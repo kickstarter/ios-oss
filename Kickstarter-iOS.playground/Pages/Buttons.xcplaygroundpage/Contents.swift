@@ -26,8 +26,7 @@ let baseButtonsStyles: [(UIButton) -> UIButton] = [
   blackButtonStyle <> UIButton.lens.title(for: .normal) .~ "Black button",
   blueButtonStyle <> UIButton.lens.title(for: .normal) .~ "Blue button",
   greenButtonStyle <> UIButton.lens.title(for: .normal) .~ "Green button",
-  greyButtonStyle <> UIButton.lens.title(for: .normal) .~ "Grey button",
-  textOnlyButtonStyle <> UIButton.lens.title(for: .normal) .~ "Text only button"
+  greyButtonStyle <> UIButton.lens.title(for: .normal) .~ "Grey button"
 ]
 
 let buttonsStyles: [[(UIButton) -> UIButton]] = baseButtonsStyles.map { [$0, $0 <> disabled()] }

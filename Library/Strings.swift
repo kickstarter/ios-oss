@@ -59,6 +59,23 @@ public enum Strings {
     )
   }
   /**
+   "Accessibility Statement"
+
+   - **en**: "Accessibility Statement"
+   - **de**: "Accessibility Statement"
+   - **es**: "Accessibility Statement"
+   - **fr**: "Accessibility Statement"
+   - **ja**: "Accessibility Statement"
+  */
+  public static func Accessibility_statement() -> String {
+    return localizedString(
+      key: "Accessibility_statement",
+      defaultValue: "Accessibility Statement",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Account"
 
    - **en**: "Account"
@@ -7242,6 +7259,40 @@ daring ideas."
     )
   }
   /**
+   "See rewards"
+
+   - **en**: "See rewards"
+   - **de**: "Belohnungen ansehen"
+   - **es**: "Ver recompensas"
+   - **fr**: "Afficher les récompenses"
+   - **ja**: "リワードを見る"
+  */
+  public static func See_rewards() -> String {
+    return localizedString(
+      key: "See_rewards",
+      defaultValue: "See rewards",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "See the rewards"
+
+   - **en**: "See the rewards"
+   - **de**: "Belohnungen einblenden"
+   - **es**: "Ver las recompensas"
+   - **fr**: "Afficher les récompenses"
+   - **ja**: "リワードを保存"
+  */
+  public static func See_the_rewards() -> String {
+    return localizedString(
+      key: "See_the_rewards",
+      defaultValue: "See the rewards",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Select"
 
    - **en**: "Select"
@@ -9041,6 +9092,23 @@ catch your eye?"
     return localizedString(
       key: "View_rewards",
       defaultValue: "View rewards",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "View the rewards"
+
+   - **en**: "View the rewards"
+   - **de**: "Belohnungen ansehen"
+   - **es**: "Ver las recompensas"
+   - **fr**: "Voir les récompenses"
+   - **ja**: "リワードを表示"
+  */
+  public static func View_the_rewards() -> String {
+    return localizedString(
+      key: "View_the_rewards",
+      defaultValue: "View the rewards",
       count: nil,
       substitutions: [:]
     )

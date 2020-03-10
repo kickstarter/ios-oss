@@ -19,8 +19,8 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   fileprivate let viewModel: ProjectPamphletContentViewModelType = ProjectPamphletContentViewModel()
   fileprivate var navBarController: ProjectNavBarViewController!
 
-  internal func configureWith(project: Project) {
-    self.viewModel.inputs.configureWith(project: project)
+  internal func configureWith(value: (Project, RefTag?)) {
+    self.viewModel.inputs.configureWith(value: value)
   }
 
   public override func viewDidLoad() {
@@ -33,7 +33,6 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     )
 
     self.tableView.registerCellClass(ProjectPamphletCreatorHeaderCell.self)
-    self.tableView.register(nib: .DeprecatedRewardCell)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -60,10 +59,10 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   public override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.loadProjectIntoDataSource
+    self.viewModel.outputs.loadProjectAndRefTagIntoDataSource
       .observeForUI()
-      .observeValues { [weak self] project, visible in
-        self?.dataSource.load(project: project, visible: visible)
+      .observeValues { [weak self] projectAndRefTag in
+        self?.dataSource.load(projectAndRefTag: projectAndRefTag)
         self?.tableView.reloadData()
       }
 
@@ -86,12 +85,6 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in self?.goToUpdates(project: $0) }
 
-    self.viewModel.outputs.goToRewardPledge
-      .observeForControllerAction()
-      .observeValues { [weak self] project, reward in
-        self?.goToRewardPledge(project: project, reward: reward)
-      }
-
     self.viewModel.outputs.goToDashboard
       .observeForControllerAction()
       .observeValues { [weak self] param in
@@ -102,8 +95,6 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   public override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     if let (_, rewardOrBacking) = self.dataSource[indexPath] as? (Project, Either<Reward, Backing>) {
       self.viewModel.inputs.tapped(rewardOrBacking: rewardOrBacking)
-    } else if self.dataSource.indexPathIsPledgeAnyAmountCell(indexPath) {
-      self.viewModel.inputs.tappedPledgeAnyAmount()
     } else if self.dataSource.indexPathIsCommentsSubpage(indexPath) {
       self.viewModel.inputs.tappedComments()
     } else if self.dataSource.indexPathIsUpdatesSubpage(indexPath) {
@@ -113,8 +104,6 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
   public override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt _: IndexPath) {
     if let cell = cell as? ProjectPamphletMainCell {
-      cell.delegate = self
-    } else if let cell = cell as? DeprecatedRewardCell {
       cell.delegate = self
     } else if let cell = cell as? ProjectPamphletCreatorHeaderCell {
       cell.delegate = self
@@ -131,23 +120,6 @@ public final class ProjectPamphletContentViewController: UITableViewController {
           self?.dismiss(animated: true, completion: nil)
         })
       }
-  }
-
-  fileprivate func goToRewardPledge(project: Project, reward: Reward) {
-    let applePayCapable = PKPaymentAuthorizationViewController.applePayCapable(for: project)
-
-    let vc = DeprecatedRewardPledgeViewController.configuredWith(
-      project: project,
-      reward: reward,
-      applePayCapable: applePayCapable
-    )
-
-    let nav = UINavigationController(rootViewController: vc)
-    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      _ = nav
-        |> \.modalPresentationStyle .~ .formSheet
-    }
-    self.present(nav, animated: true, completion: nil)
   }
 
   fileprivate func goToBacking(project: Project) {
@@ -215,9 +187,9 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 extension ProjectPamphletContentViewController: ProjectPamphletMainCellDelegate {
   internal func projectPamphletMainCell(
     _: ProjectPamphletMainCell,
-    goToCampaignForProject project: Project
+    goToCampaignForProjectWith projectAndRefTag: (project: Project, refTag: RefTag?)
   ) {
-    let vc = ProjectDescriptionViewController.configuredWith(project: project)
+    let vc = ProjectDescriptionViewController.configuredWith(value: projectAndRefTag)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
@@ -254,14 +226,6 @@ extension ProjectPamphletContentViewController: VideoViewControllerDelegate {
 
   public func videoViewControllerDidStart(_ controller: VideoViewController) {
     self.delegate?.videoViewControllerDidStart(controller)
-  }
-}
-
-extension ProjectPamphletContentViewController: DeprecatedRewardCellDelegate {
-  internal func rewardCellWantsExpansion(_ cell: DeprecatedRewardCell) {
-    cell.contentView.setNeedsUpdateConstraints()
-    self.tableView.beginUpdates()
-    self.tableView.endUpdates()
   }
 }
 

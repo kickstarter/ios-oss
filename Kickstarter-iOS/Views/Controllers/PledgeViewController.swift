@@ -255,6 +255,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.viewModel.outputs.configureWithData
       .observeForUI()
       .observeValues { [weak self] data in
+        self?.continueViewController.configureWith(value: data)
         self?.descriptionViewController.configureWith(value: data)
         self?.pledgeAmountViewController.configureWith(value: data)
         self?.pledgeAmountSummaryViewController.configureWith(data.project)
@@ -291,10 +292,9 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.viewModel.outputs.goToThanks
       .observeForControllerAction()
-      .observeValues { [weak self] project in
+      .observeValues { [weak self] data in
         generateNotificationSuccessFeedback()
-
-        self?.goToThanks(project: project)
+        self?.goToThanks(data: data)
       }
 
     self.viewModel.outputs.notifyDelegateUpdatePledgeDidSucceedWithMessage
@@ -385,8 +385,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.present(paymentAuthorizationViewController, animated: true)
   }
 
-  private func goToThanks(project: Project) {
-    let thanksVC = ThanksViewController.configuredWith(project: project)
+  private func goToThanks(data: ThanksPageData) {
+    let thanksVC = ThanksViewController.configured(with: data)
     self.navigationController?.pushViewController(thanksVC, animated: true)
   }
 
@@ -477,33 +477,6 @@ extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
     didSelect shippingRule: ShippingRule
   ) {
     self.viewModel.inputs.shippingRuleSelected(shippingRule)
-  }
-}
-
-// MARK: - RewardPledgeTransitionAnimatorDelegate
-
-extension PledgeViewController: RewardPledgeTransitionAnimatorDelegate {
-  func beginTransition(_ operation: UINavigationController.Operation) {
-    self.descriptionViewController.beginTransition(operation)
-  }
-
-  func snapshotData(withContainerView view: UIView) -> RewardPledgeTransitionSnapshotData? {
-    return self.descriptionViewController.snapshotData(withContainerView: view)
-  }
-
-  func destinationFrameData(withContainerView view: UIView) -> RewardPledgeTransitionDestinationFrameData? {
-    guard let (destination, mask) = self.descriptionViewController
-      .destinationFrameData(withContainerView: view)
-    else { return nil }
-
-    let offsetDestination = destination
-      .offsetBy(dx: 0, dy: -self.view.safeAreaInsets.top)
-
-    return (offsetDestination, mask)
-  }
-
-  func endTransition(_ operation: UINavigationController.Operation) {
-    self.descriptionViewController.endTransition(operation)
   }
 }
 

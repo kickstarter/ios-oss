@@ -9,6 +9,7 @@ final class SurveyResponseViewModelTests: TestCase {
   fileprivate let vm: SurveyResponseViewModelType = SurveyResponseViewModel()
 
   fileprivate let dismissViewController = TestObserver<Void, Never>()
+  fileprivate let extractFormDataWithJavaScript = TestObserver<String, Never>()
   fileprivate let goToProjectParam = TestObserver<Param, Never>()
   fileprivate let showAlert = TestObserver<String, Never>()
   fileprivate let title = TestObserver<String, Never>()
@@ -19,6 +20,7 @@ final class SurveyResponseViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
+    self.vm.outputs.extractFormDataWithJavaScript.observe(self.extractFormDataWithJavaScript.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProjectParam.observer)
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
     self.vm.outputs.title.observe(self.title.observer)
@@ -49,13 +51,17 @@ final class SurveyResponseViewModelTests: TestCase {
 
     self.goToProjectParam.assertDidNotEmitValue()
 
-    XCTAssertFalse(
-      self.vm.inputs.shouldStartLoad(
-        // swiftlint:disable:next force_unwrapping
-        withRequest: URLRequest(url: URL(string: project.urls.web.project)!),
-        navigationType: .linkClicked
-      )
+    let request = URLRequest(url: URL(string: project.urls.web.project)!)
+    let navigationAction = WKNavigationActionData(
+      navigationType: .linkActivated,
+      request: request,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: request),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: request)
     )
+
+    let policy = self.vm.inputs.decidePolicyFor(navigationAction: navigationAction)
+
+    XCTAssertEqual(WKNavigationActionPolicy.cancel.rawValue, policy.rawValue)
 
     self.dismissViewController.assertDidNotEmitValue()
     self.goToProjectParam.assertValues([.slug(project.slug)])
@@ -64,6 +70,7 @@ final class SurveyResponseViewModelTests: TestCase {
   func testRespondToSurvey() {
     let project = Project.template
     let surveyResponse = .template
+      |> SurveyResponse.lens.id .~ 123
       |> SurveyResponse.lens.project .~ project
 
     self.vm.inputs.configureWith(surveyResponse: surveyResponse)
@@ -73,40 +80,81 @@ final class SurveyResponseViewModelTests: TestCase {
     self.webViewLoadRequestIsPrepared.assertValues([true])
     self.webViewLoadRequest.assertValueCount(1)
 
-    XCTAssertTrue(
-      self.vm.inputs.shouldStartLoad(
-        withRequest: surveyRequest(project: project, prepared: true, method: .GET),
-        navigationType: .other
-      )
+    let surveyPreparedGetRequest = surveyRequest(project: project, prepared: true, method: .GET)
+
+    let surveyPreparedGetRequestNavigationAction = WKNavigationActionData(
+      navigationType: .other,
+      request: surveyPreparedGetRequest,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: surveyPreparedGetRequest),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: surveyPreparedGetRequest)
     )
 
-    // 2. Submit survey.
-    XCTAssertFalse(
-      self.vm.inputs.shouldStartLoad(
-        withRequest: surveyRequest(project: project, prepared: false, method: .POST),
-        navigationType: .formSubmitted
-      ),
+    let surveyPreparedGetRequestPolicy = self.vm.inputs.decidePolicyFor(
+      navigationAction: surveyPreparedGetRequestNavigationAction
+    )
+
+    XCTAssertEqual(WKNavigationActionPolicy.allow.rawValue, surveyPreparedGetRequestPolicy.rawValue)
+
+    // 2. Submit unprepared survey.
+    let surveyUnpreparedPostRequest = surveyRequest(project: project, prepared: false, method: .POST)
+
+    let surveyUnpreparedPostRequestNavigationAction = WKNavigationActionData(
+      navigationType: .formSubmitted,
+      request: surveyUnpreparedPostRequest,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: surveyUnpreparedPostRequest),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: surveyUnpreparedPostRequest)
+    )
+
+    let surveyUnpreparedPostRequestPolicy = self.vm.inputs.decidePolicyFor(
+      navigationAction: surveyUnpreparedPostRequestNavigationAction
+    )
+
+    XCTAssertEqual(
+      WKNavigationActionPolicy.cancel.rawValue, surveyUnpreparedPostRequestPolicy.rawValue,
       "Not prepared"
     )
+
+    self.extractFormDataWithJavaScript.assertValues(["$('#edit_survey_response_123').serialize()"])
+    self.vm.inputs.didEvaluateJavaScriptWithResult("data=data")
+    XCTAssertEqual(self.webViewLoadRequest.values.last?.httpBody, "data=data".data(using: .utf8))
 
     self.webViewLoadRequestIsPrepared.assertValues([true, true])
     self.webViewLoadRequest.assertValueCount(2)
 
-    XCTAssertTrue(
-      self.vm.inputs.shouldStartLoad(
-        withRequest: surveyRequest(project: project, prepared: true, method: .POST),
-        navigationType: .other
-      )
+    // 3. Submit prepared survey.
+    let surveyPreparedPostRequest = surveyRequest(project: project, prepared: true, method: .POST)
+
+    let surveyPreparedPostRequestNavigationAction = WKNavigationActionData(
+      navigationType: .other,
+      request: surveyPreparedPostRequest,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: surveyPreparedPostRequest),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: surveyPreparedPostRequest)
     )
+
+    let surveyPreparedPostRequestPolicy = self.vm.inputs.decidePolicyFor(
+      navigationAction: surveyPreparedPostRequestNavigationAction
+    )
+
+    XCTAssertEqual(WKNavigationActionPolicy.allow.rawValue, surveyPreparedPostRequestPolicy.rawValue)
 
     // 3. Display success alert.
     self.showAlert.assertDidNotEmitValue()
 
-    XCTAssertFalse(
-      self.vm.inputs.shouldStartLoad(
-        withRequest: surveyRequest(project: project, prepared: false, method: .GET),
-        navigationType: .other
-      ),
+    let surveyRedirectGetRequest = surveyRequest(project: project, prepared: false, method: .GET)
+
+    let surveyRedirectGetRequestNavigationAction = WKNavigationActionData(
+      navigationType: .other,
+      request: surveyRedirectGetRequest,
+      sourceFrame: WKFrameInfoData(mainFrame: true, request: surveyRedirectGetRequest),
+      targetFrame: WKFrameInfoData(mainFrame: true, request: surveyRedirectGetRequest)
+    )
+
+    let surveyRedirectGetRequestPolicy = self.vm.inputs.decidePolicyFor(
+      navigationAction: surveyRedirectGetRequestNavigationAction
+    )
+
+    XCTAssertEqual(
+      WKNavigationActionPolicy.cancel.rawValue, surveyRedirectGetRequestPolicy.rawValue,
       "Intercept redirect to survey"
     )
 

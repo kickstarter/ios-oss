@@ -50,14 +50,9 @@ final class ThanksProjectsDataSourceTests: XCTestCase {
     ]
     dataSource.loadData(projects: projects, category: Category.games)
 
-    let indexPath0 = IndexPath(item: 0, section: 0)
-    let indexPath1 = IndexPath(item: 1, section: 0)
-    let indexPath2 = IndexPath(item: 2, section: 0)
-    let indexPath3 = IndexPath(item: 3, section: 0)
-
-    XCTAssertNil(dataSource.categoryAtIndexPath(indexPath0), "Category is nil for non-category item")
-    XCTAssertNil(self.dataSource.categoryAtIndexPath(indexPath1), "Category is nil for non-category item")
-    XCTAssertNil(self.dataSource.categoryAtIndexPath(indexPath2), "Category is nil for non-category item")
-    XCTAssertEqual(Category.games, self.dataSource.categoryAtIndexPath(indexPath3))
+    XCTAssertEqual("DiscoveryPostcardCell", self.dataSource.reusableId(item: 0, section: 0))
+    XCTAssertEqual("DiscoveryPostcardCell", self.dataSource.reusableId(item: 1, section: 0))
+    XCTAssertEqual("DiscoveryPostcardCell", self.dataSource.reusableId(item: 2, section: 0))
+    XCTAssertEqual("ThanksCategoryCell", self.dataSource.reusableId(item: 3, section: 0))
   }
 }

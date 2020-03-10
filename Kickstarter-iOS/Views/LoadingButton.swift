@@ -13,6 +13,12 @@ final class LoadingButton: UIButton {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  public var activityIndicatorStyle: UIActivityIndicatorView.Style = .white {
+    didSet {
+      self.activityIndicator.style = self.activityIndicatorStyle
+    }
+  }
+
   public var isLoading: Bool = false {
     didSet {
       self.viewModel.inputs.isLoading(self.isLoading)

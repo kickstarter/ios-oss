@@ -20,10 +20,10 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   fileprivate let shareViewModel: ShareViewModelType = ShareViewModel()
   fileprivate let dataSource = ThanksProjectsDataSource()
 
-  internal static func configuredWith(project: Project) -> ThanksViewController {
+  internal static func configured(with data: ThanksPageData) -> ThanksViewController {
     let vc = Storyboard.Thanks.instantiate(ThanksViewController.self)
-    vc.viewModel.inputs.project(project)
-    vc.shareViewModel.inputs.configureWith(shareContext: .thanks(project), shareContextView: nil)
+    vc.viewModel.inputs.configure(with: data)
+    vc.shareViewModel.inputs.configureWith(shareContext: .thanks(data.project), shareContextView: nil)
     return vc
   }
 
@@ -107,9 +107,10 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     self.backedLabel.rac.attributedText = self.viewModel.outputs.backedProjectText
 
-    self.viewModel.outputs.dismissToRootViewController
+    self.viewModel.outputs.dismissToRootViewControllerAndPostNotification
       .observeForControllerAction()
       .observeValues { [weak self] in
+        NotificationCenter.default.post($0)
         self?.dismiss(animated: true)
       }
 
@@ -257,13 +258,20 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
   }
 
   internal func tableView(
+    _: UITableView, willDisplay cell: UITableViewCell,
+    forRowAt _: IndexPath
+  ) {
+    if let cell = cell as? ThanksCategoryCell {
+      cell.delegate = self
+    }
+  }
+
+  internal func tableView(
     _: UITableView,
     didSelectRowAt indexPath: IndexPath
   ) {
     if let project = self.dataSource.projectAtIndexPath(indexPath) {
       self.viewModel.inputs.projectTapped(project)
-    } else if let category = self.dataSource.categoryAtIndexPath(indexPath) {
-      self.viewModel.inputs.categoryCellTapped(category)
     }
   }
 
@@ -278,4 +286,10 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
 extension ThanksViewController: ProjectNavigatorDelegate {
   func transitionedToProject(at _: Int) {}
+}
+
+extension ThanksViewController: ThanksCategoryCellDelegate {
+  func thanksCategoryCell(_: ThanksCategoryCell, didTapSeeAllProjectsWith category: KsApi.Category) {
+    self.viewModel.inputs.categoryCellTapped(category)
+  }
 }

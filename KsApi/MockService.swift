@@ -10,6 +10,7 @@
     internal let language: String
     internal let currency: String
     internal let buildVersion: String
+    internal let deviceIdentifier: String
 
     fileprivate let addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>?
 
@@ -45,9 +46,6 @@
     fileprivate let backingUpdate: Backing
 
     fileprivate let fetchGraphCategoriesResponse: RootCategoriesEnvelope?
-
-    fileprivate let fetchCheckoutResponse: CheckoutEnvelope?
-    fileprivate let fetchCheckoutError: ErrorEnvelope?
 
     fileprivate let fetchCommentsResponse: [Comment]?
     fileprivate let fetchCommentsError: ErrorEnvelope?
@@ -149,8 +147,6 @@
     fileprivate let signupResponse: AccessTokenEnvelope?
     fileprivate let signupError: ErrorEnvelope?
 
-    fileprivate let submitApplePayResponse: SubmitApplePayEnvelope
-
     fileprivate let unfollowFriendError: ErrorEnvelope?
 
     fileprivate let updateBackingResult: Result<UpdateBackingEnvelope, GraphError>?
@@ -177,7 +173,8 @@
       oauthToken: OauthTokenAuthType?,
       language: String,
       currency: String,
-      buildVersion: String = "1"
+      buildVersion: String = "1",
+      deviceIdentifier: String = "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
     ) {
       self.init(
         appId: appId,
@@ -186,6 +183,7 @@
         language: language,
         currency: currency,
         buildVersion: buildVersion,
+        deviceIdentifier: deviceIdentifier,
         fetchActivitiesResponse: nil
       )
     }
@@ -197,6 +195,7 @@
       language: String = "en",
       currency: String = "USD",
       buildVersion: String = "1",
+      deviceIdentifier: String = "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
       addNewCreditCardResult: Result<CreatePaymentSourceEnvelope, GraphError>? = nil,
       cancelBackingResult: Result<GraphMutationEmptyResponseEnvelope, GraphError>? = nil,
       changeEmailError: GraphError? = nil,
@@ -219,8 +218,6 @@
       fetchBackingResponse: Backing = .template,
       backingUpdate: Backing = .template,
       fetchGraphCategoriesResponse: RootCategoriesEnvelope? = nil,
-      fetchCheckoutResponse: CheckoutEnvelope? = nil,
-      fetchCheckoutError: ErrorEnvelope? = nil,
       fetchCommentsResponse: [Comment]? = nil,
       fetchCommentsError: ErrorEnvelope? = nil,
       fetchConfigResponse: Config? = nil,
@@ -285,7 +282,6 @@
       sendEmailVerificationError: GraphError? = nil,
       signupResponse: AccessTokenEnvelope? = nil,
       signupError: ErrorEnvelope? = nil,
-      submitApplePayResponse: SubmitApplePayEnvelope = .template,
       unfollowFriendError: ErrorEnvelope? = nil,
       updateBackingResult: Result<UpdateBackingEnvelope, GraphError>? = nil,
       updateDraftError: ErrorEnvelope? = nil,
@@ -304,6 +300,7 @@
       self.language = language
       self.currency = currency
       self.buildVersion = buildVersion
+      self.deviceIdentifier = deviceIdentifier
 
       self.addNewCreditCardResult = addNewCreditCardResult
 
@@ -342,7 +339,7 @@
 
       self.backingUpdate = backingUpdate
 
-      self.fetchGraphCategoriesResponse = fetchGraphCategoriesResponse ?? (.template
+      self.fetchGraphCategoriesResponse = fetchGraphCategoriesResponse ?? (RootCategoriesEnvelope.template
         |> RootCategoriesEnvelope.lens.categories .~ [
           .art,
           .filmAndVideo,
@@ -359,9 +356,6 @@
 
       self.fetchGraphUserBackingsResponse = fetchGraphUserBackingsResponse
       self.fetchGraphUserBackingsError = fetchGraphUserBackingsError
-
-      self.fetchCheckoutResponse = fetchCheckoutResponse
-      self.fetchCheckoutError = fetchCheckoutError
 
       self.fetchCommentsResponse = fetchCommentsResponse ?? [
         .template |> Comment.lens.id .~ 2,
@@ -483,8 +477,6 @@
 
       self.signupError = signupError
 
-      self.submitApplePayResponse = submitApplePayResponse
-
       self.unfollowFriendError = unfollowFriendError
 
       self.updateBackingResult = updateBackingResult
@@ -589,16 +581,6 @@
     internal func clearUserUnseenActivity(input _: EmptyInput)
       -> SignalProducer<ClearUserUnseenActivityEnvelope, GraphError> {
       return producer(for: self.clearUserUnseenActivityResult)
-    }
-
-    internal func fetchCheckout(checkoutUrl _: String) -> SignalProducer<CheckoutEnvelope, ErrorEnvelope> {
-      if let response = fetchCheckoutResponse {
-        return SignalProducer(value: response)
-      } else if let error = fetchCheckoutError {
-        return SignalProducer(error: error)
-      }
-
-      return SignalProducer(value: .template)
     }
 
     internal func fetchComments(project _: Project) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
@@ -938,10 +920,15 @@
       if let project = self.fetchProjectResponse {
         return SignalProducer(value: project)
       }
+
+      let projectWithId = Project.template
+        |> Project.lens.id %~ { param.id ?? $0 }
+
+      let projectWithSlugAndId = projectWithId
+        |> Project.lens.slug %~ { param.slug ?? $0 }
+
       return SignalProducer(
-        value: .template
-          |> Project.lens.id %~ { param.id ?? $0 }
-          |> Project.lens.slug %~ { param.slug ?? $0 }
+        value: projectWithSlugAndId
       )
     }
 
@@ -1294,17 +1281,6 @@
       )
     }
 
-    func submitApplePay(
-      checkoutUrl _: String,
-      stripeToken _: String,
-      paymentInstrumentName _: String,
-      paymentNetwork _: String,
-      transactionIdentifier _: String
-    ) ->
-      SignalProducer<SubmitApplePayEnvelope, ErrorEnvelope> {
-      return SignalProducer(value: self.submitApplePayResponse)
-    }
-
     internal func updateProjectNotification(_ notification: ProjectNotification)
       -> SignalProducer<ProjectNotification, ErrorEnvelope> {
       if let error = updateProjectNotificationError {
@@ -1509,7 +1485,6 @@
             resetPasswordError: $1.resetPasswordError,
             signupResponse: $1.signupResponse,
             signupError: $1.signupError,
-            submitApplePayResponse: $1.submitApplePayResponse,
             unfollowFriendError: $1.unfollowFriendError,
             updateBackingResult: $1.updateBackingResult,
             updateDraftError: $1.updateDraftError,
@@ -1533,3 +1508,19 @@
     }
   }
 #endif
+
+private extension Result {
+  var value: Success? {
+    switch self {
+    case let .success(value): return value
+    case .failure: return nil
+    }
+  }
+
+  var error: Failure? {
+    switch self {
+    case .success: return nil
+    case let .failure(error): return error
+    }
+  }
+}

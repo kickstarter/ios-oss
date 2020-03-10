@@ -73,8 +73,8 @@ public final class ResetPasswordViewModel: ResetPasswordViewModelType, ResetPass
 
     self.returnToLogin = self.confirmResetButtonPressedProperty.signal
 
-    self.viewDidLoadProperty.signal.observeValues { AppEnvironment.current.koala.trackResetPassword() }
-    self.showResetSuccess.observeValues { _ in AppEnvironment.current.koala.trackResetPasswordSuccess() }
+    self.viewDidLoadProperty.signal
+      .observeValues { AppEnvironment.current.koala.trackForgotPasswordViewed() }
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())

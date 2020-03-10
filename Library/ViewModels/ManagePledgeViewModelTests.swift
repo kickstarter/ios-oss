@@ -24,8 +24,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let goToRewards = TestObserver<Project, Never>()
   private let goToUpdatePledgeProject = TestObserver<Project, Never>()
   private let goToUpdatePledgeReward = TestObserver<Reward, Never>()
-  private let notifyDelegateShouldDismissAndShowSuccessBannerWithMessage
-    = TestObserver<String, Never>()
+  private let notifyDelegateManagePledgeViewControllerFinishedWithMessage
+    = TestObserver<String?, Never>()
   private let rewardReceivedViewControllerViewIsHidden = TestObserver<Bool, Never>()
   private let showActionSheetMenuWithOptions = TestObserver<[ManagePledgeAlertAction], Never>()
   private let showErrorBannerWithMessage = TestObserver<String, Never>()
@@ -55,8 +55,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.outputs.goToRewards.observe(self.goToRewards.observer)
     self.vm.outputs.goToUpdatePledge.map(first).observe(self.goToUpdatePledgeProject.observer)
     self.vm.outputs.goToUpdatePledge.map(second).observe(self.goToUpdatePledgeReward.observer)
-    self.vm.outputs.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage
-      .observe(self.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage.observer)
+    self.vm.outputs.notifyDelegateManagePledgeViewControllerFinishedWithMessage
+      .observe(self.notifyDelegateManagePledgeViewControllerFinishedWithMessage.observer)
     self.vm.outputs.rewardReceivedViewControllerViewIsHidden.observe(
       self.rewardReceivedViewControllerViewIsHidden.observer
     )
@@ -465,16 +465,28 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
   }
 
-  func testCancelPledgeDidFinish() {
+  func testNotifyDelegateManagePledgeViewControllerFinishedWithMessage_CancellingPledge() {
     self.vm.inputs.configureWith(Project.template)
     self.vm.inputs.viewDidLoad()
 
-    self.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage.assertDidNotEmitValue()
+    self.notifyDelegateManagePledgeViewControllerFinishedWithMessage.assertDidNotEmitValue()
 
     self.vm.inputs.cancelPledgeDidFinish(with: "You cancelled your pledge.")
 
-    self.notifyDelegateShouldDismissAndShowSuccessBannerWithMessage
+    self.notifyDelegateManagePledgeViewControllerFinishedWithMessage
       .assertValues(["You cancelled your pledge."])
+  }
+
+  func testNotifyDelegateManagePledgeViewControllerFinishedWithMessage_UpdatingPledge() {
+    self.vm.inputs.configureWith(Project.template)
+    self.vm.inputs.viewDidLoad()
+
+    self.notifyDelegateManagePledgeViewControllerFinishedWithMessage.assertDidNotEmitValue()
+
+    self.vm.inputs.pledgeViewControllerDidUpdatePledgeWithMessage("Pledge updated.")
+
+    self.notifyDelegateManagePledgeViewControllerFinishedWithMessage
+      .assertValues([], "The delegate doesn't send message when updating a pledge.")
   }
 
   func testPledgeViewControllerDidUpdatePledge() {

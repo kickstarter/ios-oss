@@ -14,8 +14,11 @@ public protocol ProjectPamphletViewModelInputs {
   /// Call after the view loads and passes the initial TopConstraint constant.
   func initial(topConstraint: CGFloat)
 
-  /// Call when the ManagePledgeViewController finished with a confirmation message
-  func managePledgeViewControllerFinished(with message: String)
+  /// Call when the Thank you page is dismissed after finishing backing the project
+  func didBackProject()
+
+  /// Call when the ManagePledgeViewController finished updating/cancelling a pledge with an optional message
+  func managePledgeViewControllerFinished(with message: String?)
 
   /// Call when the pledge CTA button is tapped
   func pledgeCTAButtonTapped(with state: PledgeStateCTAType)
@@ -37,19 +40,18 @@ public protocol ProjectPamphletViewModelOutputs {
   /// Emits a project that should be used to configure all children view controllers.
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
 
-  /// Emits a (project, isLoading) tuple used to configure the pledge CTA view
-  var configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never> { get }
+  /// Emits PledgeCTAContainerViewData to configure PledgeCTAContainerView
+  var configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never> { get }
 
   var dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never> { get }
-
-  var goToDeprecatedManagePledge: Signal<PledgeData, Never> { get }
-
-  var goToDeprecatedViewBacking: Signal<BackingData, Never> { get }
 
   var goToManagePledge: Signal<Project, Never> { get }
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
+
+  /// Emits when the navigation stack should be popped to the root view controller.
+  var popToRootViewController: Signal<(), Never> { get }
 
   /// Emits two booleans that determine if the navigation bar should be hidden, and if it should be animated.
   var setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never> { get }
@@ -71,10 +73,13 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   public init() {
     let isLoading = MutableProperty(false)
 
+    self.popToRootViewController = self.didBackProjectProperty.signal.ignoreValues()
+
     let freshProjectAndRefTagEvent = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
         self.viewDidLoadProperty.signal.mapConst(true),
-        self.viewDidAppearAnimated.signal.filter(isTrue).mapConst(false),
+        self.didBackProjectProperty.signal.ignoreValues().mapConst(false),
+        self.managePledgeViewControllerFinishedWithMessageProperty.signal.ignoreValues().mapConst(false),
         self.pledgeRetryButtonTappedProperty.signal.mapConst(false)
       ))
       .map(unpack)
@@ -112,24 +117,12 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .skipNil()
 
     let shouldGoToRewards = ctaButtonTappedWithType
-      .filter { [.pledge, .viewRewards, .viewYourRewards].contains($0) }
+      .filter { [.pledge, .viewRewards, .viewYourRewards, .seeTheRewards, .viewTheRewards].contains($0) }
       .ignoreValues()
-      .filter(userCanSeeNativeCheckout)
-
-    let shouldGoToDeprecatedManagePledge = ctaButtonTappedWithType
-      .filter { $0 == .manage }
-      .ignoreValues()
-      .filter(featureNativeCheckoutPledgeViewIsEnabled >>> isFalse)
-
-    let shouldGoToDeprecatedViewBacking = ctaButtonTappedWithType
-      .filter { $0 == .viewBacking }
-      .ignoreValues()
-      .filter(featureNativeCheckoutPledgeViewIsEnabled >>> isFalse)
 
     let shouldGoToManagePledge = ctaButtonTappedWithType
       .filter(shouldGoToManagePledge(with:))
       .ignoreValues()
-      .filter(featureNativeCheckoutPledgeViewIsEnabled)
 
     self.goToRewards = freshProjectAndRefTag
       .takeWhen(shouldGoToRewards)
@@ -138,30 +131,13 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .takeWhen(shouldGoToManagePledge)
       .map(first)
 
-    self.goToDeprecatedManagePledge = Signal.combineLatest(projectAndBacking, refTag)
-      .takeWhen(shouldGoToDeprecatedManagePledge)
-      .map(unpack)
-      .map { project, backing, refTag in
-        PledgeData(project: project, reward: reward(from: backing, inProject: project), refTag: refTag)
-      }
-
-    self.goToDeprecatedViewBacking = projectAndBacking
-      .takeWhen(shouldGoToDeprecatedViewBacking)
-      .map { project, _ in
-        BackingData(project, AppEnvironment.current.currentUser)
-      }
-
-    let projectCTA: Signal<Either<Project, ErrorEnvelope>, Never> = project
-      .map { .left($0) }
-
-    let projectError: Signal<Either<Project, ErrorEnvelope>, Never> = freshProjectAndRefTagEvent.errors()
-      .map { .right($0) }
+    let projectError: Signal<ErrorEnvelope, Never> = freshProjectAndRefTagEvent.errors()
 
     self.configurePledgeCTAView = Signal.combineLatest(
-      Signal.merge(projectCTA, projectError),
+      Signal.merge(freshProjectAndRefTag.map(Either.left), projectError.map(Either.right)),
       isLoading.signal
     )
-    .filter { _ in userCanSeeNativeCheckout() }
+    .map { ($0, $1, PledgeCTAContainerViewContext.projectPamphlet) }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
@@ -181,7 +157,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(layoutConstraintConstant(initialTopConstraint:traitCollection:))
 
     self.dismissManagePledgeAndShowMessageBannerWithMessage
-      = self.managePledgeViewControllerFinishedWithMessageProperty.signal.skipNil()
+      = self.managePledgeViewControllerFinishedWithMessageProperty.signal
+      .skipNil()
 
     let cookieRefTag = freshProjectAndRefTag
       .map { project, refTag in
@@ -189,14 +166,17 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       }
       .take(first: 1)
 
-    Signal.combineLatest(
-      freshProjectAndRefTag,
-      cookieRefTag,
+    Signal.zip(
+      freshProjectAndRefTag.skip(first: 1),
       self.viewDidAppearAnimated.signal.ignoreValues()
     )
-    .map { (project: $0.0, refTag: $0.1, cookieRefTag: $1, _: $2) }
-    .take(first: 1)
-    .observeValues { project, refTag, cookieRefTag, _ in
+    .map(unpack)
+    .map { project, refTag, _ in
+      let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
+
+      return (project: project, refTag: refTag, cookieRefTag: cookieRefTag)
+    }
+    .observeValues { project, refTag, cookieRefTag in
       AppEnvironment.current.koala.trackProjectViewed(
         project,
         refTag: refTag,
@@ -209,6 +189,27 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(cookieFrom(refTag:project:))
       .skipNil()
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
+
+    let shouldTrackCTATappedEvent = ctaButtonTappedWithType
+      .filter { [.pledge, .seeTheRewards, .viewTheRewards].contains($0) }
+
+    Signal.combineLatest(project, refTag)
+      .takeWhen(shouldTrackCTATappedEvent)
+      .observeValues { project, refTag in
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+          with: AppEnvironment.current.currentUser,
+          project: project,
+          refTag: refTag
+        )
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "Project Page Pledge Button Clicked",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
+      }
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)
@@ -216,8 +217,13 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     self.configDataProperty.value = (projectOrParam, refTag)
   }
 
+  private let didBackProjectProperty = MutableProperty<Void>(())
+  public func didBackProject() {
+    self.didBackProjectProperty.value = ()
+  }
+
   private let managePledgeViewControllerFinishedWithMessageProperty = MutableProperty<String?>(nil)
-  public func managePledgeViewControllerFinished(with message: String) {
+  public func managePledgeViewControllerFinished(with message: String?) {
     self.managePledgeViewControllerFinishedWithMessageProperty.value = message
   }
 
@@ -258,12 +264,11 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
-  public let configurePledgeCTAView: Signal<(Either<Project, ErrorEnvelope>, Bool), Never>
+  public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
-  public let goToDeprecatedManagePledge: Signal<PledgeData, Never>
-  public let goToDeprecatedViewBacking: Signal<BackingData, Never>
   public let goToManagePledge: Signal<Project, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
+  public let popToRootViewController: Signal<(), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
   public let topLayoutConstraintConstant: Signal<CGFloat, Never>
@@ -271,9 +276,6 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   public var inputs: ProjectPamphletViewModelInputs { return self }
   public var outputs: ProjectPamphletViewModelOutputs { return self }
 }
-
-private let cookieSeparator = "?"
-private let escapedCookieSeparator = "%3F"
 
 private func layoutConstraintConstant(
   initialTopConstraint: CGFloat,
@@ -284,63 +286,6 @@ private func layoutConstraintConstant(
   }
 
   return traitCollection.isVerticallyCompact ? 0.0 : initialTopConstraint
-}
-
-// Extracts the ref tag stored in cookies for a particular project. Returns `nil` if no such cookie has
-// been previously set.
-private func cookieRefTagFor(project: Project) -> RefTag? {
-  return AppEnvironment.current.cookieStorage.cookies?
-    .filter { cookie in cookie.name == cookieName(project) }
-    .first
-    .map(refTagName(fromCookie:))
-    .flatMap(RefTag.init(code:))
-}
-
-// Derives the name of the ref cookie from the project.
-private func cookieName(_ project: Project) -> String {
-  return "ref_\(project.id)"
-}
-
-// Tries to extract the name of the ref tag from a cookie. It has to do double work in case the cookie
-// is accidentally encoded with a `%3F` instead of a `?`.
-private func refTagName(fromCookie cookie: HTTPCookie) -> String {
-  return cleanUp(refTagString: cookie.value)
-}
-
-// Tries to remove cruft from a ref tag.
-private func cleanUp(refTag: RefTag) -> RefTag {
-  return RefTag(code: cleanUp(refTagString: refTag.stringTag))
-}
-
-// Tries to remove cruft from a ref tag string.
-private func cleanUp(refTagString: String) -> String {
-  let secondPass = refTagString.components(separatedBy: escapedCookieSeparator)
-  if let name = secondPass.first, secondPass.count == 2 {
-    return String(name)
-  }
-
-  let firstPass = refTagString.components(separatedBy: cookieSeparator)
-  if let name = firstPass.first, firstPass.count == 2 {
-    return String(name)
-  }
-
-  return refTagString
-}
-
-// Constructs a cookie from a ref tag and project.
-private func cookieFrom(refTag: RefTag, project: Project) -> HTTPCookie? {
-  let timestamp = Int(AppEnvironment.current.scheduler.currentDate.timeIntervalSince1970)
-
-  var properties: [HTTPCookiePropertyKey: Any] = [:]
-  properties[.name] = cookieName(project)
-  properties[.value] = "\(refTag.stringTag)\(cookieSeparator)\(timestamp)"
-  properties[.domain] = URL(string: project.urls.web.project)?.host
-  properties[.path] = URL(string: project.urls.web.project)?.path
-  properties[.version] = 0
-  properties[.expires] = AppEnvironment.current.dateType
-    .init(timeIntervalSince1970: project.dates.deadline).date
-
-  return HTTPCookie(properties: properties)
 }
 
 private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: Bool)

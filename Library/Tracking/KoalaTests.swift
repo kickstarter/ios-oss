@@ -6,6 +6,8 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 final class KoalaTests: TestCase {
+  // MARK: - Session Properties Tests
+
   func testSessionProperties() {
     let bundle = MockBundle()
     let client = MockTrackingClient()
@@ -54,20 +56,33 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("1234567890", properties?["session_app_build_number"] as? String)
     XCTAssertEqual("1.2.3.4.5.6.7.8.9.0", properties?["session_app_release_version"] as? String)
     XCTAssertEqual("phone", properties?["session_device_format"] as? String)
-    XCTAssertEqual("abc-123", properties?["session_device_fingerprint"] as? String)
     XCTAssertEqual("Apple", properties?["session_device_manufacturer"] as? String)
     XCTAssertEqual("Portrait", properties?["session_device_orientation"] as? String)
-    XCTAssertEqual("abc-123", properties?["session_distinct_id"] as? String)
+    XCTAssertEqual("abc-123", properties?["session_device_distinct_id"] as? String)
+    XCTAssertEqual(["service": "wifi"], properties?["session_cellular_connection"] as? [String: String]?)
 
     XCTAssertEqual("MockSystemName", properties?["session_os"] as? String)
     XCTAssertEqual("MockSystemVersion", properties?["session_os_version"] as? String)
     XCTAssertEqual(UInt(screen.bounds.width), properties?["session_screen_width"] as? UInt)
     XCTAssertEqual("kickstarter_ios", properties?["session_mp_lib"] as? String)
-    XCTAssertEqual("abc-123", properties?["session_iphone_uuid"] as? String)
     XCTAssertEqual(false, properties?["session_user_logged_in"] as? Bool)
     XCTAssertEqual("ios", properties?["session_client_platform"] as? String)
+    XCTAssertEqual("en", properties?["session_display_language"] as? String)
 
-    XCTAssertEqual(25, properties?.keys.filter { $0.hasPrefix("session_") }.count)
+    XCTAssertEqual(23, properties?.keys.filter { $0.hasPrefix("session_") }.count)
+  }
+
+  func testSessionProperties_Language() {
+    withEnvironment(language: Language.es) {
+      let client = MockTrackingClient()
+      let koala = Koala(client: client)
+
+      koala.trackAppOpen()
+
+      let properties = client.properties.last
+
+      XCTAssertEqual("es", properties?["session_display_language"] as? String)
+    }
   }
 
   func testSessionProperties_VoiceOver() {
@@ -141,11 +156,18 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("Face Down", props?["session_device_orientation"] as? String)
   }
 
-  func testTrackProject() {
+  // MARK: - Project Properties Tests
+
+  func testProjectProperties() {
     let client = MockTrackingClient()
     let koala = Koala(client: client, loggedInUser: nil)
     let project = Project.template
-      |> Project.lens.stats.staticUsdRate .~ 2
+      |> Project.lens.rewards .~ [Reward.template]
+      |> \.category .~ (.illustration
+        |> \.id .~ 123
+        |> \.parentId .~ 321
+      )
+      |> Project.lens.stats.staticUsdRate .~ 2.0
       |> Project.lens.stats.commentsCount .~ 10
       |> Project.lens.prelaunchActivated .~ true
 
@@ -162,9 +184,10 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(project.stats.goal, properties?["project_goal"] as? Int)
     XCTAssertEqual(project.id, properties?["project_pid"] as? Int)
     XCTAssertEqual(project.stats.fundingProgress, properties?["project_percent_raised"] as? Float)
-    XCTAssertEqual(project.stats.updatesCount, properties?["project_updates_count"] as? Int)
     XCTAssertEqual(project.category.name, properties?["project_subcategory"] as? String)
-    XCTAssertEqual(project.category._parent?.name, properties?["project_category"] as? String)
+    XCTAssertEqual(123, properties?["project_subcategory_id"] as? Int)
+    XCTAssertEqual("Art", properties?["project_category"] as? String)
+    XCTAssertEqual(321, properties?["project_category_id"] as? Int)
     XCTAssertEqual(project.location.name, properties?["project_location"] as? String)
     XCTAssertEqual(project.creator.id, properties?["project_creator_uid"] as? Int)
     XCTAssertEqual(24 * 15, properties?["project_hours_remaining"] as? Int)
@@ -179,13 +202,14 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(true, properties?["project_has_video"] as? Bool)
     XCTAssertEqual(10, properties?["project_comments_count"] as? Int)
     XCTAssertEqual(true, properties?["project_prelaunch_activated"] as? Bool)
-    XCTAssertEqual(0, properties?["project_rewards_count"] as? Int)
+    XCTAssertEqual(1, properties?["project_rewards_count"] as? Int)
+    XCTAssertEqual(1, properties?["project_updates_count"] as? Int)
 
     XCTAssertEqual(false, properties?["project_user_is_project_creator"] as? Bool)
     XCTAssertNil(properties?["project_user_is_backer"])
     XCTAssertNil(properties?["project_user_has_starred"])
 
-    XCTAssertEqual(25, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(28, properties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual("discovery", properties?["session_ref_tag"] as? String)
     XCTAssertEqual("recommended", properties?["session_referrer_credit"] as? String)
@@ -209,7 +233,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(false, properties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, properties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(26, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(27, properties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInBacker() {
@@ -229,7 +253,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(true, properties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, properties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(26, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(27, properties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInStarrer() {
@@ -249,7 +273,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(false, properties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(true, properties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(26, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(27, properties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInCreator() {
@@ -269,8 +293,10 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(false, properties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, properties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(26, properties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(27, properties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
+
+  // MARK: - Discovery Properties Tests
 
   func testDiscoveryProperties() {
     let client = MockTrackingClient()
@@ -360,6 +386,93 @@ final class KoalaTests: TestCase {
     XCTAssertNil(properties?["discover_search_term"])
     XCTAssertEqual(true, properties?["discover_everything"] as? Bool)
     XCTAssertEqual("magic", properties?["discover_sort"] as? String)
+  }
+
+  // MARK: - Pledge Properties Tests
+
+  func testPledgeProperties() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    let project = Project.cosmicSurgery
+    let reward = Reward.template
+
+    koala.trackRewardClicked(project: project, reward: reward, context: .newPledge, refTag: .recommended)
+
+    let props = client.properties.last
+
+    XCTAssertEqual(false, props?["pledge_backer_reward_has_items"] as? Bool)
+    XCTAssertEqual(1, props?["pledge_backer_reward_id"] as? Int)
+    XCTAssertEqual(true, props?["pledge_backer_reward_is_limited_quantity"] as? Bool)
+    XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_time"] as? Bool)
+    XCTAssertEqual(10.00, props?["pledge_backer_reward_minimum"] as? Double)
+    XCTAssertEqual(false, props?["pledge_backer_reward_shipping_enabled"] as? Bool)
+    XCTAssertNil(props?["pledge_backer_reward_shipping_preference"] as? String)
+
+    XCTAssertEqual("recommended", props?["session_ref_tag"] as? String)
+    XCTAssertEqual("new_pledge", props?["context_pledge_flow"] as? String)
+  }
+
+  func testPledgeProperties_NoReward() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    let project = Project.cosmicSurgery
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 5.0
+
+    koala.trackRewardClicked(project: project, reward: reward, context: .changeReward, refTag: nil)
+
+    let props = client.properties.last
+
+    XCTAssertEqual(false, props?["pledge_backer_reward_has_items"] as? Bool)
+    XCTAssertEqual(0, props?["pledge_backer_reward_id"] as? Int)
+    XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_quantity"] as? Bool)
+    XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_time"] as? Bool)
+    XCTAssertEqual(5.00, props?["pledge_backer_reward_minimum"] as? Double)
+    XCTAssertEqual(false, props?["pledge_backer_reward_shipping_enabled"] as? Bool)
+    XCTAssertNil(props?["pledge_backer_reward_shipping_preference"] as? String)
+
+    XCTAssertEqual("change_reward", props?["context_pledge_flow"] as? String)
+  }
+
+  func testPledgeProperties_ShippingPreference() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    let project = Project.cosmicSurgery
+    let reward = Reward.template
+      |> Reward.lens.shipping .~ (Reward.Shipping.template
+        |> Reward.Shipping.lens.preference .~ Reward.Shipping.Preference.restricted)
+
+    koala.trackRewardClicked(project: project, reward: reward, context: .manageReward, refTag: nil)
+
+    let props = client.properties.last
+
+    XCTAssertEqual("restricted", props?["pledge_backer_reward_shipping_preference"] as? String)
+    XCTAssertEqual("manage_reward", props?["context_pledge_flow"] as? String)
+  }
+
+  func testTrackCheckoutPaymentMethodViewed() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackCheckoutPaymentPageViewed(
+      project: .template,
+      reward: .template,
+      context: .newPledge,
+      refTag: RefTag.activity
+    )
+
+    let props = client.properties.last
+
+    XCTAssertEqual(["Checkout Payment Page Viewed"], client.events)
+
+    self.assertProjectProperties(props)
+    self.assertPledgeProperties(props)
+
+    XCTAssertEqual("activity", props?["session_ref_tag"] as? String)
+    XCTAssertEqual("new_pledge", props?["context_pledge_flow"] as? String)
   }
 
   func testTrackViewedPaymentMethods() {
@@ -516,12 +629,9 @@ final class KoalaTests: TestCase {
 
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackPledgeCTAButtonClicked(stateType: .fix, project: project, screen: .projectPage)
-
-    let properties = client.properties.last
+    koala.trackPledgeCTAButtonClicked(stateType: .fix, project: project)
 
     XCTAssertEqual(["Fix Pledge Button Clicked"], client.events)
-    XCTAssertEqual("Project page", properties?["screen"] as? String)
   }
 
   func testTrackPledgeCTAButtonClicked_PledgeState() {
@@ -531,12 +641,9 @@ final class KoalaTests: TestCase {
 
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackPledgeCTAButtonClicked(stateType: .pledge, project: project, screen: .projectPage)
+    koala.trackPledgeCTAButtonClicked(stateType: .pledge, project: project)
 
-    let properties = client.properties.last
-
-    XCTAssertEqual(["Back this Project Button Clicked"], client.events)
-    XCTAssertEqual("Project page", properties?["screen"] as? String)
+    XCTAssertEqual(["Project Page Pledge Button Clicked"], client.events)
   }
 
   func testTrackPledgeCTAButtonClicked_ManageState() {
@@ -546,12 +653,9 @@ final class KoalaTests: TestCase {
 
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackPledgeCTAButtonClicked(stateType: .manage, project: project, screen: .projectPage)
-
-    let properties = client.properties.last
+    koala.trackPledgeCTAButtonClicked(stateType: .manage, project: project)
 
     XCTAssertEqual(["Manage Pledge Button Clicked"], client.events)
-    XCTAssertEqual("Project page", properties?["screen"] as? String)
   }
 
   func testTrackPledgeCTAButtonClicked_ViewBackingState() {
@@ -561,12 +665,9 @@ final class KoalaTests: TestCase {
 
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackPledgeCTAButtonClicked(stateType: .viewBacking, project: project, screen: .projectPage)
-
-    let properties = client.properties.last
+    koala.trackPledgeCTAButtonClicked(stateType: .viewBacking, project: project)
 
     XCTAssertEqual(["View Your Pledge Button Clicked"], client.events)
-    XCTAssertEqual("Project page", properties?["screen"] as? String)
   }
 
   func testTrackPledgeCTAButtonClicked_ViewRewardState() {
@@ -576,12 +677,9 @@ final class KoalaTests: TestCase {
 
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackPledgeCTAButtonClicked(stateType: .viewRewards, project: project, screen: .projectPage)
-
-    let properties = client.properties.last
+    koala.trackPledgeCTAButtonClicked(stateType: .viewRewards, project: project)
 
     XCTAssertEqual(["View Rewards Button Clicked"], client.events)
-    XCTAssertEqual("Project page", properties?["screen"] as? String)
   }
 
   func testTrackPledgeCTAButtonClicked_ViewYourRewardsState() {
@@ -592,36 +690,35 @@ final class KoalaTests: TestCase {
 
     let koala = Koala(client: client, loggedInUser: user)
 
-    koala.trackPledgeCTAButtonClicked(stateType: .viewYourRewards, project: project, screen: .projectPage)
-
-    let properties = client.properties.last
+    koala.trackPledgeCTAButtonClicked(stateType: .viewYourRewards, project: project)
 
     XCTAssertEqual(["View Your Rewards Button Clicked"], client.events)
-    XCTAssertEqual("Project page", properties?["screen"] as? String)
   }
 
   func testTrackSelectRewardButtonClicked() {
     let client = MockTrackingClient()
     let reward = Reward.template
-    let backing = .template
-      |> Backing.lens.reward .~ reward
-    let project = .template
-      |> Project.lens.personalization.backing .~ backing
+    let project = Project.template
     let loggedInUser = User.template |> \.id .~ 42
 
     let koala = Koala(client: client, loggedInUser: loggedInUser)
 
-    koala.trackSelectRewardButtonClicked(
+    koala.trackRewardClicked(
       project: project,
       reward: reward,
-      backing: backing,
-      screen: .backThisPage
+      context: .newPledge,
+      refTag: .category
     )
 
     let properties = client.properties.last
 
     XCTAssertEqual(["Select Reward Button Clicked"], client.events)
-    XCTAssertEqual("Back this page", properties?["screen"] as? String)
+
+    self.assertPledgeProperties(properties)
+    self.assertProjectProperties(properties)
+
+    XCTAssertEqual("new_pledge", properties?["context_pledge_flow"] as? String)
+    XCTAssertEqual("category", properties?["session_ref_tag"] as? String)
   }
 
   func testTrackCancelPledgeButtonClicked() {
@@ -666,36 +763,45 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(50.00, properties?["pledge_total"] as? Double)
   }
 
-  func testTrackPledgeScreenViewed() {
+  func testTrackPledgeSubmitButtonClicked() {
     let client = MockTrackingClient()
-    let loggedInUser = User.template
-    let koala = Koala(client: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client)
 
-    koala.trackPledgeScreenViewed(project: .template)
-    XCTAssertEqual(["Pledge Screen Viewed"], client.events)
-  }
+    koala.trackPledgeSubmitButtonClicked(
+      project: .template,
+      reward: .template,
+      checkoutData: .template, refTag: nil
+    )
 
-  func testTrackPledgeButtonClicked() {
-    let client = MockTrackingClient()
-    let loggedInUser = User.template
-    let koala = Koala(client: client, loggedInUser: loggedInUser)
+    let props = client.properties.last
 
-    koala.trackPledgeButtonClicked(project: .template, pledgeAmount: 30.00)
+    XCTAssertEqual(["Pledge Submit Button Clicked"], client.events)
 
-    let properties = client.properties.last
-
-    XCTAssertEqual(["Pledge Button Clicked"], client.events)
-    XCTAssertEqual(30.00, properties?["pledge_total"] as? Double)
+    self.assertProjectProperties(props)
+    self.assertPledgeProperties(props)
+    self.assertCheckoutProperties(props)
   }
 
   func testTrackAddNewCardButtonClicked() {
     let client = MockTrackingClient()
-    let loggedInUser = User.template
-    let koala = Koala(client: client, loggedInUser: loggedInUser)
+    let koala = Koala(client: client)
 
-    koala.trackAddNewCardButtonClicked(project: .template)
+    koala.trackAddNewCardButtonClicked(
+      context: .newPledge,
+      project: .template,
+      refTag: .activity,
+      reward: .template
+    )
+
+    let props = client.properties.last
 
     XCTAssertEqual(["Add New Card Button Clicked"], client.events)
+
+    self.assertProjectProperties(props)
+    self.assertPledgeProperties(props)
+
+    XCTAssertEqual("new_pledge", props?["context_pledge_flow"] as? String)
+    XCTAssertEqual("activity", props?["session_ref_tag"] as? String)
   }
 
   func testTrackManagePledgeOptionClicked_CancelPledgeSelected() {
@@ -792,11 +898,7 @@ final class KoalaTests: TestCase {
     let props = client.properties.last
 
     XCTAssertEqual("US", props?["user_country"] as? String)
-    XCTAssertNil(props?["user_backed_projects_count"])
-    XCTAssertNil(props?["user_facebook_account"])
-    XCTAssertNil(props?["user_watched_projects_count"])
     XCTAssertNil(props?["user_uid"])
-    XCTAssertNil(props?["user_is_admin"])
   }
 
   func testUserProperties_loggedIn() {
@@ -807,6 +909,7 @@ final class KoalaTests: TestCase {
       |> User.lens.location .~ Location.usa
       |> User.lens.facebookConnected .~ true
       |> User.lens.stats.starredProjectsCount .~ 2
+      |> User.lens.stats.createdProjectsCount .~ 3
       |> User.lens.id .~ 10
       |> User.lens.isAdmin .~ false
 
@@ -816,12 +919,8 @@ final class KoalaTests: TestCase {
 
     let props = client.properties.last
 
-    XCTAssertEqual(5, props?["user_backed_projects_count"] as? Int)
     XCTAssertEqual("US", props?["user_country"] as? String)
-    XCTAssertEqual(true, props?["user_facebook_account"] as? Bool)
-    XCTAssertEqual(2, props?["user_watched_projects_count"] as? Int)
     XCTAssertEqual(10, props?["user_uid"] as? Int)
-    XCTAssertEqual(false, props?["user_is_admin"] as? Bool)
   }
 
   func testTabBarClicked() {
@@ -837,17 +936,17 @@ final class KoalaTests: TestCase {
     koala.trackTabBarClicked(tabBarActivity)
 
     XCTAssertEqual(["Tab Bar Clicked"], client.events)
-    XCTAssertEqual("activity", client.properties.last?["ios_tab_bar_label"] as? String)
+    XCTAssertEqual("activity", client.properties.last?["context_tab_bar_label"] as? String)
 
     koala.trackTabBarClicked(tabBarDashboard)
 
     XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked"], client.events)
-    XCTAssertEqual("dashboard", client.properties.last?["ios_tab_bar_label"] as? String)
+    XCTAssertEqual("dashboard", client.properties.last?["context_tab_bar_label"] as? String)
 
     koala.trackTabBarClicked(tabBarHome)
 
     XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"], client.events)
-    XCTAssertEqual("discovery", client.properties.last?["ios_tab_bar_label"] as? String)
+    XCTAssertEqual("discovery", client.properties.last?["context_tab_bar_label"] as? String)
 
     koala.trackTabBarClicked(tabBarProfile)
 
@@ -855,7 +954,7 @@ final class KoalaTests: TestCase {
       ["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"],
       client.events
     )
-    XCTAssertEqual("profile", client.properties.last?["ios_tab_bar_label"] as? String)
+    XCTAssertEqual("profile", client.properties.last?["context_tab_bar_label"] as? String)
 
     koala.trackTabBarClicked(tabBarSearch)
 
@@ -866,7 +965,7 @@ final class KoalaTests: TestCase {
       "Tab Bar Clicked",
       "Tab Bar Clicked"
     ], client.events)
-    XCTAssertEqual("search", client.properties.last?["ios_tab_bar_label"] as? String)
+    XCTAssertEqual("search", client.properties.last?["context_tab_bar_label"] as? String)
   }
 
   func testLakeWhiteList() {
@@ -890,4 +989,185 @@ final class KoalaTests: TestCase {
       "White-listed event is tracked by data lake client"
     )
   }
+
+  func testContextProperties() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackAppOpen()
+
+    XCTAssertEqual(1_475_361_315.0, client.properties.last?["context_timestamp"] as? TimeInterval)
+  }
+
+  func testContextLocationProperties() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackActivities(count: 1)
+    XCTAssertEqual("activity_feed_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackAddNewCardButtonClicked(
+      context: .newPledge,
+      location: .pledgeAddNewCard,
+      project: .template,
+      refTag: nil,
+      reward: .template
+    )
+    XCTAssertEqual("pledge_add_new_card_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackAddNewCardButtonClicked(
+      context: .newPledge,
+      location: .settingsAddNewCard,
+      project: .template,
+      refTag: nil,
+      reward: .template
+    )
+    XCTAssertEqual("settings_add_new_card_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackCheckoutPaymentPageViewed(
+      project: .template,
+      reward: .template,
+      context: .newPledge,
+      refTag: nil
+    )
+    XCTAssertEqual("pledge_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackCollectionViewed(params: .defaults)
+    XCTAssertEqual("editorial_collection_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackDiscovery(params: .defaults)
+    XCTAssertEqual("explore_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackDiscoveryModalSelectedFilter(params: .defaults)
+    XCTAssertEqual("explore_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackEditorialHeaderTapped(refTag: .discovery)
+    XCTAssertEqual("explore_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackFacebookLoginOrSignupButtonClicked(intent: .generic)
+    XCTAssertEqual("login_or_signup_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackForgotPasswordViewed()
+    XCTAssertEqual("forgot_password_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackLoginButtonClicked(intent: .generic)
+    XCTAssertEqual("login_or_signup_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackLoginOrSignupButtonClicked(intent: .generic)
+    XCTAssertEqual("explore_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackLoginOrSignupPageViewed(intent: .generic)
+    XCTAssertEqual("login_or_signup_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackLoginSubmitButtonClicked()
+    XCTAssertEqual("login_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackPledgeCTAButtonClicked(stateType: .pledge, project: .template)
+    XCTAssertEqual("project_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackProjectSearchView()
+    XCTAssertEqual("search_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackProjectViewed(.template)
+    XCTAssertEqual("project_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackRewardClicked(project: .template, reward: .template, context: .newPledge, refTag: nil)
+    XCTAssertEqual("rewards_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackSearchResults(query: "", params: .defaults, refTag: .search, hasResults: false)
+    XCTAssertEqual("search_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackSwipedProject(.template, refTag: nil)
+    XCTAssertEqual("project_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackSignupSubmitButtonClicked()
+    XCTAssertEqual("sign_up", client.properties.last?["context_location"] as? String)
+
+    koala.trackThanksPageViewed(project: .template, reward: .template, checkoutData: nil)
+    XCTAssertEqual("thanks_screen", client.properties.last?["context_location"] as? String)
+
+    koala.track2FAViewed()
+    XCTAssertEqual("two_factor_auth_verify_screen", client.properties.last?["context_location"] as? String)
+  }
+
+  /*
+   Helper for testing projectProperties from a template Project
+   */
+  private func assertProjectProperties(_ props: [String: Any]?) {
+    XCTAssertEqual(10, props?["project_backers_count"] as? Int)
+    XCTAssertEqual("US", props?["project_country"] as? String)
+    XCTAssertEqual("USD", props?["project_currency"] as? String)
+    XCTAssertEqual(2_000, props?["project_goal"] as? Int)
+    XCTAssertEqual(1, props?["project_pid"] as? Int)
+    XCTAssertEqual(0.50, props?["project_percent_raised"] as? Float)
+    XCTAssertEqual("Art", props?["project_subcategory"] as? String)
+    XCTAssertEqual(1, props?["project_subcategory_id"] as? Int)
+
+    XCTAssertEqual("Brooklyn", props?["project_location"] as? String)
+    XCTAssertEqual(1, props?["project_creator_uid"] as? Int)
+    XCTAssertEqual(24 * 15, props?["project_hours_remaining"] as? Int)
+    XCTAssertEqual(30, props?["project_duration"] as? Int)
+    XCTAssertEqual(1_476_657_315, props?["project_deadline"] as? Double)
+    XCTAssertEqual(1_474_065_315, props?["project_launched_at"] as? Double)
+    XCTAssertEqual(1, props?["project_static_usd_rate"] as? Float)
+    XCTAssertEqual("live", props?["project_state"] as? String)
+    XCTAssertEqual(1_000, props?["project_current_pledge_amount"] as? Int)
+    XCTAssertEqual(1_000, props?["project_current_pledge_amount_usd"] as? Int)
+    XCTAssertEqual(2_000, props?["project_goal_usd"] as? Int)
+    XCTAssertEqual(true, props?["project_has_video"] as? Bool)
+    XCTAssertEqual(10, props?["project_comments_count"] as? Int)
+    XCTAssertEqual(0, props?["project_rewards_count"] as? Int)
+    XCTAssertEqual(1, props?["project_updates_count"] as? Int)
+
+    XCTAssertEqual(false, props?["project_user_is_project_creator"] as? Bool)
+    XCTAssertNil(props?["project_user_is_backer"])
+    XCTAssertNil(props?["project_user_has_starred"])
+    XCTAssertNil(props?["project_category"] as? String)
+    XCTAssertNil(props?["project_category_id"] as? String)
+    XCTAssertNil(props?["project_prelaunch_activated"] as? Bool)
+  }
+
+  /*
+   Helper for testing pledgeProperties from a template Reward
+   */
+  private func assertPledgeProperties(_ props: [String: Any]?) {
+    XCTAssertEqual(false, props?["pledge_backer_reward_has_items"] as? Bool)
+    XCTAssertEqual(1, props?["pledge_backer_reward_id"] as? Int)
+    XCTAssertEqual(true, props?["pledge_backer_reward_is_limited_quantity"] as? Bool)
+    XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_time"] as? Bool)
+    XCTAssertEqual(10.00, props?["pledge_backer_reward_minimum"] as? Double)
+    XCTAssertEqual(false, props?["pledge_backer_reward_shipping_enabled"] as? Bool)
+
+    XCTAssertNil(props?["pledge_backer_reward_shipping_preference"] as? String)
+  }
+
+  /*
+   Helper for testing checkoutProperties from a template Koala.CheckoutPropertiesData
+   */
+  private func assertCheckoutProperties(_ props: [String: Any]?) {
+    XCTAssertEqual("20.00", props?["checkout_amount"] as? String)
+    XCTAssertEqual("CREDIT_CARD", props?["checkout_payment_type"] as? String)
+    XCTAssertEqual("SUPER reward", props?["checkout_reward_title"] as? String)
+    XCTAssertEqual(2, props?["checkout_reward_id"] as? Int)
+    XCTAssertEqual(2_000, props?["checkout_revenue_in_usd_cents"] as? Int)
+    XCTAssertEqual(false, props?["checkout_reward_shipping_enabled"] as? Bool)
+    XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
+    XCTAssertNil(props?["checkout_shipping_amount"] as? Double)
+    XCTAssertNil(props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
+  }
+}
+
+extension Koala.CheckoutPropertiesData {
+  static let template = Koala.CheckoutPropertiesData(
+    amount: "20.00",
+    checkoutId: 1,
+    estimatedDelivery: nil,
+    paymentType: "CREDIT_CARD",
+    revenueInUsdCents: 2_000,
+    rewardId: 2,
+    rewardTitle: "SUPER reward",
+    shippingEnabled: false,
+    shippingAmount: nil,
+    userHasStoredApplePayCard: true
+  )
 }

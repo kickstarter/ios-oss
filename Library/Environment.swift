@@ -1,4 +1,5 @@
 import AVFoundation
+import CoreTelephony
 import FBSDKCoreKit
 import Foundation
 import KsApi
@@ -13,6 +14,9 @@ public struct Environment {
 
   /// The amount of time to delay API requests by. Used primarily for testing. Default value is `0.0`.
   public let apiDelayInterval: DispatchTimeInterval
+
+  /// A type that exposes Apple Pay capabilities
+  public let applePayCapabilities: ApplePayCapabilitiesType
 
   /// The app instance
   public let application: UIApplicationType
@@ -31,6 +35,9 @@ public struct Environment {
 
   /// A type that exposes how to interact with cookie storage. Default value is `HTTPCookieStorage.shared`.
   public let cookieStorage: HTTPCookieStorageProtocol
+
+  /// A type that provides telephony network info.
+  public let coreTelephonyNetworkInfo: CoreTelephonyNetworkInfoType
 
   /// The user’s current country. This is valid whether the user is logged-in or not.
   public let countryCode: String
@@ -77,6 +84,9 @@ public struct Environment {
   /// A type that exposes how to interface with an NSBundle. Default value is `Bundle.main`.
   public let mainBundle: NSBundleType
 
+  /// The optimizely client
+  public let optimizelyClient: OptimizelyClientType?
+
   /// A type that manages registration for push notifications.
   public let pushRegistrationType: PushRegistrationType.Type
 
@@ -96,12 +106,14 @@ public struct Environment {
   public init(
     apiService: ServiceType = Service(),
     apiDelayInterval: DispatchTimeInterval = .seconds(0),
+    applePayCapabilities: ApplePayCapabilitiesType = ApplePayCapabilities(),
     application: UIApplicationType = UIApplication.shared,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AVAssetImageGenerator.self,
     cache: KSCache = KSCache(),
     calendar: Calendar = .current,
     config: Config? = nil,
     cookieStorage: HTTPCookieStorageProtocol = HTTPCookieStorage.shared,
+    coreTelephonyNetworkInfo: CoreTelephonyNetworkInfoType = CTTelephonyNetworkInfo.current(),
     countryCode: String = "US",
     currentUser: User? = nil,
     dateType: DateProtocol.Type = Date.self,
@@ -115,6 +127,7 @@ public struct Environment {
     launchedCountries: LaunchedCountries = .init(),
     locale: Locale = .current,
     mainBundle: NSBundleType = Bundle.main,
+    optimizelyClient: OptimizelyClientType? = nil,
     pushRegistrationType: PushRegistrationType.Type = PushRegistration.self,
     reachability: SignalProducer<Reachability, Never> = Reachability.signalProducer,
     scheduler: DateScheduler = QueueScheduler.main,
@@ -123,6 +136,7 @@ public struct Environment {
   ) {
     self.apiService = apiService
     self.apiDelayInterval = apiDelayInterval
+    self.applePayCapabilities = applePayCapabilities
     self.application = application
     self.assetImageGeneratorType = assetImageGeneratorType
     self.cache = cache
@@ -130,6 +144,7 @@ public struct Environment {
     self.config = config
     self.cookieStorage = cookieStorage
     self.countryCode = countryCode
+    self.coreTelephonyNetworkInfo = coreTelephonyNetworkInfo
     self.currentUser = currentUser
     self.dateType = dateType
     self.debounceInterval = debounceInterval
@@ -142,6 +157,7 @@ public struct Environment {
     self.launchedCountries = launchedCountries
     self.locale = locale
     self.mainBundle = mainBundle
+    self.optimizelyClient = optimizelyClient
     self.pushRegistrationType = pushRegistrationType
     self.reachability = reachability
     self.scheduler = scheduler

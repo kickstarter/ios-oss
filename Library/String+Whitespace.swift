@@ -2,7 +2,7 @@ import Foundation
 
 extension String {
   // Non-breaking space character.
-  public static let nbsp = " "
+  public static let nbsp = "\u{00A0}"
 
   /**
    Returns a new string with all spaces converted into non-breaking spaces.

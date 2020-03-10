@@ -94,29 +94,30 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
           : .cancel
       }
 
-    let possiblyGoToComments = currentUpdate
-      .takePairWhen(navigationAction)
+    let externalNavigationAction = navigationAction
+      .filter { action in action.navigationType == .linkActivated }
+      .filter(isExternalNavigation)
+
+    let internalNavigationAction = navigationAction
+      .filter { action in action.navigationType == .linkActivated }
+      .filter(isExternalNavigation >>> isFalse)
+
+    let goToComments = currentUpdate
+      .takePairWhen(internalNavigationAction)
       .map { update, action -> Update? in
-        if action.navigationType == .linkActivated,
-          Navigation.Project.updateCommentsWithRequest(action.request) != nil {
-          return update
-        }
-        return nil
+        Navigation.Project.updateCommentsWithRequest(action.request) != nil ? update : nil
       }
+      .skipNil()
 
-    self.goToComments = possiblyGoToComments.skipNil()
+    let goToProject = internalNavigationAction
+      .map { action in (action, Navigation.Project.withRequest(action.request)) }
+      .filter(second >>> isNotNil)
 
-    let possiblyGoToProject = navigationAction
-      .map { action in
-        action.navigationType == .linkActivated
-          ? Navigation.Project.withRequest(action.request)
-          : nil
-      }
-
-    self.goToProject = project
-      .takePairWhen(possiblyGoToProject)
-      .switchMap { (project, projectParamAndRefTag) -> SignalProducer<(Project, RefTag), Never> in
-
+    let projectAndRefTag = project
+      .takePairWhen(goToProject)
+      .map(unpack)
+      .switchMap { (project, action, projectParamAndRefTag)
+        -> SignalProducer<(WKNavigationActionData, Project, RefTag), Never> in
         guard let (projectParam, refTag) = projectParamAndRefTag else { return .empty }
 
         let producer: SignalProducer<Project, Never>
@@ -128,17 +129,19 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
             .demoteErrors()
         }
 
-        return producer.map { ($0, refTag ?? RefTag.update) }
+        return producer.map { (action, $0, refTag ?? RefTag.update) }
       }
 
-    self.goToSafariBrowser = Signal.zip(navigationAction, possiblyGoToProject, possiblyGoToComments)
-      .filter { action, goToProject, goToComments in
-        Navigation.Project.updateWithRequest(action.request) == nil
-          && action.navigationType == .linkActivated
-          && goToProject == nil
-          && goToComments == nil
-      }
-      .map { action, _, _ in action.request.url }
+    self.goToComments = goToComments
+    self.goToProject = projectAndRefTag.filter { _, project, _ in project.prelaunchActivated != .some(true) }
+      .map { _, project, refTag in (project, refTag) }
+
+    let goToPrelaunchPage = projectAndRefTag
+      .filter { _, project, _ in project.prelaunchActivated == true }
+      .map(first)
+
+    self.goToSafariBrowser = Signal.merge(externalNavigationAction, goToPrelaunchPage)
+      .map { action in action.request.url }
       .skipNil()
 
     project
@@ -174,4 +177,12 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
 
   internal var inputs: UpdateViewModelInputs { return self }
   internal var outputs: UpdateViewModelOutputs { return self }
+}
+
+func isExternalNavigation(_ action: WKNavigationActionData) -> Bool {
+  return ([
+    Navigation.Project.withRequest(action.request),
+    Navigation.Project.updateWithRequest(action.request),
+    Navigation.Project.updateCommentsWithRequest(action.request)
+  ] as [Any?]).compactMap { $0 }.isEmpty
 }

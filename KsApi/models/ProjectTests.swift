@@ -61,6 +61,8 @@ final class ProjectTests: XCTestCase {
       "category": [
         "id": 1,
         "name": "Art",
+        "parent_id": 5,
+        "parent_name": "Parent Category",
         "slug": "art",
         "position": 1
       ],
@@ -108,6 +110,10 @@ final class ProjectTests: XCTestCase {
 
     XCTAssertNil(project.error)
     XCTAssertEqual("US", project.value?.country.countryCode)
+    XCTAssertEqual(1, project.value?.category.id)
+    XCTAssertEqual("Art", project.value?.category.name)
+    XCTAssertEqual(5, project.value?.category.parentId)
+    XCTAssertEqual("Parent Category", project.value?.category.parentName)
   }
 
   func testJSONParsing_WithMemberData() {
@@ -148,6 +154,8 @@ final class ProjectTests: XCTestCase {
       "category": [
         "id": 1,
         "name": "Art",
+        "parent_id": 5,
+        "parent_name": "Parent Category",
         "slug": "art",
         "position": 1
       ],

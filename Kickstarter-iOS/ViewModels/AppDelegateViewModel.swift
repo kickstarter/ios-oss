@@ -15,7 +15,6 @@ public enum NotificationAuthorizationStatus {
   case authorized
   case denied
   case notDetermined
-  @available(iOS 12, *)
   case provisional
 }
 
@@ -56,6 +55,11 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the user taps "OK" from the contextual alert.
   func didAcceptReceivingRemoteNotifications()
 
+  /// Call with the result of evaluating Qualtrics Targeting Logic and current Qualtrics.Properties
+  func didEvaluateQualtricsTargetingLogic(
+    with result: QualtricsResultType, properties: QualtricsPropertiesType
+  )
+
   /// Call when the app delegate receives a remote notification.
   func didReceive(remoteNotification notification: [AnyHashable: Any])
 
@@ -65,8 +69,17 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the config has been updated the AppEnvironment
   func didUpdateConfig(_ config: Config)
 
+  /// Call when the Optimizely client has been updated in the AppEnvironment
+  func didUpdateOptimizelyClient(_ client: OptimizelyClientType)
+
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
+
+  /// Call when Optimizely has been configured with the given result
+  func optimizelyConfigured(with result: OptimizelyResultType) -> Bool
+
+  /// Call with the result from initializing Qualtrics
+  func qualtricsInitialized(with result: QualtricsResultType)
 
   /// Call when the contextual PushNotification dialog should be presented.
   func showNotificationDialog(notification: Notification)
@@ -91,8 +104,20 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the application should configure Fabric
   var configureFabric: Signal<(), Never> { get }
 
+  /// Emits when the application should configure Optimizely
+  var configureOptimizely: Signal<(String, OptimizelyLogLevelType), Never> { get }
+
+  /// Emits when the application should configure Qualtrics
+  var configureQualtrics: Signal<QualtricsConfigData, Never> { get }
+
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
+
+  /// Emits when we should display the Qualtrics survey.
+  var displayQualtricsSurvey: Signal<(), Never> { get }
+
+  /// Emits when we should ask Qualtrics to evaluate its targeting logic.
+  var evaluateQualtricsTargetingLogic: Signal<(), Never> { get }
 
   /// Emits when the view needs to figure out the redirect URL for the emitted URL.
   var findRedirectUrl: Signal<URL, Never> { get }
@@ -396,19 +421,20 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         AppEnvironment.current.apiService.fetchProject(param: param)
           .demoteErrors()
           .observeForUI()
-          .map { project -> (Project, Navigation.Project, [UIViewController]) in
+          .map { project -> (Project, Navigation.Project, [UIViewController], RefTag?) in
             (
               project, subpage,
-              [ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)]
+              [ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)],
+              refTag
             )
           }
       }
 
     let projectLink = projectLinkValues
-      .filter { project, _, _ in project.prelaunchActivated != true }
+      .filter { project, _, _, _ in project.prelaunchActivated != true }
 
     let projectPreviewLink = projectLinkValues
-      .filter { project, _, _ in project.prelaunchActivated == true }
+      .filter { project, _, _, _ in project.prelaunchActivated == true }
 
     let resolvedRedirectUrl = deepLinkUrl
       .filter { Navigation.deepLinkMatch($0) == nil }
@@ -426,12 +452,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
 
     let projectRootLink = projectLink
-      .filter { _, subpage, _ in subpage == .root }
-      .map { _, _, vcs in vcs }
+      .filter { _, subpage, _, _ in subpage == .root }
+      .map { _, _, vcs, _ in vcs }
 
     let projectCommentsLink = projectLink
-      .filter { _, subpage, _ in subpage == .comments }
-      .map { project, _, vcs in vcs + [CommentsViewController.configuredWith(project: project, update: nil)] }
+      .filter { _, subpage, _, _ in subpage == .comments }
+      .map { project, _, vcs, _ in
+        vcs + [CommentsViewController.configuredWith(project: project, update: nil)]
+      }
 
     let surveyResponseLink = deepLink
       .map { link -> Int? in
@@ -450,15 +478,17 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
 
     let campaignFaqLink = projectLink
-      .filter { _, subpage, _ in subpage == .faqs }
-      .map { project, _, vcs in vcs + [ProjectDescriptionViewController.configuredWith(project: project)] }
+      .filter { _, subpage, _, _ in subpage == .faqs }
+      .map { project, _, vcs, refTag in
+        vcs + [ProjectDescriptionViewController.configuredWith(value: (project, refTag))]
+      }
 
     let updatesLink = projectLink
-      .filter { _, subpage, _ in subpage == .updates }
-      .map { project, _, vcs in vcs + [ProjectUpdatesViewController.configuredWith(project: project)] }
+      .filter { _, subpage, _, _ in subpage == .updates }
+      .map { project, _, vcs, _ in vcs + [ProjectUpdatesViewController.configuredWith(project: project)] }
 
     let updateLink = projectLink
-      .map { project, subpage, vcs -> (Project, Int, Navigation.Project.Update, [UIViewController])? in
+      .map { project, subpage, vcs, _ -> (Project, Int, Navigation.Project.Update, [UIViewController])? in
         guard case let .update(id, updateSubpage) = subpage else { return nil }
         return (project, id, updateSubpage, vcs)
       }
@@ -508,6 +538,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .map { UINavigationController() |> UINavigationController.lens.viewControllers .~ $0 }
 
     self.configureFabric = self.applicationLaunchOptionsProperty.signal.ignoreValues()
+
+    self.configureOptimizely = self.applicationLaunchOptionsProperty.signal
+      .map { _ in AppEnvironment.current }
+      .map(optimizelyData(for:))
 
     self.configureAppCenterWithData = Signal.merge(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
@@ -600,6 +634,30 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     .flatMap { AppEnvironment.current.pushRegistrationType.hasAuthorizedNotifications() }
     .filter(isTrue)
     .mapConst(0)
+
+    self.optimizelyConfigurationReturnValue <~ self.optimizelyConfiguredWithResultProperty.signal
+      .skipNil()
+      .map { $0.isSuccess }
+
+    self.configureQualtrics = Signal.zip(
+      self.applicationLaunchOptionsProperty.signal,
+      self.didUpdateConfigProperty.signal
+    )
+    .filter { _ in featureQualtricsIsEnabled() }
+    .ignoreValues()
+    .map(qualtricsConfigData)
+
+    self.evaluateQualtricsTargetingLogic = self.qualtricsInitializedWithResultProperty.signal
+      .skipNil()
+      .filter { $0.passed() }
+      .ksr_delay(.seconds(2), on: AppEnvironment.current.scheduler)
+      .ignoreValues()
+
+    self.displayQualtricsSurvey = self.didEvaluateQualtricsTargetingLogicWithResultProperty.signal
+      .skipNil()
+      .on(value: { _, properties in properties.setNumber(number: 0, for: "first_app_session") })
+      .filter { result, _ in result.passed() }
+      .ignoreValues()
   }
 
   // swiftlint:enable cyclomatic_complexity
@@ -664,9 +722,23 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.didAcceptReceivingRemoteNotificationsProperty.value = ()
   }
 
+  fileprivate let didEvaluateQualtricsTargetingLogicWithResultProperty
+    = MutableProperty<(QualtricsResultType, QualtricsPropertiesType)?>(nil)
+  public func didEvaluateQualtricsTargetingLogic(
+    with result: QualtricsResultType,
+    properties: QualtricsPropertiesType
+  ) {
+    self.didEvaluateQualtricsTargetingLogicWithResultProperty.value = (result, properties)
+  }
+
   fileprivate let didUpdateConfigProperty = MutableProperty<Config?>(nil)
   public func didUpdateConfig(_ config: Config) {
     self.didUpdateConfigProperty.value = config
+  }
+
+  fileprivate let didUpdateOptimizelyClientProperty = MutableProperty<OptimizelyClientType?>(nil)
+  public func didUpdateOptimizelyClient(_ client: OptimizelyClientType) {
+    self.didUpdateOptimizelyClientProperty.value = client
   }
 
   private let foundRedirectUrlProperty = MutableProperty<URL?>(nil)
@@ -694,6 +766,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     return true
   }
 
+  fileprivate let qualtricsInitializedWithResultProperty = MutableProperty<QualtricsResultType?>(nil)
+  public func qualtricsInitialized(with result: QualtricsResultType) {
+    self.qualtricsInitializedWithResultProperty.value = result
+  }
+
   fileprivate let showNotificationDialogProperty = MutableProperty<Notification?>(nil)
   public func showNotificationDialog(notification: Notification) {
     self.showNotificationDialogProperty.value = notification
@@ -714,10 +791,23 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     return self.applicationDidFinishLaunchingReturnValueProperty.value
   }
 
+  private let optimizelyConfigurationReturnValue = MutableProperty<Bool>(false)
+
+  fileprivate let optimizelyConfiguredWithResultProperty = MutableProperty<OptimizelyResultType?>(nil)
+  public func optimizelyConfigured(with result: OptimizelyResultType) -> Bool {
+    self.optimizelyConfiguredWithResultProperty.value = result
+
+    return self.optimizelyConfigurationReturnValue.value
+  }
+
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFabric: Signal<(), Never>
+  public let configureOptimizely: Signal<(String, OptimizelyLogLevelType), Never>
+  public let configureQualtrics: Signal<QualtricsConfigData, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
+  public let displayQualtricsSurvey: Signal<(), Never>
+  public let evaluateQualtricsTargetingLogic: Signal<(), Never>
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
   public let goToActivity: Signal<(), Never>
@@ -930,6 +1020,24 @@ extension ShortcutItem {
   }
 }
 
+private func optimizelyData(for environment: Environment) -> (String, OptimizelyLogLevelType) {
+  let environmentType = environment.environmentType
+  let logLevel = environment.mainBundle.isDebug ? OptimizelyLogLevelType.debug : OptimizelyLogLevelType.error
+
+  var sdkKey: String
+
+  switch environmentType {
+  case .production:
+    sdkKey = Secrets.OptimizelySDKKey.production
+  case .staging:
+    sdkKey = Secrets.OptimizelySDKKey.staging
+  case .development, .local:
+    sdkKey = Secrets.OptimizelySDKKey.development
+  }
+
+  return (sdkKey, logLevel)
+}
+
 private func visitorCookies() -> [HTTPCookie] {
   let uuidString = (AppEnvironment.current.device.identifierForVendor ?? UUID()).uuidString
 
@@ -959,4 +1067,20 @@ private func visitorCookies() -> [HTTPCookie] {
     )
   )
   .compact()
+}
+
+private func qualtricsConfigData() -> QualtricsConfigData {
+  return .init(
+    brandId: Secrets.Qualtrics.brandId,
+    zoneId: Secrets.Qualtrics.zoneId,
+    interceptId: QualtricsIntercept.survey.interceptId,
+    stringProperties: [
+      "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier,
+      "language": AppEnvironment.current.language.rawValue,
+      "logged_in": "\(AppEnvironment.current.currentUser != nil)",
+      "distinct_id": AppEnvironment.current.device.identifierForVendor?.uuidString,
+      "user_uid": AppEnvironment.current.currentUser.flatMap { $0.id }.map(String.init)
+    ]
+    .compact()
+  )
 }

@@ -137,7 +137,7 @@ internal final class DashboardProjectsDrawerViewController: UITableViewControlle
   }
 
   fileprivate func accessibilityFocusOnFirstProject() {
-    let cell = self.tableView.visibleCells.filter { $0 is DashboardProjectsDrawerCell }.first
+    let cell = self.tableView.visibleCells.first { $0 is DashboardProjectsDrawerCell }
     if let cell = cell {
       UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: cell)
     }

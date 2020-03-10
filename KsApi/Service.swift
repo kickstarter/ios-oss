@@ -19,6 +19,7 @@ public struct Service: ServiceType {
   public let language: String
   public let currency: String
   public let buildVersion: String
+  public let deviceIdentifier: String
 
   public init(
     appId: String = Bundle.main.bundleIdentifier ?? "com.kickstarter.kickstarter",
@@ -26,7 +27,8 @@ public struct Service: ServiceType {
     oauthToken: OauthTokenAuthType? = nil,
     language: String = "en",
     currency: String = "USD",
-    buildVersion: String = Bundle.main._buildVersion
+    buildVersion: String = Bundle.main._buildVersion,
+    deviceIdentifier: String = UIDevice.current.identifierForVendor.coalesceWith(UUID()).uuidString
   ) {
     self.appId = appId
     self.serverConfig = serverConfig
@@ -34,6 +36,7 @@ public struct Service: ServiceType {
     self.language = language
     self.currency = currency
     self.buildVersion = buildVersion
+    self.deviceIdentifier = deviceIdentifier
 
     // Global override required for injecting custom User-Agent header in ajax requests
     UserDefaults.standard.register(defaults: ["UserAgent": Service.userAgent])
@@ -186,10 +189,6 @@ public struct Service: ServiceType {
   public func fetchBacking(forProject project: Project, forUser user: User)
     -> SignalProducer<Backing, ErrorEnvelope> {
     return request(.backing(projectId: project.id, backerId: user.id))
-  }
-
-  public func fetchCheckout(checkoutUrl url: String) -> SignalProducer<CheckoutEnvelope, ErrorEnvelope> {
-    return request(.checkout(url))
   }
 
   public func fetchComments(paginationUrl url: String) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
@@ -473,24 +472,6 @@ public struct Service: ServiceType {
   public func signup(facebookAccessToken token: String, sendNewsletters: Bool) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
     return request(.facebookSignup(facebookAccessToken: token, sendNewsletters: sendNewsletters))
-  }
-
-  public func submitApplePay(
-    checkoutUrl: String,
-    stripeToken: String,
-    paymentInstrumentName: String,
-    paymentNetwork: String,
-    transactionIdentifier: String
-  ) -> SignalProducer<SubmitApplePayEnvelope, ErrorEnvelope> {
-    return request(
-      .submitApplePay(
-        checkoutUrl: checkoutUrl,
-        stripeToken: stripeToken,
-        paymentInstrumentName: paymentInstrumentName,
-        paymentNetwork: paymentNetwork,
-        transactionIdentifier: transactionIdentifier
-      )
-    )
   }
 
   public func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {

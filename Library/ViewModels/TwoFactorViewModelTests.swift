@@ -33,15 +33,6 @@ final class TwoFactorViewModelTests: TestCase {
     self.codeTextFieldBecomeFirstResponder.assertValueCount(1)
   }
 
-  func testKoala_viewEvents() {
-    self.vm.inputs.viewWillAppear()
-
-    XCTAssertEqual(
-      ["Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation"],
-      trackingClient.events
-    )
-  }
-
   func testFormIsValid_forEmailPasswordFlow() {
     self.vm.inputs.viewWillAppear()
 
@@ -94,11 +85,6 @@ final class TwoFactorViewModelTests: TestCase {
 
     self.isLoading.assertValues([true, false])
     self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
-    XCTAssertEqual([
-      "Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation", "Login",
-      "Logged In"
-    ], trackingClient.events)
-    XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
 
     self.vm.inputs.environmentLoggedIn()
 
@@ -121,11 +107,6 @@ final class TwoFactorViewModelTests: TestCase {
 
     self.isLoading.assertValues([true, false])
     self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
-    XCTAssertEqual([
-      "Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation", "Login",
-      "Logged In"
-    ], trackingClient.events)
-    XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
 
     self.vm.inputs.environmentLoggedIn()
 
@@ -156,12 +137,6 @@ final class TwoFactorViewModelTests: TestCase {
       isLoading.assertValues([true, false])
       logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       showError.assertValues(["The code provided does not match."], "Code does not match error emitted")
-
-      XCTAssertEqual([
-        "Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation",
-        "Errored User Login", "Errored Login"
-      ], trackingClient.events)
-      XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
     }
   }
 
@@ -182,12 +157,6 @@ final class TwoFactorViewModelTests: TestCase {
       isLoading.assertValues([true, false])
       logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       showError.assertValues(["The code provided does not match."], "Code does not match error emitted")
-
-      XCTAssertEqual([
-        "Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation",
-        "Errored User Login", "Errored Login"
-      ], trackingClient.events)
-      XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
     }
   }
 
@@ -208,12 +177,6 @@ final class TwoFactorViewModelTests: TestCase {
       isLoading.assertValues([true, false])
       logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       showError.assertValues(["Unable to login."], "Login errored")
-
-      XCTAssertEqual([
-        "Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation",
-        "Errored User Login", "Errored Login"
-      ], trackingClient.events)
-      XCTAssertEqual("Email", trackingClient.properties.last!["auth_type"] as? String)
     }
   }
 
@@ -234,12 +197,6 @@ final class TwoFactorViewModelTests: TestCase {
       isLoading.assertValues([true, false])
       logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       showError.assertValues(["Unable to login."], "Errored user login")
-
-      XCTAssertEqual([
-        "Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation",
-        "Errored User Login", "Errored Login"
-      ], trackingClient.events)
-      XCTAssertEqual("Facebook", trackingClient.properties.last!["auth_type"] as? String)
     }
   }
 
@@ -259,11 +216,6 @@ final class TwoFactorViewModelTests: TestCase {
       isLoading.assertValues([true, false])
       showError.assertValueCount(0, "No error was emitted")
       resendSuccess.assertValueCount(1, "Code resent successfully")
-
-      XCTAssertEqual([
-        "Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation",
-        "Two-factor Authentication Resend Code", "Resent Two-Factor Code"
-      ], trackingClient.events)
     }
   }
 
@@ -283,11 +235,6 @@ final class TwoFactorViewModelTests: TestCase {
       isLoading.assertValues([true, false])
       showError.assertValueCount(0, "No error was emitted")
       resendSuccess.assertValueCount(1, "Code resent successfully")
-
-      XCTAssertEqual([
-        "Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation",
-        "Two-factor Authentication Resend Code", "Resent Two-Factor Code"
-      ], trackingClient.events)
     }
   }
 
@@ -307,11 +254,6 @@ final class TwoFactorViewModelTests: TestCase {
       isLoading.assertValues([true, false])
       showError.assertValueCount(0, "No error was emitted")
       resendSuccess.assertValueCount(0, "Code was not resent")
-
-      XCTAssertEqual([
-        "Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation",
-        "Two-factor Authentication Resend Code", "Resent Two-Factor Code"
-      ], trackingClient.events)
     }
   }
 
@@ -331,11 +273,13 @@ final class TwoFactorViewModelTests: TestCase {
       isLoading.assertValues([true, false])
       showError.assertValueCount(0, "No error was emitted")
       resendSuccess.assertValueCount(0, "Code was not resent")
-
-      XCTAssertEqual([
-        "Two-factor Authentication Confirm View", "Viewed Two-Factor Confirmation",
-        "Two-factor Authentication Resend Code", "Resent Two-Factor Code"
-      ], trackingClient.events)
     }
+  }
+
+  func testTracking() {
+    self.vm.inputs.viewDidLoad()
+    self.vm.inputs.viewWillAppear()
+
+    XCTAssertEqual(["Two-Factor Confirmation Viewed"], self.trackingClient.events)
   }
 }

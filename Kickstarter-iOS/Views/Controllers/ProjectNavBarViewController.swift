@@ -81,7 +81,7 @@ public final class ProjectNavBarViewController: UIViewController {
 
     _ = self.backgroundView
       |> UIView.lens.layer.shadowOpacity .~ 0
-      |> UIView.lens.layer.shadowRadius .~ 2
+      |> UIView.lens.layer.shadowRadius .~ 2.0
       |> UIView.lens.layer.shadowOffset .~ CGSize(width: 0, height: 2)
       |> UIView.lens.layer.shadowColor .~ UIColor.ksr_grey_500.cgColor
 

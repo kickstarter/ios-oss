@@ -39,8 +39,8 @@ public func baseControllerStyle<VC: UIViewControllerProtocol>() -> ((VC) -> VC) 
 public func baseActivityIndicatorStyle(indicator: UIActivityIndicatorView) -> UIActivityIndicatorView {
   return indicator
     |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
-    |> UIActivityIndicatorView.lens.activityIndicatorViewStyle .~ .white
-    |> UIActivityIndicatorView.lens.color .~ .ksr_soft_black
+    |> UIActivityIndicatorView.lens.style .~ .white
+    |> UIActivityIndicatorView.lens.color .~ UIColor.ksr_soft_black
 }
 
 /**

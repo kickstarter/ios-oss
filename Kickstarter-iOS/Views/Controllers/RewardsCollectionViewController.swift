@@ -146,12 +146,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
         self?.goToPledge(project: data.project, reward: data.reward, refTag: data.refTag, context: context)
       }
 
-    self.viewModel.outputs.goToDeprecatedPledge
-      .observeForControllerAction()
-      .observeValues { [weak self] project, reward, refTag in
-        self?.goToDeprecatedPledge(project: project, reward: reward, refTag: refTag)
-      }
-
     self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
       .observeForUI()
       .observeValues { [weak self] isHidden in
@@ -241,15 +235,6 @@ final class RewardsCollectionViewController: UICollectionViewController {
     self.navigationController?.pushViewController(pledgeViewController, animated: true)
   }
 
-  private func goToDeprecatedPledge(project: Project, reward: Reward, refTag _: RefTag?) {
-    let pledgeViewController = DeprecatedRewardPledgeViewController
-      .configuredWith(
-        project: project, reward: reward
-      )
-
-    self.navigationController?.pushViewController(pledgeViewController, animated: true)
-  }
-
   // MARK: - Actions
 
   @objc func closeButtonTapped() {
@@ -299,59 +284,44 @@ extension RewardsCollectionViewController: RewardCellDelegate {
   }
 }
 
-// MARK: - RewardPledgeTransitionAnimatorDelegate
-
-extension RewardsCollectionViewController: RewardPledgeTransitionAnimatorDelegate {
-  func beginTransition(_: UINavigationController.Operation) {
-    self.selectedRewardCell()?.alpha = 0
-  }
-
-  func snapshotData(withContainerView view: UIView) -> RewardPledgeTransitionSnapshotData? {
-    guard
-      let cell = self.selectedRewardCell(),
-      let snapshotView = cell.rewardCardContainerView.snapshotView(afterScreenUpdates: false),
-      let sourceFrame = cell.rewardCardContainerView.superview?
-      .convert(cell.rewardCardContainerView.frame, to: view)
-    else { return nil }
-
-    return (snapshotView, sourceFrame, snapshotView.bounds)
-  }
-
-  func destinationFrameData(withContainerView _: UIView) -> RewardPledgeTransitionDestinationFrameData? {
-    guard
-      let cell = self.selectedRewardCell(),
-      let frame = cell.rewardCardContainerView.superview?
-      .convert(cell.rewardCardContainerView.frame, to: self.view)
-    else { return nil }
-
-    return (frame, CGRect(origin: .zero, size: frame.size))
-  }
-
-  func endTransition(_: UINavigationController.Operation) {
-    self.selectedRewardCell()?.alpha = 1
-  }
-
-  private func selectedRewardCell() -> RewardCell? {
-    guard
-      let selectedReward = self.viewModel.outputs.selectedReward(),
-      let cell = self.cell(for: selectedReward)
-    else { return nil }
-
-    return cell
-  }
-
-  private func cell(for reward: Reward) -> RewardCell? {
-    return self.collectionView.visibleCells
-      .compactMap { $0 as? RewardCell }
-      .filter { cell in cell.currentReward(is: reward) }
-      .first
-  }
-}
-
 // MARK: Styles
 
 private var collectionViewStyle: CollectionViewStyle = { collectionView -> UICollectionView in
   collectionView
     |> \.allowsSelection .~ true
     |> \.showsHorizontalScrollIndicator .~ true
+}
+
+extension RewardsCollectionViewController {
+  public static func controller(
+    with project: Project,
+    refTag: RefTag?
+  ) -> UINavigationController {
+    let rewardsCollectionViewController = RewardsCollectionViewController
+      .instantiate(with: project, refTag: refTag, context: .createPledge)
+
+    let closeButton = UIBarButtonItem(
+      image: UIImage(named: "icon--cross"),
+      style: .plain,
+      target: rewardsCollectionViewController,
+      action: #selector(RewardsCollectionViewController.closeButtonTapped)
+    )
+
+    _ = closeButton
+      |> \.width .~ Styles.minTouchSize.width
+      |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
+
+    rewardsCollectionViewController.navigationItem.setLeftBarButton(closeButton, animated: false)
+
+    let navigationController = RewardPledgeNavigationController(
+      rootViewController: rewardsCollectionViewController
+    )
+
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = navigationController
+        |> \.modalPresentationStyle .~ .pageSheet
+    }
+
+    return navigationController
+  }
 }

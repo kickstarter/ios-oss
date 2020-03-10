@@ -100,11 +100,9 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let backedProject = .template
       |> Project.lens.personalization.isBacking .~ true
 
-    let featuredProject = .template
-      |> Project.lens.category.parent .~ ParentCategory(
-        id: Category.art.id,
-        name: Category.art.name
-      )
+    let featuredProject = Project.template
+      |> \.category.parentId .~ Project.Category.art.id
+      |> \.category.parentName .~ Project.Category.art.name
       |> Project.lens.dates.featuredAt .~ featuredAt
 
     let backedColor: UIColor = .ksr_green_700
@@ -384,13 +382,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   }
 
   func testHidesCategoryLabel_IfFilterCategoryIsEqualToProjectCategory() {
-    // Workaround for discrepancy between category ids from graphQL and category ids from the legacy API
-    let categoryId = KsApi.Category.illustration.intID
-    let illustrationCategory = KsApi.Category.illustration
-      |> KsApi.Category.lens.id .~ String(categoryId!)
-
     let illustrationProject = Project.template
-      |> Project.lens.category .~ illustrationCategory
+      |> \.category .~ .illustration
 
     self.vm.inputs.configureWith(project: illustrationProject, category: .illustration)
 

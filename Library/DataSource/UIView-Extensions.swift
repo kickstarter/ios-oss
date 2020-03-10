@@ -1,30 +1,33 @@
 import UIKit
 
 private func swizzle(_ v: UIView.Type) {
-  [(#selector(v.traitCollectionDidChange(_:)), #selector(v.ksr_traitCollectionDidChange(_:)))]
-    .forEach { original, swizzled in
+  [
+    (#selector(v.traitCollectionDidChange(_:)), #selector(v.ksr_traitCollectionDidChange(_:))),
+    (#selector(v.didMoveToSuperview), #selector(v.ksr_didMoveToSuperview))
+  ]
+  .forEach { original, swizzled in
 
-      guard let originalMethod = class_getInstanceMethod(v, original),
-        let swizzledMethod = class_getInstanceMethod(v, swizzled) else { return }
+    guard let originalMethod = class_getInstanceMethod(v, original),
+      let swizzledMethod = class_getInstanceMethod(v, swizzled) else { return }
 
-      let didAddViewDidLoadMethod = class_addMethod(
+    let didAddViewDidLoadMethod = class_addMethod(
+      v,
+      original,
+      method_getImplementation(swizzledMethod),
+      method_getTypeEncoding(swizzledMethod)
+    )
+
+    if didAddViewDidLoadMethod {
+      class_replaceMethod(
         v,
-        original,
-        method_getImplementation(swizzledMethod),
-        method_getTypeEncoding(swizzledMethod)
+        swizzled,
+        method_getImplementation(originalMethod),
+        method_getTypeEncoding(originalMethod)
       )
-
-      if didAddViewDidLoadMethod {
-        class_replaceMethod(
-          v,
-          swizzled,
-          method_getImplementation(originalMethod),
-          method_getTypeEncoding(originalMethod)
-        )
-      } else {
-        method_exchangeImplementations(originalMethod, swizzledMethod)
-      }
+    } else {
+      method_exchangeImplementations(originalMethod, swizzledMethod)
     }
+  }
 }
 
 private var hasSwizzled = false
@@ -55,6 +58,11 @@ extension UIView {
 
   @objc internal func ksr_traitCollectionDidChange(_ previousTraitCollection: UITraitCollection) {
     self.ksr_traitCollectionDidChange(previousTraitCollection)
+    self.bindStyles()
+  }
+
+  @objc internal func ksr_didMoveToSuperview() {
+    self.ksr_didMoveToSuperview()
     self.bindStyles()
   }
 }

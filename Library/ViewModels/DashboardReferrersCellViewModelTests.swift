@@ -151,31 +151,31 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
     let stats1 = .template
       |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ 6
       |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.3
-      |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 300
+      |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 300.0
       |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "B"
 
     let stats2 = .template
       |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ 3
       |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.5
-      |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 500
+      |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 500.0
       |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "A"
 
     let stats3 = .template
       |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ 10
       |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.2
-      |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 200
+      |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 200.0
       |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "C"
 
     let stats4 = .template
       |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ 2
       |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.05
-      |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 50
+      |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 50.0
       |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "E"
 
     let stats5 = .template
       |> ProjectStatsEnvelope.ReferrerStats.lens.backersCount .~ 7
       |> ProjectStatsEnvelope.ReferrerStats.lens.percentageOfDollars .~ 0.15
-      |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 150
+      |> ProjectStatsEnvelope.ReferrerStats.lens.pledged .~ 150.0
       |> ProjectStatsEnvelope.ReferrerStats.lens.referrerName .~ "D"
 
     let referrers = [stats1, stats2, stats3, stats4, stats5]

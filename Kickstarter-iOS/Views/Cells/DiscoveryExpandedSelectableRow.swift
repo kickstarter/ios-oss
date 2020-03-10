@@ -56,7 +56,7 @@ internal final class DiscoveryExpandedSelectableRowCell: UITableViewCell, ValueC
             right: Styles.grid(2)
           )
       }
-      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button.rawValue
+      |> UITableViewCell.lens.accessibilityTraits .~ UIAccessibilityTraits.button
   }
 
   internal func willDisplay() {

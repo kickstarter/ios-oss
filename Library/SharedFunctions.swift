@@ -44,27 +44,12 @@ public func currentUserIsCreator(of project: Project) -> Bool {
  */
 
 internal func reward(from backing: Backing, inProject project: Project) -> Reward {
-  let noRewardFromProject = project.rewards.filter { $0.id == Reward.noReward.id }.first
+  let noRewardFromProject = project.rewards.first { $0.id == Reward.noReward.id }
 
   return backing.reward
-    ?? project.rewards.filter { $0.id == backing.rewardId }.first
+    ?? project.rewards.first { $0.id == backing.rewardId }
     ?? noRewardFromProject
     ?? Reward.noReward
-}
-
-/**
- Computes the pledge context (i.e. new pledge, managing reward, changing reward) from a project and reward.
-
- - parameter project: A project.
- - parameter reward:  A reward.
-
- - returns: A pledge context.
- */
-internal func pledgeContext(forProject project: Project, reward: Reward) -> Koala.PledgeContext {
-  if project.personalization.isBacking == .some(true) {
-    return userIsBacking(reward: reward, inProject: project) ? .manageReward : .changeReward
-  }
-  return .newPledge
 }
 
 /**
@@ -141,47 +126,6 @@ public func currencySymbol(
   }
 }
 
-/// Returns a signal producer that emits, every second, the number of days/hours/minutes/seconds until
-/// a date is reached, at which point it completes.
-///
-/// - parameter untilDate: The date to countdown to.
-///
-/// - returns: A signal producer.
-public func countdownProducer(to date: Date)
-  -> SignalProducer<(day: String, hour: String, minute: String, second: String), Never> {
-  func formattedComponents(dateComponents: DateComponents)
-    -> (day: String, hour: String, minute: String, second: String) {
-    return (
-      day: String(format: "%02d", max(0, dateComponents.day ?? 0)),
-      hour: String(format: "%02d", max(0, dateComponents.hour ?? 0)),
-      minute: String(format: "%02d", max(0, dateComponents.minute ?? 0)),
-      second: String(format: "%02d", max(0, dateComponents.second ?? 0))
-    )
-  }
-
-  let now = AppEnvironment.current.scheduler.currentDate
-  let timeUntilNextRoundSecond = ceil(now.timeIntervalSince1970) - now.timeIntervalSince1970
-
-  // A timer that emits every second, but with a small delay so that it emits on a roundeded second.
-  let everySecond = SignalProducer<(), Never>(value: ())
-    .ksr_delay(.milliseconds(Int(timeUntilNextRoundSecond * 1_000)), on: AppEnvironment.current.scheduler)
-    .flatMap { SignalProducer.timer(interval: .seconds(1), on: AppEnvironment.current.scheduler) }
-
-  return SignalProducer.merge(
-    SignalProducer<Date, Never>(value: now),
-    everySecond
-  )
-  .map { currentDate in
-    AppEnvironment.current.calendar.dateComponents(
-      [.day, .hour, .minute, .second],
-      from: currentDate,
-      to: Date(timeIntervalSince1970: ceil(date.timeIntervalSince1970))
-    )
-  }
-  .take(while: { ($0.second ?? 0) >= 0 })
-  .map(formattedComponents(dateComponents:))
-}
-
 public func updatedUserWithClearedActivityCountProducer() -> SignalProducer<User, Never> {
   return AppEnvironment.current.apiService.clearUserUnseenActivity(input: .init())
     .filter { _ in AppEnvironment.current.currentUser != nil }
@@ -236,6 +180,14 @@ internal func classNameWithoutModule(_ class: AnyClass) -> String {
     .joined(separator: ".")
 }
 
+public func deviceIdentifier(uuid: UUIDType, env: Environment = AppEnvironment.current) -> String {
+  guard let identifier = env.device.identifierForVendor else {
+    return uuid.uuidString
+  }
+
+  return identifier.uuidString
+}
+
 typealias SanitizedPledgeParams = (pledgeTotal: String, rewardId: String, locationId: String?)
 
 internal func sanitizedPledgeParameters(
@@ -243,18 +195,15 @@ internal func sanitizedPledgeParameters(
   pledgeAmount: Double,
   shippingRule: ShippingRule?
 ) -> SanitizedPledgeParams {
-  let pledgeAmountDecimal = Decimal(pledgeAmount)
-  var shippingAmountDecimal: Decimal = Decimal()
+  var pledgeTotal = pledgeAmount
   var shippingLocationId: String?
 
   if let shippingRule = shippingRule {
-    shippingAmountDecimal = Decimal(shippingRule.cost)
+    pledgeTotal = pledgeAmount.addingCurrency(shippingRule.cost)
     shippingLocationId = String(shippingRule.location.id)
   }
 
-  let pledgeTotal = NSDecimalNumber(decimal: pledgeAmountDecimal + shippingAmountDecimal)
-  let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal.doubleValue)
-
+  let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal)
   let rewardId = reward.graphID
 
   return (formattedPledgeTotal, rewardId, shippingLocationId)

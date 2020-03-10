@@ -18,6 +18,7 @@ public protocol ServiceType {
   var language: String { get }
   var currency: String { get }
   var buildVersion: String { get }
+  var deviceIdentifier: String { get }
 
   init(
     appId: String,
@@ -25,7 +26,8 @@ public protocol ServiceType {
     oauthToken: OauthTokenAuthType?,
     language: String,
     currency: String,
-    buildVersion: String
+    buildVersion: String,
+    deviceIdentifier: String
   )
 
   /// Returns a new service with the oauth token replaced.
@@ -108,9 +110,6 @@ public protocol ServiceType {
   /// Fetches the current user's backing for the project, if it exists.
   func fetchBacking(forProject project: Project, forUser user: User)
     -> SignalProducer<Backing, ErrorEnvelope>
-
-  /// Fetch a checkout's status.
-  func fetchCheckout(checkoutUrl url: String) -> SignalProducer<CheckoutEnvelope, ErrorEnvelope>
 
   /// Fetch comments from a pagination url.
   func fetchComments(paginationUrl url: String) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
@@ -304,14 +303,6 @@ public protocol ServiceType {
   /// Signup with Facebook access token and newsletter bool.
   func signup(facebookAccessToken: String, sendNewsletters: Bool) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope>
-
-  func submitApplePay(
-    checkoutUrl: String,
-    stripeToken: String,
-    paymentInstrumentName: String,
-    paymentNetwork: String,
-    transactionIdentifier: String
-  ) -> SignalProducer<SubmitApplePayEnvelope, ErrorEnvelope>
 
   /// Unfollow a user with their id.
   func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope>
@@ -508,6 +499,7 @@ extension ServiceType {
     headers["Kickstarter-iOS-App"] = self.buildVersion
     headers["User-Agent"] = Self.userAgent
     headers["X-KICKSTARTER-CLIENT"] = self.serverConfig.apiClientAuth.clientId
+    headers["Kickstarter-iOS-App-UUID"] = self.deviceIdentifier
 
     return headers
   }

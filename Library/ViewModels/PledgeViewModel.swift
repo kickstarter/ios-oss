@@ -47,7 +47,7 @@ public protocol PledgeViewModelInputs {
 
 public protocol PledgeViewModelOutputs {
   var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
-  var configurePaymentMethodsViewControllerWithValue: Signal<(User, Project), Never> { get }
+  var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var configureSummaryViewControllerWithData: Signal<(Project, Double), Never> { get }
   var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
@@ -56,7 +56,7 @@ public protocol PledgeViewModelOutputs {
   var continueViewHidden: Signal<Bool, Never> { get }
   var descriptionViewHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
-  var goToThanks: Signal<Project, Never> { get }
+  var goToThanks: Signal<ThanksPageData, Never> { get }
   var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
   var notifyPledgeAmountViewControllerShippingAmountChanged: Signal<Double, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
@@ -118,29 +118,26 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.notifyPledgeAmountViewControllerShippingAmountChanged = shippingCost
 
-    self.configureWithData = initialData.map { (project: $0.0, reward: $0.1) }
+    let projectAndReward = initialData.map { (project: $0.0, reward: $0.1) }
+
+    self.configureWithData = projectAndReward
 
     self.configureSummaryViewControllerWithData = project
       .takePairWhen(pledgeTotal)
       .map { project, total in (project, total) }
 
     let configurePaymentMethodsViewController = Signal.merge(
-      project,
-      project.takeWhen(self.userSessionStartedSignal)
+      initialData,
+      initialData.takeWhen(self.userSessionStartedSignal)
     )
 
-    self.configurePaymentMethodsViewControllerWithValue = Signal.combineLatest(
-      configurePaymentMethodsViewController,
-      context
-    )
-    .filter { !$1.paymentMethodsViewHidden }
-    .map(first)
-    .map { project -> (User, Project)? in
-      guard let user = AppEnvironment.current.currentUser else { return nil }
+    self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsViewController
+      .filter { !$3.paymentMethodsViewHidden }
+      .filterMap { project, reward, refTag, context -> PledgePaymentMethodsValue? in
+        guard let user = AppEnvironment.current.currentUser else { return nil }
 
-      return (user, project)
-    }
-    .skipNil()
+        return (user, project, reward, context, refTag)
+      }
 
     let projectAndPledgeTotal = project
       .combineLatest(with: pledgeTotal)
@@ -179,7 +176,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .ignoreValues()
     .map { _ in
       (
-        PKPaymentAuthorizationViewController.merchantIdentifier,
+        Secrets.ApplePay.merchantIdentifier,
         AppEnvironment.current.environmentType.stripePublishableKey
       )
     }
@@ -208,7 +205,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         reward,
         pledgeAmount,
         shippingRule,
-        PKPaymentAuthorizationViewController.merchantIdentifier
+        Secrets.ApplePay.merchantIdentifier
       ) as PaymentAuthorizationData
     }
 
@@ -308,12 +305,18 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       )
     )
 
+    // Captures the checkoutId immediately and avoids a race condition further down the chain.
+    let checkoutIdProperty = MutableProperty<Int?>(nil)
+
     let createBackingEvents = createBackingDataAndIsApplePay
       .map(CreateBackingInput.input(from:isApplePay:))
-      .switchMap { input in
+      .switchMap { [checkoutIdProperty] input in
         AppEnvironment.current.apiService.createBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { $0 as StripeSCARequiring }
+          .map { envelope -> StripeSCARequiring in
+            checkoutIdProperty.value = decompose(id: envelope.createBacking.checkout.id)
+            return envelope as StripeSCARequiring
+          }
           .materialize()
       }
 
@@ -501,7 +504,20 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       scaFlowCompletedWithSuccess.combineLatest(with: creatingContext).ignoreValues()
     )
 
-    self.goToThanks = project.takeWhen(createBackingCompletionEvents)
+    let thanksPageData = createBackingDataAndIsApplePay.combineLatest(with: checkoutIdProperty.signal)
+      .map(unpack)
+      .map { data, isApplePay, checkoutId -> ThanksPageData in
+        let checkoutPropsData = checkoutPropertiesData(
+          from: data,
+          checkoutId: checkoutId,
+          isApplePay: isApplePay
+        )
+
+        return (data.project, data.reward, checkoutPropsData)
+      }
+
+    self.goToThanks = thanksPageData
+      .takeWhen(createBackingCompletionEvents)
 
     let errorsOrNil = Signal.merge(
       createOrUpdateEvent.errors().wrapInOptional(),
@@ -570,19 +586,46 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         )
       }
 
-    contextAndProjectAndPledgeAmount
-      .filter { $0.0 == .pledge }
-      .takeWhen(self.viewDidLoadProperty.signal)
-      .observeValues { _, project, _ in
-        AppEnvironment.current.koala.trackPledgeScreenViewed(project: project)
+    initialData
+      .observeValues { project, reward, refTag, context in
+        AppEnvironment.current.koala.trackCheckoutPaymentPageViewed(
+          project: project,
+          reward: reward,
+          context: TrackingHelpers.pledgeContext(for: context),
+          refTag: refTag
+        )
       }
 
-    contextAndProjectAndPledgeAmount
-      .takeWhen(createButtonTapped)
-      .observeValues { _, project, pledgeAmount in
-        AppEnvironment.current.koala.trackPledgeButtonClicked(
+    initialData
+      .observeValues { project, _, refTag, _ in
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+          with: AppEnvironment.current.currentUser,
           project: project,
-          pledgeAmount: pledgeAmount
+          refTag: refTag
+        )
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "Pledge Screen Viewed",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
+      }
+
+    createBackingData
+      .takeWhen(createButtonTapped)
+      .map { data in
+        let checkoutData = checkoutPropertiesData(from: data, isApplePay: false)
+
+        return (data.project, data.reward, data.refTag, checkoutData)
+      }
+      .observeValues { project, reward, refTag, checkoutData in
+        AppEnvironment.current.koala.trackPledgeSubmitButtonClicked(
+          project: project,
+          reward: reward,
+          checkoutData: checkoutData,
+          refTag: refTag
         )
       }
   }
@@ -668,7 +711,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   // MARK: - Outputs
 
   public let beginSCAFlowWithClientSecret: Signal<String, Never>
-  public let configurePaymentMethodsViewControllerWithValue: Signal<(User, Project), Never>
+  public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
   public let configureWithData: Signal<(project: Project, reward: Reward), Never>
@@ -677,7 +720,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let continueViewHidden: Signal<Bool, Never>
   public let descriptionViewHidden: Signal<Bool, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
-  public let goToThanks: Signal<Project, Never>
+  public let goToThanks: Signal<ThanksPageData, Never>
   public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
   public let notifyPledgeAmountViewControllerShippingAmountChanged: Signal<Double, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
@@ -802,4 +845,50 @@ private func allValuesChangedAndValid(
   }
 
   return amountValid && shippingRuleValid
+}
+
+// MARK: - Helper Functions
+
+private func checkoutPropertiesData(
+  from createBackingData: CreateBackingData,
+  checkoutId: Int? = nil,
+  isApplePay: Bool
+) -> Koala.CheckoutPropertiesData {
+  var pledgeTotal = createBackingData.pledgeAmount
+
+  if let shippingRule = createBackingData.shippingRule {
+    pledgeTotal = pledgeTotal.addingCurrency(shippingRule.cost)
+  }
+
+  let pledgeTotalUsdCents = pledgeTotal
+    .multiplyingCurrency(Double(createBackingData.project.stats.staticUsdRate))
+    .multiplyingCurrency(100.0)
+    .rounded()
+
+  let amount = Format.decimalCurrency(for: pledgeTotal)
+  let revenueInUsdCents = Int(pledgeTotalUsdCents)
+  let rewardId = createBackingData.reward.id
+  let estimatedDelivery = createBackingData.reward.estimatedDeliveryOn
+  let paymentType = isApplePay
+    ? Backing.PaymentType.applePay.rawValue
+    : Backing.PaymentType.creditCard.rawValue
+  let shippingEnabled = createBackingData.reward.shipping.enabled
+  let shippingAmount = createBackingData.shippingRule?.cost
+  let rewardTitle = createBackingData.reward.title
+  let userHasEligibleStoredApplePayCard = AppEnvironment.current
+    .applePayCapabilities
+    .applePayCapable(for: createBackingData.project)
+
+  return Koala.CheckoutPropertiesData(
+    amount: amount,
+    checkoutId: checkoutId,
+    estimatedDelivery: estimatedDelivery,
+    paymentType: paymentType,
+    revenueInUsdCents: revenueInUsdCents,
+    rewardId: rewardId,
+    rewardTitle: rewardTitle,
+    shippingEnabled: shippingEnabled,
+    shippingAmount: shippingAmount,
+    userHasStoredApplePayCard: userHasEligibleStoredApplePayCard
+  )
 }

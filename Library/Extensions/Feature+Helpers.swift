@@ -5,12 +5,8 @@ public func featureGoRewardlessIsEnabled() -> Bool {
   return Feature.goRewardless.isEnabled()
 }
 
-public func featureNativeCheckoutIsEnabled() -> Bool {
-  return Feature.nativeCheckout.isEnabled()
-}
-
-public func featureNativeCheckoutPledgeViewIsEnabled() -> Bool {
-  return Feature.nativeCheckoutPledgeView.isEnabled()
+public func featureQualtricsIsEnabled() -> Bool {
+  return Feature.qualtrics.isEnabled()
 }
 
 extension Feature {

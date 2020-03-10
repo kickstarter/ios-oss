@@ -3,7 +3,7 @@ import Prelude
 import ReactiveSwift
 
 public protocol ProjectPamphletContentViewModelInputs {
-  func configureWith(project: Project)
+  func configureWith(value: (Project, RefTag?))
   func tappedComments()
   func tappedPledgeAnyAmount()
   func tapped(rewardOrBacking: Either<Reward, Backing>)
@@ -21,8 +21,7 @@ public protocol ProjectPamphletContentViewModelOutputs {
   var goToRewardPledge: Signal<(Project, Reward), Never> { get }
   var goToUpdates: Signal<Project, Never> { get }
   var loadMinimalProjectIntoDataSource: Signal<Project, Never> { get }
-  var loadProjectIntoDataSource: Signal<(Project, Bool), Never> { get }
-  var rewardTitleCellVisible: Signal<Bool, Never> { get }
+  var loadProjectAndRefTagIntoDataSource: Signal<(Project, RefTag?), Never> { get }
 }
 
 public protocol ProjectPamphletContentViewModelType {
@@ -33,11 +32,13 @@ public protocol ProjectPamphletContentViewModelType {
 public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewModelType,
   ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
   public init() {
-    let project = Signal.combineLatest(
+    let projectAndRefTag = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
     .map(first)
+
+    let project = projectAndRefTag.map(first)
 
     let loadDataSourceOnSwipeCompletion = self.viewDidAppearAnimatedProperty.signal
       .filter(isTrue)
@@ -57,15 +58,11 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
     )
     .take(first: 1)
 
-    self.rewardTitleCellVisible = project
-      .map { $0.state == .live && $0.personalization.isBacking == true }
-
-    self.loadProjectIntoDataSource = Signal.combineLatest(
-      project,
-      timeToLoadDataSource,
-      self.rewardTitleCellVisible
+    self.loadProjectAndRefTagIntoDataSource = Signal.combineLatest(
+      projectAndRefTag,
+      timeToLoadDataSource
     )
-    .map { project, _, rewardVisible in (project, rewardVisible) }
+    .map(first)
 
     self.loadMinimalProjectIntoDataSource = project
       .takePairWhen(self.viewWillAppearAnimatedProperty.signal)
@@ -99,9 +96,9 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
       .map { .id($0.id) }
   }
 
-  fileprivate let configDataProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
-    self.configDataProperty.value = project
+  fileprivate let configDataProperty = MutableProperty<(Project, RefTag?)?>(nil)
+  public func configureWith(value: (Project, RefTag?)) {
+    self.configDataProperty.value = value
   }
 
   fileprivate let tappedCommentsProperty = MutableProperty(())
@@ -150,8 +147,7 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
   public let goToRewardPledge: Signal<(Project, Reward), Never>
   public let goToUpdates: Signal<Project, Never>
   public let loadMinimalProjectIntoDataSource: Signal<Project, Never>
-  public let loadProjectIntoDataSource: Signal<(Project, Bool), Never>
-  public let rewardTitleCellVisible: Signal<Bool, Never>
+  public let loadProjectAndRefTagIntoDataSource: Signal<(Project, RefTag?), Never>
 
   public var inputs: ProjectPamphletContentViewModelInputs { return self }
   public var outputs: ProjectPamphletContentViewModelOutputs { return self }
@@ -159,7 +155,7 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
 
 private func reward(forBacking backing: Backing, inProject project: Project) -> Reward? {
   return backing.reward
-    ?? project.rewards.filter { $0.id == backing.rewardId }.first
+    ?? project.rewards.first { $0.id == backing.rewardId }
     ?? Reward.noReward
 }
 

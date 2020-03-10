@@ -3,8 +3,19 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
+public enum PledgeCTAContainerViewContext {
+  case projectPamphlet
+  case projectDescription
+}
+
+public typealias PledgeCTAContainerViewData = (
+  projectOrError: Either<(Project, RefTag?), ErrorEnvelope>,
+  isLoading: Bool,
+  context: PledgeCTAContainerViewContext
+)
+
 public protocol PledgeCTAContainerViewViewModelInputs {
-  func configureWith(value: (projectOrError: Either<Project, ErrorEnvelope>, isLoading: Bool))
+  func configureWith(value: PledgeCTAContainerViewData)
   func pledgeCTAButtonTapped()
 }
 
@@ -29,18 +40,24 @@ public protocol PledgeCTAContainerViewViewModelType {
 public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewModelType,
   PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   public init() {
-    let projectOrError = self.projectOrErrorProperty.signal
+    let projectOrError = self.configData.signal
       .skipNil()
       .filter(second >>> isFalse)
       .map(first)
 
-    let isLoading = self.projectOrErrorProperty.signal
+    let isLoading = self.configData.signal
       .skipNil()
       .map(second)
 
     let project = projectOrError
       .map(Either.left)
       .skipNil()
+      .map(first)
+
+    let refTag = projectOrError
+      .map(Either.left)
+      .skipNil()
+      .map(second)
 
     let projectError = projectOrError
       .map(Either.right)
@@ -50,8 +67,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .negate()
 
     let backing = project.map { $0.personalization.backing }
-    let pledgeState = Signal.combineLatest(project, backing)
-      .map(pledgeCTA(project:backing:))
+    let pledgeState = Signal.combineLatest(project, refTag, backing)
+      .map(pledgeCTA(project:refTag:backing:))
 
     let inError = Signal.merge(
       projectError.ignoreValues().mapConst(true),
@@ -96,16 +113,14 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .observeValues {
         AppEnvironment.current.koala.trackPledgeCTAButtonClicked(
           stateType: $0,
-          project: $1,
-          screen: .projectPage
+          project: $1
         )
       }
   }
 
-  fileprivate let projectOrErrorProperty =
-    MutableProperty<(Either<Project, ErrorEnvelope>, isLoading: Bool)?>(nil)
-  public func configureWith(value: (projectOrError: Either<Project, ErrorEnvelope>, isLoading: Bool)) {
-    self.projectOrErrorProperty.value = value
+  fileprivate let configData = MutableProperty<PledgeCTAContainerViewData?>(nil)
+  public func configureWith(value: PledgeCTAContainerViewData) {
+    self.configData.value = value
   }
 
   fileprivate let pledgeCTAButtonTappedProperty = MutableProperty(())
@@ -130,10 +145,35 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 
 // MARK: - Functions
 
-private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTAType {
+private func pledgeCTA(project: Project, refTag: RefTag?, backing: Backing?) -> PledgeStateCTAType {
   guard let projectBacking = backing, project.personalization.isBacking == .some(true) else {
     if currentUserIsCreator(of: project) {
       return PledgeStateCTAType.viewYourRewards
+    }
+
+    let userAttributes = optimizelyUserAttributes(
+      with: AppEnvironment.current.currentUser,
+      project: project,
+      refTag: refTag
+    )
+
+    let optimizelyVariant = AppEnvironment.current.optimizelyClient?
+      .variant(
+        for: OptimizelyExperiment.Key.pledgeCTACopy,
+        userId: deviceIdentifier(uuid: UUID()),
+        isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
+        userAttributes: userAttributes
+      )
+
+    if let variant = optimizelyVariant, project.state == .live {
+      switch variant {
+      case .variant1:
+        return PledgeStateCTAType.seeTheRewards
+      case .variant2:
+        return PledgeStateCTAType.viewTheRewards
+      case .control:
+        return PledgeStateCTAType.pledge
+      }
     }
 
     return project.state == .live ? PledgeStateCTAType.pledge : PledgeStateCTAType.viewRewards
@@ -158,7 +198,7 @@ private func subtitle(project: Project, pledgeState: PledgeStateCTAType) -> Stri
   let amount = formattedPledge(amount: backing.amount, project: project)
 
   let reward = backing.reward
-    ?? project.rewards.filter { $0.id == backing.rewardId }.first
+    ?? project.rewards.first { $0.id == backing.rewardId }
     ?? Reward.noReward
 
   guard let rewardTitle = reward.title else { return "\(amount)" }

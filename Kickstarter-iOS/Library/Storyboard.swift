@@ -4,7 +4,6 @@ public enum Storyboard: String {
   case Activity
   case Backing
   case BackerDashboard
-  case Checkout
   case Comments
   case Dashboard
   case DashboardProjectsDrawer
@@ -22,7 +21,6 @@ public enum Storyboard: String {
   case Profile
   case ProjectActivity
   case ProjectPamphlet
-  case RewardPledge
   case Search
   case Settings
   case SettingsNewsletters

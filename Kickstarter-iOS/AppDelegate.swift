@@ -13,7 +13,9 @@ import Foundation
 #endif
 import Kickstarter_Framework
 import Library
+import Optimizely
 import Prelude
+import Qualtrics
 import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
@@ -151,6 +153,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues(UIApplication.shared.unregisterForRemoteNotifications)
 
+    self.viewModel.outputs.configureOptimizely
+      .observeForUI()
+      .observeValues { [weak self] key, logLevel in
+        self?.configureOptimizely(with: key, logLevel: logLevel)
+      }
+
     self.viewModel.outputs.configureAppCenterWithData
       .observeForUI()
       .observeValues { data in
@@ -198,6 +206,27 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.findRedirectUrl
       .observeForUI()
       .observeValues { [weak self] in self?.findRedirectUrl($0) }
+
+    self.viewModel.outputs.configureQualtrics
+      .observeValues { [weak self] config in
+        self?.configureQualtrics(with: config)
+      }
+
+    self.viewModel.outputs.evaluateQualtricsTargetingLogic
+      .observeValues { [weak self] in
+        Qualtrics.shared.evaluateTargetingLogic() { result in
+          self?.viewModel.inputs.didEvaluateQualtricsTargetingLogic(
+            with: result, properties: Qualtrics.shared.properties
+          )
+        }
+      }
+
+    self.viewModel.outputs.displayQualtricsSurvey
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let vc = self?.rootTabBarController else { return }
+        _ = Qualtrics.shared.display(viewController: vc)
+      }
 
     // swiftlint:disable discarded_notification_center_observer
     NotificationCenter.default
@@ -292,6 +321,23 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     completionHandler(true)
   }
 
+  // MARK: - Functions
+
+  private func configureOptimizely(with key: String, logLevel: OptimizelyLogLevelType) {
+    let optimizelyClient = OptimizelyClient(sdkKey: key, defaultLogLevel: logLevel.logLevel)
+
+    optimizelyClient.start { [weak self] result in
+      let shouldUpdateClient = self?.viewModel.inputs.optimizelyConfigured(with: result)
+
+      if let shouldUpdateClient = shouldUpdateClient, shouldUpdateClient {
+        print("🔮 Optimizely SDK Successfully Configured")
+        AppEnvironment.updateOptimizelyClient(optimizelyClient)
+
+        self?.viewModel.inputs.didUpdateOptimizelyClient(optimizelyClient)
+      }
+    }
+  }
+
   fileprivate func presentContextualPermissionAlert(_ notification: Notification) {
     guard let context = notification.userInfo?.values.first as? PushNotificationDialog.Context else {
       return
@@ -338,6 +384,22 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     let task = session.dataTask(with: url)
     task.resume()
   }
+
+  // MARK: - Qualtrics Configuration
+
+  private func configureQualtrics(with config: QualtricsConfigData) {
+    config.stringProperties.forEach { key, value in
+      Qualtrics.shared.properties.setString(string: value, for: key)
+    }
+
+    Qualtrics.shared.initialize(
+      brandId: config.brandId,
+      zoneId: config.zoneId,
+      interceptId: config.interceptId
+    ) { result in
+      self.viewModel.inputs.qualtricsInitialized(with: result)
+    }
+  }
 }
 
 // MARK: - MSCrashesDelegate
@@ -380,8 +442,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
-    self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
-    self.rootTabBarController?.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
+    guard let rootTabBarController = self.rootTabBarController else {
+      completion()
+      return
+    }
+
+    if !Qualtrics.shared.handleLocalNotification(response: response, displayOn: rootTabBarController) {
+      self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
+      rootTabBarController.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
+    }
     completion()
   }
 }

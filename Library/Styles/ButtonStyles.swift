@@ -133,20 +133,20 @@ public let shareButtonStyle =
   <> UIButton.lens.tintColor .~ .ksr_soft_black
   <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
-// MARK: - Text only
+// MARK: - Read More Campaign Button
 
-// Remove when DeprecatedRewardShippingPickerViewController is removed.
-public let textOnlyButtonStyle = roundedStyle(cornerRadius: 0)
-  <> UIButton.lens.titleLabel.font .~ UIFont.boldSystemFont(ofSize: 16)
-  <> UIButton.lens.contentEdgeInsets %~~ { _, button in
-    button.traitCollection.verticalSizeClass == .compact
-      ? .init(topBottom: 10.0, leftRight: 12.0)
-      : .init(topBottom: 13.0, leftRight: 16.0)
-  }
+public let readMoreButtonStyle = baseButtonStyle
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_dark_grey_500
+  <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
+  <> UIButton.lens.contentEdgeInsets .~ .init(
+    top: Styles.grid(3) - 1,
+    left: 0,
+    bottom: Styles.grid(4) - 1,
+    right: 0
+  )
+  <> UIButton.lens.backgroundColor .~ .white
 
-  <> UIButton.lens.adjustsImageWhenDisabled .~ false
-  <> UIButton.lens.adjustsImageWhenHighlighted .~ false
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_500
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .clear
-  <> UIButton.lens.titleColor(for: .highlighted) .~ UIColor.ksr_green_500.mixDarker(0.36)
-  <> UIButton.lens.titleColor(for: .disabled) .~ UIColor.ksr_green_500.mixDarker(0.36)
+// experimental campaign button
+public let greyReadMoreButtonStyle = greyButtonStyle
+  <> UIButton.lens.contentHorizontalAlignment .~ .center

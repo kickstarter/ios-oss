@@ -71,11 +71,6 @@ public final class ProjectNavigatorViewModel: ProjectNavigatorViewModelType,
       .takeWhen(pageTransitionCompletedFromIndex)
       .map(first)
 
-    let currentProject = Signal.merge(
-      configData.map { $0.project },
-      swipedToProject
-    )
-
     self.setNeedsStatusBarAppearanceUpdate = swipedToProject.ignoreValues()
 
     let panningData = self.panningDataProperty.signal.skipNil()

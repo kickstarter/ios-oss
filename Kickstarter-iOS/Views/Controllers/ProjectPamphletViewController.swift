@@ -25,8 +25,6 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
   fileprivate var contentController: ProjectPamphletContentViewController!
 
   @IBOutlet private var navBarTopConstraint: NSLayoutConstraint!
-
-  private let pledgeCTAContainerViewMargins = Styles.grid(3)
   private let pledgeCTAContainerView: PledgeCTAContainerView = {
     PledgeCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -43,9 +41,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    if userCanSeeNativeCheckout() {
-      self.configurePledgeCTAContainerView()
-    }
+    self.configurePledgeCTAContainerView()
 
     self.navBarController = self.children
       .compactMap { $0 as? ProjectNavBarViewController }.first
@@ -60,6 +56,14 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
     self.viewModel.inputs.initial(topConstraint: self.initialTopConstraint)
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+
+    NotificationCenter.default
+      .addObserver(
+        self,
+        selector: #selector(ProjectPamphletViewController.didBackProject),
+        name: NSNotification.Name.ksr_projectBacked,
+        object: nil
+      )
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -76,9 +80,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
       constant: self.initialTopConstraint
     )
 
-    if userCanSeeNativeCheckout() {
-      self.updateContentInsets()
-    }
+    self.updateContentInsets()
   }
 
   public override func viewDidAppear(_ animated: Bool) {
@@ -109,24 +111,6 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
     NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
   }
 
-  public override func bindStyles() {
-    super.bindStyles()
-
-    if userCanSeeNativeCheckout() {
-      _ = self.pledgeCTAContainerView
-        |> \.layoutMargins .~ .init(all: self.pledgeCTAContainerViewMargins)
-
-      _ = self.pledgeCTAContainerView.layer
-        |> checkoutLayerCardRoundedStyle
-        |> \.backgroundColor .~ UIColor.white.cgColor
-        |> \.shadowColor .~ UIColor.black.cgColor
-        |> \.shadowOpacity .~ 0.12
-        |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
-        |> \.shadowRadius .~ 1.0
-        |> \.maskedCorners .~ [CACornerMask.layerMaxXMinYCorner, CACornerMask.layerMinXMinYCorner]
-    }
-  }
-
   public override func bindViewModel() {
     super.bindViewModel()
 
@@ -144,22 +128,10 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
         self?.goToManageViewPledge(project: project)
       }
 
-    self.viewModel.outputs.goToDeprecatedViewBacking
-      .observeForControllerAction()
-      .observeValues { [weak self] project, user in
-        self?.goToDeprecatedViewBacking(project: project, user: user)
-      }
-
-    self.viewModel.outputs.goToDeprecatedManagePledge
-      .observeForControllerAction()
-      .observeValues { [weak self] project, reward, refTag in
-        self?.goToDeprecatedManagePledge(project: project, reward: reward, refTag: refTag)
-      }
-
     self.viewModel.outputs.configureChildViewControllersWithProject
       .observeForUI()
       .observeValues { [weak self] project, refTag in
-        self?.contentController.configureWith(project: project)
+        self?.contentController.configureWith(value: (project, refTag))
         self?.navBarController.configureWith(project: project, refTag: refTag)
       }
 
@@ -192,6 +164,12 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
           self?.messageBannerViewController?.showBanner(with: .success, message: message)
         })
       }
+
+    self.viewModel.outputs.popToRootViewController
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        self?.navigationController?.popToRootViewController(animated: false)
+      }
   }
 
   public override func willTransition(
@@ -203,6 +181,10 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
 
   // MARK: - Private Helpers
 
+  @objc private func didBackProject() {
+    self.viewModel.inputs.didBackProject()
+  }
+
   private func setInitial(constraints: [NSLayoutConstraint?], constant: CGFloat) {
     constraints.forEach {
       $0?.constant = constant
@@ -210,7 +192,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
   }
 
   private func goToRewards(project: Project, refTag: RefTag?) {
-    let vc = rewardsCollectionViewController(project: project, refTag: refTag)
+    let vc = RewardsCollectionViewController.controller(with: project, refTag: refTag)
 
     self.present(vc, animated: true)
   }
@@ -228,32 +210,6 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
     }
 
     self.present(nc, animated: true)
-  }
-
-  private func goToDeprecatedManagePledge(project: Project, reward: Reward, refTag _: RefTag?) {
-    let pledgeViewController = DeprecatedRewardPledgeViewController
-      .configuredWith(
-        project: project, reward: reward
-      )
-
-    let nav = UINavigationController(rootViewController: pledgeViewController)
-    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      _ = nav
-        |> \.modalPresentationStyle .~ .formSheet
-    }
-    self.present(nav, animated: true)
-  }
-
-  private func goToDeprecatedViewBacking(project: Project, user _: User?) {
-    let backingViewController = BackingViewController.configuredWith(project: project, backer: nil)
-
-    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      let nav = UINavigationController(rootViewController: backingViewController)
-        |> \.modalPresentationStyle .~ .formSheet
-      self.present(nav, animated: true)
-    } else {
-      self.navigationController?.pushViewController(backingViewController, animated: true)
-    }
   }
 
   private func updateContentInsets() {
@@ -321,7 +277,7 @@ extension ProjectPamphletViewController: VideoViewControllerDelegate {
 extension ProjectPamphletViewController: ManagePledgeViewControllerDelegate {
   func managePledgeViewController(
     _: ManagePledgeViewController,
-    shouldDismissAndShowSuccessBannerWithMessage message: String
+    managePledgeViewControllerFinishedWithMessage message: String?
   ) {
     self.viewModel.inputs.managePledgeViewControllerFinished(with: message)
   }
@@ -333,36 +289,4 @@ extension ProjectPamphletViewController: ProjectNavBarViewControllerDelegate {
   public func projectNavBarControllerDidTapTitle(_: ProjectNavBarViewController) {
     self.contentController.tableView.scrollToTop()
   }
-}
-
-private func rewardsCollectionViewController(
-  project: Project,
-  refTag: RefTag?
-) -> UINavigationController {
-  let rewardsCollectionViewController = RewardsCollectionViewController
-    .instantiate(with: project, refTag: refTag, context: .createPledge)
-
-  let closeButton = UIBarButtonItem(
-    image: UIImage(named: "icon--cross"),
-    style: .plain,
-    target: rewardsCollectionViewController,
-    action: #selector(RewardsCollectionViewController.closeButtonTapped)
-  )
-
-  _ = closeButton
-    |> \.width .~ Styles.minTouchSize.width
-    |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
-
-  rewardsCollectionViewController.navigationItem.setLeftBarButton(closeButton, animated: false)
-
-  let navigationController = RewardPledgeNavigationController(
-    rootViewController: rewardsCollectionViewController
-  )
-
-  if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-    _ = navigationController
-      |> \.modalPresentationStyle .~ .pageSheet
-  }
-
-  return navigationController
 }

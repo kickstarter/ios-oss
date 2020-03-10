@@ -51,6 +51,12 @@ public struct AppEnvironment: AppEnvironmentType {
     )
   }
 
+  public static func updateOptimizelyClient(_ optimizelyClient: OptimizelyClientType?) {
+    self.replaceCurrentEnvironment(
+      optimizelyClient: optimizelyClient
+    )
+  }
+
   public static func updateServerConfig(_ config: ServerConfigType) {
     let service = Service(serverConfig: config)
 
@@ -122,12 +128,14 @@ public struct AppEnvironment: AppEnvironmentType {
   public static func pushEnvironment(
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
+    applePayCapabilities: ApplePayCapabilitiesType = AppEnvironment.current.applePayCapabilities,
     application: UIApplicationType = UIApplication.shared,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     cache: KSCache = AppEnvironment.current.cache,
     calendar: Calendar = AppEnvironment.current.calendar,
     config: Config? = AppEnvironment.current.config,
     cookieStorage: HTTPCookieStorageProtocol = AppEnvironment.current.cookieStorage,
+    coreTelephonyNetworkInfo: CoreTelephonyNetworkInfoType = AppEnvironment.current.coreTelephonyNetworkInfo,
     countryCode: String = AppEnvironment.current.countryCode,
     currentUser: User? = AppEnvironment.current.currentUser,
     dateType: DateProtocol.Type = AppEnvironment.current.dateType,
@@ -140,6 +148,7 @@ public struct AppEnvironment: AppEnvironmentType {
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
+    optimizelyClient: OptimizelyClientType? = AppEnvironment.current.optimizelyClient,
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
     reachability: SignalProducer<Reachability, Never> = AppEnvironment.current.reachability,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
@@ -150,12 +159,14 @@ public struct AppEnvironment: AppEnvironmentType {
       Environment(
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
+        applePayCapabilities: applePayCapabilities,
         application: application,
         assetImageGeneratorType: assetImageGeneratorType,
         cache: cache,
         calendar: calendar,
         config: config,
         cookieStorage: cookieStorage,
+        coreTelephonyNetworkInfo: coreTelephonyNetworkInfo,
         countryCode: countryCode,
         currentUser: currentUser,
         dateType: dateType,
@@ -168,6 +179,7 @@ public struct AppEnvironment: AppEnvironmentType {
         launchedCountries: launchedCountries,
         locale: locale,
         mainBundle: mainBundle,
+        optimizelyClient: optimizelyClient,
         pushRegistrationType: pushRegistrationType,
         reachability: reachability,
         scheduler: scheduler,
@@ -182,12 +194,14 @@ public struct AppEnvironment: AppEnvironmentType {
   public static func replaceCurrentEnvironment(
     apiService: ServiceType = AppEnvironment.current.apiService,
     apiDelayInterval: DispatchTimeInterval = AppEnvironment.current.apiDelayInterval,
+    applePayCapabilities: ApplePayCapabilitiesType = AppEnvironment.current.applePayCapabilities,
     application: UIApplicationType = UIApplication.shared,
     assetImageGeneratorType: AssetImageGeneratorType.Type = AppEnvironment.current.assetImageGeneratorType,
     cache: KSCache = AppEnvironment.current.cache,
     calendar: Calendar = AppEnvironment.current.calendar,
     config: Config? = AppEnvironment.current.config,
     cookieStorage: HTTPCookieStorageProtocol = AppEnvironment.current.cookieStorage,
+    coreTelephonyNetworkInfo: CoreTelephonyNetworkInfoType = AppEnvironment.current.coreTelephonyNetworkInfo,
     countryCode: String = AppEnvironment.current.countryCode,
     currentUser: User? = AppEnvironment.current.currentUser,
     dateType: DateProtocol.Type = AppEnvironment.current.dateType,
@@ -200,6 +214,7 @@ public struct AppEnvironment: AppEnvironmentType {
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     locale: Locale = AppEnvironment.current.locale,
     mainBundle: NSBundleType = AppEnvironment.current.mainBundle,
+    optimizelyClient: OptimizelyClientType? = AppEnvironment.current.optimizelyClient,
     pushRegistrationType: PushRegistrationType.Type = AppEnvironment.current.pushRegistrationType,
     reachability: SignalProducer<Reachability, Never> = AppEnvironment.current.reachability,
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
@@ -210,12 +225,14 @@ public struct AppEnvironment: AppEnvironmentType {
       Environment(
         apiService: apiService,
         apiDelayInterval: apiDelayInterval,
+        applePayCapabilities: applePayCapabilities,
         application: application,
         assetImageGeneratorType: assetImageGeneratorType,
         cache: cache,
         calendar: calendar,
         config: config,
         cookieStorage: cookieStorage,
+        coreTelephonyNetworkInfo: coreTelephonyNetworkInfo,
         countryCode: countryCode,
         currentUser: currentUser,
         dateType: dateType,
@@ -228,6 +245,7 @@ public struct AppEnvironment: AppEnvironmentType {
         launchedCountries: launchedCountries,
         locale: locale,
         mainBundle: mainBundle,
+        optimizelyClient: optimizelyClient,
         pushRegistrationType: pushRegistrationType,
         reachability: reachability,
         scheduler: scheduler,

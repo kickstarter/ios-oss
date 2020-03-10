@@ -31,55 +31,29 @@ final class FeatureHelpersTests: TestCase {
     }
   }
 
-  // MARK: - nativeCheckout
+  // MARK: - Qualtrics
 
-  func testFeatureNativeCheckoutIsEnabled_isTrue() {
+  func testFeatureQualtrics_isTrue() {
     let config = Config.template
-      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> \.features .~ [Feature.qualtrics.rawValue: true]
 
     withEnvironment(config: config) {
-      XCTAssertTrue(featureNativeCheckoutIsEnabled())
+      XCTAssertTrue(featureQualtricsIsEnabled())
     }
   }
 
-  func testFeatureNativeCheckoutIsEnabled_isFalse() {
+  func testFeatureQualtrics_isFalse() {
     let config = Config.template
-      |> \.features .~ [Feature.nativeCheckout.rawValue: false]
+      |> \.features .~ [Feature.qualtrics.rawValue: false]
 
     withEnvironment(config: config) {
-      XCTAssertFalse(featureNativeCheckoutIsEnabled())
+      XCTAssertFalse(featureQualtricsIsEnabled())
     }
   }
 
-  func testFeatureNativeCheckoutIsEnabled_isFalse_whenNil() {
+  func testFeatureQualtrics_isFalse_whenNil() {
     withEnvironment(config: .template) {
-      XCTAssertFalse(featureNativeCheckoutIsEnabled())
-    }
-  }
-
-  // MARK: - nativeCheckoutPledgeView
-
-  func testFeatureNativeCheckoutPledgeViewEnabled_isTrue() {
-    let config = Config.template
-      |> \.features .~ [Feature.nativeCheckoutPledgeView.rawValue: true]
-
-    withEnvironment(config: config) {
-      XCTAssertTrue(featureNativeCheckoutPledgeViewIsEnabled())
-    }
-  }
-
-  func testFeatureNativeCheckoutPledgeViewEnabled_isFalse() {
-    let config = Config.template
-      |> \.features .~ [Feature.nativeCheckoutPledgeView.rawValue: false]
-
-    withEnvironment(config: config) {
-      XCTAssertFalse(featureNativeCheckoutPledgeViewIsEnabled())
-    }
-  }
-
-  func testFeatureNativeCheckoutPledgeViewEnabled_isFalse_whenNil() {
-    withEnvironment(config: .template) {
-      XCTAssertFalse(featureNativeCheckoutPledgeViewIsEnabled())
+      XCTAssertFalse(featureQualtricsIsEnabled())
     }
   }
 }

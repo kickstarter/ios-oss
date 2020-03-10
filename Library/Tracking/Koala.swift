@@ -1,4 +1,3 @@
-import CoreTelephony
 import KsApi
 import PassKit
 import Prelude
@@ -22,21 +21,55 @@ public final class Koala {
   private let screen: UIScreenType
 
   private enum DataLakeWhiteListedEvent: String, CaseIterable {
+    case activityFeedViewed = "Activity Feed Viewed"
+    case addNewCardButtonClicked = "Add New Card Button Clicked"
+    case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
+    case collectionViewed = "Collection Viewed"
+    case editorialCardClicked = "Editorial Card Clicked"
     case explorePageViewed = "Explore Page Viewed"
     case exploreSortClicked = "Explore Sort Clicked"
-    case activityFeedViewed = "Activity Feed Viewed"
-    case editorialCardClicked = "Editorial Card Clicked"
-    case collectionViewed = "Collection Viewed"
+    case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
     case filterClicked = "Filter Clicked"
-    case tabBarClicked = "Tab Bar Clicked"
+    case forgotPasswordViewed = "Forgot Password Viewed"
+    case loginButtonClicked = "Log In Button Clicked"
+    case loginOrSignupButtonClicked = "Log In or Signup Button Clicked"
+    case loginOrSignupPageViewed = "Log In or Signup Page Viewed"
+    case loginSubmitButtonClicked = "Log In Submit Button Clicked"
+    case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked"
+    case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
+    case projectPageViewed = "Project Page Viewed"
+    case projectSwiped = "Project Swiped"
     case searchPageViewed = "Search Page Viewed"
     case searchResultsLoaded = "Search Results Loaded"
-    case projectSwiped = "Project Swiped"
-    case projectPageViewed = "Project Page Viewed"
+    case selectRewardButtonClicked = "Select Reward Button Clicked"
+    case signupButtonClicked = "Signup Button Clicked"
+    case signupSubmitButtonClicked = "Signup Submit Button Clicked"
+    case tabBarClicked = "Tab Bar Clicked"
+    case thanksPageViewed = "Thanks Page Viewed"
+    case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
 
     static func allWhiteListedEvents() -> [String] {
       return DataLakeWhiteListedEvent.allCases.map { $0.rawValue }
     }
+  }
+
+  /// Determines the screen from which the event is sent.
+  public enum LocationContext: String {
+    case activities = "activity_feed_screen" // ActivitiesViewController
+    case discovery = "explore_screen" // DiscoveryViewController
+    case editorialProjects = "editorial_collection_screen" // EditorialProjectsViewController
+    case forgotPassword = "forgot_password_screen" // ResetPasswordViewController
+    case login = "login_screen" // LoginViewController
+    case loginTout = "login_or_signup_screen" // LoginToutViewController
+    case pledgeAddNewCard = "pledge_add_new_card_screen" // AddNewCardViewController
+    case pledgeScreen = "pledge_screen" // PledgeViewController
+    case projectPage = "project_screen" // ProjectPamphletViewController
+    case rewards = "rewards_screen" // RewardsViewController
+    case search = "search_screen" // SearchViewController
+    case settingsAddNewCard = "settings_add_new_card_screen" // AddNewCardViewController
+    case signup = "sign_up" // SignupViewController
+    case thanks = "thanks_screen" // ThanksViewController
+    case twoFactorAuth = "two_factor_auth_verify_screen" // TwoFactorViewController
   }
 
   /// Determines the authentication type for login or signup events.
@@ -255,67 +288,6 @@ public final class Koala {
     }
   }
 
-  /**
-   Describes the buttons the user can click on in the reward pledge screen.
-
-   - applePay:            The user clicked the apple pay button.
-   - cancel:              The user clicked the cancel pledge button.
-   - changePaymentMethod: The user clicked the change payment method button.
-   - paymentMethods:      The user clicked the payment methods button.
-   - updatePledge:        The user clicked the update pledge button.
-   */
-  public enum ClickedRewardPledgeButtonType {
-    case applePay
-    case cancel
-    case changePaymentMethod
-    case paymentMethods
-    case updatePledge
-
-    fileprivate var trackingString: String {
-      switch self {
-      case .applePay: return "apple_pay"
-      case .cancel: return "cancel"
-      case .changePaymentMethod: return "change_payment_method"
-      case .paymentMethods: return "payment_methods"
-      case .updatePledge: return "update_pledge"
-      }
-    }
-  }
-
-  /**
-   Describes the types of errors that can occur when trying to click a reward pledge button.
-
-   - maximumAmount: A pledge amount was entered that is greater than what the project can handle.
-   - minimumAmount: A pledge amount was entered that is less than the minimum the project requires.
-   */
-  public enum ErroredRewardPledgeButtonClickType {
-    case maximumAmount
-    case minimumAmount
-
-    fileprivate var trackingString: String {
-      switch self {
-      case .maximumAmount: return "MAXIMUM_AMOUNT"
-      case .minimumAmount: return "MINIMUM_AMOUNT"
-      }
-    }
-  }
-
-  /**
-   Describes the types of payment methods that can be used.
-   */
-  public enum PaymentMethod {
-    case applePay
-
-    fileprivate var trackingString: String {
-      switch self {
-      case .applePay: return "apple_pay"
-      }
-    }
-  }
-
-  /**
-   Describes the pages where checkout events can occur.
-   */
   public enum CheckoutPageContext {
     case paymentsPage
     case projectPage
@@ -326,18 +298,6 @@ public final class Koala {
       case .paymentsPage: return "Payments Page"
       case .projectPage: return "Project Page"
       case .rewardSelection: return "Reward Selection"
-      }
-    }
-  }
-
-  public enum CheckoutContext {
-    case backThisPage
-    case projectPage
-
-    var trackingString: String {
-      switch self {
-      case .backThisPage: return "Back this page"
-      case .projectPage: return "Project page"
       }
     }
   }
@@ -382,6 +342,19 @@ public final class Koala {
     var trackingString: String {
       return self.rawValue
     }
+  }
+
+  public struct CheckoutPropertiesData: Equatable {
+    let amount: String
+    let checkoutId: Int?
+    let estimatedDelivery: TimeInterval?
+    let paymentType: String?
+    let revenueInUsdCents: Int
+    let rewardId: Int
+    let rewardTitle: String?
+    let shippingEnabled: Bool
+    let shippingAmount: Double?
+    let userHasStoredApplePayCard: Bool
   }
 
   public init(
@@ -436,6 +409,7 @@ public final class Koala {
   public func trackActivities(count: Int) {
     self.track(
       event: DataLakeWhiteListedEvent.activityFeedViewed.rawValue,
+      location: .activities,
       properties: ["activities_count": count]
     )
   }
@@ -502,11 +476,11 @@ public final class Koala {
   }
 
   public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
-    let label = tabBarItemLabel.trackingString
+    let properties = contextProperties(pledgeFlowContext: nil, tabBarLabel: tabBarItemLabel)
 
     self.track(
       event: DataLakeWhiteListedEvent.tabBarClicked.rawValue,
-      properties: ["ios_tab_bar_label": label]
+      properties: properties
     )
   }
 
@@ -521,7 +495,11 @@ public final class Koala {
   public func trackDiscovery(params: DiscoveryParams) {
     let props = discoveryProperties(from: params)
 
-    self.track(event: DataLakeWhiteListedEvent.explorePageViewed.rawValue, properties: props)
+    self.track(
+      event: DataLakeWhiteListedEvent.explorePageViewed.rawValue,
+      location: .discovery,
+      properties: props
+    )
   }
 
   /**
@@ -532,6 +510,7 @@ public final class Koala {
   public func trackDiscoveryModalSelectedFilter(params: DiscoveryParams) {
     self.track(
       event: DataLakeWhiteListedEvent.filterClicked.rawValue,
+      location: .discovery,
       properties: discoveryProperties(from: params)
     )
   }
@@ -547,7 +526,11 @@ public final class Koala {
         "discover_sort": sort.rawValue
       ])
 
-    self.track(event: DataLakeWhiteListedEvent.exploreSortClicked.rawValue, properties: props)
+    self.track(
+      event: DataLakeWhiteListedEvent.exploreSortClicked.rawValue,
+      location: .discovery,
+      properties: props
+    )
   }
 
   /**
@@ -556,6 +539,7 @@ public final class Koala {
   public func trackEditorialHeaderTapped(refTag: RefTag) {
     self.track(
       event: DataLakeWhiteListedEvent.editorialCardClicked.rawValue,
+      location: .discovery,
       properties: [:], refTag: refTag.stringTag
     )
   }
@@ -568,32 +552,40 @@ public final class Koala {
   public func trackCollectionViewed(params: DiscoveryParams) {
     self.track(
       event: DataLakeWhiteListedEvent.collectionViewed.rawValue,
+      location: .editorialProjects,
       properties: discoveryProperties(from: params)
     )
   }
 
-  // MARK: - Checkout Events
+  // MARK: - Pledge Events
 
   public func trackPledgeCTAButtonClicked(
     stateType: PledgeStateCTAType,
-    project: Project, screen: CheckoutContext
+    project: Project
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["screen": screen.trackingString])
 
     switch stateType {
     case .fix:
       self.track(event: "Fix Pledge Button Clicked", properties: props)
     case .pledge:
-      self.track(event: "Back this Project Button Clicked", properties: props)
+      self.track(
+        event: DataLakeWhiteListedEvent.projectPagePledgeButtonClicked.rawValue,
+        location: .projectPage,
+        properties: props
+      )
     case .manage:
       self.track(event: "Manage Pledge Button Clicked", properties: props)
+    case .seeTheRewards:
+      self.track(event: "See the Rewards Button Clicked", properties: props)
     case .viewBacking:
       self.track(event: "View Your Pledge Button Clicked", properties: props)
     case .viewRewards:
       self.track(event: "View Rewards Button Clicked", properties: props)
     case .viewYourRewards:
       self.track(event: "View Your Rewards Button Clicked", properties: props)
+    case .viewTheRewards:
+      self.track(event: "View the Rewards Button Clicked", properties: props)
     }
   }
 
@@ -625,247 +617,286 @@ public final class Koala {
     self.track(event: "Manage Pledge Option Clicked", properties: props)
   }
 
-  public func trackSelectRewardButtonClicked(
-    project: Project,
-    reward: Reward?,
-    backing: Backing?,
-    screen: CheckoutContext
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom([
-        "screen": screen.trackingString,
-        "backer_reward_minimum": reward?.minimum as Any,
-        "pledge_total": backing?.amount as Any
-      ])
+  /* Call when a reward is selected
 
-    self.track(event: "Select Reward Button Clicked", properties: props)
-  }
+   parameters:
+   - project: the project being pledged to
+   - reward: the selected reward
+   - context: the PledgeContext from which the event was triggered
+   - refTag: the optional RefTag associated with the pledge
+   */
 
-  public func trackPledgeScreenViewed(project: Project) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-
-    self.track(event: "Pledge Screen Viewed", properties: props)
-  }
-
-  public func trackPledgeButtonClicked(project: Project, pledgeAmount: Double) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["pledge_total": pledgeAmount])
-
-    self.track(event: "Pledge Button Clicked", properties: props)
-  }
-
-  public func trackAddNewCardButtonClicked(project: Project) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-
-    self.track(event: "Add New Card Button Clicked", properties: props)
-  }
-
-  public func trackCheckoutCancel(
+  public func trackRewardClicked(
     project: Project,
     reward: Reward,
-    pledgeContext: PledgeContext
+    context: PledgeContext,
+    refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
-      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
-
-    self.track(event: "Checkout Cancel", properties: props.withAllValuesFrom(deprecatedProps))
-    self.track(event: "Canceled Checkout", properties: props)
-  }
-
-  public func trackClickedRewardPledgeButton(
-    project: Project,
-    reward: Reward,
-    buttonType: ClickedRewardPledgeButtonType,
-    pageContext: CheckoutPageContext,
-    pledgeContext: PledgeContext
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
-      .withAllValuesFrom([
-        "pledge_context": pledgeContext.trackingString,
-        "type": buttonType.trackingString,
-        "context": pageContext.trackingString
-      ])
-
-    self.track(event: "Clicked Reward Pledge Button", properties: props)
-  }
-
-  public func trackClickedRewardPledgeButton(
-    project: Project,
-    reward: Reward,
-    errorText: String,
-    errorType: ErroredRewardPledgeButtonClickType,
-    paymentMethod: PaymentMethod?,
-    pageContext: CheckoutPageContext,
-    pledgeContext: PledgeContext
-  ) {
-    var extraProps = [
-      "error_text": errorText,
-      "type": errorType.trackingString,
-      "pledge_context": pledgeContext.trackingString,
-      "context": pageContext.trackingString
-    ]
-    extraProps["payment_method"] = paymentMethod?.trackingString
-
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
-      .withAllValuesFrom(extraProps)
-
-    self.track(event: "Errored Reward Pledge Button Click", properties: props)
-  }
-
-  public func trackChangedPledgeAmount(_ project: Project, reward: Reward, pledgeContext: PledgeContext) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
-      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
-
-    self.track(event: "Checkout Amount Changed", properties: props.withAllValuesFrom(deprecatedProps))
-
-    self.track(event: "Changed Pledge Amount", properties: props)
-  }
-
-  public func trackSelectedShippingDestination(
-    _ project: Project,
-    reward: Reward,
-    pledgeContext: PledgeContext
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
-      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
-
-    self.track(event: "Checkout Location Changed", properties: props.withAllValuesFrom(deprecatedProps))
-
-    self.track(event: "Selected Shipping Destination", properties: props)
-  }
-
-  public func trackSelectedReward(project: Project, reward: Reward, pledgeContext: PledgeContext) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
-      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
-
-    self.track(event: "Reward Checkout", properties: props.withAllValuesFrom(deprecatedProps))
-
-    self.track(event: "Selected Reward", properties: props)
-  }
-
-  public func trackClosedReward(project: Project, reward: Reward, pledgeContext: PledgeContext) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
-      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
-
-    self.track(event: "Closed Reward", properties: props)
-  }
-
-  // MARK: - Login Events
-
-  public func trackLoginTout(intent: LoginIntent) {
-    // Deprecated event
-    self.track(
-      event: "Application Login or Signup",
-      properties: [
-        "intent": intent.trackingString,
-        "context": intent.trackingString,
-        Koala.DeprecatedKey: true
-      ]
-    )
+      .withAllValuesFrom(pledgeProperties(from: reward))
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
-      event: "Viewed Login Signup",
-      properties: ["intent": intent.trackingString, "context": intent.trackingString]
+      event: DataLakeWhiteListedEvent.selectRewardButtonClicked.rawValue,
+      location: .rewards,
+      properties: props,
+      refTag: refTag?.stringTag
     )
   }
 
-  public func trackLoginFormView() {
+  /* Call when the pledge screen is shown
+
+   parameters:
+   - project: the project being pledged to
+   - reward: the chosen reward
+   - context: the PledgeContext from which the event was triggered
+   - refTag: the associated RefTag for the pledge
+   */
+
+  public func trackCheckoutPaymentPageViewed(
+    project: Project,
+    reward: Reward,
+    context: Koala.PledgeContext,
+    refTag: RefTag?
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(pledgeProperties(from: reward))
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
+
     self.track(
-      event: "User Login",
-      properties: [
-        Koala.DeprecatedKey: true
-      ]
+      event: DataLakeWhiteListedEvent.checkoutPaymentPageViewed.rawValue,
+      location: .pledgeScreen,
+      properties: props,
+      refTag: refTag?.stringTag
     )
-    self.track(event: "Viewed Login")
   }
 
-  public func trackLoginSuccess(authType: AuthType) {
-    // Deprecated event
-    self.track(event: "Login", properties: deprecatedProps)
+  /* Call when the Pledge button is clicked
 
-    self.track(event: "Logged In", properties: ["auth_type": authType.trackingString])
+   parameters:
+   - project: the project being pledged to
+   - reward: the chosen reward
+   - checkoutData: all the checkout data associated with the pledge
+   - refTag: the associated RefTag for the pledge
+
+   */
+
+  public func trackPledgeSubmitButtonClicked(
+    project: Project,
+    reward: Reward,
+    checkoutData: CheckoutPropertiesData,
+    refTag: RefTag?
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(pledgeProperties(from: reward))
+      .withAllValuesFrom(checkoutProperties(from: checkoutData))
+      // the context is always "newPledge" for this event
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
+
+    self.track(
+      event: DataLakeWhiteListedEvent.pledgeSubmitButtonClicked.rawValue,
+      location: .pledgeScreen,
+      properties: props,
+      refTag: refTag?.stringTag
+    )
   }
 
-  public func trackLoginError(authType: AuthType) {
-    // Deprecated event
-    self.track(event: "Errored User Login", properties: deprecatedProps)
+  /* Call when the Add New Card button is clicked from the pledge screen
 
-    self.track(event: "Errored Login", properties: ["auth_type": authType.trackingString])
+   parameters:
+   - project: the project that is being pledged to
+   - reward: the reward that was chosen for the pledge
+   - context: the PledgeContext from which the event was triggered
+   */
+
+  public func trackAddNewCardButtonClicked(
+    context: Koala.PledgeContext,
+    location: Koala.LocationContext? = nil,
+    project: Project,
+    refTag: RefTag?,
+    reward: Reward
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(pledgeProperties(from: reward))
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
+
+    self.track(
+      event: DataLakeWhiteListedEvent.addNewCardButtonClicked.rawValue,
+      location: location,
+      properties: props,
+      refTag: refTag?.stringTag
+    )
   }
 
-  public func trackResetPassword() {
-    // Deprecated event
-    self.track(event: "Forgot Password View", properties: deprecatedProps)
+  /* Call when the Thanks page is viewed
 
-    self.track(event: "Viewed Forgot Password")
+   parameters:
+   - project: the project that was pledged to
+   - reward: the reward that was chosen
+   - checkoutData: all the checkout data associated with the pledge
+   */
+
+  public func trackThanksPageViewed(
+    project: Project,
+    reward: Reward,
+    checkoutData: CheckoutPropertiesData?
+  ) {
+    var props = projectProperties(from: project)
+      .withAllValuesFrom(pledgeProperties(from: reward))
+      // the context is always "newPledge" for this event
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
+
+    if let checkoutData = checkoutData {
+      props = props.withAllValuesFrom(checkoutProperties(from: checkoutData))
+    }
+
+    self.track(
+      event: DataLakeWhiteListedEvent.thanksPageViewed.rawValue,
+      location: .thanks,
+      properties: props
+    )
   }
 
-  public func trackResetPasswordSuccess() {
-    // Deprecated event
-    self.track(event: "Forgot Password Requested", properties: deprecatedProps)
+  // MARK: - Login/Signup Events
 
-    self.track(event: "Requested Password Reset")
+  /* Call when the Login or Signup button entry-point is tapped
+
+   parameters:
+   - intent: the LoginIntent associated with the login/signup attempt
+   - project: if the login attempt is made from the checkout flow, the associated project
+   - reward: if the login attempt is made from the checkout flow, the associated selected reward
+   */
+
+  public func trackLoginOrSignupButtonClicked(
+    intent: LoginIntent,
+    project: Project? = nil,
+    reward: Reward? = nil
+  ) {
+    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
+
+    self.track(
+      event: DataLakeWhiteListedEvent.loginOrSignupButtonClicked.rawValue,
+      location: .discovery,
+      properties: props
+    )
   }
 
-  public func trackResetPasswordError() {
-    // Deprecated event
-    self.track(event: "Forgot Password Errored", properties: deprecatedProps)
+  /* Call when the Login/Signup page is viewed
 
-    self.track(event: "Errored Forgot Password")
+   parameters:
+   - intent: the LoginIntent associated with the login/signup attempt
+   - project: if the login attempt is made from the checkout flow, the associated project
+   - reward: if the login attempt is made from the checkout flow, the associated selected reward
+   */
+  public func trackLoginOrSignupPageViewed(
+    intent: LoginIntent,
+    project: Project? = nil,
+    reward: Reward? = nil
+  ) {
+    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
+
+    self.track(
+      event: DataLakeWhiteListedEvent.loginOrSignupPageViewed.rawValue,
+      location: .loginTout,
+      properties: props
+    )
   }
 
-  public func trackFacebookConfirmation() {
-    // Deprecated event
-    self.track(event: "Facebook Confirm", properties: deprecatedProps)
+  /* Call when the Log In button is tapped on the Login/Signup Page
 
-    self.track(event: "Viewed Facebook Signup")
+   parameters:
+   - intent: the LoginIntent associated with the login/signup attempt
+   - project: if the login attempt is made from the checkout flow, the associated project
+   - reward: if the login attempt is made from the checkout flow, the associated selected reward
+   */
+
+  public func trackLoginButtonClicked(
+    intent: LoginIntent,
+    project: Project? = nil,
+    reward: Reward? = nil
+  ) {
+    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
+
+    self.track(
+      event: DataLakeWhiteListedEvent.loginButtonClicked.rawValue,
+      location: .loginTout,
+      properties: props
+    )
   }
 
-  public func trackTfa() {
-    // Deprecated event
-    self.track(event: "Two-factor Authentication Confirm View", properties: deprecatedProps)
+  /* Call when the "Log in with Facebook" button is tapped on the Login/Signup Page
 
-    self.track(event: "Viewed Two-Factor Confirmation")
+   parameters:
+   - intent: the LoginIntent associated with the login/signup attempt
+   - project: if the login attempt is made from the checkout flow, the associated project
+   - reward: if the login attempt is made from the checkout flow, the associated selected reward
+   */
+
+  public func trackFacebookLoginOrSignupButtonClicked(
+    intent: LoginIntent,
+    project: Project? = nil,
+    reward: Reward? = nil
+  ) {
+    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
+
+    self.track(
+      event: DataLakeWhiteListedEvent.fbLoginOrSignupButtonClicked.rawValue,
+      location: .loginTout,
+      properties: props
+    )
   }
 
-  public func trackTfaResendCode() {
-    // Deprecated event
-    self.track(event: "Two-factor Authentication Resend Code", properties: deprecatedProps)
+  /* Call when the "Sign up" button is tapped on the Login/Signup Page
 
-    self.track(event: "Resent Two-Factor Code")
+   parameters:
+   - intent: the LoginIntent associated with the login/signup attempt
+   - project: if the login attempt is made from the checkout flow, the associated project
+   - reward: if the login attempt is made from the checkout flow, the associated selected reward
+   */
+
+  public func trackSignupButtonClicked(
+    intent: LoginIntent,
+    project: Project? = nil,
+    reward: Reward? = nil
+  ) {
+    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
+
+    self.track(
+      event: DataLakeWhiteListedEvent.signupButtonClicked.rawValue,
+      location: .loginTout,
+      properties: props
+    )
   }
 
-  // MARK: - Signup
-
-  // Call when an error is returned after attempting to signup.
-  public func trackSignupError(authType: AuthType) {
-    // Deprecated event
-    self.track(event: "Errored User Signup", properties: deprecatedProps)
-
-    self.track(event: "Errored Signup", properties: ["auth_type": authType.trackingString])
+  public func trackSignupSubmitButtonClicked() {
+    self.track(event: DataLakeWhiteListedEvent.signupSubmitButtonClicked.rawValue, location: .signup)
   }
 
-  // Call when the user has successfully signed up for a new account.
-  public func trackSignupSuccess(authType: AuthType) {
-    // Deprecated event
-    self.track(event: "New User", properties: deprecatedProps)
-
-    self.track(event: "Signed Up", properties: ["auth_type": authType.trackingString])
+  public func trackLoginSubmitButtonClicked() {
+    self.track(event: DataLakeWhiteListedEvent.loginSubmitButtonClicked.rawValue, location: .login)
   }
 
-  // Call once when the signup view loads.
-  public func trackSignupView() {
-    // Deprecated event
-    self.track(event: "User Signup", properties: deprecatedProps)
+  public func trackForgotPasswordViewed() {
+    self.track(event: DataLakeWhiteListedEvent.forgotPasswordViewed.rawValue, location: .forgotPassword)
+  }
 
-    self.track(event: "Viewed Signup")
+  public func track2FAViewed() {
+    self.track(event: DataLakeWhiteListedEvent.twoFactorConfirmationViewed.rawValue, location: .twoFactorAuth)
+  }
+
+  private func loginEventProperties(for intent: LoginIntent, project: Project?, reward: Reward?)
+    -> [String: Any] {
+    var props: [String: Any] = [:]
+
+    if let project = project {
+      props = props.withAllValuesFrom(projectProperties(from: project))
+    }
+
+    if let reward = reward {
+      props = props.withAllValuesFrom(pledgeProperties(from: reward))
+    }
+
+    return props.withAllValuesFrom(["login_intent": intent.trackingString])
   }
 
   // MARK: - Comments Events
@@ -1298,7 +1329,7 @@ public final class Koala {
 
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
-    self.track(event: DataLakeWhiteListedEvent.searchPageViewed.rawValue)
+    self.track(event: DataLakeWhiteListedEvent.searchPageViewed.rawValue, location: .search)
   }
 
   // Call when projects have been obtained from a search.
@@ -1315,7 +1346,11 @@ public final class Koala {
         "has_results": hasResults
       ])
 
-    self.track(event: DataLakeWhiteListedEvent.searchResultsLoaded.rawValue, properties: props)
+    self.track(
+      event: DataLakeWhiteListedEvent.searchResultsLoaded.rawValue,
+      location: .search,
+      properties: props
+    )
   }
 
   // MARK: - Project Events
@@ -1336,6 +1371,7 @@ public final class Koala {
 
     self.track(
       event: DataLakeWhiteListedEvent.projectPageViewed.rawValue,
+      location: .projectPage,
       properties: props,
       refTag: refTag?.stringTag,
       referrerCredit: cookieRefTag?.stringTag
@@ -1352,6 +1388,7 @@ public final class Koala {
 
     self.track(
       event: DataLakeWhiteListedEvent.projectSwiped.rawValue,
+      location: .projectPage,
       properties: props, refTag: refTag?.stringTag
     )
   }
@@ -1820,94 +1857,6 @@ public final class Koala {
     )
   }
 
-  // MARK: - Apple Pay events
-
-  public func trackShowApplePaySheet(
-    project: Project,
-    reward: Reward,
-    pledgeContext: PledgeContext
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
-      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
-
-    // deprecated
-    self.track(
-      event: "Apple Pay Show Sheet",
-      properties: props.withAllValuesFrom(deprecatedProps)
-    )
-
-    self.track(event: "Showed Apple Pay Sheet", properties: props)
-  }
-
-  public func trackApplePayAuthorizedPayment(
-    project: Project,
-    reward: Reward,
-    pledgeContext: PledgeContext
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
-      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
-
-    // deprecated
-    self.track(event: "Apple Pay Authorized", properties: props.withAllValuesFrom(deprecatedProps))
-
-    self.track(event: "Authorized Apple Pay", properties: props)
-  }
-
-  public func trackStripeTokenCreatedForApplePay(
-    project: Project,
-    reward: Reward,
-    pledgeContext: PledgeContext
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
-      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
-
-    self.track(event: "Apple Pay Stripe Token Created", properties: props.withAllValuesFrom(deprecatedProps))
-
-    self.track(event: "Created Apple Pay Stripe Token", properties: props)
-  }
-
-  public func trackStripeTokenErroredForApplePay(
-    project: Project,
-    reward: Reward,
-    pledgeContext: PledgeContext
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
-      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
-
-    self.track(event: "Apple Pay Stripe Token Errored", properties: props.withAllValuesFrom(deprecatedProps))
-
-    self.track(event: "Errored Apple Pay Stripe Token", properties: props)
-  }
-
-  public func trackApplePayFinished(
-    project: Project,
-    reward: Reward,
-    pledgeContext: PledgeContext
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
-      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
-
-    self.track(event: "Apple Pay Finished", properties: props.withAllValuesFrom(deprecatedProps))
-  }
-
-  public func trackApplePaySheetCanceled(
-    project: Project,
-    reward: Reward,
-    pledgeContext: PledgeContext
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
-      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
-    self.track(event: "Apple Pay Canceled", properties: props.withAllValuesFrom(deprecatedProps))
-
-    self.track(event: "Canceled Apple Pay", properties: props)
-  }
-
   // MARK: - Empty State Events
 
   public func trackEmptyStateButtonTapped(type: EmptyState) {
@@ -1915,30 +1864,6 @@ public final class Koala {
       event: "Tapped Empty State Button",
       properties: ["type": type.rawValue]
     )
-  }
-
-  public func trackExpandedRewardDescription(
-    _ reward: Reward,
-    project: Project,
-    pledgeContext: PledgeContext
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
-      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
-
-    self.track(event: "Expanded Reward Description", properties: props)
-  }
-
-  public func trackExpandedUnavailableReward(
-    _ reward: Reward,
-    project: Project,
-    pledgeContext: PledgeContext
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(properties(reward: reward))
-      .withAllValuesFrom(["pledge_context": pledgeContext.trackingString])
-
-    self.track(event: "Expanded Unavailable Reward", properties: props)
   }
 
   public func trackPerformedShortcutItem(
@@ -1981,12 +1906,14 @@ public final class Koala {
   // Private tracking method that merges in default properties.
   private func track(
     event: String,
+    location: Koala.LocationContext? = nil,
     properties: [String: Any] = [:],
     refTag: String? = nil,
     referrerCredit: String? = nil
   ) {
     let props = self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
       .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
+      .withAllValuesFrom(contextProperties(location: location))
       .withAllValuesFrom(properties)
 
     self.logEventCallback?(event, props)
@@ -2018,26 +1945,25 @@ public final class Koala {
       .keys
       .sorted()
 
-    props["apple_pay_capable"] = PKPaymentAuthorizationViewController.applePayCapable()
-    props["apple_pay_device"] = PKPaymentAuthorizationViewController.applePayDevice()
-    props["cellular_connection"] = CTTelephonyNetworkInfo().serviceCurrentRadioAccessTechnology
+    props["apple_pay_capable"] = AppEnvironment.current.applePayCapabilities.applePayCapable()
+    props["apple_pay_device"] = AppEnvironment.current.applePayCapabilities.applePayDevice()
+    props["cellular_connection"] = AppEnvironment.current.coreTelephonyNetworkInfo
+      .serviceCurrentRadioAccessTechnology
     props["client_type"] = "native"
     props["current_variants"] = self.config?.abExperimentsArray.sorted()
+    props["display_language"] = AppEnvironment.current.language.rawValue
 
-    props["device_fingerprint"] = self.distinctId
-    props["device_format"] = self.deviceFormat
+    props["device_format"] = self.device.deviceFormat
     props["device_manufacturer"] = "Apple"
     props["device_model"] = Koala.deviceModel
     props["device_orientation"] = self.deviceOrientation
-    props["distinct_id"] = self.distinctId
+    props["device_distinct_id"] = self.distinctId
 
     props["enabled_features"] = enabledFeatureFlags
-    props["iphone_uuid"] = self.distinctId
     props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
     props["mp_lib"] = "kickstarter_ios"
     props["os"] = self.device.systemName
     props["os_version"] = self.device.systemVersion
-    props["time"] = Date().timeIntervalSince1970
     props["app_build_number"] = self.bundle.infoDictionary?["CFBundleVersion"]
     props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
     props["screen_width"] = UInt(self.screen.bounds.width)
@@ -2081,15 +2007,6 @@ public final class Koala {
     }
   }
 
-  private var deviceFormat: String {
-    switch self.device.userInterfaceIdiom {
-    case .phone: return "phone"
-    case .pad: return "tablet"
-    case .tv: return "tv"
-    default: return "unspecified"
-    }
-  }
-
   private var clientPlatform: String {
     switch self.device.userInterfaceIdiom {
     case .phone, .pad: return "ios"
@@ -2112,6 +2029,7 @@ private func projectProperties(
 
   props["backers_count"] = project.stats.backersCount
   props["subcategory"] = project.category.name
+  props["subcategory_id"] = project.category.id
   props["country"] = project.country.countryCode
   props["comments_count"] = project.stats.commentsCount ?? 0
   props["currency"] = project.country.currencyCode
@@ -2122,7 +2040,8 @@ private func projectProperties(
   props["location"] = project.location.name
   props["name"] = project.name
   props["pid"] = project.id
-  props["category"] = project.category.parent?.name
+  props["category"] = project.category.parentName
+  props["category_id"] = project.category.parentId
   props["percent_raised"] = project.stats.fundingProgress
   props["state"] = project.state.rawValue
   props["static_usd_rate"] = project.stats.staticUsdRate
@@ -2130,9 +2049,9 @@ private func projectProperties(
   props["current_pledge_amount_usd"] = project.stats.pledgedUsd
   props["goal_usd"] = project.stats.goalUsd
   props["has_video"] = project.video != nil
-  props["updates_count"] = project.stats.updatesCount
   props["prelaunch_activated"] = project.prelaunchActivated
   props["rewards_count"] = project.rewards.count
+  props["updates_count"] = project.stats.updatesCount
 
   let now = dateType.init().date
   props["hours_remaining"] = project.dates.hoursRemaining(from: now, using: calendar)
@@ -2181,6 +2100,43 @@ private func properties(userActivity: NSUserActivity) -> [String: Any] {
   return props
 }
 
+// MARK: - Pledge Properties
+
+private func pledgeProperties(from reward: Reward, prefix: String = "pledge_backer_reward_")
+  -> [String: Any] {
+  var result: [String: Any] = [:]
+
+  result["has_items"] = !reward.rewardsItems.isEmpty
+  result["id"] = reward.id
+  result["is_limited_quantity"] = reward.limit != nil
+  result["is_limited_time"] = reward.endsAt != nil
+  result["minimum"] = reward.minimum
+  result["shipping_enabled"] = reward.shipping.enabled
+  result["shipping_preference"] = reward.shipping.preference?.trackingString
+
+  return result.prefixedKeys(prefix)
+}
+
+// MARK: - Checkout Properties
+
+private func checkoutProperties(from data: Koala.CheckoutPropertiesData, prefix: String = "checkout_")
+  -> [String: Any] {
+  var result: [String: Any] = [:]
+
+  result["amount"] = data.amount
+  result["id"] = data.checkoutId
+  result["payment_type"] = data.paymentType
+  result["reward_id"] = data.rewardId
+  result["reward_title"] = data.rewardTitle
+  result["shipping_amount"] = data.shippingAmount
+  result["revenue_in_usd_cents"] = data.revenueInUsdCents
+  result["reward_estimated_delivery_on"] = data.estimatedDelivery
+  result["reward_shipping_enabled"] = data.shippingEnabled
+  result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
+
+  return result.prefixedKeys(prefix)
+}
+
 // MARK: - Discovery Properties
 
 private func discoveryProperties(
@@ -2219,6 +2175,24 @@ private func properties(category: KsApi.Category, prefix: String = "category_") 
   return result.prefixedKeys(prefix)
 }
 
+// MARK: - Context Properties
+
+private func contextProperties(
+  pledgeFlowContext: Koala.PledgeContext? = nil,
+  tabBarLabel: Koala.TabBarItemLabel? = nil,
+  location: Koala.LocationContext? = nil,
+  prefix: String = "context_"
+) -> [String: Any] {
+  var result: [String: Any] = [:]
+
+  result["location"] = location?.rawValue
+  result["pledge_flow"] = pledgeFlowContext?.trackingString
+  result["timestamp"] = AppEnvironment.current.dateType.init().timeIntervalSince1970
+  result["tab_bar_label"] = tabBarLabel?.trackingString
+
+  return result.prefixedKeys(prefix)
+}
+
 private func properties(
   shareContext: ShareContext,
   loggedInUser: User?,
@@ -2251,22 +2225,6 @@ private func properties(
   return result
 }
 
-private func properties(reward: Reward, prefix: String = "backer_reward_") -> [String: Any] {
-  guard reward != Reward.noReward else { return [:] }
-
-  var result: [String: Any] = [:]
-
-  result["id"] = reward.id
-  result["is_limited_quantity"] = reward.limit == nil
-  // result["is_limited_time"] = // implement when reward scheduling is supported
-  result["minimum"] = reward.minimum
-  result["shipping_enabled"] = reward.shipping.enabled
-  result["shipping_preference"] = reward.shipping.preference?.trackingString
-  result["has_items"] = !reward.rewardsItems.isEmpty
-
-  return result.prefixedKeys(prefix)
-}
-
 private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String? {
   guard let shareType = shareType else { return nil }
 
@@ -2294,11 +2252,7 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
 private func userProperties(for user: User?, config: Config?, _ prefix: String = "user_") -> [String: Any] {
   var props: [String: Any] = [:]
 
-  props["is_admin"] = user?.isAdmin
-  props["backed_projects_count"] = user?.stats.backedProjectsCount
   props["country"] = user?.location?.country ?? config?.countryCode
-  props["facebook_account"] = user?.facebookConnected
-  props["watched_projects_count"] = user?.stats.starredProjectsCount
   props["uid"] = user?.id
 
   return props.prefixedKeys(prefix)

@@ -61,7 +61,7 @@ internal final class SharedFunctionsTests: XCTestCase {
   func testFormattedPledgeParameters_WithShipping() {
     let reward = Reward.template
     let selectedShippingRule = ShippingRule.template
-      |> ShippingRule.lens.cost .~ 3
+      |> ShippingRule.lens.cost .~ 3.0
       |> ShippingRule.lens.location .~ (Location.template |> Location.lens.id .~ 123)
 
     let params = sanitizedPledgeParameters(
@@ -188,6 +188,21 @@ internal final class SharedFunctionsTests: XCTestCase {
 
     withEnvironment(currentUser: user) {
       XCTAssertFalse(currentUserIsCreator(of: project))
+    }
+  }
+
+  func testDeviceIdentifier_IdentifierForVendor_IsNotNil() {
+    withEnvironment(device: MockDevice()) {
+      XCTAssertEqual("DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF", deviceIdentifier(uuid: MockUUID()))
+    }
+  }
+
+  func testDeviceIdentifier_IdentifierForVendor_IsNil() {
+    let device = MockDevice()
+      |> \.identifierForVendor .~ nil
+
+    withEnvironment(device: device) {
+      XCTAssertEqual("ABCD-123", deviceIdentifier(uuid: MockUUID()))
     }
   }
 }

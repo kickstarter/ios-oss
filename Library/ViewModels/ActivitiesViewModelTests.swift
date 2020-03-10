@@ -227,12 +227,12 @@ final class ActivitiesViewModelTests: TestCase {
     self.clearBadgeValue.assertValueCount(0)
 
     let mockService1 = MockService(
-      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0)),
+      clearUserUnseenActivityResult: Result.success(.init(activityIndicatorCount: 0)),
       fetchActivitiesResponse: [activity1, activity2]
     )
 
     let mockService2 = MockService(
-      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0)),
+      clearUserUnseenActivityResult: Result.success(.init(activityIndicatorCount: 0)),
       fetchActivitiesResponse: [activity1, activity2, activity3]
     )
 
@@ -272,12 +272,12 @@ final class ActivitiesViewModelTests: TestCase {
     self.clearBadgeValue.assertValueCount(0)
 
     let mockService1 = MockService(
-      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0)),
+      clearUserUnseenActivityResult: Result.success(.init(activityIndicatorCount: 0)),
       fetchActivitiesResponse: [activity1, activity2]
     )
 
     let mockService2 = MockService(
-      clearUserUnseenActivityResult: Result(success: .init(activityIndicatorCount: 0)),
+      clearUserUnseenActivityResult: Result.success(.init(activityIndicatorCount: 0)),
       fetchActivitiesResponse: [activity1, activity2, activity3]
     )
 

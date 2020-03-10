@@ -163,14 +163,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   // MARK: - Configuration
 
-  func configure(with value: (user: User, project: Project)) {
-    let pledgePaymentMethodsValue = PledgePaymentMethodsValue(
-      user: value.user,
-      project: value.project,
-      deviceIsApplePayCapable: PKPaymentAuthorizationViewController.applePayDevice()
-    )
-
-    self.viewModel.inputs.configureWith(pledgePaymentMethodsValue)
+  func configure(with value: PledgePaymentMethodsValue) {
+    self.viewModel.inputs.configure(with: value)
   }
 
   // MARK: - Actions
@@ -188,7 +182,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
     let navigationController = UINavigationController.init(rootViewController: addNewCardViewController)
     let offset = navigationController.navigationBar.bounds.height
 
-    self.presentViewControllerWithSheetOverlay(navigationController, offset: offset)
+    if #available(iOS 13.0, *) {
+      self.present(navigationController, animated: true)
+    } else {
+      self.presentViewControllerWithSheetOverlay(navigationController, offset: offset)
+    }
   }
 
   private func reloadPaymentMethods(

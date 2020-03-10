@@ -3,18 +3,20 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
+public typealias ThanksPageData = (
+  project: Project, reward: Reward,
+  checkoutData: Koala.CheckoutPropertiesData?
+)
+
 public protocol ThanksViewModelInputs {
-  /// Call when the view controller view did load
-  func viewDidLoad()
+  /// Call to configure the VM
+  func configure(with data: ThanksPageData)
 
   /// Call when close button is tapped
   func closeButtonTapped()
 
   /// Call when category cell is tapped
   func categoryCellTapped(_ category: KsApi.Category)
-
-  /// Call to set project
-  func project(_ project: Project)
 
   /// Call when project cell is tapped
   func projectTapped(_ project: Project)
@@ -24,6 +26,9 @@ public protocol ThanksViewModelInputs {
 
   /// Call when the current user has been updated in the environment
   func userUpdated()
+
+  /// Call when the view controller view did load
+  func viewDidLoad()
 }
 
 public protocol ThanksViewModelOutputs {
@@ -31,7 +36,7 @@ public protocol ThanksViewModelOutputs {
   var backedProjectText: Signal<NSAttributedString, Never> { get }
 
   /// Emits when view controller should dismiss
-  var dismissToRootViewController: Signal<(), Never> { get }
+  var dismissToRootViewControllerAndPostNotification: Signal<Notification, Never> { get }
 
   /// Emits DiscoveryParams when should go to Discovery
   var goToDiscovery: Signal<DiscoveryParams, Never> { get }
@@ -68,7 +73,9 @@ public protocol ThanksViewModelType {
 
 public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, ThanksViewModelOutputs {
   public init() {
-    let project = self.projectProperty.signal.skipNil()
+    let project = self.configureWithDataProperty.signal
+      .skipNil()
+      .map(first)
 
     self.backedProjectText = project.map {
       let string = Strings.You_have_successfully_backed_project_html(
@@ -106,10 +113,13 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .ignoreValues()
       .on(value: { AppEnvironment.current.userDefaults.hasSeenAppRating = true })
 
-    self.dismissToRootViewController = self.closeButtonTappedProperty.signal
+    self.dismissToRootViewControllerAndPostNotification = self.closeButtonTappedProperty.signal
+      .mapConst(Notification(name: .ksr_projectBacked))
 
     self.goToDiscovery = self.categoryCellTappedProperty.signal.skipNil()
-      .map { DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0 }
+      .map {
+        DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ $0
+      }
 
     let rootCategory: Signal<KsApi.Category, Never> = project
       .map { toBase64($0.category) }
@@ -179,6 +189,17 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .observeValues { project in
         AppEnvironment.current.koala.trackTriggeredAppStoreRatingDialog(project: project)
       }
+
+    Signal.combineLatest(
+      self.configureWithDataProperty.signal.skipNil(),
+      self.viewDidLoadProperty.signal.ignoreValues()
+    )
+    .map(first)
+    .observeValues { AppEnvironment.current.koala.trackThanksPageViewed(
+      project: $0.project,
+      reward: $0.reward,
+      checkoutData: $0.checkoutData
+    ) }
   }
 
   // MARK: - ThanksViewModelType
@@ -187,6 +208,11 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public var outputs: ThanksViewModelOutputs { return self }
 
   // MARK: - ThanksViewModelInputs
+
+  fileprivate let configureWithDataProperty = MutableProperty<ThanksPageData?>(nil)
+  public func configure(with data: ThanksPageData) {
+    self.configureWithDataProperty.value = data
+  }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
@@ -225,7 +251,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
 
   // MARK: - ThanksViewModelOutputs
 
-  public let dismissToRootViewController: Signal<(), Never>
+  public let dismissToRootViewControllerAndPostNotification: Signal<Notification, Never>
   public let goToDiscovery: Signal<DiscoveryParams, Never>
   public let backedProjectText: Signal<NSAttributedString, Never>
   public let goToProject: Signal<(Project, [Project], RefTag), Never>
@@ -245,9 +271,9 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
  Discovery projects.
 
  */
-private func toBase64(_ category: KsApi.Category) -> String {
+private func toBase64(_ category: Project.Category) -> String {
   let id = category.parentId ?? category.id
-  let decodedId = Category.decode(id: id)
+  let decodedId = Category.decode(id: "\(id)")
   return decodedId.toBase64()
 }
 
