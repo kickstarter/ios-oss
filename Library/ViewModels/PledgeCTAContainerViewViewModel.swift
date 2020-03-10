@@ -183,6 +183,8 @@ private func pledgeCTA(project: Project, refTag: RefTag?, backing: Backing?) -> 
   switch (project.state, projectBacking.status) {
   case (.live, _):
     return .manage
+  case (.successful, .errored):
+    return .fix
   case (_, _):
     return .viewBacking
   }

@@ -43,6 +43,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private lazy var paymentMethodView: ManagePledgePaymentMethodView = {
     ManagePledgePaymentMethodView(frame: .zero)
+      |> \.delegate .~ self
   }()
 
   private lazy var paymentMethodViews = {
@@ -155,8 +156,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.viewModel.outputs.configurePaymentMethodView
       .observeForUI()
-      .observeValues { [weak self] card in
-        self?.paymentMethodView.configure(with: card)
+      .observeValues { [weak self] backing in
+        self?.paymentMethodView.configure(with: backing)
       }
 
     self.viewModel.outputs.configurePledgeSummaryView
@@ -426,6 +427,12 @@ extension ManagePledgeViewController: CancelPledgeViewControllerDelegate {
 extension ManagePledgeViewController: PledgeViewControllerDelegate {
   func pledgeViewControllerDidUpdatePledge(_: PledgeViewController, message: String) {
     self.viewModel.inputs.pledgeViewControllerDidUpdatePledgeWithMessage(message)
+  }
+}
+
+extension ManagePledgeViewController: ManagePledgePaymentMethodViewDelegate {
+  func managePledgePaymentMethodViewDidTapFixButton(_: ManagePledgePaymentMethodView) {
+    self.viewModel.inputs.fixButtonTapped()
   }
 }
 

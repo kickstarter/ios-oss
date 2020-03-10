@@ -216,6 +216,37 @@ internal final class ActivitiesViewControllerTests: TestCase {
     }
   }
 
+  func testErroredBackings() {
+    let project = GraphBacking.Project.template
+      |> \.name .~ "Awesome tabletop collection"
+
+    let backing = GraphBacking.template
+      |> \.project .~ project
+
+    let backings = GraphBackingEnvelope.GraphBackingConnection(nodes: [backing])
+
+    let envelope = GraphBackingEnvelope.template
+      |> \.backings .~ backings
+
+    let backingsResponse = UserEnvelope<GraphBackingEnvelope>(me: envelope)
+
+    combos(Language.allLanguages, [Device.phone4_7inch]).forEach { language, device in
+      withEnvironment(
+        apiService: MockService(fetchGraphUserBackingsResponse: backingsResponse),
+        currentUser: .template |> \.facebookConnected .~ true |> \.needsFreshFacebookToken .~ false,
+        language: language
+      ) {
+        let vc = ActivitiesViewController.instantiate()
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = 900
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
   func testScrollToTop() {
     let controller = ActivitiesViewController.instantiate()
 
