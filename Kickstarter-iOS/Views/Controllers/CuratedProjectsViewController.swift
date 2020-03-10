@@ -10,6 +10,8 @@ final class CuratedProjectsViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private let dataSource = DiscoveryProjectsDataSource()
+
   private lazy var doneButton: UIBarButtonItem = {
     UIBarButtonItem(
       title: Strings.Done(),
@@ -32,6 +34,8 @@ final class CuratedProjectsViewController: UIViewController {
     self.navigationItem.setRightBarButton(self.doneButton, animated: false)
     self.navigationItem.hidesBackButton = true
 
+    self.tableView.registerCellClass(DiscoveryPostcardCell.self)
+
     self.configureSubviews()
     self.setupConstraints()
   }
@@ -45,6 +49,10 @@ final class CuratedProjectsViewController: UIViewController {
   }
 
   // MARK: - Configuration
+
+  public func configure(with categories: [Category]) {
+
+  }
 
   private func configureSubviews() {
     _ = (self.headerView, self.view)
