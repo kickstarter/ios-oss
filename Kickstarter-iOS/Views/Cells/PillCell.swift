@@ -50,9 +50,9 @@ final class PillCell: UICollectionViewCell, ValueCell {
 
     _ = self.label
       |> labelStyle
-//
-//    _ = self.contentView
-//      |> \.layoutMargins .~ .init(topBottom: Styles.grid(1) + Styles.gridHalf(1), leftRight: Styles.grid(2))
+
+    _ = self.contentView
+      |> \.layoutMargins .~ .init(all: Styles.grid(2))
   }
 
   // MARK: - View Model

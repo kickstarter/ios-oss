@@ -21,7 +21,6 @@ public final class CategorySelectionViewController: UIViewController {
       collectionViewLayout: self.pillLayout
     )
       |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
-      |> \.contentInset .~ .init(top: Styles.grid(2))
       |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -121,10 +120,17 @@ public final class CategorySelectionViewController: UIViewController {
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
+    self.headerView.layoutIfNeeded()
+
     let bottomSafeAreaInset = self.view.safeAreaInsets.bottom
+    let topSafeAreaInset = self.view.safeAreaInsets.top
     let bottomInset = self.buttonView.frame.height - bottomSafeAreaInset
+    let topInset = self.headerView.frame.height - topSafeAreaInset + Styles.grid(2) // collection view's inset
+
     self.collectionView.contentInset.bottom = bottomInset
+    self.collectionView.contentInset.top = topInset
     self.collectionView.scrollIndicatorInsets.bottom = bottomInset
+    self.collectionView.scrollIndicatorInsets.top = topInset
   }
 
   public override func bindViewModel() {
@@ -139,10 +145,11 @@ public final class CategorySelectionViewController: UIViewController {
   }
 
   private func configureSubviews() {
-    _ = (self.headerView, self.view)
-      |> ksr_addSubviewToParent()
-
     _ = (self.collectionView, self.view)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.headerView, self.view)
       |> ksr_addSubviewToParent()
 
     _ = (self.buttonView, self.view)
@@ -159,10 +166,6 @@ public final class CategorySelectionViewController: UIViewController {
       self.headerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.headerView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-      self.collectionView.topAnchor.constraint(equalTo: self.headerView.bottomAnchor),
-      self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-      self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.buttonView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.buttonView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.buttonView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
@@ -182,7 +185,7 @@ extension CategorySelectionViewController: UICollectionViewDelegate {
   public func collectionView(
     _ collectionView: UICollectionView,
     willDisplay cell: UICollectionViewCell,
-    forItemAt _: IndexPath
+    forItemAt index: IndexPath
   ) {
     guard let pillCell = cell as? PillCell else { return }
 
@@ -191,14 +194,9 @@ extension CategorySelectionViewController: UICollectionViewDelegate {
     _ = pillCell.label
       |> \.preferredMaxLayoutWidth .~ collectionView.bounds.width
 
-//    let shouldSelect
-  }
+    let shouldSelect = self.viewModel.outputs.shouldSelectCell(at: index)
 
-  public func collectionView(_ collectionView: UICollectionView,
-                      didSelectItemAt indexPath: IndexPath) {
-    guard let pillCell = collectionView.cellForItem(at: indexPath) as? PillCell else { return }
-
-    pillCell.setIsSelected(pillCell.isSelected)
+    pillCell.setIsSelected(shouldSelect)
   }
 }
 

@@ -59,15 +59,12 @@ public enum PillCellStyle {
   }
 
   var layoutMargins: UIEdgeInsets {
-//    switch self {
-//      case .green:
-//        return .init(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3))
-//      case .grey:
-//        return .init(all: Styles.grid(2))
-//    }
-
-//    return .init(topBottom: Styles.gridHalf(3), leftRight: Styles.gridHalf(3))
-    return .init(all: Styles.gridHalf(3))
+    switch self {
+      case .green:
+        return .init(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3))
+      case .grey:
+        return .init(all: Styles.grid(2))
+    }
   }
 }
 

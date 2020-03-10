@@ -19,8 +19,10 @@ internal final class CategorySelectionDataSource: ValueCellDataSource {
   }
 
   override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
+    print("***Configuring cell with value: \(value)")
+
     switch (cell, value) {
-    case let (cell as PillCell, value as (String, PillCellStyle, IndexPath)):
+    case let (cell as PillCell, value as (String, PillCellStyle, IndexPath?)):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, value) combo.")
