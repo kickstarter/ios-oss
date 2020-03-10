@@ -25,6 +25,7 @@ public final class CategorySelectionViewController: UIViewController {
       |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.allowsSelection .~ false
   }()
 
   private let dataSource = CategorySelectionDataSource()
@@ -185,8 +186,12 @@ extension CategorySelectionViewController: UICollectionViewDelegate {
   ) {
     guard let pillCell = cell as? PillCell else { return }
 
+    pillCell.delegate = self
+
     _ = pillCell.label
       |> \.preferredMaxLayoutWidth .~ collectionView.bounds.width
+
+//    let shouldSelect
   }
 
   public func collectionView(_ collectionView: UICollectionView,
@@ -215,6 +220,20 @@ extension CategorySelectionViewController: UICollectionViewDelegateFlowLayout {
     let height = headerView?.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize).height ?? 0
 
     return CGSize(width: collectionView.bounds.width, height: height)
+  }
+}
+
+// MARK: - PillCellDelegate
+
+extension CategorySelectionViewController: PillCellDelegate {
+  func pillCell(_ cell: PillCell, didTapAtIndex index: IndexPath, action: (Bool) -> ()) {
+    self.viewModel.inputs.categorySelected(at: index)
+
+    let shouldSelectCell = self.viewModel.outputs.shouldSelectCell(at: index)
+
+    print("**** WILL SELECT CELL *** \(shouldSelectCell)")
+
+    action(shouldSelectCell)
   }
 }
 

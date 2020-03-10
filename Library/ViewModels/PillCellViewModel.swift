@@ -36,7 +36,7 @@ public enum PillCellStyle {
     case .green:
       return UIColor.ksr_green_500.withAlphaComponent(0.06)
     case .grey:
-      return UIColor.ksr_trust_700.withAlphaComponent(0.8)
+      return UIColor.ksr_trust_700.withAlphaComponent(0.1)
     }
   }
 
@@ -59,17 +59,20 @@ public enum PillCellStyle {
   }
 
   var layoutMargins: UIEdgeInsets {
-    switch self {
-      case .green:
-        return .init(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3))
-      case .grey:
-        return .init(all: Styles.grid(2))
-    }
+//    switch self {
+//      case .green:
+//        return .init(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3))
+//      case .grey:
+//        return .init(all: Styles.grid(2))
+//    }
+
+//    return .init(topBottom: Styles.gridHalf(3), leftRight: Styles.gridHalf(3))
+    return .init(all: Styles.gridHalf(3))
   }
 }
 
 public protocol PillCellViewModelInputs {
-  func configure(with value: (String, PillCellStyle, IndexPath))
+  func configure(with value: (String, PillCellStyle, IndexPath?))
   func pillCellTapped()
   func setIsSelected(selected: Bool)
 }
@@ -90,7 +93,7 @@ public protocol PillCellViewModelType {
 }
 
 public final class PillCellViewModel: PillCellViewModelType, PillCellViewModelInputs,
-  PillCellViewModelOutputs {
+PillCellViewModelOutputs {
   public init() {
     self.tapGestureRecognizerIsEnabled = self.configureWithValueProperty.signal.skipNil()
       .map(second)
@@ -116,6 +119,7 @@ public final class PillCellViewModel: PillCellViewModelType, PillCellViewModelIn
     self.notifyDelegatePillCellTapped = self.configureWithValueProperty.signal
       .skipNil()
       .map(third)
+      .skipNil()
       .takeWhen(self.pillCellTappedProperty.signal)
 
     self.textColor = Signal.merge(defaultTextColor, selectedTextColor)
@@ -132,8 +136,8 @@ public final class PillCellViewModel: PillCellViewModelType, PillCellViewModelIn
       .map(\.layoutMargins)
   }
 
-  private let configureWithValueProperty = MutableProperty<(String, PillCellStyle, IndexPath)?>(nil)
-  public func configure(with value: (String, PillCellStyle, IndexPath)) {
+  private let configureWithValueProperty = MutableProperty<(String, PillCellStyle, IndexPath?)?>(nil)
+  public func configure(with value: (String, PillCellStyle, IndexPath?)) {
     self.configureWithValueProperty.value = value
   }
 

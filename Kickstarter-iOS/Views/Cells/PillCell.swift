@@ -4,7 +4,10 @@ import ReactiveSwift
 import UIKit
 
 protocol PillCellDelegate: AnyObject {
-  func pillCell(_ cell: PillCell, didTapAtIndex index: IndexPath)
+  func pillCell(_ cell: PillCell,
+                didTapAtIndex index: IndexPath,
+                action: ((Bool) -> ())
+  )
 }
 
 final class PillCell: UICollectionViewCell, ValueCell {
@@ -17,9 +20,7 @@ final class PillCell: UICollectionViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let tapGestureRecognizer = {
-    return UITapGestureRecognizer(target: self, action: #selector(PillCell.pillCellTapped))
-  }()
+  private var tapGestureRecognizer: UITapGestureRecognizer?
 
   private let viewModel: PillCellViewModelType = PillCellViewModel()
 
@@ -28,10 +29,14 @@ final class PillCell: UICollectionViewCell, ValueCell {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    self.configureSubviews()
-    self.bindViewModel()
+    self.tapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                       action: #selector(PillCell.pillCellTapped))
 
-    self.addGestureRecognizer(tapGestureRecognizer)
+    self.addGestureRecognizer(tapGestureRecognizer!)
+
+    self.configureSubviews()
+    self.bindStyles()
+    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
@@ -45,6 +50,9 @@ final class PillCell: UICollectionViewCell, ValueCell {
 
     _ = self.label
       |> labelStyle
+//
+//    _ = self.contentView
+//      |> \.layoutMargins .~ .init(topBottom: Styles.grid(1) + Styles.gridHalf(1), leftRight: Styles.grid(2))
   }
 
   // MARK: - View Model
@@ -78,17 +86,21 @@ final class PillCell: UICollectionViewCell, ValueCell {
     }
 
     self.viewModel.outputs.notifyDelegatePillCellTapped
-    .observeForUI()
+      .observeForUI()
       .observeValues { [weak self] indexPath in
         guard let self = self else { return }
 
-        self.delegate?.pillCell(self, didTapAtIndex: indexPath)
+        self.delegate?.pillCell(self,
+                                didTapAtIndex: indexPath,
+                                action: { shouldSelect in
+          self.viewModel.inputs.setIsSelected(selected: shouldSelect)
+        })
     }
   }
 
   // MARK: - Configuration
 
-  func configureWith(value: (String, PillCellStyle, IndexPath)) {
+  func configureWith(value: (String, PillCellStyle, IndexPath?)) {
     self.viewModel.inputs.configure(with: value)
   }
 

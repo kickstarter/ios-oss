@@ -3,12 +3,15 @@ import KsApi
 import ReactiveSwift
 
 public protocol CategorySelectionViewModelInputs {
+  func categorySelected(at index: IndexPath)
   func viewDidLoad()
 }
 
 public protocol CategorySelectionViewModelOutputs {
   // A tuple of Section Titles: [String], and Categories Section Data: [[(String, PillCellStyle)]]
   var loadCategorySections: Signal<([String], [[(String, PillCellStyle)]]), Never> { get }
+
+  func shouldSelectCell(at index: IndexPath) -> Bool
 }
 
 public protocol CategorySelectionViewModelType {
@@ -53,6 +56,40 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
 
       return (sectionTitles, categoriesData)
     }
+
+    let selectedCategoryIndexes = self.categorySelectedAtIndexPathProperty.signal.skipNil()
+      .scan(Set<IndexPath>.init()) { (selectedIndexes, currentIndexPath) -> Set<IndexPath> in
+        var updatedIndexes = selectedIndexes
+
+        if selectedIndexes.contains(currentIndexPath) {
+          updatedIndexes.remove(currentIndexPath)
+        } else {
+          updatedIndexes.insert(currentIndexPath)
+        }
+
+        print("*** updated indexes: \(updatedIndexes)")
+
+        return updatedIndexes
+      }
+
+    self.selectCellAtIndexProperty <~ selectedCategoryIndexes
+      .takePairWhen(shouldSelectCellAtIndexProperty.signal.skipNil())
+      .map { selectedCategoryIndexes, shouldSelectIndex in
+        return selectedCategoryIndexes.contains(shouldSelectIndex)
+      }
+  }
+
+  private let categorySelectedAtIndexPathProperty = MutableProperty<IndexPath?>(nil)
+  public func categorySelected(at index: IndexPath) {
+    self.categorySelectedAtIndexPathProperty.value = index
+  }
+
+  private let shouldSelectCellAtIndexProperty = MutableProperty<IndexPath?>(nil)
+  private let selectCellAtIndexProperty = MutableProperty<Bool>(false)
+  public func shouldSelectCell(at index: IndexPath) -> Bool {
+    self.shouldSelectCellAtIndexProperty.value = index
+
+    return selectCellAtIndexProperty.value
   }
 
   private let viewDidLoadProperty = MutableProperty(())

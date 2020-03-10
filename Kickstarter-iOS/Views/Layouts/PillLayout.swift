@@ -26,7 +26,7 @@ class PillLayout: UICollectionViewFlowLayout {
   // MARK: - Layout
 
   override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-    guard let baseAttributes = super.layoutAttributesForElements(in: rect) else { return nil }
+    guard let layoutAttributes = super.layoutAttributesForElements(in: rect) else { return nil }
 
     let layoutAttributes = baseAttributes.compactMap { $0.copy() as? UICollectionViewLayoutAttributes }
 
