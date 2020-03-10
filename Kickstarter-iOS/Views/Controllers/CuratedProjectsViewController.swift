@@ -73,7 +73,7 @@ final class CuratedProjectsViewController: UIViewController {
     super.bindStyles()
 
     _ = self.tableView
-      |> collectionViewStyle
+      |> tableViewStyle
 
     _ = self.doneButton
       |> doneButtonStyle
@@ -91,11 +91,6 @@ final class CuratedProjectsViewController: UIViewController {
 
 // MARK: - Styles
 
-private let collectionViewStyle: ViewStyle = { view in
-  view
-    |> \.backgroundColor .~ .white
-}
-
 private let doneButtonStyle: BarButtonStyle = { button in
   button
     |> \.tintColor .~ .white
@@ -104,4 +99,9 @@ private let doneButtonStyle: BarButtonStyle = { button in
 private let headerViewStyle: ViewStyle = { view in
   view
     |> \.layoutMargins .~ .init(all: Styles.grid(3))
+}
+
+private let tableViewStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ .white
 }
