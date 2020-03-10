@@ -2,7 +2,6 @@ import Foundation
 import KsApi
 import Library
 import Prelude
-import SpriteKit
 import UIKit
 
 public final class CategorySelectionViewController: UIViewController {
@@ -30,7 +29,7 @@ public final class CategorySelectionViewController: UIViewController {
   private let dataSource = CategorySelectionDataSource()
 
   private lazy var headerView: UIView = {
-    CategorySelectionHeaderView(frame: .zero)
+    CategorySelectionHeaderView(frame: .zero, context: .categorySelection)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -84,6 +83,11 @@ public final class CategorySelectionViewController: UIViewController {
       withReuseIdentifier: CategoryCollectionViewSectionHeaderView.defaultReusableId
     )
 
+    self.continueButton.addTarget(
+      self, action: #selector(CategorySelectionViewController.continueButtonTapped),
+      for: .touchUpInside
+    )
+
     self.configureSubviews()
     self.setupConstraints()
 
@@ -135,6 +139,13 @@ public final class CategorySelectionViewController: UIViewController {
         self?.dataSource.load(sectionTitles, categories: categories)
         self?.collectionView.reloadData()
       }
+
+    self.viewModel.outputs.goToCuratedProjects
+      .observeForUI()
+      .observeValues { [weak self] in
+        let vc = CuratedProjectsViewController.instantiate()
+        self?.navigationController?.pushViewController(vc, animated: true)
+      }
   }
 
   private func configureSubviews() {
@@ -173,22 +184,13 @@ public final class CategorySelectionViewController: UIViewController {
   @objc func skipButtonTapped() {
     self.dismiss(animated: true)
   }
+
+  @objc func continueButtonTapped() {
+    self.viewModel.inputs.continueButtonTapped()
+  }
 }
 
 // MARK: - UICollectionViewDelegate
-
-extension CategorySelectionViewController: UICollectionViewDelegate {
-  public func collectionView(
-    _ collectionView: UICollectionView,
-    willDisplay cell: UICollectionViewCell,
-    forItemAt _: IndexPath
-  ) {
-    guard let pillCell = cell as? PillCell else { return }
-
-    _ = pillCell.label
-      |> \.preferredMaxLayoutWidth .~ collectionView.bounds.width
-  }
-}
 
 extension CategorySelectionViewController: UICollectionViewDelegateFlowLayout {
   public func collectionView(
@@ -208,6 +210,19 @@ extension CategorySelectionViewController: UICollectionViewDelegateFlowLayout {
     let height = headerView?.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize).height ?? 0
 
     return CGSize(width: collectionView.bounds.width, height: height)
+  }
+}
+
+extension CategorySelectionViewController: UICollectionViewDelegate {
+  public func collectionView(
+    _ collectionView: UICollectionView,
+    willDisplay cell: UICollectionViewCell,
+    forItemAt _: IndexPath
+  ) {
+    guard let pillCell = cell as? PillCell else { return }
+
+    _ = pillCell.label
+      |> \.preferredMaxLayoutWidth .~ collectionView.bounds.width
   }
 }
 

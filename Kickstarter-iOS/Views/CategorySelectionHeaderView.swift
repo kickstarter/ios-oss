@@ -17,12 +17,16 @@ final class CategorySelectionHeaderView: UIView {
   private lazy var stepLabel = { UILabel(frame: .zero) }()
   private lazy var subtitleLabel = { UILabel(frame: .zero) }()
   private lazy var titleLabel = { UILabel(frame: .zero) }()
+  private let viewModel: CategorySelectionHeaderViewModelType = CategorySelectionHeaderViewModel()
 
-  override init(frame: CGRect) {
+  init(frame: CGRect, context: HeaderViewContext) {
     super.init(frame: frame)
 
     self.setupViews()
     self.bindStyles()
+    self.bindViewModel()
+
+    self.viewModel.inputs.configure(with: context)
   }
 
   required init?(coder _: NSCoder) {
@@ -74,6 +78,14 @@ final class CategorySelectionHeaderView: UIView {
     _ = (self.stepLabel, self.rootStackView)
       |> ksr_setCustomSpacing(Styles.grid(1))
   }
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.stepLabel.rac.text = self.viewModel.outputs.stepLabelText
+    self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleLabelText
+    self.titleLabel.rac.text = self.viewModel.outputs.titleLabelText
+  }
 }
 
 // MARK: - Styles
@@ -94,7 +106,6 @@ private let titleLabelStyle: LabelStyle = { label in
     |> \.textColor .~ .white
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.numberOfLines .~ 2
-    |> \.text %~ { _ in Strings.Which_categories_interest_you() }
 }
 
 private let subtitleLabelStyle: LabelStyle = { label in
@@ -103,7 +114,6 @@ private let subtitleLabelStyle: LabelStyle = { label in
     |> \.textColor .~ .white
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.numberOfLines .~ 2
-    |> \.text %~ { _ in Strings.Select_up_to_five() }
 }
 
 private let stepLabelStyle: LabelStyle = { label in
@@ -112,7 +122,6 @@ private let stepLabelStyle: LabelStyle = { label in
     |> \.textColor .~ .white
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.numberOfLines .~ 1
-    |> \.text %~ { _ in Strings.Step_number(current_step: "1", total_steps: "2") }
 }
 
 private let imageViewStyle: ImageViewStyle = { imageView in

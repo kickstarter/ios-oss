@@ -3,10 +3,13 @@ import KsApi
 import ReactiveSwift
 
 public protocol CategorySelectionViewModelInputs {
+  func continueButtonTapped()
   func viewDidLoad()
 }
 
 public protocol CategorySelectionViewModelOutputs {
+  var goToCuratedProjects: Signal<Void, Never> { get }
+
   // A tuple of Section Titles: [String], and Categories Section Data: [[(String, PillCellStyle)]]
   var loadCategorySections: Signal<([String], [[(String, PillCellStyle)]]), Never> { get }
 }
@@ -53,6 +56,13 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
 
       return (sectionTitles, categoriesData)
     }
+
+    self.goToCuratedProjects = self.continueButtonTappedProperty.signal.ignoreValues()
+  }
+
+  private let continueButtonTappedProperty = MutableProperty(())
+  public func continueButtonTapped() {
+    self.continueButtonTappedProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -60,6 +70,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
+  public let goToCuratedProjects: Signal<Void, Never>
   public let loadCategorySections: Signal<([String], [[(String, PillCellStyle)]]), Never>
 
   public var inputs: CategorySelectionViewModelInputs { return self }
