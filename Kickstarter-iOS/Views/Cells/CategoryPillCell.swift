@@ -4,14 +4,15 @@ import ReactiveSwift
 import UIKit
 
 protocol CategoryPillCellDelegate: AnyObject {
-  func categoryPillCell(_ cell: CategoryPillCell,
-                didTapAtIndex index: IndexPath,
-                action: ((Bool) -> ())
+  func categoryPillCell(
+    _ cell: CategoryPillCell,
+    didTapAtIndex index: IndexPath,
+    action: (Bool) -> ()
   )
 }
 
 final class CategoryPillCell: UICollectionViewCell, ValueCell {
-  lazy var button: UIButton = { UIButton(type: .custom) }()
+  private lazy var button: UIButton = { UIButton(type: .custom) }()
   weak var delegate: CategoryPillCellDelegate?
 
   // MARK: - Properties
@@ -51,7 +52,7 @@ final class CategoryPillCell: UICollectionViewCell, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.button.rac.title = self.viewModel.outputs.text
+    self.button.rac.title = self.viewModel.outputs.buttonTitle
     self.button.rac.selected = self.viewModel.outputs.isSelected
 
     self.viewModel.outputs.notifyDelegatePillCellTapped
@@ -59,12 +60,14 @@ final class CategoryPillCell: UICollectionViewCell, ValueCell {
       .observeValues { [weak self] indexPath in
         guard let self = self else { return }
 
-        self.delegate?.categoryPillCell(self,
-                                didTapAtIndex: indexPath,
-                                action: { shouldSelect in
-          self.viewModel.inputs.setIsSelected(selected: shouldSelect)
-        })
-    }
+        self.delegate?.categoryPillCell(
+          self,
+          didTapAtIndex: indexPath,
+          action: { shouldSelect in
+            self.viewModel.inputs.setIsSelected(selected: shouldSelect)
+          }
+        )
+      }
   }
 
   // MARK: - Configuration

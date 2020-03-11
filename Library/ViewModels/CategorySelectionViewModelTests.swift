@@ -8,7 +8,7 @@ import XCTest
 
 final class CategorySelectionViewModelTests: TestCase {
   private let loadCategorySectionTitles = TestObserver<[String], Never>()
-  private let loadCategorySectionData = TestObserver<[[(String, PillCellStyle)]], Never>()
+  private let loadCategorySectionData = TestObserver<[[String]], Never>()
   private let vm: CategorySelectionViewModelType = CategorySelectionViewModel()
 
   override func setUp() {
@@ -36,32 +36,13 @@ final class CategorySelectionViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.loadCategorySectionTitles.assertValues([["Games", "Art", "Film & Video"]])
-
-      XCTAssertEqual(3, self.loadCategorySectionData.lastValue?.count)
-      XCTAssertEqual(
-        ["All Games Projects", "Tabletop Games"],
-        self.loadCategorySectionData.lastValue?[0].map { $0.0 }
-      )
-      XCTAssertEqual(
-        ["All Art Projects", "Illustration"],
-        self.loadCategorySectionData.lastValue?[1].map { $0.0 }
-      )
-      XCTAssertEqual(
-        ["All Film & Video Projects", "Documentary"],
-        self.loadCategorySectionData.lastValue?[2].map { $0.0 }
-      )
-      XCTAssertEqual(
-        [PillCellStyle.grey, PillCellStyle.grey],
-        self.loadCategorySectionData.lastValue?.first?.map { $0.1 }
-      )
-      XCTAssertEqual(
-        [PillCellStyle.grey, PillCellStyle.grey],
-        self.loadCategorySectionData.lastValue?[1].map { $0.1 }
-      )
-      XCTAssertEqual(
-        [PillCellStyle.grey, PillCellStyle.grey],
-        self.loadCategorySectionData.lastValue?[2].map { $0.1 }
-      )
+      self.loadCategorySectionData.assertValues([
+        [
+          ["All Games Projects", "Tabletop Games"],
+          ["All Art Projects", "Illustration"],
+          ["All Film & Video Projects", "Documentary"]
+        ]
+      ])
     }
   }
 
@@ -88,41 +69,14 @@ final class CategorySelectionViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.loadCategorySectionTitles.assertValues([["Games", "Art", "Film & Video", "Cool Stuff"]])
-
-      XCTAssertEqual(4, self.loadCategorySectionData.lastValue?.count)
-      XCTAssertEqual(
-        ["All Games Projects", "Tabletop Games"],
-        self.loadCategorySectionData.lastValue?[0].map { $0.0 }
-      )
-      XCTAssertEqual(
-        ["All Art Projects", "Illustration"],
-        self.loadCategorySectionData.lastValue?[1].map { $0.0 }
-      )
-      XCTAssertEqual(
-        ["All Film & Video Projects", "Documentary"],
-        self.loadCategorySectionData.lastValue?[2].map { $0.0 }
-      )
-      XCTAssertEqual(
-        ["All Cool Stuff Projects", "Tabletop Games"],
-        self.loadCategorySectionData.lastValue?[3].map { $0.0 }
-      )
-
-      XCTAssertEqual(
-        [PillCellStyle.grey, PillCellStyle.grey],
-        self.loadCategorySectionData.lastValue?.first?.map { $0.1 }
-      )
-      XCTAssertEqual(
-        [PillCellStyle.grey, PillCellStyle.grey],
-        self.loadCategorySectionData.lastValue?[1].map { $0.1 }
-      )
-      XCTAssertEqual(
-        [PillCellStyle.grey, PillCellStyle.grey],
-        self.loadCategorySectionData.lastValue?[2].map { $0.1 }
-      )
-      XCTAssertEqual(
-        [PillCellStyle.grey, PillCellStyle.grey],
-        self.loadCategorySectionData.lastValue?[3].map { $0.1 }
-      )
+      self.loadCategorySectionData.assertValues([
+        [
+          ["All Games Projects", "Tabletop Games"],
+          ["All Art Projects", "Illustration"],
+          ["All Film & Video Projects", "Documentary"],
+          ["All Cool Stuff Projects", "Tabletop Games"]
+        ]
+      ])
     }
   }
 

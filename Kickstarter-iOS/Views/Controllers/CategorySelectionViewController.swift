@@ -183,7 +183,7 @@ public final class CategorySelectionViewController: UIViewController {
 
 extension CategorySelectionViewController: UICollectionViewDelegate {
   public func collectionView(
-    _ collectionView: UICollectionView,
+    _: UICollectionView,
     willDisplay cell: UICollectionViewCell,
     forItemAt index: IndexPath
   ) {
@@ -221,7 +221,7 @@ extension CategorySelectionViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - CategoryPillCellDelegate
 
 extension CategorySelectionViewController: CategoryPillCellDelegate {
-  func categoryPillCell(_ cell: CategoryPillCell, didTapAtIndex index: IndexPath, action: (Bool) -> ()) {
+  func categoryPillCell(_: CategoryPillCell, didTapAtIndex index: IndexPath, action: (Bool) -> ()) {
     self.viewModel.inputs.categorySelected(at: index)
 
     let shouldSelectCell = self.viewModel.outputs.shouldSelectCell(at: index)

@@ -1,6 +1,6 @@
 import Foundation
-import ReactiveSwift
 import Prelude
+import ReactiveSwift
 
 public protocol CategoryPillCellViewModelInputs {
   func configure(with value: (String, IndexPath?))
@@ -9,9 +9,9 @@ public protocol CategoryPillCellViewModelInputs {
 }
 
 public protocol CategoryPillCellViewModelOutputs {
+  var buttonTitle: Signal<String, Never> { get }
   var isSelected: Signal<Bool, Never> { get }
   var notifyDelegatePillCellTapped: Signal<IndexPath, Never> { get }
-  var text: Signal<String, Never> { get }
 }
 
 public protocol CategoryPillCellViewModelType {
@@ -19,8 +19,8 @@ public protocol CategoryPillCellViewModelType {
   var outputs: CategoryPillCellViewModelOutputs { get }
 }
 
-
-public final class CategoryPillCellViewModel: CategoryPillCellViewModelType, CategoryPillCellViewModelInputs, CategoryPillCellViewModelOutputs {
+public final class CategoryPillCellViewModel: CategoryPillCellViewModelType,
+  CategoryPillCellViewModelInputs, CategoryPillCellViewModelOutputs {
   public init() {
     self.notifyDelegatePillCellTapped = self.configureWithValueProperty.signal
       .skipNil()
@@ -28,9 +28,9 @@ public final class CategoryPillCellViewModel: CategoryPillCellViewModelType, Cat
       .skipNil()
       .takeWhen(self.pillCellTappedProperty.signal)
 
-    self.isSelected = self.isSelectedProperty.signal
+    self.isSelected = self.isSelectedProperty.signal.skipRepeats()
 
-    self.text = self.configureWithValueProperty.signal.skipNil()
+    self.buttonTitle = self.configureWithValueProperty.signal.skipNil()
       .map(first)
   }
 
@@ -49,9 +49,9 @@ public final class CategoryPillCellViewModel: CategoryPillCellViewModelType, Cat
     self.isSelectedProperty.value = selected
   }
 
+  public let buttonTitle: Signal<String, Never>
   public let isSelected: Signal<Bool, Never>
   public let notifyDelegatePillCellTapped: Signal<IndexPath, Never>
-  public let text: Signal<String, Never>
 
   public var inputs: CategoryPillCellViewModelInputs { return self }
   public var outputs: CategoryPillCellViewModelOutputs { return self }

@@ -179,7 +179,6 @@ public final class RewardCardView: UIView {
   // MARK: - Private Helpers
 
   private func configureViews() {
-    
     _ = (self.baseStackView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()

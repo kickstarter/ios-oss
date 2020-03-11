@@ -68,9 +68,9 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
       }
 
     self.selectCellAtIndexProperty <~ selectedCategoryIndexes
-      .takePairWhen(shouldSelectCellAtIndexProperty.signal.skipNil())
+      .takePairWhen(self.shouldSelectCellAtIndexProperty.signal.skipNil())
       .map { selectedCategoryIndexes, shouldSelectIndex in
-        return selectedCategoryIndexes.contains(shouldSelectIndex)
+        selectedCategoryIndexes.contains(shouldSelectIndex)
       }
   }
 
@@ -84,7 +84,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
   public func shouldSelectCell(at index: IndexPath) -> Bool {
     self.shouldSelectCellAtIndexProperty.value = index
 
-    return selectCellAtIndexProperty.value
+    return self.selectCellAtIndexProperty.value
   }
 
   private let viewDidLoadProperty = MutableProperty(())

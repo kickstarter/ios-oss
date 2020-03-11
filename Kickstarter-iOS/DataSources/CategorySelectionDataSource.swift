@@ -6,12 +6,12 @@ import UIKit
 internal final class CategorySelectionDataSource: ValueCellDataSource {
   private var categorySectionTitles: [String] = []
 
-  func load(_ sectionTitles: [String], categories: [[(String)]]) {
+  func load(_ sectionTitles: [String], categories: [[String]]) {
     self.categorySectionTitles = sectionTitles
 
     for (section, subcategories) in categories.enumerated() {
       let indexedSubcategories = subcategories.enumerated().map { index, value in
-        return (value, IndexPath(item: index, section: section))
+        (value, IndexPath(item: index, section: section))
       }
 
       self.set(values: indexedSubcategories, cellClass: CategoryPillCell.self, inSection: section)

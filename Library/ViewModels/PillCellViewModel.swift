@@ -18,10 +18,10 @@ public enum PillCellStyle {
 
   var cornerRadius: CGFloat {
     switch self {
-      case .green:
-        return Styles.grid(1)
-      case .grey:
-        return Styles.grid(3)
+    case .green:
+      return Styles.grid(1)
+    case .grey:
+      return Styles.grid(3)
     }
   }
 
@@ -54,10 +54,10 @@ public enum PillCellStyle {
 
   var layoutMargins: UIEdgeInsets {
     switch self {
-      case .green:
-        return .init(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3))
-      case .grey:
-        return .init(all: Styles.grid(2))
+    case .green:
+      return .init(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3))
+    case .grey:
+      return .init(all: Styles.grid(2))
     }
   }
 }
@@ -76,7 +76,7 @@ public protocol PillCellViewModelType {
 }
 
 public final class PillCellViewModel: PillCellViewModelType, PillCellViewModelInputs,
-PillCellViewModelOutputs {
+  PillCellViewModelOutputs {
   public init() {
     self.text = self.configureWithValueProperty.signal.skipNil()
   }
