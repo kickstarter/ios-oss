@@ -23,7 +23,7 @@ public struct Service: ServiceType {
 
   public init(
     appId: String = Bundle.main.bundleIdentifier ?? "com.kickstarter.kickstarter",
-    serverConfig: ServerConfigType = ServerConfig.production,
+    serverConfig: ServerConfigType = ServerConfig.staging,
     oauthToken: OauthTokenAuthType? = nil,
     language: String = "en",
     currency: String = "USD",

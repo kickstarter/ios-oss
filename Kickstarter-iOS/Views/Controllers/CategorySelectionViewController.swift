@@ -144,6 +144,7 @@ public final class CategorySelectionViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         let vc = CuratedProjectsViewController.instantiate()
+        vc.configure(with: [KsApi.Category.filmAndVideo])
         self?.navigationController?.pushViewController(vc, animated: true)
       }
   }
