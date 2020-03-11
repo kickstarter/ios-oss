@@ -67,6 +67,7 @@ class PillCell: UICollectionViewCell, ValueCell {
 private let contentViewStyle: ViewStyle = { view in
   view
     |> checkoutRoundedCornersStyle
+    |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3))
     |> \.backgroundColor .~ UIColor.ksr_green_500.withAlphaComponent(0.06)
 }
 

@@ -1,6 +1,6 @@
 @testable import Kickstarter_Framework
-@testable import Library
 @testable import KsApi
+@testable import Library
 import XCTest
 
 internal final class CategorySelectionViewControllerTests: TestCase {
@@ -37,4 +37,3 @@ internal final class CategorySelectionViewControllerTests: TestCase {
     }
   }
 }
-

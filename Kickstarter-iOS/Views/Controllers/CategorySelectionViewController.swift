@@ -185,7 +185,7 @@ public final class CategorySelectionViewController: UIViewController {
 
 extension CategorySelectionViewController: UICollectionViewDelegate {
   public func collectionView(
-    _ collectionView: UICollectionView,
+    _: UICollectionView,
     willDisplay cell: UICollectionViewCell,
     forItemAt index: IndexPath
   ) {

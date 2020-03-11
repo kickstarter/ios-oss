@@ -1096,30 +1096,29 @@ private func qualtricsConfigData() -> QualtricsConfigData {
 }
 
 private func shouldSeeCategoryPersonalization() -> Bool {
-  return true
-//  let isLoggedIn = AppEnvironment.current.currentUser != nil
-//  let hasSeenCategoryPersonalization = AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow
-//
-//  if isLoggedIn || hasSeenCategoryPersonalization {
-//    // Currently logged-in users should not see the onboarding flow
-//    AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow = true
-//
-//    return false
-//  }
-//
-//  let variant = AppEnvironment.current.optimizelyClient?.variant(
-//    for: .onboardingCategoryPersonalizationFlow,
-//    userId: deviceIdentifier(uuid: UUID()),
-//    isAdmin: false,
-//    userAttributes: optimizelyUserAttributes()
-//  )
-//
-//  switch variant {
-//  case .control:
-//    return false
-//  case .variant1:
-//    return true
-//  default:
-//    return false
-//  }
+  let isLoggedIn = AppEnvironment.current.currentUser != nil
+  let hasSeenCategoryPersonalization = AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow
+
+  if isLoggedIn || hasSeenCategoryPersonalization {
+    // Currently logged-in users should not see the onboarding flow
+    AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow = true
+
+    return false
+  }
+
+  let variant = AppEnvironment.current.optimizelyClient?.variant(
+    for: .onboardingCategoryPersonalizationFlow,
+    userId: deviceIdentifier(uuid: UUID()),
+    isAdmin: false,
+    userAttributes: optimizelyUserAttributes()
+  )
+
+  switch variant {
+  case .control:
+    return false
+  case .variant1:
+    return true
+  default:
+    return false
+  }
 }
