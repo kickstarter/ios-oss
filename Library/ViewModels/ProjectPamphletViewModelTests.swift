@@ -460,74 +460,6 @@ final class ProjectPamphletViewModelTests: TestCase {
     }
   }
 
-  func testGoToDeprecatedManagePledge_ManagingPledge_featureNativeCheckoutPledgeView_Disabled() {
-    let config = .template
-      |> Config.lens.features .~ [Feature.nativeCheckoutPledgeView.rawValue: false]
-
-    withEnvironment(config: config) {
-      let reward = Project.cosmicSurgery.rewards.first!
-      let backing = Backing.template
-        |> Backing.lens.reward .~ reward
-        |> Backing.lens.rewardId .~ reward.id
-
-      let project = Project.cosmicSurgery
-        |> Project.lens.personalization.backing .~ backing
-        |> Project.lens.personalization.isBacking .~ true
-
-      self.configureInitialState(.left(project))
-
-      self.goToDeprecatedManagePledgeProject.assertDidNotEmitValue()
-      self.goToDeprecatedManagePledgeReward.assertDidNotEmitValue()
-      self.goToDeprecatedManagePledgeRefTag.assertDidNotEmitValue()
-
-      self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
-
-      self.goToDeprecatedManagePledgeProject.assertValues([project])
-      self.goToDeprecatedManagePledgeReward.assertValues([project.rewards[0]])
-      self.goToDeprecatedManagePledgeRefTag.assertValues([.discovery])
-
-      self.goToManageViewPledge.assertDidNotEmitValue()
-
-      self.goToDeprecatedViewBackingUser.assertDidNotEmitValue()
-      self.goToDeprecatedViewBackingProject.assertDidNotEmitValue()
-    }
-  }
-
-  func testGoToManageViewPledge_FixingPledge_FeatureNativeCheckoutPledgeView_Enabled() {
-    let config = .template
-      |> Config.lens.features .~ [Feature.nativeCheckoutPledgeView.rawValue: true]
-
-    withEnvironment(config: config) {
-      let reward = Project.cosmicSurgery.rewards.first!
-      let backing = Backing.template
-        |> Backing.lens.reward .~ reward
-        |> Backing.lens.rewardId .~ reward.id
-
-      let project = Project.cosmicSurgery
-        |> Project.lens.personalization.backing .~ backing
-        |> Project.lens.personalization.isBacking .~ true
-
-      self.configureInitialState(.left(project))
-
-      self.goToManageViewPledge.assertDidNotEmitValue()
-
-      self.vm.inputs.pledgeCTAButtonTapped(with: .fix)
-
-      self.goToManageViewPledge.assertValues([project])
-
-      self.goToDeprecatedViewBackingUser.assertDidNotEmitValue()
-      self.goToDeprecatedViewBackingProject.assertDidNotEmitValue()
-
-      self.goToDeprecatedManagePledgeProject.assertDidNotEmitValue()
-      self.goToDeprecatedManagePledgeReward.assertDidNotEmitValue()
-      self.goToDeprecatedManagePledgeRefTag.assertDidNotEmitValue()
-    }
-  }
-
-  func testGoToManageViewPledge_ManagingPledge_FeatureNativeCheckoutPledgeView_Enabled() {
-    let config = .template
-      |> Config.lens.features .~ [Feature.nativeCheckoutPledgeView.rawValue: true]
-
   func testGoToManageViewPledge_ManagingPledge() {
     withEnvironment(config: .template) {
       let reward = Project.cosmicSurgery.rewards.first!
@@ -546,13 +478,6 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
 
       self.goToManageViewPledge.assertValues([project])
-
-      self.goToDeprecatedViewBackingUser.assertDidNotEmitValue()
-      self.goToDeprecatedViewBackingProject.assertDidNotEmitValue()
-
-      self.goToDeprecatedManagePledgeProject.assertDidNotEmitValue()
-      self.goToDeprecatedManagePledgeReward.assertDidNotEmitValue()
-      self.goToDeprecatedManagePledgeRefTag.assertDidNotEmitValue()
     }
   }
 

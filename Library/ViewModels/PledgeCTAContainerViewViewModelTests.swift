@@ -136,7 +136,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.state .~ .successful
       |> Project.lens.personalization.backing .~ backing
 
-    self.vm.inputs.configureWith(value: (.left(project), false))
+    self.vm.inputs.configureWith(value: (.left((project, nil)), false, .projectPamphlet))
     self.buttonStyleType.assertValues([ButtonStyleType.red])
     self.buttonTitleText.assertValues([Strings.Manage()])
     self.titleText.assertValues(["Payment failure"])

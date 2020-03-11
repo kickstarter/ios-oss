@@ -188,6 +188,7 @@ final class PledgeCreditCardView: UIView {
     self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
     self.unavailableCardTypeLabel.rac.hidden = self.viewModel.outputs.unavailableCardLabelHidden
     self.unavailableCardTypeLabel.rac.text = self.viewModel.outputs.unavailableCardText
+    self.fixIconView.rac.hidden = self.viewModel.outputs.fixIconIsHidden
 
     self.viewModel.outputs.cardImage
       .observeForUI()
