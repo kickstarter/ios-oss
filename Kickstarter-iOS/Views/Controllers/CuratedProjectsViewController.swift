@@ -23,9 +23,9 @@ final class CuratedProjectsViewController: UIViewController {
   }()
 
   private lazy var tableView: UITableView = {
-     UITableView(frame: .zero)
-       |> \.translatesAutoresizingMaskIntoConstraints .~ false
-   }()
+    UITableView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   private let viewModel: CuratedProjectsViewModelType = CuratedProjectsViewModel()
 
@@ -84,6 +84,7 @@ final class CuratedProjectsViewController: UIViewController {
   }
 
   // MARK: - View model
+
   override func bindViewModel() {
     super.bindViewModel()
 

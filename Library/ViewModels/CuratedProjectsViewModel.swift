@@ -18,22 +18,25 @@ public protocol CuratedProjectsViewModelType {
   var outputs: CuratedProjectsViewModelOutputs { get }
 }
 
-final public class CuratedProjectsViewModel: CuratedProjectsViewModelType, CuratedProjectsViewModelInputs,
-CuratedProjectsViewModelOutputs {
+public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, CuratedProjectsViewModelInputs,
+  CuratedProjectsViewModelOutputs {
   public init() {
-    let projectsPerPage = self.categoriesSignal
+    let projectsPerCategory = self.categoriesSignal
       .map(\.count)
-      .map { Int(floor(Float(30/$0))) }
+      .map { Int(floor(Float(30 / $0))) }
 
-    let params: Signal<[DiscoveryParams], Never> = self.categoriesSignal
-      .combineLatest(with: projectsPerPage)
-      .map(categoryToParams(_:perPage:))
+    let scheduler = QueueScheduler(qos: .background, name: "com.kickstarter.library", targeting: nil)
 
-    let projectsEvents = params
-      .takeWhen(self.viewDidLoadSignal)
-      .switchMap(projectsFrom(params:))
+    let curatedProjects: Signal<[Project], Never> = self.categoriesSignal
+      .combineLatest(with: projectsPerCategory)
+      .observe(on: scheduler)
+      .switchMap { (arg) -> SignalProducer<[Project], Never> in
+        let (categories, perPage) = arg
+        return projects(from: categories, perPage: perPage)
+      }
 
-    self.loadProjects = projectsEvents
+    self.loadProjects = curatedProjects
+      .takeWhen(self.viewDidLoadSignal.ignoreValues())
 
     self.dismissViewController = self.doneButtonTappedSignal
   }
@@ -60,30 +63,24 @@ CuratedProjectsViewModelOutputs {
   public var outputs: CuratedProjectsViewModelOutputs { return self }
 }
 
-private func categoryToParams(_ categories: [KsApi.Category], perPage: Int) -> [DiscoveryParams] {
-  return categories.map {
-    DiscoveryParams.defaults
-      |> DiscoveryParams.lens.category .~ $0
+private func projects(from categories: [KsApi.Category], perPage: Int)
+  -> SignalProducer<[Project], Never> {
+  var fetchedProjects: [Project] = []
+
+  categories.forEach { category in
+
+    let params = DiscoveryParams.defaults
+      |> DiscoveryParams.lens.category .~ category
       |> DiscoveryParams.lens.perPage .~ perPage
-  }
-}
 
-private func projectsFrom(params: [DiscoveryParams]) -> SignalProducer<[Project], Never> {
-  let producer: SignalProducer<[[Project]], Never> = SignalProducer(value: [])
-
-  params.forEach {
-    let projects = AppEnvironment.current.apiService.fetchDiscovery(params: $0)
+    let projects = AppEnvironment.current.apiService.fetchDiscovery(params: params)
+      .demoteErrors()
       .map { $0.projects }
-      .demoteErrors(replaceErrorWith: [])
+      .allValues()
+      .flatMap { $0 }
 
-    projects.uncollect().allValues().forEach { v in
-      print(v)
-    }
-
-    _ = producer.concat([projects], { curr, new in curr + new })
+    fetchedProjects.append(contentsOf: projects)
   }
 
-  print(producer.uncollect().allValues())
-
-  return producer.uncollect()
+  return SignalProducer(value: fetchedProjects)
 }
