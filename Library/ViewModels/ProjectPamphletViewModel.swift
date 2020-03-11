@@ -40,8 +40,8 @@ public protocol ProjectPamphletViewModelOutputs {
   /// Emits a project that should be used to configure all children view controllers.
   var configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never> { get }
 
-  /// Emits a (project, isLoading) tuple used to configure the pledge CTA view
-  var configurePledgeCTAView: Signal<(Either<(Project, RefTag?), ErrorEnvelope>, Bool), Never> { get }
+  /// Emits PledgeCTAContainerViewData to configure PledgeCTAContainerView
+  var configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never> { get }
 
   var dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never> { get }
 
@@ -49,6 +49,9 @@ public protocol ProjectPamphletViewModelOutputs {
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
+
+  /// Emits when the navigation stack should be popped to the root view controller.
+  var popToRootViewController: Signal<(), Never> { get }
 
   /// Emits two booleans that determine if the navigation bar should be hidden, and if it should be animated.
   var setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never> { get }
@@ -69,6 +72,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   ProjectPamphletViewModelOutputs {
   public init() {
     let isLoading = MutableProperty(false)
+
+    self.popToRootViewController = self.didBackProjectProperty.signal.ignoreValues()
 
     let freshProjectAndRefTagEvent = self.configDataProperty.signal.skipNil()
       .takePairWhen(Signal.merge(
@@ -132,6 +137,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       Signal.merge(freshProjectAndRefTag.map(Either.left), projectError.map(Either.right)),
       isLoading.signal
     )
+    .map { ($0, $1, PledgeCTAContainerViewContext.projectPamphlet) }
 
     self.configureChildViewControllersWithProject = freshProjectAndRefTag
       .map { project, refTag in (project, refTag) }
@@ -198,7 +204,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
         try? AppEnvironment.current.optimizelyClient?
           .track(
-            eventKey: "Project Page Rewards CTA Tapped",
+            eventKey: "Project Page Pledge Button Clicked",
             userId: deviceIdentifier(uuid: UUID()),
             attributes: properties,
             eventTags: eventTags
@@ -258,10 +264,11 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   }
 
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
-  public let configurePledgeCTAView: Signal<(Either<(Project, RefTag?), ErrorEnvelope>, Bool), Never>
+  public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
   public let goToManagePledge: Signal<Project, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
+  public let popToRootViewController: Signal<(), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>
   public let setNeedsStatusBarAppearanceUpdate: Signal<(), Never>
   public let topLayoutConstraintConstant: Signal<CGFloat, Never>
