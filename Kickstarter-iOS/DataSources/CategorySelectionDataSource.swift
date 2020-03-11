@@ -6,6 +6,8 @@ import UIKit
 internal final class CategorySelectionDataSource: ValueCellDataSource {
   private var categorySectionTitles: [String] = []
 
+  weak var collectionView: UICollectionView?
+
   func load(_ sectionTitles: [String], categories: [[String]]) {
     self.categorySectionTitles = sectionTitles
 
@@ -22,9 +24,19 @@ internal final class CategorySelectionDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as CategoryPillCell, value as (String, IndexPath?)):
       cell.configureWith(value: value)
+
+      self.configureCellWidth(cell)
     default:
       assertionFailure("Unrecognized (cell, value) combo.")
     }
+  }
+
+  private func configureCellWidth(_ cell: CategoryPillCell) {
+    guard let collectionView = self.collectionView else { return }
+    let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
+    let leftRightInsets = (layout?.sectionInset.left ?? 0) + (layout?.sectionInset.right ?? 0)
+
+    cell.buttonWidthConstraint?.constant = collectionView.bounds.width - leftRightInsets
   }
 
   public func collectionView(

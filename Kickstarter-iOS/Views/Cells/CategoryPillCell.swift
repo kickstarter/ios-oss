@@ -13,6 +13,8 @@ protocol CategoryPillCellDelegate: AnyObject {
 
 final class CategoryPillCell: UICollectionViewCell, ValueCell {
   private lazy var button: UIButton = { UIButton(type: .custom) }()
+  var buttonWidthConstraint: NSLayoutConstraint?
+
   weak var delegate: CategoryPillCellDelegate?
 
   // MARK: - Properties
@@ -42,9 +44,6 @@ final class CategoryPillCell: UICollectionViewCell, ValueCell {
 
     _ = self.button
       |> buttonStyle
-
-    _ = self.contentView
-      |> contentViewStyle
   }
 
   // MARK: - View Model
@@ -63,8 +62,8 @@ final class CategoryPillCell: UICollectionViewCell, ValueCell {
         self.delegate?.categoryPillCell(
           self,
           didTapAtIndex: indexPath,
-          action: { shouldSelect in
-            self.viewModel.inputs.setIsSelected(selected: shouldSelect)
+          action: { [weak self] shouldSelect in
+            self?.viewModel.inputs.setIsSelected(selected: shouldSelect)
           }
         )
       }
@@ -83,8 +82,11 @@ final class CategoryPillCell: UICollectionViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent(priority: .defaultHigh)
 
+    self.buttonWidthConstraint = self.button.widthAnchor.constraint(lessThanOrEqualToConstant: 0)
+
     NSLayoutConstraint.activate([
-      self.button.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height)
+      self.buttonWidthConstraint!,
+      self.button.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
   }
 
@@ -103,14 +105,9 @@ final class CategoryPillCell: UICollectionViewCell, ValueCell {
 
 private let buttonStyle: ButtonStyle = { button in
   button
-    |> baseButtonStyle
+    |> greyButtonStyle
     |> roundedStyle(cornerRadius: Styles.minTouchSize.height / 2)
-    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_soft_black
-    |> UIButton.lens.titleColor(for: .selected) .~ UIColor.ksr_cobalt_500
-    |> UIButton.lens.backgroundColor(for: .normal) .~ UIColor.ksr_grey_400.withAlphaComponent(0.8)
-    |> UIButton.lens.backgroundColor(for: .selected) .~ UIColor.ksr_cobalt_500.withAlphaComponent(0.1)
-}
-
-private let contentViewStyle: ViewStyle = { view in
-  view
+    |> UIButton.lens.titleLabel.lineBreakMode .~ .byTruncatingTail
+    |> UIButton.lens.titleColor(for: .selected) .~ UIColor.white
+    |> UIButton.lens.backgroundColor(for: .selected) .~ UIColor.ksr_green_500
 }

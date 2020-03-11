@@ -62,8 +62,6 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
           updatedIndexes.insert(currentIndexPath)
         }
 
-        print("*** updated indexes: \(updatedIndexes)")
-
         return updatedIndexes
       }
 

@@ -84,6 +84,8 @@ public final class CategorySelectionViewController: UIViewController {
       withReuseIdentifier: CategoryCollectionViewSectionHeaderView.defaultReusableId
     )
 
+    self.dataSource.collectionView = self.collectionView
+
     self.configureSubviews()
     self.setupConstraints()
 
@@ -183,13 +185,14 @@ public final class CategorySelectionViewController: UIViewController {
 
 extension CategorySelectionViewController: UICollectionViewDelegate {
   public func collectionView(
-    _: UICollectionView,
+    _ collectionView: UICollectionView,
     willDisplay cell: UICollectionViewCell,
     forItemAt index: IndexPath
   ) {
     guard let pillCell = cell as? CategoryPillCell else { return }
 
-    pillCell.delegate = self
+    _ = pillCell
+      |> \.delegate .~ self
 
     let shouldSelect = self.viewModel.outputs.shouldSelectCell(at: index)
 
@@ -225,8 +228,6 @@ extension CategorySelectionViewController: CategoryPillCellDelegate {
     self.viewModel.inputs.categorySelected(at: index)
 
     let shouldSelectCell = self.viewModel.outputs.shouldSelectCell(at: index)
-
-    print("**** WILL SELECT CELL *** \(shouldSelectCell)")
 
     action(shouldSelectCell)
   }

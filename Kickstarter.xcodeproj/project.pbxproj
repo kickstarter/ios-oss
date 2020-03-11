@@ -257,6 +257,7 @@
 		776B1A0F24192CA900B03098 /* CategoryPillCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B1A0E24192CA900B03098 /* CategoryPillCellViewModel.swift */; };
 		776B1A1124193C2500B03098 /* CategoryPillCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B1A1024193C2500B03098 /* CategoryPillCellViewModelTests.swift */; };
 		776B1A132419407700B03098 /* CategorySelectionDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B1A122419407700B03098 /* CategorySelectionDataSourceTests.swift */; };
+		776B1A15241945E000B03098 /* CategorySelectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B1A14241945E000B03098 /* CategorySelectionViewControllerTests.swift */; };
 		776B6F70215183A400AB0652 /* ChangeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */; };
 		77752F5E219B39EA00E7DA7D /* SettingsAccountWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77752F5D219B39EA00E7DA7D /* SettingsAccountWarningCell.swift */; };
 		77752F97219B3D7300E7DA7D /* SettingsAccountWarningCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77752F96219B3D7300E7DA7D /* SettingsAccountWarningCell.xib */; };
@@ -1683,6 +1684,7 @@
 		776B1A0E24192CA900B03098 /* CategoryPillCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPillCellViewModel.swift; sourceTree = "<group>"; };
 		776B1A1024193C2500B03098 /* CategoryPillCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPillCellViewModelTests.swift; sourceTree = "<group>"; };
 		776B1A122419407700B03098 /* CategorySelectionDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionDataSourceTests.swift; sourceTree = "<group>"; };
+		776B1A14241945E000B03098 /* CategorySelectionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionViewControllerTests.swift; sourceTree = "<group>"; };
 		776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewController.swift; sourceTree = "<group>"; };
 		77752F5D219B39EA00E7DA7D /* SettingsAccountWarningCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountWarningCell.swift; sourceTree = "<group>"; };
 		77752F96219B3D7300E7DA7D /* SettingsAccountWarningCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsAccountWarningCell.xib; sourceTree = "<group>"; };
@@ -3114,6 +3116,8 @@
 				774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */,
 				771E630A23425977005967E8 /* CancelPledgeViewController.swift */,
 				771E630F23426F03005967E8 /* CancelPledgeViewControllerTests.swift */,
+				7727494323F34FF90065E9F2 /* CategorySelectionViewController.swift */,
+				776B1A14241945E000B03098 /* CategorySelectionViewControllerTests.swift */,
 				776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */,
 				D6B6871721923BA6005F5DA7 /* ChangeEmailViewControllerTests.swift */,
 				7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */,
@@ -3236,7 +3240,6 @@
 				A731BF8B1D1EE44E00A734AC /* UpdateViewController.swift */,
 				59673CBC1D50ED380035AFD9 /* VideoViewController.swift */,
 				9D89B7E21D6B8B310021F6FF /* WebModalViewController.swift */,
-				7727494323F34FF90065E9F2 /* CategorySelectionViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -5586,6 +5589,7 @@
 				771E631023426F04005967E8 /* CancelPledgeViewControllerTests.swift in Sources */,
 				3732C25F224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift in Sources */,
 				A7ED205A1E8323E900BFFA01 /* TwoFactorViewControllerTests.swift in Sources */,
+				776B1A15241945E000B03098 /* CategorySelectionViewControllerTests.swift in Sources */,
 				A7ED20591E8323E900BFFA01 /* MessageThreadsViewControllerTests.swift in Sources */,
 				A7ED20241E83237F00BFFA01 /* TraitController.swift in Sources */,
 				A7ED201F1E83232A00BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */,
