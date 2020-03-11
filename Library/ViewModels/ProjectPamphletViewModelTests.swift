@@ -475,6 +475,37 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.goToManageViewPledge.assertDidNotEmitValue()
 
+      self.vm.inputs.pledgeCTAButtonTapped(with: .fix)
+
+      self.goToManageViewPledge.assertValues([project])
+
+      self.goToDeprecatedViewBackingUser.assertDidNotEmitValue()
+      self.goToDeprecatedViewBackingProject.assertDidNotEmitValue()
+
+      self.goToDeprecatedManagePledgeProject.assertDidNotEmitValue()
+      self.goToDeprecatedManagePledgeReward.assertDidNotEmitValue()
+      self.goToDeprecatedManagePledgeRefTag.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToManageViewPledge_ManagingPledge_FeatureNativeCheckoutPledgeView_Enabled() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.nativeCheckoutPledgeView.rawValue: true]
+
+    withEnvironment(config: config) {
+      let reward = Project.cosmicSurgery.rewards.first!
+      let backing = Backing.template
+        |> Backing.lens.reward .~ reward
+        |> Backing.lens.rewardId .~ reward.id
+
+      let project = Project.cosmicSurgery
+        |> Project.lens.personalization.backing .~ backing
+        |> Project.lens.personalization.isBacking .~ true
+
+      self.configureInitialState(.left(project))
+
+      self.goToManageViewPledge.assertDidNotEmitValue()
+
       self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
 
       self.goToManageViewPledge.assertValues([project])
@@ -502,8 +533,8 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.goToManageViewPledge.assertValues([project])
     }
   }
-
   func testConfigurePledgeCTAView_FetchProjectSuccess() {
+
     let project = Project.template
     let projectFull = Project.template
       |> \.id .~ 2
@@ -523,8 +554,8 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.configurePledgeCTAViewContext.assertValues([])
 
       self.configureInitialState(.left(project))
-
       self.configurePledgeCTAViewProject.assertValues([project])
+
       self.configurePledgeCTAViewIsLoading.assertValues([true])
       self.configurePledgeCTAViewRefTag.assertValues([.discovery])
       self.configurePledgeCTAViewContext.assertValues([.projectPamphlet])
@@ -605,6 +636,13 @@ final class ProjectPamphletViewModelTests: TestCase {
       self.configurePledgeCTAViewRefTag.assertValues([.discovery, .discovery, .discovery])
       self.configurePledgeCTAViewContext.assertValues([.projectPamphlet, .projectPamphlet, .projectPamphlet])
     }
+
+  func testConfigurePledgeCTAView_fetchProjectFailure_featureEnabled_experimentDisabled() {
+    let config = Config.template
+      |> \.features .~ [Feature.nativeCheckout.rawValue: true]
+      |> \.abExperiments .~ [Experiment.Name.nativeCheckoutV1.rawValue: "control"]
+    let project = Project.template
+    let mockService = MockService(fetchProjectError: .couldNotParseJSON)
 
     withEnvironment(
       apiService: MockService(fetchProjectResponse: backedProject),
@@ -830,8 +868,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
     XCTAssertNil(self.optimizelyClient.trackedAttributes)
     XCTAssertNil(self.optimizelyClient.trackedEventTags)
-
     // Only track for non-backed, pledge state
+
     self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
 
     XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
