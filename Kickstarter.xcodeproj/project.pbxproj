@@ -253,6 +253,8 @@
 		77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */; };
 		7758A8372097BADF0018B96D /* DiscoveryProjectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */; };
 		7758A8382097BB090018B96D /* DiscoveryProjectCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */; };
+		776B1A0D2418227100B03098 /* CategoryPillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B1A0C2418227100B03098 /* CategoryPillCell.swift */; };
+		776B1A0F24192CA900B03098 /* CategoryPillCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B1A0E24192CA900B03098 /* CategoryPillCellViewModel.swift */; };
 		776B6F70215183A400AB0652 /* ChangeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */; };
 		77752F5E219B39EA00E7DA7D /* SettingsAccountWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77752F5D219B39EA00E7DA7D /* SettingsAccountWarningCell.swift */; };
 		77752F97219B3D7300E7DA7D /* SettingsAccountWarningCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77752F96219B3D7300E7DA7D /* SettingsAccountWarningCell.xib */; };
@@ -1675,6 +1677,8 @@
 		775D922822BD7CFD00442301 /* DebugData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugData.swift; sourceTree = "<group>"; };
 		775DFA9C215E758400620CED /* GraphMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutation.swift; sourceTree = "<group>"; };
 		775DFAD4215EB2AB00620CED /* Service+RequestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Service+RequestHelpers.swift"; sourceTree = "<group>"; };
+		776B1A0C2418227100B03098 /* CategoryPillCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPillCell.swift; sourceTree = "<group>"; };
+		776B1A0E24192CA900B03098 /* CategoryPillCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPillCellViewModel.swift; sourceTree = "<group>"; };
 		776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewController.swift; sourceTree = "<group>"; };
 		77752F5D219B39EA00E7DA7D /* SettingsAccountWarningCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountWarningCell.swift; sourceTree = "<group>"; };
 		77752F96219B3D7300E7DA7D /* SettingsAccountWarningCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsAccountWarningCell.xib; sourceTree = "<group>"; };
@@ -3019,6 +3023,7 @@
 				014D62981E6E22920033D2BD /* BackerDashboardEmptyStateCell.swift */,
 				014D63001E721D500033D2BD /* BackerDashboardProjectCell.swift */,
 				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
+				776B1A0C2418227100B03098 /* CategoryPillCell.swift */,
 				A7A052121CD12DD7005AF5E2 /* CommentCell.swift */,
 				5981BE421D7F59DE002E49F1 /* CommentsEmptyStateCell.swift */,
 				D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */,
@@ -3651,6 +3656,7 @@
 				771E630D23426B74005967E8 /* CancelPledgeViewModelTests.swift */,
 				77C26956240D711A009AD91E /* CategoryCollectionViewSectionHeaderViewModel.swift */,
 				77D53B22240D81510066D1F4 /* CategoryCollectionViewSectionHeaderViewModelTests.swift */,
+				776B1A0E24192CA900B03098 /* CategoryPillCellViewModel.swift */,
 				7727494623FC66EA0065E9F2 /* CategorySelectionViewModel.swift */,
 				77D19FF12406D5A40058FC8E /* CategorySelectionViewModelTests.swift */,
 				D6DC653221768B6E008CF69C /* ChangeEmailViewModel.swift */,
@@ -4880,6 +4886,7 @@
 				59D1E6581D1866F800896A4C /* DashboardVideoCellViewModel.swift in Sources */,
 				A75511641C8642C3005355CF /* NSBundleType.swift in Sources */,
 				D04AAC2D218BB70D00CF713E /* SettingsNotificationPickerViewModel.swift in Sources */,
+				776B1A0F24192CA900B03098 /* CategoryPillCellViewModel.swift in Sources */,
 				A75511651C8642C3005355CF /* String+SimpleHTML.swift in Sources */,
 				A7F441C31D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift in Sources */,
 				D0200A5621935F2900F5CC27 /* MessageBannerType.swift in Sources */,
@@ -5469,6 +5476,7 @@
 				7717805A22F9ED130064A32F /* RewardsCollectionViewFooter.swift in Sources */,
 				3767EDAD22CFFEF20088E8E4 /* ShippingRulesTableViewController.swift in Sources */,
 				370ACB00225D337900C8745F /* PledgeAmountViewController.swift in Sources */,
+				776B1A0D2418227100B03098 /* CategoryPillCell.swift in Sources */,
 				7727494D23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift in Sources */,
 				A75AB2261C8B407F002FC3E6 /* ActivityFriendBackingCell.swift in Sources */,
 				A731BF901D1EE4CD00A734AC /* UpdateViewModel.swift in Sources */,

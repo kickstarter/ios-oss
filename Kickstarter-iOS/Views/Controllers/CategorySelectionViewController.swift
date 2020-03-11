@@ -36,8 +36,8 @@ public final class CategorySelectionViewController: UIViewController {
 
   private lazy var pillLayout: PillLayout = {
     let layout = PillLayout(
-      minimumInteritemSpacing: Styles.grid(1),
-      minimumLineSpacing: Styles.grid(1),
+      minimumInteritemSpacing: Styles.grid(2),
+      minimumLineSpacing: Styles.grid(2),
       sectionInset: .init(
         top: Styles.grid(1),
         left: Styles.grid(3),
@@ -77,7 +77,7 @@ public final class CategorySelectionViewController: UIViewController {
 
     self.navigationController?.setNavigationBarHidden(false, animated: false)
 
-    self.collectionView.registerCellClass(PillCell.self)
+    self.collectionView.registerCellClass(CategoryPillCell.self)
     self.collectionView.register(
       CategoryCollectionViewSectionHeaderView.self,
       forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -187,12 +187,9 @@ extension CategorySelectionViewController: UICollectionViewDelegate {
     willDisplay cell: UICollectionViewCell,
     forItemAt index: IndexPath
   ) {
-    guard let pillCell = cell as? PillCell else { return }
+    guard let pillCell = cell as? CategoryPillCell else { return }
 
     pillCell.delegate = self
-
-    _ = pillCell.label
-      |> \.preferredMaxLayoutWidth .~ collectionView.bounds.width
 
     let shouldSelect = self.viewModel.outputs.shouldSelectCell(at: index)
 
@@ -221,10 +218,10 @@ extension CategorySelectionViewController: UICollectionViewDelegateFlowLayout {
   }
 }
 
-// MARK: - PillCellDelegate
+// MARK: - CategoryPillCellDelegate
 
-extension CategorySelectionViewController: PillCellDelegate {
-  func pillCell(_ cell: PillCell, didTapAtIndex index: IndexPath, action: (Bool) -> ()) {
+extension CategorySelectionViewController: CategoryPillCellDelegate {
+  func categoryPillCell(_ cell: CategoryPillCell, didTapAtIndex index: IndexPath, action: (Bool) -> ()) {
     self.viewModel.inputs.categorySelected(at: index)
 
     let shouldSelectCell = self.viewModel.outputs.shouldSelectCell(at: index)

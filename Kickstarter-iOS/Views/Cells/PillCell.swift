@@ -3,16 +3,7 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-protocol PillCellDelegate: AnyObject {
-  func pillCell(_ cell: PillCell,
-                didTapAtIndex index: IndexPath,
-                action: ((Bool) -> ())
-  )
-}
-
-final class PillCell: UICollectionViewCell, ValueCell {
-  weak var delegate: PillCellDelegate?
-
+class PillCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
 
   private(set) lazy var label = {
@@ -20,19 +11,12 @@ final class PillCell: UICollectionViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private var tapGestureRecognizer: UITapGestureRecognizer?
-
   private let viewModel: PillCellViewModelType = PillCellViewModel()
 
   // MARK: - Lifecycle
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-
-    self.tapGestureRecognizer = UITapGestureRecognizer(target: self,
-                                                       action: #selector(PillCell.pillCellTapped))
-
-    self.addGestureRecognizer(tapGestureRecognizer!)
 
     self.configureSubviews()
     self.bindStyles()
@@ -48,11 +32,11 @@ final class PillCell: UICollectionViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self.contentView
+      |> contentViewStyle
+
     _ = self.label
       |> labelStyle
-
-    _ = self.contentView
-      |> \.layoutMargins .~ .init(all: Styles.grid(2))
   }
 
   // MARK: - View Model
@@ -60,47 +44,12 @@ final class PillCell: UICollectionViewCell, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.contentView.rac.backgroundColor = self.viewModel.outputs.backgroundColor
     self.label.rac.text = self.viewModel.outputs.text
-    self.label.rac.textColor = self.viewModel.outputs.textColor
-
-    self.viewModel.outputs.layoutMargins
-      .observeForUI()
-      .observeValues { [weak self] layoutMargins in
-        _ = self?.contentView
-          ?|> \.layoutMargins .~ layoutMargins
-    }
-
-    self.viewModel.outputs.cornerRadius
-      .observeForUI()
-      .observeValues { [weak self] cornerRadius in
-        _ = self?.contentView.layer
-          ?|> \.cornerRadius .~ cornerRadius
-    }
-
-    self.viewModel.outputs.tapGestureRecognizerIsEnabled
-    .observeForUI()
-      .observeValues { [weak self] isEnabled in
-        _ = self?.tapGestureRecognizer
-          ?|> \.isEnabled .~ isEnabled
-    }
-
-    self.viewModel.outputs.notifyDelegatePillCellTapped
-      .observeForUI()
-      .observeValues { [weak self] indexPath in
-        guard let self = self else { return }
-
-        self.delegate?.pillCell(self,
-                                didTapAtIndex: indexPath,
-                                action: { shouldSelect in
-          self.viewModel.inputs.setIsSelected(selected: shouldSelect)
-        })
-    }
   }
 
   // MARK: - Configuration
 
-  func configureWith(value: (String, PillCellStyle, IndexPath?)) {
+  func configureWith(value: String) {
     self.viewModel.inputs.configure(with: value)
   }
 
@@ -111,22 +60,19 @@ final class PillCell: UICollectionViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
   }
-
-  // MARK: - Accessors
-
-  public func setIsSelected(_ isSelected: Bool) {
-    self.viewModel.inputs.setIsSelected(selected: isSelected)
-  }
-
-  @objc func pillCellTapped() {
-    self.viewModel.inputs.pillCellTapped()
-  }
 }
 
 // MARK: - Styles
+
+private let contentViewStyle: ViewStyle = { view in
+  view
+    |> checkoutRoundedCornersStyle
+    |> \.backgroundColor .~ UIColor.ksr_green_500.withAlphaComponent(0.06)
+}
 
 private let labelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_footnote().bolded
     |> \.numberOfLines .~ 0
+    |> \.textColor .~ UIColor.ksr_green_500
 }
