@@ -7,6 +7,7 @@ import ReactiveSwift
 import XCTest
 
 final class CategorySelectionViewModelTests: TestCase {
+  private let goToCuratedProjects = TestObserver<Void, Never>()
   private let loadCategorySectionTitles = TestObserver<[String], Never>()
   private let loadCategorySectionData = TestObserver<[[String]], Never>()
   private let vm: CategorySelectionViewModelType = CategorySelectionViewModel()
@@ -14,6 +15,7 @@ final class CategorySelectionViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.goToCuratedProjects.observe(self.goToCuratedProjects.observer)
     self.vm.outputs.loadCategorySections.map(first).observe(self.loadCategorySectionTitles.observer)
     self.vm.outputs.loadCategorySections.map(second).observe(self.loadCategorySectionData.observer)
   }
@@ -78,6 +80,14 @@ final class CategorySelectionViewModelTests: TestCase {
         ]
       ])
     }
+  }
+
+  func testGoToCuratedProjects_Emits_WhenContinueButtonIsTapped() {
+    self.goToCuratedProjects.assertDidNotEmitValue()
+
+    self.vm.inputs.continueButtonTapped()
+
+    self.goToCuratedProjects.assertValueCount(1)
   }
 
   func testHasSeenCategoryPersonalizationFlowPropertyIsSet() {

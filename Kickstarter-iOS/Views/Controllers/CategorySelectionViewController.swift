@@ -2,7 +2,6 @@ import Foundation
 import KsApi
 import Library
 import Prelude
-import SpriteKit
 import UIKit
 
 public final class CategorySelectionViewController: UIViewController {
@@ -30,7 +29,7 @@ public final class CategorySelectionViewController: UIViewController {
   private let dataSource = CategorySelectionDataSource()
 
   private lazy var headerView: UIView = {
-    CategorySelectionHeaderView(frame: .zero)
+    CategorySelectionHeaderView(frame: .zero, context: .categorySelection)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -85,6 +84,10 @@ public final class CategorySelectionViewController: UIViewController {
     )
 
     self.dataSource.collectionView = self.collectionView
+    self.continueButton.addTarget(
+      self, action: #selector(CategorySelectionViewController.continueButtonTapped),
+      for: .touchUpInside
+    )
 
     self.configureSubviews()
     self.setupConstraints()
@@ -144,6 +147,13 @@ public final class CategorySelectionViewController: UIViewController {
         self?.dataSource.load(sectionTitles, categories: categories)
         self?.collectionView.reloadData()
       }
+
+    self.viewModel.outputs.goToCuratedProjects
+      .observeForUI()
+      .observeValues { [weak self] in
+        let vc = CuratedProjectsViewController.instantiate()
+        self?.navigationController?.pushViewController(vc, animated: true)
+      }
   }
 
   private func configureSubviews() {
@@ -178,6 +188,10 @@ public final class CategorySelectionViewController: UIViewController {
 
   @objc func skipButtonTapped() {
     self.dismiss(animated: true)
+  }
+
+  @objc func continueButtonTapped() {
+    self.viewModel.inputs.continueButtonTapped()
   }
 }
 
