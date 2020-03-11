@@ -3754,6 +3754,7 @@
 				01940B251D42DC1A0074FCE3 /* HelpViewModel.swift */,
 				A7ED1F8E1E831C5C00BFFA01 /* HelpViewModelTests.swift */,
 				773BFCB1241049510078A79A /* LandingViewModel.swift */,
+				778AA77F2410542900E67293 /* LandingViewModelTests.swift */,
 				D04AAC18218BB70B00CF713E /* LoadingBarButtonItemViewModel.swift */,
 				D04AAC14218BB70A00CF713E /* LoadingBarButtonItemViewModelTests.swift */,
 				370C8B6523590CA500DE75DD /* LoadingButtonViewModel.swift */,
@@ -3925,7 +3926,6 @@
 				D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */,
 				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
 				A7ED1F8A1E831C5C00BFFA01 /* WebModalViewModelTests.swift */,
-				778AA77F2410542900E67293 /* LandingViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";

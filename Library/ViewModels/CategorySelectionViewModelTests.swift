@@ -89,23 +89,4 @@ final class CategorySelectionViewModelTests: TestCase {
 
     self.goToCuratedProjects.assertValueCount(1)
   }
-
-  func testHasSeenCategoryPersonalizationFlowPropertyIsSet() {
-    let mockKVStore = MockKeyValueStore()
-    let categoriesResponse = RootCategoriesEnvelope.init(rootCategories: [
-      .art,
-      .games,
-      .filmAndVideo
-    ])
-
-    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
-
-    withEnvironment(apiService: mockService, userDefaults: mockKVStore) {
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.run()
-
-      XCTAssertTrue(mockKVStore.hasSeenCategoryPersonalizationFlow)
-    }
-  }
 }

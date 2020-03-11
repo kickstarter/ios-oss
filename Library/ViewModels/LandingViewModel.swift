@@ -3,6 +3,7 @@ import ReactiveSwift
 
 public protocol LandingViewModelInputs {
   func getStartedButtonTapped()
+  func viewDidLoad()
 }
 
 public protocol LandingViewModelOutputs {
@@ -15,13 +16,23 @@ public protocol LandingViewModelType {
 }
 
 public final class LandingViewModel: LandingViewModelType, LandingViewModelInputs, LandingViewModelOutputs {
+  private let hasSeenCategoryPersonalizationFlowProperty = MutableProperty(false)
   public init() {
+    self.hasSeenCategoryPersonalizationFlowProperty <~ self.viewDidLoadProperty.signal.on { _ in
+      AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow = true
+    }.mapConst(true)
+
     self.goToCategorySelection = self.getStartedButtonTappedProperty.signal
   }
 
   private let getStartedButtonTappedProperty = MutableProperty(())
   public func getStartedButtonTapped() {
     self.getStartedButtonTappedProperty.value = ()
+  }
+
+  private let viewDidLoadProperty = MutableProperty(())
+  public func viewDidLoad() {
+    self.viewDidLoadProperty.value = ()
   }
 
   public let goToCategorySelection: Signal<Void, Never>

@@ -38,6 +38,8 @@ public final class LandingViewController: UIViewController {
       action: #selector(LandingViewController.getStartedButtonTapped),
       for: .touchUpInside
     )
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   public override func bindViewModel() {

@@ -11,7 +11,7 @@ public protocol CategorySelectionViewModelInputs {
 public protocol CategorySelectionViewModelOutputs {
   var goToCuratedProjects: Signal<Void, Never> { get }
 
-  // A tuple of Section Titles: [String], and Categories Section Data: [[(String, PillCellStyle)]]
+  // A tuple of Section Titles: [String], and Categories Section Data: [[String]]
   var loadCategorySections: Signal<([String], [[String]]), Never> { get }
 
   func shouldSelectCell(at index: IndexPath) -> Bool
@@ -26,9 +26,6 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
   CategorySelectionViewModelInputs, CategorySelectionViewModelOutputs {
   public init() {
     let categoriesEvent = self.viewDidLoadProperty.signal
-      .on { _ in
-        AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow = true
-      }
       .switchMap { _ in
         AppEnvironment.current.apiService
           .fetchGraphCategories(query: rootCategoriesQuery)
@@ -73,12 +70,15 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
       .map { selectedCategoryIndexes, shouldSelectIndex in
         selectedCategoryIndexes.contains(shouldSelectIndex)
       }
+
     self.goToCuratedProjects = self.continueButtonTappedProperty.signal.ignoreValues()
   }
 
   private let categorySelectedAtIndexPathProperty = MutableProperty<IndexPath?>(nil)
   public func categorySelected(at index: IndexPath) {
     self.categorySelectedAtIndexPathProperty.value = index
+  }
+
   private let continueButtonTappedProperty = MutableProperty(())
   public func continueButtonTapped() {
     self.continueButtonTappedProperty.value = ()
@@ -99,7 +99,6 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
 
   public let loadCategorySections: Signal<([String], [[String]]), Never>
   public let goToCuratedProjects: Signal<Void, Never>
-  public let loadCategorySections: Signal<([String], [[(String, PillCellStyle)]]), Never>
 
   public var inputs: CategorySelectionViewModelInputs { return self }
   public var outputs: CategorySelectionViewModelOutputs { return self }
