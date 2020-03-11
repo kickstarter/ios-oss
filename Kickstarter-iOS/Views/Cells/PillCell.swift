@@ -3,7 +3,7 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-class PillCell: UICollectionViewCell, ValueCell {
+final class PillCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
 
   private(set) lazy var label = {

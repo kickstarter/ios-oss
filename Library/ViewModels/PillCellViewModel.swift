@@ -3,65 +3,6 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-public enum PillCellStyle {
-  case green
-  case grey
-
-  var backgroundColor: UIColor {
-    switch self {
-    case .green:
-      return UIColor.ksr_green_500.withAlphaComponent(0.06)
-    case .grey:
-      return UIColor.ksr_grey_400.withAlphaComponent(0.8)
-    }
-  }
-
-  var cornerRadius: CGFloat {
-    switch self {
-    case .green:
-      return Styles.grid(1)
-    case .grey:
-      return Styles.grid(3)
-    }
-  }
-
-  var selectedBackgroundColor: UIColor {
-    switch self {
-    case .green:
-      return UIColor.ksr_green_500.withAlphaComponent(0.06)
-    case .grey:
-      return UIColor.ksr_trust_700.withAlphaComponent(0.1)
-    }
-  }
-
-  var textColor: UIColor {
-    switch self {
-    case .green:
-      return UIColor.ksr_green_500
-    case .grey:
-      return UIColor.ksr_soft_black
-    }
-  }
-
-  var textColorSelected: UIColor {
-    switch self {
-    case .green:
-      return UIColor.ksr_green_500
-    case .grey:
-      return UIColor.ksr_trust_700
-    }
-  }
-
-  var layoutMargins: UIEdgeInsets {
-    switch self {
-    case .green:
-      return .init(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3))
-    case .grey:
-      return .init(all: Styles.grid(2))
-    }
-  }
-}
-
 public protocol PillCellViewModelInputs {
   func configure(with value: String)
 }

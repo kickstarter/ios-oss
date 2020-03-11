@@ -97,8 +97,8 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  public let loadCategorySections: Signal<([String], [[String]]), Never>
   public let goToCuratedProjects: Signal<Void, Never>
+  public let loadCategorySections: Signal<([String], [[String]]), Never>
 
   public var inputs: CategorySelectionViewModelInputs { return self }
   public var outputs: CategorySelectionViewModelOutputs { return self }

@@ -3,11 +3,11 @@ import Prelude
 import XCTest
 
 final class CategorySelectionDataSourceTests: XCTestCase {
-  private let dataSource = CategorySelectionDataSource()
   private let collectionView = UICollectionView(
     frame: .zero,
     collectionViewLayout: UICollectionViewFlowLayout()
   )
+  private let dataSource = CategorySelectionDataSource()
 
   func testLoadValues() {
     self.dataSource.load(["title1", "title2", "title3"], categories: [
