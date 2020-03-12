@@ -83,7 +83,7 @@ final class CategoryPillCell: UICollectionViewCell, ValueCell {
     NSLayoutConstraint.activate([
       self.buttonWidthConstraint,
       self.button.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-      ].compact())
+    ].compact())
   }
 
   // MARK: - Accessors
