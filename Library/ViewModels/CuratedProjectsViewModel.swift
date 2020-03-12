@@ -25,18 +25,21 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
       .map(\.count)
       .map { Int(floor(Float(30 / $0))) }
 
-    let scheduler = QueueScheduler(qos: .background, name: "com.kickstarter.library", targeting: nil)
+    let scheduler = QueueScheduler(qos: .userInteractive, name: "com.kickstarter.ksapi", targeting: nil)
+
 
     let curatedProjects: Signal<[Project], Never> = self.categoriesSignal
       .combineLatest(with: projectsPerCategory)
+      .takeWhen(self.viewDidLoadSignal.ignoreValues())
       .observe(on: scheduler)
       .switchMap { (arg) -> SignalProducer<[Project], Never> in
         let (categories, perPage) = arg
         return projects(from: categories, perPage: perPage)
       }
 
+
+
     self.loadProjects = curatedProjects
-      .takeWhen(self.viewDidLoadSignal.ignoreValues())
 
     self.dismissViewController = self.doneButtonTappedSignal
   }
