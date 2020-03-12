@@ -7,11 +7,11 @@ public enum LandingPageCardType {
   case trackBackings
 
   public static var statsCards: [LandingPageCardType] {
-    return [.successfulProjects, .totalBackers, .totalPledged]
+    return [.totalPledged, .successfulProjects, .totalBackers]
   }
 
   public static var howToCards: [LandingPageCardType] {
-    return [.allOrNothing, .discoverProjects, .trackBackings]
+    return [.discoverProjects, .allOrNothing, .trackBackings]
   }
 
   public var title: String {

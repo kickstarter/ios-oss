@@ -250,7 +250,7 @@ private let labelsStackViewStyle: StackViewStyle = { stackView in
 
 private let logoImageViewStyle: ImageViewStyle = { imageView in
   imageView
-    |> \.image .~ image(named: "kickstarter-logo")?.withRenderingMode(.alwaysTemplate)
+    |> \.image .~ image(named: "kickstarter-logo")
     |> \.tintColor .~ .ksr_green_400
     |> \.contentMode .~ .scaleAspectFit
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
