@@ -8,7 +8,7 @@ public typealias PledgeCreditCardViewData = (
   card: GraphUserCreditCard.CreditCard,
   isEnabled: Bool,
   projectCountry: String,
-  erroredPledge: Bool
+  isErrored: Bool
 )
 
 public protocol PledgeCreditCardViewModelInputs {
