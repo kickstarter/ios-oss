@@ -6,8 +6,7 @@ import UIKit
 protocol CategoryPillCellDelegate: AnyObject {
   func categoryPillCell(
     _ cell: CategoryPillCell,
-    didTapAtIndex index: IndexPath,
-    action: (Bool) -> ()
+    didTapAtIndex index: IndexPath
   )
 }
 
@@ -61,10 +60,7 @@ final class CategoryPillCell: UICollectionViewCell, ValueCell {
 
         self.delegate?.categoryPillCell(
           self,
-          didTapAtIndex: indexPath,
-          action: { [weak self] shouldSelect in
-            self?.viewModel.inputs.setIsSelected(selected: shouldSelect)
-          }
+          didTapAtIndex: indexPath
         )
       }
   }
@@ -85,9 +81,9 @@ final class CategoryPillCell: UICollectionViewCell, ValueCell {
     self.buttonWidthConstraint = self.button.widthAnchor.constraint(lessThanOrEqualToConstant: 0)
 
     NSLayoutConstraint.activate([
-      self.buttonWidthConstraint!,
+      self.buttonWidthConstraint,
       self.button.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-    ])
+      ].compact())
   }
 
   // MARK: - Accessors
