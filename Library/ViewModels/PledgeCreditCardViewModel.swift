@@ -106,7 +106,7 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
       .map { $0 && $1 }
       .skipRepeats()
 
-    let erroredPledge = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.erroredPledge }
+    let erroredPledge = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.isErrored }
 
     self.fixIconIsHidden = Signal.combineLatest(cardIsSelected, erroredPledge)
       .map { $0 && $1 }
