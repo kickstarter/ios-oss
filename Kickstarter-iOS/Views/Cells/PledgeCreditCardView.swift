@@ -9,6 +9,7 @@ protocol PledgeCreditCardViewDelegate: AnyObject {
     paymentSourceId: String
   )
 }
+
 private enum Layout {
   enum ImageView {
     static let minWidth: CGFloat = 16.0
@@ -25,6 +26,7 @@ final class PledgeCreditCardView: UIView {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private let containerStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -38,6 +40,7 @@ final class PledgeCreditCardView: UIView {
     UIImageView(image: image(named: "fix-icon", inBundle: Bundle.framework))
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private let imageView: UIImageView = { UIImageView(frame: .zero) }()
   private let labelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let lastFourLabel: UILabel = { UILabel(frame: .zero) }()
