@@ -3,6 +3,7 @@ import KsApi
 import ReactiveSwift
 
 public protocol CategorySelectionViewModelInputs {
+  func categorySelected(at index: IndexPath)
   func continueButtonTapped()
   func viewDidLoad()
 }
@@ -10,8 +11,10 @@ public protocol CategorySelectionViewModelInputs {
 public protocol CategorySelectionViewModelOutputs {
   var goToCuratedProjects: Signal<Void, Never> { get }
 
-  // A tuple of Section Titles: [String], and Categories Section Data: [[(String, PillCellStyle)]]
-  var loadCategorySections: Signal<([String], [[(String, PillCellStyle)]]), Never> { get }
+  // A tuple of Section Titles: [String], and Categories Section Data: [[String]]
+  var loadCategorySections: Signal<([String], [[String]]), Never> { get }
+
+  func shouldSelectCell(at index: IndexPath) -> Bool
 }
 
 public protocol CategorySelectionViewModelType {
@@ -23,9 +26,6 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
   CategorySelectionViewModelInputs, CategorySelectionViewModelOutputs {
   public init() {
     let categoriesEvent = self.viewDidLoadProperty.signal
-      .on { _ in
-        AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow = true
-      }
       .switchMap { _ in
         AppEnvironment.current.apiService
           .fetchGraphCategories(query: rootCategoriesQuery)
@@ -38,31 +38,58 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
 
     self.loadCategorySections = orderedCategories.map { rootCategories in
       var sectionTitles = [String]()
-      let categoriesData = rootCategories.compactMap { category -> [(String, PillCellStyle)]? in
+      let categoriesData = rootCategories.compactMap { category -> [String]? in
         guard let subcategories = category.subcategories?.nodes else {
           return nil
         }
 
+        let subcategoryNames = subcategories.map { $0.name }
         sectionTitles.append(category.name)
 
-        let subcategoriesData = subcategories.map { ($0.name, PillCellStyle.grey) }
-        let allCategoryProjects = (
-          Strings.All_category_name_Projects(category_name: category.name),
-          PillCellStyle.grey
-        )
-
-        return [allCategoryProjects] + subcategoriesData
+        return [Strings.All_category_name_Projects(category_name: category.name)] + subcategoryNames
       }
 
       return (sectionTitles, categoriesData)
     }
 
+    let selectedCategoryIndexes = self.categorySelectedAtIndexPathProperty.signal.skipNil()
+      .scan(Set<IndexPath>.init()) { (selectedIndexes, currentIndexPath) -> Set<IndexPath> in
+        var updatedIndexes = selectedIndexes
+
+        if selectedIndexes.contains(currentIndexPath) {
+          updatedIndexes.remove(currentIndexPath)
+        } else {
+          updatedIndexes.insert(currentIndexPath)
+        }
+
+        return updatedIndexes
+      }
+
+    self.selectCellAtIndexProperty <~ selectedCategoryIndexes
+      .takePairWhen(self.shouldSelectCellAtIndexProperty.signal.skipNil())
+      .map { selectedCategoryIndexes, shouldSelectIndex in
+        selectedCategoryIndexes.contains(shouldSelectIndex)
+      }
+
     self.goToCuratedProjects = self.continueButtonTappedProperty.signal.ignoreValues()
+  }
+
+  private let categorySelectedAtIndexPathProperty = MutableProperty<IndexPath?>(nil)
+  public func categorySelected(at index: IndexPath) {
+    self.categorySelectedAtIndexPathProperty.value = index
   }
 
   private let continueButtonTappedProperty = MutableProperty(())
   public func continueButtonTapped() {
     self.continueButtonTappedProperty.value = ()
+  }
+
+  private let shouldSelectCellAtIndexProperty = MutableProperty<IndexPath?>(nil)
+  private let selectCellAtIndexProperty = MutableProperty<Bool>(false)
+  public func shouldSelectCell(at index: IndexPath) -> Bool {
+    self.shouldSelectCellAtIndexProperty.value = index
+
+    return self.selectCellAtIndexProperty.value
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -71,7 +98,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
   }
 
   public let goToCuratedProjects: Signal<Void, Never>
-  public let loadCategorySections: Signal<([String], [[(String, PillCellStyle)]]), Never>
+  public let loadCategorySections: Signal<([String], [[String]]), Never>
 
   public var inputs: CategorySelectionViewModelInputs { return self }
   public var outputs: CategorySelectionViewModelOutputs { return self }
