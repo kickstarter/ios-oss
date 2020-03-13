@@ -8,12 +8,16 @@ internal final class CategorySelectionDataSource: ValueCellDataSource {
 
   weak var collectionView: UICollectionView?
 
-  func load(_ sectionTitles: [String], categories: [[String]]) {
+  func load(_ sectionTitles: [String], categories: [[(String, Int)]]) {
     self.categorySectionTitles = sectionTitles
 
     for (section, subcategories) in categories.enumerated() {
       let indexedSubcategories = subcategories.enumerated().map { index, value in
-        (value, IndexPath(item: index, section: section))
+        CategoryPillCellValue(
+          name: value.0,
+          id: value.1,
+          indexPath: IndexPath(item: index, section: section)
+        )
       }
 
       self.set(values: indexedSubcategories, cellClass: CategoryPillCell.self, inSection: section)
@@ -22,7 +26,7 @@ internal final class CategorySelectionDataSource: ValueCellDataSource {
 
   override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as CategoryPillCell, value as (String, IndexPath?)):
+    case let (cell as CategoryPillCell, value as CategoryPillCellValue):
       cell.configureWith(value: value)
 
       self.configureCellWidth(cell)

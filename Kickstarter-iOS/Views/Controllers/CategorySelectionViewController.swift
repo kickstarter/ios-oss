@@ -257,12 +257,12 @@ extension CategorySelectionViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - CategoryPillCellDelegate
 
 extension CategorySelectionViewController: CategoryPillCellDelegate {
-  func categoryPillCell(_: CategoryPillCell, didTapAtIndex index: IndexPath, action: (Bool) -> ()) {
-    self.viewModel.inputs.categorySelected(at: index)
+  func categoryPillCell(_ cell: CategoryPillCell, didTapAtIndex index: IndexPath, withId id: Int) {
+    self.viewModel.inputs.categorySelected(with: (index, id))
 
     let shouldSelectCell = self.viewModel.outputs.shouldSelectCell(at: index)
 
-    action(shouldSelectCell)
+    cell.setIsSelected(shouldSelectCell)
   }
 }
 
@@ -321,4 +321,3 @@ private let warningLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 0
     |> \.text %~ { _ in "Select fewer catgories" }
 }
-
