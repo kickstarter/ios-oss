@@ -37,6 +37,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.tableView.register(nib: Nib.DiscoveryPostcardCell)
     self.tableView.registerCellClass(DiscoveryEditorialCell.self)
+    self.tableView.registerCellClass(PersonalizationCell.self)
 
     self.tableView.dataSource = self.dataSource
 
@@ -183,6 +184,10 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] projects, params in
         self?.dataSource.load(projects: projects, params: params)
+
+        // temp loading of personalization card
+        self?.dataSource.showPersonalization(true)
+
         self?.tableView.reloadData()
         self?.updateProjectPlaylist(projects)
       }

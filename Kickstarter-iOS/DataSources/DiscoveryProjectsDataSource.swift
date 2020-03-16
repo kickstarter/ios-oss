@@ -10,6 +10,7 @@ struct DiscoveryProjectCellRowValue {
 internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case onboarding
+    case personalization
     case editorial
     case activitySample
     case projects
@@ -62,6 +63,14 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     )
   }
 
+  func showPersonalization(_ show: Bool) {
+    self.set(
+      values: show ? [()] : [],
+      cellClass: PersonalizationCell.self,
+      inSection: Section.personalization.rawValue
+    )
+  }
+
   internal func activityAtIndexPath(_ indexPath: IndexPath) -> Activity? {
     return self[indexPath] as? Activity
   }
@@ -88,6 +97,8 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as DiscoveryEditorialCell, value as DiscoveryEditorialCellValue):
       cell.configureWith(value: value)
+    case let (cell as PersonalizationCell, value as Void):
+        cell.configureWith(value: value)
     case (is StaticTableViewCell, is Void):
       return
     default:

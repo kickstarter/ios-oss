@@ -265,6 +265,7 @@
 		77776BC8234BA76400A42388 /* CancelBackingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77776BC7234BA76400A42388 /* CancelBackingInput.swift */; };
 		77776BCA234BA88F00A42388 /* CancelBackingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77776BC9234BA88F00A42388 /* CancelBackingInputTests.swift */; };
 		777B88E522BD911F0027640F /* CategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */; };
+		777C60A6241FECD800820C59 /* PersonalizationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777C60A5241FECD800820C59 /* PersonalizationCell.swift */; };
 		777C67BB220A0FA5009F8D42 /* SettingsTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777C67BA220A0FA5009F8D42 /* SettingsTableViewHeader.swift */; };
 		777C67F4220A22FD009F8D42 /* SettingsTableViewHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 777C67F3220A22FD009F8D42 /* SettingsTableViewHeader.xib */; };
 		778215E820F6922100F3D09F /* HelpType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A707BAD31CFFAB9400653B2F /* HelpType.swift */; };
@@ -1694,6 +1695,7 @@
 		77776BC5234BA6B700A42388 /* CancelBackingMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBackingMutation.swift; sourceTree = "<group>"; };
 		77776BC7234BA76400A42388 /* CancelBackingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBackingInput.swift; sourceTree = "<group>"; };
 		77776BC9234BA88F00A42388 /* CancelBackingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBackingInputTests.swift; sourceTree = "<group>"; };
+		777C60A5241FECD800820C59 /* PersonalizationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalizationCell.swift; sourceTree = "<group>"; };
 		777C67BA220A0FA5009F8D42 /* SettingsTableViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewHeader.swift; sourceTree = "<group>"; };
 		777C67F3220A22FD009F8D42 /* SettingsTableViewHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsTableViewHeader.xib; sourceTree = "<group>"; };
 		778215EA20F79FA300F3D09F /* HelpDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSourceTests.swift; sourceTree = "<group>"; };
@@ -3067,6 +3069,7 @@
 				A77352EC1D5E70FC0017E239 /* MostPopularCell.swift */,
 				A773531E1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift */,
 				A74382041D3458C900040A95 /* PaddingCell.swift */,
+				777C60A5241FECD800820C59 /* PersonalizationCell.swift */,
 				3742036E22DD45A2007AA86E /* PillCell.swift */,
 				D6534D3722E784B500E9D279 /* PledgeCreditCardView.swift */,
 				A7FA38A31D9068940041FC9C /* PledgeTitleCell.swift */,
@@ -5361,6 +5364,7 @@
 				771E630B23425977005967E8 /* CancelPledgeViewController.swift in Sources */,
 				A7A0534E1CD19C68005AF5E2 /* CommentDialogViewController.swift in Sources */,
 				A75AB2231C8A85D1002FC3E6 /* ActivityUpdateCell.swift in Sources */,
+				777C60A6241FECD800820C59 /* PersonalizationCell.swift in Sources */,
 				370C8B64234FCC6F00DE75DD /* LoadingButton.swift in Sources */,
 				A75A292E1CE0B95300D35E5C /* MessagesDataSource.swift in Sources */,
 				A74382051D3458C900040A95 /* PaddingCell.swift in Sources */,
