@@ -105,7 +105,7 @@ public protocol AppDelegateViewModelOutputs {
   var configureFabric: Signal<(), Never> { get }
 
   /// Emits when the application should configure Optimizely
-  var configureOptimizely: Signal<(String, OptimizelyLogLevelType), Never> { get }
+  var configureOptimizely: Signal<(String, OptimizelyLogLevelType, TimeInterval), Never> { get }
 
   /// Emits when the application should configure Qualtrics
   var configureQualtrics: Signal<QualtricsConfigData, Never> { get }
@@ -813,7 +813,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFabric: Signal<(), Never>
-  public let configureOptimizely: Signal<(String, OptimizelyLogLevelType), Never>
+  public let configureOptimizely: Signal<(String, OptimizelyLogLevelType, TimeInterval), Never>
   public let configureQualtrics: Signal<QualtricsConfigData, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let displayQualtricsSurvey: Signal<(), Never>
@@ -1031,9 +1031,10 @@ extension ShortcutItem {
   }
 }
 
-private func optimizelyData(for environment: Environment) -> (String, OptimizelyLogLevelType) {
+private func optimizelyData(for environment: Environment) -> (String, OptimizelyLogLevelType, TimeInterval) {
   let environmentType = environment.environmentType
   let logLevel = environment.mainBundle.isDebug ? OptimizelyLogLevelType.debug : OptimizelyLogLevelType.error
+  let dispatchInterval: TimeInterval = 5
 
   var sdkKey: String
 
@@ -1046,7 +1047,7 @@ private func optimizelyData(for environment: Environment) -> (String, Optimizely
     sdkKey = Secrets.OptimizelySDKKey.development
   }
 
-  return (sdkKey, logLevel)
+  return (sdkKey, logLevel, dispatchInterval)
 }
 
 private func visitorCookies() -> [HTTPCookie] {
