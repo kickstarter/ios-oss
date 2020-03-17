@@ -34,8 +34,6 @@
 
     fileprivate let deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>?
 
-    fileprivate let createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>?
-
     fileprivate let facebookConnectResponse: User?
     fileprivate let facebookConnectError: ErrorEnvelope?
 
@@ -212,7 +210,6 @@
       changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
       clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, GraphError>? = nil,
       deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>? = nil,
-      createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>? = nil,
       facebookConnectResponse: User? = nil,
       facebookConnectError: ErrorEnvelope? = nil,
       fetchActivitiesResponse: [Activity]? = nil,
@@ -325,7 +322,6 @@
 
       self.changePaymentMethodResult = changePaymentMethodResult
       self.deletePaymentMethodResult = deletePaymentMethodResult
-      self.createPledgeResult = createPledgeResult
 
       self.facebookConnectResponse = facebookConnectResponse
       self.facebookConnectError = facebookConnectError
@@ -518,20 +514,6 @@
       }
 
       return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
-    }
-
-    internal func createPledge(
-      project _: Project,
-      amount _: Double,
-      reward _: Reward?,
-      shippingLocation _: Location?,
-      tappedReward _: Bool
-    ) -> SignalProducer<CreatePledgeEnvelope, ErrorEnvelope> {
-      if let error = self.createPledgeResult?.error {
-        return SignalProducer(error: error)
-      }
-
-      return SignalProducer(value: self.createPledgeResult?.value ?? .template)
     }
 
     internal func facebookConnect(facebookAccessToken _: String)
@@ -1430,7 +1412,6 @@
             changePaymentMethodResult: $1.changePaymentMethodResult,
             clearUserUnseenActivityResult: $1.clearUserUnseenActivityResult,
             deletePaymentMethodResult: $1.deletePaymentMethodResult,
-            createPledgeResult: $1.createPledgeResult,
             facebookConnectResponse: $1.facebookConnectResponse,
             facebookConnectError: $1.facebookConnectError,
             fetchActivitiesResponse: $1.fetchActivitiesResponse,
