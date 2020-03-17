@@ -19,7 +19,7 @@ public protocol CuratedProjectsViewModelType {
 }
 
 public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, CuratedProjectsViewModelInputs,
-CuratedProjectsViewModelOutputs {
+  CuratedProjectsViewModelOutputs {
   public init() {
     let projectsPerCategory = self.categoriesSignal
       .map(\.count)
@@ -31,7 +31,7 @@ CuratedProjectsViewModelOutputs {
       .flatMap { (arg) -> SignalProducer<[Project], Never> in
         let (categories, perPage) = arg
         return projects(from: categories, perPage: perPage)
-    }
+      }
 
     self.loadProjects = curatedProjects
 
@@ -62,21 +62,20 @@ CuratedProjectsViewModelOutputs {
 
 private func projects(from categories: [KsApi.Category], perPage: Int)
   -> SignalProducer<[Project], Never> {
-
-    return SignalProducer.concat(producers(from: categories, perPage: perPage))
-      .map { $0.compactMap { $0 } }
+  return SignalProducer.concat(producers(from: categories, perPage: perPage))
+    .map { $0.compactMap { $0 } }
 }
 
 private func producers(from categories: [KsApi.Category], perPage: Int)
   -> [SignalProducer<[Project], Never>] {
-    return categories.map { category in
+  return categories.map { category in
 
-      let params = DiscoveryParams.defaults
-        |> DiscoveryParams.lens.category .~ category
-        |> DiscoveryParams.lens.perPage .~ perPage
+    let params = DiscoveryParams.defaults
+      |> DiscoveryParams.lens.category .~ category
+      |> DiscoveryParams.lens.perPage .~ perPage
 
-      return AppEnvironment.current.apiService.fetchDiscovery(params: params)
-        .map { $0.projects }
-        .demoteErrors(replaceErrorWith: [])
-    }
+    return AppEnvironment.current.apiService.fetchDiscovery(params: params)
+      .map { $0.projects }
+      .demoteErrors(replaceErrorWith: [])
+  }
 }
