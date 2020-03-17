@@ -182,10 +182,12 @@ private func pledgeCreditCardViewDataAndSelectedCard(
   let data = cards.compactMap { card -> PledgeCreditCardViewData? in
     guard let cardBrand = card.type?.rawValue else { return nil }
 
+    let backing = project.personalization.backing
     let isAvailableCardType = availableCardTypes.contains(cardBrand)
-    let isErroredPledge = project.personalization.backing?.status == .errored
+    let isErroredPledge = backing?.status == .errored
+    let paymentSourceId = backing?.paymentSource?.id
 
-    return (card, isAvailableCardType, project.location.displayableName, isErroredPledge)
+    return (card, isAvailableCardType, project.location.displayableName, isErroredPledge, paymentSourceId)
   }
 
   // If there is no backing, simply select the first card in the list when it is an available card type.

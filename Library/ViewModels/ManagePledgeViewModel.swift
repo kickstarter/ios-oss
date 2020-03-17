@@ -32,6 +32,7 @@ public protocol ManagePledgeViewModelOutputs {
   var goToCancelPledge: Signal<(Project, Backing), Never> { get }
   var goToChangePaymentMethod: Signal<(Project, Reward), Never> { get }
   var goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never> { get }
+  var goToFixPaymentMethod: Signal<(Project, Reward), Never> { get }
   var goToRewards: Signal<Project, Never> { get }
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
   var notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never> { get }
@@ -115,13 +116,15 @@ public final class ManagePledgeViewModel:
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .contactCreator })
       .map { project in (MessageSubject.project(project), .backerModal) }
 
-    let goToChangePaymentMethod = Signal.merge(
-      self.menuOptionSelectedSignal.filter { $0 == .changePaymentMethod }.ignoreValues(),
-      self.fixButtonTappedSignal
-    )
+    let goToChangePaymentMethod = self.menuOptionSelectedSignal
+      .filter { $0 == .changePaymentMethod }
+      .ignoreValues()
 
     self.goToChangePaymentMethod = projectAndReward
       .takeWhen(goToChangePaymentMethod)
+
+    self.goToFixPaymentMethod = projectAndReward
+        .takeWhen(self.fixButtonTappedSignal)
 
     self.notifyDelegateManagePledgeViewControllerFinishedWithMessage = Signal.merge(
       self.cancelPledgeDidFinishWithMessageProperty.signal,
@@ -205,6 +208,7 @@ public final class ManagePledgeViewModel:
   public let goToCancelPledge: Signal<(Project, Backing), Never>
   public let goToChangePaymentMethod: Signal<(Project, Reward), Never>
   public let goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never>
+  public let goToFixPaymentMethod: Signal<(Project, Reward), Never>
   public let goToRewards: Signal<Project, Never>
   public let goToUpdatePledge: Signal<(Project, Reward), Never>
   public let notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never>

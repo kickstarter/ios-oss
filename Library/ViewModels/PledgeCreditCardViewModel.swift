@@ -8,7 +8,8 @@ public typealias PledgeCreditCardViewData = (
   card: GraphUserCreditCard.CreditCard,
   isEnabled: Bool,
   projectCountry: String,
-  isErrored: Bool
+  isErrored: Bool,
+  paymentSourceId: String?
 )
 
 public protocol PledgeCreditCardViewModelInputs {
@@ -66,6 +67,7 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
   PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
   public init() {
     let creditCard = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.card }
+    let paymentSourceId = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.paymentSourceId }
     let selectedCard = self.selectedCardProperty.signal.skipNil()
     let cardTypeIsAvailable = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.isEnabled }
 
@@ -97,24 +99,33 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
       .takeWhen(Signal.merge(cardConfiguredAsSelected, self.selectButtonTappedProperty.signal))
       .map { $0.id }
 
-    let cardIsSelected = Signal.merge(
-      creditCard.mapConst(false),
-      cardAndSelectedCard.map(==)
-    )
-
-    self.selectButtonIsSelected = Signal.combineLatest(cardIsSelected, cardTypeIsAvailable)
-      .map { $0 && $1 }
-      .skipRepeats()
-
     let erroredPledge = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.isErrored }
 
-    self.fixIconIsHidden = Signal.combineLatest(cardIsSelected, erroredPledge)
-      .map { $0 && $1 }
-      .negate()
+    self.fixIconIsHidden = Signal.combineLatest(paymentSourceId, creditCard, erroredPledge)
+      .map { paymentSourceId, creditCard, erroredPledge in
+        hideFixIcon(erroredPledge: erroredPledge,
+                    paymentSourceId: paymentSourceId,
+                    creditCardId: creditCard.id)
+    }
 
-    self.selectButtonTitle = Signal.combineLatest(cardIsSelected, cardTypeIsAvailable)
-      .filter { $1 == true }
-      .map { $0 && $1 }
+    let cardIsSelected = Signal.merge(
+         creditCard.mapConst(false),
+         cardAndSelectedCard.map(==)
+       )
+
+    let cardIsSelectedAndCardIsAvailableAndFixIconHidden =
+      Signal.combineLatest(cardIsSelected, cardTypeIsAvailable, self.fixIconIsHidden)
+
+    self.selectButtonIsSelected =
+      cardIsSelectedAndCardIsAvailableAndFixIconHidden
+      .map { cardIsSelected, cardTypeIsAvailable, fixIconHidden in
+        cardIsSelected && cardTypeIsAvailable && fixIconHidden }
+      .skipRepeats()
+
+    self.selectButtonTitle = cardIsSelectedAndCardIsAvailableAndFixIconHidden
+      .filter { _, cardTypeIsAvailable, _ in  cardTypeIsAvailable == true }
+      .map { cardIsSelected, cardTypeIsAvailable, fixIconHidden in
+        cardIsSelected && cardTypeIsAvailable && fixIconHidden }
       .map { $0 ? Strings.Selected() : Strings.Select() }
       .skipRepeats()
 
@@ -161,4 +172,17 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
 
 private func cardImageForCard(_ card: GraphUserCreditCard.CreditCard) -> UIImage? {
   return image(named: card.imageName)
+}
+
+private func hideFixIcon(erroredPledge: Bool, paymentSourceId: String?,
+                         creditCardId: String) -> Bool {
+  guard let paymentId = paymentSourceId else { return true }
+
+  if erroredPledge == false {
+    return true
+  } else if erroredPledge == true && paymentId == creditCardId {
+    return false
+  }
+
+  return true
 }

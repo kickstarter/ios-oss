@@ -208,6 +208,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         self?.goToChangePaymentMethod(project: project, reward: reward)
       }
 
+    self.viewModel.outputs.goToFixPaymentMethod
+      .observeForControllerAction()
+      .observeValues { [weak self] project, reward in
+        self?.goToFixPaymentMethod(project: project, reward: reward)
+      }
+
     self.viewModel.outputs.goToContactCreator
       .observeForControllerAction()
       .observeValues { [weak self] messageSubject, context in
@@ -394,6 +400,14 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   private func goToChangePaymentMethod(project: Project, reward: Reward) {
     let vc = PledgeViewController.instantiate()
     vc.configureWith(project: project, reward: reward, refTag: nil, context: .changePaymentMethod)
+    vc.delegate = self
+
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  private func goToFixPaymentMethod(project: Project, reward: Reward) {
+    let vc = PledgeViewController.instantiate()
+    vc.configureWith(project: project, reward: reward, refTag: nil, context: .fix)
     vc.delegate = self
 
     self.navigationController?.pushViewController(vc, animated: true)
