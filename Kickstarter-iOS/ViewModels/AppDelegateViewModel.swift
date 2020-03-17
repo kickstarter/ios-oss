@@ -1095,7 +1095,7 @@ private func qualtricsConfigData() -> QualtricsConfigData {
   )
 }
 
-private func shouldSeeCategoryPersonalization() -> Bool { return true
+private func shouldSeeCategoryPersonalization() -> Bool {
   let isLoggedIn = AppEnvironment.current.currentUser != nil
   let hasSeenCategoryPersonalization = AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow
 
