@@ -21,16 +21,11 @@ public protocol CuratedProjectsViewModelType {
 public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, CuratedProjectsViewModelInputs,
   CuratedProjectsViewModelOutputs {
   public init() {
-    let projectsPerCategory = self.categoriesSignal
-      .map(\.count)
-      .map { Int(floor(Float(30 / $0))) }
 
     let curatedProjects: Signal<[Project], Never> = self.categoriesSignal
-      .combineLatest(with: projectsPerCategory)
       .takeWhen(self.viewDidLoadSignal.ignoreValues())
-      .flatMap { (arg) -> SignalProducer<[Project], Never> in
-        let (categories, perPage) = arg
-        return projects(from: categories, perPage: perPage)
+      .flatMap { categories in
+        return projects(from: categories)
       }
 
     self.loadProjects = curatedProjects
@@ -60,19 +55,22 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
   public var outputs: CuratedProjectsViewModelOutputs { return self }
 }
 
-private func projects(from categories: [KsApi.Category], perPage: Int)
+private func projects(from categories: [KsApi.Category])
   -> SignalProducer<[Project], Never> {
-  return SignalProducer.concat(producers(from: categories, perPage: perPage))
+  return SignalProducer.concat(producers(from: categories))
     .map { $0.compactMap { $0 } }
 }
 
-private func producers(from categories: [KsApi.Category], perPage: Int)
+private func producers(from categories: [KsApi.Category])
   -> [SignalProducer<[Project], Never>] {
+
+  let projectsPerCategory = Int(floor(Float(30 / categories.count)))
+
   return categories.map { category in
 
     let params = DiscoveryParams.defaults
       |> DiscoveryParams.lens.category .~ category
-      |> DiscoveryParams.lens.perPage .~ perPage
+      |> DiscoveryParams.lens.perPage .~ projectsPerCategory
 
     return AppEnvironment.current.apiService.fetchDiscovery(params: params)
       .map { $0.projects }
