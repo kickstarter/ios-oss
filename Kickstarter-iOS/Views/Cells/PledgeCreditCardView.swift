@@ -37,7 +37,8 @@ final class PledgeCreditCardView: UIView {
   private let fixIconView: UIView = { UIView(frame: .zero) }()
 
   private let fixIconImageView: UIImageView = {
-    UIImageView(image: image(named: "fix-icon", inBundle: Bundle.framework))
+    UIImageView(frame: .zero)
+      |> \.image .~ image(named: "fix-icon", inBundle: Bundle.framework)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
