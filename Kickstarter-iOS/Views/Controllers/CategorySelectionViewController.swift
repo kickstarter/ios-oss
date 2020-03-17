@@ -20,10 +20,10 @@ public final class CategorySelectionViewController: UIViewController {
       collectionViewLayout: self.pillLayout
     )
       |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
-      |> \.contentInset .~ .init(top: Styles.grid(2))
       |> \.dataSource .~ self.dataSource
       |> \.delegate .~ self
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.allowsSelection .~ false
   }()
 
   private let dataSource = CategorySelectionDataSource()
@@ -35,8 +35,8 @@ public final class CategorySelectionViewController: UIViewController {
 
   private lazy var pillLayout: PillLayout = {
     let layout = PillLayout(
-      minimumInteritemSpacing: Styles.grid(1),
-      minimumLineSpacing: Styles.grid(1),
+      minimumInteritemSpacing: Styles.grid(2),
+      minimumLineSpacing: Styles.grid(2),
       sectionInset: .init(
         top: Styles.grid(1),
         left: Styles.grid(3),
@@ -76,12 +76,14 @@ public final class CategorySelectionViewController: UIViewController {
 
     self.navigationController?.setNavigationBarHidden(false, animated: false)
 
-    self.collectionView.registerCellClass(PillCell.self)
+    self.collectionView.registerCellClass(CategoryPillCell.self)
     self.collectionView.register(
       CategoryCollectionViewSectionHeaderView.self,
       forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
       withReuseIdentifier: CategoryCollectionViewSectionHeaderView.defaultReusableId
     )
+
+    self.dataSource.collectionView = self.collectionView
 
     self.continueButton.addTarget(
       self, action: #selector(CategorySelectionViewController.continueButtonTapped),
@@ -124,10 +126,17 @@ public final class CategorySelectionViewController: UIViewController {
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
+    self.headerView.layoutIfNeeded()
+
     let bottomSafeAreaInset = self.view.safeAreaInsets.bottom
+    let topSafeAreaInset = self.view.safeAreaInsets.top
     let bottomInset = self.buttonView.frame.height - bottomSafeAreaInset
+    let topInset = self.headerView.frame.height - topSafeAreaInset + Styles.grid(2) // collection view's inset
+
     self.collectionView.contentInset.bottom = bottomInset
+    self.collectionView.contentInset.top = topInset
     self.collectionView.scrollIndicatorInsets.bottom = bottomInset
+    self.collectionView.scrollIndicatorInsets.top = topInset
   }
 
   public override func bindViewModel() {
@@ -150,10 +159,11 @@ public final class CategorySelectionViewController: UIViewController {
   }
 
   private func configureSubviews() {
-    _ = (self.headerView, self.view)
-      |> ksr_addSubviewToParent()
-
     _ = (self.collectionView, self.view)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.headerView, self.view)
       |> ksr_addSubviewToParent()
 
     _ = (self.buttonView, self.view)
@@ -170,10 +180,6 @@ public final class CategorySelectionViewController: UIViewController {
       self.headerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.headerView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-      self.collectionView.topAnchor.constraint(equalTo: self.headerView.bottomAnchor),
-      self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-      self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.buttonView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.buttonView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.buttonView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
@@ -188,6 +194,25 @@ public final class CategorySelectionViewController: UIViewController {
 
   @objc func continueButtonTapped() {
     self.viewModel.inputs.continueButtonTapped()
+  }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension CategorySelectionViewController: UICollectionViewDelegate {
+  public func collectionView(
+    _: UICollectionView,
+    willDisplay cell: UICollectionViewCell,
+    forItemAt index: IndexPath
+  ) {
+    guard let pillCell = cell as? CategoryPillCell else { return }
+
+    _ = pillCell
+      |> \.delegate .~ self
+
+    let shouldSelect = self.viewModel.outputs.shouldSelectCell(at: index)
+
+    pillCell.setIsSelected(shouldSelect)
   }
 }
 
@@ -214,16 +239,15 @@ extension CategorySelectionViewController: UICollectionViewDelegateFlowLayout {
   }
 }
 
-extension CategorySelectionViewController: UICollectionViewDelegate {
-  public func collectionView(
-    _ collectionView: UICollectionView,
-    willDisplay cell: UICollectionViewCell,
-    forItemAt _: IndexPath
-  ) {
-    guard let pillCell = cell as? PillCell else { return }
+// MARK: - CategoryPillCellDelegate
 
-    _ = pillCell.label
-      |> \.preferredMaxLayoutWidth .~ collectionView.bounds.width
+extension CategorySelectionViewController: CategoryPillCellDelegate {
+  func categoryPillCell(_ cell: CategoryPillCell, didTapAtIndex index: IndexPath) {
+    self.viewModel.inputs.categorySelected(at: index)
+
+    let shouldSelectCell = self.viewModel.outputs.shouldSelectCell(at: index)
+
+    cell.setIsSelected(shouldSelectCell)
   }
 }
 

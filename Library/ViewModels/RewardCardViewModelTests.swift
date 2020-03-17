@@ -20,7 +20,6 @@ final class RewardCardViewModelTests: TestCase {
   private let items = TestObserver<[String], Never>()
   private let pillCollectionViewHidden = TestObserver<Bool, Never>()
   private let reloadPills = TestObserver<[String], Never>()
-  private let reloadPillsStyle = TestObserver<PillCellStyle, Never>()
   private let rewardMinimumLabelText = TestObserver<String, Never>()
   private let rewardSelected = TestObserver<Int, Never>()
   private let rewardTitleLabelHidden = TestObserver<Bool, Never>()
@@ -38,10 +37,7 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.outputs.includedItemsStackViewHidden.observe(self.includedItemsStackViewHidden.observer)
     self.vm.outputs.items.observe(self.items.observer)
     self.vm.outputs.pillCollectionViewHidden.observe(self.pillCollectionViewHidden.observer)
-    self.vm.outputs.reloadPills.map { $0.map(first) }.observe(self.reloadPills.observer)
-    // all pills in the array have the same style, so we can just test the first one
-    self.vm.outputs.reloadPills.map { $0.map(second).first }.skipNil()
-      .observe(self.reloadPillsStyle.observer)
+    self.vm.outputs.reloadPills.observe(self.reloadPills.observer)
     self.vm.outputs.rewardMinimumLabelText.observe(self.rewardMinimumLabelText.observer)
     self.vm.outputs.rewardSelected.observe(self.rewardSelected.observer)
     self.vm.outputs.rewardTitleLabelHidden.observe(self.rewardTitleLabelHidden.observer)
@@ -735,7 +731,6 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       ["25 left of 100"]
     ])
-    self.reloadPillsStyle.assertValues([.green])
   }
 
   func testPillsLimitedReward_HasBackers() {
@@ -769,7 +764,6 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       ["25 backers"]
     ])
-    self.reloadPillsStyle.assertValues([.green])
   }
 
   func testPillsTimebasedReward_24hrs() {
@@ -788,7 +782,6 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       ["24 hrs left"]
     ])
-    self.reloadPillsStyle.assertValues([.green])
   }
 
   func testPillsTimebasedReward_4days() {
@@ -809,7 +802,6 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       ["4 days left"]
     ])
-    self.reloadPillsStyle.assertValues([.green])
   }
 
   func testPillsTimebasedAndLimitedReward() {
@@ -830,7 +822,6 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       ["4 days left", "75 left of 100"]
     ])
-    self.reloadPillsStyle.assertValues([.green])
   }
 
   func testPillsTimebasedAndLimitedReward_ShippingEnabled_Worldwide() {
@@ -856,7 +847,6 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       ["4 days left", "75 left of 100", "Ships worldwide"]
     ])
-    self.reloadPillsStyle.assertValues([.green])
   }
 
   func testPillsTimebasedAndLimitedReward_ShippingEnabled_SingleLocation() {
@@ -883,7 +873,6 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       ["4 days left", "75 left of 100", "United States only"]
     ])
-    self.reloadPillsStyle.assertValues([.green])
   }
 
   func testPillsTimebasedAndLimitedReward_ShippingEnabled_MultipleLocations() {
@@ -909,7 +898,6 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       ["4 days left", "75 left of 100", "Limited shipping"]
     ])
-    self.reloadPillsStyle.assertValues([.green])
   }
 
   func testPillsTimebasedAndLimitedReward_ShippingEnabled_Available_HasBackers() {
@@ -938,7 +926,6 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       ["4 days left", "25 left of 100", "Ships worldwide"]
     ])
-    self.reloadPillsStyle.assertValues([.green])
   }
 
   func testPillsTimebasedAndLimitedReward_ShippingEnabled_Unavailable_HasBackers() {
@@ -967,7 +954,6 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       ["50 backers", "Ships worldwide"]
     ])
-    self.reloadPillsStyle.assertValues([.green])
   }
 
   func testPillsTimebasedAndLimitedReward_ShippingEnabled_NonLive() {
@@ -994,7 +980,6 @@ final class RewardCardViewModelTests: TestCase {
 
     self.pillCollectionViewHidden.assertValues([true])
     self.reloadPills.assertValues([[]])
-    self.reloadPillsStyle.assertDidNotEmitValue()
   }
 
   func testPillsTimebasedAndLimitedReward_NonLiveProject() {
@@ -1016,7 +1001,6 @@ final class RewardCardViewModelTests: TestCase {
 
     self.pillCollectionViewHidden.assertValues([true])
     self.reloadPills.assertValues([[]])
-    self.reloadPillsStyle.assertDidNotEmitValue()
   }
 
   func testPillsTimebasedAndLimitedReward_Unavailable_NoBackers() {
@@ -1033,7 +1017,6 @@ final class RewardCardViewModelTests: TestCase {
 
     self.pillCollectionViewHidden.assertValues([true])
     self.reloadPills.assertValues([[]])
-    self.reloadPillsStyle.assertDidNotEmitValue()
   }
 
   func testPillsNonLimitedReward() {
@@ -1049,7 +1032,6 @@ final class RewardCardViewModelTests: TestCase {
 
     self.pillCollectionViewHidden.assertValues([true])
     self.reloadPills.assertValues([[]])
-    self.reloadPillsStyle.assertDidNotEmitValue()
   }
 
   func testPillsLimitedReward_LiveProject_HasBackers() {
@@ -1068,7 +1050,6 @@ final class RewardCardViewModelTests: TestCase {
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([["50 left of 100"]])
-    self.reloadPillsStyle.assertValues([.green])
   }
 
   func testPillsLimitedReward_NonLiveProject_HasBackers() {
@@ -1087,6 +1068,5 @@ final class RewardCardViewModelTests: TestCase {
 
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([["50 backers"]])
-    self.reloadPillsStyle.assertValues([.green])
   }
 }

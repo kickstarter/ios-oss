@@ -126,14 +126,6 @@ final class CuratedProjectsViewController: UIViewController {
 
 // MARK: - Styles
 
-private let tableViewStyle: TableViewStyle = { view in
-  view
-    |> \.backgroundColor .~ .white
-    |> \.separatorStyle .~ .none
-    |> \.rowHeight .~ UITableView.automaticDimension
-    |> \.estimatedRowHeight .~ 550
-}
-
 private let doneButtonStyle: BarButtonStyle = { button in
   button
     |> \.tintColor .~ .white
@@ -142,4 +134,12 @@ private let doneButtonStyle: BarButtonStyle = { button in
 private let headerViewStyle: ViewStyle = { view in
   view
     |> \.layoutMargins .~ .init(all: Styles.grid(3))
+}
+
+private let tableViewStyle: TableViewStyle = { view in
+  view
+    |> \.backgroundColor .~ .white
+    |> \.separatorStyle .~ .none
+    |> \.rowHeight .~ UITableView.automaticDimension
+    |> \.estimatedRowHeight .~ 550
 }

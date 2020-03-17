@@ -37,6 +37,7 @@ final class CategorySelectionHeaderView: UIView {
     super.bindStyles()
 
     _ = self
+      |> \.clipsToBounds .~ true
       |> \.backgroundColor .~ UIColor.ksr_trust_700
 
     _ = self.rootStackView

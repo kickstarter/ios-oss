@@ -25,7 +25,7 @@ extension KsApi.Category {
     |> \.subcategories
     .~ Category.SubcategoryConnection(totalCount: 1, nodes: [.illustration])
 
-  public static let filmAndVideo = Category.template
+  internal static let filmAndVideo = Category.template
     |> \.id .~ ID.film
     |> \.name .~ Name.film
     |> \.subcategories
