@@ -21,6 +21,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let goToChangePaymentMethodReward = TestObserver<Reward, Never>()
   private let goToContactCreatorSubject = TestObserver<MessageSubject, Never>()
   private let goToContactCreatorContext = TestObserver<Koala.MessageDialogContext, Never>()
+  private let goToFixPaymentMethodProject = TestObserver<Project, Never>()
+  private let goToFixPaymentMethodReward = TestObserver<Reward, Never>()
   private let goToRewards = TestObserver<Project, Never>()
   private let goToUpdatePledgeProject = TestObserver<Project, Never>()
   private let goToUpdatePledgeReward = TestObserver<Reward, Never>()
@@ -52,6 +54,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.outputs.goToChangePaymentMethod.map(second).observe(self.goToChangePaymentMethodReward.observer)
     self.vm.outputs.goToContactCreator.map(first).observe(self.goToContactCreatorSubject.observer)
     self.vm.outputs.goToContactCreator.map(second).observe(self.goToContactCreatorContext.observer)
+    self.vm.outputs.goToFixPaymentMethod.map(first).observe(self.goToFixPaymentMethodProject.observer)
+    self.vm.outputs.goToFixPaymentMethod.map(second).observe(self.goToFixPaymentMethodReward.observer)
     self.vm.outputs.goToRewards.observe(self.goToRewards.observer)
     self.vm.outputs.goToUpdatePledge.map(first).observe(self.goToUpdatePledgeProject.observer)
     self.vm.outputs.goToUpdatePledge.map(second).observe(self.goToUpdatePledgeReward.observer)
@@ -593,7 +597,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     self.vm.inputs.fixButtonTapped()
 
-    self.goToChangePaymentMethodProject.assertValues([project])
-    self.goToChangePaymentMethodReward.assertValues([reward])
+    self.goToFixPaymentMethodProject.assertValues([project])
+    self.goToFixPaymentMethodReward.assertValues([reward])
   }
 }

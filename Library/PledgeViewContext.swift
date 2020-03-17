@@ -86,7 +86,7 @@ public enum PledgeViewContext {
 
   var title: String {
     switch self {
-    case .fix: return Strings.Fix_your_payment_method() // todo - remove "your"
+    case .fix: return "Fix payment method"
     case .pledge: return Strings.Back_this_project()
     case .update, .updateReward: return Strings.Update_pledge()
     case .changePaymentMethod: return Strings.Change_payment_method()
