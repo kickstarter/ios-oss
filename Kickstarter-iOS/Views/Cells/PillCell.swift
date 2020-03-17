@@ -19,6 +19,7 @@ final class PillCell: UICollectionViewCell, ValueCell {
     super.init(frame: frame)
 
     self.configureSubviews()
+    self.bindStyles()
     self.bindViewModel()
   }
 
@@ -43,14 +44,12 @@ final class PillCell: UICollectionViewCell, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.contentView.rac.backgroundColor = self.viewModel.outputs.backgroundColor
     self.label.rac.text = self.viewModel.outputs.text
-    self.label.rac.textColor = self.viewModel.outputs.textColor
   }
 
   // MARK: - Configuration
 
-  func configureWith(value: (String, PillCellStyle)) {
+  func configureWith(value: String) {
     self.viewModel.inputs.configure(with: value)
   }
 
@@ -69,10 +68,12 @@ private let contentViewStyle: ViewStyle = { view in
   view
     |> checkoutRoundedCornersStyle
     |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3))
+    |> \.backgroundColor .~ UIColor.ksr_green_500.withAlphaComponent(0.06)
 }
 
 private let labelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_footnote().bolded
     |> \.numberOfLines .~ 0
+    |> \.textColor .~ UIColor.ksr_green_500
 }

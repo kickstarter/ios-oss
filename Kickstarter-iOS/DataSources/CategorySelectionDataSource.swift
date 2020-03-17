@@ -5,21 +5,38 @@ import UIKit
 
 internal final class CategorySelectionDataSource: ValueCellDataSource {
   private var categorySectionTitles: [String] = []
-  func load(_ sectionTitles: [String], categories: [[(String, PillCellStyle)]]) {
+
+  weak var collectionView: UICollectionView?
+
+  func load(_ sectionTitles: [String], categories: [[String]]) {
     self.categorySectionTitles = sectionTitles
 
-    for (index, subcategories) in categories.enumerated() {
-      self.set(values: subcategories, cellClass: PillCell.self, inSection: index)
+    for (section, subcategories) in categories.enumerated() {
+      let indexedSubcategories = subcategories.enumerated().map { index, value in
+        (value, IndexPath(item: index, section: section))
+      }
+
+      self.set(values: indexedSubcategories, cellClass: CategoryPillCell.self, inSection: section)
     }
   }
 
   override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as PillCell, value as (String, PillCellStyle)):
+    case let (cell as CategoryPillCell, value as (String, IndexPath?)):
       cell.configureWith(value: value)
+
+      self.configureCellWidth(cell)
     default:
       assertionFailure("Unrecognized (cell, value) combo.")
     }
+  }
+
+  private func configureCellWidth(_ cell: CategoryPillCell) {
+    guard let collectionView = self.collectionView else { return }
+    let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
+    let leftRightInsets = (layout?.sectionInset.left ?? 0) + (layout?.sectionInset.right ?? 0)
+
+    cell.buttonWidthConstraint?.constant = collectionView.bounds.width - leftRightInsets
   }
 
   public func collectionView(

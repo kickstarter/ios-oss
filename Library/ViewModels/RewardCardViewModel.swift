@@ -17,7 +17,7 @@ public protocol RewardCardViewModelOutputs {
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
   var items: Signal<[String], Never> { get }
   var pillCollectionViewHidden: Signal<Bool, Never> { get }
-  var reloadPills: Signal<[(String, PillCellStyle)], Never> { get }
+  var reloadPills: Signal<[String], Never> { get }
   var rewardMinimumLabelText: Signal<String, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
   var rewardTitleLabelHidden: Signal<Bool, Never> { get }
@@ -138,7 +138,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let items: Signal<[String], Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
   public let pillCollectionViewHidden: Signal<Bool, Never>
-  public let reloadPills: Signal<[(String, PillCellStyle)], Never>
+  public let reloadPills: Signal<[String], Never>
   public let rewardMinimumLabelText: Signal<String, Never>
   public let rewardSelected: Signal<Int, Never>
   public let rewardTitleLabelHidden: Signal<Bool, Never>
@@ -202,14 +202,13 @@ private func rewardTitle(project: Project, reward: Reward) -> String {
   return reward.title.coalesceWith("")
 }
 
-private func pillValues(project: Project, reward: Reward) -> [(String, PillCellStyle)] {
+private func pillValues(project: Project, reward: Reward) -> [String] {
   return [
     timeLeftString(project: project, reward: reward),
     backerCountOrRemainingString(project: project, reward: reward),
     shippingSummaryString(project: project, reward: reward)
   ]
   .compact()
-  .map { ($0, PillCellStyle.green) }
 }
 
 private func timeLeftString(project: Project, reward: Reward) -> String? {
