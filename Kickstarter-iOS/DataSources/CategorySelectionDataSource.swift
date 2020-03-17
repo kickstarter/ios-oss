@@ -8,14 +8,14 @@ internal final class CategorySelectionDataSource: ValueCellDataSource {
 
   weak var collectionView: UICollectionView?
 
-  func load(_ sectionTitles: [String], categories: [[(String, Int)]]) {
+  func load(_ sectionTitles: [String], categories: [[CategorySectionData]]) {
     self.categorySectionTitles = sectionTitles
 
     for (section, subcategories) in categories.enumerated() {
       let indexedSubcategories = subcategories.enumerated().map { index, value in
         CategoryPillCellValue(
-          name: value.0,
-          id: value.1,
+          name: value.name,
+          id: value.id,
           indexPath: IndexPath(item: index, section: section)
         )
       }

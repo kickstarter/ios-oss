@@ -3,6 +3,8 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias CategorySectionData = (name: String, id: Int)
+
 public protocol CategorySelectionViewModelInputs {
   func categorySelected(with value: (IndexPath, Int))
   func continueButtonTapped()
@@ -13,7 +15,7 @@ public protocol CategorySelectionViewModelOutputs {
   var continueButtonEnabled: Signal<Bool, Never> { get }
   var goToCuratedProjects: Signal<[Int], Never> { get }
   // A tuple of Section Titles: [String], and Categories Section Data (Name and Id): [[String, Int]]
-  var loadCategorySections: Signal<([String], [[(String, Int)]]), Never> { get }
+  var loadCategorySections: Signal<([String], [[CategorySectionData]]), Never> { get }
   func shouldSelectCell(at index: IndexPath) -> Bool
   var warningLabelIsHidden: Signal<Bool, Never> { get }
 }
@@ -103,7 +105,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
 
   public let continueButtonEnabled: Signal<Bool, Never>
   public let goToCuratedProjects: Signal<[Int], Never>
-  public let loadCategorySections: Signal<([String], [[(String, Int)]]), Never>
+  public let loadCategorySections: Signal<([String], [[CategorySectionData]]), Never>
   public let warningLabelIsHidden: Signal<Bool, Never>
 
   public var inputs: CategorySelectionViewModelInputs { return self }
