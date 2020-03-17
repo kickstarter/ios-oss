@@ -16,6 +16,12 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the editioral cell is tapped
   func discoveryEditorialCellTapped(with tagId: DiscoveryParams.TagID)
 
+  /// Call when the personalization cell is tapped
+  func personalizationCellTapped()
+
+  /// Call when the personalization cell dismiss button is tapped
+  func personalizationCellDismissTapped()
+
   /// Call when the user pulls tableView to refresh
   func pulledToRefresh()
 
@@ -71,8 +77,14 @@ public protocol DiscoveryPageViewModelOutputs {
 
   var configureEditorialTableViewHeader: Signal<String, Never> { get }
 
+  /// Emits when the personalization cell should be deleted
+  var dismissPersonalizationCell: Signal<Void, Never> { get }
+
   /// Emits a project and ref tag that we should go to from the activity sample.
   var goToActivityProject: Signal<(Project, RefTag), Never> { get }
+
+  /// Emits an array of categoryIds used to generate a curated list of projects
+  var goToCuratedProjects: Signal<[Int], Never> { get }
 
   /// Emits a refTag for the editorial project list
   var goToEditorialProjectList: Signal<DiscoveryParams.TagID, Never> { get }
@@ -112,6 +124,9 @@ public protocol DiscoveryPageViewModelOutputs {
 
   /// Emits a boolean that determines of the onboarding should be shown.
   var showOnboarding: Signal<Bool, Never> { get }
+
+  /// Emits to show the personalization section
+  var showPersonalization: Signal<Void, Never> { get }
 }
 
 public protocol DiscoveryPageViewModelType {
@@ -351,6 +366,16 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         )
       }.skipRepeats()
 
+    // TODO: listen for notification for optimizely configuration?
+    self.showPersonalization = editorialHeaderShouldShow
+      .filter(isTrue).ignoreValues()
+      .filter(shouldShowPersonalization)
+
+    self.goToCuratedProjects = self.personalizationCellTappedProperty.signal
+      .map(cachedCategoryIds)
+
+    self.dismissPersonalizationCell = self.personalizationCellDismissTappedProperty.signal
+
     self.goToEditorialProjectList = self.discoveryEditorialCellTappedWithValueProperty.signal
       .skipNil()
 
@@ -395,6 +420,16 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     = MutableProperty<DiscoveryParams.TagID?>(nil)
   public func discoveryEditorialCellTapped(with tagId: DiscoveryParams.TagID) {
     self.discoveryEditorialCellTappedWithValueProperty.value = tagId
+  }
+
+  fileprivate let personalizationCellTappedProperty = MutableProperty(())
+  public func personalizationCellTapped() {
+    self.personalizationCellTappedProperty.value = ()
+  }
+
+  fileprivate let personalizationCellDismissTappedProperty = MutableProperty(())
+  public func personalizationCellDismissTapped() {
+    self.personalizationCellDismissTappedProperty.value = ()
   }
 
   fileprivate let pulledToRefreshProperty = MutableProperty(())
@@ -470,7 +505,9 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let activitiesForSample: Signal<[Activity], Never>
   public let asyncReloadData: Signal<Void, Never>
   public let configureEditorialTableViewHeader: Signal<String, Never>
+  public let dismissPersonalizationCell: Signal<Void, Never>
   public let goToActivityProject: Signal<(Project, RefTag), Never>
+  public let goToCuratedProjects: Signal<[Int], Never>
   public let goToEditorialProjectList: Signal<DiscoveryParams.TagID, Never>
   public let goToLoginSignup: Signal<LoginIntent, Never>
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never>
@@ -484,6 +521,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let showEditorialHeader: Signal<DiscoveryEditorialCellValue?, Never>
   public let showEmptyState: Signal<EmptyState, Never>
   public let showOnboarding: Signal<Bool, Never>
+  public let showPersonalization: Signal<Void, Never>
 
   public var inputs: DiscoveryPageViewModelInputs { return self }
   public var outputs: DiscoveryPageViewModelOutputs { return self }
@@ -497,6 +535,34 @@ private func saveSeen(activities: [Activity]) {
   activities.forEach { activity in
     AppEnvironment.current.userDefaults.lastSeenActivitySampleId = activity.id
   }
+}
+
+private func shouldShowPersonalization() -> Bool {
+  guard AppEnvironment.current.userDefaults.hasCompletedCategoryPersonalizationFlow
+    && !AppEnvironment.current.userDefaults.hasDismissedPersonalizationCard else {
+    return false
+  }
+
+  let userAttributes = optimizelyUserAttributes()
+  let variant = AppEnvironment.current.optimizelyClient?
+    .variant(for: .onboardingCategoryPersonalizationFlow,
+             userId: deviceIdentifier(uuid: UUID()),
+             isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
+             userAttributes: userAttributes)
+
+  switch variant {
+  case .control:
+  return false
+  case .variant1:
+  return true
+  default:
+  return false
+  }
+}
+
+private func cachedCategoryIds() -> [Int] {
+  // TODO: retrieve cached values
+  return []
 }
 
 private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {

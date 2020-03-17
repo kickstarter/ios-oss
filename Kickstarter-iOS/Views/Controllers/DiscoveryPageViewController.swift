@@ -184,10 +184,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] projects, params in
         self?.dataSource.load(projects: projects, params: params)
-
-        // temp loading of personalization card
-        self?.dataSource.showPersonalization(true)
-
         self?.tableView.reloadData()
         self?.updateProjectPlaylist(projects)
       }
@@ -207,6 +203,27 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
+    self.viewModel.outputs.showPersonalization
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.dataSource.showPersonalization(true)
+
+        let index = IndexSet(integer: DiscoveryProjectsDataSource.Section.personalization.rawValue)
+        self?.tableView.reloadSections(index,
+                                       with: .automatic)
+    }
+
+    self.viewModel.outputs.dismissPersonalizationCell
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.dataSource.showPersonalization(false)
+
+        let section = DiscoveryProjectsDataSource.Section.personalization.rawValue
+        self?.tableView.beginUpdates()
+        self?.tableView.deleteRows(at: [IndexPath(row: 0, section: section)], with: .automatic)
+        self?.tableView.endUpdates()
+    }
+
     self.viewModel.outputs.setScrollsToTop
       .observeForUI()
       .observeValues { [weak self] in
@@ -216,9 +233,9 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.viewModel.outputs.scrollToProjectRow
       .observeForUI()
       .observeValues { [weak self] row in
-        guard let _self = self else { return }
-        _self.tableView.scrollToRow(
-          at: _self.dataSource.indexPath(forProjectRow: row),
+        guard let self = self else { return }
+        self.tableView.scrollToRow(
+          at: self.dataSource.indexPath(forProjectRow: row),
           at: .top,
           animated: false
         )
@@ -292,6 +309,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
     } else if let cell = cell as? DiscoveryOnboardingCell, cell.delegate == nil {
       cell.delegate = self
     } else if let cell = cell as? DiscoveryEditorialCell {
+      cell.delegate = self
+    } else if let cell = cell as? PersonalizationCell {
       cell.delegate = self
     }
 
@@ -451,6 +470,18 @@ extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
 extension DiscoveryPageViewController: DiscoveryEditorialCellDelegate {
   func discoveryEditorialCellTapped(_: DiscoveryEditorialCell, tagId: DiscoveryParams.TagID) {
     self.viewModel.inputs.discoveryEditorialCellTapped(with: tagId)
+  }
+}
+
+// MARK: - PersonalizationCellDelegate
+
+extension DiscoveryPageViewController: PersonalizationCellDelegate {
+  func personalizationCellTapped(_ cell: PersonalizationCell) {
+
+  }
+
+  func personalizationCellDidTapDismiss(_ cell: PersonalizationCell) {
+
   }
 }
 

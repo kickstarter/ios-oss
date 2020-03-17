@@ -56,7 +56,7 @@ public func optimizelyTrackingAttributesAndEventTags(
 }
 
 public func optimizelyUserAttributes(
-  with user: User? = nil,
+  with user: User? = AppEnvironment.current.currentUser,
   project: Project? = nil,
   refTag: RefTag? = nil
 ) -> [String: Any] {

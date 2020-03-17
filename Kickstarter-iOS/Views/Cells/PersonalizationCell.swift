@@ -9,7 +9,7 @@ protocol PersonalizationCellDelegate: AnyObject {
     _ cell: PersonalizationCell
   )
 
-  func personalizationCellDidTapRemove(_ cell: PersonalizationCell)
+  func personalizationCellDidTapDismiss(_ cell: PersonalizationCell)
 }
 
 final class PersonalizationCell: UITableViewCell, ValueCell {
@@ -29,14 +29,14 @@ final class PersonalizationCell: UITableViewCell, ValueCell {
 
   private let subtitleLabel = UILabel(frame: .zero)
   private let titleLabel = UILabel(frame: .zero)
-  private let removeButton = {
+  private let dismissButton = {
     UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private let rootStackView = { UIStackView(frame: .zero) }()
 
-  private let viewModel: DiscoveryEditorialViewModelType = DiscoveryEditorialViewModel()
+  private let viewModel: PersonalizationCellViewModelType = PersonalizationCellViewModel()
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -60,6 +60,14 @@ final class PersonalizationCell: UITableViewCell, ValueCell {
 
         self.delegate?.personalizationCellTapped(self)
       }
+
+    self.viewModel.outputs.notifyDelegateDismissButtonTapped
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+
+        self.delegate?.personalizationCellDidTapDismiss(self)
+      }
   }
 
   override func bindStyles() {
@@ -80,13 +88,13 @@ final class PersonalizationCell: UITableViewCell, ValueCell {
       |> rootStackViewStyle
 
     _ = self.imageViewLeft
-      |> UIImageView.lens.contentMode .~ .scaleAspectFill
+      |> imageLeftStyle
 
     _ = self.imageViewRight
-      |> UIImageView.lens.contentMode .~ .scaleAspectFill
+      |> imageRightStyle
 
-    _ = self.removeButton
-      |> removeButtonStyle
+    _ = self.dismissButton
+      |> dismissButtonStyle
 
     _ = self.titleLabel
       |> baseLabelStyle
@@ -97,9 +105,7 @@ final class PersonalizationCell: UITableViewCell, ValueCell {
       |> subtitleLabelStyle
   }
 
-  func configureWith(value: ()) {
-//    self.viewModel.inputs.configureWith(value)
-  }
+  func configureWith(value: ()) {}
 
   // MARK: - Configuration
 
@@ -108,20 +114,20 @@ final class PersonalizationCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    _ = (self.rootStackView, self.containerView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
     _ = (self.imageViewLeft, self.containerView)
       |> ksr_addSubviewToParent()
 
     _ = (self.imageViewRight, self.containerView)
       |> ksr_addSubviewToParent()
 
+    _ = (self.rootStackView, self.containerView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
     _ = ([self.titleLabel, self.subtitleLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = (self.removeButton, self.containerView)
+    _ = (self.dismissButton, self.containerView)
       |> ksr_addSubviewToParent()
 
     let tapGestureRecognizer = UITapGestureRecognizer(
@@ -131,8 +137,8 @@ final class PersonalizationCell: UITableViewCell, ValueCell {
 
     self.containerView.addGestureRecognizer(tapGestureRecognizer)
 
-    self.removeButton
-      .addTarget(self, action: #selector(PersonalizationCell.removeButtonTapped), for: .touchUpInside)
+    self.dismissButton
+      .addTarget(self, action: #selector(PersonalizationCell.dismissButtonTapped), for: .touchUpInside)
   }
 
   private func setupConstraints() {
@@ -141,23 +147,22 @@ final class PersonalizationCell: UITableViewCell, ValueCell {
       self.imageViewLeft.topAnchor.constraint(equalTo: self.containerView.topAnchor),
       self.imageViewLeft.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor),
       self.imageViewRight.rightAnchor.constraint(equalTo: self.containerView.rightAnchor),
-      self.imageViewRight.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor),
       self.imageViewRight.topAnchor.constraint(equalTo: self.containerView.topAnchor),
-      self.removeButton.topAnchor.constraint(equalTo: self.containerView.topAnchor),
-      self.removeButton.rightAnchor.constraint(equalTo: self.containerView.rightAnchor),
-      self.removeButton.widthAnchor.constraint(equalToConstant: Styles.minTouchSize.width),
-      self.removeButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height)
+      self.dismissButton.topAnchor.constraint(equalTo: self.containerView.topAnchor),
+      self.dismissButton.rightAnchor.constraint(equalTo: self.containerView.rightAnchor),
+      self.dismissButton.widthAnchor.constraint(equalToConstant: Styles.minTouchSize.width),
+      self.dismissButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height)
     ])
   }
 
   // MARK: - Accessors
 
   @objc private func cellTapped() {
-//    self.viewModel.inputs.editorialCellTapped()
+    self.viewModel.inputs.cellTapped()
   }
 
-  @objc private func removeButtonTapped() {
-//    self.viewModel.inputs.editorialCellTapped()
+  @objc private func dismissButtonTapped() {
+    self.viewModel.inputs.dismissButtonTapped()
   }
 }
 
@@ -181,6 +186,18 @@ private let baseLabelStyle: LabelStyle = { label in
     |> \.textAlignment .~ .center
 }
 
+private let imageLeftStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.image .~ image(named: "shape-green-wave")
+  |> UIImageView.lens.contentMode .~ .scaleAspectFill
+}
+
+private let imageRightStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.image .~ image(named: "shape-purple-circle")
+    |> UIImageView.lens.contentMode .~ .scaleAspectFill
+}
+
 private let titleLabelStyle: LabelStyle = { label in
   label
   |> \.font .~ UIFont.ksr_headline().bolded
@@ -193,11 +210,11 @@ private let subtitleLabelStyle: LabelStyle = { label in
   |> \.text %~ { _ in "See what we've found >" }
 }
 
-private let removeButtonStyle: ButtonStyle = { button in
+private let dismissButtonStyle: ButtonStyle = { button in
   button
     |> \.tintColor .~ UIColor.white
     |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
-    |> UIButton.lens.accessibilityLabel %~ { _ in "Hide personalization card" }
+    |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Dismiss() }
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
