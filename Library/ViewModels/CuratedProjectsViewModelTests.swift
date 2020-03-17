@@ -39,18 +39,11 @@ final class CuratedProjectsViewModelTests: TestCase {
       let apiService = MockService(fetchDiscoveryResponse: envelope)
       withEnvironment(apiService: apiService) {
 
-        let scheduler = QueueScheduler(qos: .userInteractive, name: "com.kickstarter.ksapi", targeting: nil)
-
-
-        _ = self.viewModel.outputs.loadProjects
-          .observe(on: scheduler)
-
-
         self.viewModel.inputs.configure(with: [Category.art])
 
         self.viewModel.inputs.viewDidLoad()
 
-        self.loadProjects.assertDidEmitValue()
+        self.loadProjects.assertValue(projects)
       }
     }
 }

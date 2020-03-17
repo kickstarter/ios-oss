@@ -19,25 +19,19 @@ public protocol CuratedProjectsViewModelType {
 }
 
 public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, CuratedProjectsViewModelInputs,
-  CuratedProjectsViewModelOutputs {
+CuratedProjectsViewModelOutputs {
   public init() {
     let projectsPerCategory = self.categoriesSignal
       .map(\.count)
       .map { Int(floor(Float(30 / $0))) }
 
-    let scheduler = QueueScheduler(qos: .userInteractive, name: "com.kickstarter.ksapi", targeting: nil)
-
-
     let curatedProjects: Signal<[Project], Never> = self.categoriesSignal
       .combineLatest(with: projectsPerCategory)
       .takeWhen(self.viewDidLoadSignal.ignoreValues())
-      .observe(on: scheduler)
-      .switchMap { (arg) -> SignalProducer<[Project], Never> in
+      .flatMap { (arg) -> SignalProducer<[Project], Never> in
         let (categories, perPage) = arg
         return projects(from: categories, perPage: perPage)
-      }
-
-
+    }
 
     self.loadProjects = curatedProjects
 
@@ -68,22 +62,21 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
 
 private func projects(from categories: [KsApi.Category], perPage: Int)
   -> SignalProducer<[Project], Never> {
-  var fetchedProjects: [Project] = []
 
-  categories.forEach { category in
+    return SignalProducer.concat(producers(from: categories, perPage: perPage))
+      .map { $0.compactMap { $0 } }
+}
 
-    let params = DiscoveryParams.defaults
-      |> DiscoveryParams.lens.category .~ category
-      |> DiscoveryParams.lens.perPage .~ perPage
+private func producers(from categories: [KsApi.Category], perPage: Int)
+  -> [SignalProducer<[Project], Never>] {
+    return categories.map { category in
 
-    let projects = AppEnvironment.current.apiService.fetchDiscovery(params: params)
-      .demoteErrors()
-      .map { $0.projects }
-      .allValues()
-      .flatMap { $0 }
+      let params = DiscoveryParams.defaults
+        |> DiscoveryParams.lens.category .~ category
+        |> DiscoveryParams.lens.perPage .~ perPage
 
-    fetchedProjects.append(contentsOf: projects)
-  }
-
-  return SignalProducer(value: fetchedProjects)
+      return AppEnvironment.current.apiService.fetchDiscovery(params: params)
+        .map { $0.projects }
+        .demoteErrors(replaceErrorWith: [])
+    }
 }
