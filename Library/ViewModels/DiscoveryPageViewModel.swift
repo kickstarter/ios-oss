@@ -16,6 +16,9 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the editioral cell is tapped
   func discoveryEditorialCellTapped(with tagId: DiscoveryParams.TagID)
 
+  /// Call when the OptimizelyClient has been configured
+  func optimizelyClientConfigured()
+
   /// Call when the personalization cell is tapped
   func personalizationCellTapped()
 
@@ -126,7 +129,7 @@ public protocol DiscoveryPageViewModelOutputs {
   var showOnboarding: Signal<Bool, Never> { get }
 
   /// Emits to show the personalization section
-  var showPersonalization: Signal<Void, Never> { get }
+  var showPersonalization: Signal<Bool, Never> { get }
 }
 
 public protocol DiscoveryPageViewModelType {
@@ -366,15 +369,26 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         )
       }.skipRepeats()
 
-    // TODO: listen for notification for optimizely configuration?
-    self.showPersonalization = editorialHeaderShouldShow
-      .filter(isTrue).ignoreValues()
-      .filter(shouldShowPersonalization)
+    // MARK: Personalization Callout Card
+
+    self.showPersonalization = Signal.combineLatest(self.optimizelyClientConfiguredProperty.signal,
+                                                    editorialHeaderShouldShow)
+      .map(second)
+      .map { shouldShowHeader in
+        if shouldShowHeader {
+          return shouldShowPersonalization()
+        }
+
+        return shouldShowHeader
+      }
 
     self.goToCuratedProjects = self.personalizationCellTappedProperty.signal
       .map(cachedCategoryIds)
 
     self.dismissPersonalizationCell = self.personalizationCellDismissTappedProperty.signal
+      .on { _ in
+        AppEnvironment.current.userDefaults.hasDismissedPersonalizationCard = true
+      }
 
     self.goToEditorialProjectList = self.discoveryEditorialCellTappedWithValueProperty.signal
       .skipNil()
@@ -420,6 +434,11 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     = MutableProperty<DiscoveryParams.TagID?>(nil)
   public func discoveryEditorialCellTapped(with tagId: DiscoveryParams.TagID) {
     self.discoveryEditorialCellTappedWithValueProperty.value = tagId
+  }
+
+  fileprivate let optimizelyClientConfiguredProperty = MutableProperty(())
+  public func optimizelyClientConfigured() {
+    self.optimizelyClientConfiguredProperty.value = ()
   }
 
   fileprivate let personalizationCellTappedProperty = MutableProperty(())
@@ -521,7 +540,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let showEditorialHeader: Signal<DiscoveryEditorialCellValue?, Never>
   public let showEmptyState: Signal<EmptyState, Never>
   public let showOnboarding: Signal<Bool, Never>
-  public let showPersonalization: Signal<Void, Never>
+  public let showPersonalization: Signal<Bool, Never>
 
   public var inputs: DiscoveryPageViewModelInputs { return self }
   public var outputs: DiscoveryPageViewModelOutputs { return self }
@@ -538,10 +557,10 @@ private func saveSeen(activities: [Activity]) {
 }
 
 private func shouldShowPersonalization() -> Bool {
-  guard AppEnvironment.current.userDefaults.hasCompletedCategoryPersonalizationFlow
-    && !AppEnvironment.current.userDefaults.hasDismissedPersonalizationCard else {
-    return false
-  }
+//  guard AppEnvironment.current.userDefaults.hasCompletedCategoryPersonalizationFlow
+//    && !AppEnvironment.current.userDefaults.hasDismissedPersonalizationCard else {
+//    return false
+//  }
 
   let userAttributes = optimizelyUserAttributes()
   let variant = AppEnvironment.current.optimizelyClient?

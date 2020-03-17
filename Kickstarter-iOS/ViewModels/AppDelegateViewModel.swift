@@ -242,9 +242,13 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
       .mapConst(Notification(name: .ksr_configUpdated, object: nil))
 
+    let optimizelyClientConfiguredNotification = self.didUpdateOptimizelyClientProperty.signal
+      .mapConst(Notification(name: .ksr_optimizelyClientConfigured, object: nil))
+
     self.postNotification = Signal.merge(
       currentUserUpdatedNotification,
-      configUpdatedNotification
+      configUpdatedNotification,
+      optimizelyClientConfiguredNotification
     )
 
     let openUrl = self.applicationOpenUrlProperty.signal.skipNil()

@@ -67,10 +67,8 @@ public final class CategorySelectionViewController: UIViewController {
     _ = self
       |> baseControllerStyle()
 
-    _ = self.navigationController?.navigationBar
-      ?|> navigationBarStyle
+    self.navigationController?.configureTransparentNavigationBar()
 
-    self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
     self.navigationItem.setRightBarButton(self.skipButton, animated: false)
     self.navigationItem.setHidesBackButton(true, animated: false)
 
@@ -278,11 +276,4 @@ private let continueButtonStyle: ButtonStyle = { button in
 private let collectionViewStyle: ViewStyle = { view in
   view
     |> \.backgroundColor .~ .white
-}
-
-private let navigationBarStyle: NavigationBarStyle = { navBar in
-  navBar
-    ?|> \.backgroundColor .~ .clear
-    ?|> \.shadowImage .~ UIImage()
-    ?|> \.isTranslucent .~ true
 }

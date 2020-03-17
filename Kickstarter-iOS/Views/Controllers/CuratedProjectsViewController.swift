@@ -29,6 +29,8 @@ final class CuratedProjectsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.navigationController?.configureTransparentNavigationBar()
+
     self.navigationItem.setRightBarButton(self.doneButton, animated: false)
     self.navigationItem.hidesBackButton = true
 
