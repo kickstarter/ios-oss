@@ -692,7 +692,7 @@
       } else if let response = self.fetchGraphCategoriesResponse {
         return SignalProducer(value: response)
       }
-        return SignalProducer(value: RootCategoriesEnvelope.template)
+      return SignalProducer(value: RootCategoriesEnvelope.template)
     }
 
     internal func fetchGraphCategory(query: NonEmptySet<Query>)
