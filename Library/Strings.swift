@@ -22646,6 +22646,23 @@ projets enregistrés"
     )
   }
   /**
+   "%{projects_launched_count} created • %{projects_backed_count} backed"
+
+   - **en**: "%{projects_launched_count} created • %{projects_backed_count} backed"
+   - **de**: "%{projects_launched_count} erstellt• %{projects_backed_count} unterstützt"
+   - **es**: "%{projects_launched_count} creados • %{projects_backed_count} patrocinados"
+   - **fr**: "%{projects_launched_count} projets créés • %{projects_backed_count} projets soutenus"
+   - **ja**: "%{projects_launched_count}件作成済み・%{projects_backed_count}件バック済み"
+  */
+  public static func projects_launched_count_created_projects_backed_count_backed(projects_launched_count: String, projects_backed_count: String) -> String {
+    return localizedString(
+      key: "projects_launched_count_created_projects_backed_count_backed",
+      defaultValue: "%{projects_launched_count} created • %{projects_backed_count} backed",
+      count: nil,
+      substitutions: ["projects_launched_count": projects_launched_count, "projects_backed_count": projects_backed_count]
+    )
+  }
+  /**
    "Close"
 
    - **en**: "Close"

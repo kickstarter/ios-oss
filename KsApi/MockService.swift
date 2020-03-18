@@ -91,10 +91,12 @@
     fileprivate let fetchProjectResponse: Project?
     fileprivate let fetchProjectError: ErrorEnvelope?
 
-    fileprivate let fetchProjectNotificationsResponse: [ProjectNotification]
-
     fileprivate let fetchProjectsResponse: [Project]?
     fileprivate let fetchProjectsError: ErrorEnvelope?
+
+    fileprivate let fetchProjectCreatorDetailsResult: Result<ProjectCreatorDetailsEnvelope, GraphError>?
+
+    fileprivate let fetchProjectNotificationsResponse: [ProjectNotification]
 
     fileprivate let fetchProjectStatsResponse: ProjectStatsEnvelope?
     fileprivate let fetchProjectStatsError: ErrorEnvelope?
@@ -243,10 +245,11 @@
       publishUpdateError: ErrorEnvelope? = nil,
       fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
       fetchMessageThreadsResponse: [MessageThread]? = nil,
-      fetchProjectActivitiesResponse: [Activity]? = nil,
-      fetchProjectActivitiesError: ErrorEnvelope? = nil,
       fetchProjectResponse: Project? = nil,
       fetchProjectError: ErrorEnvelope? = nil,
+      fetchProjectActivitiesResponse: [Activity]? = nil,
+      fetchProjectActivitiesError: ErrorEnvelope? = nil,
+      fetchProjectCreatorDetailsResult: Result<ProjectCreatorDetailsEnvelope, GraphError>? = nil,
       fetchProjectNotificationsResponse: [ProjectNotification]? = nil,
       fetchProjectsResponse: [Project]? = nil,
       fetchProjectsError: ErrorEnvelope? = nil,
@@ -414,6 +417,8 @@
       ]
 
       self.fetchProjectsResponse = fetchProjectsResponse ?? []
+
+      self.fetchProjectCreatorDetailsResult = fetchProjectCreatorDetailsResult
 
       self.fetchProjectsError = fetchProjectsError
 
@@ -968,6 +973,11 @@
       return .empty
     }
 
+    func fetchProjectCreatorDetails(query _: NonEmptySet<Query>)
+      -> SignalProducer<ProjectCreatorDetailsEnvelope, GraphError> {
+      return producer(for: self.fetchProjectCreatorDetailsResult)
+    }
+
     internal func fetchProjects(member _: Bool) -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
       if let error = fetchProjectsError {
         return SignalProducer(error: error)
@@ -1429,9 +1439,10 @@
             publishUpdateError: $1.publishUpdateError,
             fetchMessageThreadResult: $1.fetchMessageThreadResult,
             fetchMessageThreadsResponse: $1.fetchMessageThreadsResponse,
+            fetchProjectResponse: $1.fetchProjectResponse,
             fetchProjectActivitiesResponse: $1.fetchProjectActivitiesResponse,
             fetchProjectActivitiesError: $1.fetchProjectActivitiesError,
-            fetchProjectResponse: $1.fetchProjectResponse,
+            fetchProjectCreatorDetailsResult: $1.fetchProjectCreatorDetailsResult,
             fetchProjectNotificationsResponse: $1.fetchProjectNotificationsResponse,
             fetchProjectsResponse: $1.fetchProjectsResponse,
             fetchProjectsError: $1.fetchProjectsError,

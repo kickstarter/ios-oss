@@ -1521,6 +1521,7 @@
 "projects_count_newline_saved.other" = "%{projects_count}\nprojets enregistrés";
 "projects_count_newline_saved.two" = "2\nprojets enregistrés";
 "projects_count_newline_saved.zero" = "0\nprojets enregistrés";
+"projects_launched_count_created_projects_backed_count_backed" = "%{projects_launched_count} projets créés • %{projects_backed_count} projets soutenus";
 "push_notifications.alert.buttons.close" = "Fermer";
 "push_notifications.alert.buttons.view" = "Afficher";
 "remaining_count_left_of_limit_count" = "%{remaining_count} sur %{limit_count}";
