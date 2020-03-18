@@ -637,6 +637,25 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     deepLinkFromNotification
       .observeValues { _ in AppEnvironment.current.koala.trackNotificationOpened() }
 
+    // Optimizely tracking
+
+    self.applicationDidEnterBackgroundProperty.signal
+      .observeValues {
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+          with: AppEnvironment.current.currentUser,
+          project: nil,
+          refTag: nil
+        )
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "App Closed",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+        )
+    }
+
     self.applicationIconBadgeNumber = Signal.merge(
       self.applicationWillEnterForegroundProperty.signal,
       self.applicationLaunchOptionsProperty.signal.ignoreValues()
