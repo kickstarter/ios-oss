@@ -11,6 +11,8 @@ public protocol CategorySelectionViewModelInputs {
 public protocol CategorySelectionViewModelOutputs {
   var goToCuratedProjects: Signal<Void, Never> { get }
 
+  var isLoading: Signal<Bool, Never> { get }
+
   // A tuple of Section Titles: [String], and Categories Section Data: [[String]]
   var loadCategorySections: Signal<([String], [[String]]), Never> { get }
 
@@ -72,6 +74,12 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
       }
 
     self.goToCuratedProjects = self.continueButtonTappedProperty.signal.ignoreValues()
+
+    self.isLoading = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(true),
+      categoriesEvent.mapConst(false)
+        .skipRepeats()
+    )
   }
 
   private let categorySelectedAtIndexPathProperty = MutableProperty<IndexPath?>(nil)
@@ -98,6 +106,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
   }
 
   public let goToCuratedProjects: Signal<Void, Never>
+  public let isLoading: Signal<Bool, Never>
   public let loadCategorySections: Signal<([String], [[String]]), Never>
 
   public var inputs: CategorySelectionViewModelInputs { return self }

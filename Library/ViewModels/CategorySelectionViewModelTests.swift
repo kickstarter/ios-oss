@@ -8,6 +8,7 @@ import XCTest
 
 final class CategorySelectionViewModelTests: TestCase {
   private let goToCuratedProjects = TestObserver<Void, Never>()
+  private let isLoading = TestObserver<Bool, Never>()
   private let loadCategorySectionTitles = TestObserver<[String], Never>()
   private let loadCategorySectionData = TestObserver<[[String]], Never>()
   private let vm: CategorySelectionViewModelType = CategorySelectionViewModel()
@@ -16,6 +17,7 @@ final class CategorySelectionViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.goToCuratedProjects.observe(self.goToCuratedProjects.observer)
+    self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.loadCategorySections.map(first).observe(self.loadCategorySectionTitles.observer)
     self.vm.outputs.loadCategorySections.map(second).observe(self.loadCategorySectionData.observer)
   }
@@ -88,5 +90,24 @@ final class CategorySelectionViewModelTests: TestCase {
     self.vm.inputs.continueButtonTapped()
 
     self.goToCuratedProjects.assertValueCount(1)
+  }
+
+  func testIsLoading() {
+
+    let categoriesResponse = RootCategoriesEnvelope.init(rootCategories: [.art])
+
+    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
+
+    withEnvironment(apiService: mockService) {
+      self.isLoading.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.isLoading.assertValues([true])
+
+      self.scheduler.advance()
+
+      self.isLoading.assertValues([true, false])
+    }
   }
 }
