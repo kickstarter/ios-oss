@@ -24,7 +24,7 @@ final class CuratedProjectsViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  // MARK: - Life cycle
+  // MARK: - Lifecycle
 
   override func viewDidLoad() {
     super.viewDidLoad()
