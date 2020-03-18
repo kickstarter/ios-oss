@@ -407,7 +407,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private func goToFixPaymentMethod(project: Project, reward: Reward) {
     let vc = PledgeViewController.instantiate()
-    vc.configureWith(project: project, reward: reward, refTag: nil, context: .fix)
+    vc.configureWith(project: project, reward: reward, refTag: nil, context: .fixPaymentMethod)
     vc.delegate = self
 
     self.navigationController?.pushViewController(vc, animated: true)
