@@ -64,19 +64,22 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
 
     let selectedCategoriesCount = selectedCategoryIndexes.map { $0.count }
 
+    let shouldEnableContinueButton = selectedCategoriesCount
+      .map { $0 > 0 && $0 <= CategorySelectionViewModel.minimumCategorySelectionCount }
+
+    let shouldDisplayWarningLabel = selectedCategoriesCount
+      .map { $0 > CategorySelectionViewModel.minimumCategorySelectionCount }
+
     self.continueButtonEnabled = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(0),
-      selectedCategoriesCount
+      self.viewDidLoadProperty.signal.mapConst(false),
+      shouldEnableContinueButton
     )
-    .map { $0 > 0 && $0 <= CategorySelectionViewModel.minimumCategorySelectionCount }
     .skipRepeats()
 
     self.warningLabelIsHidden = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(0),
-      selectedCategoriesCount
+      self.viewDidLoadProperty.signal.mapConst(true),
+      shouldDisplayWarningLabel.negate()
     )
-    .map { $0 > CategorySelectionViewModel.minimumCategorySelectionCount }
-    .negate()
     .skipRepeats()
   }
 
