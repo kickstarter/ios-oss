@@ -1361,17 +1361,228 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     }
   }
 
-  func testShowPersonalization_LoggedIn() {}
+  func testShowPersonalization_LoggedIn() {
+    let mockKeyValueStore = MockKeyValueStore()
+      |> \.hasCompletedCategoryPersonalizationFlow .~ true
+      |> \.hasDismissedPersonalizationCard .~ false
 
-  func testShowPersonalization_When_HasCompletedCategorySelection_IsFalse() {}
+    let mockOpClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
 
-  func testShowPersonalization_When_HasDismissedPersonalizationCell_IsTrue() {}
+    let defaultFilter = DiscoveryParams.recommendedDefaults
 
-  func testShowPersonalization_Variant1() {}
+    withEnvironment(
+      currentUser: User.template,
+      optimizelyClient: mockOpClient,
+      userDefaults: mockKeyValueStore
+    ) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(defaultFilter)
 
-  func testShowPersonalization_Control() {}
+      self.showPersonalization.assertDidNotEmitValue("Waits for OptimizelyClient configuration")
 
-  func testDismissPersonalizationCell() {}
+      self.vm.inputs.optimizelyClientConfigured()
 
-  func testGoToCuratedProjects() {}
+      self.showPersonalization.assertValues([true])
+
+      // Change the filter
+      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.category .~ Category.art)
+      self.showPersonalization.assertValues([true, false], "Section hides on non-default filters")
+    }
+  }
+
+  func testShowPersonalization_When_HasCompletedCategorySelection_IsFalse() {
+    let mockKeyValueStore = MockKeyValueStore()
+      |> \.hasCompletedCategoryPersonalizationFlow .~ false
+      |> \.hasDismissedPersonalizationCard .~ false
+
+    let mockOpClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    let defaultFilter = DiscoveryParams.recommendedDefaults
+
+    withEnvironment(
+      currentUser: User.template,
+      optimizelyClient: mockOpClient,
+      userDefaults: mockKeyValueStore
+    ) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(defaultFilter)
+
+      self.showPersonalization.assertDidNotEmitValue("Waits for OptimizelyClient configuration")
+
+      self.vm.inputs.optimizelyClientConfigured()
+
+      self.showPersonalization.assertValues([false], "Does not show personalization section")
+    }
+  }
+
+  func testShowPersonalization_When_HasDismissedPersonalizationCell_IsTrue() {
+    let mockKeyValueStore = MockKeyValueStore()
+      |> \.hasCompletedCategoryPersonalizationFlow .~ true
+      |> \.hasDismissedPersonalizationCard .~ true
+
+    let mockOpClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    let defaultFilter = DiscoveryParams.recommendedDefaults
+
+    withEnvironment(
+      currentUser: User.template,
+      optimizelyClient: mockOpClient,
+      userDefaults: mockKeyValueStore
+    ) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(defaultFilter)
+
+      self.showPersonalization.assertDidNotEmitValue("Waits for OptimizelyClient configuration")
+
+      self.vm.inputs.optimizelyClientConfigured()
+
+      self.showPersonalization.assertValues([false], "Does not show personalization section")
+    }
+  }
+
+  func testShowPersonalization_Variant2() {
+    let mockKeyValueStore = MockKeyValueStore()
+      |> \.hasCompletedCategoryPersonalizationFlow .~ true
+      |> \.hasDismissedPersonalizationCard .~ false
+
+    let mockOpClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant2.rawValue
+      ]
+
+    let defaultFilter = DiscoveryParams.recommendedDefaults
+
+    withEnvironment(
+      currentUser: User.template,
+      optimizelyClient: mockOpClient,
+      userDefaults: mockKeyValueStore
+    ) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(defaultFilter)
+
+      self.showPersonalization.assertDidNotEmitValue("Waits for OptimizelyClient configuration")
+
+      self.vm.inputs.optimizelyClientConfigured()
+
+      self.showPersonalization.assertValues([false], "Does not show personalization section")
+    }
+  }
+
+  func testShowPersonalization_Control() {
+    let mockKeyValueStore = MockKeyValueStore()
+      |> \.hasCompletedCategoryPersonalizationFlow .~ true
+      |> \.hasDismissedPersonalizationCard .~ false
+
+    let mockOpClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.control.rawValue
+      ]
+
+    let defaultFilter = DiscoveryParams.recommendedDefaults
+
+    withEnvironment(
+      currentUser: User.template,
+      optimizelyClient: mockOpClient,
+      userDefaults: mockKeyValueStore
+    ) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(defaultFilter)
+
+      self.showPersonalization.assertDidNotEmitValue("Waits for OptimizelyClient configuration")
+
+      self.vm.inputs.optimizelyClientConfigured()
+
+      self.showPersonalization.assertValues([false], "Does not show personalization section")
+    }
+  }
+
+  func testDismissPersonalizationCell() {
+    let mockKeyValueStore = MockKeyValueStore()
+      |> \.hasCompletedCategoryPersonalizationFlow .~ true
+      |> \.hasDismissedPersonalizationCard .~ false
+
+    let mockOpClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    let defaultFilter = DiscoveryParams.recommendedDefaults
+
+    withEnvironment(
+      currentUser: User.template,
+      optimizelyClient: mockOpClient,
+      userDefaults: mockKeyValueStore
+    ) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(defaultFilter)
+      self.vm.inputs.optimizelyClientConfigured()
+
+      self.dismissPersonalizationCell.assertDidNotEmitValue()
+
+      self.vm.inputs.personalizationCellDismissTapped()
+
+      self.dismissPersonalizationCell.assertValueCount(1)
+
+      XCTAssertTrue(mockKeyValueStore.hasDismissedPersonalizationCard)
+    }
+  }
+
+  func testGoToCuratedProjects() {
+    let mockKeyValueStore = MockKeyValueStore()
+      |> \.hasCompletedCategoryPersonalizationFlow .~ true
+      |> \.hasDismissedPersonalizationCard .~ false
+
+    let mockOpClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    let defaultFilter = DiscoveryParams.recommendedDefaults
+
+    withEnvironment(
+      currentUser: User.template,
+      optimizelyClient: mockOpClient,
+      userDefaults: mockKeyValueStore
+    ) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(defaultFilter)
+      self.vm.inputs.optimizelyClientConfigured()
+
+      self.goToCuratedProjects.assertDidNotEmitValue()
+
+      self.vm.inputs.personalizationCellTapped()
+
+      self.goToCuratedProjects.assertValues([[]])
+    }
+  }
 }
