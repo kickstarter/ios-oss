@@ -1522,6 +1522,7 @@
 "projects_count_newline_saved.other" = "%{projects_count}\nguardados";
 "projects_count_newline_saved.two" = "2\nguardados";
 "projects_count_newline_saved.zero" = "0\nguardados";
+"projects_launched_count_created_projects_backed_count_backed" = "%{projects_launched_count} creados • %{projects_backed_count} patrocinados";
 "push_notifications.alert.buttons.close" = "Cerrar";
 "push_notifications.alert.buttons.view" = "Ver";
 "remaining_count_left_of_limit_count" = "%{remaining_count} restante de %{limit_count}";

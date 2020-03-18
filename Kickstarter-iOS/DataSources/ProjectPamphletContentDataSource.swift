@@ -25,10 +25,10 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     )
   }
 
-  internal func load(projectAndRefTag: (Project, RefTag?)) {
+  internal func load(data: ProjectPamphletContentData) {
     self.clearValues()
 
-    let (project, _) = projectAndRefTag
+    let (project, creatorDetails, refTag) = data
 
     if currentUserIsCreator(of: project) {
       self.set(
@@ -39,7 +39,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     }
 
     self.set(
-      values: [projectAndRefTag],
+      values: [(project, refTag, creatorDetails)],
       cellClass: ProjectPamphletMainCell.self,
       inSection: Section.main.rawValue
     )
@@ -72,7 +72,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as ProjectPamphletCreatorHeaderCell, value as Project):
       cell.configureWith(value: value)
-    case let (cell as ProjectPamphletMainCell, value as (Project, RefTag?)):
+    case let (cell as ProjectPamphletMainCell, value as (Project, RefTag?, ProjectCreatorDetailsData)):
       cell.configureWith(value: value)
     case let (cell as ProjectPamphletMinimalCell, value as Project):
       cell.configureWith(value: value)

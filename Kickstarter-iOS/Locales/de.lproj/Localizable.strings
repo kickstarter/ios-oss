@@ -1522,6 +1522,7 @@
 "projects_count_newline_saved.other" = "%{projects_count}\ngespeichert";
 "projects_count_newline_saved.two" = "2\ngespeichert";
 "projects_count_newline_saved.zero" = "0\ngespeichert";
+"projects_launched_count_created_projects_backed_count_backed" = "%{projects_launched_count} erstellt• %{projects_backed_count} unterstützt";
 "push_notifications.alert.buttons.close" = "Schließen";
 "push_notifications.alert.buttons.view" = "Anzeigen";
 "remaining_count_left_of_limit_count" = "%{remaining_count} übrig von %{limit_count}";

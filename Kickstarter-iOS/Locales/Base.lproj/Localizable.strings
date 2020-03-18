@@ -1520,6 +1520,7 @@
 "projects_count_newline_saved.other" = "%{projects_count}\nsaved";
 "projects_count_newline_saved.two" = "2\nsaved";
 "projects_count_newline_saved.zero" = "0\nsaved";
+"projects_launched_count_created_projects_backed_count_backed" = "%{projects_launched_count} created • %{projects_backed_count} backed";
 "push_notifications.alert.buttons.close" = "Close";
 "push_notifications.alert.buttons.view" = "View";
 "remaining_count_left_of_limit_count" = "%{remaining_count} left of %{limit_count}";
