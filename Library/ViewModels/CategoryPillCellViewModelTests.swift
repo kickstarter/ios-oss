@@ -9,7 +9,8 @@ import XCTest
 final class CategoryPillCellViewModelTests: TestCase {
   private let buttonTitle = TestObserver<String, Never>()
   private let isSelected = TestObserver<Bool, Never>()
-  private let notifyDelegatePillCellTapped = TestObserver<IndexPath, Never>()
+  private let notifyDelegatePillCellTappedIndexPath = TestObserver<IndexPath, Never>()
+  private let notifyDelegatePillCellTappedId = TestObserver<Int, Never>()
 
   private let vm: CategoryPillCellViewModelType = CategoryPillCellViewModel()
 
@@ -18,7 +19,10 @@ final class CategoryPillCellViewModelTests: TestCase {
 
     self.vm.outputs.buttonTitle.observe(self.buttonTitle.observer)
     self.vm.outputs.isSelected.observe(self.isSelected.observer)
-    self.vm.outputs.notifyDelegatePillCellTapped.observe(self.notifyDelegatePillCellTapped.observer)
+    self.vm.outputs.notifyDelegatePillCellTapped.map(first)
+      .observe(self.notifyDelegatePillCellTappedIndexPath.observer)
+    self.vm.outputs.notifyDelegatePillCellTapped.map(second)
+      .observe(self.notifyDelegatePillCellTappedId.observer)
   }
 
   func testButtonTitle() {
@@ -26,7 +30,7 @@ final class CategoryPillCellViewModelTests: TestCase {
 
     self.buttonTitle.assertDidNotEmitValue()
 
-    self.vm.inputs.configure(with: ("title", indexPath))
+    self.vm.inputs.configure(with: ("title", 2, indexPath))
 
     self.buttonTitle.assertValues(["title"])
   }
@@ -36,7 +40,7 @@ final class CategoryPillCellViewModelTests: TestCase {
 
     self.isSelected.assertDidNotEmitValue()
 
-    self.vm.inputs.configure(with: ("title", indexPath))
+    self.vm.inputs.configure(with: ("title", 2, indexPath))
 
     self.vm.inputs.setIsSelected(selected: true)
 
@@ -50,11 +54,13 @@ final class CategoryPillCellViewModelTests: TestCase {
   func testNotifyDelegatePillCellTapped() {
     let indexPath = IndexPath(item: 0, section: 0)
 
-    self.notifyDelegatePillCellTapped.assertDidNotEmitValue()
+    self.notifyDelegatePillCellTappedIndexPath.assertDidNotEmitValue()
+    self.notifyDelegatePillCellTappedId.assertDidNotEmitValue()
 
-    self.vm.inputs.configure(with: ("title", indexPath))
+    self.vm.inputs.configure(with: ("title", 2, indexPath))
     self.vm.inputs.pillCellTapped()
 
-    self.notifyDelegatePillCellTapped.assertValues([indexPath])
+    self.notifyDelegatePillCellTappedIndexPath.assertValues([indexPath])
+    self.notifyDelegatePillCellTappedId.assertValues([2])
   }
 }

@@ -2,8 +2,10 @@ import Foundation
 import Prelude
 import ReactiveSwift
 
+public typealias CategoryPillCellValue = (name: String, id: Int, indexPath: IndexPath?)
+
 public protocol CategoryPillCellViewModelInputs {
-  func configure(with value: (String, IndexPath?))
+  func configure(with value: CategoryPillCellValue)
   func pillCellTapped()
   func setIsSelected(selected: Bool)
 }
@@ -11,7 +13,7 @@ public protocol CategoryPillCellViewModelInputs {
 public protocol CategoryPillCellViewModelOutputs {
   var buttonTitle: Signal<String, Never> { get }
   var isSelected: Signal<Bool, Never> { get }
-  var notifyDelegatePillCellTapped: Signal<IndexPath, Never> { get }
+  var notifyDelegatePillCellTapped: Signal<(IndexPath, Int), Never> { get }
 }
 
 public protocol CategoryPillCellViewModelType {
@@ -24,9 +26,14 @@ public final class CategoryPillCellViewModel: CategoryPillCellViewModelType,
   public init() {
     self.notifyDelegatePillCellTapped = self.configureWithValueProperty.signal
       .skipNil()
-      .map(second)
-      .skipNil()
       .takeWhen(self.pillCellTappedProperty.signal)
+      .filterMap { value in
+        guard let index = value.indexPath else {
+          return nil
+        }
+
+        return (index, value.id)
+      }
 
     self.isSelected = self.isSelectedProperty.signal.skipRepeats()
 
@@ -34,8 +41,8 @@ public final class CategoryPillCellViewModel: CategoryPillCellViewModelType,
       .map(first)
   }
 
-  private let configureWithValueProperty = MutableProperty<(String, IndexPath?)?>(nil)
-  public func configure(with value: (String, IndexPath?)) {
+  private let configureWithValueProperty = MutableProperty<CategoryPillCellValue?>(nil)
+  public func configure(with value: CategoryPillCellValue) {
     self.configureWithValueProperty.value = value
   }
 
@@ -51,7 +58,7 @@ public final class CategoryPillCellViewModel: CategoryPillCellViewModelType,
 
   public let buttonTitle: Signal<String, Never>
   public let isSelected: Signal<Bool, Never>
-  public let notifyDelegatePillCellTapped: Signal<IndexPath, Never>
+  public let notifyDelegatePillCellTapped: Signal<(IndexPath, Int), Never>
 
   public var inputs: CategoryPillCellViewModelInputs { return self }
   public var outputs: CategoryPillCellViewModelOutputs { return self }
