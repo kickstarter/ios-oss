@@ -124,7 +124,7 @@ public final class ManagePledgeViewModel:
       .takeWhen(goToChangePaymentMethod)
 
     self.goToFixPaymentMethod = projectAndReward
-        .takeWhen(self.fixButtonTappedSignal)
+      .takeWhen(self.fixButtonTappedSignal)
 
     self.notifyDelegateManagePledgeViewControllerFinishedWithMessage = Signal.merge(
       self.cancelPledgeDidFinishWithMessageProperty.signal,

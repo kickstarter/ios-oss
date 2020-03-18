@@ -102,16 +102,18 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
     let erroredPledge = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.isErrored }
 
     let cardIsSelected = Signal.merge(
-     creditCard.mapConst(false),
+      creditCard.mapConst(false),
       cardAndSelectedCard.map(==)
     )
 
     self.fixIconIsHidden = Signal.combineLatest(paymentSourceId, creditCard, erroredPledge)
       .map { paymentSourceId, creditCard, erroredPledge in
-        hideFixIcon(erroredPledge: erroredPledge,
-                    paymentSourceId: paymentSourceId,
-                    creditCardId: creditCard.id)
-    }
+        hideFixIcon(
+          erroredPledge: erroredPledge,
+          paymentSourceId: paymentSourceId,
+          creditCardId: creditCard.id
+        )
+      }
 
     let cardIsSelectedAndCardIsAvailableAndFixIconHidden =
       Signal.combineLatest(cardIsSelected, cardTypeIsAvailable, self.fixIconIsHidden)
@@ -119,13 +121,15 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
     self.selectButtonIsSelected =
       cardIsSelectedAndCardIsAvailableAndFixIconHidden
       .map { cardIsSelected, cardTypeIsAvailable, fixIconHidden in
-        cardIsSelected && cardTypeIsAvailable && fixIconHidden }
+        cardIsSelected && cardTypeIsAvailable && fixIconHidden
+      }
       .skipRepeats()
 
     self.selectButtonTitle = cardIsSelectedAndCardIsAvailableAndFixIconHidden
-      .filter { _, cardTypeIsAvailable, _ in  cardTypeIsAvailable == true }
+      .filter { _, cardTypeIsAvailable, _ in cardTypeIsAvailable == true }
       .map { cardIsSelected, cardTypeIsAvailable, fixIconHidden in
-        cardIsSelected && cardTypeIsAvailable && fixIconHidden }
+        cardIsSelected && cardTypeIsAvailable && fixIconHidden
+      }
       .map { $0 ? Strings.Selected() : Strings.Select() }
       .skipRepeats()
 
@@ -174,13 +178,15 @@ private func cardImageForCard(_ card: GraphUserCreditCard.CreditCard) -> UIImage
   return image(named: card.imageName)
 }
 
-private func hideFixIcon(erroredPledge: Bool, paymentSourceId: String?,
-                         creditCardId: String) -> Bool {
+private func hideFixIcon(
+  erroredPledge: Bool, paymentSourceId: String?,
+  creditCardId: String
+) -> Bool {
   guard let paymentId = paymentSourceId else { return true }
 
   if erroredPledge == false {
     return true
-  } else if erroredPledge == true && paymentId == creditCardId {
+  } else if erroredPledge == true, paymentId == creditCardId {
     return false
   }
 
