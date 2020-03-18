@@ -22,6 +22,7 @@ final class PersonalizationCell: UITableViewCell, ValueCell {
     UIImageView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private let imageViewRight = {
     UIImageView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -31,7 +32,7 @@ final class PersonalizationCell: UITableViewCell, ValueCell {
   private let titleLabel = UILabel(frame: .zero)
   private let dismissButton = {
     UIButton(type: .custom)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private let rootStackView = { UIStackView(frame: .zero) }()
@@ -55,7 +56,7 @@ final class PersonalizationCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.notifyDelegateViewTapped
       .observeForUI()
-      .observeValues { [weak self] tagId in
+      .observeValues { [weak self] _ in
         guard let self = self else { return }
 
         self.delegate?.personalizationCellTapped(self)
@@ -75,6 +76,7 @@ final class PersonalizationCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
+      |> \.accessibilityElements .~ [self.containerView, self.dismissButton]
       |> PersonalizationCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(top: Styles.grid(2), left: Styles.grid(30), bottom: 0, right: Styles.grid(30))
@@ -105,7 +107,7 @@ final class PersonalizationCell: UITableViewCell, ValueCell {
       |> subtitleLabelStyle
   }
 
-  func configureWith(value: ()) {}
+  func configureWith(value _: ()) {}
 
   // MARK: - Configuration
 
@@ -189,7 +191,7 @@ private let baseLabelStyle: LabelStyle = { label in
 private let imageLeftStyle: ImageViewStyle = { imageView in
   imageView
     |> \.image .~ image(named: "shape-green-wave")
-  |> UIImageView.lens.contentMode .~ .scaleAspectFill
+    |> UIImageView.lens.contentMode .~ .scaleAspectFill
 }
 
 private let imageRightStyle: ImageViewStyle = { imageView in
@@ -200,14 +202,14 @@ private let imageRightStyle: ImageViewStyle = { imageView in
 
 private let titleLabelStyle: LabelStyle = { label in
   label
-  |> \.font .~ UIFont.ksr_headline().bolded
+    |> \.font .~ UIFont.ksr_headline().bolded
     |> \.text %~ { _ in "We've helped you find your next project to back" }
 }
 
 private let subtitleLabelStyle: LabelStyle = { label in
   label
-  |> \.font .~ UIFont.ksr_subhead()
-  |> \.text %~ { _ in "See what we've found >" }
+    |> \.font .~ UIFont.ksr_subhead()
+    |> \.text %~ { _ in "See what we've found >" }
 }
 
 private let dismissButtonStyle: ButtonStyle = { button in
@@ -222,9 +224,10 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.axis .~ .vertical
     |> \.spacing .~ Styles.grid(2)
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ .init(top: Styles.grid(5),
-                                left: Styles.grid(4),
-                                bottom: Styles.grid(3),
-                                right: Styles.grid(4))
+    |> \.layoutMargins .~ .init(
+      top: Styles.grid(5),
+      left: Styles.grid(4),
+      bottom: Styles.grid(3),
+      right: Styles.grid(4)
+    )
 }
-

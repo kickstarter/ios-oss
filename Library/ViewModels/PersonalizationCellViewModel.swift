@@ -12,13 +12,12 @@ public protocol PersonalizationCellViewModelOutputs {
 }
 
 public protocol PersonalizationCellViewModelType {
-    var inputs: PersonalizationCellViewModelInputs { get }
-    var outputs: PersonalizationCellViewModelOutputs { get }
+  var inputs: PersonalizationCellViewModelInputs { get }
+  var outputs: PersonalizationCellViewModelOutputs { get }
 }
 
-
 public final class PersonalizationCellViewModel: PersonalizationCellViewModelType,
-PersonalizationCellViewModelInputs, PersonalizationCellViewModelOutputs {
+  PersonalizationCellViewModelInputs, PersonalizationCellViewModelOutputs {
   public init() {
     self.notifyDelegateDismissButtonTapped = self.dismissButtonTappedProperty.signal
     self.notifyDelegateViewTapped = self.cellTappedProperty.signal

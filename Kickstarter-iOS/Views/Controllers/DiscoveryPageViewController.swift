@@ -53,7 +53,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.optimizelyConfiguredObserver = NotificationCenter.default
       .addObserver(forName: .ksr_optimizelyClientConfigured, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.optimizelyClientConfigured()
-    }
+      }
 
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
@@ -93,11 +93,13 @@ internal final class DiscoveryPageViewController: UITableViewController {
   }
 
   deinit {
-    [self.sessionEndedObserver,
-     self.sessionStartedObserver,
-     self.currentEnvironmentChangedObserver,
-     self.configUpdatedObserver,
-     self.optimizelyConfiguredObserver].forEach { $0.doIfSome(NotificationCenter.default.removeObserver) }
+    [
+      self.sessionEndedObserver,
+      self.sessionStartedObserver,
+      self.currentEnvironmentChangedObserver,
+      self.configUpdatedObserver,
+      self.optimizelyConfiguredObserver
+    ].forEach { $0.doIfSome(NotificationCenter.default.removeObserver) }
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
@@ -216,7 +218,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.dataSource.showPersonalization(shouldShow)
 
         self?.tableView.reloadData()
-    }
+      }
 
     self.viewModel.outputs.dismissPersonalizationCell
       .observeForUI()
@@ -227,11 +229,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.tableView.beginUpdates()
         self?.tableView.deleteRows(at: [IndexPath(row: 0, section: section)], with: .automatic)
         self?.tableView.endUpdates()
-    }
+      }
 
     self.viewModel.outputs.goToCuratedProjects
       .observeForUI()
-      .observeValues { [weak self] categoryIds in
+      .observeValues { [weak self] _ in
         let curatedProjectsVC = CuratedProjectsViewController.instantiate()
         let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
 
@@ -239,7 +241,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
           |> \.modalPresentationStyle .~ (isIpad ? .formSheet : .fullScreen)
 
         self?.present(navController, animated: true)
-    }
+      }
 
     self.viewModel.outputs.setScrollsToTop
       .observeForUI()
@@ -493,11 +495,11 @@ extension DiscoveryPageViewController: DiscoveryEditorialCellDelegate {
 // MARK: - PersonalizationCellDelegate
 
 extension DiscoveryPageViewController: PersonalizationCellDelegate {
-  func personalizationCellTapped(_ cell: PersonalizationCell) {
+  func personalizationCellTapped(_: PersonalizationCell) {
     self.viewModel.inputs.personalizationCellTapped()
   }
 
-  func personalizationCellDidTapDismiss(_ cell: PersonalizationCell) {
+  func personalizationCellDidTapDismiss(_: PersonalizationCell) {
     self.viewModel.inputs.personalizationCellDismissTapped()
   }
 }

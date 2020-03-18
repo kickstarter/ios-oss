@@ -1,5 +1,5 @@
-import UIKit
 import Prelude
+import UIKit
 
 public final class NavigationController: UINavigationController {
   public override var preferredStatusBarStyle: UIStatusBarStyle {

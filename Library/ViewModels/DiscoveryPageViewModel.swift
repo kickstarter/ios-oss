@@ -371,16 +371,18 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     // MARK: Personalization Callout Card
 
-    self.showPersonalization = Signal.combineLatest(self.optimizelyClientConfiguredProperty.signal,
-                                                    editorialHeaderShouldShow)
-      .map(second)
-      .map { shouldShowHeader in
-        if shouldShowHeader {
-          return shouldShowPersonalization()
-        }
-
-        return shouldShowHeader
+    self.showPersonalization = Signal.combineLatest(
+      self.optimizelyClientConfiguredProperty.signal,
+      editorialHeaderShouldShow
+    )
+    .map(second)
+    .map { shouldShowHeader in
+      if shouldShowHeader {
+        return shouldShowPersonalization()
       }
+
+      return shouldShowHeader
+    }
 
     self.goToCuratedProjects = self.personalizationCellTappedProperty.signal
       .map(cachedCategoryIds)
@@ -557,25 +559,27 @@ private func saveSeen(activities: [Activity]) {
 }
 
 private func shouldShowPersonalization() -> Bool {
-//  guard AppEnvironment.current.userDefaults.hasCompletedCategoryPersonalizationFlow
-//    && !AppEnvironment.current.userDefaults.hasDismissedPersonalizationCard else {
-//    return false
-//  }
+  guard AppEnvironment.current.userDefaults.hasCompletedCategoryPersonalizationFlow,
+    !AppEnvironment.current.userDefaults.hasDismissedPersonalizationCard else {
+    return false
+  }
 
   let userAttributes = optimizelyUserAttributes()
   let variant = AppEnvironment.current.optimizelyClient?
-    .variant(for: .onboardingCategoryPersonalizationFlow,
-             userId: deviceIdentifier(uuid: UUID()),
-             isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
-             userAttributes: userAttributes)
+    .variant(
+      for: .onboardingCategoryPersonalizationFlow,
+      userId: deviceIdentifier(uuid: UUID()),
+      isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
+      userAttributes: userAttributes
+    )
 
   switch variant {
   case .control:
-  return false
+    return false
   case .variant1:
-  return true
+    return true
   default:
-  return false
+    return false
   }
 }
 
