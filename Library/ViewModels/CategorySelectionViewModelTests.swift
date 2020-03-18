@@ -10,6 +10,7 @@ final class CategorySelectionViewModelTests: TestCase {
   private let goToCuratedProjects = TestObserver<Void, Never>()
   private let loadCategorySectionTitles = TestObserver<[String], Never>()
   private let loadCategorySectionData = TestObserver<[[String]], Never>()
+  private let showErrorMessage = TestObserver<String, Never>()
   private let vm: CategorySelectionViewModelType = CategorySelectionViewModel()
 
   override func setUp() {
@@ -18,6 +19,7 @@ final class CategorySelectionViewModelTests: TestCase {
     self.vm.outputs.goToCuratedProjects.observe(self.goToCuratedProjects.observer)
     self.vm.outputs.loadCategorySections.map(first).observe(self.loadCategorySectionTitles.observer)
     self.vm.outputs.loadCategorySections.map(second).observe(self.loadCategorySectionData.observer)
+    self.vm.outputs.showErrorMessage.observe(self.showErrorMessage.observer)
   }
 
   func testLoadCategorySections() {
@@ -88,5 +90,19 @@ final class CategorySelectionViewModelTests: TestCase {
     self.vm.inputs.continueButtonTapped()
 
     self.goToCuratedProjects.assertValueCount(1)
+  }
+
+  func testShowErrorMessage() {
+    let mockService = MockService(fetchGraphCategoriesError: .invalidInput)
+
+    withEnvironment(apiService: mockService) {
+      self.showErrorMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.showErrorMessage.assertValue("Something went wrong.")
+    }
   }
 }

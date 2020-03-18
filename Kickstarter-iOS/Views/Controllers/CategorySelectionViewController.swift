@@ -154,6 +154,12 @@ public final class CategorySelectionViewController: UIViewController {
         let vc = CuratedProjectsViewController.instantiate()
         self?.navigationController?.pushViewController(vc, animated: true)
       }
+
+    self.viewModel.outputs.showErrorMessage
+      .observeForUI()
+      .observeValues { [weak self] message in
+        self?.present(UIAlertController.genericError(message), animated: true)
+      }
   }
 
   private func configureSubviews() {
