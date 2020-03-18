@@ -653,8 +653,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
             userId: deviceIdentifier(uuid: UUID()),
             attributes: properties,
             eventTags: eventTags
-        )
-    }
+          )
+      }
 
     self.applicationIconBadgeNumber = Signal.merge(
       self.applicationWillEnterForegroundProperty.signal,

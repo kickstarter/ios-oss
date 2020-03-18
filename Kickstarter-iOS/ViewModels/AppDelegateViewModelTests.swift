@@ -243,12 +243,12 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testOptimizelyTracking() {
-     XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
+    XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
 
-     self.vm.inputs.applicationDidEnterBackground()
+    self.vm.inputs.applicationDidEnterBackground()
 
-     XCTAssertEqual(self.optimizelyClient.trackedEventKey, "App Closed")
-   }
+    XCTAssertEqual(self.optimizelyClient.trackedEventKey, "App Closed")
+  }
 
   func testConfigureAppCenter_AlphaApp_LoggedOut() {
     let alphaBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue, lang: "en")
