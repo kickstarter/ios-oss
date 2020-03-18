@@ -319,5 +319,5 @@ private let warningLabelStyle: LabelStyle = { label in
     |> \.textAlignment .~ .center
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
-    |> \.text %~ { _ in "Select fewer catgories" }
+    |> \.text %~ { _ in Strings.Select_fewer_categories() }
 }
