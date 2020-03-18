@@ -7,7 +7,8 @@ import UIKit
 public typealias PledgeCreditCardViewData = (
   card: GraphUserCreditCard.CreditCard,
   isEnabled: Bool,
-  projectCountry: String
+  projectCountry: String,
+  isErrored: Bool
 )
 
 public protocol PledgeCreditCardViewModelInputs {
@@ -33,6 +34,9 @@ public protocol PledgeCreditCardViewModelOutputs {
 
   /// Emits the formatted card's expirationdate.
   var expirationDateText: Signal<String, Never> { get }
+
+  /// Emits a bool that shows the fix icon
+  var fixIconIsHidden: Signal<Bool, Never> { get }
 
   /// Emits the paymentSourceId of the current card.
   var notifyDelegateOfCardSelected: Signal<String, Never> { get }
@@ -61,9 +65,9 @@ public protocol PledgeCreditCardViewModelType {
 public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
   PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
   public init() {
-    let creditCard = self.pledgeCreditCardValueProperty.signal.skipNil().map(first)
+    let creditCard = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.card }
     let selectedCard = self.selectedCardProperty.signal.skipNil()
-    let cardTypeIsAvailable = self.pledgeCreditCardValueProperty.signal.skipNil().map(second)
+    let cardTypeIsAvailable = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.isEnabled }
 
     self.cardImage = creditCard
       .map(cardImageForCard)
@@ -102,6 +106,12 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
       .map { $0 && $1 }
       .skipRepeats()
 
+    let erroredPledge = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.isErrored }
+
+    self.fixIconIsHidden = Signal.combineLatest(cardIsSelected, erroredPledge)
+      .map { $0 && $1 }
+      .negate()
+
     self.selectButtonTitle = Signal.combineLatest(cardIsSelected, cardTypeIsAvailable)
       .filter { $1 == true }
       .map { $0 && $1 }
@@ -137,6 +147,7 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
   public let cardNumberAccessibilityLabel: Signal<String, Never>
   public let cardNumberTextShortStyle: Signal<String, Never>
   public let expirationDateText: Signal<String, Never>
+  public let fixIconIsHidden: Signal<Bool, Never>
   public let notifyDelegateOfCardSelected: Signal<String, Never>
   public let selectButtonEnabled: Signal<Bool, Never>
   public let selectButtonIsSelected: Signal<Bool, Never>

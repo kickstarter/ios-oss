@@ -183,8 +183,9 @@ private func pledgeCreditCardViewDataAndSelectedCard(
     guard let cardBrand = card.type?.rawValue else { return nil }
 
     let isAvailableCardType = availableCardTypes.contains(cardBrand)
+    let isErroredPledge = project.personalization.backing?.status == .errored
 
-    return (card, isAvailableCardType, project.location.displayableName)
+    return (card, isAvailableCardType, project.location.displayableName, isErroredPledge)
   }
 
   // If there is no backing, simply select the first card in the list when it is an available card type.
