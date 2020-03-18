@@ -7,12 +7,16 @@ import UIKit
 public final class CategorySelectionViewController: UIViewController {
   // MARK: - Properties
 
+  private lazy var buttonStackView = { UIStackView(frame: .zero) }()
   private lazy var buttonView: UIView = {
     UIView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var continueButton: UIButton = { UIButton(type: .custom) }()
+  private lazy var continueButton: UIButton = {
+    UIButton(type: .custom)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   private lazy var collectionView: UICollectionView = {
     UICollectionView(
@@ -58,6 +62,8 @@ public final class CategorySelectionViewController: UIViewController {
   }()
 
   private let viewModel: CategorySelectionViewModelType = CategorySelectionViewModel()
+
+  private lazy var warningLabel = { UILabel(frame: .zero) }()
 
   // MARK: - Lifecycle
 
@@ -118,8 +124,14 @@ public final class CategorySelectionViewController: UIViewController {
     _ = self.buttonView
       |> buttonViewStyle
 
+    _ = self.buttonStackView
+      |> buttonStackViewStyle
+
     _ = self.continueButton
       |> continueButtonStyle
+
+    _ = self.warningLabel
+      |> warningLabelStyle
   }
 
   public override func viewDidLayoutSubviews() {
@@ -150,10 +162,13 @@ public final class CategorySelectionViewController: UIViewController {
 
     self.viewModel.outputs.goToCuratedProjects
       .observeForUI()
-      .observeValues { [weak self] in
+      .observeValues { [weak self] _ in
         let vc = CuratedProjectsViewController.instantiate()
         self?.navigationController?.pushViewController(vc, animated: true)
       }
+
+    self.warningLabel.rac.hidden = self.viewModel.outputs.warningLabelIsHidden
+    self.continueButton.rac.enabled = self.viewModel.outputs.continueButtonEnabled
   }
 
   private func configureSubviews() {
@@ -167,9 +182,12 @@ public final class CategorySelectionViewController: UIViewController {
     _ = (self.buttonView, self.view)
       |> ksr_addSubviewToParent()
 
-    _ = (self.continueButton, self.buttonView)
+    _ = (self.buttonStackView, self.buttonView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
+
+    _ = ([self.continueButton, self.warningLabel], self.buttonStackView)
+      |> ksr_addArrangedSubviewsToStackView()
   }
 
   private func setupConstraints() {
@@ -180,7 +198,8 @@ public final class CategorySelectionViewController: UIViewController {
       self.headerView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
       self.buttonView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.buttonView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.buttonView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+      self.buttonView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+      self.continueButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height)
     ])
   }
 
@@ -238,8 +257,8 @@ extension CategorySelectionViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - CategoryPillCellDelegate
 
 extension CategorySelectionViewController: CategoryPillCellDelegate {
-  func categoryPillCell(_ cell: CategoryPillCell, didTapAtIndex index: IndexPath) {
-    self.viewModel.inputs.categorySelected(at: index)
+  func categoryPillCell(_ cell: CategoryPillCell, didTapAtIndex index: IndexPath, withId id: Int) {
+    self.viewModel.inputs.categorySelected(with: (index, id))
 
     let shouldSelectCell = self.viewModel.outputs.shouldSelectCell(at: index)
 
@@ -257,6 +276,12 @@ private let skipButtonStyle: BarButtonStyle = { button in
 private let headerViewStyle: ViewStyle = { view in
   view
     |> \.layoutMargins .~ .init(all: Styles.grid(3))
+}
+
+private let buttonStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> verticalStackViewStyle
+    |> \.spacing .~ Styles.grid(2)
 }
 
 private let buttonViewStyle: ViewStyle = { view in
@@ -285,4 +310,14 @@ private let navigationBarStyle: NavigationBarStyle = { navBar in
     ?|> \.backgroundColor .~ .clear
     ?|> \.shadowImage .~ UIImage()
     ?|> \.isTranslucent .~ true
+}
+
+private let warningLabelStyle: LabelStyle = { label in
+  label
+    |> \.textColor .~ UIColor.ksr_red_400
+    |> \.font .~ UIFont.ksr_footnote()
+    |> \.textAlignment .~ .center
+    |> \.lineBreakMode .~ .byWordWrapping
+    |> \.numberOfLines .~ 0
+    |> \.text %~ { _ in Strings.Select_fewer_categories() }
 }

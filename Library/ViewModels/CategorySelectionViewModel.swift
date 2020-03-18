@@ -1,20 +1,23 @@
 import Foundation
 import KsApi
+import Prelude
 import ReactiveSwift
 
+public typealias CategorySectionData = (name: String, id: Int)
+
 public protocol CategorySelectionViewModelInputs {
-  func categorySelected(at index: IndexPath)
+  func categorySelected(with value: (IndexPath, Int))
   func continueButtonTapped()
   func viewDidLoad()
 }
 
 public protocol CategorySelectionViewModelOutputs {
-  var goToCuratedProjects: Signal<Void, Never> { get }
-
-  // A tuple of Section Titles: [String], and Categories Section Data: [[String]]
-  var loadCategorySections: Signal<([String], [[String]]), Never> { get }
-
+  var continueButtonEnabled: Signal<Bool, Never> { get }
+  var goToCuratedProjects: Signal<[Int], Never> { get }
+  // A tuple of Section Titles: [String], and Categories Section Data (Name and Id): [[String, Int]]
+  var loadCategorySections: Signal<([String], [[CategorySectionData]]), Never> { get }
   func shouldSelectCell(at index: IndexPath) -> Bool
+  var warningLabelIsHidden: Signal<Bool, Never> { get }
 }
 
 public protocol CategorySelectionViewModelType {
@@ -24,6 +27,8 @@ public protocol CategorySelectionViewModelType {
 
 public final class CategorySelectionViewModel: CategorySelectionViewModelType,
   CategorySelectionViewModelInputs, CategorySelectionViewModelOutputs {
+  private static let minimumCategorySelectionCount: Int = 5
+
   public init() {
     let categoriesEvent = self.viewDidLoadProperty.signal
       .switchMap { _ in
@@ -36,34 +41,15 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
 
     let orderedCategories = categoriesEvent.values().map(categoriesOrderedByPopularity)
 
-    self.loadCategorySections = orderedCategories.map { rootCategories in
-      var sectionTitles = [String]()
-      let categoriesData = rootCategories.compactMap { category -> [String]? in
-        guard let subcategories = category.subcategories?.nodes else {
-          return nil
-        }
+    self.loadCategorySections = orderedCategories.map(categoryData(from:))
 
-        let subcategoryNames = subcategories.map { $0.name }
-        sectionTitles.append(category.name)
+    let selectedCategoryIndexes = self.categorySelectedWithValueProperty.signal.skipNil()
+      .map(first)
+      .scan(Set<IndexPath>.init(), updatedSelectedValues(selectedValues:currentValue:))
 
-        return [Strings.All_category_name_Projects(category_name: category.name)] + subcategoryNames
-      }
-
-      return (sectionTitles, categoriesData)
-    }
-
-    let selectedCategoryIndexes = self.categorySelectedAtIndexPathProperty.signal.skipNil()
-      .scan(Set<IndexPath>.init()) { (selectedIndexes, currentIndexPath) -> Set<IndexPath> in
-        var updatedIndexes = selectedIndexes
-
-        if selectedIndexes.contains(currentIndexPath) {
-          updatedIndexes.remove(currentIndexPath)
-        } else {
-          updatedIndexes.insert(currentIndexPath)
-        }
-
-        return updatedIndexes
-      }
+    let selectedCategoryIds = self.categorySelectedWithValueProperty.signal.skipNil()
+      .map(second)
+      .scan(Set<Int>.init(), updatedSelectedValues(selectedValues:currentValue:))
 
     self.selectCellAtIndexProperty <~ selectedCategoryIndexes
       .takePairWhen(self.shouldSelectCellAtIndexProperty.signal.skipNil())
@@ -71,12 +57,35 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
         selectedCategoryIndexes.contains(shouldSelectIndex)
       }
 
-    self.goToCuratedProjects = self.continueButtonTappedProperty.signal.ignoreValues()
+    self.goToCuratedProjects = selectedCategoryIds
+      .takeWhen(self.continueButtonTappedProperty.signal)
+      .map { $0.sorted() }
+      .map(Array.init)
+
+    let selectedCategoriesCount = selectedCategoryIndexes.map { $0.count }
+
+    let shouldEnableContinueButton = selectedCategoriesCount
+      .map { $0 > 0 && $0 <= CategorySelectionViewModel.minimumCategorySelectionCount }
+
+    let shouldDisplayWarningLabel = selectedCategoriesCount
+      .map { $0 > CategorySelectionViewModel.minimumCategorySelectionCount }
+
+    self.continueButtonEnabled = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+      shouldEnableContinueButton
+    )
+    .skipRepeats()
+
+    self.warningLabelIsHidden = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(true),
+      shouldDisplayWarningLabel.negate()
+    )
+    .skipRepeats()
   }
 
-  private let categorySelectedAtIndexPathProperty = MutableProperty<IndexPath?>(nil)
-  public func categorySelected(at index: IndexPath) {
-    self.categorySelectedAtIndexPathProperty.value = index
+  private let categorySelectedWithValueProperty = MutableProperty<(IndexPath, Int)?>(nil)
+  public func categorySelected(with value: (IndexPath, Int)) {
+    self.categorySelectedWithValueProperty.value = value
   }
 
   private let continueButtonTappedProperty = MutableProperty(())
@@ -97,8 +106,10 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  public let goToCuratedProjects: Signal<Void, Never>
-  public let loadCategorySections: Signal<([String], [[String]]), Never>
+  public let continueButtonEnabled: Signal<Bool, Never>
+  public let goToCuratedProjects: Signal<[Int], Never>
+  public let loadCategorySections: Signal<([String], [[CategorySectionData]]), Never>
+  public let warningLabelIsHidden: Signal<Bool, Never>
 
   public var inputs: CategorySelectionViewModelInputs { return self }
   public var outputs: CategorySelectionViewModelOutputs { return self }
@@ -154,4 +165,41 @@ private func categoriesOrderedByPopularity(_ categories: [KsApi.Category]) -> [K
   orderedNonNil.append(contentsOf: unknownOrderCategories)
 
   return orderedNonNil
+}
+
+private func categoryData(from rootCategories: [KsApi.Category]) -> ([String], [[(String, Int)]]) {
+  var sectionTitles = [String]()
+  let categoriesData = rootCategories.compactMap { category -> [(String, Int)]? in
+    guard let categoryId = category.intID, let subcategories = category.subcategories?.nodes else {
+      return nil
+    }
+
+    sectionTitles.append(category.name)
+
+    let subcategoryData = subcategories.compactMap { subcategory -> (String, Int)? in
+      guard let subcategoryId = subcategory.intID else {
+        return nil
+      }
+
+      return (subcategory.name, subcategoryId)
+    }
+
+    let allProjects = (Strings.All_category_name_Projects(category_name: category.name), categoryId)
+
+    return [allProjects] + subcategoryData
+  }
+
+  return (sectionTitles, categoriesData)
+}
+
+private func updatedSelectedValues<T: Hashable>(selectedValues: Set<T>, currentValue: T) -> Set<T> {
+  var updatedValues = selectedValues
+
+  if selectedValues.contains(currentValue) {
+    updatedValues.remove(currentValue)
+  } else {
+    updatedValues.insert(currentValue)
+  }
+
+  return updatedValues
 }
