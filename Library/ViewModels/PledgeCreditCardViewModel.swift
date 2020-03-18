@@ -113,11 +113,6 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
                     creditCardId: creditCard.id)
     }
 
-    let erroredPledge = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.isErrored }
-         creditCard.mapConst(false),
-         cardAndSelectedCard.map(==)
-       )
-
     let cardIsSelectedAndCardIsAvailableAndFixIconHidden =
       Signal.combineLatest(cardIsSelected, cardTypeIsAvailable, self.fixIconIsHidden)
 
