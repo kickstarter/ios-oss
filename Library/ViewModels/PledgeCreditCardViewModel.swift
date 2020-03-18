@@ -101,6 +101,11 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
 
     let erroredPledge = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.isErrored }
 
+    let cardIsSelected = Signal.merge(
+     creditCard.mapConst(false),
+      cardAndSelectedCard.map(==)
+    )
+
     self.fixIconIsHidden = Signal.combineLatest(paymentSourceId, creditCard, erroredPledge)
       .map { paymentSourceId, creditCard, erroredPledge in
         hideFixIcon(erroredPledge: erroredPledge,
@@ -108,7 +113,7 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
                     creditCardId: creditCard.id)
     }
 
-    let cardIsSelected = Signal.merge(
+    let erroredPledge = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.isErrored }
          creditCard.mapConst(false),
          cardAndSelectedCard.map(==)
        )
