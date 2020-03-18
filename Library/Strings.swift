@@ -3136,6 +3136,23 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
+   "Fix payment method"
+
+   - **en**: "Fix payment method"
+   - **de**: "Zahlungsmethode ändern"
+   - **es**: "Corregir el método de pago"
+   - **fr**: "Fix payment method"
+   - **ja**: "お支払い方法を修正"
+  */
+  public static func Fix_payment_method() -> String {
+    return localizedString(
+      key: "Fix_payment_method",
+      defaultValue: "Fix payment method",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Fix your payment method"
 
    - **en**: "Fix your payment method"
