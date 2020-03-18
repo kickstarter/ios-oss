@@ -251,7 +251,7 @@ private let labelsStackViewStyle: StackViewStyle = { stackView in
 private let logoImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.image .~ image(named: "kickstarter-logo")?.withRenderingMode(.alwaysTemplate)
-    |> \.tintColor .~ .ksr_green_400
+    |> \.tintColor .~ .ksr_green_500
     |> \.contentMode .~ .scaleAspectFit
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }
@@ -259,7 +259,7 @@ private let logoImageViewStyle: ImageViewStyle = { imageView in
 private let pageControlStyle: PageControlStyle = { pageControl in
   pageControl
     |> \.currentPage .~ 0
-    |> \.currentPageIndicatorTintColor .~ .ksr_green_400
+    |> \.currentPageIndicatorTintColor .~ .ksr_green_500
     |> \.pageIndicatorTintColor .~ .white
 }
 

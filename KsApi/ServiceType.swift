@@ -80,15 +80,6 @@ public protocol ServiceType {
   func deletePaymentMethod(input: PaymentSourceDeleteInput) ->
     SignalProducer<DeletePaymentMethodEnvelope, GraphError>
 
-  /// Performs the first step of checkout by creating a pledge on the server.
-  func createPledge(
-    project: Project,
-    amount: Double,
-    reward: Reward?,
-    shippingLocation: Location?,
-    tappedReward: Bool
-  ) -> SignalProducer<CreatePledgeEnvelope, ErrorEnvelope>
-
   /// Removes an image from a project update draft.
   func delete(image: UpdateDraft.Image, fromDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Image, ErrorEnvelope>

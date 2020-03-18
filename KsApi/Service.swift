@@ -126,24 +126,6 @@ public struct Service: ServiceType {
     return applyMutation(mutation: UpdateUserProfileMutation(input: input))
   }
 
-  public func createPledge(
-    project: Project,
-    amount: Double,
-    reward: Reward?,
-    shippingLocation: Location?,
-    tappedReward: Bool
-  ) -> SignalProducer<CreatePledgeEnvelope, ErrorEnvelope> {
-    return request(
-      .createPledge(
-        project: project,
-        amount: amount,
-        reward: reward,
-        shippingLocation: shippingLocation,
-        tappedReward: tappedReward
-      )
-    )
-  }
-
   public func delete(image: UpdateDraft.Image, fromDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Image, ErrorEnvelope> {
     return request(.deleteImage(image, fromDraft: draft))

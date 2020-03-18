@@ -17,6 +17,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let configureAppCenterWithData = TestObserver<AppCenterConfigData, Never>()
   private let configureOptimizelySDKKey = TestObserver<String, Never>()
   private let configureOptimizelyLogLevel = TestObserver<OptimizelyLogLevelType, Never>()
+  private let configureOptimizelyDispatchInterval = TestObserver<TimeInterval, Never>()
   private let configureFabric = TestObserver<(), Never>()
   private let configureQualtrics = TestObserver<QualtricsConfigData, Never>()
   private let didAcceptReceivingRemoteNotifications = TestObserver<(), Never>()
@@ -53,6 +54,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.configureFabric.observe(self.configureFabric.observer)
     self.vm.outputs.configureOptimizely.map(first).observe(self.configureOptimizelySDKKey.observer)
     self.vm.outputs.configureOptimizely.map(second).observe(self.configureOptimizelyLogLevel.observer)
+    self.vm.outputs.configureOptimizely.map(third).observe(self.configureOptimizelyDispatchInterval.observer)
     self.vm.outputs.configureQualtrics.observe(self.configureQualtrics.observer)
     self.vm.outputs.displayQualtricsSurvey.observe(self.displayQualtricsSurvey.observer)
     self.vm.outputs.evaluateQualtricsTargetingLogic.observe(self.evaluateQualtricsTargetingLogic.observer)
@@ -133,6 +135,8 @@ final class AppDelegateViewModelTests: TestCase {
     self.configureFabric.assertValueCount(1)
   }
 
+  // MARK: - Optimizely
+
   func testConfigureOptimizely_Production() {
     let mockService = MockService(serverConfig: ServerConfig.production)
 
@@ -211,6 +215,13 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
+  func testConfigureOptimizelyDispatchInterval() {
+    self.configureOptimizelyDispatchInterval.assertDidNotEmitValue()
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+    self.configureOptimizelyDispatchInterval.assertValues([5])
+  }
+
   func testOptimizelyConfiguration_IsSuccess() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
@@ -249,6 +260,8 @@ final class AppDelegateViewModelTests: TestCase {
 
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, "App Closed")
   }
+
+  // MARK: - AppCenter
 
   func testConfigureAppCenter_AlphaApp_LoggedOut() {
     let alphaBundle = MockBundle(bundleIdentifier: KickstarterBundleIdentifier.alpha.rawValue, lang: "en")
