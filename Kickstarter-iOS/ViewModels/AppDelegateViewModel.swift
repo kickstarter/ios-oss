@@ -137,6 +137,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to the creator dashboard.
   var goToDiscovery: Signal<DiscoveryParams?, Never> { get }
 
+  /// Emits when the root view controller should present the Landing Page for new users.
+  var goToLandingPage: Signal<(), Never> { get }
+
   /// Emits when the root view controller should navigate to the login screen.
   var goToLogin: Signal<(), Never> { get }
 
@@ -329,13 +332,16 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let deepLinkFromShortcut = performShortcutItem
       .switchMap(navigation(fromShortcutItem:))
 
-    let deepLink = Signal
+    let deeplinkActivated = Signal
       .merge(
         deepLinkFromUrl,
         deepLinkFromNotification,
         deepLinkFromShortcut
       )
       .skipNil()
+
+    let deepLink = deeplinkActivated
+      .filter { _ in shouldGoToLandingPage() == false }
 
     self.findRedirectUrl = deepLinkUrl
       .filter { Navigation.match($0) == .emailClick }
@@ -371,6 +377,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.goToSearch = deepLink
       .filter { $0 == .tab(.search) }
       .ignoreValues()
+
+    self.goToLandingPage = self.applicationLaunchOptionsProperty.signal.ignoreValues()
+      .takeWhen(self.didUpdateOptimizelyClientProperty.signal.ignoreValues())
+      .filter(shouldGoToLandingPage)
 
     self.goToLogin = deepLink
       .filter { $0 == .tab(.login) }
@@ -814,6 +824,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let goToCreatorMessageThread: Signal<(Param, MessageThread), Never>
   public let goToDashboard: Signal<Param?, Never>
   public let goToDiscovery: Signal<DiscoveryParams?, Never>
+  public let goToLandingPage: Signal<(), Never>
   public let goToLogin: Signal<(), Never>
   public let goToMessageThread: Signal<MessageThread, Never>
   public let goToProfile: Signal<(), Never>
@@ -1084,4 +1095,35 @@ private func qualtricsConfigData() -> QualtricsConfigData {
     ]
     .compact()
   )
+}
+
+private func shouldGoToLandingPage() -> Bool {
+  let hasNotSeenLandingPage = !AppEnvironment.current.userDefaults.hasSeenLandingPage
+
+  guard AppEnvironment.current.currentUser == nil, hasNotSeenLandingPage else {
+    AppEnvironment.current.userDefaults.hasSeenLandingPage = true
+
+    return false
+  }
+
+  let userAttributes = optimizelyUserAttributes(
+    with: AppEnvironment.current.currentUser,
+    project: nil,
+    refTag: nil
+  )
+
+  let optimizelyVariant = AppEnvironment.current.optimizelyClient?
+    .variant(
+      for: OptimizelyExperiment.Key.nativeOnboarding,
+      userId: deviceIdentifier(uuid: UUID()),
+      isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
+      userAttributes: userAttributes
+    )
+
+  switch optimizelyVariant {
+  case .variant1, .variant2:
+    return hasNotSeenLandingPage
+  case .control, nil:
+    return false
+  }
 }
