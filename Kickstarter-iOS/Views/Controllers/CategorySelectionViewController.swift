@@ -173,7 +173,7 @@ public final class CategorySelectionViewController: UIViewController {
       |> ksr_constrainViewToEdgesInParent()
 
     _ = (self.loadingIndicator, self.view)
-       |> ksr_addSubviewToParent()
+      |> ksr_addSubviewToParent()
 
     _ = (self.headerView, self.view)
       |> ksr_addSubviewToParent()

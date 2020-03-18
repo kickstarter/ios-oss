@@ -93,7 +93,6 @@ final class CategorySelectionViewModelTests: TestCase {
   }
 
   func testIsLoading() {
-
     let categoriesResponse = RootCategoriesEnvelope.init(rootCategories: [.art])
 
     let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
