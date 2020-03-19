@@ -5,6 +5,7 @@ public enum CurrentUserNotifications {
   public static let dataRequested = "CurrentUserNotifications.dataRequested"
   public static let environmentChanged = "CurrentUserNotification.environmentChanged"
   public static let localePreferencesChanged = "CurrentUserNotification.localePreferencesChanged"
+  public static let onboardingCompleted = "CurrentUserNotifications.onboardingCompleted"
   public static let optimizelyClientConfigured = "CurrentUserNotification.optimizelyClientConfigured"
   public static let projectBacked = "CurrentUserNotifications.projectBacked"
   public static let projectSaved = "CurrentUserNotifications.projectSaved"
@@ -27,6 +28,9 @@ extension Notification.Name {
   public static let ksr_environmentChanged = Notification.Name(
     rawValue:
     CurrentUserNotifications.environmentChanged
+  )
+  public static let ksr_onboardingCompleted = Notification.Name(
+    rawValue: CurrentUserNotifications.onboardingCompleted
   )
   public static let ksr_optimizelyClientConfigured = Notification.Name(
     rawValue: CurrentUserNotifications.optimizelyClientConfigured

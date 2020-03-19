@@ -19,6 +19,9 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the OptimizelyClient has been configured
   func optimizelyClientConfigured()
 
+  /// Call when onboarding has been completed
+  func onboardingCompleted()
+
   /// Call when the personalization cell is tapped
   func personalizationCellTapped()
 
@@ -371,10 +374,13 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     // MARK: Personalization Callout Card
 
-    self.showPersonalization = Signal.combineLatest(
+    let viewReady = Signal.combineLatest(
       self.optimizelyClientConfiguredProperty.signal,
       editorialHeaderShouldShow
     )
+
+    self.showPersonalization = Signal.merge(viewReady,
+                                            viewReady.takeWhen(self.onboardingCompletedProperty.signal))
     .map(second)
     .map { shouldShowHeader in
       if shouldShowHeader {
@@ -436,6 +442,11 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     = MutableProperty<DiscoveryParams.TagID?>(nil)
   public func discoveryEditorialCellTapped(with tagId: DiscoveryParams.TagID) {
     self.discoveryEditorialCellTappedWithValueProperty.value = tagId
+  }
+
+  fileprivate let onboardingCompletedProperty = MutableProperty(())
+  public func onboardingCompleted() {
+    self.onboardingCompletedProperty.value = ()
   }
 
   fileprivate let optimizelyClientConfiguredProperty = MutableProperty(())
@@ -584,8 +595,7 @@ private func shouldShowPersonalization() -> Bool {
 }
 
 private func cachedCategoryIds() -> [Int] {
-  // TODO: retrieve cached values
-  return []
+  return AppEnvironment.current.userDefaults.onboardingCategoryIds
 }
 
 private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {

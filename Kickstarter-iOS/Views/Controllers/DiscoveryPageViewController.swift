@@ -22,6 +22,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
   public weak var delegate: DiscoveryPageViewControllerDelegate?
   fileprivate var emptyStatesController: EmptyStatesViewController?
   private lazy var headerLabel = { UILabel(frame: .zero) }()
+  private var onboardingCompletedObserver: Any?
   private var optimizelyConfiguredObserver: Any?
   internal var preferredBackgroundColor: UIColor?
   private var sessionEndedObserver: Any?
@@ -49,6 +50,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
       for: .valueChanged
     )
     self.refreshControl = refreshControl
+
+    self.onboardingCompletedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_onboardingCompleted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.onboardingCompleted()
+    }
 
     self.optimizelyConfiguredObserver = NotificationCenter.default
       .addObserver(forName: .ksr_optimizelyClientConfigured, object: nil, queue: nil) { [weak self] _ in
@@ -98,6 +104,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       self.sessionStartedObserver,
       self.currentEnvironmentChangedObserver,
       self.configUpdatedObserver,
+      self.onboardingCompletedObserver,
       self.optimizelyConfiguredObserver
     ].forEach { $0.doIfSome(NotificationCenter.default.removeObserver) }
   }

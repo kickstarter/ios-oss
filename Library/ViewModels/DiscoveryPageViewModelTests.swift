@@ -1558,6 +1558,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     let mockKeyValueStore = MockKeyValueStore()
       |> \.hasCompletedCategoryPersonalizationFlow .~ true
       |> \.hasDismissedPersonalizationCard .~ false
+      |> \.onboardingCategoryIds .~ [1,2,3]
 
     let mockOpClient = MockOptimizelyClient()
       |> \.experiments .~ [
@@ -1582,7 +1583,43 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.personalizationCellTapped()
 
-      self.goToCuratedProjects.assertValues([[]])
+      self.goToCuratedProjects.assertValues([[1,2,3]])
+    }
+  }
+
+  func testShowPersonalization_WhenOnboardingCompleted() {
+    let mockKeyValueStore = MockKeyValueStore()
+      |> \.hasCompletedCategoryPersonalizationFlow .~ false // Hasn't completed personalization flow yet
+      |> \.hasDismissedPersonalizationCard .~ false
+
+    let mockOpClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    let defaultFilter = DiscoveryParams.defaults
+      |> DiscoveryParams.lens.includePOTD .~ true
+
+    withEnvironment(
+      currentUser: nil,
+      optimizelyClient: mockOpClient,
+      userDefaults: mockKeyValueStore
+    ) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(defaultFilter)
+
+      self.vm.inputs.optimizelyClientConfigured()
+
+      self.showPersonalization.assertValues([false])
+
+      mockKeyValueStore.hasCompletedCategoryPersonalizationFlow = true
+
+      self.vm.inputs.onboardingCompleted()
+
+      self.showPersonalization.assertValues([false, true])
     }
   }
 }

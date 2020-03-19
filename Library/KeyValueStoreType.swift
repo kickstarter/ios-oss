@@ -13,6 +13,7 @@ public enum AppKeys: String {
   case hasSeenFavoriteCategoryAlert = "com.kickstarter.KeyValueStoreType.hasSeenFavoriteCategoryAlert"
   case hasSeenSaveProjectAlert = "com.kickstarter.KeyValueStoreType.hasSeenSaveProjectAlert"
   case lastSeenActivitySampleId = "com.kickstarter.KeyValueStoreType.lastSeenActivitySampleId"
+  case onboardingCategoryIds = "com.kickstarter.KeyValueStoreType.onboardingCategoryIds"
   case seenAppRating = "com.kickstarter.KeyValueStoreType.hasSeenAppRating"
   case seenGamesNewsletter = "com.kickstarter.KeyValueStoreType.hasSeenGamesNewsletter"
 }
@@ -42,6 +43,7 @@ public protocol KeyValueStoreType: AnyObject {
   var hasSeenGamesNewsletterPrompt: Bool { get set }
   var hasSeenSaveProjectAlert: Bool { get set }
   var lastSeenActivitySampleId: Int { get set }
+  var onboardingCategoryIds: [Int] { get set }
 }
 
 extension KeyValueStoreType {
@@ -150,6 +152,15 @@ extension KeyValueStoreType {
     }
     set {
       self.set(newValue, forKey: AppKeys.lastSeenActivitySampleId.rawValue)
+    }
+  }
+
+  public var onboardingCategoryIds: [Int] {
+    get {
+      return self.object(forKey: AppKeys.onboardingCategoryIds.rawValue) as? [Int] ?? []
+    }
+    set {
+      self.set(newValue, forKey: AppKeys.onboardingCategoryIds.rawValue)
     }
   }
 }

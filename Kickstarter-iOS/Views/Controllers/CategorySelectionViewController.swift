@@ -165,6 +165,10 @@ public final class CategorySelectionViewController: UIViewController {
         self?.navigationController?.pushViewController(vc, animated: true)
       }
 
+    self.viewModel.outputs.postNotification
+      .observeForUI()
+      .observeValues { NotificationCenter.default.post($0) }
+
     self.warningLabel.rac.hidden = self.viewModel.outputs.warningLabelIsHidden
     self.continueButton.rac.enabled = self.viewModel.outputs.continueButtonEnabled
   }
