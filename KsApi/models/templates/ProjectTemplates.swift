@@ -2,7 +2,7 @@ import Prelude
 
 // swiftlint:disable line_length
 extension Project {
-  public static let template = Project(
+  internal static let template = Project(
     availableCardTypes: [
       "AMEX",
       "MASTERCARD",

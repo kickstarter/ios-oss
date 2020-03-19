@@ -43,7 +43,7 @@ extension KsApi.Category {
     |> \.parentId .~ ID.art
     |> Category.lens.parent .~ ParentCategory(id: ID.art, name: Name.art)
 
-  public static let documentary = Category.template
+  internal static let documentary = Category.template
     |> \.id .~ ID.documentary
     |> \.name .~ Name.documentary
     |> \.parentId .~ ID.film
