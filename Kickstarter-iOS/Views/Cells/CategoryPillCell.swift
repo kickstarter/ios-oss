@@ -6,7 +6,8 @@ import UIKit
 protocol CategoryPillCellDelegate: AnyObject {
   func categoryPillCell(
     _ cell: CategoryPillCell,
-    didTapAtIndex index: IndexPath
+    didTapAtIndex index: IndexPath,
+    withId id: Int
   )
 }
 
@@ -55,19 +56,16 @@ final class CategoryPillCell: UICollectionViewCell, ValueCell {
 
     self.viewModel.outputs.notifyDelegatePillCellTapped
       .observeForUI()
-      .observeValues { [weak self] indexPath in
+      .observeValues { [weak self] indexPath, id in
         guard let self = self else { return }
 
-        self.delegate?.categoryPillCell(
-          self,
-          didTapAtIndex: indexPath
-        )
+        self.delegate?.categoryPillCell(self, didTapAtIndex: indexPath, withId: id)
       }
   }
 
   // MARK: - Configuration
 
-  func configureWith(value: (String, IndexPath?)) {
+  func configureWith(value: CategoryPillCellValue) {
     self.viewModel.inputs.configure(with: value)
   }
 

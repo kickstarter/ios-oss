@@ -7361,6 +7361,23 @@ daring ideas."
     )
   }
   /**
+   "Select fewer categories"
+
+   - **en**: "Select fewer categories"
+   - **de**: "Select fewer categories"
+   - **es**: "Select fewer categories"
+   - **fr**: "Select fewer categories"
+   - **ja**: "Select fewer categories"
+  */
+  public static func Select_fewer_categories() -> String {
+    return localizedString(
+      key: "Select_fewer_categories",
+      defaultValue: "Select fewer categories",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Select this instead"
 
    - **en**: "Select this instead"
