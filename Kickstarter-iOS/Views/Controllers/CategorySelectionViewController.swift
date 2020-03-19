@@ -167,6 +167,12 @@ public final class CategorySelectionViewController: UIViewController {
         self?.navigationController?.pushViewController(vc, animated: true)
       }
 
+    self.viewModel.outputs.showErrorMessage
+      .observeForUI()
+      .observeValues { [weak self] message in
+        self?.present(UIAlertController.genericError(message), animated: true)
+      }
+
     self.warningLabel.rac.hidden = self.viewModel.outputs.warningLabelIsHidden
     self.continueButton.rac.enabled = self.viewModel.outputs.continueButtonEnabled
   }
