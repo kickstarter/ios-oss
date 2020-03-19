@@ -27,6 +27,14 @@ internal final class LandingPageViewModelTests: TestCase {
     self.dismissViewController.assertValueCount(1)
   }
 
+  func testoptimizelyTracking_OnButtonTap() {
+    XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
+
+    self.viewModel.inputs.ctaButtonTapped()
+
+    XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Get Started Button Clicked")
+  }
+
   func testUserDefaultsUpdates_OnViewDidLoad() {
     let userDefaults = MockKeyValueStore()
 

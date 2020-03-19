@@ -40,16 +40,16 @@ extension OptimizelyClientType {
 
 public func optimizelyTrackingAttributesAndEventTags(
   with user: User?,
-  project: Project,
+  project: Project?,
   refTag: RefTag?
 ) -> ([String: Any], [String: Any]) {
   let properties = optimizelyUserAttributes(with: user, project: project, refTag: refTag)
 
   let eventTags: [String: Any] = ([
-    "project_subcategory": project.category.name,
-    "project_category": project.category.parentName,
-    "project_country": project.location.country.lowercased(),
-    "project_user_has_watched": project.personalization.isStarred
+    "project_subcategory": project?.category.name,
+    "project_category": project?.category.parentName,
+    "project_country": project?.location.country.lowercased(),
+    "project_user_has_watched": project?.personalization.isStarred
   ] as [String: Any?]).compact()
 
   return (properties, eventTags)
