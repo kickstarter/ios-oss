@@ -379,8 +379,10 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       editorialHeaderShouldShow
     )
 
-    self.showPersonalization = Signal.merge(viewReady,
-                                            viewReady.takeWhen(self.onboardingCompletedProperty.signal))
+    self.showPersonalization = Signal.merge(
+      viewReady,
+      viewReady.takeWhen(self.onboardingCompletedProperty.signal)
+    )
     .map(second)
     .map { shouldShowHeader in
       if shouldShowHeader {

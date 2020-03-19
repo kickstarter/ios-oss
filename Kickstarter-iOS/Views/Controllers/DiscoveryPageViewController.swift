@@ -54,7 +54,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.onboardingCompletedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_onboardingCompleted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.onboardingCompleted()
-    }
+      }
 
     self.optimizelyConfiguredObserver = NotificationCenter.default
       .addObserver(forName: .ksr_optimizelyClientConfigured, object: nil, queue: nil) { [weak self] _ in

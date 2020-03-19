@@ -31,4 +31,3 @@ final class PersonalizationCellViewModelTests: TestCase {
     self.notifyDelegateViewTapped.assertValueCount(1)
   }
 }
-
