@@ -2561,6 +2561,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
     }
   }
+
   func testGoToLandingPage_EmitsIf_OptimizelyIsNotControl_HasNotSeenLandingPage() {
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~

@@ -352,7 +352,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
 
     let deepLink = deeplinkActivated
-      .filter { _ in shouldGoToLandingPage() == false }
+      .filter { _ in shouldGoToLandingPage() == false && shouldSeeCategoryPersonalization() == false }
 
     self.findRedirectUrl = deepLinkUrl
       .filter { Navigation.match($0) == .emailClick }
@@ -1155,6 +1155,7 @@ private func shouldSeeCategoryPersonalization() -> Bool {
     return false
   }
 }
+
 private func shouldGoToLandingPage() -> Bool {
   let hasNotSeenLandingPage = !AppEnvironment.current.userDefaults.hasSeenLandingPage
 
