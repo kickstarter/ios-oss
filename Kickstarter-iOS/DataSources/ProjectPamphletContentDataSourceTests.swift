@@ -16,7 +16,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
       |> Project.lens.creator .~ user
 
     withEnvironment(currentUser: user) {
-      self.dataSource.load(project: project)
+      self.dataSource.load(data: (project, (nil, false), .discovery))
 
       XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: viewProgressSection))
     }
@@ -30,7 +30,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
     let project = Project.template
 
     withEnvironment(currentUser: user) {
-      self.dataSource.load(project: project)
+      self.dataSource.load(data: (project, (nil, false), .discovery))
 
       XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: viewProgressSection))
     }
@@ -42,7 +42,7 @@ final class ProjectPamphletContentDataSourceTests: TestCase {
       lang: "en"
     )
     withEnvironment(config: config, mainBundle: releaseBundle) {
-      dataSource.load(project: .template)
+      self.dataSource.load(data: (.template, (nil, false), .discovery))
 
       XCTAssertEqual(8, self.dataSource.numberOfSections(in: self.tableView))
     }
