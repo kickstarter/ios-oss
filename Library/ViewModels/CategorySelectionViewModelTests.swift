@@ -8,7 +8,7 @@ import XCTest
 
 final class CategorySelectionViewModelTests: TestCase {
   private let continueButtonEnabled = TestObserver<Bool, Never>()
-  private let goToCuratedProjects = TestObserver<[Int], Never>()
+  private let goToCuratedProjects = TestObserver<[KsApi.Category], Never>()
   private let loadCategorySectionTitles = TestObserver<[String], Never>()
   private let loadCategorySectionNames = TestObserver<[[String]], Never>()
   private let loadCategorySectionCategoryIds = TestObserver<[[Int]], Never>()
@@ -369,27 +369,8 @@ final class CategorySelectionViewModelTests: TestCase {
       self.vm.inputs.continueButtonTapped()
 
       self.goToCuratedProjects.assertValues([
-        [artId, gamesId, illustrationId]
+        [.art, .games, .illustration]
       ])
-    }
-  }
-
-  func testHasSeenCategoryPersonalizationFlowPropertyIsSet() {
-    let mockKVStore = MockKeyValueStore()
-    let categoriesResponse = RootCategoriesEnvelope.init(rootCategories: [
-      .art,
-      .games,
-      .filmAndVideo
-    ])
-
-    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
-
-    withEnvironment(apiService: mockService, userDefaults: mockKVStore) {
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.run()
-
-      XCTAssertTrue(mockKVStore.hasSeenCategoryPersonalizationFlow)
     }
   }
 }

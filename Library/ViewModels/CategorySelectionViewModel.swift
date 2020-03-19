@@ -13,7 +13,7 @@ public protocol CategorySelectionViewModelInputs {
 
 public protocol CategorySelectionViewModelOutputs {
   var continueButtonEnabled: Signal<Bool, Never> { get }
-  var goToCuratedProjects: Signal<[Int], Never> { get }
+  var goToCuratedProjects: Signal<[KsApi.Category], Never> { get }
   // A tuple of Section Titles: [String], and Categories Section Data (Name and Id): [[String, Int]]
   var loadCategorySections: Signal<([String], [[CategorySectionData]]), Never> { get }
   func shouldSelectCell(at index: IndexPath) -> Bool
@@ -51,16 +51,20 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
       .map(second)
       .scan(Set<Int>.init(), updatedSelectedValues(selectedValues:currentValue:))
 
+
     self.selectCellAtIndexProperty <~ selectedCategoryIndexes
       .takePairWhen(self.shouldSelectCellAtIndexProperty.signal.skipNil())
       .map { selectedCategoryIndexes, shouldSelectIndex in
         selectedCategoryIndexes.contains(shouldSelectIndex)
       }
 
-    self.goToCuratedProjects = selectedCategoryIds
+    self.goToCuratedProjects = orderedCategories
+      .combineLatest(with: selectedCategoryIds)
       .takeWhen(self.continueButtonTappedProperty.signal)
-      .map { $0.sorted() }
-      .map(Array.init)
+      .map { categories, ids -> [KsApi.Category] in
+        return selectedCategories(categories, with: ids)
+    }
+    .map { $0.sorted() }
 
     let selectedCategoriesCount = selectedCategoryIndexes.map { $0.count }
 
@@ -107,7 +111,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
   }
 
   public let continueButtonEnabled: Signal<Bool, Never>
-  public let goToCuratedProjects: Signal<[Int], Never>
+  public let goToCuratedProjects: Signal<[KsApi.Category], Never>
   public let loadCategorySections: Signal<([String], [[CategorySectionData]]), Never>
   public let warningLabelIsHidden: Signal<Bool, Never>
 
@@ -202,4 +206,22 @@ private func updatedSelectedValues<T: Hashable>(selectedValues: Set<T>, currentV
   }
 
   return updatedValues
+}
+
+private func selectedCategories(_ categories: [KsApi.Category], with ids:Set<Int>) -> [KsApi.Category] {
+
+  var selectedCategories: [KsApi.Category] = []
+  let subcategories = categories
+    .compactMap { $0.subcategories?.nodes }
+    .flatMap { $0 }
+
+  ids.forEach { id in
+    if let selectedCategory = categories.first(where: { $0.intID == id }) {
+      selectedCategories.append(selectedCategory)
+    }
+    if let selectedSubcategory = subcategories.first(where: { $0.intID == id }) {
+      selectedCategories.append(selectedSubcategory)
+    }
+  }
+  return selectedCategories
 }

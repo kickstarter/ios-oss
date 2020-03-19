@@ -25,9 +25,10 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
     let curatedProjects: Signal<[Project], Never> = self.categoriesSignal
       .takeWhen(self.viewDidLoadSignal.ignoreValues())
       .flatMap { categories in
-        return projects(from: categories)
-      }
-
+        return projects(from: categories).flatten()
+    }
+    .scan([]) { current, new in new + current }
+    
     self.loadProjects = curatedProjects
 
     self.dismissViewController = self.doneButtonTappedSignal
@@ -56,9 +57,8 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
 }
 
 private func projects(from categories: [KsApi.Category])
-  -> SignalProducer<[Project], Never> {
-  return SignalProducer.concat(producers(from: categories))
-    .map { $0.compactMap { $0 } }
+  -> SignalProducer<[[Project]], Never> {
+    return SignalProducer.combineLatest(producers(from: categories))
 }
 
 private func producers(from categories: [KsApi.Category])
@@ -75,5 +75,5 @@ private func producers(from categories: [KsApi.Category])
     return AppEnvironment.current.apiService.fetchDiscovery(params: params)
       .map { $0.projects }
       .demoteErrors(replaceErrorWith: [])
-  }
+    }
 }
