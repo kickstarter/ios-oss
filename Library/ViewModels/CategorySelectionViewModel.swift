@@ -51,7 +51,6 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
       .map(second)
       .scan(Set<Int>.init(), updatedSelectedValues(selectedValues:currentValue:))
 
-
     self.selectCellAtIndexProperty <~ selectedCategoryIndexes
       .takePairWhen(self.shouldSelectCellAtIndexProperty.signal.skipNil())
       .map { selectedCategoryIndexes, shouldSelectIndex in
@@ -62,9 +61,9 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
       .combineLatest(with: selectedCategoryIds)
       .takeWhen(self.continueButtonTappedProperty.signal)
       .map { categories, ids -> [KsApi.Category] in
-        return selectedCategories(categories, with: ids)
-    }
-    .map { $0.sorted() }
+        selectedCategories(categories, with: ids)
+      }
+      .map { $0.sorted() }
 
     let selectedCategoriesCount = selectedCategoryIndexes.map { $0.count }
 
@@ -208,8 +207,7 @@ private func updatedSelectedValues<T: Hashable>(selectedValues: Set<T>, currentV
   return updatedValues
 }
 
-private func selectedCategories(_ categories: [KsApi.Category], with ids:Set<Int>) -> [KsApi.Category] {
-
+private func selectedCategories(_ categories: [KsApi.Category], with ids: Set<Int>) -> [KsApi.Category] {
   var selectedCategories: [KsApi.Category] = []
   let subcategories = categories
     .compactMap { $0.subcategories?.nodes }
