@@ -313,7 +313,7 @@ jobs:
           command: *preload_simulator
       - run:
           name: Kickstarter-iOS Tests
-          command: SCHEME=Kickstarter-iOS make test
+          command: SCHEME=Kickstarter-code-cov make test
       - run:
           name: Send coverage to codecov
           command: bash <(curl -s https://codecov.io/bash) -J Kickstarter
