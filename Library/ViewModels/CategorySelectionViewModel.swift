@@ -14,6 +14,7 @@ public protocol CategorySelectionViewModelInputs {
 public protocol CategorySelectionViewModelOutputs {
   var continueButtonEnabled: Signal<Bool, Never> { get }
   var goToCuratedProjects: Signal<[Int], Never> { get }
+  var isLoading: Signal<Bool, Never> { get }
   // A tuple of Section Titles: [String], and Categories Section Data (Name and Id): [[String, Int]]
   var loadCategorySections: Signal<([String], [[CategorySectionData]]), Never> { get }
   func shouldSelectCell(at index: IndexPath) -> Bool
@@ -57,6 +58,12 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
       .map { selectedCategoryIndexes, shouldSelectIndex in
         selectedCategoryIndexes.contains(shouldSelectIndex)
       }
+
+    self.isLoading = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(true),
+      categoriesEvent.mapConst(false)
+        .skipRepeats()
+    )
 
     self.showErrorMessage = categoriesEvent.errors()
       .map { $0.localizedDescription }
@@ -112,6 +119,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
 
   public let continueButtonEnabled: Signal<Bool, Never>
   public let goToCuratedProjects: Signal<[Int], Never>
+  public let isLoading: Signal<Bool, Never>
   public let loadCategorySections: Signal<([String], [[CategorySectionData]]), Never>
   public let showErrorMessage: Signal<String, Never>
   public let warningLabelIsHidden: Signal<Bool, Never>

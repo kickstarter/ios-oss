@@ -9,6 +9,7 @@ import XCTest
 final class CategorySelectionViewModelTests: TestCase {
   private let continueButtonEnabled = TestObserver<Bool, Never>()
   private let goToCuratedProjects = TestObserver<[Int], Never>()
+  private let isLoading = TestObserver<Bool, Never>()
   private let loadCategorySectionTitles = TestObserver<[String], Never>()
   private let loadCategorySectionNames = TestObserver<[[String]], Never>()
   private let loadCategorySectionCategoryIds = TestObserver<[[Int]], Never>()
@@ -21,6 +22,7 @@ final class CategorySelectionViewModelTests: TestCase {
 
     self.vm.outputs.continueButtonEnabled.observe(self.continueButtonEnabled.observer)
     self.vm.outputs.goToCuratedProjects.observe(self.goToCuratedProjects.observer)
+    self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.loadCategorySections.map(first).observe(self.loadCategorySectionTitles.observer)
     self.vm.outputs.loadCategorySections.map(second).map { $0.map { $0.map { $0.0 } } }
       .observe(self.loadCategorySectionNames.observer)
@@ -386,6 +388,24 @@ final class CategorySelectionViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.showErrorMessage.assertValue("Something went wrong.")
+    }
+  }
+
+  func testIsLoading() {
+    let categoriesResponse = RootCategoriesEnvelope.init(rootCategories: [.art])
+
+    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
+
+    withEnvironment(apiService: mockService) {
+      self.isLoading.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.isLoading.assertValues([true])
+
+      self.scheduler.advance()
+
+      self.isLoading.assertValues([true, false])
     }
   }
 }

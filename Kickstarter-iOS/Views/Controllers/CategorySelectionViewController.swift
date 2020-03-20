@@ -37,6 +37,11 @@ public final class CategorySelectionViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var loadingIndicator: UIActivityIndicatorView = {
+    UIActivityIndicatorView()
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var pillLayout: PillLayout = {
     let layout = PillLayout(
       minimumInteritemSpacing: Styles.grid(2),
@@ -70,12 +75,6 @@ public final class CategorySelectionViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    _ = self
-      |> baseControllerStyle()
-
-    _ = self.navigationController?.navigationBar
-      ?|> navigationBarStyle
-
     self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
     self.navigationItem.setRightBarButton(self.skipButton, animated: false)
     self.navigationItem.setHidesBackButton(true, animated: false)
@@ -90,6 +89,7 @@ public final class CategorySelectionViewController: UIViewController {
     )
 
     self.dataSource.collectionView = self.collectionView
+
     self.continueButton.addTarget(
       self, action: #selector(CategorySelectionViewController.continueButtonTapped),
       for: .touchUpInside
@@ -112,8 +112,17 @@ public final class CategorySelectionViewController: UIViewController {
   public override func bindStyles() {
     super.bindStyles()
 
+    _ = self
+      |> baseControllerStyle()
+
+    _ = self.navigationController?.navigationBar
+      ?|> navigationBarStyle
+
     _ = self.collectionView
       |> collectionViewStyle
+
+    _ = self.loadingIndicator
+      |> baseActivityIndicatorStyle
 
     _ = self.skipButton
       |> skipButtonStyle
@@ -153,6 +162,8 @@ public final class CategorySelectionViewController: UIViewController {
   public override func bindViewModel() {
     super.bindViewModel()
 
+    self.loadingIndicator.rac.animating = self.viewModel.outputs.isLoading
+
     self.viewModel.outputs.loadCategorySections
       .observeForUI()
       .observeValues { [weak self] sectionTitles, categories in
@@ -182,6 +193,9 @@ public final class CategorySelectionViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
+    _ = (self.loadingIndicator, self.view)
+      |> ksr_addSubviewToParent()
+
     _ = (self.headerView, self.view)
       |> ksr_addSubviewToParent()
 
@@ -198,6 +212,8 @@ public final class CategorySelectionViewController: UIViewController {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
+      self.loadingIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+      self.loadingIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
       self.headerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.headerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor),
