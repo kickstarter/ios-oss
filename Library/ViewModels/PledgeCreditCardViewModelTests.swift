@@ -229,8 +229,8 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1111")
     self.expirationDateText.assertLastValue("Expires 09/2019")
     self.selectButtonEnabled.assertValues([true])
-    self.selectButtonIsSelected.assertValues([false])
-    self.selectButtonTitle.assertValues(["Select"])
+    self.selectButtonIsSelected.assertValues([false, true])
+    self.selectButtonTitle.assertValues(["Select", "Selected"])
     self.fixIconIsHidden.assertValues([false])
   }
 }

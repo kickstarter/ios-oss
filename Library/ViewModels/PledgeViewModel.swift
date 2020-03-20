@@ -402,7 +402,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
 
     let notChangingPaymentMethod = context.map { context in
-      context.isUpdating && context != .changePaymentMethod || context != .fixPaymentMethod
+      context.isUpdating && context != .changePaymentMethod
     }
     .filter(isTrue)
 
@@ -414,7 +414,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         self.creditCardSelectedSignal,
         context
       )
-      .map(paymentMethodValid)
+        .map(paymentMethodValid)
     )
 
     let valuesChangedAndValid = Signal.combineLatest(
@@ -839,7 +839,8 @@ private func paymentMethodValid(
     return true
   }
 
-  if context == .fixPaymentMethod {
+  if backedPaymentSourceId == paymentSourceId && project.personalization.backing?.status == .errored
+  {
     return true
   } else if backedPaymentSourceId != paymentSourceId {
     return true
@@ -870,7 +871,7 @@ private func titleForSubmitButton(context: PledgeViewContext,
 let backedPaymentSourceId = project.personalization.backing?.paymentSource?.id
 
   if context == .fixPaymentMethod && backedPaymentSourceId == paymentSourceId {
-    return "Retry"
+    return Strings.Retry()
   } else {
     return context.submitButtonTitle
   }
