@@ -24,6 +24,7 @@
 "All_Theater_Projects" = "All Theater Projects";
 "All_category_name_Projects" = "All %{category_name} Projects";
 "All_gone" = "All gone";
+"All_or_nothing" = "All-or-nothing";
 "Almost_there" = "Almost there!";
 "Amount_previous_amount" = "Amount: %{amount}, previous amount: %{previous_amount}";
 "Amount_reward" = "Amount: %{amount}, %{reward}";
@@ -50,6 +51,7 @@
 "Backers_count_separator_backers.other" = "%{backers_count}\nbackers";
 "Backers_count_separator_backers.two" = "%{backers_count}\nbackers";
 "Backers_count_separator_backers.zero" = "%{backers_count}\nbackers";
+"Backers_have_signed_up_to_help_kickstarter_creators_bring_their_ideas_to_life" = "Backers have signed up to help Kickstarter creators bring their ideas to life.";
 "Become_a_backer_to_leave_a_comment" = "Become a backer to leave a comment.";
 "Big_Kickstarter_news_and_events_near_you" = "Big Kickstarter news and events near you, delivered just a few times a year.";
 "Biography" = "Biography";
@@ -135,6 +137,7 @@
 "Description" = "Description";
 "Developer" = "Developer";
 "Discover_arts_news" = "Discover innovative projects and ideas, handpicked twice a month by Kickstarter's Design & Tech team.";
+"Discover_creative_projects" = "Discover creative projects";
 "Discover_more_projects" = "Discover more projects.";
 "Discover_the_future_of_Design_and_Tech" = "Discover the future of Design and Tech.";
 "Dismiss" = "Dismiss";
@@ -159,6 +162,7 @@
 "Expired_date_at_time" = "Expired %{date} at %{time}";
 "Expires_date_at_time" = "Expires %{date} at %{time}";
 "Explore" = "Explore";
+"Explore_and_support_the_latest_creative_ideas" = "Explore and support the latest creative ideas created by our vast global community.";
 "Explore_creative_projects" = "Explore creative projects";
 "Explore_projects" = "Explore projects";
 "Explore_projects_we_love" = "Explore projects we love";
@@ -222,10 +226,12 @@
 "Get_notified_about_this_creators_live_streams" = "Get notified about this creator’s live streams";
 "Get_notified_when_your_friends_back_and_launch_projects" = "Get notified when your friends back and launch projects";
 "Get_reminded_about_this_project" = "Get reminded about this project?";
+"Get_started" = "Get started";
 "Go_to_project_page" = "Go to project page";
 "Got_it" = "Got it";
 "Got_it_your_changes_have_been_saved" = "Got it! Your changes have been saved.";
 "Got_it_your_survey_response_has_been_submitted" = "Got it! Your survey response has been submitted.";
+"Guide_creators_to_success" = "Guide creators to success";
 "Happening_newsletter" = "Sign up to receive a mix of new projects, compelling stories, and visual inspiration, delivered once (and sometimes twice) a week.";
 "Help" = "Help";
 "Help_center" = "Help Center";
@@ -249,6 +255,7 @@
 "Its_better_with_friends" = "It’s better\nwith friends.";
 "Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter" = "It's like the radio but nothing sucks and also it's a newsletter.";
 "Its_our_birthday" = "It's our birthday! More than 160,000 creative projects have come to life on Kickstarter over the past decade, with support from over 16,000,000 backers.";
+"Join_a_fruitful_community" = "Join a fruitful community";
 "Join_our_secret_society" = "Join our secret society.";
 "Joining_the_live_stream" = "Joining the live stream";
 "Just_for_you" = "Just for you.";
@@ -297,6 +304,7 @@
 "Message_creator" = "Message creator";
 "Message_user_name" = "Message %{user_name}…";
 "Messages" = "Messages";
+"Million_plus" = "%{total_amount} million+";
 "More_than_number_of_items_items" = "More than %{number_of_items} items";
 "Name" = "Name";
 "Never" = "Never";
@@ -486,10 +494,13 @@
 "Status" = "Status";
 "Stay_up_to_date" = "Stay up to date?";
 "Stay_up_to_date_newsletter" = "Stay up to date with our favorite projects, and any news and events that are on our radar.";
+"Stay_updated_on_the_projects_youve_backed_and_learn_about_how_these_creative_works_are_produced" = "Stay updated on the projects you've backed and learn about how these creative works are produced.";
 "Stay_updated_on_this_project" = "Stay updated on this project?";
 "Subscribe" = "Subscribe";
 "Subscribed" = "Subscribed";
 "Subscribes_to_upcoming_lives_streams" = "Subscribes to upcoming live streams.";
+"Successful_projects_have_been_created_on_kickstarter" = "Successful projects have been created on Kickstarter.";
+"Support_creative_independence" = "Support creative independence";
 "Survey" = "Survey";
 "Tap_the_heart_on_a_project_to_get_notified" = "Tap the heart icon on a project to get notified 48 hours before it ends.";
 "Tap_the_heart_on_each_project_page_to_save_it" = "Tap the heart on each project page to save it. We’ll remind you 48 hours before the project ends.";
@@ -530,7 +541,11 @@
 "Top_ten_rewards" = "Top 10 rewards";
 "Total" = "Total";
 "Total_amount" = "Total amount";
+"Total_amount_backers_have_pledged_to_projects" = "Total amount (USD) backers have pledged to projects.";
+"Total_amount_billion_plus" = "%{total_amount} billion+";
 "Total_pledged" = "Total pledged";
+"Total_plus" = "%{total}+";
+"Track_your_backings" = "Track your backings";
 "Twice_a_day_summary" = "Twice a day summary";
 "Unable_to_request" = "Unable to request data.";
 "Unfollow_friend_name" = "Unfollow %{friend_name}";
@@ -1505,6 +1520,7 @@
 "projects_count_newline_saved.other" = "%{projects_count}\nsaved";
 "projects_count_newline_saved.two" = "2\nsaved";
 "projects_count_newline_saved.zero" = "0\nsaved";
+"projects_launched_count_created_projects_backed_count_backed" = "%{projects_launched_count} created • %{projects_backed_count} backed";
 "push_notifications.alert.buttons.close" = "Close";
 "push_notifications.alert.buttons.view" = "View";
 "remaining_count_left_of_limit_count" = "%{remaining_count} left of %{limit_count}";

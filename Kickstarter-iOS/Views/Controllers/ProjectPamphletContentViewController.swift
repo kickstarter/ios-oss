@@ -59,10 +59,10 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   public override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.loadProjectAndRefTagIntoDataSource
+    self.viewModel.outputs.loadProjectPamphletContentDataIntoDataSource
       .observeForUI()
-      .observeValues { [weak self] projectAndRefTag in
-        self?.dataSource.load(projectAndRefTag: projectAndRefTag)
+      .observeValues { [weak self] data in
+        self?.dataSource.load(data: data)
         self?.tableView.reloadData()
       }
 

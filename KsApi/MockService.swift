@@ -34,8 +34,6 @@
 
     fileprivate let deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>?
 
-    fileprivate let createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>?
-
     fileprivate let facebookConnectResponse: User?
     fileprivate let facebookConnectError: ErrorEnvelope?
 
@@ -93,10 +91,12 @@
     fileprivate let fetchProjectResponse: Project?
     fileprivate let fetchProjectError: ErrorEnvelope?
 
-    fileprivate let fetchProjectNotificationsResponse: [ProjectNotification]
-
     fileprivate let fetchProjectsResponse: [Project]?
     fileprivate let fetchProjectsError: ErrorEnvelope?
+
+    fileprivate let fetchProjectCreatorDetailsResult: Result<ProjectCreatorDetailsEnvelope, GraphError>?
+
+    fileprivate let fetchProjectNotificationsResponse: [ProjectNotification]
 
     fileprivate let fetchProjectStatsResponse: ProjectStatsEnvelope?
     fileprivate let fetchProjectStatsError: ErrorEnvelope?
@@ -210,7 +210,6 @@
       changePaymentMethodResult: Result<ChangePaymentMethodEnvelope, ErrorEnvelope>? = nil,
       clearUserUnseenActivityResult: Result<ClearUserUnseenActivityEnvelope, GraphError>? = nil,
       deletePaymentMethodResult: Result<DeletePaymentMethodEnvelope, GraphError>? = nil,
-      createPledgeResult: Result<CreatePledgeEnvelope, ErrorEnvelope>? = nil,
       facebookConnectResponse: User? = nil,
       facebookConnectError: ErrorEnvelope? = nil,
       fetchActivitiesResponse: [Activity]? = nil,
@@ -246,10 +245,11 @@
       publishUpdateError: ErrorEnvelope? = nil,
       fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
       fetchMessageThreadsResponse: [MessageThread]? = nil,
-      fetchProjectActivitiesResponse: [Activity]? = nil,
-      fetchProjectActivitiesError: ErrorEnvelope? = nil,
       fetchProjectResponse: Project? = nil,
       fetchProjectError: ErrorEnvelope? = nil,
+      fetchProjectActivitiesResponse: [Activity]? = nil,
+      fetchProjectActivitiesError: ErrorEnvelope? = nil,
+      fetchProjectCreatorDetailsResult: Result<ProjectCreatorDetailsEnvelope, GraphError>? = nil,
       fetchProjectNotificationsResponse: [ProjectNotification]? = nil,
       fetchProjectsResponse: [Project]? = nil,
       fetchProjectsError: ErrorEnvelope? = nil,
@@ -322,7 +322,6 @@
 
       self.changePaymentMethodResult = changePaymentMethodResult
       self.deletePaymentMethodResult = deletePaymentMethodResult
-      self.createPledgeResult = createPledgeResult
 
       self.facebookConnectResponse = facebookConnectResponse
       self.facebookConnectError = facebookConnectError
@@ -419,6 +418,8 @@
 
       self.fetchProjectsResponse = fetchProjectsResponse ?? []
 
+      self.fetchProjectCreatorDetailsResult = fetchProjectCreatorDetailsResult
+
       self.fetchProjectsError = fetchProjectsError
 
       self.fetchProjectStatsResponse = fetchProjectStatsResponse
@@ -513,20 +514,6 @@
       }
 
       return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
-    }
-
-    internal func createPledge(
-      project _: Project,
-      amount _: Double,
-      reward _: Reward?,
-      shippingLocation _: Location?,
-      tappedReward _: Bool
-    ) -> SignalProducer<CreatePledgeEnvelope, ErrorEnvelope> {
-      if let error = self.createPledgeResult?.error {
-        return SignalProducer(error: error)
-      }
-
-      return SignalProducer(value: self.createPledgeResult?.value ?? .template)
     }
 
     internal func facebookConnect(facebookAccessToken _: String)
@@ -986,6 +973,11 @@
       return .empty
     }
 
+    func fetchProjectCreatorDetails(query _: NonEmptySet<Query>)
+      -> SignalProducer<ProjectCreatorDetailsEnvelope, GraphError> {
+      return producer(for: self.fetchProjectCreatorDetailsResult)
+    }
+
     internal func fetchProjects(member _: Bool) -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
       if let error = fetchProjectsError {
         return SignalProducer(error: error)
@@ -1420,7 +1412,6 @@
             changePaymentMethodResult: $1.changePaymentMethodResult,
             clearUserUnseenActivityResult: $1.clearUserUnseenActivityResult,
             deletePaymentMethodResult: $1.deletePaymentMethodResult,
-            createPledgeResult: $1.createPledgeResult,
             facebookConnectResponse: $1.facebookConnectResponse,
             facebookConnectError: $1.facebookConnectError,
             fetchActivitiesResponse: $1.fetchActivitiesResponse,
@@ -1448,9 +1439,10 @@
             publishUpdateError: $1.publishUpdateError,
             fetchMessageThreadResult: $1.fetchMessageThreadResult,
             fetchMessageThreadsResponse: $1.fetchMessageThreadsResponse,
+            fetchProjectResponse: $1.fetchProjectResponse,
             fetchProjectActivitiesResponse: $1.fetchProjectActivitiesResponse,
             fetchProjectActivitiesError: $1.fetchProjectActivitiesError,
-            fetchProjectResponse: $1.fetchProjectResponse,
+            fetchProjectCreatorDetailsResult: $1.fetchProjectCreatorDetailsResult,
             fetchProjectNotificationsResponse: $1.fetchProjectNotificationsResponse,
             fetchProjectsResponse: $1.fetchProjectsResponse,
             fetchProjectsError: $1.fetchProjectsError,
