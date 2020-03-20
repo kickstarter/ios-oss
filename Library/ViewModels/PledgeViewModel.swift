@@ -402,7 +402,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
 
     let notChangingPaymentMethod = context.map { context in
-      context.isUpdating && context != .changePaymentMethod
+      context.isUpdating && context != .changePaymentMethod || context != .fixPaymentMethod
     }
     .filter(isTrue)
 
@@ -560,7 +560,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.popToRootViewController = self.notifyDelegateUpdatePledgeDidSucceedWithMessage.ignoreValues()
 
-    self.submitButtonTitle = context.map { $0.submitButtonTitle }
+
+    self.submitButtonTitle = Signal.combineLatest(
+      context,
+      project,
+      selectedPaymentSourceId
+    )
+      .map(titleForSubmitButton)
+
+
     self.title = context.map { $0.title }
     let contextAndProjectAndPledgeAmount = Signal.combineLatest(context, project, pledgeAmount)
 
@@ -831,7 +839,15 @@ private func paymentMethodValid(
     return true
   }
 
-  return backedPaymentSourceId != paymentSourceId
+  if context == .fixPaymentMethod {
+    return true
+  } else if backedPaymentSourceId != paymentSourceId {
+    return true
+  }
+
+  return false
+
+ // return backedPaymentSourceId != paymentSourceId
 }
 
 private func allValuesChangedAndValid(
@@ -845,6 +861,19 @@ private func allValuesChangedAndValid(
   }
 
   return amountValid && shippingRuleValid
+}
+
+private func titleForSubmitButton(context: PledgeViewContext,
+                               project: Project,
+                               paymentSourceId: String?) -> String {
+
+let backedPaymentSourceId = project.personalization.backing?.paymentSource?.id
+
+  if context == .fixPaymentMethod && backedPaymentSourceId == paymentSourceId {
+    return "Retry"
+  } else {
+    return context.submitButtonTitle
+  }
 }
 
 // MARK: - Helper Functions

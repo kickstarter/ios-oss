@@ -70,6 +70,7 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
     let paymentSourceId = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.paymentSourceId }
     let selectedCard = self.selectedCardProperty.signal.skipNil()
     let cardTypeIsAvailable = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.isEnabled }
+    let erroredPledge = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.isErrored }
 
     self.cardImage = creditCard
       .map(cardImageForCard)
@@ -99,8 +100,6 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
       .takeWhen(Signal.merge(cardConfiguredAsSelected, self.selectButtonTappedProperty.signal))
       .map { $0.id }
 
-    let erroredPledge = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.isErrored }
-
     let cardIsSelected = Signal.merge(
       creditCard.mapConst(false),
       cardAndSelectedCard.map(==)
@@ -115,21 +114,13 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
         )
       }
 
-    let cardIsSelectedAndCardIsAvailableAndFixIconHidden =
-      Signal.combineLatest(cardIsSelected, cardTypeIsAvailable, self.fixIconIsHidden)
+    self.selectButtonIsSelected = Signal.combineLatest(cardIsSelected, cardTypeIsAvailable)
+    .map { $0 && $1 }
+    .skipRepeats()
 
-    self.selectButtonIsSelected =
-      cardIsSelectedAndCardIsAvailableAndFixIconHidden
-      .map { cardIsSelected, cardTypeIsAvailable, fixIconHidden in
-        cardIsSelected && cardTypeIsAvailable && fixIconHidden
-      }
-      .skipRepeats()
-
-    self.selectButtonTitle = cardIsSelectedAndCardIsAvailableAndFixIconHidden
-      .filter { _, cardTypeIsAvailable, _ in cardTypeIsAvailable == true }
-      .map { cardIsSelected, cardTypeIsAvailable, fixIconHidden in
-        cardIsSelected && cardTypeIsAvailable && fixIconHidden
-      }
+    self.selectButtonTitle = Signal.combineLatest(cardIsSelected, cardTypeIsAvailable)
+      .filter { $1 == true }
+      .map { $0 && $1 }
       .map { $0 ? Strings.Selected() : Strings.Select() }
       .skipRepeats()
 

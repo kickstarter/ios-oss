@@ -204,10 +204,15 @@ private func pledgeCreditCardViewDataAndSelectedCard(
     return (data, cards.first)
   }
 
+  if (cards.first(where: { $0.id == backing.paymentSource?.id }) != nil) && backing.status == .errored {
+    return (data, nil)
+  }
+
   /*
    If we're working with a backing, and a new card hasn't been added,
    select the card that the backing is associated with.
    */
+
   let backedCard = cards.first(where: { $0.id == backing.paymentSource?.id })
 
   return (data, backedCard)
