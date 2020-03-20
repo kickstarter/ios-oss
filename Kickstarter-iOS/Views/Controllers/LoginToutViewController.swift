@@ -24,7 +24,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
   private lazy var fbLoginManager: LoginManager = {
     let manager = LoginManager()
-    manager.loginBehavior = .browser
     manager.defaultAudience = .friends
     return manager
   }()
