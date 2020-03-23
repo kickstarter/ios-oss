@@ -24,9 +24,10 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
     let curatedProjects: Signal<[Project], Never> = self.categoriesSignal
       .combineLatest(with: self.viewDidLoadSignal.ignoreValues())
       .flatMap { categories, _ in
-        projects(from: categories).flatten()
+        projects(from: categories)
+          .flatten()
+          .reduce([], +)
       }
-      .scan([]) { current, new in new + current }
 
     self.loadProjects = curatedProjects
 

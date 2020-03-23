@@ -26,20 +26,14 @@ final class CuratedProjectsViewModelTests: TestCase {
   }
 
   func testLoadProjects() {
-    let artProjects = (1...5).map {
+    let projects = (1...5).map {
       .template
         |> Project.lens.id .~ $0
         |> Project.lens.category .~ Project.Category.art
     }
-    let gamesProjects = (1...5).map {
-      .template
-        |> Project.lens.id .~ $0
-        |> Project.lens.category .~ Project.Category.games
-    }
-    let projects = (artProjects + gamesProjects)
 
     let envelope = .template
-      |> DiscoveryEnvelope.lens.projects .~ (artProjects + gamesProjects)
+      |> DiscoveryEnvelope.lens.projects .~ projects
 
     let apiService = MockService(fetchDiscoveryResponse: envelope)
     withEnvironment(apiService: apiService) {
@@ -47,7 +41,8 @@ final class CuratedProjectsViewModelTests: TestCase {
 
       self.viewModel.inputs.viewDidLoad()
 
-      self.loadProjects.assertValues([projects, projects + projects])
+      // We configured the viewModel with 2 categories, therefore the request was made 2x.
+      self.loadProjects.assertValue(projects + projects)
     }
   }
 }
