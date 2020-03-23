@@ -170,14 +170,13 @@ private func cardImageForCard(_ card: GraphUserCreditCard.CreditCard) -> UIImage
 }
 
 private func hideFixIcon(
-  erroredPledge: Bool, paymentSourceId: String?,
+  erroredPledge: Bool,
+  paymentSourceId: String?,
   creditCardId: String
 ) -> Bool {
   guard let paymentId = paymentSourceId else { return true }
 
-  if erroredPledge == false {
-    return true
-  } else if erroredPledge == true, paymentId == creditCardId {
+  if erroredPledge == true, paymentId == creditCardId {
     return false
   }
 

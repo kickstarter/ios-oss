@@ -414,7 +414,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         self.creditCardSelectedSignal,
         context
       )
-        .map(paymentMethodValid)
+      .map(paymentMethodValid)
     )
 
     let valuesChangedAndValid = Signal.combineLatest(
@@ -847,8 +847,6 @@ private func paymentMethodValid(
   }
 
   return false
-
- // return backedPaymentSourceId != paymentSourceId
 }
 
 private func allValuesChangedAndValid(
