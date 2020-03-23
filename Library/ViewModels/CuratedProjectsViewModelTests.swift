@@ -8,12 +8,14 @@ import XCTest
 
 final class CuratedProjectsViewModelTests: TestCase {
   private let dismissViewController = TestObserver<Void, Never>()
+  private let isLoading = TestObserver<Bool, Never>()
   private let loadProjects = TestObserver<[Project], Never>()
   private let viewModel: CuratedProjectsViewModelType = CuratedProjectsViewModel()
 
   override func setUp() {
     super.setUp()
     self.viewModel.outputs.dismissViewController.observe(self.dismissViewController.observer)
+    self.viewModel.outputs.isLoading.observe(self.isLoading.observer)
     self.viewModel.outputs.loadProjects.observe(self.loadProjects.observer)
   }
 
@@ -42,6 +44,31 @@ final class CuratedProjectsViewModelTests: TestCase {
       self.viewModel.inputs.viewDidLoad()
 
       self.loadProjects.assertValue(projects)
+    }
+  }
+
+  func testIsLoading() {
+    let category = Project.Category.art
+    let projects = (1...5).map {
+      .template
+        |> Project.lens.id .~ $0
+        |> Project.lens.category .~ category
+    }
+    let envelope = .template
+      |> DiscoveryEnvelope.lens.projects .~ projects
+
+    let apiService = MockService(fetchDiscoveryResponse: envelope)
+
+    withEnvironment(apiService: apiService) {
+      self.isLoading.assertDidNotEmitValue()
+
+      self.viewModel.inputs.viewDidLoad()
+
+      self.isLoading.assertValues([true])
+
+      self.viewModel.inputs.configure(with: [Category.art])
+
+      self.isLoading.assertValues([true, false])
     }
   }
 }
