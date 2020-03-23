@@ -115,8 +115,8 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
       }
 
     self.selectButtonIsSelected = Signal.combineLatest(cardIsSelected, cardTypeIsAvailable)
-    .map { $0 && $1 }
-    .skipRepeats()
+      .map { $0 && $1 }
+      .skipRepeats()
 
     self.selectButtonTitle = Signal.combineLatest(cardIsSelected, cardTypeIsAvailable)
       .filter { $1 == true }

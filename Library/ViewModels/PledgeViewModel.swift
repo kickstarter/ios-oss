@@ -560,14 +560,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.popToRootViewController = self.notifyDelegateUpdatePledgeDidSucceedWithMessage.ignoreValues()
 
-
     self.submitButtonTitle = Signal.combineLatest(
       context,
       project,
       selectedPaymentSourceId
     )
-      .map(titleForSubmitButton)
-
+    .map(titleForSubmitButton)
 
     self.title = context.map { $0.title }
     let contextAndProjectAndPledgeAmount = Signal.combineLatest(context, project, pledgeAmount)
@@ -839,8 +837,7 @@ private func paymentMethodValid(
     return true
   }
 
-  if backedPaymentSourceId == paymentSourceId && project.personalization.backing?.status == .errored
-  {
+  if backedPaymentSourceId == paymentSourceId, project.personalization.backing?.status == .errored {
     return true
   } else if backedPaymentSourceId != paymentSourceId {
     return true
@@ -862,13 +859,14 @@ private func allValuesChangedAndValid(
   return amountValid && shippingRuleValid
 }
 
-private func titleForSubmitButton(context: PledgeViewContext,
-                               project: Project,
-                               paymentSourceId: String?) -> String {
+private func titleForSubmitButton(
+  context: PledgeViewContext,
+  project: Project,
+  paymentSourceId: String?
+) -> String {
+  let backedPaymentSourceId = project.personalization.backing?.paymentSource?.id
 
-let backedPaymentSourceId = project.personalization.backing?.paymentSource?.id
-
-  if context == .fixPaymentMethod && backedPaymentSourceId == paymentSourceId {
+  if context == .fixPaymentMethod, backedPaymentSourceId == paymentSourceId {
     return Strings.Retry()
   } else {
     return context.submitButtonTitle

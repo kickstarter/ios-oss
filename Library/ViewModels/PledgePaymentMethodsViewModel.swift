@@ -204,7 +204,7 @@ private func pledgeCreditCardViewDataAndSelectedCard(
     return (data, cards.first)
   }
 
-  if (cards.first(where: { $0.id == backing.paymentSource?.id }) != nil) && backing.status == .errored {
+  if cards.first(where: { $0.id == backing.paymentSource?.id }) != nil, backing.status == .errored {
     return (data, nil)
   }
 

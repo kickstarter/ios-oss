@@ -434,68 +434,68 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testFixPaymentMethodContext() {
-     let mockService = MockService(serverConfig: ServerConfig.staging)
+    let mockService = MockService(serverConfig: ServerConfig.staging)
 
-     withEnvironment(apiService: mockService, currentUser: .template) {
-       let shippingRule = ShippingRule.template
-         |> ShippingRule.lens.id .~ 123
-         |> ShippingRule.lens.cost .~ 10.0
-       let backing = Backing.template
-         |> Backing.lens.amount .~ 100
-         |> Backing.lens.locationId .~ .some(123)
-         |> Backing.lens.status .~ .errored
-       let project = Project.template
-         |> Project.lens.personalization.backing .~ backing
-       let reward = Reward.template
-         |> Reward.lens.shipping.enabled .~ true
-         |> Reward.lens.minimum .~ 10.00
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let shippingRule = ShippingRule.template
+        |> ShippingRule.lens.id .~ 123
+        |> ShippingRule.lens.cost .~ 10.0
+      let backing = Backing.template
+        |> Backing.lens.amount .~ 100
+        |> Backing.lens.locationId .~ .some(123)
+        |> Backing.lens.status .~ .errored
+      let project = Project.template
+        |> Project.lens.personalization.backing .~ backing
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.minimum .~ 10.00
 
-       self.vm.inputs.configureWith(
-         project: project, reward: reward, refTag: nil, context: .fixPaymentMethod
-       )
-       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configureWith(
+        project: project, reward: reward, refTag: nil, context: .fixPaymentMethod
+      )
+      self.vm.inputs.viewDidLoad()
 
-       self.title.assertValues(["Fix payment method"])
+      self.title.assertValues(["Fix payment method"])
 
-       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
-       self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
-       self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
-       self.configurePaymentMethodsViewControllerWithContext.assertValues([.fixPaymentMethod])
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
+      self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
+      self.configurePaymentMethodsViewControllerWithContext.assertValues([.fixPaymentMethod])
 
-       self.configureSummaryViewControllerWithDataProject.assertValues([project])
-       self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10.00])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10.00])
 
-       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
-       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
-       self.submitButtonTitle.assertValues(["Confirm"])
-       self.confirmationLabelHidden.assertValues([true])
+      self.submitButtonTitle.assertValues(["Confirm"])
+      self.confirmationLabelHidden.assertValues([true])
 
-       self.descriptionViewHidden.assertValues([true])
+      self.descriptionViewHidden.assertValues([true])
 
-       self.configureWithPledgeViewDataProject.assertValues([project])
-       self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
 
-       self.continueViewHidden.assertValues([true])
-       self.submitButtonHidden.assertValues([false])
-       self.paymentMethodsViewHidden.assertValues([false])
-       self.pledgeAmountViewHidden.assertValues([true])
-       self.pledgeAmountSummaryViewHidden.assertValues([false])
-       self.sectionSeparatorsHidden.assertValues([true])
-       self.shippingLocationViewHidden.assertValues([true])
+      self.continueViewHidden.assertValues([true])
+      self.submitButtonHidden.assertValues([false])
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.pledgeAmountViewHidden.assertValues([true])
+      self.pledgeAmountSummaryViewHidden.assertValues([false])
+      self.sectionSeparatorsHidden.assertValues([true])
+      self.shippingLocationViewHidden.assertValues([true])
 
-       let pledgeAmountData: PledgeAmountData = (amount: 90, min: 10.00, max: 10_000, isValid: true)
-       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+      let pledgeAmountData: PledgeAmountData = (amount: 90, min: 10.00, max: 10_000, isValid: true)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
-       self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 90])
-       self.configureSummaryViewControllerWithDataProject.assertValues([project, project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 90])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project])
 
-       self.vm.inputs.shippingRuleSelected(shippingRule)
+      self.vm.inputs.shippingRuleSelected(shippingRule)
 
-       self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 90, 100])
-       self.configureSummaryViewControllerWithDataProject.assertValues([project, project, project])
-     }
-   }
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 90, 100])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project, project])
+    }
+  }
 
   func testChangePaymentMethodContext_NoReward() {
     let backing = Backing.template
