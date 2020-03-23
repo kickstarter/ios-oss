@@ -17,7 +17,7 @@ final class CuratedProjectsViewModelTests: TestCase {
     self.viewModel.outputs.loadProjects.observe(self.loadProjects.observer)
   }
 
-  func testDismissViewController_OnBUttonTap() {
+  func testDismissViewController_OnButtonTap() {
     self.dismissViewController.assertDidNotEmitValue()
 
     self.viewModel.inputs.doneButtonTapped()
@@ -26,22 +26,28 @@ final class CuratedProjectsViewModelTests: TestCase {
   }
 
   func testLoadProjects() {
-    let category = Project.Category.art
-    let projects = (1...5).map {
+    let artProjects = (1...5).map {
       .template
         |> Project.lens.id .~ $0
-        |> Project.lens.category .~ category
+        |> Project.lens.category .~ Project.Category.art
     }
+    let gamesProjects = (1...5).map {
+      .template
+        |> Project.lens.id .~ $0
+        |> Project.lens.category .~ Project.Category.games
+    }
+    let projects = (artProjects + gamesProjects)
+
     let envelope = .template
-      |> DiscoveryEnvelope.lens.projects .~ projects
+      |> DiscoveryEnvelope.lens.projects .~ (artProjects + gamesProjects)
 
     let apiService = MockService(fetchDiscoveryResponse: envelope)
     withEnvironment(apiService: apiService) {
-      self.viewModel.inputs.configure(with: [Category.art])
+      self.viewModel.inputs.configure(with: [Category.art, Category.tabletopGames])
 
       self.viewModel.inputs.viewDidLoad()
 
-      self.loadProjects.assertValue(projects)
+      self.loadProjects.assertValues([projects, projects + projects])
     }
   }
 }
