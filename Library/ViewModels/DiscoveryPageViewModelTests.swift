@@ -1558,7 +1558,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     let mockKeyValueStore = MockKeyValueStore()
       |> \.hasCompletedCategoryPersonalizationFlow .~ true
       |> \.hasDismissedPersonalizationCard .~ false
-      |> \.onboardingCategoryIds .~ [1, 2, 3]
 
     let mockOpClient = MockOptimizelyClient()
       |> \.experiments .~ [
@@ -1583,7 +1582,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.personalizationCellTapped()
 
-      self.goToCuratedProjects.assertValues([[1, 2, 3]])
+      self.goToCuratedProjects.assertValues([[]])
     }
   }
 

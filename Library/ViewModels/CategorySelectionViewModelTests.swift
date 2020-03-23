@@ -402,13 +402,11 @@ final class CategorySelectionViewModelTests: TestCase {
       self.vm.inputs.categorySelected(with: (illustrationIndexPath, illustrationId))
 
       self.postNotification.assertDidNotEmitValue()
-      XCTAssertEqual([], mockKVStore.onboardingCategoryIds)
       XCTAssertFalse(mockKVStore.hasCompletedCategoryPersonalizationFlow)
 
       self.vm.inputs.continueButtonTapped()
 
       self.postNotification.assertValueCount(1)
-      XCTAssertEqual([artId, illustrationId], mockKVStore.onboardingCategoryIds)
       XCTAssertTrue(mockKVStore.hasCompletedCategoryPersonalizationFlow)
     }
   }

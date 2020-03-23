@@ -597,7 +597,8 @@ private func shouldShowPersonalization() -> Bool {
 }
 
 private func cachedCategoryIds() -> [Int] {
-  return AppEnvironment.current.userDefaults.onboardingCategoryIds
+  // TODO: this will return cached categories
+  return []
 }
 
 private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {

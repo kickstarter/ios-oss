@@ -73,9 +73,8 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
       .takeWhen(self.continueButtonTappedProperty.signal)
       .map { $0.sorted() }
       .map(Array.init)
-      .on { categoryIds in
+      .on { _ in
         AppEnvironment.current.userDefaults.hasCompletedCategoryPersonalizationFlow = true
-        AppEnvironment.current.userDefaults.onboardingCategoryIds = categoryIds
       }
 
     self.postNotification = self.goToCuratedProjects
