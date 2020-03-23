@@ -176,8 +176,10 @@ private let containerViewStyle: ViewStyle = { view in
     |> \.backgroundColor .~ .ksr_trust_700
     |> \.isAccessibilityElement .~ true
     |> \.accessibilityTraits .~ [UIAccessibilityTraits.button]
-    |> \.accessibilityLabel %~ { _ in "We've helped you find your next project to back." }
-    |> \.accessibilityHint %~ { _ in "See what we've found" }
+    |> \.accessibilityLabel %~ { _ in localizedString(key: "Well_help_you_find_a_project_to_back",
+                                                      defaultValue: "We'll help you find a project to back") }
+    |> \.accessibilityHint %~ { _ in localizedString(key: "See_our_suggestions",
+                                                     defaultValue: "See our suggestions") }
 }
 
 private let baseLabelStyle: LabelStyle = { label in
