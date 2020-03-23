@@ -116,9 +116,6 @@ public final class CategorySelectionViewController: UIViewController {
     _ = self
       |> baseControllerStyle()
 
-    _ = self.navigationController?.navigationBar
-      ?|> navigationBarStyle
-
     _ = self.collectionView
       |> collectionViewStyle
 
