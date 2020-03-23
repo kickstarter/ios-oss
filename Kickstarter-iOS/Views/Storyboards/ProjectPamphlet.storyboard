@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GbK-FV-Iaj">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GbK-FV-Iaj">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -162,7 +160,7 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProjectPamphletMinimalCell" rowHeight="300" id="dga-ES-vi9" customClass="ProjectPamphletMinimalCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="1" width="400" height="300"/>
+                                <rect key="frame" x="0.0" y="28" width="400" height="300"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dga-ES-vi9" id="ZRo-Wd-Ixv">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="300"/>
@@ -209,7 +207,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProjectPamphletMainCell" rowHeight="600" id="Pz0-YF-dZU" customClass="ProjectPamphletMainCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="301" width="400" height="600"/>
+                                <rect key="frame" x="0.0" y="328" width="400" height="600"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pz0-YF-dZU" id="9h4-fT-eHX">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="600"/>
@@ -269,7 +267,7 @@
                                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wJh-2e-un6">
+                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wJh-2e-un6" customClass="LoadingButton" customModule="Kickstarter_Framework" customModuleProvider="target">
                                                                             <rect key="frame" x="0.0" y="38.5" width="400" height="34"/>
                                                                             <state key="normal">
                                                                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -506,6 +504,7 @@
                                     <outlet property="projectNameAndCreatorStackView" destination="pdi-6q-B1m" id="AHs-By-hzg"/>
                                     <outlet property="projectNameLabel" destination="xNB-te-3Jz" id="F6w-6p-hW1"/>
                                     <outlet property="readMoreButton" destination="wJh-2e-un6" id="9sF-rI-Jw6"/>
+                                    <outlet property="spacerView" destination="ksD-Dw-vWm" id="MJU-Do-faC"/>
                                     <outlet property="stateLabel" destination="b0m-Ky-7kD" id="rf0-6I-cY1"/>
                                     <outlet property="statsStackView" destination="N0V-lF-GzK" id="rPf-34-EZf"/>
                                     <outlet property="youreABackerContainerView" destination="wDa-3z-Se6" id="spi-eC-ggZ"/>
@@ -513,7 +512,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProjectPamphletSubpageCell" rowHeight="56" id="V7Q-FK-dC8" customClass="ProjectPamphletSubpageCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="901" width="400" height="56"/>
+                                <rect key="frame" x="0.0" y="928" width="400" height="56"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="V7Q-FK-dC8" id="5qw-jj-PGQ">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="56"/>
@@ -587,7 +586,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PledgeTitleCell" rowHeight="50" id="TJ1-k5-nrM" customClass="PledgeTitleCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="957" width="400" height="50"/>
+                                <rect key="frame" x="0.0" y="984" width="400" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TJ1-k5-nrM" id="9se-FS-W3n">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="50"/>
@@ -623,7 +622,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoRewardCell" rowHeight="120" id="DhR-5a-tzD" customClass="NoRewardCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="1007" width="400" height="120"/>
+                                <rect key="frame" x="0.0" y="1034" width="400" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DhR-5a-tzD" id="TzW-Q9-jdh">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="120"/>
@@ -683,7 +682,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RewardsTitleCell" rowHeight="50" id="am6-Tp-KDq" customClass="RewardsTitleCell" customModule="Kickstarter_Framework" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="1127" width="400" height="50"/>
+                                <rect key="frame" x="0.0" y="1154" width="400" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="am6-Tp-KDq" id="qt8-mK-iTk">
                                     <rect key="frame" x="0.0" y="0.0" width="400" height="50"/>

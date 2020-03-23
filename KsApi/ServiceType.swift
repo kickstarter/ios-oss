@@ -80,15 +80,6 @@ public protocol ServiceType {
   func deletePaymentMethod(input: PaymentSourceDeleteInput) ->
     SignalProducer<DeletePaymentMethodEnvelope, GraphError>
 
-  /// Performs the first step of checkout by creating a pledge on the server.
-  func createPledge(
-    project: Project,
-    amount: Double,
-    reward: Reward?,
-    shippingLocation: Location?,
-    tappedReward: Bool
-  ) -> SignalProducer<CreatePledgeEnvelope, ErrorEnvelope>
-
   /// Removes an image from a project update draft.
   func delete(image: UpdateDraft.Image, fromDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Image, ErrorEnvelope>
@@ -192,6 +183,10 @@ public protocol ServiceType {
   /// Fetch a page of activities for a project from a pagination url.
   func fetchProjectActivities(paginationUrl: String) ->
     SignalProducer<ProjectActivityEnvelope, ErrorEnvelope>
+
+  /// Fetch the project creator details for a project with a given query.
+  func fetchProjectCreatorDetails(query: NonEmptySet<Query>)
+    -> SignalProducer<ProjectCreatorDetailsEnvelope, GraphError>
 
   /// Fetch the user's project notifications.
   func fetchProjectNotifications() -> SignalProducer<[ProjectNotification], ErrorEnvelope>

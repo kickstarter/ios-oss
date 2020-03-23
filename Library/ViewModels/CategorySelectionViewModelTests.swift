@@ -9,11 +9,12 @@ import XCTest
 final class CategorySelectionViewModelTests: TestCase {
   private let continueButtonEnabled = TestObserver<Bool, Never>()
   private let goToCuratedProjects = TestObserver<[KsApi.Category], Never>()
+  private let isLoading = TestObserver<Bool, Never>()
   private let loadCategorySectionTitles = TestObserver<[String], Never>()
   private let loadCategorySectionNames = TestObserver<[[String]], Never>()
   private let loadCategorySectionCategoryIds = TestObserver<[[Int]], Never>()
+  private let showErrorMessage = TestObserver<String, Never>()
   private let warningLabelIsHidden = TestObserver<Bool, Never>()
-
   private let vm: CategorySelectionViewModelType = CategorySelectionViewModel()
 
   override func setUp() {
@@ -21,11 +22,13 @@ final class CategorySelectionViewModelTests: TestCase {
 
     self.vm.outputs.continueButtonEnabled.observe(self.continueButtonEnabled.observer)
     self.vm.outputs.goToCuratedProjects.observe(self.goToCuratedProjects.observer)
+    self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.loadCategorySections.map(first).observe(self.loadCategorySectionTitles.observer)
     self.vm.outputs.loadCategorySections.map(second).map { $0.map { $0.map { $0.0 } } }
       .observe(self.loadCategorySectionNames.observer)
     self.vm.outputs.loadCategorySections.map(second).map { $0.map { $0.map { $0.1 } } }
       .observe(self.loadCategorySectionCategoryIds.observer)
+    self.vm.outputs.showErrorMessage.observe(self.showErrorMessage.observer)
     self.vm.outputs.warningLabelIsHidden.observe(self.warningLabelIsHidden.observer)
   }
 
@@ -371,6 +374,38 @@ final class CategorySelectionViewModelTests: TestCase {
       self.goToCuratedProjects.assertValues([
         [.art, .games, .illustration]
       ])
+    }
+  }
+
+  func testShowErrorMessage() {
+    let mockService = MockService(fetchGraphCategoriesError: .invalidInput)
+
+    withEnvironment(apiService: mockService) {
+      self.showErrorMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.showErrorMessage.assertValue("Something went wrong.")
+    }
+  }
+
+  func testIsLoading() {
+    let categoriesResponse = RootCategoriesEnvelope.init(rootCategories: [.art])
+
+    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
+
+    withEnvironment(apiService: mockService) {
+      self.isLoading.assertDidNotEmitValue()
+
+      self.vm.inputs.viewDidLoad()
+
+      self.isLoading.assertValues([true])
+
+      self.scheduler.advance()
+
+      self.isLoading.assertValues([true, false])
     }
   }
 }
