@@ -2,8 +2,11 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias ProjectCreatorDetailsData = (ProjectCreatorDetailsEnvelope?, isLoading: Bool)
+public typealias ProjectPamphletContentData = (Project, ProjectCreatorDetailsData, RefTag?)
+
 public protocol ProjectPamphletContentViewModelInputs {
-  func configureWith(project: Project)
+  func configureWith(value: (Project, RefTag?))
   func tappedComments()
   func tappedPledgeAnyAmount()
   func tapped(rewardOrBacking: Either<Reward, Backing>)
@@ -21,7 +24,7 @@ public protocol ProjectPamphletContentViewModelOutputs {
   var goToRewardPledge: Signal<(Project, Reward), Never> { get }
   var goToUpdates: Signal<Project, Never> { get }
   var loadMinimalProjectIntoDataSource: Signal<Project, Never> { get }
-  var loadProjectIntoDataSource: Signal<Project, Never> { get }
+  var loadProjectPamphletContentDataIntoDataSource: Signal<ProjectPamphletContentData, Never> { get }
 }
 
 public protocol ProjectPamphletContentViewModelType {
@@ -32,11 +35,13 @@ public protocol ProjectPamphletContentViewModelType {
 public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewModelType,
   ProjectPamphletContentViewModelInputs, ProjectPamphletContentViewModelOutputs {
   public init() {
-    let project = Signal.combineLatest(
+    let projectAndRefTag = Signal.combineLatest(
       self.configDataProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
     .map(first)
+
+    let project = projectAndRefTag.map(first)
 
     let loadDataSourceOnSwipeCompletion = self.viewDidAppearAnimatedProperty.signal
       .filter(isTrue)
@@ -56,8 +61,57 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
     )
     .take(first: 1)
 
-    self.loadProjectIntoDataSource = Signal.combineLatest(
-      project,
+    let projectCreatorDetails = project
+      .take(first: 1)
+      .map(\.slug)
+      .switchMap { slug in
+        AppEnvironment.current.apiService
+          .fetchProjectCreatorDetails(query: projectCreatorDetailsQuery(withSlug: slug))
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .map { result in (result, false) }
+          .prefix(value: (nil, true))
+          .demoteErrors(replaceErrorWith: (nil, false))
+          .materialize()
+      }
+
+    let projectCreatorDetailsLoadingValues = projectCreatorDetails.values()
+      .filter(second >>> isTrue)
+      .map { $0 as ProjectCreatorDetailsData }
+
+    let projectCreatorDetailsHasLoadedValues = projectCreatorDetails.values()
+      .filter(second >>> isFalse)
+
+    let projectCreatorDetailsExperimentValues = projectAndRefTag
+      .takePairWhen(projectCreatorDetailsHasLoadedValues)
+      .map { projectAndRefTag, creatorDetails in
+        (projectAndRefTag.0, projectAndRefTag.1, creatorDetails.0, creatorDetails.1)
+      }
+      .map { project, refTag, result, isLoading -> ProjectCreatorDetailsData in
+        let controlData: ProjectCreatorDetailsData = (nil, isLoading)
+
+        // Nil result indicates loading failed, errors demoted. No need to activate experiment.
+        guard result != nil else { return controlData }
+
+        guard
+          projectPageConversionCreatorDetailsExperiment(project: project, refTag: refTag) != .control
+        else { return controlData }
+
+        return (result, isLoading)
+      }
+
+    let projectCreatorDetailsValues = Signal.merge(
+      projectCreatorDetailsLoadingValues,
+      projectCreatorDetailsExperimentValues
+    )
+
+    let data = Signal.combineLatest(
+      projectAndRefTag,
+      projectCreatorDetailsValues
+    )
+    .map { projectAndRefTag, creatorDetails in (projectAndRefTag.0, creatorDetails, projectAndRefTag.1) }
+
+    self.loadProjectPamphletContentDataIntoDataSource = Signal.combineLatest(
+      data,
       timeToLoadDataSource
     )
     .map(first)
@@ -94,9 +148,9 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
       .map { .id($0.id) }
   }
 
-  fileprivate let configDataProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
-    self.configDataProperty.value = project
+  fileprivate let configDataProperty = MutableProperty<(Project, RefTag?)?>(nil)
+  public func configureWith(value: (Project, RefTag?)) {
+    self.configDataProperty.value = value
   }
 
   fileprivate let tappedCommentsProperty = MutableProperty(())
@@ -145,7 +199,7 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
   public let goToRewardPledge: Signal<(Project, Reward), Never>
   public let goToUpdates: Signal<Project, Never>
   public let loadMinimalProjectIntoDataSource: Signal<Project, Never>
-  public let loadProjectIntoDataSource: Signal<Project, Never>
+  public let loadProjectPamphletContentDataIntoDataSource: Signal<ProjectPamphletContentData, Never>
 
   public var inputs: ProjectPamphletContentViewModelInputs { return self }
   public var outputs: ProjectPamphletContentViewModelOutputs { return self }
@@ -180,4 +234,40 @@ private func goToBackingData(forProject project: Project, rewardOrBacking: Eithe
   }
 
   return project
+}
+
+private func projectCreatorDetailsQuery(withSlug slug: String) -> NonEmptySet<Query> {
+  return Query.project(
+    slug: slug,
+    .id +| [
+      .creator(
+        .id +| [
+          .backingsCount,
+          .launchedProjects(
+            .totalCount +| []
+          )
+        ]
+      )
+    ]
+  ) +| []
+}
+
+private func projectPageConversionCreatorDetailsExperiment(
+  project: Project, refTag: RefTag?
+) -> OptimizelyExperiment.Variant? {
+  let userAttributes = optimizelyUserAttributes(
+    with: AppEnvironment.current.currentUser,
+    project: project,
+    refTag: refTag
+  )
+
+  let optimizelyVariant = AppEnvironment.current.optimizelyClient?
+    .variant(
+      for: OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails,
+      userId: deviceIdentifier(uuid: UUID()),
+      isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
+      userAttributes: userAttributes
+    )
+
+  return optimizelyVariant
 }

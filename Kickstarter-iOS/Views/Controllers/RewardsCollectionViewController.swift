@@ -291,3 +291,37 @@ private var collectionViewStyle: CollectionViewStyle = { collectionView -> UICol
     |> \.allowsSelection .~ true
     |> \.showsHorizontalScrollIndicator .~ true
 }
+
+extension RewardsCollectionViewController {
+  public static func controller(
+    with project: Project,
+    refTag: RefTag?
+  ) -> UINavigationController {
+    let rewardsCollectionViewController = RewardsCollectionViewController
+      .instantiate(with: project, refTag: refTag, context: .createPledge)
+
+    let closeButton = UIBarButtonItem(
+      image: UIImage(named: "icon--cross"),
+      style: .plain,
+      target: rewardsCollectionViewController,
+      action: #selector(RewardsCollectionViewController.closeButtonTapped)
+    )
+
+    _ = closeButton
+      |> \.width .~ Styles.minTouchSize.width
+      |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
+
+    rewardsCollectionViewController.navigationItem.setLeftBarButton(closeButton, animated: false)
+
+    let navigationController = RewardPledgeNavigationController(
+      rootViewController: rewardsCollectionViewController
+    )
+
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = navigationController
+        |> \.modalPresentationStyle .~ .pageSheet
+    }
+
+    return navigationController
+  }
+}

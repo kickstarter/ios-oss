@@ -40,16 +40,16 @@ extension OptimizelyClientType {
 
 public func optimizelyTrackingAttributesAndEventTags(
   with user: User?,
-  project: Project,
+  project: Project?,
   refTag: RefTag?
 ) -> ([String: Any], [String: Any]) {
   let properties = optimizelyUserAttributes(with: user, project: project, refTag: refTag)
 
   let eventTags: [String: Any] = ([
-    "project_subcategory": project.category.name,
-    "project_category": project.category.parentName,
-    "project_country": project.location.country.lowercased(),
-    "project_user_has_watched": project.personalization.isStarred
+    "project_subcategory": project?.category.name,
+    "project_category": project?.category.parentName,
+    "project_country": project?.location.country.lowercased(),
+    "project_user_has_watched": project?.personalization.isStarred
   ] as [String: Any?]).compact()
 
   return (properties, eventTags)
@@ -61,6 +61,7 @@ public func optimizelyUserAttributes(
   refTag: RefTag? = nil
 ) -> [String: Any] {
   let properties: [String: Any] = [
+    "user_distinct_id": debugAdminDeviceIdentifier(),
     "user_backed_projects_count": user?.stats.backedProjectsCount,
     "user_launched_projects_count": user?.stats.createdProjectsCount,
     "user_country": (user?.location?.country ?? AppEnvironment.current.config?.countryCode)?.lowercased(),
@@ -77,4 +78,13 @@ public func optimizelyUserAttributes(
   .compact()
 
   return properties
+}
+
+private func debugAdminDeviceIdentifier() -> String? {
+  guard
+    AppEnvironment.current.environmentType != .production,
+    AppEnvironment.current.mainBundle.isRelease == false
+  else { return nil }
+
+  return deviceIdentifier(uuid: UUID())
 }

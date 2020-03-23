@@ -3,8 +3,19 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
+public enum PledgeCTAContainerViewContext {
+  case projectPamphlet
+  case projectDescription
+}
+
+public typealias PledgeCTAContainerViewData = (
+  projectOrError: Either<(Project, RefTag?), ErrorEnvelope>,
+  isLoading: Bool,
+  context: PledgeCTAContainerViewContext
+)
+
 public protocol PledgeCTAContainerViewViewModelInputs {
-  func configureWith(value: (projectOrError: Either<(Project, RefTag?), ErrorEnvelope>, isLoading: Bool))
+  func configureWith(value: PledgeCTAContainerViewData)
   func pledgeCTAButtonTapped()
 }
 
@@ -29,12 +40,12 @@ public protocol PledgeCTAContainerViewViewModelType {
 public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewModelType,
   PledgeCTAContainerViewViewModelInputs, PledgeCTAContainerViewViewModelOutputs {
   public init() {
-    let projectOrError = self.projectOrErrorProperty.signal
+    let projectOrError = self.configData.signal
       .skipNil()
       .filter(second >>> isFalse)
       .map(first)
 
-    let isLoading = self.projectOrErrorProperty.signal
+    let isLoading = self.configData.signal
       .skipNil()
       .map(second)
 
@@ -107,12 +118,9 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       }
   }
 
-  fileprivate let projectOrErrorProperty =
-    MutableProperty<(Either<(Project, RefTag?), ErrorEnvelope>, isLoading: Bool)?>(nil)
-  public func configureWith(
-    value: (projectOrError: Either<(Project, RefTag?), ErrorEnvelope>, isLoading: Bool)
-  ) {
-    self.projectOrErrorProperty.value = value
+  fileprivate let configData = MutableProperty<PledgeCTAContainerViewData?>(nil)
+  public func configureWith(value: PledgeCTAContainerViewData) {
+    self.configData.value = value
   }
 
   fileprivate let pledgeCTAButtonTappedProperty = MutableProperty(())

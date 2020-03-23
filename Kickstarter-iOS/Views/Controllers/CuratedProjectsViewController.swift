@@ -62,6 +62,7 @@ final class CuratedProjectsViewController: UIViewController {
       self.headerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.headerView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+
       self.tableView.topAnchor.constraint(equalTo: self.headerView.bottomAnchor),
       self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.tableView.leftAnchor.constraint(equalTo: self.view.leftAnchor),

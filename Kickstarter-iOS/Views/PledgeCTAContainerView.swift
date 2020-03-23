@@ -92,6 +92,21 @@ final class PledgeCTAContainerView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self
+      |> \.layoutMargins .~ .init(all: Styles.grid(3))
+
+    _ = self.layer
+      |> checkoutLayerCardRoundedStyle
+      |> \.backgroundColor .~ UIColor.white.cgColor
+      |> \.shadowColor .~ UIColor.black.cgColor
+      |> \.shadowOpacity .~ 0.12
+      |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
+      |> \.shadowRadius .~ CGFloat(1.0)
+      |> \.maskedCorners .~ [
+        CACornerMask.layerMaxXMinYCorner,
+        CACornerMask.layerMinXMinYCorner
+      ]
+
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
     _ = self.retryButton
@@ -156,7 +171,7 @@ final class PledgeCTAContainerView: UIView {
 
   // MARK: - Configuration
 
-  func configureWith(value: (projectOrError: Either<(Project, RefTag?), ErrorEnvelope>, isLoading: Bool)) {
+  func configureWith(value: PledgeCTAContainerViewData) {
     self.viewModel.inputs.configureWith(value: value)
   }
 
