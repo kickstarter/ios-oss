@@ -3761,6 +3761,7 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
 
+      XCTAssertNil(self.optimizelyClient.trackedAttributes?["user_distinct_id"] as? String)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_backed_projects_count"] as? Int, 50)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_launched_projects_count"] as? Int, 25)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
@@ -3779,6 +3780,73 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_category"] as? String, "Art")
       XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
       XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, true)
+    }
+  }
+
+  func testTrackingEvents_PledgeScreenViewed_DistinctID_LoggedIn_Beta_Staging() {
+    let user = User.template
+      |> \.location .~ Location.template
+      |> \.stats.backedProjectsCount .~ 50
+      |> \.stats.createdProjectsCount .~ 25
+      |> \.facebookConnected .~ true
+
+    let mockBundle = MockBundle(
+      bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue,
+      lang: Language.en.rawValue
+    )
+
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: user, mainBundle: mockBundle) {
+      let project = Project.template
+        |> \.category.parentId .~ Project.Category.art.id
+        |> \.category.parentName .~ Project.Category.art.name
+        |> Project.lens.stats.currentCurrency .~ "USD"
+        |> \.personalization.isStarred .~ true
+
+      self.vm.inputs.configureWith(
+        project: project, reward: .template, refTag: .discovery, context: .pledge
+      )
+
+      XCTAssertEqual([], self.trackingClient.events)
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(
+        self.optimizelyClient.trackedAttributes?["user_distinct_id"] as? String,
+        "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
+      )
+    }
+  }
+
+  func testTrackingEvents_PledgeScreenViewed_DistinctID_LoggedIn_Release_Production() {
+    let user = User.template
+      |> \.location .~ Location.template
+      |> \.stats.backedProjectsCount .~ 50
+      |> \.stats.createdProjectsCount .~ 25
+      |> \.facebookConnected .~ true
+
+    let mockBundle = MockBundle(
+      bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
+      lang: Language.en.rawValue
+    )
+
+    let mockService = MockService(serverConfig: ServerConfig.production)
+
+    withEnvironment(apiService: mockService, currentUser: user, mainBundle: mockBundle) {
+      let project = Project.template
+        |> \.category.parentId .~ Project.Category.art.id
+        |> \.category.parentName .~ Project.Category.art.name
+        |> Project.lens.stats.currentCurrency .~ "USD"
+        |> \.personalization.isStarred .~ true
+
+      self.vm.inputs.configureWith(
+        project: project, reward: .template, refTag: .discovery, context: .pledge
+      )
+
+      XCTAssertEqual([], self.trackingClient.events)
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertNil(self.optimizelyClient.trackedAttributes?["user_distinct_id"] as? String)
     }
   }
 
