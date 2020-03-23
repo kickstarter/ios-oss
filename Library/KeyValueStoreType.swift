@@ -8,6 +8,7 @@ public enum AppKeys: String {
   // swiftlint:disable line_length
   case hasSeenCategoryPersonalizationFlow = "com.kickstarter.KeyValueStoreType.hasSeenCategoryPersonalizationFlow"
   case hasSeenFavoriteCategoryAlert = "com.kickstarter.KeyValueStoreType.hasSeenFavoriteCategoryAlert"
+  case hasSeenLandingPage = "com.kickstarter.KeyValueStoreType.hasSeenLandingPage"
   case hasSeenSaveProjectAlert = "com.kickstarter.KeyValueStoreType.hasSeenSaveProjectAlert"
   case lastSeenActivitySampleId = "com.kickstarter.KeyValueStoreType.lastSeenActivitySampleId"
   case seenAppRating = "com.kickstarter.KeyValueStoreType.hasSeenAppRating"
@@ -34,6 +35,7 @@ public protocol KeyValueStoreType: AnyObject {
   var hasSeenAppRating: Bool { get set }
   var hasSeenCategoryPersonalizationFlow: Bool { get set }
   var hasSeenFavoriteCategoryAlert: Bool { get set }
+  var hasSeenLandingPage: Bool { get set }
   var hasSeenGamesNewsletterPrompt: Bool { get set }
   var hasSeenSaveProjectAlert: Bool { get set }
   var lastSeenActivitySampleId: Int { get set }
@@ -100,6 +102,15 @@ extension KeyValueStoreType {
     }
     set {
       self.set(newValue, forKey: AppKeys.hasSeenFavoriteCategoryAlert.rawValue)
+    }
+  }
+
+  public var hasSeenLandingPage: Bool {
+    get {
+      return self.bool(forKey: AppKeys.hasSeenLandingPage.rawValue)
+    }
+    set {
+      self.set(newValue, forKey: AppKeys.hasSeenLandingPage.rawValue)
     }
   }
 

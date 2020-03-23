@@ -37,14 +37,58 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
 
+    let mockService = MockService(
+      fetchProjectResponse: project,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
+      withEnvironment(
+        apiService: mockService, language: language, locale: .init(identifier: language.rawValue)
+      ) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : 900
 
+        self.scheduler.run()
+
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testNonBacker_LiveProject_CreatorDetailsExperiment() {
+    let project = self.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
+
+    let mockService = MockService(
+      fetchProjectResponse: project,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        // swiftlint:disable:next line_length
+        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    combos(Language.allLanguages, [Device.phone4_7inch]).forEach {
+      language, device in
+      withEnvironment(
+        apiService: mockService,
+        language: language,
+        locale: .init(identifier: language.rawValue),
+        optimizelyClient: optimizelyClient
+      ) {
+        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : 900
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", overallTolerance: 0.01)
       }
     }
   }
@@ -58,11 +102,20 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.state .~ .successful
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
+    let mockService = MockService(
+      fetchProjectResponse: project,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     Language.allLanguages.forEach { language in
-      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
+      withEnvironment(
+        apiService: mockService, language: language, locale: .init(identifier: language.rawValue)
+      ) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         parent.view.frame.size.height = 900
+
+        self.scheduler.run()
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
       }
@@ -95,12 +148,21 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
           |> Backing.lens.reward .~ project.rewards.first
       }
 
+    let mockService = MockService(
+      fetchProjectResponse: project,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
+      withEnvironment(
+        apiService: mockService, language: language, locale: .init(identifier: language.rawValue)
+      ) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : 900
+
+        self.scheduler.run()
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -120,15 +182,22 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
           |> Backing.lens.reward .~ nil
       }
 
+    let mockService = MockService(
+      fetchProjectResponse: project,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     Language.allLanguages.forEach { language in
       withEnvironment(
-        apiService: MockService(fetchProjectResponse: project),
+        apiService: mockService,
         language: language,
         locale: .init(identifier: language.rawValue)
       ) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         parent.view.frame.size.height = 900
+
+        self.scheduler.run()
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
       }
@@ -152,12 +221,21 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.personalization.backing .~ backing
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
+    let mockService = MockService(
+      fetchProjectResponse: project,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
+      withEnvironment(
+        apiService: mockService, language: language, locale: .init(identifier: language.rawValue)
+      ) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : 900
+
+        self.scheduler.run()
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -181,11 +259,20 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
           |> Backing.lens.reward .~ project.rewards.first
       }
 
-    let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
-    let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
-    parent.view.frame.size.height = 900
+    let mockService = MockService(
+      fetchProjectResponse: project,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
 
-    FBSnapshotVerifyView(vc.view)
+    withEnvironment(apiService: mockService) {
+      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+      let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
+      parent.view.frame.size.height = 900
+
+      self.scheduler.run()
+
+      FBSnapshotVerifyView(vc.view)
+    }
   }
 
   func testCreator_LiveProject() {
@@ -194,12 +281,24 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.creator .~ user
 
+    let mockService = MockService(
+      fetchProjectResponse: project,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(currentUser: user, language: language, locale: .init(identifier: language.rawValue)) {
+      withEnvironment(
+        apiService: mockService,
+        currentUser: user,
+        language: language,
+        locale: .init(identifier: language.rawValue)
+      ) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : 900
+
+        self.scheduler.run()
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -212,12 +311,24 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.state .~ .successful
       |> Project.lens.creator .~ user
 
+    let mockService = MockService(
+      fetchProjectResponse: project,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
       language, device in
-      withEnvironment(currentUser: user, language: language, locale: .init(identifier: language.rawValue)) {
+      withEnvironment(
+        apiService: mockService,
+        currentUser: user,
+        language: language,
+        locale: .init(identifier: language.rawValue)
+      ) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
         parent.view.frame.size.height = device == .pad ? 1_200 : 900
+
+        self.scheduler.run()
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -230,11 +341,20 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.dates.stateChangedAt .~ 1_234_567_890.0
       |> Project.lens.state .~ .failed
 
+    let mockService = MockService(
+      fetchProjectResponse: project,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     Language.allLanguages.forEach { language in
-      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
+      withEnvironment(
+        apiService: mockService, language: language, locale: .init(identifier: language.rawValue)
+      ) {
         let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: vc)
         parent.view.frame.size.height = 900
+
+        self.scheduler.run()
 
         FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)")
       }
@@ -244,23 +364,37 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
   func testMinimalProjectRendering() {
     let project = self.cosmicSurgery!
 
+    let mockService = MockService(
+      fetchProjectResponse: project,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
     [Device.phone4_7inch, Device.phone5_8inch, Device.pad].forEach { device in
-      let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
-      let (parent, _) = traitControllers(
-        device: device, orientation: .portrait, child: vc, handleAppearanceTransition: false
-      )
+      withEnvironment(apiService: mockService) {
+        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+        let (parent, _) = traitControllers(
+          device: device, orientation: .portrait, child: vc, handleAppearanceTransition: false
+        )
 
-      parent.beginAppearanceTransition(true, animated: true)
+        parent.beginAppearanceTransition(true, animated: true)
 
-      FBSnapshotVerifyView(vc.view, identifier: "device_\(device)")
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(vc.view, identifier: "device_\(device)")
+      }
     }
   }
 
   func testMinimalAndFullProjectOverlap() {
-    let project = self.cosmicSurgery!
+    let project = self.cosmicSurgery
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
-    withEnvironment(apiService: MockService(fetchProjectResponse: project)) {
+    let mockService = MockService(
+      fetchProjectResponse: project,
+      fetchProjectCreatorDetailsResult: .success(.template)
+    )
+
+    withEnvironment(apiService: mockService) {
       [Device.phone4_7inch, Device.phone5_8inch, Device.pad].forEach { device in
         let minimal = ProjectPamphletViewController.configuredWith(
           projectOrParam: .left(project), refTag: nil
@@ -284,7 +418,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
         snapshotView.addSubview(fullParent.view)
         snapshotView.addSubview(minimalParent.view)
 
-        self.scheduler.advance()
+        self.scheduler.run()
 
         FBSnapshotVerifyView(snapshotView, identifier: "device_\(device)")
       }
