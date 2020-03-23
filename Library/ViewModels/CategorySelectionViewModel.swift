@@ -74,6 +74,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
       .map { categories, ids -> [KsApi.Category] in
         selectedCategories(categories, with: ids)
       }
+      .sort { $0.name < $1.name }
 
     let selectedCategoriesCount = selectedCategoryIndexes.map { $0.count }
 
@@ -235,5 +236,5 @@ private func selectedCategories(_ categories: [KsApi.Category], with ids: Set<In
       continue
     }
   }
-  return selectedCategories.sorted()
+  return selectedCategories
 }
