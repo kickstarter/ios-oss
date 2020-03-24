@@ -107,12 +107,12 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
 
     self.fixIconIsHidden = Signal.combineLatest(paymentSourceId, creditCard, erroredPledge)
       .map { paymentSourceId, creditCard, erroredPledge in
-        hideFixIcon(
+        showFixIcon(
           erroredPledge: erroredPledge,
           paymentSourceId: paymentSourceId,
           creditCardId: creditCard.id
         )
-      }
+    }.negate()
 
     self.selectButtonIsSelected = Signal.combineLatest(cardIsSelected, cardTypeIsAvailable)
       .map { $0 && $1 }
@@ -169,16 +169,11 @@ private func cardImageForCard(_ card: GraphUserCreditCard.CreditCard) -> UIImage
   return image(named: card.imageName)
 }
 
-private func hideFixIcon(
+private func showFixIcon(
   erroredPledge: Bool,
   paymentSourceId: String?,
   creditCardId: String
 ) -> Bool {
-  guard let paymentId = paymentSourceId else { return true }
 
-  if erroredPledge == true, paymentId == creditCardId {
-    return false
-  }
-
-  return true
+  return erroredPledge == true && paymentSourceId == creditCardId
 }

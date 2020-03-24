@@ -837,7 +837,7 @@ private func paymentMethodValid(
     return true
   }
 
-  if backedPaymentSourceId == paymentSourceId, project.personalization.backing?.status == .errored {
+  if project.personalization.backing?.status == .errored {
     return true
   } else if backedPaymentSourceId != paymentSourceId {
     return true
