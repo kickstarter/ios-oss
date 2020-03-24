@@ -581,7 +581,7 @@ private func shouldShowPersonalization() -> Bool {
       isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
       userAttributes: userAttributes
     ) else {
-      return false
+    return false
   }
 
   switch variant {
