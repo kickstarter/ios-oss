@@ -574,21 +574,21 @@ private func shouldShowPersonalization() -> Bool {
   }
 
   let userAttributes = optimizelyUserAttributes()
-  let variant = AppEnvironment.current.optimizelyClient?
+  guard let variant = AppEnvironment.current.optimizelyClient?
     .variant(
       for: .onboardingCategoryPersonalizationFlow,
       userId: deviceIdentifier(uuid: UUID()),
       isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
       userAttributes: userAttributes
-    )
+    ) else {
+      return false
+  }
 
   switch variant {
   case .control, .variant2:
     return false
   case .variant1:
     return true
-  default:
-    return false
   }
 }
 
