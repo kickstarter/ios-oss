@@ -1,6 +1,6 @@
 import Foundation
-import Prelude
 import KsApi
+import Prelude
 import ReactiveSwift
 
 public typealias CategoryPillCellValue = (name: String, category: KsApi.Category, indexPath: IndexPath?)

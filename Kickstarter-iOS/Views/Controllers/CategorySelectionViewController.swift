@@ -281,9 +281,11 @@ extension CategorySelectionViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - CategoryPillCellDelegate
 
 extension CategorySelectionViewController: CategoryPillCellDelegate {
-  func categoryPillCell(_ cell: CategoryPillCell,
-                        didTapAtIndex index: IndexPath,
-                        withCategory category: KsApi.Category) {
+  func categoryPillCell(
+    _ cell: CategoryPillCell,
+    didTapAtIndex index: IndexPath,
+    withCategory category: KsApi.Category
+  ) {
     self.viewModel.inputs.categorySelected(with: (index, category))
 
     let shouldSelectCell = self.viewModel.outputs.shouldSelectCell(at: index)

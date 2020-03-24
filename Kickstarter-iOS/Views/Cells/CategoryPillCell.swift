@@ -1,8 +1,8 @@
+import KsApi
 import Library
 import Prelude
 import ReactiveSwift
 import UIKit
-import KsApi
 
 protocol CategoryPillCellDelegate: AnyObject {
   func categoryPillCell(

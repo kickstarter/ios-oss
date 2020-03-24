@@ -200,7 +200,7 @@ private func categoryData(from rootCategories: [KsApi.Category]) -> ([String], [
     sectionTitles.append(category.name)
 
     let subcategoryData = subcategories.compactMap { subcategory -> (String, KsApi.Category)? in
-      return (subcategory.name, subcategory)
+      (subcategory.name, subcategory)
     }
 
     let allProjects = (Strings.All_category_name_Projects(category_name: category.name), category)

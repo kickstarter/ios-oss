@@ -342,8 +342,10 @@ final class CategorySelectionViewModelTests: TestCase {
         [.art, .games, .illustration]
       ])
 
-      XCTAssertEqual([.art, .games, .illustration],
-                     self.cache[KSCache.ksr_onboardingCategories] as? [KsApi.Category])
+      XCTAssertEqual(
+        [.art, .games, .illustration],
+        self.cache[KSCache.ksr_onboardingCategories] as? [KsApi.Category]
+      )
       XCTAssertTrue(mockKVStore.hasCompletedCategoryPersonalizationFlow)
     }
   }
