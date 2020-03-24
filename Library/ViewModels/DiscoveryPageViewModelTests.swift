@@ -15,7 +15,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let dismissPersonalizationCell = TestObserver<Void, Never>()
   fileprivate let goToActivityProject = TestObserver<Project, Never>()
   fileprivate let goToActivityProjectRefTag = TestObserver<RefTag, Never>()
-  fileprivate let goToCuratedProjects = TestObserver<[Int], Never>()
+  fileprivate let goToCuratedProjects = TestObserver<[KsApi.Category], Never>()
   fileprivate let goToEditorialProjectList = TestObserver<DiscoveryParams.TagID, Never>()
   fileprivate let goToPlaylist = TestObserver<[Project], Never>()
   fileprivate let goToPlaylistProject = TestObserver<Project, Never>()
@@ -1390,6 +1390,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.showPersonalization.assertValues([true])
 
+      XCTAssertTrue(mockOpClient.getVariantPathCalled)
+
       // Change the filter
       self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.category .~ Category.art)
       self.showPersonalization.assertValues([true, false], "Section hides on non-default filters")
@@ -1565,6 +1567,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
           OptimizelyExperiment.Variant.variant1.rawValue
       ]
 
+    let categories = [KsApi.Category.art, KsApi.Category.illustration]
+    self.cache[KSCache.ksr_onboardingCategories] = categories
+
     let defaultFilter = DiscoveryParams.recommendedDefaults
 
     withEnvironment(
@@ -1582,7 +1587,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.personalizationCellTapped()
 
-      self.goToCuratedProjects.assertValues([[]])
+      self.goToCuratedProjects.assertValues([[.art, .illustration]])
     }
   }
 

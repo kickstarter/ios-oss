@@ -42,7 +42,7 @@ extension OptimizelyClientType {
    using the default attributes and deviceId
 
    Does *not* record an Optimizely impression. If you wish to record an experiment impression, use
-   `variant(for experiment)`
+   `variant(for experiment)`, which calls `activate` on the Optimizely SDK
    */
 
   public func getVariation(for experiment: OptimizelyExperiment.Key) -> OptimizelyExperiment.Variant {

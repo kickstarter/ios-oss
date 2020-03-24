@@ -574,14 +574,8 @@ private func shouldShowPersonalization() -> Bool {
     return false
   }
 
-  let userAttributes = optimizelyUserAttributes()
   guard let variant = AppEnvironment.current.optimizelyClient?
-    .variant(
-      for: .onboardingCategoryPersonalizationFlow,
-      userId: deviceIdentifier(uuid: UUID()),
-      isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
-      userAttributes: userAttributes
-    ) else {
+    .getVariation(for: .onboardingCategoryPersonalizationFlow) else {
     return false
   }
 

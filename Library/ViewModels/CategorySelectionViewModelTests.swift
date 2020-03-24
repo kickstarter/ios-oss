@@ -315,13 +315,15 @@ final class CategorySelectionViewModelTests: TestCase {
       .filmAndVideo
     ])
 
+    let mockKVStore = MockKeyValueStore()
+
     let artIndexPath = IndexPath(item: 0, section: 0)
     let illustrationIndexPath = IndexPath(item: 1, section: 0)
     let gamesIndexPath = IndexPath(item: 0, section: 1)
 
     let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
 
-    withEnvironment(apiService: mockService) {
+    withEnvironment(apiService: mockService, userDefaults: mockKVStore) {
       self.vm.inputs.viewDidLoad()
       self.goToCuratedProjects.assertDidNotEmitValue()
 
@@ -331,17 +333,22 @@ final class CategorySelectionViewModelTests: TestCase {
       self.vm.inputs.categorySelected(with: (illustrationIndexPath, .illustration))
       self.vm.inputs.categorySelected(with: (gamesIndexPath, .games))
 
+      XCTAssertNil(self.cache[KSCache.ksr_onboardingCategories])
+      XCTAssertFalse(mockKVStore.hasCompletedCategoryPersonalizationFlow)
+
       self.vm.inputs.continueButtonTapped()
 
       self.goToCuratedProjects.assertValues([
         [.art, .games, .illustration]
       ])
+
+      XCTAssertEqual([.art, .games, .illustration],
+                     self.cache[KSCache.ksr_onboardingCategories] as? [KsApi.Category])
+      XCTAssertTrue(mockKVStore.hasCompletedCategoryPersonalizationFlow)
     }
   }
 
   func testPostNotification() {
-    let mockKVStore = MockKeyValueStore()
-
     let categoriesResponse = RootCategoriesEnvelope.init(rootCategories: [
       .art
     ])
@@ -351,7 +358,7 @@ final class CategorySelectionViewModelTests: TestCase {
 
     let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
 
-    withEnvironment(apiService: mockService, userDefaults: mockKVStore) {
+    withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -360,12 +367,10 @@ final class CategorySelectionViewModelTests: TestCase {
       self.vm.inputs.categorySelected(with: (illustrationIndexPath, .illustration))
 
       self.postNotification.assertDidNotEmitValue()
-      XCTAssertFalse(mockKVStore.hasCompletedCategoryPersonalizationFlow)
 
       self.vm.inputs.continueButtonTapped()
 
       self.postNotification.assertValues([Notification(name: .ksr_onboardingCompleted)])
-      XCTAssertTrue(mockKVStore.hasCompletedCategoryPersonalizationFlow)
     }
   }
 
