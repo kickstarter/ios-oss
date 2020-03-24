@@ -113,9 +113,6 @@ public final class CategorySelectionViewController: UIViewController {
   public override func bindStyles() {
     super.bindStyles()
 
-    _ = self
-      |> baseControllerStyle()
-
     _ = self.collectionView
       |> collectionViewStyle
 

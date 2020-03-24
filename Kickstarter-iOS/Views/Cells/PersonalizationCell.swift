@@ -177,7 +177,7 @@ private let containerViewStyle: ViewStyle = { view in
     |> \.isAccessibilityElement .~ true
     |> \.accessibilityTraits .~ [UIAccessibilityTraits.button]
     |> \.accessibilityLabel %~ { _ in localizedString(key: "Well_help_you_find_a_project_to_back",
-                                                      defaultValue: "We'll help you find a project to back") }
+                                                      defaultValue: "We'll help you find a project to back.") }
     |> \.accessibilityHint %~ { _ in localizedString(key: "See_our_suggestions",
                                                      defaultValue: "See our suggestions") }
 }
@@ -204,14 +204,14 @@ private let imageRightStyle: ImageViewStyle = { imageView in
 
 private let titleLabelStyle: LabelStyle = { label in
   label
-    |> \.font .~ UIFont.ksr_headline().bolded
+    |> \.font .~ UIFont.ksr_title3().bolded
     |> \.text %~ { _ in localizedString(key: "Well_help_you_find_a_project_to_back",
-                                        defaultValue: "We'll help you find a project to back") }
+                                        defaultValue: "We'll help you find a project to back.") }
 }
 
 private let subtitleLabelStyle: LabelStyle = { label in
   label
-    |> \.font .~ UIFont.ksr_subhead()
+    |> \.font .~ UIFont.ksr_body()
     |> \.text %~ { _ in localizedString(key: "See_our_suggestions", defaultValue: "See our suggestions >") }
 }
 
@@ -228,7 +228,7 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(2)
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.layoutMargins .~ .init(
-      top: Styles.grid(5),
+      top: Styles.grid(6),
       left: Styles.grid(4),
       bottom: Styles.grid(3),
       right: Styles.grid(4)
