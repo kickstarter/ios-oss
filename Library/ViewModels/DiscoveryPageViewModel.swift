@@ -385,11 +385,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     )
     .map(second)
     .map { shouldShowHeader in
-      if shouldShowHeader {
-        return shouldShowPersonalization()
-      }
-
-      return shouldShowHeader
+      return shouldShowHeader && shouldShowPersonalization()
     }
 
     self.goToCuratedProjects = self.personalizationCellTappedProperty.signal
@@ -587,7 +583,7 @@ private func shouldShowPersonalization() -> Bool {
     )
 
   switch variant {
-  case .control:
+  case .control, .variant2:
     return false
   case .variant1:
     return true

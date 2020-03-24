@@ -406,7 +406,7 @@ final class CategorySelectionViewModelTests: TestCase {
 
       self.vm.inputs.continueButtonTapped()
 
-      self.postNotification.assertValueCount(1)
+      self.postNotification.assertValues([Notification(name: .ksr_onboardingCompleted)])
       XCTAssertTrue(mockKVStore.hasCompletedCategoryPersonalizationFlow)
     }
   }
