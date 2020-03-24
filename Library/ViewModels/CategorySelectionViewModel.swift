@@ -3,10 +3,10 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias CategorySectionData = (name: String, id: Int)
+public typealias CategorySectionData = (displayName: String, category: KsApi.Category)
 
 public protocol CategorySelectionViewModelInputs {
-  func categorySelected(with value: (IndexPath, Int))
+  func categorySelected(with value: (IndexPath, KsApi.Category))
   func continueButtonTapped()
   func viewDidLoad()
 }
@@ -50,9 +50,9 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
       .map(first)
       .scan(Set<IndexPath>.init(), updatedSelectedValues(selectedValues:currentValue:))
 
-    let selectedCategoryIds = self.categorySelectedWithValueProperty.signal.skipNil()
+    let selectedCategories = self.categorySelectedWithValueProperty.signal.skipNil()
       .map(second)
-      .scan(Set<Int>.init(), updatedSelectedValues(selectedValues:currentValue:))
+      .scan(Set<KsApi.Category>.init(), updatedSelectedValues(selectedValues:currentValue:))
 
     self.selectCellAtIndexProperty <~ selectedCategoryIndexes
       .takePairWhen(self.shouldSelectCellAtIndexProperty.signal.skipNil())
@@ -69,10 +69,9 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
     self.showErrorMessage = categoriesEvent.errors()
       .map { $0.localizedDescription }
 
-    self.goToCuratedProjects = orderedCategories
-      .combineLatest(with: selectedCategoryIds)
+    self.goToCuratedProjects = selectedCategories
       .takeWhen(self.continueButtonTappedProperty.signal)
-      .map(selectedCategories(_:with:))
+      .map(Array.init)
       .sort { $0.name < $1.name }
       .on { _ in
         AppEnvironment.current.userDefaults.hasCompletedCategoryPersonalizationFlow = true
@@ -102,8 +101,8 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
     .skipRepeats()
   }
 
-  private let categorySelectedWithValueProperty = MutableProperty<(IndexPath, Int)?>(nil)
-  public func categorySelected(with value: (IndexPath, Int)) {
+  private let categorySelectedWithValueProperty = MutableProperty<(IndexPath, KsApi.Category)?>(nil)
+  public func categorySelected(with value: (IndexPath, KsApi.Category)) {
     self.categorySelectedWithValueProperty.value = value
   }
 
@@ -189,24 +188,20 @@ private func categoriesOrderedByPopularity(_ categories: [KsApi.Category]) -> [K
   return orderedNonNil
 }
 
-private func categoryData(from rootCategories: [KsApi.Category]) -> ([String], [[(String, Int)]]) {
+private func categoryData(from rootCategories: [KsApi.Category]) -> ([String], [[(String, KsApi.Category)]]) {
   var sectionTitles = [String]()
-  let categoriesData = rootCategories.compactMap { category -> [(String, Int)]? in
-    guard let categoryId = category.intID, let subcategories = category.subcategories?.nodes else {
+  let categoriesData = rootCategories.compactMap { category -> [(String, KsApi.Category)]? in
+    guard let subcategories = category.subcategories?.nodes else {
       return nil
     }
 
     sectionTitles.append(category.name)
 
-    let subcategoryData = subcategories.compactMap { subcategory -> (String, Int)? in
-      guard let subcategoryId = subcategory.intID else {
-        return nil
-      }
-
-      return (subcategory.name, subcategoryId)
+    let subcategoryData = subcategories.compactMap { subcategory -> (String, KsApi.Category)? in
+      return (subcategory.name, subcategory)
     }
 
-    let allProjects = (Strings.All_category_name_Projects(category_name: category.name), categoryId)
+    let allProjects = (Strings.All_category_name_Projects(category_name: category.name), category)
 
     return [allProjects] + subcategoryData
   }
@@ -224,23 +219,4 @@ private func updatedSelectedValues<T: Hashable>(selectedValues: Set<T>, currentV
   }
 
   return updatedValues
-}
-
-private func selectedCategories(_ categories: [KsApi.Category], with ids: Set<Int>) -> [KsApi.Category] {
-  var selectedCategories: [KsApi.Category] = []
-  let subcategories = categories
-    .compactMap { $0.subcategories?.nodes }
-    .flatMap { $0 }
-
-  for id in ids {
-    if let selectedCategory = categories.first(where: { $0.intID == id }) {
-      selectedCategories.append(selectedCategory)
-      continue
-    }
-    if let selectedSubcategory = subcategories.first(where: { $0.intID == id }) {
-      selectedCategories.append(selectedSubcategory)
-      continue
-    }
-  }
-  return selectedCategories
 }

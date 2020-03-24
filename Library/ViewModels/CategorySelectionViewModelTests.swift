@@ -12,7 +12,7 @@ final class CategorySelectionViewModelTests: TestCase {
   private let isLoading = TestObserver<Bool, Never>()
   private let loadCategorySectionTitles = TestObserver<[String], Never>()
   private let loadCategorySectionNames = TestObserver<[[String]], Never>()
-  private let loadCategorySectionCategoryIds = TestObserver<[[Int]], Never>()
+  private let loadCategorySectionCategories = TestObserver<[[KsApi.Category]], Never>()
   private let postNotification = TestObserver<Notification, Never>()
   private let showErrorMessage = TestObserver<String, Never>()
   private let warningLabelIsHidden = TestObserver<Bool, Never>()
@@ -28,7 +28,7 @@ final class CategorySelectionViewModelTests: TestCase {
     self.vm.outputs.loadCategorySections.map(second).map { $0.map { $0.map { $0.0 } } }
       .observe(self.loadCategorySectionNames.observer)
     self.vm.outputs.loadCategorySections.map(second).map { $0.map { $0.map { $0.1 } } }
-      .observe(self.loadCategorySectionCategoryIds.observer)
+      .observe(self.loadCategorySectionCategories.observer)
     self.vm.outputs.postNotification.observe(self.postNotification.observer)
     self.vm.outputs.showErrorMessage.observe(self.showErrorMessage.observer)
     self.vm.outputs.warningLabelIsHidden.observe(self.warningLabelIsHidden.observer)
@@ -41,19 +41,12 @@ final class CategorySelectionViewModelTests: TestCase {
       .filmAndVideo
     ])
 
-    let artId = Category.art.intID ?? 0
-    let illustrationId = Category.illustration.intID ?? 0
-    let gamesId = Category.games.intID ?? 0
-    let tabletopId = Category.tabletopGames.intID ?? 0
-    let filmAndVideoId = Category.filmAndVideo.intID ?? 0
-    let documentaryId = Category.documentary.intID ?? 0
-
     let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
 
     withEnvironment(apiService: mockService) {
       self.loadCategorySectionTitles.assertDidNotEmitValue()
       self.loadCategorySectionNames.assertDidNotEmitValue()
-      self.loadCategorySectionCategoryIds.assertDidNotEmitValue()
+      self.loadCategorySectionCategories.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
 
@@ -67,11 +60,11 @@ final class CategorySelectionViewModelTests: TestCase {
           ["All Film & Video Projects", "Documentary"]
         ]
       ])
-      self.loadCategorySectionCategoryIds.assertValues([
+      self.loadCategorySectionCategories.assertValues([
         [
-          [gamesId, tabletopId],
-          [artId, illustrationId],
-          [filmAndVideoId, documentaryId]
+          [.games, .tabletopGames],
+          [.art, .illustration],
+          [.filmAndVideo, .documentary]
         ]
       ])
     }
@@ -88,14 +81,6 @@ final class CategorySelectionViewModelTests: TestCase {
       .games,
       .filmAndVideo
     ])
-
-    let artId = Category.art.intID ?? 0
-    let illustrationId = Category.illustration.intID ?? 0
-    let gamesId = Category.games.intID ?? 0
-    let tabletopId = Category.tabletopGames.intID ?? 0
-    let filmAndVideoId = Category.filmAndVideo.intID ?? 0
-    let documentaryId = Category.documentary.intID ?? 0
-    let unknownId = Category.tabletopGames.intID ?? 0
 
     let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
 
@@ -116,12 +101,12 @@ final class CategorySelectionViewModelTests: TestCase {
           ["All Cool Stuff Projects", "Tabletop Games"]
         ]
       ])
-      self.loadCategorySectionCategoryIds.assertValues([
+      self.loadCategorySectionCategories.assertValues([
         [
-          [gamesId, tabletopId],
-          [artId, illustrationId],
-          [filmAndVideoId, documentaryId],
-          [unknownId, tabletopId]
+          [.games, .tabletopGames],
+          [.art, .illustration],
+          [.filmAndVideo, .documentary],
+          [unknownCategory, .tabletopGames]
         ]
       ])
     }
@@ -144,13 +129,6 @@ final class CategorySelectionViewModelTests: TestCase {
     let filmAndVideoIndexPath = IndexPath(item: 0, section: 2)
     let documentaryIndexPath = IndexPath(item: 1, section: 2)
 
-    let artId = Category.art.intID ?? 0
-    let illustrationId = Category.illustration.intID ?? 0
-    let gamesId = Category.games.intID ?? 0
-    let tabletopId = Category.tabletopGames.intID ?? 0
-    let filmAndVideoId = Category.filmAndVideo.intID ?? 0
-    let documentaryId = Category.documentary.intID ?? 0
-
     let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
 
     withEnvironment(apiService: mockService) {
@@ -165,7 +143,7 @@ final class CategorySelectionViewModelTests: TestCase {
       XCTAssertFalse(self.vm.outputs.shouldSelectCell(at: filmAndVideoIndexPath))
       XCTAssertFalse(self.vm.outputs.shouldSelectCell(at: documentaryIndexPath))
 
-      self.vm.inputs.categorySelected(with: (artIndexPath, artId))
+      self.vm.inputs.categorySelected(with: (artIndexPath, .art))
 
       XCTAssertTrue(self.vm.outputs.shouldSelectCell(at: artIndexPath), "All Art Projects is selected")
       XCTAssertFalse(self.vm.outputs.shouldSelectCell(at: illustrationIndexPath))
@@ -174,7 +152,7 @@ final class CategorySelectionViewModelTests: TestCase {
       XCTAssertFalse(self.vm.outputs.shouldSelectCell(at: filmAndVideoIndexPath))
       XCTAssertFalse(self.vm.outputs.shouldSelectCell(at: documentaryIndexPath))
 
-      self.vm.inputs.categorySelected(with: (artIndexPath, artId))
+      self.vm.inputs.categorySelected(with: (artIndexPath, .art))
 
       XCTAssertFalse(self.vm.outputs.shouldSelectCell(at: artIndexPath), "All Art Projects is de-selected")
       XCTAssertFalse(self.vm.outputs.shouldSelectCell(at: illustrationIndexPath))
@@ -184,12 +162,12 @@ final class CategorySelectionViewModelTests: TestCase {
       XCTAssertFalse(self.vm.outputs.shouldSelectCell(at: documentaryIndexPath))
 
       // Select all categories
-      self.vm.inputs.categorySelected(with: (artIndexPath, artId))
-      self.vm.inputs.categorySelected(with: (illustrationIndexPath, illustrationId))
-      self.vm.inputs.categorySelected(with: (gamesIndexPath, gamesId))
-      self.vm.inputs.categorySelected(with: (tabletopIndexPath, tabletopId))
-      self.vm.inputs.categorySelected(with: (filmAndVideoIndexPath, filmAndVideoId))
-      self.vm.inputs.categorySelected(with: (documentaryIndexPath, documentaryId))
+      self.vm.inputs.categorySelected(with: (artIndexPath, .art))
+      self.vm.inputs.categorySelected(with: (illustrationIndexPath, .illustration))
+      self.vm.inputs.categorySelected(with: (gamesIndexPath, .games))
+      self.vm.inputs.categorySelected(with: (tabletopIndexPath, .tabletopGames))
+      self.vm.inputs.categorySelected(with: (filmAndVideoIndexPath, .filmAndVideo))
+      self.vm.inputs.categorySelected(with: (documentaryIndexPath, .documentary))
 
       // All categories selected
       XCTAssertTrue(self.vm.outputs.shouldSelectCell(at: artIndexPath))
@@ -218,13 +196,6 @@ final class CategorySelectionViewModelTests: TestCase {
     let filmAndVideoIndexPath = IndexPath(item: 0, section: 2)
     let documentaryIndexPath = IndexPath(item: 1, section: 2)
 
-    let artId = Category.art.intID ?? 0
-    let illustrationId = Category.illustration.intID ?? 0
-    let gamesId = Category.games.intID ?? 0
-    let tabletopId = Category.tabletopGames.intID ?? 0
-    let filmAndVideoId = Category.filmAndVideo.intID ?? 0
-    let documentaryId = Category.documentary.intID ?? 0
-
     let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
 
     withEnvironment(apiService: mockService) {
@@ -235,34 +206,34 @@ final class CategorySelectionViewModelTests: TestCase {
 
       self.continueButtonEnabled.assertValues([false])
 
-      self.vm.inputs.categorySelected(with: (tabletopIndexPath, tabletopId))
+      self.vm.inputs.categorySelected(with: (tabletopIndexPath, .tabletopGames))
 
       self.continueButtonEnabled.assertValues([false, true])
 
-      self.vm.inputs.categorySelected(with: (artIndexPath, artId))
+      self.vm.inputs.categorySelected(with: (artIndexPath, .art))
 
       self.continueButtonEnabled.assertValues([false, true])
 
-      self.vm.inputs.categorySelected(with: (gamesIndexPath, gamesId))
+      self.vm.inputs.categorySelected(with: (gamesIndexPath, .games))
 
       self.continueButtonEnabled.assertValues([false, true])
 
-      self.vm.inputs.categorySelected(with: (documentaryIndexPath, documentaryId))
+      self.vm.inputs.categorySelected(with: (documentaryIndexPath, .documentary))
 
       self.continueButtonEnabled.assertValues([false, true])
 
-      self.vm.inputs.categorySelected(with: (illustrationIndexPath, illustrationId))
+      self.vm.inputs.categorySelected(with: (illustrationIndexPath, .illustration))
 
       self.continueButtonEnabled.assertValues([false, true])
 
-      self.vm.inputs.categorySelected(with: (filmAndVideoIndexPath, filmAndVideoId))
+      self.vm.inputs.categorySelected(with: (filmAndVideoIndexPath, .filmAndVideo))
 
       self.continueButtonEnabled.assertValues(
         [false, true, false],
         "Continue button disabled when > 5 categories selected"
       )
 
-      self.vm.inputs.categorySelected(with: (filmAndVideoIndexPath, filmAndVideoId))
+      self.vm.inputs.categorySelected(with: (filmAndVideoIndexPath, .filmAndVideo))
 
       self.continueButtonEnabled.assertValues(
         [false, true, false, true],
@@ -288,13 +259,6 @@ final class CategorySelectionViewModelTests: TestCase {
     let filmAndVideoIndexPath = IndexPath(item: 0, section: 2)
     let documentaryIndexPath = IndexPath(item: 1, section: 2)
 
-    let artId = Category.art.intID ?? 0
-    let illustrationId = Category.illustration.intID ?? 0
-    let gamesId = Category.games.intID ?? 0
-    let tabletopId = Category.tabletopGames.intID ?? 0
-    let filmAndVideoId = Category.filmAndVideo.intID ?? 0
-    let documentaryId = Category.documentary.intID ?? 0
-
     let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
 
     withEnvironment(apiService: mockService) {
@@ -305,34 +269,34 @@ final class CategorySelectionViewModelTests: TestCase {
 
       self.warningLabelIsHidden.assertValues([true])
 
-      self.vm.inputs.categorySelected(with: (tabletopIndexPath, tabletopId))
+      self.vm.inputs.categorySelected(with: (tabletopIndexPath, .tabletopGames))
 
       self.warningLabelIsHidden.assertValues([true])
 
-      self.vm.inputs.categorySelected(with: (artIndexPath, artId))
+      self.vm.inputs.categorySelected(with: (artIndexPath, .art))
 
       self.warningLabelIsHidden.assertValues([true])
 
-      self.vm.inputs.categorySelected(with: (gamesIndexPath, gamesId))
+      self.vm.inputs.categorySelected(with: (gamesIndexPath, .games))
 
       self.warningLabelIsHidden.assertValues([true])
 
-      self.vm.inputs.categorySelected(with: (documentaryIndexPath, documentaryId))
+      self.vm.inputs.categorySelected(with: (documentaryIndexPath, .documentary))
 
       self.warningLabelIsHidden.assertValues([true])
 
-      self.vm.inputs.categorySelected(with: (illustrationIndexPath, illustrationId))
+      self.vm.inputs.categorySelected(with: (illustrationIndexPath, .illustration))
 
       self.warningLabelIsHidden.assertValues([true])
 
-      self.vm.inputs.categorySelected(with: (filmAndVideoIndexPath, filmAndVideoId))
+      self.vm.inputs.categorySelected(with: (filmAndVideoIndexPath, .filmAndVideo))
 
       self.warningLabelIsHidden.assertValues(
         [true, false],
         "Warning label shown when > 5 categories selected"
       )
 
-      self.vm.inputs.categorySelected(with: (filmAndVideoIndexPath, filmAndVideoId))
+      self.vm.inputs.categorySelected(with: (filmAndVideoIndexPath, .filmAndVideo))
 
       self.warningLabelIsHidden.assertValues(
         [true, false, true],
@@ -355,10 +319,6 @@ final class CategorySelectionViewModelTests: TestCase {
     let illustrationIndexPath = IndexPath(item: 1, section: 0)
     let gamesIndexPath = IndexPath(item: 0, section: 1)
 
-    let artId = Category.art.intID ?? 0
-    let illustrationId = Category.illustration.intID ?? 0
-    let gamesId = Category.games.intID ?? 0
-
     let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
 
     withEnvironment(apiService: mockService) {
@@ -367,9 +327,9 @@ final class CategorySelectionViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.vm.inputs.categorySelected(with: (artIndexPath, artId))
-      self.vm.inputs.categorySelected(with: (illustrationIndexPath, illustrationId))
-      self.vm.inputs.categorySelected(with: (gamesIndexPath, gamesId))
+      self.vm.inputs.categorySelected(with: (artIndexPath, .art))
+      self.vm.inputs.categorySelected(with: (illustrationIndexPath, .illustration))
+      self.vm.inputs.categorySelected(with: (gamesIndexPath, .games))
 
       self.vm.inputs.continueButtonTapped()
 
@@ -388,8 +348,6 @@ final class CategorySelectionViewModelTests: TestCase {
 
     let artIndexPath = IndexPath(item: 0, section: 0)
     let illustrationIndexPath = IndexPath(item: 1, section: 0)
-    let artId = Category.art.intID ?? 0
-    let illustrationId = Category.illustration.intID ?? 0
 
     let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
 
@@ -398,8 +356,8 @@ final class CategorySelectionViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.vm.inputs.categorySelected(with: (artIndexPath, artId))
-      self.vm.inputs.categorySelected(with: (illustrationIndexPath, illustrationId))
+      self.vm.inputs.categorySelected(with: (artIndexPath, .art))
+      self.vm.inputs.categorySelected(with: (illustrationIndexPath, .illustration))
 
       self.postNotification.assertDidNotEmitValue()
       XCTAssertFalse(mockKVStore.hasCompletedCategoryPersonalizationFlow)
