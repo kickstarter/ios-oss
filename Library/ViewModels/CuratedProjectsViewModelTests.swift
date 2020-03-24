@@ -9,12 +9,14 @@ import XCTest
 final class CuratedProjectsViewModelTests: TestCase {
   private let dismissViewController = TestObserver<Void, Never>()
   private let loadProjects = TestObserver<[Project], Never>()
+  private let showErrorMessage = TestObserver<String, Never>()
   private let viewModel: CuratedProjectsViewModelType = CuratedProjectsViewModel()
 
   override func setUp() {
     super.setUp()
     self.viewModel.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.viewModel.outputs.loadProjects.observe(self.loadProjects.observer)
+    self.viewModel.outputs.showErrorMessage.observe(self.showErrorMessage.observer)
   }
 
   func testDismissViewController_OnButtonTap() {
@@ -43,6 +45,20 @@ final class CuratedProjectsViewModelTests: TestCase {
 
       // We configured the viewModel with 2 categories, therefore the request was made 2x.
       self.loadProjects.assertValue(projects + projects)
+    }
+  }
+
+  func testShowErrorMessage() {
+    let apiService = MockService(fetchDiscoveryError: .couldNotParseJSON)
+
+    withEnvironment(apiService: apiService) {
+      self.viewModel.inputs.configure(with: [Category.art, Category.tabletopGames])
+
+      self.showErrorMessage.assertDidNotEmitValue()
+
+      self.viewModel.inputs.viewDidLoad()
+
+      self.showErrorMessage.assertValue("Something went wrong.", "Should show a generic error message")
     }
   }
 }

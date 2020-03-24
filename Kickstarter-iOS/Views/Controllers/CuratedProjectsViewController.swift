@@ -101,6 +101,12 @@ final class CuratedProjectsViewController: UIViewController {
         self?.dataSource.load(projects: projects)
         self?.tableView.reloadData()
       }
+
+    self.viewModel.outputs.showErrorMessage
+      .observeForUI()
+      .observeValues { [weak self] message in
+        self?.present(UIAlertController.genericError(message), animated: true)
+    }
   }
 
   // MARK: - Styles
