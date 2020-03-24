@@ -8,7 +8,7 @@ import XCTest
 
 final class CategorySelectionViewModelTests: TestCase {
   private let continueButtonEnabled = TestObserver<Bool, Never>()
-  private let goToCuratedProjects = TestObserver<[Int], Never>()
+  private let goToCuratedProjects = TestObserver<[KsApi.Category], Never>()
   private let isLoading = TestObserver<Bool, Never>()
   private let loadCategorySectionTitles = TestObserver<[String], Never>()
   private let loadCategorySectionNames = TestObserver<[[String]], Never>()
@@ -372,7 +372,7 @@ final class CategorySelectionViewModelTests: TestCase {
       self.vm.inputs.continueButtonTapped()
 
       self.goToCuratedProjects.assertValues([
-        [artId, gamesId, illustrationId]
+        [.art, .games, .illustration]
       ])
     }
   }
