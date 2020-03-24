@@ -72,10 +72,11 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
     self.goToCuratedProjects = orderedCategories
       .combineLatest(with: selectedCategoryIds)
       .takeWhen(self.continueButtonTappedProperty.signal)
-      .map { categories, ids -> [KsApi.Category] in
-        selectedCategories(categories, with: ids)
-      }
+      .map(selectedCategories(_:with:))
       .sort { $0.name < $1.name }
+      .on { _ in
+        AppEnvironment.current.userDefaults.hasCompletedCategoryPersonalizationFlow = true
+      }
 
     self.postNotification = self.goToCuratedProjects
       .map { _ in Notification(name: .ksr_onboardingCompleted) }
