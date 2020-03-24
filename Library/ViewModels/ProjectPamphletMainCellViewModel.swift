@@ -328,7 +328,10 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     let shouldTrackCTATappedEvent = projectAndRefTag
       .takeWhen(self.readMoreButtonTappedProperty.signal)
-      .filter { project, _ in project.state == .live && project.personalization.isBacking == false }
+      .logEvents(identifier: "***")
+      .filter { project, _ in
+        project.state == .live && project.personalization.backing == nil
+      }
 
     // optimizely tracking
     projectAndRefTag
