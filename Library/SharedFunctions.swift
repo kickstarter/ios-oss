@@ -22,6 +22,18 @@ internal func userIsBacking(reward: Reward, inProject project: Project) -> Bool 
 }
 
 /**
+ Determines if the personalization data in the project implies that the current user is backing the
+ project passed in.
+
+ - parameter project: A project.
+
+ - returns: A boolean.
+ */
+internal func userIsBackingProject(_ project: Project) -> Bool {
+  return project.personalization.backing != nil || project.personalization.isBacking == .some(true)
+}
+
+/**
  Determines if the current user is the creator for a given project.
 
  - parameter project: A project.
