@@ -385,7 +385,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     )
     .map(second)
     .map { shouldShowHeader in
-      return shouldShowHeader && shouldShowPersonalization()
+      shouldShowHeader && shouldShowPersonalization()
     }
 
     self.goToCuratedProjects = self.personalizationCellTappedProperty.signal
