@@ -19,7 +19,7 @@ final class CuratedProjectsViewModelTests: TestCase {
     self.viewModel.outputs.loadProjects.observe(self.loadProjects.observer)
   }
 
-  func testDismissViewController_OnBUttonTap() {
+  func testDismissViewController_OnButtonTap() {
     self.dismissViewController.assertDidNotEmitValue()
 
     self.viewModel.inputs.doneButtonTapped()
@@ -28,22 +28,23 @@ final class CuratedProjectsViewModelTests: TestCase {
   }
 
   func testLoadProjects() {
-    let category = Project.Category.art
     let projects = (1...5).map {
       .template
         |> Project.lens.id .~ $0
-        |> Project.lens.category .~ category
+        |> Project.lens.category .~ Project.Category.art
     }
+
     let envelope = .template
       |> DiscoveryEnvelope.lens.projects .~ projects
 
     let apiService = MockService(fetchDiscoveryResponse: envelope)
     withEnvironment(apiService: apiService) {
-      self.viewModel.inputs.configure(with: [Category.art])
+      self.viewModel.inputs.configure(with: [Category.art, Category.tabletopGames])
 
       self.viewModel.inputs.viewDidLoad()
 
-      self.loadProjects.assertValue(projects)
+      // We configured the viewModel with 2 categories, therefore the request was made 2x.
+      self.loadProjects.assertValue(projects + projects)
     }
   }
 
