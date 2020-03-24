@@ -36,6 +36,31 @@ extension OptimizelyClientType {
 
     return variant
   }
+
+  /*
+   Calls `getVariation` on the Optimizely SDK for the given experiment,
+   using the default attributes and deviceId
+
+   Does *not* record an Optimizely impression. If you wish to record an experiment impression, use
+   `variant(for experiment)`
+   */
+
+  public func getVariation(for experiment: OptimizelyExperiment.Key) -> OptimizelyExperiment.Variant {
+    let userId = deviceIdentifier(uuid: UUID())
+    let attributes = optimizelyUserAttributes(with: AppEnvironment.current.currentUser)
+    let variationString = try? self.getVariationKey(
+      experimentKey: experiment.rawValue, userId: userId, attributes: attributes
+    )
+
+    guard
+      let variation = variationString,
+      let variant = OptimizelyExperiment.Variant(rawValue: variation)
+    else {
+      return .control
+    }
+
+    return variant
+  }
 }
 
 public func optimizelyTrackingAttributesAndEventTags(

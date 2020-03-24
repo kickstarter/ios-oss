@@ -89,8 +89,8 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Emits a project and ref tag that we should go to from the activity sample.
   var goToActivityProject: Signal<(Project, RefTag), Never> { get }
 
-  /// Emits an array of categoryIds used to generate a curated list of projects
-  var goToCuratedProjects: Signal<[Int], Never> { get }
+  /// Emits an array of KsApi.Category objects used to generate a curated list of projects
+  var goToCuratedProjects: Signal<[KsApi.Category], Never> { get }
 
   /// Emits a refTag for the editorial project list
   var goToEditorialProjectList: Signal<DiscoveryParams.TagID, Never> { get }
@@ -389,7 +389,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     }
 
     self.goToCuratedProjects = self.personalizationCellTappedProperty.signal
-      .map(cachedCategoryIds)
+      .map(cachedCategories)
+      .skipNil()
 
     self.dismissPersonalizationCell = self.personalizationCellDismissTappedProperty.signal
       .on { _ in
@@ -537,7 +538,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let configureEditorialTableViewHeader: Signal<String, Never>
   public let dismissPersonalizationCell: Signal<Void, Never>
   public let goToActivityProject: Signal<(Project, RefTag), Never>
-  public let goToCuratedProjects: Signal<[Int], Never>
+  public let goToCuratedProjects: Signal<[KsApi.Category], Never>
   public let goToEditorialProjectList: Signal<DiscoveryParams.TagID, Never>
   public let goToLoginSignup: Signal<LoginIntent, Never>
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never>
@@ -592,9 +593,8 @@ private func shouldShowPersonalization() -> Bool {
   }
 }
 
-private func cachedCategoryIds() -> [Int] {
-  // TODO: this will return cached categories
-  return []
+private func cachedCategories() -> [KsApi.Category]? {
+  return AppEnvironment.current.cache[KSCache.ksr_onboardingCategories] as? [KsApi.Category]
 }
 
 private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {

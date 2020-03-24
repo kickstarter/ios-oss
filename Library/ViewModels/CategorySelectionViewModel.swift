@@ -73,9 +73,11 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
       .takeWhen(self.continueButtonTappedProperty.signal)
       .map(Array.init)
       .sort { $0.name < $1.name }
-      .on { _ in
+      .on(value: { categories in
         AppEnvironment.current.userDefaults.hasCompletedCategoryPersonalizationFlow = true
-      }
+
+        cache(categories)
+      })
 
     self.postNotification = self.goToCuratedProjects
       .map { _ in Notification(name: .ksr_onboardingCompleted) }
@@ -219,4 +221,8 @@ private func updatedSelectedValues<T: Hashable>(selectedValues: Set<T>, currentV
   }
 
   return updatedValues
+}
+
+private func cache(_ categories: [KsApi.Category]) {
+  AppEnvironment.current.cache[KSCache.ksr_onboardingCategories] = categories
 }
