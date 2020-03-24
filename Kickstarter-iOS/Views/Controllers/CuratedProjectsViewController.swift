@@ -1,3 +1,4 @@
+import KsApi
 import Library
 import Prelude
 import UIKit
@@ -5,10 +6,7 @@ import UIKit
 final class CuratedProjectsViewController: UIViewController {
   // MARK: - Properties
 
-  private lazy var tableView: UITableView = {
-    UITableView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
+  private let dataSource = DiscoveryProjectsDataSource()
 
   private lazy var doneButton: UIBarButtonItem = {
     UIBarButtonItem(
@@ -24,6 +22,13 @@ final class CuratedProjectsViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var tableView: UITableView = {
+    UITableView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private let viewModel: CuratedProjectsViewModelType = CuratedProjectsViewModel()
+
   // MARK: - Lifecycle
 
   override func viewDidLoad() {
@@ -34,8 +39,15 @@ final class CuratedProjectsViewController: UIViewController {
     self.navigationItem.setRightBarButton(self.doneButton, animated: false)
     self.navigationItem.hidesBackButton = true
 
+    self.tableView.register(nib: .DiscoveryPostcardCell)
+
+    _ = self.tableView
+      |> \.dataSource .~ self.dataSource
+
     self.configureSubviews()
     self.setupConstraints()
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -47,6 +59,10 @@ final class CuratedProjectsViewController: UIViewController {
   }
 
   // MARK: - Configuration
+
+  public func configure(with categories: [KsApi.Category]) {
+    self.viewModel.inputs.configure(with: categories)
+  }
 
   private func configureSubviews() {
     _ = (self.headerView, self.view)
@@ -70,6 +86,25 @@ final class CuratedProjectsViewController: UIViewController {
     ])
   }
 
+  // MARK: - View model
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.dismissViewController
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.dismiss(animated: true)
+      }
+
+    self.viewModel.outputs.loadProjects
+      .observeForUI()
+      .observeValues { [weak self] projects in
+        self?.dataSource.load(projects: projects)
+        self?.tableView.reloadData()
+      }
+  }
+
   // MARK: - Styles
 
   public override func bindStyles() {
@@ -88,7 +123,7 @@ final class CuratedProjectsViewController: UIViewController {
   // MARK: - Accessors
 
   @objc func doneButtonTapped() {
-    self.dismiss(animated: true)
+    self.viewModel.inputs.doneButtonTapped()
   }
 }
 
@@ -104,7 +139,10 @@ private let headerViewStyle: ViewStyle = { view in
     |> \.layoutMargins .~ .init(all: Styles.grid(3))
 }
 
-private let tableViewStyle: ViewStyle = { view in
+private let tableViewStyle: TableViewStyle = { view in
   view
     |> \.backgroundColor .~ .white
+    |> \.separatorStyle .~ .none
+    |> \.rowHeight .~ UITableView.automaticDimension
+    |> \.estimatedRowHeight .~ 550
 }

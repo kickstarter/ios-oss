@@ -13,7 +13,7 @@ public protocol CategorySelectionViewModelInputs {
 
 public protocol CategorySelectionViewModelOutputs {
   var continueButtonEnabled: Signal<Bool, Never> { get }
-  var goToCuratedProjects: Signal<[Int], Never> { get }
+  var goToCuratedProjects: Signal<[KsApi.Category], Never> { get }
   var isLoading: Signal<Bool, Never> { get }
   // A tuple of Section Titles: [String], and Categories Section Data (Name and Id): [[String, Int]]
   var loadCategorySections: Signal<([String], [[CategorySectionData]]), Never> { get }
@@ -69,13 +69,13 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
     self.showErrorMessage = categoriesEvent.errors()
       .map { $0.localizedDescription }
 
-    self.goToCuratedProjects = selectedCategoryIds
+    self.goToCuratedProjects = orderedCategories
+      .combineLatest(with: selectedCategoryIds)
       .takeWhen(self.continueButtonTappedProperty.signal)
-      .map { $0.sorted() }
-      .map(Array.init)
-      .on { _ in
-        AppEnvironment.current.userDefaults.hasCompletedCategoryPersonalizationFlow = true
+      .map { categories, ids -> [KsApi.Category] in
+        selectedCategories(categories, with: ids)
       }
+      .sort { $0.name < $1.name }
 
     self.postNotification = self.goToCuratedProjects
       .map { _ in Notification(name: .ksr_onboardingCompleted) }
@@ -125,7 +125,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
   }
 
   public let continueButtonEnabled: Signal<Bool, Never>
-  public let goToCuratedProjects: Signal<[Int], Never>
+  public let goToCuratedProjects: Signal<[KsApi.Category], Never>
   public let isLoading: Signal<Bool, Never>
   public let loadCategorySections: Signal<([String], [[CategorySectionData]]), Never>
   public let postNotification: Signal<Notification, Never>
@@ -223,4 +223,23 @@ private func updatedSelectedValues<T: Hashable>(selectedValues: Set<T>, currentV
   }
 
   return updatedValues
+}
+
+private func selectedCategories(_ categories: [KsApi.Category], with ids: Set<Int>) -> [KsApi.Category] {
+  var selectedCategories: [KsApi.Category] = []
+  let subcategories = categories
+    .compactMap { $0.subcategories?.nodes }
+    .flatMap { $0 }
+
+  for id in ids {
+    if let selectedCategory = categories.first(where: { $0.intID == id }) {
+      selectedCategories.append(selectedCategory)
+      continue
+    }
+    if let selectedSubcategory = subcategories.first(where: { $0.intID == id }) {
+      selectedCategories.append(selectedSubcategory)
+      continue
+    }
+  }
+  return selectedCategories
 }

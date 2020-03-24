@@ -168,8 +168,9 @@ public final class CategorySelectionViewController: UIViewController {
 
     self.viewModel.outputs.goToCuratedProjects
       .observeForUI()
-      .observeValues { [weak self] _ in
+      .observeValues { [weak self] categories in
         let vc = CuratedProjectsViewController.instantiate()
+        vc.configure(with: categories)
         self?.navigationController?.pushViewController(vc, animated: true)
       }
 
@@ -253,6 +254,8 @@ extension CategorySelectionViewController: UICollectionViewDelegate {
     pillCell.setIsSelected(shouldSelect)
   }
 }
+
+// MARK: - UICollectionViewDelegate
 
 extension CategorySelectionViewController: UICollectionViewDelegateFlowLayout {
   public func collectionView(
