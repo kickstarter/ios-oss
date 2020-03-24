@@ -112,7 +112,7 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
           paymentSourceId: paymentSourceId,
           creditCardId: creditCard.id
         )
-    }.negate()
+      }.negate()
 
     self.selectButtonIsSelected = Signal.combineLatest(cardIsSelected, cardTypeIsAvailable)
       .map { $0 && $1 }
@@ -174,6 +174,5 @@ private func showFixIcon(
   paymentSourceId: String?,
   creditCardId: String
 ) -> Bool {
-
   return erroredPledge == true && paymentSourceId == creditCardId
 }
