@@ -13,6 +13,7 @@ final class CategorySelectionViewModelTests: TestCase {
   private let loadCategorySectionTitles = TestObserver<[String], Never>()
   private let loadCategorySectionNames = TestObserver<[[String]], Never>()
   private let loadCategorySectionCategoryIds = TestObserver<[[Int]], Never>()
+  private let postNotification = TestObserver<Notification, Never>()
   private let showErrorMessage = TestObserver<String, Never>()
   private let warningLabelIsHidden = TestObserver<Bool, Never>()
   private let vm: CategorySelectionViewModelType = CategorySelectionViewModel()
@@ -28,6 +29,7 @@ final class CategorySelectionViewModelTests: TestCase {
       .observe(self.loadCategorySectionNames.observer)
     self.vm.outputs.loadCategorySections.map(second).map { $0.map { $0.map { $0.1 } } }
       .observe(self.loadCategorySectionCategoryIds.observer)
+    self.vm.outputs.postNotification.observe(self.postNotification.observer)
     self.vm.outputs.showErrorMessage.observe(self.showErrorMessage.observer)
     self.vm.outputs.warningLabelIsHidden.observe(self.warningLabelIsHidden.observer)
   }
@@ -374,6 +376,38 @@ final class CategorySelectionViewModelTests: TestCase {
       self.goToCuratedProjects.assertValues([
         [.art, .games, .illustration]
       ])
+    }
+  }
+
+  func testPostNotification() {
+    let mockKVStore = MockKeyValueStore()
+
+    let categoriesResponse = RootCategoriesEnvelope.init(rootCategories: [
+      .art
+    ])
+
+    let artIndexPath = IndexPath(item: 0, section: 0)
+    let illustrationIndexPath = IndexPath(item: 1, section: 0)
+    let artId = Category.art.intID ?? 0
+    let illustrationId = Category.illustration.intID ?? 0
+
+    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
+
+    withEnvironment(apiService: mockService, userDefaults: mockKVStore) {
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.vm.inputs.categorySelected(with: (artIndexPath, artId))
+      self.vm.inputs.categorySelected(with: (illustrationIndexPath, illustrationId))
+
+      self.postNotification.assertDidNotEmitValue()
+      XCTAssertFalse(mockKVStore.hasCompletedCategoryPersonalizationFlow)
+
+      self.vm.inputs.continueButtonTapped()
+
+      self.postNotification.assertValues([Notification(name: .ksr_onboardingCompleted)])
+      XCTAssertTrue(mockKVStore.hasCompletedCategoryPersonalizationFlow)
     }
   }
 

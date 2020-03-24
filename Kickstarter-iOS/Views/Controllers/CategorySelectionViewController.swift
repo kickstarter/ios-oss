@@ -75,7 +75,8 @@ public final class CategorySelectionViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+    self.navigationController?.configureTransparentNavigationBar()
+
     self.navigationItem.setRightBarButton(self.skipButton, animated: false)
     self.navigationItem.setHidesBackButton(true, animated: false)
 
@@ -111,12 +112,6 @@ public final class CategorySelectionViewController: UIViewController {
 
   public override func bindStyles() {
     super.bindStyles()
-
-    _ = self
-      |> baseControllerStyle()
-
-    _ = self.navigationController?.navigationBar
-      ?|> navigationBarStyle
 
     _ = self.collectionView
       |> collectionViewStyle
@@ -178,6 +173,10 @@ public final class CategorySelectionViewController: UIViewController {
         vc.configure(with: categories)
         self?.navigationController?.pushViewController(vc, animated: true)
       }
+
+    self.viewModel.outputs.postNotification
+      .observeForUI()
+      .observeValues { NotificationCenter.default.post($0) }
 
     self.viewModel.outputs.showErrorMessage
       .observeForUI()
@@ -328,13 +327,6 @@ private let continueButtonStyle: ButtonStyle = { button in
 private let collectionViewStyle: ViewStyle = { view in
   view
     |> \.backgroundColor .~ .white
-}
-
-private let navigationBarStyle: NavigationBarStyle = { navBar in
-  navBar
-    ?|> \.backgroundColor .~ .clear
-    ?|> \.shadowImage .~ UIImage()
-    ?|> \.isTranslucent .~ true
 }
 
 private let warningLabelStyle: LabelStyle = { label in
