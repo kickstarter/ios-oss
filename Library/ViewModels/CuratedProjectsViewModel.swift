@@ -37,7 +37,6 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
     self.isLoading = Signal.merge(
       self.viewDidLoadSignal.mapConst(true),
       curatedProjects.mapConst(false)
-        .skipRepeats()
     )
   }
 
