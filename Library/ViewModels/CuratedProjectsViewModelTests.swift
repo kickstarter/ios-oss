@@ -9,14 +9,14 @@ import XCTest
 final class CuratedProjectsViewModelTests: TestCase {
   private let dismissViewController = TestObserver<Void, Never>()
   private let isLoading = TestObserver<Bool, Never>()
-  private let loadProjects = TestObserver<[Project], Never>()
+  private let loadProjectsCount = TestObserver<Int, Never>()
   private let viewModel: CuratedProjectsViewModelType = CuratedProjectsViewModel()
 
   override func setUp() {
     super.setUp()
     self.viewModel.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.viewModel.outputs.isLoading.observe(self.isLoading.observer)
-    self.viewModel.outputs.loadProjects.observe(self.loadProjects.observer)
+    self.viewModel.outputs.loadProjects.map { $0.count }.observe(self.loadProjectsCount.observer)
   }
 
   func testDismissViewController_OnButtonTap() {
@@ -43,8 +43,9 @@ final class CuratedProjectsViewModelTests: TestCase {
 
       self.viewModel.inputs.viewDidLoad()
 
-      // We configured the viewModel with 2 categories, therefore the request was made 2x.
-      self.loadProjects.assertValue(projects + projects)
+      // We configured the viewModel with 2 categories,
+      // therefore, the request was made 2x, returning 10 projects
+      self.loadProjectsCount.assertValue(10)
     }
   }
 
