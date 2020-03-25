@@ -19,45 +19,15 @@ final class LoadingButtonViewModelTests: TestCase {
     self.vm.outputs.stopLoading.observe(self.stopLoading.observer)
   }
 
-  func testIsUserInteractionEnabled() {
-    self.vm.inputs.isLoading(false)
-    self.isUserInteractionEnabled.assertValues([true])
-
-    self.vm.inputs.isLoading(false)
-    self.isUserInteractionEnabled.assertValues([true])
-
+  func testIsLoading() {
     self.vm.inputs.isLoading(true)
-    self.isUserInteractionEnabled.assertValues([true, false])
-
-    self.vm.inputs.isLoading(true)
-    self.isUserInteractionEnabled.assertValues([true, false])
-  }
-
-  func testStartLoading() {
-    self.vm.inputs.isLoading(true)
+    self.isUserInteractionEnabled.assertValues([false])
     self.startLoading.assertValueCount(1)
+    self.stopLoading.assertValueCount(0)
 
-    self.vm.inputs.isLoading(true)
+    self.vm.inputs.isLoading(false)
+    self.isUserInteractionEnabled.assertValues([false, true])
     self.startLoading.assertValueCount(1)
-
-    self.vm.inputs.isLoading(false)
-    self.startLoading.assertValueCount(1)
-
-    self.vm.inputs.isLoading(true)
-    self.startLoading.assertValueCount(2)
-  }
-
-  func testStopLoading() {
-    self.vm.inputs.isLoading(false)
     self.stopLoading.assertValueCount(1)
-
-    self.vm.inputs.isLoading(false)
-    self.stopLoading.assertValueCount(1)
-
-    self.vm.inputs.isLoading(true)
-    self.stopLoading.assertValueCount(1)
-
-    self.vm.inputs.isLoading(false)
-    self.stopLoading.assertValueCount(2)
   }
 }
