@@ -166,7 +166,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       }
       .take(first: 1)
 
-    Signal.zip(
+    let freshProjectRefTagAndCookieRefTag: Signal<(Project, RefTag?, RefTag?), Never> = Signal.zip(
       freshProjectAndRefTag.skip(first: 1),
       self.viewDidAppearAnimated.signal.ignoreValues()
     )
@@ -176,13 +176,32 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
       return (project: project, refTag: refTag, cookieRefTag: cookieRefTag)
     }
-    .observeValues { project, refTag, cookieRefTag in
-      AppEnvironment.current.koala.trackProjectViewed(
-        project,
-        refTag: refTag,
-        cookieRefTag: cookieRefTag
-      )
-    }
+
+    freshProjectRefTagAndCookieRefTag
+      .observeValues { project, refTag, cookieRefTag in
+        AppEnvironment.current.koala.trackProjectViewed(
+          project,
+          refTag: refTag,
+          cookieRefTag: cookieRefTag
+        )
+      }
+
+    freshProjectRefTagAndCookieRefTag
+      .observeValues { project, refTag, _ in
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+          with: AppEnvironment.current.currentUser,
+          project: project,
+          refTag: refTag
+        )
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "Project Page Viewed",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
+      }
 
     Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))
       .take(first: 1)
