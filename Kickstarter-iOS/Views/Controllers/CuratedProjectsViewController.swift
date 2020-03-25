@@ -22,6 +22,11 @@ final class CuratedProjectsViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var loadingIndicator: UIActivityIndicatorView = {
+    UIActivityIndicatorView()
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var tableView: UITableView = {
     UITableView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -70,6 +75,9 @@ final class CuratedProjectsViewController: UIViewController {
 
     _ = (self.tableView, self.view)
       |> ksr_addSubviewToParent()
+
+    _ = (self.loadingIndicator, self.view)
+      |> ksr_addSubviewToParent()
   }
 
   private func setupConstraints() {
@@ -78,7 +86,8 @@ final class CuratedProjectsViewController: UIViewController {
       self.headerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.headerView.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.headerView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-
+      self.loadingIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+      self.loadingIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
       self.tableView.topAnchor.constraint(equalTo: self.headerView.bottomAnchor),
       self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.tableView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
@@ -90,6 +99,8 @@ final class CuratedProjectsViewController: UIViewController {
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.loadingIndicator.rac.animating = self.viewModel.outputs.isLoading
 
     self.viewModel.outputs.dismissViewController
       .observeForUI()
@@ -124,6 +135,9 @@ final class CuratedProjectsViewController: UIViewController {
 
     _ = self.headerView
       |> headerViewStyle
+
+    _ = self.loadingIndicator
+      |> baseActivityIndicatorStyle
   }
 
   // MARK: - Accessors
