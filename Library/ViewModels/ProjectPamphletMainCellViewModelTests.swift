@@ -720,7 +720,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     let project = Project.template
       |> Project.lens.state .~ .live
-      |> Project.lens.personalization.isBacking .~ false
+      |> Project.lens.personalization.backing .~ nil
 
     withEnvironment(currentUser: user) {
       self.vm.inputs.configureWith(value: (project, .discovery, (creatorDetails, false)))
