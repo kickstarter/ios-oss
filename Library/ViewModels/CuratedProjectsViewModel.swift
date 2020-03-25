@@ -29,8 +29,8 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
         projects(from: categories)
           .flatten()
           .reduce([], +)
-    }
-    .map { $0.shuffled() }
+      }
+      .map { $0.shuffled() }
 
     self.loadProjects = curatedProjects
 
