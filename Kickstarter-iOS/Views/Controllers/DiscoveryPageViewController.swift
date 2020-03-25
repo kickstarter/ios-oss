@@ -22,6 +22,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
   public weak var delegate: DiscoveryPageViewControllerDelegate?
   fileprivate var emptyStatesController: EmptyStatesViewController?
   private lazy var headerLabel = { UILabel(frame: .zero) }()
+  private var onboardingCompletedObserver: Any?
+  private var optimizelyConfiguredObserver: Any?
   internal var preferredBackgroundColor: UIColor?
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
@@ -37,6 +39,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.tableView.register(nib: Nib.DiscoveryPostcardCell)
     self.tableView.registerCellClass(DiscoveryEditorialCell.self)
+    self.tableView.registerCellClass(PersonalizationCell.self)
 
     self.tableView.dataSource = self.dataSource
 
@@ -47,6 +50,16 @@ internal final class DiscoveryPageViewController: UITableViewController {
       for: .valueChanged
     )
     self.refreshControl = refreshControl
+
+    self.onboardingCompletedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_onboardingCompleted, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.onboardingCompleted()
+      }
+
+    self.optimizelyConfiguredObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_optimizelyClientConfigured, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.optimizelyClientConfigured()
+      }
 
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
@@ -86,10 +99,14 @@ internal final class DiscoveryPageViewController: UITableViewController {
   }
 
   deinit {
-    self.sessionEndedObserver.doIfSome(NotificationCenter.default.removeObserver)
-    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
-    self.currentEnvironmentChangedObserver.doIfSome(NotificationCenter.default.removeObserver)
-    self.configUpdatedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    [
+      self.sessionEndedObserver,
+      self.sessionStartedObserver,
+      self.currentEnvironmentChangedObserver,
+      self.configUpdatedObserver,
+      self.onboardingCompletedObserver,
+      self.optimizelyConfiguredObserver
+    ].forEach { $0.doIfSome(NotificationCenter.default.removeObserver) }
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
@@ -202,6 +219,37 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
+    self.viewModel.outputs.showPersonalization
+      .observeForUI()
+      .observeValues { [weak self] shouldShow in
+        self?.dataSource.showPersonalization(shouldShow)
+
+        self?.tableView.reloadData()
+      }
+
+    self.viewModel.outputs.dismissPersonalizationCell
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.dataSource.showPersonalization(false)
+
+        let section = DiscoveryProjectsDataSource.Section.personalization.rawValue
+        self?.tableView.beginUpdates()
+        self?.tableView.deleteRows(at: [IndexPath(row: 0, section: section)], with: .automatic)
+        self?.tableView.endUpdates()
+      }
+
+    self.viewModel.outputs.goToCuratedProjects
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        let curatedProjectsVC = CuratedProjectsViewController.instantiate()
+        let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
+
+        let navController = NavigationController(rootViewController: curatedProjectsVC)
+          |> \.modalPresentationStyle .~ (isIpad ? .formSheet : .fullScreen)
+
+        self?.present(navController, animated: true)
+      }
+
     self.viewModel.outputs.setScrollsToTop
       .observeForUI()
       .observeValues { [weak self] in
@@ -211,9 +259,9 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.viewModel.outputs.scrollToProjectRow
       .observeForUI()
       .observeValues { [weak self] row in
-        guard let _self = self else { return }
-        _self.tableView.scrollToRow(
-          at: _self.dataSource.indexPath(forProjectRow: row),
+        guard let self = self else { return }
+        self.tableView.scrollToRow(
+          at: self.dataSource.indexPath(forProjectRow: row),
           at: .top,
           animated: false
         )
@@ -287,6 +335,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
     } else if let cell = cell as? DiscoveryOnboardingCell, cell.delegate == nil {
       cell.delegate = self
     } else if let cell = cell as? DiscoveryEditorialCell {
+      cell.delegate = self
+    } else if let cell = cell as? PersonalizationCell {
       cell.delegate = self
     }
 
@@ -446,6 +496,18 @@ extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
 extension DiscoveryPageViewController: DiscoveryEditorialCellDelegate {
   func discoveryEditorialCellTapped(_: DiscoveryEditorialCell, tagId: DiscoveryParams.TagID) {
     self.viewModel.inputs.discoveryEditorialCellTapped(with: tagId)
+  }
+}
+
+// MARK: - PersonalizationCellDelegate
+
+extension DiscoveryPageViewController: PersonalizationCellDelegate {
+  func personalizationCellTapped(_: PersonalizationCell) {
+    self.viewModel.inputs.personalizationCellTapped()
+  }
+
+  func personalizationCellDidTapDismiss(_: PersonalizationCell) {
+    self.viewModel.inputs.personalizationCellDismissTapped()
   }
 }
 
