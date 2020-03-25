@@ -171,9 +171,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       self.viewDidAppearAnimated.signal.ignoreValues()
     )
     .map(unpack)
-      .map { (arg) in
-        let (project, refTag, _) = arg
-        let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
+    .map { project, refTag, _ in
+      let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
 
       return (project: project, refTag: refTag, cookieRefTag: cookieRefTag)
     }
@@ -185,7 +184,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
           refTag: refTag,
           cookieRefTag: cookieRefTag
         )
-    }
+      }
 
     freshProjectRefTagAndCookieRefTag
       .observeValues { project, refTag, _ in
@@ -201,8 +200,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
             userId: deviceIdentifier(uuid: UUID()),
             attributes: properties,
             eventTags: eventTags
-        )
-    }
+          )
+      }
 
     Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))
       .take(first: 1)

@@ -851,9 +851,8 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, nil)
     }
   }
- 
-  func testOptimizelyTrackingProjectPageViewed_LoggedOut() {
 
+  func testOptimizelyTrackingProjectPageViewed_LoggedOut() {
     withEnvironment(currentUser: nil) {
       self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
