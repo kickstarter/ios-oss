@@ -1,3 +1,4 @@
+import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
@@ -9,8 +10,9 @@ public protocol CuratedProjectsViewModelInputs {
 }
 
 public protocol CuratedProjectsViewModelOutputs {
-  var loadProjects: Signal<[Project], Never> { get }
   var dismissViewController: Signal<Void, Never> { get }
+  var isLoading: Signal<Bool, Never> { get }
+  var loadProjects: Signal<[Project], Never> { get }
 }
 
 public protocol CuratedProjectsViewModelType {
@@ -28,10 +30,16 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
           .flatten()
           .reduce([], +)
       }
+      .map { $0.shuffled() }
 
     self.loadProjects = curatedProjects
 
     self.dismissViewController = self.doneButtonTappedSignal
+
+    self.isLoading = Signal.merge(
+      self.viewDidLoadSignal.mapConst(true),
+      curatedProjects.mapConst(false)
+    )
   }
 
   private let (categoriesSignal, categoriesObserver) = Signal<[KsApi.Category], Never>.pipe()
@@ -50,6 +58,7 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
   }
 
   public let dismissViewController: Signal<Void, Never>
+  public let isLoading: Signal<Bool, Never>
   public let loadProjects: Signal<[Project], Never>
 
   public var inputs: CuratedProjectsViewModelInputs { return self }
