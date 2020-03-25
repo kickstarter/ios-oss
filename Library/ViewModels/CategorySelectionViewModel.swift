@@ -17,6 +17,7 @@ public protocol CategorySelectionViewModelOutputs {
   var isLoading: Signal<Bool, Never> { get }
   // A tuple of Section Titles: [String], and Categories Section Data (Name and Id): [[String, Int]]
   var loadCategorySections: Signal<([String], [[CategorySectionData]]), Never> { get }
+  var postNotification: Signal<Notification, Never> { get }
   func shouldSelectCell(at index: IndexPath) -> Bool
   var showErrorMessage: Signal<String, Never> { get }
   var warningLabelIsHidden: Signal<Bool, Never> { get }
@@ -71,10 +72,14 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
     self.goToCuratedProjects = orderedCategories
       .combineLatest(with: selectedCategoryIds)
       .takeWhen(self.continueButtonTappedProperty.signal)
-      .map { categories, ids -> [KsApi.Category] in
-        selectedCategories(categories, with: ids)
-      }
+      .map(selectedCategories(_:with:))
       .sort { $0.name < $1.name }
+      .on { _ in
+        AppEnvironment.current.userDefaults.hasCompletedCategoryPersonalizationFlow = true
+      }
+
+    self.postNotification = self.goToCuratedProjects
+      .map { _ in Notification(name: .ksr_onboardingCompleted) }
 
     let selectedCategoriesCount = selectedCategoryIndexes.map { $0.count }
 
@@ -124,6 +129,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
   public let goToCuratedProjects: Signal<[KsApi.Category], Never>
   public let isLoading: Signal<Bool, Never>
   public let loadCategorySections: Signal<([String], [[CategorySectionData]]), Never>
+  public let postNotification: Signal<Notification, Never>
   public let showErrorMessage: Signal<String, Never>
   public let warningLabelIsHidden: Signal<Bool, Never>
 
