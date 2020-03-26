@@ -58,6 +58,9 @@ public protocol LoginToutViewModelOutputs {
   /// Emits an access token envelope that can be used to update the environment.
   var logIntoEnvironment: Signal<AccessTokenEnvelope, Never> { get }
 
+  /// Emits an image to be used as the navigation bar background.
+  var navigationBarBackgroundImage: Signal<UIImage, Never> { get }
+
   /// Emits when a login success notification should be posted.
   var postNotification: Signal<(Notification, Notification), Never> { get }
 
@@ -176,6 +179,15 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       genericFacebookErrorAlert
     )
 
+    self.navigationBarBackgroundImage = Signal.merge(
+      self.viewWillAppearProperty.signal
+        .ignoreValues()
+        .map { image(named: "signup-background") }
+        .skipNil(),
+      self.loginButtonPressedProperty.signal.mapConst(UIImage()),
+      self.signupButtonPressedProperty.signal.mapConst(UIImage())
+    )
+
     // MARK: - Tracking
 
     let trackingData = Signal.combineLatest(
@@ -282,18 +294,19 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.viewIsPresentedProperty.value = isPresented
   }
 
+  public let attemptFacebookLogin: Signal<(), Never>
   public let dismissViewController: Signal<(), Never>
   public let facebookButtonTitleText: Signal<String, Never>
   public let headlineLabelHidden: Signal<Bool, Never>
+  public let isLoading: Signal<Bool, Never>
+  public let logInContextText: Signal<String, Never>
+  public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
+  public let navigationBarBackgroundImage: Signal<UIImage, Never>
+  public let postNotification: Signal<(Notification, Notification), Never>
+  public let startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), Never>
   public let startLogin: Signal<(), Never>
   public let startSignup: Signal<(), Never>
-  public let startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), Never>
   public let startTwoFactorChallenge: Signal<String, Never>
-  public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
-  public let postNotification: Signal<(Notification, Notification), Never>
-  public let logInContextText: Signal<String, Never>
-  public let isLoading: Signal<Bool, Never>
-  public let attemptFacebookLogin: Signal<(), Never>
   public let showFacebookErrorAlert: Signal<AlertError, Never>
 }
 

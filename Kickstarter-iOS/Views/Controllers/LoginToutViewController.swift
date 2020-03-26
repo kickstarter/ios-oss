@@ -11,6 +11,9 @@ import UIKit
 internal final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate {
   // MARK: - Properties
 
+  @available(iOS 13.0, *)
+  private lazy var appleLoginButton = { ASAuthorizationAppleIDButton(frame: .zero) }()
+  private let backgroundImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var bringCreativeProjectsToLifeLabel = { UILabel(frame: .zero) }()
   private lazy var contextLabel = { UILabel(frame: .zero) }()
   private lazy var emailLoginStackView = { UIStackView(frame: .zero) }()
@@ -86,8 +89,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       ?|> \.isTranslucent .~ true
       ?|> \.shadowImage .~ UIImage()
 
-    self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-
     _ = self.navigationItem
       |> \.rightBarButtonItem .~ .help(self, selector: #selector(self.helpButtonPressed))
   }
@@ -109,6 +110,14 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     _ = self
       |> baseControllerStyle()
+
+    _ = self.backgroundImageView
+      |> backgroundImageViewStyle
+
+    if #available(iOS 13.0, *) {
+      _ = self.appleLoginButton
+        |> roundedStyle(cornerRadius: Styles.grid(2))
+    }
 
     _ = self.bringCreativeProjectsToLifeLabel
       |> baseLabelStyle
@@ -167,6 +176,13 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   // MARK: - View Model
 
   override func bindViewModel() {
+    self.viewModel.outputs.navigationBarBackgroundImage
+      .observeForUI()
+      .observeValues { [weak self] image in
+        _ = self?.navigationController?.navigationBar
+          ?|> UINavigationBar.lens.backgroundImage(for: .default) .~ image
+      }
+
     self.viewModel.outputs.startLogin
       .observeForControllerAction()
       .observeValues { [weak self] _ in
@@ -266,6 +282,10 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   // MARK: - Functions
 
   private func configureViews() {
+    _ = (self.backgroundImageView, self.view)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
     _ = (self.scrollView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
@@ -275,17 +295,23 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       |> ksr_constrainViewToEdgesInParent()
 
     _ = ([
-      self.loginContextStackView,  self.fbLoginStackView, self.separatorView, self.emailLoginStackView
+      self.loginContextStackView, self.fbLoginStackView, self.separatorView, self.emailLoginStackView
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    let spacer = UIView()
     _ = ([
-      self.logoImageView, self.bringCreativeProjectsToLifeLabel, self.contextLabel
+      self.logoImageView, spacer, self.bringCreativeProjectsToLifeLabel, self.contextLabel
     ], self.loginContextStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.fbLoginButton, self.getNotifiedLabel], self.fbLoginStackView)
+    if #available(iOS 13.0, *) {
+      _ = ([self.appleLoginButton, self.fbLoginButton, self.getNotifiedLabel], self.fbLoginStackView)
+        |> ksr_addArrangedSubviewsToStackView()
+    } else {
+      _ = ([self.fbLoginButton, self.getNotifiedLabel], self.fbLoginStackView)
       |> ksr_addArrangedSubviewsToStackView()
+    }
 
     _ = ([self.signupButton, self.loginButton], self.emailLoginStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -299,9 +325,22 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       self.loginButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
       self.signupButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
+
+    if #available(iOS 13.0, *) {
+      NSLayoutConstraint.activate([
+        self.appleLoginButton.heightAnchor
+          .constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+      ])
+    }
   }
 
   private func configureTargets() {
+    if #available(iOS 13.0, *) {
+      self.appleLoginButton.addTarget(
+        self, action: #selector(self.appleLoginButtonPressed(_:)),
+        for: .touchUpInside
+      )
+    }
     self.fbLoginButton.addTarget(
       self, action: #selector(self.facebookLoginButtonPressed(_:)),
       for: .touchUpInside
@@ -393,6 +432,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.dismiss(animated: true, completion: nil)
   }
 
+  @objc private func appleLoginButtonPressed(_: UIButton) {}
+
   @objc private func closeButtonPressed() {
     self.dismiss(animated: true, completion: nil)
   }
@@ -424,6 +465,12 @@ extension LoginToutViewController: TabBarControllerScrollable {
 
 // MARK: - Styles
 
+private let backgroundImageViewStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.contentMode .~ .scaleToFill
+    |> \.image .~ image(named: "signup-background")
+}
+
 private let baseStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.distribution .~ .fill
@@ -435,7 +482,6 @@ private let baseStackViewStyle: StackViewStyle = { stackView in
 private let baseLabelStyle: LabelStyle = { label in
   label
     |> \.textAlignment .~ NSTextAlignment.center
-    |> \.backgroundColor .~ UIColor.white
     |> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
     |> \.numberOfLines .~ 0
 }
