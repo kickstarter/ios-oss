@@ -8,11 +8,13 @@ public typealias CategorySectionData = (name: String, id: Int)
 public protocol CategorySelectionViewModelInputs {
   func categorySelected(with value: (IndexPath, Int))
   func continueButtonTapped()
+  func skipButtonTapped()
   func viewDidLoad()
 }
 
 public protocol CategorySelectionViewModelOutputs {
   var continueButtonEnabled: Signal<Bool, Never> { get }
+  var dismiss: Signal<Void, Never> { get }
   var goToCuratedProjects: Signal<[KsApi.Category], Never> { get }
   var isLoading: Signal<Bool, Never> { get }
   // A tuple of Section Titles: [String], and Categories Section Data (Name and Id): [[String, Int]]
@@ -100,6 +102,30 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
       shouldDisplayWarningLabel.negate()
     )
     .skipRepeats()
+
+    self.dismiss = self.skipButtonTappedProperty.signal
+
+    // Tracking
+
+    Signal.merge(self.skipButtonTappedProperty.signal.mapConst("Skip"),
+                 self.continueButtonTappedProperty.signal.mapConst("Continue"))
+      .observeValues { buttonTitle in
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+          with: AppEnvironment.current.currentUser,
+          project: nil,
+          refTag: nil
+        )
+
+        let eventName = "\(buttonTitle) Button Clicked"
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: eventName,
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
+      }
   }
 
   private let categorySelectedWithValueProperty = MutableProperty<(IndexPath, Int)?>(nil)
@@ -110,6 +136,11 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
   private let continueButtonTappedProperty = MutableProperty(())
   public func continueButtonTapped() {
     self.continueButtonTappedProperty.value = ()
+  }
+
+  private let skipButtonTappedProperty = MutableProperty(())
+  public func skipButtonTapped() {
+    self.skipButtonTappedProperty.value = ()
   }
 
   private let shouldSelectCellAtIndexProperty = MutableProperty<IndexPath?>(nil)
@@ -126,6 +157,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
   }
 
   public let continueButtonEnabled: Signal<Bool, Never>
+  public let dismiss: Signal<Void, Never>
   public let goToCuratedProjects: Signal<[KsApi.Category], Never>
   public let isLoading: Signal<Bool, Never>
   public let loadCategorySections: Signal<([String], [[CategorySectionData]]), Never>

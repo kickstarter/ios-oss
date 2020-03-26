@@ -22,6 +22,25 @@ public final class LandingViewModel: LandingViewModelType, LandingViewModelInput
     }
 
     self.goToCategorySelection = self.getStartedButtonTappedProperty.signal
+
+    // Tracking
+
+    self.getStartedButtonTappedProperty.signal
+      .observeValues {
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+          with: AppEnvironment.current.currentUser,
+          project: nil,
+          refTag: nil
+        )
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "Get Started Button Clicked",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
+      }
   }
 
   private let getStartedButtonTappedProperty = MutableProperty(())

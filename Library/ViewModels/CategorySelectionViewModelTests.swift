@@ -8,6 +8,7 @@ import XCTest
 
 final class CategorySelectionViewModelTests: TestCase {
   private let continueButtonEnabled = TestObserver<Bool, Never>()
+  private let dismiss = TestObserver<Void, Never>()
   private let goToCuratedProjects = TestObserver<[KsApi.Category], Never>()
   private let isLoading = TestObserver<Bool, Never>()
   private let loadCategorySectionTitles = TestObserver<[String], Never>()
@@ -22,6 +23,7 @@ final class CategorySelectionViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.continueButtonEnabled.observe(self.continueButtonEnabled.observer)
+    self.vm.outputs.dismiss.observe(self.dismiss.observer)
     self.vm.outputs.goToCuratedProjects.observe(self.goToCuratedProjects.observer)
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.loadCategorySections.map(first).observe(self.loadCategorySectionTitles.observer)
@@ -341,7 +343,7 @@ final class CategorySelectionViewModelTests: TestCase {
     }
   }
 
-  func testGoToCuratedProjects_Emits_WhenContinueButtonIsTapped() {
+  func testGoToCuratedProjects() {
     let categoriesResponse = RootCategoriesEnvelope.init(rootCategories: [
       // sucbcat: .illustration
       .art,
@@ -371,11 +373,19 @@ final class CategorySelectionViewModelTests: TestCase {
       self.vm.inputs.categorySelected(with: (illustrationIndexPath, illustrationId))
       self.vm.inputs.categorySelected(with: (gamesIndexPath, gamesId))
 
+      XCTAssertNil(self.optimizelyClient.trackedEventKey)
+      XCTAssertNil(self.optimizelyClient.trackedAttributes)
+      XCTAssertNil(self.optimizelyClient.trackedEventTags)
+
       self.vm.inputs.continueButtonTapped()
 
       self.goToCuratedProjects.assertValues([
         [.art, .games, .illustration]
       ])
+
+      XCTAssertEqual("Continue Button Clicked", self.optimizelyClient.trackedEventKey)
+
+      assertBaseUserAttributesLoggedOut()
     }
   }
 
@@ -440,6 +450,30 @@ final class CategorySelectionViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.isLoading.assertValues([true, false])
+    }
+  }
+
+  func testDismiss() {
+    let categoriesResponse = RootCategoriesEnvelope.init(rootCategories: [.art])
+    let mockService = MockService(fetchGraphCategoriesResponse: categoriesResponse)
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.viewDidLoad()
+      self.scheduler.advance()
+
+      self.dismiss.assertDidNotEmitValue()
+
+      XCTAssertNil(self.optimizelyClient.trackedEventKey)
+      XCTAssertNil(self.optimizelyClient.trackedAttributes)
+      XCTAssertNil(self.optimizelyClient.trackedEventTags)
+
+      self.vm.inputs.skipButtonTapped()
+
+      self.dismiss.assertValueCount(1)
+
+      XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Skip Button Clicked")
+
+      assertBaseUserAttributesLoggedOut()
     }
   }
 }
