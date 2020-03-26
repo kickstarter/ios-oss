@@ -240,8 +240,10 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.viewModel.outputs.goToCuratedProjects
       .observeForUI()
-      .observeValues { [weak self] _ in
+      .observeValues { [weak self] categories in
         let curatedProjectsVC = CuratedProjectsViewController.instantiate()
+        curatedProjectsVC.configure(with: categories)
+
         let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
 
         let navController = NavigationController(rootViewController: curatedProjectsVC)
