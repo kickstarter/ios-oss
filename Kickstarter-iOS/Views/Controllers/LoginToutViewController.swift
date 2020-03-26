@@ -1,3 +1,4 @@
+import AuthenticationServices
 import FBSDKLoginKit
 import Foundation
 import KsApi
@@ -12,12 +13,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
   private lazy var bringCreativeProjectsToLifeLabel = { UILabel(frame: .zero) }()
   private lazy var contextLabel = { UILabel(frame: .zero) }()
-  private lazy var disclaimerButton = { MultiLineButton(type: .custom)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   private lazy var emailLoginStackView = { UIStackView(frame: .zero) }()
-  private lazy var facebookDisclaimerLabel = { UILabel(frame: .zero) }()
   private lazy var fbLoginButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -29,7 +25,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }()
 
   private lazy var fbLoginStackView = { UIStackView(frame: .zero) }()
-  private lazy var fbDisclaimerStackView = { UIStackView(frame: .zero) }()
   private lazy var getNotifiedLabel = { UILabel(frame: .zero) }()
   private let helpViewModel = HelpViewModel()
   private lazy var loginButton = { UIButton(type: .custom)
@@ -37,13 +32,14 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }()
 
   private lazy var loginContextStackView = { UIStackView() }()
+  private lazy var logoImageView = { UIImageView(frame: .zero) }()
   private lazy var rootStackView = { UIStackView() }()
   private lazy var scrollView = {
     UIScrollView(frame: .zero)
       |> \.alwaysBounceVertical .~ true
 
   }()
-
+  private lazy var separatorView: UIView = { UIView(frame: .zero) }()
   private var sessionStartedObserver: Any?
   private lazy var signupButton = { UIButton(type: .custom)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -85,6 +81,13 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(self.closeButtonPressed))
     }
 
+    _ = self.navigationController?.navigationBar
+      ?|> \.barTintColor .~ .clear
+      ?|> \.isTranslucent .~ true
+      ?|> \.shadowImage .~ UIImage()
+
+    self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+
     _ = self.navigationItem
       |> \.rightBarButtonItem .~ .help(self, selector: #selector(self.helpButtonPressed))
   }
@@ -107,54 +110,31 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     _ = self
       |> baseControllerStyle()
 
-    _ = self.fbLoginButton
-      |> facebookButtonStyle
-
-    _ = self.disclaimerButton
-      |> multiLineButtonStyle
-      |> disclaimerButtonStyle
-
-    _ = self.loginButton
-      |> greyButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in
-        Strings.login_tout_back_intent_traditional_login_button()
-      }
-
-    _ = self.fbDisclaimerStackView
-      |> baseStackViewStyle
-      |> UIStackView.lens.spacing .~ Styles.gridHalf(1)
-
-    _ = self.getNotifiedLabel
-      |> baseLabelStyle
-      |> UILabel.lens.font %~~ { _, label in
-        label.traitCollection.isRegularRegular ? UIFont.ksr_subhead().bolded : UIFont.ksr_caption1().bolded
-      }
-      |> UILabel.lens.text %~ { _ in Strings.Get_notified_when_your_friends_back_and_launch_projects() }
-
-    _ = self.rootStackView
-      |> baseStackViewStyle
-      |> loginRootStackViewStyle
-      |> UIStackView.lens.spacing .~ Styles.grid(5)
-
-    _ = [self.loginContextStackView, self.fbLoginStackView, self.emailLoginStackView]
-      ||> baseStackViewStyle
-
-    _ = self.signupButton
-      |> signupWithEmailButtonStyle
-
-    _ = self.facebookDisclaimerLabel
-      |> baseLabelStyle
-      |> fbDisclaimerTextStyle
-
     _ = self.bringCreativeProjectsToLifeLabel
       |> baseLabelStyle
-      |> UILabel.lens.font .~ .ksr_title1()
+      |> UILabel.lens.font .~ .ksr_title2()
       |> UILabel.lens.text %~ { _ in Strings.Bring_creative_projects_to_life() }
 
     _ = self.contextLabel
       |> baseLabelStyle
       |> UILabel.lens.font %~ { _ in
         self.bringCreativeProjectsToLifeLabel.isHidden ? UIFont.ksr_title2() : UIFont.ksr_subhead()
+      }
+
+    _ = self.fbLoginButton
+      |> facebookButtonStyle
+
+    _ = self.getNotifiedLabel
+      |> baseLabelStyle
+      |> UILabel.lens.font %~~ { _, label in
+        label.traitCollection.isRegularRegular ? UIFont.ksr_subhead() : UIFont.ksr_caption2()
+      }
+      |> UILabel.lens.text %~ { _ in Strings.Get_notified_when_your_friends_back_and_launch_projects() }
+
+    _ = self.loginButton
+      |> greyButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in
+        Strings.login_tout_back_intent_traditional_login_button()
       }
 
     _ = self.loginContextStackView
@@ -165,6 +145,23 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
           : .init(top: Styles.grid(10), left: 0, bottom: Styles.grid(5), right: 0)
       }
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
+
+    _ = self.logoImageView
+      |> logoImageViewStyle
+
+    _ = self.rootStackView
+      |> baseStackViewStyle
+      |> loginRootStackViewStyle
+      |> UIStackView.lens.spacing .~ Styles.grid(5)
+
+    _ = self.separatorView
+      |> separatorViewStyle
+
+    _ = self.signupButton
+      |> signupWithEmailButtonStyle
+
+    _ = [self.loginContextStackView, self.fbLoginStackView, self.emailLoginStackView]
+      ||> baseStackViewStyle
   }
 
   // MARK: - View Model
@@ -278,26 +275,25 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       |> ksr_constrainViewToEdgesInParent()
 
     _ = ([
-      self.loginContextStackView, self.fbLoginStackView, self.fbDisclaimerStackView,
-      self.emailLoginStackView
+      self.loginContextStackView,  self.fbLoginStackView, self.separatorView, self.emailLoginStackView
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.bringCreativeProjectsToLifeLabel, self.contextLabel], self.loginContextStackView)
+    _ = ([
+      self.logoImageView, self.bringCreativeProjectsToLifeLabel, self.contextLabel
+    ], self.loginContextStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.getNotifiedLabel, self.facebookDisclaimerLabel], self.fbDisclaimerStackView)
+    _ = ([self.fbLoginButton, self.getNotifiedLabel], self.fbLoginStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.fbLoginButton, self.fbDisclaimerStackView], self.fbLoginStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = ([self.signupButton, self.loginButton, self.disclaimerButton], self.emailLoginStackView)
+    _ = ([self.signupButton, self.loginButton], self.emailLoginStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
+      self.separatorView.heightAnchor.constraint(equalToConstant: 1),
       self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
       self.fbLoginButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
       self.loginButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
@@ -306,7 +302,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }
 
   private func configureTargets() {
-    self.disclaimerButton.addTarget(self, action: #selector(self.helpButtonPressed), for: .touchUpInside)
     self.fbLoginButton.addTarget(
       self, action: #selector(self.facebookLoginButtonPressed(_:)),
       for: .touchUpInside
@@ -443,4 +438,18 @@ private let baseLabelStyle: LabelStyle = { label in
     |> \.backgroundColor .~ UIColor.white
     |> \.lineBreakMode .~ NSLineBreakMode.byWordWrapping
     |> \.numberOfLines .~ 0
+}
+
+private let logoImageViewStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.image .~ image(named: "kickstarter-logo")?.withRenderingMode(.alwaysTemplate)
+    |> \.tintColor .~ .ksr_green_500
+    |> \.contentMode .~ .scaleAspectFit
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+}
+
+private let separatorViewStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ .ksr_grey_500
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }
