@@ -119,7 +119,7 @@ final class CuratedProjectsViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] message in
         self?.present(UIAlertController.genericError(message), animated: true)
-    }
+      }
   }
 
   // MARK: - Styles

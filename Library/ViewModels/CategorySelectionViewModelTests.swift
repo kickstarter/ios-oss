@@ -338,6 +338,7 @@ final class CategorySelectionViewModelTests: TestCase {
       XCTAssertNil(self.optimizelyClient.trackedEventKey)
       XCTAssertNil(self.optimizelyClient.trackedAttributes)
       XCTAssertNil(self.optimizelyClient.trackedEventTags)
+
       XCTAssertNil(self.cache[KSCache.ksr_onboardingCategories])
       XCTAssertFalse(mockKVStore.hasCompletedCategoryPersonalizationFlow)
 
@@ -347,14 +348,14 @@ final class CategorySelectionViewModelTests: TestCase {
         [.art, .games, .illustration]
       ])
 
-      XCTAssertEqual("Continue Button Clicked", self.optimizelyClient.trackedEventKey)
-
-      assertBaseUserAttributesLoggedOut()
       XCTAssertEqual(
         [.art, .games, .illustration],
         self.cache[KSCache.ksr_onboardingCategories] as? [KsApi.Category]
       )
       XCTAssertTrue(mockKVStore.hasCompletedCategoryPersonalizationFlow)
+
+      XCTAssertEqual("Continue Button Clicked", self.optimizelyClient.trackedEventKey)
+      assertBaseUserAttributesLoggedOut()
     }
   }
 
