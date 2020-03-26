@@ -1,8 +1,9 @@
 import Foundation
+import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias CategoryPillCellValue = (name: String, id: Int, indexPath: IndexPath?)
+public typealias CategoryPillCellValue = (name: String, category: KsApi.Category, indexPath: IndexPath?)
 
 public protocol CategoryPillCellViewModelInputs {
   func configure(with value: CategoryPillCellValue)
@@ -13,7 +14,7 @@ public protocol CategoryPillCellViewModelInputs {
 public protocol CategoryPillCellViewModelOutputs {
   var buttonTitle: Signal<String, Never> { get }
   var isSelected: Signal<Bool, Never> { get }
-  var notifyDelegatePillCellTapped: Signal<(IndexPath, Int), Never> { get }
+  var notifyDelegatePillCellTapped: Signal<(IndexPath, KsApi.Category), Never> { get }
 }
 
 public protocol CategoryPillCellViewModelType {
@@ -32,7 +33,7 @@ public final class CategoryPillCellViewModel: CategoryPillCellViewModelType,
           return nil
         }
 
-        return (index, value.id)
+        return (index, value.category)
       }
 
     self.isSelected = self.isSelectedProperty.signal.skipRepeats()
@@ -58,7 +59,7 @@ public final class CategoryPillCellViewModel: CategoryPillCellViewModelType,
 
   public let buttonTitle: Signal<String, Never>
   public let isSelected: Signal<Bool, Never>
-  public let notifyDelegatePillCellTapped: Signal<(IndexPath, Int), Never>
+  public let notifyDelegatePillCellTapped: Signal<(IndexPath, KsApi.Category), Never>
 
   public var inputs: CategoryPillCellViewModelInputs { return self }
   public var outputs: CategoryPillCellViewModelOutputs { return self }

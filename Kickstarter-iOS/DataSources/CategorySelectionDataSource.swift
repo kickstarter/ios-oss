@@ -14,8 +14,8 @@ internal final class CategorySelectionDataSource: ValueCellDataSource {
     for (section, subcategories) in categories.enumerated() {
       let indexedSubcategories = subcategories.enumerated().map { index, value in
         CategoryPillCellValue(
-          name: value.name,
-          id: value.id,
+          name: value.displayName,
+          category: value.category,
           indexPath: IndexPath(item: index, section: section)
         )
       }

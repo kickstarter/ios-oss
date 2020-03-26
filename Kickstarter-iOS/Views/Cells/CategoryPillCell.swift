@@ -1,3 +1,4 @@
+import KsApi
 import Library
 import Prelude
 import ReactiveSwift
@@ -7,7 +8,7 @@ protocol CategoryPillCellDelegate: AnyObject {
   func categoryPillCell(
     _ cell: CategoryPillCell,
     didTapAtIndex index: IndexPath,
-    withId id: Int
+    withCategory category: KsApi.Category
   )
 }
 
@@ -56,10 +57,10 @@ final class CategoryPillCell: UICollectionViewCell, ValueCell {
 
     self.viewModel.outputs.notifyDelegatePillCellTapped
       .observeForUI()
-      .observeValues { [weak self] indexPath, id in
+      .observeValues { [weak self] indexPath, category in
         guard let self = self else { return }
 
-        self.delegate?.categoryPillCell(self, didTapAtIndex: indexPath, withId: id)
+        self.delegate?.categoryPillCell(self, didTapAtIndex: indexPath, withCategory: category)
       }
   }
 

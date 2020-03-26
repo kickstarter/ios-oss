@@ -10,7 +10,7 @@ final class CategoryPillCellViewModelTests: TestCase {
   private let buttonTitle = TestObserver<String, Never>()
   private let isSelected = TestObserver<Bool, Never>()
   private let notifyDelegatePillCellTappedIndexPath = TestObserver<IndexPath, Never>()
-  private let notifyDelegatePillCellTappedId = TestObserver<Int, Never>()
+  private let notifyDelegatePillCellTappedCategory = TestObserver<KsApi.Category, Never>()
 
   private let vm: CategoryPillCellViewModelType = CategoryPillCellViewModel()
 
@@ -22,7 +22,7 @@ final class CategoryPillCellViewModelTests: TestCase {
     self.vm.outputs.notifyDelegatePillCellTapped.map(first)
       .observe(self.notifyDelegatePillCellTappedIndexPath.observer)
     self.vm.outputs.notifyDelegatePillCellTapped.map(second)
-      .observe(self.notifyDelegatePillCellTappedId.observer)
+      .observe(self.notifyDelegatePillCellTappedCategory.observer)
   }
 
   func testButtonTitle() {
@@ -30,7 +30,7 @@ final class CategoryPillCellViewModelTests: TestCase {
 
     self.buttonTitle.assertDidNotEmitValue()
 
-    self.vm.inputs.configure(with: ("title", 2, indexPath))
+    self.vm.inputs.configure(with: ("title", .art, indexPath))
 
     self.buttonTitle.assertValues(["title"])
   }
@@ -40,7 +40,7 @@ final class CategoryPillCellViewModelTests: TestCase {
 
     self.isSelected.assertDidNotEmitValue()
 
-    self.vm.inputs.configure(with: ("title", 2, indexPath))
+    self.vm.inputs.configure(with: ("title", .art, indexPath))
 
     self.vm.inputs.setIsSelected(selected: true)
 
@@ -55,12 +55,12 @@ final class CategoryPillCellViewModelTests: TestCase {
     let indexPath = IndexPath(item: 0, section: 0)
 
     self.notifyDelegatePillCellTappedIndexPath.assertDidNotEmitValue()
-    self.notifyDelegatePillCellTappedId.assertDidNotEmitValue()
+    self.notifyDelegatePillCellTappedCategory.assertDidNotEmitValue()
 
-    self.vm.inputs.configure(with: ("title", 2, indexPath))
+    self.vm.inputs.configure(with: ("title", .art, indexPath))
     self.vm.inputs.pillCellTapped()
 
     self.notifyDelegatePillCellTappedIndexPath.assertValues([indexPath])
-    self.notifyDelegatePillCellTappedId.assertValues([2])
+    self.notifyDelegatePillCellTappedCategory.assertValues([.art])
   }
 }
