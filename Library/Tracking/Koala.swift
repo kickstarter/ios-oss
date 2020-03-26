@@ -255,12 +255,14 @@ public final class Koala {
    - newPledge:    pledging to the project without an existing backing
    */
   public enum PledgeContext {
+    case fixErroredPledge
     case changeReward
     case manageReward
     case newPledge
 
     var trackingString: String {
       switch self {
+      case .fixErroredPledge: return "fix_errored_pledge"
       case .changeReward: return "change_reward"
       case .manageReward: return "manage_reward"
       case .newPledge: return "new_pledge"
@@ -617,6 +619,13 @@ public final class Koala {
     self.track(event: "Manage Pledge Option Clicked", properties: props)
   }
 
+  public func trackFixPledgeButtonClicked(project: Project) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
+
+    self.track(event: "Fix Pledge Button Clicked", properties: props)
+  }
+
   /* Call when a reward is selected
 
    parameters:
@@ -700,6 +709,27 @@ public final class Koala {
       refTag: refTag?.stringTag
     )
   }
+
+  public func trackPledgeSubmitButtonClicked(
+    project: Project,
+    reward: Reward,
+    context: Koala.PledgeContext,
+    refTag: RefTag?
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(pledgeProperties(from: reward))
+      // the context is always "newPledge" for this event
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
+
+    self.track(
+      event: DataLakeWhiteListedEvent.pledgeSubmitButtonClicked.rawValue,
+      location: .pledgeScreen,
+      properties: props,
+      refTag: refTag?.stringTag
+    )
+  }
+
+  
 
   /* Call when the Add New Card button is clicked from the pledge screen
 

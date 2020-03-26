@@ -634,6 +634,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           refTag: refTag
         )
       }
+
+    Signal.combineLatest(project, updateBackingData, context)
+      .takeWhen(updateButtonTapped)
+      .observeValues { project, data, context in
+        AppEnvironment.current.koala.trackPledgeSubmitButtonClicked(
+          project: project,
+          reward: data.reward,
+          context: TrackingHelpers.pledgeContext(for: context),
+          refTag: nil
+        )
+      }
   }
 
   // MARK: - Inputs
