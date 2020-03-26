@@ -324,7 +324,6 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     .map { project, variant in
       project.rewards.isEmpty && variant == .variant2
     }
-    .skipRepeats()
 
     let shouldTrackCTATappedEvent = projectAndRefTag
       .takeWhen(self.readMoreButtonTappedProperty.signal)

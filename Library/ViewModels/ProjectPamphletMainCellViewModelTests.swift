@@ -846,7 +846,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(value: (projectWithRewards, nil, (creatorDetails, false)))
 
-      self.readMoreButtonIsLoading.assertValues([true, false])
+      self.readMoreButtonIsLoading.assertValues([true, false, false])
     }
   }
 
