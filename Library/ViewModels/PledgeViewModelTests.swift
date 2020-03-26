@@ -3898,4 +3898,35 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual("discovery", props?["session_ref_tag"] as? String)
   }
+
+  func testTrackingEvents_PledgeButtonSubmit_ContextIsFixPayment() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let backing = Backing.template
+        |> Backing.lens.amount .~ 100
+        |> Backing.lens.locationId .~ .some(123)
+        |> Backing.lens.status .~ .errored
+      let project = Project.template
+        |> Project.lens.personalization.backing .~ backing
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.minimum .~ 10.00
+
+      self.vm.inputs.configureWith(
+        project: project, reward: reward, refTag: nil, context: .fixPaymentMethod
+      )
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.creditCardSelected(with: "12345")
+
+      XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+
+      self.vm.inputs.submitButtonTapped()
+
+      XCTAssertEqual(
+        ["Checkout Payment Page Viewed", "Update Pledge Button Clicked", "Pledge Submit Button Clicked"],
+        self.trackingClient.events
+      )
+    }
+  }
 }

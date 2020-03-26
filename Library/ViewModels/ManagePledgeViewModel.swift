@@ -156,10 +156,10 @@ public final class ManagePledgeViewModel:
       }
 
     project
-      .takePairWhen(fixButtonTappedSignal)
+      .takePairWhen(self.fixButtonTappedSignal)
       .observeValues {
         AppEnvironment.current.koala.trackFixPledgeButtonClicked(project: $0.0)
-    }
+      }
   }
 
   private let (beginRefreshSignal, beginRefreshObserver) = Signal<Void, Never>.pipe()

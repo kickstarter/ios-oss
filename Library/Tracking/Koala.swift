@@ -567,9 +567,12 @@ public final class Koala {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
+    let fixPledgeProps = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
+
     switch stateType {
     case .fix:
-      self.track(event: "Fix Pledge Button Clicked", properties: props)
+      self.track(event: "Manage Pledge Button Clicked", properties: fixPledgeProps)
     case .pledge:
       self.track(
         event: DataLakeWhiteListedEvent.projectPagePledgeButtonClicked.rawValue,
@@ -718,7 +721,6 @@ public final class Koala {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      // the context is always "newPledge" for this event
       .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
@@ -728,8 +730,6 @@ public final class Koala {
       refTag: refTag?.stringTag
     )
   }
-
-  
 
   /* Call when the Add New Card button is clicked from the pledge screen
 
