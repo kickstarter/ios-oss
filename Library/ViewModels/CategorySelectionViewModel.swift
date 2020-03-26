@@ -107,25 +107,27 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
 
     // Tracking
 
-    Signal.merge(self.skipButtonTappedProperty.signal.mapConst("Skip"),
-                 self.continueButtonTappedProperty.signal.mapConst("Continue"))
-      .observeValues { buttonTitle in
-        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: AppEnvironment.current.currentUser,
-          project: nil,
-          refTag: nil
+    Signal.merge(
+      self.skipButtonTappedProperty.signal.mapConst("Skip"),
+      self.continueButtonTappedProperty.signal.mapConst("Continue")
+    )
+    .observeValues { buttonTitle in
+      let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+        with: AppEnvironment.current.currentUser,
+        project: nil,
+        refTag: nil
+      )
+
+      let eventName = "\(buttonTitle) Button Clicked"
+
+      try? AppEnvironment.current.optimizelyClient?
+        .track(
+          eventKey: eventName,
+          userId: deviceIdentifier(uuid: UUID()),
+          attributes: properties,
+          eventTags: eventTags
         )
-
-        let eventName = "\(buttonTitle) Button Clicked"
-
-        try? AppEnvironment.current.optimizelyClient?
-          .track(
-            eventKey: eventName,
-            userId: deviceIdentifier(uuid: UUID()),
-            attributes: properties,
-            eventTags: eventTags
-          )
-      }
+    }
   }
 
   private let categorySelectedWithValueProperty = MutableProperty<(IndexPath, Int)?>(nil)

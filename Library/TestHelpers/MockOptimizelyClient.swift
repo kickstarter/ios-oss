@@ -57,11 +57,15 @@ internal class MockOptimizelyClient: OptimizelyClientType {
 
 extension TestCase {
   func assertBaseUserAttributesLoggedOut() {
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_os_version"] as? String,
-                   "MockSystemVersion")
+    XCTAssertEqual(
+      self.optimizelyClient.trackedAttributes?["session_os_version"] as? String,
+      "MockSystemVersion"
+    )
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_user_is_logged_in"] as? Bool, false)
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_app_release_version"] as? String,
-                   "1.2.3.4.5.6.7.8.9.0")
+    XCTAssertEqual(
+      self.optimizelyClient.trackedAttributes?["session_app_release_version"] as? String,
+      "1.2.3.4.5.6.7.8.9.0"
+    )
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
 
