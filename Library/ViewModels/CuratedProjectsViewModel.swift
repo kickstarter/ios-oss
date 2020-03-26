@@ -13,6 +13,7 @@ public protocol CuratedProjectsViewModelOutputs {
   var dismissViewController: Signal<Void, Never> { get }
   var isLoading: Signal<Bool, Never> { get }
   var loadProjects: Signal<[Project], Never> { get }
+  var showErrorMessage: Signal<String, Never> { get }
 }
 
 public protocol CuratedProjectsViewModelType {
@@ -33,6 +34,11 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
       .map { $0.shuffled() }
 
     self.loadProjects = curatedProjects
+
+    self.showErrorMessage = curatedProjects
+      .filter { $0.isEmpty }
+      .ignoreValues()
+      .map { _ in Strings.general_error_something_wrong() }
 
     self.dismissViewController = self.doneButtonTappedSignal
 
@@ -60,6 +66,7 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
   public let dismissViewController: Signal<Void, Never>
   public let isLoading: Signal<Bool, Never>
   public let loadProjects: Signal<[Project], Never>
+  public let showErrorMessage: Signal<String, Never>
 
   public var inputs: CuratedProjectsViewModelInputs { return self }
   public var outputs: CuratedProjectsViewModelOutputs { return self }
@@ -78,6 +85,7 @@ private func producers(from categories: [KsApi.Category])
 
     let params = DiscoveryParams.defaults
       |> DiscoveryParams.lens.category .~ category
+      |> DiscoveryParams.lens.state .~ .live
       |> DiscoveryParams.lens.perPage .~ projectsPerCategory
 
     return AppEnvironment.current.apiService.fetchDiscovery(params: params)

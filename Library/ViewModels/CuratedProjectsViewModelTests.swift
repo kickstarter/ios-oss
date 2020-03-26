@@ -10,6 +10,7 @@ final class CuratedProjectsViewModelTests: TestCase {
   private let dismissViewController = TestObserver<Void, Never>()
   private let isLoading = TestObserver<Bool, Never>()
   private let loadProjectsCount = TestObserver<Int, Never>()
+  private let showErrorMessage = TestObserver<String, Never>()
   private let viewModel: CuratedProjectsViewModelType = CuratedProjectsViewModel()
 
   override func setUp() {
@@ -17,6 +18,7 @@ final class CuratedProjectsViewModelTests: TestCase {
     self.viewModel.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.viewModel.outputs.isLoading.observe(self.isLoading.observer)
     self.viewModel.outputs.loadProjects.map { $0.count }.observe(self.loadProjectsCount.observer)
+    self.viewModel.outputs.showErrorMessage.observe(self.showErrorMessage.observer)
   }
 
   func testDismissViewController_OnButtonTap() {
@@ -71,6 +73,37 @@ final class CuratedProjectsViewModelTests: TestCase {
       self.viewModel.inputs.configure(with: [Category.art])
 
       self.isLoading.assertValues([true, false])
+    }
+  }
+
+  func testShowErrorMessage_WhenServerError() {
+    let apiService = MockService(fetchDiscoveryError: .couldNotParseJSON)
+
+    withEnvironment(apiService: apiService) {
+      self.viewModel.inputs.configure(with: [Category.art, Category.tabletopGames])
+
+      self.showErrorMessage.assertDidNotEmitValue()
+
+      self.viewModel.inputs.viewDidLoad()
+
+      self.showErrorMessage.assertValue("Something went wrong.", "Should show a generic error message")
+    }
+  }
+
+  func testShowErrorMessage_WhenNoProjectsReturned() {
+    let emptyEnvelope = .template
+      |> DiscoveryEnvelope.lens.projects .~ []
+
+    let apiService = MockService(fetchDiscoveryResponse: emptyEnvelope)
+
+    withEnvironment(apiService: apiService) {
+      self.viewModel.inputs.configure(with: [Category.art, Category.tabletopGames])
+
+      self.showErrorMessage.assertDidNotEmitValue()
+
+      self.viewModel.inputs.viewDidLoad()
+
+      self.showErrorMessage.assertValue("Something went wrong.", "Should show a generic error message")
     }
   }
 }
