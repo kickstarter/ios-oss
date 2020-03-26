@@ -11,11 +11,12 @@ public protocol OptimizelyClientType: AnyObject {
 extension OptimizelyClientType {
   public func variant(
     for experiment: OptimizelyExperiment.Key,
-    userId: String,
-    isAdmin: Bool,
-    userAttributes: [String: Any]? = nil
+    userAttributes: [String: Any]? = optimizelyUserAttributes()
   ) -> OptimizelyExperiment.Variant {
     let variationString: String?
+
+    let userId = deviceIdentifier(uuid: UUID())
+    let isAdmin = AppEnvironment.current.currentUser?.isAdmin ?? false
 
     if isAdmin {
       variationString = try? self.getVariationKey(
@@ -38,12 +39,13 @@ extension OptimizelyClientType {
   }
 }
 
+// MARK: - Tracking Properties
+
 public func optimizelyTrackingAttributesAndEventTags(
-  with user: User?,
-  project: Project?,
-  refTag: RefTag?
+  with project: Project? = nil,
+  refTag: RefTag? = nil
 ) -> ([String: Any], [String: Any]) {
-  let properties = optimizelyUserAttributes(with: user, project: project, refTag: refTag)
+  let properties = optimizelyUserAttributes(with: project, refTag: refTag)
 
   let eventTags: [String: Any] = ([
     "project_subcategory": project?.category.name,
@@ -56,10 +58,11 @@ public func optimizelyTrackingAttributesAndEventTags(
 }
 
 public func optimizelyUserAttributes(
-  with user: User? = nil,
-  project: Project? = nil,
+  with project: Project? = nil,
   refTag: RefTag? = nil
 ) -> [String: Any] {
+  let user = AppEnvironment.current.currentUser
+
   let properties: [String: Any] = [
     "user_distinct_id": debugAdminDeviceIdentifier(),
     "user_backed_projects_count": user?.stats.backedProjectsCount,
@@ -67,8 +70,6 @@ public func optimizelyUserAttributes(
     "user_country": (user?.location?.country ?? AppEnvironment.current.config?.countryCode)?.lowercased(),
     "user_facebook_account": user?.facebookConnected,
     "user_display_language": AppEnvironment.current.language.rawValue,
-    "session_ref_tag": refTag?.stringTag,
-    "session_referrer_credit": project.flatMap(cookieRefTagFor(project:)).coalesceWith(refTag)?.stringTag,
     "session_os_version": AppEnvironment.current.device.systemVersion,
     "session_user_is_logged_in": user != nil,
     "session_app_release_version": AppEnvironment.current.mainBundle.shortVersionString,
@@ -76,8 +77,16 @@ public func optimizelyUserAttributes(
     "session_device_format": AppEnvironment.current.device.deviceFormat
   ]
   .compact()
+  .withAllValuesFrom(sessionRefTagProperties(with: project, refTag: refTag))
 
   return properties
+}
+
+private func sessionRefTagProperties(with project: Project?, refTag: RefTag?) -> [String: Any] {
+  return ([
+    "session_referrer_credit": project.flatMap(cookieRefTagFor(project:)).coalesceWith(refTag)?.stringTag,
+    "session_ref_tag": refTag?.stringTag
+  ] as [String: Any?]).compact()
 }
 
 private func debugAdminDeviceIdentifier() -> String? {
