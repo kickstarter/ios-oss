@@ -101,6 +101,7 @@ private func producers(from categories: [KsApi.Category])
       |> DiscoveryParams.lens.perPage .~ projectsPerCategory
 
     return AppEnvironment.current.apiService.fetchDiscovery(params: params)
+      .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
       .map { $0.projects }
       .demoteErrors(replaceErrorWith: [])
   }

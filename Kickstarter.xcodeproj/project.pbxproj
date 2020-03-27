@@ -254,6 +254,7 @@
 		77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */; };
 		7758A8372097BADF0018B96D /* DiscoveryProjectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */; };
 		7758A8382097BB090018B96D /* DiscoveryProjectCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */; };
+		776989AA242E747200AAC48D /* CuratedProjectsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776989A9242E747200AAC48D /* CuratedProjectsViewControllerTests.swift */; };
 		776B1A0D2418227100B03098 /* CategoryPillCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B1A0C2418227100B03098 /* CategoryPillCell.swift */; };
 		776B1A0F24192CA900B03098 /* CategoryPillCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B1A0E24192CA900B03098 /* CategoryPillCellViewModel.swift */; };
 		776B1A1124193C2500B03098 /* CategoryPillCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B1A1024193C2500B03098 /* CategoryPillCellViewModelTests.swift */; };
@@ -1699,6 +1700,7 @@
 		775D922822BD7CFD00442301 /* DebugData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugData.swift; sourceTree = "<group>"; };
 		775DFA9C215E758400620CED /* GraphMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutation.swift; sourceTree = "<group>"; };
 		775DFAD4215EB2AB00620CED /* Service+RequestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Service+RequestHelpers.swift"; sourceTree = "<group>"; };
+		776989A9242E747200AAC48D /* CuratedProjectsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedProjectsViewControllerTests.swift; sourceTree = "<group>"; };
 		776B1A0C2418227100B03098 /* CategoryPillCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPillCell.swift; sourceTree = "<group>"; };
 		776B1A0E24192CA900B03098 /* CategoryPillCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPillCellViewModel.swift; sourceTree = "<group>"; };
 		776B1A1024193C2500B03098 /* CategoryPillCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPillCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -3170,6 +3172,7 @@
 				37637ED7224AA03D00777AD2 /* CreatePasswordViewController.swift */,
 				3732C25E224D3CE500155BE6 /* CreatePasswordViewControllerTests.swift */,
 				D6600785240EFD6300AC1EDB /* CuratedProjectsViewController.swift */,
+				776989A9242E747200AAC48D /* CuratedProjectsViewControllerTests.swift */,
 				01A120D21D2D6E6200B42F73 /* DashboardProjectsDrawerViewController.swift */,
 				A745D0461CA8985B00C12802 /* DashboardViewController.swift */,
 				A7ED202A1E8323E900BFFA01 /* DashboardViewControllerTests.swift */,
@@ -5668,6 +5671,7 @@
 				A7ED201F1E83232A00BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */,
 				A7ED20171E83229E00BFFA01 /* DiscoveryProjectsDataSourceTest.swift in Sources */,
 				1611EF6223ABD7C00051CDCC /* OptimizelyResultTypeTests.swift in Sources */,
+				776989AA242E747200AAC48D /* CuratedProjectsViewControllerTests.swift in Sources */,
 				774ACC19225F8DC30097FCE6 /* ProjectPamphletViewControllerTests.swift in Sources */,
 				8A23EF0822F11470001262E1 /* RewardCardContainerViewTests.swift in Sources */,
 				A7ED20451E8323E900BFFA01 /* DashboardViewControllerTests.swift in Sources */,
