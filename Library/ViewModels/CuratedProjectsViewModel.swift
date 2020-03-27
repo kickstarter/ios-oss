@@ -6,11 +6,13 @@ import ReactiveSwift
 public protocol CuratedProjectsViewModelInputs {
   func configure(with categories: [KsApi.Category])
   func doneButtonTapped()
+  func projectTapped(_ project: Project?)
   func viewDidLoad()
 }
 
 public protocol CuratedProjectsViewModelOutputs {
   var dismissViewController: Signal<Void, Never> { get }
+  var goToProject: Signal<(Project, [Project], RefTag?), Never> { get }
   var isLoading: Signal<Bool, Never> { get }
   var loadProjects: Signal<[Project], Never> { get }
   var showErrorMessage: Signal<String, Never> { get }
@@ -46,6 +48,10 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
       self.viewDidLoadSignal.mapConst(true),
       curatedProjects.mapConst(false)
     )
+
+    self.goToProject = curatedProjects
+      .takePairWhen(projectTappedSignal.skipNil())
+      .map { projects, project in return (project, projects, RefTag.thanks) }
   }
 
   private let (categoriesSignal, categoriesObserver) = Signal<[KsApi.Category], Never>.pipe()
@@ -58,12 +64,18 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
     self.doneButtonTappedObserver.send(value: ())
   }
 
+  private let (projectTappedSignal, projectTappedObserver) = Signal<Project?, Never>.pipe()
+  public func projectTapped(_ project: Project?) {
+    self.projectTappedObserver.send(value: project)
+  }
+
   private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<Void, Never>.pipe()
   public func viewDidLoad() {
     self.viewDidLoadObserver.send(value: ())
   }
 
   public let dismissViewController: Signal<Void, Never>
+  public let goToProject: Signal<(Project, [Project], RefTag?), Never>
   public let isLoading: Signal<Bool, Never>
   public let loadProjects: Signal<[Project], Never>
   public let showErrorMessage: Signal<String, Never>

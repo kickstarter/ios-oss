@@ -47,6 +47,7 @@ final class CuratedProjectsViewController: UIViewController {
     self.tableView.register(nib: .DiscoveryPostcardCell)
 
     _ = self.tableView
+      |> \.delegate .~ self
       |> \.dataSource .~ self.dataSource
 
     self.configureSubviews()
@@ -115,6 +116,12 @@ final class CuratedProjectsViewController: UIViewController {
         self?.tableView.reloadData()
       }
 
+    self.viewModel.outputs.goToProject
+      .observeForControllerAction()
+      .observeValues { [weak self] project, projects, refTag in
+        self?.goToProject(project, projects: projects, refTag: refTag!)
+    }
+
     self.viewModel.outputs.showErrorMessage
       .observeForUI()
       .observeValues { [weak self] message in
@@ -145,6 +152,31 @@ final class CuratedProjectsViewController: UIViewController {
   @objc func doneButtonTapped() {
     self.viewModel.inputs.doneButtonTapped()
   }
+
+  // MARK: - Functions
+
+  fileprivate func goToProject(_ project: Project, projects: [Project], refTag: RefTag) {
+    let vc = ProjectNavigatorViewController.configuredWith(
+      project: project,
+      refTag: refTag,
+      initialPlaylist: projects,
+      navigatorDelegate: self
+    )
+
+    self.present(vc, animated: true, completion: nil)
+  }
+}
+
+extension CuratedProjectsViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let project = self.dataSource.projectAtIndexPath(indexPath)
+
+    self.viewModel.inputs.projectTapped(project)
+  }
+}
+
+extension CuratedProjectsViewController: ProjectNavigatorDelegate {
+  func transitionedToProject(at index: Int) {}
 }
 
 // MARK: - Styles
