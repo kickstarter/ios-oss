@@ -12,7 +12,9 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   // MARK: - Properties
 
   @available(iOS 13.0, *)
-  private lazy var appleLoginButton = { ASAuthorizationAppleIDButton(frame: .zero) }()
+  private lazy var appleLoginButton: ASAuthorizationAppleIDButton = {
+    ASAuthorizationAppleIDButton(type: .continue, style: .black)
+  }()
   private let backgroundImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var bringCreativeProjectsToLifeLabel = { UILabel(frame: .zero) }()
   private lazy var contextLabel = { UILabel(frame: .zero) }()
@@ -132,6 +134,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     _ = self.fbLoginButton
       |> facebookButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue_with_Facebook() }
 
     _ = self.getNotifiedLabel
       |> baseLabelStyle
