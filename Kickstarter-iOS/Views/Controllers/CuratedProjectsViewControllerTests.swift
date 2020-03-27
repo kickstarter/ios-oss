@@ -1,8 +1,8 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
-import XCTest
 import Prelude
+import XCTest
 
 internal final class CuratedProjectsViewControllerTests: TestCase {
   override func setUp() {
@@ -24,8 +24,8 @@ internal final class CuratedProjectsViewControllerTests: TestCase {
       .filmAndVideo
     ]
 
-    let projects = categories.map { category -> Project in
-      return Project.template
+    let projects = categories.map { _ -> Project in
+      Project.template
     }
 
     let discoveryEnvelope = DiscoveryEnvelope.template
@@ -46,4 +46,3 @@ internal final class CuratedProjectsViewControllerTests: TestCase {
     }
   }
 }
-
