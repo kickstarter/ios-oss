@@ -23,7 +23,6 @@ public final class LoadingButtonViewModel:
   public init() {
     let isLoading = self.isLoadingProperty.signal
       .skipNil()
-      .skipRepeats()
 
     self.isUserInteractionEnabled = isLoading
       .negate()

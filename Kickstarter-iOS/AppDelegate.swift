@@ -127,6 +127,16 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { UIApplication.shared.open($0) }
 
+    self.viewModel.outputs.goToLandingPage
+      .observeForUI()
+      .observeValues { [weak self] in
+        let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
+
+        let landingPage = LandingPageViewController()
+          |> \.modalPresentationStyle .~ (isIpad ? .formSheet : .fullScreen)
+        self?.rootTabBarController?.present(landingPage, animated: true)
+      }
+
     self.viewModel.outputs.applicationIconBadgeNumber
       .observeForUI()
       .observeValues { UIApplication.shared.applicationIconBadgeNumber = $0 }
@@ -155,8 +165,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.configureOptimizely
       .observeForUI()
-      .observeValues { [weak self] key, logLevel in
-        self?.configureOptimizely(with: key, logLevel: logLevel)
+      .observeValues { [weak self] key, logLevel, dispatchInterval in
+        self?.configureOptimizely(with: key, logLevel: logLevel, dispatchInterval: dispatchInterval)
       }
 
     self.viewModel.outputs.configureAppCenterWithData
@@ -323,8 +333,17 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   // MARK: - Functions
 
-  private func configureOptimizely(with key: String, logLevel: OptimizelyLogLevelType) {
-    let optimizelyClient = OptimizelyClient(sdkKey: key, defaultLogLevel: logLevel.logLevel)
+  private func configureOptimizely(
+    with key: String,
+    logLevel: OptimizelyLogLevelType,
+    dispatchInterval: TimeInterval
+  ) {
+    let eventDispatcher = DefaultEventDispatcher(timerInterval: dispatchInterval)
+    let optimizelyClient = OptimizelyClient(
+      sdkKey: key,
+      eventDispatcher: eventDispatcher,
+      defaultLogLevel: logLevel.logLevel
+    )
 
     optimizelyClient.start { [weak self] result in
       let shouldUpdateClient = self?.viewModel.inputs.optimizelyConfigured(with: result)

@@ -105,7 +105,7 @@ public protocol AppDelegateViewModelOutputs {
   var configureFabric: Signal<(), Never> { get }
 
   /// Emits when the application should configure Optimizely
-  var configureOptimizely: Signal<(String, OptimizelyLogLevelType), Never> { get }
+  var configureOptimizely: Signal<(String, OptimizelyLogLevelType, TimeInterval), Never> { get }
 
   /// Emits when the application should configure Qualtrics
   var configureQualtrics: Signal<QualtricsConfigData, Never> { get }
@@ -136,6 +136,9 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits when the root view controller should navigate to the creator dashboard.
   var goToDiscovery: Signal<DiscoveryParams?, Never> { get }
+
+  /// Emits when the root view controller should present the Landing Page for new users.
+  var goToLandingPage: Signal<(), Never> { get }
 
   /// Emits when the root view controller should navigate to the login screen.
   var goToLogin: Signal<(), Never> { get }
@@ -329,13 +332,16 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let deepLinkFromShortcut = performShortcutItem
       .switchMap(navigation(fromShortcutItem:))
 
-    let deepLink = Signal
+    let deeplinkActivated = Signal
       .merge(
         deepLinkFromUrl,
         deepLinkFromNotification,
         deepLinkFromShortcut
       )
       .skipNil()
+
+    let deepLink = deeplinkActivated
+      .filter { _ in shouldGoToLandingPage() == false }
 
     self.findRedirectUrl = deepLinkUrl
       .filter { Navigation.match($0) == .emailClick }
@@ -371,6 +377,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.goToSearch = deepLink
       .filter { $0 == .tab(.search) }
       .ignoreValues()
+
+    self.goToLandingPage = self.applicationLaunchOptionsProperty.signal.ignoreValues()
+      .takeWhen(self.didUpdateOptimizelyClientProperty.signal.ignoreValues())
+      .filter(shouldGoToLandingPage)
 
     self.goToLogin = deepLink
       .filter { $0 == .tab(.login) }
@@ -627,6 +637,25 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     deepLinkFromNotification
       .observeValues { _ in AppEnvironment.current.koala.trackNotificationOpened() }
 
+    // Optimizely tracking
+
+    self.applicationDidEnterBackgroundProperty.signal
+      .observeValues {
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+          with: AppEnvironment.current.currentUser,
+          project: nil,
+          refTag: nil
+        )
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "App Closed",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
+      }
+
     self.applicationIconBadgeNumber = Signal.merge(
       self.applicationWillEnterForegroundProperty.signal,
       self.applicationLaunchOptionsProperty.signal.ignoreValues()
@@ -803,7 +832,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFabric: Signal<(), Never>
-  public let configureOptimizely: Signal<(String, OptimizelyLogLevelType), Never>
+  public let configureOptimizely: Signal<(String, OptimizelyLogLevelType, TimeInterval), Never>
   public let configureQualtrics: Signal<QualtricsConfigData, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let displayQualtricsSurvey: Signal<(), Never>
@@ -814,6 +843,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let goToCreatorMessageThread: Signal<(Param, MessageThread), Never>
   public let goToDashboard: Signal<Param?, Never>
   public let goToDiscovery: Signal<DiscoveryParams?, Never>
+  public let goToLandingPage: Signal<(), Never>
   public let goToLogin: Signal<(), Never>
   public let goToMessageThread: Signal<MessageThread, Never>
   public let goToProfile: Signal<(), Never>
@@ -1020,9 +1050,10 @@ extension ShortcutItem {
   }
 }
 
-private func optimizelyData(for environment: Environment) -> (String, OptimizelyLogLevelType) {
+private func optimizelyData(for environment: Environment) -> (String, OptimizelyLogLevelType, TimeInterval) {
   let environmentType = environment.environmentType
   let logLevel = environment.mainBundle.isDebug ? OptimizelyLogLevelType.debug : OptimizelyLogLevelType.error
+  let dispatchInterval: TimeInterval = 5
 
   var sdkKey: String
 
@@ -1035,7 +1066,7 @@ private func optimizelyData(for environment: Environment) -> (String, Optimizely
     sdkKey = Secrets.OptimizelySDKKey.development
   }
 
-  return (sdkKey, logLevel)
+  return (sdkKey, logLevel, dispatchInterval)
 }
 
 private func visitorCookies() -> [HTTPCookie] {
@@ -1083,4 +1114,35 @@ private func qualtricsConfigData() -> QualtricsConfigData {
     ]
     .compact()
   )
+}
+
+private func shouldGoToLandingPage() -> Bool {
+  let hasNotSeenLandingPage = !AppEnvironment.current.userDefaults.hasSeenLandingPage
+
+  guard AppEnvironment.current.currentUser == nil, hasNotSeenLandingPage else {
+    AppEnvironment.current.userDefaults.hasSeenLandingPage = true
+
+    return false
+  }
+
+  let userAttributes = optimizelyUserAttributes(
+    with: AppEnvironment.current.currentUser,
+    project: nil,
+    refTag: nil
+  )
+
+  let optimizelyVariant = AppEnvironment.current.optimizelyClient?
+    .variant(
+      for: OptimizelyExperiment.Key.nativeOnboarding,
+      userId: deviceIdentifier(uuid: UUID()),
+      isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
+      userAttributes: userAttributes
+    )
+
+  switch optimizelyVariant {
+  case .variant1, .variant2:
+    return hasNotSeenLandingPage
+  case .control, nil:
+    return false
+  }
 }
