@@ -17,6 +17,7 @@ final class LoginToutViewModelTests: TestCase {
   fileprivate let isLoading = TestObserver<Bool, Never>()
   fileprivate let logInContextText = TestObserver<String, Never>()
   fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
+  fileprivate let navigationBarBackgroundImage = TestObserver<UIImage?, Never>()
   fileprivate let postNotification = TestObserver<(Notification.Name, Notification.Name), Never>()
   fileprivate let showFacebookErrorAlert = TestObserver<AlertError, Never>()
   fileprivate let startFacebookConfirmation = TestObserver<String, Never>()
@@ -33,6 +34,8 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
     self.vm.outputs.logInContextText.observe(self.logInContextText.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
+    self.vm.outputs.navigationBarBackgroundImage
+      .observe(self.navigationBarBackgroundImage.observer)
     self.vm.outputs.postNotification.map { ($0.0.name, $0.1.name) }.observe(self.postNotification.observer)
     self.vm.outputs.showFacebookErrorAlert.observe(self.showFacebookErrorAlert.observer)
     self.vm.outputs.startFacebookConfirmation.map { _, token in token }
@@ -584,5 +587,27 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.inputs.userSessionStarted()
 
     self.dismissViewController.assertValueCount(1)
+  }
+
+  func testNavigationBarBackgroundImage() {
+    self.navigationBarBackgroundImage.assertDidNotEmitValue()
+
+    let backgroundImage = image(named: "signup-background")
+
+    self.vm.inputs.viewWillAppear()
+
+    self.navigationBarBackgroundImage.assertValues([backgroundImage])
+
+    self.vm.inputs.loginButtonPressed()
+
+    self.navigationBarBackgroundImage.assertValues([backgroundImage, nil])
+
+    self.vm.inputs.viewWillAppear()
+
+    self.navigationBarBackgroundImage.assertValues([backgroundImage, nil, backgroundImage])
+
+    self.vm.inputs.signupButtonPressed()
+
+    self.navigationBarBackgroundImage.assertValues([backgroundImage, nil, backgroundImage, nil])
   }
 }

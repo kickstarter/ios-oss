@@ -56,7 +56,7 @@ public protocol LoginToutViewModelOutputs {
   var logIntoEnvironment: Signal<AccessTokenEnvelope, Never> { get }
 
   /// Emits an image to be used as the navigation bar background.
-  var navigationBarBackgroundImage: Signal<UIImage, Never> { get }
+  var navigationBarBackgroundImage: Signal<UIImage?, Never> { get }
 
   /// Emits when a login success notification should be posted.
   var postNotification: Signal<(Notification, Notification), Never> { get }
@@ -174,10 +174,9 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.navigationBarBackgroundImage = Signal.merge(
       self.viewWillAppearProperty.signal
         .ignoreValues()
-        .map { image(named: "signup-background") }
-        .skipNil(),
-      self.loginButtonPressedProperty.signal.mapConst(UIImage()),
-      self.signupButtonPressedProperty.signal.mapConst(UIImage())
+        .map { image(named: "signup-background") },
+      self.loginButtonPressedProperty.signal.mapConst(nil),
+      self.signupButtonPressedProperty.signal.mapConst(nil)
     )
 
     // MARK: - Tracking
@@ -292,7 +291,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let isLoading: Signal<Bool, Never>
   public let logInContextText: Signal<String, Never>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
-  public let navigationBarBackgroundImage: Signal<UIImage, Never>
+  public let navigationBarBackgroundImage: Signal<UIImage?, Never>
   public let postNotification: Signal<(Notification, Notification), Never>
   public let startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), Never>
   public let startLogin: Signal<(), Never>
