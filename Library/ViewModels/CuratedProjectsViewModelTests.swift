@@ -51,6 +51,8 @@ final class CuratedProjectsViewModelTests: TestCase {
 
       self.viewModel.inputs.viewDidLoad()
 
+      self.scheduler.advance()
+
       // We configured the viewModel with 2 categories,
       // therefore, the request was made 2x, returning 10 projects
       self.loadProjectsCount.assertValue(10)
@@ -78,6 +80,8 @@ final class CuratedProjectsViewModelTests: TestCase {
 
       self.viewModel.inputs.configure(with: [Category.art])
 
+      self.scheduler.advance()
+
       self.isLoading.assertValues([true, false])
     }
   }
@@ -91,6 +95,8 @@ final class CuratedProjectsViewModelTests: TestCase {
       self.showErrorMessage.assertDidNotEmitValue()
 
       self.viewModel.inputs.viewDidLoad()
+
+      self.scheduler.advance()
 
       self.showErrorMessage.assertValue("Something went wrong.", "Should show a generic error message")
     }
@@ -109,6 +115,8 @@ final class CuratedProjectsViewModelTests: TestCase {
 
       self.viewModel.inputs.viewDidLoad()
 
+      self.scheduler.advance()
+
       self.showErrorMessage.assertValue("Something went wrong.", "Should show a generic error message")
     }
   }
@@ -123,6 +131,8 @@ final class CuratedProjectsViewModelTests: TestCase {
       self.viewModel.inputs.configure(with: [.art])
       self.viewModel.inputs.viewDidLoad()
 
+      self.scheduler.advance()
+
       self.goToProjectProject.assertDidNotEmitValue()
       self.goToProjectProjects.assertDidNotEmitValue()
       self.goToProjectRefTag.assertDidNotEmitValue()
@@ -131,7 +141,7 @@ final class CuratedProjectsViewModelTests: TestCase {
 
       self.goToProjectProject.assertValues([.template])
       self.goToProjectProjects.assertValues([[.template]])
-      self.goToProjectRefTag.assertValues([.thanks])
+      self.goToProjectRefTag.assertValues([.onboarding])
     }
   }
 }

@@ -51,7 +51,7 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
 
     self.goToProject = curatedProjects
       .takePairWhen(self.projectTappedSignal.skipNil())
-      .map { projects, project in (project, projects, RefTag.thanks) }
+      .map { projects, project in (project, projects, RefTag.onboarding) }
   }
 
   private let (categoriesSignal, categoriesObserver) = Signal<[KsApi.Category], Never>.pipe()
