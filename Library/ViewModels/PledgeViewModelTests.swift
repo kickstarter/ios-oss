@@ -1236,11 +1236,11 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual(optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
       XCTAssertEqual(optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, nil)
 
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["checkout_amount"] as? Double, 5.0)
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["checkout_payment_type"] as? String, "APPLE_PAY")
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["revenue"] as? Int, 500)
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["currency"] as? String, "USD")
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["category"] as? String, "Art")
+      XCTAssertEqual(optimizelyClient.trackedEventTags?["checkout_amount"] as? Double, 5.0)
+      XCTAssertEqual(optimizelyClient.trackedEventTags?["checkout_payment_type"] as? String, "APPLE_PAY")
+      XCTAssertEqual(optimizelyClient.trackedEventTags?["revenue"] as? Int, 500)
+      XCTAssertEqual(optimizelyClient.trackedEventTags?["currency"] as? String, "USD")
+      XCTAssertEqual(optimizelyClient.trackedEventTags?["category"] as? String, "Art")
     }
   }
 
@@ -1508,11 +1508,11 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual(optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
       XCTAssertEqual(optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, nil)
 
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["checkout_amount"] as? Double, 25.0)
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["checkout_payment_type"] as? String, "CREDIT_CARD")
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["revenue"] as? Int, 2_500)
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["currency"] as? String, "USD")
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["category"] as? String, "Art")
+      XCTAssertEqual(optimizelyClient.trackedEventTags?["checkout_amount"] as? Double, 25.0)
+      XCTAssertEqual(optimizelyClient.trackedEventTags?["checkout_payment_type"] as? String, "CREDIT_CARD")
+      XCTAssertEqual(optimizelyClient.trackedEventTags?["revenue"] as? Int, 2_500)
+      XCTAssertEqual(optimizelyClient.trackedEventTags?["currency"] as? String, "USD")
+      XCTAssertEqual(optimizelyClient.trackedEventTags?["category"] as? String, "Art")
     }
   }
 
