@@ -12,7 +12,7 @@ public protocol CuratedProjectsViewModelInputs {
 
 public protocol CuratedProjectsViewModelOutputs {
   var dismissViewController: Signal<Void, Never> { get }
-  var goToProject: Signal<(Project, [Project], RefTag?), Never> { get }
+  var goToProject: Signal<(Project, [Project], RefTag), Never> { get }
   var isLoading: Signal<Bool, Never> { get }
   var loadProjects: Signal<[Project], Never> { get }
   var showErrorMessage: Signal<String, Never> { get }
@@ -50,8 +50,8 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
     )
 
     self.goToProject = curatedProjects
-      .takePairWhen(projectTappedSignal.skipNil())
-      .map { projects, project in return (project, projects, RefTag.thanks) }
+      .takePairWhen(self.projectTappedSignal.skipNil())
+      .map { projects, project in (project, projects, RefTag.thanks) }
   }
 
   private let (categoriesSignal, categoriesObserver) = Signal<[KsApi.Category], Never>.pipe()
@@ -75,7 +75,7 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
   }
 
   public let dismissViewController: Signal<Void, Never>
-  public let goToProject: Signal<(Project, [Project], RefTag?), Never>
+  public let goToProject: Signal<(Project, [Project], RefTag), Never>
   public let isLoading: Signal<Bool, Never>
   public let loadProjects: Signal<[Project], Never>
   public let showErrorMessage: Signal<String, Never>

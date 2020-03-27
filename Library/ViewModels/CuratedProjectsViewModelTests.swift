@@ -21,6 +21,9 @@ final class CuratedProjectsViewModelTests: TestCase {
     self.viewModel.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.viewModel.outputs.isLoading.observe(self.isLoading.observer)
     self.viewModel.outputs.loadProjects.map { $0.count }.observe(self.loadProjectsCount.observer)
+    self.viewModel.outputs.goToProject.map(first).observe(self.goToProjectProject.observer)
+    self.viewModel.outputs.goToProject.map(second).observe(self.goToProjectProjects.observer)
+    self.viewModel.outputs.goToProject.map(third).observe(self.goToProjectRefTag.observer)
     self.viewModel.outputs.showErrorMessage.observe(self.showErrorMessage.observer)
   }
 
@@ -112,7 +115,7 @@ final class CuratedProjectsViewModelTests: TestCase {
 
   func testGoToProject() {
     let discoveryEnvelope = .template
-    |> DiscoveryEnvelope.lens.projects .~ [.template]
+      |> DiscoveryEnvelope.lens.projects .~ [.template]
 
     let apiService = MockService(fetchDiscoveryResponse: discoveryEnvelope)
 

@@ -119,14 +119,14 @@ final class CuratedProjectsViewController: UIViewController {
     self.viewModel.outputs.goToProject
       .observeForControllerAction()
       .observeValues { [weak self] project, projects, refTag in
-        self?.goToProject(project, projects: projects, refTag: refTag!)
-    }
+        self?.goToProject(project, projects: projects, refTag: refTag)
+      }
 
     self.viewModel.outputs.showErrorMessage
       .observeForUI()
       .observeValues { [weak self] message in
         self?.present(UIAlertController.genericError(message), animated: true)
-    }
+      }
   }
 
   // MARK: - Styles
@@ -168,7 +168,7 @@ final class CuratedProjectsViewController: UIViewController {
 }
 
 extension CuratedProjectsViewController: UITableViewDelegate {
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+  func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
     let project = self.dataSource.projectAtIndexPath(indexPath)
 
     self.viewModel.inputs.projectTapped(project)
@@ -176,7 +176,7 @@ extension CuratedProjectsViewController: UITableViewDelegate {
 }
 
 extension CuratedProjectsViewController: ProjectNavigatorDelegate {
-  func transitionedToProject(at index: Int) {}
+  func transitionedToProject(at _: Int) {}
 }
 
 // MARK: - Styles
