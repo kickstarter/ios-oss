@@ -93,7 +93,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.headlineLabelHidden = intent.map { (intent: LoginIntent) -> Bool in
       intent != LoginIntent.generic && intent != LoginIntent.discoveryOnboarding
     }
-    
+
     let isLoading: MutableProperty<Bool> = MutableProperty(false)
 
     self.isLoading = isLoading.signal

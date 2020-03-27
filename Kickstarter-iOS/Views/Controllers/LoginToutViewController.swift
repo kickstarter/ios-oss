@@ -15,6 +15,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   private lazy var appleLoginButton: ASAuthorizationAppleIDButton = {
     ASAuthorizationAppleIDButton(type: .continue, style: .black)
   }()
+
   private let backgroundImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var bringCreativeProjectsToLifeLabel = { UILabel(frame: .zero) }()
   private lazy var contextLabel = { UILabel(frame: .zero) }()
@@ -44,6 +45,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       |> \.alwaysBounceVertical .~ true
 
   }()
+
   private lazy var separatorView: UIView = { UIView(frame: .zero) }()
   private var sessionStartedObserver: Any?
   private lazy var signupButton = { UIButton(type: .custom)
@@ -312,7 +314,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
         |> ksr_addArrangedSubviewsToStackView()
     } else {
       _ = ([self.fbLoginButton, self.getNotifiedLabel], self.fbLoginStackView)
-      |> ksr_addArrangedSubviewsToStackView()
+        |> ksr_addArrangedSubviewsToStackView()
     }
 
     _ = ([self.signupButton, self.loginButton], self.emailLoginStackView)
