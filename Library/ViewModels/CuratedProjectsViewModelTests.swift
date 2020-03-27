@@ -8,6 +8,9 @@ import XCTest
 
 final class CuratedProjectsViewModelTests: TestCase {
   private let dismissViewController = TestObserver<Void, Never>()
+  private let goToProjectProject = TestObserver<Project, Never>()
+  private let goToProjectProjects = TestObserver<[Project], Never>()
+  private let goToProjectRefTag = TestObserver<RefTag, Never>()
   private let isLoading = TestObserver<Bool, Never>()
   private let loadProjectsCount = TestObserver<Int, Never>()
   private let showErrorMessage = TestObserver<String, Never>()
@@ -104,6 +107,28 @@ final class CuratedProjectsViewModelTests: TestCase {
       self.viewModel.inputs.viewDidLoad()
 
       self.showErrorMessage.assertValue("Something went wrong.", "Should show a generic error message")
+    }
+  }
+
+  func testGoToProject() {
+    let discoveryEnvelope = .template
+    |> DiscoveryEnvelope.lens.projects .~ [.template]
+
+    let apiService = MockService(fetchDiscoveryResponse: discoveryEnvelope)
+
+    withEnvironment(apiService: apiService) {
+      self.viewModel.inputs.configure(with: [.art])
+      self.viewModel.inputs.viewDidLoad()
+
+      self.goToProjectProject.assertDidNotEmitValue()
+      self.goToProjectProjects.assertDidNotEmitValue()
+      self.goToProjectRefTag.assertDidNotEmitValue()
+
+      self.viewModel.inputs.projectTapped(.template)
+
+      self.goToProjectProject.assertValues([.template])
+      self.goToProjectProjects.assertValues([[.template]])
+      self.goToProjectRefTag.assertValues([.thanks])
     }
   }
 }
