@@ -640,7 +640,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
         try? AppEnvironment.current.optimizelyClient?
           .track(
-            eventKey: "Temporary Completed Checkout",
+            eventKey: "App Completed Checkout",
             userId: deviceIdentifier(uuid: UUID()),
             attributes: properties,
             eventTags: allEventTags

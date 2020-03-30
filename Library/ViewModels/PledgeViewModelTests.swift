@@ -1251,7 +1251,7 @@ final class PledgeViewModelTests: TestCase {
       self.scheduler.run()
 
       XCTAssertEqual(optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
-      XCTAssertEqual(optimizelyClient.trackedEventKey, "Temporary Completed Checkout")
+      XCTAssertEqual(optimizelyClient.trackedEventKey, "App Completed Checkout")
 
       XCTAssertEqual(optimizelyClient.trackedAttributes?["user_backed_projects_count"] as? Int, nil)
       XCTAssertEqual(optimizelyClient.trackedAttributes?["user_launched_projects_count"] as? Int, nil)
@@ -1556,7 +1556,7 @@ final class PledgeViewModelTests: TestCase {
       self.scheduler.run()
 
       XCTAssertEqual(optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
-      XCTAssertEqual(optimizelyClient.trackedEventKey, "Temporary Completed Checkout")
+      XCTAssertEqual(optimizelyClient.trackedEventKey, "App Completed Checkout")
 
       XCTAssertEqual(optimizelyClient.trackedAttributes?["user_backed_projects_count"] as? Int, nil)
       XCTAssertEqual(optimizelyClient.trackedAttributes?["user_launched_projects_count"] as? Int, nil)
