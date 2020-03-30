@@ -46,6 +46,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var backersSubtitleLabel: UILabel!
   @IBOutlet fileprivate var backersTitleLabel: UILabel!
   @IBOutlet fileprivate var blurbAndReadMoreStackView: UIStackView!
+  @IBOutlet fileprivate var blurbStackView: UIStackView!
   @IBOutlet fileprivate var categoryStackView: UIStackView!
   @IBOutlet fileprivate var categoryAndLocationStackView: UIStackView!
   @IBOutlet fileprivate var categoryIconImageView: UIImageView!
@@ -69,8 +70,12 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var projectImageContainerView: UIView!
   @IBOutlet fileprivate var projectNameAndCreatorStackView: UIStackView!
   @IBOutlet fileprivate var projectNameLabel: UILabel!
+  private lazy var projectSummaryCarouselView: ProjectSummaryCarouselView = {
+    ProjectSummaryCarouselView(frame: .zero)
+  }()
   @IBOutlet fileprivate var progressBarAndStatsStackView: UIStackView!
   @IBOutlet fileprivate var readMoreButton: LoadingButton!
+  @IBOutlet fileprivate var readMoreStackView: UIStackView!
   @IBOutlet fileprivate var spacerView: UIView!
   @IBOutlet fileprivate var stateLabel: UILabel!
   @IBOutlet fileprivate var statsStackView: UIStackView!
@@ -98,6 +103,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> ksr_addArrangedSubviewsToStackView()
 
     self.creatorBylineView.addGestureRecognizer(self.creatorBylineTapGesture)
+
+    self.blurbAndReadMoreStackView.insertArrangedSubview(self.projectSummaryCarouselView, at: 1)
 
     self.viewModel.inputs.awakeFromNib()
   }
@@ -164,14 +171,26 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ .ksr_body(size: 12)
       |> UILabel.lens.backgroundColor .~ .white
 
+    let leftRightInsets: CGFloat = self.traitCollection.isRegularRegular
+      ? Styles.grid(16)
+      : Styles.grid(4)
+
     _ = self.contentStackView
       |> UIStackView.lens.layoutMargins %~~ { _, stackView in
         stackView.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
-          : .init(top: Styles.grid(4), left: Styles.grid(4), bottom: Styles.grid(3), right: Styles.grid(4))
+          ? .init(topBottom: Styles.grid(6))
+          : .init(top: Styles.grid(4), left: 0, bottom: Styles.grid(3), right: 0)
       }
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(4)
+
+    _ = self.blurbStackView
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsets)
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
+
+    _ = self.readMoreStackView
+    |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsets)
+    |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.conversionLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
@@ -226,6 +245,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     _ = self.projectNameAndCreatorStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsets)
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.projectNameLabel
       |> UILabel.lens.font %~~ { _, label in

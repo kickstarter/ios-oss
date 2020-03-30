@@ -388,6 +388,7 @@
 		8AA5B06A235E25820022F5F0 /* AppCenterCrashes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA5B066235E25820022F5F0 /* AppCenterCrashes.framework */; };
 		8AA5B06B235E25820022F5F0 /* AppCenterAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA5B067235E25820022F5F0 /* AppCenterAnalytics.framework */; };
 		8AAA9BD822F49EC200F12976 /* UIColor+Mixing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */; };
+		8AB0E00C24314967008E975E /* ProjectSummaryCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0E00B24314967008E975E /* ProjectSummaryCarouselView.swift */; };
 		8AB55D5023C3FAA6002F5E64 /* Qualtrics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AD7953123A286D800998C79 /* Qualtrics.framework */; };
 		8ACF558723E8D444001654A2 /* Argo+ToPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF558623E8D444001654A2 /* Argo+ToPrimitive.swift */; };
 		8ACF558923E8D467001654A2 /* TryDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF558823E8D467001654A2 /* TryDecodable.swift */; };
@@ -1799,6 +1800,7 @@
 		8AA5B066235E25820022F5F0 /* AppCenterCrashes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterCrashes.framework; path = Carthage/Build/iOS/AppCenterCrashes.framework; sourceTree = "<group>"; };
 		8AA5B067235E25820022F5F0 /* AppCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterAnalytics.framework; path = Carthage/Build/iOS/AppCenterAnalytics.framework; sourceTree = "<group>"; };
 		8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Mixing.swift"; sourceTree = "<group>"; };
+		8AB0E00B24314967008E975E /* ProjectSummaryCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSummaryCarouselView.swift; sourceTree = "<group>"; };
 		8ACF558623E8D444001654A2 /* Argo+ToPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Argo+ToPrimitive.swift"; sourceTree = "<group>"; };
 		8ACF558823E8D467001654A2 /* TryDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryDecodable.swift; sourceTree = "<group>"; };
 		8ACF558E23EA08DB001654A2 /* TryDecodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryDecodableTests.swift; sourceTree = "<group>"; };
@@ -2957,6 +2959,7 @@
 				7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */,
 				595CDAB71D3537180051C816 /* FundingGraphView.swift */,
 				A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */,
+				D6050F51240463AC00E029D2 /* LandingPageStatsView.swift */,
 				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
 				370C8B63234FCC6F00DE75DD /* LoadingButton.swift */,
 				77BF99B622652C9500513CE3 /* MultiLineButton.swift */,
@@ -2965,6 +2968,7 @@
 				D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */,
 				374F507822614A1000DE6746 /* PledgeFooterView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
+				8AB0E00B24314967008E975E /* ProjectSummaryCarouselView.swift */,
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,
 				8A8099EA22E213F100373E66 /* RewardCardContainerView.swift */,
 				8A23EF0722F11470001262E1 /* RewardCardContainerViewTests.swift */,
@@ -2983,7 +2987,6 @@
 				8A14E09523971BD000387824 /* ShimmerLoadingViews */,
 				A73923AA1D272242004524C3 /* Storyboards */,
 				A7D8B67F1DCCD4B9009BF854 /* Transitions */,
-				D6050F51240463AC00E029D2 /* LandingPageStatsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -5452,6 +5455,7 @@
 				770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */,
 				D60C8BF12143167200D96152 /* SettingsAccountViewController.swift in Sources */,
 				8A8099EC22E213F100373E66 /* RewardCardContainerView.swift in Sources */,
+				8AB0E00C24314967008E975E /* ProjectSummaryCarouselView.swift in Sources */,
 				014D62991E6E22920033D2BD /* BackerDashboardEmptyStateCell.swift in Sources */,
 				D7237099211A3DA9001EA4CA /* SettingsFollowCell.swift in Sources */,
 				A7CC143E1D00E74F00035C52 /* FindFriendsFriendFollowCell.swift in Sources */,
