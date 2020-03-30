@@ -1149,12 +1149,7 @@ final class PledgeViewModelTests: TestCase {
       Result.success(CreateBackingEnvelope(createBacking: createBacking))
     )
 
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    withEnvironment(apiService: mockService, currentUser: .template, optimizelyClient: optimizelyClient) {
+    withEnvironment(apiService: mockService, currentUser: .template) {
       let project = Project.template
       let reward = Reward.noReward
         |> Reward.lens.minimum .~ 5
@@ -1207,6 +1202,53 @@ final class PledgeViewModelTests: TestCase {
         ["Checkout Payment Page Viewed"],
         self.trackingClient.events
       )
+    }
+  }
+
+  func testApplePay_OptimizelyExperimentTracking() {
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(
+        id: "Q2hlY2tvdXQtMQ==",
+        state: .successful,
+        backing: .init(clientSecret: nil, requiresAction: false)
+      )
+    )
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(apiService: mockService, currentUser: .template, optimizelyClient: optimizelyClient) {
+      let project = Project.template
+      let reward = Reward.noReward
+        |> Reward.lens.minimum .~ 5
+
+      XCTAssertNil(optimizelyClient.trackedAttributes)
+
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+      )
+
+      XCTAssertEqual(
+        PKPaymentAuthorizationStatus.success,
+        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
+      )
+
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.scheduler.run()
 
       XCTAssertEqual(optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
       XCTAssertEqual(optimizelyClient.trackedEventKey, "Temporary Completed Checkout")
@@ -1421,12 +1463,7 @@ final class PledgeViewModelTests: TestCase {
       Result.success(CreateBackingEnvelope(createBacking: createBacking))
     )
 
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    withEnvironment(apiService: mockService, currentUser: .template, optimizelyClient: optimizelyClient) {
+    withEnvironment(apiService: mockService, currentUser: .template) {
       self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity, context: .pledge)
       self.vm.inputs.viewDidLoad()
 
@@ -1481,6 +1518,42 @@ final class PledgeViewModelTests: TestCase {
         ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
         self.trackingClient.events
       )
+    }
+  }
+
+  func testCreateBacking_Success_OptimizelyExperimentTracking() {
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(
+        id: "Q2hlY2tvdXQtMQ==",
+        state: .verifying,
+        backing: .init(clientSecret: nil, requiresAction: false)
+      )
+    )
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(apiService: mockService, currentUser: .template, optimizelyClient: optimizelyClient) {
+      XCTAssertNil(optimizelyClient.trackedAttributes)
+
+      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity, context: .pledge)
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
+
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+        with: (amount: 25.0, min: 10.0, max: 10_000.0, isValid: true)
+      )
+
+      self.vm.inputs.submitButtonTapped()
+
+      self.scheduler.run()
 
       XCTAssertEqual(optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
       XCTAssertEqual(optimizelyClient.trackedEventKey, "Temporary Completed Checkout")
