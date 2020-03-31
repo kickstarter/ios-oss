@@ -38,11 +38,7 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
 
     self.ctaButtonTappedSignal
       .observeValues {
-        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: AppEnvironment.current.currentUser,
-          project: nil,
-          refTag: nil
-        )
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags()
 
         try? AppEnvironment.current.optimizelyClient?
           .track(
@@ -73,19 +69,8 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
 }
 
 private func cards() -> [LandingPageCardType]? {
-  let userAttributes = optimizelyUserAttributes(
-    with: AppEnvironment.current.currentUser,
-    project: nil,
-    refTag: nil
-  )
-
   let optimizelyVariant = AppEnvironment.current.optimizelyClient?
-    .variant(
-      for: OptimizelyExperiment.Key.nativeOnboarding,
-      userId: deviceIdentifier(uuid: UUID()),
-      isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
-      userAttributes: userAttributes
-    )
+    .variant(for: OptimizelyExperiment.Key.nativeOnboarding)
 
   guard let variant = optimizelyVariant else {
     return nil
