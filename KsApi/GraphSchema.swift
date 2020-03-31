@@ -174,6 +174,7 @@ public enum Query {
 
   public enum Project {
     case creator(NonEmptySet<User>)
+    case finalCollectionDate
     case id
     case name
     case slug
@@ -372,6 +373,7 @@ extension Query.Project: QueryType {
   public var description: String {
     switch self {
     case let .creator(fields): return "creator { \(join(fields)) }"
+    case .finalCollectionDate: return "finalCollectionDate"
     case .id: return "id"
     case .name: return "name"
     case .slug: return "slug"
