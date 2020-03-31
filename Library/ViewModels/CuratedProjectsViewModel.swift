@@ -3,6 +3,8 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias ProjectData = (project: Project, projects: [Project], refTag: RefTag)
+
 public protocol CuratedProjectsViewModelInputs {
   func configure(with categories: [KsApi.Category])
   func doneButtonTapped()
@@ -12,7 +14,7 @@ public protocol CuratedProjectsViewModelInputs {
 
 public protocol CuratedProjectsViewModelOutputs {
   var dismissViewController: Signal<Void, Never> { get }
-  var goToProject: Signal<(Project, [Project], RefTag), Never> { get }
+  var goToProject: Signal<ProjectData, Never> { get }
   var isLoading: Signal<Bool, Never> { get }
   var loadProjects: Signal<[Project], Never> { get }
   var showErrorMessage: Signal<String, Never> { get }
@@ -75,7 +77,7 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
   }
 
   public let dismissViewController: Signal<Void, Never>
-  public let goToProject: Signal<(Project, [Project], RefTag), Never>
+  public let goToProject: Signal<ProjectData, Never>
   public let isLoading: Signal<Bool, Never>
   public let loadProjects: Signal<[Project], Never>
   public let showErrorMessage: Signal<String, Never>
