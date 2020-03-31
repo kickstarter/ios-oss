@@ -203,7 +203,9 @@ private func categoryData(from rootCategories: [KsApi.Category]) -> ([String], [
       (subcategory.name, subcategory)
     }
 
-    let allProjects = (Strings.All_category_name_Projects(category_name: category.name), category)
+    // Copy the parent category, but ignore the subcategories to reduce object size
+    let parentCategory = KsApi.Category(id: category.id, name: category.name)
+    let allProjects = (Strings.All_category_name_Projects(category_name: category.name), parentCategory)
 
     return [allProjects] + subcategoryData
   }
@@ -224,5 +226,7 @@ private func updatedSelectedValues<T: Hashable>(selectedValues: Set<T>, currentV
 }
 
 private func cache(_ categories: [KsApi.Category]) {
-  AppEnvironment.current.cache[KSCache.ksr_onboardingCategories] = categories
+  let data = try? JSONEncoder().encode(categories)
+
+  AppEnvironment.current.userDefaults.onboardingCategories = data
 }

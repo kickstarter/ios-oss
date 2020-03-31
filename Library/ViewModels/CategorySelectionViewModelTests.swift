@@ -333,7 +333,7 @@ final class CategorySelectionViewModelTests: TestCase {
       self.vm.inputs.categorySelected(with: (illustrationIndexPath, .illustration))
       self.vm.inputs.categorySelected(with: (gamesIndexPath, .games))
 
-      XCTAssertNil(self.cache[KSCache.ksr_onboardingCategories])
+      XCTAssertNil(mockKVStore.onboardingCategories)
       XCTAssertFalse(mockKVStore.hasCompletedCategoryPersonalizationFlow)
 
       self.vm.inputs.continueButtonTapped()
@@ -342,10 +342,10 @@ final class CategorySelectionViewModelTests: TestCase {
         [.art, .games, .illustration]
       ])
 
-      XCTAssertEqual(
-        [.art, .games, .illustration],
-        self.cache[KSCache.ksr_onboardingCategories] as? [KsApi.Category]
-      )
+      let categories: [KsApi.Category] = [.art, .games, .illustration]
+      let encodedCategories = try? JSONEncoder().encode(categories)
+
+      XCTAssertEqual(encodedCategories, mockKVStore.onboardingCategories)
       XCTAssertTrue(mockKVStore.hasCompletedCategoryPersonalizationFlow)
     }
   }
