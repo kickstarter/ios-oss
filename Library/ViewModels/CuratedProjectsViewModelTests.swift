@@ -8,6 +8,9 @@ import XCTest
 
 final class CuratedProjectsViewModelTests: TestCase {
   private let dismissViewController = TestObserver<Void, Never>()
+  private let goToProjectProject = TestObserver<Project, Never>()
+  private let goToProjectProjects = TestObserver<[Project], Never>()
+  private let goToProjectRefTag = TestObserver<RefTag, Never>()
   private let isLoading = TestObserver<Bool, Never>()
   private let loadProjectsCount = TestObserver<Int, Never>()
   private let showErrorMessage = TestObserver<String, Never>()
@@ -18,6 +21,9 @@ final class CuratedProjectsViewModelTests: TestCase {
     self.viewModel.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.viewModel.outputs.isLoading.observe(self.isLoading.observer)
     self.viewModel.outputs.loadProjects.map { $0.count }.observe(self.loadProjectsCount.observer)
+    self.viewModel.outputs.goToProject.map(first).observe(self.goToProjectProject.observer)
+    self.viewModel.outputs.goToProject.map(second).observe(self.goToProjectProjects.observer)
+    self.viewModel.outputs.goToProject.map(third).observe(self.goToProjectRefTag.observer)
     self.viewModel.outputs.showErrorMessage.observe(self.showErrorMessage.observer)
   }
 
@@ -44,6 +50,8 @@ final class CuratedProjectsViewModelTests: TestCase {
       self.viewModel.inputs.configure(with: [Category.art, Category.tabletopGames])
 
       self.viewModel.inputs.viewDidLoad()
+
+      self.scheduler.advance()
 
       // We configured the viewModel with 2 categories,
       // therefore, the request was made 2x, returning 10 projects
@@ -72,6 +80,8 @@ final class CuratedProjectsViewModelTests: TestCase {
 
       self.viewModel.inputs.configure(with: [Category.art])
 
+      self.scheduler.advance()
+
       self.isLoading.assertValues([true, false])
     }
   }
@@ -85,6 +95,8 @@ final class CuratedProjectsViewModelTests: TestCase {
       self.showErrorMessage.assertDidNotEmitValue()
 
       self.viewModel.inputs.viewDidLoad()
+
+      self.scheduler.advance()
 
       self.showErrorMessage.assertValue("Something went wrong.", "Should show a generic error message")
     }
@@ -103,7 +115,33 @@ final class CuratedProjectsViewModelTests: TestCase {
 
       self.viewModel.inputs.viewDidLoad()
 
+      self.scheduler.advance()
+
       self.showErrorMessage.assertValue("Something went wrong.", "Should show a generic error message")
+    }
+  }
+
+  func testGoToProject() {
+    let discoveryEnvelope = .template
+      |> DiscoveryEnvelope.lens.projects .~ [.template]
+
+    let apiService = MockService(fetchDiscoveryResponse: discoveryEnvelope)
+
+    withEnvironment(apiService: apiService) {
+      self.viewModel.inputs.configure(with: [.art])
+      self.viewModel.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.goToProjectProject.assertDidNotEmitValue()
+      self.goToProjectProjects.assertDidNotEmitValue()
+      self.goToProjectRefTag.assertDidNotEmitValue()
+
+      self.viewModel.inputs.projectTapped(.template)
+
+      self.goToProjectProject.assertValues([.template])
+      self.goToProjectProjects.assertValues([[.template]])
+      self.goToProjectRefTag.assertValues([.onboarding])
     }
   }
 }
