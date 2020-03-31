@@ -59,6 +59,21 @@ final class CuratedProjectsViewModelTests: TestCase {
     }
   }
 
+  func testLoadProjects_WhenCategoryListIsEmpty() {
+    let envelope = .template
+      |> DiscoveryEnvelope.lens.projects .~ []
+
+    let apiService = MockService(fetchDiscoveryResponse: envelope)
+    withEnvironment(apiService: apiService) {
+      self.viewModel.inputs.configure(with: [])
+      self.viewModel.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.loadProjectsCount.assertDidNotEmitValue()
+    }
+  }
+
   func testIsLoading() {
     let category = Project.Category.art
     let projects = (1...5).map {
