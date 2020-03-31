@@ -549,6 +549,38 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("Apple", callBackProperties?["session_device_manufacturer"] as? String)
   }
 
+  func testWatchProjectButtonClicked_DiscoveryLocationContext() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackWatchProjectButtonClicked(
+      project: .template,
+      location: .discovery,
+      params: DiscoveryParams.recommendedDefaults
+    )
+
+    XCTAssertEqual(["Watch Project Button Clicked"], client.events)
+    XCTAssertEqual("explore_screen", client.properties.last?["context_location"] as? String)
+
+    self.assertProjectProperties(client.properties.last)
+    self.assertDiscoveryProperties(client.properties.last)
+  }
+
+  func testWatchProjectButtonClicked_ProjectPageLocationContext() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackWatchProjectButtonClicked(
+      project: .template,
+      location: .projectPage
+    )
+
+    XCTAssertEqual(["Watch Project Button Clicked"], client.events)
+    XCTAssertEqual("project_screen", client.properties.last?["context_location"] as? String)
+
+    self.assertProjectProperties(client.properties.last)
+  }
+
   func testTrackViewedAccount() {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
@@ -1112,6 +1144,26 @@ final class KoalaTests: TestCase {
 
     koala.track2FAViewed()
     XCTAssertEqual("two_factor_auth_verify_screen", client.properties.last?["context_location"] as? String)
+  }
+
+  /*
+   Helper for testing discoverProperties from a template DiscoveryParams.recommendedDefaults
+   */
+
+  private func assertDiscoveryProperties(_ props: [String: Any]?) {
+    XCTAssertEqual(true, props?["discover_recommended"] as? Bool)
+    XCTAssertEqual(false, props?["discover_everything"] as? Bool)
+    XCTAssertEqual("recs_home", props?["discover_ref_tag"] as? String)
+
+    XCTAssertNil(props?["discover_pwl"] as? Bool)
+    XCTAssertNil(props?["discover_social"] as? Bool)
+    XCTAssertNil(props?["discover_watched"] as? Bool)
+    XCTAssertNil(props?["discover_subcategory_id"] as? Int)
+    XCTAssertNil(props?["discover_subcategory_name"] as? String)
+    XCTAssertNil(props?["discover_category_id"] as? Int)
+    XCTAssertNil(props?["discover_category_name"] as? String)
+    XCTAssertNil(props?["discover_sort"] as? String)
+    XCTAssertNil(props?["discover_search_term"] as? String)
   }
 
   /*

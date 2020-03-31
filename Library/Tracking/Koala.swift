@@ -47,6 +47,7 @@ public final class Koala {
     case tabBarClicked = "Tab Bar Clicked"
     case thanksPageViewed = "Thanks Page Viewed"
     case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
+    case watchProjectButtonClicked = "Watch Project Button Clicked"
 
     static func allWhiteListedEvents() -> [String] {
       return DataLakeWhiteListedEvent.allCases.map { $0.rawValue }
@@ -197,29 +198,6 @@ public final class Koala {
       case .swipe: return "swipe"
       case .tap: return "tap"
       }
-    }
-  }
-
-  /// Determines which swipe was used.
-  public enum SwipeType: String {
-    case next
-    case previous
-
-    fileprivate var trackingString: String {
-      switch self {
-      case .next: return "next"
-      case .previous: return "previous"
-      }
-    }
-  }
-
-  /// Determines the place from which the project was saved.
-  public enum SaveContext: String {
-    case discovery
-    case project
-
-    fileprivate var trackingString: String {
-      return self.rawValue
     }
   }
 
@@ -1389,25 +1367,23 @@ public final class Koala {
     )
   }
 
-  public func trackProjectSave(_ project: Project, context: SaveContext) {
-    guard let isStarred = project.personalization.isStarred else { return }
+  /**
+   Call when a project is watched/saved.
+   - parameter project: The project being watched
+   - parameter location: The location context of where the project is being watched from
+   - parameter params: The optional Discover params if the project is being watched from Discover
+   */
 
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["context": context.trackingString])
+  public func trackWatchProjectButtonClicked(project: Project, location: LocationContext, params: DiscoveryParams? = nil) {
+    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
-    // Deprecated event
-    self.track(
-      event: isStarred ? "Project Star" : "Project Unstar",
-      properties: props.withAllValuesFrom(deprecatedProps)
-    )
-
-    self.track(
-      event: isStarred ? "Starred Project" : "Unstarred Project",
-      properties: props.withAllValuesFrom(deprecatedProps)
-    )
+    if let discoveryParams = params {
+      props = props.withAllValuesFrom(discoveryProperties(from: discoveryParams))
+    }
 
     self.track(
-      event: isStarred ? "Saved Project" : "Unsaved Project",
+      event: DataLakeWhiteListedEvent.watchProjectButtonClicked.rawValue,
+      location: location,
       properties: props
     )
   }
