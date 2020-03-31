@@ -30,8 +30,6 @@ final class ProjectSummaryCarouselView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    self.dataSource.load([1, 2, 3])
-
     self.configureViews()
     self.setupConstraints()
     self.bindViewModel()

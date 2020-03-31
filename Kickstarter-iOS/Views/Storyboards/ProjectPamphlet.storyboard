@@ -481,7 +481,7 @@
                                         <constraint firstItem="IK9-ug-5QA" firstAttribute="leading" secondItem="9h4-fT-eHX" secondAttribute="leading" id="fK0-jK-FWw"/>
                                         <constraint firstItem="QP9-3e-ZCa" firstAttribute="bottom" secondItem="IK9-ug-5QA" secondAttribute="bottom" id="gZL-ti-X7r"/>
                                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="IK9-ug-5QA" secondAttribute="bottom" id="i6z-G2-rVD"/>
-                                        <constraint firstItem="wDa-3z-Se6" firstAttribute="leading" secondItem="1IS-yr-alv" secondAttribute="leadingMargin" id="zYn-30-syQ"/>
+                                        <constraint firstItem="wDa-3z-Se6" firstAttribute="leading" secondItem="9h4-fT-eHX" secondAttribute="leading" id="zYn-30-syQ"/>
                                         <constraint firstItem="IK9-ug-5QA" firstAttribute="top" secondItem="9h4-fT-eHX" secondAttribute="top" id="zoK-u5-hc2"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -520,6 +520,7 @@
                                     <outlet property="stateLabel" destination="b0m-Ky-7kD" id="rf0-6I-cY1"/>
                                     <outlet property="statsStackView" destination="N0V-lF-GzK" id="rPf-34-EZf"/>
                                     <outlet property="youreABackerContainerView" destination="wDa-3z-Se6" id="spi-eC-ggZ"/>
+                                    <outlet property="youreABackerContainerViewLeadingConstraint" destination="zYn-30-syQ" id="2sV-tm-yCD"/>
                                     <outlet property="youreABackerLabel" destination="fwt-iA-zud" id="yBZ-uc-2Yd"/>
                                 </connections>
                             </tableViewCell>

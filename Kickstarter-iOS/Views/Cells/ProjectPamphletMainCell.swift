@@ -81,6 +81,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var stateLabel: UILabel!
   @IBOutlet fileprivate var statsStackView: UIStackView!
   @IBOutlet fileprivate var youreABackerContainerView: UIView!
+  @IBOutlet fileprivate var youreABackerContainerViewLeadingConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate var youreABackerLabel: UILabel!
 
   internal override func awakeFromNib() {
@@ -105,10 +106,10 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     self.creatorBylineView.addGestureRecognizer(self.creatorBylineTapGesture)
 
-    self.blurbAndReadMoreStackView.insertArrangedSubview(self.projectSummaryCarouselView, at: 1)
-
     // TODO: move to view model output.
-    self.projectSummaryCarouselView.configure(with: [1, 2, 3])
+    // Uncomment to tests, currently commented to not break snapshots
+//    self.blurbAndReadMoreStackView.insertArrangedSubview(self.projectSummaryCarouselView, at: 1)
+//    self.projectSummaryCarouselView.configure(with: [1, 2, 3])
 
     self.viewModel.inputs.awakeFromNib()
   }
@@ -172,14 +173,14 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ .ksr_body(size: 12)
       |> UILabel.lens.backgroundColor .~ .white
 
-    let leftRightInsets: CGFloat = self.traitCollection.isRegularRegular
+    let leftRightInsetValue: CGFloat = self.traitCollection.isRegularRegular
       ? Styles.grid(16)
       : Styles.grid(4)
 
     _ = self.categoryAndLocationStackView
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.layoutMargins .~ .init(
-        top: 0, left: leftRightInsets, bottom: Styles.grid(1), right: leftRightInsets
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(
+        leftRight: leftRightInsetValue
       )
 
     _ = self.contentStackView
@@ -192,11 +193,11 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(4)
 
     _ = self.blurbStackView
-      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsets)
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.readMoreStackView
-      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsets)
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.conversionLabel
@@ -252,7 +253,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     _ = self.projectNameAndCreatorStackView
       |> UIStackView.lens.spacing .~ Styles.grid(2)
-      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsets)
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.projectNameLabel
@@ -266,7 +267,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.backgroundColor .~ .white
 
     _ = self.progressBarAndStatsStackView
-      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsets)
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
@@ -277,6 +278,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.statsStackView
       |> UIStackView.lens.isAccessibilityElement .~ true
       |> UIStackView.lens.backgroundColor .~ .white
+
+    _ = self.youreABackerContainerViewLeadingConstraint.constant = leftRightInsetValue
 
     _ = self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
