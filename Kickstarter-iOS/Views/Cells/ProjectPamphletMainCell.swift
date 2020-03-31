@@ -73,6 +73,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   private lazy var projectSummaryCarouselView: ProjectSummaryCarouselView = {
     ProjectSummaryCarouselView(frame: .zero)
   }()
+
   @IBOutlet fileprivate var progressBarAndStatsStackView: UIStackView!
   @IBOutlet fileprivate var readMoreButton: LoadingButton!
   @IBOutlet fileprivate var readMoreStackView: UIStackView!
@@ -105,6 +106,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.creatorBylineView.addGestureRecognizer(self.creatorBylineTapGesture)
 
     self.blurbAndReadMoreStackView.insertArrangedSubview(self.projectSummaryCarouselView, at: 1)
+
+    // TODO: move to view model output.
+    self.projectSummaryCarouselView.configure(with: [1, 2, 3])
 
     self.viewModel.inputs.awakeFromNib()
   }
@@ -157,9 +161,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.categoryStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
-    _ = self.categoryAndLocationStackView
-      |> UIStackView.lens.layoutMargins .~ .init(top: 0, left: 0, bottom: Styles.grid(1), right: 0)
-
     _ = self.categoryIconImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
       |> UIImageView.lens.tintColor .~ .ksr_dark_grey_500
@@ -175,6 +176,12 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       ? Styles.grid(16)
       : Styles.grid(4)
 
+    _ = self.categoryAndLocationStackView
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.layoutMargins .~ .init(
+        top: 0, left: leftRightInsets, bottom: Styles.grid(1), right: leftRightInsets
+      )
+
     _ = self.contentStackView
       |> UIStackView.lens.layoutMargins %~~ { _, stackView in
         stackView.traitCollection.isRegularRegular
@@ -189,8 +196,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.readMoreStackView
-    |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsets)
-    |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsets)
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.conversionLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
@@ -259,6 +266,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.backgroundColor .~ .white
 
     _ = self.progressBarAndStatsStackView
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsets)
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
       |> UIStackView.lens.spacing .~ Styles.grid(2)
 
     _ = self.stateLabel
