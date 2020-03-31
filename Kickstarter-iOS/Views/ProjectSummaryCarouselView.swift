@@ -14,6 +14,8 @@ final class ProjectSummaryCarouselView: UIView {
       |> \.showsHorizontalScrollIndicator .~ false
   }()
 
+  private var collectionViewHeightConstraint: NSLayoutConstraint?
+
   private let dataSource = ProjectSummaryCarouselDataSource()
 
   private let layout: UICollectionViewFlowLayout = {
@@ -41,7 +43,9 @@ final class ProjectSummaryCarouselView: UIView {
 
   // MARK: - Accessors
 
-  func configure(with _: [ProjectSummaryItem]) {}
+  func configure(with items: [ProjectSummaryItem]) {
+    self.viewModel.inputs.configure(with: items)
+  }
 
   // MARK: - Configuration
 
@@ -58,10 +62,9 @@ final class ProjectSummaryCarouselView: UIView {
     _ = (self.collectionView, self)
       |> ksr_constrainViewToEdgesInParent()
 
-    self.collectionView.heightAnchor.constraint(
-      equalToConstant: self.dataSource.greatestCombinedTextHeight
-    )
-    .isActive = true
+    self.collectionViewHeightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 0)
+    self.collectionViewHeightConstraint?.priority = .defaultLow
+    self.collectionViewHeightConstraint?.isActive = true
   }
 
   // MARK: - View model
@@ -72,7 +75,11 @@ final class ProjectSummaryCarouselView: UIView {
     self.viewModel.outputs.loadProjectSummaryItemsIntoDataSource
       .observeForUI()
       .observeValues { [weak self] items in
-        self?.dataSource.load(items)
+        guard let self = self else { return }
+
+        self.dataSource.load(items)
+        self.collectionView.reloadData()
+        self.collectionViewHeightConstraint?.constant = self.dataSource.greatestCombinedTextHeight
       }
   }
 
