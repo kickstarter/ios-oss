@@ -3,14 +3,18 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias ProjectData = (project: Project, projects: [Project], refTag: RefTag)
+
 public protocol CuratedProjectsViewModelInputs {
   func configure(with categories: [KsApi.Category])
   func doneButtonTapped()
+  func projectTapped(_ project: Project?)
   func viewDidLoad()
 }
 
 public protocol CuratedProjectsViewModelOutputs {
   var dismissViewController: Signal<Void, Never> { get }
+  var goToProject: Signal<ProjectData, Never> { get }
   var isLoading: Signal<Bool, Never> { get }
   var loadProjects: Signal<[Project], Never> { get }
   var showErrorMessage: Signal<String, Never> { get }
@@ -46,6 +50,10 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
       self.viewDidLoadSignal.mapConst(true),
       curatedProjects.mapConst(false)
     )
+
+    self.goToProject = curatedProjects
+      .takePairWhen(self.projectTappedSignal.skipNil())
+      .map { projects, project in (project, projects, RefTag.onboarding) }
   }
 
   private let (categoriesSignal, categoriesObserver) = Signal<[KsApi.Category], Never>.pipe()
@@ -58,12 +66,18 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
     self.doneButtonTappedObserver.send(value: ())
   }
 
+  private let (projectTappedSignal, projectTappedObserver) = Signal<Project?, Never>.pipe()
+  public func projectTapped(_ project: Project?) {
+    self.projectTappedObserver.send(value: project)
+  }
+
   private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<Void, Never>.pipe()
   public func viewDidLoad() {
     self.viewDidLoadObserver.send(value: ())
   }
 
   public let dismissViewController: Signal<Void, Never>
+  public let goToProject: Signal<ProjectData, Never>
   public let isLoading: Signal<Bool, Never>
   public let loadProjects: Signal<[Project], Never>
   public let showErrorMessage: Signal<String, Never>
@@ -89,6 +103,7 @@ private func producers(from categories: [KsApi.Category])
       |> DiscoveryParams.lens.perPage .~ projectsPerCategory
 
     return AppEnvironment.current.apiService.fetchDiscovery(params: params)
+      .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
       .map { $0.projects }
       .demoteErrors(replaceErrorWith: [])
   }
