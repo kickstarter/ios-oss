@@ -184,6 +184,10 @@ public final class CategorySelectionViewController: UIViewController {
         self?.present(UIAlertController.genericError(message), animated: true)
       }
 
+    self.viewModel.outputs.dismiss
+      .observeForControllerAction()
+      .observeValues { [weak self] in self?.dismiss(animated: true) }
+
     self.warningLabel.rac.hidden = self.viewModel.outputs.warningLabelIsHidden
     self.continueButton.rac.enabled = self.viewModel.outputs.continueButtonEnabled
   }
@@ -228,7 +232,7 @@ public final class CategorySelectionViewController: UIViewController {
   // MARK: - Accessors
 
   @objc func skipButtonTapped() {
-    self.dismiss(animated: true)
+    self.viewModel.inputs.skipButtonTapped()
   }
 
   @objc func continueButtonTapped() {
