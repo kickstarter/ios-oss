@@ -173,7 +173,7 @@ public final class CategorySelectionViewController: UIViewController {
       .observeValues { [weak self] categories in
         let vc = CuratedProjectsViewController.instantiate()
         vc.configure(with: categories, context: .onboarding)
-        
+
         self?.navigationController?.pushViewController(vc, animated: true)
       }
 

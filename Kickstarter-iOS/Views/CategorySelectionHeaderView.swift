@@ -89,10 +89,6 @@ final class CategorySelectionHeaderView: UIView {
     self.subtitleLabel.rac.text = self.viewModel.outputs.subtitleLabelText
     self.titleLabel.rac.text = self.viewModel.outputs.titleLabelText
   }
-
-  public func setCuratedProjectsContext(_ context: CuratedProjectsContext) {
-    self.viewModel.inputs.curatedProjectsContext(context)
-  }
 }
 
 // MARK: - Styles

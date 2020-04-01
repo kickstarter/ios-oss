@@ -14,7 +14,7 @@ public enum CategorySelectionOnboardingHeaderViewContext {
     switch self {
     case .categorySelection:
       return Strings.Step_number(current_step: "1", total_steps: "2")
-    case .curatedProjects(let context):
+    case let .curatedProjects(context):
       switch context {
       case .onboarding:
         return Strings.Step_number(current_step: "2", total_steps: "2")
@@ -28,12 +28,12 @@ public enum CategorySelectionOnboardingHeaderViewContext {
     switch self {
     case .categorySelection:
       return false
-    case .curatedProjects(let context):
-        switch context {
-          case .discovery:
-          return true
-          case .onboarding:
-          return false
+    case let .curatedProjects(context):
+      switch context {
+      case .discovery:
+        return true
+      case .onboarding:
+        return false
       }
     }
   }
@@ -87,7 +87,7 @@ public final class CategorySelectionHeaderViewModel: CategorySelectionHeaderView
     self.titleLabelText = self.contextSignal
       .map(\.titleLabelText)
 
-    self.stepLabelIsHidden = contextSignal
+    self.stepLabelIsHidden = self.contextSignal
       .map(\.stepLabelHidden)
   }
 
