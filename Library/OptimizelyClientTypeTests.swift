@@ -1,3 +1,4 @@
+@testable import KsApi
 @testable import Library
 import Prelude
 import XCTest
@@ -10,7 +11,7 @@ final class OptimizelyClientTypeTests: TestCase {
 
     XCTAssertEqual(
       OptimizelyExperiment.Variant.variant1,
-      mockClient.variant(for: .pledgeCTACopy, userId: "123", isAdmin: false),
+      mockClient.variant(for: .pledgeCTACopy),
       "Returns the correction variation"
     )
     XCTAssertTrue(mockClient.activatePathCalled)
@@ -25,7 +26,7 @@ final class OptimizelyClientTypeTests: TestCase {
 
     XCTAssertEqual(
       OptimizelyExperiment.Variant.control,
-      mockClient.variant(for: .pledgeCTACopy, userId: "123", isAdmin: false),
+      mockClient.variant(for: .pledgeCTACopy),
       "Returns the control variant if error is thrown"
     )
     XCTAssertTrue(mockClient.activatePathCalled)
@@ -37,7 +38,7 @@ final class OptimizelyClientTypeTests: TestCase {
 
     XCTAssertEqual(
       OptimizelyExperiment.Variant.control,
-      mockClient.variant(for: .pledgeCTACopy, userId: "123", isAdmin: false),
+      mockClient.variant(for: .pledgeCTACopy),
       "Returns the control variant if experiment key is not found"
     )
     XCTAssertTrue(mockClient.activatePathCalled)
@@ -51,7 +52,7 @@ final class OptimizelyClientTypeTests: TestCase {
 
     XCTAssertEqual(
       OptimizelyExperiment.Variant.control,
-      mockClient.variant(for: .pledgeCTACopy, userId: "123", isAdmin: false),
+      mockClient.variant(for: .pledgeCTACopy),
       "Returns the control variant if the variant is not recognized"
     )
     XCTAssertTrue(mockClient.activatePathCalled)
@@ -63,12 +64,16 @@ final class OptimizelyClientTypeTests: TestCase {
       |> \.experiments .~
       [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
 
-    XCTAssertEqual(
-      OptimizelyExperiment.Variant.variant1,
-      mockClient.variant(for: .pledgeCTACopy, userId: "123", isAdmin: true),
-      "Returns the correction variation"
-    )
-    XCTAssertFalse(mockClient.activatePathCalled)
-    XCTAssertTrue(mockClient.getVariantPathCalled)
+    let user = User.template |> User.lens.isAdmin .~ true
+
+    withEnvironment(currentUser: user) {
+      XCTAssertEqual(
+        OptimizelyExperiment.Variant.variant1,
+        mockClient.variant(for: .pledgeCTACopy),
+        "Returns the correction variation"
+      )
+      XCTAssertFalse(mockClient.activatePathCalled)
+      XCTAssertTrue(mockClient.getVariantPathCalled)
+    }
   }
 }

@@ -84,12 +84,6 @@ internal final class ActivitiesViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.erroredBackings
-      .observeForUI()
-      .observeValues { backings in
-        print(backings)
-      }
-
     self.viewModel.outputs.showFacebookConnectSection
       .observeForUI()
       .observeValues { [weak self] source, shouldShow in

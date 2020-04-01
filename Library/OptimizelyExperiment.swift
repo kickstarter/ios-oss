@@ -22,20 +22,10 @@ extension OptimizelyExperiment {
     project: Project,
     refTag: RefTag?
   ) -> OptimizelyExperiment.Variant? {
-    let userAttributes = optimizelyUserAttributes(
-      with: AppEnvironment.current.currentUser,
-      project: project,
-      refTag: refTag
-    )
-
-    let optimizelyVariant = AppEnvironment.current.optimizelyClient?
+    return AppEnvironment.current.optimizelyClient?
       .variant(
         for: OptimizelyExperiment.Key.nativeProjectPageCampaignDetails,
-        userId: deviceIdentifier(uuid: UUID()),
-        isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
-        userAttributes: userAttributes
+        userAttributes: optimizelyUserAttributes(with: project, refTag: refTag)
       )
-
-    return optimizelyVariant
   }
 }
