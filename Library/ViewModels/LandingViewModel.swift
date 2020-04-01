@@ -27,11 +27,7 @@ public final class LandingViewModel: LandingViewModelType, LandingViewModelInput
 
     self.getStartedButtonTappedProperty.signal
       .observeValues {
-        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: AppEnvironment.current.currentUser,
-          project: nil,
-          refTag: nil
-        )
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags()
 
         try? AppEnvironment.current.optimizelyClient?
           .track(

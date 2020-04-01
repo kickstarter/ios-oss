@@ -48,7 +48,7 @@ extension OptimizelyClientType {
 
   public func getVariation(for experiment: OptimizelyExperiment.Key) -> OptimizelyExperiment.Variant {
     let userId = deviceIdentifier(uuid: UUID())
-    let attributes = optimizelyUserAttributes(with: AppEnvironment.current.currentUser)
+    let attributes = optimizelyUserAttributes()
     let variationString = try? self.getVariationKey(
       experimentKey: experiment.rawValue, userId: userId, attributes: attributes
     )

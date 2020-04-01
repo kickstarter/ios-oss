@@ -113,11 +113,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
       self.continueButtonTappedProperty.signal.mapConst("Continue")
     )
     .observeValues { buttonTitle in
-      let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-        with: AppEnvironment.current.currentUser,
-        project: nil,
-        refTag: nil
-      )
+      let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags()
 
       let eventName = "\(buttonTitle) Button Clicked"
 

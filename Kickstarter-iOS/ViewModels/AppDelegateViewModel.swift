@@ -1139,20 +1139,16 @@ private func shouldSeeCategoryPersonalization() -> Bool {
     return false
   }
 
-  let variant = AppEnvironment.current.optimizelyClient?.variant(
-    for: .onboardingCategoryPersonalizationFlow,
-    userId: deviceIdentifier(uuid: UUID()),
-    isAdmin: false,
-    userAttributes: optimizelyUserAttributes()
-  )
+  guard let variant = AppEnvironment.current.optimizelyClient?
+    .variant(for: .onboardingCategoryPersonalizationFlow) else {
+    return false
+  }
 
   switch variant {
-  case .control:
+  case .control, .variant2:
     return false
   case .variant1:
     return true
-  default:
-    return false
   }
 }
 
