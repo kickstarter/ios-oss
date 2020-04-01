@@ -154,6 +154,12 @@ public final class ManagePledgeViewModel:
       .observeValues {
         AppEnvironment.current.koala.trackManagePledgeOptionClicked(project: $0, managePledgeMenuCTA: $1)
       }
+
+    project
+      .takePairWhen(self.fixButtonTappedSignal)
+      .observeValues {
+        AppEnvironment.current.koala.trackFixPledgeButtonClicked(project: $0.0)
+      }
   }
 
   private let (beginRefreshSignal, beginRefreshObserver) = Signal<Void, Never>.pipe()
