@@ -374,8 +374,16 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     // MARK: Personalization Callout Card
 
-    let viewReady = Signal.combineLatest(
+    let optimizelyReady = Signal.merge(
       self.optimizelyClientConfiguredProperty.signal,
+      self.viewDidAppearProperty.signal.map { AppEnvironment.current.optimizelyClient }
+        .skipNil()
+        .ignoreValues()
+    ).take(first: 1)
+      .ignoreValues()
+
+    let viewReady = Signal.combineLatest(
+      optimizelyReady,
       editorialHeaderShouldShow
     )
 
@@ -588,7 +596,13 @@ private func shouldShowPersonalization() -> Bool {
 }
 
 private func cachedCategories() -> [KsApi.Category]? {
-  return AppEnvironment.current.cache[KSCache.ksr_onboardingCategories] as? [KsApi.Category]
+  guard let data = AppEnvironment.current.userDefaults.onboardingCategories,
+    let categories = try? JSONDecoder().decode([KsApi.Category].self, from: data)
+  else {
+    return []
+  }
+
+  return categories
 }
 
 private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {

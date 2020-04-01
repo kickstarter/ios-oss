@@ -30,7 +30,9 @@ public final class CuratedProjectsViewModel: CuratedProjectsViewModelType, Curat
   public init() {
     let curatedProjects: Signal<[Project], Never> = self.categoriesSignal
       .combineLatest(with: self.viewDidLoadSignal.ignoreValues())
-      .flatMap { categories, _ in
+      .map(first)
+      .filter { !$0.isEmpty }
+      .flatMap { categories in
         projects(from: categories)
           .flatten()
           .reduce([], +)

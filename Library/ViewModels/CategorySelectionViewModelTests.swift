@@ -339,7 +339,7 @@ final class CategorySelectionViewModelTests: TestCase {
       XCTAssertNil(self.optimizelyClient.trackedAttributes)
       XCTAssertNil(self.optimizelyClient.trackedEventTags)
 
-      XCTAssertNil(self.cache[KSCache.ksr_onboardingCategories])
+      XCTAssertNil(mockKVStore.onboardingCategories)
       XCTAssertFalse(mockKVStore.hasCompletedCategoryPersonalizationFlow)
 
       self.vm.inputs.continueButtonTapped()
@@ -348,10 +348,10 @@ final class CategorySelectionViewModelTests: TestCase {
         [.art, .games, .illustration]
       ])
 
-      XCTAssertEqual(
-        [.art, .games, .illustration],
-        self.cache[KSCache.ksr_onboardingCategories] as? [KsApi.Category]
-      )
+      let categories: [KsApi.Category] = [.art, .games, .illustration]
+      let encodedCategories = try? JSONEncoder().encode(categories)
+
+      XCTAssertEqual(encodedCategories, mockKVStore.onboardingCategories)
       XCTAssertTrue(mockKVStore.hasCompletedCategoryPersonalizationFlow)
 
       XCTAssertEqual("Continue Button Clicked", self.optimizelyClient.trackedEventKey)

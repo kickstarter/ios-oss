@@ -14,6 +14,7 @@ public enum AppKeys: String {
   case hasSeenLandingPage = "com.kickstarter.KeyValueStoreType.hasSeenLandingPage"
   case hasSeenSaveProjectAlert = "com.kickstarter.KeyValueStoreType.hasSeenSaveProjectAlert"
   case lastSeenActivitySampleId = "com.kickstarter.KeyValueStoreType.lastSeenActivitySampleId"
+  case onboardingCategories = "com.kickstarter.KeyValueStoreType.onboardingCategories"
   case seenAppRating = "com.kickstarter.KeyValueStoreType.hasSeenAppRating"
   case seenGamesNewsletter = "com.kickstarter.KeyValueStoreType.hasSeenGamesNewsletter"
 }
@@ -24,6 +25,7 @@ public protocol KeyValueStoreType: AnyObject {
   func set(_ value: Any?, forKey defaultName: String)
 
   func bool(forKey defaultName: String) -> Bool
+  func data(forKey defaultName: String) -> Data?
   func dictionary(forKey defaultName: String) -> [String: Any]?
   func integer(forKey defaultName: String) -> Int
   func object(forKey defaultName: String) -> Any?
@@ -44,6 +46,7 @@ public protocol KeyValueStoreType: AnyObject {
   var hasSeenGamesNewsletterPrompt: Bool { get set }
   var hasSeenSaveProjectAlert: Bool { get set }
   var lastSeenActivitySampleId: Int { get set }
+  var onboardingCategories: Data? { get set }
 }
 
 extension KeyValueStoreType {
@@ -163,6 +166,16 @@ extension KeyValueStoreType {
       self.set(newValue, forKey: AppKeys.lastSeenActivitySampleId.rawValue)
     }
   }
+
+  public var onboardingCategories: Data? {
+    get {
+      return self.data(forKey: AppKeys.onboardingCategories.rawValue)
+    }
+
+    set {
+      self.set(newValue, forKey: AppKeys.onboardingCategories.rawValue)
+    }
+  }
 }
 
 extension UserDefaults: KeyValueStoreType {}
@@ -194,6 +207,10 @@ internal class MockKeyValueStore: KeyValueStoreType {
 
   func bool(forKey defaultName: String) -> Bool {
     return self.store[defaultName] as? Bool ?? false
+  }
+
+  func data(forKey defaultName: String) -> Data? {
+    return self.store[defaultName] as? Data
   }
 
   func dictionary(forKey key: String) -> [String: Any]? {

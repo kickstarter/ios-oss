@@ -1349,10 +1349,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.selectedFilter(defaultFilter)
 
-      self.showPersonalization.assertDidNotEmitValue("Waits for OptimizelyClient configuration")
-
-      self.vm.inputs.optimizelyClientConfigured()
-
       self.showPersonalization.assertValues([true])
 
       // Change the filter
@@ -1383,10 +1379,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.selectedFilter(defaultFilter)
-
-      self.showPersonalization.assertDidNotEmitValue("Waits for OptimizelyClient configuration")
-
-      self.vm.inputs.optimizelyClientConfigured()
 
       self.showPersonalization.assertValues([true])
 
@@ -1421,10 +1413,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.selectedFilter(defaultFilter)
 
-      self.showPersonalization.assertDidNotEmitValue("Waits for OptimizelyClient configuration")
-
-      self.vm.inputs.optimizelyClientConfigured()
-
       self.showPersonalization.assertValues([false], "Does not show personalization section")
     }
   }
@@ -1451,10 +1439,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.selectedFilter(defaultFilter)
-
-      self.showPersonalization.assertDidNotEmitValue("Waits for OptimizelyClient configuration")
-
-      self.vm.inputs.optimizelyClientConfigured()
 
       self.showPersonalization.assertValues([false], "Does not show personalization section")
     }
@@ -1483,10 +1467,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.selectedFilter(defaultFilter)
 
-      self.showPersonalization.assertDidNotEmitValue("Waits for OptimizelyClient configuration")
-
-      self.vm.inputs.optimizelyClientConfigured()
-
       self.showPersonalization.assertValues([false], "Does not show personalization section")
     }
   }
@@ -1513,10 +1493,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.selectedFilter(defaultFilter)
-
-      self.showPersonalization.assertDidNotEmitValue("Waits for OptimizelyClient configuration")
-
-      self.vm.inputs.optimizelyClientConfigured()
 
       self.showPersonalization.assertValues([false], "Does not show personalization section")
     }
@@ -1568,7 +1544,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       ]
 
     let categories = [KsApi.Category.art, KsApi.Category.illustration]
-    self.cache[KSCache.ksr_onboardingCategories] = categories
+    mockKeyValueStore.onboardingCategories = try? JSONEncoder().encode(categories)
 
     let defaultFilter = DiscoveryParams.recommendedDefaults
 
@@ -1615,8 +1591,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.selectedFilter(defaultFilter)
 
-      self.vm.inputs.optimizelyClientConfigured()
-
       self.showPersonalization.assertValues([false])
 
       mockKeyValueStore.hasCompletedCategoryPersonalizationFlow = true
@@ -1624,6 +1598,39 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.onboardingCompleted()
 
       self.showPersonalization.assertValues([false, true])
+    }
+  }
+
+  func testShowPersonalization_WaitsForOptimizelyConfiguration() {
+    let mockKeyValueStore = MockKeyValueStore()
+      |> \.hasCompletedCategoryPersonalizationFlow .~ true
+      |> \.hasDismissedPersonalizationCard .~ false
+
+    let mockOpClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.control.rawValue
+      ]
+
+    let defaultFilter = DiscoveryParams.recommendedDefaults
+
+    withEnvironment(
+      currentUser: User.template,
+      optimizelyClient: nil,
+      userDefaults: mockKeyValueStore
+    ) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(defaultFilter)
+
+      self.showPersonalization.assertDidNotEmitValue("Waits for OptimizelyClient configuration")
+
+      withEnvironment(optimizelyClient: mockOpClient) {
+        self.vm.inputs.optimizelyClientConfigured()
+
+        self.showPersonalization.assertValues([false], "Does not show personalization section")
+      }
     }
   }
 }
