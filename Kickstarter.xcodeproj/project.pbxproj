@@ -374,6 +374,8 @@
 		8A8099F622E2143400373E66 /* RewardCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099EF22E2142C00373E66 /* RewardCardViewModelTests.swift */; };
 		8A8099F822E2156E00373E66 /* RewardPledgeNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099F722E2156E00373E66 /* RewardPledgeNavigationController.swift */; };
 		8A8F5CD12433E47F00007DB4 /* ProjectSummaryCarouselViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8F5CD02433E47F00007DB4 /* ProjectSummaryCarouselViewModelTests.swift */; };
+		8A8F5CD324350C2900007DB4 /* ProjectSummaryEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8F5CD224350C2900007DB4 /* ProjectSummaryEnvelope.swift */; };
+		8A8F5CD52435108000007DB4 /* ProjectSummaryEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8F5CD42435108000007DB4 /* ProjectSummaryEnvelopeTests.swift */; };
 		8AA117F323A414BF00F7E339 /* Qualtrics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AD7953123A286D800998C79 /* Qualtrics.framework */; };
 		8AA117F523A4160800F7E339 /* MockQualtricsResultType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA117F423A4160800F7E339 /* MockQualtricsResultType.swift */; };
 		8AA4E6B22405B2560095D516 /* ProjectCreatorDetailsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA4E6B12405B2560095D516 /* ProjectCreatorDetailsEnvelope.swift */; };
@@ -1792,6 +1794,8 @@
 		8A8099F022E2142C00373E66 /* RewardCardContainerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardCardContainerViewModel.swift; sourceTree = "<group>"; };
 		8A8099F722E2156E00373E66 /* RewardPledgeNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardPledgeNavigationController.swift; sourceTree = "<group>"; };
 		8A8F5CD02433E47F00007DB4 /* ProjectSummaryCarouselViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSummaryCarouselViewModelTests.swift; sourceTree = "<group>"; };
+		8A8F5CD224350C2900007DB4 /* ProjectSummaryEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSummaryEnvelope.swift; sourceTree = "<group>"; };
+		8A8F5CD42435108000007DB4 /* ProjectSummaryEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSummaryEnvelopeTests.swift; sourceTree = "<group>"; };
 		8AA117F423A4160800F7E339 /* MockQualtricsResultType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockQualtricsResultType.swift; sourceTree = "<group>"; };
 		8AA4E6B12405B2560095D516 /* ProjectCreatorDetailsEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCreatorDetailsEnvelope.swift; sourceTree = "<group>"; };
 		8AA4E6B32405B6280095D516 /* ProjectCreatorDetailsEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCreatorDetailsEnvelopeTests.swift; sourceTree = "<group>"; };
@@ -4038,6 +4042,8 @@
 				D01587DD1EEB2ED7006E7684 /* ProjectsEnvelope.swift */,
 				D01587DE1EEB2ED7006E7684 /* ProjectStatsEnvelope.swift */,
 				D01587DF1EEB2ED7006E7684 /* ProjectStatsEnvelopeTests.swift */,
+				8A8F5CD224350C2900007DB4 /* ProjectSummaryEnvelope.swift */,
+				8A8F5CD42435108000007DB4 /* ProjectSummaryEnvelopeTests.swift */,
 				D01587E01EEB2ED7006E7684 /* ProjectTests.swift */,
 				D01587E11EEB2ED7006E7684 /* PushEnvelope.swift */,
 				D01587E21EEB2ED7006E7684 /* PushEnvelopeTests.swift */,
@@ -5731,6 +5737,7 @@
 				D015899B1EEB2ED7006E7684 /* Service.swift in Sources */,
 				D6ED1B39216D50BE007F7547 /* UserEmailFields.swift in Sources */,
 				D01588731EEB2ED7006E7684 /* FindFriendsEnvelope.swift in Sources */,
+				8A8F5CD324350C2900007DB4 /* ProjectSummaryEnvelope.swift in Sources */,
 				D63BBD31217F7212007E01F0 /* GraphUserCreditCard.swift in Sources */,
 				D79CF32E219CE51A00ECB73A /* CreatePaymentSourceInput.swift in Sources */,
 				D01588A51EEB2ED7006E7684 /* Project.DatesLenses.swift in Sources */,
@@ -5873,6 +5880,7 @@
 				D0D10C101EEB4550005EBAD0 /* MessageTests.swift in Sources */,
 				D0D10C151EEB4550005EBAD0 /* ProjectStatsEnvelopeTests.swift in Sources */,
 				D0D10C221EEB4550005EBAD0 /* UserTests.swift in Sources */,
+				8A8F5CD52435108000007DB4 /* ProjectSummaryEnvelopeTests.swift in Sources */,
 				D0D10C171EEB4550005EBAD0 /* PushEnvelopeTests.swift in Sources */,
 				D0D10C1D1EEB4550005EBAD0 /* UpdatePledgeEnvelopeTests.swift in Sources */,
 				D0D10C0E1EEB4550005EBAD0 /* ItemTests.swift in Sources */,

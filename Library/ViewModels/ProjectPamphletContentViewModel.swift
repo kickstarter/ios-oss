@@ -252,6 +252,19 @@ private func projectCreatorDetailsQuery(withSlug slug: String) -> NonEmptySet<Qu
   ) +| []
 }
 
+private func projectSummaryQuery(withSlug slug: String) -> NonEmptySet<Query> {
+  return Query.project(
+    slug: slug,
+    .id +| [
+      .projectSummary(
+        .question +| [
+          .response
+        ]
+      )
+    ]
+  ) +| []
+}
+
 private func projectPageConversionCreatorDetailsExperiment(
   project: Project, refTag: RefTag?
 ) -> OptimizelyExperiment.Variant? {
