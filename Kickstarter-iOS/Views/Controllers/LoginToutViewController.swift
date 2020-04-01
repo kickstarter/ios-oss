@@ -73,6 +73,14 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   override func viewDidLoad() {
     super.viewDidLoad()
 
+#warning("The code below will be replaced with the configureTransparentNavigationBar() function, instead.")
+    _ = self.navigationController?.navigationBar
+      ?|> \.backgroundColor .~ .clear
+      ?|> \.shadowImage .~ UIImage()
+      ?|> \.isTranslucent .~ true
+
+    self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+
     self.configureViews()
     self.setupConstraints()
     self.configureTargets()
@@ -87,11 +95,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     if self.presentingViewController != nil {
       self.navigationItem.leftBarButtonItem = .close(self, selector: #selector(self.closeButtonPressed))
     }
-
-    _ = self.navigationController?.navigationBar
-      ?|> \.barTintColor .~ .clear
-      ?|> \.isTranslucent .~ true
-      ?|> \.shadowImage .~ UIImage()
 
     _ = self.navigationItem
       |> \.rightBarButtonItem .~ .help(self, selector: #selector(self.helpButtonPressed))
@@ -111,9 +114,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
   override func bindStyles() {
     super.bindStyles()
-
-    _ = self
-      |> baseControllerStyle()
 
     _ = self.backgroundImageView
       |> backgroundImageViewStyle
@@ -181,13 +181,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   // MARK: - View Model
 
   override func bindViewModel() {
-    self.viewModel.outputs.navigationBarBackgroundImage
-      .observeForUI()
-      .observeValues { [weak self] image in
-        _ = self?.navigationController?.navigationBar
-          ?|> UINavigationBar.lens.backgroundImage(for: .default) .~ image
-      }
-
     self.viewModel.outputs.startLogin
       .observeForControllerAction()
       .observeValues { [weak self] _ in

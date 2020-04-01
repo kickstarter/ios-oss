@@ -264,8 +264,10 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] intent in
         let loginTout = LoginToutViewController.configuredWith(loginIntent: intent)
+
+        let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
         let nav = UINavigationController(rootViewController: loginTout)
-        nav.modalPresentationStyle = .formSheet
+          |> \.modalPresentationStyle .~ (isIpad ? .formSheet : .fullScreen)
 
         self?.present(nav, animated: true, completion: nil)
       }
