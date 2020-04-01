@@ -73,7 +73,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   override func viewDidLoad() {
     super.viewDidLoad()
 
-#warning("The code below will be replaced with the configureTransparentNavigationBar() function, instead.")
+    #warning("The code below will be replaced with the configureTransparentNavigationBar() function, instead.")
     _ = self.navigationController?.navigationBar
       ?|> \.backgroundColor .~ .clear
       ?|> \.shadowImage .~ UIImage()
