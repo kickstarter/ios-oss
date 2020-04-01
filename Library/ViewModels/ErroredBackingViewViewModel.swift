@@ -7,9 +7,9 @@ public protocol ErroredBackingViewViewModelInputs {
 }
 
 public protocol ErroredBackingViewViewModelOutputs {
+  var finalCollectionDateText: Signal<String, Never> { get }
   var notifyDelegateManageButtonTapped: Signal<GraphBacking, Never> { get }
   var projectName: Signal<String, Never> { get }
-  var finalCollection: Signal<String, Never> { get }
 }
 
 public protocol ErroredBackingViewViewModelType {
@@ -28,7 +28,7 @@ public final class ErroredBackingViewViewModel: ErroredBackingViewViewModelType,
       .map(\.project?.name)
       .skipNil()
 
-    self.finalCollection = project
+    self.finalCollectionDateText = project
       .map { timeLeftString(date: $0.finalCollectionDate) }
 
     self.notifyDelegateManageButtonTapped = self.backingSignal
@@ -45,9 +45,9 @@ public final class ErroredBackingViewViewModel: ErroredBackingViewViewModelType,
     self.manageButtonTappedObserver.send(value: ())
   }
 
+  public let finalCollectionDateText: Signal<String, Never>
   public let notifyDelegateManageButtonTapped: Signal<GraphBacking, Never>
   public let projectName: Signal<String, Never>
-  public let finalCollection: Signal<String, Never>
 
   public var inputs: ErroredBackingViewViewModelInputs { return self }
   public var outputs: ErroredBackingViewViewModelOutputs { return self }
@@ -55,68 +55,14 @@ public final class ErroredBackingViewViewModel: ErroredBackingViewViewModelType,
 
 private func timeLeftString(date: String?) -> String {
   let dateFormatter = ISO8601DateFormatter()
-  let currentDate = Date()
+  guard let date = date else { return "" }
 
-  guard let date = date else {
-    let count = 0
-    return Strings.Time_left_left(time_left: "\(count)" + " " + "days")
-  }
-  guard let finalCollectionDate = dateFormatter.date(from: date) else {
-    let count = 0
-    return Strings.Time_left_left(time_left: "\(count)" + " " + "days")
-  }
+  guard let finalCollectionDate = dateFormatter.date(from: date) else { return "" }
 
-  let timeInterval = currentDate.timeIntervalSince(finalCollectionDate)
+  let timeInterval = finalCollectionDate.timeIntervalSince1970
 
-  let (time, unit) = daysLeft(
+  let (time, unit) = Format.duration(
     secondsInUTC: timeInterval
   )
-
    return Strings.Time_left_left(time_left: time + " " + unit)
 }
-
-private func daysLeft(
-   secondsInUTC seconds: TimeInterval,
-   env: Environment = AppEnvironment.current
- ) -> (time: String, unit: String) {
-   let components = env.calendar.dateComponents(
-    [.day, .hour, .minute, .second],
-     from: env.dateType.init().date,
-     to: env.dateType.init(timeIntervalSince1970: seconds).date
-   )
-
-   let (day, hour, minute, second) = (
-    components.day ?? 0,
-    components.hour ?? 0,
-    components.minute ?? 0,
-    components.second ?? 0
-  )
-
-   let string: String
-   if day > 1 {
-       string = Strings.dates_time_days(time_count: day)
-   } else if day == 1 || hour > 0 {
-       let count = 1
-       string = Strings.dates_time_days(time_count: count)
-   } else if minute > 0, second >= 0 {
-      let count = 1
-      string = Strings.dates_time_days(time_count: count)
-   } else if second <= 0 {
-      let count = 0
-      string = Strings.dates_time_days(time_count: count)
-   } else {
-     string = ""
-   }
-
-   let split = string
-     .replacingOccurrences(of: "(\\d+) *", with: "$1 ", options: .regularExpression)
-     .components(separatedBy: " ")
-
-   guard split.count >= 1 else { return ("", "") }
-
-   let result = (
-     time: split.first ?? "",
-     unit: split.suffix(from: 1).joined(separator: " ")
-   )
-   return result
- }

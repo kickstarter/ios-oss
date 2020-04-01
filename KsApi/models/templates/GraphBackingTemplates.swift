@@ -4,7 +4,7 @@ extension GraphBacking {
   internal static let template = GraphBacking(
     errorReason: nil,
     project: nil,
-    status: GraphBacking.Status.collected
+    status: GraphBacking.Status.errored
   )
 
   internal static let errored = GraphBacking.template
@@ -15,7 +15,7 @@ extension GraphBacking {
 
 extension GraphBacking.Project {
   internal static let template = GraphBacking.Project(
-    finalCollectionDate: "2019-11-29T15:15:05Z",
+    finalCollectionDate: "2020-04-08T15:15:05Z",
     id: "1",
     name: "Cool project",
     slug: "/cool-project"

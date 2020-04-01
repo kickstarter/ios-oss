@@ -86,7 +86,7 @@ final class ErroredBackingView: UIView {
     super.bindViewModel()
 
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
-    self.finalCollectionDateLabel.rac.text = self.viewModel.outputs.finalCollection
+    self.finalCollectionDateLabel.rac.text = self.viewModel.outputs.finalCollectionDateText
 
     self.viewModel.outputs.notifyDelegateManageButtonTapped
       .observeForUI()
