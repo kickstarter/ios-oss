@@ -548,6 +548,20 @@ internal final class ManagePledgeViewModelTests: TestCase {
     XCTAssertEqual(["Manage Pledge Option Clicked"], self.trackingClient.events)
   }
 
+  func testFixPaymentTrackingEvents() {
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ Backing.template
+
+    self.vm.inputs.configureWith(project)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.fixButtonTapped()
+
+    XCTAssertEqual(["Fix Pledge Button Clicked"], self.trackingClient.events)
+  }
+
   func testEndRefreshing() {
     let project = Project.template |> Project.lens.personalization.backing .~ .template
     let mockService = MockService(fetchProjectResponse: project)
