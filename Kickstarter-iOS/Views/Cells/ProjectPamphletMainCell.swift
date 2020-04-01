@@ -279,7 +279,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.isAccessibilityElement .~ true
       |> UIStackView.lens.backgroundColor .~ .white
 
-    _ = self.youreABackerContainerViewLeadingConstraint.constant = leftRightInsetValue
+    _ = self.youreABackerContainerViewLeadingConstraint
+      |> \.constant .~ leftRightInsetValue
 
     _ = self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
