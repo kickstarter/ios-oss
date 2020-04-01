@@ -11,8 +11,8 @@ private enum Layout {
   }
 
   enum ImageView {
-     static let minWidth: CGFloat = 16.0
-   }
+    static let minWidth: CGFloat = 16.0
+  }
 }
 
 protocol ErroredBackingViewDelegate: class {
@@ -24,9 +24,10 @@ final class ErroredBackingView: UIView {
 
   public weak var delegate: ErroredBackingViewDelegate?
   private lazy var fixIconImageView: UIImageView = {
-     UIImageView(image: image(named: "fix-icon", inBundle: Bundle.framework))
-       |> \.translatesAutoresizingMaskIntoConstraints .~ false
-   }()
+    UIImageView(image: image(named: "fix-icon", inBundle: Bundle.framework))
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private let backingInfoStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let finalCollectionDateLabel: UILabel = { UILabel(frame: .zero) }()
   private let finalCollectionDateStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -120,8 +121,8 @@ final class ErroredBackingView: UIView {
       |> finalCollectionStackViewStyle
 
     _ = self.finalCollectionDateLabel
-     |> \.textColor .~ .ksr_red_400
-     |> \.font .~ .ksr_headline(size: 13)
+      |> \.textColor .~ .ksr_red_400
+      |> \.font .~ .ksr_headline(size: 13)
 
     _ = self.backingInfoStackView
       |> backingInfoStackViewStyle

@@ -64,5 +64,5 @@ private func timeLeftString(date: String?) -> String {
   let (time, unit) = Format.duration(
     secondsInUTC: timeInterval
   )
-   return Strings.Time_left_left(time_left: time + " " + unit)
+  return Strings.Time_left_left(time_left: time + " " + unit)
 }

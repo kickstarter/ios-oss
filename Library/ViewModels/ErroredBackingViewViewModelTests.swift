@@ -50,6 +50,5 @@ final class ErroredBackingViewViewModelTests: TestCase {
 
     self.projectName.assertValue("Awesome tabletop collection")
     self.finalCollectionDateText.assertValue("4 days left")
-
   }
 }

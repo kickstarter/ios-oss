@@ -33,7 +33,9 @@ extension GraphBacking.Project {
     self.id = try values.decode(String.self, forKey: .id)
     self.name = try values.decode(String.self, forKey: .name)
     self.slug = try values.decode(String.self, forKey: .slug)
-    self.finalCollectionDate = try? values.decode(String.self,
-                                                 forKey: .finalCollectionDate)
+    self.finalCollectionDate = try? values.decode(
+      String.self,
+      forKey: .finalCollectionDate
+    )
   }
 }
