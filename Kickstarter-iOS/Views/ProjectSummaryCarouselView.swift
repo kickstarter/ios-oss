@@ -1,4 +1,5 @@
 import Foundation
+import KsApi
 import Library
 import Prelude
 import UIKit
@@ -43,7 +44,7 @@ final class ProjectSummaryCarouselView: UIView {
 
   // MARK: - Accessors
 
-  func configure(with items: [ProjectSummaryItem]) {
+  func configure(with items: [ProjectSummaryEnvelope.ProjectSummaryItem]) {
     self.viewModel.inputs.configure(with: items)
   }
 

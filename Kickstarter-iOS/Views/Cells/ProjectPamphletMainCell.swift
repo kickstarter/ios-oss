@@ -106,15 +106,12 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     self.creatorBylineView.addGestureRecognizer(self.creatorBylineTapGesture)
 
-    // TODO: move to view model output.
-    // Uncomment to tests, currently commented to not break snapshots
-//    self.blurbAndReadMoreStackView.insertArrangedSubview(self.projectSummaryCarouselView, at: 1)
-//    self.projectSummaryCarouselView.configure(with: [1, 2, 3])
+    self.blurbAndReadMoreStackView.insertArrangedSubview(self.projectSummaryCarouselView, at: 1)
 
     self.viewModel.inputs.awakeFromNib()
   }
 
-  internal func configureWith(value: (Project, RefTag?, ProjectCreatorDetailsData)) {
+  internal func configureWith(value: ProjectPamphletMainCellData) {
     self.viewModel.inputs.configureWith(value: value)
   }
 
@@ -323,6 +320,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.pledgedTitleLabel.rac.textColor = self.viewModel.outputs.pledgedTitleLabelTextColor
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
+    self.projectSummaryCarouselView.rac.hidden = self.viewModel.outputs.projectSummaryCarouselViewHidden
     self.readMoreButton.rac.title = self.viewModel.outputs.readMoreButtonTitle
     self.spacerView.rac.hidden = self.viewModel.outputs.spacerViewHidden
     self.stateLabel.rac.text = self.viewModel.outputs.projectStateLabelText
@@ -345,6 +343,12 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] project, creatorDetails in
         self?.creatorBylineView.configureWith(project: project, creatorDetails: creatorDetails)
+      }
+
+    self.viewModel.outputs.configureProjectSummaryCarouselView
+      .observeForUI()
+      .observeValues { [weak self] projectSummaryItems in
+        self?.projectSummaryCarouselView.configure(with: projectSummaryItems)
       }
 
     self.viewModel.outputs.creatorImageUrl

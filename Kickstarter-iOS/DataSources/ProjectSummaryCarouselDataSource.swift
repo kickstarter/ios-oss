@@ -10,7 +10,7 @@ internal final class ProjectSummaryCarouselDataSource: ValueCellDataSource {
     case summary
   }
 
-  func load(_ values: [ProjectSummaryItem]) {
+  func load(_ values: [ProjectSummaryEnvelope.ProjectSummaryItem]) {
     // TODO: iterate over values, calculate greatest item height and cache it
 
     self.greatestCombinedTextHeight = 300
@@ -24,7 +24,7 @@ internal final class ProjectSummaryCarouselDataSource: ValueCellDataSource {
 
   override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as ProjectSummaryCarouselCell, value as Int):
+    case let (cell as ProjectSummaryCarouselCell, value as ProjectSummaryEnvelope.ProjectSummaryItem):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, value) combo.")

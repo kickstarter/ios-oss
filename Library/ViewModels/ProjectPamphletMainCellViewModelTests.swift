@@ -94,7 +94,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 10)
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.statsStackViewAccessibilityLabel.assertValues(
@@ -107,7 +107,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ 1.2
       |> Project.lens.stats.convertedPledgedAmount .~ 1_200
-    self.vm.inputs.configureWith(value: (nonUSProject, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (nonUSProject, nil, (creatorDetails, false), []))
 
     self.statsStackViewAccessibilityLabel.assertValues(
       [
@@ -120,7 +120,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ 2.0
 
-    self.vm.inputs.configureWith(value: (nonUSUserCurrency, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (nonUSUserCurrency, nil, (creatorDetails, false), []))
 
     self.statsStackViewAccessibilityLabel.assertValues(
       [
@@ -139,7 +139,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.stats.staticUsdRate .~ 2.0
 
     withEnvironment(countryCode: "CA") {
-      self.vm.inputs.configureWith(value: (defaultUserCurrency, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (defaultUserCurrency, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       self.statsStackViewAccessibilityLabel.assertValues(
@@ -151,7 +151,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testYoureABackerLabelHidden_NotABacker() {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = .template |> Project.lens.personalization.isBacking .~ false
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.youreABackerLabelHidden.assertValues([true])
@@ -160,7 +160,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testYoureABackerLabelHidden_NotABacker_VideoInteraction() {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = .template |> Project.lens.personalization.isBacking .~ false
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.youreABackerLabelHidden.assertValues([true])
@@ -177,7 +177,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testYoureABackerLabelHidden_LoggedOut() {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = .template |> Project.lens.personalization.isBacking .~ nil
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.youreABackerLabelHidden.assertValues([true])
@@ -186,7 +186,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testYoureABackerLabelHidden_Backer() {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = .template |> Project.lens.personalization.isBacking .~ true
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.youreABackerLabelHidden.assertValues([false])
@@ -195,7 +195,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testYoureABackerLabelHidden_Backer_VideoInteraction() {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = .template |> Project.lens.personalization.isBacking .~ true
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.youreABackerLabelHidden.assertValues([false])
@@ -213,7 +213,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = .template
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ "hello.jpg"
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
     self.creatorImageUrl.assertValues(["hello.jpg"])
   }
@@ -221,7 +221,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testCreatorLabelText() {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = Project.template |> Project.lens.creator.name .~ "Creator Blob"
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
     self.creatorLabelText.assertValues(["by Creator Blob"])
   }
@@ -229,7 +229,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testProjectBlurbLabelText() {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = Project.template |> Project.lens.blurb .~ "The elevator pitch"
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
     self.projectBlurbLabelText.assertValues(["The elevator pitch"])
   }
@@ -238,7 +238,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = .template
       |> Project.lens.photo.full .~ "project.jpg"
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
     self.projectImageUrl.assertValues(["project.jpg"])
   }
@@ -246,7 +246,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testProjectNameLabelText() {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = Project.template |> Project.lens.blurb .~ "The elevator pitch"
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
     self.projectBlurbLabelText.assertValues(["The elevator pitch"])
   }
@@ -254,7 +254,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   func testBackersTitleLabel() {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = .template |> Project.lens.stats.backersCount .~ 1_000
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.backersTitleLabelText.assertValues([Format.wholeNumber(project.stats.backersCount)])
@@ -267,7 +267,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       self.conversionLabelText.assertValueCount(0)
@@ -286,7 +286,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
 
     withEnvironment(countryCode: "CA") {
-      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       self.conversionLabelText.assertValues(["Converted from US$ 1,000 pledged of US$ 2,000 goal."])
@@ -303,7 +303,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.stats.pledged .~ 1
 
     withEnvironment(config: .template |> Config.lens.countryCode .~ "US") {
-      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       self.conversionLabelText.assertValues(["Converted from £1 pledged of £2 goal."])
@@ -316,7 +316,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 4)
 
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.deadlineTitleLabelText.assertValues(["4"])
@@ -328,7 +328,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.state .~ .failed
 
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.fundingProgressBarViewBackgroundColor.assertValues([UIColor.ksr_dark_grey_400])
@@ -339,7 +339,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.state .~ .successful
 
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.fundingProgressBarViewBackgroundColor.assertValues([UIColor.ksr_green_700])
@@ -350,7 +350,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.state .~ .successful
 
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.pledgedTitleLabelTextColor.assertValues([UIColor.ksr_green_700])
@@ -361,7 +361,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.state .~ .canceled
 
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.pledgedTitleLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_500])
@@ -377,7 +377,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.stats.goal .~ 2_000
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       self.pledgedTitleLabelText.assertValues(["$1,000"])
@@ -390,7 +390,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let project = Project.template
 
     withEnvironment(countryCode: "CA") {
-      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       self.pledgedTitleLabelText.assertValues(
@@ -411,7 +411,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.stats.currentCurrencyRate .~ 2.0
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       self.pledgedTitleLabelText.assertValues(["$2,000"])
@@ -429,7 +429,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.stats.goal .~ 2
 
     withEnvironment(countryCode: "GB") {
-      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       self.pledgedTitleLabelText.assertValues(["£1"])
@@ -442,7 +442,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.stats.pledged .~ 100
       |> Project.lens.stats.goal .~ 200
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.progressPercentage.assertValues([0.5])
@@ -453,7 +453,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let project = .template
       |> Project.lens.stats.pledged .~ 300
       |> Project.lens.stats.goal .~ 200
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.progressPercentage.assertValues([1.0])
@@ -463,7 +463,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = .template
       |> Project.lens.state .~ .successful
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.projectStateLabelTextColor.assertValues([UIColor.ksr_green_700])
@@ -473,7 +473,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = .template
       |> Project.lens.state .~ .failed
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.projectStateLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_400])
@@ -483,7 +483,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = .template
       |> Project.lens.state .~ .failed
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.projectUnsuccessfulLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_500])
@@ -493,7 +493,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = .template
       |> Project.lens.state .~ .failed
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.projectUnsuccessfulLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_500])
@@ -503,7 +503,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = .template
       |> Project.lens.state .~ .live
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.stateLabelHidden.assertValues([true])
@@ -513,7 +513,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let project = .template
       |> Project.lens.state .~ .successful
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.stateLabelHidden.assertValues([false])
@@ -528,7 +528,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     self.opacityForViews.assertValues([0.0])
 
-    self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false), []))
 
     self.opacityForViews.assertValues([0.0, 1.0], "Fade in views after project comes in.")
   }
@@ -542,7 +542,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       self.blurbAndReadMoreStackViewSpacing.assertValues([Styles.grid(0)])
@@ -561,7 +561,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       self.blurbAndReadMoreStackViewSpacing.assertValues([Styles.grid(4)])
@@ -580,7 +580,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       self.blurbAndReadMoreStackViewSpacing.assertValues([Styles.grid(4)])
@@ -598,7 +598,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.notifyDelegateToGoToCampaignWithProject.assertValues([])
     self.notifyDelegateToGoToCampaignWithRefTag.assertValues([])
 
-    self.vm.inputs.configureWith(value: (project, refTag, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, refTag, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.notifyDelegateToGoToCampaignWithProject.assertValues([])
@@ -616,7 +616,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     self.notifyDelegateToGoToCreator.assertValues([])
 
-    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+    self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
     self.vm.inputs.awakeFromNib()
 
     self.notifyDelegateToGoToCreator.assertValues([])
@@ -638,7 +638,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(value: (project, .discovery, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (project, .discovery, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
@@ -694,7 +694,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(value: (project, .discovery, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (project, .discovery, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
@@ -723,7 +723,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ nil
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(value: (project, .discovery, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (project, .discovery, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
@@ -777,7 +777,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (.template, nil, (.template, true)))
+      self.vm.inputs.configureWith(value: (.template, nil, (.template, true), []))
       self.vm.inputs.awakeFromNib()
 
       self.creatorButtonIsHidden.assertValues([true])
@@ -797,7 +797,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       self.readMoreButtonIsLoading.assertValues([false])
@@ -817,7 +817,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       self.readMoreButtonIsLoading.assertValues([false])
@@ -837,14 +837,14 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       self.readMoreButtonIsLoading.assertValues([true])
 
       let projectWithRewards = Project.cosmicSurgery
 
-      self.vm.inputs.configureWith(value: (projectWithRewards, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (projectWithRewards, nil, (creatorDetails, false), []))
 
       self.readMoreButtonIsLoading.assertValues([true, false, false])
     }
@@ -863,7 +863,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false)))
+      self.vm.inputs.configureWith(value: (project, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
       self.readMoreButtonIsLoading.assertValues([false])
@@ -876,7 +876,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.creatorStackViewHidden.assertDidNotEmitValue()
     self.creatorButtonIsHidden.assertDidNotEmitValue()
 
-    self.vm.inputs.configureWith(value: (.template, .discovery, (nil, true)))
+    self.vm.inputs.configureWith(value: (.template, .discovery, (nil, true), []))
     self.vm.inputs.awakeFromNib()
 
     self.creatorBylineViewHidden.assertValues([true])
@@ -884,7 +884,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.creatorStackViewHidden.assertValues([true])
     self.creatorButtonIsHidden.assertValues([true])
 
-    self.vm.inputs.configureWith(value: (.template, .discovery, (nil, false)))
+    self.vm.inputs.configureWith(value: (.template, .discovery, (nil, false), []))
 
     self.creatorBylineViewHidden.assertValues([true, true])
     self.creatorBylineShimmerViewHidden.assertValues([false, true])
@@ -898,7 +898,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.creatorStackViewHidden.assertDidNotEmitValue()
     self.creatorButtonIsHidden.assertDidNotEmitValue()
 
-    self.vm.inputs.configureWith(value: (.template, .discovery, (.template, true)))
+    self.vm.inputs.configureWith(value: (.template, .discovery, (.template, true), []))
     self.vm.inputs.awakeFromNib()
 
     self.creatorBylineViewHidden.assertValues([true])
@@ -906,7 +906,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.creatorStackViewHidden.assertValues([true])
     self.creatorButtonIsHidden.assertValues([true])
 
-    self.vm.inputs.configureWith(value: (.template, .discovery, (.template, false)))
+    self.vm.inputs.configureWith(value: (.template, .discovery, (.template, false), []))
 
     self.creatorBylineViewHidden.assertValues([true, false])
     self.creatorBylineShimmerViewHidden.assertValues([false, true])

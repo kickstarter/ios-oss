@@ -1,4 +1,5 @@
 import Foundation
+import KsApi
 import Library
 import UIKit
 
@@ -15,5 +16,5 @@ final class ProjectSummaryCarouselCell: UICollectionViewCell {
 }
 
 extension ProjectSummaryCarouselCell: ValueCell {
-  func configureWith(value _: Int) {}
+  func configureWith(value _: ProjectSummaryEnvelope.ProjectSummaryItem) {}
 }

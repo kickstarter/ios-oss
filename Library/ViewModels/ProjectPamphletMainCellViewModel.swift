@@ -2,12 +2,19 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias ProjectPamphletMainCellData = (
+  Project,
+  RefTag?,
+  ProjectCreatorDetailsData,
+  [ProjectSummaryEnvelope.ProjectSummaryItem]
+)
+
 public protocol ProjectPamphletMainCellViewModelInputs {
   /// Call when cell awakeFromNib is called.
   func awakeFromNib()
 
-  /// Call with the project and refTag provided to the view controller.
-  func configureWith(value: (Project, RefTag?, ProjectCreatorDetailsData))
+  /// Call with the ProjectPamphletMainCellDataProjectPamphletMainCellData provided to the view controller.
+  func configureWith(value: ProjectPamphletMainCellData)
 
   /// Call when the creator button is tapped.
   func creatorButtonTapped()
@@ -43,6 +50,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
 
   /// Emits a project when the video player controller should be configured.
   var configureVideoPlayerController: Signal<Project, Never> { get }
+
+  /// Emits the data to configure the configureProjectSummaryCarouselView.
+  var configureProjectSummaryCarouselView: Signal<[ProjectSummaryEnvelope.ProjectSummaryItem], Never> { get }
 
   /// Emits a boolean that determines if the conversion labels should be hidden.
   var conversionLabelHidden: Signal<Bool, Never> { get }
@@ -119,6 +129,9 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits the text color of the project state label.
   var projectStateLabelTextColor: Signal<UIColor, Never> { get }
 
+  /// Emits whether the projectSummaryCarouselViewHidden should be hidden
+  var projectSummaryCarouselViewHidden: Signal<Bool, Never> { get }
+
   /// Emits the text color of the backer and deadline title label.
   var projectUnsuccessfulLabelTextColor: Signal<UIColor, Never> { get }
 
@@ -152,17 +165,20 @@ public protocol ProjectPamphletMainCellViewModelType {
 public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellViewModelType,
   ProjectPamphletMainCellViewModelInputs, ProjectPamphletMainCellViewModelOutputs {
   public init() {
-    let projectAndRefTagAndCreatorDetails = Signal.combineLatest(
-      self.projectAndRefTagAndCreatorDetailsProperty.signal.skipNil(),
+    let data = Signal.combineLatest(
+      self.dataProperty.signal.skipNil(),
       self.awakeFromNibProperty.signal
     )
     .map(first)
 
-    let projectAndRefTag = projectAndRefTagAndCreatorDetails.map { project, refTag, _ in (project, refTag) }
-    let projectAndCreatorDetails = projectAndRefTagAndCreatorDetails.map { project, _, creatorDetails in
+    let projectAndRefTag = data.map {
+      project, refTag, _, _ in (project, refTag)
+    }
+    let projectAndCreatorDetails = data.map { project, _, creatorDetails, _ in
       (project, creatorDetails)
     }
     let creatorDetails = projectAndCreatorDetails.map { _, creatorDetails in creatorDetails.0 }.skipNil()
+    let projectSummaryItems = data.map { $0.3 }
 
     self.creatorBylineViewHidden = projectAndCreatorDetails
       .map(second)
@@ -182,6 +198,10 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       creatorBylineViewHidden && creatorBylineShimmerViewHidden
     }
     .negate()
+
+    self.configureProjectSummaryCarouselView = projectSummaryItems
+
+    self.projectSummaryCarouselViewHidden = projectSummaryItems.map { $0.isEmpty }
 
     self.creatorButtonIsHidden = self.creatorStackViewHidden
 
@@ -310,7 +330,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .take(first: 1)
 
     self.opacityForViews = Signal.merge(
-      self.projectAndRefTagAndCreatorDetailsProperty.signal.skipNil().mapConst(1.0),
+      self.dataProperty.signal.skipNil().mapConst(1.0),
       self.awakeFromNibProperty.signal.mapConst(0.0)
     )
 
@@ -372,10 +392,10 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.awakeFromNibProperty.value = ()
   }
 
-  fileprivate let projectAndRefTagAndCreatorDetailsProperty = MutableProperty
-  <(Project, RefTag?, ProjectCreatorDetailsData)?>(nil)
-  public func configureWith(value: (Project, RefTag?, ProjectCreatorDetailsData)) {
-    self.projectAndRefTagAndCreatorDetailsProperty.value = value
+  fileprivate let dataProperty
+    = MutableProperty<ProjectPamphletMainCellData?>(nil)
+  public func configureWith(value: ProjectPamphletMainCellData) {
+    self.dataProperty.value = value
   }
 
   fileprivate let creatorButtonTappedProperty = MutableProperty(())
@@ -414,6 +434,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let categoryNameLabelText: Signal<String, Never>
   public let configureCreatorBylineView: Signal<(Project, ProjectCreatorDetailsEnvelope), Never>
   public let configureVideoPlayerController: Signal<Project, Never>
+  public let configureProjectSummaryCarouselView: Signal<[ProjectSummaryEnvelope.ProjectSummaryItem], Never>
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>
   public let creatorButtonIsHidden: Signal<Bool, Never>
@@ -439,6 +460,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let projectNameLabelText: Signal<String, Never>
   public let projectStateLabelText: Signal<String, Never>
   public let projectStateLabelTextColor: Signal<UIColor, Never>
+  public let projectSummaryCarouselViewHidden: Signal<Bool, Never>
   public let projectUnsuccessfulLabelTextColor: Signal<UIColor, Never>
   public let readMoreButtonIsLoading: Signal<Bool, Never>
   public let readMoreButtonStyle: Signal<ProjectCampaignButtonStyleType, Never>
