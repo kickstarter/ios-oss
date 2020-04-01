@@ -242,7 +242,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] categories in
         let curatedProjectsVC = CuratedProjectsViewController.instantiate()
-        curatedProjectsVC.configure(with: categories)
+        curatedProjectsVC.configure(with: categories, context: .discovery)
 
         let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
 

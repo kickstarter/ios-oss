@@ -32,8 +32,8 @@ public final class CategorySelectionViewController: UIViewController {
 
   private let dataSource = CategorySelectionDataSource()
 
-  private lazy var headerView: UIView = {
-    CategorySelectionHeaderView(frame: .zero, context: .categorySelection)
+  private lazy var headerView: CategorySelectionHeaderView = {
+    CategorySelectionHeaderView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -98,6 +98,8 @@ public final class CategorySelectionViewController: UIViewController {
 
     self.configureSubviews()
     self.setupConstraints()
+
+    self.headerView.configure(with: .categorySelection)
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -170,7 +172,8 @@ public final class CategorySelectionViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] categories in
         let vc = CuratedProjectsViewController.instantiate()
-        vc.configure(with: categories)
+        vc.configure(with: categories, context: .onboarding)
+        
         self?.navigationController?.pushViewController(vc, animated: true)
       }
 

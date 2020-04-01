@@ -1,16 +1,40 @@
 import Foundation
 import ReactiveSwift
 
-public enum HeaderViewContext {
-  case categorySelection
-  case curatedProjects
+public enum CuratedProjectsContext {
+  case onboarding
+  case discovery
+}
 
-  var stepLabelText: String {
+public enum CategorySelectionOnboardingHeaderViewContext {
+  case categorySelection
+  case curatedProjects(CuratedProjectsContext)
+
+  var stepLabelText: String? {
     switch self {
     case .categorySelection:
       return Strings.Step_number(current_step: "1", total_steps: "2")
-    case .curatedProjects:
-      return Strings.Step_number(current_step: "2", total_steps: "2")
+    case .curatedProjects(let context):
+      switch context {
+      case .onboarding:
+        return Strings.Step_number(current_step: "2", total_steps: "2")
+      case .discovery:
+        return nil
+      }
+    }
+  }
+
+  var stepLabelHidden: Bool {
+    switch self {
+    case .categorySelection:
+      return false
+    case .curatedProjects(let context):
+        switch context {
+          case .discovery:
+          return true
+          case .onboarding:
+          return false
+      }
     }
   }
 
@@ -34,10 +58,11 @@ public enum HeaderViewContext {
 }
 
 public protocol CategorySelectionHeaderViewModelInputs {
-  func configure(with context: HeaderViewContext)
+  func configure(with context: CategorySelectionOnboardingHeaderViewContext)
 }
 
 public protocol CategorySelectionHeaderViewModelOutputs {
+  var stepLabelIsHidden: Signal<Bool, Never> { get }
   var stepLabelText: Signal<String, Never> { get }
   var subtitleLabelText: Signal<String, Never> { get }
   var titleLabelText: Signal<String, Never> { get }
@@ -53,6 +78,7 @@ public final class CategorySelectionHeaderViewModel: CategorySelectionHeaderView
   public init() {
     self.stepLabelText = self.contextSignal
       .map(\.stepLabelText)
+      .skipNil()
 
     self.subtitleLabelText = self.contextSignal
       .map(\.subtitleLabelText)
@@ -60,13 +86,18 @@ public final class CategorySelectionHeaderViewModel: CategorySelectionHeaderView
 
     self.titleLabelText = self.contextSignal
       .map(\.titleLabelText)
+
+    self.stepLabelIsHidden = contextSignal
+      .map(\.stepLabelHidden)
   }
 
-  private let (contextSignal, contextObserver) = Signal<HeaderViewContext, Never>.pipe()
-  public func configure(with context: HeaderViewContext) {
+  private let (contextSignal, contextObserver)
+    = Signal<CategorySelectionOnboardingHeaderViewContext, Never>.pipe()
+  public func configure(with context: CategorySelectionOnboardingHeaderViewContext) {
     self.contextObserver.send(value: context)
   }
 
+  public let stepLabelIsHidden: Signal<Bool, Never>
   public let stepLabelText: Signal<String, Never>
   public let subtitleLabelText: Signal<String, Never>
   public let titleLabelText: Signal<String, Never>
