@@ -52,10 +52,7 @@ final class ProjectSummaryCarouselView: UIView {
   private func configureViews() {
     self.addSubview(self.collectionView)
 
-    self.collectionView.register(
-      ProjectSummaryCarouselCell.self,
-      forCellWithReuseIdentifier: ProjectSummaryCarouselCell.defaultReusableId
-    )
+    self.collectionView.register(ProjectSummaryCarouselCell.self)
   }
 
   private func setupConstraints() {
@@ -63,8 +60,8 @@ final class ProjectSummaryCarouselView: UIView {
       |> ksr_constrainViewToEdgesInParent()
 
     self.collectionViewHeightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 0)
-    self.collectionViewHeightConstraint?.priority = .defaultLow
-    self.collectionViewHeightConstraint?.isActive = true
+      |> \.priority .~ .defaultLow
+      |> \.isActive .~ true
   }
 
   // MARK: - View model
