@@ -3,7 +3,12 @@ import Prelude
 import ReactiveSwift
 
 public typealias ProjectCreatorDetailsData = (ProjectCreatorDetailsEnvelope?, isLoading: Bool)
-public typealias ProjectPamphletContentData = (Project, ProjectCreatorDetailsData, RefTag?)
+public typealias ProjectPamphletContentData = (
+  Project,
+  ProjectCreatorDetailsData,
+  [ProjectSummaryEnvelope.ProjectSummaryItem],
+  RefTag?
+)
 
 public protocol ProjectPamphletContentViewModelInputs {
   func configureWith(value: (Project, RefTag?))
@@ -104,11 +109,48 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
       projectCreatorDetailsExperimentValues
     )
 
+    let projectSummaryRequestValues = project
+      .take(first: 1)
+      .map(\.slug)
+      .switchMap { slug in
+        AppEnvironment.current.apiService
+          .fetchProjectSummary(query: projectSummaryQuery(withSlug: slug))
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .map { $0.projectSummary }
+          .prefix(value: [])
+          .demoteErrors(replaceErrorWith: [])
+          .materialize()
+      }
+      .values()
+
+    let projectSummaryHasLoadedValues = projectSummaryRequestValues.filter { $0.isEmpty == false }
+
+    let projectSummaryExperimentValues = projectAndRefTag
+      .takePairWhen(projectSummaryHasLoadedValues)
+      .map { projectAndRefTag, projectSummaryItems in
+        (projectAndRefTag.0, projectAndRefTag.1, projectSummaryItems)
+      }
+      .map { project, refTag, projectSummaryItems -> [ProjectSummaryEnvelope.ProjectSummaryItem] in
+        guard
+          projectPageConversionProjectSummaryExperiment(project: project, refTag: refTag) != .control
+        else { return [] }
+
+        return projectSummaryItems
+      }
+
+    let projectSummaryValues = Signal.merge(
+      projectSummaryRequestValues.take(first: 1),
+      projectSummaryExperimentValues
+    )
+
     let data = Signal.combineLatest(
       projectAndRefTag,
-      projectCreatorDetailsValues
+      projectCreatorDetailsValues,
+      projectSummaryValues
     )
-    .map { projectAndRefTag, creatorDetails in (projectAndRefTag.0, creatorDetails, projectAndRefTag.1) }
+    .map { projectAndRefTag, creatorDetails, projectSummaryValues in
+      (projectAndRefTag.0, creatorDetails, projectSummaryValues, projectAndRefTag.1)
+    }
 
     self.loadProjectPamphletContentDataIntoDataSource = Signal.combineLatest(
       data,
@@ -271,6 +313,18 @@ private func projectPageConversionCreatorDetailsExperiment(
   let optimizelyVariant = AppEnvironment.current.optimizelyClient?
     .variant(
       for: OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails,
+      userAttributes: optimizelyUserAttributes(with: project, refTag: refTag)
+    )
+
+  return optimizelyVariant
+}
+
+private func projectPageConversionProjectSummaryExperiment(
+  project: Project, refTag: RefTag?
+) -> OptimizelyExperiment.Variant? {
+  let optimizelyVariant = AppEnvironment.current.optimizelyClient?
+    .variant(
+      for: OptimizelyExperiment.Key.nativeMeProjectSummary,
       userAttributes: optimizelyUserAttributes(with: project, refTag: refTag)
     )
 

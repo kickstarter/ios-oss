@@ -28,7 +28,8 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
   internal func load(data: ProjectPamphletContentData) {
     self.clearValues()
 
-    let (project, creatorDetails, refTag) = data
+    // TODO: configure ProjectPamphletMainCell with ProjectSummaryItem array
+    let (project, creatorDetails, _, refTag) = data
 
     if currentUserIsCreator(of: project) {
       self.set(
