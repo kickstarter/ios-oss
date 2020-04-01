@@ -23,14 +23,13 @@ final class ErroredBackingView: UIView {
   // MARK: - Properties
 
   public weak var delegate: ErroredBackingViewDelegate?
+  private let backingInfoStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let finalCollectionDateLabel: UILabel = { UILabel(frame: .zero) }()
+  private let finalCollectionDateStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var fixIconImageView: UIImageView = {
     UIImageView(image: image(named: "fix-icon", inBundle: Bundle.framework))
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-
-  private let backingInfoStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private let finalCollectionDateLabel: UILabel = { UILabel(frame: .zero) }()
-  private let finalCollectionDateStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let manageButton: UIButton = { UIButton(type: .custom) }()
   private let projectNameLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()

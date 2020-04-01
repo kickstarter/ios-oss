@@ -20,16 +20,16 @@ public protocol ErroredBackingViewViewModelType {
 public final class ErroredBackingViewViewModel: ErroredBackingViewViewModelType,
   ErroredBackingViewViewModelInputs, ErroredBackingViewViewModelOutputs {
   public init() {
-    let project = self.backingSignal
-      .map(\.project)
-      .skipNil()
-
     self.projectName = self.backingSignal
       .map(\.project?.name)
       .skipNil()
 
-    self.finalCollectionDateText = project
-      .map { timeLeftString(date: $0.finalCollectionDate) }
+    let collectionDate = self.backingSignal
+     .map(\.project?.finalCollectionDate)
+     .skipNil()
+
+    self.finalCollectionDateText = collectionDate
+      .map { timeLeftString(date: $0) }
 
     self.notifyDelegateManageButtonTapped = self.backingSignal
       .takeWhen(self.manageButtonTappedSignal)
@@ -53,10 +53,8 @@ public final class ErroredBackingViewViewModel: ErroredBackingViewViewModelType,
   public var outputs: ErroredBackingViewViewModelOutputs { return self }
 }
 
-private func timeLeftString(date: String?) -> String {
+private func timeLeftString(date: String) -> String {
   let dateFormatter = ISO8601DateFormatter()
-  guard let date = date else { return "" }
-
   guard let finalCollectionDate = dateFormatter.date(from: date) else { return "" }
 
   let timeInterval = finalCollectionDate.timeIntervalSince1970
