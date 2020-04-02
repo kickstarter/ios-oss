@@ -15,6 +15,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   private lazy var appleLoginButton: ASAuthorizationAppleIDButton = {
     ASAuthorizationAppleIDButton(type: .continue, style: .black)
   }()
+
   private lazy var backgroundImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var bringCreativeProjectsToLifeLabel = { UILabel(frame: .zero) }()
   private lazy var contextLabel = { UILabel(frame: .zero) }()
