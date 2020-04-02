@@ -7,11 +7,11 @@ import UIKit
 extension ProjectSummaryCarouselCell {
   public enum Layout {
     public enum MaxInnerWidth {
-      public static let size: CGFloat = (UIScreen.main.bounds.width * 0.6) - (Margin.width * 2)
+      public static let size: CGFloat = MaxOuterWidth.size - (Margin.width * 2)
     }
 
     public enum MaxOuterWidth {
-      public static let size: CGFloat = (UIScreen.main.bounds.width * 0.6) + (Margin.width * 2)
+      public static let size: CGFloat = CGFloat(Int(UIScreen.main.bounds.width * 0.65))
     }
 
     public enum Margin {
@@ -113,8 +113,12 @@ final class ProjectSummaryCarouselCell: UICollectionViewCell {
     _ = (self.rootStackView, self.gradientBackgroundView)
       |> ksr_addSubviewToParent()
 
-    _ = ([self.titleLabel, self.bodyLabel, UIView()], self.rootStackView)
+    let spacer = UIView()
+
+    _ = ([self.titleLabel, self.bodyLabel, spacer], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    self.rootStackView.setCustomSpacing(0, after: self.bodyLabel)
   }
 
   private func setupConstraints() {

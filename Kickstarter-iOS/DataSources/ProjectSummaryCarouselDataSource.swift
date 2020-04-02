@@ -35,7 +35,7 @@ internal final class ProjectSummaryCarouselDataSource: ValueCellDataSource {
     return items.reduce(0) { (current, item) -> CGFloat in
       let size = CGSize(
         width: ProjectSummaryCarouselCell.Layout.MaxInnerWidth.size,
-        height: .greatestFiniteMagnitude / 2
+        height: .greatestFiniteMagnitude
       )
 
       let titleHeight = (item.question.rawValue as NSString).boundingRect(
@@ -54,9 +54,12 @@ internal final class ProjectSummaryCarouselDataSource: ValueCellDataSource {
       )
       .height
 
-      let totalHeight = titleHeight + bodyHeight
+      let totalHeight = ProjectSummaryCarouselCell.Layout.Margin.width * 2
+        + ProjectSummaryCarouselCell.Layout.Spacing.width
+        + ceil(titleHeight)
+        + ceil(bodyHeight)
 
-      return max(current, ceil(totalHeight))
+      return max(current, totalHeight)
     }
   }
 }
