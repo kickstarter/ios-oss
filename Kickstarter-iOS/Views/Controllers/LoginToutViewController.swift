@@ -453,7 +453,11 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
 extension LoginToutViewController: TabBarControllerScrollable {
   func scrollToTop() {
-    if let scrollView = self.view.subviews.first as? UIScrollView {
+    guard self.view.subviews.count > 1 else {
+      return
+    }
+
+    if let scrollView = self.view.subviews[1] as? UIScrollView {
       scrollView.scrollToTop()
     }
   }
