@@ -17,6 +17,8 @@ final class ProjectSummaryCarouselView: UIView {
 
   private var collectionViewHeightConstraint: NSLayoutConstraint?
 
+  private var greatestCombinedTextHeight: CGFloat = 0
+
   private let dataSource = ProjectSummaryCarouselDataSource()
 
   private let layout: UICollectionViewFlowLayout = {
@@ -77,8 +79,17 @@ final class ProjectSummaryCarouselView: UIView {
 
         self.dataSource.load(items)
         self.collectionView.reloadData()
-        self.collectionViewHeightConstraint?.constant = self.dataSource.greatestCombinedTextHeight
+        self.updateGreatestCombinedTextHeight(with: items)
+        self.updateCollectionViewHeight()
       }
+  }
+
+  private func updateGreatestCombinedTextHeight(with items: [ProjectSummaryEnvelope.ProjectSummaryItem]) {
+    self.greatestCombinedTextHeight = greatestCombinedTextHeightForItems(items)
+  }
+
+  private func updateCollectionViewHeight() {
+    self.collectionViewHeightConstraint?.constant = self.greatestCombinedTextHeight
   }
 
   // MARK: - Styles
@@ -101,7 +112,42 @@ extension ProjectSummaryCarouselView: UICollectionViewDelegateFlowLayout {
   ) -> CGSize {
     return CGSize(
       width: ProjectSummaryCarouselCell.Layout.MaxOuterWidth.size,
-      height: self.dataSource.greatestCombinedTextHeight
+      height: self.greatestCombinedTextHeight
     )
+  }
+}
+
+private func greatestCombinedTextHeightForItems(
+  _ items: [ProjectSummaryEnvelope.ProjectSummaryItem]
+) -> CGFloat {
+  return items.reduce(0) { (current, item) -> CGFloat in
+    let size = CGSize(
+      width: ProjectSummaryCarouselCell.Layout.MaxInnerWidth.size,
+      height: .greatestFiniteMagnitude
+    )
+
+    // TODO: use correct translation here once available
+    let titleHeight = (item.question.rawValue as NSString).boundingRect(
+      with: size,
+      options: [.usesLineFragmentOrigin, .usesFontLeading],
+      attributes: [.font: ProjectSummaryCarouselCell.Style.Title.font()],
+      context: nil
+    )
+    .height
+
+    let bodyHeight = (item.response as NSString).boundingRect(
+      with: size,
+      options: [.usesLineFragmentOrigin, .usesFontLeading],
+      attributes: [.font: ProjectSummaryCarouselCell.Style.Body.font()],
+      context: nil
+    )
+    .height
+
+    let totalHeight = ProjectSummaryCarouselCell.Layout.Margin.width * 2
+      + ProjectSummaryCarouselCell.Layout.Spacing.width
+      + ceil(titleHeight)
+      + ceil(bodyHeight)
+
+    return max(current, totalHeight)
   }
 }
