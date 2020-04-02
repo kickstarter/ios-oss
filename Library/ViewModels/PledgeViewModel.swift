@@ -605,8 +605,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     initialData
       .observeValues { project, _, refTag, _ in
         let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: AppEnvironment.current.currentUser,
-          project: project,
+          with: project,
           refTag: refTag
         )
 
@@ -644,6 +643,24 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           context: TrackingHelpers.pledgeContext(for: context),
           refTag: nil
         )
+
+    createBackingDataAndIsApplePay.takeWhen(createBackingCompletionEvents)
+     .observeValues { data, isApplePay in
+        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
+          with: data.project,
+          refTag: data.refTag
+        )
+
+        let allEventTags = eventTags
+          .withAllValuesFrom(optimizelyCheckoutEventTags(createBackingData: data, isApplePay: isApplePay))
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "App Completed Checkout",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: allEventTags
+          )
       }
   }
 
@@ -928,4 +945,28 @@ private func checkoutPropertiesData(
     shippingAmount: shippingAmount,
     userHasStoredApplePayCard: userHasEligibleStoredApplePayCard
   )
+}
+
+private func optimizelyCheckoutEventTags(
+  createBackingData: CreateBackingData,
+  isApplePay: Bool
+) -> [String: Any] {
+  let pledgeTotal = createBackingData.pledgeAmount
+
+  let pledgeTotalUsdCents = pledgeTotal
+    .multiplyingCurrency(Double(createBackingData.project.stats.staticUsdRate))
+    .multiplyingCurrency(100.0)
+    .rounded()
+
+  let paymentType = isApplePay
+    ? Backing.PaymentType.applePay.rawValue
+    : Backing.PaymentType.creditCard.rawValue
+
+  return [
+    "checkout_amount": pledgeTotal,
+    "checkout_payment_type": paymentType,
+    "revenue": Int(pledgeTotalUsdCents),
+    "currency": createBackingData.project.stats.currency,
+    "category": createBackingData.project.category.name
+  ]
 }

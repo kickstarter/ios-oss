@@ -151,8 +151,7 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
       .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
       .observeValues { project, refTag in
         let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: AppEnvironment.current.currentUser,
-          project: project,
+          with: project,
           refTag: refTag
         )
 

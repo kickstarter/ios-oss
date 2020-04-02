@@ -151,18 +151,10 @@ private func pledgeCTA(project: Project, refTag: RefTag?, backing: Backing?) -> 
       return PledgeStateCTAType.viewYourRewards
     }
 
-    let userAttributes = optimizelyUserAttributes(
-      with: AppEnvironment.current.currentUser,
-      project: project,
-      refTag: refTag
-    )
-
     let optimizelyVariant = AppEnvironment.current.optimizelyClient?
       .variant(
         for: OptimizelyExperiment.Key.pledgeCTACopy,
-        userId: deviceIdentifier(uuid: UUID()),
-        isAdmin: AppEnvironment.current.currentUser?.isAdmin ?? false,
-        userAttributes: userAttributes
+        userAttributes: optimizelyUserAttributes(with: project, refTag: refTag)
       )
 
     if let variant = optimizelyVariant, project.state == .live {

@@ -336,8 +336,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .takeWhen(shouldTrackCTATappedEvent)
       .observeValues { projectAndRefTag in
         let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: AppEnvironment.current.currentUser,
-          project: projectAndRefTag.0,
+          with: projectAndRefTag.0,
           refTag: projectAndRefTag.1
         )
 
@@ -354,8 +353,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .takeWhen(self.creatorBylineTappedProperty.signal)
       .observeValues { projectAndRefTag in
         let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: AppEnvironment.current.currentUser,
-          project: projectAndRefTag.0,
+          with: projectAndRefTag.0,
           refTag: projectAndRefTag.1
         )
 
