@@ -11,9 +11,7 @@ internal final class ProjectSummaryCarouselDataSource: ValueCellDataSource {
   }
 
   func load(_ values: [ProjectSummaryEnvelope.ProjectSummaryItem]) {
-    // TODO: iterate over values, calculate greatest item height and cache it
-
-    self.greatestCombinedTextHeight = 300
+    self.greatestCombinedTextHeight = self.greatestCombinedTextHeightForItems(values)
 
     self.set(
       values: values,
@@ -28,6 +26,37 @@ internal final class ProjectSummaryCarouselDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, value) combo.")
+    }
+  }
+
+  private func greatestCombinedTextHeightForItems(
+    _ items: [ProjectSummaryEnvelope.ProjectSummaryItem]
+  ) -> CGFloat {
+    return items.reduce(0) { (current, item) -> CGFloat in
+      let size = CGSize(
+        width: ProjectSummaryCarouselCell.Layout.MaxInnerWidth.size,
+        height: .greatestFiniteMagnitude / 2
+      )
+
+      let titleHeight = (item.question.rawValue as NSString).boundingRect(
+        with: size,
+        options: [.usesLineFragmentOrigin, .usesFontLeading],
+        attributes: [.font: ProjectSummaryCarouselCell.Style.Title.font()],
+        context: nil
+      )
+      .height
+
+      let bodyHeight = (item.response as NSString).boundingRect(
+        with: size,
+        options: [.usesLineFragmentOrigin, .usesFontLeading],
+        attributes: [.font: ProjectSummaryCarouselCell.Style.Body.font()],
+        context: nil
+      )
+      .height
+
+      let totalHeight = titleHeight + bodyHeight
+
+      return max(current, ceil(totalHeight))
     }
   }
 }

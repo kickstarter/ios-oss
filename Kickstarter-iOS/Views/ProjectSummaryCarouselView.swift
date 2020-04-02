@@ -100,7 +100,7 @@ extension ProjectSummaryCarouselView: UICollectionViewDelegateFlowLayout {
     sizeForItemAt _: IndexPath
   ) -> CGSize {
     return CGSize(
-      width: UIScreen.main.bounds.width / 2,
+      width: ProjectSummaryCarouselCell.Layout.MaxOuterWidth.size,
       height: self.dataSource.greatestCombinedTextHeight
     )
   }
