@@ -497,8 +497,9 @@ extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
 
   internal func discoveryPostcardCellGoToLoginTout() {
     let vc = LoginToutViewController.configuredWith(loginIntent: .starProject)
+    let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
     let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .formSheet
+      |> \.modalPresentationStyle .~ (isIpad ? .formSheet : .fullScreen)
 
     self.present(nav, animated: true, completion: nil)
   }
