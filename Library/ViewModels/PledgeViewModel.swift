@@ -642,7 +642,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           reward: data.reward,
           context: TrackingHelpers.pledgeContext(for: context),
           refTag: nil
-        ) }
+        ) 
+    }
 
     createBackingDataAndIsApplePay.takeWhen(createBackingCompletionEvents)
      .observeValues { data, isApplePay in
