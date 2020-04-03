@@ -573,7 +573,7 @@ public final class Koala {
     switch stateType {
     case .fix:
       self.track(event: "Manage Pledge Button Clicked", properties: fixPledgeProps)
-    case .pledge:
+    case .pledge, .seeTheRewards, .viewTheRewards:
       self.track(
         event: DataLakeWhiteListedEvent.projectPagePledgeButtonClicked.rawValue,
         location: .projectPage,
