@@ -12,6 +12,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let statsStackViewAccessibilityLabel = TestObserver<String, Never>()
   private let backersTitleLabelText = TestObserver<String, Never>()
   private let blurbAndReadMoreStackViewSpacing = TestObserver<CGFloat, Never>()
+  private let configureProjectSummaryCarouselView
+    = TestObserver<[ProjectSummaryEnvelope.ProjectSummaryItem], Never>()
   private let conversionLabelHidden = TestObserver<Bool, Never>()
   private let conversionLabelText = TestObserver<String, Never>()
   private let creatorButtonIsHidden = TestObserver<Bool, Never>()
@@ -37,6 +39,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let projectNameLabelText = TestObserver<String, Never>()
   private let projectStateLabelText = TestObserver<String, Never>()
   private let projectStateLabelTextColor = TestObserver<UIColor, Never>()
+  private let projectSummaryCarouselViewHidden = TestObserver<Bool, Never>()
   private let projectUnsuccessfulLabelTextColor = TestObserver<UIColor, Never>()
   private let readMoreButtonIsLoading = TestObserver<Bool, Never>()
   private let readMoreButtonStyle = TestObserver<ProjectCampaignButtonStyleType, Never>()
@@ -52,6 +55,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       .observe(self.statsStackViewAccessibilityLabel.observer)
     self.vm.outputs.backersTitleLabelText.observe(self.backersTitleLabelText.observer)
     self.vm.outputs.blurbAndReadMoreStackViewSpacing.observe(self.blurbAndReadMoreStackViewSpacing.observer)
+    self.vm.outputs.configureProjectSummaryCarouselView
+      .observe(self.configureProjectSummaryCarouselView.observer)
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
     self.vm.outputs.creatorButtonIsHidden.observe(self.creatorButtonIsHidden.observer)
@@ -81,6 +86,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.projectNameLabelText.observe(self.projectNameLabelText.observer)
     self.vm.outputs.projectStateLabelText.observe(self.projectStateLabelText.observer)
     self.vm.outputs.projectStateLabelTextColor.observe(self.projectStateLabelTextColor.observer)
+    self.vm.outputs.projectSummaryCarouselViewHidden.observe(self.projectSummaryCarouselViewHidden.observer)
     self.vm.outputs.projectUnsuccessfulLabelTextColor.observe(self.projectUnsuccessfulLabelTextColor.observer)
     self.vm.outputs.readMoreButtonIsLoading.observe(self.readMoreButtonIsLoading.observer)
     self.vm.outputs.readMoreButtonStyle.observe(self.readMoreButtonStyle.observer)
@@ -912,6 +918,43 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.creatorBylineShimmerViewHidden.assertValues([false, true])
     self.creatorStackViewHidden.assertValues([true, true, true])
     self.creatorButtonIsHidden.assertValues([true, true, true])
+  }
+
+  func testProjectSummaryCarousel_Visible() {
+    self.configureProjectSummaryCarouselView.assertDidNotEmitValue()
+    self.projectSummaryCarouselViewHidden.assertDidNotEmitValue()
+
+    let items = [
+      ProjectSummaryEnvelope.ProjectSummaryItem(
+        question: .whatIsTheProject,
+        response: "Test copy 1"
+      ),
+      ProjectSummaryEnvelope.ProjectSummaryItem(
+        question: .whatWillYouDoWithTheMoney,
+        response: "Test copy 2"
+      ),
+      ProjectSummaryEnvelope.ProjectSummaryItem(
+        question: .whoAreYou,
+        response: "Test copy 3"
+      )
+    ]
+
+    self.vm.inputs.configureWith(value: (.template, .discovery, (.template, true), items))
+    self.vm.inputs.awakeFromNib()
+
+    self.configureProjectSummaryCarouselView.assertValues([items])
+    self.projectSummaryCarouselViewHidden.assertValues([false])
+  }
+
+  func testProjectSummaryCarousel_Hidden() {
+    self.configureProjectSummaryCarouselView.assertDidNotEmitValue()
+    self.projectSummaryCarouselViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(value: (.template, .discovery, (.template, true), []))
+    self.vm.inputs.awakeFromNib()
+
+    self.configureProjectSummaryCarouselView.assertValues([[]])
+    self.projectSummaryCarouselViewHidden.assertValues([true])
   }
 
   // swiftlint:enable line_length

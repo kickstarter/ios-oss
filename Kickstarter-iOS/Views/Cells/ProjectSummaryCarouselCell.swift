@@ -6,12 +6,23 @@ import UIKit
 
 extension ProjectSummaryCarouselCell {
   public enum Layout {
-    public enum MaxInnerWidth {
-      public static let size: CGFloat = MaxOuterWidth.size - (Margin.width * 2)
+    public static func maxInnerWidth(withMaxOuterWidth width: CGFloat) -> CGFloat {
+      return width - (Margin.width * 2)
     }
 
-    public enum MaxOuterWidth {
-      public static let size: CGFloat = CGFloat(Int(UIScreen.main.bounds.width * 0.65))
+    public static func maxOuterWidth(
+      traitCollection: UITraitCollection
+    ) -> CGFloat {
+      let percentage: CGFloat
+      if traitCollection.isRegularRegular {
+        percentage = 35
+      } else if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+        percentage = 85
+      } else {
+        percentage = 65
+      }
+
+      return CGFloat(Int(UIScreen.main.bounds.width * percentage / 100))
     }
 
     public enum Margin {
@@ -29,7 +40,7 @@ extension ProjectSummaryCarouselCell {
     }
 
     public enum Title {
-      public static let font = { UIFont.ksr_title3() }
+      public static let font = { UIFont.ksr_title3().bolded }
     }
   }
 }
@@ -83,10 +94,12 @@ final class ProjectSummaryCarouselCell: UICollectionViewCell {
 
     _ = self.titleLabel
       |> \.numberOfLines .~ 0
+      |> \.textColor .~ .ksr_trust_700
       |> \.font .~ Style.Title.font()
 
     _ = self.bodyLabel
       |> \.numberOfLines .~ 0
+      |> \.textColor .~ .ksr_trust_700
       |> \.font .~ Style.Body.font()
 
     _ = self.gradientBackgroundView
@@ -113,9 +126,7 @@ final class ProjectSummaryCarouselCell: UICollectionViewCell {
     _ = (self.rootStackView, self.gradientBackgroundView)
       |> ksr_addSubviewToParent()
 
-    let spacer = UIView()
-
-    _ = ([self.titleLabel, self.bodyLabel, spacer], self.rootStackView)
+    _ = ([self.titleLabel, self.bodyLabel, UIView()], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     self.rootStackView.setCustomSpacing(0, after: self.bodyLabel)

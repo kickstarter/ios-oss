@@ -8,8 +8,8 @@ public protocol ProjectSummaryCarouselCellViewModelInputs {
 }
 
 public protocol ProjectSummaryCarouselCellViewModelOutputs {
-  var title: Signal<String, Never> { get }
   var body: Signal<String, Never> { get }
+  var title: Signal<String, Never> { get }
 }
 
 public protocol ProjectSummaryCarouselCellViewModelType {
@@ -23,11 +23,12 @@ public final class ProjectSummaryCarouselCellViewModel: ProjectSummaryCarouselCe
     let item = self.itemProperty.signal
       .skipNil()
 
-    self.title = item
-      .map(\.question.rawValue)
-
     self.body = item
       .map(\.response)
+
+    self.title = item
+      .map(\.question)
+      .map(titleText(for:))
   }
 
   private let itemProperty = MutableProperty<ProjectSummaryEnvelope.ProjectSummaryItem?>(nil)
@@ -35,9 +36,31 @@ public final class ProjectSummaryCarouselCellViewModel: ProjectSummaryCarouselCe
     self.itemProperty.value = item
   }
 
-  public let title: Signal<String, Never>
   public let body: Signal<String, Never>
+  public let title: Signal<String, Never>
 
   public var inputs: ProjectSummaryCarouselCellViewModelInputs { return self }
   public var outputs: ProjectSummaryCarouselCellViewModelOutputs { return self }
+}
+
+private func titleText(
+  for question: ProjectSummaryEnvelope.ProjectSummaryItem.ProjectSummaryQuestion
+) -> String {
+  switch question {
+  case .whatIsTheProject:
+    return localizedString(
+      key: "What_is_this_project",
+      defaultValue: "What is this project?"
+    )
+  case .whatWillYouDoWithTheMoney:
+    return localizedString(
+      key: "How_will_the_funds_bring_it_to_life",
+      defaultValue: "How will the funds bring it to life?"
+    )
+  case .whoAreYou:
+    return localizedString(
+      key: "Who_is_the_creator",
+      defaultValue: "Who is the creator?"
+    )
+  }
 }

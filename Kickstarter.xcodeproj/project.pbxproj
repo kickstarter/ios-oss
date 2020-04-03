@@ -401,6 +401,7 @@
 		8ACF558723E8D444001654A2 /* Argo+ToPrimitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF558623E8D444001654A2 /* Argo+ToPrimitive.swift */; };
 		8ACF558923E8D467001654A2 /* TryDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF558823E8D467001654A2 /* TryDecodable.swift */; };
 		8ACF558F23EA08DB001654A2 /* TryDecodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF558E23EA08DB001654A2 /* TryDecodableTests.swift */; };
+		8AD13A3F2436AF55009BF879 /* ProjectSummaryCarouselCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD13A3E2436AF55009BF879 /* ProjectSummaryCarouselCellViewModelTests.swift */; };
 		8AD48633235939AF00A1463E /* StripeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD48632235939AF00A1463E /* StripeTypes.swift */; };
 		8AD486352359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD486342359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift */; };
 		8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */; };
@@ -1820,6 +1821,7 @@
 		8ACF558623E8D444001654A2 /* Argo+ToPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Argo+ToPrimitive.swift"; sourceTree = "<group>"; };
 		8ACF558823E8D467001654A2 /* TryDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryDecodable.swift; sourceTree = "<group>"; };
 		8ACF558E23EA08DB001654A2 /* TryDecodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryDecodableTests.swift; sourceTree = "<group>"; };
+		8AD13A3E2436AF55009BF879 /* ProjectSummaryCarouselCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSummaryCarouselCellViewModelTests.swift; sourceTree = "<group>"; };
 		8AD48632235939AF00A1463E /* StripeTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeTypes.swift; sourceTree = "<group>"; };
 		8AD486342359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPPaymentHandler+StripePaymentHandlerActionStatus.swift"; sourceTree = "<group>"; };
 		8AD7953123A286D800998C79 /* Qualtrics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Qualtrics.framework; path = Carthage/Build/iOS/Qualtrics.framework; sourceTree = "<group>"; };
@@ -3905,6 +3907,7 @@
 				D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */,
 				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
 				A7ED1F8A1E831C5C00BFFA01 /* WebModalViewModelTests.swift */,
+				8AD13A3E2436AF55009BF879 /* ProjectSummaryCarouselCellViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -5046,6 +5049,7 @@
 				1611EF6923B275700051CDCC /* MockUUID.swift in Sources */,
 				D723708C2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift in Sources */,
 				A7ED1FAC1E831C5C00BFFA01 /* ActivitySampleFollowCellViewModelTests.swift in Sources */,
+				8AD13A3F2436AF55009BF879 /* ProjectSummaryCarouselCellViewModelTests.swift in Sources */,
 				A7ED20021E831C5C00BFFA01 /* ThanksViewModelTests.swift in Sources */,
 				3757D107228E521600241AE6 /* UIFontTests.swift in Sources */,
 				A7ED1F351E830FDC00BFFA01 /* String+SimpleHTMLTests.swift in Sources */,

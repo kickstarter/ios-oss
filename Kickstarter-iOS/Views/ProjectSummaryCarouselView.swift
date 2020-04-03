@@ -24,7 +24,6 @@ final class ProjectSummaryCarouselView: UIView {
   private let layout: UICollectionViewFlowLayout = {
     UICollectionViewFlowLayout()
       |> \.minimumInteritemSpacing .~ Styles.grid(2)
-      |> \.sectionInset .~ .init(leftRight: Styles.grid(4))
       |> \.scrollDirection .~ .horizontal
   }()
 
@@ -62,6 +61,10 @@ final class ProjectSummaryCarouselView: UIView {
     _ = (self.collectionView, self)
       |> ksr_constrainViewToEdgesInParent()
 
+    (self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset = .init(
+      leftRight: self.traitCollection.isRegularRegular ? Styles.grid(16) : Styles.grid(4)
+    )
+
     self.collectionViewHeightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 0)
       |> \.priority .~ .defaultLow
       |> \.isActive .~ true
@@ -85,7 +88,14 @@ final class ProjectSummaryCarouselView: UIView {
   }
 
   private func updateGreatestCombinedTextHeight(with items: [ProjectSummaryEnvelope.ProjectSummaryItem]) {
-    self.greatestCombinedTextHeight = greatestCombinedTextHeightForItems(items)
+    let maxOuterWidth = ProjectSummaryCarouselCell.Layout.maxOuterWidth(
+      traitCollection: self.traitCollection
+    )
+
+    self.greatestCombinedTextHeight = greatestCombinedTextHeightForItems(
+      items,
+      inWidth: ProjectSummaryCarouselCell.Layout.maxInnerWidth(withMaxOuterWidth: maxOuterWidth)
+    )
   }
 
   private func updateCollectionViewHeight() {
@@ -111,18 +121,21 @@ extension ProjectSummaryCarouselView: UICollectionViewDelegateFlowLayout {
     sizeForItemAt _: IndexPath
   ) -> CGSize {
     return CGSize(
-      width: ProjectSummaryCarouselCell.Layout.MaxOuterWidth.size,
+      width: ProjectSummaryCarouselCell.Layout.maxOuterWidth(
+        traitCollection: self.traitCollection
+      ),
       height: self.greatestCombinedTextHeight
     )
   }
 }
 
 private func greatestCombinedTextHeightForItems(
-  _ items: [ProjectSummaryEnvelope.ProjectSummaryItem]
+  _ items: [ProjectSummaryEnvelope.ProjectSummaryItem],
+  inWidth width: CGFloat
 ) -> CGFloat {
   return items.reduce(0) { (current, item) -> CGFloat in
     let size = CGSize(
-      width: ProjectSummaryCarouselCell.Layout.MaxInnerWidth.size,
+      width: width,
       height: .greatestFiniteMagnitude
     )
 
