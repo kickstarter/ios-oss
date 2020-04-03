@@ -139,10 +139,7 @@ jobs:
           command: PLATFORM=iOS make test
           no_output_timeout: "20m" # 20 minutes
 
-      - store_artifacts:
-          path: /tmp/xcode_raw.log
-      - store_artifacts:
-          path: /tmp/FailureDiffs
+      - codecov/upload
 
   # Library tests
   library-tests:
@@ -186,8 +183,7 @@ jobs:
           command: PLATFORM=iOS TARGET=Library make test
           no_output_timeout: "20m" # 20 minutes
 
-      - store_artifacts:
-          path: /tmp/xcode_raw.log
+      - codecov/upload
 
   # Kickstarter UI Tests
   kickstarter-ui-tests:
@@ -230,9 +226,6 @@ jobs:
           name: Kickstarter UI Tests
           command: SCHEME=KickstarterUITests make test
           no_output_timeout: "20m" # 20 minutes
-
-      - store_artifacts:
-          path: /tmp/xcode_raw.log
 
   # KsApi tests
   ksapi-tests:
