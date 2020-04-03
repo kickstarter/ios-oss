@@ -30,6 +30,7 @@ final class ErroredBackingView: UIView {
     UIImageView(image: image(named: "fix-icon", inBundle: Bundle.framework))
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private let manageButton: UIButton = { UIButton(type: .custom) }()
   private let projectNameLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
