@@ -577,10 +577,10 @@ public final class Koala {
     case .fix:
       self.track(event: "Manage Pledge Button Clicked", properties: fixPledgeProps)
       self.track(
-             event: DataLakeWhiteListedEvent.managePledgeButtonClicked.rawValue,
-             location: .projectPage,
-             properties: props
-           )
+        event: DataLakeWhiteListedEvent.managePledgeButtonClicked.rawValue,
+        location: .projectPage,
+        properties: props
+      )
     case .pledge, .seeTheRewards, .viewTheRewards:
       self.track(
         event: DataLakeWhiteListedEvent.projectPagePledgeButtonClicked.rawValue,
