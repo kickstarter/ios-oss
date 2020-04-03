@@ -642,15 +642,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           reward: data.reward,
           context: TrackingHelpers.pledgeContext(for: context),
           refTag: nil
-        )
-      }
+        ) 
+    }
 
     createBackingDataAndIsApplePay.takeWhen(createBackingCompletionEvents)
-      .observeValues { data, isApplePay in
+     .observeValues { data, isApplePay in
         let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
           with: data.project,
           refTag: data.refTag
-        )
+      )
 
         let allEventTags = eventTags
           .withAllValuesFrom(optimizelyCheckoutEventTags(createBackingData: data, isApplePay: isApplePay))
