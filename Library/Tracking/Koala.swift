@@ -575,7 +575,6 @@ public final class Koala {
 
     switch stateType {
     case .fix:
-      self.track(event: "Manage Pledge Button Clicked", properties: fixPledgeProps)
       self.track(
         event: DataLakeWhiteListedEvent.managePledgeButtonClicked.rawValue,
         location: .projectPage,
