@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 xcode_version: &xcode_version 11.3.1
 iphone_name: &iphone_name iPhone 8
@@ -19,6 +19,9 @@ base_job: &base_job
     FABRIC_SDK_VERSION: *fabric_sdk_version
     IPHONE_NAME: *iphone_name
     XCODE_VERSION: *xcode_version
+
+orbs:
+  codecov: codecov/codecov@1.0.2
 
 jobs:
   build-and-cache:
@@ -273,8 +276,8 @@ jobs:
           command: SCHEME=KsApi make test
           no_output_timeout: "20m" # 20 minutes
 
-      - store_artifacts:
-          path: /tmp/xcode_raw.log
+      - codecov/upload:
+          file: "/Users/distiller/Library/Developer/Xcode/DerivedData"
 
   kickstarter-ios-tests-and-code-coverage:
     <<: *base_job
@@ -584,7 +587,7 @@ workflows:
       - kickstarter-ui-tests
       - library-tests
       - ksapi-tests
-      - kickstarter-ios-tests-and-code-coverage
+      #- kickstarter-ios-tests-and-code-coverage
       - refresh_app_store_dsyms:
           filters:
             branches:
