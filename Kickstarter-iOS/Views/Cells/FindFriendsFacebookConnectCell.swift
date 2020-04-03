@@ -25,7 +25,6 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
 
   internal lazy var fbLoginManager: LoginManager = {
     let manager = LoginManager()
-    manager.loginBehavior = .browser
     manager.defaultAudience = .friends
     return manager
   }()

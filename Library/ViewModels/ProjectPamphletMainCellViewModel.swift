@@ -324,19 +324,19 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     .map { project, variant in
       project.rewards.isEmpty && variant == .variant2
     }
-    .skipRepeats()
 
     let shouldTrackCTATappedEvent = projectAndRefTag
       .takeWhen(self.readMoreButtonTappedProperty.signal)
-      .filter { project, _ in project.state == .live && project.personalization.isBacking == false }
+      .filter { project, _ in
+        project.state == .live && userIsBackingProject(project) == false
+      }
 
     // optimizely tracking
     projectAndRefTag
       .takeWhen(shouldTrackCTATappedEvent)
       .observeValues { projectAndRefTag in
         let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: AppEnvironment.current.currentUser,
-          project: projectAndRefTag.0,
+          with: projectAndRefTag.0,
           refTag: projectAndRefTag.1
         )
 
@@ -353,8 +353,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .takeWhen(self.creatorBylineTappedProperty.signal)
       .observeValues { projectAndRefTag in
         let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: AppEnvironment.current.currentUser,
-          project: projectAndRefTag.0,
+          with: projectAndRefTag.0,
           refTag: projectAndRefTag.1
         )
 
