@@ -30,11 +30,13 @@ public final class Koala {
     case exploreSortClicked = "Explore Sort Clicked"
     case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
     case filterClicked = "Filter Clicked"
+    case fixPledgeButtonClicked = "Fix Pledge Button Clicked"
     case forgotPasswordViewed = "Forgot Password Viewed"
     case loginButtonClicked = "Log In Button Clicked"
     case loginOrSignupButtonClicked = "Log In or Signup Button Clicked"
     case loginOrSignupPageViewed = "Log In or Signup Page Viewed"
     case loginSubmitButtonClicked = "Log In Submit Button Clicked"
+    case managePledgeButtonClicked = "Manage Pledge Button Clicked"
     case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked"
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
     case projectPageViewed = "Project Page Viewed"
@@ -61,6 +63,7 @@ public final class Koala {
     case forgotPassword = "forgot_password_screen" // ResetPasswordViewController
     case login = "login_screen" // LoginViewController
     case loginTout = "login_or_signup_screen" // LoginToutViewController
+    case managePledgeScreen = "manage_pledge_screen"
     case pledgeAddNewCard = "pledge_add_new_card_screen" // AddNewCardViewController
     case pledgeScreen = "pledge_screen" // PledgeViewController
     case projectPage = "project_screen" // ProjectPamphletViewController
@@ -573,6 +576,11 @@ public final class Koala {
     switch stateType {
     case .fix:
       self.track(event: "Manage Pledge Button Clicked", properties: fixPledgeProps)
+      self.track(
+             event: DataLakeWhiteListedEvent.managePledgeButtonClicked.rawValue,
+             location: .projectPage,
+             properties: props
+           )
     case .pledge, .seeTheRewards, .viewTheRewards:
       self.track(
         event: DataLakeWhiteListedEvent.projectPagePledgeButtonClicked.rawValue,
@@ -622,7 +630,11 @@ public final class Koala {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
 
-    self.track(event: "Fix Pledge Button Clicked", properties: props)
+    self.track(
+      event: DataLakeWhiteListedEvent.fixPledgeButtonClicked.rawValue,
+      location: .managePledgeScreen,
+      properties: props
+    )
   }
 
   /* Call when a reward is selected
