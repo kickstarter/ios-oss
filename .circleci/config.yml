@@ -276,8 +276,7 @@ jobs:
           command: SCHEME=KsApi make test
           no_output_timeout: "20m" # 20 minutes
 
-      - codecov/upload:
-          file: "/Users/distiller/Library/Developer/Xcode/DerivedData"
+      - codecov/upload
 
   kickstarter-ios-tests-and-code-coverage:
     <<: *base_job
