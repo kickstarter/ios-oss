@@ -1,5 +1,5 @@
 import Foundation
-import KsApi
+@testable import KsApi
 import Library
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
