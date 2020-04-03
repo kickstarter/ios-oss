@@ -28,7 +28,7 @@ public final class ProjectSummaryCarouselCellViewModel: ProjectSummaryCarouselCe
 
     self.title = item
       .map(\.question)
-      .map(titleText(for:))
+      .map(ProjectSummaryCarouselCellViewModel.titleText(for:))
   }
 
   private let itemProperty = MutableProperty<ProjectSummaryEnvelope.ProjectSummaryItem?>(nil)
@@ -43,24 +43,26 @@ public final class ProjectSummaryCarouselCellViewModel: ProjectSummaryCarouselCe
   public var outputs: ProjectSummaryCarouselCellViewModelOutputs { return self }
 }
 
-private func titleText(
-  for question: ProjectSummaryEnvelope.ProjectSummaryItem.ProjectSummaryQuestion
-) -> String {
-  switch question {
-  case .whatIsTheProject:
-    return localizedString(
-      key: "What_is_this_project",
-      defaultValue: "What is this project?"
-    )
-  case .whatWillYouDoWithTheMoney:
-    return localizedString(
-      key: "How_will_the_funds_bring_it_to_life",
-      defaultValue: "How will the funds bring it to life?"
-    )
-  case .whoAreYou:
-    return localizedString(
-      key: "Who_is_the_creator",
-      defaultValue: "Who is the creator?"
-    )
+extension ProjectSummaryCarouselCellViewModel {
+  public static func titleText(
+    for question: ProjectSummaryEnvelope.ProjectSummaryItem.ProjectSummaryQuestion
+  ) -> String {
+    switch question {
+    case .whatIsTheProject:
+      return localizedString(
+        key: "What_is_this_project",
+        defaultValue: "What is this project?"
+      )
+    case .whatWillYouDoWithTheMoney:
+      return localizedString(
+        key: "How_will_the_funds_bring_it_to_life",
+        defaultValue: "How will the funds bring it to life?"
+      )
+    case .whoAreYou:
+      return localizedString(
+        key: "Who_is_the_creator",
+        defaultValue: "Who is the creator?"
+      )
+    }
   }
 }

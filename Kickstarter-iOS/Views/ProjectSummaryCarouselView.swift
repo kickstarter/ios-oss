@@ -139,14 +139,14 @@ private func greatestCombinedTextHeightForItems(
       height: .greatestFiniteMagnitude
     )
 
-    // TODO: use correct translation here once available
-    let titleHeight = (item.question.rawValue as NSString).boundingRect(
-      with: size,
-      options: [.usesLineFragmentOrigin, .usesFontLeading],
-      attributes: [.font: ProjectSummaryCarouselCell.Style.Title.font()],
-      context: nil
-    )
-    .height
+    let titleHeight = (ProjectSummaryCarouselCellViewModel.titleText(for: item.question) as NSString)
+      .boundingRect(
+        with: size,
+        options: [.usesLineFragmentOrigin, .usesFontLeading],
+        attributes: [.font: ProjectSummaryCarouselCell.Style.Title.font()],
+        context: nil
+      )
+      .height
 
     let bodyHeight = (item.response as NSString).boundingRect(
       with: size,
