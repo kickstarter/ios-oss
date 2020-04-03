@@ -2,9 +2,15 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias WatchProjectValue = (
+  project: Project,
+  context: Koala.LocationContext,
+  discoveryParams: DiscoveryParams?
+)
+
 public protocol WatchProjectViewModelInputs {
   func awakeFromNib()
-  func configure(with project: Project)
+  func configure(with value: WatchProjectValue)
   func projectFromNotification(project: Project?)
   func saveButtonTapped(selected: Bool)
   func saveButtonTouched()
@@ -51,9 +57,10 @@ public final class WatchProjectViewModel: WatchProjectViewModelType,
   WatchProjectViewModelInputs, WatchProjectViewModelOutputs {
   public init() {
     let viewReady = Signal.merge(self.viewDidLoadProperty.signal, self.awakeFromNibProperty.signal)
+    let projectProperty = self.configureWithValueProperty.signal.skipNil().map { $0.project }
 
     let configuredProject = Signal.combineLatest(
-      self.projectProperty.signal.skipNil(),
+      projectProperty,
       viewReady
     )
     .map(first)
@@ -106,10 +113,6 @@ public final class WatchProjectViewModel: WatchProjectViewModelType,
           .flatMapError { _ in .init(value: (project, !shouldWatch, success: false)) }
           .take(until: saveButtonTapped.ignoreValues())
       }
-
-    let projectOnSaveButtonToggleSuccess = watchProjectResult
-      .filter(third)
-      .map(first)
 
     // update the cache with the result and return it
     let projectResultUpdatingCache = watchProjectResult
@@ -172,8 +175,17 @@ public final class WatchProjectViewModel: WatchProjectViewModelType,
 
     self.postNotificationWithProject = project
 
-    projectOnSaveButtonToggleSuccess
-      .observeValues { AppEnvironment.current.koala.trackProjectSave($0, context: .project) }
+    // Tracking
+
+    self.configureWithValueProperty.signal.skipNil()
+      .takeWhen(self.saveButtonTappedProperty.signal)
+      .observeValues { project, context, discoveryParams in
+        AppEnvironment.current.koala.trackWatchProjectButtonClicked(
+          project: project,
+          location: context,
+          params: discoveryParams
+        )
+      }
   }
 
   private let awakeFromNibProperty = MutableProperty(())
@@ -181,9 +193,9 @@ public final class WatchProjectViewModel: WatchProjectViewModelType,
     self.awakeFromNibProperty.value = ()
   }
 
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configure(with project: Project) {
-    self.projectProperty.value = project
+  fileprivate let configureWithValueProperty = MutableProperty<WatchProjectValue?>(nil)
+  public func configure(with value: WatchProjectValue) {
+    self.configureWithValueProperty.value = value
   }
 
   fileprivate let projectFromNotificationProperty = MutableProperty<Project?>(nil)

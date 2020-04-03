@@ -189,8 +189,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     freshProjectRefTagAndCookieRefTag
       .observeValues { project, refTag, _ in
         let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: AppEnvironment.current.currentUser,
-          project: project,
+          with: project,
           refTag: refTag
         )
 
@@ -216,8 +215,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .takeWhen(shouldTrackCTATappedEvent)
       .observeValues { project, refTag in
         let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: AppEnvironment.current.currentUser,
-          project: project,
+          with: project,
           refTag: refTag
         )
 
