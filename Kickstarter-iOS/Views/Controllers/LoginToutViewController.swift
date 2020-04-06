@@ -274,6 +274,14 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
         _ = self?.contextLabel
           ?|> UILabel.lens.font .~ (isHidden ? UIFont.ksr_title2() : UIFont.ksr_subhead())
       }
+
+    self.viewModel.outputs.prepareContinueWithAppleRequest
+      .observeForUI()
+      .observeValues { [weak self] in
+        if #available(iOS 13, *) {
+          self?.prepareContinueWithAppleRequest()
+        } 
+      }
   }
 
   // MARK: - Functions
@@ -344,6 +352,18 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     )
     self.loginButton.addTarget(self, action: #selector(self.loginButtonPressed(_:)), for: .touchUpInside)
     self.signupButton.addTarget(self, action: #selector(self.signupButtonPressed), for: .touchUpInside)
+  }
+
+  @available(iOS 13, *)
+  private func prepareContinueWithAppleRequest() {
+    let requests = [ASAuthorizationAppleIDProvider().createRequest(),
+                    ASAuthorizationPasswordProvider().createRequest()]
+
+    // Create an authorization controller with the given requests.
+    let authorizationController = ASAuthorizationController(authorizationRequests: requests)
+    authorizationController.delegate = self
+    authorizationController.presentationContextProvider = self as? ASAuthorizationControllerPresentationContextProviding
+    authorizationController.performRequests()
   }
 
   fileprivate func goToHelpType(_ helpType: HelpType) {
@@ -429,7 +449,9 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.dismiss(animated: true, completion: nil)
   }
 
-  @objc private func appleLoginButtonPressed(_: UIButton) {}
+  @objc private func appleLoginButtonPressed(_: UIButton) {
+    self.viewModel.inputs.appleLoginButtonPressed()
+  }
 
   @objc private func closeButtonPressed() {
     self.dismiss(animated: true, completion: nil)
@@ -499,4 +521,24 @@ private let separatorViewStyle: ViewStyle = { view in
   view
     |> \.backgroundColor .~ .ksr_grey_500
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
+}
+
+@available(iOS 13, *)
+extension LoginToutViewController: ASAuthorizationControllerDelegate {
+    func authorizationController(controller: ASAuthorizationController,
+                                 didCompleteWithAuthorization authorization: ASAuthorization) {
+      self.viewModel.inputs.continueWithAppleDidComplete(with: authorization)
+    }
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+      self.viewModel.inputs.continueWithAppleDidComplete(with: error)
+    }
+}
+
+@available(iOS 13.0, *)
+extension LoginViewController: ASAuthorizationControllerPresentationContextProviding {
+
+  func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
+    }
 }

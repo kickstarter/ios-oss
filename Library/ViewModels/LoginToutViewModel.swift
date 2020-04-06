@@ -1,11 +1,25 @@
+import AuthenticationServices
 import FBSDKLoginKit
 import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias ContinueWithAppleData = (firstName: String, lastName: String, token: String)
+
 public protocol LoginToutViewModelInputs {
+  /// Call when Continue withApple button is pressed
+  func appleLoginButtonPressed()
+
   /// Call to set the reason the user is attempting to log in
   func configureWith(_ intent: LoginIntent, project: Project?, reward: Reward?)
+
+  /// Call when Apple completes authorization
+  @available(iOS 13.0, *)
+  func continueWithAppleDidComplete(with authorization: ASAuthorization)
+
+  /// Call when Apple completes authorization with error
+  @available(iOS 13.0, *)
+  func continueWithAppleDidComplete(with error: Error)
 
   /// Call when the environment has been logged into
   func environmentLoggedIn()
@@ -57,6 +71,9 @@ public protocol LoginToutViewModelOutputs {
 
   /// Emits when a login success notification should be posted.
   var postNotification: Signal<(Notification, Notification), Never> { get }
+
+  /// Emits when Continue with Apple button is tapped.
+  var prepareContinueWithAppleRequest: Signal<Void, Never> { get }
 
   /// Emits when should show Facebook error alert with AlertError
   var showFacebookErrorAlert: Signal<AlertError, Never> { get }
@@ -118,6 +135,8 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     self.logIntoEnvironment = facebookLogin.values()
 
+    self.prepareContinueWithAppleRequest = self.appleLoginButtonPressedProperty.signal.ignoreValues()
+
     let tfaRequiredError = facebookLogin.errors()
       .filter { $0.ksrCode == .TfaRequired }
 
@@ -167,6 +186,25 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       facebookLoginAttemptFailAlert,
       genericFacebookErrorAlert
     )
+
+    // Login with Apple
+    if #available(iOS 13.0, *) {
+      let appleData = self.continueWithAppleDidCompleteWithAuthorizatonProperty.signal
+        .skipNil()
+        .map { authorization in
+          return continueWithAppleData(from: authorization)
+      }
+      .skipNil()
+
+      _ = appleData
+        .map { (arg) -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> in
+          let (firstName, lastName, token) = arg
+          let input = SignInWithAppleInput(authCode: token, firstName: firstName, lastName: lastName)
+
+          return AppEnvironment.current.apiService.signInWithApple(input: input)
+      }
+    }
+
 
     // MARK: - Tracking
 
@@ -220,9 +258,24 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public var inputs: LoginToutViewModelInputs { return self }
   public var outputs: LoginToutViewModelOutputs { return self }
 
-  fileprivate var viewWillAppearProperty = MutableProperty(())
-  public func viewWillAppear() {
-    self.viewWillAppearProperty.value = ()
+  fileprivate let appleLoginButtonPressedProperty = MutableProperty(())
+  public func appleLoginButtonPressed() {
+    self.appleLoginButtonPressedProperty.value = ()
+  }
+
+  // This property is being set as lazy because we can't use @available in computed properties.
+  @available(iOS 13.0, *)
+  private(set) lazy var continueWithAppleDidCompleteWithAuthorizatonProperty =
+    MutableProperty<ASAuthorization?>(nil)
+
+  @available(iOS 13.0, *)
+  public func continueWithAppleDidComplete(with authorization: ASAuthorization) {
+    self.continueWithAppleDidCompleteWithAuthorizatonProperty.value = authorization
+  }
+
+  fileprivate let continueWithAppleDidCompleteWithErrorProperty = MutableProperty<Error?>(nil)
+  public func continueWithAppleDidComplete(with error: Error) {
+    self.continueWithAppleDidCompleteWithErrorProperty.value = error
   }
 
   fileprivate let loginIntentProperty = MutableProperty<LoginIntent?>(.loginTab)
@@ -234,14 +287,9 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.rewardProperty.value = reward
   }
 
-  fileprivate let loginButtonPressedProperty = MutableProperty(())
-  public func loginButtonPressed() {
-    self.loginButtonPressedProperty.value = ()
-  }
-
-  fileprivate let signupButtonPressedProperty = MutableProperty(())
-  public func signupButtonPressed() {
-    self.signupButtonPressedProperty.value = ()
+  fileprivate let environmentLoggedInProperty = MutableProperty(())
+  public func environmentLoggedIn() {
+    self.environmentLoggedInProperty.value = ()
   }
 
   fileprivate let facebookLoginButtonPressedProperty = MutableProperty(())
@@ -249,20 +297,25 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.facebookLoginButtonPressedProperty.value = ()
   }
 
-  fileprivate let facebookLoginSuccessProperty = MutableProperty<LoginManagerLoginResult?>(nil)
-  public func facebookLoginSuccess(result: LoginManagerLoginResult) {
-    self.facebookLoginSuccessProperty.value = result
-  }
-
   fileprivate let facebookLoginFailProperty = MutableProperty<Error?>(nil)
   public func facebookLoginFail(error: Error?) {
     self.facebookLoginFailProperty.value = error
   }
 
-  fileprivate let environmentLoggedInProperty = MutableProperty(())
-  public func environmentLoggedIn() {
-    self.environmentLoggedInProperty.value = ()
+  fileprivate let facebookLoginSuccessProperty = MutableProperty<LoginManagerLoginResult?>(nil)
+  public func facebookLoginSuccess(result: LoginManagerLoginResult) {
+    self.facebookLoginSuccessProperty.value = result
   }
+
+  fileprivate let loginButtonPressedProperty = MutableProperty(())
+  public func loginButtonPressed() {
+    self.loginButtonPressedProperty.value = ()
+  }
+
+  fileprivate let signupButtonPressedProperty = MutableProperty(())
+   public func signupButtonPressed() {
+     self.signupButtonPressedProperty.value = ()
+   }
 
   fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
@@ -274,6 +327,11 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.viewIsPresentedProperty.value = isPresented
   }
 
+  fileprivate var viewWillAppearProperty = MutableProperty(())
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
+  }
+
   public let attemptFacebookLogin: Signal<(), Never>
   public let dismissViewController: Signal<(), Never>
   public let headlineLabelHidden: Signal<Bool, Never>
@@ -281,6 +339,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let logInContextText: Signal<String, Never>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
   public let postNotification: Signal<(Notification, Notification), Never>
+  public let prepareContinueWithAppleRequest: Signal<(), Never>
   public let startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), Never>
   public let startLogin: Signal<(), Never>
   public let startSignup: Signal<(), Never>
@@ -298,5 +357,26 @@ private func statusString(_ forStatus: LoginIntent) -> String {
     return Strings.Please_log_in_or_sign_up_to_message_this_creator()
   case .discoveryOnboarding, .generic, .activity, .loginTab:
     return Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
+  }
+}
+
+@available(iOS 13.0, *)
+private func continueWithAppleData(from authorization: ASAuthorization) -> ContinueWithAppleData? {
+  switch authorization.credential {
+  case let appleIDCredential as ASAuthorizationAppleIDCredential:
+
+    guard let authToken = appleIDCredential.authorizationCode else {
+      return nil
+    }
+
+    let fullName = appleIDCredential.fullName
+    let firstName = fullName?.givenName ?? ""
+    let lastName = fullName?.familyName ?? ""
+    let token = String(data: authToken, encoding: .utf8)
+
+    return (firstName: firstName, lastName: lastName, token: token) as? ContinueWithAppleData
+
+  default:
+    return nil
   }
 }
