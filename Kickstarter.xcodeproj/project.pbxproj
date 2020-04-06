@@ -198,7 +198,6 @@
 		59D1E6581D1866F800896A4C /* DashboardVideoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D1E6571D1866F800896A4C /* DashboardVideoCellViewModel.swift */; };
 		59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E877371DC9419700BCD1F7 /* Newsletter.swift */; };
 		770187C022FDCFCA0019129D /* PledgeViewControllerMessageDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */; };
-		7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
 		7703B4242321844900169EF3 /* PKPaymentRequest+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */; };
 		7705563B22BC03A600DCB062 /* TableViewStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7705563A22BC03A600DCB062 /* TableViewStyles.swift */; };
 		770A0A7723DB4244002DB8FC /* TrackingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770A0A7623DB4244002DB8FC /* TrackingHelpers.swift */; };
@@ -247,6 +246,7 @@
 		77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */; };
 		7758A8372097BADF0018B96D /* DiscoveryProjectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */; };
 		7758A8382097BB090018B96D /* DiscoveryProjectCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */; };
+		77636FBF2437DB9B007F67B9 /* EnvironmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7703B42123217D4F00169EF3 /* EnvironmentType.swift */; };
 		776B6F70215183A400AB0652 /* ChangeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */; };
 		77752F5E219B39EA00E7DA7D /* SettingsAccountWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77752F5D219B39EA00E7DA7D /* SettingsAccountWarningCell.swift */; };
 		77752F97219B3D7300E7DA7D /* SettingsAccountWarningCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77752F96219B3D7300E7DA7D /* SettingsAccountWarningCell.xib */; };
@@ -3252,7 +3252,6 @@
 				77F6E73421222E7C005A5C55 /* EmailFrequency.swift */,
 				A7C7257F1C85D36D005A016B /* Environment.swift */,
 				A7ED1F141E830FDC00BFFA01 /* EnvironmentTests.swift */,
-				7703B42123217D4F00169EF3 /* EnvironmentType.swift */,
 				3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */,
 				3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */,
 				A72C3A8A1D00F6A80075227E /* ExpandableRow.swift */,
@@ -3888,6 +3887,7 @@
 			isa = PBXGroup;
 			children = (
 				D01587531EEB2DE4006E7684 /* Info.plist */,
+				7703B42123217D4F00169EF3 /* EnvironmentType.swift */,
 				D08CD1BF21910C97009F89F0 /* GraphIDBridging.swift */,
 				775DFA9C215E758400620CED /* GraphMutation.swift */,
 				D67F29351F68333800E399A6 /* GraphSchema.swift */,
@@ -5685,7 +5685,6 @@
 				D01588831EEB2ED7006E7684 /* BackingLenses.swift in Sources */,
 				77776BC6234BA6B700A42388 /* CancelBackingMutation.swift in Sources */,
 				D01588C51EEB2ED7006E7684 /* Reward.ShippingLenses.swift in Sources */,
-				7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */,
 				D01588D51EEB2ED7006E7684 /* UpdateDraftLenses.swift in Sources */,
 				8ACF558923E8D467001654A2 /* TryDecodable.swift in Sources */,
 				D01589211EEB2ED7006E7684 /* StarEnvelope.swift in Sources */,
@@ -5696,6 +5695,7 @@
 				D08510122195015F00BC418B /* PaymentSourceDeleteInput.swift in Sources */,
 				D0158A531EEB3734006E7684 /* Secrets.swift in Sources */,
 				D01588A71EEB2ED7006E7684 /* Project.MemberDataLenses.swift in Sources */,
+				77636FBF2437DB9B007F67B9 /* EnvironmentType.swift in Sources */,
 				D015885B1EEB2ED7006E7684 /* Comment.swift in Sources */,
 				D01588C71EEB2ED7006E7684 /* RewardItemLenses.swift in Sources */,
 				D01588E91EEB2ED7006E7684 /* Message.swift in Sources */,
