@@ -5,7 +5,7 @@ import UIKit
 internal final class ThanksProjectsDataSource: ValueCellDataSource {
   internal func loadData(projects: [Project], category: KsApi.Category) {
     let values = projects.map { (project) -> DiscoveryProjectCellRowValue in
-      DiscoveryProjectCellRowValue(project: project, category: category)
+      DiscoveryProjectCellRowValue(project: project, category: category, discoveryParams: nil)
     }
 
     self.set(values: values, cellClass: DiscoveryPostcardCell.self, inSection: 0)
