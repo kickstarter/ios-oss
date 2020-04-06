@@ -2348,6 +2348,31 @@ final class AppDelegateViewModelTests: TestCase {
       self.goToLandingPage.assertDidNotEmitValue()
     }
   }
+
+  func testDeeplink_DoesNotActivateIf_GoToLandingPageEmits() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~
+      [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
+
+    let userDefaults = MockKeyValueStore()
+      |> \.hasSeenLandingPage .~ false
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient, userDefaults: userDefaults) {
+      self.goToLandingPage.assertDidNotEmitValue()
+
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.didUpdateOptimizelyClient(MockOptimizelyClient())
+
+      _ = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: "https://www.kickstarter.com/discover?sort=newest")!,
+        options: [:]
+      )
+
+      self.goToDiscovery.assertDidNotEmitValue()
+      self.goToLandingPage.assertValueCount(1)
+    }
+  }
 }
 
 private func qualtricsProps() -> [String: String] {
