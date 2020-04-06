@@ -144,6 +144,9 @@
     fileprivate let sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope?
     fileprivate let sendEmailVerificationError: GraphError?
 
+    fileprivate let signInWithAppleResponse: GraphMutationEmptyResponseEnvelope?
+    fileprivate let signInWithAppleError: GraphError?
+
     fileprivate let signupResponse: AccessTokenEnvelope?
     fileprivate let signupError: ErrorEnvelope?
 
@@ -280,6 +283,8 @@
       resetPasswordError: ErrorEnvelope? = nil,
       sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope? = nil,
       sendEmailVerificationError: GraphError? = nil,
+      signInWithAppleResponse: GraphMutationEmptyResponseEnvelope? = nil,
+      signInWithAppleError: GraphError? = nil,
       signupResponse: AccessTokenEnvelope? = nil,
       signupError: ErrorEnvelope? = nil,
       unfollowFriendError: ErrorEnvelope? = nil,
@@ -473,6 +478,10 @@
       self.sendEmailVerificationResponse = sendEmailVerificationResponse
 
       self.sendEmailVerificationError = sendEmailVerificationError
+
+      self.signInWithAppleResponse = signInWithAppleResponse
+
+      self.signInWithAppleError = signInWithAppleError
 
       self.signupResponse = signupResponse
 
@@ -1227,6 +1236,14 @@
       if let error = sendEmailVerificationError {
         return SignalProducer(error: error)
       }
+      return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
+    }
+
+    internal func signInWithApple(input: SignInWithAppleInput)
+      -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+        if let error = signInWithAppleError {
+          return SignalProducer(error: error)
+        }
       return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
     }
 

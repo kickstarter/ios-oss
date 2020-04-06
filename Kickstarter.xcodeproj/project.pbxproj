@@ -1196,6 +1196,8 @@
 		D6ED1B3E216D61E0007F7547 /* UpdateUserAccountMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED1B3D216D61E0007F7547 /* UpdateUserAccountMutation.swift */; };
 		D6ED386A1F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED38691F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift */; };
 		D6ED38A21F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */; };
+		D6F5C60F2437DD2A00C1A79D /* SignInWithAppleMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F5C60E2437DD2A00C1A79D /* SignInWithAppleMutation.swift */; };
+		D6F5C6112437E12300C1A79D /* SignInWithAppleInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F5C6102437E12300C1A79D /* SignInWithAppleInput.swift */; };
 		D6F741A821836E5700C2DDA2 /* PaymentMethodsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F7416F21836C3D00C2DDA2 /* PaymentMethodsViewControllerTests.swift */; };
 		D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */; };
 		D703FC3120F7E280004A272D /* SettingsPrivacy.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D703FC3020F7E280004A272D /* SettingsPrivacy.storyboard */; };
@@ -2543,6 +2545,8 @@
 		D6ED1B3D216D61E0007F7547 /* UpdateUserAccountMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserAccountMutation.swift; sourceTree = "<group>"; };
 		D6ED38691F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoriesEnvelopeLenses.swift; sourceTree = "<group>"; };
 		D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoriesEnvelopeTemplate.swift; sourceTree = "<group>"; };
+		D6F5C60E2437DD2A00C1A79D /* SignInWithAppleMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleMutation.swift; sourceTree = "<group>"; };
+		D6F5C6102437E12300C1A79D /* SignInWithAppleInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleInput.swift; sourceTree = "<group>"; };
 		D6F7416F21836C3D00C2DDA2 /* PaymentMethodsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsViewControllerTests.swift; sourceTree = "<group>"; };
 		D6FB2A3C1FA27D0300B0D282 /* CategoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTests.swift; sourceTree = "<group>"; };
 		D703478F1DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryExpandableRowCellViewModel.swift; sourceTree = "<group>"; };
@@ -2793,6 +2797,7 @@
 				D6B686EA2191FEEE005F5DA7 /* UserSendEmailVerificationMutation.swift */,
 				D002CAE0218CF8F1009783F2 /* WatchProjectMutation.swift */,
 				D6ED1B3C216D617E007F7547 /* inputs */,
+				D6F5C60E2437DD2A00C1A79D /* SignInWithAppleMutation.swift */,
 			);
 			path = mutations;
 			sourceTree = "<group>";
@@ -4203,6 +4208,7 @@
 				8AF34C732342CBC2000B211D /* UpdateBackingInput.swift */,
 				8AF34C752342D1D2000B211D /* UpdateBackingInputTests.swift */,
 				D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */,
+				D6F5C6102437E12300C1A79D /* SignInWithAppleInput.swift */,
 			);
 			path = inputs;
 			sourceTree = "<group>";
@@ -5707,6 +5713,7 @@
 				D015899B1EEB2ED7006E7684 /* Service.swift in Sources */,
 				D6ED1B39216D50BE007F7547 /* UserEmailFields.swift in Sources */,
 				D01588731EEB2ED7006E7684 /* FindFriendsEnvelope.swift in Sources */,
+				D6F5C6112437E12300C1A79D /* SignInWithAppleInput.swift in Sources */,
 				D63BBD31217F7212007E01F0 /* GraphUserCreditCard.swift in Sources */,
 				D79CF32E219CE51A00ECB73A /* CreatePaymentSourceInput.swift in Sources */,
 				D01588A51EEB2ED7006E7684 /* Project.DatesLenses.swift in Sources */,
@@ -5800,6 +5807,7 @@
 				D01588CD1EEB2ED7006E7684 /* ShippingRulesEnvelopeLenses.swift in Sources */,
 				D6B686EB2191FEEE005F5DA7 /* UserSendEmailVerificationMutation.swift in Sources */,
 				D76F070A24104E9500072C7B /* ProjectCreatorDetailsEnvelopeTemplate.swift in Sources */,
+				D6F5C60F2437DD2A00C1A79D /* SignInWithAppleMutation.swift in Sources */,
 				D67B6CD8221F46D700B63A6B /* Project.Country+Argo.swift in Sources */,
 				D01589871EEB2ED7006E7684 /* UpdatePledgeEnvelope.swift in Sources */,
 				D01588DD1EEB2ED7006E7684 /* User.NotificationsLenses.swift in Sources */,

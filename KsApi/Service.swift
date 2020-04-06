@@ -440,6 +440,11 @@ public struct Service: ServiceType {
     return applyMutation(mutation: UserSendEmailVerificationMutation(input: input))
   }
 
+  public func signInWithApple(input: SignInWithAppleInput)
+     -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+     return applyMutation(mutation: SignInWithAppleMutation(input: input))
+   }
+
   public func signup(
     name: String,
     email: String,
