@@ -51,4 +51,25 @@ final class ErroredBackingViewViewModelTests: TestCase {
     self.projectName.assertValue("Awesome tabletop collection")
     self.finalCollectionDateText.assertValue("4 days left")
   }
+
+  func testErroredBackings_lessThanAnHour() {
+    let date = AppEnvironment.current.calendar.date(byAdding: DateComponents(minute: 48), to: MockDate().date)
+
+    let dateFormatter = ISO8601DateFormatter()
+    let collectionDate = dateFormatter.string(from: date ?? Date())
+
+    let project = GraphBacking.Project.template
+      |> \.name .~ "Awesome tabletop collection"
+      |> \.finalCollectionDate .~ collectionDate
+    let backing = GraphBacking.template
+      |> \.project .~ project
+
+    self.projectName.assertDidNotEmitValue()
+    self.finalCollectionDateText.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: backing)
+
+    self.projectName.assertValue("Awesome tabletop collection")
+    self.finalCollectionDateText.assertValue("1 hour left")
+  }
 }

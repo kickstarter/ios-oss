@@ -30,6 +30,7 @@ public final class ErroredBackingViewViewModel: ErroredBackingViewViewModelType,
 
     self.finalCollectionDateText = collectionDate
       .map { timeLeftString(date: $0) }
+      .skipNil()
 
     self.notifyDelegateManageButtonTapped = self.backingSignal
       .takeWhen(self.manageButtonTappedSignal)
@@ -53,9 +54,9 @@ public final class ErroredBackingViewViewModel: ErroredBackingViewViewModelType,
   public var outputs: ErroredBackingViewViewModelOutputs { return self }
 }
 
-private func timeLeftString(date: String) -> String {
+private func timeLeftString(date: String) -> String? {
   let dateFormatter = ISO8601DateFormatter()
-  guard let finalCollectionDate = dateFormatter.date(from: date) else { return "" }
+  guard let finalCollectionDate = dateFormatter.date(from: date) else { return nil }
 
   let timeInterval = finalCollectionDate.timeIntervalSince1970
 
