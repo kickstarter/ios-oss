@@ -63,7 +63,7 @@ public final class Koala {
     case forgotPassword = "forgot_password_screen" // ResetPasswordViewController
     case login = "login_screen" // LoginViewController
     case loginTout = "login_or_signup_screen" // LoginToutViewController
-    case managePledgeScreen = "manage_pledge_screen"
+    case managePledgeScreen = "manage_pledge_screen" // ManagePledgeViewController
     case pledgeAddNewCard = "pledge_add_new_card_screen" // AddNewCardViewController
     case pledgeScreen = "pledge_screen" // PledgeViewController
     case projectPage = "project_screen" // ProjectPamphletViewController
