@@ -64,12 +64,12 @@ internal final class MessageCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.avatarURL
       .observeForUI()
       .on(event: { [weak self] _ in
-        self?.avatarImageView.af_cancelImageRequest()
+        self?.avatarImageView.af.cancelImageRequest()
         self?.avatarImageView.image = nil
       })
       .skipNil()
       .observeValues { [weak self] in
-        self?.avatarImageView.af_setImage(withURL: $0)
+        self?.avatarImageView.af.setImage(withURL: $0)
       }
   }
 }

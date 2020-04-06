@@ -353,9 +353,9 @@ private func scrollToTop(_ viewController: UIViewController) {
 
 private func tabbarAvatarImageFromData(_ data: Data) -> (defaultImage: UIImage?, selectedImage: UIImage?) {
   let avatar = UIImage(data: data, scale: UIScreen.main.scale)?
-    .af_imageRoundedIntoCircle()
-    .af_imageAspectScaled(toFit: tabBarAvatarSize)
-  avatar?.af_inflate()
+    .af.imageRoundedIntoCircle()
+    .af.imageAspectScaled(toFit: tabBarAvatarSize)
+  avatar?.af.inflate()
 
   let deselectedImage = strokedRoundImage(
     fromImage: avatar,

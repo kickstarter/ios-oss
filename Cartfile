@@ -5,7 +5,7 @@ github "kickstarter/Kickstarter-ReactiveExtensions" "48a3f507995a6bdae964ddf9f23
 
 ### 3rd Party
 
-github "Alamofire/AlamofireImage" "8e635e6151212f8871a321bbdd980af7c31af73b"
+github "Alamofire/AlamofireImage" == 4.1.0
 github "optimizely/swift-sdk" == 3.1.0
 github "facebook/facebook-objc-sdk" == 6.2.0
 github "microsoft/appcenter-sdk-apple" == 2.5.0
@@ -14,4 +14,4 @@ github "stripe/stripe-ios" == 18.0.0
 github "uber/ios-snapshot-test-case" == 6.2.0
 github "thoughtbot/Argo" "39f06f089d25c111444e5a85eef64586e54756ac"
 github "thoughtbot/Curry" "b6bf27ec9d711f607a8c7da9ca69ee9eaa201a22"
-binary "https://s3-us-west-2.amazonaws.com/si-mobile-sdks/ios/Qualtrics.json" == 1.15
+binary "https://s3-us-west-2.amazonaws.com/si-mobile-sdks/ios/Qualtrics.json" == 1.16
