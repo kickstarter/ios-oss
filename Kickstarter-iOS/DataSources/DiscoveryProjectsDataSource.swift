@@ -5,6 +5,7 @@ import UIKit
 struct DiscoveryProjectCellRowValue {
   let project: Project
   let category: KsApi.Category?
+  let discoveryParams: DiscoveryParams?
 }
 
 internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
@@ -36,7 +37,11 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     self.clearValues(section: Section.projects.rawValue)
 
     projects.forEach { project in
-      let value = DiscoveryProjectCellRowValue(project: project, category: params?.category)
+      let value = DiscoveryProjectCellRowValue(
+        project: project,
+        category: params?.category,
+        discoveryParams: params
+      )
 
       _ = self.appendRow(
         value: value,

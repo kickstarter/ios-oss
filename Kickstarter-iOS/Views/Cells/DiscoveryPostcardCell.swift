@@ -333,7 +333,11 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
   internal func configureWith(value: DiscoveryProjectCellRowValue) {
     self.viewModel.inputs.configureWith(project: value.project, category: value.category)
-    self.watchProjectViewModel.inputs.configure(with: value.project)
+    self.watchProjectViewModel.inputs.configure(with: (
+      value.project,
+      Koala.LocationContext.discovery,
+      value.discoveryParams
+    ))
   }
 
   internal override func layoutSubviews() {
