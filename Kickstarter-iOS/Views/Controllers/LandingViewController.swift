@@ -151,12 +151,11 @@ public final class LandingViewController: UIViewController {
     let stackViewHeight = self.rootStackView.bounds.height
     let viewHeight = self.view.bounds.height
     let buttonHeight = self.getStartedButton.bounds.height + Styles.grid(3) // padding
+    let inset = (viewHeight / 2) - stackViewHeight
 
-    if stackViewHeight > viewHeight {
+    if stackViewHeight > viewHeight || inset < 0 {
       self.scrollView.contentInset.top = 0
     } else {
-      let inset = (viewHeight / 2) - stackViewHeight
-
       self.scrollView.contentInset.top = inset
     }
 
