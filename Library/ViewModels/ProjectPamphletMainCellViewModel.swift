@@ -3,10 +3,10 @@ import Prelude
 import ReactiveSwift
 
 public typealias ProjectPamphletMainCellData = (
-  Project,
-  RefTag?,
-  ProjectCreatorDetailsData,
-  [ProjectSummaryEnvelope.ProjectSummaryItem]
+  project: Project,
+  refTag: RefTag?,
+  creatorDetailsData: ProjectCreatorDetailsData,
+  projectSummaryitems: [ProjectSummaryEnvelope.ProjectSummaryItem]
 )
 
 public protocol ProjectPamphletMainCellViewModelInputs {
@@ -178,7 +178,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       (project, creatorDetails)
     }
     let creatorDetails = projectAndCreatorDetails.map { _, creatorDetails in creatorDetails.0 }.skipNil()
-    let projectSummaryItems = data.map { $0.3 }
+    let projectSummaryItems = data.map { $0.projectSummaryitems }
 
     self.creatorBylineViewHidden = projectAndCreatorDetails
       .map(second)

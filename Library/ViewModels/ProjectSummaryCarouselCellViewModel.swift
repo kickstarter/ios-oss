@@ -20,7 +20,7 @@ public protocol ProjectSummaryCarouselCellViewModelType {
 public final class ProjectSummaryCarouselCellViewModel: ProjectSummaryCarouselCellViewModelType,
   ProjectSummaryCarouselCellViewModelInputs, ProjectSummaryCarouselCellViewModelOutputs {
   public init() {
-    let item = self.itemProperty.signal
+    let item = self.configureWithItemProperty.signal
       .skipNil()
 
     self.body = item
@@ -31,9 +31,9 @@ public final class ProjectSummaryCarouselCellViewModel: ProjectSummaryCarouselCe
       .map(ProjectSummaryCarouselCellViewModel.titleText(for:))
   }
 
-  private let itemProperty = MutableProperty<ProjectSummaryEnvelope.ProjectSummaryItem?>(nil)
+  private let configureWithItemProperty = MutableProperty<ProjectSummaryEnvelope.ProjectSummaryItem?>(nil)
   public func configure(with item: ProjectSummaryEnvelope.ProjectSummaryItem) {
-    self.itemProperty.value = item
+    self.configureWithItemProperty.value = item
   }
 
   public let body: Signal<String, Never>

@@ -87,34 +87,16 @@ final class ProjectSummaryCarouselCell: UICollectionViewCell {
       |> \.backgroundColor .~ .white
 
     _ = self.rootStackView
-      |> \.axis .~ .vertical
-      |> \.spacing .~ Layout.Spacing.width
-      |> \.layoutMargins .~ .init(all: Layout.Margin.width)
-      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> rootStackViewStyle
 
     _ = self.titleLabel
-      |> \.numberOfLines .~ 0
-      |> \.textColor .~ .ksr_trust_700
-      |> \.font .~ Style.Title.font()
+      |> titleLabelStyle
 
     _ = self.bodyLabel
-      |> \.numberOfLines .~ 0
-      |> \.textColor .~ .ksr_trust_700
-      |> \.font .~ Style.Body.font()
+      |> bodyLabelStyle
 
     _ = self.gradientBackgroundView
-      |> roundedStyle(cornerRadius: Styles.grid(3))
-      |> \.layer.borderColor .~ UIColor.white.cgColor
-      |> \.layer.borderWidth .~ 2
-      |> \.startPoint .~ CGPoint.zero
-      |> \.endPoint .~ CGPoint(x: 0, y: 1)
-
-    let gradient: [(UIColor?, Float)] = [
-      (UIColor.hex(0xDBE7FF), 0.0),
-      (UIColor.hex(0xE6FAF1), 1)
-    ]
-
-    self.gradientBackgroundView.setGradient(gradient)
+      |> gradientBackgroundViewStyle
   }
 
   // MARK: - Configuration
@@ -129,7 +111,8 @@ final class ProjectSummaryCarouselCell: UICollectionViewCell {
     _ = ([self.titleLabel, self.bodyLabel, UIView()], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.rootStackView.setCustomSpacing(0, after: self.bodyLabel)
+    _ = (self.bodyLabel, self.rootStackView)
+      |> ksr_setCustomSpacing(0)
   }
 
   private func setupConstraints() {
@@ -147,4 +130,46 @@ extension ProjectSummaryCarouselCell: ValueCell {
   func configureWith(value: ProjectSummaryEnvelope.ProjectSummaryItem) {
     self.viewModel.inputs.configure(with: value)
   }
+}
+
+// MARK: - Styles
+
+private let rootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .vertical
+    |> \.spacing .~ ProjectSummaryCarouselCell.Layout.Spacing.width
+    |> \.layoutMargins .~ .init(all: ProjectSummaryCarouselCell.Layout.Margin.width)
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+}
+
+private let bodyLabelStyle: LabelStyle = { label in
+  label
+    |> \.numberOfLines .~ 0
+    |> \.textColor .~ .ksr_trust_700
+    |> \.font .~ ProjectSummaryCarouselCell.Style.Body.font()
+}
+
+private let titleLabelStyle: LabelStyle = { label in
+  label
+    |> \.numberOfLines .~ 0
+    |> \.textColor .~ .ksr_trust_700
+    |> \.font .~ ProjectSummaryCarouselCell.Style.Title.font()
+}
+
+private let gradientBackgroundViewStyle: ((GradientView) -> GradientView) = { view in
+  _ = view
+    |> roundedStyle(cornerRadius: Styles.grid(3))
+    |> \.layer.borderColor .~ UIColor.white.cgColor
+    |> \.layer.borderWidth .~ 2
+    |> \.startPoint .~ CGPoint.zero
+    |> \.endPoint .~ CGPoint(x: 0, y: 1)
+
+  let gradient: [(UIColor?, Float)] = [
+    (UIColor.hex(0xDBE7FF), 0.0),
+    (UIColor.hex(0xE6FAF1), 1)
+  ]
+
+  view.setGradient(gradient)
+
+  return view
 }

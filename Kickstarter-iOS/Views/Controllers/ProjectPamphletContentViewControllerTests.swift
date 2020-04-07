@@ -466,7 +466,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", overallTolerance: 0.01)
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }
