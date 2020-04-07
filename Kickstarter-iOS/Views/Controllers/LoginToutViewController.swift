@@ -362,7 +362,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     // Create an authorization controller with the given requests.
     let authorizationController = ASAuthorizationController(authorizationRequests: requests)
     authorizationController.delegate = self
-    authorizationController.presentationContextProvider = self as? ASAuthorizationControllerPresentationContextProviding
+    authorizationController.presentationContextProvider = self
+      as? ASAuthorizationControllerPresentationContextProviding
     authorizationController.performRequests()
   }
 
