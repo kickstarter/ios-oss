@@ -217,8 +217,13 @@ internal final class ActivitiesViewControllerTests: TestCase {
   }
 
   func testErroredBackings() {
+    let date = AppEnvironment.current.calendar.date(byAdding: DateComponents(day: 4), to: MockDate().date)
+    let dateFormatter = ISO8601DateFormatter()
+    let collectionDate = dateFormatter.string(from: date ?? Date())
+
     let project = GraphBacking.Project.template
       |> \.name .~ "Awesome tabletop collection"
+      |> \.finalCollectionDate .~ collectionDate
 
     let backing = GraphBacking.template
       |> \.project .~ project

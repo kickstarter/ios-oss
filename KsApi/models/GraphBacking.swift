@@ -6,6 +6,7 @@ public struct GraphBacking: Swift.Decodable, Equatable {
   public var status: Status
 
   public struct Project: Swift.Decodable, Equatable {
+    public var finalCollectionDate: String?
     public var id: String
     public var name: String
     public var slug: String

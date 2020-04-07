@@ -9,6 +9,10 @@ private enum Layout {
     static let height: CGFloat = 48
     static let width: CGFloat = 98
   }
+
+  enum ImageView {
+    static let minWidth: CGFloat = 16.0
+  }
 }
 
 protocol ErroredBackingViewDelegate: class {
@@ -20,6 +24,13 @@ final class ErroredBackingView: UIView {
 
   public weak var delegate: ErroredBackingViewDelegate?
   private let backingInfoStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let finalCollectionDateLabel: UILabel = { UILabel(frame: .zero) }()
+  private let finalCollectionDateStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var fixIconImageView: UIImageView = {
+    UIImageView(image: image(named: "fix-icon", inBundle: Bundle.framework))
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private let manageButton: UIButton = { UIButton(type: .custom) }()
   private let projectNameLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -48,7 +59,10 @@ final class ErroredBackingView: UIView {
   }
 
   private func configureViews() {
-    _ = ([self.projectNameLabel], self.backingInfoStackView)
+    _ = ([self.fixIconImageView, self.finalCollectionDateLabel], self.finalCollectionDateStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.projectNameLabel, self.finalCollectionDateStackView], self.backingInfoStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.backingInfoStackView, self.manageButton], self.rootStackView)
@@ -61,6 +75,7 @@ final class ErroredBackingView: UIView {
 
   private func configureConstraints() {
     NSLayoutConstraint.activate([
+      self.fixIconImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.minWidth),
       self.manageButton.widthAnchor.constraint(equalToConstant: Layout.Button.width),
       self.manageButton.heightAnchor.constraint(equalToConstant: Layout.Button.height)
     ])
@@ -72,6 +87,7 @@ final class ErroredBackingView: UIView {
     super.bindViewModel()
 
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectName
+    self.finalCollectionDateLabel.rac.text = self.viewModel.outputs.finalCollectionDateText
 
     self.viewModel.outputs.notifyDelegateManageButtonTapped
       .observeForUI()
@@ -95,6 +111,18 @@ final class ErroredBackingView: UIView {
 
     _ = self
       |> \.backgroundColor .~ .ksr_grey_300
+
+    _ = self.fixIconImageView
+      |> \.clipsToBounds .~ true
+      |> \.contentMode .~ .scaleAspectFit
+      |> \.tintColor .~ .ksr_red_400
+
+    _ = self.finalCollectionDateStackView
+      |> finalCollectionStackViewStyle
+
+    _ = self.finalCollectionDateLabel
+      |> \.textColor .~ .ksr_red_400
+      |> \.font .~ .ksr_headline(size: 13)
 
     _ = self.backingInfoStackView
       |> backingInfoStackViewStyle
@@ -120,6 +148,14 @@ final class ErroredBackingView: UIView {
 private let backingInfoStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> verticalStackViewStyle
+    |> \.spacing .~ Styles.grid(1)
+}
+
+private let finalCollectionStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ NSLayoutConstraint.Axis.horizontal
+    |> \.spacing .~ Styles.grid(1)
+    |> \.distribution .~ .fill
 }
 
 private let manageButtonStyle: ButtonStyle = { button in

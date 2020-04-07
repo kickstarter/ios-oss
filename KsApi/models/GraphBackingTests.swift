@@ -11,6 +11,7 @@ final class GraphBackingTests: XCTestCase {
             "errorReason": "no_reason",
             "status": "errored",
             "project": {
+              "finalCollectionDate": "2020-04-08T15:15:05Z",
               "id": "UHJvamVjdC0yMDQ4MTExNDEw",
               "name": "Cool project",
               "slug": "/cool-project"
@@ -35,6 +36,7 @@ final class GraphBackingTests: XCTestCase {
 
       let project = backing?.project
 
+      XCTAssertEqual("2020-04-08T15:15:05Z", project?.finalCollectionDate)
       XCTAssertEqual("UHJvamVjdC0yMDQ4MTExNDEw", project?.id)
       XCTAssertEqual("Cool project", project?.name)
       XCTAssertEqual("/cool-project", project?.slug)
