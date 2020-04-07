@@ -189,19 +189,14 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     // Login with Apple
     if #available(iOS 13.0, *) {
-      let appleData = self.continueWithAppleDidCompleteWithAuthorizatonProperty.signal
-        .skipNil()
-        .map { authorization in
-          return continueWithAppleData(from: authorization)
-      }
-      .skipNil()
+      self.continueWithAppleDidCompleteWithAuthorizatonProperty.signal
+        .observeValues { authorization in
+          let data = continueWithAppleData(from: authorization)!
+          let input = SignInWithAppleInput(authCode: data.token,
+                                           firstName: data.firstName,
+                                           lastName: data.lastName)
 
-      _ = appleData
-        .map { (arg) -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> in
-          let (firstName, lastName, token) = arg
-          let input = SignInWithAppleInput(authCode: token, firstName: firstName, lastName: lastName)
-
-          return AppEnvironment.current.apiService.signInWithApple(input: input)
+          _ = AppEnvironment.current.apiService.signInWithApple(input: input)
       }
     }
 
@@ -361,7 +356,11 @@ private func statusString(_ forStatus: LoginIntent) -> String {
 }
 
 @available(iOS 13.0, *)
-private func continueWithAppleData(from authorization: ASAuthorization) -> ContinueWithAppleData? {
+private func continueWithAppleData(from authorization: ASAuthorization?) -> ContinueWithAppleData? {
+  guard let authorization = authorization else {
+    return nil
+  }
+
   switch authorization.credential {
   case let appleIDCredential as ASAuthorizationAppleIDCredential:
 
