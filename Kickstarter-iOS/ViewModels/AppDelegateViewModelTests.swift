@@ -2365,11 +2365,13 @@ final class AppDelegateViewModelTests: TestCase {
 
       _ = self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
-        url: URL(string: "https://www.kickstarter.com/discover?sort=newest")!,
+        url: URL(
+          string: "https://www.kickstarter.com/projects/chelsea-punk/chelsea-punk-band-the-final-album"
+          )!,
         options: [:]
       )
 
-      self.goToDiscovery.assertDidNotEmitValue()
+      self.presentViewController.assertDidNotEmitValue()
       self.goToLandingPage.assertValueCount(1)
     }
   }
