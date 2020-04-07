@@ -247,6 +247,7 @@
 		77556F5720A0B41E008CEA57 /* ThanksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77556F5520A0B408008CEA57 /* ThanksViewControllerTests.swift */; };
 		7758A8372097BADF0018B96D /* DiscoveryProjectCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */; };
 		7758A8382097BB090018B96D /* DiscoveryProjectCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7758A8352097A8180018B96D /* DiscoveryProjectCategoryView.xib */; };
+		77636FC1243CFE25007F67B9 /* ProcessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77636FC0243CFE25007F67B9 /* ProcessingView.swift */; };
 		776B6F70215183A400AB0652 /* ChangeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */; };
 		77752F5E219B39EA00E7DA7D /* SettingsAccountWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77752F5D219B39EA00E7DA7D /* SettingsAccountWarningCell.swift */; };
 		77752F97219B3D7300E7DA7D /* SettingsAccountWarningCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77752F96219B3D7300E7DA7D /* SettingsAccountWarningCell.xib */; };
@@ -1664,6 +1665,7 @@
 		775D922822BD7CFD00442301 /* DebugData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugData.swift; sourceTree = "<group>"; };
 		775DFA9C215E758400620CED /* GraphMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutation.swift; sourceTree = "<group>"; };
 		775DFAD4215EB2AB00620CED /* Service+RequestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Service+RequestHelpers.swift"; sourceTree = "<group>"; };
+		77636FC0243CFE25007F67B9 /* ProcessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessingView.swift; sourceTree = "<group>"; };
 		776B6F6F215183A400AB0652 /* ChangeEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewController.swift; sourceTree = "<group>"; };
 		77752F5D219B39EA00E7DA7D /* SettingsAccountWarningCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountWarningCell.swift; sourceTree = "<group>"; };
 		77752F96219B3D7300E7DA7D /* SettingsAccountWarningCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsAccountWarningCell.xib; sourceTree = "<group>"; };
@@ -2964,6 +2966,7 @@
 				770D86C522F0D47000CDC6A1 /* PledgeAddNewCardView.swift */,
 				D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */,
 				374F507822614A1000DE6746 /* PledgeFooterView.swift */,
+				77636FC0243CFE25007F67B9 /* ProcessingView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,
 				8A8099EA22E213F100373E66 /* RewardCardContainerView.swift */,
@@ -5277,6 +5280,7 @@
 				5981BE431D7F59DE002E49F1 /* CommentsEmptyStateCell.swift in Sources */,
 				77BF99B722652C9500513CE3 /* MultiLineButton.swift in Sources */,
 				A747A7DF1D454E8500AF199A /* ProjectPamphletContentViewController.swift in Sources */,
+				77636FC1243CFE25007F67B9 /* ProcessingView.swift in Sources */,
 				0157067D1E65F0420087DD68 /* BackerDashboardProjectsViewController.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				8A4DDAB32373427000ADE31D /* PledgeStatusLabelView.swift in Sources */,
