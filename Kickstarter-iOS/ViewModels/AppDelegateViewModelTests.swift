@@ -2367,7 +2367,7 @@ final class AppDelegateViewModelTests: TestCase {
         application: UIApplication.shared,
         url: URL(
           string: "https://www.kickstarter.com/projects/chelsea-punk/chelsea-punk-band-the-final-album"
-          )!,
+        )!,
         options: [:]
       )
 
