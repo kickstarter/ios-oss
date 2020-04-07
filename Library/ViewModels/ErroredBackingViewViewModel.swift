@@ -55,7 +55,7 @@ public final class ErroredBackingViewViewModel: ErroredBackingViewViewModelType,
 }
 
 private func timeLeftString(date: String) -> String? {
-  let dateFormatter = ISO8601DateFormatter()
+  let dateFormatter = ISO8601DateFormatter.cachedFormatter()
   guard let finalCollectionDate = dateFormatter.date(from: date) else { return nil }
 
   let timeInterval = finalCollectionDate.timeIntervalSince1970

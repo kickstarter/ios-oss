@@ -34,7 +34,7 @@ final class ErroredBackingViewViewModelTests: TestCase {
   func testErroredBackings() {
     let date = AppEnvironment.current.calendar.date(byAdding: DateComponents(day: 4), to: MockDate().date)
 
-    let dateFormatter = ISO8601DateFormatter()
+    let dateFormatter = ISO8601DateFormatter.cachedFormatter()
     let collectionDate = dateFormatter.string(from: date ?? Date())
 
     let project = GraphBacking.Project.template
@@ -55,7 +55,7 @@ final class ErroredBackingViewViewModelTests: TestCase {
   func testErroredBackings_lessThanAnHour() {
     let date = AppEnvironment.current.calendar.date(byAdding: DateComponents(minute: 48), to: MockDate().date)
 
-    let dateFormatter = ISO8601DateFormatter()
+    let dateFormatter = ISO8601DateFormatter.cachedFormatter()
     let collectionDate = dateFormatter.string(from: date ?? Date())
 
     let project = GraphBacking.Project.template
