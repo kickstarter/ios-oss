@@ -17,6 +17,10 @@ internal extension URLSession {
     -> SignalProducer<Data, GraphError> {
     let producer = self.reactive.data(with: request)
 
+      URLSession.shared.dataTask(with: request) { (data, response, error) in
+        print(data)
+      }.resume()
+
     return producer
       .start(on: scheduler)
       .flatMapError { error -> SignalProducer<(Data, URLResponse), GraphError> in
@@ -83,7 +87,10 @@ internal extension URLSession {
 
     return producer
       .start(on: scheduler)
-      .flatMapError { _ in SignalProducer(error: .couldNotParseErrorEnvelopeJSON) } // NSError
+      .flatMapError { _ in
+        SignalProducer(error: .couldNotParseErrorEnvelopeJSON)
+
+    } // NSError
       .flatMap(.concat) { data, response -> SignalProducer<Data, ErrorEnvelope> in
         guard let response = response as? HTTPURLResponse else { fatalError() }
 

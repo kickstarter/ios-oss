@@ -10,7 +10,7 @@ public struct SignInWithAppleMutation<T: GraphMutationInput>: GraphMutation {
   public var description: String {
     return """
     mutation signInWithApple($input: SignInWithAppleInput!) {
-      createOrSignInAppleUser(input: $input) {
+      signInWithApple(input: $input) {
         apiAccessToken
       }
     }

@@ -356,8 +356,10 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
   @available(iOS 13, *)
   private func prepareContinueWithAppleRequest() {
-    let requests = [ASAuthorizationAppleIDProvider().createRequest(),
-                    ASAuthorizationPasswordProvider().createRequest()]
+    let appleIDRequest = ASAuthorizationAppleIDProvider().createRequest()
+    appleIDRequest.requestedScopes = [.fullName, .email]
+
+    let requests = [appleIDRequest]
 
     // Create an authorization controller with the given requests.
     let authorizationController = ASAuthorizationController(authorizationRequests: requests)
@@ -530,6 +532,8 @@ extension LoginToutViewController: ASAuthorizationControllerDelegate {
                                  didCompleteWithAuthorization authorization: ASAuthorization) {
       self.viewModel.inputs.continueWithAppleDidComplete(with: authorization)
     }
+
+  
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
       self.viewModel.inputs.continueWithAppleDidComplete(with: error)
