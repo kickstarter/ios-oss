@@ -117,8 +117,9 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
           .fetchProjectSummary(query: projectSummaryQuery(withSlug: slug))
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { $0.projectSummary }
-          .prefix(value: [])
           .demoteErrors(replaceErrorWith: [])
+          .filter { !$0.isEmpty }
+          .prefix(value: [])
           .materialize()
       }
       .values()
