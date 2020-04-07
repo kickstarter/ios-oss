@@ -17,8 +17,8 @@ final class CuratedProjectsViewController: UIViewController {
     )
   }()
 
-  private lazy var headerView: UIView = {
-    CategorySelectionHeaderView(frame: .zero, context: .curatedProjects)
+  private lazy var headerView: CategorySelectionHeaderView = {
+    CategorySelectionHeaderView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -66,8 +66,10 @@ final class CuratedProjectsViewController: UIViewController {
 
   // MARK: - Configuration
 
-  public func configure(with categories: [KsApi.Category]) {
+  public func configure(with categories: [KsApi.Category], context: CuratedProjectsContext) {
     self.viewModel.inputs.configure(with: categories)
+
+    self.headerView.configure(with: CategorySelectionOnboardingHeaderViewContext.curatedProjects(context))
   }
 
   private func configureSubviews() {

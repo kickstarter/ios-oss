@@ -19,18 +19,20 @@ final class CategorySelectionHeaderView: UIView {
   private lazy var titleLabel = { UILabel(frame: .zero) }()
   private let viewModel: CategorySelectionHeaderViewModelType = CategorySelectionHeaderViewModel()
 
-  init(frame: CGRect, context: HeaderViewContext) {
+  override init(frame: CGRect) {
     super.init(frame: frame)
 
     self.setupViews()
     self.bindStyles()
     self.bindViewModel()
-
-    self.viewModel.inputs.configure(with: context)
   }
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  public func configure(with context: CategorySelectionOnboardingHeaderViewContext) {
+    self.viewModel.inputs.configure(with: context)
   }
 
   override func bindStyles() {

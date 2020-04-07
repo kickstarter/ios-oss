@@ -17,7 +17,7 @@ internal final class CuratedProjectsViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testCategorySelectionViewController() {
+  func testCuratedProjectsViewController() {
     let categories: [KsApi.Category] = [
       .art,
       .games,
@@ -36,7 +36,7 @@ internal final class CuratedProjectsViewControllerTests: TestCase {
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService, language: language) {
         let controller = CuratedProjectsViewController.instantiate()
-        controller.configure(with: categories)
+        controller.configure(with: categories, context: .onboarding)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.run()
