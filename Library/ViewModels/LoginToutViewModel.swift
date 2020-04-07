@@ -197,6 +197,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
                                            lastName: data.lastName)
 
           _ = AppEnvironment.current.apiService.signInWithApple(input: input)
+            .materialize()
       }
     }
 

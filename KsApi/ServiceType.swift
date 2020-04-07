@@ -291,7 +291,7 @@ public protocol ServiceType {
 
   /// Signin with Apple
   func signInWithApple(input: SignInWithAppleInput)
-    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+    -> SignalProducer<SignInWithAppleEnvelope, GraphError>
 
   /// Signup with email.
   func signup(

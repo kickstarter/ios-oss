@@ -441,7 +441,7 @@ public struct Service: ServiceType {
   }
 
   public func signInWithApple(input: SignInWithAppleInput)
-     -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+     -> SignalProducer<SignInWithAppleEnvelope, GraphError> {
      return applyMutation(mutation: SignInWithAppleMutation(input: input))
    }
 
