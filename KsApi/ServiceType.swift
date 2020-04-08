@@ -494,7 +494,7 @@ extension ServiceType {
     var headers: [String: String] = [:]
     headers["Accept-Language"] = self.language
     headers["Authorization"] = self.authorizationHeader
-    headers["Kickstarter-App-Id"] = "kickstarter.kickstarter.com.kickalpha"
+    headers["Kickstarter-App-Id"] = self.appId
     headers["Kickstarter-iOS-App"] = self.buildVersion
     headers["User-Agent"] = Self.userAgent
     headers["X-KICKSTARTER-CLIENT"] = self.serverConfig.apiClientAuth.clientId
