@@ -206,7 +206,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       }
     }
 
-
     // MARK: - Tracking
 
     let trackingData = Signal.combineLatest(
@@ -314,9 +313,9 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   }
 
   fileprivate let signupButtonPressedProperty = MutableProperty(())
-   public func signupButtonPressed() {
-     self.signupButtonPressedProperty.value = ()
-   }
+  public func signupButtonPressed() {
+    self.signupButtonPressedProperty.value = ()
+  }
 
   fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {

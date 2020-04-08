@@ -280,7 +280,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       .observeValues { [weak self] in
         if #available(iOS 13, *) {
           self?.prepareContinueWithAppleRequest()
-        } 
+        }
       }
   }
 
@@ -528,22 +528,21 @@ private let separatorViewStyle: ViewStyle = { view in
 
 @available(iOS 13, *)
 extension LoginToutViewController: ASAuthorizationControllerDelegate {
-    func authorizationController(controller: ASAuthorizationController,
-                                 didCompleteWithAuthorization authorization: ASAuthorization) {
-      self.viewModel.inputs.continueWithAppleDidComplete(with: authorization)
-    }
+  func authorizationController(
+    controller _: ASAuthorizationController,
+    didCompleteWithAuthorization authorization: ASAuthorization
+  ) {
+    self.viewModel.inputs.continueWithAppleDidComplete(with: authorization)
+  }
 
-  
-
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-      self.viewModel.inputs.continueWithAppleDidComplete(with: error)
-    }
+  func authorizationController(controller _: ASAuthorizationController, didCompleteWithError error: Error) {
+    self.viewModel.inputs.continueWithAppleDidComplete(with: error)
+  }
 }
 
 @available(iOS 13.0, *)
 extension LoginViewController: ASAuthorizationControllerPresentationContextProviding {
-
-  func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        return self.view.window!
-    }
+  func presentationAnchor(for _: ASAuthorizationController) -> ASPresentationAnchor {
+    return self.view.window!
+  }
 }

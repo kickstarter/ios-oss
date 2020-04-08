@@ -85,8 +85,7 @@ internal extension URLSession {
       .start(on: scheduler)
       .flatMapError { _ in
         SignalProducer(error: .couldNotParseErrorEnvelopeJSON)
-
-    } // NSError
+      } // NSError
       .flatMap(.concat) { data, response -> SignalProducer<Data, ErrorEnvelope> in
         guard let response = response as? HTTPURLResponse else { fatalError() }
 

@@ -1239,12 +1239,12 @@
       return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
     }
 
-    internal func signInWithApple(input: SignInWithAppleInput)
+    internal func signInWithApple(input _: SignInWithAppleInput)
       -> SignalProducer<SignInWithAppleEnvelope, GraphError> {
-        if let error = signInWithAppleError {
-          return SignalProducer(error: error)
-        }
-        return SignalProducer(value: SignInWithAppleEnvelope(apiAccessToken: "api_access_token"))
+      if let error = signInWithAppleError {
+        return SignalProducer(error: error)
+      }
+      return SignalProducer(value: SignInWithAppleEnvelope(apiAccessToken: "api_access_token"))
     }
 
     internal func signup(
