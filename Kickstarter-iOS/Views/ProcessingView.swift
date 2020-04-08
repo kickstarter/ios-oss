@@ -1,12 +1,13 @@
 import Foundation
-import UIKit
-import Prelude
 import Library
+import Prelude
+import UIKit
 
 final class ProcessingView: UIView {
   lazy var activityIndicator = { UIActivityIndicatorView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
   private lazy var processingLabel = { UILabel(frame: .zero) }()
   private lazy var stackView = { UIStackView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -19,7 +20,7 @@ final class ProcessingView: UIView {
     self.setupConstraints()
   }
 
-  required init?(coder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -80,5 +81,3 @@ private let stackViewStyle: StackViewStyle = { stackView in
     |> \.distribution .~ .fill
     |> \.spacing .~ Styles.grid(3)
 }
-
-

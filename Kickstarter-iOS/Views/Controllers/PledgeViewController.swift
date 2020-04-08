@@ -362,7 +362,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         } else {
           self?.showProcessingView()
         }
-    }
+      }
 
     // MARK: Errors
 

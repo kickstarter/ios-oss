@@ -315,21 +315,20 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .switchMap { [checkoutIdProperty] input in
         AppEnvironment.current.apiService.createBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .on(
-          starting: {
-            processingViewIsHidden.value = false
-          },
-          completed: {
-            processingViewIsHidden.value = true
-          })
+          .on(
+            starting: {
+              processingViewIsHidden.value = false
+            },
+            terminated: {
+              processingViewIsHidden.value = true
+            }
+          )
           .map { envelope -> StripeSCARequiring in
             checkoutIdProperty.value = decompose(id: envelope.createBacking.checkout.id)
             return envelope as StripeSCARequiring
           }
           .materialize()
       }
-
-    self.processingViewIsHidden = processingViewIsHidden.signal
 
     // MARK: - Update Backing
 
@@ -369,6 +368,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .switchMap { input in
         AppEnvironment.current.apiService.updateBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .on(
+            starting: {
+              processingViewIsHidden.value = false
+            },
+            terminated: {
+              processingViewIsHidden.value = true
+            }
+          )
           .map { $0 as StripeSCARequiring }
           .materialize()
       }
@@ -377,6 +384,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       createBackingEvents,
       updateBackingEvents
     )
+
+    self.processingViewIsHidden = processingViewIsHidden.signal
 
     // MARK: - Form Validation
 
