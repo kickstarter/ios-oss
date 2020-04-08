@@ -39,9 +39,6 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string to use for the backers title label.
   var backersTitleLabelText: Signal<String, Never> { get }
 
-  /// Emits the spacing of the blurb and reward stack view.
-  var blurbAndReadMoreStackViewSpacing: Signal<CGFloat, Never> { get }
-
   /// Emits a string to use for the category name label.
   var categoryNameLabelText: Signal<String, Never> { get }
 
@@ -135,17 +132,14 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits the text color of the backer and deadline title label.
   var projectUnsuccessfulLabelTextColor: Signal<UIColor, Never> { get }
 
+  /// Emits when the read more button should be hidden.
+  var readMoreButtonIsHidden: Signal<Bool, Never> { get }
+
   /// Emits when the read more button is loading.
   var readMoreButtonIsLoading: Signal<Bool, Never> { get }
 
-  /// Emits the button style of the read more about this campaign button
-  var readMoreButtonStyle: Signal<ProjectCampaignButtonStyleType, Never> { get }
-
-  /// Emits the button title of the read more about this campaign button
-  var readMoreButtonTitle: Signal<String, Never> { get }
-
-  /// Emits a boolean that determines if the the spacer view should be hidden
-  var spacerViewHidden: Signal<Bool, Never> { get }
+  /// Emits when the large read more button should be hidden.
+  var readMoreButtonLargeIsHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if the project state label should be hidden.
   var stateLabelHidden: Signal<Bool, Never> { get }
@@ -224,14 +218,10 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     self.configureCreatorBylineView = Signal.combineLatest(project, creatorDetails)
 
-    self.readMoreButtonStyle = projectCampaignExperimentVariant.map(projectCampaignButtonStyleForVariant)
-    self.readMoreButtonTitle = projectCampaignExperimentVariant.map {
-      $0 == .control ? Strings.Read_more_about_the_campaign_arrow()
-        : Strings.Read_more_about_the_campaign()
-    }
-    self.spacerViewHidden = projectCampaignExperimentVariant.map { $0 != .control }
-    self.blurbAndReadMoreStackViewSpacing = projectCampaignExperimentVariant.map { $0 == .control ? 0 : 4 }
-      .map(Styles.grid)
+    let isProjectCampaignExperimentVariant = projectCampaignExperimentVariant.map { $0 != .control }
+
+    self.readMoreButtonIsHidden = isProjectCampaignExperimentVariant
+    self.readMoreButtonLargeIsHidden = isProjectCampaignExperimentVariant.negate()
 
     self.projectStateLabelText = project
       .filter { $0.state != .live }
@@ -430,7 +420,6 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
   public let backersSubtitleLabelText: Signal<String, Never>
   public let backersTitleLabelText: Signal<String, Never>
-  public let blurbAndReadMoreStackViewSpacing: Signal<CGFloat, Never>
   public let categoryNameLabelText: Signal<String, Never>
   public let configureCreatorBylineView: Signal<(Project, ProjectCreatorDetailsEnvelope), Never>
   public let configureVideoPlayerController: Signal<Project, Never>
@@ -462,10 +451,9 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let projectStateLabelTextColor: Signal<UIColor, Never>
   public let projectSummaryCarouselViewHidden: Signal<Bool, Never>
   public let projectUnsuccessfulLabelTextColor: Signal<UIColor, Never>
+  public let readMoreButtonIsHidden: Signal<Bool, Never>
   public let readMoreButtonIsLoading: Signal<Bool, Never>
-  public let readMoreButtonStyle: Signal<ProjectCampaignButtonStyleType, Never>
-  public let readMoreButtonTitle: Signal<String, Never>
-  public let spacerViewHidden: Signal<Bool, Never>
+  public let readMoreButtonLargeIsHidden: Signal<Bool, Never>
   public let stateLabelHidden: Signal<Bool, Never>
   public let statsStackViewAccessibilityLabel: Signal<String, Never>
   public let youreABackerLabelHidden: Signal<Bool, Never>
@@ -593,16 +581,5 @@ private func progressColor(forProject project: Project) -> UIColor {
     return .ksr_dark_grey_400
   default:
     return .ksr_green_700
-  }
-}
-
-public func projectCampaignButtonStyleForVariant(
-  _ variant: OptimizelyExperiment.Variant
-) -> ProjectCampaignButtonStyleType {
-  switch variant {
-  case .control:
-    return .controlReadMoreButton
-  case .variant1, .variant2:
-    return .experimentalReadMoreButton
   }
 }

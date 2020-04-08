@@ -11,7 +11,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
   private let statsStackViewAccessibilityLabel = TestObserver<String, Never>()
   private let backersTitleLabelText = TestObserver<String, Never>()
-  private let blurbAndReadMoreStackViewSpacing = TestObserver<CGFloat, Never>()
   private let configureProjectSummaryCarouselView
     = TestObserver<[ProjectSummaryEnvelope.ProjectSummaryItem], Never>()
   private let conversionLabelHidden = TestObserver<Bool, Never>()
@@ -41,10 +40,9 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let projectStateLabelTextColor = TestObserver<UIColor, Never>()
   private let projectSummaryCarouselViewHidden = TestObserver<Bool, Never>()
   private let projectUnsuccessfulLabelTextColor = TestObserver<UIColor, Never>()
+  private let readMoreButtonIsHidden = TestObserver<Bool, Never>()
   private let readMoreButtonIsLoading = TestObserver<Bool, Never>()
-  private let readMoreButtonStyle = TestObserver<ProjectCampaignButtonStyleType, Never>()
-  private let readMoreButtonTitle = TestObserver<String, Never>()
-  private let spacerViewHidden = TestObserver<Bool, Never>()
+  private let readMoreButtonLargeIsHidden = TestObserver<Bool, Never>()
   private let stateLabelHidden = TestObserver<Bool, Never>()
   private let youreABackerLabelHidden = TestObserver<Bool, Never>()
 
@@ -54,7 +52,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.statsStackViewAccessibilityLabel
       .observe(self.statsStackViewAccessibilityLabel.observer)
     self.vm.outputs.backersTitleLabelText.observe(self.backersTitleLabelText.observer)
-    self.vm.outputs.blurbAndReadMoreStackViewSpacing.observe(self.blurbAndReadMoreStackViewSpacing.observer)
     self.vm.outputs.configureProjectSummaryCarouselView
       .observe(self.configureProjectSummaryCarouselView.observer)
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
@@ -89,9 +86,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.projectSummaryCarouselViewHidden.observe(self.projectSummaryCarouselViewHidden.observer)
     self.vm.outputs.projectUnsuccessfulLabelTextColor.observe(self.projectUnsuccessfulLabelTextColor.observer)
     self.vm.outputs.readMoreButtonIsLoading.observe(self.readMoreButtonIsLoading.observer)
-    self.vm.outputs.readMoreButtonStyle.observe(self.readMoreButtonStyle.observer)
-    self.vm.outputs.readMoreButtonTitle.observe(self.readMoreButtonTitle.observer)
-    self.vm.outputs.spacerViewHidden.observe(self.spacerViewHidden.observer)
+    self.vm.outputs.readMoreButtonIsHidden.observe(self.readMoreButtonIsHidden.observer)
+    self.vm.outputs.readMoreButtonLargeIsHidden.observe(self.readMoreButtonLargeIsHidden.observer)
     self.vm.outputs.stateLabelHidden.observe(self.stateLabelHidden.observer)
     self.vm.outputs.youreABackerLabelHidden.observe(self.youreABackerLabelHidden.observer)
   }
@@ -547,14 +543,15 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
           OptimizelyExperiment.Variant.control.rawValue
       ]
 
+    self.readMoreButtonIsHidden.assertDidNotEmitValue()
+    self.readMoreButtonLargeIsHidden.assertDidNotEmitValue()
+
     withEnvironment(optimizelyClient: optimizelyClient) {
       self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
-      self.blurbAndReadMoreStackViewSpacing.assertValues([Styles.grid(0)])
-      self.readMoreButtonStyle.assertValues([ProjectCampaignButtonStyleType.controlReadMoreButton])
-      self.readMoreButtonTitle.assertValues([Strings.Read_more_about_the_campaign_arrow()])
-      self.spacerViewHidden.assertValues([false])
+      self.readMoreButtonIsHidden.assertValues([false])
+      self.readMoreButtonLargeIsHidden.assertValues([true])
     }
   }
 
@@ -566,14 +563,15 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
           OptimizelyExperiment.Variant.variant1.rawValue
       ]
 
+    self.readMoreButtonIsHidden.assertDidNotEmitValue()
+    self.readMoreButtonLargeIsHidden.assertDidNotEmitValue()
+
     withEnvironment(optimizelyClient: optimizelyClient) {
       self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
-      self.blurbAndReadMoreStackViewSpacing.assertValues([Styles.grid(4)])
-      self.readMoreButtonStyle.assertValues([ProjectCampaignButtonStyleType.experimentalReadMoreButton])
-      self.readMoreButtonTitle.assertValues([Strings.Read_more_about_the_campaign()])
-      self.spacerViewHidden.assertValues([true])
+      self.readMoreButtonIsHidden.assertValues([true])
+      self.readMoreButtonLargeIsHidden.assertValues([false])
     }
   }
 
@@ -589,10 +587,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false), []))
       self.vm.inputs.awakeFromNib()
 
-      self.blurbAndReadMoreStackViewSpacing.assertValues([Styles.grid(4)])
-      self.readMoreButtonStyle.assertValues([ProjectCampaignButtonStyleType.experimentalReadMoreButton])
-      self.readMoreButtonTitle.assertValues([Strings.Read_more_about_the_campaign()])
-      self.spacerViewHidden.assertValues([true])
+      self.readMoreButtonIsHidden.assertValues([true])
+      self.readMoreButtonLargeIsHidden.assertValues([false])
     }
   }
 
