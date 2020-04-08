@@ -1,4 +1,5 @@
 import Foundation
+import KsApi
 import Library
 import Prelude
 import UIKit
@@ -16,12 +17,13 @@ final class ProjectSummaryCarouselView: UIView {
 
   private var collectionViewHeightConstraint: NSLayoutConstraint?
 
+  private var greatestCombinedTextHeight: CGFloat = 0
+
   private let dataSource = ProjectSummaryCarouselDataSource()
 
   private let layout: UICollectionViewFlowLayout = {
     UICollectionViewFlowLayout()
       |> \.minimumInteritemSpacing .~ Styles.grid(2)
-      |> \.sectionInset .~ .init(leftRight: Styles.grid(4))
       |> \.scrollDirection .~ .horizontal
   }()
 
@@ -43,7 +45,7 @@ final class ProjectSummaryCarouselView: UIView {
 
   // MARK: - Accessors
 
-  func configure(with items: [ProjectSummaryItem]) {
+  func configure(with items: [ProjectSummaryEnvelope.ProjectSummaryItem]) {
     self.viewModel.inputs.configure(with: items)
   }
 
@@ -58,6 +60,10 @@ final class ProjectSummaryCarouselView: UIView {
   private func setupConstraints() {
     _ = (self.collectionView, self)
       |> ksr_constrainViewToEdgesInParent()
+
+    (self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset = .init(
+      leftRight: self.traitCollection.isRegularRegular ? Styles.grid(16) : Styles.grid(4)
+    )
 
     self.collectionViewHeightConstraint = self.collectionView.heightAnchor.constraint(equalToConstant: 0)
       |> \.priority .~ .defaultLow
@@ -76,8 +82,24 @@ final class ProjectSummaryCarouselView: UIView {
 
         self.dataSource.load(items)
         self.collectionView.reloadData()
-        self.collectionViewHeightConstraint?.constant = self.dataSource.greatestCombinedTextHeight
+        self.updateGreatestCombinedTextHeight(with: items)
+        self.updateCollectionViewHeight()
       }
+  }
+
+  private func updateGreatestCombinedTextHeight(with items: [ProjectSummaryEnvelope.ProjectSummaryItem]) {
+    let maxOuterWidth = ProjectSummaryCarouselCell.Layout.maxOuterWidth(
+      traitCollection: self.traitCollection
+    )
+
+    self.greatestCombinedTextHeight = greatestCombinedTextHeightForItems(
+      items,
+      inWidth: ProjectSummaryCarouselCell.Layout.maxInnerWidth(withMaxOuterWidth: maxOuterWidth)
+    )
+  }
+
+  private func updateCollectionViewHeight() {
+    self.collectionViewHeightConstraint?.constant = self.greatestCombinedTextHeight
   }
 
   // MARK: - Styles
@@ -99,8 +121,46 @@ extension ProjectSummaryCarouselView: UICollectionViewDelegateFlowLayout {
     sizeForItemAt _: IndexPath
   ) -> CGSize {
     return CGSize(
-      width: UIScreen.main.bounds.width / 2,
-      height: self.dataSource.greatestCombinedTextHeight
+      width: ProjectSummaryCarouselCell.Layout.maxOuterWidth(
+        traitCollection: self.traitCollection
+      ),
+      height: self.greatestCombinedTextHeight
     )
+  }
+}
+
+private func greatestCombinedTextHeightForItems(
+  _ items: [ProjectSummaryEnvelope.ProjectSummaryItem],
+  inWidth width: CGFloat
+) -> CGFloat {
+  return items.reduce(0) { (current, item) -> CGFloat in
+    let size = CGSize(
+      width: width,
+      height: .greatestFiniteMagnitude
+    )
+
+    let titleHeight = (ProjectSummaryCarouselCellViewModel.titleText(for: item.question) as NSString)
+      .boundingRect(
+        with: size,
+        options: [.usesLineFragmentOrigin, .usesFontLeading],
+        attributes: [.font: ProjectSummaryCarouselCell.Style.Title.font()],
+        context: nil
+      )
+      .height
+
+    let bodyHeight = (item.response as NSString).boundingRect(
+      with: size,
+      options: [.usesLineFragmentOrigin, .usesFontLeading],
+      attributes: [.font: ProjectSummaryCarouselCell.Style.Body.font()],
+      context: nil
+    )
+    .height
+
+    let totalHeight = ProjectSummaryCarouselCell.Layout.Margin.width * 2
+      + ProjectSummaryCarouselCell.Layout.Spacing.width
+      + ceil(titleHeight)
+      + ceil(bodyHeight)
+
+    return max(current, totalHeight)
   }
 }

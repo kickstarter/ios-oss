@@ -3,14 +3,13 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias ProjectSummaryItem = Int
-
 public protocol ProjectSummaryCarouselViewModelInputs {
-  func configure(with items: [ProjectSummaryItem])
+  func configure(with items: [ProjectSummaryEnvelope.ProjectSummaryItem])
 }
 
 public protocol ProjectSummaryCarouselViewModelOutputs {
-  var loadProjectSummaryItemsIntoDataSource: Signal<[ProjectSummaryItem], Never> { get }
+  var loadProjectSummaryItemsIntoDataSource:
+    Signal<[ProjectSummaryEnvelope.ProjectSummaryItem], Never> { get }
 }
 
 public protocol ProjectSummaryCarouselViewModelType {
@@ -24,12 +23,12 @@ public final class ProjectSummaryCarouselViewModel: ProjectSummaryCarouselViewMo
     self.loadProjectSummaryItemsIntoDataSource = self.itemsProperty.signal.skipNil()
   }
 
-  private let itemsProperty = MutableProperty<[ProjectSummaryItem]?>(nil)
-  public func configure(with items: [ProjectSummaryItem]) {
+  private let itemsProperty = MutableProperty<[ProjectSummaryEnvelope.ProjectSummaryItem]?>(nil)
+  public func configure(with items: [ProjectSummaryEnvelope.ProjectSummaryItem]) {
     self.itemsProperty.value = items
   }
 
-  public let loadProjectSummaryItemsIntoDataSource: Signal<[ProjectSummaryItem], Never>
+  public let loadProjectSummaryItemsIntoDataSource: Signal<[ProjectSummaryEnvelope.ProjectSummaryItem], Never>
 
   public var inputs: ProjectSummaryCarouselViewModelInputs { return self }
   public var outputs: ProjectSummaryCarouselViewModelOutputs { return self }

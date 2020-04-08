@@ -7,6 +7,7 @@ public enum OptimizelyExperiment {
     case pledgeCTACopy = "pledge_cta_copy"
     case nativeProjectPageCampaignDetails = "native_project_page_campaign_details"
     case nativeProjectPageConversionCreatorDetails = "native_project_page_conversion_creator_details"
+    case nativeMeProjectSummary = "native_me_project_summary"
   }
 
   public enum Variant: String, Equatable {

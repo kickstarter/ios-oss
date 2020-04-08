@@ -75,9 +75,12 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   }()
 
   @IBOutlet fileprivate var progressBarAndStatsStackView: UIStackView!
-  @IBOutlet fileprivate var readMoreButton: LoadingButton!
+  @IBOutlet fileprivate var readMoreButton: UIButton!
+  fileprivate lazy var readMoreButtonLarge: LoadingButton = {
+    LoadingButton(type: .custom)
+  }()
+
   @IBOutlet fileprivate var readMoreStackView: UIStackView!
-  @IBOutlet fileprivate var spacerView: UIView!
   @IBOutlet fileprivate var stateLabel: UILabel!
   @IBOutlet fileprivate var statsStackView: UIStackView!
   @IBOutlet fileprivate var youreABackerContainerView: UIView!
@@ -97,8 +100,13 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       action: #selector(self.readMoreButtonTapped),
       for: .touchUpInside
     )
+    self.readMoreButtonLarge.addTarget(
+      self,
+      action: #selector(self.readMoreButtonTapped),
+      for: .touchUpInside
+    )
 
-    self.readMoreButton.heightAnchor
+    self.readMoreButtonLarge.heightAnchor
       .constraint(greaterThanOrEqualToConstant: Layout.Button.height).isActive = true
 
     _ = ([self.creatorBylineView, self.creatorBylineShimmerLoadingView], self.projectNameAndCreatorStackView)
@@ -106,15 +114,13 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     self.creatorBylineView.addGestureRecognizer(self.creatorBylineTapGesture)
 
-    // TODO: move to view model output.
-    // Uncomment to tests, currently commented to not break snapshots
-//    self.blurbAndReadMoreStackView.insertArrangedSubview(self.projectSummaryCarouselView, at: 1)
-//    self.projectSummaryCarouselView.configure(with: [1, 2, 3])
+    self.blurbAndReadMoreStackView.insertArrangedSubview(self.projectSummaryCarouselView, at: 1)
+    self.readMoreStackView.addArrangedSubview(self.readMoreButtonLarge)
 
     self.viewModel.inputs.awakeFromNib()
   }
 
-  internal func configureWith(value: (Project, RefTag?, ProjectCreatorDetailsData)) {
+  internal func configureWith(value: ProjectPamphletMainCellData) {
     self.viewModel.inputs.configureWith(value: value)
   }
 
@@ -138,6 +144,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
   internal override func bindStyles() {
     super.bindStyles()
+
+    // maintain vertical spacing in one place so that it's consistent in nested stackviews
+    let verticalSpacing = Styles.grid(3)
 
     _ = self
       |> baseTableViewCellStyle()
@@ -190,7 +199,13 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
           : .init(top: Styles.grid(4), left: 0, bottom: Styles.grid(3), right: 0)
       }
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.spacing .~ Styles.grid(4)
+      |> UIStackView.lens.spacing .~ verticalSpacing
+
+    _ = (self.projectNameAndCreatorStackView, self.contentStackView)
+      |> ksr_setCustomSpacing(Styles.grid(4))
+
+    _ = self.blurbAndReadMoreStackView
+      |> \.spacing .~ verticalSpacing
 
     _ = self.blurbStackView
       |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
@@ -252,7 +267,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.backgroundColor .~ .white
 
     _ = self.projectNameAndCreatorStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(2)
+      |> UIStackView.lens.spacing .~ (verticalSpacing / 2)
       |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
@@ -269,7 +284,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.progressBarAndStatsStackView
       |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.spacing .~ Styles.grid(2)
+      |> UIStackView.lens.spacing .~ verticalSpacing
 
     _ = self.stateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
@@ -293,7 +308,13 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.text %~ { _ in Strings.Youre_a_backer() }
 
     _ = self.readMoreButton
+      |> readMoreButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
+
+    _ = self.readMoreButtonLarge
       |> \.activityIndicatorStyle .~ .gray
+      |> greyReadMoreButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign() }
   }
 
   internal override func bindViewModel() {
@@ -323,8 +344,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.pledgedTitleLabel.rac.textColor = self.viewModel.outputs.pledgedTitleLabelTextColor
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
-    self.readMoreButton.rac.title = self.viewModel.outputs.readMoreButtonTitle
-    self.spacerView.rac.hidden = self.viewModel.outputs.spacerViewHidden
+    self.projectSummaryCarouselView.rac.hidden = self.viewModel.outputs.projectSummaryCarouselViewHidden
+    self.readMoreButton.rac.hidden = self.viewModel.outputs.readMoreButtonIsHidden
+    self.readMoreButtonLarge.rac.hidden = self.viewModel.outputs.readMoreButtonLargeIsHidden
     self.stateLabel.rac.text = self.viewModel.outputs.projectStateLabelText
     self.stateLabel.rac.textColor = self.viewModel.outputs.projectStateLabelTextColor
     self.stateLabel.rac.hidden = self.viewModel.outputs.stateLabelHidden
@@ -334,7 +356,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.readMoreButtonIsLoading
       .observeForUI()
       .observeValues { [weak self] isLoading in
-        self?.readMoreButton.isLoading = isLoading
+        self?.readMoreButtonLarge.isLoading = isLoading
       }
 
     self.viewModel.outputs.configureVideoPlayerController
@@ -345,6 +367,12 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] project, creatorDetails in
         self?.creatorBylineView.configureWith(project: project, creatorDetails: creatorDetails)
+      }
+
+    self.viewModel.outputs.configureProjectSummaryCarouselView
+      .observeForUI()
+      .observeValues { [weak self] projectSummaryItems in
+        self?.projectSummaryCarouselView.configure(with: projectSummaryItems)
       }
 
     self.viewModel.outputs.creatorImageUrl
@@ -358,19 +386,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       .observeValues { [weak self] in
         guard let self = self else { return }
         self.delegate?.projectPamphletMainCell(self, goToCampaignForProjectWith: $0)
-      }
-
-    self.viewModel.outputs.readMoreButtonStyle
-      .observeForUI()
-      .observeValues { [weak self] buttonStyleType in
-        _ = self?.readMoreButton
-          ?|> buttonStyleType.style
-      }
-
-    self.viewModel.outputs.blurbAndReadMoreStackViewSpacing
-      .observeForUI()
-      .observeValues { [weak self] spacing in
-        self?.blurbAndReadMoreStackView.spacing = spacing
       }
 
     self.viewModel.outputs.notifyDelegateToGoToCreator
