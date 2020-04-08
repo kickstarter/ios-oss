@@ -133,8 +133,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
           .materialize()
       }
 
-    self.logIntoEnvironment = facebookLogin.values()
-
     self.prepareContinueWithAppleRequest = self.appleLoginButtonPressedProperty.signal.ignoreValues()
 
     let tfaRequiredError = facebookLogin.errors()
@@ -186,18 +184,25 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       facebookLoginAttemptFailAlert,
       genericFacebookErrorAlert
     )
+    self.logIntoEnvironment = facebookLogin.values()
 
     // Login with Apple
     if #available(iOS 13.0, *) {
-      self.continueWithAppleDidCompleteWithAuthorizatonProperty.signal
-        .observeValues { authorization in
-          let data = continueWithAppleData(from: authorization)!
-          let input = SignInWithAppleInput(authCode: data.token,
-                                           firstName: data.firstName,
-                                           lastName: data.lastName)
+      let appleSignInInput = self.continueWithAppleDidCompleteWithAuthorizatonProperty.signal
+        .map(continueWithAppleData(from:))
+        .skipNil()
+        .map { data in
+          SignInWithAppleInput(authCode: data.token, firstName: data.firstName, lastName: data.lastName)
+        }
 
-          _ = AppEnvironment.current.apiService.signInWithApple(input: input)
+      let appleSignInEvent = appleSignInInput
+        .switchMap { input in
+          AppEnvironment.current.apiService.signInWithApple(input: input)
             .materialize()
+        }
+
+      appleSignInEvent.observeValues { v in
+        print(v)
       }
     }
 
@@ -261,7 +266,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
   // This property is being set as lazy because we can't use @available in computed properties.
   @available(iOS 13.0, *)
-  private(set) lazy var continueWithAppleDidCompleteWithAuthorizatonProperty =
+  private lazy var continueWithAppleDidCompleteWithAuthorizatonProperty =
     MutableProperty<ASAuthorization?>(nil)
 
   @available(iOS 13.0, *)

@@ -17,10 +17,6 @@ internal extension URLSession {
     -> SignalProducer<Data, GraphError> {
     let producer = self.reactive.data(with: request)
 
-      URLSession.shared.dataTask(with: request) { (data, response, error) in
-        print(data)
-      }.resume()
-
     return producer
       .start(on: scheduler)
       .flatMapError { error -> SignalProducer<(Data, URLResponse), GraphError> in
