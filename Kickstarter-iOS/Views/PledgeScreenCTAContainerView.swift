@@ -136,11 +136,11 @@ final class PledgeScreenCTAContainerView: UIView {
       self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
       self.applePayButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
-      self.disclaimerLabel.leadingAnchor.constraint(
-        equalTo: self.disclaimerView.leadingAnchor, constant: Styles.grid(4)
+      self.disclaimerView.leadingAnchor.constraint(
+        equalTo: self.disclaimerLabel.leadingAnchor, constant: Styles.grid(3)
       ),
-      self.disclaimerLabel.trailingAnchor.constraint(
-        equalTo: self.disclaimerView.trailingAnchor, constant: Styles.grid(-3)
+      self.disclaimerView.trailingAnchor.constraint(
+        equalTo: self.disclaimerLabel.trailingAnchor, constant: Styles.grid(3)
       )
     ])
   }
