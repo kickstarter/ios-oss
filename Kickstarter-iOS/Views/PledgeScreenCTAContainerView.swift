@@ -176,7 +176,7 @@ private let disclaimerLabelStyle: LabelStyle = { label in
     |> \.textAlignment .~ .center
     |> \.text %~ { _ in
       "By pledging you agree to Kickstarter's Terms of Use, Privacy Policy and Cookie Policy"
-  }
+    }
 }
 
 private let ctaStackViewStyle: StackViewStyle = { stackView in
