@@ -355,8 +355,13 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       )
       .skipNil()
 
+    self.goToLandingPage = self.applicationLaunchOptionsProperty.signal.ignoreValues()
+      .takeWhen(self.didUpdateOptimizelyClientProperty.signal.ignoreValues())
+      .filter(shouldGoToLandingPage)
+
     let deepLink = deeplinkActivated
       .filter { _ in shouldGoToLandingPage() == false && shouldSeeCategoryPersonalization() == false }
+      .take(until: self.goToLandingPage)
 
     self.findRedirectUrl = deepLinkUrl
       .filter { Navigation.match($0) == .emailClick }
@@ -392,10 +397,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.goToSearch = deepLink
       .filter { $0 == .tab(.search) }
       .ignoreValues()
-
-    self.goToLandingPage = self.applicationLaunchOptionsProperty.signal.ignoreValues()
-      .takeWhen(self.didUpdateOptimizelyClientProperty.signal.ignoreValues())
-      .filter(shouldGoToLandingPage)
 
     self.goToLogin = deepLink
       .filter { $0 == .tab(.login) }

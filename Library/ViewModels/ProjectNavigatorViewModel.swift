@@ -186,10 +186,6 @@ public final class ProjectNavigatorViewModel: ProjectNavigatorViewModelType,
   public var outputs: ProjectNavigatorViewModelOutputs { return self }
 }
 
-private func swipeType(currentIndex: Int?, previousIndex: Int?) -> Koala.SwipeType {
-  return (currentIndex ?? 0) > (previousIndex ?? 0) ? .next : .previous
-}
-
 private struct ConfigData {
   fileprivate let project: Project
   fileprivate let refTag: RefTag
