@@ -149,11 +149,22 @@ public final class CategorySelectionViewController: UIViewController {
     let topSafeAreaInset = self.view.safeAreaInsets.top
     let bottomInset = self.buttonView.frame.height - bottomSafeAreaInset
     let topInset = self.headerView.frame.height - topSafeAreaInset + Styles.grid(2) // collection view's inset
+    let prevTopInset = self.collectionView.contentInset.top
 
-    self.collectionView.contentInset.bottom = bottomInset
-    self.collectionView.contentInset.top = topInset
-    self.collectionView.scrollIndicatorInsets.bottom = bottomInset
-    self.collectionView.scrollIndicatorInsets.top = topInset
+    self.pillLayout.shouldInvalidateLayout = prevTopInset != topInset
+
+    self.collectionView.contentInset = .init(
+      top: topInset,
+      left: self.collectionView.contentInset.left,
+      bottom: bottomInset,
+      right: self.collectionView.contentInset.right
+    )
+    self.collectionView.scrollIndicatorInsets = .init(
+      top: topInset,
+      left: self.collectionView.scrollIndicatorInsets.left,
+      bottom: bottomInset,
+      right: self.collectionView.scrollIndicatorInsets.right
+    )
   }
 
   public override func bindViewModel() {
