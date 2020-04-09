@@ -104,7 +104,7 @@ final class PledgeScreenCTAContainerView: UIView {
 
   // MARK: - Configuration
 
-  //TODO: Will be addressed in functionality PR
+  // TODO: Will be addressed in functionality PR
 //  func configureWith(value: ) {
 //  }
 
@@ -126,7 +126,7 @@ final class PledgeScreenCTAContainerView: UIView {
       |> ksr_addArrangedSubviewsToStackView()
 
     self.pledgeCTAButton.addTarget(
-      self, action: #selector(self.pledgeCTAButtonTapped), for: .touchUpInside
+      self, action: #selector(self.pledgeButtonTapped), for: .touchUpInside
     )
   }
 
@@ -137,16 +137,16 @@ final class PledgeScreenCTAContainerView: UIView {
       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
       self.applePayButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
       self.disclaimerLabel.leadingAnchor.constraint(
-         equalTo: self.disclaimerView.leadingAnchor, constant: Styles.grid(4)
-       ),
+        equalTo: self.disclaimerView.leadingAnchor, constant: Styles.grid(4)
+      ),
       self.disclaimerLabel.trailingAnchor.constraint(
-         equalTo: self.disclaimerView.trailingAnchor, constant: Styles.grid(-3)
-       )
+        equalTo: self.disclaimerView.trailingAnchor, constant: Styles.grid(-3)
+      )
     ])
   }
 
-  @objc func pledgeCTAButtonTapped() {
-  }
+  // TODO: Functionality PR
+  @objc func pledgeButtonTapped() {}
 }
 
 // MARK: - Styles
@@ -158,21 +158,23 @@ private func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackV
     return stackView
       |> \.axis .~ NSLayoutConstraint.Axis.vertical
       |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ UIEdgeInsets.init(top: Styles.grid(2),
-                                              left: Styles.grid(3),
-                                              bottom: Styles.grid(6),
-                                              right: Styles.grid(3))
+      |> \.layoutMargins .~ UIEdgeInsets.init(
+        top: Styles.grid(2),
+        left: Styles.grid(3),
+        bottom: Styles.grid(6),
+        right: Styles.grid(3)
+      )
       |> \.spacing .~ spacing
   }
 }
 
 private let disclaimerLabelStyle: LabelStyle = { label in
   label
-   |> \.font .~ .ksr_footnote()
-   |> \.textColor .~ .ksr_text_dark_grey_500
-   |> \.numberOfLines .~ 0
-   |> \.textAlignment .~ .center
-   |> \.text %~ { _ in "By pledging you agree to Kickstarter's Terms of Use, Privacy Policy and Cookie Policy" }
+    |> \.font .~ .ksr_footnote()
+    |> \.textColor .~ .ksr_text_dark_grey_500
+    |> \.numberOfLines .~ 0
+    |> \.textAlignment .~ .center
+    |> \.text %~ { _ in "By pledging you agree to Kickstarter's Terms of Use, Privacy Policy and Cookie Policy" }
 }
 
 private let ctaStackViewStyle: StackViewStyle = { stackView in

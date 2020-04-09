@@ -93,8 +93,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   }()
 
   private let PledgeCTAContainerView: PledgeScreenCTAContainerView = {
-     PledgeScreenCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
-   }()
+    PledgeScreenCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
   private lazy var rootScrollView: UIScrollView = { UIScrollView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = {
@@ -140,7 +140,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.configureChildViewControllers()
     self.setupConstraints()
     self.configurePledgeScreenCTAContainerView()
-
 
     self.viewModel.inputs.viewDidLoad()
   }
