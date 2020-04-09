@@ -182,7 +182,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     let arrangedSubviews = [
       [topSectionStackView],
       self.paymentMethodsSectionViews,
-
       [bottomSectionStackView]
     ]
     .flatMap { $0 }
