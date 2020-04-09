@@ -92,6 +92,14 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     PledgeSummaryViewController.instantiate()
   }()
 
+  fileprivate lazy var keyboardDimissingTapGestureRecognizer: UITapGestureRecognizer = {
+    UITapGestureRecognizer(
+      target: self,
+      action: #selector(PledgeViewController.dismissKeyboard)
+    )
+      |> \.cancelsTouchesInView .~ false
+  }()
+
   private lazy var rootScrollView: UIScrollView = { UIScrollView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
@@ -123,9 +131,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    self.view.addGestureRecognizer(
-      UITapGestureRecognizer(target: self, action: #selector(PledgeViewController.dismissKeyboard))
-    )
+    self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
 
     self.submitButton.addTarget(
       self,
@@ -160,7 +166,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       self.descriptionSectionViews,
       self.inputsSectionViews,
       self.summarySectionViews,
-      self.loginSectionViews
+      self.loginSectionViews,
+      self.paymentMethodsSectionViews
     ]
     .flatMap { $0 }
     .compact()
@@ -176,11 +183,9 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     let arrangedSubviews = [
       [topSectionStackView],
-      self.paymentMethodsSectionViews,
       [bottomSectionStackView]
     ]
     .flatMap { $0 }
-    .compact()
 
     arrangedSubviews.forEach { view in
       self.rootStackView.addArrangedSubview(view)
@@ -232,6 +237,9 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     _ = self.confirmationLabel
       |> \.numberOfLines .~ 0
       |> checkoutBackgroundStyle
+
+    _ = self.paymentMethodsViewController.view
+      |> roundedStyle(cornerRadius: Styles.grid(2))
   }
 
   // MARK: - View model
