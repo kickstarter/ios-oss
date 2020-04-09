@@ -4042,6 +4042,7 @@
 				D01587E71EEB2ED7006E7684 /* ShippingRule.swift */,
 				D01587E81EEB2ED7006E7684 /* ShippingRulesEnvelope.swift */,
 				D68F0B15243CFF3E009FC948 /* SignInWithAppleEnvelope.swift */,
+				D68F0B19243FB688009FC948 /* SignInWithAppleEnvelopeTests.swift */,
 				D01587E91EEB2ED7006E7684 /* StarEnvelope.swift */,
 				D01587EC1EEB2ED7006E7684 /* SurveyResponse.swift */,
 				D01587ED1EEB2ED7006E7684 /* SurveyResponseTests.swift */,
@@ -4064,7 +4065,6 @@
 				D01588251EEB2ED7006E7684 /* VoidEnvelope.swift */,
 				D01587971EEB2ED6006E7684 /* lenses */,
 				D01587EE1EEB2ED7006E7684 /* templates */,
-				D68F0B19243FB688009FC948 /* SignInWithAppleEnvelopeTests.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";

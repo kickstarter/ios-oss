@@ -191,9 +191,8 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       facebookLoginAttemptFailAlert,
       genericFacebookErrorAlert
     )
-    let logIntoEnvironmentWithFacebook = facebookLogin.values()
 
-    self.logIntoEnvironment = logIntoEnvironmentWithFacebook
+    self.logIntoEnvironment = facebookLogin.values()
 
     // MARK: - Sign-in with Apple
 
