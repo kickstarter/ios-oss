@@ -92,8 +92,10 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     PledgeSummaryViewController.instantiate()
   }()
 
-  private let PledgeCTAContainerView: PledgeScreenCTAContainerView = {
-    PledgeScreenCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  private lazy var PledgeCTAContainerView: PledgeScreenCTAContainerView = {
+    PledgeScreenCTAContainerView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.delegate .~ self
   }()
 
   private lazy var rootScrollView: UIScrollView = { UIScrollView(frame: .zero) }()

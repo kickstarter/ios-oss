@@ -4,6 +4,10 @@ import PassKit
 import Prelude
 import UIKit
 
+protocol PledgeScreenCTAContainerViewDelegate: AnyObject {
+  func pledgeCTAButtonTapped()
+}
+
 private enum Layout {
   enum Button {
     static let minHeight: CGFloat = 49.0
@@ -42,6 +46,10 @@ final class PledgeScreenCTAContainerView: UIView {
     UIView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
+  weak var delegate: PledgeScreenCTAContainerViewDelegate?
+
+  private let viewModel: PledgeScreenCTAContainerViewModelType = PledgeScreenCTAContainerViewModel()
 
   // MARK: - Lifecycle
 
@@ -100,6 +108,12 @@ final class PledgeScreenCTAContainerView: UIView {
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.notifyDelegateCTATapped
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.delegate?.pledgeCTAButtonTapped()
+    }
   }
 
   // MARK: - Configuration
@@ -145,8 +159,9 @@ final class PledgeScreenCTAContainerView: UIView {
     ])
   }
 
-  // TODO: Functionality PR
-  @objc func pledgeButtonTapped() {}
+  @objc func pledgeButtonTapped() {
+    self.viewModel.inputs.pledgeCTAButtonTapped()
+  }
 }
 
 // MARK: - Styles
