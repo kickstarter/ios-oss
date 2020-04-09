@@ -176,7 +176,7 @@ private let containerViewStyle: ViewStyle = { view in
     |> \.backgroundColor .~ .ksr_trust_700
     |> \.isAccessibilityElement .~ true
     |> \.accessibilityTraits .~ [UIAccessibilityTraits.button]
-    |> \.accessibilityLabel %~ { _ in String.Well_help_you_find_a_project_to_back() }
+    |> \.accessibilityLabel %~ { _ in Strings.Well_help_you_find_a_project_to_back() }
     |> \.accessibilityHint %~ { _ in Strings.See_our_suggestions() }
 }
 
@@ -203,7 +203,7 @@ private let imageRightStyle: ImageViewStyle = { imageView in
 private let titleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_title3().bolded
-    |> \.text %~ { _ in String.Well_help_you_find_a_project_to_back() }
+    |> \.text %~ { _ in Strings.Well_help_you_find_a_project_to_back() }
 }
 
 private let subtitleLabelStyle: LabelStyle = { label in
