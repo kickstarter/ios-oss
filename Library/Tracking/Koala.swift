@@ -1374,11 +1374,9 @@ public final class Koala {
    - parameter params: The optional Discover params if the project is being watched from Discover
    */
 
-  public func trackWatchProjectButtonClicked(
-    project: Project,
-    location: LocationContext,
-    params: DiscoveryParams? = nil
-  ) {
+  public func trackWatchProjectButtonClicked(project: Project,
+                                             location: LocationContext,
+                                             params: DiscoveryParams? = nil) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
     if let discoveryParams = params {

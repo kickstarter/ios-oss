@@ -376,29 +376,3 @@ private func statusString(_ forStatus: LoginIntent) -> String {
     return Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
   }
 }
-
-@available(iOS 13.0, *)
-private func continueWithAppleData(from authorization: ASAuthorization?) -> SignInWithAppleData? {
-  guard let authorization = authorization else {
-    return nil
-  }
-
-  switch authorization.credential {
-  case let appleIDCredential as ASAuthorizationAppleIDCredential:
-
-    guard let authToken = appleIDCredential.authorizationCode else {
-      return nil
-    }
-
-    let fullName = appleIDCredential.fullName
-    let firstName = fullName?.givenName
-    let lastName = fullName?.familyName
-    let token = String(data: authToken, encoding: .utf8)
-    let appId = AppEnvironment.current.apiService.appId
-
-    return (appId: appId, firstName: firstName, lastName: lastName, token: token) as? SignInWithAppleData
-
-  default:
-    return nil
-  }
-}
