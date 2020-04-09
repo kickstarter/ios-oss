@@ -204,13 +204,17 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
             .materialize()
         }
 
-      let fetchUserEvent = appleSignInEvent.values()
-        .switchMap { envelope in
-          AppEnvironment.current.apiService.fetchUser(userId: envelope.signInWithApple.user.intID!)
+      let userId = appleSignInEvent.values()
+        .map(\.signInWithApple.user.intID)
+        .skipNil()
+
+      let fetchUserEvent = userId
+        .switchMap { id in
+          AppEnvironment.current.apiService.fetchUser(userId: id)
             .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
             .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
             .materialize()
-      }
+        }
       
       let logIntoEnvironmentWithApple = appleSignInEvent.values()
         .map(\.signInWithApple.apiAccessToken)
