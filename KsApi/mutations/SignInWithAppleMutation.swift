@@ -12,6 +12,9 @@ public struct SignInWithAppleMutation<T: GraphMutationInput>: GraphMutation {
     mutation signInWithApple($input: SignInWithAppleInput!) {
       signInWithApple(input: $input) {
         apiAccessToken
+        user {
+          id
+        }
       }
     }
     """

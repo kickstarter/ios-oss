@@ -184,9 +184,12 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       facebookLoginAttemptFailAlert,
       genericFacebookErrorAlert
     )
-    self.logIntoEnvironment = facebookLogin.values()
+    let logIntoEnvironmentWithFacebook = facebookLogin.values()
 
-    // Login with Apple
+    self.logIntoEnvironment = logIntoEnvironmentWithFacebook
+
+    // MARK: - Sign-in with Apple
+
     if #available(iOS 13.0, *) {
       let appleSignInInput = self.continueWithAppleDidCompleteWithAuthorizatonProperty.signal
         .map(continueWithAppleData(from:))
@@ -201,9 +204,22 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
             .materialize()
         }
 
-      appleSignInEvent.observeValues { v in
-        print(v)
+      let fetchUserEvent = appleSignInEvent.values()
+        .switchMap { envelope in
+          AppEnvironment.current.apiService.fetchUser(userId: envelope.signInWithApple.user.intID!)
+            .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+            .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
+            .materialize()
       }
+      
+      let logIntoEnvironmentWithApple = appleSignInEvent.values()
+        .map(\.signInWithApple.apiAccessToken)
+        .combineLatest(with: fetchUserEvent.values())
+        .map { token, user in
+          AccessTokenEnvelope(accessToken: token, user: user)
+        }
+
+      self.logIntoEnvironment = Signal.merge(logIntoEnvironmentWithFacebook, logIntoEnvironmentWithApple)
     }
 
     // MARK: - Tracking
@@ -337,7 +353,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let headlineLabelHidden: Signal<Bool, Never>
   public let isLoading: Signal<Bool, Never>
   public let logInContextText: Signal<String, Never>
-  public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
+  private(set) public var logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
   public let postNotification: Signal<(Notification, Notification), Never>
   public let prepareContinueWithAppleRequest: Signal<(), Never>
   public let startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), Never>

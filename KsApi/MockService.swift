@@ -1244,7 +1244,7 @@
       if let error = signInWithAppleError {
         return SignalProducer(error: error)
       }
-      return SignalProducer(value: SignInWithAppleEnvelope(apiAccessToken: "api_access_token"))
+      return SignalProducer(value: SignInWithAppleEnvelope.template)
     }
 
     internal func signup(
