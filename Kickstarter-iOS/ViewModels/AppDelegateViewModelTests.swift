@@ -26,6 +26,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let findRedirectUrl = TestObserver<URL, Never>()
   private let forceLogout = TestObserver<(), Never>()
   private let goToActivity = TestObserver<(), Never>()
+  private let goToCategoriesPersonalizationOnboarding = TestObserver<(), Never>()
   private let goToDashboard = TestObserver<Param?, Never>()
   private let goToDiscovery = TestObserver<DiscoveryParams?, Never>()
   private let goToLandingPage = TestObserver<(), Never>()
@@ -61,6 +62,8 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.findRedirectUrl.observe(self.findRedirectUrl.observer)
     self.vm.outputs.forceLogout.observe(self.forceLogout.observer)
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
+    self.vm.outputs.goToCategoryPersonalizationOnboarding
+      .observe(self.goToCategoriesPersonalizationOnboarding.observer)
     self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
     self.vm.outputs.goToLandingPage.observe(self.goToLandingPage.observer)
@@ -913,6 +916,31 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToSearch.assertValueCount(1)
   }
 
+  func testDeeplink_WhenOnboardingFlowIsActive() {
+    self.vm.inputs.applicationDidFinishLaunching(
+      application: UIApplication.shared,
+      launchOptions: [:]
+    )
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: "https://www.kickstarter.com/search")!,
+        options: [:]
+      )
+
+      XCTAssertTrue(result)
+
+      self.goToSearch.assertValueCount(0)
+    }
+  }
+
   func testRegisterPushNotifications_Prompted() {
     let client = MockTrackingClient()
 
@@ -1221,6 +1249,30 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
+  func testOpenPushNotification_WhenOnboardingFlowIsActive() {
+    let pushData: [String: Any] = [
+      "aps": [
+        "alert": "Blob liked your update: Important message..."
+      ],
+      "post": [
+        "id": 1,
+        "project_id": 2
+      ]
+    ]
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.didReceive(remoteNotification: pushData)
+
+      self.presentViewController.assertValueCount(0)
+    }
+  }
+
   func testContinueUserActivity_ValidActivity() {
     let userActivity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
     userActivity.webpageURL = URL(string: "https://www.kickstarter.com/activity")
@@ -1255,6 +1307,30 @@ final class AppDelegateViewModelTests: TestCase {
 
     XCTAssertFalse(self.vm.outputs.continueUserActivityReturnValue.value)
     XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
+  }
+
+  func testContinueUserActivity_WhenOnboardingFlowIsActive() {
+    let userActivity = NSUserActivity(activityType: NSUserActivityTypeBrowsingWeb)
+    userActivity.webpageURL = URL(string: "https://www.kickstarter.com/activity")
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.applicationDidFinishLaunching(application: .shared, launchOptions: [:])
+
+      self.goToActivity.assertValueCount(0)
+      XCTAssertFalse(self.vm.outputs.continueUserActivityReturnValue.value)
+
+      let result = self.vm.inputs.applicationContinueUserActivity(userActivity)
+      XCTAssertTrue(result)
+
+      XCTAssertTrue(self.vm.outputs.continueUserActivityReturnValue.value)
+      self.goToActivity.assertValueCount(0)
+    }
   }
 
   func testSetApplicationShortcutItems() {
@@ -1424,6 +1500,24 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToSearch.assertValueCount(1)
   }
 
+  func testPerformShortcutItem_WhenOnboardingFlowIsActive() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
+      self.vm.inputs.applicationPerformActionForShortcutItem(ShortcutItem.search.applicationShortcutItem)
+
+      self.goToSearch.assertValueCount(0)
+    }
+  }
+
   func testLaunchShortcutItem_Search() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
@@ -1434,6 +1528,26 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToSearch.assertValueCount(1)
     XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
+  }
+
+  func testLaunchShortcutItem_WhenOnboardingFlowIsActive() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [
+          UIApplication.LaunchOptionsKey.shortcutItem: ShortcutItem.search.applicationShortcutItem
+        ]
+      )
+
+      self.goToSearch.assertValueCount(0)
+      XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
+    }
   }
 
   func testPerformShortcutItem_KoalaTracking() {
@@ -1690,6 +1804,44 @@ final class AppDelegateViewModelTests: TestCase {
     self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
     self.presentViewController.assertValueCount(1, "Present the project view controller.")
     self.goToMobileSafari.assertValues([])
+  }
+
+  func testEmailDeepLinking_WhenOnboardingFlowIsActive() {
+    let emailUrl = URL(string: "https://click.e.kickstarter.com/?qs=deadbeef")!
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient) {
+      // The application launches.
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
+
+      // We deep-link to an email url.
+      self.vm.inputs.applicationDidEnterBackground()
+      self.vm.inputs.applicationWillEnterForeground()
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: emailUrl,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.findRedirectUrl.assertValues([emailUrl], "Ask to find the redirect after open the email url.")
+      self.presentViewController.assertValues([], "No view controller is presented yet.")
+      self.goToMobileSafari.assertValues([])
+
+      // We find the redirect to be a project url.
+      self.vm.inputs.foundRedirectUrl(URL(string: "https://www.kickstarter.com/projects/creator/project")!)
+
+      self.findRedirectUrl.assertValues([emailUrl], "Nothing new is emitted.")
+      self.presentViewController.assertValueCount(0, "Nothing is presented")
+      self.goToMobileSafari.assertValues([])
+    }
   }
 
   func testEmailDeepLinking_ContinuedUserActivity() {
@@ -2285,6 +2437,131 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
+  func testGoToCategoriesPersonalizationOnboarding_WhenLoggedIn() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments
+      .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
+
+    self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
+    _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
+
+    withEnvironment(
+      currentUser: .template,
+      optimizelyClient: mockOptimizelyClient,
+      userDefaults: MockKeyValueStore()
+    ) {
+      self.vm.inputs.didUpdateOptimizelyClient(mockOptimizelyClient)
+
+      self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToCategoriesPersonalizationOnboarding_WhenPreviouslySeen() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments
+      .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+    let mockValueStore = MockKeyValueStore()
+    mockValueStore.hasSeenCategoryPersonalizationFlow = true
+
+    self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
+
+    self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
+    _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
+
+    withEnvironment(
+      currentUser: nil,
+      optimizelyClient: mockOptimizelyClient,
+      userDefaults: mockValueStore
+    ) {
+      self.vm.inputs.didUpdateOptimizelyClient(mockOptimizelyClient)
+
+      self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToCategoriesPersonalizationOnboarding_Variant1() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments
+      .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+    let mockValueStore = MockKeyValueStore()
+
+    self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
+
+    self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
+    _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
+
+    withEnvironment(
+      currentUser: nil,
+      optimizelyClient: mockOptimizelyClient,
+      userDefaults: mockValueStore
+    ) {
+      self.vm.inputs.didUpdateOptimizelyClient(mockOptimizelyClient)
+
+      self.goToCategoriesPersonalizationOnboarding.assertValueCount(1)
+    }
+  }
+
+  func testGoToCategoriesPersonalizationOnboarding_Control() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments
+      .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.control.rawValue
+      ]
+    let mockValueStore = MockKeyValueStore()
+
+    self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
+
+    self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
+    _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
+
+    withEnvironment(
+      currentUser: nil,
+      optimizelyClient: mockOptimizelyClient,
+      userDefaults: mockValueStore
+    ) {
+      self.vm.inputs.didUpdateOptimizelyClient(mockOptimizelyClient)
+
+      self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToCategoriesPersonalizationOnboarding_Variant2() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments
+      .~ [
+        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
+          OptimizelyExperiment.Variant.variant2.rawValue
+      ]
+    let mockValueStore = MockKeyValueStore()
+
+    self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
+
+    self.vm.inputs.applicationDidFinishLaunching(application: nil, launchOptions: nil)
+    _ = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
+
+    withEnvironment(
+      currentUser: nil,
+      optimizelyClient: mockOptimizelyClient,
+      userDefaults: mockValueStore
+    ) {
+      self.vm.inputs.didUpdateOptimizelyClient(mockOptimizelyClient)
+
+      self.goToCategoriesPersonalizationOnboarding.assertDidNotEmitValue()
+    }
+  }
+
   func testGoToLandingPage_EmitsIf_OptimizelyIsNotControl_HasNotSeenLandingPage() {
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~
@@ -2346,6 +2623,33 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.didUpdateOptimizelyClient(MockOptimizelyClient())
 
       self.goToLandingPage.assertDidNotEmitValue()
+    }
+  }
+
+  func testDeeplink_DoesNotActivateIf_GoToLandingPageEmits() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~
+      [OptimizelyExperiment.Key.nativeOnboarding.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
+
+    let userDefaults = MockKeyValueStore()
+      |> \.hasSeenLandingPage .~ false
+
+    withEnvironment(currentUser: nil, optimizelyClient: optimizelyClient, userDefaults: userDefaults) {
+      self.goToLandingPage.assertDidNotEmitValue()
+
+      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+      self.vm.inputs.didUpdateOptimizelyClient(MockOptimizelyClient())
+
+      _ = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(
+          string: "https://www.kickstarter.com/projects/chelsea-punk/chelsea-punk-band-the-final-album"
+        )!,
+        options: [:]
+      )
+
+      self.presentViewController.assertDidNotEmitValue()
+      self.goToLandingPage.assertValueCount(1)
     }
   }
 }

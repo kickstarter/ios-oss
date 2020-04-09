@@ -128,6 +128,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should navigate to activity.
   var goToActivity: Signal<(), Never> { get }
 
+  /// Emits when the root view controller should navigate to the onboarding flow
+  var goToCategoryPersonalizationOnboarding: Signal<Void, Never> { get }
+
   /// Emits when application should navigate to the creator's message thread
   var goToCreatorMessageThread: Signal<(Param, MessageThread), Never> { get }
 
@@ -242,9 +245,13 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
       .mapConst(Notification(name: .ksr_configUpdated, object: nil))
 
+    let optimizelyClientConfiguredNotification = self.didUpdateOptimizelyClientProperty.signal
+      .mapConst(Notification(name: .ksr_optimizelyClientConfigured, object: nil))
+
     self.postNotification = Signal.merge(
       currentUserUpdatedNotification,
-      configUpdatedNotification
+      configUpdatedNotification,
+      optimizelyClientConfiguredNotification
     )
 
     let openUrl = self.applicationOpenUrlProperty.signal.skipNil()
@@ -292,13 +299,21 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           .map { _ in token }
       }
 
+    // Onboarding
+
+    self.goToCategoryPersonalizationOnboarding = Signal.combineLatest(
+      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
+      self.didUpdateOptimizelyClientProperty.signal.skipNil().ignoreValues()
+    ).ignoreValues()
+      .filter(shouldSeeCategoryPersonalization)
+
+    // Deep links
+
     let deepLinkFromNotification = self.remoteNotificationProperty.signal.skipNil()
       .map(decode)
       .map { $0.value }
       .skipNil()
       .map(navigation(fromPushEnvelope:))
-
-    // Deep links
 
     let continueUserActivity = self.applicationContinueUserActivityProperty.signal.skipNil()
 
@@ -340,8 +355,13 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       )
       .skipNil()
 
+    self.goToLandingPage = self.applicationLaunchOptionsProperty.signal.ignoreValues()
+      .takeWhen(self.didUpdateOptimizelyClientProperty.signal.ignoreValues())
+      .filter(shouldGoToLandingPage)
+
     let deepLink = deeplinkActivated
-      .filter { _ in shouldGoToLandingPage() == false }
+      .filter { _ in shouldGoToLandingPage() == false && shouldSeeCategoryPersonalization() == false }
+      .take(until: self.goToLandingPage)
 
     self.findRedirectUrl = deepLinkUrl
       .filter { Navigation.match($0) == .emailClick }
@@ -377,10 +397,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.goToSearch = deepLink
       .filter { $0 == .tab(.search) }
       .ignoreValues()
-
-    self.goToLandingPage = self.applicationLaunchOptionsProperty.signal.ignoreValues()
-      .takeWhen(self.didUpdateOptimizelyClientProperty.signal.ignoreValues())
-      .filter(shouldGoToLandingPage)
 
     self.goToLogin = deepLink
       .filter { $0 == .tab(.login) }
@@ -836,6 +852,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
   public let goToActivity: Signal<(), Never>
+  public let goToCategoryPersonalizationOnboarding: Signal<Void, Never>
   public let goToCreatorMessageThread: Signal<(Param, MessageThread), Never>
   public let goToDashboard: Signal<Param?, Never>
   public let goToDiscovery: Signal<DiscoveryParams?, Never>
@@ -1110,6 +1127,30 @@ private func qualtricsConfigData() -> QualtricsConfigData {
     ]
     .compact()
   )
+}
+
+private func shouldSeeCategoryPersonalization() -> Bool {
+  let isLoggedIn = AppEnvironment.current.currentUser != nil
+  let hasSeenCategoryPersonalization = AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow
+
+  if isLoggedIn || hasSeenCategoryPersonalization {
+    // Currently logged-in users should not see the onboarding flow
+    AppEnvironment.current.userDefaults.hasSeenCategoryPersonalizationFlow = true
+
+    return false
+  }
+
+  guard let variant = AppEnvironment.current.optimizelyClient?
+    .variant(for: .onboardingCategoryPersonalizationFlow) else {
+    return false
+  }
+
+  switch variant {
+  case .control, .variant2:
+    return false
+  case .variant1:
+    return true
+  }
 }
 
 private func shouldGoToLandingPage() -> Bool {
