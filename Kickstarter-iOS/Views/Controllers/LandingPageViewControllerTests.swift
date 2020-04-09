@@ -7,7 +7,6 @@ internal final class LandingPageViewControllerTests: TestCase {
     super.setUp()
 
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-    self.recordMode = true
   }
 
   override func tearDown() {
@@ -27,4 +26,3 @@ internal final class LandingPageViewControllerTests: TestCase {
     }
   }
 }
-
