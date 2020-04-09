@@ -284,11 +284,11 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       }
 
     if #available(iOS 13.0, *) {
-    self.viewModel.outputs.didSignInWithApple
-      .observeForUI()
-      .observeValues { [weak self] envelope in
-        self?.viewModel.inputs.didReceiveSignInWithAppleEnvelope(envelope)
-      }
+      self.viewModel.outputs.didSignInWithApple
+        .observeForUI()
+        .observeValues { [weak self] envelope in
+          self?.viewModel.inputs.didReceiveSignInWithAppleEnvelope(envelope)
+        }
     }
   }
 
@@ -536,20 +536,21 @@ extension LoginToutViewController: ASAuthorizationControllerDelegate {
     controller _: ASAuthorizationController,
     didCompleteWithAuthorization authorization: ASAuthorization
   ) {
-
     guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
       let authToken = credential.authorizationCode else {
-        return
-      }
+      return
+    }
 
-      let fullName = credential.fullName
-      let token = String(data: authToken, encoding: .utf8)
+    let fullName = credential.fullName
+    let token = String(data: authToken, encoding: .utf8)
 
-      let data =  (appId: AppEnvironment.current.apiService.appId,
-                   firstName: fullName?.givenName,
-                   lastName: fullName?.familyName,
-                   token: token) as? SignInWithAppleData
-      self.viewModel.inputs.appleAuthorizationDidComplete(with: data)
+    let data = (
+      appId: AppEnvironment.current.apiService.appId,
+      firstName: fullName?.givenName,
+      lastName: fullName?.familyName,
+      token: token
+    ) as? SignInWithAppleData
+    self.viewModel.inputs.appleAuthorizationDidComplete(with: data)
   }
 
   func authorizationController(controller _: ASAuthorizationController, didCompleteWithError error: Error) {

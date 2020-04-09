@@ -1,8 +1,8 @@
+import AuthenticationServices
 @testable import FBSDKCoreKit
 @testable import FBSDKLoginKit
 @testable import KsApi
 @testable import Library
-import AuthenticationServices
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
@@ -13,7 +13,7 @@ final class LoginToutViewModelTests: TestCase {
   fileprivate let vm: LoginToutViewModelType = LoginToutViewModel()
 
   fileprivate let attemptFacebookLogin = TestObserver<(), Never>()
-    fileprivate let didSignInWithApple = TestObserver<SignInWithAppleEnvelope, Never>()
+  fileprivate let didSignInWithApple = TestObserver<SignInWithAppleEnvelope, Never>()
   fileprivate let dismissViewController = TestObserver<(), Never>()
   fileprivate let headlineLabelHidden = TestObserver<Bool, Never>()
   fileprivate let isLoading = TestObserver<Bool, Never>()
@@ -593,11 +593,9 @@ final class LoginToutViewModelTests: TestCase {
 
   @available(iOS 13, *)
   func testDidSignInWithApple() {
-
     let response = SignInWithAppleEnvelope.template
 
     withEnvironment(apiService: MockService(signInWithAppleResponse: response)) {
-
       let data = SignInWithAppleData(
         appId: "com.kickstarter.test",
         firstName: "Nino",

@@ -1,7 +1,6 @@
 import Foundation
 
 public struct SignInWithAppleEnvelope: Decodable {
-
   public let signInWithApple: SignInWithApple
 
   public struct SignInWithApple: Decodable {

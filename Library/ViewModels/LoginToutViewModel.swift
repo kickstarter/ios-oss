@@ -200,10 +200,12 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       let appleSignInInput = self.appleAuthorizationDidCompleteWithDataProperty.signal
         .skipNil()
         .map { data in
-          SignInWithAppleInput(appId: data.appId,
-                               authCode: data.token,
-                               firstName: data.firstName,
-                               lastName: data.lastName)
+          SignInWithAppleInput(
+            appId: data.appId,
+            authCode: data.token,
+            firstName: data.firstName,
+            lastName: data.lastName
+          )
         }
 
       let appleSignInEvent = appleSignInInput
@@ -347,7 +349,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   }
 
   public let attemptFacebookLogin: Signal<(), Never>
-  private(set) public var didSignInWithApple: Signal<SignInWithAppleEnvelope, Never> = .empty
+  public private(set) var didSignInWithApple: Signal<SignInWithAppleEnvelope, Never> = .empty
   public let dismissViewController: Signal<(), Never>
   public let headlineLabelHidden: Signal<Bool, Never>
   public let isLoading: Signal<Bool, Never>
