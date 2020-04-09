@@ -275,13 +275,21 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
           ?|> UILabel.lens.font .~ (isHidden ? UIFont.ksr_title2() : UIFont.ksr_subhead())
       }
 
-    self.viewModel.outputs.prepareContinueWithAppleRequest
+    self.viewModel.outputs.prepareSignInWithAppleRequest
       .observeForUI()
       .observeValues { [weak self] in
         if #available(iOS 13, *) {
           self?.prepareContinueWithAppleRequest()
         }
       }
+
+    if #available(iOS 13.0, *) {
+    self.viewModel.outputs.didSignInWithApple
+      .observeForUI()
+      .observeValues { [weak self] envelope in
+        self?.viewModel.inputs.didReceiveSignInWithAppleEnvelope(envelope)
+      }
+    }
   }
 
   // MARK: - Functions
@@ -532,17 +540,20 @@ extension LoginToutViewController: ASAuthorizationControllerDelegate {
     controller _: ASAuthorizationController,
     didCompleteWithAuthorization authorization: ASAuthorization
   ) {
-    self.viewModel.inputs.continueWithAppleDidComplete(with: authorization)
+    self.viewModel.inputs.appleAuthorizationDidComplete(with: authorization)
   }
 
   func authorizationController(controller _: ASAuthorizationController, didCompleteWithError error: Error) {
-    self.viewModel.inputs.continueWithAppleDidComplete(with: error)
+    self.viewModel.inputs.appleAuthorizationDidComplete(with: error)
   }
 }
 
 @available(iOS 13.0, *)
 extension LoginViewController: ASAuthorizationControllerPresentationContextProviding {
   func presentationAnchor(for _: ASAuthorizationController) -> ASPresentationAnchor {
-    return self.view.window!
+    guard let window = self.view.window else {
+      return ASPresentationAnchor()
+    }
+    return window
   }
 }

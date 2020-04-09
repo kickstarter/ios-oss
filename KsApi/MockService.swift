@@ -144,7 +144,7 @@
     fileprivate let sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope?
     fileprivate let sendEmailVerificationError: GraphError?
 
-    fileprivate let signInWithAppleResponse: GraphMutationEmptyResponseEnvelope?
+    fileprivate let signInWithAppleResponse: SignInWithAppleEnvelope?
     fileprivate let signInWithAppleError: GraphError?
 
     fileprivate let signupResponse: AccessTokenEnvelope?
@@ -283,7 +283,7 @@
       resetPasswordError: ErrorEnvelope? = nil,
       sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope? = nil,
       sendEmailVerificationError: GraphError? = nil,
-      signInWithAppleResponse: GraphMutationEmptyResponseEnvelope? = nil,
+      signInWithAppleResponse: SignInWithAppleEnvelope? = nil,
       signInWithAppleError: GraphError? = nil,
       signupResponse: AccessTokenEnvelope? = nil,
       signupError: ErrorEnvelope? = nil,

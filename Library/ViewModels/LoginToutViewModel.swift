@@ -4,7 +4,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias ContinueWithAppleData = (firstName: String, lastName: String, token: String)
+public typealias SignInWithAppleData = (appId: String, firstName: String?, lastName: String?, token: String)
 
 public protocol LoginToutViewModelInputs {
   /// Call when Continue withApple button is pressed
@@ -15,11 +15,14 @@ public protocol LoginToutViewModelInputs {
 
   /// Call when Apple completes authorization
   @available(iOS 13.0, *)
-  func continueWithAppleDidComplete(with authorization: ASAuthorization)
+  func appleAuthorizationDidComplete(with authorization: ASAuthorization)
 
   /// Call when Apple completes authorization with error
   @available(iOS 13.0, *)
-  func continueWithAppleDidComplete(with error: Error)
+  func appleAuthorizationDidComplete(with error: Error)
+
+  /// Call when the SignInWithAppleEnvelope is received from the server
+  func didReceiveSignInWithAppleEnvelope(_ envelope: SignInWithAppleEnvelope)
 
   /// Call when the environment has been logged into
   func environmentLoggedIn()
@@ -54,6 +57,10 @@ public protocol LoginToutViewModelOutputs {
   /// Emits when Facebook login should start
   var attemptFacebookLogin: Signal<(), Never> { get }
 
+  /// Emits after the signInWithApple mutation returns a value.
+  @available(iOS 13.0, *)
+  var didSignInWithApple: Signal<SignInWithAppleEnvelope, Never> { get }
+
   /// Emits when the controller should be dismissed.
   var dismissViewController: Signal<(), Never> { get }
 
@@ -73,7 +80,7 @@ public protocol LoginToutViewModelOutputs {
   var postNotification: Signal<(Notification, Notification), Never> { get }
 
   /// Emits when Continue with Apple button is tapped.
-  var prepareContinueWithAppleRequest: Signal<Void, Never> { get }
+  var prepareSignInWithAppleRequest: Signal<Void, Never> { get }
 
   /// Emits when should show Facebook error alert with AlertError
   var showFacebookErrorAlert: Signal<AlertError, Never> { get }
@@ -133,7 +140,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
           .materialize()
       }
 
-    self.prepareContinueWithAppleRequest = self.appleLoginButtonPressedProperty.signal.ignoreValues()
+    self.prepareSignInWithAppleRequest = self.appleLoginButtonPressedProperty.signal.ignoreValues()
 
     let tfaRequiredError = facebookLogin.errors()
       .filter { $0.ksrCode == .TfaRequired }
@@ -191,11 +198,14 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     // MARK: - Sign-in with Apple
 
     if #available(iOS 13.0, *) {
-      let appleSignInInput = self.continueWithAppleDidCompleteWithAuthorizatonProperty.signal
+      let appleSignInInput = self.appleAuthorizationDidCompleteWithAuthorizatonProperty.signal
         .map(continueWithAppleData(from:))
         .skipNil()
         .map { data in
-          SignInWithAppleInput(authCode: data.token, firstName: data.firstName, lastName: data.lastName)
+          SignInWithAppleInput(appId: data.appId,
+                               authCode: data.token,
+                               firstName: data.firstName,
+                               lastName: data.lastName)
         }
 
       let appleSignInEvent = appleSignInInput
@@ -204,26 +214,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
             .materialize()
         }
 
-      let userId = appleSignInEvent.values()
-        .map(\.signInWithApple.user.intID)
-        .skipNil()
-
-      let fetchUserEvent = userId
-        .switchMap { id in
-          AppEnvironment.current.apiService.fetchUser(userId: id)
-            .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-            .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
-            .materialize()
-        }
-      
-      let logIntoEnvironmentWithApple = appleSignInEvent.values()
-        .map(\.signInWithApple.apiAccessToken)
-        .combineLatest(with: fetchUserEvent.values())
-        .map { token, user in
-          AccessTokenEnvelope(accessToken: token, user: user)
-        }
-
-      self.logIntoEnvironment = Signal.merge(logIntoEnvironmentWithFacebook, logIntoEnvironmentWithApple)
+      self.didSignInWithApple = appleSignInEvent.values()
     }
 
     // MARK: - Tracking
@@ -285,17 +276,17 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
   // This property is being set as lazy because we can't use @available in computed properties.
   @available(iOS 13.0, *)
-  private lazy var continueWithAppleDidCompleteWithAuthorizatonProperty =
+  private lazy var appleAuthorizationDidCompleteWithAuthorizatonProperty =
     MutableProperty<ASAuthorization?>(nil)
 
   @available(iOS 13.0, *)
-  public func continueWithAppleDidComplete(with authorization: ASAuthorization) {
-    self.continueWithAppleDidCompleteWithAuthorizatonProperty.value = authorization
+  public func appleAuthorizationDidComplete(with authorization: ASAuthorization) {
+    self.appleAuthorizationDidCompleteWithAuthorizatonProperty.value = authorization
   }
 
-  fileprivate let continueWithAppleDidCompleteWithErrorProperty = MutableProperty<Error?>(nil)
-  public func continueWithAppleDidComplete(with error: Error) {
-    self.continueWithAppleDidCompleteWithErrorProperty.value = error
+  fileprivate let appleAuthorizationDidCompleteWithErrorProperty = MutableProperty<Error?>(nil)
+  public func appleAuthorizationDidComplete(with error: Error) {
+    self.appleAuthorizationDidCompleteWithErrorProperty.value = error
   }
 
   fileprivate let loginIntentProperty = MutableProperty<LoginIntent?>(.loginTab)
@@ -305,6 +296,11 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.loginIntentProperty.value = intent
     self.projectProperty.value = project
     self.rewardProperty.value = reward
+  }
+
+  fileprivate let didReceiveSignInWithAppleEnvelopeProperty = MutableProperty<SignInWithAppleEnvelope?>(nil)
+  public func didReceiveSignInWithAppleEnvelope(_ envelope: SignInWithAppleEnvelope) {
+    self.didReceiveSignInWithAppleEnvelopeProperty.value = envelope
   }
 
   fileprivate let environmentLoggedInProperty = MutableProperty(())
@@ -353,13 +349,14 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   }
 
   public let attemptFacebookLogin: Signal<(), Never>
+  private(set) public var didSignInWithApple: Signal<SignInWithAppleEnvelope, Never> = .empty
   public let dismissViewController: Signal<(), Never>
   public let headlineLabelHidden: Signal<Bool, Never>
   public let isLoading: Signal<Bool, Never>
   public let logInContextText: Signal<String, Never>
-  private(set) public var logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
+  public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
   public let postNotification: Signal<(Notification, Notification), Never>
-  public let prepareContinueWithAppleRequest: Signal<(), Never>
+  public let prepareSignInWithAppleRequest: Signal<(), Never>
   public let startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), Never>
   public let startLogin: Signal<(), Never>
   public let startSignup: Signal<(), Never>
@@ -381,7 +378,7 @@ private func statusString(_ forStatus: LoginIntent) -> String {
 }
 
 @available(iOS 13.0, *)
-private func continueWithAppleData(from authorization: ASAuthorization?) -> ContinueWithAppleData? {
+private func continueWithAppleData(from authorization: ASAuthorization?) -> SignInWithAppleData? {
   guard let authorization = authorization else {
     return nil
   }
@@ -394,11 +391,12 @@ private func continueWithAppleData(from authorization: ASAuthorization?) -> Cont
     }
 
     let fullName = appleIDCredential.fullName
-    let firstName = fullName?.givenName ?? ""
-    let lastName = fullName?.familyName ?? ""
+    let firstName = fullName?.givenName
+    let lastName = fullName?.familyName
     let token = String(data: authToken, encoding: .utf8)
+    let appId = AppEnvironment.current.apiService.appId
 
-    return (firstName: firstName, lastName: lastName, token: token) as? ContinueWithAppleData
+    return (appId: appId, firstName: firstName, lastName: lastName, token: token) as? SignInWithAppleData
 
   default:
     return nil
