@@ -15,13 +15,16 @@ final class PledgeScreenCTAContainerView: UIView {
   // MARK: - Properties
 
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
-  private lazy var disclaimerLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var disclaimerView: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
+
   private lazy var ctaStackView: UIStackView = {
     UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var disclaimerLabel: UILabel = { UILabel(frame: .zero) }()
+
+  private lazy var disclaimerView: UIView = {
+    UIView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -62,12 +65,14 @@ final class PledgeScreenCTAContainerView: UIView {
     _ = self
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
+    _ = self.applePayButton
+      |> applePayButtonStyle
+
+    _ = self.ctaStackView
+      |> ctaStackViewStyle
+
     _ = self.disclaimerLabel
-      |> \.text %~ { _ in "By pledging you agree to Kickstarter's Terms of Use, Privacy Policy and Cookie Policy" }
-      |> \.font .~ .ksr_footnote()
-      |> \.textColor .~ .ksr_text_dark_grey_500
-      |> \.numberOfLines .~ 0
-      |> \.textAlignment .~ .center
+      |> disclaimerLabelStyle
 
     _ = self.layer
       |> checkoutLayerCardRoundedStyle
@@ -85,17 +90,7 @@ final class PledgeScreenCTAContainerView: UIView {
       |> greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Pledge() }
 
-    _ = self.applePayButton
-      |> applePayButtonStyle
-
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-
-    _ = self.ctaStackView
-      |> \.axis .~ .horizontal
-      |> \.distribution .~ .fillEqually
-      |> \.spacing .~ Styles.grid(2)
-      |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(2), leftRight: Styles.grid(0))
-      |> \.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.rootStackView
       |> adaptableStackViewStyle(isAccessibilityCategory)
@@ -109,9 +104,9 @@ final class PledgeScreenCTAContainerView: UIView {
 
   // MARK: - Configuration
 
-  func configureWith(value: PledgeCTAContainerViewData) {
-   // self.viewModel.inputs.configureWith(value: value)
-  }
+  //TODO: Will be addressed in functionality PR
+//  func configureWith(value: ) {
+//  }
 
   // MARK: Functions
 
@@ -163,8 +158,28 @@ private func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackV
     return stackView
       |> \.axis .~ NSLayoutConstraint.Axis.vertical
       |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ UIEdgeInsets.init(top: Styles.grid(2), left: Styles.grid(3), bottom: Styles.grid(6), right: Styles.grid(3))
-    //(topBottom: Styles.grid(5), leftRight: Styles.grid(3))
+      |> \.layoutMargins .~ UIEdgeInsets.init(top: Styles.grid(2),
+                                              left: Styles.grid(3),
+                                              bottom: Styles.grid(6),
+                                              right: Styles.grid(3))
       |> \.spacing .~ spacing
   }
+}
+
+private let disclaimerLabelStyle: LabelStyle = { label in
+  label
+   |> \.font .~ .ksr_footnote()
+   |> \.textColor .~ .ksr_text_dark_grey_500
+   |> \.numberOfLines .~ 0
+   |> \.textAlignment .~ .center
+   |> \.text %~ { _ in "By pledging you agree to Kickstarter's Terms of Use, Privacy Policy and Cookie Policy" }
+}
+
+private let ctaStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .horizontal
+    |> \.distribution .~ .fillEqually
+    |> \.spacing .~ Styles.grid(2)
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(2), leftRight: Styles.grid(0))
+    |> \.isLayoutMarginsRelativeArrangement .~ true
 }
