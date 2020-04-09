@@ -238,6 +238,17 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         _ = Qualtrics.shared.display(viewController: vc)
       }
 
+    self.viewModel.outputs.goToCategoryPersonalizationOnboarding
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        let categorySelectionViewController = LandingViewController.instantiate()
+        let navController = NavigationController(rootViewController: categorySelectionViewController)
+        let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
+        navController.modalPresentationStyle = isIpad ? .formSheet : .fullScreen
+
+        self?.rootTabBarController?.present(navController, animated: true)
+      }
+
     // swiftlint:disable discarded_notification_center_observer
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
