@@ -82,6 +82,9 @@ public protocol LoginToutViewModelOutputs {
   /// Emits when Continue with Apple button is tapped.
   var prepareSignInWithAppleRequest: Signal<Void, Never> { get }
 
+  /// Emits when should show Apple error alert with error message
+  var showAppleErrorAlert: Signal<String, Never> { get }
+
   /// Emits when should show Facebook error alert with AlertError
   var showFacebookErrorAlert: Signal<AlertError, Never> { get }
 
@@ -192,7 +195,38 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       genericFacebookErrorAlert
     )
 
-    self.logIntoEnvironment = facebookLogin.values()
+    let userId = self.didReceiveSignInWithAppleEnvelopeProperty.signal
+      .skipNil()
+      .map(\.signInWithApple.user.intID)
+      .skipNil()
+
+    let apiAccessToken = self.didReceiveSignInWithAppleEnvelopeProperty.signal
+      .skipNil()
+      .map(\.signInWithApple.apiAccessToken)
+
+    let fetchUserEvent = userId
+      .switchMap { id in
+        AppEnvironment.current.apiService.fetchUser(userId: id)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
+          .materialize()
+      }
+
+    let logIntoEnvironmentWithApple = Signal.combineLatest(fetchUserEvent.values(), apiAccessToken)
+      .map { user, token in
+        AccessTokenEnvelope(accessToken: token, user: user)
+      }
+
+    let logIntoEnvironmentWithFacebook = facebookLogin.values()
+
+    self.logIntoEnvironment = Signal.merge(logIntoEnvironmentWithFacebook, logIntoEnvironmentWithApple)
+
+    let appleAuthorizationError = self.appleAuthorizationDidCompleteWithErrorProperty.signal
+      .skipNil()
+      .map(\.localizedDescription)
+
+    let fetchUserEventError = fetchUserEvent.errors()
+      .map(\.localizedDescription)
 
     // MARK: - Sign-in with Apple
 
@@ -215,6 +249,12 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
         }
 
       self.didSignInWithApple = appleSignInEvent.values()
+
+      let appleSignInEventError = appleSignInEvent.errors()
+        .map(\.localizedDescription)
+
+      self.showAppleErrorAlert = Signal
+        .merge(appleAuthorizationError, fetchUserEventError, appleSignInEventError)
     }
 
     // MARK: - Tracking
@@ -361,6 +401,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let startLogin: Signal<(), Never>
   public let startSignup: Signal<(), Never>
   public let startTwoFactorChallenge: Signal<String, Never>
+  public private(set) var showAppleErrorAlert: Signal<String, Never> = .empty
   public let showFacebookErrorAlert: Signal<AlertError, Never>
 }
 

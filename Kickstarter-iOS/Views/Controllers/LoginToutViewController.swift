@@ -290,6 +290,16 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
           self?.viewModel.inputs.didReceiveSignInWithAppleEnvelope(envelope)
         }
     }
+
+    self.viewModel.outputs.showAppleErrorAlert
+      .observeForControllerAction()
+      .observeValues { [weak self] message in
+        self?.present(
+          UIAlertController.genericError(message),
+          animated: true,
+          completion: nil
+        )
+    }
   }
 
   // MARK: - Functions
