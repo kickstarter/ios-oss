@@ -2,6 +2,7 @@
 @testable import FBSDKLoginKit
 @testable import KsApi
 @testable import Library
+import AuthenticationServices
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
@@ -12,6 +13,7 @@ final class LoginToutViewModelTests: TestCase {
   fileprivate let vm: LoginToutViewModelType = LoginToutViewModel()
 
   fileprivate let attemptFacebookLogin = TestObserver<(), Never>()
+    fileprivate let didSignInWithApple = TestObserver<SignInWithAppleEnvelope, Never>()
   fileprivate let dismissViewController = TestObserver<(), Never>()
   fileprivate let headlineLabelHidden = TestObserver<Bool, Never>()
   fileprivate let isLoading = TestObserver<Bool, Never>()
@@ -28,6 +30,9 @@ final class LoginToutViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.attemptFacebookLogin.observe(self.attemptFacebookLogin.observer)
+    if #available(iOS 13.0, *) {
+      self.vm.outputs.didSignInWithApple.observe(self.didSignInWithApple.observer)
+    }
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.vm.outputs.headlineLabelHidden.observe(self.headlineLabelHidden.observer)
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
@@ -584,5 +589,29 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.inputs.userSessionStarted()
 
     self.dismissViewController.assertValueCount(1)
+  }
+
+  @available(iOS 13, *)
+  func testDidSignInWithApple() {
+
+    let response = SignInWithAppleEnvelope.template
+
+    withEnvironment(apiService: MockService(signInWithAppleResponse: response)) {
+
+      let data = SignInWithAppleData(
+        appId: "com.kickstarter.test",
+        firstName: "Nino",
+        lastName: "Teixeira",
+        token: "apple_auth_token"
+      )
+
+      self.vm.inputs.appleAuthorizationDidComplete(with: data)
+
+      let value = self.didSignInWithApple.values
+        .first
+
+      XCTAssertEqual("api_access_token", value?.signInWithApple.apiAccessToken)
+      XCTAssertEqual("1", value?.signInWithApple.user.id)
+    }
   }
 }

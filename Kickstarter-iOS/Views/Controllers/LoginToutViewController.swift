@@ -365,16 +365,12 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   @available(iOS 13, *)
   private func prepareContinueWithAppleRequest() {
     let appleIDRequest = ASAuthorizationAppleIDProvider().createRequest()
-    appleIDRequest.requestedScopes = [.fullName, .email]
+      |> \.requestedScopes .~ [.fullName, .email]
 
-    let requests = [appleIDRequest]
-
-    // Create an authorization controller with the given requests.
-    let authorizationController = ASAuthorizationController(authorizationRequests: requests)
-    authorizationController.delegate = self
-    authorizationController.presentationContextProvider = self
-      as? ASAuthorizationControllerPresentationContextProviding
-    authorizationController.performRequests()
+    let authorizationController = ASAuthorizationController(authorizationRequests: [appleIDRequest])
+      |> \.delegate .~ self
+      ?|> \.presentationContextProvider .~ (self as? ASAuthorizationControllerPresentationContextProviding)
+    authorizationController?.performRequests()
   }
 
   fileprivate func goToHelpType(_ helpType: HelpType) {
@@ -540,7 +536,20 @@ extension LoginToutViewController: ASAuthorizationControllerDelegate {
     controller _: ASAuthorizationController,
     didCompleteWithAuthorization authorization: ASAuthorization
   ) {
-    self.viewModel.inputs.appleAuthorizationDidComplete(with: authorization)
+
+    guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
+      let authToken = credential.authorizationCode else {
+        return
+      }
+
+      let fullName = credential.fullName
+      let token = String(data: authToken, encoding: .utf8)
+
+      let data =  (appId: AppEnvironment.current.apiService.appId,
+                   firstName: fullName?.givenName,
+                   lastName: fullName?.familyName,
+                   token: token) as? SignInWithAppleData
+      self.viewModel.inputs.appleAuthorizationDidComplete(with: data)
   }
 
   func authorizationController(controller _: ASAuthorizationController, didCompleteWithError error: Error) {

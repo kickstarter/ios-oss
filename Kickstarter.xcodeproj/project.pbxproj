@@ -1144,6 +1144,7 @@
 		D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F29351F68333800E399A6 /* GraphSchema.swift */; };
 		D68F0B16243CFF3F009FC948 /* SignInWithAppleEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68F0B15243CFF3E009FC948 /* SignInWithAppleEnvelope.swift */; };
 		D68F0B18243F6730009FC948 /* SignInWithAppleEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68F0B17243F6730009FC948 /* SignInWithAppleEnvelopeTemplates.swift */; };
+		D68F0B1A243FB688009FC948 /* SignInWithAppleEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68F0B19243FB688009FC948 /* SignInWithAppleEnvelopeTests.swift */; };
 		D69C55142397166D00B0987A /* GraphBacking.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C55132397166D00B0987A /* GraphBacking.swift */; };
 		D69C5516239852CB00B0987A /* GraphBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C5515239852CB00B0987A /* GraphBackingEnvelope.swift */; };
 		D69C55182398534E00B0987A /* GraphBackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C55172398534E00B0987A /* GraphBackingTests.swift */; };
@@ -2491,6 +2492,7 @@
 		D67F29351F68333800E399A6 /* GraphSchema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphSchema.swift; sourceTree = "<group>"; };
 		D68F0B15243CFF3E009FC948 /* SignInWithAppleEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInWithAppleEnvelope.swift; sourceTree = "<group>"; };
 		D68F0B17243F6730009FC948 /* SignInWithAppleEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleEnvelopeTemplates.swift; sourceTree = "<group>"; };
+		D68F0B19243FB688009FC948 /* SignInWithAppleEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleEnvelopeTests.swift; sourceTree = "<group>"; };
 		D69BACEF21C856F2006EAA00 /* UIAlertControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlertControllerTests.swift; sourceTree = "<group>"; };
 		D69C55132397166D00B0987A /* GraphBacking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBacking.swift; sourceTree = "<group>"; };
 		D69C5515239852CB00B0987A /* GraphBackingEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingEnvelope.swift; sourceTree = "<group>"; };
@@ -3957,7 +3959,6 @@
 		D01587771EEB2ED6006E7684 /* models */ = {
 			isa = PBXGroup;
 			children = (
-				D68F0B15243CFF3E009FC948 /* SignInWithAppleEnvelope.swift */,
 				D01587781EEB2ED6006E7684 /* AccessTokenEnvelope.swift */,
 				D01587791EEB2ED6006E7684 /* Activity.swift */,
 				D015877A1EEB2ED6006E7684 /* ActivityEnvelope.swift */,
@@ -4040,6 +4041,7 @@
 				D6AE52261FD1B41200BEC788 /* RootCategoriesEnvelope.swift */,
 				D01587E71EEB2ED7006E7684 /* ShippingRule.swift */,
 				D01587E81EEB2ED7006E7684 /* ShippingRulesEnvelope.swift */,
+				D68F0B15243CFF3E009FC948 /* SignInWithAppleEnvelope.swift */,
 				D01587E91EEB2ED7006E7684 /* StarEnvelope.swift */,
 				D01587EC1EEB2ED7006E7684 /* SurveyResponse.swift */,
 				D01587ED1EEB2ED7006E7684 /* SurveyResponseTests.swift */,
@@ -4062,6 +4064,7 @@
 				D01588251EEB2ED7006E7684 /* VoidEnvelope.swift */,
 				D01587971EEB2ED6006E7684 /* lenses */,
 				D01587EE1EEB2ED7006E7684 /* templates */,
+				D68F0B19243FB688009FC948 /* SignInWithAppleEnvelopeTests.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -5050,6 +5053,7 @@
 				D04AACA7218BB72100CF713E /* DiscoveryProjectCategoryViewModelTests.swift in Sources */,
 				A7ED1FD41E831C5C00BFFA01 /* DashboardRewardRowStackViewViewModelTests.swift in Sources */,
 				A7ED1F331E830FDC00BFFA01 /* RefTagTests.swift in Sources */,
+				D68F0B1A243FB688009FC948 /* SignInWithAppleEnvelopeTests.swift in Sources */,
 				A7ED1FDE1E831C5C00BFFA01 /* DiscoveryExpandableRowCellViewModelTests.swift in Sources */,
 				D6534D3E22E789B900E9D279 /* PledgePaymentMethodsViewModelTests.swift in Sources */,
 				A7ED1FC41E831C5C00BFFA01 /* ProjectActivitySuccessCellViewModelTests.swift in Sources */,

@@ -15,7 +15,7 @@ public protocol LoginToutViewModelInputs {
 
   /// Call when Apple completes authorization
   @available(iOS 13.0, *)
-  func appleAuthorizationDidComplete(with authorization: ASAuthorization)
+  func appleAuthorizationDidComplete(with data: SignInWithAppleData?)
 
   /// Call when Apple completes authorization with error
   @available(iOS 13.0, *)
@@ -198,8 +198,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     // MARK: - Sign-in with Apple
 
     if #available(iOS 13.0, *) {
-      let appleSignInInput = self.appleAuthorizationDidCompleteWithAuthorizatonProperty.signal
-        .map(continueWithAppleData(from:))
+      let appleSignInInput = self.appleAuthorizationDidCompleteWithDataProperty.signal
         .skipNil()
         .map { data in
           SignInWithAppleInput(appId: data.appId,
@@ -276,12 +275,12 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
   // This property is being set as lazy because we can't use @available in computed properties.
   @available(iOS 13.0, *)
-  private lazy var appleAuthorizationDidCompleteWithAuthorizatonProperty =
-    MutableProperty<ASAuthorization?>(nil)
+  private lazy var appleAuthorizationDidCompleteWithDataProperty =
+    MutableProperty<SignInWithAppleData?>(nil)
 
   @available(iOS 13.0, *)
-  public func appleAuthorizationDidComplete(with authorization: ASAuthorization) {
-    self.appleAuthorizationDidCompleteWithAuthorizatonProperty.value = authorization
+  public func appleAuthorizationDidComplete(with data: SignInWithAppleData?) {
+    self.appleAuthorizationDidCompleteWithDataProperty.value = data
   }
 
   fileprivate let appleAuthorizationDidCompleteWithErrorProperty = MutableProperty<Error?>(nil)
