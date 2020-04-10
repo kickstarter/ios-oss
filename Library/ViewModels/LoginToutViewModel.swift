@@ -222,9 +222,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.logIntoEnvironment = Signal.merge(logIntoEnvironmentWithApple, logIntoEnvironmentWithFacebook)
 
     let fetchUserEventError = fetchUserEvent.errors()
-      .map {
-        error in error.localizedDescription
-    }
+      .map { error in error.localizedDescription }
 
     // MARK: - Sign-in with Apple
 

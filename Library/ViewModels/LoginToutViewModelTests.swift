@@ -611,7 +611,7 @@ final class LoginToutViewModelTests: TestCase {
         .first
 
       XCTAssertEqual("api_access_token", value?.signInWithApple.apiAccessToken)
-      XCTAssertEqual("1", value?.signInWithApple.user.id)
+      XCTAssertEqual("VXNlci0x", value?.signInWithApple.user.id)
     }
   }
 
@@ -625,6 +625,16 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.inputs.appleAuthorizationDidComplete(with: error)
 
     self.showAppleErrorAlert.assertValue("Not online sorry")
+  }
+
+  @available(iOS 13, *)
+  func testShowAppleErrorAlert_DoesNotEmitWhen_CancellingSignInWithAppleModal() {
+
+    let error = ASAuthorizationError(.canceled)
+
+    self.vm.inputs.appleAuthorizationDidComplete(with: error)
+
+    self.showAppleErrorAlert.assertDidNotEmitValue()
   }
 
   @available(iOS 13, *)
@@ -665,16 +675,18 @@ final class LoginToutViewModelTests: TestCase {
   @available(iOS 13, *)
   func testLogIntoEnvironment_SignInWithApple() {
 
-    withEnvironment(apiService: MockService(fetchUserError: .couldNotParseJSON)) {
+    let user = User.template
+    let signInWithAppleEnvelope = SignInWithAppleEnvelope.template
 
-      self.showAppleErrorAlert.assertDidNotEmitValue()
+    withEnvironment(apiService: MockService(fetchUserResponse: user)) {
 
-      self.vm.inputs.didReceiveSignInWithAppleEnvelope(.template)
+      self.logIntoEnvironment.assertDidNotEmitValue()
+
+      self.vm.inputs.didReceiveSignInWithAppleEnvelope(signInWithAppleEnvelope)
 
       self.scheduler.run()
-      self.showAppleErrorAlert.assertValue(
-        "The operation couldn’t be completed. (KsApi.ErrorEnvelope error 1.)"
-      )
+
+      self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
     }
   }
 }
