@@ -188,5 +188,4 @@ private let layerStyle: LayerStyle = { layer in
       CACornerMask.layerMaxXMinYCorner,
       CACornerMask.layerMinXMinYCorner
     ]
-
 }
