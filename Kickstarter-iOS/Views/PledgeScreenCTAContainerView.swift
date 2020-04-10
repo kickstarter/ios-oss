@@ -22,8 +22,8 @@ final class PledgeScreenCTAContainerView: UIView {
 
   private lazy var disclaimerLabel: UILabel = { UILabel(frame: .zero) }()
 
-  private lazy var disclaimerView: UIView = {
-    UIView(frame: .zero)
+  private lazy var disclaimerStackView: UIStackView = {
+    UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -73,6 +73,9 @@ final class PledgeScreenCTAContainerView: UIView {
     _ = self.disclaimerLabel
       |> disclaimerLabelStyle
 
+    _ = self.disclaimerStackView
+      |> disclaimerStackViewStyle
+
     _ = self.layer
       |> layerStyle
 
@@ -108,11 +111,10 @@ final class PledgeScreenCTAContainerView: UIView {
     _ = ([self.pledgeCTAButton, self.applePayButton], self.ctaStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = (self.disclaimerLabel, self.disclaimerView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
+    _ = ([self.disclaimerLabel], self.disclaimerStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.ctaStackView, self.disclaimerView], self.rootStackView)
+    _ = ([self.ctaStackView, self.disclaimerStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     self.pledgeCTAButton.addTarget(
@@ -123,13 +125,7 @@ final class PledgeScreenCTAContainerView: UIView {
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
-      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
-      self.disclaimerView.leadingAnchor.constraint(
-        equalTo: self.disclaimerLabel.leadingAnchor, constant: Styles.grid(3)
-      ),
-      self.disclaimerView.trailingAnchor.constraint(
-        equalTo: self.disclaimerLabel.trailingAnchor, constant: Styles.grid(3)
-      )
+      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight)
     ])
   }
 
@@ -173,6 +169,13 @@ private let ctaStackViewStyle: StackViewStyle = { stackView in
     |> \.distribution .~ .fillEqually
     |> \.spacing .~ Styles.grid(2)
     |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(2), leftRight: Styles.grid(0))
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+}
+
+private let disclaimerStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .horizontal
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(0), leftRight: Styles.grid(5))
     |> \.isLayoutMarginsRelativeArrangement .~ true
 }
 
