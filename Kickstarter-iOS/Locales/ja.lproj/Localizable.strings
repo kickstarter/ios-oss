@@ -73,6 +73,7 @@
 "Change_payment_method" = "支払方法の変更";
 "Chat" = "チャット";
 "Check_back_later_for_an_update_on_your_export" = "しばらくしてからエクスポートの進捗状況を確認してください。";
+"Check_out_these_handpicked_projects" = "Check out these handpicked projects just for you.";
 "Check_your_payment_details" = "お支払い情報をご確認ください";
 "Choose_another_reward" = "他のリワードを選択";
 "Chooses_location_for_shipping" = "配送先%{location} を選択";
@@ -459,9 +460,11 @@
 "Select" = "選択";
 "Select_an_option" = "選択してください";
 "Select_another_project" = "他のプロジェクトを選ぶ";
+"Select_fewer_categories" = "Select fewer categories";
 "Select_this_instead" = "代わりにこちらを選択";
 "Select_this_reward" = "このリワードを選ぶ";
 "Select_this_reward_instead" = "このリワードを選択";
+"Select_up_to_five" = "Select up to five from the options below.";
 "Selected" = "選択済み";
 "Selected_reward" = "選択したリワード";
 "Send" = "送信";
@@ -496,6 +499,7 @@
 "Stay_up_to_date_newsletter" = "Kickstarter チームお気に入りのプロジェクトや、当社が選んだ注目ニュースやイベントについての最新情報を受信しましょう。";
 "Stay_updated_on_the_projects_youve_backed_and_learn_about_how_these_creative_works_are_produced" = "Stay updated on the projects you've backed and learn about how these creative works are produced.";
 "Stay_updated_on_this_project" = "このプロジェクトの最新情報を受け取りたい？";
+"Step_number" = "Step %{current_step} of %{total_steps}";
 "Subscribe" = "購読する";
 "Subscribed" = "購読済";
 "Subscribes_to_upcoming_lives_streams" = "ライブ配信を購読";

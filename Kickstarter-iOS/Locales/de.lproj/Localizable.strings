@@ -73,6 +73,7 @@
 "Change_payment_method" = "Zahlungsmethode ändern";
 "Chat" = "Chat";
 "Check_back_later_for_an_update_on_your_export" = "Der Fortschritt des Exports wird in Kürze verfügbar sein- schau später noch einmal vorbei.";
+"Check_out_these_handpicked_projects" = "Sieh dir dieses speziell für dich ausgesuchten Projekte an.";
 "Check_your_payment_details" = "Überprüfe die Daten deiner Zahlungsweise";
 "Choose_another_reward" = "Andere Belohnung auswählen";
 "Chooses_location_for_shipping" = "Legt %{location} als Versandort fest.";
@@ -460,9 +461,11 @@
 "Select" = "Auswählen";
 "Select_an_option" = "Bitte eine Option wählen";
 "Select_another_project" = "Wähle ein anderes Projekt aus";
+"Select_fewer_categories" = "Select fewer categories";
 "Select_this_instead" = "Stattdessen diese auswählen";
 "Select_this_reward" = "Diese Belohnung wählen";
 "Select_this_reward_instead" = "Diese Belohnung auswählen";
+"Select_up_to_five" = "Wähle bis zu fünf aus den unten stehenden Optionen aus.";
 "Selected" = "Ausgewählt";
 "Selected_reward" = "Gewählte Belohnung";
 "Send" = "Senden";
@@ -497,6 +500,7 @@
 "Stay_up_to_date_newsletter" = "Wir halten dich auf dem Laufenden über unsere Team-Favoriten, Neuigkeiten und Events, die wir gerade auf dem Schirm haben.";
 "Stay_updated_on_the_projects_youve_backed_and_learn_about_how_these_creative_works_are_produced" = "Stay updated on the projects you've backed and learn about how these creative works are produced.";
 "Stay_updated_on_this_project" = "Möchtest du bei diesem Projekt auf dem Laufenden bleiben?";
+"Step_number" = "Schritt %{current_step} von %{total_steps}";
 "Subscribe" = "Abonnieren";
 "Subscribed" = "Abo aktiviert";
 "Subscribes_to_upcoming_lives_streams" = "Zukünftige Live-Streams abonnieren.";
@@ -597,6 +601,7 @@
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Wir werden dir 48 Stunden vor Ablauf dieses Projekts eine Benachrichtigung senden, sowie für alle Projekte, die du in Zukunft speicherst. Um alle gespeicherten Projekte anzusehen, gehe bitte zu deiner Profilseite.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Wenn die Funktion Folgen gewählt wurde, kannst du die Aktivitäten von anderen einsehen und diese sehen deine Aktivitäten. Wenn die Funktion abgewählt wurde, werden diese Daten endgültig gelöscht.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";
+"Which_categories_interest_you" = "Welche Kategorien interessieren dich?";
 "Write_a_bio" = "Schreibe eine kurze Biografie, ein oder zwei Sätze genügen.";
 "Yes_cancel_it" = "Ja, abbrechen";
 "Yes_cancel_my_pledge" = "Ja, ich möchte meinen Beitrag zurückziehen";
