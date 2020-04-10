@@ -294,12 +294,8 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.viewModel.outputs.showAppleErrorAlert
       .observeForControllerAction()
       .observeValues { [weak self] message in
-        self?.present(
-          UIAlertController.genericError(message),
-          animated: true,
-          completion: nil
-        )
-    }
+        self?.present(UIAlertController.genericError(message), animated: true)
+      }
   }
 
   // MARK: - Functions

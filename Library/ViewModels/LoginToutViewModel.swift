@@ -80,7 +80,7 @@ public protocol LoginToutViewModelOutputs {
   var postNotification: Signal<(Notification, Notification), Never> { get }
 
   /// Emits when Continue with Apple button is tapped.
-  var prepareSignInWithAppleRequest: Signal<Void, Never> { get }
+  var prepareSignInWithAppleRequest: Signal<(), Never> { get }
 
   /// Emits when should show Apple error alert with error message
   var showAppleErrorAlert: Signal<String, Never> { get }
@@ -219,14 +219,14 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     let logIntoEnvironmentWithFacebook = facebookLogin.values()
 
-    self.logIntoEnvironment = Signal.merge(logIntoEnvironmentWithFacebook, logIntoEnvironmentWithApple)
+    self.logIntoEnvironment = Signal.merge(logIntoEnvironmentWithApple, logIntoEnvironmentWithFacebook)
 
     let appleAuthorizationError = self.appleAuthorizationDidCompleteWithErrorProperty.signal
       .skipNil()
-      .map(\.localizedDescription)
+      .map { error in error.localizedDescription }
 
     let fetchUserEventError = fetchUserEvent.errors()
-      .map(\.localizedDescription)
+      .map { error in error.localizedDescription }
 
     // MARK: - Sign-in with Apple
 
@@ -251,7 +251,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       self.didSignInWithApple = appleSignInEvent.values()
 
       let appleSignInEventError = appleSignInEvent.errors()
-        .map(\.localizedDescription)
+        .map { error in error.localizedDescription }
 
       self.showAppleErrorAlert = Signal
         .merge(appleAuthorizationError, fetchUserEventError, appleSignInEventError)
