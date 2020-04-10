@@ -20,6 +20,7 @@ final class LoginToutViewModelTests: TestCase {
   fileprivate let logInContextText = TestObserver<String, Never>()
   fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
   fileprivate let postNotification = TestObserver<(Notification.Name, Notification.Name), Never>()
+  fileprivate let showAppleErrorAlert = TestObserver<String, Never>()
   fileprivate let showFacebookErrorAlert = TestObserver<AlertError, Never>()
   fileprivate let startFacebookConfirmation = TestObserver<String, Never>()
   fileprivate let startLogin = TestObserver<(), Never>()
@@ -39,6 +40,7 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.outputs.logInContextText.observe(self.logInContextText.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
     self.vm.outputs.postNotification.map { ($0.0.name, $0.1.name) }.observe(self.postNotification.observer)
+    self.vm.outputs.showAppleErrorAlert.observe(self.showAppleErrorAlert.observer)
     self.vm.outputs.showFacebookErrorAlert.observe(self.showFacebookErrorAlert.observer)
     self.vm.outputs.startFacebookConfirmation.map { _, token in token }
       .observe(self.startFacebookConfirmation.observer)
@@ -610,6 +612,69 @@ final class LoginToutViewModelTests: TestCase {
 
       XCTAssertEqual("api_access_token", value?.signInWithApple.apiAccessToken)
       XCTAssertEqual("1", value?.signInWithApple.user.id)
+    }
+  }
+
+  @available(iOS 13, *)
+  func testShowAppleErrorAlert_AppleAuthorizationError() {
+
+    let error = NSError(
+      domain: "notonlinesorry", code: -1234, userInfo: [NSLocalizedDescriptionKey: "Not online sorry"]
+    )
+
+    self.vm.inputs.appleAuthorizationDidComplete(with: error)
+
+    self.showAppleErrorAlert.assertValue("Not online sorry")
+  }
+
+  @available(iOS 13, *)
+  func testShowAppleErrorAlert_SignInWithAppleMutationError() {
+
+    withEnvironment(apiService: MockService(signInWithAppleError: .invalidInput)) {
+      let data = SignInWithAppleData(
+        appId: "com.kickstarter.test",
+        firstName: "Nino",
+        lastName: "Teixeira",
+        token: "apple_auth_token"
+      )
+
+      self.showAppleErrorAlert.assertDidNotEmitValue()
+
+      self.vm.inputs.appleAuthorizationDidComplete(with: data)
+
+      self.showAppleErrorAlert.assertValue("Something went wrong.")
+    }
+  }
+
+  @available(iOS 13, *)
+  func testShowAppleErrorAlert_FetchUserEventError() {
+
+    withEnvironment(apiService: MockService(fetchUserError: .couldNotParseJSON)) {
+
+      self.showAppleErrorAlert.assertDidNotEmitValue()
+
+      self.vm.inputs.didReceiveSignInWithAppleEnvelope(.template)
+
+      self.scheduler.run()
+      self.showAppleErrorAlert.assertValue(
+        "The operation couldn’t be completed. (KsApi.ErrorEnvelope error 1.)"
+      )
+    }
+  }
+
+  @available(iOS 13, *)
+  func testLogIntoEnvironment_SignInWithApple() {
+
+    withEnvironment(apiService: MockService(fetchUserError: .couldNotParseJSON)) {
+
+      self.showAppleErrorAlert.assertDidNotEmitValue()
+
+      self.vm.inputs.didReceiveSignInWithAppleEnvelope(.template)
+
+      self.scheduler.run()
+      self.showAppleErrorAlert.assertValue(
+        "The operation couldn’t be completed. (KsApi.ErrorEnvelope error 1.)"
+      )
     }
   }
 }

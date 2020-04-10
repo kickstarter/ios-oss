@@ -221,12 +221,10 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     self.logIntoEnvironment = Signal.merge(logIntoEnvironmentWithApple, logIntoEnvironmentWithFacebook)
 
-    let appleAuthorizationError = self.appleAuthorizationDidCompleteWithErrorProperty.signal
-      .skipNil()
-      .map { error in error.localizedDescription }
-
     let fetchUserEventError = fetchUserEvent.errors()
-      .map { error in error.localizedDescription }
+      .map {
+        error in error.localizedDescription
+    }
 
     // MARK: - Sign-in with Apple
 
@@ -251,6 +249,11 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       self.didSignInWithApple = appleSignInEvent.values()
 
       let appleSignInEventError = appleSignInEvent.errors()
+        .map { error in error.localizedDescription }
+
+      let appleAuthorizationError = self.appleAuthorizationDidCompleteWithErrorProperty.signal
+        .skipNil()
+        .filter { !userCanceledSignInWithAppleFlow($0) }
         .map { error in error.localizedDescription }
 
       self.showAppleErrorAlert = Signal
@@ -416,4 +419,12 @@ private func statusString(_ forStatus: LoginIntent) -> String {
   case .discoveryOnboarding, .generic, .activity, .loginTab:
     return Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
   }
+}
+
+@available(iOS 13.0, *)
+private func userCanceledSignInWithAppleFlow(_ error: Error) -> Bool {
+  if let error = error as? ASAuthorizationError {
+    return error.errorCode == ASAuthorizationError.Code.canceled.rawValue
+  }
+  return false
 }
