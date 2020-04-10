@@ -175,7 +175,12 @@ private let ctaStackViewStyle: StackViewStyle = { stackView in
 private let disclaimerStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .horizontal
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(0), leftRight: Styles.grid(5))
+    |> \.layoutMargins .~ UIEdgeInsets.init(
+      top: Styles.grid(0),
+      left: Styles.grid(5),
+      bottom: Styles.grid(1),
+      right: Styles.grid(5)
+    )
     |> \.isLayoutMarginsRelativeArrangement .~ true
 }
 
