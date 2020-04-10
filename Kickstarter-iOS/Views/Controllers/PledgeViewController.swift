@@ -435,13 +435,9 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     _ = (self.processingView, window)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
-
-    self.processingView.activityIndicator.startAnimating()
   }
 
   private func hideProcessingView() {
-    self.processingView.activityIndicator.stopAnimating()
-
     self.processingView.removeFromSuperview()
   }
 }

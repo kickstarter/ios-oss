@@ -764,8 +764,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
-  public let processingViewIsHidden: Signal<Bool, Never>
   public let popToRootViewController: Signal<(), Never>
+  public let processingViewIsHidden: Signal<Bool, Never>
   public let sectionSeparatorsHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>

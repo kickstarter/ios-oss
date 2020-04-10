@@ -4,7 +4,7 @@ import Prelude
 import UIKit
 
 final class ProcessingView: UIView {
-  lazy var activityIndicator = { UIActivityIndicatorView(frame: .zero)
+  private lazy var activityIndicator = { UIActivityIndicatorView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -18,6 +18,8 @@ final class ProcessingView: UIView {
 
     self.configureSubviews()
     self.setupConstraints()
+
+    self.activityIndicator.startAnimating()
   }
 
   required init?(coder _: NSCoder) {
@@ -71,7 +73,12 @@ private let processingLabelStyle: LabelStyle = { label in
     |> \.textAlignment .~ .center
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
-    |> \.text %~ { _ in localizedString(key: "processing", defaultValue: "Processing...") }
+    |> \.text %~ { _ -> String in
+      var processingString = Strings.project_checkout_finalizing_title()
+      processingString.append("...")
+
+      return processingString
+  }
 }
 
 private let stackViewStyle: StackViewStyle = { stackView in
