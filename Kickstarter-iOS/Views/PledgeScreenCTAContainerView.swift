@@ -6,8 +6,7 @@ import UIKit
 
 private enum Layout {
   enum Button {
-    static let minHeight: CGFloat = 49.0
-    static let minWidth: CGFloat = 162.0
+    static let minHeight: CGFloat = 48.0
   }
 }
 
@@ -75,16 +74,7 @@ final class PledgeScreenCTAContainerView: UIView {
       |> disclaimerLabelStyle
 
     _ = self.layer
-      |> checkoutLayerCardRoundedStyle
-      |> \.backgroundColor .~ UIColor.white.cgColor
-      |> \.shadowColor .~ UIColor.black.cgColor
-      |> \.shadowOpacity .~ 0.12
-      |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
-      |> \.shadowRadius .~ CGFloat(1.0)
-      |> \.maskedCorners .~ [
-        CACornerMask.layerMaxXMinYCorner,
-        CACornerMask.layerMinXMinYCorner
-      ]
+      |> layerStyle
 
     _ = self.pledgeCTAButton
       |> greenButtonStyle
@@ -133,9 +123,7 @@ final class PledgeScreenCTAContainerView: UIView {
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
-      self.pledgeCTAButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
-      self.applePayButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minWidth),
       self.disclaimerView.leadingAnchor.constraint(
         equalTo: self.disclaimerLabel.leadingAnchor, constant: Styles.grid(3)
       ),
@@ -161,7 +149,7 @@ private func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackV
       |> \.layoutMargins .~ UIEdgeInsets.init(
         top: Styles.grid(2),
         left: Styles.grid(3),
-        bottom: Styles.grid(6),
+        bottom: Styles.grid(0),
         right: Styles.grid(3)
       )
       |> \.spacing .~ spacing
@@ -186,4 +174,19 @@ private let ctaStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(2)
     |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(2), leftRight: Styles.grid(0))
     |> \.isLayoutMarginsRelativeArrangement .~ true
+}
+
+private let layerStyle: LayerStyle = { layer in
+  layer
+    |> checkoutLayerCardRoundedStyle
+    |> \.backgroundColor .~ UIColor.white.cgColor
+    |> \.shadowColor .~ UIColor.black.cgColor
+    |> \.shadowOpacity .~ 0.12
+    |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
+    |> \.shadowRadius .~ CGFloat(1.0)
+    |> \.maskedCorners .~ [
+      CACornerMask.layerMaxXMinYCorner,
+      CACornerMask.layerMinXMinYCorner
+    ]
+
 }

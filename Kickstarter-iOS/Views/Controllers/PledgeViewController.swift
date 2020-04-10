@@ -92,7 +92,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     PledgeSummaryViewController.instantiate()
   }()
 
-  private let PledgeCTAContainerView: PledgeScreenCTAContainerView = {
+  private let pledgeCTAContainerView: PledgeScreenCTAContainerView = {
     PledgeScreenCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -202,14 +202,14 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   private func configurePledgeScreenCTAContainerView() {
     // Configure subviews
-    _ = (self.PledgeCTAContainerView, self.rootScrollView)
+    _ = (self.pledgeCTAContainerView, self.view)
       |> ksr_addSubviewToParent()
 
     // Configure constraints
     let pledgeCTAContainerViewConstraints = [
-      self.PledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.PledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.PledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+      self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
     ]
 
     NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
