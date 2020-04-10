@@ -19,11 +19,12 @@ public typealias PledgePaymentMethodsAndSelectionData = (
 )
 
 public protocol PledgePaymentMethodsViewModelInputs {
+  func addNewCardTapped(with intent: AddNewCardIntent)
   func configure(with value: PledgePaymentMethodsValue)
   func creditCardSelected(card: GraphUserCreditCard.CreditCard)
   func addNewCardViewControllerDidAdd(newCard card: GraphUserCreditCard.CreditCard)
   func viewDidLoad()
-  func addNewCardTapped(with intent: AddNewCardIntent)
+  func willSelectRowAtIndexPath(_ indexPath: IndexPath) -> IndexPath?
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
@@ -121,6 +122,19 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
 
     self.goToAddCardScreen = Signal.combineLatest(self.addNewCardIntentProperty.signal.skipNil(), project)
 
+    self.willSelectRowAtIndexPathReturnProperty <~ self.reloadPaymentMethods.map { $0.paymentMethodsCellData }
+      .takePairWhen(self.willSelectRowAtIndexPathProperty.signal.skipNil())
+      .map { cellData, indexPath -> IndexPath? in
+        guard
+          // the cell is in the payment methods section.
+          indexPath.section == 0,
+          // the row is within bounds and the card is enabled.
+          cellData.count > indexPath.row, cellData[indexPath.row].isEnabled
+        else { return nil }
+
+        return indexPath
+      }
+
     // Tracking
 
     projectRewardContextRefTag
@@ -135,6 +149,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
           reward: reward
         )
       }
+  }
+
+  private let addNewCardIntentProperty = MutableProperty<AddNewCardIntent?>(nil)
+  public func addNewCardTapped(with intent: AddNewCardIntent) {
+    self.addNewCardIntentProperty.value = intent
   }
 
   private let configureWithValueProperty = MutableProperty<PledgePaymentMethodsValue?>(nil)
@@ -153,14 +172,16 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.newCreditCardProperty.value = card
   }
 
-  private let addNewCardIntentProperty = MutableProperty<AddNewCardIntent?>(nil)
-  public func addNewCardTapped(with intent: AddNewCardIntent) {
-    self.addNewCardIntentProperty.value = intent
-  }
-
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  private let willSelectRowAtIndexPathProperty = MutableProperty<IndexPath?>(nil)
+  private let willSelectRowAtIndexPathReturnProperty = MutableProperty<IndexPath?>(nil)
+  public func willSelectRowAtIndexPath(_ indexPath: IndexPath) -> IndexPath? {
+    self.willSelectRowAtIndexPathProperty.value = indexPath
+    return self.willSelectRowAtIndexPathReturnProperty.value
   }
 
   public let goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never>

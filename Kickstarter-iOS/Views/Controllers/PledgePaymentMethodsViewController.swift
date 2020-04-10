@@ -160,6 +160,10 @@ extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
 // MARK: - UITableViewDelegate
 
 extension PledgePaymentMethodsViewController: UITableViewDelegate {
+  func tableView(_: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    return self.viewModel.inputs.willSelectRowAtIndexPath(indexPath)
+  }
+
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
 

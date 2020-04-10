@@ -349,6 +349,34 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     }
   }
 
+  func testCantSelectUnavailableCards() {
+    let cards = GraphUserCreditCard.withCards([
+      GraphUserCreditCard.visa,
+      GraphUserCreditCard.discover,
+      GraphUserCreditCard.amex
+    ])
+    let response = UserEnvelope<GraphUserCreditCard>(me: cards)
+    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+    let project = Project.template
+      |> \.availableCardTypes .~ ["AMEX", "VISA", "MASTERCARD"]
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.run()
+
+      let discoverIndexPath = IndexPath(row: 1, section: 0)
+      XCTAssertNil(self.vm.inputs.willSelectRowAtIndexPath(discoverIndexPath))
+
+      let amexIndexPath = IndexPath(row: 2, section: 0)
+      XCTAssertEqual(self.vm.inputs.willSelectRowAtIndexPath(amexIndexPath), amexIndexPath)
+
+      let outOfBoundsIndexPath = IndexPath(row: 1, section: 1)
+      XCTAssertNil(self.vm.inputs.willSelectRowAtIndexPath(outOfBoundsIndexPath))
+    }
+  }
+
   func testGoToAddNewCard() {
     let project = Project.template
 
