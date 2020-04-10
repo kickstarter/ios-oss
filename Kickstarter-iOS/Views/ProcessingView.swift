@@ -78,7 +78,7 @@ private let processingLabelStyle: LabelStyle = { label in
       processingString.append("...")
 
       return processingString
-  }
+    }
 }
 
 private let stackViewStyle: StackViewStyle = { stackView in
