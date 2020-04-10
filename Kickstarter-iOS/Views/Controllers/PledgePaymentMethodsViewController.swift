@@ -45,6 +45,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> ksr_addSubviewToParent()
 
     self.tableView.registerCellClass(PledgePaymentMethodCell.self)
+    self.tableView.registerCellClass(PledgePaymentMethodAddCell.self)
   }
 
   private func setupConstraints() {
@@ -131,14 +132,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 }
 
-// MARK: - PledgeAddNewCardViewDelegate
-
-extension PledgePaymentMethodsViewController: PledgeAddNewCardViewDelegate {
-  func pledgeAddNewCardView(_: PledgeAddNewCardView, didTapAddNewCardWith intent: AddNewCardIntent) {
-    self.viewModel.inputs.addNewCardTapped(with: intent)
-  }
-}
-
 // MARK: - AddNewCardViewControllerDelegate
 
 extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
@@ -167,8 +160,6 @@ extension PledgePaymentMethodsViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
 
-    guard let data = self.dataSource[indexPath] as? PledgePaymentMethodCellData else { return }
-
-    self.viewModel.inputs.creditCardSelected(card: data.card)
+    self.viewModel.inputs.didSelectRowAtIndexPath(indexPath)
   }
 }

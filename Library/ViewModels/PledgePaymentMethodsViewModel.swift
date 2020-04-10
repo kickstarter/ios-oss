@@ -4,6 +4,12 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
+public enum PaymentMethodsTableViewSection: Int {
+  case paymentMethods
+  case addNewCard
+  case loading
+}
+
 public typealias PledgePaymentMethodsValue = (
   user: User,
   project: Project,
@@ -19,10 +25,9 @@ public typealias PledgePaymentMethodsAndSelectionData = (
 )
 
 public protocol PledgePaymentMethodsViewModelInputs {
-  func addNewCardTapped(with intent: AddNewCardIntent)
-  func configure(with value: PledgePaymentMethodsValue)
-  func creditCardSelected(card: GraphUserCreditCard.CreditCard)
   func addNewCardViewControllerDidAdd(newCard card: GraphUserCreditCard.CreditCard)
+  func configure(with value: PledgePaymentMethodsValue)
+  func didSelectRowAtIndexPath(_ indexPath: IndexPath)
   func viewDidLoad()
   func willSelectRowAtIndexPath(_ indexPath: IndexPath) -> IndexPath?
 }
@@ -97,19 +102,26 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     )
     .map(pledgePaymentMethodCellDataAndSelectedCard)
 
-    let updateSelectedCard = cards
-      .takePairWhen(self.creditCardSelectedSignal)
+    let updatedCards = cards
+      .takePairWhen(self.didSelectRowAtIndexPathProperty.signal.skipNil())
       .map(unpack)
-      .map { data, _, card in (cellData(data, selecting: card), card, false) }
+      .filter { _, _, indexPath in
+        indexPath.section == PaymentMethodsTableViewSection.paymentMethods.rawValue
+      }
+      .map { data, _, indexPath -> PledgePaymentMethodsAndSelectionData? in
+        guard data.count > indexPath.row else { return nil }
+        let card = data[indexPath.row].card
+
+        return (cellData(data, selecting: card), card, false)
+      }
+      .skipNil()
 
     let configuredCards = cards.map { cellData, selectedCard in (cellData, selectedCard, true) }
-    let updatedCards = updateSelectedCard
 
     self.reloadPaymentMethods = Signal.merge(
-      configuredCards,
+      configuredCards.map { $0 as PledgePaymentMethodsAndSelectionData },
       updatedCards
     )
-    .map { $0 as PledgePaymentMethodsAndSelectionData }
 
     self.notifyDelegateLoadPaymentMethodsError = storedCardsEvent
       .errors()
@@ -120,14 +132,24 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .skipNil()
       .skipRepeats()
 
-    self.goToAddCardScreen = Signal.combineLatest(self.addNewCardIntentProperty.signal.skipNil(), project)
+    let didTapToAddNewCard = self.didSelectRowAtIndexPathProperty.signal.skipNil()
+      .filter { $0.section == PaymentMethodsTableViewSection.addNewCard.rawValue }
 
-    self.willSelectRowAtIndexPathReturnProperty <~ self.reloadPaymentMethods.map { $0.paymentMethodsCellData }
+    self.goToAddCardScreen = project
+      .takeWhen(didTapToAddNewCard)
+      .map { project in (.pledge, project) }
+
+    self.willSelectRowAtIndexPathReturnProperty <~ self.reloadPaymentMethods
+      .map { $0.paymentMethodsCellData }
       .takePairWhen(self.willSelectRowAtIndexPathProperty.signal.skipNil())
       .map { cellData, indexPath -> IndexPath? in
         guard
-          // the cell is in the payment methods section.
-          indexPath.section == 0,
+          // the cell is in the payment methods or add new card section.
+          [
+            PaymentMethodsTableViewSection.paymentMethods.rawValue,
+            PaymentMethodsTableViewSection.addNewCard.rawValue
+          ]
+          .contains(indexPath.section),
           // the row is within bounds and the card is enabled.
           cellData.count > indexPath.row, cellData[indexPath.row].isEnabled
         else { return nil }
@@ -151,20 +173,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       }
   }
 
-  private let addNewCardIntentProperty = MutableProperty<AddNewCardIntent?>(nil)
-  public func addNewCardTapped(with intent: AddNewCardIntent) {
-    self.addNewCardIntentProperty.value = intent
-  }
-
   private let configureWithValueProperty = MutableProperty<PledgePaymentMethodsValue?>(nil)
   public func configure(with value: PledgePaymentMethodsValue) {
     self.configureWithValueProperty.value = value
-  }
-
-  private let (creditCardSelectedSignal, creditCardSelectedObserver)
-    = Signal<GraphUserCreditCard.CreditCard, Never>.pipe()
-  public func creditCardSelected(card: GraphUserCreditCard.CreditCard) {
-    self.creditCardSelectedObserver.send(value: card)
   }
 
   private let newCreditCardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
@@ -175,6 +186,11 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+  }
+
+  private let didSelectRowAtIndexPathProperty = MutableProperty<IndexPath?>(nil)
+  public func didSelectRowAtIndexPath(_ indexPath: IndexPath) {
+    self.didSelectRowAtIndexPathProperty.value = indexPath
   }
 
   private let willSelectRowAtIndexPathProperty = MutableProperty<IndexPath?>(nil)

@@ -337,15 +337,20 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      self.notifyDelegateCreditCardSelected.assertValues(["6"], "First card selected by default")
+      self.notifyDelegateCreditCardSelected.assertValues(
+        [GraphUserCreditCard.amex.id], "First card selected by default"
+      )
 
-      self.vm.inputs.creditCardSelected(card: GraphUserCreditCard.discover)
+      let discoverIndexPath = IndexPath(
+        row: 5,
+        section: PaymentMethodsTableViewSection.paymentMethods.rawValue
+      )
 
-      self.notifyDelegateCreditCardSelected.assertValues(["6", "5"])
+      self.vm.inputs.didSelectRowAtIndexPath(discoverIndexPath)
 
-      self.vm.inputs.creditCardSelected(card: GraphUserCreditCard.visa)
-
-      self.notifyDelegateCreditCardSelected.assertValues(["6", "5", "2"])
+      self.notifyDelegateCreditCardSelected.assertValues([
+        GraphUserCreditCard.amex.id, GraphUserCreditCard.discover.id
+      ])
     }
   }
 
@@ -366,13 +371,21 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      let discoverIndexPath = IndexPath(row: 1, section: 0)
+      let discoverIndexPath = IndexPath(
+        row: 1,
+        section: PaymentMethodsTableViewSection.paymentMethods.rawValue
+      )
       XCTAssertNil(self.vm.inputs.willSelectRowAtIndexPath(discoverIndexPath))
 
-      let amexIndexPath = IndexPath(row: 2, section: 0)
+      let amexIndexPath = IndexPath(
+        row: 2,
+        section: PaymentMethodsTableViewSection.paymentMethods.rawValue
+      )
       XCTAssertEqual(self.vm.inputs.willSelectRowAtIndexPath(amexIndexPath), amexIndexPath)
 
-      let outOfBoundsIndexPath = IndexPath(row: 1, section: 1)
+      let outOfBoundsIndexPath = IndexPath(
+        row: 1, section: PaymentMethodsTableViewSection.loading.rawValue
+      )
       XCTAssertNil(self.vm.inputs.willSelectRowAtIndexPath(outOfBoundsIndexPath))
     }
   }
@@ -383,7 +396,12 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
 
-    self.vm.inputs.addNewCardTapped(with: .pledge)
+    let addNewCardIndexPath = IndexPath(
+      row: 0,
+      section: PaymentMethodsTableViewSection.addNewCard.rawValue
+    )
+
+    self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
     self.goToAddCardIntent.assertValues([.pledge])
     self.goToProject.assertValues([project])
   }
@@ -396,7 +414,12 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
     XCTAssertEqual([], self.trackingClient.events)
 
-    self.vm.inputs.addNewCardTapped(with: .pledge)
+    let addNewCardIndexPath = IndexPath(
+      row: 0,
+      section: PaymentMethodsTableViewSection.addNewCard.rawValue
+    )
+
+    self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
 
     XCTAssertEqual(["Add New Card Button Clicked"], self.trackingClient.events)
 
@@ -412,7 +435,12 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
     XCTAssertEqual([], self.trackingClient.events)
 
-    self.vm.inputs.addNewCardTapped(with: .pledge)
+    let addNewCardIndexPath = IndexPath(
+      row: 0,
+      section: PaymentMethodsTableViewSection.addNewCard.rawValue
+    )
+
+    self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
 
     XCTAssertEqual(["Add New Card Button Clicked"], self.trackingClient.events)
 
