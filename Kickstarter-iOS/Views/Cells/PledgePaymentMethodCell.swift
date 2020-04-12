@@ -63,6 +63,7 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
       |> ksr_constrainViewToEdgesInParent()
 
     NSLayoutConstraint.activate([
+      self.cardImageView.widthAnchor.constraint(equalToConstant: Styles.grid(10)),
       self.checkmarkImageView.widthAnchor.constraint(
         equalTo: self.cardImageView.widthAnchor, multiplier: 0.4
       ),
