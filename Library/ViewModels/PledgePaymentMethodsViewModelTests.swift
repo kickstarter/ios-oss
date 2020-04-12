@@ -63,7 +63,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.reloadPaymentMethodsCards.assertValue(response.me.storedCards.nodes)
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
-        [true, true, true, true, true, true, false, true]
+        [true, true, true, true, true, true, true, false]
       ])
       self.reloadPaymentMethodsIsSelected.assertValues([
         [true, false, false, false, false, false, false, false]
@@ -85,8 +85,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
             GraphUserCreditCard.diners,
             GraphUserCreditCard.jcb,
             GraphUserCreditCard.discover,
-            GraphUserCreditCard.generic,
-            GraphUserCreditCard.unionPay
+            GraphUserCreditCard.unionPay,
+            GraphUserCreditCard.generic
           ], [
             userCreditCard,
             GraphUserCreditCard.amex,
@@ -95,14 +95,14 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
             GraphUserCreditCard.diners,
             GraphUserCreditCard.jcb,
             GraphUserCreditCard.discover,
-            GraphUserCreditCard.generic,
-            GraphUserCreditCard.unionPay
+            GraphUserCreditCard.unionPay,
+            GraphUserCreditCard.generic
           ]
         ]
       )
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
-        [true, true, true, true, true, true, false, true],
-        [true, true, true, true, true, true, true, false, true]
+        [true, true, true, true, true, true, true, false],
+        [true, true, true, true, true, true, true, true, false]
       ])
       self.reloadPaymentMethodsIsSelected.assertValues([
         [true, false, false, false, false, false, false, false],
@@ -121,7 +121,14 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
   }
 
   func testReloadPaymentMethods_NewCardAdded_ProjectHasBacking() {
-    let response = UserEnvelope<GraphUserCreditCard>(me: GraphUserCreditCard.template)
+    let cards = GraphUserCreditCard.withCards([
+      GraphUserCreditCard.amex,
+      GraphUserCreditCard.visa,
+      GraphUserCreditCard.masterCard,
+      GraphUserCreditCard.diners,
+      GraphUserCreditCard.generic
+    ])
+    let response = UserEnvelope<GraphUserCreditCard>(me: cards)
     let mockService = MockService(fetchGraphCreditCardsResponse: response)
 
     self.reloadPaymentMethodsCards.assertDidNotEmitValue()
@@ -152,17 +159,14 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           GraphUserCreditCard.amex,
           GraphUserCreditCard.masterCard,
           GraphUserCreditCard.diners,
-          GraphUserCreditCard.jcb,
-          GraphUserCreditCard.discover,
-          GraphUserCreditCard.generic,
-          GraphUserCreditCard.unionPay
+          GraphUserCreditCard.generic
         ]
       ], "Card used for backing is first")
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
-        [true, true, true, true, true, true, false, true]
+        [true, true, true, true, false]
       ])
       self.reloadPaymentMethodsIsSelected.assertValues([
-        [true, false, false, false, false, false, false, false]
+        [true, false, false, false, false]
       ], "First card is selected")
       self.reloadPaymentMethodsProjectCountry.assertValues([
         (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" }
@@ -185,10 +189,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           GraphUserCreditCard.amex,
           GraphUserCreditCard.masterCard,
           GraphUserCreditCard.diners,
-          GraphUserCreditCard.jcb,
-          GraphUserCreditCard.discover,
-          GraphUserCreditCard.generic,
-          GraphUserCreditCard.unionPay
+          GraphUserCreditCard.generic
         ],
         [
           newCard,
@@ -196,19 +197,16 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
           GraphUserCreditCard.amex,
           GraphUserCreditCard.masterCard,
           GraphUserCreditCard.diners,
-          GraphUserCreditCard.jcb,
-          GraphUserCreditCard.discover,
-          GraphUserCreditCard.generic,
-          GraphUserCreditCard.unionPay
+          GraphUserCreditCard.generic
         ]
       ], "New card added is first")
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
-        [true, true, true, true, true, true, false, true],
-        [true, true, true, true, true, true, true, false, true]
+        [true, true, true, true, false],
+        [true, true, true, true, true, false]
       ])
       self.reloadPaymentMethodsIsSelected.assertValues([
-        [true, false, false, false, false, false, false, false],
-        [true, false, false, false, false, false, false, false, false]
+        [true, false, false, false, false],
+        [true, false, false, false, false, false]
       ], "First card is selected")
       self.reloadPaymentMethodsProjectCountry.assertValues([
         (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" },
@@ -371,14 +369,22 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
       self.scheduler.run()
 
+      self.reloadPaymentMethodsCards.assertValues([
+        [
+          GraphUserCreditCard.visa,
+          GraphUserCreditCard.amex,
+          GraphUserCreditCard.discover
+        ]
+      ], "Discover unavailable and ordered last")
+
       let discoverIndexPath = IndexPath(
-        row: 1,
+        row: 2,
         section: PaymentMethodsTableViewSection.paymentMethods.rawValue
       )
       XCTAssertNil(self.vm.inputs.willSelectRowAtIndexPath(discoverIndexPath))
 
       let amexIndexPath = IndexPath(
-        row: 2,
+        row: 1,
         section: PaymentMethodsTableViewSection.paymentMethods.rawValue
       )
       XCTAssertEqual(self.vm.inputs.willSelectRowAtIndexPath(amexIndexPath), amexIndexPath)

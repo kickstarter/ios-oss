@@ -25,7 +25,7 @@ final class PledgePaymentMethodsDataSourceTests: XCTestCase {
 
     self.dataSource.load(cellData)
 
-    XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(2, self.dataSource.numberOfItems(in: 0))
   }
 }
