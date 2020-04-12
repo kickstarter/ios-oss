@@ -44,6 +44,9 @@ public protocol PledgePaymentMethodCellViewModelOutputs {
   /// Emits the text color for the last four digits label.
   var lastFourLabelTextColor: Signal<UIColor, Never> { get }
 
+  /// Emits the selection cell's selection style.
+  var selectionStyle: Signal<UITableViewCell.SelectionStyle, Never> { get }
+
   /// Emits whether or not the unavailable card type label should be hidden.
   var unavailableCardLabelHidden: Signal<Bool, Never> { get }
 
@@ -103,6 +106,10 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
       )
     }
 
+    self.selectionStyle = cardTypeIsAvailable.map {
+      $0 ? .default : .none
+    }
+
     self.cardImageAlpha = cardTypeIsAvailable.map {
       $0 ? 1.0 : 0.5
     }
@@ -132,6 +139,7 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
   public let checkmarkImageName: Signal<String, Never>
   public let expirationDateText: Signal<String, Never>
   public let lastFourLabelTextColor: Signal<UIColor, Never>
+  public let selectionStyle: Signal<UITableViewCell.SelectionStyle, Never>
   public let unavailableCardLabelHidden: Signal<Bool, Never>
   public let unavailableCardText: Signal<String, Never>
 

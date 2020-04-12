@@ -150,6 +150,12 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
         _ = self?.checkmarkImageView
           ?|> \.image .~ Library.image(named: imageName)
       }
+
+    self.viewModel.outputs.selectionStyle
+      .observeForUI()
+      .observeValues { [weak self] style in
+        self?.selectionStyle = style
+      }
   }
 
   func configureWith(value: PledgePaymentMethodCellData) {

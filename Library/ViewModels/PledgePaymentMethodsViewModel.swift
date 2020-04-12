@@ -220,8 +220,17 @@ private func pledgePaymentMethodCellDataAndSelectedCard(
 
     let isAvailableCardType = availableCardTypes.contains(cardBrand)
 
-    return (card, isAvailableCardType, false, project.location.displayableName)
+    return (
+      card: card,
+      isEnabled: isAvailableCardType,
+      isSelected: false,
+      projectCountry: project.location.displayableName
+    )
   }
+  // Position unavailable cards last
+  .sorted { data1, data2 -> Bool in data1.isEnabled && !data2.isEnabled }
+
+  let orderedCards = data.map { $0.card }
 
   // If there is no backing, simply select the first card in the list when it is an available card type.
   guard let backing = project.personalization.backing else {
@@ -229,14 +238,14 @@ private func pledgePaymentMethodCellDataAndSelectedCard(
       return (data, nil)
     }
 
-    let selected = cards.first
+    let selected = orderedCards.first
 
     return (cellData(data, selecting: selected), selected)
   }
 
   // If we're working with a backing, but we have a newly added card, select the newly added card.
   if newCardAdded {
-    let selected = cards.first
+    let selected = orderedCards.first
 
     return (cellData(data, selecting: selected), selected)
   }
@@ -245,7 +254,7 @@ private func pledgePaymentMethodCellDataAndSelectedCard(
    If we're working with a backing, and a new card hasn't been added,
    select the card that the backing is associated with.
    */
-  let backedCard = cards.first(where: { $0.id == backing.paymentSource?.id })
+  let backedCard = orderedCards.first(where: { $0.id == backing.paymentSource?.id })
 
   return (cellData(data, selecting: backedCard), backedCard)
 }
