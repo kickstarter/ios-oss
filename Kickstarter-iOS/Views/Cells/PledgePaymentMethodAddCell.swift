@@ -7,7 +7,6 @@ final class PledgePaymentMethodAddCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   private lazy var selectionView: UIView = { UIView(frame: .zero) |> \.backgroundColor .~ .ksr_grey_200 }()
-  // TODO: convert to label and image in stackview
   private lazy var addButton: UIButton = { UIButton(type: .custom) }()
 
   // MARK: - Lifecycle
@@ -36,7 +35,9 @@ final class PledgePaymentMethodAddCell: UITableViewCell, ValueCell {
       |> ksr_constrainViewToEdgesInParent()
       |> ksr_constrainViewToCenterInParent()
 
-    self.addButton.heightAnchor.constraint(equalToConstant: Styles.grid(9)).isActive = true
+    _ = self.addButton.heightAnchor.constraint(equalToConstant: Styles.grid(9))
+      |> \.priority .~ .defaultHigh
+      |> \.isActive .~ true
   }
 
   // MARK: - Styles
@@ -64,8 +65,10 @@ private let addButtonStyle: ButtonStyle = { button in
         defaultValue: "New payment method"
       )
     }
-    |> UIButton.lens.titleLabel.font .~ .ksr_subhead()
-    |> \.isUserInteractionEnabled .~ false
+    |> UIButton.lens.image(for: .normal) .~ Library.image(named: "icon-add-round-green")
+    |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead().bolded
+    |> UIButton.lens.isUserInteractionEnabled .~ false
     |> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_500
-    |> \.tintColor .~ .ksr_green_500
+    |> UIButton.lens.tintColor .~ .ksr_green_500
+    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(3))
 }
