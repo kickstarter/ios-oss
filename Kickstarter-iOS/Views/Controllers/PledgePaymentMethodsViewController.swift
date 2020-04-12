@@ -46,6 +46,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.tableView.registerCellClass(PledgePaymentMethodCell.self)
     self.tableView.registerCellClass(PledgePaymentMethodAddCell.self)
+    self.tableView.registerCellClass(PledgePaymentMethodLoadingCell.self)
   }
 
   private func setupConstraints() {
@@ -72,10 +73,11 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
     self.viewModel.outputs.reloadPaymentMethods
       .observeForUI()
-      .observeValues { [weak self] cards, selectedCard, shouldReload in
+      .observeValues { [weak self] cards, selectedCard, shouldReload, isLoading in
         guard let self = self else { return }
 
-        self.dataSource.load(cards)
+        self.dataSource.load(cards, isLoading: isLoading)
+
         if shouldReload {
           self.tableView.reloadData()
         } else {
