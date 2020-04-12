@@ -63,6 +63,7 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
       |> ksr_constrainViewToEdgesInParent()
 
     NSLayoutConstraint.activate([
+      self.cardImageView.widthAnchor.constraint(equalToConstant: Styles.grid(10)),
       self.checkmarkImageView.widthAnchor.constraint(
         equalTo: self.cardImageView.widthAnchor, multiplier: 0.4
       ),
@@ -149,6 +150,12 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
       .observeValues { [weak self] imageName in
         _ = self?.checkmarkImageView
           ?|> \.image .~ Library.image(named: imageName)
+      }
+
+    self.viewModel.outputs.selectionStyle
+      .observeForUI()
+      .observeValues { [weak self] style in
+        self?.selectionStyle = style
       }
   }
 

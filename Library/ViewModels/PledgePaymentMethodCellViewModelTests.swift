@@ -16,6 +16,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
   private let checkmarkImageName = TestObserver<String, Never>()
   private let expirationDateText = TestObserver<String, Never>()
   private let lastFourLabelTextColor = TestObserver<UIColor, Never>()
+  private let selectionStyle = TestObserver<UITableViewCell.SelectionStyle, Never>()
   private let unavailableCardLabelHidden = TestObserver<Bool, Never>()
   private let unavailableCardText = TestObserver<String, Never>()
 
@@ -30,6 +31,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.vm.outputs.checkmarkImageName.observe(self.checkmarkImageName.observer)
     self.vm.outputs.checkmarkImageHidden.observe(self.checkmarkImageHidden.observer)
     self.vm.outputs.lastFourLabelTextColor.observe(self.lastFourLabelTextColor.observer)
+    self.vm.outputs.selectionStyle.observe(self.selectionStyle.observer)
     self.vm.outputs.unavailableCardLabelHidden.observe(self.unavailableCardLabelHidden.observer)
     self.vm.outputs.unavailableCardText.observe(self.unavailableCardText.observer)
   }
@@ -43,6 +45,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.checkmarkImageName.assertDidNotEmitValue()
     self.checkmarkImageHidden.assertDidNotEmitValue()
     self.lastFourLabelTextColor.assertDidNotEmitValue()
+    self.selectionStyle.assertDidNotEmitValue()
     self.unavailableCardLabelHidden.assertDidNotEmitValue()
     self.unavailableCardText.assertDidNotEmitValue()
 
@@ -56,6 +59,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.checkmarkImageName.assertLastValue("icon-payment-method-unselected")
     self.checkmarkImageHidden.assertLastValue(false)
     self.lastFourLabelTextColor.assertLastValue(.ksr_soft_black)
+    self.selectionStyle.assertLastValue(.default)
     self.unavailableCardLabelHidden.assertLastValue(true)
     self.unavailableCardText.assertDidNotEmitValue()
 
@@ -69,6 +73,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.checkmarkImageName.assertLastValue("icon-payment-method-unselected")
     self.checkmarkImageHidden.assertLastValue(false)
     self.lastFourLabelTextColor.assertLastValue(.ksr_soft_black)
+    self.selectionStyle.assertLastValue(.default)
     self.unavailableCardLabelHidden.assertLastValue(true)
     self.unavailableCardText.assertDidNotEmitValue()
 
@@ -82,6 +87,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.checkmarkImageName.assertLastValue("icon-payment-method-unselected")
     self.checkmarkImageHidden.assertLastValue(false)
     self.lastFourLabelTextColor.assertLastValue(.ksr_soft_black)
+    self.selectionStyle.assertLastValue(.default)
     self.unavailableCardLabelHidden.assertLastValue(true)
     self.unavailableCardText.assertDidNotEmitValue()
 
@@ -95,6 +101,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.checkmarkImageName.assertLastValue("icon-payment-method-unselected")
     self.checkmarkImageHidden.assertLastValue(false)
     self.lastFourLabelTextColor.assertLastValue(.ksr_soft_black)
+    self.selectionStyle.assertLastValue(.default)
     self.unavailableCardLabelHidden.assertLastValue(true)
     self.unavailableCardText.assertDidNotEmitValue()
 
@@ -108,6 +115,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.checkmarkImageName.assertLastValue("icon-payment-method-unselected")
     self.checkmarkImageHidden.assertLastValue(false)
     self.lastFourLabelTextColor.assertLastValue(.ksr_soft_black)
+    self.selectionStyle.assertLastValue(.default)
     self.unavailableCardLabelHidden.assertLastValue(true)
     self.unavailableCardText.assertDidNotEmitValue()
 
@@ -119,6 +127,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.expirationDateText.assertLastValue("Expires 09/2022")
     self.cardImageAlpha.assertLastValue(1.0)
     self.checkmarkImageName.assertLastValue("icon-payment-method-unselected")
+    self.selectionStyle.assertLastValue(.default)
     self.checkmarkImageHidden.assertLastValue(false)
     self.lastFourLabelTextColor.assertLastValue(.ksr_soft_black)
     self.unavailableCardLabelHidden.assertLastValue(true)
@@ -134,6 +143,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.checkmarkImageHidden.assertDidNotEmitValue()
     self.expirationDateText.assertDidNotEmitValue()
     self.lastFourLabelTextColor.assertDidNotEmitValue()
+    self.selectionStyle.assertDidNotEmitValue()
     self.unavailableCardLabelHidden.assertDidNotEmitValue()
     self.unavailableCardText.assertDidNotEmitValue()
 
@@ -148,6 +158,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.checkmarkImageHidden.assertValues([false])
     self.expirationDateText.assertValues(["Expires 01/2024"])
     self.lastFourLabelTextColor.assertValues([.ksr_soft_black])
+    self.selectionStyle.assertValues([.default])
     self.unavailableCardLabelHidden.assertValues([true])
     self.unavailableCardText.assertValues([])
   }
@@ -161,6 +172,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.checkmarkImageHidden.assertDidNotEmitValue()
     self.expirationDateText.assertDidNotEmitValue()
     self.lastFourLabelTextColor.assertDidNotEmitValue()
+    self.selectionStyle.assertDidNotEmitValue()
     self.unavailableCardLabelHidden.assertDidNotEmitValue()
     self.unavailableCardText.assertDidNotEmitValue()
 
@@ -175,6 +187,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.checkmarkImageHidden.assertValues([false])
     self.expirationDateText.assertValues(["Expires 01/2024"])
     self.lastFourLabelTextColor.assertValues([.ksr_soft_black])
+    self.selectionStyle.assertValues([.default])
     self.unavailableCardLabelHidden.assertValues([true])
     self.unavailableCardText.assertValues([])
   }
@@ -188,6 +201,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.checkmarkImageHidden.assertDidNotEmitValue()
     self.expirationDateText.assertDidNotEmitValue()
     self.lastFourLabelTextColor.assertDidNotEmitValue()
+    self.selectionStyle.assertDidNotEmitValue()
     self.unavailableCardLabelHidden.assertDidNotEmitValue()
     self.unavailableCardText.assertDidNotEmitValue()
 
@@ -202,36 +216,11 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.checkmarkImageHidden.assertValues([true])
     self.expirationDateText.assertValues(["Expires 01/2024"])
     self.lastFourLabelTextColor.assertValues([.ksr_dark_grey_500])
+    self.selectionStyle.assertValues([.none])
     self.unavailableCardLabelHidden.assertValues([false])
     self.unavailableCardText.assertValues(
       ["You can’t use this credit card to back a project from Brooklyn, NY."]
     )
-  }
-
-  func testCardInfoForUnsupportedCards() {
-    self.cardImageName.assertDidNotEmitValue()
-    self.cardImageAlpha.assertDidNotEmitValue()
-    self.cardNumberAccessibilityLabel.assertDidNotEmitValue()
-    self.cardNumberTextShortStyle.assertDidNotEmitValue()
-    self.checkmarkImageName.assertDidNotEmitValue()
-    self.checkmarkImageHidden.assertDidNotEmitValue()
-    self.expirationDateText.assertDidNotEmitValue()
-    self.lastFourLabelTextColor.assertDidNotEmitValue()
-    self.unavailableCardLabelHidden.assertDidNotEmitValue()
-    self.unavailableCardText.assertDidNotEmitValue()
-
-    self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, true, false, "Brooklyn, NY"))
-
-    self.cardImageName.assertValues(["icon--generic"])
-    self.cardImageAlpha.assertValues([1.0])
-    self.cardNumberAccessibilityLabel.assertValues(["Card ending in 1882"])
-    self.cardNumberTextShortStyle.assertValues(["•••• 1882"])
-    self.checkmarkImageName.assertValues(["icon-payment-method-unselected"])
-    self.checkmarkImageHidden.assertValues([false])
-    self.expirationDateText.assertValues(["Expires 01/2024"])
-    self.lastFourLabelTextColor.assertValues([.ksr_soft_black])
-    self.unavailableCardLabelHidden.assertValues([true])
-    self.unavailableCardText.assertValues([])
   }
 
   func testCardInfoForUnknownCardType() {
@@ -243,6 +232,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.checkmarkImageHidden.assertDidNotEmitValue()
     self.expirationDateText.assertDidNotEmitValue()
     self.lastFourLabelTextColor.assertDidNotEmitValue()
+    self.selectionStyle.assertDidNotEmitValue()
     self.unavailableCardLabelHidden.assertDidNotEmitValue()
     self.unavailableCardText.assertDidNotEmitValue()
 
@@ -258,6 +248,7 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.checkmarkImageHidden.assertValues([false])
     self.expirationDateText.assertValues(["Expires 01/2024"])
     self.lastFourLabelTextColor.assertValues([.ksr_soft_black])
+    self.selectionStyle.assertValues([.default])
     self.unavailableCardLabelHidden.assertValues([true])
     self.unavailableCardText.assertValues([])
   }
