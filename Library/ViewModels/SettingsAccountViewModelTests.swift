@@ -43,7 +43,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   }
 
   func testHideEmailPasswordHeaderView_HasNoPassword() {
-    let user = UserAccountFields.template
+    let user = GraphUser.template
       |> \.hasPassword .~ false
 
     let mockService = MockService(fetchGraphUserAccountFieldsResponse: UserEnvelope(me: user))
@@ -57,7 +57,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
   }
 
   func testHideEmailPasswordHeaderView_HasPassword() {
-    let user = UserAccountFields.template
+    let user = GraphUser.template
       |> \.hasPassword .~ true
 
     let mockService = MockService(fetchGraphUserAccountFieldsResponse: UserEnvelope(me: user))

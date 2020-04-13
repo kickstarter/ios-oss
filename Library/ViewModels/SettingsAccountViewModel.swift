@@ -2,6 +2,9 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias SettingsAccountData = (currency: Currency, email: String,
+  shouldHideEmailWarning: Bool, shouldHideEmailPasswordSection: Bool, isAppleConnectedAccount: Bool)
+
 public protocol SettingsAccountViewModelInputs {
   func didSelectRow(cellType: SettingsAccountCellType)
   func viewWillAppear()
@@ -11,9 +14,10 @@ public protocol SettingsAccountViewModelInputs {
 
 public protocol SettingsAccountViewModelOutputs {
   var fetchAccountFieldsError: Signal<Void, Never> { get }
-  var reloadData: Signal<(Currency, Bool, Bool), Never> { get }
+  var reloadData: Signal<SettingsAccountData, Never> { get }
   var transitionToViewController: Signal<UIViewController, Never> { get }
-  var userHasPasswordAndEmail: (Bool, String?) { get }
+
+  func shouldShowCreatePasswordFooter() -> (Bool, String)?
 }
 
 public protocol SettingsAccountViewModelType {
@@ -43,20 +47,34 @@ public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
         return isEmailVerified && isDeliverable
       }
 
-    let shouldHideEmailPasswordSection = userAccountFields.values()
-      .map { $0.me.hasPassword == .some(false) }
+    let user = userAccountFields.values().map(\.me)
 
-    self.userHasPasswordAndEmailProperty <~ userAccountFields.values()
-      .map { ($0.me.hasPassword == .some(true), $0.me.email) }
+    let shouldHideEmailPasswordSection = user
+      .map { $0.hasPassword == .some(false) || $0.isAppleConnected == .some(true) }
+
+    let shouldShowCreatePasswordFooter = user
+      .map { user -> (Bool, String) in
+        let isAppleConnected = user.isAppleConnected == .some(true)
+        let userHasPassword = user.hasPassword == .some(true)
+        let shouldShow = !userHasPassword && !isAppleConnected
+
+        return (shouldShow, user.email)
+      }
+
+    let isAppleConnectedAccount = user.map { $0.isAppleConnected == .some(true) }
+
+    self.shouldShowCreatePasswordFooterAndEmailProperty <~ shouldShowCreatePasswordFooter
 
     let chosenCurrency = userAccountFields.values()
       .map { Currency(rawValue: $0.me.chosenCurrency ?? Currency.USD.rawValue) ?? Currency.USD }
 
     self.reloadData = Signal.combineLatest(
       chosenCurrency,
+      user.map(\.email),
       shouldHideEmailWarning,
-      shouldHideEmailPasswordSection
-    )
+      shouldHideEmailPasswordSection,
+      isAppleConnectedAccount
+    ).map { $0 as SettingsAccountData }
 
     self.transitionToViewController = chosenCurrency
       .takePairWhen(self.selectedCellTypeProperty.signal.skipNil())
@@ -88,13 +106,13 @@ public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
     self.viewDidLoadProperty.value = ()
   }
 
-  fileprivate let userHasPasswordAndEmailProperty = MutableProperty<(Bool, String?)>((true, nil))
-  public var userHasPasswordAndEmail: (Bool, String?) {
-    return self.userHasPasswordAndEmailProperty.value
+  fileprivate let shouldShowCreatePasswordFooterAndEmailProperty = MutableProperty<(Bool, String)?>(nil)
+  public func shouldShowCreatePasswordFooter() -> (Bool, String)? {
+    return self.shouldShowCreatePasswordFooterAndEmailProperty.value
   }
 
   public let fetchAccountFieldsError: Signal<Void, Never>
-  public let reloadData: Signal<(Currency, Bool, Bool), Never>
+  public let reloadData: Signal<SettingsAccountData, Never>
   public let transitionToViewController: Signal<UIViewController, Never>
 
   public var inputs: SettingsAccountViewModelInputs { return self }

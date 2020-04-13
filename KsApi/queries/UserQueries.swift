@@ -21,7 +21,12 @@ public enum UserQueries: Queryable {
 }
 
 public func accountQueryFields() -> NonEmptySet<Query.User> {
-  return .chosenCurrency +| [.isEmailVerified, .isEmailDeliverable, .hasPassword, .email]
+  return .chosenCurrency +|
+    [.isAppleConnected,
+     .isEmailVerified,
+     .isEmailDeliverable,
+     .hasPassword,
+     .email]
 }
 
 public func storedCardsQueryFields() -> NonEmptySet<Query.User> {

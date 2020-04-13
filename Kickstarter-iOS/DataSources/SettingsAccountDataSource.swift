@@ -9,11 +9,18 @@ final class SettingsAccountDataSource: ValueCellDataSource {
   func configureRows(
     currency: Currency?,
     shouldHideEmailWarning: Bool,
-    shouldHideEmailPasswordSection: Bool
+    shouldHideEmailPasswordSection: Bool,
+    isAppleConnected: Bool
   ) {
-    self.filteredSections = shouldHideEmailPasswordSection
-      ? SettingsAccountSectionType.allCases.filter { $0 != .changeEmailPassword }
-      : SettingsAccountSectionType.allCases.filter { $0 != .createPassword }
+
+    if isAppleConnected {
+      self.filteredSections = SettingsAccountSectionType.allCases
+        .filter { $0 != .changeEmailPassword && $0 != .createPassword}
+    } else {
+      self.filteredSections = shouldHideEmailPasswordSection
+        ? SettingsAccountSectionType.allCases.filter { $0 != .changeEmailPassword }
+        : SettingsAccountSectionType.allCases.filter { $0 != .createPassword }
+    }
 
     self.clearValues()
 
