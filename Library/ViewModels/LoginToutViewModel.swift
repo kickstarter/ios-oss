@@ -15,11 +15,11 @@ public protocol LoginToutViewModelInputs {
 
   /// Call when Apple completes authorization
   @available(iOS 13.0, *)
-  func appleAuthorizationDidComplete(with data: SignInWithAppleData?)
+  func appleAuthorizationDidSucceed(with data: SignInWithAppleData?)
 
   /// Call when Apple completes authorization with error
   @available(iOS 13.0, *)
-  func appleAuthorizationDidComplete(with error: Error)
+  func appleAuthorizationDidFail(with error: Error)
 
   /// Call when the SignInWithAppleEnvelope is received from the server
   func didReceiveSignInWithAppleEnvelope(_ envelope: SignInWithAppleEnvelope)
@@ -54,6 +54,9 @@ public protocol LoginToutViewModelInputs {
 }
 
 public protocol LoginToutViewModelOutputs {
+  /// Emits when Apple login should start
+  var attemptAppleLogin: Signal<Void, Never> { get }
+
   /// Emits when Facebook login should start
   var attemptFacebookLogin: Signal<(), Never> { get }
 
@@ -78,9 +81,6 @@ public protocol LoginToutViewModelOutputs {
 
   /// Emits when a login success notification should be posted.
   var postNotification: Signal<(Notification, Notification), Never> { get }
-
-  /// Emits when Continue with Apple button is tapped.
-  var prepareSignInWithAppleRequest: Signal<(), Never> { get }
 
   /// Emits when should show Apple error alert with error message
   var showAppleErrorAlert: Signal<String, Never> { get }
@@ -143,7 +143,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
           .materialize()
       }
 
-    self.prepareSignInWithAppleRequest = self.appleLoginButtonPressedProperty.signal.ignoreValues()
+    self.attemptAppleLogin = self.appleLoginButtonPressedProperty.signal.ignoreValues()
 
     let tfaRequiredError = facebookLogin.errors()
       .filter { $0.ksrCode == .TfaRequired }
@@ -197,7 +197,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     let userId = self.didReceiveSignInWithAppleEnvelopeProperty.signal
       .skipNil()
-      .map(\.signInWithApple.user.intID)
+      .map { envelope in Int(envelope.signInWithApple.user.uid) }
       .skipNil()
 
     let apiAccessToken = self.didReceiveSignInWithAppleEnvelopeProperty.signal
@@ -227,7 +227,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     // MARK: - Sign-in with Apple
 
     if #available(iOS 13.0, *) {
-      let appleSignInInput = self.appleAuthorizationDidCompleteWithDataProperty.signal
+      let appleSignInInput = self.appleAuthorizationDidSucceedWithDataProperty.signal
         .skipNil()
         .map { data in
           SignInWithAppleInput(
@@ -249,7 +249,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       let appleSignInEventError = appleSignInEvent.errors()
         .map { error in error.localizedDescription }
 
-      let appleAuthorizationError = self.appleAuthorizationDidCompleteWithErrorProperty.signal
+      let appleAuthorizationError = self.appleAuthorizationDidFailWithErrorProperty.signal
         .skipNil()
         .filter { !userCanceledSignInWithAppleFlow($0) }
         .map { error in error.localizedDescription }
@@ -315,19 +315,14 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.appleLoginButtonPressedProperty.value = ()
   }
 
-  // This property is being set as lazy because we can't use @available in computed properties.
-  @available(iOS 13.0, *)
-  private lazy var appleAuthorizationDidCompleteWithDataProperty =
-    MutableProperty<SignInWithAppleData?>(nil)
-
-  @available(iOS 13.0, *)
-  public func appleAuthorizationDidComplete(with data: SignInWithAppleData?) {
-    self.appleAuthorizationDidCompleteWithDataProperty.value = data
+  fileprivate let appleAuthorizationDidSucceedWithDataProperty = MutableProperty<SignInWithAppleData?>(nil)
+  public func appleAuthorizationDidSucceed(with data: SignInWithAppleData?) {
+    self.appleAuthorizationDidSucceedWithDataProperty.value = data
   }
 
-  fileprivate let appleAuthorizationDidCompleteWithErrorProperty = MutableProperty<Error?>(nil)
-  public func appleAuthorizationDidComplete(with error: Error) {
-    self.appleAuthorizationDidCompleteWithErrorProperty.value = error
+  fileprivate let appleAuthorizationDidFailWithErrorProperty = MutableProperty<Error?>(nil)
+  public func appleAuthorizationDidFail(with error: Error) {
+    self.appleAuthorizationDidFailWithErrorProperty.value = error
   }
 
   fileprivate let loginIntentProperty = MutableProperty<LoginIntent?>(.loginTab)
@@ -389,6 +384,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.viewWillAppearProperty.value = ()
   }
 
+  public let attemptAppleLogin: Signal<(), Never>
   public let attemptFacebookLogin: Signal<(), Never>
   public private(set) var didSignInWithApple: Signal<SignInWithAppleEnvelope, Never> = .empty
   public let dismissViewController: Signal<(), Never>
@@ -397,7 +393,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let logInContextText: Signal<String, Never>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
   public let postNotification: Signal<(Notification, Notification), Never>
-  public let prepareSignInWithAppleRequest: Signal<(), Never>
   public let startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), Never>
   public let startLogin: Signal<(), Never>
   public let startSignup: Signal<(), Never>

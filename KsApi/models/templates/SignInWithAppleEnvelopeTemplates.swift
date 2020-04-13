@@ -4,7 +4,7 @@ extension SignInWithAppleEnvelope {
   public static let template = SignInWithAppleEnvelope(
     signInWithApple: SignInWithAppleEnvelope.SignInWithApple(
       apiAccessToken: "api_access_token",
-      user: SignInWithAppleEnvelope.User(id: "VXNlci0x")
+      user: SignInWithAppleEnvelope.User(uid: "1")
     )
   )
 }
