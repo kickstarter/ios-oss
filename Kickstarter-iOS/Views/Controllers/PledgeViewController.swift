@@ -93,6 +93,10 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     PledgeSummaryViewController.instantiate()
   }()
 
+  private let pledgeCTAContainerView: PledgeViewCTAContainerView = {
+    PledgeViewCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var rootScrollView: UIScrollView = { UIScrollView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
@@ -136,6 +140,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.configureChildViewControllers()
     self.setupConstraints()
+    self.configurePledgeViewCTAContainerView()
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -194,6 +199,21 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       self.addChild(viewController)
       viewController.didMove(toParent: self)
     }
+  }
+
+  private func configurePledgeViewCTAContainerView() {
+    // Configure subviews
+    _ = (self.pledgeCTAContainerView, self.view)
+      |> ksr_addSubviewToParent()
+
+    // Configure constraints
+    let pledgeCTAContainerViewConstraints = [
+      self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+    ]
+
+    NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
   }
 
   private func setupConstraints() {
