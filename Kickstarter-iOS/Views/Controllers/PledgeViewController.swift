@@ -54,6 +54,14 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     [self.pledgeAmountViewController.view, self.shippingLocationViewController.view]
   }()
 
+  fileprivate lazy var keyboardDimissingTapGestureRecognizer: UITapGestureRecognizer = {
+    UITapGestureRecognizer(
+      target: self,
+      action: #selector(PledgeViewController.dismissKeyboard)
+    )
+      |> \.cancelsTouchesInView .~ false
+  }()
+
   private lazy var loginSectionViews = {
     [self.continueViewController.view]
   }()
@@ -93,12 +101,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     PledgeSummaryViewController.instantiate()
   }()
 
-  fileprivate lazy var keyboardDimissingTapGestureRecognizer: UITapGestureRecognizer = {
-    UITapGestureRecognizer(
-      target: self,
-      action: #selector(PledgeViewController.dismissKeyboard)
-    )
-      |> \.cancelsTouchesInView .~ false
+  private let pledgeCTAContainerView: PledgeViewCTAContainerView = {
+    PledgeViewCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var rootScrollView: UIScrollView = { UIScrollView(frame: .zero) }()
@@ -142,6 +146,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.configureChildViewControllers()
     self.setupConstraints()
+    self.configurePledgeViewCTAContainerView()
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -199,6 +204,21 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       self.addChild(viewController)
       viewController.didMove(toParent: self)
     }
+  }
+
+  private func configurePledgeViewCTAContainerView() {
+    // Configure subviews
+    _ = (self.pledgeCTAContainerView, self.view)
+      |> ksr_addSubviewToParent()
+
+    // Configure constraints
+    let pledgeCTAContainerViewConstraints = [
+      self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+    ]
+
+    NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
   }
 
   private func setupConstraints() {
