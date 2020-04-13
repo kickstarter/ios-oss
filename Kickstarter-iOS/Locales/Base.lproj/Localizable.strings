@@ -253,6 +253,7 @@
 "Introduce_yourself" = "Introduce yourself";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again.";
 "Its_a_way_to_bring_creative_projects_to_life" = "It's a way to bring creative projects to life.";
+"Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "It's a way to bring creative projects to life. <a href=\"%{trust_link}\">Learn more about accountability</a>";
 "Its_better_with_friends" = "It’s better\nwith friends.";
 "Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter" = "It's like the radio but nothing sucks and also it's a newsletter.";
 "Its_our_birthday" = "It's our birthday! More than 160,000 creative projects have come to life on Kickstarter over the past decade, with support from over 16,000,000 backers.";
@@ -455,6 +456,7 @@
 "Say_something_kind" = "Say something kind...";
 "Security_code" = "Security code";
 "See_all_category_name_projects" = "See all %{category_name} projects";
+"See_our_suggestions" = "See our suggestions ▸";
 "See_rewards" = "See rewards";
 "See_the_rewards" = "See the rewards";
 "Select" = "Select";
@@ -499,6 +501,7 @@
 "Stay_up_to_date_newsletter" = "Stay up to date with our favorite projects, and any news and events that are on our radar.";
 "Stay_updated_on_the_projects_youve_backed_and_learn_about_how_these_creative_works_are_produced" = "Stay updated on the projects you've backed and learn about how these creative works are produced.";
 "Stay_updated_on_this_project" = "Stay updated on this project?";
+"Step_number" = "Step %{current_step} of %{total_steps}";
 "Subscribe" = "Subscribe";
 "Subscribed" = "Subscribed";
 "Subscribes_to_upcoming_lives_streams" = "Subscribes to upcoming live streams.";
@@ -595,6 +598,7 @@
 "Websites" = "Websites";
 "Welcome_to_our_library_Peruse_the_stacks_with_us" = "Welcome to our library. Peruse the stacks with us.";
 "Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password" = "We'll ask you to sign back into the Kickstarter app once you've changed your password.";
+"Well_help_you_find_a_project_to_back" = "We'll help you find a project to back.";
 "Well_import_your_name_and_profile_photo_and_access_your_friend_list" = "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "We’ll remind you 48 hours before this project ends, and you'll get a reminder about all projects you save moving forward. To view everything you’ve saved, visit your profile.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "When following is on, you can follow the activity of others and others can follow your activity. Turn following off to permanently delete this data.";
@@ -617,6 +621,7 @@
 "You_pledged_on_date" = "<b>You pledged</b> on %{pledge_date}";
 "You_pledged_without_a_reward" = "You pledged without a reward";
 "You_saved_this_project" = "You saved this project.";
+"You_wont_be_charged_for_backing_a_project" = "You won't be charged for backing a project unless it reaches its funding goal.";
 "Youll_receive_an_email_at_email_when_your_download_is_ready" = "You'll receive an email at %{email} when your download is ready.";
 "Your_chat_message_wasnt_sent_successfully" = "Your chat message wasn't sent successfully.";
 "Your_friends_havent_backed_any_projects_yet" = "Your friends haven’t backed any projects yet, but once they do, you’ll see them listed here.";
@@ -1226,6 +1231,12 @@
 "invalid_api_client_alert.message" = "You seem to be using a really old version of the app. Please upgrade from the App Store to continue using.";
 "invalid_api_client_alert.title" = "Please Upgrade";
 "invalid_api_client_alert.upgrade" = "Upgrade";
+"likes_count_likes.few" = "%{likes_count} likes";
+"likes_count_likes.many" = "%{likes_count} likes";
+"likes_count_likes.one" = "%{likes_count} like";
+"likes_count_likes.other" = "%{likes_count} likes";
+"likes_count_likes.two" = "%{likes_count} likes";
+"likes_count_likes.zero" = "%{likes_count} likes";
 "location_name_only" = "%{location_name} only";
 "login.buttons.forgot_password" = "Forgot your password?";
 "login.buttons.forgot_password_html" = "<u>Forgot your password?</u>";
