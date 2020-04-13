@@ -33,6 +33,8 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     self.tableView.registerHeaderFooterClass(SettingsGroupedFooterView.self)
 
     self.viewModel.inputs.viewDidLoad()
+
+    self.setupAppleHeader(with: "ifbarrera@me.com")
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -45,6 +47,12 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     super.viewDidAppear(animated)
 
     self.viewModel.inputs.viewDidAppear()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.tableView.ksr_sizeHeaderFooterViewsToFit()
   }
 
   override func bindViewModel() {
@@ -91,11 +99,31 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
       |> settingsTableViewSeparatorStyle
   }
 
+  // MARK: - Functions
+
   private func showGeneralError() {
     self.messageBannerViewController?.showBanner(
       with: .error,
       message: Strings.Something_went_wrong_please_try_again()
     )
+  }
+
+  private func setupAppleHeader(with appleId: String) {
+    let container = UIView(frame: .zero)
+      |> \.layoutMargins .~ .init(all: Styles.grid(3))
+
+    self.tableView.tableHeaderView = container
+
+    let header = SettingsAccountHeaderView(frame: .zero)
+    header.configure(with: appleId)
+
+    _ = (header, container)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
+    _ = header.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)
+      |> \.priority .~ .defaultHigh
+      |> \.isActive .~ true
   }
 }
 
