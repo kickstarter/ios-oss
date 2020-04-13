@@ -89,10 +89,8 @@ final class PledgeViewCTAContainerView: UIView {
       |> greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Pledge() }
 
-    let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-
     _ = self.rootStackView
-      |> adaptableStackViewStyle(isAccessibilityCategory)
+      |> rootStackViewStyle
   }
 
   // MARK: - View Model
