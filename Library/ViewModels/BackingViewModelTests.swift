@@ -176,10 +176,7 @@ internal final class BackingViewModelTests: TestCase {
       self.pledgeSectionTitle.assertValues(["", "Pledged on July 14, 2016"])
       self.statusDescription.assertValues(["", Strings.Backer_has_pledged_to_this_project()])
       self.messageButtonTitleText.assertValues([
-        localizedString(
-          key: "Contact_backer",
-          defaultValue: "Contact backer"
-        )
+        "Contact backer"
       ])
     }
   }

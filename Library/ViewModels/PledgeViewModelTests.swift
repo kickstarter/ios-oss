@@ -25,15 +25,12 @@ final class PledgeViewModelTests: TestCase {
   private let configureStripeIntegrationMerchantId = TestObserver<String, Never>()
   private let configureStripeIntegrationPublishableKey = TestObserver<String, Never>()
 
+  private let configureSummaryViewControllerWithDataConfirmationLabelHidden = TestObserver<Bool, Never>()
   private let configureSummaryViewControllerWithDataPledgeTotal = TestObserver<Double, Never>()
   private let configureSummaryViewControllerWithDataProject = TestObserver<Project, Never>()
 
   private let configureWithPledgeViewDataProject = TestObserver<Project, Never>()
   private let configureWithPledgeViewDataReward = TestObserver<Reward, Never>()
-
-  private let confirmationLabelAttributedText = TestObserver<NSAttributedString, Never>()
-  private let confirmationLabelText = TestObserver<String, Never>()
-  private let confirmationLabelHidden = TestObserver<Bool, Never>()
 
   private let continueViewHidden = TestObserver<Bool, Never>()
 
@@ -81,6 +78,8 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.3 }
       .observe(self.configurePaymentMethodsViewControllerWithContext.observer)
 
+    self.vm.outputs.configureSummaryViewControllerWithData.map(third)
+      .observe(self.configureSummaryViewControllerWithDataConfirmationLabelHidden.observer)
     self.vm.outputs.configureSummaryViewControllerWithData.map(second)
       .observe(self.configureSummaryViewControllerWithDataPledgeTotal.observer)
     self.vm.outputs.configureSummaryViewControllerWithData.map(first)
@@ -100,10 +99,6 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.submitButtonHidden.observe(self.submitButtonHidden.observer)
     self.vm.outputs.submitButtonIsLoading.observe(self.submitButtonIsLoading.observer)
     self.vm.outputs.submitButtonTitle.observe(self.submitButtonTitle.observer)
-    self.vm.outputs.confirmationLabelAttributedText.observe(self.confirmationLabelAttributedText.observer)
-    self.vm.outputs.confirmationLabelAttributedText.map { $0.string }
-      .observe(self.confirmationLabelText.observer)
-    self.vm.outputs.confirmationLabelHidden.observe(self.confirmationLabelHidden.observer)
 
     self.vm.outputs.continueViewHidden.observe(self.continueViewHidden.observer)
 
@@ -165,7 +160,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
       self.submitButtonTitle.assertValues(["Pledge"])
-      self.confirmationLabelHidden.assertValues([false])
+      self.configureSummaryViewControllerWithDataConfirmationLabelHidden.assertValues([false])
 
       self.descriptionViewHidden.assertValues([false])
 
@@ -206,7 +201,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
       self.submitButtonTitle.assertValues(["Pledge"])
-      self.confirmationLabelHidden.assertValues([false])
+      self.configureSummaryViewControllerWithDataConfirmationLabelHidden.assertValues([false])
 
       self.descriptionViewHidden.assertValues([false])
 
@@ -247,7 +242,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
 
       self.submitButtonTitle.assertValues(["Confirm"])
-      self.confirmationLabelHidden.assertValues([false])
+      self.configureSummaryViewControllerWithDataConfirmationLabelHidden.assertValues([false])
 
       self.descriptionViewHidden.assertValues([true])
 
@@ -263,69 +258,6 @@ final class PledgeViewModelTests: TestCase {
       self.shippingLocationViewHidden.assertValues([false])
       self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryViewControllerWithDataProject.assertValues([project])
-    }
-  }
-
-  func testUpdateContext_ConfirmationLabel() {
-    let dateComponents = DateComponents()
-      |> \.month .~ 11
-      |> \.day .~ 1
-      |> \.year .~ 2_019
-      |> \.timeZone .~ TimeZone.init(secondsFromGMT: 0)
-
-    let calendar = Calendar(identifier: .gregorian)
-      |> \.timeZone .~ TimeZone.init(secondsFromGMT: 0)!
-
-    withEnvironment(calendar: calendar, locale: Locale(identifier: "en")) {
-      let date = AppEnvironment.current.calendar.date(from: dateComponents)
-
-      let project = Project.template
-        |> Project.lens.dates.deadline .~ date!.timeIntervalSince1970
-        |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
-        |> Project.lens.stats.currency .~ Currency.USD.rawValue
-      let reward = Reward.template
-        |> Reward.lens.shipping.enabled .~ true
-
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .update)
-      self.vm.inputs.viewDidLoad()
-
-      self.confirmationLabelHidden.assertValues([false])
-      self.confirmationLabelAttributedText.assertValueCount(1)
-      self.confirmationLabelText.assertValues([
-        "If the project reaches its funding goal, you will be charged on November 1, 2019."
-      ])
-    }
-  }
-
-  func testUpdateContext_ConfirmationLabelShowsTotalAmount() {
-    let dateComponents = DateComponents()
-      |> \.month .~ 11
-      |> \.day .~ 1
-      |> \.year .~ 2_019
-      |> \.timeZone .~ TimeZone(secondsFromGMT: 0)
-
-    let calendar = Calendar(identifier: .gregorian)
-      |> \.timeZone .~ TimeZone(secondsFromGMT: 0)!
-
-    withEnvironment(calendar: calendar, locale: Locale(identifier: "en")) {
-      let date = AppEnvironment.current.calendar.date(from: dateComponents)
-
-      let project = Project.template
-        |> Project.lens.dates.deadline .~ date!.timeIntervalSince1970
-        |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
-        |> Project.lens.stats.currency .~ Currency.HKD.rawValue
-        |> Project.lens.country .~ .hk
-      let reward = Reward.template
-        |> Reward.lens.shipping.enabled .~ true
-
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .update)
-      self.vm.inputs.viewDidLoad()
-
-      self.confirmationLabelHidden.assertValues([false])
-      self.confirmationLabelAttributedText.assertValueCount(1)
-      self.confirmationLabelText.assertValues([
-        "If the project reaches its funding goal, you will be charged HK$ 10 on November 1, 2019."
-      ])
     }
   }
 
@@ -353,7 +285,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
 
       self.submitButtonTitle.assertValues(["Confirm"])
-      self.confirmationLabelHidden.assertValues([true])
+      self.configureSummaryViewControllerWithDataConfirmationLabelHidden.assertValues([true])
 
       self.descriptionViewHidden.assertValues([false])
 
@@ -407,7 +339,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
       self.submitButtonTitle.assertValues(["Confirm"])
-      self.confirmationLabelHidden.assertValues([true])
+      self.configureSummaryViewControllerWithDataConfirmationLabelHidden.assertValues([true])
 
       self.descriptionViewHidden.assertValues([true])
 
@@ -466,7 +398,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
       self.submitButtonTitle.assertValues(["Confirm"])
-      self.confirmationLabelHidden.assertValues([true])
+      self.configureSummaryViewControllerWithDataConfirmationLabelHidden.assertValues([true])
 
       self.descriptionViewHidden.assertValues([true])
 

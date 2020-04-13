@@ -30,7 +30,7 @@ internal final class CategorySelectionViewControllerTests: TestCase {
         let controller = CategorySelectionViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        self.scheduler.advance()
+        self.scheduler.run()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
