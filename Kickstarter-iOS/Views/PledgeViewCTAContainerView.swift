@@ -78,10 +78,8 @@ final class PledgeViewCTAContainerView: UIView {
       |> greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Pledge() }
 
-    let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-
     _ = self.rootStackView
-      |> adaptableStackViewStyle(isAccessibilityCategory)
+      |> rootStackViewStyle
   }
 
   // MARK: - View Model
@@ -130,11 +128,8 @@ final class PledgeViewCTAContainerView: UIView {
 
 // MARK: - Styles
 
-private func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
-  return { (stackView: UIStackView) in
-    let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : Styles.grid(1))
-
-    return stackView
+private let rootStackViewStyle: StackViewStyle = { stackView in
+  stackView
       |> \.axis .~ NSLayoutConstraint.Axis.vertical
       |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.layoutMargins .~ UIEdgeInsets.init(
@@ -143,8 +138,7 @@ private func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackV
         bottom: Styles.grid(0),
         right: Styles.grid(3)
       )
-      |> \.spacing .~ spacing
-  }
+      |> \.spacing .~ Styles.grid(1)
 }
 
 private let disclaimerLabelStyle: LabelStyle = { label in
