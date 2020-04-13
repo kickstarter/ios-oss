@@ -4,6 +4,11 @@ import PassKit
 import Prelude
 import UIKit
 
+protocol PledgeViewCTAContainerViewDelegate: AnyObject {
+  func pledgeCTAButtonTapped()
+  func applePayButtonTapped()
+}
+
 private enum Layout {
   enum Button {
     static let minHeight: CGFloat = 48.0
@@ -12,7 +17,6 @@ private enum Layout {
 
 final class PledgeViewCTAContainerView: UIView {
   // MARK: - Properties
-
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
 
   private lazy var ctaStackView: UIStackView = {
@@ -37,8 +41,16 @@ final class PledgeViewCTAContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  // MARK: - Lifecycle
+  private lazy var spacer: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
 
+  weak var delegate: PledgeViewCTAContainerViewDelegate?
+
+  private let viewModel: PledgeViewCTAContainerViewModelType = PledgeViewCTAContainerViewModel()
+
+  // MARK: - Lifecycle
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -52,7 +64,6 @@ final class PledgeViewCTAContainerView: UIView {
   }
 
   // MARK: - Styles
-
   override func bindStyles() {
     super.bindStyles()
 
@@ -78,24 +89,36 @@ final class PledgeViewCTAContainerView: UIView {
       |> greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Pledge() }
 
+    let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+
     _ = self.rootStackView
-      |> rootStackViewStyle
+      |> adaptableStackViewStyle(isAccessibilityCategory)
   }
 
   // MARK: - View Model
-
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.notifyDelegatePledgeButtonTapped
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+        self.delegate?.pledgeCTAButtonTapped()
+    }
+
+    self.viewModel.outputs.notifyDelegateApplePayButtonTapped
+     .observeForUI()
+     .observeValues { [weak self] in
+       guard let self = self else { return }
+       self.delegate?.applePayButtonTapped()
+     }
   }
 
   // MARK: - Configuration
-
   // TODO: Will be addressed in functionality PR
 //  func configureWith(value: ) {
 //  }
-
   // MARK: Functions
-
   private func configureSubviews() {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
@@ -113,6 +136,12 @@ final class PledgeViewCTAContainerView: UIView {
     self.pledgeCTAButton.addTarget(
       self, action: #selector(self.pledgeButtonTapped), for: .touchUpInside
     )
+
+    self.applePayButton.addTarget(
+      self,
+      action: #selector(self.applePayButtonTapped),
+      for: .touchUpInside
+    )
   }
 
   private func setupConstraints() {
@@ -122,23 +151,27 @@ final class PledgeViewCTAContainerView: UIView {
     ])
   }
 
-  // TODO: Functionality PR
-  @objc func pledgeButtonTapped() {}
+  @objc func pledgeButtonTapped() {
+    self.viewModel.inputs.pledgeCTAButtonTapped()
+  }
+
+  @objc func applePayButtonTapped() {
+    self.viewModel.inputs.applePayButtonTapped()
+  }
 }
 
 // MARK: - Styles
-
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
-      |> \.axis .~ NSLayoutConstraint.Axis.vertical
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ UIEdgeInsets.init(
-        top: Styles.grid(2),
-        left: Styles.grid(3),
-        bottom: Styles.grid(0),
-        right: Styles.grid(3)
-      )
-      |> \.spacing .~ Styles.grid(1)
+     |> \.axis .~ NSLayoutConstraint.Axis.vertical
+     |> \.isLayoutMarginsRelativeArrangement .~ true
+     |> \.layoutMargins .~ UIEdgeInsets.init(
+      top: Styles.grid(2),
+      left: Styles.grid(3),
+      bottom: Styles.grid(0),
+      right: Styles.grid(3)
+    )
+    |> \.spacing .~ Styles.grid(1)
 }
 
 private let disclaimerLabelStyle: LabelStyle = { label in

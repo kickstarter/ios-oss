@@ -6,8 +6,8 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-internal final class PledgeScreenCTAContainerViewModelTests: TestCase {
-  let vm: PledgeScreenCTAContainerViewModelType = PledgeScreenCTAContainerViewModel()
+internal final class PledgeViewCTAContainerViewModelTests: TestCase {
+  let vm: PledgeViewCTAContainerViewModelType = PledgeViewCTAContainerViewModel()
   private let notifyDelegateApplePayButtonTapped = TestObserver<Void, Never>()
   private let notifyDelegatePledgeButtonTapped = TestObserver<Void, Never>()
 

@@ -93,8 +93,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     PledgeSummaryViewController.instantiate()
   }()
 
-  private lazy var pledgeCTAContainerView: PledgeScreenCTAContainerView = {
-    PledgeScreenCTAContainerView(frame: .zero)
+  private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
+    PledgeViewCTAContainerView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.delegate .~ self
   }()
@@ -502,7 +502,7 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
 
 // MARK: - PledgeScreenCTAContainerViewDelegate
 
-extension PledgeViewController: PledgeScreenCTAContainerViewDelegate {
+extension PledgeViewController: PledgeViewCTAContainerViewDelegate {
   func applePayButtonTapped() {
     self.viewModel.inputs.applePayButtonTapped()
   }
