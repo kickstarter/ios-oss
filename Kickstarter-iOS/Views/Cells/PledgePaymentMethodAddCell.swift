@@ -7,7 +7,10 @@ final class PledgePaymentMethodAddCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   private lazy var selectionView: UIView = { UIView(frame: .zero) |> \.backgroundColor .~ .ksr_grey_200 }()
-  private lazy var addButton: UIButton = { UIButton(type: .custom) }()
+  private lazy var addButton: UIButton = {
+    UIButton(type: .custom)
+      |> UIButton.lens.titleLabel.font .~ UIFont.boldSystemFont(ofSize: 15)
+  }()
 
   // MARK: - Lifecycle
 
@@ -66,7 +69,6 @@ private let addButtonStyle: ButtonStyle = { button in
       )
     }
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "icon-add-round-green")
-    |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead().bolded
     |> UIButton.lens.isUserInteractionEnabled .~ false
     |> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_500
     |> UIButton.lens.tintColor .~ .ksr_green_500
