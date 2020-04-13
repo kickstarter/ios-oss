@@ -1,4 +1,3 @@
-import AuthenticationServices
 import FBSDKLoginKit
 import KsApi
 import Prelude
@@ -15,11 +14,11 @@ public protocol LoginToutViewModelInputs {
 
   /// Call when Apple completes authorization
   @available(iOS 13.0, *)
-  func appleAuthorizationDidComplete(with data: SignInWithAppleData?)
+  func appleAuthorizationDidSucceed(with data: SignInWithAppleData?)
 
   /// Call when Apple completes authorization with error
   @available(iOS 13.0, *)
-  func appleAuthorizationDidComplete(with error: Error)
+  func appleAuthorizationDidFail(with error: Error)
 
   /// Call when the SignInWithAppleEnvelope is received from the server
   func didReceiveSignInWithAppleEnvelope(_ envelope: SignInWithAppleEnvelope)
@@ -197,7 +196,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     // MARK: - Sign-in with Apple
 
     if #available(iOS 13.0, *) {
-      let appleSignInInput = self.appleAuthorizationDidCompleteWithDataProperty.signal
+      let appleSignInInput = self.appleAuthorizationDidSucceedWithDataProperty.signal
         .skipNil()
         .map { data in
           SignInWithAppleInput(
@@ -274,19 +273,14 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.appleLoginButtonPressedProperty.value = ()
   }
 
-  // This property is being set as lazy because we can't use @available in computed properties.
-  @available(iOS 13.0, *)
-  private lazy var appleAuthorizationDidCompleteWithDataProperty =
-    MutableProperty<SignInWithAppleData?>(nil)
-
-  @available(iOS 13.0, *)
-  public func appleAuthorizationDidComplete(with data: SignInWithAppleData?) {
-    self.appleAuthorizationDidCompleteWithDataProperty.value = data
+  fileprivate let appleAuthorizationDidSucceedWithDataProperty = MutableProperty<SignInWithAppleData?>(nil)
+  public func appleAuthorizationDidSucceed(with data: SignInWithAppleData?) {
+    self.appleAuthorizationDidSucceedWithDataProperty.value = data
   }
 
-  fileprivate let appleAuthorizationDidCompleteWithErrorProperty = MutableProperty<Error?>(nil)
-  public func appleAuthorizationDidComplete(with error: Error) {
-    self.appleAuthorizationDidCompleteWithErrorProperty.value = error
+  fileprivate let appleAuthorizationDidFailWithErrorProperty = MutableProperty<Error?>(nil)
+  public func appleAuthorizationDidFail(with error: Error) {
+    self.appleAuthorizationDidFailWithErrorProperty.value = error
   }
 
   fileprivate let loginIntentProperty = MutableProperty<LoginIntent?>(.loginTab)

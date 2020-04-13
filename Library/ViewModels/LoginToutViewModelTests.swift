@@ -1,4 +1,3 @@
-import AuthenticationServices
 @testable import FBSDKCoreKit
 @testable import FBSDKLoginKit
 @testable import KsApi
@@ -20,6 +19,7 @@ final class LoginToutViewModelTests: TestCase {
   fileprivate let logInContextText = TestObserver<String, Never>()
   fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
   fileprivate let postNotification = TestObserver<(Notification.Name, Notification.Name), Never>()
+  fileprivate let prepareSignInWithAppleRequest = TestObserver<(), Never>()
   fileprivate let showFacebookErrorAlert = TestObserver<AlertError, Never>()
   fileprivate let startFacebookConfirmation = TestObserver<String, Never>()
   fileprivate let startLogin = TestObserver<(), Never>()
@@ -39,6 +39,7 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.outputs.logInContextText.observe(self.logInContextText.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
     self.vm.outputs.postNotification.map { ($0.0.name, $0.1.name) }.observe(self.postNotification.observer)
+    self.vm.outputs.prepareSignInWithAppleRequest.observe(self.prepareSignInWithAppleRequest.observer)
     self.vm.outputs.showFacebookErrorAlert.observe(self.showFacebookErrorAlert.observer)
     self.vm.outputs.startFacebookConfirmation.map { _, token in token }
       .observe(self.startFacebookConfirmation.observer)
@@ -603,7 +604,7 @@ final class LoginToutViewModelTests: TestCase {
         token: "apple_auth_token"
       )
 
-      self.vm.inputs.appleAuthorizationDidComplete(with: data)
+      self.vm.inputs.appleAuthorizationDidSucceed(with: data)
 
       let value = self.didSignInWithApple.values
         .first
@@ -611,5 +612,13 @@ final class LoginToutViewModelTests: TestCase {
       XCTAssertEqual("api_access_token", value?.signInWithApple.apiAccessToken)
       XCTAssertEqual("1", value?.signInWithApple.user.uid)
     }
+  }
+
+  func testPrepareSignInWithAppleRequest() {
+    self.prepareSignInWithAppleRequest.assertDidNotEmitValue()
+
+    self.vm.inputs.appleLoginButtonPressed()
+
+    self.prepareSignInWithAppleRequest.assertValueCount(1)
   }
 }

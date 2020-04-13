@@ -550,11 +550,11 @@ extension LoginToutViewController: ASAuthorizationControllerDelegate {
       lastName: fullName?.familyName,
       token: token
     ) as? SignInWithAppleData
-    self.viewModel.inputs.appleAuthorizationDidComplete(with: data)
+    self.viewModel.inputs.appleAuthorizationDidSucceed(with: data)
   }
 
   func authorizationController(controller _: ASAuthorizationController, didCompleteWithError error: Error) {
-    self.viewModel.inputs.appleAuthorizationDidComplete(with: error)
+    self.viewModel.inputs.appleAuthorizationDidFail(with: error)
   }
 }
 
