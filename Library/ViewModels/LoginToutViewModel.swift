@@ -60,10 +60,6 @@ public protocol LoginToutViewModelOutputs {
   /// Emits when Facebook login should start
   var attemptFacebookLogin: Signal<(), Never> { get }
 
-  /// Emits after the signInWithApple mutation returns a value.
-  @available(iOS 13.0, *)
-  var didSignInWithApple: Signal<SignInWithAppleEnvelope, Never> { get }
-
   /// Emits when the controller should be dismissed.
   var dismissViewController: Signal<(), Never> { get }
 
@@ -195,34 +191,9 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       genericFacebookErrorAlert
     )
 
-    let userId = self.didReceiveSignInWithAppleEnvelopeProperty.signal
-      .skipNil()
-      .map { envelope in Int(envelope.signInWithApple.user.uid) }
-      .skipNil()
-
-    let apiAccessToken = self.didReceiveSignInWithAppleEnvelopeProperty.signal
-      .skipNil()
-      .map(\.signInWithApple.apiAccessToken)
-
-    let fetchUserEvent = userId
-      .switchMap { id in
-        AppEnvironment.current.apiService.fetchUser(userId: id)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
-          .materialize()
-      }
-
-    let logIntoEnvironmentWithApple = Signal.combineLatest(fetchUserEvent.values(), apiAccessToken)
-      .map { user, token in
-        AccessTokenEnvelope(accessToken: token, user: user)
-      }
-
     let logIntoEnvironmentWithFacebook = facebookLogin.values()
 
-    self.logIntoEnvironment = Signal.merge(logIntoEnvironmentWithApple, logIntoEnvironmentWithFacebook)
-
-    let fetchUserEventError = fetchUserEvent.errors()
-      .map { error in error.localizedDescription }
+    let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
 
     // MARK: - Sign-in with Apple
 
@@ -244,7 +215,25 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
             .materialize()
         }
 
-      self.didSignInWithApple = appleSignInEvent.values()
+      let userId = appleSignInEvent.values()
+        .map { envelope in Int(envelope.signInWithApple.user.uid) }
+        .skipNil()
+
+      let apiAccessToken = appleSignInEvent.values()
+        .map(\.signInWithApple.apiAccessToken)
+
+      let fetchUserEvent = userId
+        .switchMap { id in
+          AppEnvironment.current.apiService.fetchUser(userId: id)
+            .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+            .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
+            .materialize()
+        }
+
+      let logIntoEnvironmentWithApple = Signal.combineLatest(fetchUserEvent.values(), apiAccessToken)
+        .map { user, token in
+          AccessTokenEnvelope(accessToken: token, user: user)
+        }
 
       let appleSignInEventError = appleSignInEvent.errors()
         .map { error in error.localizedDescription }
@@ -254,9 +243,18 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
         .filter { !userCanceledSignInWithAppleFlow($0) }
         .map { error in error.localizedDescription }
 
+      let fetchUserEventError = fetchUserEvent.errors()
+        .map { error in error.localizedDescription }
+
       self.showAppleErrorAlert = Signal
         .merge(appleAuthorizationError, fetchUserEventError, appleSignInEventError)
+
+      logIntoEnvironment = Signal.merge(logIntoEnvironmentWithApple, logIntoEnvironmentWithFacebook)
+    } else {
+      logIntoEnvironment = logIntoEnvironmentWithFacebook
     }
+
+    self.logIntoEnvironment = logIntoEnvironment
 
     // MARK: - Tracking
 
@@ -386,7 +384,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
   public let attemptAppleLogin: Signal<(), Never>
   public let attemptFacebookLogin: Signal<(), Never>
-  public private(set) var didSignInWithApple: Signal<SignInWithAppleEnvelope, Never> = .empty
   public let dismissViewController: Signal<(), Never>
   public let headlineLabelHidden: Signal<Bool, Never>
   public let isLoading: Signal<Bool, Never>

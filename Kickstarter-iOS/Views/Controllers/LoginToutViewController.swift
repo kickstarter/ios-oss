@@ -283,14 +283,6 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
         }
       }
 
-    if #available(iOS 13.0, *) {
-      self.viewModel.outputs.didSignInWithApple
-        .observeForUI()
-        .observeValues { [weak self] envelope in
-          self?.viewModel.inputs.didReceiveSignInWithAppleEnvelope(envelope)
-        }
-    }
-
     self.viewModel.outputs.showAppleErrorAlert
       .observeForControllerAction()
       .observeValues { [weak self] message in

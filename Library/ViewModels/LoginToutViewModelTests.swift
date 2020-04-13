@@ -14,7 +14,6 @@ final class LoginToutViewModelTests: TestCase {
 
   fileprivate let attemptAppleLogin = TestObserver<(), Never>()
   fileprivate let attemptFacebookLogin = TestObserver<(), Never>()
-  fileprivate let didSignInWithApple = TestObserver<SignInWithAppleEnvelope, Never>()
   fileprivate let dismissViewController = TestObserver<(), Never>()
   fileprivate let headlineLabelHidden = TestObserver<Bool, Never>()
   fileprivate let isLoading = TestObserver<Bool, Never>()
@@ -33,9 +32,6 @@ final class LoginToutViewModelTests: TestCase {
 
     self.vm.outputs.attemptAppleLogin.observe(self.attemptAppleLogin.observer)
     self.vm.outputs.attemptFacebookLogin.observe(self.attemptFacebookLogin.observer)
-    if #available(iOS 13.0, *) {
-      self.vm.outputs.didSignInWithApple.observe(self.didSignInWithApple.observer)
-    }
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.vm.outputs.headlineLabelHidden.observe(self.headlineLabelHidden.observer)
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
@@ -596,42 +592,7 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   @available(iOS 13, *)
-  func testDidSignInWithApple() {
-    let response = SignInWithAppleEnvelope.template
-
-    withEnvironment(apiService: MockService(signInWithAppleResponse: response)) {
-      let data = SignInWithAppleData(
-        appId: "com.kickstarter.test",
-        firstName: "Nino",
-        lastName: "Teixeira",
-        token: "apple_auth_token"
-      )
-
-      self.vm.inputs.appleAuthorizationDidSucceed(with: data)
-
-      let value = self.didSignInWithApple.values
-        .first
-
-      XCTAssertEqual("api_access_token", value?.signInWithApple.apiAccessToken)
-      XCTAssertEqual("1", value?.signInWithApple.user.uid)
-    }
-  }
-
-  @available(iOS 13, *)
-  func testShowAppleErrorAlert_AppleAuthorizationError() {
-
-    let error = NSError(
-      domain: "notonlinesorry", code: -1234, userInfo: [NSLocalizedDescriptionKey: "Not online sorry"]
-    )
-
-    self.vm.inputs.appleAuthorizationDidFail(with: error)
-
-    self.showAppleErrorAlert.assertValue("Not online sorry")
-  }
-
-  @available(iOS 13, *)
   func testShowAppleErrorAlert_DoesNotEmitWhen_CancellingSignInWithAppleModal() {
-
     let error = ASAuthorizationError(.canceled)
 
     self.vm.inputs.appleAuthorizationDidFail(with: error)
@@ -640,8 +601,18 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   @available(iOS 13, *)
-  func testShowAppleErrorAlert_SignInWithAppleMutationError() {
+  func testShowAppleErrorAlert_AppleAuthorizationError() {
+    let error = NSError(
+      domain: "notonlinesorry", code: -1_234, userInfo: [NSLocalizedDescriptionKey: "Not online sorry"]
+    )
 
+    self.vm.inputs.appleAuthorizationDidFail(with: error)
+
+    self.showAppleErrorAlert.assertValue("Not online sorry")
+  }
+
+  @available(iOS 13, *)
+  func testShowAppleErrorAlert_SignInWithAppleMutationError() {
     withEnvironment(apiService: MockService(signInWithAppleError: .invalidInput)) {
       let data = SignInWithAppleData(
         appId: "com.kickstarter.test",
@@ -658,14 +629,19 @@ final class LoginToutViewModelTests: TestCase {
     }
   }
 
-  @available(iOS 13, *)
+  @available(iOS 13.0, *)
   func testShowAppleErrorAlert_FetchUserEventError() {
-
     withEnvironment(apiService: MockService(fetchUserError: .couldNotParseJSON)) {
+      let data = SignInWithAppleData(
+        appId: "com.kickstarter.test",
+        firstName: "Nino",
+        lastName: "Teixeira",
+        token: "apple_auth_token"
+      )
 
       self.showAppleErrorAlert.assertDidNotEmitValue()
 
-      self.vm.inputs.didReceiveSignInWithAppleEnvelope(.template)
+      self.vm.inputs.appleAuthorizationDidSucceed(with: data)
 
       self.scheduler.run()
       self.showAppleErrorAlert.assertValue(
@@ -674,21 +650,28 @@ final class LoginToutViewModelTests: TestCase {
     }
   }
 
-  @available(iOS 13, *)
+  @available(iOS 13.0, *)
   func testLogIntoEnvironment_SignInWithApple() {
-
     let user = User.template
-    let signInWithAppleEnvelope = SignInWithAppleEnvelope.template
 
     withEnvironment(apiService: MockService(fetchUserResponse: user)) {
+      let data = SignInWithAppleData(
+        appId: "com.kickstarter.test",
+        firstName: "Nino",
+        lastName: "Teixeira",
+        token: "apple_auth_token"
+      )
 
       self.logIntoEnvironment.assertDidNotEmitValue()
 
-      self.vm.inputs.didReceiveSignInWithAppleEnvelope(signInWithAppleEnvelope)
+      self.vm.inputs.appleAuthorizationDidSucceed(with: data)
 
       self.scheduler.run()
 
-      self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
+      let value = self.logIntoEnvironment.values.first
+
+      XCTAssertEqual(user, value?.user)
+      XCTAssertEqual("api_access_token", value?.accessToken)
     }
   }
 
