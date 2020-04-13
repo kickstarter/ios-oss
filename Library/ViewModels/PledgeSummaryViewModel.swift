@@ -3,14 +3,18 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias PledgeSummaryViewData = (project: Project, total: Double, confirmationLabelHidden: Bool)
+
 public protocol PledgeSummaryViewModelInputs {
-  func configureWith(_ project: Project, total: Double)
+  func configure(with data: PledgeSummaryViewData)
   func tapped(_ url: URL)
   func viewDidLoad()
 }
 
 public protocol PledgeSummaryViewModelOutputs {
   var amountLabelAttributedText: Signal<NSAttributedString, Never> { get }
+  var confirmationLabelAttributedText: Signal<NSAttributedString, Never> { get }
+  var confirmationLabelHidden: Signal<Bool, Never> { get }
   var notifyDelegateOpenHelpType: Signal<HelpType, Never> { get }
   var totalConversionLabelText: Signal<String, Never> { get }
 }
@@ -24,16 +28,18 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
   PledgeSummaryViewModelInputs, PledgeSummaryViewModelOutputs {
   public init() {
     let initialData = Signal.combineLatest(
-      self.configureWithProjectAndTotalProperty.signal.skipNil(),
+      self.configureWithDataProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
     .map(first)
 
-    self.amountLabelAttributedText = initialData
+    let projectAndPledgeTotal = initialData.map { project, total, _ in (project, total) }
+
+    self.amountLabelAttributedText = projectAndPledgeTotal
       .map(attributedCurrency(with:total:))
       .skipNil()
 
-    self.totalConversionLabelText = initialData
+    self.totalConversionLabelText = projectAndPledgeTotal
       .filter { project, _ in project.stats.needsConversion }
       .map { project, total in
         let convertedTotal = total * Double(project.stats.currentCurrencyRate ?? project.stats.staticUsdRate)
@@ -61,11 +67,21 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
       return helpType
     }
     .skipNil()
+
+    self.confirmationLabelAttributedText = projectAndPledgeTotal
+      .map { project, pledgeTotal in
+        attributedConfirmationString(
+          with: project,
+          pledgeTotal: pledgeTotal
+        )
+      }
+
+    self.confirmationLabelHidden = initialData.map(third)
   }
 
-  private let configureWithProjectAndTotalProperty = MutableProperty<(Project, Double)?>(nil)
-  public func configureWith(_ project: Project, total: Double) {
-    self.configureWithProjectAndTotalProperty.value = (project, total)
+  private let configureWithDataProperty = MutableProperty<PledgeSummaryViewData?>(nil)
+  public func configure(with data: PledgeSummaryViewData) {
+    self.configureWithDataProperty.value = data
   }
 
   private let (tappedUrlSignal, tappedUrlObserver) = Signal<URL, Never>.pipe()
@@ -79,6 +95,8 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
   }
 
   public let amountLabelAttributedText: Signal<NSAttributedString, Never>
+  public let confirmationLabelAttributedText: Signal<NSAttributedString, Never>
+  public let confirmationLabelHidden: Signal<Bool, Never>
   public let notifyDelegateOpenHelpType: Signal<HelpType, Never>
   public let totalConversionLabelText: Signal<String, Never>
 
@@ -88,12 +106,35 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
 
 private func attributedCurrency(with project: Project, total: Double) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
-    .withAllValuesFrom([.foregroundColor: UIColor.ksr_green_500])
+    .withAllValuesFrom([.foregroundColor: UIColor.ksr_text_black])
   return Format.attributedCurrency(
     total,
     country: project.country,
     omitCurrencyCode: project.stats.omitUSCurrencyCode,
     defaultAttributes: defaultAttributes,
     superscriptAttributes: checkoutCurrencySuperscriptAttributes()
+  )
+}
+
+private func attributedConfirmationString(with project: Project, pledgeTotal: Double) -> NSAttributedString {
+  let date = Format.date(secondsInUTC: project.dates.deadline, template: "MMMM d, yyyy")
+  let pledgeTotal = Format.currency(pledgeTotal, country: project.country)
+
+  let font = UIFont.ksr_caption1()
+  let foregroundColor = UIColor.ksr_text_dark_grey_500
+
+  guard project.stats.needsConversion else {
+    return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
+      project_deadline: date
+    )
+    .attributed(with: font, foregroundColor: foregroundColor, attributes: [:], bolding: [date])
+  }
+
+  return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
+    total: pledgeTotal,
+    project_deadline: date
+  )
+  .attributed(
+    with: font, foregroundColor: foregroundColor, attributes: [:], bolding: [pledgeTotal, date]
   )
 }

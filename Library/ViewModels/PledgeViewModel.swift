@@ -49,10 +49,8 @@ public protocol PledgeViewModelOutputs {
   var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
-  var configureSummaryViewControllerWithData: Signal<(Project, Double), Never> { get }
+  var configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
   var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
-  var confirmationLabelAttributedText: Signal<NSAttributedString, Never> { get }
-  var confirmationLabelHidden: Signal<Bool, Never> { get }
   var continueViewHidden: Signal<Bool, Never> { get }
   var descriptionViewHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
@@ -63,6 +61,7 @@ public protocol PledgeViewModelOutputs {
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
   var popToRootViewController: Signal<(), Never> { get }
+  var processingViewIsHidden: Signal<Bool, Never> { get }
   var sectionSeparatorsHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var showApplePayAlert: Signal<(String, String), Never> { get }
@@ -95,7 +94,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let backing = project.map { $0.personalization.backing }.skipNil()
 
-    self.confirmationLabelHidden = context.map { $0.confirmationLabelHidden }
     self.descriptionViewHidden = context.map { $0.descriptionViewHidden }
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
     self.pledgeAmountSummaryViewHidden = context.map { $0.pledgeAmountSummaryViewHidden }
@@ -122,9 +120,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.configureWithData = projectAndReward
 
-    self.configureSummaryViewControllerWithData = project
-      .takePairWhen(pledgeTotal)
-      .map { project, total in (project, total) }
+    self.configureSummaryViewControllerWithData = Signal.combineLatest(
+      project,
+      context.map { $0.confirmationLabelHidden }
+    )
+    .takePairWhen(pledgeTotal)
+    .map(unpack)
+    .map { project, confirmationLabelHidden, total in (project, total, confirmationLabelHidden) }
 
     let configurePaymentMethodsViewController = Signal.merge(
       initialData,
@@ -137,17 +139,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         guard let user = AppEnvironment.current.currentUser else { return nil }
 
         return (user, project, reward, context, refTag)
-      }
-
-    let projectAndPledgeTotal = project
-      .combineLatest(with: pledgeTotal)
-
-    self.confirmationLabelAttributedText = projectAndPledgeTotal
-      .map { project, pledgeTotal in
-        attributedConfirmationString(
-          with: project,
-          pledgeTotal: pledgeTotal
-        )
       }
 
     self.continueViewHidden = Signal
@@ -307,12 +298,21 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     // Captures the checkoutId immediately and avoids a race condition further down the chain.
     let checkoutIdProperty = MutableProperty<Int?>(nil)
+    let processingViewIsHidden = MutableProperty<Bool>(true)
 
     let createBackingEvents = createBackingDataAndIsApplePay
       .map(CreateBackingInput.input(from:isApplePay:))
       .switchMap { [checkoutIdProperty] input in
         AppEnvironment.current.apiService.createBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .on(
+            starting: {
+              processingViewIsHidden.value = false
+            },
+            terminated: {
+              processingViewIsHidden.value = true
+            }
+          )
           .map { envelope -> StripeSCARequiring in
             checkoutIdProperty.value = decompose(id: envelope.createBacking.checkout.id)
             return envelope as StripeSCARequiring
@@ -358,6 +358,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .switchMap { input in
         AppEnvironment.current.apiService.updateBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .on(
+            starting: {
+              processingViewIsHidden.value = false
+            },
+            terminated: {
+              processingViewIsHidden.value = true
+            }
+          )
           .map { $0 as StripeSCARequiring }
           .materialize()
       }
@@ -366,6 +374,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       createBackingEvents,
       updateBackingEvents
     )
+
+    self.processingViewIsHidden = processingViewIsHidden.signal
 
     // MARK: - Form Validation
 
@@ -731,10 +741,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let beginSCAFlowWithClientSecret: Signal<String, Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
-  public let configureSummaryViewControllerWithData: Signal<(Project, Double), Never>
+  public let configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
   public let configureWithData: Signal<(project: Project, reward: Reward), Never>
-  public let confirmationLabelAttributedText: Signal<NSAttributedString, Never>
-  public let confirmationLabelHidden: Signal<Bool, Never>
   public let continueViewHidden: Signal<Bool, Never>
   public let descriptionViewHidden: Signal<Bool, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
@@ -745,6 +753,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
   public let popToRootViewController: Signal<(), Never>
+  public let processingViewIsHidden: Signal<Bool, Never>
   public let sectionSeparatorsHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
@@ -763,36 +772,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
 private func requiresSCA(_ envelope: StripeSCARequiring) -> Bool {
   return envelope.requiresSCAFlow
-}
-
-private func attributedConfirmationString(with project: Project, pledgeTotal: Double) -> NSAttributedString {
-  let date = Format.date(secondsInUTC: project.dates.deadline, template: "MMMM d, yyyy")
-  let pledgeTotal = Format.currency(pledgeTotal, country: project.country)
-
-  let font = UIFont.ksr_caption1()
-  let foregroundColor = UIColor.ksr_text_dark_grey_500
-
-  let paragraphStyle = NSMutableParagraphStyle()
-  paragraphStyle.alignment = .center
-
-  let attributes = [
-    NSAttributedString.Key.paragraphStyle: paragraphStyle
-  ]
-
-  guard project.stats.needsConversion else {
-    return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(
-      project_deadline: date
-    )
-    .attributed(with: font, foregroundColor: foregroundColor, attributes: attributes, bolding: [date])
-  }
-
-  return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(
-    total: pledgeTotal,
-    project_deadline: date
-  )
-  .attributed(
-    with: font, foregroundColor: foregroundColor, attributes: attributes, bolding: [pledgeTotal, date]
-  )
 }
 
 // MARK: - Validation Functions
