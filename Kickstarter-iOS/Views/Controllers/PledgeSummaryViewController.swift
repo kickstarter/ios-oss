@@ -41,7 +41,6 @@ final class PledgeSummaryViewController: UIViewController {
 
     _ = self.rootStackView
       |> rootStackViewStyle
-      |> \.spacing .~ 0
 
     _ = self.confirmationLabel
       |> \.numberOfLines .~ 0
@@ -148,7 +147,7 @@ private let adaptableStackViewStyle: StackViewStyle = { (stackView: UIStackView)
 private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
     |> verticalStackViewStyle
-    |> \.spacing .~ Styles.gridHalf(3)
+    |> \.spacing .~ Styles.grid(3)
 }
 
 private let titleLabelStyle: LabelStyle = { (label: UILabel) -> UILabel in
@@ -176,7 +175,7 @@ private func totalStackViewStyle(_ isAccessibilityCategory: Bool) -> StackViewSt
   return { stackView in
     stackView
       |> verticalStackViewStyle
-      |> \.spacing .~ Styles.gridHalf(3)
+      |> \.spacing .~ Styles.grid(1)
       |> \.alignment .~
       (isAccessibilityCategory ? UIStackView.Alignment.leading : UIStackView.Alignment.trailing)
   }
