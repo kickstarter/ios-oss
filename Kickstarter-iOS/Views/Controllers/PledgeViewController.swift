@@ -11,9 +11,8 @@ protocol PledgeViewControllerDelegate: AnyObject {
 final class PledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
-  private lazy var confirmationLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var confirmationSectionViews = {
-    [self.submitButton, self.confirmationLabel]
+    [self.submitButton]
   }()
 
   public weak var delegate: PledgeViewControllerDelegate?
@@ -36,6 +35,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     PledgeAmountViewController.instantiate()
       |> \.delegate .~ self
   }()
+
+  private lazy var processingView: ProcessingView = { ProcessingView(frame: .zero) }()
 
   private lazy var continueViewController = {
     PledgeContinueViewController.instantiate()
@@ -248,10 +249,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     _ = self.submitButton
       |> greenButtonStyle
-
-    _ = self.confirmationLabel
-      |> \.numberOfLines .~ 0
-      |> checkoutBackgroundStyle
   }
 
   // MARK: - View model
@@ -290,8 +287,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.viewModel.outputs.configureSummaryViewControllerWithData
       .observeForUI()
-      .observeValues { [weak self] project, pledgeTotal in
-        self?.summaryViewController.configureWith(project, total: pledgeTotal)
+      .observeValues { [weak self] data in
+        self?.summaryViewController.configure(with: data)
       }
     self.viewModel.outputs.configurePaymentMethodsViewControllerWithValue
       .observeForUI()
@@ -353,9 +350,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.submitButton.rac.enabled = self.viewModel.outputs.submitButtonEnabled
     self.submitButton.rac.hidden = self.viewModel.outputs.submitButtonHidden
     self.submitButton.rac.title = self.viewModel.outputs.submitButtonTitle
-    self.confirmationLabel.rac.hidden = self.viewModel.outputs.confirmationLabelHidden
-
-    self.confirmationLabel.rac.attributedText = self.viewModel.outputs.confirmationLabelAttributedText
 
     self.viewModel.outputs.title
       .observeForUI()
@@ -370,6 +364,16 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .observeForUI()
       .observeValues { [weak self] isLoading in
         self?.submitButton.isLoading = isLoading
+      }
+
+    self.viewModel.outputs.processingViewIsHidden
+      .observeForUI()
+      .observeValues { [weak self] isHidden in
+        if isHidden {
+          self?.hideProcessingView()
+        } else {
+          self?.showProcessingView()
+        }
       }
 
     // MARK: Errors
@@ -424,6 +428,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.view.endEditing(true)
   }
 
+  // MARK: - Functions
+
   private func beginSCAFlow(withClientSecret secret: String) {
     STPPaymentHandler.shared().confirmSetupIntent(
       withParams: .init(clientSecret: secret),
@@ -431,6 +437,20 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     ) { [weak self] status, _, error in
       self?.viewModel.inputs.scaFlowCompleted(with: status, error: error)
     }
+  }
+
+  private func showProcessingView() {
+    guard let window = UIApplication.shared.keyWindow else {
+      return
+    }
+
+    _ = (self.processingView, window)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+  }
+
+  private func hideProcessingView() {
+    self.processingView.removeFromSuperview()
   }
 }
 
