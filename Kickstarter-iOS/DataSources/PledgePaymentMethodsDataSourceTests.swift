@@ -35,10 +35,6 @@ final class PledgePaymentMethodsDataSourceTests: XCTestCase {
       1,
       self.dataSource.numberOfItems(in: PaymentMethodsTableViewSection.addNewCard.rawValue)
     )
-    XCTAssertEqual(
-      0,
-      self.dataSource.numberOfItems(in: PaymentMethodsTableViewSection.loading.rawValue)
-    )
   }
 
   func testLoadingState() {
