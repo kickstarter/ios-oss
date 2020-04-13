@@ -319,8 +319,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsIsSelected.assertValues([[], [true, false, false]])
       self.reloadPaymentMethodsProjectCountry.assertValues([
         [],
-        ["Brooklyn, NY", "Brooklyn, NY", "Brooklyn, NY"]]
-      )
+        ["Brooklyn, NY", "Brooklyn, NY", "Brooklyn, NY"]
+      ])
       self.reloadPaymentMethodsSelectedCard.assertValues([nil, GraphUserCreditCard.visa])
       self.reloadPaymentMethodsShouldReload.assertValues([true, true])
     }
