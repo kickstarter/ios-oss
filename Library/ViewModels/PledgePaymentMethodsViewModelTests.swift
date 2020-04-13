@@ -16,6 +16,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
   private let reloadPaymentMethodsCards = TestObserver<[GraphUserCreditCard.CreditCard], Never>()
   private let reloadPaymentMethodsAvailableCardTypes = TestObserver<[Bool], Never>()
+  private let reloadPaymentMethodsIsLoading = TestObserver<Bool, Never>()
   private let reloadPaymentMethodsIsSelected = TestObserver<[Bool], Never>()
   private let reloadPaymentMethodsProjectCountry = TestObserver<[String], Never>()
   private let reloadPaymentMethodsSelectedCard = TestObserver<GraphUserCreditCard.CreditCard?, Never>()
@@ -32,12 +33,13 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       .observe(self.notifyDelegateLoadPaymentMethodsError.observer)
 
     // swiftlint:disable line_length
-    self.vm.outputs.reloadPaymentMethods.map(first).map { $0.map { $0.card } }.observe(self.reloadPaymentMethodsCards.observer)
-    self.vm.outputs.reloadPaymentMethods.map(first).map { $0.map { $0.isEnabled } }.observe(self.reloadPaymentMethodsAvailableCardTypes.observer)
-    self.vm.outputs.reloadPaymentMethods.map(first).map { $0.map { $0.isSelected } }.observe(self.reloadPaymentMethodsIsSelected.observer)
-    self.vm.outputs.reloadPaymentMethods.map(first).map { $0.map { $0.projectCountry } }.observe(self.reloadPaymentMethodsProjectCountry.observer)
-    self.vm.outputs.reloadPaymentMethods.map(second).observe(self.reloadPaymentMethodsSelectedCard.observer)
-    self.vm.outputs.reloadPaymentMethods.map(third).observe(self.reloadPaymentMethodsShouldReload.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.card } }.observe(self.reloadPaymentMethodsCards.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.isEnabled } }.observe(self.reloadPaymentMethodsAvailableCardTypes.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.isSelected } }.observe(self.reloadPaymentMethodsIsSelected.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.projectCountry } }.observe(self.reloadPaymentMethodsProjectCountry.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.1 }.observe(self.reloadPaymentMethodsSelectedCard.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.2 }.observe(self.reloadPaymentMethodsShouldReload.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.3 }.observe(self.reloadPaymentMethodsIsLoading.observer)
     // swiftlint:enable line_length
   }
 
@@ -55,29 +57,35 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
       self.reloadPaymentMethodsShouldReload.assertDidNotEmitValue()
+      self.reloadPaymentMethodsIsLoading.assertDidNotEmitValue()
 
       self.vm.inputs.configure(with: (User.template, Project.template, Reward.template, .pledge, .discovery))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
 
-      self.reloadPaymentMethodsCards.assertValue(response.me.storedCards.nodes)
+      self.reloadPaymentMethodsCards.assertValues([[], response.me.storedCards.nodes])
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
+        [],
         [true, true, true, true, true, true, true, false]
       ])
       self.reloadPaymentMethodsIsSelected.assertValues([
+        [],
         [true, false, false, false, false, false, false, false]
       ], "First card is selected")
       self.reloadPaymentMethodsProjectCountry.assertValues([
+        [],
         (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" }
       ], "One card is unavailable")
-      self.reloadPaymentMethodsSelectedCard.assertValues([response.me.storedCards.nodes.first])
-      self.reloadPaymentMethodsShouldReload.assertValues([true])
+      self.reloadPaymentMethodsSelectedCard.assertValues([nil, response.me.storedCards.nodes.first])
+      self.reloadPaymentMethodsShouldReload.assertValues([true, true])
+      self.reloadPaymentMethodsIsLoading.assertValues([true, false])
 
       self.vm.inputs.addNewCardViewControllerDidAdd(newCard: userCreditCard)
 
       self.reloadPaymentMethodsCards.assertValues(
         [
+          [],
           [
             GraphUserCreditCard.amex,
             GraphUserCreditCard.masterCard,
@@ -101,22 +109,26 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         ]
       )
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
+        [],
         [true, true, true, true, true, true, true, false],
         [true, true, true, true, true, true, true, true, false]
       ])
       self.reloadPaymentMethodsIsSelected.assertValues([
+        [],
         [true, false, false, false, false, false, false, false],
         [true, false, false, false, false, false, false, false, false]
       ], "First card is selected")
       self.reloadPaymentMethodsProjectCountry.assertValues([
+        [],
         (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" },
         (0...response.me.storedCards.nodes.count).map { _ in "Brooklyn, NY" }
       ], "New and available card added")
       self.reloadPaymentMethodsSelectedCard.assertValues([
+        nil,
         response.me.storedCards.nodes.first,
         userCreditCard
       ])
-      self.reloadPaymentMethodsShouldReload.assertValues([true, true])
+      self.reloadPaymentMethodsShouldReload.assertValues([true, true, true])
     }
   }
 
@@ -137,6 +149,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
     self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
     self.reloadPaymentMethodsShouldReload.assertDidNotEmitValue()
+    self.reloadPaymentMethodsIsLoading.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService, currentUser: User.template) {
       let paymentSource = Backing.PaymentSource.template
@@ -154,6 +167,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.reloadPaymentMethodsCards.assertValues([
+        [],
         [
           GraphUserCreditCard.visa,
           GraphUserCreditCard.amex,
@@ -163,19 +177,22 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         ]
       ], "Card used for backing is first")
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
+        [],
         [true, true, true, true, false]
       ])
       self.reloadPaymentMethodsIsSelected.assertValues([
+        [],
         [true, false, false, false, false]
       ], "First card is selected")
       self.reloadPaymentMethodsProjectCountry.assertValues([
+        [],
         (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" }
       ], "One card is unavailable")
       self.reloadPaymentMethodsSelectedCard.assertValues(
-        [GraphUserCreditCard.visa],
+        [nil, GraphUserCreditCard.visa],
         "Card used for backing is selected"
       )
-      self.reloadPaymentMethodsShouldReload.assertValues([true])
+      self.reloadPaymentMethodsShouldReload.assertValues([true, true])
 
       let newCard = GraphUserCreditCard.visa
         |> \.id .~ "123"
@@ -184,6 +201,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.vm.inputs.addNewCardViewControllerDidAdd(newCard: newCard)
 
       self.reloadPaymentMethodsCards.assertValues([
+        [],
         [
           GraphUserCreditCard.visa,
           GraphUserCreditCard.amex,
@@ -201,25 +219,29 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
         ]
       ], "New card added is first")
       self.reloadPaymentMethodsAvailableCardTypes.assertValues([
+        [],
         [true, true, true, true, false],
         [true, true, true, true, true, false]
       ])
       self.reloadPaymentMethodsIsSelected.assertValues([
+        [],
         [true, false, false, false, false],
         [true, false, false, false, false, false]
       ], "First card is selected")
       self.reloadPaymentMethodsProjectCountry.assertValues([
+        [],
         (0...response.me.storedCards.nodes.count - 1).map { _ in "Brooklyn, NY" },
         (0...response.me.storedCards.nodes.count).map { _ in "Brooklyn, NY" }
       ], "One card is unavailable")
       self.reloadPaymentMethodsSelectedCard.assertValues(
         [
+          nil,
           GraphUserCreditCard.visa,
           newCard
         ],
         "Newly added card is selected"
       )
-      self.reloadPaymentMethodsShouldReload.assertValues([true, true])
+      self.reloadPaymentMethodsShouldReload.assertValues([true, true, true])
     }
   }
 
@@ -234,28 +256,29 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
       self.reloadPaymentMethodsShouldReload.assertDidNotEmitValue()
+      self.reloadPaymentMethodsIsLoading.assertDidNotEmitValue()
 
       self.vm.inputs.configure(with: (User.template, Project.template, Reward.template, .pledge, .discovery))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.run()
 
-      self.reloadPaymentMethodsCards.assertValues([[]])
-      self.reloadPaymentMethodsAvailableCardTypes.assertValues([[]])
-      self.reloadPaymentMethodsIsSelected.assertValues([[]])
-      self.reloadPaymentMethodsProjectCountry.assertValues([[]])
-      self.reloadPaymentMethodsSelectedCard.assertValues([nil], "No card to select")
-      self.reloadPaymentMethodsShouldReload.assertValues([true])
+      self.reloadPaymentMethodsCards.assertValues([[], []])
+      self.reloadPaymentMethodsAvailableCardTypes.assertValues([[], []])
+      self.reloadPaymentMethodsIsSelected.assertValues([[], []])
+      self.reloadPaymentMethodsProjectCountry.assertValues([[], []])
+      self.reloadPaymentMethodsSelectedCard.assertValues([nil, nil], "No card to select")
+      self.reloadPaymentMethodsShouldReload.assertValues([true, true])
 
       self.vm.inputs.addNewCardViewControllerDidAdd(newCard: GraphUserCreditCard.visa)
 
-      self.reloadPaymentMethodsCards.assertValues([[], [GraphUserCreditCard.visa]])
-      self.reloadPaymentMethodsAvailableCardTypes.assertValues([[], [true]])
-      self.reloadPaymentMethodsIsSelected.assertValues([[], [true]])
-      self.reloadPaymentMethodsProjectCountry.assertValues([[], ["Brooklyn, NY"]])
+      self.reloadPaymentMethodsCards.assertValues([[], [], [GraphUserCreditCard.visa]])
+      self.reloadPaymentMethodsAvailableCardTypes.assertValues([[], [], [true]])
+      self.reloadPaymentMethodsIsSelected.assertValues([[], [], [true]])
+      self.reloadPaymentMethodsProjectCountry.assertValues([[], [], ["Brooklyn, NY"]])
       self.reloadPaymentMethodsSelectedCard
-        .assertValues([nil, GraphUserCreditCard.visa], "Added card is selected")
-      self.reloadPaymentMethodsShouldReload.assertValues([true, true])
+        .assertValues([nil, nil, GraphUserCreditCard.visa], "Added card is selected")
+      self.reloadPaymentMethodsShouldReload.assertValues([true, true, true])
     }
   }
 
@@ -277,6 +300,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
       self.reloadPaymentMethodsShouldReload.assertDidNotEmitValue()
+      self.reloadPaymentMethodsIsLoading.assertDidNotEmitValue()
 
       self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
       self.vm.inputs.viewDidLoad()
@@ -284,17 +308,18 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.reloadPaymentMethodsCards.assertValues([
+        [],
         [
           GraphUserCreditCard.visa,
           GraphUserCreditCard.amex,
           GraphUserCreditCard.discover
         ]
       ])
-      self.reloadPaymentMethodsAvailableCardTypes.assertValues([[true, true, false]])
-      self.reloadPaymentMethodsIsSelected.assertValues([[true, false, false]])
-      self.reloadPaymentMethodsProjectCountry.assertValues([["Brooklyn, NY", "Brooklyn, NY", "Brooklyn, NY"]])
-      self.reloadPaymentMethodsSelectedCard.assertValues([GraphUserCreditCard.visa])
-      self.reloadPaymentMethodsShouldReload.assertValues([true])
+      self.reloadPaymentMethodsAvailableCardTypes.assertValues([[], [true, true, false]])
+      self.reloadPaymentMethodsIsSelected.assertValues([[], [true, false, false]])
+      self.reloadPaymentMethodsProjectCountry.assertValues([[], ["Brooklyn, NY", "Brooklyn, NY", "Brooklyn, NY"]])
+      self.reloadPaymentMethodsSelectedCard.assertValues([nil, GraphUserCreditCard.visa])
+      self.reloadPaymentMethodsShouldReload.assertValues([true, true])
     }
   }
 
@@ -311,6 +336,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
       self.reloadPaymentMethodsShouldReload.assertDidNotEmitValue()
+      self.reloadPaymentMethodsIsLoading.assertDidNotEmitValue()
       self.notifyDelegateLoadPaymentMethodsError.assertDidNotEmitValue()
 
       self.scheduler.run()
@@ -321,6 +347,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.reloadPaymentMethodsProjectCountry.assertDidNotEmitValue()
       self.reloadPaymentMethodsSelectedCard.assertDidNotEmitValue()
       self.reloadPaymentMethodsShouldReload.assertDidNotEmitValue()
+      self.reloadPaymentMethodsIsLoading.assertDidNotEmitValue()
       self.notifyDelegateLoadPaymentMethodsError.assertDidNotEmitValue()
     }
   }
@@ -370,6 +397,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.reloadPaymentMethodsCards.assertValues([
+        [],
         [
           GraphUserCreditCard.visa,
           GraphUserCreditCard.amex,
