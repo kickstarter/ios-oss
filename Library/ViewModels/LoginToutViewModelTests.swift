@@ -654,7 +654,10 @@ final class LoginToutViewModelTests: TestCase {
   func testLogIntoEnvironment_SignInWithApple() {
     let user = User.template
 
-    withEnvironment(apiService: MockService(fetchUserResponse: user)) {
+    let envelope = SignInWithAppleEnvelope.template
+      |> \.signInWithApple.apiAccessToken .~ "some_token"
+
+    withEnvironment(apiService: MockService(fetchUserResponse: user, signInWithAppleResponse: envelope)) {
       let data = SignInWithAppleData(
         appId: "com.kickstarter.test",
         firstName: "Nino",
@@ -671,7 +674,7 @@ final class LoginToutViewModelTests: TestCase {
       let value = self.logIntoEnvironment.values.first
 
       XCTAssertEqual(user, value?.user)
-      XCTAssertEqual("api_access_token", value?.accessToken)
+      XCTAssertEqual("some_token", value?.accessToken)
     }
   }
 

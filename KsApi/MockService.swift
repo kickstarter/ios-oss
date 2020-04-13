@@ -1241,7 +1241,9 @@
 
     internal func signInWithApple(input _: SignInWithAppleInput)
       -> SignalProducer<SignInWithAppleEnvelope, GraphError> {
-      if let error = signInWithAppleError {
+      if let response = self.signInWithAppleResponse {
+        return SignalProducer(value: response)
+      } else if let error = signInWithAppleError {
         return SignalProducer(error: error)
       }
       return SignalProducer(value: SignInWithAppleEnvelope.template)
