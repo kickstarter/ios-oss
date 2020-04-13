@@ -14,6 +14,7 @@ public enum RefTag {
   case discovery
   case discoveryWithSort(DiscoveryParams.Sort)
   case messageThread
+  case onboarding
   case profile
   case profileBacked
   case profileSaved
@@ -61,6 +62,7 @@ public enum RefTag {
     case "discovery_home": self = .discoveryWithSort(.magic)
     case "discovery_newest": self = .discoveryWithSort(.newest)
     case "discovery_popular": self = .discoveryWithSort(.popular)
+    case "ios_experiment_onboarding_1": self = .onboarding
     case "message_thread": self = .messageThread
     case "profile": self = .profile
     case "profile_backed": self = .profileBacked
@@ -120,6 +122,8 @@ public enum RefTag {
       return "discovery" + sortRefTagSuffix(sort)
     case .messageThread:
       return "message_thread"
+    case .onboarding:
+      return "ios_experiment_onboarding_1"
     case .profile:
       return "profile"
     case .profileBacked:

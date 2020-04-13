@@ -73,6 +73,7 @@
 "Change_payment_method" = "Cambiar método de pago";
 "Chat" = "Chat";
 "Check_back_later_for_an_update_on_your_export" = "Vuelve más tarde para obtener una actualización sobre tu progreso de exportación.";
+"Check_out_these_handpicked_projects" = "Echa un vistazo a estos proyectos seleccionados exclusivamente para ti.";
 "Check_your_payment_details" = "Revisa tu información de pago";
 "Choose_another_reward" = "Elegir otra recompensa";
 "Chooses_location_for_shipping" = "Destino determinado: %{location}.";
@@ -460,9 +461,11 @@
 "Select" = "Seleccionar";
 "Select_an_option" = "Seleccionar una opción";
 "Select_another_project" = "Selecciona otro proyecto";
+"Select_fewer_categories" = "Select fewer categories";
 "Select_this_instead" = "Seleccionar esto";
 "Select_this_reward" = "Seleccionar esta recompensa";
 "Select_this_reward_instead" = "Selecciona esta recompensa";
+"Select_up_to_five" = "Selecciona hasta cinco de las opciones que aparecen a continuación.";
 "Selected" = "Seleccionada";
 "Selected_reward" = "Recompensa seleccionada";
 "Send" = "Enviar";
@@ -497,6 +500,7 @@
 "Stay_up_to_date_newsletter" = "Mantente al día sobre nuestros proyectos favoritos, noticias y eventos que tenemos en la mira.";
 "Stay_updated_on_the_projects_youve_backed_and_learn_about_how_these_creative_works_are_produced" = "Mantente al tanto de los proyectos que has patrocinado y conoce cómo se producen estos trabajos creativos.";
 "Stay_updated_on_this_project" = "¿Deseas mantenerte actualizado sobre este proyecto?";
+"Step_number" = "Paso %{current_step} de %{total_steps}";
 "Subscribe" = "Suscribir";
 "Subscribed" = "Suscripción activa";
 "Subscribes_to_upcoming_lives_streams" = "Activa subscripción a futuros Live-Streams.";
@@ -597,6 +601,7 @@
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Te recordaremos 48 horas antes de que finalice este proyecto y recibirás un recordatorio sobre todos los proyectos que guardes de aquí en adelante. Para ver todo lo que has guardado, visita tu perfil.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Cuando el seguimiento está activado, puedes seguir la actividad de los demás y otros pueden seguir tu actividad. Desactiva el seguimiento para eliminar esta información definitivamente.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice";
+"Which_categories_interest_you" = "¿Qué categorías te interesan?";
 "Write_a_bio" = "Escribe una biografía breve mediante una oración o dos.";
 "Yes_cancel_it" = "Sí, cancelar";
 "Yes_cancel_my_pledge" = "Sí, cancelar mi contribución";

@@ -44,6 +44,7 @@
     fileprivate let backingUpdate: Backing
 
     fileprivate let fetchGraphCategoriesResponse: RootCategoriesEnvelope?
+    fileprivate let fetchGraphCategoriesError: GraphError?
 
     fileprivate let fetchCommentsResponse: [Comment]?
     fileprivate let fetchCommentsError: ErrorEnvelope?
@@ -217,6 +218,7 @@
       fetchBackingResponse: Backing = .template,
       backingUpdate: Backing = .template,
       fetchGraphCategoriesResponse: RootCategoriesEnvelope? = nil,
+      fetchGraphCategoriesError: GraphError? = nil,
       fetchCommentsResponse: [Comment]? = nil,
       fetchCommentsError: ErrorEnvelope? = nil,
       fetchConfigResponse: Config? = nil,
@@ -346,6 +348,8 @@
           .documentary
         ]
       )
+
+      self.fetchGraphCategoriesError = fetchGraphCategoriesError
 
       self.fetchGraphUserAccountFieldsResponse = fetchGraphUserAccountFieldsResponse
         ?? UserEnvelope(me: UserAccountFields.template)
@@ -670,10 +674,12 @@
 
     internal func fetchGraphCategories(query _: NonEmptySet<Query>)
       -> SignalProducer<RootCategoriesEnvelope, GraphError> {
-      if let response = self.fetchGraphCategoriesResponse {
+      if let error = self.fetchGraphCategoriesError {
+        return SignalProducer(error: error)
+      } else if let response = self.fetchGraphCategoriesResponse {
         return SignalProducer(value: response)
       }
-      return .empty
+      return SignalProducer(value: RootCategoriesEnvelope.template)
     }
 
     internal func fetchGraphCategory(query: NonEmptySet<Query>)
