@@ -8,7 +8,7 @@ final class SignInWithAppleEnvelopeTests: XCTestCase {
       "signInWithApple": {
         "apiAccessToken": "api_access_token",
         "user": {
-          "id": "VXNlci0x"
+          "uid": "1"
         }
       }
     }
@@ -19,8 +19,7 @@ final class SignInWithAppleEnvelopeTests: XCTestCase {
     do {
       let envelope = try JSONDecoder().decode(SignInWithAppleEnvelope.self, from: data)
       XCTAssertEqual(envelope.signInWithApple.apiAccessToken, "api_access_token")
-      XCTAssertEqual(envelope.signInWithApple.user.id, "VXNlci0x")
-      XCTAssertEqual(envelope.signInWithApple.user.intID, 1)
+      XCTAssertEqual(envelope.signInWithApple.user.uid, "1")
     } catch {
       XCTFail("\(error)")
     }

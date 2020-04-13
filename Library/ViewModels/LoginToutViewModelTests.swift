@@ -609,7 +609,7 @@ final class LoginToutViewModelTests: TestCase {
         .first
 
       XCTAssertEqual("api_access_token", value?.signInWithApple.apiAccessToken)
-      XCTAssertEqual("1", value?.signInWithApple.user.id)
+      XCTAssertEqual("1", value?.signInWithApple.user.uid)
     }
   }
 }

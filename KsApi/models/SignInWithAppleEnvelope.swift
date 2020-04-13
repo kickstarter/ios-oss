@@ -9,9 +9,6 @@ public struct SignInWithAppleEnvelope: Decodable {
   }
 
   public struct User: Decodable {
-    public let id: String
-    public var intID: Int? {
-      return decompose(id: self.id)
-    }
+    public let uid: String
   }
 }
