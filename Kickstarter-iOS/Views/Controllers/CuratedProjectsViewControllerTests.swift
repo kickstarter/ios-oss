@@ -38,6 +38,7 @@ internal final class CuratedProjectsViewControllerTests: TestCase {
         let controller = CuratedProjectsViewController.instantiate()
         controller.configure(with: categories, context: .onboarding)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_000
 
         self.scheduler.run()
 

@@ -176,6 +176,7 @@ public enum Query {
     case creator(NonEmptySet<User>)
     case id
     case name
+    case projectSummary(NonEmptySet<ProjectSummary>)
     case slug
     case updates(Set<QueryArg<Never>>, NonEmptySet<Connection<Project.Update>>)
 
@@ -190,6 +191,11 @@ public enum Query {
       case id
       case publishedAt
       case title
+    }
+
+    public enum ProjectSummary: String {
+      case question
+      case response
     }
   }
 
@@ -374,6 +380,7 @@ extension Query.Project: QueryType {
     case let .creator(fields): return "creator { \(join(fields)) }"
     case .id: return "id"
     case .name: return "name"
+    case let .projectSummary(fields): return "projectSummary { \(join(fields)) }"
     case .slug: return "slug"
     case let .updates(args, fields): return "updates\(connection(args, fields))"
     }
@@ -434,6 +441,14 @@ extension Query.User: QueryType {
     case .url: return "url"
     case .userId: return "uid"
     }
+  }
+}
+
+// MARK: - ProjectSummary
+
+extension Query.Project.ProjectSummary: QueryType {
+  public var description: String {
+    return self.rawValue
   }
 }
 
@@ -547,6 +562,12 @@ extension PageInfo {
 }
 
 extension Query.Notifications {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.description)
+  }
+}
+
+extension Query.Project.ProjectSummary {
   public func hash(into hasher: inout Hasher) {
     hasher.combine(self.description)
   }
