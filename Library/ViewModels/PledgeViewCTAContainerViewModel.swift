@@ -4,7 +4,7 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol PledgeViewCTAContainerViewModelInputs {
-  //func configureWith(value: PledgeCTAContainerViewData)
+  // func configureWith(value: PledgeCTAContainerViewData)
   func applePayButtonTapped()
   func pledgeCTAButtonTapped()
 }
@@ -22,10 +22,8 @@ public protocol PledgeViewCTAContainerViewModelType {
 public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewModelType,
   PledgeViewCTAContainerViewModelInputs, PledgeViewCTAContainerViewModelOutputs {
   public init() {
-
     self.notifyDelegatePledgeButtonTapped = self.pledgeCTAButtonTappedProperty.signal
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
-
   }
 
   private let applePayButtonTappedProperty = MutableProperty(())
@@ -44,4 +42,3 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
   public var inputs: PledgeViewCTAContainerViewModelInputs { return self }
   public var outputs: PledgeViewCTAContainerViewModelOutputs { return self }
 }
-

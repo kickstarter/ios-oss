@@ -17,6 +17,7 @@ private enum Layout {
 
 final class PledgeViewCTAContainerView: UIView {
   // MARK: - Properties
+
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
 
   private lazy var ctaStackView: UIStackView = {
@@ -46,6 +47,7 @@ final class PledgeViewCTAContainerView: UIView {
   private let viewModel: PledgeViewCTAContainerViewModelType = PledgeViewCTAContainerViewModel()
 
   // MARK: - Lifecycle
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -59,6 +61,7 @@ final class PledgeViewCTAContainerView: UIView {
   }
 
   // MARK: - Styles
+
   override func bindStyles() {
     super.bindStyles()
 
@@ -89,6 +92,7 @@ final class PledgeViewCTAContainerView: UIView {
   }
 
   // MARK: - View Model
+
   override func bindViewModel() {
     super.bindViewModel()
 
@@ -97,21 +101,24 @@ final class PledgeViewCTAContainerView: UIView {
       .observeValues { [weak self] in
         guard let self = self else { return }
         self.delegate?.pledgeCTAButtonTapped()
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateApplePayButtonTapped
-     .observeForUI()
-     .observeValues { [weak self] in
-       guard let self = self else { return }
-       self.delegate?.applePayButtonTapped()
-     }
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+        self.delegate?.applePayButtonTapped()
+      }
   }
 
   // MARK: - Configuration
+
   // TODO: Will be addressed in functionality PR
 //  func configureWith(value: ) {
 //  }
+
   // MARK: Functions
+
   private func configureSubviews() {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
@@ -154,11 +161,12 @@ final class PledgeViewCTAContainerView: UIView {
 }
 
 // MARK: - Styles
+
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
-     |> \.axis .~ NSLayoutConstraint.Axis.vertical
-     |> \.isLayoutMarginsRelativeArrangement .~ true
-     |> \.layoutMargins .~ UIEdgeInsets.init(
+    |> \.axis .~ NSLayoutConstraint.Axis.vertical
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ UIEdgeInsets.init(
       top: Styles.grid(2),
       left: Styles.grid(3),
       bottom: Styles.grid(0),
