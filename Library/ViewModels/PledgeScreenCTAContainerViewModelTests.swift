@@ -14,7 +14,8 @@ internal final class PledgeScreenCTAContainerViewModelTests: TestCase {
   internal override func setUp() {
     super.setUp()
 
-    self.vm.outputs.notifyDelegateApplePayButtonTapped.observe(self.notifyDelegateApplePayButtonTapped.observer)
+    self.vm.outputs.notifyDelegateApplePayButtonTapped
+      .observe(self.notifyDelegateApplePayButtonTapped.observer)
     self.vm.outputs.notifyDelegatePledgeButtonTapped.observe(self.notifyDelegatePledgeButtonTapped.observer)
   }
 
