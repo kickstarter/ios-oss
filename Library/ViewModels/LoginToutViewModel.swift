@@ -53,6 +53,9 @@ public protocol LoginToutViewModelInputs {
 }
 
 public protocol LoginToutViewModelOutputs {
+  /// Emits when Apple login should start
+  var attemptAppleLogin: Signal<Void, Never> { get }
+
   /// Emits when Facebook login should start
   var attemptFacebookLogin: Signal<(), Never> { get }
 
@@ -77,9 +80,6 @@ public protocol LoginToutViewModelOutputs {
 
   /// Emits when a login success notification should be posted.
   var postNotification: Signal<(Notification, Notification), Never> { get }
-
-  /// Emits when Continue with Apple button is tapped.
-  var prepareSignInWithAppleRequest: Signal<Void, Never> { get }
 
   /// Emits when should show Facebook error alert with AlertError
   var showFacebookErrorAlert: Signal<AlertError, Never> { get }
@@ -139,7 +139,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
           .materialize()
       }
 
-    self.prepareSignInWithAppleRequest = self.appleLoginButtonPressedProperty.signal.ignoreValues()
+    self.attemptAppleLogin = self.appleLoginButtonPressedProperty.signal.ignoreValues()
 
     let tfaRequiredError = facebookLogin.errors()
       .filter { $0.ksrCode == .TfaRequired }
@@ -342,6 +342,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.viewWillAppearProperty.value = ()
   }
 
+  public let attemptAppleLogin: Signal<(), Never>
   public let attemptFacebookLogin: Signal<(), Never>
   public private(set) var didSignInWithApple: Signal<SignInWithAppleEnvelope, Never> = .empty
   public let dismissViewController: Signal<(), Never>
@@ -350,7 +351,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let logInContextText: Signal<String, Never>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
   public let postNotification: Signal<(Notification, Notification), Never>
-  public let prepareSignInWithAppleRequest: Signal<(), Never>
   public let startFacebookConfirmation: Signal<(ErrorEnvelope.FacebookUser?, String), Never>
   public let startLogin: Signal<(), Never>
   public let startSignup: Signal<(), Never>

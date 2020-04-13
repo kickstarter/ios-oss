@@ -11,6 +11,7 @@ import XCTest
 final class LoginToutViewModelTests: TestCase {
   fileprivate let vm: LoginToutViewModelType = LoginToutViewModel()
 
+  fileprivate let attemptAppleLogin = TestObserver<(), Never>()
   fileprivate let attemptFacebookLogin = TestObserver<(), Never>()
   fileprivate let didSignInWithApple = TestObserver<SignInWithAppleEnvelope, Never>()
   fileprivate let dismissViewController = TestObserver<(), Never>()
@@ -19,7 +20,6 @@ final class LoginToutViewModelTests: TestCase {
   fileprivate let logInContextText = TestObserver<String, Never>()
   fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
   fileprivate let postNotification = TestObserver<(Notification.Name, Notification.Name), Never>()
-  fileprivate let prepareSignInWithAppleRequest = TestObserver<(), Never>()
   fileprivate let showFacebookErrorAlert = TestObserver<AlertError, Never>()
   fileprivate let startFacebookConfirmation = TestObserver<String, Never>()
   fileprivate let startLogin = TestObserver<(), Never>()
@@ -29,6 +29,7 @@ final class LoginToutViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.attemptAppleLogin.observe(self.attemptAppleLogin.observer)
     self.vm.outputs.attemptFacebookLogin.observe(self.attemptFacebookLogin.observer)
     if #available(iOS 13.0, *) {
       self.vm.outputs.didSignInWithApple.observe(self.didSignInWithApple.observer)
@@ -39,7 +40,6 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.outputs.logInContextText.observe(self.logInContextText.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
     self.vm.outputs.postNotification.map { ($0.0.name, $0.1.name) }.observe(self.postNotification.observer)
-    self.vm.outputs.prepareSignInWithAppleRequest.observe(self.prepareSignInWithAppleRequest.observer)
     self.vm.outputs.showFacebookErrorAlert.observe(self.showFacebookErrorAlert.observer)
     self.vm.outputs.startFacebookConfirmation.map { _, token in token }
       .observe(self.startFacebookConfirmation.observer)
@@ -614,11 +614,11 @@ final class LoginToutViewModelTests: TestCase {
     }
   }
 
-  func testPrepareSignInWithAppleRequest() {
-    self.prepareSignInWithAppleRequest.assertDidNotEmitValue()
+  func testAttemptAppleLogin() {
+    self.attemptAppleLogin.assertDidNotEmitValue()
 
     self.vm.inputs.appleLoginButtonPressed()
 
-    self.prepareSignInWithAppleRequest.assertValueCount(1)
+    self.attemptAppleLogin.assertValueCount(1)
   }
 }

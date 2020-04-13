@@ -275,11 +275,11 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
           ?|> UILabel.lens.font .~ (isHidden ? UIFont.ksr_title2() : UIFont.ksr_subhead())
       }
 
-    self.viewModel.outputs.prepareSignInWithAppleRequest
+    self.viewModel.outputs.attemptAppleLogin
       .observeForUI()
       .observeValues { [weak self] in
         if #available(iOS 13, *) {
-          self?.prepareContinueWithAppleRequest()
+          self?.attemptAppleLogin()
         }
       }
 
@@ -363,7 +363,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   }
 
   @available(iOS 13, *)
-  private func prepareContinueWithAppleRequest() {
+  private func attemptAppleLogin() {
     let appleIDRequest = ASAuthorizationAppleIDProvider().createRequest()
       |> \.requestedScopes .~ [.fullName, .email]
 
