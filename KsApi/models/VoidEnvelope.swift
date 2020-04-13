@@ -7,3 +7,5 @@ extension VoidEnvelope: Argo.Decodable {
     return .success(VoidEnvelope())
   }
 }
+
+extension VoidEnvelope: Swift.Decodable {}

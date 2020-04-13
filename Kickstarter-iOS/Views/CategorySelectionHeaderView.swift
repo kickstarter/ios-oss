@@ -108,7 +108,7 @@ private let titleLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_title3().bolded
     |> \.textColor .~ .white
     |> \.lineBreakMode .~ .byTruncatingTail
-    |> \.numberOfLines .~ 2
+    |> \.numberOfLines .~ 3
 }
 
 private let subtitleLabelStyle: LabelStyle = { label in
