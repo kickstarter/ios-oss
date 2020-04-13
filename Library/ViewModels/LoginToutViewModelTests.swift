@@ -31,9 +31,6 @@ final class LoginToutViewModelTests: TestCase {
 
     self.vm.outputs.attemptAppleLogin.observe(self.attemptAppleLogin.observer)
     self.vm.outputs.attemptFacebookLogin.observe(self.attemptFacebookLogin.observer)
-    if #available(iOS 13.0, *) {
-      self.vm.outputs.didSignInWithApple.observe(self.didSignInWithApple.observer)
-    }
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.vm.outputs.headlineLabelHidden.observe(self.headlineLabelHidden.observer)
     self.vm.outputs.isLoading.observe(self.isLoading.observer)
@@ -590,28 +587,6 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.inputs.userSessionStarted()
 
     self.dismissViewController.assertValueCount(1)
-  }
-
-  @available(iOS 13, *)
-  func testDidSignInWithApple() {
-    let response = SignInWithAppleEnvelope.template
-
-    withEnvironment(apiService: MockService(signInWithAppleResponse: response)) {
-      let data = SignInWithAppleData(
-        appId: "com.kickstarter.test",
-        firstName: "Nino",
-        lastName: "Teixeira",
-        token: "apple_auth_token"
-      )
-
-      self.vm.inputs.appleAuthorizationDidSucceed(with: data)
-
-      let value = self.didSignInWithApple.values
-        .first
-
-      XCTAssertEqual("api_access_token", value?.signInWithApple.apiAccessToken)
-      XCTAssertEqual("1", value?.signInWithApple.user.uid)
-    }
   }
 
   func testAttemptAppleLogin() {

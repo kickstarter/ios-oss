@@ -20,9 +20,6 @@ public protocol LoginToutViewModelInputs {
   @available(iOS 13.0, *)
   func appleAuthorizationDidFail(with error: Error)
 
-  /// Call when the SignInWithAppleEnvelope is received from the server
-  func didReceiveSignInWithAppleEnvelope(_ envelope: SignInWithAppleEnvelope)
-
   /// Call when the environment has been logged into
   func environmentLoggedIn()
 
@@ -58,10 +55,6 @@ public protocol LoginToutViewModelOutputs {
 
   /// Emits when Facebook login should start
   var attemptFacebookLogin: Signal<(), Never> { get }
-
-  /// Emits after the signInWithApple mutation returns a value.
-  @available(iOS 13.0, *)
-  var didSignInWithApple: Signal<SignInWithAppleEnvelope, Never> { get }
 
   /// Emits when the controller should be dismissed.
   var dismissViewController: Signal<(), Never> { get }
@@ -213,7 +206,10 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
             .materialize()
         }
 
-      self.didSignInWithApple = appleSignInEvent.values()
+      // This is temporary uniquely to prove that the mutation is working properly for review purposes.
+      appleSignInEvent.observeValues { v in
+        print("=== Sign In With Apple ===\n\(v) ")
+      }
     }
 
     // MARK: - Tracking
@@ -292,11 +288,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.rewardProperty.value = reward
   }
 
-  fileprivate let didReceiveSignInWithAppleEnvelopeProperty = MutableProperty<SignInWithAppleEnvelope?>(nil)
-  public func didReceiveSignInWithAppleEnvelope(_ envelope: SignInWithAppleEnvelope) {
-    self.didReceiveSignInWithAppleEnvelopeProperty.value = envelope
-  }
-
   fileprivate let environmentLoggedInProperty = MutableProperty(())
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
@@ -344,7 +335,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
   public let attemptAppleLogin: Signal<(), Never>
   public let attemptFacebookLogin: Signal<(), Never>
-  public private(set) var didSignInWithApple: Signal<SignInWithAppleEnvelope, Never> = .empty
   public let dismissViewController: Signal<(), Never>
   public let headlineLabelHidden: Signal<Bool, Never>
   public let isLoading: Signal<Bool, Never>
