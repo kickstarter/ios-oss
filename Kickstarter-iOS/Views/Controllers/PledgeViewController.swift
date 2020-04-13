@@ -37,6 +37,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       |> \.delegate .~ self
   }()
 
+  private lazy var processingView: ProcessingView = { ProcessingView(frame: .zero) }()
+
   private lazy var continueViewController = {
     PledgeContinueViewController.instantiate()
   }()
@@ -352,6 +354,16 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.submitButton.isLoading = isLoading
       }
 
+    self.viewModel.outputs.processingViewIsHidden
+      .observeForUI()
+      .observeValues { [weak self] isHidden in
+        if isHidden {
+          self?.hideProcessingView()
+        } else {
+          self?.showProcessingView()
+        }
+      }
+
     // MARK: Errors
 
     self.viewModel.outputs.showErrorBannerWithMessage
@@ -404,6 +416,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.view.endEditing(true)
   }
 
+  // MARK: - Functions
+
   private func beginSCAFlow(withClientSecret secret: String) {
     STPPaymentHandler.shared().confirmSetupIntent(
       withParams: .init(clientSecret: secret),
@@ -411,6 +425,20 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     ) { [weak self] status, _, error in
       self?.viewModel.inputs.scaFlowCompleted(with: status, error: error)
     }
+  }
+
+  private func showProcessingView() {
+    guard let window = UIApplication.shared.keyWindow else {
+      return
+    }
+
+    _ = (self.processingView, window)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+  }
+
+  private func hideProcessingView() {
+    self.processingView.removeFromSuperview()
   }
 }
 
