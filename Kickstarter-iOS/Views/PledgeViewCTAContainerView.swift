@@ -41,11 +41,6 @@ final class PledgeViewCTAContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var spacer: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   weak var delegate: PledgeViewCTAContainerViewDelegate?
 
   private let viewModel: PledgeViewCTAContainerViewModelType = PledgeViewCTAContainerViewModel()
