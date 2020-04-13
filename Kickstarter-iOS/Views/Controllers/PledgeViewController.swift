@@ -480,6 +480,18 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
   }
 }
 
+// MARK: - PledgeScreenCTAContainerViewDelegate
+
+extension PledgeViewController: PledgeScreenCTAContainerViewDelegate {
+  func applePayButtonTapped() {
+    self.viewModel.inputs.applePayButtonTapped()
+  }
+
+  func pledgeCTAButtonTapped() {
+    self.viewModel.inputs.submitButtonTapped()
+  }
+}
+
 // MARK: - PledgeAmountViewControllerDelegate
 
 extension PledgeViewController: PledgeAmountViewControllerDelegate {

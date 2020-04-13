@@ -3,17 +3,15 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-protocol PledgeScreenCTAContainerViewDelegate: AnyObject {
-  func pledgeCTAButtonTapped(with state: PledgeStateCTAType)
-}
-
 public protocol PledgeScreenCTAContainerViewModelInputs {
   //func configureWith(value: PledgeCTAContainerViewData)
+  func applePayButtonTapped()
   func pledgeCTAButtonTapped()
 }
 
 public protocol PledgeScreenCTAContainerViewModelOutputs {
-  var notifyDelegateCTATapped: Signal<Void, Never> { get }
+  var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
+  var notifyDelegatePledgeButtonTapped: Signal<Void, Never> { get }
 }
 
 public protocol PledgeScreenCTAContainerViewModelType {
@@ -24,21 +22,24 @@ public protocol PledgeScreenCTAContainerViewModelType {
 public final class PledgeScreenCTAContainerViewModel: PledgeScreenCTAContainerViewModelType,
   PledgeScreenCTAContainerViewModelInputs, PledgeScreenCTAContainerViewModelOutputs {
   public init() {
-    self.notifyDelegateCTATapped = self.pledgeCTAButtonTappedProperty.signal
+
+    self.notifyDelegatePledgeButtonTapped = self.pledgeCTAButtonTappedProperty.signal
+    self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
+
   }
 
-//  fileprivate let configData = MutableProperty<PledgeCTAContainerViewData?>(nil)
-//  public func configureWith(value: PledgeCTAContainerViewData) {
-//    self.configData.value = value
-//  }
+  private let applePayButtonTappedProperty = MutableProperty(())
+  public func applePayButtonTapped() {
+    self.applePayButtonTappedProperty.value = ()
+  }
 
   fileprivate let pledgeCTAButtonTappedProperty = MutableProperty(())
   public func pledgeCTAButtonTapped() {
     self.pledgeCTAButtonTappedProperty.value = ()
   }
 
-  public let notifyDelegateCTATapped: Signal<Void, Never>
-
+  public let notifyDelegateApplePayButtonTapped: Signal<Void, Never>
+  public let notifyDelegatePledgeButtonTapped: Signal<Void, Never>
 
   public var inputs: PledgeScreenCTAContainerViewModelInputs { return self }
   public var outputs: PledgeScreenCTAContainerViewModelOutputs { return self }

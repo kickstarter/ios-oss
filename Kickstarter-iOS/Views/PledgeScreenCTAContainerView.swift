@@ -6,6 +6,7 @@ import UIKit
 
 protocol PledgeScreenCTAContainerViewDelegate: AnyObject {
   func pledgeCTAButtonTapped()
+  func applePayButtonTapped()
 }
 
 private enum Layout {
@@ -109,11 +110,19 @@ final class PledgeScreenCTAContainerView: UIView {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.notifyDelegateCTATapped
+    self.viewModel.outputs.notifyDelegatePledgeButtonTapped
       .observeForUI()
-      .observeValues { [weak self] _ in
-        self?.delegate?.pledgeCTAButtonTapped()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+        self.delegate?.pledgeCTAButtonTapped()
     }
+
+    self.viewModel.outputs.notifyDelegateApplePayButtonTapped
+     .observeForUI()
+     .observeValues { [weak self] in
+       guard let self = self else { return }
+       self.delegate?.applePayButtonTapped()
+     }
   }
 
   // MARK: - Configuration
@@ -142,6 +151,12 @@ final class PledgeScreenCTAContainerView: UIView {
     self.pledgeCTAButton.addTarget(
       self, action: #selector(self.pledgeButtonTapped), for: .touchUpInside
     )
+
+    self.applePayButton.addTarget(
+      self,
+      action: #selector(self.applePayButtonTapped),
+      for: .touchUpInside
+    )
   }
 
   private func setupConstraints() {
@@ -161,6 +176,10 @@ final class PledgeScreenCTAContainerView: UIView {
 
   @objc func pledgeButtonTapped() {
     self.viewModel.inputs.pledgeCTAButtonTapped()
+  }
+
+  @objc func applePayButtonTapped() {
+    self.viewModel.inputs.applePayButtonTapped()
   }
 }
 
