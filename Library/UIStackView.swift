@@ -15,3 +15,14 @@ public func ksr_setCustomSpacing(_ spacing: CGFloat) -> ((UIView, UIStackView) -
     return stackView
   }
 }
+
+public func ksr_setBackgroundColor(_ color: UIColor) -> ((UIStackView) -> (UIStackView)) {
+  return { stackView in
+    let backgroundView = UIView(frame: stackView.bounds)
+    backgroundView.backgroundColor = color
+    backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    stackView.insertSubview(backgroundView, at: 0)
+
+    return stackView
+  }
+}

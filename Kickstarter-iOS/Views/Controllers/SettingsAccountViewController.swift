@@ -110,7 +110,6 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
 
   private func setupAppleHeader(with appleId: String) {
     let container = UIView(frame: .zero)
-      |> \.layoutMargins .~ .init(all: Styles.grid(3))
 
     self.tableView.tableHeaderView = container
 
@@ -119,7 +118,7 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
 
     _ = (header, container)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     _ = header.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)
       |> \.priority .~ .defaultHigh

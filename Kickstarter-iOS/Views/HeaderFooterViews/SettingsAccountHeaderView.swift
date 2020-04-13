@@ -39,18 +39,10 @@ final class SettingsAccountHeaderView: UIView {
       |> settingsHeaderContentViewStyle
 
     _ = self.stackView
-      |> verticalStackViewStyle
-      |> \.alignment .~ .leading
-      |> \.spacing .~ Styles.grid(2)
-//      |> \.layoutMargins .~ .init(leftRight: Styles.grid(2))
-//      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.backgroundColor .~ .white
+      |> stackViewStyle
 
     _ = self.appleIdLabel
-      |> \.backgroundColor .~ .white
-      |> \.font .~ .ksr_title3()
-      |> \.textColor .~ .ksr_soft_black
-      |> \.text %~ { _ in localizedString(key: "apple_id", defaultValue: "Apple ID") }
+      |> appleIdLabelStyle
 
     _ = self.emailLabel
       |> emailLabelStyle
@@ -77,32 +69,48 @@ final class SettingsAccountHeaderView: UIView {
       self.stackView.leftAnchor.constraint(equalTo: self.leftAnchor),
       self.stackView.rightAnchor.constraint(equalTo: self.rightAnchor),
       self.stackView.topAnchor.constraint(equalTo: margins.topAnchor),
-      self.manageThisAccountLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-      self.manageThisAccountLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+      self.manageThisAccountLabel.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
+      self.manageThisAccountLabel.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
       self.manageThisAccountLabel.topAnchor.constraint(equalTo: self.stackView.bottomAnchor,
                                                        constant: Styles.grid(2)),
-      self.manageThisAccountLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+      self.manageThisAccountLabel.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
     ])
   }
 }
 
 // MARK: - Styles
 
-private let emailLabelStyle: LabelStyle = { label in
+private let appleIdLabelStyle: LabelStyle = { label in
   label
   |> \.lineBreakMode .~ .byWordWrapping
   |> \.numberOfLines .~ 0
   |> \.font .~ .ksr_body()
+  |> \.textColor .~ .ksr_soft_black
+  |> \.text %~ { _ in localizedString(key: "apple_id", defaultValue: "Apple ID") }
+}
+
+private let emailLabelStyle: LabelStyle = { label in
+  label
+  |> \.lineBreakMode .~ .byWordWrapping
+  |> \.numberOfLines .~ 0
+  |> \.font .~ .ksr_subhead()
   |> \.textColor .~ .ksr_text_dark_grey_500
 }
 
 private let manageThisAccountLabelStyle: LabelStyle = { label in
   label
-  |> \.lineBreakMode .~ .byWordWrapping
-  |> \.numberOfLines .~ 0
-  |> \.font .~ .ksr_footnote()
-  |> \.textColor .~ .ksr_text_dark_grey_500
+  |> settingsDescriptionLabelStyle
   |> \.text %~ { _ in localizedString(key: "manage_this_account",
                                       defaultValue: "Manage this account in your Apple ID settings."
     )}
+}
+
+private let stackViewStyle: StackViewStyle = { stackView in
+  stackView
+  |> ksr_setBackgroundColor(UIColor.white)
+  |> verticalStackViewStyle
+  |> \.alignment .~ .leading
+  |> \.spacing .~ Styles.grid(1)
+  |> \.layoutMargins .~ .init(all: Styles.grid(2))
+  |> \.isLayoutMarginsRelativeArrangement .~ true
 }
