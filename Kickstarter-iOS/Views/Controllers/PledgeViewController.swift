@@ -92,7 +92,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     PledgeSummaryViewController.instantiate()
   }()
 
-  private lazy var PledgeCTAContainerView: PledgeScreenCTAContainerView = {
+  private lazy var pledgeCTAContainerView: PledgeScreenCTAContainerView = {
     PledgeScreenCTAContainerView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.delegate .~ self
