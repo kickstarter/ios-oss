@@ -11,9 +11,8 @@ protocol PledgeViewControllerDelegate: AnyObject {
 final class PledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
-  private lazy var confirmationLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var confirmationSectionViews = {
-    [self.submitButton, self.confirmationLabel]
+    [self.submitButton]
   }()
 
   public weak var delegate: PledgeViewControllerDelegate?
@@ -230,10 +229,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     _ = self.submitButton
       |> greenButtonStyle
-
-    _ = self.confirmationLabel
-      |> \.numberOfLines .~ 0
-      |> checkoutBackgroundStyle
   }
 
   // MARK: - View model
@@ -272,8 +267,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.viewModel.outputs.configureSummaryViewControllerWithData
       .observeForUI()
-      .observeValues { [weak self] project, pledgeTotal in
-        self?.summaryViewController.configureWith(project, total: pledgeTotal)
+      .observeValues { [weak self] data in
+        self?.summaryViewController.configure(with: data)
       }
     self.viewModel.outputs.configurePaymentMethodsViewControllerWithValue
       .observeForUI()
@@ -335,9 +330,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.submitButton.rac.enabled = self.viewModel.outputs.submitButtonEnabled
     self.submitButton.rac.hidden = self.viewModel.outputs.submitButtonHidden
     self.submitButton.rac.title = self.viewModel.outputs.submitButtonTitle
-    self.confirmationLabel.rac.hidden = self.viewModel.outputs.confirmationLabelHidden
-
-    self.confirmationLabel.rac.attributedText = self.viewModel.outputs.confirmationLabelAttributedText
 
     self.viewModel.outputs.title
       .observeForUI()
