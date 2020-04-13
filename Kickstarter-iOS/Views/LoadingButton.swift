@@ -45,7 +45,10 @@ final class LoadingButton: UIButton {
 
   override func setTitle(_ title: String?, for state: UIControl.State) {
     // Do not allow changing the title while the activity indicator is animating
-    guard !self.activityIndicator.isAnimating else { return }
+    guard !self.activityIndicator.isAnimating else {
+      self.originalTitles[state.rawValue] = title
+      return
+    }
 
     super.setTitle(title, for: state)
   }
