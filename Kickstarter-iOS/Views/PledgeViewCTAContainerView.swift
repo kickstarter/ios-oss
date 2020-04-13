@@ -10,7 +10,7 @@ private enum Layout {
   }
 }
 
-final class PledgeScreenCTAContainerView: UIView {
+final class PledgeViewCTAContainerView: UIView {
   // MARK: - Properties
 
   private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
@@ -34,11 +34,6 @@ final class PledgeScreenCTAContainerView: UIView {
 
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
-  private lazy var spacer: UIView = {
-    UIView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 

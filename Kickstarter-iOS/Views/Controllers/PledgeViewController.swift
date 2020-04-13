@@ -92,8 +92,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     PledgeSummaryViewController.instantiate()
   }()
 
-  private let pledgeCTAContainerView: PledgeScreenCTAContainerView = {
-    PledgeScreenCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  private let pledgeCTAContainerView: PledgeViewCTAContainerView = {
+    PledgeViewCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var rootScrollView: UIScrollView = { UIScrollView(frame: .zero) }()
@@ -139,7 +139,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.configureChildViewControllers()
     self.setupConstraints()
-    self.configurePledgeScreenCTAContainerView()
+    self.configurePledgeViewCTAContainerView()
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -200,7 +200,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     }
   }
 
-  private func configurePledgeScreenCTAContainerView() {
+  private func configurePledgeViewCTAContainerView() {
     // Configure subviews
     _ = (self.pledgeCTAContainerView, self.view)
       |> ksr_addSubviewToParent()
