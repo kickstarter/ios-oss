@@ -56,18 +56,20 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
   override func bindViewModel() {
     self.viewModel.outputs.reloadData
       .observeForUI()
-      .observeValues { [weak self] currency, email, shouldHideEmailWarning, shouldHideEmailPasswordSection, isAppleConnectedAccount in
+      .observeValues { [weak self] currency, email,
+        shouldHideEmailWarning, shouldHideEmailPasswordSection, isAppleConnectedAccount in
         self?.dataSource.configureRows(
           currency: currency,
           shouldHideEmailWarning: shouldHideEmailWarning,
           shouldHideEmailPasswordSection: shouldHideEmailPasswordSection,
           isAppleConnected: isAppleConnectedAccount
         )
-        self?.tableView.reloadData()
 
         if isAppleConnectedAccount {
           self?.showAppleHeader(with: email)
         }
+
+        self?.tableView.reloadData()
       }
 
     self.viewModel.outputs.fetchAccountFieldsError
