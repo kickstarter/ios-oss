@@ -2,8 +2,10 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias SettingsAccountData = (currency: Currency, email: String,
-  shouldHideEmailWarning: Bool, shouldHideEmailPasswordSection: Bool, isAppleConnectedAccount: Bool)
+public typealias SettingsAccountData = (
+  currency: Currency, email: String,
+  shouldHideEmailWarning: Bool, shouldHideEmailPasswordSection: Bool, isAppleConnectedAccount: Bool
+)
 
 public protocol SettingsAccountViewModelInputs {
   func didSelectRow(cellType: SettingsAccountCellType)
@@ -32,12 +34,12 @@ public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
       self.viewDidLoadProperty.signal,
       self.viewWillAppearProperty.signal.skip(first: 1)
     )
-      .switchMap { _ in
-        AppEnvironment.current.apiService
-          .fetchGraphUserAccountFields(query: UserQueries.account.query)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-      }
+    .switchMap { _ in
+      AppEnvironment.current.apiService
+        .fetchGraphUserAccountFields(query: UserQueries.account.query)
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
+    }
 
     self.fetchAccountFieldsError = userAccountFields.errors().ignoreValues()
 

@@ -12,10 +12,9 @@ final class SettingsAccountDataSource: ValueCellDataSource {
     shouldHideEmailPasswordSection: Bool,
     isAppleConnected: Bool
   ) {
-
     if isAppleConnected {
       self.filteredSections = SettingsAccountSectionType.allCases
-        .filter { $0 != .changeEmailPassword && $0 != .createPassword}
+        .filter { $0 != .changeEmailPassword && $0 != .createPassword }
     } else {
       self.filteredSections = shouldHideEmailPasswordSection
         ? SettingsAccountSectionType.allCases.filter { $0 != .changeEmailPassword }
