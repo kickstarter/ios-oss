@@ -172,7 +172,6 @@ extension SettingsAccountViewController: UITableViewDelegate {
 
     let (shouldShowCreatePasswordFooter, email) = data
 
-    // TODO: section check should happen in datasource so it can be tested
     guard shouldShowCreatePasswordFooter,
       section == SettingsAccountSectionType.createPassword.rawValue else {
       return nil
