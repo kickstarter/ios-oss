@@ -306,6 +306,11 @@ public struct Service: ServiceType {
     return request(.projectStats(projectId: projectId))
   }
 
+  public func fetchProjectSummary(query: NonEmptySet<Query>)
+    -> SignalProducer<ProjectSummaryEnvelope, GraphError> {
+    return fetch(query: query)
+  }
+
   public func fetchRewardShippingRules(projectId: Int, rewardId: Int)
     -> SignalProducer<ShippingRulesEnvelope, ErrorEnvelope> {
     return request(.shippingRules(projectId: projectId, rewardId: rewardId))

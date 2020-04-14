@@ -102,6 +102,8 @@
     fileprivate let fetchProjectStatsResponse: ProjectStatsEnvelope?
     fileprivate let fetchProjectStatsError: ErrorEnvelope?
 
+    fileprivate let fetchProjectSummaryResult: Result<ProjectSummaryEnvelope, GraphError>?
+
     fileprivate let fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>?
 
     fileprivate let fetchSurveyResponseResponse: SurveyResponse?
@@ -257,6 +259,7 @@
       fetchProjectsError: ErrorEnvelope? = nil,
       fetchProjectStatsResponse: ProjectStatsEnvelope? = nil,
       fetchProjectStatsError: ErrorEnvelope? = nil,
+      fetchProjectSummaryResult: Result<ProjectSummaryEnvelope, GraphError>? = nil,
       fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>? = nil,
       fetchUserProjectsBackedResponse: [Project]? = nil,
       fetchUserProjectsBackedError: ErrorEnvelope? = nil,
@@ -428,6 +431,8 @@
 
       self.fetchProjectStatsResponse = fetchProjectStatsResponse
       self.fetchProjectStatsError = fetchProjectStatsError
+
+      self.fetchProjectSummaryResult = fetchProjectSummaryResult
 
       self.fetchShippingRulesResult = fetchShippingRulesResult
 
@@ -1018,6 +1023,11 @@
       return SignalProducer(value: .template)
     }
 
+    internal func fetchProjectSummary(query _: NonEmptySet<Query>)
+      -> SignalProducer<ProjectSummaryEnvelope, GraphError> {
+      return producer(for: self.fetchProjectSummaryResult)
+    }
+
     internal func fetchRewardShippingRules(projectId _: Int, rewardId _: Int)
       -> SignalProducer<ShippingRulesEnvelope, ErrorEnvelope> {
       if let error = self.fetchShippingRulesResult?.error {
@@ -1454,6 +1464,7 @@
             fetchProjectsError: $1.fetchProjectsError,
             fetchProjectStatsResponse: $1.fetchProjectStatsResponse,
             fetchProjectStatsError: $1.fetchProjectStatsError,
+            fetchProjectSummaryResult: $1.fetchProjectSummaryResult,
             fetchShippingRulesResult: $1.fetchShippingRulesResult,
             fetchUserProjectsBackedResponse: $1.fetchUserProjectsBackedResponse,
             fetchUserProjectsBackedError: $1.fetchUserProjectsBackedError,
