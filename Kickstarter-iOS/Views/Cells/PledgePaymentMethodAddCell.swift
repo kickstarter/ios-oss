@@ -6,11 +6,8 @@ import UIKit
 final class PledgePaymentMethodAddCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private lazy var selectionView: UIView = { UIView(frame: .zero) |> \.backgroundColor .~ .ksr_grey_200 }()
-  private lazy var addButton: UIButton = {
-    UIButton(type: .custom)
-      |> UIButton.lens.titleLabel.font .~ UIFont.boldSystemFont(ofSize: 15)
-  }()
+  private lazy var selectionView: UIView = { UIView(frame: .zero) }()
+  private lazy var addButton: UIButton = { UIButton(type: .custom) }()
 
   // MARK: - Lifecycle
 
@@ -48,6 +45,9 @@ final class PledgePaymentMethodAddCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self.selectionView
+      |> selectionViewStyle
+
     _ = self
       |> \.selectedBackgroundView .~ self.selectionView
 
@@ -68,9 +68,15 @@ private let addButtonStyle: ButtonStyle = { button in
         defaultValue: "New payment method"
       )
     }
+    |> UIButton.lens.titleLabel.font .~ UIFont.boldSystemFont(ofSize: 15)
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "icon-add-round-green")
     |> UIButton.lens.isUserInteractionEnabled .~ false
     |> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_500
     |> UIButton.lens.tintColor .~ .ksr_green_500
     |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(3))
+}
+
+private let selectionViewStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ .ksr_grey_200
 }

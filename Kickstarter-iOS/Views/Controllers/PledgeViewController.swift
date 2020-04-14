@@ -128,14 +128,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
-    _ = (self.rootScrollView, self.view)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    _ = (self.rootStackView, self.rootScrollView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
 
     self.submitButton.addTarget(
@@ -146,9 +138,19 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.configureChildViewControllers()
     self.setupConstraints()
-    self.configurePledgeViewCTAContainerView()
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.rootScrollView.contentInset = UIEdgeInsets(
+      top: self.rootScrollView.contentInset.top,
+      left: self.rootScrollView.contentInset.left,
+      bottom: self.pledgeCTAContainerView.bounds.height - self.view.safeAreaInsets.bottom,
+      right: self.rootScrollView.contentInset.right
+    )
   }
 
   deinit {
@@ -158,6 +160,15 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   // MARK: - Configuration
 
   private func configureChildViewControllers() {
+    _ = (self.rootScrollView, self.view)
+      |> ksr_addSubviewToParent()
+
+    _ = (self.rootStackView, self.rootScrollView)
+      |> ksr_addSubviewToParent()
+
+    _ = (self.pledgeCTAContainerView, self.view)
+      |> ksr_addSubviewToParent()
+
     let childViewControllers = [
       self.descriptionViewController,
       self.pledgeAmountViewController,
@@ -206,23 +217,17 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     }
   }
 
-  private func configurePledgeViewCTAContainerView() {
-    // Configure subviews
-    _ = (self.pledgeCTAContainerView, self.view)
-      |> ksr_addSubviewToParent()
+  private func setupConstraints() {
+    _ = (self.rootScrollView, self.view)
+      |> ksr_constrainViewToEdgesInParent()
 
-    // Configure constraints
-    let pledgeCTAContainerViewConstraints = [
+    _ = (self.rootStackView, self.rootScrollView)
+      |> ksr_constrainViewToEdgesInParent()
+
+    NSLayoutConstraint.activate([
       self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-    ]
-
-    NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
-  }
-
-  private func setupConstraints() {
-    NSLayoutConstraint.activate([
+      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor),
       self.submitButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])

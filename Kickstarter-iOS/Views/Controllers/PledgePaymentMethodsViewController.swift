@@ -18,6 +18,7 @@ final class PledgePaymentMethodsViewController: UIViewController {
 
   private lazy var tableView: UITableView = {
     ContentSizeTableView(frame: .zero, style: .plain)
+      |> \.separatorInset .~ .zero
       |> \.contentInsetAdjustmentBehavior .~ .never
       |> \.isScrollEnabled .~ false
       |> \.dataSource .~ self.dataSource
@@ -61,7 +62,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
       |> checkoutBackgroundStyle
 
     _ = self.tableView
-      |> \.separatorInset .~ .zero
       |> checkoutWhiteBackgroundStyle
   }
 
