@@ -111,7 +111,7 @@ final class PledgeViewCTAContainerView: UIView {
         self.delegate?.applePayButtonTapped()
       }
 
-    self.viewModel.outputs.notifyDelegateTermsOfUseTapped
+    self.viewModel.outputs.notifyDelegateOpenHelpType
       .observeForControllerAction()
       .observeValues { [weak self] helpType in
         guard let self = self else { return }
@@ -167,7 +167,6 @@ final class PledgeViewCTAContainerView: UIView {
     self.viewModel.inputs.applePayButtonTapped()
   }
 }
-
 
 extension PledgeViewCTAContainerView: UITextViewDelegate {
   func textView(

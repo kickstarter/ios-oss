@@ -184,7 +184,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.creditCardSelectedSignal.wrapInOptional()
     )
 
-    self.showWebHelp = termsOfUseTappedSignal
+    self.showWebHelp = self.termsOfUseTappedSignal
 
     // MARK: - Apple Pay
 

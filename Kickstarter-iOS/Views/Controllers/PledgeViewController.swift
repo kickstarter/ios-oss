@@ -381,9 +381,9 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.viewModel.outputs.showWebHelp
       .observeForUI()
       .observeValues { [weak self] helpType in
-      guard let self = self else { return }
-      self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
-    }
+        guard let self = self else { return }
+        self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
+      }
 
     // MARK: Errors
 

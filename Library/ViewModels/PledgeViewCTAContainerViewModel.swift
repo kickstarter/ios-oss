@@ -12,7 +12,7 @@ public protocol PledgeViewCTAContainerViewModelInputs {
 
 public protocol PledgeViewCTAContainerViewModelOutputs {
   var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
-  var notifyDelegateTermsOfUseTapped: Signal<HelpType, Never> { get }
+  var notifyDelegateOpenHelpType: Signal<HelpType, Never> { get }
   var notifyDelegatePledgeButtonTapped: Signal<Void, Never> { get }
 }
 
@@ -24,11 +24,10 @@ public protocol PledgeViewCTAContainerViewModelType {
 public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewModelType,
   PledgeViewCTAContainerViewModelInputs, PledgeViewCTAContainerViewModelOutputs {
   public init() {
-
     self.notifyDelegatePledgeButtonTapped = self.pledgeCTAButtonTappedProperty.signal
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
 
-    self.notifyDelegateTermsOfUseTapped = self.tappedUrlProperty.signal.skipNil().map { url -> HelpType? in
+    self.notifyDelegateOpenHelpType = self.tappedUrlProperty.signal.skipNil().map { url -> HelpType? in
       let helpType = HelpType.allCases.filter { helpType in
         url.absoluteString == helpType.url(
           withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
@@ -56,7 +55,7 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
   }
 
   public let notifyDelegateApplePayButtonTapped: Signal<Void, Never>
-  public let notifyDelegateTermsOfUseTapped: Signal<HelpType, Never>
+  public let notifyDelegateOpenHelpType: Signal<HelpType, Never>
   public let notifyDelegatePledgeButtonTapped: Signal<Void, Never>
 
   public var inputs: PledgeViewCTAContainerViewModelInputs { return self }
