@@ -7,6 +7,7 @@ import UIKit
 protocol PledgeViewCTAContainerViewDelegate: AnyObject {
   func pledgeCTAButtonTapped()
   func applePayButtonTapped()
+  func termsOfUseTapped(with helptype: HelpType)
 }
 
 private enum Layout {
@@ -25,7 +26,7 @@ final class PledgeViewCTAContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var disclaimerLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var termsTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
 
   private lazy var disclaimerStackView: UIStackView = {
     UIStackView(frame: .zero)
@@ -74,8 +75,8 @@ final class PledgeViewCTAContainerView: UIView {
     _ = self.ctaStackView
       |> ctaStackViewStyle
 
-    _ = self.disclaimerLabel
-      |> disclaimerLabelStyle
+    _ = self.termsTextView
+      |> termsTextViewStyle
 
     _ = self.disclaimerStackView
       |> disclaimerStackViewStyle
@@ -109,6 +110,13 @@ final class PledgeViewCTAContainerView: UIView {
         guard let self = self else { return }
         self.delegate?.applePayButtonTapped()
       }
+
+    self.viewModel.outputs.notifyDelegateTermsOfUseTapped
+      .observeForControllerAction()
+      .observeValues { [weak self] helpType in
+        guard let self = self else { return }
+        self.delegate?.termsOfUseTapped(with: helpType)
+      }
   }
 
   // MARK: - Configuration
@@ -127,7 +135,7 @@ final class PledgeViewCTAContainerView: UIView {
     _ = ([self.pledgeCTAButton, self.applePayButton], self.ctaStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.disclaimerLabel], self.disclaimerStackView)
+    _ = ([self.termsTextView], self.disclaimerStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.ctaStackView, self.disclaimerStackView], self.rootStackView)
@@ -157,6 +165,24 @@ final class PledgeViewCTAContainerView: UIView {
 
   @objc func applePayButtonTapped() {
     self.viewModel.inputs.applePayButtonTapped()
+  }
+}
+
+
+extension PledgeViewCTAContainerView: UITextViewDelegate {
+  func textView(
+    _: UITextView, shouldInteractWith _: NSTextAttachment,
+    in _: NSRange, interaction _: UITextItemInteraction
+  ) -> Bool {
+    return false
+  }
+
+  func textView(
+    _: UITextView, shouldInteractWith url: URL, in _: NSRange,
+    interaction _: UITextItemInteraction
+  ) -> Bool {
+    self.viewModel.inputs.tapped(url)
+    return false
   }
 }
 
@@ -219,4 +245,35 @@ private let layerStyle: LayerStyle = { layer in
       CACornerMask.layerMaxXMinYCorner,
       CACornerMask.layerMinXMinYCorner
     ]
+}
+
+private let termsTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
+  _ = textView
+    |> tappableLinksViewStyle
+    |> \.attributedText .~ attributedTermsText()
+    |> \.accessibilityTraits .~ [.staticText]
+    |> \.textAlignment .~ .center
+
+//  _ = textView
+//    |> checkoutBackgroundStyle
+
+  return textView
+}
+
+private func attributedTermsText() -> NSAttributedString? {
+  let baseUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl
+
+  guard
+    let termsOfUseLink = HelpType.terms.url(withBaseUrl: baseUrl)?.absoluteString,
+    let privacyPolicyLink = HelpType.privacy.url(withBaseUrl: baseUrl)?.absoluteString,
+    let cookiePolicyLink = HelpType.cookie.url(withBaseUrl: baseUrl)?.absoluteString
+  else { return nil }
+
+  let string = Strings.By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy(
+    terms_of_use_link: termsOfUseLink,
+    privacy_policy_link: privacyPolicyLink,
+    cookie_policy_link: cookiePolicyLink
+  )
+
+  return checkoutAttributedLink(with: string)
 }
