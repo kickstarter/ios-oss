@@ -590,10 +590,21 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testAttemptAppleLogin() {
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
+    self.vm.inputs.viewWillAppear()
+
     self.attemptAppleLogin.assertDidNotEmitValue()
 
     self.vm.inputs.appleLoginButtonPressed()
 
+    XCTAssertEqual(
+      [
+        "Log In or Signup Page Viewed",
+        "Continue With Apple Button Clicked"
+      ],
+      trackingClient.events
+    )
+    
     self.attemptAppleLogin.assertValueCount(1)
   }
 }
