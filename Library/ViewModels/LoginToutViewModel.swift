@@ -259,6 +259,16 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
           reward: reward
         )
       }
+
+    trackingData
+      .takeWhen(self.appleLoginButtonPressedProperty.signal)
+      .observeValues { intent, project, reward in
+        AppEnvironment.current.koala.trackContinueWithAppleButtonClicked(
+          intent: intent,
+          project: project,
+          reward: reward
+        )
+      }
   }
 
   public var inputs: LoginToutViewModelInputs { return self }
