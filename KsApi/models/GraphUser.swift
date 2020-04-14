@@ -1,4 +1,4 @@
-import Prelude
+import Foundation
 
 public struct GraphUser: Swift.Decodable {
   public var chosenCurrency: String?

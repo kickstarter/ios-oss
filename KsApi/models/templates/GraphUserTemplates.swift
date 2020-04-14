@@ -5,7 +5,7 @@ extension GraphUser {
     chosenCurrency: "USD",
     email: "nativesquad@ksr.com",
     hasPassword: true,
-    isAppleConnected: nil,
+    isAppleConnected: false,
     isEmailVerified: true,
     isDeliverable: true
   )

@@ -28,26 +28,34 @@ public protocol SettingsAccountViewModelType {
 public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
   SettingsAccountViewModelOutputs, SettingsAccountViewModelType {
   public init(_ viewControllerFactory: @escaping (SettingsAccountCellType, Currency) -> UIViewController?) {
-    let userAccountFields = self.viewWillAppearProperty.signal
+    let userAccountFields = Signal.merge(
+      self.viewDidLoadProperty.signal,
+      self.viewWillAppearProperty.signal.skip(first: 1)
+    )
       .switchMap { _ in
         AppEnvironment.current.apiService
           .fetchGraphUserAccountFields(query: UserQueries.account.query)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
 
     self.fetchAccountFieldsError = userAccountFields.errors().ignoreValues()
 
-    let shouldHideEmailWarning = userAccountFields.values()
-      .map { response -> Bool in
-        guard let isEmailVerified = response.me.isEmailVerified,
-          let isDeliverable = response.me.isDeliverable else {
+    let user = userAccountFields.values().map(\.me)
+
+    let shouldHideEmailWarning = user
+      .map { user -> Bool in
+        if user.isAppleConnected == .some(true) {
+          return true
+        }
+
+        guard let isEmailVerified = user.isEmailVerified,
+          let isDeliverable = user.isDeliverable else {
           return true
         }
 
         return isEmailVerified && isDeliverable
       }
-
-    let user = userAccountFields.values().map(\.me)
 
     let shouldHideEmailPasswordSection = user
       .map { $0.hasPassword == .some(false) || $0.isAppleConnected == .some(true) }
@@ -65,10 +73,10 @@ public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
 
     self.shouldShowCreatePasswordFooterAndEmailProperty <~ shouldShowCreatePasswordFooter
 
-    let chosenCurrency = userAccountFields.values()
-      .map { Currency(rawValue: $0.me.chosenCurrency ?? Currency.USD.rawValue) ?? Currency.USD }
+    let chosenCurrency = user
+      .map { Currency(rawValue: $0.chosenCurrency ?? Currency.USD.rawValue) ?? Currency.USD }
 
-    self.reloadData = Signal.combineLatest(
+    self.reloadData = Signal.zip(
       chosenCurrency,
       user.map(\.email),
       shouldHideEmailWarning,

@@ -344,6 +344,7 @@
 		77F6E765212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
 		77F9A9B02135FB760082A11E /* FindFriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */; };
 		77F9A9B22135FC9B0082A11E /* FindFriendsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77F9A9B12135FC9B0082A11E /* FindFriendsCell.xib */; };
+		77FA1AF32445FB810035D659 /* GraphUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA1AF22445FB810035D659 /* GraphUserTests.swift */; };
 		77FA6C7120F3DD6C00809E31 /* SettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA6C7020F3DD6C00809E31 /* SettingsDataSource.swift */; };
 		77FA6CA920F3E18F00809E31 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA6CA820F3E18F00809E31 /* SettingsTableViewCell.swift */; };
 		77FA6CAB20F3E3C200809E31 /* SettingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */; };
@@ -1783,6 +1784,7 @@
 		77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNotificationsViewControllerTests.swift; sourceTree = "<group>"; };
 		77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFriendsCell.swift; sourceTree = "<group>"; };
 		77F9A9B12135FC9B0082A11E /* FindFriendsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FindFriendsCell.xib; sourceTree = "<group>"; };
+		77FA1AF22445FB810035D659 /* GraphUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserTests.swift; sourceTree = "<group>"; };
 		77FA6C7020F3DD6C00809E31 /* SettingsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataSource.swift; sourceTree = "<group>"; };
 		77FA6CA820F3E18F00809E31 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsTableViewCell.xib; sourceTree = "<group>"; };
@@ -4090,6 +4092,8 @@
 				D002CAE4218CF951009783F2 /* GraphMutationWatchProjectResponseEnvelope.swift */,
 				D63BBD30217F7212007E01F0 /* GraphUserCreditCard.swift */,
 				77DB53292215D0AA0078991C /* GraphUserCreditCardTests.swift */,
+				7798B56421750041008BC50D /* GraphUser.swift */,
+				77FA1AF22445FB810035D659 /* GraphUserTests.swift */,
 				D01587951EEB2ED6006E7684 /* Item.swift */,
 				D01587961EEB2ED6006E7684 /* ItemTests.swift */,
 				D01587CB1EEB2ED7006E7684 /* Location.swift */,
@@ -4143,7 +4147,6 @@
 				D01588211EEB2ED7006E7684 /* User.NewsletterSubscriptionsTests.swift */,
 				D01588221EEB2ED7006E7684 /* User.NotificationsTests.swift */,
 				D01588231EEB2ED7006E7684 /* User.swift */,
-				7798B56421750041008BC50D /* GraphUser.swift */,
 				D6ED1B38216D50BE007F7547 /* UserEmailFields.swift */,
 				7798B5622174F494008BC50D /* UserEnvelope.swift */,
 				D01588241EEB2ED7006E7684 /* UserTests.swift */,
@@ -5984,6 +5987,7 @@
 				D755ECB123217D5B0096F189 /* CreateBackingEnvelopeTests.swift in Sources */,
 				D0D10C1B1EEB4550005EBAD0 /* SurveyResponseTests.swift in Sources */,
 				D0D10C1F1EEB4550005EBAD0 /* User.AvatarTests.swift in Sources */,
+				77FA1AF32445FB810035D659 /* GraphUserTests.swift in Sources */,
 				D0D10C021EEB4550005EBAD0 /* ActivityTests.swift in Sources */,
 				D01589A81EEB306D006E7684 /* EncodableTests.swift in Sources */,
 				D0D10C111EEB4550005EBAD0 /* MessageThreadTests.swift in Sources */,
