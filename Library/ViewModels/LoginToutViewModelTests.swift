@@ -11,6 +11,7 @@ import XCTest
 final class LoginToutViewModelTests: TestCase {
   fileprivate let vm: LoginToutViewModelType = LoginToutViewModel()
 
+  fileprivate let attemptAppleLogin = TestObserver<(), Never>()
   fileprivate let attemptFacebookLogin = TestObserver<(), Never>()
   fileprivate let dismissViewController = TestObserver<(), Never>()
   fileprivate let headlineLabelHidden = TestObserver<Bool, Never>()
@@ -27,6 +28,7 @@ final class LoginToutViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.attemptAppleLogin.observe(self.attemptAppleLogin.observer)
     self.vm.outputs.attemptFacebookLogin.observe(self.attemptFacebookLogin.observer)
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
     self.vm.outputs.headlineLabelHidden.observe(self.headlineLabelHidden.observer)
@@ -584,5 +586,13 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.inputs.userSessionStarted()
 
     self.dismissViewController.assertValueCount(1)
+  }
+
+  func testAttemptAppleLogin() {
+    self.attemptAppleLogin.assertDidNotEmitValue()
+
+    self.vm.inputs.appleLoginButtonPressed()
+
+    self.attemptAppleLogin.assertValueCount(1)
   }
 }

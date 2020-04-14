@@ -274,6 +274,14 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
         _ = self?.contextLabel
           ?|> UILabel.lens.font .~ (isHidden ? UIFont.ksr_title2() : UIFont.ksr_subhead())
       }
+
+    self.viewModel.outputs.attemptAppleLogin
+      .observeForUI()
+      .observeValues { [weak self] in
+        if #available(iOS 13, *) {
+          self?.attemptAppleLogin()
+        }
+      }
   }
 
   // MARK: - Functions
@@ -344,6 +352,17 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     )
     self.loginButton.addTarget(self, action: #selector(self.loginButtonPressed(_:)), for: .touchUpInside)
     self.signupButton.addTarget(self, action: #selector(self.signupButtonPressed), for: .touchUpInside)
+  }
+
+  @available(iOS 13, *)
+  private func attemptAppleLogin() {
+    let appleIDRequest = ASAuthorizationAppleIDProvider().createRequest()
+      |> \.requestedScopes .~ [.fullName, .email]
+
+    let authorizationController = ASAuthorizationController(authorizationRequests: [appleIDRequest])
+      |> \.delegate .~ self
+      ?|> \.presentationContextProvider .~ (self as? ASAuthorizationControllerPresentationContextProviding)
+    authorizationController?.performRequests()
   }
 
   fileprivate func goToHelpType(_ helpType: HelpType) {
@@ -429,7 +448,9 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
     self.dismiss(animated: true, completion: nil)
   }
 
-  @objc private func appleLoginButtonPressed(_: UIButton) {}
+  @objc private func appleLoginButtonPressed(_: UIButton) {
+    self.viewModel.inputs.appleLoginButtonPressed()
+  }
 
   @objc private func closeButtonPressed() {
     self.dismiss(animated: true, completion: nil)
@@ -499,4 +520,46 @@ private let separatorViewStyle: ViewStyle = { view in
   view
     |> \.backgroundColor .~ .ksr_grey_500
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
+}
+
+// MARK: - ASAuthorizationControllerDelegate
+
+@available(iOS 13, *)
+extension LoginToutViewController: ASAuthorizationControllerDelegate {
+  func authorizationController(
+    controller _: ASAuthorizationController,
+    didCompleteWithAuthorization authorization: ASAuthorization
+  ) {
+    guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
+      let authToken = credential.authorizationCode else {
+      return
+    }
+
+    let fullName = credential.fullName
+    let token = String(data: authToken, encoding: .utf8)
+
+    let data = (
+      appId: AppEnvironment.current.apiService.appId,
+      firstName: fullName?.givenName,
+      lastName: fullName?.familyName,
+      token: token
+    ) as? SignInWithAppleData
+    self.viewModel.inputs.appleAuthorizationDidSucceed(with: data)
+  }
+
+  func authorizationController(controller _: ASAuthorizationController, didCompleteWithError error: Error) {
+    self.viewModel.inputs.appleAuthorizationDidFail(with: error)
+  }
+}
+
+// MARK: - ASAuthorizationControllerPresentationContextProviding
+
+@available(iOS 13.0, *)
+extension LoginToutViewController: ASAuthorizationControllerPresentationContextProviding {
+  func presentationAnchor(for _: ASAuthorizationController) -> ASPresentationAnchor {
+    guard let window = self.view.window else {
+      return ASPresentationAnchor()
+    }
+    return window
+  }
 }

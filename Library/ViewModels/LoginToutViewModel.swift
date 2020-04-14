@@ -3,9 +3,20 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias SignInWithAppleData = (appId: String, firstName: String?, lastName: String?, token: String)
+
 public protocol LoginToutViewModelInputs {
+  /// Call when Continue withApple button is pressed
+  func appleLoginButtonPressed()
+
   /// Call to set the reason the user is attempting to log in
   func configureWith(_ intent: LoginIntent, project: Project?, reward: Reward?)
+
+  /// Call when Apple completes authorization
+  func appleAuthorizationDidSucceed(with data: SignInWithAppleData?)
+
+  /// Call when Apple completes authorization with error
+  func appleAuthorizationDidFail(with error: Error)
 
   /// Call when the environment has been logged into
   func environmentLoggedIn()
@@ -37,6 +48,9 @@ public protocol LoginToutViewModelInputs {
 }
 
 public protocol LoginToutViewModelOutputs {
+  /// Emits when Apple login should start
+  var attemptAppleLogin: Signal<Void, Never> { get }
+
   /// Emits when Facebook login should start
   var attemptFacebookLogin: Signal<(), Never> { get }
 
@@ -116,7 +130,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
           .materialize()
       }
 
-    self.logIntoEnvironment = facebookLogin.values()
+    self.attemptAppleLogin = self.appleLoginButtonPressedProperty.signal.ignoreValues()
 
     let tfaRequiredError = facebookLogin.errors()
       .filter { $0.ksrCode == .TfaRequired }
@@ -167,6 +181,32 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       facebookLoginAttemptFailAlert,
       genericFacebookErrorAlert
     )
+
+    self.logIntoEnvironment = facebookLogin.values()
+
+    // MARK: - Sign-in with Apple
+
+    let appleSignInInput = self.appleAuthorizationDidSucceedWithDataProperty.signal
+      .skipNil()
+      .map { data in
+        SignInWithAppleInput(
+          appId: data.appId,
+          authCode: data.token,
+          firstName: data.firstName,
+          lastName: data.lastName
+        )
+      }
+
+    let appleSignInEvent = appleSignInInput
+      .switchMap { input in
+        AppEnvironment.current.apiService.signInWithApple(input: input)
+          .materialize()
+      }
+
+    // This is temporary uniquely to prove that the mutation is working properly for review purposes.
+    appleSignInEvent.observeValues { v in
+      print("=== Sign In With Apple ===\n\(v) ")
+    }
 
     // MARK: - Tracking
 
@@ -220,9 +260,19 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public var inputs: LoginToutViewModelInputs { return self }
   public var outputs: LoginToutViewModelOutputs { return self }
 
-  fileprivate var viewWillAppearProperty = MutableProperty(())
-  public func viewWillAppear() {
-    self.viewWillAppearProperty.value = ()
+  fileprivate let appleLoginButtonPressedProperty = MutableProperty(())
+  public func appleLoginButtonPressed() {
+    self.appleLoginButtonPressedProperty.value = ()
+  }
+
+  fileprivate let appleAuthorizationDidSucceedWithDataProperty = MutableProperty<SignInWithAppleData?>(nil)
+  public func appleAuthorizationDidSucceed(with data: SignInWithAppleData?) {
+    self.appleAuthorizationDidSucceedWithDataProperty.value = data
+  }
+
+  fileprivate let appleAuthorizationDidFailWithErrorProperty = MutableProperty<Error?>(nil)
+  public func appleAuthorizationDidFail(with error: Error) {
+    self.appleAuthorizationDidFailWithErrorProperty.value = error
   }
 
   fileprivate let loginIntentProperty = MutableProperty<LoginIntent?>(.loginTab)
@@ -232,6 +282,26 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.loginIntentProperty.value = intent
     self.projectProperty.value = project
     self.rewardProperty.value = reward
+  }
+
+  fileprivate let environmentLoggedInProperty = MutableProperty(())
+  public func environmentLoggedIn() {
+    self.environmentLoggedInProperty.value = ()
+  }
+
+  fileprivate let facebookLoginButtonPressedProperty = MutableProperty(())
+  public func facebookLoginButtonPressed() {
+    self.facebookLoginButtonPressedProperty.value = ()
+  }
+
+  fileprivate let facebookLoginFailProperty = MutableProperty<Error?>(nil)
+  public func facebookLoginFail(error: Error?) {
+    self.facebookLoginFailProperty.value = error
+  }
+
+  fileprivate let facebookLoginSuccessProperty = MutableProperty<LoginManagerLoginResult?>(nil)
+  public func facebookLoginSuccess(result: LoginManagerLoginResult) {
+    self.facebookLoginSuccessProperty.value = result
   }
 
   fileprivate let loginButtonPressedProperty = MutableProperty(())
@@ -244,26 +314,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.signupButtonPressedProperty.value = ()
   }
 
-  fileprivate let facebookLoginButtonPressedProperty = MutableProperty(())
-  public func facebookLoginButtonPressed() {
-    self.facebookLoginButtonPressedProperty.value = ()
-  }
-
-  fileprivate let facebookLoginSuccessProperty = MutableProperty<LoginManagerLoginResult?>(nil)
-  public func facebookLoginSuccess(result: LoginManagerLoginResult) {
-    self.facebookLoginSuccessProperty.value = result
-  }
-
-  fileprivate let facebookLoginFailProperty = MutableProperty<Error?>(nil)
-  public func facebookLoginFail(error: Error?) {
-    self.facebookLoginFailProperty.value = error
-  }
-
-  fileprivate let environmentLoggedInProperty = MutableProperty(())
-  public func environmentLoggedIn() {
-    self.environmentLoggedInProperty.value = ()
-  }
-
   fileprivate let userSessionStartedProperty = MutableProperty(())
   public func userSessionStarted() {
     self.userSessionStartedProperty.value = ()
@@ -274,6 +324,12 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.viewIsPresentedProperty.value = isPresented
   }
 
+  fileprivate var viewWillAppearProperty = MutableProperty(())
+  public func viewWillAppear() {
+    self.viewWillAppearProperty.value = ()
+  }
+
+  public let attemptAppleLogin: Signal<(), Never>
   public let attemptFacebookLogin: Signal<(), Never>
   public let dismissViewController: Signal<(), Never>
   public let headlineLabelHidden: Signal<Bool, Never>
