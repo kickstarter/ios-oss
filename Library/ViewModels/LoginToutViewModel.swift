@@ -13,11 +13,9 @@ public protocol LoginToutViewModelInputs {
   func configureWith(_ intent: LoginIntent, project: Project?, reward: Reward?)
 
   /// Call when Apple completes authorization
-  @available(iOS 13.0, *)
   func appleAuthorizationDidSucceed(with data: SignInWithAppleData?)
 
   /// Call when Apple completes authorization with error
-  @available(iOS 13.0, *)
   func appleAuthorizationDidFail(with error: Error)
 
   /// Call when the environment has been logged into
