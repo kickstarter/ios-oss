@@ -4,6 +4,12 @@ import Prelude
 import Stripe
 import UIKit
 
+private enum Layout {
+  enum Style {
+    static let cornerRadius: CGFloat = Styles.grid(2)
+  }
+}
+
 protocol PledgeViewControllerDelegate: AnyObject {
   func pledgeViewControllerDidUpdatePledge(_ viewController: PledgeViewController, message: String)
 }
@@ -12,7 +18,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   // MARK: - Properties
 
   private lazy var confirmationSectionViews = {
-    [self.submitButton]
+    [self.pledgeDisclaimerView, self.submitButton]
   }()
 
   public weak var delegate: PledgeViewControllerDelegate?
@@ -34,6 +40,10 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   private lazy var pledgeAmountViewController = {
     PledgeAmountViewController.instantiate()
       |> \.delegate .~ self
+  }()
+
+  private lazy var pledgeDisclaimerView: PledgeDisclaimerView = {
+    PledgeDisclaimerView(frame: .zero)
   }()
 
   private lazy var processingView: ProcessingView = { ProcessingView(frame: .zero) }()
@@ -155,6 +165,19 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.rootScrollView.contentInset = UIEdgeInsets(
+      top: self.rootScrollView.contentInset.top,
+      left: self.rootScrollView.contentInset.left,
+      bottom: self.pledgeCTAContainerView.bounds.height - self.view.safeAreaInsets.bottom,
+      right: self.rootScrollView.contentInset.right
+    )
+
+    self.rootScrollView.scrollIndicatorInsets = self.rootScrollView.contentInset
+  }
+
   // MARK: - Configuration
 
   private func configureChildViewControllers() {
@@ -243,6 +266,9 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     _ = self.view
       |> checkoutBackgroundStyle
 
+    _ = self.pledgeDisclaimerView
+      |> pledgeDisclaimerViewStyle
+
     _ = self.rootScrollView
       |> rootScrollViewStyle
 
@@ -256,7 +282,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       |> greenButtonStyle
 
     _ = self.paymentMethodsViewController.view
-      |> roundedStyle(cornerRadius: Styles.grid(2))
+      |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
   }
 
   // MARK: - View model
@@ -573,9 +599,13 @@ private let bottomStackViewStyle: StackViewStyle = { stackView in
     |> \.layoutMargins .~ UIEdgeInsets(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
 }
 
+private let pledgeDisclaimerViewStyle: ViewStyle = { view in
+  view
+    |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
+}
+
 private let rootScrollViewStyle: ScrollStyle = { scrollView in
   scrollView
-    |> UIScrollView.lens.showsVerticalScrollIndicator .~ false
     |> \.alwaysBounceVertical .~ true
 }
 
