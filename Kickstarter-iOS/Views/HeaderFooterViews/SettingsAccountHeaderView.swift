@@ -85,10 +85,9 @@ final class SettingsAccountHeaderView: UIView {
 
 private let appleIdLabelStyle: LabelStyle = { label in
   label
+    |> settingsTitleLabelStyle
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
-    |> \.font .~ .ksr_body()
-    |> \.textColor .~ .ksr_soft_black
     |> \.text %~ { _ in localizedString(key: "apple_id", defaultValue: "Apple ID") }
 }
 
