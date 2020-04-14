@@ -522,6 +522,8 @@ private let separatorViewStyle: ViewStyle = { view in
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }
 
+// MARK: - ASAuthorizationControllerDelegate
+
 @available(iOS 13, *)
 extension LoginToutViewController: ASAuthorizationControllerDelegate {
   func authorizationController(
@@ -550,8 +552,10 @@ extension LoginToutViewController: ASAuthorizationControllerDelegate {
   }
 }
 
+// MARK: - ASAuthorizationControllerPresentationContextProviding
+
 @available(iOS 13.0, *)
-extension LoginViewController: ASAuthorizationControllerPresentationContextProviding {
+extension LoginToutViewController: ASAuthorizationControllerPresentationContextProviding {
   func presentationAnchor(for _: ASAuthorizationController) -> ASPresentationAnchor {
     guard let window = self.view.window else {
       return ASPresentationAnchor()

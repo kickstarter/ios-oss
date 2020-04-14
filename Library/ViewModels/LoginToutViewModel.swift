@@ -186,28 +186,26 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     // MARK: - Sign-in with Apple
 
-    if #available(iOS 13.0, *) {
-      let appleSignInInput = self.appleAuthorizationDidSucceedWithDataProperty.signal
-        .skipNil()
-        .map { data in
-          SignInWithAppleInput(
-            appId: data.appId,
-            authCode: data.token,
-            firstName: data.firstName,
-            lastName: data.lastName
-          )
-        }
-
-      let appleSignInEvent = appleSignInInput
-        .switchMap { input in
-          AppEnvironment.current.apiService.signInWithApple(input: input)
-            .materialize()
-        }
-
-      // This is temporary uniquely to prove that the mutation is working properly for review purposes.
-      appleSignInEvent.observeValues { v in
-        print("=== Sign In With Apple ===\n\(v) ")
+    let appleSignInInput = self.appleAuthorizationDidSucceedWithDataProperty.signal
+      .skipNil()
+      .map { data in
+        SignInWithAppleInput(
+          appId: data.appId,
+          authCode: data.token,
+          firstName: data.firstName,
+          lastName: data.lastName
+        )
       }
+
+    let appleSignInEvent = appleSignInInput
+      .switchMap { input in
+        AppEnvironment.current.apiService.signInWithApple(input: input)
+          .materialize()
+      }
+
+    // This is temporary uniquely to prove that the mutation is working properly for review purposes.
+    appleSignInEvent.observeValues { v in
+      print("=== Sign In With Apple ===\n\(v) ")
     }
 
     // MARK: - Tracking
