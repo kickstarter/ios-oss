@@ -167,19 +167,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    self.rootScrollView.contentInset = UIEdgeInsets(
-      top: self.rootScrollView.contentInset.top,
-      left: self.rootScrollView.contentInset.left,
-      bottom: self.pledgeCTAContainerView.bounds.height - self.view.safeAreaInsets.bottom,
-      right: self.rootScrollView.contentInset.right
-    )
-
-    self.rootScrollView.scrollIndicatorInsets = self.rootScrollView.contentInset
-  }
-
   // MARK: - Configuration
 
   private func configureChildViewControllers() {
@@ -613,6 +600,7 @@ private let pledgeDisclaimerViewStyle: ViewStyle = { view in
 
 private let rootScrollViewStyle: ScrollStyle = { scrollView in
   scrollView
+    |> \.showsVerticalScrollIndicator .~ false
     |> \.alwaysBounceVertical .~ true
 }
 
