@@ -3,8 +3,11 @@ import Prelude
 import ReactiveSwift
 
 public typealias SettingsAccountData = (
-  currency: Currency, email: String,
-  shouldHideEmailWarning: Bool, shouldHideEmailPasswordSection: Bool, isAppleConnectedAccount: Bool
+  currency: Currency,
+  email: String,
+  shouldHideEmailWarning: Bool,
+  shouldHideEmailPasswordSection: Bool,
+  isAppleConnectedAccount: Bool
 )
 
 public protocol SettingsAccountViewModelInputs {

@@ -11,7 +11,7 @@ final class SettingsAccountHeaderView: UIView {
       |> UILabel.lens.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var stackView = {
+  private lazy var rootStackView = {
     UIStackView(frame: .zero)
       |> UIStackView.lens.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -39,7 +39,7 @@ final class SettingsAccountHeaderView: UIView {
       |> \.backgroundColor .~ .ksr_grey_200
       |> settingsHeaderContentViewStyle
 
-    _ = self.stackView
+    _ = self.rootStackView
       |> stackViewStyle
 
     _ = self.appleIdLabel
@@ -53,10 +53,10 @@ final class SettingsAccountHeaderView: UIView {
   }
 
   private func setupViews() {
-    _ = (self.stackView, self)
+    _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
 
-    _ = ([self.appleIdLabel, self.emailLabel], self.stackView)
+    _ = ([self.appleIdLabel, self.emailLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.manageThisAccountLabel, self)
@@ -67,13 +67,13 @@ final class SettingsAccountHeaderView: UIView {
     let margins = self.layoutMarginsGuide
 
     NSLayoutConstraint.activate([
-      self.stackView.leftAnchor.constraint(equalTo: self.leftAnchor),
-      self.stackView.rightAnchor.constraint(equalTo: self.rightAnchor),
-      self.stackView.topAnchor.constraint(equalTo: margins.topAnchor),
+      self.rootStackView.leftAnchor.constraint(equalTo: self.leftAnchor),
+      self.rootStackView.rightAnchor.constraint(equalTo: self.rightAnchor),
+      self.rootStackView.topAnchor.constraint(equalTo: margins.topAnchor),
       self.manageThisAccountLabel.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
       self.manageThisAccountLabel.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
       self.manageThisAccountLabel.topAnchor.constraint(
-        equalTo: self.stackView.bottomAnchor,
+        equalTo: self.rootStackView.bottomAnchor,
         constant: Styles.grid(2)
       ),
       self.manageThisAccountLabel.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
