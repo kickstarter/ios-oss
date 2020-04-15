@@ -6,19 +6,17 @@ import ReactiveSwift
 public typealias SignInWithAppleData = (appId: String, firstName: String?, lastName: String?, token: String)
 
 public protocol LoginToutViewModelInputs {
+  /// Call when Apple completes authorization with error
+  func appleAuthorizationDidFail(with error: Error)
+
+  /// Call when Apple completes authorization
+  func appleAuthorizationDidSucceed(with data: SignInWithAppleData?)
+
   /// Call when Continue withApple button is pressed
   func appleLoginButtonPressed()
 
   /// Call to set the reason the user is attempting to log in
   func configureWith(_ intent: LoginIntent, project: Project?, reward: Reward?)
-
-  /// Call when Apple completes authorization
-  @available(iOS 13.0, *)
-  func appleAuthorizationDidSucceed(with data: SignInWithAppleData?)
-
-  /// Call when Apple completes authorization with error
-  @available(iOS 13.0, *)
-  func appleAuthorizationDidFail(with error: Error)
 
   /// Call when the environment has been logged into
   func environmentLoggedIn()
@@ -188,28 +186,26 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     // MARK: - Sign-in with Apple
 
-    if #available(iOS 13.0, *) {
-      let appleSignInInput = self.appleAuthorizationDidSucceedWithDataProperty.signal
-        .skipNil()
-        .map { data in
-          SignInWithAppleInput(
-            appId: data.appId,
-            authCode: data.token,
-            firstName: data.firstName,
-            lastName: data.lastName
-          )
-        }
-
-      let appleSignInEvent = appleSignInInput
-        .switchMap { input in
-          AppEnvironment.current.apiService.signInWithApple(input: input)
-            .materialize()
-        }
-
-      // This is temporary uniquely to prove that the mutation is working properly for review purposes.
-      appleSignInEvent.observeValues { v in
-        print("=== Sign In With Apple ===\n\(v) ")
+    let appleSignInInput = self.appleAuthorizationDidSucceedWithDataProperty.signal
+      .skipNil()
+      .map { data in
+        SignInWithAppleInput(
+          appId: data.appId,
+          authCode: data.token,
+          firstName: data.firstName,
+          lastName: data.lastName
+        )
       }
+
+    let appleSignInEvent = appleSignInInput
+      .switchMap { input in
+        AppEnvironment.current.apiService.signInWithApple(input: input)
+          .materialize()
+      }
+
+    // This is temporary uniquely to prove that the mutation is working properly for review purposes.
+    appleSignInEvent.observeValues { v in
+      print("=== Sign In With Apple ===\n\(v) ")
     }
 
     // MARK: - Tracking

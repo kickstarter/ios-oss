@@ -604,7 +604,6 @@ final class LoginToutViewModelTests: TestCase {
       ],
       trackingClient.events
     )
-    
     self.attemptAppleLogin.assertValueCount(1)
   }
 }
