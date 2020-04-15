@@ -144,8 +144,7 @@
     fileprivate let sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope?
     fileprivate let sendEmailVerificationError: GraphError?
 
-    fileprivate let signInWithAppleResponse: SignInWithAppleEnvelope?
-    fileprivate let signInWithAppleError: GraphError?
+    fileprivate let signInWithAppleResult: Result<SignInWithAppleEnvelope, GraphError>?
 
     fileprivate let signupResponse: AccessTokenEnvelope?
     fileprivate let signupError: ErrorEnvelope?
@@ -283,8 +282,7 @@
       resetPasswordError: ErrorEnvelope? = nil,
       sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope? = nil,
       sendEmailVerificationError: GraphError? = nil,
-      signInWithAppleResponse: SignInWithAppleEnvelope? = nil,
-      signInWithAppleError: GraphError? = nil,
+      signInWithAppleResult: Result<SignInWithAppleEnvelope, GraphError>? = nil,
       signupResponse: AccessTokenEnvelope? = nil,
       signupError: ErrorEnvelope? = nil,
       unfollowFriendError: ErrorEnvelope? = nil,
@@ -479,9 +477,7 @@
 
       self.sendEmailVerificationError = sendEmailVerificationError
 
-      self.signInWithAppleResponse = signInWithAppleResponse
-
-      self.signInWithAppleError = signInWithAppleError
+      self.signInWithAppleResult = signInWithAppleResult
 
       self.signupResponse = signupResponse
 
@@ -1241,12 +1237,10 @@
 
     internal func signInWithApple(input _: SignInWithAppleInput)
       -> SignalProducer<SignInWithAppleEnvelope, GraphError> {
-      if let response = self.signInWithAppleResponse {
-        return SignalProducer(value: response)
-      } else if let error = signInWithAppleError {
+      if let error = self.signInWithAppleResult?.error {
         return SignalProducer(error: error)
       }
-      return SignalProducer(value: SignInWithAppleEnvelope.template)
+      return SignalProducer(value: self.signInWithAppleResult?.value ?? SignInWithAppleEnvelope.template)
     }
 
     internal func signup(

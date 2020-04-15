@@ -17,8 +17,8 @@ public struct SignInWithAppleInput: GraphMutationInput {
     return [
       "iosAppId": appId,
       "authCode": authCode,
-      "firstName": firstName ?? "",
-      "lastName": lastName ?? ""
-    ]
+      "firstName": firstName,
+      "lastName": lastName
+    ].compact()
   }
 }

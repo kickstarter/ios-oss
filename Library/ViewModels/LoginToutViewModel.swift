@@ -7,22 +7,17 @@ import ReactiveSwift
 public typealias SignInWithAppleData = (appId: String, firstName: String?, lastName: String?, token: String)
 
 public protocol LoginToutViewModelInputs {
+  /// Call when Apple completes authorization
+  func appleAuthorizationDidSucceed(with data: SignInWithAppleData?)
+
+  /// Call when Apple completes authorization with error
+  func appleAuthorizationDidFail(with error: Error)
+
   /// Call when Continue withApple button is pressed
   func appleLoginButtonPressed()
 
   /// Call to set the reason the user is attempting to log in
   func configureWith(_ intent: LoginIntent, project: Project?, reward: Reward?)
-
-  /// Call when Apple completes authorization
-  @available(iOS 13.0, *)
-  func appleAuthorizationDidSucceed(with data: SignInWithAppleData?)
-
-  /// Call when Apple completes authorization with error
-  @available(iOS 13.0, *)
-  func appleAuthorizationDidFail(with error: Error)
-
-  /// Call when the SignInWithAppleEnvelope is received from the server
-  func didReceiveSignInWithAppleEnvelope(_ envelope: SignInWithAppleEnvelope)
 
   /// Call when the environment has been logged into
   func environmentLoggedIn()
@@ -193,11 +188,8 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     let logIntoEnvironmentWithFacebook = facebookLogin.values()
 
-    let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
-
     // MARK: - Sign-in with Apple
 
-    if #available(iOS 13.0, *) {
       let appleSignInInput = self.appleAuthorizationDidSucceedWithDataProperty.signal
         .skipNil()
         .map { data in
@@ -240,7 +232,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
       let appleAuthorizationError = self.appleAuthorizationDidFailWithErrorProperty.signal
         .skipNil()
-        .filter { !userCanceledSignInWithAppleFlow($0) }
+        //.filter { !userCanceledSignInWithAppleFlow($0) }
         .map { error in error.localizedDescription }
 
       let fetchUserEventError = fetchUserEvent.errors()
@@ -249,12 +241,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       self.showAppleErrorAlert = Signal
         .merge(appleAuthorizationError, fetchUserEventError, appleSignInEventError)
 
-      logIntoEnvironment = Signal.merge(logIntoEnvironmentWithApple, logIntoEnvironmentWithFacebook)
-    } else {
-      logIntoEnvironment = logIntoEnvironmentWithFacebook
-    }
-
-    self.logIntoEnvironment = logIntoEnvironment
+      self.logIntoEnvironment = Signal.merge(logIntoEnvironmentWithApple, logIntoEnvironmentWithFacebook)
 
     // MARK: - Tracking
 
@@ -330,11 +317,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.loginIntentProperty.value = intent
     self.projectProperty.value = project
     self.rewardProperty.value = reward
-  }
-
-  fileprivate let didReceiveSignInWithAppleEnvelopeProperty = MutableProperty<SignInWithAppleEnvelope?>(nil)
-  public func didReceiveSignInWithAppleEnvelope(_ envelope: SignInWithAppleEnvelope) {
-    self.didReceiveSignInWithAppleEnvelopeProperty.value = envelope
   }
 
   fileprivate let environmentLoggedInProperty = MutableProperty(())

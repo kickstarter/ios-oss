@@ -613,7 +613,7 @@ final class LoginToutViewModelTests: TestCase {
 
   @available(iOS 13, *)
   func testShowAppleErrorAlert_SignInWithAppleMutationError() {
-    withEnvironment(apiService: MockService(signInWithAppleError: .invalidInput)) {
+    withEnvironment(apiService: MockService(signInWithAppleResult: .failure(.invalidInput))) {
       let data = SignInWithAppleData(
         appId: "com.kickstarter.test",
         firstName: "Nino",
@@ -657,7 +657,9 @@ final class LoginToutViewModelTests: TestCase {
     let envelope = SignInWithAppleEnvelope.template
       |> \.signInWithApple.apiAccessToken .~ "some_token"
 
-    withEnvironment(apiService: MockService(fetchUserResponse: user, signInWithAppleResponse: envelope)) {
+    let service = MockService(fetchUserResponse: user, signInWithAppleResult: .success(envelope))
+
+    withEnvironment(apiService: service) {
       let data = SignInWithAppleData(
         appId: "com.kickstarter.test",
         firstName: "Nino",
