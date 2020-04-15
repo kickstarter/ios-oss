@@ -555,12 +555,14 @@ extension LoginToutViewController: ASAuthorizationControllerDelegate {
 
   func authorizationController(controller _: ASAuthorizationController, didCompleteWithError error: Error) {
     if let error = error as? ASAuthorizationError {
+      let authError: AuthServicesError
       switch error.errorCode {
-      case .canceled.rawValue:
-        self.viewModel.inputs.appleAuthorizationDidFail(with: .canceled)
+      case ASAuthorizationError.canceled.rawValue:
+        authError = .canceled
       default:
-        self.viewModel.inputs.appleAuthorizationDidFail(with: .other(error))
+        authError = .other(error)
       }
+      self.viewModel.inputs.appleAuthorizationDidFail(with: authError)
     }
   }
 }

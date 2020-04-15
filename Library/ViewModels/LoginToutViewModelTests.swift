@@ -593,9 +593,7 @@ final class LoginToutViewModelTests: TestCase {
 
   @available(iOS 13, *)
   func testShowAppleErrorAlert_DoesNotEmitWhen_CancellingSignInWithAppleModal() {
-    let error = ASAuthorizationError(.canceled)
-
-    self.vm.inputs.appleAuthorizationDidFail(with: error)
+    self.vm.inputs.appleAuthorizationDidFail(with: .canceled)
 
     self.showAppleErrorAlert.assertDidNotEmitValue()
   }
@@ -606,7 +604,7 @@ final class LoginToutViewModelTests: TestCase {
       domain: "notonlinesorry", code: -1_234, userInfo: [NSLocalizedDescriptionKey: "Not online sorry"]
     )
 
-    self.vm.inputs.appleAuthorizationDidFail(with: error)
+    self.vm.inputs.appleAuthorizationDidFail(with: .other(error))
 
     self.showAppleErrorAlert.assertValue("Not online sorry")
   }
