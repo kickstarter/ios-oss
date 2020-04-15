@@ -21,7 +21,8 @@ public typealias PledgePaymentMethodsValue = (
 public typealias PledgePaymentMethodsAndSelectionData = (
   paymentMethodsCellData: [PledgePaymentMethodCellData],
   selectedCard: GraphUserCreditCard.CreditCard?,
-  shouldReload: Bool
+  shouldReload: Bool,
+  isLoading: Bool
 )
 
 public protocol PledgePaymentMethodsViewModelInputs {
@@ -61,12 +62,20 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .switchMap { _ in
         AppEnvironment.current.apiService
           .fetchGraphCreditCards(query: UserQueries.storedCards.query)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+          .map { envelope in (envelope, false) }
+          .prefix(value: (nil, true))
           .materialize()
       }
 
-    let storedCardsValues = storedCardsEvent.values().map { $0.me.storedCards.nodes }
-    let backing = configureWithValue.map { $0.project.personalization.backing }
+    let storedCardsValues = storedCardsEvent.values()
+      .filter(second >>> isFalse)
+      .map(first)
+      .skipNil()
+      .map { $0.me.storedCards.nodes }
+
+    let backing = configureWithValue
+      .map { $0.project.personalization.backing }
 
     let storedCards = Signal.combineLatest(storedCardsValues, backing)
       .map(cards(_:orderedBy:))
@@ -112,13 +121,25 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
         guard data.count > indexPath.row else { return nil }
         let card = data[indexPath.row].card
 
-        return (cellData(data, selecting: card), card, false)
+        return (
+          paymentMethodsCellData: cellData(data, selecting: card),
+          selectedCard: card,
+          shouldReload: false,
+          isLoading: false
+        )
       }
       .skipNil()
 
-    let configuredCards = cards.map { cellData, selectedCard in (cellData, selectedCard, true) }
+    let configuredCards = cards.map { cellData, selectedCard in
+      (paymentMethodsCellData: cellData, selectedCard: selectedCard, shouldReload: true, isLoading: false)
+    }
+
+    let reloadWithLoadingCell: Signal<PledgePaymentMethodsAndSelectionData, Never> = storedCardsEvent.values()
+      .filter(second >>> isTrue)
+      .map { _ in (paymentMethodsCellData: [], selectedCard: nil, shouldReload: true, isLoading: true) }
 
     self.reloadPaymentMethods = Signal.merge(
+      reloadWithLoadingCell,
       configuredCards.map { $0 as PledgePaymentMethodsAndSelectionData },
       updatedCards
     )
