@@ -105,7 +105,11 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     PledgeViewCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var rootScrollView: UIScrollView = { UIScrollView(frame: .zero) }()
+  private lazy var rootScrollView: UIScrollView = {
+    UIScrollView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -140,17 +144,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.setupConstraints()
 
     self.viewModel.inputs.viewDidLoad()
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    self.rootScrollView.contentInset = UIEdgeInsets(
-      top: self.rootScrollView.contentInset.top,
-      left: self.rootScrollView.contentInset.left,
-      bottom: self.pledgeCTAContainerView.bounds.height - self.view.safeAreaInsets.bottom,
-      right: self.rootScrollView.contentInset.right
-    )
   }
 
   deinit {
@@ -218,13 +211,14 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   }
 
   private func setupConstraints() {
-    _ = (self.rootScrollView, self.view)
-      |> ksr_constrainViewToEdgesInParent()
-
     _ = (self.rootStackView, self.rootScrollView)
       |> ksr_constrainViewToEdgesInParent()
 
     NSLayoutConstraint.activate([
+      self.rootScrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.rootScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.rootScrollView.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor),
       self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
