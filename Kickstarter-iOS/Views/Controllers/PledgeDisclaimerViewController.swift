@@ -2,7 +2,7 @@ import Library
 import Prelude
 import UIKit
 
-final class PledgeDisclaimerView: UIView {
+final class PledgeDisclaimerViewController: UIViewController {
   // MARK: - Properties
 
   private lazy var iconImageView: UIImageView = { UIImageView(frame: .zero) }()
@@ -10,24 +10,21 @@ final class PledgeDisclaimerView: UIView {
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var textView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
 
+  private let viewModel: PledgeDisclaimerViewModelType = PledgeDisclaimerViewModel()
+
   // MARK: - Lifecycle
 
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  override func viewDidLoad() {
+    super.viewDidLoad()
 
     self.configureSubviews()
     self.setupConstraints()
-    self.bindViewModel()
-  }
-
-  required init?(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
 
   // MARK: - Views
 
   private func configureSubviews() {
-    _ = (self.rootStackView, self)
+    _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
 
     _ = ([self.leftColumnStackView, self.textView], self.rootStackView)
@@ -38,7 +35,7 @@ final class PledgeDisclaimerView: UIView {
   }
 
   private func setupConstraints() {
-    _ = (self.rootStackView, self)
+    _ = (self.rootStackView, self.view)
       |> ksr_constrainViewToEdgesInParent()
 
     self.leftColumnStackView.widthAnchor.constraint(equalToConstant: Styles.grid(6)).isActive = true
@@ -49,14 +46,14 @@ final class PledgeDisclaimerView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self
+    _ = self.view
       |> \.backgroundColor .~ .ksr_grey_400
 
     _ = self.rootStackView
       |> rootStackViewStyle
 
     _ = self.iconImageView
-      |> iconImageViewStyle
+      |> iconImageViewStyle(self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory)
 
     _ = self.textView
       |> textViewStyle
@@ -65,10 +62,20 @@ final class PledgeDisclaimerView: UIView {
       |> leftColumnStackViewStyle
   }
 
-  // MARK: - Configuration
+  // MARK: - View model
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewModel.outputs.presentTrustAndSafety
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.presentHelpWebViewController(with: .trust, presentationStyle: .formSheet)
+      }
+  }
 }
 
-extension PledgeDisclaimerView: UITextViewDelegate {
+extension PledgeDisclaimerViewController: UITextViewDelegate {
   func textView(
     _: UITextView, shouldInteractWith _: NSTextAttachment,
     in _: NSRange, interaction _: UITextItemInteraction
@@ -80,7 +87,7 @@ extension PledgeDisclaimerView: UITextViewDelegate {
     _: UITextView, shouldInteractWith _: URL, in _: NSRange,
     interaction _: UITextItemInteraction
   ) -> Bool {
-//    self.viewModel.inputs.learnMoreTapped()
+    self.viewModel.inputs.learnMoreTapped()
     return false
   }
 }
@@ -97,18 +104,20 @@ private let textViewStyle: TextViewStyle = { (textView: UITextView) -> UITextVie
     |> \.backgroundColor .~ .ksr_grey_400
 }
 
-private let iconImageViewStyle: ImageViewStyle = { imageView in
-  let image = Library.image(named: "icon-not-a-store")?.withRenderingMode(.alwaysTemplate)
+private func iconImageViewStyle(_ isAccessibilityCategory: Bool) -> (ImageViewStyle) {
+  return { (imageView: UIImageView) in
+    let image = Library.image(named: "icon-not-a-store")?.withRenderingMode(.alwaysTemplate)
 
-  return imageView
-    |> \.image .~ image
-    |> \.tintColor .~ .ksr_green_500
-    |> \.contentMode .~ .center
+    return imageView
+      |> \.image .~ image
+      |> \.tintColor .~ .ksr_green_500
+      |> \.contentMode .~ (isAccessibilityCategory ? .top : .center)
+  }
 }
 
 private let leftColumnStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.alignment .~ .center
+    |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.gridHalf(3))
     |> \.isLayoutMarginsRelativeArrangement .~ true
 }
 

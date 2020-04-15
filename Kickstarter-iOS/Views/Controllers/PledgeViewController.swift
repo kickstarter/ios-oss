@@ -18,7 +18,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   // MARK: - Properties
 
   private lazy var confirmationSectionViews = {
-    [self.pledgeDisclaimerView, self.submitButton]
+    [self.pledgeDisclaimerViewController.view, self.submitButton]
   }()
 
   public weak var delegate: PledgeViewControllerDelegate?
@@ -42,8 +42,8 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       |> \.delegate .~ self
   }()
 
-  private lazy var pledgeDisclaimerView: PledgeDisclaimerView = {
-    PledgeDisclaimerView(frame: .zero)
+  private lazy var pledgeDisclaimerViewController: PledgeDisclaimerViewController = {
+    PledgeDisclaimerViewController.instantiate()
   }()
 
   private lazy var processingView: ProcessingView = { ProcessingView(frame: .zero) }()
@@ -185,6 +185,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       self.descriptionViewController,
       self.pledgeAmountViewController,
       self.pledgeAmountSummaryViewController,
+      self.pledgeDisclaimerViewController,
       self.shippingLocationViewController,
       self.summaryViewController,
       self.continueViewController,
@@ -206,6 +207,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     let bottomSectionViews = [self.confirmationSectionViews]
       .flatMap { $0 }
+      .compact()
 
     let bottomSectionStackView = UIStackView(arrangedSubviews: bottomSectionViews)
       |> bottomStackViewStyle
@@ -266,7 +268,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     _ = self.view
       |> checkoutBackgroundStyle
 
-    _ = self.pledgeDisclaimerView
+    _ = self.pledgeDisclaimerViewController.view
       |> pledgeDisclaimerViewStyle
 
     _ = self.rootScrollView
