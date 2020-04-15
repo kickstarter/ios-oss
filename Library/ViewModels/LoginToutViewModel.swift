@@ -1,4 +1,3 @@
-import AuthenticationServices
 import FBSDKLoginKit
 import KsApi
 import Prelude
@@ -6,12 +5,17 @@ import ReactiveSwift
 
 public typealias SignInWithAppleData = (appId: String, firstName: String?, lastName: String?, token: String)
 
+public enum AuthServicesError {
+  case canceled
+  case other(Error)
+}
+
 public protocol LoginToutViewModelInputs {
   /// Call when Apple completes authorization
   func appleAuthorizationDidSucceed(with data: SignInWithAppleData?)
 
   /// Call when Apple completes authorization with error
-  func appleAuthorizationDidFail(with error: Error)
+  func appleAuthorizationDidFail(with error: AuthServicesError)
 
   /// Call when Continue withApple button is pressed
   func appleLoginButtonPressed()
@@ -232,8 +236,8 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
       let appleAuthorizationError = self.appleAuthorizationDidFailWithErrorProperty.signal
         .skipNil()
-        //.filter { !userCanceledSignInWithAppleFlow($0) }
-        .map { error in error.localizedDescription }
+        .map(errorMessage(from:))
+        .skipNil()
 
       let fetchUserEventError = fetchUserEvent.errors()
         .map { error in error.localizedDescription }
@@ -305,8 +309,8 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.appleAuthorizationDidSucceedWithDataProperty.value = data
   }
 
-  fileprivate let appleAuthorizationDidFailWithErrorProperty = MutableProperty<Error?>(nil)
-  public func appleAuthorizationDidFail(with error: Error) {
+  fileprivate let appleAuthorizationDidFailWithErrorProperty = MutableProperty<AuthServicesError?>(nil)
+  public func appleAuthorizationDidFail(with error: AuthServicesError) {
     self.appleAuthorizationDidFailWithErrorProperty.value = error
   }
 
@@ -393,10 +397,11 @@ private func statusString(_ forStatus: LoginIntent) -> String {
   }
 }
 
-@available(iOS 13.0, *)
-private func userCanceledSignInWithAppleFlow(_ error: Error) -> Bool {
-  if let error = error as? ASAuthorizationError {
-    return error.errorCode == ASAuthorizationError.Code.canceled.rawValue
+private func errorMessage(from error: AuthServicesError) -> String? {
+  switch error {
+  case .other(let error):
+    return error.localizedDescription
+  case .canceled:
+    return nil
   }
-  return false
 }
