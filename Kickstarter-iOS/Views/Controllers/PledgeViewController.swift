@@ -105,7 +105,11 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     PledgeViewCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var rootScrollView: UIScrollView = { UIScrollView(frame: .zero) }()
+  private lazy var rootScrollView: UIScrollView = {
+    UIScrollView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -128,14 +132,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
-    _ = (self.rootScrollView, self.view)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    _ = (self.rootStackView, self.rootScrollView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
 
     self.submitButton.addTarget(
@@ -146,7 +142,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.configureChildViewControllers()
     self.setupConstraints()
-    self.configurePledgeViewCTAContainerView()
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -158,6 +153,15 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   // MARK: - Configuration
 
   private func configureChildViewControllers() {
+    _ = (self.rootScrollView, self.view)
+      |> ksr_addSubviewToParent()
+
+    _ = (self.rootStackView, self.rootScrollView)
+      |> ksr_addSubviewToParent()
+
+    _ = (self.pledgeCTAContainerView, self.view)
+      |> ksr_addSubviewToParent()
+
     let childViewControllers = [
       self.descriptionViewController,
       self.pledgeAmountViewController,
@@ -206,23 +210,18 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     }
   }
 
-  private func configurePledgeViewCTAContainerView() {
-    // Configure subviews
-    _ = (self.pledgeCTAContainerView, self.view)
-      |> ksr_addSubviewToParent()
+  private func setupConstraints() {
+    _ = (self.rootStackView, self.rootScrollView)
+      |> ksr_constrainViewToEdgesInParent()
 
-    // Configure constraints
-    let pledgeCTAContainerViewConstraints = [
+    NSLayoutConstraint.activate([
+      self.rootScrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.rootScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.rootScrollView.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor),
       self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-    ]
-
-    NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
-  }
-
-  private func setupConstraints() {
-    NSLayoutConstraint.activate([
+      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor),
       self.submitButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])

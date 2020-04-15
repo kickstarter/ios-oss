@@ -45,24 +45,6 @@ public func ksr_addLayoutGuideToView() -> ((UILayoutGuide, UIView) -> (UILayoutG
   }
 }
 
-public func ksr_centerInParent(priority: UILayoutPriority = .required)
-  -> ((UIView, UIView) -> (UIView, UIView)) {
-  return { subview, parent in
-    subview.translatesAutoresizingMaskIntoConstraints = false
-
-    let constraints = [
-      subview.centerYAnchor.constraint(equalTo: parent.centerYAnchor),
-      subview.centerXAnchor.constraint(equalTo: parent.centerXAnchor)
-    ]
-
-    constraints.forEach { $0.priority = priority }
-
-    NSLayoutConstraint.activate(constraints)
-
-    return (subview, parent)
-  }
-}
-
 public func ksr_constrainViewToEdgesInParent(priority: UILayoutPriority = .required)
   -> ((UIView, UIView) -> (UIView, UIView)) {
   return { subview, parent in

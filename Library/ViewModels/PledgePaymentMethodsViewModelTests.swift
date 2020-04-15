@@ -443,6 +443,27 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.goToProject.assertValues([project])
   }
 
+  func testGoToAddNewCard_NoStoredCards() {
+    let project = Project.template
+    let cards = GraphUserCreditCard.withCards([])
+    let response = UserEnvelope<GraphUserCreditCard>(me: cards)
+    let mockService = MockService(fetchGraphCreditCardsResponse: response)
+
+    withEnvironment(apiService: mockService, currentUser: User.template) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
+
+      let addNewCardIndexPath = IndexPath(
+        row: 0,
+        section: PaymentMethodsTableViewSection.addNewCard.rawValue
+      )
+
+      self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
+      self.goToAddCardIntent.assertValues([.pledge])
+      self.goToProject.assertValues([project])
+    }
+  }
+
   func testTrackingEvents_PledgeContext() {
     let project = Project.template
 
