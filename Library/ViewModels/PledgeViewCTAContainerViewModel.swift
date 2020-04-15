@@ -4,14 +4,13 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol PledgeViewCTAContainerViewModelInputs {
-  // func configureWith(value: PledgeCTAContainerViewData)
   func applePayButtonTapped()
-  func pledgeCTAButtonTapped()
+  func submitButtonTapped()
 }
 
 public protocol PledgeViewCTAContainerViewModelOutputs {
   var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
-  var notifyDelegatePledgeButtonTapped: Signal<Void, Never> { get }
+  var notifyDelegateSubmitButtonTapped: Signal<Void, Never> { get }
 }
 
 public protocol PledgeViewCTAContainerViewModelType {
@@ -22,7 +21,7 @@ public protocol PledgeViewCTAContainerViewModelType {
 public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewModelType,
   PledgeViewCTAContainerViewModelInputs, PledgeViewCTAContainerViewModelOutputs {
   public init() {
-    self.notifyDelegatePledgeButtonTapped = self.pledgeCTAButtonTappedProperty.signal
+    self.notifyDelegateSubmitButtonTapped = self.submitButtonTappedProperty.signal
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
   }
 
@@ -31,13 +30,13 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
     self.applePayButtonTappedProperty.value = ()
   }
 
-  fileprivate let pledgeCTAButtonTappedProperty = MutableProperty(())
-  public func pledgeCTAButtonTapped() {
-    self.pledgeCTAButtonTappedProperty.value = ()
+  fileprivate let submitButtonTappedProperty = MutableProperty(())
+  public func submitButtonTapped() {
+    self.submitButtonTappedProperty.value = ()
   }
 
   public let notifyDelegateApplePayButtonTapped: Signal<Void, Never>
-  public let notifyDelegatePledgeButtonTapped: Signal<Void, Never>
+  public let notifyDelegateSubmitButtonTapped: Signal<Void, Never>
 
   public var inputs: PledgeViewCTAContainerViewModelInputs { return self }
   public var outputs: PledgeViewCTAContainerViewModelOutputs { return self }

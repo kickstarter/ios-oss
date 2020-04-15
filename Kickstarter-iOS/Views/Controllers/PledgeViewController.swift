@@ -422,7 +422,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   // MARK: - Actions
 
-  @objc private func submitButtonTapped() {
+  @objc internal func submitButtonTapped() {
     self.viewModel.inputs.submitButtonTapped()
   }
 
@@ -507,7 +507,7 @@ extension PledgeViewController: PledgeViewCTAContainerViewDelegate {
     self.viewModel.inputs.applePayButtonTapped()
   }
 
-  func pledgeCTAButtonTapped() {
+  func pledgeButtonTapped() {
     self.viewModel.inputs.submitButtonTapped()
   }
 }
