@@ -150,8 +150,10 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
             PaymentMethodsTableViewSection.addNewCard.rawValue
           ]
           .contains(indexPath.section),
-          // the row is within bounds and the card is enabled.
-          cellData.count > indexPath.row, cellData[indexPath.row].isEnabled
+          // the row is within bounds and the card is enabled,
+          (cellData.count > indexPath.row && cellData[indexPath.row].isEnabled) ||
+          // or we're adding a new card.
+          indexPath.section == PaymentMethodsTableViewSection.addNewCard.rawValue
         else { return nil }
 
         return indexPath

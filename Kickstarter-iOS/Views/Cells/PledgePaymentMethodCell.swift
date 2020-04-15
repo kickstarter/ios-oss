@@ -204,7 +204,7 @@ private let labelsStackViewStyle: StackViewStyle = { stackView in
 private let lastFourLabelStyle: LabelStyle = { label in
   label
     |> checkoutTitleLabelStyle
-    |> \.font .~ UIFont.ksr_caption1(size: 14).bolded
+    |> \.font .~ UIFont.ksr_subhead().bolded
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
