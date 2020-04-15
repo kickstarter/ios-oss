@@ -194,58 +194,58 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     // MARK: - Sign-in with Apple
 
-      let appleSignInInput = self.appleAuthorizationDidSucceedWithDataProperty.signal
-        .skipNil()
-        .map { data in
-          SignInWithAppleInput(
-            appId: data.appId,
-            authCode: data.token,
-            firstName: data.firstName,
-            lastName: data.lastName
-          )
-        }
+    let appleSignInInput = self.appleAuthorizationDidSucceedWithDataProperty.signal
+      .skipNil()
+      .map { data in
+        SignInWithAppleInput(
+          appId: data.appId,
+          authCode: data.token,
+          firstName: data.firstName,
+          lastName: data.lastName
+        )
+      }
 
-      let appleSignInEvent = appleSignInInput
-        .switchMap { input in
-          AppEnvironment.current.apiService.signInWithApple(input: input)
-            .materialize()
-        }
+    let appleSignInEvent = appleSignInInput
+      .switchMap { input in
+        AppEnvironment.current.apiService.signInWithApple(input: input)
+          .materialize()
+      }
 
-      let userId = appleSignInEvent.values()
-        .map { envelope in Int(envelope.signInWithApple.user.uid) }
-        .skipNil()
+    let userId = appleSignInEvent.values()
+      .map { envelope in Int(envelope.signInWithApple.user.uid) }
+      .skipNil()
 
-      let apiAccessToken = appleSignInEvent.values()
-        .map(\.signInWithApple.apiAccessToken)
+    let apiAccessToken = appleSignInEvent.values()
+      .map(\.signInWithApple.apiAccessToken)
 
-      let fetchUserEvent = userId
-        .switchMap { id in
-          AppEnvironment.current.apiService.fetchUser(userId: id)
-            .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-            .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
-            .materialize()
-        }
+    let fetchUserEvent = userId
+      .switchMap { id in
+        AppEnvironment.current.apiService.fetchUser(userId: id)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
+          .materialize()
+      }
 
-      let logIntoEnvironmentWithApple = Signal.combineLatest(fetchUserEvent.values(), apiAccessToken)
-        .map { user, token in
-          AccessTokenEnvelope(accessToken: token, user: user)
-        }
+    let logIntoEnvironmentWithApple = Signal.combineLatest(fetchUserEvent.values(), apiAccessToken)
+      .map { user, token in
+        AccessTokenEnvelope(accessToken: token, user: user)
+      }
 
-      let appleSignInEventError = appleSignInEvent.errors()
-        .map { error in error.localizedDescription }
+    let appleSignInEventError = appleSignInEvent.errors()
+      .map { error in error.localizedDescription }
 
-      let appleAuthorizationError = self.appleAuthorizationDidFailWithErrorProperty.signal
-        .skipNil()
-        .map(errorMessage(from:))
-        .skipNil()
+    let appleAuthorizationError = self.appleAuthorizationDidFailWithErrorProperty.signal
+      .skipNil()
+      .map(errorMessage(from:))
+      .skipNil()
 
-      let fetchUserEventError = fetchUserEvent.errors()
-        .map { error in error.localizedDescription }
+    let fetchUserEventError = fetchUserEvent.errors()
+      .map { error in error.localizedDescription }
 
-      self.showAppleErrorAlert = Signal
-        .merge(appleAuthorizationError, fetchUserEventError, appleSignInEventError)
+    self.showAppleErrorAlert = Signal
+      .merge(appleAuthorizationError, fetchUserEventError, appleSignInEventError)
 
-      self.logIntoEnvironment = Signal.merge(logIntoEnvironmentWithApple, logIntoEnvironmentWithFacebook)
+    self.logIntoEnvironment = Signal.merge(logIntoEnvironmentWithApple, logIntoEnvironmentWithFacebook)
 
     // MARK: - Tracking
 
@@ -399,7 +399,7 @@ private func statusString(_ forStatus: LoginIntent) -> String {
 
 private func errorMessage(from error: AuthServicesError) -> String? {
   switch error {
-  case .other(let error):
+  case let .other(error):
     return error.localizedDescription
   case .canceled:
     return nil
