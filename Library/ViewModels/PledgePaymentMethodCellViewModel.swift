@@ -62,10 +62,10 @@ public protocol PledgePaymentMethodCellViewModelType {
 public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellViewModelInputs,
   PledgePaymentMethodCellViewModelOutputs, PledgePaymentMethodCellViewModelType {
   public init() {
-    let creditCard = self.pledgeCreditCardValueProperty.signal.skipNil().map(\.card)
+    let creditCard = self.configureValueProperty.signal.skipNil().map(\.card)
     let selectedCard = self.selectedCardProperty.signal.skipNil()
-    let cardTypeIsAvailable = self.pledgeCreditCardValueProperty.signal.skipNil().map(\.isEnabled)
-    let configuredAsSelected = self.pledgeCreditCardValueProperty.signal.skipNil().map(\.isSelected)
+    let cardTypeIsAvailable = self.configureValueProperty.signal.skipNil().map(\.isEnabled)
+    let configuredAsSelected = self.configureValueProperty.signal.skipNil().map(\.isSelected)
 
     self.cardImageName = creditCard
       .map { $0.imageName }
@@ -96,7 +96,7 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
     self.unavailableCardLabelHidden = cardTypeIsAvailable
 
     self.unavailableCardText = Signal.combineLatest(
-      self.pledgeCreditCardValueProperty.signal.skipNil(),
+      self.configureValueProperty.signal.skipNil(),
       cardTypeIsAvailable
     )
     .filter(second >>> isFalse)
@@ -121,9 +121,9 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
     }
   }
 
-  fileprivate let pledgeCreditCardValueProperty = MutableProperty<PledgePaymentMethodCellData?>(nil)
+  fileprivate let configureValueProperty = MutableProperty<PledgePaymentMethodCellData?>(nil)
   public func configureWith(value: PledgePaymentMethodCellData) {
-    self.pledgeCreditCardValueProperty.value = value
+    self.configureValueProperty.value = value
   }
 
   private let selectedCardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
