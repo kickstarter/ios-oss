@@ -130,15 +130,15 @@ final class PledgeViewCTAContainerView: UIView {
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
-      |> \.axis .~ NSLayoutConstraint.Axis.vertical
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ UIEdgeInsets.init(
-        top: Styles.grid(2),
-        left: Styles.grid(3),
-        bottom: Styles.grid(0),
-        right: Styles.grid(3)
-      )
-      |> \.spacing .~ Styles.grid(1)
+    |> \.axis .~ NSLayoutConstraint.Axis.vertical
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ UIEdgeInsets.init(
+      top: Styles.grid(2),
+      left: Styles.grid(3),
+      bottom: Styles.grid(0),
+      right: Styles.grid(3)
+    )
+    |> \.spacing .~ Styles.grid(1)
 }
 
 private let disclaimerLabelStyle: LabelStyle = { label in

@@ -5,9 +5,6 @@ import Prelude
 import UIKit
 
 protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
-  func pledgePaymentMethodsViewControllerDidTapApplePayButton(
-    _ viewController: PledgePaymentMethodsViewController
-  )
   func pledgePaymentMethodsViewController(
     _ viewController: PledgePaymentMethodsViewController,
     didSelectCreditCard paymentSourceId: String
@@ -17,15 +14,20 @@ protocol PledgePaymentMethodsViewControllerDelegate: AnyObject {
 final class PledgePaymentMethodsViewController: UIViewController {
   // MARK: - Properties
 
-  private lazy var applePayButton: PKPaymentButton = { PKPaymentButton() }()
-  private lazy var applePaySectionStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var cardsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let dataSource = PledgePaymentMethodsDataSource()
+
+  private lazy var tableView: UITableView = {
+    ContentSizeTableView(frame: .zero, style: .plain)
+      |> \.separatorInset .~ .zero
+      |> \.contentInsetAdjustmentBehavior .~ .never
+      |> \.isScrollEnabled .~ false
+      |> \.dataSource .~ self.dataSource
+      |> \.delegate .~ self
+      |> \.rowHeight .~ UITableView.automaticDimension
+  }()
+
   internal weak var delegate: PledgePaymentMethodsViewControllerDelegate?
   internal weak var messageDisplayingDelegate: PledgeViewControllerMessageDisplaying?
-  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var scrollView: UIScrollView = { UIScrollView(frame: .zero) }()
-  private lazy var spacer: UIView = { UIView(frame: .zero) }()
-  private lazy var storedPaymentMethodsTitleLabel: UILabel = { UILabel(frame: .zero) }()
   private let viewModel: PledgePaymentMethodsViewModelType = PledgePaymentMethodsViewModel()
 
   // MARK: - Lifecycle
@@ -40,42 +42,17 @@ final class PledgePaymentMethodsViewController: UIViewController {
   }
 
   private func configureSubviews() {
-    _ = (self.scrollView, self.view)
+    _ = (self.tableView, self.view)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
 
-    let applePaySectionViews = [
-      self.applePayButton,
-      self.spacer,
-      self.storedPaymentMethodsTitleLabel
-    ]
-
-    _ = (applePaySectionViews, applePaySectionStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = (self.cardsStackView, self.scrollView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    _ = ([applePaySectionStackView, self.scrollView], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = (self.rootStackView, self.view)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    self.applePayButton.addTarget(
-      self,
-      action: #selector(PledgePaymentMethodsViewController.applePayButtonTapped),
-      for: .touchUpInside
-    )
+    self.tableView.registerCellClass(PledgePaymentMethodCell.self)
+    self.tableView.registerCellClass(PledgePaymentMethodAddCell.self)
+    self.tableView.registerCellClass(PledgePaymentMethodLoadingCell.self)
   }
 
   private func setupConstraints() {
-    NSLayoutConstraint.activate([
-      self.scrollView.heightAnchor.constraint(equalTo: self.cardsStackView.heightAnchor),
-      self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
-    ])
+    _ = (self.tableView, self.view)
+      |> ksr_constrainViewToEdgesInParent()
   }
 
   // MARK: - Bind Styles
@@ -85,25 +62,8 @@ final class PledgePaymentMethodsViewController: UIViewController {
     _ = self.view
       |> checkoutBackgroundStyle
 
-    _ = self.cardsStackView
-      |> cardsStackViewStyle
-
-    _ = self.applePayButton
-      |> applePayButtonStyle
-
-    _ = self.scrollView
-      |> \.contentInset .~ .init(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
-      |> checkoutBackgroundStyle
-
-    _ = self.rootStackView
-      |> verticalStackViewStyle
-      |> checkoutSubStackViewStyle
-
-    _ = self.applePaySectionStackView
-      |> applePaySectionStackViewStyle
-
-    _ = self.storedPaymentMethodsTitleLabel
-      |> storedPaymentMethodsTitleLabelStyle
+    _ = self.tableView
+      |> checkoutWhiteBackgroundStyle
   }
 
   // MARK: - View model
@@ -111,17 +71,22 @@ final class PledgePaymentMethodsViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.reloadPaymentMethodsAndSelectCard
+    self.viewModel.outputs.reloadPaymentMethods
       .observeForUI()
-      .observeValues { [weak self] cardValues, selectedCard in
+      .observeValues { [weak self] cards, selectedCard, shouldReload, isLoading in
         guard let self = self else { return }
 
-        self.scrollView.setContentOffset(
-          CGPoint(x: -CheckoutConstants.PledgeView.Inset.leftRight, y: 0),
-          animated: false
-        )
+        self.dataSource.load(cards, isLoading: isLoading)
 
-        self.reloadPaymentMethods(with: cardValues, andSelect: selectedCard)
+        if shouldReload {
+          self.tableView.reloadData()
+        } else {
+          guard let selectedCard = selectedCard else { return }
+
+          self.tableView.visibleCells
+            .compactMap { $0 as? PledgePaymentMethodCell }
+            .forEach { $0.setSelectedCard(selectedCard) }
+        }
       }
 
     self.viewModel.outputs.notifyDelegateLoadPaymentMethodsError
@@ -129,13 +94,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
       .observeValues { [weak self] errorMessage in
         guard let self = self else { return }
         self.messageDisplayingDelegate?.pledgeViewController(self, didErrorWith: errorMessage)
-      }
-
-    self.viewModel.outputs.notifyDelegateApplePayButtonTapped
-      .observeForUI()
-      .observeValues { [weak self] in
-        guard let self = self else { return }
-        self.delegate?.pledgePaymentMethodsViewControllerDidTapApplePayButton(self)
       }
 
     self.viewModel.outputs.notifyDelegateCreditCardSelected
@@ -146,31 +104,17 @@ final class PledgePaymentMethodsViewController: UIViewController {
         self.delegate?.pledgePaymentMethodsViewController(self, didSelectCreditCard: paymentSourceId)
       }
 
-    self.viewModel.outputs.updateSelectedCreditCard
-      .observeForUI()
-      .observeValues { [weak self] card in
-        self?.updateSelectedCard(to: card)
-      }
-
     self.viewModel.outputs.goToAddCardScreen
       .observeForUI()
       .observeValues { [weak self] intent, project in
         self?.goToAddNewCard(intent: intent, project: project)
       }
-
-    self.applePaySectionStackView.rac.hidden = self.viewModel.outputs.applePayStackViewHidden
   }
 
   // MARK: - Configuration
 
   func configure(with value: PledgePaymentMethodsValue) {
     self.viewModel.inputs.configure(with: value)
-  }
-
-  // MARK: - Actions
-
-  @objc private func applePayButtonTapped() {
-    self.viewModel.inputs.applePayButtonTapped()
   }
 
   // MARK: - Functions
@@ -187,91 +131,6 @@ final class PledgePaymentMethodsViewController: UIViewController {
     } else {
       self.presentViewControllerWithSheetOverlay(navigationController, offset: offset)
     }
-  }
-
-  private func reloadPaymentMethods(
-    with cardValues: [PledgeCreditCardViewData],
-    andSelect selectedCard: GraphUserCreditCard.CreditCard?
-  ) {
-    self.cardsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-
-    let cardViews = self.newCardViews(with: cardValues, selecting: selectedCard)
-
-    let addNewCardView: PledgeAddNewCardView = PledgeAddNewCardView(frame: .zero)
-      |> \.delegate .~ self
-
-    _ = (cardViews + [addNewCardView], self.cardsStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-  }
-
-  private func updateSelectedCard(to card: GraphUserCreditCard.CreditCard) {
-    self.cardsStackView.arrangedSubviews
-      .compactMap { $0 as? PledgeCreditCardView }
-      .forEach { $0.setSelectedCard(card) }
-  }
-
-  private func newCardViews(
-    with cardValues: [PledgeCreditCardViewData],
-    selecting selectedCard: GraphUserCreditCard.CreditCard?
-  ) -> [UIView] {
-    return cardValues.map { data -> PledgeCreditCardView in
-      let cardView = PledgeCreditCardView(frame: .zero)
-        |> \.delegate .~ self
-
-      cardView.configureWith(value: data)
-
-      if let selectedCard = selectedCard {
-        cardView.setSelectedCard(selectedCard)
-      }
-
-      return cardView
-    }
-  }
-}
-
-// MARK: - Styles
-
-private let cardsStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.spacing .~ Styles.grid(0)
-}
-
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> verticalStackViewStyle
-    |> \.spacing .~ Styles.grid(3)
-}
-
-private let storedPaymentMethodsTitleLabelStyle: LabelStyle = { label in
-  label
-    |> checkoutTitleLabelStyle
-    |> \.text %~ { _ in Strings.Other_payment_methods() }
-    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
-    |> \.font .~ UIFont.ksr_caption1()
-    |> \.textAlignment .~ .center
-}
-
-private let applePaySectionStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> verticalStackViewStyle
-    |> checkoutSubStackViewStyle
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ .init(leftRight: Styles.grid(4))
-}
-
-// MARK: - PledgeCreditCardViewDelegate
-
-extension PledgePaymentMethodsViewController: PledgeCreditCardViewDelegate {
-  func pledgeCreditCardViewSelected(_: PledgeCreditCardView, paymentSourceId: String) {
-    self.viewModel.inputs.creditCardSelected(paymentSourceId: paymentSourceId)
-  }
-}
-
-// MARK: - PledgeAddNewCardViewDelegate
-
-extension PledgePaymentMethodsViewController: PledgeAddNewCardViewDelegate {
-  func pledgeAddNewCardView(_: PledgeAddNewCardView, didTapAddNewCardWith intent: AddNewCardIntent) {
-    self.viewModel.inputs.addNewCardTapped(with: intent)
   }
 }
 
@@ -290,5 +149,19 @@ extension PledgePaymentMethodsViewController: AddNewCardViewControllerDelegate {
 
   func addNewCardViewControllerDismissed(_: AddNewCardViewController) {
     self.dismiss(animated: true)
+  }
+}
+
+// MARK: - UITableViewDelegate
+
+extension PledgePaymentMethodsViewController: UITableViewDelegate {
+  func tableView(_: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    return self.viewModel.inputs.willSelectRowAtIndexPath(indexPath)
+  }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
+
+    self.viewModel.inputs.didSelectRowAtIndexPath(indexPath)
   }
 }
