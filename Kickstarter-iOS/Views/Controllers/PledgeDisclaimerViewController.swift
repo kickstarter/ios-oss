@@ -135,14 +135,10 @@ private func attributedLearnMoreText() -> NSAttributedString? {
     withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
   )?.absoluteString else { return nil }
 
-  let line1 = Strings.Kickstarter_is_not_a_store()
-  let line2 = Strings.Its_a_way_to_bring_creative_projects_to_life()
-  let linkString = Strings.Learn_more_about_accountability()
-
   let paragraphStyle = NSMutableParagraphStyle()
   paragraphStyle.lineSpacing = 2
 
-  let attributedString = [line1, line2, linkString].joined(separator: "\n")
+  let attributedLine1String = Strings.Kickstarter_is_not_a_store()
     .attributed(
       with: UIFont.ksr_body(size: 13),
       foregroundColor: .ksr_text_dark_grey_500,
@@ -150,5 +146,30 @@ private func attributedLearnMoreText() -> NSAttributedString? {
       bolding: [Strings.Kickstarter_is_not_a_store()]
     )
 
-  return attributedString.setAsLink(textToFind: linkString, linkURL: trustLink)
+  let line2String = Strings.Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability(
+    trust_link: trustLink
+  )
+
+  guard let attributedLine2String = try? NSMutableAttributedString(
+    data: Data(line2String.utf8),
+    options: [
+      .documentType: NSAttributedString.DocumentType.html,
+      .characterEncoding: String.Encoding.utf8.rawValue
+    ],
+    documentAttributes: nil
+  ) else { return nil }
+
+  let attributes: String.Attributes = [
+    .font: UIFont.ksr_body(size: 13),
+    .foregroundColor: UIColor.ksr_text_dark_grey_500,
+    .paragraphStyle: paragraphStyle,
+    .underlineStyle: 0
+  ]
+
+  let fullRange = (attributedLine2String.string as NSString).range(of: attributedLine2String.string)
+  attributedLine2String.addAttributes(attributes, range: fullRange)
+
+  let attributedString = attributedLine1String + NSAttributedString(string: "\n") + attributedLine2String
+
+  return attributedString
 }
