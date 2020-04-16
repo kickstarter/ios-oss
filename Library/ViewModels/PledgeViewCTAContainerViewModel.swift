@@ -4,7 +4,6 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol PledgeViewCTAContainerViewModelInputs {
-  // func configureWith(value: PledgeCTAContainerViewData)
   func applePayButtonTapped()
   func submitButtonTapped()
   func tapped(_ url: URL)

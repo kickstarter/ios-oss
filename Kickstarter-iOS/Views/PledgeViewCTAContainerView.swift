@@ -5,8 +5,8 @@ import Prelude
 import UIKit
 
 protocol PledgeViewCTAContainerViewDelegate: AnyObject {
-  func pledgeButtonTapped()
   func applePayButtonTapped()
+  func pledgeButtonTapped()
   func termsOfUseTapped(with helptype: HelpType)
 }
 
@@ -246,9 +246,6 @@ private let termsTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITe
     |> \.attributedText .~ attributedTermsText()
     |> \.accessibilityTraits .~ [.staticText]
     |> \.textAlignment .~ .center
-
-//  _ = textView
-//    |> checkoutBackgroundStyle
 
   return textView
 }
