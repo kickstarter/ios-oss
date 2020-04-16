@@ -4,6 +4,12 @@ import Prelude
 import Stripe
 import UIKit
 
+private enum Layout {
+  enum Style {
+    static let cornerRadius: CGFloat = Styles.grid(2)
+  }
+}
+
 protocol PledgeViewControllerDelegate: AnyObject {
   func pledgeViewControllerDidUpdatePledge(_ viewController: PledgeViewController, message: String)
 }
@@ -12,7 +18,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   // MARK: - Properties
 
   private lazy var confirmationSectionViews = {
-    [self.submitButton]
+    [self.pledgeDisclaimerViewController.view, self.submitButton]
   }()
 
   public weak var delegate: PledgeViewControllerDelegate?
@@ -34,6 +40,10 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   private lazy var pledgeAmountViewController = {
     PledgeAmountViewController.instantiate()
       |> \.delegate .~ self
+  }()
+
+  private lazy var pledgeDisclaimerViewController: PledgeDisclaimerViewController = {
+    PledgeDisclaimerViewController.instantiate()
   }()
 
   private lazy var processingView: ProcessingView = { ProcessingView(frame: .zero) }()
@@ -168,6 +178,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       self.descriptionViewController,
       self.pledgeAmountViewController,
       self.pledgeAmountSummaryViewController,
+      self.pledgeDisclaimerViewController,
       self.shippingLocationViewController,
       self.summaryViewController,
       self.continueViewController,
@@ -189,6 +200,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     let bottomSectionViews = [self.confirmationSectionViews]
       .flatMap { $0 }
+      .compact()
 
     let bottomSectionStackView = UIStackView(arrangedSubviews: bottomSectionViews)
       |> bottomStackViewStyle
@@ -244,6 +256,9 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     _ = self.view
       |> checkoutBackgroundStyle
 
+    _ = self.pledgeDisclaimerViewController.view
+      |> pledgeDisclaimerViewStyle
+
     _ = self.rootScrollView
       |> rootScrollViewStyle
 
@@ -257,7 +272,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       |> greenButtonStyle
 
     _ = self.paymentMethodsViewController.view
-      |> roundedStyle(cornerRadius: Styles.grid(2))
+      |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
   }
 
   // MARK: - View model
@@ -586,9 +601,14 @@ private let bottomStackViewStyle: StackViewStyle = { stackView in
     |> \.layoutMargins .~ UIEdgeInsets(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
 }
 
+private let pledgeDisclaimerViewStyle: ViewStyle = { view in
+  view
+    |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
+}
+
 private let rootScrollViewStyle: ScrollStyle = { scrollView in
   scrollView
-    |> UIScrollView.lens.showsVerticalScrollIndicator .~ false
+    |> \.showsVerticalScrollIndicator .~ false
     |> \.alwaysBounceVertical .~ true
 }
 
