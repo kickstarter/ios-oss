@@ -5162,6 +5162,23 @@ with friends."
     )
   }
   /**
+   "New payment method"
+
+   - **en**: "New payment method"
+   - **de**: "Neue Zahlungsmethode"
+   - **es**: "Nuevo método de pago"
+   - **fr**: "Nouveau moyen de paiement"
+   - **ja**: "新しいお支払い方法"
+  */
+  public static func New_payment_method() -> String {
+    return localizedString(
+      key: "New_payment_method",
+      defaultValue: "New payment method",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "New pledge activity"
 
    - **en**: "New pledge activity"
