@@ -4,6 +4,11 @@ import PassKit
 import Prelude
 import UIKit
 
+protocol PledgeViewCTAContainerViewDelegate: AnyObject {
+  func pledgeButtonTapped()
+  func applePayButtonTapped()
+}
+
 private enum Layout {
   enum Button {
     static let minHeight: CGFloat = 48.0
@@ -27,7 +32,7 @@ final class PledgeViewCTAContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var pledgeCTAButton: UIButton = {
+  private lazy var submitButton: UIButton = {
     UIButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -36,6 +41,10 @@ final class PledgeViewCTAContainerView: UIView {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
+  weak var delegate: PledgeViewCTAContainerViewDelegate?
+
+  private let viewModel: PledgeViewCTAContainerViewModelType = PledgeViewCTAContainerViewModel()
 
   // MARK: - Lifecycle
 
@@ -74,7 +83,7 @@ final class PledgeViewCTAContainerView: UIView {
     _ = self.layer
       |> layerStyle
 
-    _ = self.pledgeCTAButton
+    _ = self.submitButton
       |> greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Pledge() }
 
@@ -86,13 +95,21 @@ final class PledgeViewCTAContainerView: UIView {
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.notifyDelegateSubmitButtonTapped
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+        self.delegate?.pledgeButtonTapped()
+      }
+
+    self.viewModel.outputs.notifyDelegateApplePayButtonTapped
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+        self.delegate?.applePayButtonTapped()
+      }
   }
-
-  // MARK: - Configuration
-
-  // TODO: Will be addressed in functionality PR
-//  func configureWith(value: ) {
-//  }
 
   // MARK: Functions
 
@@ -101,7 +118,7 @@ final class PledgeViewCTAContainerView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.pledgeCTAButton, self.applePayButton], self.ctaStackView)
+    _ = ([self.submitButton, self.applePayButton], self.ctaStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.disclaimerLabel], self.disclaimerStackView)
@@ -110,20 +127,31 @@ final class PledgeViewCTAContainerView: UIView {
     _ = ([self.ctaStackView, self.disclaimerStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.pledgeCTAButton.addTarget(
-      self, action: #selector(self.pledgeButtonTapped), for: .touchUpInside
+    self.submitButton.addTarget(
+      self, action: #selector(self.submitButtonTapped), for: .touchUpInside
+    )
+
+    self.applePayButton.addTarget(
+      self,
+      action: #selector(self.applePayButtonTapped),
+      for: .touchUpInside
     )
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
+      self.submitButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight)
     ])
   }
 
-  // TODO: Functionality PR
-  @objc func pledgeButtonTapped() {}
+  @objc func submitButtonTapped() {
+    self.viewModel.inputs.submitButtonTapped()
+  }
+
+  @objc func applePayButtonTapped() {
+    self.viewModel.inputs.applePayButtonTapped()
+  }
 }
 
 // MARK: - Styles

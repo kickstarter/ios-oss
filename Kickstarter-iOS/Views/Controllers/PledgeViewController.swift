@@ -101,8 +101,10 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     PledgeSummaryViewController.instantiate()
   }()
 
-  private let pledgeCTAContainerView: PledgeViewCTAContainerView = {
-    PledgeViewCTAContainerView(frame: .zero) |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  private lazy var pledgeCTAContainerView: PledgeViewCTAContainerView = {
+    PledgeViewCTAContainerView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.delegate .~ self
   }()
 
   private lazy var rootScrollView: UIScrollView = {
@@ -427,7 +429,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   // MARK: - Actions
 
-  @objc private func submitButtonTapped() {
+  @objc internal func submitButtonTapped() {
     self.viewModel.inputs.submitButtonTapped()
   }
 
@@ -502,6 +504,18 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
     controller.dismiss(animated: true, completion: { [weak self] in
       self?.viewModel.inputs.paymentAuthorizationViewControllerDidFinish()
     })
+  }
+}
+
+// MARK: - PledgeScreenCTAContainerViewDelegate
+
+extension PledgeViewController: PledgeViewCTAContainerViewDelegate {
+  func applePayButtonTapped() {
+    self.viewModel.inputs.applePayButtonTapped()
+  }
+
+  func pledgeButtonTapped() {
+    self.viewModel.inputs.submitButtonTapped()
   }
 }
 
