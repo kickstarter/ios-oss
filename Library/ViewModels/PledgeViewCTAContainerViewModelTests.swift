@@ -27,7 +27,7 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     self.notifyDelegateApplePayButtonTapped.assertValueCount(1)
   }
 
-  func testPledgeButtonTapped() {
+  func testSubmitButtonTapped() {
     self.notifyDelegateSubmitButtonTapped.assertDidNotEmitValue()
 
     self.vm.inputs.submitButtonTapped()
