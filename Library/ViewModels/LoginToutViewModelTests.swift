@@ -1,4 +1,3 @@
-import AuthenticationServices
 @testable import FBSDKCoreKit
 @testable import FBSDKLoginKit
 @testable import KsApi
@@ -591,27 +590,33 @@ final class LoginToutViewModelTests: TestCase {
     self.dismissViewController.assertValueCount(1)
   }
 
-  @available(iOS 13, *)
   func testShowAppleErrorAlert_DoesNotEmitWhen_CancellingSignInWithAppleModal() {
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
+    self.vm.inputs.viewWillAppear()
+
     self.vm.inputs.appleAuthorizationDidFail(with: .canceled)
 
     self.showAppleErrorAlert.assertDidNotEmitValue()
   }
 
-  @available(iOS 13, *)
   func testShowAppleErrorAlert_AppleAuthorizationError() {
     let error = NSError(
       domain: "notonlinesorry", code: -1_234, userInfo: [NSLocalizedDescriptionKey: "Not online sorry"]
     )
+
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
+    self.vm.inputs.viewWillAppear()
 
     self.vm.inputs.appleAuthorizationDidFail(with: .other(error))
 
     self.showAppleErrorAlert.assertValue("Not online sorry")
   }
 
-  @available(iOS 13, *)
   func testShowAppleErrorAlert_SignInWithAppleMutationError() {
     withEnvironment(apiService: MockService(signInWithAppleResult: .failure(.invalidInput))) {
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
+      self.vm.inputs.viewWillAppear()
+
       let data = SignInWithAppleData(
         appId: "com.kickstarter.test",
         firstName: "Nino",
@@ -627,9 +632,11 @@ final class LoginToutViewModelTests: TestCase {
     }
   }
 
-  @available(iOS 13.0, *)
   func testShowAppleErrorAlert_FetchUserEventError() {
     withEnvironment(apiService: MockService(fetchUserError: .couldNotParseJSON)) {
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
+      self.vm.inputs.viewWillAppear()
+
       let data = SignInWithAppleData(
         appId: "com.kickstarter.test",
         firstName: "Nino",
@@ -648,7 +655,6 @@ final class LoginToutViewModelTests: TestCase {
     }
   }
 
-  @available(iOS 13.0, *)
   func testLogIntoEnvironment_SignInWithApple() {
     let user = User.template
 
@@ -658,6 +664,9 @@ final class LoginToutViewModelTests: TestCase {
     let service = MockService(fetchUserResponse: user, signInWithAppleResult: .success(envelope))
 
     withEnvironment(apiService: service) {
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
+      self.vm.inputs.viewWillAppear()
+
       let data = SignInWithAppleData(
         appId: "com.kickstarter.test",
         firstName: "Nino",
@@ -671,6 +680,8 @@ final class LoginToutViewModelTests: TestCase {
 
       self.scheduler.run()
 
+      self.logIntoEnvironment.assertValueCount(1)
+
       let value = self.logIntoEnvironment.values.first
 
       XCTAssertEqual(user, value?.user)
@@ -679,6 +690,9 @@ final class LoginToutViewModelTests: TestCase {
   }
 
   func testAttemptAppleLogin() {
+    self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
+    self.vm.inputs.viewWillAppear()
+
     self.attemptAppleLogin.assertDidNotEmitValue()
 
     self.vm.inputs.appleLoginButtonPressed()

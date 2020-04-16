@@ -222,14 +222,11 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .switchMap { id in
         AppEnvironment.current.apiService.fetchUser(userId: id)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .prefix(SignalProducer([AppEnvironment.current.currentUser].compact()))
           .materialize()
       }
 
-    let logIntoEnvironmentWithApple = Signal.combineLatest(fetchUserEvent.values(), apiAccessToken)
-      .map { user, token in
-        AccessTokenEnvelope(accessToken: token, user: user)
-      }
+    let logIntoEnvironmentWithApple = Signal.combineLatest(apiAccessToken, fetchUserEvent.values())
+      .map(AccessTokenEnvelope.init)
 
     let appleSignInEventError = appleSignInEvent.errors()
       .map { error in error.localizedDescription }
@@ -380,7 +377,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let startLogin: Signal<(), Never>
   public let startSignup: Signal<(), Never>
   public let startTwoFactorChallenge: Signal<String, Never>
-  public private(set) var showAppleErrorAlert: Signal<String, Never> = .empty
+  public let showAppleErrorAlert: Signal<String, Never>
   public let showFacebookErrorAlert: Signal<AlertError, Never>
 }
 
