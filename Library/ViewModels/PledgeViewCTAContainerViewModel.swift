@@ -6,14 +6,14 @@ import ReactiveSwift
 public protocol PledgeViewCTAContainerViewModelInputs {
   // func configureWith(value: PledgeCTAContainerViewData)
   func applePayButtonTapped()
-  func pledgeCTAButtonTapped()
+  func submitButtonTapped()
   func tapped(_ url: URL)
 }
 
 public protocol PledgeViewCTAContainerViewModelOutputs {
   var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var notifyDelegateOpenHelpType: Signal<HelpType, Never> { get }
-  var notifyDelegatePledgeButtonTapped: Signal<Void, Never> { get }
+  var notifyDelegateSubmitButtonTapped: Signal<Void, Never> { get }
 }
 
 public protocol PledgeViewCTAContainerViewModelType {
@@ -24,7 +24,7 @@ public protocol PledgeViewCTAContainerViewModelType {
 public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewModelType,
   PledgeViewCTAContainerViewModelInputs, PledgeViewCTAContainerViewModelOutputs {
   public init() {
-    self.notifyDelegatePledgeButtonTapped = self.pledgeCTAButtonTappedProperty.signal
+    self.notifyDelegateSubmitButtonTapped = self.submitButtonTappedProperty.signal
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
 
     self.notifyDelegateOpenHelpType = self.tappedUrlProperty.signal.skipNil().map { url -> HelpType? in
@@ -44,9 +44,9 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
     self.applePayButtonTappedProperty.value = ()
   }
 
-  fileprivate let pledgeCTAButtonTappedProperty = MutableProperty(())
-  public func pledgeCTAButtonTapped() {
-    self.pledgeCTAButtonTappedProperty.value = ()
+  fileprivate let submitButtonTappedProperty = MutableProperty(())
+  public func submitButtonTapped() {
+    self.submitButtonTappedProperty.value = ()
   }
 
   fileprivate let tappedUrlProperty = MutableProperty<(URL)?>(nil)
@@ -56,7 +56,7 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
 
   public let notifyDelegateApplePayButtonTapped: Signal<Void, Never>
   public let notifyDelegateOpenHelpType: Signal<HelpType, Never>
-  public let notifyDelegatePledgeButtonTapped: Signal<Void, Never>
+  public let notifyDelegateSubmitButtonTapped: Signal<Void, Never>
 
   public var inputs: PledgeViewCTAContainerViewModelInputs { return self }
   public var outputs: PledgeViewCTAContainerViewModelOutputs { return self }

@@ -5,7 +5,7 @@ import Prelude
 import UIKit
 
 protocol PledgeViewCTAContainerViewDelegate: AnyObject {
-  func pledgeCTAButtonTapped()
+  func pledgeButtonTapped()
   func applePayButtonTapped()
   func termsOfUseTapped(with helptype: HelpType)
 }
@@ -33,7 +33,7 @@ final class PledgeViewCTAContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var pledgeCTAButton: UIButton = {
+  private lazy var submitButton: UIButton = {
     UIButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -84,7 +84,7 @@ final class PledgeViewCTAContainerView: UIView {
     _ = self.layer
       |> layerStyle
 
-    _ = self.pledgeCTAButton
+    _ = self.submitButton
       |> greenButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Pledge() }
 
@@ -97,11 +97,11 @@ final class PledgeViewCTAContainerView: UIView {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.notifyDelegatePledgeButtonTapped
+    self.viewModel.outputs.notifyDelegateSubmitButtonTapped
       .observeForUI()
       .observeValues { [weak self] in
         guard let self = self else { return }
-        self.delegate?.pledgeCTAButtonTapped()
+        self.delegate?.pledgeButtonTapped()
       }
 
     self.viewModel.outputs.notifyDelegateApplePayButtonTapped
@@ -119,12 +119,6 @@ final class PledgeViewCTAContainerView: UIView {
       }
   }
 
-  // MARK: - Configuration
-
-  // TODO: Will be addressed in functionality PR
-//  func configureWith(value: ) {
-//  }
-
   // MARK: Functions
 
   private func configureSubviews() {
@@ -132,7 +126,7 @@ final class PledgeViewCTAContainerView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.pledgeCTAButton, self.applePayButton], self.ctaStackView)
+    _ = ([self.submitButton, self.applePayButton], self.ctaStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.termsTextView], self.disclaimerStackView)
@@ -141,8 +135,8 @@ final class PledgeViewCTAContainerView: UIView {
     _ = ([self.ctaStackView, self.disclaimerStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.pledgeCTAButton.addTarget(
-      self, action: #selector(self.pledgeButtonTapped), for: .touchUpInside
+    self.submitButton.addTarget(
+      self, action: #selector(self.submitButtonTapped), for: .touchUpInside
     )
 
     self.applePayButton.addTarget(
@@ -154,13 +148,13 @@ final class PledgeViewCTAContainerView: UIView {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.pledgeCTAButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
+      self.submitButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight),
       self.applePayButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.Button.minHeight)
     ])
   }
 
-  @objc func pledgeButtonTapped() {
-    self.viewModel.inputs.pledgeCTAButtonTapped()
+  @objc func submitButtonTapped() {
+    self.viewModel.inputs.submitButtonTapped()
   }
 
   @objc func applePayButtonTapped() {

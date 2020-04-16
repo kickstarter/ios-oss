@@ -9,7 +9,7 @@ import XCTest
 internal final class PledgeViewCTAContainerViewModelTests: TestCase {
   let vm: PledgeViewCTAContainerViewModelType = PledgeViewCTAContainerViewModel()
   private let notifyDelegateApplePayButtonTapped = TestObserver<Void, Never>()
-  private let notifyDelegatePledgeButtonTapped = TestObserver<Void, Never>()
+  private let notifyDelegateSubmitButtonTapped = TestObserver<Void, Never>()
   private let notifyDelegateOpenHelpType = TestObserver<HelpType, Never>()
 
   internal override func setUp() {
@@ -17,7 +17,7 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
 
     self.vm.outputs.notifyDelegateApplePayButtonTapped
       .observe(self.notifyDelegateApplePayButtonTapped.observer)
-    self.vm.outputs.notifyDelegatePledgeButtonTapped.observe(self.notifyDelegatePledgeButtonTapped.observer)
+    self.vm.outputs.notifyDelegateSubmitButtonTapped.observe(self.notifyDelegateSubmitButtonTapped.observer)
     self.vm.outputs.notifyDelegateOpenHelpType.observe(self.notifyDelegateOpenHelpType.observer)
   }
 
@@ -29,12 +29,12 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     self.notifyDelegateApplePayButtonTapped.assertValueCount(1)
   }
 
-  func testPledgeButtonTapped() {
-    self.notifyDelegatePledgeButtonTapped.assertDidNotEmitValue()
+  func testSubmitButtonTapped() {
+    self.notifyDelegateSubmitButtonTapped.assertDidNotEmitValue()
 
-    self.vm.inputs.pledgeCTAButtonTapped()
+    self.vm.inputs.submitButtonTapped()
 
-    self.notifyDelegatePledgeButtonTapped.assertValueCount(1)
+    self.notifyDelegateSubmitButtonTapped.assertValueCount(1)
   }
 
   func testNotifyDelegateOpenHelpType() {
