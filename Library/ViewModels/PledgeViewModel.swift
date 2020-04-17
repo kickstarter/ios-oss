@@ -41,6 +41,7 @@ public protocol PledgeViewModelInputs {
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
   func submitButtonTapped()
+  func termsOfUseTapped(with: HelpType)
   func userSessionStarted()
   func viewDidLoad()
 }
@@ -66,6 +67,7 @@ public protocol PledgeViewModelOutputs {
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var showApplePayAlert: Signal<(String, String), Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
+  var showWebHelp: Signal<HelpType, Never> { get }
   var submitButtonEnabled: Signal<Bool, Never> { get }
   var submitButtonHidden: Signal<Bool, Never> { get }
   var submitButtonIsLoading: Signal<Bool, Never> { get }
@@ -181,6 +183,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       initialData.mapConst(nil),
       self.creditCardSelectedSignal.wrapInOptional()
     )
+
+    self.showWebHelp = self.termsOfUseTappedSignal
 
     // MARK: - Apple Pay
 
@@ -726,6 +730,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     return self.createApplePayBackingStatusProperty.value
   }
 
+  private let (termsOfUseTappedSignal, termsOfUseTappedObserver) = Signal<HelpType, Never>.pipe()
+  public func termsOfUseTapped(with helpType: HelpType) {
+    self.termsOfUseTappedObserver.send(value: helpType)
+  }
+
   private let (userSessionStartedSignal, userSessionStartedObserver) = Signal<Void, Never>.pipe()
   public func userSessionStarted() {
     self.userSessionStartedObserver.send(value: ())
@@ -758,6 +767,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showApplePayAlert: Signal<(String, String), Never>
+  public let showWebHelp: Signal<HelpType, Never>
   public let submitButtonEnabled: Signal<Bool, Never>
   public let submitButtonHidden: Signal<Bool, Never>
   public let submitButtonIsLoading: Signal<Bool, Never>

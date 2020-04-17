@@ -58,6 +58,7 @@ final class PledgeViewModelTests: TestCase {
   private let showApplePayAlertMessage = TestObserver<String, Never>()
   private let showApplePayAlertTitle = TestObserver<String, Never>()
   private let showErrorBannerWithMessage = TestObserver<String, Never>()
+  private let showWebHelp = TestObserver<HelpType, Never>()
   private let submitButtonEnabled = TestObserver<Bool, Never>()
   private let submitButtonHidden = TestObserver<Bool, Never>()
   private let submitButtonIsLoading = TestObserver<Bool, Never>()
@@ -132,10 +133,18 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.shippingLocationViewHidden.observe(self.shippingLocationViewHidden.observer)
     self.vm.outputs.showApplePayAlert.map(second).observe(self.showApplePayAlertMessage.observer)
     self.vm.outputs.showApplePayAlert.map(first).observe(self.showApplePayAlertTitle.observer)
-
+    self.vm.outputs.showWebHelp.observe(self.showWebHelp.observer)
     self.vm.outputs.showErrorBannerWithMessage.observe(self.showErrorBannerWithMessage.observer)
 
     self.vm.outputs.title.observe(self.title.observer)
+  }
+
+  func testShowWebHelp() {
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.termsOfUseTapped(with: .terms)
+
+    self.showWebHelp.assertValues([HelpType.terms])
   }
 
   func testPledgeContext_LoggedIn() {

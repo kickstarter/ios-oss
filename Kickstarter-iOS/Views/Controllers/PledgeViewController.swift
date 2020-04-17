@@ -400,6 +400,13 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         }
       }
 
+    self.viewModel.outputs.showWebHelp
+      .observeForControllerAction()
+      .observeValues { [weak self] helpType in
+        guard let self = self else { return }
+        self.presentHelpWebViewController(with: helpType, presentationStyle: .formSheet)
+      }
+
     // MARK: Errors
 
     self.viewModel.outputs.showErrorBannerWithMessage
@@ -531,6 +538,10 @@ extension PledgeViewController: PledgeViewCTAContainerViewDelegate {
 
   func pledgeButtonTapped() {
     self.viewModel.inputs.submitButtonTapped()
+  }
+
+  func termsOfUseTapped(with helpType: HelpType) {
+    self.viewModel.inputs.termsOfUseTapped(with: helpType)
   }
 }
 
