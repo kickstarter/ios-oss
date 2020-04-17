@@ -1,14 +1,14 @@
 import Foundation
 
 public struct SignInWithAppleEnvelope: Decodable {
-  public let signInWithApple: SignInWithApple
+  public var signInWithApple: SignInWithApple
 
   public struct SignInWithApple: Decodable {
-    public let apiAccessToken: String
-    public let user: SignInWithAppleEnvelope.User
+    public var apiAccessToken: String
+    public var user: SignInWithAppleEnvelope.User
   }
 
   public struct User: Decodable {
-    public let uid: String
+    public var uid: String
   }
 }

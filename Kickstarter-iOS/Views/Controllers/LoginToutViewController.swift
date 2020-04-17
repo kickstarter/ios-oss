@@ -282,6 +282,12 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
           self?.attemptAppleLogin()
         }
       }
+
+    self.viewModel.outputs.showAppleErrorAlert
+      .observeForControllerAction()
+      .observeValues { [weak self] message in
+        self?.present(UIAlertController.genericError(message), animated: true)
+      }
   }
 
   // MARK: - Functions
@@ -548,7 +554,16 @@ extension LoginToutViewController: ASAuthorizationControllerDelegate {
   }
 
   func authorizationController(controller _: ASAuthorizationController, didCompleteWithError error: Error) {
-    self.viewModel.inputs.appleAuthorizationDidFail(with: error)
+    if let error = error as? ASAuthorizationError {
+      let authError: AuthServicesError
+      switch error.errorCode {
+      case ASAuthorizationError.canceled.rawValue:
+        authError = .canceled
+      default:
+        authError = .other(error)
+      }
+      self.viewModel.inputs.appleAuthorizationDidFail(with: authError)
+    }
   }
 }
 
