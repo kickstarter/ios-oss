@@ -20,5 +20,5 @@ comment:
   require_changes: no
 
 ignore:
-  - "**/*Tests.swift" # ignore coverage reports for our test files
-  - "Frameworks" # ignore all files in our Frameworks directory
+  - "**/*Tests.swift" # ignore coverage reports for test files
+  - "Frameworks/**/*" # ignore all files in the Frameworks directory

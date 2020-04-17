@@ -271,48 +271,6 @@ jobs:
 
       - codecov/upload
 
-  kickstarter-ios-tests-and-code-coverage:
-    <<: *base_job
-    steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
-      - checkout
-
-      - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
-          name: Store Xcode Version
-          command: xcodebuild -version > xcode_version.txt
-
-      - restore_cache:
-          name: Restore Carthage Cache
-          keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
-      - run:
-          name: Bootstrap
-          command: make bootstrap
-
-      - run:
-          name: Pre-load simulator
-          command: *preload_simulator
-      - run:
-          name: Kickstarter-iOS Tests
-          command: SCHEME=Kickstarter-code-cov make test
-      - run:
-          name: Send coverage to codecov
-          command: bash <(curl -s https://codecov.io/bash) -J Kickstarter
-
   deploy_beta:
     <<: *base_job
     steps:
@@ -579,7 +537,6 @@ workflows:
       - kickstarter-ui-tests
       - library-tests
       - ksapi-tests
-      #- kickstarter-ios-tests-and-code-coverage
       - refresh_app_store_dsyms:
           filters:
             branches:
