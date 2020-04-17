@@ -21,4 +21,4 @@ comment:
 
 ignore:
   - "**/*Tests.swift" # ignore coverage reports for test files
-  - "Frameworks/**/*" # ignore all files in the Frameworks directory
+  - "**/*.framework" # ignore all files in .framework directories
