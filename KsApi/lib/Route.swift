@@ -180,7 +180,12 @@ internal enum Route {
       case let .incrementVideoCompletion(project):
         let statsURL = URL(string: project.urls.web.project)?
           .appendingPathComponent("video/plays")
-        return (.POST, statsURL?.absoluteString ?? "", ["event_type": "complete", "location": "internal"], nil)
+        return (
+          .POST,
+          statsURL?.absoluteString ?? "",
+          ["event_type": "complete", "location": "internal"],
+          nil
+        )
 
       case let .incrementVideoStart(project):
         let statsURL = URL(string: project.urls.web.project)?

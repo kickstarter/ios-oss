@@ -13,8 +13,8 @@ extension Project {
      Ideally we should get the amounts from the API. But for now we have to update them manually.
      */
 
-    // swiftlint:disable line_length
-    // swiftlint:disable comma
+    // swiftformat:disable wrap
+    // swiftformat:disable wrapArguments
     public static let at = Country(countryCode: "AT", currencyCode: "EUR", currencySymbol: "€", maxPledge: 8_500, minPledge: 1, trailingCode: false)
     public static let au = Country(countryCode: "AU", currencyCode: "AUD", currencySymbol: "$", maxPledge: 13_000, minPledge: 1, trailingCode: true)
     public static let be = Country(countryCode: "BE", currencyCode: "EUR", currencySymbol: "€", maxPledge: 8_500, minPledge: 1, trailingCode: false)
@@ -37,8 +37,8 @@ extension Project {
     public static let se = Country(countryCode: "SE", currencyCode: "SEK", currencySymbol: "kr", maxPledge: 85_000, minPledge: 5, trailingCode: true)
     public static let sg = Country(countryCode: "SG", currencyCode: "SGD", currencySymbol: "$", maxPledge: 13_000, minPledge: 2, trailingCode: true)
     public static let us = Country(countryCode: "US", currencyCode: "USD", currencySymbol: "$", maxPledge: 10_000, minPledge: 1, trailingCode: true)
-    // swiftlint:enable line_length
-    // swiftlint:enable comma
+    // swiftformat:enable wrap
+    // swiftformat:enable wrapArguments
 
     public static let all: [Country] = [
       .au, .at, .be, .ca, .ch, .de, .dk, .es, .fr, .gb, .hk, .ie, .it, .jp, .lu, .mx, .nl, .no, .nz, .se, .sg,

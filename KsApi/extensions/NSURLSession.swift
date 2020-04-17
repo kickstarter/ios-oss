@@ -126,7 +126,6 @@ internal extension URLSession {
       }
   }
 
-  // swiftlint:disable force_try
   fileprivate static let sanitationRules = [
     "oauth_token=[REDACTED]":
       try! NSRegularExpression(pattern: "oauth_token=([a-zA-Z0-9]*)", options: .caseInsensitive),
@@ -137,7 +136,6 @@ internal extension URLSession {
     "password=[REDACTED]":
       try! NSRegularExpression(pattern: "password=([a-zA-Z0-9]*)", options: .caseInsensitive)
   ]
-  // swiftlint:enable force_try
 
   // Strips sensitive materials from the request, e.g. oauth token, client id, fb token, password, etc...
   fileprivate func sanitized(_ request: URLRequest) -> String {

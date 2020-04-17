@@ -18,14 +18,18 @@ let baseActivity = .template
   |> Activity.lens.comment .~ (
     .template
       |> Comment.lens.author .~ .brando
-      |> Comment.lens.body .~ "Hi, I'm wondering if you're planning on holding a gallery showing with these portraits? I'd love to attend if you'll be in New York!"
+      |> Comment.lens
+      .body .~
+      "Hi, I'm wondering if you're planning on holding a gallery showing with these portraits? I'd love to attend if you'll be in New York!"
   )
   |> Activity.lens.memberData.amount .~ 25
   |> Activity.lens.project .~ project
   |> Activity.lens.update .~ (
     .template
       |> Update.lens.title .~ "Spirit animal reward available again"
-      |> Update.lens.body .~ "Due to popular demand, and the inspirational momentum of this project, we've added more spirit animal rewards!"
+      |> Update.lens
+      .body .~
+      "Due to popular demand, and the inspirational momentum of this project, we've added more spirit animal rewards!"
   )
   |> Activity.lens.user .~ .brando
   |> Activity.lens.memberData.backing .~ (
@@ -76,7 +80,8 @@ let backingActivities = [
 AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(
     oauthToken: OauthToken(token: "deadbeef"),
-    fetchProjectActivitiesResponse: activityCategories.map { baseActivity |> Activity.lens.category .~ $0 } + backingActivities
+    fetchProjectActivitiesResponse: activityCategories
+      .map { baseActivity |> Activity.lens.category .~ $0 } + backingActivities
   ),
   currentUser: Project.cosmicSurgery.creator,
   isVoiceOverRunning: { isVoiceOverRunning }

@@ -39,13 +39,11 @@ internal final class MessageThreadsViewModelTests: TestCase {
       self.trackingClient.events,
       "View event and its deprecated version are tracked."
     )
-    // swiftlint:disable force_cast
     XCTAssertEqual(
       [nil, true, true],
       self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? },
       "Deprecated property is tracked in deprecated event."
     )
-    // swiftlint:enable force_cast
 
     // Wait enough time to get API response
     self.scheduler.advance()
@@ -137,13 +135,11 @@ internal final class MessageThreadsViewModelTests: TestCase {
       self.trackingClient.events,
       "View event and its deprecated version are tracked."
     )
-    // swiftlint:disable force_cast
     XCTAssertEqual(
       [nil, true, true],
       self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? },
       "Deprecated property is tracked in deprecated event."
     )
-    // swiftlint:enable force_cast
 
     self.loadingFooterIsHidden.assertValues(
       [false, true],
@@ -172,13 +168,11 @@ internal final class MessageThreadsViewModelTests: TestCase {
       self.trackingClient.events,
       "View event and its deprecated version are tracked."
     )
-    // swiftlint:disable force_cast
     XCTAssertEqual(
       [nil, true, true, nil, true, true],
       self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? },
       "Deprecated property is tracked in deprecated event."
     )
-    // swiftlint:enable force_cast
 
     self.scheduler.advance()
 

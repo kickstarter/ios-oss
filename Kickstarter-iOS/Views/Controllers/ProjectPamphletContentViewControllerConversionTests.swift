@@ -114,7 +114,6 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
   func test_USProject_USUser_NonUSLocation_Backer() {
     let deadline = self.dateType.init().addingTimeInterval(-100).timeIntervalSince1970
     let backing = .template
-      // swiftlint:disable:next force_unwrapping
       |> Backing.lens.amount .~ (self.cosmicSurgery.rewards.first!.minimum + 5.00)
       |> Backing.lens.rewardId .~ self.cosmicSurgery.rewards.first?.id
       |> Backing.lens.reward .~ self.cosmicSurgery.rewards.first

@@ -178,7 +178,6 @@ final class SurveyResponseViewModelTests: TestCase {
 
 private func surveyRequest(project: Project, prepared: Bool, method: KsApi.Method) -> URLRequest {
   let url = "\(project.urls.web.project)/surveys/1"
-  // swiftlint:disable:next force_unwrapping
   var request = URLRequest(url: URL(string: url)!)
   request.httpMethod = method.rawValue
   if prepared {

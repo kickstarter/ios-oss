@@ -1065,7 +1065,6 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.textFieldTextColor.assertValues([green, red, green, red, green])
   }
 
-  // swiftlint:disable line_length
   func testTextFieldValueChangedRounding() {
     let green = UIColor.ksr_green_500
     let red = UIColor.ksr_red_400
@@ -1164,7 +1163,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.textFieldValueChanged("10.0194444444")
     self.amountIsValid.assertValues([true, true, true, true, true, true, true, true, true, true])
     self.amountMin.assertValues([10, 10, 10, 10, 10, 10, 10, 10, 10, 10])
-    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000])
+    self.amountMax
+      .assertValues([10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01, 10.01, 10.01, 10.02, 10.02])
     self.doneButtonIsEnabled.assertValues([true])
     self.labelTextColor.assertValues([green])
@@ -1174,7 +1174,8 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.textFieldValueChanged("9.999")
     self.amountIsValid.assertValues([true, true, true, true, true, true, true, true, true, true, false])
     self.amountMin.assertValues([10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10])
-    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000])
+    self.amountMax
+      .assertValues([10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000])
     self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01, 10.01, 10.01, 10.02, 10.02, 10])
     self.doneButtonIsEnabled.assertValues([true, false])
     self.labelTextColor.assertValues([green, red])
@@ -1182,9 +1183,24 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.textFieldTextColor.assertValues([green, red])
 
     self.vm.inputs.textFieldValueChanged("9.99")
-    self.amountIsValid.assertValues([true, true, true, true, true, true, true, true, true, true, false, false])
+    self.amountIsValid
+      .assertValues([true, true, true, true, true, true, true, true, true, true, false, false])
     self.amountMin.assertValues([10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10])
-    self.amountMax.assertValues([10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000])
+    self.amountMax
+      .assertValues([
+        10_000,
+        10_000,
+        10_000,
+        10_000,
+        10_000,
+        10_000,
+        10_000,
+        10_000,
+        10_000,
+        10_000,
+        10_000,
+        10_000
+      ])
     self.amountValue.assertValues([10, 10, 10, 10, 10, 10.01, 10.01, 10.01, 10.02, 10.02, 10, 9.99])
     self.doneButtonIsEnabled.assertValues([true, false])
     self.labelTextColor.assertValues([green, red])
@@ -1222,11 +1238,11 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.textFieldValue.assertValues(["10", "10", "10", "10", "10.01", "10.01", "10.01", "10.02", "10.02"])
 
     self.vm.inputs.textFieldDidEndEditing("9.999")
-    self.textFieldValue.assertValues(["10", "10", "10", "10", "10.01", "10.01", "10.01", "10.02", "10.02", "10"])
+    self.textFieldValue
+      .assertValues(["10", "10", "10", "10", "10.01", "10.01", "10.01", "10.02", "10.02", "10"])
 
     self.vm.inputs.textFieldDidEndEditing("9.99")
-    self.textFieldValue.assertValues(["10", "10", "10", "10", "10.01", "10.01", "10.01", "10.02", "10.02", "10", "9.99"])
+    self.textFieldValue
+      .assertValues(["10", "10", "10", "10", "10.01", "10.01", "10.01", "10.02", "10.02", "10", "9.99"])
   }
-
-  // swiftlint:enable line_length
 }

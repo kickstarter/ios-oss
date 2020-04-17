@@ -39,7 +39,6 @@ internal class TestCase: FBSnapshotTestCase {
     UIViewController.doBadSwizzleStuff()
 
     var calendar = Calendar(identifier: .gregorian)
-    // swiftlint:disable:next force_unwrapping
     calendar.timeZone = TimeZone(identifier: "GMT")!
 
     AppEnvironment.pushEnvironment(

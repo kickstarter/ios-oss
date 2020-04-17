@@ -127,7 +127,15 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
 
     self.rewardsRowRewards.assertValues([
       [self.stat4, self.stat5, self.stat2],
-      [self.stat4, self.stat5, self.stat2, self.stat1, self.stat3, self.zeroPledgedStat1, self.zeroPledgedStat2]
+      [
+        self.stat4,
+        self.stat5,
+        self.stat2,
+        self.stat1,
+        self.stat3,
+        self.zeroPledgedStat1,
+        self.zeroPledgedStat2
+      ]
     ], "Emit all rewards sorted by minimum value")
     self.rewardsRowCountry.assertValues([.us, .us])
     self.rewardsRowTotalPledged.assertValues([5_000, 5_000])

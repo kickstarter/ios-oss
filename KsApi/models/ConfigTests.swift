@@ -53,7 +53,6 @@ final class ConfigTests: XCTestCase {
     let decodedConfig = Config.decodeJSONDictionary(self.json)
     XCTAssertNil(decodedConfig.error)
 
-    // swiftlint:disable:next force_unwrapping
     let config = decodedConfig.value!
     self.assertValues(of: config)
   }

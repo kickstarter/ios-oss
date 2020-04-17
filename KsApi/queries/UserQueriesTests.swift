@@ -36,7 +36,6 @@ final class UserQueriesTests: XCTestCase {
     )
   }
 
-  // swiftlint:disable line_length
   func testBackingsQuery() {
     let query = Query.user(backingsQueryFields(status: GraphBacking.Status.errored.rawValue))
     XCTAssertEqual(

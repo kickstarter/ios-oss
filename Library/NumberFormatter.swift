@@ -1,4 +1,4 @@
-// swiftlint:disable line_length
+// swiftformat:disable wrap
 import Foundation
 
 final class AttributedNumberFormatter: NumberFormatter {

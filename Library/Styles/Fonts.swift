@@ -1,6 +1,5 @@
 import UIKit
 
-// swiftlint:disable valid_docs
 extension UIFont {
   /// Returns a bolded version of `self`.
   public var bolded: UIFont {
@@ -106,7 +105,6 @@ extension UIFont {
     return UIFont(descriptor: monospacedDescriptor, size: 0.0)
   }
 
-  // swiftlint:disable:next cyclomatic_complexity
   fileprivate static func preferredFont(style: UIFont.TextStyle, size: CGFloat? = nil) -> UIFont {
     let defaultSize: CGFloat
     switch style {

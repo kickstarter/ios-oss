@@ -15,6 +15,9 @@
 # spaceAroundOperators
 --nospaceoperators ...,..<
 
+# wrap
+--maxwidth 110
+
 # trailingCommas
 --commas inline
 

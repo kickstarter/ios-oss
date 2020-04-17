@@ -308,7 +308,6 @@ final class ActivitiesViewModelTests: TestCase {
 
   func testGoToProject() {
     let activity = .template |> Activity.lens.category .~ .backing
-    // swiftlint:disable:next force_unwrapping
     let project = activity.project!
     let refTag = RefTag.activity
 

@@ -2,7 +2,6 @@ import Foundation
 import KsApi
 import Prelude
 
-// swiftlint:disable:next force_unwrapping
 public let UTCTimeZone = TimeZone(secondsFromGMT: 0)!
 
 public enum Format {
@@ -272,7 +271,6 @@ public enum Format {
 
    - returns: A pair of strings for the numeric time value and unit.
    */
-  // swiftlint:disable valid_docs
   public static func duration(
     secondsInUTC seconds: TimeInterval,
     abbreviate: Bool = false,
@@ -331,8 +329,6 @@ public enum Format {
     }
     return result
   }
-
-  // swiftlint:enable valid_docs
 
   /**
    Format a date into a relative string.
