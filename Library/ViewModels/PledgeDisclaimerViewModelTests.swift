@@ -3,8 +3,6 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
-import XCTest
-
 final class PledgeDisclaimerViewModelTests: TestCase {
   private let vm: PledgeDisclaimerViewModelType = PledgeDisclaimerViewModel()
 
