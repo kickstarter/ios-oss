@@ -5,12 +5,17 @@ import ReactiveSwift
 
 public typealias SignInWithAppleData = (appId: String, firstName: String?, lastName: String?, token: String)
 
-public protocol LoginToutViewModelInputs {
-  /// Call when Apple completes authorization with error
-  func appleAuthorizationDidFail(with error: Error)
+public enum AuthServicesError {
+  case canceled
+  case other(Error)
+}
 
+public protocol LoginToutViewModelInputs {
   /// Call when Apple completes authorization
   func appleAuthorizationDidSucceed(with data: SignInWithAppleData?)
+
+  /// Call when Apple completes authorization with error
+  func appleAuthorizationDidFail(with error: AuthServicesError)
 
   /// Call when Continue withApple button is pressed
   func appleLoginButtonPressed()
@@ -71,6 +76,9 @@ public protocol LoginToutViewModelOutputs {
 
   /// Emits when a login success notification should be posted.
   var postNotification: Signal<(Notification, Notification), Never> { get }
+
+  /// Emits when should show Apple error alert with error message
+  var showAppleErrorAlert: Signal<String, Never> { get }
 
   /// Emits when should show Facebook error alert with AlertError
   var showFacebookErrorAlert: Signal<AlertError, Never> { get }
@@ -182,7 +190,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       genericFacebookErrorAlert
     )
 
-    self.logIntoEnvironment = facebookLogin.values()
+    let logIntoEnvironmentWithFacebook = facebookLogin.values()
 
     // MARK: - Sign-in with Apple
 
@@ -203,10 +211,38 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
           .materialize()
       }
 
-    // This is temporary uniquely to prove that the mutation is working properly for review purposes.
-    appleSignInEvent.observeValues { v in
-      print("=== Sign In With Apple ===\n\(v) ")
-    }
+    let userId = appleSignInEvent.values()
+      .map { envelope in Int(envelope.signInWithApple.user.uid) }
+      .skipNil()
+
+    let apiAccessToken = appleSignInEvent.values()
+      .map(\.signInWithApple.apiAccessToken)
+
+    let fetchUserEvent = userId
+      .switchMap { id in
+        AppEnvironment.current.apiService.fetchUser(userId: id)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    let logIntoEnvironmentWithApple = Signal.combineLatest(apiAccessToken, fetchUserEvent.values())
+      .map(AccessTokenEnvelope.init)
+
+    let appleSignInEventError = appleSignInEvent.errors()
+      .map { error in error.localizedDescription }
+
+    let appleAuthorizationError = self.appleAuthorizationDidFailWithErrorProperty.signal
+      .skipNil()
+      .map(errorMessage(from:))
+      .skipNil()
+
+    let fetchUserEventError = fetchUserEvent.errors()
+      .map { error in error.localizedDescription }
+
+    self.showAppleErrorAlert = Signal
+      .merge(appleAuthorizationError, fetchUserEventError, appleSignInEventError)
+
+    self.logIntoEnvironment = Signal.merge(logIntoEnvironmentWithApple, logIntoEnvironmentWithFacebook)
 
     // MARK: - Tracking
 
@@ -280,8 +316,8 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.appleAuthorizationDidSucceedWithDataProperty.value = data
   }
 
-  fileprivate let appleAuthorizationDidFailWithErrorProperty = MutableProperty<Error?>(nil)
-  public func appleAuthorizationDidFail(with error: Error) {
+  fileprivate let appleAuthorizationDidFailWithErrorProperty = MutableProperty<AuthServicesError?>(nil)
+  public func appleAuthorizationDidFail(with error: AuthServicesError) {
     self.appleAuthorizationDidFailWithErrorProperty.value = error
   }
 
@@ -351,6 +387,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
   public let startLogin: Signal<(), Never>
   public let startSignup: Signal<(), Never>
   public let startTwoFactorChallenge: Signal<String, Never>
+  public let showAppleErrorAlert: Signal<String, Never>
   public let showFacebookErrorAlert: Signal<AlertError, Never>
 }
 
@@ -364,5 +401,14 @@ private func statusString(_ forStatus: LoginIntent) -> String {
     return Strings.Please_log_in_or_sign_up_to_message_this_creator()
   case .discoveryOnboarding, .generic, .activity, .loginTab:
     return Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
+  }
+}
+
+private func errorMessage(from error: AuthServicesError) -> String? {
+  switch error {
+  case let .other(error):
+    return error.localizedDescription
+  case .canceled:
+    return nil
   }
 }
