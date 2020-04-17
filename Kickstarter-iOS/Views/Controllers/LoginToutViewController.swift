@@ -367,7 +367,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
     let authorizationController = ASAuthorizationController(authorizationRequests: [appleIDRequest])
       |> \.delegate .~ self
-      ?|> \.presentationContextProvider .~ (self as? ASAuthorizationControllerPresentationContextProviding)
+      ?|> \.presentationContextProvider .~ self
     authorizationController?.performRequests()
   }
 

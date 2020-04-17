@@ -13,6 +13,7 @@ final class LoginToutViewModelTests: TestCase {
 
   fileprivate let attemptAppleLogin = TestObserver<(), Never>()
   fileprivate let attemptFacebookLogin = TestObserver<(), Never>()
+  fileprivate let didSignInWithApple = TestObserver<SignInWithAppleEnvelope, Never>()
   fileprivate let dismissViewController = TestObserver<(), Never>()
   fileprivate let headlineLabelHidden = TestObserver<Bool, Never>()
   fileprivate let isLoading = TestObserver<Bool, Never>()
@@ -697,6 +698,13 @@ final class LoginToutViewModelTests: TestCase {
 
     self.vm.inputs.appleLoginButtonPressed()
 
+    XCTAssertEqual(
+      [
+        "Log In or Signup Page Viewed",
+        "Continue With Apple Button Clicked"
+      ],
+      trackingClient.events
+    )
     self.attemptAppleLogin.assertValueCount(1)
   }
 }
