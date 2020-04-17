@@ -2,6 +2,8 @@ import Prelude
 import UIKit
 
 class PillLayout: UICollectionViewFlowLayout {
+  var shouldInvalidateLayout: Bool = true
+
   // MARK: - Lifecycle
 
   required init(
@@ -50,5 +52,11 @@ class PillLayout: UICollectionViewFlowLayout {
     }
 
     return layoutAttributes
+  }
+
+  override func invalidateLayout() {
+    if self.shouldInvalidateLayout {
+      super.invalidateLayout()
+    }
   }
 }

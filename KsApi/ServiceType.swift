@@ -200,6 +200,10 @@ public protocol ServiceType {
   /// Fetches the stats for a particular project.
   func fetchProjectStats(projectId: Int) -> SignalProducer<ProjectStatsEnvelope, ErrorEnvelope>
 
+  /// Fetch the project summary for a project with a given query.
+  func fetchProjectSummary(query: NonEmptySet<Query>)
+    -> SignalProducer<ProjectSummaryEnvelope, GraphError>
+
   /// Fetches a reward for a project and reward id.
   func fetchRewardShippingRules(projectId: Int, rewardId: Int)
     -> SignalProducer<ShippingRulesEnvelope, ErrorEnvelope>

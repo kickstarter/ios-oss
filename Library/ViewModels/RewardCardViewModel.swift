@@ -106,7 +106,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
         }
       }
 
-    self.reloadPills = projectAndReward.map(pillStrings(project:reward:))
+    self.reloadPills = projectAndReward.map(pillValues(project:reward:))
     self.pillCollectionViewHidden = self.reloadPills.map { $0.isEmpty }
 
     self.rewardSelected = reward
@@ -202,7 +202,7 @@ private func rewardTitle(project: Project, reward: Reward) -> String {
   return reward.title.coalesceWith("")
 }
 
-private func pillStrings(project: Project, reward: Reward) -> [String] {
+private func pillValues(project: Project, reward: Reward) -> [String] {
   return [
     timeLeftString(project: project, reward: reward),
     backerCountOrRemainingString(project: project, reward: reward),
