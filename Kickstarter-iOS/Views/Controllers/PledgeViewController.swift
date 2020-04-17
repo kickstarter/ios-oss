@@ -303,6 +303,12 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.shippingLocationViewController.configureWith(value: data)
       }
 
+    self.viewModel.outputs.configurePledgeViewCTAContainerView
+      .observeForUI()
+      .observeValues { [weak self] value in
+        self?.pledgeCTAContainerView.configureWith(value: value)
+      }
+
     self.viewModel.outputs.notifyPledgeAmountViewControllerShippingAmountChanged
       .observeForUI()
       .observeValues { [weak self] amount in

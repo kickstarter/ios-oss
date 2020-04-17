@@ -110,6 +110,7 @@ final class PledgeViewCTAContainerView: UIView {
         guard let self = self else { return }
         self.delegate?.applePayButtonTapped()
       }
+    self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
 
     self.viewModel.outputs.notifyDelegateOpenHelpType
       .observeForUI()
@@ -117,6 +118,12 @@ final class PledgeViewCTAContainerView: UIView {
         guard let self = self else { return }
         self.delegate?.termsOfUseTapped(with: helpType)
       }
+  }
+
+  // MARK: - Configuration
+
+  func configureWith(value: PledgeViewCTAContainerViewData) {
+    self.viewModel.inputs.configureWith(value: value)
   }
 
   // MARK: Functions
