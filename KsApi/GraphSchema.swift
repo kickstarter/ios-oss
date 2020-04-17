@@ -216,6 +216,7 @@ public enum Query {
     case id
     case image(alias: String, width: Int)
     case imageUrl(alias: String, blur: Bool, width: Int)
+    case isAppleConnected
     case isEmailDeliverable
     case isEmailVerified
     case isFollowing
@@ -422,6 +423,7 @@ extension Query.User: QueryType {
     case .id: return "id"
     case let .image(alias, width): return "\(alias): imageUrl(width: \(width))"
     case let .imageUrl(alias, blur, width): return "\(alias): imageUrl(blur: \(blur), width: \(width))"
+    case .isAppleConnected: return "isAppleConnected"
     case .isEmailDeliverable: return "isDeliverable"
     case .isEmailVerified: return "isEmailVerified"
     case .isFollowing: return "isFollowing"
