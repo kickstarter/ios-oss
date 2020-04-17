@@ -112,7 +112,7 @@ final class PledgeViewCTAContainerView: UIView {
       }
 
     self.viewModel.outputs.notifyDelegateOpenHelpType
-      .observeForControllerAction()
+      .observeForUI()
       .observeValues { [weak self] helpType in
         guard let self = self else { return }
         self.delegate?.termsOfUseTapped(with: helpType)
