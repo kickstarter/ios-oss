@@ -88,7 +88,7 @@ private let appleIdLabelStyle: LabelStyle = { label in
     |> settingsTitleLabelStyle
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
-    |> \.text %~ { _ in localizedString(key: "apple_id", defaultValue: "Apple ID") }
+    |> \.text %~ { _ in Strings.Apple_ID() }
 }
 
 private let emailLabelStyle: LabelStyle = { label in
@@ -102,10 +102,7 @@ private let emailLabelStyle: LabelStyle = { label in
 private let manageThisAccountLabelStyle: LabelStyle = { label in
   label
     |> settingsDescriptionLabelStyle
-    |> \.text %~ { _ in localizedString(
-      key: "manage_this_account",
-      defaultValue: "Manage this account in your Apple ID settings."
-    ) }
+    |> \.text %~ { _ in Strings.Manage_this_account() }
 }
 
 private let stackViewStyle: StackViewStyle = { stackView in
