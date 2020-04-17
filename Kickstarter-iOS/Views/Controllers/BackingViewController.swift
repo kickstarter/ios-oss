@@ -47,10 +47,10 @@ internal final class BackingViewController: UIViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
     _ = self.messageCreatorButton
-      |> UIButton.lens.targets .~ [(self, #selector(messageCreatorTapped), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, #selector(self.messageCreatorTapped), .touchUpInside)]
 
     _ = self.viewMessagesButton
-      |> UIButton.lens.targets .~ [(self, #selector(viewMessagesTapped), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, #selector(self.viewMessagesTapped), .touchUpInside)]
 
     self.viewModel.inputs.viewDidLoad()
 

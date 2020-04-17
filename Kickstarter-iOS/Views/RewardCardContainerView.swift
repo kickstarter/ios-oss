@@ -182,7 +182,7 @@ public final class RewardCardContainerView: UIView {
       (UIColor.hex(0xFFF2EC), 1)
     ]
 
-    baseGradientView.setGradient(gradient)
+    self.baseGradientView.setGradient(gradient)
 
     _ = (self.baseGradientView, self)
       |> ksr_addSubviewToParent()

@@ -33,9 +33,9 @@ let buttonsStyles: [[(UIButton) -> UIButton]] = baseButtonsStyles.map { [$0, $0 
 
 let rowStackViewStyle =
   UIStackView.lens.alignment .~ .top
-  <> UIStackView.lens.axis .~ .horizontal
-  <> UIStackView.lens.distribution .~ .equalSpacing
-  <> UIStackView.lens.spacing .~ 24.0
+    <> UIStackView.lens.axis .~ .horizontal
+    <> UIStackView.lens.distribution .~ .equalSpacing
+    <> UIStackView.lens.spacing .~ 24.0
 
 buttonsStyles.forEach { styles in
   let rowStackView = UIStackView()

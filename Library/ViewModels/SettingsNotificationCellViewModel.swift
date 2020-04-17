@@ -126,17 +126,17 @@ public final class SettingsNotificationCellViewModel: SettingsNotificationCellVi
 
     self.pushNotificationsButtonAccessibilityLabel =
       Signal.combineLatest(self.pushNotificationsEnabled, cellType)
-      .map { pushNotificationEnabled, cellType in
-        pushNotificationEnabled ? Strings.Notification_push_notification_on(notification: cellType.title)
-          : Strings.Notification_push_notification_off(notification: cellType.title)
-      }
+        .map { pushNotificationEnabled, cellType in
+          pushNotificationEnabled ? Strings.Notification_push_notification_on(notification: cellType.title)
+            : Strings.Notification_push_notification_off(notification: cellType.title)
+        }
 
     self.emailNotificationsButtonAccessibilityLabel =
       Signal.combineLatest(self.emailNotificationsEnabled, cellType)
-      .map { emailNotificationEnabled, cellType in
-        emailNotificationEnabled ? Strings.Notification_email_notification_on(notification: cellType.title)
-          : Strings.Notification_email_notification_off(notification: cellType.title)
-      }
+        .map { emailNotificationEnabled, cellType in
+          emailNotificationEnabled ? Strings.Notification_email_notification_on(notification: cellType.title)
+            : Strings.Notification_email_notification_off(notification: cellType.title)
+        }
 
     self.emailNotificationButtonIsHidden = cellType
       .map { $0.shouldShowEmailNotificationButton }

@@ -52,7 +52,7 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.playButtonTapped()
     self.vm.inputs.durationChanged(toNew: self.duration)
 
-    self.addCompletionObserver.assertValues([completedThreshold], "Observer added to completion threshold.")
+    self.addCompletionObserver.assertValues([self.completedThreshold], "Observer added to completion threshold.")
   }
 
   func testConfigureVideoWithURL_setsHighURL_WhenHlsIsNil() {

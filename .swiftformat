@@ -12,8 +12,8 @@
 # Reference `self` explicitly
 --self insert
 
-# ranges
---ranges no-space
+# spaceAroundOperators
+--nospaceoperators ...,..<
 
 # trailingCommas
 --commas inline

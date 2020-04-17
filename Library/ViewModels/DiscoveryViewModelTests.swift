@@ -74,14 +74,14 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear(animated: false)
 
     self.loadFilterIntoDataSource.assertValues(
-      [initialParams],
+      [self.initialParams],
       "Initial params load into data source immediately."
     )
 
     self.vm.inputs.filter(withParams: self.starredParams)
 
     self.loadFilterIntoDataSource.assertValues(
-      [initialParams, starredParams],
+      [self.initialParams, self.starredParams],
       "New params load into data source after selecting."
     )
   }
@@ -148,7 +148,7 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: false)
 
-    self.configureNavigationHeader.assertValues([initialParams])
+    self.configureNavigationHeader.assertValues([self.initialParams])
   }
 
   func testOrdering() {

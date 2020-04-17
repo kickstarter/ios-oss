@@ -454,10 +454,10 @@ extension DateFormatterConfig: Hashable {
 func == (lhs: DateFormatterConfig, rhs: DateFormatterConfig) -> Bool {
   return
     lhs.template == rhs.template
-    && lhs.dateStyle == rhs.dateStyle
-    && lhs.locale == rhs.locale
-    && lhs.timeStyle == rhs.timeStyle
-    && lhs.timeZone == rhs.timeZone
+      && lhs.dateStyle == rhs.dateStyle
+      && lhs.locale == rhs.locale
+      && lhs.timeStyle == rhs.timeStyle
+      && lhs.timeZone == rhs.timeZone
 }
 
 private struct NumberFormatterConfig {
@@ -545,11 +545,11 @@ extension NumberFormatterConfig: Hashable {
 private func == (lhs: NumberFormatterConfig, rhs: NumberFormatterConfig) -> Bool {
   return
     lhs.numberStyle == rhs.numberStyle
-    && lhs.roundingMode == rhs.roundingMode
-    && lhs.maximumFractionDigits == rhs.maximumFractionDigits
-    && lhs.generatesDecimalNumbers == rhs.generatesDecimalNumbers
-    && lhs.locale == rhs.locale
-    && lhs.currencySymbol == rhs.currencySymbol
+      && lhs.roundingMode == rhs.roundingMode
+      && lhs.maximumFractionDigits == rhs.maximumFractionDigits
+      && lhs.generatesDecimalNumbers == rhs.generatesDecimalNumbers
+      && lhs.locale == rhs.locale
+      && lhs.currencySymbol == rhs.currencySymbol
 }
 
 extension NumberFormatterConfig {
