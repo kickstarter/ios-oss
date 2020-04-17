@@ -249,7 +249,7 @@ public final class BackingViewModel: BackingViewModelType, BackingViewModelInput
       .map { _, _, backerIsCurrentUser in
         backerIsCurrentUser
           ? Strings.Contact_creator()
-          : localizedString(key: "Contact_backer", defaultValue: "Contact backer")
+          : Strings.Contact_backer()
       }
 
     self.opacityForContainers = Signal.merge(

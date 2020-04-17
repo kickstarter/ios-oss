@@ -43,6 +43,20 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
     )
   }
 
+  func testPersonalization() {
+    let section = DiscoveryProjectsDataSource.Section.personalization.rawValue
+
+    self.dataSource.showPersonalization(true)
+
+    XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
+
+    self.dataSource.showPersonalization(false)
+
+    XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
+  }
+
   func testActivitySample() {
     let section = DiscoveryProjectsDataSource.Section.activitySample.rawValue
 
