@@ -569,6 +569,23 @@ public enum Strings {
     )
   }
   /**
+   "AppleID"
+
+   - **en**: "AppleID"
+   - **de**: "AppleID"
+   - **es**: "Apple ID"
+   - **fr**: "Apple ID"
+   - **ja**: "AppleID"
+  */
+  public static func Apple_ID() -> String {
+    return localizedString(
+      key: "Apple_ID",
+      defaultValue: "AppleID",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Are you sure?"
 
    - **en**: "Are you sure?"
@@ -4885,6 +4902,23 @@ with friends."
     return localizedString(
       key: "Manage",
       defaultValue: "Manage",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Manage this account in your AppleID settings."
+
+   - **en**: "Manage this account in your AppleID settings."
+   - **de**: "Manage this account in your AppleID settings."
+   - **es**: "Administra esta cuenta desde la configuración de tu Apple ID."
+   - **fr**: "Gérez ce compte depuis vos paramètres Apple ID."
+   - **ja**: "Manage this account in your AppleID settings."
+  */
+  public static func Manage_this_account() -> String {
+    return localizedString(
+      key: "Manage_this_account",
+      defaultValue: "Manage this account in your AppleID settings.",
       count: nil,
       substitutions: [:]
     )
