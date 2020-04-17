@@ -136,7 +136,7 @@ public final class VideoViewController: UIViewController {
     self.viewModel.outputs.projectImageURL
       .observeForUI()
       .on(event: { [weak self] _ in
-        self?.projectImageView.af_cancelImageRequest()
+        self?.projectImageView.af.cancelImageRequest()
         self?.projectImageView.image = nil
       })
       .skipNil()

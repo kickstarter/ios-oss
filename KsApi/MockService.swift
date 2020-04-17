@@ -73,7 +73,7 @@
     fileprivate let fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>?
     fileprivate let fetchGraphCreditCardsError: GraphError?
 
-    fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>?
+    fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>?
     fileprivate let fetchGraphUserAccountFieldsError: GraphError?
 
     fileprivate let fetchGraphUserBackingsResponse: UserEnvelope<GraphBackingEnvelope>?
@@ -238,7 +238,7 @@
       fetchDraftResponse: UpdateDraft? = nil,
       fetchDraftError: ErrorEnvelope? = nil,
       fetchGraphUserEmailFieldsResponse: UserEmailFields? = nil,
-      fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>? = nil,
+      fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>? = nil,
       fetchGraphUserAccountFieldsError: GraphError? = nil,
       fetchGraphUserBackingsResponse: UserEnvelope<GraphBackingEnvelope>? = nil,
       fetchGraphUserBackingsError: GraphError? = nil,
@@ -355,7 +355,7 @@
       self.fetchGraphCategoriesError = fetchGraphCategoriesError
 
       self.fetchGraphUserAccountFieldsResponse = fetchGraphUserAccountFieldsResponse
-        ?? UserEnvelope(me: UserAccountFields.template)
+        ?? UserEnvelope(me: GraphUser.template)
       self.fetchGraphUserAccountFieldsError = fetchGraphUserAccountFieldsError
 
       self.fetchGraphUserEmailFieldsResponse = fetchGraphUserEmailFieldsResponse
@@ -712,7 +712,7 @@
     }
 
     internal func fetchGraphUserAccountFields(query _: NonEmptySet<Query>)
-      -> SignalProducer<UserEnvelope<UserAccountFields>, GraphError> {
+      -> SignalProducer<UserEnvelope<GraphUser>, GraphError> {
       if let error = self.fetchGraphUserAccountFieldsError {
         return SignalProducer(error: error)
       } else if let response = self.fetchGraphUserAccountFieldsResponse {

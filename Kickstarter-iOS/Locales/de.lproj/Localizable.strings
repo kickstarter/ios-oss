@@ -31,6 +31,7 @@
 "Amounts_shown" = "Die angezeigten Beträge stellen nur eine ungefähre Umrechnung dar. Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der Währung des Erstellungslandes abgebucht. Dieser Betrag wird ebenso angezeigt.";
 "Any_payment_methods_you_saved_to_Kickstarter" = "Sämtliche auf Kickstarter gespeicherten Zahlungsmethoden sind hier (sicher) hinterlegt.";
 "App_version" = "App-Version";
+"Apple_ID" = "AppleID";
 "Are_you_sure" = "Bist du sicher?";
 "Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name" = "Bist du sicher, dass du deinen Beitrag von %{amount} für %{project_name} zurückziehen möchtest?";
 "Are_you_sure_you_wish_to_remove_this_card" = "Bist du sicher, dass du diese Karte aus deinen Zahlungsmethoden entfernen möchtest?";
@@ -297,6 +298,7 @@
 "Make_a_pledge_without_a_reward" = "Ohne Belohnung unterstützen";
 "Making_this_change" = "Wenn du die Währung wechselst, werden das Finanzierungsziel und die Finanzierungsbeiträge in der von dir gewählten Währung angezeigt.";
 "Manage" = "Verwalten";
+"Manage_this_account" = "Manage this account in your AppleID settings.";
 "Manage_your_pledge" = "Meinen Beitrag verwalten";
 "Manage_your_pledge_below" = "Folgenden Beitrag verwalten";
 "Manage_your_reward" = "Belohnung verwalten";

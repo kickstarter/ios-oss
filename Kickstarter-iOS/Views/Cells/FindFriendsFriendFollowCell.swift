@@ -47,7 +47,7 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.imageURL
       .observeForUI()
       .on(event: { [weak avatarImageView] _ in
-        avatarImageView?.af_cancelImageRequest()
+        avatarImageView?.af.cancelImageRequest()
         avatarImageView?.image = nil
       })
       .skipNil()
