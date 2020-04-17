@@ -90,7 +90,7 @@ internal final class BackerDashboardViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.avatarImageView.rac.imageUrl = self.viewModel.outputs.avatarURL
+    self.avatarImageView.rac.ksr_imageUrl = self.viewModel.outputs.avatarURL
     self.backerNameLabel.rac.text = self.viewModel.outputs.backerNameText
     self.embeddedViewTopLayoutConstraint.rac.constant =
       self.viewModel.outputs.embeddedViewTopConstraintConstant

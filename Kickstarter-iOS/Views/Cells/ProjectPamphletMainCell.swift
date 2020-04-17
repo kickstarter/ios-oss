@@ -379,7 +379,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       .observeForUI()
       .on(event: { [weak self] _ in self?.creatorImageView.image = nil })
       .skipNil()
-      .observeValues { [weak self] in self?.creatorImageView.af_setImage(withURL: $0) }
+      .observeValues { [weak self] in self?.creatorImageView.af.setImage(withURL: $0) }
 
     self.viewModel.outputs.notifyDelegateToGoToCampaignWithProjectAndRefTag
       .observeForControllerAction()

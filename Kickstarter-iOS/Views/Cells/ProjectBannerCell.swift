@@ -11,10 +11,10 @@ internal final class ProjectBannerCell: UITableViewCell, ValueCell {
   func configureWith(value project: Project) {
     self.projectNameLabel.text = project.name
     self.creatorNameLabel.text = project.creator.name
-    self.projectImageView.af_cancelImageRequest()
+    self.projectImageView.af.cancelImageRequest()
     self.projectImageView.image = nil
     if let url = URL(string: project.photo.full) {
-      self.projectImageView.af_setImage(withURL: url)
+      self.projectImageView.af.setImage(withURL: url)
     }
   }
 

@@ -116,7 +116,7 @@ final class CreatorBylineView: UIView {
 
     self.creatorLabel.rac.text = self.viewModel.outputs.creatorLabelText
     self.creatorStatsLabel.rac.text = self.viewModel.outputs.creatorStatsText
-    self.creatorImageView.rac.imageUrl = self.viewModel.outputs.creatorImageUrl
+    self.creatorImageView.rac.ksr_imageUrl = self.viewModel.outputs.creatorImageUrl
   }
 
   // MARK: - Configuration

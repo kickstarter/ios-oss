@@ -24,7 +24,7 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.friendImageURL
       .observeForUI()
       .on(event: { [weak friendImageView] _ in
-        friendImageView?.af_cancelImageRequest()
+        friendImageView?.af.cancelImageRequest()
         friendImageView?.image = nil
       })
       .skipNil()
