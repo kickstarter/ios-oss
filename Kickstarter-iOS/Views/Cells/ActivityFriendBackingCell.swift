@@ -32,7 +32,7 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.friendImageURL
       .observeForUI()
       .on(event: { [weak friendImageView] _ in
-        friendImageView?.af_cancelImageRequest()
+        friendImageView?.af.cancelImageRequest()
         friendImageView?.image = nil
       })
       .skipNil()
@@ -51,7 +51,7 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.projectImageURL
       .observeForUI()
       .on(event: { [weak projectImageView] _ in
-        projectImageView?.af_cancelImageRequest()
+        projectImageView?.af.cancelImageRequest()
         projectImageView?.image = nil
       })
       .skipNil()

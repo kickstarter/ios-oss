@@ -28,4 +28,27 @@ final class UIStackViewTests: XCTestCase {
 
     XCTAssertEqual(10, stackView.customSpacing(after: afterView))
   }
+
+  func testSetBackgroundColor() {
+    let subview = UIView(frame: .zero)
+    let stackView = UIStackView(frame: .zero)
+
+    XCTAssertEqual(0, stackView.subviews.count)
+
+    stackView.addArrangedSubview(subview)
+
+    XCTAssertEqual(1, stackView.subviews.count)
+
+    _ = stackView
+      |> ksr_setBackgroundColor(.black)
+
+    XCTAssertEqual(2, stackView.subviews.count)
+    XCTAssertEqual(UIColor.black, stackView.subviews[0].backgroundColor)
+
+    _ = stackView
+      |> ksr_setBackgroundColor(.black)
+
+    XCTAssertEqual(2, stackView.subviews.count, "setBackgroundColor is idempotent")
+    XCTAssertEqual(UIColor.black, stackView.subviews[0].backgroundColor)
+  }
 }

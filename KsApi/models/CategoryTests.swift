@@ -61,6 +61,57 @@ class CategoryTests: XCTestCase {
     }
   }
 
+  func testEncode_Subcategory() {
+    let category = Category.tabletopGames
+    if let data = try? JSONEncoder().encode(category) {
+      XCTAssertNotNil(data)
+
+      let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+
+      XCTAssertEqual("Q2F0ZWdvcnktMzQ=", json?["id"] as? String)
+      XCTAssertEqual("Tabletop Games", json?["name"] as? String)
+      XCTAssertEqual("Q2F0ZWdvcnktMTI=", json?["parentId"] as? String)
+      XCTAssertEqual([
+        "id": "Q2F0ZWdvcnktMTI=",
+        "name": "Games"
+      ], json?["parentCategory"] as? [String: String])
+      XCTAssertNil(json?["subcategories"])
+      XCTAssertNil(json?["totalProjectCount"])
+    } else {
+      XCTFail("Data should be encoded")
+    }
+  }
+
+  func testEncode_ParentCategory() {
+    let category = Category.art
+    if let data = try? JSONEncoder().encode(category) {
+      XCTAssertNotNil(data)
+
+      let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+
+      XCTAssertEqual("Q2F0ZWdvcnktMQ==", json?["id"] as? String)
+      XCTAssertEqual("Art", json?["name"] as? String)
+      XCTAssertNil(json?["totalProjectCount"])
+      XCTAssertNil(json?["parentCategory"])
+      XCTAssertNil(json?["parentId"])
+
+      let subcategories = json?["subcategories"] as? [String: Any]
+      let nodes = subcategories?["nodes"] as? [[String: Any]]
+
+      XCTAssertEqual(1, subcategories?["totalCount"] as? Int)
+      XCTAssertEqual("Illustration", nodes?.first?["name"] as? String)
+      XCTAssertEqual("Q2F0ZWdvcnktMjI=", nodes?.first?["id"] as? String)
+      XCTAssertEqual([
+        "id": "Q2F0ZWdvcnktMQ==",
+        "name": "Art"
+      ], nodes?.first?["parentCategory"] as? [String: String])
+      XCTAssertEqual("Q2F0ZWdvcnktMQ==", nodes?.first?["parentId"] as? String)
+      XCTAssertNil(nodes?.first?["totalProjectCount"])
+    } else {
+      XCTFail("Data should be encoded")
+    }
+  }
+
   func testParent() {
     XCTAssertEqual(Category.illustration.parent, Category.art)
     XCTAssertEqual(Category.art.parent, nil)

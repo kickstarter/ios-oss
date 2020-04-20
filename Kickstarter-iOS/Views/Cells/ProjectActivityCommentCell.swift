@@ -52,7 +52,7 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.authorImageURL
       .observeForUI()
       .on(event: { [weak self] _ in
-        self?.authorImageView.af_cancelImageRequest()
+        self?.authorImageView.af.cancelImageRequest()
         self?.authorImageView.image = nil
       })
       .skipNil()

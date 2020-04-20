@@ -7,11 +7,11 @@ final class UserQueriesTests: XCTestCase {
     let query = Query.user(accountQueryFields())
 
     XCTAssertEqual(
-      "me { chosenCurrency email hasPassword isDeliverable isEmailVerified }",
+      "me { chosenCurrency email hasPassword isAppleConnected isDeliverable isEmailVerified }",
       query.description
     )
     XCTAssertEqual(
-      "{ me { chosenCurrency email hasPassword isDeliverable isEmailVerified } }",
+      "{ me { chosenCurrency email hasPassword isAppleConnected isDeliverable isEmailVerified } }",
       Query.build(NonEmptySet(query))
     )
   }

@@ -113,7 +113,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
     self.viewModel.outputs.backerImageURLAndPlaceholderImageName
       .observeForUI()
       .on(event: { [weak self] _ in
-        self?.circleAvatarImageView.af_cancelImageRequest()
+        self?.circleAvatarImageView.af.cancelImageRequest()
         self?.circleAvatarImageView.image = nil
       })
       .observeValues { [weak self] url, placeholderImageName in

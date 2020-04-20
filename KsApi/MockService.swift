@@ -44,6 +44,7 @@
     fileprivate let backingUpdate: Backing
 
     fileprivate let fetchGraphCategoriesResponse: RootCategoriesEnvelope?
+    fileprivate let fetchGraphCategoriesError: GraphError?
 
     fileprivate let fetchCommentsResponse: [Comment]?
     fileprivate let fetchCommentsError: ErrorEnvelope?
@@ -72,7 +73,7 @@
     fileprivate let fetchGraphCreditCardsResponse: UserEnvelope<GraphUserCreditCard>?
     fileprivate let fetchGraphCreditCardsError: GraphError?
 
-    fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>?
+    fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>?
     fileprivate let fetchGraphUserAccountFieldsError: GraphError?
 
     fileprivate let fetchGraphUserBackingsResponse: UserEnvelope<GraphBackingEnvelope>?
@@ -100,6 +101,8 @@
 
     fileprivate let fetchProjectStatsResponse: ProjectStatsEnvelope?
     fileprivate let fetchProjectStatsError: ErrorEnvelope?
+
+    fileprivate let fetchProjectSummaryResult: Result<ProjectSummaryEnvelope, GraphError>?
 
     fileprivate let fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>?
 
@@ -219,6 +222,7 @@
       fetchBackingResponse: Backing = .template,
       backingUpdate: Backing = .template,
       fetchGraphCategoriesResponse: RootCategoriesEnvelope? = nil,
+      fetchGraphCategoriesError: GraphError? = nil,
       fetchCommentsResponse: [Comment]? = nil,
       fetchCommentsError: ErrorEnvelope? = nil,
       fetchConfigResponse: Config? = nil,
@@ -236,7 +240,7 @@
       fetchDraftResponse: UpdateDraft? = nil,
       fetchDraftError: ErrorEnvelope? = nil,
       fetchGraphUserEmailFieldsResponse: UserEmailFields? = nil,
-      fetchGraphUserAccountFieldsResponse: UserEnvelope<UserAccountFields>? = nil,
+      fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>? = nil,
       fetchGraphUserAccountFieldsError: GraphError? = nil,
       fetchGraphUserBackingsResponse: UserEnvelope<GraphBackingEnvelope>? = nil,
       fetchGraphUserBackingsError: GraphError? = nil,
@@ -257,6 +261,7 @@
       fetchProjectsError: ErrorEnvelope? = nil,
       fetchProjectStatsResponse: ProjectStatsEnvelope? = nil,
       fetchProjectStatsError: ErrorEnvelope? = nil,
+      fetchProjectSummaryResult: Result<ProjectSummaryEnvelope, GraphError>? = nil,
       fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>? = nil,
       fetchUserProjectsBackedResponse: [Project]? = nil,
       fetchUserProjectsBackedError: ErrorEnvelope? = nil,
@@ -350,8 +355,10 @@
         ]
       )
 
+      self.fetchGraphCategoriesError = fetchGraphCategoriesError
+
       self.fetchGraphUserAccountFieldsResponse = fetchGraphUserAccountFieldsResponse
-        ?? UserEnvelope(me: UserAccountFields.template)
+        ?? UserEnvelope(me: GraphUser.template)
       self.fetchGraphUserAccountFieldsError = fetchGraphUserAccountFieldsError
 
       self.fetchGraphUserEmailFieldsResponse = fetchGraphUserEmailFieldsResponse
@@ -427,6 +434,8 @@
 
       self.fetchProjectStatsResponse = fetchProjectStatsResponse
       self.fetchProjectStatsError = fetchProjectStatsError
+
+      self.fetchProjectSummaryResult = fetchProjectSummaryResult
 
       self.fetchShippingRulesResult = fetchShippingRulesResult
 
@@ -675,10 +684,12 @@
 
     internal func fetchGraphCategories(query _: NonEmptySet<Query>)
       -> SignalProducer<RootCategoriesEnvelope, GraphError> {
-      if let response = self.fetchGraphCategoriesResponse {
+      if let error = self.fetchGraphCategoriesError {
+        return SignalProducer(error: error)
+      } else if let response = self.fetchGraphCategoriesResponse {
         return SignalProducer(value: response)
       }
-      return .empty
+      return SignalProducer(value: RootCategoriesEnvelope.template)
     }
 
     internal func fetchGraphCategory(query: NonEmptySet<Query>)
@@ -706,7 +717,7 @@
     }
 
     internal func fetchGraphUserAccountFields(query _: NonEmptySet<Query>)
-      -> SignalProducer<UserEnvelope<UserAccountFields>, GraphError> {
+      -> SignalProducer<UserEnvelope<GraphUser>, GraphError> {
       if let error = self.fetchGraphUserAccountFieldsError {
         return SignalProducer(error: error)
       } else if let response = self.fetchGraphUserAccountFieldsResponse {
@@ -1015,6 +1026,11 @@
       }
 
       return SignalProducer(value: .template)
+    }
+
+    internal func fetchProjectSummary(query _: NonEmptySet<Query>)
+      -> SignalProducer<ProjectSummaryEnvelope, GraphError> {
+      return producer(for: self.fetchProjectSummaryResult)
     }
 
     internal func fetchRewardShippingRules(projectId _: Int, rewardId _: Int)
@@ -1461,6 +1477,7 @@
             fetchProjectsError: $1.fetchProjectsError,
             fetchProjectStatsResponse: $1.fetchProjectStatsResponse,
             fetchProjectStatsError: $1.fetchProjectStatsError,
+            fetchProjectSummaryResult: $1.fetchProjectSummaryResult,
             fetchShippingRulesResult: $1.fetchShippingRulesResult,
             fetchUserProjectsBackedResponse: $1.fetchUserProjectsBackedResponse,
             fetchUserProjectsBackedError: $1.fetchUserProjectsBackedError,

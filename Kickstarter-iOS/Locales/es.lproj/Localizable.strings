@@ -1,7 +1,7 @@
 "A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency" = "Un proyecto financiado con éxito cobrará tu contribución en su moneda nativa. Los importes mostrados son aproximados.";
 "A_weekly_roundup_of_the_best_and_brightest" = "Un resumen semanal de los mejores y más brillantes proyectos de Kickstarter, seleccionados por nuestro equipo.";
 "About_reward_amount" = "Aprox. %{reward_amount}";
-"Accessibility_statement" = "Accessibility Statement";
+"Accessibility_statement" = "Declaración de accesibilidad";
 "Account" = "Cuenta";
 "Add" = "Añadir";
 "Add_attachments" = "Agregar anexos …";
@@ -22,7 +22,7 @@
 "All_Publishing_Projects" = "Todos los proyectos de la categoría Editorial";
 "All_Tech_Projects" = "Todos los proyectos de la categoría Tecnología";
 "All_Theater_Projects" = "Todos los proyectos de la categoría Teatro";
-"All_category_name_Projects" = "Todos los proyectos de la categoría %{category_name}";
+"All_category_name_Projects" = "Todos los proyectos de %{category_name}";
 "All_gone" = "¡Recompensas agotadas!";
 "All_or_nothing" = "Todo o nada";
 "Almost_there" = "Cerca de la meta!";
@@ -31,6 +31,7 @@
 "Amounts_shown" = "Los montos mostrados son una conversión aproximada. Si el proyecto tiene éxito, tu contribución se recaudará en la moneda nativa del proyecto, que también se mostrará.";
 "Any_payment_methods_you_saved_to_Kickstarter" = "Para tu comodidad, aquí se enumeran (de manera absolutamente segura) los métodos de pago que guardaste en Kickstarter.";
 "App_version" = "Versión de la aplicación";
+"Apple_ID" = "Apple ID";
 "Are_you_sure" = "¿Estás seguro?";
 "Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name" = "¿Estás seguro de que quieres cancelar tu %{amount} contribución para %{project_name}?";
 "Are_you_sure_you_wish_to_remove_this_card" = "¿Estás seguro de que deseas eliminar esta tarjeta de tus opciones de métodos de pago?";
@@ -73,6 +74,7 @@
 "Change_payment_method" = "Cambiar método de pago";
 "Chat" = "Chat";
 "Check_back_later_for_an_update_on_your_export" = "Vuelve más tarde para obtener una actualización sobre tu progreso de exportación.";
+"Check_out_these_handpicked_projects" = "Echa un vistazo a estos proyectos seleccionados exclusivamente para ti.";
 "Check_your_payment_details" = "Revisa tu información de pago";
 "Choose_another_reward" = "Elegir otra recompensa";
 "Chooses_location_for_shipping" = "Destino determinado: %{location}.";
@@ -252,6 +254,7 @@
 "Introduce_yourself" = "Preséntate";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "Puede demorar hasta 24 horas recopilar tus datos. Cuando estén listos, te enviaremos instrucciones para descargar tus datos al correo electrónico asociado con esta cuenta. Si no recibes noticias nuestras, vuelve aquí e inténtalo de nuevo.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es una plataforma para dar vida a proyectos creativos.";
+"Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "Es una forma de dar vida a proyectos creativos.<a href=\"%{trust_link}\">Más información sobre las responsabilidades</a>";
 "Its_better_with_friends" = "Todo en la vida es mejor con amigos ...";
 "Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter" = "Es como la radio, pero sin malas noticias y, además, es un boletín informativo.";
 "Its_our_birthday" = "¡Cumplimos años! Más de 160.000 proyectos creativos se han hecho realidad en Kickstarter durante la última década, gracias al apoyo de más de 16.000.000 de patrocinadores.";
@@ -296,6 +299,7 @@
 "Make_a_pledge_without_a_reward" = "Contribuir sin recompensa";
 "Making_this_change" = "Hacer este cambio te permitirá ver la meta del proyecto y los montos de las contribuciones convertidos a la moneda elegida.";
 "Manage" = "Administrar";
+"Manage_this_account" = "Administra esta cuenta desde la configuración de tu Apple ID.";
 "Manage_your_pledge" = "Administra tu contribución";
 "Manage_your_pledge_below" = "Administra tu contribución:";
 "Manage_your_reward" = "Administra tu recompensa";
@@ -455,14 +459,17 @@
 "Say_something_kind" = "Di algo amable...";
 "Security_code" = "Código de seguridad";
 "See_all_category_name_projects" = "Ver todos los proyectos de %{category_name}";
+"See_our_suggestions" = "Ver nuestras sugerencias ▸";
 "See_rewards" = "Ver recompensas";
 "See_the_rewards" = "Ver las recompensas";
 "Select" = "Seleccionar";
 "Select_an_option" = "Seleccionar una opción";
 "Select_another_project" = "Selecciona otro proyecto";
+"Select_fewer_categories" = "Selecciona menos categorías";
 "Select_this_instead" = "Seleccionar esto";
 "Select_this_reward" = "Seleccionar esta recompensa";
 "Select_this_reward_instead" = "Selecciona esta recompensa";
+"Select_up_to_five" = "Selecciona hasta cinco de las opciones que aparecen a continuación.";
 "Selected" = "Seleccionada";
 "Selected_reward" = "Recompensa seleccionada";
 "Send" = "Enviar";
@@ -497,6 +504,7 @@
 "Stay_up_to_date_newsletter" = "Mantente al día sobre nuestros proyectos favoritos, noticias y eventos que tenemos en la mira.";
 "Stay_updated_on_the_projects_youve_backed_and_learn_about_how_these_creative_works_are_produced" = "Mantente al tanto de los proyectos que has patrocinado y conoce cómo se producen estos trabajos creativos.";
 "Stay_updated_on_this_project" = "¿Deseas mantenerte actualizado sobre este proyecto?";
+"Step_number" = "Paso %{current_step} de %{total_steps}";
 "Subscribe" = "Suscribir";
 "Subscribed" = "Suscripción activa";
 "Subscribes_to_upcoming_lives_streams" = "Activa subscripción a futuros Live-Streams.";
@@ -593,10 +601,12 @@
 "Websites" = "Sitios web";
 "Welcome_to_our_library_Peruse_the_stacks_with_us" = "Bienvenidos a nuestra biblioteca. Descubre montones de libros con nosotros.";
 "Well_ask_you_to_sign_back_into_the_Kickstarter_app_once_youve_changed_your_password" = "Te pediremos que inicies sesión de nuevo en la aplicación de Kickstarter una vez que hayas cambiado tu contraseña.";
+"Well_help_you_find_a_project_to_back" = "Te ayudaremos a encontrar un proyecto para patrocinar.";
 "Well_import_your_name_and_profile_photo_and_access_your_friend_list" = "Importaremos tu nombre y tu foto de perfil, y tendremos acceso a tu lista de amigos. Nunca publicaremos nada sin tu permiso.";
 "Well_remind_you_forty_eight_hours_before_this_project_ends" = "Te recordaremos 48 horas antes de que finalice este proyecto y recibirás un recordatorio sobre todos los proyectos que guardes de aquí en adelante. Para ver todo lo que has guardado, visita tu perfil.";
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Cuando el seguimiento está activado, puedes seguir la actividad de los demás y otros pueden seguir tu actividad. Desactiva el seguimiento para eliminar esta información definitivamente.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Cuando guardes un proyecto, te enviaremos un recordatorio por correo electrónico 48 horas antes de que finalice";
+"Which_categories_interest_you" = "¿Qué categorías te interesan?";
 "Write_a_bio" = "Escribe una biografía breve mediante una oración o dos.";
 "Yes_cancel_it" = "Sí, cancelar";
 "Yes_cancel_my_pledge" = "Sí, cancelar mi contribución";
@@ -1224,6 +1234,12 @@
 "invalid_api_client_alert.message" = "Parece que estás usando una versión muy antigua de esta aplicación. Por favor descarga la última versión en la App Store para continuar usándola.";
 "invalid_api_client_alert.title" = "Por favor actualizar";
 "invalid_api_client_alert.upgrade" = "Actualizar";
+"likes_count_likes.few" = "A %{likes_count} personas les gusta";
+"likes_count_likes.many" = "A %{likes_count} personas les gusta";
+"likes_count_likes.one" = "A %{likes_count} persona le gusta";
+"likes_count_likes.other" = "A %{likes_count} personas les gusta";
+"likes_count_likes.two" = "A %{likes_count} personas les gusta";
+"likes_count_likes.zero" = "A %{likes_count} personas les gusta";
 "location_name_only" = "Sólo %{location_name}";
 "login.buttons.forgot_password" = "¿Olvidaste tu contraseña?";
 "login.buttons.forgot_password_html" = "<u>¿Olvidaste la contraseña?</u>";

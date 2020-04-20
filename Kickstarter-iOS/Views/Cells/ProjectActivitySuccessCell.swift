@@ -25,12 +25,12 @@ internal final class ProjectActivitySuccessCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.backgroundImageURL
       .observeForUI()
       .on(event: { [weak backgroundImageView] _ in
-        backgroundImageView?.af_cancelImageRequest()
+        backgroundImageView?.af.cancelImageRequest()
         backgroundImageView?.image = nil
       })
       .skipNil()
       .observeValues { [weak backgroundImageView] url in
-        backgroundImageView?.af_setImage(withURL: url)
+        backgroundImageView?.af.setImage(withURL: url)
       }
 
     self.viewModel.outputs.title.observeForUI()

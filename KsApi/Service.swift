@@ -228,7 +228,7 @@ public struct Service: ServiceType {
   }
 
   public func fetchGraphUserAccountFields(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<UserAccountFields>, GraphError> {
+    -> SignalProducer<UserEnvelope<GraphUser>, GraphError> {
     return fetch(query: query)
   }
 
@@ -304,6 +304,11 @@ public struct Service: ServiceType {
   public func fetchProjectStats(projectId: Int) ->
     SignalProducer<ProjectStatsEnvelope, ErrorEnvelope> {
     return request(.projectStats(projectId: projectId))
+  }
+
+  public func fetchProjectSummary(query: NonEmptySet<Query>)
+    -> SignalProducer<ProjectSummaryEnvelope, GraphError> {
+    return fetch(query: query)
   }
 
   public func fetchRewardShippingRules(projectId: Int, rewardId: Int)
