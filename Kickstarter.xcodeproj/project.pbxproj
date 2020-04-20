@@ -229,8 +229,8 @@
 		7727494923FC8C2A0065E9F2 /* CategorySelectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7727494823FC8C2A0065E9F2 /* CategorySelectionDataSource.swift */; };
 		7727494D23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7727494C23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift */; };
 		77277C3022B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77277C2F22B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift */; };
-		77320F8A24411459004C631E /* SettingsAccountHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77320F8924411459004C631E /* SettingsAccountHeaderView.swift */; };
 		77320F88243FC51E004C631E /* LandingPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77320F87243FC51E004C631E /* LandingPageViewControllerTests.swift */; };
+		77320F8A24411459004C631E /* SettingsAccountHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77320F8924411459004C631E /* SettingsAccountHeaderView.swift */; };
 		773452FA2384477D00E6B6A3 /* DiscoveryEditorialCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773452F92384477D00E6B6A3 /* DiscoveryEditorialCell.swift */; };
 		773452FD2384B6BF00E6B6A3 /* DiscoveryEditorialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773452FB2384AD9300E6B6A3 /* DiscoveryEditorialViewModel.swift */; };
 		773BFCB0241013D60078A79A /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773BFCAF241013D60078A79A /* LandingViewController.swift */; };
@@ -1691,8 +1691,8 @@
 		7727494823FC8C2A0065E9F2 /* CategorySelectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionDataSource.swift; sourceTree = "<group>"; };
 		7727494C23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionHeaderView.swift; sourceTree = "<group>"; };
 		77277C2F22B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagToolsViewModelTests.swift; sourceTree = "<group>"; };
-		77320F8924411459004C631E /* SettingsAccountHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountHeaderView.swift; sourceTree = "<group>"; };
 		77320F87243FC51E004C631E /* LandingPageViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewControllerTests.swift; sourceTree = "<group>"; };
+		77320F8924411459004C631E /* SettingsAccountHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountHeaderView.swift; sourceTree = "<group>"; };
 		773452F92384477D00E6B6A3 /* DiscoveryEditorialCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryEditorialCell.swift; sourceTree = "<group>"; };
 		773452FB2384AD9300E6B6A3 /* DiscoveryEditorialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryEditorialViewModel.swift; sourceTree = "<group>"; };
 		773BFCAF241013D60078A79A /* LandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
@@ -4537,7 +4537,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1030;
+				LastUpgradeCheck = 1140;
 				ORGANIZATIONNAME = Kickstarter;
 				TargetAttributes = {
 					A755113B1C8642B3005355CF = {
@@ -5421,6 +5421,7 @@
 				7720BA6E22DE79BF0071FDA1 /* UIViewController+Presentation.swift in Sources */,
 				7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */,
 				8AD7953423A2C95000998C79 /* QualtricsTypes.swift in Sources */,
+				D710ADF9243D18EA00DC7199 /* PledgeViewCTAContainerView.swift in Sources */,
 				8A8099EB22E213F100373E66 /* RewardCardView.swift in Sources */,
 				A70F1F321D8A3E85007DA8E9 /* ProjectPamphletViewController.swift in Sources */,
 				77FA6C7120F3DD6C00809E31 /* SettingsDataSource.swift in Sources */,
