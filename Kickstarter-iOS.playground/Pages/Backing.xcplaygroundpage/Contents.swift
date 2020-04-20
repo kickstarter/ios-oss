@@ -10,12 +10,12 @@ import UIKit
 initialize()
 let controller = BackingViewController.configuredWith(project: .template, backer: .template)
 
+// swiftformat:disable wrap
 AppEnvironment.login(
   AccessTokenEnvelope(
     accessToken: "cafebeef",
     user: .template
-      |> \.avatar
-      .small .~ "https://s-media-cache-ak0.pinimg.com/564x/fd/9a/25/fd9a25f4f454d86cfef6fe75ea9c7129.jpg"
+      |> \.avatar.small .~ "https://s-media-cache-ak0.pinimg.com/564x/fd/9a/25/fd9a25f4f454d86cfef6fe75ea9c7129.jpg"
       |> \.name .~ "Darby"
   )
 )
@@ -28,9 +28,8 @@ AppEnvironment.replaceCurrentEnvironment(
 )
 
 let reward = .template
-  |> Reward.lens
-  .description .~
-  "- PRINT COPY-  A full color copy of the Far Away comic book, plus a sticker and a Far Away Button. Also includes the pdf and all other digital downloads. "
+  |> Reward.lens.description .~ "- PRINT COPY-  A full color copy of the Far Away comic book, plus a sticker and a Far Away Button. Also includes the pdf and all other digital downloads. "
+// swiftformat:enable wrap
 
 let backing = .template
   |> Backing.lens.amount .~ 1_000

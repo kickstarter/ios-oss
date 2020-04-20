@@ -14,28 +14,26 @@ let orientation = Orientation.portrait
 
 let project = Project.cosmicSurgery
 
+// swiftformat:disable wrap
 let baseActivity = .template
   |> Activity.lens.comment .~ (
     .template
       |> Comment.lens.author .~ .brando
-      |> Comment.lens
-      .body .~
-      "Hi, I'm wondering if you're planning on holding a gallery showing with these portraits? I'd love to attend if you'll be in New York!"
+      |> Comment.lens.body .~ "Hi, I'm wondering if you're planning on holding a gallery showing with these portraits? I'd love to attend if you'll be in New York!"
   )
   |> Activity.lens.memberData.amount .~ 25
   |> Activity.lens.project .~ project
   |> Activity.lens.update .~ (
     .template
       |> Update.lens.title .~ "Spirit animal reward available again"
-      |> Update.lens
-      .body .~
-      "Due to popular demand, and the inspirational momentum of this project, we've added more spirit animal rewards!"
+      |> Update.lens.body .~ "Due to popular demand, and the inspirational momentum of this project, we've added more spirit animal rewards!"
   )
   |> Activity.lens.user .~ .brando
   |> Activity.lens.memberData.backing .~ (
     .template
       |> Backing.lens.amount .~ 25
   )
+// swiftformat:enable wrap
 
 let backingActivity = baseActivity
   |> Activity.lens.category .~ .backing
