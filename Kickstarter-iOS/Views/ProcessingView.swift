@@ -37,7 +37,7 @@ final class ProcessingView: UIView {
     super.bindStyles()
 
     _ = self
-      |> \.backgroundColor .~ UIColor.ksr_soft_black.withAlphaComponent(0.8)
+      |> processingViewStyle
 
     _ = self.activityIndicator
       |> activityIndicatorStyle
@@ -68,6 +68,15 @@ final class ProcessingView: UIView {
   }
 }
 
+// MARK: - Styles
+
+private let processingViewStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ UIColor.ksr_soft_black.withAlphaComponent(0.8)
+    |> \.isAccessibilityElement .~ true
+    |> \.accessibilityLabel %~ { _ in Strings.project_checkout_finalizing_title() }
+}
+
 private let activityIndicatorStyle: ActivityIndicatorStyle = { activityIndicator in
   activityIndicator
     |> \.style .~ .white
@@ -75,6 +84,7 @@ private let activityIndicatorStyle: ActivityIndicatorStyle = { activityIndicator
 
 private let processingLabelStyle: LabelStyle = { label in
   label
+    |> \.isAccessibilityElement .~ false
     |> \.font .~ UIFont.ksr_callout()
     |> \.textColor .~ UIColor.white
     |> \.textAlignment .~ .center
@@ -107,6 +117,13 @@ extension ProcessingViewPresenting where Self: UIViewController {
     _ = (processingView, window)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
+
+    if AppEnvironment.current.isVoiceOverRunning() {
+      UIAccessibility.post(
+        notification: UIAccessibility.Notification.layoutChanged,
+        argument: processingView
+      )
+    }
   }
 
   func hideProcessingView() {
