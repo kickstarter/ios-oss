@@ -90,7 +90,7 @@ internal final class BackingViewController: UIViewController {
     self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
     self.markAsReceivedStackView.rac.hidden = self.viewModel.outputs.markAsReceivedSectionIsHidden
     self.rewardReceivedSwitch.rac.on = self.viewModel.outputs.rewardMarkedReceived
-    self.backerAvatarImageView.rac.imageUrl = self.viewModel.outputs.backerAvatarURL
+    self.backerAvatarImageView.rac.ksr_imageUrl = self.viewModel.outputs.backerAvatarURL
 
     self.viewModel.outputs.goToMessages
       .observeForControllerAction()

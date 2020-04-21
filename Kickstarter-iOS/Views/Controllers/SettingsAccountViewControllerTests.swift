@@ -32,7 +32,7 @@ internal final class SettingsAccountViewControllerTests: TestCase {
   }
 
   func testAccountView_EmailPasswordSectionHidden() {
-    let user = UserAccountFields.template
+    let user = GraphUser.template
       |> \.hasPassword .~ false
 
     let mockService = MockService(fetchGraphUserAccountFieldsResponse: UserEnvelope(me: user))
@@ -52,7 +52,7 @@ internal final class SettingsAccountViewControllerTests: TestCase {
 
   func testAccountView_WhenUserEmailIsUnverified() {
     Device.allCases.forEach { device in
-      let fields = UserAccountFields.template
+      let fields = GraphUser.template
         |> \.isEmailVerified .~ false
       let response = UserEnvelope(me: fields)
 

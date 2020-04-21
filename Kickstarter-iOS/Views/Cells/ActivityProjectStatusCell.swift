@@ -36,7 +36,7 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.projectImageURL
       .observeForUI()
       .on(event: { [weak projectImageView] _ in
-        projectImageView?.af_cancelImageRequest()
+        projectImageView?.af.cancelImageRequest()
         projectImageView?.image = nil
       })
       .skipNil()

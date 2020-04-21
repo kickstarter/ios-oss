@@ -58,12 +58,12 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.backerImageURL
       .observeForUI()
       .on(event: { [weak self] _ in
-        self?.backerImageView.af_cancelImageRequest()
+        self?.backerImageView.af.cancelImageRequest()
         self?.backerImageView.image = nil
       })
       .skipNil()
       .observeValues { [weak self] url in
-        self?.backerImageView.af_setImage(withURL: url)
+        self?.backerImageView.af.setImage(withURL: url)
       }
 
     self.viewModel.outputs.notifyDelegateGoToBacking

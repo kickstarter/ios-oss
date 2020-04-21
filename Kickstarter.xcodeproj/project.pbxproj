@@ -230,6 +230,7 @@
 		7727494D23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7727494C23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift */; };
 		77277C3022B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77277C2F22B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift */; };
 		77320F88243FC51E004C631E /* LandingPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77320F87243FC51E004C631E /* LandingPageViewControllerTests.swift */; };
+		77320F8A24411459004C631E /* SettingsAccountHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77320F8924411459004C631E /* SettingsAccountHeaderView.swift */; };
 		773452FA2384477D00E6B6A3 /* DiscoveryEditorialCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773452F92384477D00E6B6A3 /* DiscoveryEditorialCell.swift */; };
 		773452FD2384B6BF00E6B6A3 /* DiscoveryEditorialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773452FB2384AD9300E6B6A3 /* DiscoveryEditorialViewModel.swift */; };
 		773BFCB0241013D60078A79A /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773BFCAF241013D60078A79A /* LandingViewController.swift */; };
@@ -290,7 +291,7 @@
 		77950F0A231EB8C300308331 /* CreateApplePayBackingMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77950F09231EB8C300308331 /* CreateApplePayBackingMutation.swift */; };
 		7798B5612174F3CD008BC50D /* UserQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798B5602174F3CD008BC50D /* UserQueries.swift */; };
 		7798B5632174F494008BC50D /* UserEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798B5622174F494008BC50D /* UserEnvelope.swift */; };
-		7798B56521750041008BC50D /* UserCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798B56421750041008BC50D /* UserCurrency.swift */; };
+		7798B56521750041008BC50D /* GraphUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798B56421750041008BC50D /* GraphUser.swift */; };
 		7798B56821750368008BC50D /* UserQueriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798B5662175035E008BC50D /* UserQueriesTests.swift */; };
 		77A3C502219B5E4900824FC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9501C850B7C000D41D5 /* Assets.xcassets */; };
 		77A3C53B219CCEBF00824FC1 /* SettingsAccountDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BE52142D01E00D96152 /* SettingsAccountDataSource.swift */; };
@@ -345,6 +346,7 @@
 		77F6E765212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */; };
 		77F9A9B02135FB760082A11E /* FindFriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */; };
 		77F9A9B22135FC9B0082A11E /* FindFriendsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77F9A9B12135FC9B0082A11E /* FindFriendsCell.xib */; };
+		77FA1AF32445FB810035D659 /* GraphUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA1AF22445FB810035D659 /* GraphUserTests.swift */; };
 		77FA6C7120F3DD6C00809E31 /* SettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA6C7020F3DD6C00809E31 /* SettingsDataSource.swift */; };
 		77FA6CA920F3E18F00809E31 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FA6CA820F3E18F00809E31 /* SettingsTableViewCell.swift */; };
 		77FA6CAB20F3E3C200809E31 /* SettingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */; };
@@ -1265,7 +1267,7 @@
 		D764377C224174B700DAFC9E /* SharedFunctionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D764377A2241707D00DAFC9E /* SharedFunctionsTests.swift */; };
 		D76F0708241012C800072C7B /* CreatorBylineViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76F0706241012B700072C7B /* CreatorBylineViewModelTests.swift */; };
 		D76F070A24104E9500072C7B /* ProjectCreatorDetailsEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76F070924104E9500072C7B /* ProjectCreatorDetailsEnvelopeTemplate.swift */; };
-		D770DDE8217D729300B5319A /* UserCurrencyTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D770DDE7217D729300B5319A /* UserCurrencyTemplates.swift */; };
+		D770DDE8217D729300B5319A /* GraphUserTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D770DDE7217D729300B5319A /* GraphUserTemplates.swift */; };
 		D770DE75217E598C00B5319A /* AddNewCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D770DE3D217E339500B5319A /* AddNewCardViewController.swift */; };
 		D770DE78217E876000B5319A /* AddNewCardViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D770DE76217E874F00B5319A /* AddNewCardViewControllerTests.swift */; };
 		D77594DC226F9C9C005EE69B /* PledgeDescriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77594DB226F9C9B005EE69B /* PledgeDescriptionViewModel.swift */; };
@@ -1690,6 +1692,7 @@
 		7727494C23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionHeaderView.swift; sourceTree = "<group>"; };
 		77277C2F22B2BF53002B2321 /* FeatureFlagToolsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagToolsViewModelTests.swift; sourceTree = "<group>"; };
 		77320F87243FC51E004C631E /* LandingPageViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageViewControllerTests.swift; sourceTree = "<group>"; };
+		77320F8924411459004C631E /* SettingsAccountHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountHeaderView.swift; sourceTree = "<group>"; };
 		773452F92384477D00E6B6A3 /* DiscoveryEditorialCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryEditorialCell.swift; sourceTree = "<group>"; };
 		773452FB2384AD9300E6B6A3 /* DiscoveryEditorialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryEditorialViewModel.swift; sourceTree = "<group>"; };
 		773BFCAF241013D60078A79A /* LandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
@@ -1746,7 +1749,7 @@
 		77950F09231EB8C300308331 /* CreateApplePayBackingMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateApplePayBackingMutation.swift; sourceTree = "<group>"; };
 		7798B5602174F3CD008BC50D /* UserQueries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserQueries.swift; sourceTree = "<group>"; };
 		7798B5622174F494008BC50D /* UserEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEnvelope.swift; sourceTree = "<group>"; };
-		7798B56421750041008BC50D /* UserCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCurrency.swift; sourceTree = "<group>"; };
+		7798B56421750041008BC50D /* GraphUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUser.swift; sourceTree = "<group>"; };
 		7798B5662175035E008BC50D /* UserQueriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserQueriesTests.swift; sourceTree = "<group>"; };
 		77A3C53C219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountDataSourceTests.swift; sourceTree = "<group>"; };
 		77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsNotificationCell.xib; sourceTree = "<group>"; };
@@ -1795,6 +1798,7 @@
 		77F6E764212355C3005A5C55 /* ProjectNotificationsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNotificationsViewControllerTests.swift; sourceTree = "<group>"; };
 		77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFriendsCell.swift; sourceTree = "<group>"; };
 		77F9A9B12135FC9B0082A11E /* FindFriendsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FindFriendsCell.xib; sourceTree = "<group>"; };
+		77FA1AF22445FB810035D659 /* GraphUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserTests.swift; sourceTree = "<group>"; };
 		77FA6C7020F3DD6C00809E31 /* SettingsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataSource.swift; sourceTree = "<group>"; };
 		77FA6CA820F3E18F00809E31 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		77FA6CAA20F3E3C200809E31 /* SettingsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsTableViewCell.xib; sourceTree = "<group>"; };
@@ -2657,7 +2661,7 @@
 		D764377A2241707D00DAFC9E /* SharedFunctionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedFunctionsTests.swift; sourceTree = "<group>"; };
 		D76F0706241012B700072C7B /* CreatorBylineViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorBylineViewModelTests.swift; sourceTree = "<group>"; };
 		D76F070924104E9500072C7B /* ProjectCreatorDetailsEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCreatorDetailsEnvelopeTemplate.swift; sourceTree = "<group>"; };
-		D770DDE7217D729300B5319A /* UserCurrencyTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCurrencyTemplates.swift; sourceTree = "<group>"; };
+		D770DDE7217D729300B5319A /* GraphUserTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserTemplates.swift; sourceTree = "<group>"; };
 		D770DE3D217E339500B5319A /* AddNewCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardViewController.swift; sourceTree = "<group>"; };
 		D770DE76217E874F00B5319A /* AddNewCardViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardViewControllerTests.swift; sourceTree = "<group>"; };
 		D77594DB226F9C9B005EE69B /* PledgeDescriptionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeDescriptionViewModel.swift; sourceTree = "<group>"; };
@@ -2904,6 +2908,7 @@
 			isa = PBXGroup;
 			children = (
 				77D19FFC24085A170058FC8E /* CategoryCollectionViewSectionHeaderView.swift */,
+				77320F8924411459004C631E /* SettingsAccountHeaderView.swift */,
 			);
 			path = HeaderFooterViews;
 			sourceTree = "<group>";
@@ -4121,6 +4126,8 @@
 				D002CAE4218CF951009783F2 /* GraphMutationWatchProjectResponseEnvelope.swift */,
 				D63BBD30217F7212007E01F0 /* GraphUserCreditCard.swift */,
 				77DB53292215D0AA0078991C /* GraphUserCreditCardTests.swift */,
+				7798B56421750041008BC50D /* GraphUser.swift */,
+				77FA1AF22445FB810035D659 /* GraphUserTests.swift */,
 				D01587951EEB2ED6006E7684 /* Item.swift */,
 				D01587961EEB2ED6006E7684 /* ItemTests.swift */,
 				D01587CB1EEB2ED7006E7684 /* Location.swift */,
@@ -4176,7 +4183,6 @@
 				D01588211EEB2ED7006E7684 /* User.NewsletterSubscriptionsTests.swift */,
 				D01588221EEB2ED7006E7684 /* User.NotificationsTests.swift */,
 				D01588231EEB2ED7006E7684 /* User.swift */,
-				7798B56421750041008BC50D /* UserCurrency.swift */,
 				D6ED1B38216D50BE007F7547 /* UserEmailFields.swift */,
 				7798B5622174F494008BC50D /* UserEnvelope.swift */,
 				D01588241EEB2ED7006E7684 /* UserTests.swift */,
@@ -4300,7 +4306,7 @@
 				D01588161EEB2ED7006E7684 /* User.NewsletterSubscriptionsTemplates.swift */,
 				D01588171EEB2ED7006E7684 /* User.NotificationsTemplates.swift */,
 				D01588181EEB2ED7006E7684 /* User.StatsTemplates.swift */,
-				D770DDE7217D729300B5319A /* UserCurrencyTemplates.swift */,
+				D770DDE7217D729300B5319A /* GraphUserTemplates.swift */,
 				D01588191EEB2ED7006E7684 /* UserTemplates.swift */,
 			);
 			path = templates;
@@ -4531,7 +4537,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1030;
+				LastUpgradeCheck = 1140;
 				ORGANIZATIONNAME = Kickstarter;
 				TargetAttributes = {
 					A755113B1C8642B3005355CF = {
@@ -5415,6 +5421,7 @@
 				7720BA6E22DE79BF0071FDA1 /* UIViewController+Presentation.swift in Sources */,
 				7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */,
 				8AD7953423A2C95000998C79 /* QualtricsTypes.swift in Sources */,
+				D710ADF9243D18EA00DC7199 /* PledgeViewCTAContainerView.swift in Sources */,
 				8A8099EB22E213F100373E66 /* RewardCardView.swift in Sources */,
 				A70F1F321D8A3E85007DA8E9 /* ProjectPamphletViewController.swift in Sources */,
 				77FA6C7120F3DD6C00809E31 /* SettingsDataSource.swift in Sources */,
@@ -5451,6 +5458,7 @@
 				A72C3AAA1D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */,
 				A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */,
 				D6B6766B20FF8F890082717D /* SettingsNewslettersCell.swift in Sources */,
+				77320F8A24411459004C631E /* SettingsAccountHeaderView.swift in Sources */,
 				015A06F41D219156007AE210 /* DashboardRewardRowStackView.swift in Sources */,
 				A78838A91D8A32060081E94D /* ProjectNavBarViewController.swift in Sources */,
 				D61F38EE233D0DAE00C8972B /* ManagePledgeRewardView.swift in Sources */,
@@ -5768,7 +5776,7 @@
 				D01588991EEB2ED7006E7684 /* FriendStatsEnvelopeLenses.swift in Sources */,
 				D6B9F943220358D1003282A5 /* AuthorTemplates.swift in Sources */,
 				D7417D0E20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift in Sources */,
-				7798B56521750041008BC50D /* UserCurrency.swift in Sources */,
+				7798B56521750041008BC50D /* GraphUser.swift in Sources */,
 				D08CD20321922025009F89F0 /* GraphMutationWatchProjectResponseEnvelopeTemplates.swift in Sources */,
 				D69C55142397166D00B0987A /* GraphBacking.swift in Sources */,
 				8A32AE9623EA1DC0005CEA57 /* Project.CategoryTemplates.swift in Sources */,
@@ -5882,7 +5890,7 @@
 				D79CF32E219CE51A00ECB73A /* CreatePaymentSourceInput.swift in Sources */,
 				D01588A51EEB2ED7006E7684 /* Project.DatesLenses.swift in Sources */,
 				D01588EB1EEB2ED7006E7684 /* MessageSubject.swift in Sources */,
-				D770DDE8217D729300B5319A /* UserCurrencyTemplates.swift in Sources */,
+				D770DDE8217D729300B5319A /* GraphUserTemplates.swift in Sources */,
 				D01589171EEB2ED7006E7684 /* RewardsItem.swift in Sources */,
 				77950F0A231EB8C300308331 /* CreateApplePayBackingMutation.swift in Sources */,
 				D0158A1B1EEB30A2006E7684 /* Project.VideoTemplates.swift in Sources */,
@@ -6028,6 +6036,7 @@
 				D755ECB123217D5B0096F189 /* CreateBackingEnvelopeTests.swift in Sources */,
 				D0D10C1B1EEB4550005EBAD0 /* SurveyResponseTests.swift in Sources */,
 				D0D10C1F1EEB4550005EBAD0 /* User.AvatarTests.swift in Sources */,
+				77FA1AF32445FB810035D659 /* GraphUserTests.swift in Sources */,
 				D0D10C021EEB4550005EBAD0 /* ActivityTests.swift in Sources */,
 				D01589A81EEB306D006E7684 /* EncodableTests.swift in Sources */,
 				D0D10C111EEB4550005EBAD0 /* MessageThreadTests.swift in Sources */,
