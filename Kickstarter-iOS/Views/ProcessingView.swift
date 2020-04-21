@@ -3,6 +3,13 @@ import Library
 import Prelude
 import UIKit
 
+protocol ProcessingViewPresenting {
+  var processingView: ProcessingView? { get set }
+
+  func showProcessingView()
+  func hideProcessingView()
+}
+
 final class ProcessingView: UIView {
   private lazy var activityIndicator = { UIActivityIndicatorView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -87,4 +94,22 @@ private let stackViewStyle: StackViewStyle = { stackView in
     |> \.alignment .~ .center
     |> \.distribution .~ .fill
     |> \.spacing .~ Styles.grid(3)
+}
+
+extension ProcessingViewPresenting where Self: UIViewController {
+  func showProcessingView() {
+    self.processingView?.removeFromSuperview()
+
+    guard let window = UIApplication.shared.keyWindow, let processingView = self.processingView else {
+      return
+    }
+
+    _ = (processingView, window)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+  }
+
+  func hideProcessingView() {
+    self.processingView?.removeFromSuperview()
+  }
 }

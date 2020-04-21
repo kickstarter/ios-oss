@@ -8,7 +8,8 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-internal final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate {
+internal final class LoginToutViewController: UIViewController,
+MFMailComposeViewControllerDelegate, ProcessingViewPresenting {
   // MARK: - Properties
 
   @available(iOS 13.0, *)
@@ -39,6 +40,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
 
   private lazy var loginContextStackView = { UIStackView() }()
   private lazy var logoImageView = { UIImageView(frame: .zero) }()
+  internal var processingView: ProcessingView? = ProcessingView(frame: .zero)
   private lazy var rootStackView = { UIStackView() }()
   private lazy var scrollView = {
     UIScrollView(frame: .zero)
@@ -73,13 +75,7 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    #warning("This will be replaced with the configureTransparentNavigationBar() function, instead.")
-    _ = self.navigationController?.navigationBar
-      ?|> \.backgroundColor .~ .clear
-      ?|> \.shadowImage .~ UIImage()
-      ?|> \.isTranslucent .~ true
-
-    self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+    self.navigationController?.configureTransparentNavigationBar()
 
     self.configureViews()
     self.setupConstraints()
@@ -288,6 +284,16 @@ internal final class LoginToutViewController: UIViewController, MFMailComposeVie
       .observeValues { [weak self] message in
         self?.present(UIAlertController.genericError(message), animated: true)
       }
+
+    self.viewModel.outputs.isLoading
+    .observeForUI()
+    .observeValues { [weak self] isLoading in
+      if isLoading {
+        self?.showProcessingView()
+      } else {
+        self?.hideProcessingView()
+      }
+    }
   }
 
   // MARK: - Functions

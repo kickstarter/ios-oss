@@ -8,7 +8,8 @@ protocol PledgeViewControllerDelegate: AnyObject {
   func pledgeViewControllerDidUpdatePledge(_ viewController: PledgeViewController, message: String)
 }
 
-final class PledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
+final class PledgeViewController: UIViewController,
+MessageBannerViewControllerPresenting, ProcessingViewPresenting {
   // MARK: - Properties
 
   private lazy var confirmationLabel: UILabel = { UILabel(frame: .zero) }()
@@ -37,7 +38,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       |> \.delegate .~ self
   }()
 
-  private lazy var processingView: ProcessingView = { ProcessingView(frame: .zero) }()
+  internal var processingView: ProcessingView? = ProcessingView(frame: .zero)
 
   private lazy var continueViewController = {
     PledgeContinueViewController.instantiate()
@@ -425,20 +426,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     ) { [weak self] status, _, error in
       self?.viewModel.inputs.scaFlowCompleted(with: status, error: error)
     }
-  }
-
-  private func showProcessingView() {
-    guard let window = UIApplication.shared.keyWindow else {
-      return
-    }
-
-    _ = (self.processingView, window)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-  }
-
-  private func hideProcessingView() {
-    self.processingView.removeFromSuperview()
   }
 }
 
