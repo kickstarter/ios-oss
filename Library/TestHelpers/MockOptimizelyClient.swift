@@ -1,7 +1,13 @@
 import Library
 import XCTest
 
-internal struct MockOptimizelyError: Error {}
+internal enum MockOptimizelyError: Error {
+  case generic
+
+  var localizedDescription: String {
+    return "Optimizely Error"
+  }
+}
 
 internal class MockOptimizelyClient: OptimizelyClientType {
   // MARK: - Experiment Activation Test Properties

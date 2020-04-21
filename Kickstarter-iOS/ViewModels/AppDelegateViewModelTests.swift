@@ -234,9 +234,9 @@ final class AppDelegateViewModelTests: TestCase {
       self.configureOptimizelySDKKey
         .assertValues([Secrets.OptimizelySDKKey.staging])
 
-      let shouldUpdateClient = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
+      let error = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
 
-      XCTAssertTrue(shouldUpdateClient)
+      XCTAssertNil(error)
     }
   }
 
@@ -250,9 +250,9 @@ final class AppDelegateViewModelTests: TestCase {
       self.configureOptimizelySDKKey
         .assertValues([Secrets.OptimizelySDKKey.staging])
 
-      let shouldUpdateClient = self.vm.inputs.optimizelyConfigured(with: mockResult)
+      let error = self.vm.inputs.optimizelyConfigured(with: mockResult) as? MockOptimizelyError
 
-      XCTAssertFalse(shouldUpdateClient)
+      XCTAssertEqual("Optimizely Error", error?.localizedDescription)
     }
   }
 
