@@ -9,7 +9,7 @@ protocol PledgeViewControllerDelegate: AnyObject {
 }
 
 final class PledgeViewController: UIViewController,
-MessageBannerViewControllerPresenting, ProcessingViewPresenting {
+  MessageBannerViewControllerPresenting, ProcessingViewPresenting {
   // MARK: - Properties
 
   private lazy var confirmationLabel: UILabel = { UILabel(frame: .zero) }()

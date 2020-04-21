@@ -9,7 +9,7 @@ import ReactiveSwift
 import UIKit
 
 internal final class LoginToutViewController: UIViewController,
-MFMailComposeViewControllerDelegate, ProcessingViewPresenting {
+  MFMailComposeViewControllerDelegate, ProcessingViewPresenting {
   // MARK: - Properties
 
   @available(iOS 13.0, *)
@@ -286,14 +286,14 @@ MFMailComposeViewControllerDelegate, ProcessingViewPresenting {
       }
 
     self.viewModel.outputs.isLoading
-    .observeForUI()
-    .observeValues { [weak self] isLoading in
-      if isLoading {
-        self?.showProcessingView()
-      } else {
-        self?.hideProcessingView()
+      .observeForUI()
+      .observeValues { [weak self] isLoading in
+        if isLoading {
+          self?.showProcessingView()
+        } else {
+          self?.hideProcessingView()
+        }
       }
-    }
   }
 
   // MARK: - Functions

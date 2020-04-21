@@ -127,6 +127,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     let facebookLogin = tokenString
       .switchMap { token in
         AppEnvironment.current.apiService.login(facebookAccessToken: token, code: nil)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .on(
             starting: {
               isLoading.value = true
@@ -135,7 +136,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
               isLoading.value = false
             }
           )
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
 
@@ -207,6 +207,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     let appleSignInEvent = appleSignInInput
       .switchMap { input in
         AppEnvironment.current.apiService.signInWithApple(input: input)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .on(
             starting: {
               isLoading.value = true
@@ -215,7 +216,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
               isLoading.value = false
             }
           )
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
 
@@ -229,6 +229,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     let fetchUserEvent = userId
       .switchMap { id in
         AppEnvironment.current.apiService.fetchUser(userId: id)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .on(
             starting: {
               isLoading.value = true
@@ -237,7 +238,6 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
               isLoading.value = false
             }
           )
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
 
