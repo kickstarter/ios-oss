@@ -146,11 +146,11 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
 
-    self.submitButton.addTarget(
-      self,
-      action: #selector(PledgeViewController.submitButtonTapped),
-      for: .touchUpInside
-    )
+//    self.submitButton.addTarget(
+//      self,
+//      action: #selector(PledgeViewController.submitButtonTapped),
+//      for: .touchUpInside
+//    )
 
     self.configureChildViewControllers()
     self.setupConstraints()
@@ -326,6 +326,12 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
         self?.paymentMethodsViewController.configure(with: value)
       }
 
+    self.viewModel.outputs.goToLoginSignup
+      .observeForControllerAction()
+      .observeValues { [weak self] intent, project, reward in
+        self?.goToLoginSignup(with: intent, project: project, reward: reward)
+      }
+
     self.sessionStartedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
@@ -457,15 +463,32 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   // MARK: - Actions
 
-  @objc internal func submitButtonTapped() {
-    self.viewModel.inputs.submitButtonTapped()
-  }
+//  @objc internal func submitButtonTapped() {
+//    //self.viewModel.inputs.submitButtonTapped()
+//  }
 
   @objc private func dismissKeyboard() {
     self.view.endEditing(true)
   }
 
   // MARK: - Functions
+
+  private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {
+    let loginSignupViewController = LoginToutViewController.configuredWith(
+      loginIntent: intent,
+      project: project,
+      reward: reward
+    )
+
+    let navigationController = UINavigationController(rootViewController: loginSignupViewController)
+    let navigationBarHeight = navigationController.navigationBar.bounds.height
+
+    if #available(iOS 13.0, *) {
+      self.present(navigationController, animated: true)
+    } else {
+      self.presentViewControllerWithSheetOverlay(navigationController, offset: navigationBarHeight)
+    }
+  }
 
   private func beginSCAFlow(withClientSecret secret: String) {
     STPPaymentHandler.shared().confirmSetupIntent(
@@ -538,12 +561,16 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
 // MARK: - PledgeScreenCTAContainerViewDelegate
 
 extension PledgeViewController: PledgeViewCTAContainerViewDelegate {
+  func goToLoginSignup() {
+    self.viewModel.inputs.goToLoginSignupTapped()
+  }
+
   func applePayButtonTapped() {
     self.viewModel.inputs.applePayButtonTapped()
   }
 
-  func pledgeButtonTapped() {
-    self.viewModel.inputs.submitButtonTapped()
+  func pledgeButtonTapped(with submitType: SubmitCTAType) {
+    self.viewModel.inputs.submitButtonTapped(with: submitType)
   }
 
   func termsOfUseTapped(with helpType: HelpType) {

@@ -32,6 +32,7 @@ public protocol PledgeViewModelInputs {
   func applePayButtonTapped()
   func configureWith(project: Project, reward: Reward, refTag: RefTag?, context: PledgeViewContext)
   func creditCardSelected(with paymentSourceId: String)
+  func goToLoginSignupTapped()
   func paymentAuthorizationDidAuthorizePayment(
     paymentData: (displayName: String?, network: String?, transactionIdentifier: String)
   )
@@ -40,7 +41,7 @@ public protocol PledgeViewModelInputs {
   func scaFlowCompleted(with result: StripePaymentHandlerActionStatusType, error: Error?)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
-  func submitButtonTapped()
+  func submitButtonTapped(with: SubmitCTAType)
   func termsOfUseTapped(with: HelpType)
   func userSessionStarted()
   func viewDidLoad()
@@ -57,6 +58,7 @@ public protocol PledgeViewModelOutputs {
   var descriptionViewHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
   var goToThanks: Signal<ThanksPageData, Never> { get }
+  var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
   var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
   var notifyPledgeAmountViewControllerShippingAmountChanged: Signal<Double, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
@@ -147,6 +149,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.continueViewHidden = Signal
       .combineLatest(isLoggedIn, context)
       .map { $0 || $1.continueViewHidden }
+
+    self.goToLoginSignup = Signal.combineLatest(project, reward)
+      .takeWhen(self.goToLoginSignupSignal)
+      .map {(LoginIntent.backProject, $0.0, $0.1) }
 
     self.submitButtonHidden = self.continueViewHidden.negate()
 
@@ -291,7 +297,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.submitButtonTappedSignal,
       context
     )
-    .filter { _, context in context.isCreating }
+    .filter { submitType, context in context.isCreating && submitType == .pledge  }
     .ignoreValues()
 
     let createBackingDataAndIsApplePay = createBackingData.takePairWhen(
@@ -440,22 +446,44 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
     .map(allValuesChangedAndValid)
 
-    self.submitButtonEnabled = Signal.merge(
+    self.submitButtonEnabled = .empty
+
+//      Signal.merge(
+//      self.viewDidLoadProperty.signal.mapConst(false)
+//        .take(until: valuesChangedAndValid.ignoreValues()),
+//      valuesChangedAndValid,
+//      self.submitButtonTappedSignal.signal.mapConst(false),
+//      createOrUpdateEvent.filter { $0.isTerminating }.mapConst(true)
+//    )
+//    .skipRepeats()
+
+    self.submitButtonIsLoading = .empty
+
+//      Signal.merge(
+//      self.viewDidLoadProperty.signal.mapConst(false),
+//      self.submitButtonTappedSignal.mapConst(true),
+//      createOrUpdateEvent.filter { $0.isTerminating }.mapConst(false)
+//    )
+
+    let isEnabled = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false)
         .take(until: valuesChangedAndValid.ignoreValues()),
       valuesChangedAndValid,
-      self.submitButtonTappedSignal.signal.mapConst(false),
+//      self.submitButtonTappedSignal.signal.mapConst(false),
       createOrUpdateEvent.filter { $0.isTerminating }.mapConst(true)
     )
     .skipRepeats()
 
-    self.submitButtonIsLoading = Signal.merge(
-      self.submitButtonTappedSignal.mapConst(true),
+    let isLoading = Signal.merge(
+      self.viewDidLoadProperty.signal.mapConst(false),
+//      self.submitButtonTappedSignal.mapConst(true),
       createOrUpdateEvent.filter { $0.isTerminating }.mapConst(false)
     )
+    self.configurePledgeViewCTAContainerView = Signal.combineLatest(isLoggedIn, isEnabled, isLoading)
+      .map { ($0.0, $0.1, $0.2) }
 
     let isCreateOrUpdateBacking = Signal.merge(
-      self.submitButtonTappedSignal.mapConst(true),
+      self.submitButtonTappedSignal.filter { $0 == .pledge }.mapConst(true),
       Signal.merge(willUpdateApplePayBacking, willCreateApplePayBacking).mapConst(false)
     )
 
@@ -579,10 +607,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.title = context.map { $0.title }
     let contextAndProjectAndPledgeAmount = Signal.combineLatest(context, project, pledgeAmount)
 
-    self.configurePledgeViewCTAContainerView = Signal.combineLatest(context, self.submitButtonIsLoading, isLoggedIn)
-      .map { _, loading, loggedIn in (loading, loggedIn) }
-
-
     // Tracking
 
     contextAndProjectAndPledgeAmount
@@ -703,6 +727,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.paymentAuthorizationDidFinishObserver.send(value: ())
   }
 
+  private let (goToLoginSignupSignal, goToLoginSignupObserver) = Signal<Void, Never>.pipe()
+  public func goToLoginSignupTapped() {
+    self.goToLoginSignupObserver.send(value: ())
+  }
+
   private let (pledgeAmountDataSignal, pledgeAmountObserver) = Signal<PledgeAmountData, Never>.pipe()
   public func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData) {
     self.pledgeAmountObserver.send(value: data)
@@ -722,9 +751,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   private let (stripeTokenSignal, stripeTokenObserver) = Signal<String?, Never>.pipe()
   private let (stripeErrorSignal, stripeErrorObserver) = Signal<Error?, Never>.pipe()
 
-  private let (submitButtonTappedSignal, submitButtonTappedObserver) = Signal<(), Never>.pipe()
-  public func submitButtonTapped() {
-    self.submitButtonTappedObserver.send(value: ())
+  private let (submitButtonTappedSignal, submitButtonTappedObserver) = Signal<SubmitCTAType, Never>.pipe()
+  public func submitButtonTapped(with submitType: SubmitCTAType) {
+    self.submitButtonTappedObserver.send(value: submitType)
   }
 
   private let createApplePayBackingStatusProperty = MutableProperty<PKPaymentAuthorizationStatus>(.failure)
@@ -762,6 +791,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let descriptionViewHidden: Signal<Bool, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let goToThanks: Signal<ThanksPageData, Never>
+  public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
   public let notifyPledgeAmountViewControllerShippingAmountChanged: Signal<Double, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
