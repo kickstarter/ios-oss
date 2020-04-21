@@ -342,7 +342,7 @@ private let buttonViewStyle: ViewStyle = { view in
 
 private let continueButtonStyle: ButtonStyle = { button in
   button
-    |> greyButtonStyle
+    |> greenButtonStyle
     |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue() }
 }
 
