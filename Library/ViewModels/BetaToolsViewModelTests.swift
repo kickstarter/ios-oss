@@ -95,8 +95,9 @@ final class BetaToolsViewModelTests: TestCase {
 
       self.vm.inputs.setCurrentLanguage(.en)
 
-      // swiftlint:disable:next line_length
-      self.updateLanguage.assertDidNotEmitValue("Doesn't update language when the chosen language is the same as the current language.")
+      self.updateLanguage.assertDidNotEmitValue(
+        "Doesn't update language when the chosen language is the same as the current language."
+      )
 
       self.vm.inputs.setCurrentLanguage(.de)
 

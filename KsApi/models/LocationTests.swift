@@ -26,7 +26,6 @@ final class LocationTests: XCTestCase {
      }
     """
     let data = json.data(using: .utf8)
-    // swiftlint:disable:next force_unwrapping
     let location = try? JSONDecoder().decode(Location.self, from: data!)
     XCTAssertNotNil(location)
     XCTAssertEqual(location?.id, 1)

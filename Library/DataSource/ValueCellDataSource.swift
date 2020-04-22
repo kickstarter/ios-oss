@@ -185,8 +185,8 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
   (values: [Value], cellClass _: Cell.Type)
     where
     Cell.Value == Value {
-      self.values.append(values.map { ($0, Cell.defaultReusableId) })
-    }
+    self.values.append(values.map { ($0, Cell.defaultReusableId) })
+  }
 
   /**
    Replaces a section with values.
@@ -202,9 +202,9 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
   (values: [Value], cellClass _: Cell.Type, inSection section: Int)
     where
     Cell.Value == Value {
-      self.padValuesForSection(section)
-      self.values[section] = values.map { ($0, Cell.defaultReusableId) }
-    }
+    self.padValuesForSection(section)
+    self.values[section] = values.map { ($0, Cell.defaultReusableId) }
+  }
 
   /**
    Replaces a row with a value.
@@ -221,8 +221,8 @@ open class ValueCellDataSource: NSObject, UICollectionViewDataSource, UITableVie
   (value: Value, cellClass _: Cell.Type, inSection section: Int, row: Int)
     where
     Cell.Value == Value {
-      self.values[section][row] = (value, Cell.defaultReusableId)
-    }
+    self.values[section][row] = (value, Cell.defaultReusableId)
+  }
 
   /**
    - parameter indexPath: An index path to retrieve a value.

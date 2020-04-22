@@ -13,8 +13,11 @@ final class MockApplication: UIApplicationType {
     return self.canOpenURL
   }
 
-  // swiftlint:disable:next line_length
-  func open(_: URL, options _: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler _: ((Bool) -> Void)?) {
+  func open(
+    _: URL,
+    options _: [UIApplication.OpenExternalURLOptionsKey: Any],
+    completionHandler _: ((Bool) -> Void)?
+  ) {
     self.openUrlWasCalled = true
   }
 }

@@ -231,7 +231,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.goToCancelPledgeProject.assertDidNotEmitValue()
     self.goToCancelPledgeBacking.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertValues([
-      // swiftlint:disable:next line_length
       "We don’t allow cancelations that will cause a project to fall short of its goal within the last 24 hours."
     ])
   }

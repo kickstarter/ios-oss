@@ -53,7 +53,7 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
 
     _ = self.followButton
       |> blackButtonStyle
-      |> UIButton.lens.targets .~ [(self, action: #selector(followButtonTapped), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, action: #selector(self.followButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.social_following_friend_buttons_follow() }
   }
 

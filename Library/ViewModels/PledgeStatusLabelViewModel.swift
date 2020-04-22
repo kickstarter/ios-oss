@@ -106,8 +106,8 @@ private func projectStatusLabelText(with project: Project, isCreator: Bool) -> S
   case (.canceled, true):
     string = Strings.You_canceled_this_project_so_the_backers_payment_method_was_never_charged()
   case (.failed, true):
-    // swiftlint:disable:next line_length
-    string = Strings.Your_project_didnt_reach_its_funding_goal_so_the_backers_payment_method_was_never_charged()
+    string = Strings
+      .Your_project_didnt_reach_its_funding_goal_so_the_backers_payment_method_was_never_charged()
   case (.live, _), (.purged, _), (.started, _), (.submitted, _), (.suspended, _), (.successful, _):
     return nil
   }
@@ -145,14 +145,14 @@ private func attributedConfirmationString(with project: Project, pledgeTotal: Do
   }
 
   if isCreator {
-    // swiftlint:disable:next line_length
-    return Strings.If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_total_on_project_deadline(
-      total: pledgeTotal,
-      project_deadline: date
-    )
-    .attributed(
-      with: font, foregroundColor: foregroundColor, attributes: attributes, bolding: [pledgeTotal, date]
-    )
+    return Strings
+      .If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_total_on_project_deadline(
+        total: pledgeTotal,
+        project_deadline: date
+      )
+      .attributed(
+        with: font, foregroundColor: foregroundColor, attributes: attributes, bolding: [pledgeTotal, date]
+      )
   }
 
   return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_total_on_project_deadline(

@@ -23,7 +23,6 @@ final class ProjectCountryTests: XCTestCase {
 
     XCTAssertEqual(.us, decodedCountry.value)
 
-    // swiftlint:disable:next force_unwrapping
     let country = decodedCountry.value!
     XCTAssertEqual(country, Project.Country.decodeJSONDictionary(country.encode()).value)
   }
@@ -38,7 +37,6 @@ final class ProjectCountryTests: XCTestCase {
 
     XCTAssertEqual(.us, decodedCountry.value)
 
-    // swiftlint:disable:next force_unwrapping
     let country = decodedCountry.value!
     XCTAssertEqual(country, Project.Country.decodeJSONDictionary(country.encode()).value)
   }

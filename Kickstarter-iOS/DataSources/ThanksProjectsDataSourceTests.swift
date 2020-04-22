@@ -17,7 +17,7 @@ final class ThanksProjectsDataSourceTests: XCTestCase {
       Project.template |> Project.lens.id .~ 2,
       Project.template |> Project.lens.id .~ 3
     ]
-    dataSource.loadData(projects: projects, category: Category.games)
+    self.dataSource.loadData(projects: projects, category: Category.games)
 
     XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.collectionView))
     XCTAssertEqual(4, self.dataSource.collectionView(self.collectionView, numberOfItemsInSection: 0))
@@ -29,7 +29,7 @@ final class ThanksProjectsDataSourceTests: XCTestCase {
       Project.template |> Project.lens.id .~ 2,
       Project.template |> Project.lens.id .~ 3
     ]
-    dataSource.loadData(projects: projects, category: Category.art)
+    self.dataSource.loadData(projects: projects, category: Category.art)
 
     let indexPath0 = IndexPath(item: 0, section: 0)
     let indexPath1 = IndexPath(item: 1, section: 0)
@@ -48,7 +48,7 @@ final class ThanksProjectsDataSourceTests: XCTestCase {
       Project.template |> Project.lens.id .~ 2,
       Project.template |> Project.lens.id .~ 3
     ]
-    dataSource.loadData(projects: projects, category: Category.games)
+    self.dataSource.loadData(projects: projects, category: Category.games)
 
     XCTAssertEqual("DiscoveryPostcardCell", self.dataSource.reusableId(item: 0, section: 0))
     XCTAssertEqual("DiscoveryPostcardCell", self.dataSource.reusableId(item: 1, section: 0))

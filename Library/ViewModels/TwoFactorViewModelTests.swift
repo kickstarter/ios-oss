@@ -2,7 +2,6 @@
 @testable import Library
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-// swiftlint:disable force_unwrapping
 import XCTest
 
 final class TwoFactorViewModelTests: TestCase {

@@ -25,7 +25,7 @@ internal final class DashboardTitleView: UIView {
       |> UIButton.lens.contentEdgeInsets %~ { insets in .init(topBottom: insets.top, leftRight: 0) }
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.tabbar_dashboard() }
       |> UIButton.lens.accessibilityTraits .~ UIAccessibilityTraits.staticText
-      |> UIButton.lens.targets .~ [(self, #selector(titleButtonTapped), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, #selector(self.titleButtonTapped), .touchUpInside)]
 
     _ = self.arrowImageView
       |> UIImageView.lens.isHidden .~ true
