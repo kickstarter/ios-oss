@@ -115,10 +115,11 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     let isLoading: MutableProperty<Bool> = MutableProperty(false)
 
-    self.isLoading = isLoading.signal
+    self.isLoading = isLoading.signal.skipRepeats()
     self.startLogin = self.loginButtonPressedProperty.signal
     self.startSignup = self.signupButtonPressedProperty.signal
     self.attemptFacebookLogin = self.facebookLoginButtonPressedProperty.signal
+    self.attemptAppleLogin = self.appleLoginButtonPressedProperty.signal.ignoreValues()
 
     let tokenString: Signal<String, Never> = self.facebookLoginSuccessProperty.signal.skipNil()
       .map { $0.token?.tokenString ?? "" }
@@ -126,6 +127,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     let facebookLogin = tokenString
       .switchMap { token in
         AppEnvironment.current.apiService.login(facebookAccessToken: token, code: nil)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .on(
             starting: {
               isLoading.value = true
@@ -134,11 +136,8 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
               isLoading.value = false
             }
           )
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
-
-    self.attemptAppleLogin = self.appleLoginButtonPressedProperty.signal.ignoreValues()
 
     let tfaRequiredError = facebookLogin.errors()
       .filter { $0.ksrCode == .TfaRequired }
@@ -208,6 +207,15 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     let appleSignInEvent = appleSignInInput
       .switchMap { input in
         AppEnvironment.current.apiService.signInWithApple(input: input)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .on(
+            starting: {
+              isLoading.value = true
+            },
+            failed: { _ in
+              isLoading.value = false
+            }
+          )
           .materialize()
       }
 
@@ -222,6 +230,14 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
       .switchMap { id in
         AppEnvironment.current.apiService.fetchUser(userId: id)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .on(
+            starting: {
+              isLoading.value = true
+            },
+            terminated: {
+              isLoading.value = false
+            }
+          )
           .materialize()
       }
 
