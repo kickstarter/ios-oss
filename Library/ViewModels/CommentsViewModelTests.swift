@@ -4,7 +4,6 @@ import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-// swiftlint:disable force_unwrapping
 import XCTest
 
 internal final class CommentsViewModelTests: TestCase {

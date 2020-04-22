@@ -7,7 +7,6 @@ import ReactiveSwift
 import WebKit
 import XCTest
 
-// swiftlint:disable force_unwrapping
 final class UpdateViewModelTests: TestCase {
   fileprivate let vm: UpdateViewModelType = UpdateViewModel()
 

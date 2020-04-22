@@ -41,7 +41,7 @@ public final class SettingsPrivacyViewModel: SettingsPrivacyViewModelType,
 
     let privateProfileAttributeChanged: Signal<(UserAttribute, Bool), Never> =
       self.privateProfileProperty.signal.negate()
-      .map { (UserAttribute.privacy(UserAttribute.Privacy.showPublicProfile), $0) }
+        .map { (UserAttribute.privacy(UserAttribute.Privacy.showPublicProfile), $0) }
 
     let followingAttributeChanged = self.didConfirmSocialOptOutProperty.signal
       .map {

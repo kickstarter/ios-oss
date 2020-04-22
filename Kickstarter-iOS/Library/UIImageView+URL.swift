@@ -57,7 +57,7 @@ extension Rac where Object: UIImageView {
     }
 
     get {
-      return .empty
+      .empty
     }
   }
 }

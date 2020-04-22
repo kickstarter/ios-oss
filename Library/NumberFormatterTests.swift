@@ -44,7 +44,6 @@ final class NumberFormatterTests: TestCase {
     XCTAssertTrue(self.defaultAttributes == attributes)
   }
 
-  // swiftlint:disable line_length
   func testAttributedString_DecimalSeparator() {
     let formatter = AttributedNumberFormatter()
     formatter.numberStyle = .currency
@@ -66,8 +65,6 @@ final class NumberFormatterTests: TestCase {
 
     XCTAssertTrue(expectedAttributes == attributes)
   }
-
-  // swiftlint:enable line_length
 
   func testAttributedString_FractionDigits() {
     let formatter = AttributedNumberFormatter()

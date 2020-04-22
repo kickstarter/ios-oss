@@ -34,8 +34,8 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public init() {
     let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), Never> =
       self.projectAndRewardOrBackingProperty.signal
-      .skipNil()
-      .map { ($0.0, $0.1) }
+        .skipNil()
+        .map { ($0.0, $0.1) }
 
     let project: Signal<Project, Never> = projectAndRewardOrBacking.map(first)
 

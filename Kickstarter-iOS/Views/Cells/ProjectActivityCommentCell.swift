@@ -31,10 +31,10 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
     super.awakeFromNib()
 
     _ = self.backingButton
-      |> UIButton.lens.targets .~ [(self, #selector(backingButtonPressed), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, #selector(self.backingButtonPressed), .touchUpInside)]
 
     _ = self.replyButton
-      |> UIButton.lens.targets .~ [(self, #selector(replyButtonPressed), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, #selector(self.replyButtonPressed), .touchUpInside)]
   }
 
   internal func configureWith(value activityAndProject: (Activity, Project)) {

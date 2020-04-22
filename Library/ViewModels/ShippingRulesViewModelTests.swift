@@ -23,7 +23,6 @@ private let shippingRules = [
     |> ShippingRule.lens.location .~ .usa
 ]
 
-// swiftlint:disable line_length
 final class ShippingRulesViewModelTests: TestCase {
   private let vm: ShippingRulesViewModelType = ShippingRulesViewModel()
 
@@ -94,28 +93,36 @@ final class ShippingRulesViewModelTests: TestCase {
         // Sorted list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[7]
+            project: project, selectedShippingRule: selectedShippingRule,
+            shippingRule: shippingRulesUnsorted[7]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[6]
+            project: project, selectedShippingRule: selectedShippingRule,
+            shippingRule: shippingRulesUnsorted[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[5]
+            project: project, selectedShippingRule: selectedShippingRule,
+            shippingRule: shippingRulesUnsorted[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[4]
+            project: project, selectedShippingRule: selectedShippingRule,
+            shippingRule: shippingRulesUnsorted[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[3]
+            project: project, selectedShippingRule: selectedShippingRule,
+            shippingRule: shippingRulesUnsorted[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[2]
+            project: project, selectedShippingRule: selectedShippingRule,
+            shippingRule: shippingRulesUnsorted[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[1]
+            project: project, selectedShippingRule: selectedShippingRule,
+            shippingRule: shippingRulesUnsorted[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRulesUnsorted[0]
+            project: project, selectedShippingRule: selectedShippingRule,
+            shippingRule: shippingRulesUnsorted[0]
           )
         ]
       ]
@@ -724,10 +731,12 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Los Angeles
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[4]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[5]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[5]
           )
         ]
       ]
@@ -784,17 +793,20 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Los Angeles
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[4]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[5]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[5]
           )
         ],
         // Filtered list by "c": [Canada]
         // Selected rule: Los Angeles
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[2]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[2]
           )
         ]
       ]
@@ -853,24 +865,28 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Los Angeles
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[4]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[5]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[5]
           )
         ],
         // Filtered list by "c": [Canada]
         // Selected rule: Los Angeles
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[2]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[2]
           )
         ],
         // Filtered list by "c": [Canada]
         // Selected rule: Canada
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule, shippingRule: shippingRules[2]
+            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            shippingRule: shippingRules[2]
           )
         ]
       ]
@@ -977,28 +993,36 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Portland
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[0]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[1]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[2]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[3]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[4]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[5]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[6]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[7]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[7]
           )
         ]
       ]
@@ -1048,56 +1072,72 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Portland
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[0]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[1]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[2]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[3]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[4]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[5]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[6]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule, shippingRule: shippingRules[7]
+            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            shippingRule: shippingRules[7]
           )
         ],
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
         // Selected rule: Great Britain
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule, shippingRule: shippingRules[0]
+            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule, shippingRule: shippingRules[1]
+            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule, shippingRule: shippingRules[2]
+            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule, shippingRule: shippingRules[3]
+            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule, shippingRule: shippingRules[4]
+            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule, shippingRule: shippingRules[5]
+            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule, shippingRule: shippingRules[6]
+            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule, shippingRule: shippingRules[7]
+            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            shippingRule: shippingRules[7]
           )
         ]
       ]

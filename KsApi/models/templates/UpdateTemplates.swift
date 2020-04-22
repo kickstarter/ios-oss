@@ -2,7 +2,6 @@ import Foundation
 
 extension Update {
   internal static let template = Update(
-    // swiftlint:disable:next line_length
     body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id vulputate augue. Donec elementum est facilisis dolor accumsan feugiat. Nam et pellentesque massa. Sed sit amet commodo ligula. Sed viverra, est viverra pretium luctus, arcu ligula congue neque, sed bibendum neque quam vel elit. Nunc varius orci et tempus consequat. Nullam tempor velit vitae consectetur mattis. Proin dignissim id turpis ac fermentum.",
     commentsCount: 2,
     hasLiked: false,

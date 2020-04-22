@@ -371,7 +371,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       ])
       self.paymentMethods.assertValues(
         [GraphUserCreditCard.template.storedCards.nodes, result1.storedCards],
-        // swiftlint:disable:next line_length
         "Emits again with the results from the last successful deletion to reload the tableview after an error occurred"
       )
 

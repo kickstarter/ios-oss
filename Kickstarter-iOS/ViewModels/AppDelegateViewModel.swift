@@ -199,7 +199,6 @@ public protocol AppDelegateViewModelType {
 
 public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateViewModelInputs,
   AppDelegateViewModelOutputs {
-  // swiftlint:disable cyclomatic_complexity
   public init() {
     let currentUserEvent = Signal
       .merge(
@@ -701,8 +700,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .ignoreValues()
   }
 
-  // swiftlint:enable cyclomatic_complexity
-
   public var inputs: AppDelegateViewModelInputs { return self }
   public var outputs: AppDelegateViewModelOutputs { return self }
 
@@ -880,7 +877,6 @@ private func deviceToken(fromData data: Data) -> String {
     .joined()
 }
 
-// swiftlint:disable:next cyclomatic_complexity
 private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? {
   if let activity = envelope.activity {
     switch activity.category {

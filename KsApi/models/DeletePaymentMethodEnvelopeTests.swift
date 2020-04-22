@@ -30,7 +30,6 @@ class DeletePaymentMethodEnvelopeTests: XCTestCase {
     let data = jsonString.data(using: .utf8)
 
     do {
-      // swiftlint:disable:next force_unwrapping
       let envelope = try JSONDecoder().decode(DeletePaymentMethodEnvelope.self, from: data!)
       XCTAssertEqual(envelope.storedCards.first?.expirationDate, "2055-11-01")
       XCTAssertEqual(envelope.storedCards.first?.id, "1057")
