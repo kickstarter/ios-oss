@@ -9,11 +9,11 @@ protocol BetaToolsFooterViewDelegate: AnyObject {
 final class BetaToolsFooterView: UIView {
   // MARK: - Properties
 
-  private let appVersionDetailLabel: UILabel = { UILabel(frame: .zero) }()
+  private let appVersionDetailTextView: UITextView = { UITextView(frame: .zero) }()
   private let appVersionStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let appVersionTitleLabel: UILabel = { UILabel(frame: .zero) }()
   private let betaFeedbackButton = UIButton(type: .custom)
-  private let deviceIdentifierDetailLabel: UILabel = { UILabel(frame: .zero) }()
+  private let deviceIdentifierDetailTextView: UITextView = { UITextView(frame: .zero) }()
   private let deviceIdentifierStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let deviceIdentifierTitleLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -44,10 +44,13 @@ final class BetaToolsFooterView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    _ = ([self.appVersionTitleLabel, self.appVersionDetailLabel], self.appVersionStackView)
+    _ = ([self.appVersionTitleLabel, self.appVersionDetailTextView], self.appVersionStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.deviceIdentifierTitleLabel, self.deviceIdentifierDetailLabel], self.deviceIdentifierStackView)
+    _ = (
+      [self.deviceIdentifierTitleLabel, self.deviceIdentifierDetailTextView],
+      self.deviceIdentifierStackView
+    )
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (
@@ -70,8 +73,8 @@ final class BetaToolsFooterView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.appVersionDetailLabel
-      |> appVersionDetailLabelStyle
+    _ = self.appVersionDetailTextView
+      |> appVersionDetailTextViewStyle
 
     _ = self.appVersionStackView
       |> appVersionStackViewStyle
@@ -82,8 +85,8 @@ final class BetaToolsFooterView: UIView {
     _ = self.betaFeedbackButton
       |> betaFeedbackButtonStyle
 
-    _ = self.deviceIdentifierDetailLabel
-      |> deviceIdentifierDetailLabelStyle
+    _ = self.deviceIdentifierDetailTextView
+      |> deviceIdentifierDetailTextViewStyle
 
     _ = self.deviceIdentifierStackView
       |> deviceIdentifierStackViewStyle
@@ -104,9 +107,9 @@ final class BetaToolsFooterView: UIView {
 
 // MARK: - Styles
 
-private let appVersionDetailLabelStyle: LabelStyle = { label in
-  label
-    |> baseDetailLabelStyle
+private let appVersionDetailTextViewStyle: TextViewStyle = { textView in
+  textView
+    |> baseTextViewStyle
     |> \.text .~ AppEnvironment.current.mainBundle.appVersionString
 }
 
@@ -127,11 +130,12 @@ private let betaFeedbackButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.title(for: .normal) .~ "Submit feedback for beta"
 }
 
-private let deviceIdentifierDetailLabelStyle: LabelStyle = { label in
-  label
-    |> baseDetailLabelStyle
-    |> \.minimumScaleFactor .~ 0.5
+private let deviceIdentifierDetailTextViewStyle: TextViewStyle = { textView in
+  _ = textView
+    |> baseTextViewStyle
     |> \.text .~ AppEnvironment.current.device.identifierForVendor?.uuidString
+
+  return textView
 }
 
 private let deviceIdentifierStackViewStyle: StackViewStyle = { stackView in
@@ -151,12 +155,20 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(2)
 }
 
-private let baseDetailLabelStyle: LabelStyle = { label in
-  label
+private let baseTextViewStyle: TextViewStyle = { textView in
+  _ = textView
     |> \.font .~ .ksr_headline(size: 15)
     |> \.textColor .~ .ksr_text_dark_grey_500
-    |> \.lineBreakMode .~ .byWordWrapping
-    |> \.textAlignment .~ .left
+    |> \.isScrollEnabled .~ false
+
+  _ = textView
+    |> \.textContainerInset .~ UIEdgeInsets.zero
+    |> \.textContainer.lineFragmentPadding .~ 0
+    |> \.isEditable .~ false
+    |> \.isUserInteractionEnabled .~ true
+    |> \.adjustsFontForContentSizeCategory .~ true
+
+  return textView
 }
 
 private let baseTitleLabelStyle: LabelStyle = { label in
