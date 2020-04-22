@@ -4,7 +4,6 @@ import KsApi
 import Prelude
 import XCTest
 
-// swiftlint:disable line_length
 internal final class DiscoveryFiltersDataSourceTests: XCTestCase {
   fileprivate let collectionsHeader = DiscoveryFiltersDataSource.Section.collectionsHeader.rawValue
   fileprivate let collections = DiscoveryFiltersDataSource.Section.collections.rawValue
@@ -28,8 +27,14 @@ internal final class DiscoveryFiltersDataSourceTests: XCTestCase {
     )
 
     XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.collections))
-    XCTAssertEqual("DiscoverySelectableRowCell", self.dataSource.reusableId(item: 0, section: self.collections))
-    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.collectionsHeader))
+    XCTAssertEqual(
+      "DiscoverySelectableRowCell",
+      self.dataSource.reusableId(item: 0, section: self.collections)
+    )
+    XCTAssertEqual(
+      1,
+      self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.collectionsHeader)
+    )
     XCTAssertEqual(
       "DiscoveryFiltersStaticRowCell",
       self.dataSource.reusableId(item: 0, section: self.collectionsHeader)
@@ -80,8 +85,14 @@ internal final class DiscoveryFiltersDataSourceTests: XCTestCase {
     )
 
     XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.categories))
-    XCTAssertEqual("DiscoveryExpandableRowCell", self.dataSource.reusableId(item: 0, section: self.categories))
-    XCTAssertEqual("DiscoveryExpandableRowCell", self.dataSource.reusableId(item: 1, section: self.categories))
+    XCTAssertEqual(
+      "DiscoveryExpandableRowCell",
+      self.dataSource.reusableId(item: 0, section: self.categories)
+    )
+    XCTAssertEqual(
+      "DiscoveryExpandableRowCell",
+      self.dataSource.reusableId(item: 1, section: self.categories)
+    )
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.categoriesHeader))
   }
 
@@ -109,8 +120,14 @@ internal final class DiscoveryFiltersDataSourceTests: XCTestCase {
     )
 
     XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: self.categories))
-    XCTAssertEqual("DiscoveryExpandableRowCell", self.dataSource.reusableId(item: 0, section: self.categories))
-    XCTAssertEqual("DiscoveryExpandableRowCell", self.dataSource.reusableId(item: 1, section: self.categories))
+    XCTAssertEqual(
+      "DiscoveryExpandableRowCell",
+      self.dataSource.reusableId(item: 0, section: self.categories)
+    )
+    XCTAssertEqual(
+      "DiscoveryExpandableRowCell",
+      self.dataSource.reusableId(item: 1, section: self.categories)
+    )
     XCTAssertEqual(
       "DiscoveryExpandedSelectableRowCell",
       self.dataSource.reusableId(item: 2, section: self.categories)

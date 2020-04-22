@@ -95,7 +95,7 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
 
     _ = self.closeButton
       |> UIButton.lens.tintColor .~ .ksr_soft_black
-      |> UIButton.lens.targets .~ [(self, action: #selector(closeButtonTapped), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, action: #selector(self.closeButtonTapped), .touchUpInside)]
       |> UIButton.lens.contentEdgeInsets .~ .init(
         top: Styles.grid(1), left: Styles.grid(3),
         bottom: Styles.grid(3), right: Styles.grid(2)
@@ -103,7 +103,9 @@ internal final class FindFriendsFacebookConnectCell: UITableViewCell, ValueCell 
 
     _ = self.facebookConnectButton
       |> facebookButtonStyle
-      |> UIButton.lens.targets .~ [(self, action: #selector(facebookConnectButtonTapped), .touchUpInside)]
+      |> UIButton.lens.targets .~ [
+        (self, action: #selector(self.facebookConnectButtonTapped), .touchUpInside)
+      ]
   }
 
   // MARK: - Facebook Login

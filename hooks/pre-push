@@ -1,7 +1,0 @@
-#!/bin/sh
-if [ -z "$CI" ]; then
-	echo "Linting..."
-	swiftlint lint --quiet --strict
-else
-	echo "Skipping linting..."
-fi

@@ -59,7 +59,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
 
     let statLabel =
       UILabel.lens.font .~ .ksr_caption1(size: 12)
-      <> UILabel.lens.textColor .~ .ksr_text_navy_600
+        <> UILabel.lens.textColor .~ .ksr_text_navy_600
 
     _ = self
       |> baseTableViewCellStyle()

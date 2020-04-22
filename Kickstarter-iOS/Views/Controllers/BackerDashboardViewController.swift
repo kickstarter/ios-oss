@@ -49,10 +49,10 @@ internal final class BackerDashboardViewController: UIViewController {
     self.pageViewController?.delegate = self
 
     _ = self.backedMenuButton
-      |> UIButton.lens.targets .~ [(self, action: #selector(backedButtonTapped), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, action: #selector(self.backedButtonTapped), .touchUpInside)]
 
     _ = self.savedMenuButton
-      |> UIButton.lens.targets .~ [(self, action: #selector(savedButtonTapped), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, action: #selector(self.savedButtonTapped), .touchUpInside)]
 
     _ = self.messagesButtonItem
       |> UIBarButtonItem.lens.targetAction .~ (self, #selector(self.messagesButtonTapped))

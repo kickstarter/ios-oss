@@ -15,7 +15,7 @@ public let discoveryBorderLineStyle = UIView.lens.alpha .~ 0.15
 
 public let discoveryNavDividerLabelStyle =
   UILabel.lens.font .~ UIFont.ksr_callout()
-  <> UILabel.lens.alpha .~ 0.6
+    <> UILabel.lens.alpha .~ 0.6
 
 public let discoveryNavTitleStackViewStyle =
   UIStackView.lens.layoutMargins %~~ { _, stack in
@@ -62,27 +62,27 @@ public let discoveryFilterRowMarginStyle = baseTableViewCellStyle()
 
 public let discoveryOnboardingTitleStyle =
   UILabel.lens.font .~ .ksr_title3()
-  <> UILabel.lens.backgroundColor .~ .white
-  <> UILabel.lens.textAlignment .~ .center
-  <> UILabel.lens.numberOfLines .~ 2
-  <> UILabel.lens.text %~ { _ in Strings.discovery_onboarding_title_bring_creative_projects_to_life() }
+    <> UILabel.lens.backgroundColor .~ .white
+    <> UILabel.lens.textAlignment .~ .center
+    <> UILabel.lens.numberOfLines .~ 2
+    <> UILabel.lens.text %~ { _ in Strings.discovery_onboarding_title_bring_creative_projects_to_life() }
 
 public let discoveryOnboardingLogoStyle =
   UIImageView.lens.contentMode .~ .scaleAspectFit
-  <> UIImageView.lens.backgroundColor .~ .white
-  <> UIImageView.lens.contentHuggingPriority(for: .vertical) .~ .required
-  <> UIImageView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
+    <> UIImageView.lens.backgroundColor .~ .white
+    <> UIImageView.lens.contentHuggingPriority(for: .vertical) .~ .required
+    <> UIImageView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
 public let discoveryOnboardingStackViewStyle =
   UIStackView.lens.spacing .~ 16.0
-  <> UIStackView.lens.distribution .~ .fill
-  <> UIStackView.lens.alignment .~ .fill
+    <> UIStackView.lens.distribution .~ .fill
+    <> UIStackView.lens.alignment .~ .fill
 
 public let discoveryProjectCellStyle =
   baseTableViewCellStyle()
-  <> UITableViewCell.lens.accessibilityHint %~ { _ in
-    Strings.dashboard_tout_accessibility_hint_opens_project()
-  }
+    <> UITableViewCell.lens.accessibilityHint %~ { _ in
+      Strings.dashboard_tout_accessibility_hint_opens_project()
+    }
 
 public func discoverySortPagerButtonStyle<B: UIButtonProtocol>(
   sort: DiscoveryParams.Sort,
@@ -109,40 +109,40 @@ public func discoverySortPagerButtonStyle<B: UIButtonProtocol>(
 
   return
     B.lens.titleColor(for: .highlighted) .~ discoverySecondaryColor()
-    <> B.lens.accessibilityLabel %~ { _ in
-      Strings.discovery_accessibility_buttons_sort_label(sort: sortString)
-    }
-    <> B.lens.accessibilityHint %~ { _ in Strings.discovery_accessibility_buttons_sort_hint() }
-    <> B.lens.contentEdgeInsets .~ sortButtonEdgeInsets(
-      isLeftMost: isLeftMost,
-      isRightMost: isRightMost
-    )
-    <> B.lens.attributedTitle(for: .normal) %~ { _ in normalTitleString }
-    <> B.lens.attributedTitle(for: .selected) %~ { _ in selectedTitleString }
+      <> B.lens.accessibilityLabel %~ { _ in
+        Strings.discovery_accessibility_buttons_sort_label(sort: sortString)
+      }
+      <> B.lens.accessibilityHint %~ { _ in Strings.discovery_accessibility_buttons_sort_hint() }
+      <> B.lens.contentEdgeInsets .~ sortButtonEdgeInsets(
+        isLeftMost: isLeftMost,
+        isRightMost: isRightMost
+      )
+      <> B.lens.attributedTitle(for: .normal) %~ { _ in normalTitleString }
+      <> B.lens.attributedTitle(for: .selected) %~ { _ in selectedTitleString }
 }
 
 public let postcardCategoryLabelStyle =
   UILabel.lens.font .~ .ksr_body(size: 13.0)
-  <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
-  <> UILabel.lens.textAlignment .~ .left
-  <> UILabel.lens.lineBreakMode .~ .byClipping
-  <> UILabel.lens.backgroundColor .~ .white
+    <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+    <> UILabel.lens.textAlignment .~ .left
+    <> UILabel.lens.lineBreakMode .~ .byClipping
+    <> UILabel.lens.backgroundColor .~ .white
 
 public let postcardMetadataLabelStyle =
   UILabel.lens.font .~ .ksr_headline(size: 12.0)
-  <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+    <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
 
 public let postcardMetadataStackViewStyle =
   UIStackView.lens.alignment .~ .center
-  <> UIStackView.lens.spacing .~ Styles.grid(1)
-  <> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: 8.0)
-  <> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
+    <> UIStackView.lens.spacing .~ Styles.grid(1)
+    <> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: 8.0)
+    <> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
 public let postcardSocialStackViewStyle =
   UIStackView.lens.alignment .~ .center
-  <> UIStackView.lens.spacing .~ Styles.grid(1)
-  <> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: 8.0)
-  <> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
+    <> UIStackView.lens.spacing .~ Styles.grid(1)
+    <> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: 8.0)
+    <> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
 public let postcardStatsSubtitleStyle =
   UILabel.lens.font %~~ { _, label in

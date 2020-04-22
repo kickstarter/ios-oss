@@ -132,21 +132,21 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
 
     let projectActivityBackingCellGoToBacking =
       self.projectActivityBackingCellGoToBackingProperty.signal.skipNil()
-      .map { project, user in ProjectActivitiesGoTo.backing(project, user) }
+        .map { project, user in ProjectActivitiesGoTo.backing(project, user) }
 
     let projectActivityBackingCellGoToSendMessage =
       self.projectActivityBackingCellGoToSendMessageProperty.signal.skipNil()
-      .map { _, backing in
-        ProjectActivitiesGoTo.sendMessage(backing, Koala.MessageDialogContext.creatorActivity)
-      }
+        .map { _, backing in
+          ProjectActivitiesGoTo.sendMessage(backing, Koala.MessageDialogContext.creatorActivity)
+        }
 
     let projectActivityCommentCellGoToBacking =
       self.projectActivityCommentCellGoToBackingProperty.signal.skipNil()
-      .map { project, user in ProjectActivitiesGoTo.backing(project, user) }
+        .map { project, user in ProjectActivitiesGoTo.backing(project, user) }
 
     let projectActivityCommentCellGoToSendReply =
       self.projectActivityCommentCellGoToSendReplyProperty.signal.skipNil()
-      .map { project, update, comment in ProjectActivitiesGoTo.sendReply(project, update, comment) }
+        .map { project, update, comment in ProjectActivitiesGoTo.sendReply(project, update, comment) }
 
     self.goTo = Signal.merge(
       cellTappedGoTo,

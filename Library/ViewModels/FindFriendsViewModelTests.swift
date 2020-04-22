@@ -5,7 +5,6 @@ import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import UIKit.UIActivity
-// swiftlint:disable force_cast
 import XCTest
 
 final class FindFriendsViewModelTests: TestCase {

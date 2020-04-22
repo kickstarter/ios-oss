@@ -36,10 +36,10 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
     super.awakeFromNib()
 
     _ = self.backingButton
-      |> UIButton.lens.targets .~ [(self, #selector(backingButtonPressed), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, #selector(self.backingButtonPressed), .touchUpInside)]
 
     _ = self.sendMessageButton
-      |> UIButton.lens.targets .~ [(self, #selector(sendMessageButtonPressed), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, #selector(self.sendMessageButtonPressed), .touchUpInside)]
   }
 
   internal func configureWith(value activityAndProject: (Activity, Project)) {

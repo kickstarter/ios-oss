@@ -72,11 +72,11 @@ public func dropShadowStyle<V: UIViewProtocol>(
 ) -> ((V) -> V) {
   return
     V.lens.layer.shadowColor .~ UIColor.black.cgColor
-    <> V.lens.layer.shadowOpacity .~ 0.17
-    <> V.lens.layer.shadowRadius .~ radius
-    <> V.lens.layer.masksToBounds .~ false
-    <> V.lens.layer.shouldRasterize .~ true
-    <> V.lens.layer.shadowOffset .~ offset
+      <> V.lens.layer.shadowOpacity .~ 0.17
+      <> V.lens.layer.shadowRadius .~ radius
+      <> V.lens.layer.masksToBounds .~ false
+      <> V.lens.layer.shouldRasterize .~ true
+      <> V.lens.layer.shadowOffset .~ offset
 }
 
 public func dropShadowStyleMedium<V: UIViewProtocol>() -> ((V) -> V) {

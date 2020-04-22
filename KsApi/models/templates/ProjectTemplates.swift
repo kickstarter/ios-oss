@@ -1,6 +1,6 @@
 import Prelude
 
-// swiftlint:disable line_length
+// swiftformat:disable wrap
 extension Project {
   internal static let template = Project(
     availableCardTypes: [

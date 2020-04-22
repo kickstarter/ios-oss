@@ -331,10 +331,8 @@ final class FormatTests: TestCase {
 
   func testDate() {
     let date = 434_592_000.0 // Oct 10 1983 in UTC
-    // swiftlint:disable force_unwrapping
     let UTC = TimeZone(abbreviation: "UTC")!
     let EST = TimeZone(abbreviation: "EST")!
-    // swiftlint:enable force_unwrapping
     var calUTC = Calendar.current
     calUTC.timeZone = UTC
     var calEST = Calendar.current
@@ -401,10 +399,8 @@ final class FormatTests: TestCase {
 
   func testDateWithDateFormat() {
     let date = 434_592_000.0 // Oct 10 1983 in UTC
-    // swiftlint:disable force_unwrapping
     let UTC = TimeZone(abbreviation: "UTC")!
     let EST = TimeZone(abbreviation: "EST")!
-    // swiftlint:enable force_unwrapping
     let format = "MMMyyyy"
     var calUTC = Calendar.current
     calUTC.timeZone = UTC
@@ -463,7 +459,6 @@ final class FormatTests: TestCase {
     let dateString = "2018-01"
     let timeZone = UTCTimeZone
     let PST = TimeZone(abbreviation: "PST")
-    // swiftlint:disable:next force_unwrapping
     let EST = TimeZone(abbreviation: "EST")!
     var calEST = Calendar.current
     calEST.timeZone = EST

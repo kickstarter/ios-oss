@@ -134,4 +134,4 @@ secrets:
 fabric:
 	bin/download_framework.sh Fabric $(FABRIC_SDK_VERSION) $(FABRIC_SDK_URL); \
 
-.PHONY: test-all test clean dependencies submodules deploy lint secrets strings fabric
+.PHONY: test-all test clean dependencies submodules deploy secrets strings fabric

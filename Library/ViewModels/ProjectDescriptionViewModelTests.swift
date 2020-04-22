@@ -1,6 +1,5 @@
 @testable import KsApi
 @testable import Library
-// swiftlint:disable force_unwrapping
 import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
@@ -286,7 +285,6 @@ final class ProjectDescriptionViewModelTests: TestCase {
     self.showErrorAlert.assertValues([error])
   }
 
-  // swiftlint:disable line_length
   func testConfigurePledgeCTAContainerView_LiveProject_NonBacker_Control() {
     let project = Project.template
       |> Project.lens.state .~ .live
@@ -295,7 +293,8 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.control.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
+          .control.rawValue
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
@@ -322,7 +321,8 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.control.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
+          .control.rawValue
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
@@ -343,7 +343,8 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
+          .variant1.rawValue
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
@@ -370,7 +371,8 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
+          .variant1.rawValue
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
@@ -391,7 +393,8 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant2.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
+          .variant2.rawValue
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
@@ -421,7 +424,8 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant2.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
+          .variant2.rawValue
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
@@ -448,7 +452,8 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant2.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
+          .variant2.rawValue
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
@@ -474,7 +479,8 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
+          .variant1.rawValue
       ]
 
     withEnvironment(currentUser: user, optimizelyClient: optimizelyClient) {
@@ -501,7 +507,8 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant2.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
+          .variant2.rawValue
       ]
 
     withEnvironment(currentUser: user, optimizelyClient: optimizelyClient) {
@@ -528,7 +535,8 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant2.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
+          .variant2.rawValue
       ]
 
     withEnvironment(currentUser: user, optimizelyClient: optimizelyClient) {
@@ -554,9 +562,15 @@ final class ProjectDescriptionViewModelTests: TestCase {
 
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "discovery")
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String, "discovery")
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_os_version"] as? String, "MockSystemVersion")
+      XCTAssertEqual(
+        optimizelyClient.trackedAttributes?["session_os_version"] as? String,
+        "MockSystemVersion"
+      )
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_user_is_logged_in"] as? Bool, true)
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_app_release_version"] as? String, "1.2.3.4.5.6.7.8.9.0")
+      XCTAssertEqual(
+        optimizelyClient.trackedAttributes?["session_app_release_version"] as? String,
+        "1.2.3.4.5.6.7.8.9.0"
+      )
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
 
@@ -566,6 +580,4 @@ final class ProjectDescriptionViewModelTests: TestCase {
       XCTAssertEqual(optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, nil)
     }
   }
-
-  // swiftlint:enable line_length
 }
