@@ -355,14 +355,22 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     optimizelyClient.start { [weak self] result in
-      let shouldUpdateClient = self?.viewModel.inputs.optimizelyConfigured(with: result)
+      guard let self = self else { return }
 
-      if let shouldUpdateClient = shouldUpdateClient, shouldUpdateClient {
+      let optimizelyConfigurationError = self.viewModel.inputs.optimizelyConfigured(with: result)
+
+      guard let optimizelyError = optimizelyConfigurationError else {
         print("🔮 Optimizely SDK Successfully Configured")
         AppEnvironment.updateOptimizelyClient(optimizelyClient)
 
-        self?.viewModel.inputs.didUpdateOptimizelyClient(optimizelyClient)
+        self.viewModel.inputs.didUpdateOptimizelyClient(optimizelyClient)
+
+        return
       }
+
+      print("🔴 Optimizely SDK Configuration Failed with Error: \(optimizelyError.localizedDescription)")
+
+      Crashlytics.sharedInstance().recordError(optimizelyError)
     }
   }
 

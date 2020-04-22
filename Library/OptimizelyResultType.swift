@@ -1,5 +1,5 @@
 import Foundation
 
 public protocol OptimizelyResultType {
-  var isSuccess: Bool { get }
+  var hasError: Error? { get }
 }
