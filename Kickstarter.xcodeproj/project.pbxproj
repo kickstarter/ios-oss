@@ -4437,7 +4437,6 @@
 				A7D1F9421C850B7C000D41D5 /* Frameworks */,
 				A7D1F9431C850B7C000D41D5 /* Resources */,
 				A7D1F9C21C850DDE000D41D5 /* Embed Frameworks */,
-				16344A3D20B4F6B700610E8D /* Swiftlint */,
 				7713662C20E4048B00D7D7AD /* Fabric */,
 				D0D58D772257F95E00532AC1 /* Carthage */,
 			);
@@ -4739,20 +4738,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		16344A3D20B4F6B700610E8D /* Swiftlint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = Swiftlint;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ -z \"$CI\" ]; then\n    echo \"Running Swiftlint...\"\n    bin/swiftlint\nfi\n";
-		};
 		7713662C20E4048B00D7D7AD /* Fabric */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

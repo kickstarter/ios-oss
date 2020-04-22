@@ -51,9 +51,11 @@ final class CreatePasswordViewController: UIViewController, MessageBannerViewCon
   }
 }
 
-// swiftlint:disable line_length
 extension CreatePasswordViewController: CreatePasswordTableViewControllerDelegate {
-  func createPasswordTableViewController(_: CreatePasswordTableViewController, setSaveButtonIsEnabled isEnabled: Bool) {
+  func createPasswordTableViewController(
+    _: CreatePasswordTableViewController,
+    setSaveButtonIsEnabled isEnabled: Bool
+  ) {
     self.saveButtonView.setIsEnabled(isEnabled: isEnabled)
   }
 
@@ -65,9 +67,10 @@ extension CreatePasswordViewController: CreatePasswordTableViewControllerDelegat
     self.saveButtonView.stopAnimating()
   }
 
-  func createPasswordTableViewController(_: CreatePasswordTableViewController, showErrorMessage message: String) {
+  func createPasswordTableViewController(
+    _: CreatePasswordTableViewController,
+    showErrorMessage message: String
+  ) {
     self.messageBannerViewController?.showBanner(with: .error, message: message)
   }
 }
-
-// swiftlint:enable line_length

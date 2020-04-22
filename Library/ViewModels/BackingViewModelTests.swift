@@ -183,7 +183,6 @@ internal final class BackingViewModelTests: TestCase {
 
   func testRewardInfo_BackerView() {
     let date = 1_485_907_200.0 // Feb 01 2017 in UTC
-    // swiftlint:disable:next force_unwrapping
     let EST = TimeZone(abbreviation: "EST")!
     var calEST = Calendar.current
     calEST.timeZone = EST
@@ -227,7 +226,6 @@ internal final class BackingViewModelTests: TestCase {
 
   func testRewardInfo_CreatorView() {
     let date = 1_485_907_200.0 // Feb 01 2017 in UTC
-    // swiftlint:disable:next force_unwrapping
     let EST = TimeZone(abbreviation: "EST")!
     var calEST = Calendar.current
     calEST.timeZone = EST

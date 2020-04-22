@@ -80,11 +80,9 @@ public final class FindFriendsFriendFollowCellViewModel: FindFriendsFriendFollow
       friend.stats.createdProjectsCount ?? 0
     }
 
-    // swiftlint:disable empty_count
     self.hideProjectsCreated = projectsCreatedCount.map {
       (count: Int) -> Bool in count == 0
     }
-    // swiftlint:enable empty_count
 
     self.projectsCreatedText = projectsCreatedCount
       .filter { $0 > 0 }

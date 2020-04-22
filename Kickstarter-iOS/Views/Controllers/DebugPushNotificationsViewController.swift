@@ -209,7 +209,6 @@ private let surveyPushData: [String: Any] = [
   ]
 ]
 
-// swiftlint:disable line_length
 private let reminderPushData: [String: Any] = [
   "aps": [
     "alert": "Reminder! This Pile of Wood is ending soon."
@@ -219,7 +218,6 @@ private let reminderPushData: [String: Any] = [
     "id": 820_501_933
   ]
 ]
-// swiftlint:enable line_length
 
 private let backingForCreatorPushData: [String: Any] = [
   "aps": [

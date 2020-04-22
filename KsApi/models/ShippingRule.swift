@@ -19,7 +19,7 @@ extension ShippingRule: Argo.Decodable {
 
 extension ShippingRule: Equatable {}
 public func == (lhs: ShippingRule, rhs: ShippingRule) -> Bool {
-  // todo: change to compare id once that api is deployed
+  // TODO: change to compare id once that api is deployed
   return lhs.location == rhs.location
 }
 

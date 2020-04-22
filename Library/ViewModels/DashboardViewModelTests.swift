@@ -294,7 +294,6 @@ internal final class DashboardViewModelTests: TestCase {
         self.scheduler.advance()
 
         self.project.assertValueCount(2)
-        // swiftlint:disable:next force_unwrapping
         XCTAssertEqual("\(projects[0].name) (updated)", self.project.values.last!.name)
 
         self.fundingStats.assertValueCount(2)
@@ -391,7 +390,6 @@ internal final class DashboardViewModelTests: TestCase {
     }
   }
 
-  // swiftlint:disable force_unwrapping
   func testDeepLink() {
     let projects = (0...4).map { .template |> Project.lens.id .~ $0 }
 
@@ -403,8 +401,6 @@ internal final class DashboardViewModelTests: TestCase {
       self.project.assertValues([projects.last!])
     }
   }
-
-  // swiftlint:enable force_unwrapping
 
   func testGoToThread() {
     let projects = (0...4).map { .template |> Project.lens.id .~ $0 }

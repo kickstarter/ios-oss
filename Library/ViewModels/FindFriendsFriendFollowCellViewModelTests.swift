@@ -7,8 +7,6 @@ import ReactiveSwift
 import UIKit.UIActivity
 import XCTest
 
-// swiftlint:disable force_cast
-// swiftlint:disable line_length
 final class FindFriendsFriendFollowCellViewModelTests: TestCase {
   let vm: FindFriendsFriendFollowCellViewModelType = FindFriendsFriendFollowCellViewModel()
 
@@ -112,7 +110,8 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     self.hideUnfollowButton.assertValues([false], "Show Unfollow Button")
     self.enableFollowButton.assertValues([false], "Disable Follow Button")
     self.enableUnfollowButton.assertValues([true], "Enable Unfollow Button")
-    self.followButtonAccessibilityLabel.assertValues(["Follow Jed"], "Accessibility label assigned to the Button")
+    self.followButtonAccessibilityLabel
+      .assertValues(["Follow Jed"], "Accessibility label assigned to the Button")
     self.unfollowButtonAccessibilityLabel.assertValues(
       ["Unfollow Jed"],
       "Accessibility label assigned to the Button"
@@ -133,7 +132,8 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     XCTAssertEqual(["Facebook Friend Unfollow", "Unfollowed Facebook Friend"], self.trackingClient.events)
     XCTAssertEqual(["activity", "activity"], self.trackingClient.properties.map { $0["source"] as! String? })
 
-    self.followButtonAccessibilityLabel.assertValues(["Follow Jed"], "Accessibility label assigned to the Button")
+    self.followButtonAccessibilityLabel
+      .assertValues(["Follow Jed"], "Accessibility label assigned to the Button")
     self.unfollowButtonAccessibilityLabel.assertValues(
       ["Unfollow Jed"],
       "Accessibility label assigned to the Button"
@@ -177,7 +177,8 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
 
     self.hideFollowButton.assertValues([true, false, true], "Follow Button does not change")
     self.hideUnfollowButton.assertValues([false, true, false], "Unfollow Button does not change")
-    self.enableFollowButton.assertValues([false, true, false, true, false], "Enable Follow Button does not emit")
+    self.enableFollowButton
+      .assertValues([false, true, false, true, false], "Enable Follow Button does not emit")
     self.enableUnfollowButton.assertValues(
       [true, false, true, false, true, false, true],
       "Enable Unfollow Button emits false/true with loader"
@@ -207,7 +208,8 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     )
 
     // Accessibility labels remains the same through all the sequences of following/unfollowing
-    self.followButtonAccessibilityLabel.assertValues(["Follow Jed"], "Accessibility label assigned to the Button")
+    self.followButtonAccessibilityLabel
+      .assertValues(["Follow Jed"], "Accessibility label assigned to the Button")
     self.unfollowButtonAccessibilityLabel.assertValues(
       ["Unfollow Jed"],
       "Accessibility label assigned to the Button"
@@ -231,7 +233,8 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     self.hideUnfollowButton.assertValues([true], "Hide Unfollow Button")
     self.enableFollowButton.assertValues([true], "Enable Follow Button")
     self.enableUnfollowButton.assertValues([false], "Disable Unfollow Button")
-    self.followButtonAccessibilityLabel.assertValues(["Follow Zed"], "Accessibility label assigned to the Button")
+    self.followButtonAccessibilityLabel
+      .assertValues(["Follow Zed"], "Accessibility label assigned to the Button")
     self.unfollowButtonAccessibilityLabel.assertValues(
       ["Unfollow Zed"],
       "Accessibility label assigned to the Button"
@@ -309,7 +312,8 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
       [true, false, true, false, true, false, true],
       "Enable Follow Button emits false/true with loader"
     )
-    self.enableUnfollowButton.assertValues([false, true, false, true, false], "Unfollow Button does not change")
+    self.enableUnfollowButton
+      .assertValues([false, true, false, true, false], "Unfollow Button does not change")
     XCTAssertEqual(
       [
         "Facebook Friend Follow", "Followed Facebook Friend",

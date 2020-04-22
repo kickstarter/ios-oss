@@ -235,7 +235,6 @@ public final class RootTabBarViewController: UITabBarController {
     dashboardVC.navigateToProjectActivities(projectId: projectId)
   }
 
-  // swiftlint:disable:next function_body_length
   fileprivate func setTabBarItemStyles(withData data: TabBarItemsData) {
     data.items.forEach { item in
       switch item {

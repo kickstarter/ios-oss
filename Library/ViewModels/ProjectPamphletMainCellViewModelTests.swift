@@ -771,11 +771,11 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     }
   }
 
-  // swiftlint:disable line_length
   func testCreatorBylineIsShown_Variant1() {
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment
+          .Variant.variant1.rawValue
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
@@ -795,7 +795,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.control.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
+          .control.rawValue
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
@@ -815,7 +816,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
+          .variant1.rawValue
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
@@ -835,7 +837,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant2.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
+          .variant2.rawValue
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
@@ -861,7 +864,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant.variant2.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
+          .variant2.rawValue
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
@@ -952,6 +956,4 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.configureProjectSummaryCarouselView.assertValues([[]])
     self.projectSummaryCarouselViewHidden.assertValues([true])
   }
-
-  // swiftlint:enable line_length
 }

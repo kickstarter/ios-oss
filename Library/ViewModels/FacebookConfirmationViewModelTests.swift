@@ -3,7 +3,6 @@
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
-// swiftlint:disable force_unwrapping
 import XCTest
 
 final class FacebookConfirmationViewModelTests: TestCase {

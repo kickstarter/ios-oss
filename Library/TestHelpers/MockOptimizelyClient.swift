@@ -1,7 +1,13 @@
 import Library
 import XCTest
 
-internal struct MockOptimizelyError: Error {}
+internal enum MockOptimizelyError: Error {
+  case generic
+
+  var localizedDescription: String {
+    return "Optimizely Error"
+  }
+}
 
 internal class MockOptimizelyClient: OptimizelyClientType {
   // MARK: - Experiment Activation Test Properties
@@ -21,30 +27,30 @@ internal class MockOptimizelyClient: OptimizelyClientType {
 
   internal func activate(experimentKey: String, userId: String, attributes: [String: Any?]?) throws
     -> String {
-    self.activatePathCalled = true
-    return try self.experiment(forKey: experimentKey, userId: userId, attributes: attributes)
-  }
+      self.activatePathCalled = true
+      return try self.experiment(forKey: experimentKey, userId: userId, attributes: attributes)
+    }
 
   internal func getVariationKey(experimentKey: String, userId: String, attributes: [String: Any?]?) throws
     -> String {
-    self.getVariantPathCalled = true
-    return try self.experiment(forKey: experimentKey, userId: userId, attributes: attributes)
-  }
+      self.getVariantPathCalled = true
+      return try self.experiment(forKey: experimentKey, userId: userId, attributes: attributes)
+    }
 
   private func experiment(forKey key: String, userId _: String, attributes: [String: Any?]?) throws
     -> String {
-    self.userAttributes = attributes
+      self.userAttributes = attributes
 
-    if let error = self.error {
-      throw error
+      if let error = self.error {
+        throw error
+      }
+
+      guard let experimentVariant = self.experiments[key] else {
+        return OptimizelyExperiment.Variant.control.rawValue
+      }
+
+      return experimentVariant
     }
-
-    guard let experimentVariant = self.experiments[key] else {
-      return OptimizelyExperiment.Variant.control.rawValue
-    }
-
-    return experimentVariant
-  }
 
   func track(eventKey: String, userId: String, attributes: [String: Any?]?, eventTags: [String: Any]?)
     throws {

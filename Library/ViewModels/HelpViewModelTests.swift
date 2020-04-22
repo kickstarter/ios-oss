@@ -1,4 +1,3 @@
-// swiftlint:disable force_cast
 @testable import Library
 import MessageUI
 import Prelude

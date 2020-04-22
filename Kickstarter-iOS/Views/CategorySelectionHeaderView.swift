@@ -62,7 +62,7 @@ final class CategorySelectionHeaderView: UIView {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
 
-    _ = ([stepLabel, titleLabel, subtitleLabel], self.rootStackView)
+    _ = ([self.stepLabel, self.titleLabel, self.subtitleLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.imageView, self)
