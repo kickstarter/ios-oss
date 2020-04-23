@@ -27,6 +27,6 @@ extension OptimizelyExperiment {
       .variant(
         for: OptimizelyExperiment.Key.nativeProjectPageCampaignDetails,
         userAttributes: optimizelyUserAttributes(with: project, refTag: refTag)
-      )
+      ) ?? .control
   }
 }

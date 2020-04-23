@@ -310,24 +310,24 @@ private func projectSummaryQuery(withSlug slug: String) -> NonEmptySet<Query> {
 
 private func projectPageConversionCreatorDetailsExperiment(
   project: Project, refTag: RefTag?
-) -> OptimizelyExperiment.Variant? {
+) -> OptimizelyExperiment.Variant {
   let optimizelyVariant = AppEnvironment.current.optimizelyClient?
     .variant(
       for: OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails,
       userAttributes: optimizelyUserAttributes(with: project, refTag: refTag)
-    )
+    ) ?? .control
 
   return optimizelyVariant
 }
 
 private func projectPageConversionProjectSummaryExperiment(
   project: Project, refTag: RefTag?
-) -> OptimizelyExperiment.Variant? {
+) -> OptimizelyExperiment.Variant {
   let optimizelyVariant = AppEnvironment.current.optimizelyClient?
     .variant(
       for: OptimizelyExperiment.Key.nativeMeProjectSummary,
       userAttributes: optimizelyUserAttributes(with: project, refTag: refTag)
-    )
+    ) ?? .control
 
   return optimizelyVariant
 }
