@@ -555,6 +555,21 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     }
   }
 
+  func testProjectCampaignCTA_OptimizelyControl_OptimizelyClientNotConfigured() {
+    let creatorDetails = ProjectCreatorDetailsEnvelope.template
+
+    self.readMoreButtonIsHidden.assertDidNotEmitValue()
+    self.readMoreButtonLargeIsHidden.assertDidNotEmitValue()
+
+    withEnvironment(optimizelyClient: nil) {
+      self.vm.inputs.configureWith(value: (.template, nil, (creatorDetails, false), []))
+      self.vm.inputs.awakeFromNib()
+
+      self.readMoreButtonIsHidden.assertValues([false])
+      self.readMoreButtonLargeIsHidden.assertValues([true])
+    }
+  }
+
   func testProjectCampaignCTA_OptimizelyExperimental_Variant1() {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let optimizelyClient = MockOptimizelyClient()
