@@ -98,7 +98,6 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
       let variation = try optimizelyClient.getVariationKey(
         experimentKey: experimentKey.rawValue,
         userId: userId,
-
         attributes: attributes
       )
 
@@ -109,7 +108,7 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
     } catch {
       return [
         "optimizely_experiment_slug": experimentKey.rawValue,
-        "optimizely_variant_id": "none"
+        "optimizely_variant_id": "unknown"
       ]
     }
   }

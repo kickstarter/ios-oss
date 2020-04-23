@@ -148,7 +148,7 @@ final class OptimizelyClientTypeTests: TestCase {
         ],
         [
           "optimizely_experiment_slug": "onboarding_category_personalization_flow",
-          "optimizely_variant_id": "none" // Not found in experiments
+          "optimizely_variant_id": "unknown" // Not found in experiments
         ]
       ], optimizelyExperiments)
 
