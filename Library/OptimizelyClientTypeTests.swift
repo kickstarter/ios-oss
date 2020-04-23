@@ -80,10 +80,10 @@ final class OptimizelyClientTypeTests: TestCase {
   func testGetVariation() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments .~
-      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
+      ["fake_experiment": OptimizelyExperiment.Variant.variant1.rawValue]
 
     withEnvironment(currentUser: User.template, optimizelyClient: mockOptimizelyClient) {
-      let variation = mockOptimizelyClient.getVariation(for: .pledgeCTACopy)
+      let variation = mockOptimizelyClient.getVariation(for: "fake_experiment")
       let userAttributes = mockOptimizelyClient.userAttributes
 
       XCTAssertEqual(.variant1, variation)
@@ -96,10 +96,10 @@ final class OptimizelyClientTypeTests: TestCase {
   func testGetVariation_Error() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments .~
-      [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
+      ["fake_experiment": OptimizelyExperiment.Variant.variant1.rawValue]
 
     withEnvironment(currentUser: User.template, optimizelyClient: mockOptimizelyClient) {
-      let variation = mockOptimizelyClient.getVariation(for: .nativeMeProjectSummary)
+      let variation = mockOptimizelyClient.getVariation(for: "other_experiment")
       let userAttributes = mockOptimizelyClient.userAttributes
 
       XCTAssertEqual(.control, variation, "Defaults to control when error is thrown")
@@ -112,18 +112,18 @@ final class OptimizelyClientTypeTests: TestCase {
   func testOptimizelyProperties() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeOnboarding.rawValue:
+        "fake_experiment_1":
           OptimizelyExperiment.Variant.control.rawValue,
-        OptimizelyExperiment.Key.nativeMeProjectSummary.rawValue:
+        "fake_experiment_2":
           OptimizelyExperiment.Variant.variant1.rawValue,
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue:
+        "fake_experiment_3":
           OptimizelyExperiment.Variant.variant2.rawValue
       ]
       |> \.allKnownExperiments .~ [
-        OptimizelyExperiment.Key.nativeOnboarding,
-        OptimizelyExperiment.Key.nativeMeProjectSummary,
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails,
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow
+        "fake_experiment_1",
+        "fake_experiment_2",
+        "fake_experiment_3",
+        "fake_experiment_4"
       ]
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
@@ -135,19 +135,19 @@ final class OptimizelyClientTypeTests: TestCase {
       XCTAssertEqual(Secrets.OptimizelySDKKey.staging, properties?["optimizely_api_key"] as? String)
       XCTAssertEqual([
         [
-          "optimizely_experiment_slug": "native_onboarding_series_new_backers",
+          "optimizely_experiment_slug": "fake_experiment_1",
           "optimizely_variant_id": "control"
         ],
         [
-          "optimizely_experiment_slug": "native_me_project_summary",
+          "optimizely_experiment_slug": "fake_experiment_2",
           "optimizely_variant_id": "variant-1"
         ],
         [
-          "optimizely_experiment_slug": "native_project_page_campaign_details",
+          "optimizely_experiment_slug": "fake_experiment_3",
           "optimizely_variant_id": "variant-2"
         ],
         [
-          "optimizely_experiment_slug": "onboarding_category_personalization_flow",
+          "optimizely_experiment_slug": "fake_experiment_4",
           "optimizely_variant_id": "unknown" // Not found in experiments
         ]
       ], optimizelyExperiments)

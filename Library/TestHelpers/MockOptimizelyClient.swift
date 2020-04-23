@@ -13,7 +13,7 @@ internal class MockOptimizelyClient: OptimizelyClientType {
   // MARK: - Experiment Activation Test Properties
 
   var activatePathCalled: Bool = false
-  var allKnownExperiments: [OptimizelyExperiment.Key] = []
+  var allKnownExperiments: [String] = []
   var experiments: [String: String] = [:]
   var error: MockOptimizelyError?
   var getVariantPathCalled: Bool = false
@@ -61,7 +61,7 @@ internal class MockOptimizelyClient: OptimizelyClientType {
     self.trackedUserId = userId
   }
 
-  func allExperiments() -> [OptimizelyExperiment.Key] {
+  func allExperiments() -> [String] {
     return self.allKnownExperiments
   }
 }

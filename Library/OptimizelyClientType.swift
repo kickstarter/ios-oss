@@ -6,7 +6,7 @@ public protocol OptimizelyClientType: AnyObject {
   func activate(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
   func getVariationKey(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
   func track(eventKey: String, userId: String, attributes: [String: Any?]?, eventTags: [String: Any]?) throws
-  func allExperiments() -> [OptimizelyExperiment.Key]
+  func allExperiments() -> [String]
 }
 
 extension OptimizelyClientType {
@@ -47,11 +47,11 @@ extension OptimizelyClientType {
    `variant(for experiment)`, which calls `activate` on the Optimizely SDK
    */
 
-  public func getVariation(for experiment: OptimizelyExperiment.Key) -> OptimizelyExperiment.Variant {
+  public func getVariation(for experimentKey: String) -> OptimizelyExperiment.Variant {
     let userId = deviceIdentifier(uuid: UUID())
     let attributes = optimizelyUserAttributes()
     let variationString = try? self.getVariationKey(
-      experimentKey: experiment.rawValue, userId: userId, attributes: attributes
+      experimentKey: experimentKey, userId: userId, attributes: attributes
     )
 
     guard
@@ -66,8 +66,8 @@ extension OptimizelyClientType {
 
   /* Returns all experiments the app knows about */
 
-  public func allExperiments() -> [OptimizelyExperiment.Key] {
-    return OptimizelyExperiment.Key.allCases
+  public func allExperiments() -> [String] {
+    return OptimizelyExperiment.Key.allCases.map { $0.rawValue }
   }
 }
 
@@ -96,18 +96,18 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
   let allExperiments = optimizelyClient.allExperiments().map { experimentKey -> [String: String] in
     do {
       let variation = try optimizelyClient.getVariationKey(
-        experimentKey: experimentKey.rawValue,
+        experimentKey: experimentKey,
         userId: userId,
         attributes: attributes
       )
 
       return [
-        "optimizely_experiment_slug": experimentKey.rawValue,
+        "optimizely_experiment_slug": experimentKey,
         "optimizely_variant_id": variation
       ]
     } catch {
       return [
-        "optimizely_experiment_slug": experimentKey.rawValue,
+        "optimizely_experiment_slug": experimentKey,
         "optimizely_variant_id": "unknown"
       ]
     }
