@@ -109,7 +109,7 @@ final class OptimizelyClientTypeTests: TestCase {
     }
   }
 
-  func testOptimizelyProperties_Production() {
+  func testOptimizelyProperties() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
         OptimizelyExperiment.Key.nativeOnboarding.rawValue:
