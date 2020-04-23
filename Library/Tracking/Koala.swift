@@ -22,7 +22,12 @@ public final class Koala {
 
   private enum DataLakeWhiteListedEvent: String, CaseIterable {
     case activityFeedViewed = "Activity Feed Viewed"
+    case appClosed = "App Closed"
+    case appCompletedCheckout = "App Completed Checkout"
     case addNewCardButtonClicked = "Add New Card Button Clicked"
+    case campaignDetailsButtonClicked = "Campaign Details Button Clicked"
+    case campaignDetailsPledgeButtonClicked = "Campaign Details Pledge Button Clicked"
+    case creatorDetailsClicked = "Creator Details Clicked"
     case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
     case collectionViewed = "Collection Viewed"
     case editorialCardClicked = "Editorial Card Clicked"
@@ -35,6 +40,9 @@ public final class Koala {
     case loginOrSignupButtonClicked = "Log In or Signup Button Clicked"
     case loginOrSignupPageViewed = "Log In or Signup Page Viewed"
     case loginSubmitButtonClicked = "Log In Submit Button Clicked"
+    case onboardingContinueButtonClicked = "Onboarding Continue Button Clicked"
+    case onboardingGetStartedButtonClicked = "Onboarding Get Started Button Clicked"
+    case onboardinSkipButtonClicked = "Onboarding Skip Button Clicked"
     case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked"
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
     case projectPageViewed = "Project Page Viewed"
