@@ -40,6 +40,7 @@ public final class Koala {
     case loginOrSignupButtonClicked = "Log In or Signup Button Clicked"
     case loginOrSignupPageViewed = "Log In or Signup Page Viewed"
     case loginSubmitButtonClicked = "Log In Submit Button Clicked"
+    case onboardingCarouselSwiped = "Onboarding Carousel Swiped"
     case onboardingContinueButtonClicked = "Onboarding Continue Button Clicked"
     case onboardingGetStartedButtonClicked = "Onboarding Get Started Button Clicked"
     case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
@@ -71,6 +72,7 @@ public final class Koala {
     case landingPage = "landing_page" // LandingViewController
     case login = "login_screen" // LoginViewController
     case loginTout = "login_or_signup_screen" // LoginToutViewController
+    case onboarding = "onboarding" // CategorySelectionViewController, CuratedProjectsViewController
     case pledgeAddNewCard = "pledge_add_new_card_screen" // AddNewCardViewController
     case pledgeScreen = "pledge_screen" // PledgeViewController
     case projectPage = "project_screen" // ProjectPamphletViewController
@@ -474,6 +476,13 @@ public final class Koala {
 
   // MARK: - Onboarding Events
 
+  public func trackOnboardingCarouselSwiped() {
+    self.track(
+      event: DataLakeWhiteListedEvent.onboardingCarouselSwiped.rawValue,
+      location: .landingPage
+    )
+  }
+
   public func trackOnboardingGetStartedButtonClicked() {
     self.track(
       event: DataLakeWhiteListedEvent.onboardingGetStartedButtonClicked.rawValue,
@@ -484,14 +493,14 @@ public final class Koala {
   public func trackOnboardingSkipButtonClicked() {
     self.track(
       event: DataLakeWhiteListedEvent.onboardingSkipButtonClicked.rawValue,
-      location: .landingPage
+      location: .onboarding
     )
   }
 
   public func trackOnboardingContinueButtonClicked() {
     self.track(
       event: DataLakeWhiteListedEvent.onboardingContinueButtonClicked.rawValue,
-      location: .landingPage
+      location: .onboarding
     )
   }
 
