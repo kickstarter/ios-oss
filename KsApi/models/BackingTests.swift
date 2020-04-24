@@ -36,7 +36,7 @@ final class BackingTests: XCTestCase {
     XCTAssertEqual("1234", backing.value?.paymentSource?.lastFour)
     XCTAssertEqual("CREDIT_CARD", backing.value?.paymentSource?.paymentType.rawValue)
     XCTAssertEqual("ACTIVE", backing.value?.paymentSource?.state)
-    XCTAssertEqual(GraphUserCreditCard.CreditCardType.visa, backing.value?.paymentSource?.type)
+    XCTAssertEqual(CreditCardType.visa, backing.value?.paymentSource?.type)
     XCTAssertEqual(1, backing.value?.locationId)
     XCTAssertEqual("United States", backing.value?.locationName)
     XCTAssertEqual(1_000, backing.value?.pledgedAt)

@@ -69,11 +69,19 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.title.assertDidNotEmitValue()
 
     let project = Project.template
-    self.vm.inputs.configureWith(project)
 
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(fetchManagePledgeViewBackingResult: .success(.template))
 
-    self.title.assertValue("Manage your pledge")
+    withEnvironment(apiService: mockService) {
+      self.title.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith(project)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.title.assertValues(["Manage your pledge"])
+    }
   }
 
   func testNavigationBarTitle_FinishedProject() {
@@ -81,11 +89,20 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let finishedProject = Project.template
       |> \.state .~ .successful
-    self.vm.inputs.configureWith(finishedProject)
 
-    self.vm.inputs.viewDidLoad()
+    let envelope = ManagePledgeViewBackingEnvelope.template
+      |> \.project.state .~ .successful
 
-    self.title.assertValue("Your pledge")
+    let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith(finishedProject)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.title.assertValue("Your pledge")
+    }
   }
 
   func testConfigurePaymentMethodViewController() {
@@ -496,7 +513,10 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let updatedProject = project
       |> Project.lens.personalization.backing .~ (backing |> Backing.lens.amount .~ 10.00)
 
-    let mockService = MockService(fetchProjectResponse: updatedProject)
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: updatedProject
+    )
 
     withEnvironment(apiService: mockService) {
       self.showSuccessBannerWithMessage.assertDidNotEmitValue()
@@ -523,7 +543,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.configureRewardSummaryViewProject.assertValues([project, updatedProject])
       self.configureRewardSummaryViewReward.assertValues([.template, .template])
       self.configureRewardReceivedWithProject.assertValues([project, updatedProject])
-      self.title.assertValueCount(2)
+      self.title.assertValues(["Manage your pledge"])
     }
   }
 

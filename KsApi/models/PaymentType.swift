@@ -1,6 +1,21 @@
+import Argo
 import Foundation
 
-// This type should be removed once the createBacking mutation is updated to automatically set this type
-public enum PaymentType: String, Encodable {
+public enum PaymentType: String, Swift.Decodable {
+  case applePay = "APPLE_PAY"
   case creditCard = "CREDIT_CARD"
+  case googlePay = "ANDROID_PAY"
+
+  public var accessibilityLabel: String? {
+    switch self {
+    case .applePay:
+      return "Apple Pay"
+    case .googlePay:
+      return "Google Pay"
+    case .creditCard:
+      return nil
+    }
+  }
 }
+
+extension PaymentType: Argo.Decodable {}

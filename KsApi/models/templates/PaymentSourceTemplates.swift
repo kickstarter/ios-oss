@@ -7,7 +7,7 @@ extension Backing.PaymentSource {
     lastFour: "1111",
     paymentType: .creditCard,
     state: "",
-    type: GraphUserCreditCard.CreditCardType.visa
+    type: CreditCardType.visa
   )
 
   internal static let visa = Backing.PaymentSource(
@@ -16,7 +16,7 @@ extension Backing.PaymentSource {
     lastFour: "1111",
     paymentType: .creditCard,
     state: "",
-    type: GraphUserCreditCard.CreditCardType.visa
+    type: CreditCardType.visa
   )
 
   internal static let amex = Backing.PaymentSource(
@@ -25,7 +25,7 @@ extension Backing.PaymentSource {
     lastFour: "8882",
     paymentType: .creditCard,
     state: "",
-    type: GraphUserCreditCard.CreditCardType.amex
+    type: CreditCardType.amex
   )
 
   internal static let applePay = Backing.PaymentSource(
@@ -34,7 +34,7 @@ extension Backing.PaymentSource {
     lastFour: "1111",
     paymentType: .applePay,
     state: "",
-    type: GraphUserCreditCard.CreditCardType.visa
+    type: CreditCardType.visa
   )
 
   internal static let googlePay = Backing.PaymentSource(

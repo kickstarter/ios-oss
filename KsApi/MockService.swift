@@ -76,15 +76,14 @@
     fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>?
     fileprivate let fetchGraphUserAccountFieldsError: GraphError?
 
-    fileprivate let fetchGraphUserBackingsResponse: UserEnvelope<GraphBackingEnvelope>?
-    fileprivate let fetchGraphUserBackingsError: GraphError?
-
     fileprivate let addAttachmentResponse: UpdateDraft.Image?
     fileprivate let addAttachmentError: ErrorEnvelope?
     fileprivate let removeAttachmentResponse: UpdateDraft.Image?
     fileprivate let removeAttachmentError: ErrorEnvelope?
 
     fileprivate let publishUpdateError: ErrorEnvelope?
+
+    fileprivate let fetchManagePledgeViewBackingResult: Result<ManagePledgeViewBackingEnvelope, GraphError>?
 
     fileprivate let fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>?
     fileprivate let fetchMessageThreadsResponse: [MessageThread]
@@ -240,13 +239,12 @@
       fetchGraphUserEmailFieldsResponse: UserEmailFields? = nil,
       fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>? = nil,
       fetchGraphUserAccountFieldsError: GraphError? = nil,
-      fetchGraphUserBackingsResponse: UserEnvelope<GraphBackingEnvelope>? = nil,
-      fetchGraphUserBackingsError: GraphError? = nil,
       addAttachmentResponse: UpdateDraft.Image? = nil,
       addAttachmentError: ErrorEnvelope? = nil,
       removeAttachmentResponse: UpdateDraft.Image? = nil,
       removeAttachmentError: ErrorEnvelope? = nil,
       publishUpdateError: ErrorEnvelope? = nil,
+      fetchManagePledgeViewBackingResult: Result<ManagePledgeViewBackingEnvelope, GraphError>? = nil,
       fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
       fetchMessageThreadsResponse: [MessageThread]? = nil,
       fetchProjectResponse: Project? = nil,
@@ -358,9 +356,6 @@
 
       self.fetchGraphUserEmailFieldsResponse = fetchGraphUserEmailFieldsResponse
 
-      self.fetchGraphUserBackingsResponse = fetchGraphUserBackingsResponse
-      self.fetchGraphUserBackingsError = fetchGraphUserBackingsError
-
       self.fetchCommentsResponse = fetchCommentsResponse ?? [
         .template |> Comment.lens.id .~ 2,
         .template |> Comment.lens.id .~ 1
@@ -393,6 +388,8 @@
       self.removeAttachmentError = removeAttachmentError
 
       self.publishUpdateError = publishUpdateError
+
+      self.fetchManagePledgeViewBackingResult = fetchManagePledgeViewBackingResult
 
       self.fetchMessageThreadResult = fetchMessageThreadResult
 
@@ -720,16 +717,6 @@
       }
     }
 
-    internal func fetchGraphUserBackings(query _: NonEmptySet<Query>)
-      -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError> {
-      if let error = fetchGraphUserBackingsError {
-        return SignalProducer(error: error)
-      }
-      let response = self.fetchGraphUserBackingsResponse ??
-        UserEnvelope<GraphBackingEnvelope>(me: GraphBackingEnvelope.template)
-      return SignalProducer(value: response)
-    }
-
     internal func fetchGraph<A>(
       query _: NonEmptySet<Query>
     ) -> SignalProducer<A, GraphError> where A: Decodable {
@@ -827,6 +814,11 @@
       )
 
       return SignalProducer(value: envelope)
+    }
+
+    func fetchManagePledgeViewBacking(query _: NonEmptySet<Query>)
+      -> SignalProducer<ManagePledgeViewBackingEnvelope, GraphError> {
+      return producer(for: self.fetchManagePledgeViewBackingResult)
     }
 
     internal func fetchMessageThread(messageThreadId _: Int)
@@ -1451,6 +1443,7 @@
             removeAttachmentResponse: $1.removeAttachmentResponse,
             removeAttachmentError: $1.removeAttachmentError,
             publishUpdateError: $1.publishUpdateError,
+            fetchManagePledgeViewBackingResult: $1.fetchManagePledgeViewBackingResult,
             fetchMessageThreadResult: $1.fetchMessageThreadResult,
             fetchMessageThreadsResponse: $1.fetchMessageThreadsResponse,
             fetchProjectResponse: $1.fetchProjectResponse,

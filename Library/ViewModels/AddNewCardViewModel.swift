@@ -7,7 +7,7 @@ public typealias Month = UInt
 public typealias Year = UInt
 public typealias CardDetails = (
   cardNumber: String, expMonth: Month?, expYear: Year?, cvc: String?,
-  cardBrand: GraphUserCreditCard.CreditCardType?
+  cardBrand: CreditCardType?
 )
 public typealias PaymentDetails = (
   cardholderName: String, cardNumber: String, expMonth: Month, expYear: Year,
@@ -303,8 +303,8 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   public var outputs: AddNewCardViewModelOutputs { return self }
 }
 
-private func cardBrandIsSupported(project: Project?, cardBrand: GraphUserCreditCard.CreditCardType) -> Bool {
-  let supportedCardBrands: [GraphUserCreditCard.CreditCardType] = [
+private func cardBrandIsSupported(project: Project?, cardBrand: CreditCardType) -> Bool {
+  let supportedCardBrands: [CreditCardType] = [
     .amex,
     .diners,
     .discover,
@@ -319,7 +319,7 @@ private func cardBrandIsSupported(project: Project?, cardBrand: GraphUserCreditC
   }
 
   let availableCreditCardTypes = availableCardTypes
-    .compactMap { GraphUserCreditCard.CreditCardType(rawValue: $0) }
+    .compactMap { CreditCardType(rawValue: $0) }
 
   return availableCreditCardTypes.contains(cardBrand)
 }
