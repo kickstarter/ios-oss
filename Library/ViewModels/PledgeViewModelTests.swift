@@ -32,8 +32,6 @@ final class PledgeViewModelTests: TestCase {
   private let configureWithPledgeViewDataProject = TestObserver<Project, Never>()
   private let configureWithPledgeViewDataReward = TestObserver<Reward, Never>()
 
-  private let continueViewHidden = TestObserver<Bool, Never>()
-
   private let descriptionViewHidden = TestObserver<Bool, Never>()
 
   private let goToApplePayPaymentAuthorizationProject = TestObserver<Project, Never>()
@@ -91,8 +89,6 @@ final class PledgeViewModelTests: TestCase {
       .observe(self.configureStripeIntegrationMerchantId.observer)
     self.vm.outputs.configureStripeIntegration.map(second)
       .observe(self.configureStripeIntegrationPublishableKey.observer)
-
-    self.vm.outputs.continueViewHidden.observe(self.continueViewHidden.observer)
 
     self.vm.outputs.descriptionViewHidden.observe(self.descriptionViewHidden.observer)
 
@@ -166,7 +162,6 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
@@ -205,7 +200,6 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.continueViewHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
@@ -244,7 +238,6 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
@@ -285,7 +278,6 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
@@ -337,7 +329,6 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([true])
       self.pledgeAmountSummaryViewHidden.assertValues([false])
@@ -394,7 +385,6 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([true])
       self.pledgeAmountSummaryViewHidden.assertValues([false])
@@ -427,7 +417,6 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.continueViewHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
@@ -454,7 +443,6 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.continueViewHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
@@ -482,7 +470,6 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
@@ -509,7 +496,6 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
@@ -536,7 +522,6 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
@@ -572,7 +557,6 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
@@ -621,7 +605,6 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
@@ -670,7 +653,6 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.continueViewHidden.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
@@ -687,7 +669,6 @@ final class PledgeViewModelTests: TestCase {
         self.configureWithPledgeViewDataProject.assertValues([project])
         self.configureWithPledgeViewDataReward.assertValues([reward])
 
-        self.continueViewHidden.assertValues([false, true])
         self.paymentMethodsViewHidden.assertValues([true, false])
         self.shippingLocationViewHidden.assertValues([true])
       }
@@ -711,7 +692,6 @@ final class PledgeViewModelTests: TestCase {
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
       self.pledgeAmountSummaryViewHidden.assertValues([true])
@@ -1236,7 +1216,6 @@ final class PledgeViewModelTests: TestCase {
       self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryViewControllerWithDataProject.assertValues([project])
 
-      self.continueViewHidden.assertValues([true])
       self.paymentMethodsViewHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([true])
 

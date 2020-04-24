@@ -54,7 +54,6 @@ public protocol PledgeViewModelOutputs {
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
   var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
-  var continueViewHidden: Signal<Bool, Never> { get }
   var descriptionViewHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
   var goToThanks: Signal<ThanksPageData, Never> { get }
@@ -141,10 +140,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
         return (user, project, reward, context, refTag)
       }
-
-    self.continueViewHidden = Signal
-      .combineLatest(isLoggedIn, context)
-      .map { $0 || $1.continueViewHidden }
 
     self.goToLoginSignup = Signal.combineLatest(project, reward, self.goToLoginSignupSignal)
       .map { (LoginIntent.backProject, $0.0, $0.1) }
@@ -758,7 +753,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
   public let configureWithData: Signal<(project: Project, reward: Reward), Never>
-  public let continueViewHidden: Signal<Bool, Never>
   public let descriptionViewHidden: Signal<Bool, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let goToThanks: Signal<ThanksPageData, Never>

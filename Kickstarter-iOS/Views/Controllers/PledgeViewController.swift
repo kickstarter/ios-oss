@@ -48,10 +48,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   private lazy var processingView: ProcessingView = { ProcessingView(frame: .zero) }()
 
-  private lazy var continueViewController = {
-    PledgeContinueViewController.instantiate()
-  }()
-
   private lazy var descriptionSectionViews = {
     [self.descriptionViewController.view, self.descriptionSectionSeparator]
   }()
@@ -70,10 +66,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       action: #selector(PledgeViewController.dismissKeyboard)
     )
       |> \.cancelsTouchesInView .~ false
-  }()
-
-  private lazy var loginSectionViews = {
-    [self.continueViewController.view]
   }()
 
   internal var messageBannerViewController: MessageBannerViewController?
@@ -173,7 +165,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       self.pledgeDisclaimerViewController,
       self.shippingLocationViewController,
       self.summaryViewController,
-      self.continueViewController,
       self.paymentMethodsViewController
     ]
 
@@ -181,7 +172,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       self.descriptionSectionViews,
       self.inputsSectionViews,
       self.summarySectionViews,
-      self.loginSectionViews,
       self.paymentMethodsSectionViews
     ]
     .flatMap { $0 }
@@ -284,7 +274,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.viewModel.outputs.configureWithData
       .observeForUI()
       .observeValues { [weak self] data in
-        self?.continueViewController.configureWith(value: data)
         self?.descriptionViewController.configureWith(value: data)
         self?.pledgeAmountViewController.configureWith(value: data)
         self?.pledgeAmountSummaryViewController.configureWith(data.project)
@@ -365,7 +354,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.shippingLocationViewController.view.rac.hidden
       = self.viewModel.outputs.shippingLocationViewHidden
-    self.continueViewController.view.rac.hidden = self.viewModel.outputs.continueViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
     self.pledgeAmountSummaryViewController.view.rac.hidden
