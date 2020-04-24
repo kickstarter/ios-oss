@@ -6,8 +6,8 @@ import UIKit
 
 protocol PledgeViewCTAContainerViewDelegate: AnyObject {
   func applePayButtonTapped()
-  func pledgeButtonTapped(with submitType: SubmitCTAType)
   func goToLoginSignup()
+  func submitButtonTapped()
   func termsOfUseTapped(with helptype: HelpType)
 }
 
@@ -34,8 +34,14 @@ final class PledgeViewCTAContainerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var submitButton: LoadingButton = {
-    LoadingButton(type: .custom)
+  private lazy var continueButton: UIButton = {
+    UIButton(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var submitButton: UIButton = {
+    UIButton(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var rootStackView: UIStackView = {
@@ -84,6 +90,10 @@ final class PledgeViewCTAContainerView: UIView {
     _ = self.layer
       |> layerStyle
 
+    _ = self.continueButton
+      |> greenButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Continue() }
+
     _ = self.submitButton
       |> greenButtonStyle
 
@@ -98,16 +108,16 @@ final class PledgeViewCTAContainerView: UIView {
 
     self.viewModel.outputs.notifyDelegateToGoToLoginSignup
       .observeForUI()
-      .observeValues { [weak self] _ in
+      .observeValues { [weak self] in
         guard let self = self else { return }
         self.delegate?.goToLoginSignup()
     }
 
     self.viewModel.outputs.notifyDelegateSubmitButtonTapped
       .observeForUI()
-      .observeValues { [weak self] submitType in
+      .observeValues { [weak self] in
         guard let self = self else { return }
-        self.delegate?.pledgeButtonTapped(with: submitType)
+        self.delegate?.submitButtonTapped()
       }
 
     self.viewModel.outputs.notifyDelegateApplePayButtonTapped
@@ -124,14 +134,9 @@ final class PledgeViewCTAContainerView: UIView {
         self.delegate?.termsOfUseTapped(with: helpType)
       }
 
-    self.viewModel.outputs.submitButtonIsLoading
-      .observeForUI()
-      .observeValues { [weak self] isLoading in
-        guard let self = self else { return }
-        self.submitButton.isLoading = isLoading
-      }
-
-    self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonHidden
+    self.applePayButton.rac.hidden = self.viewModel.outputs.hideApplePayButton
+    self.submitButton.rac.hidden = self.viewModel.outputs.hideSubmitButton
+    self.continueButton.rac.hidden = self.viewModel.outputs.hideContinueButton
     self.submitButton.rac.title = self.viewModel.outputs.submitButtonTitle
     self.submitButton.rac.enabled = self.viewModel.outputs.submitButtonIsEnabled
   }
@@ -149,7 +154,7 @@ final class PledgeViewCTAContainerView: UIView {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.submitButton, self.applePayButton], self.ctaStackView)
+    _ = ([self.continueButton, self.submitButton, self.applePayButton], self.ctaStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.termsTextView], self.disclaimerStackView)
@@ -160,6 +165,10 @@ final class PledgeViewCTAContainerView: UIView {
 
     self.submitButton.addTarget(
       self, action: #selector(self.submitButtonTapped), for: .touchUpInside
+    )
+
+    self.continueButton.addTarget(
+      self, action: #selector(self.continueButtonTapped), for: .touchUpInside
     )
 
     self.applePayButton.addTarget(
@@ -178,6 +187,10 @@ final class PledgeViewCTAContainerView: UIView {
 
   @objc func submitButtonTapped() {
     self.viewModel.inputs.submitButtonTapped()
+  }
+
+  @objc func continueButtonTapped() {
+    self.viewModel.inputs.continueButtonTapped()
   }
 
   @objc func applePayButtonTapped() {

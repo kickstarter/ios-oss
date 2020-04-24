@@ -18,7 +18,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   // MARK: - Properties
 
   private lazy var confirmationSectionViews = {
-    [self.pledgeDisclaimerViewController.view, self.submitButton]
+    [self.pledgeDisclaimerViewController.view]
   }()
 
   public weak var delegate: PledgeViewControllerDelegate?
@@ -97,8 +97,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       |> \.delegate .~ self
   }()
 
-  private lazy var submitButton: LoadingButton = { LoadingButton(type: .custom) }()
-
   private lazy var summarySectionViews = {
     [
       self.summarySectionSeparator,
@@ -145,12 +143,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
-
-//    self.submitButton.addTarget(
-//      self,
-//      action: #selector(PledgeViewController.submitButtonTapped),
-//      for: .touchUpInside
-//    )
 
     self.configureChildViewControllers()
     self.setupConstraints()
@@ -237,7 +229,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
       self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor),
-      self.submitButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
     ])
 
     self.sectionSeparatorViews.forEach { view in
@@ -267,9 +258,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     _ = self.sectionSeparatorViews
       ||> separatorStyleDark
-
-    _ = self.submitButton
-      |> greenButtonStyle
 
     _ = self.paymentMethodsViewController.view
       |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
@@ -383,10 +371,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.pledgeAmountSummaryViewController.view.rac.hidden
       = self.viewModel.outputs.pledgeAmountSummaryViewHidden
 
-    self.submitButton.rac.enabled = self.viewModel.outputs.submitButtonEnabled
-    self.submitButton.rac.hidden = self.viewModel.outputs.submitButtonHidden
-    self.submitButton.rac.title = self.viewModel.outputs.submitButtonTitle
-
     self.viewModel.outputs.title
       .observeForUI()
       .observeValues { [weak self] title in
@@ -394,12 +378,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
         _ = self
           |> \.title %~ { _ in title }
-      }
-
-    self.viewModel.outputs.submitButtonIsLoading
-      .observeForUI()
-      .observeValues { [weak self] isLoading in
-        self?.submitButton.isLoading = isLoading
       }
 
     self.viewModel.outputs.processingViewIsHidden
@@ -462,10 +440,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   }
 
   // MARK: - Actions
-
-//  @objc internal func submitButtonTapped() {
-//    //self.viewModel.inputs.submitButtonTapped()
-//  }
 
   @objc private func dismissKeyboard() {
     self.view.endEditing(true)
@@ -569,8 +543,8 @@ extension PledgeViewController: PledgeViewCTAContainerViewDelegate {
     self.viewModel.inputs.applePayButtonTapped()
   }
 
-  func pledgeButtonTapped(with submitType: SubmitCTAType) {
-    self.viewModel.inputs.submitButtonTapped(with: submitType)
+  func submitButtonTapped() {
+    self.viewModel.inputs.submitButtonTapped()
   }
 
   func termsOfUseTapped(with helpType: HelpType) {

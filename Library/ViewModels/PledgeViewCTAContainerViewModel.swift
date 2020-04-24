@@ -6,23 +6,26 @@ import ReactiveSwift
 public typealias PledgeViewCTAContainerViewData = (
   isLoggedIn: Bool,
   isEnabled: Bool,
-  isLoading: Bool
+  title: String,
+  context: PledgeViewContext
 )
 
 public protocol PledgeViewCTAContainerViewModelInputs {
-  func configureWith(value: PledgeViewCTAContainerViewData)
   func applePayButtonTapped()
+  func configureWith(value: PledgeViewCTAContainerViewData)
+  func continueButtonTapped()
   func submitButtonTapped()
   func tapped(_ url: URL)
 }
 
 public protocol PledgeViewCTAContainerViewModelOutputs {
+  var hideApplePayButton: Signal<Bool, Never> { get }
+  var hideContinueButton: Signal<Bool, Never> { get }
+  var hideSubmitButton: Signal<Bool, Never> { get }
   var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var notifyDelegateOpenHelpType: Signal<HelpType, Never> { get }
-  var notifyDelegateSubmitButtonTapped: Signal<SubmitCTAType, Never> { get }
-  var notifyDelegateToGoToLoginSignup: Signal<SubmitCTAType, Never> { get }
-  var applePayButtonHidden: Signal<Bool, Never> { get }
-  var submitButtonIsLoading: Signal<Bool, Never> { get }
+  var notifyDelegateSubmitButtonTapped: Signal<Void, Never> { get }
+  var notifyDelegateToGoToLoginSignup: Signal<Void, Never> { get }
   var submitButtonIsEnabled: Signal<Bool, Never> { get }
   var submitButtonTitle: Signal<String, Never> { get }
 }
@@ -35,37 +38,31 @@ public protocol PledgeViewCTAContainerViewModelType {
 public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewModelType,
   PledgeViewCTAContainerViewModelInputs, PledgeViewCTAContainerViewModelOutputs {
   public init() {
+    let context = self.configDataSignal.map { $0.context }
     let isLoggedIn = self.configDataSignal.map { $0.isLoggedIn }
-    let isEnabled = self.configDataSignal.map { $0.isEnabled }
-    let submitCTAType = isLoggedIn.map(submitCTA(isLoggedIn:))
 
-    self.applePayButtonHidden = submitCTAType.map { $0.applePayButtonHidden }
-    self.submitButtonTitle = submitCTAType.map { $0.buttonTitle }
+    self.notifyDelegateOpenHelpType = self.tappedUrlProperty.signal.skipNil().map { url -> HelpType? in
+        let helpType = HelpType.allCases.filter { helpType in
+          url.absoluteString == helpType.url(
+            withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
+          )?.absoluteString
+        }
+        .first
 
-    self.submitButtonIsLoading = self.configDataSignal.map{ $0.isLoading }
-    self.submitButtonIsEnabled = Signal.combineLatest(submitCTAType, isEnabled)
-    .map(enableSubmitButton(submitCTAType:isEnabled:))
+        return helpType
+      }.skipNil()
 
-  self.notifyDelegateOpenHelpType = self.tappedUrlProperty.signal.skipNil().map { url -> HelpType? in
-      let helpType = HelpType.allCases.filter { helpType in
-        url.absoluteString == helpType.url(
-          withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
-        )?.absoluteString
-      }
-      .first
+    self.submitButtonIsEnabled = self.configDataSignal.map { $0.isEnabled }
+    self.submitButtonTitle = self.configDataSignal.map { $0.title }
 
-      return helpType
-    }.skipNil()
-
-    self.notifyDelegateSubmitButtonTapped = submitCTAType
-      .filter { $0 == .pledge }
-      .takeWhen(self.submitButtonTappedProperty.signal)
+    self.hideSubmitButton = isLoggedIn.map { !$0 }
+    self.hideApplePayButton = Signal.combineLatest(context, isLoggedIn)
+      .map { $0.0 != .pledge || !$0.1 }
+    self.hideContinueButton = isLoggedIn
 
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
-
-    self.notifyDelegateToGoToLoginSignup = submitCTAType
-      .filter { $0 == .continueCTA }
-      .takeWhen(self.submitButtonTappedProperty.signal)
+    self.notifyDelegateSubmitButtonTapped = self.submitButtonTappedProperty.signal
+    self.notifyDelegateToGoToLoginSignup = self.continueButtonTappedProperty.signal
   }
 
   private let applePayButtonTappedProperty = MutableProperty(())
@@ -73,72 +70,36 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
     self.applePayButtonTappedProperty.value = ()
   }
 
-  fileprivate let (configDataSignal, configDataObserver) = Signal<PledgeViewCTAContainerViewData, Never>.pipe()
+  private let (configDataSignal, configDataObserver) = Signal<PledgeViewCTAContainerViewData, Never>.pipe()
   public func configureWith(value: PledgeViewCTAContainerViewData) {
     self.configDataObserver.send(value: value)
   }
 
-  fileprivate let submitButtonTappedProperty = MutableProperty(())
+  private let continueButtonTappedProperty = MutableProperty(())
+  public func continueButtonTapped() {
+    self.continueButtonTappedProperty.value = ()
+  }
+
+  private let submitButtonTappedProperty = MutableProperty(())
   public func submitButtonTapped() {
     self.submitButtonTappedProperty.value = ()
   }
 
-  fileprivate let tappedUrlProperty = MutableProperty<(URL)?>(nil)
+  private let tappedUrlProperty = MutableProperty<(URL)?>(nil)
   public func tapped(_ url: URL) {
     self.tappedUrlProperty.value = url
   }
 
-  public let applePayButtonHidden: Signal<Bool, Never>
+  public let hideApplePayButton: Signal<Bool, Never>
+  public let hideContinueButton: Signal<Bool, Never>
+  public let hideSubmitButton: Signal<Bool, Never>
   public let notifyDelegateApplePayButtonTapped: Signal<Void, Never>
   public let notifyDelegateOpenHelpType: Signal<HelpType, Never>
-  public let notifyDelegateSubmitButtonTapped: Signal<SubmitCTAType, Never>
-  public let notifyDelegateToGoToLoginSignup: Signal<SubmitCTAType, Never>
+  public let notifyDelegateSubmitButtonTapped: Signal<Void, Never>
+  public let notifyDelegateToGoToLoginSignup: Signal<Void, Never>
   public let submitButtonIsEnabled: Signal<Bool, Never>
-  public let submitButtonIsLoading: Signal<Bool, Never>
   public let submitButtonTitle: Signal<String, Never>
 
   public var inputs: PledgeViewCTAContainerViewModelInputs { return self }
   public var outputs: PledgeViewCTAContainerViewModelOutputs { return self }
-}
-
-
-public enum SubmitCTAType {
-  case pledge
-  case continueCTA
-
-  public var applePayButtonHidden: Bool {
-    switch self {
-      case .pledge:
-        return false
-      case .continueCTA:
-        return true
-    }
-  }
-
-  public var buttonTitle: String {
-    switch self {
-    case .pledge:
-      return Strings.Pledge()
-    case .continueCTA:
-      return Strings.Continue()
-    }
-  }
-}
-
-private func submitCTA(isLoggedIn: Bool) -> SubmitCTAType {
-  if isLoggedIn == true {
-    return SubmitCTAType.pledge
-  } else {
-    return SubmitCTAType.continueCTA
-  }
-}
-
-private func enableSubmitButton(submitCTAType: SubmitCTAType, isEnabled: Bool) -> Bool {
-  if submitCTAType == .pledge {
-    return isEnabled
-  } else if submitCTAType == .continueCTA {
-    return true
-  } else {
-    return isEnabled
-  }
 }
