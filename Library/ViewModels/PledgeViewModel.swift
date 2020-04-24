@@ -647,25 +647,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           refTag: refTag
         )
       }
-
-    createBackingDataAndIsApplePay.takeWhen(createBackingCompletionEvents)
-      .observeValues { data, isApplePay in
-        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: data.project,
-          refTag: data.refTag
-        )
-
-        let allEventTags = eventTags
-          .withAllValuesFrom(optimizelyCheckoutEventTags(createBackingData: data, isApplePay: isApplePay))
-
-        try? AppEnvironment.current.optimizelyClient?
-          .track(
-            eventKey: "App Completed Checkout",
-            userId: deviceIdentifier(uuid: UUID()),
-            attributes: properties,
-            eventTags: allEventTags
-          )
-      }
   }
 
   // MARK: - Inputs
