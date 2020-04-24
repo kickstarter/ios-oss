@@ -42,7 +42,7 @@ public final class Koala {
     case loginSubmitButtonClicked = "Log In Submit Button Clicked"
     case onboardingContinueButtonClicked = "Onboarding Continue Button Clicked"
     case onboardingGetStartedButtonClicked = "Onboarding Get Started Button Clicked"
-    case onboardinSkipButtonClicked = "Onboarding Skip Button Clicked"
+    case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
     case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked"
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
     case projectPageViewed = "Project Page Viewed"
@@ -68,6 +68,7 @@ public final class Koala {
     case discovery = "explore_screen" // DiscoveryViewController
     case editorialProjects = "editorial_collection_screen" // EditorialProjectsViewController
     case forgotPassword = "forgot_password_screen" // ResetPasswordViewController
+    case landingPage = "landing_page" // LandingViewController
     case login = "login_screen" // LoginViewController
     case loginTout = "login_or_signup_screen" // LoginToutViewController
     case pledgeAddNewCard = "pledge_add_new_card_screen" // AddNewCardViewController
@@ -413,9 +414,10 @@ public final class Koala {
   }
 
   /// Call when the app enters the background.
-  public func trackAppClose() {
-    self.track(event: "App Close", properties: deprecatedProps)
-    self.track(event: "Closed App")
+  public func trackAppClosed() {
+    self.track(
+      event: DataLakeWhiteListedEvent.appClosed.rawValue
+    )
   }
 
   public func trackMemoryWarning() {
@@ -467,6 +469,29 @@ public final class Koala {
     self.track(
       event: DataLakeWhiteListedEvent.tabBarClicked.rawValue,
       properties: properties
+    )
+  }
+
+  // MARK: - Onboarding Events
+
+  public func trackOnboardingGetStartedButtonClicked() {
+    self.track(
+      event: DataLakeWhiteListedEvent.onboardingGetStartedButtonClicked.rawValue,
+      location: .landingPage
+    )
+  }
+
+  public func trackOnboardingSkipButtonClicked() {
+    self.track(
+      event: DataLakeWhiteListedEvent.onboardingSkipButtonClicked.rawValue,
+      location: .landingPage
+    )
+  }
+
+  public func trackOnboardingContinueButtonClicked() {
+    self.track(
+      event: DataLakeWhiteListedEvent.onboardingContinueButtonClicked.rawValue,
+      location: .landingPage
     )
   }
 
@@ -735,6 +760,34 @@ public final class Koala {
     self.track(
       event: DataLakeWhiteListedEvent.thanksPageViewed.rawValue,
       location: .thanks,
+      properties: props
+    )
+  }
+
+  /* Call when the a pledge occurs
+
+   parameters:
+   - project: the project that was pledged to
+   - reward: the reward that was chosen
+   - checkoutData: all the checkout data associated with the pledge
+   */
+
+  public func trackAppCompletedCheckout(project: Project,
+                                        reward: Reward,
+                                        location: LocationContext,
+                                        checkoutData: CheckoutPropertiesData?) {
+    var props = projectProperties(from: project)
+      .withAllValuesFrom(pledgeProperties(from: reward))
+      // the context is always "newPledge" for this event
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
+
+    if let checkoutData = checkoutData {
+      props = props.withAllValuesFrom(checkoutProperties(from: checkoutData))
+    }
+
+    self.track(
+      event: DataLakeWhiteListedEvent.appCompletedCheckout.rawValue,
+      location: location,
       properties: props
     )
   }
@@ -1335,7 +1388,7 @@ public final class Koala {
     )
   }
 
-  // MARK: - Project Events
+  // MARK: - Project Page Events
 
   /**
    Call when a project page is viewed.
@@ -1397,6 +1450,51 @@ public final class Koala {
       event: DataLakeWhiteListedEvent.watchProjectButtonClicked.rawValue,
       location: location,
       properties: props
+    )
+  }
+
+  public func trackCreatorDetailsClicked(project: Project,
+                                         location: LocationContext,
+                                         refTag: RefTag?,
+                                         cookieRefTag: RefTag? = nil) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+
+    self.track(
+      event: DataLakeWhiteListedEvent.creatorDetailsClicked.rawValue,
+      location: location,
+      properties: props,
+      refTag: refTag?.stringTag,
+      referrerCredit: cookieRefTag?.stringTag
+    )
+  }
+
+  public func trackCampaignDetailsButtonClicked(project: Project,
+                                                location: LocationContext,
+                                                refTag: RefTag?,
+                                                cookieRefTag: RefTag? = nil) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+
+    self.track(
+      event: DataLakeWhiteListedEvent.campaignDetailsButtonClicked.rawValue,
+      location: location,
+      properties: props,
+      refTag: refTag?.stringTag,
+      referrerCredit: cookieRefTag?.stringTag
+    )
+  }
+
+  public func trackCampaignDetailsPledgeButtonClicked(project: Project,
+                                                      location: LocationContext,
+                                                      refTag: RefTag?,
+                                                      cookieRefTag: RefTag? = nil) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+
+    self.track(
+      event: DataLakeWhiteListedEvent.campaignDetailsPledgeButtonClicked.rawValue,
+      location: location,
+      properties: props,
+      refTag: refTag?.stringTag,
+      referrerCredit: cookieRefTag?.stringTag
     )
   }
 
