@@ -939,7 +939,7 @@ final class KoalaTests: TestCase {
     let koala = Koala(client: client)
 
     koala.trackOnboardingContinueButtonClicked()
-    
+
     XCTAssertEqual(["Onboarding Continue Button Clicked"], client.events)
 
     XCTAssertEqual(["onboarding"], client.properties(forKey: "context_location"))

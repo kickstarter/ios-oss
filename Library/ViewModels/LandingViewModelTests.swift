@@ -29,7 +29,7 @@ final class LandingViewModelTests: TestCase {
     self.goToCategorySelection.assertValueCount(1)
 
     XCTAssertEqual(self.trackingClient.events, ["Onboarding Get Started Button Clicked"])
-    XCTAssertTrue(self.trackingClient.properties(forKey: "context_location"), ["landing_page"])
+    XCTAssertEqual(self.trackingClient.properties(forKey: "context_location"), ["landing_page"])
   }
 
   func testHasSeenCategoryPersonalizationFlowPropertyIsSet() {

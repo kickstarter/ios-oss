@@ -351,6 +351,7 @@ final class CategorySelectionViewModelTests: TestCase {
       XCTAssertTrue(mockKVStore.hasCompletedCategoryPersonalizationFlow)
 
       XCTAssertEqual(["Onboarding Continue Button Clicked"], self.trackingClient.events)
+      XCTAssertEqual(self.trackingClient.properties(forKey: "context_location"), ["onboarding"])
     }
   }
 
@@ -427,6 +428,7 @@ final class CategorySelectionViewModelTests: TestCase {
       self.dismiss.assertValueCount(1)
 
       XCTAssertEqual(self.trackingClient.events, ["Onboarding Skip Button Clicked"])
+      XCTAssertEqual(self.trackingClient.properties(forKey: "context_location"), ["onboarding"])
     }
   }
 }

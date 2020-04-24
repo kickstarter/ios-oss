@@ -341,39 +341,34 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
         project.state == .live && userIsBackingProject(project) == false
       }
 
-    // optimizely tracking
+    // Tracking
+
     projectAndRefTag
       .takeWhen(shouldTrackCTATappedEvent)
       .observeValues { projectAndRefTag in
-        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: projectAndRefTag.0,
-          refTag: projectAndRefTag.1
-        )
+        let (project, refTag) = projectAndRefTag
+        let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
 
-        try? AppEnvironment.current.optimizelyClient?
-          .track(
-            eventKey: "Campaign Details Button Clicked",
-            userId: deviceIdentifier(uuid: UUID()),
-            attributes: properties,
-            eventTags: eventTags
-          )
+        AppEnvironment.current.koala.trackCampaignDetailsButtonClicked(
+          project: project,
+          location: .projectPage,
+          refTag: refTag,
+          cookieRefTag: cookieRefTag
+        )
       }
 
     projectAndRefTag
       .takeWhen(self.creatorBylineTappedProperty.signal)
       .observeValues { projectAndRefTag in
-        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: projectAndRefTag.0,
-          refTag: projectAndRefTag.1
-        )
+        let (project, refTag) = projectAndRefTag
+        let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
 
-        try? AppEnvironment.current.optimizelyClient?
-          .track(
-            eventKey: "Creator Details Clicked",
-            userId: deviceIdentifier(uuid: UUID()),
-            attributes: properties,
-            eventTags: eventTags
-          )
+        AppEnvironment.current.koala.trackCreatorDetailsClicked(
+          project: project,
+          location: .projectPage,
+          refTag: refTag,
+          cookieRefTag: cookieRefTag
+        )
       }
   }
 

@@ -33,8 +33,10 @@ internal final class LandingPageViewModelTests: TestCase {
     self.viewModel.inputs.ctaButtonTapped()
 
     XCTAssertEqual(self.trackingClient.events, ["Onboarding Get Started Button Clicked"])
-    XCTAssertEqual(self.trackingClient.properties(forKey: "context_location"),
-                   ["landing_page"])
+    XCTAssertEqual(
+      self.trackingClient.properties(forKey: "context_location"),
+      ["landing_page"]
+    )
   }
 
   func testUserDefaultsUpdates_OnViewDidLoad() {

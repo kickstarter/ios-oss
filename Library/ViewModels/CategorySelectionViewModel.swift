@@ -111,12 +111,12 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
     self.skipButtonTappedProperty.signal
       .observeValues { _ in
         AppEnvironment.current.koala.trackOnboardingSkipButtonClicked()
-    }
+      }
 
     self.continueButtonTappedProperty.signal
       .observeValues { _ in
         AppEnvironment.current.koala.trackOnboardingContinueButtonClicked()
-    }
+      }
   }
 
   private let categorySelectedWithValueProperty = MutableProperty<(IndexPath, KsApi.Category)?>(nil)

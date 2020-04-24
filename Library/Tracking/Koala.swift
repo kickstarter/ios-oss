@@ -64,13 +64,14 @@ public final class Koala {
   /// Determines the screen from which the event is sent.
   public enum LocationContext: String {
     case activities = "activity_feed_screen" // ActivitiesViewController
+    case campaign = "campaign_screen"
     case discovery = "explore_screen" // DiscoveryViewController
     case editorialProjects = "editorial_collection_screen" // EditorialProjectsViewController
     case forgotPassword = "forgot_password_screen" // ResetPasswordViewController
     case landingPage = "landing_page" // LandingViewController
     case login = "login_screen" // LoginViewController
     case loginTout = "login_or_signup_screen" // LoginToutViewController
-    case onboarding = "onboarding" // CategorySelectionViewController, CuratedProjectsViewController
+    case onboarding // CategorySelectionViewController, CuratedProjectsViewController
     case pledgeAddNewCard = "pledge_add_new_card_screen" // AddNewCardViewController
     case pledgeScreen = "pledge_screen" // PledgeViewController
     case projectPage = "project_screen" // ProjectPamphletViewController

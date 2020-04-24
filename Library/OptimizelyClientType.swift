@@ -120,22 +120,6 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
   ]
 }
 
-public func optimizelyTrackingAttributesAndEventTags(
-  with project: Project? = nil,
-  refTag: RefTag? = nil
-) -> ([String: Any], [String: Any]) {
-  let properties = optimizelyUserAttributes(with: project, refTag: refTag)
-
-  let eventTags: [String: Any] = ([
-    "project_subcategory": project?.category.name,
-    "project_category": project?.category.parentName,
-    "project_country": project?.location.country.lowercased(),
-    "project_user_has_watched": project?.personalization.isStarred
-  ] as [String: Any?]).compact()
-
-  return (properties, eventTags)
-}
-
 public func optimizelyUserAttributes(
   with project: Project? = nil,
   refTag: RefTag? = nil
