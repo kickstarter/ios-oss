@@ -385,7 +385,6 @@ internal final class SearchViewModelTests: TestCase {
       self.scheduler.advance(by: apiDelay)
 
       self.hasProjects.assertValues([true], "Popular projects emit immediately.")
-      // swiftlint:disable:next force_unwrapping
       let popularProjects = projects.values.last!
 
       self.vm.inputs.searchTextChanged("skull graphic tee")

@@ -43,7 +43,6 @@ class ErrorEnvelopeTests: XCTestCase {
     ])
     XCTAssertNil(env.error)
     XCTAssertEqual(ErrorEnvelope.KsrCode.UnknownCode, env.value?.ksrCode)
-    // swiftlint:disable:next force_unwrapping
     XCTAssertEqual(["Bad amount"], env.value!.errorMessages)
     XCTAssertEqual(406, env.value?.httpCode)
   }

@@ -36,10 +36,10 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
     super.awakeFromNib()
 
     _ = self.backingButton
-      |> UIButton.lens.targets .~ [(self, #selector(backingButtonPressed), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, #selector(self.backingButtonPressed), .touchUpInside)]
 
     _ = self.sendMessageButton
-      |> UIButton.lens.targets .~ [(self, #selector(sendMessageButtonPressed), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, #selector(self.sendMessageButtonPressed), .touchUpInside)]
   }
 
   internal func configureWith(value activityAndProject: (Activity, Project)) {
@@ -58,12 +58,12 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.backerImageURL
       .observeForUI()
       .on(event: { [weak self] _ in
-        self?.backerImageView.af_cancelImageRequest()
+        self?.backerImageView.af.cancelImageRequest()
         self?.backerImageView.image = nil
       })
       .skipNil()
       .observeValues { [weak self] url in
-        self?.backerImageView.af_setImage(withURL: url)
+        self?.backerImageView.af.setImage(withURL: url)
       }
 
     self.viewModel.outputs.notifyDelegateGoToBacking

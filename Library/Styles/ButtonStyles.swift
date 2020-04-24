@@ -113,25 +113,25 @@ public let fbFollowButtonStyle = facebookButtonStyle
 
 public let multiLineButtonStyle =
   UIButton.lens.titleLabel.lineBreakMode .~ NSLineBreakMode.byWordWrapping
-  <> UIButton.lens.titleLabel.numberOfLines .~ 0
-  <> UIButton.lens.titleLabel.textAlignment .~ NSTextAlignment.center
+    <> UIButton.lens.titleLabel.numberOfLines .~ 0
+    <> UIButton.lens.titleLabel.textAlignment .~ NSTextAlignment.center
 
 // MARK: - Save
 
 public let saveButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
-  <> UIButton.lens.tintColor .~ .ksr_soft_black
-  <> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart-outline")
-  <> UIButton.lens.image(for: .selected) .~ image(named: "icon--heart")
-  <> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project() }
+    <> UIButton.lens.tintColor .~ .ksr_soft_black
+    <> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart-outline")
+    <> UIButton.lens.image(for: .selected) .~ image(named: "icon--heart")
+    <> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project() }
 
 // MARK: - Share
 
 public let shareButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
-  <> UIButton.lens.image(for: .normal) .~ image(named: "icon--share")
-  <> UIButton.lens.tintColor .~ .ksr_soft_black
-  <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
+    <> UIButton.lens.image(for: .normal) .~ image(named: "icon--share")
+    <> UIButton.lens.tintColor .~ .ksr_soft_black
+    <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
 // MARK: - Read More Campaign Button
 

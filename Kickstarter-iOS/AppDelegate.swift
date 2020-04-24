@@ -224,7 +224,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.evaluateQualtricsTargetingLogic
       .observeValues { [weak self] in
-        Qualtrics.shared.evaluateTargetingLogic() { result in
+        Qualtrics.shared.evaluateTargetingLogic { result in
           self?.viewModel.inputs.didEvaluateQualtricsTargetingLogic(
             with: result, properties: Qualtrics.shared.properties
           )
@@ -249,7 +249,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.rootTabBarController?.present(navController, animated: true)
       }
 
-    // swiftlint:disable discarded_notification_center_observer
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
@@ -266,7 +265,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
       }
-    // swiftlint:enable discarded_notification_center_observer
 
     self.window?.tintColor = .ksr_green_700
 

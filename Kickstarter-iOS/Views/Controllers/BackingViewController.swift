@@ -47,10 +47,10 @@ internal final class BackingViewController: UIViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
     _ = self.messageCreatorButton
-      |> UIButton.lens.targets .~ [(self, #selector(messageCreatorTapped), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, #selector(self.messageCreatorTapped), .touchUpInside)]
 
     _ = self.viewMessagesButton
-      |> UIButton.lens.targets .~ [(self, #selector(viewMessagesTapped), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, #selector(self.viewMessagesTapped), .touchUpInside)]
 
     self.viewModel.inputs.viewDidLoad()
 
@@ -90,7 +90,7 @@ internal final class BackingViewController: UIViewController {
     self.messageCreatorButton.rac.title = self.viewModel.outputs.messageButtonTitleText
     self.markAsReceivedStackView.rac.hidden = self.viewModel.outputs.markAsReceivedSectionIsHidden
     self.rewardReceivedSwitch.rac.on = self.viewModel.outputs.rewardMarkedReceived
-    self.backerAvatarImageView.rac.imageUrl = self.viewModel.outputs.backerAvatarURL
+    self.backerAvatarImageView.rac.ksr_imageUrl = self.viewModel.outputs.backerAvatarURL
 
     self.viewModel.outputs.goToMessages
       .observeForControllerAction()

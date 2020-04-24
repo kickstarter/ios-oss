@@ -62,7 +62,7 @@ public final class DashboardVideoCellViewModel: DashboardVideoCellViewModelInput
     self.internalStartProgress = videoStats.map(internalStartPercentage)
 
     self.totalStartCount = videoStats
-      .map { // todo: need new string with count value
+      .map { // TODO: need new string with count value
         let string = Strings.dashboard_graphs_video_stats_total_plays_count(
           total_start_count: totalStarts(videoStats: $0)
         )

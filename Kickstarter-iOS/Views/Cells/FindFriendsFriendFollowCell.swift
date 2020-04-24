@@ -47,7 +47,7 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.imageURL
       .observeForUI()
       .on(event: { [weak avatarImageView] _ in
-        avatarImageView?.af_cancelImageRequest()
+        avatarImageView?.af.cancelImageRequest()
         avatarImageView?.image = nil
       })
       .skipNil()
@@ -80,12 +80,12 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
 
     _ = self.followButton
       |> blackButtonStyle
-      |> UIButton.lens.targets .~ [(self, action: #selector(followButtonTapped), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, action: #selector(self.followButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.social_following_friend_buttons_follow() }
 
     _ = self.unfollowButton
       |> greyButtonStyle
-      |> UIButton.lens.targets .~ [(self, action: #selector(unfollowButtonTapped), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, action: #selector(self.unfollowButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(for: .normal) %~ { _ in
         Strings.social_following_friend_buttons_following()
       }

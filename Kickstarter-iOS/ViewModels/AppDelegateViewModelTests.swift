@@ -1,8 +1,6 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
-// swiftlint:disable force_unwrapping
-// swiftlint:disable force_cast
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers

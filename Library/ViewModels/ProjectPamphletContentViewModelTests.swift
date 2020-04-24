@@ -402,7 +402,6 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     self.loadMinimalProjectIntoDataSource.assertValues([project], "Nothing new emits.")
   }
 
-  // swiftlint:disable line_length
   func testLoadProjectIntoDataSource_CreatorDetailsLoaded_ExperimentalVariant() {
     let project = Project.template
 
@@ -412,7 +411,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment
+          .Variant.variant1.rawValue
       ]
 
     withEnvironment(apiService: mockService, optimizelyClient: optimizelyClient) {
@@ -490,7 +490,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.control.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment
+          .Variant.control.rawValue
       ]
 
     withEnvironment(apiService: mockService, optimizelyClient: optimizelyClient) {
@@ -635,7 +636,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment
+          .Variant.variant1.rawValue
       ]
 
     withEnvironment(apiService: mockService, optimizelyClient: optimizelyClient) {
@@ -702,7 +704,6 @@ final class ProjectPamphletContentViewModelTests: TestCase {
     }
   }
 
-  // swiftlint:disable line_length
   func testLoadProjectIntoDataSource_ProjectSummaryLoaded_ExperimentalVariant() {
     let project = Project.template
 
@@ -716,7 +717,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeMeProjectSummary.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+        OptimizelyExperiment.Key.nativeMeProjectSummary.rawValue: OptimizelyExperiment.Variant.variant1
+          .rawValue
       ]
 
     withEnvironment(apiService: mockService, optimizelyClient: optimizelyClient) {
@@ -791,7 +793,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeMeProjectSummary.rawValue: OptimizelyExperiment.Variant.control.rawValue
+        OptimizelyExperiment.Key.nativeMeProjectSummary.rawValue: OptimizelyExperiment.Variant.control
+          .rawValue
       ]
 
     withEnvironment(apiService: mockService, optimizelyClient: optimizelyClient) {
@@ -860,7 +863,8 @@ final class ProjectPamphletContentViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeMeProjectSummary.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+        OptimizelyExperiment.Key.nativeMeProjectSummary.rawValue: OptimizelyExperiment.Variant.variant1
+          .rawValue
       ]
 
     withEnvironment(apiService: mockService, optimizelyClient: optimizelyClient) {
@@ -921,6 +925,4 @@ final class ProjectPamphletContentViewModelTests: TestCase {
       self.loadMinimalProjectIntoDataSource.assertValues([])
     }
   }
-
-  // swiftlint:enable line_length
 }
