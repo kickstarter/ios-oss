@@ -71,10 +71,6 @@ public protocol PledgeViewModelOutputs {
   var showApplePayAlert: Signal<(String, String), Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
-//  var submitButtonEnabled: Signal<Bool, Never> { get }
-//  var submitButtonHidden: Signal<Bool, Never> { get }
-//  var submitButtonIsLoading: Signal<Bool, Never> { get }
-//  var submitButtonTitle: Signal<String, Never> { get }
   var title: Signal<String, Never> { get }
 }
 
@@ -152,8 +148,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.goToLoginSignup = Signal.combineLatest(project, reward, self.goToLoginSignupSignal)
       .map { (LoginIntent.backProject, $0.0, $0.1) }
-
-   // self.submitButtonHidden = self.continueViewHidden.negate()
 
     self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
       .map { !$0 || $1.paymentMethodsViewHidden }
@@ -296,7 +290,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.submitButtonTappedSignal,
       context
     )
-    .filter { _, context in context.isCreating  }
+    .filter { _, context in context.isCreating }
     .ignoreValues()
 
     let createBackingDataAndIsApplePay = createBackingData.takePairWhen(
@@ -445,23 +439,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
     .map(allValuesChangedAndValid)
 
-    //self.submitButtonEnabled =
-
-//      Signal.merge(
-//      self.viewDidLoadProperty.signal.mapConst(false)
-//        .take(until: valuesChangedAndValid.ignoreValues()),
-//      valuesChangedAndValid,
-//      self.submitButtonTappedSignal.signal.mapConst(false),
-//      createOrUpdateEvent.filter { $0.isTerminating }.mapConst(true)
-//    )
-//    .skipRepeats()
-
-//    self.submitButtonIsLoading = Signal.merge(
-//      self.viewDidLoadProperty.signal.mapConst(false),
-//      self.submitButtonTappedSignal.mapConst(true),
-//      createOrUpdateEvent.filter { $0.isTerminating }.mapConst(false)
-//    )
-
     let isEnabled = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false)
         .take(until: valuesChangedAndValid.ignoreValues()),
@@ -591,8 +568,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
 
     self.popToRootViewController = self.notifyDelegateUpdatePledgeDidSucceedWithMessage.ignoreValues()
-
-   // self.submitButtonTitle = context.map { $0.submitButtonTitle }
 
     let buttonTitle = context.map { $0.submitButtonTitle }
 
@@ -800,10 +775,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showApplePayAlert: Signal<(String, String), Never>
   public let showWebHelp: Signal<HelpType, Never>
-//  public let submitButtonEnabled: Signal<Bool, Never>
-//  public let submitButtonHidden: Signal<Bool, Never>
-//  public let submitButtonIsLoading: Signal<Bool, Never>
-//  public let submitButtonTitle: Signal<String, Never>
   public let title: Signal<String, Never>
 
   public var inputs: PledgeViewModelInputs { return self }

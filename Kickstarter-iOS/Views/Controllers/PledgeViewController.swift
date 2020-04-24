@@ -228,7 +228,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor),
+      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
     ])
 
     self.sectionSeparatorViews.forEach { view in

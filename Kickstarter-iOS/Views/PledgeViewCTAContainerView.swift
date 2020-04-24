@@ -111,7 +111,7 @@ final class PledgeViewCTAContainerView: UIView {
       .observeValues { [weak self] in
         guard let self = self else { return }
         self.delegate?.goToLoginSignup()
-    }
+      }
 
     self.viewModel.outputs.notifyDelegateSubmitButtonTapped
       .observeForUI()

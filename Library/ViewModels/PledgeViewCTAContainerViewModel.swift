@@ -42,15 +42,15 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
     let isLoggedIn = self.configDataSignal.map { $0.isLoggedIn }
 
     self.notifyDelegateOpenHelpType = self.tappedUrlProperty.signal.skipNil().map { url -> HelpType? in
-        let helpType = HelpType.allCases.filter { helpType in
-          url.absoluteString == helpType.url(
-            withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
-          )?.absoluteString
-        }
-        .first
+      let helpType = HelpType.allCases.filter { helpType in
+        url.absoluteString == helpType.url(
+          withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
+        )?.absoluteString
+      }
+      .first
 
-        return helpType
-      }.skipNil()
+      return helpType
+    }.skipNil()
 
     self.submitButtonIsEnabled = self.configDataSignal.map { $0.isEnabled }
     self.submitButtonTitle = self.configDataSignal.map { $0.title }

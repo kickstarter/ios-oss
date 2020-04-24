@@ -49,7 +49,6 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     self.hideApplePayButton.assertValues([true])
     self.hideContinueButton.assertValues([false])
     self.submitButtonIsEnabled.assertValues([true])
-
   }
 
   func testPledgeView_UpdateContext_UserLoggedOut() {
