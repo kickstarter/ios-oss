@@ -899,6 +899,52 @@ final class KoalaTests: TestCase {
     )
   }
 
+  // MARK: - Onboarding Tracking
+
+  func testOnboardingGetStartedButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackOnboardingGetStartedButtonClicked()
+
+    XCTAssertEqual(["Onboarding Get Started Button Clicked"], client.events)
+
+    XCTAssertEqual(["landing_page"], client.properties(forKey: "context_location"))
+  }
+
+  func testOnboardingCarouselSwipedButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackOnboardingCarouselSwiped()
+
+    XCTAssertEqual(["Onboarding Carousel Swiped"], client.events)
+
+    XCTAssertEqual(["landing_page"], client.properties(forKey: "context_location"))
+  }
+
+  func testOnboardingSkipButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackOnboardingSkipButtonClicked()
+
+    XCTAssertEqual(["Onboarding Skip Button Clicked"], client.events)
+
+    XCTAssertEqual(["onboarding"], client.properties(forKey: "context_location"))
+  }
+
+  func testOnboardingContinueButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackOnboardingContinueButtonClicked()
+    
+    XCTAssertEqual(["Onboarding Continue Button Clicked"], client.events)
+
+    XCTAssertEqual(["onboarding"], client.properties(forKey: "context_location"))
+  }
+
   // MARK: - Search Tracking
 
   func testTrackSearchViewed() {

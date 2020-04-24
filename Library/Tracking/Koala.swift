@@ -22,8 +22,6 @@ public final class Koala {
 
   private enum DataLakeWhiteListedEvent: String, CaseIterable {
     case activityFeedViewed = "Activity Feed Viewed"
-    case appClosed = "App Closed"
-    case appCompletedCheckout = "App Completed Checkout"
     case addNewCardButtonClicked = "Add New Card Button Clicked"
     case campaignDetailsButtonClicked = "Campaign Details Button Clicked"
     case campaignDetailsPledgeButtonClicked = "Campaign Details Pledge Button Clicked"
@@ -415,13 +413,6 @@ public final class Koala {
     self.track(event: "Opened App")
   }
 
-  /// Call when the app enters the background.
-  public func trackAppClosed() {
-    self.track(
-      event: DataLakeWhiteListedEvent.appClosed.rawValue
-    )
-  }
-
   public func trackMemoryWarning() {
     self.track(event: "App Memory Warning")
   }
@@ -769,34 +760,6 @@ public final class Koala {
     self.track(
       event: DataLakeWhiteListedEvent.thanksPageViewed.rawValue,
       location: .thanks,
-      properties: props
-    )
-  }
-
-  /* Call when the a pledge occurs
-
-   parameters:
-   - project: the project that was pledged to
-   - reward: the reward that was chosen
-   - checkoutData: all the checkout data associated with the pledge
-   */
-
-  public func trackAppCompletedCheckout(project: Project,
-                                        reward: Reward,
-                                        location: LocationContext,
-                                        checkoutData: CheckoutPropertiesData?) {
-    var props = projectProperties(from: project)
-      .withAllValuesFrom(pledgeProperties(from: reward))
-      // the context is always "newPledge" for this event
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
-
-    if let checkoutData = checkoutData {
-      props = props.withAllValuesFrom(checkoutProperties(from: checkoutData))
-    }
-
-    self.track(
-      event: DataLakeWhiteListedEvent.appCompletedCheckout.rawValue,
-      location: location,
       properties: props
     )
   }
