@@ -6,7 +6,6 @@ import ReactiveSwift
 public typealias PledgeViewCTAContainerViewData = (
   isLoggedIn: Bool,
   isEnabled: Bool,
-  title: String,
   context: PledgeViewContext
 )
 
@@ -53,7 +52,7 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
     }.skipNil()
 
     self.submitButtonIsEnabled = self.configDataSignal.map { $0.isEnabled }
-    self.submitButtonTitle = self.configDataSignal.map { $0.title }
+    self.submitButtonTitle = context.map { $0.submitButtonTitle }
 
     self.hideSubmitButton = isLoggedIn.map { !$0 }
     self.hideApplePayButton = Signal.combineLatest(context, isLoggedIn)

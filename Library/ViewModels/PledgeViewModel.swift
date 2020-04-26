@@ -564,11 +564,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.popToRootViewController = self.notifyDelegateUpdatePledgeDidSucceedWithMessage.ignoreValues()
 
-    let buttonTitle = context.map { $0.submitButtonTitle }
-
     self.configurePledgeViewCTAContainerView =
-      Signal.combineLatest(isLoggedIn, isEnabled, buttonTitle, context)
-      .map { ($0.0, $0.1, $0.2, $0.3) }
+      Signal.combineLatest(isLoggedIn, isEnabled, context)
+      .map { ($0.0, $0.1, $0.2) }
 
     self.title = context.map { $0.title }
     let contextAndProjectAndPledgeAmount = Signal.combineLatest(context, project, pledgeAmount)

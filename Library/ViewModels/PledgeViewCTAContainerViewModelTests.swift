@@ -39,7 +39,6 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     let pledgeData = PledgeViewCTAContainerViewData(
       isLoggedIn: false,
       isEnabled: true,
-      title: context.submitButtonTitle,
       context: context
     )
 
@@ -57,7 +56,6 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     let pledgeData = PledgeViewCTAContainerViewData(
       isLoggedIn: true,
       isEnabled: true,
-      title: context.submitButtonTitle,
       context: context
     )
 
@@ -76,7 +74,6 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     let pledgeData = PledgeViewCTAContainerViewData(
       isLoggedIn: true,
       isEnabled: true,
-      title: context.submitButtonTitle,
       context: context
     )
 
@@ -93,7 +90,6 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     let pledgeData = PledgeViewCTAContainerViewData(
       isLoggedIn: false,
       isEnabled: true,
-      title: Strings.Pledge(),
       context: .pledge
     )
 
