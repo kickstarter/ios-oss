@@ -16,6 +16,7 @@ public struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
     public var bankAccount: BankAccount?
     public var creditCard: CreditCard?
     public var errorReason: String?
+    public var id: String
     public var pledgedOn: TimeInterval?
     public var reward: Reward?
     public var shippingAmount: Money?

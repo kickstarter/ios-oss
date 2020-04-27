@@ -215,8 +215,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.viewModel.outputs.goToCancelPledge
       .observeForControllerAction()
-      .observeValues { [weak self] project, backing in
-        self?.goToCancelPledge(project: project, backing: backing)
+      .observeValues { [weak self] data in
+        self?.goToCancelPledge(with: data)
       }
 
     self.viewModel.outputs.notifyDelegateManagePledgeViewControllerFinishedWithMessage
@@ -382,10 +382,10 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func goToCancelPledge(project: Project, backing: Backing) {
+  private func goToCancelPledge(with data: CancelPledgeViewData) {
     let cancelPledgeViewController = CancelPledgeViewController.instantiate()
       |> \.delegate .~ self
-    cancelPledgeViewController.configure(with: project, backing: backing)
+    cancelPledgeViewController.configure(with: data)
 
     self.navigationController?.pushViewController(cancelPledgeViewController, animated: true)
   }

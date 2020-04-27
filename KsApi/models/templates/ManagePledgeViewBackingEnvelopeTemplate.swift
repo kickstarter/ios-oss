@@ -14,6 +14,7 @@ extension ManagePledgeViewBackingEnvelope {
           type: .visa
         ),
         errorReason: "Error",
+        id: "123412",
         pledgedOn: 1_587_502_131,
         reward: Backing.Reward(
           amount: Money(amount: "159.0", currency: .usd, symbol: "$"),

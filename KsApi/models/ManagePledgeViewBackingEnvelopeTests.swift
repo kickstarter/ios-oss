@@ -9,6 +9,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
         "name": "The Keyboardio Atreus",
         "state": "LIVE",
         "backing": [
+          "id": "UHJvamVjdC00NDc0NzMM=",
           "status": "pledged",
           "errorReason": "This just isn't your day.",
           "pledgedOn": 1_587_502_131,
@@ -77,6 +78,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.project.name, "The Keyboardio Atreus")
       XCTAssertEqual(value.project.state, .live)
 
+      XCTAssertEqual(value.backing?.id, "UHJvamVjdC00NDc0NzMM=")
       XCTAssertEqual(value.backing?.status, .pledged)
       XCTAssertEqual(value.backing?.errorReason, "This just isn't your day.")
       XCTAssertEqual(value.backing?.pledgedOn, 1_587_502_131)
@@ -151,6 +153,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
         "name": "The Keyboardio Atreus",
         "state": "LIVE",
         "backing": [
+          "id": "UHJvamVjdC00NDc0NzMM=",
           "status": "pledged",
           "errorReason": nil,
           "pledgedOn": 1_587_502_131,
@@ -215,6 +218,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.project.name, "The Keyboardio Atreus")
       XCTAssertEqual(value.project.state, .live)
 
+      XCTAssertEqual(value.backing?.id, "UHJvamVjdC00NDc0NzMM=")
       XCTAssertEqual(value.backing?.status, .pledged)
       XCTAssertNil(value.backing?.errorReason)
       XCTAssertEqual(value.backing?.pledgedOn, 1_587_502_131)
