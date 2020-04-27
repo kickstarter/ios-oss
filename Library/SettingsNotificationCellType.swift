@@ -15,6 +15,7 @@ public enum SettingsNotificationSectionType: Int {
   case backedProjects
   case creator
   case social
+  case fromKickstarter
 
   public var sectionHeaderHeight: CGFloat {
     return Styles.grid(9)
@@ -28,6 +29,8 @@ public enum SettingsNotificationSectionType: Int {
       return [.pledgeActivity, .newComments, .newLikes, .creatorTips]
     case .social:
       return [.messages, .newFollowers, .friendBacksProject, .commentReplyDigest]
+    case .fromKickstarter:
+      return [.announcements]
     }
   }
 
@@ -39,13 +42,16 @@ public enum SettingsNotificationSectionType: Int {
       return Strings.Projects_youve_launched()
     case .social:
       return Strings.profile_settings_social_title()
+    case .fromKickstarter:
+      return "From Kickstarter"
     }
   }
 
   public static var allCases: [SettingsNotificationSectionType] = [
     .backedProjects,
     .creator,
-    .social
+    .social,
+    .fromKickstarter
   ]
 }
 
@@ -61,6 +67,7 @@ public enum SettingsNotificationCellType {
   case newFollowers
   case friendBacksProject
   case commentReplyDigest
+  case announcements
 
   public static var allCases: [SettingsNotificationCellType] = [
     .projectUpdates,
@@ -73,7 +80,8 @@ public enum SettingsNotificationCellType {
     .messages,
     .newFollowers,
     .friendBacksProject,
-    .commentReplyDigest
+    .commentReplyDigest,
+    .announcements
   ]
 
   public var accessibilityTraits: UIAccessibilityTraits {
@@ -150,6 +158,8 @@ public enum SettingsNotificationCellType {
       return Strings.profile_settings_social_friend_backs()
     case .commentReplyDigest:
       return Strings.Comment_reply_digest()
+    case .announcements:
+      return "Announcements"
     }
   }
 }
