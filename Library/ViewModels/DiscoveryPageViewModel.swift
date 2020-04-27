@@ -601,7 +601,7 @@ private func shouldShowPersonalization() -> Bool {
   }
 
   guard let variant = AppEnvironment.current.optimizelyClient?
-    .getVariation(for: .onboardingCategoryPersonalizationFlow) else {
+    .getVariation(for: OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue) else {
     return false
   }
 

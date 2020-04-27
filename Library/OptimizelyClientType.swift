@@ -6,6 +6,7 @@ public protocol OptimizelyClientType: AnyObject {
   func activate(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
   func getVariationKey(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
   func track(eventKey: String, userId: String, attributes: [String: Any?]?, eventTags: [String: Any]?) throws
+  func allExperiments() -> [String]
 }
 
 extension OptimizelyClientType {
@@ -46,11 +47,11 @@ extension OptimizelyClientType {
    `variant(for experiment)`, which calls `activate` on the Optimizely SDK
    */
 
-  public func getVariation(for experiment: OptimizelyExperiment.Key) -> OptimizelyExperiment.Variant {
+  public func getVariation(for experimentKey: String) -> OptimizelyExperiment.Variant {
     let userId = deviceIdentifier(uuid: UUID())
     let attributes = optimizelyUserAttributes()
     let variationString = try? self.getVariationKey(
-      experimentKey: experiment.rawValue, userId: userId, attributes: attributes
+      experimentKey: experimentKey, userId: userId, attributes: attributes
     )
 
     guard
@@ -62,9 +63,55 @@ extension OptimizelyClientType {
 
     return variant
   }
+
+  /* Returns all experiments the app knows about */
+
+  public func allExperiments() -> [String] {
+    return OptimizelyExperiment.Key.allCases.map { $0.rawValue }
+  }
 }
 
 // MARK: - Tracking Properties
+
+public func optimizelyProperties(environment: Environment? = AppEnvironment.current) -> [String: Any]? {
+  guard let env = environment, let optimizelyClient = env.optimizelyClient else {
+    return nil
+  }
+
+  let environmentType = env.environmentType
+  let userId = deviceIdentifier(uuid: UUID())
+  let attributes = optimizelyUserAttributes()
+
+  var sdkKey: String
+
+  switch environmentType {
+  case .production:
+    sdkKey = Secrets.OptimizelySDKKey.production
+  case .staging:
+    sdkKey = Secrets.OptimizelySDKKey.staging
+  case .development, .local:
+    sdkKey = Secrets.OptimizelySDKKey.development
+  }
+
+  let allExperiments = optimizelyClient.allExperiments().map { experimentKey -> [String: String] in
+    let variation = try? optimizelyClient.getVariationKey(
+      experimentKey: experimentKey,
+      userId: userId,
+      attributes: attributes
+    )
+
+    return [
+      "optimizely_experiment_slug": experimentKey,
+      "optimizely_variant_id": variation ?? "unknown"
+    ]
+  }
+
+  return [
+    "optimizely_api_key": sdkKey,
+    "optimizely_environment": environmentType.rawValue,
+    "optimizely_experiments": allExperiments
+  ]
+}
 
 public func optimizelyTrackingAttributesAndEventTags(
   with project: Project? = nil,
@@ -89,7 +136,7 @@ public func optimizelyUserAttributes(
   let user = AppEnvironment.current.currentUser
 
   let properties: [String: Any] = [
-    "user_distinct_id": debugAdminDeviceIdentifier(),
+    "user_distinct_id": debugDeviceIdentifier(),
     "user_backed_projects_count": user?.stats.backedProjectsCount,
     "user_launched_projects_count": user?.stats.createdProjectsCount,
     "user_country": (user?.location?.country ?? AppEnvironment.current.config?.countryCode)?.lowercased(),
@@ -114,7 +161,7 @@ private func sessionRefTagProperties(with project: Project?, refTag: RefTag?) ->
   ] as [String: Any?]).compact()
 }
 
-private func debugAdminDeviceIdentifier() -> String? {
+private func debugDeviceIdentifier() -> String? {
   guard
     AppEnvironment.current.environmentType != .production,
     AppEnvironment.current.mainBundle.isRelease == false
