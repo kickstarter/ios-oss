@@ -689,7 +689,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       XCTAssertEqual(self.trackingClient.events, [])
 
-      // TODO: verify this behaviour, why don't we want to track when this button is tapped?
+      // TODO: when we add the Optimizely properties, we'll want this event to fire always, but only include the Optimizely properties if the project is live and not backed
       self.vm.inputs.readMoreButtonTapped()
 
       XCTAssertEqual(self.trackingClient.events, [])

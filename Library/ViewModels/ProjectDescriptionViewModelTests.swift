@@ -466,7 +466,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
     }
   }
 
-  func testOptimizelyTrackingCampaignDetailsPledgeButtonTapped_LiveProject_LoggedIn_NonBacked_Variant1() {
+  func testTrackingCampaignDetailsPledgeButtonTapped_LiveProject_LoggedIn_NonBacked_Variant1() {
     let user = User.template
       |> \.location .~ Location.template
       |> \.stats.backedProjectsCount .~ 50
@@ -487,16 +487,13 @@ final class ProjectDescriptionViewModelTests: TestCase {
       self.vm.inputs.configureWith(value: (project, .discovery))
       self.vm.inputs.viewDidLoad()
 
-      XCTAssertEqual(optimizelyClient.trackedUserId, nil)
-      XCTAssertEqual(optimizelyClient.trackedEventKey, nil)
-      XCTAssertNil(optimizelyClient.trackedAttributes)
-      XCTAssertNil(optimizelyClient.trackedEventTags)
+      XCTAssertEqual(self.trackingClient.events, [])
 
       self.pledgeCTAContainerViewIsHidden.assertValues([true])
     }
   }
 
-  func testOptimizelyTrackingCampaignDetailsPledgeButtonTapped_LiveProject_LoggedIn_Backed_Variant2() {
+  func testTrackingCampaignDetailsPledgeButtonTapped_LiveProject_LoggedIn_Backed_Variant2() {
     let user = User.template
       |> \.location .~ Location.template
       |> \.stats.backedProjectsCount .~ 50
@@ -515,10 +512,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
       self.vm.inputs.configureWith(value: (project, .discovery))
       self.vm.inputs.viewDidLoad()
 
-      XCTAssertEqual(optimizelyClient.trackedUserId, nil)
-      XCTAssertEqual(optimizelyClient.trackedEventKey, nil)
-      XCTAssertNil(optimizelyClient.trackedAttributes)
-      XCTAssertNil(optimizelyClient.trackedEventTags)
+      XCTAssertEqual(self.trackingClient.events, [])
 
       self.pledgeCTAContainerViewIsHidden.assertValues([true])
     }
@@ -539,10 +533,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
       self.vm.inputs.configureWith(value: (project, .discovery))
       self.vm.inputs.viewDidLoad()
 
-      XCTAssertEqual(optimizelyClient.trackedUserId, nil)
-      XCTAssertEqual(optimizelyClient.trackedEventKey, nil)
-      XCTAssertNil(optimizelyClient.trackedAttributes)
-      XCTAssertNil(optimizelyClient.trackedEventTags)
+      XCTAssertEqual(self.trackingClient.events, [])
 
       self.pledgeCTAContainerViewIsHidden.assertValues([true])
       self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)

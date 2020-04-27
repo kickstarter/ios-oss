@@ -20,9 +20,7 @@ final class LandingViewModelTests: TestCase {
   func testGoToCategorySelection() {
     self.goToCategorySelection.assertDidNotEmitValue()
 
-    XCTAssertNil(self.optimizelyClient.trackedEventKey)
-    XCTAssertNil(self.optimizelyClient.trackedAttributes)
-    XCTAssertNil(self.optimizelyClient.trackedEventTags)
+    XCTAssertEqual(self.trackingClient.events, [])
 
     self.vm.inputs.getStartedButtonTapped()
 

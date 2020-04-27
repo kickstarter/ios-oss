@@ -437,18 +437,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: refTag)
     }
 
-    personalizationCellTappedAndRefTag
-      .observeValues { refTag in
-        let attributes = optimizelyUserAttributes(refTag: refTag)
-
-        try? AppEnvironment.current.optimizelyClient?.track(
-          eventKey: "Editorial Card Clicked",
-          userId: deviceIdentifier(uuid: UUID()),
-          attributes: attributes,
-          eventTags: nil
-        )
-      }
-
     self.goToLoginSignup
       .observeValues { AppEnvironment.current.koala.trackLoginOrSignupButtonClicked(intent: $0) }
   }

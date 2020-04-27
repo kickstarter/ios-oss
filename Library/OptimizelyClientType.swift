@@ -5,7 +5,6 @@ import Prelude
 public protocol OptimizelyClientType: AnyObject {
   func activate(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
   func getVariationKey(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
-  func track(eventKey: String, userId: String, attributes: [String: Any?]?, eventTags: [String: Any]?) throws
   func allExperiments() -> [String]
 }
 
@@ -99,20 +98,6 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
       userId: userId,
       attributes: attributes
     )
-
-    return [
-      "optimizely_experiment_slug": experimentKey,
-      "optimizely_variant_id": variation ?? "unknown"
-    ]
-  }
-
-  return [
-    "optimizely_api_key": sdkKey,
-    "optimizely_environment": environmentType.rawValue,
-    "optimizely_experiments": allExperiments
-  ]
-}
-
 
     return [
       "optimizely_experiment_slug": experimentKey,

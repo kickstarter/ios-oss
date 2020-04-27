@@ -3816,38 +3816,6 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
-  func testTrackingEvents_PledgeScreenViewed_DistinctID_LoggedIn_Release_Production() {
-    let user = User.template
-      |> \.location .~ Location.template
-      |> \.stats.backedProjectsCount .~ 50
-      |> \.stats.createdProjectsCount .~ 25
-      |> \.facebookConnected .~ true
-
-    let mockBundle = MockBundle(
-      bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
-      lang: Language.en.rawValue
-    )
-
-    let mockService = MockService(serverConfig: ServerConfig.production)
-
-    withEnvironment(apiService: mockService, currentUser: user, mainBundle: mockBundle) {
-      let project = Project.template
-        |> \.category.parentId .~ Project.Category.art.id
-        |> \.category.parentName .~ Project.Category.art.name
-        |> Project.lens.stats.currentCurrency .~ "USD"
-        |> \.personalization.isStarred .~ true
-
-      self.vm.inputs.configureWith(
-        project: project, reward: .template, refTag: .discovery, context: .pledge
-      )
-
-      XCTAssertEqual([], self.trackingClient.events)
-      self.vm.inputs.viewDidLoad()
-
-      XCTAssertNil(self.optimizelyClient.trackedAttributes?["user_distinct_id"] as? String)
-    }
-  }
-
   func testTrackingEvents_PledgeSubmitButtonClicked() {
     self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .discovery, context: .pledge)
     self.vm.inputs.viewDidLoad()
