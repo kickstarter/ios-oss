@@ -113,6 +113,20 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
   ]
 }
 
+
+    return [
+      "optimizely_experiment_slug": experimentKey,
+      "optimizely_variant_id": variation ?? "unknown"
+    ]
+  }
+
+  return [
+    "optimizely_api_key": sdkKey,
+    "optimizely_environment": environmentType.rawValue,
+    "optimizely_experiments": allExperiments
+  ]
+}
+
 public func optimizelyUserAttributes(
   with project: Project? = nil,
   refTag: RefTag? = nil

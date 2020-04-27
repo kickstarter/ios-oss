@@ -552,7 +552,8 @@ public final class Koala {
     self.track(
       event: DataLakeWhiteListedEvent.editorialCardClicked.rawValue,
       location: .discovery,
-      properties: [:], refTag: refTag.stringTag
+      properties: [:],
+      refTag: refTag.stringTag
     )
   }
 

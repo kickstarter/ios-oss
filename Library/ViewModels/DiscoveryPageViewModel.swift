@@ -425,10 +425,28 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         AppEnvironment.current.koala.trackDiscovery(params: params)
       }
 
-    self.discoveryEditorialCellTappedWithValueProperty.signal
-      .skipNil()
-      .observeValues { tagId in
-        AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: RefTag.projectCollection(tagId))
+    let personalizationCellTappedAndRefTag = self.personalizationCellTappedProperty.signal
+      .mapConst(RefTag.onboarding)
+
+    Signal.merge(
+      self.discoveryEditorialCellTappedWithValueProperty.signal.skipNil()
+        .map { RefTag.projectCollection($0) },
+      personalizationCellTappedAndRefTag
+    )
+    .observeValues { refTag in
+      AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: refTag)
+    }
+
+    personalizationCellTappedAndRefTag
+      .observeValues { refTag in
+        let attributes = optimizelyUserAttributes(refTag: refTag)
+
+        try? AppEnvironment.current.optimizelyClient?.track(
+          eventKey: "Editorial Card Clicked",
+          userId: deviceIdentifier(uuid: UUID()),
+          attributes: attributes,
+          eventTags: nil
+        )
       }
 
     self.goToLoginSignup
