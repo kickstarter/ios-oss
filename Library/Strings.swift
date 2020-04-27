@@ -535,6 +535,23 @@ public enum Strings {
     )
   }
   /**
+   "Announcements"
+
+   - **en**: "Announcements"
+   - **de**: "Announcements"
+   - **es**: "Announcements"
+   - **fr**: "Announcements"
+   - **ja**: "Announcements"
+  */
+  public static func Announcements() -> String {
+    return localizedString(
+      key: "Announcements",
+      defaultValue: "Announcements",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Any payment methods you've saved to Kickstarter are listed here (securely) for your convenience."
 
    - **en**: "Any payment methods you've saved to Kickstarter are listed here (securely) for your convenience."
@@ -3694,6 +3711,23 @@ Haz clic para volver a intentarlo."
       defaultValue: "%{friend_name} launched a project!",
       count: nil,
       substitutions: ["friend_name": friend_name]
+    )
+  }
+  /**
+   "From Kickstarter"
+
+   - **en**: "From Kickstarter"
+   - **de**: "From Kickstarter"
+   - **es**: "From Kickstarter"
+   - **fr**: "From Kickstarter"
+   - **ja**: "From Kickstarter"
+  */
+  public static func From_Kickstarter() -> String {
+    return localizedString(
+      key: "From_Kickstarter",
+      defaultValue: "From Kickstarter",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**

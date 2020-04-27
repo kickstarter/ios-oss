@@ -29,6 +29,7 @@
 "Amount_previous_amount" = "金額: %{amount}, 以前の金額: %{previous_amount}";
 "Amount_reward" = "金額：%{amount}、%{reward}";
 "Amounts_shown" = "表示されている金額は、おおよその換算金額ですのでご注意ください。プロジェクトが成功した場合、プレッジはプロジェクトをローンチした国の通貨で集められ、その換算額も表示されます。";
+"Announcements" = "Announcements";
 "Any_payment_methods_you_saved_to_Kickstarter" = "Kickstarter に保存されたお支払い方法は、こちらに (安全に) リストアップされます。";
 "App_version" = "アプリ版";
 "Apple_ID" = "AppleID";
@@ -222,6 +223,7 @@
 "Friend_backed_tech_project" = "<b>%{friend_name}</b> は<i>テクノロジー</i> プロジェクトをバックしています。";
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> は<i>演劇</i> プロジェクトをバックしています。";
 "Friend_name_launched_a_project" = "%{friend_name} がプロジェクトを発表しました！";
+"From_Kickstarter" = "From Kickstarter";
 "Funding_successful" = "ファンディング成功";
 "Games_newsletter" = "Kickstarter の「ゲーム」チーム選りすぐりの、ゲームに関するあらゆる新プロジェクトや更新情報を毎月2回お届けするニュースレターに登録しましょう。";
 "Get_notified_about_new_messages" = "新規メッセージについて通知の受信を希望しますか？";
