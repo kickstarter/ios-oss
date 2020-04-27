@@ -120,6 +120,11 @@ public final class NavigationTests: XCTestCase {
     )
 
     KSRAssertMatch(
+      .project(.slug("project"), .pledge(.manage), refTag: .emailBackerFailedTransaction),
+      "/projects/creator/project/pledge?ref=ksr_email_backer_failed_transaction"
+    )
+
+    KSRAssertMatch(
       .project(.slug("project"), .updates, refTag: nil),
       "/projects/creator/project/posts"
     )

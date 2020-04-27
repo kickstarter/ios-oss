@@ -53,6 +53,16 @@ public struct ServerConfig: ServerConfigType {
     environment: EnvironmentType.staging
   )
 
+  public static let cj: ServerConfigType = ServerConfig(
+    apiBaseUrl: URL(string: "https://api-cj.dev.kickstarter.com")!,
+    webBaseUrl: URL(string: "https://cj.dev.kickstarter.com")!,
+    apiClientAuth: ClientAuth.development,
+    basicHTTPAuth: BasicHTTPAuth.development,
+    graphQLEndpointUrl: URL(string: "https://cj.dev.kickstarter.com")!
+      .appendingPathComponent(gqlPath),
+    environment: EnvironmentType.development
+  )
+
   public static let development: ServerConfigType = ServerConfig(
     apiBaseUrl: URL(string: "https://\(Secrets.Api.Endpoint.development)")!,
     webBaseUrl: URL(string: "https://\(Secrets.WebEndpoint.development)")!,

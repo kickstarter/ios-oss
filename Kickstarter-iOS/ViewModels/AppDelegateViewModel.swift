@@ -538,6 +538,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           }
       }
 
+    let fixErroredPledgeLink = projectLink
+      .filter { _, subpage, _, _ in subpage == .pledge(.manage) }
+      .map { project, _, vcs, _ -> [UIViewController] in
+        let vc = ManagePledgeViewController.instantiate()
+        vc.configureWith(project: project)
+        return vcs + [vc]
+      }
+
     let updateRootLink = updateLink
       .filter { _, _, subpage, _ in subpage == .root }
       .map { _, _, _, vcs in vcs }
@@ -558,9 +566,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         updatesLink,
         updateRootLink,
         updateCommentsLink,
-        campaignFaqLink
+        campaignFaqLink,
+        fixErroredPledgeLink
       )
       .map { UINavigationController() |> UINavigationController.lens.viewControllers .~ $0 }
+      .logEvents(identifier: "***")
 
     self.configureFabric = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
@@ -938,6 +948,10 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
 
   if let update = envelope.update {
     return .project(.id(update.projectId), .update(update.id, .root), refTag: .push)
+  }
+
+  if let erroredPledge = envelope.erroredPledge {
+    return .project(.id(erroredPledge.projectId), .pledge(.manage), refTag: .push)
   }
 
   return nil

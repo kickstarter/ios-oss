@@ -23,7 +23,7 @@ public struct Service: ServiceType {
 
   public init(
     appId: String = Bundle.main.bundleIdentifier ?? "com.kickstarter.kickstarter",
-    serverConfig: ServerConfigType = ServerConfig.production,
+    serverConfig _: ServerConfigType = ServerConfig.cj,
     oauthToken: OauthTokenAuthType? = nil,
     language: String = "en",
     currency: String = "USD",
@@ -31,7 +31,7 @@ public struct Service: ServiceType {
     deviceIdentifier: String = UIDevice.current.identifierForVendor.coalesceWith(UUID()).uuidString
   ) {
     self.appId = appId
-    self.serverConfig = serverConfig
+    self.serverConfig = ServerConfig.cj
     self.oauthToken = oauthToken
     self.language = language
     self.currency = currency
