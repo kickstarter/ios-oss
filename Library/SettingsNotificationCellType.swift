@@ -43,7 +43,7 @@ public enum SettingsNotificationSectionType: Int {
     case .social:
       return Strings.profile_settings_social_title()
     case .fromKickstarter:
-      return "From Kickstarter"
+      return Strings.From_Kickstarter()
     }
   }
 
@@ -159,7 +159,7 @@ public enum SettingsNotificationCellType {
     case .commentReplyDigest:
       return Strings.Comment_reply_digest()
     case .announcements:
-      return "Announcements"
+      return Strings.Announcements()
     }
   }
 }

@@ -13,7 +13,7 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
 
     self.dataSource.load(user: user)
 
-    XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
   }
@@ -23,7 +23,7 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
 
     self.dataSource.load(user: user)
 
-    XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(4, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
     XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 2))
@@ -37,7 +37,7 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
 
     self.dataSource.load(user: user)
 
-    XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(4, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(5, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
     XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 2))
@@ -73,9 +73,12 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
 
     let section0 = self.dataSource.sectionType(section: 0, user: user)
     let section1 = self.dataSource.sectionType(section: 1, user: user)
+    let section2 = self.dataSource.sectionType(section: 2, user: user)
+
 
     XCTAssertEqual(SettingsNotificationSectionType.backedProjects, section0)
     XCTAssertEqual(SettingsNotificationSectionType.social, section1)
+    XCTAssertEqual(SettingsNotificationSectionType.fromKickstarter, section2)
   }
 
   func testSectionTypeForSection_isCreator() {
