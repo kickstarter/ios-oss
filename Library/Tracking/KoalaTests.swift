@@ -461,7 +461,8 @@ final class KoalaTests: TestCase {
       project: .template,
       reward: .template,
       context: .newPledge,
-      refTag: RefTag.activity
+      refTag: RefTag.activity,
+      cookieRefTag: RefTag.activity
     )
 
     let props = client.properties.last
@@ -1130,7 +1131,8 @@ final class KoalaTests: TestCase {
       project: .template,
       reward: .template,
       context: .newPledge,
-      refTag: nil
+      refTag: nil,
+      cookieRefTag: nil
     )
     XCTAssertEqual("pledge_screen", client.properties.last?["context_location"] as? String)
 

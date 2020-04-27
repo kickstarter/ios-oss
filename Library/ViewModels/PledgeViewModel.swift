@@ -608,11 +608,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     initialData
       .observeValues { project, reward, refTag, context in
+        let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
+
         AppEnvironment.current.koala.trackCheckoutPaymentPageViewed(
           project: project,
           reward: reward,
           context: TrackingHelpers.pledgeContext(for: context),
-          refTag: refTag
+          refTag: refTag,
+          cookieRefTag: cookieRefTag
         )
       }
 

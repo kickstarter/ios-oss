@@ -659,13 +659,16 @@ public final class Koala {
    - reward: the chosen reward
    - context: the PledgeContext from which the event was triggered
    - refTag: the associated RefTag for the pledge
+   - cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
+
    */
 
   public func trackCheckoutPaymentPageViewed(
     project: Project,
     reward: Reward,
     context: Koala.PledgeContext,
-    refTag: RefTag?
+    refTag: RefTag?,
+    cookieRefTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
@@ -675,7 +678,8 @@ public final class Koala {
       event: DataLakeWhiteListedEvent.checkoutPaymentPageViewed.rawValue,
       location: .pledgeScreen,
       properties: props,
-      refTag: refTag?.stringTag
+      refTag: refTag?.stringTag,
+      referrerCredit: cookieRefTag?.stringTag
     )
   }
 

@@ -100,8 +100,6 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     let project = freshProjectAndRefTag
       .map(first)
-    let refTag = freshProjectAndRefTag
-      .map(second)
 
     let projectAndBacking = project
       .filter { $0.personalization.isBacking ?? false }
