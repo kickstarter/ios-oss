@@ -282,7 +282,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       Strings.Filter_by_all_projects(),
       Strings.Filter_by_all_projects(), Strings.Filter_by_saved_projects(),
       Strings.Filter_by_saved_projects(),
-      Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? "")
+      Strings.Filter_by_category_name(category_name: self.categoryParams.category?.name ?? "")
     ])
 
     self.vm.inputs.titleButtonTapped()
@@ -308,8 +308,8 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       Strings.Filter_by_all_projects(),
       Strings.Filter_by_all_projects(), Strings.Filter_by_saved_projects(),
       Strings.Filter_by_saved_projects(),
-      Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? ""),
-      Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? "")
+      Strings.Filter_by_category_name(category_name: self.categoryParams.category?.name ?? ""),
+      Strings.Filter_by_category_name(category_name: self.categoryParams.category?.name ?? "")
     ])
 
     self.vm.inputs.filtersSelected(
@@ -338,11 +338,11 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       Strings.Filter_by_all_projects(),
       Strings.Filter_by_all_projects(), Strings.Filter_by_saved_projects(),
       Strings.Filter_by_saved_projects(),
-      Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? ""),
-      Strings.Filter_by_category_name(category_name: categoryParams.category?.name ?? ""),
+      Strings.Filter_by_category_name(category_name: self.categoryParams.category?.name ?? ""),
+      Strings.Filter_by_category_name(category_name: self.categoryParams.category?.name ?? ""),
       Strings.Filter_by_subcategory_name_in_category_name(
-        subcategory_name: subcategoryParams.category?.name ?? "",
-        category_name: subcategoryParams.category?._parent?.name ?? ""
+        subcategory_name: self.subcategoryParams.category?.name ?? "",
+        category_name: self.subcategoryParams.category?._parent?.name ?? ""
       )
     ])
   }
@@ -381,7 +381,7 @@ internal final class DiscoveryNavigationHeaderViewModelTests: TestCase {
       row: self.selectableRow |> SelectableRow.lens.params .~ self.categoryParams
     )
 
-    self.notifyDelegateFilterSelectedParams.assertValues([DiscoveryParams.defaults, categoryParams])
+    self.notifyDelegateFilterSelectedParams.assertValues([DiscoveryParams.defaults, self.categoryParams])
   }
 
   func testFavoriting() {

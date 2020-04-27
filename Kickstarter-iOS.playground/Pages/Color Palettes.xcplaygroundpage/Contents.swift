@@ -26,7 +26,8 @@ func paletteItemStackView(colorView colorView: UIView, labelsView: UIView) -> UI
     |> UIStackView.lens.arrangedSubviews .~ [colorView, labelsView]
 }
 
-func labelsStackView(colorName colorName: String, startColor: UIColor, endColor: UIColor?, weight: Int? = nil) -> UIStackView {
+func labelsStackView(colorName colorName: String, startColor: UIColor, endColor: UIColor?,
+                     weight: Int? = nil) -> UIStackView {
   var weightValue = ""
   if let weight = weight {
     weightValue = " - \(weight)"
@@ -66,7 +67,8 @@ func colorBlockStackView(color color: UIColor, colorName: String, weight: Int? =
 
 //: A gradient color block with labels in a stack view.
 
-func gradientBlockStackView(colorName colorName: String, startColor: UIColor, endColor: UIColor) -> UIStackView {
+func gradientBlockStackView(colorName colorName: String, startColor: UIColor,
+                            endColor: UIColor) -> UIStackView {
   let view = GradientView()
   view.startPoint = CGPoint(x: 0.0, y: 1.0)
   view.endPoint = CGPoint(x: 1.0, y: 0.0)

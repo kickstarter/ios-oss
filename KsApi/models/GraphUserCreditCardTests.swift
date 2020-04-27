@@ -14,7 +14,6 @@ final class GraphUserCreditCardTests: XCTestCase {
     let data = jsonString.data(using: .utf8)
 
     do {
-      // swiftlint:disable:next force_unwrapping
       let cards = try JSONDecoder().decode(GraphUserCreditCard.self, from: data!)
 
       XCTAssertEqual(cards.storedCards.nodes.count, 0)
@@ -49,7 +48,6 @@ final class GraphUserCreditCardTests: XCTestCase {
     let data = jsonString.data(using: .utf8)
 
     do {
-      // swiftlint:disable:next force_unwrapping
       let cards = try JSONDecoder().decode(GraphUserCreditCard.self, from: data!)
 
       XCTAssertEqual(cards.storedCards.nodes.count, 2)
@@ -87,7 +85,6 @@ final class GraphUserCreditCardTests: XCTestCase {
     let data = jsonString.data(using: .utf8)
 
     do {
-      // swiftlint:disable:next force_unwrapping
       let cards = try JSONDecoder().decode(GraphUserCreditCard.self, from: data!)
 
       guard let card = cards.storedCards.nodes.first else {
@@ -124,7 +121,6 @@ final class GraphUserCreditCardTests: XCTestCase {
     let data = jsonString.data(using: .utf8)
 
     do {
-      // swiftlint:disable:next force_unwrapping
       let cards = try JSONDecoder().decode(GraphUserCreditCard.self, from: data!)
 
       guard let card = cards.storedCards.nodes.first else {

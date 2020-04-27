@@ -12,7 +12,8 @@ final class SettingsAccountDataSourceTests: XCTestCase {
     self.self.dataSource.configureRows(
       currency: Currency.USD,
       shouldHideEmailWarning: true,
-      shouldHideEmailPasswordSection: false
+      shouldHideEmailPasswordSection: false,
+      isAppleConnected: false
     )
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
@@ -25,13 +26,27 @@ final class SettingsAccountDataSourceTests: XCTestCase {
     self.dataSource.configureRows(
       currency: Currency.USD,
       shouldHideEmailWarning: true,
-      shouldHideEmailPasswordSection: true
+      shouldHideEmailPasswordSection: true,
+      isAppleConnected: false
     )
 
     XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
     XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 2))
+  }
+
+  func testConfigureRows_EmailPasswordRowsHidden_IsApplePayConnected() {
+    self.dataSource.configureRows(
+      currency: Currency.USD,
+      shouldHideEmailWarning: true,
+      shouldHideEmailPasswordSection: true,
+      isAppleConnected: true
+    )
+
+    XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
+    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
   }
 
   func testCellTypeForIndexPath() {
@@ -44,7 +59,8 @@ final class SettingsAccountDataSourceTests: XCTestCase {
     self.dataSource.configureRows(
       currency: .USD,
       shouldHideEmailWarning: true,
-      shouldHideEmailPasswordSection: false
+      shouldHideEmailPasswordSection: false,
+      isAppleConnected: false
     )
 
     XCTAssertEqual(
@@ -73,7 +89,8 @@ final class SettingsAccountDataSourceTests: XCTestCase {
     self.dataSource.configureRows(
       currency: .USD,
       shouldHideEmailWarning: true,
-      shouldHideEmailPasswordSection: true
+      shouldHideEmailPasswordSection: true,
+      isAppleConnected: false
     )
 
     XCTAssertEqual(

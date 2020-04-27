@@ -176,17 +176,13 @@ internal final class BackingViewModelTests: TestCase {
       self.pledgeSectionTitle.assertValues(["", "Pledged on July 14, 2016"])
       self.statusDescription.assertValues(["", Strings.Backer_has_pledged_to_this_project()])
       self.messageButtonTitleText.assertValues([
-        localizedString(
-          key: "Contact_backer",
-          defaultValue: "Contact backer"
-        )
+        "Contact backer"
       ])
     }
   }
 
   func testRewardInfo_BackerView() {
     let date = 1_485_907_200.0 // Feb 01 2017 in UTC
-    // swiftlint:disable:next force_unwrapping
     let EST = TimeZone(abbreviation: "EST")!
     var calEST = Calendar.current
     calEST.timeZone = EST
@@ -230,7 +226,6 @@ internal final class BackingViewModelTests: TestCase {
 
   func testRewardInfo_CreatorView() {
     let date = 1_485_907_200.0 // Feb 01 2017 in UTC
-    // swiftlint:disable:next force_unwrapping
     let EST = TimeZone(abbreviation: "EST")!
     var calEST = Calendar.current
     calEST.timeZone = EST

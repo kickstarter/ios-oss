@@ -71,7 +71,7 @@ public let settingsSeparatorStyle = UIView.lens.backgroundColor .~ .ksr_grey_500
 
 public let settingsNotificationIconButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
-  <> UIButton.lens.tintColor .~ .ksr_text_dark_grey_400
+    <> UIButton.lens.tintColor .~ .ksr_text_dark_grey_400
 
 public let settingsSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_green_700
   <> UISwitch.lens.tintColor .~ .ksr_grey_600

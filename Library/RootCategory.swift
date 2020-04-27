@@ -28,7 +28,6 @@ public enum RootCategory: Int {
 }
 
 public extension RootCategory {
-  // swiftlint:disable:next cyclomatic_complexity
   func allProjectsString() -> String {
     switch self {
     case .art: return Strings.All_Art_Projects()

@@ -177,6 +177,7 @@ public enum Query {
     case finalCollectionDate
     case id
     case name
+    case projectSummary(NonEmptySet<ProjectSummary>)
     case slug
     case updates(Set<QueryArg<Never>>, NonEmptySet<Connection<Project.Update>>)
 
@@ -191,6 +192,11 @@ public enum Query {
       case id
       case publishedAt
       case title
+    }
+
+    public enum ProjectSummary: String {
+      case question
+      case response
     }
   }
 
@@ -211,6 +217,7 @@ public enum Query {
     case id
     case image(alias: String, width: Int)
     case imageUrl(alias: String, blur: Bool, width: Int)
+    case isAppleConnected
     case isEmailDeliverable
     case isEmailVerified
     case isFollowing
@@ -376,6 +383,7 @@ extension Query.Project: QueryType {
     case .finalCollectionDate: return "finalCollectionDate"
     case .id: return "id"
     case .name: return "name"
+    case let .projectSummary(fields): return "projectSummary { \(join(fields)) }"
     case .slug: return "slug"
     case let .updates(args, fields): return "updates\(connection(args, fields))"
     }
@@ -417,6 +425,7 @@ extension Query.User: QueryType {
     case .id: return "id"
     case let .image(alias, width): return "\(alias): imageUrl(width: \(width))"
     case let .imageUrl(alias, blur, width): return "\(alias): imageUrl(blur: \(blur), width: \(width))"
+    case .isAppleConnected: return "isAppleConnected"
     case .isEmailDeliverable: return "isDeliverable"
     case .isEmailVerified: return "isEmailVerified"
     case .isFollowing: return "isFollowing"
@@ -436,6 +445,14 @@ extension Query.User: QueryType {
     case .url: return "url"
     case .userId: return "uid"
     }
+  }
+}
+
+// MARK: - ProjectSummary
+
+extension Query.Project.ProjectSummary: QueryType {
+  public var description: String {
+    return self.rawValue
   }
 }
 
@@ -549,6 +566,12 @@ extension PageInfo {
 }
 
 extension Query.Notifications {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.description)
+  }
+}
+
+extension Query.Project.ProjectSummary {
   public func hash(into hasher: inout Hasher) {
     hasher.combine(self.description)
   }

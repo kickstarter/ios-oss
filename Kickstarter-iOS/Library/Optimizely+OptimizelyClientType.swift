@@ -5,12 +5,12 @@ import Optimizely
 extension OptimizelyClient: OptimizelyClientType {}
 
 extension OptimizelyResult: OptimizelyResultType {
-  public var isSuccess: Bool {
+  public var hasError: Error? {
     switch self {
     case .success:
-      return true
-    case .failure:
-      return false
+      return nil
+    case let .failure(error):
+      return error
     }
   }
 }

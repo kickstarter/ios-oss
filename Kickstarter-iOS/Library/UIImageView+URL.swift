@@ -8,7 +8,7 @@ extension UIImageView {
     _ url: URL,
     placeholderImage: UIImage? = nil
   ) {
-    self.af_setImage(
+    self.af.setImage(
       withURL: url,
       placeholderImage: placeholderImage,
       filter: nil,
@@ -21,7 +21,7 @@ extension UIImageView {
   }
 
   public func ksr_setRoundedImageWith(_ url: URL) {
-    self.af_setImage(
+    self.af.setImage(
       withURL: url,
       placeholderImage: nil,
       filter: CircleFilter(),
@@ -35,17 +35,17 @@ extension UIImageView {
 }
 
 private enum Associations {
-  fileprivate static var imageUrl = 0
+  fileprivate static var ksr_imageUrl = 0
 }
 
 extension Rac where Object: UIImageView {
-  public var imageUrl: Signal<URL?, Never> {
+  public var ksr_imageUrl: Signal<URL?, Never> {
     nonmutating set {
       let prop: MutableProperty<URL?> = lazyMutableProperty(
         object,
-        key: &Associations.imageUrl,
+        key: &Associations.ksr_imageUrl,
         setter: { [weak object] url in
-          object?.af_cancelImageRequest()
+          object?.af.cancelImageRequest()
           object?.image = nil
           guard let url = url else { return }
           object?.ksr_setImageWithURL(url)
@@ -57,7 +57,7 @@ extension Rac where Object: UIImageView {
     }
 
     get {
-      return .empty
+      .empty
     }
   }
 }

@@ -24,7 +24,7 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.friendImageURL
       .observeForUI()
       .on(event: { [weak friendImageView] _ in
-        friendImageView?.af_cancelImageRequest()
+        friendImageView?.af.cancelImageRequest()
         friendImageView?.image = nil
       })
       .skipNil()
@@ -53,7 +53,7 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
 
     _ = self.followButton
       |> blackButtonStyle
-      |> UIButton.lens.targets .~ [(self, action: #selector(followButtonTapped), .touchUpInside)]
+      |> UIButton.lens.targets .~ [(self, action: #selector(self.followButtonTapped), .touchUpInside)]
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.social_following_friend_buttons_follow() }
   }
 

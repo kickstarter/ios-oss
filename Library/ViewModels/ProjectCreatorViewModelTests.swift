@@ -1,6 +1,5 @@
 @testable import KsApi
 @testable import Library
-// swiftlint:disable force_unwrapping
 import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift

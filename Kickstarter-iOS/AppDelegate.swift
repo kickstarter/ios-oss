@@ -224,7 +224,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.evaluateQualtricsTargetingLogic
       .observeValues { [weak self] in
-        Qualtrics.shared.evaluateTargetingLogic() { result in
+        Qualtrics.shared.evaluateTargetingLogic { result in
           self?.viewModel.inputs.didEvaluateQualtricsTargetingLogic(
             with: result, properties: Qualtrics.shared.properties
           )
@@ -238,7 +238,17 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         _ = Qualtrics.shared.display(viewController: vc)
       }
 
-    // swiftlint:disable discarded_notification_center_observer
+    self.viewModel.outputs.goToCategoryPersonalizationOnboarding
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        let categorySelectionViewController = LandingViewController.instantiate()
+        let navController = NavigationController(rootViewController: categorySelectionViewController)
+        let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
+        navController.modalPresentationStyle = isIpad ? .formSheet : .fullScreen
+
+        self?.rootTabBarController?.present(navController, animated: true)
+      }
+
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
@@ -255,7 +265,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
       }
-    // swiftlint:enable discarded_notification_center_observer
 
     self.window?.tintColor = .ksr_green_700
 
@@ -346,14 +355,22 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     optimizelyClient.start { [weak self] result in
-      let shouldUpdateClient = self?.viewModel.inputs.optimizelyConfigured(with: result)
+      guard let self = self else { return }
 
-      if let shouldUpdateClient = shouldUpdateClient, shouldUpdateClient {
+      let optimizelyConfigurationError = self.viewModel.inputs.optimizelyConfigured(with: result)
+
+      guard let optimizelyError = optimizelyConfigurationError else {
         print("🔮 Optimizely SDK Successfully Configured")
         AppEnvironment.updateOptimizelyClient(optimizelyClient)
 
-        self?.viewModel.inputs.didUpdateOptimizelyClient(optimizelyClient)
+        self.viewModel.inputs.didUpdateOptimizelyClient(optimizelyClient)
+
+        return
       }
+
+      print("🔴 Optimizely SDK Configuration Failed with Error: \(optimizelyError.localizedDescription)")
+
+      Crashlytics.sharedInstance().recordError(optimizelyError)
     }
   }
 

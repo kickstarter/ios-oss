@@ -50,14 +50,14 @@ final class PledgePaymentMethodsViewController: UIViewController {
       self.storedPaymentMethodsTitleLabel
     ]
 
-    _ = (applePaySectionViews, applePaySectionStackView)
+    _ = (applePaySectionViews, self.applePaySectionStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.cardsStackView, self.scrollView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([applePaySectionStackView, self.scrollView], self.rootStackView)
+    _ = ([self.applePaySectionStackView, self.scrollView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.rootStackView, self.view)

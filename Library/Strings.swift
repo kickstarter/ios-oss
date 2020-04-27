@@ -62,10 +62,10 @@ public enum Strings {
    "Accessibility Statement"
 
    - **en**: "Accessibility Statement"
-   - **de**: "Accessibility Statement"
-   - **es**: "Accessibility Statement"
-   - **fr**: "Accessibility Statement"
-   - **ja**: "Accessibility Statement"
+   - **de**: "Barrierefreiheit"
+   - **es**: "Declaración de accesibilidad"
+   - **fr**: "Déclaration d'accessibilité"
+   - **ja**: "アクセシビリティ・ステートメント"
   */
   public static func Accessibility_statement() -> String {
     return localizedString(
@@ -419,9 +419,9 @@ public enum Strings {
    "All %{category_name} Projects"
 
    - **en**: "All %{category_name} Projects"
-   - **de**: "Alle Projekte der Kategorie %{category_name}"
-   - **es**: "Todos los proyectos de la categoría %{category_name}"
-   - **fr**: "Tous les projets de la catégorie %{category_name}"
+   - **de**: "Alle Projekte in %{category_name}"
+   - **es**: "Todos los proyectos de %{category_name}"
+   - **fr**: "Tous les projets %{category_name}"
    - **ja**: "%{category_name} の全プロジェクト"
   */
   public static func All_category_name_Projects(category_name: String) -> String {
@@ -453,7 +453,7 @@ public enum Strings {
    "All-or-nothing"
 
    - **en**: "All-or-nothing"
-   - **de**: "All-or-nothing"
+   - **de**: "Alles oder nichts"
    - **es**: "Todo o nada"
    - **fr**: "Tout ou rien"
    - **ja**: "All-or-nothing 方式"
@@ -564,6 +564,23 @@ public enum Strings {
     return localizedString(
       key: "App_version",
       defaultValue: "App version",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "AppleID"
+
+   - **en**: "AppleID"
+   - **de**: "AppleID"
+   - **es**: "Apple ID"
+   - **fr**: "Apple ID"
+   - **ja**: "AppleID"
+  */
+  public static func Apple_ID() -> String {
+    return localizedString(
+      key: "Apple_ID",
+      defaultValue: "AppleID",
       count: nil,
       substitutions: [:]
     )
@@ -855,10 +872,10 @@ contributeurs"
    "Backers have signed up to help Kickstarter creators bring their ideas to life."
 
    - **en**: "Backers have signed up to help Kickstarter creators bring their ideas to life."
-   - **de**: "Backers have signed up to help Kickstarter creators bring their ideas to life."
+   - **de**: "Unterstützer haben Projektgründern auf Kickstarter dabei geholfen, kreative Ideen zu verwirklichen."
    - **es**: "Patrocinadores se han registrado para ayudar a los creadores de Kickstarter a hacer realidad sus ideas."
-   - **fr**: "Backers have signed up to help Kickstarter creators bring their ideas to life."
-   - **ja**: "Backers have signed up to help Kickstarter creators bring their ideas to life."
+   - **fr**: "Le nombre de contributeurs qui se sont inscrits sur Kickstarter pour faire vivre des idées créatives."
+   - **ja**: "ものバッカーが Kickstarter クリエイター達のアイデア実現を支援すべく Kickstarter にサインアップしています。"
   */
   public static func Backers_have_signed_up_to_help_kickstarter_creators_bring_their_ideas_to_life() -> String {
     return localizedString(
@@ -1221,6 +1238,23 @@ contributeurs"
     return localizedString(
       key: "Check_back_later_for_an_update_on_your_export",
       defaultValue: "Check back later for an update on your export progress.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Check out these handpicked projects just for you."
+
+   - **en**: "Check out these handpicked projects just for you."
+   - **de**: "Sieh dir dieses speziell für dich ausgesuchten Projekte an."
+   - **es**: "Echa un vistazo a estos proyectos seleccionados exclusivamente para ti."
+   - **fr**: "Voici quelques projets sélectionnés rien que pour vous."
+   - **ja**: "あなたにピッタリの Kickstarter イチオシのプロジェクトをご覧ください。"
+  */
+  public static func Check_out_these_handpicked_projects() -> String {
+    return localizedString(
+      key: "Check_out_these_handpicked_projects",
+      defaultValue: "Check out these handpicked projects just for you.",
       count: nil,
       substitutions: [:]
     )
@@ -2323,10 +2357,10 @@ Haz clic para volver a intentarlo."
    "Discover creative projects"
 
    - **en**: "Discover creative projects"
-   - **de**: "Discover creative projects"
+   - **de**: "Erkunde kreative Projekte"
    - **es**: "Descubre proyectos creativos"
-   - **fr**: "Découvrez des projets créatifs"
-   - **ja**: "Discover creative projects"
+   - **fr**: "Des projets créatifs à découvrir"
+   - **ja**: "クリエイティブなプロジェクトをさがそう"
   */
   public static func Discover_creative_projects() -> String {
     return localizedString(
@@ -2748,10 +2782,10 @@ Haz clic para volver a intentarlo."
    "Explore and support the latest creative ideas created by our vast global community."
 
    - **en**: "Explore and support the latest creative ideas created by our vast global community."
-   - **de**: "Explore and support the latest creative ideas created by our vast global community."
+   - **de**: "Erkunde und unterstütze die neuesten kreativen Ideen unserer enormen globalen Community."
    - **es**: "Explora y apoya las más recientes ideas creativas de nuestra vasta comunidad global."
    - **fr**: "Explorez et participez aux dernières idées créatives de nos créateurs à travers le monde."
-   - **ja**: "Explore and support the latest creative ideas created by our vast global community."
+   - **ja**: "Kickstarter のグローバルなコミュニティが作成した最新のクリエイティブアイデアを閲覧し、サポートしましょう。"
   */
   public static func Explore_and_support_the_latest_creative_ideas() -> String {
     return localizedString(
@@ -3870,10 +3904,10 @@ Haz clic para volver a intentarlo."
    "Guide creators to success"
 
    - **en**: "Guide creators to success"
-   - **de**: "Guide creators to success"
+   - **de**: "Verhelfe Projekgründern zum Erfolg"
    - **es**: "Conduce a los creadores al éxito"
    - **fr**: "Accompagnez un créateur vers le succès"
-   - **ja**: "Guide creators to success"
+   - **ja**: "クリエイターを成功に導こう"
   */
   public static func Guide_creators_to_success() -> String {
     return localizedString(
@@ -4095,7 +4129,7 @@ Haz clic para volver a intentarlo."
    - **de**: "Wenn dein Projekt das Finanzierungsziel erreicht, wird der Finanzierungsbeitrag des Unterstützers am %{project_deadline} abgebucht."
    - **es**: "Si el proyecto alcanza su meta de financiamiento, al patrocinador se le cobrará el %{project_deadline}."
    - **fr**: "Si vous atteignez votre objectif de financement, le contributeur sera débité le %{project_deadline}."
-   - **ja**: "If your project reaches its funding goal, the backer will be charged on %{project_deadline}."
+   - **ja**: "プロジェクトがファンディングゴールに到達すると、バッカーは %{project_deadline} に請求されます。"
   */
   public static func If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_on_project_deadline(project_deadline: String) -> String {
     return localizedString(
@@ -4112,7 +4146,7 @@ Haz clic para volver a intentarlo."
    - **de**: "Wenn dein Projekt das Finanzierungsziel erreicht, wird die Karte des Unterstützers am %{project_deadline} mit %{total} belastet."
    - **es**: "Si el proyecto alcanza su meta de financiamiento, al patrocinador se le cobrará %{total} el %{project_deadline}."
    - **fr**: "Si vous atteignez votre objectif de financement, le contributeur sera débité de %{total} le %{project_deadline}."
-   - **ja**: "If your project reaches its funding goal, the backer will be charged %{total} on %{project_deadline}."
+   - **ja**: "プロジェクトがファンディングゴールに到達すると、%{project_deadline} にバッカーへ %{total} が請求されます。"
   */
   public static func If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_total_on_project_deadline(total: String, project_deadline: String) -> String {
     return localizedString(
@@ -4281,9 +4315,9 @@ with friends."
    "Join a fruitful community"
 
    - **en**: "Join a fruitful community"
-   - **de**: "Join a fruitful community"
+   - **de**: "Schließe dich einer erfolgreichen Community an"
    - **es**: "Únete a una comunidad fructífera"
-   - **fr**: "Join a fruitful community"
+   - **fr**: "Rejoignez une communauté vivante"
    - **ja**: "活気あるコミュニティに参加しましょう"
   */
   public static func Join_a_fruitful_community() -> String {
@@ -4468,7 +4502,7 @@ with friends."
    "Kickstarter is not a store. It's a way to bring creative projects to life.<br/><a href="%{trust_link}">Learn more about accountability</a>"
 
    - **en**: "Kickstarter is not a store. It's a way to bring creative projects to life.<br/><a href="%{trust_link}">Learn more about accountability</a>"
-   - **de**: "Kickstarter ist kein Geschäft, sondern eine Plattform, um kreative Projekte zu verwirklichen..</br><a href="%{trust_link}">HIer findest du mehr Info zur Rechenschaftspflicht</a>"
+   - **de**: "Kickstarter ist kein Geschäft, sondern eine Plattform, um kreative Projekte zu verwirklichen. <br/><a href="%{trust_link}">Hier findest du mehr Info zur Rechenschftspflicht</a>"
    - **es**: "Kickstarter no es una tienda. Es una forma de dar vida a proyectos creativos.<br/><a href="%{trust_link}">Más información sobre las responsabilidades</a>"
    - **fr**: "Kickstarter n'est pas un magasin, mais un moyen de faire vivre des projets créatifs. </br><a href="%{trust_link}">En savoir plus sur la notion de responsabilité</a>"
    - **ja**: "Kickstarter は普通のお店とは全く違います。クリエイティブなプロジェクトに生命を吹き込む場です。<br/><a href="%{trust_link}">アカウンタビリティについて詳しくみる。</a>"
@@ -4890,6 +4924,23 @@ with friends."
     )
   }
   /**
+   "Manage this account in your AppleID settings."
+
+   - **en**: "Manage this account in your AppleID settings."
+   - **de**: "Manage this account in your AppleID settings."
+   - **es**: "Administra esta cuenta desde la configuración de tu Apple ID."
+   - **fr**: "Gérez ce compte depuis vos paramètres Apple ID."
+   - **ja**: "Manage this account in your AppleID settings."
+  */
+  public static func Manage_this_account() -> String {
+    return localizedString(
+      key: "Manage_this_account",
+      defaultValue: "Manage this account in your AppleID settings.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Manage your pledge"
 
    - **en**: "Manage your pledge"
@@ -5046,9 +5097,9 @@ with friends."
    "%{total_amount} million+"
 
    - **en**: "%{total_amount} million+"
-   - **de**: "%{total_amount} million+"
+   - **de**: "Über %{total_amount} Millionen"
    - **es**: "Más de %{total_amount} millones"
-   - **fr**: "%{total_amount} million+"
+   - **fr**: "Plus de %{total_amount} millions"
    - **ja**: "%{total_amount},000,000 以上"
   */
   public static func Million_plus(total_amount: String) -> String {
@@ -7412,6 +7463,23 @@ daring ideas."
     )
   }
   /**
+   "See our suggestions ▸"
+
+   - **en**: "See our suggestions ▸"
+   - **de**: "Unsere Empfehlungen ansehen ▸"
+   - **es**: "Ver nuestras sugerencias ▸"
+   - **fr**: "Voir nos suggestions ▸"
+   - **ja**: "おすすめを見る ▸"
+  */
+  public static func See_our_suggestions() -> String {
+    return localizedString(
+      key: "See_our_suggestions",
+      defaultValue: "See our suggestions ▸",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "See rewards"
 
    - **en**: "See rewards"
@@ -7497,6 +7565,21 @@ daring ideas."
     )
   }
   /**
+   "Select fewer categories"
+
+   - **en**: "Select fewer categories"
+   - **de**: "Reduziere die Anzahl der Kategorien"
+   - **es**: "Selecciona menos categorías"
+  */
+  public static func Select_fewer_categories() -> String {
+    return localizedString(
+      key: "Select_fewer_categories",
+      defaultValue: "Select fewer categories",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Select this instead"
 
    - **en**: "Select this instead"
@@ -7543,6 +7626,23 @@ daring ideas."
     return localizedString(
       key: "Select_this_reward_instead",
       defaultValue: "Select this reward instead",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Select up to five from the options below."
+
+   - **en**: "Select up to five from the options below."
+   - **de**: "Wähle bis zu fünf aus den unten stehenden Optionen aus."
+   - **es**: "Selecciona hasta cinco de las opciones que aparecen a continuación."
+   - **fr**: "Sélectionnez cinq catégories parmi les propositions ci-dessous."
+   - **ja**: "以下のオプションから最大5つをお選びください。"
+  */
+  public static func Select_up_to_five() -> String {
+    return localizedString(
+      key: "Select_up_to_five",
+      defaultValue: "Select up to five from the options below.",
       count: nil,
       substitutions: [:]
     )
@@ -8097,10 +8197,10 @@ catch your eye?"
    "Stay updated on the projects you've backed and learn about how these creative works are produced."
 
    - **en**: "Stay updated on the projects you've backed and learn about how these creative works are produced."
-   - **de**: "Stay updated on the projects you've backed and learn about how these creative works are produced."
+   - **de**: "Bleib immer informiert über die Projekte, die du unterstützt hast, und erfahre mehr zu ihrer Entstehung."
    - **es**: "Mantente al tanto de los proyectos que has patrocinado y conoce cómo se producen estos trabajos creativos."
-   - **fr**: "Stay updated on the projects you've backed and learn about how these creative works are produced."
-   - **ja**: "Stay updated on the projects you've backed and learn about how these creative works are produced."
+   - **fr**: "Suivez les projets créatifs auxquels vous avez contribué pour tout savoir sur la phase de production."
+   - **ja**: "バックしたプロジェクトの最新情報を把握し、これらクリエイティブ作品がどのように製作されているかを確認しましょう。"
   */
   public static func Stay_updated_on_the_projects_youve_backed_and_learn_about_how_these_creative_works_are_produced() -> String {
     return localizedString(
@@ -8125,6 +8225,23 @@ catch your eye?"
       defaultValue: "Stay updated on this project?",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Step %{current_step} of %{total_steps}"
+
+   - **en**: "Step %{current_step} of %{total_steps}"
+   - **de**: "Schritt %{current_step} von %{total_steps}"
+   - **es**: "Paso %{current_step} de %{total_steps}"
+   - **fr**: "Étape %{current_step} de%{total_steps}"
+   - **ja**: "ステップ%{current_step} (合計%{total_steps}ステップ中)"
+  */
+  public static func Step_number(current_step: String, total_steps: String) -> String {
+    return localizedString(
+      key: "Step_number",
+      defaultValue: "Step %{current_step} of %{total_steps}",
+      count: nil,
+      substitutions: ["current_step": current_step, "total_steps": total_steps]
     )
   }
   /**
@@ -8182,10 +8299,10 @@ catch your eye?"
    "Successful projects have been created on Kickstarter."
 
    - **en**: "Successful projects have been created on Kickstarter."
-   - **de**: "Successful projects have been created on Kickstarter."
+   - **de**: "Projekte wurden erfolgreich auf Kickstarter finanziert."
    - **es**: "Proyectos exitosos se han creado en Kickstarter."
-   - **fr**: "Successful projects have been created on Kickstarter."
-   - **ja**: "Successful projects have been created on Kickstarter."
+   - **fr**: "Le nombre total de projets intégralement financés sur Kickstarter."
+   - **ja**: "のプロジェクトが Kickstarter で作成されました。"
   */
   public static func Successful_projects_have_been_created_on_kickstarter() -> String {
     return localizedString(
@@ -8199,10 +8316,10 @@ catch your eye?"
    "Support creative independence"
 
    - **en**: "Support creative independence"
-   - **de**: "Support creative independence"
+   - **de**: "Unterstütze kreative Unabhängigkeit"
    - **es**: "Apoya la independencia creativa"
-   - **fr**: "Support creative independence"
-   - **ja**: "Support creative independence"
+   - **fr**: "Soutenez l'indépendance créative"
+   - **ja**: "クリエイティブな独立プロジェクトをサポートしよう"
   */
   public static func Support_creative_independence() -> String {
     return localizedString(
@@ -8406,7 +8523,7 @@ catch your eye?"
    - **de**: "Der Unterstützer hat den Finanzierungsbeitrag zurückgezogen."
    - **es**: "El patrocinador canceló su contribución a este proyecto."
    - **fr**: "Le contributeur a annulé son engagement."
-   - **ja**: "The backer canceled their pledge for this project."
+   - **ja**: "バッカーがこのプロジェクトのプレッジをキャンセルしました。"
   */
   public static func The_backer_canceled_their_pledge_for_this_project() -> String {
     return localizedString(
@@ -8423,7 +8540,7 @@ catch your eye?"
    - **de**: "Der Projektgründer hat das Projekt abgebrochen. Daher wurde deine Zahlungsmethode nicht belastet."
    - **es**: "El creador canceló el proyecto, así que tu método de pago nunca recibió ningún cargo."
    - **fr**: "Ce projet a été annulé par le créateur, donc votre moyen de paiement n'a pas été débité."
-   - **ja**: "The creator canceled this project, so your payment method was never charged."
+   - **ja**: "クリエイターがこのプロジェクトをキャンセルしたため、お支払い方法への請求は行われませんでした。"
   */
   public static func The_creator_canceled_this_project_so_your_payment_method_was_never_charged() -> String {
     return localizedString(
@@ -8659,9 +8776,9 @@ catch your eye?"
 
    - **en**: "This holiday season, support a project for no reward, just because it speaks to you."
    - **de**: "Weihnachten steht kurz vor der Tür - unterstütze ein Projekt ohne Belohnung. Einfach, weil es dich anspricht."
-   - **es**: "Esta temporada navideña, apoya un proyecto sin recompensa, simplemente porque te resulta interesante."
+   - **es**: "Esta temporada de fiestas, apoya un proyecto sin recompensa, simplemente porque te resulta interesante."
    - **fr**: "Pour les fêtes, soutenez un projet simplement parce qu'il vous parle, sans choisir de récompense."
-   - **ja**: "このホリデーシーズンはぜひ、リワード無しでもあなたの心に訴えかけるようなプロジェクトをサポートしてください。"
+   - **ja**: "このホリデーシーズンはぜひ、リワード無しでも「支援したい！」と思わせてくれるような、あなたの心に訴えかけるプロジェクトをサポートしてみませんか？"
   */
   public static func This_holiday_season_support_a_project_for_no_reward() -> String {
     return localizedString(
@@ -8678,7 +8795,7 @@ catch your eye?"
    - **de**: "Dieser Finanzierungsbeitrag wurde aufgrund von Fehlern, die bei der Zahlung auftraten, nicht übernommen."
    - **es**: "Esta contribución no pudo ser cobrada por un error en el método de pago."
    - **fr**: "Cet engagement a été annulé en raison d'un échec de règlement."
-   - **ja**: "This pledge was dropped because of payment errors."
+   - **ja**: "支払関連のエラーにより、このプレッジは取り消されました。"
   */
   public static func This_pledge_was_dropped_because_of_payment_errors() -> String {
     return localizedString(
@@ -8695,7 +8812,7 @@ catch your eye?"
    - **de**: "Bei diesem Projekt wurde das Finanzierungsziel nicht erreicht. Daher wurde deine Zahlungsmethode nicht belastet."
    - **es**: "Este proyecto no alcanzó su meta de financiamiento, así que no se realizó ningún cargo a tu método de pago."
    - **fr**: "L'objectif de financement de ce projet n'a pas été atteint, donc votre moyen de paiement n'a pas été débité."
-   - **ja**: "This project didn’t reach its funding goal, so your payment method was never charged."
+   - **ja**: "このプロジェクトはファンディングゴールに到達しなかったため、お支払い方法への請求は行われませんでした。"
   */
   public static func This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged() -> String {
     return localizedString(
@@ -8896,10 +9013,10 @@ catch your eye?"
    "Total amount (USD) backers have pledged to projects."
 
    - **en**: "Total amount (USD) backers have pledged to projects."
-   - **de**: "Total amount (USD) backers have pledged to projects."
+   - **de**: "Gesamtsumme (in USD) aller Finanzierungsbeiträge zu Kickstarter-Projekten."
    - **es**: "El monto total (USD) que los patrocinadores han contribuido a proyectos."
-   - **fr**: "Total amount (USD) backers have pledged to projects."
-   - **ja**: "Total amount (USD) backers have pledged to projects."
+   - **fr**: "Le montant total (en USD) engagé par les contributeurs."
+   - **ja**: "バッカーの皆さまがプロジェクトにプレッジした合計金額 (米ドル)。"
   */
   public static func Total_amount_backers_have_pledged_to_projects() -> String {
     return localizedString(
@@ -8915,8 +9032,8 @@ catch your eye?"
    - **en**: "%{total_amount} billion+"
    - **de**: "%{total_amount} Milliarden+"
    - **es**: "%{total_amount} mil millones+"
-   - **fr**: "%{total_amount} billion+"
-   - **ja**: "%{total_amount} 十億+"
+   - **fr**: "Plus de 4 milliards de dollars"
+   - **ja**: "%{total_amount},000,000,000 以上"
   */
   public static func Total_amount_billion_plus(total_amount: String) -> String {
     return localizedString(
@@ -8947,9 +9064,9 @@ catch your eye?"
    "%{total}+"
 
    - **en**: "%{total}+"
-   - **de**: "%{total}+"
+   - **de**: "Über %{total}"
    - **es**: "Más de %{total}"
-   - **fr**: "%{total}+"
+   - **fr**: "Plus de %{total}"
    - **ja**: "%{total}以上"
   */
   public static func Total_plus(total: String) -> String {
@@ -8964,10 +9081,10 @@ catch your eye?"
    "Track your backings"
 
    - **en**: "Track your backings"
-   - **de**: "Track your backings"
+   - **de**: "Folge deinen unterstützten Projekten"
    - **es**: "Sigue los proyectos que has patrocinado"
-   - **fr**: "Track your backings"
-   - **ja**: "Track your backings"
+   - **fr**: "Suivi de vos engagements"
+   - **ja**: "バックしたプロジェクトを追跡"
   */
   public static func Track_your_backings() -> String {
     return localizedString(
@@ -9460,7 +9577,7 @@ catch your eye?"
    - **de**: "Dieser Finanzierungsbeitrag konnte aufgrund eines Problems mit der Zahlungsmethode des Unterstützers nicht bearbeitet werden."
    - **es**: "No podemos procesar esta contribución por un problema con el método de pago del patrocinador."
    - **fr**: "Impossible de traiter cet engagement en raison d'un problème survenu au niveau du moyen de paiement du contributeur."
-   - **ja**: "We can’t process this pledge because of a problem with the backer’s payment method."
+   - **ja**: "バッカーのお支払い方法で問題があったためこのプレッジを処理することができません。"
   */
   public static func We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method() -> String {
     return localizedString(
@@ -9545,7 +9662,7 @@ catch your eye?"
    - **de**: "Dein Finanzierungsbeitrag für dieses Projekt wurde abgebucht."
    - **es**: "Hemos recolectado tu contribución a este proyecto."
    - **fr**: "Votre engagement a été débité."
-   - **ja**: "We collected your pledge for this project."
+   - **ja**: "このプロジェクトへのあなたのプレッジを請求しました。"
   */
   public static func We_collected_your_pledge_for_this_project() -> String {
     return localizedString(
@@ -9613,7 +9730,7 @@ catch your eye?"
    - **de**: "Der Finanzierungsbeitrag wird derzeit bearbeitet — zur Aktualisierung nach unten ziehen."
    - **es**: "Estamos procesando la contribución, desliza para actualizar."
    - **fr**: "Cet engagement est en cours de traitement, veuillez tirer sur la page pour actualiser."
-   - **ja**: "We're processing this pledge—pull to refresh."
+   - **ja**: "このプレッジを処理中です。リフレッシュするにはプルしてください。"
   */
   public static func We_re_processing_this_pledge_pull_to_refresh() -> String {
     return localizedString(
@@ -9630,7 +9747,7 @@ catch your eye?"
    - **de**: "Dein Finanzierungsbeitrag wird derzeit bearbeitet — zur Aktualisierung nach unten ziehen."
    - **es**: "Estamos procesando tu actualización, desliza para actualizar."
    - **fr**: "Votre engagement est en cours de traitement, veuillez tirer sur la page pour actualiser."
-   - **ja**: "We're processing your pledge—pull to refresh."
+   - **ja**: "プレッジを処理中です。リフレッシュするにはプルしてください。"
   */
   public static func We_re_processing_your_pledge_pull_to_refresh() -> String {
     return localizedString(
@@ -9800,6 +9917,23 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "We'll help you find a project to back."
+
+   - **en**: "We'll help you find a project to back."
+   - **de**: "Wir helfen dir dabei, Projekte nach deinem Geschmack zu finden."
+   - **es**: "Te ayudaremos a encontrar un proyecto para patrocinar."
+   - **fr**: "Nous sommes là pour vous aider à trouver un projet."
+   - **ja**: "ぜひあなたがバックしたいと思えるプロジェクトを見つけましょう。"
+  */
+  public static func Well_help_you_find_a_project_to_back() -> String {
+    return localizedString(
+      key: "Well_help_you_find_a_project_to_back",
+      defaultValue: "We'll help you find a project to back.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission."
 
    - **en**: "We'll import your name and profile photo, and access your friend list. We'll never post anything without your permission."
@@ -9863,6 +9997,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "When_you_save_a_project_we_ll_send_you_a_reminder",
       defaultValue: "When you save a project we’ll send you a reminder 48 hours before it ends",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Which categories interest you?"
+
+   - **en**: "Which categories interest you?"
+   - **de**: "Welche Kategorien interessieren dich?"
+   - **es**: "¿Qué categorías te interesan?"
+   - **fr**: "Quelles sont les catégories qui vous intéressent ?"
+   - **ja**: "興味のあるカテゴリーは？"
+  */
+  public static func Which_categories_interest_you() -> String {
+    return localizedString(
+      key: "Which_categories_interest_you",
+      defaultValue: "Which categories interest you?",
       count: nil,
       substitutions: [:]
     )
@@ -10010,7 +10161,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Du hast dieses Projekt abgebrochen. Daher wurde die Zahlungsmethode des Unterstützers nicht belastet."
    - **es**: "Has cancelado este proyecto, así que no se realizó ningún cargo al método de pago del patrocinador."
    - **fr**: "Vous avez annulé ce projet, donc le moyen de paiement du contributeur n'a pas été débité."
-   - **ja**: "You canceled this project, so the backer’s payment method was never charged."
+   - **ja**: "このプロジェクトはあなたによってキャンセルされたため、お支払い方法への請求は行われませんでした。"
   */
   public static func You_canceled_this_project_so_the_backers_payment_method_was_never_charged() -> String {
     return localizedString(
@@ -10027,7 +10178,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Du hast den Finanzierungsbeitrag für dieses Projekt zurückgezogen."
    - **es**: "Has cancelado tu contribución a este proyecto."
    - **fr**: "Vous avez annulé votre engagement."
-   - **ja**: "You canceled your pledge for this project."
+   - **ja**: "このプロジェクトのプレッジはキャンセルされました。"
   */
   public static func You_canceled_your_pledge_for_this_project() -> String {
     return localizedString(
@@ -10160,9 +10311,9 @@ Veuillez réessayer ultérieurement."
    "You won't be charged for backing a project unless it reaches its funding goal."
 
    - **en**: "You won't be charged for backing a project unless it reaches its funding goal."
-   - **de**: "You won't be charged for backing a project unless it reaches its funding goal."
+   - **de**: "Dein Finanzierungsbeitrag wird nur abgebucht, wenn das Projekt sein Finanzierungsziel erreichte."
    - **es**: "No se te cobrará por patrocinar un proyecto a menos que alcance su meta de financiamiento."
-   - **fr**: "You won't be charged for backing a project unless it reaches its funding goal."
+   - **fr**: "Vous ne serez débité que si le créateur atteint son objectif de financement."
    - **ja**: "プロジェクトをバックした場合、プロジェクトがファンディングゴールに到達しない限り、課金されることはありません。"
   */
   public static func You_wont_be_charged_for_backing_a_project() -> String {
@@ -10350,7 +10501,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Dein Finanzierungsbeitrag wurde aufgrund von Fehlern, die bei der Zahlung auftraten, nicht übernommen."
    - **es**: "Tu contribución no pudo ser cobrada por un error en el método de pago."
    - **fr**: "Votre engagement a été annulé en raison d'un échec de règlement."
-   - **ja**: "Your pledge was dropped because of payment errors."
+   - **ja**: "支払関連のエラーにより、あなたのプレッジは取り消されました。"
   */
   public static func Your_pledge_was_dropped_because_of_payment_errors() -> String {
     return localizedString(
@@ -10367,7 +10518,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Dein Projekt hat das Finanzierungsziel leider nicht erreicht. Daher wurde die Zahlungsmethode des Unterstützers nicht belastet."
    - **es**: "Tu proyecto no alcanzó su meta de financiamiento, así que no se realizó ningún cargo al método de pago del patrocinador."
    - **fr**: "L'objectif de financement de votre projet n'a pas été atteint, donc le moyen de paiement du contributeur n'a pas été débité."
-   - **ja**: "Your project didn’t reach its funding goal, so the backer’s payment method was never charged."
+   - **ja**: "あなたのプロジェクトはファンディングゴールに到達しなかったため、お支払い方法への請求は行われませんでした。"
   */
   public static func Your_project_didnt_reach_its_funding_goal_so_the_backers_payment_method_was_never_charged() -> String {
     return localizedString(
@@ -16198,7 +16349,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -19524,7 +19675,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -22635,7 +22786,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -23570,7 +23721,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(

@@ -206,10 +206,11 @@ public final class LandingPageViewController: UIViewController {
   }
 }
 
-// Styles
+// MARK: - Styles
+
 private let backgroundImageViewStyle: ImageViewStyle = { imageView in
   imageView
-    |> \.contentMode .~ .scaleToFill
+    |> \.contentMode .~ .scaleAspectFill
     |> \.image .~ image(named: "landing-page-background")
 }
 
@@ -290,7 +291,7 @@ private let titleLabelStyle: LabelStyle = { label in
 
 private let viewStyle: ViewStyle = { view in
   view
-    |> \.layoutMargins .~ UIEdgeInsets.init(bottom: Styles.grid(3))
+    |> \.layoutMargins .~ UIEdgeInsets.init(all: Styles.grid(3))
 }
 
 extension LandingPageViewController: UIScrollViewDelegate {

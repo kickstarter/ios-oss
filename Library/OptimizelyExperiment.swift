@@ -5,8 +5,10 @@ public enum OptimizelyExperiment {
   public enum Key: String {
     case nativeOnboarding = "native_onboarding_series_new_backers"
     case pledgeCTACopy = "pledge_cta_copy"
+    case onboardingCategoryPersonalizationFlow = "onboarding_category_personalization_flow"
     case nativeProjectPageCampaignDetails = "native_project_page_campaign_details"
     case nativeProjectPageConversionCreatorDetails = "native_project_page_conversion_creator_details"
+    case nativeMeProjectSummary = "native_me_project_summary"
   }
 
   public enum Variant: String, Equatable {
@@ -20,11 +22,11 @@ extension OptimizelyExperiment {
   static func projectCampaignExperiment(
     project: Project,
     refTag: RefTag?
-  ) -> OptimizelyExperiment.Variant? {
+  ) -> OptimizelyExperiment.Variant {
     return AppEnvironment.current.optimizelyClient?
       .variant(
         for: OptimizelyExperiment.Key.nativeProjectPageCampaignDetails,
         userAttributes: optimizelyUserAttributes(with: project, refTag: refTag)
-      )
+      ) ?? .control
   }
 }

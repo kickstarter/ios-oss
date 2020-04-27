@@ -16,11 +16,13 @@ public enum Styles {
 }
 
 public typealias ActivityIndicatorStyle = (UIActivityIndicatorView) -> UIActivityIndicatorView
+public typealias BarButtonStyle = (UIBarButtonItem) -> UIBarButtonItem
 public typealias ButtonStyle = (UIButton) -> UIButton
 public typealias CollectionViewStyle = (UICollectionView) -> UICollectionView
 public typealias ImageViewStyle = (UIImageView) -> UIImageView
 public typealias LabelStyle = (UILabel) -> UILabel
 public typealias LayerStyle = (CALayer) -> CALayer
+public typealias NavigationBarStyle = (UINavigationBar?) -> UINavigationBar?
 public typealias PageControlStyle = (UIPageControl) -> UIPageControl
 public typealias ScrollStyle = (UIScrollView) -> UIScrollView
 public typealias StackViewStyle = (UIStackView) -> UIStackView
@@ -71,11 +73,11 @@ public func dropShadowStyle<V: UIViewProtocol>(
 ) -> ((V) -> V) {
   return
     V.lens.layer.shadowColor .~ UIColor.black.cgColor
-    <> V.lens.layer.shadowOpacity .~ 0.17
-    <> V.lens.layer.shadowRadius .~ radius
-    <> V.lens.layer.masksToBounds .~ false
-    <> V.lens.layer.shouldRasterize .~ true
-    <> V.lens.layer.shadowOffset .~ offset
+      <> V.lens.layer.shadowOpacity .~ 0.17
+      <> V.lens.layer.shadowRadius .~ radius
+      <> V.lens.layer.masksToBounds .~ false
+      <> V.lens.layer.shouldRasterize .~ true
+      <> V.lens.layer.shadowOffset .~ offset
 }
 
 public func dropShadowStyleMedium<V: UIViewProtocol>() -> ((V) -> V) {

@@ -1,7 +1,6 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
-// swiftlint:disable force_unwrapping
 import Prelude
 import XCTest
 
@@ -70,8 +69,8 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        // swiftlint:disable:next line_length
-        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment
+          .Variant.variant1.rawValue
       ]
 
     combos(Language.allLanguages, [Device.phone4_7inch]).forEach {
@@ -421,6 +420,52 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
         self.scheduler.run()
 
         FBSnapshotVerifyView(snapshotView, identifier: "device_\(device)")
+      }
+    }
+  }
+
+  func testNonBacker_LiveProject_ProjectSummaryExperiment() {
+    let project = self.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
+
+    let items = [
+      ProjectSummaryEnvelope.ProjectSummaryItem(
+        question: .whatIsTheProject,
+        response: "Short copy words words words words words words words words words"
+      ),
+      ProjectSummaryEnvelope.ProjectSummaryItem(
+        question: .whatWillYouDoWithTheMoney,
+        response: "Long copy " + Array(0...50).map { _ in "words" }.joined(separator: " ")
+      )
+    ]
+
+    let mockService = MockService(
+      fetchProjectResponse: project,
+      fetchProjectSummaryResult: .success(ProjectSummaryEnvelope(projectSummary: items))
+    )
+
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeMeProjectSummary.rawValue: OptimizelyExperiment.Variant.variant1
+          .rawValue
+      ]
+
+    combos([Language.en], [Device.phone4_7inch]).forEach {
+      language, device in
+      withEnvironment(
+        apiService: mockService,
+        language: language,
+        locale: .init(identifier: language.rawValue),
+        optimizelyClient: optimizelyClient
+      ) {
+        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
+        parent.view.frame.size.height = device == .pad ? 1_200 : 900
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }

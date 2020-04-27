@@ -35,15 +35,20 @@ extension CreatePasswordRow {
   @objc optional func newPasswordConfirmationTextFieldDidReturn(_ sender: UITextField)
 }
 
-// swiftlint:disable line_length
 protocol CreatePasswordTableViewControllerDelegate: AnyObject {
-  func createPasswordTableViewController(_ viewController: CreatePasswordTableViewController, setSaveButtonIsEnabled isEnabled: Bool)
-  func createPasswordTableViewControllerStartAnimatingSaveButton(_ viewController: CreatePasswordTableViewController)
-  func createPasswordTableViewControllerStopAnimatingSaveButton(_ viewController: CreatePasswordTableViewController)
-  func createPasswordTableViewController(_ viewController: CreatePasswordTableViewController, showErrorMessage message: String)
+  func createPasswordTableViewController(
+    _ viewController: CreatePasswordTableViewController,
+    setSaveButtonIsEnabled isEnabled: Bool
+  )
+  func createPasswordTableViewControllerStartAnimatingSaveButton(
+    _ viewController: CreatePasswordTableViewController)
+  func createPasswordTableViewControllerStopAnimatingSaveButton(
+    _ viewController: CreatePasswordTableViewController)
+  func createPasswordTableViewController(
+    _ viewController: CreatePasswordTableViewController,
+    showErrorMessage message: String
+  )
 }
-
-// swiftlint:enable line_length
 
 final class CreatePasswordTableViewController: UITableViewController {
   // MARK: - Properties
@@ -233,7 +238,6 @@ final class CreatePasswordTableViewController: UITableViewController {
     return footerView
   }
 
-  // swiftlint:disable line_length
   override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     guard let textInputCell = cell as? SettingsTextInputCell else { return }
 
@@ -251,8 +255,6 @@ final class CreatePasswordTableViewController: UITableViewController {
 
     self.groupedFooterView = groupedFooterView
   }
-
-  // swiftlint:enable line_length
 }
 
 extension CreatePasswordTableViewController: CreatePasswordTableViewControllerType {
@@ -273,8 +275,10 @@ extension CreatePasswordTableViewController: CreatePasswordTableViewControllerTy
   }
 }
 
-// swiftlint:disable line_length
-func textFieldTargetActions(for controller: CreatePasswordTableViewControllerType, row: CreatePasswordRow) -> [TextFieldTargetAction] {
+func textFieldTargetActions(
+  for controller: CreatePasswordTableViewControllerType,
+  row: CreatePasswordRow
+) -> [TextFieldTargetAction] {
   let changedSelector: Selector
   let didReturnSelector: Selector
 
@@ -292,5 +296,3 @@ func textFieldTargetActions(for controller: CreatePasswordTableViewControllerTyp
     (controller.self, didReturnSelector, .editingDidEndOnExit)
   ]
 }
-
-// swiftlint:enable line_length

@@ -46,6 +46,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var backersSubtitleLabel: UILabel!
   @IBOutlet fileprivate var backersTitleLabel: UILabel!
   @IBOutlet fileprivate var blurbAndReadMoreStackView: UIStackView!
+  @IBOutlet fileprivate var blurbStackView: UIStackView!
   @IBOutlet fileprivate var categoryStackView: UIStackView!
   @IBOutlet fileprivate var categoryAndLocationStackView: UIStackView!
   @IBOutlet fileprivate var categoryIconImageView: UIImageView!
@@ -69,12 +70,21 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var projectImageContainerView: UIView!
   @IBOutlet fileprivate var projectNameAndCreatorStackView: UIStackView!
   @IBOutlet fileprivate var projectNameLabel: UILabel!
+  private lazy var projectSummaryCarouselView: ProjectSummaryCarouselView = {
+    ProjectSummaryCarouselView(frame: .zero)
+  }()
+
   @IBOutlet fileprivate var progressBarAndStatsStackView: UIStackView!
-  @IBOutlet fileprivate var readMoreButton: LoadingButton!
-  @IBOutlet fileprivate var spacerView: UIView!
+  @IBOutlet fileprivate var readMoreButton: UIButton!
+  fileprivate lazy var readMoreButtonLarge: LoadingButton = {
+    LoadingButton(type: .custom)
+  }()
+
+  @IBOutlet fileprivate var readMoreStackView: UIStackView!
   @IBOutlet fileprivate var stateLabel: UILabel!
   @IBOutlet fileprivate var statsStackView: UIStackView!
   @IBOutlet fileprivate var youreABackerContainerView: UIView!
+  @IBOutlet fileprivate var youreABackerContainerViewLeadingConstraint: NSLayoutConstraint!
   @IBOutlet fileprivate var youreABackerLabel: UILabel!
 
   internal override func awakeFromNib() {
@@ -90,8 +100,13 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       action: #selector(self.readMoreButtonTapped),
       for: .touchUpInside
     )
+    self.readMoreButtonLarge.addTarget(
+      self,
+      action: #selector(self.readMoreButtonTapped),
+      for: .touchUpInside
+    )
 
-    self.readMoreButton.heightAnchor
+    self.readMoreButtonLarge.heightAnchor
       .constraint(greaterThanOrEqualToConstant: Layout.Button.height).isActive = true
 
     _ = ([self.creatorBylineView, self.creatorBylineShimmerLoadingView], self.projectNameAndCreatorStackView)
@@ -99,10 +114,13 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     self.creatorBylineView.addGestureRecognizer(self.creatorBylineTapGesture)
 
+    self.blurbAndReadMoreStackView.insertArrangedSubview(self.projectSummaryCarouselView, at: 1)
+    self.readMoreStackView.addArrangedSubview(self.readMoreButtonLarge)
+
     self.viewModel.inputs.awakeFromNib()
   }
 
-  internal func configureWith(value: (Project, RefTag?, ProjectCreatorDetailsData)) {
+  internal func configureWith(value: ProjectPamphletMainCellData) {
     self.viewModel.inputs.configureWith(value: value)
   }
 
@@ -127,6 +145,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
+    // maintain vertical spacing in one place so that it's consistent in nested stackviews
+    let verticalSpacing = Styles.grid(3)
+
     _ = self
       |> baseTableViewCellStyle()
       |> UITableViewCell.lens.clipsToBounds .~ true
@@ -150,9 +171,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.categoryStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
 
-    _ = self.categoryAndLocationStackView
-      |> UIStackView.lens.layoutMargins .~ .init(top: 0, left: 0, bottom: Styles.grid(1), right: 0)
-
     _ = self.categoryIconImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
       |> UIImageView.lens.tintColor .~ .ksr_dark_grey_500
@@ -164,14 +182,38 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.font .~ .ksr_body(size: 12)
       |> UILabel.lens.backgroundColor .~ .white
 
+    let leftRightInsetValue: CGFloat = self.traitCollection.isRegularRegular
+      ? Styles.grid(16)
+      : Styles.grid(4)
+
+    _ = self.categoryAndLocationStackView
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(
+        leftRight: leftRightInsetValue
+      )
+
     _ = self.contentStackView
       |> UIStackView.lens.layoutMargins %~~ { _, stackView in
         stackView.traitCollection.isRegularRegular
-          ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))
-          : .init(top: Styles.grid(4), left: Styles.grid(4), bottom: Styles.grid(3), right: Styles.grid(4))
+          ? .init(topBottom: Styles.grid(6))
+          : .init(top: Styles.grid(4), left: 0, bottom: Styles.grid(3), right: 0)
       }
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
-      |> UIStackView.lens.spacing .~ Styles.grid(4)
+      |> UIStackView.lens.spacing .~ verticalSpacing
+
+    _ = (self.projectNameAndCreatorStackView, self.contentStackView)
+      |> ksr_setCustomSpacing(Styles.grid(4))
+
+    _ = self.blurbAndReadMoreStackView
+      |> \.spacing .~ verticalSpacing
+
+    _ = self.blurbStackView
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
+
+    _ = self.readMoreStackView
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.conversionLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
@@ -225,7 +267,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.backgroundColor .~ .white
 
     _ = self.projectNameAndCreatorStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(2)
+      |> UIStackView.lens.spacing .~ (verticalSpacing / 2)
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
 
     _ = self.projectNameLabel
       |> UILabel.lens.font %~~ { _, label in
@@ -238,7 +282,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.backgroundColor .~ .white
 
     _ = self.progressBarAndStatsStackView
-      |> UIStackView.lens.spacing .~ Styles.grid(2)
+      |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
+      |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
+      |> UIStackView.lens.spacing .~ verticalSpacing
 
     _ = self.stateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
@@ -247,6 +293,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.statsStackView
       |> UIStackView.lens.isAccessibilityElement .~ true
       |> UIStackView.lens.backgroundColor .~ .white
+
+    _ = self.youreABackerContainerViewLeadingConstraint
+      |> \.constant .~ leftRightInsetValue
 
     _ = self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
@@ -259,7 +308,13 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UILabel.lens.text %~ { _ in Strings.Youre_a_backer() }
 
     _ = self.readMoreButton
+      |> readMoreButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
+
+    _ = self.readMoreButtonLarge
       |> \.activityIndicatorStyle .~ .gray
+      |> greyReadMoreButtonStyle
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign() }
   }
 
   internal override func bindViewModel() {
@@ -289,8 +344,9 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.pledgedTitleLabel.rac.textColor = self.viewModel.outputs.pledgedTitleLabelTextColor
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
-    self.readMoreButton.rac.title = self.viewModel.outputs.readMoreButtonTitle
-    self.spacerView.rac.hidden = self.viewModel.outputs.spacerViewHidden
+    self.projectSummaryCarouselView.rac.hidden = self.viewModel.outputs.projectSummaryCarouselViewHidden
+    self.readMoreButton.rac.hidden = self.viewModel.outputs.readMoreButtonIsHidden
+    self.readMoreButtonLarge.rac.hidden = self.viewModel.outputs.readMoreButtonLargeIsHidden
     self.stateLabel.rac.text = self.viewModel.outputs.projectStateLabelText
     self.stateLabel.rac.textColor = self.viewModel.outputs.projectStateLabelTextColor
     self.stateLabel.rac.hidden = self.viewModel.outputs.stateLabelHidden
@@ -300,7 +356,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.readMoreButtonIsLoading
       .observeForUI()
       .observeValues { [weak self] isLoading in
-        self?.readMoreButton.isLoading = isLoading
+        self?.readMoreButtonLarge.isLoading = isLoading
       }
 
     self.viewModel.outputs.configureVideoPlayerController
@@ -313,30 +369,23 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
         self?.creatorBylineView.configureWith(project: project, creatorDetails: creatorDetails)
       }
 
+    self.viewModel.outputs.configureProjectSummaryCarouselView
+      .observeForUI()
+      .observeValues { [weak self] projectSummaryItems in
+        self?.projectSummaryCarouselView.configure(with: projectSummaryItems)
+      }
+
     self.viewModel.outputs.creatorImageUrl
       .observeForUI()
       .on(event: { [weak self] _ in self?.creatorImageView.image = nil })
       .skipNil()
-      .observeValues { [weak self] in self?.creatorImageView.af_setImage(withURL: $0) }
+      .observeValues { [weak self] in self?.creatorImageView.af.setImage(withURL: $0) }
 
     self.viewModel.outputs.notifyDelegateToGoToCampaignWithProjectAndRefTag
       .observeForControllerAction()
       .observeValues { [weak self] in
         guard let self = self else { return }
         self.delegate?.projectPamphletMainCell(self, goToCampaignForProjectWith: $0)
-      }
-
-    self.viewModel.outputs.readMoreButtonStyle
-      .observeForUI()
-      .observeValues { [weak self] buttonStyleType in
-        _ = self?.readMoreButton
-          ?|> buttonStyleType.style
-      }
-
-    self.viewModel.outputs.blurbAndReadMoreStackViewSpacing
-      .observeForUI()
-      .observeValues { [weak self] spacing in
-        self?.blurbAndReadMoreStackView.spacing = spacing
       }
 
     self.viewModel.outputs.notifyDelegateToGoToCreator

@@ -44,9 +44,9 @@ public enum LandingPageCardType {
     case .totalPledged:
       return Strings.Total_amount_backers_have_pledged_to_projects()
     case .trackBackings:
-      // swiftlint:disable line_length
+      // swiftformat:disable wrap
       return Strings.Stay_updated_on_the_projects_youve_backed_and_learn_about_how_these_creative_works_are_produced()
-      // swiftlint:enable line_length
+      // swiftformat:enable wrap
     }
   }
 

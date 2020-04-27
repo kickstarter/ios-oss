@@ -291,7 +291,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.projectImageURL
       .observeForUI()
       .on(event: { [weak self] _ in
-        self?.projectImageView.af_cancelImageRequest()
+        self?.projectImageView.af.cancelImageRequest()
         self?.projectImageView.image = nil
       })
       .skipNil()
@@ -308,7 +308,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.socialImageURL
       .observeForUI()
       .on(event: { [weak self] _ in
-        self?.socialAvatarImageView.af_cancelImageRequest()
+        self?.socialAvatarImageView.af.cancelImageRequest()
         self?.socialAvatarImageView.image = nil
       })
       .skipNil()
@@ -333,7 +333,11 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
   internal func configureWith(value: DiscoveryProjectCellRowValue) {
     self.viewModel.inputs.configureWith(project: value.project, category: value.category)
-    self.watchProjectViewModel.inputs.configure(with: value.project)
+    self.watchProjectViewModel.inputs.configure(with: (
+      value.project,
+      Koala.LocationContext.discovery,
+      value.discoveryParams
+    ))
   }
 
   internal override func layoutSubviews() {

@@ -63,6 +63,7 @@ public protocol PledgeViewModelOutputs {
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
   var popToRootViewController: Signal<(), Never> { get }
+  var processingViewIsHidden: Signal<Bool, Never> { get }
   var sectionSeparatorsHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var showApplePayAlert: Signal<(String, String), Never> { get }
@@ -307,12 +308,21 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     // Captures the checkoutId immediately and avoids a race condition further down the chain.
     let checkoutIdProperty = MutableProperty<Int?>(nil)
+    let processingViewIsHidden = MutableProperty<Bool>(true)
 
     let createBackingEvents = createBackingDataAndIsApplePay
       .map(CreateBackingInput.input(from:isApplePay:))
       .switchMap { [checkoutIdProperty] input in
         AppEnvironment.current.apiService.createBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .on(
+            starting: {
+              processingViewIsHidden.value = false
+            },
+            terminated: {
+              processingViewIsHidden.value = true
+            }
+          )
           .map { envelope -> StripeSCARequiring in
             checkoutIdProperty.value = decompose(id: envelope.createBacking.checkout.id)
             return envelope as StripeSCARequiring
@@ -358,6 +368,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .switchMap { input in
         AppEnvironment.current.apiService.updateBacking(input: input)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .on(
+            starting: {
+              processingViewIsHidden.value = false
+            },
+            terminated: {
+              processingViewIsHidden.value = true
+            }
+          )
           .map { $0 as StripeSCARequiring }
           .materialize()
       }
@@ -366,6 +384,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       createBackingEvents,
       updateBackingEvents
     )
+
+    self.processingViewIsHidden = processingViewIsHidden.signal
 
     // MARK: - Form Validation
 
@@ -762,6 +782,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
   public let popToRootViewController: Signal<(), Never>
+  public let processingViewIsHidden: Signal<Bool, Never>
   public let sectionSeparatorsHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>

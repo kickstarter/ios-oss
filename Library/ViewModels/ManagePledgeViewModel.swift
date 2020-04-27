@@ -142,8 +142,11 @@ public final class ManagePledgeViewModel:
 
     self.showErrorBannerWithMessage = cancelBackingDisallowed
       .takeWhen(cancelPledgeSelected)
-      // swiftlint:disable:next line_length
-      .map { _ in Strings.We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours() }
+      .map { _ in
+        // swiftformat:disable wrap
+        Strings.We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours()
+        // swiftformat:enable wrap
+      }
 
     let managePledgeMenuType: Signal<Koala.ManagePledgeMenuCTAType, Never> = self.menuOptionSelectedSignal
       .map(managePledgeMenuCTAType(for:))

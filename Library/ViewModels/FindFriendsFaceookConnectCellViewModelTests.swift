@@ -6,8 +6,6 @@ import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import UIKit.UIActivity
-// swiftlint:disable force_unwrapping
-// swiftlint:disable force_cast
 import XCTest
 
 final class FindFriendsFacebookConnectCellViewModelTests: TestCase {

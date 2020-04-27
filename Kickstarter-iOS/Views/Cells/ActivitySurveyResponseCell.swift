@@ -89,7 +89,7 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.creatorImageURL
       .observeForUI()
       .on(event: { [weak creatorImageView] _ in
-        creatorImageView?.af_cancelImageRequest()
+        creatorImageView?.af.cancelImageRequest()
         creatorImageView?.image = nil
       })
       .skipNil()
