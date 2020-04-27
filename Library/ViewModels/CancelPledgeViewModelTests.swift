@@ -31,13 +31,11 @@ final class CancelPledgeViewModelTests: TestCase {
   }
 
   func testConfigureCancelPledgeView() {
-    let backing = Backing.template
-      |> Backing.lens.amount .~ 5
     let project = Project.cosmicSurgery
       |> Project.lens.country .~ Project.Country.us
 
     self.vm.inputs.configure(with:
-      (project: project, backingId: backing.graphID, pledgeAmount: backing.amount)
+      (project: project, backingId: "backing-id", pledgeAmount: 5.0)
     )
     self.vm.inputs.viewDidLoad()
 
@@ -97,10 +95,8 @@ final class CancelPledgeViewModelTests: TestCase {
   }
 
   func testGoBackButtonTapped() {
-    let backing = Backing.template
-
     self.vm.inputs.configure(with:
-      (project: Project.template, backingId: backing.graphID, pledgeAmount: backing.amount)
+      (project: Project.template, backingId: "backing-id", pledgeAmount: 5.0)
     )
     self.vm.inputs.viewDidLoad()
 
@@ -113,10 +109,9 @@ final class CancelPledgeViewModelTests: TestCase {
 
   func testDismissKeyboard() {
     let project = Project.template
-    let backing = Backing.template
 
     self.vm.inputs.configure(with:
-      (project: project, backingId: backing.graphID, pledgeAmount: backing.amount)
+      (project: project, backingId: "backing-id", pledgeAmount: 5.0)
     )
 
     self.vm.inputs.viewDidLoad()
@@ -130,10 +125,9 @@ final class CancelPledgeViewModelTests: TestCase {
 
   func testViewTapped() {
     let project = Project.template
-    let backing = Backing.template
 
     self.vm.inputs.configure(with:
-      (project: project, backingId: backing.graphID, pledgeAmount: backing.amount)
+      (project: project, backingId: "backing-id", pledgeAmount: 5.0)
     )
 
     self.vm.inputs.viewDidLoad()
@@ -151,10 +145,9 @@ final class CancelPledgeViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService) {
       let project = Project.template
-      let backing = Backing.template
 
       self.vm.inputs.configure(with:
-        (project: project, backingId: backing.graphID, pledgeAmount: backing.amount)
+        (project: project, backingId: "backing-id", pledgeAmount: 5.0)
       )
 
       self.vm.inputs.viewDidLoad()
@@ -187,10 +180,9 @@ final class CancelPledgeViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService) {
       let project = Project.template
-      let backing = Backing.template
 
       self.vm.inputs.configure(with:
-        (project: project, backingId: backing.graphID, pledgeAmount: backing.amount)
+        (project: project, backingId: "backing-id", pledgeAmount: 5.0)
       )
 
       self.vm.inputs.viewDidLoad()
@@ -237,10 +229,9 @@ final class CancelPledgeViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService) {
       let project = Project.template
-      let backing = Backing.template
 
       self.vm.inputs.configure(with:
-        (project: project, backingId: backing.graphID, pledgeAmount: backing.amount)
+        (project: project, backingId: "backing-id", pledgeAmount: 5.0)
       )
 
       self.vm.inputs.viewDidLoad()
@@ -266,10 +257,9 @@ final class CancelPledgeViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService) {
       let project = Project.template
-      let backing = Backing.template
 
       self.vm.inputs.configure(with:
-        (project: project, backingId: backing.graphID, pledgeAmount: backing.amount)
+        (project: project, backingId: "backing-id", pledgeAmount: 5.0)
       )
 
       self.vm.inputs.viewDidLoad()
