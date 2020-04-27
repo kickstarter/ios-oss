@@ -94,23 +94,16 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
   }
 
   let allExperiments = optimizelyClient.allExperiments().map { experimentKey -> [String: String] in
-    do {
-      let variation = try optimizelyClient.getVariationKey(
-        experimentKey: experimentKey,
-        userId: userId,
-        attributes: attributes
-      )
+    let variation = try? optimizelyClient.getVariationKey(
+      experimentKey: experimentKey,
+      userId: userId,
+      attributes: attributes
+    )
 
-      return [
-        "optimizely_experiment_slug": experimentKey,
-        "optimizely_variant_id": variation
-      ]
-    } catch {
-      return [
-        "optimizely_experiment_slug": experimentKey,
-        "optimizely_variant_id": "unknown"
-      ]
-    }
+    return [
+      "optimizely_experiment_slug": experimentKey,
+      "optimizely_variant_id": variation ?? "unknown"
+    ]
   }
 
   return [
