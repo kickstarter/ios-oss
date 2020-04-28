@@ -18,14 +18,14 @@ public protocol PledgeViewCTAContainerViewModelInputs {
 }
 
 public protocol PledgeViewCTAContainerViewModelOutputs {
-  var hideApplePayButton: Signal<Bool, Never> { get }
-  var hideContinueButton: Signal<Bool, Never> { get }
-  var hideSubmitButton: Signal<Bool, Never> { get }
+  var applePayButtonIsHidden: Signal<Bool, Never> { get }
+  var continueButtonIsHidden: Signal<Bool, Never> { get }
   var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var notifyDelegateOpenHelpType: Signal<HelpType, Never> { get }
   var notifyDelegateSubmitButtonTapped: Signal<Void, Never> { get }
   var notifyDelegateToGoToLoginSignup: Signal<Void, Never> { get }
   var submitButtonIsEnabled: Signal<Bool, Never> { get }
+  var submitButtonIsHidden: Signal<Bool, Never> { get }
   var submitButtonTitle: Signal<String, Never> { get }
 }
 
@@ -54,10 +54,10 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
     self.submitButtonIsEnabled = self.configDataSignal.map { $0.isEnabled }
     self.submitButtonTitle = context.map { $0.submitButtonTitle }
 
-    self.hideSubmitButton = isLoggedIn.map { !$0 }
-    self.hideApplePayButton = Signal.combineLatest(context, isLoggedIn)
+    self.submitButtonIsHidden = isLoggedIn.map { $0 }.negate()
+    self.applePayButtonIsHidden = Signal.combineLatest(context, isLoggedIn)
       .map { $0.0 != .pledge || !$0.1 }
-    self.hideContinueButton = isLoggedIn
+    self.continueButtonIsHidden = isLoggedIn
 
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
     self.notifyDelegateSubmitButtonTapped = self.submitButtonTappedProperty.signal
@@ -89,9 +89,9 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
     self.tappedUrlProperty.value = url
   }
 
-  public let hideApplePayButton: Signal<Bool, Never>
-  public let hideContinueButton: Signal<Bool, Never>
-  public let hideSubmitButton: Signal<Bool, Never>
+  public let applePayButtonIsHidden: Signal<Bool, Never>
+  public let continueButtonIsHidden: Signal<Bool, Never>
+  public let submitButtonIsHidden: Signal<Bool, Never>
   public let notifyDelegateApplePayButtonTapped: Signal<Void, Never>
   public let notifyDelegateOpenHelpType: Signal<HelpType, Never>
   public let notifyDelegateSubmitButtonTapped: Signal<Void, Never>

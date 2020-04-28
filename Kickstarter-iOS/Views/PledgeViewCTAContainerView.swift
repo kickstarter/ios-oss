@@ -134,9 +134,9 @@ final class PledgeViewCTAContainerView: UIView {
         self.delegate?.termsOfUseTapped(with: helpType)
       }
 
-    self.applePayButton.rac.hidden = self.viewModel.outputs.hideApplePayButton
-    self.submitButton.rac.hidden = self.viewModel.outputs.hideSubmitButton
-    self.continueButton.rac.hidden = self.viewModel.outputs.hideContinueButton
+    self.applePayButton.rac.hidden = self.viewModel.outputs.applePayButtonIsHidden
+    self.continueButton.rac.hidden = self.viewModel.outputs.continueButtonIsHidden
+    self.submitButton.rac.hidden = self.viewModel.outputs.submitButtonIsHidden
     self.submitButton.rac.title = self.viewModel.outputs.submitButtonTitle
     self.submitButton.rac.enabled = self.viewModel.outputs.submitButtonIsEnabled
   }

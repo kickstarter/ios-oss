@@ -8,28 +8,28 @@ import XCTest
 
 internal final class PledgeViewCTAContainerViewModelTests: TestCase {
   let vm: PledgeViewCTAContainerViewModelType = PledgeViewCTAContainerViewModel()
-  private let hideApplePayButton = TestObserver<Bool, Never>()
-  private let hideContinueButton = TestObserver<Bool, Never>()
-  private let hideSubmitButton = TestObserver<Bool, Never>()
+  private let applePayButtonIsHidden = TestObserver<Bool, Never>()
+  private let continueButtonIsHidden = TestObserver<Bool, Never>()
   private let notifyDelegateApplePayButtonTapped = TestObserver<Void, Never>()
   private let notifyDelegateOpenHelpType = TestObserver<HelpType, Never>()
   private let notifyDelegateSubmitButtonTapped = TestObserver<Void, Never>()
   private let notifyDelegateToGoToLoginSignup = TestObserver<Void, Never>()
   private let submitButtonIsEnabled = TestObserver<Bool, Never>()
+  private let submitButtonIsHidden = TestObserver<Bool, Never>()
   private let submitButtonTitle = TestObserver<String, Never>()
 
   internal override func setUp() {
     super.setUp()
 
-    self.vm.outputs.hideApplePayButton.observe(self.hideApplePayButton.observer)
-    self.vm.outputs.hideContinueButton.observe(self.hideContinueButton.observer)
-    self.vm.outputs.hideSubmitButton.observe(self.hideSubmitButton.observer)
+    self.vm.outputs.applePayButtonIsHidden.observe(self.applePayButtonIsHidden.observer)
+    self.vm.outputs.continueButtonIsHidden.observe(self.continueButtonIsHidden.observer)
     self.vm.outputs.notifyDelegateApplePayButtonTapped
       .observe(self.notifyDelegateApplePayButtonTapped.observer)
     self.vm.outputs.notifyDelegateOpenHelpType.observe(self.notifyDelegateOpenHelpType.observer)
     self.vm.outputs.notifyDelegateSubmitButtonTapped.observe(self.notifyDelegateSubmitButtonTapped.observer)
     self.vm.outputs.notifyDelegateToGoToLoginSignup.observe(self.notifyDelegateToGoToLoginSignup.observer)
     self.vm.outputs.submitButtonIsEnabled.observe(self.submitButtonIsEnabled.observer)
+     self.vm.outputs.submitButtonIsHidden.observe(self.submitButtonIsHidden.observer)
     self.vm.outputs.submitButtonTitle.observe(self.submitButtonTitle.observer)
   }
 
@@ -42,11 +42,16 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
       context: context
     )
 
+    self.submitButtonIsHidden.assertDidNotEmitValue()
+    self.applePayButtonIsHidden.assertDidNotEmitValue()
+    self.continueButtonIsHidden.assertDidNotEmitValue()
+    self.submitButtonIsEnabled.assertDidNotEmitValue()
+
     self.vm.inputs.configureWith(value: pledgeData)
 
-    self.hideSubmitButton.assertValues([true])
-    self.hideApplePayButton.assertValues([true])
-    self.hideContinueButton.assertValues([false])
+    self.submitButtonIsHidden.assertValues([true])
+    self.applePayButtonIsHidden.assertValues([true])
+    self.continueButtonIsHidden.assertValues([false])
     self.submitButtonIsEnabled.assertValues([true])
   }
 
@@ -59,11 +64,16 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
       context: context
     )
 
+    self.submitButtonIsHidden.assertDidNotEmitValue()
+    self.applePayButtonIsHidden.assertDidNotEmitValue()
+    self.continueButtonIsHidden.assertDidNotEmitValue()
+    self.submitButtonIsEnabled.assertDidNotEmitValue()
+
     self.vm.inputs.configureWith(value: pledgeData)
 
-    self.hideSubmitButton.assertValues([false])
-    self.hideApplePayButton.assertValues([true])
-    self.hideContinueButton.assertValues([true])
+    self.submitButtonIsHidden.assertValues([false])
+    self.applePayButtonIsHidden.assertValues([true])
+    self.continueButtonIsHidden.assertValues([true])
     self.submitButtonIsEnabled.assertValues([true])
     self.submitButtonTitle.assertValues(["Confirm"])
   }
@@ -77,11 +87,16 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
       context: context
     )
 
+    self.submitButtonIsHidden.assertDidNotEmitValue()
+    self.applePayButtonIsHidden.assertDidNotEmitValue()
+    self.continueButtonIsHidden.assertDidNotEmitValue()
+    self.submitButtonIsEnabled.assertDidNotEmitValue()
+
     self.vm.inputs.configureWith(value: pledgeData)
 
-    self.hideSubmitButton.assertValues([false])
-    self.hideApplePayButton.assertValues([false])
-    self.hideContinueButton.assertValues([true])
+    self.submitButtonIsHidden.assertValues([false])
+    self.applePayButtonIsHidden.assertValues([false])
+    self.continueButtonIsHidden.assertValues([true])
     self.submitButtonIsEnabled.assertValues([true])
     self.submitButtonTitle.assertValues(["Pledge"])
   }
