@@ -108,8 +108,6 @@ public final class ManagePledgeViewModel:
     self.title = graphBackingProject.map(navigationBarTitle(with:))
 
     self.configurePaymentMethodView = v1Backing
-      .map { $0.paymentSource }
-      .skipNil()
 
     self.configurePledgeSummaryView = project
     self.configureRewardReceivedWithProject = project
