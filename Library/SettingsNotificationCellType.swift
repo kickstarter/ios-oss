@@ -21,6 +21,15 @@ public enum SettingsNotificationSectionType: Int {
     return Styles.grid(9)
   }
 
+  public var hasDescriptionFooter: Bool {
+    switch self {
+    case .fromKickstarter:
+     return true
+    default:
+     return false
+    }
+  }
+
   public var cellRowsForSection: [SettingsNotificationCellType] {
     switch self {
     case .backedProjects:

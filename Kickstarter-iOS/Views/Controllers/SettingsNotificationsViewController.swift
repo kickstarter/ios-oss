@@ -183,18 +183,25 @@ extension SettingsNotificationsViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    guard section == SettingsNotificationSectionType.fromKickstarter.rawValue else {
-         return nil
-       }
+    guard let sectionType = dataSource.sectionType(
+      section: section,
+      user: AppEnvironment.current.currentUser
+    ) else {
+      return nil
+    }
 
-    let footerView = tableView.dequeueReusableHeaderFooterView(
-      withClass: SettingsGroupedFooterView.self
-    ) as? SettingsGroupedFooterView
+    if sectionType.hasDescriptionFooter {
+      let footerView = tableView.dequeueReusableHeaderFooterView(
+        withClass: SettingsGroupedFooterView.self
+      ) as? SettingsGroupedFooterView
 
-    let text = "Big Kickstarter announcements, plus occasional projects and events chosen just for you."
-    footerView?.label.text = text
+      let text = "Big Kickstarter announcements, plus occasional projects and events chosen just for you."
+      footerView?.label.text = text
 
-    return footerView
+      return footerView
+    } else {
+      return nil
+    }
   }
 
   func tableView(_: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
