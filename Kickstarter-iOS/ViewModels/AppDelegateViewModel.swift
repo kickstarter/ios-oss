@@ -545,6 +545,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         vc.configureWith(project: project)
         return vcs + [vc]
       }
+      .map { vcs -> RewardPledgeNavigationController in
+        let nav = RewardPledgeNavigationController(nibName: nil, bundle: nil)
+        nav.viewControllers = vcs
+        return nav
+      }
 
     let updateRootLink = updateLink
       .filter { _, _, subpage, _ in subpage == .root }
@@ -558,7 +563,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
       .skipNil()
 
-    self.presentViewController = Signal
+    let viewControllersContainedInNavigationController = Signal
       .merge(
         projectRootLink,
         projectCommentsLink,
@@ -566,11 +571,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         updatesLink,
         updateRootLink,
         updateCommentsLink,
-        campaignFaqLink,
-        fixErroredPledgeLink
+        campaignFaqLink
       )
       .map { UINavigationController() |> UINavigationController.lens.viewControllers .~ $0 }
-      .logEvents(identifier: "***")
+
+    self.presentViewController = Signal.merge(
+      viewControllersContainedInNavigationController.map { $0 as UIViewController },
+      fixErroredPledgeLink.map { $0 as UIViewController }
+    )
 
     self.configureFabric = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
