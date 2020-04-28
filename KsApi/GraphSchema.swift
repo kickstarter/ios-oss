@@ -273,13 +273,13 @@ public enum Query {
     case type
   }
 
-  public enum BankAccount {
+  public enum BankAccount: String {
     case bankName
     case id
     case lastFour
   }
 
-  public enum Money {
+  public enum Money: String {
     case amount
     case currency
     case symbol
@@ -515,11 +515,7 @@ extension Query.Backing: QueryType {
 
 extension Query.BankAccount: QueryType {
   public var description: String {
-    switch self {
-    case .bankName: return "bankName"
-    case .id: return "id"
-    case .lastFour: return "lastFour"
-    }
+    return self.rawValue
   }
 }
 
@@ -579,11 +575,7 @@ extension Query.Location: QueryType {
 
 extension Query.Money: QueryType {
   public var description: String {
-    switch self {
-    case .amount: return "amount"
-    case .currency: return "currency"
-    case .symbol: return "symbol"
-    }
+    return self.rawValue
   }
 }
 
