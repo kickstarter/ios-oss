@@ -59,7 +59,6 @@ final class CommentTests: XCTestCase {
     }
     """
 
-    // swiftlint:disable:next force_unwrapping
     let data = jsonString.data(using: .utf8)!
     let author = try? JSONDecoder().decode(Author.self, from: data)
 

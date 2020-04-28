@@ -138,12 +138,12 @@ public final class UpdateDraftViewModel: UpdateDraftViewModelType, UpdateDraftVi
 
     let draftEvent =
       Signal.combineLatest(self.viewDidLoadProperty.signal, project)
-      .map(second)
-      .flatMap {
-        AppEnvironment.current.apiService.fetchUpdateDraft(forProject: $0)
-          .materialize()
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-      }
+        .map(second)
+        .flatMap {
+          AppEnvironment.current.apiService.fetchUpdateDraft(forProject: $0)
+            .materialize()
+            .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        }
 
     let draft: Signal<UpdateDraft, Never> = draftEvent.values()
 

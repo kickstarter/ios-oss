@@ -75,9 +75,9 @@ public let fbWrongAccountLabelStyle = UILabel.lens.font .~ .ksr_caption1()
 
 public let forgotPasswordButtonStyle =
   UIButton.lens.titleLabel.font .~ .ksr_subhead()
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_soft_black
-  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_forgot_password() }
+    <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
+    <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_soft_black
+    <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_forgot_password() }
 
 public let loginControllerStyle = UIViewController.lens.title %~ { _ in Strings.login_navbar_title() }
 
@@ -115,11 +115,11 @@ public let resetPasswordControllerStyle = UIViewController.lens.title %~ { _ in
 
 public let loginRootStackViewStyle =
   UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
-  <> UIStackView.lens.layoutMargins %~~ { _, stack in
-    stack.traitCollection.isRegularRegular
-      ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
-      : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(4))
-  }
+    <> UIStackView.lens.layoutMargins %~~ { _, stack in
+      stack.traitCollection.isRegularRegular
+        ? .init(topBottom: Styles.grid(10), leftRight: Styles.grid(20))
+        : .init(topBottom: Styles.grid(2), leftRight: Styles.grid(4))
+    }
 
 public let signupButtonStyle: ButtonStyle = { button in
   button

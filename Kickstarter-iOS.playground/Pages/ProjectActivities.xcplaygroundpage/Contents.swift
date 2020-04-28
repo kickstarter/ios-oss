@@ -14,6 +14,7 @@ let orientation = Orientation.portrait
 
 let project = Project.cosmicSurgery
 
+// swiftformat:disable wrap
 let baseActivity = .template
   |> Activity.lens.comment .~ (
     .template
@@ -32,6 +33,7 @@ let baseActivity = .template
     .template
       |> Backing.lens.amount .~ 25
   )
+// swiftformat:enable wrap
 
 let backingActivity = baseActivity
   |> Activity.lens.category .~ .backing
@@ -76,7 +78,8 @@ let backingActivities = [
 AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(
     oauthToken: OauthToken(token: "deadbeef"),
-    fetchProjectActivitiesResponse: activityCategories.map { baseActivity |> Activity.lens.category .~ $0 } + backingActivities
+    fetchProjectActivitiesResponse: activityCategories
+      .map { baseActivity |> Activity.lens.category .~ $0 } + backingActivities
   ),
   currentUser: Project.cosmicSurgery.creator,
   isVoiceOverRunning: { isVoiceOverRunning }

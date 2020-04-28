@@ -76,7 +76,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
   public override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     self.setInitial(
-      constraints: [navBarTopConstraint],
+      constraints: [self.navBarTopConstraint],
       constant: self.initialTopConstraint
     )
 

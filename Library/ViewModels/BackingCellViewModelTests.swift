@@ -23,7 +23,6 @@ internal final class BackingCellViewModelTests: TestCase {
     self.vm.outputs.rootStackViewAlignment.observe(self.rootStackViewAlignment.observer)
   }
 
-  // swiftlint:disable force_unwrapping
   func testOutputs() {
     let reward = .template |> Reward.lens.estimatedDeliveryOn .~ Date().timeIntervalSince1970
     let backing = .template |> Backing.lens.reward .~ reward
@@ -47,8 +46,6 @@ internal final class BackingCellViewModelTests: TestCase {
 
     self.rootStackViewAlignment.assertValues([UIStackView.Alignment.leading])
   }
-
-  // swiftlint:enable force_unwrapping
 
   func testRootStackViewAlignment() {
     let reward = .template |> Reward.lens.estimatedDeliveryOn .~ Date().timeIntervalSince1970

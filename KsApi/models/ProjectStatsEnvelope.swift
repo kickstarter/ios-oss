@@ -216,8 +216,8 @@ private func decodeSuccessfulFundingStats(_ json: JSON) -> Decoded<[ProjectStats
 private func stringToIntOrZero(_ string: String) -> Decoded<Int> {
   return
     Double(string).flatMap(Int.init).map(Decoded.success)
-    ?? Int(string).map(Decoded.success)
-    ?? .success(0)
+      ?? Int(string).map(Decoded.success)
+      ?? .success(0)
 }
 
 private func stringToInt(_ string: String?) -> Decoded<Int?> {
@@ -225,8 +225,8 @@ private func stringToInt(_ string: String?) -> Decoded<Int?> {
 
   return
     Double(string).flatMap(Int.init).map(Decoded.success)
-    ?? Int(string).map(Decoded<Int?>.success)
-    ?? .failure(.custom("Could not parse string into int."))
+      ?? Int(string).map(Decoded<Int?>.success)
+      ?? .failure(.custom("Could not parse string into int."))
 }
 
 private func stringToDouble(_ string: String?) -> Decoded<Double?> {

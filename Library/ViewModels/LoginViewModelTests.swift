@@ -109,7 +109,6 @@ final class LoginViewModelTests: TestCase {
 
       self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
 
-      // swiftlint:disable:next force_unwrapping
       self.showError.assertValues(["Unable to log in."], "Login errored")
       self.tfaChallenge.assertValueCount(0, "TFA challenge did not happen")
     }
@@ -131,7 +130,6 @@ final class LoginViewModelTests: TestCase {
 
       self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
 
-      // swiftlint:disable:next force_unwrapping
       self.showError.assertValues([Strings.login_errors_unable_to_log_in()], "Login errored")
       self.tfaChallenge.assertValueCount(0, "TFA challenge did not happen")
     }

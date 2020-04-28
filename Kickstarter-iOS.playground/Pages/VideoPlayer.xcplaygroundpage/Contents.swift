@@ -6,11 +6,13 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
+// swiftformat:disable wrap
 let project = .cosmicSurgery
   |> Project.lens.video .~ (
     .template
       |> Project.Video.lens.high .~ "https://d2pq0u4uni88oo.cloudfront.net/projects/1846844/video-562464-h264_high.mp4"
   )
+// swiftformat:enable wrap
 
 AppEnvironment.replaceCurrentEnvironment(
   apiService: MockService(

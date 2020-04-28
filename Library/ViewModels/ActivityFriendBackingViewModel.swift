@@ -121,7 +121,6 @@ private func progressBarColor(forActivityCategory category: Activity.Category) -
   }
 }
 
-// swiftlint:disable:next cyclomatic_complexity
 private func string(forCategoryId id: String, friendName: String) -> String {
   let root = RootCategory(categoryId: Int(id) ?? -1)
   switch root {

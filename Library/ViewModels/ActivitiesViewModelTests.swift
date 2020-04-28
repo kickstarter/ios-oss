@@ -65,7 +65,7 @@ final class ActivitiesViewModelTests: TestCase {
     self.hideEmptyState.assertValueCount(1, "Dismiss empty state emits.")
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
-    withEnvironment(apiService: MockService(fetchActivitiesResponse: [activity1, activity2])) {
+    withEnvironment(apiService: MockService(fetchActivitiesResponse: [self.activity1, self.activity2])) {
       self.vm.inputs.userSessionStarted()
       self.vm.inputs.viewWillAppear(animated: false)
 
@@ -195,7 +195,7 @@ final class ActivitiesViewModelTests: TestCase {
 
   func testRefreshActivities() {
     withEnvironment(
-      apiService: MockService(fetchActivitiesResponse: [activity1, activity2]),
+      apiService: MockService(fetchActivitiesResponse: [self.activity1, self.activity2]),
       currentUser: .template
     ) {
       self.vm.inputs.viewDidLoad()
@@ -226,12 +226,12 @@ final class ActivitiesViewModelTests: TestCase {
 
     let mockService1 = MockService(
       clearUserUnseenActivityResult: Result.success(.init(activityIndicatorCount: 0)),
-      fetchActivitiesResponse: [activity1, activity2]
+      fetchActivitiesResponse: [self.activity1, self.activity2]
     )
 
     let mockService2 = MockService(
       clearUserUnseenActivityResult: Result.success(.init(activityIndicatorCount: 0)),
-      fetchActivitiesResponse: [activity1, activity2, activity3]
+      fetchActivitiesResponse: [self.activity1, self.activity2, self.activity3]
     )
 
     let user = User.template
@@ -271,12 +271,12 @@ final class ActivitiesViewModelTests: TestCase {
 
     let mockService1 = MockService(
       clearUserUnseenActivityResult: Result.success(.init(activityIndicatorCount: 0)),
-      fetchActivitiesResponse: [activity1, activity2]
+      fetchActivitiesResponse: [self.activity1, self.activity2]
     )
 
     let mockService2 = MockService(
       clearUserUnseenActivityResult: Result.success(.init(activityIndicatorCount: 0)),
-      fetchActivitiesResponse: [activity1, activity2, activity3]
+      fetchActivitiesResponse: [self.activity1, self.activity2, self.activity3]
     )
 
     withEnvironment(
@@ -308,7 +308,6 @@ final class ActivitiesViewModelTests: TestCase {
 
   func testGoToProject() {
     let activity = .template |> Activity.lens.category .~ .backing
-    // swiftlint:disable:next force_unwrapping
     let project = activity.project!
     let refTag = RefTag.activity
 

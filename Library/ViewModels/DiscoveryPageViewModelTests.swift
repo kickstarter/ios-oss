@@ -1560,10 +1560,18 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.optimizelyClientConfigured()
 
       self.goToCuratedProjects.assertDidNotEmitValue()
+      XCTAssertEqual(["Explore Page Viewed"], self.trackingClient.events)
 
       self.vm.inputs.personalizationCellTapped()
 
+      XCTAssertEqual(["Explore Page Viewed", "Editorial Card Clicked"], self.trackingClient.events)
+      XCTAssertEqual(
+        [nil, "ios_experiment_onboarding_1"],
+        self.trackingClient.properties(forKey: "session_ref_tag")
+      )
       self.goToCuratedProjects.assertValues([[.art, .illustration]])
+
+      XCTAssertEqual("Editorial Card Clicked", mockOpClient.trackedEventKey)
     }
   }
 

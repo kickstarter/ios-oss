@@ -25,8 +25,10 @@ final class SettingsDataSourceTests: XCTestCase {
     let indexPath1 = IndexPath(item: 0, section: 1)
     let indexPath2 = IndexPath(item: 1, section: 1)
 
-    // swiftlint:disable:next line_length
-    XCTAssertEqual(SettingsCellType.notifications, self.dataSource.cellTypeForIndexPath(indexPath: indexPath1))
+    XCTAssertEqual(
+      SettingsCellType.notifications,
+      self.dataSource.cellTypeForIndexPath(indexPath: indexPath1)
+    )
     XCTAssertEqual(SettingsCellType.newsletters, self.dataSource.cellTypeForIndexPath(indexPath: indexPath2))
   }
 }

@@ -121,7 +121,6 @@ public func == (lhs: Navigation.Checkout.Payment, rhs: Navigation.Checkout.Payme
 }
 
 extension Navigation.Project: Equatable {}
-// swiftlint:disable:next cyclomatic_complexity
 public func == (lhs: Navigation.Project, rhs: Navigation.Project) -> Bool {
   switch (lhs, rhs) {
   case let (.checkout(lhsId, lhsCheckout), .checkout(rhsId, rhsCheckout)):
@@ -292,7 +291,6 @@ private let deepLinkRoutes: [String: (RouteParams) -> Decoded<Navigation>] = all
 )
 
 extension Navigation.Project {
-  // swiftlint:disable conditional_binding_cascade
   public static func withRequest(_ request: URLRequest) -> (Param, RefTag?)? {
     guard let nav = Navigation.match(request), case let .project(project, .root, refTag) = nav
     else { return nil }
@@ -310,8 +308,6 @@ extension Navigation.Project {
     else { return nil }
     return (project, update)
   }
-
-  // swiftlint:enable conditional_binding_cascade
 }
 
 // MARK: - Router

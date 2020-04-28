@@ -297,9 +297,7 @@
       updateProjectNotificationResponse: ProjectNotification? = nil,
       updateProjectNotificationError: ErrorEnvelope? = nil,
       updateUserSelfError: ErrorEnvelope? = nil,
-      // swiftlint:disable:next line_length
       unwatchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil,
-      // swiftlint:disable:next line_length
       watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil
     ) {
       self.appId = appId
