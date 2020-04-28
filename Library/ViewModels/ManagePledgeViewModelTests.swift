@@ -9,7 +9,7 @@ import XCTest
 internal final class ManagePledgeViewModelTests: TestCase {
   private let vm = ManagePledgeViewModel()
 
-  private let configurePaymentMethodView = TestObserver<Backing.PaymentSource, Never>()
+  private let configurePaymentMethodView = TestObserver<Backing, Never>()
   private let configurePledgeSummaryView = TestObserver<Project, Never>()
   private let configureRewardReceivedWithProject = TestObserver<Project, Never>()
   private let configureRewardSummaryViewProject = TestObserver<Project, Never>()
@@ -22,6 +22,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let goToChangePaymentMethodReward = TestObserver<Reward, Never>()
   private let goToContactCreatorSubject = TestObserver<MessageSubject, Never>()
   private let goToContactCreatorContext = TestObserver<Koala.MessageDialogContext, Never>()
+  private let goToFixPaymentMethodProject = TestObserver<Project, Never>()
+  private let goToFixPaymentMethodReward = TestObserver<Reward, Never>()
   private let goToRewards = TestObserver<Project, Never>()
   private let goToUpdatePledgeProject = TestObserver<Project, Never>()
   private let goToUpdatePledgeReward = TestObserver<Reward, Never>()
@@ -54,6 +56,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.outputs.goToChangePaymentMethod.map(second).observe(self.goToChangePaymentMethodReward.observer)
     self.vm.outputs.goToContactCreator.map(first).observe(self.goToContactCreatorSubject.observer)
     self.vm.outputs.goToContactCreator.map(second).observe(self.goToContactCreatorContext.observer)
+    self.vm.outputs.goToFixPaymentMethod.map(first).observe(self.goToFixPaymentMethodProject.observer)
+    self.vm.outputs.goToFixPaymentMethod.map(second).observe(self.goToFixPaymentMethodReward.observer)
     self.vm.outputs.goToRewards.observe(self.goToRewards.observer)
     self.vm.outputs.goToUpdatePledge.map(first).observe(self.goToUpdatePledgeProject.observer)
     self.vm.outputs.goToUpdatePledge.map(second).observe(self.goToUpdatePledgeReward.observer)
@@ -119,7 +123,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
-    self.configurePaymentMethodView.assertValue(Backing.PaymentSource.template)
+    self.configurePaymentMethodView.assertValue(Backing.template)
   }
 
   func testConfigurePledgeSummaryViewController() {
@@ -536,8 +540,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Backing.lens.amount .~ 5.00
     let project = Project.cosmicSurgery
       |> Project.lens.personalization.backing .~ backing
+    let updatedBacking = backing |> Backing.lens.amount .~ 10.00
     let updatedProject = project
-      |> Project.lens.personalization.backing .~ (backing |> Backing.lens.amount .~ 10.00)
+      |> Project.lens.personalization.backing .~ updatedBacking
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(.template),
@@ -562,8 +567,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.showSuccessBannerWithMessage.assertValues(["Got it! Your changes have been saved."])
       self.configurePaymentMethodView.assertValues([
-        Backing.PaymentSource.template,
-        Backing.PaymentSource.template
+        backing,
+        updatedBacking
       ])
       self.configurePledgeSummaryView.assertValues([project, updatedProject])
       self.configureRewardSummaryViewProject.assertValues([project, updatedProject])
@@ -586,6 +591,20 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.inputs.menuOptionSelected(with: .updatePledge)
 
     XCTAssertEqual(["Manage Pledge Option Clicked"], self.trackingClient.events)
+  }
+
+  func testFixPaymentTrackingEvents() {
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ Backing.template
+
+    self.vm.inputs.configureWith(project)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual([], self.trackingClient.events)
+
+    self.vm.inputs.fixButtonTapped()
+
+    XCTAssertEqual(["Fix Pledge Button Clicked"], self.trackingClient.events)
   }
 
   func testEndRefreshing() {
@@ -622,5 +641,22 @@ internal final class ManagePledgeViewModelTests: TestCase {
         self.endRefreshing.assertValueCount(3, "End refreshing is called on error")
       }
     }
+  }
+
+  func testFixButtonTapped() {
+    self.goToChangePaymentMethodReward.assertDidNotEmitValue()
+    self.goToChangePaymentMethodProject.assertDidNotEmitValue()
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ Backing.template
+    let reward = Project.cosmicSurgery.rewards.filter { $0.id == Backing.template.rewardId }.first!
+
+    self.vm.inputs.configureWith(project)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.fixButtonTapped()
+
+    self.goToFixPaymentMethodProject.assertValues([project])
+    self.goToFixPaymentMethodReward.assertValues([reward])
   }
 }

@@ -10,12 +10,23 @@ protocol PledgeCreditCardViewDelegate: AnyObject {
   )
 }
 
+private enum Layout {
+  enum ImageView {
+    static let minWidth: CGFloat = 16.0
+  }
+}
+
 final class PledgeCreditCardView: UIView {
   // MARK: - Properties
 
   private let adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let bottomLayoutGuide = UILayoutGuide()
   private let cardView: UIView = { UIView(frame: .zero) }()
+  private let cardInfoStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private let containerStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -23,6 +34,14 @@ final class PledgeCreditCardView: UIView {
 
   weak var delegate: PledgeCreditCardViewDelegate?
   private let expirationDateLabel: UILabel = { UILabel(frame: .zero) }()
+  private let fixIconView: UIView = { UIView(frame: .zero) }()
+
+  private let fixIconImageView: UIImageView = {
+    UIImageView(frame: .zero)
+      |> \.image .~ image(named: "fix-icon", inBundle: Bundle.framework)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private let imageView: UIImageView = { UIImageView(frame: .zero) }()
   private let labelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let lastFourLabel: UILabel = { UILabel(frame: .zero) }()
@@ -54,7 +73,14 @@ final class PledgeCreditCardView: UIView {
     _ = (self.containerStackView, self)
       |> ksr_addSubviewToParent()
 
-    _ = ([self.lastFourLabel, self.expirationDateLabel], self.labelsStackView)
+    _ = (self.fixIconImageView, self.fixIconView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
+    _ = ([self.lastFourLabel, self.fixIconView], self.cardInfoStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.cardInfoStackView, self.expirationDateLabel], self.labelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.imageView, self.labelsStackView], self.adaptableStackView)
@@ -81,6 +107,8 @@ final class PledgeCreditCardView: UIView {
       self.rootStackView.widthAnchor.constraint(equalToConstant: CheckoutConstants.PaymentSource.Card.width),
       self.selectButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.imageView.widthAnchor.constraint(equalToConstant: CheckoutConstants.PaymentSource.ImageView.width),
+      self.fixIconImageView.widthAnchor.constraint(equalToConstant: Layout.ImageView.minWidth),
+      self.fixIconImageView.heightAnchor.constraint(equalTo: self.fixIconImageView.widthAnchor),
       self.cardView.heightAnchor.constraint(
         greaterThanOrEqualToConstant:
         CheckoutConstants.CreditCardView.height
@@ -121,6 +149,10 @@ final class PledgeCreditCardView: UIView {
     _ = self.imageView
       |> cardImageViewStyle
 
+    _ = self.fixIconImageView
+      |> \.contentMode .~ .scaleAspectFit
+      |> \.tintColor .~ .ksr_red_400
+
     _ = self.lastFourLabel
       |> cardLastFourLabelStyle
 
@@ -135,6 +167,9 @@ final class PledgeCreditCardView: UIView {
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
       |> adaptableStackViewStyle
+
+    _ = self.cardInfoStackView
+      |> cardInfoStackViewStyle
 
     _ = self.rootStackView
       |> checkoutCardStackViewStyle
@@ -157,6 +192,7 @@ final class PledgeCreditCardView: UIView {
     self.lastFourLabel.rac.text = self.viewModel.outputs.cardNumberTextShortStyle
     self.unavailableCardTypeLabel.rac.hidden = self.viewModel.outputs.unavailableCardLabelHidden
     self.unavailableCardTypeLabel.rac.text = self.viewModel.outputs.unavailableCardText
+    self.fixIconView.rac.hidden = self.viewModel.outputs.fixIconIsHidden
 
     self.viewModel.outputs.cardImage
       .observeForUI()
@@ -193,6 +229,12 @@ final class PledgeCreditCardView: UIView {
 private let adaptableStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.spacing .~ Styles.grid(2)
+}
+
+private let cardInfoStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.distribution .~ .fill
+    |> \.axis .~ .horizontal
 }
 
 private let cardExpirationDateLabelStyle: LabelStyle = { label in

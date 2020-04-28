@@ -28,6 +28,7 @@ public typealias ScrollStyle = (UIScrollView) -> UIScrollView
 public typealias StackViewStyle = (UIStackView) -> UIStackView
 public typealias SwitchControlStyle = (UISwitch) -> UISwitch
 public typealias TableViewStyle = (UITableView) -> UITableView
+public typealias TableViewCellStyle = (UITableViewCell) -> UITableViewCell
 public typealias TextFieldStyle = (UITextField) -> UITextField
 public typealias TextViewStyle = (UITextView) -> UITextView
 public typealias ToolbarStyle = (UIToolbar) -> UIToolbar

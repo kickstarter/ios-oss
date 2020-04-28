@@ -1,4 +1,4 @@
-import Argo
+import Foundation
 
 public enum ProjectState: String, CaseIterable, Swift.Decodable {
   case canceled = "CANCELED"

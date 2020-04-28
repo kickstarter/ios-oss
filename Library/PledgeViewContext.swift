@@ -1,6 +1,7 @@
 import Foundation
 
 public enum PledgeViewContext {
+  case fixPaymentMethod
   case pledge
   case update
   case changePaymentMethod
@@ -8,7 +9,7 @@ public enum PledgeViewContext {
 
   var confirmationLabelHidden: Bool {
     switch self {
-    case .changePaymentMethod, .updateReward: return true
+    case .fixPaymentMethod, .changePaymentMethod, .updateReward: return true
     case .pledge, .update: return false
     }
   }
@@ -16,34 +17,34 @@ public enum PledgeViewContext {
   var continueViewHidden: Bool {
     switch self {
     case .pledge: return false
-    case .update, .changePaymentMethod, .updateReward: return true
+    case .fixPaymentMethod, .update, .changePaymentMethod, .updateReward: return true
     }
   }
 
   var descriptionViewHidden: Bool {
     switch self {
     case .pledge, .updateReward: return false
-    case .update, .changePaymentMethod: return true
+    case .fixPaymentMethod, .update, .changePaymentMethod: return true
     }
   }
 
   var isCreating: Bool {
     switch self {
     case .pledge: return true
-    case .update, .changePaymentMethod, .updateReward: return false
+    case .fixPaymentMethod, .update, .changePaymentMethod, .updateReward: return false
     }
   }
 
   var isUpdating: Bool {
     switch self {
     case .pledge: return false
-    case .update, .changePaymentMethod, .updateReward: return true
+    case .fixPaymentMethod, .update, .changePaymentMethod, .updateReward: return true
     }
   }
 
   var paymentMethodsViewHidden: Bool {
     switch self {
-    case .pledge, .changePaymentMethod: return false
+    case .fixPaymentMethod, .pledge, .changePaymentMethod: return false
     case .update, .updateReward: return true
     }
   }
@@ -51,13 +52,13 @@ public enum PledgeViewContext {
   var pledgeAmountViewHidden: Bool {
     switch self {
     case .pledge, .update, .updateReward: return false
-    case .changePaymentMethod: return true
+    case .fixPaymentMethod, .changePaymentMethod: return true
     }
   }
 
   var pledgeAmountSummaryViewHidden: Bool {
     switch self {
-    case .changePaymentMethod: return false
+    case .fixPaymentMethod, .changePaymentMethod: return false
     case .pledge, .update, .updateReward: return true
     }
   }
@@ -65,26 +66,27 @@ public enum PledgeViewContext {
   var sectionSeparatorsHidden: Bool {
     switch self {
     case .pledge, .updateReward: return false
-    case .update, .changePaymentMethod: return true
+    case .fixPaymentMethod, .update, .changePaymentMethod: return true
     }
   }
 
   var shippingLocationViewHidden: Bool {
     switch self {
     case .pledge, .update, .updateReward: return false
-    case .changePaymentMethod: return true
+    case .fixPaymentMethod, .changePaymentMethod: return true
     }
   }
 
   var submitButtonTitle: String {
     switch self {
     case .pledge: return Strings.Pledge()
-    case .update, .changePaymentMethod, .updateReward: return Strings.Confirm()
+    case .fixPaymentMethod, .update, .changePaymentMethod, .updateReward: return Strings.Confirm()
     }
   }
 
   var title: String {
     switch self {
+    case .fixPaymentMethod: return Strings.Fix_payment_method()
     case .pledge: return Strings.Back_this_project()
     case .update, .updateReward: return Strings.Update_pledge()
     case .changePaymentMethod: return Strings.Change_payment_method()

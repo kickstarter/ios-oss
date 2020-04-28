@@ -12,6 +12,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
   private let cardNumberAccessibilityLabel = TestObserver<String, Never>()
   private let cardNumberTextShortStyle = TestObserver<String, Never>()
   private let expirationDateText = TestObserver<String, Never>()
+  private let fixIconIsHidden = TestObserver<Bool, Never>()
   private let notifyDelegateOfCardSelected = TestObserver<String, Never>()
   private let selectButtonEnabled = TestObserver<Bool, Never>()
   private let selectButtonIsSelected = TestObserver<Bool, Never>()
@@ -26,6 +27,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.vm.outputs.cardNumberAccessibilityLabel.observe(self.cardNumberAccessibilityLabel.observer)
     self.vm.outputs.cardNumberTextShortStyle.observe(self.cardNumberTextShortStyle.observer)
     self.vm.outputs.expirationDateText.observe(self.expirationDateText.observer)
+    self.vm.outputs.fixIconIsHidden.observe(self.fixIconIsHidden.observer)
     self.vm.outputs.notifyDelegateOfCardSelected.observe(self.notifyDelegateOfCardSelected.observer)
     self.vm.outputs.selectButtonEnabled.observe(self.selectButtonEnabled.observer)
     self.vm.outputs.selectButtonIsSelected.observe(self.selectButtonIsSelected.observer)
@@ -35,7 +37,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
   }
 
   func testCardInfoForSupportedCards() {
-    self.vm.inputs.configureWith(value: (GraphUserCreditCard.amex, true, "Brooklyn, NY"))
+    self.vm.inputs.configureWith(value: (GraphUserCreditCard.amex, true, "Brooklyn, NY", false, nil))
 
     self.cardImage.assertLastValue(UIImage(named: "icon--amex"))
     self.cardNumberAccessibilityLabel.assertLastValue("Amex, Card ending in 8882")
@@ -45,7 +47,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.selectButtonIsSelected.assertValues([false])
     self.selectButtonTitle.assertValues(["Select"])
 
-    self.vm.inputs.configureWith(value: (GraphUserCreditCard.discover, true, "Brooklyn, NY"))
+    self.vm.inputs.configureWith(value: (GraphUserCreditCard.discover, true, "Brooklyn, NY", false, nil))
 
     self.cardImage.assertLastValue(UIImage(named: "icon--discover"))
     self.cardNumberAccessibilityLabel.assertLastValue("Discover, Card ending in 4242")
@@ -55,7 +57,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.selectButtonIsSelected.assertValues([false])
     self.selectButtonTitle.assertValues(["Select"])
 
-    self.vm.inputs.configureWith(value: (GraphUserCreditCard.jcb, true, "Brooklyn, NY"))
+    self.vm.inputs.configureWith(value: (GraphUserCreditCard.jcb, true, "Brooklyn, NY", false, nil))
 
     self.cardImage.assertLastValue(UIImage(named: "icon--jcb"))
     self.cardNumberAccessibilityLabel.assertLastValue("Jcb, Card ending in 2222")
@@ -64,7 +66,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.selectButtonIsSelected.assertValues([false])
     self.selectButtonTitle.assertValues(["Select"])
 
-    self.vm.inputs.configureWith(value: (GraphUserCreditCard.masterCard, true, "Brooklyn, NY"))
+    self.vm.inputs.configureWith(value: (GraphUserCreditCard.masterCard, true, "Brooklyn, NY", false, nil))
 
     self.cardImage.assertLastValue(UIImage(named: "icon--mastercard"))
     self.cardNumberAccessibilityLabel.assertLastValue("Mastercard, Card ending in 0000")
@@ -74,7 +76,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.selectButtonIsSelected.assertValues([false])
     self.selectButtonTitle.assertValues(["Select"])
 
-    self.vm.inputs.configureWith(value: (GraphUserCreditCard.visa, true, "Brooklyn, NY"))
+    self.vm.inputs.configureWith(value: (GraphUserCreditCard.visa, true, "Brooklyn, NY", false, nil))
 
     self.cardImage.assertLastValue(UIImage(named: "icon--visa"))
     self.cardNumberAccessibilityLabel.assertLastValue("Visa, Card ending in 1111")
@@ -84,7 +86,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.selectButtonIsSelected.assertValues([false])
     self.selectButtonTitle.assertValues(["Select"])
 
-    self.vm.inputs.configureWith(value: (GraphUserCreditCard.diners, true, "Brooklyn, NY"))
+    self.vm.inputs.configureWith(value: (GraphUserCreditCard.diners, true, "Brooklyn, NY", false, nil))
 
     self.cardImage.assertLastValue(UIImage(named: "icon--diners"))
     self.cardNumberAccessibilityLabel.assertLastValue("Diners, Card ending in 1212")
@@ -103,7 +105,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.selectButtonIsSelected.assertValues([])
     self.selectButtonTitle.assertValues([])
 
-    self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, true, "Brooklyn, NY"))
+    self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, true, "Brooklyn, NY", false, nil))
     self.vm.inputs.setSelectedCard(GraphUserCreditCard.diners)
 
     self.cardImage.assertValue(UIImage(named: "icon--generic"))
@@ -121,7 +123,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.selectButtonIsSelected.assertValues([])
     self.selectButtonTitle.assertValues([])
 
-    self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, true, "Brooklyn, NY"))
+    self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, true, "Brooklyn, NY", false, nil))
     self.vm.inputs.setSelectedCard(GraphUserCreditCard.generic)
 
     self.cardImage.assertValue(UIImage(named: "icon--generic"))
@@ -139,7 +141,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.selectButtonTitle.assertValues([])
     self.selectButtonEnabled.assertValues([])
 
-    self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, false, "Brooklyn, NY"))
+    self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, false, "Brooklyn, NY", false, nil))
     self.vm.inputs.setSelectedCard(GraphUserCreditCard.generic)
 
     self.cardImage.assertValue(UIImage(named: "icon--generic"))
@@ -160,7 +162,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     self.unavailableCardText.assertValues([])
     self.unavailableCardLabelHidden.assertValues([])
 
-    self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, false, "Brooklyn, NY"))
+    self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, false, "Brooklyn, NY", false, nil))
 
     self.cardImage.assertValue(UIImage(named: "icon--generic"))
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1882")
@@ -174,7 +176,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
   }
 
   func testCardInfoForUnsupportedCards() {
-    self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, true, "Brooklyn, NY"))
+    self.vm.inputs.configureWith(value: (GraphUserCreditCard.generic, true, "Brooklyn, NY", false, nil))
 
     self.cardImage.assertValue(UIImage(named: "icon--generic"))
     self.cardNumberTextShortStyle.assertLastValue("Ending in 1882")
@@ -184,7 +186,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
   func testCardInfoForUnknownCardType() {
     let unknownCard = GraphUserCreditCard.generic |> \.type .~ nil
 
-    self.vm.inputs.configureWith(value: (unknownCard, true, "Brooklyn, NY"))
+    self.vm.inputs.configureWith(value: (unknownCard, true, "Brooklyn, NY", false, nil))
 
     self.cardImage.assertValue(UIImage(named: "icon--generic"))
     self.cardNumberAccessibilityLabel.assertLastValue("Card ending in 1882")
@@ -196,7 +198,7 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     let card = GraphUserCreditCard.amex
       |> \.id .~ "123"
 
-    self.vm.inputs.configureWith(value: (card, true, "Brooklyn, NY"))
+    self.vm.inputs.configureWith(value: (card, true, "Brooklyn, NY", false, nil))
 
     self.notifyDelegateOfCardSelected.assertDidNotEmitValue()
 
@@ -209,11 +211,26 @@ internal final class PledgeCreditCardViewModelTests: TestCase {
     let card = GraphUserCreditCard.amex
       |> \.id .~ "123"
 
-    self.vm.inputs.configureWith(value: (card, true, "Brooklyn, NY"))
+    self.vm.inputs.configureWith(value: (card, true, "Brooklyn, NY", false, nil))
 
     self.notifyDelegateOfCardSelected.assertDidNotEmitValue()
 
     self.vm.inputs.selectButtonTapped()
     self.notifyDelegateOfCardSelected.assertValues(["123"])
+  }
+
+  func testFixIconIsHidden() {
+    let card = GraphUserCreditCard.visa
+    self.vm.inputs.configureWith(value: (card, true, "Brooklyn, NY", true, "2"))
+    self.vm.inputs.setSelectedCard(card)
+
+    self.cardImage.assertLastValue(UIImage(named: "icon--visa"))
+    self.cardNumberAccessibilityLabel.assertLastValue("Visa, Card ending in 1111")
+    self.cardNumberTextShortStyle.assertLastValue("Ending in 1111")
+    self.expirationDateText.assertLastValue("Expires 09/2019")
+    self.selectButtonEnabled.assertValues([true])
+    self.selectButtonIsSelected.assertValues([false, true])
+    self.selectButtonTitle.assertValues(["Select", "Selected"])
+    self.fixIconIsHidden.assertValues([false])
   }
 }

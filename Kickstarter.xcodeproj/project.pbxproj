@@ -385,6 +385,11 @@
 		8A32AE9623EA1DC0005CEA57 /* Project.CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A32AE9523EA1DC0005CEA57 /* Project.CategoryTemplates.swift */; };
 		8A3BF51923F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3BF51823F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift */; };
 		8A3BF51E23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */; };
+		8A41CC692458A0360095B15E /* GraphBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41CC672458A0360095B15E /* GraphBackingEnvelope.swift */; };
+		8A41CC6A2458A0360095B15E /* GraphBacking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41CC682458A0360095B15E /* GraphBacking.swift */; };
+		8A41CC6C2458A0480095B15E /* GraphBackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41CC6B2458A0480095B15E /* GraphBackingTests.swift */; };
+		8A41CC6F2458A0610095B15E /* GraphBackingsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41CC6D2458A0610095B15E /* GraphBackingsEnvelopeTemplates.swift */; };
+		8A41CC702458A0610095B15E /* GraphBackingTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41CC6E2458A0610095B15E /* GraphBackingTemplates.swift */; };
 		8A4503F4234BEDBD008309EC /* PledgeViewContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4503F3234BEDBD008309EC /* PledgeViewContext.swift */; };
 		8A4503F6234BEDD4008309EC /* PledgeViewContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4503F5234BEDD4008309EC /* PledgeViewContextTests.swift */; };
 		8A4DDAB32373427000ADE31D /* PledgeStatusLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */; };
@@ -1193,6 +1198,17 @@
 		D67B6CD8221F46D700B63A6B /* Project.Country+Argo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67B6CD7221F46D700B63A6B /* Project.Country+Argo.swift */; };
 		D67DF564232ABB960051D207 /* ManagePledgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67DF563232ABB950051D207 /* ManagePledgeViewModel.swift */; };
 		D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F29351F68333800E399A6 /* GraphSchema.swift */; };
+		D69C55142397166D00B0987A /* GraphBacking.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C55132397166D00B0987A /* GraphBacking.swift */; };
+		D69C5516239852CB00B0987A /* GraphBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C5515239852CB00B0987A /* GraphBackingEnvelope.swift */; };
+		D69C55182398534E00B0987A /* GraphBackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C55172398534E00B0987A /* GraphBackingTests.swift */; };
+		D69C551A239867F200B0987A /* GraphBackingTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C5519239867F200B0987A /* GraphBackingTemplates.swift */; };
+		D69C551C23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C551B23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift */; };
+		D69C5529239ED10E00B0987A /* ErroredBackingViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C5528239ED10E00B0987A /* ErroredBackingViewViewModel.swift */; };
+		D69C552B239EFA6C00B0987A /* ActivityErroredBackingsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C552A239EFA6C00B0987A /* ActivityErroredBackingsCellViewModel.swift */; };
+		D69C552D23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C552C23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift */; };
+		D69C552F23A0609600B0987A /* ErroredBackingViewViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C552E23A0609600B0987A /* ErroredBackingViewViewModelTests.swift */; };
+		D69C553123A17A0700B0987A /* ActivityErroredBackingsCellHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C553023A17A0700B0987A /* ActivityErroredBackingsCellHeader.swift */; };
+		D69C553323A2C30300B0987A /* ErroredBackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C553223A2C30200B0987A /* ErroredBackingView.swift */; };
 		D6A45DB72319A7E1006DDB01 /* ManagePledgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */; };
 		D6A7AB3A1FDAF24D007B20AE /* DiscoveryPostcardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */; };
 		D6A7AB401FDAF3EC007B20AE /* ThanksCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */; };
@@ -1224,11 +1240,14 @@
 		D6B9F94522035E34003282A5 /* AuthorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9F94422035E34003282A5 /* AuthorTests.swift */; };
 		D6BD66B323CCC9A8008694BB /* NSAttributedString+Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BD66B223CCC9A8008694BB /* NSAttributedString+Link.swift */; };
 		D6BD66B523CCCA51008694BB /* NSAttributedStringLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BD66B423CCCA51008694BB /* NSAttributedStringLinkTests.swift */; };
+		D6BD66BB23CCF79D008694BB /* Equatable+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BD66BA23CCF79D008694BB /* Equatable+Helpers.swift */; };
+		D6BD66BD23CCF7B6008694BB /* EquatableHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BD66BC23CCF7B6008694BB /* EquatableHelpersTests.swift */; };
 		D6C3845B210B9AC400ADB671 /* SettingsNewslettersTopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C38459210B9AC400ADB671 /* SettingsNewslettersTopCell.swift */; };
 		D6C3845C210B9AC400ADB671 /* SettingsNewslettersTopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D6C3845A210B9AC400ADB671 /* SettingsNewslettersTopCell.xib */; };
 		D6C9A20E1F755FE200981E64 /* GraphSchemaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */; };
 		D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */; };
 		D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C9A2551F75921500981E64 /* CategoryTemplates.swift */; };
+		D6CCD8A523A94C6200CFD5FF /* ActivityErroredBackingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CCD8A423A94C6200CFD5FF /* ActivityErroredBackingsCell.swift */; };
 		D6D4425E22C2B4570070C3AF /* PledgePaymentMethodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsViewController.swift */; };
 		D6DC652F21768502008CF69C /* Queryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC652E21768502008CF69C /* Queryable.swift */; };
 		D6DC653321768B6E008CF69C /* ChangeEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC653221768B6E008CF69C /* ChangeEmailViewModel.swift */; };
@@ -1248,6 +1267,7 @@
 		D703FC6920F7E2EC004A272D /* SettingsPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703FC6820F7E2EC004A272D /* SettingsPrivacyViewController.swift */; };
 		D703FC6B20F7E3F8004A272D /* SettingsPrivacyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703FC6A20F7E3F8004A272D /* SettingsPrivacyViewModel.swift */; };
 		D706479023A2BF4B00B33C20 /* OptimizelyClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */; };
+		D710ADF7243CCE7E00DC7199 /* ISO8601DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710ADF5243BE9F600DC7199 /* ISO8601DateFormatter.swift */; };
 		D7180BA222EF9DE900EB0110 /* RewardCellProjectBackingStateTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7180BA022EF9DD900EB0110 /* RewardCellProjectBackingStateTypeTests.swift */; };
 		D72370542118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72370532118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift */; };
 		D723708C2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D723708B2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift */; };
@@ -1843,6 +1863,11 @@
 		8A32AE9523EA1DC0005CEA57 /* Project.CategoryTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.CategoryTemplates.swift; sourceTree = "<group>"; };
 		8A3BF51823F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTelephonyNetworkInfoType.swift; sourceTree = "<group>"; };
 		8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCoreTelephonyNetworkInfo.swift; sourceTree = "<group>"; };
+		8A41CC672458A0360095B15E /* GraphBackingEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBackingEnvelope.swift; sourceTree = "<group>"; };
+		8A41CC682458A0360095B15E /* GraphBacking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBacking.swift; sourceTree = "<group>"; };
+		8A41CC6B2458A0480095B15E /* GraphBackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBackingTests.swift; sourceTree = "<group>"; };
+		8A41CC6D2458A0610095B15E /* GraphBackingsEnvelopeTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBackingsEnvelopeTemplates.swift; sourceTree = "<group>"; };
+		8A41CC6E2458A0610095B15E /* GraphBackingTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBackingTemplates.swift; sourceTree = "<group>"; };
 		8A4503F3234BEDBD008309EC /* PledgeViewContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewContext.swift; sourceTree = "<group>"; };
 		8A4503F5234BEDD4008309EC /* PledgeViewContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewContextTests.swift; sourceTree = "<group>"; };
 		8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelView.swift; sourceTree = "<group>"; };
@@ -2583,6 +2608,17 @@
 		D67DF563232ABB950051D207 /* ManagePledgeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewModel.swift; sourceTree = "<group>"; };
 		D67F29351F68333800E399A6 /* GraphSchema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphSchema.swift; sourceTree = "<group>"; };
 		D69BACEF21C856F2006EAA00 /* UIAlertControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlertControllerTests.swift; sourceTree = "<group>"; };
+		D69C55132397166D00B0987A /* GraphBacking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBacking.swift; sourceTree = "<group>"; };
+		D69C5515239852CB00B0987A /* GraphBackingEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingEnvelope.swift; sourceTree = "<group>"; };
+		D69C55172398534E00B0987A /* GraphBackingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingTests.swift; sourceTree = "<group>"; };
+		D69C5519239867F200B0987A /* GraphBackingTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingTemplates.swift; sourceTree = "<group>"; };
+		D69C551B23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingsEnvelopeTemplates.swift; sourceTree = "<group>"; };
+		D69C5528239ED10E00B0987A /* ErroredBackingViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredBackingViewViewModel.swift; sourceTree = "<group>"; };
+		D69C552A239EFA6C00B0987A /* ActivityErroredBackingsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsCellViewModel.swift; sourceTree = "<group>"; };
+		D69C552C23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsCellViewModelTests.swift; sourceTree = "<group>"; };
+		D69C552E23A0609600B0987A /* ErroredBackingViewViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredBackingViewViewModelTests.swift; sourceTree = "<group>"; };
+		D69C553023A17A0700B0987A /* ActivityErroredBackingsCellHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsCellHeader.swift; sourceTree = "<group>"; };
+		D69C553223A2C30200B0987A /* ErroredBackingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ErroredBackingView.swift; path = Cells/ErroredBackingView.swift; sourceTree = "<group>"; };
 		D6A45DB62319A7E1006DDB01 /* ManagePledgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewController.swift; sourceTree = "<group>"; };
 		D6A7AB371FD9EDFD007B20AE /* DiscoveryPostcardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiscoveryPostcardCell.xib; sourceTree = "<group>"; };
 		D6A7AB3E1FDAF3EC007B20AE /* ThanksCategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ThanksCategoryCell.xib; sourceTree = "<group>"; };
@@ -2618,11 +2654,14 @@
 		D6B9FA1422089C05003282A5 /* SelectCurrencyViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCurrencyViewControllerTests.swift; sourceTree = "<group>"; };
 		D6BD66B223CCC9A8008694BB /* NSAttributedString+Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Link.swift"; sourceTree = "<group>"; };
 		D6BD66B423CCCA51008694BB /* NSAttributedStringLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSAttributedStringLinkTests.swift; sourceTree = "<group>"; };
+		D6BD66BA23CCF79D008694BB /* Equatable+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Equatable+Helpers.swift"; sourceTree = "<group>"; };
+		D6BD66BC23CCF7B6008694BB /* EquatableHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableHelpersTests.swift; sourceTree = "<group>"; };
 		D6C38459210B9AC400ADB671 /* SettingsNewslettersTopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNewslettersTopCell.swift; sourceTree = "<group>"; };
 		D6C3845A210B9AC400ADB671 /* SettingsNewslettersTopCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsNewslettersTopCell.xib; sourceTree = "<group>"; };
 		D6C9A20D1F755FE200981E64 /* GraphSchemaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphSchemaTests.swift; sourceTree = "<group>"; };
 		D6C9A2531F758C7900981E64 /* GraphCategoryLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategoryLenses.swift; sourceTree = "<group>"; };
 		D6C9A2551F75921500981E64 /* CategoryTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTemplates.swift; sourceTree = "<group>"; };
+		D6CCD8A423A94C6200CFD5FF /* ActivityErroredBackingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsCell.swift; sourceTree = "<group>"; };
 		D6D4425C22C276DF0070C3AF /* PledgePaymentMethodsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsViewController.swift; sourceTree = "<group>"; };
 		D6DC652E21768502008CF69C /* Queryable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queryable.swift; sourceTree = "<group>"; };
 		D6DC653221768B6E008CF69C /* ChangeEmailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewModel.swift; sourceTree = "<group>"; };
@@ -2642,6 +2681,7 @@
 		D703FC6820F7E2EC004A272D /* SettingsPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewController.swift; sourceTree = "<group>"; };
 		D703FC6A20F7E3F8004A272D /* SettingsPrivacyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewModel.swift; sourceTree = "<group>"; };
 		D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyClientType.swift; sourceTree = "<group>"; };
+		D710ADF5243BE9F600DC7199 /* ISO8601DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISO8601DateFormatter.swift; sourceTree = "<group>"; };
 		D7180BA022EF9DD900EB0110 /* RewardCellProjectBackingStateTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellProjectBackingStateTypeTests.swift; sourceTree = "<group>"; };
 		D72370532118C19B001EA4CA /* SettingsRecommendationsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRecommendationsCellViewModelTests.swift; sourceTree = "<group>"; };
 		D723708B2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeleteAccountCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -3050,6 +3090,7 @@
 		A751A51B1C85EAD8009C5DEA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D69C553023A17A0700B0987A /* ActivityErroredBackingsCellHeader.swift */,
 				77D19FFB240859F20058FC8E /* HeaderFooterViews */,
 				37E9E29F225EABB000D29DD7 /* AmountInputView.swift */,
 				D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */,
@@ -3058,6 +3099,7 @@
 				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
 				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
 				7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */,
+				D69C553223A2C30200B0987A /* ErroredBackingView.swift */,
 				595CDAB71D3537180051C816 /* FundingGraphView.swift */,
 				A7ED205B1E83240D00BFFA01 /* FundingGraphViewTests.swift */,
 				D6050F51240463AC00E029D2 /* LandingPageStatsView.swift */,
@@ -3096,6 +3138,7 @@
 		A751A51C1C85EAD8009C5DEA /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				D6CCD8A423A94C6200CFD5FF /* ActivityErroredBackingsCell.swift */,
 				A75AB2241C8B407F002FC3E6 /* ActivityFriendBackingCell.swift */,
 				A762EFF11C8CC663005581A4 /* ActivityFriendFollowCell.swift */,
 				A762F01B1C8CD2B3005581A4 /* ActivityProjectStatusCell.swift */,
@@ -3360,6 +3403,7 @@
 				D6534D3922E7878D00E9D279 /* CreditCard+Utils.swift */,
 				D612A21822F0ED5A007F7FD9 /* CreditCard+UtilsTests.swift */,
 				D798A6AD21656D970053D097 /* Currency.swift */,
+				A7C725851C85D36D005A016B /* DataSource */,
 				3706408C22A9BE8100889CBD /* DateFormatter.swift */,
 				3706408F22A9BE9400889CBD /* DateFormatterTests.swift */,
 				A7F6F0C01DC7EBF7002C118C /* DateProtocol.swift */,
@@ -3370,9 +3414,12 @@
 				7703B42123217D4F00169EF3 /* EnvironmentType.swift */,
 				3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */,
 				3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */,
+				D6BD66BA23CCF79D008694BB /* Equatable+Helpers.swift */,
+				D6BD66BC23CCF7B6008694BB /* EquatableHelpersTests.swift */,
 				A72C3A8A1D00F6A80075227E /* ExpandableRow.swift */,
 				77556F1C20A09993008CEA57 /* ExperimentName+Helpers.swift */,
 				D667C2BB2305F03300EC094A /* ExperimentName+HelpersTests.swift */,
+				778F891A22D3E35600D095C5 /* Extensions */,
 				77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */,
 				8AF91CDC22EF5AF7005F9C90 /* Feature.swift */,
 				A7C725801C85D36D005A016B /* Format.swift */,
@@ -3385,6 +3432,7 @@
 				80E8EAC71D3EC65A007BDA4B /* Image.swift */,
 				7748437F22D8DA3800508C9B /* Instantiable.swift */,
 				7720BA6F22E0DBD00071FDA1 /* InstantiableTests.swift */,
+				D710ADF5243BE9F600DC7199 /* ISO8601DateFormatter.swift */,
 				A76078091CAEE0A6001B39D0 /* IsValidEmail.swift */,
 				A7ED1F161E830FDC00BFFA01 /* IsValidEmailTests.swift */,
 				A72AFFD91CD7ED6B008F052B /* Keyboard.swift */,
@@ -3465,6 +3513,9 @@
 				A7ED1F221E830FDC00BFFA01 /* String+WhitespaceTests.swift */,
 				A79BF81E1D11F6AF004C0445 /* Strings.swift */,
 				8AD48632235939AF00A1463E /* StripeTypes.swift */,
+				A73378F91D0AE33B00C91445 /* Styles */,
+				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
+				8A213CE3239EAEA400BBB4C7 /* Tracking */,
 				0156B4181D10B419000C4252 /* UIAlertController.swift */,
 				D69BACEF21C856F2006EAA00 /* UIAlertControllerTests.swift */,
 				370F52B2225426C700F159B9 /* UIApplication.swift */,
@@ -3504,13 +3555,8 @@
 				8AE8D86723466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift */,
 				D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */,
 				1611EF6623B2752A0051CDCC /* UUIDType.swift */,
-				A734A2661D21A1790080BBD5 /* WKNavigationActionData.swift */,
-				A7C725851C85D36D005A016B /* DataSource */,
-				778F891A22D3E35600D095C5 /* Extensions */,
-				A73378F91D0AE33B00C91445 /* Styles */,
-				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
-				8A213CE3239EAEA400BBB4C7 /* Tracking */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
+				A734A2661D21A1790080BBD5 /* WKNavigationActionData.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -3718,6 +3764,8 @@
 			children = (
 				A7F4418E1D005A9400FE6FC5 /* ActivitiesViewModel.swift */,
 				A7ED1F6D1E831C5C00BFFA01 /* ActivitiesViewModelTests.swift */,
+				D69C552A239EFA6C00B0987A /* ActivityErroredBackingsCellViewModel.swift */,
+				D69C552C23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift */,
 				A7F4418F1D005A9400FE6FC5 /* ActivityFriendBackingViewModel.swift */,
 				A7ED1F6F1E831C5C00BFFA01 /* ActivityFriendBackingViewModelTests.swift */,
 				A7F441901D005A9400FE6FC5 /* ActivityFriendFollowCellViewModel.swift */,
@@ -3819,6 +3867,8 @@
 				8AA524922384CAC100FD52CF /* EditorialProjectsViewModelTests.swift */,
 				013744F71D99A39B00E50C78 /* EmptyStatesViewModel.swift */,
 				A7ED1F881E831C5C00BFFA01 /* EmptyStatesViewModelTests.swift */,
+				D69C5528239ED10E00B0987A /* ErroredBackingViewViewModel.swift */,
+				D69C552E23A0609600B0987A /* ErroredBackingViewViewModelTests.swift */,
 				A7F441991D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift */,
 				A7ED1F8B1E831C5C00BFFA01 /* FacebookConfirmationViewModelTests.swift */,
 				774F8D5C22B1B14100A1ACD5 /* FeatureFlagToolsViewModel.swift */,
@@ -4129,6 +4179,9 @@
 				D01587921EEB2ED6006E7684 /* FindFriendsEnvelopeTests.swift */,
 				D01587931EEB2ED6006E7684 /* FriendStatsEnvelope.swift */,
 				D01587941EEB2ED6006E7684 /* FriendStatsEnvelopeTests.swift */,
+				8A41CC682458A0360095B15E /* GraphBacking.swift */,
+				8A41CC672458A0360095B15E /* GraphBackingEnvelope.swift */,
+				8A41CC6B2458A0480095B15E /* GraphBackingTests.swift */,
 				D002CAE4218CF951009783F2 /* GraphMutationWatchProjectResponseEnvelope.swift */,
 				7798B56421750041008BC50D /* GraphUser.swift */,
 				D63BBD30217F7212007E01F0 /* GraphUserCreditCard.swift */,
@@ -4276,6 +4329,8 @@
 				D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */,
 				D01587FA1EEB2ED7006E7684 /* FindFriendsEnvelopeTemplates.swift */,
 				D01587FB1EEB2ED7006E7684 /* FriendStatsEnvelopeTemplates.swift */,
+				8A41CC6D2458A0610095B15E /* GraphBackingsEnvelopeTemplates.swift */,
+				8A41CC6E2458A0610095B15E /* GraphBackingTemplates.swift */,
 				D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */,
 				D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */,
 				D08CD20221922025009F89F0 /* GraphMutationWatchProjectResponseEnvelopeTemplates.swift */,
@@ -4965,8 +5020,10 @@
 				9D8772131D19E84E003A4E96 /* ProjectActivityLaunchCellViewModel.swift in Sources */,
 				774F8D5D22B1B14100A1ACD5 /* FeatureFlagToolsViewModel.swift in Sources */,
 				A7F441CF1D005A9400FE6FC5 /* MessageThreadCellViewModel.swift in Sources */,
+				D69C552B239EFA6C00B0987A /* ActivityErroredBackingsCellViewModel.swift in Sources */,
 				A7F441CB1D005A9400FE6FC5 /* MessagesSearchViewModel.swift in Sources */,
 				A7CC14651D00E81B00035C52 /* FriendsSource.swift in Sources */,
+				D6BD66BB23CCF79D008694BB /* Equatable+Helpers.swift in Sources */,
 				3706408622A8A6D700889CBD /* PledgeShippingLocationViewModel.swift in Sources */,
 				3757D0CE228E51F800241AE6 /* UIFont.swift in Sources */,
 				778F891C22D3E37300D095C5 /* Feature+Helpers.swift in Sources */,
@@ -5104,7 +5161,9 @@
 				D6B6766520FE85010082717D /* SettingsNewslettersCellViewModel.swift in Sources */,
 				593AC6011D33F517002613F4 /* DashboardFundingCellViewModel.swift in Sources */,
 				373AB25D222A0D8900769FC2 /* PasswordValidation.swift in Sources */,
+				D710ADF7243CCE7E00DC7199 /* ISO8601DateFormatter.swift in Sources */,
 				9D2F4BE01D1AE02700B7C554 /* ProjectActivitySuccessCellViewModel.swift in Sources */,
+				D69C5529239ED10E00B0987A /* ErroredBackingViewViewModel.swift in Sources */,
 				A707BADA1CFFAB9400653B2F /* Notifications.swift in Sources */,
 				77556F5420A099B3008CEA57 /* ExperimentName+Helpers.swift in Sources */,
 				77C93C1A22C13DED005D3195 /* PledgeContinueViewModel.swift in Sources */,
@@ -5160,6 +5219,7 @@
 				1611EF6923B275700051CDCC /* MockUUID.swift in Sources */,
 				D723708C2118CAD8001EA4CA /* SettingsDeleteAccountCellViewModelTests.swift in Sources */,
 				A7ED1FAC1E831C5C00BFFA01 /* ActivitySampleFollowCellViewModelTests.swift in Sources */,
+				D69C552D23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift in Sources */,
 				8AD13A3F2436AF55009BF879 /* ProjectSummaryCarouselCellViewModelTests.swift in Sources */,
 				A7ED20021E831C5C00BFFA01 /* ThanksViewModelTests.swift in Sources */,
 				3757D107228E521600241AE6 /* UIFontTests.swift in Sources */,
@@ -5194,6 +5254,7 @@
 				A7ED1FE41E831C5C00BFFA01 /* EmptyStatesViewModelTests.swift in Sources */,
 				D04AACA8218BB72100CF713E /* FindFriendsCellViewModelTests.swift in Sources */,
 				8AA524932384CAC100FD52CF /* EditorialProjectsViewModelTests.swift in Sources */,
+				D6BD66BD23CCF7B6008694BB /* EquatableHelpersTests.swift in Sources */,
 				D04AACA6218BB72100CF713E /* ChangePasswordViewModelTests.swift in Sources */,
 				8A213CF5239EAF5600BBB4C7 /* TrackingClientConfigurationTests.swift in Sources */,
 				A7ED20041E831C5C00BFFA01 /* UpdateDraftViewModelTests.swift in Sources */,
@@ -5264,6 +5325,7 @@
 				D79CF40521B0840E00ECB73A /* AddNewCardViewModelTests.swift in Sources */,
 				D7A86A3B1F324EB300C7DA53 /* MostPopularSearchProjectCellViewModelTests.swift in Sources */,
 				A7ED1FD61E831C5C00BFFA01 /* ActivityUpdateViewModelTests.swift in Sources */,
+				D69C552F23A0609600B0987A /* ErroredBackingViewViewModelTests.swift in Sources */,
 				373AB25B222A063500769FC2 /* CreatePasswordViewModelTests.swift in Sources */,
 				A7ED1FCE1E831C5C00BFFA01 /* DashboardReferrerRowStackViewViewModelTests.swift in Sources */,
 				D6B9F94522035E34003282A5 /* AuthorTests.swift in Sources */,
@@ -5450,6 +5512,7 @@
 				A745D0221CA897FF00C12802 /* SearchViewController.swift in Sources */,
 				A72C3AAA1D00F96C0075227E /* DiscoveryPageViewController.swift in Sources */,
 				A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */,
+				D6CCD8A523A94C6200CFD5FF /* ActivityErroredBackingsCell.swift in Sources */,
 				D6B6766B20FF8F890082717D /* SettingsNewslettersCell.swift in Sources */,
 				77320F8A24411459004C631E /* SettingsAccountHeaderView.swift in Sources */,
 				015A06F41D219156007AE210 /* DashboardRewardRowStackView.swift in Sources */,
@@ -5543,6 +5606,7 @@
 				8072F41D1D46B75200999EF1 /* UpdatePreviewViewController.swift in Sources */,
 				015706161E649DEE0087DD68 /* BackerDashboardViewController.swift in Sources */,
 				A749001F1D00E27100BC3BE7 /* SignupViewController.swift in Sources */,
+				D69C553323A2C30300B0987A /* ErroredBackingView.swift in Sources */,
 				59B0DFFE1D11B2E50081D2DC /* DashboardContextCell.swift in Sources */,
 				37CA16AD23300376006044F9 /* ManageViewPledgeRewardReceivedViewController.swift in Sources */,
 				D770DE75217E598C00B5319A /* AddNewCardViewController.swift in Sources */,
@@ -5598,6 +5662,7 @@
 				3742037322DEB67A007AA86E /* PillCollectionViewDataSource.swift in Sources */,
 				017508161D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift in Sources */,
 				8AD486352359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift in Sources */,
+				D69C553123A17A0700B0987A /* ActivityErroredBackingsCellHeader.swift in Sources */,
 				014D625B1E6E20BB0033D2BD /* BackerDashboardProjectsDataSource.swift in Sources */,
 				A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */,
 				597073B21D07281800B00444 /* ProjectNotificationCell.swift in Sources */,
@@ -5804,6 +5869,7 @@
 				D6AE52251FD1B3F600BEC788 /* RootCategoriesEnvelope.swift in Sources */,
 				D002CAE3218CF91D009783F2 /* WatchProjectInput.swift in Sources */,
 				D0158A2D1EEB30A2006E7684 /* UpdateTemplates.swift in Sources */,
+				8A41CC702458A0610095B15E /* GraphBackingTemplates.swift in Sources */,
 				D755ECA52315E6E10096F189 /* CreateBackingInput.swift in Sources */,
 				D0158A181EEB30A2006E7684 /* MessageTemplates.swift in Sources */,
 				D0158A191EEB30A2006E7684 /* MessageThreadTemplates.swift in Sources */,
@@ -5830,6 +5896,7 @@
 				D01588B31EEB2ED7006E7684 /* ProjectNotification.ProjectLenses.swift in Sources */,
 				D01588811EEB2ED7006E7684 /* ActivityLenses.swift in Sources */,
 				D01588971EEB2ED7006E7684 /* FriendStatsEnvelope.StatsLenses.swift in Sources */,
+				8A41CC6A2458A0360095B15E /* GraphBacking.swift in Sources */,
 				D01588AD1EEB2ED7006E7684 /* Project.StatsLenses.swift in Sources */,
 				D0158A211EEB30A2006E7684 /* ProjectStatsEnvelope.VideoStatsTemplates.swift in Sources */,
 				D0158A141EEB30A2006E7684 /* FindFriendsEnvelopeTemplates.swift in Sources */,
@@ -5892,6 +5959,7 @@
 				D01588B11EEB2ED7006E7684 /* ProjectLenses.swift in Sources */,
 				D777442F217A3382008D679F /* ChangeCurrencyInput.swift in Sources */,
 				D01588531EEB2ED7006E7684 /* ChangePaymentMethodEnvelope.swift in Sources */,
+				8A41CC6F2458A0610095B15E /* GraphBackingsEnvelopeTemplates.swift in Sources */,
 				D01588E51EEB2ED7006E7684 /* Location.swift in Sources */,
 				D01588A11EEB2ED7006E7684 /* MessageThreadLenses.swift in Sources */,
 				D01588BB1EEB2ED7006E7684 /* ProjectStatsEnvelope.ReferrerStatsLenses.swift in Sources */,
@@ -5979,6 +6047,7 @@
 				8A4E954B245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift in Sources */,
 				D755ECAB232005A70096F189 /* Checkout.swift in Sources */,
 				8A4E953B2450FE1500A578CF /* Money.swift in Sources */,
+				8A41CC692458A0360095B15E /* GraphBackingEnvelope.swift in Sources */,
 				D01588BF1EEB2ED7006E7684 /* ProjectStatsEnvelope.VideoStatsLenses.swift in Sources */,
 				8AF34C802343C41C000B211D /* UpdateBackingEnvelope.swift in Sources */,
 				D775EC682084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift in Sources */,
@@ -5999,6 +6068,7 @@
 				8ACF558F23EA08DB001654A2 /* TryDecodableTests.swift in Sources */,
 				D0D10C1E1EEB4550005EBAD0 /* UpdateTests.swift in Sources */,
 				D0D10C211EEB4550005EBAD0 /* User.NotificationsTests.swift in Sources */,
+				8A41CC6C2458A0480095B15E /* GraphBackingTests.swift in Sources */,
 				D0D10C1C1EEB4550005EBAD0 /* UpdateDraftTests.swift in Sources */,
 				D0D10C0D1EEB4550005EBAD0 /* FriendStatsEnvelopeTests.swift in Sources */,
 				8AF34C8623440565000B211D /* ApplePayParamsTests.swift in Sources */,

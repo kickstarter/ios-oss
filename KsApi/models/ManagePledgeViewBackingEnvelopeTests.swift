@@ -123,32 +123,6 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
   func testJSONParsing_WithPartialData() {
     let dictionary: [String: Any] = [
       "project": [
-        "projectSummary": [
-          [
-            "question": "WHAT_IS_THE_PROJECT",
-            "response": "A cool project."
-          ],
-          [
-            "question": "WHO_ARE_YOU",
-            "response": "I am a writer."
-          ]
-        ]
-      ]
-    ]
-
-    guard let data = try? JSONSerialization.data(withJSONObject: dictionary, options: []) else {
-      XCTFail("Should have data")
-      return
-    }
-
-    let value = try? JSONDecoder().decode(ProjectSummaryEnvelope.self, from: data)
-
-    XCTAssertNotNil(value, "Should deserialize with only some values.")
-  }
-
-  func testJSONParsing_WithUnknownQuestion() {
-    let dictionary: [String: Any] = [
-      "project": [
         "id": "UHJvamVjdC00NDc0NzM2MTM=",
         "name": "The Keyboardio Atreus",
         "state": "LIVE",
@@ -255,6 +229,34 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
 
       XCTAssertEqual(value.backing?.backer?.id, "VXNlci0xMTA4OTI0NjQw")
       XCTAssertEqual(value.backing?.backer?.name, "Backer McGee")
+    } catch {
+      XCTFail((error as NSError).description)
+    }
+  }
+
+  func testJSONParsing_WithNoBacking() {
+    let dictionary: [String: Any] = [
+      "project": [
+        "id": "UHJvamVjdC00NDc0NzM2MTM=",
+        "name": "The Keyboardio Atreus",
+        "state": "LIVE",
+        "backing": nil
+      ]
+    ]
+
+    guard let data = try? JSONSerialization.data(withJSONObject: dictionary, options: []) else {
+      XCTFail("Should have data")
+      return
+    }
+
+    do {
+      let value = try JSONDecoder().decode(ManagePledgeViewBackingEnvelope.self, from: data)
+
+      XCTAssertEqual(value.project.id, "UHJvamVjdC00NDc0NzM2MTM=")
+      XCTAssertEqual(value.project.name, "The Keyboardio Atreus")
+      XCTAssertEqual(value.project.state, .live)
+
+      XCTAssertNil(value.backing)
     } catch {
       XCTFail((error as NSError).description)
     }

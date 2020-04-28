@@ -4,8 +4,11 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol ManagePledgePaymentMethodViewModelInputs {
-  /// Call to configure payment method section with payment source values.
-  func configureWith(value: Backing.PaymentSource)
+  /// Call to configure payment method section the values from a backing
+  func configureWith(value: Backing)
+
+  /// Call when the "Fix" button is tapped
+  func fixButtonTapped()
 }
 
 public protocol ManagePledgePaymentMethodViewModelOutputs {
@@ -20,6 +23,12 @@ public protocol ManagePledgePaymentMethodViewModelOutputs {
 
   /// Emits the formatted card's expirationdate.
   var expirationDateText: Signal<String, Never> { get }
+
+  /// Emits whether the Fix button is hidden
+  var fixButtonHidden: Signal<Bool, Never> { get }
+
+  /// Emits when the fix button was tapped
+  var notifyDelegateFixButtonTapped: Signal<Void, Never> { get }
 }
 
 public protocol ManagePledgePaymentMethodViewModelType {
@@ -30,19 +39,23 @@ public protocol ManagePledgePaymentMethodViewModelType {
 public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethodViewModelInputs,
   ManagePledgePaymentMethodViewModelOutputs, ManagePledgePaymentMethodViewModelType {
   public init() {
-    self.cardImageName = self.paymentSourceSignal
+    let paymentSource = self.backingSignal
+      .map(\.paymentSource)
+      .skipNil()
+
+    self.cardImageName = paymentSource
       .map(imageName(for:))
       .skipNil()
 
-    let paymentType = self.paymentSourceSignal
-      .map { $0.paymentType }
+    let paymentType = paymentSource
+      .map(\.paymentType)
 
-    let cardType = self.paymentSourceSignal
-      .map { $0.type }
+    let cardType = paymentSource
+      .map(\.type)
       .skipNil()
 
-    let lastFour = self.paymentSourceSignal
-      .map { $0.lastFour }
+    let lastFour = paymentSource
+      .map(\.lastFour)
       .skipNil()
 
     self.cardNumberAccessibilityLabel = Signal.combineLatest(
@@ -59,23 +72,35 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
     self.cardNumberTextShortStyle = lastFour
       .map { Strings.Ending_in_last_four(last_four: $0) }
 
-    self.expirationDateText = self.paymentSourceSignal
-      .map { $0.expirationDate }
+    self.expirationDateText = paymentSource
+      .map(\.expirationDate)
       .skipNil()
       .map { String($0.dropLast(3)) }
       .map(formatted(dateString:))
       .map { Strings.Credit_card_expiration(expiration_date: $0) }
+
+    self.fixButtonHidden = self.backingSignal
+      .map { $0.status != .errored }
+
+    self.notifyDelegateFixButtonTapped = self.fixButtonTappedSignal
   }
 
-  fileprivate let (paymentSourceSignal, paymentSourceObserver) = Signal<Backing.PaymentSource, Never>.pipe()
-  public func configureWith(value: Backing.PaymentSource) {
-    self.paymentSourceObserver.send(value: value)
+  fileprivate let (backingSignal, backingObserver) = Signal<Backing, Never>.pipe()
+  public func configureWith(value: Backing) {
+    self.backingObserver.send(value: value)
+  }
+
+  fileprivate let (fixButtonTappedSignal, fixButtonTappedObserver) = Signal<Void, Never>.pipe()
+  public func fixButtonTapped() {
+    self.fixButtonTappedObserver.send(value: ())
   }
 
   public let cardImageName: Signal<String, Never>
   public let cardNumberAccessibilityLabel: Signal<String, Never>
   public let cardNumberTextShortStyle: Signal<String, Never>
   public let expirationDateText: Signal<String, Never>
+  public let fixButtonHidden: Signal<Bool, Never>
+  public let notifyDelegateFixButtonTapped: Signal<Void, Never>
 
   public var inputs: ManagePledgePaymentMethodViewModelInputs { return self }
   public var outputs: ManagePledgePaymentMethodViewModelOutputs { return self }

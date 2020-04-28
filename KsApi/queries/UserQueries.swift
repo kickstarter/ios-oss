@@ -64,7 +64,8 @@ public func backingsQueryFields(status: String) -> NonEmptySet<Query.User> {
             .project(
               .id +| [
                 .name,
-                .slug
+                .slug,
+                .finalCollectionDate
               ]
             )
           ]

@@ -76,6 +76,9 @@
     fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>?
     fileprivate let fetchGraphUserAccountFieldsError: GraphError?
 
+    fileprivate let fetchGraphUserBackingsResponse: UserEnvelope<GraphBackingEnvelope>?
+    fileprivate let fetchGraphUserBackingsError: GraphError?
+
     fileprivate let addAttachmentResponse: UpdateDraft.Image?
     fileprivate let addAttachmentError: ErrorEnvelope?
     fileprivate let removeAttachmentResponse: UpdateDraft.Image?
@@ -239,6 +242,8 @@
       fetchGraphUserEmailFieldsResponse: UserEmailFields? = nil,
       fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>? = nil,
       fetchGraphUserAccountFieldsError: GraphError? = nil,
+      fetchGraphUserBackingsResponse: UserEnvelope<GraphBackingEnvelope>? = nil,
+      fetchGraphUserBackingsError: GraphError? = nil,
       addAttachmentResponse: UpdateDraft.Image? = nil,
       addAttachmentError: ErrorEnvelope? = nil,
       removeAttachmentResponse: UpdateDraft.Image? = nil,
@@ -355,6 +360,9 @@
       self.fetchGraphUserAccountFieldsError = fetchGraphUserAccountFieldsError
 
       self.fetchGraphUserEmailFieldsResponse = fetchGraphUserEmailFieldsResponse
+
+      self.fetchGraphUserBackingsResponse = fetchGraphUserBackingsResponse
+      self.fetchGraphUserBackingsError = fetchGraphUserBackingsError
 
       self.fetchCommentsResponse = fetchCommentsResponse ?? [
         .template |> Comment.lens.id .~ 2,
@@ -715,6 +723,20 @@
       } else {
         return .empty
       }
+    }
+
+    internal func fetchGraphUserBackings(query _: NonEmptySet<Query>)
+      -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError> {
+      if let error = fetchGraphUserBackingsError {
+        return SignalProducer(error: error)
+      }
+      let backings = GraphBackingEnvelope.GraphBackingConnection(nodes: [])
+      let emptyEnvelope = GraphBackingEnvelope.template
+        |> \.backings .~ backings
+      let emptyResponse = UserEnvelope<GraphBackingEnvelope>(me: emptyEnvelope)
+
+      let response = self.fetchGraphUserBackingsResponse ?? emptyResponse
+      return SignalProducer(value: response)
     }
 
     internal func fetchGraph<A>(

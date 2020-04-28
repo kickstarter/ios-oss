@@ -121,7 +121,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .ignoreValues()
 
     let shouldGoToManagePledge = ctaButtonTappedWithType
-      .filter { $0 == .viewBacking || $0 == .manage }
+      .filter(shouldGoToManagePledge(with:))
       .ignoreValues()
 
     self.goToRewards = freshProjectAndRefTag
@@ -317,4 +317,8 @@ private func fetchProject(projectOrParam: Either<Project, Param>, shouldPrefix: 
   }
 
   return projectProducer
+}
+
+private func shouldGoToManagePledge(with type: PledgeStateCTAType) -> Bool {
+  return type.isAny(of: .viewBacking, .manage, .fix)
 }
