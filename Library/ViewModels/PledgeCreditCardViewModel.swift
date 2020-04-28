@@ -7,7 +7,9 @@ import UIKit
 public typealias PledgeCreditCardViewData = (
   card: GraphUserCreditCard.CreditCard,
   isEnabled: Bool,
-  projectCountry: String
+  projectCountry: String,
+  isErrored: Bool,
+  paymentSourceId: String?
 )
 
 public protocol PledgeCreditCardViewModelInputs {
@@ -33,6 +35,9 @@ public protocol PledgeCreditCardViewModelOutputs {
 
   /// Emits the formatted card's expirationdate.
   var expirationDateText: Signal<String, Never> { get }
+
+  /// Emits a bool that shows the fix icon
+  var fixIconIsHidden: Signal<Bool, Never> { get }
 
   /// Emits the paymentSourceId of the current card.
   var notifyDelegateOfCardSelected: Signal<String, Never> { get }
@@ -61,9 +66,11 @@ public protocol PledgeCreditCardViewModelType {
 public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
   PledgeCreditCardViewModelOutputs, PledgeCreditCardViewModelType {
   public init() {
-    let creditCard = self.pledgeCreditCardValueProperty.signal.skipNil().map(first)
+    let creditCard = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.card }
+    let paymentSourceId = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.paymentSourceId }
     let selectedCard = self.selectedCardProperty.signal.skipNil()
-    let cardTypeIsAvailable = self.pledgeCreditCardValueProperty.signal.skipNil().map(second)
+    let cardTypeIsAvailable = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.isEnabled }
+    let erroredPledge = self.pledgeCreditCardValueProperty.signal.skipNil().map { $0.isErrored }
 
     self.cardImage = creditCard
       .map(cardImageForCard)
@@ -97,6 +104,15 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
       creditCard.mapConst(false),
       cardAndSelectedCard.map(==)
     )
+
+    self.fixIconIsHidden = Signal.combineLatest(paymentSourceId, creditCard, erroredPledge)
+      .map { paymentSourceId, creditCard, erroredPledge in
+        showFixIcon(
+          erroredPledge: erroredPledge,
+          paymentSourceId: paymentSourceId,
+          creditCardId: creditCard.id
+        )
+      }.negate()
 
     self.selectButtonIsSelected = Signal.combineLatest(cardIsSelected, cardTypeIsAvailable)
       .map { $0 && $1 }
@@ -137,6 +153,7 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
   public let cardNumberAccessibilityLabel: Signal<String, Never>
   public let cardNumberTextShortStyle: Signal<String, Never>
   public let expirationDateText: Signal<String, Never>
+  public let fixIconIsHidden: Signal<Bool, Never>
   public let notifyDelegateOfCardSelected: Signal<String, Never>
   public let selectButtonEnabled: Signal<Bool, Never>
   public let selectButtonIsSelected: Signal<Bool, Never>
@@ -150,4 +167,12 @@ public final class PledgeCreditCardViewModel: PledgeCreditCardViewModelInputs,
 
 private func cardImageForCard(_ card: GraphUserCreditCard.CreditCard) -> UIImage? {
   return image(named: card.imageName)
+}
+
+private func showFixIcon(
+  erroredPledge: Bool,
+  paymentSourceId: String?,
+  creditCardId: String
+) -> Bool {
+  return erroredPledge == true && paymentSourceId == creditCardId
 }

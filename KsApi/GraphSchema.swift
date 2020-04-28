@@ -170,6 +170,7 @@ public enum Query {
   public indirect enum Project {
     case backing(NonEmptySet<Backing>)
     case creator(NonEmptySet<User>)
+    case finalCollectionDate
     case id
     case name
     case projectSummary(NonEmptySet<ProjectSummary>)
@@ -411,6 +412,7 @@ extension Query.Project: QueryType {
     switch self {
     case let .backing(fields): return "backing { \(join(fields)) }"
     case let .creator(fields): return "creator { \(join(fields)) }"
+    case .finalCollectionDate: return "finalCollectionDate"
     case .id: return "id"
     case .name: return "name"
     case let .projectSummary(fields): return "projectSummary { \(join(fields)) }"

@@ -43,6 +43,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private lazy var paymentMethodView: ManagePledgePaymentMethodView = {
     ManagePledgePaymentMethodView(frame: .zero)
+      |> \.delegate .~ self
   }()
 
   private lazy var paymentMethodViews = {
@@ -155,8 +156,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.viewModel.outputs.configurePaymentMethodView
       .observeForUI()
-      .observeValues { [weak self] card in
-        self?.paymentMethodView.configure(with: card)
+      .observeValues { [weak self] backing in
+        self?.paymentMethodView.configure(with: backing)
       }
 
     self.viewModel.outputs.configurePledgeSummaryView
@@ -205,6 +206,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       .observeForControllerAction()
       .observeValues { [weak self] project, reward in
         self?.goToChangePaymentMethod(project: project, reward: reward)
+      }
+
+    self.viewModel.outputs.goToFixPaymentMethod
+      .observeForControllerAction()
+      .observeValues { [weak self] project, reward in
+        self?.goToFixPaymentMethod(project: project, reward: reward)
       }
 
     self.viewModel.outputs.goToContactCreator
@@ -398,6 +405,14 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
+  private func goToFixPaymentMethod(project: Project, reward: Reward) {
+    let vc = PledgeViewController.instantiate()
+    vc.configureWith(project: project, reward: reward, refTag: nil, context: .fixPaymentMethod)
+    vc.delegate = self
+
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
+
   private func goToContactCreator(
     messageSubject: MessageSubject,
     context: Koala.MessageDialogContext
@@ -426,6 +441,12 @@ extension ManagePledgeViewController: CancelPledgeViewControllerDelegate {
 extension ManagePledgeViewController: PledgeViewControllerDelegate {
   func pledgeViewControllerDidUpdatePledge(_: PledgeViewController, message: String) {
     self.viewModel.inputs.pledgeViewControllerDidUpdatePledgeWithMessage(message)
+  }
+}
+
+extension ManagePledgeViewController: ManagePledgePaymentMethodViewDelegate {
+  func managePledgePaymentMethodViewDidTapFixButton(_: ManagePledgePaymentMethodView) {
+    self.viewModel.inputs.fixButtonTapped()
   }
 }
 

@@ -580,7 +580,13 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.popToRootViewController = self.notifyDelegateUpdatePledgeDidSucceedWithMessage.ignoreValues()
 
-    self.submitButtonTitle = context.map { $0.submitButtonTitle }
+    self.submitButtonTitle = Signal.combineLatest(
+      context,
+      project,
+      selectedPaymentSourceId
+    )
+    .map(titleForSubmitButton)
+
     self.title = context.map { $0.title }
     let contextAndProjectAndPledgeAmount = Signal.combineLatest(context, project, pledgeAmount)
 
@@ -645,6 +651,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           reward: reward,
           checkoutData: checkoutData,
           refTag: refTag
+        )
+      }
+
+    Signal.combineLatest(project, updateBackingData, context)
+      .takeWhen(updateButtonTapped)
+      .observeValues { project, data, context in
+        AppEnvironment.current.koala.trackPledgeSubmitButtonClicked(
+          project: project,
+          reward: data.reward,
+          context: TrackingHelpers.pledgeContext(for: context),
+          refTag: nil
         )
       }
 
@@ -870,7 +887,13 @@ private func paymentMethodValid(
     return true
   }
 
-  return backedPaymentSourceId != paymentSourceId
+  if project.personalization.backing?.status == .errored {
+    return true
+  } else if backedPaymentSourceId != paymentSourceId {
+    return true
+  }
+
+  return false
 }
 
 private func allValuesChangedAndValid(
@@ -884,6 +907,20 @@ private func allValuesChangedAndValid(
   }
 
   return amountValid && shippingRuleValid
+}
+
+private func titleForSubmitButton(
+  context: PledgeViewContext,
+  project: Project,
+  paymentSourceId: String?
+) -> String {
+  let backedPaymentSourceId = project.personalization.backing?.paymentSource?.id
+
+  if context == .fixPaymentMethod, backedPaymentSourceId == paymentSourceId {
+    return Strings.Retry()
+  } else {
+    return context.submitButtonTitle
+  }
 }
 
 // MARK: - Helper Functions

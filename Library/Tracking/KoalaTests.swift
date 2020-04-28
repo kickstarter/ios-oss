@@ -663,7 +663,7 @@ final class KoalaTests: TestCase {
 
     koala.trackPledgeCTAButtonClicked(stateType: .fix, project: project)
 
-    XCTAssertEqual(["Fix Pledge Button Clicked"], client.events)
+    XCTAssertEqual(["Manage Pledge Button Clicked"], client.events)
   }
 
   func testTrackPledgeCTAButtonClicked_PledgeState() {

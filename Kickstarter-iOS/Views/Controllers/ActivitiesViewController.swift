@@ -45,7 +45,7 @@ internal final class ActivitiesViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: Styles.gridHalf(3)))
-
+    self.tableView.registerCellClass(ActivityErroredBackingsCell.self)
     self.tableView.dataSource = self.dataSource
 
     let emptyVC = EmptyStatesViewController.configuredWith(emptyState: .activity)
@@ -81,6 +81,13 @@ internal final class ActivitiesViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] activities in
         self?.dataSource.load(activities: activities)
+        self?.tableView.reloadData()
+      }
+
+    self.viewModel.outputs.erroredBackings
+      .observeForUI()
+      .observeValues { [weak self] backings in
+        self?.dataSource.load(erroredBackings: backings)
         self?.tableView.reloadData()
       }
 

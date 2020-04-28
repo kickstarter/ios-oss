@@ -137,12 +137,12 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ backing
 
     self.vm.inputs.configureWith(value: (.left((project, nil)), false, .projectPamphlet))
-    self.buttonStyleType.assertValues([ButtonStyleType.black])
-    self.buttonTitleText.assertValues([Strings.View_your_pledge()])
-    self.titleText.assertValues([])
-    self.subtitleText.assertValues(["$10"])
-    self.spacerIsHidden.assertValues([true])
-    self.stackViewIsHidden.assertValues([true])
+    self.buttonStyleType.assertValues([ButtonStyleType.red])
+    self.buttonTitleText.assertValues([Strings.Manage()])
+    self.titleText.assertValues(["Payment failure"])
+    self.subtitleText.assertValues(["We can't process your pledge."])
+    self.spacerIsHidden.assertValues([false])
+    self.stackViewIsHidden.assertValues([false])
   }
 
   func testPledgeCTA_NonBacker_LiveProject_loggedIn() {
