@@ -643,36 +643,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.notifyDelegateToGoToCreator.assertValues([project])
   }
 
-  func testTrackingCreatorBylineTapped_LiveProject_LoggedIn_NonBacked() {
-    let creatorDetails = ProjectCreatorDetailsEnvelope.template
-
-    let project = Project.template
-      |> Project.lens.state .~ .live
-      |> Project.lens.personalization.isBacking .~ false
-
-    withEnvironment(config: .template, currentUser: .template) {
-      self.vm.inputs.configureWith(value: (project, .discovery, (creatorDetails, false), []))
-      self.vm.inputs.awakeFromNib()
-
-      XCTAssertEqual(self.trackingClient.events, [])
-
-      self.vm.inputs.creatorBylineTapped()
-
-      self.notifyDelegateToGoToCreatorFromByline.assertValues([project])
-
-      XCTAssertEqual(self.trackingClient.events, ["Creator Details Clicked"])
-
-      XCTAssertEqual(self.trackingClient.properties(forKey: "context_location"), ["project_screen"])
-      XCTAssertEqual(self.trackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
-      XCTAssertEqual(self.trackingClient.properties(forKey: "session_referrer_credit"), ["discovery"])
-
-      XCTAssertEqual(self.trackingClient.properties(forKey: "project_subcategory"), ["Art"])
-      XCTAssertEqual(self.trackingClient.properties(forKey: "project_category"), [nil])
-      XCTAssertEqual(self.trackingClient.properties(forKey: "project_country"), ["US"])
-      XCTAssertEqual(self.trackingClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
-    }
-  }
-
   func testTrackingCampaignDetailsButtonTapped_NonLiveProject_LoggedIn_Backed() {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let user = User.template
@@ -689,10 +659,16 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       XCTAssertEqual(self.trackingClient.events, [])
 
-      // TODO: when we add the Optimizely properties, we'll want this event to fire always, but only include the Optimizely properties if the project is live and not backed
       self.vm.inputs.readMoreButtonTapped()
 
-      XCTAssertEqual(self.trackingClient.events, [])
+      XCTAssertEqual(self.trackingClient.events, ["Campaign Details Button Clicked"], "Event is tracked")
+
+      XCTAssertEqual(self.trackingClient.properties(forKey: "optimizely_api_key"),
+                     [nil], "Event does not include Optimizely properties")
+      XCTAssertEqual(self.trackingClient.properties(forKey: "optimizely_environment"),
+                     [nil], "Event does not include Optimizely properties")
+      XCTAssertEqual(self.trackingClient.properties(forKey: "optimizely_experiments"),
+                     [nil], "Event does not include Optimizely properties")
     }
   }
 
@@ -728,6 +704,82 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       XCTAssertEqual(self.trackingClient.properties(forKey: "project_category"), [nil])
       XCTAssertEqual(self.trackingClient.properties(forKey: "project_country"), ["US"])
       XCTAssertEqual(self.trackingClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+
+      let properties = self.trackingClient.properties.last
+
+      XCTAssertNotNil(properties?["optimizely_api_key"],
+                   "Event includes Optimizely properties")
+      XCTAssertNotNil(properties?["optimizely_environment"],
+                   "Event includes Optimizely properties")
+      XCTAssertNotNil(properties?["optimizely_experiments"],
+                   "Event includes Optimizely properties")
+    }
+  }
+
+  func testTrackingCreatorBylineTapped_LiveProject_LoggedIn_NonBacked() {
+    let creatorDetails = ProjectCreatorDetailsEnvelope.template
+
+    let project = Project.template
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ false
+
+    withEnvironment(config: .template, currentUser: .template) {
+      self.vm.inputs.configureWith(value: (project, .discovery, (creatorDetails, false), []))
+      self.vm.inputs.awakeFromNib()
+
+      XCTAssertEqual(self.trackingClient.events, [])
+
+      self.vm.inputs.creatorBylineTapped()
+
+      self.notifyDelegateToGoToCreatorFromByline.assertValues([project])
+
+      XCTAssertEqual(self.trackingClient.events, ["Creator Details Clicked"])
+
+      XCTAssertEqual(self.trackingClient.properties(forKey: "context_location"), ["project_screen"])
+      XCTAssertEqual(self.trackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
+      XCTAssertEqual(self.trackingClient.properties(forKey: "session_referrer_credit"), ["discovery"])
+
+      XCTAssertEqual(self.trackingClient.properties(forKey: "project_subcategory"), ["Art"])
+      XCTAssertEqual(self.trackingClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(self.trackingClient.properties(forKey: "project_country"), ["US"])
+      XCTAssertEqual(self.trackingClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+
+      let properties = self.trackingClient.properties.last
+
+      XCTAssertNotNil(properties?["optimizely_api_key"],
+                   "Event includes Optimizely properties")
+      XCTAssertNotNil(properties?["optimizely_environment"],
+                   "Event includes Optimizely properties")
+      XCTAssertNotNil(properties?["optimizely_experiments"],
+                   "Event includes Optimizely properties")
+    }
+  }
+
+  func testTrackingCreatorBylineTapped_LiveProject_LoggedIn_Backed() {
+    let creatorDetails = ProjectCreatorDetailsEnvelope.template
+
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ Backing.template
+
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(value: (project, .discovery, (creatorDetails, false), []))
+      self.vm.inputs.awakeFromNib()
+
+      XCTAssertEqual(self.trackingClient.events, [])
+
+      self.vm.inputs.creatorBylineTapped()
+
+      self.notifyDelegateToGoToCreatorFromByline.assertValues([project])
+
+      XCTAssertEqual(self.trackingClient.events, ["Creator Details Clicked"], "Event is tracked")
+
+      XCTAssertEqual(self.trackingClient.properties(forKey: "optimizely_api_key"),
+                     [nil], "Event does not include Optimizely properties")
+      XCTAssertEqual(self.trackingClient.properties(forKey: "optimizely_environment"),
+                     [nil], "Event does not include Optimizely properties")
+      XCTAssertEqual(self.trackingClient.properties(forKey: "optimizely_experiments"),
+                     [nil], "Event does not include Optimizely properties")
     }
   }
 

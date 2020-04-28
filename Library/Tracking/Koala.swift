@@ -1434,8 +1434,13 @@ public final class Koala {
   public func trackCreatorDetailsClicked(project: Project,
                                          location: LocationContext,
                                          refTag: RefTag?,
-                                         cookieRefTag: RefTag? = nil) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+                                         cookieRefTag: RefTag? = nil,
+                                         optimizelyProperties: [String: Any]? = nil) {
+    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+
+    if let optimizelyProperties = optimizelyProperties {
+      props = props.withAllValuesFrom(optimizelyProperties)
+    }
 
     self.track(
       event: DataLakeWhiteListedEvent.creatorDetailsClicked.rawValue,
@@ -1449,8 +1454,13 @@ public final class Koala {
   public func trackCampaignDetailsButtonClicked(project: Project,
                                                 location: LocationContext,
                                                 refTag: RefTag?,
-                                                cookieRefTag: RefTag? = nil) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+                                                cookieRefTag: RefTag? = nil,
+                                                optimizelyProperties: [String: Any]? = nil) {
+    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+
+    if let optimizelyProperties = optimizelyProperties {
+      props = props.withAllValuesFrom(optimizelyProperties)
+    }
 
     self.track(
       event: DataLakeWhiteListedEvent.campaignDetailsButtonClicked.rawValue,
