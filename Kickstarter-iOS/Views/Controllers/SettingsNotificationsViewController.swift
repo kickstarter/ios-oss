@@ -164,7 +164,7 @@ extension SettingsNotificationsViewController: UITableViewDelegate {
   }
 
   func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
-    return 0.1 // Required to remove footer in table view of type "Grouped"
+    return UITableView.automaticDimension // Required to remove footer in table view of type "Grouped"
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -195,10 +195,6 @@ extension SettingsNotificationsViewController: UITableViewDelegate {
     footerView?.label.text = text
 
     return footerView
-  }
-
-  func tableView(_: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return UITableView.automaticDimension
   }
 
   func tableView(_: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
