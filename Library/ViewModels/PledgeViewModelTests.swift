@@ -78,11 +78,11 @@ final class PledgeViewModelTests: TestCase {
       .observe(self.configurePaymentMethodsViewControllerWithContext.observer)
 
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.0 }
-    .observe(self.configurePledgeViewCTAContainerViewIsLoggedIn.observer)
+      .observe(self.configurePledgeViewCTAContainerViewIsLoggedIn.observer)
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.1 }
-    .observe(self.configurePledgeViewCTAContainerViewIsEnabled.observer)
+      .observe(self.configurePledgeViewCTAContainerViewIsEnabled.observer)
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.2 }
-    .observe(self.configurePledgeViewCTAContainerViewContext.observer)
+      .observe(self.configurePledgeViewCTAContainerViewContext.observer)
 
     self.vm.outputs.configureSummaryViewControllerWithData.map(third)
       .observe(self.configureSummaryViewControllerWithDataConfirmationLabelHidden.observer)
@@ -1446,14 +1446,12 @@ final class PledgeViewModelTests: TestCase {
 
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
 
-
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(
         with: (amount: 25.0, min: 10.0, max: 10_000.0, isValid: true)
       )
 
       self.processingViewIsHidden.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
-
 
       self.vm.inputs.submitButtonTapped()
 
@@ -1803,7 +1801,8 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false], "Shipping rule and amount unchanged")
+    self.configurePledgeViewCTAContainerViewIsEnabled
+      .assertValues([false], "Shipping rule and amount unchanged")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
@@ -1825,12 +1824,13 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.shippingRuleSelected(.template)
 
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false, true], "Shipping rule changed")
+    self.configurePledgeViewCTAContainerViewIsEnabled
+      .assertValues([false, true, false, true], "Shipping rule changed")
 
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false, true, false], "Shipping rule unchanged")
-
+    self.configurePledgeViewCTAContainerViewIsEnabled
+      .assertValues([false, true, false, true, false], "Shipping rule unchanged")
   }
 
   func testUpdatingSubmitButtonEnabled_NoShipping() {
@@ -1930,10 +1930,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
-
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues(
-          [false, true], "Shipping rule and amount unchanged, button enabled due to different reward"
-        )
+        [false, true], "Shipping rule and amount unchanged, button enabled due to different reward"
+      )
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
       self.popToRootViewController.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
@@ -1986,7 +1985,8 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false], "Shipping rule and amount unchanged")
+    self.configurePledgeViewCTAContainerViewIsEnabled
+      .assertValues([false], "Shipping rule and amount unchanged")
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
@@ -2000,16 +2000,16 @@ final class PledgeViewModelTests: TestCase {
 
     self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true], "Amount changed")
 
-
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
       with: (amount: 690, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-     self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false], "Amount unchanged")
+    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false], "Amount unchanged")
 
     self.vm.inputs.shippingRuleSelected(.template)
 
-    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false, true], "Shipping rule changed")
+    self.configurePledgeViewCTAContainerViewIsEnabled
+      .assertValues([false, true, false, true], "Shipping rule changed")
 
     self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
 
@@ -2021,9 +2021,9 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.creditCardSelected(with: "12345")
 
     self.configurePledgeViewCTAContainerViewIsEnabled.assertValues(
-        [false, true, false, true, false, true],
-        "Payment method changed"
-      )
+      [false, true, false, true, false, true],
+      "Payment method changed"
+    )
 
     self.vm.inputs.creditCardSelected(with: Backing.PaymentSource.template.id ?? "")
 

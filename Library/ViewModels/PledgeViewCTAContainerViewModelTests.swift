@@ -29,7 +29,7 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     self.vm.outputs.notifyDelegateSubmitButtonTapped.observe(self.notifyDelegateSubmitButtonTapped.observer)
     self.vm.outputs.notifyDelegateToGoToLoginSignup.observe(self.notifyDelegateToGoToLoginSignup.observer)
     self.vm.outputs.submitButtonIsEnabled.observe(self.submitButtonIsEnabled.observer)
-     self.vm.outputs.submitButtonIsHidden.observe(self.submitButtonIsHidden.observer)
+    self.vm.outputs.submitButtonIsHidden.observe(self.submitButtonIsHidden.observer)
     self.vm.outputs.submitButtonTitle.observe(self.submitButtonTitle.observer)
   }
 

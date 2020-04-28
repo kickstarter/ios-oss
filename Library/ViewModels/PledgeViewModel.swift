@@ -566,7 +566,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.configurePledgeViewCTAContainerView =
       Signal.combineLatest(isLoggedIn, isEnabled, context)
-      .map { ($0.0, $0.1, $0.2) }
+        .map { ($0.0, $0.1, $0.2) }
 
     self.title = context.map { $0.title }
     let contextAndProjectAndPledgeAmount = Signal.combineLatest(context, project, pledgeAmount)
