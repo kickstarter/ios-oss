@@ -22,6 +22,7 @@ internal final class SettingsNotificationsViewController: UIViewController {
 
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
+    self.tableView.estimatedSectionFooterHeight = SettingsGroupedFooterView.defaultHeight
 
     self.emailFrequencyPickerView.delegate = self
     self.emailFrequencyPickerView.dataSource = self
@@ -29,8 +30,15 @@ internal final class SettingsNotificationsViewController: UIViewController {
     self.tableView.register(nib: .SettingsNotificationCell)
     self.tableView.register(nib: .SettingsNotificationPickerCell)
     self.tableView.registerHeaderFooter(nib: .SettingsHeaderView)
+    self.tableView.registerHeaderFooterClass(SettingsGroupedFooterView.self)
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.tableView.ksr_sizeHeaderFooterViewsToFit()
   }
 
   internal override func bindStyles() {
@@ -172,6 +180,25 @@ extension SettingsNotificationsViewController: UITableViewDelegate {
     headerView?.configure(title: sectionType.sectionTitle)
 
     return headerView
+  }
+
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    guard section == SettingsNotificationSectionType.fromKickstarter.rawValue else {
+         return nil
+       }
+
+    let footerView = tableView.dequeueReusableHeaderFooterView(
+      withClass: SettingsGroupedFooterView.self
+    ) as? SettingsGroupedFooterView
+
+    let text = "Big Kickstarter announcements, plus occasional projects and events chosen just for you."
+    footerView?.label.text = text
+
+    return footerView
+  }
+
+  func tableView(_: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return UITableView.automaticDimension
   }
 
   func tableView(_: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
