@@ -144,6 +144,10 @@ public protocol ServiceType {
   func fetchGraphUserAccountFields(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<GraphUser>, GraphError>
 
+  /// Fetch User's backings with a specific status.
+  func fetchGraphUserBackings(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError>
+
   /// Fetch User's email fields object using graphQL.
   func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError>

@@ -385,6 +385,11 @@
 		8A32AE9623EA1DC0005CEA57 /* Project.CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A32AE9523EA1DC0005CEA57 /* Project.CategoryTemplates.swift */; };
 		8A3BF51923F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3BF51823F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift */; };
 		8A3BF51E23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */; };
+		8A41CC692458A0360095B15E /* GraphBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41CC672458A0360095B15E /* GraphBackingEnvelope.swift */; };
+		8A41CC6A2458A0360095B15E /* GraphBacking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41CC682458A0360095B15E /* GraphBacking.swift */; };
+		8A41CC6C2458A0480095B15E /* GraphBackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41CC6B2458A0480095B15E /* GraphBackingTests.swift */; };
+		8A41CC6F2458A0610095B15E /* GraphBackingsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41CC6D2458A0610095B15E /* GraphBackingsEnvelopeTemplates.swift */; };
+		8A41CC702458A0610095B15E /* GraphBackingTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41CC6E2458A0610095B15E /* GraphBackingTemplates.swift */; };
 		8A4503F4234BEDBD008309EC /* PledgeViewContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4503F3234BEDBD008309EC /* PledgeViewContext.swift */; };
 		8A4503F6234BEDD4008309EC /* PledgeViewContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4503F5234BEDD4008309EC /* PledgeViewContextTests.swift */; };
 		8A4DDAB32373427000ADE31D /* PledgeStatusLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */; };
@@ -1843,6 +1848,11 @@
 		8A32AE9523EA1DC0005CEA57 /* Project.CategoryTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.CategoryTemplates.swift; sourceTree = "<group>"; };
 		8A3BF51823F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTelephonyNetworkInfoType.swift; sourceTree = "<group>"; };
 		8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCoreTelephonyNetworkInfo.swift; sourceTree = "<group>"; };
+		8A41CC672458A0360095B15E /* GraphBackingEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBackingEnvelope.swift; sourceTree = "<group>"; };
+		8A41CC682458A0360095B15E /* GraphBacking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBacking.swift; sourceTree = "<group>"; };
+		8A41CC6B2458A0480095B15E /* GraphBackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBackingTests.swift; sourceTree = "<group>"; };
+		8A41CC6D2458A0610095B15E /* GraphBackingsEnvelopeTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBackingsEnvelopeTemplates.swift; sourceTree = "<group>"; };
+		8A41CC6E2458A0610095B15E /* GraphBackingTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBackingTemplates.swift; sourceTree = "<group>"; };
 		8A4503F3234BEDBD008309EC /* PledgeViewContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewContext.swift; sourceTree = "<group>"; };
 		8A4503F5234BEDD4008309EC /* PledgeViewContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewContextTests.swift; sourceTree = "<group>"; };
 		8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelView.swift; sourceTree = "<group>"; };
@@ -4129,6 +4139,9 @@
 				D01587921EEB2ED6006E7684 /* FindFriendsEnvelopeTests.swift */,
 				D01587931EEB2ED6006E7684 /* FriendStatsEnvelope.swift */,
 				D01587941EEB2ED6006E7684 /* FriendStatsEnvelopeTests.swift */,
+				8A41CC682458A0360095B15E /* GraphBacking.swift */,
+				8A41CC672458A0360095B15E /* GraphBackingEnvelope.swift */,
+				8A41CC6B2458A0480095B15E /* GraphBackingTests.swift */,
 				D002CAE4218CF951009783F2 /* GraphMutationWatchProjectResponseEnvelope.swift */,
 				7798B56421750041008BC50D /* GraphUser.swift */,
 				D63BBD30217F7212007E01F0 /* GraphUserCreditCard.swift */,
@@ -4276,6 +4289,8 @@
 				D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */,
 				D01587FA1EEB2ED7006E7684 /* FindFriendsEnvelopeTemplates.swift */,
 				D01587FB1EEB2ED7006E7684 /* FriendStatsEnvelopeTemplates.swift */,
+				8A41CC6D2458A0610095B15E /* GraphBackingsEnvelopeTemplates.swift */,
+				8A41CC6E2458A0610095B15E /* GraphBackingTemplates.swift */,
 				D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */,
 				D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */,
 				D08CD20221922025009F89F0 /* GraphMutationWatchProjectResponseEnvelopeTemplates.swift */,
@@ -5804,6 +5819,7 @@
 				D6AE52251FD1B3F600BEC788 /* RootCategoriesEnvelope.swift in Sources */,
 				D002CAE3218CF91D009783F2 /* WatchProjectInput.swift in Sources */,
 				D0158A2D1EEB30A2006E7684 /* UpdateTemplates.swift in Sources */,
+				8A41CC702458A0610095B15E /* GraphBackingTemplates.swift in Sources */,
 				D755ECA52315E6E10096F189 /* CreateBackingInput.swift in Sources */,
 				D0158A181EEB30A2006E7684 /* MessageTemplates.swift in Sources */,
 				D0158A191EEB30A2006E7684 /* MessageThreadTemplates.swift in Sources */,
@@ -5830,6 +5846,7 @@
 				D01588B31EEB2ED7006E7684 /* ProjectNotification.ProjectLenses.swift in Sources */,
 				D01588811EEB2ED7006E7684 /* ActivityLenses.swift in Sources */,
 				D01588971EEB2ED7006E7684 /* FriendStatsEnvelope.StatsLenses.swift in Sources */,
+				8A41CC6A2458A0360095B15E /* GraphBacking.swift in Sources */,
 				D01588AD1EEB2ED7006E7684 /* Project.StatsLenses.swift in Sources */,
 				D0158A211EEB30A2006E7684 /* ProjectStatsEnvelope.VideoStatsTemplates.swift in Sources */,
 				D0158A141EEB30A2006E7684 /* FindFriendsEnvelopeTemplates.swift in Sources */,
@@ -5892,6 +5909,7 @@
 				D01588B11EEB2ED7006E7684 /* ProjectLenses.swift in Sources */,
 				D777442F217A3382008D679F /* ChangeCurrencyInput.swift in Sources */,
 				D01588531EEB2ED7006E7684 /* ChangePaymentMethodEnvelope.swift in Sources */,
+				8A41CC6F2458A0610095B15E /* GraphBackingsEnvelopeTemplates.swift in Sources */,
 				D01588E51EEB2ED7006E7684 /* Location.swift in Sources */,
 				D01588A11EEB2ED7006E7684 /* MessageThreadLenses.swift in Sources */,
 				D01588BB1EEB2ED7006E7684 /* ProjectStatsEnvelope.ReferrerStatsLenses.swift in Sources */,
@@ -5979,6 +5997,7 @@
 				8A4E954B245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift in Sources */,
 				D755ECAB232005A70096F189 /* Checkout.swift in Sources */,
 				8A4E953B2450FE1500A578CF /* Money.swift in Sources */,
+				8A41CC692458A0360095B15E /* GraphBackingEnvelope.swift in Sources */,
 				D01588BF1EEB2ED7006E7684 /* ProjectStatsEnvelope.VideoStatsLenses.swift in Sources */,
 				8AF34C802343C41C000B211D /* UpdateBackingEnvelope.swift in Sources */,
 				D775EC682084FDE800885634 /* ProjectStatsEnvelope.ReferralAggregateStatsLenses.swift in Sources */,
@@ -5999,6 +6018,7 @@
 				8ACF558F23EA08DB001654A2 /* TryDecodableTests.swift in Sources */,
 				D0D10C1E1EEB4550005EBAD0 /* UpdateTests.swift in Sources */,
 				D0D10C211EEB4550005EBAD0 /* User.NotificationsTests.swift in Sources */,
+				8A41CC6C2458A0480095B15E /* GraphBackingTests.swift in Sources */,
 				D0D10C1C1EEB4550005EBAD0 /* UpdateDraftTests.swift in Sources */,
 				D0D10C0D1EEB4550005EBAD0 /* FriendStatsEnvelopeTests.swift in Sources */,
 				8AF34C8623440565000B211D /* ApplePayParamsTests.swift in Sources */,
