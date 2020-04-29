@@ -64,7 +64,7 @@ public final class Koala {
   /// Determines the screen from which the event is sent.
   public enum LocationContext: String {
     case activities = "activity_feed_screen" // ActivitiesViewController
-    case campaign = "campaign_screen"
+    case campaign = "campaign_screen" // ProjectDescriptionViewController
     case discovery = "explore_screen" // DiscoveryViewController
     case editorialProjects = "editorial_collection_screen" // EditorialProjectsViewController
     case forgotPassword = "forgot_password_screen" // ResetPasswordViewController
@@ -1431,10 +1431,12 @@ public final class Koala {
     )
   }
 
-  public func trackCreatorDetailsClicked(project: Project,
-                                         location: LocationContext,
-                                         refTag: RefTag?,
-                                         cookieRefTag: RefTag? = nil) {
+  public func trackCreatorDetailsClicked(
+    project: Project,
+    location: LocationContext,
+    refTag: RefTag?,
+    cookieRefTag: RefTag? = nil
+  ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
     self.track(
