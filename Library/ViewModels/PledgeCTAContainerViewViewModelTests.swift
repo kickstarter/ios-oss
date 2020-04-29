@@ -468,12 +468,21 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     XCTAssertEqual(["View Rewards Button Clicked"], self.trackingClient.events)
 
-    XCTAssertEqual(self.trackingClient.properties(forKey: "optimizely_api_key"),
-                   [nil], "Event does not include Optimizely properties")
-    XCTAssertEqual(self.trackingClient.properties(forKey: "optimizely_environment"),
-                   [nil], "Event does not include Optimizely properties")
-    XCTAssertEqual(self.trackingClient.properties(forKey: "optimizely_experiments"),
-                   [nil], "Event does not include Optimizely properties")
+    XCTAssertEqual(
+      self.trackingClient.properties(forKey: "optimizely_api_key"),
+      [nil],
+      "Event does not include Optimizely properties"
+    )
+    XCTAssertEqual(
+      self.trackingClient.properties(forKey: "optimizely_environment"),
+      [nil],
+      "Event does not include Optimizely properties"
+    )
+    XCTAssertEqual(
+      self.trackingClient.properties(forKey: "optimizely_experiments"),
+      [nil],
+      "Event does not include Optimizely properties"
+    )
   }
 
   func testTrackingEvents_Pledge_PledgeCTACopyExpeirment() {

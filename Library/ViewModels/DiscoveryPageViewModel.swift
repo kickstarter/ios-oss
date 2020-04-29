@@ -424,14 +424,16 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .observeValues { params in
         let optimizelyProps = optimizelyProperties()
 
-        AppEnvironment.current.koala.trackDiscovery(params: params,
-                                                    optimizelyProperties: optimizelyProps)
+        AppEnvironment.current.koala.trackDiscovery(
+          params: params,
+          optimizelyProperties: optimizelyProps
+        )
       }
 
     let personalizationCellTappedAndRefTag = self.personalizationCellTappedProperty.signal
       .mapConst(RefTag.onboarding)
 
-    let editorialCellTappedAndRefTag =  self.discoveryEditorialCellTappedWithValueProperty.signal
+    let editorialCellTappedAndRefTag = self.discoveryEditorialCellTappedWithValueProperty.signal
       .skipNil()
       .map { RefTag.projectCollection($0) }
 

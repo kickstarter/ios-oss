@@ -663,12 +663,21 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       XCTAssertEqual(self.trackingClient.events, ["Campaign Details Button Clicked"], "Event is tracked")
 
-      XCTAssertEqual(self.trackingClient.properties(forKey: "optimizely_api_key"),
-                     [nil], "Event does not include Optimizely properties")
-      XCTAssertEqual(self.trackingClient.properties(forKey: "optimizely_environment"),
-                     [nil], "Event does not include Optimizely properties")
-      XCTAssertEqual(self.trackingClient.properties(forKey: "optimizely_experiments"),
-                     [nil], "Event does not include Optimizely properties")
+      XCTAssertEqual(
+        self.trackingClient.properties(forKey: "optimizely_api_key"),
+        [nil],
+        "Event does not include Optimizely properties"
+      )
+      XCTAssertEqual(
+        self.trackingClient.properties(forKey: "optimizely_environment"),
+        [nil],
+        "Event does not include Optimizely properties"
+      )
+      XCTAssertEqual(
+        self.trackingClient.properties(forKey: "optimizely_experiments"),
+        [nil],
+        "Event does not include Optimizely properties"
+      )
     }
   }
 
@@ -707,12 +716,18 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       let properties = self.trackingClient.properties.last
 
-      XCTAssertNotNil(properties?["optimizely_api_key"],
-                   "Event includes Optimizely properties")
-      XCTAssertNotNil(properties?["optimizely_environment"],
-                   "Event includes Optimizely properties")
-      XCTAssertNotNil(properties?["optimizely_experiments"],
-                   "Event includes Optimizely properties")
+      XCTAssertNotNil(
+        properties?["optimizely_api_key"],
+        "Event includes Optimizely properties"
+      )
+      XCTAssertNotNil(
+        properties?["optimizely_environment"],
+        "Event includes Optimizely properties"
+      )
+      XCTAssertNotNil(
+        properties?["optimizely_experiments"],
+        "Event includes Optimizely properties"
+      )
     }
   }
 
@@ -746,12 +761,18 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       let properties = self.trackingClient.properties.last
 
-      XCTAssertNotNil(properties?["optimizely_api_key"],
-                   "Event includes Optimizely properties")
-      XCTAssertNotNil(properties?["optimizely_environment"],
-                   "Event includes Optimizely properties")
-      XCTAssertNotNil(properties?["optimizely_experiments"],
-                   "Event includes Optimizely properties")
+      XCTAssertNotNil(
+        properties?["optimizely_api_key"],
+        "Event includes Optimizely properties"
+      )
+      XCTAssertNotNil(
+        properties?["optimizely_environment"],
+        "Event includes Optimizely properties"
+      )
+      XCTAssertNotNil(
+        properties?["optimizely_experiments"],
+        "Event includes Optimizely properties"
+      )
     }
   }
 
@@ -774,12 +795,21 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       XCTAssertEqual(self.trackingClient.events, ["Creator Details Clicked"], "Event is tracked")
 
-      XCTAssertEqual(self.trackingClient.properties(forKey: "optimizely_api_key"),
-                     [nil], "Event does not include Optimizely properties")
-      XCTAssertEqual(self.trackingClient.properties(forKey: "optimizely_environment"),
-                     [nil], "Event does not include Optimizely properties")
-      XCTAssertEqual(self.trackingClient.properties(forKey: "optimizely_experiments"),
-                     [nil], "Event does not include Optimizely properties")
+      XCTAssertEqual(
+        self.trackingClient.properties(forKey: "optimizely_api_key"),
+        [nil],
+        "Event does not include Optimizely properties"
+      )
+      XCTAssertEqual(
+        self.trackingClient.properties(forKey: "optimizely_environment"),
+        [nil],
+        "Event does not include Optimizely properties"
+      )
+      XCTAssertEqual(
+        self.trackingClient.properties(forKey: "optimizely_experiments"),
+        [nil],
+        "Event does not include Optimizely properties"
+      )
     }
   }
 
