@@ -3693,6 +3693,21 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  func testTrackingEvents_CheckoutPaymentPageViewed() {
+    self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil, context: .pledge)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+
+    XCTAssertEqual(self.trackingClient.properties(forKey: "context_pledge_flow"), ["new_pledge"])
+
+    let properties = self.trackingClient.properties.last
+
+    XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
+    XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")
+    XCTAssertNotNil(properties?["optimizely_experiments"], "Event includes Optimizely properties")
+  }
+
   func testTrackingEvents_UpdatePaymentMethod() {
     self.vm.inputs.configureWith(
       project: .template, reward: .template,
@@ -3701,6 +3716,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+    XCTAssertEqual(self.trackingClient.properties(forKey: "context_pledge_flow"), ["manage_reward"])
 
     self.vm.inputs.submitButtonTapped()
 
@@ -3715,6 +3731,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+    XCTAssertEqual(self.trackingClient.properties(forKey: "context_pledge_flow"), ["manage_reward"])
 
     self.vm.inputs.submitButtonTapped()
 
@@ -3729,6 +3746,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+    XCTAssertEqual(self.trackingClient.properties(forKey: "context_pledge_flow"), ["change_reward"])
 
     self.vm.inputs.submitButtonTapped()
 
@@ -3755,6 +3773,7 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(["Checkout Payment Page Viewed"], trackingClient.events)
 
+      XCTAssertEqual(trackingClient.properties(forKey: "context_pledge_flow"), ["new_pledge"])
       XCTAssertEqual(trackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
       XCTAssertEqual(
         trackingClient.properties(forKey: "session_referrer_credit"),

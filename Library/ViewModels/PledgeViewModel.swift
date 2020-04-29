@@ -609,14 +609,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     initialData
       .observeValues { project, reward, refTag, context in
         let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
-        let optimizelyProperties = optimizelyProperties()
+        let optimizelyProps = optimizelyProperties()
 
         AppEnvironment.current.koala.trackCheckoutPaymentPageViewed(
           project: project,
           reward: reward,
           context: TrackingHelpers.pledgeContext(for: context),
           refTag: refTag,
-          cookieRefTag: cookieRefTag
+          cookieRefTag: cookieRefTag,
+          optimizelyProperties: optimizelyProps
         )
       }
 
