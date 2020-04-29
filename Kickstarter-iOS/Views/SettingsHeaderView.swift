@@ -4,7 +4,7 @@ import Prelude
 final class SettingsHeaderView: UITableViewHeaderFooterView {
   @IBOutlet fileprivate var titleLabel: UILabel!
 
-  func configure(title: String) {
+  func configure(title: String?) {
     _ = self
       |> \.accessibilityLabel .~ title
       |> \.accessibilityTraits .~ .header

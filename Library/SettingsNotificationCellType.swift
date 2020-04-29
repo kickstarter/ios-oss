@@ -30,6 +30,15 @@ public enum SettingsNotificationSectionType: Int {
     }
   }
 
+  public var hasHeader: Bool {
+    switch self {
+    case .fromKickstarter:
+     return false
+    default:
+     return true
+    }
+  }
+
   public var cellRowsForSection: [SettingsNotificationCellType] {
     switch self {
     case .backedProjects:
@@ -43,7 +52,7 @@ public enum SettingsNotificationSectionType: Int {
     }
   }
 
-  public var sectionTitle: String {
+  public var sectionTitle: String? {
     switch self {
     case .backedProjects:
       return Strings.Projects_youve_backed()
@@ -52,7 +61,7 @@ public enum SettingsNotificationSectionType: Int {
     case .social:
       return Strings.profile_settings_social_title()
     case .fromKickstarter:
-      return Strings.From_Kickstarter()
+      return nil
     }
   }
 

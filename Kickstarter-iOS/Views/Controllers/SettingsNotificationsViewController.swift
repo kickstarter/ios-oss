@@ -160,11 +160,26 @@ extension SettingsNotificationsViewController: UITableViewDelegate {
       return 0.0
     }
 
-    return sectionType.sectionHeaderHeight
+    if sectionType.hasHeader {
+      return sectionType.sectionHeaderHeight
+    } else {
+      return 0.0
+    }
   }
 
-  func tableView(_: UITableView, heightForFooterInSection _: Int) -> CGFloat {
-    return UITableView.automaticDimension // Required to remove footer in table view of type "Grouped"
+  func tableView(_: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    guard let sectionType = dataSource.sectionType(
+      section: section,
+      user: AppEnvironment.current.currentUser
+    ) else {
+      return 0.1
+    }
+
+    if sectionType.hasDescriptionFooter {
+      return UITableView.automaticDimension
+    } else {
+      return 0.1
+    }
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -195,7 +210,7 @@ extension SettingsNotificationsViewController: UITableViewDelegate {
         withClass: SettingsGroupedFooterView.self
       ) as? SettingsGroupedFooterView
 
-      let text = "Big Kickstarter announcements, plus occasional projects and events chosen just for you."
+      let text = "A weekly mix of handpicked projects, plus occasional Kickstarter news"
       footerView?.label.text = text
 
       return footerView
