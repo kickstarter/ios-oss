@@ -485,7 +485,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     )
   }
 
-  func testTrackingEvents_Pledge_PledgeCTACopyExpeirment() {
+  func testTrackingEvents_Pledge() {
     self.vm.inputs.configureWith(value: (.left((Project.template, nil)), false, .projectPamphlet))
 
     self.notifyDelegateCTATapped.assertDidNotEmitValue()
