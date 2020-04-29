@@ -18,7 +18,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
   // MARK: - Properties
 
   private lazy var confirmationSectionViews = {
-    [self.pledgeDisclaimerViewController.view, self.submitButton]
+    [self.pledgeDisclaimerViewController.view]
   }()
 
   public weak var delegate: PledgeViewControllerDelegate?
@@ -48,10 +48,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   private lazy var processingView: ProcessingView = { ProcessingView(frame: .zero) }()
 
-  private lazy var continueViewController = {
-    PledgeContinueViewController.instantiate()
-  }()
-
   private lazy var descriptionSectionViews = {
     [self.descriptionViewController.view, self.descriptionSectionSeparator]
   }()
@@ -70,10 +66,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       action: #selector(PledgeViewController.dismissKeyboard)
     )
       |> \.cancelsTouchesInView .~ false
-  }()
-
-  private lazy var loginSectionViews = {
-    [self.continueViewController.view]
   }()
 
   internal var messageBannerViewController: MessageBannerViewController?
@@ -96,8 +88,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     PledgeShippingLocationViewController.instantiate()
       |> \.delegate .~ self
   }()
-
-  private lazy var submitButton: LoadingButton = { LoadingButton(type: .custom) }()
 
   private lazy var summarySectionViews = {
     [
@@ -146,12 +136,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
 
-    self.submitButton.addTarget(
-      self,
-      action: #selector(PledgeViewController.submitButtonTapped),
-      for: .touchUpInside
-    )
-
     self.configureChildViewControllers()
     self.setupConstraints()
 
@@ -181,7 +165,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       self.pledgeDisclaimerViewController,
       self.shippingLocationViewController,
       self.summaryViewController,
-      self.continueViewController,
       self.paymentMethodsViewController
     ]
 
@@ -189,7 +172,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       self.descriptionSectionViews,
       self.inputsSectionViews,
       self.summarySectionViews,
-      self.loginSectionViews,
       self.paymentMethodsSectionViews
     ]
     .flatMap { $0 }
@@ -236,8 +218,7 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor),
-      self.submitButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height)
+      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
     ])
 
     self.sectionSeparatorViews.forEach { view in
@@ -268,9 +249,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     _ = self.sectionSeparatorViews
       ||> separatorStyleDark
 
-    _ = self.submitButton
-      |> greenButtonStyle
-
     _ = self.paymentMethodsViewController.view
       |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
   }
@@ -296,11 +274,16 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     self.viewModel.outputs.configureWithData
       .observeForUI()
       .observeValues { [weak self] data in
-        self?.continueViewController.configureWith(value: data)
         self?.descriptionViewController.configureWith(value: data)
         self?.pledgeAmountViewController.configureWith(value: data)
         self?.pledgeAmountSummaryViewController.configureWith(data.project)
         self?.shippingLocationViewController.configureWith(value: data)
+      }
+
+    self.viewModel.outputs.configurePledgeViewCTAContainerView
+      .observeForUI()
+      .observeValues { [weak self] value in
+        self?.pledgeCTAContainerView.configureWith(value: value)
       }
 
     self.viewModel.outputs.notifyPledgeAmountViewControllerShippingAmountChanged
@@ -318,6 +301,12 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       .observeForUI()
       .observeValues { [weak self] value in
         self?.paymentMethodsViewController.configure(with: value)
+      }
+
+    self.viewModel.outputs.goToLoginSignup
+      .observeForControllerAction()
+      .observeValues { [weak self] intent, project, reward in
+        self?.goToLoginSignup(with: intent, project: project, reward: reward)
       }
 
     self.sessionStartedObserver = NotificationCenter.default
@@ -365,15 +354,10 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
     self.shippingLocationViewController.view.rac.hidden
       = self.viewModel.outputs.shippingLocationViewHidden
-    self.continueViewController.view.rac.hidden = self.viewModel.outputs.continueViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
     self.pledgeAmountSummaryViewController.view.rac.hidden
       = self.viewModel.outputs.pledgeAmountSummaryViewHidden
-
-    self.submitButton.rac.enabled = self.viewModel.outputs.submitButtonEnabled
-    self.submitButton.rac.hidden = self.viewModel.outputs.submitButtonHidden
-    self.submitButton.rac.title = self.viewModel.outputs.submitButtonTitle
 
     self.viewModel.outputs.title
       .observeForUI()
@@ -382,12 +366,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
         _ = self
           |> \.title %~ { _ in title }
-      }
-
-    self.viewModel.outputs.submitButtonIsLoading
-      .observeForUI()
-      .observeValues { [weak self] isLoading in
-        self?.submitButton.isLoading = isLoading
       }
 
     self.viewModel.outputs.processingViewIsHidden
@@ -451,15 +429,28 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
 
   // MARK: - Actions
 
-  @objc internal func submitButtonTapped() {
-    self.viewModel.inputs.submitButtonTapped()
-  }
-
   @objc private func dismissKeyboard() {
     self.view.endEditing(true)
   }
 
   // MARK: - Functions
+
+  private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {
+    let loginSignupViewController = LoginToutViewController.configuredWith(
+      loginIntent: intent,
+      project: project,
+      reward: reward
+    )
+
+    let navigationController = UINavigationController(rootViewController: loginSignupViewController)
+    let navigationBarHeight = navigationController.navigationBar.bounds.height
+
+    if #available(iOS 13.0, *) {
+      self.present(navigationController, animated: true)
+    } else {
+      self.presentViewControllerWithSheetOverlay(navigationController, offset: navigationBarHeight)
+    }
+  }
 
   private func beginSCAFlow(withClientSecret secret: String) {
     STPPaymentHandler.shared().confirmSetupIntent(
@@ -532,11 +523,15 @@ extension PledgeViewController: PKPaymentAuthorizationViewControllerDelegate {
 // MARK: - PledgeScreenCTAContainerViewDelegate
 
 extension PledgeViewController: PledgeViewCTAContainerViewDelegate {
+  func goToLoginSignup() {
+    self.viewModel.inputs.goToLoginSignupTapped()
+  }
+
   func applePayButtonTapped() {
     self.viewModel.inputs.applePayButtonTapped()
   }
 
-  func pledgeButtonTapped() {
+  func submitButtonTapped() {
     self.viewModel.inputs.submitButtonTapped()
   }
 

@@ -33,10 +33,14 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
       .observe(self.notifyDelegateLoadPaymentMethodsError.observer)
 
     // swiftlint:disable line_length
-    self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.card } }.observe(self.reloadPaymentMethodsCards.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.isEnabled } }.observe(self.reloadPaymentMethodsAvailableCardTypes.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.isSelected } }.observe(self.reloadPaymentMethodsIsSelected.observer)
-    self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.projectCountry } }.observe(self.reloadPaymentMethodsProjectCountry.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.card } }
+      .observe(self.reloadPaymentMethodsCards.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.isEnabled } }
+      .observe(self.reloadPaymentMethodsAvailableCardTypes.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.isSelected } }
+      .observe(self.reloadPaymentMethodsIsSelected.observer)
+    self.vm.outputs.reloadPaymentMethods.map { $0.0 }.map { $0.map { $0.projectCountry } }
+      .observe(self.reloadPaymentMethodsProjectCountry.observer)
     self.vm.outputs.reloadPaymentMethods.map { $0.1 }.observe(self.reloadPaymentMethodsSelectedCard.observer)
     self.vm.outputs.reloadPaymentMethods.map { $0.2 }.observe(self.reloadPaymentMethodsShouldReload.observer)
     self.vm.outputs.reloadPaymentMethods.map { $0.3 }.observe(self.reloadPaymentMethodsIsLoading.observer)
