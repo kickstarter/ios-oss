@@ -172,13 +172,13 @@ extension SettingsNotificationsViewController: UITableViewDelegate {
       section: section,
       user: AppEnvironment.current.currentUser
     ) else {
-      return 0.1
+      return 0.1 // Required to remove the footer in UITableViewStyleGrouped
     }
 
     if sectionType.hasDescriptionFooter {
       return UITableView.automaticDimension
     } else {
-      return 0.1
+      return 0.1 // Required to remove the footer in UITableViewStyleGrouped
     }
   }
 
