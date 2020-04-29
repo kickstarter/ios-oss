@@ -24,18 +24,18 @@ public enum SettingsNotificationSectionType: Int {
   public var hasDescriptionFooter: Bool {
     switch self {
     case .fromKickstarter:
-     return true
+      return true
     default:
-     return false
+      return false
     }
   }
 
   public var hasHeader: Bool {
     switch self {
     case .fromKickstarter:
-     return false
+      return false
     default:
-     return true
+      return true
     }
   }
 

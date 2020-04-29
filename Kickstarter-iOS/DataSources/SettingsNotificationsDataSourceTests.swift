@@ -75,7 +75,6 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
     let section1 = self.dataSource.sectionType(section: 1, user: user)
     let section2 = self.dataSource.sectionType(section: 2, user: user)
 
-
     XCTAssertEqual(SettingsNotificationSectionType.backedProjects, section0)
     XCTAssertEqual(SettingsNotificationSectionType.social, section1)
     XCTAssertEqual(SettingsNotificationSectionType.fromKickstarter, section2)
