@@ -119,11 +119,6 @@ public enum Query {
   case rootCategories(NonEmptySet<Category>)
   case user(NonEmptySet<User>)
 
-  public enum Amount {
-    case amount
-    case currency
-  }
-
   public enum Category {
     public enum ProjectsConnection {
       public enum Argument {
@@ -172,13 +167,15 @@ public enum Query {
     case topic
   }
 
-  public enum Project {
+  public indirect enum Project {
+    case backing(NonEmptySet<Backing>)
     case creator(NonEmptySet<User>)
     case finalCollectionDate
     case id
     case name
     case projectSummary(NonEmptySet<ProjectSummary>)
     case slug
+    case state
     case updates(Set<QueryArg<Never>>, NonEmptySet<Connection<Project.Update>>)
 
     public enum State: String {
@@ -198,6 +195,34 @@ public enum Query {
       case question
       case response
     }
+  }
+
+  public enum Reward {
+    case amount(NonEmptySet<Money>)
+    case backersCount
+    case description
+    case estimatedDeliveryOn
+    case items(Set<QueryArg<Never>>, NonEmptySet<Connection<Item>>)
+    case name
+
+    public enum Item {
+      case id
+      case name
+    }
+  }
+
+  public enum Backing {
+    case amount(NonEmptySet<Money>)
+    case backer(NonEmptySet<User>)
+    case bankAccount(NonEmptySet<BankAccount>)
+    case creditCard(NonEmptySet<CreditCard>)
+    case errorReason
+    case id
+    case pledgedOn
+    case project(NonEmptySet<Project>)
+    case reward(NonEmptySet<Reward>)
+    case shippingAmount(NonEmptySet<Money>)
+    case status
   }
 
   public indirect enum User {
@@ -237,22 +262,29 @@ public enum Query {
     case url
     case userId
 
-    public enum CreditCard: String {
-      case expirationDate
-      case id
-      case lastFour
-      case type
-    }
-
-    public enum Backing {
-      case errorReason
-      case project(NonEmptySet<Project>)
-      case status
-    }
-
     public enum LaunchedProjects {
       case totalCount
     }
+  }
+
+  public enum CreditCard: String {
+    case expirationDate
+    case id
+    case lastFour
+    case paymentType
+    case type
+  }
+
+  public enum BankAccount: String {
+    case bankName
+    case id
+    case lastFour
+  }
+
+  public enum Money: String {
+    case amount
+    case currency
+    case symbol
   }
 }
 
@@ -379,12 +411,14 @@ extension Query.Category.ProjectsConnection.Argument: CustomStringConvertible {
 extension Query.Project: QueryType {
   public var description: String {
     switch self {
+    case let .backing(fields): return "backing { \(join(fields)) }"
     case let .creator(fields): return "creator { \(join(fields)) }"
     case .finalCollectionDate: return "finalCollectionDate"
     case .id: return "id"
     case .name: return "name"
     case let .projectSummary(fields): return "projectSummary { \(join(fields)) }"
     case .slug: return "slug"
+    case .state: return "state"
     case let .updates(args, fields): return "updates\(connection(args, fields))"
     }
   }
@@ -456,18 +490,57 @@ extension Query.Project.ProjectSummary: QueryType {
   }
 }
 
-extension Query.User.CreditCard: QueryType {
+extension Query.CreditCard: QueryType {
   public var description: String {
     return self.rawValue
   }
 }
 
-extension Query.User.Backing: QueryType {
+// swiftformat:disable wrap
+extension Query.Backing: QueryType {
   public var description: String {
     switch self {
+    case let .amount(fields): return "amount { \(join(fields)) }"
+    case let .backer(fields): return "backer { \(join(fields)) }"
+    case let .bankAccount(fields): return "bankAccount: paymentSource { ... on BankAccount {  \(join(fields)) } }"
+    case let .creditCard(fields): return "creditCard: paymentSource { ... on CreditCard { \(join(fields)) } }"
     case .errorReason: return "errorReason"
+    case .id: return "id"
+    case .pledgedOn: return "pledgedOn"
     case let .project(fields): return "project { \(join(fields)) }"
+    case let .reward(fields): return "reward { \(join(fields)) }"
+    case let .shippingAmount(fields): return "shippingAmount { \(join(fields)) }"
     case .status: return "status"
+    }
+  }
+}
+
+// swiftformat:enable wrap
+
+extension Query.BankAccount: QueryType {
+  public var description: String {
+    return self.rawValue
+  }
+}
+
+extension Query.Reward: QueryType {
+  public var description: String {
+    switch self {
+    case let .amount(fields): return "amount { \(join(fields)) }"
+    case .backersCount: return "backersCount"
+    case .description: return "description"
+    case .estimatedDeliveryOn: return "estimatedDeliveryOn"
+    case let .items(args, fields): return "items" + connection(args, fields)
+    case .name: return "name"
+    }
+  }
+}
+
+extension Query.Reward.Item: QueryType {
+  public var description: String {
+    switch self {
+    case .id: return "id"
+    case .name: return "name"
     }
   }
 }
@@ -504,12 +577,9 @@ extension Query.Location: QueryType {
   }
 }
 
-extension Query.Amount: QueryType {
+extension Query.Money: QueryType {
   public var description: String {
-    switch self {
-    case .amount: return "amount"
-    case .currency: return "currency"
-    }
+    return self.rawValue
   }
 }
 
@@ -541,7 +611,7 @@ extension QueryType {
   }
 }
 
-extension Query.User.CreditCard {
+extension Query.CreditCard {
   public func hash(into hasher: inout Hasher) {
     hasher.combine(self.description)
   }

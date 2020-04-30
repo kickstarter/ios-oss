@@ -109,7 +109,7 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
 private func imageName(for paymentSource: Backing.PaymentSource) -> String? {
   switch paymentSource.paymentType {
   case .creditCard:
-    return paymentSource.imageName
+    return paymentSource.type?.imageName
   case .applePay:
     return "icon--apple-pay"
   case .googlePay:

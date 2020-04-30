@@ -31,12 +31,12 @@ final class CancelPledgeViewModelTests: TestCase {
   }
 
   func testConfigureCancelPledgeView() {
-    let backing = Backing.template
-      |> Backing.lens.amount .~ 5
     let project = Project.cosmicSurgery
       |> Project.lens.country .~ Project.Country.us
 
-    self.vm.inputs.configure(with: project, backing: backing)
+    self.vm.inputs.configure(with:
+      (project: project, backingId: "backing-id", pledgeAmount: 5.0)
+    )
     self.vm.inputs.viewDidLoad()
 
     let cancellationString = "Are you sure you wish to cancel your $5 pledge to Cosmic Surgery?"
@@ -95,7 +95,9 @@ final class CancelPledgeViewModelTests: TestCase {
   }
 
   func testGoBackButtonTapped() {
-    self.vm.inputs.configure(with: Project.template, backing: Backing.template)
+    self.vm.inputs.configure(with:
+      (project: Project.template, backingId: "backing-id", pledgeAmount: 5.0)
+    )
     self.vm.inputs.viewDidLoad()
 
     self.popCancelPledgeViewController.assertDidNotEmitValue()
@@ -106,7 +108,12 @@ final class CancelPledgeViewModelTests: TestCase {
   }
 
   func testDismissKeyboard() {
-    self.vm.inputs.configure(with: .template, backing: .template)
+    let project = Project.template
+
+    self.vm.inputs.configure(with:
+      (project: project, backingId: "backing-id", pledgeAmount: 5.0)
+    )
+
     self.vm.inputs.viewDidLoad()
 
     self.dismissKeyboard.assertDidNotEmitValue()
@@ -117,7 +124,12 @@ final class CancelPledgeViewModelTests: TestCase {
   }
 
   func testViewTapped() {
-    self.vm.inputs.configure(with: .template, backing: .template)
+    let project = Project.template
+
+    self.vm.inputs.configure(with:
+      (project: project, backingId: "backing-id", pledgeAmount: 5.0)
+    )
+
     self.vm.inputs.viewDidLoad()
 
     self.dismissKeyboard.assertDidNotEmitValue()
@@ -132,7 +144,12 @@ final class CancelPledgeViewModelTests: TestCase {
     let mockService = MockService(cancelBackingResult: .success(envelope))
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configure(with: .template, backing: .template)
+      let project = Project.template
+
+      self.vm.inputs.configure(with:
+        (project: project, backingId: "backing-id", pledgeAmount: 5.0)
+      )
+
       self.vm.inputs.viewDidLoad()
 
       self.cancelPledgeButtonEnabled.assertValues([true])
@@ -162,7 +179,12 @@ final class CancelPledgeViewModelTests: TestCase {
     let mockService = MockService(cancelBackingResult: .success(envelope))
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configure(with: .template, backing: .template)
+      let project = Project.template
+
+      self.vm.inputs.configure(with:
+        (project: project, backingId: "backing-id", pledgeAmount: 5.0)
+      )
+
       self.vm.inputs.viewDidLoad()
 
       self.notifyDelegateCancelPledgeSuccess.assertDidNotEmitValue()
@@ -206,7 +228,12 @@ final class CancelPledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configure(with: .template, backing: .template)
+      let project = Project.template
+
+      self.vm.inputs.configure(with:
+        (project: project, backingId: "backing-id", pledgeAmount: 5.0)
+      )
+
       self.vm.inputs.viewDidLoad()
 
       self.notifyDelegateCancelPledgeSuccess.assertDidNotEmitValue()
@@ -229,7 +256,12 @@ final class CancelPledgeViewModelTests: TestCase {
     let mockService = MockService(cancelBackingResult: .success(envelope))
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configure(with: .template, backing: .template)
+      let project = Project.template
+
+      self.vm.inputs.configure(with:
+        (project: project, backingId: "backing-id", pledgeAmount: 5.0)
+      )
+
       self.vm.inputs.viewDidLoad()
 
       XCTAssertEqual([], self.trackingClient.events)

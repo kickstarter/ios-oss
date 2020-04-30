@@ -946,8 +946,8 @@ private func checkoutPropertiesData(
   let rewardId = createBackingData.reward.id
   let estimatedDelivery = createBackingData.reward.estimatedDeliveryOn
   let paymentType = isApplePay
-    ? Backing.PaymentType.applePay.rawValue
-    : Backing.PaymentType.creditCard.rawValue
+    ? PaymentType.applePay.rawValue
+    : PaymentType.creditCard.rawValue
   let shippingEnabled = createBackingData.reward.shipping.enabled
   let shippingAmount = createBackingData.shippingRule?.cost
   let rewardTitle = createBackingData.reward.title
@@ -981,8 +981,8 @@ private func optimizelyCheckoutEventTags(
     .rounded()
 
   let paymentType = isApplePay
-    ? Backing.PaymentType.applePay.rawValue
-    : Backing.PaymentType.creditCard.rawValue
+    ? PaymentType.applePay.rawValue
+    : PaymentType.creditCard.rawValue
 
   return [
     "checkout_amount": pledgeTotal,

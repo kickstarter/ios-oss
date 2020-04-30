@@ -2,7 +2,7 @@ import KsApi
 import Stripe
 
 extension STPCardBrand {
-  public var creditCardType: GraphUserCreditCard.CreditCardType {
+  public var creditCardType: CreditCardType {
     switch self {
     case .amex: return .amex
     case .dinersClub: return .diners

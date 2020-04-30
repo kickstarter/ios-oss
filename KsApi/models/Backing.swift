@@ -27,33 +27,7 @@ public struct Backing {
     public var lastFour: String?
     public var paymentType: PaymentType
     public var state: String
-    public var type: GraphUserCreditCard.CreditCardType?
-
-    public var imageName: String {
-      switch self.type {
-      case nil, .some(.generic):
-        return "icon--generic"
-      case let .some(type):
-        return "icon--\(type.rawValue.lowercased())"
-      }
-    }
-  }
-
-  public enum PaymentType: String {
-    case applePay = "APPLE_PAY"
-    case creditCard = "CREDIT_CARD"
-    case googlePay = "ANDROID_PAY"
-
-    public var accessibilityLabel: String? {
-      switch self {
-      case .applePay:
-        return "Apple Pay"
-      case .googlePay:
-        return "Google Pay"
-      case .creditCard:
-        return nil
-      }
-    }
+    public var type: CreditCardType?
   }
 
   public enum Status: String, CaseIterable {
@@ -139,8 +113,6 @@ extension Backing.PaymentSource: Argo.Decodable {
 }
 
 extension Backing.Status: Argo.Decodable {}
-
-extension Backing.PaymentType: Argo.Decodable {}
 
 extension Backing.PaymentSource: Equatable {}
 public func == (lhs: Backing.PaymentSource, rhs: Backing.PaymentSource) -> Bool {

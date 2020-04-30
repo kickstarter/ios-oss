@@ -29,7 +29,7 @@ public protocol ManagePledgeViewModelOutputs {
   var configureRewardReceivedWithProject: Signal<Project, Never> { get }
   var configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never> { get }
   var endRefreshing: Signal<Void, Never> { get }
-  var goToCancelPledge: Signal<(Project, Backing), Never> { get }
+  var goToCancelPledge: Signal<CancelPledgeViewData, Never> { get }
   var goToChangePaymentMethod: Signal<(Project, Reward), Never> { get }
   var goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never> { get }
   var goToFixPaymentMethod: Signal<(Project, Reward), Never> { get }
@@ -54,25 +54,45 @@ public final class ManagePledgeViewModel:
     let initialProject = Signal.combineLatest(self.configureWithProjectSignal, self.viewDidLoadSignal)
       .map(first)
 
-    let shouldBeginRefreshProject = Signal.merge(
+    let shouldBeginRefresh = Signal.merge(
       self.pledgeViewControllerDidUpdatePledgeWithMessageSignal.ignoreValues(),
       self.beginRefreshSignal
     )
 
     let refreshProjectEvent = initialProject
-      .takeWhen(shouldBeginRefreshProject)
+      .takeWhen(shouldBeginRefresh)
       .switchMap { project in
         AppEnvironment.current.apiService.fetchProject(param: Param.id(project.id))
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
 
+    let shouldFetchGraphBackingWithProject = Signal.merge(
+      initialProject,
+      initialProject.takeWhen(shouldBeginRefresh)
+    )
+
+    let graphBackingEvent = shouldFetchGraphBackingWithProject
+      .switchMap { project in
+        AppEnvironment.current.apiService
+          .fetchManagePledgeViewBacking(query: projectBackingQuery(withSlug: project.slug))
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    let graphBackingProject = graphBackingEvent.values()
+      .map { $0.project }
+
+    let graphBacking = graphBackingEvent.values()
+      .map { $0.backing }
+      .skipNil()
+
     self.endRefreshing = refreshProjectEvent
       .filter { $0.isTerminating }
       .ignoreValues()
 
     let project = Signal.merge(initialProject, refreshProjectEvent.values())
-    let backing = project
+    let v1Backing = project
       .map { $0.personalization.backing }
       .skipNil()
     let projectAndReward = project
@@ -85,9 +105,10 @@ public final class ManagePledgeViewModel:
       }
       .map { project, backing in (project, reward(from: backing, inProject: project)) }
 
-    self.title = project.map(navigationBarTitle(with:))
+    self.title = graphBackingProject.map(navigationBarTitle(with:))
 
-    self.configurePaymentMethodView = backing
+    self.configurePaymentMethodView = v1Backing
+
     self.configurePledgeSummaryView = project
     self.configureRewardReceivedWithProject = project
 
@@ -108,9 +129,16 @@ public final class ManagePledgeViewModel:
       .filter { $0 == .cancelPledge }
       .ignoreValues()
 
-    self.goToCancelPledge = Signal.combineLatest(project, backing)
+    self.goToCancelPledge = Signal.combineLatest(project, graphBacking, v1Backing)
       .takeWhen(cancelPledgeSelected)
-      .filter { _, backing in backing.cancelable }
+      .filter { _, _, v1Backing in v1Backing.cancelable } // TODO: remove once we get this from GraphQL
+      .map { project, backing, _ in
+        (
+          project: project,
+          backingId: backing.id,
+          pledgeAmount: backing.amount.amount.flatMap(Double.init) ?? 0
+        )
+      }
 
     self.goToContactCreator = project
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .contactCreator })
@@ -136,7 +164,7 @@ public final class ManagePledgeViewModel:
 
     self.showSuccessBannerWithMessage = self.pledgeViewControllerDidUpdatePledgeWithMessageSignal
 
-    let cancelBackingDisallowed = backing
+    let cancelBackingDisallowed = v1Backing
       .map { $0.cancelable }
       .filter(isFalse)
 
@@ -214,7 +242,7 @@ public final class ManagePledgeViewModel:
   public let configureRewardReceivedWithProject: Signal<Project, Never>
   public let configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never>
   public let endRefreshing: Signal<Void, Never>
-  public let goToCancelPledge: Signal<(Project, Backing), Never>
+  public let goToCancelPledge: Signal<CancelPledgeViewData, Never>
   public let goToChangePaymentMethod: Signal<(Project, Reward), Never>
   public let goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never>
   public let goToFixPaymentMethod: Signal<(Project, Reward), Never>
@@ -245,7 +273,7 @@ private func actionSheetMenuOptionsFor(project: Project) -> [ManagePledgeAlertAc
   return ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards }
 }
 
-private func navigationBarTitle(with project: Project) -> String {
+private func navigationBarTitle(with project: ManagePledgeViewBackingEnvelope.Project) -> String {
   return project.state == .live ? Strings.Manage_your_pledge() : Strings.Your_pledge()
 }
 
@@ -259,4 +287,54 @@ private func managePledgeMenuCTAType(for managePledgeAlertAction: ManagePledgeAl
   case .updatePledge: return .updatePledge
   case .viewRewards: return .viewRewards
   }
+}
+
+private func projectBackingQuery(withSlug slug: String) -> NonEmptySet<Query> {
+  return Query.project(
+    slug: slug,
+    .id +| [
+      .state,
+      .name,
+      .backing(
+        .status +| [
+          .id,
+          .amount(
+            .amount +| [
+              .currency,
+              .symbol
+            ]
+          ),
+          .backer(
+            .id +| [
+              .name
+            ]
+          ),
+          .creditCard(
+            .id +| [
+              .expirationDate,
+              .lastFour,
+              .paymentType,
+              .type
+            ]
+          ),
+          .errorReason,
+          .pledgedOn,
+          .reward(
+            .name +| [
+              .amount(
+                .amount +| [
+                  .currency,
+                  .symbol
+                ]
+              ),
+              .backersCount,
+              .description,
+              .estimatedDeliveryOn,
+              .items([], NonEmptySet(.nodes(.id +| [.name])))
+            ]
+          )
+        ]
+      )
+    ]
+  ) +| []
 }

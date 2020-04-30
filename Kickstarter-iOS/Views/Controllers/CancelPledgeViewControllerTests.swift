@@ -22,7 +22,9 @@ final class CancelPledgeViewControllerTests: TestCase {
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(language: language) {
         let controller = CancelPledgeViewController.instantiate()
-        controller.configure(with: Project.cosmicSurgery, backing: Backing.template)
+        controller.configure(with:
+          (project: Project.cosmicSurgery, backingId: "backing-id", pledgeAmount: 10)
+        )
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")

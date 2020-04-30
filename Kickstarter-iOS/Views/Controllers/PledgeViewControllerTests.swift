@@ -26,7 +26,7 @@ final class PledgeViewControllerTests: TestCase {
     ]))
     let mockService = MockService(fetchGraphCreditCardsResponse: userEnvelope)
     let project = Project.template
-      |> \.availableCardTypes .~ [GraphUserCreditCard.CreditCardType.discover.rawValue]
+      |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: User.template, language: language) {
@@ -241,7 +241,7 @@ final class PledgeViewControllerTests: TestCase {
         |> Backing.lens.paymentSource .~
         (.template |> \.id .~ "123")
       )
-      |> \.availableCardTypes .~ [GraphUserCreditCard.CreditCardType.discover.rawValue]
+      |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: User.template, language: language) {
