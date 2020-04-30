@@ -22,7 +22,7 @@ final class OptimizelyClientTypeTests: TestCase {
     let mockClient = MockOptimizelyClient()
       |> \.experiments .~
       [OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue]
-      |> \.error .~ MockOptimizelyError()
+      |> \.error .~ MockOptimizelyError.generic
 
     XCTAssertEqual(
       OptimizelyExperiment.Variant.control,

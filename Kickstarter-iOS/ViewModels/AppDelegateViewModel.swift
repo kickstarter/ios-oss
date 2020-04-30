@@ -76,7 +76,7 @@ public protocol AppDelegateViewModelInputs {
   func foundRedirectUrl(_ url: URL)
 
   /// Call when Optimizely has been configured with the given result
-  func optimizelyConfigured(with result: OptimizelyResultType) -> Bool
+  func optimizelyConfigured(with result: OptimizelyResultType) -> Error?
 
   /// Call with the result from initializing Qualtrics
   func qualtricsInitialized(with result: QualtricsResultType)
@@ -677,7 +677,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     self.optimizelyConfigurationReturnValue <~ self.optimizelyConfiguredWithResultProperty.signal
       .skipNil()
-      .map { $0.isSuccess }
+      .map { $0.hasError }
 
     self.configureQualtrics = Signal.zip(
       self.applicationLaunchOptionsProperty.signal,
@@ -829,10 +829,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     return self.applicationDidFinishLaunchingReturnValueProperty.value
   }
 
-  private let optimizelyConfigurationReturnValue = MutableProperty<Bool>(false)
-
+  private let optimizelyConfigurationReturnValue = MutableProperty<Error?>(nil)
   fileprivate let optimizelyConfiguredWithResultProperty = MutableProperty<OptimizelyResultType?>(nil)
-  public func optimizelyConfigured(with result: OptimizelyResultType) -> Bool {
+  public func optimizelyConfigured(with result: OptimizelyResultType) -> Error? {
     self.optimizelyConfiguredWithResultProperty.value = result
 
     return self.optimizelyConfigurationReturnValue.value

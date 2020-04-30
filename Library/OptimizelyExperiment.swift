@@ -22,11 +22,11 @@ extension OptimizelyExperiment {
   static func projectCampaignExperiment(
     project: Project,
     refTag: RefTag?
-  ) -> OptimizelyExperiment.Variant? {
+  ) -> OptimizelyExperiment.Variant {
     return AppEnvironment.current.optimizelyClient?
       .variant(
         for: OptimizelyExperiment.Key.nativeProjectPageCampaignDetails,
         userAttributes: optimizelyUserAttributes(with: project, refTag: refTag)
-      )
+      ) ?? .control
   }
 }

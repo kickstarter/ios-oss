@@ -5,12 +5,12 @@ final class OptimizelyResultTypeTests: XCTestCase {
   func testIsSuccess_ReturnsTrue() {
     let result = OptimizelyResult.success(true)
 
-    XCTAssertTrue(result.isSuccess)
+    XCTAssertNil(result.hasError)
   }
 
   func testIsSuccess_ReturnsFalse() {
     let result = OptimizelyResult<Any>.failure(OptimizelyError.generic)
 
-    XCTAssertFalse(result.isSuccess)
+    XCTAssertEqual("Unknown reason", result.hasError?.localizedDescription)
   }
 }
