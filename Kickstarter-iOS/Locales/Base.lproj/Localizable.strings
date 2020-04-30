@@ -1,4 +1,5 @@
 "A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency" = "A successfully funded project will collect your pledge in its native currency. The amounts shown are approximate.";
+"A_weekly_mix_of_handpicked_projects" = "A weekly mix of handpicked projects, plus occasional Kickstarter news";
 "A_weekly_roundup_of_the_best_and_brightest" = "A weekly roundup of the best and brightest projects on Kickstarter, handpicked by our team.";
 "About_reward_amount" = "About %{reward_amount}";
 "Accessibility_statement" = "Accessibility Statement";
@@ -223,7 +224,6 @@
 "Friend_backed_tech_project" = "<b>%{friend_name}</b> backed a <i>Technology</i> project.";
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> backed a <i>Theater</i> project.";
 "Friend_name_launched_a_project" = "%{friend_name} launched a project!";
-"From_Kickstarter" = "From Kickstarter";
 "Funding_successful" = "Funding successful";
 "Games_newsletter" = "Sign up to receive a biweekly mix of new projects and updates on all things games, handpicked by Kickstarter's Games team.";
 "Get_notified_about_new_messages" = "Get notified about new messages?";

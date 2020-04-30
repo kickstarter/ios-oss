@@ -1,4 +1,5 @@
 "A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency" = "Un proyecto financiado con éxito cobrará tu contribución en su moneda nativa. Los importes mostrados son aproximados.";
+"A_weekly_mix_of_handpicked_projects" = "A weekly mix of handpicked projects, plus occasional Kickstarter news";
 "A_weekly_roundup_of_the_best_and_brightest" = "Un resumen semanal de los mejores y más brillantes proyectos de Kickstarter, seleccionados por nuestro equipo.";
 "About_reward_amount" = "Aprox. %{reward_amount}";
 "Accessibility_statement" = "Declaración de accesibilidad";
@@ -29,7 +30,7 @@
 "Amount_previous_amount" = "Monto actual: %{amount}, monto previo: %{previous_amount}";
 "Amount_reward" = "Monto: %{amount}, %{reward}";
 "Amounts_shown" = "Los montos mostrados son una conversión aproximada. Si el proyecto tiene éxito, tu contribución se recaudará en la moneda nativa del proyecto, que también se mostrará.";
-"Announcements" = "Announcements";
+"Announcements" = "Anuncios";
 "Any_payment_methods_you_saved_to_Kickstarter" = "Para tu comodidad, aquí se enumeran (de manera absolutamente segura) los métodos de pago que guardaste en Kickstarter.";
 "App_version" = "Versión de la aplicación";
 "Apple_ID" = "Apple ID";
@@ -223,7 +224,6 @@
 "Friend_backed_tech_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Tecnología</i>.";
 "Friend_backed_theater_project" = "<b>%{friend_name}</b> patrocinó un proyecto de <i>Teatro</i>.";
 "Friend_name_launched_a_project" = "¡%{friend_name} publicó un proyecto!";
-"From_Kickstarter" = "From Kickstarter";
 "Funding_successful" = "Financiado con éxito";
 "Games_newsletter" = "Suscríbete para recibir, cada dos semanas, una combinación de nuevos proyectos y actualizaciones sobre todo lo relacionado a juegos, seleccionados exclusivamente para ti por el equipo de Juegos de Kickstarter.";
 "Get_notified_about_new_messages" = "¿Deseas recibir notificaciones sobre nuevos mensajes?";

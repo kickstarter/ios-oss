@@ -25,6 +25,23 @@ public enum Strings {
     )
   }
   /**
+   "A weekly mix of handpicked projects, plus occasional Kickstarter news"
+
+   - **en**: "A weekly mix of handpicked projects, plus occasional Kickstarter news"
+   - **de**: "A weekly mix of handpicked projects, plus occasional Kickstarter news"
+   - **es**: "A weekly mix of handpicked projects, plus occasional Kickstarter news"
+   - **fr**: "A weekly mix of handpicked projects, plus occasional Kickstarter news"
+   - **ja**: "A weekly mix of handpicked projects, plus occasional Kickstarter news"
+  */
+  public static func A_weekly_mix_of_handpicked_projects() -> String {
+    return localizedString(
+      key: "A_weekly_mix_of_handpicked_projects",
+      defaultValue: "A weekly mix of handpicked projects, plus occasional Kickstarter news",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "A weekly roundup of the best and brightest projects on Kickstarter, handpicked by our team."
 
    - **en**: "A weekly roundup of the best and brightest projects on Kickstarter, handpicked by our team."
@@ -538,10 +555,10 @@ public enum Strings {
    "Announcements"
 
    - **en**: "Announcements"
-   - **de**: "Announcements"
-   - **es**: "Announcements"
-   - **fr**: "Announcements"
-   - **ja**: "Announcements"
+   - **de**: "Ankündigungen"
+   - **es**: "Anuncios"
+   - **fr**: "Annonces"
+   - **ja**: "お知らせ"
   */
   public static func Announcements() -> String {
     return localizedString(
@@ -3711,23 +3728,6 @@ Haz clic para volver a intentarlo."
       defaultValue: "%{friend_name} launched a project!",
       count: nil,
       substitutions: ["friend_name": friend_name]
-    )
-  }
-  /**
-   "From Kickstarter"
-
-   - **en**: "From Kickstarter"
-   - **de**: "From Kickstarter"
-   - **es**: "From Kickstarter"
-   - **fr**: "From Kickstarter"
-   - **ja**: "From Kickstarter"
-  */
-  public static func From_Kickstarter() -> String {
-    return localizedString(
-      key: "From_Kickstarter",
-      defaultValue: "From Kickstarter",
-      count: nil,
-      substitutions: [:]
     )
   }
   /**
