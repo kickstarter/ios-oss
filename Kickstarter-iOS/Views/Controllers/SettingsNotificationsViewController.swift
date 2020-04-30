@@ -201,7 +201,7 @@ extension SettingsNotificationsViewController: UITableViewDelegate {
       withClass: SettingsGroupedFooterView.self
     ) as? SettingsGroupedFooterView
 
-    let text = "A weekly mix of handpicked projects, plus occasional Kickstarter news"
+    let text = Strings.A_weekly_mix_of_handpicked_projects()
     footerView?.label.text = text
 
     return footerView
