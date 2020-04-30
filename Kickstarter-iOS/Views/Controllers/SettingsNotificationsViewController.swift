@@ -156,30 +156,22 @@ extension SettingsNotificationsViewController: UITableViewDelegate {
     guard let sectionType = dataSource.sectionType(
       section: section,
       user: AppEnvironment.current.currentUser
-    ) else {
+    ), sectionType.hasHeader else {
       return 0.0
     }
 
-    if sectionType.hasHeader {
-      return sectionType.sectionHeaderHeight
-    } else {
-      return 0.0
-    }
+    return sectionType.sectionHeaderHeight
   }
 
   func tableView(_: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     guard let sectionType = dataSource.sectionType(
       section: section,
       user: AppEnvironment.current.currentUser
-    ) else {
+    ), sectionType.hasDescriptionFooter else {
       return 0.1 // Required to remove the footer in UITableViewStyleGrouped
     }
 
-    if sectionType.hasDescriptionFooter {
-      return UITableView.automaticDimension
-    } else {
-      return 0.1 // Required to remove the footer in UITableViewStyleGrouped
-    }
+    return UITableView.automaticDimension
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -201,22 +193,18 @@ extension SettingsNotificationsViewController: UITableViewDelegate {
     guard let sectionType = dataSource.sectionType(
       section: section,
       user: AppEnvironment.current.currentUser
-    ) else {
+    ), sectionType.hasDescriptionFooter else {
       return nil
     }
 
-    if sectionType.hasDescriptionFooter {
-      let footerView = tableView.dequeueReusableHeaderFooterView(
-        withClass: SettingsGroupedFooterView.self
-      ) as? SettingsGroupedFooterView
+    let footerView = tableView.dequeueReusableHeaderFooterView(
+      withClass: SettingsGroupedFooterView.self
+    ) as? SettingsGroupedFooterView
 
-      let text = "A weekly mix of handpicked projects, plus occasional Kickstarter news"
-      footerView?.label.text = text
+    let text = "A weekly mix of handpicked projects, plus occasional Kickstarter news"
+    footerView?.label.text = text
 
-      return footerView
-    } else {
-      return nil
-    }
+    return footerView
   }
 
   func tableView(_: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
