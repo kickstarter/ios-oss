@@ -137,7 +137,8 @@ platform :ios do
       ipa: "#{gym_dir}/Kickstarter.ipa",
       team_name: ENV["ITUNES_TEAM_NAME"],
       skip_screenshots: true,
-      skip_metadata: true
+      skip_metadata: true,
+      skip_app_version_update: true
     )
 
     slack(
