@@ -217,9 +217,22 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     .skip { $0.isEmpty }
     .skipRepeats(==)
 
-    self.projectsLoaded = self.selectedFilterProperty.signal
+    // Ensure that Optimizely is configured before rendering the projects list
+    let optimizelyReadyOrContinue = Signal.merge(
+      self.optimizelyClientConfiguredProperty.signal,
+      self.viewDidAppearProperty.signal.map { AppEnvironment.current.optimizelyClient }
+        .skipNil()
+        .ignoreValues(),
+      self.viewDidAppearProperty.signal
+        .ksr_debounce(.seconds(3), on: AppEnvironment.current.scheduler) // Fall-back in case Optimizely configuration fails
+    ).take(first: 1)
+      .ignoreValues()
+
+    let projectsData = self.selectedFilterProperty.signal
       .takePairWhen(projects)
       .map { ($1, $0) }
+
+    self.projectsLoaded = Signal.combineLatest(optimizelyReadyOrContinue, projectsData).map(second)
 
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
 
