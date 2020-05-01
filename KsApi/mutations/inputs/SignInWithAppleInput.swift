@@ -12,13 +12,13 @@ public struct SignInWithAppleInput: GraphMutationInput {
     self.firstName = firstName
     self.lastName = lastName
   }
+}
 
-  public func toInputDictionary() -> [String: Any] {
-    return [
-      "iosAppId": appId,
-      "authCode": authCode,
-      "firstName": firstName,
-      "lastName": lastName
-    ].compact()
+extension SignInWithAppleInput: Encodable {
+  enum CodingKeys: String, CodingKey {
+    case appId = "iosAppId"
+    case authCode
+    case firstName
+    case lastName
   }
 }
