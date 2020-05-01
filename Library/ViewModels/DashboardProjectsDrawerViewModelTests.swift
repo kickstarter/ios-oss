@@ -47,7 +47,7 @@ internal final class DashboardProjectsDrawerViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
-    self.projectsDrawerData.assertValues([data1])
+    self.projectsDrawerData.assertValues([self.data1])
 
     self.vm.inputs.configureWith(data: self.data2)
 
@@ -55,7 +55,7 @@ internal final class DashboardProjectsDrawerViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
-    self.projectsDrawerData.assertValues([data1, data2])
+    self.projectsDrawerData.assertValues([self.data1, self.data2])
   }
 
   func testProjectTapped() {
@@ -66,7 +66,7 @@ internal final class DashboardProjectsDrawerViewModelTests: TestCase {
 
     self.vm.inputs.projectCellTapped(self.project1)
 
-    self.notifyDelegateProjectCellTapped.assertValues([project1])
+    self.notifyDelegateProjectCellTapped.assertValues([self.project1])
   }
 
   func testAnimateOut_OnBackgroundTapped() {

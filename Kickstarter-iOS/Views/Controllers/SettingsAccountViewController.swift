@@ -47,15 +47,28 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     self.viewModel.inputs.viewDidAppear()
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.tableView.ksr_sizeHeaderFooterViewsToFit()
+  }
+
   override func bindViewModel() {
     self.viewModel.outputs.reloadData
       .observeForUI()
-      .observeValues { [weak self] currency, shouldHideEmailWarning, shouldHideEmailPasswordSection in
+      .observeValues { [weak self] currency, email,
+        shouldHideEmailWarning, shouldHideEmailPasswordSection, isAppleConnectedAccount in
         self?.dataSource.configureRows(
           currency: currency,
           shouldHideEmailWarning: shouldHideEmailWarning,
-          shouldHideEmailPasswordSection: shouldHideEmailPasswordSection
+          shouldHideEmailPasswordSection: shouldHideEmailPasswordSection,
+          isAppleConnected: isAppleConnectedAccount
         )
+
+        if isAppleConnectedAccount {
+          self?.showAppleHeader(with: email)
+        }
+
         self?.tableView.reloadData()
       }
 
@@ -65,8 +78,10 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
         self?.dataSource.configureRows(
           currency: nil,
           shouldHideEmailWarning: true,
-          shouldHideEmailPasswordSection: false
+          shouldHideEmailPasswordSection: false,
+          isAppleConnected: false
         )
+
         self?.tableView.reloadData()
 
         self?.showGeneralError()
@@ -91,11 +106,30 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
       |> settingsTableViewSeparatorStyle
   }
 
+  // MARK: - Functions
+
   private func showGeneralError() {
     self.messageBannerViewController?.showBanner(
       with: .error,
       message: Strings.Something_went_wrong_please_try_again()
     )
+  }
+
+  private func showAppleHeader(with appleId: String) {
+    let container = UIView(frame: .zero)
+
+    self.tableView.tableHeaderView = container
+
+    let header = SettingsAccountHeaderView(frame: .zero)
+    header.configure(with: appleId)
+
+    _ = (header, container)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = header.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)
+      |> \.priority .~ .defaultHigh
+      |> \.isActive .~ true
   }
 }
 
@@ -114,10 +148,16 @@ extension SettingsAccountViewController: UITableViewDelegate {
   }
 
   func tableView(_: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    let (userHasPassword, _) = self.viewModel.outputs.userHasPasswordAndEmail
-    guard section == SettingsAccountSectionType.createPassword.rawValue, !userHasPassword else {
+    guard let data = self.viewModel.outputs.shouldShowCreatePasswordFooter() else {
       return 0.1
     }
+
+    let (shouldShow, _) = data
+
+    guard section == SettingsAccountSectionType.createPassword.rawValue, shouldShow else {
+      return 0.1
+    }
+
     return UITableView.automaticDimension
   }
 
@@ -126,9 +166,13 @@ extension SettingsAccountViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    let (userHasPassword, email) = self.viewModel.outputs.userHasPasswordAndEmail
-    guard let userEmail = email,
-      !userHasPassword,
+    guard let data = self.viewModel.outputs.shouldShowCreatePasswordFooter() else {
+      return nil
+    }
+
+    let (shouldShowCreatePasswordFooter, email) = data
+
+    guard shouldShowCreatePasswordFooter,
       section == SettingsAccountSectionType.createPassword.rawValue else {
       return nil
     }
@@ -137,9 +181,9 @@ extension SettingsAccountViewController: UITableViewDelegate {
       withClass: SettingsGroupedFooterView.self
     ) as? SettingsGroupedFooterView
 
-    let text = Strings.Youre_connected_via_Facebook_email_Create_a_password_for_this_account(email: userEmail)
-
+    let text = Strings.Youre_connected_via_Facebook_email_Create_a_password_for_this_account(email: email)
     footerView?.label.text = text
+
     return footerView
   }
 }

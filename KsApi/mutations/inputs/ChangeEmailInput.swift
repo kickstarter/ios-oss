@@ -11,8 +11,8 @@ public struct ChangeEmailInput: GraphMutationInput {
 
   public func toInputDictionary() -> [String: Any] {
     return [
-      "currentPassword": currentPassword,
-      "email": email
+      "currentPassword": self.currentPassword,
+      "email": self.email
     ]
   }
 }

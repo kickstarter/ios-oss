@@ -31,6 +31,7 @@
 "Amounts_shown" = "Los montos mostrados son una conversión aproximada. Si el proyecto tiene éxito, tu contribución se recaudará en la moneda nativa del proyecto, que también se mostrará.";
 "Any_payment_methods_you_saved_to_Kickstarter" = "Para tu comodidad, aquí se enumeran (de manera absolutamente segura) los métodos de pago que guardaste en Kickstarter.";
 "App_version" = "Versión de la aplicación";
+"Apple_ID" = "Apple ID";
 "Are_you_sure" = "¿Estás seguro?";
 "Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name" = "¿Estás seguro de que quieres cancelar tu %{amount} contribución para %{project_name}?";
 "Are_you_sure_you_wish_to_remove_this_card" = "¿Estás seguro de que deseas eliminar esta tarjeta de tus opciones de métodos de pago?";
@@ -298,6 +299,7 @@
 "Make_a_pledge_without_a_reward" = "Contribuir sin recompensa";
 "Making_this_change" = "Hacer este cambio te permitirá ver la meta del proyecto y los montos de las contribuciones convertidos a la moneda elegida.";
 "Manage" = "Administrar";
+"Manage_this_account" = "Administra esta cuenta desde la configuración de tu Apple ID.";
 "Manage_your_pledge" = "Administra tu contribución";
 "Manage_your_pledge_below" = "Administra tu contribución:";
 "Manage_your_reward" = "Administra tu recompensa";
@@ -313,6 +315,7 @@
 "Never" = "Nunca";
 "New_email" = "Nuevo correo electrónico";
 "New_password" = "Contraseña nueva";
+"New_payment_method" = "Nuevo método de pago";
 "New_pledge_activity" = "Nueva actividad de contribución";
 "New_work_and_big_ideas_from_established_and" = "Nuevos trabajos y grandes ideas de artistas establecidos y emergentes.";
 "News_events" = "Unas cuantas veces al año: Noticias sobresalientes y eventos cerca de ti.";

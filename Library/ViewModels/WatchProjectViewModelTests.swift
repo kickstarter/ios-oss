@@ -11,7 +11,7 @@ internal final class WatchProjectViewModelTests: TestCase {
   internal let generateSelectionFeedback = TestObserver<(), Never>()
   internal let generateNotificationSuccessFeedback = TestObserver<(), Never>()
   internal let goToLoginTout = TestObserver<(), Never>()
-  internal let postNotificationWithProject = TestObserver<Project, Never>() // fixme: test
+  internal let postNotificationWithProject = TestObserver<Project, Never>() // FIXME: test
   internal let saveButtonAccessibilityValue = TestObserver<String, Never>()
   internal let saveButtonSelected = TestObserver<Bool, Never>()
   internal let showNotificationDialog = TestObserver<Notification.Name, Never>()

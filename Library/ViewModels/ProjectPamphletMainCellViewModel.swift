@@ -214,7 +214,6 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     let projectCampaignExperimentVariant = projectAndRefTag
       .map(OptimizelyExperiment.projectCampaignExperiment)
-      .skipNil()
 
     self.configureCreatorBylineView = Signal.combineLatest(project, creatorDetails)
 

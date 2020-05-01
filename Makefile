@@ -5,7 +5,7 @@ SCHEME ?= $(TARGET)-$(PLATFORM)
 TARGET ?= Kickstarter-Framework
 PLATFORM ?= iOS
 RELEASE ?= itunes
-IOS_VERSION ?= 13.3
+IOS_VERSION ?= 13.4
 IPHONE_NAME ?= iPhone 8
 BRANCH ?= master
 DIST_BRANCH = $(RELEASE)-dist
@@ -134,4 +134,4 @@ secrets:
 fabric:
 	bin/download_framework.sh Fabric $(FABRIC_SDK_VERSION) $(FABRIC_SDK_URL); \
 
-.PHONY: test-all test clean dependencies submodules deploy lint secrets strings fabric
+.PHONY: test-all test clean dependencies submodules deploy secrets strings fabric

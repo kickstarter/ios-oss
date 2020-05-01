@@ -8,6 +8,6 @@ public struct ChangeCurrencyInput: GraphMutationInput {
   }
 
   public func toInputDictionary() -> [String: Any] {
-    return ["chosenCurrency": chosenCurrency]
+    return ["chosenCurrency": self.chosenCurrency]
   }
 }

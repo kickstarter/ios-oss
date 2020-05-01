@@ -81,7 +81,9 @@ let stats = [
 let fundingStats = stats.enumerated().map { idx, pledged in
   .template
     |> ProjectStatsEnvelope.FundingDateStats.lens.cumulativePledged .~ pledged
-    |> ProjectStatsEnvelope.FundingDateStats.lens.date .~ (cosmicSurgery.dates.launchedAt + TimeInterval(idx * 86_400))
+    |> ProjectStatsEnvelope.FundingDateStats.lens.date .~ (
+      cosmicSurgery.dates.launchedAt + TimeInterval(idx * 86_400)
+    )
 }
 
 AppEnvironment.replaceCurrentEnvironment(

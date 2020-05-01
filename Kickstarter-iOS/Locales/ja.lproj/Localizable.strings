@@ -31,6 +31,7 @@
 "Amounts_shown" = "表示されている金額は、おおよその換算金額ですのでご注意ください。プロジェクトが成功した場合、プレッジはプロジェクトをローンチした国の通貨で集められ、その換算額も表示されます。";
 "Any_payment_methods_you_saved_to_Kickstarter" = "Kickstarter に保存されたお支払い方法は、こちらに (安全に) リストアップされます。";
 "App_version" = "アプリ版";
+"Apple_ID" = "AppleID";
 "Are_you_sure" = "オフにしてもよろしいですか？";
 "Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name" = "本当に%{project_name}への%{amount}のプレッジを取り消しますか？";
 "Are_you_sure_you_wish_to_remove_this_card" = "このカードをお支払い方法から削除してもよろしいですか？";
@@ -297,6 +298,7 @@
 "Make_a_pledge_without_a_reward" = "リワードなしでプレッジ";
 "Making_this_change" = "この変更によって、プロジェクトゴールとプレッジ額が選択された通貨で表示されます。";
 "Manage" = "プレッジ管理";
+"Manage_this_account" = "Manage this account in your AppleID settings.";
 "Manage_your_pledge" = "プレッジを変更";
 "Manage_your_pledge_below" = "以下のプレッジを変更";
 "Manage_your_reward" = "リワードの管理";
@@ -312,6 +314,7 @@
 "Never" = "通知を受けない";
 "New_email" = "新しいメールアドレス";
 "New_password" = "新しいパスワード";
+"New_payment_method" = "新しいお支払い方法";
 "New_pledge_activity" = "新しいプレッジ";
 "New_work_and_big_ideas_from_established_and" = "新進アーティストや著名アーティストの最新プロジェクトやアイデアをご紹介。";
 "News_events" = "1年に数回だけ、お近くのニュースやイベント情報をお届け。";

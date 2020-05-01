@@ -1,8 +1,6 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
-// swiftlint:disable force_unwrapping
-// swiftlint:disable force_cast
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
@@ -234,9 +232,9 @@ final class AppDelegateViewModelTests: TestCase {
       self.configureOptimizelySDKKey
         .assertValues([Secrets.OptimizelySDKKey.staging])
 
-      let shouldUpdateClient = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
+      let error = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
 
-      XCTAssertTrue(shouldUpdateClient)
+      XCTAssertNil(error)
     }
   }
 
@@ -250,9 +248,9 @@ final class AppDelegateViewModelTests: TestCase {
       self.configureOptimizelySDKKey
         .assertValues([Secrets.OptimizelySDKKey.staging])
 
-      let shouldUpdateClient = self.vm.inputs.optimizelyConfigured(with: mockResult)
+      let error = self.vm.inputs.optimizelyConfigured(with: mockResult) as? MockOptimizelyError
 
-      XCTAssertFalse(shouldUpdateClient)
+      XCTAssertEqual("Optimizely Error", error?.localizedDescription)
     }
   }
 

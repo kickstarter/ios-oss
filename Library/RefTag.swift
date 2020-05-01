@@ -43,7 +43,6 @@ public enum RefTag {
 
    - returns: A ref tag.
    */
-  // swiftlint:disable:next cyclomatic_complexity
   public init(code: String) {
     switch code {
     case "activity": self = .activity

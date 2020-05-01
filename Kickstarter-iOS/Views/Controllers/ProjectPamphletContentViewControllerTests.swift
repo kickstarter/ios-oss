@@ -1,7 +1,6 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
-// swiftlint:disable force_unwrapping
 import Prelude
 import XCTest
 
@@ -70,8 +69,8 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        // swiftlint:disable:next line_length
-        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment
+          .Variant.variant1.rawValue
       ]
 
     combos(Language.allLanguages, [Device.phone4_7inch]).forEach {
@@ -448,8 +447,8 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        // swiftlint:disable:next line_length
-        OptimizelyExperiment.Key.nativeMeProjectSummary.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+        OptimizelyExperiment.Key.nativeMeProjectSummary.rawValue: OptimizelyExperiment.Variant.variant1
+          .rawValue
       ]
 
     combos([Language.en], [Device.phone4_7inch]).forEach {

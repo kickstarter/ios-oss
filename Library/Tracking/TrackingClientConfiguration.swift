@@ -67,7 +67,6 @@ private let koalaRequest: TrackingClientRequest = { config, environmentType, dat
   let dataString = data.base64EncodedString(options: [])
 
   if dataString.count >= 10_000 {
-    // swiftlint:disable:next line_length
     print("\(config.identifier.emoji) [\(config.identifier) Error]: Base64 payload is longer than 10,000 characters.")
   }
 

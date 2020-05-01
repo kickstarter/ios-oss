@@ -10,7 +10,6 @@ final class PledgeDescriptionViewController: UIViewController {
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var estimatedDeliveryLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var estimatedDeliveryStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var learnMoreTextView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
   private lazy var rewardInfoStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var rewardInfoBackgroundView: UIView = { UIView(frame: .zero) }()
   private lazy var rewardTitleLabel: UILabel = { UILabel(frame: .zero) }()
@@ -46,12 +45,6 @@ final class PledgeDescriptionViewController: UIViewController {
     _ = self.estimatedDeliveryStackView
       |> estimatedDeliveryStackViewStyle(isAccessibilityCategory)
 
-    _ = self.learnMoreTextView
-      |> checkoutBackgroundStyle
-
-    _ = self.learnMoreTextView
-      |> learnMoreTextViewStyle
-
     _ = self.rewardInfoBackgroundView
       |> rewardInfoBackgroundViewStyle
 
@@ -83,7 +76,7 @@ final class PledgeDescriptionViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.rewardInfoBackgroundView, self.learnMoreTextView], self.rootStackView)
+    _ = ([self.rewardInfoBackgroundView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -107,12 +100,6 @@ final class PledgeDescriptionViewController: UIViewController {
     self.dateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryText
     self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryStackViewIsHidden
 
-    self.viewModel.outputs.presentTrustAndSafety
-      .observeForUI()
-      .observeValues { [weak self] in
-        self?.presentHelpWebViewController(with: .trust, presentationStyle: .formSheet)
-      }
-
     self.viewModel.outputs.rewardTitle
       .observeForUI()
       .observeValues { [weak self] title in
@@ -132,23 +119,6 @@ final class PledgeDescriptionViewController: UIViewController {
 
   internal func configureWith(value: (project: Project, reward: Reward)) {
     self.viewModel.inputs.configureWith(data: value)
-  }
-}
-
-extension PledgeDescriptionViewController: UITextViewDelegate {
-  func textView(
-    _: UITextView, shouldInteractWith _: NSTextAttachment,
-    in _: NSRange, interaction _: UITextItemInteraction
-  ) -> Bool {
-    return false
-  }
-
-  func textView(
-    _: UITextView, shouldInteractWith _: URL, in _: NSRange,
-    interaction _: UITextItemInteraction
-  ) -> Bool {
-    self.viewModel.inputs.learnMoreTapped()
-    return false
   }
 }
 
@@ -182,17 +152,6 @@ private func estimatedDeliveryStackViewStyle(_ isAccessibilityCategory: Bool) ->
   }
 }
 
-private let learnMoreTextViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
-  _ = textView
-    |> tappableLinksViewStyle
-    |> \.font .~ UIFont.ksr_caption1()
-    |> \.attributedText .~ attributedLearnMoreText()
-    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
-    |> \.accessibilityTraits .~ [.staticText]
-
-  return textView
-}
-
 private let rewardInfoBackgroundViewStyle: ViewStyle = { (view: UIView) in
   view
     |> roundedStyle(cornerRadius: Styles.grid(2))
@@ -221,24 +180,4 @@ private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
     |> checkoutSubStackViewStyle
     |> verticalStackViewStyle
     |> \.alignment .~ UIStackView.Alignment.top
-}
-
-private func attributedLearnMoreText() -> NSAttributedString? {
-  guard let trustLink = HelpType.trust.url(
-    withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
-  )?.absoluteString else { return nil }
-
-  let storeString = Strings.Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life()
-  let accountabilityString = Strings.Learn_more_about_accountability()
-  let fullString = storeString + " " + accountabilityString
-
-  guard let attributedString = try? NSAttributedString(
-    data: Data(fullString.utf8),
-    options: [
-      .characterEncoding: String.Encoding.utf8.rawValue
-    ],
-    documentAttributes: nil
-  ) else { return nil }
-
-  return attributedString.setAsLink(textToFind: accountabilityString, linkURL: trustLink)
 }

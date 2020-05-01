@@ -59,8 +59,8 @@ extension ShareContext: Equatable {
       return lhs == rhs
     case let (.thanks(lhs), .thanks(rhs)):
       return lhs == rhs
-    case let (.update(lhs), .update(rhs)):
-      return lhs == rhs
+    case let (.update(lhsProject, lhsUpdate), .update(rhsProject, rhsUpdate)):
+      return lhsProject == rhsProject && lhsUpdate == rhsUpdate
     case (.creatorDashboard, _), (.discovery, _), (.project, _), (.thanks, _), (.update, _):
       return false
     }

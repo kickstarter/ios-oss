@@ -1,5 +1,4 @@
 @testable import KsApi
-// swiftlint:disable force_unwrapping
 import XCTest
 
 final class ServiceTypeTests: XCTestCase {
@@ -315,14 +314,14 @@ final class ServiceTypeTests: XCTestCase {
   }
 }
 
-// swiftlint:disable line_length
+// swiftformat:disable wrap
 private func userAgent() -> String {
   return """
   com.apple.dt.xctest.tool/\(testToolBuildNumber()) (\(UIDevice.current.model); iOS \(UIDevice.current.systemVersion) Scale/\(UIScreen.main.scale))
   """
 }
 
-// swiftlint:enable line_length
+// swiftformat:enable wrap
 
 private func testToolBuildNumber() -> Int {
   guard

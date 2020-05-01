@@ -65,12 +65,12 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.participantAvatarURL
       .observeForUI()
       .on(event: { [weak self] _ in
-        self?.avatarImageView.af_cancelImageRequest()
+        self?.avatarImageView.af.cancelImageRequest()
         self?.avatarImageView.image = nil
       })
       .skipNil()
       .observeValues { [weak self] url in
-        self?.avatarImageView.af_setImage(withURL: url)
+        self?.avatarImageView.af.setImage(withURL: url)
       }
 
     self.viewModel.outputs.participantName

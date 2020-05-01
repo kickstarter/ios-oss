@@ -8,7 +8,7 @@ public func + (left: NSAttributedString, right: NSAttributedString) -> NSAttribu
   return NSMutableAttributedString(attributedString: combined)
 }
 
-extension String {
+public extension String {
   func attributed(
     with font: UIFont,
     foregroundColor: UIColor,

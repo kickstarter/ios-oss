@@ -31,6 +31,7 @@
 "Amounts_shown" = "The amounts shown are an approximate conversion. If the project is successful, your pledge will be collected in the native currency of the project, which is also displayed.";
 "Any_payment_methods_you_saved_to_Kickstarter" = "Any payment methods you've saved to Kickstarter are listed here (securely) for your convenience.";
 "App_version" = "App version";
+"Apple_ID" = "AppleID";
 "Are_you_sure" = "Are you sure?";
 "Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name" = "Are you sure you wish to cancel your %{amount} pledge to %{project_name}?";
 "Are_you_sure_you_wish_to_remove_this_card" = "Are you sure you wish to remove this card from your payment method options?";
@@ -297,6 +298,7 @@
 "Make_a_pledge_without_a_reward" = "Make a pledge without a reward";
 "Making_this_change" = "Making this change will allow you to see project goal and pledge amounts converted to your chosen currency.";
 "Manage" = "Manage";
+"Manage_this_account" = "Manage this account in your AppleID settings.";
 "Manage_your_pledge" = "Manage your pledge";
 "Manage_your_pledge_below" = "Manage your pledge below";
 "Manage_your_reward" = "Manage your reward";
@@ -312,6 +314,7 @@
 "Never" = "Never";
 "New_email" = "New email";
 "New_password" = "New password";
+"New_payment_method" = "New payment method";
 "New_pledge_activity" = "New pledge activity";
 "New_work_and_big_ideas_from_established_and" = "New work and big ideas from established and emerging artists.";
 "News_events" = "Big news and events happening near you, delivered just a few times a year.";

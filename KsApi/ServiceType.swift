@@ -142,7 +142,7 @@ public protocol ServiceType {
 
   /// Fetch a User's account fields
   func fetchGraphUserAccountFields(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<UserAccountFields>, GraphError>
+    -> SignalProducer<UserEnvelope<GraphUser>, GraphError>
 
   /// Fetch User's email fields object using graphQL.
   func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
@@ -375,7 +375,6 @@ extension ServiceType {
     var headers = self.defaultHeaders
 
     let method = request.httpMethod?.uppercased()
-    // swiftlint:disable:next force_unwrapping
     var components = URLComponents(url: URL, resolvingAgainstBaseURL: false)!
     var queryItems = components.queryItems ?? []
     queryItems.append(contentsOf: self.defaultQueryParams.map(URLQueryItem.init(name:value:)))
@@ -434,7 +433,6 @@ extension ServiceType {
 
     request.httpBody = "query=\(queryString)".data(using: .utf8)
 
-    // swiftlint:disable:next force_unwrapping
     let components = URLComponents(url: URL, resolvingAgainstBaseURL: false)!
     request.url = components.url
     request.allHTTPHeaderFields = self.defaultHeaders
@@ -477,7 +475,6 @@ extension ServiceType {
     var headers = self.defaultHeaders
     headers["Content-Type"] = "application/json; charset=utf-8"
 
-    // swiftlint:disable:next force_unwrapping
     let components = URLComponents(url: URL, resolvingAgainstBaseURL: false)!
     request.url = components.url
     request.allHTTPHeaderFields = headers

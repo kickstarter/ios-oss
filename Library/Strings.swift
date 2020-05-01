@@ -569,6 +569,23 @@ public enum Strings {
     )
   }
   /**
+   "AppleID"
+
+   - **en**: "AppleID"
+   - **de**: "AppleID"
+   - **es**: "Apple ID"
+   - **fr**: "Apple ID"
+   - **ja**: "AppleID"
+  */
+  public static func Apple_ID() -> String {
+    return localizedString(
+      key: "Apple_ID",
+      defaultValue: "AppleID",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Are you sure?"
 
    - **en**: "Are you sure?"
@@ -4225,6 +4242,23 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
+   "It's a way to bring creative projects to life. <a href="%{trust_link}">Learn more about accountability</a>"
+
+   - **en**: "It's a way to bring creative projects to life. <a href="%{trust_link}">Learn more about accountability</a>"
+   - **de**: "Es ist eine Plattform, um kreative Projekte zu verwirklichen. <a href="%{trust_link}">Hier findest du mehr Info zur Rechenschaftspflicht</a>"
+   - **es**: "Es una forma de dar vida a proyectos creativos.<a href="%{trust_link}">Más información sobre las responsabilidades</a>"
+   - **fr**: "Notre plateforme est un moyen de faire vivre des projets créatifs. <a href="%{trust_link}">En savoir plus sur la notion de responsabilité</a>"
+   - **ja**: "クリエイティブなプロジェクトに生命を吹き込む場です。<a href="%{trust_link}">アカウンタビリティについて詳しくみる。</a>"
+  */
+  public static func Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability(trust_link: String) -> String {
+    return localizedString(
+      key: "Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability",
+      defaultValue: "It's a way to bring creative projects to life. <a href=\"%{trust_link}\">Learn more about accountability</a>",
+      count: nil,
+      substitutions: ["trust_link": trust_link]
+    )
+  }
+  /**
    "It’s better
 with friends."
 
@@ -4890,6 +4924,23 @@ with friends."
     )
   }
   /**
+   "Manage this account in your AppleID settings."
+
+   - **en**: "Manage this account in your AppleID settings."
+   - **de**: "Manage this account in your AppleID settings."
+   - **es**: "Administra esta cuenta desde la configuración de tu Apple ID."
+   - **fr**: "Gérez ce compte depuis vos paramètres Apple ID."
+   - **ja**: "Manage this account in your AppleID settings."
+  */
+  public static func Manage_this_account() -> String {
+    return localizedString(
+      key: "Manage_this_account",
+      defaultValue: "Manage this account in your AppleID settings.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Manage your pledge"
 
    - **en**: "Manage your pledge"
@@ -5140,6 +5191,23 @@ with friends."
     return localizedString(
       key: "New_password",
       defaultValue: "New password",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "New payment method"
+
+   - **en**: "New payment method"
+   - **de**: "Neue Zahlungsmethode"
+   - **es**: "Nuevo método de pago"
+   - **fr**: "Nouveau moyen de paiement"
+   - **ja**: "新しいお支払い方法"
+  */
+  public static func New_payment_method() -> String {
+    return localizedString(
+      key: "New_payment_method",
+      defaultValue: "New payment method",
       count: nil,
       substitutions: [:]
     )
