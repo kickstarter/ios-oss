@@ -453,6 +453,65 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("manage_reward", props?["context_pledge_flow"] as? String)
   }
 
+  // MARK: - Project Page Tracking
+
+  func testTrackCreatorDetailsClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackCreatorDetailsClicked(
+      project: .template,
+      location: .projectPage,
+      refTag: .discovery,
+      cookieRefTag: .discovery
+    )
+
+    XCTAssertEqual(["Creator Details Clicked"], client.events)
+    XCTAssertEqual(["project_screen"], client.properties(forKey: "context_location"))
+    XCTAssertEqual(["discovery"], client.properties(forKey: "session_ref_tag"))
+    XCTAssertEqual(["discovery"], client.properties(forKey: "session_referrer_credit"))
+
+    self.assertProjectProperties(client.properties.last)
+  }
+
+  func testTrackCampaignDetailsButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackCampaignDetailsButtonClicked(
+      project: .template,
+      location: .projectPage,
+      refTag: .discovery,
+      cookieRefTag: .discovery
+    )
+
+    XCTAssertEqual(["Campaign Details Button Clicked"], client.events)
+    XCTAssertEqual(["project_screen"], client.properties(forKey: "context_location"))
+    XCTAssertEqual(["discovery"], client.properties(forKey: "session_ref_tag"))
+    XCTAssertEqual(["discovery"], client.properties(forKey: "session_referrer_credit"))
+
+    self.assertProjectProperties(client.properties.last)
+  }
+
+  func testTrackCampignDetailsPledgeButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackCampaignDetailsPledgeButtonClicked(
+      project: .template,
+      location: .campaign,
+      refTag: .discovery,
+      cookieRefTag: .discovery
+    )
+
+    XCTAssertEqual(["Campaign Details Pledge Button Clicked"], client.events)
+    XCTAssertEqual(["campaign_screen"], client.properties(forKey: "context_location"))
+    XCTAssertEqual(["discovery"], client.properties(forKey: "session_ref_tag"))
+    XCTAssertEqual(["discovery"], client.properties(forKey: "session_referrer_credit"))
+
+    self.assertProjectProperties(client.properties.last)
+  }
+
   func testTrackCheckoutPaymentMethodViewed() {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
@@ -461,7 +520,8 @@ final class KoalaTests: TestCase {
       project: .template,
       reward: .template,
       context: .newPledge,
-      refTag: RefTag.activity
+      refTag: RefTag.activity,
+      cookieRefTag: RefTag.activity
     )
 
     let props = client.properties.last
@@ -899,6 +959,52 @@ final class KoalaTests: TestCase {
     )
   }
 
+  // MARK: - Onboarding Tracking
+
+  func testOnboardingGetStartedButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackOnboardingGetStartedButtonClicked()
+
+    XCTAssertEqual(["Onboarding Get Started Button Clicked"], client.events)
+
+    XCTAssertEqual(["landing_page"], client.properties(forKey: "context_location"))
+  }
+
+  func testOnboardingCarouselSwipedButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackOnboardingCarouselSwiped()
+
+    XCTAssertEqual(["Onboarding Carousel Swiped"], client.events)
+
+    XCTAssertEqual(["landing_page"], client.properties(forKey: "context_location"))
+  }
+
+  func testOnboardingSkipButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackOnboardingSkipButtonClicked()
+
+    XCTAssertEqual(["Onboarding Skip Button Clicked"], client.events)
+
+    XCTAssertEqual(["onboarding"], client.properties(forKey: "context_location"))
+  }
+
+  func testOnboardingContinueButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackOnboardingContinueButtonClicked()
+
+    XCTAssertEqual(["Onboarding Continue Button Clicked"], client.events)
+
+    XCTAssertEqual(["onboarding"], client.properties(forKey: "context_location"))
+  }
+
   // MARK: - Search Tracking
 
   func testTrackSearchViewed() {
@@ -1084,7 +1190,8 @@ final class KoalaTests: TestCase {
       project: .template,
       reward: .template,
       context: .newPledge,
-      refTag: nil
+      refTag: nil,
+      cookieRefTag: nil
     )
     XCTAssertEqual("pledge_screen", client.properties.last?["context_location"] as? String)
 

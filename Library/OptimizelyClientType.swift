@@ -5,7 +5,6 @@ import Prelude
 public protocol OptimizelyClientType: AnyObject {
   func activate(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
   func getVariationKey(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
-  func track(eventKey: String, userId: String, attributes: [String: Any?]?, eventTags: [String: Any]?) throws
   func allExperiments() -> [String]
 }
 
@@ -111,22 +110,6 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
     "optimizely_environment": environmentType.rawValue,
     "optimizely_experiments": allExperiments
   ]
-}
-
-public func optimizelyTrackingAttributesAndEventTags(
-  with project: Project? = nil,
-  refTag: RefTag? = nil
-) -> ([String: Any], [String: Any]) {
-  let properties = optimizelyUserAttributes(with: project, refTag: refTag)
-
-  let eventTags: [String: Any] = ([
-    "project_subcategory": project?.category.name,
-    "project_category": project?.category.parentName,
-    "project_country": project?.location.country.lowercased(),
-    "project_user_has_watched": project?.personalization.isStarred
-  ] as [String: Any?]).compact()
-
-  return (properties, eventTags)
 }
 
 public func optimizelyUserAttributes(

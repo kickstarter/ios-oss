@@ -1570,8 +1570,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         self.trackingClient.properties(forKey: "session_ref_tag")
       )
       self.goToCuratedProjects.assertValues([[.art, .illustration]])
-
-      XCTAssertEqual("Editorial Card Clicked", mockOpClient.trackedEventKey)
     }
   }
 

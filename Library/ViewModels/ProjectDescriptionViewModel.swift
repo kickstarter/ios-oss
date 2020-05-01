@@ -150,18 +150,14 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
     projectAndRefTag
       .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
       .observeValues { project, refTag in
-        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: project,
-          refTag: refTag
-        )
+        let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
 
-        try? AppEnvironment.current.optimizelyClient?
-          .track(
-            eventKey: "Campaign Details Pledge Button Clicked",
-            userId: deviceIdentifier(uuid: UUID()),
-            attributes: properties,
-            eventTags: eventTags
-          )
+        AppEnvironment.current.koala.trackCampaignDetailsPledgeButtonClicked(
+          project: project,
+          location: .campaign,
+          refTag: refTag,
+          cookieRefTag: cookieRefTag
+        )
       }
 
     project
