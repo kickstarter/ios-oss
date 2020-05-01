@@ -468,43 +468,35 @@ public final class Koala {
 
   // MARK: - Onboarding Events
 
-  public func trackOnboardingCarouselSwiped(optimizelyProperties: [String: Any]? = nil) {
-    let props = optimizelyProperties ?? [:]
-
+  public func trackOnboardingCarouselSwiped(optimizelyProperties: [String: Any] = [:]) {
     self.track(
       event: DataLakeWhiteListedEvent.onboardingCarouselSwiped.rawValue,
       location: .landingPage,
-      properties: props
+      properties: optimizelyProperties
     )
   }
 
-  public func trackOnboardingGetStartedButtonClicked(optimizelyProperties: [String: Any]? = nil) {
-    let props = optimizelyProperties ?? [:]
-
+  public func trackOnboardingGetStartedButtonClicked(optimizelyProperties: [String: Any] = [:]) {
     self.track(
       event: DataLakeWhiteListedEvent.onboardingGetStartedButtonClicked.rawValue,
       location: .landingPage,
-      properties: props
+      properties: optimizelyProperties
     )
   }
 
-  public func trackOnboardingSkipButtonClicked(optimizelyProperties: [String: Any]? = nil) {
-    let props = optimizelyProperties ?? [:]
-
+  public func trackOnboardingSkipButtonClicked(optimizelyProperties: [String: Any] = [:]) {
     self.track(
       event: DataLakeWhiteListedEvent.onboardingSkipButtonClicked.rawValue,
       location: .onboarding,
-      properties: props
+      properties: optimizelyProperties
     )
   }
 
-  public func trackOnboardingContinueButtonClicked(optimizelyProperties: [String: Any]? = nil) {
-    let props = optimizelyProperties ?? [:]
-
+  public func trackOnboardingContinueButtonClicked(optimizelyProperties: [String: Any] = [:]) {
     self.track(
       event: DataLakeWhiteListedEvent.onboardingContinueButtonClicked.rawValue,
       location: .onboarding,
-      properties: props
+      properties: optimizelyProperties
     )
   }
 
@@ -517,12 +509,9 @@ public final class Koala {
    */
 
   public func trackDiscovery(params: DiscoveryParams,
-                             optimizelyProperties: [String: Any]? = nil) {
-    var props = discoveryProperties(from: params)
-
-    if let optimizelyProperties = optimizelyProperties {
-      props = props.withAllValuesFrom(optimizelyProperties)
-    }
+                             optimizelyProperties: [String: Any] = [:]) {
+    let props = discoveryProperties(from: params)
+      .withAllValuesFrom(optimizelyProperties)
 
     self.track(
       event: DataLakeWhiteListedEvent.explorePageViewed.rawValue,
@@ -567,12 +556,9 @@ public final class Koala {
    */
   public func trackEditorialHeaderTapped(params: DiscoveryParams,
                                          refTag: RefTag,
-                                         optimizelyProperties: [String: Any]? = nil) {
-    var props = discoveryProperties(from: params)
-
-    if let optimizelyProperties = optimizelyProperties {
-      props = props.withAllValuesFrom(optimizelyProperties)
-    }
+                                         optimizelyProperties: [String: Any] = [:]) {
+    let props = discoveryProperties(from: params)
+      .withAllValuesFrom(optimizelyProperties)
 
     self.track(
       event: DataLakeWhiteListedEvent.editorialCardClicked.rawValue,
@@ -600,7 +586,7 @@ public final class Koala {
   public func trackPledgeCTAButtonClicked(
     stateType: PledgeStateCTAType,
     project: Project,
-    optimizelyProperties: [String: Any]? = nil
+    optimizelyProperties: [String: Any] = [:]
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
@@ -608,11 +594,8 @@ public final class Koala {
     case .fix:
       self.track(event: "Fix Pledge Button Clicked", properties: props)
     case .pledge, .seeTheRewards, .viewTheRewards:
-      var allProps = props
-
-      if let optimizelyProperties = optimizelyProperties {
-        allProps = props.withAllValuesFrom(optimizelyProperties)
-      }
+      let allProps = props
+        .withAllValuesFrom(optimizelyProperties)
 
       self.track(
         event: DataLakeWhiteListedEvent.projectPagePledgeButtonClicked.rawValue,
@@ -702,15 +685,12 @@ public final class Koala {
     context: Koala.PledgeContext,
     refTag: RefTag?,
     cookieRefTag: RefTag?,
-    optimizelyProperties: [String: Any]? = nil
+    optimizelyProperties: [String: Any] = [:]
   ) {
-    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
-
-    if let optimizelyProperties = optimizelyProperties {
-      props = props.withAllValuesFrom(optimizelyProperties)
-    }
+      .withAllValuesFrom(optimizelyProperties)
 
     self.track(
       event: DataLakeWhiteListedEvent.checkoutPaymentPageViewed.rawValue,
@@ -1416,13 +1396,10 @@ public final class Koala {
     _ project: Project,
     refTag: RefTag? = nil,
     cookieRefTag: RefTag? = nil,
-    optimizelyProperties: [String: Any]? = nil
+    optimizelyProperties: [String: Any] = [:]
   ) {
-    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-
-    if let optimizelyProperties = optimizelyProperties {
-      props = props.withAllValuesFrom(optimizelyProperties)
-    }
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(optimizelyProperties)
 
     self.track(
       event: DataLakeWhiteListedEvent.projectPageViewed.rawValue,
@@ -1478,13 +1455,10 @@ public final class Koala {
     location: LocationContext,
     refTag: RefTag?,
     cookieRefTag: RefTag? = nil,
-    optimizelyProperties: [String: Any]? = nil
+    optimizelyProperties: [String: Any] = [:]
   ) {
-    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-
-    if let optimizelyProperties = optimizelyProperties {
-      props = props.withAllValuesFrom(optimizelyProperties)
-    }
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(optimizelyProperties)
 
     self.track(
       event: DataLakeWhiteListedEvent.creatorDetailsClicked.rawValue,
@@ -1495,16 +1469,15 @@ public final class Koala {
     )
   }
 
-  public func trackCampaignDetailsButtonClicked(project: Project,
-                                                location: LocationContext,
-                                                refTag: RefTag?,
-                                                cookieRefTag: RefTag? = nil,
-                                                optimizelyProperties: [String: Any]? = nil) {
-    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-
-    if let optimizelyProperties = optimizelyProperties {
-      props = props.withAllValuesFrom(optimizelyProperties)
-    }
+  public func trackCampaignDetailsButtonClicked(
+    project: Project,
+    location: LocationContext,
+    refTag: RefTag?,
+    cookieRefTag: RefTag? = nil,
+    optimizelyProperties: [String: Any] = [:]
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(optimizelyProperties)
 
     self.track(
       event: DataLakeWhiteListedEvent.campaignDetailsButtonClicked.rawValue,
@@ -1519,12 +1492,9 @@ public final class Koala {
                                                       location: LocationContext,
                                                       refTag: RefTag?,
                                                       cookieRefTag: RefTag? = nil,
-                                                      optimizelyProperties: [String: Any]? = nil) {
-    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-
-    if let optimizelyProperties = optimizelyProperties {
-      props = props.withAllValuesFrom(optimizelyProperties)
-    }
+                                                      optimizelyProperties: [String: Any] = [:]) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(optimizelyProperties)
 
     self.track(
       event: DataLakeWhiteListedEvent.campaignDetailsPledgeButtonClicked.rawValue,

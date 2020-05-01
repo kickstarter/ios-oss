@@ -38,7 +38,7 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
 
     self.ctaButtonTappedSignal
       .observeValues {
-        let optimizelyProps = optimizelyProperties()
+        let optimizelyProps = optimizelyProperties() ?? [:]
 
         AppEnvironment.current.koala
           .trackOnboardingGetStartedButtonClicked(optimizelyProperties: optimizelyProps)

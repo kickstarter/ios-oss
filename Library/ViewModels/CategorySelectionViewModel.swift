@@ -110,14 +110,14 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
 
     self.skipButtonTappedProperty.signal
       .observeValues { _ in
-        let optimizelyProps = optimizelyProperties()
+        let optimizelyProps = optimizelyProperties() ?? [:]
 
         AppEnvironment.current.koala.trackOnboardingSkipButtonClicked(optimizelyProperties: optimizelyProps)
       }
 
     self.continueButtonTappedProperty.signal
       .observeValues { _ in
-        let optimizelyProps = optimizelyProperties()
+        let optimizelyProps = optimizelyProperties() ?? [:]
 
         AppEnvironment.current.koala
           .trackOnboardingContinueButtonClicked(optimizelyProperties: optimizelyProps)

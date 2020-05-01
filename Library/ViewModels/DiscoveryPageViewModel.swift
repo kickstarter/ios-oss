@@ -422,7 +422,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     requestFirstPageWith
       .observeValues { params in
-        let optimizelyProps = optimizelyProperties()
+        let optimizelyProps = optimizelyProperties() ?? [:]
 
         AppEnvironment.current.koala.trackDiscovery(
           params: params,
@@ -450,7 +450,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         AppEnvironment.current.koala.trackEditorialHeaderTapped(
           params: params,
           refTag: refTag,
-          optimizelyProperties: optimizelyProps
+          optimizelyProperties: optimizelyProps ?? [:]
         )
       }
 

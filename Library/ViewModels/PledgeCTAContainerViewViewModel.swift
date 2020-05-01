@@ -111,7 +111,7 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     pledgeTypeAndProject
       .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
       .observeValues { state, project in
-        let optimizelyProps = optimizelyProperties()
+        let optimizelyProps = optimizelyProperties() ?? [:]
 
         AppEnvironment.current.koala.trackPledgeCTAButtonClicked(
           stateType: state,

@@ -342,14 +342,14 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
         let (project, refTag) = projectAndRefTag
         let includeOptimizelyProperties = project.state == .live && userIsBackingProject(project) == false
         let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
-        let optyProperties: [String: Any]? = includeOptimizelyProperties ? optimizelyProperties() : nil
+        let optyProperties = includeOptimizelyProperties ? optimizelyProperties() : nil
 
         AppEnvironment.current.koala.trackCampaignDetailsButtonClicked(
           project: project,
           location: .projectPage,
           refTag: refTag,
           cookieRefTag: cookieRefTag,
-          optimizelyProperties: optyProperties
+          optimizelyProperties: optyProperties ?? [:]
         )
       }
 
@@ -359,14 +359,14 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
         let (project, refTag) = projectAndRefTag
         let includeOptimizelyProperties = project.state == .live && userIsBackingProject(project) == false
         let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
-        let optyProperties: [String: Any]? = includeOptimizelyProperties ? optimizelyProperties() : nil
+        let optyProperties = includeOptimizelyProperties ? optimizelyProperties() : [:]
 
         AppEnvironment.current.koala.trackCreatorDetailsClicked(
           project: project,
           location: .projectPage,
           refTag: refTag,
           cookieRefTag: cookieRefTag,
-          optimizelyProperties: optyProperties
+          optimizelyProperties: optyProperties ?? [:]
         )
       }
   }

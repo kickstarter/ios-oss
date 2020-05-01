@@ -151,7 +151,7 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
       .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
       .observeValues { project, refTag in
         let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
-        let optimizelyProps = optimizelyProperties()
+        let optimizelyProps = optimizelyProperties() ?? [:]
 
         AppEnvironment.current.koala.trackCampaignDetailsPledgeButtonClicked(
           project: project,
