@@ -65,8 +65,8 @@ extension GraphUserCreditCard {
       GraphUserCreditCard.diners,
       GraphUserCreditCard.jcb,
       GraphUserCreditCard.discover,
-      GraphUserCreditCard.generic,
-      GraphUserCreditCard.unionPay
+      GraphUserCreditCard.unionPay,
+      GraphUserCreditCard.generic
     ])
   )
 

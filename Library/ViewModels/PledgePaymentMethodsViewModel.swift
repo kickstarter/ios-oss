@@ -4,30 +4,40 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
+public enum PaymentMethodsTableViewSection: Int {
+  case paymentMethods
+  case addNewCard
+  case loading
+}
+
 public typealias PledgePaymentMethodsValue = (
-  user: User, project: Project, reward: Reward,
+  user: User,
+  project: Project,
+  reward: Reward,
   context: PledgeViewContext,
   refTag: RefTag?
 )
 
+public typealias PledgePaymentMethodsAndSelectionData = (
+  paymentMethodsCellData: [PledgePaymentMethodCellData],
+  selectedCard: GraphUserCreditCard.CreditCard?,
+  shouldReload: Bool,
+  isLoading: Bool
+)
+
 public protocol PledgePaymentMethodsViewModelInputs {
-  func applePayButtonTapped()
-  func configure(with value: PledgePaymentMethodsValue)
-  func creditCardSelected(paymentSourceId: String)
   func addNewCardViewControllerDidAdd(newCard card: GraphUserCreditCard.CreditCard)
+  func configure(with value: PledgePaymentMethodsValue)
+  func didSelectRowAtIndexPath(_ indexPath: IndexPath)
   func viewDidLoad()
-  func addNewCardTapped(with intent: AddNewCardIntent)
+  func willSelectRowAtIndexPath(_ indexPath: IndexPath) -> IndexPath?
 }
 
 public protocol PledgePaymentMethodsViewModelOutputs {
-  var applePayStackViewHidden: Signal<Bool, Never> { get }
   var goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never> { get }
-  var notifyDelegateApplePayButtonTapped: Signal<Void, Never> { get }
   var notifyDelegateCreditCardSelected: Signal<String, Never> { get }
   var notifyDelegateLoadPaymentMethodsError: Signal<String, Never> { get }
-  var reloadPaymentMethodsAndSelectCard:
-    Signal<([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?), Never> { get }
-  var updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never> { get }
+  var reloadPaymentMethods: Signal<PledgePaymentMethodsAndSelectionData, Never> { get }
 }
 
 public protocol PledgePaymentMethodsViewModelType {
@@ -52,17 +62,20 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .switchMap { _ in
         AppEnvironment.current.apiService
           .fetchGraphCreditCards(query: UserQueries.storedCards.query)
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
+          .map { envelope in (envelope, false) }
+          .prefix(value: (nil, true))
           .materialize()
       }
 
-    self.applePayStackViewHidden = configureWithValue
-      .map { ($0.project, AppEnvironment.current.applePayCapabilities.applePayDevice()) }
-      .map(showApplePayButton(for:applePayDevice:))
-      .negate()
+    let storedCardsValues = storedCardsEvent.values()
+      .filter(second >>> isFalse)
+      .map(first)
+      .skipNil()
+      .map { $0.me.storedCards.nodes }
 
-    let storedCardsValues = storedCardsEvent.values().map { $0.me.storedCards.nodes }
-    let backing = configureWithValue.map { $0.project.personalization.backing }
+    let backing = configureWithValue
+      .map { $0.project.personalization.backing }
 
     let storedCards = Signal.combineLatest(storedCardsValues, backing)
       .map(cards(_:orderedBy:))
@@ -92,27 +105,80 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .takePairWhen(newCard)
       .map { cardData, _ in (cardData.0, cardData.1, cardData.2, true) }
 
-    self.reloadPaymentMethodsAndSelectCard = Signal.merge(
+    let cards = Signal.merge(
       initialCardData,
       newCardAdded
     )
-    .map(pledgeCreditCardViewDataAndSelectedCard)
+    .map(pledgePaymentMethodCellDataAndSelectedCard)
 
-    self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
+    let updatedCards = cards
+      .takePairWhen(self.didSelectRowAtIndexPathProperty.signal.skipNil())
+      .map(unpack)
+      .filter { _, _, indexPath in
+        indexPath.section == PaymentMethodsTableViewSection.paymentMethods.rawValue
+      }
+      .map { data, _, indexPath -> PledgePaymentMethodsAndSelectionData? in
+        guard data.count > indexPath.row else { return nil }
+        let card = data[indexPath.row].card
+
+        return (
+          paymentMethodsCellData: cellData(data, selecting: card),
+          selectedCard: card,
+          shouldReload: false,
+          isLoading: false
+        )
+      }
+      .skipNil()
+
+    let configuredCards = cards.map { cellData, selectedCard in
+      (paymentMethodsCellData: cellData, selectedCard: selectedCard, shouldReload: true, isLoading: false)
+    }
+
+    let reloadWithLoadingCell: Signal<PledgePaymentMethodsAndSelectionData, Never> = storedCardsEvent.values()
+      .filter(second >>> isTrue)
+      .map { _ in (paymentMethodsCellData: [], selectedCard: nil, shouldReload: true, isLoading: true) }
+
+    self.reloadPaymentMethods = Signal.merge(
+      reloadWithLoadingCell,
+      configuredCards.map { $0 as PledgePaymentMethodsAndSelectionData },
+      updatedCards
+    )
 
     self.notifyDelegateLoadPaymentMethodsError = storedCardsEvent
       .errors()
       .map { $0.localizedDescription }
 
-    self.notifyDelegateCreditCardSelected = self.creditCardSelectedSignal
+    self.notifyDelegateCreditCardSelected = self.reloadPaymentMethods
+      .map { $0.selectedCard?.id }
+      .skipNil()
       .skipRepeats()
 
-    self.updateSelectedCreditCard = allCards
-      .takePairWhen(self.creditCardSelectedSignal)
-      .map { cards, id in cards.first { $0.id == id } }
-      .skipNil()
+    let didTapToAddNewCard = self.didSelectRowAtIndexPathProperty.signal.skipNil()
+      .filter { $0.section == PaymentMethodsTableViewSection.addNewCard.rawValue }
 
-    self.goToAddCardScreen = Signal.combineLatest(self.addNewCardIntentProperty.signal.skipNil(), project)
+    self.goToAddCardScreen = project
+      .takeWhen(didTapToAddNewCard)
+      .map { project in (.pledge, project) }
+
+    self.willSelectRowAtIndexPathReturnProperty <~ self.reloadPaymentMethods
+      .map { $0.paymentMethodsCellData }
+      .takePairWhen(self.willSelectRowAtIndexPathProperty.signal.skipNil())
+      .map { cellData, indexPath -> IndexPath? in
+        guard
+          // the cell is in the payment methods or add new card section.
+          [
+            PaymentMethodsTableViewSection.paymentMethods.rawValue,
+            PaymentMethodsTableViewSection.addNewCard.rawValue
+          ]
+          .contains(indexPath.section),
+          // the row is within bounds and the card is enabled,
+          (cellData.count > indexPath.row && cellData[indexPath.row].isEnabled) ||
+          // or we're adding a new card.
+          indexPath.section == PaymentMethodsTableViewSection.addNewCard.rawValue
+        else { return nil }
+
+        return indexPath
+      }
 
     // Tracking
 
@@ -130,19 +196,9 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       }
   }
 
-  private let applePayButtonTappedProperty = MutableProperty(())
-  public func applePayButtonTapped() {
-    self.applePayButtonTappedProperty.value = ()
-  }
-
   private let configureWithValueProperty = MutableProperty<PledgePaymentMethodsValue?>(nil)
   public func configure(with value: PledgePaymentMethodsValue) {
     self.configureWithValueProperty.value = value
-  }
-
-  private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<String, Never>.pipe()
-  public func creditCardSelected(paymentSourceId: String) {
-    self.creditCardSelectedObserver.send(value: paymentSourceId)
   }
 
   private let newCreditCardProperty = MutableProperty<GraphUserCreditCard.CreditCard?>(nil)
@@ -150,42 +206,54 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     self.newCreditCardProperty.value = card
   }
 
-  private let addNewCardIntentProperty = MutableProperty<AddNewCardIntent?>(nil)
-  public func addNewCardTapped(with intent: AddNewCardIntent) {
-    self.addNewCardIntentProperty.value = intent
-  }
-
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
-  public let applePayStackViewHidden: Signal<Bool, Never>
+  private let didSelectRowAtIndexPathProperty = MutableProperty<IndexPath?>(nil)
+  public func didSelectRowAtIndexPath(_ indexPath: IndexPath) {
+    self.didSelectRowAtIndexPathProperty.value = indexPath
+  }
+
+  private let willSelectRowAtIndexPathProperty = MutableProperty<IndexPath?>(nil)
+  private let willSelectRowAtIndexPathReturnProperty = MutableProperty<IndexPath?>(nil)
+  public func willSelectRowAtIndexPath(_ indexPath: IndexPath) -> IndexPath? {
+    self.willSelectRowAtIndexPathProperty.value = indexPath
+    return self.willSelectRowAtIndexPathReturnProperty.value
+  }
+
   public let goToAddCardScreen: Signal<(AddNewCardIntent, Project), Never>
-  public let notifyDelegateApplePayButtonTapped: Signal<Void, Never>
   public let notifyDelegateCreditCardSelected: Signal<String, Never>
   public let notifyDelegateLoadPaymentMethodsError: Signal<String, Never>
-  public let reloadPaymentMethodsAndSelectCard:
-    Signal<([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?), Never>
-  public let updateSelectedCreditCard: Signal<GraphUserCreditCard.CreditCard, Never>
+  public let reloadPaymentMethods: Signal<PledgePaymentMethodsAndSelectionData, Never>
 
   public var inputs: PledgePaymentMethodsViewModelInputs { return self }
   public var outputs: PledgePaymentMethodsViewModelOutputs { return self }
 }
 
-private func pledgeCreditCardViewDataAndSelectedCard(
+private func pledgePaymentMethodCellDataAndSelectedCard(
   with cards: [GraphUserCreditCard.CreditCard],
   availableCardTypes: [String],
   project: Project,
   newCardAdded: Bool
-) -> ([PledgeCreditCardViewData], GraphUserCreditCard.CreditCard?) {
-  let data = cards.compactMap { card -> PledgeCreditCardViewData? in
+) -> ([PledgePaymentMethodCellData], GraphUserCreditCard.CreditCard?) {
+  let data = cards.compactMap { card -> PledgePaymentMethodCellData? in
     guard let cardBrand = card.type?.rawValue else { return nil }
 
     let isAvailableCardType = availableCardTypes.contains(cardBrand)
 
-    return (card, isAvailableCardType, project.location.displayableName)
+    return (
+      card: card,
+      isEnabled: isAvailableCardType,
+      isSelected: false,
+      projectCountry: project.location.displayableName
+    )
   }
+  // Position unavailable cards last
+  .sorted { data1, data2 -> Bool in data1.isEnabled && !data2.isEnabled }
+
+  let orderedCards = data.map { $0.card }
 
   // If there is no backing, simply select the first card in the list when it is an available card type.
   guard let backing = project.personalization.backing else {
@@ -193,26 +261,39 @@ private func pledgeCreditCardViewDataAndSelectedCard(
       return (data, nil)
     }
 
-    return (data, cards.first)
+    let selected = orderedCards.first
+
+    return (cellData(data, selecting: selected), selected)
   }
 
   // If we're working with a backing, but we have a newly added card, select the newly added card.
   if newCardAdded {
-    return (data, cards.first)
+    let selected = orderedCards.first
+
+    return (cellData(data, selecting: selected), selected)
   }
 
   /*
    If we're working with a backing, and a new card hasn't been added,
    select the card that the backing is associated with.
    */
-  let backedCard = cards.first(where: { $0.id == backing.paymentSource?.id })
+  let backedCard = orderedCards.first(where: { $0.id == backing.paymentSource?.id })
 
-  return (data, backedCard)
+  return (cellData(data, selecting: backedCard), backedCard)
 }
 
-private func showApplePayButton(for project: Project, applePayDevice: Bool) -> Bool {
-  return applePayDevice &&
-    AppEnvironment.current.config?.applePayCountries.contains(project.country.countryCode) ?? false
+private func cellData(
+  _ data: [PledgePaymentMethodCellData],
+  selecting card: GraphUserCreditCard.CreditCard?
+) -> [PledgePaymentMethodCellData] {
+  return data.map { value in
+    (
+      value.card,
+      value.isEnabled,
+      value.card == card,
+      value.projectCountry
+    )
+  }
 }
 
 private func isCreatingPledge(_ project: Project) -> Bool {
