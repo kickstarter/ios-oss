@@ -140,7 +140,7 @@ private func attributedLearnMoreText() -> NSAttributedString? {
 
   let attributedLine1String = Strings.Kickstarter_is_not_a_store()
     .attributed(
-      with: UIFont.ksr_body(size: 13),
+      with: UIFont.ksr_footnote(),
       foregroundColor: .ksr_text_dark_grey_500,
       attributes: [.paragraphStyle: paragraphStyle],
       bolding: [Strings.Kickstarter_is_not_a_store()]
@@ -160,7 +160,7 @@ private func attributedLearnMoreText() -> NSAttributedString? {
   ) else { return nil }
 
   let attributes: String.Attributes = [
-    .font: UIFont.ksr_body(size: 13),
+    .font: UIFont.ksr_footnote(),
     .foregroundColor: UIColor.ksr_text_dark_grey_500,
     .paragraphStyle: paragraphStyle,
     .underlineStyle: 0
