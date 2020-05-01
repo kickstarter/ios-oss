@@ -48,7 +48,6 @@ final class PledgeViewController: UIViewController,
     PledgeDisclaimerViewController.instantiate()
   }()
 
-
   private lazy var descriptionSectionViews = {
     [self.descriptionViewController.view, self.descriptionSectionSeparator]
   }()

@@ -3,10 +3,12 @@ import XCTest
 
 final class SignInWithAppleInputTests: XCTestCase {
   func testInput() {
-    let input = SignInWithAppleInput(appId: "app-123",
-                                     authCode: "12345",
-                                     firstName: "Blob",
-                                     lastName: "Blobbo")
+    let input = SignInWithAppleInput(
+      appId: "app-123",
+      authCode: "12345",
+      firstName: "Blob",
+      lastName: "Blobbo"
+    )
 
     let inputDictionary = input.toInputDictionary()
 
@@ -17,10 +19,12 @@ final class SignInWithAppleInputTests: XCTestCase {
   }
 
   func testInput_FirstNameLastName_IsNil() {
-    let input = SignInWithAppleInput(appId: "app-123",
-                                     authCode: "12345",
-                                     firstName: nil,
-                                     lastName: nil)
+    let input = SignInWithAppleInput(
+      appId: "app-123",
+      authCode: "12345",
+      firstName: nil,
+      lastName: nil
+    )
 
     let inputDictionary = input.toInputDictionary()
 

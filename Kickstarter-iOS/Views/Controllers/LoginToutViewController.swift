@@ -489,7 +489,7 @@ extension LoginToutViewController: TabBarControllerScrollable {
   func scrollToTop() {
     guard let scrollView = self.view.subviews
       .first(where: { view in view is UIScrollView })
-      .flatMap({ view in view as? UIScrollView})
+      .flatMap({ view in view as? UIScrollView })
     else { return }
 
     scrollView.scrollToTop()
