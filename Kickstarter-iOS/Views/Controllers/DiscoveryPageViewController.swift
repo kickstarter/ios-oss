@@ -136,8 +136,9 @@ internal final class DiscoveryPageViewController: UITableViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    _ = self
-      |> baseTableControllerStyle(estimatedRowHeight: 200.0)
+    _ = self.tableView
+      |> \.rowHeight .~ UITableView.automaticDimension
+      |> \.estimatedRowHeight .~ 200.0
 
     if let preferredBackgroundColor = self.preferredBackgroundColor {
       _ = self
@@ -198,7 +199,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.viewModel.outputs.projectsLoaded
       .observeForUI()
-      .observeValues { [weak self] projects, params in
+      .observeValues { [weak self] projects, params, variant in
         self?.dataSource.load(projects: projects, params: params)
         self?.tableView.reloadData()
         self?.updateProjectPlaylist(projects)
@@ -319,6 +320,20 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
         self?.present(nav, animated: true, completion: nil)
       }
+
+    self.viewModel.outputs.backgroundColor
+    .observeForUI()
+      .observeValues { [weak self] backgroundColor in
+        guard let self = self else { return }
+
+        _ = self.view
+          |> \.backgroundColor .~ backgroundColor
+
+        _ = self.tableView
+          |> \.backgroundColor .~ backgroundColor
+
+        self.preferredBackgroundColor = backgroundColor
+    }
   }
 
   internal override func tableView(

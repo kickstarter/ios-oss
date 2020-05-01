@@ -81,6 +81,9 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Hopefully in the future we can remove this when we can resolve postcard display issues.
   var asyncReloadData: Signal<Void, Never> { get }
 
+  /// Emits the background color for the view
+  var backgroundColor: Signal<UIColor, Never> { get }
+
   var configureEditorialTableViewHeader: Signal<String, Never> { get }
 
   /// Emits when the personalization cell should be deleted
@@ -111,7 +114,7 @@ public protocol DiscoveryPageViewModelOutputs {
   var notifyDelegateContentOffsetChanged: Signal<CGPoint, Never> { get }
 
   /// Emits a list of projects that should be shown, and the corresponding filter request params
-  var projectsLoaded: Signal<([Project], DiscoveryParams?), Never> { get }
+  var projectsLoaded: Signal<([Project], DiscoveryParams?, OptimizelyExperiment.Variant), Never> { get }
 
   /// Emits a boolean that determines if projects are currently loading or not.
   var projectsAreLoadingAnimated: Signal<(Bool, Bool), Never> { get }
@@ -232,9 +235,24 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .takePairWhen(projects)
       .map { ($1, $0) }
 
-    self.projectsLoaded = Signal.combineLatest(optimizelyReadyOrContinue, projectsData).map(second)
+    self.projectsLoaded = Signal.combineLatest(optimizelyReadyOrContinue, projectsData).map { _, projectsAndParams in
+      let variant = nativeProjectCardsExperimentVariant()
+
+      return (projectsAndParams.0, projectsAndParams.1, variant)
+    }
 
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
+
+    self.backgroundColor = optimizelyReadyOrContinue.map { _ in
+      let variant = nativeProjectCardsExperimentVariant()
+
+      switch variant {
+        case .variant1:
+          return UIColor.ksr_grey_200
+        case .variant2, .control:
+          return UIColor.white
+      }
+    }
 
     let isRefreshing = isLoading
       .combineLatest(with: self.pulledToRefreshProperty.signal)
@@ -574,6 +592,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
   public let activitiesForSample: Signal<[Activity], Never>
   public let asyncReloadData: Signal<Void, Never>
+  public let backgroundColor: Signal<UIColor, Never>
   public let configureEditorialTableViewHeader: Signal<String, Never>
   public let dismissPersonalizationCell: Signal<Void, Never>
   public let goToActivityProject: Signal<(Project, RefTag), Never>
@@ -584,7 +603,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let goToProjectUpdate: Signal<(Project, Update), Never>
   public let hideEmptyState: Signal<Void, Never>
   public let notifyDelegateContentOffsetChanged: Signal<CGPoint, Never>
-  public let projectsLoaded: Signal<([Project], DiscoveryParams?), Never>
+  public let projectsLoaded: Signal<([Project], DiscoveryParams?, OptimizelyExperiment.Variant), Never>
   public let projectsAreLoadingAnimated: Signal<(Bool, Bool), Never>
   public let setScrollsToTop: Signal<Bool, Never>
   public let scrollToProjectRow: Signal<Int, Never>
@@ -646,4 +665,14 @@ private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {
   }
 
   return nil
+}
+
+private func nativeProjectCardsExperimentVariant() -> OptimizelyExperiment.Variant {
+  guard let optimizelyClient = AppEnvironment.current.optimizelyClient else {
+    return .control
+  }
+
+  let variant = optimizelyClient.variant(for: .nativeProjectCards)
+
+  return variant
 }
