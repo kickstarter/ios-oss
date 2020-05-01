@@ -14,7 +14,8 @@ protocol PledgeViewControllerDelegate: AnyObject {
   func pledgeViewControllerDidUpdatePledge(_ viewController: PledgeViewController, message: String)
 }
 
-final class PledgeViewController: UIViewController, MessageBannerViewControllerPresenting {
+final class PledgeViewController: UIViewController,
+  MessageBannerViewControllerPresenting, ProcessingViewPresenting {
   // MARK: - Properties
 
   private lazy var confirmationSectionViews = {
@@ -42,11 +43,10 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
       |> \.delegate .~ self
   }()
 
+  internal var processingView: ProcessingView? = ProcessingView(frame: .zero)
   private lazy var pledgeDisclaimerViewController: PledgeDisclaimerViewController = {
     PledgeDisclaimerViewController.instantiate()
   }()
-
-  private lazy var processingView: ProcessingView = { ProcessingView(frame: .zero) }()
 
   private lazy var descriptionSectionViews = {
     [self.descriptionViewController.view, self.descriptionSectionSeparator]
@@ -459,20 +459,6 @@ final class PledgeViewController: UIViewController, MessageBannerViewControllerP
     ) { [weak self] status, _, error in
       self?.viewModel.inputs.scaFlowCompleted(with: status, error: error)
     }
-  }
-
-  private func showProcessingView() {
-    guard let window = UIApplication.shared.keyWindow else {
-      return
-    }
-
-    _ = (self.processingView, window)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-  }
-
-  private func hideProcessingView() {
-    self.processingView.removeFromSuperview()
   }
 }
 
