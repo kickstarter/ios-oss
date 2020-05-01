@@ -6,7 +6,6 @@ import ReactiveSwift
 
 public protocol PledgeDescriptionViewModelInputs {
   func configureWith(data: (Project, Reward))
-  func learnMoreTapped()
   func rewardCardTapped()
 }
 
@@ -14,7 +13,6 @@ public protocol PledgeDescriptionViewModelOutputs {
   var estimatedDeliveryStackViewIsHidden: Signal<Bool, Never> { get }
   var estimatedDeliveryText: Signal<String, Never> { get }
   var popViewController: Signal<(), Never> { get }
-  var presentTrustAndSafety: Signal<Void, Never> { get }
   var rewardTitle: Signal<String, Never> { get }
 }
 
@@ -38,7 +36,6 @@ public final class PledgeDescriptionViewModel: PledgeDescriptionViewModelType,
       .map(second)
       .map { $0.estimatedDeliveryOn.isNil }
 
-    self.presentTrustAndSafety = self.learnMoreTappedProperty.signal
     self.rewardTitle = self.configDataProperty.signal
       .skipNil()
       .map { _, reward in reward.title ?? Strings.Back_it_because_you_believe_in_it() }
@@ -51,11 +48,6 @@ public final class PledgeDescriptionViewModel: PledgeDescriptionViewModelType,
     self.configDataProperty.value = data
   }
 
-  private let learnMoreTappedProperty = MutableProperty(())
-  public func learnMoreTapped() {
-    self.learnMoreTappedProperty.value = ()
-  }
-
   private let (rewardCardTappedSignal, rewardCardTappedObserver) = Signal<(), Never>.pipe()
   public func rewardCardTapped() {
     self.rewardCardTappedObserver.send(value: ())
@@ -64,7 +56,6 @@ public final class PledgeDescriptionViewModel: PledgeDescriptionViewModelType,
   public let estimatedDeliveryStackViewIsHidden: Signal<Bool, Never>
   public let estimatedDeliveryText: Signal<String, Never>
   public let popViewController: Signal<(), Never>
-  public let presentTrustAndSafety: Signal<Void, Never>
   public let rewardTitle: Signal<String, Never>
 
   public var inputs: PledgeDescriptionViewModelInputs { return self }
