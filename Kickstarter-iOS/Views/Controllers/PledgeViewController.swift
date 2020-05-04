@@ -168,37 +168,19 @@ final class PledgeViewController: UIViewController,
       self.paymentMethodsViewController
     ]
 
-    let topSectionViews = [
+    let arrangedSubviews = [
       self.descriptionSectionViews,
       self.inputsSectionViews,
       self.summarySectionViews,
-      self.paymentMethodsSectionViews
+      self.paymentMethodsSectionViews,
+      self.confirmationSectionViews
     ]
     .flatMap { $0 }
     .compact()
 
-    let topSectionStackView = UIStackView(arrangedSubviews: topSectionViews)
-      |> nestedStackViewStyle
-
-    let bottomSectionViews = [self.confirmationSectionViews]
-      .flatMap { $0 }
-      .compact()
-
-    let bottomSectionStackView = UIStackView(arrangedSubviews: bottomSectionViews)
-      |> bottomStackViewStyle
-
-    let arrangedSubviews = [
-      [topSectionStackView],
-      [bottomSectionStackView]
-    ]
-    .flatMap { $0 }
-
     arrangedSubviews.forEach { view in
       self.rootStackView.addArrangedSubview(view)
     }
-
-    _ = (self.paymentMethodsViewController.view, self.rootStackView)
-      |> ksr_setCustomSpacing(Styles.grid(2))
 
     childViewControllers.forEach { viewController in
       self.addChild(viewController)
@@ -236,6 +218,9 @@ final class PledgeViewController: UIViewController,
 
     _ = self.view
       |> checkoutBackgroundStyle
+
+    _ = self.descriptionViewController.view
+      |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
 
     _ = self.pledgeDisclaimerViewController.view
       |> pledgeDisclaimerViewStyle
@@ -579,20 +564,6 @@ extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
 
 // MARK: - Styles
 
-private let nestedStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> checkoutRootStackViewStyle
-    |> \.layoutMargins .~ UIEdgeInsets(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
-}
-
-private let bottomStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> verticalStackViewStyle
-    |> \.spacing .~ Styles.grid(2)
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
-}
-
 private let pledgeDisclaimerViewStyle: ViewStyle = { view in
   view
     |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
@@ -607,5 +578,9 @@ private let rootScrollViewStyle: ScrollStyle = { scrollView in
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> checkoutRootStackViewStyle
-    |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3))
+    |> \.spacing .~ Styles.grid(4)
+    |> \.layoutMargins .~ UIEdgeInsets(
+      topBottom: Styles.grid(3),
+      leftRight: CheckoutConstants.PledgeView.Inset.leftRight
+  )
 }

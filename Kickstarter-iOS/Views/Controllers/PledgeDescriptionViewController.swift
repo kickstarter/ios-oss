@@ -10,8 +10,6 @@ final class PledgeDescriptionViewController: UIViewController {
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var estimatedDeliveryLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var estimatedDeliveryStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var rewardInfoStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var rewardInfoBackgroundView: UIView = { UIView(frame: .zero) }()
   private lazy var rewardTitleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = {
     UIStackView(frame: .zero)
@@ -34,6 +32,9 @@ final class PledgeDescriptionViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self.view
+      |> checkoutWhiteBackgroundStyle
+
     _ = self.dateLabel
       |> dateLabelStyle
 
@@ -45,45 +46,27 @@ final class PledgeDescriptionViewController: UIViewController {
     _ = self.estimatedDeliveryStackView
       |> estimatedDeliveryStackViewStyle(isAccessibilityCategory)
 
-    _ = self.rewardInfoBackgroundView
-      |> rewardInfoBackgroundViewStyle
-
-    _ = self.rewardInfoStackView
-      |> rewardInfoStackViewStyle
-
     _ = self.rewardTitleLabel
       |> rewardTitleLabelStyle
 
     _ = self.rootStackView
       |> rootStackViewStyle
-
-    _ = self.view
-      |> checkoutBackgroundStyle
   }
 
   private func configureSubviews() {
     _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
 
     _ = ([self.estimatedDeliveryLabel, self.dateLabel, UIView()], self.estimatedDeliveryStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.estimatedDeliveryStackView, self.rewardTitleLabel], self.rewardInfoStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = (self.rewardInfoStackView, self.rewardInfoBackgroundView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    _ = ([self.rewardInfoBackgroundView], self.rootStackView)
+    _ = ([self.estimatedDeliveryStackView, self.rewardTitleLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
   private func setupConstraints() {
-    NSLayoutConstraint.activate([
-      self.rewardInfoBackgroundView.widthAnchor.constraint(equalTo: self.rootStackView.widthAnchor)
-    ])
+    _ = (self.rootStackView, self.view)
+      |> ksr_constrainViewToEdgesInParent()
   }
 
   // MARK: - Actions
@@ -152,21 +135,6 @@ private func estimatedDeliveryStackViewStyle(_ isAccessibilityCategory: Bool) ->
   }
 }
 
-private let rewardInfoBackgroundViewStyle: ViewStyle = { (view: UIView) in
-  view
-    |> roundedStyle(cornerRadius: Styles.grid(2))
-    |> \.backgroundColor .~ .white
-}
-
-private let rewardInfoStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
-
-  stackView
-    |> verticalStackViewStyle
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
-    |> \.spacing .~ Styles.grid(1)
-}
-
 private let rewardTitleLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.numberOfLines .~ 2
@@ -177,7 +145,8 @@ private let rewardTitleLabelStyle: LabelStyle = { (label: UILabel) in
 
 private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
-    |> checkoutSubStackViewStyle
+    |> \.spacing .~ Styles.grid(1)
     |> verticalStackViewStyle
-    |> \.alignment .~ UIStackView.Alignment.top
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(3), leftRight: Styles.grid(3))
 }
