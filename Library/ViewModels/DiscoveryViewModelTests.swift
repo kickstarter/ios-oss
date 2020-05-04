@@ -47,8 +47,7 @@ internal final class DiscoveryViewModelTests: TestCase {
   func testConfigureDataSourceOptimizelyConfiguration() {
     withEnvironment(optimizelyClient: nil) {
       self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance(by: .seconds(1))
+      self.vm.inputs.viewWillAppear(animated: false)
 
       self.configureDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
 
@@ -68,14 +67,13 @@ internal final class DiscoveryViewModelTests: TestCase {
   func testConfigureDataSource_OptimizelyConfiguration_Failed() {
     withEnvironment(optimizelyClient: nil) {
       self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance(by: .seconds(1))
+      self.vm.inputs.viewWillAppear(animated: false)
 
       self.configureDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
 
-      self.scheduler.advance(by: .seconds(2))
+      self.vm.inputs.optimizelyClientConfigurationFailed()
 
-      self.configureDataSource.assertValueCount(1, "Proceeds after debounce interval")
+      self.configureDataSource.assertValueCount(1)
     }
   }
 
@@ -158,7 +156,8 @@ internal final class DiscoveryViewModelTests: TestCase {
 
       self.loadFilterIntoDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
 
-      self.scheduler.advance(by: .seconds(3))
+      self.vm.inputs.optimizelyClientConfigurationFailed()
+
       self.scheduler.advance()
 
       self.loadFilterIntoDataSource.assertValues([self.initialParams], "Proceeds after 3 seconds")
@@ -280,7 +279,8 @@ internal final class DiscoveryViewModelTests: TestCase {
 
       self.configureNavigationHeader.assertDidNotEmitValue("Waits for Optimizely configuration")
 
-      self.scheduler.advance(by: .seconds(3))
+      self.vm.inputs.optimizelyClientConfigurationFailed()
+
       self.scheduler.advance()
 
       self.configureNavigationHeader.assertValues([self.initialParams], "Proceeds after 3 seconds")

@@ -11,6 +11,7 @@ internal final class DiscoveryViewController: UIViewController {
 
   private weak var navigationHeaderViewController: DiscoveryNavigationHeaderViewController!
   private var optimizelyConfiguredObserver: Any?
+  private var optimizelyConfigurationFailedObserver: Any?
   private weak var pageViewController: UIPageViewController!
   private weak var sortPagerViewController: SortPagerViewController!
 
@@ -53,11 +54,17 @@ internal final class DiscoveryViewController: UIViewController {
         self?.viewModel.inputs.optimizelyClientConfigured()
       }
 
+    self.optimizelyConfigurationFailedObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_optimizelyClientConfigurationFailed, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.optimizelyClientConfigurationFailed()
+      }
+
     self.viewModel.inputs.viewDidLoad()
   }
 
   deinit {
     [self.optimizelyConfiguredObserver,
+     self.optimizelyConfigurationFailedObserver,
      self.recommendationsChangedObserver
       ].forEach { $0.doIfSome(NotificationCenter.default.removeObserver) }
   }

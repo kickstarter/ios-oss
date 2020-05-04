@@ -15,6 +15,9 @@ public protocol DiscoveryViewModelInputs {
   /// Call when the OptimizelyClient has been configured
   func optimizelyClientConfigured()
 
+  /// Call when the OptimizelyClient configuration has failed
+  func optimizelyClientConfigurationFailed()
+
   /// Call when the UIPageViewController finishes transitioning.
   func pageTransition(completed: Bool)
 
@@ -85,8 +88,7 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
       self.viewDidLoadProperty.signal.map { AppEnvironment.current.optimizelyClient }
         .skipNil()
         .ignoreValues(),
-      self.viewDidLoadProperty.signal
-        .ksr_debounce(.seconds(3), on: AppEnvironment.current.scheduler) // Fall-back in case Optimizely configuration fails
+      self.optimizelyClientConfigurationFailedProperty.signal
     ).take(first: 1)
       .map {
         // Immediately activate the nativeProjectCards experiment
@@ -97,7 +99,7 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
 
     let configureWithSorts = optimizelyReadyOrContinue.mapConst(sorts)
 
-    self.configurePagerDataSource = configureWithSorts.logEvents(identifier: "*** CONFIGURE PAGER DATA SOURCE **")
+    self.configurePagerDataSource = configureWithSorts
     self.configureSortPager = configureWithSorts
 
     let initialParams = Signal.merge(
@@ -181,6 +183,11 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
   fileprivate let optimizelyClientConfiguredProperty = MutableProperty(())
   public func optimizelyClientConfigured() {
     self.optimizelyClientConfiguredProperty.value = ()
+  }
+
+  fileprivate let optimizelyClientConfigurationFailedProperty = MutableProperty(())
+  public func optimizelyClientConfigurationFailed() {
+    self.optimizelyClientConfigurationFailedProperty.value = ()
   }
 
   fileprivate let pageTransitionCompletedProperty = MutableProperty(false)
