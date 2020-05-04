@@ -466,58 +466,6 @@ final class ProjectDescriptionViewModelTests: TestCase {
     }
   }
 
-  func testTrackingCampaignDetailsPledgeButtonTapped_LiveProject_LoggedIn_NonBacked_Variant1() {
-    let user = User.template
-      |> \.location .~ Location.template
-      |> \.stats.backedProjectsCount .~ 50
-
-    let project = Project.template
-      |> Project.lens.creator .~ user
-      |> Project.lens.state .~ .live
-      |> Project.lens.personalization.backing .~ nil
-      |> Project.lens.personalization.isBacking .~ false
-
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
-          .variant1.rawValue
-      ]
-
-    withEnvironment(currentUser: user, optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (project, .discovery))
-      self.vm.inputs.viewDidLoad()
-
-      XCTAssertEqual(self.trackingClient.events, [])
-
-      self.pledgeCTAContainerViewIsHidden.assertValues([true])
-    }
-  }
-
-  func testTrackingCampaignDetailsPledgeButtonTapped_LiveProject_LoggedIn_Backed_Variant2() {
-    let user = User.template
-      |> \.location .~ Location.template
-      |> \.stats.backedProjectsCount .~ 50
-
-    let project = Project.template
-      |> Project.lens.state .~ .live
-      |> Project.lens.personalization.backing .~ Backing.template
-
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
-          .variant2.rawValue
-      ]
-
-    withEnvironment(currentUser: user, optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (project, .discovery))
-      self.vm.inputs.viewDidLoad()
-
-      XCTAssertEqual(self.trackingClient.events, [])
-
-      self.pledgeCTAContainerViewIsHidden.assertValues([true])
-    }
-  }
-
   func testTrackingCampaignDetailsPledgeButtonTapped_LiveProject_LoggedIn_NonBacked_Variant2() {
     let project = Project.template
       |> Project.lens.state .~ .live
@@ -548,6 +496,12 @@ final class ProjectDescriptionViewModelTests: TestCase {
       XCTAssertEqual(self.trackingClient.properties(forKey: "project_category"), [nil])
       XCTAssertEqual(self.trackingClient.properties(forKey: "project_country"), ["US"])
       XCTAssertEqual(self.trackingClient.properties(forKey: "project_user_has_watched"), [nil])
+
+      let properties = self.trackingClient.properties.last
+
+      XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
+      XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")
+      XCTAssertNotNil(properties?["optimizely_experiments"], "Event includes Optimizely properties")
     }
   }
 }

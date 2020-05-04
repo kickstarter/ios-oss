@@ -27,7 +27,10 @@ public final class LandingViewModel: LandingViewModelType, LandingViewModelInput
 
     self.getStartedButtonTappedProperty.signal
       .observeValues {
-        AppEnvironment.current.koala.trackOnboardingGetStartedButtonClicked()
+        let optimizelyProps = optimizelyProperties() ?? [:]
+
+        AppEnvironment.current.koala
+          .trackOnboardingGetStartedButtonClicked(optimizelyProperties: optimizelyProps)
       }
   }
 

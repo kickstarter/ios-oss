@@ -422,20 +422,37 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     requestFirstPageWith
       .observeValues { params in
-        AppEnvironment.current.koala.trackDiscovery(params: params)
+        let optimizelyProps = optimizelyProperties() ?? [:]
+
+        AppEnvironment.current.koala.trackDiscovery(
+          params: params,
+          optimizelyProperties: optimizelyProps
+        )
       }
 
     let personalizationCellTappedAndRefTag = self.personalizationCellTappedProperty.signal
       .mapConst(RefTag.onboarding)
 
-    Signal.merge(
-      self.discoveryEditorialCellTappedWithValueProperty.signal.skipNil()
-        .map { RefTag.projectCollection($0) },
-      personalizationCellTappedAndRefTag
+    let editorialCellTappedAndRefTag = self.discoveryEditorialCellTappedWithValueProperty.signal
+      .skipNil()
+      .map { RefTag.projectCollection($0) }
+
+    let editorialOrPersonaliztionCardTappedAndRefTag = Signal.merge(
+      personalizationCellTappedAndRefTag,
+      editorialCellTappedAndRefTag
     )
-    .observeValues { refTag in
-      AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: refTag)
-    }
+
+    requestFirstPageWith
+      .takePairWhen(editorialOrPersonaliztionCardTappedAndRefTag)
+      .observeValues { params, refTag in
+        let optimizelyProps = refTag == .onboarding ? optimizelyProperties() : nil
+
+        AppEnvironment.current.koala.trackEditorialHeaderTapped(
+          params: params,
+          refTag: refTag,
+          optimizelyProperties: optimizelyProps ?? [:]
+        )
+      }
 
     self.goToLoginSignup
       .observeValues { AppEnvironment.current.koala.trackLoginOrSignupButtonClicked(intent: $0) }

@@ -253,7 +253,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     }
   }
 
-  func testProjectPaveViewed_OnViewDidAppear() {
+  func testProjectPageViewed_OnViewDidAppear() {
     XCTAssertEqual([], self.trackingClient.events)
 
     self.configureInitialState(.init(left: .template))
@@ -841,6 +841,12 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(trackingClient.properties(forKey: "project_category"), [nil])
       XCTAssertEqual(trackingClient.properties(forKey: "project_country"), ["US"])
       XCTAssertEqual(trackingClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+
+      let properties = trackingClient.properties.last
+
+      XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
+      XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")
+      XCTAssertNotNil(properties?["optimizely_experiments"], "Event includes Optimizely properties")
     }
   }
 
@@ -874,6 +880,12 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(trackingClient.properties(forKey: "project_category"), [nil])
       XCTAssertEqual(trackingClient.properties(forKey: "project_country"), ["US"])
       XCTAssertEqual(trackingClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+
+      let properties = trackingClient.properties.last
+
+      XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
+      XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")
+      XCTAssertNotNil(properties?["optimizely_experiments"], "Event includes Optimizely properties")
     }
   }
 

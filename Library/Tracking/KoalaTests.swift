@@ -1204,7 +1204,7 @@ final class KoalaTests: TestCase {
     koala.trackDiscoveryModalSelectedFilter(params: .defaults)
     XCTAssertEqual("explore_screen", client.properties.last?["context_location"] as? String)
 
-    koala.trackEditorialHeaderTapped(refTag: .discovery)
+    koala.trackEditorialHeaderTapped(params: .defaults, refTag: .discovery)
     XCTAssertEqual("explore_screen", client.properties.last?["context_location"] as? String)
 
     koala.trackFacebookLoginOrSignupButtonClicked(intent: .generic)

@@ -334,25 +334,22 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       project.rewards.isEmpty && variant == .variant2
     }
 
-    let shouldTrackCTATappedEvent = projectAndRefTag
-      .takeWhen(self.readMoreButtonTappedProperty.signal)
-      .filter { project, _ in
-        project.state == .live && userIsBackingProject(project) == false
-      }
-
     // Tracking
 
     projectAndRefTag
-      .takeWhen(shouldTrackCTATappedEvent)
+      .takeWhen(self.readMoreButtonTappedProperty.signal)
       .observeValues { projectAndRefTag in
         let (project, refTag) = projectAndRefTag
+        let includeOptimizelyProperties = project.state == .live && userIsBackingProject(project) == false
         let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
+        let optyProperties = includeOptimizelyProperties ? optimizelyProperties() : nil
 
         AppEnvironment.current.koala.trackCampaignDetailsButtonClicked(
           project: project,
           location: .projectPage,
           refTag: refTag,
-          cookieRefTag: cookieRefTag
+          cookieRefTag: cookieRefTag,
+          optimizelyProperties: optyProperties ?? [:]
         )
       }
 
@@ -360,13 +357,16 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .takeWhen(self.creatorBylineTappedProperty.signal)
       .observeValues { projectAndRefTag in
         let (project, refTag) = projectAndRefTag
+        let includeOptimizelyProperties = project.state == .live && userIsBackingProject(project) == false
         let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
+        let optyProperties = includeOptimizelyProperties ? optimizelyProperties() : [:]
 
         AppEnvironment.current.koala.trackCreatorDetailsClicked(
           project: project,
           location: .projectPage,
           refTag: refTag,
-          cookieRefTag: cookieRefTag
+          cookieRefTag: cookieRefTag,
+          optimizelyProperties: optyProperties ?? [:]
         )
       }
   }
