@@ -43,7 +43,6 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.configureDataSource.assertValueCount(1, "Data source configures after view loads.")
   }
 
-
   func testConfigureDataSourceOptimizelyConfiguration() {
     withEnvironment(optimizelyClient: nil) {
       self.vm.inputs.viewDidLoad()
@@ -246,7 +245,7 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.configureNavigationHeader.assertValues([self.initialParams])
   }
 
-    func testConfigureNavigationHeader_OptimizelyConfiguration() {
+  func testConfigureNavigationHeader_OptimizelyConfiguration() {
     withEnvironment(optimizelyClient: nil) {
       self.configureNavigationHeader.assertValueCount(0)
 

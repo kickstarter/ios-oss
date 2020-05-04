@@ -73,4 +73,3 @@ private let discoveryOnboardingStackViewStyle: StackViewStyle = { stackView in
     |> \.distribution .~ .fill
     |> \.alignment .~ .fill
 }
-

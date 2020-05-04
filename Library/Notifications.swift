@@ -7,7 +7,8 @@ public enum CurrentUserNotifications {
   public static let localePreferencesChanged = "CurrentUserNotification.localePreferencesChanged"
   public static let onboardingCompleted = "CurrentUserNotifications.onboardingCompleted"
   public static let optimizelyClientConfigured = "CurrentUserNotification.optimizelyClientConfigured"
-  public static let optimizelyClientConfigurationFailed = "CurrentUserNotification.optimizelyClientConfigurationFailed"
+  public static let optimizelyClientConfigurationFailed =
+    "CurrentUserNotification.optimizelyClientConfigurationFailed"
   public static let projectBacked = "CurrentUserNotifications.projectBacked"
   public static let projectSaved = "CurrentUserNotifications.projectSaved"
   public static let recommendationsSettingChanged = "CurrentUserNotifications.recommendationsSettingChanged"

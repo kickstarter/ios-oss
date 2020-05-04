@@ -217,12 +217,13 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     .skip { $0.isEmpty }
     .skipRepeats(==)
 
-    let projectsData: Signal<([Project], DiscoveryParams?, OptimizelyExperiment.Variant), Never> = paramsChanged.takePairWhen(projects)
-      .map { params, projects in
-        let variant = nativeProjectCardsExperimentVariant()
+    let projectsData: Signal<([Project], DiscoveryParams?, OptimizelyExperiment.Variant), Never> =
+      paramsChanged.takePairWhen(projects)
+        .map { params, projects in
+          let variant = nativeProjectCardsExperimentVariant()
 
-        return (projects, params, variant)
-    }
+          return (projects, params, variant)
+        }
 
     self.projectsLoaded = projectsData
 
@@ -230,15 +231,15 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     self.backgroundColor = self.viewWillAppearProperty.signal
       .map { _ in
-      let variant = nativeProjectCardsExperimentVariant()
+        let variant = nativeProjectCardsExperimentVariant()
 
-      switch variant {
+        switch variant {
         case .variant1:
           return UIColor.ksr_grey_200
         case .variant2, .control:
           return UIColor.white
+        }
       }
-    }
 
     let isRefreshing = isLoading
       .combineLatest(with: self.pulledToRefreshProperty.signal)

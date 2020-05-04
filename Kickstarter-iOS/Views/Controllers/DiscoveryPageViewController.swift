@@ -192,7 +192,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.viewModel.outputs.projectsLoaded
       .observeForUI()
-      .observeValues { [weak self] projects, params, variant in
+      .observeValues { [weak self] projects, params, _ in
         self?.dataSource.load(projects: projects, params: params)
         self?.tableView.reloadData()
         self?.updateProjectPlaylist(projects)
@@ -317,7 +317,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       }
 
     self.viewModel.outputs.backgroundColor
-    .observeForUI()
+      .observeForUI()
       .observeValues { [weak self] backgroundColor in
         guard let self = self else { return }
 
@@ -328,7 +328,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
           |> \.backgroundColor .~ backgroundColor
 
         self.preferredBackgroundColor = backgroundColor
-    }
+      }
   }
 
   internal override func tableView(

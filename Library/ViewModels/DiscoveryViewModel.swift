@@ -92,8 +92,8 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
     ).take(first: 1)
       .map {
         // Immediately activate the nativeProjectCards experiment
-        return nativeProjectCardsExperimentVariant()
-    }.ignoreValues()
+        nativeProjectCardsExperimentVariant()
+      }.ignoreValues()
 
     let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon]
 
@@ -120,7 +120,7 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
       configureWithSorts.ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler),
       currentParams
     )
-      .map(second)
+    .map(second)
 
     self.configureNavigationHeader = dataSourceConfiguredAndCurrentParams
     self.loadFilterIntoDataSource = dataSourceConfiguredAndCurrentParams

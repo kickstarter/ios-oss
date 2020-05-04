@@ -63,7 +63,7 @@ public final class SortPagerViewModel: SortPagerViewModelType, SortPagerViewMode
       self.sortsProperty.signal.skipNil(),
       self.viewWillAppearProperty.signal
     )
-      .map(first)
+    .map(first)
 
     self.createSortButtons = sorts.take(first: 1)
 

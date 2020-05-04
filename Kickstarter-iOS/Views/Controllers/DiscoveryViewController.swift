@@ -55,7 +55,11 @@ internal final class DiscoveryViewController: UIViewController {
       }
 
     self.optimizelyConfigurationFailedObserver = NotificationCenter.default
-      .addObserver(forName: .ksr_optimizelyClientConfigurationFailed, object: nil, queue: nil) { [weak self] _ in
+      .addObserver(
+        forName: .ksr_optimizelyClientConfigurationFailed,
+        object: nil,
+        queue: nil
+      ) { [weak self] _ in
         self?.viewModel.inputs.optimizelyClientConfigurationFailed()
       }
 
@@ -63,10 +67,11 @@ internal final class DiscoveryViewController: UIViewController {
   }
 
   deinit {
-    [self.optimizelyConfiguredObserver,
-     self.optimizelyConfigurationFailedObserver,
-     self.recommendationsChangedObserver
-      ].forEach { $0.doIfSome(NotificationCenter.default.removeObserver) }
+    [
+      self.optimizelyConfiguredObserver,
+      self.optimizelyConfigurationFailedObserver,
+      self.recommendationsChangedObserver
+    ].forEach { $0.doIfSome(NotificationCenter.default.removeObserver) }
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -87,7 +92,7 @@ internal final class DiscoveryViewController: UIViewController {
     self.viewModel.outputs.configurePagerDataSource
       .observeForControllerAction()
       .observeValues { [weak self] in self?.configurePagerDataSource($0)
-    }
+      }
 
     self.viewModel.outputs.configureSortPager
       .observeForControllerAction()
@@ -97,7 +102,7 @@ internal final class DiscoveryViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.dataSource?.load(filter: $0)
-    }
+      }
 
     self.viewModel.outputs.navigateToSort
       .observeForControllerAction()
@@ -166,7 +171,7 @@ extension DiscoveryViewController: UIPageViewControllerDelegate {
     willTransitionTo pendingViewControllers: [UIViewController]
   ) {
     guard let dataSource = self.dataSource,
-      let idx = pendingViewControllers.first.flatMap(dataSource.indexFor(controller:))else { return }
+      let idx = pendingViewControllers.first.flatMap(dataSource.indexFor(controller:)) else { return }
 
     self.viewModel.inputs.willTransition(toPage: idx)
   }

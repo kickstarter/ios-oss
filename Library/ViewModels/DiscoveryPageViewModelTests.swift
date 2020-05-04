@@ -206,7 +206,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.inputs.willDisplayRow(20, outOf: 20)
     self.scheduler.advance()
 
-    self.projectsLoadedDiscoveryParams.assertValues([params, params, updatedParams, updatedParams, updatedParams])
+    self.projectsLoadedDiscoveryParams
+      .assertValues([params, params, updatedParams, updatedParams, updatedParams])
     self.asyncReloadData.assertValueCount(1, "View is only reloaded once in the beginning.")
     self.hasAddedProjects.assertValues(
       [true, true, false, true, true],
@@ -290,8 +291,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   func testProjectsLoadedVariant_IsControl() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [OptimizelyExperiment.Key.nativeProjectCards.rawValue:
-        OptimizelyExperiment.Variant.control.rawValue]
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+          OptimizelyExperiment.Variant.control.rawValue
+      ]
 
     let params = DiscoveryParams.defaults
       |> \.sort .~ .magic
@@ -315,8 +318,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   func testProjectsLoadedVariant_IsVariant1() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [OptimizelyExperiment.Key.nativeProjectCards.rawValue:
-        OptimizelyExperiment.Variant.variant1.rawValue]
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
 
     let params = DiscoveryParams.defaults
       |> \.sort .~ .magic
@@ -340,8 +345,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   func testBackgroundColor_IsControl() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [OptimizelyExperiment.Key.nativeProjectCards.rawValue:
-        OptimizelyExperiment.Variant.control.rawValue]
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+          OptimizelyExperiment.Variant.control.rawValue
+      ]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(sort: .magic)
@@ -355,8 +362,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   func testBackgroundColor_IsVariant1() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [OptimizelyExperiment.Key.nativeProjectCards.rawValue:
-        OptimizelyExperiment.Variant.variant1.rawValue]
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(sort: .magic)
