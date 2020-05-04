@@ -16,9 +16,6 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the editioral cell is tapped
   func discoveryEditorialCellTapped(with tagId: DiscoveryParams.TagID)
 
-  /// Call when the OptimizelyClient has been configured
-  func optimizelyClientConfigured()
-
   /// Call when onboarding has been completed
   func onboardingCompleted()
 
@@ -220,30 +217,19 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     .skip { $0.isEmpty }
     .skipRepeats(==)
 
-    // Ensure that Optimizely is configured before rendering the projects list
-    let optimizelyReadyOrContinue = Signal.merge(
-      self.optimizelyClientConfiguredProperty.signal,
-      self.viewDidAppearProperty.signal.map { AppEnvironment.current.optimizelyClient }
-        .skipNil()
-        .ignoreValues(),
-      self.viewDidAppearProperty.signal
-        .ksr_debounce(.seconds(3), on: AppEnvironment.current.scheduler) // Fall-back in case Optimizely configuration fails
-    ).take(first: 1)
-      .ignoreValues()
+    let projectsData: Signal<([Project], DiscoveryParams?, OptimizelyExperiment.Variant), Never> = paramsChanged.takePairWhen(projects)
+      .map { params, projects in
+        let variant = nativeProjectCardsExperimentVariant()
 
-    let projectsData = self.selectedFilterProperty.signal
-      .takePairWhen(projects)
-      .map { ($1, $0) }
-
-    self.projectsLoaded = Signal.combineLatest(optimizelyReadyOrContinue, projectsData).map { _, projectsAndParams in
-      let variant = nativeProjectCardsExperimentVariant()
-
-      return (projectsAndParams.0, projectsAndParams.1, variant)
+        return (projects, params, variant)
     }
+
+    self.projectsLoaded = projectsData
 
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
 
-    self.backgroundColor = optimizelyReadyOrContinue.map { _ in
+    self.backgroundColor = self.viewWillAppearProperty.signal
+      .map { _ in
       let variant = nativeProjectCardsExperimentVariant()
 
       switch variant {
@@ -405,16 +391,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     // MARK: Personalization Callout Card
 
-    let optimizelyReady = Signal.merge(
-      self.optimizelyClientConfiguredProperty.signal,
-      self.viewDidAppearProperty.signal.map { AppEnvironment.current.optimizelyClient }
-        .skipNil()
-        .ignoreValues()
-    ).take(first: 1)
-      .ignoreValues()
-
     let viewReady = Signal.combineLatest(
-      optimizelyReady,
+      self.viewDidAppearProperty.signal,
       editorialHeaderShouldShow
     )
 
@@ -503,11 +481,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   fileprivate let onboardingCompletedProperty = MutableProperty(())
   public func onboardingCompleted() {
     self.onboardingCompletedProperty.value = ()
-  }
-
-  fileprivate let optimizelyClientConfiguredProperty = MutableProperty(())
-  public func optimizelyClientConfigured() {
-    self.optimizelyClientConfiguredProperty.value = ()
   }
 
   fileprivate let personalizationCellTappedProperty = MutableProperty(())
@@ -672,7 +645,7 @@ private func nativeProjectCardsExperimentVariant() -> OptimizelyExperiment.Varia
     return .control
   }
 
-  let variant = optimizelyClient.variant(for: .nativeProjectCards)
+  let variant = optimizelyClient.getVariation(for: .nativeProjectCards)
 
   return variant
 }

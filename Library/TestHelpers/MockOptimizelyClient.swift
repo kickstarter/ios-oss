@@ -13,6 +13,7 @@ internal class MockOptimizelyClient: OptimizelyClientType {
   // MARK: - Experiment Activation Test Properties
 
   var activatePathCalled: Bool = false
+  var activatePathCalledCount: Int = 0
   var experiments: [String: String] = [:]
   var error: MockOptimizelyError?
   var getVariantPathCalled: Bool = false
@@ -28,6 +29,8 @@ internal class MockOptimizelyClient: OptimizelyClientType {
   internal func activate(experimentKey: String, userId: String, attributes: [String: Any?]?) throws
     -> String {
       self.activatePathCalled = true
+      self.activatePathCalledCount += 1
+
       return try self.experiment(forKey: experimentKey, userId: userId, attributes: attributes)
     }
 

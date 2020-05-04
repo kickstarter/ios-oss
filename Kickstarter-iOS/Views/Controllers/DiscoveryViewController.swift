@@ -10,8 +10,10 @@ internal final class DiscoveryViewController: UIViewController {
   private var recommendationsChangedObserver: Any?
 
   private weak var navigationHeaderViewController: DiscoveryNavigationHeaderViewController!
+  private var optimizelyConfiguredObserver: Any?
   private weak var pageViewController: UIPageViewController!
   private weak var sortPagerViewController: SortPagerViewController!
+
   internal static func instantiate() -> DiscoveryViewController {
     return Storyboard.Discovery.instantiate(DiscoveryViewController.self)
   }
@@ -46,11 +48,18 @@ internal final class DiscoveryViewController: UIViewController {
         self?.viewModel.inputs.didChangeRecommendationsSetting()
       }
 
+    self.optimizelyConfiguredObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_optimizelyClientConfigured, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.optimizelyClientConfigured()
+      }
+
     self.viewModel.inputs.viewDidLoad()
   }
 
   deinit {
-    self.recommendationsChangedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    [self.optimizelyConfiguredObserver,
+     self.recommendationsChangedObserver
+      ].forEach { $0.doIfSome(NotificationCenter.default.removeObserver) }
   }
 
   override func viewWillAppear(_ animated: Bool) {

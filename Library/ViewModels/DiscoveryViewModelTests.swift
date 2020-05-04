@@ -43,6 +43,42 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.configureDataSource.assertValueCount(1, "Data source configures after view loads.")
   }
 
+
+  func testConfigureDataSourceOptimizelyConfiguration() {
+    withEnvironment(optimizelyClient: nil) {
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.configureDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
+
+      let mockOptimizelyClient = MockOptimizelyClient()
+
+      withEnvironment(optimizelyClient: mockOptimizelyClient) {
+        self.vm.inputs.optimizelyClientConfigured()
+
+        XCTAssertTrue(mockOptimizelyClient.activatePathCalled)
+        XCTAssertEqual(mockOptimizelyClient.activatePathCalledCount, 1)
+
+        self.configureDataSource.assertValueCount(1)
+      }
+    }
+  }
+
+  func testConfigureDataSource_OptimizelyConfiguration_Failed() {
+    withEnvironment(optimizelyClient: nil) {
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.configureDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
+
+      self.scheduler.advance(by: .seconds(2))
+
+      self.configureDataSource.assertValueCount(1, "Proceeds after debounce interval")
+    }
+  }
+
   func trackViewAppearedEvent() {
     self.vm.inputs.viewDidLoad()
 

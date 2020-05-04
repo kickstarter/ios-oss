@@ -11,6 +11,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   fileprivate let activitiesForSample = TestObserver<[Activity], Never>()
   fileprivate let asyncReloadData = TestObserver<(), Never>()
+  fileprivate let backgroundColor = TestObserver<UIColor, Never>()
   fileprivate let configureEditorialTableViewHeader = TestObserver<String, Never>()
   fileprivate let dismissPersonalizationCell = TestObserver<Void, Never>()
   fileprivate let goToActivityProject = TestObserver<Project, Never>()
@@ -28,6 +29,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let notifyDelegateContentOffsetChanged = TestObserver<CGPoint, Never>()
   fileprivate let projectsAreLoading = TestObserver<Bool, Never>()
   fileprivate let projectsAreLoadingAnimated = TestObserver<(Bool, Bool), Never>()
+  fileprivate let projectsLoadedDiscoveryParams = TestObserver<DiscoveryParams?, Never>()
+  fileprivate let projectsLoadedVariant = TestObserver<OptimizelyExperiment.Variant, Never>()
   fileprivate let setScrollsToTop = TestObserver<Bool, Never>()
   private let scrollToProjectRow = TestObserver<Int, Never>()
   fileprivate let showEditorialHeader = TestObserver<DiscoveryEditorialCellValue?, Never>()
@@ -44,6 +47,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.vm.outputs.activitiesForSample.observe(self.activitiesForSample.observer)
     self.vm.outputs.asyncReloadData.observe(self.asyncReloadData.observer)
+    self.vm.outputs.backgroundColor.observe(self.backgroundColor.observer)
     self.vm.outputs.configureEditorialTableViewHeader
       .observe(self.configureEditorialTableViewHeader.observer)
     self.vm.outputs.dismissPersonalizationCell.observe(self.dismissPersonalizationCell.observer)
@@ -60,6 +64,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       .observe(self.notifyDelegateContentOffsetChanged.observer)
     self.vm.outputs.projectsAreLoadingAnimated.observe(self.projectsAreLoadingAnimated.observer)
     self.vm.outputs.projectsLoaded.ignoreValues().observe(self.hasLoadedProjects.observer)
+    self.vm.outputs.projectsLoaded.map(second).observe(self.projectsLoadedDiscoveryParams.observer)
+    self.vm.outputs.projectsLoaded.map(third).observe(self.projectsLoadedVariant.observer)
     self.vm.outputs.scrollToProjectRow.observe(self.scrollToProjectRow.observer)
     self.vm.outputs.setScrollsToTop.observe(self.setScrollsToTop.observer)
     self.vm.outputs.showEditorialHeader.observe(self.showEditorialHeader.observer)
@@ -87,9 +93,13 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   }
 
   func testPaginating() {
+    let params = DiscoveryParams.defaults
+      |> \.sort .~ .magic
+
     self.vm.inputs.configureWith(sort: .magic)
     self.scheduler.advance()
 
+    self.projectsLoadedDiscoveryParams.assertDidNotEmitValue()
     self.hasAddedProjects.assertDidNotEmitValue("No projects load at first.")
     self.hasRemovedProjects.assertDidNotEmitValue("No projects load at first.")
     XCTAssertEqual([], self.trackingClient.events, "No events tracked at first.")
@@ -102,8 +112,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.projectsAreLoading.assertValues([true], "Projects start loading on viewWillAppear")
 
     self.vm.inputs.viewDidAppear()
-    self.scheduler.advance()
+    self.scheduler.advance(by: .seconds(3)) // clear debounce
 
+    self.projectsLoadedDiscoveryParams.assertValues([params])
     self.asyncReloadData.assertValueCount(1, "Reload data when projects are first added.")
     self.hasAddedProjects.assertValues([true], "Projects are added.")
     self.hasRemovedProjects.assertValues([false], "Projects are not removed.")
@@ -130,6 +141,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.inputs.willDisplayRow(9, outOf: 10)
     self.scheduler.advance()
 
+    self.projectsLoadedDiscoveryParams.assertValues([params, params])
     self.hasAddedProjects.assertValues([true, true], "More projects are added from pagination.")
     self.hasRemovedProjects.assertValues([false, false], "No projects are removed.")
     self.projectsAreLoading.assertValues(
@@ -145,6 +157,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.inputs.willDisplayRow(9, outOf: 20)
     self.scheduler.advance()
 
+    self.projectsLoadedDiscoveryParams.assertValues([params, params])
     self.hasAddedProjects.assertValues([true, true], "No projects are added.")
     self.hasRemovedProjects.assertValues([false, false], "No projects are removed.")
     XCTAssertEqual(
@@ -166,6 +179,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     // Advance scheduler so that the API request is made
     self.scheduler.advance()
 
+    let updatedParams = params
+      |> DiscoveryParams.lens.category .~ Category.art
+
+    self.projectsLoadedDiscoveryParams.assertValues([params, params, updatedParams, updatedParams])
     self.hasAddedProjects.assertValues([true, true, false, true], "Projects are added.")
     self.hasRemovedProjects.assertValues([false, false, true, false], "Projects are not removed.")
     self.projectsAreLoading.assertValues(
@@ -189,6 +206,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.inputs.willDisplayRow(20, outOf: 20)
     self.scheduler.advance()
 
+    self.projectsLoadedDiscoveryParams.assertValues([params, params, updatedParams, updatedParams, updatedParams])
     self.asyncReloadData.assertValueCount(1, "View is only reloaded once in the beginning.")
     self.hasAddedProjects.assertValues(
       [true, true, false, true, true],
@@ -268,6 +286,86 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       [true, false, true],
       "Switch away from the view and coming back doesn't do anything"
     )
+  }
+
+  func testProjectsLoadedVariant_IsControl() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+        OptimizelyExperiment.Variant.control.rawValue]
+
+    let params = DiscoveryParams.defaults
+      |> \.sort .~ .magic
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.scheduler.advance()
+
+      self.hasAddedProjects.assertValues([])
+
+      self.vm.inputs.selectedFilter(.defaults)
+      self.scheduler.advance()
+
+      self.hasAddedProjects.assertValues([true], "Projects load after the filter is changed.")
+      self.projectsLoadedDiscoveryParams.assertValues([params])
+      self.projectsLoadedVariant.assertValues([.control])
+    }
+  }
+
+  func testProjectsLoadedVariant_IsVariant1() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+        OptimizelyExperiment.Variant.variant1.rawValue]
+
+    let params = DiscoveryParams.defaults
+      |> \.sort .~ .magic
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.scheduler.advance()
+
+      self.hasAddedProjects.assertValues([])
+
+      self.vm.inputs.selectedFilter(.defaults)
+      self.scheduler.advance()
+
+      self.hasAddedProjects.assertValues([true], "Projects load after the filter is changed.")
+      self.projectsLoadedDiscoveryParams.assertValues([params])
+      self.projectsLoadedVariant.assertValues([.variant1])
+    }
+  }
+
+  func testBackgroundColor_IsControl() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+        OptimizelyExperiment.Variant.control.rawValue]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.scheduler.advance()
+
+      self.backgroundColor.assertValues([.white])
+    }
+  }
+
+  func testBackgroundColor_IsVariant1() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+        OptimizelyExperiment.Variant.variant1.rawValue]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.scheduler.advance()
+
+      self.backgroundColor.assertValues([UIColor.ksr_grey_200])
+    }
   }
 
   func testGoToProject() {
@@ -1520,7 +1618,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.selectedFilter(defaultFilter)
-      self.vm.inputs.optimizelyClientConfigured()
 
       self.dismissPersonalizationCell.assertDidNotEmitValue()
 
@@ -1557,7 +1654,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.selectedFilter(defaultFilter)
-      self.vm.inputs.optimizelyClientConfigured()
 
       self.goToCuratedProjects.assertDidNotEmitValue()
       XCTAssertEqual(["Explore Page Viewed"], self.trackingClient.events)
@@ -1606,39 +1702,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.onboardingCompleted()
 
       self.showPersonalization.assertValues([false, true])
-    }
-  }
-
-  func testShowPersonalization_WaitsForOptimizelyConfiguration() {
-    let mockKeyValueStore = MockKeyValueStore()
-      |> \.hasCompletedCategoryPersonalizationFlow .~ true
-      |> \.hasDismissedPersonalizationCard .~ false
-
-    let mockOpClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.control.rawValue
-      ]
-
-    let defaultFilter = DiscoveryParams.recommendedDefaults
-
-    withEnvironment(
-      currentUser: User.template,
-      optimizelyClient: nil,
-      userDefaults: mockKeyValueStore
-    ) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(defaultFilter)
-
-      self.showPersonalization.assertDidNotEmitValue("Waits for OptimizelyClient configuration")
-
-      withEnvironment(optimizelyClient: mockOpClient) {
-        self.vm.inputs.optimizelyClientConfigured()
-
-        self.showPersonalization.assertValues([false], "Does not show personalization section")
-      }
     }
   }
 }

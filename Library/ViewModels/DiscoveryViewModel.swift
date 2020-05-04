@@ -12,6 +12,9 @@ public protocol DiscoveryViewModelInputs {
   /// Call when params have been selected.
   func filter(withParams params: DiscoveryParams)
 
+  /// Call when the OptimizelyClient has been configured
+  func optimizelyClientConfigured()
+
   /// Call when the UIPageViewController finishes transitioning.
   func pageTransition(completed: Bool)
 
@@ -79,11 +82,27 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
   public init() {
     let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon]
 
-    self.configurePagerDataSource = self.viewDidLoadProperty.signal.mapConst(sorts)
+    // Ensure that Optimizely is configured before rendering the projects list
+    let optimizelyReadyOrContinue = Signal.merge(
+      self.optimizelyClientConfiguredProperty.signal,
+      self.viewDidLoadProperty.signal.map { AppEnvironment.current.optimizelyClient }
+        .skipNil()
+        .ignoreValues(),
+      self.viewDidLoadProperty.signal
+        .ksr_debounce(.seconds(3), on: AppEnvironment.current.scheduler) // Fall-back in case Optimizely configuration fails
+    ).take(first: 1)
+      .map {
+        // Immediately activate the nativeProjectCards experiment
+        return nativeProjectCardsExperimentVariant()
+    }.ignoreValues()
+
+    let configureWithSorts = optimizelyReadyOrContinue.mapConst(sorts)
+
+    self.configurePagerDataSource = configureWithSorts
     self.configureSortPager = self.configurePagerDataSource
 
     let initialParams = Signal.merge(
-      self.viewWillAppearProperty.signal.take(first: 1).ignoreValues(),
+      optimizelyReadyOrContinue,
       self.didChangeRecommendationsSettingProperty.signal
         .takeWhen(self.viewWillAppearProperty.signal)
     )
@@ -97,7 +116,7 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
     .skipRepeats()
 
     self.configureNavigationHeader = currentParams
-    self.loadFilterIntoDataSource = currentParams
+    self.loadFilterIntoDataSource = Signal.combineLatest(configureWithSorts, currentParams).map(second)
 
     let swipeToSort = self.willTransitionToPageProperty.signal
       .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))
@@ -153,6 +172,11 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
     self.filterWithParamsProperty.value = params
   }
 
+  fileprivate let optimizelyClientConfiguredProperty = MutableProperty(())
+  public func optimizelyClientConfigured() {
+    self.optimizelyClientConfiguredProperty.value = ()
+  }
+
   fileprivate let pageTransitionCompletedProperty = MutableProperty(false)
   public func pageTransition(completed: Bool) {
     self.pageTransitionCompletedProperty.value = completed
@@ -194,4 +218,14 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
 
   public var inputs: DiscoveryViewModelInputs { return self }
   public var outputs: DiscoveryViewModelOutputs { return self }
+}
+
+private func nativeProjectCardsExperimentVariant() -> OptimizelyExperiment.Variant {
+  guard let optimizelyClient = AppEnvironment.current.optimizelyClient else {
+    return .control
+  }
+
+  let variant = optimizelyClient.variant(for: .nativeProjectCards)
+
+  return variant
 }
