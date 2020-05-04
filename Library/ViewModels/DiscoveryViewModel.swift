@@ -80,9 +80,6 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
   }
 
   public init() {
-    let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon]
-
-    // Ensure that Optimizely is configured before rendering the projects list
     let optimizelyReadyOrContinue = Signal.merge(
       self.optimizelyClientConfiguredProperty.signal,
       self.viewDidLoadProperty.signal.map { AppEnvironment.current.optimizelyClient }
@@ -96,13 +93,15 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
         return nativeProjectCardsExperimentVariant()
     }.ignoreValues()
 
+    let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon]
+
     let configureWithSorts = optimizelyReadyOrContinue.mapConst(sorts)
 
-    self.configurePagerDataSource = configureWithSorts
-    self.configureSortPager = self.configurePagerDataSource
+    self.configurePagerDataSource = configureWithSorts.logEvents(identifier: "*** CONFIGURE PAGER DATA SOURCE **")
+    self.configureSortPager = configureWithSorts
 
     let initialParams = Signal.merge(
-      optimizelyReadyOrContinue,
+      self.viewWillAppearProperty.signal.take(first: 1).ignoreValues(),
       self.didChangeRecommendationsSettingProperty.signal
         .takeWhen(self.viewWillAppearProperty.signal)
     )
@@ -115,8 +114,15 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
     )
     .skipRepeats()
 
-    self.configureNavigationHeader = currentParams
-    self.loadFilterIntoDataSource = Signal.combineLatest(configureWithSorts, currentParams).map(second)
+    let dataSourceConfiguredAndCurrentParams = Signal.combineLatest(
+      configureWithSorts.ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler),
+      currentParams
+    )
+      .map(second)
+
+    self.configureNavigationHeader = dataSourceConfiguredAndCurrentParams
+    self.loadFilterIntoDataSource = dataSourceConfiguredAndCurrentParams
+      .logEvents(identifier: "*** LOAD FILTER INTO DATA SOURCE **")
 
     let swipeToSort = self.willTransitionToPageProperty.signal
       .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))
