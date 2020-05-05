@@ -112,7 +112,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.projectsAreLoading.assertValues([true], "Projects start loading on viewWillAppear")
 
     self.vm.inputs.viewDidAppear()
-    self.scheduler.advance(by: .seconds(3)) // clear debounce
+    self.scheduler.advance()
 
     self.projectsLoadedDiscoveryParams.assertValues([params])
     self.asyncReloadData.assertValueCount(1, "Reload data when projects are first added.")
@@ -289,7 +289,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     )
   }
 
-  func testProjectsLoadedVariant_IsControl() {
+  func testProjectsLoaded_IsNativeProjectCardsControl() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
         OptimizelyExperiment.Key.nativeProjectCards.rawValue:
@@ -306,6 +306,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.hasAddedProjects.assertValues([])
+      self.projectsLoadedDiscoveryParams.assertValues([])
+      self.projectsLoadedVariant.assertValues([])
 
       self.vm.inputs.selectedFilter(.defaults)
       self.scheduler.advance()
@@ -313,10 +315,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.hasAddedProjects.assertValues([true], "Projects load after the filter is changed.")
       self.projectsLoadedDiscoveryParams.assertValues([params])
       self.projectsLoadedVariant.assertValues([.control])
+
+      XCTAssertTrue(mockOptimizelyClient.getVariantPathCalled)
     }
   }
 
-  func testProjectsLoadedVariant_IsVariant1() {
+  func testProjectsLoaded_IsNativeProjectCardsVariant1() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
         OptimizelyExperiment.Key.nativeProjectCards.rawValue:
@@ -333,6 +337,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.hasAddedProjects.assertValues([])
+      self.projectsLoadedDiscoveryParams.assertValues([])
+      self.projectsLoadedVariant.assertValues([])
 
       self.vm.inputs.selectedFilter(.defaults)
       self.scheduler.advance()
@@ -340,10 +346,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.hasAddedProjects.assertValues([true], "Projects load after the filter is changed.")
       self.projectsLoadedDiscoveryParams.assertValues([params])
       self.projectsLoadedVariant.assertValues([.variant1])
+
+      XCTAssertTrue(mockOptimizelyClient.getVariantPathCalled)
     }
   }
 
-  func testBackgroundColor_IsControl() {
+  func testBackgroundColor_IsNativeProjectCardsControl() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
         OptimizelyExperiment.Key.nativeProjectCards.rawValue:
@@ -357,10 +365,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.backgroundColor.assertValues([.white])
+
+      XCTAssertTrue(mockOptimizelyClient.getVariantPathCalled)
     }
   }
 
-  func testBackgroundColor_IsVariant1() {
+  func testBackgroundColor_IsNativeProjectCardsVariant1() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
         OptimizelyExperiment.Key.nativeProjectCards.rawValue:
@@ -374,6 +384,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.backgroundColor.assertValues([UIColor.ksr_grey_200])
+
+      XCTAssertTrue(mockOptimizelyClient.getVariantPathCalled)
     }
   }
 

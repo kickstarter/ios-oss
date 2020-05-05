@@ -91,8 +91,7 @@ internal final class DiscoveryViewController: UIViewController {
 
     self.viewModel.outputs.configurePagerDataSource
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.configurePagerDataSource($0)
-      }
+      .observeValues { [weak self] in self?.configurePagerDataSource($0) }
 
     self.viewModel.outputs.configureSortPager
       .observeForControllerAction()
@@ -100,9 +99,7 @@ internal final class DiscoveryViewController: UIViewController {
 
     self.viewModel.outputs.loadFilterIntoDataSource
       .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.dataSource?.load(filter: $0)
-      }
+      .observeValues { [weak self] in self?.dataSource?.load(filter: $0) }
 
     self.viewModel.outputs.navigateToSort
       .observeForControllerAction()

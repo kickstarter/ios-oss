@@ -56,7 +56,6 @@ internal final class DiscoveryViewModelTests: TestCase {
         self.vm.inputs.optimizelyClientConfigured()
 
         XCTAssertTrue(mockOptimizelyClient.activatePathCalled)
-        XCTAssertEqual(mockOptimizelyClient.activatePathCalledCount, 1)
 
         self.configureDataSource.assertValueCount(1)
       }

@@ -217,13 +217,12 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     .skip { $0.isEmpty }
     .skipRepeats(==)
 
-    let projectsData: Signal<([Project], DiscoveryParams?, OptimizelyExperiment.Variant), Never> =
-      paramsChanged.takePairWhen(projects)
-        .map { params, projects in
-          let variant = nativeProjectCardsExperimentVariant()
+    let projectsData = paramsChanged.takePairWhen(projects)
+      .map { params, projects -> ([Project], DiscoveryParams?, OptimizelyExperiment.Variant) in
+        let variant = nativeProjectCardsExperimentVariant()
 
-          return (projects, params, variant)
-        }
+        return (projects, params, variant)
+      }
 
     self.projectsLoaded = projectsData
 

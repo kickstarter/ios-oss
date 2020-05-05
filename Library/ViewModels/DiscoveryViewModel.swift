@@ -124,7 +124,6 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
 
     self.configureNavigationHeader = dataSourceConfiguredAndCurrentParams
     self.loadFilterIntoDataSource = dataSourceConfiguredAndCurrentParams
-      .logEvents(identifier: "*** LOAD FILTER INTO DATA SOURCE **")
 
     let swipeToSort = self.willTransitionToPageProperty.signal
       .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))
