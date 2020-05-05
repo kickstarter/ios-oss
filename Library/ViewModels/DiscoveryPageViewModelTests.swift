@@ -887,7 +887,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.showLightsOnEditorialHeader.assertValueCount(1)
     self.showLightsOnEditorialHeaderTitle.assertValues(["Introducing Lights On"])
     self.showLightsOnEditorialHeaderSubtitle
-      .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▶︎"])
+      .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
     self.showLightsOnEditorialHeaderImageName.assertValues(["lights-on-home"])
   }
 
@@ -903,7 +903,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showLightsOnEditorialHeader.assertValueCount(1)
       self.showLightsOnEditorialHeaderTitle.assertValues(["Introducing Lights On"])
       self.showLightsOnEditorialHeaderSubtitle
-        .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▶︎"])
+        .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
       self.showLightsOnEditorialHeaderImageName.assertValues(["lights-on-home"])
     }
   }
