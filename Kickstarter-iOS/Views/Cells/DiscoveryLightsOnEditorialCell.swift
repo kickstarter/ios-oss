@@ -66,9 +66,10 @@ final class DiscoveryLightsOnEditorialCell: UITableViewCell, ValueCell {
           ? .init(top: Styles.grid(2), left: Styles.grid(30), bottom: 0, right: Styles.grid(30))
           : .init(top: Styles.grid(2), left: Styles.grid(2), bottom: 0, right: Styles.grid(2))
       }
-
-    _ = self.containerView
-      |> containerViewStyle
+      |> \.isAccessibilityElement .~ true
+      |> \.accessibilityTraits .~ [UIAccessibilityTraits.button]
+      |> \.accessibilityLabel %~ { _ in Strings.Introducing_Lights_On() }
+      |> \.accessibilityHint %~ { _ in Strings.Support_creative_spaces_and_businesses_affected_by() }
 
     _ = self.rootStackView
       |> rootStackViewStyle
@@ -124,15 +125,6 @@ final class DiscoveryLightsOnEditorialCell: UITableViewCell, ValueCell {
 }
 
 // MARK: - Styles
-
-private let containerViewStyle: ViewStyle = { view in
-  view
-    |> \.backgroundColor .~ UIColor.clear
-    |> \.isAccessibilityElement .~ true
-    |> \.accessibilityTraits .~ [UIAccessibilityTraits.button]
-    |> \.accessibilityLabel %~ { _ in Strings.Back_it_because_you_believe_in_it() }
-    |> \.accessibilityHint %~ { _ in Strings.Find_projects_that_speak_to_you() }
-}
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
