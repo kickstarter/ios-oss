@@ -2,6 +2,12 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias DiscoveryProjectCellRowValue = (
+  project: Project,
+  category: KsApi.Category?,
+  params: DiscoveryParams?
+)
+
 public struct PostcardMetadataData {
   public let iconImage: UIImage?
   public let labelText: String
@@ -34,8 +40,8 @@ private enum PostcardMetadataType {
 }
 
 public protocol DiscoveryPostcardViewModelInputs {
-  /// Call with the project provided to the view controller.
-  func configureWith(project: Project, category: KsApi.Category?)
+  /// Call with the data provided to the view controller.
+  func configure(with value: DiscoveryProjectCellRowValue)
 }
 
 public protocol DiscoveryPostcardViewModelOutputs {
@@ -62,6 +68,12 @@ public protocol DiscoveryPostcardViewModelOutputs {
 
   /// Emits a boolean to determine whether or not to display funding progress container view.
   var fundingProgressContainerViewHidden: Signal<Bool, Never> { get }
+
+  /// Emits a boolean to determine whether or not to display the location stack view
+  var locationStackViewHidden: Signal<Bool, Never> { get }
+
+  /// Emits the location label text
+  var locationLabelText: Signal<String, Never> { get }
 
   /// Emits metadata label text
   var metadataLabelText: Signal<String, Never> { get }
@@ -138,7 +150,8 @@ public protocol DiscoveryPostcardViewModelType {
 public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   DiscoveryPostcardViewModelInputs, DiscoveryPostcardViewModelOutputs {
   public init() {
-    let configuredProject = self.projectProperty.signal.skipNil()
+    let configuredProject = self.configureWithValueProperty.signal.skipNil().map(first)
+    let configuredCategory = self.configureWithValueProperty.signal.skipNil().map(second)
 
     let backersTitleAndSubtitleText = configuredProject.map { project -> (String?, String?) in
       let string = Strings.Backers_count_separator_backers(backers_count: project.stats.backersCount)
@@ -205,8 +218,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       .map { $0.category.name }
 
     self.projectCategoryViewHidden = Signal.combineLatest(
-      self.projectProperty.signal.skipNil(),
-      self.categoryProperty.signal
+      configuredProject,
+      configuredCategory
     ).map { project, category in
       guard let category = category else {
         // Always show category when filter category is nil
@@ -259,14 +272,21 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     self.cellAccessibilityValue = Signal.zip(configuredProject, self.projectStateTitleLabelText)
       .map { project, projectState in "\(project.blurb). \(projectState)" }
+
+    let params = self.configureWithValueProperty.signal.skipNil().map(third)
+
+    self.locationStackViewHidden = params.map { params in
+      guard let params = params else { return false }
+
+      return params.sort != .distance
+    }
+
+    self.locationLabelText = configuredProject.map(\.location.name)
   }
 
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  fileprivate let categoryProperty = MutableProperty<KsApi.Category?>(nil)
-
-  public func configureWith(project: Project, category: KsApi.Category? = nil) {
-    self.projectProperty.value = project
-    self.categoryProperty.value = category
+  fileprivate let configureWithValueProperty = MutableProperty<DiscoveryProjectCellRowValue?>(nil)
+  public func configure(with value: DiscoveryProjectCellRowValue) {
+    self.configureWithValueProperty.value = value
   }
 
   public let backersTitleLabelText: Signal<String, Never>
@@ -277,6 +297,8 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
   public let deadlineTitleLabelText: Signal<String, Never>
   public let fundingProgressBarViewHidden: Signal<Bool, Never>
   public let fundingProgressContainerViewHidden: Signal<Bool, Never>
+  public let locationLabelText: Signal<String, Never>
+  public let locationStackViewHidden: Signal<Bool, Never>
   public let metadataLabelText: Signal<String, Never>
   public let metadataIcon: Signal<UIImage?, Never>
   public let metadataIconImageViewTintColor: Signal<UIColor, Never>
@@ -343,7 +365,9 @@ private func fundingStatusText(forProject project: Project) -> String {
 private func postcardMetadata(forProject project: Project) -> PostcardMetadataData? {
   let today = AppEnvironment.current.dateType.init().date
 
-  if project.personalization.isBacking == true {
+  let userHasBacked = userIsBackingProject(project)
+
+  if userHasBacked {
     return PostcardMetadataType.backing.data(forProject: project)
   } else if project.isFeaturedToday(today: today) {
     return PostcardMetadataType.featured.data(forProject: project)

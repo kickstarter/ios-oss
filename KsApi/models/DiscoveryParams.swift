@@ -34,6 +34,7 @@ public struct DiscoveryParams {
     case magic
     case newest
     case popular = "popularity"
+    case distance
   }
 
   public enum TagID: String, Argo.Decodable {
