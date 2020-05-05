@@ -4208,6 +4208,23 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
+   "Introducing Lights On"
+
+   - **en**: "Introducing Lights On"
+   - **de**: "Introducing Lights On"
+   - **es**: "Introducing Lights On"
+   - **fr**: "Introducing Lights On"
+   - **ja**: "Introducing Lights On"
+  */
+  public static func Introducing_Lights_On() -> String {
+    return localizedString(
+      key: "Introducing_Lights_On",
+      defaultValue: "Introducing Lights On",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again."
 
    - **en**: "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again."
@@ -8325,6 +8342,23 @@ catch your eye?"
     return localizedString(
       key: "Support_creative_independence",
       defaultValue: "Support creative independence",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"
+
+   - **en**: "Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"
+   - **de**: "Unterstütze kreative Lokale und Geschäfte, ddie von COVID-19 betroffen sind. Sieh dir Projekte in deiner Nähe an. ▸"
+   - **es**: "Apoya espacios creativos y negocios afectados por el COVID-19. Consulta los proyectos cerca de ti. ▸"
+   - **fr**: "Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"
+   - **ja**: "Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"
+  */
+  public static func Support_creative_spaces_and_businesses_affected_by() -> String {
+    return localizedString(
+      key: "Support_creative_spaces_and_businesses_affected_by",
+      defaultValue: "Support creative spaces and businesses affected by COVID-19. See projects near you. ▸",
       count: nil,
       substitutions: [:]
     )

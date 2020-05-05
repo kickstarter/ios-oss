@@ -252,6 +252,7 @@
 "Individual_Emails" = "Notificaciones por correo electrónico individuales";
 "Info" = "Información";
 "Introduce_yourself" = "Preséntate";
+"Introducing_Lights_On" = "Introducing Lights On";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "Puede demorar hasta 24 horas recopilar tus datos. Cuando estén listos, te enviaremos instrucciones para descargar tus datos al correo electrónico asociado con esta cuenta. Si no recibes noticias nuestras, vuelve aquí e inténtalo de nuevo.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es una plataforma para dar vida a proyectos creativos.";
 "Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "Es una forma de dar vida a proyectos creativos.<a href=\"%{trust_link}\">Más información sobre las responsabilidades</a>";
@@ -511,6 +512,7 @@
 "Subscribes_to_upcoming_lives_streams" = "Activa subscripción a futuros Live-Streams.";
 "Successful_projects_have_been_created_on_kickstarter" = "Proyectos exitosos se han creado en Kickstarter.";
 "Support_creative_independence" = "Apoya la independencia creativa";
+"Support_creative_spaces_and_businesses_affected_by" = "Apoya espacios creativos y negocios afectados por el COVID-19. Consulta los proyectos cerca de ti. ▸";
 "Survey" = "Cuestionario";
 "Tap_the_heart_on_a_project_to_get_notified" = "Haz clic en el icono de corazón de un proyecto para recibir una notificación 48 horas antes de que finalice.";
 "Tap_the_heart_on_each_project_page_to_save_it" = "Haz clic en el corazón en la página de cada proyecto para guardarlo. Te recordaremos 48 horas antes de que finalice el proyecto.";
