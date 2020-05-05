@@ -379,12 +379,12 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     .map { shouldShow, _ in
       guard shouldShow else {
         return nil
-      }    //  self.viewWillAppearProperty.signal
+      }
 
-              return DiscoveryLightsOnEditorialCellValue(
-          title: "Introducing Lights On",
-          subtitle: "Support creative spaces and businesses affected by COVID-19. See projects near you. ▶︎",
-          imageName: "lights-on-home"
+      return DiscoveryLightsOnEditorialCellValue(
+        title: Strings.Introducing_Lights_On(),
+        subtitle: Strings.Support_creative_spaces_and_businesses_affected_by(),
+        imageName: "lights-on-home"
         )
       }.skipRepeats()
 
