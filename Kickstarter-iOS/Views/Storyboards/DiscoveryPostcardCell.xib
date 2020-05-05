@@ -231,7 +231,7 @@
                         </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eIL-Rt-9Tk">
-                        <rect key="frame" x="320" y="18" width="52" height="52"/>
+                        <rect key="frame" x="317" y="11" width="52" height="52"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="52" id="9pP-ce-B17"/>
                             <constraint firstAttribute="height" constant="52" id="rlz-Z5-lHQ"/>
@@ -242,8 +242,8 @@
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="eIL-Rt-9Tk" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="18" id="MyL-3A-SIB"/>
-                    <constraint firstItem="eIL-Rt-9Tk" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailing" constant="-12" id="cDH-gt-oco"/>
+                    <constraint firstItem="eIL-Rt-9Tk" firstAttribute="top" secondItem="MCx-XZ-do1" secondAttribute="top" id="Ifc-lT-5RD"/>
+                    <constraint firstItem="eIL-Rt-9Tk" firstAttribute="trailing" secondItem="MCx-XZ-do1" secondAttribute="trailing" id="Ns3-OX-kas"/>
                     <constraint firstItem="MCx-XZ-do1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="dbR-df-MQ4"/>
                     <constraint firstItem="MCx-XZ-do1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="eg0-SZ-EOW"/>
                     <constraint firstItem="MCx-XZ-do1" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="fDK-r5-ClH"/>
