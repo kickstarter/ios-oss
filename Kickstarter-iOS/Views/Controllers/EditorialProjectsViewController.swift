@@ -76,6 +76,9 @@ public final class EditorialProjectsViewController: UIViewController {
       self.discoveryPageViewController.tableView.contentInset
 
     self.headerTopLayoutGuideHeightConstraint?.constant = self.view.safeAreaInsets.top
+
+    self.view.bringSubviewToFront(self.headerView)
+    self.view.bringSubviewToFront(self.closeButton)
   }
 
   public override var preferredStatusBarStyle: UIStatusBarStyle {
