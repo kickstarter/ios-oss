@@ -74,7 +74,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       .observe(self.showEditorialHeaderImageName.observer)
     self.vm.outputs.showEditorialHeader.map { $0?.tagId }.observe(self.showEditorialHeaderTagId.observer)
     self.vm.outputs.showLightsOnEditorialHeader.observe(self.showLightsOnEditorialHeader.observer)
-    self.vm.outputs.showLightsOnEditorialHeader.map { $0?.title }.observe(self.showLightsOnEditorialHeaderTitle.observer)
+    self.vm.outputs.showLightsOnEditorialHeader.map { $0?.title }
+      .observe(self.showLightsOnEditorialHeaderTitle.observer)
     self.vm.outputs.showLightsOnEditorialHeader.map { $0?.subtitle }
       .observe(self.showLightsOnEditorialHeaderSubtitle.observer)
     self.vm.outputs.showLightsOnEditorialHeader.map { $0?.imageName }
@@ -872,6 +873,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showEditorialHeaderTagId.assertValues([nil])
     }
   }
+
   // MARK: - Lights On
 
   func testShowLightsOnEditorialHeader_LoggedOut() {
@@ -884,9 +886,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.showLightsOnEditorialHeader.assertValueCount(1)
     self.showLightsOnEditorialHeaderTitle.assertValues(["Introducing Lights On"])
-    self.showLightsOnEditorialHeaderSubtitle.assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▶︎"])
+    self.showLightsOnEditorialHeaderSubtitle
+      .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▶︎"])
     self.showLightsOnEditorialHeaderImageName.assertValues(["lights-on-home"])
-}
+  }
 
   func testShowLightsOnEditorialHeader_LoggedIn() {
     withEnvironment(currentUser: .template) {
@@ -899,7 +902,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.showLightsOnEditorialHeader.assertValueCount(1)
       self.showLightsOnEditorialHeaderTitle.assertValues(["Introducing Lights On"])
-      self.showLightsOnEditorialHeaderSubtitle.assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▶︎"])
+      self.showLightsOnEditorialHeaderSubtitle
+        .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▶︎"])
       self.showLightsOnEditorialHeaderImageName.assertValues(["lights-on-home"])
     }
   }

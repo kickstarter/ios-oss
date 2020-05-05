@@ -117,7 +117,8 @@ final class DiscoveryLightsOnEditorialCell: UITableViewCell, ValueCell {
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.containerView.widthAnchor.constraint(equalTo: self.editorialImageView.widthAnchor, multiplier: 0.52)
+      self.containerView.widthAnchor
+        .constraint(equalTo: self.editorialImageView.widthAnchor, multiplier: 0.52)
     ])
   }
 }

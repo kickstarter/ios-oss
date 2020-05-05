@@ -376,15 +376,15 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       }.skipRepeats()
 
     self.showLightsOnEditorialHeader = updateEditorialHeader
-    .map { shouldShow, _ in
-      guard shouldShow else {
-        return nil
-      }
+      .map { shouldShow, _ in
+        guard shouldShow else {
+          return nil
+        }
 
-      return DiscoveryLightsOnEditorialCellValue(
-        title: Strings.Introducing_Lights_On(),
-        subtitle: Strings.Support_creative_spaces_and_businesses_affected_by(),
-        imageName: "lights-on-home"
+        return DiscoveryLightsOnEditorialCellValue(
+          title: Strings.Introducing_Lights_On(),
+          subtitle: Strings.Support_creative_spaces_and_businesses_affected_by(),
+          imageName: "lights-on-home"
         )
       }.skipRepeats()
 

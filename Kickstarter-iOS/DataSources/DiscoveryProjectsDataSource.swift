@@ -54,12 +54,12 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
   }
 
   func showLightsOnEditorial(value: DiscoveryLightsOnEditorialCellValue?) {
-     self.set(
-       values: [value].compactMap { $0 },
-       cellClass: DiscoveryLightsOnEditorialCell.self,
-       inSection: Section.lightsOnEditiorial.rawValue
-     )
-   }
+    self.set(
+      values: [value].compactMap { $0 },
+      cellClass: DiscoveryLightsOnEditorialCell.self,
+      inSection: Section.lightsOnEditiorial.rawValue
+    )
+  }
 
   func showEditorial(value: DiscoveryEditorialCellValue?) {
     self.set(
@@ -112,7 +112,7 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     case let (cell as DiscoveryEditorialCell, value as DiscoveryEditorialCellValue):
       cell.configureWith(value: value)
     case let (cell as DiscoveryLightsOnEditorialCell, value as DiscoveryLightsOnEditorialCellValue):
-         cell.configureWith(value: value)
+      cell.configureWith(value: value)
     case let (cell as PersonalizationCell, value as Void):
       cell.configureWith(value: value)
     case (is StaticTableViewCell, is Void):
