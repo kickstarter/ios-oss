@@ -35,6 +35,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let showEditorialHeaderSubtitle = TestObserver<String?, Never>()
   fileprivate let showEditorialHeaderTagId = TestObserver<DiscoveryParams.TagID?, Never>()
   fileprivate let showEditorialHeaderTitle = TestObserver<String?, Never>()
+  fileprivate let showLightsOnEditorialHeader = TestObserver<DiscoveryLightsOnEditorialCellValue?, Never>()
+  fileprivate let showLightsOnEditorialHeaderImageName = TestObserver<String?, Never>()
+  fileprivate let showLightsOnEditorialHeaderSubtitle = TestObserver<String?, Never>()
+  fileprivate let showLightsOnEditorialHeaderTitle = TestObserver<String?, Never>()
   fileprivate let showEmptyState = TestObserver<EmptyState, Never>()
   fileprivate let showOnboarding = TestObserver<Bool, Never>()
   fileprivate let showPersonalization = TestObserver<Bool, Never>()
@@ -69,6 +73,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.showEditorialHeader.map { $0?.imageName }
       .observe(self.showEditorialHeaderImageName.observer)
     self.vm.outputs.showEditorialHeader.map { $0?.tagId }.observe(self.showEditorialHeaderTagId.observer)
+    self.vm.outputs.showLightsOnEditorialHeader.observe(self.showLightsOnEditorialHeader.observer)
+    self.vm.outputs.showLightsOnEditorialHeader.map { $0?.title }.observe(self.showLightsOnEditorialHeaderTitle.observer)
+    self.vm.outputs.showLightsOnEditorialHeader.map { $0?.subtitle }
+      .observe(self.showLightsOnEditorialHeaderSubtitle.observer)
+    self.vm.outputs.showLightsOnEditorialHeader.map { $0?.imageName }
+      .observe(self.showLightsOnEditorialHeaderImageName.observer)
     self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
     self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
     self.vm.outputs.showPersonalization.observe(self.showPersonalization.observer)
@@ -860,6 +870,37 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showEditorialHeaderSubtitle.assertValues([nil])
       self.showEditorialHeaderImageName.assertValues([nil])
       self.showEditorialHeaderTagId.assertValues([nil])
+    }
+  }
+  // MARK: - Lights On
+
+  func testShowLightsOnEditorialHeader_LoggedOut() {
+    self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+    self.vm.inputs.selectedFilter(.defaults)
+
+    self.scheduler.advance(by: .seconds(1))
+
+    self.showLightsOnEditorialHeader.assertValueCount(1)
+    self.showLightsOnEditorialHeaderTitle.assertValues(["Introducing Lights On"])
+    self.showLightsOnEditorialHeaderSubtitle.assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▶︎"])
+    self.showLightsOnEditorialHeaderImageName.assertValues(["lights-on-home"])
+}
+
+  func testShowLightsOnEditorialHeader_LoggedIn() {
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(DiscoveryParams.recommendedDefaults)
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.showLightsOnEditorialHeader.assertValueCount(1)
+      self.showLightsOnEditorialHeaderTitle.assertValues(["Introducing Lights On"])
+      self.showLightsOnEditorialHeaderSubtitle.assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▶︎"])
+      self.showLightsOnEditorialHeaderImageName.assertValues(["lights-on-home"])
     }
   }
 

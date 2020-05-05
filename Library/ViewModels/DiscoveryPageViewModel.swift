@@ -125,6 +125,9 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Emits to show an editorial header
   var showEditorialHeader: Signal<DiscoveryEditorialCellValue?, Never> { get }
 
+  /// Emits to show a lights on editorial header
+  var showLightsOnEditorialHeader: Signal<DiscoveryLightsOnEditorialCellValue?, Never> { get }
+
   /// Emits to show the empty state controller.
   var showEmptyState: Signal<EmptyState, Never> { get }
 
@@ -372,6 +375,19 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         )
       }.skipRepeats()
 
+    self.showLightsOnEditorialHeader = updateEditorialHeader
+    .map { shouldShow, _ in
+      guard shouldShow else {
+        return nil
+      }    //  self.viewWillAppearProperty.signal
+
+              return DiscoveryLightsOnEditorialCellValue(
+          title: "Introducing Lights On",
+          subtitle: "Support creative spaces and businesses affected by COVID-19. See projects near you. ▶︎",
+          imageName: "lights-on-home"
+        )
+      }.skipRepeats()
+
     // MARK: Personalization Callout Card
 
     let optimizelyReady = Signal.merge(
@@ -576,6 +592,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let setScrollsToTop: Signal<Bool, Never>
   public let scrollToProjectRow: Signal<Int, Never>
   public let showEditorialHeader: Signal<DiscoveryEditorialCellValue?, Never>
+  public let showLightsOnEditorialHeader: Signal<DiscoveryLightsOnEditorialCellValue?, Never>
   public let showEmptyState: Signal<EmptyState, Never>
   public let showOnboarding: Signal<Bool, Never>
   public let showPersonalization: Signal<Bool, Never>
