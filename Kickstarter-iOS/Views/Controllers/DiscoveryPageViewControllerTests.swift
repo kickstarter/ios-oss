@@ -51,29 +51,29 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
       |> DiscoveryEnvelope.lens.projects .~ [project]
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
-        withEnvironment(
-          apiService: MockService(
-            fetchActivitiesResponse: [],
-            fetchDiscoveryResponse: discoveryResponse
-          ),
-          config: Config.template,
-          currentUser: User.template,
-          language: language
-        ) {
-          let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
-          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-          parent.view.frame.size.height = device == .pad ? 700 : 550
+      withEnvironment(
+        apiService: MockService(
+          fetchActivitiesResponse: [],
+          fetchDiscoveryResponse: discoveryResponse
+        ),
+        config: Config.template,
+        currentUser: User.template,
+        language: language
+      ) {
+        let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = device == .pad ? 700 : 550
 
-          controller.change(filter: magicParams)
+        controller.change(filter: magicParams)
 
-          self.scheduler.run()
+        self.scheduler.run()
 
-          controller.tableView.layoutIfNeeded()
-          controller.tableView.reloadData()
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
 
-          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
-        }
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
+    }
   }
 
   func testView_Card_NoMetadata() {
