@@ -25,7 +25,6 @@ final class PledgeAmountViewController: UIViewController {
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var horizontalSpacer: UIView = { UIView(frame: .zero) }()
   private lazy var stepper: UIStepper = { UIStepper(frame: .zero) }()
-  private lazy var verticalSpacer: UIView = { UIView(frame: .zero) }()
 
   // MARK: - Lifecycle
 
@@ -43,8 +42,7 @@ final class PledgeAmountViewController: UIViewController {
       self.titleLabel,
       self.minPledgeAmountLabel,
       self.adaptableStackView,
-      self.maxPledgeAmountErrorLabel,
-      self.verticalSpacer
+      self.maxPledgeAmountErrorLabel
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 

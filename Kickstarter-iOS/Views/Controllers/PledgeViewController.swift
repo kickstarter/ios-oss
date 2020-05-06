@@ -8,6 +8,11 @@ private enum Layout {
   enum Style {
     static let cornerRadius: CGFloat = Styles.grid(2)
   }
+
+  enum Margin {
+    static let topBottom: CGFloat = Styles.grid(3)
+    static let leftRight: CGFloat = CheckoutConstants.PledgeView.Inset.leftRight
+  }
 }
 
 protocol PledgeViewControllerDelegate: AnyObject {
@@ -19,7 +24,7 @@ final class PledgeViewController: UIViewController,
   // MARK: - Properties
 
   private lazy var confirmationSectionViews = {
-    [self.pledgeDisclaimerViewController.view]
+    [self.pledgeDisclaimerView]
   }()
 
   public weak var delegate: PledgeViewControllerDelegate?
@@ -44,16 +49,18 @@ final class PledgeViewController: UIViewController,
   }()
 
   internal var processingView: ProcessingView? = ProcessingView(frame: .zero)
-  private lazy var pledgeDisclaimerViewController: PledgeDisclaimerViewController = {
-    PledgeDisclaimerViewController.instantiate()
+  private lazy var pledgeDisclaimerView: PledgeDisclaimerView = {
+    PledgeDisclaimerView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var descriptionSectionViews = {
-    [self.descriptionViewController.view, self.descriptionSectionSeparator]
+    [self.pledgeDescriptionView, self.descriptionSectionSeparator]
   }()
 
-  private lazy var descriptionViewController = {
-    PledgeDescriptionViewController.instantiate()
+  private lazy var pledgeDescriptionView: PledgeDescriptionView = {
+    PledgeDescriptionView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var inputsSectionViews = {
@@ -107,6 +114,11 @@ final class PledgeViewController: UIViewController,
       |> \.delegate .~ self
   }()
 
+  private lazy var rootContainerView: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var rootScrollView: UIScrollView = {
     UIScrollView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -142,6 +154,17 @@ final class PledgeViewController: UIViewController,
     self.viewModel.inputs.viewDidLoad()
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.rootScrollView.contentInset = UIEdgeInsets(
+      top: self.rootScrollView.contentInset.top,
+      left: self.rootScrollView.contentInset.left,
+      bottom: self.pledgeCTAContainerView.frame.size.height - self.view.safeAreaInsets.bottom,
+      right: self.rootScrollView.contentInset.right
+    )
+  }
+
   deinit {
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
@@ -152,17 +175,18 @@ final class PledgeViewController: UIViewController,
     _ = (self.rootScrollView, self.view)
       |> ksr_addSubviewToParent()
 
-    _ = (self.rootStackView, self.rootScrollView)
+    _ = (self.rootContainerView, self.rootScrollView)
+      |> ksr_addSubviewToParent()
+
+    _ = (self.rootStackView, self.rootContainerView)
       |> ksr_addSubviewToParent()
 
     _ = (self.pledgeCTAContainerView, self.view)
       |> ksr_addSubviewToParent()
 
     let childViewControllers = [
-      self.descriptionViewController,
       self.pledgeAmountViewController,
       self.pledgeAmountSummaryViewController,
-      self.pledgeDisclaimerViewController,
       self.shippingLocationViewController,
       self.summaryViewController,
       self.paymentMethodsViewController
@@ -189,18 +213,20 @@ final class PledgeViewController: UIViewController,
   }
 
   private func setupConstraints() {
-    _ = (self.rootStackView, self.rootScrollView)
+    _ = (self.rootScrollView, self.view)
       |> ksr_constrainViewToEdgesInParent()
 
+    _ = (self.rootContainerView, self.rootScrollView)
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.rootStackView, self.rootContainerView)
+      |> ksr_constrainViewToMarginsInParent()
+
     NSLayoutConstraint.activate([
-      self.rootScrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
-      self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.rootScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.rootScrollView.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor),
       self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
+      self.rootContainerView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
     ])
 
     self.sectionSeparatorViews.forEach { view in
@@ -219,11 +245,14 @@ final class PledgeViewController: UIViewController,
     _ = self.view
       |> checkoutBackgroundStyle
 
-    _ = self.descriptionViewController.view
+    _ = self.pledgeDescriptionView
       |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
 
-    _ = self.pledgeDisclaimerViewController.view
+    _ = self.pledgeDisclaimerView
       |> pledgeDisclaimerViewStyle
+
+    _ = self.rootContainerView
+      |> rootContainerViewStyle
 
     _ = self.rootScrollView
       |> rootScrollViewStyle
@@ -259,7 +288,7 @@ final class PledgeViewController: UIViewController,
     self.viewModel.outputs.configureWithData
       .observeForUI()
       .observeValues { [weak self] data in
-        self?.descriptionViewController.configureWith(value: data)
+        self?.pledgeDescriptionView.configureWith(value: data)
         self?.pledgeAmountViewController.configureWith(value: data)
         self?.pledgeAmountSummaryViewController.configureWith(data.project)
         self?.shippingLocationViewController.configureWith(value: data)
@@ -335,7 +364,7 @@ final class PledgeViewController: UIViewController,
       .observeForUI()
       .observeValues { [weak self] hidden in self?.sectionSeparatorViews.forEach { $0.isHidden = hidden } }
 
-    self.descriptionViewController.view.rac.hidden = self.viewModel.outputs.descriptionViewHidden
+    self.pledgeDescriptionView.rac.hidden = self.viewModel.outputs.descriptionViewHidden
 
     self.shippingLocationViewController.view.rac.hidden
       = self.viewModel.outputs.shippingLocationViewHidden
@@ -575,12 +604,16 @@ private let rootScrollViewStyle: ScrollStyle = { scrollView in
     |> \.alwaysBounceVertical .~ true
 }
 
+private let rootContainerViewStyle: ViewStyle = { view in
+  view
+    |> \.layoutMargins .~ UIEdgeInsets(
+      topBottom: Layout.Margin.topBottom,
+      leftRight: Layout.Margin.leftRight
+    )
+}
+
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> checkoutRootStackViewStyle
+    |> \.axis .~ NSLayoutConstraint.Axis.vertical
     |> \.spacing .~ Styles.grid(4)
-    |> \.layoutMargins .~ UIEdgeInsets(
-      topBottom: Styles.grid(3),
-      leftRight: CheckoutConstants.PledgeView.Inset.leftRight
-  )
 }
