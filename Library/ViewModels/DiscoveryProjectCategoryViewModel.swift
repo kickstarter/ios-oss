@@ -9,7 +9,7 @@ public protocol DiscoveryProjectCategoryViewModelInputs {
 
 public protocol DiscoveryProjectCategoryViewModelOutputs {
   var categoryNameText: Signal<String, Never> { get }
-  var categoryImage: Signal<UIImage?, Never> { get }
+  var categoryImageName: Signal<String, Never> { get }
 }
 
 public protocol DiscoveryProjectCategoryViewModelType {
@@ -25,11 +25,11 @@ public final class DiscoveryProjectCategoryViewModel: DiscoveryProjectCategoryVi
 
   public init() {
     self.categoryNameText = self.categoryNameTextProperty.signal.skipNil().map { $0 }
-    self.categoryImage = self.imageStringProperty.signal.skipNil().map { UIImage(named: $0) }
+    self.categoryImageName = self.imageStringProperty.signal.skipNil()
   }
 
   public var categoryNameText: Signal<String, Never>
-  public var categoryImage: Signal<UIImage?, Never>
+  public var categoryImageName: Signal<String, Never>
 
   private let categoryNameTextProperty = MutableProperty<String?>(nil)
   private let imageStringProperty = MutableProperty<String?>(nil)

@@ -366,10 +366,11 @@ private func postcardMetadata(forProject project: Project) -> PostcardMetadataDa
   let today = AppEnvironment.current.dateType.init().date
 
   let userHasBacked = userIsBackingProject(project)
+  let projectIsFeaturedToday = project.isFeaturedToday(today: today)
 
   if userHasBacked {
     return PostcardMetadataType.backing.data(forProject: project)
-  } else if project.isFeaturedToday(today: today) {
+  } else if projectIsFeaturedToday {
     return PostcardMetadataType.featured.data(forProject: project)
   } else {
     return nil

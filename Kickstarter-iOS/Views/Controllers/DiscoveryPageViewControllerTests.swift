@@ -43,13 +43,45 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     }
   }
 
+  func testView_Card_Project_HasSocial() {
+    let project = self.anomalisaNoPhoto
+      |> Project.lens.personalization.friends .~ [self.brandoNoAvatar]
+
+    let discoveryResponse = .template
+      |> DiscoveryEnvelope.lens.projects .~ [project]
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+        withEnvironment(
+          apiService: MockService(
+            fetchActivitiesResponse: [],
+            fetchDiscoveryResponse: discoveryResponse
+          ),
+          config: Config.template,
+          currentUser: User.template,
+          language: language
+        ) {
+          let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+          parent.view.frame.size.height = device == .pad ? 700 : 550
+
+          controller.change(filter: magicParams)
+
+          self.scheduler.run()
+
+          controller.tableView.layoutIfNeeded()
+          controller.tableView.reloadData()
+
+          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+        }
+      }
+  }
+
   func testView_Card_NoMetadata() {
     let project = self.anomalisaNoPhoto
       |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 6)
 
     let discoveryResponse = .template
       |> DiscoveryEnvelope.lens.projects .~ [project]
-    let config = Config.template
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
@@ -58,7 +90,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
             fetchActivitiesResponse: [],
             fetchDiscoveryResponse: discoveryResponse
           ),
-          config: config,
+          config: Config.template,
           currentUser: User.template, language: language
         ) {
           let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
@@ -77,10 +109,45 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
       }
   }
 
+  func testView_Card_Project_IsBacked() {
+    let backedProject = self.anomalisaNoPhoto
+      |> Project.lens.personalization.backing .~ Backing.template
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      let discoveryResponse = .template
+        |> DiscoveryEnvelope.lens.projects .~ [backedProject]
+
+      let apiService = MockService(fetchActivitiesResponse: [], fetchDiscoveryResponse: discoveryResponse)
+      withEnvironment(
+        apiService: apiService,
+        config: config,
+        currentUser: User.template,
+        language: language
+      ) {
+        let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = device == .pad ? 500 : 450
+
+        controller.change(filter: magicParams)
+
+        self.scheduler.run()
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
+
+        FBSnapshotVerifyView(
+          parent.view,
+          identifier: "backed_lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
   func testView_Card_Project_TodaySpecial() {
+    let mockDate = MockDate()
     let featuredProj = self.anomalisaNoPhoto
-      |> Project.lens.category .~ Project.Category.art
-      |> Project.lens.dates.featuredAt .~ self.dateType.init().timeIntervalSince1970
+      |> Project.lens.category .~ Project.Category.illustration
+      |> Project.lens.dates.featuredAt .~ mockDate.timeIntervalSince1970
 
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let config = Config.template
@@ -94,7 +161,9 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         withEnvironment(
           apiService: apiService,
           config: config,
-          currentUser: User.template, language: language
+          currentUser: User.template,
+          dateType: MockDate.self,
+          language: language
         ) {
           let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)

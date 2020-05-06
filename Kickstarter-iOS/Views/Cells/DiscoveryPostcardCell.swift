@@ -376,9 +376,9 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
 private let locationStackViewStyle: StackViewStyle = { stackView in
   stackView
-  |> \.alignment .~ .center
-  |> \.distribution .~ .fill
-  |> \.spacing .~ Styles.grid(1)
+    |> \.alignment .~ .center
+    |> \.distribution .~ .fill
+    |> \.spacing .~ Styles.grid(1)
 }
 
 private let locationLabelStyle: LabelStyle = { label in

@@ -14,6 +14,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   internal let deadlineTitleLabelText = TestObserver<String, Never>()
   internal let fundingProgressBarViewHidden = TestObserver<Bool, Never>()
   internal let fundingProgressContainerViewHidden = TestObserver<Bool, Never>()
+  internal let locationLabelText = TestObserver<String, Never>()
+  internal let locationStackViewHidden = TestObserver<Bool, Never>()
   internal let metadataIcon = TestObserver<UIImage?, Never>()
   internal let metadataIconTintColor = TestObserver<UIColor, Never>()
   internal let metadataTextColor = TestObserver<UIColor, Never>()
@@ -47,6 +49,8 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.vm.outputs.fundingProgressBarViewHidden.observe(self.fundingProgressBarViewHidden.observer)
     self.vm.outputs.fundingProgressContainerViewHidden
       .observe(self.fundingProgressContainerViewHidden.observer)
+    self.vm.outputs.locationLabelText.observe(self.locationLabelText.observer)
+    self.vm.outputs.locationStackViewHidden.observe(self.locationStackViewHidden.observer)
     self.vm.outputs.metadataIcon.observe(self.metadataIcon.observer)
     self.vm.outputs.metadataTextColor.observe(self.metadataTextColor.observer)
     self.vm.outputs.metadataIconImageViewTintColor.observe(self.metadataIconTintColor.observer)
@@ -78,7 +82,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.name .~ "Hammocks for All"
       |> Project.lens.blurb .~ "Let's make hammocks universal for all creatures!"
 
-    self.vm.inputs.configureWith(project: project, category: nil)
+    self.vm.inputs.configure(with: (project, nil, nil))
     self.cellAccessibilityLabel.assertValues([project.name])
     self.cellAccessibilityValue.assertValues([project.blurb + ". "])
   }
@@ -89,7 +93,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.blurb .~ "Let's make hammocks universal for all creatures!"
       |> Project.lens.state .~ .canceled
 
-    self.vm.inputs.configureWith(project: project, category: nil)
+    self.vm.inputs.configure(with: (project, nil, nil))
     self.cellAccessibilityLabel.assertValues([project.name])
     self.cellAccessibilityValue.assertValues([project.blurb + ". " + "Project cancelled"])
   }
@@ -112,13 +116,13 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let featuredImage = image(named: "metadata-featured")
 
     withEnvironment(currentUser: nil) {
-      self.vm.inputs.configureWith(project: Project.template, category: nil)
+      self.vm.inputs.configure(with: (Project.template, nil, nil))
 
       self.metadataLabelText.assertValueCount(0, "No metadata shown for logged out user.")
       self.metadataViewHidden.assertValues([true])
 
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeeef", user: User.template))
-      self.vm.inputs.configureWith(project: backedProject, category: nil)
+      self.vm.inputs.configure(with: (backedProject, nil, nil))
 
       self.metadataLabelText.assertValues([Strings.discovery_baseball_card_metadata_backer()])
       self.metadataViewHidden.assertValues([true, false])
@@ -137,7 +141,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.metadataTextColor.assertValues([backedColor])
       self.metadataIconTintColor.assertValues([backedColor])
 
-      self.vm.inputs.configureWith(project: featuredProject, category: nil)
+      self.vm.inputs.configure(with: (featuredProject, nil, nil))
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),
@@ -162,7 +166,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   func testProjectStatsEmit() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project, category: nil)
+    self.vm.inputs.configure(with: (project, nil, nil))
 
     self.backersTitleLabelText.assertValues([Format.wholeNumber(project.stats.backersCount)])
 
@@ -185,7 +189,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let project = .template
       |> Project.lens.name .~ "The Turtle Hat. Helping people come out of their shells!"
 
-    self.vm.inputs.configureWith(project: project, category: nil)
+    self.vm.inputs.configure(with: (project, nil, nil))
 
     self.projectNameAndBlurbLabelText.assertValues(
       ["\(project.name) \(project.blurb)"]
@@ -222,24 +226,24 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let projectManyFriends = .template
       |> Project.lens.personalization.friends .~ manyFriends
 
-    self.vm.inputs.configureWith(project: projectNoSocial, category: nil)
+    self.vm.inputs.configure(with: (projectNoSocial, nil, nil))
     self.socialImageURL.assertValues([nil])
     self.socialLabelText.assertValues([""])
     self.socialStackViewHidden.assertValues([true])
 
-    self.vm.inputs.configureWith(project: projectNoFriends, category: nil)
+    self.vm.inputs.configure(with: (projectNoFriends, nil, nil))
     self.socialImageURL.assertValues([nil, nil])
     self.socialLabelText.assertValues(["", ""])
     self.socialStackViewHidden.assertValues([true])
 
-    self.vm.inputs.configureWith(project: projectOneFriend, category: nil)
+    self.vm.inputs.configure(with: (projectOneFriend, nil, nil))
     self.socialImageURL.assertValues([nil, nil, oneFriend[0].avatar.medium])
     self.socialLabelText.assertValues(
       ["", "", Strings.project_social_friend_is_backer(friend_name: oneFriend[0].name)]
     )
     self.socialStackViewHidden.assertValues([true, false])
 
-    self.vm.inputs.configureWith(project: projectTwoFriends, category: nil)
+    self.vm.inputs.configure(with: (projectTwoFriends, nil, nil))
     self.socialImageURL.assertValues(
       [nil, nil, oneFriend[0].avatar.medium, twoFriends[0].avatar.medium],
       "First friend's avatar emits."
@@ -256,7 +260,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     )
     self.socialStackViewHidden.assertValues([true, false])
 
-    self.vm.inputs.configureWith(project: projectManyFriends, category: nil)
+    self.vm.inputs.configure(with: (projectManyFriends, nil, nil))
     self.socialImageURL.assertValues([
       nil, nil, oneFriend[0].avatar.medium, twoFriends[0].avatar.medium,
       manyFriends[0].avatar.medium
@@ -288,14 +292,14 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let greenColor = UIColor.ksr_green_700
     let navyColor = UIColor.ksr_soft_black
 
-    self.vm.inputs.configureWith(project: live, category: nil)
+    self.vm.inputs.configure(with: (live, nil, nil))
     self.projectStateStackViewHidden.assertValues([true])
     self.projectStateSubtitleLabelText.assertValueCount(1, "Empty subtitle string emits.")
     self.projectStatsStackViewHidden.assertValues([false])
     self.fundingProgressContainerViewHidden.assertValues([false])
     self.fundingProgressBarViewHidden.assertValues([false])
 
-    self.vm.inputs.configureWith(project: canceled, category: nil)
+    self.vm.inputs.configure(with: (canceled, nil, nil))
     self.projectStateIconHidden.assertValues([true, true])
     self.projectStateSubtitleLabelText.assertValueCount(2)
     self.projectStateTitleLabelText.assertValues([
@@ -308,7 +312,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.fundingProgressBarViewHidden.assertValues([false, false])
     self.fundingProgressContainerViewHidden.assertValues([false, true])
 
-    self.vm.inputs.configureWith(project: failed, category: nil)
+    self.vm.inputs.configure(with: (failed, nil, nil))
     self.projectStateIconHidden.assertValues([true, true, true])
     self.projectStateSubtitleLabelText.assertValueCount(3)
     self.projectStateTitleLabelText.assertValues(
@@ -324,7 +328,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.fundingProgressBarViewHidden.assertValues([false, false, true])
     self.fundingProgressContainerViewHidden.assertValues([false, true, false])
 
-    self.vm.inputs.configureWith(project: successful, category: nil)
+    self.vm.inputs.configure(with: (successful, nil, nil))
     self.projectStateIconHidden.assertValues([true, true, true, false])
     self.projectStateSubtitleLabelText.assertValueCount(4)
     self.projectStateTitleLabelText.assertValues(
@@ -341,7 +345,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.fundingProgressBarViewHidden.assertValues([false, false, true, false])
     self.fundingProgressContainerViewHidden.assertValues([false, true, false, false])
 
-    self.vm.inputs.configureWith(project: suspended, category: nil)
+    self.vm.inputs.configure(with: (suspended, nil, nil))
     self.projectStateIconHidden.assertValues([true, true, true, false, true])
     self.projectStateSubtitleLabelText.assertValueCount(5)
     self.projectStateTitleLabelText.assertValues(
@@ -367,7 +371,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.staffPick .~ true
       |> Project.lens.category .~ .illustration
 
-    self.vm.inputs.configureWith(project: staffPickProject, category: .art)
+    self.vm.inputs.configure(with: (staffPickProject, KsApi.Category.art, nil))
 
     self.projectIsStaffPickViewHidden.assertValue(false)
     self.projectCategoryStackViewHidden.assertValue(false)
@@ -376,7 +380,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
   }
 
   func testShowsCategoryLabels_AlwaysIfFilterCategoryIsNil() {
-    self.vm.inputs.configureWith(project: Project.template, category: nil)
+    self.vm.inputs.configure(with: (Project.template, nil, nil))
 
     self.projectCategoryStackViewHidden.assertValue(false)
   }
@@ -385,11 +389,44 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let illustrationProject = Project.template
       |> \.category .~ .illustration
 
-    self.vm.inputs.configureWith(project: illustrationProject, category: .illustration)
+    self.vm.inputs.configure(with: (illustrationProject, .illustration, nil))
 
     self.projectIsStaffPickViewHidden.assertValue(true)
     self.projectCategoryStackViewHidden.assertValue(true)
     self.projectCategoryName.assertValue(KsApi.Category.illustration.name)
     self.projectCategoryViewHidden.assertValue(true)
+  }
+
+  func testLocationStackView_IsNotHidden_WhenSortIsByDistance() {
+    let project = Project.template
+      |> \.location .~ Location.template
+
+    let params = DiscoveryParams.defaults
+      |> \.sort .~ .distance
+
+    self.vm.inputs.configure(with: (project, .illustration, params))
+
+    self.locationStackViewHidden.assertValues([false])
+  }
+
+  func testLocationStackView_IsHidden_WhenSortIsNotByDistance() {
+    let project = Project.template
+      |> \.location .~ Location.template
+
+    let params = DiscoveryParams.defaults
+      |> \.sort .~ .magic
+
+    self.vm.inputs.configure(with: (project, .illustration, params))
+
+    self.locationStackViewHidden.assertValues([true])
+  }
+
+  func testLocationLabelText() {
+    let project = Project.template
+      |> \.location .~ Location.template
+
+    self.vm.inputs.configure(with: (project, nil, nil))
+
+    self.locationLabelText.assertValues(["Brooklyn"])
   }
 }
