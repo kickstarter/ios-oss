@@ -4,7 +4,7 @@ import Library
 import Prelude
 import UIKit
 
-final class PledgeDescriptionView: UIView { //TODO drop VC naming
+final class PledgeDescriptionView: UIView {
   // MARK: - Properties
 
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
@@ -29,7 +29,7 @@ final class PledgeDescriptionView: UIView { //TODO drop VC naming
     self.bindViewModel()
   }
 
-  required init?(coder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 

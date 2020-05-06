@@ -52,6 +52,7 @@ final class PledgeViewController: UIViewController,
   private lazy var pledgeDisclaimerView: PledgeDisclaimerView = {
     PledgeDisclaimerView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.delegate .~ self
   }()
 
   private lazy var descriptionSectionViews = {
@@ -588,6 +589,14 @@ extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
     didSelectCreditCard paymentSourceId: String
   ) {
     self.viewModel.inputs.creditCardSelected(with: paymentSourceId)
+  }
+}
+
+// MARK: - PledgeDisclaimerViewDelegate
+
+extension PledgeViewController: PledgeDisclaimerViewDelegate {
+  func pledgeDisclaimerViewDidTapLearnMore(_: PledgeDisclaimerView) {
+    self.viewModel.inputs.pledgeDisclaimerViewDidTapLearnMore()
   }
 }
 

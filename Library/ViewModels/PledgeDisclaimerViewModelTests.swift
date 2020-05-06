@@ -6,15 +6,16 @@ import XCTest
 final class PledgeDisclaimerViewModelTests: TestCase {
   private let vm: PledgeDisclaimerViewModelType = PledgeDisclaimerViewModel()
 
-  private let presentTrustAndSafety = TestObserver<Void, Never>()
+  private let notifyDelegatePresentTrustAndSafety = TestObserver<Void, Never>()
 
   override func setUp() {
-    self.vm.outputs.presentTrustAndSafety.observe(self.presentTrustAndSafety.observer)
+    self.vm.outputs.notifyDelegatePresentTrustAndSafety
+      .observe(self.notifyDelegatePresentTrustAndSafety.observer)
   }
 
   func testPresentTrustAndSafety() {
     self.vm.inputs.learnMoreTapped()
 
-    self.presentTrustAndSafety.assertDidEmitValue()
+    self.notifyDelegatePresentTrustAndSafety.assertDidEmitValue()
   }
 }

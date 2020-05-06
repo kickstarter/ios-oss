@@ -2,7 +2,11 @@ import Library
 import Prelude
 import UIKit
 
-final class PledgeDisclaimerView: UIView { //TODO: rename
+protocol PledgeDisclaimerViewDelegate: AnyObject {
+  func pledgeDisclaimerViewDidTapLearnMore(_ view: PledgeDisclaimerView)
+}
+
+final class PledgeDisclaimerView: UIView {
   // MARK: - Properties
 
   private lazy var iconImageView: UIImageView = { UIImageView(frame: .zero) }()
@@ -10,6 +14,7 @@ final class PledgeDisclaimerView: UIView { //TODO: rename
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var textView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
 
+  weak var delegate: PledgeDisclaimerViewDelegate?
   private let viewModel: PledgeDisclaimerViewModelType = PledgeDisclaimerViewModel()
 
   // MARK: - Lifecycle
@@ -23,7 +28,7 @@ final class PledgeDisclaimerView: UIView { //TODO: rename
     self.bindViewModel()
   }
 
-  required init?(coder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
@@ -73,11 +78,12 @@ final class PledgeDisclaimerView: UIView { //TODO: rename
   override func bindViewModel() {
     super.bindViewModel()
 
-//    self.viewModel.outputs.presentTrustAndSafety
-//      .observeForUI()
-//      .observeValues { [weak self] in
-//        self?.presentHelpWebViewController(with: .trust, presentationStyle: .formSheet)
-//      }
+    self.viewModel.outputs.notifyDelegatePresentTrustAndSafety
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+        self.delegate?.pledgeDisclaimerViewDidTapLearnMore(self)
+      }
   }
 }
 
