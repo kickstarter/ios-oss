@@ -4,7 +4,7 @@ import Library
 import Prelude
 import UIKit
 
-final class PledgeDescriptionViewController: UIViewController {
+final class PledgeDescriptionView: UIView { //TODO drop VC naming
   // MARK: - Properties
 
   private lazy var dateLabel: UILabel = { UILabel(frame: .zero) }()
@@ -20,11 +20,17 @@ final class PledgeDescriptionViewController: UIViewController {
 
   // MARK: - Lifecycle
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
+  override init(frame: CGRect) {
+    super.init(frame: frame)
 
     self.configureSubviews()
     self.setupConstraints()
+    self.bindStyles()
+    self.bindViewModel()
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
   // MARK: - Styles
@@ -32,7 +38,7 @@ final class PledgeDescriptionViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.view
+    _ = self
       |> checkoutWhiteBackgroundStyle
 
     _ = self.dateLabel
@@ -54,7 +60,7 @@ final class PledgeDescriptionViewController: UIViewController {
   }
 
   private func configureSubviews() {
-    _ = (self.rootStackView, self.view)
+    _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
 
     _ = ([self.estimatedDeliveryLabel, self.dateLabel, UIView()], self.estimatedDeliveryStackView)
@@ -65,7 +71,7 @@ final class PledgeDescriptionViewController: UIViewController {
   }
 
   private func setupConstraints() {
-    _ = (self.rootStackView, self.view)
+    _ = (self.rootStackView, self)
       |> ksr_constrainViewToEdgesInParent()
   }
 
@@ -88,13 +94,6 @@ final class PledgeDescriptionViewController: UIViewController {
       .observeValues { [weak self] title in
         _ = self?.rewardTitleLabel
           ?|> \.text .~ title
-      }
-
-    self.viewModel.outputs.popViewController
-      .observeForUI()
-      .observeValues { [weak self] in
-        guard let self = self else { return }
-        self.navigationController?.popViewController(animated: true)
       }
   }
 
