@@ -39,7 +39,7 @@ internal final class ProjectActivityViewControllerTests: TestCase {
         FBSnapshotVerifyView(
           parent.view,
           identifier: "lang_\(language)_device_\(device)",
-          overallTolerance: 0.01)
+          overallTolerance: 0.03)
       }
     }
   }
