@@ -28,40 +28,19 @@ internal final class ProjectActivityViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testPad() {
-    let controller = ProjectActivitiesViewController.configuredWith(project: project)
-    let (parent, _) = traitControllers(device: .pad, orientation: .portrait, child: controller)
-    parent.view.frame.size.height = 2_600
-
-    self.scheduler.run()
-
-    FBSnapshotVerifyView(parent.view)
-  }
-
-  func testLanguages() {
-    Language.allLanguages.forEach { language in
+  func testProjectActivityView() {
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(language: language) {
         let controller = ProjectActivitiesViewController.configuredWith(project: project)
-        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 2_200
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)")
+        FBSnapshotVerifyView(
+          parent.view,
+          identifier: "lang_\(language)_device_\(device)",
+          overallTolerance: 0.01)
       }
-    }
-  }
-
-  func testVoiceOverRunning() {
-    let isVoiceOverRunning = { true }
-    withEnvironment(isVoiceOverRunning: isVoiceOverRunning) {
-      let controller = ProjectActivitiesViewController.configuredWith(project: project)
-      let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
-      parent.view.frame.size.height = 2_800
-
-      self.scheduler.run()
-
-      FBSnapshotVerifyView(parent.view)
     }
   }
 }
