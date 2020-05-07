@@ -1,7 +1,7 @@
 import Foundation
 import Library
-import UIKit
 import Prelude
+import UIKit
 
 final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private lazy var backersLabel = { UILabel(frame: .zero) }()
@@ -19,7 +19,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
   private let viewModel: DiscoveryPostcardViewModelType = DiscoveryPostcardViewModel()
 
-  func configureWith(value: DiscoveryProjectCellRowValue) {
+  func configureWith(value _: DiscoveryProjectCellRowValue) {
     //
   }
 
@@ -27,10 +27,12 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     _ = self.contentView
-      |> \.layoutMargins .~ .init(top: Styles.grid(2),
-                                  left: Styles.grid(2),
-                                  bottom: 0,
-                                  right: Styles.grid(2))
+      |> \.layoutMargins .~ .init(
+        top: Styles.grid(2),
+        left: Styles.grid(2),
+        bottom: 0,
+        right: Styles.grid(2)
+      )
       |> \.backgroundColor .~ .ksr_grey_200
 
     _ = self.projectImageView
@@ -57,8 +59,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = self.projectInfoStackView
       |> projectInfoStackViewStyle
       |> checkoutAdaptableStackViewStyle(
-         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-       ) // TODO: rename this to a generic stack view style
+        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+      ) // TODO: rename this to a generic stack view style
   }
 
   override func bindViewModel() {
@@ -74,7 +76,6 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       .observeValues { [weak self] url in
         self?.projectImageView.ksr_setImageWithURL(url)
       }
-
   }
 
   private func configureSubviews() {
@@ -88,10 +89,12 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = (self.projectDetailsStackView, self.cardContainerView)
       |> ksr_addSubviewToParent()
 
-    _ = ([self.projectNameLabel,
-          self.projectBlurbLabel,
-          self.projectInfoStackView,
-          self.tagsCollectionView], self.projectDetailsStackView)
+    _ = ([
+      self.projectNameLabel,
+      self.projectBlurbLabel,
+      self.projectInfoStackView,
+      self.tagsCollectionView
+    ], self.projectDetailsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.percentFundedLabel, self.backersCountStackView], self.projectInfoStackView)
@@ -99,7 +102,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   }
 
   private func setupConstraints() {
-    let aspectRatio = CGFloat(9/16)
+    let aspectRatio = CGFloat(9 / 16)
 
     NSLayoutConstraint.activate([
       self.projectImageView.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
@@ -109,8 +112,10 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       self.projectDetailsStackView.leftAnchor.constraint(equalTo: self.cardContainerView.leftAnchor),
       self.projectDetailsStackView.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
       self.projectDetailsStackView.bottomAnchor.constraint(equalTo: self.cardContainerView.bottomAnchor),
-      self.projectImageView.heightAnchor.constraint(equalTo: self.projectImageView.widthAnchor,
-                                                    multiplier: aspectRatio)
+      self.projectImageView.heightAnchor.constraint(
+        equalTo: self.projectImageView.widthAnchor,
+        multiplier: aspectRatio
+      )
     ])
   }
 }

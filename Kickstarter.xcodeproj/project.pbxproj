@@ -294,6 +294,7 @@
 		77A3C53B219CCEBF00824FC1 /* SettingsAccountDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BE52142D01E00D96152 /* SettingsAccountDataSource.swift */; };
 		77A3C53D219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A3C53C219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift */; };
 		77A64E5824645DCE003BF98E /* DiscoveryProjectCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A64E5724645DCE003BF98E /* DiscoveryProjectCardCell.swift */; };
+		77A64E5A24647C55003BF98E /* DiscoveryProjectCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A64E5924647C55003BF98E /* DiscoveryProjectCardViewModel.swift */; };
 		77A7B64321026CAE008D12C1 /* SettingsNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */; };
 		77A7B67B21026F4F008D12C1 /* SettingsNotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A7B67A21026F4E008D12C1 /* SettingsNotificationCell.swift */; };
 		77AA2B3B233C0A1B008BBCB8 /* CreateBackingInput+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AA2B39233C09F5008BBCB8 /* CreateBackingInput+Constructor.swift */; };
@@ -1765,6 +1766,7 @@
 		7798B5662175035E008BC50D /* UserQueriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserQueriesTests.swift; sourceTree = "<group>"; };
 		77A3C53C219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountDataSourceTests.swift; sourceTree = "<group>"; };
 		77A64E5724645DCE003BF98E /* DiscoveryProjectCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCardCell.swift; sourceTree = "<group>"; };
+		77A64E5924647C55003BF98E /* DiscoveryProjectCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCardViewModel.swift; sourceTree = "<group>"; };
 		77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsNotificationCell.xib; sourceTree = "<group>"; };
 		77A7B67A21026F4E008D12C1 /* SettingsNotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCell.swift; sourceTree = "<group>"; };
 		77AA2B39233C09F5008BBCB8 /* CreateBackingInput+Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreateBackingInput+Constructor.swift"; sourceTree = "<group>"; };
@@ -3844,6 +3846,7 @@
 				A7ED1F851E831C5C00BFFA01 /* DiscoveryPostcardViewModelTests.swift */,
 				D04AAC0D218BB70900CF713E /* DiscoveryProjectCategoryViewModel.swift */,
 				D04AAC10218BB70900CF713E /* DiscoveryProjectCategoryViewModelTests.swift */,
+				77A64E5924647C55003BF98E /* DiscoveryProjectCardViewModel.swift */,
 				A7F441981D005A9400FE6FC5 /* DiscoveryViewModel.swift */,
 				A7ED1F861E831C5C00BFFA01 /* DiscoveryViewModelTests.swift */,
 				8AA524902384CAAC00FD52CF /* EditorialProjectsViewModel.swift */,
@@ -4990,6 +4993,7 @@
 				D04AABFA218BB32000CF713E /* SettingsAccountViewModel.swift in Sources */,
 				8A8099F422E2142C00373E66 /* RewardCardContainerViewModel.swift in Sources */,
 				A75511631C8642C3005355CF /* LocalizedString.swift in Sources */,
+				77A64E5A24647C55003BF98E /* DiscoveryProjectCardViewModel.swift in Sources */,
 				A7F441E11D005A9400FE6FC5 /* ResetPasswordViewModel.swift in Sources */,
 				774D98D423A94EDB00FC81C2 /* OptimizelyExperiment.swift in Sources */,
 				A734A2671D21A1790080BBD5 /* WKNavigationActionData.swift in Sources */,
