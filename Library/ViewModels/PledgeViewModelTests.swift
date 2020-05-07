@@ -25,6 +25,7 @@ final class PledgeViewModelTests: TestCase {
   private let configurePledgeViewCTAContainerViewIsLoggedIn = TestObserver<Bool, Never>()
   private let configurePledgeViewCTAContainerViewIsEnabled = TestObserver<Bool, Never>()
   private let configurePledgeViewCTAContainerViewContext = TestObserver<PledgeViewContext, Never>()
+  private let configurePledgeViewCTAContainerViewWillRetryPaymentMethod = TestObserver<Bool, Never>()
 
   private let configureStripeIntegrationMerchantId = TestObserver<String, Never>()
   private let configureStripeIntegrationPublishableKey = TestObserver<String, Never>()
@@ -83,6 +84,8 @@ final class PledgeViewModelTests: TestCase {
       .observe(self.configurePledgeViewCTAContainerViewIsEnabled.observer)
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.2 }
       .observe(self.configurePledgeViewCTAContainerViewContext.observer)
+    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.3 }
+      .observe(self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.observer)
 
     self.vm.outputs.configureSummaryViewControllerWithData.map(third)
       .observe(self.configureSummaryViewControllerWithDataConfirmationLabelHidden.observer)
@@ -414,21 +417,23 @@ final class PledgeViewModelTests: TestCase {
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
-      self.submitButtonTitle.assertValues(["Confirm"])
-      self.confirmationLabelHidden.assertValues([true])
+      self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false])
 
       self.descriptionViewHidden.assertValues([true])
 
       self.configureWithPledgeViewDataProject.assertValues([project])
       self.configureWithPledgeViewDataReward.assertValues([reward])
 
-      self.continueViewHidden.assertValues([true])
-      self.submitButtonHidden.assertValues([false])
+      self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([true])
       self.pledgeAmountSummaryViewHidden.assertValues([false])
       self.sectionSeparatorsHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([true])
+
+      self.vm.inputs.creditCardSelected(with: backing.paymentSource?.id ?? "")
+
+      self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false, true])
 
       let pledgeAmountData: PledgeAmountData = (amount: 90, min: 10.00, max: 10_000, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)

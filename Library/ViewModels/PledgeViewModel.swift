@@ -573,6 +573,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       context == .fixPaymentMethod
         && project.personalization.backing?.paymentSource?.id == selectedPaymentSourceId
     }
+    .skipRepeats()
 
     self.configurePledgeViewCTAContainerView = Signal.combineLatest(
       isLoggedIn,

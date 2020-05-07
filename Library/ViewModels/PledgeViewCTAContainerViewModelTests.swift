@@ -39,7 +39,8 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     let pledgeData = PledgeViewCTAContainerViewData(
       isLoggedIn: false,
       isEnabled: true,
-      context: context
+      context: context,
+      willRetryPaymentMethod: false
     )
 
     self.submitButtonIsHidden.assertDidNotEmitValue()
@@ -61,7 +62,8 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     let pledgeData = PledgeViewCTAContainerViewData(
       isLoggedIn: true,
       isEnabled: true,
-      context: context
+      context: context,
+      willRetryPaymentMethod: false
     )
 
     self.submitButtonIsHidden.assertDidNotEmitValue()
@@ -84,7 +86,8 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     let pledgeData = PledgeViewCTAContainerViewData(
       isLoggedIn: true,
       isEnabled: true,
-      context: context
+      context: context,
+      willRetryPaymentMethod: false
     )
 
     self.submitButtonIsHidden.assertDidNotEmitValue()
@@ -105,7 +108,8 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     let pledgeData = PledgeViewCTAContainerViewData(
       isLoggedIn: false,
       isEnabled: true,
-      context: .pledge
+      context: .pledge,
+      willRetryPaymentMethod: false
     )
 
     self.vm.inputs.configureWith(value: pledgeData)
