@@ -570,7 +570,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       selectedPaymentSourceId
     )
     .map { context, project, selectedPaymentSourceId -> Bool in
-      return context == .fixPaymentMethod
+      context == .fixPaymentMethod
         && project.personalization.backing?.paymentSource?.id == selectedPaymentSourceId
     }
 

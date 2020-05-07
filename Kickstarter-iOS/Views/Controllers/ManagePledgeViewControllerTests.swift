@@ -25,15 +25,24 @@ final class ManagePledgeViewControllerTests: TestCase {
         |> User.lens.id .~ 1
         |> User.lens.avatar.small .~ ""
 
-      withEnvironment(currentUser: user, language: language) {
-        let reward = Reward.template
-          |> Reward.lens.shipping.enabled .~ true
-        let backing = Backing.template
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+      let backing = Backing.template
 
-          |> Backing.lens.reward .~ reward
-        let backedProject = Project.cosmicSurgery
-          |> Project.lens.personalization.backing .~ backing
+        |> Backing.lens.reward .~ reward
+      let backedProject = Project.cosmicSurgery
+        |> Project.lens.personalization.backing .~ backing
 
+      let envelope = ManagePledgeViewBackingEnvelope.template
+        |> \.backing.sequence .~ 10
+        |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
+        |> \.backing.amount .~ Money(amount: "10.0", currency: .gbp, symbol: "£")
+        |> \.backing.backer.uid .~ user.id
+        |> \.backing.backer.name .~ "Blob"
+
+      let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
+
+      withEnvironment(apiService: mockService, currentUser: user, language: language) {
         let controller = ManagePledgeViewController.instantiate()
         controller.configureWith(project: backedProject)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -43,34 +52,6 @@ final class ManagePledgeViewControllerTests: TestCase {
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
-    }
-  }
-
-  func testView_CurrentUser_IsNotBacker() {
-    let device = Device.phone4_7inch
-    let language = Language.en
-
-    let user = User.template
-      |> User.lens.id .~ 1
-      |> User.lens.avatar.small .~ ""
-
-    withEnvironment(currentUser: user, language: language) {
-      let reward = Reward.template
-        |> Reward.lens.shipping.enabled .~ true
-      let backing = Backing.template
-        |> Backing.lens.backerId .~ 5
-
-        |> Backing.lens.reward .~ reward
-      let backedProject = Project.cosmicSurgery
-        |> Project.lens.personalization.backing .~ backing
-
-      let controller = ManagePledgeViewController.instantiate()
-      controller.configureWith(project: backedProject)
-      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-
-      self.scheduler.run()
-
-      FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
     }
   }
 
@@ -95,17 +76,36 @@ final class ManagePledgeViewControllerTests: TestCase {
       let backedProject = Project.cosmicSurgery
         |> Project.lens.personalization.backing .~ backing
 
-      let controller = ManagePledgeViewController.instantiate()
-      controller.configureWith(project: backedProject)
-      let (parent, _) = traitControllers(
-        device: device,
-        orientation: .portrait,
-        child: controller
-      )
+      // TODO: Configure ManagePledgePaymentMethodView to be configured with this Backing
+      let envelope = ManagePledgeViewBackingEnvelope.template
+        |> \.backing.sequence .~ 10
+        |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
+        |> \.backing.amount .~ Money(amount: "10.0", currency: .gbp, symbol: "£")
+        |> \.backing.backer.uid .~ user.id
+        |> \.backing.backer.name .~ "Blob"
+        |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
+          expirationDate: "2019-10-31",
+          id: "1",
+          lastFour: "1111",
+          paymentType: .applePay,
+          type: .visa
+        )
 
-      self.scheduler.run()
+      let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
 
-      FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      withEnvironment(apiService: mockService, currentUser: user, language: language) {
+        let controller = ManagePledgeViewController.instantiate()
+        controller.configureWith(project: backedProject)
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
     }
   }
 
@@ -127,16 +127,35 @@ final class ManagePledgeViewControllerTests: TestCase {
       let backedProject = Project.cosmicSurgery
         |> Project.lens.personalization.backing .~ backing
 
-      let controller = ManagePledgeViewController.instantiate()
-      controller.configureWith(project: backedProject)
-      let (parent, _) = traitControllers(
-        device: device,
-        orientation: .portrait,
-        child: controller
-      )
-      self.scheduler.run()
+      // TODO: Configure ManagePledgePaymentMethodView to be configured with this Backing
+      let envelope = ManagePledgeViewBackingEnvelope.template
+        |> \.backing.sequence .~ 10
+        |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
+        |> \.backing.amount .~ Money(amount: "10.0", currency: .gbp, symbol: "£")
+        |> \.backing.backer.uid .~ user.id
+        |> \.backing.backer.name .~ "Blob"
+        |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
+          expirationDate: "2019-10-31",
+          id: "123",
+          lastFour: "4111",
+          paymentType: .googlePay,
+          type: .visa
+        )
 
-      FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
+
+      withEnvironment(apiService: mockService, currentUser: user, language: language) {
+        let controller = ManagePledgeViewController.instantiate()
+        controller.configureWith(project: backedProject)
+        let (parent, _) = traitControllers(
+          device: device,
+          orientation: .portrait,
+          child: controller
+        )
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
     }
   }
 
@@ -146,15 +165,27 @@ final class ManagePledgeViewControllerTests: TestCase {
         |> User.lens.id .~ 1
         |> User.lens.avatar.small .~ ""
 
-      withEnvironment(currentUser: user, language: language) {
-        let reward = Reward.template
-          |> Reward.lens.shipping.enabled .~ true
-        let backing = Backing.template
-          |> Backing.lens.status .~ .errored
-          |> Backing.lens.reward .~ reward
-        let backedProject = Project.cosmicSurgery
-          |> Project.lens.personalization.backing .~ backing
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+      let backing = Backing.template
+        |> Backing.lens.status .~ .errored
+        |> Backing.lens.reward .~ reward
+      let backedProject = Project.cosmicSurgery
+        |> Project.lens.personalization.backing .~ backing
 
+      // TODO: update PledgeStatusLabelView to use this backing
+      let envelope = ManagePledgeViewBackingEnvelope.template
+        |> \.backing.sequence .~ 10
+        |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
+        |> \.backing.amount .~ Money(amount: "10.0", currency: .gbp, symbol: "£")
+        |> \.backing.backer.uid .~ user.id
+        |> \.backing.backer.name .~ "Blob"
+        |> \.backing.status .~ .errored
+        |> \.backing.errorReason .~ "Error reason"
+
+      let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
+
+      withEnvironment(apiService: mockService, currentUser: user, language: language) {
         let controller = ManagePledgeViewController.instantiate()
         controller.configureWith(project: backedProject)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
