@@ -2,17 +2,18 @@ import Foundation
 import ReactiveSwift
 import Prelude
 
+public typealias BoldedAttributedLabelData = (boldedString: String, inString: String)
+
 public protocol DiscoveryProjectCardViewModelInputs {
   func configure(with value: DiscoveryProjectCellRowValue)
 }
 
 public protocol DiscoveryProjectCardViewModelOutputs {
+  var backerCountLabelData: Signal<BoldedAttributedLabelData, Never> { get }
   var goalMetIconHidden: Signal<Bool, Never> { get }
   var projectNameLabelText: Signal<String, Never> { get }
   var projectBlurbLabelText: Signal<String, Never> { get }
-  var backerCountLabelText: Signal<String, Never> { get }
-  var backerLabelText: Signal<String, Never> { get }
-  var percentFundedLabelText: Signal<String, Never> { get }
+  var percentFundedLabelData: Signal<BoldedAttributedLabelData, Never> { get }
   var projectImageURL: Signal<URL, Never> { get }
 }
 
@@ -28,17 +29,18 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
 
     self.projectNameLabelText = project.map(\.name)
     self.projectBlurbLabelText = project.map(\.blurb)
-    self.backerCountLabelText = Signal.empty
-    self.backerLabelText = project.map { project in
-      return Strings.general_backer_count_backers(backer_count: project.stats.backersCount)
+    self.backerCountLabelData = project.map(\.stats.backersCount).map { count in
+      return (String(count), Strings.general_backer_count_backers(backer_count: count))
     }
 
-    self.percentFundedLabelText = project.map { project in
+    self.percentFundedLabelData = project.map { project in
       if project.stats.goalMet {
-        return "Goal met"
+        return ("Goal met", "Goal met")
       }
 
-      return Strings.percentage_funded(percentage: String(project.stats.percentFunded))
+      let percentage = "\(project.stats.percentFunded)%"
+
+      return (percentage, Strings.percentage_funded(percentage: percentage))
     }
 
     self.goalMetIconHidden = project.map { !$0.stats.goalMet }
@@ -53,9 +55,8 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
   public let goalMetIconHidden: Signal<Bool, Never>
   public let projectNameLabelText: Signal<String, Never>
   public let projectBlurbLabelText: Signal<String, Never>
-  public let backerCountLabelText: Signal<String, Never>
-  public let backerLabelText: Signal<String, Never>
-  public let percentFundedLabelText: Signal<String, Never>
+  public let backerCountLabelData: Signal<BoldedAttributedLabelData, Never>
+  public let percentFundedLabelData: Signal<BoldedAttributedLabelData, Never>
   public let projectImageURL: Signal<URL, Never>
 
   public var inputs: DiscoveryProjectCardViewModelInputs { return self }

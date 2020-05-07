@@ -4,15 +4,14 @@ import Prelude
 import UIKit
 
 final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
-  private lazy var backersLabel = { UILabel(frame: .zero) }()
   private lazy var backersCountLabel = { UILabel(frame: .zero) }()
   private lazy var backersCountIconImageView = { UIImageView(frame: .zero) }()
   private lazy var backersCountStackView = { UIStackView(frame: .zero) }()
   private lazy var cardContainerView = { UIView(frame: .zero) }()
   private lazy var goalMetIconImageView = { UIImageView(frame: .zero) }()
   private lazy var goalPercentFundedStackView = { UIStackView(frame: .zero) }()
-  private lazy var projectDetailsStackView = { UIStackView(frame: .zero) }()
   private lazy var percentFundedLabel = { UILabel(frame: .zero) }()
+  private lazy var projectDetailsStackView = { UIStackView(frame: .zero) }()
   private lazy var projectImageView = { UIImageView(frame: .zero) }()
   // Stack view container for "percent funded" and "backer count" info
   private lazy var projectInfoStackView = { UIStackView(frame: .zero) }()
@@ -77,9 +76,6 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = self.goalMetIconImageView
       |> goalMetIconImageViewStyle
 
-    _ = self.backersLabel
-      |> backersLabelStyle
-
     _ = self.backersCountIconImageView
       |> backersCountIconImageViewStyle
 
@@ -95,8 +91,6 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
-    self.percentFundedLabel.rac.text = self.viewModel.outputs.percentFundedLabelText
-    self.backersLabel.rac.text = self.viewModel.outputs.backerLabelText
     self.goalMetIconImageView.rac.hidden = self.viewModel.outputs.goalMetIconHidden
 
     self.viewModel.outputs.projectImageURL
@@ -108,6 +102,28 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       .observeValues { [weak self] url in
         self?.projectImageView.ksr_setImageWithURL(url)
       }
+
+    self.viewModel.outputs.percentFundedLabelData
+    .observeForUI()
+      .observeValues { [weak self] boldedString, fullString in
+        guard let self = self else { return }
+
+        let attributedString = self.attributedString(bolding: boldedString, in: fullString)
+
+        _ = self.percentFundedLabel
+          |> \.attributedText .~ attributedString
+    }
+
+    self.viewModel.outputs.backerCountLabelData
+     .observeForUI()
+       .observeValues { [weak self] boldedString, fullString in
+         guard let self = self else { return }
+
+         let attributedString = self.attributedString(bolding: boldedString, in: fullString)
+
+         _ = self.backersCountLabel
+           |> \.attributedText .~ attributedString
+     }
   }
 
   private func configureSubviews() {
@@ -132,7 +148,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = ([self.goalMetIconImageView, self.percentFundedLabel], self.goalPercentFundedStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.backersCountIconImageView, self.backersLabel], self.backersCountStackView)
+    _ = ([self.backersCountIconImageView, self.backersCountLabel], self.backersCountStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.goalPercentFundedStackView, self.backersCountStackView], self.projectInfoStackView)
@@ -160,6 +176,19 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       self.projectDetailsStackView.bottomAnchor.constraint(equalTo: self.cardContainerView.bottomAnchor)
     ])
   }
+
+  private func attributedString(bolding boldedString: String, in fullString: String) -> NSAttributedString {
+    let attributedString: NSMutableAttributedString = NSMutableAttributedString.init(string: fullString)
+    let regularFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_footnote().bolded]
+    let boldFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_subhead().bolded]
+    let fullRange = (fullString as NSString).localizedStandardRange(of: fullString)
+    let boldedRange: NSRange = (fullString as NSString).localizedStandardRange(of: boldedString)
+
+    attributedString.addAttributes(regularFontAttribute, range: fullRange)
+    attributedString.addAttributes(boldFontAttribute, range: boldedRange)
+
+    return attributedString
+  }
 }
 
 // MARK: - Styles
@@ -167,10 +196,10 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 private let contentViewStyle: ViewStyle = { view in
   view
   |> \.layoutMargins .~ .init(
-    top: Styles.grid(2),
-    left: Styles.grid(2),
+    top: Styles.gridHalf(3),
+    left: Styles.gridHalf(3),
     bottom: 0,
-    right: Styles.grid(2)
+    right: Styles.gridHalf(3)
   )
   |> \.backgroundColor .~ .ksr_grey_200
 }
@@ -215,7 +244,7 @@ private let infoStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .horizontal
     |> \.spacing .~ Styles.grid(1)
-    |> \.alignment .~ .center
+    |> \.alignment .~ .lastBaseline
     |> \.distribution .~ .equalSpacing
 }
 
@@ -223,36 +252,25 @@ private let percentFundedLabelStyle: LabelStyle = { label in
   label
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
-    |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.textColor .~ .ksr_green_500
 }
 
 private let backersCountIconImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.image .~ image(named: "icon--humans")
-    |> \.tintColor .~ .ksr_grey_500
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    |> \.tintColor .~ .ksr_dark_grey_500
 }
 
 private let backersCountLabelStyle: LabelStyle = { label in
   label
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
-    |> \.font .~ UIFont.ksr_subhead().bolded
-    |> \.textColor .~ .ksr_soft_black
-}
-
-private let backersLabelStyle: LabelStyle = { label in
-  label
-    |> \.numberOfLines .~ 1
-    |> \.lineBreakMode .~ .byTruncatingTail
-    |> \.font .~ UIFont.ksr_footnote().bolded
     |> \.textColor .~ .ksr_soft_black
 }
 
 private let projectInfoStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.spacing .~ Styles.grid(2)
+    |> \.spacing .~ Styles.grid(3)
 }
 
 private let projectDetailsStackViewStyle: StackViewStyle = { stackView in
