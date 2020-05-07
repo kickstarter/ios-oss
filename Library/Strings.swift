@@ -3952,6 +3952,23 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
+   "Help local businesses keep the lights on during COVID-19 closures."
+
+   - **en**: "Help local businesses keep the lights on during COVID-19 closures."
+   - **de**: "Help local businesses keep the lights on during COVID-19 closures."
+   - **es**: "Help local businesses keep the lights on during COVID-19 closures."
+   - **fr**: "Help local businesses keep the lights on during COVID-19 closures."
+   - **ja**: "Help local businesses keep the lights on during COVID-19 closures."
+  */
+  public static func Help_local_businesses_keep_the_lights() -> String {
+    return localizedString(
+      key: "Help_local_businesses_keep_the_lights",
+      defaultValue: "Help local businesses keep the lights on during COVID-19 closures.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Hide password"
 
    - **en**: "Hide password"
@@ -8000,6 +8017,23 @@ daring ideas."
     return localizedString(
       key: "Show_password",
       defaultValue: "Show password",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Show up for the spaces you love"
+
+   - **en**: "Show up for the spaces you love"
+   - **de**: "Show up for the spaces you love"
+   - **es**: "Show up for the spaces you love"
+   - **fr**: "Show up for the spaces you love"
+   - **ja**: "Show up for the spaces you love"
+  */
+  public static func Show_up_for_the_spaces_you_love() -> String {
+    return localizedString(
+      key: "Show_up_for_the_spaces_you_love",
+      defaultValue: "Show up for the spaces you love",
       count: nil,
       substitutions: [:]
     )
