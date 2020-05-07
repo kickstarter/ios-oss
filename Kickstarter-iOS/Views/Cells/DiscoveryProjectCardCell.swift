@@ -156,7 +156,10 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   }
 
   private func setupConstraints() {
-    _ = [self.projectImageView, self.projectDetailsStackView]
+    _ = [self.projectImageView,
+         self.projectDetailsStackView,
+         self.goalMetIconImageView,
+         self.backersCountIconImageView]
       ||> \.translatesAutoresizingMaskIntoConstraints .~ false
 
     let aspectRatio = CGFloat(9.0 / 16.0)
@@ -173,7 +176,11 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       self.projectDetailsStackView.topAnchor.constraint(equalTo: self.projectImageView.bottomAnchor),
       self.projectDetailsStackView.leftAnchor.constraint(equalTo: self.cardContainerView.leftAnchor),
       self.projectDetailsStackView.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
-      self.projectDetailsStackView.bottomAnchor.constraint(equalTo: self.cardContainerView.bottomAnchor)
+      self.projectDetailsStackView.bottomAnchor.constraint(equalTo: self.cardContainerView.bottomAnchor),
+      self.goalMetIconImageView.widthAnchor.constraint(equalToConstant: 13.0),
+      self.goalMetIconImageView.heightAnchor.constraint(equalToConstant: 13.0),
+      self.backersCountIconImageView.widthAnchor.constraint(equalToConstant: 13.0),
+      self.backersCountIconImageView.heightAnchor.constraint(equalToConstant: 13.0)
     ])
   }
 
@@ -196,10 +203,10 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 private let contentViewStyle: ViewStyle = { view in
   view
   |> \.layoutMargins .~ .init(
-    top: Styles.gridHalf(3),
-    left: Styles.gridHalf(3),
+    top: Styles.grid(2),
+    left: 0,
     bottom: 0,
-    right: Styles.gridHalf(3)
+    right: 0
   )
   |> \.backgroundColor .~ .ksr_grey_200
 }
@@ -211,8 +218,12 @@ private let cardContainerViewStyle: ViewStyle = { view in
 }
 
 private let goalMetIconImageViewStyle: ImageViewStyle = { imageView in
-  imageView
-    |> \.image .~ image(named: "")
+  let descender = UIFont.ksr_footnote().bolded.descender
+  let image = Library.image(named: "icon--star")?
+    .withAlignmentRectInsets(.init(top: -descender, left: 0, bottom: descender, right: 0))
+
+  return imageView
+    |> \.image .~ image
     |> \.tintColor .~ .ksr_green_500
 }
 
@@ -256,9 +267,14 @@ private let percentFundedLabelStyle: LabelStyle = { label in
 }
 
 private let backersCountIconImageViewStyle: ImageViewStyle = { imageView in
-  imageView
-    |> \.image .~ image(named: "icon--humans")
+  let descender = UIFont.ksr_footnote().bolded.descender
+  let image = Library.image(named: "icon--humans")?
+    .withAlignmentRectInsets(.init(top: -descender, left: 0, bottom: descender, right: 0))
+
+  return imageView
+    |> \.image .~ image
     |> \.tintColor .~ .ksr_dark_grey_500
+    |> \.contentMode .~ .scaleAspectFit
 }
 
 private let backersCountLabelStyle: LabelStyle = { label in
