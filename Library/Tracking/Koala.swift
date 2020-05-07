@@ -25,6 +25,7 @@ public final class Koala {
     case addNewCardButtonClicked = "Add New Card Button Clicked"
     case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
     case collectionViewed = "Collection Viewed"
+    case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
     case editorialCardClicked = "Editorial Card Clicked"
     case explorePageViewed = "Explore Page Viewed"
     case exploreSortClicked = "Explore Sort Clicked"
@@ -549,6 +550,7 @@ public final class Koala {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
+    // TODO: unused?
     let fixPledgeProps = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
 
@@ -857,6 +859,28 @@ public final class Koala {
 
     self.track(
       event: DataLakeWhiteListedEvent.fbLoginOrSignupButtonClicked.rawValue,
+      location: .loginTout,
+      properties: props
+    )
+  }
+
+  /* Call when the "Continue with Apple" button is tapped on the Login/Signup Page
+
+   parameters:
+   - intent: the LoginIntent associated with the login/signup attempt
+   - project: if the login attempt is made from the checkout flow, the associated project
+   - reward: if the login attempt is made from the checkout flow, the associated selected reward
+   */
+
+  public func trackContinueWithAppleButtonClicked(
+    intent: LoginIntent,
+    project: Project? = nil,
+    reward: Reward? = nil
+  ) {
+    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
+
+    self.track(
+      event: DataLakeWhiteListedEvent.continueWithAppleButtonClicked.rawValue,
       location: .loginTout,
       properties: props
     )

@@ -293,6 +293,10 @@ public protocol ServiceType {
   func sendVerificationEmail(input: EmptyInput)
     -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
 
+  /// Signin with Apple
+  func signInWithApple(input: SignInWithAppleInput)
+    -> SignalProducer<SignInWithAppleEnvelope, GraphError>
+
   /// Signup with email.
   func signup(
     name: String, email: String, password: String, passwordConfirmation: String,
