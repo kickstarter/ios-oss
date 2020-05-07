@@ -5,13 +5,16 @@ import UIKit
 
 internal final class DiscoveryViewController: UIViewController {
   fileprivate let viewModel: DiscoveryViewModelType = DiscoveryViewModel()
-  fileprivate var dataSource: DiscoveryPagesDataSource!
+  fileprivate var dataSource: DiscoveryPagesDataSource?
 
   private var recommendationsChangedObserver: Any?
 
   private weak var navigationHeaderViewController: DiscoveryNavigationHeaderViewController!
+  private var optimizelyConfiguredObserver: Any?
+  private var optimizelyConfigurationFailedObserver: Any?
   private weak var pageViewController: UIPageViewController!
   private weak var sortPagerViewController: SortPagerViewController!
+
   internal static func instantiate() -> DiscoveryViewController {
     return Storyboard.Discovery.instantiate(DiscoveryViewController.self)
   }
@@ -46,11 +49,29 @@ internal final class DiscoveryViewController: UIViewController {
         self?.viewModel.inputs.didChangeRecommendationsSetting()
       }
 
+    self.optimizelyConfiguredObserver = NotificationCenter.default
+      .addObserver(forName: .ksr_optimizelyClientConfigured, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.optimizelyClientConfigured()
+      }
+
+    self.optimizelyConfigurationFailedObserver = NotificationCenter.default
+      .addObserver(
+        forName: .ksr_optimizelyClientConfigurationFailed,
+        object: nil,
+        queue: nil
+      ) { [weak self] _ in
+        self?.viewModel.inputs.optimizelyClientConfigurationFailed()
+      }
+
     self.viewModel.inputs.viewDidLoad()
   }
 
   deinit {
-    self.recommendationsChangedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    [
+      self.optimizelyConfiguredObserver,
+      self.optimizelyConfigurationFailedObserver,
+      self.recommendationsChangedObserver
+    ].forEach { $0.doIfSome(NotificationCenter.default.removeObserver) }
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -73,16 +94,17 @@ internal final class DiscoveryViewController: UIViewController {
       .observeValues { [weak self] in self?.configurePagerDataSource($0) }
 
     self.viewModel.outputs.configureSortPager
+      .observeForControllerAction()
       .observeValues { [weak self] in self?.sortPagerViewController.configureWith(sorts: $0) }
 
     self.viewModel.outputs.loadFilterIntoDataSource
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.dataSource.load(filter: $0) }
+      .observeValues { [weak self] in self?.dataSource?.load(filter: $0) }
 
     self.viewModel.outputs.navigateToSort
       .observeForControllerAction()
       .observeValues { [weak self] sort, direction in
-        guard let controller = self?.dataSource.controllerFor(sort: sort) else { return }
+        guard let controller = self?.dataSource?.controllerFor(sort: sort) else { return }
 
         self?.pageViewController.ksr_setViewControllers(
           [controller], direction: direction, animated: true, completion: nil
@@ -119,7 +141,7 @@ internal final class DiscoveryViewController: UIViewController {
     self.pageViewController.dataSource = self.dataSource
 
     self.pageViewController.ksr_setViewControllers(
-      [self.dataSource.controllerFor(index: 0)].compact(),
+      [self.dataSource?.controllerFor(index: 0)].compact(),
       direction: .forward,
       animated: false,
       completion: nil
@@ -145,9 +167,8 @@ extension DiscoveryViewController: UIPageViewControllerDelegate {
     _: UIPageViewController,
     willTransitionTo pendingViewControllers: [UIViewController]
   ) {
-    guard let idx = pendingViewControllers.first.flatMap(self.dataSource.indexFor(controller:)) else {
-      return
-    }
+    guard let dataSource = self.dataSource,
+      let idx = pendingViewControllers.first.flatMap(dataSource.indexFor(controller:)) else { return }
 
     self.viewModel.inputs.willTransition(toPage: idx)
   }

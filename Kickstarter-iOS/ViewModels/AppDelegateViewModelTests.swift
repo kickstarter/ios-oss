@@ -235,6 +235,10 @@ final class AppDelegateViewModelTests: TestCase {
       let error = self.vm.inputs.optimizelyConfigured(with: MockOptimizelyResult())
 
       XCTAssertNil(error)
+
+      self.vm.inputs.didUpdateOptimizelyClient(MockOptimizelyClient())
+
+      self.postNotificationName.assertValues([.ksr_optimizelyClientConfigured])
     }
   }
 
@@ -251,6 +255,10 @@ final class AppDelegateViewModelTests: TestCase {
       let error = self.vm.inputs.optimizelyConfigured(with: mockResult) as? MockOptimizelyError
 
       XCTAssertEqual("Optimizely Error", error?.localizedDescription)
+
+      self.vm.inputs.optimizelyClientConfigurationFailed()
+
+      self.postNotificationName.assertValues([.ksr_optimizelyClientConfigurationFailed])
     }
   }
 

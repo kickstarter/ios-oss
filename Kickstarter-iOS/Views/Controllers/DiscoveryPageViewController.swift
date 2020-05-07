@@ -23,7 +23,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate var emptyStatesController: EmptyStatesViewController?
   private lazy var headerLabel = { UILabel(frame: .zero) }()
   private var onboardingCompletedObserver: Any?
-  private var optimizelyConfiguredObserver: Any?
   internal var preferredBackgroundColor: UIColor?
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
@@ -54,11 +53,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.onboardingCompletedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_onboardingCompleted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.onboardingCompleted()
-      }
-
-    self.optimizelyConfiguredObserver = NotificationCenter.default
-      .addObserver(forName: .ksr_optimizelyClientConfigured, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.optimizelyClientConfigured()
       }
 
     self.sessionStartedObserver = NotificationCenter.default
@@ -104,8 +98,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       self.sessionStartedObserver,
       self.currentEnvironmentChangedObserver,
       self.configUpdatedObserver,
-      self.onboardingCompletedObserver,
-      self.optimizelyConfiguredObserver
+      self.onboardingCompletedObserver
     ].forEach { $0.doIfSome(NotificationCenter.default.removeObserver) }
   }
 
@@ -136,8 +129,9 @@ internal final class DiscoveryPageViewController: UITableViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    _ = self
-      |> baseTableControllerStyle(estimatedRowHeight: 200.0)
+    _ = self.tableView
+      |> \.rowHeight .~ UITableView.automaticDimension
+      |> \.estimatedRowHeight .~ 200.0
 
     if let preferredBackgroundColor = self.preferredBackgroundColor {
       _ = self
@@ -198,7 +192,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.viewModel.outputs.projectsLoaded
       .observeForUI()
-      .observeValues { [weak self] projects, params in
+      .observeValues { [weak self] projects, params, _ in
         self?.dataSource.load(projects: projects, params: params)
         self?.tableView.reloadData()
         self?.updateProjectPlaylist(projects)
@@ -320,6 +314,20 @@ internal final class DiscoveryPageViewController: UITableViewController {
           |> \.modalPresentationStyle .~ (isIpad ? .formSheet : .fullScreen)
 
         self?.present(nav, animated: true, completion: nil)
+      }
+
+    self.viewModel.outputs.backgroundColor
+      .observeForUI()
+      .observeValues { [weak self] backgroundColor in
+        guard let self = self else { return }
+
+        _ = self.view
+          |> \.backgroundColor .~ backgroundColor
+
+        _ = self.tableView
+          |> \.backgroundColor .~ backgroundColor
+
+        self.preferredBackgroundColor = backgroundColor
       }
   }
 
