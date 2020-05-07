@@ -59,8 +59,11 @@ public protocol SortPagerViewModelType {
 public final class SortPagerViewModel: SortPagerViewModelType, SortPagerViewModelInputs,
   SortPagerViewModelOutputs {
   public init() {
-    let sorts: Signal<[DiscoveryParams.Sort], Never> = self.sortsProperty.signal.skipNil()
-      .takeWhen(self.viewWillAppearProperty.signal)
+    let sorts: Signal<[DiscoveryParams.Sort], Never> = Signal.combineLatest(
+      self.sortsProperty.signal.skipNil(),
+      self.viewWillAppearProperty.signal
+    )
+    .map(first)
 
     self.createSortButtons = sorts.take(first: 1)
 
