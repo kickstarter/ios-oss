@@ -2,12 +2,6 @@ import KsApi
 import Library
 import UIKit
 
-struct DiscoveryProjectCellRowValue {
-  let project: Project
-  let category: KsApi.Category?
-  let discoveryParams: DiscoveryParams?
-}
-
 internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case onboarding
@@ -41,7 +35,7 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
       let value = DiscoveryProjectCellRowValue(
         project: project,
         category: params?.category,
-        discoveryParams: params
+        params: params
       )
 
       _ = self.appendRow(

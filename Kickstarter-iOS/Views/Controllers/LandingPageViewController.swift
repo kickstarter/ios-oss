@@ -255,6 +255,7 @@ private let logoImageViewStyle: ImageViewStyle = { imageView in
     |> \.tintColor .~ .ksr_green_500
     |> \.contentMode .~ .scaleAspectFit
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    |> \.accessibilityLabel %~ { _ in Strings.general_accessibility_kickstarter() }
 }
 
 private let pageControlStyle: PageControlStyle = { pageControl in

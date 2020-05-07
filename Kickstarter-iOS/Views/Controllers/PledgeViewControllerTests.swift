@@ -7,7 +7,6 @@ import UIKit
 final class PledgeViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
-
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
@@ -35,7 +34,7 @@ final class PledgeViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_200
 
-        self.scheduler.run()
+        self.scheduler.advance(by: .seconds(1))
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -55,7 +54,7 @@ final class PledgeViewControllerTests: TestCase {
           controller.configureWith(project: .template, reward: .template, refTag: nil, context: .pledge)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-          self.scheduler.run()
+          self.scheduler.advance(by: .seconds(1))
 
           let loggedIn = currentUser != nil
           let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
@@ -83,7 +82,7 @@ final class PledgeViewControllerTests: TestCase {
           controller.configureWith(project: project, reward: .template, refTag: nil, context: .pledge)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-          self.scheduler.run()
+          self.scheduler.advance(by: .seconds(1))
 
           let loggedIn = currentUser != nil
           let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
@@ -185,7 +184,7 @@ final class PledgeViewControllerTests: TestCase {
         )
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        self.scheduler.run()
+        self.scheduler.advance(by: .seconds(1))
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -223,7 +222,7 @@ final class PledgeViewControllerTests: TestCase {
         )
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        self.scheduler.run()
+        self.scheduler.advance(by: .seconds(1))
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -254,7 +253,7 @@ final class PledgeViewControllerTests: TestCase {
         )
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        self.scheduler.run()
+        self.scheduler.advance(by: .seconds(1))
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
