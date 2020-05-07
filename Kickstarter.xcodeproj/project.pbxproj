@@ -293,6 +293,7 @@
 		77A3C502219B5E4900824FC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7D1F9501C850B7C000D41D5 /* Assets.xcassets */; };
 		77A3C53B219CCEBF00824FC1 /* SettingsAccountDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BE52142D01E00D96152 /* SettingsAccountDataSource.swift */; };
 		77A3C53D219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A3C53C219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift */; };
+		77A64E5824645DCE003BF98E /* DiscoveryProjectCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A64E5724645DCE003BF98E /* DiscoveryProjectCardCell.swift */; };
 		77A7B64321026CAE008D12C1 /* SettingsNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */; };
 		77A7B67B21026F4F008D12C1 /* SettingsNotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A7B67A21026F4E008D12C1 /* SettingsNotificationCell.swift */; };
 		77AA2B3B233C0A1B008BBCB8 /* CreateBackingInput+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AA2B39233C09F5008BBCB8 /* CreateBackingInput+Constructor.swift */; };
@@ -1763,6 +1764,7 @@
 		7798B56421750041008BC50D /* GraphUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUser.swift; sourceTree = "<group>"; };
 		7798B5662175035E008BC50D /* UserQueriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserQueriesTests.swift; sourceTree = "<group>"; };
 		77A3C53C219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountDataSourceTests.swift; sourceTree = "<group>"; };
+		77A64E5724645DCE003BF98E /* DiscoveryProjectCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectCardCell.swift; sourceTree = "<group>"; };
 		77A7B64221026CAE008D12C1 /* SettingsNotificationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsNotificationCell.xib; sourceTree = "<group>"; };
 		77A7B67A21026F4E008D12C1 /* SettingsNotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationCell.swift; sourceTree = "<group>"; };
 		77AA2B39233C09F5008BBCB8 /* CreateBackingInput+Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreateBackingInput+Constructor.swift"; sourceTree = "<group>"; };
@@ -3149,6 +3151,7 @@
 				013672DF1E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift */,
 				0169F9831D6E0B2000C8D5C5 /* DiscoveryFiltersStaticRowCell.swift */,
 				A757EBB11D1B084F00A5C978 /* DiscoveryOnboardingCell.swift */,
+				77A64E5724645DCE003BF98E /* DiscoveryProjectCardCell.swift */,
 				59AE35E11D67643100A310E6 /* DiscoveryPostcardCell.swift */,
 				A72C3AB31D00FB1F0075227E /* DiscoverySelectableRowCell.swift */,
 				77F9A9AF2135FB760082A11E /* FindFriendsCell.swift */,
@@ -5420,6 +5423,7 @@
 				018422C51D2C48AA00CA7566 /* DashboardProjectsDrawerDataSource.swift in Sources */,
 				D0237C1522BC2B640092C792 /* PledgeSummaryViewController.swift in Sources */,
 				015706BB1E68DE580087DD68 /* ProfileSortBarView.swift in Sources */,
+				77A64E5824645DCE003BF98E /* DiscoveryProjectCardCell.swift in Sources */,
 				A74FFE691CE3FFE200C7BCB9 /* SearchMessagesViewController.swift in Sources */,
 				598D96B81D426F70003F3F66 /* ActivitySampleProjectCell.swift in Sources */,
 				0169F9861D6F4E1D00C8D5C5 /* DiscoveryFiltersViewController.swift in Sources */,
