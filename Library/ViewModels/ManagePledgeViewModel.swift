@@ -25,7 +25,7 @@ public protocol ManagePledgeViewModelInputs {
 
 public protocol ManagePledgeViewModelOutputs {
   var configurePaymentMethodView: Signal<Backing, Never> { get }
-  var configurePledgeSummaryView: Signal<Project, Never> { get }
+  var configurePledgeSummaryView: Signal<ManagePledgeSummaryViewData, Never> { get }
   var configureRewardReceivedWithProject: Signal<Project, Never> { get }
   var configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never> { get }
   var endRefreshing: Signal<Void, Never> { get }
@@ -85,7 +85,6 @@ public final class ManagePledgeViewModel:
 
     let graphBacking = graphBackingEvent.values()
       .map { $0.backing }
-      .skipNil()
 
     self.endRefreshing = refreshProjectEvent
       .filter { $0.isTerminating }
@@ -109,7 +108,17 @@ public final class ManagePledgeViewModel:
 
     self.configurePaymentMethodView = v1Backing
 
-    self.configurePledgeSummaryView = project
+    self.configurePledgeSummaryView = Signal.combineLatest(project, graphBacking)
+      .map { project, backing in
+        (
+          project: project,
+          pledgeAmount: backing.amount.doubleValue,
+          backerId: backing.backer.uid,
+          backerName: backing.backer.name,
+          backerSequence: backing.sequence,
+          pledgeDate: backing.pledgedOn
+        )
+      }
     self.configureRewardReceivedWithProject = project
 
     self.configureRewardSummaryView = projectAndReward
@@ -129,14 +138,14 @@ public final class ManagePledgeViewModel:
       .filter { $0 == .cancelPledge }
       .ignoreValues()
 
-    self.goToCancelPledge = Signal.combineLatest(project, graphBacking, v1Backing)
+    self.goToCancelPledge = Signal.combineLatest(project, graphBacking)
       .takeWhen(cancelPledgeSelected)
-      .filter { _, _, v1Backing in v1Backing.cancelable } // TODO: remove once we get this from GraphQL
-      .map { project, backing, _ in
+      .filter { _, backing in backing.cancelable }
+      .map { project, backing in
         (
           project: project,
           backingId: backing.id,
-          pledgeAmount: backing.amount.amount.flatMap(Double.init) ?? 0
+          pledgeAmount: backing.amount.doubleValue
         )
       }
 
@@ -238,7 +247,7 @@ public final class ManagePledgeViewModel:
   }
 
   public let configurePaymentMethodView: Signal<Backing, Never>
-  public let configurePledgeSummaryView: Signal<Project, Never>
+  public let configurePledgeSummaryView: Signal<ManagePledgeSummaryViewData, Never>
   public let configureRewardReceivedWithProject: Signal<Project, Never>
   public let configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never>
   public let endRefreshing: Signal<Void, Never>
@@ -292,7 +301,7 @@ private func managePledgeMenuCTAType(for managePledgeAlertAction: ManagePledgeAl
 private func projectBackingQuery(withSlug slug: String) -> NonEmptySet<Query> {
   return Query.project(
     slug: slug,
-    .id +| [
+    .pid +| [
       .state,
       .name,
       .backing(
@@ -304,8 +313,10 @@ private func projectBackingQuery(withSlug slug: String) -> NonEmptySet<Query> {
               .symbol
             ]
           ),
+          .sequence,
+          .cancelable,
           .backer(
-            .id +| [
+            .uid +| [
               .name
             ]
           ),

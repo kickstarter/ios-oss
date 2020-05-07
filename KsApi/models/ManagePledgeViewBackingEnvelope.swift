@@ -2,28 +2,30 @@ import Foundation
 
 public struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
   public var project: Project
-  public var backing: Backing?
+  public var backing: Backing
 
   public struct Project: Swift.Decodable {
-    public var id: String
+    public var pid: Int
     public var name: String
     public var state: ProjectState
   }
 
   public struct Backing: Swift.Decodable {
     public var amount: Money
-    public var backer: Backer?
+    public var backer: Backer
     public var bankAccount: BankAccount?
+    public var cancelable: Bool
     public var creditCard: CreditCard?
     public var errorReason: String?
     public var id: String
-    public var pledgedOn: TimeInterval?
-    public var reward: Reward?
+    public var pledgedOn: TimeInterval
+    public var reward: Reward
+    public var sequence: Int
     public var shippingAmount: Money?
     public var status: BackingState
 
     public struct Backer: Swift.Decodable {
-      public var id: String
+      public var uid: Int
       public var name: String
     }
 
@@ -43,15 +45,15 @@ public struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
 
     public struct Reward: Swift.Decodable {
       public var amount: Money
-      public var backersCount: Int?
+      public var backersCount: Int
       public var description: String
       public var estimatedDeliveryOn: String?
       public var items: [Item]?
-      public var name: String?
+      public var name: String
 
       public struct Item: Swift.Decodable {
         public var id: String
-        public var name: String?
+        public var name: String
       }
     }
   }
@@ -68,7 +70,7 @@ public extension ManagePledgeViewBackingEnvelope {
 
     self.project = try values.decode(Project.self, forKey: .project)
     self.backing = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .project)
-      .decode(Backing?.self, forKey: .backing)
+      .decode(Backing.self, forKey: .backing)
   }
 }
 
@@ -87,11 +89,31 @@ public extension ManagePledgeViewBackingEnvelope.Backing.Reward {
     let values = try decoder.container(keyedBy: CodingKeys.self)
 
     self.amount = try values.decode(Money.self, forKey: .amount)
-    self.backersCount = try values.decode(Int?.self, forKey: .backersCount)
+    self.backersCount = try values.decode(Int.self, forKey: .backersCount)
     self.description = try values.decode(String.self, forKey: .description)
     self.estimatedDeliveryOn = try values.decode(String?.self, forKey: .estimatedDeliveryOn)
     self.items = try? values.nestedContainer(keyedBy: CodingKeys.self, forKey: .items)
       .decode([Item].self, forKey: .nodes)
-    self.name = try values.decode(String?.self, forKey: .name)
+    self.name = try values.decode(String.self, forKey: .name)
+  }
+}
+
+extension ManagePledgeViewBackingEnvelope.Backing.Backer {
+  private enum CodingKeys: CodingKey {
+    case uid
+    case name
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+
+    guard let uid = Int(try values.decode(String.self, forKey: .uid)) else {
+      throw DecodingError.dataCorruptedError(
+        forKey: .uid, in: values, debugDescription: "Not a valid integer"
+      )
+    }
+
+    self.uid = uid
+    self.name = try values.decode(String.self, forKey: .name)
   }
 }

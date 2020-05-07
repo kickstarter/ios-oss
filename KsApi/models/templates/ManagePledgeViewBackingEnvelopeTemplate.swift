@@ -1,11 +1,12 @@
 extension ManagePledgeViewBackingEnvelope {
   static var template: ManagePledgeViewBackingEnvelope {
     return ManagePledgeViewBackingEnvelope(
-      project: .init(id: "123", name: "Project", state: .live),
+      project: .init(pid: 123, name: "Project", state: .live),
       backing: .init(
         amount: Money(amount: "179.0", currency: .usd, symbol: "$"),
-        backer: Backing.Backer(id: "1234", name: "Backer McGee"),
+        backer: Backing.Backer(uid: 1_234, name: "Backer McGee"),
         bankAccount: nil,
+        cancelable: true,
         creditCard: Backing.CreditCard(
           expirationDate: "2020-01-01",
           id: "556",
@@ -27,6 +28,7 @@ extension ManagePledgeViewBackingEnvelope {
           ],
           name: "Reward name"
         ),
+        sequence: 1,
         shippingAmount: Money(amount: "20.0", currency: .usd, symbol: "$"),
         status: .pledged
       )

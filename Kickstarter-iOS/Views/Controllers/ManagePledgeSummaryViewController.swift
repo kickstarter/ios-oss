@@ -40,8 +40,8 @@ final class ManagePledgeSummaryViewController: UIViewController {
 
   // MARK: - Lifecycle
 
-  public func configureWith(_ project: Project) {
-    self.viewModel.inputs.configureWith(project)
+  public func configureWith(_ data: ManagePledgeSummaryViewData) {
+    self.viewModel.inputs.configureWith(data)
   }
 
   override func viewDidLoad() {

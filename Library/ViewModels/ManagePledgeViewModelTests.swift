@@ -10,7 +10,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let vm = ManagePledgeViewModel()
 
   private let configurePaymentMethodView = TestObserver<Backing, Never>()
-  private let configurePledgeSummaryView = TestObserver<Project, Never>()
+  private let configurePledgeSummaryView = TestObserver<ManagePledgeSummaryViewData, Never>()
   private let configureRewardReceivedWithProject = TestObserver<Project, Never>()
   private let configureRewardSummaryViewProject = TestObserver<Project, Never>()
   private let configureRewardSummaryViewReward = TestObserver<Reward, Never>()
@@ -130,11 +130,38 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.configurePledgeSummaryView.assertDidNotEmitValue()
 
     let project = Project.template
-    self.vm.inputs.configureWith(project)
+      |> Project.lens.personalization.backing .~ Backing.template
 
-    self.vm.inputs.viewDidLoad()
+    let envelope = ManagePledgeViewBackingEnvelope.template
 
-    self.configurePledgeSummaryView.assertValue(project)
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(envelope)
+    )
+
+    let pledgeViewSummaryData: ManagePledgeSummaryViewData = (
+      project: project,
+      pledgeAmount: envelope.backing.amount.doubleValue,
+      backerId: envelope.backing.backer.uid,
+      backerName: envelope.backing.backer.name,
+      backerSequence: envelope.backing.sequence,
+      pledgeDate: envelope.backing.pledgedOn
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith(project)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePledgeSummaryView.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.configurePledgeSummaryView.assertValueCount(1)
+
+      XCTAssertTrue(
+        self.configurePledgeSummaryView.values.map { $0 == pledgeViewSummaryData }.allSatisfy(isTrue)
+      )
+    }
   }
 
   func testConfigureRewardSummaryViewController() {
@@ -225,8 +252,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let envelope = ManagePledgeViewBackingEnvelope.template
 
-    let expectedId = envelope.backing?.id ?? ""
-    let expectedAmount = envelope.backing?.amount.amount.flatMap(Double.init) ?? 0
+    let expectedId = envelope.backing.id
+    let expectedAmount = envelope.backing.amount.doubleValue
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope)
@@ -544,8 +571,19 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let updatedProject = project
       |> Project.lens.personalization.backing .~ updatedBacking
 
+    let envelope = ManagePledgeViewBackingEnvelope.template
+
+    let pledgeViewSummaryData: ManagePledgeSummaryViewData = (
+      project: project,
+      pledgeAmount: envelope.backing.amount.doubleValue,
+      backerId: envelope.backing.backer.uid,
+      backerName: envelope.backing.backer.name,
+      backerSequence: envelope.backing.sequence,
+      pledgeDate: envelope.backing.pledgedOn
+    )
+
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchManagePledgeViewBackingResult: .success(envelope),
       fetchProjectResponse: updatedProject
     )
 
@@ -570,7 +608,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
         backing,
         updatedBacking
       ])
-      self.configurePledgeSummaryView.assertValues([project, updatedProject])
+
+      self.configurePledgeSummaryView.assertValueCount(1)
+      XCTAssertTrue(
+        self.configurePledgeSummaryView.values.map { $0 == pledgeViewSummaryData }.allSatisfy(isTrue)
+      )
       self.configureRewardSummaryViewProject.assertValues([project, updatedProject])
       self.configureRewardSummaryViewReward.assertValues([.template, .template])
       self.configureRewardReceivedWithProject.assertValues([project, updatedProject])

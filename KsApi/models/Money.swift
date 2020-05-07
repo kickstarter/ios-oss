@@ -1,9 +1,9 @@
 import Foundation
 
 public struct Money: Swift.Decodable, Equatable {
-  public var amount: String?
-  public var currency: CurrencyCode?
-  public var symbol: String?
+  public var amount: String
+  public var currency: CurrencyCode
+  public var symbol: String
 
   public enum CurrencyCode: String, CaseIterable, Swift.Decodable, Equatable {
     case aud = "AUD"
@@ -21,5 +21,11 @@ public struct Money: Swift.Decodable, Equatable {
     case sek = "SEK"
     case sgd = "SGD"
     case usd = "USD"
+  }
+}
+
+extension Money {
+  public var doubleValue: Double {
+    return Double(self.amount) ?? 0
   }
 }

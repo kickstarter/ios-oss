@@ -33,17 +33,18 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
   }
 
   func testTextOutputsEmitTheCorrectValue() {
-    let backing = .template
-      |> Backing.lens.sequence .~ 999
-      |> Backing.lens.pledgedAt .~ 1_568_666_243.0
-      |> Backing.lens.amount .~ 30.0
-      |> Backing.lens.shippingAmount .~ 7
-
     let project = Project.template
-      |> \.personalization.isBacking .~ true
-      |> \.personalization.backing .~ backing
 
-    self.vm.inputs.configureWith(project)
+    let data: ManagePledgeSummaryViewData = (
+      project: project,
+      pledgeAmount: 30,
+      backerId: 1,
+      backerName: "Backer McGee",
+      backerSequence: 999,
+      pledgeDate: 1_568_666_243.0
+    )
+
+    self.vm.inputs.configureWith(data)
     self.vm.inputs.viewDidLoad()
 
     self.backerNumberText.assertValue("Backer #999")
@@ -52,17 +53,23 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
   }
 
   func testBackerUserInfo_UserIsBacker() {
-    let backing = Backing.template
-      |> Backing.lens.backerId .~ 123
     let user = User.template
       |> User.lens.id .~ 123
       |> User.lens.name .~ "Blob"
 
     let project = Project.template
-      |> Project.lens.personalization.backing .~ backing
+
+    let data: ManagePledgeSummaryViewData = (
+      project: project,
+      pledgeAmount: 30,
+      backerId: 123,
+      backerName: "Blob",
+      backerSequence: 999,
+      pledgeDate: 1_568_666_243.0
+    )
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(project)
+      self.vm.inputs.configureWith(data)
       self.vm.inputs.viewDidLoad()
 
       self.backerNameText.assertValues(["Blob"])
@@ -74,16 +81,22 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
   }
 
   func testBackerUserInfo_UserIsNotBacker() {
-    let backing = Backing.template
-      |> Backing.lens.backerId .~ 321
     let user = User.template
       |> User.lens.id .~ 123
 
     let project = Project.template
-      |> Project.lens.personalization.backing .~ backing
+
+    let data: ManagePledgeSummaryViewData = (
+      project: project,
+      pledgeAmount: 30,
+      backerId: 321,
+      backerName: "Blob",
+      backerSequence: 999,
+      pledgeDate: 1_568_666_243.0
+    )
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(project)
+      self.vm.inputs.configureWith(data)
       self.vm.inputs.viewDidLoad()
 
       self.backerNameText.assertDidNotEmitValue()

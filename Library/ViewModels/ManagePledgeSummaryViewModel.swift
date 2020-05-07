@@ -3,8 +3,17 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias ManagePledgeSummaryViewData = (
+  project: Project,
+  pledgeAmount: Double,
+  backerId: Int,
+  backerName: String,
+  backerSequence: Int,
+  pledgeDate: TimeInterval
+)
+
 public protocol ManagePledgeSummaryViewModelInputs {
-  func configureWith(_ project: Project)
+  func configureWith(_ data: ManagePledgeSummaryViewData)
   func viewDidLoad()
 }
 
@@ -28,29 +37,24 @@ public protocol ManagePledgeSummaryViewModelType {
 public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
   ManagePledgeSummaryViewModelInputs, ManagePledgeSummaryViewModelOutputs {
   public init() {
-    let project = Signal.combineLatest(
-      self.projectSignal,
+    let data = Signal.combineLatest(
+      self.dataSignal,
       self.viewDidLoadSignal
     )
     .map(first)
 
-    let backing = project
-      .map { $0.personalization.backing }
-      .skipNil()
+    let project = data.map(\.project)
 
     self.configurePledgeStatusLabelViewWithProject = project
     self.configurePledgeAmountSummaryViewWithProject = project
 
-    let projectAndBacking = project
-      .zip(with: backing)
-
-    let userAndIsBackingProject = backing
-      .filterMap { backing -> (User, Bool)? in
+    let userAndIsBackingProject = data.map(\.backerId)
+      .filterMap { backerId -> (User, Bool)? in
         guard let user = AppEnvironment.current.currentUser else {
           return nil
         }
 
-        return (user, backing.backerId == user.id)
+        return (user, backerId == user.id)
       }
 
     self.backerNameLabelHidden = userAndIsBackingProject.map(second).negate()
@@ -69,22 +73,22 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
       .skipNil()
       .map { ($0, "avatar--placeholder") }
 
-    self.backerNumberText = backing
-      .map { Strings.backer_modal_backer_number(backer_number: Format.wholeNumber($0.sequence)) }
+    self.backerNumberText = data.map(\.backerSequence)
+      .map { Strings.backer_modal_backer_number(backer_number: Format.wholeNumber($0)) }
 
-    self.backingDateText = backing
+    self.backingDateText = data.map(\.pledgeDate)
       .map(formattedPledgeDate)
 
-    self.totalAmountText = projectAndBacking
-      .map { project, backing in
-        attributedCurrency(with: project, amount: backing.amount)
+    self.totalAmountText = data
+      .map { project, pledgeAmount, _, _, _, _ in
+        attributedCurrency(with: project, amount: pledgeAmount)
       }
       .skipNil()
   }
 
-  private let (projectSignal, projectObserver) = Signal<Project, Never>.pipe()
-  public func configureWith(_ project: Project) {
-    self.projectObserver.send(value: project)
+  private let (dataSignal, dataObserver) = Signal<ManagePledgeSummaryViewData, Never>.pipe()
+  public func configureWith(_ data: ManagePledgeSummaryViewData) {
+    self.dataObserver.send(value: data)
   }
 
   private let (viewDidLoadSignal, viewDidLoadObserver) = Signal<(), Never>.pipe()
@@ -106,8 +110,8 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
   public var outputs: ManagePledgeSummaryViewModelOutputs { return self }
 }
 
-private func formattedPledgeDate(_ backing: Backing) -> String {
-  let formattedDate = Format.date(secondsInUTC: backing.pledgedAt, dateStyle: .long, timeStyle: .none)
+private func formattedPledgeDate(_ timeInterval: TimeInterval) -> String {
+  let formattedDate = Format.date(secondsInUTC: timeInterval, dateStyle: .long, timeStyle: .none)
   return Strings.As_of_pledge_date(pledge_date: formattedDate)
 }
 
