@@ -141,7 +141,7 @@ internal final class DiscoveryViewController: UIViewController {
     self.pageViewController.dataSource = self.dataSource
 
     self.pageViewController.ksr_setViewControllers(
-      [self.dataSource!.controllerFor(index: 0)].compact(),
+      [self.dataSource?.controllerFor(index: 0)].compact(),
       direction: .forward,
       animated: false,
       completion: nil
