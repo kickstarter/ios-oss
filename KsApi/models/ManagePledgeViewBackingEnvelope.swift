@@ -19,7 +19,7 @@ public struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
     public var errorReason: String?
     public var id: String
     public var pledgedOn: TimeInterval
-    public var reward: Reward
+    public var reward: Reward?
     public var sequence: Int
     public var shippingAmount: Money?
     public var status: BackingState
