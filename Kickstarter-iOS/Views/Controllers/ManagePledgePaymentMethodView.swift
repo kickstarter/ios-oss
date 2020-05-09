@@ -42,8 +42,8 @@ final class ManagePledgePaymentMethodView: UIView {
 
   // MARK: - Configuration
 
-  public func configure(with backing: Backing) {
-    self.viewModel.inputs.configureWith(value: backing)
+  public func configure(with data: ManagePledgePaymentMethodViewData) {
+    self.viewModel.inputs.configureWith(data: data)
   }
 
   private func configureViews() {

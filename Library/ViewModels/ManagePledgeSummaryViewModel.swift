@@ -3,14 +3,22 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias ManagePledgeSummaryViewData = (
-  project: Project,
-  pledgeAmount: Double,
-  backerId: Int,
-  backerName: String,
-  backerSequence: Int,
-  pledgeDate: TimeInterval
-)
+public struct ManagePledgeSummaryViewData: Equatable {
+  public let pledgeAmount: Double
+  public let pledgedOn: TimeInterval
+  public let projectCountry: Project.Country
+  public let omitUSCurrencyCode: Bool
+  public let backerId: Int
+  public let backerName: String
+  public let backerSequence: Int
+  public let shippingAmount: Double?
+  public let locationName: String?
+  public let currentUserIsCreatorOfProject: Bool
+  public let needsConversion: Bool
+  public let projectDeadline: TimeInterval
+  public let projectState: ProjectState
+  public let backingState: BackingState
+}
 
 public protocol ManagePledgeSummaryViewModelInputs {
   func configureWith(_ data: ManagePledgeSummaryViewData)
@@ -24,8 +32,8 @@ public protocol ManagePledgeSummaryViewModelOutputs {
   var backerNumberText: Signal<String, Never> { get }
   var backingDateText: Signal<String, Never> { get }
   var circleAvatarViewHidden: Signal<Bool, Never> { get }
-  var configurePledgeAmountSummaryViewWithProject: Signal<Project, Never> { get }
-  var configurePledgeStatusLabelViewWithProject: Signal<Project, Never> { get }
+  var configurePledgeAmountSummaryViewWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
+  var configurePledgeStatusLabelViewWithProject: Signal<PledgeStatusLabelViewData, Never> { get }
   var totalAmountText: Signal<NSAttributedString, Never> { get }
 }
 
@@ -43,10 +51,9 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
     )
     .map(first)
 
-    let project = data.map(\.project)
+    self.configurePledgeStatusLabelViewWithProject = data.map(pledgeStatusLabelViewData)
 
-    self.configurePledgeStatusLabelViewWithProject = project
-    self.configurePledgeAmountSummaryViewWithProject = project
+    self.configurePledgeAmountSummaryViewWithData = data.map(pledgeAmountSummaryViewData)
 
     let userAndIsBackingProject = data.map(\.backerId)
       .filterMap { backerId -> (User, Bool)? in
@@ -76,12 +83,12 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
     self.backerNumberText = data.map(\.backerSequence)
       .map { Strings.backer_modal_backer_number(backer_number: Format.wholeNumber($0)) }
 
-    self.backingDateText = data.map(\.pledgeDate)
+    self.backingDateText = data.map(\.pledgedOn)
       .map(formattedPledgeDate)
 
-    self.totalAmountText = data
-      .map { project, pledgeAmount, _, _, _, _ in
-        attributedCurrency(with: project, amount: pledgeAmount)
+    self.totalAmountText = data.map { ($0.projectCountry, $0.pledgeAmount, $0.omitUSCurrencyCode) }
+      .map { projectCountry, pledgeAmount, omitUSCurrencyCode in
+        attributedCurrency(with: projectCountry, amount: pledgeAmount, omitUSCurrencyCode: omitUSCurrencyCode)
       }
       .skipNil()
   }
@@ -102,8 +109,8 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
   public let backerNumberText: Signal<String, Never>
   public let backingDateText: Signal<String, Never>
   public let circleAvatarViewHidden: Signal<Bool, Never>
-  public let configurePledgeStatusLabelViewWithProject: Signal<Project, Never>
-  public let configurePledgeAmountSummaryViewWithProject: Signal<Project, Never>
+  public let configurePledgeStatusLabelViewWithProject: Signal<PledgeStatusLabelViewData, Never>
+  public let configurePledgeAmountSummaryViewWithData: Signal<PledgeAmountSummaryViewData, Never>
   public let totalAmountText: Signal<NSAttributedString, Never>
 
   public var inputs: ManagePledgeSummaryViewModelInputs { return self }
@@ -115,15 +122,44 @@ private func formattedPledgeDate(_ timeInterval: TimeInterval) -> String {
   return Strings.As_of_pledge_date(pledge_date: formattedDate)
 }
 
-private func attributedCurrency(with project: Project, amount: Double) -> NSAttributedString? {
+private func pledgeAmountSummaryViewData(
+  with data: ManagePledgeSummaryViewData
+) -> PledgeAmountSummaryViewData {
+  return (
+    projectCountry: data.projectCountry,
+    pledgeAmount: data.pledgeAmount,
+    pledgedOn: data.pledgedOn,
+    shippingAmount: data.shippingAmount,
+    locationName: data.locationName,
+    omitUSCurrencyCode: data.omitUSCurrencyCode
+  )
+}
+
+private func pledgeStatusLabelViewData(with data: ManagePledgeSummaryViewData) -> PledgeStatusLabelViewData {
+  return (
+    currentUserIsCreatorOfProject: data.currentUserIsCreatorOfProject,
+    needsConversion: data.needsConversion,
+    pledgeAmount: data.pledgeAmount,
+    projectCountry: data.projectCountry,
+    projectDeadline: data.projectDeadline,
+    projectState: data.projectState,
+    backingState: data.backingState
+  )
+}
+
+private func attributedCurrency(
+  with country: Project.Country,
+  amount: Double,
+  omitUSCurrencyCode: Bool
+) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
     .withAllValuesFrom([.foregroundColor: UIColor.ksr_green_500])
   let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
   guard
     let attributedCurrency = Format.attributedCurrency(
       amount,
-      country: project.country,
-      omitCurrencyCode: project.stats.omitUSCurrencyCode,
+      country: country,
+      omitCurrencyCode: omitUSCurrencyCode,
       defaultAttributes: defaultAttributes,
       superscriptAttributes: superscriptAttributes
     ) else { return nil }

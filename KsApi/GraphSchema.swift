@@ -220,6 +220,7 @@ public enum Query {
     case creditCard(NonEmptySet<CreditCard>)
     case errorReason
     case id
+    case location(NonEmptySet<Location>)
     case pledgedOn
     case project(NonEmptySet<Project>)
     case reward(NonEmptySet<Reward>)
@@ -513,6 +514,7 @@ extension Query.Backing: QueryType {
     case let .creditCard(fields): return "creditCard: paymentSource { ... on CreditCard { \(join(fields)) } }"
     case .errorReason: return "errorReason"
     case .id: return "id"
+    case let .location(fields): return "location { \(join(fields)) }"
     case .pledgedOn: return "pledgedOn"
     case let .project(fields): return "project { \(join(fields)) }"
     case let .reward(fields): return "reward { \(join(fields)) }"

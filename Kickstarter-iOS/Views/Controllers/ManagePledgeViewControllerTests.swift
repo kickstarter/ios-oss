@@ -28,15 +28,23 @@ final class ManagePledgeViewControllerTests: TestCase {
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
       let backing = Backing.template
-
         |> Backing.lens.reward .~ reward
       let backedProject = Project.cosmicSurgery
         |> Project.lens.personalization.backing .~ backing
 
       let envelope = ManagePledgeViewBackingEnvelope.template
+        |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
+          expirationDate: "2019-09-01",
+          id: "556",
+          lastFour: "1111",
+          paymentType: .creditCard,
+          type: .visa
+        )
         |> \.backing.sequence .~ 10
+        |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
         |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
         |> \.backing.amount .~ Money(amount: "10.0", currency: .gbp, symbol: "£")
+        |> \.backing.shippingAmount .~ Money(amount: "2.0", currency: .gbp, symbol: "£")
         |> \.backing.backer.uid .~ user.id
         |> \.backing.backer.name .~ "Blob"
 
@@ -66,30 +74,27 @@ final class ManagePledgeViewControllerTests: TestCase {
       let reward = Reward.noReward
 
       let backing = Backing.template
-        |> Backing.lens.amount .~ 10
-        |> Backing.lens.locationId .~ nil
-        |> Backing.lens.shippingAmount .~ nil
         |> Backing.lens.rewardId .~ nil
         |> Backing.lens.reward .~ reward
-        |> Backing.lens.paymentSource .~ Backing.PaymentSource.applePay
 
       let backedProject = Project.cosmicSurgery
         |> Project.lens.personalization.backing .~ backing
 
-      // TODO: Configure ManagePledgePaymentMethodView to be configured with this Backing
       let envelope = ManagePledgeViewBackingEnvelope.template
-        |> \.backing.sequence .~ 10
-        |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-        |> \.backing.amount .~ Money(amount: "10.0", currency: .gbp, symbol: "£")
-        |> \.backing.backer.uid .~ user.id
-        |> \.backing.backer.name .~ "Blob"
         |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
-          expirationDate: "2019-10-31",
-          id: "1",
+          expirationDate: "2019-10-01",
+          id: "556",
           lastFour: "1111",
           paymentType: .applePay,
           type: .visa
         )
+        |> \.backing.sequence .~ 10
+        |> \.backing.location .~ nil
+        |> \.backing.shippingAmount .~ nil
+        |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
+        |> \.backing.amount .~ Money(amount: "10.0", currency: .gbp, symbol: "£")
+        |> \.backing.backer.uid .~ user.id
+        |> \.backing.backer.name .~ "Blob"
 
       let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
 
@@ -127,20 +132,21 @@ final class ManagePledgeViewControllerTests: TestCase {
       let backedProject = Project.cosmicSurgery
         |> Project.lens.personalization.backing .~ backing
 
-      // TODO: Configure ManagePledgePaymentMethodView to be configured with this Backing
       let envelope = ManagePledgeViewBackingEnvelope.template
-        |> \.backing.sequence .~ 10
-        |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-        |> \.backing.amount .~ Money(amount: "10.0", currency: .gbp, symbol: "£")
-        |> \.backing.backer.uid .~ user.id
-        |> \.backing.backer.name .~ "Blob"
         |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
-          expirationDate: "2019-10-31",
-          id: "123",
+          expirationDate: "2019-10-01",
+          id: "556",
           lastFour: "4111",
           paymentType: .googlePay,
           type: .visa
         )
+        |> \.backing.sequence .~ 10
+        |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
+        |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
+        |> \.backing.amount .~ Money(amount: "10.0", currency: .gbp, symbol: "£")
+        |> \.backing.shippingAmount .~ Money(amount: "2.0", currency: .gbp, symbol: "£")
+        |> \.backing.backer.uid .~ user.id
+        |> \.backing.backer.name .~ "Blob"
 
       let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
 
@@ -173,15 +179,22 @@ final class ManagePledgeViewControllerTests: TestCase {
       let backedProject = Project.cosmicSurgery
         |> Project.lens.personalization.backing .~ backing
 
-      // TODO: update PledgeStatusLabelView to use this backing
       let envelope = ManagePledgeViewBackingEnvelope.template
+        |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
+          expirationDate: "2019-09-01",
+          id: "556",
+          lastFour: "1111",
+          paymentType: .creditCard,
+          type: .visa
+        )
         |> \.backing.sequence .~ 10
+        |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
         |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
         |> \.backing.amount .~ Money(amount: "10.0", currency: .gbp, symbol: "£")
+        |> \.backing.shippingAmount .~ Money(amount: "2.0", currency: .gbp, symbol: "£")
         |> \.backing.backer.uid .~ user.id
         |> \.backing.backer.name .~ "Blob"
         |> \.backing.status .~ .errored
-        |> \.backing.errorReason .~ "Error reason"
 
       let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
 

@@ -16,6 +16,7 @@ extension ManagePledgeViewBackingEnvelope {
         ),
         errorReason: "Error",
         id: "123412",
+        location: ManagePledgeViewBackingEnvelope.Backing.Location(name: "Brooklyn, NY"),
         pledgedOn: 1_587_502_131,
         reward: Backing.Reward(
           amount: Money(amount: "159.0", currency: .usd, symbol: "$"),

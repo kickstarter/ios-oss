@@ -119,16 +119,6 @@ public func == (lhs: Backing.PaymentSource, rhs: Backing.PaymentSource) -> Bool 
   return lhs.id == rhs.id
 }
 
-extension Backing {
-  /// Returns the pledge amount subtracting the shipping amount
-  public var pledgeAmount: Double {
-    let shippingAmount = Double(self.shippingAmount ?? 0)
-    let pledgeAmount = Decimal(amount) - Decimal(shippingAmount)
-
-    return (pledgeAmount as NSDecimalNumber).doubleValue
-  }
-}
-
 extension Backing: GraphIDBridging {
   public static var modelName: String {
     return "Backing"

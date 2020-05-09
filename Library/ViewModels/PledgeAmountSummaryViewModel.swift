@@ -3,8 +3,17 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias PledgeAmountSummaryViewData = (
+  projectCountry: Project.Country,
+  pledgeAmount: Double,
+  pledgedOn: TimeInterval,
+  shippingAmount: Double?,
+  locationName: String?,
+  omitUSCurrencyCode: Bool
+)
+
 public protocol PledgeAmountSummaryViewModelInputs {
-  func configureWith(_ project: Project)
+  func configureWith(_ data: PledgeAmountSummaryViewData)
   func viewDidLoad()
 }
 
@@ -23,46 +32,39 @@ public protocol PledgeAmountSummaryViewModelType {
 public class PledgeAmountSummaryViewModel: PledgeAmountSummaryViewModelType,
   PledgeAmountSummaryViewModelInputs, PledgeAmountSummaryViewModelOutputs {
   public init() {
-    let project = Signal.combineLatest(
-      self.projectSignal,
+    let data = Signal.combineLatest(
+      self.configureWithDataSignal,
       self.viewDidLoadProperty.signal
     )
     .map(first)
 
-    let backing = project
-      .map { $0.personalization.backing }
-      .skipNil()
-
-    let projectAndBacking = project
-      .zip(with: backing)
-
-    self.pledgeAmountText = projectAndBacking
-      .map { project, backing in
-        attributedCurrency(with: project, amount: backing.pledgeAmount)
+    self.pledgeAmountText = data
+      .map {
+        (
+          $0.projectCountry,
+          ksr_pledgeAmount($0.pledgeAmount, subtractingShippingAmount: $0.shippingAmount),
+          $0.omitUSCurrencyCode
+        )
       }
+      .map(attributedCurrency(with:amount:omitUSCurrencyCode:))
       .skipNil()
 
-    let shippingAmount = backing
-      .map { Double($0.shippingAmount ?? 0) }
-
-    self.shippingAmountText = project
-      .combineLatest(with: shippingAmount)
-      .map { project, shippingAmount in
-        shippingValue(with: project, shippingAmount: shippingAmount)
-      }
+    self.shippingAmountText = data.map { ($0.projectCountry, $0.shippingAmount ?? 0, $0.omitUSCurrencyCode) }
+      .filter { _, shippingAmount, _ in shippingAmount > 0 }
+      .map(shippingValue(with:amount:omitUSCurrencyCode:))
       .skipNil()
 
-    self.shippingLocationText = backing
-      .map { $0.locationName }
+    self.shippingLocationText = data.map { $0.locationName }
       .skipNil()
       .map { Strings.Shipping_to_country(country: $0) }
 
-    self.shippingLocationStackViewIsHidden = backing.map { $0.locationId }.map(isNil)
+    self.shippingLocationStackViewIsHidden = data.map { $0.locationName }.map(isNil)
   }
 
-  private let (projectSignal, projectObserver) = Signal<Project, Never>.pipe()
-  public func configureWith(_ project: Project) {
-    self.projectObserver.send(value: project)
+  private let (configureWithDataSignal, configureWithDataObserver)
+    = Signal<PledgeAmountSummaryViewData, Never>.pipe()
+  public func configureWith(_ data: PledgeAmountSummaryViewData) {
+    self.configureWithDataObserver.send(value: data)
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -84,15 +86,19 @@ private func formattedPledgeDate(_ backing: Backing) -> String {
   return Strings.As_of_pledge_date(pledge_date: formattedDate)
 }
 
-private func attributedCurrency(with project: Project, amount: Double) -> NSAttributedString? {
+private func attributedCurrency(
+  with projectCountry: Project.Country,
+  amount: Double,
+  omitUSCurrencyCode: Bool
+) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
     .withAllValuesFrom([.foregroundColor: UIColor.ksr_green_500])
   let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
   guard
     let attributedCurrency = Format.attributedCurrency(
       amount,
-      country: project.country,
-      omitCurrencyCode: project.stats.omitUSCurrencyCode,
+      country: projectCountry,
+      omitCurrencyCode: omitUSCurrencyCode,
       defaultAttributes: defaultAttributes,
       superscriptAttributes: superscriptAttributes
     ) else { return nil }
@@ -100,14 +106,18 @@ private func attributedCurrency(with project: Project, amount: Double) -> NSAttr
   return attributedCurrency
 }
 
-private func shippingValue(with project: Project, shippingAmount: Double) -> NSAttributedString? {
+private func shippingValue(
+  with projectCountry: Project.Country,
+  amount: Double,
+  omitUSCurrencyCode: Bool
+) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
   let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
   guard
     let attributedCurrency = Format.attributedCurrency(
-      shippingAmount,
-      country: project.country,
-      omitCurrencyCode: project.stats.omitUSCurrencyCode,
+      amount,
+      country: projectCountry,
+      omitCurrencyCode: omitUSCurrencyCode,
       defaultAttributes: defaultAttributes,
       superscriptAttributes: superscriptAttributes
     ) else { return nil }

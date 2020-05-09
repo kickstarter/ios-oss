@@ -33,15 +33,21 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
   }
 
   func testTextOutputsEmitTheCorrectValue() {
-    let project = Project.template
-
-    let data: ManagePledgeSummaryViewData = (
-      project: project,
+    let data = ManagePledgeSummaryViewData(
       pledgeAmount: 30,
+      pledgedOn: 1_568_666_243.0,
+      projectCountry: Project.Country.us,
+      omitUSCurrencyCode: true,
       backerId: 1,
       backerName: "Backer McGee",
       backerSequence: 999,
-      pledgeDate: 1_568_666_243.0
+      shippingAmount: nil,
+      locationName: nil,
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      projectDeadline: 1_572_626_213.0,
+      projectState: ProjectState.live,
+      backingState: BackingState.pledged
     )
 
     self.vm.inputs.configureWith(data)
@@ -57,15 +63,21 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       |> User.lens.id .~ 123
       |> User.lens.name .~ "Blob"
 
-    let project = Project.template
-
-    let data: ManagePledgeSummaryViewData = (
-      project: project,
+    let data = ManagePledgeSummaryViewData(
       pledgeAmount: 30,
+      pledgedOn: 1_568_666_243.0,
+      projectCountry: Project.Country.us,
+      omitUSCurrencyCode: true,
       backerId: 123,
       backerName: "Blob",
       backerSequence: 999,
-      pledgeDate: 1_568_666_243.0
+      shippingAmount: nil,
+      locationName: nil,
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      projectDeadline: 1_572_626_213.0,
+      projectState: ProjectState.live,
+      backingState: BackingState.pledged
     )
 
     withEnvironment(currentUser: user) {
@@ -84,15 +96,21 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
     let user = User.template
       |> User.lens.id .~ 123
 
-    let project = Project.template
-
-    let data: ManagePledgeSummaryViewData = (
-      project: project,
+    let data = ManagePledgeSummaryViewData(
       pledgeAmount: 30,
+      pledgedOn: 1_568_666_243.0,
+      projectCountry: Project.Country.us,
+      omitUSCurrencyCode: true,
       backerId: 321,
-      backerName: "Blob",
+      backerName: "Backer McGee",
       backerSequence: 999,
-      pledgeDate: 1_568_666_243.0
+      shippingAmount: nil,
+      locationName: nil,
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      projectDeadline: 1_572_626_213.0,
+      projectState: ProjectState.live,
+      backingState: BackingState.pledged
     )
 
     withEnvironment(currentUser: user) {

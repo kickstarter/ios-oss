@@ -34,9 +34,16 @@ final class CancelPledgeViewModelTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.country .~ Project.Country.us
 
-    self.vm.inputs.configure(with:
-      (project: project, backingId: "backing-id", pledgeAmount: 5.0)
+    let data: CancelPledgeViewData = (
+      project: project,
+      projectCountry: project.country,
+      projectName: project.name,
+      omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
+      backingId: "backing-id",
+      pledgeAmount: 5
     )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     let cancellationString = "Are you sure you wish to cancel your $5 pledge to Cosmic Surgery?"
@@ -95,9 +102,19 @@ final class CancelPledgeViewModelTests: TestCase {
   }
 
   func testGoBackButtonTapped() {
-    self.vm.inputs.configure(with:
-      (project: Project.template, backingId: "backing-id", pledgeAmount: 5.0)
+    let project = Project.template
+
+    let data: CancelPledgeViewData = (
+      project: project,
+      projectCountry: project.country,
+      projectName: project.name,
+      omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
+      backingId: "backing-id",
+      pledgeAmount: 5
     )
+
+    self.vm.inputs.configure(with: data)
+
     self.vm.inputs.viewDidLoad()
 
     self.popCancelPledgeViewController.assertDidNotEmitValue()
@@ -110,9 +127,16 @@ final class CancelPledgeViewModelTests: TestCase {
   func testDismissKeyboard() {
     let project = Project.template
 
-    self.vm.inputs.configure(with:
-      (project: project, backingId: "backing-id", pledgeAmount: 5.0)
+    let data: CancelPledgeViewData = (
+      project: project,
+      projectCountry: project.country,
+      projectName: project.name,
+      omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
+      backingId: "backing-id",
+      pledgeAmount: 5
     )
+
+    self.vm.inputs.configure(with: data)
 
     self.vm.inputs.viewDidLoad()
 
@@ -126,9 +150,16 @@ final class CancelPledgeViewModelTests: TestCase {
   func testViewTapped() {
     let project = Project.template
 
-    self.vm.inputs.configure(with:
-      (project: project, backingId: "backing-id", pledgeAmount: 5.0)
+    let data: CancelPledgeViewData = (
+      project: project,
+      projectCountry: project.country,
+      projectName: project.name,
+      omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
+      backingId: "backing-id",
+      pledgeAmount: 5
     )
+
+    self.vm.inputs.configure(with: data)
 
     self.vm.inputs.viewDidLoad()
 
@@ -146,9 +177,16 @@ final class CancelPledgeViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       let project = Project.template
 
-      self.vm.inputs.configure(with:
-        (project: project, backingId: "backing-id", pledgeAmount: 5.0)
+      let data: CancelPledgeViewData = (
+        project: project,
+        projectCountry: project.country,
+        projectName: project.name,
+        omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
+        backingId: String(project.personalization.backing?.id ?? 0),
+        pledgeAmount: project.personalization.backing?.pledgeAmount ?? 0
       )
+
+      self.vm.inputs.configure(with: data)
 
       self.vm.inputs.viewDidLoad()
 
@@ -181,9 +219,16 @@ final class CancelPledgeViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       let project = Project.template
 
-      self.vm.inputs.configure(with:
-        (project: project, backingId: "backing-id", pledgeAmount: 5.0)
+      let data: CancelPledgeViewData = (
+        project: project,
+        projectCountry: project.country,
+        projectName: project.name,
+        omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
+        backingId: String(project.personalization.backing?.id ?? 0),
+        pledgeAmount: project.personalization.backing?.pledgeAmount ?? 0
       )
+
+      self.vm.inputs.configure(with: data)
 
       self.vm.inputs.viewDidLoad()
 
@@ -230,9 +275,16 @@ final class CancelPledgeViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       let project = Project.template
 
-      self.vm.inputs.configure(with:
-        (project: project, backingId: "backing-id", pledgeAmount: 5.0)
+      let data: CancelPledgeViewData = (
+        project: project,
+        projectCountry: project.country,
+        projectName: project.name,
+        omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
+        backingId: String(project.personalization.backing?.id ?? 0),
+        pledgeAmount: project.personalization.backing?.pledgeAmount ?? 0
       )
+
+      self.vm.inputs.configure(with: data)
 
       self.vm.inputs.viewDidLoad()
 
@@ -258,9 +310,16 @@ final class CancelPledgeViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       let project = Project.template
 
-      self.vm.inputs.configure(with:
-        (project: project, backingId: "backing-id", pledgeAmount: 5.0)
+      let data: CancelPledgeViewData = (
+        project: project,
+        projectCountry: project.country,
+        projectName: project.name,
+        omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
+        backingId: String(project.personalization.backing?.id ?? 0),
+        pledgeAmount: project.personalization.backing?.pledgeAmount ?? 0
       )
+
+      self.vm.inputs.configure(with: data)
 
       self.vm.inputs.viewDidLoad()
 

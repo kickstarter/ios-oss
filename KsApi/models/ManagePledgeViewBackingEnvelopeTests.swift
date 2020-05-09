@@ -31,6 +31,9 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
             "paymentType": "CREDIT_CARD",
             "type": "VISA"
           ],
+          "location": [
+            "name": "Brooklyn, NY"
+          ],
           "sequence": 5,
           "shippingAmount": [
             "amount": "17.0",
@@ -99,6 +102,8 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.backing.creditCard?.paymentType, .creditCard)
       XCTAssertEqual(value.backing.creditCard?.type, .visa)
 
+      XCTAssertEqual(value.backing.location?.name, "Brooklyn, NY")
+
       XCTAssertEqual(value.backing.shippingAmount, Money(amount: "17.0", currency: .usd, symbol: "$"))
 
       XCTAssertEqual(value.backing.reward?.name, "Everyday Carry")
@@ -145,6 +150,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "bankAccount": nil,
           "cancelable": true,
           "creditCard": nil,
+          "location": nil,
           "shippingAmount": nil,
           "reward": [
             "name": "Everyday Carry",
@@ -191,6 +197,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
 
       XCTAssertNil(value.backing.creditCard)
 
+      XCTAssertNil(value.backing.location)
       XCTAssertNil(value.backing.shippingAmount)
 
       XCTAssertEqual(value.backing.reward?.name, "Everyday Carry")
@@ -231,6 +238,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "bankAccount": nil,
           "cancelable": true,
           "creditCard": nil,
+          "location": nil,
           "shippingAmount": nil,
           "reward": nil,
           "backer": [
@@ -266,6 +274,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
 
       XCTAssertNil(value.backing.creditCard)
 
+      XCTAssertNil(value.backing.location)
       XCTAssertNil(value.backing.shippingAmount)
 
       XCTAssertNil(value.backing.reward)

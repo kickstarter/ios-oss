@@ -1,6 +1,6 @@
 import Foundation
 
-public enum BackingState: String, CaseIterable, Swift.Decodable {
+public enum BackingState: String, CaseIterable, Swift.Decodable, Equatable {
   case canceled
   case collected
   case dropped

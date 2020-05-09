@@ -4,7 +4,10 @@ import Prelude
 import ReactiveSwift
 
 public typealias CancelPledgeViewData = (
-  project: Project,
+  project: Project, // TODO: remove once tracking is updated.
+  projectCountry: Project.Country,
+  projectName: String,
+  omitUSCurrencyCode: Bool,
   backingId: String,
   pledgeAmount: Double
 )
@@ -43,19 +46,17 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
     )
     .map(first)
 
-    let projectAndBackingAmount = data.map { project, _, amount in (project, amount) }
-
     self.cancellationDetailsAttributedText = Signal.merge(
-      projectAndBackingAmount,
-      projectAndBackingAmount.takeWhen(self.traitCollectionDidChangeProperty.signal)
+      data,
+      data.takeWhen(self.traitCollectionDidChangeProperty.signal)
     )
-    .map { project, amount in
+    .map { data in
       let formattedAmount = Format.currency(
-        amount,
-        country: project.country,
-        omitCurrencyCode: project.stats.omitUSCurrencyCode
+        data.pledgeAmount,
+        country: data.projectCountry,
+        omitCurrencyCode: data.omitUSCurrencyCode
       )
-      return (formattedAmount, project.name)
+      return (formattedAmount, data.projectName)
     }
     .map(createCancellationDetailsAttributedText(with:projectName:))
 
@@ -100,8 +101,9 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
     .skipRepeats()
 
     // Tracking
-    projectAndBackingAmount
+    data
       .takeWhen(self.cancelPledgeButtonTappedProperty.signal)
+      .map { ($0.project, $0.pledgeAmount) }
       .observeValues { project, amount in
         AppEnvironment.current.koala.trackCancelPledgeButtonClicked(
           project: project,

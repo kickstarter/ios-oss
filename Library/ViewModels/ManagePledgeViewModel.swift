@@ -24,7 +24,7 @@ public protocol ManagePledgeViewModelInputs {
 }
 
 public protocol ManagePledgeViewModelOutputs {
-  var configurePaymentMethodView: Signal<Backing, Never> { get }
+  var configurePaymentMethodView: Signal<ManagePledgePaymentMethodViewData, Never> { get }
   var configurePledgeSummaryView: Signal<ManagePledgeSummaryViewData, Never> { get }
   var configureRewardReceivedWithProject: Signal<Project, Never> { get }
   var configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never> { get }
@@ -83,7 +83,9 @@ public final class ManagePledgeViewModel:
     let graphBackingProject = graphBackingEvent.values()
       .map { $0.project }
 
-    let graphBacking = graphBackingEvent.values()
+    let graphBackingEnvelope = graphBackingEvent.values()
+
+    let backing = graphBackingEnvelope
       .map { $0.backing }
 
     self.endRefreshing = refreshProjectEvent
@@ -91,9 +93,7 @@ public final class ManagePledgeViewModel:
       .ignoreValues()
 
     let project = Signal.merge(initialProject, refreshProjectEvent.values())
-    let v1Backing = project
-      .map { $0.personalization.backing }
-      .skipNil()
+
     let projectAndReward = project
       .filterMap { project in
         guard let backing = project.personalization.backing else {
@@ -106,19 +106,12 @@ public final class ManagePledgeViewModel:
 
     self.title = graphBackingProject.map(navigationBarTitle(with:))
 
-    self.configurePaymentMethodView = v1Backing
+    self.configurePaymentMethodView = backing.map(managePledgePaymentMethodViewData)
 
-    self.configurePledgeSummaryView = Signal.combineLatest(project, graphBacking)
-      .map { project, backing in
-        (
-          project: project,
-          pledgeAmount: backing.amount.doubleValue,
-          backerId: backing.backer.uid,
-          backerName: backing.backer.name,
-          backerSequence: backing.sequence,
-          pledgeDate: backing.pledgedOn
-        )
-      }
+    self.configurePledgeSummaryView = Signal.combineLatest(project, graphBackingEnvelope)
+      .map(managePledgeSummaryViewData(with:envelope:))
+      .skipNil()
+
     self.configureRewardReceivedWithProject = project
 
     self.configureRewardSummaryView = projectAndReward
@@ -138,16 +131,10 @@ public final class ManagePledgeViewModel:
       .filter { $0 == .cancelPledge }
       .ignoreValues()
 
-    self.goToCancelPledge = Signal.combineLatest(project, graphBacking)
+    self.goToCancelPledge = Signal.combineLatest(project, backing)
       .takeWhen(cancelPledgeSelected)
       .filter { _, backing in backing.cancelable }
-      .map { project, backing in
-        (
-          project: project,
-          backingId: backing.id,
-          pledgeAmount: backing.amount.doubleValue
-        )
-      }
+      .map(cancelPledgeViewData(with:backing:))
 
     self.goToContactCreator = project
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .contactCreator })
@@ -173,7 +160,7 @@ public final class ManagePledgeViewModel:
 
     self.showSuccessBannerWithMessage = self.pledgeViewControllerDidUpdatePledgeWithMessageSignal
 
-    let cancelBackingDisallowed = v1Backing
+    let cancelBackingDisallowed = backing
       .map { $0.cancelable }
       .filter(isFalse)
 
@@ -246,7 +233,7 @@ public final class ManagePledgeViewModel:
     self.viewDidLoadObserver.send(value: ())
   }
 
-  public let configurePaymentMethodView: Signal<Backing, Never>
+  public let configurePaymentMethodView: Signal<ManagePledgePaymentMethodViewData, Never>
   public let configurePledgeSummaryView: Signal<ManagePledgeSummaryViewData, Never>
   public let configureRewardReceivedWithProject: Signal<Project, Never>
   public let configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never>
@@ -296,6 +283,54 @@ private func managePledgeMenuCTAType(for managePledgeAlertAction: ManagePledgeAl
   case .updatePledge: return .updatePledge
   case .viewRewards: return .viewRewards
   }
+}
+
+private func cancelPledgeViewData(
+  with project: Project,
+  backing: ManagePledgeViewBackingEnvelope.Backing
+) -> CancelPledgeViewData {
+  return (
+    project: project,
+    projectCountry: project.country,
+    projectName: project.name,
+    omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
+    backingId: backing.id,
+    pledgeAmount: backing.amount.doubleValue
+  )
+}
+
+private func managePledgePaymentMethodViewData(
+  with backing: ManagePledgeViewBackingEnvelope.Backing
+) -> ManagePledgePaymentMethodViewData {
+  (
+    backingState: backing.status,
+    expirationDate: backing.creditCard?.expirationDate,
+    lastFour: backing.creditCard?.lastFour,
+    creditCardType: backing.creditCard?.type,
+    paymentType: backing.creditCard?.paymentType
+  )
+}
+
+private func managePledgeSummaryViewData(
+  with project: Project,
+  envelope: ManagePledgeViewBackingEnvelope
+) -> ManagePledgeSummaryViewData? {
+  return .init(
+    pledgeAmount: envelope.backing.amount.doubleValue,
+    pledgedOn: envelope.backing.pledgedOn,
+    projectCountry: project.country,
+    omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
+    backerId: envelope.backing.backer.uid,
+    backerName: envelope.backing.backer.name,
+    backerSequence: envelope.backing.sequence,
+    shippingAmount: envelope.backing.shippingAmount?.doubleValue,
+    locationName: envelope.backing.location?.name,
+    currentUserIsCreatorOfProject: currentUserIsCreator(of: project),
+    needsConversion: project.stats.needsConversion,
+    projectDeadline: project.dates.deadline,
+    projectState: envelope.project.state,
+    backingState: envelope.backing.status
+  )
 }
 
 private func projectBackingQuery(withSlug slug: String) -> NonEmptySet<Query> {

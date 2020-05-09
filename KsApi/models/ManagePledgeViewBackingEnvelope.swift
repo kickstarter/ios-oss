@@ -18,6 +18,7 @@ public struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
     public var creditCard: CreditCard?
     public var errorReason: String?
     public var id: String
+    public var location: Location?
     public var pledgedOn: TimeInterval
     public var reward: Reward?
     public var sequence: Int
@@ -41,6 +42,10 @@ public struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
       public var lastFour: String
       public var paymentType: PaymentType
       public var type: CreditCardType
+    }
+
+    public struct Location: Swift.Decodable {
+      public var name: String
     }
 
     public struct Reward: Swift.Decodable {

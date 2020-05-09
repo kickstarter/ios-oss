@@ -98,10 +98,10 @@ final class ManagePledgeSummaryViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.configurePledgeAmountSummaryViewWithProject
+    self.viewModel.outputs.configurePledgeAmountSummaryViewWithData
       .observeForUI()
-      .observeValues { [weak self] project in
-        self?.pledgeAmountSummaryViewController.configureWith(project)
+      .observeValues { [weak self] data in
+        self?.pledgeAmountSummaryViewController.configureWith(data)
       }
 
     self.viewModel.outputs.configurePledgeStatusLabelViewWithProject
