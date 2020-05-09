@@ -205,4 +205,8 @@ internal final class SharedFunctionsTests: XCTestCase {
       XCTAssertEqual("ABCD-123", deviceIdentifier(uuid: MockUUID()))
     }
   }
+
+  func testPledgeAmountSubtractingShippingAmount() {
+    XCTAssertEqual(ksr_pledgeAmount(700.50, subtractingShippingAmount: 100), 600.50)
+  }
 }

@@ -77,15 +77,4 @@ final class BackingTests: XCTestCase {
     XCTAssertEqual(1, backing.value?.sequence)
     XCTAssertEqual(Backing.Status.pledged, backing.value?.status)
   }
-
-  func testPledgeAmount() {
-    let backing = Backing.template
-      |> Backing.lens.reward .~ Reward.postcards
-      |> Backing.lens.rewardId .~ Reward.postcards.id
-      |> Backing.lens.shippingAmount .~ 100
-      |> Backing.lens.amount .~ 700.50
-
-    XCTAssertEqual(backing.amount, 700.50)
-    XCTAssertEqual(backing.pledgeAmount, 600.50)
-  }
 }
