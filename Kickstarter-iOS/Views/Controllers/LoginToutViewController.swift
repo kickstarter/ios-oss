@@ -8,8 +8,7 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-internal final class LoginToutViewController: UIViewController,
-  MFMailComposeViewControllerDelegate, ProcessingViewPresenting {
+public final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate, ProcessingViewPresenting {
   // MARK: - Properties
 
   @available(iOS 13.0, *)
@@ -58,7 +57,7 @@ internal final class LoginToutViewController: UIViewController,
 
   // MARK: - Configuration
 
-  internal static func configuredWith(
+  public static func configuredWith(
     loginIntent intent: LoginIntent,
     project: Project? = nil,
     reward: Reward? = nil
@@ -72,7 +71,7 @@ internal final class LoginToutViewController: UIViewController,
 
   // MARK: - Lifecycle
 
-  override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
     self.navigationController?.configureTransparentNavigationBar()
@@ -96,7 +95,7 @@ internal final class LoginToutViewController: UIViewController,
       |> \.rightBarButtonItem .~ .help(self, selector: #selector(self.helpButtonPressed))
   }
 
-  override func viewWillAppear(_ animated: Bool) {
+  public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.viewModel.inputs.view(isPresented: self.presentingViewController != nil)
     self.viewModel.inputs.viewWillAppear()
@@ -108,7 +107,7 @@ internal final class LoginToutViewController: UIViewController,
 
   // MARK: - Styles
 
-  override func bindStyles() {
+  public override func bindStyles() {
     super.bindStyles()
 
     _ = self.backgroundImageView
@@ -176,7 +175,7 @@ internal final class LoginToutViewController: UIViewController,
 
   // MARK: - View Model
 
-  override func bindViewModel() {
+  public override func bindViewModel() {
     self.viewModel.outputs.startLogin
       .observeForControllerAction()
       .observeValues { [weak self] _ in
@@ -451,7 +450,7 @@ internal final class LoginToutViewController: UIViewController,
 
   // MARK: - Accessors
 
-  @objc internal func mailComposeController(
+  @objc public func mailComposeController(
     _: MFMailComposeViewController,
     didFinishWith result: MFMailComposeResult,
     error _: Error?

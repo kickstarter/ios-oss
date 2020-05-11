@@ -143,8 +143,8 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should present the Landing Page for new users.
   var goToLandingPage: Signal<(), Never> { get }
 
-  /// Emits when the root view controller should navigate to the login screen.
-  var goToLogin: Signal<(), Never> { get }
+  /// Emits when the root view controller should present the login modal.
+  var goToLoginWithIntent: Signal<LoginIntent, Never> { get }
 
   /// Emits a message thread when we should navigate to it.
   var goToMessageThread: Signal<MessageThread, Never> { get }
@@ -441,14 +441,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .filter { $0 == .tab(.search) }
       .ignoreValues()
 
-    let loginTabDeepLink = deepLink
-      .filter { $0 == .tab(.login) }
-      .ignoreValues()
-
-    self.goToLogin = Signal.merge(
-      loginTabDeepLink,
-      fixErroredPledgeLinkAndIsLoggedIn.filter(third >>> isFalse).ignoreValues()
-    )
+    self.goToLoginWithIntent = fixErroredPledgeLinkAndIsLoggedIn.filter(third >>> isFalse)
+      .mapConst(.erroredPledge)
 
     self.goToCreatorMessageThread = deepLink
       .map { navigation -> (Param, Int)? in
@@ -487,6 +481,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let resolvedRedirectUrl = deepLinkUrl
       .filter { Navigation.deepLinkMatch($0) == nil }
+      .logEvents(identifier: "***")
 
     self.goToMobileSafari = Signal.merge(
       resolvedRedirectUrl,
@@ -882,7 +877,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let goToDashboard: Signal<Param?, Never>
   public let goToDiscovery: Signal<DiscoveryParams?, Never>
   public let goToLandingPage: Signal<(), Never>
-  public let goToLogin: Signal<(), Never>
+  public let goToLoginWithIntent: Signal<LoginIntent, Never>
   public let goToMessageThread: Signal<MessageThread, Never>
   public let goToProfile: Signal<(), Never>
   public let goToProjectActivities: Signal<Param, Never>

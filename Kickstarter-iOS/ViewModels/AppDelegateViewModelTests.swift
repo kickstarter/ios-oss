@@ -29,7 +29,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let goToDiscovery = TestObserver<DiscoveryParams?, Never>()
   private let goToLandingPage = TestObserver<(), Never>()
   private let goToProjectActivities = TestObserver<Param, Never>()
-  private let goToLogin = TestObserver<(), Never>()
+  private let goToLoginWithIntent = TestObserver<LoginIntent, Never>()
   private let goToProfile = TestObserver<(), Never>()
   private let goToMobileSafari = TestObserver<URL, Never>()
   private let goToSearch = TestObserver<(), Never>()
@@ -65,7 +65,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
     self.vm.outputs.goToLandingPage.observe(self.goToLandingPage.observer)
-    self.vm.outputs.goToLogin.observe(self.goToLogin.observer)
+    self.vm.outputs.goToLoginWithIntent.observe(self.goToLoginWithIntent.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
     self.vm.outputs.goToMobileSafari.observe(self.goToMobileSafari.observer)
     self.vm.outputs.goToProjectActivities.observe(self.goToProjectActivities.observer)
@@ -866,7 +866,7 @@ final class AppDelegateViewModelTests: TestCase {
       launchOptions: [:]
     )
 
-    self.goToLogin.assertValueCount(0)
+    self.goToLoginWithIntent.assertValueCount(0)
 
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
@@ -875,7 +875,7 @@ final class AppDelegateViewModelTests: TestCase {
     )
     XCTAssertTrue(result)
 
-    self.goToLogin.assertValueCount(1)
+    self.goToLoginWithIntent.assertValueCount(1)
   }
 
   func testGoToProfile() {
@@ -2009,7 +2009,7 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.goToLogin.assertDidNotEmitValue()
+      self.goToLoginWithIntent.assertDidNotEmitValue()
       self.presentViewController.assertValues([])
 
       let projectUrl = "https://www.kickstarter.com"
@@ -2023,7 +2023,7 @@ final class AppDelegateViewModelTests: TestCase {
       )
       XCTAssertTrue(result)
 
-      self.goToLogin.assertDidNotEmitValue()
+      self.goToLoginWithIntent.assertDidNotEmitValue()
       self.presentViewController.assertValues([2])
     }
   }
@@ -2035,7 +2035,7 @@ final class AppDelegateViewModelTests: TestCase {
         launchOptions: [:]
       )
 
-      self.goToLogin.assertDidNotEmitValue()
+      self.goToLoginWithIntent.assertDidNotEmitValue()
       self.presentViewController.assertValues([])
 
       let projectUrl = "https://www.kickstarter.com"
@@ -2049,14 +2049,14 @@ final class AppDelegateViewModelTests: TestCase {
       )
       XCTAssertTrue(result)
 
-      self.goToLogin.assertValueCount(1)
+      self.goToLoginWithIntent.assertValues([.erroredPledge])
       self.presentViewController.assertDidNotEmitValue()
     }
   }
 
   func testErroredPledgePushDeepLink_LoggedIn() {
     withEnvironment(currentUser: .template) {
-      self.goToLogin.assertDidNotEmitValue()
+      self.goToLoginWithIntent.assertDidNotEmitValue()
       self.presentViewController.assertDidNotEmitValue()
 
       let pushData: [String: Any] = [
@@ -2070,14 +2070,14 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.vm.inputs.didReceive(remoteNotification: pushData)
 
-      self.goToLogin.assertDidNotEmitValue()
+      self.goToLoginWithIntent.assertDidNotEmitValue()
       self.presentViewController.assertValues([2])
     }
   }
 
   func testErroredPledgePushDeepLink_LoggedOut() {
     withEnvironment(currentUser: nil) {
-      self.goToLogin.assertDidNotEmitValue()
+      self.goToLoginWithIntent.assertDidNotEmitValue()
       self.presentViewController.assertDidNotEmitValue()
 
       let pushData: [String: Any] = [
@@ -2091,7 +2091,7 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.vm.inputs.didReceive(remoteNotification: pushData)
 
-      self.goToLogin.assertValueCount(1)
+      self.goToLoginWithIntent.assertValues([.erroredPledge])
       self.presentViewController.assertDidNotEmitValue()
     }
   }
