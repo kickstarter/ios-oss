@@ -1,9 +1,14 @@
 import Foundation
+import KsApi
 import Library
 import Prelude
 import UIKit
 
 final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
+  internal weak var delegate: DiscoveryPostcardCellDelegate?
+
+  // MARK: - Properties
+
   private lazy var backersCountLabel = { UILabel(frame: .zero) }()
   private lazy var backersCountIconImageView = { UIImageView(frame: .zero) }()
   private lazy var backersCountStackView = { UIStackView(frame: .zero) }()
@@ -17,9 +22,16 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private lazy var projectInfoStackView = { UIStackView(frame: .zero) }()
   private lazy var projectNameLabel = { UILabel(frame: .zero) }()
   private lazy var projectBlurbLabel = { UILabel(frame: .zero) }()
-//  private lazy var tagsCollectionView = { UICollectionView(frame: .zero) }()
+  private lazy var saveButton = { UIButton(type: .custom) }()
 
   private let viewModel: DiscoveryProjectCardViewModelType = DiscoveryProjectCardViewModel()
+  private let watchProjectViewModel: WatchProjectViewModelType = WatchProjectViewModel()
+
+  // MARK: - Notification Observers
+
+  private var projectSavedObserver: Any?
+  private var sessionEndedObserver: Any?
+  private var sessionStartedObserver: Any?
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -31,19 +43,54 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.bindViewModel()
   }
 
-  required init?(coder: NSCoder) {
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  deinit {
+    [
+      self.projectSavedObserver,
+      self.sessionEndedObserver,
+      self.sessionStartedObserver
+    ]
+    .forEach { $0.doIfSome(NotificationCenter.default.removeObserver) }
   }
 
   func configureWith(value: DiscoveryProjectCellRowValue) {
     self.viewModel.inputs.configure(with: value)
+
+    self.watchProjectViewModel.inputs.configure(with: (
+      value.project,
+      Koala.LocationContext.discovery,
+      value.params
+    ))
   }
 
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self
+      |> \.selectionStyle .~ .none
+
     _ = self.contentView
       |> contentViewStyle
+      |> \.layoutMargins %~~ { _, cell in
+        cell.traitCollection.isRegularRegular ?
+          .init(
+            top: Styles.grid(2),
+            left: Styles.grid(30),
+            bottom: 0,
+            right: Styles.grid(30)
+          ) : .init(
+            top: Styles.grid(2),
+            left: Styles.grid(2),
+            bottom: 0,
+            right: Styles.grid(2)
+          )
+      }
+
+    _ = self.saveButton
+      |> saveButtonStyle
 
     _ = self.cardContainerView
       |> cardContainerViewStyle
@@ -104,7 +151,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       }
 
     self.viewModel.outputs.percentFundedLabelData
-    .observeForUI()
+      .observeForUI()
       .observeValues { [weak self] boldedString, fullString in
         guard let self = self else { return }
 
@@ -112,18 +159,40 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
         _ = self.percentFundedLabel
           |> \.attributedText .~ attributedString
-    }
+      }
 
     self.viewModel.outputs.backerCountLabelData
-     .observeForUI()
-       .observeValues { [weak self] boldedString, fullString in
-         guard let self = self else { return }
+      .observeForUI()
+      .observeValues { [weak self] boldedString, fullString in
+        guard let self = self else { return }
 
-         let attributedString = self.attributedString(bolding: boldedString, in: fullString)
+        let attributedString = self.attributedString(bolding: boldedString, in: fullString)
 
-         _ = self.backersCountLabel
-           |> \.attributedText .~ attributedString
-     }
+        _ = self.backersCountLabel
+          |> \.attributedText .~ attributedString
+      }
+
+    // Watch Project View Model
+
+    self.watchProjectViewModel.outputs.showProjectSavedAlert
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+        self.delegate?.discoveryPostcardCellProjectSaveAlert()
+      }
+
+    self.watchProjectViewModel.outputs.goToLoginTout
+      .observeForControllerAction()
+      .observeValues { [weak self] in
+        guard let self = self else { return }
+        self.delegate?.discoveryPostcardCellGoToLoginTout()
+      }
+
+    self.watchProjectViewModel.outputs.showNotificationDialog
+      .observeForUI()
+      .observeValues { n in
+        NotificationCenter.default.post(n)
+      }
   }
 
   private func configureSubviews() {
@@ -137,11 +206,13 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = (self.projectDetailsStackView, self.cardContainerView)
       |> ksr_addSubviewToParent()
 
+    _ = (self.saveButton, self.cardContainerView)
+      |> ksr_addSubviewToParent()
+
     _ = ([
       self.projectNameLabel,
       self.projectBlurbLabel,
       self.projectInfoStackView
-//      self.tagsCollectionView
     ], self.projectDetailsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -156,23 +227,32 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   }
 
   private func setupConstraints() {
-    _ = [self.projectImageView,
-         self.projectDetailsStackView,
-         self.goalMetIconImageView,
-         self.backersCountIconImageView]
+    _ = [
+      self.projectImageView,
+      self.projectDetailsStackView,
+      self.goalMetIconImageView,
+      self.backersCountIconImageView,
+      self.saveButton
+    ]
       ||> \.translatesAutoresizingMaskIntoConstraints .~ false
 
     let aspectRatio = CGFloat(9.0 / 16.0)
+
+    let imageHeightConstraint = self.projectImageView.heightAnchor.constraint(
+      equalTo: self.projectImageView.widthAnchor,
+      multiplier: aspectRatio
+      ) |> \.priority .~ .defaultHigh
 
     NSLayoutConstraint.activate([
       self.projectImageView.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
       self.projectImageView.leftAnchor.constraint(equalTo: self.cardContainerView.leftAnchor),
       self.projectImageView.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
       self.projectImageView.widthAnchor.constraint(equalTo: self.cardContainerView.widthAnchor),
-      self.projectImageView.heightAnchor.constraint(
-        equalTo: self.projectImageView.widthAnchor,
-        multiplier: aspectRatio
-      ),
+      imageHeightConstraint,
+      self.saveButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
+      self.saveButton.widthAnchor.constraint(equalToConstant: Styles.minTouchSize.width),
+      self.saveButton.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
+      self.saveButton.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
       self.projectDetailsStackView.topAnchor.constraint(equalTo: self.projectImageView.bottomAnchor),
       self.projectDetailsStackView.leftAnchor.constraint(equalTo: self.cardContainerView.leftAnchor),
       self.projectDetailsStackView.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
@@ -196,19 +276,49 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     return attributedString
   }
+
+  private func configureWatchProjectObservers() {
+    self.saveButton.addTarget(self, action: #selector(self.saveButtonTapped(_:)), for: .touchUpInside)
+    self.saveButton.addTarget(self, action: #selector(self.saveButtonPressed(_:)), for: .touchDown)
+
+    self.sessionStartedObserver = NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
+        self?.watchProjectViewModel.inputs.userSessionStarted()
+      }
+
+    self.sessionEndedObserver = NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
+        self?.watchProjectViewModel.inputs.userSessionEnded()
+      }
+
+    self.projectSavedObserver = NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_projectSaved, object: nil, queue: nil) { [weak self]
+        notification in
+        self?.watchProjectViewModel.inputs.projectFromNotification(
+          project: notification.userInfo?["project"] as? Project
+        )
+      }
+
+    self.watchProjectViewModel.inputs.awakeFromNib()
+  }
+
+  // MARK: - Accessors
+
+  @objc fileprivate func saveButtonPressed(_: UIButton) {
+    self.watchProjectViewModel.inputs.saveButtonTouched()
+  }
+
+  @objc fileprivate func saveButtonTapped(_ button: UIButton) {
+    self.watchProjectViewModel.inputs.saveButtonTapped(selected: button.isSelected)
+  }
 }
 
 // MARK: - Styles
 
 private let contentViewStyle: ViewStyle = { view in
   view
-  |> \.layoutMargins .~ .init(
-    top: Styles.grid(2),
-    left: 0,
-    bottom: 0,
-    right: 0
-  )
-  |> \.backgroundColor .~ .ksr_grey_200
+    |> \.preservesSuperviewLayoutMargins .~ false
+    |> \.backgroundColor .~ .ksr_grey_200
 }
 
 private let cardContainerViewStyle: ViewStyle = { view in
@@ -218,9 +328,9 @@ private let cardContainerViewStyle: ViewStyle = { view in
 }
 
 private let goalMetIconImageViewStyle: ImageViewStyle = { imageView in
-  let descender = UIFont.ksr_footnote().bolded.descender
+  let descender = abs(UIFont.ksr_footnote().bolded.descender)
   let image = Library.image(named: "icon--star")?
-    .withAlignmentRectInsets(.init(top: -descender, left: 0, bottom: descender, right: 0))
+    .withAlignmentRectInsets(.init(top: descender, left: 0, bottom: -descender, right: 0))
 
   return imageView
     |> \.image .~ image
@@ -267,9 +377,9 @@ private let percentFundedLabelStyle: LabelStyle = { label in
 }
 
 private let backersCountIconImageViewStyle: ImageViewStyle = { imageView in
-  let descender = UIFont.ksr_footnote().bolded.descender
+  let descender = abs(UIFont.ksr_footnote().bolded.descender)
   let image = Library.image(named: "icon--humans")?
-    .withAlignmentRectInsets(.init(top: -descender, left: 0, bottom: descender, right: 0))
+    .withAlignmentRectInsets(.init(top: descender, left: 0, bottom: -descender, right: 0))
 
   return imageView
     |> \.image .~ image
@@ -296,4 +406,9 @@ private let projectDetailsStackViewStyle: StackViewStyle = { stackView in
     |> \.alignment .~ .leading
     |> \.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
     |> \.isLayoutMarginsRelativeArrangement .~ true
+}
+
+private let saveButtonStyle: ButtonStyle = { button in
+  button
+    |> discoverySaveButtonStyle
 }

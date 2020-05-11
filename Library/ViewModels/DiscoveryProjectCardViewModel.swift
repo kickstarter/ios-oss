@@ -1,6 +1,6 @@
 import Foundation
-import ReactiveSwift
 import Prelude
+import ReactiveSwift
 
 public typealias BoldedAttributedLabelData = (boldedString: String, inString: String)
 
@@ -30,7 +30,7 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
     self.projectNameLabelText = project.map(\.name)
     self.projectBlurbLabelText = project.map(\.blurb)
     self.backerCountLabelData = project.map(\.stats.backersCount).map { count in
-      return (String(count), Strings.general_backer_count_backers(backer_count: count))
+      (String(count), Strings.general_backer_count_backers(backer_count: count))
     }
 
     self.percentFundedLabelData = project.map { project in

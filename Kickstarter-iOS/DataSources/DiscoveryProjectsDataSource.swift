@@ -33,9 +33,11 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
             projectCardVariant: OptimizelyExperiment.Variant = .control) {
     self.clearValues(section: Section.projects.rawValue)
 
-    let values = projects.map { DiscoveryProjectCellRowValue(project: $0,
-                                                             category: params?.category,
-                                                             params: params) }
+    let values = projects.map { DiscoveryProjectCellRowValue(
+      project: $0,
+      category: params?.category,
+      params: params
+    ) }
 
     if projectCardVariant == .variant1 {
       self.set(
