@@ -127,6 +127,9 @@ internal final class BackerDashboardProjectsViewController: UITableViewControlle
       initialPlaylist: initialPlaylist,
       navigatorDelegate: self
     )
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      vc.modalPresentationStyle = .fullScreen
+    }
     self.present(vc, animated: true, completion: nil)
   }
 

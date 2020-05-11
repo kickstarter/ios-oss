@@ -113,6 +113,9 @@ internal final class ProjectActivitiesViewController: UITableViewController {
 
   internal func goToProject(project: Project) {
     let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: .dashboardActivity)
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      vc.modalPresentationStyle = .fullScreen
+    }
     self.present(vc, animated: true, completion: nil)
   }
 
