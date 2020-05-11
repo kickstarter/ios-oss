@@ -4212,7 +4212,7 @@ Haz clic para volver a intentarlo."
 
    - **en**: "Introducing Lights On"
    - **de**: "Introducing Lights On"
-   - **es**: "Introducing Lights On"
+   - **es**: "Presentamos "Seguimos activos""
    - **fr**: "Introducing Lights On"
    - **ja**: "Introducing Lights On"
   */
