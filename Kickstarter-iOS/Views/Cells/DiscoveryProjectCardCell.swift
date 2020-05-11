@@ -241,7 +241,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     let imageHeightConstraint = self.projectImageView.heightAnchor.constraint(
       equalTo: self.projectImageView.widthAnchor,
       multiplier: aspectRatio
-      ) |> \.priority .~ .defaultHigh
+    ) |> \.priority .~ .defaultHigh
 
     NSLayoutConstraint.activate([
       self.projectImageView.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),

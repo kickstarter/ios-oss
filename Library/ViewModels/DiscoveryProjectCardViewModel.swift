@@ -11,10 +11,10 @@ public protocol DiscoveryProjectCardViewModelInputs {
 public protocol DiscoveryProjectCardViewModelOutputs {
   var backerCountLabelData: Signal<BoldedAttributedLabelData, Never> { get }
   var goalMetIconHidden: Signal<Bool, Never> { get }
-  var projectNameLabelText: Signal<String, Never> { get }
-  var projectBlurbLabelText: Signal<String, Never> { get }
   var percentFundedLabelData: Signal<BoldedAttributedLabelData, Never> { get }
+  var projectBlurbLabelText: Signal<String, Never> { get }
   var projectImageURL: Signal<URL, Never> { get }
+  var projectNameLabelText: Signal<String, Never> { get }
 }
 
 public protocol DiscoveryProjectCardViewModelType {
@@ -35,7 +35,8 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
 
     self.percentFundedLabelData = project.map { project in
       if project.stats.goalMet {
-        return ("Goal met", "Goal met")
+        return (localizedString(key: "Goal_met", defaultValue: "Goal met"),
+                localizedString(key: "Goal_met", defaultValue: "Goal met"))
       }
 
       let percentage = "\(project.stats.percentFunded)%"
