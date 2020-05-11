@@ -353,6 +353,7 @@ private let projectNameLabelStyle: LabelStyle = { label in
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.font .~ UIFont.ksr_headline().bolded
     |> \.textColor .~ .ksr_soft_black
+    |> \.backgroundColor .~ .white
 }
 
 private let projectBlurbLabelStyle: LabelStyle = { label in
@@ -361,6 +362,7 @@ private let projectBlurbLabelStyle: LabelStyle = { label in
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.font .~ UIFont.ksr_subhead()
     |> \.textColor .~ .ksr_text_dark_grey_500
+    |> \.backgroundColor .~ .white
 }
 
 private let infoStackViewStyle: StackViewStyle = { stackView in
@@ -376,6 +378,7 @@ private let percentFundedLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.textColor .~ .ksr_green_500
+    |> \.backgroundColor .~ .white
 }
 
 private let backersCountIconImageViewStyle: ImageViewStyle = { imageView in
@@ -394,6 +397,7 @@ private let backersCountLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.textColor .~ .ksr_soft_black
+    |> \.backgroundColor .~ .white
 }
 
 private let projectInfoStackViewStyle: StackViewStyle = { stackView in
