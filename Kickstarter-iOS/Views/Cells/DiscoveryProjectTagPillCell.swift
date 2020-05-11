@@ -4,13 +4,6 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-enum DiscoveryProjectTagPillCellType {
-  case green
-  case grey
-}
-
-typealias DiscoveryProjectTagPillCellValue = (type: DiscoveryProjectTagPillCellType, categoryName: String?)
-
 final class DiscoveryProjectTagPillCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
