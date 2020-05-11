@@ -170,6 +170,14 @@ final class PledgeViewController: UIViewController,
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    // Works around a layout bug when in landscape or on iPhone SE - last observed on iOS 13.4.
+    self.addChild(self.paymentMethodsViewController)
+    self.paymentMethodsViewController.didMove(toParent: self)
+  }
+
   // MARK: - Configuration
 
   private func configureChildViewControllers() {
@@ -189,8 +197,7 @@ final class PledgeViewController: UIViewController,
       self.pledgeAmountViewController,
       self.pledgeAmountSummaryViewController,
       self.shippingLocationViewController,
-      self.summaryViewController,
-      self.paymentMethodsViewController
+      self.summaryViewController
     ]
 
     let arrangedSubviews = [
