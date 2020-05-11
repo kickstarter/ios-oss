@@ -83,7 +83,7 @@ final class PledgeAmountViewController: UIViewController {
       |> checkoutBackgroundStyle
 
     _ = self.adaptableStackView
-      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
+      |> adaptableStackViewStyle(isAccessibilityCategory)
       |> \.spacing .~ Styles.grid(3)
 
     _ = self.horizontalSpacer

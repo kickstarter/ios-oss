@@ -47,7 +47,7 @@ final class PledgeSummaryViewController: UIViewController {
       |> checkoutBackgroundStyle
 
     _ = self.adaptableStackView
-      |> checkoutAdaptableStackViewStyle(
+      |> adaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
       |> adaptableStackViewStyle

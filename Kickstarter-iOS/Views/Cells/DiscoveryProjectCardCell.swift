@@ -127,7 +127,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       |> backersCountIconImageViewStyle
 
     _ = self.projectInfoStackView
-      |> checkoutAdaptableStackViewStyle(
+      |> adaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       ) // TODO: rename this to a generic stack view style
       |> projectInfoStackViewStyle

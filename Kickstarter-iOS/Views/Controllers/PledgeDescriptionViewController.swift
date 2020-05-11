@@ -144,7 +144,7 @@ private let estimatedDeliveryLabelStyle: LabelStyle = { (label: UILabel) in
 private func estimatedDeliveryStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
   return { (stackView: UIStackView) in
     stackView
-      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
+      |> adaptableStackViewStyle(isAccessibilityCategory)
       |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.spacing .~ Styles.grid(1)
       |> \.distribution .~ .fill

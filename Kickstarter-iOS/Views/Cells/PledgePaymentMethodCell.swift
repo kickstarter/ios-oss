@@ -93,7 +93,7 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
       |> labelsStackViewStyle
 
     _ = self.cardImageAndLabelsStackView
-      |> checkoutAdaptableStackViewStyle(
+      |> adaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
       |> adaptableStackViewStyle
