@@ -38,6 +38,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     self.configureSubviews()
     self.setupConstraints()
+    self.configureWatchProjectObservers()
 
     self.bindStyles()
     self.bindViewModel()
@@ -328,13 +329,14 @@ private let cardContainerViewStyle: ViewStyle = { view in
 }
 
 private let goalMetIconImageViewStyle: ImageViewStyle = { imageView in
-  let descender = abs(UIFont.ksr_footnote().bolded.descender)
+  let descender = abs(UIFont.ksr_subhead().bolded.descender)
   let image = Library.image(named: "icon--star")?
     .withAlignmentRectInsets(.init(top: descender, left: 0, bottom: -descender, right: 0))
 
   return imageView
     |> \.image .~ image
     |> \.tintColor .~ .ksr_green_500
+    |> \.contentMode .~ .center
 }
 
 private let projectImageViewStyle: ImageViewStyle = { imageView in
@@ -377,14 +379,14 @@ private let percentFundedLabelStyle: LabelStyle = { label in
 }
 
 private let backersCountIconImageViewStyle: ImageViewStyle = { imageView in
-  let descender = abs(UIFont.ksr_footnote().bolded.descender)
+  let descender = abs(UIFont.ksr_subhead().bolded.descender)
   let image = Library.image(named: "icon--humans")?
     .withAlignmentRectInsets(.init(top: descender, left: 0, bottom: -descender, right: 0))
 
   return imageView
     |> \.image .~ image
     |> \.tintColor .~ .ksr_dark_grey_500
-    |> \.contentMode .~ .scaleAspectFit
+    |> \.contentMode .~ .bottom
 }
 
 private let backersCountLabelStyle: LabelStyle = { label in
