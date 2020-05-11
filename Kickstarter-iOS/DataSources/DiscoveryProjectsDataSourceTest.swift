@@ -43,38 +43,17 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
     )
   }
 
-  func testLightsOnEditorial() {
-    let section = DiscoveryProjectsDataSource.Section.lightsOnEditiorial.rawValue
-
-    let lightsOnValue: DiscoveryLightsOnEditorialCellValue = .init(
-      title: "title", subtitle: "subtitle", imageName: ""
-    )
-
-    self.dataSource.showLightsOnEditorial(value: lightsOnValue)
-
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
-    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
-
-    self.dataSource.showLightsOnEditorial(value: lightsOnValue)
-
-    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
-    XCTAssertEqual(
-      1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section),
-      "One only row is ever added"
-    )
-  }
-
   func testPersonalization() {
     let section = DiscoveryProjectsDataSource.Section.personalization.rawValue
 
     self.dataSource.showPersonalization(true)
 
-    XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
 
     self.dataSource.showPersonalization(false)
 
-    XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
   }
 

@@ -111,12 +111,18 @@ private func editorialImageName(for tagId: DiscoveryParams.TagID) -> String {
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
       return "go-rewardless-modal-large"
     }
-    return "go-rewardless-modal"
+     return "go-rewardless-modal"
+  case .lightsOn:
+     return "go-rewardless-modal"
   }
+
+  return "go-rewardless-modal"
 }
 
 private func editorialTitleLabelText(for tagId: DiscoveryParams.TagID) -> String {
   switch tagId {
   case .goRewardless: return Strings.This_holiday_season_support_a_project_for_no_reward()
+  case .lightsOn:
+    return Strings.This_holiday_season_support_a_project_for_no_reward()
   }
 }
