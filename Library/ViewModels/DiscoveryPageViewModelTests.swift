@@ -81,7 +81,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       .observe(self.showLightsOnEditorialHeaderSubtitle.observer)
     self.vm.outputs.showLightsOnEditorialHeader.map { $0?.imageName }
       .observe(self.showLightsOnEditorialHeaderImageName.observer)
-    self.vm.outputs.showLightsOnEditorialHeader.map { $0?.tagId }.observe(self.showLightsOnEditorialHeaderTagId.observer)
+    self.vm.outputs.showLightsOnEditorialHeader.map { $0?.tagId }
+      .observe(self.showLightsOnEditorialHeaderTagId.observer)
     self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
     self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
     self.vm.outputs.showPersonalization.observe(self.showPersonalization.observer)
@@ -892,7 +893,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
     self.showLightsOnEditorialHeaderImageName.assertValues(["lights-on-home"])
     self.showLightsOnEditorialHeaderTagId.assertValues([.lightsOn])
-
   }
 
   func testShowLightsOnEditorialHeader_LoggedIn() {

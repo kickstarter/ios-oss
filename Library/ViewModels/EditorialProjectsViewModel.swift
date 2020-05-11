@@ -111,9 +111,9 @@ private func editorialImageName(for tagId: DiscoveryParams.TagID) -> String {
     if AppEnvironment.current.device.userInterfaceIdiom == .pad {
       return "go-rewardless-modal-large"
     }
-     return "go-rewardless-modal"
+    return "go-rewardless-modal"
   case .lightsOn:
-     return "go-rewardless-modal"
+    return "go-rewardless-modal"
   }
 
   return "go-rewardless-modal"
