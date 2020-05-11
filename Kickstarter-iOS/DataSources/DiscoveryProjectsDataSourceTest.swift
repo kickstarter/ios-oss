@@ -88,9 +88,11 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
   func testProjects_ExperimentVariant() {
     let section = DiscoveryProjectsDataSource.Section.projects.rawValue
 
-    self.dataSource.load(projects: [.template, .template, .template],
-                         params: DiscoveryParams.defaults,
-                         projectCardVariant: .variant1)
+    self.dataSource.load(
+      projects: [.template, .template, .template],
+      params: DiscoveryParams.defaults,
+      projectCardVariant: .variant1
+    )
 
     XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(3, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
