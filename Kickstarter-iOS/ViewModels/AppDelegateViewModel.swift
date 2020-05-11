@@ -389,6 +389,50 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           .map { params |> DiscoveryParams.lens.category .~ $0.first }
       }
 
+    let projectLinkValues = deepLink
+      .map { link -> (Param, Navigation.Project, RefTag?)? in
+        guard case let .project(param, subpage, refTag) = link else { return nil }
+        return (param, subpage, refTag)
+      }
+      .skipNil()
+      .switchMap { param, subpage, refTag in
+        AppEnvironment.current.apiService.fetchProject(param: param)
+          .demoteErrors()
+          .observeForUI()
+          .map { project -> (Project, Navigation.Project, [UIViewController], RefTag?) in
+            (
+              project, subpage,
+              [ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)],
+              refTag
+            )
+          }
+      }
+
+    let projectLink = projectLinkValues
+      .filter { project, _, _, _ in project.prelaunchActivated != true }
+
+    let projectPreviewLink = projectLinkValues
+      .filter { project, _, _, _ in project.prelaunchActivated == true }
+
+    let fixErroredPledgeLinkAndIsLoggedIn = projectLink
+      .filter { _, subpage, _, _ in subpage == .pledge(.manage) }
+      .map { project, _, vcs, _ in
+        (project, vcs, AppEnvironment.current.currentUser != nil)
+      }
+
+    let fixErroredPledgeLink = fixErroredPledgeLinkAndIsLoggedIn
+      .filter(third >>> isTrue)
+      .map { project, vcs, _ -> [UIViewController] in
+        let vc = ManagePledgeViewController.instantiate()
+        vc.configureWith(project: project)
+        return vcs + [vc]
+      }
+      .map { vcs -> RewardPledgeNavigationController in
+        let nav = RewardPledgeNavigationController(nibName: nil, bundle: nil)
+        nav.viewControllers = vcs
+        return nav
+      }
+
     self.goToActivity = deepLink
       .filter { $0 == .tab(.activity) }
       .ignoreValues()
@@ -397,9 +441,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .filter { $0 == .tab(.search) }
       .ignoreValues()
 
-    self.goToLogin = deepLink
+    let loginTabDeepLink = deepLink
       .filter { $0 == .tab(.login) }
       .ignoreValues()
+
+    self.goToLogin = Signal.merge(
+      loginTabDeepLink,
+      fixErroredPledgeLinkAndIsLoggedIn.filter(third >>> isFalse).ignoreValues()
+    )
 
     self.goToCreatorMessageThread = deepLink
       .map { navigation -> (Param, Int)? in
@@ -435,31 +484,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.goToProfile = deepLink
       .filter { $0 == .tab(.me) }
       .ignoreValues()
-
-    let projectLinkValues = deepLink
-      .map { link -> (Param, Navigation.Project, RefTag?)? in
-        guard case let .project(param, subpage, refTag) = link else { return nil }
-        return (param, subpage, refTag)
-      }
-      .skipNil()
-      .switchMap { param, subpage, refTag in
-        AppEnvironment.current.apiService.fetchProject(param: param)
-          .demoteErrors()
-          .observeForUI()
-          .map { project -> (Project, Navigation.Project, [UIViewController], RefTag?) in
-            (
-              project, subpage,
-              [ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)],
-              refTag
-            )
-          }
-      }
-
-    let projectLink = projectLinkValues
-      .filter { project, _, _, _ in project.prelaunchActivated != true }
-
-    let projectPreviewLink = projectLinkValues
-      .filter { project, _, _, _ in project.prelaunchActivated == true }
 
     let resolvedRedirectUrl = deepLinkUrl
       .filter { Navigation.deepLinkMatch($0) == nil }
@@ -536,19 +560,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
               ]
             )
           }
-      }
-
-    let fixErroredPledgeLink = projectLink
-      .filter { _, subpage, _, _ in subpage == .pledge(.manage) }
-      .map { project, _, vcs, _ -> [UIViewController] in
-        let vc = ManagePledgeViewController.instantiate()
-        vc.configureWith(project: project)
-        return vcs + [vc]
-      }
-      .map { vcs -> RewardPledgeNavigationController in
-        let nav = RewardPledgeNavigationController(nibName: nil, bundle: nil)
-        nav.viewControllers = vcs
-        return nav
       }
 
     let updateRootLink = updateLink

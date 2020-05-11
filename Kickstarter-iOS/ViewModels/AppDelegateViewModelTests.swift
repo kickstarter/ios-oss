@@ -2002,41 +2002,98 @@ final class AppDelegateViewModelTests: TestCase {
     self.presentViewController.assertValues([1])
   }
 
-  func testErroredPledgeDeepLink() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
+  func testErroredPledgeDeepLink_LoggedIn() {
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
 
-    self.presentViewController.assertValues([])
+      self.goToLogin.assertDidNotEmitValue()
+      self.presentViewController.assertValues([])
 
-    let projectUrl = "https://www.kickstarter.com"
-      + "/projects/sshults/greensens-the-easy-way-to-take-care-of-your-houseplants-0"
-      + "/pledge?at=4f7d35e7c9d2bb57&ref=ksr_email_backer_failed_transaction"
+      let projectUrl = "https://www.kickstarter.com"
+        + "/projects/sshults/greensens-the-easy-way-to-take-care-of-your-houseplants-0"
+        + "/pledge?at=4f7d35e7c9d2bb57&ref=ksr_email_backer_failed_transaction"
 
-    let result = self.vm.inputs.applicationOpenUrl(
-      application: UIApplication.shared,
-      url: URL(string: projectUrl)!,
-      options: [:]
-    )
-    XCTAssertTrue(result)
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: projectUrl)!,
+        options: [:]
+      )
+      XCTAssertTrue(result)
 
-    self.presentViewController.assertValues([2])
+      self.goToLogin.assertDidNotEmitValue()
+      self.presentViewController.assertValues([2])
+    }
   }
 
-  func testErroredPledgePushDeepLink() {
-    let pushData: [String: Any] = [
-      "aps": [
-        "alert": "You have an errored pledge."
-      ],
-      "errored_pledge": [
-        "project_id": 2
+  func testErroredPledgeDeepLink_LoggedOut() {
+    withEnvironment(currentUser: nil) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
+
+      self.goToLogin.assertDidNotEmitValue()
+      self.presentViewController.assertValues([])
+
+      let projectUrl = "https://www.kickstarter.com"
+        + "/projects/sshults/greensens-the-easy-way-to-take-care-of-your-houseplants-0"
+        + "/pledge?at=4f7d35e7c9d2bb57&ref=ksr_email_backer_failed_transaction"
+
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: projectUrl)!,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.goToLogin.assertValueCount(1)
+      self.presentViewController.assertDidNotEmitValue()
+    }
+  }
+
+  func testErroredPledgePushDeepLink_LoggedIn() {
+    withEnvironment(currentUser: .template) {
+      self.goToLogin.assertDidNotEmitValue()
+      self.presentViewController.assertDidNotEmitValue()
+
+      let pushData: [String: Any] = [
+        "aps": [
+          "alert": "You have an errored pledge."
+        ],
+        "errored_pledge": [
+          "project_id": 2
+        ]
       ]
-    ]
 
-    self.vm.inputs.didReceive(remoteNotification: pushData)
+      self.vm.inputs.didReceive(remoteNotification: pushData)
 
-    self.presentViewController.assertValues([2])
+      self.goToLogin.assertDidNotEmitValue()
+      self.presentViewController.assertValues([2])
+    }
+  }
+
+  func testErroredPledgePushDeepLink_LoggedOut() {
+    withEnvironment(currentUser: nil) {
+      self.goToLogin.assertDidNotEmitValue()
+      self.presentViewController.assertDidNotEmitValue()
+
+      let pushData: [String: Any] = [
+        "aps": [
+          "alert": "You have an errored pledge."
+        ],
+        "errored_pledge": [
+          "project_id": 2
+        ]
+      ]
+
+      self.vm.inputs.didReceive(remoteNotification: pushData)
+
+      self.goToLogin.assertValueCount(1)
+      self.presentViewController.assertDidNotEmitValue()
+    }
   }
 
   func testUserSurveyDeepLink() {
