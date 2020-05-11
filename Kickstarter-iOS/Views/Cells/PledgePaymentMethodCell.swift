@@ -96,7 +96,7 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
       |> adaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
-      |> adaptableStackViewStyle
+      |> cardImageAndLabelsStackViewStyle
 
     _ = self.unavailableCardTypeLabel
       |> unavailableCardTypeLabelStyle
@@ -172,7 +172,7 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
 
 // MARK: - Styles
 
-private let adaptableStackViewStyle: StackViewStyle = { stackView in
+private let cardImageAndLabelsStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.spacing .~ Styles.grid(2)
 }

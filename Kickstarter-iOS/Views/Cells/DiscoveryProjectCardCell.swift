@@ -129,7 +129,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = self.projectInfoStackView
       |> adaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      ) // TODO: rename this to a generic stack view style
+      )
       |> projectInfoStackViewStyle
   }
 

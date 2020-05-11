@@ -8,7 +8,7 @@ public typealias PledgeSummaryCellData = (project: Project, total: Double)
 final class PledgeSummaryViewController: UIViewController {
   // MARK: - Properties
 
-  private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var titleAndTotalStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var confirmationLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = {
@@ -46,11 +46,11 @@ final class PledgeSummaryViewController: UIViewController {
       |> \.numberOfLines .~ 0
       |> checkoutBackgroundStyle
 
-    _ = self.adaptableStackView
+    _ = self.titleAndTotalStackView
       |> adaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
-      |> adaptableStackViewStyle
+      |> titleAndTotalStackViewStyle
 
     _ = self.totalStackView
       |> totalStackViewStyle(self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory)
@@ -70,10 +70,10 @@ final class PledgeSummaryViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.adaptableStackView, self.confirmationLabel], self.rootStackView)
+    _ = ([self.titleAndTotalStackView, self.confirmationLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.titleLabel, self.totalStackView], self.adaptableStackView)
+    _ = ([self.titleLabel, self.totalStackView], self.titleAndTotalStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.amountLabel, self.totalConversionLabel], self.totalStackView)
@@ -139,7 +139,7 @@ private let amountLabelStyle: LabelStyle = { (label: UILabel) in
   return label
 }
 
-private let adaptableStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
+private let titleAndTotalStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
     |> \.alignment .~ UIStackView.Alignment.top
 }
