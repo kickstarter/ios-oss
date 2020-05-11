@@ -5,6 +5,11 @@ import Prelude
 import UIKit
 
 final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
+  private enum IconImageSize {
+    static let height: CGFloat = 13.0
+    static let width: CGFloat = 13.0
+  }
+
   internal weak var delegate: DiscoveryPostcardCellDelegate?
 
   // MARK: - Properties
@@ -258,10 +263,10 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       self.projectDetailsStackView.leftAnchor.constraint(equalTo: self.cardContainerView.leftAnchor),
       self.projectDetailsStackView.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
       self.projectDetailsStackView.bottomAnchor.constraint(equalTo: self.cardContainerView.bottomAnchor),
-      self.goalMetIconImageView.widthAnchor.constraint(equalToConstant: 13.0),
-      self.goalMetIconImageView.heightAnchor.constraint(equalToConstant: 13.0),
-      self.backersCountIconImageView.widthAnchor.constraint(equalToConstant: 13.0),
-      self.backersCountIconImageView.heightAnchor.constraint(equalToConstant: 13.0)
+      self.goalMetIconImageView.widthAnchor.constraint(equalToConstant: IconImageSize.width),
+      self.goalMetIconImageView.heightAnchor.constraint(equalToConstant: IconImageSize.height),
+      self.backersCountIconImageView.widthAnchor.constraint(equalToConstant: IconImageSize.width),
+      self.backersCountIconImageView.heightAnchor.constraint(equalToConstant: IconImageSize.height)
     ])
   }
 
