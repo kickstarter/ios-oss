@@ -35,8 +35,10 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
 
     self.percentFundedLabelData = project.map { project in
       if project.stats.goalMet {
-        return (localizedString(key: "Goal_met", defaultValue: "Goal met"),
-                localizedString(key: "Goal_met", defaultValue: "Goal met"))
+        return (
+          localizedString(key: "Goal_met", defaultValue: "Goal met"),
+          localizedString(key: "Goal_met", defaultValue: "Goal met")
+        )
       }
 
       let percentage = "\(project.stats.percentFunded)%"

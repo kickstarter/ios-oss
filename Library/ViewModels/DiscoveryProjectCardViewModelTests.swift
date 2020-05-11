@@ -16,7 +16,6 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
   private let projectImageUrlString = TestObserver<String, Never>()
   private let projectNameLabelText = TestObserver<String, Never>()
 
-
   private let vm: DiscoveryProjectCardViewModelType = DiscoveryProjectCardViewModel()
 
   override func setUp() {
@@ -34,7 +33,7 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
   func testBackerCountLabelData() {
     let project = Project.template
-    |> \.stats.backersCount .~ 315
+      |> \.stats.backersCount .~ 315
 
     self.backerCountLabelBoldedString.assertDidNotEmitValue()
     self.backerCountLabelFullString.assertDidNotEmitValue()
@@ -47,8 +46,8 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
   func testPercentFundedLabelData_ProjectNotFunded() {
     let project = Project.template
-    |> \.stats.goal .~ 1000
-    |> \.stats.pledged .~ 500
+      |> \.stats.goal .~ 1_000
+      |> \.stats.pledged .~ 500
 
     self.percentFundedLabelFullString.assertDidNotEmitValue()
     self.percentFundedLabelBoldedString.assertDidNotEmitValue()
@@ -61,8 +60,8 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
   func testPercentFundedLabelData_ProjectFunded() {
     let project = Project.template
-    |> \.stats.goal .~ 1000
-    |> \.stats.pledged .~ 1100
+      |> \.stats.goal .~ 1_000
+      |> \.stats.pledged .~ 1_100
 
     self.percentFundedLabelFullString.assertDidNotEmitValue()
     self.percentFundedLabelBoldedString.assertDidNotEmitValue()
@@ -75,8 +74,8 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
   func testGoalMetIconHidden_ProjectNotFunded() {
     let project = Project.template
-    |> \.stats.goal .~ 1000
-    |> \.stats.pledged .~ 500
+      |> \.stats.goal .~ 1_000
+      |> \.stats.pledged .~ 500
 
     self.goalMetIconHidden.assertDidNotEmitValue()
 
@@ -87,8 +86,8 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
   func testGoalMetIconHidden_ProjectFunded() {
     let project = Project.template
-    |> \.stats.goal .~ 1000
-    |> \.stats.pledged .~ 2000
+      |> \.stats.goal .~ 1_000
+      |> \.stats.pledged .~ 2_000
 
     self.goalMetIconHidden.assertDidNotEmitValue()
 
@@ -121,4 +120,3 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
     self.projectImageUrlString.assertValues(["http://www.kickstarter.com/full.jpg"])
   }
 }
-
