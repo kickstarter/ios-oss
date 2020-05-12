@@ -3,7 +3,7 @@ import KsApi
 import ReactiveSwift
 
 public protocol PledgeDisclaimerViewModelOutputs {
-  var presentTrustAndSafety: Signal<Void, Never> { get }
+  var notifyDelegatePresentTrustAndSafety: Signal<Void, Never> { get }
 }
 
 public protocol PledgeDisclaimerViewModelInputs {
@@ -18,7 +18,7 @@ public protocol PledgeDisclaimerViewModelType {
 public final class PledgeDisclaimerViewModel: PledgeDisclaimerViewModelType,
   PledgeDisclaimerViewModelInputs, PledgeDisclaimerViewModelOutputs {
   public init() {
-    self.presentTrustAndSafety = self.learnMoreTappedProperty.signal
+    self.notifyDelegatePresentTrustAndSafety = self.learnMoreTappedProperty.signal
   }
 
   private let learnMoreTappedProperty = MutableProperty(())
@@ -26,7 +26,7 @@ public final class PledgeDisclaimerViewModel: PledgeDisclaimerViewModelType,
     self.learnMoreTappedProperty.value = ()
   }
 
-  public let presentTrustAndSafety: Signal<Void, Never>
+  public let notifyDelegatePresentTrustAndSafety: Signal<Void, Never>
 
   public var inputs: PledgeDisclaimerViewModelInputs { return self }
   public var outputs: PledgeDisclaimerViewModelOutputs { return self }
