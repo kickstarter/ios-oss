@@ -161,12 +161,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
       locationName: "Brooklyn, NY",
       needsConversion: false,
       omitUSCurrencyCode: true,
-      pledgeAmount: envelope.backing.amount.doubleValue,
+      pledgeAmount: envelope.backing.amount.amount,
       pledgedOn: envelope.backing.pledgedOn,
       projectCountry: Project.Country.us,
       projectDeadline: 1_476_657_315.0,
       projectState: ProjectState.live,
-      shippingAmount: envelope.backing.shippingAmount?.doubleValue
+      shippingAmount: envelope.backing.shippingAmount?.amount
     )
 
     withEnvironment(apiService: mockService) {
@@ -271,7 +271,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let envelope = ManagePledgeViewBackingEnvelope.template
 
     let expectedId = envelope.backing.id
-    let expectedAmount = envelope.backing.amount.doubleValue
+    let expectedAmount = envelope.backing.amount.amount
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope)
@@ -595,12 +595,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
       locationName: "Brooklyn, NY",
       needsConversion: true,
       omitUSCurrencyCode: true,
-      pledgeAmount: envelope.backing.amount.doubleValue,
+      pledgeAmount: envelope.backing.amount.amount,
       pledgedOn: envelope.backing.pledgedOn,
       projectCountry: project.country,
       projectDeadline: 1_476_657_315.0,
       projectState: ProjectState.live,
-      shippingAmount: envelope.backing.shippingAmount?.doubleValue
+      shippingAmount: envelope.backing.shippingAmount?.amount
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(

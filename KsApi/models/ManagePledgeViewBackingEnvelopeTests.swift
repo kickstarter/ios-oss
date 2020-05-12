@@ -88,7 +88,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.backing.sequence, 5)
       XCTAssertEqual(value.backing.errorReason, "This just isn't your day.")
       XCTAssertEqual(value.backing.pledgedOn, 1_587_502_131)
-      XCTAssertEqual(value.backing.amount, Money(amount: "146.0", currency: .usd, symbol: "$"))
+      XCTAssertEqual(value.backing.amount, Money(amount: 146.0, currency: .usd, symbol: "$"))
 
       XCTAssertEqual(value.backing.bankAccount?.bankName, "Chase")
       XCTAssertEqual(value.backing.bankAccount?.id, "60922339")
@@ -104,7 +104,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
 
       XCTAssertEqual(value.backing.location?.name, "Brooklyn, NY")
 
-      XCTAssertEqual(value.backing.shippingAmount, Money(amount: "17.0", currency: .usd, symbol: "$"))
+      XCTAssertEqual(value.backing.shippingAmount, Money(amount: 17.0, currency: .usd, symbol: "$"))
 
       XCTAssertEqual(value.backing.reward?.name, "Everyday Carry")
       XCTAssertEqual(value.backing.reward?.backersCount, 593)
@@ -121,7 +121,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.backing.reward?.items?[1].id, "UmV3YXJkSXRlbS04NzMzMDY=")
       XCTAssertEqual(value.backing.reward?.items?[1].name, "Travel case")
 
-      XCTAssertEqual(value.backing.reward?.amount, Money(amount: "129.0", currency: .usd, symbol: "$"))
+      XCTAssertEqual(value.backing.reward?.amount, Money(amount: 129.0, currency: .usd, symbol: "$"))
 
       XCTAssertEqual(value.backing.backer.uid, 565_656)
       XCTAssertEqual(value.backing.backer.name, "Backer McGee")
@@ -189,7 +189,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.backing.status, .pledged)
       XCTAssertNil(value.backing.errorReason)
       XCTAssertEqual(value.backing.pledgedOn, 1_587_502_131)
-      XCTAssertEqual(value.backing.amount, Money(amount: "146.0", currency: .usd, symbol: "$"))
+      XCTAssertEqual(value.backing.amount, Money(amount: 146.0, currency: .usd, symbol: "$"))
 
       XCTAssertNil(value.backing.bankAccount)
 
@@ -209,7 +209,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertNil(value.backing.reward?.estimatedDeliveryOn)
       XCTAssertNil(value.backing.reward?.items)
 
-      XCTAssertEqual(value.backing.reward?.amount, Money(amount: "129.0", currency: .usd, symbol: "$"))
+      XCTAssertEqual(value.backing.reward?.amount, Money(amount: 129.0, currency: .usd, symbol: "$"))
 
       XCTAssertEqual(value.backing.backer.uid, 565_656)
       XCTAssertEqual(value.backing.backer.name, "Backer McGee")
@@ -266,7 +266,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.backing.status, .pledged)
       XCTAssertNil(value.backing.errorReason)
       XCTAssertEqual(value.backing.pledgedOn, 1_587_502_131)
-      XCTAssertEqual(value.backing.amount, Money(amount: "146.0", currency: .usd, symbol: "$"))
+      XCTAssertEqual(value.backing.amount, Money(amount: 146.0, currency: .usd, symbol: "$"))
 
       XCTAssertNil(value.backing.bankAccount)
 

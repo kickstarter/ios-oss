@@ -295,7 +295,7 @@ private func cancelPledgeViewData(
     projectName: project.name,
     omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
     backingId: backing.id,
-    pledgeAmount: backing.amount.doubleValue
+    pledgeAmount: backing.amount.amount
   )
 }
 
@@ -324,12 +324,12 @@ private func managePledgeSummaryViewData(
     locationName: envelope.backing.location?.name,
     needsConversion: project.stats.needsConversion,
     omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
-    pledgeAmount: envelope.backing.amount.doubleValue,
+    pledgeAmount: envelope.backing.amount.amount,
     pledgedOn: envelope.backing.pledgedOn,
     projectCountry: project.country,
     projectDeadline: project.dates.deadline,
     projectState: envelope.project.state,
-    shippingAmount: envelope.backing.shippingAmount?.doubleValue
+    shippingAmount: envelope.backing.shippingAmount?.amount
   )
 }
 
