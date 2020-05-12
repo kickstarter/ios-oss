@@ -157,20 +157,20 @@ internal final class ManagePledgeViewModelTests: TestCase {
     )
 
     let pledgeViewSummaryData = ManagePledgeSummaryViewData(
-      pledgeAmount: envelope.backing.amount.doubleValue,
-      pledgedOn: envelope.backing.pledgedOn,
-      projectCountry: Project.Country.us,
-      omitUSCurrencyCode: true,
       backerId: envelope.backing.backer.uid,
       backerName: envelope.backing.backer.name,
       backerSequence: envelope.backing.sequence,
-      shippingAmount: envelope.backing.shippingAmount?.doubleValue,
-      locationName: "Brooklyn, NY",
+      backingState: BackingState.pledged,
       currentUserIsCreatorOfProject: false,
+      locationName: "Brooklyn, NY",
       needsConversion: false,
+      omitUSCurrencyCode: true,
+      pledgeAmount: envelope.backing.amount.doubleValue,
+      pledgedOn: envelope.backing.pledgedOn,
+      projectCountry: Project.Country.us,
       projectDeadline: 1_476_657_315.0,
       projectState: ProjectState.live,
-      backingState: BackingState.pledged
+      shippingAmount: envelope.backing.shippingAmount?.doubleValue
     )
 
     withEnvironment(apiService: mockService) {
@@ -591,20 +591,20 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let envelope = ManagePledgeViewBackingEnvelope.template
 
     let pledgeViewSummaryData = ManagePledgeSummaryViewData(
-      pledgeAmount: envelope.backing.amount.doubleValue,
-      pledgedOn: envelope.backing.pledgedOn,
-      projectCountry: project.country,
-      omitUSCurrencyCode: true,
       backerId: envelope.backing.backer.uid,
       backerName: envelope.backing.backer.name,
       backerSequence: envelope.backing.sequence,
-      shippingAmount: envelope.backing.shippingAmount?.doubleValue,
-      locationName: "Brooklyn, NY",
+      backingState: BackingState.pledged,
       currentUserIsCreatorOfProject: false,
+      locationName: "Brooklyn, NY",
       needsConversion: true,
+      omitUSCurrencyCode: true,
+      pledgeAmount: envelope.backing.amount.doubleValue,
+      pledgedOn: envelope.backing.pledgedOn,
+      projectCountry: project.country,
       projectDeadline: 1_476_657_315.0,
       projectState: ProjectState.live,
-      backingState: BackingState.pledged
+      shippingAmount: envelope.backing.shippingAmount?.doubleValue
     )
 
     let pledgePaymentMethodViewData: ManagePledgePaymentMethodViewData = (

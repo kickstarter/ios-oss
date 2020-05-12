@@ -316,20 +316,20 @@ private func managePledgeSummaryViewData(
   envelope: ManagePledgeViewBackingEnvelope
 ) -> ManagePledgeSummaryViewData? {
   return .init(
-    pledgeAmount: envelope.backing.amount.doubleValue,
-    pledgedOn: envelope.backing.pledgedOn,
-    projectCountry: project.country,
-    omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
     backerId: envelope.backing.backer.uid,
     backerName: envelope.backing.backer.name,
     backerSequence: envelope.backing.sequence,
-    shippingAmount: envelope.backing.shippingAmount?.doubleValue,
-    locationName: envelope.backing.location?.name,
+    backingState: envelope.backing.status,
     currentUserIsCreatorOfProject: currentUserIsCreator(of: project),
+    locationName: envelope.backing.location?.name,
     needsConversion: project.stats.needsConversion,
+    omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
+    pledgeAmount: envelope.backing.amount.doubleValue,
+    pledgedOn: envelope.backing.pledgedOn,
+    projectCountry: project.country,
     projectDeadline: project.dates.deadline,
     projectState: envelope.project.state,
-    backingState: envelope.backing.status
+    shippingAmount: envelope.backing.shippingAmount?.doubleValue
   )
 }
 

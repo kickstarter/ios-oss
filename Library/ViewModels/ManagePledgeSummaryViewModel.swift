@@ -4,20 +4,20 @@ import Prelude
 import ReactiveSwift
 
 public struct ManagePledgeSummaryViewData: Equatable {
-  public let pledgeAmount: Double
-  public let pledgedOn: TimeInterval
-  public let projectCountry: Project.Country
-  public let omitUSCurrencyCode: Bool
   public let backerId: Int
   public let backerName: String
   public let backerSequence: Int
-  public let shippingAmount: Double?
-  public let locationName: String?
+  public let backingState: BackingState
   public let currentUserIsCreatorOfProject: Bool
+  public let locationName: String?
   public let needsConversion: Bool
+  public let omitUSCurrencyCode: Bool
+  public let pledgeAmount: Double
+  public let pledgedOn: TimeInterval
+  public let projectCountry: Project.Country
   public let projectDeadline: TimeInterval
   public let projectState: ProjectState
-  public let backingState: BackingState
+  public let shippingAmount: Double?
 }
 
 public protocol ManagePledgeSummaryViewModelInputs {
