@@ -65,7 +65,7 @@ final class ManagePledgePaymentMethodView: UIView {
       |> lastFourDigitsLabelStyle
 
     _ = self.paymentMethodAdaptableStackView
-      |> checkoutAdaptableStackViewStyle(
+      |> adaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
       |> paymentMethodAdaptableStackViewStyle

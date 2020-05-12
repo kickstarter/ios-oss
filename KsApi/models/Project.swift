@@ -126,6 +126,10 @@ public struct Project {
 
       return self.currency != currentCurrency
     }
+
+    public var goalMet: Bool {
+      return self.pledged >= self.goal
+    }
   }
 
   public struct MemberData {

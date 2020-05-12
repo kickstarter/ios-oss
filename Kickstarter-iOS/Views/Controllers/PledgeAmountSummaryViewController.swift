@@ -39,13 +39,13 @@ final class PledgeAmountSummaryViewController: UIViewController {
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
     _ = self.pledgeAmountStackView
-      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
+      |> adaptableStackViewStyle(isAccessibilityCategory)
 
     _ = self.rootStackView
       |> rootStackViewStyle
 
     _ = self.shippingLocationStackView
-      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
+      |> adaptableStackViewStyle(isAccessibilityCategory)
 
     _ = self.pledgeLabel
       |> pledgeLabelStyle
