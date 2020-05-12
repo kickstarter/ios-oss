@@ -6,7 +6,7 @@ extension Backing {
   public var pledgeAmount: Double {
     return ksr_pledgeAmount(
       self.amount,
-      subtractingShippingAmount: Double(self.shippingAmount ?? 0)
+      subtractingShippingAmount: self.shippingAmount.flatMap(Double.init)
     )
   }
 }
