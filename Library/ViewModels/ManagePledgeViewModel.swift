@@ -109,7 +109,7 @@ public final class ManagePledgeViewModel:
     self.configurePaymentMethodView = backing.map(managePledgePaymentMethodViewData)
 
     self.configurePledgeSummaryView = Signal.combineLatest(project, graphBackingEnvelope)
-      .map(managePledgeSummaryViewData(with:envelope:))
+      .map { project, env in managePledgeSummaryViewData(with: project, envelope: env) }
       .skipNil()
 
     self.configureRewardReceivedWithProject = project
