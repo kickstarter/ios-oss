@@ -892,7 +892,7 @@ private func allValuesChangedAndValid(
 private func pledgeAmountSummaryViewData(with project: Project) -> PledgeAmountSummaryViewData? {
   guard let backing = project.personalization.backing else { return nil }
 
-  return (
+  return .init(
     projectCountry: project.country,
     pledgeAmount: backing.amount,
     pledgedOn: backing.pledgedAt,

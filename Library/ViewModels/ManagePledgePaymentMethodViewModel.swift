@@ -3,13 +3,13 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public typealias ManagePledgePaymentMethodViewData = (
-  backingState: BackingState,
-  expirationDate: String?,
-  lastFour: String?,
-  creditCardType: CreditCardType?,
-  paymentType: PaymentType?
-)
+public struct ManagePledgePaymentMethodViewData: Equatable {
+  public let backingState: BackingState
+  public let expirationDate: String?
+  public let lastFour: String?
+  public let creditCardType: CreditCardType?
+  public let paymentType: PaymentType?
+}
 
 public protocol ManagePledgePaymentMethodViewModelInputs {
   /// Call to configure payment method section the values from a backing

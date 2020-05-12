@@ -125,7 +125,7 @@ private func formattedPledgeDate(_ timeInterval: TimeInterval) -> String {
 private func pledgeAmountSummaryViewData(
   with data: ManagePledgeSummaryViewData
 ) -> PledgeAmountSummaryViewData {
-  return (
+  return .init(
     projectCountry: data.projectCountry,
     pledgeAmount: data.pledgeAmount,
     pledgedOn: data.pledgedOn,
@@ -136,7 +136,7 @@ private func pledgeAmountSummaryViewData(
 }
 
 private func pledgeStatusLabelViewData(with data: ManagePledgeSummaryViewData) -> PledgeStatusLabelViewData {
-  return (
+  return .init(
     currentUserIsCreatorOfProject: data.currentUserIsCreatorOfProject,
     needsConversion: data.needsConversion,
     pledgeAmount: data.pledgeAmount,

@@ -27,7 +27,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
   }
 
   func testTextOutputsEmitTheCorrectValue() {
-    let data: PledgeAmountSummaryViewData = (
+    let data = PledgeAmountSummaryViewData(
       projectCountry: Project.Country.us,
       pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,
@@ -45,7 +45,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
   }
 
   func testShippingLocationStackViewIsHidden_isTrue_WhenLocationNameIsNil() {
-    let data: PledgeAmountSummaryViewData = (
+    let data = PledgeAmountSummaryViewData(
       projectCountry: Project.Country.us,
       pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,
@@ -61,7 +61,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
   }
 
   func testShippingLocationStackViewIsHidden_isFalse_WhenLocationNameIsNotNil() {
-    let data: PledgeAmountSummaryViewData = (
+    let data = PledgeAmountSummaryViewData(
       projectCountry: Project.Country.us,
       pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,

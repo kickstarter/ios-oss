@@ -18,7 +18,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testProjectStatusCanceled_Backer() {
-    let data: PledgeStatusLabelViewData = (
+    let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
       pledgeAmount: 10,
@@ -36,7 +36,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testProjectStatusFailed_Backer() {
-    let data: PledgeStatusLabelViewData = (
+    let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
       pledgeAmount: 10,
@@ -54,7 +54,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testBackingStatus_Canceled_Backer() {
-    let data: PledgeStatusLabelViewData = (
+    let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
       pledgeAmount: 10,
@@ -72,7 +72,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testBackingStatus_Collected_Backer() {
-    let data: PledgeStatusLabelViewData = (
+    let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
       pledgeAmount: 10,
@@ -90,7 +90,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testBackingStatus_Dropped_Backer() {
-    let data: PledgeStatusLabelViewData = (
+    let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
       pledgeAmount: 10,
@@ -108,7 +108,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testBackingStatus_Errored_Backer() {
-    let data: PledgeStatusLabelViewData = (
+    let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
       pledgeAmount: 10,
@@ -126,7 +126,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testBackingStatus_Preauth_Backer() {
-    let data: PledgeStatusLabelViewData = (
+    let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
       pledgeAmount: 10,
@@ -144,7 +144,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testBackingStatus_Pledged_Backer() {
-    let data: PledgeStatusLabelViewData = (
+    let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: false,
       needsConversion: false,
       pledgeAmount: 10,
@@ -163,7 +163,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
 
   func testBackingStatus_Pledged_OtherCurrency_Backer() {
     withEnvironment(locale: Locale(identifier: "en")) {
-      let data: PledgeStatusLabelViewData = (
+      let data = PledgeStatusLabelViewData(
         currentUserIsCreatorOfProject: false,
         needsConversion: true,
         pledgeAmount: 10,
@@ -186,7 +186,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       .filter { ![.canceled, .collected, .dropped, .errored, .pledged, .preauth].contains($0) }
 
     statuses.forEach { backingState in
-      let data: PledgeStatusLabelViewData = (
+      let data = PledgeStatusLabelViewData(
         currentUserIsCreatorOfProject: false,
         needsConversion: false,
         pledgeAmount: 10,
@@ -203,7 +203,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testProjectStatusCanceled_Creator() {
-    let data: PledgeStatusLabelViewData = (
+    let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: true,
       needsConversion: false,
       pledgeAmount: 10,
@@ -221,7 +221,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testProjectStatusFailed_Creator() {
-    let data: PledgeStatusLabelViewData = (
+    let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: true,
       needsConversion: false,
       pledgeAmount: 10,
@@ -239,7 +239,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testBackingStatus_Canceled_Creator() {
-    let data: PledgeStatusLabelViewData = (
+    let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: true,
       needsConversion: false,
       pledgeAmount: 10,
@@ -257,7 +257,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testBackingStatus_Collected_Creator() {
-    let data: PledgeStatusLabelViewData = (
+    let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: true,
       needsConversion: false,
       pledgeAmount: 10,
@@ -275,7 +275,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testBackingStatus_Dropped_Creator() {
-    let data: PledgeStatusLabelViewData = (
+    let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: true,
       needsConversion: false,
       pledgeAmount: 10,
@@ -293,7 +293,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testBackingStatus_Errored_Creator() {
-    let data: PledgeStatusLabelViewData = (
+    let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: true,
       needsConversion: false,
       pledgeAmount: 10,
@@ -311,7 +311,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testBackingStatus_Pledged_Creator() {
-    let data: PledgeStatusLabelViewData = (
+    let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: true,
       needsConversion: false,
       pledgeAmount: 10,
@@ -330,7 +330,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
 
   func testBackingStatus_Pledged_OtherCurrency_Creator() {
     withEnvironment(locale: Locale(identifier: "en")) {
-      let data: PledgeStatusLabelViewData = (
+      let data = PledgeStatusLabelViewData(
         currentUserIsCreatorOfProject: true,
         needsConversion: true,
         pledgeAmount: 10,
@@ -349,7 +349,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testBackingStatus_Preauth_Creator() {
-    let data: PledgeStatusLabelViewData = (
+    let data = PledgeStatusLabelViewData(
       currentUserIsCreatorOfProject: true,
       needsConversion: false,
       pledgeAmount: 10,
@@ -371,7 +371,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       .filter { ![.canceled, .collected, .dropped, .errored, .pledged, .preauth].contains($0) }
 
     statuses.forEach { backingState in
-      let data: PledgeStatusLabelViewData = (
+      let data = PledgeStatusLabelViewData(
         currentUserIsCreatorOfProject: true,
         needsConversion: false,
         pledgeAmount: 10,

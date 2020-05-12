@@ -34,7 +34,7 @@ final class CancelPledgeViewModelTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.country .~ Project.Country.us
 
-    let data: CancelPledgeViewData = (
+    let data = CancelPledgeViewData(
       project: project,
       projectCountry: project.country,
       projectName: project.name,
@@ -104,7 +104,7 @@ final class CancelPledgeViewModelTests: TestCase {
   func testGoBackButtonTapped() {
     let project = Project.template
 
-    let data: CancelPledgeViewData = (
+    let data = CancelPledgeViewData(
       project: project,
       projectCountry: project.country,
       projectName: project.name,
@@ -127,7 +127,7 @@ final class CancelPledgeViewModelTests: TestCase {
   func testDismissKeyboard() {
     let project = Project.template
 
-    let data: CancelPledgeViewData = (
+    let data = CancelPledgeViewData(
       project: project,
       projectCountry: project.country,
       projectName: project.name,
@@ -150,7 +150,7 @@ final class CancelPledgeViewModelTests: TestCase {
   func testViewTapped() {
     let project = Project.template
 
-    let data: CancelPledgeViewData = (
+    let data = CancelPledgeViewData(
       project: project,
       projectCountry: project.country,
       projectName: project.name,
@@ -177,7 +177,7 @@ final class CancelPledgeViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       let project = Project.template
 
-      let data: CancelPledgeViewData = (
+      let data = CancelPledgeViewData(
         project: project,
         projectCountry: project.country,
         projectName: project.name,
@@ -219,7 +219,7 @@ final class CancelPledgeViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       let project = Project.template
 
-      let data: CancelPledgeViewData = (
+      let data = CancelPledgeViewData(
         project: project,
         projectCountry: project.country,
         projectName: project.name,
@@ -275,7 +275,7 @@ final class CancelPledgeViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       let project = Project.template
 
-      let data: CancelPledgeViewData = (
+      let data = CancelPledgeViewData(
         project: project,
         projectCountry: project.country,
         projectName: project.name,
@@ -310,7 +310,7 @@ final class CancelPledgeViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       let project = Project.template
 
-      let data: CancelPledgeViewData = (
+      let data = CancelPledgeViewData(
         project: project,
         projectCountry: project.country,
         projectName: project.name,

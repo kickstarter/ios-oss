@@ -289,7 +289,7 @@ private func cancelPledgeViewData(
   with project: Project,
   backing: ManagePledgeViewBackingEnvelope.Backing
 ) -> CancelPledgeViewData {
-  return (
+  return .init(
     project: project,
     projectCountry: project.country,
     projectName: project.name,
@@ -302,7 +302,7 @@ private func cancelPledgeViewData(
 private func managePledgePaymentMethodViewData(
   with backing: ManagePledgeViewBackingEnvelope.Backing
 ) -> ManagePledgePaymentMethodViewData {
-  (
+  ManagePledgePaymentMethodViewData(
     backingState: backing.status,
     expirationDate: backing.creditCard?.expirationDate,
     lastFour: backing.creditCard?.lastFour,

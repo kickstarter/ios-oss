@@ -119,7 +119,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       fetchManagePledgeViewBackingResult: .success(envelope)
     )
 
-    let pledgePaymentMethodViewData: ManagePledgePaymentMethodViewData = (
+    let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
       backingState: .pledged,
       expirationDate: "2020-01-01",
       lastFour: "1234",
@@ -136,11 +136,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.configurePaymentMethodView.assertValueCount(1)
-
-      XCTAssertTrue(
-        self.configurePaymentMethodView.values.map { $0 == pledgePaymentMethodViewData }.allSatisfy(isTrue)
-      )
+      self.configurePaymentMethodView.assertValues([pledgePaymentMethodViewData])
     }
   }
 
@@ -607,7 +603,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       shippingAmount: envelope.backing.shippingAmount?.doubleValue
     )
 
-    let pledgePaymentMethodViewData: ManagePledgePaymentMethodViewData = (
+    let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
       backingState: .pledged,
       expirationDate: "2020-01-01",
       lastFour: "1234",
@@ -637,10 +633,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.scheduler.run()
 
       self.showSuccessBannerWithMessage.assertValues(["Got it! Your changes have been saved."])
-      XCTAssertTrue(
-        self.configurePaymentMethodView.values.map { $0 == pledgePaymentMethodViewData }.allSatisfy(isTrue)
-      )
 
+      self.configurePaymentMethodView.assertValues([pledgePaymentMethodViewData])
       self.configurePledgeSummaryView.assertValues([pledgeViewSummaryData])
 
       self.configureRewardSummaryViewProject.assertValues([project, updatedProject])

@@ -3,15 +3,15 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias PledgeStatusLabelViewData = (
-  currentUserIsCreatorOfProject: Bool,
-  needsConversion: Bool,
-  pledgeAmount: Double,
-  projectCountry: Project.Country,
-  projectDeadline: TimeInterval,
-  projectState: ProjectState,
-  backingState: BackingState
-)
+public struct PledgeStatusLabelViewData {
+  public let currentUserIsCreatorOfProject: Bool
+  public let needsConversion: Bool
+  public let pledgeAmount: Double
+  public let projectCountry: Project.Country
+  public let projectDeadline: TimeInterval
+  public let projectState: ProjectState
+  public let backingState: BackingState
+}
 
 public protocol PledgeStatusLabelViewModelInputs {
   func configure(with data: PledgeStatusLabelViewData)

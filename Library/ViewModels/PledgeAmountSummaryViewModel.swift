@@ -3,14 +3,14 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias PledgeAmountSummaryViewData = (
-  projectCountry: Project.Country,
-  pledgeAmount: Double,
-  pledgedOn: TimeInterval,
-  shippingAmount: Double?,
-  locationName: String?,
-  omitUSCurrencyCode: Bool
-)
+public struct PledgeAmountSummaryViewData {
+  public let projectCountry: Project.Country
+  public let pledgeAmount: Double
+  public let pledgedOn: TimeInterval
+  public let shippingAmount: Double?
+  public let locationName: String?
+  public let omitUSCurrencyCode: Bool
+}
 
 public protocol PledgeAmountSummaryViewModelInputs {
   func configureWith(_ data: PledgeAmountSummaryViewData)

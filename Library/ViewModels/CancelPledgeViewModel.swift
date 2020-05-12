@@ -3,14 +3,14 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias CancelPledgeViewData = (
-  project: Project, // TODO: remove once tracking is updated.
-  projectCountry: Project.Country,
-  projectName: String,
-  omitUSCurrencyCode: Bool,
-  backingId: String,
-  pledgeAmount: Double
-)
+public struct CancelPledgeViewData {
+  public let project: Project // TODO: remove once tracking is updated.
+  public let projectCountry: Project.Country
+  public let projectName: String
+  public let omitUSCurrencyCode: Bool
+  public let backingId: String
+  public let pledgeAmount: Double
+}
 
 public protocol CancelPledgeViewModelInputs {
   func cancelPledgeButtonTapped()

@@ -34,7 +34,7 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
     self.fixButtonHidden.assertDidNotEmitValue()
     self.notifyDelegateFixButtonTapped.assertDidNotEmitValue()
 
-    let data: ManagePledgePaymentMethodViewData = (
+    let data = ManagePledgePaymentMethodViewData(
       backingState: .pledged,
       expirationDate: "2019-09-30",
       lastFour: "1111",
@@ -60,7 +60,7 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
     self.fixButtonHidden.assertDidNotEmitValue()
     self.notifyDelegateFixButtonTapped.assertDidNotEmitValue()
 
-    let data: ManagePledgePaymentMethodViewData = (
+    let data = ManagePledgePaymentMethodViewData(
       backingState: .pledged,
       expirationDate: "2019-10-19",
       lastFour: "1111",
@@ -86,7 +86,7 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
     self.fixButtonHidden.assertDidNotEmitValue()
     self.notifyDelegateFixButtonTapped.assertDidNotEmitValue()
 
-    let data: ManagePledgePaymentMethodViewData = (
+    let data = ManagePledgePaymentMethodViewData(
       backingState: .pledged,
       expirationDate: "2019-10-19",
       lastFour: "4111",
@@ -112,7 +112,7 @@ final class ManagePledgePaymentMethodViewModelTests: TestCase {
     self.fixButtonHidden.assertDidNotEmitValue()
     self.notifyDelegateFixButtonTapped.assertDidNotEmitValue()
 
-    let data: ManagePledgePaymentMethodViewData = (
+    let data = ManagePledgePaymentMethodViewData(
       backingState: .errored,
       expirationDate: "2019-09-30",
       lastFour: "1111",
