@@ -21,7 +21,7 @@ final class CancelPledgeViewControllerTests: TestCase {
   func testCancelPledge() {
     let project = Project.cosmicSurgery
 
-    let data: CancelPledgeViewData = (
+    let data = CancelPledgeViewData(
       project: project,
       projectCountry: project.country,
       projectName: project.name,
