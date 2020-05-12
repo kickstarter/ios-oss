@@ -39,7 +39,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.tableView.register(nib: Nib.DiscoveryPostcardCell)
     self.tableView.registerCellClass(DiscoveryEditorialCell.self)
-    self.tableView.registerCellClass(DiscoveryLightsOnEditorialCell.self)
     self.tableView.registerCellClass(PersonalizationCell.self)
 
     self.tableView.dataSource = self.dataSource
@@ -223,7 +222,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.viewModel.outputs.showLightsOnEditorialHeader
       .observeForUI()
       .observeValues { [weak self] value in
-        self?.dataSource.showLightsOnEditorial(value: value)
+        self?.dataSource.showEditorial(value: value)
 
         self?.tableView.reloadData()
       }

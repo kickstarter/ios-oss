@@ -1317,9 +1317,6 @@
 		D79F0F7321067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F7221067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift */; };
 		D79F0F7521068DC800D3B32C /* SettingsDeleteAccountCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F7421068DC800D3B32C /* SettingsDeleteAccountCellViewModel.swift */; };
 		D79F0F772107D60800D3B32C /* SettingsRequestDataCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79F0F762107D60800D3B32C /* SettingsRequestDataCellViewModel.swift */; };
-		D7A2745B2460ACD600EDD30A /* DiscoveryLightsOnEditorialCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A274592460ACC800EDD30A /* DiscoveryLightsOnEditorialCell.swift */; };
-		D7A2745D2460AD7900EDD30A /* DiscoveryLightsOnEditorialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A2745C2460AD7900EDD30A /* DiscoveryLightsOnEditorialViewModel.swift */; };
-		D7A274602461E9C100EDD30A /* DiscoveryLightsOnEditorialViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A2745E2461E66C00EDD30A /* DiscoveryLightsOnEditorialViewModelTests.swift */; };
 		D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */; };
 		D7A37CCF1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */; };
 		D7A37D7A1E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A37D781E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift */; };
@@ -2726,9 +2723,6 @@
 		D79F0F7221067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRecommendationsCellViewModel.swift; sourceTree = "<group>"; };
 		D79F0F7421068DC800D3B32C /* SettingsDeleteAccountCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeleteAccountCellViewModel.swift; sourceTree = "<group>"; };
 		D79F0F762107D60800D3B32C /* SettingsRequestDataCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRequestDataCellViewModel.swift; sourceTree = "<group>"; };
-		D7A274592460ACC800EDD30A /* DiscoveryLightsOnEditorialCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryLightsOnEditorialCell.swift; sourceTree = "<group>"; };
-		D7A2745C2460AD7900EDD30A /* DiscoveryLightsOnEditorialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryLightsOnEditorialViewModel.swift; sourceTree = "<group>"; };
-		D7A2745E2461E66C00EDD30A /* DiscoveryLightsOnEditorialViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryLightsOnEditorialViewModelTests.swift; sourceTree = "<group>"; };
 		D7A37C8E1E2EB01700EA066D /* SearchEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCell.swift; sourceTree = "<group>"; };
 		D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEmptyStateCellViewModel.swift; sourceTree = "<group>"; };
 		D7A37D781E367E5A00EA066D /* MostPopularSearchProjectCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MostPopularSearchProjectCellViewModel.swift; sourceTree = "<group>"; };
@@ -3150,7 +3144,6 @@
 				015A06F51D219513007AE210 /* DashboardRewardsCell.swift */,
 				59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */,
 				773452F92384477D00E6B6A3 /* DiscoveryEditorialCell.swift */,
-				D7A274592460ACC800EDD30A /* DiscoveryLightsOnEditorialCell.swift */,
 				A72C3AB11D00FB1F0075227E /* DiscoveryExpandableRowCell.swift */,
 				A72C3AB21D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift */,
 				013672DF1E3970CA00BCA1B0 /* DiscoveryFiltersLoaderCell.swift */,
@@ -3840,8 +3833,6 @@
 				A7ED1F821E831C5C00BFFA01 /* DiscoveryExpandableRowCellViewModelTests.swift */,
 				0169F9871D6F51C400C8D5C5 /* DiscoveryFiltersViewModel.swift */,
 				A7ED1F831E831C5C00BFFA01 /* DiscoveryFiltersViewModelTests.swift */,
-				D7A2745C2460AD7900EDD30A /* DiscoveryLightsOnEditorialViewModel.swift */,
-				D7A2745E2461E66C00EDD30A /* DiscoveryLightsOnEditorialViewModelTests.swift */,
 				013F2FDB1D66243E0066DB77 /* DiscoveryNavigationHeaderViewModel.swift */,
 				A7ED1F841E831C5C00BFFA01 /* DiscoveryNavigationHeaderViewModelTests.swift */,
 				A72C3A911D00F6C70075227E /* DiscoveryPageViewModel.swift */,
@@ -5022,7 +5013,6 @@
 				A7F441C51D005A9400FE6FC5 /* LoginToutViewModel.swift in Sources */,
 				D7E20EA7228B4B7D00BA61A0 /* PledgeCTAContainerViewViewModel.swift in Sources */,
 				A75C811E1D210C4700B5AD03 /* ProjectActivityItemProvider.swift in Sources */,
-				D7A2745D2460AD7900EDD30A /* DiscoveryLightsOnEditorialViewModel.swift in Sources */,
 				370C8B6623590CA500DE75DD /* LoadingButtonViewModel.swift in Sources */,
 				1611EF5E23ABD1550051CDCC /* OptimizelyResultType.swift in Sources */,
 				D79F0F7321067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift in Sources */,
@@ -5295,7 +5285,6 @@
 				774D98DE23B1613800FC81C2 /* MockOptimizelyClient.swift in Sources */,
 				D667C2BC2305F03300EC094A /* ExperimentName+HelpersTests.swift in Sources */,
 				8A8099F622E2143400373E66 /* RewardCardViewModelTests.swift in Sources */,
-				D7A274602461E9C100EDD30A /* DiscoveryLightsOnEditorialViewModelTests.swift in Sources */,
 				D66850A323707CCC00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModelTests.swift in Sources */,
 				37D99C5B22247F58008EF839 /* NSBundleType+Tests.swift in Sources */,
 				374CB95122C17D6700B84219 /* CharacterSetTests.swift in Sources */,
@@ -5498,7 +5487,6 @@
 				A745D0481CA8985B00C12802 /* DashboardViewController.swift in Sources */,
 				D6B6766B20FF8F890082717D /* SettingsNewslettersCell.swift in Sources */,
 				77320F8A24411459004C631E /* SettingsAccountHeaderView.swift in Sources */,
-				D7A2745B2460ACD600EDD30A /* DiscoveryLightsOnEditorialCell.swift in Sources */,
 				015A06F41D219156007AE210 /* DashboardRewardRowStackView.swift in Sources */,
 				A78838A91D8A32060081E94D /* ProjectNavBarViewController.swift in Sources */,
 				D61F38EE233D0DAE00C8972B /* ManagePledgeRewardView.swift in Sources */,

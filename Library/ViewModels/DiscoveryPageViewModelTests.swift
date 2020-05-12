@@ -35,9 +35,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let showEditorialHeaderSubtitle = TestObserver<String?, Never>()
   fileprivate let showEditorialHeaderTagId = TestObserver<DiscoveryParams.TagID?, Never>()
   fileprivate let showEditorialHeaderTitle = TestObserver<String?, Never>()
-  fileprivate let showLightsOnEditorialHeader = TestObserver<DiscoveryLightsOnEditorialCellValue?, Never>()
+  fileprivate let showLightsOnEditorialHeader = TestObserver<DiscoveryEditorialCellValue?, Never>()
   fileprivate let showLightsOnEditorialHeaderImageName = TestObserver<String?, Never>()
   fileprivate let showLightsOnEditorialHeaderSubtitle = TestObserver<String?, Never>()
+  fileprivate let showLightsOnEditorialHeaderTagId = TestObserver<DiscoveryParams.TagID?, Never>()
   fileprivate let showLightsOnEditorialHeaderTitle = TestObserver<String?, Never>()
   fileprivate let showEmptyState = TestObserver<EmptyState, Never>()
   fileprivate let showOnboarding = TestObserver<Bool, Never>()
@@ -80,6 +81,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       .observe(self.showLightsOnEditorialHeaderSubtitle.observer)
     self.vm.outputs.showLightsOnEditorialHeader.map { $0?.imageName }
       .observe(self.showLightsOnEditorialHeaderImageName.observer)
+    self.vm.outputs.showLightsOnEditorialHeader.map { $0?.tagId }
+      .observe(self.showLightsOnEditorialHeaderTagId.observer)
     self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
     self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
     self.vm.outputs.showPersonalization.observe(self.showPersonalization.observer)
@@ -889,6 +892,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.showLightsOnEditorialHeaderSubtitle
       .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
     self.showLightsOnEditorialHeaderImageName.assertValues(["lights-on-home"])
+    self.showLightsOnEditorialHeaderTagId.assertValues([.lightsOn])
   }
 
   func testShowLightsOnEditorialHeader_LoggedIn() {
@@ -905,6 +909,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showLightsOnEditorialHeaderSubtitle
         .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
       self.showLightsOnEditorialHeaderImageName.assertValues(["lights-on-home"])
+      self.showLightsOnEditorialHeaderTagId.assertValues([.lightsOn])
     }
   }
 
