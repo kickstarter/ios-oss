@@ -64,8 +64,6 @@ final class ManagePledgeViewControllerTests: TestCase {
   }
 
   func testView_CurrentUser_IsNotBacker_IsCreator() {
-    self.recordMode = true
-
     let device = Device.phone4_7inch
     let language = Language.en
 
