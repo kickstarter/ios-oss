@@ -144,7 +144,7 @@ final class PledgeAmountViewController: UIViewController {
       }
   }
 
-  override func didMove(toParent _: UIViewController?) {
+  override func didMove(toParent parent: UIViewController?) {
     self.verticalSpacer.isHidden = true
   }
 
