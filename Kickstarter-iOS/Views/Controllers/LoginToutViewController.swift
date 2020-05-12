@@ -8,7 +8,8 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-public final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate, ProcessingViewPresenting {
+public final class LoginToutViewController: UIViewController, MFMailComposeViewControllerDelegate,
+  ProcessingViewPresenting {
   // MARK: - Properties
 
   @available(iOS 13.0, *)
@@ -537,7 +538,7 @@ private let separatorViewStyle: ViewStyle = { view in
 
 @available(iOS 13, *)
 extension LoginToutViewController: ASAuthorizationControllerDelegate {
-  func authorizationController(
+  public func authorizationController(
     controller _: ASAuthorizationController,
     didCompleteWithAuthorization authorization: ASAuthorization
   ) {
@@ -558,7 +559,10 @@ extension LoginToutViewController: ASAuthorizationControllerDelegate {
     self.viewModel.inputs.appleAuthorizationDidSucceed(with: data)
   }
 
-  func authorizationController(controller _: ASAuthorizationController, didCompleteWithError error: Error) {
+  public func authorizationController(
+    controller _: ASAuthorizationController,
+    didCompleteWithError error: Error
+  ) {
     if let error = error as? ASAuthorizationError {
       let authError: AuthServicesError
       switch error.errorCode {
@@ -576,7 +580,7 @@ extension LoginToutViewController: ASAuthorizationControllerDelegate {
 
 @available(iOS 13.0, *)
 extension LoginToutViewController: ASAuthorizationControllerPresentationContextProviding {
-  func presentationAnchor(for _: ASAuthorizationController) -> ASPresentationAnchor {
+  public func presentationAnchor(for _: ASAuthorizationController) -> ASPresentationAnchor {
     guard let window = self.view.window else {
       return ASPresentationAnchor()
     }
