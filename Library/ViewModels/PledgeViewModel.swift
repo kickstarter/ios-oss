@@ -38,6 +38,7 @@ public protocol PledgeViewModelInputs {
   )
   func paymentAuthorizationViewControllerDidFinish()
   func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData)
+  func pledgeDisclaimerViewDidTapLearnMore()
   func scaFlowCompleted(with result: StripePaymentHandlerActionStatusType, error: Error?)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func stripeTokenCreated(token: String?, error: Error?) -> PKPaymentAuthorizationStatus
@@ -184,7 +185,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.creditCardSelectedSignal.wrapInOptional()
     )
 
-    self.showWebHelp = self.termsOfUseTappedSignal
+    self.showWebHelp = Signal.merge(
+      self.termsOfUseTappedSignal,
+      self.pledgeDisclaimerViewDidTapLearnMoreSignal.mapConst(.trust)
+    )
 
     // MARK: - Apple Pay
 
@@ -730,6 +734,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   private let (pledgeAmountDataSignal, pledgeAmountObserver) = Signal<PledgeAmountData, Never>.pipe()
   public func pledgeAmountViewControllerDidUpdate(with data: PledgeAmountData) {
     self.pledgeAmountObserver.send(value: data)
+  }
+
+  private let (pledgeDisclaimerViewDidTapLearnMoreSignal, pledgeDisclaimerViewDidTapLearnMoreObserver)
+    = Signal<Void, Never>.pipe()
+  public func pledgeDisclaimerViewDidTapLearnMore() {
+    self.pledgeDisclaimerViewDidTapLearnMoreObserver.send(value: ())
   }
 
   private let (scaFlowCompletedWithResultSignal, scaFlowCompletedWithResultObserver)
