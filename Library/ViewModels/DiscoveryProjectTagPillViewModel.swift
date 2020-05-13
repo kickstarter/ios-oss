@@ -8,22 +8,22 @@ public enum DiscoveryProjectTagPillCellType {
 
   var backgroundColor: UIColor {
     switch self {
-    case .green: return .ksr_green_400
-    case .grey: return .ksr_grey_200
+    case .green: return UIColor.ksr_green_500.withAlphaComponent(0.07)
+    case .grey: return .ksr_grey_300
     }
   }
 
   var textColor: UIColor {
     switch self {
-    case .green: return .ksr_text_green_800
-    case .grey: return .ksr_text_dark_grey_500
+    case .green: return .ksr_green_500
+    case .grey: return .ksr_dark_grey_500
     }
   }
 
   var imageTintColor: UIColor {
     switch self {
-    case .green: return .ksr_green_800
-    case .grey: return .ksr_grey_400
+    case .green: return .ksr_green_500
+    case .grey: return .ksr_dark_grey_500
     }
   }
 }

@@ -4,7 +4,7 @@ import ReactiveSwift
 
 public typealias DiscoveryProjectCellRowValue = (
   project: Project,
-  category: KsApi.Category?,
+  category: KsApi.Category?, // FIXME: consolidate into two parameters: project, filterParams
   params: DiscoveryParams?
 )
 

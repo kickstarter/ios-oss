@@ -4,6 +4,21 @@ import Library
 import Prelude
 import UIKit
 
+final class DiscoveryProjectTagsCollectionViewDataSource: ValueCellDataSource {
+  func load(with tags: [DiscoveryProjectTagPillCellValue]) {
+    self.set(values: tags, cellClass: DiscoveryProjectTagPillCell.self, inSection: 0)
+  }
+
+  override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
+    switch (cell, value) {
+    case let (cell as DiscoveryProjectTagPillCell, value as DiscoveryProjectTagPillCellValue):
+      cell.configureWith(value: value)
+    default:
+      assertionFailure("Unrecognized combo: \(cell), \(value)")
+    }
+  }
+}
+
 final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private enum IconImageSize {
     static let height: CGFloat = 13.0
@@ -21,6 +36,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private lazy var goalMetIconImageView = { UIImageView(frame: .zero) }()
   private lazy var goalPercentFundedStackView = { UIStackView(frame: .zero) }()
   private lazy var percentFundedLabel = { UILabel(frame: .zero) }()
+  private lazy var pillLayout: PillLayout = { PillLayout() }()
   private lazy var projectDetailsStackView = { UIStackView(frame: .zero) }()
   private lazy var projectImageView = { UIImageView(frame: .zero) }()
   // Stack view container for "percent funded" and "backer count" info
@@ -28,6 +44,19 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private lazy var projectNameLabel = { UILabel(frame: .zero) }()
   private lazy var projectBlurbLabel = { UILabel(frame: .zero) }()
   private lazy var saveButton = { UIButton(type: .custom) }()
+  private let tagsCollectionViewDataSource = DiscoveryProjectTagsCollectionViewDataSource()
+
+  private lazy var tagsCollectionView: UICollectionView = {
+    UICollectionView(
+      frame: .zero,
+      collectionViewLayout: self.pillLayout
+    )
+      |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.never
+      |> \.dataSource .~ self.tagsCollectionViewDataSource
+      |> \.allowsSelection .~ false
+  }()
+
+  private var tagsCollectionViewHeightConstraint: NSLayoutConstraint?
 
   private let viewModel: DiscoveryProjectCardViewModelType = DiscoveryProjectCardViewModel()
   private let watchProjectViewModel: WatchProjectViewModelType = WatchProjectViewModel()
@@ -45,6 +74,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.setupConstraints()
     self.configureWatchProjectObservers()
 
+    self.tagsCollectionView.registerCellClass(DiscoveryProjectTagPillCell.self)
+
     self.bindStyles()
     self.bindViewModel()
   }
@@ -60,6 +91,18 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       self.sessionStartedObserver
     ]
     .forEach { $0.doIfSome(NotificationCenter.default.removeObserver) }
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    self.updateCollectionViewConstraints()
+  }
+
+  override func prepareForReuse() {
+    super.prepareForReuse()
+
+    self.tagsCollectionViewHeightConstraint?.constant = 0
   }
 
   func configureWith(value: DiscoveryProjectCellRowValue) {
@@ -137,14 +180,18 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
       |> projectInfoStackViewStyle
+
+    _ = self.tagsCollectionView
+      |> collectionViewStyle
   }
 
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.goalMetIconImageView.rac.hidden = self.viewModel.outputs.goalMetIconHidden
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
-    self.goalMetIconImageView.rac.hidden = self.viewModel.outputs.goalMetIconHidden
+    self.tagsCollectionView.rac.hidden = self.viewModel.outputs.tagsCollectionViewHidden
 
     self.viewModel.outputs.projectImageURL
       .observeForUI()
@@ -178,6 +225,14 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
           |> \.attributedText .~ attributedString
       }
 
+    self.viewModel.outputs.loadProjectTags
+      .observeForUI()
+      .observeValues { [weak self] tags in
+        self?.tagsCollectionViewDataSource.load(with: tags)
+
+        self?.tagsCollectionView.reloadData()
+    }
+
     // Watch Project View Model
 
     self.watchProjectViewModel.outputs.showProjectSavedAlert
@@ -201,6 +256,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       }
   }
 
+  // MARK: - Functions
+
   private func configureSubviews() {
     _ = (self.cardContainerView, self.contentView)
       |> ksr_addSubviewToParent()
@@ -218,7 +275,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = ([
       self.projectNameLabel,
       self.projectBlurbLabel,
-      self.projectInfoStackView
+      self.projectInfoStackView,
+      self.tagsCollectionView
     ], self.projectDetailsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -238,7 +296,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       self.projectDetailsStackView,
       self.goalMetIconImageView,
       self.backersCountIconImageView,
-      self.saveButton
+      self.saveButton,
+      self.tagsCollectionView
     ]
       ||> \.translatesAutoresizingMaskIntoConstraints .~ false
 
@@ -248,6 +307,10 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       equalTo: self.projectImageView.widthAnchor,
       multiplier: aspectRatio
     ) |> \.priority .~ .defaultHigh
+
+    self.tagsCollectionViewHeightConstraint = self.tagsCollectionView.heightAnchor
+      .constraint(equalToConstant: 0)
+      |> \.isActive .~ true
 
     NSLayoutConstraint.activate([
       self.projectImageView.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
@@ -266,7 +329,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       self.goalMetIconImageView.widthAnchor.constraint(equalToConstant: IconImageSize.width),
       self.goalMetIconImageView.heightAnchor.constraint(equalToConstant: IconImageSize.height),
       self.backersCountIconImageView.widthAnchor.constraint(equalToConstant: IconImageSize.width),
-      self.backersCountIconImageView.heightAnchor.constraint(equalToConstant: IconImageSize.height)
+      self.backersCountIconImageView.heightAnchor.constraint(equalToConstant: IconImageSize.height),
+      self.tagsCollectionView.widthAnchor.constraint(equalTo: self.projectDetailsStackView.layoutMarginsGuide.widthAnchor)
     ])
   }
 
@@ -308,6 +372,12 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.watchProjectViewModel.inputs.awakeFromNib()
   }
 
+  private func updateCollectionViewConstraints() {
+    self.tagsCollectionView.layoutIfNeeded()
+
+    self.tagsCollectionViewHeightConstraint?.constant = self.tagsCollectionView.contentSize.height
+  }
+
   // MARK: - Accessors
 
   @objc fileprivate func saveButtonPressed(_: UIButton) {
@@ -320,6 +390,11 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 }
 
 // MARK: - Styles
+
+private let collectionViewStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ .white
+}
 
 private let contentViewStyle: ViewStyle = { view in
   view
