@@ -100,25 +100,32 @@ public final class EditorialProjectsViewController: UIViewController {
     _ = self.view
       |> \.backgroundColor .~ UIColor.white
 
-//    _ = self.headerView
-//      |> UIView.lens.layoutMargins %~~ { _, view in
-//        view.traitCollection.isRegularRegular
-//          ? .init(top: Styles.grid(2), left: Styles.grid(30), bottom: 0, right: Styles.grid(30))
-//          : .init(top: Styles.grid(2), left: Styles.grid(7), bottom: 0, right: Styles.grid(6))
-//      }
+    _ = self.headerView
+      |> UIView.lens.layoutMargins %~~ { _, view in
+        view.traitCollection.isRegularRegular
+          ? .init(top: Styles.grid(2), left: Styles.grid(30), bottom: 0, right: Styles.grid(30))
+          : .init(top: Styles.grid(2), left: Styles.grid(7), bottom: 0, right: Styles.grid(6))
+      }
 
-//    _ = self.headerView
-//      |> headerViewStyle
+    _ = self.headerView
+      |> headerViewStyle
 
     _ = self.editorialImageView
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
+
+    _ = self.editorialLabelStackView
+      |> \.axis .~ .vertical
+      |> \.spacing .~ Styles.grid(2)
+      |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.distribution .~ .fill
+      |> UIStackView.lens.layoutMargins .~ .init(top: Styles.grid(10), left: Styles.grid(6), bottom: Styles.grid(2), right: Styles.grid(6))
 
     _ = self.editorialTitleLabel
       |> editorialLabelStyle
       |> \.font %~~ { _, label in
         label.traitCollection.isRegularRegular
-          ? UIFont.ksr_title3(size: 30).bolded
-          : UIFont.ksr_title3().bolded
+          ? UIFont.ksr_title2(size: 30).bolded
+          : UIFont.ksr_title2().bolded
       }
 
     _ = self.editorialSubtitleLabel
@@ -126,16 +133,13 @@ public final class EditorialProjectsViewController: UIViewController {
       |> \.text %~ { _ in Strings.Help_local_businesses_keep_the_lights() }
       |> \.font %~~ { _, label in
         label.traitCollection.isRegularRegular
-          ? UIFont.ksr_callout(size: 20)
-          : UIFont.ksr_callout().bolded
+          ? UIFont.ksr_headline(size: 20)
+          : UIFont.ksr_headline().bolded
       }
 
     _ = self.closeButton
-      |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
-      |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
-      |> UIButton.lens.accessibilityHint %~ { _ in
-        Strings.dashboard_switcher_accessibility_label_closes_list_of_projects()
-      }
+      |> closeButtonStyle
+
   }
 
   // MARK: - View model
@@ -192,14 +196,18 @@ public final class EditorialProjectsViewController: UIViewController {
     _ = (self.headerView, self.view)
       |> ksr_addSubviewToParent()
 
-//    _ = (self.headerTopLayoutGuide, self.headerView)
-//      |> ksr_addLayoutGuideToView()
-
-    _ = (self.editorialTitleLabel, self.headerView)
-      |> ksr_addSubviewToParent()
+    _ = (self.headerTopLayoutGuide, self.headerView)
+      |> ksr_addLayoutGuideToView()
 
     _ = (self.editorialImageView, self.headerView)
       |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.editorialLabelStackView, self.editorialImageView)
+       |> ksr_addSubviewToParent()
+
+    _ = ([self.editorialTitleLabel, self.editorialSubtitleLabel], self.editorialLabelStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.discoveryPageViewController.view, self.view)
       |> ksr_addSubviewToParent()
@@ -213,9 +221,9 @@ public final class EditorialProjectsViewController: UIViewController {
   }
 
   private func setupConstraints() {
-    //let headerTopLayoutGuideHeightConstraint = self.headerTopLayoutGuide.heightAnchor
-    // .constraint(equalToConstant: 0)
-   // self.headerTopLayoutGuideHeightConstraint = headerTopLayoutGuideHeightConstraint
+    let headerTopLayoutGuideHeightConstraint = self.headerTopLayoutGuide.heightAnchor
+     .constraint(equalToConstant: 0)
+    self.headerTopLayoutGuideHeightConstraint = headerTopLayoutGuideHeightConstraint
 
     NSLayoutConstraint.activate([
       // headerView
@@ -224,31 +232,25 @@ public final class EditorialProjectsViewController: UIViewController {
       self.headerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.headerView.widthAnchor.constraint(equalTo: self.discoveryPageViewController.tableView.widthAnchor),
       // headerTopLayoutGuide
-     // self.headerTopLayoutGuide.leftAnchor.constraint(equalTo: self.headerView.leftAnchor),
-//      self.headerTopLayoutGuide.rightAnchor.constraint(equalTo: self.headerView.rightAnchor),
-//      self.headerTopLayoutGuide.topAnchor.constraint(equalTo: self.headerView.topAnchor),
-//     // headerTopLayoutGuideHeightConstraint,
-      // editorialTitleLabel
-//      self.editorialTitleLabel.leftAnchor.constraint(equalTo: self.headerView.layoutMarginsGuide.leftAnchor),
-//      self.editorialTitleLabel.topAnchor
-//        .constraint(equalTo: self.headerTopLayoutGuide.bottomAnchor, constant: Styles.gridHalf(3)),
-//      self.editorialTitleLabel.rightAnchor
-//        .constraint(equalTo: self.headerView.layoutMarginsGuide.rightAnchor),
+      self.headerTopLayoutGuide.leftAnchor.constraint(equalTo: self.headerView.leftAnchor),
+      self.headerTopLayoutGuide.rightAnchor.constraint(equalTo: self.headerView.rightAnchor),
+      self.headerTopLayoutGuide.topAnchor.constraint(equalTo: self.headerView.topAnchor),
+      headerTopLayoutGuideHeightConstraint,
+      // editorialLabelStackView
+      self.editorialLabelStackView.trailingAnchor.constraint(equalTo: self.editorialImageView.trailingAnchor),
+      self.editorialLabelStackView.topAnchor
+      .constraint(equalTo: self.editorialImageView.topAnchor, constant: Styles.grid(5)),
+      self.editorialLabelStackView.leadingAnchor
+      .constraint(equalTo: self.editorialImageView.leadingAnchor),
+      self.editorialImageView.bottomAnchor
+      .constraint(equalTo: self.editorialLabelStackView.bottomAnchor, constant: Styles.grid(5)),
       // closeButton
-      self.closeButton.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.closeButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: Styles.grid(1)),
       self.closeButton.topAnchor.constraint(
-        equalTo: self.view.safeAreaLayoutGuide.topAnchor
+        equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: Styles.grid(3)
       ),
       self.closeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
       self.closeButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.width),
-      // editorialImageView
-      self.editorialImageView.leftAnchor.constraint(equalTo: self.headerView.leftAnchor),
-      self.editorialImageView.rightAnchor.constraint(equalTo: self.headerView.rightAnchor),
-      self.editorialImageView.bottomAnchor.constraint(equalTo: self.headerView.bottomAnchor),
-      self.editorialImageView.topAnchor.constraint(
-        equalTo: self.editorialTitleLabel.bottomAnchor,
-        constant: Styles.grid(6)
-      )
     ])
   }
 
@@ -290,11 +292,19 @@ extension EditorialProjectsViewController: DiscoveryPageViewControllerDelegate {
 
 // MARK: - Styles
 
-//private let headerViewStyle: ViewStyle = { view in
-//  view
-//    |> \.clipsToBounds .~ true
-//    |> \.backgroundColor .~ .ksr_trust_700
-//}
+private let closeButtonStyle: ButtonStyle = { button in
+  button
+    |> UIButton.lens.image(for: .normal) .~ image(named: "icon--close-circle")
+    |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
+    |> UIButton.lens.accessibilityHint %~ { _ in
+    Strings.dashboard_switcher_accessibility_label_closes_list_of_projects()
+  }
+}
+
+private let headerViewStyle: ViewStyle = { view in
+  view
+    |> \.clipsToBounds .~ true
+}
 
 private let editorialLabelStyle: LabelStyle = { label in
   label
