@@ -17,8 +17,18 @@ public final class EditorialProjectsViewController: UIViewController {
       |> \.delegate .~ self
   }()
 
+  private lazy var editorialLabelStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var editorialImageView = {
     UIImageView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var editorialSubtitleLabel: UILabel = {
+    UILabel(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -32,7 +42,7 @@ public final class EditorialProjectsViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-//  private lazy var headerTopLayoutGuide: UILayoutGuide = { UILayoutGuide() }()
+  private lazy var headerTopLayoutGuide: UILayoutGuide = { UILayoutGuide() }()
   private var headerTopLayoutGuideHeightConstraint: NSLayoutConstraint?
 
   private let viewModel: EditorialProjectsViewModelType = EditorialProjectsViewModel()
@@ -75,7 +85,7 @@ public final class EditorialProjectsViewController: UIViewController {
     self.discoveryPageViewController.tableView.scrollIndicatorInsets =
       self.discoveryPageViewController.tableView.contentInset
 
-    //self.headerTopLayoutGuideHeightConstraint?.constant = self.view.safeAreaInsets.top
+    self.headerTopLayoutGuideHeightConstraint?.constant = self.view.safeAreaInsets.top
   }
 
   public override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -109,6 +119,15 @@ public final class EditorialProjectsViewController: UIViewController {
         label.traitCollection.isRegularRegular
           ? UIFont.ksr_title3(size: 30).bolded
           : UIFont.ksr_title3().bolded
+      }
+
+    _ = self.editorialSubtitleLabel
+      |> editorialLabelStyle
+      |> \.text %~ { _ in Strings.Help_local_businesses_keep_the_lights() }
+      |> \.font %~~ { _, label in
+        label.traitCollection.isRegularRegular
+          ? UIFont.ksr_callout(size: 20)
+          : UIFont.ksr_callout().bolded
       }
 
     _ = self.closeButton
