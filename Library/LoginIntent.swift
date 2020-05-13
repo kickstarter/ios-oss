@@ -2,6 +2,7 @@ public enum LoginIntent: String {
   case activity
   case backProject
   case discoveryOnboarding
+  case erroredPledge
   case generic
   case loginTab
   case messageCreator
@@ -15,6 +16,8 @@ public enum LoginIntent: String {
       return "pledge"
     case .discoveryOnboarding:
       return "discovery_prompt"
+    case .erroredPledge:
+      return "errored_pledge"
     case .generic:
       return "generic"
     case .loginTab:
