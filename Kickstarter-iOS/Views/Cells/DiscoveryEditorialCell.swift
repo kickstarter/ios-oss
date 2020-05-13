@@ -121,7 +121,7 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    _ = (self.containerView, self.editorialImageView)
+    _ = (self.containerView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
@@ -143,7 +143,7 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.containerView.widthAnchor
-        .constraint(equalTo: self.editorialImageView.widthAnchor, multiplier: 0.52)
+        .constraint(equalTo: self.editorialImageView.widthAnchor, multiplier: 0.55)
     ])
   }
 
@@ -161,4 +161,5 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.axis .~ .vertical
     |> \.spacing .~ Styles.grid(2)
     |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ .init(top: Styles.grid(2), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(0))
 }
