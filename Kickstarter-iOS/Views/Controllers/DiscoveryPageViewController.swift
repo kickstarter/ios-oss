@@ -348,6 +348,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
       cell.delegate = self
     } else if let cell = cell as? DiscoveryEditorialCell {
       cell.delegate = self
+    } else if let cell = cell as? DiscoveryLightsOnEditorialCell {
+      cell.delegate = self
     } else if let cell = cell as? PersonalizationCell {
       cell.delegate = self
     }
@@ -507,6 +509,14 @@ extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
 
 extension DiscoveryPageViewController: DiscoveryEditorialCellDelegate {
   func discoveryEditorialCellTapped(_: DiscoveryEditorialCell, tagId: DiscoveryParams.TagID) {
+    self.viewModel.inputs.discoveryEditorialCellTapped(with: tagId)
+  }
+}
+
+// MARK: - DiscoveryLightsOnEditorialCellDelegate
+
+extension DiscoveryPageViewController: DiscoveryLightsOnEditorialCellDelegate {
+  func discoveryLightsOnEditorialCellTapped(_: DiscoveryLightsOnEditorialCell, tagId:  DiscoveryParams.TagID) {
     self.viewModel.inputs.discoveryEditorialCellTapped(with: tagId)
   }
 }

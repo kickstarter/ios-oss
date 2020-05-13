@@ -385,6 +385,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
           title: Strings.Introducing_Lights_On(),
           subtitle: Strings.Support_creative_spaces_and_businesses_affected_by(),
           imageName: "lights-on-home", tagId: .lightsOn
+          tagId: .lightsOn
         )
       }.skipRepeats()
 
