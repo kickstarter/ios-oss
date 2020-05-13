@@ -441,8 +441,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .filter { $0 == .tab(.search) }
       .ignoreValues()
 
-    self.goToLoginWithIntent = fixErroredPledgeLinkAndIsLoggedIn.filter(third >>> isFalse)
-      .mapConst(.erroredPledge)
+    let goToLogin = deepLink
+      .filter { $0 == .tab(.login) }
+      .ignoreValues()
+
+    self.goToLoginWithIntent = Signal.merge(
+      fixErroredPledgeLinkAndIsLoggedIn.filter(third >>> isFalse).mapConst(.erroredPledge),
+      goToLogin.mapConst(.generic)
+    )
 
     self.goToCreatorMessageThread = deepLink
       .map { navigation -> (Param, Int)? in
@@ -481,7 +487,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let resolvedRedirectUrl = deepLinkUrl
       .filter { Navigation.deepLinkMatch($0) == nil }
-      .logEvents(identifier: "***")
 
     self.goToMobileSafari = Signal.merge(
       resolvedRedirectUrl,
