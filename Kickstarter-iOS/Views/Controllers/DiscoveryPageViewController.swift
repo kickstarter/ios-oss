@@ -39,6 +39,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.tableView.register(nib: Nib.DiscoveryPostcardCell)
     self.tableView.registerCellClass(DiscoveryEditorialCell.self)
     self.tableView.registerCellClass(PersonalizationCell.self)
+    self.tableView.registerCellClass(DiscoveryProjectCardCell.self)
 
     self.tableView.dataSource = self.dataSource
 
@@ -192,8 +193,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.viewModel.outputs.projectsLoaded
       .observeForUI()
-      .observeValues { [weak self] projects, params, _ in
-        self?.dataSource.load(projects: projects, params: params)
+      .observeValues { [weak self] projects, params, variant in
+        self?.dataSource.load(projects: projects, params: params, projectCardVariant: variant)
         self?.tableView.reloadData()
         self?.updateProjectPlaylist(projects)
       }
@@ -349,6 +350,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
     } else if let cell = cell as? DiscoveryEditorialCell {
       cell.delegate = self
     } else if let cell = cell as? PersonalizationCell {
+      cell.delegate = self
+    } else if let cell = cell as? DiscoveryProjectCardCell {
       cell.delegate = self
     }
 

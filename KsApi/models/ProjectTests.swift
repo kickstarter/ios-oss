@@ -289,4 +289,28 @@ final class ProjectTests: XCTestCase {
 
     XCTAssertEqual(0, project.dates.hoursRemaining(from: nowDate!, using: calendar))
   }
+
+  func testGoalMet_PledgedIsLessThanGoal() {
+    let project = Project.template
+      |> \.stats.goal .~ 1_000
+      |> \.stats.pledged .~ 50
+
+    XCTAssertFalse(project.stats.goalMet)
+  }
+
+  func testGoalMet_PledgedEqualToGoal() {
+    let project = Project.template
+      |> \.stats.goal .~ 1_000
+      |> \.stats.pledged .~ 1_000
+
+    XCTAssertTrue(project.stats.goalMet)
+  }
+
+  func testGoalMet_PledgedIsGreaterThanGoal() {
+    let project = Project.template
+      |> \.stats.goal .~ 1_000
+      |> \.stats.pledged .~ 2_000
+
+    XCTAssertTrue(project.stats.goalMet)
+  }
 }
