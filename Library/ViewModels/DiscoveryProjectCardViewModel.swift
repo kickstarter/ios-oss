@@ -1,7 +1,7 @@
 import Foundation
+import KsApi
 import Prelude
 import ReactiveSwift
-import KsApi
 
 public typealias BoldedAttributedLabelData = (boldedString: String, inString: String)
 
@@ -58,15 +58,19 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
       .map(projectCategoryTagShouldHide(for:in:))
     let pwlTagShouldHide = project.map(\.staffPick).negate()
 
-    self.tagsCollectionViewHidden = Signal.combineLatest(projectCategoryTagShouldHide,
-                                                         pwlTagShouldHide)
-      .map { $0 && $1 }
+    self.tagsCollectionViewHidden = Signal.combineLatest(
+      projectCategoryTagShouldHide,
+      pwlTagShouldHide
+    )
+    .map { $0 && $1 }
 
-    self.loadProjectTags = Signal.combineLatest(project,
-                                                pwlTagShouldHide.negate(),
-                                                projectCategoryTagShouldHide.negate())
-      .map(projectTags(project:shouldShowPWLTag:shouldShowCategoryTag:))
-      .filter { !$0.isEmpty }
+    self.loadProjectTags = Signal.combineLatest(
+      project,
+      pwlTagShouldHide.negate(),
+      projectCategoryTagShouldHide.negate()
+    )
+    .map(projectTags(project:shouldShowPWLTag:shouldShowCategoryTag:))
+    .filter { !$0.isEmpty }
   }
 
   private let configureWithValueProperty = MutableProperty<DiscoveryProjectCellRowValue?>(nil)
@@ -98,23 +102,27 @@ private func projectCategoryTagShouldHide(for project: Project, in category: KsA
 
 private func projectTags(project: Project, shouldShowPWLTag: Bool, shouldShowCategoryTag: Bool)
   -> [DiscoveryProjectTagPillCellValue] {
-      var tags: [DiscoveryProjectTagPillCellValue] = []
+  var tags: [DiscoveryProjectTagPillCellValue] = []
 
-    if shouldShowPWLTag {
-      let pwlTag = DiscoveryProjectTagPillCellValue(type: .green,
-                                                    tagLabelText: Strings.Projects_We_Love(),
-                                                    tagIconImageName: "icon--small-k")
+  if shouldShowPWLTag {
+    let pwlTag = DiscoveryProjectTagPillCellValue(
+      type: .green,
+      tagLabelText: Strings.Projects_We_Love(),
+      tagIconImageName: "icon--small-k"
+    )
 
-      tags.append(pwlTag)
-    }
+    tags.append(pwlTag)
+  }
 
-    if shouldShowCategoryTag {
-      let categoryTag = DiscoveryProjectTagPillCellValue(type: .grey,
-                                                         tagLabelText: project.category.name,
-                                                         tagIconImageName: "icon--compass")
+  if shouldShowCategoryTag {
+    let categoryTag = DiscoveryProjectTagPillCellValue(
+      type: .grey,
+      tagLabelText: project.category.name,
+      tagIconImageName: "icon--compass"
+    )
 
-      tags.append(categoryTag)
-    }
+    tags.append(categoryTag)
+  }
 
-    return tags
+  return tags
 }

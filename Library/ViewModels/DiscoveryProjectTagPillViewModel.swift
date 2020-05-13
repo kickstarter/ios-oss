@@ -47,12 +47,12 @@ public protocol DiscoveryProjectTagPillViewModelOutputs {
 }
 
 public protocol DiscoveryProjectTagPillViewModelType {
-    var inputs: DiscoveryProjectTagPillViewModelInputs { get }
-    var outputs: DiscoveryProjectTagPillViewModelOutputs { get }
+  var inputs: DiscoveryProjectTagPillViewModelInputs { get }
+  var outputs: DiscoveryProjectTagPillViewModelOutputs { get }
 }
 
-
-public final class DiscoveryProjectTagPillViewModel: DiscoveryProjectTagPillViewModelType, DiscoveryProjectTagPillViewModelInputs, DiscoveryProjectTagPillViewModelOutputs {
+public final class DiscoveryProjectTagPillViewModel: DiscoveryProjectTagPillViewModelType,
+  DiscoveryProjectTagPillViewModelInputs, DiscoveryProjectTagPillViewModelOutputs {
   public init() {
     let configureWithValue = self.configureWithValueProperty.signal.skipNil()
 

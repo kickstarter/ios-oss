@@ -6,6 +6,7 @@ import UIKit
 
 final class DiscoveryProjectTagPillCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
+
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var tagIconImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var tagLabel: UILabel = { UILabel(frame: .zero) }()
@@ -54,12 +55,12 @@ final class DiscoveryProjectTagPillCell: UICollectionViewCell, ValueCell {
     self.tagIconImageView.rac.tintColor = self.viewModel.outputs.tagIconImageTintColor
 
     self.viewModel.outputs.tagIconImageName
-    .observeForUI()
-    .observeValues { [weak self] imageName in
-      guard let self = self else { return }
-      _ = self.tagIconImageView
-        |> \.image .~ image(named: imageName)
-    }
+      .observeForUI()
+      .observeValues { [weak self] imageName in
+        guard let self = self else { return }
+        _ = self.tagIconImageView
+          |> \.image .~ image(named: imageName)
+      }
   }
 
   // MARK: - Configuration
@@ -85,7 +86,8 @@ final class DiscoveryProjectTagPillCell: UICollectionViewCell, ValueCell {
 
     self.stackViewWidthConstraint = self.rootStackView.widthAnchor.constraint(lessThanOrEqualToConstant: 0.0)
 
-    let tagIconImageViewHeightConstraint = self.tagIconImageView.heightAnchor.constraint(equalToConstant: 13.0)
+    let tagIconImageViewHeightConstraint = self.tagIconImageView.heightAnchor
+      .constraint(equalToConstant: 13.0)
       |> \.priority .~ .defaultHigh
     let tagIconImageViewWidthConstraint = self.tagIconImageView.widthAnchor.constraint(equalToConstant: 13.0)
       |> \.priority .~ .defaultHigh
@@ -96,7 +98,7 @@ final class DiscoveryProjectTagPillCell: UICollectionViewCell, ValueCell {
       tagIconImageViewWidthConstraint,
       tagIconImageViewHeightConstraint,
       self.stackViewWidthConstraint
-      ].compact())
+    ].compact())
   }
 }
 

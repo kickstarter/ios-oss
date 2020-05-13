@@ -23,11 +23,13 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private lazy var goalPercentFundedStackView = { UIStackView(frame: .zero) }()
   private lazy var percentFundedLabel = { UILabel(frame: .zero) }()
   private lazy var pillLayout: PillLayout = {
-    PillLayout(minimumInteritemSpacing: Styles.grid(1),
-               minimumLineSpacing: Styles.grid(1)
+    PillLayout(
+      minimumInteritemSpacing: Styles.grid(1),
+      minimumLineSpacing: Styles.grid(1)
 //               sectionInset: .init(top: Styles.grid(1))
     )
   }()
+
   private lazy var projectDetailsStackView = { UIStackView(frame: .zero) }()
   private lazy var projectImageView = { UIImageView(frame: .zero) }()
   // Stack view container for "percent funded" and "backer count" info
@@ -235,7 +237,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
         self?.tagsCollectionView.reloadData()
 
         self?.contentView.setNeedsLayout()
-    }
+      }
 
     // Watch Project View Model
 
@@ -310,7 +312,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     let imageHeightConstraint = self.projectImageView.heightAnchor.constraint(
       equalTo: self.projectImageView.widthAnchor,
       multiplier: aspectRatio
-      ) |> \.priority .~ .defaultHigh
+    ) |> \.priority .~ .defaultHigh
 
     self.tagsCollectionViewHeightConstraint = self.tagsCollectionView.heightAnchor
       .constraint(greaterThanOrEqualToConstant: 0)
@@ -327,7 +329,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       self.goalMetIconImageView.heightAnchor.constraint(equalToConstant: IconImageSize.height),
       self.backersCountIconImageView.widthAnchor.constraint(equalToConstant: IconImageSize.width),
       self.backersCountIconImageView.heightAnchor.constraint(equalToConstant: IconImageSize.height),
-      self.tagsCollectionView.widthAnchor.constraint(equalTo: self.projectDetailsStackView.layoutMarginsGuide.widthAnchor)
+      self.tagsCollectionView.widthAnchor
+        .constraint(equalTo: self.projectDetailsStackView.layoutMarginsGuide.widthAnchor)
     ])
   }
 
@@ -391,9 +394,9 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 }
 
 extension DiscoveryProjectCardCell: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView,
+  func collectionView(_: UICollectionView,
                       willDisplay cell: UICollectionViewCell,
-                      forItemAt indexPath: IndexPath) {
+                      forItemAt _: IndexPath) {
     guard let pillCell = cell as? DiscoveryProjectTagPillCell else {
       return
     }
