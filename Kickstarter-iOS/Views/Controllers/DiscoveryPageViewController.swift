@@ -219,14 +219,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.showLightsOnEditorialHeader
-      .observeForUI()
-      .observeValues { [weak self] value in
-        self?.dataSource.showEditorial(value: value)
-
-        self?.tableView.reloadData()
-      }
-
     self.viewModel.outputs.showPersonalization
       .observeForUI()
       .observeValues { [weak self] shouldShow in

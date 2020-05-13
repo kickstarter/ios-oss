@@ -35,11 +35,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let showEditorialHeaderSubtitle = TestObserver<String?, Never>()
   fileprivate let showEditorialHeaderTagId = TestObserver<DiscoveryParams.TagID?, Never>()
   fileprivate let showEditorialHeaderTitle = TestObserver<String?, Never>()
-  fileprivate let showLightsOnEditorialHeader = TestObserver<DiscoveryEditorialCellValue?, Never>()
-  fileprivate let showLightsOnEditorialHeaderImageName = TestObserver<String?, Never>()
-  fileprivate let showLightsOnEditorialHeaderSubtitle = TestObserver<String?, Never>()
-  fileprivate let showLightsOnEditorialHeaderTagId = TestObserver<DiscoveryParams.TagID?, Never>()
-  fileprivate let showLightsOnEditorialHeaderTitle = TestObserver<String?, Never>()
   fileprivate let showEmptyState = TestObserver<EmptyState, Never>()
   fileprivate let showOnboarding = TestObserver<Bool, Never>()
   fileprivate let showPersonalization = TestObserver<Bool, Never>()
@@ -74,15 +69,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.showEditorialHeader.map { $0?.imageName }
       .observe(self.showEditorialHeaderImageName.observer)
     self.vm.outputs.showEditorialHeader.map { $0?.tagId }.observe(self.showEditorialHeaderTagId.observer)
-    self.vm.outputs.showLightsOnEditorialHeader.observe(self.showLightsOnEditorialHeader.observer)
-    self.vm.outputs.showLightsOnEditorialHeader.map { $0?.title }
-      .observe(self.showLightsOnEditorialHeaderTitle.observer)
-    self.vm.outputs.showLightsOnEditorialHeader.map { $0?.subtitle }
-      .observe(self.showLightsOnEditorialHeaderSubtitle.observer)
-    self.vm.outputs.showLightsOnEditorialHeader.map { $0?.imageName }
-      .observe(self.showLightsOnEditorialHeaderImageName.observer)
-    self.vm.outputs.showLightsOnEditorialHeader.map { $0?.tagId }
-      .observe(self.showLightsOnEditorialHeaderTagId.observer)
     self.vm.outputs.showEmptyState.observe(self.showEmptyState.observer)
     self.vm.outputs.showOnboarding.observe(self.showOnboarding.observer)
     self.vm.outputs.showPersonalization.observe(self.showPersonalization.observer)
@@ -570,316 +556,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   // MARK: - Editorial Header
 
-  func testShowEditorialHeader_LoggedOut_OnMagic_DefaultFilters_FeatureFlag_IsOn() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
-    let defaultFilters = DiscoveryParams.defaults
-      |> DiscoveryParams.lens.includePOTD .~ true
-
-    withEnvironment(config: mockConfig, currentUser: nil) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(defaultFilters)
-
-      self.vm.inputs.configUpdated(config: mockConfig)
-
-      self.scheduler.advance(by: .seconds(1))
-
-      self.showEditorialHeader.assertValueCount(1)
-      self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
-      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▸"])
-      self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
-      self.showEditorialHeaderTagId.assertValues([.goRewardless])
-    }
-  }
-
-  func testShowEditorialHeader_LoggedOut_NonMagic_FeatureFlag_IsOn() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
-
-    withEnvironment(config: mockConfig, currentUser: nil) {
-      self.vm.inputs.configureWith(sort: .popular)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(.defaults)
-
-      self.vm.inputs.configUpdated(config: mockConfig)
-
-      self.scheduler.advance(by: .seconds(1))
-
-      self.showEditorialHeader.assertDidNotEmitValue()
-    }
-  }
-
-  func testShowEditorialHeader_LoggedOut_OnMagic_OtherFilters_FeatureFlag_IsOn() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
-    let otherFilter = DiscoveryParams.defaults
-      |> \.category .~ Category.tabletopGames
-
-    withEnvironment(config: mockConfig, currentUser: nil) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(otherFilter)
-
-      self.vm.inputs.configUpdated(config: mockConfig)
-
-      self.scheduler.advance(by: .seconds(1))
-
-      self.showEditorialHeader.assertValueCount(1)
-      self.showEditorialHeaderTitle.assertValues([nil])
-      self.showEditorialHeaderSubtitle.assertValues([nil])
-      self.showEditorialHeaderImageName.assertValues([nil])
-      self.showEditorialHeaderTagId.assertValues([nil])
-    }
-  }
-
-  func testShowEditorialHeader_LoggedOut_OnMagic_DefaultFilters_FeatureFlag_IsOff() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: false]
-    let loggedOutDefaults = DiscoveryParams.defaults
-      |> DiscoveryParams.lens.includePOTD .~ true
-
-    withEnvironment(config: mockConfig, currentUser: nil) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(loggedOutDefaults)
-
-      self.vm.inputs.configUpdated(config: mockConfig)
-
-      self.scheduler.advance(by: .seconds(1))
-
-      self.showEditorialHeader.assertValueCount(1)
-      self.showEditorialHeaderTitle.assertValues([nil])
-      self.showEditorialHeaderSubtitle.assertValues([nil])
-      self.showEditorialHeaderImageName.assertValues([nil])
-      self.showEditorialHeaderTagId.assertValues([nil])
-    }
-  }
-
-  func testShowEditorialHeader_LoggedIn_OnMagic_DefaultFilters_FeatureFlag_IsOn() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
-    let defaultFilters = DiscoveryParams.recommendedDefaults
-
-    withEnvironment(config: mockConfig, currentUser: User.template) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(defaultFilters)
-
-      self.vm.inputs.configUpdated(config: mockConfig)
-
-      self.scheduler.advance(by: .seconds(1))
-
-      self.showEditorialHeader.assertValueCount(1)
-      self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
-      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▸"])
-      self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
-      self.showEditorialHeaderTagId.assertValues([.goRewardless])
-    }
-  }
-
-  func testShowEditorialHeader_LoggedIn_NonMagic_FeatureFlag_IsOn() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
-
-    withEnvironment(config: mockConfig, currentUser: .template) {
-      self.vm.inputs.configureWith(sort: .popular)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(DiscoveryParams.recommendedDefaults)
-
-      self.vm.inputs.configUpdated(config: mockConfig)
-
-      self.showEditorialHeader.assertDidNotEmitValue()
-    }
-  }
-
-  func testShowEditorialHeader_LoggedIn_OnMagic_OtherFilters_FeatureFlag_IsOn() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
-    let otherFilter = DiscoveryParams.defaults
-      |> \.category .~ Category.filmAndVideo
-
-    withEnvironment(config: mockConfig, currentUser: .template) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(otherFilter)
-
-      self.vm.inputs.configUpdated(config: mockConfig)
-
-      self.scheduler.advance(by: .seconds(1))
-
-      self.showEditorialHeader.assertValueCount(1)
-      self.showEditorialHeaderTitle.assertValues([nil])
-      self.showEditorialHeaderSubtitle.assertValues([nil])
-      self.showEditorialHeaderImageName.assertValues([nil])
-      self.showEditorialHeaderTagId.assertValues([nil])
-    }
-  }
-
-  func testShowEditorialHeader_LoggedIn_OnMagic_ChangingFilters_FeatureFlag_IsOn() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
-    let otherFilter = DiscoveryParams.defaults
-      |> \.category .~ Category.filmAndVideo
-    let defaultFilters = DiscoveryParams.recommendedDefaults
-
-    withEnvironment(config: mockConfig, currentUser: .template) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(defaultFilters)
-
-      self.vm.inputs.configUpdated(config: mockConfig)
-
-      self.scheduler.advance(by: .seconds(1))
-
-      self.showEditorialHeader.assertValueCount(1)
-      self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
-      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▸"])
-      self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
-      self.showEditorialHeaderTagId.assertValues([.goRewardless])
-
-      self.vm.inputs.selectedFilter(otherFilter)
-
-      self.showEditorialHeader.assertValueCount(2)
-      self.showEditorialHeaderTitle.assertValues([
-        "Back it because you believe in it.",
-        nil
-      ])
-      self.showEditorialHeaderSubtitle.assertValues([
-        "Find projects that speak to you ▸",
-        nil
-      ])
-      self.showEditorialHeaderImageName.assertValues([
-        "go-rewardless-home",
-        nil
-      ])
-      self.showEditorialHeaderTagId.assertValues([.goRewardless, nil])
-
-      self.vm.inputs.selectedFilter(defaultFilters)
-
-      self.showEditorialHeaderTitle.assertValues([
-        "Back it because you believe in it.",
-        nil,
-        "Back it because you believe in it."
-      ])
-      self.showEditorialHeaderSubtitle.assertValues([
-        "Find projects that speak to you ▸",
-        nil,
-        "Find projects that speak to you ▸"
-      ])
-      self.showEditorialHeaderImageName.assertValues([
-        "go-rewardless-home",
-        nil,
-        "go-rewardless-home"
-      ])
-      self.showEditorialHeaderTagId.assertValues([.goRewardless, nil, .goRewardless])
-    }
-  }
-
-  func testShowEditorialHeader_LoggedIn_OnMagic_DefaultFilters_FeatureFlag_IsToggled() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
-    let defaultFilters = DiscoveryParams.recommendedDefaults
-
-    withEnvironment(config: mockConfig, currentUser: .template) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(defaultFilters)
-
-      self.vm.inputs.configUpdated(config: mockConfig)
-
-      self.scheduler.advance(by: .seconds(1))
-
-      self.showEditorialHeader.assertValueCount(1)
-      self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
-      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▸"])
-      self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
-      self.showEditorialHeaderTagId.assertValues([.goRewardless])
-
-      let updatedConfig = Config.template
-        |> \.features .~ [Feature.goRewardless.rawValue: false]
-
-      withEnvironment(config: updatedConfig) {
-        self.vm.inputs.configUpdated(config: updatedConfig)
-
-        self.scheduler.advance(by: .seconds(1))
-
-        self.showEditorialHeader.assertValueCount(2)
-        self.showEditorialHeaderTitle.assertValues([
-          "Back it because you believe in it.",
-          nil
-        ])
-        self.showEditorialHeaderSubtitle.assertValues([
-          "Find projects that speak to you ▸",
-          nil
-        ])
-        self.showEditorialHeaderImageName.assertValues([
-          "go-rewardless-home",
-          nil
-        ])
-        self.showEditorialHeaderTagId.assertValues([.goRewardless, nil])
-
-        self.vm.inputs.configUpdated(config: updatedConfig)
-
-        self.showEditorialHeader.assertValueCount(2, "Doesn't repeat if value is the same")
-      }
-    }
-  }
-
-  func testShowEditorialHeader_LoggedIn_OnMagic_DefaultFilters_FeatureFlag_IsOff() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: false]
-
-    withEnvironment(config: mockConfig, currentUser: .template) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(DiscoveryParams.recommendedDefaults)
-
-      self.vm.inputs.configUpdated(config: mockConfig)
-
-      self.scheduler.advance(by: .seconds(1))
-
-      self.showEditorialHeader.assertValueCount(1)
-      self.showEditorialHeaderTitle.assertValues([nil])
-      self.showEditorialHeaderSubtitle.assertValues([nil])
-      self.showEditorialHeaderImageName.assertValues([nil])
-      self.showEditorialHeaderTagId.assertValues([nil])
-    }
-  }
-
-  func testShowEditorialHeader_LoggedIn_OnMagic_DefaultFilters_FeatureFlag_IsOn_UsesCachedConfig() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: false]
-
-    withEnvironment(config: mockConfig, currentUser: .template) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(DiscoveryParams.recommendedDefaults)
-
-      self.scheduler.advance(by: .seconds(1))
-
-      self.showEditorialHeader.assertValueCount(1)
-      self.showEditorialHeaderTitle.assertValues([nil])
-      self.showEditorialHeaderSubtitle.assertValues([nil])
-      self.showEditorialHeaderImageName.assertValues([nil])
-      self.showEditorialHeaderTagId.assertValues([nil])
-    }
-  }
-
-  // MARK: - Lights On
-
-  func testShowLightsOnEditorialHeader_LoggedOut() {
+  func testShowLightsOnEditorialHeader__LoggedOut() {
     self.vm.inputs.configureWith(sort: .magic)
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidAppear()
@@ -887,12 +564,28 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     self.scheduler.advance(by: .seconds(1))
 
-    self.showLightsOnEditorialHeader.assertValueCount(1)
-    self.showLightsOnEditorialHeaderTitle.assertValues(["Introducing Lights On"])
-    self.showLightsOnEditorialHeaderSubtitle
-      .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
-    self.showLightsOnEditorialHeaderImageName.assertValues(["lights-on-home"])
-    self.showLightsOnEditorialHeaderTagId.assertValues([.lightsOn])
+    self.showEditorialHeader.assertValueCount(1)
+    self.showEditorialHeaderTitle.assertValues(["Introducing Lights On"])
+    self.showEditorialHeaderSubtitle.assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
+    self.showEditorialHeaderImageName.assertValues(["lights-on-home"])
+    self.showEditorialHeaderTagId.assertValues([.lightsOn])
+  }
+
+  func testShowLightsOnEditorialHeader_PopularSort_LoggedIn() {
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(sort: .popular)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(DiscoveryParams.recommendedDefaults)
+
+      self.scheduler.advance(by: .seconds(1))
+
+      self.showEditorialHeader.assertDidNotEmitValue()
+      self.showEditorialHeaderTitle.assertDidNotEmitValue()
+      self.showEditorialHeaderSubtitle.assertDidNotEmitValue()
+      self.showEditorialHeaderImageName.assertDidNotEmitValue()
+      self.showEditorialHeaderTagId.assertDidNotEmitValue()
+    }
   }
 
   func testShowLightsOnEditorialHeader_LoggedIn() {
@@ -904,12 +597,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.scheduler.advance(by: .seconds(1))
 
-      self.showLightsOnEditorialHeader.assertValueCount(1)
-      self.showLightsOnEditorialHeaderTitle.assertValues(["Introducing Lights On"])
-      self.showLightsOnEditorialHeaderSubtitle
-        .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
-      self.showLightsOnEditorialHeaderImageName.assertValues(["lights-on-home"])
-      self.showLightsOnEditorialHeaderTagId.assertValues([.lightsOn])
+      self.showEditorialHeader.assertValueCount(1)
+      self.showEditorialHeaderTitle.assertValues(["Introducing Lights On"])
+      self.showEditorialHeaderSubtitle.assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
+      self.showEditorialHeaderImageName.assertValues(["lights-on-home"])
+      self.showEditorialHeaderTagId.assertValues([.lightsOn])
     }
   }
 
@@ -1282,10 +974,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(1))
 
       self.showEditorialHeader.assertValueCount(1)
-      self.showEditorialHeaderTitle.assertValues(["Back it because you believe in it."])
-      self.showEditorialHeaderSubtitle.assertValues(["Find projects that speak to you ▸"])
-      self.showEditorialHeaderImageName.assertValues(["go-rewardless-home"])
-      self.showEditorialHeaderTagId.assertValues([.goRewardless])
+      self.showEditorialHeaderTitle.assertValues(["Introducing Lights On"])
+      self.showEditorialHeaderSubtitle.assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
+      self.showEditorialHeaderImageName.assertValues(["lights-on-home"])
+      self.showEditorialHeaderTagId.assertValues([.lightsOn])
       self.goToEditorialProjectList.assertDidNotEmitValue()
 
       self.vm.inputs.discoveryEditorialCellTapped(with: .goRewardless)

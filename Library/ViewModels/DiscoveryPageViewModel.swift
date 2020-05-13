@@ -125,9 +125,6 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Emits to show an editorial header
   var showEditorialHeader: Signal<DiscoveryEditorialCellValue?, Never> { get }
 
-  /// Emits to show a lights on editorial header
-  var showLightsOnEditorialHeader: Signal<DiscoveryEditorialCellValue?, Never> { get }
-
   /// Emits to show the empty state controller.
   var showEmptyState: Signal<EmptyState, Never> { get }
 
@@ -362,20 +359,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     let updateEditorialHeader = Signal.combineLatest(editorialHeaderShouldShow, latestFeatureFlagValue)
 
     self.showEditorialHeader = updateEditorialHeader
-      .map { shouldShow, isEnabled in
-        guard shouldShow, isEnabled else {
-          return nil
-        }
-
-        return DiscoveryEditorialCellValue(
-          title: Strings.Back_it_because_you_believe_in_it(),
-          subtitle: Strings.Find_projects_that_speak_to_you(),
-          imageName: "go-rewardless-home",
-          tagId: .goRewardless
-        )
-      }.skipRepeats()
-
-    self.showLightsOnEditorialHeader = updateEditorialHeader
       .map { shouldShow, _ in
         guard shouldShow else {
           return nil
@@ -592,7 +575,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let setScrollsToTop: Signal<Bool, Never>
   public let scrollToProjectRow: Signal<Int, Never>
   public let showEditorialHeader: Signal<DiscoveryEditorialCellValue?, Never>
-  public let showLightsOnEditorialHeader: Signal<DiscoveryEditorialCellValue?, Never>
   public let showEmptyState: Signal<EmptyState, Never>
   public let showOnboarding: Signal<Bool, Never>
   public let showPersonalization: Signal<Bool, Never>

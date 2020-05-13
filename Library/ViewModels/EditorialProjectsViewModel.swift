@@ -115,8 +115,6 @@ private func editorialImageName(for tagId: DiscoveryParams.TagID) -> String {
   case .lightsOn:
     return "go-rewardless-modal"
   }
-
-  return "go-rewardless-modal"
 }
 
 private func editorialTitleLabelText(for tagId: DiscoveryParams.TagID) -> String {
