@@ -57,8 +57,8 @@ final class PledgeStatusLabelView: UIView {
 
   // MARK: - Configuration
 
-  internal func configure(with project: Project) {
-    self.viewModel.inputs.configure(with: project)
+  internal func configure(with data: PledgeStatusLabelViewData) {
+    self.viewModel.inputs.configure(with: data)
   }
 }
 

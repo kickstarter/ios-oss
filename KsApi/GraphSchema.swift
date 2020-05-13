@@ -173,6 +173,7 @@ public enum Query {
     case finalCollectionDate
     case id
     case name
+    case pid
     case projectSummary(NonEmptySet<ProjectSummary>)
     case slug
     case state
@@ -215,12 +216,15 @@ public enum Query {
     case amount(NonEmptySet<Money>)
     case backer(NonEmptySet<User>)
     case bankAccount(NonEmptySet<BankAccount>)
+    case cancelable
     case creditCard(NonEmptySet<CreditCard>)
     case errorReason
     case id
+    case location(NonEmptySet<Location>)
     case pledgedOn
     case project(NonEmptySet<Project>)
     case reward(NonEmptySet<Reward>)
+    case sequence
     case shippingAmount(NonEmptySet<Money>)
     case status
   }
@@ -259,6 +263,7 @@ public enum Query {
     case savedProjects(Set<QueryArg<Never>>, NonEmptySet<Connection<Project>>)
     case storedCards(Set<QueryArg<Never>>, NonEmptySet<Connection<CreditCard>>)
     case slug
+    case uid
     case url
     case userId
 
@@ -416,6 +421,7 @@ extension Query.Project: QueryType {
     case .finalCollectionDate: return "finalCollectionDate"
     case .id: return "id"
     case .name: return "name"
+    case .pid: return "pid"
     case let .projectSummary(fields): return "projectSummary { \(join(fields)) }"
     case .slug: return "slug"
     case .state: return "state"
@@ -476,6 +482,7 @@ extension Query.User: QueryType {
     case .showPublicProfile: return "showPublicProfile"
     case let .storedCards(args, fields): return "storedCards\(connection(args, fields))"
     case .slug: return "slug"
+    case .uid: return "uid"
     case .url: return "url"
     case .userId: return "uid"
     }
@@ -503,12 +510,15 @@ extension Query.Backing: QueryType {
     case let .amount(fields): return "amount { \(join(fields)) }"
     case let .backer(fields): return "backer { \(join(fields)) }"
     case let .bankAccount(fields): return "bankAccount: paymentSource { ... on BankAccount {  \(join(fields)) } }"
+    case .cancelable: return "cancelable"
     case let .creditCard(fields): return "creditCard: paymentSource { ... on CreditCard { \(join(fields)) } }"
     case .errorReason: return "errorReason"
     case .id: return "id"
+    case let .location(fields): return "location { \(join(fields)) }"
     case .pledgedOn: return "pledgedOn"
     case let .project(fields): return "project { \(join(fields)) }"
     case let .reward(fields): return "reward { \(join(fields)) }"
+    case .sequence: return "sequence"
     case let .shippingAmount(fields): return "shippingAmount { \(join(fields)) }"
     case .status: return "status"
     }

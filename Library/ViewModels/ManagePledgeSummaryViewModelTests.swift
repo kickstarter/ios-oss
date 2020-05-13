@@ -33,17 +33,24 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
   }
 
   func testTextOutputsEmitTheCorrectValue() {
-    let backing = .template
-      |> Backing.lens.sequence .~ 999
-      |> Backing.lens.pledgedAt .~ 1_568_666_243.0
-      |> Backing.lens.amount .~ 30.0
-      |> Backing.lens.shippingAmount .~ 7
+    let data = ManagePledgeSummaryViewData(
+      backerId: 1,
+      backerName: "Backer McGee",
+      backerSequence: 999,
+      backingState: BackingState.pledged,
+      currentUserIsCreatorOfProject: false,
+      locationName: nil,
+      needsConversion: false,
+      omitUSCurrencyCode: true,
+      pledgeAmount: 30,
+      pledgedOn: 1_568_666_243.0,
+      projectCountry: Project.Country.us,
+      projectDeadline: 1_572_626_213.0,
+      projectState: ProjectState.live,
+      shippingAmount: nil
+    )
 
-    let project = Project.template
-      |> \.personalization.isBacking .~ true
-      |> \.personalization.backing .~ backing
-
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(data)
     self.vm.inputs.viewDidLoad()
 
     self.backerNumberText.assertValue("Backer #999")
@@ -52,17 +59,29 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
   }
 
   func testBackerUserInfo_UserIsBacker() {
-    let backing = Backing.template
-      |> Backing.lens.backerId .~ 123
     let user = User.template
       |> User.lens.id .~ 123
       |> User.lens.name .~ "Blob"
 
-    let project = Project.template
-      |> Project.lens.personalization.backing .~ backing
+    let data = ManagePledgeSummaryViewData(
+      backerId: 123,
+      backerName: "Blob",
+      backerSequence: 999,
+      backingState: BackingState.pledged,
+      currentUserIsCreatorOfProject: false,
+      locationName: nil,
+      needsConversion: false,
+      omitUSCurrencyCode: true,
+      pledgeAmount: 30,
+      pledgedOn: 1_568_666_243.0,
+      projectCountry: Project.Country.us,
+      projectDeadline: 1_572_626_213.0,
+      projectState: ProjectState.live,
+      shippingAmount: nil
+    )
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(project)
+      self.vm.inputs.configureWith(data)
       self.vm.inputs.viewDidLoad()
 
       self.backerNameText.assertValues(["Blob"])
@@ -74,16 +93,28 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
   }
 
   func testBackerUserInfo_UserIsNotBacker() {
-    let backing = Backing.template
-      |> Backing.lens.backerId .~ 321
     let user = User.template
       |> User.lens.id .~ 123
 
-    let project = Project.template
-      |> Project.lens.personalization.backing .~ backing
+    let data = ManagePledgeSummaryViewData(
+      backerId: 321,
+      backerName: "Backer McGee",
+      backerSequence: 999,
+      backingState: BackingState.pledged,
+      currentUserIsCreatorOfProject: false,
+      locationName: nil,
+      needsConversion: false,
+      omitUSCurrencyCode: true,
+      pledgeAmount: 30,
+      pledgedOn: 1_568_666_243.0,
+      projectCountry: Project.Country.us,
+      projectDeadline: 1_572_626_213.0,
+      projectState: ProjectState.live,
+      shippingAmount: nil
+    )
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(project)
+      self.vm.inputs.configureWith(data)
       self.vm.inputs.viewDidLoad()
 
       self.backerNameText.assertDidNotEmitValue()

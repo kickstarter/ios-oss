@@ -9,15 +9,13 @@ import XCTest
 internal final class ManagePledgeViewModelTests: TestCase {
   private let vm = ManagePledgeViewModel()
 
-  private let configurePaymentMethodView = TestObserver<Backing, Never>()
-  private let configurePledgeSummaryView = TestObserver<Project, Never>()
+  private let configurePaymentMethodView = TestObserver<ManagePledgePaymentMethodViewData, Never>()
+  private let configurePledgeSummaryView = TestObserver<ManagePledgeSummaryViewData, Never>()
   private let configureRewardReceivedWithProject = TestObserver<Project, Never>()
   private let configureRewardSummaryViewProject = TestObserver<Project, Never>()
   private let configureRewardSummaryViewReward = TestObserver<Reward, Never>()
   private let endRefreshing = TestObserver<Void, Never>()
-  private let goToCancelPledgeProject = TestObserver<Project, Never>()
-  private let goToCancelPledgeBackingId = TestObserver<String, Never>()
-  private let goToCancelPledgeAmount = TestObserver<Double, Never>()
+  private let goToCancelPledge = TestObserver<CancelPledgeViewData, Never>()
   private let goToChangePaymentMethodProject = TestObserver<Project, Never>()
   private let goToChangePaymentMethodReward = TestObserver<Reward, Never>()
   private let goToContactCreatorSubject = TestObserver<MessageSubject, Never>()
@@ -49,9 +47,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.outputs.configureRewardSummaryView.map(second).map { Either.left($0) }.skipNil()
       .observe(self.configureRewardSummaryViewReward.observer)
     self.vm.outputs.endRefreshing.observe(self.endRefreshing.observer)
-    self.vm.outputs.goToCancelPledge.map(first).observe(self.goToCancelPledgeProject.observer)
-    self.vm.outputs.goToCancelPledge.map(second).observe(self.goToCancelPledgeBackingId.observer)
-    self.vm.outputs.goToCancelPledge.map(third).observe(self.goToCancelPledgeAmount.observer)
+    self.vm.outputs.goToCancelPledge.observe(self.goToCancelPledge.observer)
     self.vm.outputs.goToChangePaymentMethod.map(first).observe(self.goToChangePaymentMethodProject.observer)
     self.vm.outputs.goToChangePaymentMethod.map(second).observe(self.goToChangePaymentMethodReward.observer)
     self.vm.outputs.goToContactCreator.map(first).observe(self.goToContactCreatorSubject.observer)
@@ -114,27 +110,76 @@ internal final class ManagePledgeViewModelTests: TestCase {
   func testConfigurePaymentMethodViewController() {
     self.configurePaymentMethodView.assertDidNotEmitValue()
 
-    let backing = Backing.template
-
     let project = Project.template
-      |> \.personalization.backing .~ backing
+      |> Project.lens.personalization.backing .~ Backing.template
 
-    self.vm.inputs.configureWith(project)
+    let envelope = ManagePledgeViewBackingEnvelope.template
 
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(envelope)
+    )
 
-    self.configurePaymentMethodView.assertValue(Backing.template)
+    let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
+      backingState: .pledged,
+      expirationDate: "2020-01-01",
+      lastFour: "1234",
+      creditCardType: .visa,
+      paymentType: .creditCard
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith(project)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePaymentMethodView.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.configurePaymentMethodView.assertValues([pledgePaymentMethodViewData])
+    }
   }
 
   func testConfigurePledgeSummaryViewController() {
     self.configurePledgeSummaryView.assertDidNotEmitValue()
 
     let project = Project.template
-    self.vm.inputs.configureWith(project)
+      |> Project.lens.personalization.backing .~ Backing.template
 
-    self.vm.inputs.viewDidLoad()
+    let envelope = ManagePledgeViewBackingEnvelope.template
 
-    self.configurePledgeSummaryView.assertValue(project)
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(envelope)
+    )
+
+    let pledgeViewSummaryData = ManagePledgeSummaryViewData(
+      backerId: envelope.backing.backer.uid,
+      backerName: envelope.backing.backer.name,
+      backerSequence: envelope.backing.sequence,
+      backingState: BackingState.pledged,
+      currentUserIsCreatorOfProject: false,
+      locationName: "Brooklyn, NY",
+      needsConversion: false,
+      omitUSCurrencyCode: true,
+      pledgeAmount: envelope.backing.amount.amount,
+      pledgedOn: envelope.backing.pledgedOn,
+      projectCountry: Project.Country.us,
+      projectDeadline: 1_476_657_315.0,
+      projectState: ProjectState.live,
+      shippingAmount: envelope.backing.shippingAmount?.amount
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith(project)
+
+      self.vm.inputs.viewDidLoad()
+
+      self.configurePledgeSummaryView.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.configurePledgeSummaryView.assertValues([pledgeViewSummaryData])
+    }
   }
 
   func testConfigureRewardSummaryViewController() {
@@ -225,8 +270,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let envelope = ManagePledgeViewBackingEnvelope.template
 
-    let expectedId = envelope.backing?.id ?? ""
-    let expectedAmount = envelope.backing?.amount.amount.flatMap(Double.init) ?? 0
+    let expectedId = envelope.backing.id
+    let expectedAmount = envelope.backing.amount.amount
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope)
@@ -238,44 +283,39 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.goToCancelPledgeProject.assertDidNotEmitValue()
-      self.goToCancelPledgeBackingId.assertDidNotEmitValue()
-      self.goToCancelPledgeAmount.assertDidNotEmitValue()
+      self.goToCancelPledge.assertDidNotEmitValue()
 
       self.vm.inputs.menuButtonTapped()
       self.vm.inputs.menuOptionSelected(with: .cancelPledge)
 
-      self.goToCancelPledgeProject.assertValues([project])
-      self.goToCancelPledgeBackingId.assertValues([expectedId])
-      self.goToCancelPledgeAmount.assertValues([expectedAmount])
+      XCTAssertEqual(self.goToCancelPledge.values.map { $0.project }, [project])
+      XCTAssertEqual(self.goToCancelPledge.values.map { $0.backingId }, [expectedId])
+      XCTAssertEqual(self.goToCancelPledge.values.map { $0.pledgeAmount }, [expectedAmount])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
     }
   }
 
-  func testBackingNotCancellable() {
-    // FIXME: cancelable should be returned along with the GraphQL Backing.
-    let project = Project.template
-      |> Project.lens.personalization.backing .~ (Backing.template |> Backing.lens.cancelable .~ false)
-
+  func testBackingNotCancelable() {
     let envelope = ManagePledgeViewBackingEnvelope.template
+      |> \.backing.cancelable .~ false
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope)
     )
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(project)
+      self.vm.inputs.configureWith(.template)
       self.vm.inputs.viewDidLoad()
 
+      self.scheduler.advance()
+
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.goToCancelPledgeProject.assertDidNotEmitValue()
-      self.goToCancelPledgeBackingId.assertDidNotEmitValue()
+      self.goToCancelPledge.assertDidNotEmitValue()
 
       self.vm.inputs.menuButtonTapped()
       self.vm.inputs.menuOptionSelected(with: .cancelPledge)
 
-      self.goToCancelPledgeProject.assertDidNotEmitValue()
-      self.goToCancelPledgeBackingId.assertDidNotEmitValue()
+      self.goToCancelPledge.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues([
         "We don’t allow cancelations that will cause a project to fall short of its goal within the last 24 hours."
       ])
@@ -544,8 +584,35 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let updatedProject = project
       |> Project.lens.personalization.backing .~ updatedBacking
 
+    let envelope = ManagePledgeViewBackingEnvelope.template
+
+    let pledgeViewSummaryData = ManagePledgeSummaryViewData(
+      backerId: envelope.backing.backer.uid,
+      backerName: envelope.backing.backer.name,
+      backerSequence: envelope.backing.sequence,
+      backingState: BackingState.pledged,
+      currentUserIsCreatorOfProject: false,
+      locationName: "Brooklyn, NY",
+      needsConversion: true,
+      omitUSCurrencyCode: true,
+      pledgeAmount: envelope.backing.amount.amount,
+      pledgedOn: envelope.backing.pledgedOn,
+      projectCountry: project.country,
+      projectDeadline: 1_476_657_315.0,
+      projectState: ProjectState.live,
+      shippingAmount: envelope.backing.shippingAmount?.amount
+    )
+
+    let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
+      backingState: .pledged,
+      expirationDate: "2020-01-01",
+      lastFour: "1234",
+      creditCardType: .visa,
+      paymentType: .creditCard
+    )
+
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchManagePledgeViewBackingResult: .success(envelope),
       fetchProjectResponse: updatedProject
     )
 
@@ -566,11 +633,10 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.scheduler.run()
 
       self.showSuccessBannerWithMessage.assertValues(["Got it! Your changes have been saved."])
-      self.configurePaymentMethodView.assertValues([
-        backing,
-        updatedBacking
-      ])
-      self.configurePledgeSummaryView.assertValues([project, updatedProject])
+
+      self.configurePaymentMethodView.assertValues([pledgePaymentMethodViewData])
+      self.configurePledgeSummaryView.assertValues([pledgeViewSummaryData])
+
       self.configureRewardSummaryViewProject.assertValues([project, updatedProject])
       self.configureRewardSummaryViewReward.assertValues([.template, .template])
       self.configureRewardReceivedWithProject.assertValues([project, updatedProject])

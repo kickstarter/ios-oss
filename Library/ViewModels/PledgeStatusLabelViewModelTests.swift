@@ -18,206 +18,162 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testProjectStatusCanceled_Backer() {
-    withEnvironment(currentUser: .template) {
-      let creator = User.template
-        |> User.lens.id .~ 5
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: ProjectState.canceled,
+      backingState: BackingState.pledged
+    )
 
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.state .~ .canceled
+    self.vm.inputs.configure(with: data)
 
-      self.vm.inputs.configure(with: project)
-
-      self.labelTextString.assertValues([
-        "The creator canceled this project, so your payment method was never charged."
-      ])
-    }
+    self.labelTextString.assertValues([
+      "The creator canceled this project, so your payment method was never charged."
+    ])
   }
 
   func testProjectStatusFailed_Backer() {
-    withEnvironment(currentUser: .template) {
-      let creator = User.template
-        |> User.lens.id .~ 5
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: ProjectState.failed,
+      backingState: BackingState.pledged
+    )
 
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.state .~ .failed
+    self.vm.inputs.configure(with: data)
 
-      self.vm.inputs.configure(with: project)
-
-      self.labelTextString.assertValues([
-        "This project didn’t reach its funding goal, so your payment method was never charged."
-      ])
-    }
-  }
-
-  func testProjectStatus_AllOtherStatuses_Backer() {
-    withEnvironment(currentUser: .template) {
-      let statuses = Project.State.allCases
-        .filter { ![.canceled, .failed].contains($0) }
-
-      statuses.forEach {
-        let creator = User.template
-          |> User.lens.id .~ 5
-
-        let project = Project.cosmicSurgery
-          |> Project.lens.creator .~ creator
-          |> Project.lens.state .~ $0
-          |> Project.lens.personalization.backing .~ nil
-
-        self.vm.inputs.configure(with: project)
-      }
-
-      self.labelTextString.assertValues([])
-    }
+    self.labelTextString.assertValues([
+      "This project didn’t reach its funding goal, so your payment method was never charged."
+    ])
   }
 
   func testBackingStatus_Canceled_Backer() {
-    withEnvironment(currentUser: .template) {
-      let creator = User.template
-        |> User.lens.id .~ 5
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: ProjectState.live,
+      backingState: BackingState.canceled
+    )
 
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.backing .~ (
-          Backing.template
-            |> Backing.lens.status .~ .canceled
-        )
+    self.vm.inputs.configure(with: data)
 
-      self.vm.inputs.configure(with: project)
-
-      self.labelTextString.assertValues([
-        "You canceled your pledge for this project."
-      ])
-    }
+    self.labelTextString.assertValues([
+      "You canceled your pledge for this project."
+    ])
   }
 
   func testBackingStatus_Collected_Backer() {
-    withEnvironment(currentUser: .template) {
-      let creator = User.template
-        |> User.lens.id .~ 5
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: ProjectState.successful,
+      backingState: BackingState.collected
+    )
 
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.backing .~ (
-          Backing.template
-            |> Backing.lens.status .~ .collected
-        )
+    self.vm.inputs.configure(with: data)
 
-      self.vm.inputs.configure(with: project)
-
-      self.labelTextString.assertValues([
-        "We collected your pledge for this project."
-      ])
-    }
+    self.labelTextString.assertValues([
+      "We collected your pledge for this project."
+    ])
   }
 
   func testBackingStatus_Dropped_Backer() {
-    withEnvironment(currentUser: .template) {
-      let creator = User.template
-        |> User.lens.id .~ 5
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: ProjectState.successful,
+      backingState: BackingState.dropped
+    )
 
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.backing .~ (
-          Backing.template
-            |> Backing.lens.status .~ .dropped
-        )
+    self.vm.inputs.configure(with: data)
 
-      self.vm.inputs.configure(with: project)
-
-      self.labelTextString.assertValues([
-        "Your pledge was dropped because of payment errors."
-      ])
-    }
+    self.labelTextString.assertValues([
+      "Your pledge was dropped because of payment errors."
+    ])
   }
 
   func testBackingStatus_Errored_Backer() {
-    withEnvironment(currentUser: .template) {
-      let creator = User.template
-        |> User.lens.id .~ 5
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: ProjectState.successful,
+      backingState: BackingState.errored
+    )
 
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.backing .~ (
-          Backing.template
-            |> Backing.lens.status .~ .errored
-        )
+    self.vm.inputs.configure(with: data)
 
-      self.vm.inputs.configure(with: project)
-
-      self.labelTextString.assertValues([
-        "We can’t process your pledge. Please update your payment method."
-      ])
-    }
+    self.labelTextString.assertValues([
+      "We can’t process your pledge. Please update your payment method."
+    ])
   }
 
   func testBackingStatus_Preauth_Backer() {
-    withEnvironment(currentUser: .template) {
-      let creator = User.template
-        |> User.lens.id .~ 5
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: ProjectState.live,
+      backingState: BackingState.preauth
+    )
 
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.backing .~ (
-          Backing.template
-            |> Backing.lens.status .~ .preauth
-        )
+    self.vm.inputs.configure(with: data)
 
-      self.vm.inputs.configure(with: project)
-
-      self.labelTextString.assertValues([
-        "We're processing your pledge—pull to refresh."
-      ])
-    }
+    self.labelTextString.assertValues([
+      "We're processing your pledge—pull to refresh."
+    ])
   }
 
   func testBackingStatus_Pledged_Backer() {
-    withEnvironment(currentUser: .template) {
-      let creator = User.template
-        |> User.lens.id .~ 5
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: false,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: ProjectState.successful,
+      backingState: BackingState.pledged
+    )
 
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.state .~ .successful
-        |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
-        |> Project.lens.stats.currency .~ Currency.USD.rawValue
-        |> Project.lens.country .~ .us
-        |> Project.lens.personalization.backing .~ (
-          Backing.template
-            |> Backing.lens.status .~ .pledged
-        )
+    self.vm.inputs.configure(with: data)
 
-      self.vm.inputs.configure(with: project)
-
-      self.labelTextString.assertValues([
-        "If the project reaches its funding goal, you will be charged on October 16, 2016."
-      ])
-    }
+    self.labelTextString.assertValues([
+      "If the project reaches its funding goal, you will be charged on October 16, 2016."
+    ])
   }
 
   func testBackingStatus_Pledged_OtherCurrency_Backer() {
-    withEnvironment(currentUser: .template, locale: Locale(identifier: "en")) {
-      let creator = User.template
-        |> User.lens.id .~ 5
+    withEnvironment(locale: Locale(identifier: "en")) {
+      let data = PledgeStatusLabelViewData(
+        currentUserIsCreatorOfProject: false,
+        needsConversion: true,
+        pledgeAmount: 10,
+        projectCountry: Project.Country.hk,
+        projectDeadline: 1_476_657_315,
+        projectState: ProjectState.successful,
+        backingState: BackingState.pledged
+      )
 
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
-        |> Project.lens.stats.currency .~ Currency.HKD.rawValue
-        |> Project.lens.country .~ .hk
-        |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.backing .~ (
-          Backing.template
-            |> Backing.lens.status .~ .pledged
-        )
-
-      self.vm.inputs.configure(with: project)
+      self.vm.inputs.configure(with: data)
 
       self.labelTextString.assertValues([
         "If the project reaches its funding goal, you will be charged HK$ 10 on October 16, 2016."
@@ -226,209 +182,165 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testBackingStatus_AllOtherStatuses_Backer() {
-    withEnvironment(currentUser: .template) {
-      let statuses = Backing.Status.allCases
-        .filter { ![.canceled, .collected, .dropped, .errored, .pledged, .preauth].contains($0) }
+    let statuses = BackingState.allCases
+      .filter { ![.canceled, .collected, .dropped, .errored, .pledged, .preauth].contains($0) }
 
-      statuses.forEach {
-        let creator = User.template
-          |> User.lens.id .~ 5
+    statuses.forEach { backingState in
+      let data = PledgeStatusLabelViewData(
+        currentUserIsCreatorOfProject: false,
+        needsConversion: false,
+        pledgeAmount: 10,
+        projectCountry: Project.Country.hk,
+        projectDeadline: 1_476_657_315,
+        projectState: ProjectState.successful,
+        backingState: backingState
+      )
 
-        let project = Project.cosmicSurgery
-          |> Project.lens.creator .~ creator
-          |> Project.lens.state .~ .successful
-          |> Project.lens.personalization.backing .~ (
-            Backing.template
-              |> Backing.lens.status .~ $0
-          )
-
-        self.vm.inputs.configure(with: project)
-      }
-
-      self.labelTextString.assertValues([])
+      self.vm.inputs.configure(with: data)
     }
+
+    self.labelTextString.assertValues([])
   }
 
   func testProjectStatusCanceled_Creator() {
-    let creator = User.template
-      |> User.lens.id .~ 5
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: true,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: ProjectState.canceled,
+      backingState: BackingState.pledged
+    )
 
-    withEnvironment(currentUser: creator) {
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.state .~ .canceled
+    self.vm.inputs.configure(with: data)
 
-      self.vm.inputs.configure(with: project)
-
-      self.labelTextString.assertValues([
-        "You canceled this project, so the backer’s payment method was never charged."
-      ])
-    }
+    self.labelTextString.assertValues([
+      "You canceled this project, so the backer’s payment method was never charged."
+    ])
   }
 
   func testProjectStatusFailed_Creator() {
-    let creator = User.template
-      |> User.lens.id .~ 5
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: true,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: ProjectState.failed,
+      backingState: BackingState.pledged
+    )
 
-    withEnvironment(currentUser: creator) {
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.state .~ .failed
+    self.vm.inputs.configure(with: data)
 
-      self.vm.inputs.configure(with: project)
-
-      self.labelTextString.assertValues([
-        "Your project didn’t reach its funding goal, so the backer’s payment method was never charged."
-      ])
-    }
-  }
-
-  func testProjectStatus_AllOtherStatuses_Creator() {
-    let creator = User.template
-      |> User.lens.id .~ 5
-
-    withEnvironment(currentUser: creator) {
-      let statuses = Project.State.allCases
-        .filter { ![.canceled, .failed].contains($0) }
-
-      statuses.forEach {
-        let project = Project.template
-          |> Project.lens.creator .~ creator
-          |> Project.lens.state .~ $0
-          |> Project.lens.personalization.backing .~ nil
-
-        self.vm.inputs.configure(with: project)
-      }
-
-      self.labelTextString.assertValues([])
-    }
+    self.labelTextString.assertValues([
+      "Your project didn’t reach its funding goal, so the backer’s payment method was never charged."
+    ])
   }
 
   func testBackingStatus_Canceled_Creator() {
-    let creator = User.template
-      |> User.lens.id .~ 5
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: true,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: ProjectState.live,
+      backingState: BackingState.canceled
+    )
 
-    withEnvironment(currentUser: creator) {
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.backing .~ (
-          Backing.template
-            |> Backing.lens.status .~ .canceled
-        )
+    self.vm.inputs.configure(with: data)
 
-      self.vm.inputs.configure(with: project)
-
-      self.labelTextString.assertValues([
-        "The backer canceled their pledge for this project."
-      ])
-    }
+    self.labelTextString.assertValues([
+      "The backer canceled their pledge for this project."
+    ])
   }
 
   func testBackingStatus_Collected_Creator() {
-    let creator = User.template
-      |> User.lens.id .~ 5
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: true,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: ProjectState.successful,
+      backingState: BackingState.collected
+    )
 
-    withEnvironment(currentUser: creator) {
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.backing .~ (
-          Backing.template
-            |> Backing.lens.status .~ .collected
-        )
+    self.vm.inputs.configure(with: data)
 
-      self.vm.inputs.configure(with: project)
-
-      self.labelTextString.assertValues([
-        "We collected the backer’s pledge for this project."
-      ])
-    }
+    self.labelTextString.assertValues([
+      "We collected the backer’s pledge for this project."
+    ])
   }
 
   func testBackingStatus_Dropped_Creator() {
-    let creator = User.template
-      |> User.lens.id .~ 5
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: true,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: ProjectState.successful,
+      backingState: BackingState.dropped
+    )
 
-    withEnvironment(currentUser: creator) {
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.backing .~ (
-          Backing.template
-            |> Backing.lens.status .~ .dropped
-        )
+    self.vm.inputs.configure(with: data)
 
-      self.vm.inputs.configure(with: project)
-
-      self.labelTextString.assertValues([
-        "This pledge was dropped because of payment errors."
-      ])
-    }
+    self.labelTextString.assertValues([
+      "This pledge was dropped because of payment errors."
+    ])
   }
 
   func testBackingStatus_Errored_Creator() {
-    let creator = User.template
-      |> User.lens.id .~ 5
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: true,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: ProjectState.successful,
+      backingState: BackingState.errored
+    )
 
-    withEnvironment(currentUser: creator) {
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.backing .~ (
-          Backing.template
-            |> Backing.lens.status .~ .errored
-        )
+    self.vm.inputs.configure(with: data)
 
-      self.vm.inputs.configure(with: project)
-
-      self.labelTextString.assertValues([
-        "We can’t process this pledge because of a problem with the backer’s payment method."
-      ])
-    }
+    self.labelTextString.assertValues([
+      "We can’t process this pledge because of a problem with the backer’s payment method."
+    ])
   }
 
   func testBackingStatus_Pledged_Creator() {
-    let creator = User.template
-      |> User.lens.id .~ 5
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: true,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: ProjectState.live,
+      backingState: BackingState.pledged
+    )
 
-    withEnvironment(currentUser: creator) {
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.state .~ .successful
-        |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
-        |> Project.lens.stats.currency .~ Currency.USD.rawValue
-        |> Project.lens.country .~ .us
-        |> Project.lens.personalization.backing .~ (
-          Backing.template
-            |> Backing.lens.status .~ .pledged
-        )
+    self.vm.inputs.configure(with: data)
 
-      self.vm.inputs.configure(with: project)
-
-      self.labelTextString.assertValues([
-        "If your project reaches its funding goal, the backer will be charged on October 16, 2016."
-      ])
-    }
+    self.labelTextString.assertValues([
+      "If your project reaches its funding goal, the backer will be charged on October 16, 2016."
+    ])
   }
 
   func testBackingStatus_Pledged_OtherCurrency_Creator() {
-    let creator = User.template
-      |> User.lens.id .~ 5
+    withEnvironment(locale: Locale(identifier: "en")) {
+      let data = PledgeStatusLabelViewData(
+        currentUserIsCreatorOfProject: true,
+        needsConversion: true,
+        pledgeAmount: 10,
+        projectCountry: Project.Country.hk,
+        projectDeadline: 1_476_657_315,
+        projectState: ProjectState.successful,
+        backingState: BackingState.pledged
+      )
 
-    withEnvironment(currentUser: creator, locale: Locale(identifier: "en")) {
-      let project = Project.template
-        |> Project.lens.creator .~ creator
-        |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
-        |> Project.lens.stats.currency .~ Currency.HKD.rawValue
-        |> Project.lens.country .~ .hk
-        |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.backing .~ (
-          Backing.template
-            |> Backing.lens.status .~ .pledged
-        )
-
-      self.vm.inputs.configure(with: project)
+      self.vm.inputs.configure(with: data)
 
       self.labelTextString.assertValues([
         "If your project reaches its funding goal, the backer will be charged HK$ 10 on October 16, 2016."
@@ -437,47 +349,41 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testBackingStatus_Preauth_Creator() {
-    let creator = User.template
-      |> User.lens.id .~ 5
+    let data = PledgeStatusLabelViewData(
+      currentUserIsCreatorOfProject: true,
+      needsConversion: false,
+      pledgeAmount: 10,
+      projectCountry: Project.Country.hk,
+      projectDeadline: 1_476_657_315,
+      projectState: ProjectState.successful,
+      backingState: BackingState.preauth
+    )
 
-    withEnvironment(currentUser: creator) {
-      let project = Project.cosmicSurgery
-        |> Project.lens.creator .~ creator
-        |> Project.lens.state .~ .successful
-        |> Project.lens.personalization.backing .~ (
-          Backing.template
-            |> Backing.lens.status .~ .preauth
-        )
+    self.vm.inputs.configure(with: data)
 
-      self.vm.inputs.configure(with: project)
-
-      self.labelTextString.assertValues([
-        "We're processing this pledge—pull to refresh."
-      ])
-    }
+    self.labelTextString.assertValues([
+      "We're processing this pledge—pull to refresh."
+    ])
   }
 
   func testBackingStatus_AllOtherStatuses_Creator() {
-    let creator = User.template
-      |> User.lens.id .~ 5
+    let statuses = BackingState.allCases
+      .filter { ![.canceled, .collected, .dropped, .errored, .pledged, .preauth].contains($0) }
 
-    withEnvironment(currentUser: .template) {
-      let statuses = Backing.Status.allCases
-        .filter { ![.canceled, .collected, .dropped, .errored, .pledged, .preauth].contains($0) }
+    statuses.forEach { backingState in
+      let data = PledgeStatusLabelViewData(
+        currentUserIsCreatorOfProject: true,
+        needsConversion: false,
+        pledgeAmount: 10,
+        projectCountry: Project.Country.hk,
+        projectDeadline: 1_476_657_315,
+        projectState: ProjectState.successful,
+        backingState: backingState
+      )
 
-      statuses.forEach {
-        let project = Project.template
-          |> Project.lens.creator .~ creator
-          |> Project.lens.state .~ .successful
-          |> Project.lens.personalization.backing .~ (
-            Backing.template
-              |> Backing.lens.status .~ $0
-          )
-
-        self.vm.inputs.configure(with: project)
-      }
-
-      self.labelTextString.assertValues([])
+      self.vm.inputs.configure(with: data)
     }
+
+    self.labelTextString.assertValues([])
   }
 }

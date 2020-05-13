@@ -15,7 +15,7 @@ private enum Layout {
   }
 }
 
-protocol ErroredBackingViewDelegate: class {
+protocol ErroredBackingViewDelegate: AnyObject {
   func erroredBackingViewDidTapManage(_ view: ErroredBackingView, backing: GraphBacking)
 }
 

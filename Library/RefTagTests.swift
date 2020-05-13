@@ -13,6 +13,7 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual("dashboard", RefTag.dashboard.stringTag)
     XCTAssertEqual("dashboard_activity", RefTag.dashboardActivity.stringTag)
     XCTAssertEqual("discovery", RefTag.discovery.stringTag)
+    XCTAssertEqual("ksr_email_backer_failed_transaction", RefTag.emailBackerFailedTransaction.stringTag)
     XCTAssertEqual("profile_backed", RefTag.profileBacked.stringTag)
     XCTAssertEqual("project_page", RefTag.projectPage.stringTag)
     XCTAssertEqual("push", RefTag.push.stringTag)
@@ -117,6 +118,11 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual(
       RefTag.discoveryWithSort(.popular),
       RefTag(code: RefTag.discoveryWithSort(.popular).stringTag)
+    )
+
+    XCTAssertEqual(
+      RefTag.emailBackerFailedTransaction,
+      RefTag(code: "ksr_email_backer_failed_transaction")
     )
 
     XCTAssertEqual(RefTag.messageThread, RefTag(code: RefTag.messageThread.stringTag))

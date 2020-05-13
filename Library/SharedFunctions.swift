@@ -220,3 +220,14 @@ internal func sanitizedPledgeParameters(
 
   return (formattedPledgeTotal, rewardId, shippingLocationId)
 }
+
+public func ksr_pledgeAmount(
+  _ pledgeAmount: Double,
+  subtractingShippingAmount shippingAmount: Double?
+) -> Double {
+  guard let shippingAmount = shippingAmount, shippingAmount > 0 else { return pledgeAmount }
+
+  let pledgeAmount = Decimal(pledgeAmount) - Decimal(shippingAmount)
+
+  return (pledgeAmount as NSDecimalNumber).doubleValue
+}

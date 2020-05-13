@@ -50,6 +50,7 @@ public protocol PledgeViewModelInputs {
 public protocol PledgeViewModelOutputs {
   var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
+  var configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
@@ -127,6 +128,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .takePairWhen(pledgeTotal)
     .map(unpack)
     .map { project, confirmationLabelHidden, total in (project, total, confirmationLabelHidden) }
+
+    self.configurePledgeAmountSummaryViewControllerWithData = project
+      .map(pledgeAmountSummaryViewData)
+      .skipNil()
 
     let configurePaymentMethodsViewController = Signal.merge(
       initialData,
@@ -570,9 +575,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       selectedPaymentSourceId
     )
     .map { context, project, selectedPaymentSourceId -> Bool in
-      return context == .fixPaymentMethod
+      context == .fixPaymentMethod
         && project.personalization.backing?.paymentSource?.id == selectedPaymentSourceId
     }
+    .skipRepeats()
 
     self.configurePledgeViewCTAContainerView = Signal.combineLatest(
       isLoggedIn,
@@ -771,8 +777,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   // MARK: - Outputs
 
   public let beginSCAFlowWithClientSecret: Signal<String, Never>
-  public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
+  public let configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never>
+  public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
   public let configureWithData: Signal<(project: Project, reward: Reward), Never>
@@ -881,6 +888,19 @@ private func allValuesChangedAndValid(
 }
 
 // MARK: - Helper Functions
+
+private func pledgeAmountSummaryViewData(with project: Project) -> PledgeAmountSummaryViewData? {
+  guard let backing = project.personalization.backing else { return nil }
+
+  return .init(
+    projectCountry: project.country,
+    pledgeAmount: backing.amount,
+    pledgedOn: backing.pledgedAt,
+    shippingAmount: backing.shippingAmount.flatMap(Double.init),
+    locationName: backing.locationName,
+    omitUSCurrencyCode: project.stats.omitUSCurrencyCode
+  )
+}
 
 private func checkoutPropertiesData(
   from createBackingData: CreateBackingData,

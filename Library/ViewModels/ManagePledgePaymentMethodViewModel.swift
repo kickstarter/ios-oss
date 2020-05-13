@@ -3,9 +3,17 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
+public struct ManagePledgePaymentMethodViewData: Equatable {
+  public let backingState: BackingState
+  public let expirationDate: String?
+  public let lastFour: String?
+  public let creditCardType: CreditCardType?
+  public let paymentType: PaymentType?
+}
+
 public protocol ManagePledgePaymentMethodViewModelInputs {
   /// Call to configure payment method section the values from a backing
-  func configureWith(value: Backing)
+  func configureWith(data: ManagePledgePaymentMethodViewData)
 
   /// Call when the "Fix" button is tapped
   func fixButtonTapped()
@@ -39,22 +47,20 @@ public protocol ManagePledgePaymentMethodViewModelType {
 public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethodViewModelInputs,
   ManagePledgePaymentMethodViewModelOutputs, ManagePledgePaymentMethodViewModelType {
   public init() {
-    let paymentSource = self.backingSignal
-      .map(\.paymentSource)
+    self.cardImageName = self.configureWithDataSignal
+      .map { ($0.paymentType, $0.creditCardType) }
+      .map(imageName(for:creditCardType:))
       .skipNil()
 
-    self.cardImageName = paymentSource
-      .map(imageName(for:))
-      .skipNil()
-
-    let paymentType = paymentSource
+    let paymentType = self.configureWithDataSignal
       .map(\.paymentType)
-
-    let cardType = paymentSource
-      .map(\.type)
       .skipNil()
 
-    let lastFour = paymentSource
+    let cardType = self.configureWithDataSignal
+      .map(\.creditCardType)
+      .skipNil()
+
+    let lastFour = self.configureWithDataSignal
       .map(\.lastFour)
       .skipNil()
 
@@ -72,22 +78,23 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
     self.cardNumberTextShortStyle = lastFour
       .map { Strings.Ending_in_last_four(last_four: $0) }
 
-    self.expirationDateText = paymentSource
+    self.expirationDateText = self.configureWithDataSignal
       .map(\.expirationDate)
       .skipNil()
       .map { String($0.dropLast(3)) }
       .map(formatted(dateString:))
       .map { Strings.Credit_card_expiration(expiration_date: $0) }
 
-    self.fixButtonHidden = self.backingSignal
-      .map { $0.status != .errored }
+    self.fixButtonHidden = self.configureWithDataSignal
+      .map { $0.backingState != .errored }
 
     self.notifyDelegateFixButtonTapped = self.fixButtonTappedSignal
   }
 
-  fileprivate let (backingSignal, backingObserver) = Signal<Backing, Never>.pipe()
-  public func configureWith(value: Backing) {
-    self.backingObserver.send(value: value)
+  fileprivate let (configureWithDataSignal, configureWithDataObserver)
+    = Signal<ManagePledgePaymentMethodViewData, Never>.pipe()
+  public func configureWith(data: ManagePledgePaymentMethodViewData) {
+    self.configureWithDataObserver.send(value: data)
   }
 
   fileprivate let (fixButtonTappedSignal, fixButtonTappedObserver) = Signal<Void, Never>.pipe()
@@ -106,14 +113,16 @@ public final class ManagePledgePaymentMethodViewModel: ManagePledgePaymentMethod
   public var outputs: ManagePledgePaymentMethodViewModelOutputs { return self }
 }
 
-private func imageName(for paymentSource: Backing.PaymentSource) -> String? {
-  switch paymentSource.paymentType {
+private func imageName(for paymentType: PaymentType?, creditCardType: CreditCardType?) -> String? {
+  switch paymentType {
   case .creditCard:
-    return paymentSource.type?.imageName
+    return creditCardType?.imageName
   case .applePay:
     return "icon--apple-pay"
   case .googlePay:
     return "icon--google-pay"
+  case nil:
+    return nil
   }
 }
 

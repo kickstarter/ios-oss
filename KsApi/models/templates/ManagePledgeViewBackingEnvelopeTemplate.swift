@@ -1,11 +1,12 @@
 extension ManagePledgeViewBackingEnvelope {
   static var template: ManagePledgeViewBackingEnvelope {
     return ManagePledgeViewBackingEnvelope(
-      project: .init(id: "123", name: "Project", state: .live),
+      project: .init(pid: 123, name: "Project", state: .live),
       backing: .init(
-        amount: Money(amount: "179.0", currency: .usd, symbol: "$"),
-        backer: Backing.Backer(id: "1234", name: "Backer McGee"),
+        amount: Money(amount: 179.0, currency: .usd, symbol: "$"),
+        backer: Backing.Backer(uid: 1_234, name: "Backer McGee"),
         bankAccount: nil,
+        cancelable: true,
         creditCard: Backing.CreditCard(
           expirationDate: "2020-01-01",
           id: "556",
@@ -15,9 +16,10 @@ extension ManagePledgeViewBackingEnvelope {
         ),
         errorReason: "Error",
         id: "123412",
+        location: ManagePledgeViewBackingEnvelope.Backing.Location(name: "Brooklyn, NY"),
         pledgedOn: 1_587_502_131,
         reward: Backing.Reward(
-          amount: Money(amount: "159.0", currency: .usd, symbol: "$"),
+          amount: Money(amount: 159.0, currency: .usd, symbol: "$"),
           backersCount: 55,
           description: "Description",
           estimatedDeliveryOn: "2020-08-01",
@@ -27,7 +29,8 @@ extension ManagePledgeViewBackingEnvelope {
           ],
           name: "Reward name"
         ),
-        shippingAmount: Money(amount: "20.0", currency: .usd, symbol: "$"),
+        sequence: 1,
+        shippingAmount: Money(amount: 20.0, currency: .usd, symbol: "$"),
         status: .pledged
       )
     )

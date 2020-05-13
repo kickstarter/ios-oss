@@ -162,8 +162,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.viewModel.outputs.configurePledgeSummaryView
       .observeForUI()
-      .observeValues { [weak self] project in
-        self?.pledgeSummaryViewController.configureWith(project)
+      .observeValues { [weak self] data in
+        self?.pledgeSummaryViewController.configureWith(data)
       }
 
     self.viewModel.outputs.configureRewardReceivedWithProject

@@ -24,8 +24,8 @@ public protocol ManagePledgeViewModelInputs {
 }
 
 public protocol ManagePledgeViewModelOutputs {
-  var configurePaymentMethodView: Signal<Backing, Never> { get }
-  var configurePledgeSummaryView: Signal<Project, Never> { get }
+  var configurePaymentMethodView: Signal<ManagePledgePaymentMethodViewData, Never> { get }
+  var configurePledgeSummaryView: Signal<ManagePledgeSummaryViewData, Never> { get }
   var configureRewardReceivedWithProject: Signal<Project, Never> { get }
   var configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never> { get }
   var endRefreshing: Signal<Void, Never> { get }
@@ -83,18 +83,17 @@ public final class ManagePledgeViewModel:
     let graphBackingProject = graphBackingEvent.values()
       .map { $0.project }
 
-    let graphBacking = graphBackingEvent.values()
+    let graphBackingEnvelope = graphBackingEvent.values()
+
+    let backing = graphBackingEnvelope
       .map { $0.backing }
-      .skipNil()
 
     self.endRefreshing = refreshProjectEvent
       .filter { $0.isTerminating }
       .ignoreValues()
 
     let project = Signal.merge(initialProject, refreshProjectEvent.values())
-    let v1Backing = project
-      .map { $0.personalization.backing }
-      .skipNil()
+
     let projectAndReward = project
       .filterMap { project in
         guard let backing = project.personalization.backing else {
@@ -107,9 +106,12 @@ public final class ManagePledgeViewModel:
 
     self.title = graphBackingProject.map(navigationBarTitle(with:))
 
-    self.configurePaymentMethodView = v1Backing
+    self.configurePaymentMethodView = backing.map(managePledgePaymentMethodViewData)
 
-    self.configurePledgeSummaryView = project
+    self.configurePledgeSummaryView = Signal.combineLatest(project, graphBackingEnvelope)
+      .map { project, env in managePledgeSummaryViewData(with: project, envelope: env) }
+      .skipNil()
+
     self.configureRewardReceivedWithProject = project
 
     self.configureRewardSummaryView = projectAndReward
@@ -129,16 +131,10 @@ public final class ManagePledgeViewModel:
       .filter { $0 == .cancelPledge }
       .ignoreValues()
 
-    self.goToCancelPledge = Signal.combineLatest(project, graphBacking, v1Backing)
+    self.goToCancelPledge = Signal.combineLatest(project, backing)
       .takeWhen(cancelPledgeSelected)
-      .filter { _, _, v1Backing in v1Backing.cancelable } // TODO: remove once we get this from GraphQL
-      .map { project, backing, _ in
-        (
-          project: project,
-          backingId: backing.id,
-          pledgeAmount: backing.amount.amount.flatMap(Double.init) ?? 0
-        )
-      }
+      .filter { _, backing in backing.cancelable }
+      .map(cancelPledgeViewData(with:backing:))
 
     self.goToContactCreator = project
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .contactCreator })
@@ -164,7 +160,7 @@ public final class ManagePledgeViewModel:
 
     self.showSuccessBannerWithMessage = self.pledgeViewControllerDidUpdatePledgeWithMessageSignal
 
-    let cancelBackingDisallowed = v1Backing
+    let cancelBackingDisallowed = backing
       .map { $0.cancelable }
       .filter(isFalse)
 
@@ -237,8 +233,8 @@ public final class ManagePledgeViewModel:
     self.viewDidLoadObserver.send(value: ())
   }
 
-  public let configurePaymentMethodView: Signal<Backing, Never>
-  public let configurePledgeSummaryView: Signal<Project, Never>
+  public let configurePaymentMethodView: Signal<ManagePledgePaymentMethodViewData, Never>
+  public let configurePledgeSummaryView: Signal<ManagePledgeSummaryViewData, Never>
   public let configureRewardReceivedWithProject: Signal<Project, Never>
   public let configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never>
   public let endRefreshing: Signal<Void, Never>
@@ -289,10 +285,58 @@ private func managePledgeMenuCTAType(for managePledgeAlertAction: ManagePledgeAl
   }
 }
 
+private func cancelPledgeViewData(
+  with project: Project,
+  backing: ManagePledgeViewBackingEnvelope.Backing
+) -> CancelPledgeViewData {
+  return .init(
+    project: project,
+    projectCountry: project.country,
+    projectName: project.name,
+    omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
+    backingId: backing.id,
+    pledgeAmount: backing.amount.amount
+  )
+}
+
+private func managePledgePaymentMethodViewData(
+  with backing: ManagePledgeViewBackingEnvelope.Backing
+) -> ManagePledgePaymentMethodViewData {
+  ManagePledgePaymentMethodViewData(
+    backingState: backing.status,
+    expirationDate: backing.creditCard?.expirationDate,
+    lastFour: backing.creditCard?.lastFour,
+    creditCardType: backing.creditCard?.type,
+    paymentType: backing.creditCard?.paymentType
+  )
+}
+
+private func managePledgeSummaryViewData(
+  with project: Project,
+  envelope: ManagePledgeViewBackingEnvelope
+) -> ManagePledgeSummaryViewData? {
+  return .init(
+    backerId: envelope.backing.backer.uid,
+    backerName: envelope.backing.backer.name,
+    backerSequence: envelope.backing.sequence,
+    backingState: envelope.backing.status,
+    currentUserIsCreatorOfProject: currentUserIsCreator(of: project),
+    locationName: envelope.backing.location?.name,
+    needsConversion: project.stats.needsConversion,
+    omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
+    pledgeAmount: envelope.backing.amount.amount,
+    pledgedOn: envelope.backing.pledgedOn,
+    projectCountry: project.country,
+    projectDeadline: project.dates.deadline,
+    projectState: envelope.project.state,
+    shippingAmount: envelope.backing.shippingAmount?.amount
+  )
+}
+
 private func projectBackingQuery(withSlug slug: String) -> NonEmptySet<Query> {
   return Query.project(
     slug: slug,
-    .id +| [
+    .pid +| [
       .state,
       .name,
       .backing(
@@ -304,8 +348,10 @@ private func projectBackingQuery(withSlug slug: String) -> NonEmptySet<Query> {
               .symbol
             ]
           ),
+          .sequence,
+          .cancelable,
           .backer(
-            .id +| [
+            .uid +| [
               .name
             ]
           ),

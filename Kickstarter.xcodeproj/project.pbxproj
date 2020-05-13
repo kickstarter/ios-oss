@@ -466,6 +466,7 @@
 		8AF34C802343C41C000B211D /* UpdateBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C7B2343C2FD000B211D /* UpdateBackingEnvelope.swift */; };
 		8AF34C8423440327000B211D /* ApplePayParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C8323440327000B211D /* ApplePayParams.swift */; };
 		8AF34C8623440565000B211D /* ApplePayParamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C8523440565000B211D /* ApplePayParamsTests.swift */; };
+		8AF3EBD42466134A007598BF /* Backing+PledgeAmount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3EBD32466134A007598BF /* Backing+PledgeAmount.swift */; };
 		8AF91CDD22EF5AF8005F9C90 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF91CDC22EF5AF7005F9C90 /* Feature.swift */; };
 		8AFB8C97233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB8C96233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift */; };
 		8AFB8C99233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */; };
@@ -1208,11 +1209,6 @@
 		D68F0B16243CFF3F009FC948 /* SignInWithAppleEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68F0B15243CFF3E009FC948 /* SignInWithAppleEnvelope.swift */; };
 		D68F0B18243F6730009FC948 /* SignInWithAppleEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68F0B17243F6730009FC948 /* SignInWithAppleEnvelopeTemplates.swift */; };
 		D68F0B1A243FB688009FC948 /* SignInWithAppleEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68F0B19243FB688009FC948 /* SignInWithAppleEnvelopeTests.swift */; };
-		D69C55142397166D00B0987A /* GraphBacking.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C55132397166D00B0987A /* GraphBacking.swift */; };
-		D69C5516239852CB00B0987A /* GraphBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C5515239852CB00B0987A /* GraphBackingEnvelope.swift */; };
-		D69C55182398534E00B0987A /* GraphBackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C55172398534E00B0987A /* GraphBackingTests.swift */; };
-		D69C551A239867F200B0987A /* GraphBackingTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C5519239867F200B0987A /* GraphBackingTemplates.swift */; };
-		D69C551C23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C551B23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift */; };
 		D69C5529239ED10E00B0987A /* ErroredBackingViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C5528239ED10E00B0987A /* ErroredBackingViewViewModel.swift */; };
 		D69C552B239EFA6C00B0987A /* ActivityErroredBackingsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C552A239EFA6C00B0987A /* ActivityErroredBackingsCellViewModel.swift */; };
 		D69C552D23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69C552C23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift */; };
@@ -1954,6 +1950,7 @@
 		8AF34C7E2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingEnvelopeTests.swift; sourceTree = "<group>"; };
 		8AF34C8323440327000B211D /* ApplePayParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayParams.swift; sourceTree = "<group>"; };
 		8AF34C8523440565000B211D /* ApplePayParamsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayParamsTests.swift; sourceTree = "<group>"; };
+		8AF3EBD32466134A007598BF /* Backing+PledgeAmount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Backing+PledgeAmount.swift"; sourceTree = "<group>"; };
 		8AF91CDC22EF5AF7005F9C90 /* Feature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 		8AFB8C96233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceInput+Constructor.swift"; sourceTree = "<group>"; };
 		8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceInput+ConstructorTests.swift"; sourceTree = "<group>"; };
@@ -2631,11 +2628,6 @@
 		D68F0B17243F6730009FC948 /* SignInWithAppleEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		D68F0B19243FB688009FC948 /* SignInWithAppleEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleEnvelopeTests.swift; sourceTree = "<group>"; };
 		D69BACEF21C856F2006EAA00 /* UIAlertControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlertControllerTests.swift; sourceTree = "<group>"; };
-		D69C55132397166D00B0987A /* GraphBacking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBacking.swift; sourceTree = "<group>"; };
-		D69C5515239852CB00B0987A /* GraphBackingEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingEnvelope.swift; sourceTree = "<group>"; };
-		D69C55172398534E00B0987A /* GraphBackingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingTests.swift; sourceTree = "<group>"; };
-		D69C5519239867F200B0987A /* GraphBackingTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingTemplates.swift; sourceTree = "<group>"; };
-		D69C551B23986AB900B0987A /* GraphBackingsEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphBackingsEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		D69C5528239ED10E00B0987A /* ErroredBackingViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErroredBackingViewViewModel.swift; sourceTree = "<group>"; };
 		D69C552A239EFA6C00B0987A /* ActivityErroredBackingsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsCellViewModel.swift; sourceTree = "<group>"; };
 		D69C552C23A03D9700B0987A /* ActivityErroredBackingsCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityErroredBackingsCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -3435,8 +3427,8 @@
 				8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */,
 				D6534D3922E7878D00E9D279 /* CreditCard+Utils.swift */,
 				D612A21822F0ED5A007F7FD9 /* CreditCard+UtilsTests.swift */,
+				8A4E954424525AC900A578CF /* CreditCardType+ImageName.swift */,
 				D798A6AD21656D970053D097 /* Currency.swift */,
-				A7C725851C85D36D005A016B /* DataSource */,
 				3706408C22A9BE8100889CBD /* DateFormatter.swift */,
 				3706408F22A9BE9400889CBD /* DateFormatterTests.swift */,
 				A7F6F0C01DC7EBF7002C118C /* DateProtocol.swift */,
@@ -3452,7 +3444,6 @@
 				A72C3A8A1D00F6A80075227E /* ExpandableRow.swift */,
 				77556F1C20A09993008CEA57 /* ExperimentName+Helpers.swift */,
 				D667C2BB2305F03300EC094A /* ExperimentName+HelpersTests.swift */,
-				778F891A22D3E35600D095C5 /* Extensions */,
 				77216CAB20EFE7F70061BE82 /* FacebookConnectionType.swift */,
 				8AF91CDC22EF5AF7005F9C90 /* Feature.swift */,
 				A7C725801C85D36D005A016B /* Format.swift */,
@@ -3503,7 +3494,6 @@
 				A7ED1F1C1E830FDC00BFFA01 /* PaginateTests.swift */,
 				373AB25C222A0D8900769FC2 /* PasswordValidation.swift */,
 				373AB25E222A0DAC00769FC2 /* PasswordValidationTests.swift */,
-				8A4E954424525AC900A578CF /* CreditCardType+ImageName.swift */,
 				7703B4232321844900169EF3 /* PKPaymentRequest+Helpers.swift */,
 				77BC00EF2326F0CC00808E75 /* PKPaymentRequestHelpersTests.swift */,
 				D78E0355229305E20043E92F /* PledgeStateCTAType.swift */,
@@ -3546,9 +3536,6 @@
 				A7ED1F221E830FDC00BFFA01 /* String+WhitespaceTests.swift */,
 				A79BF81E1D11F6AF004C0445 /* Strings.swift */,
 				8AD48632235939AF00A1463E /* StripeTypes.swift */,
-				A73378F91D0AE33B00C91445 /* Styles */,
-				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
-				8A213CE3239EAEA400BBB4C7 /* Tracking */,
 				0156B4181D10B419000C4252 /* UIAlertController.swift */,
 				D69BACEF21C856F2006EAA00 /* UIAlertControllerTests.swift */,
 				370F52B2225426C700F159B9 /* UIApplication.swift */,
@@ -3588,8 +3575,14 @@
 				8AE8D86723466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift */,
 				D6B6F9BF20F403F400A295F7 /* UserAttribute.swift */,
 				1611EF6623B2752A0051CDCC /* UUIDType.swift */,
-				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
 				A734A2661D21A1790080BBD5 /* WKNavigationActionData.swift */,
+				A7C725851C85D36D005A016B /* DataSource */,
+				778F891A22D3E35600D095C5 /* Extensions */,
+				A73378F91D0AE33B00C91445 /* Styles */,
+				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
+				8A213CE3239EAEA400BBB4C7 /* Tracking */,
+				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
+				8AF3EBD32466134A007598BF /* Backing+PledgeAmount.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -5140,6 +5133,7 @@
 				A7F441BD1D005A9400FE6FC5 /* CommentsViewModel.swift in Sources */,
 				015706551E64BFC80087DD68 /* BackerDashboardViewModel.swift in Sources */,
 				A74900181D00E23000BC3BE7 /* SignupViewModel.swift in Sources */,
+				8AF3EBD42466134A007598BF /* Backing+PledgeAmount.swift in Sources */,
 				8A8F5CD724355A4600007DB4 /* ProjectSummaryCarouselCellViewModel.swift in Sources */,
 				D04AAC33218BB70D00CF713E /* SettingsPrivacySwitchCellViewModel.swift in Sources */,
 				A7169BF61DDD064200480C0D /* UIScrollView+Extensions.swift in Sources */,
