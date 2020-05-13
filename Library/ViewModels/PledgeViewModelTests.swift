@@ -145,6 +145,14 @@ final class PledgeViewModelTests: TestCase {
     self.showWebHelp.assertValues([HelpType.terms])
   }
 
+  func testShowWebHelpLearnMore() {
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.pledgeDisclaimerViewDidTapLearnMore()
+
+    self.showWebHelp.assertValues([HelpType.trust])
+  }
+
   func testPledgeContext_LoggedIn() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
