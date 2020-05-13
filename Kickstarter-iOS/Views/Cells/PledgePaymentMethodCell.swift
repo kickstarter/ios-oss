@@ -75,11 +75,7 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     _ = self
-      |> \.insetsLayoutMarginsFromSafeArea .~ false
       |> \.selectedBackgroundView .~ self.selectionView
-
-    _ = self.contentView
-      |> \.insetsLayoutMarginsFromSafeArea .~ false
 
     _ = self.rootStackView
       |> rootStackViewStyle
