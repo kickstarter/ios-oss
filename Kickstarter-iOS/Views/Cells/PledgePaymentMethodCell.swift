@@ -176,13 +176,11 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
 private let adaptableStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.spacing .~ Styles.grid(2)
-    |> \.insetsLayoutMarginsFromSafeArea .~ false
 }
 
 private func cardImageAndLabelsStackViewStyle(_ isAccessibilityCategory: Bool) -> StackViewStyle {
   return { stackView in
     stackView
-      |> \.insetsLayoutMarginsFromSafeArea .~ false
       |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
       |> adaptableStackViewStyle
   }
@@ -191,16 +189,12 @@ private func cardImageAndLabelsStackViewStyle(_ isAccessibilityCategory: Bool) -
 private let checkmarkImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.contentMode .~ .center
-    |> \.insetsLayoutMarginsFromSafeArea .~ false
 }
 
 private let columnStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
     |> \.spacing .~ Styles.grid(2)
-    |> \.insetsLayoutMarginsFromSafeArea .~ false
-    |> \.layoutMargins .~ .zero
-    |> \.isLayoutMarginsRelativeArrangement .~ true
 }
 
 private let expirationDateLabelStyle: LabelStyle = { label in
@@ -214,7 +208,6 @@ private let labelsStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
     |> \.spacing .~ Styles.grid(1)
-    |> \.insetsLayoutMarginsFromSafeArea .~ false
 }
 
 private let lastFourLabelStyle: LabelStyle = { label in
