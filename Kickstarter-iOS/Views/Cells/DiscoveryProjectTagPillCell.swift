@@ -8,7 +8,7 @@ final class DiscoveryProjectTagPillCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var tagIconImageView: UIImageView = { UIImageView(frame: .zero) }()
-  private(set) lazy var tagLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var tagLabel: UILabel = { UILabel(frame: .zero) }()
 
   var stackViewWidthConstraint: NSLayoutConstraint?
 
@@ -60,14 +60,6 @@ final class DiscoveryProjectTagPillCell: UICollectionViewCell, ValueCell {
       _ = self.tagIconImageView
         |> \.image .~ image(named: imageName)
     }
-
-//    self.viewModel.outputs.tagIconImageTintColor
-//    .observeForUI()
-//    .observeValues { [weak self] tintColor in
-//      guard let self = self else { return }
-//      _ = self.tagIconImageView
-//        |> \.tintColor .~ tintColor
-//    }
   }
 
   // MARK: - Configuration
@@ -85,19 +77,26 @@ final class DiscoveryProjectTagPillCell: UICollectionViewCell, ValueCell {
 
     _ = ([self.tagIconImageView, self.tagLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+  }
 
+  private func setupConstraints() {
     _ = [self.tagIconImageView]
       ||> \.translatesAutoresizingMaskIntoConstraints .~ false
 
-//    self.stackViewWidthConstraint = self.rootStackView.widthAnchor.constraint(equalToConstant: 0.0)
-//      |> \.isActive .~ true
+    self.stackViewWidthConstraint = self.rootStackView.widthAnchor.constraint(lessThanOrEqualToConstant: 0.0)
+
     let tagIconImageViewHeightConstraint = self.tagIconImageView.heightAnchor.constraint(equalToConstant: 13.0)
       |> \.priority .~ .defaultHigh
+    let tagIconImageViewWidthConstraint = self.tagIconImageView.widthAnchor.constraint(equalToConstant: 13.0)
+      |> \.priority .~ .defaultHigh
+
+    self.tagIconImageView.setContentHuggingPriority(.required, for: .horizontal)
 
     NSLayoutConstraint.activate([
-      self.tagIconImageView.widthAnchor.constraint(equalToConstant: 13.0),
-      tagIconImageViewHeightConstraint
-    ])
+      tagIconImageViewWidthConstraint,
+      tagIconImageViewHeightConstraint,
+      self.stackViewWidthConstraint
+      ].compact())
   }
 }
 

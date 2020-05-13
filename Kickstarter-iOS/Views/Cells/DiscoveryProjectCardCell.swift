@@ -4,21 +4,6 @@ import Library
 import Prelude
 import UIKit
 
-final class DiscoveryProjectTagsCollectionViewDataSource: ValueCellDataSource {
-  func load(with tags: [DiscoveryProjectTagPillCellValue]) {
-    self.set(values: tags, cellClass: DiscoveryProjectTagPillCell.self, inSection: 0)
-  }
-
-  override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
-    switch (cell, value) {
-    case let (cell as DiscoveryProjectTagPillCell, value as DiscoveryProjectTagPillCellValue):
-      cell.configureWith(value: value)
-    default:
-      assertionFailure("Unrecognized combo: \(cell), \(value)")
-    }
-  }
-}
-
 final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private enum IconImageSize {
     static let height: CGFloat = 13.0
@@ -33,10 +18,16 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private lazy var backersCountIconImageView = { UIImageView(frame: .zero) }()
   private lazy var backersCountStackView = { UIStackView(frame: .zero) }()
   private lazy var cardContainerView = { UIView(frame: .zero) }()
+  private lazy var dataSource = { DiscoveryProjectTagsCollectionViewDataSource() }()
   private lazy var goalMetIconImageView = { UIImageView(frame: .zero) }()
   private lazy var goalPercentFundedStackView = { UIStackView(frame: .zero) }()
   private lazy var percentFundedLabel = { UILabel(frame: .zero) }()
-  private lazy var pillLayout: PillLayout = { PillLayout() }()
+  private lazy var pillLayout: PillLayout = {
+    PillLayout(minimumInteritemSpacing: Styles.grid(1),
+               minimumLineSpacing: Styles.grid(1)
+//               sectionInset: .init(top: Styles.grid(1))
+    )
+  }()
   private lazy var projectDetailsStackView = { UIStackView(frame: .zero) }()
   private lazy var projectImageView = { UIImageView(frame: .zero) }()
   // Stack view container for "percent funded" and "backer count" info
@@ -44,7 +35,6 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private lazy var projectNameLabel = { UILabel(frame: .zero) }()
   private lazy var projectBlurbLabel = { UILabel(frame: .zero) }()
   private lazy var saveButton = { UIButton(type: .custom) }()
-  private let tagsCollectionViewDataSource = DiscoveryProjectTagsCollectionViewDataSource()
 
   private lazy var tagsCollectionView: UICollectionView = {
     UICollectionView(
@@ -52,7 +42,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       collectionViewLayout: self.pillLayout
     )
       |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.never
-      |> \.dataSource .~ self.tagsCollectionViewDataSource
+      |> \.dataSource .~ self.dataSource
+      |> \.delegate .~ self
       |> \.allowsSelection .~ false
   }()
 
@@ -75,6 +66,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.configureWatchProjectObservers()
 
     self.tagsCollectionView.registerCellClass(DiscoveryProjectTagPillCell.self)
+
+    self.dataSource.collectionView = self.tagsCollectionView
 
     self.bindStyles()
     self.bindViewModel()
@@ -113,6 +106,9 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       Koala.LocationContext.discovery,
       value.params
     ))
+
+    self.contentView.setNeedsLayout()
+    self.contentView.layoutIfNeeded()
   }
 
   override func bindStyles() {
@@ -228,7 +224,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.loadProjectTags
       .observeForUI()
       .observeValues { [weak self] tags in
-        self?.tagsCollectionViewDataSource.load(with: tags)
+        self?.dataSource.load(with: tags)
 
         self?.tagsCollectionView.reloadData()
     }
@@ -310,7 +306,6 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     self.tagsCollectionViewHeightConstraint = self.tagsCollectionView.heightAnchor
       .constraint(equalToConstant: 0)
-      |> \.isActive .~ true
 
     NSLayoutConstraint.activate([
       self.projectImageView.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
@@ -375,6 +370,9 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private func updateCollectionViewConstraints() {
     self.tagsCollectionView.layoutIfNeeded()
 
+    print("*** tag collection view content size: \(self.tagsCollectionView.contentSize)")
+
+    self.tagsCollectionViewHeightConstraint?.isActive = true
     self.tagsCollectionViewHeightConstraint?.constant = self.tagsCollectionView.contentSize.height
   }
 
@@ -386,6 +384,18 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
   @objc fileprivate func saveButtonTapped(_ button: UIButton) {
     self.watchProjectViewModel.inputs.saveButtonTapped(selected: button.isSelected)
+  }
+}
+
+extension DiscoveryProjectCardCell: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView,
+                      willDisplay cell: UICollectionViewCell,
+                      forItemAt indexPath: IndexPath) {
+    guard let pillCell = cell as? DiscoveryProjectTagPillCell else {
+      return
+    }
+
+    print("")
   }
 }
 
@@ -423,7 +433,7 @@ private let projectImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.clipsToBounds .~ true
     |> \.backgroundColor .~ .ksr_grey_400
-    |> \.contentMode .~ .scaleAspectFit
+    |> \.contentMode .~ .scaleAspectFill
     |> ignoresInvertColorsImageViewStyle
 }
 
@@ -492,6 +502,7 @@ private let projectDetailsStackViewStyle: StackViewStyle = { stackView in
     |> \.alignment .~ .leading
     |> \.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
     |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.insetsLayoutMarginsFromSafeArea .~ false
 }
 
 private let saveButtonStyle: ButtonStyle = { button in
