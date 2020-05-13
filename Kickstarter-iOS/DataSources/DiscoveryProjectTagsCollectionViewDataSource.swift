@@ -5,6 +5,8 @@ final class DiscoveryProjectTagsCollectionViewDataSource: ValueCellDataSource {
   weak var collectionView: UICollectionView?
 
   func load(with tags: [DiscoveryProjectTagPillCellValue]) {
+    self.clearValues(section: 0)
+
     self.set(values: tags, cellClass: DiscoveryProjectTagPillCell.self, inSection: 0)
   }
 

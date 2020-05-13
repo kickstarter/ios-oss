@@ -34,6 +34,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private lazy var projectInfoStackView = { UIStackView(frame: .zero) }()
   private lazy var projectNameLabel = { UILabel(frame: .zero) }()
   private lazy var projectBlurbLabel = { UILabel(frame: .zero) }()
+  private lazy var rootStackView = { UIStackView(frame: .zero) }()
   private lazy var saveButton = { UIButton(type: .custom) }()
 
   private lazy var tagsCollectionView: UICollectionView = {
@@ -87,6 +88,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   }
 
   override func layoutSubviews() {
+    self.tagsCollectionView.setNeedsLayout()
+
     super.layoutSubviews()
 
     self.updateCollectionViewConstraints()
@@ -134,6 +137,10 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
           )
       }
 
+    _ = self.rootStackView
+      |> verticalStackViewStyle
+      |> \.spacing .~ 0
+
     _ = self.saveButton
       |> saveButtonStyle
 
@@ -163,7 +170,6 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     _ = self.goalPercentFundedStackView
       |> infoStackViewStyle
-      |> UIView.lens.contentHuggingPriority(for: .horizontal) .~ .required
 
     _ = self.goalMetIconImageView
       |> goalMetIconImageViewStyle
@@ -227,6 +233,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
         self?.dataSource.load(with: tags)
 
         self?.tagsCollectionView.reloadData()
+
+        self?.contentView.setNeedsLayout()
     }
 
     // Watch Project View Model
@@ -259,11 +267,12 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    _ = (self.projectImageView, self.cardContainerView)
+    _ = (self.rootStackView, self.cardContainerView)
       |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
-    _ = (self.projectDetailsStackView, self.cardContainerView)
-      |> ksr_addSubviewToParent()
+    _ = ([self.projectImageView, self.projectDetailsStackView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.saveButton, self.cardContainerView)
       |> ksr_addSubviewToParent()
@@ -289,7 +298,6 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private func setupConstraints() {
     _ = [
       self.projectImageView,
-      self.projectDetailsStackView,
       self.goalMetIconImageView,
       self.backersCountIconImageView,
       self.saveButton,
@@ -302,25 +310,19 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     let imageHeightConstraint = self.projectImageView.heightAnchor.constraint(
       equalTo: self.projectImageView.widthAnchor,
       multiplier: aspectRatio
-    ) |> \.priority .~ .defaultHigh
+      ) |> \.priority .~ .defaultHigh
 
     self.tagsCollectionViewHeightConstraint = self.tagsCollectionView.heightAnchor
-      .constraint(equalToConstant: 0)
+      .constraint(greaterThanOrEqualToConstant: 0)
+      |> \.isActive .~ true
 
     NSLayoutConstraint.activate([
-      self.projectImageView.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
-      self.projectImageView.leftAnchor.constraint(equalTo: self.cardContainerView.leftAnchor),
-      self.projectImageView.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
       self.projectImageView.widthAnchor.constraint(equalTo: self.cardContainerView.widthAnchor),
       imageHeightConstraint,
       self.saveButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.saveButton.widthAnchor.constraint(equalToConstant: Styles.minTouchSize.width),
       self.saveButton.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
       self.saveButton.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
-      self.projectDetailsStackView.topAnchor.constraint(equalTo: self.projectImageView.bottomAnchor),
-      self.projectDetailsStackView.leftAnchor.constraint(equalTo: self.cardContainerView.leftAnchor),
-      self.projectDetailsStackView.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
-      self.projectDetailsStackView.bottomAnchor.constraint(equalTo: self.cardContainerView.bottomAnchor),
       self.goalMetIconImageView.widthAnchor.constraint(equalToConstant: IconImageSize.width),
       self.goalMetIconImageView.heightAnchor.constraint(equalToConstant: IconImageSize.height),
       self.backersCountIconImageView.widthAnchor.constraint(equalToConstant: IconImageSize.width),
@@ -372,8 +374,9 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     print("*** tag collection view content size: \(self.tagsCollectionView.contentSize)")
 
-    self.tagsCollectionViewHeightConstraint?.isActive = true
     self.tagsCollectionViewHeightConstraint?.constant = self.tagsCollectionView.contentSize.height
+
+    self.tagsCollectionView.invalidateIntrinsicContentSize()
   }
 
   // MARK: - Accessors
@@ -492,7 +495,8 @@ private let backersCountLabelStyle: LabelStyle = { label in
 
 private let projectInfoStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.spacing .~ Styles.grid(3)
+    |> \.distribution .~ .fill
+    |> \.spacing .~ Styles.grid(2)
 }
 
 private let projectDetailsStackViewStyle: StackViewStyle = { stackView in
