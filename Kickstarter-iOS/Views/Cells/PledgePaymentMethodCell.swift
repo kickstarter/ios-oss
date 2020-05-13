@@ -75,7 +75,11 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     _ = self
+      |> \.insetsLayoutMarginsFromSafeArea .~ false
       |> \.selectedBackgroundView .~ self.selectionView
+
+    _ = self.contentView
+      |> \.insetsLayoutMarginsFromSafeArea .~ false
 
     _ = self.rootStackView
       |> rootStackViewStyle
@@ -187,6 +191,7 @@ private func cardImageAndLabelsStackViewStyle(_ isAccessibilityCategory: Bool) -
 private let checkmarkImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.contentMode .~ .center
+    |> \.insetsLayoutMarginsFromSafeArea .~ false
 }
 
 private let columnStackViewStyle: StackViewStyle = { stackView in
