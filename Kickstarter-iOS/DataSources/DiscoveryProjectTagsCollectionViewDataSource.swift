@@ -27,6 +27,6 @@ final class DiscoveryProjectTagsCollectionViewDataSource: ValueCellDataSource {
     let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
     let leftRightInsets = (layout?.sectionInset.left ?? 0) + (layout?.sectionInset.right ?? 0)
 
-    cell.stackViewWidthConstraint?.constant = collectionView.bounds.width - leftRightInsets - 5
+    cell.stackViewWidthConstraint?.constant = collectionView.bounds.width - leftRightInsets
   }
 }

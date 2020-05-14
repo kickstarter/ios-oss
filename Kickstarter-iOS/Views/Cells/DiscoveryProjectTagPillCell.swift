@@ -5,6 +5,11 @@ import ReactiveSwift
 import UIKit
 
 final class DiscoveryProjectTagPillCell: UICollectionViewCell, ValueCell {
+  private enum IconSize {
+    static let height: CGFloat = 13.0
+    static let width: CGFloat = 13.0
+  }
+
   // MARK: - Properties
 
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -87,12 +92,11 @@ final class DiscoveryProjectTagPillCell: UICollectionViewCell, ValueCell {
     self.stackViewWidthConstraint = self.rootStackView.widthAnchor.constraint(lessThanOrEqualToConstant: 0.0)
 
     let tagIconImageViewHeightConstraint = self.tagIconImageView.heightAnchor
-      .constraint(equalToConstant: 13.0)
+      .constraint(equalToConstant: IconSize.height)
       |> \.priority .~ .defaultHigh
-    let tagIconImageViewWidthConstraint = self.tagIconImageView.widthAnchor.constraint(equalToConstant: 13.0)
+    let tagIconImageViewWidthConstraint = self.tagIconImageView.widthAnchor
+      .constraint(equalToConstant: IconSize.width)
       |> \.priority .~ .defaultHigh
-
-    self.tagIconImageView.setContentHuggingPriority(.required, for: .horizontal)
 
     NSLayoutConstraint.activate([
       tagIconImageViewWidthConstraint,
