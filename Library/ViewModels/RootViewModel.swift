@@ -255,7 +255,8 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
     )
 
     let badgeValueOnUserUpdated = self.currentUserUpdatedProperty.signal
-      .map { _ in AppEnvironment.current.currentUser?.unseenActivityCount }
+      .map { _ in currentUserActivitiesAndErroredPledgeCount() }
+      .wrapInOptional()
 
     let updateBadgeValueFromNotification = selectedIndexAndActivityViewControllerIndex
       .takePairWhen(self.didReceiveBadgeValueSignal)
@@ -279,7 +280,9 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
     let clearBadgeValueOnActivitiesTabSelected = selectedIndexAndActivityViewControllerIndex.filter(==)
       .flatMap { _, index in currentBadgeValue.producer.map { ($0, index) }.take(first: 1) }
       .filter { value, _ in value != nil }
-      .map { _, index -> (Int?, RootViewControllerIndex) in (nil, index) }
+      .map { _, index -> (Int?, RootViewControllerIndex) in
+        (AppEnvironment.current.currentUser?.erroredBackingsCount, index)
+      }
 
     let integerBadgeValueAndIndex = Signal.merge(
       updateBadgeValueOnLifecycleEvents,
@@ -425,6 +428,11 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
 
   public var inputs: RootViewModelInputs { return self }
   public var outputs: RootViewModelOutputs { return self }
+}
+
+private func currentUserActivitiesAndErroredPledgeCount() -> Int {
+  (AppEnvironment.current.currentUser?.unseenActivityCount ?? 0) +
+    (AppEnvironment.current.currentUser?.erroredBackingsCount ?? 0)
 }
 
 private func generateStandardViewControllers() -> [RootViewControllerData] {

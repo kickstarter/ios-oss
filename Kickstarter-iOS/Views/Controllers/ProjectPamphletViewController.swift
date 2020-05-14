@@ -200,7 +200,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
   private func goToManageViewPledge(project: Project) {
     let vc = ManagePledgeViewController.instantiate()
       |> \.delegate .~ self
-    vc.configureWith(project: project)
+    vc.configureWith(projectOrParam: .left(project))
 
     let nc = RewardPledgeNavigationController(rootViewController: vc)
 

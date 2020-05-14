@@ -4,6 +4,7 @@ import Runes
 
 public struct User {
   public var avatar: Avatar
+  public var erroredBackingsCount: Int?
   public var facebookConnected: Bool?
   public var id: Int
   public var isAdmin: Bool?
@@ -110,6 +111,7 @@ extension User: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<User> {
     let tmp1 = pure(curry(User.init))
       <*> json <| "avatar"
+      <*> json <|? "errored_backings_count"
       <*> json <|? "facebook_connected"
       <*> json <| "id"
     let tmp2 = tmp1

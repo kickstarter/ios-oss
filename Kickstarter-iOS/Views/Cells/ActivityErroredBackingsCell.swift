@@ -12,6 +12,14 @@ final class ActivityErroredBackingsCell: UITableViewCell, ValueCell {
   }()
 
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  public weak var delegate: ErroredBackingViewDelegate? {
+    didSet {
+      self.rootStackView.arrangedSubviews
+        .compactMap { $0 as? ErroredBackingView }
+        .forEach { $0.delegate = self.delegate }
+    }
+  }
+
   private let viewModel: ActivityErroredBackingsCellViewModelType =
     ActivityErroredBackingsCellViewModel()
 
@@ -82,7 +90,7 @@ final class ActivityErroredBackingsCell: UITableViewCell, ValueCell {
 
     let erroredBackingsViews = backings.map { backing -> ErroredBackingView in
       let view = ErroredBackingView()
-        |> \.delegate .~ self
+        |> \.delegate .~ self.delegate
       view.configureWith(value: backing)
       return view
     }
@@ -127,8 +135,4 @@ private let contentViewStyle: ViewStyle = { view in
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> verticalStackViewStyle
-}
-
-extension ActivityErroredBackingsCell: ErroredBackingViewDelegate {
-  func erroredBackingViewDidTapManage(_: ErroredBackingView, backing _: GraphBacking) {}
 }

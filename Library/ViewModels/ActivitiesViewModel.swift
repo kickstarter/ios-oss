@@ -7,6 +7,9 @@ public protocol ActitiviesViewModelInputs {
   /// Called when the project image in an update activity cell is tapped.
   func activityUpdateCellTappedProjectImage(activity: Activity)
 
+  /// Called when the user tapped to fix an errored pledge.
+  func erroredBackingViewDidTapManage(with backing: GraphBacking)
+
   /// Call when the Find Friends section is dismissed.
   func findFriendsHeaderCellDismissHeader()
 
@@ -21,6 +24,9 @@ public protocol ActitiviesViewModelInputs {
 
   /// Call when an alert should be shown.
   func findFriendsFacebookConnectCellShowErrorAlert(_ alert: AlertError)
+
+  /// Call when the ManagePledgeViewController made changes.
+  func managePledgeViewControllerDidFinish()
 
   /// Call when the feed should be refreshed, e.g. pull-to-refresh.
   func refresh()
@@ -76,6 +82,9 @@ public protocol ActivitiesViewModelOutputs {
 
   /// Emits when should transition to Friends view with source (.Activity).
   var goToFriends: Signal<FriendsSource, Never> { get }
+
+  /// Emits a project Param to navigate to ManagePledgeViewController.
+  var goToManagePledge: Signal<Param, Never> { get }
 
   /// Emits a project and ref tag that should be used to present a project controller.
   var goToProject: Signal<(Project, RefTag), Never> { get }
@@ -171,12 +180,15 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
     )
     .ignoreValues()
 
-    self.updateUserInEnvironment = self.clearBadgeValue
-      .filter { _ in AppEnvironment.current.currentUser != nil }
-      .switchMap { _ in
-        updatedUserWithClearedActivityCountProducer()
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-      }
+    self.updateUserInEnvironment = Signal.merge(
+      self.clearBadgeValue,
+      self.managePledgeViewControllerDidFinishProperty.signal
+    )
+    .filter { _ in AppEnvironment.current.currentUser != nil }
+    .switchMap { _ in
+      updatedUserWithClearedActivityCountProducer()
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    }
 
     let currentUser = Signal
       .merge(
@@ -306,6 +318,11 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
         return SignalProducer(value: (project, update))
       }
 
+    self.goToManagePledge = self.erroredBackingViewDidTapManageWithBackingProperty.signal
+      .map { $0?.project?.pid }
+      .skipNil()
+      .map(Param.id)
+
     Signal.zip(pageCount, paginatedActivities)
       .filter { pageCount, _ in
         pageCount == 1
@@ -323,6 +340,16 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
   fileprivate let dismissFindFriendsSectionProperty = MutableProperty(())
   public func findFriendsHeaderCellDismissHeader() {
     self.dismissFindFriendsSectionProperty.value = ()
+  }
+
+  fileprivate let erroredBackingViewDidTapManageWithBackingProperty = MutableProperty<GraphBacking?>(nil)
+  public func erroredBackingViewDidTapManage(with backing: GraphBacking) {
+    self.erroredBackingViewDidTapManageWithBackingProperty.value = backing
+  }
+
+  fileprivate let managePledgeViewControllerDidFinishProperty = MutableProperty(())
+  public func managePledgeViewControllerDidFinish() {
+    self.managePledgeViewControllerDidFinishProperty.value = ()
   }
 
   fileprivate let goToFriendsProperty = MutableProperty(())
@@ -398,6 +425,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
   public let hideEmptyState: Signal<(), Never>
   public let isRefreshing: Signal<Bool, Never>
   public let goToFriends: Signal<FriendsSource, Never>
+  public let goToManagePledge: Signal<Param, Never>
   public let goToProject: Signal<(Project, RefTag), Never>
   public let goToSurveyResponse: Signal<SurveyResponse, Never>
   public let goToUpdate: Signal<(Project, Update), Never>

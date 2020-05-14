@@ -253,8 +253,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   // MARK: - Configuration
 
-  func configureWith(project: Project) {
-    self.viewModel.inputs.configureWith(project)
+  func configureWith(projectOrParam: Either<Project, Param>) {
+    self.viewModel.inputs.configureWith(projectOrParam)
   }
 
   private func setupConstraints() {
@@ -478,4 +478,39 @@ extension ManagePledgeViewController: MessageDialogViewControllerDelegate {
   }
 
   internal func messageDialog(_: MessageDialogViewController, postedMessage _: Message) {}
+}
+
+extension ManagePledgeViewController {
+  public static func controller(
+    with projectOrParam: Either<Project, Param>,
+    delegate _: ManagePledgeViewControllerDelegate? = nil
+  ) -> UINavigationController {
+    let managePledgeViewController = ManagePledgeViewController
+      .instantiate()
+    managePledgeViewController.configureWith(projectOrParam: projectOrParam)
+
+    let closeButton = UIBarButtonItem(
+      image: UIImage(named: "icon--cross"),
+      style: .plain,
+      target: managePledgeViewController,
+      action: #selector(ManagePledgeViewController.closeButtonTapped)
+    )
+
+    _ = closeButton
+      |> \.width .~ Styles.minTouchSize.width
+      |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
+
+    managePledgeViewController.navigationItem.setLeftBarButton(closeButton, animated: false)
+
+    let navigationController = RewardPledgeNavigationController(
+      rootViewController: managePledgeViewController
+    )
+
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = navigationController
+        |> \.modalPresentationStyle .~ .pageSheet
+    }
+
+    return navigationController
+  }
 }

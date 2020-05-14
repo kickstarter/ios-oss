@@ -424,7 +424,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .filter(third >>> isTrue)
       .map { project, vcs, _ -> [UIViewController] in
         let vc = ManagePledgeViewController.instantiate()
-        vc.configureWith(project: project)
+        vc.configureWith(projectOrParam: .left(project))
         return vcs + [vc]
       }
       .map { vcs -> RewardPledgeNavigationController in
