@@ -9,6 +9,7 @@ final class ActivitiesViewModelTests: TestCase {
 
   fileprivate let activitiesPresent = TestObserver<Bool, Never>()
   fileprivate let clearBadgeValue = TestObserver<(), Never>()
+  fileprivate let erroredBackings = TestObserver<[GraphBacking], Never>()
   fileprivate let isRefreshing = TestObserver<Bool, Never>()
   fileprivate let goToProject = TestObserver<Project, Never>()
   fileprivate let goToSurveyResponse = TestObserver<SurveyResponse, Never>()
@@ -32,6 +33,7 @@ final class ActivitiesViewModelTests: TestCase {
 
     self.vm.outputs.activities.map { !$0.isEmpty }.observe(self.activitiesPresent.observer)
     self.vm.outputs.clearBadgeValue.observe(self.clearBadgeValue.observer)
+    self.vm.outputs.erroredBackings.observe(self.erroredBackings.observer)
     self.vm.outputs.hideEmptyState.observe(self.hideEmptyState.observer)
     self.vm.outputs.isRefreshing.observe(self.isRefreshing.observer)
     self.vm.outputs.goToProject.map { $0.0 }.observe(self.goToProject.observer)
@@ -539,12 +541,35 @@ final class ActivitiesViewModelTests: TestCase {
   func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish() {
     let user = User.template
 
-    withEnvironment(currentUser: user) {
+    let backing = GraphBacking.template
+      |> \.project .~ .template
+
+    let backings = GraphBackingEnvelope.GraphBackingConnection(nodes: [backing])
+
+    let envelope = GraphBackingEnvelope.template
+      |> \.backings .~ backings
+
+    let backingsResponse = UserEnvelope<GraphBackingEnvelope>(me: envelope)
+
+    let mockService = MockService(fetchGraphUserBackingsResponse: backingsResponse)
+
+    withEnvironment(apiService: mockService, currentUser: user) {
       self.updateUserInEnvironment.assertDidNotEmitValue()
+      self.erroredBackings.assertDidNotEmitValue()
 
       self.vm.inputs.managePledgeViewControllerDidFinish()
 
+      self.scheduler.advance()
+
       self.updateUserInEnvironment.assertValues([user])
+      self.erroredBackings.assertDidNotEmitValue()
+
+      self.vm.inputs.currentUserUpdated()
+
+      self.scheduler.advance()
+
+      self.updateUserInEnvironment.assertValues([user])
+      self.erroredBackings.assertValues([backingsResponse.me.backings.nodes])
     }
   }
 

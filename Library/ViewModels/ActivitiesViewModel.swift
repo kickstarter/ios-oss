@@ -7,6 +7,9 @@ public protocol ActitiviesViewModelInputs {
   /// Called when the project image in an update activity cell is tapped.
   func activityUpdateCellTappedProjectImage(activity: Activity)
 
+  /// Call when the controller has received a user updated notification.
+  func currentUserUpdated()
+
   /// Called when the user tapped to fix an errored pledge.
   func erroredBackingViewDidTapManage(with backing: GraphBacking)
 
@@ -180,18 +183,28 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
     )
     .ignoreValues()
 
+    let userClearingBadgeCountEvent = self.clearBadgeValue
+      .filter { _ in AppEnvironment.current.currentUser != nil }
+      .switchMap { _ in
+        updatedUserWithClearedActivityCountProducer()
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    let refreshUserEvent = self.managePledgeViewControllerDidFinishProperty.signal
+      .switchMap { _ in
+        AppEnvironment.current.apiService.fetchUserSelf()
+          .materialize()
+      }
+
     self.updateUserInEnvironment = Signal.merge(
-      self.clearBadgeValue,
-      self.managePledgeViewControllerDidFinishProperty.signal
+      userClearingBadgeCountEvent.values(),
+      refreshUserEvent.values()
     )
-    .filter { _ in AppEnvironment.current.currentUser != nil }
-    .switchMap { _ in
-      updatedUserWithClearedActivityCountProducer()
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-    }
 
     let currentUser = Signal
       .merge(
+        self.currentUserUpdatedProperty.signal.ignoreValues(),
         self.viewDidLoadProperty.signal,
         self.userSessionStartedProperty.signal,
         self.userSessionEndedProperty.signal
@@ -330,6 +343,11 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       .map(second)
       .map { $0.count }
       .observeValues { AppEnvironment.current.koala.trackActivities(count: $0) }
+  }
+
+  fileprivate let currentUserUpdatedProperty = MutableProperty(())
+  public func currentUserUpdated() {
+    self.currentUserUpdatedProperty.value = ()
   }
 
   fileprivate let dismissFacebookConnectSectionProperty = MutableProperty(())
