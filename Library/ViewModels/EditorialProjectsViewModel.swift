@@ -113,7 +113,7 @@ private func editorialImageName(for tagId: DiscoveryParams.TagID) -> String {
     }
     return "go-rewardless-modal"
   case .lightsOn:
-    return "lights-on-home"
+    return "lights-on"
   }
 }
 
