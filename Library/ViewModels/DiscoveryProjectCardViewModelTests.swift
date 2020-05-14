@@ -10,11 +10,13 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
   private let backerCountLabelBoldedString = TestObserver<String, Never>()
   private let backerCountLabelFullString = TestObserver<String, Never>()
   private let goalMetIconHidden = TestObserver<Bool, Never>()
+  private let loadProjectTags = TestObserver<[DiscoveryProjectTagPillCellValue], Never>()
   private let percentFundedLabelBoldedString = TestObserver<String, Never>()
   private let percentFundedLabelFullString = TestObserver<String, Never>()
   private let projectBlurbLabelText = TestObserver<String, Never>()
   private let projectImageUrlString = TestObserver<String, Never>()
   private let projectNameLabelText = TestObserver<String, Never>()
+  private let tagsCollectionViewHidden = TestObserver<Bool, Never>()
 
   private let vm: DiscoveryProjectCardViewModelType = DiscoveryProjectCardViewModel()
 
@@ -24,11 +26,13 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
     self.vm.outputs.backerCountLabelData.map(first).observe(self.backerCountLabelBoldedString.observer)
     self.vm.outputs.backerCountLabelData.map(second).observe(self.backerCountLabelFullString.observer)
     self.vm.outputs.goalMetIconHidden.observe(self.goalMetIconHidden.observer)
+    self.vm.outputs.loadProjectTags.observe(self.loadProjectTags.observer)
     self.vm.outputs.percentFundedLabelData.map(first).observe(self.percentFundedLabelBoldedString.observer)
     self.vm.outputs.percentFundedLabelData.map(second).observe(self.percentFundedLabelFullString.observer)
     self.vm.outputs.projectBlurbLabelText.observe(self.projectBlurbLabelText.observer)
     self.vm.outputs.projectImageURL.map(\.absoluteString).observe(self.projectImageUrlString.observer)
     self.vm.outputs.projectNameLabelText.observe(self.projectNameLabelText.observer)
+    self.vm.outputs.tagsCollectionViewHidden.observe(self.tagsCollectionViewHidden.observer)
   }
 
   func testBackerCountLabelData() {
@@ -118,5 +122,121 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
     self.vm.inputs.configure(with: (Project.template, nil, nil))
 
     self.projectImageUrlString.assertValues(["http://www.kickstarter.com/full.jpg"])
+  }
+
+  func testLoadProjectTags_ProjectIsPWL_CategoryIsRoot() {
+    let project = Project.template
+      |> \.staffPick .~ true
+      |> \.category .~ .illustration
+
+    self.loadProjectTags.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, .art, nil))
+
+    self.loadProjectTags.assertValues([
+      [
+        DiscoveryProjectTagPillCellValue(
+          type: .green,
+          tagIconImageName: "icon--small-k",
+          tagLabelText: "Projects We Love"
+        ),
+        DiscoveryProjectTagPillCellValue(
+          type: .grey,
+          tagIconImageName: "icon--compass",
+          tagLabelText: "Illustration"
+        )
+      ]
+    ])
+  }
+
+  func testLoadProjectTags_CategoryIsNil() {
+    let project = Project.template
+      |> \.staffPick .~ true
+      |> \.category .~ .illustration
+
+    self.loadProjectTags.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, nil, nil))
+
+    self.loadProjectTags.assertValues([
+      [
+        DiscoveryProjectTagPillCellValue(
+          type: .green,
+          tagIconImageName: "icon--small-k",
+          tagLabelText: "Projects We Love"
+        ),
+        DiscoveryProjectTagPillCellValue(
+          type: .grey,
+          tagIconImageName: "icon--compass",
+          tagLabelText: "Illustration"
+        )
+      ]
+    ])
+  }
+
+  func testLoadProjectTags_CategoryMatchesProjectCategory() {
+    let project = Project.template
+      |> \.staffPick .~ true
+      |> \.category .~ .illustration
+
+    self.loadProjectTags.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, .illustration, nil))
+
+    self.loadProjectTags.assertValues([
+      [DiscoveryProjectTagPillCellValue(
+        type: .green,
+        tagIconImageName: "icon--small-k",
+        tagLabelText: "Projects We Love"
+      )]
+    ], "Does not show subcategory tag when filtered category is the same as project subcategory")
+  }
+
+  func testTagsCollectionViewHidden_WhenProjectIsNotStaffPick_CategoryTagShouldShow() {
+    let project = Project.template
+      |> \.staffPick .~ false
+      |> \.category .~ .illustration
+
+    self.tagsCollectionViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, .art, nil))
+
+    self.tagsCollectionViewHidden.assertValues([false])
+  }
+
+  func testTagsCollectionViewHidden_WhenProjectIsNotStaffPick_CategoryTagShouldNotShow() {
+    let project = Project.template
+      |> \.staffPick .~ false
+      |> \.category .~ .illustration
+
+    self.tagsCollectionViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, .illustration, nil))
+
+    self.tagsCollectionViewHidden.assertValues([true])
+  }
+
+  func testTagsCollectionViewHidden_WhenProjectIsStaffPick_CategoryTagShouldShow() {
+    let project = Project.template
+      |> \.staffPick .~ true
+      |> \.category .~ .illustration
+
+    self.tagsCollectionViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, .art, nil))
+
+    self.tagsCollectionViewHidden.assertValues([false])
+  }
+
+  func testTagsCollectionViewHidden_WhenProjectIsStaffPick_CategoryTagShouldNotShow() {
+    let project = Project.template
+      |> \.staffPick .~ true
+      |> \.category .~ .illustration
+
+    self.tagsCollectionViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, .illustration, nil))
+
+    self.tagsCollectionViewHidden.assertValues([false])
   }
 }

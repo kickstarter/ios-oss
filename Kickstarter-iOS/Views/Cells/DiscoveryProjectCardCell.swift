@@ -314,10 +314,12 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       .constraint(greaterThanOrEqualToConstant: 0)
       |> \.isActive .~ true
 
-    let goalMetIconWidth = self.goalMetIconImageView.widthAnchor.constraint(equalToConstant: IconImageSize.width)
+    let goalMetIconWidth = self.goalMetIconImageView.widthAnchor
+      .constraint(equalToConstant: IconImageSize.width)
       |> \.priority .~ .defaultHigh
 
-    let backersIconWidth = self.backersCountIconImageView.widthAnchor.constraint(equalToConstant: IconImageSize.width)
+    let backersIconWidth = self.backersCountIconImageView.widthAnchor
+      .constraint(equalToConstant: IconImageSize.width)
       |> \.priority .~ .defaultHigh
 
     NSLayoutConstraint.activate([

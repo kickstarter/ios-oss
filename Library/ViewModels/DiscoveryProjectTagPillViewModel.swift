@@ -2,7 +2,7 @@ import Foundation
 import ReactiveSwift
 import UIKit
 
-public enum DiscoveryProjectTagPillCellType {
+public enum DiscoveryProjectTagPillCellType: Equatable {
   case green
   case grey
 
@@ -28,11 +28,11 @@ public enum DiscoveryProjectTagPillCellType {
   }
 }
 
-public typealias DiscoveryProjectTagPillCellValue = (
-  type: DiscoveryProjectTagPillCellType,
-  tagLabelText: String,
-  tagIconImageName: String
-)
+public struct DiscoveryProjectTagPillCellValue: Equatable {
+  public let type: DiscoveryProjectTagPillCellType
+  public let tagIconImageName: String
+  public let tagLabelText: String
+}
 
 public protocol DiscoveryProjectTagPillViewModelInputs {
   func configure(with value: DiscoveryProjectTagPillCellValue)

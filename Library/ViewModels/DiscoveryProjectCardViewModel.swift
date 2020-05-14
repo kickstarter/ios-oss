@@ -30,7 +30,6 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
   public init() {
     let project = self.configureWithValueProperty.signal.skipNil().map(first)
     let category = self.configureWithValueProperty.signal.skipNil().map(second)
-//    let filterParams = self.configureWithValueProperty.signal.skipNil().map(third)
 
     self.projectNameLabelText = project.map(\.name)
     self.projectBlurbLabelText = project.map(\.blurb)
@@ -107,8 +106,8 @@ private func projectTags(project: Project, shouldShowPWLTag: Bool, shouldShowCat
   if shouldShowPWLTag {
     let pwlTag = DiscoveryProjectTagPillCellValue(
       type: .green,
-      tagLabelText: Strings.Projects_We_Love(),
-      tagIconImageName: "icon--small-k"
+      tagIconImageName: "icon--small-k",
+      tagLabelText: Strings.Projects_We_Love()
     )
 
     tags.append(pwlTag)
@@ -117,8 +116,8 @@ private func projectTags(project: Project, shouldShowPWLTag: Bool, shouldShowCat
   if shouldShowCategoryTag {
     let categoryTag = DiscoveryProjectTagPillCellValue(
       type: .grey,
-      tagLabelText: project.category.name,
-      tagIconImageName: "icon--compass"
+      tagIconImageName: "icon--compass",
+      tagLabelText: project.category.name
     )
 
     tags.append(categoryTag)

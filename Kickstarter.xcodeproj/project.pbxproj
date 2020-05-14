@@ -333,6 +333,8 @@
 		77D7A739214187A9003F258C /* SettingsSwitchCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */; };
 		77DB532A2215D0AA0078991C /* GraphUserCreditCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DB53292215D0AA0078991C /* GraphUserCreditCardTests.swift */; };
 		77DC4DFE246C6B73002355A1 /* DiscoveryProjectTagsCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DC4DFD246C6B73002355A1 /* DiscoveryProjectTagsCollectionViewDataSource.swift */; };
+		77DC4E00246D9311002355A1 /* DiscoveryProjectTagPillViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DC4DFF246D9311002355A1 /* DiscoveryProjectTagPillViewModelTests.swift */; };
+		77DC4E02246D9CCD002355A1 /* DiscoveryProjectTagsCollectionViewDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DC4E01246D9CCD002355A1 /* DiscoveryProjectTagsCollectionViewDataSourceTests.swift */; };
 		77E44B7421823A56006446B8 /* ChangePasswordInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E44B7321823A56006446B8 /* ChangePasswordInput.swift */; };
 		77E6440120F64F0B005F6B38 /* HelpDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440020F64F0B005F6B38 /* HelpDataSource.swift */; };
 		77E6440320F65074005F6B38 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E6440220F65074005F6B38 /* HelpViewController.swift */; };
@@ -1806,6 +1808,8 @@
 		77D7A738214187A9003F258C /* SettingsSwitchCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCellType.swift; sourceTree = "<group>"; };
 		77DB53292215D0AA0078991C /* GraphUserCreditCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphUserCreditCardTests.swift; sourceTree = "<group>"; };
 		77DC4DFD246C6B73002355A1 /* DiscoveryProjectTagsCollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectTagsCollectionViewDataSource.swift; sourceTree = "<group>"; };
+		77DC4DFF246D9311002355A1 /* DiscoveryProjectTagPillViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectTagPillViewModelTests.swift; sourceTree = "<group>"; };
+		77DC4E01246D9CCD002355A1 /* DiscoveryProjectTagsCollectionViewDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProjectTagsCollectionViewDataSourceTests.swift; sourceTree = "<group>"; };
 		77E44B7321823A56006446B8 /* ChangePasswordInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordInput.swift; sourceTree = "<group>"; };
 		77E6440020F64F0B005F6B38 /* HelpDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDataSource.swift; sourceTree = "<group>"; };
 		77E6440220F65074005F6B38 /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
@@ -3683,6 +3687,7 @@
 				A7E315C41C88AAA8000DD85A /* DiscoveryProjectsDataSource.swift */,
 				A7ED200B1E83229E00BFFA01 /* DiscoveryProjectsDataSourceTest.swift */,
 				77DC4DFD246C6B73002355A1 /* DiscoveryProjectTagsCollectionViewDataSource.swift */,
+				77DC4E01246D9CCD002355A1 /* DiscoveryProjectTagsCollectionViewDataSourceTests.swift */,
 				A7CC14431D00E75F00035C52 /* FindFriendsDataSource.swift */,
 				A7ED200C1E83229E00BFFA01 /* FindFriendsDataSourceTests.swift */,
 				77E6440020F64F0B005F6B38 /* HelpDataSource.swift */,
@@ -3857,6 +3862,7 @@
 				D04AAC0D218BB70900CF713E /* DiscoveryProjectCategoryViewModel.swift */,
 				D04AAC10218BB70900CF713E /* DiscoveryProjectCategoryViewModelTests.swift */,
 				77319C812469FE9F0051B755 /* DiscoveryProjectTagPillViewModel.swift */,
+				77DC4DFF246D9311002355A1 /* DiscoveryProjectTagPillViewModelTests.swift */,
 				77A64E5924647C55003BF98E /* DiscoveryProjectCardViewModel.swift */,
 				77319C7D2469B5C70051B755 /* DiscoveryProjectCardViewModelTests.swift */,
 				A7F441981D005A9400FE6FC5 /* DiscoveryViewModel.swift */,
@@ -5394,6 +5400,7 @@
 				D08CD201219216BA009F89F0 /* WatchProjectViewModelTests.swift in Sources */,
 				A7ED1F291E830FDC00BFFA01 /* EnvironmentTests.swift in Sources */,
 				77CB227022C3B3CB00AEAAF1 /* PledgeContinueViewModelTests.swift in Sources */,
+				77DC4E00246D9311002355A1 /* DiscoveryProjectTagPillViewModelTests.swift in Sources */,
 				A7ED1F2E1E830FDC00BFFA01 /* LaunchedCountriesTests.swift in Sources */,
 				3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */,
 				D710ADFD2441172100DC7199 /* PledgeViewCTAContainerViewModelTests.swift in Sources */,
@@ -5764,6 +5771,7 @@
 				A7ED204D1E8323E900BFFA01 /* FindFriendsViewControllerTests.swift in Sources */,
 				015102AE1F1947CB0006C0FC /* MessageThreadsDataSourceTests.swift in Sources */,
 				774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */,
+				77DC4E02246D9CCD002355A1 /* DiscoveryProjectTagsCollectionViewDataSourceTests.swift in Sources */,
 				D033E2C322A05B7400464E43 /* MockApplication.swift in Sources */,
 				A7ED20541E8323E900BFFA01 /* ProjectPamphletContentViewControllerTests.swift in Sources */,
 				1611EF6A23B2773A0051CDCC /* MockUUID.swift in Sources */,
