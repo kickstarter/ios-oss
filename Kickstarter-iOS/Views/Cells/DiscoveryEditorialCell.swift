@@ -161,5 +161,6 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.axis .~ .vertical
     |> \.spacing .~ Styles.grid(2)
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ .init(top: Styles.grid(2), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(0))
+    |> \.layoutMargins .~
+    .init(top: Styles.grid(2), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(0))
 }

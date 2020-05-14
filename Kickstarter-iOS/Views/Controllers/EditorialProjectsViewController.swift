@@ -118,7 +118,9 @@ public final class EditorialProjectsViewController: UIViewController {
       |> \.spacing .~ Styles.grid(2)
       |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.distribution .~ .fill
-      |> UIStackView.lens.layoutMargins .~ .init(top: Styles.grid(10), left: Styles.grid(6), bottom: Styles.grid(2), right: Styles.grid(6))
+      |> UIStackView.lens
+      .layoutMargins .~
+      .init(top: Styles.grid(10), left: Styles.grid(6), bottom: Styles.grid(2), right: Styles.grid(6))
 
     _ = self.editorialTitleLabel
       |> editorialLabelStyle
@@ -139,7 +141,6 @@ public final class EditorialProjectsViewController: UIViewController {
 
     _ = self.closeButton
       |> closeButtonStyle
-
   }
 
   // MARK: - View model
@@ -204,7 +205,7 @@ public final class EditorialProjectsViewController: UIViewController {
       |> ksr_constrainViewToEdgesInParent()
 
     _ = (self.editorialLabelStackView, self.editorialImageView)
-       |> ksr_addSubviewToParent()
+      |> ksr_addSubviewToParent()
 
     _ = ([self.editorialTitleLabel, self.editorialSubtitleLabel], self.editorialLabelStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -222,7 +223,7 @@ public final class EditorialProjectsViewController: UIViewController {
 
   private func setupConstraints() {
     let headerTopLayoutGuideHeightConstraint = self.headerTopLayoutGuide.heightAnchor
-     .constraint(equalToConstant: 0)
+      .constraint(equalToConstant: 0)
     self.headerTopLayoutGuideHeightConstraint = headerTopLayoutGuideHeightConstraint
 
     NSLayoutConstraint.activate([
@@ -239,18 +240,18 @@ public final class EditorialProjectsViewController: UIViewController {
       // editorialLabelStackView
       self.editorialLabelStackView.trailingAnchor.constraint(equalTo: self.editorialImageView.trailingAnchor),
       self.editorialLabelStackView.topAnchor
-      .constraint(equalTo: self.editorialImageView.topAnchor, constant: Styles.grid(5)),
+        .constraint(equalTo: self.editorialImageView.topAnchor, constant: Styles.grid(5)),
       self.editorialLabelStackView.leadingAnchor
-      .constraint(equalTo: self.editorialImageView.leadingAnchor),
+        .constraint(equalTo: self.editorialImageView.leadingAnchor),
       self.editorialImageView.bottomAnchor
-      .constraint(equalTo: self.editorialLabelStackView.bottomAnchor, constant: Styles.grid(5)),
+        .constraint(equalTo: self.editorialLabelStackView.bottomAnchor, constant: Styles.grid(5)),
       // closeButton
       self.closeButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: Styles.grid(1)),
       self.closeButton.topAnchor.constraint(
         equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: Styles.grid(3)
       ),
       self.closeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
-      self.closeButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.width),
+      self.closeButton.widthAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.width)
     ])
   }
 
@@ -297,8 +298,8 @@ private let closeButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.image(for: .normal) .~ image(named: "icon--close-circle")
     |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
     |> UIButton.lens.accessibilityHint %~ { _ in
-    Strings.dashboard_switcher_accessibility_label_closes_list_of_projects()
-  }
+      Strings.dashboard_switcher_accessibility_label_closes_list_of_projects()
+    }
 }
 
 private let headerViewStyle: ViewStyle = { view in
