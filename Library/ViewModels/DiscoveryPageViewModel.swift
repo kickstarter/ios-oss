@@ -331,7 +331,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     )
 
     self.configureEditorialTableViewHeader = paramsChanged
-      .filter { $0.tagId == .goRewardless }
+      .filter { $0.tagId == .lightsOn }
       .map { _ in Strings.These_projects_could_use_your_support() }
 
     // MARK: - Editorial Header
@@ -349,9 +349,9 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       }
 
     let cachedFeatureFlagValue = self.sortProperty.signal.skipNil()
-      .map { _ in featureGoRewardlessIsEnabled() }
-    let updatedFeatureFlagValue = self.configUpdatedProperty.signal.skipNil()
-      .map { _ in featureGoRewardlessIsEnabled() }
+      .map { _ in editorialLightsOnFeatureIsEnabled() }
+    let updatedFeatureFlagValue = self.optimizelyClientConfiguredProperty.signal
+      .map { _ in editorialLightsOnFeatureIsEnabled() }
 
     let latestFeatureFlagValue = Signal.merge(cachedFeatureFlagValue, updatedFeatureFlagValue)
       .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
@@ -359,8 +359,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     let updateEditorialHeader = Signal.combineLatest(editorialHeaderShouldShow, latestFeatureFlagValue)
 
     self.showEditorialHeader = updateEditorialHeader
-      .map { shouldShow, _ in
-        guard shouldShow else {
+      .map { shouldShow, isEnabled in
+        guard shouldShow, isEnabled else {
           return nil
         }
 
@@ -632,4 +632,9 @@ private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {
   }
 
   return nil
+}
+
+private func editorialLightsOnFeatureIsEnabled() -> Bool {
+  return AppEnvironment.current.optimizelyClient?
+    .isFeatureEnabled(featureKey: OptimizelyFeature.Key.lightsOn.rawValue) ?? false
 }

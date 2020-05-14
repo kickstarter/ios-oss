@@ -96,55 +96,6 @@ final class RewardCardViewModelTests: TestCase {
     self.rewardTitleLabelText.assertValues(["You pledged without a reward"])
   }
 
-  func testTitleLabel_Reward_GoRewardless_FeatureFlag_IsOn() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
-
-    let reward = Reward.template
-      |> Reward.lens.title .~ "Free poster"
-
-    withEnvironment(config: mockConfig) {
-      self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
-
-      self.rewardTitleLabelHidden.assertValues([false])
-      self.rewardTitleLabelText.assertValues(["Free poster"], "No special copy treatment")
-    }
-  }
-
-  func testTitleLabel_NoReward_GoRewardless_FeatureFlag_IsOn() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
-
-    withEnvironment(config: mockConfig) {
-      self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(Reward.noReward))
-
-      self.rewardTitleLabelHidden.assertValues([false])
-      self.rewardTitleLabelText.assertValues(
-        ["Back it because you believe in it."],
-        "Go rewardless copy treatment"
-      )
-    }
-  }
-
-  func testTitleLabel_NoReward_Backed_GoRewardless_FeatureFlag_IsOn() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
-
-    withEnvironment(config: mockConfig) {
-      let backing = Backing.template
-        |> Backing.lens.reward .~ Reward.noReward
-        |> Backing.lens.rewardId .~ Reward.noReward.id
-      let project = Project.template
-        |> Project.lens.personalization.isBacking .~ true
-        |> Project.lens.personalization.backing .~ backing
-
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(Reward.noReward))
-
-      self.rewardTitleLabelHidden.assertValues([false])
-      self.rewardTitleLabelText.assertValues(["You pledged without a reward"], "No treatment")
-    }
-  }
-
   // MARK: - Reward Minimum
 
   func testMinimumLabel_US_Project_US_UserLocation() {
@@ -330,52 +281,6 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
     self.descriptionLabelText.assertValues(["Back it because you believe in it."])
-  }
-
-  func testDescriptionLabel_NoReward_GoRewardless_FeatureFlag_IsOn() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
-
-    withEnvironment(config: mockConfig) {
-      self.vm.inputs.configureWith(project: Project.template, rewardOrBacking: .left(Reward.noReward))
-
-      self.descriptionLabelText.assertValues(
-        ["This holiday season, support a project for no reward, just because it speaks to you."],
-        "Go rewardless treatment"
-      )
-    }
-  }
-
-  func testDescriptionLabel_NoReward_IsBacking_GoRewardless_FeatureFlag_IsOn() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
-    let project = Project.template
-      |> Project.lens.personalization.isBacking .~ true
-      |> Project.lens.personalization.backing .~ (Backing.template
-        |> Backing.lens.reward .~ Reward.noReward)
-
-    withEnvironment(config: mockConfig) {
-      self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(Reward.noReward))
-
-      self.descriptionLabelText.assertValues(
-        ["Thanks for bringing this project one step closer to becoming a reality."],
-        "No treatment"
-      )
-    }
-  }
-
-  func testDescriptionLabel_Reward_GoRewardless_FeatureFlag_IsOn() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
-
-    withEnvironment(config: mockConfig) {
-      self.vm.inputs.configureWith(project: Project.template, rewardOrBacking: .left(Reward.template))
-
-      self.descriptionLabelText.assertValues(
-        ["A cool thing"],
-        "No treatment"
-      )
-    }
   }
 
   // MARK: - Conversion Label

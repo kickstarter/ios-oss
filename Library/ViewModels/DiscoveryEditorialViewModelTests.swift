@@ -38,7 +38,7 @@ final class DiscoveryEditorialViewModelTests: TestCase {
         title: "hello",
         subtitle: "boop",
         imageName: "image",
-        tagId: .goRewardless
+        tagId: .lightsOn
       )
     )
 
@@ -54,11 +54,11 @@ final class DiscoveryEditorialViewModelTests: TestCase {
         title: "hello",
         subtitle: "boop",
         imageName: "image",
-        tagId: .goRewardless
+        tagId: .lightsOn
       )
     )
 
     self.vm.inputs.editorialCellTapped()
-    self.notifyDelegateViewTapped.assertValues([.goRewardless])
+    self.notifyDelegateViewTapped.assertValues([.lightsOn])
   }
 }

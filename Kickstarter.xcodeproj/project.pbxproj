@@ -302,7 +302,6 @@
 		77BC00F82330236600808E75 /* RewardCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BC00F72330236600808E75 /* RewardCellViewModelTests.swift */; };
 		77BF99B722652C9500513CE3 /* MultiLineButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BF99B622652C9500513CE3 /* MultiLineButton.swift */; };
 		77C0818E245CBA1B004ABE88 /* SignInWithAppleInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C0818D245CBA1B004ABE88 /* SignInWithAppleInputTests.swift */; };
-		77C25FBF2385FDA5006E2010 /* DiscoveryEditorialViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C25FBE2385FDA5006E2010 /* DiscoveryEditorialViewModelTests.swift */; };
 		77C26957240D711A009AD91E /* CategoryCollectionViewSectionHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C26956240D711A009AD91E /* CategoryCollectionViewSectionHeaderViewModel.swift */; };
 		77C5E21A214182A2002E1670 /* SettingsPrivacySwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */; };
 		77C5E252214182CA002E1670 /* SettingsPrivacySwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C5E251214182CA002E1670 /* SettingsPrivacySwitchCell.swift */; };
@@ -426,6 +425,8 @@
 		8AB0E0102432B3B5008E975E /* ProjectSummaryCarouselDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0E00F2432B3B5008E975E /* ProjectSummaryCarouselDataSourceTests.swift */; };
 		8AB0E0122432B4C9008E975E /* ProjectSummaryCarouselCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0E0112432B4C9008E975E /* ProjectSummaryCarouselCell.swift */; };
 		8AB0E0142432D03A008E975E /* ProjectSummaryCarouselViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0E0132432D03A008E975E /* ProjectSummaryCarouselViewModel.swift */; };
+		8AB3BDA5246DAEEB00D69624 /* OptimizelyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB3BDA4246DAEEB00D69624 /* OptimizelyFeature.swift */; };
+		8AB3BDA6246DC8BE00D69624 /* DiscoveryEditorialViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C25FBE2385FDA5006E2010 /* DiscoveryEditorialViewModelTests.swift */; };
 		8AB55D5023C3FAA6002F5E64 /* Qualtrics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AD7953123A286D800998C79 /* Qualtrics.framework */; };
 		8AB87DF3243FF22B006D7451 /* PledgePaymentMethodAddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB87DF2243FF22B006D7451 /* PledgePaymentMethodAddCell.swift */; };
 		8ACD29F7243E48260044BC17 /* PledgePaymentMethodsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACD29F6243E48260044BC17 /* PledgePaymentMethodsDataSource.swift */; };
@@ -1894,6 +1895,7 @@
 		8AB0E00F2432B3B5008E975E /* ProjectSummaryCarouselDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSummaryCarouselDataSourceTests.swift; sourceTree = "<group>"; };
 		8AB0E0112432B4C9008E975E /* ProjectSummaryCarouselCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSummaryCarouselCell.swift; sourceTree = "<group>"; };
 		8AB0E0132432D03A008E975E /* ProjectSummaryCarouselViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSummaryCarouselViewModel.swift; sourceTree = "<group>"; };
+		8AB3BDA4246DAEEB00D69624 /* OptimizelyFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeature.swift; sourceTree = "<group>"; };
 		8AB87DF2243FF22B006D7451 /* PledgePaymentMethodAddCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodAddCell.swift; sourceTree = "<group>"; };
 		8ACD29F6243E48260044BC17 /* PledgePaymentMethodsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsDataSource.swift; sourceTree = "<group>"; };
 		8ACF558623E8D444001654A2 /* Argo+ToPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Argo+ToPrimitive.swift"; sourceTree = "<group>"; };
@@ -3443,6 +3445,7 @@
 				D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */,
 				774D98D823A96E7500FC81C2 /* OptimizelyClientTypeTests.swift */,
 				D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */,
+				8AB3BDA4246DAEEB00D69624 /* OptimizelyFeature.swift */,
 				771123FA23BF9E7E00BA5702 /* OptimizelyLogLevelType.swift */,
 				1611EF5D23ABD1550051CDCC /* OptimizelyResultType.swift */,
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
@@ -4940,6 +4943,7 @@
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
 				598D96CB1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift in Sources */,
 				01C7CDB31D13462A00D9E0D1 /* DashboardRewardsCellViewModel.swift in Sources */,
+				8AB3BDA5246DAEEB00D69624 /* OptimizelyFeature.swift in Sources */,
 				A7D121091D15B08200F364FD /* CountBadgeView.swift in Sources */,
 				77216CE220EFE7F70061BE82 /* FacebookConnectionType.swift in Sources */,
 				D7ADDFE722E0DAFA00157D83 /* RewardCellProjectBackingStateType.swift in Sources */,
@@ -5343,6 +5347,7 @@
 				A7ED1F271E830FDC00BFFA01 /* AppEnvironmentTests.swift in Sources */,
 				D775953C22725289005EE69B /* PledgeDescriptionViewModelTests.swift in Sources */,
 				D78E039022930DF80043E92F /* PledgeCTAContainerViewViewModelTests.swift in Sources */,
+				8AB3BDA6246DC8BE00D69624 /* DiscoveryEditorialViewModelTests.swift in Sources */,
 				D6B4F00021079F750079159D /* SettingsNewslettersCellViewModelTests.swift in Sources */,
 				A7ED1FE71E831C5C00BFFA01 /* FacebookConfirmationViewModelTests.swift in Sources */,
 				D6BD66B523CCCA51008694BB /* NSAttributedStringLinkTests.swift in Sources */,
@@ -5715,7 +5720,6 @@
 				8A61E1E423D1202000CA9603 /* MockQualtricsPropertiesType.swift in Sources */,
 				D60CAB922208A1B60083FA40 /* SelectCurrencyViewControllerTests.swift in Sources */,
 				77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */,
-				77C25FBF2385FDA5006E2010 /* DiscoveryEditorialViewModelTests.swift in Sources */,
 				A7ED20581E8323E900BFFA01 /* SignupViewControllerTests.swift in Sources */,
 				D6B6875221923BCF005F5DA7 /* ChangeEmailViewControllerTests.swift in Sources */,
 				D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */,

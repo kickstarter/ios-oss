@@ -21,8 +21,7 @@ final class KoalaTests: TestCase {
       |> Config.lens.features .~ [
         "android_flag": true,
         "ios_feature_something": false,
-        "ios_feature_checkout": true,
-        "ios_feature_go_rewardless": true
+        "ios_enabled_feature": true
       ]
     let device = MockDevice(userInterfaceIdiom: .phone)
     let screen = MockScreen()
@@ -46,8 +45,7 @@ final class KoalaTests: TestCase {
     )
     XCTAssertEqual(
       [
-        "ios_feature_checkout",
-        "ios_feature_go_rewardless"
+        "ios_enabled_feature"
       ],
       properties?["session_enabled_features"] as? [String]
     )
@@ -313,7 +311,7 @@ final class KoalaTests: TestCase {
       )
       <> DiscoveryParams.lens.query .~ "collage"
       <> DiscoveryParams.lens.sort .~ .popular
-      <> DiscoveryParams.lens.tagId .~ .goRewardless
+      <> DiscoveryParams.lens.tagId .~ .lightsOn
       <> DiscoveryParams.lens.page .~ 2
 
     let loggedInUser = User.template |> \.id .~ 42
@@ -333,7 +331,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(Category.filmAndVideo.intID, properties?["discover_category_id"] as? Int)
     XCTAssertEqual(Category.filmAndVideo.name, properties?["discover_category_name"] as? String)
     XCTAssertEqual("popularity", properties?["discover_sort"] as? String)
-    XCTAssertEqual("ios_project_collection_tag_518", properties?["discover_ref_tag"] as? String)
+    XCTAssertEqual("ios_project_collection_tag_250", properties?["discover_ref_tag"] as? String)
     XCTAssertEqual("collage", properties?["discover_search_term"] as? String)
   }
 

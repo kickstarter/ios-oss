@@ -26,7 +26,7 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
     let section = DiscoveryProjectsDataSource.Section.editorial.rawValue
 
     let editorialValue: DiscoveryEditorialCellValue = .init(
-      title: "title", subtitle: "subtitle", imageName: "", tagId: .goRewardless
+      title: "title", subtitle: "subtitle", imageName: "", tagId: .lightsOn
     )
 
     self.dataSource.showEditorial(value: editorialValue)

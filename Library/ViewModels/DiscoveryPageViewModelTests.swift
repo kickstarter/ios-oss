@@ -533,7 +533,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.inputs.viewDidAppear()
 
     let params = DiscoveryParams.defaults
-      |> \.tagId .~ .goRewardless
+      |> \.tagId .~ .lightsOn
 
     self.configureEditorialTableViewHeader.assertDidNotEmitValue()
 
@@ -557,18 +557,24 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   // MARK: - Editorial Header
 
   func testShowLightsOnEditorialHeader__LoggedOut() {
-    self.vm.inputs.configureWith(sort: .magic)
-    self.vm.inputs.viewWillAppear()
-    self.vm.inputs.viewDidAppear()
-    self.vm.inputs.selectedFilter(.defaults)
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.lightsOn.rawValue: true]
 
-    self.scheduler.advance(by: .seconds(1))
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
 
-    self.showEditorialHeader.assertValueCount(1)
-    self.showEditorialHeaderTitle.assertValues(["Introducing Lights On"])
-    self.showEditorialHeaderSubtitle.assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
-    self.showEditorialHeaderImageName.assertValues(["lights-on-home"])
-    self.showEditorialHeaderTagId.assertValues([.lightsOn])
+      self.scheduler.advance(by: .seconds(1))
+
+      self.showEditorialHeader.assertValueCount(1)
+      self.showEditorialHeaderTitle.assertValues(["Introducing Lights On"])
+      self.showEditorialHeaderSubtitle
+        .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
+      self.showEditorialHeaderImageName.assertValues(["lights-on-home"])
+      self.showEditorialHeaderTagId.assertValues([.lightsOn])
+    }
   }
 
   func testShowLightsOnEditorialHeader_PopularSort_LoggedIn() {
@@ -589,7 +595,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   }
 
   func testShowLightsOnEditorialHeader_LoggedIn() {
-    withEnvironment(currentUser: .template) {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.lightsOn.rawValue: true]
+
+    withEnvironment(currentUser: .template, optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(sort: .magic)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
@@ -599,7 +608,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues(["Introducing Lights On"])
-      self.showEditorialHeaderSubtitle.assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
+      self.showEditorialHeaderSubtitle
+        .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
       self.showEditorialHeaderImageName.assertValues(["lights-on-home"])
       self.showEditorialHeaderTagId.assertValues([.lightsOn])
     }
@@ -642,7 +652,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.inputs.viewDidAppear()
 
     let params = DiscoveryParams.defaults
-      |> \.tagId .~ .goRewardless
+      |> \.tagId .~ .lightsOn
 
     self.vm.inputs.selectedFilter(params)
 
@@ -946,8 +956,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       |> DiscoveryEnvelope.lens.projects .~ (
         (0...2).map { id in .template |> Project.lens.id .~ (100 + id) }
       )
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
+
     let loggedOutFilters = DiscoveryParams.defaults
       |> \.includePOTD .~ true
 
@@ -958,16 +967,17 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.showEditorialHeaderTagId.assertDidNotEmitValue()
     self.goToEditorialProjectList.assertDidNotEmitValue()
 
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.lightsOn.rawValue: true]
+
     withEnvironment(
       apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope),
-      config: mockConfig
+      optimizelyClient: mockOptimizelyClient
     ) {
       self.vm.inputs.configureWith(sort: .magic)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
       self.vm.inputs.selectedFilter(loggedOutFilters)
-
-      self.vm.inputs.configUpdated(config: mockConfig)
 
       self.scheduler.advance()
 
@@ -975,14 +985,15 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues(["Introducing Lights On"])
-      self.showEditorialHeaderSubtitle.assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
+      self.showEditorialHeaderSubtitle
+        .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
       self.showEditorialHeaderImageName.assertValues(["lights-on-home"])
       self.showEditorialHeaderTagId.assertValues([.lightsOn])
       self.goToEditorialProjectList.assertDidNotEmitValue()
 
-      self.vm.inputs.discoveryEditorialCellTapped(with: .goRewardless)
+      self.vm.inputs.discoveryEditorialCellTapped(with: .lightsOn)
 
-      self.goToEditorialProjectList.assertValues([.goRewardless])
+      self.goToEditorialProjectList.assertValues([.lightsOn])
     }
   }
 
@@ -997,7 +1008,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.configureWith(sort: .magic)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.tagId .~ .goRewardless)
+      self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.tagId .~ .lightsOn)
       self.scheduler.advance()
 
       self.vm.inputs.tapped(project: project)
@@ -1005,8 +1016,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.goToPlaylist.assertValues([discoveryEnvelope.projects], "Project playlist emits.")
       self.goToPlaylistProject.assertValues([project])
       self.goToPlaylistRefTag.assertValues(
-        [.projectCollection(DiscoveryParams.TagID.goRewardless)],
-        "Go to the project with Go Rewardless Editorial ref tag."
+        [.projectCollection(DiscoveryParams.TagID.lightsOn)],
+        "Go to the project with Editorial ref tag."
       )
     }
   }
@@ -1014,19 +1025,19 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   func testTrackEditorialHeaderTapped() {
     XCTAssertEqual([], self.trackingClient.events)
 
-    self.vm.inputs.discoveryEditorialCellTapped(with: .goRewardless)
+    self.vm.inputs.discoveryEditorialCellTapped(with: .lightsOn)
 
     XCTAssertEqual(["Editorial Card Clicked"], self.trackingClient.events)
     XCTAssertEqual(
-      ["ios_project_collection_tag_518"],
+      ["ios_project_collection_tag_250"],
       self.trackingClient.properties(forKey: "session_ref_tag", as: String.self)
     )
 
-    self.vm.inputs.discoveryEditorialCellTapped(with: .goRewardless)
+    self.vm.inputs.discoveryEditorialCellTapped(with: .lightsOn)
 
     XCTAssertEqual(["Editorial Card Clicked", "Editorial Card Clicked"], self.trackingClient.events)
     XCTAssertEqual(
-      ["ios_project_collection_tag_518", "ios_project_collection_tag_518"],
+      ["ios_project_collection_tag_250", "ios_project_collection_tag_250"],
       self.trackingClient.properties(forKey: "session_ref_tag")
     )
   }
