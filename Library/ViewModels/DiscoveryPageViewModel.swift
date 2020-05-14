@@ -359,16 +359,15 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     let updateEditorialHeader = Signal.combineLatest(editorialHeaderShouldShow, latestFeatureFlagValue)
 
     self.showEditorialHeader = updateEditorialHeader
-      .map { shouldShow, isEnabled in
-        guard shouldShow, isEnabled else {
+      .map { shouldShow, _ in
+        guard shouldShow else {
           return nil
         }
 
         return DiscoveryEditorialCellValue(
-          title: Strings.Back_it_because_you_believe_in_it(),
-          subtitle: Strings.Find_projects_that_speak_to_you(),
-          imageName: "go-rewardless-home",
-          tagId: .goRewardless
+          title: Strings.Introducing_Lights_On(),
+          subtitle: Strings.Support_creative_spaces_and_businesses_affected_by(),
+          imageName: "lights-on-home", tagId: .lightsOn
         )
       }.skipRepeats()
 

@@ -252,6 +252,7 @@
 "Individual_Emails" = "Individuelle E-Mails";
 "Info" = "Info";
 "Introduce_yourself" = "Stelle dich vor";
+"Introducing_Lights_On" = "Introducing Lights On";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "Die Zusammenstellung deiner Daten kann bis zu 24 Stunden dauern. Sobald sie zum Download bereitstehen, werden wir dir eine Anleitung dazu per E-Mail schicken. Solltest du nichts von uns hören, versuche es von hier aus noch einmal.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es ist eine Plattform, um kreative Projekte ins Leben zu rufen.";
 "Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "Es ist eine Plattform, um kreative Projekte zu verwirklichen. <a href=\"%{trust_link}\">Hier findest du mehr Info zur Rechenschaftspflicht</a>";
@@ -510,7 +511,7 @@
 "Subscribes_to_upcoming_lives_streams" = "Zukünftige Live-Streams abonnieren.";
 "Successful_projects_have_been_created_on_kickstarter" = "Projekte wurden erfolgreich auf Kickstarter finanziert.";
 "Support_creative_independence" = "Unterstütze kreative Unabhängigkeit";
-"Support_the_project_for_no_reward" = "Unterstütze ein Projekt ohne Belohnung; einfach, weil es dich anspricht.";
+"Support_creative_spaces_and_businesses_affected_by" = "Unterstütze kreative Lokale und Geschäfte, ddie von COVID-19 betroffen sind. Sieh dir Projekte in deiner Nähe an. ▸";
 "Survey" = "Befragung";
 "Tap_the_heart_on_a_project_to_get_notified" = "Tippe auf das Herz neben einem Projekt und wir benachrichtigen dich 48 Stunden, bevor es abläuft.";
 "Tap_the_heart_on_each_project_page_to_save_it" = "Klicke einfach auf das Herz auf der Projektseite, um dieses Projekt zu speichern. Wir werden dir 48 Stunden vor Ablauf eine Benachrichtigung schicken.";
