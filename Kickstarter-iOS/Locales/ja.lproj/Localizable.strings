@@ -252,6 +252,7 @@
 "Individual_Emails" = "個人メール";
 "Info" = "インフォメーション";
 "Introduce_yourself" = "自己紹介";
+"Introducing_Lights_On" = "Introducing Lights On";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "データの収集には最大で24時間かかる場合があります。ダウンロードの準備が整いましたら、このアカウントに登録されているメールアドレス宛てにデータのダウンロード手順が記載されたメールをお送りします。メールが届かなかった場合には、お手数ですがこちらに戻って再試行してください。";
 "Its_a_way_to_bring_creative_projects_to_life" = "クリエイティブなプロジェクトを実現するためのプラットフォームです。";
 "Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "クリエイティブなプロジェクトに生命を吹き込む場です。<a href=\"%{trust_link}\">アカウンタビリティについて詳しくみる。</a>";
@@ -510,6 +511,7 @@
 "Subscribes_to_upcoming_lives_streams" = "ライブ配信を購読";
 "Successful_projects_have_been_created_on_kickstarter" = "のプロジェクトが Kickstarter で作成されました。";
 "Support_creative_independence" = "クリエイティブな独立プロジェクトをサポートしよう";
+"Support_creative_spaces_and_businesses_affected_by" = "Support creative spaces and businesses affected by COVID-19. See projects near you. ▸";
 "Survey" = "サーベイ";
 "Tap_the_heart_on_a_project_to_get_notified" = "終了48時間前に知らせるにはハートのアイコンをタップ！";
 "Tap_the_heart_on_each_project_page_to_save_it" = "ハートのアイコンを押して保存しましょう。終了48時間前に通知が届きます。";
