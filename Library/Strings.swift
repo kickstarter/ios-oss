@@ -25,23 +25,6 @@ public enum Strings {
     )
   }
   /**
-   "A weekly mix of handpicked projects, plus occasional Kickstarter news"
-
-   - **en**: "A weekly mix of handpicked projects, plus occasional Kickstarter news"
-   - **de**: "Ein wöchentlicher Mix handverlesener Projekte plus gelegentliche Nachrichten von Kickstarter"
-   - **es**: "Una combinación semanal de proyectos seleccionados exclusivamente para mí, además de noticias ocasionales de Kickstarter"
-   - **fr**: "Une sélection de projets hebdomadaire, et de temps en temps des actualités de Kickstarter"
-   - **ja**: "Kickstarter イチオシのプロジェクトを毎週紹介するニュースレター (Kickstarter ニュースも随時送信)"
-  */
-  public static func A_weekly_mix_of_handpicked_projects() -> String {
-    return localizedString(
-      key: "A_weekly_mix_of_handpicked_projects",
-      defaultValue: "A weekly mix of handpicked projects, plus occasional Kickstarter news",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "A weekly roundup of the best and brightest projects on Kickstarter, handpicked by our team."
 
    - **en**: "A weekly roundup of the best and brightest projects on Kickstarter, handpicked by our team."
@@ -161,28 +144,11 @@ public enum Strings {
     )
   }
   /**
-   "Alert"
-
-   - **en**: "Alert"
-   - **de**: "Hinweis"
-   - **es**: "Alerta"
-   - **fr**: "Alerte"
-   - **ja**: "個の警告"
-  */
-  public static func Alert() -> String {
-    return localizedString(
-      key: "Alert",
-      defaultValue: "Alert",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "All Art Projects"
 
    - **en**: "All Art Projects"
    - **de**: "Alle Projekte der Kategorie Kunst"
-   - **es**: "Todos los proyectos"
+   - **es**: "Todos los proyectos de la categoría Arte"
    - **fr**: "Tous les projets de la catégorie Art"
    - **ja**: "全てのアートプロジェクト"
   */
@@ -199,7 +165,7 @@ public enum Strings {
 
    - **en**: "All Comics Projects"
    - **de**: "Alle Projekte der Kategorie Comics"
-   - **es**: "Todos los proyectos"
+   - **es**: "Todos los proyectos de la categoría Comics"
    - **fr**: "Tous les projets de la catégorie Bande dessinée"
    - **ja**: "全てのコミックプロジェクト"
   */
@@ -216,7 +182,7 @@ public enum Strings {
 
    - **en**: "All Crafts Projects"
    - **de**: "Alle Projekte der Kategorie Kunsthandwerk"
-   - **es**: "Todos los proyectos"
+   - **es**: "Todos los proyectos de la categoría Artesanías"
    - **fr**: "Tous les projets de la catégorie Artisanat"
    - **ja**: "全ての工芸プロジェクト"
   */
@@ -233,7 +199,7 @@ public enum Strings {
 
    - **en**: "All Dance Projects"
    - **de**: "Alle Projekte der Kategorie Tanz"
-   - **es**: "Todos los proyectos"
+   - **es**: "Todos los proyectos de la categoría Danza"
    - **fr**: "Tous les projets de la catégorie Danse"
    - **ja**: "全てのダンスプロジェクト"
   */
@@ -250,7 +216,7 @@ public enum Strings {
 
    - **en**: "All Design Projects"
    - **de**: "Alle Projekte der Kategorie Design"
-   - **es**: "Todos los proyectos"
+   - **es**: "Todos los proyectos de la categoría Diseño"
    - **fr**: "Tous les projets de la catégorie Design"
    - **ja**: "全てのデザインプロジェクト"
   */
@@ -267,7 +233,7 @@ public enum Strings {
 
    - **en**: "All Fashion Projects"
    - **de**: "Alle Projekte der Kategorie Mode"
-   - **es**: "Todos los proyectos"
+   - **es**: "Todos los proyectos de la categoría Moda"
    - **fr**: "Tous les projets de la catégorie Mode"
    - **ja**: "全てのファッションプロジェクト"
   */
@@ -301,7 +267,7 @@ public enum Strings {
 
    - **en**: "All Food Projects"
    - **de**: "Alle Projekte der Kategorie Essen"
-   - **es**: "Todos los proyectos"
+   - **es**: "Todos los proyectos de la categoría Comida"
    - **fr**: "Tous les projets de la catégorie Gastronomie"
    - **ja**: "全てのフードプロジェクト"
   */
@@ -318,7 +284,7 @@ public enum Strings {
 
    - **en**: "All Games Projects"
    - **de**: "Alle Projekte der Kategorie Spiele"
-   - **es**: "Todos los proyectos"
+   - **es**: "Todos los proyectos de la categoría Juegos"
    - **fr**: "Tous les projets de la catégorie Jeux"
    - **ja**: "全てのゲームプロジェクト"
   */
@@ -335,7 +301,7 @@ public enum Strings {
 
    - **en**: "All Journalism Projects"
    - **de**: "Alle Projekte der Kategorie Journalismus"
-   - **es**: "Todos los proyectos"
+   - **es**: "Todos los proyectos de la categoría Periodismo"
    - **fr**: "Tous les projets de la catégorie Journalisme"
    - **ja**: "全てのジャーナリズムプロジェクト"
   */
@@ -369,7 +335,7 @@ public enum Strings {
 
    - **en**: "All Photography Projects"
    - **de**: "Alle Projekte der Kategorie Fotografie"
-   - **es**: "Todos los proyectos"
+   - **es**: "Todos los proyectos de la categoría Fotografía"
    - **fr**: "Tous les projets de la catégorie Photographie"
    - **ja**: "全てのフォトグラフィープロジェクト"
   */
@@ -403,7 +369,7 @@ public enum Strings {
 
    - **en**: "All Publishing Projects"
    - **de**: "Alle Projekte der Kategorie Publishing"
-   - **es**: "Todos los proyectos"
+   - **es**: "Todos los proyectos de la categoría Editorial"
    - **fr**: "Tous les projets de la catégorie Édition"
    - **ja**: "全ての出版プロジェクト"
   */
@@ -420,7 +386,7 @@ public enum Strings {
 
    - **en**: "All Technology Projects"
    - **de**: "Alle Projekte der Kategorie Technologie"
-   - **es**: "Todos los proyectos"
+   - **es**: "Todos los proyectos de la categoría Tecnología"
    - **fr**: "Tous les projets de la catégorie Technologie"
    - **ja**: "全てのテクノロジープロジェクト"
   */
@@ -437,7 +403,7 @@ public enum Strings {
 
    - **en**: "All Theater Projects"
    - **de**: "Alle Projekte der Kategorie Theater"
-   - **es**: "Todos los proyectos"
+   - **es**: "Todos los proyectos de la categoría Teatro"
    - **fr**: "Tous les projets de la catégorie Théâtre"
    - **ja**: "全ての演劇プロジェクト"
   */
@@ -569,23 +535,6 @@ public enum Strings {
     )
   }
   /**
-   "Announcements"
-
-   - **en**: "Announcements"
-   - **de**: "Ankündigungen"
-   - **es**: "Anuncios"
-   - **fr**: "Annonces"
-   - **ja**: "お知らせ"
-  */
-  public static func Announcements() -> String {
-    return localizedString(
-      key: "Announcements",
-      defaultValue: "Announcements",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "Any payment methods you've saved to Kickstarter are listed here (securely) for your convenience."
 
    - **en**: "Any payment methods you've saved to Kickstarter are listed here (securely) for your convenience."
@@ -620,18 +569,18 @@ public enum Strings {
     )
   }
   /**
-   "Apple ID"
+   "AppleID"
 
-   - **en**: "Apple ID"
-   - **de**: "Apple ID"
+   - **en**: "AppleID"
+   - **de**: "AppleID"
    - **es**: "Apple ID"
    - **fr**: "Apple ID"
-   - **ja**: "Apple ID"
+   - **ja**: "AppleID"
   */
   public static func Apple_ID() -> String {
     return localizedString(
       key: "Apple_ID",
-      defaultValue: "Apple ID",
+      defaultValue: "AppleID",
       count: nil,
       substitutions: [:]
     )
@@ -3289,40 +3238,6 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
-   "Fix payment method"
-
-   - **en**: "Fix payment method"
-   - **de**: "Zahlungsmethode ändern"
-   - **es**: "Corregir el método de pago"
-   - **fr**: "Correction du moyen de paiement"
-   - **ja**: "お支払い方法を修正"
-  */
-  public static func Fix_payment_method() -> String {
-    return localizedString(
-      key: "Fix_payment_method",
-      defaultValue: "Fix payment method",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Fix within %{time_remaining}"
-
-   - **en**: "Fix within %{time_remaining}"
-   - **de**: "Innerhalb von %{time_remaining} korrigieren"
-   - **es**: "Corregir en %{time_remaining}"
-   - **fr**: "Il vous reste %{time_remaining} pour corriger un problème."
-   - **ja**: "%{time_remaining} 以内に修正してください"
-  */
-  public static func Fix_within_time_remaining(time_remaining: String) -> String {
-    return localizedString(
-      key: "Fix_within_time_remaining",
-      defaultValue: "Fix within %{time_remaining}",
-      count: nil,
-      substitutions: ["time_remaining": time_remaining]
-    )
-  }
-  /**
    "Fix your payment method"
 
    - **en**: "Fix your payment method"
@@ -4032,23 +3947,6 @@ Haz clic para volver a intentarlo."
     return localizedString(
       key: "Help_center",
       defaultValue: "Help Center",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Help local businesses keep the lights on during COVID-19 closures."
-
-   - **en**: "Help local businesses keep the lights on during COVID-19 closures."
-   - **de**: "Help local businesses keep the lights on during COVID-19 closures."
-   - **es**: "Help local businesses keep the lights on during COVID-19 closures."
-   - **fr**: "Help local businesses keep the lights on during COVID-19 closures."
-   - **ja**: "Help local businesses keep the lights on during COVID-19 closures."
-  */
-  public static func Help_local_businesses_keep_the_lights() -> String {
-    return localizedString(
-      key: "Help_local_businesses_keep_the_lights",
-      defaultValue: "Help local businesses keep the lights on during COVID-19 closures.",
       count: nil,
       substitutions: [:]
     )
@@ -5043,18 +4941,18 @@ with friends."
     )
   }
   /**
-   "Manage this account in your Apple ID settings."
+   "Manage this account in your AppleID settings."
 
-   - **en**: "Manage this account in your Apple ID settings."
-   - **de**: "Verwalte dieses Konto in deinen Apple ID-Einstellungen."
+   - **en**: "Manage this account in your AppleID settings."
+   - **de**: "Manage this account in your AppleID settings."
    - **es**: "Administra esta cuenta desde la configuración de tu Apple ID."
    - **fr**: "Gérez ce compte depuis vos paramètres Apple ID."
-   - **ja**: "Apple ID の設定からこのアカウントを管理。"
+   - **ja**: "Manage this account in your AppleID settings."
   */
   public static func Manage_this_account() -> String {
     return localizedString(
       key: "Manage_this_account",
-      defaultValue: "Manage this account in your Apple ID settings.",
+      defaultValue: "Manage this account in your AppleID settings.",
       count: nil,
       substitutions: [:]
     )
@@ -6083,23 +5981,6 @@ n'ont rien soutenu."
     )
   }
   /**
-   "Payment failure"
-
-   - **en**: "Payment failure"
-   - **de**: "Zahlung fehlgeschlagen"
-   - **es**: "Error de pago"
-   - **fr**: "Échec du paiement"
-   - **ja**: "お支払い手続きに失敗しました"
-  */
-  public static func Payment_failure() -> String {
-    return localizedString(
-      key: "Payment_failure",
-      defaultValue: "Payment failure",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "Payment method"
 
    - **en**: "Payment method"
@@ -6571,23 +6452,6 @@ n'ont rien soutenu."
     return localizedString(
       key: "Private_profile_more_info_content",
       defaultValue: "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off.",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Processing..."
-
-   - **en**: "Processing..."
-   - **de**: "Verarbeitung läuft..."
-   - **es**: "Procesando..."
-   - **fr**: "Traitement en cours..."
-   - **ja**: "アップロード中"
-  */
-  public static func Processing() -> String {
-    return localizedString(
-      key: "Processing",
-      defaultValue: "Processing...",
       count: nil,
       substitutions: [:]
     )
@@ -7276,23 +7140,6 @@ daring ideas."
     )
   }
   /**
-   "Retry or select another method."
-
-   - **en**: "Retry or select another method."
-   - **de**: "Versuche es erneut oder wähle eine andere Karte."
-   - **es**: "Vuelve a intentarlo o selecciona otro método."
-   - **fr**: "Veuillez réessayer ou choisir un autre moyen de paiement."
-   - **ja**: "再試行するか別のお支払い方法を選択してください。"
-  */
-  public static func Retry_or_select_another_method() -> String {
-    return localizedString(
-      key: "Retry_or_select_another_method",
-      defaultValue: "Retry or select another method.",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "%{reward_survey_count} Reward Surveys"
 
    - **en**: "%{reward_survey_count} Reward Surveys"
@@ -7740,30 +7587,11 @@ daring ideas."
    - **en**: "Select fewer categories"
    - **de**: "Reduziere die Anzahl der Kategorien"
    - **es**: "Selecciona menos categorías"
-   - **fr**: "Veuillez sélectionner moins de catégories."
-   - **ja**: "選択カテゴリー数が多すぎます"
   */
   public static func Select_fewer_categories() -> String {
     return localizedString(
       key: "Select_fewer_categories",
       defaultValue: "Select fewer categories",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Select this card"
-
-   - **en**: "Select this card"
-   - **de**: "Diese Karte auswählen"
-   - **es**: "Selecciona esta tarjeta"
-   - **fr**: "Sélectionner cette carte"
-   - **ja**: "このカードを選択する"
-  */
-  public static func Select_this_card() -> String {
-    return localizedString(
-      key: "Select_this_card",
-      defaultValue: "Select this card",
       count: nil,
       substitutions: [:]
     )
@@ -7849,23 +7677,6 @@ daring ideas."
     return localizedString(
       key: "Selected",
       defaultValue: "Selected",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Selected card"
-
-   - **en**: "Selected card"
-   - **de**: "Ausgewählte Karte"
-   - **es**: "Tarjeta seleccionada"
-   - **fr**: "Carte sélectionnée"
-   - **ja**: "選択済みのカード"
-  */
-  public static func Selected_card() -> String {
-    return localizedString(
-      key: "Selected_card",
-      defaultValue: "Selected card",
       count: nil,
       substitutions: [:]
     )
@@ -8189,23 +8000,6 @@ daring ideas."
     return localizedString(
       key: "Show_password",
       defaultValue: "Show password",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "Show up for the spaces you love"
-
-   - **en**: "Show up for the spaces you love"
-   - **de**: "Show up for the spaces you love"
-   - **es**: "Show up for the spaces you love"
-   - **fr**: "Show up for the spaces you love"
-   - **ja**: "Show up for the spaces you love"
-  */
-  public static func Show_up_for_the_spaces_you_love() -> String {
-    return localizedString(
-      key: "Show_up_for_the_spaces_you_love",
-      defaultValue: "Show up for the spaces you love",
       count: nil,
       substitutions: [:]
     )
@@ -9046,23 +8840,6 @@ catch your eye?"
     )
   }
   /**
-   "This post is for backers only"
-
-   - **en**: "This post is for backers only"
-   - **de**: "Dieser Beitrag ist nur für Unterstützer"
-   - **es**: "Esta publicación es únicamente para patrocinadores"
-   - **fr**: "Cette publication est réservée aux contributeurs."
-   - **ja**: "この投稿はバッカー向けです"
-  */
-  public static func This_post_is_for_backers_only() -> String {
-    return localizedString(
-      key: "This_post_is_for_backers_only",
-      defaultValue: "This post is for backers only",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "This project didn’t reach its funding goal, so your payment method was never charged."
 
    - **en**: "This project didn’t reach its funding goal, so your payment method was never charged."
@@ -9075,23 +8852,6 @@ catch your eye?"
     return localizedString(
       key: "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged",
       defaultValue: "This project didn’t reach its funding goal, so your payment method was never charged.",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "This project has a set currency that can't process this option."
-
-   - **en**: "This project has a set currency that can't process this option."
-   - **de**: "Diese Option ist für die Währung dieses Projekts nicht verfügbar."
-   - **es**: "Dado que este proyecto tiene una moneda establecida, no se puede procesar esta opción."
-   - **fr**: "La devise de ce projet rend impossible l'utilisation de ce moyen de paiement."
-   - **ja**: "このプロジェクトには、このオプションを処理できない通貨が設定されています。"
-  */
-  public static func This_project_has_a_set_currency_that_cant_process_this_option() -> String {
-    return localizedString(
-      key: "This_project_has_a_set_currency_that_cant_process_this_option",
-      defaultValue: "This project has a set currency that can't process this option.",
       count: nil,
       substitutions: [:]
     )
@@ -9862,52 +9622,18 @@ catch your eye?"
     )
   }
   /**
-   "We can't process your pledge."
-
-   - **en**: "We can't process your pledge."
-   - **de**: "Wir können deine Zahlung leider nicht bearbeiten."
-   - **es**: "No podemos procesar tu contribución."
-   - **fr**: "Impossible de traiter votre engagement."
-   - **ja**: "プレッジを処理することができません。"
-  */
-  public static func We_cant_process_your_pledge() -> String {
-    return localizedString(
-      key: "We_cant_process_your_pledge",
-      defaultValue: "We can't process your pledge.",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "We can’t process your pledge. Please update your payment method."
 
    - **en**: "We can’t process your pledge. Please update your payment method."
    - **de**: "Dein Finanzierungsbeitrag kann nicht bearbeitet werden. Bitte aktualisiere deine Zahlungsmethode."
    - **es**: "No podemos procesar la contribución. Por favor actualiza tu método de pago."
    - **fr**: "Impossible de traiter votre engagement. Veuillez mettre à jour votre moyen de paiement."
-   - **ja**: "プレッジを処理できません。お支払い方法を更新してください。"
+   - **ja**: "We can’t process your pledge. Please update your payment method."
   */
   public static func We_cant_process_your_pledge_Please_update_your_payment_method() -> String {
     return localizedString(
       key: "We_cant_process_your_pledge_Please_update_your_payment_method",
       defaultValue: "We can’t process your pledge. Please update your payment method.",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "We can't process your pledge for:"
-
-   - **en**: "We can't process your pledge for:"
-   - **de**: "Wir können deine Zahlung aus folgendem Grund leider nicht bearbeiten:"
-   - **es**: "No podemos procesar tu contribución para:"
-   - **fr**: "Impossible de traiter votre engagement pour :"
-   - **ja**: "以下のプレッジを処理することが出来ません:"
-  */
-  public static func We_cant_process_your_pledge_for() -> String {
-    return localizedString(
-      key: "We_cant_process_your_pledge_for",
-      defaultValue: "We can't process your pledge for:",
       count: nil,
       substitutions: [:]
     )
@@ -9919,7 +9645,7 @@ catch your eye?"
    - **de**: "Der Finanzierungsbeitrag dieses Unterstützers wurde abgebucht."
    - **es**: "Hemos recolectado la contribución del patrocinador a este proyecto."
    - **fr**: "L'engagement de ce contributeur a été débité."
-   - **ja**: "このプロジェクトへのこのバッカーからのプレッジを請求しました。"
+   - **ja**: "We collected the backer’s pledge for this project."
   */
   public static func We_collected_the_backers_pledge_for_this_project() -> String {
     return localizedString(
@@ -18536,40 +18262,6 @@ Veuillez réessayer ultérieurement."
       defaultValue: "Upgrade",
       count: nil,
       substitutions: [:]
-    )
-  }
-  /**
-   "%{likes_count} like"
-
-   - **en**: "%{likes_count} like"
-   - **de**: "%{likes_count} Person gefällt das"
-   - **es**: "A %{likes_count} persona le gusta"
-   - **fr**: "%{likes_count} mention J'aime"
-   - **ja**: "いいね！%{likes_count}件"
-  */
-  public static func likes_count_likes(likes_count: Int) -> String {
-    return localizedString(
-      key: "likes_count_likes",
-      defaultValue: "%{likes_count} like",
-      count: likes_count,
-      substitutions: ["likes_count": Format.wholeNumber(likes_count)]
-    )
-  }
-  /**
-   "%{likes_count} likes"
-
-   - **en**: "%{likes_count} likes"
-   - **de**: "%{likes_count} Personen gefällt das"
-   - **es**: "A %{likes_count} personas les gusta"
-   - **fr**: "%{likes_count} mentions J'aime"
-   - **ja**: "いいね！%{likes_count}件"
-  */
-  public static func likes_count_likes_other(likes_count: String) -> String {
-    return localizedString(
-      key: "likes_count_likes.other",
-      defaultValue: "%{likes_count} likes",
-      count: nil,
-      substitutions: ["likes_count": likes_count]
     )
   }
   /**

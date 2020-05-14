@@ -1,5 +1,4 @@
 "A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency" = "Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der Währung des Erstellungslandes abgebucht. Bis dahin können nur ungefähre Beträge angezeigt werden.";
-"A_weekly_mix_of_handpicked_projects" = "Ein wöchentlicher Mix handverlesener Projekte plus gelegentliche Nachrichten von Kickstarter";
 "A_weekly_roundup_of_the_best_and_brightest" = "Eine wöchentliche Zusammenfassung der besten und cleversten Projekte auf Kickstarter, handverlesen von unserem Team.";
 "About_reward_amount" = "Ungefähr %{reward_amount}";
 "Accessibility_statement" = "Barrierefreiheit";
@@ -7,7 +6,6 @@
 "Add" = "Hinzufügen";
 "Add_attachments" = "Anhänge hinzufügen ...";
 "Add_new_card" = "Kreditkarte hinzufügen";
-"Alert" = "Hinweis";
 "All_Art_Projects" = "Alle Projekte der Kategorie Kunst";
 "All_Comics_Projects" = "Alle Projekte der Kategorie Comics";
 "All_Crafts_Projects" = "Alle Projekte der Kategorie Kunsthandwerk";
@@ -31,10 +29,9 @@
 "Amount_previous_amount" = "Jetziger Betrag: %{amount}, vorheriger Betrag: %{previous_amount}";
 "Amount_reward" = "Betrag: %{amount}, %{reward}";
 "Amounts_shown" = "Die angezeigten Beträge stellen nur eine ungefähre Umrechnung dar. Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der Währung des Erstellungslandes abgebucht. Dieser Betrag wird ebenso angezeigt.";
-"Announcements" = "Ankündigungen";
 "Any_payment_methods_you_saved_to_Kickstarter" = "Sämtliche auf Kickstarter gespeicherten Zahlungsmethoden sind hier (sicher) hinterlegt.";
 "App_version" = "App-Version";
-"Apple_ID" = "Apple ID";
+"Apple_ID" = "AppleID";
 "Are_you_sure" = "Bist du sicher?";
 "Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name" = "Bist du sicher, dass du deinen Beitrag von %{amount} für %{project_name} zurückziehen möchtest?";
 "Are_you_sure_you_wish_to_remove_this_card" = "Bist du sicher, dass du diese Karte aus deinen Zahlungsmethoden entfernen möchtest?";
@@ -198,8 +195,6 @@
 "Find_projects_youll_love_in_art_design_film" = "Finde Projekte nach deinem Geschmack - in Kunst, Design, Film, Spiele, Musik und vielen anderen Kategorien. Wenn du ein Projekt unterstützt hast, wird deren Aktivität hier angezeigt.";
 "First_created" = "Erstes Projekt";
 "Fix" = "Korrigieren";
-"Fix_payment_method" = "Zahlungsmethode ändern";
-"Fix_within_time_remaining" = "Innerhalb von %{time_remaining} korrigieren";
 "Fix_your_payment_method" = "Zahlungsmethode ändern";
 "Follow_friend_name" = "%{friend_name} folgen.";
 "Follow_friends" = "Freunden folgen";
@@ -305,7 +300,7 @@
 "Make_a_pledge_without_a_reward" = "Ohne Belohnung unterstützen";
 "Making_this_change" = "Wenn du die Währung wechselst, werden das Finanzierungsziel und die Finanzierungsbeiträge in der von dir gewählten Währung angezeigt.";
 "Manage" = "Verwalten";
-"Manage_this_account" = "Verwalte dieses Konto in deinen Apple ID-Einstellungen.";
+"Manage_this_account" = "Manage this account in your AppleID settings.";
 "Manage_your_pledge" = "Meinen Beitrag verwalten";
 "Manage_your_pledge_below" = "Folgenden Beitrag verwalten";
 "Manage_your_reward" = "Belohnung verwalten";
@@ -366,7 +361,6 @@
 "Password_visibility" = "Passwort-Anzeige";
 "Passwords_matching_message" = "Neues Passwort stimmt nicht überein.";
 "Past_live_stream" = "Früherer Live-Stream";
-"Payment_failure" = "Zahlung fehlgeschlagen";
 "Payment_method" = "Zahlungsmethode";
 "Payment_method_was_successfully_charged" = "Zahlungsmethode wurde erfolgreich belastet.";
 "Payment_methods" = "Zahlungsmethoden";
@@ -395,7 +389,6 @@
 "Private_profile" = "Privates Profil";
 "Private_profile_more_info" = "Privates Profil - Mehr Info";
 "Private_profile_more_info_content" = "Die Standard-Einstellung für Profile sind auf Kickstarter ist privat. Um dein Profil öffentlich zu machen, hebe diese Einstellung bitte auf.";
-"Processing" = "Verarbeitung läuft...";
 "Project_Cancelled" = "Projekt abgebrochen.";
 "Project_Suspended" = "Projekt ausgesetzt.";
 "Project_activity" = "Projektaktivität";
@@ -436,7 +429,6 @@
 "Request_my_personal_data" = "Meine persönlichen Daten anfordern";
 "Resend_verification_email" = "Verifizierungs-E-Mail erneut senden";
 "Retry" = "Erneut versuchen";
-"Retry_or_select_another_method" = "Versuche es erneut oder wähle eine andere Karte.";
 "Reward_Surveys.few" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.many" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.one" = "Befragung";
@@ -476,13 +468,11 @@
 "Select_an_option" = "Bitte eine Option wählen";
 "Select_another_project" = "Wähle ein anderes Projekt aus";
 "Select_fewer_categories" = "Reduziere die Anzahl der Kategorien";
-"Select_this_card" = "Diese Karte auswählen";
 "Select_this_instead" = "Stattdessen diese auswählen";
 "Select_this_reward" = "Diese Belohnung wählen";
 "Select_this_reward_instead" = "Diese Belohnung auswählen";
 "Select_up_to_five" = "Wähle bis zu fünf aus den unten stehenden Optionen aus.";
 "Selected" = "Ausgewählt";
-"Selected_card" = "Ausgewählte Karte";
 "Selected_reward" = "Gewählte Belohnung";
 "Send" = "Senden";
 "Send_verfication_email" = "Verifizeirungs-E-Mail senden";
@@ -552,9 +542,7 @@
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Dieses Facebook-Konto ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
 "This_holiday_season_support_a_project_for_no_reward" = "Weihnachten steht kurz vor der Tür - unterstütze ein Projekt ohne Belohnung. Einfach, weil es dich anspricht.";
 "This_pledge_was_dropped_because_of_payment_errors" = "Dieser Finanzierungsbeitrag wurde aufgrund von Fehlern, die bei der Zahlung auftraten, nicht übernommen.";
-"This_post_is_for_backers_only" = "Dieser Beitrag ist nur für Unterstützer";
 "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged" = "Bei diesem Projekt wurde das Finanzierungsziel nicht erreicht. Daher wurde deine Zahlungsmethode nicht belastet.";
-"This_project_has_a_set_currency_that_cant_process_this_option" = "Diese Option ist für die Währung dieses Projekts nicht verfügbar.";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "Dieses Projekt wird nur finanziert, wenn bis am %{date} Unterstützungsbeiträge von mindestens %{amount} geleistet werden.";
 "Time_left_left" = "%{time_left} übrig";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Für schnellen Zugriff auf deine meist besuchten Kategorien, tippe auf das Dropdown-Menü oben.";
@@ -600,9 +588,7 @@
 "View_your_rewards" = "Deine Belohnungen ansehen";
 "Watch_live" = "Live ansehen";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "Dieser Finanzierungsbeitrag konnte aufgrund eines Problems mit der Zahlungsmethode des Unterstützers nicht bearbeitet werden.";
-"We_cant_process_your_pledge" = "Wir können deine Zahlung leider nicht bearbeiten.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "Dein Finanzierungsbeitrag kann nicht bearbeitet werden. Bitte aktualisiere deine Zahlungsmethode.";
-"We_cant_process_your_pledge_for" = "Wir können deine Zahlung aus folgendem Grund leider nicht bearbeiten:";
 "We_collected_the_backers_pledge_for_this_project" = "Der Finanzierungsbeitrag dieses Unterstützers wurde abgebucht.";
 "We_collected_your_pledge_for_this_project" = "Dein Finanzierungsbeitrag für dieses Projekt wurde abgebucht.";
 "We_couldnt_find_anything_for_search_term" = "Es wurden keine Ergebnisse für die Suche \"%{search_term}\" gefunden.";

@@ -1,5 +1,4 @@
 "A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency" = "A successfully funded project will collect your pledge in its native currency. The amounts shown are approximate.";
-"A_weekly_mix_of_handpicked_projects" = "A weekly mix of handpicked projects, plus occasional Kickstarter news";
 "A_weekly_roundup_of_the_best_and_brightest" = "A weekly roundup of the best and brightest projects on Kickstarter, handpicked by our team.";
 "About_reward_amount" = "About %{reward_amount}";
 "Accessibility_statement" = "Accessibility Statement";
@@ -7,7 +6,6 @@
 "Add" = "Add";
 "Add_attachments" = "Add attachments…";
 "Add_new_card" = "Add new card";
-"Alert" = "Alert";
 "All_Art_Projects" = "All Art Projects";
 "All_Comics_Projects" = "All Comics Projects";
 "All_Crafts_Projects" = "All Crafts Projects";
@@ -31,10 +29,9 @@
 "Amount_previous_amount" = "Amount: %{amount}, previous amount: %{previous_amount}";
 "Amount_reward" = "Amount: %{amount}, %{reward}";
 "Amounts_shown" = "The amounts shown are an approximate conversion. If the project is successful, your pledge will be collected in the native currency of the project, which is also displayed.";
-"Announcements" = "Announcements";
 "Any_payment_methods_you_saved_to_Kickstarter" = "Any payment methods you've saved to Kickstarter are listed here (securely) for your convenience.";
 "App_version" = "App version";
-"Apple_ID" = "Apple ID";
+"Apple_ID" = "AppleID";
 "Are_you_sure" = "Are you sure?";
 "Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name" = "Are you sure you wish to cancel your %{amount} pledge to %{project_name}?";
 "Are_you_sure_you_wish_to_remove_this_card" = "Are you sure you wish to remove this card from your payment method options?";
@@ -198,8 +195,6 @@
 "Find_projects_youll_love_in_art_design_film" = "Find projects you’ll love in art, design, film, games, music, and more. Once you back a project, you’ll see all your activity here.";
 "First_created" = "First created";
 "Fix" = "Fix";
-"Fix_payment_method" = "Fix payment method";
-"Fix_within_time_remaining" = "Fix within %{time_remaining}";
 "Fix_your_payment_method" = "Fix your payment method";
 "Follow_friend_name" = "Follow %{friend_name}";
 "Follow_friends" = "Follow friends";
@@ -305,7 +300,7 @@
 "Make_a_pledge_without_a_reward" = "Make a pledge without a reward";
 "Making_this_change" = "Making this change will allow you to see project goal and pledge amounts converted to your chosen currency.";
 "Manage" = "Manage";
-"Manage_this_account" = "Manage this account in your Apple ID settings.";
+"Manage_this_account" = "Manage this account in your AppleID settings.";
 "Manage_your_pledge" = "Manage your pledge";
 "Manage_your_pledge_below" = "Manage your pledge below";
 "Manage_your_reward" = "Manage your reward";
@@ -366,7 +361,6 @@
 "Password_visibility" = "Password visibility";
 "Passwords_matching_message" = "New passwords must match.";
 "Past_live_stream" = "Past live stream";
-"Payment_failure" = "Payment failure";
 "Payment_method" = "Payment method";
 "Payment_method_was_successfully_charged" = "Payment method was successfully charged.";
 "Payment_methods" = "Payment methods";
@@ -395,7 +389,6 @@
 "Private_profile" = "Private profile";
 "Private_profile_more_info" = "Private profile more info";
 "Private_profile_more_info_content" = "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off.";
-"Processing" = "Processing...";
 "Project_Cancelled" = "Project Cancelled.";
 "Project_Suspended" = "Project Suspended.";
 "Project_activity" = "Project activity";
@@ -436,7 +429,6 @@
 "Request_my_personal_data" = "Request my personal data";
 "Resend_verification_email" = "Re-send verification email";
 "Retry" = "Retry";
-"Retry_or_select_another_method" = "Retry or select another method.";
 "Reward_Surveys.few" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.many" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.one" = "Reward Survey";
@@ -476,13 +468,11 @@
 "Select_an_option" = "Select an option";
 "Select_another_project" = "Select another project";
 "Select_fewer_categories" = "Select fewer categories";
-"Select_this_card" = "Select this card";
 "Select_this_instead" = "Select this instead";
 "Select_this_reward" = "Select this reward";
 "Select_this_reward_instead" = "Select this reward instead";
 "Select_up_to_five" = "Select up to five from the options below.";
 "Selected" = "Selected";
-"Selected_card" = "Selected card";
 "Selected_reward" = "Selected reward";
 "Send" = "Send";
 "Send_verfication_email" = "Send verification email";
@@ -552,9 +542,7 @@
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "This Facebook account is already linked to another Kickstarter user.";
 "This_holiday_season_support_a_project_for_no_reward" = "This holiday season, support a project for no reward, just because it speaks to you.";
 "This_pledge_was_dropped_because_of_payment_errors" = "This pledge was dropped because of payment errors.";
-"This_post_is_for_backers_only" = "This post is for backers only";
 "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged" = "This project didn’t reach its funding goal, so your payment method was never charged.";
-"This_project_has_a_set_currency_that_cant_process_this_option" = "This project has a set currency that can't process this option.";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "This project will only be funded on if at least %{amount} is pledged by %{date}.";
 "Time_left_left" = "%{time_left} left";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "To access all your favorite categories, tap the explore dropdown at the top of the app.";
@@ -600,9 +588,7 @@
 "View_your_rewards" = "View your rewards";
 "Watch_live" = "Watch live";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "We can’t process this pledge because of a problem with the backer’s payment method.";
-"We_cant_process_your_pledge" = "We can't process your pledge.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "We can’t process your pledge. Please update your payment method.";
-"We_cant_process_your_pledge_for" = "We can't process your pledge for:";
 "We_collected_the_backers_pledge_for_this_project" = "We collected the backer’s pledge for this project.";
 "We_collected_your_pledge_for_this_project" = "We collected your pledge for this project.";
 "We_couldnt_find_anything_for_search_term" = "We couldn't find anything for “%{search_term}”.";
