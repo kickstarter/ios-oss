@@ -483,11 +483,12 @@ extension ManagePledgeViewController: MessageDialogViewControllerDelegate {
 extension ManagePledgeViewController {
   public static func controller(
     with projectOrParam: Either<Project, Param>,
-    delegate _: ManagePledgeViewControllerDelegate? = nil
+    delegate: ManagePledgeViewControllerDelegate? = nil
   ) -> UINavigationController {
     let managePledgeViewController = ManagePledgeViewController
       .instantiate()
     managePledgeViewController.configureWith(projectOrParam: projectOrParam)
+    managePledgeViewController.delegate = delegate
 
     let closeButton = UIBarButtonItem(
       image: UIImage(named: "icon--cross"),

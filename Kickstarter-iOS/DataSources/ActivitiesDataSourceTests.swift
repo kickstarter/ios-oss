@@ -105,5 +105,9 @@ final class ActivitiesDataSourceTests: XCTestCase {
     XCTAssertEqual("ActivityErroredBackingsCell", self.dataSource.reusableId(item: 0, section: section))
 
     self.dataSource.load(erroredBackings: [])
+
+    XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
+    XCTAssertEqual(nil, self.dataSource.reusableId(item: 0, section: section))
   }
 }

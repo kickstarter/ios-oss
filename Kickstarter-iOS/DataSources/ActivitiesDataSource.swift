@@ -41,6 +41,10 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
   }
 
   internal func load(erroredBackings: [GraphBacking]) {
+    self.clearValues(section: Section.erroredBackings.rawValue)
+
+    guard !erroredBackings.isEmpty else { return }
+
     self.set(
       values: [erroredBackings],
       cellClass: ActivityErroredBackingsCell.self,

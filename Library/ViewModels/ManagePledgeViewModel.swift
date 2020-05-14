@@ -380,6 +380,7 @@ private func projectBackingQuery(withSlug slug: String) -> NonEmptySet<Query> {
             ]
           ),
           .errorReason,
+          .location(.name +| []),
           .pledgedOn,
           .reward(
             .name +| [
