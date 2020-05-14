@@ -64,6 +64,7 @@ final class PledgePaymentMethodLoadingCell: UITableViewCell, ValueCell {
     _ = self.rootStackView
       |> \.spacing .~ Styles.grid(2)
       |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.insetsLayoutMarginsFromSafeArea .~ false
       |> \.layoutMargins .~ .init(all: Styles.grid(2))
 
     _ = self.contentStackView
@@ -71,7 +72,14 @@ final class PledgePaymentMethodLoadingCell: UITableViewCell, ValueCell {
       |> \.distribution .~ .fillEqually
       |> \.spacing .~ Styles.gridHalf(3)
       |> \.isLayoutMarginsRelativeArrangement .~ true
+      |> \.insetsLayoutMarginsFromSafeArea .~ false
       |> \.layoutMargins .~ .init(topBottom: Styles.grid(1))
+
+    _ = self.subtitleStackView
+      |> \.insetsLayoutMarginsFromSafeArea .~ false
+
+    _ = self.titleStackView
+      |> \.insetsLayoutMarginsFromSafeArea .~ false
   }
 
   func configureWith(value _: Void) {}

@@ -184,5 +184,7 @@ private func string(forSort sort: DiscoveryParams.Sort) -> String {
     return Strings.discovery_sort_types_newest()
   case .popular:
     return Strings.Popular()
+  case .distance:
+    return ""
   }
 }

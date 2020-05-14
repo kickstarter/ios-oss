@@ -367,8 +367,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         return DiscoveryEditorialCellValue(
           title: Strings.Introducing_Lights_On(),
           subtitle: Strings.Support_creative_spaces_and_businesses_affected_by(),
-          imageName: "lights-on-home",
-          tagId: .lightsOn
+          imageName: "lights-on-home", tagId: .lightsOn
         )
       }.skipRepeats()
 
