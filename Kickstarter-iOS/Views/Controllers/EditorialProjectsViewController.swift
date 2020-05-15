@@ -118,9 +118,9 @@ public final class EditorialProjectsViewController: UIViewController {
       |> \.spacing .~ Styles.grid(2)
       |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.distribution .~ .fill
-      |> UIStackView.lens
-      .layoutMargins .~
-      .init(top: Styles.grid(10), left: Styles.grid(6), bottom: Styles.grid(2), right: Styles.grid(6))
+      |> UIStackView.lens.layoutMargins .~ .init(
+        top: Styles.grid(15), left: Styles.grid(6), bottom: Styles.grid(7), right: Styles.grid(6)
+      )
 
     _ = self.editorialTitleLabel
       |> editorialLabelStyle
@@ -204,8 +204,9 @@ public final class EditorialProjectsViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = (self.editorialLabelStackView, self.editorialImageView)
+    _ = (self.editorialLabelStackView, self.headerView)
       |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     _ = ([self.editorialTitleLabel, self.editorialSubtitleLabel], self.editorialLabelStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -237,14 +238,6 @@ public final class EditorialProjectsViewController: UIViewController {
       self.headerTopLayoutGuide.rightAnchor.constraint(equalTo: self.headerView.rightAnchor),
       self.headerTopLayoutGuide.topAnchor.constraint(equalTo: self.headerView.topAnchor),
       headerTopLayoutGuideHeightConstraint,
-      // editorialLabelStackView
-      self.editorialLabelStackView.trailingAnchor.constraint(equalTo: self.editorialImageView.trailingAnchor),
-      self.editorialLabelStackView.topAnchor
-        .constraint(equalTo: self.editorialImageView.topAnchor, constant: Styles.grid(5)),
-      self.editorialLabelStackView.leadingAnchor
-        .constraint(equalTo: self.editorialImageView.leadingAnchor),
-      self.editorialImageView.bottomAnchor
-        .constraint(equalTo: self.editorialLabelStackView.bottomAnchor, constant: Styles.grid(5)),
       // closeButton
       self.closeButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: Styles.grid(1)),
       self.closeButton.topAnchor.constraint(
