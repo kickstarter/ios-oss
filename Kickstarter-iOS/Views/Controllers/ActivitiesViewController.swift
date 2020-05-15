@@ -9,6 +9,7 @@ internal final class ActivitiesViewController: UITableViewController {
   fileprivate let dataSource = ActivitiesDataSource()
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
+  private var userUpdatedObserver: Any?
 
   fileprivate var emptyStatesController: EmptyStatesViewController?
 
@@ -28,11 +29,21 @@ internal final class ActivitiesViewController: UITableViewController {
       .addObserver(forName: .ksr_sessionEnded, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionEnded()
       }
+
+    self.userUpdatedObserver = NotificationCenter.default
+      .addObserver(forName: Notification.Name.ksr_userUpdated, object: nil, queue: nil) { [weak self] _ in
+        self?.viewModel.inputs.currentUserUpdated()
+      }
   }
 
   deinit {
-    self.sessionEndedObserver.doIfSome(NotificationCenter.default.removeObserver)
-    self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
+    [
+      self.sessionEndedObserver,
+      self.sessionStartedObserver,
+      self.userUpdatedObserver
+    ]
+    .compact()
+    .forEach(NotificationCenter.default.removeObserver)
   }
 
   internal override func viewDidLayoutSubviews() {
@@ -177,6 +188,12 @@ internal final class ActivitiesViewController: UITableViewController {
         self?.goToUpdate(project: project, update: update)
       }
 
+    self.viewModel.outputs.goToManagePledge
+      .observeForControllerAction()
+      .observeValues { [weak self] param in
+        self?.goToManagePledge(param: param)
+      }
+
     self.viewModel.outputs.clearBadgeValue
       .observeForUI()
       .observeValues { [weak self] in
@@ -202,6 +219,8 @@ internal final class ActivitiesViewController: UITableViewController {
     } else if let cell = cell as? FindFriendsHeaderCell, cell.delegate == nil {
       cell.delegate = self
     } else if let cell = cell as? ActivitySurveyResponseCell, cell.delegate == nil {
+      cell.delegate = self
+    } else if let cell = cell as? ActivityErroredBackingsCell, cell.delegate == nil {
       cell.delegate = self
     }
 
@@ -248,6 +267,11 @@ internal final class ActivitiesViewController: UITableViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
+  fileprivate func goToManagePledge(param: Param) {
+    let vc = ManagePledgeViewController.controller(with: .right(param), delegate: self)
+    self.present(vc, animated: true)
+  }
+
   fileprivate func deleteFacebookSection() {
     self.tableView.beginUpdates()
 
@@ -265,11 +289,15 @@ internal final class ActivitiesViewController: UITableViewController {
   }
 }
 
+// MARK: - ActivityUpdateCellDelegate
+
 extension ActivitiesViewController: ActivityUpdateCellDelegate {
   internal func activityUpdateCellTappedProjectImage(activity: Activity) {
     self.viewModel.inputs.activityUpdateCellTappedProjectImage(activity: activity)
   }
 }
+
+// MARK: - FindFriendsHeaderCellDelegate
 
 extension ActivitiesViewController: FindFriendsHeaderCellDelegate {
   func findFriendsHeaderCellDismissHeader() {
@@ -280,6 +308,8 @@ extension ActivitiesViewController: FindFriendsHeaderCellDelegate {
     self.viewModel.inputs.findFriendsHeaderCellGoToFriends()
   }
 }
+
+// MARK: - FindFriendsFacebookConnectCellDelegate
 
 extension ActivitiesViewController: FindFriendsFacebookConnectCellDelegate {
   func findFriendsFacebookConnectCellDidFacebookConnectUser() {
@@ -295,11 +325,15 @@ extension ActivitiesViewController: FindFriendsFacebookConnectCellDelegate {
   }
 }
 
+// MARK: - ActivitySurveyResponseCellDelegate
+
 extension ActivitiesViewController: ActivitySurveyResponseCellDelegate {
   func activityTappedRespondNow(forSurveyResponse surveyResponse: SurveyResponse) {
     self.viewModel.inputs.tappedRespondNow(forSurveyResponse: surveyResponse)
   }
 }
+
+// MARK: - EmptyStatesViewControllerDelegate
 
 extension ActivitiesViewController: EmptyStatesViewControllerDelegate {
   func emptyStatesViewController(
@@ -320,3 +354,22 @@ extension ActivitiesViewController: SurveyResponseViewControllerDelegate {
 }
 
 extension ActivitiesViewController: TabBarControllerScrollable {}
+
+// MARK: - ErroredBackingViewDelegate
+
+extension ActivitiesViewController: ErroredBackingViewDelegate {
+  func erroredBackingViewDidTapManage(_: ErroredBackingView, backing: GraphBacking) {
+    self.viewModel.inputs.erroredBackingViewDidTapManage(with: backing)
+  }
+}
+
+// MARK: - ManagePledgeViewControllerDelegate
+
+extension ActivitiesViewController: ManagePledgeViewControllerDelegate {
+  func managePledgeViewController(
+    _: ManagePledgeViewController,
+    managePledgeViewControllerFinishedWithMessage _: String?
+  ) {
+    self.viewModel.inputs.managePledgeViewControllerDidFinish()
+  }
+}

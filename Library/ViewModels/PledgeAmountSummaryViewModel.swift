@@ -50,7 +50,6 @@ public class PledgeAmountSummaryViewModel: PledgeAmountSummaryViewModelType,
       .skipNil()
 
     self.shippingAmountText = data.map { ($0.projectCountry, $0.shippingAmount ?? 0, $0.omitUSCurrencyCode) }
-      .filter { _, shippingAmount, _ in shippingAmount > 0 }
       .map(shippingValue(with:amount:omitUSCurrencyCode:))
       .skipNil()
 

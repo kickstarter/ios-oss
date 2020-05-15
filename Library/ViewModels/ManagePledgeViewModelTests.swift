@@ -77,7 +77,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.title.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(project)
+      self.vm.inputs.configureWith(.left(project))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -98,7 +98,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(finishedProject)
+      self.vm.inputs.configureWith(.left(finishedProject))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -128,7 +128,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(project)
+      self.vm.inputs.configureWith(.left(project))
 
       self.vm.inputs.viewDidLoad()
 
@@ -170,7 +170,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(project)
+      self.vm.inputs.configureWith(.left(project))
 
       self.vm.inputs.viewDidLoad()
 
@@ -189,7 +189,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.backing .~ Backing.template
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
 
     self.vm.inputs.viewDidLoad()
 
@@ -203,7 +203,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.backing .~ Backing.template
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
 
     self.vm.inputs.viewDidLoad()
 
@@ -214,7 +214,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.state .~ .live
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
@@ -236,7 +236,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.state .~ .successful
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
@@ -254,7 +254,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.backing .~ backing
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
@@ -278,7 +278,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(project)
+      self.vm.inputs.configureWith(.left(project))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -304,7 +304,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(.template)
+      self.vm.inputs.configureWith(.left(.template))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -326,7 +326,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.backing .~ Backing.template
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.goToChangePaymentMethodProject.assertDidNotEmitValue()
@@ -343,7 +343,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.backing .~ Backing.template
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.goToContactCreatorSubject.assertDidNotEmitValue()
@@ -357,7 +357,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testGoToRewards() {
-    self.vm.inputs.configureWith(Project.template)
+    self.vm.inputs.configureWith(.left(Project.template))
     self.vm.inputs.viewDidLoad()
 
     self.goToRewards.assertDidNotEmitValue()
@@ -372,7 +372,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.backing .~ Backing.template
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.goToUpdatePledgeProject.assertDidNotEmitValue()
@@ -394,7 +394,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.rewards .~ ([Reward.noReward] + Project.cosmicSurgery.rewards.suffix(from: 1))
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
@@ -409,7 +409,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.rewards .~ ([Reward.noReward] + Project.cosmicSurgery.rewards.suffix(from: 1))
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
@@ -424,7 +424,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.rewards .~ ([Reward.noReward] + Project.cosmicSurgery.rewards.suffix(from: 1))
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
@@ -439,7 +439,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.rewards .~ ([Reward.noReward] + Project.cosmicSurgery.rewards.suffix(from: 1))
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
@@ -454,7 +454,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.rewards .~ ([Reward.noReward] + Project.cosmicSurgery.rewards.suffix(from: 1))
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
@@ -467,7 +467,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
@@ -480,7 +480,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
@@ -493,7 +493,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.rewardReceivedViewControllerViewIsHidden.assertValues([false])
@@ -506,7 +506,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
@@ -519,7 +519,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
@@ -532,7 +532,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
@@ -545,14 +545,14 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
   }
 
   func testNotifyDelegateManagePledgeViewControllerFinishedWithMessage_CancellingPledge() {
-    self.vm.inputs.configureWith(Project.template)
+    self.vm.inputs.configureWith(.left(Project.template))
     self.vm.inputs.viewDidLoad()
 
     self.notifyDelegateManagePledgeViewControllerFinishedWithMessage.assertDidNotEmitValue()
@@ -564,7 +564,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testNotifyDelegateManagePledgeViewControllerFinishedWithMessage_UpdatingPledge() {
-    self.vm.inputs.configureWith(Project.template)
+    self.vm.inputs.configureWith(.left(Project.template))
     self.vm.inputs.viewDidLoad()
 
     self.notifyDelegateManagePledgeViewControllerFinishedWithMessage.assertDidNotEmitValue()
@@ -580,13 +580,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Backing.lens.amount .~ 5.00
     let project = Project.cosmicSurgery
       |> Project.lens.personalization.backing .~ backing
-    let updatedBacking = backing |> Backing.lens.amount .~ 10.00
-    let updatedProject = project
-      |> Project.lens.personalization.backing .~ updatedBacking
 
     let envelope = ManagePledgeViewBackingEnvelope.template
 
-    let pledgeViewSummaryData = ManagePledgeSummaryViewData(
+    // Pledge amount 25
+    let initialPledgeViewSummaryData = ManagePledgeSummaryViewData(
       backerId: envelope.backing.backer.uid,
       backerName: envelope.backing.backer.name,
       backerSequence: envelope.backing.sequence,
@@ -595,7 +593,25 @@ internal final class ManagePledgeViewModelTests: TestCase {
       locationName: "Brooklyn, NY",
       needsConversion: true,
       omitUSCurrencyCode: true,
-      pledgeAmount: envelope.backing.amount.amount,
+      pledgeAmount: 25,
+      pledgedOn: envelope.backing.pledgedOn,
+      projectCountry: project.country,
+      projectDeadline: 1_476_657_315.0,
+      projectState: ProjectState.live,
+      shippingAmount: envelope.backing.shippingAmount?.amount
+    )
+
+    // Pledge amount 50
+    let updatedPledgeViewSummaryData = ManagePledgeSummaryViewData(
+      backerId: envelope.backing.backer.uid,
+      backerName: envelope.backing.backer.name,
+      backerSequence: envelope.backing.sequence,
+      backingState: BackingState.pledged,
+      currentUserIsCreatorOfProject: false,
+      locationName: "Brooklyn, NY",
+      needsConversion: true,
+      omitUSCurrencyCode: true,
+      pledgeAmount: 50,
       pledgedOn: envelope.backing.pledgedOn,
       projectCountry: project.country,
       projectDeadline: 1_476_657_315.0,
@@ -611,12 +627,14 @@ internal final class ManagePledgeViewModelTests: TestCase {
       paymentType: .creditCard
     )
 
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(envelope),
-      fetchProjectResponse: updatedProject
-    )
+    let initialBackingEnvelope = ManagePledgeViewBackingEnvelope.template
+      |> \.backing.amount.amount .~ 25
+    let updatedBackingEnvelope = ManagePledgeViewBackingEnvelope.template
+      |> \.backing.amount.amount .~ 50
 
-    withEnvironment(apiService: mockService) {
+    withEnvironment(
+      apiService: MockService(fetchManagePledgeViewBackingResult: .success(initialBackingEnvelope))
+    ) {
       self.showSuccessBannerWithMessage.assertDidNotEmitValue()
       self.configurePaymentMethodView.assertDidNotEmitValue()
       self.configurePledgeSummaryView.assertDidNotEmitValue()
@@ -625,22 +643,42 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.configureRewardReceivedWithProject.assertDidNotEmitValue()
       self.title.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(project)
+      self.vm.inputs.configureWith(.left(project))
       self.vm.inputs.viewDidLoad()
 
+      self.scheduler.advance()
+
+      self.configurePaymentMethodView.assertValues([pledgePaymentMethodViewData])
+      self.configurePledgeSummaryView.assertValues([initialPledgeViewSummaryData])
+
+      self.configureRewardSummaryViewProject.assertValues([project])
+      self.configureRewardSummaryViewReward.assertValues([.template])
+      self.configureRewardReceivedWithProject.assertValues([project])
+      self.title.assertValues(["Manage your pledge"])
+    }
+
+    withEnvironment(
+      apiService: MockService(fetchManagePledgeViewBackingResult: .success(updatedBackingEnvelope))
+    ) {
       self.vm.inputs.pledgeViewControllerDidUpdatePledgeWithMessage("Got it! Your changes have been saved.")
 
       self.scheduler.run()
 
       self.showSuccessBannerWithMessage.assertValues(["Got it! Your changes have been saved."])
 
-      self.configurePaymentMethodView.assertValues([pledgePaymentMethodViewData])
-      self.configurePledgeSummaryView.assertValues([pledgeViewSummaryData])
+      self.configurePaymentMethodView.assertValues([
+        pledgePaymentMethodViewData,
+        pledgePaymentMethodViewData
+      ])
+      self.configurePledgeSummaryView.assertValues([
+        initialPledgeViewSummaryData,
+        updatedPledgeViewSummaryData
+      ])
 
-      self.configureRewardSummaryViewProject.assertValues([project, updatedProject])
-      self.configureRewardSummaryViewReward.assertValues([.template, .template])
-      self.configureRewardReceivedWithProject.assertValues([project, updatedProject])
-      self.title.assertValues(["Manage your pledge"])
+      self.configureRewardSummaryViewProject.assertValues([project])
+      self.configureRewardSummaryViewReward.assertValues([.template])
+      self.configureRewardReceivedWithProject.assertValues([project])
+      self.title.assertValues(["Manage your pledge", "Manage your pledge"])
     }
   }
 
@@ -648,7 +686,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.backing .~ Backing.template
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual([], self.trackingClient.events)
@@ -663,7 +701,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.backing .~ Backing.template
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual([], self.trackingClient.events)
@@ -674,13 +712,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testEndRefreshing() {
-    let project = Project.template |> Project.lens.personalization.backing .~ .template
-    let mockService = MockService(fetchProjectResponse: project)
+    let mockService = MockService(fetchManagePledgeViewBackingResult: .success(.template))
 
     withEnvironment(apiService: mockService) {
       self.endRefreshing.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(.template)
+      self.vm.inputs.configureWith(.left(.template))
       self.vm.inputs.viewDidLoad()
 
       self.endRefreshing.assertDidNotEmitValue()
@@ -717,7 +754,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ Backing.template
     let reward = Project.cosmicSurgery.rewards.filter { $0.id == Backing.template.rewardId }.first!
 
-    self.vm.inputs.configureWith(project)
+    self.vm.inputs.configureWith(.left(project))
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.fixButtonTapped()

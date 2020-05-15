@@ -7,8 +7,8 @@ public struct GraphBacking: Swift.Decodable, Equatable {
 
   public struct Project: Swift.Decodable, Equatable {
     public var finalCollectionDate: String?
-    public var id: String
     public var name: String
+    public var pid: Int
     public var slug: String
   }
 

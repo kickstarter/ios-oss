@@ -14,7 +14,7 @@ public enum ManagePledgeAlertAction: CaseIterable {
 
 public protocol ManagePledgeViewModelInputs {
   func beginRefresh()
-  func configureWith(_ project: Project)
+  func configureWith(_ projectOrParam: Either<Project, Param>)
   func cancelPledgeDidFinish(with message: String)
   func fixButtonTapped()
   func menuButtonTapped()
@@ -51,25 +51,28 @@ public protocol ManagePledgeViewModelType {
 public final class ManagePledgeViewModel:
   ManagePledgeViewModelType, ManagePledgeViewModelInputs, ManagePledgeViewModelOutputs {
   public init() {
-    let initialProject = Signal.combineLatest(self.configureWithProjectSignal, self.viewDidLoadSignal)
-      .map(first)
+    let projectOrParam = Signal.combineLatest(
+      self.configureWithProjectOrParamSignal,
+      self.viewDidLoadSignal
+    )
+    .map(first)
 
     let shouldBeginRefresh = Signal.merge(
       self.pledgeViewControllerDidUpdatePledgeWithMessageSignal.ignoreValues(),
       self.beginRefreshSignal
     )
 
-    let refreshProjectEvent = initialProject
-      .takeWhen(shouldBeginRefresh)
-      .switchMap { project in
-        AppEnvironment.current.apiService.fetchProject(param: Param.id(project.id))
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    let fetchProjectEvent = projectOrParam
+      .switchMap { projectOrParam in
+        fetchProject(projectOrParam: projectOrParam)
           .materialize()
       }
 
+    let project = fetchProjectEvent.values()
+
     let shouldFetchGraphBackingWithProject = Signal.merge(
-      initialProject,
-      initialProject.takeWhen(shouldBeginRefresh)
+      project,
+      project.takeWhen(shouldBeginRefresh)
     )
 
     let graphBackingEvent = shouldFetchGraphBackingWithProject
@@ -88,11 +91,10 @@ public final class ManagePledgeViewModel:
     let backing = graphBackingEnvelope
       .map { $0.backing }
 
-    self.endRefreshing = refreshProjectEvent
+    self.endRefreshing = graphBackingEvent
+      .skip(first: 1) // TODO: Confirm this is correct when loading state is added
       .filter { $0.isTerminating }
       .ignoreValues()
-
-    let project = Signal.merge(initialProject, refreshProjectEvent.values())
 
     let projectAndReward = project
       .filterMap { project in
@@ -112,6 +114,7 @@ public final class ManagePledgeViewModel:
       .map { project, env in managePledgeSummaryViewData(with: project, envelope: env) }
       .skipNil()
 
+    // TODO: Configure with GraphQL backing
     self.configureRewardReceivedWithProject = project
 
     self.configureRewardSummaryView = projectAndReward
@@ -152,7 +155,7 @@ public final class ManagePledgeViewModel:
 
     self.notifyDelegateManagePledgeViewControllerFinishedWithMessage = Signal.merge(
       self.cancelPledgeDidFinishWithMessageProperty.signal,
-      refreshProjectEvent.mapConst(nil)
+      graphBackingEvent.mapConst(nil)
     )
 
     self.rewardReceivedViewControllerViewIsHidden = projectAndReward
@@ -194,9 +197,10 @@ public final class ManagePledgeViewModel:
     self.beginRefreshObserver.send(value: ())
   }
 
-  private let (configureWithProjectSignal, configureWithProjectObserver) = Signal<Project, Never>.pipe()
-  public func configureWith(_ project: Project) {
-    self.configureWithProjectObserver.send(value: project)
+  private let (configureWithProjectOrParamSignal, configureWithProjectOrParamObserver)
+    = Signal<Either<Project, Param>, Never>.pipe()
+  public func configureWith(_ projectOrParam: Either<Project, Param>) {
+    self.configureWithProjectOrParamObserver.send(value: projectOrParam)
   }
 
   private let cancelPledgeDidFinishWithMessageProperty = MutableProperty<String?>(nil)
@@ -256,6 +260,18 @@ public final class ManagePledgeViewModel:
 }
 
 // MARK: - Functions
+
+private func fetchProject(projectOrParam: Either<Project, Param>)
+  -> SignalProducer<Project, ErrorEnvelope> {
+  if let project = projectOrParam.left {
+    return SignalProducer(value: project)
+  } else {
+    let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
+
+    return AppEnvironment.current.apiService.fetchProject(param: param)
+      .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+  }
+}
 
 private func actionSheetMenuOptionsFor(project: Project) -> [ManagePledgeAlertAction] {
   guard project.state == .live else {
@@ -364,6 +380,7 @@ private func projectBackingQuery(withSlug slug: String) -> NonEmptySet<Query> {
             ]
           ),
           .errorReason,
+          .location(.name +| []),
           .pledgedOn,
           .reward(
             .name +| [

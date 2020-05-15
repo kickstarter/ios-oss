@@ -52,7 +52,7 @@ final class ManagePledgeViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: user, language: language) {
         let controller = ManagePledgeViewController.instantiate()
-        controller.configureWith(project: backedProject)
+        controller.configureWith(projectOrParam: .left(backedProject))
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_200
 
@@ -99,7 +99,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     withEnvironment(apiService: mockService, currentUser: user, language: language) {
       let controller = ManagePledgeViewController.instantiate()
-      controller.configureWith(project: backedProject)
+      controller.configureWith(projectOrParam: .left(backedProject))
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
       self.scheduler.run()
@@ -145,7 +145,7 @@ final class ManagePledgeViewControllerTests: TestCase {
     withEnvironment(currentUser: user, language: language) {
       withEnvironment(apiService: mockService, currentUser: user, language: language) {
         let controller = ManagePledgeViewController.instantiate()
-        controller.configureWith(project: backedProject)
+        controller.configureWith(projectOrParam: .left(backedProject))
         let (parent, _) = traitControllers(
           device: device,
           orientation: .portrait,
@@ -197,7 +197,7 @@ final class ManagePledgeViewControllerTests: TestCase {
     withEnvironment(currentUser: user, language: language) {
       withEnvironment(apiService: mockService, currentUser: user, language: language) {
         let controller = ManagePledgeViewController.instantiate()
-        controller.configureWith(project: backedProject)
+        controller.configureWith(projectOrParam: .left(backedProject))
         let (parent, _) = traitControllers(
           device: device,
           orientation: .portrait,
@@ -245,7 +245,7 @@ final class ManagePledgeViewControllerTests: TestCase {
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: user, language: language) {
         let controller = ManagePledgeViewController.instantiate()
-        controller.configureWith(project: backedProject)
+        controller.configureWith(projectOrParam: .left(backedProject))
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.run()
