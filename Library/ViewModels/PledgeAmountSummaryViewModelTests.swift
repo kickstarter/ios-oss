@@ -44,6 +44,24 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
     self.shippingLocationText.assertValue("Shipping: United States")
   }
 
+  func testTextOutputsEmitTheCorrectValue_ZeroShippingAmount() {
+    let data = PledgeAmountSummaryViewData(
+      projectCountry: Project.Country.us,
+      pledgeAmount: 30.0,
+      pledgedOn: 1_568_666_243.0,
+      shippingAmount: 0,
+      locationName: "United States",
+      omitUSCurrencyCode: true
+    )
+
+    self.vm.inputs.configureWith(data)
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeAmountText.assertValue("$30.00")
+    self.shippingAmountText.assertValue("+$0.00")
+    self.shippingLocationText.assertValue("Shipping: United States")
+  }
+
   func testShippingLocationStackViewIsHidden_isTrue_WhenLocationNameIsNil() {
     let data = PledgeAmountSummaryViewData(
       projectCountry: Project.Country.us,
