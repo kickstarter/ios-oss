@@ -56,7 +56,7 @@ final class EditorialProjectsViewModelTests: TestCase {
     self.vm.inputs.configure(with: .lightsOn)
     self.vm.inputs.viewDidLoad()
 
-    self.imageName.assertValues(["lights-on-home"])
+    self.imageName.assertValues(["lights-on"])
   }
 
   func testTitleLabel_LightsOn() {
@@ -66,7 +66,7 @@ final class EditorialProjectsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.titleLabelText.assertValues([
-      "This holiday season, support a project for no reward, just because it speaks to you."
+      "Show up for the spaces you love"
     ])
   }
 

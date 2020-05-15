@@ -199,6 +199,6 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual("recommended_home", RefTag.fromParams(discoPWL).stringTag)
     XCTAssertEqual("social_home", RefTag.fromParams(discoSocial).stringTag)
     XCTAssertEqual("starred_home", RefTag.fromParams(discoStarred).stringTag)
-    XCTAssertEqual("ios_project_collection_tag_250", RefTag.fromParams(discoCollection).stringTag)
+    XCTAssertEqual("ios_project_collection_tag_557", RefTag.fromParams(discoCollection).stringTag)
   }
 }

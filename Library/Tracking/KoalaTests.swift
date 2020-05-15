@@ -331,7 +331,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(Category.filmAndVideo.intID, properties?["discover_category_id"] as? Int)
     XCTAssertEqual(Category.filmAndVideo.name, properties?["discover_category_name"] as? String)
     XCTAssertEqual("popularity", properties?["discover_sort"] as? String)
-    XCTAssertEqual("ios_project_collection_tag_250", properties?["discover_ref_tag"] as? String)
+    XCTAssertEqual("ios_project_collection_tag_557", properties?["discover_ref_tag"] as? String)
     XCTAssertEqual("collage", properties?["discover_search_term"] as? String)
   }
 

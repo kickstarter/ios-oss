@@ -108,13 +108,12 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
 private func editorialImageName(for tagId: DiscoveryParams.TagID) -> String {
   switch tagId {
   case .lightsOn:
-    return "lights-on-home"
+    return "lights-on"
   }
 }
 
 private func editorialTitleLabelText(for tagId: DiscoveryParams.TagID) -> String {
   switch tagId {
-  case .lightsOn:
-    return Strings.This_holiday_season_support_a_project_for_no_reward()
+  case .lightsOn: return Strings.Show_up_for_the_spaces_you_love()
   }
 }

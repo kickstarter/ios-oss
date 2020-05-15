@@ -442,6 +442,7 @@
 		8AE09C3A244537BE00036043 /* PledgeDisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */; };
 		8AE09C3C2446330100036043 /* PledgeDisclaimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C3B2446330100036043 /* PledgeDisclaimerViewModel.swift */; };
 		8AE09C3E24463C4C00036043 /* PledgeDisclaimerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C3D24463C4C00036043 /* PledgeDisclaimerViewModelTests.swift */; };
+		8AE329FE246F46500027F2E3 /* PledgeViewCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE329FD246F46500027F2E3 /* PledgeViewCTAContainerView.swift */; };
 		8AE8D86623466EB9005860C6 /* UpdateBackingInput+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D86523466EB9005860C6 /* UpdateBackingInput+Constructor.swift */; };
 		8AE8D86823466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D86723466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift */; };
 		8AF34C722342CBAD000B211D /* UpdateBackingMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C712342CBAD000B211D /* UpdateBackingMutation.swift */; };
@@ -1257,7 +1258,6 @@
 		D703FC6920F7E2EC004A272D /* SettingsPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703FC6820F7E2EC004A272D /* SettingsPrivacyViewController.swift */; };
 		D703FC6B20F7E3F8004A272D /* SettingsPrivacyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703FC6A20F7E3F8004A272D /* SettingsPrivacyViewModel.swift */; };
 		D706479023A2BF4B00B33C20 /* OptimizelyClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */; };
-		D710ADF9243D18EA00DC7199 /* PledgeViewCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710ADF8243D18EA00DC7199 /* PledgeViewCTAContainerView.swift */; };
 		D710ADFB243FB94A00DC7199 /* PledgeViewCTAContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710ADFA243FB94A00DC7199 /* PledgeViewCTAContainerViewModel.swift */; };
 		D710ADFD2441172100DC7199 /* PledgeViewCTAContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710ADFC2441172100DC7199 /* PledgeViewCTAContainerViewModelTests.swift */; };
 		D7180BA222EF9DE900EB0110 /* RewardCellProjectBackingStateTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7180BA022EF9DD900EB0110 /* RewardCellProjectBackingStateTypeTests.swift */; };
@@ -1909,6 +1909,7 @@
 		8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerView.swift; sourceTree = "<group>"; };
 		8AE09C3B2446330100036043 /* PledgeDisclaimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerViewModel.swift; sourceTree = "<group>"; };
 		8AE09C3D24463C4C00036043 /* PledgeDisclaimerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerViewModelTests.swift; sourceTree = "<group>"; };
+		8AE329FD246F46500027F2E3 /* PledgeViewCTAContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeViewCTAContainerView.swift; sourceTree = "<group>"; };
 		8AE8D86523466EB9005860C6 /* UpdateBackingInput+Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateBackingInput+Constructor.swift"; sourceTree = "<group>"; };
 		8AE8D86723466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateBackingInput+ConstructorTests.swift"; sourceTree = "<group>"; };
 		8AF34C712342CBAD000B211D /* UpdateBackingMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingMutation.swift; sourceTree = "<group>"; };
@@ -2663,7 +2664,6 @@
 		D703FC6820F7E2EC004A272D /* SettingsPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewController.swift; sourceTree = "<group>"; };
 		D703FC6A20F7E3F8004A272D /* SettingsPrivacyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewModel.swift; sourceTree = "<group>"; };
 		D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyClientType.swift; sourceTree = "<group>"; };
-		D710ADF8243D18EA00DC7199 /* PledgeViewCTAContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewCTAContainerView.swift; sourceTree = "<group>"; };
 		D710ADFA243FB94A00DC7199 /* PledgeViewCTAContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewCTAContainerViewModel.swift; sourceTree = "<group>"; };
 		D710ADFC2441172100DC7199 /* PledgeViewCTAContainerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewCTAContainerViewModelTests.swift; sourceTree = "<group>"; };
 		D7180BA022EF9DD900EB0110 /* RewardCellProjectBackingStateTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellProjectBackingStateTypeTests.swift; sourceTree = "<group>"; };
@@ -3094,7 +3094,7 @@
 				D79A054A225E9B6B004BC6A8 /* PledgeDescriptionView.swift */,
 				8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */,
 				374F507822614A1000DE6746 /* PledgeFooterView.swift */,
-				D710ADF8243D18EA00DC7199 /* PledgeViewCTAContainerView.swift */,
+				8AE329FD246F46500027F2E3 /* PledgeViewCTAContainerView.swift */,
 				77636FC0243CFE25007F67B9 /* ProcessingView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
 				8AB0E00B24314967008E975E /* ProjectSummaryCarouselView.swift */,
@@ -5451,11 +5451,10 @@
 				3742036D22DD41BA007AA86E /* PillLayout.swift in Sources */,
 				015A07461D247564007AE210 /* UpdateDraftViewController.swift in Sources */,
 				D7D13C332405B89A00B6E929 /* CreatorBylineView.swift in Sources */,
+				8AE329FE246F46500027F2E3 /* PledgeViewCTAContainerView.swift in Sources */,
 				7720BA6E22DE79BF0071FDA1 /* UIViewController+Presentation.swift in Sources */,
 				7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */,
 				8AD7953423A2C95000998C79 /* QualtricsTypes.swift in Sources */,
-				D710ADF9243D18EA00DC7199 /* PledgeViewCTAContainerView.swift in Sources */,
-				D710ADF9243D18EA00DC7199 /* PledgeViewCTAContainerView.swift in Sources */,
 				8A8099EB22E213F100373E66 /* RewardCardView.swift in Sources */,
 				A70F1F321D8A3E85007DA8E9 /* ProjectPamphletViewController.swift in Sources */,
 				77FA6C7120F3DD6C00809E31 /* SettingsDataSource.swift in Sources */,

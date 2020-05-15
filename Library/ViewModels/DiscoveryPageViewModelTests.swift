@@ -572,7 +572,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showEditorialHeaderTitle.assertValues(["Introducing Lights On"])
       self.showEditorialHeaderSubtitle
         .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
-      self.showEditorialHeaderImageName.assertValues(["lights-on-home"])
+      self.showEditorialHeaderImageName.assertValues(["lights-on"])
       self.showEditorialHeaderTagId.assertValues([.lightsOn])
     }
   }
@@ -610,7 +610,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showEditorialHeaderTitle.assertValues(["Introducing Lights On"])
       self.showEditorialHeaderSubtitle
         .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
-      self.showEditorialHeaderImageName.assertValues(["lights-on-home"])
+      self.showEditorialHeaderImageName.assertValues(["lights-on"])
       self.showEditorialHeaderTagId.assertValues([.lightsOn])
     }
   }
@@ -987,7 +987,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showEditorialHeaderTitle.assertValues(["Introducing Lights On"])
       self.showEditorialHeaderSubtitle
         .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
-      self.showEditorialHeaderImageName.assertValues(["lights-on-home"])
+      self.showEditorialHeaderImageName.assertValues(["lights-on"])
       self.showEditorialHeaderTagId.assertValues([.lightsOn])
       self.goToEditorialProjectList.assertDidNotEmitValue()
 
@@ -1029,7 +1029,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     XCTAssertEqual(["Editorial Card Clicked"], self.trackingClient.events)
     XCTAssertEqual(
-      ["ios_project_collection_tag_250"],
+      ["ios_project_collection_tag_557"],
       self.trackingClient.properties(forKey: "session_ref_tag", as: String.self)
     )
 
@@ -1037,7 +1037,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     XCTAssertEqual(["Editorial Card Clicked", "Editorial Card Clicked"], self.trackingClient.events)
     XCTAssertEqual(
-      ["ios_project_collection_tag_250", "ios_project_collection_tag_250"],
+      ["ios_project_collection_tag_557", "ios_project_collection_tag_557"],
       self.trackingClient.properties(forKey: "session_ref_tag")
     )
   }
