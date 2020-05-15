@@ -241,7 +241,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
 
   func testView_Editorial_LoggedOut() {
     let mockOptimizelyClient = MockOptimizelyClient()
-    |> \.features .~ [OptimizelyFeature.Key.lightsOn.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.Key.lightsOn.rawValue: true]
 
     combos(Language.allLanguages, Device.allCases).forEach {
       language, device in
@@ -273,7 +273,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
       |> Activity.lens.user .~ self.brandoNoAvatar
 
     let mockOptimizelyClient = MockOptimizelyClient()
-    |> \.features .~ [OptimizelyFeature.Key.lightsOn.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.Key.lightsOn.rawValue: true]
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
