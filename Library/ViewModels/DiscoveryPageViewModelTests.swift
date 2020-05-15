@@ -556,7 +556,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
   // MARK: - Editorial Header
 
-  func testShowLightsOnEditorialHeader__LoggedOut() {
+  func testShowLightsOnEditorialHeader_LoggedOut() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.Key.lightsOn.rawValue: true]
 
