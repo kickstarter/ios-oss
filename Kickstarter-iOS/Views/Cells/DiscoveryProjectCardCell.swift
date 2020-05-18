@@ -18,16 +18,38 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private lazy var backersCountIconImageView = { UIImageView(frame: .zero) }()
   private lazy var backersCountStackView = { UIStackView(frame: .zero) }()
   private lazy var cardContainerView = { UIView(frame: .zero) }()
+  private lazy var dataSource = { DiscoveryProjectTagsCollectionViewDataSource() }()
   private lazy var goalMetIconImageView = { UIImageView(frame: .zero) }()
   private lazy var goalPercentFundedStackView = { UIStackView(frame: .zero) }()
   private lazy var percentFundedLabel = { UILabel(frame: .zero) }()
+  private lazy var pillLayout: PillLayout = {
+    PillLayout(
+      minimumInteritemSpacing: Styles.grid(1),
+      minimumLineSpacing: Styles.grid(1),
+      sectionInset: .init(top: Styles.grid(1))
+    )
+  }()
+
   private lazy var projectDetailsStackView = { UIStackView(frame: .zero) }()
   private lazy var projectImageView = { UIImageView(frame: .zero) }()
   // Stack view container for "percent funded" and "backer count" info
   private lazy var projectInfoStackView = { UIStackView(frame: .zero) }()
   private lazy var projectNameLabel = { UILabel(frame: .zero) }()
   private lazy var projectBlurbLabel = { UILabel(frame: .zero) }()
+  private lazy var rootStackView = { UIStackView(frame: .zero) }()
   private lazy var saveButton = { UIButton(type: .custom) }()
+
+  private lazy var tagsCollectionView: UICollectionView = {
+    UICollectionView(
+      frame: .zero,
+      collectionViewLayout: self.pillLayout
+    )
+      |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.never
+      |> \.dataSource .~ self.dataSource
+      |> \.allowsSelection .~ false
+  }()
+
+  private var tagsCollectionViewHeightConstraint: NSLayoutConstraint?
 
   private let viewModel: DiscoveryProjectCardViewModelType = DiscoveryProjectCardViewModel()
   private let watchProjectViewModel: WatchProjectViewModelType = WatchProjectViewModel()
@@ -44,6 +66,10 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.configureSubviews()
     self.setupConstraints()
     self.configureWatchProjectObservers()
+
+    self.tagsCollectionView.registerCellClass(DiscoveryProjectTagPillCell.self)
+
+    self.dataSource.collectionView = self.tagsCollectionView
 
     self.bindStyles()
     self.bindViewModel()
@@ -62,6 +88,18 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     .forEach { $0.doIfSome(NotificationCenter.default.removeObserver) }
   }
 
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    self.updateCollectionViewConstraints()
+  }
+
+  override func prepareForReuse() {
+    super.prepareForReuse()
+
+    self.tagsCollectionViewHeightConstraint?.constant = 0
+  }
+
   func configureWith(value: DiscoveryProjectCellRowValue) {
     self.viewModel.inputs.configure(with: value)
 
@@ -70,6 +108,9 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       Koala.LocationContext.discovery,
       value.params
     ))
+
+    self.setNeedsLayout()
+    self.layoutIfNeeded()
   }
 
   override func bindStyles() {
@@ -95,6 +136,10 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
           )
       }
 
+    _ = self.rootStackView
+      |> verticalStackViewStyle
+      |> \.spacing .~ 0
+
     _ = self.saveButton
       |> saveButtonStyle
 
@@ -109,22 +154,25 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     _ = self.projectNameLabel
       |> projectNameLabelStyle
+      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
     _ = self.projectBlurbLabel
       |> projectBlurbLabelStyle
+      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
     _ = self.percentFundedLabel
       |> percentFundedLabelStyle
+      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
     _ = self.backersCountLabel
       |> backersCountLabelStyle
+      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
     _ = self.backersCountStackView
       |> infoStackViewStyle
 
     _ = self.goalPercentFundedStackView
       |> infoStackViewStyle
-      |> UIView.lens.contentHuggingPriority(for: .horizontal) .~ .required
 
     _ = self.goalMetIconImageView
       |> goalMetIconImageViewStyle
@@ -137,14 +185,18 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
       |> projectInfoStackViewStyle
+
+    _ = self.tagsCollectionView
+      |> collectionViewStyle
   }
 
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.goalMetIconImageView.rac.hidden = self.viewModel.outputs.goalMetIconHidden
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
-    self.goalMetIconImageView.rac.hidden = self.viewModel.outputs.goalMetIconHidden
+    self.tagsCollectionView.rac.hidden = self.viewModel.outputs.tagsCollectionViewHidden
 
     self.viewModel.outputs.projectImageURL
       .observeForUI()
@@ -178,6 +230,14 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
           |> \.attributedText .~ attributedString
       }
 
+    self.viewModel.outputs.loadProjectTags
+      .observeForUI()
+      .observeValues { [weak self] tags in
+        self?.dataSource.load(with: tags)
+
+        self?.tagsCollectionView.reloadData()
+      }
+
     // Watch Project View Model
 
     self.watchProjectViewModel.outputs.showProjectSavedAlert
@@ -201,16 +261,19 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       }
   }
 
+  // MARK: - Functions
+
   private func configureSubviews() {
     _ = (self.cardContainerView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    _ = (self.projectImageView, self.cardContainerView)
+    _ = (self.rootStackView, self.cardContainerView)
       |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent(priority: UILayoutPriority(rawValue: 999))
 
-    _ = (self.projectDetailsStackView, self.cardContainerView)
-      |> ksr_addSubviewToParent()
+    _ = ([self.projectImageView, self.projectDetailsStackView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     _ = (self.saveButton, self.cardContainerView)
       |> ksr_addSubviewToParent()
@@ -218,7 +281,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = ([
       self.projectNameLabel,
       self.projectBlurbLabel,
-      self.projectInfoStackView
+      self.projectInfoStackView,
+      self.tagsCollectionView
     ], self.projectDetailsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -234,11 +298,12 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
   private func setupConstraints() {
     _ = [
+      self.rootStackView,
       self.projectImageView,
-      self.projectDetailsStackView,
       self.goalMetIconImageView,
       self.backersCountIconImageView,
-      self.saveButton
+      self.saveButton,
+      self.tagsCollectionView
     ]
       ||> \.translatesAutoresizingMaskIntoConstraints .~ false
 
@@ -249,24 +314,36 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       multiplier: aspectRatio
     ) |> \.priority .~ .defaultHigh
 
+    self.tagsCollectionViewHeightConstraint = self.tagsCollectionView.heightAnchor
+      .constraint(greaterThanOrEqualToConstant: 0)
+      |> \.isActive .~ true
+
+    let goalMetIconWidth = self.goalMetIconImageView.widthAnchor
+      .constraint(equalToConstant: IconImageSize.width)
+      |> \.priority .~ .defaultHigh
+    let goalMetIconHeight = self.goalMetIconImageView.heightAnchor
+      .constraint(equalToConstant: IconImageSize.height)
+      |> \.priority .~ .defaultHigh
+    let backersIconWidth = self.backersCountIconImageView.widthAnchor
+      .constraint(equalToConstant: IconImageSize.width)
+      |> \.priority .~ .defaultHigh
+    let backersIconHeight = self.backersCountIconImageView.heightAnchor
+      .constraint(equalToConstant: IconImageSize.height)
+      |> \.priority .~ .defaultHigh
+
     NSLayoutConstraint.activate([
-      self.projectImageView.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
-      self.projectImageView.leftAnchor.constraint(equalTo: self.cardContainerView.leftAnchor),
-      self.projectImageView.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
       self.projectImageView.widthAnchor.constraint(equalTo: self.cardContainerView.widthAnchor),
       imageHeightConstraint,
       self.saveButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.saveButton.widthAnchor.constraint(equalToConstant: Styles.minTouchSize.width),
       self.saveButton.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
       self.saveButton.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
-      self.projectDetailsStackView.topAnchor.constraint(equalTo: self.projectImageView.bottomAnchor),
-      self.projectDetailsStackView.leftAnchor.constraint(equalTo: self.cardContainerView.leftAnchor),
-      self.projectDetailsStackView.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
-      self.projectDetailsStackView.bottomAnchor.constraint(equalTo: self.cardContainerView.bottomAnchor),
-      self.goalMetIconImageView.widthAnchor.constraint(equalToConstant: IconImageSize.width),
-      self.goalMetIconImageView.heightAnchor.constraint(equalToConstant: IconImageSize.height),
-      self.backersCountIconImageView.widthAnchor.constraint(equalToConstant: IconImageSize.width),
-      self.backersCountIconImageView.heightAnchor.constraint(equalToConstant: IconImageSize.height)
+      goalMetIconWidth,
+      goalMetIconHeight,
+      backersIconWidth,
+      backersIconHeight,
+      self.tagsCollectionView.widthAnchor
+        .constraint(equalTo: self.projectDetailsStackView.layoutMarginsGuide.widthAnchor)
     ])
   }
 
@@ -308,6 +385,12 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.watchProjectViewModel.inputs.awakeFromNib()
   }
 
+  private func updateCollectionViewConstraints() {
+    self.tagsCollectionView.layoutIfNeeded()
+
+    self.tagsCollectionViewHeightConstraint?.constant = self.tagsCollectionView.contentSize.height
+  }
+
   // MARK: - Accessors
 
   @objc fileprivate func saveButtonPressed(_: UIButton) {
@@ -320,6 +403,11 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 }
 
 // MARK: - Styles
+
+private let collectionViewStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ .white
+}
 
 private let contentViewStyle: ViewStyle = { view in
   view
@@ -334,12 +422,8 @@ private let cardContainerViewStyle: ViewStyle = { view in
 }
 
 private let goalMetIconImageViewStyle: ImageViewStyle = { imageView in
-  let descender = abs(UIFont.ksr_subhead().bolded.descender)
-  let image = Library.image(named: "icon--star")?
-    .withAlignmentRectInsets(.init(top: descender, left: 0, bottom: -descender, right: 0))
-
-  return imageView
-    |> \.image .~ image
+  imageView
+    |> \.image .~ Library.image(named: "icon--star")
     |> \.tintColor .~ .ksr_green_500
     |> \.contentMode .~ .center
 }
@@ -348,7 +432,7 @@ private let projectImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.clipsToBounds .~ true
     |> \.backgroundColor .~ .ksr_grey_400
-    |> \.contentMode .~ .scaleAspectFit
+    |> \.contentMode .~ .scaleAspectFill
     |> ignoresInvertColorsImageViewStyle
 }
 
@@ -374,7 +458,7 @@ private let infoStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .horizontal
     |> \.spacing .~ Styles.grid(1)
-    |> \.alignment .~ .lastBaseline
+    |> \.alignment .~ .fill
     |> \.distribution .~ .equalSpacing
 }
 
@@ -387,14 +471,10 @@ private let percentFundedLabelStyle: LabelStyle = { label in
 }
 
 private let backersCountIconImageViewStyle: ImageViewStyle = { imageView in
-  let descender = abs(UIFont.ksr_subhead().bolded.descender)
-  let image = Library.image(named: "icon--humans")?
-    .withAlignmentRectInsets(.init(top: descender, left: 0, bottom: -descender, right: 0))
-
-  return imageView
-    |> \.image .~ image
+  imageView
+    |> \.image .~ Library.image(named: "icon--humans")
     |> \.tintColor .~ .ksr_dark_grey_500
-    |> \.contentMode .~ .bottom
+    |> \.contentMode .~ .center
 }
 
 private let backersCountLabelStyle: LabelStyle = { label in
@@ -407,7 +487,8 @@ private let backersCountLabelStyle: LabelStyle = { label in
 
 private let projectInfoStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.spacing .~ Styles.grid(3)
+    |> \.distribution .~ .fill
+    |> \.spacing .~ Styles.grid(2)
 }
 
 private let projectDetailsStackViewStyle: StackViewStyle = { stackView in

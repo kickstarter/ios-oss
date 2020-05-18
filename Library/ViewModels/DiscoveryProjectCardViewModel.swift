@@ -1,4 +1,5 @@
 import Foundation
+import KsApi
 import Prelude
 import ReactiveSwift
 
@@ -11,10 +12,12 @@ public protocol DiscoveryProjectCardViewModelInputs {
 public protocol DiscoveryProjectCardViewModelOutputs {
   var backerCountLabelData: Signal<BoldedAttributedLabelData, Never> { get }
   var goalMetIconHidden: Signal<Bool, Never> { get }
+  var loadProjectTags: Signal<[DiscoveryProjectTagPillCellValue], Never> { get }
   var percentFundedLabelData: Signal<BoldedAttributedLabelData, Never> { get }
   var projectBlurbLabelText: Signal<String, Never> { get }
   var projectImageURL: Signal<URL, Never> { get }
   var projectNameLabelText: Signal<String, Never> { get }
+  var tagsCollectionViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol DiscoveryProjectCardViewModelType {
@@ -26,6 +29,7 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
   DiscoveryProjectCardViewModelInputs, DiscoveryProjectCardViewModelOutputs {
   public init() {
     let project = self.configureWithValueProperty.signal.skipNil().map(first)
+    let category = self.configureWithValueProperty.signal.skipNil().map(second)
 
     self.projectNameLabelText = project.map(\.name)
     self.projectBlurbLabelText = project.map(\.blurb)
@@ -48,6 +52,24 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
 
     self.goalMetIconHidden = project.map { !$0.stats.goalMet }
     self.projectImageURL = project.map(\.photo.full).map(URL.init(string:)).skipNil()
+
+    let projectCategoryTagShouldHide = Signal.zip(project, category)
+      .map(projectCategoryTagShouldHide(for:in:))
+    let pwlTagShouldHide = project.map(\.staffPick).negate()
+
+    self.tagsCollectionViewHidden = Signal.combineLatest(
+      projectCategoryTagShouldHide,
+      pwlTagShouldHide
+    )
+    .map { $0 && $1 }
+
+    self.loadProjectTags = Signal.combineLatest(
+      project,
+      pwlTagShouldHide.negate(),
+      projectCategoryTagShouldHide.negate()
+    )
+    .map(projectTags(project:shouldShowPWLTag:shouldShowCategoryTag:))
+    .filter { !$0.isEmpty }
   }
 
   private let configureWithValueProperty = MutableProperty<DiscoveryProjectCellRowValue?>(nil)
@@ -55,13 +77,51 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
     self.configureWithValueProperty.value = value
   }
 
-  public let goalMetIconHidden: Signal<Bool, Never>
-  public let projectNameLabelText: Signal<String, Never>
-  public let projectBlurbLabelText: Signal<String, Never>
   public let backerCountLabelData: Signal<BoldedAttributedLabelData, Never>
+  public let goalMetIconHidden: Signal<Bool, Never>
+  public let loadProjectTags: Signal<[DiscoveryProjectTagPillCellValue], Never>
   public let percentFundedLabelData: Signal<BoldedAttributedLabelData, Never>
+  public let projectBlurbLabelText: Signal<String, Never>
   public let projectImageURL: Signal<URL, Never>
+  public let projectNameLabelText: Signal<String, Never>
+  public let tagsCollectionViewHidden: Signal<Bool, Never>
 
   public var inputs: DiscoveryProjectCardViewModelInputs { return self }
   public var outputs: DiscoveryProjectCardViewModelOutputs { return self }
+}
+
+private func projectCategoryTagShouldHide(for project: Project, in category: KsApi.Category?) -> Bool {
+  guard let category = category, !category.isRoot else {
+    // Always show category when filter category is nil, or we're in a root category
+    return false
+  }
+
+  return project.category.id == category.intID
+}
+
+private func projectTags(project: Project, shouldShowPWLTag: Bool, shouldShowCategoryTag: Bool)
+  -> [DiscoveryProjectTagPillCellValue] {
+  var tags: [DiscoveryProjectTagPillCellValue] = []
+
+  if shouldShowPWLTag {
+    let pwlTag = DiscoveryProjectTagPillCellValue(
+      type: .green,
+      tagIconImageName: "icon--small-k",
+      tagLabelText: Strings.Projects_We_Love()
+    )
+
+    tags.append(pwlTag)
+  }
+
+  if shouldShowCategoryTag {
+    let categoryTag = DiscoveryProjectTagPillCellValue(
+      type: .grey,
+      tagIconImageName: "icon--compass",
+      tagLabelText: project.category.name
+    )
+
+    tags.append(categoryTag)
+  }
+
+  return tags
 }
