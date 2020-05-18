@@ -31,11 +31,15 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   }()
 
   private lazy var projectDetailsStackView = { UIStackView(frame: .zero) }()
+  private lazy var projectBlurbLabel = { UILabel(frame: .zero) }()
   private lazy var projectImageView = { UIImageView(frame: .zero) }()
   // Stack view container for "percent funded" and "backer count" info
   private lazy var projectInfoStackView = { UIStackView(frame: .zero) }()
   private lazy var projectNameLabel = { UILabel(frame: .zero) }()
-  private lazy var projectBlurbLabel = { UILabel(frame: .zero) }()
+  private lazy var projectStatusContainerView = { UIView(frame: .zero) }()
+  private lazy var projectStatusIconImageView = { UIImageView(frame: .zero) }()
+  private lazy var projectStatusLabel = { UILabel(frame: .zero) }()
+  private lazy var projectStatusStackView = { UIStackView(frame: .zero) }()
   private lazy var rootStackView = { UIStackView(frame: .zero) }()
   private lazy var saveButton = { UIButton(type: .custom) }()
 
@@ -152,6 +156,16 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = self.projectDetailsStackView
       |> projectDetailsStackViewStyle
 
+    _ = self.projectStatusContainerView
+      |> projectStatusContainerViewStyle
+
+    _ = self.projectStatusStackView
+      |> adaptableStackViewStyle(self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory)
+      |> \.spacing .~ .zero
+      |> \.alignment %~ { _ in
+        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .leading : .center
+      }
+
     _ = self.projectNameLabel
       |> projectNameLabelStyle
       |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
@@ -167,6 +181,9 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = self.backersCountLabel
       |> backersCountLabelStyle
       |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
+
+    _ = self.projectStatusLabel
+      |> projectStatusLabelStyle
 
     _ = self.backersCountStackView
       |> infoStackViewStyle
@@ -278,6 +295,16 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = (self.saveButton, self.cardContainerView)
       |> ksr_addSubviewToParent()
 
+    _ = (self.projectStatusContainerView, self.cardContainerView)
+      |> ksr_addSubviewToParent()
+
+    _ = (self.projectStatusStackView, self.projectStatusContainerView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
+    _ = ([self.projectStatusIconImageView, self.projectStatusLabel], self.projectStatusStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
     _ = ([
       self.projectNameLabel,
       self.projectBlurbLabel,
@@ -300,6 +327,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = [
       self.rootStackView,
       self.projectImageView,
+      self.projectStatusContainerView,
       self.goalMetIconImageView,
       self.backersCountIconImageView,
       self.saveButton,
@@ -338,6 +366,9 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       self.saveButton.widthAnchor.constraint(equalToConstant: Styles.minTouchSize.width),
       self.saveButton.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
       self.saveButton.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
+      self.projectStatusContainerView.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
+      self.projectStatusContainerView.leftAnchor.constraint(equalTo: self.cardContainerView.leftAnchor),
+      self.projectStatusContainerView.rightAnchor.constraint(lessThanOrEqualTo: self.saveButton.leftAnchor),
       goalMetIconWidth,
       goalMetIconHeight,
       backersIconWidth,
@@ -421,6 +452,13 @@ private let cardContainerViewStyle: ViewStyle = { view in
     |> \.backgroundColor .~ .white
 }
 
+private let projectStatusContainerViewStyle: ViewStyle = { view in
+  view
+    |> roundedStyle(cornerRadius: Styles.grid(2))
+    |> \.backgroundColor .~ UIColor.white.withAlphaComponent(0.8)
+    |> \.layoutMargins .~ .init(all: Styles.grid(2))
+}
+
 private let goalMetIconImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.image .~ Library.image(named: "icon--star")
@@ -451,6 +489,14 @@ private let projectBlurbLabelStyle: LabelStyle = { label in
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.font .~ UIFont.ksr_subhead()
     |> \.textColor .~ .ksr_text_dark_grey_500
+    |> \.backgroundColor .~ .white
+}
+
+private let projectStatusLabelStyle: LabelStyle = { label in
+  label
+    |> \.numberOfLines .~ 1
+    |> \.lineBreakMode .~ .byTruncatingTail
+    |> \.textColor .~ .ksr_soft_black
     |> \.backgroundColor .~ .white
 }
 
