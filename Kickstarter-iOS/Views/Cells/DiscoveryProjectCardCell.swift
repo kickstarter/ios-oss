@@ -161,10 +161,13 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     _ = self.projectStatusStackView
       |> adaptableStackViewStyle(self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory)
-      |> \.spacing .~ .zero
+      |> \.spacing .~ Styles.grid(1)
       |> \.alignment %~ { _ in
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .leading : .center
       }
+
+    _ = self.projectStatusIconImageView
+      |> projectStatusIconImageStyle
 
     _ = self.projectNameLabel
       |> projectNameLabelStyle
@@ -246,6 +249,24 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
         _ = self.backersCountLabel
           |> \.attributedText .~ attributedString
       }
+
+    self.viewModel.outputs.projectStatusLabelData
+      .observeForUI()
+      .observeValues { [weak self] boldedString, fullString in
+        guard let self = self else { return }
+
+        let attributedString = self.attributedString(bolding: boldedString, in: fullString)
+
+        _ = self.projectStatusLabel
+          |> \.attributedText .~ attributedString
+      }
+
+    self.viewModel.outputs.projectStatusIconImageName
+      .observeForUI()
+      .observeValues { [weak self] imageName in
+        _ = self?.projectStatusIconImageView
+          ?|> \.image .~ Library.image(named: imageName)
+    }
 
     self.viewModel.outputs.loadProjectTags
       .observeForUI()
@@ -366,9 +387,12 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       self.saveButton.widthAnchor.constraint(equalToConstant: Styles.minTouchSize.width),
       self.saveButton.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
       self.saveButton.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
-      self.projectStatusContainerView.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
-      self.projectStatusContainerView.leftAnchor.constraint(equalTo: self.cardContainerView.leftAnchor),
-      self.projectStatusContainerView.rightAnchor.constraint(lessThanOrEqualTo: self.saveButton.leftAnchor),
+      self.projectStatusContainerView.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor,
+                                                           constant: Styles.grid(2)),
+      self.projectStatusContainerView.leftAnchor.constraint(equalTo: self.cardContainerView.leftAnchor,
+                                                            constant: Styles.grid(2)),
+      self.projectStatusContainerView.rightAnchor.constraint(lessThanOrEqualTo: self.saveButton.leftAnchor,
+                                                             constant: -Styles.grid(2)),
       goalMetIconWidth,
       goalMetIconHeight,
       backersIconWidth,
@@ -454,9 +478,9 @@ private let cardContainerViewStyle: ViewStyle = { view in
 
 private let projectStatusContainerViewStyle: ViewStyle = { view in
   view
-    |> roundedStyle(cornerRadius: Styles.grid(2))
+    |> roundedStyle(cornerRadius: Styles.grid(1))
     |> \.backgroundColor .~ UIColor.white.withAlphaComponent(0.8)
-    |> \.layoutMargins .~ .init(all: Styles.grid(2))
+    |> \.layoutMargins .~ .init(all: Styles.gridHalf(3))
 }
 
 private let goalMetIconImageViewStyle: ImageViewStyle = { imageView in
@@ -497,7 +521,13 @@ private let projectStatusLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.textColor .~ .ksr_soft_black
-    |> \.backgroundColor .~ .white
+    |> \.backgroundColor .~ .clear
+}
+
+private let projectStatusIconImageStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.tintColor .~ .ksr_text_dark_grey_500
+    |> \.contentMode .~ .center
 }
 
 private let infoStackViewStyle: StackViewStyle = { stackView in
