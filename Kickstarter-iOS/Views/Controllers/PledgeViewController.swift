@@ -155,17 +155,6 @@ final class PledgeViewController: UIViewController,
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    self.rootScrollView.contentInset = UIEdgeInsets(
-      top: self.rootScrollView.contentInset.top,
-      left: self.rootScrollView.contentInset.left,
-      bottom: self.pledgeCTAContainerView.frame.size.height - self.view.safeAreaInsets.bottom,
-      right: self.rootScrollView.contentInset.right
-    )
-  }
-
   deinit {
     self.sessionStartedObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
@@ -214,8 +203,7 @@ final class PledgeViewController: UIViewController,
   }
 
   private func setupConstraints() {
-    _ = (self.rootScrollView, self.view)
-      |> ksr_constrainViewToEdgesInParent()
+    self.rootScrollView.translatesAutoresizingMaskIntoConstraints = false
 
     _ = (self.rootContainerView, self.rootScrollView)
       |> ksr_constrainViewToEdgesInParent()
@@ -224,6 +212,10 @@ final class PledgeViewController: UIViewController,
       |> ksr_constrainViewToMarginsInParent()
 
     NSLayoutConstraint.activate([
+      self.rootScrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.rootScrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.rootScrollView.bottomAnchor.constraint(equalTo: self.pledgeCTAContainerView.topAnchor),
       self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
