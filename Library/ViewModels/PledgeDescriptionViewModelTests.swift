@@ -21,7 +21,6 @@ internal final class PledgeDescriptionViewModelTests: TestCase {
     )
     self.vm.outputs.estimatedDeliveryText.observe(self.estimatedDeliveryText.observer)
     self.vm.outputs.popViewController.observe(self.popViewController.observer)
-    self.vm.outputs.presentTrustAndSafety.observe(self.presentTrustAndSafety.observer)
     self.vm.outputs.rewardTitle.observe(self.rewardTitle.observer)
   }
 
@@ -33,12 +32,6 @@ internal final class PledgeDescriptionViewModelTests: TestCase {
     self.vm.inputs.configureWith(data: (project, reward))
 
     self.estimatedDeliveryText.assertValues(["July 2016"], "Emits the estimated delivery date")
-  }
-
-  func testPresentTrustAndSafety() {
-    self.vm.inputs.learnMoreTapped()
-
-    self.presentTrustAndSafety.assertDidEmitValue()
   }
 
   func testNotifyDelegateDidTapRewardThumbnail() {

@@ -164,7 +164,9 @@ final class CuratedProjectsViewController: UIViewController {
       initialPlaylist: projects,
       navigatorDelegate: self
     )
-
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      vc.modalPresentationStyle = .fullScreen
+    }
     self.present(vc, animated: true, completion: nil)
   }
 }

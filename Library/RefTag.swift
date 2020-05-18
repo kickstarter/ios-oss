@@ -188,6 +188,8 @@ private func sortRefTagSuffix(_ sort: DiscoveryParams.Sort) -> String {
     return "_newest"
   case .popular:
     return "_popular"
+  case .distance:
+    return "_distance"
   }
 }
 

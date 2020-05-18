@@ -314,8 +314,10 @@ internal final class DiscoveryPageViewController: UITableViewController {
       .observeForControllerAction()
       .observeValues { [weak self] intent in
         let loginTout = LoginToutViewController.configuredWith(loginIntent: intent)
+
+        let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
         let nav = UINavigationController(rootViewController: loginTout)
-        nav.modalPresentationStyle = .formSheet
+          |> \.modalPresentationStyle .~ (isIpad ? .formSheet : .fullScreen)
 
         self?.present(nav, animated: true, completion: nil)
       }
@@ -420,6 +422,9 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
   fileprivate func goTo(project: Project, refTag: RefTag) {
     let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      vc.modalPresentationStyle = .fullScreen
+    }
     self.present(vc, animated: true, completion: nil)
   }
 
@@ -430,6 +435,9 @@ internal final class DiscoveryPageViewController: UITableViewController {
       initialPlaylist: initialPlaylist,
       navigatorDelegate: self
     )
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      vc.modalPresentationStyle = .fullScreen
+    }
     self.present(vc, animated: true, completion: nil)
   }
 
@@ -559,8 +567,9 @@ extension DiscoveryPageViewController: DiscoveryPostcardCellDelegate {
 
   internal func discoveryPostcardCellGoToLoginTout() {
     let vc = LoginToutViewController.configuredWith(loginIntent: .starProject)
+    let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
     let nav = UINavigationController(rootViewController: vc)
-    nav.modalPresentationStyle = .formSheet
+      |> \.modalPresentationStyle .~ (isIpad ? .formSheet : .fullScreen)
 
     self.present(nav, animated: true, completion: nil)
   }

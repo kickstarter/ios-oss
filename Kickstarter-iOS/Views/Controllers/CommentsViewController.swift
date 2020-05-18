@@ -130,8 +130,9 @@ internal final class CommentsViewController: UITableViewController {
 
   internal func presentLoginTout() {
     let login = LoginToutViewController.configuredWith(loginIntent: .generic)
+    let isIpad = AppEnvironment.current.device.userInterfaceIdiom == .pad
     let nav = UINavigationController(rootViewController: login)
-    nav.modalPresentationStyle = .formSheet
+      |> \.modalPresentationStyle .~ (isIpad ? .formSheet : .fullScreen)
 
     self.present(nav, animated: true, completion: nil)
   }
