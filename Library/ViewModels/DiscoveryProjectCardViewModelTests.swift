@@ -124,40 +124,57 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
     self.projectImageUrlString.assertValues(["http://www.kickstarter.com/full.jpg"])
   }
 
-  func testLoadProjectTags_ProjectIsPWL_CategoryIsRoot() {
+  func testTagsCollectionViewHidden_FilteredCategoryIsNil() {
     let project = Project.template
-      |> \.staffPick .~ true
+      |> \.staffPick .~ false
       |> \.category .~ .illustration
 
-    self.loadProjectTags.assertDidNotEmitValue()
-
-    self.vm.inputs.configure(with: (project, .art, nil))
-
-    self.loadProjectTags.assertValues([
-      [
-        DiscoveryProjectTagPillCellValue(
-          type: .green,
-          tagIconImageName: "icon--small-k",
-          tagLabelText: "Projects We Love"
-        ),
-        DiscoveryProjectTagPillCellValue(
-          type: .grey,
-          tagIconImageName: "icon--compass",
-          tagLabelText: "Illustration"
-        )
-      ]
-    ])
-  }
-
-  func testLoadProjectTags_CategoryIsNil() {
-    let project = Project.template
-      |> \.staffPick .~ true
-      |> \.category .~ .illustration
-
+    self.tagsCollectionViewHidden.assertDidNotEmitValue()
     self.loadProjectTags.assertDidNotEmitValue()
 
     self.vm.inputs.configure(with: (project, nil, nil))
 
+    self.tagsCollectionViewHidden.assertValues([false])
+    self.loadProjectTags.assertValues([
+      [DiscoveryProjectTagPillCellValue(
+        type: .grey,
+        tagIconImageName: "icon--compass",
+        tagLabelText: "Illustration"
+      )]
+    ])
+  }
+
+  func testTagsCollectionViewHidden_WhenProjectIsNotStaffPick_FilteredCategoryIsParentCategory() {
+    let project = Project.template
+      |> \.staffPick .~ false
+      |> \.category .~ .illustration
+
+    self.tagsCollectionViewHidden.assertDidNotEmitValue()
+    self.loadProjectTags.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, .art, nil))
+
+    self.tagsCollectionViewHidden.assertValues([false])
+    self.loadProjectTags.assertValues([
+      [DiscoveryProjectTagPillCellValue(
+        type: .grey,
+        tagIconImageName: "icon--compass",
+        tagLabelText: "Illustration"
+      )]
+    ])
+  }
+
+  func testTagsCollectionViewHidden_WhenProjectIsStaffPick_FilteredCategoryIsParentCategory() {
+    let project = Project.template
+      |> \.staffPick .~ true
+      |> \.category .~ .illustration
+
+    self.tagsCollectionViewHidden.assertDidNotEmitValue()
+    self.loadProjectTags.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, .art, nil))
+
+    self.tagsCollectionViewHidden.assertValues([false])
     self.loadProjectTags.assertValues([
       [
         DiscoveryProjectTagPillCellValue(
@@ -174,69 +191,39 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
     ])
   }
 
-  func testLoadProjectTags_CategoryMatchesProjectCategory() {
+  func testTagsCollectionViewHidden_WhenProjectIsStaffPick_FilteredCategoryIsProjectCategory() {
     let project = Project.template
       |> \.staffPick .~ true
       |> \.category .~ .illustration
 
+    self.tagsCollectionViewHidden.assertDidNotEmitValue()
     self.loadProjectTags.assertDidNotEmitValue()
 
     self.vm.inputs.configure(with: (project, .illustration, nil))
 
-    self.loadProjectTags.assertValues([
-      [DiscoveryProjectTagPillCellValue(
-        type: .green,
-        tagIconImageName: "icon--small-k",
-        tagLabelText: "Projects We Love"
-      )]
-    ], "Does not show subcategory tag when filtered category is the same as project subcategory")
-  }
-
-  func testTagsCollectionViewHidden_WhenProjectIsNotStaffPick_CategoryTagShouldShow() {
-    let project = Project.template
-      |> \.staffPick .~ false
-      |> \.category .~ .illustration
-
-    self.tagsCollectionViewHidden.assertDidNotEmitValue()
-
-    self.vm.inputs.configure(with: (project, .art, nil))
-
     self.tagsCollectionViewHidden.assertValues([false])
+    self.loadProjectTags.assertValues([
+      [
+        DiscoveryProjectTagPillCellValue(
+          type: .green,
+          tagIconImageName: "icon--small-k",
+          tagLabelText: "Projects We Love"
+        )
+      ]
+    ])
   }
 
-  func testTagsCollectionViewHidden_WhenProjectIsNotStaffPick_CategoryTagShouldNotShow() {
+  func testTagsCollectionViewHidden_WhenProjectIsNotStaffPick_FilteredCategoryIsProjectCategory() {
     let project = Project.template
       |> \.staffPick .~ false
       |> \.category .~ .illustration
 
     self.tagsCollectionViewHidden.assertDidNotEmitValue()
+    self.loadProjectTags.assertDidNotEmitValue()
 
     self.vm.inputs.configure(with: (project, .illustration, nil))
 
     self.tagsCollectionViewHidden.assertValues([true])
-  }
-
-  func testTagsCollectionViewHidden_WhenProjectIsStaffPick_CategoryTagShouldShow() {
-    let project = Project.template
-      |> \.staffPick .~ true
-      |> \.category .~ .illustration
-
-    self.tagsCollectionViewHidden.assertDidNotEmitValue()
-
-    self.vm.inputs.configure(with: (project, .art, nil))
-
-    self.tagsCollectionViewHidden.assertValues([false])
-  }
-
-  func testTagsCollectionViewHidden_WhenProjectIsStaffPick_CategoryTagShouldNotShow() {
-    let project = Project.template
-      |> \.staffPick .~ true
-      |> \.category .~ .illustration
-
-    self.tagsCollectionViewHidden.assertDidNotEmitValue()
-
-    self.vm.inputs.configure(with: (project, .illustration, nil))
-
-    self.tagsCollectionViewHidden.assertValues([false])
+    self.loadProjectTags.assertDidNotEmitValue()
   }
 }
