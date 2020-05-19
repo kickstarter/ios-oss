@@ -11,6 +11,7 @@ import XCTest
 final class LoginToutViewModelTests: TestCase {
   fileprivate let vm: LoginToutViewModelType = LoginToutViewModel()
 
+  fileprivate let appleButtonHidden = TestObserver<Bool, Never>()
   fileprivate let attemptAppleLogin = TestObserver<(), Never>()
   fileprivate let attemptFacebookLogin = TestObserver<(), Never>()
   fileprivate let didSignInWithApple = TestObserver<SignInWithAppleEnvelope, Never>()
@@ -30,6 +31,7 @@ final class LoginToutViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.appleButtonHidden.observe(self.appleButtonHidden.observer)
     self.vm.outputs.attemptAppleLogin.observe(self.attemptAppleLogin.observer)
     self.vm.outputs.attemptFacebookLogin.observe(self.attemptFacebookLogin.observer)
     self.vm.outputs.dismissViewController.observe(self.dismissViewController.observer)
@@ -740,5 +742,51 @@ final class LoginToutViewModelTests: TestCase {
       trackingClient.events
     )
     self.attemptAppleLogin.assertValueCount(1)
+  }
+
+  func testAppleButtonHidden_FeatureEnabled() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.Key.signInWithAppleKillswitch.rawValue: true
+      ]
+
+    self.appleButtonHidden.assertDidNotEmitValue()
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
+      self.vm.inputs.viewWillAppear()
+
+      self.appleButtonHidden.assertValues([true])
+    }
+  }
+
+  func testAppleButtonHidden_FeatureDisabled() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.Key.signInWithAppleKillswitch.rawValue: false
+      ]
+
+    self.appleButtonHidden.assertDidNotEmitValue()
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
+      self.vm.inputs.viewWillAppear()
+
+      self.appleButtonHidden.assertValues([false])
+    }
+  }
+
+  func testAppleButtonHidden_FeatureMissing() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [:]
+
+    self.appleButtonHidden.assertDidNotEmitValue()
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(.generic, project: nil, reward: nil)
+      self.vm.inputs.viewWillAppear()
+
+      self.appleButtonHidden.assertValues([false])
+    }
   }
 }
