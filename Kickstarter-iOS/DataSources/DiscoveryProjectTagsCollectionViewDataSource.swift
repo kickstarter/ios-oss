@@ -28,6 +28,7 @@ final class DiscoveryProjectTagsCollectionViewDataSource: ValueCellDataSource {
     let leftRightInsets = (layout?.sectionInset.left ?? 0) + (layout?.sectionInset.right ?? 0)
     let leftRightContentInsets = collectionView.contentInset.left + collectionView.contentInset.right
 
-    cell.stackViewWidthConstraint?.constant = collectionView.bounds.width - leftRightInsets - leftRightContentInsets
+    cell.stackViewWidthConstraint?.constant = collectionView.bounds
+      .width - leftRightInsets - leftRightContentInsets
   }
 }

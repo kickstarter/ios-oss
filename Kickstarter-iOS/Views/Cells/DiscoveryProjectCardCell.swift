@@ -362,8 +362,10 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     NSLayoutConstraint.activate([
       self.projectImageView.widthAnchor.constraint(equalTo: self.cardContainerView.widthAnchor),
-      self.projectImageView.heightAnchor.constraint(equalTo: self.projectImageView.widthAnchor,
-                                                    multiplier: aspectRatio),
+      self.projectImageView.heightAnchor.constraint(
+        equalTo: self.projectImageView.widthAnchor,
+        multiplier: aspectRatio
+      ),
       self.saveButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.saveButton.widthAnchor.constraint(equalToConstant: Styles.minTouchSize.width),
       self.saveButton.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
