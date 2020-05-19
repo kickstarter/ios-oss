@@ -261,6 +261,9 @@ public final class LoginToutViewController: UIViewController, MFMailComposeViewC
         self?.goToHelpType(helpType)
       }
 
+    if #available(iOS 13.0, *) {
+      self.appleLoginButton.rac.hidden = self.viewModel.outputs.appleButtonHidden
+    }
     self.contextLabel.rac.text = self.viewModel.outputs.logInContextText
     self.bringCreativeProjectsToLifeLabel.rac.hidden = self.viewModel.outputs.headlineLabelHidden
 

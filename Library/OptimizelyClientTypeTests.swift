@@ -76,4 +76,20 @@ final class OptimizelyClientTypeTests: TestCase {
       XCTAssertTrue(mockClient.getVariantPathCalled)
     }
   }
+
+  func testIsFeatureEnabled() {
+    let mockClient = MockOptimizelyClient()
+      |> \.features .~ [
+        "my_enabled_feature": true,
+        "my_disabled_feature": false
+      ]
+
+    XCTAssertTrue(mockClient.isFeatureEnabled(featureKey: "my_enabled_feature", userId: "1", attributes: [:]))
+    XCTAssertFalse(
+      mockClient.isFeatureEnabled(featureKey: "my_disabled_feature", userId: "1", attributes: [:])
+    )
+    XCTAssertFalse(
+      mockClient.isFeatureEnabled(featureKey: "my_missing_feature", userId: "1", attributes: [:])
+    )
+  }
 }
