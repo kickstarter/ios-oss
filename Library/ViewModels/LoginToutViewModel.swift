@@ -53,6 +53,9 @@ public protocol LoginToutViewModelInputs {
 }
 
 public protocol LoginToutViewModelOutputs {
+  /// Emits whether the Sign In With Apple Button should be hidden.
+  var appleButtonHidden: Signal<Bool, Never> { get }
+
   /// Emits when Apple login should start
   var attemptAppleLogin: Signal<Void, Never> { get }
 
@@ -260,6 +263,14 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
 
     self.logIntoEnvironment = Signal.merge(logIntoEnvironmentWithApple, logIntoEnvironmentWithFacebook)
 
+    self.appleButtonHidden = self.viewWillAppearProperty.signal
+      .map { _ in
+        AppEnvironment.current.optimizelyClient?.isFeatureEnabled(
+          featureKey: OptimizelyFeature.Key.signInWithApple.rawValue
+        ) ?? false
+      }
+      .negate()
+
     // MARK: - Tracking
 
     let trackingData = Signal.combineLatest(
@@ -391,6 +402,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.viewWillAppearProperty.value = ()
   }
 
+  public let appleButtonHidden: Signal<Bool, Never>
   public let attemptAppleLogin: Signal<(), Never>
   public let attemptFacebookLogin: Signal<(), Never>
   public let dismissViewController: Signal<(), Never>
