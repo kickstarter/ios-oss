@@ -310,7 +310,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     _ = (self.rootStackView, self.cardContainerView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
+      |> ksr_constrainViewToEdgesInParent(priority: UILayoutPriority(rawValue: 999))
 
     _ = ([self.projectImageView, self.projectDetailsStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
