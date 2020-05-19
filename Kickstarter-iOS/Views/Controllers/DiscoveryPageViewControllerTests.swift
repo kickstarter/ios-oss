@@ -302,16 +302,17 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
   }
 
   func testProjectCard_Experimental() {
-    let project = cosmicSurgeryNoPhoto
-    |> \.state .~ .live
-    |> \.staffPick .~ true
+    let project = self.cosmicSurgeryNoPhoto
+      |> \.state .~ .live
+      |> \.staffPick .~ true
 
     let states: [Project.State] = [.live, .successful, .failed, .canceled]
 
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
         OptimizelyExperiment.Key.nativeProjectCards.rawValue:
-        OptimizelyExperiment.Variant.variant1.rawValue]
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
 
     combos(Language.allLanguages, Device.allCases, states).forEach { language, device, state in
       let discoveryResponse = .template

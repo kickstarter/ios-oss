@@ -268,7 +268,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       .observeValues { [weak self] imageName in
         _ = self?.projectStatusIconImageView
           ?|> \.image .~ Library.image(named: imageName)
-    }
+      }
 
     self.viewModel.outputs.loadProjectTags
       .observeForUI()
@@ -360,8 +360,11 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     let aspectRatio = CGFloat(9.0 / 16.0)
 
-    let imageViewHeightConstraint = self.projectImageView.heightAnchor.constraint(equalTo:
-      self.projectImageView.widthAnchor, multiplier: aspectRatio)
+    let imageViewHeightConstraint = self.projectImageView.heightAnchor.constraint(
+      equalTo:
+      self.projectImageView.widthAnchor,
+      multiplier: aspectRatio
+    )
       |> \.priority .~ .defaultHigh
 
     self.tagsCollectionViewHeightConstraint = self.tagsCollectionView.heightAnchor
@@ -388,14 +391,23 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       self.saveButton.widthAnchor.constraint(equalToConstant: Styles.minTouchSize.width),
       self.saveButton.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
       self.saveButton.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
-      self.projectStatusContainerView.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor,
-                                                           constant: Styles.grid(2)),
-      self.projectStatusContainerView.leftAnchor.constraint(equalTo: self.cardContainerView.leftAnchor,
-                                                            constant: Styles.grid(2)),
-      self.projectStatusContainerView.rightAnchor.constraint(lessThanOrEqualTo: self.saveButton.leftAnchor,
-                                                             constant: -Styles.grid(2)),
-      self.projectStatusContainerView.bottomAnchor.constraint(lessThanOrEqualTo: self.projectDetailsStackView.topAnchor,
-                                                              constant: -Styles.grid(2)),
+      self.projectStatusContainerView.topAnchor.constraint(
+        equalTo: self.cardContainerView.topAnchor,
+        constant: Styles.grid(2)
+      ),
+      self.projectStatusContainerView.leftAnchor.constraint(
+        equalTo: self.cardContainerView.leftAnchor,
+        constant: Styles.grid(2)
+      ),
+      self.projectStatusContainerView.rightAnchor.constraint(
+        lessThanOrEqualTo: self.saveButton.leftAnchor,
+        constant: -Styles.grid(2)
+      ),
+      self.projectStatusContainerView.bottomAnchor
+        .constraint(
+          lessThanOrEqualTo: self.projectDetailsStackView.topAnchor,
+          constant: -Styles.grid(2)
+        ),
       goalMetIconWidth,
       goalMetIconHeight,
       backersIconWidth,

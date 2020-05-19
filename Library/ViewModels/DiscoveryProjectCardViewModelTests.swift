@@ -235,7 +235,7 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
   func testProjecStatusView_ProjectIsLive() {
     let project = Project.template
-    |> \.state .~ .live
+      |> \.state .~ .live
 
     self.projectStatusLabelFullString.assertDidNotEmitValue()
     self.projectStatusLabelBoldedString.assertDidNotEmitValue()
@@ -250,7 +250,7 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
   func testProjecStatusView_ProjectIsSuccessful() {
     let project = Project.template
-    |> \.state .~ .successful
+      |> \.state .~ .successful
 
     self.projectStatusLabelFullString.assertDidNotEmitValue()
     self.projectStatusLabelBoldedString.assertDidNotEmitValue()
@@ -265,7 +265,7 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
   func testProjecStatusView_ProjectIsCanceled() {
     let project = Project.template
-    |> \.state .~ .canceled
+      |> \.state .~ .canceled
 
     self.projectStatusLabelFullString.assertDidNotEmitValue()
     self.projectStatusLabelBoldedString.assertDidNotEmitValue()
@@ -280,7 +280,7 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
   func testProjecStatusView_ProjectFailed() {
     let project = Project.template
-    |> \.state .~ .failed
+      |> \.state .~ .failed
 
     self.projectStatusLabelFullString.assertDidNotEmitValue()
     self.projectStatusLabelBoldedString.assertDidNotEmitValue()
@@ -295,7 +295,7 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
   func testProjecStatusView_ProjectIsPurged() {
     let project = Project.template
-    |> \.state .~ .purged
+      |> \.state .~ .purged
 
     self.projectStatusLabelFullString.assertDidNotEmitValue()
     self.projectStatusLabelBoldedString.assertDidNotEmitValue()
@@ -310,7 +310,7 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
   func testProjecStatusView_ProjectIsSuspended() {
     let project = Project.template
-    |> \.state .~ .suspended
+      |> \.state .~ .suspended
 
     self.projectStatusLabelFullString.assertDidNotEmitValue()
     self.projectStatusLabelBoldedString.assertDidNotEmitValue()

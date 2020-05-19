@@ -75,26 +75,28 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
 
     self.projectStatusIconImageName = project.filterMap { project in
       switch project.state {
-        case .canceled, .failed: return "icon--prohibit"
-        case .successful: return "icon--check"
-        case .live: return "icon--clock"
-        case .started, .submitted, .suspended, .purged: return nil // there should be no projects in this state
+      case .canceled, .failed: return "icon--prohibit"
+      case .successful: return "icon--check"
+      case .live: return "icon--clock"
+      case .started, .submitted, .suspended, .purged: return nil // there should be no projects in this state
       }
     }
 
     self.projectStatusLabelData = project.filterMap { project in
       switch project.state {
-        case .canceled: return ("", Strings.profile_projects_status_canceled())
-        case .failed: return ("", Strings.profile_projects_status_unsuccessful())
-        case .successful: return ("", Strings.profile_projects_status_successful())
-        case .live:
-          let (duration, unit) = Format.duration(secondsInUTC: project.dates.deadline,
-                                                 abbreviate: false,
-                                                 useToGo: true,
-                                                 env: AppEnvironment.current)
+      case .canceled: return ("", Strings.profile_projects_status_canceled())
+      case .failed: return ("", Strings.profile_projects_status_unsuccessful())
+      case .successful: return ("", Strings.profile_projects_status_successful())
+      case .live:
+        let (duration, unit) = Format.duration(
+          secondsInUTC: project.dates.deadline,
+          abbreviate: false,
+          useToGo: true,
+          env: AppEnvironment.current
+        )
 
         return (duration, "\(duration) \(unit)")
-        case .started, .submitted, .suspended, .purged: return nil // there should be no projects in this state
+      case .started, .submitted, .suspended, .purged: return nil // there should be no projects in this state
       }
     }
   }
