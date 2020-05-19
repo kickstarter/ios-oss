@@ -81,7 +81,7 @@ final class OptimizelyClientTypeTests: TestCase {
     let mockClient = MockOptimizelyClient()
       |> \.features .~ [
         "my_enabled_feature": true,
-        "my_disbled_feature": false
+        "my_disabled_feature": false
       ]
 
     XCTAssertTrue(mockClient.isFeatureEnabled(featureKey: "my_enabled_feature", userId: "1", attributes: [:]))
