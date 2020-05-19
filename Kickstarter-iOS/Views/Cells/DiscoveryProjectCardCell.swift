@@ -310,7 +310,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     _ = (self.rootStackView, self.cardContainerView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent(priority: UILayoutPriority(rawValue: 999))
+      |> ksr_constrainViewToEdgesInParent()
 
     _ = ([self.projectImageView, self.projectDetailsStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -360,6 +360,10 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     let aspectRatio = CGFloat(9.0 / 16.0)
 
+    let imageViewHeightConstraint = self.projectImageView.heightAnchor.constraint(equalTo:
+      self.projectImageView.widthAnchor, multiplier: aspectRatio)
+      |> \.priority .~ .defaultHigh
+
     self.tagsCollectionViewHeightConstraint = self.tagsCollectionView.heightAnchor
       .constraint(greaterThanOrEqualToConstant: 0)
       |> \.isActive .~ true
@@ -379,8 +383,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     NSLayoutConstraint.activate([
       self.projectImageView.widthAnchor.constraint(equalTo: self.cardContainerView.widthAnchor),
-      self.projectImageView.heightAnchor.constraint(equalTo: self.projectImageView.widthAnchor,
-                                                    multiplier: aspectRatio),
+      imageViewHeightConstraint,
       self.saveButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.saveButton.widthAnchor.constraint(equalToConstant: Styles.minTouchSize.width),
       self.saveButton.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
