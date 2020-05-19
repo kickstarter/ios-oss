@@ -628,7 +628,6 @@ private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {
 }
 
 private func editorialLightsOnFeatureIsEnabled() -> Bool {
-  return true
   return AppEnvironment.current.optimizelyClient?
     .isFeatureEnabled(featureKey: OptimizelyFeature.Key.lightsOn.rawValue) ?? false
 }
