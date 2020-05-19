@@ -16,6 +16,9 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
   private let projectBlurbLabelText = TestObserver<String, Never>()
   private let projectImageUrlString = TestObserver<String, Never>()
   private let projectNameLabelText = TestObserver<String, Never>()
+  private let projectStatusIconName = TestObserver<String, Never>()
+  private let projectStatusLabelBoldedString = TestObserver<String, Never>()
+  private let projectStatusLabelFullString = TestObserver<String, Never>()
   private let tagsCollectionViewHidden = TestObserver<Bool, Never>()
 
   private let vm: DiscoveryProjectCardViewModelType = DiscoveryProjectCardViewModel()
@@ -32,6 +35,9 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
     self.vm.outputs.projectBlurbLabelText.observe(self.projectBlurbLabelText.observer)
     self.vm.outputs.projectImageURL.map(\.absoluteString).observe(self.projectImageUrlString.observer)
     self.vm.outputs.projectNameLabelText.observe(self.projectNameLabelText.observer)
+    self.vm.outputs.projectStatusIconImageName.observe(self.projectStatusIconName.observer)
+    self.vm.outputs.projectStatusLabelData.map(first).observe(self.projectStatusLabelBoldedString.observer)
+    self.vm.outputs.projectStatusLabelData.map(second).observe(self.projectStatusLabelFullString.observer)
     self.vm.outputs.tagsCollectionViewHidden.observe(self.tagsCollectionViewHidden.observer)
   }
 
@@ -225,5 +231,95 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
     self.tagsCollectionViewHidden.assertValues([true])
     self.loadProjectTags.assertDidNotEmitValue()
+  }
+
+  func testProjecStatusView_ProjectIsLive() {
+    let project = Project.template
+    |> \.state .~ .live
+
+    self.projectStatusLabelFullString.assertDidNotEmitValue()
+    self.projectStatusLabelBoldedString.assertDidNotEmitValue()
+    self.projectStatusIconName.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, nil, nil))
+
+    self.projectStatusIconName.assertValues(["icon--clock"])
+    self.projectStatusLabelBoldedString.assertValues(["15"])
+    self.projectStatusLabelFullString.assertValues(["15 days to go"])
+  }
+
+  func testProjecStatusView_ProjectIsSuccessful() {
+    let project = Project.template
+    |> \.state .~ .successful
+
+    self.projectStatusLabelFullString.assertDidNotEmitValue()
+    self.projectStatusLabelBoldedString.assertDidNotEmitValue()
+    self.projectStatusIconName.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, nil, nil))
+
+    self.projectStatusIconName.assertValues(["icon--check"])
+    self.projectStatusLabelBoldedString.assertValues([""])
+    self.projectStatusLabelFullString.assertValues(["Successful"])
+  }
+
+  func testProjecStatusView_ProjectIsCanceled() {
+    let project = Project.template
+    |> \.state .~ .canceled
+
+    self.projectStatusLabelFullString.assertDidNotEmitValue()
+    self.projectStatusLabelBoldedString.assertDidNotEmitValue()
+    self.projectStatusIconName.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, nil, nil))
+
+    self.projectStatusIconName.assertValues(["icon--prohibit"])
+    self.projectStatusLabelBoldedString.assertValues([""])
+    self.projectStatusLabelFullString.assertValues(["Canceled"])
+  }
+
+  func testProjecStatusView_ProjectFailed() {
+    let project = Project.template
+    |> \.state .~ .failed
+
+    self.projectStatusLabelFullString.assertDidNotEmitValue()
+    self.projectStatusLabelBoldedString.assertDidNotEmitValue()
+    self.projectStatusIconName.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, nil, nil))
+
+    self.projectStatusIconName.assertValues(["icon--prohibit"])
+    self.projectStatusLabelBoldedString.assertValues([""])
+    self.projectStatusLabelFullString.assertValues(["Unsuccessful"])
+  }
+
+  func testProjecStatusView_ProjectIsPurged() {
+    let project = Project.template
+    |> \.state .~ .purged
+
+    self.projectStatusLabelFullString.assertDidNotEmitValue()
+    self.projectStatusLabelBoldedString.assertDidNotEmitValue()
+    self.projectStatusIconName.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, nil, nil))
+
+    self.projectStatusIconName.assertDidNotEmitValue()
+    self.projectStatusLabelBoldedString.assertDidNotEmitValue()
+    self.projectStatusLabelFullString.assertDidNotEmitValue()
+  }
+
+  func testProjecStatusView_ProjectIsSuspended() {
+    let project = Project.template
+    |> \.state .~ .suspended
+
+    self.projectStatusLabelFullString.assertDidNotEmitValue()
+    self.projectStatusLabelBoldedString.assertDidNotEmitValue()
+    self.projectStatusIconName.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, nil, nil))
+
+    self.projectStatusIconName.assertDidNotEmitValue()
+    self.projectStatusLabelBoldedString.assertDidNotEmitValue()
+    self.projectStatusLabelFullString.assertDidNotEmitValue()
   }
 }

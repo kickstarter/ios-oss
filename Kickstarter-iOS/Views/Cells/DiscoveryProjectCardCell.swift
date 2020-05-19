@@ -360,10 +360,6 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     let aspectRatio = CGFloat(9.0 / 16.0)
 
-    let imageHeightConstraint = self.projectImageView.heightAnchor.constraint(
-      equalTo: self.projectImageView.widthAnchor,
-      multiplier: aspectRatio)
-
     self.tagsCollectionViewHeightConstraint = self.tagsCollectionView.heightAnchor
       .constraint(greaterThanOrEqualToConstant: 0)
       |> \.isActive .~ true
@@ -383,7 +379,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     NSLayoutConstraint.activate([
       self.projectImageView.widthAnchor.constraint(equalTo: self.cardContainerView.widthAnchor),
-      imageHeightConstraint,
+      self.projectImageView.heightAnchor.constraint(equalTo: self.projectImageView.widthAnchor,
+                                                    multiplier: aspectRatio),
       self.saveButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.saveButton.widthAnchor.constraint(equalToConstant: Styles.minTouchSize.width),
       self.saveButton.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
@@ -394,6 +391,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
                                                             constant: Styles.grid(2)),
       self.projectStatusContainerView.rightAnchor.constraint(lessThanOrEqualTo: self.saveButton.leftAnchor,
                                                              constant: -Styles.grid(2)),
+      self.projectStatusContainerView.bottomAnchor.constraint(lessThanOrEqualTo: self.projectDetailsStackView.topAnchor,
+                                                              constant: -Styles.grid(2)),
       goalMetIconWidth,
       goalMetIconHeight,
       backersIconWidth,
