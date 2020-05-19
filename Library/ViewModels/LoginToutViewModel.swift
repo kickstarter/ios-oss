@@ -266,10 +266,9 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     self.appleButtonHidden = self.viewWillAppearProperty.signal
       .map { _ in
         AppEnvironment.current.optimizelyClient?.isFeatureEnabled(
-          featureKey: OptimizelyFeature.Key.signInWithApple.rawValue
+          featureKey: OptimizelyFeature.Key.signInWithAppleKillswitch.rawValue
         ) ?? false
       }
-      .negate()
 
     // MARK: - Tracking
 
