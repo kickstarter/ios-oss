@@ -203,8 +203,6 @@ final class PledgeViewController: UIViewController,
   }
 
   private func setupConstraints() {
-    self.rootScrollView.translatesAutoresizingMaskIntoConstraints = false
-
     _ = (self.rootContainerView, self.rootScrollView)
       |> ksr_constrainViewToEdgesInParent()
 
