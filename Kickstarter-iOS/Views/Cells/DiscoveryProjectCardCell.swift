@@ -190,9 +190,11 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     _ = self.backersCountStackView
       |> infoStackViewStyle
+      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
     _ = self.goalPercentFundedStackView
       |> infoStackViewStyle
+      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
     _ = self.goalMetIconImageView
       |> goalMetIconImageViewStyle
@@ -360,8 +362,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     let imageHeightConstraint = self.projectImageView.heightAnchor.constraint(
       equalTo: self.projectImageView.widthAnchor,
-      multiplier: aspectRatio
-    ) |> \.priority .~ .defaultHigh
+      multiplier: aspectRatio)
 
     self.tagsCollectionViewHeightConstraint = self.tagsCollectionView.heightAnchor
       .constraint(greaterThanOrEqualToConstant: 0)
