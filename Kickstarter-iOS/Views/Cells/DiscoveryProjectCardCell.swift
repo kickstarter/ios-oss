@@ -171,30 +171,24 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     _ = self.projectNameLabel
       |> projectNameLabelStyle
-      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
     _ = self.projectBlurbLabel
       |> projectBlurbLabelStyle
-      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
     _ = self.percentFundedLabel
       |> percentFundedLabelStyle
-      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
     _ = self.backersCountLabel
       |> backersCountLabelStyle
-      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
     _ = self.projectStatusLabel
       |> projectStatusLabelStyle
 
     _ = self.backersCountStackView
       |> infoStackViewStyle
-      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
     _ = self.goalPercentFundedStackView
       |> infoStackViewStyle
-      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
     _ = self.goalMetIconImageView
       |> goalMetIconImageViewStyle
@@ -276,6 +270,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
         self?.dataSource.load(with: tags)
 
         self?.tagsCollectionView.reloadData()
+
+        self?.updateCollectionViewConstraints()
       }
 
     // Watch Project View Model
@@ -360,33 +356,14 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     let aspectRatio = CGFloat(9.0 / 16.0)
 
-    let imageViewHeightConstraint = self.projectImageView.heightAnchor.constraint(
-      equalTo:
-      self.projectImageView.widthAnchor,
-      multiplier: aspectRatio
-    )
-      |> \.priority .~ .defaultHigh
-
     self.tagsCollectionViewHeightConstraint = self.tagsCollectionView.heightAnchor
       .constraint(greaterThanOrEqualToConstant: 0)
       |> \.isActive .~ true
 
-    let goalMetIconWidth = self.goalMetIconImageView.widthAnchor
-      .constraint(equalToConstant: IconImageSize.width)
-      |> \.priority .~ .defaultHigh
-    let goalMetIconHeight = self.goalMetIconImageView.heightAnchor
-      .constraint(equalToConstant: IconImageSize.height)
-      |> \.priority .~ .defaultHigh
-    let backersIconWidth = self.backersCountIconImageView.widthAnchor
-      .constraint(equalToConstant: IconImageSize.width)
-      |> \.priority .~ .defaultHigh
-    let backersIconHeight = self.backersCountIconImageView.heightAnchor
-      .constraint(equalToConstant: IconImageSize.height)
-      |> \.priority .~ .defaultHigh
-
     NSLayoutConstraint.activate([
       self.projectImageView.widthAnchor.constraint(equalTo: self.cardContainerView.widthAnchor),
-      imageViewHeightConstraint,
+      self.projectImageView.heightAnchor.constraint(equalTo: self.projectImageView.widthAnchor,
+                                                    multiplier: aspectRatio),
       self.saveButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.saveButton.widthAnchor.constraint(equalToConstant: Styles.minTouchSize.width),
       self.saveButton.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
@@ -408,10 +385,6 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
           lessThanOrEqualTo: self.projectDetailsStackView.topAnchor,
           constant: -Styles.grid(2)
         ),
-      goalMetIconWidth,
-      goalMetIconHeight,
-      backersIconWidth,
-      backersIconHeight,
       self.tagsCollectionView.widthAnchor
         .constraint(equalTo: self.projectDetailsStackView.layoutMarginsGuide.widthAnchor)
     ])
