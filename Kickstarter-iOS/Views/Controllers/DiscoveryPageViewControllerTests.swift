@@ -8,8 +8,6 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     super.setUp()
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
-
-    self.recordMode = true
   }
 
   override func tearDown() {
