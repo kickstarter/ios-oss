@@ -37,6 +37,7 @@ public final class Koala {
     case loginOrSignupPageViewed = "Log In or Signup Page Viewed"
     case loginSubmitButtonClicked = "Log In Submit Button Clicked"
     case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked"
+    case projectCardClicked = "Project Card Clicked"
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
     case projectPageViewed = "Project Page Viewed"
     case projectSwiped = "Project Swiped"
@@ -534,6 +535,24 @@ public final class Koala {
       event: DataLakeWhiteListedEvent.collectionViewed.rawValue,
       location: .editorialProjects,
       properties: discoveryProperties(from: params)
+    )
+  }
+
+  /**
+   Call when a project card is clicked from a list of projects
+   - parameter project: the Project corresponding to the card that was clicked
+   - parameter params: the DiscoveryParams associated with the list of projects
+   - parameter location: the location context of the event
+   */
+
+  public func trackProjectCardClicked(project: Project, params: DiscoveryParams, location: LocationContext) {
+    let props = discoveryProperties(from: params)
+      .withAllValuesFrom(projectProperties(from: project, loggedInUser: self.loggedInUser))
+
+    self.track(
+      event: DataLakeWhiteListedEvent.projectCardClicked.rawValue,
+      location: location,
+      properties: props
     )
   }
 
@@ -1128,13 +1147,6 @@ public final class Koala {
   public func trackCheckoutFinishJumpToDiscovery(project: Project) {
     self.track(
       event: "Checkout Finished Discover More",
-      properties: projectProperties(from: project, loggedInUser: self.loggedInUser)
-    )
-  }
-
-  public func trackCheckoutFinishJumpToProject(project: Project) {
-    self.track(
-      event: "Checkout Finished Discover Open Project",
       properties: projectProperties(from: project, loggedInUser: self.loggedInUser)
     )
   }

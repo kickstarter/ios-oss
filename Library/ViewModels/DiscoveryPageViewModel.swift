@@ -458,6 +458,16 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         )
       }
 
+    paramsChanged
+      .takePairWhen(self.tappedProject.signal.skipNil())
+      .observeValues { params, project in
+        AppEnvironment.current.koala.trackProjectCardClicked(
+          project: project,
+          params: params,
+          location: .discovery
+        )
+      }
+
     self.goToLoginSignup
       .observeValues { AppEnvironment.current.koala.trackLoginOrSignupButtonClicked(intent: $0) }
   }

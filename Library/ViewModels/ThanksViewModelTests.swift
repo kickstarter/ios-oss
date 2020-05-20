@@ -248,7 +248,7 @@ final class ThanksViewModelTests: TestCase {
         [
           "Triggered App Store Rating Dialog",
           "Thanks Page Viewed",
-          "Checkout Finished Discover Open Project"
+          "Project Card Clicked"
         ],
         self.trackingClient.events
       )

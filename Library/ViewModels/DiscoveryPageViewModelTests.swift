@@ -412,6 +412,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Go to the project with discovery ref tag."
       )
 
+      XCTAssertEqual(["Explore Page Viewed", "Project Card Clicked"], self.trackingClient.events)
+
       self.vm.inputs.selectedFilter(.defaults
         |> DiscoveryParams.lens.category .~ Category.art)
       self.vm.inputs.tapped(project: project)
@@ -423,8 +425,24 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Go to the project with the category sort ref tag."
       )
 
+      XCTAssertEqual([
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked"
+      ], self.trackingClient.events)
+
       self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.staffPicks .~ true)
       self.vm.inputs.tapped(project: project)
+
+      XCTAssertEqual([
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked"
+      ], self.trackingClient.events)
 
       self.goToPlaylist.assertValueCount(3, "New playlist for project emits.")
       self.goToPlaylistProject.assertValues([project, project, project])
@@ -435,6 +453,17 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.social .~ true)
       self.vm.inputs.tapped(project: project)
+
+      XCTAssertEqual([
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked"
+      ], self.trackingClient.events)
 
       self.goToPlaylist.assertValueCount(4, "New playlist for project emits.")
       self.goToPlaylistProject.assertValues([project, project, project, project])
@@ -456,6 +485,20 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.configureWith(sort: .endingSoon)
       self.vm.inputs.tapped(project: project)
+
+      XCTAssertEqual([
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked"
+      ], self.trackingClient.events)
+
       self.goToPlaylistProject.assertValues([project, project, project, project, project])
       self.goToPlaylistRefTag.assertValues(
         [

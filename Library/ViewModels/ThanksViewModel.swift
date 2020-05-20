@@ -179,16 +179,25 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       }
 
     project
-      .takeWhen(self.goToProject)
-      .observeValues { project in
-        AppEnvironment.current.koala.trackCheckoutFinishJumpToProject(project: project)
-      }
-
-    project
       .takeWhen(self.showRatingAlert)
       .observeValues { project in
         AppEnvironment.current.koala.trackTriggeredAppStoreRatingDialog(project: project)
       }
+
+    self.projectTappedProperty.signal.skipNil().map { project in
+      let recommendedParams = DiscoveryParams.defaults
+        |> DiscoveryParams.lens.backed .~ false
+        |> DiscoveryParams.lens.perPage .~ 6
+        |> DiscoveryParams.lens.recommended .~ true
+
+      return (project, recommendedParams)
+    }.observeValues { project, params in
+      AppEnvironment.current.koala.trackProjectCardClicked(
+        project: project,
+        params: params,
+        location: .thanks
+      )
+    }
 
     Signal.combineLatest(
       self.configureWithDataProperty.signal.skipNil(),
