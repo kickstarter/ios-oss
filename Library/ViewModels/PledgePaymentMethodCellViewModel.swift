@@ -94,18 +94,21 @@ public final class PledgePaymentMethodCellViewModel: PledgePaymentMethodCellView
     self.checkmarkImageName = Signal.merge(configuredAsSelected, setAsSelected)
       .map { $0 ? "icon-payment-method-selected" : "icon-payment-method-unselected" }
 
-    self.unavailableCardLabelHidden = cardTypeIsAvailable
+    self.unavailableCardLabelHidden = self.configureValueProperty.signal.skipNil()
+      .map { card in !card.isEnabled || card.isErroredPaymentMethod }
+      .negate()
 
-    self.unavailableCardText = Signal.combineLatest(
-      self.configureValueProperty.signal.skipNil(),
-      cardTypeIsAvailable
-    )
-    .filter(second >>> isFalse)
-    .map { card, _ in
-      Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
-        project_country: card.projectCountry
-      )
-    }
+    self.unavailableCardText = self.configureValueProperty.signal.skipNil()
+      .filter { card in !card.isEnabled || card.isErroredPaymentMethod }
+      .map { card in
+        if !card.isEnabled {
+          return Strings.You_cant_use_this_credit_card_to_back_a_project_from_project_country(
+            project_country: card.projectCountry
+          )
+        }
+
+        return Strings.Retry_or_select_another_method()
+      }
 
     self.selectionStyle = cardTypeIsAvailable.map {
       $0 ? .default : .none

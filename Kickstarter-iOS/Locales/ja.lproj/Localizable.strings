@@ -429,6 +429,7 @@
 "Request_my_personal_data" = "自分の個人データをリクエストする";
 "Resend_verification_email" = "認証メールをもう一度送信";
 "Retry" = "もう一度試す";
+"Retry_or_select_another_method" = "再試行するか別のお支払い方法を選択してください。";
 "Reward_Surveys.few" = "%{reward_survey_count} リワードのサーベイ";
 "Reward_Surveys.many" = "%{reward_survey_count} リワードのサーベイ";
 "Reward_Surveys.one" = "リワードサーベイ";

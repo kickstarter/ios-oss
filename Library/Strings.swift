@@ -7157,6 +7157,23 @@ daring ideas."
     )
   }
   /**
+   "Retry or select another method."
+
+   - **en**: "Retry or select another method."
+   - **de**: "Versuche es erneut oder wähle eine andere Karte."
+   - **es**: "Vuelve a intentarlo o selecciona otro método."
+   - **fr**: "Veuillez réessayer ou choisir un autre moyen de paiement."
+   - **ja**: "再試行するか別のお支払い方法を選択してください。"
+  */
+  public static func Retry_or_select_another_method() -> String {
+    return localizedString(
+      key: "Retry_or_select_another_method",
+      defaultValue: "Retry or select another method.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "%{reward_survey_count} Reward Surveys"
 
    - **en**: "%{reward_survey_count} Reward Surveys"

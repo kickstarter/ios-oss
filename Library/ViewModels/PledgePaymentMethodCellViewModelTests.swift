@@ -252,4 +252,40 @@ internal final class PledgePaymentMethodCellViewModelTests: TestCase {
     self.unavailableCardLabelHidden.assertValues([true])
     self.unavailableCardText.assertValues([])
   }
+
+  func testCardInfoForErroredCard() {
+    self.cardImageName.assertDidNotEmitValue()
+    self.cardImageAlpha.assertDidNotEmitValue()
+    self.cardNumberAccessibilityLabel.assertDidNotEmitValue()
+    self.cardNumberTextShortStyle.assertDidNotEmitValue()
+    self.checkmarkImageName.assertDidNotEmitValue()
+    self.checkmarkImageHidden.assertDidNotEmitValue()
+    self.expirationDateText.assertDidNotEmitValue()
+    self.lastFourLabelTextColor.assertDidNotEmitValue()
+    self.selectionStyle.assertDidNotEmitValue()
+    self.unavailableCardLabelHidden.assertDidNotEmitValue()
+    self.unavailableCardText.assertDidNotEmitValue()
+
+    let data = PledgePaymentMethodCellData(
+      card: GraphUserCreditCard.visa,
+      isEnabled: true,
+      isSelected: false,
+      projectCountry: "Brooklyn, NY",
+      isErroredPaymentMethod: true
+    )
+
+    self.vm.inputs.configureWith(value: data)
+
+    self.cardImageName.assertValues(["icon--visa"])
+    self.cardImageAlpha.assertValues([1.0])
+    self.cardNumberAccessibilityLabel.assertValues(["Visa, Card ending in 1111"])
+    self.cardNumberTextShortStyle.assertValues(["•••• 1111"])
+    self.checkmarkImageName.assertValues(["icon-payment-method-unselected"])
+    self.checkmarkImageHidden.assertValues([false])
+    self.expirationDateText.assertValues(["Expires 09/2019"])
+    self.lastFourLabelTextColor.assertValues([.ksr_soft_black])
+    self.selectionStyle.assertValues([.default])
+    self.unavailableCardLabelHidden.assertValues([false])
+    self.unavailableCardText.assertValues(["Retry or select another method."])
+  }
 }

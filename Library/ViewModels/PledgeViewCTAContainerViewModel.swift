@@ -50,10 +50,15 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
       .first
 
       return helpType
-    }.skipNil()
+    }
+    .skipNil()
 
     self.submitButtonIsEnabled = self.configDataSignal.map { $0.isEnabled }
-    self.submitButtonTitle = context.map { $0.submitButtonTitle }
+    self.submitButtonTitle = self.configDataSignal.map { data in
+      guard data.willRetryPaymentMethod == false else { return Strings.Retry() }
+
+      return data.context.submitButtonTitle
+    }
 
     self.submitButtonIsHidden = isLoggedIn.map { $0 }.negate()
     self.applePayButtonIsHidden = Signal.combineLatest(context, isLoggedIn)
