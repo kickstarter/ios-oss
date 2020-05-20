@@ -175,14 +175,6 @@ private let cardImageAndLabelsStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(2)
 }
 
-private func cardImageAndLabelsStackViewStyle(_ isAccessibilityCategory: Bool) -> StackViewStyle {
-  return { stackView in
-    stackView
-      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
-      |> adaptableStackViewStyle
-  }
-}
-
 private let checkmarkImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.contentMode .~ .center
