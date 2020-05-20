@@ -2,7 +2,11 @@ import Library
 import Prelude
 import UIKit
 
-final class PledgeDisclaimerViewController: UIViewController {
+protocol PledgeDisclaimerViewDelegate: AnyObject {
+  func pledgeDisclaimerViewDidTapLearnMore(_ view: PledgeDisclaimerView)
+}
+
+final class PledgeDisclaimerView: UIView {
   // MARK: - Properties
 
   private lazy var iconImageView: UIImageView = { UIImageView(frame: .zero) }()
@@ -10,21 +14,28 @@ final class PledgeDisclaimerViewController: UIViewController {
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var textView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
 
+  weak var delegate: PledgeDisclaimerViewDelegate?
   private let viewModel: PledgeDisclaimerViewModelType = PledgeDisclaimerViewModel()
 
   // MARK: - Lifecycle
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
+  override init(frame: CGRect) {
+    super.init(frame: frame)
 
     self.configureSubviews()
     self.setupConstraints()
+    self.bindStyles()
+    self.bindViewModel()
+  }
+
+  required init?(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
   // MARK: - Views
 
   private func configureSubviews() {
-    _ = (self.rootStackView, self.view)
+    _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
 
     _ = ([self.leftColumnStackView, self.textView], self.rootStackView)
@@ -35,7 +46,7 @@ final class PledgeDisclaimerViewController: UIViewController {
   }
 
   private func setupConstraints() {
-    _ = (self.rootStackView, self.view)
+    _ = (self.rootStackView, self)
       |> ksr_constrainViewToEdgesInParent()
 
     self.leftColumnStackView.widthAnchor.constraint(equalToConstant: Styles.grid(6)).isActive = true
@@ -46,7 +57,7 @@ final class PledgeDisclaimerViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.view
+    _ = self
       |> \.backgroundColor .~ .ksr_grey_400
 
     _ = self.rootStackView
@@ -67,15 +78,16 @@ final class PledgeDisclaimerViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.presentTrustAndSafety
+    self.viewModel.outputs.notifyDelegatePresentTrustAndSafety
       .observeForUI()
       .observeValues { [weak self] in
-        self?.presentHelpWebViewController(with: .trust, presentationStyle: .formSheet)
+        guard let self = self else { return }
+        self.delegate?.pledgeDisclaimerViewDidTapLearnMore(self)
       }
   }
 }
 
-extension PledgeDisclaimerViewController: UITextViewDelegate {
+extension PledgeDisclaimerView: UITextViewDelegate {
   func textView(
     _: UITextView, shouldInteractWith _: NSTextAttachment,
     in _: NSRange, interaction _: UITextItemInteraction

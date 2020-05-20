@@ -208,6 +208,9 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
       initialPlaylist: projects,
       navigatorDelegate: self
     )
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      vc.modalPresentationStyle = .fullScreen
+    }
     self.present(vc, animated: true, completion: nil)
   }
 
