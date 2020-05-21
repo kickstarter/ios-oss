@@ -107,11 +107,6 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
 
 private func editorialImageName(for tagId: DiscoveryParams.TagID) -> String {
   switch tagId {
-  case .goRewardless:
-    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
-      return "go-rewardless-modal-large"
-    }
-    return "go-rewardless-modal"
   case .lightsOn:
     return "lights-on"
   }
@@ -119,8 +114,6 @@ private func editorialImageName(for tagId: DiscoveryParams.TagID) -> String {
 
 private func editorialTitleLabelText(for tagId: DiscoveryParams.TagID) -> String {
   switch tagId {
-  case .goRewardless: return Strings.This_holiday_season_support_a_project_for_no_reward()
   case .lightsOn: return Strings.Show_up_for_the_spaces_you_love()
-    return Strings.This_holiday_season_support_a_project_for_no_reward()
   }
 }

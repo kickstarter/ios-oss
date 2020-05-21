@@ -304,12 +304,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self.delegate?.discoverPageViewController(self, contentOffsetDidChangeTo: offset)
       }
 
-    self.viewModel.outputs.configureEditorialTableViewHeader
-      .observeForUI()
-      .observeValues { [weak self] title in
-        self?.configureHeaderView(with: title)
-      }
-
     self.viewModel.outputs.goToLoginSignup
       .observeForControllerAction()
       .observeValues { [weak self] intent in

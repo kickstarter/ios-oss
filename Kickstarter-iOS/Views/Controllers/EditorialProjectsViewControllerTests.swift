@@ -18,7 +18,7 @@ internal final class EditorialProjectsViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testView_GoRewardless_LoggedOut() {
+  func testView_LightsOn_LoggedOut() {
     combos(Language.allLanguages, Device.allCases).forEach {
       language, device in
       withEnvironment(currentUser: nil, language: language) {
@@ -39,7 +39,7 @@ internal final class EditorialProjectsViewControllerTests: TestCase {
     }
   }
 
-  func testView_GoRewardless_LoggedIn() {
+  func testView_LightsOn_LoggedIn() {
     combos(Language.allLanguages, Device.allCases).forEach {
       language, device in
       withEnvironment(currentUser: .template, language: language) {

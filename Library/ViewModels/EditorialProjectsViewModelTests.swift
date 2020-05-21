@@ -33,11 +33,11 @@ final class EditorialProjectsViewModelTests: TestCase {
   func testConfigureDiscoveryPageViewControllerWithParams() {
     self.configureDiscoveryPageViewControllerWithParams.assertDidNotEmitValue()
 
-    self.vm.inputs.configure(with: .goRewardless)
+    self.vm.inputs.configure(with: .lightsOn)
     self.vm.inputs.viewDidLoad()
 
     let expectedParams = DiscoveryParams.defaults
-      |> \.tagId .~ .goRewardless
+      |> \.tagId .~ .lightsOn
 
     self.configureDiscoveryPageViewControllerWithParams.assertValues([expectedParams])
   }
@@ -50,7 +50,7 @@ final class EditorialProjectsViewModelTests: TestCase {
     self.dismiss.assertValueCount(1)
   }
 
-  func testImageName() {
+  func testImageName_LightsOn() {
     self.imageName.assertDidNotEmitValue()
 
     self.vm.inputs.configure(with: .lightsOn)
@@ -59,7 +59,7 @@ final class EditorialProjectsViewModelTests: TestCase {
     self.imageName.assertValues(["lights-on"])
   }
 
-  func testTitleLabel() {
+  func testTitleLabel_LightsOn() {
     self.titleLabelText.assertDidNotEmitValue()
 
     self.vm.inputs.configure(with: .lightsOn)

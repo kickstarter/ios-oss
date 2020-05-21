@@ -313,58 +313,6 @@ final class RewardCardContainerViewTests: TestCase {
     }
   }
 
-  func testLive_NonBacker_NoReward_GoRewardlessFeature_IsOn() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
-
-    combos([Language.en], [Device.phone4_7inch]).forEach { language, device in
-      withEnvironment(config: mockConfig) {
-        guard let noReward = allRewards.first(where: { $0.1.isNoReward }) else {
-          XCTFail("Should have a reward")
-          return
-        }
-        let (description, reward) = noReward
-
-        let vc = rewardCardInViewController(
-          language: language,
-          device: device,
-          project: Project.template,
-          reward: reward
-        )
-
-        FBSnapshotVerifyView(vc.view, identifier: "\(description)_lang_\(language)_device_\(device)")
-      }
-    }
-  }
-
-  func testLive_Backer_NoReward_GoRewardlessFeature_IsOn() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
-
-    combos([Language.en], [Device.phone4_7inch]).forEach { language, device in
-      withEnvironment(config: mockConfig) {
-        guard let noReward = allRewards.first(where: { $0.1.isNoReward }) else {
-          XCTFail("Should have a reward")
-          return
-        }
-        let (description, reward) = noReward
-        let project = Project.template
-          |> Project.lens.personalization.isBacking .~ true
-          |> Project.lens.personalization.backing .~ (Backing.template
-            |> Backing.lens.reward .~ reward)
-
-        let vc = rewardCardInViewController(
-          language: language,
-          device: device,
-          project: project,
-          reward: reward
-        )
-
-        FBSnapshotVerifyView(vc.view, identifier: "\(description)_lang_\(language)_device_\(device)")
-      }
-    }
-  }
-
   override func tearDown() {
     AppEnvironment.popEnvironment()
     super.tearDown()
