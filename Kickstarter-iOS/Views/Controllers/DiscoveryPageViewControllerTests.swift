@@ -301,6 +301,40 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     }
   }
 
+  func testProjectCard_Experimental() {
+    let project = self.cosmicSurgeryNoPhoto
+      |> \.state .~ .live
+      |> \.staffPick .~ true
+
+    let states: [Project.State] = [.live, .successful, .failed, .canceled]
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    combos(Language.allLanguages, Device.allCases, states).forEach { language, device, state in
+      let discoveryResponse = .template
+        |> DiscoveryEnvelope.lens.projects .~ [project |> Project.lens.state .~ state]
+      let apiService = MockService(fetchActivitiesResponse: [], fetchDiscoveryResponse: discoveryResponse)
+
+      withEnvironment(apiService: apiService, language: language, optimizelyClient: mockOptimizelyClient) {
+        let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        controller.change(filter: .defaults)
+
+        self.scheduler.run()
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
+
+        FBSnapshotVerifyView(parent.view, identifier: "state_\(state)_lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
   fileprivate let anomalisaNoPhoto = .anomalisa
     |> Project.lens.id .~ 1_111
     |> Project.lens.photo.full .~ ""

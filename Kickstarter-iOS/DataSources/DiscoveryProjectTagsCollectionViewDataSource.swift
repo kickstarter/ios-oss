@@ -13,9 +13,9 @@ final class DiscoveryProjectTagsCollectionViewDataSource: ValueCellDataSource {
   override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
     switch (cell, value) {
     case let (cell as DiscoveryProjectTagPillCell, value as DiscoveryProjectTagPillCellValue):
-      cell.configureWith(value: value)
-
       self.configureCellWidth(cell)
+
+      cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value)")
     }
@@ -26,7 +26,9 @@ final class DiscoveryProjectTagsCollectionViewDataSource: ValueCellDataSource {
 
     let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
     let leftRightInsets = (layout?.sectionInset.left ?? 0) + (layout?.sectionInset.right ?? 0)
+    let leftRightContentInsets = collectionView.contentInset.left + collectionView.contentInset.right
 
-    cell.stackViewWidthConstraint?.constant = collectionView.bounds.width - leftRightInsets
+    cell.stackViewWidthConstraint?.constant = collectionView.bounds
+      .width - leftRightInsets - leftRightContentInsets
   }
 }

@@ -17,6 +17,8 @@ public protocol DiscoveryProjectCardViewModelOutputs {
   var projectBlurbLabelText: Signal<String, Never> { get }
   var projectImageURL: Signal<URL, Never> { get }
   var projectNameLabelText: Signal<String, Never> { get }
+  var projectStatusIconImageName: Signal<String, Never> { get }
+  var projectStatusLabelData: Signal<BoldedAttributedLabelData, Never> { get }
   var tagsCollectionViewHidden: Signal<Bool, Never> { get }
 }
 
@@ -70,6 +72,33 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
     )
     .map(projectTags(project:shouldShowPWLTag:shouldShowCategoryTag:))
     .filter { !$0.isEmpty }
+
+    self.projectStatusIconImageName = project.filterMap { project in
+      switch project.state {
+      case .canceled, .failed: return "icon--prohibit"
+      case .successful: return "icon--check"
+      case .live: return "icon--clock"
+      case .started, .submitted, .suspended, .purged: return nil // there should be no projects in this state
+      }
+    }
+
+    self.projectStatusLabelData = project.filterMap { project in
+      switch project.state {
+      case .canceled: return ("", Strings.profile_projects_status_canceled())
+      case .failed: return ("", Strings.profile_projects_status_unsuccessful())
+      case .successful: return ("", Strings.profile_projects_status_successful())
+      case .live:
+        let (duration, unit) = Format.duration(
+          secondsInUTC: project.dates.deadline,
+          abbreviate: false,
+          useToGo: true,
+          env: AppEnvironment.current
+        )
+
+        return (duration, "\(duration) \(unit)")
+      case .started, .submitted, .suspended, .purged: return nil // there should be no projects in this state
+      }
+    }
   }
 
   private let configureWithValueProperty = MutableProperty<DiscoveryProjectCellRowValue?>(nil)
@@ -84,6 +113,8 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
   public let projectBlurbLabelText: Signal<String, Never>
   public let projectImageURL: Signal<URL, Never>
   public let projectNameLabelText: Signal<String, Never>
+  public let projectStatusIconImageName: Signal<String, Never>
+  public let projectStatusLabelData: Signal<BoldedAttributedLabelData, Never>
   public let tagsCollectionViewHidden: Signal<Bool, Never>
 
   public var inputs: DiscoveryProjectCardViewModelInputs { return self }

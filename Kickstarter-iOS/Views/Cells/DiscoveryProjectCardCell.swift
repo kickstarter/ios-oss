@@ -31,11 +31,15 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   }()
 
   private lazy var projectDetailsStackView = { UIStackView(frame: .zero) }()
+  private lazy var projectBlurbLabel = { UILabel(frame: .zero) }()
   private lazy var projectImageView = { UIImageView(frame: .zero) }()
   // Stack view container for "percent funded" and "backer count" info
   private lazy var projectInfoStackView = { UIStackView(frame: .zero) }()
   private lazy var projectNameLabel = { UILabel(frame: .zero) }()
-  private lazy var projectBlurbLabel = { UILabel(frame: .zero) }()
+  private lazy var projectStatusContainerView = { UIView(frame: .zero) }()
+  private lazy var projectStatusIconImageView = { UIImageView(frame: .zero) }()
+  private lazy var projectStatusLabel = { UILabel(frame: .zero) }()
+  private lazy var projectStatusStackView = { UIStackView(frame: .zero) }()
   private lazy var rootStackView = { UIStackView(frame: .zero) }()
   private lazy var saveButton = { UIButton(type: .custom) }()
 
@@ -152,21 +156,33 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = self.projectDetailsStackView
       |> projectDetailsStackViewStyle
 
+    _ = self.projectStatusContainerView
+      |> projectStatusContainerViewStyle
+
+    _ = self.projectStatusStackView
+      |> adaptableStackViewStyle(self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory)
+      |> \.spacing .~ Styles.grid(1)
+      |> \.alignment %~ { _ in
+        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .leading : .center
+      }
+
+    _ = self.projectStatusIconImageView
+      |> projectStatusIconImageStyle
+
     _ = self.projectNameLabel
       |> projectNameLabelStyle
-      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
     _ = self.projectBlurbLabel
       |> projectBlurbLabelStyle
-      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
     _ = self.percentFundedLabel
       |> percentFundedLabelStyle
-      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
 
     _ = self.backersCountLabel
       |> backersCountLabelStyle
-      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
+
+    _ = self.projectStatusLabel
+      |> projectStatusLabelStyle
 
     _ = self.backersCountStackView
       |> infoStackViewStyle
@@ -230,12 +246,32 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
           |> \.attributedText .~ attributedString
       }
 
+    self.viewModel.outputs.projectStatusLabelData
+      .observeForUI()
+      .observeValues { [weak self] boldedString, fullString in
+        guard let self = self else { return }
+
+        let attributedString = self.attributedString(bolding: boldedString, in: fullString)
+
+        _ = self.projectStatusLabel
+          |> \.attributedText .~ attributedString
+      }
+
+    self.viewModel.outputs.projectStatusIconImageName
+      .observeForUI()
+      .observeValues { [weak self] imageName in
+        _ = self?.projectStatusIconImageView
+          ?|> \.image .~ Library.image(named: imageName)
+      }
+
     self.viewModel.outputs.loadProjectTags
       .observeForUI()
       .observeValues { [weak self] tags in
         self?.dataSource.load(with: tags)
 
         self?.tagsCollectionView.reloadData()
+
+        self?.updateCollectionViewConstraints()
       }
 
     // Watch Project View Model
@@ -278,6 +314,16 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = (self.saveButton, self.cardContainerView)
       |> ksr_addSubviewToParent()
 
+    _ = (self.projectStatusContainerView, self.cardContainerView)
+      |> ksr_addSubviewToParent()
+
+    _ = (self.projectStatusStackView, self.projectStatusContainerView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
+    _ = ([self.projectStatusIconImageView, self.projectStatusLabel], self.projectStatusStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
     _ = ([
       self.projectNameLabel,
       self.projectBlurbLabel,
@@ -300,6 +346,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = [
       self.rootStackView,
       self.projectImageView,
+      self.projectStatusContainerView,
       self.goalMetIconImageView,
       self.backersCountIconImageView,
       self.saveButton,
@@ -309,39 +356,37 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     let aspectRatio = CGFloat(9.0 / 16.0)
 
-    let imageHeightConstraint = self.projectImageView.heightAnchor.constraint(
-      equalTo: self.projectImageView.widthAnchor,
-      multiplier: aspectRatio
-    ) |> \.priority .~ .defaultHigh
-
     self.tagsCollectionViewHeightConstraint = self.tagsCollectionView.heightAnchor
       .constraint(greaterThanOrEqualToConstant: 0)
       |> \.isActive .~ true
 
-    let goalMetIconWidth = self.goalMetIconImageView.widthAnchor
-      .constraint(equalToConstant: IconImageSize.width)
-      |> \.priority .~ .defaultHigh
-    let goalMetIconHeight = self.goalMetIconImageView.heightAnchor
-      .constraint(equalToConstant: IconImageSize.height)
-      |> \.priority .~ .defaultHigh
-    let backersIconWidth = self.backersCountIconImageView.widthAnchor
-      .constraint(equalToConstant: IconImageSize.width)
-      |> \.priority .~ .defaultHigh
-    let backersIconHeight = self.backersCountIconImageView.heightAnchor
-      .constraint(equalToConstant: IconImageSize.height)
-      |> \.priority .~ .defaultHigh
-
     NSLayoutConstraint.activate([
       self.projectImageView.widthAnchor.constraint(equalTo: self.cardContainerView.widthAnchor),
-      imageHeightConstraint,
+      self.projectImageView.heightAnchor.constraint(
+        equalTo: self.projectImageView.widthAnchor,
+        multiplier: aspectRatio
+      ),
       self.saveButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.saveButton.widthAnchor.constraint(equalToConstant: Styles.minTouchSize.width),
       self.saveButton.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
       self.saveButton.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
-      goalMetIconWidth,
-      goalMetIconHeight,
-      backersIconWidth,
-      backersIconHeight,
+      self.projectStatusContainerView.topAnchor.constraint(
+        equalTo: self.cardContainerView.topAnchor,
+        constant: Styles.grid(2)
+      ),
+      self.projectStatusContainerView.leftAnchor.constraint(
+        equalTo: self.cardContainerView.leftAnchor,
+        constant: Styles.grid(2)
+      ),
+      self.projectStatusContainerView.rightAnchor.constraint(
+        lessThanOrEqualTo: self.saveButton.leftAnchor,
+        constant: -Styles.grid(2)
+      ),
+      self.projectStatusContainerView.bottomAnchor
+        .constraint(
+          lessThanOrEqualTo: self.projectDetailsStackView.topAnchor,
+          constant: -Styles.grid(2)
+        ),
       self.tagsCollectionView.widthAnchor
         .constraint(equalTo: self.projectDetailsStackView.layoutMarginsGuide.widthAnchor)
     ])
@@ -389,6 +434,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.tagsCollectionView.layoutIfNeeded()
 
     self.tagsCollectionViewHeightConstraint?.constant = self.tagsCollectionView.contentSize.height
+
+    self.layoutIfNeeded()
   }
 
   // MARK: - Accessors
@@ -419,6 +466,13 @@ private let cardContainerViewStyle: ViewStyle = { view in
   view
     |> roundedStyle(cornerRadius: Styles.grid(2))
     |> \.backgroundColor .~ .white
+}
+
+private let projectStatusContainerViewStyle: ViewStyle = { view in
+  view
+    |> roundedStyle(cornerRadius: Styles.grid(1))
+    |> \.backgroundColor .~ UIColor.white.withAlphaComponent(0.8)
+    |> \.layoutMargins .~ .init(all: Styles.gridHalf(3))
 }
 
 private let goalMetIconImageViewStyle: ImageViewStyle = { imageView in
@@ -452,6 +506,20 @@ private let projectBlurbLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_subhead()
     |> \.textColor .~ .ksr_text_dark_grey_500
     |> \.backgroundColor .~ .white
+}
+
+private let projectStatusLabelStyle: LabelStyle = { label in
+  label
+    |> \.numberOfLines .~ 1
+    |> \.lineBreakMode .~ .byTruncatingTail
+    |> \.textColor .~ .ksr_soft_black
+    |> \.backgroundColor .~ .clear
+}
+
+private let projectStatusIconImageStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.tintColor .~ .ksr_text_dark_grey_500
+    |> \.contentMode .~ .center
 }
 
 private let infoStackViewStyle: StackViewStyle = { stackView in
