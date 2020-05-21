@@ -62,7 +62,9 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
 
     self.submitButtonIsHidden = isLoggedIn.map { $0 }.negate()
     self.applePayButtonIsHidden = Signal.combineLatest(context, isLoggedIn)
-      .map { $0.0 != .pledge || !$0.1 }
+      .map { context, isLoggedIn in
+        context.isAny(of: .pledge, .fixPaymentMethod) == false || isLoggedIn == false
+      }
     self.continueButtonIsHidden = isLoggedIn
 
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal

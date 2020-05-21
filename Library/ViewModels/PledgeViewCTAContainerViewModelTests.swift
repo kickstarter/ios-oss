@@ -122,7 +122,7 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     self.vm.inputs.configureWith(value: pledgeData)
 
     self.submitButtonIsHidden.assertValues([false])
-    self.applePayButtonIsHidden.assertValues([true])
+    self.applePayButtonIsHidden.assertValues([false])
     self.continueButtonIsHidden.assertValues([true])
     self.submitButtonIsEnabled.assertValues([true])
     self.submitButtonTitle.assertValues(["Retry"])
