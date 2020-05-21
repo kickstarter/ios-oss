@@ -434,6 +434,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.tagsCollectionView.layoutIfNeeded()
 
     self.tagsCollectionViewHeightConstraint?.constant = self.tagsCollectionView.contentSize.height
+
+    self.layoutIfNeeded()
   }
 
   // MARK: - Accessors
