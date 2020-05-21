@@ -179,16 +179,20 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       }
 
     project
-      .takeWhen(self.goToProject)
-      .observeValues { project in
-        AppEnvironment.current.koala.trackCheckoutFinishJumpToProject(project: project)
-      }
-
-    project
       .takeWhen(self.showRatingAlert)
       .observeValues { project in
         AppEnvironment.current.koala.trackTriggeredAppStoreRatingDialog(project: project)
       }
+
+    self.projectTappedProperty.signal.skipNil().map { project in
+      return (project, recommendedParams)
+    }.observeValues { project, params in
+      AppEnvironment.current.koala.trackProjectCardClicked(
+        project: project,
+        params: params,
+        location: .thanks
+      )
+    }
 
     Signal.combineLatest(
       self.configureWithDataProperty.signal.skipNil(),
@@ -284,10 +288,6 @@ private func relatedProjects(
   SignalProducer<[Project], Never> {
   let base = DiscoveryParams.lens.perPage .~ 3 <> DiscoveryParams.lens.backed .~ false
 
-  let recommendedParams = DiscoveryParams.defaults |> base
-    |> DiscoveryParams.lens.perPage .~ 6
-    |> DiscoveryParams.lens.recommended .~ true
-
   let similarToParams = DiscoveryParams.defaults |> base
     |> DiscoveryParams.lens.similarTo .~ project
 
@@ -341,3 +341,8 @@ private func shuffle(projects xs: [Project]) -> [Project] {
     return xs
   }
 }
+
+private let recommendedParams = DiscoveryParams.defaults
+  |> DiscoveryParams.lens.backed .~ false
+  |> DiscoveryParams.lens.perPage .~ 6
+  |> DiscoveryParams.lens.recommended .~ true
