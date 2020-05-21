@@ -118,7 +118,7 @@ public final class ManagePledgeViewModel:
 
     self.rootStackViewHidden = Signal.merge(
       projectOrParam.mapConst(true),
-      self.endRefreshing.mapConst(false)
+      Signal.zip(backing, self.endRefreshing).mapConst(false)
     )
     .skipRepeats()
 
