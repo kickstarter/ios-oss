@@ -143,6 +143,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.rootStackView.rac.hidden = self.viewModel.outputs.rootStackViewHidden
     self.rewardReceivedViewController.view.rac.hidden =
       self.viewModel.outputs.rewardReceivedViewControllerViewIsHidden
 
@@ -176,6 +177,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       .observeForUI()
       .observeValues { [weak self] in
         self?.rewardView.configure(with: $0)
+      }
+
+    self.viewModel.outputs.startRefreshing
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.refreshControl.ksr_beginRefreshing()
       }
 
     self.viewModel.outputs.endRefreshing

@@ -37,9 +37,11 @@ public protocol ManagePledgeViewModelOutputs {
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
   var notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never> { get }
   var rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never> { get }
+  var rootStackViewHidden: Signal<Bool, Never> { get }
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showSuccessBannerWithMessage: Signal<String, Never> { get }
+  var startRefreshing: Signal<(), Never> { get }
   var title: Signal<String, Never> { get }
 }
 
@@ -92,8 +94,8 @@ public final class ManagePledgeViewModel:
       .map { $0.backing }
 
     self.endRefreshing = graphBackingEvent
-      .skip(first: 1) // TODO: Confirm this is correct when loading state is added
       .filter { $0.isTerminating }
+      .ksr_delay(.milliseconds(300), on: AppEnvironment.current.scheduler)
       .ignoreValues()
 
     let projectAndReward = project
@@ -113,6 +115,17 @@ public final class ManagePledgeViewModel:
     self.configurePledgeSummaryView = Signal.combineLatest(project, graphBackingEnvelope)
       .map { project, env in managePledgeSummaryViewData(with: project, envelope: env) }
       .skipNil()
+
+    self.rootStackViewHidden = Signal.merge(
+      projectOrParam.mapConst(true),
+      self.endRefreshing.mapConst(false)
+    )
+    .skipRepeats()
+
+    self.startRefreshing = Signal.merge(
+      project.ignoreValues(),
+      shouldBeginRefresh.ignoreValues()
+    )
 
     // TODO: Configure with GraphQL backing
     self.configureRewardReceivedWithProject = project
@@ -167,13 +180,24 @@ public final class ManagePledgeViewModel:
       .map { $0.cancelable }
       .filter(isFalse)
 
-    self.showErrorBannerWithMessage = cancelBackingDisallowed
+    let attemptedDisallowedCancelBackingMessage = cancelBackingDisallowed
       .takeWhen(cancelPledgeSelected)
       .map { _ in
         // swiftformat:disable wrap
         Strings.We_dont_allow_cancelations_that_will_cause_a_project_to_fall_short_of_its_goal_within_the_last_24_hours()
         // swiftformat:enable wrap
       }
+
+    let networkErrorMessage = Signal.merge(
+      fetchProjectEvent.errors().ignoreValues(),
+      graphBackingEvent.errors().ignoreValues()
+    )
+    .map { _ in Strings.Something_went_wrong_please_try_again() }
+
+    self.showErrorBannerWithMessage = Signal.merge(
+      attemptedDisallowedCancelBackingMessage,
+      networkErrorMessage
+    )
 
     let managePledgeMenuType: Signal<Koala.ManagePledgeMenuCTAType, Never> = self.menuOptionSelectedSignal
       .map(managePledgeMenuCTAType(for:))
@@ -250,9 +274,11 @@ public final class ManagePledgeViewModel:
   public let goToUpdatePledge: Signal<(Project, Reward), Never>
   public let notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never>
   public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
+  public let rootStackViewHidden: Signal<Bool, Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let showSuccessBannerWithMessage: Signal<String, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
+  public let startRefreshing: Signal<(), Never>
   public let title: Signal<String, Never>
 
   public var inputs: ManagePledgeViewModelInputs { return self }

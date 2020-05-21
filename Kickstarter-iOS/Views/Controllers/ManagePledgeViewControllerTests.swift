@@ -56,7 +56,11 @@ final class ManagePledgeViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_200
 
-        self.scheduler.run()
+        // Network request completes
+        self.scheduler.advance()
+
+        // endRefreshing is delayed by 300ms for animation duration
+        self.scheduler.advance(by: .milliseconds(300))
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -102,7 +106,11 @@ final class ManagePledgeViewControllerTests: TestCase {
       controller.configureWith(projectOrParam: .left(backedProject))
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-      self.scheduler.run()
+      // Network request completes
+      self.scheduler.advance()
+
+      // endRefreshing is delayed by 300ms for animation duration
+      self.scheduler.advance(by: .milliseconds(300))
 
       FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
     }
@@ -142,20 +150,22 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
 
-    withEnvironment(currentUser: user, language: language) {
-      withEnvironment(apiService: mockService, currentUser: user, language: language) {
-        let controller = ManagePledgeViewController.instantiate()
-        controller.configureWith(projectOrParam: .left(backedProject))
-        let (parent, _) = traitControllers(
-          device: device,
-          orientation: .portrait,
-          child: controller
-        )
+    withEnvironment(apiService: mockService, currentUser: user, language: language) {
+      let controller = ManagePledgeViewController.instantiate()
+      controller.configureWith(projectOrParam: .left(backedProject))
+      let (parent, _) = traitControllers(
+        device: device,
+        orientation: .portrait,
+        child: controller
+      )
 
-        self.scheduler.run()
+      // Network request completes
+      self.scheduler.advance()
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
-      }
+      // endRefreshing is delayed by 300ms for animation duration
+      self.scheduler.advance(by: .milliseconds(300))
+
+      FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
     }
   }
 
@@ -194,19 +204,22 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
 
-    withEnvironment(currentUser: user, language: language) {
-      withEnvironment(apiService: mockService, currentUser: user, language: language) {
-        let controller = ManagePledgeViewController.instantiate()
-        controller.configureWith(projectOrParam: .left(backedProject))
-        let (parent, _) = traitControllers(
-          device: device,
-          orientation: .portrait,
-          child: controller
-        )
-        self.scheduler.run()
+    withEnvironment(apiService: mockService, currentUser: user, language: language) {
+      let controller = ManagePledgeViewController.instantiate()
+      controller.configureWith(projectOrParam: .left(backedProject))
+      let (parent, _) = traitControllers(
+        device: device,
+        orientation: .portrait,
+        child: controller
+      )
 
-        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
-      }
+      // Network request completes
+      self.scheduler.advance()
+
+      // endRefreshing is delayed by 300ms for animation duration
+      self.scheduler.advance(by: .milliseconds(300))
+
+      FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
     }
   }
 
@@ -248,7 +261,11 @@ final class ManagePledgeViewControllerTests: TestCase {
         controller.configureWith(projectOrParam: .left(backedProject))
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        self.scheduler.run()
+        // Network request completes
+        self.scheduler.advance()
+
+        // endRefreshing is delayed by 300ms for animation duration
+        self.scheduler.advance(by: .milliseconds(300))
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }

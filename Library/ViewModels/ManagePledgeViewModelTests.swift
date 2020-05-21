@@ -7,7 +7,7 @@ import ReactiveSwift
 import XCTest
 
 internal final class ManagePledgeViewModelTests: TestCase {
-  private let vm = ManagePledgeViewModel()
+  private var vm: ManagePledgeViewModelType!
 
   private let configurePaymentMethodView = TestObserver<ManagePledgePaymentMethodViewData, Never>()
   private let configurePledgeSummaryView = TestObserver<ManagePledgeSummaryViewData, Never>()
@@ -28,13 +28,18 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let notifyDelegateManagePledgeViewControllerFinishedWithMessage
     = TestObserver<String?, Never>()
   private let rewardReceivedViewControllerViewIsHidden = TestObserver<Bool, Never>()
+  private let rootStackViewHidden = TestObserver<Bool, Never>()
   private let showActionSheetMenuWithOptions = TestObserver<[ManagePledgeAlertAction], Never>()
   private let showErrorBannerWithMessage = TestObserver<String, Never>()
   private let showSuccessBannerWithMessage = TestObserver<String, Never>()
+  private let startRefreshing = TestObserver<(), Never>()
   private let title = TestObserver<String, Never>()
 
   override func setUp() {
     super.setUp()
+
+    self.vm = ManagePledgeViewModel()
+
     self.vm.outputs.title.observe(self.title.observer)
     self.vm.outputs.configurePaymentMethodView
       .observe(self.configurePaymentMethodView.observer)
@@ -62,9 +67,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.outputs.rewardReceivedViewControllerViewIsHidden.observe(
       self.rewardReceivedViewControllerViewIsHidden.observer
     )
+    self.vm.outputs.rootStackViewHidden.observe(self.rootStackViewHidden.observer)
     self.vm.outputs.showActionSheetMenuWithOptions.observe(self.showActionSheetMenuWithOptions.observer)
     self.vm.outputs.showErrorBannerWithMessage.observe(self.showErrorBannerWithMessage.observer)
     self.vm.outputs.showSuccessBannerWithMessage.observe(self.showSuccessBannerWithMessage.observer)
+    self.vm.outputs.startRefreshing.observe(self.startRefreshing.observer)
   }
 
   func testNavigationBarTitle_LiveProject() {
@@ -711,37 +718,108 @@ internal final class ManagePledgeViewModelTests: TestCase {
     XCTAssertEqual(["Fix Pledge Button Clicked"], self.trackingClient.events)
   }
 
-  func testEndRefreshing() {
+  func testRefreshing() {
     let mockService = MockService(fetchManagePledgeViewBackingResult: .success(.template))
 
     withEnvironment(apiService: mockService) {
+      self.startRefreshing.assertDidNotEmitValue()
       self.endRefreshing.assertDidNotEmitValue()
+      self.rootStackViewHidden.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       self.vm.inputs.configureWith(.left(.template))
       self.vm.inputs.viewDidLoad()
 
+      self.startRefreshing.assertValueCount(1)
       self.endRefreshing.assertDidNotEmitValue()
+      self.rootStackViewHidden.assertValues([true])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
+      // Network request completes
+      self.scheduler.advance()
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertDidNotEmitValue()
+      self.rootStackViewHidden.assertValues([true])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      // endRefreshing is delayed by 300ms for animation duration
+      self.scheduler.advance(by: .milliseconds(300))
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertValueCount(1)
+      self.rootStackViewHidden.assertValues([true, false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      // Pledge view completed a change
       self.vm.inputs.pledgeViewControllerDidUpdatePledgeWithMessage("Updated")
 
-      self.scheduler.run()
+      self.startRefreshing.assertValueCount(2)
+      self.endRefreshing.assertValueCount(1)
+      self.rootStackViewHidden.assertValues([true, false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      self.endRefreshing.assertValueCount(1, "End refreshing is called on success")
+      // Network request completes
+      self.scheduler.advance()
 
+      self.startRefreshing.assertValueCount(2)
+      self.endRefreshing.assertValueCount(1)
+      self.rootStackViewHidden.assertValues([true, false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      // endRefreshing is delayed by 300ms for animation duration
+      self.scheduler.advance(by: .milliseconds(300))
+
+      self.startRefreshing.assertValueCount(2)
+      self.endRefreshing.assertValueCount(2)
+      self.rootStackViewHidden.assertValues([true, false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      // User pulls to refresh
       self.vm.inputs.beginRefresh()
 
-      self.scheduler.run()
+      // Network request completes
+      self.scheduler.advance()
 
-      self.endRefreshing.assertValueCount(2, "End refreshing is called on success")
+      self.startRefreshing.assertValueCount(3)
+      self.endRefreshing.assertValueCount(2)
+      self.rootStackViewHidden.assertValues([true, false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      let failureMockService = MockService(fetchProjectError: .couldNotParseJSON)
+      // endRefreshing is delayed by 300ms for animation duration
+      self.scheduler.advance(by: .milliseconds(300))
+
+      self.startRefreshing.assertValueCount(3)
+      self.endRefreshing.assertValueCount(3)
+      self.rootStackViewHidden.assertValues([true, false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      let failureMockService = MockService(fetchManagePledgeViewBackingResult: .failure(.invalidInput))
 
       withEnvironment(apiService: failureMockService) {
+        // User pulls to refresh
         self.vm.inputs.beginRefresh()
 
-        self.scheduler.run()
+        self.startRefreshing.assertValueCount(4)
+        self.endRefreshing.assertValueCount(3)
+        self.rootStackViewHidden.assertValues([true, false])
+        self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-        self.endRefreshing.assertValueCount(3, "End refreshing is called on error")
+        // Network request completes
+        self.scheduler.advance()
+
+        self.startRefreshing.assertValueCount(4)
+        self.endRefreshing.assertValueCount(3)
+        self.rootStackViewHidden.assertValues([true, false])
+        self.showErrorBannerWithMessage.assertValues(["Something went wrong, please try again."])
+
+        // endRefreshing is delayed by 300ms for animation duration
+        self.scheduler.advance(by: .milliseconds(300))
+
+        self.startRefreshing.assertValueCount(4)
+        self.endRefreshing.assertValueCount(4, "End refresh on errors")
+        self.rootStackViewHidden.assertValues([true, false])
+        self.showErrorBannerWithMessage.assertValues(["Something went wrong, please try again."])
       }
     }
   }
