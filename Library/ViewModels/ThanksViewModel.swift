@@ -185,11 +185,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       }
 
     self.projectTappedProperty.signal.skipNil().map { project in
-      let recommendedParams = DiscoveryParams.defaults
-        |> DiscoveryParams.lens.backed .~ false
-        |> DiscoveryParams.lens.perPage .~ 6
-        |> DiscoveryParams.lens.recommended .~ true
-
       return (project, recommendedParams)
     }.observeValues { project, params in
       AppEnvironment.current.koala.trackProjectCardClicked(
@@ -293,10 +288,6 @@ private func relatedProjects(
   SignalProducer<[Project], Never> {
   let base = DiscoveryParams.lens.perPage .~ 3 <> DiscoveryParams.lens.backed .~ false
 
-  let recommendedParams = DiscoveryParams.defaults |> base
-    |> DiscoveryParams.lens.perPage .~ 6
-    |> DiscoveryParams.lens.recommended .~ true
-
   let similarToParams = DiscoveryParams.defaults |> base
     |> DiscoveryParams.lens.similarTo .~ project
 
@@ -350,3 +341,8 @@ private func shuffle(projects xs: [Project]) -> [Project] {
     return xs
   }
 }
+
+private let recommendedParams = DiscoveryParams.defaults
+  |> DiscoveryParams.lens.backed .~ false
+  |> DiscoveryParams.lens.perPage .~ 6
+  |> DiscoveryParams.lens.recommended .~ true
