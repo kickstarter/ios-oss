@@ -185,7 +185,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       }
 
     self.projectTappedProperty.signal.skipNil().map { project in
-      return (project, recommendedParams)
+      (project, recommendedParams)
     }.observeValues { project, params in
       AppEnvironment.current.koala.trackProjectCardClicked(
         project: project,

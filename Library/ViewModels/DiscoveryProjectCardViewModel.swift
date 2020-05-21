@@ -20,6 +20,7 @@ public protocol DiscoveryProjectCardViewModelOutputs {
   var projectStatusIconImageName: Signal<String, Never> { get }
   var projectStatusLabelData: Signal<BoldedAttributedLabelData, Never> { get }
   var tagsCollectionViewHidden: Signal<Bool, Never> { get }
+  var youreABackerViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol DiscoveryProjectCardViewModelType {
@@ -99,6 +100,8 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
       case .started, .submitted, .suspended, .purged: return nil // there should be no projects in this state
       }
     }
+
+    self.youreABackerViewHidden = project.map(userIsBackingProject).negate()
   }
 
   private let configureWithValueProperty = MutableProperty<DiscoveryProjectCellRowValue?>(nil)
@@ -116,6 +119,7 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
   public let projectStatusIconImageName: Signal<String, Never>
   public let projectStatusLabelData: Signal<BoldedAttributedLabelData, Never>
   public let tagsCollectionViewHidden: Signal<Bool, Never>
+  public let youreABackerViewHidden: Signal<Bool, Never>
 
   public var inputs: DiscoveryProjectCardViewModelInputs { return self }
   public var outputs: DiscoveryProjectCardViewModelOutputs { return self }
