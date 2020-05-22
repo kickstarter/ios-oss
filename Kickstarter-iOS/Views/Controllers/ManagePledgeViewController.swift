@@ -63,6 +63,22 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var pullToRefreshImageView: UIImageView = {
+    UIImageView(image: image(named: "icon--refresh-small"))
+  }()
+
+  private lazy var pullToRefreshLabel: UILabel = {
+    UILabel(frame: .zero)
+  }()
+
+  private lazy var pullToRefreshStackView: UIStackView = {
+    UIStackView(frame: .zero)
+  }()
+
+  private lazy var pullToRefreshCenteringStackView: UIStackView = {
+    UIStackView(frame: .zero)
+  }()
+
   private lazy var refreshControl: UIRefreshControl = { UIRefreshControl() }()
 
   private lazy var rewardView: ManagePledgeRewardView = {
@@ -80,6 +96,10 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private lazy var rewardSectionViews = {
     [self.rewardView, self.rewardSectionSeparator]
+  }()
+
+  private lazy var rootContentStackView: UIStackView = {
+    UIStackView(frame: .zero)
   }()
 
   private lazy var rootScrollView: UIScrollView = {
@@ -131,8 +151,19 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     _ = self.rootScrollView
       |> rootScrollViewStyle
 
-    _ = self.rootStackView
+    _ = self.rootContentStackView
       |> checkoutRootStackViewStyle
+
+    _ = self.pullToRefreshLabel
+      |> \.text %~ { _ in Strings.Something_went_wrong_please_try_again() }
+
+    _ = self.pullToRefreshStackView
+      |> \.alignment .~ .center
+
+    _ = self.pullToRefreshCenteringStackView
+      |> \.axis .~ .vertical
+      |> \.spacing .~ Styles.grid(2)
+      |> \.alignment .~ .center
 
     _ = self.sectionSeparatorViews
       ||> separatorStyleDark
@@ -143,7 +174,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.rootStackView.rac.hidden = self.viewModel.outputs.rootStackViewHidden
+    self.pullToRefreshStackView.rac.hidden = self.viewModel.outputs.pullToRefreshStackViewHidden
+    self.rootContentStackView.rac.hidden = self.viewModel.outputs.rootContentStackViewHidden
     self.rewardReceivedViewController.view.rac.hidden =
       self.viewModel.outputs.rewardReceivedViewControllerViewIsHidden
 
@@ -291,6 +323,15 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
+    _ = ([self.pullToRefreshStackView, self.rootContentStackView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.pullToRefreshImageView, self.pullToRefreshLabel], self.pullToRefreshCenteringStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.pullToRefreshCenteringStackView], self.pullToRefreshStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
     let childViews: [UIView] = [
       self.pledgeSummarySectionViews,
       self.paymentMethodViews,
@@ -300,7 +341,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     .flatMap { $0 }
     .compact()
 
-    _ = (childViews, self.rootStackView)
+    _ = (childViews, self.rootContentStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     [
@@ -462,21 +503,6 @@ extension ManagePledgeViewController: ManagePledgePaymentMethodViewDelegate {
 private let rootScrollViewStyle = { (scrollView: UIScrollView) in
   scrollView
     |> \.alwaysBounceVertical .~ true
-}
-
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.layoutMargins .~ .init(
-      top: Styles.grid(3),
-      left: Styles.grid(4),
-      bottom: Styles.grid(3),
-      right: Styles.grid(4)
-    )
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.distribution .~ UIStackView.Distribution.fill
-    |> \.alignment .~ UIStackView.Alignment.fill
-    |> \.spacing .~ Styles.grid(4)
 }
 
 extension ManagePledgeViewController: MessageDialogViewControllerDelegate {
