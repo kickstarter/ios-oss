@@ -20,17 +20,14 @@ final class LandingViewModelTests: TestCase {
   func testGoToCategorySelection() {
     self.goToCategorySelection.assertDidNotEmitValue()
 
-    XCTAssertNil(self.optimizelyClient.trackedEventKey)
-    XCTAssertNil(self.optimizelyClient.trackedAttributes)
-    XCTAssertNil(self.optimizelyClient.trackedEventTags)
+    XCTAssertEqual(self.trackingClient.events, [])
 
     self.vm.inputs.getStartedButtonTapped()
 
     self.goToCategorySelection.assertValueCount(1)
 
-    XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Get Started Button Clicked")
-
-    assertBaseUserAttributesLoggedOut()
+    XCTAssertEqual(self.trackingClient.events, ["Onboarding Get Started Button Clicked"])
+    XCTAssertEqual(self.trackingClient.properties(forKey: "context_location"), ["landing_page"])
   }
 
   func testHasSeenCategoryPersonalizationFlowPropertyIsSet() {
