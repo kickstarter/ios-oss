@@ -20,6 +20,7 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
   private let projectStatusLabelBoldedString = TestObserver<String, Never>()
   private let projectStatusLabelFullString = TestObserver<String, Never>()
   private let tagsCollectionViewHidden = TestObserver<Bool, Never>()
+  private let youreABackerViewHidden = TestObserver<Bool, Never>()
 
   private let vm: DiscoveryProjectCardViewModelType = DiscoveryProjectCardViewModel()
 
@@ -39,6 +40,7 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
     self.vm.outputs.projectStatusLabelData.map(first).observe(self.projectStatusLabelBoldedString.observer)
     self.vm.outputs.projectStatusLabelData.map(second).observe(self.projectStatusLabelFullString.observer)
     self.vm.outputs.tagsCollectionViewHidden.observe(self.tagsCollectionViewHidden.observer)
+    self.vm.outputs.youreABackerViewHidden.observe(self.youreABackerViewHidden.observer)
   }
 
   func testBackerCountLabelData() {
@@ -321,5 +323,22 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
     self.projectStatusIconName.assertDidNotEmitValue()
     self.projectStatusLabelBoldedString.assertDidNotEmitValue()
     self.projectStatusLabelFullString.assertDidNotEmitValue()
+  }
+
+  func testYoureABackerView_HidesWhenNotBacked() {
+    self.youreABackerViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (Project.template, nil, nil))
+
+    self.youreABackerViewHidden.assertValues([true])
+  }
+
+  func testYoureABackerView_ShowsWhenBacked() {
+    let project = Project.template
+      |> \.personalization.backing .~ Backing.template
+
+    self.vm.inputs.configure(with: (project, nil, nil))
+
+    self.youreABackerViewHidden.assertValues([false])
   }
 }

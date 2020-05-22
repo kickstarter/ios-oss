@@ -335,6 +335,38 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     }
   }
 
+  func testProjectCard_Experimental_Backer() {
+    let project = self.cosmicSurgeryNoPhoto
+      |> \.personalization.backing .~ Backing.template
+      |> \.staffPick .~ true
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      let discoveryResponse = .template
+        |> DiscoveryEnvelope.lens.projects .~ [project]
+      let apiService = MockService(fetchActivitiesResponse: [], fetchDiscoveryResponse: discoveryResponse)
+
+      withEnvironment(apiService: apiService, language: language, optimizelyClient: mockOptimizelyClient) {
+        let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        controller.change(filter: .defaults)
+
+        self.scheduler.run()
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
+
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
   fileprivate let anomalisaNoPhoto = .anomalisa
     |> Project.lens.id .~ 1_111
     |> Project.lens.photo.full .~ ""

@@ -58,6 +58,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   }()
 
   private var tagsCollectionViewHeightConstraint: NSLayoutConstraint?
+  private lazy var youreABackerLabel = { UILabel(frame: .zero) }()
+  private lazy var youreABackerView = { UIView(frame: .zero) }()
 
   private let viewModel: DiscoveryProjectCardViewModelType = DiscoveryProjectCardViewModel()
   private let watchProjectViewModel: WatchProjectViewModelType = WatchProjectViewModel()
@@ -219,6 +221,12 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     _ = self.tagsCollectionView
       |> collectionViewStyle
+
+    _ = self.youreABackerView
+      |> youreABackerViewStyle
+
+    _ = self.youreABackerLabel
+      |> youreABackerLabelStyle
   }
 
   override func bindViewModel() {
@@ -230,6 +238,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.tagsCollectionView.rac.hidden = self.viewModel.outputs.tagsCollectionViewHidden
     self.facepileDescriptionLabel.rac.text = self.viewModel.outputs.facepileViewData.map(second)
     self.facepileStackView.rac.hidden = self.viewModel.outputs.facepileViewHidden
+    self.youreABackerView.rac.hidden = self.viewModel.outputs.youreABackerViewHidden
 
     self.viewModel.outputs.projectImageURL
       .observeForUI()
@@ -334,6 +343,13 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = (self.projectStatusContainerView, self.cardContainerView)
       |> ksr_addSubviewToParent()
 
+    _ = (self.youreABackerView, self.cardContainerView)
+      |> ksr_addSubviewToParent()
+
+    _ = (self.youreABackerLabel, self.youreABackerView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
     _ = (self.projectStatusStackView, self.projectStatusContainerView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
@@ -368,6 +384,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       self.rootStackView,
       self.projectImageView,
       self.projectStatusContainerView,
+      self.youreABackerView,
       self.goalMetIconImageView,
       self.backersCountIconImageView,
       self.saveButton,
@@ -386,6 +403,14 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       self.projectImageView.heightAnchor.constraint(
         equalTo: self.projectImageView.widthAnchor,
         multiplier: aspectRatio
+      ),
+      self.youreABackerView.centerYAnchor.constraint(
+        equalTo: self.projectImageView.bottomAnchor,
+        constant: -Styles.grid(1)
+      ),
+      self.youreABackerView.leftAnchor.constraint(
+        equalTo: self.cardContainerView.leftAnchor,
+        constant: Styles.grid(3)
       ),
       self.saveButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
       self.saveButton.widthAnchor.constraint(equalToConstant: Styles.minTouchSize.width),
@@ -612,11 +637,28 @@ private let projectDetailsStackViewStyle: StackViewStyle = { stackView in
     |> verticalStackViewStyle
     |> \.spacing .~ Styles.grid(2)
     |> \.alignment .~ .leading
-    |> \.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
+    |> \.layoutMargins .~ .init(all: Styles.grid(3))
     |> \.isLayoutMarginsRelativeArrangement .~ true
 }
 
 private let saveButtonStyle: ButtonStyle = { button in
   button
     |> discoverySaveButtonStyle
+}
+
+private let youreABackerViewStyle: ViewStyle = { view in
+  view
+    |> roundedStyle(cornerRadius: Styles.grid(1))
+    |> \.backgroundColor .~ UIColor.ksr_cobalt_500
+    |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.gridHalf(3))
+}
+
+private let youreABackerLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_footnote().bolded
+    |> \.textColor .~ UIColor.white
+    |> \.numberOfLines .~ 1
+    |> \.lineBreakMode .~ .byTruncatingTail
+    |> \.text %~ { _ in localizedString(key: "Youre_a_backer_no_punctuation",
+                                        defaultValue: "You're a backer") }
 }
