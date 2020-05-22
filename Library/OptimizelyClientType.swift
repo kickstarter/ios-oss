@@ -6,6 +6,8 @@ public protocol OptimizelyClientType: AnyObject {
   func activate(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
   func getVariationKey(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
   func allExperiments() -> [String]
+  func isFeatureEnabled(featureKey: String, userId: String, attributes: [String: Any?]?) -> Bool
+  func track(eventKey: String, userId: String, attributes: [String: Any?]?, eventTags: [String: Any]?) throws
 }
 
 extension OptimizelyClientType {
@@ -67,6 +69,12 @@ extension OptimizelyClientType {
 
   public func allExperiments() -> [String] {
     return OptimizelyExperiment.Key.allCases.map { $0.rawValue }
+  public func isFeatureEnabled(featureKey: String) -> Bool {
+    return self.isFeatureEnabled(
+      featureKey: featureKey,
+      userId: deviceIdentifier(uuid: UUID()),
+      attributes: optimizelyUserAttributes()
+    )
   }
 }
 

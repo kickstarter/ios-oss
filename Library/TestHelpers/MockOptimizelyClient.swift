@@ -16,6 +16,7 @@ internal class MockOptimizelyClient: OptimizelyClientType {
   var allKnownExperiments: [String] = []
   var experiments: [String: String] = [:]
   var error: MockOptimizelyError?
+  var features: [String: Bool] = [:]
   var getVariantPathCalled: Bool = false
   var userAttributes: [String: Any?]?
 
@@ -30,6 +31,10 @@ internal class MockOptimizelyClient: OptimizelyClientType {
       self.getVariantPathCalled = true
       return try self.experiment(forKey: experimentKey, userId: userId, attributes: attributes)
     }
+
+  func isFeatureEnabled(featureKey: String, userId _: String, attributes _: [String: Any?]?) -> Bool {
+    return self.features[featureKey] == true
+  }
 
   private func experiment(forKey key: String, userId _: String, attributes: [String: Any?]?) throws
     -> String {
