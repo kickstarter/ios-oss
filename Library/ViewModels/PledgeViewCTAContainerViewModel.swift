@@ -65,7 +65,7 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
       .map { context, isLoggedIn in
         context.isAny(of: .pledge, .fixPaymentMethod, .changePaymentMethod) == false || isLoggedIn == false
       }
-    self.continueButtonIsHidden = isLoggedIn//
+    self.continueButtonIsHidden = isLoggedIn
 
     self.notifyDelegateApplePayButtonTapped = self.applePayButtonTappedProperty.signal
     self.notifyDelegateSubmitButtonTapped = self.submitButtonTappedProperty.signal
