@@ -429,6 +429,7 @@
 "Request_my_personal_data" = "Meine persönlichen Daten anfordern";
 "Resend_verification_email" = "Verifizierungs-E-Mail erneut senden";
 "Retry" = "Erneut versuchen";
+"Retry_or_select_another_method" = "Versuche es erneut oder wähle eine andere Karte.";
 "Reward_Surveys.few" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.many" = "%{reward_survey_count} Befragungen";
 "Reward_Surveys.one" = "Befragung";

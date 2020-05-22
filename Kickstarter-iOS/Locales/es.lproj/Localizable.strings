@@ -430,6 +430,7 @@
 "Request_my_personal_data" = "Solicitar mis datos personales";
 "Resend_verification_email" = "Volver a enviar correo electrónico de verificación";
 "Retry" = "Volver a intentar";
+"Retry_or_select_another_method" = "Vuelve a intentarlo o selecciona otro método.";
 "Reward_Surveys.few" = "%{reward_survey_count} cuestionarios";
 "Reward_Surveys.many" = "%{reward_survey_count} cuestionarios";
 "Reward_Surveys.one" = "Cuestionario";

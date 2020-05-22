@@ -429,6 +429,7 @@
 "Request_my_personal_data" = "Request my personal data";
 "Resend_verification_email" = "Re-send verification email";
 "Retry" = "Retry";
+"Retry_or_select_another_method" = "Retry or select another method.";
 "Reward_Surveys.few" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.many" = "%{reward_survey_count} Reward Surveys";
 "Reward_Surveys.one" = "Reward Survey";
