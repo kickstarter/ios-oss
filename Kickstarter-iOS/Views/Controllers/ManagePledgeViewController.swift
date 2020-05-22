@@ -73,10 +73,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private lazy var pullToRefreshStackView: UIStackView = {
     UIStackView(frame: .zero)
-  }()
-
-  private lazy var pullToRefreshCenteringStackView: UIStackView = {
-    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var refreshControl: UIRefreshControl = { UIRefreshControl() }()
@@ -96,10 +93,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private lazy var rewardSectionViews = {
     [self.rewardView, self.rewardSectionSeparator]
-  }()
-
-  private lazy var rootContentStackView: UIStackView = {
-    UIStackView(frame: .zero)
   }()
 
   private lazy var rootScrollView: UIScrollView = {
@@ -151,16 +144,17 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     _ = self.rootScrollView
       |> rootScrollViewStyle
 
-    _ = self.rootContentStackView
+    _ = self.rootStackView
       |> checkoutRootStackViewStyle
 
     _ = self.pullToRefreshLabel
-      |> \.text %~ { _ in Strings.Something_went_wrong_please_try_again() }
+      |> \.text %~ { _ in localizedString(
+        key: "Something_went_wrong_pull_to_refresh",
+        defaultValue: "Something went wrong, pull to refresh."
+      )
+      }
 
     _ = self.pullToRefreshStackView
-      |> \.alignment .~ .center
-
-    _ = self.pullToRefreshCenteringStackView
       |> \.axis .~ .vertical
       |> \.spacing .~ Styles.grid(2)
       |> \.alignment .~ .center
@@ -175,7 +169,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     super.bindViewModel()
 
     self.pullToRefreshStackView.rac.hidden = self.viewModel.outputs.pullToRefreshStackViewHidden
-    self.rootContentStackView.rac.hidden = self.viewModel.outputs.rootContentStackViewHidden
+    self.rootStackView.rac.hidden = self.viewModel.outputs.rootStackViewHidden
     self.rewardReceivedViewController.view.rac.hidden =
       self.viewModel.outputs.rewardReceivedViewControllerViewIsHidden
 
@@ -298,7 +292,16 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
+      // rootStackView
+      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor),
+
+      // pullToRefreshStackView
+      self.pullToRefreshStackView.leftAnchor.constraint(equalTo: self.rootScrollView.leftAnchor),
+      self.pullToRefreshStackView.rightAnchor.constraint(equalTo: self.rootScrollView.rightAnchor),
+      self.pullToRefreshStackView.centerXAnchor.constraint(equalTo: self.rootScrollView.centerXAnchor),
+      self.pullToRefreshStackView.centerYAnchor.constraint(
+        equalTo: self.rootScrollView.centerYAnchor, constant: -Styles.grid(8)
+      )
     ])
 
     self.sectionSeparatorViews.forEach { view in
@@ -323,13 +326,10 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.pullToRefreshStackView, self.rootContentStackView], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
+    _ = (self.pullToRefreshStackView, self.rootScrollView)
+      |> ksr_addSubviewToParent()
 
-    _ = ([self.pullToRefreshImageView, self.pullToRefreshLabel], self.pullToRefreshCenteringStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = ([self.pullToRefreshCenteringStackView], self.pullToRefreshStackView)
+    _ = ([self.pullToRefreshImageView, self.pullToRefreshLabel], self.pullToRefreshStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     let childViews: [UIView] = [
@@ -341,7 +341,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     .flatMap { $0 }
     .compact()
 
-    _ = (childViews, self.rootContentStackView)
+    _ = (childViews, self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     [
