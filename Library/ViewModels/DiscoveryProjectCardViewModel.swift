@@ -4,6 +4,7 @@ import Prelude
 import ReactiveSwift
 
 public typealias BoldedAttributedLabelData = (boldedString: String, inString: String)
+public typealias FacepileViewData = (avatars: [URL], description: String)
 
 public protocol DiscoveryProjectCardViewModelInputs {
   func configure(with value: DiscoveryProjectCellRowValue)
@@ -11,6 +12,8 @@ public protocol DiscoveryProjectCardViewModelInputs {
 
 public protocol DiscoveryProjectCardViewModelOutputs {
   var backerCountLabelData: Signal<BoldedAttributedLabelData, Never> { get }
+  var facepileViewData: Signal<FacepileViewData, Never> { get }
+  var facepileViewHidden: Signal<Bool, Never> { get }
   var goalMetIconHidden: Signal<Bool, Never> { get }
   var loadProjectTags: Signal<[DiscoveryProjectTagPillCellValue], Never> { get }
   var percentFundedLabelData: Signal<BoldedAttributedLabelData, Never> { get }
@@ -54,6 +57,14 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
 
     self.goalMetIconHidden = project.map { !$0.stats.goalMet }
     self.projectImageURL = project.map(\.photo.full).map(URL.init(string:)).skipNil()
+    self.facepileViewHidden = project.map(\.personalization.friends).map { friends in
+      guard let friends = friends else {
+        return true
+      }
+
+      return friends.isEmpty
+    }
+    self.facepileViewData = project.filterMap(\.personalization.friends).filterMap(facepileData(for:))
 
     let projectCategoryTagShouldHide = Signal.zip(project, category)
       .map(projectCategoryTagShouldHide(for:in:))
@@ -107,6 +118,8 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
   }
 
   public let backerCountLabelData: Signal<BoldedAttributedLabelData, Never>
+  public let facepileViewHidden: Signal<Bool, Never>
+  public let facepileViewData: Signal<FacepileViewData, Never>
   public let goalMetIconHidden: Signal<Bool, Never>
   public let loadProjectTags: Signal<[DiscoveryProjectTagPillCellValue], Never>
   public let percentFundedLabelData: Signal<BoldedAttributedLabelData, Never>
@@ -155,4 +168,30 @@ private func projectTags(project: Project, shouldShowPWLTag: Bool, shouldShowCat
   }
 
   return tags
+}
+
+private func facepileData(for friendsList: [User]) -> FacepileViewData? {
+  guard !friendsList.isEmpty else { return nil }
+
+  let avatars = friendsList.map(\.avatar.small).compactMap(URL.init(string:))
+
+  var description: String = ""
+
+  if friendsList.count == 1 {
+    description = Strings.project_social_friend_is_backer(friend_name: friendsList[0].name)
+  } else if friendsList.count == 2 {
+    description = Strings.project_social_friend_and_friend_are_backers(
+      friend_name: friendsList[0].name,
+      second_friend_name: friendsList[1].name
+    )
+  } else if friendsList.count > 2 {
+    let remainingCount = max(0, friendsList.count - 2)
+    description = Strings.discovery_baseball_card_social_friends_are_backers(
+      friend_name: friendsList[0].name,
+      second_friend_name: friendsList[1].name,
+      remaining_count: remainingCount
+    )
+  }
+
+  return (avatars, description)
 }

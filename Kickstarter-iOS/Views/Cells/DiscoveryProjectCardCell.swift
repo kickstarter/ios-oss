@@ -19,6 +19,10 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private lazy var backersCountStackView = { UIStackView(frame: .zero) }()
   private lazy var cardContainerView = { UIView(frame: .zero) }()
   private lazy var dataSource = { DiscoveryProjectTagsCollectionViewDataSource() }()
+  private lazy var facepileAvatarContainerView = { UIView(frame: .zero) }()
+  private var facepileAvatarImageViews: [UIImageView] = [UIImageView]()
+  private lazy var facepileDescriptionLabel = { UILabel(frame: .zero) }()
+  private lazy var facepileStackView = { UIStackView(frame: .zero) }()
   private lazy var goalMetIconImageView = { UIImageView(frame: .zero) }()
   private lazy var goalPercentFundedStackView = { UIStackView(frame: .zero) }()
   private lazy var percentFundedLabel = { UILabel(frame: .zero) }()
@@ -102,6 +106,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     super.prepareForReuse()
 
     self.tagsCollectionViewHeightConstraint?.constant = 0
+    self.facepileAvatarImageViews.map { $0.af.cancelImageRequest() }
+    self.facepileAvatarImageViews = []
   }
 
   func configureWith(value: DiscoveryProjectCellRowValue) {
@@ -184,6 +190,9 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = self.projectStatusLabel
       |> projectStatusLabelStyle
 
+    _ = self.facepileDescriptionLabel
+      |> facepileDescriptionLabelStyle
+
     _ = self.backersCountStackView
       |> infoStackViewStyle
 
@@ -202,6 +211,12 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       )
       |> projectInfoStackViewStyle
 
+    _ = self.facepileStackView
+      |> adaptableStackViewStyle(
+        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+      )
+      |> projectInfoStackViewStyle
+
     _ = self.tagsCollectionView
       |> collectionViewStyle
   }
@@ -213,6 +228,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
     self.tagsCollectionView.rac.hidden = self.viewModel.outputs.tagsCollectionViewHidden
+    self.facepileDescriptionLabel.rac.text = self.viewModel.outputs.facepileViewData.map(second)
+    self.facepileStackView.rac.hidden = self.viewModel.outputs.facepileViewHidden
 
     self.viewModel.outputs.projectImageURL
       .observeForUI()
@@ -324,11 +341,15 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = ([self.projectStatusIconImageView, self.projectStatusLabel], self.projectStatusStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    _ = ([self.facepileAvatarContainerView, self.facepileDescriptionLabel], self.facepileStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
     _ = ([
       self.projectNameLabel,
       self.projectBlurbLabel,
       self.projectInfoStackView,
-      self.tagsCollectionView
+      self.tagsCollectionView,
+      self.facepileStackView
     ], self.projectDetailsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -438,6 +459,25 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.layoutIfNeeded()
   }
 
+  private func configureFacepileSubviews(with avatars: [URL], description: String) {
+
+    self.facepileAvatarImageViews = avatars.enumerated().map { index, imageURL -> UIImageView in
+      let xPos = index == 0 ? 0 : (index*30 - 3)
+
+      let imageView = UIImageView(frame: .init(x: xPos, y: 0, width: 30, height: 30))
+      imageView.ksr_setRoundedImageWith(imageURL)
+
+      imageView.layer.borderColor = UIColor.white.cgColor
+      imageView.backgroundColor = UIColor.ksr_grey_500
+      imageView.layer.borderWidth = 2
+
+      self.facepileAvatarContainerView.addSubview(imageView)
+      self.facepileAvatarContainerView.sendSubviewToBack(imageView)
+
+      return imageView
+    }
+  }
+
   // MARK: - Accessors
 
   @objc fileprivate func saveButtonPressed(_: UIButton) {
@@ -514,6 +554,14 @@ private let projectStatusLabelStyle: LabelStyle = { label in
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.textColor .~ .ksr_soft_black
     |> \.backgroundColor .~ .clear
+}
+
+private let facepileDescriptionLabelStyle: LabelStyle = { label in
+  label
+    |> \.numberOfLines .~ 1
+    |> \.lineBreakMode .~ .byTruncatingTail
+    |> \.textColor .~ .ksr_soft_black
+    |> \.font .~ UIFont.ksr_footnote()
 }
 
 private let projectStatusIconImageStyle: ImageViewStyle = { imageView in
