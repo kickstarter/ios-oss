@@ -365,7 +365,6 @@
 		80EAEF071D243FC7008C2353 /* BackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EAEF011D243B69008C2353 /* BackingViewController.swift */; };
 		8A05CB0E23DB82D3002B01EE /* CookieRefTagFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */; };
 		8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A072D39230223B200BA1538 /* UIImage+Color.swift */; };
-		8A0AF2422464A9EF00C9EB3C /* PledgeViewCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710ADF8243D18EA00DC7199 /* PledgeViewCTAContainerView.swift */; };
 		8A142EBD23354BFD00FB43AB /* AddNewCardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */; };
 		8A14E09723971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */; };
 		8A1E3CE6240F45FA0093BDA7 /* ProjectCreatorDetailsShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1E3CE5240F45FA0093BDA7 /* ProjectCreatorDetailsShimmerLoadingView.swift */; };
@@ -382,6 +381,7 @@
 		8A297912234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A297911234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift */; };
 		8A2A2E2E238B3CBE002C62E0 /* UIView+ShimmerLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A2E2D238B3CBE002C62E0 /* UIView+ShimmerLoading.swift */; };
 		8A32AE9623EA1DC0005CEA57 /* Project.CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A32AE9523EA1DC0005CEA57 /* Project.CategoryTemplates.swift */; };
+		8A355B4C24782B6400380021 /* PledgeViewCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710ADF8243D18EA00DC7199 /* PledgeViewCTAContainerView.swift */; };
 		8A3BF51923F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3BF51823F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift */; };
 		8A3BF51E23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */; };
 		8A41CC692458A0360095B15E /* GraphBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41CC672458A0360095B15E /* GraphBackingEnvelope.swift */; };
@@ -3589,6 +3589,8 @@
 				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
 				8A213CE3239EAEA400BBB4C7 /* Tracking */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
+				8AF3EBD32466134A007598BF /* Backing+PledgeAmount.swift */,
+				8A6C58922475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -5485,7 +5487,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8A0AF2422464A9EF00C9EB3C /* PledgeViewCTAContainerView.swift in Sources */,
 				A7D8B6B61DCCD4DE009BF854 /* ProjectNavigatorTransitionAnimator.swift in Sources */,
 				773452FA2384477D00E6B6A3 /* DiscoveryEditorialCell.swift in Sources */,
 				A7561A3B1D3144210028DEA1 /* ProjectDescriptionViewController.swift in Sources */,
@@ -5664,6 +5665,7 @@
 				A773531F1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift in Sources */,
 				D65BF3552334050100B15B25 /* ManagePledgePaymentMethodView.swift in Sources */,
 				37E9E2A0225EABB000D29DD7 /* AmountInputView.swift in Sources */,
+				8A355B4C24782B6400380021 /* PledgeViewCTAContainerView.swift in Sources */,
 				A77352ED1D5E70FC0017E239 /* MostPopularCell.swift in Sources */,
 				D79F0F3721028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift in Sources */,
 				D6B6766920FF8D850082717D /* SettingsNewslettersDataSource.swift in Sources */,
