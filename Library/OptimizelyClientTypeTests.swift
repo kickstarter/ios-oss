@@ -172,6 +172,7 @@ final class OptimizelyClientTypeTests: TestCase {
     XCTAssertNil(userAttributes?["session_referrer_credit"] as? String)
     XCTAssertNil(userAttributes?["session_ref_tag"] as? String)
   }
+
   func testIsFeatureEnabled() {
     let mockClient = MockOptimizelyClient()
       |> \.features .~ [
