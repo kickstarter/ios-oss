@@ -108,23 +108,20 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
 
     // Tracking
 
-    Signal.merge(
-      self.skipButtonTappedProperty.signal.mapConst("Skip"),
-      self.continueButtonTappedProperty.signal.mapConst("Continue")
-    )
-    .observeValues { buttonTitle in
-      let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags()
+    self.skipButtonTappedProperty.signal
+      .observeValues { _ in
+        let optimizelyProps = optimizelyProperties() ?? [:]
 
-      let eventName = "\(buttonTitle) Button Clicked"
+        AppEnvironment.current.koala.trackOnboardingSkipButtonClicked(optimizelyProperties: optimizelyProps)
+      }
 
-      try? AppEnvironment.current.optimizelyClient?
-        .track(
-          eventKey: eventName,
-          userId: deviceIdentifier(uuid: UUID()),
-          attributes: properties,
-          eventTags: eventTags
-        )
-    }
+    self.continueButtonTappedProperty.signal
+      .observeValues { _ in
+        let optimizelyProps = optimizelyProperties() ?? [:]
+
+        AppEnvironment.current.koala
+          .trackOnboardingContinueButtonClicked(optimizelyProperties: optimizelyProps)
+      }
   }
 
   private let categorySelectedWithValueProperty = MutableProperty<(IndexPath, KsApi.Category)?>(nil)

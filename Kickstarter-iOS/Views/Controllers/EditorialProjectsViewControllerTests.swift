@@ -8,7 +8,6 @@ import Prelude
 internal final class EditorialProjectsViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
-    self.recordMode = true
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
