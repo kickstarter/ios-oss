@@ -233,11 +233,12 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
 }
 
 private func nativeProjectCardsExperimentVariant() -> OptimizelyExperiment.Variant {
-  guard let optimizelyClient = AppEnvironment.current.optimizelyClient else {
-    return .control
-  }
-
-  let variant = optimizelyClient.variant(for: .nativeProjectCards)
-
-  return variant
+  return .variant1
+//  guard let optimizelyClient = AppEnvironment.current.optimizelyClient else {
+//    return .control
+//  }
+//
+//  let variant = optimizelyClient.variant(for: .nativeProjectCards)
+//
+//  return variant
 }

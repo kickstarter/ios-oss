@@ -177,7 +177,7 @@ private func projectTags(project: Project, shouldShowPWLTag: Bool, shouldShowCat
 private func facepileData(for friendsList: [User]) -> FacepileViewData? {
   guard !friendsList.isEmpty else { return nil }
 
-  let avatars = friendsList.map(\.avatar.small).compactMap(URL.init(string:))
+  let avatars = friendsList.prefix(3).map(\.avatar.small).compactMap(URL.init(string:))
 
   var description: String = ""
 
@@ -190,10 +190,10 @@ private func facepileData(for friendsList: [User]) -> FacepileViewData? {
     )
   } else if friendsList.count > 2 {
     let remainingCount = max(0, friendsList.count - 2)
-    description = Strings.discovery_baseball_card_social_friends_are_backers(
+    description = Strings.discovery_baseball_card_social_friends_are_backers_other(
       friend_name: friendsList[0].name,
       second_friend_name: friendsList[1].name,
-      remaining_count: remainingCount
+      remaining_count: Format.wholeNumber(remainingCount)
     )
   }
 
