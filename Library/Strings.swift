@@ -8381,18 +8381,18 @@ catch your eye?"
     )
   }
   /**
-   "Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"
+   "Support creative spaces and businesses affected by COVID-19."
 
-   - **en**: "Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"
-   - **de**: "Unterstütze kreative Lokale und Geschäfte, ddie von COVID-19 betroffen sind. Sieh dir Projekte in deiner Nähe an. ▸"
-   - **es**: "Apoya espacios creativos y negocios afectados por el COVID-19. Consulta los proyectos cerca de ti. ▸"
-   - **fr**: "Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"
-   - **ja**: "Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"
+   - **en**: "Support creative spaces and businesses affected by COVID-19."
+   - **de**: "Unterstütze kreative Lokale und Geschäfte, ddie von COVID-19 betroffen sind."
+   - **es**: "Apoya espacios creativos y negocios afectados por el COVID-19."
+   - **fr**: "Les entreprises et les espaces créatifs touchés par le COVID-19 ont besoin de vous."
+   - **ja**: "コロナ禍に影響を受けた文化スペースやクリエイティブなビジネスたちをサポートしましょう。近辺のプロジェクトを表示 ▸ "
   */
   public static func Support_creative_spaces_and_businesses_affected_by() -> String {
     return localizedString(
       key: "Support_creative_spaces_and_businesses_affected_by",
-      defaultValue: "Support creative spaces and businesses affected by COVID-19. See projects near you. ▸",
+      defaultValue: "Support creative spaces and businesses affected by COVID-19.",
       count: nil,
       substitutions: [:]
     )
