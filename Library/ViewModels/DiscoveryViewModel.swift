@@ -92,7 +92,7 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
     ).take(first: 1)
       .map {
         // Immediately activate the nativeProjectCards experiment
-        nativeProjectCardsExperimentVariant()
+        activateNativeProjectCardsExperiment()
       }.ignoreValues()
 
     let sorts: [DiscoveryParams.Sort] = [.magic, .popular, .newest, .endingSoon]
@@ -232,7 +232,7 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
   public var outputs: DiscoveryViewModelOutputs { return self }
 }
 
-private func nativeProjectCardsExperimentVariant() -> OptimizelyExperiment.Variant {
+private func activateNativeProjectCardsExperiment() -> OptimizelyExperiment.Variant {
   guard let optimizelyClient = AppEnvironment.current.optimizelyClient else {
     return .control
   }
