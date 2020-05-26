@@ -5,8 +5,8 @@ import Prelude
 import UIKit
 
 private enum FacepileAvatarSize {
-  static let height: CGFloat = 20.0
-  static let width: CGFloat = 20.0
+  static let height: CGFloat = 26.0
+  static let width: CGFloat = 26.0
 }
 
 final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
@@ -501,7 +501,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     let endIndex = avatars.endIndex
 
     self.facepileAvatarImageViews = avatars.enumerated().map { index, imageURL -> UIImageView in
-      let overlap = CGFloat(index)*Styles.grid(2)
+      let overlap = CGFloat(index)*Styles.grid(1)
       let xOffset = index == 0 ? 0 : (CGFloat(index)*FacepileAvatarSize.width - overlap)
 
       let imageView = UIImageView(frame: .zero)
@@ -561,9 +561,10 @@ private let avatarImageViewStyle: ImageViewStyle = { imageView in
   imageView
   |> \.translatesAutoresizingMaskIntoConstraints .~ false
   |> \.layer.borderColor .~ UIColor.white.cgColor
-  |> \.backgroundColor .~ UIColor.ksr_grey_500
+  |> \.backgroundColor .~ UIColor.ksr_grey_400
   |> \.layer.borderWidth .~ 2
   |> \.clipsToBounds .~ true
+  |> ignoresInvertColorsImageViewStyle
   |> roundedStyle(cornerRadius: FacepileAvatarSize.width/2)
 }
 

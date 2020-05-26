@@ -371,7 +371,7 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
     self.vm.inputs.configure(with: (project, nil, nil))
 
     self.facepileViewHidden.assertValues([false])
-    self.facepileDescriptionText.assertValues(["Brandon Williams is a backer."])
+    self.facepileDescriptionText.assertValues(["Brandon Williams is a backer"])
     self.facepileAvatarURLStrings.assertValues([[User.brando.avatar.small]])
   }
 
@@ -386,7 +386,7 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
     self.vm.inputs.configure(with: (project, nil, nil))
 
     self.facepileViewHidden.assertValues([false])
-    self.facepileDescriptionText.assertValues(["Brandon Williams and Blob are backers."])
+    self.facepileDescriptionText.assertValues(["Brandon Williams and 1 other"])
     self.facepileAvatarURLStrings.assertValues([[User.brando.avatar.small, User.template.avatar.small]])
   }
 
@@ -406,7 +406,7 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
     self.vm.inputs.configure(with: (project, nil, nil))
 
     self.facepileViewHidden.assertValues([false])
-    self.facepileDescriptionText.assertValues(["Brandon Williams, Blob, and 1 more are backers."])
+    self.facepileDescriptionText.assertValues(["Brandon Williams and 2 others"])
     self.facepileAvatarURLStrings.assertValues([[User.brando.avatar.small,
                                                  User.template.avatar.small,
                                                  otherFriend.avatar.small]])
@@ -431,7 +431,7 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
     self.vm.inputs.configure(with: (project, nil, nil))
 
     self.facepileViewHidden.assertValues([false])
-    self.facepileDescriptionText.assertValues(["Brandon Williams, Blob, and 2 more are backers."])
+    self.facepileDescriptionText.assertValues(["Brandon Williams and 3 others"])
     self.facepileAvatarURLStrings.assertValues([[User.brando.avatar.small,
                                                  User.template.avatar.small,
                                                  otherFriend.avatar.small]])
