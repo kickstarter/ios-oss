@@ -32,7 +32,8 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
     self.vm.outputs.backerCountLabelData.map(first).observe(self.backerCountLabelBoldedString.observer)
     self.vm.outputs.backerCountLabelData.map(second).observe(self.backerCountLabelFullString.observer)
-    self.vm.outputs.facepileViewData.map(first).map { $0.map(\.absoluteString) }.observe(self.facepileAvatarURLStrings.observer)
+    self.vm.outputs.facepileViewData.map(first).map { $0.map(\.absoluteString) }
+      .observe(self.facepileAvatarURLStrings.observer)
     self.vm.outputs.facepileViewData.map(second).observe(self.facepileDescriptionText.observer)
     self.vm.outputs.facepileViewHidden.observe(self.facepileViewHidden.observer)
     self.vm.outputs.goalMetIconHidden.observe(self.goalMetIconHidden.observer)
@@ -407,9 +408,11 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
     self.facepileViewHidden.assertValues([false])
     self.facepileDescriptionText.assertValues(["Brandon Williams and 2 others"])
-    self.facepileAvatarURLStrings.assertValues([[User.brando.avatar.small,
-                                                 User.template.avatar.small,
-                                                 otherFriend.avatar.small]])
+    self.facepileAvatarURLStrings.assertValues([[
+      User.brando.avatar.small,
+      User.template.avatar.small,
+      otherFriend.avatar.small
+    ]])
   }
 
   func testFacepile_MoreThanThreeFriendsHaveBacked() {
@@ -418,8 +421,8 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
       |> \.avatar.small .~ "www.avatar.com"
 
     let fourthFriend = User.brando
-    |> \.name .~ "Fourth"
-    |> \.avatar.small .~ "www.avatar-fourth.com"
+      |> \.name .~ "Fourth"
+      |> \.avatar.small .~ "www.avatar-fourth.com"
 
     let project = Project.template
       |> \.personalization.friends .~ [User.brando, User.template, otherFriend, fourthFriend]
@@ -432,8 +435,10 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
     self.facepileViewHidden.assertValues([false])
     self.facepileDescriptionText.assertValues(["Brandon Williams and 3 others"])
-    self.facepileAvatarURLStrings.assertValues([[User.brando.avatar.small,
-                                                 User.template.avatar.small,
-                                                 otherFriend.avatar.small]])
+    self.facepileAvatarURLStrings.assertValues([[
+      User.brando.avatar.small,
+      User.template.avatar.small,
+      otherFriend.avatar.small
+    ]])
   }
 }

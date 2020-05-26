@@ -651,13 +651,11 @@ private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {
 }
 
 private func nativeProjectCardsExperimentVariant() -> OptimizelyExperiment.Variant {
-//  guard let optimizelyClient = AppEnvironment.current.optimizelyClient else {
-//    return .control
-//  }
-//
-//  let variant = optimizelyClient.getVariation(for: .nativeProjectCards)
-//
-//  return variant
+  guard let optimizelyClient = AppEnvironment.current.optimizelyClient else {
+    return .control
+  }
 
-  return .variant1
+  let variant = optimizelyClient.getVariation(for: .nativeProjectCards)
+
+  return variant
 }

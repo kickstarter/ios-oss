@@ -259,7 +259,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       })
       .observeValues { [weak self] avatars in
         self?.configureFacepileImageViews(with: avatars)
-    }
+      }
 
     self.viewModel.outputs.percentFundedLabelData
       .observeForUI()
@@ -389,8 +389,10 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     let spacer = UIView(frame: .zero)
       |> UIView.lens.contentHuggingPriority(for: .horizontal) .~ UILayoutPriority(rawValue: 249)
 
-    _ = ([self.goalPercentFundedStackView, self.backersCountStackView, spacer],
-         self.projectInfoStackView)
+    _ = (
+      [self.goalPercentFundedStackView, self.backersCountStackView, spacer],
+      self.projectInfoStackView
+    )
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -501,8 +503,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     let endIndex = avatars.endIndex
 
     self.facepileAvatarImageViews = avatars.enumerated().map { index, imageURL -> UIImageView in
-      let overlap = CGFloat(index)*Styles.grid(1)
-      let xOffset = index == 0 ? 0 : (CGFloat(index)*FacepileAvatarSize.width - overlap)
+      let overlap = CGFloat(index) * Styles.grid(1)
+      let xOffset = index == 0 ? 0 : (CGFloat(index) * FacepileAvatarSize.width - overlap)
 
       let imageView = UIImageView(frame: .zero)
         |> avatarImageViewStyle
@@ -515,10 +517,12 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       NSLayoutConstraint.activate([
         imageView.widthAnchor.constraint(equalToConstant: FacepileAvatarSize.width),
         imageView.heightAnchor.constraint(equalToConstant: FacepileAvatarSize.height),
-        imageView.leftAnchor.constraint(equalTo: self.facepileAvatarContainerView.leftAnchor,
-                                        constant: xOffset),
+        imageView.leftAnchor.constraint(
+          equalTo: self.facepileAvatarContainerView.leftAnchor,
+          constant: xOffset
+        ),
         imageView.topAnchor.constraint(equalTo: self.facepileAvatarContainerView.topAnchor),
-        imageView.bottomAnchor.constraint(equalTo: self.facepileAvatarContainerView.bottomAnchor),
+        imageView.bottomAnchor.constraint(equalTo: self.facepileAvatarContainerView.bottomAnchor)
       ])
 
       // Last avatar
@@ -559,13 +563,13 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
 private let avatarImageViewStyle: ImageViewStyle = { imageView in
   imageView
-  |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  |> \.layer.borderColor .~ UIColor.white.cgColor
-  |> \.backgroundColor .~ UIColor.ksr_grey_400
-  |> \.layer.borderWidth .~ 2
-  |> \.clipsToBounds .~ true
-  |> ignoresInvertColorsImageViewStyle
-  |> roundedStyle(cornerRadius: FacepileAvatarSize.width/2)
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    |> \.layer.borderColor .~ UIColor.white.cgColor
+    |> \.backgroundColor .~ UIColor.ksr_grey_400
+    |> \.layer.borderWidth .~ 2
+    |> \.clipsToBounds .~ true
+    |> ignoresInvertColorsImageViewStyle
+    |> roundedStyle(cornerRadius: FacepileAvatarSize.width / 2)
 }
 
 private let collectionViewStyle: ViewStyle = { view in
@@ -718,6 +722,8 @@ private let youreABackerLabelStyle: LabelStyle = { label in
     |> \.textColor .~ UIColor.white
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
-    |> \.text %~ { _ in localizedString(key: "Youre_a_backer_no_punctuation",
-                                        defaultValue: "You're a backer") }
+    |> \.text %~ { _ in localizedString(
+      key: "Youre_a_backer_no_punctuation",
+      defaultValue: "You're a backer"
+    ) }
 }

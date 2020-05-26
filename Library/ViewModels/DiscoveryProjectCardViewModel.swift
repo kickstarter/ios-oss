@@ -182,19 +182,23 @@ private func facepileData(for friendsList: [User]) -> FacepileViewData? {
   var description: String = ""
 
   if friendsList.count == 1 {
-    description = localizedString(key: "social_friend_is_a_backer",
-                                  defaultValue: "\(friendsList[0].name) is a backer")
+    description = localizedString(
+      key: "social_friend_is_a_backer",
+      defaultValue: "\(friendsList[0].name) is a backer"
+    )
   } else if friendsList.count == 2 {
     let remainingCount = max(0, friendsList.count - 1)
 
-    description = localizedString(key: "social_friend_and_singular_other",
-                                  defaultValue: "\(friendsList[0].name) and \(remainingCount) other"
+    description = localizedString(
+      key: "social_friend_and_singular_other",
+      defaultValue: "\(friendsList[0].name) and \(remainingCount) other"
     )
   } else if friendsList.count > 2 {
     let remainingCount = max(0, friendsList.count - 1)
 
-    description = localizedString(key: "social_friend_and_plural_other",
-                                  defaultValue: "\(friendsList[0].name) and \(remainingCount) others"
+    description = localizedString(
+      key: "social_friend_and_plural_other",
+      defaultValue: "\(friendsList[0].name) and \(remainingCount) others"
     )
   }
 
