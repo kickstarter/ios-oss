@@ -114,6 +114,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       "Impression is tracked."
     )
 
+    let props = self.trackingClient.properties.last
+
+    XCTAssertNotNil(props?["optimizely_api_key"], "Event includes Optimizely properties")
+    XCTAssertNotNil(props?["optimizely_environment"], "Event includes Optimizely properties")
+    XCTAssertNotNil(props?["optimizely_experiments"], "Event includes Optimizely properties")
+
     // Scroll down a bit and advance scheduler
     self.vm.inputs.willDisplayRow(2, outOf: 10)
     self.scheduler.advance()
@@ -1270,23 +1276,41 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   }
 
   func testTrackEditorialHeaderTapped() {
-    XCTAssertEqual([], self.trackingClient.events)
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: .template)) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.vm.inputs.selectedFilter(.defaults)
+      self.scheduler.advance()
 
-    self.vm.inputs.discoveryEditorialCellTapped(with: .goRewardless)
+      self.vm.inputs.discoveryEditorialCellTapped(with: .goRewardless)
 
-    XCTAssertEqual(["Editorial Card Clicked"], self.trackingClient.events)
-    XCTAssertEqual(
-      ["ios_project_collection_tag_518"],
-      self.trackingClient.properties(forKey: "session_ref_tag", as: String.self)
-    )
+      XCTAssertEqual(["Explore Page Viewed", "Editorial Card Clicked"], self.trackingClient.events)
+      XCTAssertEqual(
+        [nil, "ios_project_collection_tag_518"],
+        self.trackingClient.properties(forKey: "session_ref_tag", as: String.self)
+      )
 
-    self.vm.inputs.discoveryEditorialCellTapped(with: .goRewardless)
+      let props = self.trackingClient.properties.last
 
-    XCTAssertEqual(["Editorial Card Clicked", "Editorial Card Clicked"], self.trackingClient.events)
-    XCTAssertEqual(
-      ["ios_project_collection_tag_518", "ios_project_collection_tag_518"],
-      self.trackingClient.properties(forKey: "session_ref_tag")
-    )
+      XCTAssertEqual(true, props?["discover_everything"] as? Bool)
+      XCTAssertEqual("discovery_home", props?["discover_ref_tag"] as? String)
+      XCTAssertEqual("magic", props?["discover_sort"] as? String)
+
+      XCTAssertNil(props?["discover_recommended"] as? Bool)
+      XCTAssertNil(props?["discover_pwl"] as? Bool)
+      XCTAssertNil(props?["discover_social"] as? Bool)
+      XCTAssertNil(props?["discover_watched"] as? Bool)
+      XCTAssertNil(props?["discover_subcategory_id"] as? Int)
+      XCTAssertNil(props?["discover_subcategory_name"] as? String)
+      XCTAssertNil(props?["discover_category_id"] as? Int)
+      XCTAssertNil(props?["discover_category_name"] as? String)
+      XCTAssertNil(props?["discover_search_term"] as? String)
+
+      XCTAssertNil(props?["optimizely_api_key"], "Event does not include Optimizely properties")
+      XCTAssertNil(props?["optimizely_environment"], "Event does not include Optimizely properties")
+      XCTAssertNil(props?["optimizely_experiments"], "Event does not include Optimizely properties")
+    }
   }
 
   func testNotifyDelegateContentOffsetChanged() {
@@ -1571,7 +1595,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       )
       self.goToCuratedProjects.assertValues([[.art, .illustration]])
 
-      XCTAssertEqual("Editorial Card Clicked", mockOpClient.trackedEventKey)
+      let properties = self.trackingClient.properties.last
+
+      XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
+      XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")
+      XCTAssertNotNil(properties?["optimizely_experiments"], "Event includes Optimizely properties")
     }
   }
 

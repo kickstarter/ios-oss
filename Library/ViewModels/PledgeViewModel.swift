@@ -619,28 +619,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     initialData
       .observeValues { project, reward, refTag, context in
+        let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
+        let optimizelyProps = optimizelyProperties() ?? [:]
+
         AppEnvironment.current.koala.trackCheckoutPaymentPageViewed(
           project: project,
           reward: reward,
           context: TrackingHelpers.pledgeContext(for: context),
-          refTag: refTag
+          refTag: refTag,
+          cookieRefTag: cookieRefTag,
+          optimizelyProperties: optimizelyProps
         )
-      }
-
-    initialData
-      .observeValues { project, _, refTag, _ in
-        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: project,
-          refTag: refTag
-        )
-
-        try? AppEnvironment.current.optimizelyClient?
-          .track(
-            eventKey: "Pledge Screen Viewed",
-            userId: deviceIdentifier(uuid: UUID()),
-            attributes: properties,
-            eventTags: eventTags
-          )
       }
 
     createBackingData
@@ -668,25 +657,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           context: TrackingHelpers.pledgeContext(for: context),
           refTag: nil
         )
-      }
-
-    createBackingDataAndIsApplePay.takeWhen(createBackingCompletionEvents)
-      .observeValues { data, isApplePay in
-        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags(
-          with: data.project,
-          refTag: data.refTag
-        )
-
-        let allEventTags = eventTags
-          .withAllValuesFrom(optimizelyCheckoutEventTags(createBackingData: data, isApplePay: isApplePay))
-
-        try? AppEnvironment.current.optimizelyClient?
-          .track(
-            eventKey: "App Completed Checkout",
-            userId: deviceIdentifier(uuid: UUID()),
-            attributes: properties,
-            eventTags: allEventTags
-          )
       }
   }
 

@@ -422,30 +422,35 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     requestFirstPageWith
       .observeValues { params in
-        AppEnvironment.current.koala.trackDiscovery(params: params)
+        let optimizelyProps = optimizelyProperties() ?? [:]
+
+        AppEnvironment.current.koala.trackDiscovery(
+          params: params,
+          optimizelyProperties: optimizelyProps
+        )
       }
 
     let personalizationCellTappedAndRefTag = self.personalizationCellTappedProperty.signal
       .mapConst(RefTag.onboarding)
 
-    Signal.merge(
-      self.discoveryEditorialCellTappedWithValueProperty.signal.skipNil()
-        .map { RefTag.projectCollection($0) },
-      personalizationCellTappedAndRefTag
+    let editorialCellTappedAndRefTag = self.discoveryEditorialCellTappedWithValueProperty.signal
+      .skipNil()
+      .map { RefTag.projectCollection($0) }
+
+    let editorialOrPersonaliztionCardTappedAndRefTag = Signal.merge(
+      personalizationCellTappedAndRefTag,
+      editorialCellTappedAndRefTag
     )
-    .observeValues { refTag in
-      AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: refTag)
-    }
 
-    personalizationCellTappedAndRefTag
-      .observeValues { refTag in
-        let attributes = optimizelyUserAttributes(refTag: refTag)
+    requestFirstPageWith
+      .takePairWhen(editorialOrPersonaliztionCardTappedAndRefTag)
+      .observeValues { params, refTag in
+        let optimizelyProps = refTag == .onboarding ? optimizelyProperties() : nil
 
-        try? AppEnvironment.current.optimizelyClient?.track(
-          eventKey: "Editorial Card Clicked",
-          userId: deviceIdentifier(uuid: UUID()),
-          attributes: attributes,
-          eventTags: nil
+        AppEnvironment.current.koala.trackEditorialHeaderTapped(
+          params: params,
+          refTag: refTag,
+          optimizelyProperties: optimizelyProps ?? [:]
         )
       }
 
@@ -601,7 +606,7 @@ private func shouldShowPersonalization() -> Bool {
   }
 
   guard let variant = AppEnvironment.current.optimizelyClient?
-    .getVariation(for: .onboardingCategoryPersonalizationFlow) else {
+    .getVariation(for: OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue) else {
     return false
   }
 
