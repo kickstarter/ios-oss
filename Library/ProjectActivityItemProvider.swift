@@ -31,9 +31,6 @@ public final class ProjectActivityItemProvider: UIActivityItemProvider {
   }
 
   private func formattedString(for project: Project) -> String {
-    return """
-     \(project.name)\n
-     \(project.urls.web.project)
-    """
+    return [project.name, project.urls.web.project].joined(separator: "\n")
   }
 }
