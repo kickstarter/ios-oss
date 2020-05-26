@@ -16,7 +16,6 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 
   // MARK: - Properties
 
-  private let containerView = UIView(frame: .zero)
   private let editorialImageView = {
     UIImageView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -24,6 +23,11 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 
   private let editorialTitleLabel = UILabel(frame: .zero)
   private let editorialSubtitleLabel = UILabel(frame: .zero)
+  private let leftColumnStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private let rootStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -35,7 +39,6 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.configureViews()
-    self.setupConstraints()
     self.bindViewModel()
   }
 
@@ -91,6 +94,10 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
     _ = self.rootStackView
       |> rootStackViewStyle
 
+    _ = self.leftColumnStackView
+      |> \.axis .~ .vertical
+      |> \.spacing .~ Styles.grid(2)
+
     _ = self.editorialImageView
       |> roundedStyle(cornerRadius: Styles.grid(2))
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
@@ -112,6 +119,8 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 
   func configureWith(value: DiscoveryEditorialCellValue) {
     self.viewModel.inputs.configureWith(value)
+
+    self.layoutIfNeeded()
   }
 
   // MARK: - Configuration
@@ -121,15 +130,14 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    _ = (self.containerView, self.contentView)
+    _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    _ = (self.rootStackView, self.containerView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
+    _ = ([self.leftColumnStackView, UIView()], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.editorialTitleLabel, self.editorialSubtitleLabel], self.rootStackView)
+    _ = ([self.editorialTitleLabel, self.editorialSubtitleLabel], self.leftColumnStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     let tapGestureRecognizer = UITapGestureRecognizer(
@@ -138,13 +146,6 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
     )
 
     self.addGestureRecognizer(tapGestureRecognizer)
-  }
-
-  private func setupConstraints() {
-    NSLayoutConstraint.activate([
-      self.containerView.widthAnchor
-        .constraint(equalTo: self.editorialImageView.widthAnchor, multiplier: 0.55)
-    ])
   }
 
   // MARK: - Accessors
@@ -158,10 +159,7 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.axis .~ .vertical
-    |> \.spacing .~ Styles.grid(2)
+    |> \.distribution .~ .fillEqually
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ .init(
-      top: Styles.grid(2), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(0)
-    )
+    |> \.layoutMargins .~ .init(all: Styles.grid(2))
 }

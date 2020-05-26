@@ -239,24 +239,27 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     }
   }
 
-  func testView_Editorial_LoggedOut() {
+  func testView_Editorial() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.Key.lightsOn.rawValue: true]
 
-    combos(Language.allLanguages, Device.allCases).forEach {
-      language, device in
-      withEnvironment(currentUser: nil, language: language, optimizelyClient: mockOptimizelyClient) {
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(
+        language: language,
+        optimizelyClient: mockOptimizelyClient
+      ) {
         let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        controller.tableView.refreshControl = nil
 
-        let defaultLoggedOutParams = DiscoveryParams.defaults
-          |> \.includePOTD .~ true
-
-        controller.change(filter: defaultLoggedOutParams)
+        controller.change(filter: DiscoveryParams.defaults)
 
         NotificationCenter.default.post(Notification(name: .ksr_configUpdated))
 
         self.scheduler.advance(by: .seconds(1))
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(language)_device_\(device)"
