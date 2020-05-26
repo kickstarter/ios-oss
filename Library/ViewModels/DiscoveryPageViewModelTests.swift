@@ -547,7 +547,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues(["Introducing Lights On"])
       self.showEditorialHeaderSubtitle
-        .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
+        .assertValues(["Support creative spaces and businesses affected by COVID-19."])
       self.showEditorialHeaderImageName.assertValues(["lights-on"])
       self.showEditorialHeaderTagId.assertValues([.lightsOn])
     }
@@ -585,7 +585,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues(["Introducing Lights On"])
       self.showEditorialHeaderSubtitle
-        .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
+        .assertValues(["Support creative spaces and businesses affected by COVID-19."])
       self.showEditorialHeaderImageName.assertValues(["lights-on"])
       self.showEditorialHeaderTagId.assertValues([.lightsOn])
     }
@@ -962,7 +962,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showEditorialHeader.assertValueCount(1)
       self.showEditorialHeaderTitle.assertValues(["Introducing Lights On"])
       self.showEditorialHeaderSubtitle
-        .assertValues(["Support creative spaces and businesses affected by COVID-19. See projects near you. ▸"])
+        .assertValues(["Support creative spaces and businesses affected by COVID-19."])
       self.showEditorialHeaderImageName.assertValues(["lights-on"])
       self.showEditorialHeaderTagId.assertValues([.lightsOn])
       self.goToEditorialProjectList.assertDidNotEmitValue()
