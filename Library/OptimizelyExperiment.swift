@@ -33,12 +33,14 @@ extension OptimizelyExperiment {
 
   // Returns variation via getVariation for native_project_cards experiment
   static func nativeProjectCardsExperimentVariant() -> OptimizelyExperiment.Variant {
-    guard let optimizelyClient = AppEnvironment.current.optimizelyClient else {
-      return .control
-    }
+//    guard let optimizelyClient = AppEnvironment.current.optimizelyClient else {
+//      return .control
+//    }
+//
+//    let variant = optimizelyClient.getVariation(for: .nativeProjectCards)
+//
+//    return variant
 
-    let variant = optimizelyClient.getVariation(for: .nativeProjectCards)
-
-    return variant
+    return .variant1
   }
 }
