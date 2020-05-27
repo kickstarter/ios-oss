@@ -38,6 +38,7 @@ public protocol ManagePledgeViewModelOutputs {
   var notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never> { get }
   var pullToRefreshStackViewHidden: Signal<Bool, Never> { get }
   var rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never> { get }
+  var rightBarButtonItemHidden: Signal<Bool, Never> { get }
   var rootStackViewHidden: Signal<Bool, Never> { get }
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
@@ -160,6 +161,8 @@ public final class ManagePledgeViewModel:
       Signal.zip(backing, self.endRefreshing).mapConst(false)
     )
     .skipRepeats()
+
+    self.rightBarButtonItemHidden = self.rootStackViewHidden
 
     self.startRefreshing = Signal.merge(
       projectOrParam.ignoreValues(),
@@ -314,6 +317,7 @@ public final class ManagePledgeViewModel:
   public let pullToRefreshStackViewHidden: Signal<Bool, Never>
   public let notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never>
   public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
+  public let rightBarButtonItemHidden: Signal<Bool, Never>
   public let rootStackViewHidden: Signal<Bool, Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let showSuccessBannerWithMessage: Signal<String, Never>

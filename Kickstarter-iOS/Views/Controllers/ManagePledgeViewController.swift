@@ -173,6 +173,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.rewardReceivedViewController.view.rac.hidden =
       self.viewModel.outputs.rewardReceivedViewControllerViewIsHidden
 
+    self.viewModel.outputs.rightBarButtonItemHidden
+      .observeForUI()
+      .observeValues { [weak self] hidden in
+        self?.navigationItem.rightBarButtonItem = hidden ? nil : self?.menuButton
+      }
+
     self.viewModel.outputs.title
       .observeForUI()
       .observeValues { [weak self] title in
