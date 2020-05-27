@@ -188,14 +188,14 @@ private func facepileData(for friendsList: [User]) -> FacepileViewData? {
       defaultValue: "\(friendsList[0].name) is a backer"
     )
   case 2:
-    let remainingCount = max(0, friendsList.count - 1)
+    let remainingCount = friendsList.count - 1
 
     description = localizedString(
       key: "social_friend_and_singular_other",
       defaultValue: "\(friendsList[0].name) and \(remainingCount) other"
     )
   case let count where count > 2:
-    let remainingCount = max(0, friendsList.count - 1)
+    let remainingCount = count - 1
 
     description = localizedString(
       key: "social_friend_and_plural_other",
