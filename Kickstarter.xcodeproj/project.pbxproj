@@ -380,7 +380,6 @@
 		8A297912234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A297911234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift */; };
 		8A2A2E2E238B3CBE002C62E0 /* UIView+ShimmerLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A2E2D238B3CBE002C62E0 /* UIView+ShimmerLoading.swift */; };
 		8A32AE9623EA1DC0005CEA57 /* Project.CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A32AE9523EA1DC0005CEA57 /* Project.CategoryTemplates.swift */; };
-		8A355B4C24782B6400380021 /* PledgeViewCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710ADF8243D18EA00DC7199 /* PledgeViewCTAContainerView.swift */; };
 		8A3BF51923F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3BF51823F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift */; };
 		8A3BF51E23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */; };
 		8A41CC692458A0360095B15E /* GraphBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41CC672458A0360095B15E /* GraphBackingEnvelope.swift */; };
@@ -435,13 +434,11 @@
 		8AA5B06A235E25820022F5F0 /* AppCenterCrashes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA5B066235E25820022F5F0 /* AppCenterCrashes.framework */; };
 		8AA5B06B235E25820022F5F0 /* AppCenterAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA5B067235E25820022F5F0 /* AppCenterAnalytics.framework */; };
 		8AAA9BD822F49EC200F12976 /* UIColor+Mixing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */; };
-		8AAFEAE92474535D004A88F8 /* OptimizelyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAFEAE82474535C004A88F8 /* OptimizelyFeature.swift */; };
 		8AB0E00C24314967008E975E /* ProjectSummaryCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0E00B24314967008E975E /* ProjectSummaryCarouselView.swift */; };
 		8AB0E00E2432B396008E975E /* ProjectSummaryCarouselDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0E00D2432B396008E975E /* ProjectSummaryCarouselDataSource.swift */; };
 		8AB0E0102432B3B5008E975E /* ProjectSummaryCarouselDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0E00F2432B3B5008E975E /* ProjectSummaryCarouselDataSourceTests.swift */; };
 		8AB0E0122432B4C9008E975E /* ProjectSummaryCarouselCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0E0112432B4C9008E975E /* ProjectSummaryCarouselCell.swift */; };
 		8AB0E0142432D03A008E975E /* ProjectSummaryCarouselViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0E0132432D03A008E975E /* ProjectSummaryCarouselViewModel.swift */; };
-		8AB3BDA5246DAEEB00D69624 /* OptimizelyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB3BDA4246DAEEB00D69624 /* OptimizelyFeature.swift */; };
 		8AB3BDA6246DC8BE00D69624 /* DiscoveryEditorialViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C25FBE2385FDA5006E2010 /* DiscoveryEditorialViewModelTests.swift */; };
 		8AB55D5023C3FAA6002F5E64 /* Qualtrics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AD7953123A286D800998C79 /* Qualtrics.framework */; };
 		8AB87DF3243FF22B006D7451 /* PledgePaymentMethodAddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB87DF2243FF22B006D7451 /* PledgePaymentMethodAddCell.swift */; };
@@ -458,9 +455,10 @@
 		8AE09C3A244537BE00036043 /* PledgeDisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */; };
 		8AE09C3C2446330100036043 /* PledgeDisclaimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C3B2446330100036043 /* PledgeDisclaimerViewModel.swift */; };
 		8AE09C3E24463C4C00036043 /* PledgeDisclaimerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C3D24463C4C00036043 /* PledgeDisclaimerViewModelTests.swift */; };
-		8AE329FE246F46500027F2E3 /* PledgeViewCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE329FD246F46500027F2E3 /* PledgeViewCTAContainerView.swift */; };
 		8AE8D86623466EB9005860C6 /* UpdateBackingInput+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D86523466EB9005860C6 /* UpdateBackingInput+Constructor.swift */; };
 		8AE8D86823466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D86723466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift */; };
+		8AF2ABD6247ED338009BF5E7 /* PledgeViewCTAContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF2ABD5247ED338009BF5E7 /* PledgeViewCTAContainerView.swift */; };
+		8AF2ABD8247ED350009BF5E7 /* OptimizelyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF2ABD7247ED350009BF5E7 /* OptimizelyFeature.swift */; };
 		8AF34C722342CBAD000B211D /* UpdateBackingMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C712342CBAD000B211D /* UpdateBackingMutation.swift */; };
 		8AF34C742342CBC2000B211D /* UpdateBackingInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C732342CBC2000B211D /* UpdateBackingInput.swift */; };
 		8AF34C762342D1D2000B211D /* UpdateBackingInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C752342D1D2000B211D /* UpdateBackingInputTests.swift */; };
@@ -1926,13 +1924,11 @@
 		8AA5B066235E25820022F5F0 /* AppCenterCrashes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterCrashes.framework; path = Carthage/Build/iOS/AppCenterCrashes.framework; sourceTree = "<group>"; };
 		8AA5B067235E25820022F5F0 /* AppCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterAnalytics.framework; path = Carthage/Build/iOS/AppCenterAnalytics.framework; sourceTree = "<group>"; };
 		8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Mixing.swift"; sourceTree = "<group>"; };
-		8AAFEAE82474535C004A88F8 /* OptimizelyFeature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptimizelyFeature.swift; sourceTree = "<group>"; };
 		8AB0E00B24314967008E975E /* ProjectSummaryCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSummaryCarouselView.swift; sourceTree = "<group>"; };
 		8AB0E00D2432B396008E975E /* ProjectSummaryCarouselDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSummaryCarouselDataSource.swift; sourceTree = "<group>"; };
 		8AB0E00F2432B3B5008E975E /* ProjectSummaryCarouselDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSummaryCarouselDataSourceTests.swift; sourceTree = "<group>"; };
 		8AB0E0112432B4C9008E975E /* ProjectSummaryCarouselCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSummaryCarouselCell.swift; sourceTree = "<group>"; };
 		8AB0E0132432D03A008E975E /* ProjectSummaryCarouselViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSummaryCarouselViewModel.swift; sourceTree = "<group>"; };
-		8AB3BDA4246DAEEB00D69624 /* OptimizelyFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyFeature.swift; sourceTree = "<group>"; };
 		8AB87DF2243FF22B006D7451 /* PledgePaymentMethodAddCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodAddCell.swift; sourceTree = "<group>"; };
 		8ACD29F6243E48260044BC17 /* PledgePaymentMethodsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsDataSource.swift; sourceTree = "<group>"; };
 		8ACF558623E8D444001654A2 /* Argo+ToPrimitive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Argo+ToPrimitive.swift"; sourceTree = "<group>"; };
@@ -1946,9 +1942,10 @@
 		8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerView.swift; sourceTree = "<group>"; };
 		8AE09C3B2446330100036043 /* PledgeDisclaimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerViewModel.swift; sourceTree = "<group>"; };
 		8AE09C3D24463C4C00036043 /* PledgeDisclaimerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerViewModelTests.swift; sourceTree = "<group>"; };
-		8AE329FD246F46500027F2E3 /* PledgeViewCTAContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeViewCTAContainerView.swift; sourceTree = "<group>"; };
 		8AE8D86523466EB9005860C6 /* UpdateBackingInput+Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateBackingInput+Constructor.swift"; sourceTree = "<group>"; };
 		8AE8D86723466EDB005860C6 /* UpdateBackingInput+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateBackingInput+ConstructorTests.swift"; sourceTree = "<group>"; };
+		8AF2ABD5247ED338009BF5E7 /* PledgeViewCTAContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeViewCTAContainerView.swift; sourceTree = "<group>"; };
+		8AF2ABD7247ED350009BF5E7 /* OptimizelyFeature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptimizelyFeature.swift; sourceTree = "<group>"; };
 		8AF34C712342CBAD000B211D /* UpdateBackingMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingMutation.swift; sourceTree = "<group>"; };
 		8AF34C732342CBC2000B211D /* UpdateBackingInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingInput.swift; sourceTree = "<group>"; };
 		8AF34C752342D1D2000B211D /* UpdateBackingInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingInputTests.swift; sourceTree = "<group>"; };
@@ -2707,7 +2704,6 @@
 		D703FC6A20F7E3F8004A272D /* SettingsPrivacyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPrivacyViewModel.swift; sourceTree = "<group>"; };
 		D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyClientType.swift; sourceTree = "<group>"; };
 		D710ADF5243BE9F600DC7199 /* ISO8601DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISO8601DateFormatter.swift; sourceTree = "<group>"; };
-		D710ADF8243D18EA00DC7199 /* PledgeViewCTAContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewCTAContainerView.swift; sourceTree = "<group>"; };
 		D710ADFA243FB94A00DC7199 /* PledgeViewCTAContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewCTAContainerViewModel.swift; sourceTree = "<group>"; };
 		D710ADFC2441172100DC7199 /* PledgeViewCTAContainerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeViewCTAContainerViewModelTests.swift; sourceTree = "<group>"; };
 		D7180BA022EF9DD900EB0110 /* RewardCellProjectBackingStateTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellProjectBackingStateTypeTests.swift; sourceTree = "<group>"; };
@@ -3120,6 +3116,7 @@
 		A751A51B1C85EAD8009C5DEA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8AF2ABD5247ED338009BF5E7 /* PledgeViewCTAContainerView.swift */,
 				D69C553023A17A0700B0987A /* ActivityErroredBackingsCellHeader.swift */,
 				37E9E29F225EABB000D29DD7 /* AmountInputView.swift */,
 				D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */,
@@ -3140,7 +3137,6 @@
 				D79A054A225E9B6B004BC6A8 /* PledgeDescriptionView.swift */,
 				8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */,
 				374F507822614A1000DE6746 /* PledgeFooterView.swift */,
-				8AE329FD246F46500027F2E3 /* PledgeViewCTAContainerView.swift */,
 				77636FC0243CFE25007F67B9 /* ProcessingView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
 				8AB0E00B24314967008E975E /* ProjectSummaryCarouselView.swift */,
@@ -3415,6 +3411,7 @@
 		A7C725771C85D36D005A016B /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				8AF2ABD7247ED350009BF5E7 /* OptimizelyFeature.swift */,
 				8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */,
 				A709697D1D143D1300DB39D3 /* AlertError.swift */,
 				A7C725781C85D36D005A016B /* AppEnvironment.swift */,
@@ -3497,8 +3494,6 @@
 				D706478F23A2BF4B00B33C20 /* OptimizelyClientType.swift */,
 				774D98D823A96E7500FC81C2 /* OptimizelyClientTypeTests.swift */,
 				D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */,
-				8AB3BDA4246DAEEB00D69624 /* OptimizelyFeature.swift */,
-				8AAFEAE82474535C004A88F8 /* OptimizelyFeature.swift */,
 				771123FA23BF9E7E00BA5702 /* OptimizelyLogLevelType.swift */,
 				1611EF5D23ABD1550051CDCC /* OptimizelyResultType.swift */,
 				A77D7B061CBAAF5D0077586B /* Paginate.swift */,
@@ -5012,8 +5007,6 @@
 				A755115F1C8642C3005355CF /* Format.swift in Sources */,
 				598D96CB1D42AE85003F3F66 /* ActivitySampleProjectCellViewModel.swift in Sources */,
 				01C7CDB31D13462A00D9E0D1 /* DashboardRewardsCellViewModel.swift in Sources */,
-				8AB3BDA5246DAEEB00D69624 /* OptimizelyFeature.swift in Sources */,
-				8AAFEAE92474535D004A88F8 /* OptimizelyFeature.swift in Sources */,
 				A7D121091D15B08200F364FD /* CountBadgeView.swift in Sources */,
 				77216CE220EFE7F70061BE82 /* FacebookConnectionType.swift in Sources */,
 				D7ADDFE722E0DAFA00157D83 /* RewardCellProjectBackingStateType.swift in Sources */,
@@ -5212,6 +5205,7 @@
 				D6B6766520FE85010082717D /* SettingsNewslettersCellViewModel.swift in Sources */,
 				593AC6011D33F517002613F4 /* DashboardFundingCellViewModel.swift in Sources */,
 				373AB25D222A0D8900769FC2 /* PasswordValidation.swift in Sources */,
+				8AF2ABD8247ED350009BF5E7 /* OptimizelyFeature.swift in Sources */,
 				D710ADF7243CCE7E00DC7199 /* ISO8601DateFormatter.swift in Sources */,
 				9D2F4BE01D1AE02700B7C554 /* ProjectActivitySuccessCellViewModel.swift in Sources */,
 				D69C5529239ED10E00B0987A /* ErroredBackingViewViewModel.swift in Sources */,
@@ -5528,7 +5522,6 @@
 				3742036D22DD41BA007AA86E /* PillLayout.swift in Sources */,
 				015A07461D247564007AE210 /* UpdateDraftViewController.swift in Sources */,
 				D7D13C332405B89A00B6E929 /* CreatorBylineView.swift in Sources */,
-				8AE329FE246F46500027F2E3 /* PledgeViewCTAContainerView.swift in Sources */,
 				7720BA6E22DE79BF0071FDA1 /* UIViewController+Presentation.swift in Sources */,
 				7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */,
 				8AD7953423A2C95000998C79 /* QualtricsTypes.swift in Sources */,
@@ -5673,7 +5666,6 @@
 				A773531F1D5E8AEF0017E239 /* MostPopularSearchProjectCell.swift in Sources */,
 				D65BF3552334050100B15B25 /* ManagePledgePaymentMethodView.swift in Sources */,
 				37E9E2A0225EABB000D29DD7 /* AmountInputView.swift in Sources */,
-				8A355B4C24782B6400380021 /* PledgeViewCTAContainerView.swift in Sources */,
 				A77352ED1D5E70FC0017E239 /* MostPopularCell.swift in Sources */,
 				D79F0F3721028C2600D3B32C /* SettingsPrivacyRecommendationCell.swift in Sources */,
 				D6B6766920FF8D850082717D /* SettingsNewslettersDataSource.swift in Sources */,
@@ -5707,6 +5699,7 @@
 				77752F5E219B39EA00E7DA7D /* SettingsAccountWarningCell.swift in Sources */,
 				8AB0E00E2432B396008E975E /* ProjectSummaryCarouselDataSource.swift in Sources */,
 				3780C8622208F8C8002117D1 /* SettingsTextInputCell.swift in Sources */,
+				8AF2ABD6247ED338009BF5E7 /* PledgeViewCTAContainerView.swift in Sources */,
 				597073A01D07277100B00444 /* ProjectNotificationsDataSource.swift in Sources */,
 				A757E9EF1D19C37F00A5C978 /* ActivitySurveyResponseCell.swift in Sources */,
 				D63BBCDA217E7802007E01F0 /* CreditCardCell.swift in Sources */,
