@@ -107,9 +107,7 @@ public final class ManagePledgeViewModel:
     let backing = graphBackingEnvelope
       .map { $0.backing }
 
-    let endRefreshingWhenProjectFailed = fetchProjectEvent
-      .map { $0.error }
-      .filter(isNotNil)
+    let endRefreshingWhenProjectFailed = fetchProjectEvent.errors()
       .ignoreValues()
 
     let endRefreshingWhenBackingCompleted = graphBackingEvent
