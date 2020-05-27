@@ -4,6 +4,11 @@ import Library
 import Prelude
 import UIKit
 
+private enum FacepileAvatarSize {
+  static let height: CGFloat = 26.0
+  static let width: CGFloat = 26.0
+}
+
 final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private enum IconImageSize {
     static let height: CGFloat = 13.0
@@ -19,6 +24,10 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private lazy var backersCountStackView = { UIStackView(frame: .zero) }()
   private lazy var cardContainerView = { UIView(frame: .zero) }()
   private lazy var dataSource = { DiscoveryProjectTagsCollectionViewDataSource() }()
+  private lazy var facepileAvatarContainerView = { UIView(frame: .zero) }()
+  private var facepileAvatarImageViews: [UIImageView] = [UIImageView]()
+  private lazy var facepileDescriptionLabel = { UILabel(frame: .zero) }()
+  private lazy var facepileStackView = { UIStackView(frame: .zero) }()
   private lazy var goalMetIconImageView = { UIImageView(frame: .zero) }()
   private lazy var goalPercentFundedStackView = { UIStackView(frame: .zero) }()
   private lazy var percentFundedLabel = { UILabel(frame: .zero) }()
@@ -104,6 +113,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     super.prepareForReuse()
 
     self.tagsCollectionViewHeightConstraint?.constant = 0
+
+    self.clearFacepileImageViews()
   }
 
   func configureWith(value: DiscoveryProjectCellRowValue) {
@@ -186,6 +197,9 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = self.projectStatusLabel
       |> projectStatusLabelStyle
 
+    _ = self.facepileDescriptionLabel
+      |> facepileDescriptionLabelStyle
+
     _ = self.backersCountStackView
       |> infoStackViewStyle
 
@@ -204,6 +218,9 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       )
       |> projectInfoStackViewStyle
 
+    _ = self.facepileStackView
+      |> facepileStackViewStyle
+
     _ = self.tagsCollectionView
       |> collectionViewStyle
 
@@ -221,6 +238,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
     self.tagsCollectionView.rac.hidden = self.viewModel.outputs.tagsCollectionViewHidden
+    self.facepileDescriptionLabel.rac.text = self.viewModel.outputs.facepileViewData.map(second)
+    self.facepileStackView.rac.hidden = self.viewModel.outputs.facepileViewHidden
     self.youreABackerView.rac.hidden = self.viewModel.outputs.youreABackerViewHidden
 
     self.viewModel.outputs.projectImageURL
@@ -231,6 +250,15 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       })
       .observeValues { [weak self] url in
         self?.projectImageView.ksr_setImageWithURL(url)
+      }
+
+    self.viewModel.outputs.facepileViewData.map(first)
+      .observeForUI()
+      .on(event: { [weak self] _ in
+        self?.clearFacepileImageViews()
+      })
+      .observeValues { [weak self] avatars in
+        self?.configureFacepileImageViews(with: avatars)
       }
 
     self.viewModel.outputs.percentFundedLabelData
@@ -340,10 +368,14 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = ([self.projectStatusIconImageView, self.projectStatusLabel], self.projectStatusStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    _ = ([self.facepileAvatarContainerView, self.facepileDescriptionLabel], self.facepileStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
     _ = ([
       self.projectNameLabel,
       self.projectBlurbLabel,
       self.projectInfoStackView,
+      self.facepileStackView,
       self.tagsCollectionView
     ], self.projectDetailsStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -354,7 +386,13 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = ([self.backersCountIconImageView, self.backersCountLabel], self.backersCountStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.goalPercentFundedStackView, self.backersCountStackView], self.projectInfoStackView)
+    let spacer = UIView(frame: .zero)
+      |> UIView.lens.contentHuggingPriority(for: .horizontal) .~ UILayoutPriority(rawValue: 249)
+
+    _ = (
+      [self.goalPercentFundedStackView, self.backersCountStackView, spacer],
+      self.projectInfoStackView
+    )
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -415,9 +453,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
         .constraint(
           lessThanOrEqualTo: self.projectDetailsStackView.topAnchor,
           constant: -Styles.grid(2)
-        ),
-      self.tagsCollectionView.widthAnchor
-        .constraint(equalTo: self.projectDetailsStackView.layoutMarginsGuide.widthAnchor)
+        )
     ])
   }
 
@@ -467,6 +503,55 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.layoutIfNeeded()
   }
 
+  private func configureFacepileImageViews(with avatars: [URL]) {
+    let endIndex = avatars.endIndex
+
+    self.facepileAvatarImageViews = avatars.enumerated().map { index, imageURL -> UIImageView in
+      let overlap = CGFloat(index) * Styles.grid(1)
+      let xOffset = index == 0 ? 0 : (CGFloat(index) * FacepileAvatarSize.width - overlap)
+
+      let imageView = UIImageView(frame: .zero)
+        |> avatarImageViewStyle
+
+      self.facepileAvatarContainerView.addSubview(imageView)
+      self.facepileAvatarContainerView.sendSubviewToBack(imageView)
+
+      imageView.ksr_setRoundedImageWith(imageURL)
+
+      NSLayoutConstraint.activate([
+        imageView.widthAnchor.constraint(equalToConstant: FacepileAvatarSize.width),
+        imageView.heightAnchor.constraint(equalToConstant: FacepileAvatarSize.height),
+        imageView.leftAnchor.constraint(
+          equalTo: self.facepileAvatarContainerView.leftAnchor,
+          constant: xOffset
+        ),
+        imageView.topAnchor.constraint(equalTo: self.facepileAvatarContainerView.topAnchor),
+        imageView.bottomAnchor.constraint(equalTo: self.facepileAvatarContainerView.bottomAnchor)
+      ])
+
+      // Last avatar
+      if index == endIndex - 1 {
+        _ = imageView.rightAnchor.constraint(equalTo: self.facepileAvatarContainerView.rightAnchor)
+          |> \.isActive .~ true
+      }
+
+      return imageView
+    }
+
+    self.facepileAvatarContainerView.layoutIfNeeded()
+  }
+
+  private func clearFacepileImageViews() {
+    self.facepileAvatarImageViews.forEach { imageView in
+      imageView.af.cancelImageRequest()
+      imageView.image = nil
+
+      imageView.removeFromSuperview()
+    }
+
+    self.facepileAvatarImageViews = []
+  }
+
   // MARK: - Accessors
 
   @objc fileprivate func saveButtonPressed(_: UIButton) {
@@ -479,6 +564,17 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 }
 
 // MARK: - Styles
+
+private let avatarImageViewStyle: ImageViewStyle = { imageView in
+  imageView
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    |> \.layer.borderColor .~ UIColor.white.cgColor
+    |> \.backgroundColor .~ UIColor.ksr_grey_400
+    |> \.layer.borderWidth .~ 2
+    |> \.clipsToBounds .~ true
+    |> ignoresInvertColorsImageViewStyle
+    |> roundedStyle(cornerRadius: FacepileAvatarSize.width / 2)
+}
 
 private let collectionViewStyle: ViewStyle = { view in
   view
@@ -545,6 +641,14 @@ private let projectStatusLabelStyle: LabelStyle = { label in
     |> \.backgroundColor .~ .clear
 }
 
+private let facepileDescriptionLabelStyle: LabelStyle = { label in
+  label
+    |> \.numberOfLines .~ 2
+    |> \.lineBreakMode .~ .byTruncatingTail
+    |> \.textColor .~ .ksr_soft_black
+    |> \.font .~ UIFont.ksr_footnote().bolded
+}
+
 private let projectStatusIconImageStyle: ImageViewStyle = { imageView in
   imageView
     |> \.tintColor .~ .ksr_text_dark_grey_500
@@ -556,7 +660,7 @@ private let infoStackViewStyle: StackViewStyle = { stackView in
     |> \.axis .~ .horizontal
     |> \.spacing .~ Styles.grid(1)
     |> \.alignment .~ .fill
-    |> \.distribution .~ .equalSpacing
+    |> \.distribution .~ .fill
 }
 
 private let percentFundedLabelStyle: LabelStyle = { label in
@@ -588,11 +692,18 @@ private let projectInfoStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(2)
 }
 
+private let facepileStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.alignment .~ .center
+    |> \.distribution .~ .fill
+    |> \.spacing .~ Styles.grid(1)
+}
+
 private let projectDetailsStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> verticalStackViewStyle
     |> \.spacing .~ Styles.grid(2)
-    |> \.alignment .~ .leading
+    |> \.alignment .~ .fill
     |> \.layoutMargins .~ .init(all: Styles.grid(3))
     |> \.isLayoutMarginsRelativeArrangement .~ true
 }
