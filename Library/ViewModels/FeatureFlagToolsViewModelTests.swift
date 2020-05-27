@@ -100,7 +100,7 @@ final class FeatureFlagToolsViewModelTests: TestCase {
   }
 
   func testFeatureEnabledFromDictionaries_KnownFeatures() {
-    let featureEnabled = featureEnabledFromDictionaries([["ios_go_rewardless": false]])
+    let featureEnabled = featureEnabledFromDictionaries([["ios_qualtrics": false]])
 
     XCTAssertFalse(featureEnabled.isEmpty, "Known features produce Feature enums")
   }

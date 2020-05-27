@@ -195,20 +195,3 @@ private func activityController(forShareContext shareContext: ShareContext) -> U
 
   return controller
 }
-
-private func twitterInitialText(forShareContext shareContext: ShareContext) -> String {
-  switch shareContext {
-  case let .creatorDashboard(project):
-    return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
-  case let .discovery(project):
-    return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
-  case let .project(project):
-    return Strings.project_checkout_share_twitter_via_kickstarter(project_or_update_title: project.name)
-  case let .thanks(project):
-    return Strings.project_checkout_share_twitter_I_just_backed_project_on_kickstarter(
-      project_name: project.name
-    )
-  case let .update(_, update):
-    return Strings.social_update_number(update_number: String(update.sequence)) + ": " + update.title
-  }
-}

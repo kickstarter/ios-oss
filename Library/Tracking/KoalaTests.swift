@@ -21,8 +21,7 @@ final class KoalaTests: TestCase {
       |> Config.lens.features .~ [
         "android_flag": true,
         "ios_feature_something": false,
-        "ios_feature_checkout": true,
-        "ios_feature_go_rewardless": true
+        "ios_enabled_feature": true
       ]
     let device = MockDevice(userInterfaceIdiom: .phone)
     let screen = MockScreen()
@@ -46,8 +45,7 @@ final class KoalaTests: TestCase {
     )
     XCTAssertEqual(
       [
-        "ios_feature_checkout",
-        "ios_feature_go_rewardless"
+        "ios_enabled_feature"
       ],
       properties?["session_enabled_features"] as? [String]
     )
@@ -313,7 +311,7 @@ final class KoalaTests: TestCase {
       )
       <> DiscoveryParams.lens.query .~ "collage"
       <> DiscoveryParams.lens.sort .~ .popular
-      <> DiscoveryParams.lens.tagId .~ .goRewardless
+      <> DiscoveryParams.lens.tagId .~ .lightsOn
       <> DiscoveryParams.lens.page .~ 2
 
     let loggedInUser = User.template |> \.id .~ 42
@@ -333,7 +331,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(Category.filmAndVideo.intID, properties?["discover_category_id"] as? Int)
     XCTAssertEqual(Category.filmAndVideo.name, properties?["discover_category_name"] as? String)
     XCTAssertEqual("popularity", properties?["discover_sort"] as? String)
-    XCTAssertEqual("ios_project_collection_tag_518", properties?["discover_ref_tag"] as? String)
+    XCTAssertEqual("ios_project_collection_tag_557", properties?["discover_ref_tag"] as? String)
     XCTAssertEqual("collage", properties?["discover_search_term"] as? String)
   }
 
@@ -453,6 +451,65 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("manage_reward", props?["context_pledge_flow"] as? String)
   }
 
+  // MARK: - Project Page Tracking
+
+  func testTrackCreatorDetailsClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackCreatorDetailsClicked(
+      project: .template,
+      location: .projectPage,
+      refTag: .discovery,
+      cookieRefTag: .discovery
+    )
+
+    XCTAssertEqual(["Creator Details Clicked"], client.events)
+    XCTAssertEqual(["project_screen"], client.properties(forKey: "context_location"))
+    XCTAssertEqual(["discovery"], client.properties(forKey: "session_ref_tag"))
+    XCTAssertEqual(["discovery"], client.properties(forKey: "session_referrer_credit"))
+
+    self.assertProjectProperties(client.properties.last)
+  }
+
+  func testTrackCampaignDetailsButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackCampaignDetailsButtonClicked(
+      project: .template,
+      location: .projectPage,
+      refTag: .discovery,
+      cookieRefTag: .discovery
+    )
+
+    XCTAssertEqual(["Campaign Details Button Clicked"], client.events)
+    XCTAssertEqual(["project_screen"], client.properties(forKey: "context_location"))
+    XCTAssertEqual(["discovery"], client.properties(forKey: "session_ref_tag"))
+    XCTAssertEqual(["discovery"], client.properties(forKey: "session_referrer_credit"))
+
+    self.assertProjectProperties(client.properties.last)
+  }
+
+  func testTrackCampignDetailsPledgeButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackCampaignDetailsPledgeButtonClicked(
+      project: .template,
+      location: .campaign,
+      refTag: .discovery,
+      cookieRefTag: .discovery
+    )
+
+    XCTAssertEqual(["Campaign Details Pledge Button Clicked"], client.events)
+    XCTAssertEqual(["campaign_screen"], client.properties(forKey: "context_location"))
+    XCTAssertEqual(["discovery"], client.properties(forKey: "session_ref_tag"))
+    XCTAssertEqual(["discovery"], client.properties(forKey: "session_referrer_credit"))
+
+    self.assertProjectProperties(client.properties.last)
+  }
+
   func testTrackCheckoutPaymentMethodViewed() {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
@@ -461,7 +518,8 @@ final class KoalaTests: TestCase {
       project: .template,
       reward: .template,
       context: .newPledge,
-      refTag: RefTag.activity
+      refTag: RefTag.activity,
+      cookieRefTag: RefTag.activity
     )
 
     let props = client.properties.last
@@ -903,6 +961,52 @@ final class KoalaTests: TestCase {
     )
   }
 
+  // MARK: - Onboarding Tracking
+
+  func testOnboardingGetStartedButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackOnboardingGetStartedButtonClicked()
+
+    XCTAssertEqual(["Onboarding Get Started Button Clicked"], client.events)
+
+    XCTAssertEqual(["landing_page"], client.properties(forKey: "context_location"))
+  }
+
+  func testOnboardingCarouselSwipedButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackOnboardingCarouselSwiped()
+
+    XCTAssertEqual(["Onboarding Carousel Swiped"], client.events)
+
+    XCTAssertEqual(["landing_page"], client.properties(forKey: "context_location"))
+  }
+
+  func testOnboardingSkipButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackOnboardingSkipButtonClicked()
+
+    XCTAssertEqual(["Onboarding Skip Button Clicked"], client.events)
+
+    XCTAssertEqual(["onboarding"], client.properties(forKey: "context_location"))
+  }
+
+  func testOnboardingContinueButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackOnboardingContinueButtonClicked()
+
+    XCTAssertEqual(["Onboarding Continue Button Clicked"], client.events)
+
+    XCTAssertEqual(["onboarding"], client.properties(forKey: "context_location"))
+  }
+
   // MARK: - Search Tracking
 
   func testTrackSearchViewed() {
@@ -1088,7 +1192,8 @@ final class KoalaTests: TestCase {
       project: .template,
       reward: .template,
       context: .newPledge,
-      refTag: nil
+      refTag: nil,
+      cookieRefTag: nil
     )
     XCTAssertEqual("pledge_screen", client.properties.last?["context_location"] as? String)
 
@@ -1101,7 +1206,7 @@ final class KoalaTests: TestCase {
     koala.trackDiscoveryModalSelectedFilter(params: .defaults)
     XCTAssertEqual("explore_screen", client.properties.last?["context_location"] as? String)
 
-    koala.trackEditorialHeaderTapped(refTag: .discovery)
+    koala.trackEditorialHeaderTapped(params: .defaults, refTag: .discovery)
     XCTAssertEqual("explore_screen", client.properties.last?["context_location"] as? String)
 
     koala.trackFacebookLoginOrSignupButtonClicked(intent: .generic)

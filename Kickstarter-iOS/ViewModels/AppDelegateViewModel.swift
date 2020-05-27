@@ -645,9 +645,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     )
     .observeValues { AppEnvironment.current.koala.trackAppOpen() }
 
-    self.applicationDidEnterBackgroundProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackAppClose() }
-
     self.applicationDidReceiveMemoryWarningProperty.signal
       .observeValues { AppEnvironment.current.koala.trackMemoryWarning() }
 
@@ -680,21 +677,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     deepLinkFromNotification
       .observeValues { _ in AppEnvironment.current.koala.trackNotificationOpened() }
-
-    // Optimizely tracking
-
-    self.applicationDidEnterBackgroundProperty.signal
-      .observeValues {
-        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags()
-
-        try? AppEnvironment.current.optimizelyClient?
-          .track(
-            eventKey: "App Closed",
-            userId: deviceIdentifier(uuid: UUID()),
-            attributes: properties,
-            eventTags: eventTags
-          )
-      }
 
     self.applicationIconBadgeNumber = Signal.merge(
       self.applicationWillEnterForegroundProperty.signal,

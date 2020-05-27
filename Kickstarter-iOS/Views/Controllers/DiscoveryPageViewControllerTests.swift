@@ -239,24 +239,27 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     }
   }
 
-  func testView_Editorial_LoggedOut() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
+  func testView_Editorial() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.lightsOn.rawValue: true]
 
-    combos(Language.allLanguages, Device.allCases).forEach {
-      language, device in
-      withEnvironment(config: mockConfig, currentUser: nil, language: language) {
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(
+        language: language,
+        optimizelyClient: mockOptimizelyClient
+      ) {
         let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        controller.tableView.refreshControl = nil
 
-        let defaultLoggedOutParams = DiscoveryParams.defaults
-          |> \.includePOTD .~ true
-
-        controller.change(filter: defaultLoggedOutParams)
+        controller.change(filter: DiscoveryParams.defaults)
 
         NotificationCenter.default.post(Notification(name: .ksr_configUpdated))
 
         self.scheduler.advance(by: .seconds(1))
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(language)_device_\(device)"
@@ -266,20 +269,21 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
   }
 
   func testView_Editorial_WithActivity() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
     let backing = .template
       |> Activity.lens.category .~ .backing
       |> Activity.lens.id .~ 1_234
       |> Activity.lens.project .~ self.cosmicSurgeryNoPhoto
       |> Activity.lens.user .~ self.brandoNoAvatar
 
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.lightsOn.rawValue: true]
+
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
         apiService: MockService(fetchActivitiesResponse: [backing]),
-        config: mockConfig,
         currentUser: .template,
         language: language,
+        optimizelyClient: mockOptimizelyClient,
         userDefaults: MockKeyValueStore()
       ) {
         let controller = DiscoveryPageViewController.configuredWith(sort: .magic)

@@ -304,12 +304,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self.delegate?.discoverPageViewController(self, contentOffsetDidChangeTo: offset)
       }
 
-    self.viewModel.outputs.configureEditorialTableViewHeader
-      .observeForUI()
-      .observeValues { [weak self] title in
-        self?.configureHeaderView(with: title)
-      }
-
     self.viewModel.outputs.goToLoginSignup
       .observeForControllerAction()
       .observeValues { [weak self] intent in
@@ -362,35 +356,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
   }
 
   // MARK: - Functions
-
-  private func configureHeaderView(with title: String) {
-    let headerContainer = UIView(frame: .zero)
-      |> \.backgroundColor .~ .white
-      |> \.accessibilityLabel .~ title
-      |> \.accessibilityTraits .~ .header
-      |> \.isAccessibilityElement .~ true
-      |> \.layoutMargins %~~ { _, _ in
-        self.view.traitCollection.isRegularRegular
-          ? .init(top: Styles.grid(4), left: Styles.grid(30), bottom: Styles.grid(2), right: Styles.grid(30))
-          : .init(top: Styles.grid(4), left: Styles.grid(2), bottom: Styles.grid(2), right: Styles.grid(2))
-      }
-
-    _ = self.headerLabel
-      |> \.text .~ title
-
-    _ = (self.headerLabel, headerContainer)
-      |> ksr_addSubviewToParent()
-
-    self.tableView.tableHeaderView = headerContainer
-
-    _ = (self.headerLabel, headerContainer)
-      |> ksr_constrainViewToMarginsInParent()
-
-    let widthConstraint = self.headerLabel.widthAnchor.constraint(equalTo: self.tableView.widthAnchor)
-      |> \.priority .~ .defaultHigh
-
-    NSLayoutConstraint.activate([widthConstraint])
-  }
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController, shareContextView: UIView?) {
     controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in

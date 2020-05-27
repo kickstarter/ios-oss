@@ -238,6 +238,7 @@
 "Happening_newsletter" = "Suscríbete para recibir una combinación de nuevos proyectos, historias persuasivas e inspiración visual, que se entregan una vez (y algunas veces dos veces) por semana.";
 "Help" = "Ayuda";
 "Help_center" = "Centro de ayuda";
+"Help_local_businesses_keep_the_lights" = "Ayuda a que los negocios locales sigan activos durante los cierres producidos por el COVID-19.";
 "Hide_password" = "Ocultar contraseña";
 "Home" = "Inicio";
 "How_backers_found_your_project" = "Cómo encontraron tu proyecto los patrocinadores";
@@ -253,6 +254,7 @@
 "Individual_Emails" = "Notificaciones por correo electrónico individuales";
 "Info" = "Información";
 "Introduce_yourself" = "Preséntate";
+"Introducing_Lights_On" = "Presentamos \"Seguimos activos\"";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "Puede demorar hasta 24 horas recopilar tus datos. Cuando estén listos, te enviaremos instrucciones para descargar tus datos al correo electrónico asociado con esta cuenta. Si no recibes noticias nuestras, vuelve aquí e inténtalo de nuevo.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es una plataforma para dar vida a proyectos creativos.";
 "Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "Es una forma de dar vida a proyectos creativos.<a href=\"%{trust_link}\">Más información sobre las responsabilidades</a>";
@@ -261,7 +263,6 @@
 "Its_our_birthday" = "¡Cumplimos años! Más de 160.000 proyectos creativos se han hecho realidad en Kickstarter durante la última década, gracias al apoyo de más de 16.000.000 de patrocinadores.";
 "Join_a_fruitful_community" = "Únete a una comunidad fructífera";
 "Join_our_secret_society" = "Únete a nuestra sociedad secreta.";
-"Join_us_in_supporting_creative_work_for_its_own_sake_this_holiday_season" = "En esta temporada navideña, apoya con nosotros el trabajo creativo sin esperar nada a cambio.";
 "Joining_the_live_stream" = "Abriendo conexión a Live Stream";
 "Just_for_you" = "Sólo para ti.";
 "Keep_in_touch_after_your_campaign" = "Mantente en contacto después de tu campaña y planifica tu próximo proyecto.";
@@ -494,6 +495,7 @@
 "Ships_worldwide" = "Envíos a todo el mundo";
 "Show_me_projects" = "Múestrame proyectos";
 "Show_password" = "Mostrar contraseña";
+"Show_up_for_the_spaces_you_love" = "Apoya tus espacios culturales favoritos";
 "Shows_list_of_subcategories" = "Mostrar lista de subcategorías.";
 "Sign_up" = "Registrarse";
 "Sign_up_newsletter" = "Suscríbete a Nuestros favoritos para recibir una combinación semanal de proyectos destacados, seleccionados por el equipo de Kickstarter.";
@@ -514,6 +516,7 @@
 "Subscribes_to_upcoming_lives_streams" = "Activa subscripción a futuros Live-Streams.";
 "Successful_projects_have_been_created_on_kickstarter" = "Proyectos exitosos se han creado en Kickstarter.";
 "Support_creative_independence" = "Apoya la independencia creativa";
+"Support_creative_spaces_and_businesses_affected_by" = "Apoya espacios creativos y negocios afectados por el COVID-19.";
 "Survey" = "Cuestionario";
 "Tap_the_heart_on_a_project_to_get_notified" = "Haz clic en el icono de corazón de un proyecto para recibir una notificación 48 horas antes de que finalice.";
 "Tap_the_heart_on_each_project_page_to_save_it" = "Haz clic en el corazón en la página de cada proyecto para guardarlo. Te recordaremos 48 horas antes de que finalice el proyecto.";

@@ -238,6 +238,7 @@
 "Happening_newsletter" = "新しいプロジェクトや、感動的なストーリー、視覚的なインスピレーションなどが週に1回 (時には2回) 届くニュースレターにサインアップしましょう。";
 "Help" = "ヘルプ";
 "Help_center" = "ヘルプセンター";
+"Help_local_businesses_keep_the_lights" = "新型コロナウイルス感染症(COVID- 19)の影響により休業を強いられた地元のビジネスを支援しましょう。";
 "Hide_password" = "パスワードを非表示にする";
 "Home" = "ホーム";
 "How_backers_found_your_project" = "バッカ―があなたのプロジェクトを見つけた経緯";
@@ -253,6 +254,7 @@
 "Individual_Emails" = "個人メール";
 "Info" = "インフォメーション";
 "Introduce_yourself" = "自己紹介";
+"Introducing_Lights_On" = "新企画「Lights On」";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "データの収集には最大で24時間かかる場合があります。ダウンロードの準備が整いましたら、このアカウントに登録されているメールアドレス宛てにデータのダウンロード手順が記載されたメールをお送りします。メールが届かなかった場合には、お手数ですがこちらに戻って再試行してください。";
 "Its_a_way_to_bring_creative_projects_to_life" = "クリエイティブなプロジェクトを実現するためのプラットフォームです。";
 "Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "クリエイティブなプロジェクトに生命を吹き込む場です。<a href=\"%{trust_link}\">アカウンタビリティについて詳しくみる。</a>";
@@ -493,6 +495,7 @@
 "Ships_worldwide" = "世界各地へ配送";
 "Show_me_projects" = "プロジェクトを表示";
 "Show_password" = "パスワードを表示する";
+"Show_up_for_the_spaces_you_love" = "お気に入りの場所や団体のためにできること";
 "Shows_list_of_subcategories" = "サブカテゴリーリストを見せる。";
 "Sign_up" = "サインアップ。";
 "Sign_up_newsletter" = "Projects We Love に登録して、私たち Kickstarter チームが選別した注目プロジェクトに関する情報を週に1度受け取りましょう。";
@@ -513,6 +516,7 @@
 "Subscribes_to_upcoming_lives_streams" = "ライブ配信を購読";
 "Successful_projects_have_been_created_on_kickstarter" = "のプロジェクトが Kickstarter で作成されました。";
 "Support_creative_independence" = "クリエイティブな独立プロジェクトをサポートしよう";
+"Support_creative_spaces_and_businesses_affected_by" = "コロナ禍に影響を受けた文化スペースやクリエイティブなビジネスたちをサポートしましょう。近辺のプロジェクトを表示 ▸ ";
 "Survey" = "サーベイ";
 "Tap_the_heart_on_a_project_to_get_notified" = "終了48時間前に知らせるにはハートのアイコンをタップ！";
 "Tap_the_heart_on_each_project_page_to_save_it" = "ハートのアイコンを押して保存しましょう。終了48時間前に通知が届きます。";

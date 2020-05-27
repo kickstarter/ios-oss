@@ -38,15 +38,10 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
 
     self.ctaButtonTappedSignal
       .observeValues {
-        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags()
+        let optimizelyProps = optimizelyProperties() ?? [:]
 
-        try? AppEnvironment.current.optimizelyClient?
-          .track(
-            eventKey: "Get Started Button Clicked",
-            userId: deviceIdentifier(uuid: UUID()),
-            attributes: properties,
-            eventTags: eventTags
-          )
+        AppEnvironment.current.koala
+          .trackOnboardingGetStartedButtonClicked(optimizelyProperties: optimizelyProps)
       }
   }
 

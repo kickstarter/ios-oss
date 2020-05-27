@@ -254,14 +254,6 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testOptimizelyTracking() {
-    XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
-
-    self.vm.inputs.applicationDidEnterBackground()
-
-    XCTAssertEqual(self.optimizelyClient.trackedEventKey, "App Closed")
-  }
-
   // MARK: - AppCenter
 
   func testConfigureAppCenter_AlphaApp_LoggedOut() {
@@ -417,11 +409,11 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertEqual(["App Open", "Opened App"], trackingClient.events)
 
     self.vm.inputs.applicationDidEnterBackground()
-    XCTAssertEqual(["App Open", "Opened App", "App Close", "Closed App"], trackingClient.events)
+    XCTAssertEqual(["App Open", "Opened App"], trackingClient.events)
 
     self.vm.inputs.applicationWillEnterForeground()
     XCTAssertEqual(
-      ["App Open", "Opened App", "App Close", "Closed App", "App Open", "Opened App"],
+      ["App Open", "Opened App", "App Open", "Opened App"],
       trackingClient.events
     )
   }

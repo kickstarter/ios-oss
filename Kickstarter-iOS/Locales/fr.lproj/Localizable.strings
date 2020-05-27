@@ -238,6 +238,7 @@
 "Happening_newsletter" = "Inscrivez-vous pour recevoir une sélection de nouveaux projets, de témoignages et d'inspiration visuelle, une fois par semaine (et parfois deux).";
 "Help" = "Aide";
 "Help_center" = "Centre d'aide";
+"Help_local_businesses_keep_the_lights" = "À l'ère du COVID-19, les entreprises de votre région ont besoin de vous pour survire.";
 "Hide_password" = "Masquer le mot de passe";
 "Home" = "Accueil";
 "How_backers_found_your_project" = "Comment les contributeurs ont découvert votre projet";
@@ -253,6 +254,7 @@
 "Individual_Emails" = "E-mails individuels";
 "Info" = "Info";
 "Introduce_yourself" = "Présentez-vous ici.";
+"Introducing_Lights_On" = "Voici Lueurs d'espoir";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "La préparation de vos données personnelles peut prendre jusqu'à 24 heures. Nous vous enverrons des instructions de téléchargement à l'adresse e-mail associée à ce compte une fois que tout sera prêt. Si vous ne recevez rien, revenez ici pour réessayer.";
 "Its_a_way_to_bring_creative_projects_to_life" = "C'est un outil qui permet de donner vie à des projets créatifs.";
 "Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "Notre plateforme est un moyen de faire vivre des projets créatifs. <a href=\"%{trust_link}\">En savoir plus sur la notion de responsabilité</a>";
@@ -493,6 +495,7 @@
 "Ships_worldwide" = "Livraison dans le monde entier";
 "Show_me_projects" = "Montrez-moi des projets";
 "Show_password" = "Afficher le mot de passe";
+"Show_up_for_the_spaces_you_love" = "Soutenez vos espaces culturels préférés.";
 "Shows_list_of_subcategories" = "Affiche la liste des sous-catégories.";
 "Sign_up" = "Inscription";
 "Sign_up_newsletter" = "Inscrivez-vous à Coups de cœur pour recevoir une sélection hebdomadaire de projets marquants qui nous ont plu.";
@@ -513,7 +516,7 @@
 "Subscribes_to_upcoming_lives_streams" = "Abonnement aux diffusions en direct à venir.";
 "Successful_projects_have_been_created_on_kickstarter" = "Le nombre total de projets intégralement financés sur Kickstarter.";
 "Support_creative_independence" = "Soutenez l'indépendance créative";
-"Support_the_project_for_no_reward" = "Soutenez un projet simplement parce qu'il vous parle, sans choisir de récompense.";
+"Support_creative_spaces_and_businesses_affected_by" = "Les entreprises et les espaces créatifs touchés par le COVID-19 ont besoin de vous.";
 "Survey" = "Questionnaire";
 "Tap_the_heart_on_a_project_to_get_notified" = "Cliquez sur l'icône en forme de cœur située à côté du projet pour recevoir une notification 48 avant la fin de la campagne.";
 "Tap_the_heart_on_each_project_page_to_save_it" = "Cliquez sur le cœur qui apparaît sur la page du projet pour l'ajouter à vos favoris. Nous vous enverrons un petit rappel 48 heures avant la fin de la campagne.";

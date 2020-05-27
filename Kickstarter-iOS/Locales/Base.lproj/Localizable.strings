@@ -238,6 +238,7 @@
 "Happening_newsletter" = "Sign up to receive a mix of new projects, compelling stories, and visual inspiration, delivered once (and sometimes twice) a week.";
 "Help" = "Help";
 "Help_center" = "Help Center";
+"Help_local_businesses_keep_the_lights" = "Help local businesses keep the lights on during COVID-19 closures.";
 "Hide_password" = "Hide password";
 "Home" = "Home";
 "How_backers_found_your_project" = "How backers found your project";
@@ -253,6 +254,7 @@
 "Individual_Emails" = "Individual emails";
 "Info" = "Info";
 "Introduce_yourself" = "Introduce yourself";
+"Introducing_Lights_On" = "Introducing Lights On";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "It may take up to 24 hours to collect your data. When it’s ready, we’ll send instructions to download your data to the email associated with this account. If you don’t hear from us, come back here to try again.";
 "Its_a_way_to_bring_creative_projects_to_life" = "It's a way to bring creative projects to life.";
 "Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "It's a way to bring creative projects to life. <a href=\"%{trust_link}\">Learn more about accountability</a>";
@@ -493,6 +495,7 @@
 "Ships_worldwide" = "Ships worldwide";
 "Show_me_projects" = "Show me projects";
 "Show_password" = "Show password";
+"Show_up_for_the_spaces_you_love" = "Show up for the spaces you love";
 "Shows_list_of_subcategories" = "Shows list of subcategories.";
 "Sign_up" = "Sign up";
 "Sign_up_newsletter" = "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team.";
@@ -513,6 +516,7 @@
 "Subscribes_to_upcoming_lives_streams" = "Subscribes to upcoming live streams.";
 "Successful_projects_have_been_created_on_kickstarter" = "Successful projects have been created on Kickstarter.";
 "Support_creative_independence" = "Support creative independence";
+"Support_creative_spaces_and_businesses_affected_by" = "Support creative spaces and businesses affected by COVID-19.";
 "Survey" = "Survey";
 "Tap_the_heart_on_a_project_to_get_notified" = "Tap the heart icon on a project to get notified 48 hours before it ends.";
 "Tap_the_heart_on_each_project_page_to_save_it" = "Tap the heart on each project page to save it. We’ll remind you 48 hours before the project ends.";
