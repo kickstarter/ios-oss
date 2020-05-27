@@ -8,6 +8,9 @@ import XCTest
 
 final class DiscoveryProjectCardViewModelTests: TestCase {
   private let backerCountLabelBoldedString = TestObserver<String, Never>()
+  private let facepileAvatarURLStrings = TestObserver<[String], Never>()
+  private let facepileDescriptionText = TestObserver<String, Never>()
+  private let facepileViewHidden = TestObserver<Bool, Never>()
   private let backerCountLabelFullString = TestObserver<String, Never>()
   private let goalMetIconHidden = TestObserver<Bool, Never>()
   private let loadProjectTags = TestObserver<[DiscoveryProjectTagPillCellValue], Never>()
@@ -29,6 +32,10 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
     self.vm.outputs.backerCountLabelData.map(first).observe(self.backerCountLabelBoldedString.observer)
     self.vm.outputs.backerCountLabelData.map(second).observe(self.backerCountLabelFullString.observer)
+    self.vm.outputs.facepileViewData.map(first).map { $0.map(\.absoluteString) }
+      .observe(self.facepileAvatarURLStrings.observer)
+    self.vm.outputs.facepileViewData.map(second).observe(self.facepileDescriptionText.observer)
+    self.vm.outputs.facepileViewHidden.observe(self.facepileViewHidden.observer)
     self.vm.outputs.goalMetIconHidden.observe(self.goalMetIconHidden.observer)
     self.vm.outputs.loadProjectTags.observe(self.loadProjectTags.observer)
     self.vm.outputs.percentFundedLabelData.map(first).observe(self.percentFundedLabelBoldedString.observer)
@@ -340,5 +347,98 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
     self.vm.inputs.configure(with: (project, nil, nil))
 
     self.youreABackerViewHidden.assertValues([false])
+  }
+
+  func testFacepile_ZeroFriendsHaveBacked() {
+    self.facepileAvatarURLStrings.assertDidNotEmitValue()
+    self.facepileDescriptionText.assertDidNotEmitValue()
+    self.facepileViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (Project.template, nil, nil))
+
+    self.facepileViewHidden.assertValues([true])
+    self.facepileAvatarURLStrings.assertDidNotEmitValue()
+    self.facepileDescriptionText.assertDidNotEmitValue()
+  }
+
+  func testFacepile_OneFriendHasBacked() {
+    let project = Project.template
+      |> \.personalization.friends .~ [User.brando]
+
+    self.facepileAvatarURLStrings.assertDidNotEmitValue()
+    self.facepileDescriptionText.assertDidNotEmitValue()
+    self.facepileViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, nil, nil))
+
+    self.facepileViewHidden.assertValues([false])
+    self.facepileDescriptionText.assertValues(["Brandon Williams is a backer"])
+    self.facepileAvatarURLStrings.assertValues([[User.brando.avatar.small]])
+  }
+
+  func testFacepile_TwoFriendsHaveBacked() {
+    let project = Project.template
+      |> \.personalization.friends .~ [User.brando, User.template]
+
+    self.facepileAvatarURLStrings.assertDidNotEmitValue()
+    self.facepileDescriptionText.assertDidNotEmitValue()
+    self.facepileViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, nil, nil))
+
+    self.facepileViewHidden.assertValues([false])
+    self.facepileDescriptionText.assertValues(["Brandon Williams and 1 other"])
+    self.facepileAvatarURLStrings.assertValues([[User.brando.avatar.small, User.template.avatar.small]])
+  }
+
+  func testFacepile_ThreeFriendsHaveBacked() {
+    let otherFriend = User.brando
+      |> \.id .~ 123
+      |> \.name .~ "Other"
+      |> \.avatar.small .~ "www.avatar.com"
+
+    let project = Project.template
+      |> \.personalization.friends .~ [User.brando, User.template, otherFriend]
+
+    self.facepileAvatarURLStrings.assertDidNotEmitValue()
+    self.facepileDescriptionText.assertDidNotEmitValue()
+    self.facepileViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, nil, nil))
+
+    self.facepileViewHidden.assertValues([false])
+    self.facepileDescriptionText.assertValues(["Brandon Williams and 2 others"])
+    self.facepileAvatarURLStrings.assertValues([[
+      User.brando.avatar.small,
+      User.template.avatar.small,
+      otherFriend.avatar.small
+    ]])
+  }
+
+  func testFacepile_MoreThanThreeFriendsHaveBacked() {
+    let otherFriend = User.brando
+      |> \.name .~ "Other"
+      |> \.avatar.small .~ "www.avatar.com"
+
+    let fourthFriend = User.brando
+      |> \.name .~ "Fourth"
+      |> \.avatar.small .~ "www.avatar-fourth.com"
+
+    let project = Project.template
+      |> \.personalization.friends .~ [User.brando, User.template, otherFriend, fourthFriend]
+
+    self.facepileAvatarURLStrings.assertDidNotEmitValue()
+    self.facepileDescriptionText.assertDidNotEmitValue()
+    self.facepileViewHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, nil, nil))
+
+    self.facepileViewHidden.assertValues([false])
+    self.facepileDescriptionText.assertValues(["Brandon Williams and 3 others"])
+    self.facepileAvatarURLStrings.assertValues([[
+      User.brando.avatar.small,
+      User.template.avatar.small,
+      otherFriend.avatar.small
+    ]])
   }
 }
