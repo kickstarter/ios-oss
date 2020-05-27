@@ -391,10 +391,14 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
         equalTo: self.cardContainerView.leftAnchor,
         constant: Styles.grid(3)
       ),
-      self.saveButton.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor,
-                                           constant: Styles.grid(2)),
-      self.saveButton.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor,
-                                             constant: -Styles.grid(2)),
+      self.saveButton.topAnchor.constraint(
+        equalTo: self.cardContainerView.topAnchor,
+        constant: Styles.grid(2)
+      ),
+      self.saveButton.rightAnchor.constraint(
+        equalTo: self.cardContainerView.rightAnchor,
+        constant: -Styles.grid(2)
+      ),
       self.projectStatusContainerView.topAnchor.constraint(
         equalTo: self.cardContainerView.topAnchor,
         constant: Styles.grid(2)
@@ -611,6 +615,8 @@ private let youreABackerLabelStyle: LabelStyle = { label in
     |> \.textColor .~ UIColor.white
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
-    |> \.text %~ { _ in localizedString(key: "Youre_a_backer_no_punctuation",
-                                        defaultValue: "You're a backer") }
+    |> \.text %~ { _ in localizedString(
+      key: "Youre_a_backer_no_punctuation",
+      defaultValue: "You're a backer"
+    ) }
 }

@@ -55,7 +55,7 @@ class ThanksViewControllerTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
         OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
-    ]
+      ]
 
     combos(Language.allLanguages, Device.allCases).forEach {
       language, device in

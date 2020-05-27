@@ -301,10 +301,12 @@ final class ThanksViewModelTests: TestCase {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
         OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
-    ]
+      ]
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response),
-                    optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(
+      apiService: MockService(fetchDiscoveryResponse: response),
+      optimizelyClient: mockOptimizelyClient
+    ) {
       self.vm.inputs.configure(with: (Project.template, Reward.template, nil))
       self.vm.inputs.viewDidLoad()
 
