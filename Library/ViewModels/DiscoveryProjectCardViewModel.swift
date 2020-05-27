@@ -179,27 +179,30 @@ private func facepileData(for friendsList: [User]) -> FacepileViewData? {
 
   let avatars = friendsList.prefix(3).map(\.avatar.small).compactMap(URL.init(string:))
 
-  var description: String = ""
+  let description: String
 
-  if friendsList.count == 1 {
+  switch friendsList.count {
+  case 1:
     description = localizedString(
       key: "social_friend_is_a_backer",
       defaultValue: "\(friendsList[0].name) is a backer"
     )
-  } else if friendsList.count == 2 {
+  case 2:
     let remainingCount = max(0, friendsList.count - 1)
 
     description = localizedString(
       key: "social_friend_and_singular_other",
       defaultValue: "\(friendsList[0].name) and \(remainingCount) other"
     )
-  } else if friendsList.count > 2 {
+  case let count where count > 2:
     let remainingCount = max(0, friendsList.count - 1)
 
     description = localizedString(
       key: "social_friend_and_plural_other",
       defaultValue: "\(friendsList[0].name) and \(remainingCount) others"
     )
+  default:
+    description = ""
   }
 
   return (avatars, description)
