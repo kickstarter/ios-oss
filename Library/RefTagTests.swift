@@ -197,7 +197,7 @@ public final class RefTagTests: XCTestCase {
     let discoStarred = DiscoveryParams.defaults
       |> DiscoveryParams.lens.starred .~ true
     let discoCollection = DiscoveryParams.defaults
-      |> DiscoveryParams.lens.tagId .~ .goRewardless
+      |> DiscoveryParams.lens.tagId .~ .lightsOn
 
     XCTAssertEqual("discovery_ending_soon", RefTag.fromParams(discoSort).stringTag)
     XCTAssertEqual("category_ending_soon", RefTag.fromParams(discoCategory).stringTag)
@@ -205,6 +205,6 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual("recommended_home", RefTag.fromParams(discoPWL).stringTag)
     XCTAssertEqual("social_home", RefTag.fromParams(discoSocial).stringTag)
     XCTAssertEqual("starred_home", RefTag.fromParams(discoStarred).stringTag)
-    XCTAssertEqual("ios_project_collection_tag_518", RefTag.fromParams(discoCollection).stringTag)
+    XCTAssertEqual("ios_project_collection_tag_557", RefTag.fromParams(discoCollection).stringTag)
   }
 }

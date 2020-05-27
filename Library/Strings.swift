@@ -3969,6 +3969,23 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
+   "Help local businesses keep the lights on during COVID-19 closures."
+
+   - **en**: "Help local businesses keep the lights on during COVID-19 closures."
+   - **de**: "Mit deiner Hilfe gehen bei lokalen Geschäften während COVID-19 nicht die Lichter aus."
+   - **es**: "Ayuda a que los negocios locales sigan activos durante los cierres producidos por el COVID-19."
+   - **fr**: "À l'ère du COVID-19, les entreprises de votre région ont besoin de vous pour survire."
+   - **ja**: "新型コロナウイルス感染症(COVID- 19)の影響により休業を強いられた地元のビジネスを支援しましょう。"
+  */
+  public static func Help_local_businesses_keep_the_lights() -> String {
+    return localizedString(
+      key: "Help_local_businesses_keep_the_lights",
+      defaultValue: "Help local businesses keep the lights on during COVID-19 closures.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Hide password"
 
    - **en**: "Hide password"
@@ -4220,6 +4237,23 @@ Haz clic para volver a intentarlo."
     return localizedString(
       key: "Introduce_yourself",
       defaultValue: "Introduce yourself",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Introducing Lights On"
+
+   - **en**: "Introducing Lights On"
+   - **de**: "Introducing Lights On"
+   - **es**: "Presentamos "Seguimos activos""
+   - **fr**: "Introducing Lights On"
+   - **ja**: "Introducing Lights On"
+  */
+  public static func Introducing_Lights_On() -> String {
+    return localizedString(
+      key: "Introducing_Lights_On",
+      defaultValue: "Introducing Lights On",
       count: nil,
       substitutions: [:]
     )
@@ -8039,6 +8073,23 @@ daring ideas."
     )
   }
   /**
+   "Show up for the spaces you love"
+
+   - **en**: "Show up for the spaces you love"
+   - **de**: "Zeige deinen Lieblingslokalen deine Solidarität"
+   - **es**: "Apoya tus espacios culturales favoritos"
+   - **fr**: "Soutenez vos espaces culturels préférés."
+   - **ja**: "お気に入りの場所や団体のためにできること"
+  */
+  public static func Show_up_for_the_spaces_you_love() -> String {
+    return localizedString(
+      key: "Show_up_for_the_spaces_you_love",
+      defaultValue: "Show up for the spaces you love",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Shows list of subcategories."
 
    - **en**: "Shows list of subcategories."
@@ -8376,6 +8427,23 @@ catch your eye?"
     return localizedString(
       key: "Support_creative_independence",
       defaultValue: "Support creative independence",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Support creative spaces and businesses affected by COVID-19."
+
+   - **en**: "Support creative spaces and businesses affected by COVID-19."
+   - **de**: "Unterstütze kreative Lokale und Geschäfte, ddie von COVID-19 betroffen sind."
+   - **es**: "Apoya espacios creativos y negocios afectados por el COVID-19."
+   - **fr**: "Les entreprises et les espaces créatifs touchés par le COVID-19 ont besoin de vous."
+   - **ja**: "コロナ禍に影響を受けた文化スペースやクリエイティブなビジネスたちをサポートしましょう。近辺のプロジェクトを表示 ▸ "
+  */
+  public static func Support_creative_spaces_and_businesses_affected_by() -> String {
+    return localizedString(
+      key: "Support_creative_spaces_and_businesses_affected_by",
+      defaultValue: "Support creative spaces and businesses affected by COVID-19.",
       count: nil,
       substitutions: [:]
     )

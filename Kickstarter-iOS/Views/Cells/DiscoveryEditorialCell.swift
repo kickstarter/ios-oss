@@ -16,7 +16,6 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 
   // MARK: - Properties
 
-  private let containerView = UIView(frame: .zero)
   private let editorialImageView = {
     UIImageView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -24,6 +23,11 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 
   private let editorialTitleLabel = UILabel(frame: .zero)
   private let editorialSubtitleLabel = UILabel(frame: .zero)
+  private let leftColumnStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private let rootStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -35,7 +39,6 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.configureViews()
-    self.setupConstraints()
     self.bindViewModel()
   }
 
@@ -83,43 +86,58 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
           ? .init(top: Styles.grid(2), left: Styles.grid(30), bottom: 0, right: Styles.grid(30))
           : .init(top: Styles.grid(2), left: Styles.grid(2), bottom: 0, right: Styles.grid(2))
       }
-
-    _ = self.containerView
-      |> containerViewStyle
+      |> \.isAccessibilityElement .~ true
+      |> \.accessibilityTraits .~ [UIAccessibilityTraits.button]
+      |> \.accessibilityLabel %~ { _ in Strings.Introducing_Lights_On() }
+      |> \.accessibilityHint %~ { _ in Strings.Support_creative_spaces_and_businesses_affected_by() }
 
     _ = self.rootStackView
       |> rootStackViewStyle
 
+    _ = self.leftColumnStackView
+      |> \.axis .~ .vertical
+      |> \.spacing .~ Styles.grid(2)
+
     _ = self.editorialImageView
+      |> roundedStyle(cornerRadius: Styles.grid(2))
       |> UIImageView.lens.contentMode .~ .scaleAspectFill
 
     _ = self.editorialTitleLabel
-      |> editorialLabelStyle
+      |> \.lineBreakMode .~ .byWordWrapping
+      |> \.numberOfLines .~ 0
+      |> \.textColor .~ .white
+      |> \.textAlignment .~ .left
       |> \.font .~ UIFont.ksr_title3().bolded
 
     _ = self.editorialSubtitleLabel
-      |> editorialLabelStyle
-      |> \.font .~ UIFont.ksr_callout()
+      |> \.lineBreakMode .~ .byWordWrapping
+      |> \.numberOfLines .~ 0
+      |> \.textColor .~ .white
+      |> \.textAlignment .~ .left
+      |> \.font .~ UIFont.ksr_callout().bolded
   }
 
   func configureWith(value: DiscoveryEditorialCellValue) {
     self.viewModel.inputs.configureWith(value)
+
+    self.layoutIfNeeded()
   }
 
   // MARK: - Configuration
 
   private func configureViews() {
-    _ = (self.containerView, self.contentView)
+    _ = (self.editorialImageView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    _ = (self.rootStackView, self.containerView)
+    _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
 
-    _ = (self.editorialImageView, self.containerView)
-      |> ksr_addSubviewToParent()
+    _ = ([self.leftColumnStackView, UIView()], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.editorialTitleLabel, self.editorialSubtitleLabel], self.rootStackView)
+    _ = ([self.editorialTitleLabel, self.editorialSubtitleLabel], self.leftColumnStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     let tapGestureRecognizer = UITapGestureRecognizer(
@@ -127,22 +145,7 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
       action: #selector(DiscoveryEditorialCell.editorialCellTapped)
     )
 
-    self.containerView.addGestureRecognizer(tapGestureRecognizer)
-  }
-
-  private func setupConstraints() {
-    NSLayoutConstraint.activate([
-      self.rootStackView.leftAnchor.constraint(equalTo: self.containerView.leftAnchor),
-      self.rootStackView.rightAnchor.constraint(equalTo: self.containerView.rightAnchor),
-      self.rootStackView.topAnchor.constraint(equalTo: self.containerView.topAnchor),
-      self.editorialImageView.leftAnchor.constraint(equalTo: self.containerView.leftAnchor),
-      self.editorialImageView.rightAnchor.constraint(equalTo: self.containerView.rightAnchor),
-      self.editorialImageView.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor),
-      self.editorialImageView.topAnchor.constraint(
-        equalTo: self.rootStackView.bottomAnchor,
-        constant: Styles.grid(1)
-      )
-    ])
+    self.addGestureRecognizer(tapGestureRecognizer)
   }
 
   // MARK: - Accessors
@@ -154,33 +157,9 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
 
 // MARK: - Styles
 
-private let containerViewStyle: ViewStyle = { view in
-  view
-    |> roundedStyle(cornerRadius: Styles.grid(2))
-    |> \.backgroundColor .~ .ksr_trust_700
-    |> \.isAccessibilityElement .~ true
-    |> \.accessibilityTraits .~ [UIAccessibilityTraits.button]
-    |> \.accessibilityLabel %~ { _ in Strings.Back_it_because_you_believe_in_it() }
-    |> \.accessibilityHint %~ { _ in Strings.Find_projects_that_speak_to_you() }
-}
-
-private let editorialLabelStyle: LabelStyle = { label in
-  label
-    |> \.lineBreakMode .~ .byWordWrapping
-    |> \.numberOfLines .~ 0
-    |> \.textColor .~ .white
-    |> \.textAlignment .~ .left
-}
-
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> \.axis .~ .vertical
-    |> \.spacing .~ Styles.grid(2)
+    |> \.distribution .~ .fillEqually
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets.init(
-      top: Styles.grid(3),
-      left: Styles.grid(3),
-      bottom: 0,
-      right: Styles.grid(3)
-    )
+    |> \.layoutMargins .~ .init(all: Styles.grid(2))
 }
