@@ -297,7 +297,9 @@ final class ThanksViewModelTests: TestCase {
   }
 
   func testRecommendationsProjects_ExperimentalVariant() {
-    let response = .template |> DiscoveryEnvelope.lens.projects .~ [Project.template]
+    let recommendedProject = Project.template
+      |> \.id .~ 3
+    let response = .template |> DiscoveryEnvelope.lens.projects .~ [recommendedProject]
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
         OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
@@ -312,7 +314,7 @@ final class ThanksViewModelTests: TestCase {
 
       scheduler.advance()
 
-      self.showRecommendationsProjects.assertValues([[Project.template]])
+      self.showRecommendationsProjects.assertValues([[recommendedProject]])
       self.showRecommendationsVariant.assertValues([.variant1])
     }
   }
