@@ -190,6 +190,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     _ = self.percentFundedLabel
       |> percentFundedLabelStyle
+      |> UIView.lens.contentCompressionResistancePriority(for: .horizontal) .~ .defaultLow
 
     _ = self.backersCountLabel
       |> backersCountLabelStyle
