@@ -46,8 +46,8 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
     self.percentFundedLabelData = project.map { project in
       if project.stats.goalMet {
         return (
-          localizedString(key: "Goal_met", defaultValue: "Goal met"),
-          localizedString(key: "Goal_met", defaultValue: "Goal met")
+          Strings.Goal_met(),
+          Strings.Goal_met()
         )
       }
 

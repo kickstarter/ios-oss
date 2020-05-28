@@ -722,8 +722,5 @@ private let youreABackerLabelStyle: LabelStyle = { label in
     |> \.textColor .~ UIColor.white
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
-    |> \.text %~ { _ in localizedString(
-      key: "Youre_a_backer_no_punctuation",
-      defaultValue: "You're a backer"
-    ) }
+    |> \.text %~ { _ in Strings.Youre_a_backer_no_punctuation() }
 }
