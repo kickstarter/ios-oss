@@ -230,6 +230,7 @@
 "Get_reminded_about_this_project" = "Envie de recevoir un rappel à propos de ce projet ?";
 "Get_started" = "Démarrer";
 "Go_to_project_page" = "Accéder à la page de projet";
+"Goal_met" = "Objectif atteint";
 "Got_it" = "Super.";
 "Got_it_your_changes_have_been_saved" = "C'est bon, vos modifications ont été enregistrées.";
 "Got_it_your_survey_response_has_been_submitted" = "Merci ! Vos réponses au questionnaire ont bien été envoyées.";
@@ -387,6 +388,7 @@
 "Private_profile" = "Profil privé";
 "Private_profile_more_info" = "Plus d'informations sur le profil privé";
 "Private_profile_more_info_content" = "Par défaut, les profils Kickstarter sont privés. Pour rendre votre profil public et visible par tout le monde, décochez cette case.";
+"Processing" = "Traitement en cours...";
 "Project_Cancelled" = "Projet annulé.";
 "Project_Suspended" = "Projet suspendu.";
 "Project_activity" = "Activité de mon projet";
@@ -643,6 +645,7 @@
 "Your_shipping_destination" = "Destination d'expédition";
 "Your_shipping_location" = "Votre destination de livraison";
 "Youre_a_backer" = "Vous êtes contributeur !";
+"Youre_a_backer_no_punctuation" = "Vous êtes contributeur";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail que vous utilisez sur Facebook. Veuillez confirmer avant de continuer.";
 "Youre_all_set" = "C'est tout bon";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Vous êtes connecté par Facebook (%{email}). Si vous souhaitez modifier vos identifiants Kickstarter, veuillez définir le mot de passe de ce compte.";

@@ -569,18 +569,18 @@ public enum Strings {
     )
   }
   /**
-   "AppleID"
+   "Apple ID"
 
-   - **en**: "AppleID"
-   - **de**: "AppleID"
+   - **en**: "Apple ID"
+   - **de**: "Apple ID"
    - **es**: "Apple ID"
    - **fr**: "Apple ID"
-   - **ja**: "AppleID"
+   - **ja**: "Apple ID"
   */
   public static func Apple_ID() -> String {
     return localizedString(
       key: "Apple_ID",
-      defaultValue: "AppleID",
+      defaultValue: "Apple ID",
       count: nil,
       substitutions: [:]
     )
@@ -3833,6 +3833,23 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
+   "Goal met"
+
+   - **en**: "Goal met"
+   - **de**: "Finanzierungsziel erreicht"
+   - **es**: "Meta cumplida"
+   - **fr**: "Objectif atteint"
+   - **ja**: "Goal met"
+  */
+  public static func Goal_met() -> String {
+    return localizedString(
+      key: "Goal_met",
+      defaultValue: "Goal met",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Got it"
 
    - **en**: "Got it"
@@ -4924,18 +4941,18 @@ with friends."
     )
   }
   /**
-   "Manage this account in your AppleID settings."
+   "Manage this account in your Apple ID settings."
 
-   - **en**: "Manage this account in your AppleID settings."
-   - **de**: "Manage this account in your AppleID settings."
+   - **en**: "Manage this account in your Apple ID settings."
+   - **de**: "Verwalte dieses Konto in deinen Apple ID-Einstellungen."
    - **es**: "Administra esta cuenta desde la configuración de tu Apple ID."
    - **fr**: "Gérez ce compte depuis vos paramètres Apple ID."
-   - **ja**: "Manage this account in your AppleID settings."
+   - **ja**: "Apple ID の設定からこのアカウントを管理。"
   */
   public static func Manage_this_account() -> String {
     return localizedString(
       key: "Manage_this_account",
-      defaultValue: "Manage this account in your AppleID settings.",
+      defaultValue: "Manage this account in your Apple ID settings.",
       count: nil,
       substitutions: [:]
     )
@@ -6435,6 +6452,23 @@ n'ont rien soutenu."
     return localizedString(
       key: "Private_profile_more_info_content",
       defaultValue: "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Processing..."
+
+   - **en**: "Processing..."
+   - **de**: "Verarbeitung läuft..."
+   - **es**: "Procesando..."
+   - **fr**: "Traitement en cours..."
+   - **ja**: "アップロード中"
+  */
+  public static func Processing() -> String {
+    return localizedString(
+      key: "Processing",
+      defaultValue: "Processing...",
       count: nil,
       substitutions: [:]
     )
@@ -10575,6 +10609,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "Youre_a_backer",
       defaultValue: "You’re a backer!",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You're a backer"
+
+   - **en**: "You're a backer"
+   - **de**: "Du bist ein Unterstützer"
+   - **es**: "Eres patrocinador"
+   - **fr**: "Vous êtes contributeur"
+   - **ja**: "バック中"
+  */
+  public static func Youre_a_backer_no_punctuation() -> String {
+    return localizedString(
+      key: "Youre_a_backer_no_punctuation",
+      defaultValue: "You're a backer",
       count: nil,
       substitutions: [:]
     )
