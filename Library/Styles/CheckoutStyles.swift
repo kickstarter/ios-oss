@@ -40,14 +40,6 @@ public enum CheckoutConstants {
     public enum Layout {
       public static let width: CGFloat = 294
     }
-
-    public enum Transition {
-      public enum DepressAnimation {
-        public static let scaleFactor: CGFloat = 0.975
-        public static let duration: TimeInterval = 0.0967
-        public static let longPressMinimumDuration: TimeInterval = 0.001
-      }
-    }
   }
 
   public enum PaymentSource {

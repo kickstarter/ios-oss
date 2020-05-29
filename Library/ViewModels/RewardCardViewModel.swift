@@ -166,11 +166,6 @@ private func backingReward(fromProject project: Project) -> Reward? {
 }
 
 private func localizedDescription(project: Project, reward: Reward) -> String {
-  if featureGoRewardlessIsEnabled(),
-    reward.isNoReward, !userIsBacking(reward: reward, inProject: project) {
-    return Strings.This_holiday_season_support_a_project_for_no_reward()
-  }
-
   guard project.personalization.isBacking == true else {
     return reward.isNoReward ? Strings.Back_it_because_you_believe_in_it() : reward.description
   }
@@ -185,11 +180,6 @@ private func localizedDescription(project: Project, reward: Reward) -> String {
 }
 
 private func rewardTitle(project: Project, reward: Reward) -> String {
-  if featureGoRewardlessIsEnabled(),
-    reward.isNoReward, !userIsBacking(reward: reward, inProject: project) {
-    return Strings.Back_it_because_you_believe_in_it()
-  }
-
   guard project.personalization.isBacking == true else {
     return reward.isNoReward ? Strings.Pledge_without_a_reward() : reward.title.coalesceWith("")
   }

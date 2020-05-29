@@ -2,7 +2,7 @@ import Foundation
 import KsApi
 
 public enum OptimizelyExperiment {
-  public enum Key: String {
+  public enum Key: String, CaseIterable {
     case nativeOnboarding = "native_onboarding_series_new_backers"
     case pledgeCTACopy = "pledge_cta_copy"
     case onboardingCategoryPersonalizationFlow = "onboarding_category_personalization_flow"
@@ -29,5 +29,16 @@ extension OptimizelyExperiment {
         for: OptimizelyExperiment.Key.nativeProjectPageCampaignDetails,
         userAttributes: optimizelyUserAttributes(with: project, refTag: refTag)
       ) ?? .control
+  }
+
+  // Returns variation via getVariation for native_project_cards experiment
+  static func nativeProjectCardsExperimentVariant() -> OptimizelyExperiment.Variant {
+    guard let optimizelyClient = AppEnvironment.current.optimizelyClient else {
+      return .control
+    }
+
+    let variant = optimizelyClient.getVariation(for: OptimizelyExperiment.Key.nativeProjectCards.rawValue)
+
+    return variant
   }
 }

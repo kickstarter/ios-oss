@@ -141,14 +141,14 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       |> \.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular ?
           .init(
-            top: Styles.grid(2),
+            top: Styles.grid(1),
             left: Styles.grid(30),
-            bottom: 0,
+            bottom: Styles.grid(1),
             right: Styles.grid(30)
           ) : .init(
-            top: Styles.grid(2),
+            top: Styles.grid(1),
             left: Styles.grid(2),
-            bottom: 0,
+            bottom: Styles.grid(1),
             right: Styles.grid(2)
           )
       }
@@ -430,10 +430,14 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
         equalTo: self.cardContainerView.leftAnchor,
         constant: Styles.grid(3)
       ),
-      self.saveButton.heightAnchor.constraint(equalToConstant: Styles.minTouchSize.height),
-      self.saveButton.widthAnchor.constraint(equalToConstant: Styles.minTouchSize.width),
-      self.saveButton.topAnchor.constraint(equalTo: self.cardContainerView.topAnchor),
-      self.saveButton.rightAnchor.constraint(equalTo: self.cardContainerView.rightAnchor),
+      self.saveButton.topAnchor.constraint(
+        equalTo: self.cardContainerView.topAnchor,
+        constant: Styles.grid(2)
+      ),
+      self.saveButton.rightAnchor.constraint(
+        equalTo: self.cardContainerView.rightAnchor,
+        constant: -Styles.grid(2)
+      ),
       self.projectStatusContainerView.topAnchor.constraint(
         equalTo: self.cardContainerView.topAnchor,
         constant: Styles.grid(2)
@@ -493,7 +497,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   }
 
   private func updateCollectionViewConstraints() {
-    self.tagsCollectionView.layoutIfNeeded()
+    self.layoutIfNeeded()
 
     self.tagsCollectionViewHeightConstraint?.constant = self.tagsCollectionView.contentSize.height
 
