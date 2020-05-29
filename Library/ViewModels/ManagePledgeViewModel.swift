@@ -36,7 +36,9 @@ public protocol ManagePledgeViewModelOutputs {
   var goToRewards: Signal<Project, Never> { get }
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
   var notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never> { get }
+  var pullToRefreshStackViewHidden: Signal<Bool, Never> { get }
   var rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never> { get }
+  var rightBarButtonItemHidden: Signal<Bool, Never> { get }
   var rootStackViewHidden: Signal<Bool, Never> { get }
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
@@ -64,13 +66,25 @@ public final class ManagePledgeViewModel:
       self.beginRefreshSignal
     )
 
-    let fetchProjectEvent = projectOrParam
+    // Keep track of whether the project has successfully loaded at least once.
+    let projectLoaded = MutableProperty<Bool>(false)
+
+    let shouldFetchProjectWithProjectOrParam = Signal.merge(
+      projectOrParam,
+      projectOrParam.takeWhen(shouldBeginRefresh)
+    )
+
+    let fetchProjectEvent = shouldFetchProjectWithProjectOrParam
+      // Only fetch the project if it hasn't yet succeeded, to avoid this call occurring with each refresh.
+      .filter { [projectLoaded] _ in projectLoaded.value == false }
       .switchMap { projectOrParam in
         fetchProject(projectOrParam: projectOrParam)
           .materialize()
       }
 
     let project = fetchProjectEvent.values()
+      // Once we know we have a project value, keep track of that.
+      .on(value: { [projectLoaded] _ in projectLoaded.value = true })
 
     let shouldFetchGraphBackingWithProject = Signal.merge(
       project,
@@ -93,10 +107,19 @@ public final class ManagePledgeViewModel:
     let backing = graphBackingEnvelope
       .map { $0.backing }
 
-    self.endRefreshing = graphBackingEvent
+    let endRefreshingWhenProjectFailed = fetchProjectEvent.errors()
+      .ignoreValues()
+
+    let endRefreshingWhenBackingCompleted = graphBackingEvent
       .filter { $0.isTerminating }
       .ksr_delay(.milliseconds(300), on: AppEnvironment.current.scheduler)
       .ignoreValues()
+
+    self.endRefreshing = Signal.merge(
+      endRefreshingWhenProjectFailed,
+      endRefreshingWhenBackingCompleted
+    )
+    .ignoreValues()
 
     let projectAndReward = project
       .filterMap { project in
@@ -116,14 +139,31 @@ public final class ManagePledgeViewModel:
       .map { project, env in managePledgeSummaryViewData(with: project, envelope: env) }
       .skipNil()
 
+    let projectOrBackingFailedToLoad = Signal.merge(
+      fetchProjectEvent.map { $0.error as Error? },
+      graphBackingEvent.map { $0.error as Error? }
+    )
+    .filter(isNotNil)
+
+    self.pullToRefreshStackViewHidden = Signal.merge(
+      projectOrParam.mapConst(true),
+      backing.mapConst(true),
+      projectOrBackingFailedToLoad
+        .take(until: backing.ignoreValues())
+        .mapConst(false)
+    )
+    .skipRepeats()
+
     self.rootStackViewHidden = Signal.merge(
       projectOrParam.mapConst(true),
       Signal.zip(backing, self.endRefreshing).mapConst(false)
     )
     .skipRepeats()
 
+    self.rightBarButtonItemHidden = self.rootStackViewHidden
+
     self.startRefreshing = Signal.merge(
-      project.ignoreValues(),
+      projectOrParam.ignoreValues(),
       shouldBeginRefresh.ignoreValues()
     )
 
@@ -272,8 +312,10 @@ public final class ManagePledgeViewModel:
   public let goToFixPaymentMethod: Signal<(Project, Reward), Never>
   public let goToRewards: Signal<Project, Never>
   public let goToUpdatePledge: Signal<(Project, Reward), Never>
+  public let pullToRefreshStackViewHidden: Signal<Bool, Never>
   public let notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never>
   public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
+  public let rightBarButtonItemHidden: Signal<Bool, Never>
   public let rootStackViewHidden: Signal<Bool, Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let showSuccessBannerWithMessage: Signal<String, Never>

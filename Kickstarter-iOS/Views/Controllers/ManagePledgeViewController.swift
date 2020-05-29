@@ -63,6 +63,19 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var pullToRefreshImageView: UIImageView = {
+    UIImageView(image: image(named: "icon--refresh-small"))
+  }()
+
+  private lazy var pullToRefreshLabel: UILabel = {
+    UILabel(frame: .zero)
+  }()
+
+  private lazy var pullToRefreshStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var refreshControl: UIRefreshControl = { UIRefreshControl() }()
 
   private lazy var rewardView: ManagePledgeRewardView = {
@@ -134,6 +147,18 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     _ = self.rootStackView
       |> checkoutRootStackViewStyle
 
+    _ = self.pullToRefreshLabel
+      |> \.text %~ { _ in localizedString(
+        key: "Something_went_wrong_pull_to_refresh",
+        defaultValue: "Something went wrong, pull to refresh."
+      )
+      }
+
+    _ = self.pullToRefreshStackView
+      |> \.axis .~ .vertical
+      |> \.spacing .~ Styles.grid(2)
+      |> \.alignment .~ .center
+
     _ = self.sectionSeparatorViews
       ||> separatorStyleDark
   }
@@ -143,9 +168,16 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.pullToRefreshStackView.rac.hidden = self.viewModel.outputs.pullToRefreshStackViewHidden
     self.rootStackView.rac.hidden = self.viewModel.outputs.rootStackViewHidden
     self.rewardReceivedViewController.view.rac.hidden =
       self.viewModel.outputs.rewardReceivedViewControllerViewIsHidden
+
+    self.viewModel.outputs.rightBarButtonItemHidden
+      .observeForUI()
+      .observeValues { [weak self] hidden in
+        self?.navigationItem.rightBarButtonItem = hidden ? nil : self?.menuButton
+      }
 
     self.viewModel.outputs.title
       .observeForUI()
@@ -266,7 +298,16 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
+      // rootStackView
+      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor),
+
+      // pullToRefreshStackView
+      self.pullToRefreshStackView.leftAnchor.constraint(equalTo: self.rootScrollView.leftAnchor),
+      self.pullToRefreshStackView.rightAnchor.constraint(equalTo: self.rootScrollView.rightAnchor),
+      self.pullToRefreshStackView.centerXAnchor.constraint(equalTo: self.rootScrollView.centerXAnchor),
+      self.pullToRefreshStackView.centerYAnchor.constraint(
+        equalTo: self.rootScrollView.centerYAnchor, constant: -Styles.grid(8)
+      )
     ])
 
     self.sectionSeparatorViews.forEach { view in
@@ -290,6 +331,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     _ = (self.rootStackView, self.rootScrollView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.pullToRefreshStackView, self.rootScrollView)
+      |> ksr_addSubviewToParent()
+
+    _ = ([self.pullToRefreshImageView, self.pullToRefreshLabel], self.pullToRefreshStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     let childViews: [UIView] = [
       self.pledgeSummarySectionViews,
@@ -462,21 +509,6 @@ extension ManagePledgeViewController: ManagePledgePaymentMethodViewDelegate {
 private let rootScrollViewStyle = { (scrollView: UIScrollView) in
   scrollView
     |> \.alwaysBounceVertical .~ true
-}
-
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.layoutMargins .~ .init(
-      top: Styles.grid(3),
-      left: Styles.grid(4),
-      bottom: Styles.grid(3),
-      right: Styles.grid(4)
-    )
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.distribution .~ UIStackView.Distribution.fill
-    |> \.alignment .~ UIStackView.Alignment.fill
-    |> \.spacing .~ Styles.grid(4)
 }
 
 extension ManagePledgeViewController: MessageDialogViewControllerDelegate {
