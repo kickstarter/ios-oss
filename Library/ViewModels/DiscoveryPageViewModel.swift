@@ -219,7 +219,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     let projectsData = paramsChanged.takePairWhen(projects)
       .map { params, projects -> ([Project], DiscoveryParams?, OptimizelyExperiment.Variant) in
-        let variant = nativeProjectCardsExperimentVariant()
+        let variant = OptimizelyExperiment.nativeProjectCardsExperimentVariant()
 
         return (projects, params, variant)
       }
@@ -230,7 +230,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     self.backgroundColor = self.viewWillAppearProperty.signal
       .map { _ in
-        let variant = nativeProjectCardsExperimentVariant()
+        let variant = OptimizelyExperiment.nativeProjectCardsExperimentVariant()
 
         switch variant {
         case .variant1:
@@ -648,14 +648,4 @@ private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {
   }
 
   return nil
-}
-
-private func nativeProjectCardsExperimentVariant() -> OptimizelyExperiment.Variant {
-  guard let optimizelyClient = AppEnvironment.current.optimizelyClient else {
-    return .control
-  }
-
-  let variant = optimizelyClient.getVariation(for: .nativeProjectCards)
-
-  return variant
 }
