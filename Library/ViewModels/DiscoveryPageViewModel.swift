@@ -347,10 +347,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       self.viewDidDisappearProperty.signal.mapConst(false)
     )
 
-    self.configureEditorialTableViewHeader = paramsChanged
-      .filter { $0.tagId == .goRewardless }
-      .map { _ in Strings.These_projects_could_use_your_support() }
-
     // MARK: - Editorial Header
 
     let filtersUpdated = self.sortProperty.signal.skipNil()
@@ -366,9 +362,9 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       }
 
     let cachedFeatureFlagValue = self.sortProperty.signal.skipNil()
-      .map { _ in featureGoRewardlessIsEnabled() }
-    let updatedFeatureFlagValue = self.configUpdatedProperty.signal.skipNil()
-      .map { _ in featureGoRewardlessIsEnabled() }
+      .map { _ in editorialLightsOnFeatureIsEnabled() }
+    let updatedFeatureFlagValue = self.optimizelyClientConfiguredProperty.signal
+      .map { _ in editorialLightsOnFeatureIsEnabled() }
 
     let latestFeatureFlagValue = Signal.merge(cachedFeatureFlagValue, updatedFeatureFlagValue)
       .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
@@ -382,10 +378,9 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         }
 
         return DiscoveryEditorialCellValue(
-          title: Strings.Back_it_because_you_believe_in_it(),
-          subtitle: Strings.Find_projects_that_speak_to_you(),
-          imageName: "go-rewardless-home",
-          tagId: .goRewardless
+          title: Strings.Introducing_Lights_On(),
+          subtitle: Strings.Support_creative_spaces_and_businesses_affected_by(),
+          imageName: "lights-on", tagId: .lightsOn
         )
       }.skipRepeats()
 
@@ -431,30 +426,35 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     requestFirstPageWith
       .observeValues { params in
-        AppEnvironment.current.koala.trackDiscovery(params: params)
+        let optimizelyProps = optimizelyProperties() ?? [:]
+
+        AppEnvironment.current.koala.trackDiscovery(
+          params: params,
+          optimizelyProperties: optimizelyProps
+        )
       }
 
     let personalizationCellTappedAndRefTag = self.personalizationCellTappedProperty.signal
       .mapConst(RefTag.onboarding)
 
-    Signal.merge(
-      self.discoveryEditorialCellTappedWithValueProperty.signal.skipNil()
-        .map { RefTag.projectCollection($0) },
-      personalizationCellTappedAndRefTag
+    let editorialCellTappedAndRefTag = self.discoveryEditorialCellTappedWithValueProperty.signal
+      .skipNil()
+      .map { RefTag.projectCollection($0) }
+
+    let editorialOrPersonaliztionCardTappedAndRefTag = Signal.merge(
+      personalizationCellTappedAndRefTag,
+      editorialCellTappedAndRefTag
     )
-    .observeValues { refTag in
-      AppEnvironment.current.koala.trackEditorialHeaderTapped(refTag: refTag)
-    }
 
-    personalizationCellTappedAndRefTag
-      .observeValues { refTag in
-        let attributes = optimizelyUserAttributes(refTag: refTag)
+    requestFirstPageWith
+      .takePairWhen(editorialOrPersonaliztionCardTappedAndRefTag)
+      .observeValues { params, refTag in
+        let optimizelyProps = refTag == .onboarding ? optimizelyProperties() : nil
 
-        try? AppEnvironment.current.optimizelyClient?.track(
-          eventKey: "Editorial Card Clicked",
-          userId: deviceIdentifier(uuid: UUID()),
-          attributes: attributes,
-          eventTags: nil
+        AppEnvironment.current.koala.trackEditorialHeaderTapped(
+          params: params,
+          refTag: refTag,
+          optimizelyProperties: optimizelyProps ?? [:]
         )
       }
 
@@ -616,7 +616,7 @@ private func shouldShowPersonalization() -> Bool {
   }
 
   guard let variant = AppEnvironment.current.optimizelyClient?
-    .getVariation(for: .onboardingCategoryPersonalizationFlow) else {
+    .getVariation(for: OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue) else {
     return false
   }
 
@@ -648,4 +648,9 @@ private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {
   }
 
   return nil
+}
+
+private func editorialLightsOnFeatureIsEnabled() -> Bool {
+  return AppEnvironment.current.optimizelyClient?
+    .isFeatureEnabled(featureKey: OptimizelyFeature.Key.lightsOn.rawValue) ?? false
 }
