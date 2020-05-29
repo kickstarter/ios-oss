@@ -12,7 +12,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let activitiesForSample = TestObserver<[Activity], Never>()
   fileprivate let asyncReloadData = TestObserver<(), Never>()
   fileprivate let backgroundColor = TestObserver<UIColor, Never>()
-  fileprivate let configureEditorialTableViewHeader = TestObserver<String, Never>()
   fileprivate let dismissPersonalizationCell = TestObserver<Void, Never>()
   fileprivate let goToActivityProject = TestObserver<Project, Never>()
   fileprivate let goToActivityProjectRefTag = TestObserver<RefTag, Never>()
@@ -48,8 +47,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.activitiesForSample.observe(self.activitiesForSample.observer)
     self.vm.outputs.asyncReloadData.observe(self.asyncReloadData.observer)
     self.vm.outputs.backgroundColor.observe(self.backgroundColor.observer)
-    self.vm.outputs.configureEditorialTableViewHeader
-      .observe(self.configureEditorialTableViewHeader.observer)
     self.vm.outputs.dismissPersonalizationCell.observe(self.dismissPersonalizationCell.observer)
     self.vm.outputs.hideEmptyState.observe(self.hideEmptyState.observer)
     self.vm.outputs.goToActivityProject.map(first).observe(self.goToActivityProject.observer)

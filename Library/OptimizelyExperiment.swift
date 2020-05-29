@@ -37,7 +37,7 @@ extension OptimizelyExperiment {
       return .control
     }
 
-    let variant = optimizelyClient.getVariation(for: .nativeProjectCards)
+    let variant = optimizelyClient.getVariation(for: OptimizelyExperiment.Key.nativeProjectCards.rawValue)
 
     return variant
   }

@@ -81,8 +81,6 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Emits the background color for the view
   var backgroundColor: Signal<UIColor, Never> { get }
 
-  var configureEditorialTableViewHeader: Signal<String, Never> { get }
-
   /// Emits when the personalization cell should be deleted
   var dismissPersonalizationCell: Signal<Void, Never> { get }
 
@@ -361,15 +359,10 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         return sort == .magic && filterParams == DiscoveryViewModel.initialParams()
       }
 
-    let cachedFeatureFlagValue = self.sortProperty.signal.skipNil()
-      .map { _ in editorialLightsOnFeatureIsEnabled() }
-    let updatedFeatureFlagValue = self.optimizelyClientConfiguredProperty.signal
+    let featureFlagValue = self.sortProperty.signal.skipNil()
       .map { _ in editorialLightsOnFeatureIsEnabled() }
 
-    let latestFeatureFlagValue = Signal.merge(cachedFeatureFlagValue, updatedFeatureFlagValue)
-      .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
-
-    let updateEditorialHeader = Signal.combineLatest(editorialHeaderShouldShow, latestFeatureFlagValue)
+    let updateEditorialHeader = Signal.combineLatest(editorialHeaderShouldShow, featureFlagValue)
 
     self.showEditorialHeader = updateEditorialHeader
       .map { shouldShow, isEnabled in
@@ -576,7 +569,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let activitiesForSample: Signal<[Activity], Never>
   public let asyncReloadData: Signal<Void, Never>
   public let backgroundColor: Signal<UIColor, Never>
-  public let configureEditorialTableViewHeader: Signal<String, Never>
   public let dismissPersonalizationCell: Signal<Void, Never>
   public let goToActivityProject: Signal<(Project, RefTag), Never>
   public let goToCuratedProjects: Signal<[KsApi.Category], Never>
