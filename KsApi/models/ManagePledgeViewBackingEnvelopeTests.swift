@@ -42,6 +42,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "symbol": "$"
         ],
         "reward": [
+          "id": "reward-id",
           "name": "Everyday Carry",
           "backersCount": 593,
           "description": "For the typist who takes their keyboard everywhere.",
@@ -106,6 +107,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
 
       XCTAssertEqual(value.backing.shippingAmount, Money(amount: 17.0, currency: .usd, symbol: "$"))
 
+      XCTAssertEqual(value.backing.reward?.id, "reward-id")
       XCTAssertEqual(value.backing.reward?.name, "Everyday Carry")
       XCTAssertEqual(value.backing.reward?.backersCount, 593)
       XCTAssertEqual(
@@ -154,6 +156,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
         "location": nil,
         "shippingAmount": nil,
         "reward": [
+          "id": "reward-id",
           "name": "Everyday Carry",
           "backersCount": 593,
           "description": "For the typist who takes their keyboard everywhere.",
@@ -200,6 +203,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertNil(value.backing.location)
       XCTAssertNil(value.backing.shippingAmount)
 
+      XCTAssertEqual(value.backing.reward?.id, "reward-id")
       XCTAssertEqual(value.backing.reward?.name, "Everyday Carry")
       XCTAssertEqual(value.backing.reward?.backersCount, 593)
       XCTAssertEqual(
@@ -309,6 +313,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "state": "SUCCESSFUL"
         ],
         "reward": [
+          "id": "reward-id",
           "amount": [
             "amount": "1.0",
             "currency": "USD",
@@ -369,6 +374,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertNil(value.backing.location)
       XCTAssertEqual(value.backing.shippingAmount, Money(amount: 17.0, currency: .usd, symbol: "$"))
 
+      XCTAssertEqual(value.backing.reward?.id, "reward-id")
       XCTAssertEqual(value.backing.reward?.name, "Reward title")
       XCTAssertEqual(value.backing.reward?.backersCount, 1)
       XCTAssertEqual(value.backing.reward?.description, "Best description")
