@@ -8,6 +8,7 @@ final class GraphBackingTests: XCTestCase {
       "backings": {
         "nodes": [
           {
+            "id": "backing-id",
             "errorReason": "no_reason",
             "status": "errored",
             "project": {
@@ -31,6 +32,7 @@ final class GraphBackingTests: XCTestCase {
 
       let backing = envelope.backings.nodes.first
 
+      XCTAssertEqual("backing-id", backing?.id)
       XCTAssertEqual("no_reason", backing?.errorReason)
       XCTAssertEqual(GraphBacking.Status.errored, backing?.status)
 

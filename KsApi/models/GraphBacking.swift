@@ -2,6 +2,7 @@ import Foundation
 
 public struct GraphBacking: Swift.Decodable, Equatable {
   public var errorReason: String?
+  public var id: String
   public var project: Project?
   public var status: Status
 

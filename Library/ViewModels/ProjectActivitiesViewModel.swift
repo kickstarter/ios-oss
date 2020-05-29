@@ -4,7 +4,7 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public enum ProjectActivitiesGoTo {
-  case backing(Project, User)
+  case backing(ManagePledgeViewParamConfigData)
   case comments(Project?, Update?)
   case project(Project)
   case sendMessage(Backing, Koala.MessageDialogContext)
@@ -113,8 +113,8 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
       .flatMap { activity, project -> SignalProducer<ProjectActivitiesGoTo, Never> in
         switch activity.category {
         case .backing, .backingAmount, .backingCanceled, .backingReward:
-          guard let user = activity.user else { return .empty }
-          return .init(value: .backing(project, user))
+          guard let params = backingParams(project: project) else { return .empty }
+          return .init(value: params)
         case .commentProject:
           return .init(value: .comments(project, nil))
         case .commentPost:
@@ -132,7 +132,8 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
 
     let projectActivityBackingCellGoToBacking =
       self.projectActivityBackingCellGoToBackingProperty.signal.skipNil()
-        .map { project, user in ProjectActivitiesGoTo.backing(project, user) }
+        .map(first)
+        .filterMap(backingParams(project:))
 
     let projectActivityBackingCellGoToSendMessage =
       self.projectActivityBackingCellGoToSendMessageProperty.signal.skipNil()
@@ -142,7 +143,8 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
 
     let projectActivityCommentCellGoToBacking =
       self.projectActivityCommentCellGoToBackingProperty.signal.skipNil()
-        .map { project, user in ProjectActivitiesGoTo.backing(project, user) }
+        .map(first)
+        .filterMap(backingParams(project:))
 
     let projectActivityCommentCellGoToSendReply =
       self.projectActivityCommentCellGoToSendReplyProperty.signal.skipNil()
@@ -223,4 +225,14 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
 
   public var inputs: ProjectActivitiesViewModelInputs { return self }
   public var outputs: ProjectActivitiesViewModelOutputs { return self }
+}
+
+private func backingParams(project: Project) -> ProjectActivitiesGoTo? {
+  guard let backing = project.personalization.backing else {
+    return nil
+  }
+
+  return ProjectActivitiesGoTo.backing(
+    (projectParam: Param.slug(project.slug), backingParam: Param.id(backing.id))
+  )
 }

@@ -45,7 +45,7 @@ public protocol ProjectPamphletViewModelOutputs {
 
   var dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never> { get }
 
-  var goToManagePledge: Signal<Project, Never> { get }
+  var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> { get }
 
   /// Emits a project and refTag to be used to navigate to the reward selection screen.
   var goToRewards: Signal<(Project, RefTag?), Never> { get }
@@ -128,6 +128,14 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     self.goToManagePledge = projectAndBacking
       .takeWhen(shouldGoToManagePledge)
       .map(first)
+      .map { project -> ManagePledgeViewParamConfigData? in
+        guard let backing = project.personalization.backing else {
+          return nil
+        }
+
+        return (projectParam: Param.slug(project.slug), backingParam: Param.id(backing.id))
+      }
+      .skipNil()
 
     let projectError: Signal<ErrorEnvelope, Never> = freshProjectAndRefTagEvent.errors()
 
@@ -248,7 +256,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
   public let configureChildViewControllersWithProject: Signal<(Project, RefTag?), Never>
   public let configurePledgeCTAView: Signal<PledgeCTAContainerViewData, Never>
   public let dismissManagePledgeAndShowMessageBannerWithMessage: Signal<String, Never>
-  public let goToManagePledge: Signal<Project, Never>
+  public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToRewards: Signal<(Project, RefTag?), Never>
   public let popToRootViewController: Signal<(), Never>
   public let setNavigationBarHiddenAnimated: Signal<(Bool, Bool), Never>

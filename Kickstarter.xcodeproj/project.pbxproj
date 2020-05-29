@@ -361,7 +361,6 @@
 		80E8EAC81D3EC65A007BDA4B /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E8EAC71D3EC65A007BDA4B /* Image.swift */; };
 		80EAEF001D243A7A008C2353 /* BackingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EAEEFF1D243A7A008C2353 /* BackingViewModel.swift */; };
 		80EAEF051D243C4E008C2353 /* Backing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80EAEF031D243C4E008C2353 /* Backing.storyboard */; };
-		80EAEF071D243FC7008C2353 /* BackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EAEF011D243B69008C2353 /* BackingViewController.swift */; };
 		8A05CB0E23DB82D3002B01EE /* CookieRefTagFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */; };
 		8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A072D39230223B200BA1538 /* UIImage+Color.swift */; };
 		8A142EBD23354BFD00FB43AB /* AddNewCardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */; };
@@ -783,7 +782,6 @@
 		A7ED20431E8323E900BFFA01 /* EmptyStatesViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20281E8323E900BFFA01 /* EmptyStatesViewControllerTests.swift */; };
 		A7ED20441E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20291E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift */; };
 		A7ED20451E8323E900BFFA01 /* DashboardViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202A1E8323E900BFFA01 /* DashboardViewControllerTests.swift */; };
-		A7ED20461E8323E900BFFA01 /* BackingViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202B1E8323E900BFFA01 /* BackingViewControllerTests.swift */; };
 		A7ED20481E8323E900BFFA01 /* LoginViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202D1E8323E900BFFA01 /* LoginViewControllerTests.swift */; };
 		A7ED20491E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED202E1E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift */; };
 		A7ED204B1E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED20301E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift */; };
@@ -1851,7 +1849,6 @@
 		80E26A121D500C6A007B3022 /* Navigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		80E8EAC71D3EC65A007BDA4B /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		80EAEEFF1D243A7A008C2353 /* BackingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewModel.swift; sourceTree = "<group>"; };
-		80EAEF011D243B69008C2353 /* BackingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewController.swift; sourceTree = "<group>"; };
 		80EAEF031D243C4E008C2353 /* Backing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Backing.storyboard; sourceTree = "<group>"; };
 		8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieRefTagFunctions.swift; sourceTree = "<group>"; };
 		8A072D39230223B200BA1538 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
@@ -2277,7 +2274,6 @@
 		A7ED20281E8323E900BFFA01 /* EmptyStatesViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyStatesViewControllerTests.swift; sourceTree = "<group>"; };
 		A7ED20291E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewControllerTests.swift; sourceTree = "<group>"; };
 		A7ED202A1E8323E900BFFA01 /* DashboardViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewControllerTests.swift; sourceTree = "<group>"; };
-		A7ED202B1E8323E900BFFA01 /* BackingViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingViewControllerTests.swift; sourceTree = "<group>"; };
 		A7ED202D1E8323E900BFFA01 /* LoginViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewControllerTests.swift; sourceTree = "<group>"; };
 		A7ED202E1E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPageViewControllerTests.swift; sourceTree = "<group>"; };
 		A7ED20301E8323E900BFFA01 /* DiscoveryNavigationHeaderViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryNavigationHeaderViewControllerTests.swift; sourceTree = "<group>"; };
@@ -3263,8 +3259,6 @@
 				0157067C1E65F0420087DD68 /* BackerDashboardProjectsViewController.swift */,
 				A78356091E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift */,
 				015706141E649DEE0087DD68 /* BackerDashboardViewController.swift */,
-				80EAEF011D243B69008C2353 /* BackingViewController.swift */,
-				A7ED202B1E8323E900BFFA01 /* BackingViewControllerTests.swift */,
 				774A76E820D841110012A71F /* BetaToolsViewController.swift */,
 				774A76F420D98EEF0012A71F /* BetaToolsViewControllerTests.swift */,
 				771E630A23425977005967E8 /* CancelPledgeViewController.swift */,
@@ -3420,7 +3414,6 @@
 				77C9122823C4FC0B00F3D2C9 /* ApplePayCapabilities.swift */,
 				77C9122E23C508CF00F3D2C9 /* ApplePayCapabilitiesTests.swift */,
 				A7C725791C85D36D005A016B /* AssetImageGeneratorType.swift */,
-				8AF3EBD32466134A007598BF /* Backing+PledgeAmount.swift */,
 				374CB94E22C17D4E00B84219 /* CharacterSet.swift */,
 				374CB95022C17D6700B84219 /* CharacterSetTests.swift */,
 				A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */,
@@ -3564,7 +3557,6 @@
 				A7ED1F251E830FDC00BFFA01 /* UILabel+SimpleHTMLTests.swift */,
 				D0D77C1D22D3FC3400356FEA /* UIPageViewController+ThreadSafety.swift */,
 				A7C725991C85D36D005A016B /* UIPress-Extensions.swift */,
-				8A6C58922475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift */,
 				A78537E11CB5422100385B73 /* UIScreenType.swift */,
 				A7169BF51DDD064200480C0D /* UIScrollView+Extensions.swift */,
 				37FDAF702273B7FF00662CC8 /* UIStackView.swift */,
@@ -5623,7 +5615,6 @@
 				774F8D5B22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift in Sources */,
 				7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */,
 				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
-				80EAEF071D243FC7008C2353 /* BackingViewController.swift in Sources */,
 				37059843226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift in Sources */,
 				01940B291D467ECE0074FCE3 /* HelpWebViewController.swift in Sources */,
 				8AB87DF3243FF22B006D7451 /* PledgePaymentMethodAddCell.swift in Sources */,
@@ -5872,7 +5863,6 @@
 				37CA16B323304DD9006044F9 /* ToggleViewControllerTests.swift in Sources */,
 				A7ED20231E83237F00BFFA01 /* Combos.swift in Sources */,
 				D6F741A821836E5700C2DDA2 /* PaymentMethodsViewControllerTests.swift in Sources */,
-				A7ED20461E8323E900BFFA01 /* BackingViewControllerTests.swift in Sources */,
 				A7ED20621E83256700BFFA01 /* AppDelegateViewModelTests.swift in Sources */,
 				77EFBAE02268D34A00DA5C3C /* RewardsCollectionViewControllerTests.swift in Sources */,
 			);

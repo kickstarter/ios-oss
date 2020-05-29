@@ -65,6 +65,23 @@ internal func reward(from backing: Backing, inProject project: Project) -> Rewar
 }
 
 /**
+ Returns a reward for a backing ID in a given project
+
+ - parameter backing: A backing ID
+ - parameter project: A project
+
+ - returns: A reward
+ */
+
+internal func reward(withId rewardId: Int, inProject project: Project) -> Reward {
+  let noRewardFromProject = project.rewards.first { $0.id == Reward.noReward.id }
+
+  return project.rewards.first { $0.id == rewardId }
+    ?? noRewardFromProject
+    ?? Reward.noReward
+}
+
+/**
  Computes the minimum and maximum amounts that can be pledge to a reward. For the "no reward" reward,
  this looks up values in the table of launched countries, since the values depend on the currency.
 

@@ -3,6 +3,11 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
+public typealias ManagePledgeViewParamConfigData = (
+  projectParam: Param,
+  backingParam: Param
+)
+
 public enum ManagePledgeAlertAction: CaseIterable {
   case updatePledge
   case changePaymentMethod
@@ -14,7 +19,7 @@ public enum ManagePledgeAlertAction: CaseIterable {
 
 public protocol ManagePledgeViewModelInputs {
   func beginRefresh()
-  func configureWith(_ projectOrParam: Either<Project, Param>)
+  func configureWith(_ params: ManagePledgeViewParamConfigData)
   func cancelPledgeDidFinish(with message: String)
   func fixButtonTapped()
   func menuButtonTapped()
@@ -36,6 +41,7 @@ public protocol ManagePledgeViewModelOutputs {
   var goToRewards: Signal<Project, Never> { get }
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
   var notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never> { get }
+  var paymentMethodViewHidden: Signal<Bool, Never> { get }
   var pullToRefreshStackViewHidden: Signal<Bool, Never> { get }
   var rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never> { get }
   var rightBarButtonItemHidden: Signal<Bool, Never> { get }
@@ -55,11 +61,14 @@ public protocol ManagePledgeViewModelType {
 public final class ManagePledgeViewModel:
   ManagePledgeViewModelType, ManagePledgeViewModelInputs, ManagePledgeViewModelOutputs {
   public init() {
-    let projectOrParam = Signal.combineLatest(
+    let params = Signal.combineLatest(
       self.configureWithProjectOrParamSignal,
       self.viewDidLoadSignal
     )
     .map(first)
+
+    let projectParam = params.map(first)
+    let backingParam = params.map(second)
 
     let shouldBeginRefresh = Signal.merge(
       self.pledgeViewControllerDidUpdatePledgeWithMessageSignal.ignoreValues(),
@@ -69,16 +78,17 @@ public final class ManagePledgeViewModel:
     // Keep track of whether the project has successfully loaded at least once.
     let projectLoaded = MutableProperty<Bool>(false)
 
-    let shouldFetchProjectWithProjectOrParam = Signal.merge(
-      projectOrParam,
-      projectOrParam.takeWhen(shouldBeginRefresh)
+    let shouldFetchProjectWithParam = Signal.merge(
+      projectParam,
+      projectParam.takeWhen(shouldBeginRefresh)
     )
 
-    let fetchProjectEvent = shouldFetchProjectWithProjectOrParam
+    let fetchProjectEvent = shouldFetchProjectWithParam
       // Only fetch the project if it hasn't yet succeeded, to avoid this call occurring with each refresh.
       .filter { [projectLoaded] _ in projectLoaded.value == false }
-      .switchMap { projectOrParam in
-        fetchProject(projectOrParam: projectOrParam)
+      .switchMap { param in
+        AppEnvironment.current.apiService.fetchProject(param: param)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
 
@@ -86,15 +96,18 @@ public final class ManagePledgeViewModel:
       // Once we know we have a project value, keep track of that.
       .on(value: { [projectLoaded] _ in projectLoaded.value = true })
 
-    let shouldFetchGraphBackingWithProject = Signal.merge(
-      project,
-      project.takeWhen(shouldBeginRefresh)
+    let shouldFetchGraphBackingWithParam = Signal.merge(
+      backingParam,
+      backingParam.takeWhen(shouldBeginRefresh)
     )
 
-    let graphBackingEvent = shouldFetchGraphBackingWithProject
-      .switchMap { project in
+    let graphBackingEvent = shouldFetchGraphBackingWithParam
+      .map { param in param.id }
+      .skipNil()
+      .map(String.init)
+      .switchMap { backingId in
         AppEnvironment.current.apiService
-          .fetchManagePledgeViewBacking(query: projectBackingQuery(withSlug: project.slug))
+          .fetchManagePledgeViewBacking(query: projectBackingQuery(withBackingId: backingId))
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
@@ -121,17 +134,23 @@ public final class ManagePledgeViewModel:
     )
     .ignoreValues()
 
-    let projectAndReward = project
-      .filterMap { project in
-        guard let backing = project.personalization.backing else {
-          return nil
-        }
+    let userIsCreatorOfProject = project.map {
+      project in project.creator.id == AppEnvironment.current.currentUser?.id
+    }
 
-        return (project, backing)
+    let projectAndReward = Signal.combineLatest(project, backing)
+      .filterMap { project, backing -> (Project, Int)? in
+        guard
+          let rewardRelayId = backing.reward?.id,
+          let rewardId = decompose(id: rewardRelayId)
+        else { return (project, Reward.noReward.id) }
+
+        return (project, rewardId)
       }
-      .map { project, backing in (project, reward(from: backing, inProject: project)) }
+      .map { project, backingId in (project, reward(withId: backingId, inProject: project)) }
 
-    self.title = graphBackingProject.map(navigationBarTitle(with:))
+    self.title = graphBackingProject.combineLatest(with: userIsCreatorOfProject)
+      .map(navigationBarTitle(with:userIsCreatorOfProject:))
 
     self.configurePaymentMethodView = backing.map(managePledgePaymentMethodViewData)
 
@@ -145,9 +164,11 @@ public final class ManagePledgeViewModel:
     )
     .filter(isNotNil)
 
+    let dataLoaded = Signal.combineLatest(project, backing)
+
     self.pullToRefreshStackViewHidden = Signal.merge(
-      projectOrParam.mapConst(true),
-      backing.mapConst(true),
+      params.mapConst(true),
+      dataLoaded.mapConst(true),
       projectOrBackingFailedToLoad
         .take(until: backing.ignoreValues())
         .mapConst(false)
@@ -155,15 +176,17 @@ public final class ManagePledgeViewModel:
     .skipRepeats()
 
     self.rootStackViewHidden = Signal.merge(
-      projectOrParam.mapConst(true),
-      Signal.zip(backing, self.endRefreshing).mapConst(false)
+      params.mapConst(true),
+      Signal.zip(dataLoaded, self.endRefreshing).mapConst(false)
     )
     .skipRepeats()
+
+    self.paymentMethodViewHidden = userIsCreatorOfProject
 
     self.rightBarButtonItemHidden = self.rootStackViewHidden
 
     self.startRefreshing = Signal.merge(
-      projectOrParam.ignoreValues(),
+      params.ignoreValues(),
       shouldBeginRefresh.ignoreValues()
     )
 
@@ -173,9 +196,9 @@ public final class ManagePledgeViewModel:
     self.configureRewardSummaryView = projectAndReward
       .map { project, reward in (project, .left(reward)) }
 
-    self.showActionSheetMenuWithOptions = project
+    self.showActionSheetMenuWithOptions = Signal.combineLatest(project, backing, userIsCreatorOfProject)
       .takeWhen(self.menuButtonTappedSignal)
-      .map(actionSheetMenuOptionsFor(project:))
+      .map(actionSheetMenuOptionsFor(project:backing:userIsCreatorOfProject:))
 
     self.goToUpdatePledge = projectAndReward
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .updatePledge })
@@ -211,8 +234,14 @@ public final class ManagePledgeViewModel:
       graphBackingEvent.mapConst(nil)
     )
 
-    self.rewardReceivedViewControllerViewIsHidden = projectAndReward
-      .map { project, reward in reward.isNoReward || project.personalization.backing?.status != .collected }
+    self.rewardReceivedViewControllerViewIsHidden = Signal.combineLatest(
+      projectAndReward,
+      backing, userIsCreatorOfProject
+    )
+    .map { ($0.1, $1, $2) }
+    .map { reward, backing, userIsCreatorOfProject in
+      reward.isNoReward || backing.status != .collected || userIsCreatorOfProject
+    }
 
     self.showSuccessBannerWithMessage = self.pledgeViewControllerDidUpdatePledgeWithMessageSignal
 
@@ -262,9 +291,9 @@ public final class ManagePledgeViewModel:
   }
 
   private let (configureWithProjectOrParamSignal, configureWithProjectOrParamObserver)
-    = Signal<Either<Project, Param>, Never>.pipe()
-  public func configureWith(_ projectOrParam: Either<Project, Param>) {
-    self.configureWithProjectOrParamObserver.send(value: projectOrParam)
+    = Signal<ManagePledgeViewParamConfigData, Never>.pipe()
+  public func configureWith(_ params: ManagePledgeViewParamConfigData) {
+    self.configureWithProjectOrParamObserver.send(value: params)
   }
 
   private let cancelPledgeDidFinishWithMessageProperty = MutableProperty<String?>(nil)
@@ -312,6 +341,7 @@ public final class ManagePledgeViewModel:
   public let goToFixPaymentMethod: Signal<(Project, Reward), Never>
   public let goToRewards: Signal<Project, Never>
   public let goToUpdatePledge: Signal<(Project, Reward), Never>
+  public let paymentMethodViewHidden: Signal<Bool, Never>
   public let pullToRefreshStackViewHidden: Signal<Bool, Never>
   public let notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never>
   public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
@@ -329,31 +359,35 @@ public final class ManagePledgeViewModel:
 
 // MARK: - Functions
 
-private func fetchProject(projectOrParam: Either<Project, Param>)
-  -> SignalProducer<Project, ErrorEnvelope> {
-  if let project = projectOrParam.left {
-    return SignalProducer(value: project)
-  } else {
-    let param = projectOrParam.ifLeft({ Param.id($0.id) }, ifRight: id)
+private func actionSheetMenuOptionsFor(
+  project: Project,
+  backing: ManagePledgeViewBackingEnvelope.Backing,
+  userIsCreatorOfProject: Bool
+) -> [ManagePledgeAlertAction] {
+  let contactCreatorAction: [ManagePledgeAlertAction] = userIsCreatorOfProject ? [] : [.contactCreator]
 
-    return AppEnvironment.current.apiService.fetchProject(param: param)
-      .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-  }
-}
-
-private func actionSheetMenuOptionsFor(project: Project) -> [ManagePledgeAlertAction] {
   guard project.state == .live else {
-    return [.viewRewards, .contactCreator]
+    return [.viewRewards] + contactCreatorAction
   }
 
-  if project.personalization.backing?.status == .preauth {
-    return [.contactCreator]
+  if backing.status == .preauth {
+    return contactCreatorAction
   }
 
   return ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards }
 }
 
-private func navigationBarTitle(with project: ManagePledgeViewBackingEnvelope.Project) -> String {
+private func navigationBarTitle(
+  with project: ManagePledgeViewBackingEnvelope.Project,
+  userIsCreatorOfProject: Bool
+) -> String {
+  if userIsCreatorOfProject {
+    return localizedString(
+      key: "Pledge_details",
+      defaultValue: "Pledge details"
+    )
+  }
+
   return project.state == .live ? Strings.Manage_your_pledge() : Strings.Your_pledge()
 }
 
@@ -417,14 +451,43 @@ private func managePledgeSummaryViewData(
   )
 }
 
-private func projectBackingQuery(withSlug slug: String) -> NonEmptySet<Query> {
-  return Query.project(
-    slug: slug,
-    .pid +| [
-      .state,
-      .name,
-      .backing(
-        .status +| [
+private func projectBackingQuery(withBackingId backingId: String) -> NonEmptySet<Query> {
+  return Query.backing(
+    id: backingId,
+    .id +| [
+      .project(
+        .pid +| [
+          .name,
+          .state
+        ]
+      ),
+      .status,
+      .amount(
+        .amount +| [
+          .currency,
+          .symbol
+        ]
+      ),
+      .sequence,
+      .cancelable,
+      .backer(
+        .uid +| [
+          .name
+        ]
+      ),
+      .creditCard(
+        .id +| [
+          .expirationDate,
+          .lastFour,
+          .paymentType,
+          .type
+        ]
+      ),
+      .errorReason,
+      .location(.name +| []),
+      .pledgedOn,
+      .reward(
+        .name +| [
           .id,
           .amount(
             .amount +| [
@@ -432,38 +495,10 @@ private func projectBackingQuery(withSlug slug: String) -> NonEmptySet<Query> {
               .symbol
             ]
           ),
-          .sequence,
-          .cancelable,
-          .backer(
-            .uid +| [
-              .name
-            ]
-          ),
-          .creditCard(
-            .id +| [
-              .expirationDate,
-              .lastFour,
-              .paymentType,
-              .type
-            ]
-          ),
-          .errorReason,
-          .location(.name +| []),
-          .pledgedOn,
-          .reward(
-            .name +| [
-              .amount(
-                .amount +| [
-                  .currency,
-                  .symbol
-                ]
-              ),
-              .backersCount,
-              .description,
-              .estimatedDeliveryOn,
-              .items([], NonEmptySet(.nodes(.id +| [.name])))
-            ]
-          )
+          .backersCount,
+          .description,
+          .estimatedDeliveryOn,
+          .items([], NonEmptySet(.nodes(.id +| [.name])))
         ]
       )
     ]
