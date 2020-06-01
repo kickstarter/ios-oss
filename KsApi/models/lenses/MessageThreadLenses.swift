@@ -2,6 +2,14 @@ import Prelude
 
 extension MessageThread {
   public enum lens {
+    public static let backing = Lens<MessageThread, Backing?>(
+      view: { $0.backing },
+      set: { MessageThread(
+        backing: $0, closed: $1.closed, id: $1.id, lastMessage: $1.lastMessage,
+        participant: $1.participant, project: $1.project, unreadMessagesCount: $1.unreadMessagesCount
+      ) }
+    )
+
     public static let id = Lens<MessageThread, Int>(
       view: { $0.id },
       set: { MessageThread(

@@ -20,7 +20,8 @@ final class ProjectPamphletViewModelTests: TestCase {
   private let configurePledgeCTAViewIsLoading = TestObserver<Bool, Never>()
   private let configurePledgeCTAViewRefTag = TestObserver<RefTag?, Never>()
   private let dismissManagePledgeAndShowMessageBannerWithMessage = TestObserver<String, Never>()
-  private let goToManageViewPledge = TestObserver<Project, Never>()
+  private let goToManagePledgeProjectParam = TestObserver<Param, Never>()
+  private let goToManagePledgeBackingParam = TestObserver<Param, Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let popToRootViewController = TestObserver<(), Never>()
@@ -62,7 +63,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.vm.outputs.configurePledgeCTAView.map(third).observe(self.configurePledgeCTAViewContext.observer)
     self.vm.outputs.dismissManagePledgeAndShowMessageBannerWithMessage
       .observe(self.dismissManagePledgeAndShowMessageBannerWithMessage.observer)
-    self.vm.outputs.goToManagePledge.observe(self.goToManageViewPledge.observer)
+    self.vm.outputs.goToManagePledge.map(first).observe(self.goToManagePledgeProjectParam.observer)
+    self.vm.outputs.goToManagePledge.map(second).observe(self.goToManagePledgeBackingParam.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
     self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
@@ -473,11 +475,13 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.configureInitialState(.left(project))
 
-      self.goToManageViewPledge.assertDidNotEmitValue()
+      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
 
       self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
 
-      self.goToManageViewPledge.assertValues([project])
+      self.goToManagePledgeProjectParam.assertValues([.slug(project.slug)])
+      self.goToManagePledgeBackingParam.assertValues([.id(backing.id)])
     }
   }
 
@@ -495,11 +499,13 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.configureInitialState(.left(project))
 
-      self.goToManageViewPledge.assertDidNotEmitValue()
+      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
 
       self.vm.inputs.pledgeCTAButtonTapped(with: .viewBacking)
 
-      self.goToManageViewPledge.assertValues([project])
+      self.goToManagePledgeProjectParam.assertValues([.slug(project.slug)])
+      self.goToManagePledgeBackingParam.assertValues([.id(backing.id)])
     }
   }
 

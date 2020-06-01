@@ -147,7 +147,7 @@ public final class ManagePledgeViewModel:
 
         return (project, rewardId)
       }
-      .map { project, backingId in (project, reward(withId: backingId, inProject: project)) }
+      .map { project, rewardId in (project, reward(withId: rewardId, inProject: project)) }
 
     self.title = graphBackingProject.combineLatest(with: userIsCreatorOfProject)
       .map(navigationBarTitle(with:userIsCreatorOfProject:))
@@ -183,8 +183,6 @@ public final class ManagePledgeViewModel:
 
     self.paymentMethodViewHidden = userIsCreatorOfProject
 
-    self.rightBarButtonItemHidden = self.rootStackViewHidden
-
     self.startRefreshing = Signal.merge(
       params.ignoreValues(),
       shouldBeginRefresh.ignoreValues()
@@ -196,9 +194,19 @@ public final class ManagePledgeViewModel:
     self.configureRewardSummaryView = projectAndReward
       .map { project, reward in (project, .left(reward)) }
 
-    self.showActionSheetMenuWithOptions = Signal.combineLatest(project, backing, userIsCreatorOfProject)
-      .takeWhen(self.menuButtonTappedSignal)
+    let menuOptions = Signal.combineLatest(project, backing, userIsCreatorOfProject)
       .map(actionSheetMenuOptionsFor(project:backing:userIsCreatorOfProject:))
+
+    self.showActionSheetMenuWithOptions = menuOptions
+      .takeWhen(self.menuButtonTappedSignal)
+
+    self.rightBarButtonItemHidden = Signal.combineLatest(
+      self.rootStackViewHidden,
+      menuOptions
+    )
+    .map { rootStackViewHidden, menuOptions in
+      rootStackViewHidden || menuOptions.isEmpty
+    }
 
     self.goToUpdatePledge = projectAndReward
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .updatePledge })
@@ -231,12 +239,13 @@ public final class ManagePledgeViewModel:
 
     self.notifyDelegateManagePledgeViewControllerFinishedWithMessage = Signal.merge(
       self.cancelPledgeDidFinishWithMessageProperty.signal,
-      graphBackingEvent.mapConst(nil)
+      backing.skip(first: 1).mapConst(nil)
     )
 
     self.rewardReceivedViewControllerViewIsHidden = Signal.combineLatest(
       projectAndReward,
-      backing, userIsCreatorOfProject
+      backing,
+      userIsCreatorOfProject
     )
     .map { ($0.1, $1, $2) }
     .map { reward, backing, userIsCreatorOfProject in
