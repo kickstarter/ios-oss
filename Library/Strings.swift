@@ -3839,7 +3839,7 @@ Haz clic para volver a intentarlo."
    - **de**: "Finanzierungsziel erreicht"
    - **es**: "Meta cumplida"
    - **fr**: "Objectif atteint"
-   - **ja**: "Goal met"
+   - **ja**: "目標達成"
   */
   public static func Goal_met() -> String {
     return localizedString(
