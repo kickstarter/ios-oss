@@ -373,33 +373,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.menuButtonTapped()
 
-      self.showActionSheetMenuWithOptions.assertValues([[]])
-    }
-  }
-
-  func testRightBarButtonItemHidden_IsPreAuth_CreatorContext() {
-    let user = User.template
-    let project = Project.template
-      |> Project.lens.creator .~ user
-      |> Project.lens.state .~ .live
-
-    let env = ManagePledgeViewBackingEnvelope.template
-      |> \.backing.status .~ .preauth
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(env),
-      fetchProjectResponse: project
-    )
-
-    withEnvironment(apiService: mockService, currentUser: user) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-      self.vm.inputs.viewDidLoad()
-
-      self.rightBarButtonItemHidden.assertDidNotEmitValue()
-
-      self.scheduler.advance()
-
-      self.rightBarButtonItemHidden.assertValues([true])
+      self.showActionSheetMenuWithOptions.assertValues([[.viewRewards]])
     }
   }
 

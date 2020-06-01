@@ -183,6 +183,8 @@ public final class ManagePledgeViewModel:
 
     self.paymentMethodViewHidden = userIsCreatorOfProject
 
+    self.rightBarButtonItemHidden = self.rootStackViewHidden
+
     self.startRefreshing = Signal.merge(
       params.ignoreValues(),
       shouldBeginRefresh.ignoreValues()
@@ -199,14 +201,6 @@ public final class ManagePledgeViewModel:
 
     self.showActionSheetMenuWithOptions = menuOptions
       .takeWhen(self.menuButtonTappedSignal)
-
-    self.rightBarButtonItemHidden = Signal.combineLatest(
-      self.rootStackViewHidden,
-      menuOptions
-    )
-    .map { rootStackViewHidden, menuOptions in
-      rootStackViewHidden || menuOptions.isEmpty
-    }
 
     self.goToUpdatePledge = projectAndReward
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .updatePledge })
@@ -373,14 +367,16 @@ private func actionSheetMenuOptionsFor(
   backing: ManagePledgeViewBackingEnvelope.Backing,
   userIsCreatorOfProject: Bool
 ) -> [ManagePledgeAlertAction] {
-  let contactCreatorAction: [ManagePledgeAlertAction] = userIsCreatorOfProject ? [] : [.contactCreator]
+  if userIsCreatorOfProject {
+    return [.viewRewards]
+  }
 
   guard project.state == .live else {
-    return [.viewRewards] + contactCreatorAction
+    return [.viewRewards, .contactCreator]
   }
 
   if backing.status == .preauth {
-    return contactCreatorAction
+    return [.contactCreator]
   }
 
   return ManagePledgeAlertAction.allCases.filter { $0 != .viewRewards }
