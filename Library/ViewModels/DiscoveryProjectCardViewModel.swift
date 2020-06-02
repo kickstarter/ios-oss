@@ -35,7 +35,6 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
   DiscoveryProjectCardViewModelInputs, DiscoveryProjectCardViewModelOutputs {
   public init() {
     let project = self.configureWithValueProperty.signal.skipNil().map(first)
-    let category = self.configureWithValueProperty.signal.skipNil().map(second)
 
     self.projectNameLabelText = project.map(\.name)
     self.projectBlurbLabelText = project.map(\.blurb)
@@ -56,7 +55,7 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
       return (percentage, Strings.percentage_funded(percentage: percentage))
     }
 
-    self.goalMetIconHidden = project.map { !$0.stats.goalMet }
+    self.goalMetIconHidden = project.map(\.stats.goalMet).negate()
     self.projectImageURL = project.map(\.photo.full).map(URL.init(string:)).skipNil()
     self.facepileViewHidden = project.map(\.personalization.friends).map { friends in
       guard let friends = friends else {
@@ -67,23 +66,14 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
     }
     self.facepileViewData = project.filterMap(\.personalization.friends).filterMap(facepileData(for:))
 
-    let projectCategoryTagShouldHide = Signal.zip(project, category)
-      .map(projectCategoryTagShouldHide(for:in:))
-    let pwlTagShouldHide = project.map(\.staffPick).negate()
+    self.tagsCollectionViewHidden = self.configureWithValueProperty.signal.skipNil()
+      .map { ($0.project, $0.category) }
+      .map(projectTagsViewShouldHide(project:category:))
 
-    self.tagsCollectionViewHidden = Signal.combineLatest(
-      projectCategoryTagShouldHide,
-      pwlTagShouldHide
-    )
-    .map { $0 && $1 }
-
-    self.loadProjectTags = Signal.combineLatest(
-      project,
-      pwlTagShouldHide.negate(),
-      projectCategoryTagShouldHide.negate()
-    )
-    .map(projectTags(project:shouldShowPWLTag:shouldShowCategoryTag:))
-    .filter { !$0.isEmpty }
+    self.loadProjectTags = self.configureWithValueProperty.signal.skipNil()
+      .map { ($0.project, $0.category) }
+      .map(projectTags(project:category:))
+      .filter { !$0.isEmpty }
 
     self.projectStatusIconImageName = project.filterMap { project in
       switch project.state {
@@ -138,6 +128,13 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
   public var outputs: DiscoveryProjectCardViewModelOutputs { return self }
 }
 
+private func projectTagsViewShouldHide(project: Project, category: KsApi.Category?) -> Bool {
+  let categoryTagShouldHide = projectCategoryTagShouldHide(for:project, in: category)
+  let pwlTagShouldHide = projectPWLTagShouldHide(project: project)
+
+  return categoryTagShouldHide && pwlTagShouldHide
+}
+
 private func projectCategoryTagShouldHide(for project: Project, in category: KsApi.Category?) -> Bool {
   guard let category = category, !category.isRoot else {
     // Always show category when filter category is nil, or we're in a root category
@@ -147,8 +144,14 @@ private func projectCategoryTagShouldHide(for project: Project, in category: KsA
   return project.category.id == category.intID
 }
 
-private func projectTags(project: Project, shouldShowPWLTag: Bool, shouldShowCategoryTag: Bool)
-  -> [DiscoveryProjectTagPillCellValue] {
+private func projectPWLTagShouldHide(project: Project) -> Bool {
+  return !project.staffPick
+}
+
+private func projectTags(project: Project, category: KsApi.Category?) -> [DiscoveryProjectTagPillCellValue] {
+  let shouldShowCategoryTag = !projectCategoryTagShouldHide(for:project, in: category)
+  let shouldShowPWLTag = !projectPWLTagShouldHide(project: project)
+
   var tags: [DiscoveryProjectTagPillCellValue] = []
 
   if shouldShowPWLTag {
