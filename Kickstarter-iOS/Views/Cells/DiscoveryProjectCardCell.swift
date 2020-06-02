@@ -106,18 +106,22 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   override func layoutSubviews() {
     super.layoutSubviews()
 
+    print("Layout subviews, updating constraints")
+
     self.updateCollectionViewConstraints()
   }
 
-  override func prepareForReuse() {
-    super.prepareForReuse()
-
-    self.tagsCollectionViewHeightConstraint?.constant = 0
-
-    self.clearFacepileImageViews()
-  }
+//  override func prepareForReuse() {
+//    super.prepareForReuse()
+//
+//    self.tagsCollectionViewHeightConstraint?.constant = 0
+//
+//    self.clearFacepileImageViews()
+//  }
 
   func configureWith(value: DiscoveryProjectCellRowValue) {
+    print("[CONFIGURE] \(value.project.name)")
+
     self.viewModel.inputs.configure(with: value)
 
     self.watchProjectViewModel.inputs.configure(with: (
@@ -308,6 +312,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
         self?.dataSource.load(with: tags)
 
         self?.tagsCollectionView.reloadData()
+
+        print("Reload Data, updating constraints")
 
         self?.updateCollectionViewConstraints()
       }
@@ -501,7 +507,9 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     self.tagsCollectionViewHeightConstraint?.constant = self.tagsCollectionView.contentSize.height
 
-    self.layoutIfNeeded()
+    print("Tag collection view height: \(self.tagsCollectionView.frame.height)")
+//
+//    self.layoutIfNeeded()
   }
 
   private func configureFacepileImageViews(with avatars: [URL]) {
@@ -707,6 +715,7 @@ private let projectDetailsStackViewStyle: StackViewStyle = { stackView in
     |> \.alignment .~ .fill
     |> \.layoutMargins .~ .init(all: Styles.grid(3))
     |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.insetsLayoutMarginsFromSafeArea .~ false
 }
 
 private let saveButtonStyle: ButtonStyle = { button in
