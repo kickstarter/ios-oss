@@ -8141,6 +8141,40 @@ daring ideas."
     )
   }
   /**
+   "%{friend_name} and %{remaining_count} others"
+
+   - **en**: "%{friend_name} and %{remaining_count} others"
+   - **de**: "%{friend_name} und %{remaining_count} weitere"
+   - **es**: "%{friend_name} y %{remaining_count} otros"
+   - **fr**: "%{friend_name} et %{remaining_count} autre(s)"
+   - **ja**: "%{friend_name} さんと他%{remaining_count} 人"
+  */
+  public static func Social_friend_is_backer(friend_name: String, remaining_count: Int) -> String {
+    return localizedString(
+      key: "Social_friend_is_backer",
+      defaultValue: "%{friend_name} and %{remaining_count} others",
+      count: remaining_count,
+      substitutions: ["friend_name": friend_name, "remaining_count": Format.wholeNumber(remaining_count)]
+    )
+  }
+  /**
+   "%{friend_name} and %{remaining_count} others"
+
+   - **en**: "%{friend_name} and %{remaining_count} others"
+   - **de**: "%{friend_name} und %{remaining_count} weitere"
+   - **es**: "%{friend_name} y %{remaining_count} otros"
+   - **fr**: "%{friend_name} et %{remaining_count} autre(s)"
+   - **ja**: "%{friend_name} さんと他%{remaining_count} 人"
+  */
+  public static func Social_friend_is_backer_other(friend_name: String, remaining_count: String) -> String {
+    return localizedString(
+      key: "Social_friend_is_backer.other",
+      defaultValue: "%{friend_name} and %{remaining_count} others",
+      count: nil,
+      substitutions: ["friend_name": friend_name, "remaining_count": remaining_count]
+    )
+  }
+  /**
    "Something
 catch your eye?"
 
