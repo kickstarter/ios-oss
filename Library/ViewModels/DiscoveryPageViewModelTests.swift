@@ -12,6 +12,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
   fileprivate let activitiesForSample = TestObserver<[Activity], Never>()
   fileprivate let asyncReloadData = TestObserver<(), Never>()
   fileprivate let backgroundColor = TestObserver<UIColor, Never>()
+  fileprivate let contentInset = TestObserver<UIEdgeInsets, Never>()
   fileprivate let dismissPersonalizationCell = TestObserver<Void, Never>()
   fileprivate let goToActivityProject = TestObserver<Project, Never>()
   fileprivate let goToActivityProjectRefTag = TestObserver<RefTag, Never>()
@@ -47,6 +48,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.vm.outputs.activitiesForSample.observe(self.activitiesForSample.observer)
     self.vm.outputs.asyncReloadData.observe(self.asyncReloadData.observer)
     self.vm.outputs.backgroundColor.observe(self.backgroundColor.observer)
+    self.vm.outputs.contentInset.observe(self.contentInset.observer)
     self.vm.outputs.dismissPersonalizationCell.observe(self.dismissPersonalizationCell.observer)
     self.vm.outputs.hideEmptyState.observe(self.hideEmptyState.observer)
     self.vm.outputs.goToActivityProject.map(first).observe(self.goToActivityProject.observer)
@@ -387,6 +389,44 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.backgroundColor.assertValues([UIColor.ksr_grey_200])
+
+      XCTAssertTrue(mockOptimizelyClient.getVariantPathCalled)
+    }
+  }
+
+  func testContentInset_IsNativeProjectCardsControl() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+          OptimizelyExperiment.Variant.control.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.scheduler.advance()
+
+      self.contentInset.assertValues([UIEdgeInsets.zero])
+
+      XCTAssertTrue(mockOptimizelyClient.getVariantPathCalled)
+    }
+  }
+
+  func testContentInset_IsNativeProjectCardsVariant1() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(sort: .magic)
+      self.vm.inputs.viewWillAppear()
+      self.vm.inputs.viewDidAppear()
+      self.scheduler.advance()
+
+      self.contentInset.assertValues([UIEdgeInsets.init(topBottom: Styles.grid(1))])
 
       XCTAssertTrue(mockOptimizelyClient.getVariantPathCalled)
     }

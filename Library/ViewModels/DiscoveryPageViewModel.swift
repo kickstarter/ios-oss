@@ -81,6 +81,9 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Emits the background color for the view
   var backgroundColor: Signal<UIColor, Never> { get }
 
+  /// Emits the contentInset for the UITableView
+  var contentInset: Signal<UIEdgeInsets, Never> { get }
+
   /// Emits when the personalization cell should be deleted
   var dismissPersonalizationCell: Signal<Void, Never> { get }
 
@@ -235,6 +238,18 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
           return UIColor.ksr_grey_200
         case .variant2, .control:
           return UIColor.white
+        }
+      }
+
+    self.contentInset = self.viewWillAppearProperty.signal
+      .map { _ in
+        let variant = OptimizelyExperiment.nativeProjectCardsExperimentVariant()
+
+        switch variant {
+        case .variant1:
+          return .init(topBottom: Styles.grid(1))
+        case .variant2, .control:
+          return .zero
         }
       }
 
@@ -572,6 +587,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let activitiesForSample: Signal<[Activity], Never>
   public let asyncReloadData: Signal<Void, Never>
   public let backgroundColor: Signal<UIColor, Never>
+  public let contentInset: Signal<UIEdgeInsets, Never>
   public let dismissPersonalizationCell: Signal<Void, Never>
   public let goToActivityProject: Signal<(Project, RefTag), Never>
   public let goToCuratedProjects: Signal<[KsApi.Category], Never>
