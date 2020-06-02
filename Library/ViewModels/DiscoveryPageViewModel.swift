@@ -454,7 +454,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     paramsChanged
       .takePairWhen(self.tappedProject.signal.skipNil())
       .observeValues { params, project in
-        let optyProperties = optimizelyProperties()
+        let optyProperties = optimizelyProperties() ?? [:]
 
         AppEnvironment.current.koala.trackProjectCardClicked(
           project: project,
