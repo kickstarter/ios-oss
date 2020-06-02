@@ -134,8 +134,8 @@ public final class ManagePledgeViewModel:
     )
     .ignoreValues()
 
-    let userIsCreatorOfProject = project.map {
-      project in project.creator.id == AppEnvironment.current.currentUser?.id
+    let userIsCreatorOfProject = project.map { project in
+      currentUserIsCreator(of: project)
     }
 
     let projectAndReward = Signal.combineLatest(project, backing)
@@ -155,8 +155,7 @@ public final class ManagePledgeViewModel:
     self.configurePaymentMethodView = backing.map(managePledgePaymentMethodViewData)
 
     self.configurePledgeSummaryView = Signal.combineLatest(project, graphBackingEnvelope)
-      .map { project, env in managePledgeSummaryViewData(with: project, envelope: env) }
-      .skipNil()
+      .filterMap { project, env in managePledgeSummaryViewData(with: project, envelope: env) }
 
     let projectOrBackingFailedToLoad = Signal.merge(
       fetchProjectEvent.map { $0.error as Error? },

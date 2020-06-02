@@ -163,7 +163,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
 
     self.goToBacking = Signal.combineLatest(messageThreadEnvelope, currentUser)
       .takeWhen(self.backingInfoPressedProperty.signal)
-      .map { env, _ -> ManagePledgeViewParamConfigData? in
+      .filterMap { env, _ -> ManagePledgeViewParamConfigData? in
         guard let backing = env.messageThread.backing else {
           return nil
         }
@@ -172,7 +172,6 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
 
         return (projectParam: Param.slug(project.slug), backingParam: Param.id(backing.id))
       }
-      .skipNil()
 
     self.goToProject = self.project.takeWhen(self.projectBannerTappedProperty.signal)
       .map { ($0, .messageThread) }
