@@ -32,7 +32,6 @@ public protocol ManagePledgeViewModelOutputs {
   var configurePaymentMethodView: Signal<ManagePledgePaymentMethodViewData, Never> { get }
   var configurePledgeSummaryView: Signal<ManagePledgeSummaryViewData, Never> { get }
   var configureRewardReceivedWithProject: Signal<Project, Never> { get }
-  var configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never> { get }
   var endRefreshing: Signal<Void, Never> { get }
   var goToCancelPledge: Signal<CancelPledgeViewData, Never> { get }
   var goToChangePaymentMethod: Signal<(Project, Reward), Never> { get }
@@ -40,12 +39,12 @@ public protocol ManagePledgeViewModelOutputs {
   var goToFixPaymentMethod: Signal<(Project, Reward), Never> { get }
   var goToRewards: Signal<Project, Never> { get }
   var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
+  var loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never> { get }
+  var loadPullToRefreshHeaderView: Signal<(), Never> { get }
   var notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never> { get }
   var paymentMethodViewHidden: Signal<Bool, Never> { get }
-  var pullToRefreshStackViewHidden: Signal<Bool, Never> { get }
   var rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never> { get }
   var rightBarButtonItemHidden: Signal<Bool, Never> { get }
-  var rootStackViewHidden: Signal<Bool, Never> { get }
   var showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showSuccessBannerWithMessage: Signal<String, Never> { get }
@@ -163,26 +162,21 @@ public final class ManagePledgeViewModel:
     )
     .filter(isNotNil)
 
-    let dataLoaded = Signal.combineLatest(project, backing)
-
-    self.pullToRefreshStackViewHidden = Signal.merge(
-      params.mapConst(true),
-      dataLoaded.mapConst(true),
-      projectOrBackingFailedToLoad
-        .take(until: backing.ignoreValues())
-        .mapConst(false)
-    )
-    .skipRepeats()
-
-    self.rootStackViewHidden = Signal.merge(
-      params.mapConst(true),
-      Signal.zip(dataLoaded, self.endRefreshing).mapConst(false)
-    )
-    .skipRepeats()
+    self.loadPullToRefreshHeaderView = projectOrBackingFailedToLoad
+      .take(until: backing.ignoreValues())
+      .ignoreValues()
 
     self.paymentMethodViewHidden = userIsCreatorOfProject
 
-    self.rightBarButtonItemHidden = self.rootStackViewHidden
+    self.loadProjectAndRewardsIntoDataSource = projectAndReward
+      .map { project, reward in (project, [reward]) }
+
+    self.rightBarButtonItemHidden = Signal.merge(
+      params.mapConst(true),
+      self.loadPullToRefreshHeaderView.mapConst(true),
+      self.loadProjectAndRewardsIntoDataSource.mapConst(false)
+    )
+    .skipRepeats()
 
     self.startRefreshing = Signal.merge(
       params.ignoreValues(),
@@ -191,9 +185,6 @@ public final class ManagePledgeViewModel:
 
     // TODO: Configure with GraphQL backing
     self.configureRewardReceivedWithProject = project
-
-    self.configureRewardSummaryView = projectAndReward
-      .map { project, reward in (project, .left(reward)) }
 
     let menuOptions = Signal.combineLatest(project, backing, userIsCreatorOfProject)
       .map(actionSheetMenuOptionsFor(project:backing:userIsCreatorOfProject:))
@@ -335,7 +326,6 @@ public final class ManagePledgeViewModel:
   public let configurePaymentMethodView: Signal<ManagePledgePaymentMethodViewData, Never>
   public let configurePledgeSummaryView: Signal<ManagePledgeSummaryViewData, Never>
   public let configureRewardReceivedWithProject: Signal<Project, Never>
-  public let configureRewardSummaryView: Signal<(Project, Either<Reward, Backing>), Never>
   public let endRefreshing: Signal<Void, Never>
   public let goToCancelPledge: Signal<CancelPledgeViewData, Never>
   public let goToChangePaymentMethod: Signal<(Project, Reward), Never>
@@ -343,12 +333,12 @@ public final class ManagePledgeViewModel:
   public let goToFixPaymentMethod: Signal<(Project, Reward), Never>
   public let goToRewards: Signal<Project, Never>
   public let goToUpdatePledge: Signal<(Project, Reward), Never>
+  public let loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never>
+  public let loadPullToRefreshHeaderView: Signal<(), Never>
   public let paymentMethodViewHidden: Signal<Bool, Never>
-  public let pullToRefreshStackViewHidden: Signal<Bool, Never>
   public let notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never>
   public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>
   public let rightBarButtonItemHidden: Signal<Bool, Never>
-  public let rootStackViewHidden: Signal<Bool, Never>
   public let showActionSheetMenuWithOptions: Signal<[ManagePledgeAlertAction], Never>
   public let showSuccessBannerWithMessage: Signal<String, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>

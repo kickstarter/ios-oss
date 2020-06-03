@@ -16,6 +16,16 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   // MARK: - Properties
 
+  private lazy var tableView: UITableView = {
+    UITableView(frame: .zero)
+      |> \.alwaysBounceVertical .~ true
+      |> \.dataSource .~ self.dataSource
+      |> \.rowHeight .~ UITableView.automaticDimension
+      |> \.tableFooterView .~ UIView(frame: .zero)
+  }()
+
+  private let dataSource = ManagePledgeDataSource()
+
   private lazy var closeButton: UIBarButtonItem = {
     UIBarButtonItem(
       image: UIImage(named: "icon--cross"),
@@ -23,6 +33,11 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       target: self,
       action: #selector(ManagePledgeViewController.closeButtonTapped)
     )
+  }()
+
+  private lazy var headerView: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var menuButton: UIBarButtonItem = {
@@ -71,6 +86,11 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     UILabel(frame: .zero)
   }()
 
+  private lazy var pullToRefreshHeaderView: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var pullToRefreshStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -78,26 +98,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private lazy var refreshControl: UIRefreshControl = { UIRefreshControl() }()
 
-  private lazy var rewardView: ManagePledgeRewardView = {
-    ManagePledgeRewardView(frame: .zero)
-  }()
-
   private lazy var rewardReceivedViewController: ManageViewPledgeRewardReceivedViewController = {
     ManageViewPledgeRewardReceivedViewController.instantiate()
-  }()
-
-  private lazy var rewardSectionSeparator: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
-  private lazy var rewardSectionViews = {
-    [self.rewardView, self.rewardSectionSeparator]
-  }()
-
-  private lazy var rootScrollView: UIScrollView = {
-    UIScrollView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var rootStackView: UIStackView = {
@@ -106,7 +108,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   }()
 
   private lazy var sectionSeparatorViews = {
-    [self.pledgeSummarySectionSeparator, self.paymentMethodSectionSeparator, self.rewardSectionSeparator]
+    [self.pledgeSummarySectionSeparator, self.paymentMethodSectionSeparator]
   }()
 
   // MARK: - Lifecycle
@@ -120,10 +122,23 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
+    self.tableView.registerCellClass(RewardTableViewCell.self)
+
+    self.refreshControl.addTarget(
+      self,
+      action: #selector(ManagePledgeViewController.beginRefresh),
+      for: .valueChanged
+    )
+
     self.configureViews()
-    self.setupConstraints()
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.tableView.ksr_sizeHeaderFooterViewsToFit()
   }
 
   // MARK: - Styles
@@ -131,7 +146,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self.view
+    _ = self.tableView
       |> checkoutBackgroundStyle
 
     _ = self.closeButton
@@ -141,23 +156,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     _ = self.menuButton
       |> \.accessibilityLabel %~ { _ in Strings.Menu() }
 
-    _ = self.rootScrollView
-      |> rootScrollViewStyle
-
     _ = self.rootStackView
       |> checkoutRootStackViewStyle
-
-    _ = self.pullToRefreshLabel
-      |> \.text %~ { _ in localizedString(
-        key: "Something_went_wrong_pull_to_refresh",
-        defaultValue: "Something went wrong, pull to refresh."
-      )
-      }
-
-    _ = self.pullToRefreshStackView
-      |> \.axis .~ .vertical
-      |> \.spacing .~ Styles.grid(2)
-      |> \.alignment .~ .center
 
     _ = self.sectionSeparatorViews
       ||> separatorStyleDark
@@ -168,8 +168,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.pullToRefreshStackView.rac.hidden = self.viewModel.outputs.pullToRefreshStackViewHidden
-    self.rootStackView.rac.hidden = self.viewModel.outputs.rootStackViewHidden
     self.rewardReceivedViewController.view.rac.hidden =
       self.viewModel.outputs.rewardReceivedViewControllerViewIsHidden
 
@@ -211,10 +209,19 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         self?.rewardReceivedViewController.configureWith(project: project)
       }
 
-    self.viewModel.outputs.configureRewardSummaryView
+    self.viewModel.outputs.loadProjectAndRewardsIntoDataSource
+      .observeForUI()
+      .observeValues { [weak self] project, rewards in
+        self?.dataSource.load(project: project, rewards: rewards)
+        self?.configureHeaderView()
+        self?.tableView.reloadData()
+      }
+
+    self.viewModel.outputs.loadPullToRefreshHeaderView
       .observeForUI()
       .observeValues { [weak self] in
-        self?.rewardView.configure(with: $0)
+        self?.dataSource.clearValues()
+        self?.configurePullToRefreshHeaderView()
       }
 
     self.viewModel.outputs.startRefreshing
@@ -302,52 +309,27 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.viewModel.inputs.configureWith(params)
   }
 
-  private func setupConstraints() {
-    NSLayoutConstraint.activate([
-      // rootStackView
-      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor),
-
-      // pullToRefreshStackView
-      self.pullToRefreshStackView.leftAnchor.constraint(equalTo: self.rootScrollView.leftAnchor),
-      self.pullToRefreshStackView.rightAnchor.constraint(equalTo: self.rootScrollView.rightAnchor),
-      self.pullToRefreshStackView.centerXAnchor.constraint(equalTo: self.rootScrollView.centerXAnchor),
-      self.pullToRefreshStackView.centerYAnchor.constraint(
-        equalTo: self.rootScrollView.centerYAnchor, constant: -Styles.grid(8)
-      )
-    ])
-
-    self.sectionSeparatorViews.forEach { view in
-      _ = view.heightAnchor.constraint(equalToConstant: 1)
-        |> \.isActive .~ true
-
-      view.setContentCompressionResistancePriority(.required, for: .vertical)
-    }
-  }
-
   // MARK: Functions
 
   private func configureViews() {
-    _ = (self.rootScrollView, self.view)
+    _ = (self.tableView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = self.rootScrollView
+    _ = self.tableView
       |> \.refreshControl .~ self.refreshControl
+  }
 
-    _ = (self.rootStackView, self.rootScrollView)
+  private func configureHeaderView() {
+    guard self.tableView.tableHeaderView != self.headerView else { return }
+
+    _ = (self.rootStackView, self.headerView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
-
-    _ = (self.pullToRefreshStackView, self.rootScrollView)
-      |> ksr_addSubviewToParent()
-
-    _ = ([self.pullToRefreshImageView, self.pullToRefreshLabel], self.pullToRefreshStackView)
-      |> ksr_addArrangedSubviewsToStackView()
 
     let childViews: [UIView] = [
       self.pledgeSummarySectionViews,
       self.paymentMethodViews,
-      self.rewardSectionViews,
       [self.rewardReceivedViewController.view]
     ]
     .flatMap { $0 }
@@ -365,11 +347,53 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       viewController.didMove(toParent: self)
     }
 
-    self.refreshControl.addTarget(
-      self,
-      action: #selector(ManagePledgeViewController.beginRefresh),
-      for: .valueChanged
-    )
+    self.sectionSeparatorViews.forEach { view in
+      _ = view.heightAnchor.constraint(equalToConstant: 1)
+        |> \.isActive .~ true
+
+      view.setContentCompressionResistancePriority(.required, for: .vertical)
+    }
+
+    self.tableView.tableHeaderView = self.headerView
+
+    self.headerView.widthAnchor.constraint(equalTo: self.tableView.widthAnchor).isActive = true
+  }
+
+  private func configurePullToRefreshHeaderView() {
+    guard self.tableView.tableHeaderView != self.pullToRefreshHeaderView else { return }
+
+    _ = (self.pullToRefreshStackView, self.pullToRefreshHeaderView)
+      |> ksr_addSubviewToParent()
+
+    _ = ([self.pullToRefreshImageView, self.pullToRefreshLabel], self.pullToRefreshStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = self.pullToRefreshLabel
+      |> \.text %~ { _ in
+        localizedString(
+          key: "Something_went_wrong_pull_to_refresh",
+          defaultValue: "Something went wrong, pull to refresh."
+        )
+      }
+
+    _ = self.pullToRefreshStackView
+      |> \.axis .~ .vertical
+      |> \.spacing .~ Styles.grid(2)
+      |> \.alignment .~ .center
+
+    self.tableView.tableHeaderView = self.pullToRefreshHeaderView
+
+    NSLayoutConstraint.activate([
+      self.pullToRefreshStackView.leftAnchor.constraint(equalTo: self.pullToRefreshHeaderView.leftAnchor),
+      self.pullToRefreshStackView.rightAnchor.constraint(equalTo: self.pullToRefreshHeaderView.rightAnchor),
+      self.pullToRefreshStackView.centerXAnchor
+        .constraint(equalTo: self.pullToRefreshHeaderView.centerXAnchor),
+      self.pullToRefreshStackView.centerYAnchor.constraint(
+        equalTo: self.pullToRefreshHeaderView.centerYAnchor, constant: -Styles.grid(8)
+      ),
+      self.pullToRefreshHeaderView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+      self.pullToRefreshHeaderView.heightAnchor.constraint(equalTo: self.view.heightAnchor)
+    ])
   }
 
   // MARK: Actions
@@ -511,11 +535,6 @@ extension ManagePledgeViewController: ManagePledgePaymentMethodViewDelegate {
 }
 
 // MARK: Styles
-
-private let rootScrollViewStyle = { (scrollView: UIScrollView) in
-  scrollView
-    |> \.alwaysBounceVertical .~ true
-}
 
 extension ManagePledgeViewController: MessageDialogViewControllerDelegate {
   internal func messageDialogWantsDismissal(_ dialog: MessageDialogViewController) {
