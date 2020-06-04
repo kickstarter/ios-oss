@@ -129,7 +129,7 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
 }
 
 private func projectTagsViewShouldHide(project: Project, category: KsApi.Category?) -> Bool {
-  let categoryTagShouldHide = projectCategoryTagShouldHide(for:project, in: category)
+  let categoryTagShouldHide = projectCategoryTagShouldHide(for: project, in: category)
   let pwlTagShouldHide = projectPWLTagShouldHide(project: project)
 
   return categoryTagShouldHide && pwlTagShouldHide
@@ -149,7 +149,7 @@ private func projectPWLTagShouldHide(project: Project) -> Bool {
 }
 
 private func projectTags(project: Project, category: KsApi.Category?) -> [DiscoveryProjectTagPillCellValue] {
-  let shouldShowCategoryTag = !projectCategoryTagShouldHide(for:project, in: category)
+  let shouldShowCategoryTag = !projectCategoryTagShouldHide(for: project, in: category)
   let shouldShowPWLTag = !projectPWLTagShouldHide(project: project)
 
   var tags: [DiscoveryProjectTagPillCellValue] = []
