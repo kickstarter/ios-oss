@@ -1356,6 +1356,72 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
+  func testRefreshing_ProjectId_NilBackingId() {
+    let reward = Reward.template
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ .template
+      |> Project.lens.rewards .~ [reward]
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.startRefreshing.assertDidNotEmitValue()
+      self.endRefreshing.assertDidNotEmitValue()
+      self.loadProjectAndRewardsIntoDataSourceProject.assertDidNotEmitValue()
+      self.loadProjectAndRewardsIntoDataSourceReward.assertDidNotEmitValue()
+      self.rightBarButtonItemHidden.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.loadPullToRefreshHeaderView.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith((Param.slug("project-slug"), nil))
+      self.vm.inputs.viewDidLoad()
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertDidNotEmitValue()
+      self.loadProjectAndRewardsIntoDataSourceProject.assertDidNotEmitValue()
+      self.loadProjectAndRewardsIntoDataSourceReward.assertDidNotEmitValue()
+      self.rightBarButtonItemHidden.assertValues([true])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.loadPullToRefreshHeaderView.assertDidNotEmitValue()
+
+      // Project request completes
+      self.scheduler.advance()
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertDidNotEmitValue()
+      self.loadProjectAndRewardsIntoDataSourceProject.assertValues([project])
+      self.loadProjectAndRewardsIntoDataSourceReward.assertValues([[reward]])
+      self.rightBarButtonItemHidden.assertValues([true, false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.loadPullToRefreshHeaderView.assertDidNotEmitValue()
+
+      // Backing request completes
+      self.scheduler.advance()
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertDidNotEmitValue()
+      self.loadProjectAndRewardsIntoDataSourceProject.assertValues([project])
+      self.loadProjectAndRewardsIntoDataSourceReward.assertValues([[reward]])
+      self.rightBarButtonItemHidden.assertValues([true, false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.loadPullToRefreshHeaderView.assertDidNotEmitValue()
+
+      // endRefreshing is delayed by 300ms for animation duration
+      self.scheduler.advance(by: .milliseconds(300))
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertValueCount(1)
+      self.loadProjectAndRewardsIntoDataSourceProject.assertValues([project])
+      self.loadProjectAndRewardsIntoDataSourceReward.assertValues([[reward]])
+      self.rightBarButtonItemHidden.assertValues([true, false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.loadPullToRefreshHeaderView.assertDidNotEmitValue()
+    }
+  }
+
   func testFixButtonTapped() {
     self.goToChangePaymentMethodReward.assertDidNotEmitValue()
     self.goToChangePaymentMethodProject.assertDidNotEmitValue()

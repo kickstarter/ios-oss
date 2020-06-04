@@ -9,7 +9,7 @@ final class ProjectPamphletContentViewModelTests: TestCase {
   fileprivate let vm: ProjectPamphletContentViewModelType = ProjectPamphletContentViewModel()
 
   fileprivate let goToBackingProjectParam = TestObserver<Param, Never>()
-  fileprivate let goToBackingBackingParam = TestObserver<Param, Never>()
+  fileprivate let goToBackingBackingParam = TestObserver<Param?, Never>()
   fileprivate let goToComments = TestObserver<Project, Never>()
   fileprivate let goToDashboard = TestObserver<Param, Never>()
   fileprivate let goToRewardPledgeProject = TestObserver<Project, Never>()

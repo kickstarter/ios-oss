@@ -12,7 +12,7 @@ internal final class MessagesViewModelTests: TestCase {
   fileprivate let emptyStateIsVisible = TestObserver<Bool, Never>()
   fileprivate let emptyStateMessage = TestObserver<String, Never>()
   fileprivate let goToBackingProjectParam = TestObserver<Param, Never>()
-  fileprivate let goToBackingBackingParam = TestObserver<Param, Never>()
+  fileprivate let goToBackingBackingParam = TestObserver<Param?, Never>()
   fileprivate let goToProject = TestObserver<Project, Never>()
   fileprivate let goToRefTag = TestObserver<RefTag, Never>()
   fileprivate let messages = TestObserver<[Message], Never>()

@@ -5,7 +5,7 @@ import ReactiveSwift
 
 public typealias ManagePledgeViewParamConfigData = (
   projectParam: Param,
-  backingParam: Param
+  backingParam: Param?
 )
 
 public enum ManagePledgeAlertAction: CaseIterable {
@@ -67,7 +67,6 @@ public final class ManagePledgeViewModel:
     .map(first)
 
     let projectParam = params.map(first)
-    let backingParam = params.map(second)
 
     let shouldBeginRefresh = Signal.merge(
       self.pledgeViewControllerDidUpdatePledgeWithMessageSignal.ignoreValues(),
@@ -95,12 +94,25 @@ public final class ManagePledgeViewModel:
       // Once we know we have a project value, keep track of that.
       .on(value: { [projectLoaded] _ in projectLoaded.value = true })
 
+    let backingParamFromConfigData = params.map(second)
+      .skipNil()
+    let backingParamFromProject = project.map { $0.personalization.backing?.id }
+      .skipNil()
+      .map(Param.id)
+
+    let backingParam = Signal.merge(
+      backingParamFromConfigData,
+      backingParamFromProject
+        .take(until: backingParamFromConfigData.ignoreValues())
+    )
+
     let shouldFetchGraphBackingWithParam = Signal.merge(
       backingParam,
       backingParam.takeWhen(shouldBeginRefresh)
     )
 
     let graphBackingEvent = shouldFetchGraphBackingWithParam
+      .logEvents(identifier: "***")
       .map { param in param.id }
       .skipNil()
       .map(String.init)
@@ -166,7 +178,12 @@ public final class ManagePledgeViewModel:
       .take(until: backing.ignoreValues())
       .ignoreValues()
 
-    self.paymentMethodViewHidden = userIsCreatorOfProject
+    self.paymentMethodViewHidden = Signal.combineLatest(
+      userIsCreatorOfProject,
+      backing.map { backing in backing.creditCard }
+    )
+    .map { userIsCreatorOfProject, creditCard in userIsCreatorOfProject || creditCard == nil }
+    .skipRepeats()
 
     self.loadProjectAndRewardsIntoDataSource = projectAndReward
       .map { project, reward in (project, [reward]) }
