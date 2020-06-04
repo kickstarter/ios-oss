@@ -180,6 +180,8 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
           userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login]
         )
       ))
+      // Post notifications on the next run loop to avoid race condition with VCs being deallocated.
+      .ksr_delay(.nanoseconds(0), on: AppEnvironment.current.scheduler)
 
     self.dismissViewController = self.viewIsPresentedProperty.signal
       .filter(isTrue)
