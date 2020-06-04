@@ -230,7 +230,7 @@
 "Get_reminded_about_this_project" = "このプロジェクトについてリマインダーを希望しますか？";
 "Get_started" = "はじめよう";
 "Go_to_project_page" = "プロジェクトページを見る";
-"Goal_met" = "Goal met";
+"Goal_met" = "目標達成";
 "Got_it" = "完了";
 "Got_it_your_changes_have_been_saved" = "変更が保存されました。";
 "Got_it_your_survey_response_has_been_submitted" = "サーベイを送信しました！";
@@ -501,10 +501,10 @@
 "Signs_up_with_Email" = "Eメールでサインアップする。";
 "Social_friend_is_backer.few" = "%{friend_name} さんと他%{remaining_count} 人";
 "Social_friend_is_backer.many" = "%{friend_name} さんと他%{remaining_count} 人";
-"Social_friend_is_backer.one" = "%{friend_name} is a backer";
+"Social_friend_is_backer.one" = "%{friend_name} さんと他%{remaining_count} 人";
 "Social_friend_is_backer.other" = "%{friend_name} さんと他%{remaining_count} 人";
 "Social_friend_is_backer.two" = "%{friend_name} さんと他%{remaining_count} 人";
-"Social_friend_is_backer.zero" = "%{friend_name} is a backer";
+"Social_friend_is_backer.zero" = "%{friend_name}さんがバッカーです";
 "Something_catch_your_eye" = "何か目にとまるものはありましたか？";
 "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "何らかのエラーにより、お支払い方法を削除できませんでした。もう一度お試しください。";
 "Something_went_wrong_please_try_again" = "なにかが間違っています。もう一度お試しください。";

@@ -501,9 +501,9 @@
 "Signs_up_with_Email" = "Registro con correo electrónico.";
 "Social_friend_is_backer.few" = "%{friend_name} y %{remaining_count} otros";
 "Social_friend_is_backer.many" = "%{friend_name} y %{remaining_count} otros";
-"Social_friend_is_backer.one" = "%{friend_name} patrocina este proyecto";
+"Social_friend_is_backer.one" = "%{friend_name} y %{remaining_count} persona más";
 "Social_friend_is_backer.other" = "%{friend_name} y %{remaining_count} otros";
-"Social_friend_is_backer.two" = "%{friend_name} y %{remaining_count} persona más";
+"Social_friend_is_backer.two" = "%{friend_name} y %{remaining_count} otros";
 "Social_friend_is_backer.zero" = "%{friend_name} patrocina este proyecto";
 "Something_catch_your_eye" = "¿Algo que te haya llamado la atención?";
 "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "Hubo un error y no pudimos eliminar tu método de pago. Inténtalo de nuevo.";

@@ -501,9 +501,9 @@
 "Signs_up_with_Email" = "Inscription avec l'adresse e-mail.";
 "Social_friend_is_backer.few" = "%{friend_name} et %{remaining_count} autre(s)";
 "Social_friend_is_backer.many" = "%{friend_name} et %{remaining_count} autre(s)";
-"Social_friend_is_backer.one" = "%{friend_name} est contributeur";
+"Social_friend_is_backer.one" = "%{friend_name} et %{remaining_count} autre";
 "Social_friend_is_backer.other" = "%{friend_name} et %{remaining_count} autre(s)";
-"Social_friend_is_backer.two" = "%{friend_name} et %{remaining_count} autre";
+"Social_friend_is_backer.two" = "%{friend_name} et %{remaining_count} autre(s)";
 "Social_friend_is_backer.zero" = "%{friend_name} est contributeur";
 "Something_catch_your_eye" = "Quelque chose a retenu votre attention ?";
 "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "Une erreur s'est produite et la suppression de votre moyen de payement a échoué. Veuillez réessayer.";

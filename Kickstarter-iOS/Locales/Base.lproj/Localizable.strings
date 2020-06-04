@@ -501,9 +501,9 @@
 "Signs_up_with_Email" = "Signs up with Email.";
 "Social_friend_is_backer.few" = "%{friend_name} and %{remaining_count} others";
 "Social_friend_is_backer.many" = "%{friend_name} and %{remaining_count} others";
-"Social_friend_is_backer.one" = "%{friend_name} is a backer";
+"Social_friend_is_backer.one" = "%{friend_name} and %{remaining_count} other";
 "Social_friend_is_backer.other" = "%{friend_name} and %{remaining_count} others";
-"Social_friend_is_backer.two" = "%{friend_name} and %{remaining_count} other";
+"Social_friend_is_backer.two" = "%{friend_name} and %{remaining_count} others";
 "Social_friend_is_backer.zero" = "%{friend_name} is a backer";
 "Something_catch_your_eye" = "Something\ncatch your eye?";
 "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "Something went wrong and we were unable to remove your payment method, please try again.";
