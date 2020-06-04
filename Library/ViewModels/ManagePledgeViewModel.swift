@@ -112,7 +112,6 @@ public final class ManagePledgeViewModel:
     )
 
     let graphBackingEvent = shouldFetchGraphBackingWithParam
-      .logEvents(identifier: "***")
       .map { param in param.id }
       .skipNil()
       .map(String.init)
