@@ -38,9 +38,9 @@ public final class RewardCardView: UIView {
         sectionInset: UIEdgeInsets(topBottom: Styles.grid(1))
       )
     )
-    |> \.contentInsetAdjustmentBehavior .~ .never
-    |> \.dataSource .~ self.pillDataSource
-    |> \.delegate .~ self
+      |> \.contentInsetAdjustmentBehavior .~ .never
+      |> \.dataSource .~ self.pillDataSource
+      |> \.delegate .~ self
   }()
 
   private lazy var pillCollectionViewHeightConstraint: NSLayoutConstraint = {
