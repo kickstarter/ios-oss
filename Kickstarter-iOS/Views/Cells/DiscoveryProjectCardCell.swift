@@ -106,22 +106,10 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   override func layoutSubviews() {
     super.layoutSubviews()
 
-    print("Layout subviews, updating constraints")
-
     self.updateCollectionViewConstraints()
   }
 
-//  override func prepareForReuse() {
-//    super.prepareForReuse()
-//
-//    self.tagsCollectionViewHeightConstraint?.constant = 0
-//
-//    self.clearFacepileImageViews()
-//  }
-
   func configureWith(value: DiscoveryProjectCellRowValue) {
-    print("[CONFIGURE] \(value.project.name)")
-
     self.viewModel.inputs.configure(with: value)
 
     self.watchProjectViewModel.inputs.configure(with: (
@@ -313,8 +301,6 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
         self?.tagsCollectionView.reloadData()
 
-        print("Reload Data, updating constraints")
-
         self?.updateCollectionViewConstraints()
       }
 
@@ -503,13 +489,11 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   }
 
   private func updateCollectionViewConstraints() {
-    self.layoutIfNeeded()
+    self.tagsCollectionView.layoutIfNeeded()
 
     self.tagsCollectionViewHeightConstraint?.constant = self.tagsCollectionView.contentSize.height
 
-    print("Tag collection view height: \(self.tagsCollectionView.frame.height)")
-//
-//    self.layoutIfNeeded()
+    self.layoutIfNeeded()
   }
 
   private func configureFacepileImageViews(with avatars: [URL]) {
