@@ -124,7 +124,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
   fileprivate func goToBacking(params: ManagePledgeViewParamConfigData) {
     let vc = ManagePledgeViewController.controller(with: params)
-    self.present(vc, animated: true)
+
     if self.traitCollection.userInterfaceIdiom == .pad {
       vc.modalPresentationStyle = UIModalPresentationStyle.formSheet
     }

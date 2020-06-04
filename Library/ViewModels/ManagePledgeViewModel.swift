@@ -180,7 +180,12 @@ public final class ManagePledgeViewModel:
     )
     .skipRepeats()
 
-    self.paymentMethodViewHidden = userIsCreatorOfProject
+    self.paymentMethodViewHidden = Signal.combineLatest(
+      userIsCreatorOfProject,
+      backing.map { backing in backing.creditCard }
+    )
+    .map { userIsCreatorOfProject, creditCard in userIsCreatorOfProject || creditCard == nil }
+    .skipRepeats()
 
     self.rightBarButtonItemHidden = self.rootStackViewHidden
 

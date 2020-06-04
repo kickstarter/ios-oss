@@ -92,12 +92,11 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   internal func goToBacking(params: ManagePledgeViewParamConfigData) {
     let vc = ManagePledgeViewController.controller(with: params)
 
-    self.present(vc, animated: true)
     if self.traitCollection.userInterfaceIdiom == .pad {
       vc.modalPresentationStyle = UIModalPresentationStyle.formSheet
     }
 
-    self.present(vc, animated: true, completion: nil)
+    self.present(vc, animated: true)
   }
 
   internal func goToComments(project: Project?, update: Update?) {
