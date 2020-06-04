@@ -3,6 +3,7 @@ import Prelude
 extension GraphBacking {
   internal static let template = GraphBacking(
     errorReason: nil,
+    id: "UmV3YXJkLTE=",
     project: nil,
     status: GraphBacking.Status.errored
   )

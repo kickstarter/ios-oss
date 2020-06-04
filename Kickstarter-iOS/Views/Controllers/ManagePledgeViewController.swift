@@ -173,6 +173,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.rewardReceivedViewController.view.rac.hidden =
       self.viewModel.outputs.rewardReceivedViewControllerViewIsHidden
 
+    self.viewModel.outputs.paymentMethodViewHidden
+      .observeForUI()
+      .observeValues { [weak self] hidden in
+        self?.paymentMethodViews.forEach { $0.isHidden = hidden }
+      }
+
     self.viewModel.outputs.rightBarButtonItemHidden
       .observeForUI()
       .observeValues { [weak self] hidden in
@@ -292,8 +298,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   // MARK: - Configuration
 
-  func configureWith(projectOrParam: Either<Project, Param>) {
-    self.viewModel.inputs.configureWith(projectOrParam)
+  func configureWith(params: ManagePledgeViewParamConfigData) {
+    self.viewModel.inputs.configureWith(params)
   }
 
   private func setupConstraints() {
@@ -521,12 +527,12 @@ extension ManagePledgeViewController: MessageDialogViewControllerDelegate {
 
 extension ManagePledgeViewController {
   public static func controller(
-    with projectOrParam: Either<Project, Param>,
+    with params: ManagePledgeViewParamConfigData,
     delegate: ManagePledgeViewControllerDelegate? = nil
   ) -> UINavigationController {
     let managePledgeViewController = ManagePledgeViewController
       .instantiate()
-    managePledgeViewController.configureWith(projectOrParam: projectOrParam)
+    managePledgeViewController.configureWith(params: params)
     managePledgeViewController.delegate = delegate
 
     let closeButton = UIBarButtonItem(

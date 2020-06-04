@@ -33,7 +33,7 @@ public protocol MessagesViewModelOutputs {
   var emptyStateIsVisibleAndMessageToUser: Signal<(Bool, String), Never> { get }
 
   /// Emits when we should go to the backing screen.
-  var goToBacking: Signal<(Project, User), Never> { get }
+  var goToBacking: Signal<ManagePledgeViewParamConfigData, Never> { get }
 
   /// Emits when we should go to the projet.
   var goToProject: Signal<(Project, RefTag), Never> { get }
@@ -163,10 +163,14 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
 
     self.goToBacking = Signal.combineLatest(messageThreadEnvelope, currentUser)
       .takeWhen(self.backingInfoPressedProperty.signal)
-      .map { env, currentUser in
-        env.messageThread.project.personalization.isBacking == .some(true)
-          ? (env.messageThread.project, currentUser)
-          : (env.messageThread.project, env.messageThread.participant)
+      .filterMap { env, _ -> ManagePledgeViewParamConfigData? in
+        guard let backing = env.messageThread.backing else {
+          return nil
+        }
+
+        let project = env.messageThread.project
+
+        return (projectParam: Param.slug(project.slug), backingParam: Param.id(backing.id))
       }
 
     self.goToProject = self.project.takeWhen(self.projectBannerTappedProperty.signal)
@@ -218,7 +222,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
 
   public let backingAndProjectAndIsFromBacking: Signal<(Backing, Project, Bool), Never>
   public let emptyStateIsVisibleAndMessageToUser: Signal<(Bool, String), Never>
-  public let goToBacking: Signal<(Project, User), Never>
+  public let goToBacking: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToProject: Signal<(Project, RefTag), Never>
   public let messages: Signal<[Message], Never>
   public let presentMessageDialog: Signal<(MessageThread, Koala.MessageDialogContext), Never>

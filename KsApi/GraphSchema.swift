@@ -114,6 +114,7 @@ public enum GraphError: Error {
 }
 
 public enum Query {
+  case backing(id: String, NonEmptySet<Backing>)
   case category(id: String, NonEmptySet<Category>)
   case project(slug: String, NonEmptySet<Project>)
   case rootCategories(NonEmptySet<Category>)
@@ -203,6 +204,7 @@ public enum Query {
     case backersCount
     case description
     case estimatedDeliveryOn
+    case id
     case items(Set<QueryArg<Never>>, NonEmptySet<Connection<Item>>)
     case name
 
@@ -302,6 +304,8 @@ extension Query {
 extension Query: QueryType {
   public var description: String {
     switch self {
+    case let .backing(id, fields):
+      return "backing(id: \"\(id)\") { \(join(fields)) }"
     case let .category(id, fields):
       return "node(id: \"\(id)\") { ... on Category { \(join(fields)) } }"
     case let .project(slug, fields):
@@ -540,6 +544,7 @@ extension Query.Reward: QueryType {
     case .backersCount: return "backersCount"
     case .description: return "description"
     case .estimatedDeliveryOn: return "estimatedDeliveryOn"
+    case .id: return "id"
     case let .items(args, fields): return "items" + connection(args, fields)
     case .name: return "name"
     }

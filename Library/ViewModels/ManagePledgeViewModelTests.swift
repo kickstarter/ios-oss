@@ -27,6 +27,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let goToUpdatePledgeReward = TestObserver<Reward, Never>()
   private let notifyDelegateManagePledgeViewControllerFinishedWithMessage
     = TestObserver<String?, Never>()
+  private let paymentMethodViewHidden = TestObserver<Bool, Never>()
   private let pullToRefreshStackViewHidden = TestObserver<Bool, Never>()
   private let rewardReceivedViewControllerViewIsHidden = TestObserver<Bool, Never>()
   private let rightBarButtonItemHidden = TestObserver<Bool, Never>()
@@ -66,6 +67,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.outputs.goToUpdatePledge.map(second).observe(self.goToUpdatePledgeReward.observer)
     self.vm.outputs.notifyDelegateManagePledgeViewControllerFinishedWithMessage
       .observe(self.notifyDelegateManagePledgeViewControllerFinishedWithMessage.observer)
+    self.vm.outputs.paymentMethodViewHidden.observe(self.paymentMethodViewHidden.observer)
     self.vm.outputs.pullToRefreshStackViewHidden.observe(self.pullToRefreshStackViewHidden.observer)
     self.vm.outputs.rewardReceivedViewControllerViewIsHidden.observe(
       self.rewardReceivedViewControllerViewIsHidden.observer
@@ -81,14 +83,15 @@ internal final class ManagePledgeViewModelTests: TestCase {
   func testNavigationBarTitle_LiveProject() {
     self.title.assertDidNotEmitValue()
 
-    let project = Project.template
-
-    let mockService = MockService(fetchManagePledgeViewBackingResult: .success(.template))
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: .template
+    )
 
     withEnvironment(apiService: mockService) {
       self.title.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(.left(project))
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -106,10 +109,13 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let envelope = ManagePledgeViewBackingEnvelope.template
       |> \.project.state .~ .successful
 
-    let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(envelope),
+      fetchProjectResponse: finishedProject
+    )
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(.left(finishedProject))
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -122,12 +128,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.configurePaymentMethodView.assertDidNotEmitValue()
 
     let project = Project.template
-      |> Project.lens.personalization.backing .~ Backing.template
 
     let envelope = ManagePledgeViewBackingEnvelope.template
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(envelope)
+      fetchManagePledgeViewBackingResult: .success(envelope),
+      fetchProjectResponse: project
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(
@@ -139,7 +145,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(.left(project))
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
 
       self.vm.inputs.viewDidLoad()
 
@@ -155,12 +161,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.configurePledgeSummaryView.assertDidNotEmitValue()
 
     let project = Project.template
-      |> Project.lens.personalization.backing .~ Backing.template
 
     let envelope = ManagePledgeViewBackingEnvelope.template
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(envelope)
+      fetchManagePledgeViewBackingResult: .success(envelope),
+      fetchProjectResponse: project
     )
 
     let pledgeViewSummaryData = ManagePledgeSummaryViewData(
@@ -181,7 +187,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(.left(project))
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
 
       self.vm.inputs.viewDidLoad()
 
@@ -198,86 +204,181 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.configureRewardSummaryViewReward.assertDidNotEmitValue()
 
     let project = Project.template
-      |> Project.lens.personalization.backing .~ Backing.template
+      |> Project.lens.rewards .~ [.template]
 
-    self.vm.inputs.configureWith(.left(project))
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.vm.inputs.viewDidLoad()
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
 
-    self.configureRewardSummaryViewProject.assertValue(project)
-    self.configureRewardSummaryViewReward.assertValue(Reward.template)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.configureRewardSummaryViewProject.assertValue(project)
+      self.configureRewardSummaryViewReward.assertValue(Reward.template)
+    }
   }
 
   func testConfigureRewardReceived() {
     self.configureRewardReceivedWithProject.assertDidNotEmitValue()
 
     let project = Project.template
-      |> Project.lens.personalization.backing .~ Backing.template
 
-    self.vm.inputs.configureWith(.left(project))
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.vm.inputs.viewDidLoad()
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
 
-    self.configureRewardReceivedWithProject.assertValue(project)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.configureRewardReceivedWithProject.assertValue(project)
+    }
   }
 
   func testMenuButtonTapped_WhenProject_IsLive() {
     let project = Project.template
       |> Project.lens.state .~ .live
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.menuButtonTapped()
+      self.scheduler.advance()
 
-    self.showActionSheetMenuWithOptions.assertValues([
-      [
-        ManagePledgeAlertAction.updatePledge,
-        ManagePledgeAlertAction.changePaymentMethod,
-        ManagePledgeAlertAction.chooseAnotherReward,
-        ManagePledgeAlertAction.contactCreator,
-        ManagePledgeAlertAction.cancelPledge
-      ]
-    ])
+      self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+
+      self.vm.inputs.menuButtonTapped()
+
+      self.showActionSheetMenuWithOptions.assertValues([
+        [
+          ManagePledgeAlertAction.updatePledge,
+          ManagePledgeAlertAction.changePaymentMethod,
+          ManagePledgeAlertAction.chooseAnotherReward,
+          ManagePledgeAlertAction.contactCreator,
+          ManagePledgeAlertAction.cancelPledge
+        ]
+      ])
+    }
+  }
+
+  func testMenuButtonTapped_WhenProject_IsSuccessful_CreatorContext() {
+    let user = User.template
+    let project = Project.template
+      |> Project.lens.state .~ .successful
+      |> Project.lens.creator .~ user
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+
+      self.vm.inputs.menuButtonTapped()
+
+      self.showActionSheetMenuWithOptions.assertValues([[.viewRewards]])
+    }
   }
 
   func testMenuButtonTapped_WhenProject_IsNotLive() {
     let project = Project.template
       |> Project.lens.state .~ .successful
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.menuButtonTapped()
+      self.scheduler.advance()
 
-    self.showActionSheetMenuWithOptions.assertValues([[.viewRewards, .contactCreator]])
+      self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+
+      self.vm.inputs.menuButtonTapped()
+
+      self.showActionSheetMenuWithOptions.assertValues([[.viewRewards, .contactCreator]])
+    }
   }
 
   func testMenuButtonTapped_WhenProject_IsLive_BackingStatus_IsPreAuth() {
-    let backing = Backing.template
-      |> Backing.lens.status .~ .preauth
-
     let project = Project.template
       |> Project.lens.state .~ .live
-      |> Project.lens.personalization.backing .~ backing
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let env = ManagePledgeViewBackingEnvelope.template
+      |> \.backing.status .~ .preauth
 
-    self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
+    )
 
-    self.vm.inputs.menuButtonTapped()
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
 
-    self.showActionSheetMenuWithOptions.assertValues([[.contactCreator]])
+      self.scheduler.advance()
+
+      self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+
+      self.vm.inputs.menuButtonTapped()
+
+      self.showActionSheetMenuWithOptions.assertValues([[.contactCreator]])
+    }
+  }
+
+  func testMenuButtonTapped_WhenProject_IsLive_BackingStatus_IsPreAuth_CreatorContext() {
+    let user = User.template
+    let project = Project.template
+      |> Project.lens.creator .~ user
+      |> Project.lens.state .~ .live
+
+    let env = ManagePledgeViewBackingEnvelope.template
+      |> \.backing.status .~ .preauth
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.showActionSheetMenuWithOptions.assertDidNotEmitValue()
+
+      self.vm.inputs.menuButtonTapped()
+
+      self.showActionSheetMenuWithOptions.assertValues([[.viewRewards]])
+    }
   }
 
   func testGoToCancelPledge() {
     let project = Project.template
-      |> Project.lens.personalization.backing .~ Backing.template
 
     let envelope = ManagePledgeViewBackingEnvelope.template
 
@@ -285,11 +386,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let expectedAmount = envelope.backing.amount.amount
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(envelope)
+      fetchManagePledgeViewBackingResult: .success(envelope),
+      fetchProjectResponse: project
     )
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(.left(project))
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -311,11 +413,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> \.backing.cancelable .~ false
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(envelope)
+      fetchManagePledgeViewBackingResult: .success(envelope),
+      fetchProjectResponse: .template
     )
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(.left(.template))
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -335,65 +438,100 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
   func testGoToChangePaymentMethod() {
     let project = Project.template
-      |> Project.lens.personalization.backing .~ Backing.template
+      |> Project.lens.rewards .~ [.template]
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.goToChangePaymentMethodProject.assertDidNotEmitValue()
-    self.goToChangePaymentMethodReward.assertDidNotEmitValue()
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.menuButtonTapped()
-    self.vm.inputs.menuOptionSelected(with: .changePaymentMethod)
+      self.scheduler.advance()
 
-    self.goToChangePaymentMethodProject.assertValues([project])
-    self.goToChangePaymentMethodReward.assertValues([Reward.template])
+      self.goToChangePaymentMethodProject.assertDidNotEmitValue()
+      self.goToChangePaymentMethodReward.assertDidNotEmitValue()
+
+      self.vm.inputs.menuButtonTapped()
+      self.vm.inputs.menuOptionSelected(with: .changePaymentMethod)
+
+      self.goToChangePaymentMethodProject.assertValues([project])
+      self.goToChangePaymentMethodReward.assertValues([Reward.template])
+    }
   }
 
   func testGoToContactCreator() {
     let project = Project.template
-      |> Project.lens.personalization.backing .~ Backing.template
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.goToContactCreatorSubject.assertDidNotEmitValue()
-    self.goToContactCreatorContext.assertDidNotEmitValue()
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.menuButtonTapped()
-    self.vm.inputs.menuOptionSelected(with: .contactCreator)
+      self.scheduler.advance()
 
-    self.goToContactCreatorSubject.assertValues([.project(project)])
-    self.goToContactCreatorContext.assertValues([.backerModal])
+      self.goToContactCreatorSubject.assertDidNotEmitValue()
+      self.goToContactCreatorContext.assertDidNotEmitValue()
+
+      self.vm.inputs.menuButtonTapped()
+      self.vm.inputs.menuOptionSelected(with: .contactCreator)
+
+      self.goToContactCreatorSubject.assertValues([.project(project)])
+      self.goToContactCreatorContext.assertValues([.backerModal])
+    }
   }
 
   func testGoToRewards() {
-    self.vm.inputs.configureWith(.left(Project.template))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: .template
+    )
 
-    self.goToRewards.assertDidNotEmitValue()
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.menuButtonTapped()
-    self.vm.inputs.menuOptionSelected(with: .chooseAnotherReward)
+      self.scheduler.advance()
 
-    self.goToRewards.assertValues([Project.template])
+      self.goToRewards.assertDidNotEmitValue()
+
+      self.vm.inputs.menuButtonTapped()
+      self.vm.inputs.menuOptionSelected(with: .chooseAnotherReward)
+
+      self.goToRewards.assertValues([Project.template])
+    }
   }
 
   func testGoToUpdatePledge() {
     let project = Project.template
-      |> Project.lens.personalization.backing .~ Backing.template
+      |> Project.lens.rewards .~ [.template]
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.goToUpdatePledgeProject.assertDidNotEmitValue()
-    self.goToUpdatePledgeReward.assertDidNotEmitValue()
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.menuButtonTapped()
-    self.vm.inputs.menuOptionSelected(with: .updatePledge)
+      self.scheduler.advance()
 
-    self.goToUpdatePledgeProject.assertValues([project])
-    self.goToUpdatePledgeReward.assertValues([Reward.template])
+      self.goToUpdatePledgeProject.assertDidNotEmitValue()
+      self.goToUpdatePledgeReward.assertDidNotEmitValue()
+
+      self.vm.inputs.menuButtonTapped()
+      self.vm.inputs.menuOptionSelected(with: .updatePledge)
+
+      self.goToUpdatePledgeProject.assertValues([project])
+      self.goToUpdatePledgeReward.assertValues([Reward.template])
+    }
   }
 
   func testRewardReceivedViewControllerIsHidden_NoReward_Canceled() {
@@ -405,10 +543,19 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.rewards .~ ([Reward.noReward] + Project.cosmicSurgery.rewards.suffix(from: 1))
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    }
   }
 
   func testRewardReceivedViewControllerIsHidden_NoReward_Collected() {
@@ -420,10 +567,19 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.rewards .~ ([Reward.noReward] + Project.cosmicSurgery.rewards.suffix(from: 1))
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    }
   }
 
   func testRewardReceivedViewControllerIsHidden_NoReward_Dropped() {
@@ -435,10 +591,19 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.rewards .~ ([Reward.noReward] + Project.cosmicSurgery.rewards.suffix(from: 1))
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    }
   }
 
   func testRewardReceivedViewControllerIsHidden_NoReward_Errored() {
@@ -450,10 +615,19 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.rewards .~ ([Reward.noReward] + Project.cosmicSurgery.rewards.suffix(from: 1))
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    }
   }
 
   func testRewardReceivedViewControllerIsHidden_NoReward_Pledged() {
@@ -465,10 +639,19 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.rewards .~ ([Reward.noReward] + Project.cosmicSurgery.rewards.suffix(from: 1))
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    }
   }
 
   func testRewardReceivedViewControllerIsHidden_NoReward_Preauth() {
@@ -478,10 +661,19 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    }
   }
 
   func testRewardReceivedViewControllerIsHidden_Reward_Canceled() {
@@ -491,23 +683,40 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    }
   }
 
   func testRewardReceivedViewControllerIsHidden_Reward_Collected() {
-    let backing = Backing.template
-      |> Backing.lens.status .~ .collected
-
     let project = Project.cosmicSurgery
-      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let env = ManagePledgeViewBackingEnvelope.template
+      |> \.backing.status .~ .collected
 
-    self.rewardReceivedViewControllerViewIsHidden.assertValues([false])
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.rewardReceivedViewControllerViewIsHidden.assertValues([false])
+    }
   }
 
   func testRewardReceivedViewControllerIsHidden_Reward_Dropped() {
@@ -517,10 +726,19 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    }
   }
 
   func testRewardReceivedViewControllerIsHidden_Reward_Errored() {
@@ -530,10 +748,19 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    }
   }
 
   func testRewardReceivedViewControllerIsHidden_Reward_Pledged() {
@@ -543,10 +770,19 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.cosmicSurgery
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    }
   }
 
   func testRewardReceivedViewControllerIsHidden_Reward_Preauth() {
@@ -556,41 +792,91 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    }
+  }
+
+  func testRewardReceivedViewControllerIsHidden_Reward_Collected_UserIsCreatorOfProject() {
+    let user = User.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ user
+
+    let env = ManagePledgeViewBackingEnvelope.template
+      |> \.backing.status .~ .collected
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.rewardReceivedViewControllerViewIsHidden.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.rewardReceivedViewControllerViewIsHidden.assertValues([true])
+    }
   }
 
   func testNotifyDelegateManagePledgeViewControllerFinishedWithMessage_CancellingPledge() {
-    self.vm.inputs.configureWith(.left(Project.template))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: .template
+    )
 
-    self.notifyDelegateManagePledgeViewControllerFinishedWithMessage.assertDidNotEmitValue()
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.cancelPledgeDidFinish(with: "You cancelled your pledge.")
+      self.scheduler.advance()
 
-    self.notifyDelegateManagePledgeViewControllerFinishedWithMessage
-      .assertValues(["You cancelled your pledge."])
+      self.notifyDelegateManagePledgeViewControllerFinishedWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.cancelPledgeDidFinish(with: "You cancelled your pledge.")
+
+      self.notifyDelegateManagePledgeViewControllerFinishedWithMessage
+        .assertValues(["You cancelled your pledge."])
+    }
   }
 
   func testNotifyDelegateManagePledgeViewControllerFinishedWithMessage_UpdatingPledge() {
-    self.vm.inputs.configureWith(.left(Project.template))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: .template
+    )
 
-    self.notifyDelegateManagePledgeViewControllerFinishedWithMessage.assertDidNotEmitValue()
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.pledgeViewControllerDidUpdatePledgeWithMessage("Pledge updated.")
+      self.scheduler.advance()
 
-    self.notifyDelegateManagePledgeViewControllerFinishedWithMessage
-      .assertValues([], "The delegate doesn't send message when updating a pledge.")
+      self.notifyDelegateManagePledgeViewControllerFinishedWithMessage.assertDidNotEmitValue()
+
+      self.vm.inputs.pledgeViewControllerDidUpdatePledgeWithMessage("Pledge updated.")
+
+      self.notifyDelegateManagePledgeViewControllerFinishedWithMessage
+        .assertValues([], "The delegate doesn't send message when updating a pledge.")
+    }
   }
 
   func testPledgeViewControllerDidUpdatePledge() {
-    let backing = Backing.template
-      |> Backing.lens.amount .~ 5.00
     let project = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
 
     let envelope = ManagePledgeViewBackingEnvelope.template
 
@@ -643,9 +929,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let updatedBackingEnvelope = ManagePledgeViewBackingEnvelope.template
       |> \.backing.amount.amount .~ 50
 
-    withEnvironment(
-      apiService: MockService(fetchManagePledgeViewBackingResult: .success(initialBackingEnvelope))
-    ) {
+    let mockService1 = MockService(
+      fetchManagePledgeViewBackingResult: .success(initialBackingEnvelope),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService1) {
       self.showSuccessBannerWithMessage.assertDidNotEmitValue()
       self.configurePaymentMethodView.assertDidNotEmitValue()
       self.configurePledgeSummaryView.assertDidNotEmitValue()
@@ -654,7 +943,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.configureRewardReceivedWithProject.assertDidNotEmitValue()
       self.title.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(.left(project))
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -668,9 +957,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.title.assertValues(["Manage your pledge"])
     }
 
-    withEnvironment(
-      apiService: MockService(fetchManagePledgeViewBackingResult: .success(updatedBackingEnvelope))
-    ) {
+    let mockService2 = MockService(
+      fetchManagePledgeViewBackingResult: .success(updatedBackingEnvelope),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService2) {
       self.vm.inputs.pledgeViewControllerDidUpdatePledgeWithMessage("Got it! Your changes have been saved.")
 
       self.scheduler.run()
@@ -686,8 +978,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
         updatedPledgeViewSummaryData
       ])
 
-      self.configureRewardSummaryViewProject.assertValues([project])
-      self.configureRewardSummaryViewReward.assertValues([.template])
+      self.configureRewardSummaryViewProject.assertValues([project, project])
+      self.configureRewardSummaryViewReward.assertValues([.template, .template])
       self.configureRewardReceivedWithProject.assertValues([project])
       self.title.assertValues(["Manage your pledge", "Manage your pledge"])
     }
@@ -695,31 +987,47 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
   func testTrackingEvents() {
     let project = Project.template
-      |> Project.lens.personalization.backing .~ Backing.template
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    XCTAssertEqual([], self.trackingClient.events)
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.menuButtonTapped()
-    self.vm.inputs.menuOptionSelected(with: .updatePledge)
+      self.scheduler.advance()
 
-    XCTAssertEqual(["Manage Pledge Option Clicked"], self.trackingClient.events)
+      XCTAssertEqual([], self.trackingClient.events)
+
+      self.vm.inputs.menuButtonTapped()
+      self.vm.inputs.menuOptionSelected(with: .updatePledge)
+
+      XCTAssertEqual(["Manage Pledge Option Clicked"], self.trackingClient.events)
+    }
   }
 
   func testFixPaymentTrackingEvents() {
     let project = Project.template
-      |> Project.lens.personalization.backing .~ Backing.template
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    XCTAssertEqual([], self.trackingClient.events)
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.fixButtonTapped()
+      self.scheduler.advance()
 
-    XCTAssertEqual(["Fix Pledge Button Clicked"], self.trackingClient.events)
+      XCTAssertEqual([], self.trackingClient.events)
+
+      self.vm.inputs.fixButtonTapped()
+
+      XCTAssertEqual(["Fix Pledge Button Clicked"], self.trackingClient.events)
+    }
   }
 
   func testRefreshing_ProjectErrorThenSuccess() {
@@ -735,7 +1043,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.pullToRefreshStackViewHidden.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(.right(.slug("project-slug")))
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 
       self.startRefreshing.assertValueCount(1)
@@ -785,7 +1093,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
         self.scheduler.advance(by: .milliseconds(300))
 
         self.startRefreshing.assertValueCount(2)
-        self.endRefreshing.assertValueCount(2, "Ends refreshing")
+        self.endRefreshing.assertValueCount(3, "Ends refreshing for project and backing")
         self.rootStackViewHidden.assertValues([true, false])
         self.rightBarButtonItemHidden.assertValues([true, false])
         self.showErrorBannerWithMessage.assertValues(["Something went wrong, please try again."])
@@ -794,8 +1102,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
-  func testRefreshing_ErrorThenSuccess() {
-    let mockService = MockService(fetchManagePledgeViewBackingResult: .failure(.invalidInput))
+  func testRefreshing_BackingErrorThenSuccess() {
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .failure(.invalidInput),
+      fetchProjectResponse: .template
+    )
 
     withEnvironment(apiService: mockService) {
       self.startRefreshing.assertDidNotEmitValue()
@@ -805,7 +1116,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.pullToRefreshStackViewHidden.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(.left(.template))
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 
       self.startRefreshing.assertValueCount(1)
@@ -835,7 +1146,10 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertValues(["Something went wrong, please try again."])
       self.pullToRefreshStackViewHidden.assertValues([true, false])
 
-      let successMockService = MockService(fetchManagePledgeViewBackingResult: .success(.template))
+      let successMockService = MockService(
+        fetchManagePledgeViewBackingResult: .success(.template),
+        fetchProjectResponse: .template
+      )
 
       withEnvironment(apiService: successMockService) {
         // User pulls to refresh
@@ -871,8 +1185,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
-  func testRefreshing_SuccessThenError() {
-    let mockService = MockService(fetchManagePledgeViewBackingResult: .success(.template))
+  func testRefreshing_BackingSuccessThenError() {
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: .template
+    )
 
     withEnvironment(apiService: mockService) {
       self.startRefreshing.assertDidNotEmitValue()
@@ -882,7 +1199,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.pullToRefreshStackViewHidden.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(.left(.template))
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
       self.vm.inputs.viewDidLoad()
 
       self.startRefreshing.assertValueCount(1)
@@ -965,7 +1282,10 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.pullToRefreshStackViewHidden.assertValues([true])
 
-      let failureMockService = MockService(fetchManagePledgeViewBackingResult: .failure(.invalidInput))
+      let failureMockService = MockService(
+        fetchManagePledgeViewBackingResult: .failure(.invalidInput),
+        fetchProjectResponse: .template
+      )
 
       withEnvironment(apiService: failureMockService) {
         // User pulls to refresh
@@ -1001,20 +1321,137 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
+  func testRefreshing_ProjectId_NilBackingId() {
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ .template
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.startRefreshing.assertDidNotEmitValue()
+      self.endRefreshing.assertDidNotEmitValue()
+      self.rootStackViewHidden.assertDidNotEmitValue()
+      self.rightBarButtonItemHidden.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.pullToRefreshStackViewHidden.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith((Param.slug("project-slug"), nil))
+      self.vm.inputs.viewDidLoad()
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertDidNotEmitValue()
+      self.rootStackViewHidden.assertValues([true])
+      self.rightBarButtonItemHidden.assertValues([true])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.pullToRefreshStackViewHidden.assertValues([true])
+
+      // Project request completes
+      self.scheduler.advance()
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertDidNotEmitValue()
+      self.rootStackViewHidden.assertValues([true])
+      self.rightBarButtonItemHidden.assertValues([true])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.pullToRefreshStackViewHidden.assertValues([true])
+
+      // Backing request completes
+      self.scheduler.advance()
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertDidNotEmitValue()
+      self.rootStackViewHidden.assertValues([true])
+      self.rightBarButtonItemHidden.assertValues([true])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.pullToRefreshStackViewHidden.assertValues([true])
+
+      // endRefreshing is delayed by 300ms for animation duration
+      self.scheduler.advance(by: .milliseconds(300))
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertValueCount(1)
+      self.rootStackViewHidden.assertValues([true, false])
+      self.rightBarButtonItemHidden.assertValues([true, false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.pullToRefreshStackViewHidden.assertValues([true])
+    }
+  }
+
   func testFixButtonTapped() {
     self.goToChangePaymentMethodReward.assertDidNotEmitValue()
     self.goToChangePaymentMethodProject.assertDidNotEmitValue()
 
     let project = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ Backing.template
     let reward = Project.cosmicSurgery.rewards.filter { $0.id == Backing.template.rewardId }.first!
 
-    self.vm.inputs.configureWith(.left(project))
-    self.vm.inputs.viewDidLoad()
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
 
-    self.vm.inputs.fixButtonTapped()
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
 
-    self.goToFixPaymentMethodProject.assertValues([project])
-    self.goToFixPaymentMethodReward.assertValues([reward])
+      self.scheduler.advance()
+
+      self.vm.inputs.fixButtonTapped()
+
+      self.goToFixPaymentMethodProject.assertValues([project])
+      self.goToFixPaymentMethodReward.assertValues([reward])
+    }
+  }
+
+  func testPaymentMethodViewHidden_UserIsCreatorOfProject() {
+    self.paymentMethodViewHidden.assertDidNotEmitValue()
+
+    let user = User.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ user
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.paymentMethodViewHidden.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.paymentMethodViewHidden.assertValues([true])
+    }
+  }
+
+  func testPaymentMethodViewHidden_UserIsNotCreatorOfProject() {
+    self.paymentMethodViewHidden.assertDidNotEmitValue()
+
+    let user = User.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ (user |> User.lens.id .~ 999)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.paymentMethodViewHidden.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.paymentMethodViewHidden.assertValues([false])
+    }
   }
 }

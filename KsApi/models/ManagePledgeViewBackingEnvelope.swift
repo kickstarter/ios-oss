@@ -53,6 +53,7 @@ public struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
       public var backersCount: Int
       public var description: String
       public var estimatedDeliveryOn: String?
+      public var id: String
       public var items: [Item]?
       public var name: String
 
@@ -73,9 +74,9 @@ public extension ManagePledgeViewBackingEnvelope {
   init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
 
-    self.project = try values.decode(Project.self, forKey: .project)
-    self.backing = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .project)
-      .decode(Backing.self, forKey: .backing)
+    self.backing = try values.decode(Backing.self, forKey: .backing)
+    self.project = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .backing)
+      .decode(Project.self, forKey: .project)
   }
 }
 
@@ -85,6 +86,7 @@ public extension ManagePledgeViewBackingEnvelope.Backing.Reward {
     case backersCount
     case description
     case estimatedDeliveryOn
+    case id
     case items
     case name
     case nodes
@@ -97,6 +99,7 @@ public extension ManagePledgeViewBackingEnvelope.Backing.Reward {
     self.backersCount = try values.decode(Int.self, forKey: .backersCount)
     self.description = try values.decode(String.self, forKey: .description)
     self.estimatedDeliveryOn = try values.decode(String?.self, forKey: .estimatedDeliveryOn)
+    self.id = try values.decode(String.self, forKey: .id)
     self.items = try? values.nestedContainer(keyedBy: CodingKeys.self, forKey: .items)
       .decode([Item].self, forKey: .nodes)
     self.name = try values.decode(String.self, forKey: .name)

@@ -1995,7 +1995,11 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testErroredPledgeDeepLink_LoggedIn() {
-    withEnvironment(currentUser: .template) {
+    let project = Project.template
+      |> \.personalization.backing .~ .template
+    let service = MockService(fetchProjectResponse: project)
+
+    withEnvironment(apiService: service, currentUser: .template) {
       self.vm.inputs.applicationDidFinishLaunching(
         application: UIApplication.shared,
         launchOptions: [:]
@@ -2047,7 +2051,11 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testErroredPledgePushDeepLink_LoggedIn() {
-    withEnvironment(currentUser: .template) {
+    let project = Project.template
+      |> \.personalization.backing .~ .template
+    let service = MockService(fetchProjectResponse: project)
+
+    withEnvironment(apiService: service, currentUser: .template) {
       self.goToLoginWithIntent.assertDidNotEmitValue()
       self.presentViewController.assertDidNotEmitValue()
 

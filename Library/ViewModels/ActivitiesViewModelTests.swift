@@ -18,7 +18,8 @@ final class ActivitiesViewModelTests: TestCase {
   fileprivate let deleteFindFriendsSection = TestObserver<(), Never>()
   fileprivate let hideEmptyState = TestObserver<(), Never>()
   fileprivate let goToFriends = TestObserver<FriendsSource, Never>()
-  fileprivate let goToManagePledge = TestObserver<Param, Never>()
+  fileprivate let goToManagePledgeProjectParam = TestObserver<Param, Never>()
+  fileprivate let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
   fileprivate let showEmptyStateIsLoggedIn = TestObserver<Bool, Never>()
   fileprivate let showFacebookConnectSection = TestObserver<Bool, Never>()
   fileprivate let showFacebookConnectSectionSource = TestObserver<FriendsSource, Never>()
@@ -42,7 +43,8 @@ final class ActivitiesViewModelTests: TestCase {
     self.vm.outputs.deleteFindFriendsSection.observe(self.deleteFindFriendsSection.observer)
     self.vm.outputs.goToFriends.observe(self.goToFriends.observer)
     self.vm.outputs.goToSurveyResponse.observe(self.goToSurveyResponse.observer)
-    self.vm.outputs.goToManagePledge.observe(self.goToManagePledge.observer)
+    self.vm.outputs.goToManagePledge.map(first).observe(self.goToManagePledgeProjectParam.observer)
+    self.vm.outputs.goToManagePledge.map(second).observe(self.goToManagePledgeBackingParam.observer)
     self.vm.outputs.showEmptyStateIsLoggedIn.observe(self.showEmptyStateIsLoggedIn.observer)
     self.vm.outputs.showFacebookConnectSection.map { $0.1 }.observe(self.showFacebookConnectSection.observer)
     self.vm.outputs.showFacebookConnectSection.map { $0.0 }
@@ -528,14 +530,24 @@ final class ActivitiesViewModelTests: TestCase {
   }
 
   func testGoToManagePledge() {
-    self.goToManagePledge.assertDidNotEmitValue()
+    self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+    self.goToManagePledgeBackingParam.assertDidNotEmitValue()
 
     let backing = GraphBacking.template
       |> \.project .~ .template
 
     self.vm.inputs.erroredBackingViewDidTapManage(with: backing)
 
-    self.goToManagePledge.assertValues([.id(backing.project?.pid ?? 0)])
+    guard
+      let projectId = backing.project?.pid,
+      let backingId = decompose(id: backing.id)
+    else {
+      XCTFail("Should have projectId and backingId")
+      return
+    }
+
+    self.goToManagePledgeProjectParam.assertValues([.id(projectId)])
+    self.goToManagePledgeBackingParam.assertValues([.id(backingId)])
   }
 
   func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish() {

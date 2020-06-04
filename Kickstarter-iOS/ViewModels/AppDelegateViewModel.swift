@@ -422,11 +422,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let fixErroredPledgeLink = fixErroredPledgeLinkAndIsLoggedIn
       .filter(third >>> isTrue)
-      .map { project, vcs, _ -> [UIViewController] in
+      .map { project, vcs, _ -> [UIViewController]? in
+        guard let backingId = project.personalization.backing?.id else { return nil }
         let vc = ManagePledgeViewController.instantiate()
-        vc.configureWith(projectOrParam: .left(project))
+        let params: ManagePledgeViewParamConfigData = (.id(project.id), .id(backingId))
+        vc.configureWith(params: params)
         return vcs + [vc]
       }
+      .skipNil()
       .map { vcs -> RewardPledgeNavigationController in
         let nav = RewardPledgeNavigationController(nibName: nil, bundle: nil)
         nav.viewControllers = vcs

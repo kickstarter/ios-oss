@@ -190,8 +190,8 @@ internal final class ActivitiesViewController: UITableViewController {
 
     self.viewModel.outputs.goToManagePledge
       .observeForControllerAction()
-      .observeValues { [weak self] param in
-        self?.goToManagePledge(param: param)
+      .observeValues { [weak self] params in
+        self?.goToManagePledge(params: params)
       }
 
     self.viewModel.outputs.clearBadgeValue
@@ -270,8 +270,8 @@ internal final class ActivitiesViewController: UITableViewController {
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  fileprivate func goToManagePledge(param: Param) {
-    let vc = ManagePledgeViewController.controller(with: .right(param), delegate: self)
+  fileprivate func goToManagePledge(params: ManagePledgeViewParamConfigData) {
+    let vc = ManagePledgeViewController.controller(with: params, delegate: self)
     self.present(vc, animated: true)
   }
 

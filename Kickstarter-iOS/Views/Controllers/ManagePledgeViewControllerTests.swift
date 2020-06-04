@@ -26,10 +26,8 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
-    let backing = Backing.template
-      |> Backing.lens.reward .~ reward
     let backedProject = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
+      |> \.rewards .~ [reward]
 
     let envelope = ManagePledgeViewBackingEnvelope.template
       |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
@@ -47,12 +45,15 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> \.backing.backer.uid .~ user.id
       |> \.backing.backer.name .~ "Blob"
 
-    let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(envelope),
+      fetchProjectResponse: backedProject
+    )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: user, language: language) {
         let controller = ManagePledgeViewController.instantiate()
-        controller.configureWith(projectOrParam: .left(backedProject))
+        controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_200
 
@@ -77,11 +78,9 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
-    let backing = Backing.template
-      |> Backing.lens.reward .~ reward
     let backedProject = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
       |> Project.lens.creator.id .~ 1
+      |> \.rewards .~ [reward]
 
     let envelope = ManagePledgeViewBackingEnvelope.template
       |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
@@ -99,11 +98,14 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> \.backing.backer.uid .~ 5
       |> \.backing.backer.name .~ "Blob"
 
-    let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(envelope),
+      fetchProjectResponse: backedProject
+    )
 
     withEnvironment(apiService: mockService, currentUser: user, language: language) {
       let controller = ManagePledgeViewController.instantiate()
-      controller.configureWith(projectOrParam: .left(backedProject))
+      controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
       // Network request completes
@@ -125,12 +127,8 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.noReward
 
-    let backing = Backing.template
-      |> Backing.lens.rewardId .~ nil
-      |> Backing.lens.reward .~ reward
-
     let backedProject = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
+      |> \.rewards .~ [reward]
 
     let envelope = ManagePledgeViewBackingEnvelope.template
       |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
@@ -148,11 +146,14 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> \.backing.backer.uid .~ user.id
       |> \.backing.backer.name .~ "Blob"
 
-    let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(envelope),
+      fetchProjectResponse: backedProject
+    )
 
     withEnvironment(apiService: mockService, currentUser: user, language: language) {
       let controller = ManagePledgeViewController.instantiate()
-      controller.configureWith(projectOrParam: .left(backedProject))
+      controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
       let (parent, _) = traitControllers(
         device: device,
         orientation: .portrait,
@@ -179,12 +180,8 @@ final class ManagePledgeViewControllerTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
 
-    let backing = Backing.template
-      |> Backing.lens.reward .~ reward
-      |> Backing.lens.paymentSource .~ Backing.PaymentSource.googlePay
-
     let backedProject = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
+      |> \.rewards .~ [reward]
 
     let envelope = ManagePledgeViewBackingEnvelope.template
       |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
@@ -202,11 +199,14 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> \.backing.backer.uid .~ user.id
       |> \.backing.backer.name .~ "Blob"
 
-    let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(envelope),
+      fetchProjectResponse: backedProject
+    )
 
     withEnvironment(apiService: mockService, currentUser: user, language: language) {
       let controller = ManagePledgeViewController.instantiate()
-      controller.configureWith(projectOrParam: .left(backedProject))
+      controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
       let (parent, _) = traitControllers(
         device: device,
         orientation: .portrait,
@@ -230,11 +230,9 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
-    let backing = Backing.template
-      |> Backing.lens.status .~ .errored
-      |> Backing.lens.reward .~ reward
+
     let backedProject = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ backing
+      |> \.rewards .~ [reward]
 
     let envelope = ManagePledgeViewBackingEnvelope.template
       |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
@@ -253,12 +251,15 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> \.backing.backer.name .~ "Blob"
       |> \.backing.status .~ .errored
 
-    let mockService = MockService(fetchManagePledgeViewBackingResult: .success(envelope))
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(envelope),
+      fetchProjectResponse: backedProject
+    )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: user, language: language) {
         let controller = ManagePledgeViewController.instantiate()
-        controller.configureWith(projectOrParam: .left(backedProject))
+        controller.configureWith(params: (Param.slug("project-slug"), Param.id(1)))
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         // Network request completes

@@ -596,16 +596,12 @@ public final class Koala {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
-    // TODO: unused?
-    let fixPledgeProps = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
-
     switch stateType {
     case .fix:
       self.track(
         event: DataLakeWhiteListedEvent.managePledgeButtonClicked.rawValue,
         location: .projectPage,
-        properties: props
+        properties: props.withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
       )
     case .pledge, .seeTheRewards, .viewTheRewards:
       let allProps = props

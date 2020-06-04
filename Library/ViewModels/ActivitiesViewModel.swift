@@ -86,8 +86,8 @@ public protocol ActivitiesViewModelOutputs {
   /// Emits when should transition to Friends view with source (.Activity).
   var goToFriends: Signal<FriendsSource, Never> { get }
 
-  /// Emits a project Param to navigate to ManagePledgeViewController.
-  var goToManagePledge: Signal<Param, Never> { get }
+  /// Emits a project and backing Param to navigate to ManagePledgeViewController.
+  var goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never> { get }
 
   /// Emits a project and ref tag that should be used to present a project controller.
   var goToProject: Signal<(Project, RefTag), Never> { get }
@@ -332,9 +332,13 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       }
 
     self.goToManagePledge = self.erroredBackingViewDidTapManageWithBackingProperty.signal
-      .map { $0?.project?.pid }
       .skipNil()
-      .map(Param.id)
+      .map { backing -> ManagePledgeViewParamConfigData? in
+        guard let pid = backing.project?.pid, let backingId = decompose(id: backing.id) else { return nil }
+
+        return (projectParam: Param.id(pid), backingParam: Param.id(backingId))
+      }
+      .skipNil()
 
     Signal.zip(pageCount, paginatedActivities)
       .filter { pageCount, _ in
@@ -443,7 +447,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
   public let hideEmptyState: Signal<(), Never>
   public let isRefreshing: Signal<Bool, Never>
   public let goToFriends: Signal<FriendsSource, Never>
-  public let goToManagePledge: Signal<Param, Never>
+  public let goToManagePledge: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToProject: Signal<(Project, RefTag), Never>
   public let goToSurveyResponse: Signal<SurveyResponse, Never>
   public let goToUpdate: Signal<(Project, Update), Never>

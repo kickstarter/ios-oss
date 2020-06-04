@@ -23,6 +23,7 @@ extension ManagePledgeViewBackingEnvelope {
           backersCount: 55,
           description: "Description",
           estimatedDeliveryOn: "2020-08-01",
+          id: "UmV3YXJkLTE=",
           items: [
             .init(id: "432", name: "Item 1"),
             .init(id: "442", name: "Item 2")
