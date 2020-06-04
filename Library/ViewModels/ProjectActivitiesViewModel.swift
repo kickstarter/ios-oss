@@ -228,11 +228,9 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
 }
 
 private func backingParams(project: Project) -> ProjectActivitiesGoTo? {
-  guard let backing = project.personalization.backing else {
-    return nil
-  }
+  let backingId = project.personalization.backing?.id
 
   return ProjectActivitiesGoTo.backing(
-    (projectParam: Param.slug(project.slug), backingParam: Param.id(backing.id))
+    (projectParam: Param.slug(project.slug), backingParam: backingId.flatMap(Param.id))
   )
 }

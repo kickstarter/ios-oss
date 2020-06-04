@@ -21,7 +21,7 @@ final class ProjectPamphletViewModelTests: TestCase {
   private let configurePledgeCTAViewRefTag = TestObserver<RefTag?, Never>()
   private let dismissManagePledgeAndShowMessageBannerWithMessage = TestObserver<String, Never>()
   private let goToManagePledgeProjectParam = TestObserver<Param, Never>()
-  private let goToManagePledgeBackingParam = TestObserver<Param, Never>()
+  private let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let popToRootViewController = TestObserver<(), Never>()

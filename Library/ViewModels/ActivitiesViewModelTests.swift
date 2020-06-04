@@ -19,7 +19,7 @@ final class ActivitiesViewModelTests: TestCase {
   fileprivate let hideEmptyState = TestObserver<(), Never>()
   fileprivate let goToFriends = TestObserver<FriendsSource, Never>()
   fileprivate let goToManagePledgeProjectParam = TestObserver<Param, Never>()
-  fileprivate let goToManagePledgeBackingParam = TestObserver<Param, Never>()
+  fileprivate let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
   fileprivate let showEmptyStateIsLoggedIn = TestObserver<Bool, Never>()
   fileprivate let showFacebookConnectSection = TestObserver<Bool, Never>()
   fileprivate let showFacebookConnectSectionSource = TestObserver<FriendsSource, Never>()

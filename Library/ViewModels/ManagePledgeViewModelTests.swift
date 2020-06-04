@@ -1321,6 +1321,65 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
+  func testRefreshing_ProjectId_NilBackingId() {
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ .template
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.startRefreshing.assertDidNotEmitValue()
+      self.endRefreshing.assertDidNotEmitValue()
+      self.rootStackViewHidden.assertDidNotEmitValue()
+      self.rightBarButtonItemHidden.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.pullToRefreshStackViewHidden.assertDidNotEmitValue()
+
+      self.vm.inputs.configureWith((Param.slug("project-slug"), nil))
+      self.vm.inputs.viewDidLoad()
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertDidNotEmitValue()
+      self.rootStackViewHidden.assertValues([true])
+      self.rightBarButtonItemHidden.assertValues([true])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.pullToRefreshStackViewHidden.assertValues([true])
+
+      // Project request completes
+      self.scheduler.advance()
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertDidNotEmitValue()
+      self.rootStackViewHidden.assertValues([true])
+      self.rightBarButtonItemHidden.assertValues([true])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.pullToRefreshStackViewHidden.assertValues([true])
+
+      // Backing request completes
+      self.scheduler.advance()
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertDidNotEmitValue()
+      self.rootStackViewHidden.assertValues([true])
+      self.rightBarButtonItemHidden.assertValues([true])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.pullToRefreshStackViewHidden.assertValues([true])
+
+      // endRefreshing is delayed by 300ms for animation duration
+      self.scheduler.advance(by: .milliseconds(300))
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertValueCount(1)
+      self.rootStackViewHidden.assertValues([true, false])
+      self.rightBarButtonItemHidden.assertValues([true, false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.pullToRefreshStackViewHidden.assertValues([true])
+    }
+  }
+
   func testFixButtonTapped() {
     self.goToChangePaymentMethodReward.assertDidNotEmitValue()
     self.goToChangePaymentMethodProject.assertDidNotEmitValue()
