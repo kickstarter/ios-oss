@@ -16,7 +16,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   // MARK: - Properties
 
-  private lazy var tableView: UITableView = {
+  internal lazy var tableView: UITableView = {
     UITableView(frame: .zero)
       |> \.alwaysBounceVertical .~ true
       |> \.dataSource .~ self.dataSource

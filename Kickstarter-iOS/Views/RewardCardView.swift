@@ -38,10 +38,9 @@ public final class RewardCardView: UIView {
         sectionInset: UIEdgeInsets(topBottom: Styles.grid(1))
       )
     )
-      |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
-      |> \.dataSource .~ self.pillDataSource
-      |> \.delegate .~ self
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    |> \.contentInsetAdjustmentBehavior .~ .never
+    |> \.dataSource .~ self.pillDataSource
+    |> \.delegate .~ self
   }()
 
   private lazy var pillCollectionViewHeightConstraint: NSLayoutConstraint = {
@@ -133,9 +132,6 @@ public final class RewardCardView: UIView {
 
     _ = (self.pillCollectionView, self.backgroundColor)
       |> pillCollectionViewStyle
-
-    _ = self.titleStackView
-      |> titleStackViewStyle
   }
 
   public override func bindViewModel() {
@@ -176,6 +172,7 @@ public final class RewardCardView: UIView {
       .observeValues { [weak self] values in
         self?.pillDataSource.load(values)
         self?.pillCollectionView.reloadData()
+        self?.updateCollectionViewConstraints()
       }
   }
 
@@ -230,6 +227,8 @@ public final class RewardCardView: UIView {
     self.pillCollectionView.layoutIfNeeded()
 
     self.pillCollectionViewHeightConstraint.constant = self.pillCollectionView.contentSize.height
+
+    self.layoutIfNeeded()
   }
 
   fileprivate func load(items: [String]) {
@@ -325,8 +324,6 @@ private let rewardTitleLabelStyle: LabelStyle = { label in
 private let sectionStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
-    |> \.alignment .~ .fill
-    |> \.distribution .~ .fill
     |> \.spacing .~ Styles.grid(1)
 }
 
@@ -339,11 +336,6 @@ private let sectionBodyLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_soft_black
     |> \.font .~ UIFont.ksr_body()
-}
-
-private let titleStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.alignment .~ UIStackView.Alignment.top
 }
 
 // MARK: - UICollectionViewDelegate

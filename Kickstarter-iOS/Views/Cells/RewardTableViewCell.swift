@@ -30,7 +30,7 @@ final class RewardTableViewCell: UITableViewCell, ValueCell {
 
     _ = (self.rewardCardView, self.containerView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
+      |> ksr_constrainViewToMarginsInParent(priority: UILayoutPriority(rawValue: 999))
   }
 
   private func setupConstraints() {
@@ -62,6 +62,9 @@ final class RewardTableViewCell: UITableViewCell, ValueCell {
 
   internal func configureWith(value: (project: Project, reward: Reward)) {
     self.rewardCardView.configure(with: (value.project, .left(value.reward)))
+
+    self.contentView.setNeedsLayout()
+    self.contentView.layoutIfNeeded()
   }
 }
 

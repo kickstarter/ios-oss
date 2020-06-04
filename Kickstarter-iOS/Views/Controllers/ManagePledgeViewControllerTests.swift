@@ -63,6 +63,9 @@ final class ManagePledgeViewControllerTests: TestCase {
         // endRefreshing is delayed by 300ms for animation duration
         self.scheduler.advance(by: .milliseconds(300))
 
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
+
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
@@ -113,6 +116,9 @@ final class ManagePledgeViewControllerTests: TestCase {
 
       // endRefreshing is delayed by 300ms for animation duration
       self.scheduler.advance(by: .milliseconds(300))
+
+      controller.tableView.layoutIfNeeded()
+      controller.tableView.reloadData()
 
       FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
     }
@@ -165,6 +171,9 @@ final class ManagePledgeViewControllerTests: TestCase {
 
       // endRefreshing is delayed by 300ms for animation duration
       self.scheduler.advance(by: .milliseconds(300))
+
+      controller.tableView.layoutIfNeeded()
+      controller.tableView.reloadData()
 
       FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
     }
@@ -219,6 +228,9 @@ final class ManagePledgeViewControllerTests: TestCase {
       // endRefreshing is delayed by 300ms for animation duration
       self.scheduler.advance(by: .milliseconds(300))
 
+      controller.tableView.layoutIfNeeded()
+      controller.tableView.reloadData()
+
       FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
     }
   }
@@ -267,6 +279,9 @@ final class ManagePledgeViewControllerTests: TestCase {
 
         // endRefreshing is delayed by 300ms for animation duration
         self.scheduler.advance(by: .milliseconds(300))
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
