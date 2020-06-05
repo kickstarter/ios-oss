@@ -23,6 +23,11 @@ public struct Reward {
     return self.id == Reward.noReward.id
   }
 
+  // FIXME: selectedQuantity needs to come from somewhere
+  public var selectedQuantity: Int {
+    return 3
+  }
+
   public struct Shipping: Swift.Decodable {
     public let enabled: Bool
     public let location: Location?

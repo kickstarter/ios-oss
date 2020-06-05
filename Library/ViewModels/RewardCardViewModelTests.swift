@@ -23,7 +23,7 @@ final class RewardCardViewModelTests: TestCase {
   private let rewardMinimumLabelText = TestObserver<String, Never>()
   private let rewardSelected = TestObserver<Int, Never>()
   private let rewardTitleLabelHidden = TestObserver<Bool, Never>()
-  private let rewardTitleLabelText = TestObserver<String, Never>()
+  private let rewardTitleLabelAttributedText = TestObserver<NSAttributedString, Never>()
 
   override func setUp() {
     super.setUp()
@@ -41,7 +41,7 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.outputs.rewardMinimumLabelText.observe(self.rewardMinimumLabelText.observer)
     self.vm.outputs.rewardSelected.observe(self.rewardSelected.observer)
     self.vm.outputs.rewardTitleLabelHidden.observe(self.rewardTitleLabelHidden.observer)
-    self.vm.outputs.rewardTitleLabelText.observe(self.rewardTitleLabelText.observer)
+    self.vm.outputs.rewardTitleLabelAttributedText.observe(self.rewardTitleLabelAttributedText.observer)
   }
 
   // MARK: - Reward Title
@@ -54,7 +54,7 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
     self.rewardTitleLabelHidden.assertValues([false])
-    self.rewardTitleLabelText.assertValues(["The thing"])
+    XCTAssertEqual(self.rewardTitleLabelAttributedText.values.map { $0.string }, ["The thing"])
   }
 
   func testTitleLabel_NoTitle() {
@@ -65,7 +65,7 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
     self.rewardTitleLabelHidden.assertValues([true])
-    self.rewardTitleLabelText.assertValues([""])
+    XCTAssertEqual(self.rewardTitleLabelAttributedText.values.map { $0.string }, [""])
   }
 
   func testTitleLabel_NoTitle_NoReward() {
@@ -74,7 +74,7 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: .template, rewardOrBacking: .left(reward))
 
     self.rewardTitleLabelHidden.assertValues([false])
-    self.rewardTitleLabelText.assertValues(["Pledge without a reward"])
+    XCTAssertEqual(self.rewardTitleLabelAttributedText.values.map { $0.string }, ["Pledge without a reward"])
   }
 
   func testTitleLabel_BackedNoReward() {
@@ -93,7 +93,10 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
 
     self.rewardTitleLabelHidden.assertValues([false])
-    self.rewardTitleLabelText.assertValues(["You pledged without a reward"])
+    XCTAssertEqual(
+      self.rewardTitleLabelAttributedText.values.map { $0.string },
+      ["You pledged without a reward"]
+    )
   }
 
   // MARK: - Reward Minimum

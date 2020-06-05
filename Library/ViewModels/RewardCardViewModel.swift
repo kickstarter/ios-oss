@@ -21,7 +21,7 @@ public protocol RewardCardViewModelOutputs {
   var rewardMinimumLabelText: Signal<String, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
   var rewardTitleLabelHidden: Signal<Bool, Never> { get }
-  var rewardTitleLabelText: Signal<String, Never> { get }
+  var rewardTitleLabelAttributedText: Signal<NSAttributedString, Never> { get }
 }
 
 public protocol RewardCardViewModelType {
@@ -86,7 +86,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
     self.rewardTitleLabelHidden = reward
       .map { $0.title == nil && !$0.isNoReward }
 
-    self.rewardTitleLabelText = projectAndReward
+    self.rewardTitleLabelAttributedText = projectAndReward
       .map(rewardTitle(project:reward:))
 
     let rewardItemsIsEmpty = reward
@@ -142,7 +142,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let rewardMinimumLabelText: Signal<String, Never>
   public let rewardSelected: Signal<Int, Never>
   public let rewardTitleLabelHidden: Signal<Bool, Never>
-  public let rewardTitleLabelText: Signal<String, Never>
+  public let rewardTitleLabelAttributedText: Signal<NSAttributedString, Never>
 
   public var inputs: RewardCardViewModelInputs { return self }
   public var outputs: RewardCardViewModelOutputs { return self }
@@ -179,17 +179,41 @@ private func localizedDescription(project: Project, reward: Reward) -> String {
   return reward.description
 }
 
-private func rewardTitle(project: Project, reward: Reward) -> String {
+private func rewardTitle(project: Project, reward: Reward) -> NSAttributedString {
   guard project.personalization.isBacking == true else {
-    return reward.isNoReward ? Strings.Pledge_without_a_reward() : reward.title.coalesceWith("")
+    return NSAttributedString(
+      string: reward.isNoReward ? Strings.Pledge_without_a_reward() : reward.title.coalesceWith("")
+    )
   }
 
   if reward.isNoReward {
-    return userIsBacking(reward: reward, inProject: project)
+    let string = userIsBacking(reward: reward, inProject: project)
       ? Strings.You_pledged_without_a_reward() : Strings.Pledge_without_a_reward()
+
+    return NSAttributedString(string: string)
   }
 
-  return reward.title.coalesceWith("")
+  let attributes: [NSAttributedString.Key: Any] = [
+    .font: UIFont.ksr_title2().bolded
+  ]
+
+  let title = reward.title.coalesceWith("")
+  let titleAttributed = title.attributed(
+    with: UIFont.ksr_title2(),
+    foregroundColor: UIColor.ksr_soft_black,
+    attributes: attributes,
+    bolding: [title]
+  )
+
+  let qty = "\(reward.selectedQuantity) x "
+  let qtyAttributed = qty.attributed(
+    with: UIFont.ksr_title2(),
+    foregroundColor: UIColor.ksr_green_500,
+    attributes: attributes,
+    bolding: [title]
+  )
+
+  return qtyAttributed + titleAttributed
 }
 
 private func pillValues(project: Project, reward: Reward) -> [String] {

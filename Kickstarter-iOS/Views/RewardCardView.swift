@@ -146,7 +146,7 @@ public final class RewardCardView: UIView {
     self.minimumPriceLabel.rac.text = self.viewModel.outputs.rewardMinimumLabelText
     self.pillCollectionView.rac.hidden = self.viewModel.outputs.pillCollectionViewHidden
     self.rewardTitleLabel.rac.hidden = self.viewModel.outputs.rewardTitleLabelHidden
-    self.rewardTitleLabel.rac.text = self.viewModel.outputs.rewardTitleLabelText
+    self.rewardTitleLabel.rac.attributedText = self.viewModel.outputs.rewardTitleLabelAttributedText
 
     self.viewModel.outputs.items
       .observeForUI()
