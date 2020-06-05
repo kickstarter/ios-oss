@@ -203,10 +203,16 @@ public enum Query {
     case amount(NonEmptySet<Money>)
     case backersCount
     case description
+    case displayName
+    case endsAt
     case estimatedDeliveryOn
     case id
+    case isMaxPledge
     case items(Set<QueryArg<Never>>, NonEmptySet<Connection<Item>>)
+    case limit
     case name
+    case remainingQuantity
+    case startsAt
 
     public enum Item {
       case id
@@ -215,6 +221,7 @@ public enum Query {
   }
 
   public enum Backing {
+    case addOns(Set<QueryArg<Never>>, NonEmptySet<Connection<Reward>>)
     case amount(NonEmptySet<Money>)
     case backer(NonEmptySet<User>)
     case bankAccount(NonEmptySet<BankAccount>)
@@ -511,6 +518,7 @@ extension Query.CreditCard: QueryType {
 extension Query.Backing: QueryType {
   public var description: String {
     switch self {
+    case let .addOns(args, fields): return "addOns\(connection(args, fields))"
     case let .amount(fields): return "amount { \(join(fields)) }"
     case let .backer(fields): return "backer { \(join(fields)) }"
     case let .bankAccount(fields): return "bankAccount: paymentSource { ... on BankAccount {  \(join(fields)) } }"
@@ -543,10 +551,16 @@ extension Query.Reward: QueryType {
     case let .amount(fields): return "amount { \(join(fields)) }"
     case .backersCount: return "backersCount"
     case .description: return "description"
+    case .displayName: return "displayName"
+    case .endsAt: return "endsAt"
     case .estimatedDeliveryOn: return "estimatedDeliveryOn"
     case .id: return "id"
+    case .isMaxPledge: return "isMaxPledge"
     case let .items(args, fields): return "items" + connection(args, fields)
+    case .limit: return "limit"
     case .name: return "name"
+    case .remainingQuantity: return "remainingQuantity"
+    case .startsAt: return "startsAt"
     }
   }
 }

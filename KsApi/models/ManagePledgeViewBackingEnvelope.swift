@@ -11,6 +11,7 @@ public struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
   }
 
   public struct Backing: Swift.Decodable {
+    public var addOns: AddOns?
     public var amount: Money
     public var backer: Backer
     public var bankAccount: BankAccount?
@@ -24,6 +25,10 @@ public struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
     public var sequence: Int
     public var shippingAmount: Money?
     public var status: BackingState
+
+    public struct AddOns: Swift.Decodable {
+      public var nodes: [Reward]
+    }
 
     public struct Backer: Swift.Decodable {
       public var uid: Int
@@ -52,10 +57,16 @@ public struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
       public var amount: Money
       public var backersCount: Int
       public var description: String
+      public var displayName: String
+      public var endsAt: TimeInterval?
       public var estimatedDeliveryOn: String?
       public var id: String
+      public var isMaxPledge: Bool
       public var items: [Item]?
+      public var limit: Int?
       public var name: String
+      public var remainingQuantity: Int?
+      public var startsAt: TimeInterval?
 
       public struct Item: Swift.Decodable {
         public var id: String
@@ -85,8 +96,10 @@ public extension ManagePledgeViewBackingEnvelope.Backing.Reward {
     case amount
     case backersCount
     case description
+    case displayName
     case estimatedDeliveryOn
     case id
+    case isMaxPledge
     case items
     case name
     case nodes
@@ -98,8 +111,10 @@ public extension ManagePledgeViewBackingEnvelope.Backing.Reward {
     self.amount = try values.decode(Money.self, forKey: .amount)
     self.backersCount = try values.decode(Int.self, forKey: .backersCount)
     self.description = try values.decode(String.self, forKey: .description)
+    self.displayName = try values.decode(String.self, forKey: .displayName)
     self.estimatedDeliveryOn = try values.decode(String?.self, forKey: .estimatedDeliveryOn)
     self.id = try values.decode(String.self, forKey: .id)
+    self.isMaxPledge = try values.decode(Bool.self, forKey: .isMaxPledge)
     self.items = try? values.nestedContainer(keyedBy: CodingKeys.self, forKey: .items)
       .decode([Item].self, forKey: .nodes)
     self.name = try values.decode(String.self, forKey: .name)

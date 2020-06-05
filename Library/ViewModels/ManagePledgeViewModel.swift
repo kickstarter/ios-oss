@@ -184,8 +184,13 @@ public final class ManagePledgeViewModel:
     .map { userIsCreatorOfProject, creditCard in userIsCreatorOfProject || creditCard == nil }
     .skipRepeats()
 
-    self.loadProjectAndRewardsIntoDataSource = projectAndReward
-      .map { project, reward in (project, [reward]) }
+    let addOnRewardsFromBacking = backing.map(rewardsData(from:))
+
+    self.loadProjectAndRewardsIntoDataSource = projectAndReward.combineLatest(with: addOnRewardsFromBacking)
+      .map(unpack)
+      .map { project, reward, addOnRewardsFromBacking in
+        (project, [reward] + addOnRewardsFromBacking)
+      }
 
     self.rightBarButtonItemHidden = Signal.merge(
       params.mapConst(true),
@@ -461,6 +466,14 @@ private func managePledgeSummaryViewData(
   )
 }
 
+private func rewardsData(from backing: ManagePledgeViewBackingEnvelope.Backing) -> [Reward] {
+  guard let addOns = backing.addOns?.nodes else { return [] }
+
+  return addOns.map { addOn in
+    Reward.reward(from: addOn, dateFormatter: ISO8601DateFormatter.cachedFormatter())
+  }
+}
+
 private func projectBackingQuery(withBackingId backingId: String) -> NonEmptySet<Query> {
   return Query.backing(
     id: backingId,
@@ -499,6 +512,7 @@ private func projectBackingQuery(withBackingId backingId: String) -> NonEmptySet
       .reward(
         .name +| [
           .id,
+          .isMaxPledge,
           .amount(
             .amount +| [
               .currency,
@@ -507,9 +521,35 @@ private func projectBackingQuery(withBackingId backingId: String) -> NonEmptySet
           ),
           .backersCount,
           .description,
+          .displayName,
           .estimatedDeliveryOn,
           .items([], NonEmptySet(.nodes(.id +| [.name])))
         ]
+      ),
+      .addOns(
+        [],
+        NonEmptySet(
+          .nodes(
+            .id +| [
+              .displayName,
+              .description,
+              .estimatedDeliveryOn,
+              .name,
+              .amount(
+                .amount +| [
+                  .currency,
+                  .symbol
+                ]
+              ),
+              .backersCount,
+              .isMaxPledge,
+              .limit,
+              .items([], NonEmptySet(.nodes(.id +| [.name]))),
+              .remainingQuantity,
+              .startsAt
+            ]
+          )
+        )
       )
     ]
   ) +| []

@@ -22,8 +22,10 @@ extension ManagePledgeViewBackingEnvelope {
           amount: Money(amount: 159.0, currency: .usd, symbol: "$"),
           backersCount: 55,
           description: "Description",
+          displayName: "Display Name",
           estimatedDeliveryOn: "2020-08-01",
           id: "UmV3YXJkLTE=",
+          isMaxPledge: false,
           items: [
             .init(id: "432", name: "Item 1"),
             .init(id: "442", name: "Item 2")

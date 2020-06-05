@@ -10,6 +10,30 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "name": "The Keyboardio Atreus",
           "state": "LIVE"
         ],
+        "addOns": [
+          "nodes": [
+            [
+              "amount": [
+                "amount": "179.0",
+                "currency": "USD",
+                "symbol": "$"
+              ],
+              "backersCount": 2,
+              "description": "Best Add-on",
+              "displayName": "Crowdfunding Special ($179)",
+              "estimatedDeliveryOn": "2020-07-01",
+              "id": "UmV3YXJkLTc2MDEyNDk=",
+              "isMaxPledge": false,
+              "items": [
+                "nodes": []
+              ],
+              "limit": nil,
+              "name": "Crowdfunding Special",
+              "remainingQuantity": nil,
+              "startsAt": nil
+            ]
+          ]
+        ],
         "id": "UHJvamVjdC00NDc0NzMM=",
         "status": "pledged",
         "errorReason": "This just isn't your day.",
@@ -45,7 +69,9 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "id": "reward-id",
           "name": "Everyday Carry",
           "backersCount": 593,
+          "isMaxPledge": false,
           "description": "For the typist who takes their keyboard everywhere.",
+          "displayName": "Display name",
           "estimatedDeliveryOn": "2020-08-01",
           "items": [
             "nodes": [
@@ -107,6 +133,18 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
 
       XCTAssertEqual(value.backing.shippingAmount, Money(amount: 17.0, currency: .usd, symbol: "$"))
 
+      XCTAssertEqual(value.backing.addOns?.nodes[0].id, "UmV3YXJkLTc2MDEyNDk=")
+      XCTAssertEqual(value.backing.addOns?.nodes[0].amount, Money(amount: 179.0, currency: .usd, symbol: "$"))
+      XCTAssertEqual(value.backing.addOns?.nodes[0].backersCount, 2)
+      XCTAssertEqual(value.backing.addOns?.nodes[0].description, "Best Add-on")
+      XCTAssertEqual(value.backing.addOns?.nodes[0].displayName, "Crowdfunding Special ($179)")
+      XCTAssertEqual(value.backing.addOns?.nodes[0].name, "Crowdfunding Special")
+      XCTAssertEqual(value.backing.addOns?.nodes[0].isMaxPledge, false)
+      XCTAssertEqual(value.backing.addOns?.nodes[0].items?.count, 0)
+      XCTAssertEqual(value.backing.addOns?.nodes[0].limit, nil)
+      XCTAssertEqual(value.backing.addOns?.nodes[0].remainingQuantity, nil)
+      XCTAssertEqual(value.backing.addOns?.nodes[0].startsAt, nil)
+
       XCTAssertEqual(value.backing.reward?.id, "reward-id")
       XCTAssertEqual(value.backing.reward?.name, "Everyday Carry")
       XCTAssertEqual(value.backing.reward?.backersCount, 593)
@@ -160,6 +198,8 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "name": "Everyday Carry",
           "backersCount": 593,
           "description": "For the typist who takes their keyboard everywhere.",
+          "isMaxPledge": false,
+          "displayName": "Display name",
           "estimatedDeliveryOn": nil,
           "items": nil,
           "amount": [
@@ -314,6 +354,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
         ],
         "reward": [
           "id": "reward-id",
+          "isMaxPledge": false,
           "amount": [
             "amount": "1.0",
             "currency": "USD",
@@ -321,6 +362,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           ],
           "backersCount": 1,
           "description": "Best description",
+          "displayName": "Display name",
           "estimatedDeliveryOn": "2017-08-01",
           "items": [
             "nodes": [
