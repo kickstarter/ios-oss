@@ -72,7 +72,7 @@ public struct ApplePayCapabilities: ApplePayCapabilitiesType {
     }
 
     return availableCardTypes
-      .compactMap(GraphUserCreditCard.CreditCardType.init(rawValue:))
+      .compactMap(CreditCardType.init(rawValue:))
       .compactMap(ApplePayCapabilities.pkPaymentNetwork(for:))
   }
 
@@ -89,7 +89,7 @@ public struct ApplePayCapabilities: ApplePayCapabilitiesType {
     }
   }
 
-  private static func pkPaymentNetwork(for graphCreditCardType: GraphUserCreditCard.CreditCardType)
+  private static func pkPaymentNetwork(for graphCreditCardType: CreditCardType)
     -> PKPaymentNetwork? {
     switch graphCreditCardType {
     case .amex:

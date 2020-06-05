@@ -29,7 +29,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let goToDiscovery = TestObserver<DiscoveryParams?, Never>()
   private let goToLandingPage = TestObserver<(), Never>()
   private let goToProjectActivities = TestObserver<Param, Never>()
-  private let goToLogin = TestObserver<(), Never>()
+  private let goToLoginWithIntent = TestObserver<LoginIntent, Never>()
   private let goToProfile = TestObserver<(), Never>()
   private let goToMobileSafari = TestObserver<URL, Never>()
   private let goToSearch = TestObserver<(), Never>()
@@ -65,7 +65,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToDashboard.observe(self.goToDashboard.observer)
     self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
     self.vm.outputs.goToLandingPage.observe(self.goToLandingPage.observer)
-    self.vm.outputs.goToLogin.observe(self.goToLogin.observer)
+    self.vm.outputs.goToLoginWithIntent.observe(self.goToLoginWithIntent.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
     self.vm.outputs.goToMobileSafari.observe(self.goToMobileSafari.observer)
     self.vm.outputs.goToProjectActivities.observe(self.goToProjectActivities.observer)
@@ -858,7 +858,7 @@ final class AppDelegateViewModelTests: TestCase {
       launchOptions: [:]
     )
 
-    self.goToLogin.assertValueCount(0)
+    self.goToLoginWithIntent.assertValueCount(0)
 
     let result = self.vm.inputs.applicationOpenUrl(
       application: UIApplication.shared,
@@ -867,7 +867,7 @@ final class AppDelegateViewModelTests: TestCase {
     )
     XCTAssertTrue(result)
 
-    self.goToLogin.assertValueCount(1)
+    self.goToLoginWithIntent.assertValueCount(1)
   }
 
   func testGoToProfile() {
@@ -1992,6 +1992,108 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertTrue(result)
 
     self.presentViewController.assertValues([1])
+  }
+
+  func testErroredPledgeDeepLink_LoggedIn() {
+    let project = Project.template
+      |> \.personalization.backing .~ .template
+    let service = MockService(fetchProjectResponse: project)
+
+    withEnvironment(apiService: service, currentUser: .template) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
+
+      self.goToLoginWithIntent.assertDidNotEmitValue()
+      self.presentViewController.assertValues([])
+
+      let projectUrl = "https://www.kickstarter.com"
+        + "/projects/sshults/greensens-the-easy-way-to-take-care-of-your-houseplants-0"
+        + "/pledge?at=4f7d35e7c9d2bb57&ref=ksr_email_backer_failed_transaction"
+
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: projectUrl)!,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.goToLoginWithIntent.assertDidNotEmitValue()
+      self.presentViewController.assertValues([2])
+    }
+  }
+
+  func testErroredPledgeDeepLink_LoggedOut() {
+    withEnvironment(currentUser: nil) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: UIApplication.shared,
+        launchOptions: [:]
+      )
+
+      self.goToLoginWithIntent.assertDidNotEmitValue()
+      self.presentViewController.assertValues([])
+
+      let projectUrl = "https://www.kickstarter.com"
+        + "/projects/sshults/greensens-the-easy-way-to-take-care-of-your-houseplants-0"
+        + "/pledge?at=4f7d35e7c9d2bb57&ref=ksr_email_backer_failed_transaction"
+
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: projectUrl)!,
+        options: [:]
+      )
+      XCTAssertTrue(result)
+
+      self.goToLoginWithIntent.assertValues([.erroredPledge])
+      self.presentViewController.assertDidNotEmitValue()
+    }
+  }
+
+  func testErroredPledgePushDeepLink_LoggedIn() {
+    let project = Project.template
+      |> \.personalization.backing .~ .template
+    let service = MockService(fetchProjectResponse: project)
+
+    withEnvironment(apiService: service, currentUser: .template) {
+      self.goToLoginWithIntent.assertDidNotEmitValue()
+      self.presentViewController.assertDidNotEmitValue()
+
+      let pushData: [String: Any] = [
+        "aps": [
+          "alert": "You have an errored pledge."
+        ],
+        "errored_pledge": [
+          "project_id": 2
+        ]
+      ]
+
+      self.vm.inputs.didReceive(remoteNotification: pushData)
+
+      self.goToLoginWithIntent.assertDidNotEmitValue()
+      self.presentViewController.assertValues([2])
+    }
+  }
+
+  func testErroredPledgePushDeepLink_LoggedOut() {
+    withEnvironment(currentUser: nil) {
+      self.goToLoginWithIntent.assertDidNotEmitValue()
+      self.presentViewController.assertDidNotEmitValue()
+
+      let pushData: [String: Any] = [
+        "aps": [
+          "alert": "You have an errored pledge."
+        ],
+        "errored_pledge": [
+          "project_id": 2
+        ]
+      ]
+
+      self.vm.inputs.didReceive(remoteNotification: pushData)
+
+      self.goToLoginWithIntent.assertValues([.erroredPledge])
+      self.presentViewController.assertDidNotEmitValue()
+    }
   }
 
   func testUserSurveyDeepLink() {

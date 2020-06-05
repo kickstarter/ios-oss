@@ -62,9 +62,10 @@ public func backingsQueryFields(status: String) -> NonEmptySet<Query.User> {
           .status +| [
             .errorReason,
             .project(
-              .id +| [
+              .pid +| [
                 .name,
-                .slug
+                .slug,
+                .finalCollectionDate
               ]
             )
           ]

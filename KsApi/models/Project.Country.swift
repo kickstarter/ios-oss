@@ -8,7 +8,7 @@ extension Project {
     public let trailingCode: Bool
 
     /*
-     The amount for maximum pledge can be found here:
+     FIXME: The amount for maximum pledge can be found here:
      https://github.com/kickstarter/kickstarter/blob/master/config/countries.yml
      Ideally we should get the amounts from the API. But for now we have to update them manually.
      */

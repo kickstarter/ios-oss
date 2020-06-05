@@ -114,9 +114,9 @@ final class ProjectActivitiesViewModelTests: TestCase {
   }
 
   func testGoTo() {
-    let project = Project.template
+    let backing = Backing.template |> Backing.lens.projectId .~ Project.template.id
+    let project = Project.template |> Project.lens.personalization.backing .~ backing
     let comment = Comment.template
-    let backing = Backing.template |> Backing.lens.projectId .~ project.id
     let update = Update.template
     let user = User.template
 

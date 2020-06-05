@@ -241,13 +241,17 @@ private func pledgePaymentMethodCellDataAndSelectedCard(
   let data = cards.compactMap { card -> PledgePaymentMethodCellData? in
     guard let cardBrand = card.type?.rawValue else { return nil }
 
+    let backing = project.personalization.backing
     let isAvailableCardType = availableCardTypes.contains(cardBrand)
+
+    let isErroredPaymentMethod = card.id == backing?.paymentSource?.id && backing?.status == .errored
 
     return (
       card: card,
       isEnabled: isAvailableCardType,
       isSelected: false,
-      projectCountry: project.location.displayableName
+      projectCountry: project.location.displayableName,
+      isErroredPaymentMethod: isErroredPaymentMethod
     )
   }
   // Position unavailable cards last
@@ -273,6 +277,10 @@ private func pledgePaymentMethodCellDataAndSelectedCard(
     return (cellData(data, selecting: selected), selected)
   }
 
+  if cards.first(where: { $0.id == backing.paymentSource?.id }) != nil, backing.status == .errored {
+    return (data, nil)
+  }
+
   /*
    If we're working with a backing, and a new card hasn't been added,
    select the card that the backing is associated with.
@@ -291,7 +299,8 @@ private func cellData(
       value.card,
       value.isEnabled,
       value.card == card,
-      value.projectCountry
+      value.projectCountry,
+      value.isErroredPaymentMethod
     )
   }
 }

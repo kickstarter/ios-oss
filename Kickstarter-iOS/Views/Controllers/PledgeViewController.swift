@@ -281,8 +281,13 @@ final class PledgeViewController: UIViewController,
       .observeValues { [weak self] data in
         self?.pledgeDescriptionView.configureWith(value: data)
         self?.pledgeAmountViewController.configureWith(value: data)
-        self?.pledgeAmountSummaryViewController.configureWith(data.project)
         self?.shippingLocationViewController.configureWith(value: data)
+      }
+
+    self.viewModel.outputs.configurePledgeAmountSummaryViewControllerWithData
+      .observeForUI()
+      .observeValues { [weak self] data in
+        self?.pledgeAmountSummaryViewController.configureWith(data)
       }
 
     self.viewModel.outputs.configurePledgeViewCTAContainerView

@@ -9,6 +9,8 @@ final class TrackingHelpers {
       return Koala.PledgeContext.manageReward
     case .updateReward:
       return Koala.PledgeContext.changeReward
+    case .fixPaymentMethod:
+      return Koala.PledgeContext.fixErroredPledge
     }
   }
 }

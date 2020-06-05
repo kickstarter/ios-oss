@@ -232,13 +232,18 @@ public struct Service: ServiceType {
     return fetch(query: query)
   }
 
+  public func fetchGraphUserBackings(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError> {
+    return fetch(query: query)
+  }
+
   public func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError> {
     return fetch(query: query)
   }
 
-  public func fetchGraphUserBackings(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError> {
+  public func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
+    -> SignalProducer<ManagePledgeViewBackingEnvelope, GraphError> {
     return fetch(query: query)
   }
 

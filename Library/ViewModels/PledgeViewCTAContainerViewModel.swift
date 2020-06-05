@@ -6,7 +6,8 @@ import ReactiveSwift
 public typealias PledgeViewCTAContainerViewData = (
   isLoggedIn: Bool,
   isEnabled: Bool,
-  context: PledgeViewContext
+  context: PledgeViewContext,
+  willRetryPaymentMethod: Bool
 )
 
 public protocol PledgeViewCTAContainerViewModelInputs {
@@ -49,15 +50,20 @@ public final class PledgeViewCTAContainerViewModel: PledgeViewCTAContainerViewMo
       .first
 
       return helpType
-    }.skipNil()
+    }
+    .skipNil()
 
     self.submitButtonIsEnabled = self.configDataSignal.map { $0.isEnabled }
-    self.submitButtonTitle = context.map { $0.submitButtonTitle }
+    self.submitButtonTitle = self.configDataSignal.map { data in
+      guard data.willRetryPaymentMethod == false else { return Strings.Retry() }
+
+      return data.context.submitButtonTitle
+    }
 
     self.submitButtonIsHidden = isLoggedIn.map { $0 }.negate()
     self.applePayButtonIsHidden = Signal.combineLatest(context, isLoggedIn)
       .map { context, isLoggedIn in
-        [.pledge, .changePaymentMethod].contains(context) == false || isLoggedIn == false
+        context.isAny(of: .pledge, .fixPaymentMethod, .changePaymentMethod) == false || isLoggedIn == false
       }
     self.continueButtonIsHidden = isLoggedIn
 

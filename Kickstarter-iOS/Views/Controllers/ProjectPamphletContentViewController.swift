@@ -75,7 +75,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 
     self.viewModel.outputs.goToBacking
       .observeForControllerAction()
-      .observeValues { [weak self] in self?.goToBacking(project: $0) }
+      .observeValues { [weak self] in self?.goToBacking(params: $0) }
 
     self.viewModel.outputs.goToComments
       .observeForControllerAction()
@@ -122,16 +122,14 @@ public final class ProjectPamphletContentViewController: UITableViewController {
       }
   }
 
-  fileprivate func goToBacking(project: Project) {
-    let vc = BackingViewController.configuredWith(project: project, backer: nil)
+  fileprivate func goToBacking(params: ManagePledgeViewParamConfigData) {
+    let vc = ManagePledgeViewController.controller(with: params)
 
     if self.traitCollection.userInterfaceIdiom == .pad {
-      let nav = UINavigationController(rootViewController: vc)
-      nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
-      self.present(nav, animated: true, completion: nil)
-    } else {
-      self.navigationController?.pushViewController(vc, animated: true)
+      vc.modalPresentationStyle = UIModalPresentationStyle.formSheet
     }
+
+    self.present(vc, animated: true, completion: nil)
   }
 
   fileprivate func goToComments(project: Project) {

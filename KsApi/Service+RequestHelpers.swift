@@ -53,7 +53,7 @@ extension Service {
 
           return .init(value: decodedObject.data)
         } catch {
-          print("🔴 [KsApi] Failure - Decoding error: \(error.localizedDescription)")
+          print("🔴 [KsApi] Failure - Decoding error: \((error as NSError).description)")
           return .init(error: .jsonDecodingError(
             responseString: String(data: data, encoding: .utf8),
             error: error

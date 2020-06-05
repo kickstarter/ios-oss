@@ -109,6 +109,16 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.goToCreatorMessageThread($0, $1)
       }
 
+    self.viewModel.outputs.goToLoginWithIntent
+      .observeForControllerAction()
+      .observeValues { [weak self] intent in
+        let vc = LoginToutViewController.configuredWith(loginIntent: intent)
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .formSheet
+
+        self?.rootTabBarController?.present(nav, animated: true, completion: nil)
+      }
+
     self.viewModel.outputs.goToMessageThread
       .observeForUI()
       .observeValues { [weak self] in self?.goToMessageThread($0) }

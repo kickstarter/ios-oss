@@ -13,6 +13,7 @@ public enum RefTag {
   case dashboardActivity
   case discovery
   case discoveryWithSort(DiscoveryParams.Sort)
+  case emailBackerFailedTransaction
   case messageThread
   case onboarding
   case profile
@@ -61,6 +62,7 @@ public enum RefTag {
     case "discovery_home": self = .discoveryWithSort(.magic)
     case "discovery_newest": self = .discoveryWithSort(.newest)
     case "discovery_popular": self = .discoveryWithSort(.popular)
+    case "ksr_email_backer_failed_transaction": self = .emailBackerFailedTransaction
     case "ios_experiment_onboarding_1": self = .onboarding
     case "message_thread": self = .messageThread
     case "profile": self = .profile
@@ -119,6 +121,8 @@ public enum RefTag {
       return "discovery"
     case let .discoveryWithSort(sort):
       return "discovery" + sortRefTagSuffix(sort)
+    case .emailBackerFailedTransaction:
+      return "ksr_email_backer_failed_transaction"
     case .messageThread:
       return "message_thread"
     case .onboarding:

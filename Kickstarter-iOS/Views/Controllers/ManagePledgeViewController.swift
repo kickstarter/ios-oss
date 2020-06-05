@@ -43,6 +43,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private lazy var paymentMethodView: ManagePledgePaymentMethodView = {
     ManagePledgePaymentMethodView(frame: .zero)
+      |> \.delegate .~ self
   }()
 
   private lazy var paymentMethodViews = {
@@ -59,6 +60,19 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private lazy var pledgeSummarySectionSeparator: UIView = {
     UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var pullToRefreshImageView: UIImageView = {
+    UIImageView(image: image(named: "icon--refresh-small"))
+  }()
+
+  private lazy var pullToRefreshLabel: UILabel = {
+    UILabel(frame: .zero)
+  }()
+
+  private lazy var pullToRefreshStackView: UIStackView = {
+    UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -133,6 +147,18 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     _ = self.rootStackView
       |> checkoutRootStackViewStyle
 
+    _ = self.pullToRefreshLabel
+      |> \.text %~ { _ in localizedString(
+        key: "Something_went_wrong_pull_to_refresh",
+        defaultValue: "Something went wrong, pull to refresh."
+      )
+      }
+
+    _ = self.pullToRefreshStackView
+      |> \.axis .~ .vertical
+      |> \.spacing .~ Styles.grid(2)
+      |> \.alignment .~ .center
+
     _ = self.sectionSeparatorViews
       ||> separatorStyleDark
   }
@@ -142,8 +168,22 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.pullToRefreshStackView.rac.hidden = self.viewModel.outputs.pullToRefreshStackViewHidden
+    self.rootStackView.rac.hidden = self.viewModel.outputs.rootStackViewHidden
     self.rewardReceivedViewController.view.rac.hidden =
       self.viewModel.outputs.rewardReceivedViewControllerViewIsHidden
+
+    self.viewModel.outputs.paymentMethodViewHidden
+      .observeForUI()
+      .observeValues { [weak self] hidden in
+        self?.paymentMethodViews.forEach { $0.isHidden = hidden }
+      }
+
+    self.viewModel.outputs.rightBarButtonItemHidden
+      .observeForUI()
+      .observeValues { [weak self] hidden in
+        self?.navigationItem.rightBarButtonItem = hidden ? nil : self?.menuButton
+      }
 
     self.viewModel.outputs.title
       .observeForUI()
@@ -155,14 +195,14 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.viewModel.outputs.configurePaymentMethodView
       .observeForUI()
-      .observeValues { [weak self] card in
-        self?.paymentMethodView.configure(with: card)
+      .observeValues { [weak self] backing in
+        self?.paymentMethodView.configure(with: backing)
       }
 
     self.viewModel.outputs.configurePledgeSummaryView
       .observeForUI()
-      .observeValues { [weak self] project in
-        self?.pledgeSummaryViewController.configureWith(project)
+      .observeValues { [weak self] data in
+        self?.pledgeSummaryViewController.configureWith(data)
       }
 
     self.viewModel.outputs.configureRewardReceivedWithProject
@@ -175,6 +215,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       .observeForUI()
       .observeValues { [weak self] in
         self?.rewardView.configure(with: $0)
+      }
+
+    self.viewModel.outputs.startRefreshing
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.refreshControl.ksr_beginRefreshing()
       }
 
     self.viewModel.outputs.endRefreshing
@@ -207,6 +253,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         self?.goToChangePaymentMethod(project: project, reward: reward)
       }
 
+    self.viewModel.outputs.goToFixPaymentMethod
+      .observeForControllerAction()
+      .observeValues { [weak self] project, reward in
+        self?.goToFixPaymentMethod(project: project, reward: reward)
+      }
+
     self.viewModel.outputs.goToContactCreator
       .observeForControllerAction()
       .observeValues { [weak self] messageSubject, context in
@@ -215,8 +267,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.viewModel.outputs.goToCancelPledge
       .observeForControllerAction()
-      .observeValues { [weak self] project, backing in
-        self?.goToCancelPledge(project: project, backing: backing)
+      .observeValues { [weak self] data in
+        self?.goToCancelPledge(with: data)
       }
 
     self.viewModel.outputs.notifyDelegateManagePledgeViewControllerFinishedWithMessage
@@ -246,13 +298,22 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   // MARK: - Configuration
 
-  func configureWith(project: Project) {
-    self.viewModel.inputs.configureWith(project)
+  func configureWith(params: ManagePledgeViewParamConfigData) {
+    self.viewModel.inputs.configureWith(params)
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor)
+      // rootStackView
+      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor),
+
+      // pullToRefreshStackView
+      self.pullToRefreshStackView.leftAnchor.constraint(equalTo: self.rootScrollView.leftAnchor),
+      self.pullToRefreshStackView.rightAnchor.constraint(equalTo: self.rootScrollView.rightAnchor),
+      self.pullToRefreshStackView.centerXAnchor.constraint(equalTo: self.rootScrollView.centerXAnchor),
+      self.pullToRefreshStackView.centerYAnchor.constraint(
+        equalTo: self.rootScrollView.centerYAnchor, constant: -Styles.grid(8)
+      )
     ])
 
     self.sectionSeparatorViews.forEach { view in
@@ -276,6 +337,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     _ = (self.rootStackView, self.rootScrollView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.pullToRefreshStackView, self.rootScrollView)
+      |> ksr_addSubviewToParent()
+
+    _ = ([self.pullToRefreshImageView, self.pullToRefreshLabel], self.pullToRefreshStackView)
+      |> ksr_addArrangedSubviewsToStackView()
 
     let childViews: [UIView] = [
       self.pledgeSummarySectionViews,
@@ -382,10 +449,10 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func goToCancelPledge(project: Project, backing: Backing) {
+  private func goToCancelPledge(with data: CancelPledgeViewData) {
     let cancelPledgeViewController = CancelPledgeViewController.instantiate()
       |> \.delegate .~ self
-    cancelPledgeViewController.configure(with: project, backing: backing)
+    cancelPledgeViewController.configure(with: data)
 
     self.navigationController?.pushViewController(cancelPledgeViewController, animated: true)
   }
@@ -393,6 +460,14 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   private func goToChangePaymentMethod(project: Project, reward: Reward) {
     let vc = PledgeViewController.instantiate()
     vc.configureWith(project: project, reward: reward, refTag: nil, context: .changePaymentMethod)
+    vc.delegate = self
+
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  private func goToFixPaymentMethod(project: Project, reward: Reward) {
+    let vc = PledgeViewController.instantiate()
+    vc.configureWith(project: project, reward: reward, refTag: nil, context: .fixPaymentMethod)
     vc.delegate = self
 
     self.navigationController?.pushViewController(vc, animated: true)
@@ -429,26 +504,17 @@ extension ManagePledgeViewController: PledgeViewControllerDelegate {
   }
 }
 
+extension ManagePledgeViewController: ManagePledgePaymentMethodViewDelegate {
+  func managePledgePaymentMethodViewDidTapFixButton(_: ManagePledgePaymentMethodView) {
+    self.viewModel.inputs.fixButtonTapped()
+  }
+}
+
 // MARK: Styles
 
 private let rootScrollViewStyle = { (scrollView: UIScrollView) in
   scrollView
     |> \.alwaysBounceVertical .~ true
-}
-
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.layoutMargins .~ .init(
-      top: Styles.grid(3),
-      left: Styles.grid(4),
-      bottom: Styles.grid(3),
-      right: Styles.grid(4)
-    )
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.axis .~ NSLayoutConstraint.Axis.vertical
-    |> \.distribution .~ UIStackView.Distribution.fill
-    |> \.alignment .~ UIStackView.Alignment.fill
-    |> \.spacing .~ Styles.grid(4)
 }
 
 extension ManagePledgeViewController: MessageDialogViewControllerDelegate {
@@ -457,4 +523,40 @@ extension ManagePledgeViewController: MessageDialogViewControllerDelegate {
   }
 
   internal func messageDialog(_: MessageDialogViewController, postedMessage _: Message) {}
+}
+
+extension ManagePledgeViewController {
+  public static func controller(
+    with params: ManagePledgeViewParamConfigData,
+    delegate: ManagePledgeViewControllerDelegate? = nil
+  ) -> UINavigationController {
+    let managePledgeViewController = ManagePledgeViewController
+      .instantiate()
+    managePledgeViewController.configureWith(params: params)
+    managePledgeViewController.delegate = delegate
+
+    let closeButton = UIBarButtonItem(
+      image: UIImage(named: "icon--cross"),
+      style: .plain,
+      target: managePledgeViewController,
+      action: #selector(ManagePledgeViewController.closeButtonTapped)
+    )
+
+    _ = closeButton
+      |> \.width .~ Styles.minTouchSize.width
+      |> \.accessibilityLabel %~ { _ in Strings.Dismiss() }
+
+    managePledgeViewController.navigationItem.setLeftBarButton(closeButton, animated: false)
+
+    let navigationController = RewardPledgeNavigationController(
+      rootViewController: managePledgeViewController
+    )
+
+    if AppEnvironment.current.device.userInterfaceIdiom == .pad {
+      _ = navigationController
+        |> \.modalPresentationStyle .~ .pageSheet
+    }
+
+    return navigationController
+  }
 }

@@ -143,8 +143,8 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the root view controller should present the Landing Page for new users.
   var goToLandingPage: Signal<(), Never> { get }
 
-  /// Emits when the root view controller should navigate to the login screen.
-  var goToLogin: Signal<(), Never> { get }
+  /// Emits when the root view controller should present the login modal.
+  var goToLoginWithIntent: Signal<LoginIntent, Never> { get }
 
   /// Emits a message thread when we should navigate to it.
   var goToMessageThread: Signal<MessageThread, Never> { get }
@@ -389,6 +389,53 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           .map { params |> DiscoveryParams.lens.category .~ $0.first }
       }
 
+    let projectLinkValues = deepLink
+      .map { link -> (Param, Navigation.Project, RefTag?)? in
+        guard case let .project(param, subpage, refTag) = link else { return nil }
+        return (param, subpage, refTag)
+      }
+      .skipNil()
+      .switchMap { param, subpage, refTag in
+        AppEnvironment.current.apiService.fetchProject(param: param)
+          .demoteErrors()
+          .observeForUI()
+          .map { project -> (Project, Navigation.Project, [UIViewController], RefTag?) in
+            (
+              project, subpage,
+              [ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)],
+              refTag
+            )
+          }
+      }
+
+    let projectLink = projectLinkValues
+      .filter { project, _, _, _ in project.prelaunchActivated != true }
+
+    let projectPreviewLink = projectLinkValues
+      .filter { project, _, _, _ in project.prelaunchActivated == true }
+
+    let fixErroredPledgeLinkAndIsLoggedIn = projectLink
+      .filter { _, subpage, _, _ in subpage == .pledge(.manage) }
+      .map { project, _, vcs, _ in
+        (project, vcs, AppEnvironment.current.currentUser != nil)
+      }
+
+    let fixErroredPledgeLink = fixErroredPledgeLinkAndIsLoggedIn
+      .filter(third >>> isTrue)
+      .map { project, vcs, _ -> [UIViewController]? in
+        guard let backingId = project.personalization.backing?.id else { return nil }
+        let vc = ManagePledgeViewController.instantiate()
+        let params: ManagePledgeViewParamConfigData = (.id(project.id), .id(backingId))
+        vc.configureWith(params: params)
+        return vcs + [vc]
+      }
+      .skipNil()
+      .map { vcs -> RewardPledgeNavigationController in
+        let nav = RewardPledgeNavigationController(nibName: nil, bundle: nil)
+        nav.viewControllers = vcs
+        return nav
+      }
+
     self.goToActivity = deepLink
       .filter { $0 == .tab(.activity) }
       .ignoreValues()
@@ -397,9 +444,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .filter { $0 == .tab(.search) }
       .ignoreValues()
 
-    self.goToLogin = deepLink
+    let goToLogin = deepLink
       .filter { $0 == .tab(.login) }
       .ignoreValues()
+
+    self.goToLoginWithIntent = Signal.merge(
+      fixErroredPledgeLinkAndIsLoggedIn.filter(third >>> isFalse).mapConst(.erroredPledge),
+      goToLogin.mapConst(.generic)
+    )
 
     self.goToCreatorMessageThread = deepLink
       .map { navigation -> (Param, Int)? in
@@ -435,31 +487,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.goToProfile = deepLink
       .filter { $0 == .tab(.me) }
       .ignoreValues()
-
-    let projectLinkValues = deepLink
-      .map { link -> (Param, Navigation.Project, RefTag?)? in
-        guard case let .project(param, subpage, refTag) = link else { return nil }
-        return (param, subpage, refTag)
-      }
-      .skipNil()
-      .switchMap { param, subpage, refTag in
-        AppEnvironment.current.apiService.fetchProject(param: param)
-          .demoteErrors()
-          .observeForUI()
-          .map { project -> (Project, Navigation.Project, [UIViewController], RefTag?) in
-            (
-              project, subpage,
-              [ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: refTag)],
-              refTag
-            )
-          }
-      }
-
-    let projectLink = projectLinkValues
-      .filter { project, _, _, _ in project.prelaunchActivated != true }
-
-    let projectPreviewLink = projectLinkValues
-      .filter { project, _, _, _ in project.prelaunchActivated == true }
 
     let resolvedRedirectUrl = deepLinkUrl
       .filter { Navigation.deepLinkMatch($0) == nil }
@@ -550,7 +577,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
       .skipNil()
 
-    self.presentViewController = Signal
+    let viewControllersContainedInNavigationController = Signal
       .merge(
         projectRootLink,
         projectCommentsLink,
@@ -561,6 +588,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
         campaignFaqLink
       )
       .map { UINavigationController() |> UINavigationController.lens.viewControllers .~ $0 }
+
+    self.presentViewController = Signal.merge(
+      viewControllersContainedInNavigationController.map { $0 as UIViewController },
+      fixErroredPledgeLink.map { $0 as UIViewController }
+    )
 
     self.configureFabric = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
@@ -835,7 +867,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let goToDashboard: Signal<Param?, Never>
   public let goToDiscovery: Signal<DiscoveryParams?, Never>
   public let goToLandingPage: Signal<(), Never>
-  public let goToLogin: Signal<(), Never>
+  public let goToLoginWithIntent: Signal<LoginIntent, Never>
   public let goToMessageThread: Signal<MessageThread, Never>
   public let goToProfile: Signal<(), Never>
   public let goToProjectActivities: Signal<Param, Never>
@@ -920,6 +952,10 @@ private func navigation(fromPushEnvelope envelope: PushEnvelope) -> Navigation? 
 
   if let update = envelope.update {
     return .project(.id(update.projectId), .update(update.id, .root), refTag: .push)
+  }
+
+  if let erroredPledge = envelope.erroredPledge {
+    return .project(.id(erroredPledge.projectId), .pledge(.manage), refTag: .push)
   }
 
   return nil

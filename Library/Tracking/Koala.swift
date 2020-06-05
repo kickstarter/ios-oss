@@ -34,11 +34,13 @@ public final class Koala {
     case exploreSortClicked = "Explore Sort Clicked"
     case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
     case filterClicked = "Filter Clicked"
+    case fixPledgeButtonClicked = "Fix Pledge Button Clicked"
     case forgotPasswordViewed = "Forgot Password Viewed"
     case loginButtonClicked = "Log In Button Clicked"
     case loginOrSignupButtonClicked = "Log In or Signup Button Clicked"
     case loginOrSignupPageViewed = "Log In or Signup Page Viewed"
     case loginSubmitButtonClicked = "Log In Submit Button Clicked"
+    case managePledgeButtonClicked = "Manage Pledge Button Clicked"
     case onboardingCarouselSwiped = "Onboarding Carousel Swiped"
     case onboardingContinueButtonClicked = "Onboarding Continue Button Clicked"
     case onboardingGetStartedButtonClicked = "Onboarding Get Started Button Clicked"
@@ -72,6 +74,7 @@ public final class Koala {
     case landingPage = "landing_page" // LandingViewController
     case login = "login_screen" // LoginViewController
     case loginTout = "login_or_signup_screen" // LoginToutViewController
+    case managePledgeScreen = "manage_pledge_screen" // ManagePledgeViewController
     case onboarding // CategorySelectionViewController, CuratedProjectsViewController
     case pledgeAddNewCard = "pledge_add_new_card_screen" // AddNewCardViewController
     case pledgeScreen = "pledge_screen" // PledgeViewController
@@ -244,12 +247,14 @@ public final class Koala {
    - newPledge:    pledging to the project without an existing backing
    */
   public enum PledgeContext {
+    case fixErroredPledge
     case changeReward
     case manageReward
     case newPledge
 
     var trackingString: String {
       switch self {
+      case .fixErroredPledge: return "fix_errored_pledge"
       case .changeReward: return "change_reward"
       case .manageReward: return "manage_reward"
       case .newPledge: return "new_pledge"
@@ -593,7 +598,11 @@ public final class Koala {
 
     switch stateType {
     case .fix:
-      self.track(event: "Fix Pledge Button Clicked", properties: props)
+      self.track(
+        event: DataLakeWhiteListedEvent.managePledgeButtonClicked.rawValue,
+        location: .projectPage,
+        properties: props.withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
+      )
     case .pledge, .seeTheRewards, .viewTheRewards:
       let allProps = props
         .withAllValuesFrom(optimizelyProperties)
@@ -614,9 +623,9 @@ public final class Koala {
     }
   }
 
-  public func trackCancelPledgeButtonClicked(project: Project, backing: Backing) {
+  public func trackCancelPledgeButtonClicked(project: Project, backingAmount: Double) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(["pledge_total": backing.amount])
+      .withAllValuesFrom(["pledge_total": backingAmount])
 
     self.track(event: "Cancel Pledge Button Clicked", properties: props)
   }
@@ -640,6 +649,17 @@ public final class Koala {
       .withAllValuesFrom(["cta": managePledgeMenuCTA.trackingString])
 
     self.track(event: "Manage Pledge Option Clicked", properties: props)
+  }
+
+  public func trackFixPledgeButtonClicked(project: Project) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
+
+    self.track(
+      event: DataLakeWhiteListedEvent.fixPledgeButtonClicked.rawValue,
+      location: .managePledgeScreen,
+      properties: props
+    )
   }
 
   /* Call when a reward is selected
@@ -723,6 +743,24 @@ public final class Koala {
       .withAllValuesFrom(checkoutProperties(from: checkoutData))
       // the context is always "newPledge" for this event
       .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
+
+    self.track(
+      event: DataLakeWhiteListedEvent.pledgeSubmitButtonClicked.rawValue,
+      location: .pledgeScreen,
+      properties: props,
+      refTag: refTag?.stringTag
+    )
+  }
+
+  public func trackPledgeSubmitButtonClicked(
+    project: Project,
+    reward: Reward,
+    context: Koala.PledgeContext,
+    refTag: RefTag?
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(pledgeProperties(from: reward))
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
       event: DataLakeWhiteListedEvent.pledgeSubmitButtonClicked.rawValue,
