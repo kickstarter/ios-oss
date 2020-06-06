@@ -99,6 +99,21 @@ final class RewardCardViewModelTests: TestCase {
     )
   }
 
+  func testTitleLabel_Backed_AddOn() {
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+
+    let reward = .template
+      |> \.addOnData .~ AddOnData(selectedQuantity: 2)
+      |> Reward.lens.title .~ "The thing"
+      |> Reward.lens.remaining .~ nil
+
+    self.vm.inputs.configureWith(project: project, rewardOrBacking: .left(reward))
+
+    self.rewardTitleLabelHidden.assertValues([false])
+    XCTAssertEqual(self.rewardTitleLabelAttributedText.values.map { $0.string }, ["2 x The thing"])
+  }
+
   // MARK: - Reward Minimum
 
   func testMinimumLabel_US_Project_US_UserLocation() {

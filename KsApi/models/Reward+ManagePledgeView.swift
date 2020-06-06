@@ -3,14 +3,20 @@ import Foundation
 public extension Reward {
   static func reward(
     from backingReward: ManagePledgeViewBackingEnvelope.Backing.Reward,
+    project: Project,
+    selectedAddOnQuantities: [String: Int],
     dateFormatter: ISO8601DateFormatter
   ) -> Reward {
     let estimatedDeliveryOn = backingReward.estimatedDeliveryOn
       .flatMap(dateFormatter.date(from:))?.timeIntervalSince1970
 
+    let addOnData = selectedAddOnQuantities[backingReward.id]
+      .flatMap(AddOnData.init(selectedQuantity:))
+
     return Reward(
+      addOnData: addOnData,
       backersCount: backingReward.backersCount,
-      convertedMinimum: 0, // FIXME: can be inferred from project (see below)
+      convertedMinimum: calculateConvertedMinimum(from: backingReward, with: project),
       description: backingReward.description,
       endsAt: backingReward.endsAt,
       estimatedDeliveryOn: estimatedDeliveryOn,
@@ -18,7 +24,7 @@ public extension Reward {
       limit: backingReward.limit,
       minimum: backingReward.amount.amount,
       remaining: backingReward.remainingQuantity,
-      rewardsItems: rewardItemsData(from: backingReward),
+      rewardsItems: rewardItemsData(from: backingReward, with: project),
       shipping: shippingData(from: backingReward),
       startsAt: backingReward.startsAt,
       title: backingReward.name
@@ -26,38 +32,36 @@ public extension Reward {
   }
 }
 
-/*
- let (country, rate) = zip(
-   project.stats.currentCountry,
-   project.stats.currentCurrencyRate
- ) ?? (.us, project.stats.staticUsdRate)
+private func calculateConvertedMinimum(
+  from backingReward: ManagePledgeViewBackingEnvelope.Backing.Reward,
+  with project: Project
+) -> Double {
+  let rate = project.stats.currentCurrencyRate ?? project.stats.staticUsdRate
 
- Int(ceil(Float(reward.amount) * rate))
- */
+  return Double(Int(ceil(Float(backingReward.amount.amount) * rate)))
+}
 
 private func rewardItemsData(
-  from _: ManagePledgeViewBackingEnvelope.Backing.Reward
+  from backingReward: ManagePledgeViewBackingEnvelope.Backing.Reward,
+  with project: Project
 ) -> [RewardsItem] {
-  return []
-  /*
-   return backingReward.items?.compactMap { item -> RewardsItem? in
-     guard let id = Int(item.id) else { return nil }
+  return backingReward.items?.compactMap { item -> RewardsItem? in
+    guard let id = Int(item.id) else { return nil }
 
-     // FIXME:
-     return RewardsItem(
-       id: id,
-       // doesn't exist
-       item: Item(
-         description: nil,
-         id: 0,
-         name: item.name,
-         projectId: 0
-       ),
-       quantity: 0,
-       rewardId: 0
-     )
-   } ?? []
-   */
+    // FIXME:
+    return RewardsItem(
+      id: id,
+      // doesn't exist
+      item: Item(
+        description: nil,
+        id: 0,
+        name: item.name,
+        projectId: project.id
+      ),
+      quantity: 0,
+      rewardId: Int(backingReward.id) ?? -1
+    )
+  } ?? []
 }
 
 private func shippingData(

@@ -184,12 +184,10 @@ public final class ManagePledgeViewModel:
     .map { userIsCreatorOfProject, creditCard in userIsCreatorOfProject || creditCard == nil }
     .skipRepeats()
 
-    let addOnRewardsFromBacking = backing.map(rewardsData(from:))
-
-    self.loadProjectAndRewardsIntoDataSource = projectAndReward.combineLatest(with: addOnRewardsFromBacking)
+    self.loadProjectAndRewardsIntoDataSource = projectAndReward.combineLatest(with: backing)
       .map(unpack)
-      .map { project, reward, addOnRewardsFromBacking in
-        (project, [reward] + addOnRewardsFromBacking)
+      .map { project, reward, backing in
+        (project, [reward] + rewardsData(from: backing, with: project))
       }
 
     self.rightBarButtonItemHidden = Signal.merge(
@@ -466,11 +464,26 @@ private func managePledgeSummaryViewData(
   )
 }
 
-private func rewardsData(from backing: ManagePledgeViewBackingEnvelope.Backing) -> [Reward] {
+private func rewardsData(
+  from backing: ManagePledgeViewBackingEnvelope.Backing,
+  with project: Project
+) -> [Reward] {
   guard let addOns = backing.addOns?.nodes else { return [] }
 
+  var selectedAddOnQuantities: [String: Int] = [:]
+
+  addOns.forEach { addOn in
+    let quantity = (selectedAddOnQuantities[addOn.id] ?? 0) + 1
+    selectedAddOnQuantities[addOn.id] = quantity
+  }
+
   return addOns.map { addOn in
-    Reward.reward(from: addOn, dateFormatter: ISO8601DateFormatter.cachedFormatter())
+    Reward.reward(
+      from: addOn,
+      project: project,
+      selectedAddOnQuantities: selectedAddOnQuantities,
+      dateFormatter: ISO8601DateFormatter.cachedFormatter()
+    )
   }
 }
 

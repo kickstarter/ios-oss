@@ -205,7 +205,9 @@ private func rewardTitle(project: Project, reward: Reward) -> NSAttributedString
     bolding: [title]
   )
 
-  let qty = "\(reward.selectedQuantity) x "
+  guard let selectedQuantity = reward.addOnData?.selectedQuantity else { return titleAttributed }
+
+  let qty = "\(selectedQuantity) x "
   let qtyAttributed = qty.attributed(
     with: UIFont.ksr_title2(),
     foregroundColor: UIColor.ksr_green_500,
