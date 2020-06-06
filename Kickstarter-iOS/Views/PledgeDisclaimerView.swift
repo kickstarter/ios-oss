@@ -128,8 +128,6 @@ extension PledgeDisclaimerView: UITextViewDelegate {
 private let textViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
   textView
     |> tappableLinksViewStyle
-    |> \.font .~ UIFont.ksr_caption1()
-    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
     |> \.accessibilityTraits .~ [.staticText]
     |> \.backgroundColor .~ .ksr_grey_400
 }

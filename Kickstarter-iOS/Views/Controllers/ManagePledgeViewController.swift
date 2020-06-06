@@ -376,7 +376,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     let childViews: [UIView] = [
       self.pledgeSummarySectionViews,
       self.paymentMethodViews,
-      [self.rewardReceivedViewController.view]
+      self.pledgeDetailsSectionViews
     ]
     .flatMap { $0 }
     .compact()
