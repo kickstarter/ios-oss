@@ -65,6 +65,18 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     [self.paymentMethodView, self.paymentMethodSectionSeparator]
   }()
 
+  private lazy var pledgeDetailsSectionLabel: UILabel = {
+    UILabel(frame: .zero)
+  }()
+
+  private lazy var pledgeDetailsSectionViews = {
+    [pledgeDetailsSectionLabel, self.rewardReceivedViewController.view, self.pledgeDisclaimerView]
+  }()
+
+  private lazy var pledgeDisclaimerView: PledgeDisclaimerView = {
+    PledgeDisclaimerView(frame: .zero)
+  }()
+
   private lazy var pledgeSummaryViewController: ManagePledgeSummaryViewController = {
     ManagePledgeSummaryViewController.instantiate()
   }()
@@ -131,6 +143,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     )
 
     self.configureViews()
+    self.configureDisclaimerView()
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -158,6 +171,12 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     _ = self.rootStackView
       |> checkoutRootStackViewStyle
+
+    _ = self.pledgeDisclaimerView
+      |> roundedStyle(cornerRadius: Styles.grid(2))
+
+    _ = self.pledgeDetailsSectionLabel
+      |> pledgeDetailsSectionLabelStyle
 
     _ = self.sectionSeparatorViews
       ||> separatorStyleDark
@@ -310,6 +329,33 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   }
 
   // MARK: Functions
+
+  private func configureDisclaimerView() {
+    let string1 = localizedString(
+      key: "Remember_that_delivery_dates_are_not_guaranteed",
+      defaultValue: "Remember that delivery dates are not guaranteed."
+    )
+
+    let string2 = localizedString(
+      key: "Delays_or_changes_are_possible",
+      defaultValue: "Delays or changes are possible."
+    )
+
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.lineSpacing = 2
+
+    let attributedText = string1
+      .appending(String.nbsp)
+      .appending(string2)
+      .attributed(
+        with: UIFont.ksr_footnote(),
+        foregroundColor: .ksr_text_dark_grey_500,
+        attributes: [.paragraphStyle: paragraphStyle],
+        bolding: [string1]
+      )
+
+    self.pledgeDisclaimerView.configure(with: ("calendar-icon", attributedText))
+  }
 
   private func configureViews() {
     _ = (self.tableView, self.view)
@@ -535,6 +581,12 @@ extension ManagePledgeViewController: ManagePledgePaymentMethodViewDelegate {
 }
 
 // MARK: Styles
+
+private let pledgeDetailsSectionLabelStyle: LabelStyle = { label in
+  label
+    |> checkoutTitleLabelStyle
+    |> \.text %~ { _ in Strings.Selected_reward() } // FIXME: context-specific
+}
 
 extension ManagePledgeViewController: MessageDialogViewControllerDelegate {
   internal func messageDialogWantsDismissal(_ dialog: MessageDialogViewController) {
