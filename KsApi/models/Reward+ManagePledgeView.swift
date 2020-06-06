@@ -10,8 +10,10 @@ public extension Reward {
     let estimatedDeliveryOn = backingReward.estimatedDeliveryOn
       .flatMap(dateFormatter.date(from:))?.timeIntervalSince1970
 
-    let addOnData = selectedAddOnQuantities[backingReward.id]
-      .flatMap(AddOnData.init(selectedQuantity:))
+    let addOnData = AddOnData(
+      isAddOn: true,
+      selectedQuantity: selectedAddOnQuantities[backingReward.id] ?? 0
+    )
 
     return Reward(
       addOnData: addOnData,

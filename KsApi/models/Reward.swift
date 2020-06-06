@@ -4,6 +4,7 @@ import Prelude
 import Runes
 
 public struct AddOnData {
+  public let isAddOn: Bool
   public let selectedQuantity: Int
 }
 
@@ -76,7 +77,7 @@ extension Reward: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Reward> {
     let tmp1 = curry(Reward.init)
       // Add-On data is not de-serialized, it's injected from GraphQL backing info.
-      <^> .success(nil)
+      <^> .success(AddOnData(isAddOn: false, selectedQuantity: 0))
       <*> json <|? "backers_count"
       <*> json <| "converted_minimum"
       <*> (json <| "description" <|> json <| "reward")
