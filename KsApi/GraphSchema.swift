@@ -224,6 +224,7 @@ public enum Query {
     case addOns(Set<QueryArg<Never>>, NonEmptySet<Connection<Reward>>)
     case amount(NonEmptySet<Money>)
     case backer(NonEmptySet<User>)
+    case backerCompleted
     case bankAccount(NonEmptySet<BankAccount>)
     case cancelable
     case creditCard(NonEmptySet<CreditCard>)
@@ -521,6 +522,7 @@ extension Query.Backing: QueryType {
     case let .addOns(args, fields): return "addOns\(connection(args, fields))"
     case let .amount(fields): return "amount { \(join(fields)) }"
     case let .backer(fields): return "backer { \(join(fields)) }"
+    case .backerCompleted: return "backerCompleted"
     case let .bankAccount(fields): return "bankAccount: paymentSource { ... on BankAccount {  \(join(fields)) } }"
     case .cancelable: return "cancelable"
     case let .creditCard(fields): return "creditCard: paymentSource { ... on CreditCard { \(join(fields)) } }"

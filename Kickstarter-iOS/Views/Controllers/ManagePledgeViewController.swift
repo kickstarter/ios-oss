@@ -70,7 +70,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   }()
 
   private lazy var pledgeDetailsSectionViews = {
-    [pledgeDetailsSectionLabel, self.rewardReceivedViewController.view, self.pledgeDisclaimerView]
+    [self.pledgeDetailsSectionLabel, self.rewardReceivedViewController.view, self.pledgeDisclaimerView]
   }()
 
   private lazy var pledgeDisclaimerView: PledgeDisclaimerView = {
@@ -175,6 +175,9 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     _ = self.pledgeDisclaimerView
       |> roundedStyle(cornerRadius: Styles.grid(2))
 
+    _ = self.rewardReceivedViewController.view
+      |> roundedStyle(cornerRadius: Styles.grid(2))
+
     _ = self.pledgeDetailsSectionLabel
       |> pledgeDetailsSectionLabelStyle
 
@@ -222,10 +225,10 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         self?.pledgeSummaryViewController.configureWith(data)
       }
 
-    self.viewModel.outputs.configureRewardReceivedWithProject
+    self.viewModel.outputs.configureRewardReceivedWithData
       .observeForControllerAction()
-      .observeValues { [weak self] project in
-        self?.rewardReceivedViewController.configureWith(project: project)
+      .observeValues { [weak self] data in
+        self?.rewardReceivedViewController.configureWith(data: data)
       }
 
     self.viewModel.outputs.loadProjectAndRewardsIntoDataSource

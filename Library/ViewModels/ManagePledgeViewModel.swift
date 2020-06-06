@@ -31,7 +31,7 @@ public protocol ManagePledgeViewModelInputs {
 public protocol ManagePledgeViewModelOutputs {
   var configurePaymentMethodView: Signal<ManagePledgePaymentMethodViewData, Never> { get }
   var configurePledgeSummaryView: Signal<ManagePledgeSummaryViewData, Never> { get }
-  var configureRewardReceivedWithProject: Signal<Project, Never> { get }
+  var configureRewardReceivedWithData: Signal<ManageViewPledgeRewardReceivedViewData, Never> { get }
   var endRefreshing: Signal<Void, Never> { get }
   var goToCancelPledge: Signal<CancelPledgeViewData, Never> { get }
   var goToChangePaymentMethod: Signal<(Project, Reward), Never> { get }
@@ -202,8 +202,21 @@ public final class ManagePledgeViewModel:
       shouldBeginRefresh.ignoreValues()
     )
 
-    // TODO: Configure with GraphQL backing
-    self.configureRewardReceivedWithProject = project
+    let latestRewardDeliveryDate = self.loadProjectAndRewardsIntoDataSource.map { _, rewards in
+      rewards
+        .compactMap { $0.estimatedDeliveryOn }
+        .reduce(0) { accum, value in max(accum, value) }
+    }
+
+    self.configureRewardReceivedWithData = Signal.combineLatest(project, backing, latestRewardDeliveryDate)
+      .map { project, backing, latestRewardDeliveryDate in
+        ManageViewPledgeRewardReceivedViewData(
+          project: project,
+          backerCompleted: backing.backerCompleted,
+          estimatedDeliveryOn: latestRewardDeliveryDate,
+          backingState: backing.status
+        )
+    }
 
     let menuOptions = Signal.combineLatest(project, backing, userIsCreatorOfProject)
       .map(actionSheetMenuOptionsFor(project:backing:userIsCreatorOfProject:))
@@ -245,14 +258,8 @@ public final class ManagePledgeViewModel:
       backing.skip(first: 1).mapConst(nil)
     )
 
-    self.rewardReceivedViewControllerViewIsHidden = Signal.combineLatest(
-      projectAndReward,
-      backing,
-      userIsCreatorOfProject
-    )
-    .map { ($0.1, $1, $2) }
-    .map { reward, backing, userIsCreatorOfProject in
-      reward.isNoReward || backing.status != .collected || userIsCreatorOfProject
+    self.rewardReceivedViewControllerViewIsHidden = projectAndReward.map { _, reward in
+      reward.estimatedDeliveryOn == nil
     }
 
     self.showSuccessBannerWithMessage = self.pledgeViewControllerDidUpdatePledgeWithMessageSignal
@@ -344,7 +351,7 @@ public final class ManagePledgeViewModel:
 
   public let configurePaymentMethodView: Signal<ManagePledgePaymentMethodViewData, Never>
   public let configurePledgeSummaryView: Signal<ManagePledgeSummaryViewData, Never>
-  public let configureRewardReceivedWithProject: Signal<Project, Never>
+  public let configureRewardReceivedWithData: Signal<ManageViewPledgeRewardReceivedViewData, Never>
   public let endRefreshing: Signal<Void, Never>
   public let goToCancelPledge: Signal<CancelPledgeViewData, Never>
   public let goToChangePaymentMethod: Signal<(Project, Reward), Never>
@@ -511,6 +518,7 @@ private func projectBackingQuery(withBackingId backingId: String) -> NonEmptySet
           .name
         ]
       ),
+      .backerCompleted,
       .creditCard(
         .id +| [
           .expirationDate,

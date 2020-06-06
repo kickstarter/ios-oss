@@ -5,6 +5,7 @@ extension ManagePledgeViewBackingEnvelope {
       backing: .init(
         amount: Money(amount: 179.0, currency: .usd, symbol: "$"),
         backer: Backing.Backer(uid: 1_234, name: "Backer McGee"),
+        backerCompleted: false,
         bankAccount: nil,
         cancelable: true,
         creditCard: Backing.CreditCard(
