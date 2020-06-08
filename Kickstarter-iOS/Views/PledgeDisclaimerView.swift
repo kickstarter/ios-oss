@@ -11,6 +11,7 @@ final class PledgeDisclaimerView: UIView {
 
   private lazy var iconImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var leftColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var rightColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var textView: UITextView = { UITextView(frame: .zero) |> \.delegate .~ self }()
 
@@ -44,7 +45,10 @@ final class PledgeDisclaimerView: UIView {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
 
-    _ = ([self.leftColumnStackView, self.textView], self.rootStackView)
+    _ = ([self.leftColumnStackView, self.rightColumnStackView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.textView], self.rightColumnStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.iconImageView], self.leftColumnStackView)
@@ -77,6 +81,9 @@ final class PledgeDisclaimerView: UIView {
 
     _ = self.leftColumnStackView
       |> leftColumnStackViewStyle
+
+    _ = self.rightColumnStackView
+      |> rightColumnStackViewStyle
   }
 
   // MARK: - View model
@@ -143,6 +150,12 @@ private func iconImageViewStyle(_ isAccessibilityCategory: Bool) -> (ImageViewSt
 private let leftColumnStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.gridHalf(3))
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+}
+
+private let rightColumnStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.alignment .~ .center
     |> \.isLayoutMarginsRelativeArrangement .~ true
 }
 

@@ -24,6 +24,7 @@ extension ManagePledgeViewBackingEnvelope {
           backersCount: 55,
           description: "Description",
           displayName: "Display Name",
+          endsAt: 1_887_502_131,
           estimatedDeliveryOn: "2020-08-01",
           id: "UmV3YXJkLTE=",
           isMaxPledge: false,
@@ -31,7 +32,10 @@ extension ManagePledgeViewBackingEnvelope {
             .init(id: "432", name: "Item 1"),
             .init(id: "442", name: "Item 2")
           ],
-          name: "Reward name"
+          limit: 5,
+          name: "Reward name",
+          remainingQuantity: 10,
+          startsAt: 1_487_502_131
         ),
         sequence: 1,
         shippingAmount: Money(amount: 20.0, currency: .usd, symbol: "$"),
