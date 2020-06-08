@@ -206,8 +206,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.rewards .~ [.template]
 
+    let env = ManagePledgeViewBackingEnvelope.template
+      |> \.backing .~ (.template |> \.addOns .~ nil)
+
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchManagePledgeViewBackingResult: .success(env),
       fetchProjectResponse: project
     )
 
@@ -228,8 +231,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
     let project = Project.template
 
+    let env = ManagePledgeViewBackingEnvelope.template
+      |> \.backing .~ (.template |> \.addOns .~ nil)
+
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchManagePledgeViewBackingResult: .success(env),
       fetchProjectResponse: project
     )
 
@@ -879,6 +885,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.cosmicSurgery
 
     let envelope = ManagePledgeViewBackingEnvelope.template
+      |> \.backing .~ (.template |> \.addOns .~ nil)
 
     // Pledge amount 25
     let initialPledgeViewSummaryData = ManagePledgeSummaryViewData(
@@ -924,9 +931,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
       paymentType: .creditCard
     )
 
-    let initialBackingEnvelope = ManagePledgeViewBackingEnvelope.template
+    let initialBackingEnvelope = envelope
       |> \.backing.amount.amount .~ 25
-    let updatedBackingEnvelope = ManagePledgeViewBackingEnvelope.template
+    let updatedBackingEnvelope = envelope
       |> \.backing.amount.amount .~ 50
 
     let mockService1 = MockService(
@@ -1070,8 +1077,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
       let project = Project.template
         |> \.rewards .~ [reward]
 
+      let env = ManagePledgeViewBackingEnvelope.template
+        |> \.backing .~ (.template |> \.addOns .~ nil)
+
       let successMockService = MockService(
-        fetchManagePledgeViewBackingResult: .success(.template),
+        fetchManagePledgeViewBackingResult: .success(env),
         fetchProjectResponse: project
       )
 
@@ -1164,8 +1174,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertValues(["Something went wrong, please try again."])
       self.loadPullToRefreshHeaderView.assertValueCount(1)
 
+      let env = ManagePledgeViewBackingEnvelope.template
+        |> \.backing .~ (.template |> \.addOns .~ nil)
+
       let successMockService = MockService(
-        fetchManagePledgeViewBackingResult: .success(.template),
+        fetchManagePledgeViewBackingResult: .success(env),
         fetchProjectResponse: .template
       )
 
@@ -1211,8 +1224,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let project = Project.template
       |> \.rewards .~ [reward]
 
+    let env = ManagePledgeViewBackingEnvelope.template
+      |> \.backing .~ (.template |> \.addOns .~ nil)
+
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchManagePledgeViewBackingResult: .success(env),
       fetchProjectResponse: project
     )
 
@@ -1384,8 +1400,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ .template
       |> Project.lens.rewards .~ [reward]
 
+    let env = ManagePledgeViewBackingEnvelope.template
+      |> \.backing .~ (.template |> \.addOns .~ nil)
+
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchManagePledgeViewBackingResult: .success(env),
       fetchProjectResponse: project
     )
 
