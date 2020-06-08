@@ -11,6 +11,7 @@ final class Reward_ManagePledgeViewTests: XCTestCase {
     }
 
     let dateFormatter = DateFormatter()
+    dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
     dateFormatter.dateFormat = "yyyy-MM-DD"
 
     let v1Reward = Reward.addOnReward(
@@ -27,7 +28,7 @@ final class Reward_ManagePledgeViewTests: XCTestCase {
     XCTAssertEqual(v1Reward?.convertedMinimum, 239.0)
     XCTAssertEqual(v1Reward?.description, "Description")
     XCTAssertEqual(v1Reward?.endsAt, 1_887_502_131)
-    XCTAssertEqual(v1Reward?.estimatedDeliveryOn, 1_577_865_600.0)
+    XCTAssertEqual(v1Reward?.estimatedDeliveryOn, 1_577_836_800.0)
     XCTAssertEqual(v1Reward?.id, 1)
     XCTAssertEqual(v1Reward?.limit, 5)
     XCTAssertEqual(v1Reward?.minimum, 159.0)
