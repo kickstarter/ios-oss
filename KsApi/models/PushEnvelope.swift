@@ -5,6 +5,7 @@ import Runes
 public struct PushEnvelope {
   public let activity: Activity?
   public let aps: ApsEnvelope
+  public let erroredPledge: ErroredPledge?
   public let forCreator: Bool?
   public let message: Message?
   public let project: Project?
@@ -23,6 +24,10 @@ public struct PushEnvelope {
 
   public struct ApsEnvelope {
     public let alert: String
+  }
+
+  public struct ErroredPledge {
+    public let projectId: Int
   }
 
   public struct Message {
@@ -54,8 +59,10 @@ extension PushEnvelope: Argo.Decodable {
     let tmp = curry(PushEnvelope.init)
       <^> json <|? "activity"
       <*> json <| "aps"
-      <*> json <|? "for_creator"
+      <*> json <|? "errored_pledge"
+
     return tmp
+      <*> json <|? "for_creator"
       <*> json <|? "message"
       <*> json <|? "project"
       <*> json <|? "survey"
@@ -81,6 +88,13 @@ extension PushEnvelope.ApsEnvelope: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<PushEnvelope.ApsEnvelope> {
     return curry(PushEnvelope.ApsEnvelope.init)
       <^> json <| "alert"
+  }
+}
+
+extension PushEnvelope.ErroredPledge: Argo.Decodable {
+  public static func decode(_ json: JSON) -> Decoded<PushEnvelope.ErroredPledge> {
+    return curry(PushEnvelope.ErroredPledge.init)
+      <^> json <| "project_id"
   }
 }
 

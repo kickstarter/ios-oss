@@ -9,7 +9,7 @@ import ReactiveSwift
 import XCTest
 
 final class LoginToutViewModelTests: TestCase {
-  fileprivate let vm: LoginToutViewModelType = LoginToutViewModel()
+  fileprivate var vm: LoginToutViewModelType!
 
   fileprivate let appleButtonHidden = TestObserver<Bool, Never>()
   fileprivate let attemptAppleLogin = TestObserver<(), Never>()
@@ -30,6 +30,8 @@ final class LoginToutViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
+
+    self.vm = LoginToutViewModel()
 
     self.vm.outputs.appleButtonHidden.observe(self.appleButtonHidden.observer)
     self.vm.outputs.attemptAppleLogin.observe(self.attemptAppleLogin.observer)
@@ -221,6 +223,12 @@ final class LoginToutViewModelTests: TestCase {
     )
 
     self.vm.inputs.environmentLoggedIn()
+
+    self.postNotification.assertDidNotEmitValue()
+
+    self.scheduler.advance()
+
+    // Notifications are posted on the next run loop
     XCTAssertEqual(self.postNotification.values.first?.0, .ksr_sessionStarted, "Login notification posted.")
     XCTAssertEqual(
       self.postNotification.values.first?.1, .ksr_showNotificationsDialog,

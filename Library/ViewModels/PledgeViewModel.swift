@@ -51,6 +51,7 @@ public protocol PledgeViewModelInputs {
 public protocol PledgeViewModelOutputs {
   var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
+  var configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
@@ -128,6 +129,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .takePairWhen(pledgeTotal)
     .map(unpack)
     .map { project, confirmationLabelHidden, total in (project, total, confirmationLabelHidden) }
+
+    self.configurePledgeAmountSummaryViewControllerWithData = project
+      .map(pledgeAmountSummaryViewData)
+      .skipNil()
 
     let configurePaymentMethodsViewController = Signal.merge(
       initialData,
@@ -568,9 +573,24 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.popToRootViewController = self.notifyDelegateUpdatePledgeDidSucceedWithMessage.ignoreValues()
 
-    self.configurePledgeViewCTAContainerView =
-      Signal.combineLatest(isLoggedIn, isEnabled, context)
-        .map { ($0.0, $0.1, $0.2) }
+    let willRetryPaymentMethod = Signal.combineLatest(
+      context,
+      project,
+      selectedPaymentSourceId
+    )
+    .map { context, project, selectedPaymentSourceId -> Bool in
+      context == .fixPaymentMethod
+        && project.personalization.backing?.paymentSource?.id == selectedPaymentSourceId
+    }
+    .skipRepeats()
+
+    self.configurePledgeViewCTAContainerView = Signal.combineLatest(
+      isLoggedIn,
+      isEnabled,
+      context,
+      willRetryPaymentMethod
+    )
+    .map { $0 as PledgeViewCTAContainerViewData }
 
     self.title = context.map { $0.title }
     let contextAndProjectAndPledgeAmount = Signal.combineLatest(context, project, pledgeAmount)
@@ -625,6 +645,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           reward: reward,
           checkoutData: checkoutData,
           refTag: refTag
+        )
+      }
+
+    Signal.combineLatest(project, updateBackingData, context)
+      .takeWhen(updateButtonTapped)
+      .observeValues { project, data, context in
+        AppEnvironment.current.koala.trackPledgeSubmitButtonClicked(
+          project: project,
+          reward: data.reward,
+          context: TrackingHelpers.pledgeContext(for: context),
+          refTag: nil
         )
       }
   }
@@ -726,8 +757,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   // MARK: - Outputs
 
   public let beginSCAFlowWithClientSecret: Signal<String, Never>
-  public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
+  public let configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never>
+  public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
   public let configureWithData: Signal<(project: Project, reward: Reward), Never>
@@ -813,7 +845,13 @@ private func paymentMethodValid(
     return true
   }
 
-  return backedPaymentSourceId != paymentSourceId
+  if project.personalization.backing?.status == .errored {
+    return true
+  } else if backedPaymentSourceId != paymentSourceId {
+    return true
+  }
+
+  return false
 }
 
 private func allValuesChangedAndValid(
@@ -830,6 +868,19 @@ private func allValuesChangedAndValid(
 }
 
 // MARK: - Helper Functions
+
+private func pledgeAmountSummaryViewData(with project: Project) -> PledgeAmountSummaryViewData? {
+  guard let backing = project.personalization.backing else { return nil }
+
+  return .init(
+    projectCountry: project.country,
+    pledgeAmount: backing.amount,
+    pledgedOn: backing.pledgedAt,
+    shippingAmount: backing.shippingAmount.flatMap(Double.init),
+    locationName: backing.locationName,
+    omitUSCurrencyCode: project.stats.omitUSCurrencyCode
+  )
+}
 
 private func checkoutPropertiesData(
   from createBackingData: CreateBackingData,
@@ -852,8 +903,8 @@ private func checkoutPropertiesData(
   let rewardId = createBackingData.reward.id
   let estimatedDelivery = createBackingData.reward.estimatedDeliveryOn
   let paymentType = isApplePay
-    ? Backing.PaymentType.applePay.rawValue
-    : Backing.PaymentType.creditCard.rawValue
+    ? PaymentType.applePay.rawValue
+    : PaymentType.creditCard.rawValue
   let shippingEnabled = createBackingData.reward.shipping.enabled
   let shippingAmount = createBackingData.shippingRule?.cost
   let rewardTitle = createBackingData.reward.title
@@ -887,8 +938,8 @@ private func optimizelyCheckoutEventTags(
     .rounded()
 
   let paymentType = isApplePay
-    ? Backing.PaymentType.applePay.rawValue
-    : Backing.PaymentType.creditCard.rawValue
+    ? PaymentType.applePay.rawValue
+    : PaymentType.creditCard.rawValue
 
   return [
     "checkout_amount": pledgeTotal,

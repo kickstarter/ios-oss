@@ -5,6 +5,7 @@ import UIKit
 
 internal final class ActivitiesDataSource: ValueCellDataSource {
   internal enum Section: Int {
+    case erroredBackings
     case surveys
     case facebookConnect
     case findFriends
@@ -37,6 +38,18 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     self.clearValues(section: Section.findFriends.rawValue)
 
     return [IndexPath(row: 0, section: Section.findFriends.rawValue)]
+  }
+
+  internal func load(erroredBackings: [GraphBacking]) {
+    self.clearValues(section: Section.erroredBackings.rawValue)
+
+    guard !erroredBackings.isEmpty else { return }
+
+    self.set(
+      values: [erroredBackings],
+      cellClass: ActivityErroredBackingsCell.self,
+      inSection: Section.erroredBackings.rawValue
+    )
   }
 
   internal func load(surveys: [SurveyResponse]) {
@@ -74,6 +87,8 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
+    case let (cell as ActivityErroredBackingsCell, value as [GraphBacking]):
+      cell.configureWith(value: value)
     case let (cell as ActivityUpdateCell, activity as Activity):
       cell.configureWith(value: activity)
     case let (cell as ActivityFriendBackingCell, activity as Activity):

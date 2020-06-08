@@ -86,6 +86,8 @@
 
     fileprivate let publishUpdateError: ErrorEnvelope?
 
+    fileprivate let fetchManagePledgeViewBackingResult: Result<ManagePledgeViewBackingEnvelope, GraphError>?
+
     fileprivate let fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>?
     fileprivate let fetchMessageThreadsResponse: [MessageThread]
 
@@ -249,6 +251,7 @@
       removeAttachmentResponse: UpdateDraft.Image? = nil,
       removeAttachmentError: ErrorEnvelope? = nil,
       publishUpdateError: ErrorEnvelope? = nil,
+      fetchManagePledgeViewBackingResult: Result<ManagePledgeViewBackingEnvelope, GraphError>? = nil,
       fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
       fetchMessageThreadsResponse: [MessageThread]? = nil,
       fetchProjectResponse: Project? = nil,
@@ -396,6 +399,8 @@
       self.removeAttachmentError = removeAttachmentError
 
       self.publishUpdateError = publishUpdateError
+
+      self.fetchManagePledgeViewBackingResult = fetchManagePledgeViewBackingResult
 
       self.fetchMessageThreadResult = fetchMessageThreadResult
 
@@ -730,8 +735,12 @@
       if let error = fetchGraphUserBackingsError {
         return SignalProducer(error: error)
       }
-      let response = self.fetchGraphUserBackingsResponse ??
-        UserEnvelope<GraphBackingEnvelope>(me: GraphBackingEnvelope.template)
+      let backings = GraphBackingEnvelope.GraphBackingConnection(nodes: [])
+      let emptyEnvelope = GraphBackingEnvelope.template
+        |> \.backings .~ backings
+      let emptyResponse = UserEnvelope<GraphBackingEnvelope>(me: emptyEnvelope)
+
+      let response = self.fetchGraphUserBackingsResponse ?? emptyResponse
       return SignalProducer(value: response)
     }
 
@@ -832,6 +841,11 @@
       )
 
       return SignalProducer(value: envelope)
+    }
+
+    func fetchManagePledgeViewBacking(query _: NonEmptySet<Query>)
+      -> SignalProducer<ManagePledgeViewBackingEnvelope, GraphError> {
+      return producer(for: self.fetchManagePledgeViewBackingResult)
     }
 
     internal func fetchMessageThread(messageThreadId _: Int)
@@ -1464,6 +1478,7 @@
             removeAttachmentResponse: $1.removeAttachmentResponse,
             removeAttachmentError: $1.removeAttachmentError,
             publishUpdateError: $1.publishUpdateError,
+            fetchManagePledgeViewBackingResult: $1.fetchManagePledgeViewBackingResult,
             fetchMessageThreadResult: $1.fetchMessageThreadResult,
             fetchMessageThreadsResponse: $1.fetchMessageThreadsResponse,
             fetchProjectResponse: $1.fetchProjectResponse,

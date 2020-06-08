@@ -25,7 +25,7 @@ final class PledgeViewControllerTests: TestCase {
     ]))
     let mockService = MockService(fetchGraphCreditCardsResponse: userEnvelope)
     let project = Project.template
-      |> \.availableCardTypes .~ [GraphUserCreditCard.CreditCardType.discover.rawValue]
+      |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: User.template, language: language) {
@@ -33,6 +33,39 @@ final class PledgeViewControllerTests: TestCase {
         controller.configureWith(project: project, reward: .template, refTag: nil, context: .pledge)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_200
+
+        self.scheduler.advance(by: .seconds(1))
+
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testView_PledgeContext_FixPaymentMethod_ErroredCard() {
+    let userEnvelope = UserEnvelope(me: GraphUserCreditCard.withCards([
+      GraphUserCreditCard.visa,
+      GraphUserCreditCard.masterCard
+    ]))
+    let mockService = MockService(fetchGraphCreditCardsResponse: userEnvelope)
+    let project = Project.template
+      |> Project.lens.state .~ .successful
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.visa
+          |> Backing.lens.status .~ .errored
+          |> Backing.lens.reward .~ Reward.noReward
+          |> Backing.lens.rewardId .~ Reward.noReward.id
+          |> Backing.lens.shippingAmount .~ 5
+          |> Backing.lens.amount .~ 700.0
+      )
+
+    combos([Language.en], [Device.phone4_7inch]).forEach { language, device in
+      withEnvironment(apiService: mockService, currentUser: User.template, language: language) {
+        let controller = PledgeViewController.instantiate()
+        controller.configureWith(project: project, reward: .template, refTag: nil, context: .pledge)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 800
 
         self.scheduler.advance(by: .seconds(1))
 
@@ -240,7 +273,7 @@ final class PledgeViewControllerTests: TestCase {
         |> Backing.lens.paymentSource .~
         (.template |> \.id .~ "123")
       )
-      |> \.availableCardTypes .~ [GraphUserCreditCard.CreditCardType.discover.rawValue]
+      |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: User.template, language: language) {

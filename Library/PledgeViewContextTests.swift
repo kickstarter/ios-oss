@@ -2,6 +2,22 @@
 import XCTest
 
 final class PledgeViewContextTests: TestCase {
+  func testFixPaymentMethod() {
+    let context = PledgeViewContext.fixPaymentMethod
+
+    XCTAssertTrue(context.confirmationLabelHidden)
+    XCTAssertTrue(context.continueViewHidden)
+    XCTAssertTrue(context.descriptionViewHidden)
+    XCTAssertTrue(context.isUpdating)
+    XCTAssertFalse(context.isCreating)
+    XCTAssertFalse(context.paymentMethodsViewHidden)
+    XCTAssertTrue(context.pledgeAmountViewHidden)
+    XCTAssertFalse(context.pledgeAmountSummaryViewHidden)
+    XCTAssertTrue(context.sectionSeparatorsHidden)
+    XCTAssertEqual(context.submitButtonTitle, "Confirm")
+    XCTAssertEqual(context.title, "Fix payment method")
+  }
+
   func testPledge() {
     let context = PledgeViewContext.pledge
 

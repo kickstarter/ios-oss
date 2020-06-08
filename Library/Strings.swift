@@ -3294,7 +3294,7 @@ Haz clic para volver a intentarlo."
    - **en**: "Fix payment method"
    - **de**: "Zahlungsmethode ändern"
    - **es**: "Corregir el método de pago"
-   - **fr**: "Correction du moyen de paiement"
+   - **fr**: "Fix payment method"
    - **ja**: "お支払い方法を修正"
   */
   public static func Fix_payment_method() -> String {

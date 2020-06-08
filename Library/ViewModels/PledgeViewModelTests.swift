@@ -25,6 +25,7 @@ final class PledgeViewModelTests: TestCase {
   private let configurePledgeViewCTAContainerViewIsLoggedIn = TestObserver<Bool, Never>()
   private let configurePledgeViewCTAContainerViewIsEnabled = TestObserver<Bool, Never>()
   private let configurePledgeViewCTAContainerViewContext = TestObserver<PledgeViewContext, Never>()
+  private let configurePledgeViewCTAContainerViewWillRetryPaymentMethod = TestObserver<Bool, Never>()
 
   private let configureStripeIntegrationMerchantId = TestObserver<String, Never>()
   private let configureStripeIntegrationPublishableKey = TestObserver<String, Never>()
@@ -83,6 +84,8 @@ final class PledgeViewModelTests: TestCase {
       .observe(self.configurePledgeViewCTAContainerViewIsEnabled.observer)
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.2 }
       .observe(self.configurePledgeViewCTAContainerViewContext.observer)
+    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.3 }
+      .observe(self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.observer)
 
     self.vm.outputs.configureSummaryViewControllerWithData.map(third)
       .observe(self.configureSummaryViewControllerWithDataConfirmationLabelHidden.observer)
@@ -373,6 +376,72 @@ final class PledgeViewModelTests: TestCase {
       self.pledgeAmountSummaryViewHidden.assertValues([false])
       self.sectionSeparatorsHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([true])
+
+      let pledgeAmountData: PledgeAmountData = (amount: 90, min: 10.00, max: 10_000, isValid: true)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 90])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project])
+
+      self.vm.inputs.shippingRuleSelected(shippingRule)
+
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 90, 100])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project, project])
+    }
+  }
+
+  func testFixPaymentMethodContext() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let shippingRule = ShippingRule.template
+        |> ShippingRule.lens.id .~ 123
+        |> ShippingRule.lens.cost .~ 10.0
+      let backing = Backing.template
+        |> Backing.lens.amount .~ 100
+        |> Backing.lens.locationId .~ .some(123)
+        |> Backing.lens.status .~ .errored
+      let project = Project.template
+        |> Project.lens.personalization.backing .~ backing
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.minimum .~ 10.00
+
+      self.vm.inputs.configureWith(
+        project: project, reward: reward, refTag: nil, context: .fixPaymentMethod
+      )
+      self.vm.inputs.viewDidLoad()
+
+      self.title.assertValues(["Fix payment method"])
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
+      self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
+      self.configurePaymentMethodsViewControllerWithContext.assertValues([.fixPaymentMethod])
+
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10.00])
+
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
+
+      self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false])
+
+      self.descriptionViewHidden.assertValues([true])
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false])
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.pledgeAmountViewHidden.assertValues([true])
+      self.pledgeAmountSummaryViewHidden.assertValues([false])
+      self.sectionSeparatorsHidden.assertValues([true])
+      self.shippingLocationViewHidden.assertValues([true])
+
+      self.vm.inputs.creditCardSelected(with: backing.paymentSource?.id ?? "")
+
+      self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false, true])
 
       let pledgeAmountData: PledgeAmountData = (amount: 90, min: 10.00, max: 10_000, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
@@ -3841,5 +3910,36 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual(1, props?["project_pid"] as? Int)
 
     XCTAssertEqual("discovery", props?["session_ref_tag"] as? String)
+  }
+
+  func testTrackingEvents_PledgeButtonSubmit_ContextIsFixPayment() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let backing = Backing.template
+        |> Backing.lens.amount .~ 100
+        |> Backing.lens.locationId .~ .some(123)
+        |> Backing.lens.status .~ .errored
+      let project = Project.template
+        |> Project.lens.personalization.backing .~ backing
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.minimum .~ 10.00
+
+      self.vm.inputs.configureWith(
+        project: project, reward: reward, refTag: nil, context: .fixPaymentMethod
+      )
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.creditCardSelected(with: "12345")
+
+      XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+
+      self.vm.inputs.submitButtonTapped()
+
+      XCTAssertEqual(
+        ["Checkout Payment Page Viewed", "Update Pledge Button Clicked", "Pledge Submit Button Clicked"],
+        self.trackingClient.events
+      )
+    }
   }
 }

@@ -195,6 +195,7 @@
 "Find_projects_youll_love_in_art_design_film" = "Découvrez des projets que vous allez adorer : art, design, cinéma, jeux, musique et plus encore. L'activité des projets que vous soutenez s'affichera ici.";
 "First_created" = "Premier projet créé";
 "Fix" = "Corriger";
+"Fix_payment_method" = "Fix payment method";
 "Fix_your_payment_method" = "Corriger votre moyen de paiement";
 "Follow_friend_name" = "Suivre %{friend_name}";
 "Follow_friends" = "Suivre vos amis";
@@ -362,6 +363,7 @@
 "Password_visibility" = "Visibilité du mot de passe";
 "Passwords_matching_message" = "Le nouveau mot de passe doit être identique.";
 "Past_live_stream" = "Diffusion en direct passée";
+"Payment_failure" = "Échec du paiement";
 "Payment_method" = "Moyen de paiement ";
 "Payment_method_was_successfully_charged" = "Le moyen de paiement a bien été débité.";
 "Payment_methods" = "Moyens de paiement ";
@@ -431,6 +433,7 @@
 "Request_my_personal_data" = "Demander mes données personnelles";
 "Resend_verification_email" = "Renvoyer l'e-mail de vérification";
 "Retry" = "Réessayer";
+"Retry_or_select_another_method" = "Veuillez réessayer ou choisir un autre moyen de paiement.";
 "Reward_Surveys.few" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.many" = "%{reward_survey_count} questionnaires";
 "Reward_Surveys.one" = "Questionnaire";
@@ -596,7 +599,9 @@
 "View_your_rewards" = "Afficher mes récompenses";
 "Watch_live" = "Regarder en direct";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "Impossible de traiter cet engagement en raison d'un problème survenu au niveau du moyen de paiement du contributeur.";
+"We_cant_process_your_pledge" = "Impossible de traiter votre engagement.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "Impossible de traiter votre engagement. Veuillez mettre à jour votre moyen de paiement.";
+"We_cant_process_your_pledge_for" = "Impossible de traiter votre engagement pour :";
 "We_collected_the_backers_pledge_for_this_project" = "L'engagement de ce contributeur a été débité.";
 "We_collected_your_pledge_for_this_project" = "Votre engagement a été débité.";
 "We_couldnt_find_anything_for_search_term" = "Pas de résultats pour « %{search_term} ».";

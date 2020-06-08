@@ -271,6 +271,95 @@ final class RootViewModelTests: TestCase {
     }
   }
 
+  func testSetBadgeValueAtIndex_CurrentUserUpdated_SessionEnded_IncludesErroredPledges() {
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = 0
+
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    withEnvironment(application: mockApplication) {
+      self.vm.inputs.viewDidLoad()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+    }
+
+    let user = .template
+      |> User.lens.unseenActivityCount .~ 50
+      |> User.lens.erroredBackingsCount .~ 4
+
+    withEnvironment(application: mockApplication) {
+      AppEnvironment.login(.init(accessToken: "deadbeef", user: user))
+      self.vm.inputs.currentUserUpdated()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil, "54"])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+
+      AppEnvironment.logout()
+
+      self.vm.inputs.userSessionEnded()
+
+      self.setBadgeValueAtIndexValue.assertValues([nil, "54", nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+    }
+  }
+
+  func testClearBadgeValueOnActivitiesTabSelected_IncludesErroredPledges() {
+    let initialActivitiesCount = 100
+
+    let mockApplication = MockApplication()
+    mockApplication.applicationIconBadgeNumber = initialActivitiesCount
+
+    self.updateUserInEnvironment.assertValues([])
+    self.setBadgeValueAtIndexValue.assertValues([])
+    self.setBadgeValueAtIndexIndex.assertValues([])
+
+    let mockService = MockService(
+      clearUserUnseenActivityResult: Result.success(.init(activityIndicatorCount: 0))
+    )
+
+    let user = User.template
+      |> User.lens.unseenActivityCount .~ initialActivitiesCount
+      |> User.lens.erroredBackingsCount .~ 9
+
+    withEnvironment(apiService: mockService, application: mockApplication, currentUser: user) {
+      self.vm.inputs.viewDidLoad()
+
+      self.updateUserInEnvironment.assertValues([])
+      self.setBadgeValueAtIndexValue.assertValues(["99+"])
+      self.setBadgeValueAtIndexIndex.assertValues([1])
+
+      self.vm.inputs.didSelect(index: 1)
+
+      self.updateUserInEnvironment.assertValues([])
+      self.setBadgeValueAtIndexValue.assertValues(["99+", "9"])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(self.updateUserInEnvironment.values.map { $0.id }, [user.id])
+      self.setBadgeValueAtIndexValue.assertValues(["99+", "9"])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1])
+    }
+
+    let userAddressedErroredPledges = User.template
+      |> User.lens.unseenActivityCount .~ 0
+      |> User.lens.erroredBackingsCount .~ 0
+
+    withEnvironment(
+      apiService: mockService,
+      application: mockApplication,
+      currentUser: userAddressedErroredPledges
+    ) {
+      self.vm.inputs.currentUserUpdated()
+
+      XCTAssertEqual(self.updateUserInEnvironment.values.map { $0.id }, [user.id])
+      self.setBadgeValueAtIndexValue.assertValues(["99+", "9", nil])
+      self.setBadgeValueAtIndexIndex.assertValues([1, 1, 1])
+    }
+  }
+
   func testSetViewControllers() {
     let viewControllerNames = TestObserver<[String], Never>()
     vm.outputs.setViewControllers.map(extractRootNames)

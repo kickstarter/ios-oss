@@ -8,10 +8,12 @@ final class GraphBackingTests: XCTestCase {
       "backings": {
         "nodes": [
           {
+            "id": "backing-id",
             "errorReason": "no_reason",
             "status": "errored",
             "project": {
-              "id": "UHJvamVjdC0yMDQ4MTExNDEw",
+              "finalCollectionDate": "2020-04-08T15:15:05Z",
+              "pid": 65,
               "name": "Cool project",
               "slug": "/cool-project"
             }
@@ -20,6 +22,7 @@ final class GraphBackingTests: XCTestCase {
       }
     }
     """
+
     let data = Data(jsonString.utf8)
 
     do {
@@ -29,12 +32,14 @@ final class GraphBackingTests: XCTestCase {
 
       let backing = envelope.backings.nodes.first
 
+      XCTAssertEqual("backing-id", backing?.id)
       XCTAssertEqual("no_reason", backing?.errorReason)
       XCTAssertEqual(GraphBacking.Status.errored, backing?.status)
 
       let project = backing?.project
 
-      XCTAssertEqual("UHJvamVjdC0yMDQ4MTExNDEw", project?.id)
+      XCTAssertEqual("2020-04-08T15:15:05Z", project?.finalCollectionDate)
+      XCTAssertEqual(65, project?.pid)
       XCTAssertEqual("Cool project", project?.name)
       XCTAssertEqual("/cool-project", project?.slug)
     } catch {

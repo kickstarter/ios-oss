@@ -14,13 +14,15 @@ final class PledgePaymentMethodsDataSourceTests: XCTestCase {
         card: GraphUserCreditCard.amex,
         isEnabled: true,
         isSelected: true,
-        projectCountry: "Country 1"
+        projectCountry: "Country 1",
+        isErroredPaymentMethod: false
       ),
       (
         card: GraphUserCreditCard.visa,
         isEnabled: false,
         isSelected: false,
-        projectCountry: "Country 2"
+        projectCountry: "Country 2",
+        isErroredPaymentMethod: false
       )
     ]
 

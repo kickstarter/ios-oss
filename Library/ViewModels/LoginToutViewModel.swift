@@ -180,6 +180,8 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
           userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login]
         )
       ))
+      // Post notifications on the next run loop to avoid race condition with VCs being deallocated.
+      .ksr_delay(.nanoseconds(0), on: AppEnvironment.current.scheduler)
 
     self.dismissViewController = self.viewIsPresentedProperty.signal
       .filter(isTrue)
@@ -426,7 +428,7 @@ private func statusString(_ forStatus: LoginIntent) -> String {
     return Strings.Please_log_in_or_sign_up_to_back_this_project()
   case .messageCreator:
     return Strings.Please_log_in_or_sign_up_to_message_this_creator()
-  case .discoveryOnboarding, .generic, .activity, .loginTab:
+  case .discoveryOnboarding, .generic, .activity, .loginTab, .erroredPledge:
     return Strings.Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place()
   }
 }

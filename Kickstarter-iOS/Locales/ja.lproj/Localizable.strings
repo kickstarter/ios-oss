@@ -195,6 +195,7 @@
 "Find_projects_youll_love_in_art_design_film" = "お気に入りを見つけて、クリエイティブなプロジェクトに生命を吹き込もう。";
 "First_created" = "1つめのプロジェクト";
 "Fix" = "修正する";
+"Fix_payment_method" = "お支払い方法を修正";
 "Fix_your_payment_method" = "お支払い方法を修正";
 "Follow_friend_name" = "%{friend_name} をフォロー";
 "Follow_friends" = "友達をフォロー";
@@ -362,6 +363,7 @@
 "Password_visibility" = "パスワードの表示/非表示";
 "Passwords_matching_message" = "新しいパスワードが一致しません。";
 "Past_live_stream" = "過去のプロジェクト";
+"Payment_failure" = "お支払い手続きに失敗しました";
 "Payment_method" = "支払方法";
 "Payment_method_was_successfully_charged" = "支払い方法が登録されました。";
 "Payment_methods" = "お支払い方法";
@@ -431,6 +433,7 @@
 "Request_my_personal_data" = "自分の個人データをリクエストする";
 "Resend_verification_email" = "認証メールをもう一度送信";
 "Retry" = "もう一度試す";
+"Retry_or_select_another_method" = "再試行するか別のお支払い方法を選択してください。";
 "Reward_Surveys.few" = "%{reward_survey_count} リワードのサーベイ";
 "Reward_Surveys.many" = "%{reward_survey_count} リワードのサーベイ";
 "Reward_Surveys.one" = "リワードサーベイ";
