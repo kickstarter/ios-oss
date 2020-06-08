@@ -1,12 +1,25 @@
 import Foundation
 
 public extension Reward {
-  static func reward(
+  /**
+   Create an add-on reward from a ManagePledgeViewBackingEnvelope.Backing.Reward
+
+    - parameter backingReward: The ManagePledgeViewBackingEnvelope.Backing.Reward data structure.
+    - parameter project: The associated Project model.
+    - parameter selectedAddOnQuantities: The selected quantity for this add-on.
+    - parameter dateFormatter: A DateFormatter configured with the format "yyyy-MM-DD".
+
+    - returns: A Reward.
+   */
+
+  static func addOnReward(
     from backingReward: ManagePledgeViewBackingEnvelope.Backing.Reward,
     project: Project,
     selectedAddOnQuantities: [String: Int],
-    dateFormatter: ISO8601DateFormatter
-  ) -> Reward {
+    dateFormatter: DateFormatter
+  ) -> Reward? {
+    guard let rewardId = decompose(id: backingReward.id) else { return nil }
+
     let estimatedDeliveryOn = backingReward.estimatedDeliveryOn
       .flatMap(dateFormatter.date(from:))?.timeIntervalSince1970
 
@@ -22,7 +35,7 @@ public extension Reward {
       description: backingReward.description,
       endsAt: backingReward.endsAt,
       estimatedDeliveryOn: estimatedDeliveryOn,
-      id: Int(backingReward.id) ?? -1,
+      id: rewardId,
       limit: backingReward.limit,
       minimum: backingReward.amount.amount,
       remaining: backingReward.remainingQuantity,
