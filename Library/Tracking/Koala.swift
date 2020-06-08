@@ -590,9 +590,13 @@ public final class Koala {
    - parameter location: the location context of the event
    */
 
-  public func trackProjectCardClicked(project: Project, params: DiscoveryParams, location: LocationContext) {
+  public func trackProjectCardClicked(project: Project,
+                                      params: DiscoveryParams,
+                                      location: LocationContext,
+                                      optimizelyProperties: [String: Any] = [:]) {
     let props = discoveryProperties(from: params)
       .withAllValuesFrom(projectProperties(from: project, loggedInUser: self.loggedInUser))
+      .withAllValuesFrom(optimizelyProperties)
 
     self.track(
       event: DataLakeWhiteListedEvent.projectCardClicked.rawValue,

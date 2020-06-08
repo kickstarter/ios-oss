@@ -31,7 +31,7 @@
 "Amounts_shown" = "表示されている金額は、おおよその換算金額ですのでご注意ください。プロジェクトが成功した場合、プレッジはプロジェクトをローンチした国の通貨で集められ、その換算額も表示されます。";
 "Any_payment_methods_you_saved_to_Kickstarter" = "Kickstarter に保存されたお支払い方法は、こちらに (安全に) リストアップされます。";
 "App_version" = "アプリ版";
-"Apple_ID" = "AppleID";
+"Apple_ID" = "Apple ID";
 "Are_you_sure" = "オフにしてもよろしいですか？";
 "Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name" = "本当に%{project_name}への%{amount}のプレッジを取り消しますか？";
 "Are_you_sure_you_wish_to_remove_this_card" = "このカードをお支払い方法から削除してもよろしいですか？";
@@ -230,6 +230,7 @@
 "Get_reminded_about_this_project" = "このプロジェクトについてリマインダーを希望しますか？";
 "Get_started" = "はじめよう";
 "Go_to_project_page" = "プロジェクトページを見る";
+"Goal_met" = "目標達成";
 "Got_it" = "完了";
 "Got_it_your_changes_have_been_saved" = "変更が保存されました。";
 "Got_it_your_survey_response_has_been_submitted" = "サーベイを送信しました！";
@@ -300,7 +301,7 @@
 "Make_a_pledge_without_a_reward" = "リワードなしでプレッジ";
 "Making_this_change" = "この変更によって、プロジェクトゴールとプレッジ額が選択された通貨で表示されます。";
 "Manage" = "プレッジ管理";
-"Manage_this_account" = "Manage this account in your AppleID settings.";
+"Manage_this_account" = "Apple ID の設定からこのアカウントを管理。";
 "Manage_your_pledge" = "プレッジを変更";
 "Manage_your_pledge_below" = "以下のプレッジを変更";
 "Manage_your_reward" = "リワードの管理";
@@ -389,6 +390,7 @@
 "Private_profile" = "プライベート設定のプロフィール";
 "Private_profile_more_info" = "プライベート設定のプロフィール詳細";
 "Private_profile_more_info_content" = "Kickstarter でのプロフィールはデフォルト設定ではプライベート (非公開) となっています。プロフィールを公開したい場合はこの設定をオフにしてください。";
+"Processing" = "アップロード中";
 "Project_Cancelled" = "プロジェクトが取り消されました。";
 "Project_Suspended" = "プロジェクトは停止されました。";
 "Project_activity" = "プロジェクトのアクティビティ";
@@ -497,6 +499,12 @@
 "Sign_up" = "サインアップ。";
 "Sign_up_newsletter" = "Projects We Love に登録して、私たち Kickstarter チームが選別した注目プロジェクトに関する情報を週に1度受け取りましょう。";
 "Signs_up_with_Email" = "Eメールでサインアップする。";
+"Social_friend_is_backer.few" = "%{friend_name} さんと他%{remaining_count} 人";
+"Social_friend_is_backer.many" = "%{friend_name} さんと他%{remaining_count} 人";
+"Social_friend_is_backer.one" = "%{friend_name} さんと他%{remaining_count} 人";
+"Social_friend_is_backer.other" = "%{friend_name} さんと他%{remaining_count} 人";
+"Social_friend_is_backer.two" = "%{friend_name} さんと他%{remaining_count} 人";
+"Social_friend_is_backer.zero" = "%{friend_name}さんがバッカーです";
 "Something_catch_your_eye" = "何か目にとまるものはありましたか？";
 "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "何らかのエラーにより、お支払い方法を削除できませんでした。もう一度お試しください。";
 "Something_went_wrong_please_try_again" = "なにかが間違っています。もう一度お試しください。";
@@ -648,6 +656,7 @@
 "Your_shipping_destination" = "配送地域";
 "Your_shipping_location" = "配送地域";
 "Youre_a_backer" = "バッカーになりました！";
+"Youre_a_backer_no_punctuation" = "バック中";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Facebookのメールアドレスで新しいアカウントを作成しようとしています。再度確認してください。";
 "Youre_all_set" = "完了です";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Facebook (%{email}) を通して接続されています。Kickstarter の認識情報を編集するには、このアカウント用にパスワードを作成してください。";

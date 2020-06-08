@@ -109,14 +109,6 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.updateCollectionViewConstraints()
   }
 
-  override func prepareForReuse() {
-    super.prepareForReuse()
-
-    self.tagsCollectionViewHeightConstraint?.constant = 0
-
-    self.clearFacepileImageViews()
-  }
-
   func configureWith(value: DiscoveryProjectCellRowValue) {
     self.viewModel.inputs.configure(with: value)
 
@@ -190,6 +182,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     _ = self.percentFundedLabel
       |> percentFundedLabelStyle
+      |> UIView.lens.contentCompressionResistancePriority(for: .horizontal) .~ .defaultLow
 
     _ = self.backersCountLabel
       |> backersCountLabelStyle
@@ -496,7 +489,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   }
 
   private func updateCollectionViewConstraints() {
-    self.layoutIfNeeded()
+    self.tagsCollectionView.layoutIfNeeded()
 
     self.tagsCollectionViewHeightConstraint?.constant = self.tagsCollectionView.contentSize.height
 
@@ -706,6 +699,7 @@ private let projectDetailsStackViewStyle: StackViewStyle = { stackView in
     |> \.alignment .~ .fill
     |> \.layoutMargins .~ .init(all: Styles.grid(3))
     |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.insetsLayoutMarginsFromSafeArea .~ false
 }
 
 private let saveButtonStyle: ButtonStyle = { button in
@@ -726,8 +720,5 @@ private let youreABackerLabelStyle: LabelStyle = { label in
     |> \.textColor .~ UIColor.white
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
-    |> \.text %~ { _ in localizedString(
-      key: "Youre_a_backer_no_punctuation",
-      defaultValue: "You're a backer"
-    ) }
+    |> \.text %~ { _ in Strings.Youre_a_backer_no_punctuation() }
 }

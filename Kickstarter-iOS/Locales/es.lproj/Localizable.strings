@@ -230,6 +230,7 @@
 "Get_reminded_about_this_project" = "¿Deseas recibir recordatorios sobre este proyecto?";
 "Get_started" = "¡Manos a la obra!";
 "Go_to_project_page" = "Ir a la página de proyecto";
+"Goal_met" = "Meta cumplida";
 "Got_it" = "¡Listo!";
 "Got_it_your_changes_have_been_saved" = "Listo. Se han guardado tus cambios.";
 "Got_it_your_survey_response_has_been_submitted" = "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario.";
@@ -389,6 +390,7 @@
 "Private_profile" = "Perfil privado";
 "Private_profile_more_info" = "Más información sobre el perfil privado";
 "Private_profile_more_info_content" = "Los perfiles de Kickstarter son privados por defecto. Para hacer que tu perfil sea público y visible para el mundo, desactiva esta opción.";
+"Processing" = "Procesando...";
 "Project_Cancelled" = "Proyecto cancelado.";
 "Project_Suspended" = "Proyecto suspendido.";
 "Project_activity" = "Actividad del proyecto";
@@ -497,6 +499,12 @@
 "Sign_up" = "Registrarse";
 "Sign_up_newsletter" = "Suscríbete a Nuestros favoritos para recibir una combinación semanal de proyectos destacados, seleccionados por el equipo de Kickstarter.";
 "Signs_up_with_Email" = "Registro con correo electrónico.";
+"Social_friend_is_backer.few" = "%{friend_name} y %{remaining_count} otros";
+"Social_friend_is_backer.many" = "%{friend_name} y %{remaining_count} otros";
+"Social_friend_is_backer.one" = "%{friend_name} y %{remaining_count} persona más";
+"Social_friend_is_backer.other" = "%{friend_name} y %{remaining_count} otros";
+"Social_friend_is_backer.two" = "%{friend_name} y %{remaining_count} otros";
+"Social_friend_is_backer.zero" = "%{friend_name} patrocina este proyecto";
 "Something_catch_your_eye" = "¿Algo que te haya llamado la atención?";
 "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "Hubo un error y no pudimos eliminar tu método de pago. Inténtalo de nuevo.";
 "Something_went_wrong_please_try_again" = "Ocurrió un error. Inténtalo nuevamente más tarde.";
@@ -646,6 +654,7 @@
 "Your_shipping_destination" = "Tu destino de envío";
 "Your_shipping_location" = "Tu ubicación de envío";
 "Youre_a_backer" = "¡Eres un patrocinador!";
+"Youre_a_backer_no_punctuation" = "Eres patrocinador";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Estás a punto de crear una nueva cuenta de Kickstarter usando el correo electrónico associado a tu cuenta de Facebook. Por favor confírmalo antes de proceder.";
 "Youre_all_set" = "Ya está todo listo";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Estás conectado a través de Facebook (%{email}). Crea una contraseña para esta cuenta para editar tus credenciales de Kickstarter.";

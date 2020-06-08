@@ -191,10 +191,13 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     self.projectTappedProperty.signal.skipNil().map { project in
       (project, recommendedParams)
     }.observeValues { project, params in
+      let optyProperties = optimizelyProperties() ?? [:]
+
       AppEnvironment.current.koala.trackProjectCardClicked(
         project: project,
         params: params,
-        location: .thanks
+        location: .thanks,
+        optimizelyProperties: optyProperties
       )
     }
 

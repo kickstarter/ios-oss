@@ -324,6 +324,15 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
         self.preferredBackgroundColor = backgroundColor
       }
+
+    self.viewModel.outputs.contentInset
+      .observeForUI()
+      .observeValues { [weak self] inset in
+        guard let self = self else { return }
+
+        _ = self.tableView
+          |> \.contentInset .~ inset
+      }
   }
 
   internal override func tableView(
