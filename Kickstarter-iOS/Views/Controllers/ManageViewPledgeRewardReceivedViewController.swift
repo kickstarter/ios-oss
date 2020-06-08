@@ -12,7 +12,7 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var toggleViewController: ToggleViewController = {
-    return ToggleViewController(nibName: nil, bundle: nil)
+    ToggleViewController(nibName: nil, bundle: nil)
   }()
 
   // MARK: - Lifecycle
@@ -35,7 +35,7 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
 
   private func configureViews() {
     _ = (self.rootStackView, self.view)
-     |> ksr_addSubviewToParent()
+      |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
     _ = ([self.titleLabel, self.toggleViewController.view], self.rootStackView)
@@ -92,12 +92,12 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] borderWidth in
         self?.view.layer.borderWidth = borderWidth
-    }
+      }
 
     self.viewModel.outputs.layoutMargins
       .observeForUI()
       .observeValues { [weak self] layoutMargins in
         self?.rootStackView.layoutMargins = layoutMargins
-    }
+      }
   }
 }

@@ -3,7 +3,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public struct ManageViewPledgeRewardReceivedViewData {
+public struct ManageViewPledgeRewardReceivedViewData: Equatable {
   public let project: Project
   public let backerCompleted: Bool
   public let estimatedDeliveryOn: TimeInterval
@@ -108,13 +108,12 @@ public class ManageViewPledgeRewardReceivedViewModel:
 }
 
 private func estimatedDeliveryAttributedText(with date: TimeInterval) -> NSAttributedString {
-  return NSAttributedString()
   let dateString = Format.date(
     secondsInUTC: date,
     template: DateFormatter.monthYear,
     timeZone: UTCTimeZone
   )
-  let string =  Strings.backing_info_estimated_delivery_date(delivery_date: dateString)
+  let string = Strings.backing_info_estimated_delivery_date(delivery_date: dateString)
 
   let font = UIFont.ksr_subhead()
 
@@ -124,7 +123,7 @@ private func estimatedDeliveryAttributedText(with date: TimeInterval) -> NSAttri
       foregroundColor: .ksr_text_dark_grey_500,
       attributes: [:],
       bolding: [string.replacingOccurrences(of: dateString, with: "")]
-  ))
+    ))
 
   attributedText.setAttributes(
     [

@@ -216,7 +216,7 @@ public final class ManagePledgeViewModel:
           estimatedDeliveryOn: latestRewardDeliveryDate,
           backingState: backing.status
         )
-    }
+      }
 
     let menuOptions = Signal.combineLatest(project, backing, userIsCreatorOfProject)
       .map(actionSheetMenuOptionsFor(project:backing:userIsCreatorOfProject:))
