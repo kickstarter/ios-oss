@@ -190,6 +190,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.pledgeDisclaimerView.rac.hidden = self.viewModel.outputs.pledgeDisclaimerViewHidden
     self.rewardReceivedViewController.view.rac.hidden =
       self.viewModel.outputs.rewardReceivedViewControllerViewIsHidden
 
