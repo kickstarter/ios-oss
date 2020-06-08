@@ -477,12 +477,15 @@ private func rewardsData(
     selectedAddOnQuantities[addOn.id] = quantity
   }
 
-  return addOns.map { addOn in
-    Reward.reward(
+  let dateFormatter = DateFormatter()
+  dateFormatter.dateFormat = "yyyy-MM-DD"
+
+  return addOns.compactMap { addOn in
+    Reward.addOnReward(
       from: addOn,
       project: project,
       selectedAddOnQuantities: selectedAddOnQuantities,
-      dateFormatter: ISO8601DateFormatter.cachedFormatter()
+      dateFormatter: dateFormatter
     )
   }
 }
