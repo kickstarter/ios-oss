@@ -50,17 +50,15 @@ private func rewardItemsData(
   return backingReward.items?.compactMap { item -> RewardsItem? in
     guard let id = Int(item.id) else { return nil }
 
-    // FIXME:
     return RewardsItem(
-      id: id,
-      // doesn't exist
+      id: 0, // not returned
       item: Item(
-        description: nil,
-        id: 0,
+        description: nil, // not returned
+        id: id,
         name: item.name,
         projectId: project.id
       ),
-      quantity: 0,
+      quantity: 0, // not needed
       rewardId: Int(backingReward.id) ?? -1
     )
   } ?? []
