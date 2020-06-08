@@ -23,6 +23,7 @@ internal class MockOptimizelyClient: OptimizelyClientType {
   internal func activate(experimentKey: String, userId: String, attributes: [String: Any?]?) throws
     -> String {
       self.activatePathCalled = true
+
       return try self.experiment(forKey: experimentKey, userId: userId, attributes: attributes)
     }
 

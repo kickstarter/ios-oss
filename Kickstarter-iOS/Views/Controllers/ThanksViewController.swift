@@ -32,6 +32,7 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     self.projectsTableView.register(nib: .DiscoveryPostcardCell)
     self.projectsTableView.register(nib: .ThanksCategoryCell)
+    self.projectsTableView.registerCellClass(DiscoveryProjectCardCell.self)
 
     self.projectsTableView.dataSource = self.dataSource
     self.projectsTableView.delegate = self
@@ -169,8 +170,12 @@ internal final class ThanksViewController: UIViewController, UITableViewDelegate
 
     self.viewModel.outputs.showRecommendations
       .observeForUI()
-      .observeValues { [weak self] projects, category in
-        self?.dataSource.loadData(projects: projects, category: category)
+      .observeValues { [weak self] projects, category, nativeProjectCardsVariant in
+        self?.dataSource.loadData(
+          projects: projects,
+          category: category,
+          nativeProjectCardsVariant: nativeProjectCardsVariant
+        )
         self?.projectsTableView.reloadData()
       }
 

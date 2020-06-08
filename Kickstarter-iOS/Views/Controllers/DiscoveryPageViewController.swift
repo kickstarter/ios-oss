@@ -23,7 +23,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate var emptyStatesController: EmptyStatesViewController?
   private lazy var headerLabel = { UILabel(frame: .zero) }()
   private var onboardingCompletedObserver: Any?
-  private var optimizelyConfiguredObserver: Any?
   internal var preferredBackgroundColor: UIColor?
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
@@ -40,6 +39,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.tableView.register(nib: Nib.DiscoveryPostcardCell)
     self.tableView.registerCellClass(DiscoveryEditorialCell.self)
     self.tableView.registerCellClass(PersonalizationCell.self)
+    self.tableView.registerCellClass(DiscoveryProjectCardCell.self)
 
     self.tableView.dataSource = self.dataSource
 
@@ -54,11 +54,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.onboardingCompletedObserver = NotificationCenter.default
       .addObserver(forName: .ksr_onboardingCompleted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.onboardingCompleted()
-      }
-
-    self.optimizelyConfiguredObserver = NotificationCenter.default
-      .addObserver(forName: .ksr_optimizelyClientConfigured, object: nil, queue: nil) { [weak self] _ in
-        self?.viewModel.inputs.optimizelyClientConfigured()
       }
 
     self.sessionStartedObserver = NotificationCenter.default
@@ -104,8 +99,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       self.sessionStartedObserver,
       self.currentEnvironmentChangedObserver,
       self.configUpdatedObserver,
-      self.onboardingCompletedObserver,
-      self.optimizelyConfiguredObserver
+      self.onboardingCompletedObserver
     ].forEach { $0.doIfSome(NotificationCenter.default.removeObserver) }
   }
 
@@ -136,8 +130,9 @@ internal final class DiscoveryPageViewController: UITableViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    _ = self
-      |> baseTableControllerStyle(estimatedRowHeight: 200.0)
+    _ = self.tableView
+      |> \.rowHeight .~ UITableView.automaticDimension
+      |> \.estimatedRowHeight .~ 200.0
 
     if let preferredBackgroundColor = self.preferredBackgroundColor {
       _ = self
@@ -198,8 +193,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
     self.viewModel.outputs.projectsLoaded
       .observeForUI()
-      .observeValues { [weak self] projects, params in
-        self?.dataSource.load(projects: projects, params: params)
+      .observeValues { [weak self] projects, params, variant in
+        self?.dataSource.load(projects: projects, params: params, projectCardVariant: variant)
         self?.tableView.reloadData()
         self?.updateProjectPlaylist(projects)
       }
@@ -315,6 +310,29 @@ internal final class DiscoveryPageViewController: UITableViewController {
 
         self?.present(nav, animated: true, completion: nil)
       }
+
+    self.viewModel.outputs.backgroundColor
+      .observeForUI()
+      .observeValues { [weak self] backgroundColor in
+        guard let self = self else { return }
+
+        _ = self.view
+          |> \.backgroundColor .~ backgroundColor
+
+        _ = self.tableView
+          |> \.backgroundColor .~ backgroundColor
+
+        self.preferredBackgroundColor = backgroundColor
+      }
+
+    self.viewModel.outputs.contentInset
+      .observeForUI()
+      .observeValues { [weak self] inset in
+        guard let self = self else { return }
+
+        _ = self.tableView
+          |> \.contentInset .~ inset
+      }
   }
 
   internal override func tableView(
@@ -335,6 +353,8 @@ internal final class DiscoveryPageViewController: UITableViewController {
     } else if let cell = cell as? DiscoveryEditorialCell {
       cell.delegate = self
     } else if let cell = cell as? PersonalizationCell {
+      cell.delegate = self
+    } else if let cell = cell as? DiscoveryProjectCardCell {
       cell.delegate = self
     }
 

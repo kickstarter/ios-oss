@@ -62,7 +62,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
       |> ignoresInvertColorsImageViewStyle
 
     _ = self.backerInfoContainerStackView
-      |> checkoutAdaptableStackViewStyle(
+      |> adaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory)
       |> backerInfoContainerStackViewStyle
 
@@ -76,7 +76,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
       |> rootStackViewStyle
 
     _ = self.totalAmountStackView
-      |> checkoutAdaptableStackViewStyle(
+      |> adaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
 

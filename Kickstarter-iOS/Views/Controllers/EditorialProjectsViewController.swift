@@ -194,6 +194,10 @@ public final class EditorialProjectsViewController: UIViewController {
   // MARK: - Layout
 
   private func configureSubviews() {
+    _ = (self.discoveryPageViewController.view, self.view)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
     _ = (self.headerView, self.view)
       |> ksr_addSubviewToParent()
 
@@ -210,10 +214,6 @@ public final class EditorialProjectsViewController: UIViewController {
 
     _ = ([self.editorialTitleLabel, self.editorialSubtitleLabel], self.editorialLabelStackView)
       |> ksr_addArrangedSubviewsToStackView()
-
-    _ = (self.discoveryPageViewController.view, self.view)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
 
     _ = (self.closeButton, self.view)
       |> ksr_addSubviewToParent()

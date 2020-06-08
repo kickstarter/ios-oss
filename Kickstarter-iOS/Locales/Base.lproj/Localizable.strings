@@ -31,7 +31,7 @@
 "Amounts_shown" = "The amounts shown are an approximate conversion. If the project is successful, your pledge will be collected in the native currency of the project, which is also displayed.";
 "Any_payment_methods_you_saved_to_Kickstarter" = "Any payment methods you've saved to Kickstarter are listed here (securely) for your convenience.";
 "App_version" = "App version";
-"Apple_ID" = "AppleID";
+"Apple_ID" = "Apple ID";
 "Are_you_sure" = "Are you sure?";
 "Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name" = "Are you sure you wish to cancel your %{amount} pledge to %{project_name}?";
 "Are_you_sure_you_wish_to_remove_this_card" = "Are you sure you wish to remove this card from your payment method options?";
@@ -231,6 +231,7 @@
 "Get_reminded_about_this_project" = "Get reminded about this project?";
 "Get_started" = "Get started";
 "Go_to_project_page" = "Go to project page";
+"Goal_met" = "Goal met";
 "Got_it" = "Got it";
 "Got_it_your_changes_have_been_saved" = "Got it! Your changes have been saved.";
 "Got_it_your_survey_response_has_been_submitted" = "Got it! Your survey response has been submitted.";
@@ -301,7 +302,7 @@
 "Make_a_pledge_without_a_reward" = "Make a pledge without a reward";
 "Making_this_change" = "Making this change will allow you to see project goal and pledge amounts converted to your chosen currency.";
 "Manage" = "Manage";
-"Manage_this_account" = "Manage this account in your AppleID settings.";
+"Manage_this_account" = "Manage this account in your Apple ID settings.";
 "Manage_your_pledge" = "Manage your pledge";
 "Manage_your_pledge_below" = "Manage your pledge below";
 "Manage_your_reward" = "Manage your reward";
@@ -391,6 +392,7 @@
 "Private_profile" = "Private profile";
 "Private_profile_more_info" = "Private profile more info";
 "Private_profile_more_info_content" = "Kickstarter profiles are private by default. To make your profile public and visible to the world, turn this off.";
+"Processing" = "Processing...";
 "Project_Cancelled" = "Project Cancelled.";
 "Project_Suspended" = "Project Suspended.";
 "Project_activity" = "Project activity";
@@ -500,6 +502,12 @@
 "Sign_up" = "Sign up";
 "Sign_up_newsletter" = "Sign up for Projects We Love to receive a weekly mix of noteworthy projects, handpicked by our team.";
 "Signs_up_with_Email" = "Signs up with Email.";
+"Social_friend_is_backer.few" = "%{friend_name} and %{remaining_count} others";
+"Social_friend_is_backer.many" = "%{friend_name} and %{remaining_count} others";
+"Social_friend_is_backer.one" = "%{friend_name} and %{remaining_count} other";
+"Social_friend_is_backer.other" = "%{friend_name} and %{remaining_count} others";
+"Social_friend_is_backer.two" = "%{friend_name} and %{remaining_count} others";
+"Social_friend_is_backer.zero" = "%{friend_name} is a backer";
 "Something_catch_your_eye" = "Something\ncatch your eye?";
 "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "Something went wrong and we were unable to remove your payment method, please try again.";
 "Something_went_wrong_please_try_again" = "Something went wrong, please try again.";
@@ -651,6 +659,7 @@
 "Your_shipping_destination" = "Your shipping destination";
 "Your_shipping_location" = "Your shipping location";
 "Youre_a_backer" = "You’re a backer!";
+"Youre_a_backer_no_punctuation" = "You're a backer";
 "Youre_about_to_create_a_new_Kickstarter_account" = "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.";
 "Youre_all_set" = "You’re all set";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials.";

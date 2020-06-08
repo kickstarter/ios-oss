@@ -83,21 +83,6 @@ public enum Layout {
   }
 }
 
-public func checkoutAdaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
-  return { (stackView: UIStackView) in
-    let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .leading : .center)
-    let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
-    let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fill)
-    let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
-
-    return stackView
-      |> \.alignment .~ alignment
-      |> \.axis .~ axis
-      |> \.distribution .~ distribution
-      |> \.spacing .~ spacing
-  }
-}
-
 public let checkoutBackgroundStyle: ViewStyle = { (view: UIView) in
   view
     |> \.backgroundColor .~ UIColor.ksr_grey_300
