@@ -43,6 +43,7 @@ public protocol ManagePledgeViewModelOutputs {
   var loadPullToRefreshHeaderView: Signal<(), Never> { get }
   var notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never> { get }
   var paymentMethodViewHidden: Signal<Bool, Never> { get }
+  var pledgeDetailsSectionLabelText: Signal<String, Never> { get }
   var pledgeDisclaimerViewHidden: Signal<Bool, Never> { get }
   var rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never> { get }
   var rightBarButtonItemHidden: Signal<Bool, Never> { get }
@@ -205,6 +206,12 @@ public final class ManagePledgeViewModel:
     .map(unpack)
     .map { _, rewards, userIsCreatorOfProject in
       rewards.map { $0.estimatedDeliveryOn }.allSatisfy(isNil) || userIsCreatorOfProject
+    }
+
+    self.pledgeDetailsSectionLabelText = userIsCreatorOfProject.map {
+      $0
+        ? localizedString(key: "Pledge_details", defaultValue: "Pledge details")
+        : localizedString(key: "Your_pledge_details", defaultValue: "Your pledge details")
     }
 
     self.startRefreshing = Signal.merge(
@@ -372,6 +379,7 @@ public final class ManagePledgeViewModel:
   public let loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never>
   public let loadPullToRefreshHeaderView: Signal<(), Never>
   public let paymentMethodViewHidden: Signal<Bool, Never>
+  public let pledgeDetailsSectionLabelText: Signal<String, Never>
   public let pledgeDisclaimerViewHidden: Signal<Bool, Never>
   public let notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never>
   public let rewardReceivedViewControllerViewIsHidden: Signal<Bool, Never>

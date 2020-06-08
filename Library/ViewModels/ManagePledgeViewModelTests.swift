@@ -29,6 +29,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let notifyDelegateManagePledgeViewControllerFinishedWithMessage
     = TestObserver<String?, Never>()
   private let paymentMethodViewHidden = TestObserver<Bool, Never>()
+  private let pledgeDetailsSectionLabelText = TestObserver<String, Never>()
   private let pledgeDisclaimerViewHidden = TestObserver<Bool, Never>()
   private let rewardReceivedViewControllerViewIsHidden = TestObserver<Bool, Never>()
   private let rightBarButtonItemHidden = TestObserver<Bool, Never>()
@@ -69,6 +70,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.outputs.notifyDelegateManagePledgeViewControllerFinishedWithMessage
       .observe(self.notifyDelegateManagePledgeViewControllerFinishedWithMessage.observer)
     self.vm.outputs.paymentMethodViewHidden.observe(self.paymentMethodViewHidden.observer)
+    self.vm.outputs.pledgeDetailsSectionLabelText.observe(self.pledgeDetailsSectionLabelText.observer)
     self.vm.outputs.pledgeDisclaimerViewHidden.observe(self.pledgeDisclaimerViewHidden.observer)
     self.vm.outputs.rewardReceivedViewControllerViewIsHidden.observe(
       self.rewardReceivedViewControllerViewIsHidden.observer
@@ -1403,6 +1405,56 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.pledgeDisclaimerViewHidden.assertValues([false])
+    }
+  }
+
+  func testPledgeDetailsSectionLabelText_UserIsNotCreatorOfProject() {
+    self.pledgeDetailsSectionLabelText.assertDidNotEmitValue()
+
+    let user = User.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ (user |> User.lens.id .~ 999)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.pledgeDetailsSectionLabelText.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.pledgeDetailsSectionLabelText.assertValues(["Your pledge details"])
+    }
+  }
+
+  func testPledgeDetailsSectionLabelText_UserIsCreatorOfProject() {
+    self.pledgeDetailsSectionLabelText.assertDidNotEmitValue()
+
+    let user = User.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ user
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.pledgeDetailsSectionLabelText.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.pledgeDetailsSectionLabelText.assertValues(["Pledge details"])
     }
   }
 }

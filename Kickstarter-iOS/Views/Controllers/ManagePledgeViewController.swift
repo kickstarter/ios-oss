@@ -190,6 +190,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.pledgeDetailsSectionLabel.rac.text = self.viewModel.outputs.pledgeDetailsSectionLabelText
     self.pledgeDisclaimerView.rac.hidden = self.viewModel.outputs.pledgeDisclaimerViewHidden
     self.rewardReceivedViewController.view.rac.hidden =
       self.viewModel.outputs.rewardReceivedViewControllerViewIsHidden
@@ -589,7 +590,6 @@ extension ManagePledgeViewController: ManagePledgePaymentMethodViewDelegate {
 private let pledgeDetailsSectionLabelStyle: LabelStyle = { label in
   label
     |> checkoutTitleLabelStyle
-    |> \.text %~ { _ in Strings.Selected_reward() } // FIXME: context-specific
 }
 
 extension ManagePledgeViewController: MessageDialogViewControllerDelegate {
