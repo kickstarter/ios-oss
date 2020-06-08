@@ -29,6 +29,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let notifyDelegateManagePledgeViewControllerFinishedWithMessage
     = TestObserver<String?, Never>()
   private let paymentMethodViewHidden = TestObserver<Bool, Never>()
+  private let pledgeDisclaimerViewHidden = TestObserver<Bool, Never>()
   private let rewardReceivedViewControllerViewIsHidden = TestObserver<Bool, Never>()
   private let rightBarButtonItemHidden = TestObserver<Bool, Never>()
   private let showActionSheetMenuWithOptions = TestObserver<[ManagePledgeAlertAction], Never>()
@@ -68,6 +69,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.outputs.notifyDelegateManagePledgeViewControllerFinishedWithMessage
       .observe(self.notifyDelegateManagePledgeViewControllerFinishedWithMessage.observer)
     self.vm.outputs.paymentMethodViewHidden.observe(self.paymentMethodViewHidden.observer)
+    self.vm.outputs.pledgeDisclaimerViewHidden.observe(self.pledgeDisclaimerViewHidden.observer)
     self.vm.outputs.rewardReceivedViewControllerViewIsHidden.observe(
       self.rewardReceivedViewControllerViewIsHidden.observer
     )
@@ -1514,6 +1516,96 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.paymentMethodViewHidden.assertValues([false])
+    }
+  }
+
+  func testPledgeDisclaimerViewHidden_Shipping_UserIsCreatorOfProject() {
+    self.pledgeDisclaimerViewHidden.assertDidNotEmitValue()
+
+    let user = User.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ user
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.pledgeDisclaimerViewHidden.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.pledgeDisclaimerViewHidden.assertValues([true])
+    }
+  }
+
+  func testPledgeDisclaimerViewHidden_NoShipping_UserIsNotCreatorOfProject() {
+    self.pledgeDisclaimerViewHidden.assertDidNotEmitValue()
+
+    let user = User.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ (user |> User.lens.id .~ 999)
+      |> \.rewards .~ [.template |> Reward.lens.estimatedDeliveryOn .~ nil]
+
+    let addOn = ManagePledgeViewBackingEnvelope.Backing.Reward.template
+      |> \.estimatedDeliveryOn .~ nil
+
+    let reward = ManagePledgeViewBackingEnvelope.Backing.Reward.template
+      |> \.estimatedDeliveryOn .~ nil
+
+    let backing = ManagePledgeViewBackingEnvelope.Backing.template
+      |> \.reward .~ reward
+      |> \.addOns .~ .init(nodes: [addOn])
+
+    let env = ManagePledgeViewBackingEnvelope.template
+      |> \.backing .~ backing
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.pledgeDisclaimerViewHidden.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+      self.scheduler.advance(by: .milliseconds(300))
+
+      self.pledgeDisclaimerViewHidden.assertValues([true])
+    }
+  }
+
+  func testPledgeDisclaimerViewHidden_Shipping_UserIsNotCreatorOfProject() {
+    self.pledgeDisclaimerViewHidden.assertDidNotEmitValue()
+
+    let user = User.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ (user |> User.lens.id .~ 999)
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService, currentUser: user) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.pledgeDisclaimerViewHidden.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.pledgeDisclaimerViewHidden.assertValues([false])
     }
   }
 }
