@@ -63,6 +63,19 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
     self.backerCountLabelFullString.assertValues(["315 backers"])
   }
 
+  func testBackerCountLabelData_IsFormatted() {
+    let project = Project.template
+      |> \.stats.backersCount .~ 31666
+
+    self.backerCountLabelBoldedString.assertDidNotEmitValue()
+    self.backerCountLabelFullString.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (project, nil, nil))
+
+    self.backerCountLabelBoldedString.assertValues(["31,666"])
+    self.backerCountLabelFullString.assertValues(["31,666 backers"])
+  }
+
   func testPercentFundedLabelData_ProjectNotFunded() {
     let project = Project.template
       |> \.stats.goal .~ 1_000

@@ -80,6 +80,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     self.configureSubviews()
     self.setupConstraints()
+    self.addShadowLayers()
     self.configureWatchProjectObservers()
 
     self.tagsCollectionView.registerCellClass(DiscoveryProjectTagPillCell.self)
@@ -107,6 +108,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     super.layoutSubviews()
 
     self.updateCollectionViewConstraints()
+    self.updateShadowLayerPaths()
   }
 
   func configureWith(value: DiscoveryProjectCellRowValue) {
@@ -234,6 +236,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.facepileDescriptionLabel.rac.text = self.viewModel.outputs.facepileViewData.map(second)
     self.facepileStackView.rac.hidden = self.viewModel.outputs.facepileViewHidden
     self.youreABackerView.rac.hidden = self.viewModel.outputs.youreABackerViewHidden
+    self.saveButton.rac.selected = self.watchProjectViewModel.outputs.saveButtonSelected
 
     self.viewModel.outputs.projectImageURL
       .observeForUI()
@@ -325,6 +328,18 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       .observeValues { n in
         NotificationCenter.default.post(n)
       }
+
+    self.watchProjectViewModel.outputs.generateImpactFeedback
+      .observeForUI()
+      .observeValues { _ in generateImpactFeedback() }
+
+    self.watchProjectViewModel.outputs.generateNotificationSuccessFeedback
+      .observeForUI()
+      .observeValues { generateNotificationSuccessFeedback() }
+
+    self.watchProjectViewModel.outputs.generateSelectionFeedback
+      .observeForUI()
+      .observeValues { generateSelectionFeedback() }
   }
 
   // MARK: - Functions
@@ -496,6 +511,48 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.layoutIfNeeded()
   }
 
+  private func addShadowLayers() {
+    let projectStatusShadowLayer = CAShapeLayer()
+      |> \.fillColor .~ UIColor.white.withAlphaComponent(0.95).cgColor
+      |> \.shadowColor .~ UIColor.black.cgColor
+      |> \.shadowOpacity .~ 0.15
+      |> \.shadowRadius .~ 4
+      |> \.shadowOffset .~ CGSize(width: 0, height: 1)
+
+    projectStatusShadowLayer.shadowPath = projectStatusShadowLayer.path
+
+    self.projectStatusContainerView.layer.insertSublayer(projectStatusShadowLayer, at: 0)
+
+    let saveButtonShadowLayer = CAShapeLayer()
+    |> \.fillColor .~ UIColor.white.withAlphaComponent(0.95).cgColor
+    |> \.shadowColor .~ UIColor.black.cgColor
+    |> \.shadowOpacity .~ 0.15
+    |> \.shadowRadius .~ 4
+    |> \.shadowOffset .~ CGSize(width: 0, height: 1)
+
+    saveButtonShadowLayer.shadowPath = saveButtonShadowLayer.path
+
+    self.saveButton.layer.insertSublayer(saveButtonShadowLayer, at: 0)
+  }
+
+  private func updateShadowLayerPaths() {
+    if let projectStatusShadowLayer = self.projectStatusContainerView.layer.sublayers?[0] as? CAShapeLayer {
+      projectStatusShadowLayer.path = UIBezierPath(roundedRect: self.projectStatusContainerView.bounds,
+                                                   cornerRadius: Styles.grid(1)).cgPath
+    }
+
+    if let saveButtonShadowLayer = self.saveButton.layer.sublayers?.first(where: { $0 is CAShapeLayer }) as? CAShapeLayer {
+      let cornerRadius = self.saveButton.bounds.width / 2
+
+      saveButtonShadowLayer.path = UIBezierPath(roundedRect: self.saveButton.bounds,
+                                                cornerRadius: cornerRadius).cgPath
+
+      if let imageView = self.saveButton.imageView {
+        self.saveButton.bringSubviewToFront(imageView)
+      }
+    }
+  }
+
   private func configureFacepileImageViews(with avatars: [URL]) {
     let endIndex = avatars.endIndex
 
@@ -588,9 +645,7 @@ private let cardContainerViewStyle: ViewStyle = { view in
 
 private let projectStatusContainerViewStyle: ViewStyle = { view in
   view
-    |> roundedStyle(cornerRadius: Styles.grid(1))
-    |> \.backgroundColor .~ UIColor.white.withAlphaComponent(0.8)
-    |> \.layoutMargins .~ .init(all: Styles.gridHalf(3))
+    |> \.layoutMargins .~ .init(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3))
 }
 
 private let goalMetIconImageViewStyle: ImageViewStyle = { imageView in
