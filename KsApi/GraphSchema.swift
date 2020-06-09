@@ -226,7 +226,7 @@ public enum Query {
     case backer(NonEmptySet<User>)
     case backerCompleted
     case bankAccount(NonEmptySet<BankAccount>)
-    case bonusAmount
+    case bonusAmount(NonEmptySet<Money>)
     case cancelable
     case creditCard(NonEmptySet<CreditCard>)
     case errorReason
@@ -525,7 +525,7 @@ extension Query.Backing: QueryType {
     case let .backer(fields): return "backer { \(join(fields)) }"
     case .backerCompleted: return "backerCompleted"
     case let .bankAccount(fields): return "bankAccount: paymentSource { ... on BankAccount {  \(join(fields)) } }"
-    case .bonusAmount: return "bonusAmount"
+    case .bonusAmount(fields): return "bonusAmount { \(join(fields)) }"
     case .cancelable: return "cancelable"
     case let .creditCard(fields): return "creditCard: paymentSource { ... on CreditCard { \(join(fields)) } }"
     case .errorReason: return "errorReason"
