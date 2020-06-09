@@ -534,6 +534,12 @@ private func projectBackingQuery(withBackingId backingId: String) -> NonEmptySet
           .symbol
         ]
       ),
+      .bonusAmount(
+        .amount +| [
+          .currency,
+          .symbol
+        ]
+      ),
       .sequence,
       .cancelable,
       .backer(
