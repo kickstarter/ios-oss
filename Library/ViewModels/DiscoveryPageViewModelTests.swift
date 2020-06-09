@@ -1512,6 +1512,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.personalizationCellTapped()
 
       XCTAssertEqual(["Explore Page Viewed", "Editorial Card Clicked"], self.trackingClient.events)
+      XCTAssertEqual("Editorial Card Clicked", mockOpClient.trackedEventKey)
+
       XCTAssertEqual(
         [nil, "ios_experiment_onboarding_1"],
         self.trackingClient.properties(forKey: "session_ref_tag")

@@ -100,6 +100,8 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     let project = freshProjectAndRefTag
       .map(first)
+    let refTag = freshProjectAndRefTag
+      .map(second)
 
     let projectAndBacking = project
       .filter { $0.personalization.isBacking ?? false }
@@ -193,6 +195,19 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
           cookieRefTag: cookieRefTag,
           optimizelyProperties: optimizelyProps
         )
+        
+        let (properties, eventTags) = optimizelyClientTrackingAttributesAndEventTags(
+          with: project,
+          refTag: refTag
+        )
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "Project Page Viewed",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
       }
 
     Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))
@@ -200,6 +215,27 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(cookieFrom(refTag:project:))
       .skipNil()
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
+    
+    
+    let shouldTrackCTATappedEvent = ctaButtonTappedWithType
+      .filter { [.pledge, .seeTheRewards, .viewTheRewards].contains($0) }
+
+    Signal.combineLatest(project, refTag)
+      .takeWhen(shouldTrackCTATappedEvent)
+      .observeValues { project, refTag in
+        let (properties, eventTags) = optimizelyClientTrackingAttributesAndEventTags(
+          with: project,
+          refTag: refTag
+        )
+
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "Project Page Pledge Button Clicked",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
+      }
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)

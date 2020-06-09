@@ -108,20 +108,17 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
 
     // Tracking
 
-    self.skipButtonTappedProperty.signal
-      .observeValues { _ in
-        let optimizelyProps = optimizelyProperties() ?? [:]
+    self.skipButtonTappedProperty.signal.observeValues { _ in
+      let optimizelyProps = optimizelyProperties() ?? [:]
+      AppEnvironment.current.koala.trackOnboardingSkipButtonClicked(optimizelyProperties: optimizelyProps)
+      trackOptimizelyClientButtonClicked(buttonTitle: "Skip")
+    }
 
-        AppEnvironment.current.koala.trackOnboardingSkipButtonClicked(optimizelyProperties: optimizelyProps)
-      }
-
-    self.continueButtonTappedProperty.signal
-      .observeValues { _ in
-        let optimizelyProps = optimizelyProperties() ?? [:]
-
-        AppEnvironment.current.koala
-          .trackOnboardingContinueButtonClicked(optimizelyProperties: optimizelyProps)
-      }
+    self.continueButtonTappedProperty.signal.observeValues { buttonTitle in
+      let optimizelyProps = optimizelyProperties() ?? [:]
+      AppEnvironment.current.koala.trackOnboardingContinueButtonClicked(optimizelyProperties: optimizelyProps)
+      trackOptimizelyClientButtonClicked(buttonTitle: "Continue")
+    }
   }
 
   private let categorySelectedWithValueProperty = MutableProperty<(IndexPath, KsApi.Category)?>(nil)
@@ -256,4 +253,15 @@ private func cache(_ categories: [KsApi.Category]) {
   let data = try? JSONEncoder().encode(categories)
 
   AppEnvironment.current.userDefaults.onboardingCategories = data
+}
+
+private func trackOptimizelyClientButtonClicked(buttonTitle: String) {
+  let (properties, eventTags) = optimizelyClientTrackingAttributesAndEventTags()
+
+  let eventName = "\(buttonTitle) Button Clicked"
+
+  try? AppEnvironment.current.optimizelyClient?.track(eventKey: eventName,
+                                                      userId: deviceIdentifier(uuid: UUID()),
+                                                      attributes: properties,
+                                                      eventTags: eventTags)
 }

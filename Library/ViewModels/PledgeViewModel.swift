@@ -631,6 +631,22 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           optimizelyProperties: optimizelyProps
         )
       }
+    
+    initialData
+      .observeValues { project, _, refTag, _ in
+        let (properties, eventTags) = optimizelyClientTrackingAttributesAndEventTags(
+          with: project,
+          refTag: refTag
+        )
+        
+        try? AppEnvironment.current.optimizelyClient?
+          .track(
+            eventKey: "Pledge Screen Viewed",
+            userId: deviceIdentifier(uuid: UUID()),
+            attributes: properties,
+            eventTags: eventTags
+          )
+      }
 
     createBackingData
       .takeWhen(createButtonTapped)
@@ -647,6 +663,25 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           refTag: refTag
         )
       }
+    
+    createBackingDataAndIsApplePay.takeWhen(createBackingCompletionEvents)
+    .observeValues { data, isApplePay in
+      let (properties, eventTags) = optimizelyClientTrackingAttributesAndEventTags(
+        with: data.project,
+        refTag: data.refTag
+      )
+
+      let allEventTags = eventTags
+        .withAllValuesFrom(optimizelyCheckoutEventTags(createBackingData: data, isApplePay: isApplePay))
+
+      try? AppEnvironment.current.optimizelyClient?
+        .track(
+          eventKey: "App Completed Checkout",
+          userId: deviceIdentifier(uuid: UUID()),
+          attributes: properties,
+          eventTags: allEventTags
+        )
+    }
 
     Signal.combineLatest(project, updateBackingData, context)
       .takeWhen(updateButtonTapped)

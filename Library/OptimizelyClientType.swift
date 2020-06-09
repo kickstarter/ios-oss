@@ -7,6 +7,7 @@ public protocol OptimizelyClientType: AnyObject {
   func getVariationKey(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
   func allExperiments() -> [String]
   func isFeatureEnabled(featureKey: String, userId: String, attributes: [String: Any?]?) -> Bool
+  func track(eventKey: String, userId: String, attributes: [String: Any?]?, eventTags: [String: Any]?) throws
 }
 
 extension OptimizelyClientType {
@@ -81,6 +82,21 @@ extension OptimizelyClientType {
 
 // MARK: - Tracking Properties
 
+public func optimizelyClientTrackingAttributesAndEventTags(
+  with project: Project? = nil,
+  refTag: RefTag? = nil
+) -> ([String: Any], [String: Any]) {
+  let properties = optimizelyUserAttributes(with: project, refTag: refTag)
+
+  let eventTags: [String: Any] = ([
+    "project_subcategory": project?.category.name,
+    "project_category": project?.category.parentName,
+    "project_country": project?.location.country.lowercased(),
+    "project_user_has_watched": project?.personalization.isStarred
+  ] as [String: Any?]).compact()
+  return (properties, eventTags)
+}
+
 public func optimizelyProperties(environment: Environment? = AppEnvironment.current) -> [String: Any]? {
   guard let env = environment, let optimizelyClient = env.optimizelyClient else {
     return nil
@@ -120,7 +136,7 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
     "optimizely_experiments": allExperiments
   ]
 }
-
+  
 public func optimizelyUserAttributes(
   with project: Project? = nil,
   refTag: RefTag? = nil
