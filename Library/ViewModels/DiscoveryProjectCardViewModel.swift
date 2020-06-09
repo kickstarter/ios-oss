@@ -39,7 +39,7 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
     self.projectNameLabelText = project.map(\.name)
     self.projectBlurbLabelText = project.map(\.blurb)
     self.backerCountLabelData = project.map(\.stats.backersCount).map { count in
-      (String(count), Strings.general_backer_count_backers(backer_count: count))
+      (Format.wholeNumber(count), Strings.general_backer_count_backers(backer_count: count))
     }
 
     self.percentFundedLabelData = project.map { project in
