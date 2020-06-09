@@ -873,6 +873,7 @@ private func pledgeAmountSummaryViewData(with project: Project) -> PledgeAmountS
   guard let backing = project.personalization.backing else { return nil }
 
   return .init(
+    bonusAmount: nil,
     projectCountry: project.country,
     pledgeAmount: backing.amount,
     pledgedOn: backing.pledgedAt,

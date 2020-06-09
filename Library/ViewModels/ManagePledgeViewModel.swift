@@ -477,6 +477,7 @@ private func managePledgeSummaryViewData(
     backerName: envelope.backing.backer.name,
     backerSequence: envelope.backing.sequence,
     backingState: envelope.backing.status,
+    bonusAmount: envelope.backing.bonusAmount?.amount,
     currentUserIsCreatorOfProject: currentUserIsCreator(of: project),
     locationName: envelope.backing.location?.name,
     needsConversion: project.stats.needsConversion,

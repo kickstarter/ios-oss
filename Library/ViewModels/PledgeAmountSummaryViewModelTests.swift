@@ -9,6 +9,7 @@ import XCTest
 final class PledgeAmountSummaryViewModelTests: TestCase {
   private let vm: PledgeAmountSummaryViewModelType = PledgeAmountSummaryViewModel()
 
+  private let bonusAmountText = TestObserver<String, Never>()
   private let pledgeAmountText = TestObserver<String, Never>()
   private let shippingAmountText = TestObserver<String, Never>()
   private let shippingLocationStackViewIsHidden = TestObserver<Bool, Never>()
@@ -17,6 +18,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.bonusAmountText.map { $0.string }
+      .observe(self.bonusAmountText.observer)
     self.vm.outputs.pledgeAmountText.map { $0.string }
       .observe(self.pledgeAmountText.observer)
     self.vm.outputs.shippingAmountText.map { $0.string }
@@ -28,6 +31,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
 
   func testTextOutputsEmitTheCorrectValue() {
     let data = PledgeAmountSummaryViewData(
+      bonusAmount: 5,
       projectCountry: Project.Country.us,
       pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,
@@ -39,6 +43,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
     self.vm.inputs.configureWith(data)
     self.vm.inputs.viewDidLoad()
 
+    self.bonusAmountText.assertValue("+$5.00")
     self.pledgeAmountText.assertValue("$23.00")
     self.shippingAmountText.assertValue("+$7.00")
     self.shippingLocationText.assertValue("Shipping: United States")
@@ -46,6 +51,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
 
   func testTextOutputsEmitTheCorrectValue_ZeroShippingAmount() {
     let data = PledgeAmountSummaryViewData(
+      bonusAmount: 0,
       projectCountry: Project.Country.us,
       pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,
@@ -64,6 +70,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
 
   func testShippingLocationStackViewIsHidden_isTrue_WhenLocationNameIsNil() {
     let data = PledgeAmountSummaryViewData(
+      bonusAmount: 0,
       projectCountry: Project.Country.us,
       pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,
@@ -80,6 +87,7 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
 
   func testShippingLocationStackViewIsHidden_isFalse_WhenLocationNameIsNotNil() {
     let data = PledgeAmountSummaryViewData(
+      bonusAmount: 0,
       projectCountry: Project.Country.us,
       pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,

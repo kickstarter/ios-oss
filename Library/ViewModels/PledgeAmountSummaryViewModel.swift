@@ -4,6 +4,7 @@ import Prelude
 import ReactiveSwift
 
 public struct PledgeAmountSummaryViewData {
+  public let bonusAmount: Double?
   public let projectCountry: Project.Country
   public let pledgeAmount: Double
   public let pledgedOn: TimeInterval
@@ -18,6 +19,7 @@ public protocol PledgeAmountSummaryViewModelInputs {
 }
 
 public protocol PledgeAmountSummaryViewModelOutputs {
+  var bonusAmountText: Signal<NSAttributedString, Never> { get }
   var pledgeAmountText: Signal<NSAttributedString, Never> { get }
   var shippingAmountText: Signal<NSAttributedString, Never> { get }
   var shippingLocationStackViewIsHidden: Signal<Bool, Never> { get }
@@ -46,11 +48,16 @@ public class PledgeAmountSummaryViewModel: PledgeAmountSummaryViewModelType,
           $0.omitUSCurrencyCode
         )
       }
-      .map(attributedCurrency(with:amount:omitUSCurrencyCode:))
+      .map(attributedCurrency)
+      .skipNil()
+
+    self.bonusAmountText = data
+      .map { data in (data.projectCountry, data.bonusAmount ?? 0, data.omitUSCurrencyCode) }
+      .map(plusSignAmount)
       .skipNil()
 
     self.shippingAmountText = data.map { ($0.projectCountry, $0.shippingAmount ?? 0, $0.omitUSCurrencyCode) }
-      .map(shippingValue(with:amount:omitUSCurrencyCode:))
+      .map(plusSignAmount)
       .skipNil()
 
     self.shippingLocationText = data.map { $0.locationName }
@@ -71,6 +78,7 @@ public class PledgeAmountSummaryViewModel: PledgeAmountSummaryViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
+  public let bonusAmountText: Signal<NSAttributedString, Never>
   public let pledgeAmountText: Signal<NSAttributedString, Never>
   public let shippingAmountText: Signal<NSAttributedString, Never>
   public let shippingLocationStackViewIsHidden: Signal<Bool, Never>
@@ -105,7 +113,7 @@ private func attributedCurrency(
   return attributedCurrency
 }
 
-private func shippingValue(
+private func plusSignAmount(
   with projectCountry: Project.Country,
   amount: Double,
   omitUSCurrencyCode: Bool

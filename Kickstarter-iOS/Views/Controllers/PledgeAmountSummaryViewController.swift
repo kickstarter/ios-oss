@@ -7,6 +7,9 @@ import UIKit
 final class PledgeAmountSummaryViewController: UIViewController {
   // MARK: Properties
 
+  private lazy var bonusAmountLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var bonusAmountStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var bonusLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var pledgeAmountLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var pledgeAmountStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var pledgeLabel: UILabel = { UILabel(frame: .zero) }()
@@ -38,23 +41,31 @@ final class PledgeAmountSummaryViewController: UIViewController {
 
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
-    _ = self.pledgeAmountStackView
-      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
-
     _ = self.rootStackView
       |> rootStackViewStyle
+
+    _ = self.bonusAmountStackView
+      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
+
+    _ = self.pledgeAmountStackView
+      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
 
     _ = self.shippingLocationStackView
       |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
 
+    _ = self.bonusLabel
+      |> titleLabelStyle
+      |> \.text %~ { _ in localizedString(key: "Bonus", defaultValue: "Bonus") }
+
     _ = self.pledgeLabel
-      |> pledgeLabelStyle
+      |> titleLabelStyle
+      |> \.text %~ { _ in Strings.Pledge() }
 
     _ = self.pledgeAmountLabel
       |> amountLabelStyle
 
     _ = self.shippingLocationLabel
-      |> shippingLocationLabelStyle
+      |> titleLabelStyle
 
     _ = self.shippingAmountLabel
       |> amountLabelStyle
@@ -65,6 +76,7 @@ final class PledgeAmountSummaryViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.bonusAmountLabel.rac.attributedText = self.viewModel.outputs.bonusAmountText
     self.pledgeAmountLabel.rac.attributedText = self.viewModel.outputs.pledgeAmountText
     self.shippingAmountLabel.rac.attributedText = self.viewModel.outputs.shippingAmountText
     self.shippingLocationLabel.rac.text = self.viewModel.outputs.shippingLocationText
@@ -81,6 +93,10 @@ final class PledgeAmountSummaryViewController: UIViewController {
     _ = ([self.pledgeLabel, self.pledgeAmountLabel], self.pledgeAmountStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
+    _ = ([self.bonusLabel, self.bonusAmountLabel], self.bonusAmountStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    self.bonusAmountLabel.setContentHuggingPriority(.required, for: .horizontal)
     self.pledgeAmountLabel.setContentHuggingPriority(.required, for: .horizontal)
     self.shippingAmountLabel.setContentHuggingPriority(.required, for: .horizontal)
 
@@ -89,7 +105,8 @@ final class PledgeAmountSummaryViewController: UIViewController {
 
     _ = ([
       self.pledgeAmountStackView,
-      self.shippingLocationStackView
+      self.shippingLocationStackView,
+      self.bonusAmountStackView
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
@@ -105,24 +122,16 @@ private let amountLabelStyle: LabelStyle = { label in
     |> \.minimumScaleFactor .~ 0.75
 }
 
-private let pledgeLabelStyle: LabelStyle = { label in
+private let titleLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ UIColor.ksr_dark_grey_500
     |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.text %~ { _ in Strings.Pledge() }
+    |> \.numberOfLines .~ 0
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> checkoutStackViewStyle
     |> \.spacing .~ Styles.grid(3)
-}
-
-private let shippingLocationLabelStyle: LabelStyle = { label in
-  label
-    |> \.textColor .~ UIColor.ksr_dark_grey_500
-    |> \.font .~ UIFont.ksr_subhead().bolded
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.numberOfLines .~ 0
 }
