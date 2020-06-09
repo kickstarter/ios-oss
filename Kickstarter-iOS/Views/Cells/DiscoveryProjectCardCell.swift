@@ -524,11 +524,11 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.projectStatusContainerView.layer.insertSublayer(projectStatusShadowLayer, at: 0)
 
     let saveButtonShadowLayer = CAShapeLayer()
-    |> \.fillColor .~ UIColor.white.withAlphaComponent(0.95).cgColor
-    |> \.shadowColor .~ UIColor.black.cgColor
-    |> \.shadowOpacity .~ 0.15
-    |> \.shadowRadius .~ 4
-    |> \.shadowOffset .~ CGSize(width: 0, height: 1)
+      |> \.fillColor .~ UIColor.white.withAlphaComponent(0.95).cgColor
+      |> \.shadowColor .~ UIColor.black.cgColor
+      |> \.shadowOpacity .~ 0.15
+      |> \.shadowRadius .~ 4
+      |> \.shadowOffset .~ CGSize(width: 0, height: 1)
 
     saveButtonShadowLayer.shadowPath = saveButtonShadowLayer.path
 
@@ -537,15 +537,20 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
   private func updateShadowLayerPaths() {
     if let projectStatusShadowLayer = self.projectStatusContainerView.layer.sublayers?[0] as? CAShapeLayer {
-      projectStatusShadowLayer.path = UIBezierPath(roundedRect: self.projectStatusContainerView.bounds,
-                                                   cornerRadius: Styles.grid(1)).cgPath
+      projectStatusShadowLayer.path = UIBezierPath(
+        roundedRect: self.projectStatusContainerView.bounds,
+        cornerRadius: Styles.grid(1)
+      ).cgPath
     }
 
-    if let saveButtonShadowLayer = self.saveButton.layer.sublayers?.first(where: { $0 is CAShapeLayer }) as? CAShapeLayer {
+    if let saveButtonShadowLayer = self.saveButton.layer.sublayers?
+      .first(where: { $0 is CAShapeLayer }) as? CAShapeLayer {
       let cornerRadius = self.saveButton.bounds.width / 2
 
-      saveButtonShadowLayer.path = UIBezierPath(roundedRect: self.saveButton.bounds,
-                                                cornerRadius: cornerRadius).cgPath
+      saveButtonShadowLayer.path = UIBezierPath(
+        roundedRect: self.saveButton.bounds,
+        cornerRadius: cornerRadius
+      ).cgPath
 
       if let imageView = self.saveButton.imageView {
         self.saveButton.bringSubviewToFront(imageView)

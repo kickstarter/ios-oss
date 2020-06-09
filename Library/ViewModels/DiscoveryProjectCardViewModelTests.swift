@@ -65,7 +65,7 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
   func testBackerCountLabelData_IsFormatted() {
     let project = Project.template
-      |> \.stats.backersCount .~ 31666
+      |> \.stats.backersCount .~ 31_666
 
     self.backerCountLabelBoldedString.assertDidNotEmitValue()
     self.backerCountLabelFullString.assertDidNotEmitValue()
