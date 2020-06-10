@@ -61,7 +61,10 @@ private func rewardItemsData(
   with project: Project
 ) -> [RewardsItem] {
   return backingReward.items?.compactMap { item -> RewardsItem? in
-    guard let id = Int(item.id) else { return nil }
+    guard
+      let id = Int(item.id),
+      let rewardId = decompose(id: backingReward.id)
+    else { return nil }
 
     return RewardsItem(
       id: 0, // not returned
@@ -72,7 +75,7 @@ private func rewardItemsData(
         projectId: project.id
       ),
       quantity: 0, // not needed
-      rewardId: Int(backingReward.id) ?? -1
+      rewardId: rewardId
     )
   } ?? []
 }
