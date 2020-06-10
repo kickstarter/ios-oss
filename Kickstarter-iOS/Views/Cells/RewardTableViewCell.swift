@@ -33,17 +33,6 @@ final class RewardTableViewCell: UITableViewCell, ValueCell {
       |> ksr_constrainViewToMarginsInParent(priority: UILayoutPriority(rawValue: 999))
   }
 
-  private func setupConstraints() {
-    NSLayoutConstraint.activate([
-      self.rewardCardView.leftAnchor.constraint(
-        equalTo: self.contentView.leftAnchor, constant: Styles.grid(4)
-      ),
-      self.rewardCardView.rightAnchor.constraint(
-        equalTo: self.contentView.rightAnchor, constant: -Styles.grid(4)
-      )
-    ])
-  }
-
   override func layoutSubviews() {
     super.layoutSubviews()
 
