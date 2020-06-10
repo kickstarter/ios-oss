@@ -337,7 +337,7 @@ final class CategorySelectionViewModelTests: TestCase {
       
       XCTAssertNil(self.optimizelyClient.trackedEventKey)
       XCTAssertNil(self.optimizelyClient.trackedAttributes)
-      XCTAssertNil(self.optimizelyClient.trackedEventTags)
+
 
       XCTAssertNil(mockKVStore.onboardingCategories)
       XCTAssertFalse(mockKVStore.hasCompletedCategoryPersonalizationFlow)
@@ -431,7 +431,7 @@ final class CategorySelectionViewModelTests: TestCase {
       
       XCTAssertNil(self.optimizelyClient.trackedEventKey)
       XCTAssertNil(self.optimizelyClient.trackedAttributes)
-      XCTAssertNil(self.optimizelyClient.trackedEventTags)
+
 
       self.vm.inputs.skipButtonTapped()
 

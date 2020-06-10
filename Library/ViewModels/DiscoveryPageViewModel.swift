@@ -447,14 +447,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     
     personalizationCellTappedAndRefTag
       .observeValues { refTag in
-        let attributes = optimizelyUserAttributes(refTag: refTag)
-        
-        try? AppEnvironment.current.optimizelyClient?.track(
-        eventKey: "Editorial Card Clicked",
-        userId: deviceIdentifier(uuid: UUID()),
-        attributes: attributes,
-        eventTags: nil
-        )
+        AppEnvironment.current.optimizelyClient?.track(eventName: "Editorial Card Clicked")
       }
 
     let editorialCellTappedAndRefTag = self.discoveryEditorialCellTappedWithValueProperty.signal

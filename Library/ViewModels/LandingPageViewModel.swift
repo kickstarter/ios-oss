@@ -43,14 +43,7 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
         AppEnvironment.current.koala
           .trackOnboardingGetStartedButtonClicked(optimizelyProperties: optimizelyProps)
         
-        let (properties, eventTags) = optimizelyClientTrackingAttributesAndEventTags()
-        try? AppEnvironment.current.optimizelyClient?
-          .track(
-            eventKey: "Get Started Button Clicked",
-            userId: deviceIdentifier(uuid: UUID()),
-            attributes: properties,
-            eventTags: eventTags
-          )
+        AppEnvironment.current.optimizelyClient?.track(eventName: "Get Started Button Clicked")
       }
   }
 

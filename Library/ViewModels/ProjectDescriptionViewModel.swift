@@ -160,16 +160,7 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
           cookieRefTag: cookieRefTag,
           optimizelyProperties: optimizelyProps
         )
-        
-        let (properties, eventTags) = optimizelyClientTrackingAttributesAndEventTags(with: project,
-                                                                                     refTag: refTag)
-        try? AppEnvironment.current.optimizelyClient?
-        .track(
-          eventKey: "Campaign Details Pledge Button Clicked",
-          userId: deviceIdentifier(uuid: UUID()),
-          attributes: properties,
-          eventTags: eventTags
-        )
+        AppEnvironment.current.optimizelyClient?.track(eventName: "Campaign Details Pledge Button Clicked")
       }
 
     project

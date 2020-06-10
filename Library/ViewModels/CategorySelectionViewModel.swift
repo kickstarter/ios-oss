@@ -256,12 +256,6 @@ private func cache(_ categories: [KsApi.Category]) {
 }
 
 private func trackOptimizelyClientButtonClicked(buttonTitle: String) {
-  let (properties, eventTags) = optimizelyClientTrackingAttributesAndEventTags()
-
   let eventName = "\(buttonTitle) Button Clicked"
-
-  try? AppEnvironment.current.optimizelyClient?.track(eventKey: eventName,
-                                                      userId: deviceIdentifier(uuid: UUID()),
-                                                      attributes: properties,
-                                                      eventTags: eventTags)
+  AppEnvironment.current.optimizelyClient?.track(eventName: eventName)
 }

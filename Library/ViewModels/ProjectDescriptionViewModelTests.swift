@@ -490,8 +490,6 @@ final class ProjectDescriptionViewModelTests: TestCase {
       XCTAssertEqual(optimizelyClient.trackedUserId, nil)
       XCTAssertEqual(optimizelyClient.trackedEventKey, nil)
       XCTAssertNil(optimizelyClient.trackedAttributes)
-      XCTAssertNil(optimizelyClient.trackedEventTags)
-
       self.pledgeCTAContainerViewIsHidden.assertValues([true])
     }
   }
@@ -518,7 +516,6 @@ final class ProjectDescriptionViewModelTests: TestCase {
       XCTAssertEqual(optimizelyClient.trackedUserId, nil)
       XCTAssertEqual(optimizelyClient.trackedEventKey, nil)
       XCTAssertNil(optimizelyClient.trackedAttributes)
-      XCTAssertNil(optimizelyClient.trackedEventTags)
 
       self.pledgeCTAContainerViewIsHidden.assertValues([true])
     }
@@ -545,7 +542,6 @@ final class ProjectDescriptionViewModelTests: TestCase {
       XCTAssertEqual(optimizelyClient.trackedUserId, nil)
       XCTAssertEqual(optimizelyClient.trackedEventKey, nil)
       XCTAssertNil(optimizelyClient.trackedAttributes)
-      XCTAssertNil(optimizelyClient.trackedEventTags)
 
       self.pledgeCTAContainerViewIsHidden.assertValues([true])
       self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
@@ -569,8 +565,6 @@ final class ProjectDescriptionViewModelTests: TestCase {
       
       // Optimizely Client
       XCTAssertEqual(optimizelyClient.trackedEventKey, "Campaign Details Pledge Button Clicked")
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "discovery")
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String, "discovery")
       XCTAssertEqual(
         optimizelyClient.trackedAttributes?["session_os_version"] as? String,
         "MockSystemVersion"
@@ -582,10 +576,6 @@ final class ProjectDescriptionViewModelTests: TestCase {
       )
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_category"] as? String, nil)
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, nil)
     }
   }
 }

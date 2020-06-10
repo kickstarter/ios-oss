@@ -1304,11 +1304,6 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual(optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
       XCTAssertEqual(optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
       XCTAssertEqual(optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
-
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "project_page")
-      XCTAssertEqual(
-        optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String, "project_page"
-      )
       XCTAssertEqual(
         optimizelyClient.trackedAttributes?["session_os_version"] as? String, "MockSystemVersion"
       )
@@ -1318,17 +1313,6 @@ final class PledgeViewModelTests: TestCase {
       )
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
-
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_category"] as? String, nil)
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, nil)
-
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["checkout_amount"] as? Double, 5.0)
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["checkout_payment_type"] as? String, "APPLE_PAY")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["revenue"] as? Int, 500)
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["currency"] as? String, "USD")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["category"] as? String, "Art")
     }
   }
 
@@ -1611,9 +1595,6 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual(optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
       XCTAssertEqual(optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
       XCTAssertEqual(optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
-
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "activity")
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String, "activity")
       XCTAssertEqual(
         optimizelyClient.trackedAttributes?["session_os_version"] as? String, "MockSystemVersion"
       )
@@ -1623,17 +1604,6 @@ final class PledgeViewModelTests: TestCase {
       )
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
-
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_category"] as? String, nil)
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, nil)
-
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["checkout_amount"] as? Double, 25.0)
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["checkout_payment_type"] as? String, "CREDIT_CARD")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["revenue"] as? Int, 2_500)
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["currency"] as? String, "USD")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["category"] as? String, "Art")
     }
   }
 
@@ -3987,28 +3957,20 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
     
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "discovery")
-      XCTAssertEqual(
-        self.optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String,
-        "discovery"
-      )
-      XCTAssertEqual(
-        self.optimizelyClient.trackedAttributes?["session_os_version"] as? String,
-        "MockSystemVersion"
-      )
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_user_is_logged_in"] as? Bool, false)
-      XCTAssertEqual(
-        self.optimizelyClient.trackedAttributes?["session_app_release_version"] as? String,
-        "1.2.3.4.5.6.7.8.9.0"
-      )
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
-
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_category"] as? String, "Art")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_user_has_watched"] as? String, nil)
-    }
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, nil)
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String, nil)
+    XCTAssertEqual(
+      self.optimizelyClient.trackedAttributes?["session_os_version"] as? String,
+      "MockSystemVersion"
+    )
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_user_is_logged_in"] as? Bool, false)
+    XCTAssertEqual(
+      self.optimizelyClient.trackedAttributes?["session_app_release_version"] as? String,
+      "1.2.3.4.5.6.7.8.9.0"
+    )
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
+  }
   
   func testTrackingEvents_OptimizelyClient_PledgeScreenViewed_LoggedIn() {
      let user = User.template
@@ -4042,12 +4004,6 @@ final class PledgeViewModelTests: TestCase {
         XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
         XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, true)
         XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
-      
-        XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "discovery")
-        XCTAssertEqual(
-          self.optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String,
-          "discovery"
-        )
         XCTAssertEqual(
           self.optimizelyClient.trackedAttributes?["session_os_version"] as? String,
           "MockSystemVersion"
@@ -4059,11 +4015,6 @@ final class PledgeViewModelTests: TestCase {
         )
         XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
         XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
-
-        XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
-        XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_category"] as? String, "Art")
-        XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
-        XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, true)
       }
   }
       

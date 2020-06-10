@@ -24,7 +24,6 @@ internal class MockOptimizelyClient: OptimizelyClientType {
   
   var trackedAttributes: [String: Any?]?
   var trackedEventKey: String?
-  var trackedEventTags: [String: Any?]?
   var trackedUserId: String?
 
   internal func activate(experimentKey: String, userId: String, attributes: [String: Any?]?) throws
@@ -58,12 +57,10 @@ internal class MockOptimizelyClient: OptimizelyClientType {
 
       return experimentVariant
   }
-
-  func track(eventKey: String, userId: String, attributes: [String: Any?]?, eventTags: [String: Any]?)
-    throws {
+  
+  func track(eventKey: String, userId: String, attributes: [String: Any?]?, eventTags: [String: Any]?) throws {
     self.trackedEventKey = eventKey
     self.trackedAttributes = attributes
-    self.trackedEventTags = eventTags
     self.trackedUserId = userId
   }
 

@@ -195,19 +195,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
           cookieRefTag: cookieRefTag,
           optimizelyProperties: optimizelyProps
         )
-        
-        let (properties, eventTags) = optimizelyClientTrackingAttributesAndEventTags(
-          with: project,
-          refTag: refTag
-        )
-
-        try? AppEnvironment.current.optimizelyClient?
-          .track(
-            eventKey: "Project Page Viewed",
-            userId: deviceIdentifier(uuid: UUID()),
-            attributes: properties,
-            eventTags: eventTags
-          )
+        AppEnvironment.current.optimizelyClient?.track(eventName: "Project Page Viewed")
       }
 
     Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))
@@ -223,18 +211,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
     Signal.combineLatest(project, refTag)
       .takeWhen(shouldTrackCTATappedEvent)
       .observeValues { project, refTag in
-        let (properties, eventTags) = optimizelyClientTrackingAttributesAndEventTags(
-          with: project,
-          refTag: refTag
-        )
-
-        try? AppEnvironment.current.optimizelyClient?
-          .track(
-            eventKey: "Project Page Pledge Button Clicked",
-            userId: deviceIdentifier(uuid: UUID()),
-            attributes: properties,
-            eventTags: eventTags
-          )
+        AppEnvironment.current.optimizelyClient?.track(eventName: "Project Page Pledge Button Clicked")
       }
   }
 

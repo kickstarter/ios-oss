@@ -78,24 +78,19 @@ extension OptimizelyClientType {
       attributes: optimizelyUserAttributes()
     )
   }
+  
+  public func track(eventName: String) {
+    let userAttributes = optimizelyUserAttributes()
+    let userId = deviceIdentifier(uuid: UUID())
+
+    try? self.track(eventKey: eventName,
+                    userId: userId,
+                    attributes: userAttributes,
+                    eventTags: nil)
+  }
 }
 
 // MARK: - Tracking Properties
-
-public func optimizelyClientTrackingAttributesAndEventTags(
-  with project: Project? = nil,
-  refTag: RefTag? = nil
-) -> ([String: Any], [String: Any]) {
-  let properties = optimizelyUserAttributes(with: project, refTag: refTag)
-
-  let eventTags: [String: Any] = ([
-    "project_subcategory": project?.category.name,
-    "project_category": project?.category.parentName,
-    "project_country": project?.location.country.lowercased(),
-    "project_user_has_watched": project?.personalization.isStarred
-  ] as [String: Any?]).compact()
-  return (properties, eventTags)
-}
 
 public func optimizelyProperties(environment: Environment? = AppEnvironment.current) -> [String: Any]? {
   guard let env = environment, let optimizelyClient = env.optimizelyClient else {
@@ -136,7 +131,7 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
     "optimizely_experiments": allExperiments
   ]
 }
-  
+ 
 public func optimizelyUserAttributes(
   with project: Project? = nil,
   refTag: RefTag? = nil
