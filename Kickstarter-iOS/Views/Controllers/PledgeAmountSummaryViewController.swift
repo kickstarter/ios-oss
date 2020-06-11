@@ -77,6 +77,7 @@ final class PledgeAmountSummaryViewController: UIViewController {
     super.bindViewModel()
 
     self.bonusAmountLabel.rac.attributedText = self.viewModel.outputs.bonusAmountText
+    self.bonusAmountStackView.rac.hidden = self.viewModel.outputs.bonusAmountStackViewIsHidden
     self.pledgeAmountLabel.rac.attributedText = self.viewModel.outputs.pledgeAmountText
     self.shippingAmountLabel.rac.attributedText = self.viewModel.outputs.shippingAmountText
     self.shippingLocationLabel.rac.text = self.viewModel.outputs.shippingLocationText

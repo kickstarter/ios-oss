@@ -5,12 +5,13 @@ import ReactiveSwift
 
 public struct PledgeAmountSummaryViewData {
   public let bonusAmount: Double?
+  public let isNoReward: Bool
+  public let locationName: String?
+  public let omitUSCurrencyCode: Bool
   public let projectCountry: Project.Country
   public let pledgeAmount: Double
   public let pledgedOn: TimeInterval
   public let shippingAmount: Double?
-  public let locationName: String?
-  public let omitUSCurrencyCode: Bool
 }
 
 public protocol PledgeAmountSummaryViewModelInputs {
@@ -20,6 +21,7 @@ public protocol PledgeAmountSummaryViewModelInputs {
 
 public protocol PledgeAmountSummaryViewModelOutputs {
   var bonusAmountText: Signal<NSAttributedString, Never> { get }
+  var bonusAmountStackViewIsHidden: Signal<Bool, Never> { get }
   var pledgeAmountText: Signal<NSAttributedString, Never> { get }
   var shippingAmountText: Signal<NSAttributedString, Never> { get }
   var shippingLocationStackViewIsHidden: Signal<Bool, Never> { get }
@@ -64,6 +66,7 @@ public class PledgeAmountSummaryViewModel: PledgeAmountSummaryViewModelType,
       .skipNil()
       .map { Strings.Shipping_to_country(country: $0) }
 
+    self.bonusAmountStackViewIsHidden = data.map { $0.isNoReward }
     self.shippingLocationStackViewIsHidden = data.map { $0.locationName }.map(isNil)
   }
 
@@ -79,6 +82,7 @@ public class PledgeAmountSummaryViewModel: PledgeAmountSummaryViewModelType,
   }
 
   public let bonusAmountText: Signal<NSAttributedString, Never>
+  public let bonusAmountStackViewIsHidden: Signal<Bool, Never>
   public let pledgeAmountText: Signal<NSAttributedString, Never>
   public let shippingAmountText: Signal<NSAttributedString, Never>
   public let shippingLocationStackViewIsHidden: Signal<Bool, Never>

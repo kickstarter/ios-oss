@@ -5,7 +5,7 @@ import Prelude
 import UIKit
 
 final class RewardsCollectionViewDataSource: ValueCellDataSource {
-  func load(_ values: [(Project, Either<Reward, Backing>)]) {
+  func load(_ values: [RewardCardViewData]) {
     self.set(
       values: values,
       cellClass: RewardCell.self,
@@ -15,7 +15,7 @@ final class RewardsCollectionViewDataSource: ValueCellDataSource {
 
   override func configureCell(collectionCell cell: UICollectionViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as RewardCell, value as (Project, Either<Reward, Backing>)):
+    case let (cell as RewardCell, value as RewardCardViewData):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, value) combo.")

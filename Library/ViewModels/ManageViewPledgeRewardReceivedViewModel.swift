@@ -17,6 +17,7 @@ public protocol ManageViewPledgeRewardReceivedViewModelInputs {
 }
 
 public protocol ManageViewPledgeRewardReceivedViewModelOutputs {
+  var cornerRadius: Signal<CGFloat, Never> { get }
   var estimatedDeliveryDateLabelAttributedText: Signal<NSAttributedString, Never> { get }
   var layoutMargins: Signal<UIEdgeInsets, Never> { get }
   var marginWidth: Signal<CGFloat, Never> { get }
@@ -78,6 +79,7 @@ public class ManageViewPledgeRewardReceivedViewModel:
       .map(estimatedDeliveryAttributedText)
 
     self.rewardReceivedHidden = data.map(\.backingState).map { state in state != .collected }
+    self.cornerRadius = self.rewardReceivedHidden.map { $0 ? 0 : Styles.grid(2) }
     self.layoutMargins = self.rewardReceivedHidden.map { $0 ? .zero : .init(all: Styles.gridHalf(5)) }
     self.marginWidth = self.rewardReceivedHidden.map { $0 ? 0 : 1 }
   }
@@ -97,6 +99,7 @@ public class ManageViewPledgeRewardReceivedViewModel:
     self.viewDidLoadObserver.send(value: ())
   }
 
+  public let cornerRadius: Signal<CGFloat, Never>
   public let estimatedDeliveryDateLabelAttributedText: Signal<NSAttributedString, Never>
   public let layoutMargins: Signal<UIEdgeInsets, Never>
   public let marginWidth: Signal<CGFloat, Never>

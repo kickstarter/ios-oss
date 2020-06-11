@@ -11,6 +11,7 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
   private let vm: ManageViewPledgeRewardReceivedViewModelType = ManageViewPledgeRewardReceivedViewModel()
 
   private let estimatedDeliveryDateLabelAttributedText = TestObserver<String, Never>()
+  private let cornerRadius = TestObserver<CGFloat, Never>()
   private let layoutMargins = TestObserver<UIEdgeInsets, Never>()
   private let marginWidth = TestObserver<CGFloat, Never>()
   private let rewardReceived = TestObserver<Bool, Never>()
@@ -22,6 +23,7 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
     self.vm.outputs.estimatedDeliveryDateLabelAttributedText
       .map { $0.string }
       .observe(self.estimatedDeliveryDateLabelAttributedText.observer)
+    self.vm.outputs.cornerRadius.observe(self.cornerRadius.observer)
     self.vm.outputs.layoutMargins.observe(self.layoutMargins.observer)
     self.vm.outputs.marginWidth.observe(self.marginWidth.observer)
     self.vm.outputs.rewardReceived.observe(self.rewardReceived.observer)
@@ -92,6 +94,50 @@ final class ManageViewPledgeRewardReceivedViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.layoutMargins.assertValues([.init(all: Styles.gridHalf(5))])
+  }
+
+  func testCornerRadius_NotCollected() {
+    let backing = Backing.template
+      |> Backing.lens.backerCompleted .~ false
+
+    let project = Project.template
+      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
+
+    let data = ManageViewPledgeRewardReceivedViewData(
+      project: project,
+      backerCompleted: false,
+      estimatedDeliveryOn: 1_475_361_315,
+      backingState: .pledged
+    )
+
+    self.cornerRadius.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(data)
+    self.vm.inputs.viewDidLoad()
+
+    self.cornerRadius.assertValues([0])
+  }
+
+  func testCornerRadius_Collected() {
+    let backing = Backing.template
+      |> Backing.lens.backerCompleted .~ false
+
+    let project = Project.template
+      |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
+
+    let data = ManageViewPledgeRewardReceivedViewData(
+      project: project,
+      backerCompleted: false,
+      estimatedDeliveryOn: 1_475_361_315,
+      backingState: .collected
+    )
+
+    self.cornerRadius.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(data)
+    self.vm.inputs.viewDidLoad()
+
+    self.cornerRadius.assertValues([Styles.grid(2)])
   }
 
   func testMarginWidth_NotCollected() {

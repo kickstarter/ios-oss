@@ -178,6 +178,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       backingState: BackingState.pledged,
       bonusAmount: nil,
       currentUserIsCreatorOfProject: false,
+      isNoReward: false,
       locationName: "Brooklyn, NY",
       needsConversion: false,
       omitUSCurrencyCode: true,
@@ -554,6 +555,9 @@ internal final class ManagePledgeViewModelTests: TestCase {
   func testRewardReceivedViewControllerIsHidden_EstimatedDeliveryOnIsNil() {
     let reward = Reward.noReward
 
+    let env = ManagePledgeViewBackingEnvelope.template
+      |> \.backing .~ (.template |> \.addOns .~ nil)
+
     let backing = Backing.template
       |> Backing.lens.status .~ .canceled
       |> Backing.lens.reward .~ reward
@@ -563,7 +567,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       |> Project.lens.personalization .. Project.Personalization.lens.backing .~ backing
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchManagePledgeViewBackingResult: .success(env),
       fetchProjectResponse: project
     )
 
@@ -664,6 +668,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       backingState: BackingState.pledged,
       bonusAmount: nil,
       currentUserIsCreatorOfProject: false,
+      isNoReward: false,
       locationName: "Brooklyn, NY",
       needsConversion: true,
       omitUSCurrencyCode: true,
@@ -683,6 +688,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       backingState: BackingState.pledged,
       bonusAmount: nil,
       currentUserIsCreatorOfProject: false,
+      isNoReward: false,
       locationName: "Brooklyn, NY",
       needsConversion: true,
       omitUSCurrencyCode: true,

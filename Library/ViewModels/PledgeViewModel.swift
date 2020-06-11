@@ -874,12 +874,13 @@ private func pledgeAmountSummaryViewData(with project: Project) -> PledgeAmountS
 
   return .init(
     bonusAmount: nil,
+    isNoReward: backing.reward?.isNoReward ?? false,
+    locationName: backing.locationName,
+    omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
     projectCountry: project.country,
     pledgeAmount: backing.amount,
     pledgedOn: backing.pledgedAt,
-    shippingAmount: backing.shippingAmount.flatMap(Double.init),
-    locationName: backing.locationName,
-    omitUSCurrencyCode: project.stats.omitUSCurrencyCode
+    shippingAmount: backing.shippingAmount.flatMap(Double.init)
   )
 }
 

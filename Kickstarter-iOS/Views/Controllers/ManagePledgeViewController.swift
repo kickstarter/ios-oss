@@ -175,9 +175,6 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     _ = self.pledgeDisclaimerView
       |> roundedStyle(cornerRadius: Styles.grid(2))
 
-    _ = self.rewardReceivedViewController.view
-      |> roundedStyle(cornerRadius: Styles.grid(2))
-
     _ = self.pledgeDetailsSectionLabel
       |> pledgeDetailsSectionLabelStyle
 

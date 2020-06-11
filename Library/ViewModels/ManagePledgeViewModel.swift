@@ -275,9 +275,7 @@ public final class ManagePledgeViewModel:
       backing.skip(first: 1).mapConst(nil)
     )
 
-    self.rewardReceivedViewControllerViewIsHidden = projectAndReward.map { _, reward in
-      reward.estimatedDeliveryOn == nil
-    }
+    self.rewardReceivedViewControllerViewIsHidden = latestRewardDeliveryDate.map { $0 == 0 }
 
     self.showSuccessBannerWithMessage = self.pledgeViewControllerDidUpdatePledgeWithMessageSignal
 
@@ -472,6 +470,14 @@ private func managePledgeSummaryViewData(
   with project: Project,
   envelope: ManagePledgeViewBackingEnvelope
 ) -> ManagePledgeSummaryViewData? {
+  let backedReward: Reward
+
+  if let backing = project.personalization.backing {
+    backedReward = reward(from: backing, inProject: project)
+  } else {
+    backedReward = Reward.noReward
+  }
+
   return .init(
     backerId: envelope.backing.backer.uid,
     backerName: envelope.backing.backer.name,
@@ -479,6 +485,7 @@ private func managePledgeSummaryViewData(
     backingState: envelope.backing.status,
     bonusAmount: envelope.backing.bonusAmount?.amount,
     currentUserIsCreatorOfProject: currentUserIsCreator(of: project),
+    isNoReward: backedReward.id == Reward.noReward.id,
     locationName: envelope.backing.location?.name,
     needsConversion: project.stats.needsConversion,
     omitUSCurrencyCode: project.stats.omitUSCurrencyCode,

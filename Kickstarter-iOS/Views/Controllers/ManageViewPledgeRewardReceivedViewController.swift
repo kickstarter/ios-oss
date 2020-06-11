@@ -99,5 +99,13 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
       .observeValues { [weak self] layoutMargins in
         self?.rootStackView.layoutMargins = layoutMargins
       }
+
+    self.viewModel.outputs.cornerRadius
+      .observeForUI()
+      .observeValues { [weak self] radius in
+        guard let self = self else { return }
+        _ = self.view
+          |> roundedStyle(cornerRadius: radius)
+      }
   }
 }
