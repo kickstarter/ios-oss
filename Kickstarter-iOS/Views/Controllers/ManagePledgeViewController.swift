@@ -236,6 +236,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         self?.dataSource.load(project: project, rewards: rewards)
         self?.configureHeaderView()
         self?.tableView.reloadData()
+        self?.tableView.layoutIfNeeded()
       }
 
     self.viewModel.outputs.loadPullToRefreshHeaderView
