@@ -144,6 +144,11 @@ final class ManagePledgeViewControllerTests: TestCase {
     let reward = Reward.noReward
 
     let backedProject = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+      )
       |> \.rewards .~ [reward]
 
     let envelope = ManagePledgeViewBackingEnvelope.template
@@ -200,6 +205,11 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
 
     let backedProject = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+      )
       |> \.rewards .~ [reward]
 
     let envelope = ManagePledgeViewBackingEnvelope.template
