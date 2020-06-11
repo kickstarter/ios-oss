@@ -470,13 +470,9 @@ private func managePledgeSummaryViewData(
   with project: Project,
   envelope: ManagePledgeViewBackingEnvelope
 ) -> ManagePledgeSummaryViewData? {
-  let backedReward: Reward
+  guard let backing = project.personalization.backing else { return nil }
 
-  if let backing = project.personalization.backing {
-    backedReward = reward(from: backing, inProject: project)
-  } else {
-    backedReward = Reward.noReward
-  }
+  let backedReward = reward(from: backing, inProject: project)
 
   return .init(
     backerId: envelope.backing.backer.uid,

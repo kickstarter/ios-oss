@@ -163,6 +163,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.configurePledgeSummaryView.assertDidNotEmitValue()
 
     let project = Project.template
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ Reward.noReward
+          |> Backing.lens.rewardId .~ Reward.noReward.id
+      )
 
     let envelope = ManagePledgeViewBackingEnvelope.template
 
@@ -178,7 +183,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       backingState: BackingState.pledged,
       bonusAmount: nil,
       currentUserIsCreatorOfProject: false,
-      isNoReward: false,
+      isNoReward: true,
       locationName: "Brooklyn, NY",
       needsConversion: false,
       omitUSCurrencyCode: true,
@@ -656,6 +661,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
   func testPledgeViewControllerDidUpdatePledge() {
     let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ Reward.noReward
+          |> Backing.lens.rewardId .~ Reward.noReward.id
+      )
 
     let envelope = ManagePledgeViewBackingEnvelope.template
       |> \.backing .~ (.template |> \.addOns .~ nil)
@@ -668,7 +678,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       backingState: BackingState.pledged,
       bonusAmount: nil,
       currentUserIsCreatorOfProject: false,
-      isNoReward: false,
+      isNoReward: true,
       locationName: "Brooklyn, NY",
       needsConversion: true,
       omitUSCurrencyCode: true,
@@ -688,7 +698,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       backingState: BackingState.pledged,
       bonusAmount: nil,
       currentUserIsCreatorOfProject: false,
-      isNoReward: false,
+      isNoReward: true,
       locationName: "Brooklyn, NY",
       needsConversion: true,
       omitUSCurrencyCode: true,
