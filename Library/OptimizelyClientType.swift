@@ -7,6 +7,7 @@ public protocol OptimizelyClientType: AnyObject {
   func getVariationKey(experimentKey: String, userId: String, attributes: [String: Any?]?) throws -> String
   func allExperiments() -> [String]
   func isFeatureEnabled(featureKey: String, userId: String, attributes: [String: Any?]?) -> Bool
+  func track(eventKey: String, userId: String, attributes: [String: Any?]?, eventTags: [String: Any]?) throws
 }
 
 extension OptimizelyClientType {
@@ -77,6 +78,16 @@ extension OptimizelyClientType {
       attributes: optimizelyUserAttributes()
     )
   }
+  
+  public func track(eventName: String) {
+    let userAttributes = optimizelyUserAttributes()
+    let userId = deviceIdentifier(uuid: UUID())
+
+    try? self.track(eventKey: eventName,
+                    userId: userId,
+                    attributes: userAttributes,
+                    eventTags: nil)
+  }
 }
 
 // MARK: - Tracking Properties
@@ -120,7 +131,7 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
     "optimizely_experiments": allExperiments
   ]
 }
-
+ 
 public func optimizelyUserAttributes(
   with project: Project? = nil,
   refTag: RefTag? = nil

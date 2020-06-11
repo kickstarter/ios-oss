@@ -351,6 +351,8 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
           cookieRefTag: cookieRefTag,
           optimizelyProperties: optyProperties ?? [:]
         )
+
+        AppEnvironment.current.optimizelyClient?.track(eventName: "Campaign Details Button Clicked")
       }
 
     projectAndRefTag
@@ -368,6 +370,8 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
           cookieRefTag: cookieRefTag,
           optimizelyProperties: optyProperties ?? [:]
         )
+        
+        AppEnvironment.current.optimizelyClient?.track(eventName: "Creator Details Clicked")
       }
   }
 
