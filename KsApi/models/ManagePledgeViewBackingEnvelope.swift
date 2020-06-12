@@ -14,7 +14,9 @@ public struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
     public var addOns: AddOns?
     public var amount: Money
     public var backer: Backer
+    public var backerCompleted: Bool
     public var bankAccount: BankAccount?
+    public var bonusAmount: Money?
     public var cancelable: Bool
     public var creditCard: CreditCard?
     public var errorReason: String?

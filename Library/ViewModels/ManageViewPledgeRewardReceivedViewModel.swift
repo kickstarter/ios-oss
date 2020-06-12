@@ -3,14 +3,26 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public struct ManageViewPledgeRewardReceivedViewData: Equatable {
+  public let project: Project
+  public let backerCompleted: Bool
+  public let estimatedDeliveryOn: TimeInterval
+  public let backingState: BackingState
+}
+
 public protocol ManageViewPledgeRewardReceivedViewModelInputs {
-  func configureWith(_ project: Project)
+  func configureWith(_ data: ManageViewPledgeRewardReceivedViewData)
   func rewardReceivedToggleTapped(isOn: Bool)
   func viewDidLoad()
 }
 
 public protocol ManageViewPledgeRewardReceivedViewModelOutputs {
+  var cornerRadius: Signal<CGFloat, Never> { get }
+  var estimatedDeliveryDateLabelAttributedText: Signal<NSAttributedString, Never> { get }
+  var layoutMargins: Signal<UIEdgeInsets, Never> { get }
+  var marginWidth: Signal<CGFloat, Never> { get }
   var rewardReceived: Signal<Bool, Never> { get }
+  var rewardReceivedHidden: Signal<Bool, Never> { get }
 }
 
 public protocol ManageViewPledgeRewardReceivedViewModelType {
@@ -23,12 +35,14 @@ public class ManageViewPledgeRewardReceivedViewModel:
   ManageViewPledgeRewardReceivedViewModelInputs,
   ManageViewPledgeRewardReceivedViewModelOutputs {
   public init() {
-    let project = Signal.combineLatest(
-      self.configureWithProjectProperty.signal,
+    let data = Signal.combineLatest(
+      self.configureWithDataProperty.signal,
       self.viewDidLoadSignal
     )
     .map(first)
     .skipNil()
+
+    let project = data.map(\.project)
 
     let backer = project
       .map { _ in AppEnvironment.current.currentUser }
@@ -48,11 +62,10 @@ public class ManageViewPledgeRewardReceivedViewModel:
       .materialize()
     }
 
-    let markedReceivedBacking = rewardReceivedEvent.values().map { $0 }
+    let markedReceivedBacking = rewardReceivedEvent.values()
 
-    let initialRewardReceived = project
-      .map { $0.personalization.backing?.backerCompleted }
-      .map { $0.coalesceWith(false) }
+    let initialRewardReceived = data
+      .map(\.backerCompleted)
 
     let updatedRewardReceived = markedReceivedBacking
       .map { $0.backerCompleted.coalesceWith(false) }
@@ -61,11 +74,19 @@ public class ManageViewPledgeRewardReceivedViewModel:
       initialRewardReceived,
       updatedRewardReceived
     )
+
+    self.estimatedDeliveryDateLabelAttributedText = data.map(\.estimatedDeliveryOn)
+      .map(estimatedDeliveryAttributedText)
+
+    self.rewardReceivedHidden = data.map(\.backingState).map { state in state != .collected }
+    self.cornerRadius = self.rewardReceivedHidden.map { $0 ? 0 : Styles.grid(2) }
+    self.layoutMargins = self.rewardReceivedHidden.map { $0 ? .zero : .init(all: Styles.gridHalf(5)) }
+    self.marginWidth = self.rewardReceivedHidden.map { $0 ? 0 : 1 }
   }
 
-  private let configureWithProjectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(_ project: Project) {
-    self.configureWithProjectProperty.value = project
+  private let configureWithDataProperty = MutableProperty<ManageViewPledgeRewardReceivedViewData?>(nil)
+  public func configureWith(_ data: ManageViewPledgeRewardReceivedViewData) {
+    self.configureWithDataProperty.value = data
   }
 
   private let rewardReceivedToggleTappedProperty = MutableProperty<Bool>(false)
@@ -78,8 +99,42 @@ public class ManageViewPledgeRewardReceivedViewModel:
     self.viewDidLoadObserver.send(value: ())
   }
 
+  public let cornerRadius: Signal<CGFloat, Never>
+  public let estimatedDeliveryDateLabelAttributedText: Signal<NSAttributedString, Never>
+  public let layoutMargins: Signal<UIEdgeInsets, Never>
+  public let marginWidth: Signal<CGFloat, Never>
   public let rewardReceived: Signal<Bool, Never>
+  public let rewardReceivedHidden: Signal<Bool, Never>
 
   public var inputs: ManageViewPledgeRewardReceivedViewModelInputs { return self }
   public var outputs: ManageViewPledgeRewardReceivedViewModelOutputs { return self }
+}
+
+private func estimatedDeliveryAttributedText(with date: TimeInterval) -> NSAttributedString {
+  let dateString = Format.date(
+    secondsInUTC: date,
+    template: DateFormatter.monthYear,
+    timeZone: UTCTimeZone
+  )
+  let string = Strings.backing_info_estimated_delivery_date(delivery_date: dateString)
+
+  let font = UIFont.ksr_subhead()
+
+  let attributedText = NSMutableAttributedString(attributedString: string
+    .attributed(
+      with: font,
+      foregroundColor: .ksr_text_dark_grey_500,
+      attributes: [:],
+      bolding: [string.replacingOccurrences(of: dateString, with: "")]
+    ))
+
+  attributedText.setAttributes(
+    [
+      .font: font,
+      .foregroundColor: UIColor.ksr_text_black
+    ],
+    range: (string as NSString).range(of: dateString)
+  )
+
+  return attributedText
 }

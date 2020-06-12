@@ -70,7 +70,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   }()
 
   private lazy var pledgeDetailsSectionViews = {
-    [pledgeDetailsSectionLabel, self.rewardReceivedViewController.view, self.pledgeDisclaimerView]
+    [self.pledgeDetailsSectionLabel, self.rewardReceivedViewController.view, self.pledgeDisclaimerView]
   }()
 
   private lazy var pledgeDisclaimerView: PledgeDisclaimerView = {
@@ -187,6 +187,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.pledgeDetailsSectionLabel.rac.text = self.viewModel.outputs.pledgeDetailsSectionLabelText
     self.pledgeDisclaimerView.rac.hidden = self.viewModel.outputs.pledgeDisclaimerViewHidden
     self.rewardReceivedViewController.view.rac.hidden =
       self.viewModel.outputs.rewardReceivedViewControllerViewIsHidden
@@ -223,10 +224,10 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         self?.pledgeSummaryViewController.configureWith(data)
       }
 
-    self.viewModel.outputs.configureRewardReceivedWithProject
+    self.viewModel.outputs.configureRewardReceivedWithData
       .observeForControllerAction()
-      .observeValues { [weak self] project in
-        self?.rewardReceivedViewController.configureWith(project: project)
+      .observeValues { [weak self] data in
+        self?.rewardReceivedViewController.configureWith(data: data)
       }
 
     self.viewModel.outputs.loadProjectAndRewardsIntoDataSource
@@ -235,6 +236,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         self?.dataSource.load(project: project, rewards: rewards)
         self?.configureHeaderView()
         self?.tableView.reloadData()
+        self?.tableView.layoutIfNeeded()
       }
 
     self.viewModel.outputs.loadPullToRefreshHeaderView
@@ -586,7 +588,6 @@ extension ManagePledgeViewController: ManagePledgePaymentMethodViewDelegate {
 private let pledgeDetailsSectionLabelStyle: LabelStyle = { label in
   label
     |> checkoutTitleLabelStyle
-    |> \.text %~ { _ in Strings.Selected_reward() } // FIXME: context-specific
 }
 
 extension ManagePledgeViewController: MessageDialogViewControllerDelegate {

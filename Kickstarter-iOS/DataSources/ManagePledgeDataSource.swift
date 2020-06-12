@@ -12,7 +12,9 @@ internal final class ManagePledgeDataSource: ValueCellDataSource {
   internal func load(project: Project, rewards: [Reward]) {
     self.clearValues()
 
-    let values = rewards.map { reward in (project, reward) }
+    let values = rewards.map { reward -> RewardCardViewData in
+      (project, reward, .manage)
+    }
 
     self.set(
       values: values,
@@ -23,7 +25,7 @@ internal final class ManagePledgeDataSource: ValueCellDataSource {
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as RewardTableViewCell, value as (Project, Reward)):
+    case let (cell as RewardTableViewCell, value as RewardCardViewData):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value).")

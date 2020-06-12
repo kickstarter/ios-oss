@@ -60,8 +60,8 @@ final class RewardTableViewCell: UITableViewCell, ValueCell {
       |> containerViewStyle
   }
 
-  internal func configureWith(value: (project: Project, reward: Reward)) {
-    self.rewardCardView.configure(with: (value.project, .left(value.reward)))
+  internal func configureWith(value: RewardCardViewData) {
+    self.rewardCardView.configure(with: value)
 
     self.contentView.setNeedsLayout()
     self.contentView.layoutIfNeeded()

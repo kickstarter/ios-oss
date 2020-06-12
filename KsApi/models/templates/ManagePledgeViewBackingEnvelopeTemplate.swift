@@ -12,6 +12,7 @@ extension ManagePledgeViewBackingEnvelope.Backing {
     addOns: .template,
     amount: Money(amount: 179.0, currency: .usd, symbol: "$"),
     backer: .init(uid: 1_234, name: "Backer McGee"),
+    backerCompleted: false,
     bankAccount: nil,
     cancelable: true,
     creditCard: .init(
