@@ -232,8 +232,12 @@ final class ThanksViewModelTests: TestCase {
 
     let project = Project.template
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
+    let mockOptimizelyClient = MockOptimizelyClient()
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+    withEnvironment(
+      apiService: MockService(fetchDiscoveryResponse: response),
+      optimizelyClient: mockOptimizelyClient
+    ) {
       self.vm.inputs.configure(with: (project, Reward.template, nil))
       self.vm.inputs.viewDidLoad()
 
@@ -254,6 +258,7 @@ final class ThanksViewModelTests: TestCase {
         ],
         self.trackingClient.events
       )
+      XCTAssertEqual("Project Card Clicked", mockOptimizelyClient.trackedEventKey)
     }
   }
 
