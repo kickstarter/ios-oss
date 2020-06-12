@@ -339,7 +339,7 @@ private func rewardCardInViewController(
     view.bottomAnchor.constraint(lessThanOrEqualTo: controller.view.layoutMarginsGuide.bottomAnchor)
   ])
 
-  view.configure(with: (project: project, reward: .init(left: reward)))
+  view.configure(with: (project: project, reward: reward, context: .pledge))
 
   return parent
 }

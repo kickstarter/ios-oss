@@ -8,7 +8,9 @@ public struct ManagePledgeSummaryViewData: Equatable {
   public let backerName: String
   public let backerSequence: Int
   public let backingState: BackingState
+  public let bonusAmount: Double?
   public let currentUserIsCreatorOfProject: Bool
+  public let isNoReward: Bool
   public let locationName: String?
   public let needsConversion: Bool
   public let omitUSCurrencyCode: Bool
@@ -126,12 +128,14 @@ private func pledgeAmountSummaryViewData(
   with data: ManagePledgeSummaryViewData
 ) -> PledgeAmountSummaryViewData {
   return .init(
+    bonusAmount: data.bonusAmount,
+    isNoReward: data.isNoReward,
+    locationName: data.locationName,
+    omitUSCurrencyCode: data.omitUSCurrencyCode,
     projectCountry: data.projectCountry,
     pledgeAmount: data.pledgeAmount,
     pledgedOn: data.pledgedOn,
-    shippingAmount: data.shippingAmount,
-    locationName: data.locationName,
-    omitUSCurrencyCode: data.omitUSCurrencyCode
+    shippingAmount: data.shippingAmount
   )
 }
 

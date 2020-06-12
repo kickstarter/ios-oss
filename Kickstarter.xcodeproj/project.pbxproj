@@ -363,6 +363,7 @@
 		80EAEF051D243C4E008C2353 /* Backing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80EAEF031D243C4E008C2353 /* Backing.storyboard */; };
 		8A05CB0E23DB82D3002B01EE /* CookieRefTagFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */; };
 		8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A072D39230223B200BA1538 /* UIImage+Color.swift */; };
+		8A0B14D7248EB8BE00EBD985 /* Reward+ManagePledgeViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0B14D6248EB8BE00EBD985 /* Reward+ManagePledgeViewTests.swift */; };
 		8A142EBD23354BFD00FB43AB /* AddNewCardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */; };
 		8A14E09723971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */; };
 		8A1E3CE6240F45FA0093BDA7 /* ProjectCreatorDetailsShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1E3CE5240F45FA0093BDA7 /* ProjectCreatorDetailsShimmerLoadingView.swift */; };
@@ -378,6 +379,8 @@
 		8A297910234EA8FD0039396D /* PledgeAmountSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A29790F234EA8FD0039396D /* PledgeAmountSummaryViewModel.swift */; };
 		8A297912234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A297911234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift */; };
 		8A2A2E2E238B3CBE002C62E0 /* UIView+ShimmerLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A2E2D238B3CBE002C62E0 /* UIView+ShimmerLoading.swift */; };
+		8A30C6B12491683C00EE12E4 /* ManagePledgeViewQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A30C6B02491683C00EE12E4 /* ManagePledgeViewQueries.swift */; };
+		8A30C6B32491689300EE12E4 /* ManagePledgeViewQueriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A30C6B22491689300EE12E4 /* ManagePledgeViewQueriesTests.swift */; };
 		8A32AE9623EA1DC0005CEA57 /* Project.CategoryTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A32AE9523EA1DC0005CEA57 /* Project.CategoryTemplates.swift */; };
 		8A3BF51923F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3BF51823F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift */; };
 		8A3BF51E23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */; };
@@ -448,6 +451,7 @@
 		8ACF558923E8D467001654A2 /* TryDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF558823E8D467001654A2 /* TryDecodable.swift */; };
 		8ACF558F23EA08DB001654A2 /* TryDecodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF558E23EA08DB001654A2 /* TryDecodableTests.swift */; };
 		8ACF95AE248957B10064FC4C /* ManagePledgeDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF95AD248957B10064FC4C /* ManagePledgeDataSourceTests.swift */; };
+		8ACF95B02489C60F0064FC4C /* Reward+ManagePledgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF95AF2489C60F0064FC4C /* Reward+ManagePledgeView.swift */; };
 		8AD13A3F2436AF55009BF879 /* ProjectSummaryCarouselCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD13A3E2436AF55009BF879 /* ProjectSummaryCarouselCellViewModelTests.swift */; };
 		8AD48633235939AF00A1463E /* StripeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD48632235939AF00A1463E /* StripeTypes.swift */; };
 		8AD486352359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD486342359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift */; };
@@ -1854,6 +1858,7 @@
 		80EAEF031D243C4E008C2353 /* Backing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Backing.storyboard; sourceTree = "<group>"; };
 		8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieRefTagFunctions.swift; sourceTree = "<group>"; };
 		8A072D39230223B200BA1538 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
+		8A0B14D6248EB8BE00EBD985 /* Reward+ManagePledgeViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reward+ManagePledgeViewTests.swift"; sourceTree = "<group>"; };
 		8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardIntent.swift; sourceTree = "<group>"; };
 		8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationShimmerLoadingView.swift; sourceTree = "<group>"; };
 		8A1E3CE5240F45FA0093BDA7 /* ProjectCreatorDetailsShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCreatorDetailsShimmerLoadingView.swift; sourceTree = "<group>"; };
@@ -1869,6 +1874,8 @@
 		8A29790F234EA8FD0039396D /* PledgeAmountSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAmountSummaryViewModel.swift; sourceTree = "<group>"; };
 		8A297911234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeAmountSummaryViewModelTests.swift; sourceTree = "<group>"; };
 		8A2A2E2D238B3CBE002C62E0 /* UIView+ShimmerLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ShimmerLoading.swift"; sourceTree = "<group>"; };
+		8A30C6B02491683C00EE12E4 /* ManagePledgeViewQueries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewQueries.swift; sourceTree = "<group>"; };
+		8A30C6B22491689300EE12E4 /* ManagePledgeViewQueriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewQueriesTests.swift; sourceTree = "<group>"; };
 		8A32AE9523EA1DC0005CEA57 /* Project.CategoryTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.CategoryTemplates.swift; sourceTree = "<group>"; };
 		8A3BF51823F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTelephonyNetworkInfoType.swift; sourceTree = "<group>"; };
 		8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCoreTelephonyNetworkInfo.swift; sourceTree = "<group>"; };
@@ -1936,6 +1943,7 @@
 		8ACF558823E8D467001654A2 /* TryDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryDecodable.swift; sourceTree = "<group>"; };
 		8ACF558E23EA08DB001654A2 /* TryDecodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryDecodableTests.swift; sourceTree = "<group>"; };
 		8ACF95AD248957B10064FC4C /* ManagePledgeDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeDataSourceTests.swift; sourceTree = "<group>"; };
+		8ACF95AF2489C60F0064FC4C /* Reward+ManagePledgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reward+ManagePledgeView.swift"; sourceTree = "<group>"; };
 		8AD13A3E2436AF55009BF879 /* ProjectSummaryCarouselCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSummaryCarouselCellViewModelTests.swift; sourceTree = "<group>"; };
 		8AD48632235939AF00A1463E /* StripeTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeTypes.swift; sourceTree = "<group>"; };
 		8AD486342359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPPaymentHandler+StripePaymentHandlerActionStatus.swift"; sourceTree = "<group>"; };
@@ -2969,6 +2977,8 @@
 		7798B5292174F3BC008BC50D /* queries */ = {
 			isa = PBXGroup;
 			children = (
+				8A30C6B02491683C00EE12E4 /* ManagePledgeViewQueries.swift */,
+				8A30C6B22491689300EE12E4 /* ManagePledgeViewQueriesTests.swift */,
 				D6DC652E21768502008CF69C /* Queryable.swift */,
 				7798B5602174F3CD008BC50D /* UserQueries.swift */,
 				7798B5662175035E008BC50D /* UserQueriesTests.swift */,
@@ -3418,7 +3428,6 @@
 				77C9122823C4FC0B00F3D2C9 /* ApplePayCapabilities.swift */,
 				77C9122E23C508CF00F3D2C9 /* ApplePayCapabilitiesTests.swift */,
 				A7C725791C85D36D005A016B /* AssetImageGeneratorType.swift */,
-				8AF3EBD32466134A007598BF /* Backing+PledgeAmount.swift */,
 				374CB94E22C17D4E00B84219 /* CharacterSet.swift */,
 				374CB95022C17D6700B84219 /* CharacterSetTests.swift */,
 				A7FC8C051C8F1DEA00C3B49B /* CircleAvatarImageView.swift */,
@@ -3562,7 +3571,6 @@
 				A7ED1F251E830FDC00BFFA01 /* UILabel+SimpleHTMLTests.swift */,
 				D0D77C1D22D3FC3400356FEA /* UIPageViewController+ThreadSafety.swift */,
 				A7C725991C85D36D005A016B /* UIPress-Extensions.swift */,
-				8A6C58922475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift */,
 				A78537E11CB5422100385B73 /* UIScreenType.swift */,
 				A7169BF51DDD064200480C0D /* UIScrollView+Extensions.swift */,
 				37FDAF702273B7FF00662CC8 /* UIStackView.swift */,
@@ -4263,6 +4271,8 @@
 				D01587E11EEB2ED7006E7684 /* PushEnvelope.swift */,
 				D01587E21EEB2ED7006E7684 /* PushEnvelopeTests.swift */,
 				D01587E31EEB2ED7006E7684 /* Reward.swift */,
+				8ACF95AF2489C60F0064FC4C /* Reward+ManagePledgeView.swift */,
+				8A0B14D6248EB8BE00EBD985 /* Reward+ManagePledgeViewTests.swift */,
 				D01587E41EEB2ED7006E7684 /* RewardsItem.swift */,
 				D01587E51EEB2ED7006E7684 /* RewardsItemTests.swift */,
 				D01587E61EEB2ED7006E7684 /* RewardTests.swift */,
@@ -5933,6 +5943,7 @@
 				D0158A161EEB30A2006E7684 /* ItemTemplates.swift in Sources */,
 				D63BBD33217F9CDE007E01F0 /* GraphCreditCardTemplate.swift in Sources */,
 				D01588D71EEB2ED7006E7684 /* UpdateLenses.swift in Sources */,
+				8A30C6B12491683C00EE12E4 /* ManagePledgeViewQueries.swift in Sources */,
 				D01588FF1EEB2ED7006E7684 /* Project.swift in Sources */,
 				D002CAE1218CF8F1009783F2 /* WatchProjectMutation.swift in Sources */,
 				D0158A1D1EEB30A2006E7684 /* ProjectStatsEnvelope.CumulativeStatsTemplates.swift in Sources */,
@@ -5960,6 +5971,7 @@
 				D0158A0A1EEB30A2006E7684 /* BackingTemplates.swift in Sources */,
 				D67F29361F68333800E399A6 /* GraphSchema.swift in Sources */,
 				D6B686E92191FE5E005F5DA7 /* EmptyInput.swift in Sources */,
+				8ACF95B02489C60F0064FC4C /* Reward+ManagePledgeView.swift in Sources */,
 				D0158A2A1EEB30A2006E7684 /* SurveyResponseTemplates.swift in Sources */,
 				D6ED38A21F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift in Sources */,
 				D01588911EEB2ED7006E7684 /* DiscoveryEnvelopeLenses.swift in Sources */,
@@ -6142,6 +6154,7 @@
 				D0D10C0C1EEB4550005EBAD0 /* FindFriendsEnvelopeTests.swift in Sources */,
 				D0D10C141EEB4550005EBAD0 /* Project.VideoTests.swift in Sources */,
 				D0D10C181EEB4550005EBAD0 /* RewardsItemTests.swift in Sources */,
+				8A30C6B32491689300EE12E4 /* ManagePledgeViewQueriesTests.swift in Sources */,
 				8AF34C7F2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift in Sources */,
 				D0D10C131EEB4550005EBAD0 /* Project.PhotoTests.swift in Sources */,
 				D0D10C071EEB4550005EBAD0 /* CommentTests.swift in Sources */,
@@ -6152,6 +6165,7 @@
 				D0D10C151EEB4550005EBAD0 /* ProjectStatsEnvelopeTests.swift in Sources */,
 				D0D10C221EEB4550005EBAD0 /* UserTests.swift in Sources */,
 				8A8F5CD52435108000007DB4 /* ProjectSummaryEnvelopeTests.swift in Sources */,
+				8A0B14D7248EB8BE00EBD985 /* Reward+ManagePledgeViewTests.swift in Sources */,
 				D0D10C171EEB4550005EBAD0 /* PushEnvelopeTests.swift in Sources */,
 				D0D10C1D1EEB4550005EBAD0 /* UpdatePledgeEnvelopeTests.swift in Sources */,
 				D0D10C0E1EEB4550005EBAD0 /* ItemTests.swift in Sources */,

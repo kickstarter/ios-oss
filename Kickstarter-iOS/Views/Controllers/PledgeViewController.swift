@@ -150,6 +150,7 @@ final class PledgeViewController: UIViewController,
     self.view.addGestureRecognizer(self.keyboardDimissingTapGestureRecognizer)
 
     self.configureChildViewControllers()
+    self.configureDisclaimerView()
     self.setupConstraints()
 
     self.viewModel.inputs.viewDidLoad()
@@ -445,6 +446,11 @@ final class PledgeViewController: UIViewController,
 
   // MARK: - Functions
 
+  private func configureDisclaimerView() {
+    guard let attributedText = attributedLearnMoreText() else { return }
+    self.pledgeDisclaimerView.configure(with: ("icon-not-a-store", attributedText))
+  }
+
   private func goToLoginSignup(with intent: LoginIntent, project: Project, reward: Reward) {
     let loginSignupViewController = LoginToutViewController.configuredWith(
       loginIntent: intent,
@@ -590,7 +596,7 @@ extension PledgeViewController: PledgePaymentMethodsViewControllerDelegate {
 // MARK: - PledgeDisclaimerViewDelegate
 
 extension PledgeViewController: PledgeDisclaimerViewDelegate {
-  func pledgeDisclaimerViewDidTapLearnMore(_: PledgeDisclaimerView) {
+  func pledgeDisclaimerView(_: PledgeDisclaimerView, didTapURL _: URL) {
     self.viewModel.inputs.pledgeDisclaimerViewDidTapLearnMore()
   }
 }
@@ -620,4 +626,50 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ NSLayoutConstraint.Axis.vertical
     |> \.spacing .~ Styles.grid(4)
+}
+
+// MARK: - Functions
+
+private func attributedLearnMoreText() -> NSAttributedString? {
+  guard let trustLink = HelpType.trust.url(
+    withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
+  )?.absoluteString else { return nil }
+
+  let paragraphStyle = NSMutableParagraphStyle()
+  paragraphStyle.lineSpacing = 2
+
+  let attributedLine1String = Strings.Kickstarter_is_not_a_store()
+    .attributed(
+      with: UIFont.ksr_footnote(),
+      foregroundColor: .ksr_text_dark_grey_500,
+      attributes: [.paragraphStyle: paragraphStyle],
+      bolding: [Strings.Kickstarter_is_not_a_store()]
+    )
+
+  let line2String = Strings.Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability(
+    trust_link: trustLink
+  )
+
+  guard let attributedLine2String = try? NSMutableAttributedString(
+    data: Data(line2String.utf8),
+    options: [
+      .documentType: NSAttributedString.DocumentType.html,
+      .characterEncoding: String.Encoding.utf8.rawValue
+    ],
+    documentAttributes: nil
+  ) else { return nil }
+
+  let attributes: String.Attributes = [
+    .font: UIFont.ksr_footnote(),
+    .foregroundColor: UIColor.ksr_text_dark_grey_500,
+    .paragraphStyle: paragraphStyle,
+    .underlineStyle: 0
+  ]
+
+  let fullRange = (attributedLine2String.string as NSString).range(of: attributedLine2String.string)
+  attributedLine2String.addAttributes(attributes, range: fullRange)
+
+  let attributedString = attributedLine1String + NSAttributedString(string: "\n") + attributedLine2String
+
+  return attributedString
 }

@@ -2,8 +2,19 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public enum RewardCardViewContext {
+  case pledge
+  case manage
+}
+
+public typealias RewardCardViewData = (
+  project: Project,
+  reward: Reward,
+  context: RewardCardViewContext
+)
+
 public protocol RewardCardViewModelInputs {
-  func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>)
+  func configure(with data: RewardCardViewData)
   func rewardCardTapped()
 }
 
@@ -21,7 +32,7 @@ public protocol RewardCardViewModelOutputs {
   var rewardMinimumLabelText: Signal<String, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
   var rewardTitleLabelHidden: Signal<Bool, Never> { get }
-  var rewardTitleLabelText: Signal<String, Never> { get }
+  var rewardTitleLabelAttributedText: Signal<NSAttributedString, Never> { get }
 }
 
 public protocol RewardCardViewModelType {
@@ -32,52 +43,31 @@ public protocol RewardCardViewModelType {
 public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewModelInputs,
   RewardCardViewModelOutputs {
   public init() {
-    let projectAndRewardOrBacking: Signal<(Project, Either<Reward, Backing>), Never> =
-      self.projectAndRewardOrBackingProperty.signal
-        .skipNil()
-        .map { ($0.0, $0.1) }
+    let configData = self.configDataProperty.signal
+      .skipNil()
 
-    let project: Signal<Project, Never> = projectAndRewardOrBacking.map(first)
+    let context = configData.map(third)
 
-    let reward: Signal<Reward, Never> = projectAndRewardOrBacking
-      .map { project, rewardOrBacking -> Reward in
-        rewardOrBacking.left
-          ?? rewardOrBacking.right?.reward
-          ?? backingReward(fromProject: project)
-          ?? Reward.noReward
-      }
+    let project: Signal<Project, Never> = configData.map(first)
+    let reward: Signal<Reward, Never> = configData.map(second)
 
     let projectAndReward = Signal.zip(project, reward)
 
     self.conversionLabelHidden = project.map(needsConversion(project:) >>> negate)
-    /* The conversion logic here is currently the same as what we already have, but note that
-     this will likely change to make rounding more consistent
-     */
-    self.conversionLabelText = projectAndRewardOrBacking
+
+    self.conversionLabelText = projectAndReward
       .filter(first >>> needsConversion(project:))
-      .map { project, rewardOrBacking in
-        let (country, rate) = zip(
-          project.stats.currentCountry,
-          project.stats.currentCurrencyRate
-        ) ?? (.us, project.stats.staticUsdRate)
-        switch rewardOrBacking {
-        case let .left(reward):
-          return Format.currency(
-            reward.convertedMinimum,
-            country: country,
-            omitCurrencyCode: project.stats.omitUSCurrencyCode
-          )
-        case let .right(backing):
-          return Format.currency(
-            Int(ceil(Float(backing.amount) * rate)),
-            country: country,
-            omitCurrencyCode: project.stats.omitUSCurrencyCode
-          )
-        }
+      .map { project, reward in
+        Format.currency(
+          reward.convertedMinimum,
+          country: project.stats.currentCountry ?? .us,
+          omitCurrencyCode: project.stats.omitUSCurrencyCode
+        )
       }
       .map(Strings.About_reward_amount(reward_amount:))
 
-    self.rewardMinimumLabelText = projectAndRewardOrBacking
+    self.rewardMinimumLabelText = projectAndReward
+      .map { project, reward in (project, Either<Reward, Backing>.left(reward)) }
       .map(formattedAmountForRewardOrBacking(project:rewardOrBacking:))
 
     self.descriptionLabelText = projectAndReward
@@ -86,7 +76,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
     self.rewardTitleLabelHidden = reward
       .map { $0.title == nil && !$0.isNoReward }
 
-    self.rewardTitleLabelText = projectAndReward
+    self.rewardTitleLabelAttributedText = projectAndReward
       .map(rewardTitle(project:reward:))
 
     let rewardItemsIsEmpty = reward
@@ -115,13 +105,16 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
 
     self.cardUserInteractionIsEnabled = rewardAvailable
 
-    self.estimatedDeliveryDateLabelHidden = reward.map { $0.estimatedDeliveryOn }.map(isNil)
+    self.estimatedDeliveryDateLabelHidden = context.combineLatest(with: reward)
+      .map { context, reward in
+        context == .manage || reward.estimatedDeliveryOn == nil
+      }
     self.estimatedDeliveryDateLabelText = reward.map(estimatedDeliveryText(with:)).skipNil()
   }
 
-  private let projectAndRewardOrBackingProperty = MutableProperty<(Project, Either<Reward, Backing>)?>(nil)
-  public func configureWith(project: Project, rewardOrBacking: Either<Reward, Backing>) {
-    self.projectAndRewardOrBackingProperty.value = (project, rewardOrBacking)
+  private let configDataProperty = MutableProperty<RewardCardViewData?>(nil)
+  public func configure(with data: RewardCardViewData) {
+    self.configDataProperty.value = data
   }
 
   private let rewardCardTappedProperty = MutableProperty(())
@@ -142,7 +135,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let rewardMinimumLabelText: Signal<String, Never>
   public let rewardSelected: Signal<Int, Never>
   public let rewardTitleLabelHidden: Signal<Bool, Never>
-  public let rewardTitleLabelText: Signal<String, Never>
+  public let rewardTitleLabelAttributedText: Signal<NSAttributedString, Never>
 
   public var inputs: RewardCardViewModelInputs { return self }
   public var outputs: RewardCardViewModelOutputs { return self }
@@ -179,17 +172,46 @@ private func localizedDescription(project: Project, reward: Reward) -> String {
   return reward.description
 }
 
-private func rewardTitle(project: Project, reward: Reward) -> String {
+private func rewardTitle(project: Project, reward: Reward) -> NSAttributedString {
   guard project.personalization.isBacking == true else {
-    return reward.isNoReward ? Strings.Pledge_without_a_reward() : reward.title.coalesceWith("")
+    return NSAttributedString(
+      string: reward.isNoReward ? Strings.Pledge_without_a_reward() : reward.title.coalesceWith("")
+    )
   }
 
   if reward.isNoReward {
-    return userIsBacking(reward: reward, inProject: project)
+    let string = userIsBacking(reward: reward, inProject: project)
       ? Strings.You_pledged_without_a_reward() : Strings.Pledge_without_a_reward()
+
+    return NSAttributedString(string: string)
   }
 
-  return reward.title.coalesceWith("")
+  let attributes: [NSAttributedString.Key: Any] = [
+    .font: UIFont.ksr_title2().bolded
+  ]
+
+  let title = reward.title.coalesceWith("")
+  let titleAttributed = title.attributed(
+    with: UIFont.ksr_title2(),
+    foregroundColor: UIColor.ksr_soft_black,
+    attributes: attributes,
+    bolding: [title]
+  )
+
+  guard
+    let selectedQuantity = reward.addOnData?.selectedQuantity,
+    selectedQuantity > 0
+  else { return titleAttributed }
+
+  let qty = "\(selectedQuantity) x "
+  let qtyAttributed = qty.attributed(
+    with: UIFont.ksr_title2(),
+    foregroundColor: UIColor.ksr_green_500,
+    attributes: attributes,
+    bolding: [title]
+  )
+
+  return qtyAttributed + titleAttributed
 }
 
 private func pillValues(project: Project, reward: Reward) -> [String] {
