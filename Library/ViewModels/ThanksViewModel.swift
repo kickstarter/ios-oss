@@ -199,6 +199,8 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
         location: .thanks,
         optimizelyProperties: optyProperties
       )
+
+      AppEnvironment.current.optimizelyClient?.track(eventName: "Project Card Clicked")
     }
 
     Signal.combineLatest(
