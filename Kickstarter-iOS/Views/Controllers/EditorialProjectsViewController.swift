@@ -194,12 +194,12 @@ public final class EditorialProjectsViewController: UIViewController {
   // MARK: - Layout
 
   private func configureSubviews() {
+    _ = (self.headerView, self.view)
+      |> ksr_addSubviewToParent()
+
     _ = (self.discoveryPageViewController.view, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
-
-    _ = (self.headerView, self.view)
-      |> ksr_addSubviewToParent()
 
     _ = (self.headerTopLayoutGuide, self.headerView)
       |> ksr_addLayoutGuideToView()

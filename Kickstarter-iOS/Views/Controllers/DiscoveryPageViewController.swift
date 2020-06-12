@@ -314,7 +314,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
     self.viewModel.outputs.backgroundColor
       .observeForUI()
       .observeValues { [weak self] backgroundColor in
-        guard let self = self else { return }
+        guard let self = self, !(self.parent is EditorialProjectsViewController) else { return }
 
         _ = self.view
           |> \.backgroundColor .~ backgroundColor
