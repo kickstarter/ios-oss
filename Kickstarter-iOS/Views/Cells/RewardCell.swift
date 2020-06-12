@@ -85,7 +85,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> scrollViewStyle
   }
 
-  internal func configureWith(value: (project: Project, reward: Either<Reward, Backing>)) {
+  internal func configureWith(value: RewardCardViewData) {
     self.rewardCardContainerView.configure(with: value)
   }
 

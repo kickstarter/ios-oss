@@ -27,6 +27,11 @@ final class ManagePledgeViewControllerTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
     let backedProject = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+      )
       |> \.rewards .~ [reward]
 
     let envelope = ManagePledgeViewBackingEnvelope.template
@@ -63,6 +68,9 @@ final class ManagePledgeViewControllerTests: TestCase {
         // endRefreshing is delayed by 300ms for animation duration
         self.scheduler.advance(by: .milliseconds(300))
 
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
+
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
@@ -80,6 +88,11 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
     let backedProject = Project.cosmicSurgery
       |> Project.lens.creator.id .~ 1
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+      )
       |> \.rewards .~ [reward]
 
     let envelope = ManagePledgeViewBackingEnvelope.template
@@ -114,6 +127,9 @@ final class ManagePledgeViewControllerTests: TestCase {
       // endRefreshing is delayed by 300ms for animation duration
       self.scheduler.advance(by: .milliseconds(300))
 
+      controller.tableView.layoutIfNeeded()
+      controller.tableView.reloadData()
+
       FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
     }
   }
@@ -128,6 +144,11 @@ final class ManagePledgeViewControllerTests: TestCase {
     let reward = Reward.noReward
 
     let backedProject = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+      )
       |> \.rewards .~ [reward]
 
     let envelope = ManagePledgeViewBackingEnvelope.template
@@ -166,6 +187,9 @@ final class ManagePledgeViewControllerTests: TestCase {
       // endRefreshing is delayed by 300ms for animation duration
       self.scheduler.advance(by: .milliseconds(300))
 
+      controller.tableView.layoutIfNeeded()
+      controller.tableView.reloadData()
+
       FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
     }
   }
@@ -181,6 +205,11 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
 
     let backedProject = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+      )
       |> \.rewards .~ [reward]
 
     let envelope = ManagePledgeViewBackingEnvelope.template
@@ -219,6 +248,9 @@ final class ManagePledgeViewControllerTests: TestCase {
       // endRefreshing is delayed by 300ms for animation duration
       self.scheduler.advance(by: .milliseconds(300))
 
+      controller.tableView.layoutIfNeeded()
+      controller.tableView.reloadData()
+
       FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
     }
   }
@@ -232,6 +264,11 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
 
     let backedProject = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+      )
       |> \.rewards .~ [reward]
 
     let envelope = ManagePledgeViewBackingEnvelope.template
@@ -267,6 +304,9 @@ final class ManagePledgeViewControllerTests: TestCase {
 
         // endRefreshing is delayed by 300ms for animation duration
         self.scheduler.advance(by: .milliseconds(300))
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }

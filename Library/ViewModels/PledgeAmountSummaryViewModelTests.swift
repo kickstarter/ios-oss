@@ -9,6 +9,8 @@ import XCTest
 final class PledgeAmountSummaryViewModelTests: TestCase {
   private let vm: PledgeAmountSummaryViewModelType = PledgeAmountSummaryViewModel()
 
+  private let bonusAmountText = TestObserver<String, Never>()
+  private let bonusAmountStackViewIsHidden = TestObserver<Bool, Never>()
   private let pledgeAmountText = TestObserver<String, Never>()
   private let shippingAmountText = TestObserver<String, Never>()
   private let shippingLocationStackViewIsHidden = TestObserver<Bool, Never>()
@@ -17,6 +19,10 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.bonusAmountText.map { $0.string }
+      .observe(self.bonusAmountText.observer)
+    self.vm.outputs.bonusAmountStackViewIsHidden
+      .observe(self.bonusAmountStackViewIsHidden.observer)
     self.vm.outputs.pledgeAmountText.map { $0.string }
       .observe(self.pledgeAmountText.observer)
     self.vm.outputs.shippingAmountText.map { $0.string }
@@ -28,17 +34,20 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
 
   func testTextOutputsEmitTheCorrectValue() {
     let data = PledgeAmountSummaryViewData(
+      bonusAmount: 5,
+      isNoReward: false,
+      locationName: "United States",
+      omitUSCurrencyCode: true,
       projectCountry: Project.Country.us,
       pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,
-      shippingAmount: 7.0,
-      locationName: "United States",
-      omitUSCurrencyCode: true
+      shippingAmount: 7.0
     )
 
     self.vm.inputs.configureWith(data)
     self.vm.inputs.viewDidLoad()
 
+    self.bonusAmountText.assertValue("+$5.00")
     self.pledgeAmountText.assertValue("$23.00")
     self.shippingAmountText.assertValue("+$7.00")
     self.shippingLocationText.assertValue("Shipping: United States")
@@ -46,12 +55,14 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
 
   func testTextOutputsEmitTheCorrectValue_ZeroShippingAmount() {
     let data = PledgeAmountSummaryViewData(
+      bonusAmount: 0,
+      isNoReward: false,
+      locationName: "United States",
+      omitUSCurrencyCode: true,
       projectCountry: Project.Country.us,
       pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,
-      shippingAmount: 0,
-      locationName: "United States",
-      omitUSCurrencyCode: true
+      shippingAmount: 0
     )
 
     self.vm.inputs.configureWith(data)
@@ -64,12 +75,14 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
 
   func testShippingLocationStackViewIsHidden_isTrue_WhenLocationNameIsNil() {
     let data = PledgeAmountSummaryViewData(
+      bonusAmount: 0,
+      isNoReward: false,
+      locationName: nil,
+      omitUSCurrencyCode: true,
       projectCountry: Project.Country.us,
       pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,
-      shippingAmount: 7.0,
-      locationName: nil,
-      omitUSCurrencyCode: true
+      shippingAmount: 7.0
     )
 
     self.vm.inputs.configureWith(data)
@@ -80,17 +93,55 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
 
   func testShippingLocationStackViewIsHidden_isFalse_WhenLocationNameIsNotNil() {
     let data = PledgeAmountSummaryViewData(
+      bonusAmount: 0,
+      isNoReward: false,
+      locationName: "United States",
+      omitUSCurrencyCode: true,
       projectCountry: Project.Country.us,
       pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,
-      shippingAmount: 7.0,
-      locationName: "United States",
-      omitUSCurrencyCode: true
+      shippingAmount: 7.0
     )
 
     self.vm.inputs.configureWith(data)
     self.vm.inputs.viewDidLoad()
 
     self.shippingLocationStackViewIsHidden.assertValue(false)
+  }
+
+  func testBonusAmountStackViewIsHidden_isTrue_WhenIsNoReward() {
+    let data = PledgeAmountSummaryViewData(
+      bonusAmount: 0,
+      isNoReward: true,
+      locationName: nil,
+      omitUSCurrencyCode: true,
+      projectCountry: Project.Country.us,
+      pledgeAmount: 30.0,
+      pledgedOn: 1_568_666_243.0,
+      shippingAmount: 7.0
+    )
+
+    self.vm.inputs.configureWith(data)
+    self.vm.inputs.viewDidLoad()
+
+    self.shippingLocationStackViewIsHidden.assertValue(true)
+  }
+
+  func testBonusAmountStackViewIsHidden_isFalse_WhenIsNotNoReward() {
+    let data = PledgeAmountSummaryViewData(
+      bonusAmount: 0,
+      isNoReward: false,
+      locationName: nil,
+      omitUSCurrencyCode: true,
+      projectCountry: Project.Country.us,
+      pledgeAmount: 30.0,
+      pledgedOn: 1_568_666_243.0,
+      shippingAmount: 7.0
+    )
+
+    self.vm.inputs.configureWith(data)
+    self.vm.inputs.viewDidLoad()
+
+    self.shippingLocationStackViewIsHidden.assertValue(true)
   }
 }

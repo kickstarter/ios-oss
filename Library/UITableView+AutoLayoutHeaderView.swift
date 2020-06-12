@@ -9,7 +9,13 @@ extension UITableView {
 
     keyPaths.forEach { keyPath in
       if let view = self[keyPath: keyPath] {
-        let size = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        let sizeToFit = CGSize(width: self.frame.width, height: UIView.layoutFittingCompressedSize.height)
+
+        let size = view.systemLayoutSizeFitting(
+          sizeToFit,
+          withHorizontalFittingPriority: .required,
+          verticalFittingPriority: .defaultLow
+        )
 
         if view.frame.height != size.height {
           view.frame.size.height = size.height

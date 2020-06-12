@@ -324,7 +324,6 @@ private func rewardCardInViewController(
 ) -> UIViewController {
   let view = RewardCardContainerView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  view.configure(with: (project: project, reward: .init(left: reward)))
 
   let controller = UIViewController(nibName: nil, bundle: nil)
   let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -340,7 +339,7 @@ private func rewardCardInViewController(
     view.bottomAnchor.constraint(lessThanOrEqualTo: controller.view.layoutMarginsGuide.bottomAnchor)
   ])
 
-  view.setNeedsLayout()
+  view.configure(with: (project: project, reward: reward, context: .pledge))
 
   return parent
 }
