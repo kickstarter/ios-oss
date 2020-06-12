@@ -78,9 +78,6 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Hopefully in the future we can remove this when we can resolve postcard display issues.
   var asyncReloadData: Signal<Void, Never> { get }
 
-  /// Emits the background color for the view
-  var backgroundColor: Signal<UIColor, Never> { get }
-
   /// Emits the contentInset for the UITableView
   var contentInset: Signal<UIEdgeInsets, Never> { get }
 
@@ -228,18 +225,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     self.projectsLoaded = projectsData
 
     self.asyncReloadData = self.projectsLoaded.take(first: 1).ignoreValues()
-
-    self.backgroundColor = self.viewWillAppearProperty.signal
-      .map { _ in
-        let variant = OptimizelyExperiment.nativeProjectCardsExperimentVariant()
-
-        switch variant {
-        case .variant1:
-          return UIColor.ksr_grey_200
-        case .variant2, .control:
-          return UIColor.white
-        }
-      }
 
     self.contentInset = self.viewWillAppearProperty.signal
       .map { _ in
@@ -444,9 +429,9 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     let personalizationCellTappedAndRefTag = self.personalizationCellTappedProperty.signal
       .mapConst(RefTag.onboarding)
-    
+
     personalizationCellTappedAndRefTag
-      .observeValues { refTag in
+      .observeValues { _ in
         AppEnvironment.current.optimizelyClient?.track(eventName: "Editorial Card Clicked")
       }
 
@@ -591,7 +576,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
   public let activitiesForSample: Signal<[Activity], Never>
   public let asyncReloadData: Signal<Void, Never>
-  public let backgroundColor: Signal<UIColor, Never>
   public let contentInset: Signal<UIEdgeInsets, Never>
   public let dismissPersonalizationCell: Signal<Void, Never>
   public let goToActivityProject: Signal<(Project, RefTag), Never>

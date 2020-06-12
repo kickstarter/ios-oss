@@ -13,7 +13,6 @@ public final class EditorialProjectsViewController: UIViewController {
 
   internal lazy var discoveryPageViewController: DiscoveryPageViewController = {
     DiscoveryPageViewController.configuredWith(sort: .distance)
-      |> \.preferredBackgroundColor .~ .clear
       |> \.delegate .~ self
   }()
 
@@ -99,6 +98,9 @@ public final class EditorialProjectsViewController: UIViewController {
 
     _ = self.view
       |> \.backgroundColor .~ UIColor.white
+
+    _ = self.discoveryPageViewController.view
+      |> \.backgroundColor .~ .clear
 
     _ = self.headerView
       |> UIView.lens.layoutMargins %~~ { _, view in

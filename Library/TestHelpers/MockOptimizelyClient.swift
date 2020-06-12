@@ -19,9 +19,9 @@ internal class MockOptimizelyClient: OptimizelyClientType {
   var features: [String: Bool] = [:]
   var getVariantPathCalled: Bool = false
   var userAttributes: [String: Any?]?
-  
+
   // MARK: - Event Tracking Test Properties
-  
+
   var trackedAttributes: [String: Any?]?
   var trackedEventKey: String?
   var trackedUserId: String?
@@ -56,9 +56,14 @@ internal class MockOptimizelyClient: OptimizelyClientType {
       }
 
       return experimentVariant
-  }
-  
-  func track(eventKey: String, userId: String, attributes: [String: Any?]?, eventTags: [String: Any]?) throws {
+    }
+
+  func track(
+    eventKey: String,
+    userId: String,
+    attributes: [String: Any?]?,
+    eventTags _: [String: Any]?
+  ) throws {
     self.trackedEventKey = eventKey
     self.trackedAttributes = attributes
     self.trackedUserId = userId

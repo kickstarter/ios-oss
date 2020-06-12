@@ -35,6 +35,7 @@ internal final class ActivitySampleFollowCell: UITableViewCell, ValueCell {
 
     _ = self
       |> activitySampleCellStyle
+      |> \.backgroundColor .~ discoveryPageBackgroundColor()
 
     _ = self.activityStackView
       |> activitySampleStackViewStyle

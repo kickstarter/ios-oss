@@ -465,7 +465,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
       self.pledgeCTAContainerViewIsHidden.assertValues([true])
     }
   }
-  
+
   func testOptimizelyTrackingCampaignDetailsPledgeButtonTapped_LiveProject_LoggedIn_NonBacked_Variant1() {
     let user = User.template
       |> \.location .~ Location.template
@@ -537,7 +537,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       XCTAssertEqual(self.trackingClient.events, [])
-      
+
       // Optimizely Client
       XCTAssertEqual(optimizelyClient.trackedUserId, nil)
       XCTAssertEqual(optimizelyClient.trackedEventKey, nil)
@@ -562,7 +562,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
       XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
       XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")
       XCTAssertNotNil(properties?["optimizely_experiments"], "Event includes Optimizely properties")
-      
+
       // Optimizely Client
       XCTAssertEqual(optimizelyClient.trackedEventKey, "Campaign Details Pledge Button Clicked")
       XCTAssertEqual(

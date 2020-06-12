@@ -78,15 +78,17 @@ extension OptimizelyClientType {
       attributes: optimizelyUserAttributes()
     )
   }
-  
+
   public func track(eventName: String) {
     let userAttributes = optimizelyUserAttributes()
     let userId = deviceIdentifier(uuid: UUID())
 
-    try? self.track(eventKey: eventName,
-                    userId: userId,
-                    attributes: userAttributes,
-                    eventTags: nil)
+    try? self.track(
+      eventKey: eventName,
+      userId: userId,
+      attributes: userAttributes,
+      eventTags: nil
+    )
   }
 }
 
@@ -131,7 +133,7 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
     "optimizely_experiments": allExperiments
   ]
 }
- 
+
 public func optimizelyUserAttributes(
   with project: Project? = nil,
   refTag: RefTag? = nil
