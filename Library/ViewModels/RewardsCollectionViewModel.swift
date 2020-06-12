@@ -26,7 +26,7 @@ public protocol RewardsCollectionViewModelOutputs {
   var flashScrollIndicators: Signal<Void, Never> { get }
   var goToPledge: Signal<(PledgeData, PledgeViewContext), Never> { get }
   var navigationBarShadowImageHidden: Signal<Bool, Never> { get }
-  var reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never> { get }
+  var reloadDataWithValues: Signal<[RewardCardViewData], Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
   var scrollToBackedRewardIndexPath: Signal<IndexPath, Never> { get }
   var title: Signal<String, Never> { get }
@@ -70,7 +70,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
     self.reloadDataWithValues = Signal.combineLatest(project, rewards)
       .map { project, rewards in
-        rewards.map { (project, Either<Reward, Backing>.left($0)) }
+        rewards.map { reward in (project, reward, .pledge) }
       }
 
     self.configureRewardsCollectionViewFooterWithCount = self.reloadDataWithValues
@@ -179,7 +179,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public let flashScrollIndicators: Signal<Void, Never>
   public let goToPledge: Signal<(PledgeData, PledgeViewContext), Never>
   public let navigationBarShadowImageHidden: Signal<Bool, Never>
-  public let reloadDataWithValues: Signal<[(Project, Either<Reward, Backing>)], Never>
+  public let reloadDataWithValues: Signal<[RewardCardViewData], Never>
   public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
   public let scrollToBackedRewardIndexPath: Signal<IndexPath, Never>
   public let title: Signal<String, Never>

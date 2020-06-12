@@ -10,6 +10,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "name": "The Keyboardio Atreus",
           "state": "LIVE"
         ],
+        "backerCompleted": false,
         "addOns": [
           "nodes": [
             [
@@ -38,6 +39,11 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
         "status": "pledged",
         "errorReason": "This just isn't your day.",
         "pledgedOn": 1_587_502_131,
+        "bonusAmount": [
+          "amount": "5.0",
+          "currency": "USD",
+          "symbol": "$"
+        ],
         "amount": [
           "amount": "146.0",
           "currency": "USD",
@@ -116,6 +122,9 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.backing.errorReason, "This just isn't your day.")
       XCTAssertEqual(value.backing.pledgedOn, 1_587_502_131)
       XCTAssertEqual(value.backing.amount, Money(amount: 146.0, currency: .usd, symbol: "$"))
+      XCTAssertEqual(value.backing.backerCompleted, false)
+
+      XCTAssertEqual(value.backing.bonusAmount, Money(amount: 5.0, currency: .usd, symbol: "$"))
 
       XCTAssertEqual(value.backing.bankAccount?.bankName, "Chase")
       XCTAssertEqual(value.backing.bankAccount?.id, "60922339")
@@ -178,6 +187,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "name": "The Keyboardio Atreus",
           "state": "LIVE"
         ],
+        "backerCompleted": false,
         "id": "UHJvamVjdC00NDc0NzMM=",
         "sequence": 123,
         "status": "pledged",
@@ -270,6 +280,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "name": "The Keyboardio Atreus",
           "state": "LIVE"
         ],
+        "backerCompleted": false,
         "id": "UHJvamVjdC00NDc0NzMM=",
         "sequence": 123,
         "status": "pledged",
@@ -338,6 +349,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "currency": "USD",
           "symbol": "$"
         ],
+        "backerCompleted": false,
         "backer": [
           "name": "Backer McGee",
           "uid": "110079315"

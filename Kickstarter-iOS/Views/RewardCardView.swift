@@ -263,8 +263,8 @@ public final class RewardCardView: UIView {
 
   // MARK: - Configuration
 
-  internal func configure(with value: (Project, Either<Reward, Backing>)) {
-    self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1)
+  internal func configure(with data: RewardCardViewData) {
+    self.viewModel.inputs.configure(with: data)
   }
 
   // MARK: - Selectors
