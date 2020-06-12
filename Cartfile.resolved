@@ -1,5 +1,5 @@
-binary "https://s3-us-west-2.amazonaws.com/si-mobile-sdks/ios/Qualtrics.json" "1.16"
-github "Alamofire/Alamofire" "5.1.0"
+binary "https://s3-us-west-2.amazonaws.com/si-mobile-sdks/ios/Qualtrics.json" "1.18"
+github "Alamofire/Alamofire" "5.2.1"
 github "Alamofire/AlamofireImage" "4.1.0"
 github "ReactiveCocoa/ReactiveSwift" "6.1.0"
 github "facebook/facebook-objc-sdk" "v6.2.0"
