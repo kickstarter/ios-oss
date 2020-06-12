@@ -119,7 +119,7 @@ public final class ManagePledgeViewModel:
       .map(String.init)
       .switchMap { backingId in
         AppEnvironment.current.apiService
-          .fetchManagePledgeViewBacking(query: projectBackingQuery(withBackingId: backingId))
+          .fetchManagePledgeViewBacking(query: managePledgeViewProjectBackingQuery(withBackingId: backingId))
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
@@ -518,92 +518,4 @@ private func rewardsData(
       dateFormatter: dateFormatter
     )
   }
-}
-
-private func projectBackingQuery(withBackingId backingId: String) -> NonEmptySet<Query> {
-  return Query.backing(
-    id: backingId,
-    .id +| [
-      .project(
-        .pid +| [
-          .name,
-          .state
-        ]
-      ),
-      .status,
-      .amount(
-        .amount +| [
-          .currency,
-          .symbol
-        ]
-      ),
-      .bonusAmount(
-        .amount +| [
-          .currency,
-          .symbol
-        ]
-      ),
-      .sequence,
-      .cancelable,
-      .backer(
-        .uid +| [
-          .name
-        ]
-      ),
-      .backerCompleted,
-      .creditCard(
-        .id +| [
-          .expirationDate,
-          .lastFour,
-          .paymentType,
-          .type
-        ]
-      ),
-      .errorReason,
-      .location(.name +| []),
-      .pledgedOn,
-      .reward(
-        .name +| [
-          .id,
-          .isMaxPledge,
-          .amount(
-            .amount +| [
-              .currency,
-              .symbol
-            ]
-          ),
-          .backersCount,
-          .description,
-          .displayName,
-          .estimatedDeliveryOn,
-          .items([], NonEmptySet(.nodes(.id +| [.name])))
-        ]
-      ),
-      .addOns(
-        [],
-        NonEmptySet(
-          .nodes(
-            .id +| [
-              .displayName,
-              .description,
-              .estimatedDeliveryOn,
-              .name,
-              .amount(
-                .amount +| [
-                  .currency,
-                  .symbol
-                ]
-              ),
-              .backersCount,
-              .isMaxPledge,
-              .limit,
-              .items([], NonEmptySet(.nodes(.id +| [.name]))),
-              .remainingQuantity,
-              .startsAt
-            ]
-          )
-        )
-      )
-    ]
-  ) +| []
 }
