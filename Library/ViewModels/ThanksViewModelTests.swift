@@ -234,8 +234,10 @@ final class ThanksViewModelTests: TestCase {
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
     let mockOptimizelyClient = MockOptimizelyClient()
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response),
-                    optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(
+      apiService: MockService(fetchDiscoveryResponse: response),
+      optimizelyClient: mockOptimizelyClient
+    ) {
       self.vm.inputs.configure(with: (project, Reward.template, nil))
       self.vm.inputs.viewDidLoad()
 

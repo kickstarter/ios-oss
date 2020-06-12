@@ -440,8 +440,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       )
     let mockOptimizelyClient = MockOptimizelyClient()
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope),
-                    optimizelyClient: mockOptimizelyClient) {
+    withEnvironment(
+      apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope),
+      optimizelyClient: mockOptimizelyClient
+    ) {
       self.vm.inputs.configureWith(sort: .magic)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
