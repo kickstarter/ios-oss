@@ -60,11 +60,13 @@ public func backingsQueryFields(status: String) -> NonEmptySet<Query.User> {
       .totalCount +| [
         .nodes(
           .status +| [
+            .id,
             .errorReason,
             .project(
-              .id +| [
+              .pid +| [
                 .name,
-                .slug
+                .slug,
+                .finalCollectionDate
               ]
             )
           ]

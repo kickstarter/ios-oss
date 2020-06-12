@@ -14,4 +14,4 @@ github "stripe/stripe-ios" == 18.0.0
 github "uber/ios-snapshot-test-case" == 6.2.0
 github "thoughtbot/Argo" "39f06f089d25c111444e5a85eef64586e54756ac"
 github "thoughtbot/Curry" "b6bf27ec9d711f607a8c7da9ca69ee9eaa201a22"
-binary "https://s3-us-west-2.amazonaws.com/si-mobile-sdks/ios/Qualtrics.json" == 1.16
+binary "https://s3-us-west-2.amazonaws.com/si-mobile-sdks/ios/Qualtrics.json" == 1.18

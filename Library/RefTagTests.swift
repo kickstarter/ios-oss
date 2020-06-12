@@ -13,6 +13,7 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual("dashboard", RefTag.dashboard.stringTag)
     XCTAssertEqual("dashboard_activity", RefTag.dashboardActivity.stringTag)
     XCTAssertEqual("discovery", RefTag.discovery.stringTag)
+    XCTAssertEqual("ksr_email_backer_failed_transaction", RefTag.emailBackerFailedTransaction.stringTag)
     XCTAssertEqual("profile_backed", RefTag.profileBacked.stringTag)
     XCTAssertEqual("project_page", RefTag.projectPage.stringTag)
     XCTAssertEqual("push", RefTag.push.stringTag)
@@ -119,6 +120,11 @@ public final class RefTagTests: XCTestCase {
       RefTag(code: RefTag.discoveryWithSort(.popular).stringTag)
     )
 
+    XCTAssertEqual(
+      RefTag.emailBackerFailedTransaction,
+      RefTag(code: "ksr_email_backer_failed_transaction")
+    )
+
     XCTAssertEqual(RefTag.messageThread, RefTag(code: RefTag.messageThread.stringTag))
     XCTAssertEqual(RefTag.messageThread, RefTag(code: RefTag.messageThread.stringTag))
     XCTAssertEqual(RefTag.profileBacked, RefTag(code: RefTag.profileBacked.stringTag))
@@ -191,7 +197,7 @@ public final class RefTagTests: XCTestCase {
     let discoStarred = DiscoveryParams.defaults
       |> DiscoveryParams.lens.starred .~ true
     let discoCollection = DiscoveryParams.defaults
-      |> DiscoveryParams.lens.tagId .~ .goRewardless
+      |> DiscoveryParams.lens.tagId .~ .lightsOn
 
     XCTAssertEqual("discovery_ending_soon", RefTag.fromParams(discoSort).stringTag)
     XCTAssertEqual("category_ending_soon", RefTag.fromParams(discoCategory).stringTag)
@@ -199,6 +205,6 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual("recommended_home", RefTag.fromParams(discoPWL).stringTag)
     XCTAssertEqual("social_home", RefTag.fromParams(discoSocial).stringTag)
     XCTAssertEqual("starred_home", RefTag.fromParams(discoStarred).stringTag)
-    XCTAssertEqual("ios_project_collection_tag_518", RefTag.fromParams(discoCollection).stringTag)
+    XCTAssertEqual("ios_project_collection_tag_557", RefTag.fromParams(discoCollection).stringTag)
   }
 }

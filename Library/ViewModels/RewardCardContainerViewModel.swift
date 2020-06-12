@@ -8,13 +8,10 @@ public protocol RewardCardContainerViewModelInputs {
 }
 
 public protocol RewardCardContainerViewModelOutputs {
-  var configureNoRewardGradientView: Signal<Bool, Never> { get }
-  var gradientViewHidden: Signal<Bool, Never> { get }
   var pledgeButtonStyleType: Signal<ButtonStyleType, Never> { get }
   var pledgeButtonEnabled: Signal<Bool, Never> { get }
   var pledgeButtonHidden: Signal<Bool, Never> { get }
   var pledgeButtonTitleText: Signal<String?, Never> { get }
-  var rewardCardViewBackgroundColor: Signal<UIColor, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
   func currentReward(is reward: Reward) -> Bool
 }
@@ -46,18 +43,6 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
 
     self.currentRewardProperty <~ reward
 
-    self.configureNoRewardGradientView = reward
-      .map { $0.isNoReward && featureGoRewardlessIsEnabled() }
-
-    self.rewardCardViewBackgroundColor = reward
-      .map { reward in
-        if featureGoRewardlessIsEnabled() {
-          return reward.isNoReward ? UIColor.clear : UIColor.white
-        }
-
-        return UIColor.white
-      }
-
     let pledgeButtonTitleText = projectAndReward
       .map(pledgeButtonTitle(project:reward:))
 
@@ -70,8 +55,6 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
       .map(pledgeButtonIsEnabled(project:reward:))
 
     self.pledgeButtonHidden = pledgeButtonTitleText.map(isNil)
-
-    self.gradientViewHidden = self.pledgeButtonHidden
 
     self.rewardSelected = reward
       .takeWhen(self.pledgeButtonTappedProperty.signal)
@@ -88,13 +71,10 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
     self.pledgeButtonTappedProperty.value = ()
   }
 
-  public let configureNoRewardGradientView: Signal<Bool, Never>
-  public let gradientViewHidden: Signal<Bool, Never>
   public let pledgeButtonStyleType: Signal<ButtonStyleType, Never>
   public let pledgeButtonEnabled: Signal<Bool, Never>
   public let pledgeButtonHidden: Signal<Bool, Never>
   public let pledgeButtonTitleText: Signal<String?, Never>
-  public let rewardCardViewBackgroundColor: Signal<UIColor, Never>
   public let rewardSelected: Signal<Int, Never>
 
   private let currentRewardProperty = MutableProperty<Reward?>(nil)
@@ -143,7 +123,7 @@ private func buttonStyleType(project: Project, reward: Reward) -> ButtonStyleTyp
   switch projectBackingState {
   case .backedError:
     if isBackingThisReward {
-      return .apricot
+      return .red
     }
   case .backed(.live):
     if isBackingThisReward {

@@ -28,6 +28,7 @@ public typealias ScrollStyle = (UIScrollView) -> UIScrollView
 public typealias StackViewStyle = (UIStackView) -> UIStackView
 public typealias SwitchControlStyle = (UISwitch) -> UISwitch
 public typealias TableViewStyle = (UITableView) -> UITableView
+public typealias TableViewCellStyle = (UITableViewCell) -> UITableViewCell
 public typealias TextFieldStyle = (UITextField) -> UITextField
 public typealias TextViewStyle = (UITextView) -> UITextView
 public typealias ToolbarStyle = (UIToolbar) -> UIToolbar
@@ -61,6 +62,21 @@ public func darkCardStyle<V: UIViewProtocol>
 (cornerRadius radius: CGFloat = Styles.cornerRadius) -> ((V) -> V) {
   return cardStyle(cornerRadius: radius)
     <> V.lens.layer.borderColor .~ UIColor.ksr_text_dark_grey_500.cgColor
+}
+
+public func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
+  return { (stackView: UIStackView) in
+    let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .leading : .center)
+    let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
+    let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fill)
+    let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
+
+    return stackView
+      |> \.alignment .~ alignment
+      |> \.axis .~ axis
+      |> \.distribution .~ distribution
+      |> \.spacing .~ spacing
+  }
 }
 
 public let containerViewBackgroundStyle =

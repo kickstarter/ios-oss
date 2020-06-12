@@ -79,10 +79,7 @@ public let forgotPasswordButtonStyle =
     <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_soft_black
     <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_forgot_password() }
 
-public let loginControllerStyle = baseControllerStyle()
-  <> UIViewController.lens.title %~ { _ in
-    Strings.login_navbar_title()
-  }
+public let loginControllerStyle = UIViewController.lens.title %~ { _ in Strings.login_navbar_title() }
 
 public let loginWithEmailButtonStyle = greyButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in_email() }
@@ -112,8 +109,9 @@ public func newPasswordFieldAutoFillStyle(_ textField: UITextField) -> UITextFie
 public let resetPasswordButtonStyle = greenButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.forgot_password_buttons_reset_my_password() }
 
-public let resetPasswordControllerStyle = baseControllerStyle()
-  <> UIViewController.lens.title %~ { _ in Strings.forgot_password_title() }
+public let resetPasswordControllerStyle = UIViewController.lens.title %~ { _ in
+  Strings.forgot_password_title()
+}
 
 public let loginRootStackViewStyle =
   UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true
@@ -131,8 +129,7 @@ public let signupButtonStyle: ButtonStyle = { button in
     }
 }
 
-public let signupControllerStyle = baseControllerStyle()
-  <> UIViewController.lens.title %~ { _ in Strings.signup_button() }
+public let signupControllerStyle = UIViewController.lens.title %~ { _ in Strings.signup_button() }
 
 public let newsletterButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ksr_text_dark_grey_500
   <> UIButton.lens.titleColor(for: .highlighted) %~ { _ in
@@ -180,5 +177,4 @@ public func tfaCodeFieldAutoFillStyle(_ textField: UITextField) -> UITextField {
   return style
 }
 
-public let twoFactorControllerStyle = baseControllerStyle()
-  <> UIViewController.lens.title %~ { _ in Strings.two_factor_title() }
+public let twoFactorControllerStyle = UIViewController.lens.title %~ { _ in Strings.two_factor_title() }

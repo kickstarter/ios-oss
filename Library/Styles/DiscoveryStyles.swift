@@ -60,24 +60,6 @@ public let discoveryFilterRowMarginStyle = baseTableViewCellStyle()
       )
   }
 
-public let discoveryOnboardingTitleStyle =
-  UILabel.lens.font .~ .ksr_title3()
-    <> UILabel.lens.backgroundColor .~ .white
-    <> UILabel.lens.textAlignment .~ .center
-    <> UILabel.lens.numberOfLines .~ 2
-    <> UILabel.lens.text %~ { _ in Strings.discovery_onboarding_title_bring_creative_projects_to_life() }
-
-public let discoveryOnboardingLogoStyle =
-  UIImageView.lens.contentMode .~ .scaleAspectFit
-    <> UIImageView.lens.backgroundColor .~ .white
-    <> UIImageView.lens.contentHuggingPriority(for: .vertical) .~ .required
-    <> UIImageView.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
-
-public let discoveryOnboardingStackViewStyle =
-  UIStackView.lens.spacing .~ 16.0
-    <> UIStackView.lens.distribution .~ .fill
-    <> UIStackView.lens.alignment .~ .fill
-
 public let discoveryProjectCellStyle =
   baseTableViewCellStyle()
     <> UITableViewCell.lens.accessibilityHint %~ { _ in
@@ -184,5 +166,7 @@ private func string(forSort sort: DiscoveryParams.Sort) -> String {
     return Strings.discovery_sort_types_newest()
   case .popular:
     return Strings.Popular()
+  case .distance:
+    return ""
   }
 }

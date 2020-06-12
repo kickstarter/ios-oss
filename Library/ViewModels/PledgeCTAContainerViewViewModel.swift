@@ -110,10 +110,13 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
     // Tracking
     pledgeTypeAndProject
       .takeWhen(self.pledgeCTAButtonTappedProperty.signal)
-      .observeValues {
+      .observeValues { state, project in
+        let optimizelyProps = optimizelyProperties() ?? [:]
+
         AppEnvironment.current.koala.trackPledgeCTAButtonClicked(
-          stateType: $0,
-          project: $1
+          stateType: state,
+          project: project,
+          optimizelyProperties: optimizelyProps
         )
       }
   }
@@ -175,6 +178,8 @@ private func pledgeCTA(project: Project, refTag: RefTag?, backing: Backing?) -> 
   switch (project.state, projectBacking.status) {
   case (.live, _):
     return .manage
+  case (.successful, .errored):
+    return .fix
   case (_, _):
     return .viewBacking
   }

@@ -232,13 +232,18 @@ public struct Service: ServiceType {
     return fetch(query: query)
   }
 
+  public func fetchGraphUserBackings(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError> {
+    return fetch(query: query)
+  }
+
   public func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError> {
     return fetch(query: query)
   }
 
-  public func fetchGraphUserBackings(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError> {
+  public func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
+    -> SignalProducer<ManagePledgeViewBackingEnvelope, GraphError> {
     return fetch(query: query)
   }
 
@@ -443,6 +448,11 @@ public struct Service: ServiceType {
   public func sendVerificationEmail(input: EmptyInput) ->
     SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
     return applyMutation(mutation: UserSendEmailVerificationMutation(input: input))
+  }
+
+  public func signInWithApple(input: SignInWithAppleInput)
+    -> SignalProducer<SignInWithAppleEnvelope, GraphError> {
+    return applyMutation(mutation: SignInWithAppleMutation(input: input))
   }
 
   public func signup(

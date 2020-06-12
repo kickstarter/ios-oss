@@ -27,15 +27,12 @@ public final class LandingViewModel: LandingViewModelType, LandingViewModelInput
 
     self.getStartedButtonTappedProperty.signal
       .observeValues {
-        let (properties, eventTags) = optimizelyTrackingAttributesAndEventTags()
+        let optimizelyProps = optimizelyProperties() ?? [:]
 
-        try? AppEnvironment.current.optimizelyClient?
-          .track(
-            eventKey: "Get Started Button Clicked",
-            userId: deviceIdentifier(uuid: UUID()),
-            attributes: properties,
-            eventTags: eventTags
-          )
+        AppEnvironment.current.koala
+          .trackOnboardingGetStartedButtonClicked(optimizelyProperties: optimizelyProps)
+
+        AppEnvironment.current.optimizelyClient?.track(eventName: "Get Started Button Clicked")
       }
   }
 

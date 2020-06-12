@@ -23,7 +23,7 @@ public protocol ProjectPamphletContentViewModelInputs {
 }
 
 public protocol ProjectPamphletContentViewModelOutputs {
-  var goToBacking: Signal<Project, Never> { get }
+  var goToBacking: Signal<ManagePledgeViewParamConfigData, Never> { get }
   var goToComments: Signal<Project, Never> { get }
   var goToDashboard: Signal<Param, Never> { get }
   var goToRewardPledge: Signal<(Project, Reward), Never> { get }
@@ -236,7 +236,7 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
     self.viewWillAppearAnimatedProperty.value = animated
   }
 
-  public let goToBacking: Signal<Project, Never>
+  public let goToBacking: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToComments: Signal<Project, Never>
   public let goToDashboard: Signal<Param, Never>
   public let goToRewardPledge: Signal<(Project, Reward), Never>
@@ -271,12 +271,12 @@ private func goToRewardPledgeData(forProject project: Project, rewardOrBacking: 
 }
 
 private func goToBackingData(forProject project: Project, rewardOrBacking: Either<Reward, Backing>)
-  -> Project? {
-  guard project.state != .live, rewardOrBacking.right != nil else {
+  -> ManagePledgeViewParamConfigData? {
+  guard project.state != .live, let backing = rewardOrBacking.right else {
     return nil
   }
 
-  return project
+  return (projectParam: Param.slug(project.slug), backingParam: Param.id(backing.id))
 }
 
 private func projectCreatorDetailsQuery(withSlug slug: String) -> NonEmptySet<Query> {

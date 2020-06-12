@@ -33,6 +33,7 @@ internal final class LoginToutViewControllerTests: TestCase {
     let intent = LoginIntent.generic
     let controller = LoginToutViewController.configuredWith(loginIntent: intent)
 
-    XCTAssertNotNil(controller.view.subviews.first as? UIScrollView)
+    // Due to the new design, a background imageView is now added as subview before the scroll.
+    XCTAssertNotNil(controller.view.subviews[1] as? UIScrollView)
   }
 }

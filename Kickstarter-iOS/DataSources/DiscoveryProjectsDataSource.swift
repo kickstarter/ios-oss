@@ -2,12 +2,6 @@ import KsApi
 import Library
 import UIKit
 
-struct DiscoveryProjectCellRowValue {
-  let project: Project
-  let category: KsApi.Category?
-  let discoveryParams: DiscoveryParams?
-}
-
 internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case onboarding
@@ -34,20 +28,28 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     }
   }
 
-  func load(projects: [Project], params: DiscoveryParams? = nil) {
+  func load(projects: [Project],
+            params: DiscoveryParams? = nil,
+            projectCardVariant: OptimizelyExperiment.Variant = .control) {
     self.clearValues(section: Section.projects.rawValue)
 
-    projects.forEach { project in
-      let value = DiscoveryProjectCellRowValue(
-        project: project,
-        category: params?.category,
-        discoveryParams: params
-      )
+    let values = projects.map { DiscoveryProjectCellRowValue(
+      project: $0,
+      category: params?.category,
+      params: params
+    ) }
 
-      _ = self.appendRow(
-        value: value,
+    if projectCardVariant == .variant1 {
+      self.set(
+        values: values,
+        cellClass: DiscoveryProjectCardCell.self,
+        inSection: Section.projects.rawValue
+      )
+    } else {
+      self.set(
+        values: values,
         cellClass: DiscoveryPostcardCell.self,
-        toSection: Section.projects.rawValue
+        inSection: Section.projects.rawValue
       )
     }
   }
@@ -97,6 +99,8 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
     case let (cell as ActivitySampleProjectCell, value as Activity):
       cell.configureWith(value: value)
     case let (cell as DiscoveryPostcardCell, value as DiscoveryProjectCellRowValue):
+      cell.configureWith(value: value)
+    case let (cell as DiscoveryProjectCardCell, value as DiscoveryProjectCellRowValue):
       cell.configureWith(value: value)
     case let (cell as DiscoveryOnboardingCell, value as Void):
       cell.configureWith(value: value)

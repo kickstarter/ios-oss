@@ -20,7 +20,8 @@ final class ProjectPamphletViewModelTests: TestCase {
   private let configurePledgeCTAViewIsLoading = TestObserver<Bool, Never>()
   private let configurePledgeCTAViewRefTag = TestObserver<RefTag?, Never>()
   private let dismissManagePledgeAndShowMessageBannerWithMessage = TestObserver<String, Never>()
-  private let goToManageViewPledge = TestObserver<Project, Never>()
+  private let goToManagePledgeProjectParam = TestObserver<Param, Never>()
+  private let goToManagePledgeBackingParam = TestObserver<Param?, Never>()
   private let goToRewardsProject = TestObserver<Project, Never>()
   private let goToRewardsRefTag = TestObserver<RefTag?, Never>()
   private let popToRootViewController = TestObserver<(), Never>()
@@ -62,7 +63,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.vm.outputs.configurePledgeCTAView.map(third).observe(self.configurePledgeCTAViewContext.observer)
     self.vm.outputs.dismissManagePledgeAndShowMessageBannerWithMessage
       .observe(self.dismissManagePledgeAndShowMessageBannerWithMessage.observer)
-    self.vm.outputs.goToManagePledge.observe(self.goToManageViewPledge.observer)
+    self.vm.outputs.goToManagePledge.map(first).observe(self.goToManagePledgeProjectParam.observer)
+    self.vm.outputs.goToManagePledge.map(second).observe(self.goToManagePledgeBackingParam.observer)
     self.vm.outputs.goToRewards.map(first).observe(self.goToRewardsProject.observer)
     self.vm.outputs.goToRewards.map(second).observe(self.goToRewardsRefTag.observer)
     self.vm.outputs.popToRootViewController.observe(self.popToRootViewController.observer)
@@ -253,7 +255,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     }
   }
 
-  func testProjectPaveViewed_OnViewDidAppear() {
+  func testProjectPageViewed_OnViewDidAppear() {
     XCTAssertEqual([], self.trackingClient.events)
 
     self.configureInitialState(.init(left: .template))
@@ -473,11 +475,13 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.configureInitialState(.left(project))
 
-      self.goToManageViewPledge.assertDidNotEmitValue()
+      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
 
       self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
 
-      self.goToManageViewPledge.assertValues([project])
+      self.goToManagePledgeProjectParam.assertValues([.slug(project.slug)])
+      self.goToManagePledgeBackingParam.assertValues([.id(backing.id)])
     }
   }
 
@@ -495,11 +499,13 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.configureInitialState(.left(project))
 
-      self.goToManageViewPledge.assertDidNotEmitValue()
+      self.goToManagePledgeProjectParam.assertDidNotEmitValue()
+      self.goToManagePledgeBackingParam.assertDidNotEmitValue()
 
       self.vm.inputs.pledgeCTAButtonTapped(with: .viewBacking)
 
-      self.goToManageViewPledge.assertValues([project])
+      self.goToManagePledgeProjectParam.assertValues([.slug(project.slug)])
+      self.goToManagePledgeBackingParam.assertValues([.id(backing.id)])
     }
   }
 
@@ -814,6 +820,81 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.dismissManagePledgeAndShowMessageBannerWithMessage.assertValues(["Your changes have been saved"])
   }
 
+  func testTrackingProjectPageViewed_LoggedIn() {
+    let trackingClient = MockTrackingClient()
+    let koala = Koala(client: trackingClient, config: .template, loggedInUser: User.template)
+
+    withEnvironment(currentUser: User.template, koala: koala) {
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(trackingClient.events, ["Project Page Viewed"])
+
+      XCTAssertEqual(trackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
+      XCTAssertEqual(
+        trackingClient.properties(forKey: "session_referrer_credit"),
+        ["discovery"]
+      )
+
+      XCTAssertEqual(trackingClient.properties(forKey: "session_user_logged_in", as: Bool.self), [true])
+      XCTAssertEqual(trackingClient.properties(forKey: "user_country"), ["US"])
+      XCTAssertEqual(trackingClient.properties(forKey: "user_uid", as: Int.self), [1])
+
+      XCTAssertEqual(trackingClient.properties(forKey: "project_subcategory"), ["Art"])
+      XCTAssertEqual(trackingClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(trackingClient.properties(forKey: "project_country"), ["US"])
+      XCTAssertEqual(trackingClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+
+      let properties = trackingClient.properties.last
+
+      XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
+      XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")
+      XCTAssertNotNil(properties?["optimizely_experiments"], "Event includes Optimizely properties")
+    }
+  }
+
+  func testTrackingProjectPageViewed_LoggedOut() {
+    let config = Config.template
+      |> \.countryCode .~ "GB"
+
+    let trackingClient = MockTrackingClient()
+    let koala = Koala(client: trackingClient, config: config, loggedInUser: nil)
+
+    withEnvironment(currentUser: nil, koala: koala) {
+      self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear(animated: false)
+
+      self.scheduler.advance()
+
+      XCTAssertEqual(trackingClient.events, ["Project Page Viewed"])
+
+      XCTAssertEqual(trackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
+      XCTAssertEqual(
+        trackingClient.properties(forKey: "session_referrer_credit"),
+        ["discovery"]
+      )
+
+      XCTAssertEqual(trackingClient.properties(forKey: "session_user_logged_in", as: Bool.self), [false])
+      XCTAssertEqual(trackingClient.properties(forKey: "user_country"), ["GB"])
+      XCTAssertEqual(trackingClient.properties(forKey: "user_uid", as: Int.self), [nil])
+
+      XCTAssertEqual(trackingClient.properties(forKey: "project_subcategory"), ["Art"])
+      XCTAssertEqual(trackingClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(trackingClient.properties(forKey: "project_country"), ["US"])
+      XCTAssertEqual(trackingClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+
+      let properties = trackingClient.properties.last
+
+      XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
+      XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")
+      XCTAssertNotNil(properties?["optimizely_experiments"], "Event includes Optimizely properties")
+    }
+  }
+
   func testOptimizelyTrackingProjectPageViewed_LoggedIn() {
     let user = User.template
       |> \.location .~ Location.template
@@ -834,12 +915,6 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
-
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "discovery")
-      XCTAssertEqual(
-        self.optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String,
-        "discovery"
-      )
       XCTAssertEqual(
         self.optimizelyClient.trackedAttributes?["session_os_version"] as? String,
         "MockSystemVersion"
@@ -851,11 +926,6 @@ final class ProjectPamphletViewModelTests: TestCase {
       )
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
-
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_category"] as? String, nil)
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, nil)
     }
   }
 
@@ -875,12 +945,6 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
-
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "discovery")
-      XCTAssertEqual(
-        self.optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String,
-        "discovery"
-      )
       XCTAssertEqual(
         self.optimizelyClient.trackedAttributes?["session_os_version"] as? String,
         "MockSystemVersion"
@@ -892,11 +956,6 @@ final class ProjectPamphletViewModelTests: TestCase {
       )
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
-
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_category"] as? String, nil)
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, nil)
     }
   }
 
@@ -907,14 +966,12 @@ final class ProjectPamphletViewModelTests: TestCase {
     XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
     XCTAssertNil(self.optimizelyClient.trackedAttributes)
-    XCTAssertNil(self.optimizelyClient.trackedEventTags)
 
     self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
 
     XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
     XCTAssertNil(self.optimizelyClient.trackedAttributes)
-    XCTAssertNil(self.optimizelyClient.trackedEventTags)
 
     // Only track for non-backed, pledge state
     self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
@@ -928,11 +985,6 @@ final class ProjectPamphletViewModelTests: TestCase {
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
 
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "discovery")
-    XCTAssertEqual(
-      self.optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String,
-      "discovery"
-    )
     XCTAssertEqual(
       self.optimizelyClient.trackedAttributes?["session_os_version"] as? String,
       "MockSystemVersion"
@@ -944,11 +996,6 @@ final class ProjectPamphletViewModelTests: TestCase {
     )
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
-
-    XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
-    XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_category"] as? String, nil)
-    XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
-    XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_user_has_watched"] as? String, nil)
   }
 
   func testOptimizelyTrackingPledgeCTAButtonTapped_LoggedOut_Backed() {
@@ -969,14 +1016,12 @@ final class ProjectPamphletViewModelTests: TestCase {
     XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
     XCTAssertNil(self.optimizelyClient.trackedAttributes)
-    XCTAssertNil(self.optimizelyClient.trackedEventTags)
 
     self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
 
     XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
     XCTAssertNil(self.optimizelyClient.trackedAttributes)
-    XCTAssertNil(self.optimizelyClient.trackedEventTags)
 
     // Only track for non-backed, pledge state
     self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
@@ -985,7 +1030,6 @@ final class ProjectPamphletViewModelTests: TestCase {
     XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
     XCTAssertNil(self.optimizelyClient.trackedAttributes)
-    XCTAssertNil(self.optimizelyClient.trackedEventTags)
   }
 
   func testOptimizelyTrackingPledgeCTAButtonTapped_SeeTheRewards() {
@@ -1026,14 +1070,12 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
       XCTAssertNil(self.optimizelyClient.trackedAttributes)
-      XCTAssertNil(self.optimizelyClient.trackedEventTags)
 
       self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
       XCTAssertNil(self.optimizelyClient.trackedAttributes)
-      XCTAssertNil(self.optimizelyClient.trackedEventTags)
 
       // Only track for non-backed, pledge state
       self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
@@ -1046,12 +1088,6 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
-
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "discovery")
-      XCTAssertEqual(
-        self.optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String,
-        "discovery"
-      )
       XCTAssertEqual(
         self.optimizelyClient.trackedAttributes?["session_os_version"] as? String,
         "MockSystemVersion"
@@ -1063,11 +1099,6 @@ final class ProjectPamphletViewModelTests: TestCase {
       )
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
-
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_category"] as? String, nil)
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, nil)
     }
   }
 
@@ -1094,14 +1125,12 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
       XCTAssertNil(self.optimizelyClient.trackedAttributes)
-      XCTAssertNil(self.optimizelyClient.trackedEventTags)
 
       self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
       XCTAssertNil(self.optimizelyClient.trackedAttributes)
-      XCTAssertNil(self.optimizelyClient.trackedEventTags)
 
       // Only track for non-backed, pledge state
       self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
@@ -1110,7 +1139,6 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
       XCTAssertNil(self.optimizelyClient.trackedAttributes)
-      XCTAssertNil(self.optimizelyClient.trackedEventTags)
     }
   }
 

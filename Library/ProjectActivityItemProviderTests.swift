@@ -9,10 +9,7 @@ class ProjectActivityItemProviderTests: XCTestCase {
     |> Project.lens.urls.web.project .~ "https://kickstarter.com/awesome-project"
 
   private var formattedString: String {
-    return """
-     \(self.project.name)\n
-     \(self.project.urls.web.project)
-    """
+    return [self.project.name, self.project.urls.web.project].joined(separator: "\n")
   }
 
   func testProviderInitReturnsCorrectPlaceholderItem() {

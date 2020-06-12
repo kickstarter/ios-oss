@@ -43,6 +43,38 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.configureDataSource.assertValueCount(1, "Data source configures after view loads.")
   }
 
+  func testConfigureDataSourceOptimizelyConfiguration() {
+    withEnvironment(optimizelyClient: nil) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.configureDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
+
+      let mockOptimizelyClient = MockOptimizelyClient()
+
+      withEnvironment(optimizelyClient: mockOptimizelyClient) {
+        self.vm.inputs.optimizelyClientConfigured()
+
+        XCTAssertTrue(mockOptimizelyClient.activatePathCalled)
+
+        self.configureDataSource.assertValueCount(1)
+      }
+    }
+  }
+
+  func testConfigureDataSource_OptimizelyConfiguration_Failed() {
+    withEnvironment(optimizelyClient: nil) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.configureDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
+
+      self.vm.inputs.optimizelyClientConfigurationFailed()
+
+      self.configureDataSource.assertValueCount(1)
+    }
+  }
+
   func trackViewAppearedEvent() {
     self.vm.inputs.viewDidLoad()
 
@@ -68,22 +100,73 @@ internal final class DiscoveryViewModelTests: TestCase {
   }
 
   func testLoadFilterIntoDataSource() {
-    self.loadFilterIntoDataSource.assertValueCount(0)
+    withEnvironment {
+      self.loadFilterIntoDataSource.assertValueCount(0)
 
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.scheduler.advance()
 
-    self.loadFilterIntoDataSource.assertValues(
-      [self.initialParams],
-      "Initial params load into data source immediately."
-    )
+      self.loadFilterIntoDataSource.assertValues(
+        [self.initialParams],
+        "Initial params load into data source immediately."
+      )
 
-    self.vm.inputs.filter(withParams: self.starredParams)
+      self.vm.inputs.filter(withParams: self.starredParams)
 
-    self.loadFilterIntoDataSource.assertValues(
-      [self.initialParams, self.starredParams],
-      "New params load into data source after selecting."
-    )
+      self.loadFilterIntoDataSource.assertValues(
+        [self.initialParams, self.starredParams],
+        "New params load into data source after selecting."
+      )
+    }
+  }
+
+  func testLoadFilterIntoDataSource_OptimizelyConfiguration() {
+    withEnvironment(optimizelyClient: nil) {
+      self.loadFilterIntoDataSource.assertValueCount(0)
+
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.loadFilterIntoDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
+
+      self.vm.inputs.optimizelyClientConfigured()
+
+      self.scheduler.advance()
+
+      self.loadFilterIntoDataSource.assertValues([self.initialParams])
+
+      self.vm.inputs.filter(withParams: self.starredParams)
+
+      self.loadFilterIntoDataSource.assertValues(
+        [self.initialParams, self.starredParams],
+        "New params load into data source after selecting."
+      )
+    }
+  }
+
+  func testLoadFilterIntoDataSource_OptimizelyConfiguration_Failed() {
+    withEnvironment(optimizelyClient: nil) {
+      self.loadFilterIntoDataSource.assertValueCount(0)
+
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.loadFilterIntoDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
+
+      self.vm.inputs.optimizelyClientConfigurationFailed()
+
+      self.scheduler.advance()
+
+      self.loadFilterIntoDataSource.assertValues([self.initialParams], "Proceeds after 3 seconds")
+
+      self.vm.inputs.filter(withParams: self.starredParams)
+
+      self.loadFilterIntoDataSource.assertValues(
+        [self.initialParams, self.starredParams],
+        "New params load into data source after selecting."
+      )
+    }
   }
 
   func testLoadRecommendedProjectsIntoDataSource_UserRecommendationsOptedOut() {
@@ -93,6 +176,8 @@ internal final class DiscoveryViewModelTests: TestCase {
     withEnvironment(config: Config.template, currentUser: user) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
+
+      self.scheduler.advance()
 
       self.configureNavigationHeader.assertValues([initialParams])
     }
@@ -110,6 +195,8 @@ internal final class DiscoveryViewModelTests: TestCase {
     withEnvironment(config: Config.template, currentUser: user) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
+
+      self.scheduler.advance()
 
       self.configureNavigationHeader.assertValues([recsInitialParams])
     }
@@ -131,11 +218,15 @@ internal final class DiscoveryViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
 
+      self.scheduler.advance()
+
       self.configureNavigationHeader.assertValues([recsInitialParams])
 
       withEnvironment(currentUser: optedOutUser) {
         self.vm.inputs.didChangeRecommendationsSetting()
         self.vm.inputs.viewWillAppear(animated: false)
+
+        self.scheduler.advance()
 
         self.configureNavigationHeader.assertValues([recsInitialParams, initialParams])
       }
@@ -148,7 +239,57 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: false)
 
+    self.scheduler.advance()
+
     self.configureNavigationHeader.assertValues([self.initialParams])
+  }
+
+  func testConfigureNavigationHeader_OptimizelyConfiguration() {
+    withEnvironment(optimizelyClient: nil) {
+      self.configureNavigationHeader.assertValueCount(0)
+
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.configureNavigationHeader.assertDidNotEmitValue("Waits for Optimizely configuration")
+
+      self.vm.inputs.optimizelyClientConfigured()
+
+      self.scheduler.advance()
+
+      self.configureNavigationHeader.assertValues([self.initialParams])
+
+      self.vm.inputs.filter(withParams: self.starredParams)
+
+      self.configureNavigationHeader.assertValues(
+        [self.initialParams, self.starredParams],
+        "New params load into data source after selecting."
+      )
+    }
+  }
+
+  func testConfigureNavigationHeader_OptimizelyConfiguration_Failed() {
+    withEnvironment(optimizelyClient: nil) {
+      self.configureNavigationHeader.assertValueCount(0)
+
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+
+      self.configureNavigationHeader.assertDidNotEmitValue("Waits for Optimizely configuration")
+
+      self.vm.inputs.optimizelyClientConfigurationFailed()
+
+      self.scheduler.advance()
+
+      self.configureNavigationHeader.assertValues([self.initialParams], "Proceeds after 3 seconds")
+
+      self.vm.inputs.filter(withParams: self.starredParams)
+
+      self.configureNavigationHeader.assertValues(
+        [self.initialParams, self.starredParams],
+        "New params load into data source after selecting."
+      )
+    }
   }
 
   func testOrdering() {
@@ -160,6 +301,8 @@ internal final class DiscoveryViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: false)
+
+    self.scheduler.advance()
 
     test.assertValues(
       ["configureDataSource", "loadFilterIntoDataSource"],

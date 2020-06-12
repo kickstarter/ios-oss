@@ -43,13 +43,45 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     }
   }
 
+  func testView_Card_Project_HasSocial() {
+    let project = self.anomalisaNoPhoto
+      |> Project.lens.personalization.friends .~ [self.brandoNoAvatar]
+
+    let discoveryResponse = .template
+      |> DiscoveryEnvelope.lens.projects .~ [project]
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(
+        apiService: MockService(
+          fetchActivitiesResponse: [],
+          fetchDiscoveryResponse: discoveryResponse
+        ),
+        config: Config.template,
+        currentUser: User.template,
+        language: language
+      ) {
+        let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = device == .pad ? 700 : 550
+
+        controller.change(filter: magicParams)
+
+        self.scheduler.run()
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
+
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
   func testView_Card_NoMetadata() {
     let project = self.anomalisaNoPhoto
       |> Project.lens.dates.deadline .~ (self.dateType.init().timeIntervalSince1970 + 60 * 60 * 24 * 6)
 
     let discoveryResponse = .template
       |> DiscoveryEnvelope.lens.projects .~ [project]
-    let config = Config.template
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad])
       .forEach { language, device in
@@ -58,7 +90,7 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
             fetchActivitiesResponse: [],
             fetchDiscoveryResponse: discoveryResponse
           ),
-          config: config,
+          config: Config.template,
           currentUser: User.template, language: language
         ) {
           let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
@@ -77,10 +109,45 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
       }
   }
 
+  func testView_Card_Project_IsBacked() {
+    let backedProject = self.anomalisaNoPhoto
+      |> Project.lens.personalization.backing .~ Backing.template
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      let discoveryResponse = .template
+        |> DiscoveryEnvelope.lens.projects .~ [backedProject]
+
+      let apiService = MockService(fetchActivitiesResponse: [], fetchDiscoveryResponse: discoveryResponse)
+      withEnvironment(
+        apiService: apiService,
+        config: config,
+        currentUser: User.template,
+        language: language
+      ) {
+        let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = device == .pad ? 500 : 450
+
+        controller.change(filter: magicParams)
+
+        self.scheduler.run()
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
+
+        FBSnapshotVerifyView(
+          parent.view,
+          identifier: "backed_lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
   func testView_Card_Project_TodaySpecial() {
+    let mockDate = MockDate()
     let featuredProj = self.anomalisaNoPhoto
-      |> Project.lens.category .~ Project.Category.art
-      |> Project.lens.dates.featuredAt .~ self.dateType.init().timeIntervalSince1970
+      |> Project.lens.category .~ Project.Category.illustration
+      |> Project.lens.dates.featuredAt .~ mockDate.timeIntervalSince1970
 
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     let config = Config.template
@@ -94,7 +161,9 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         withEnvironment(
           apiService: apiService,
           config: config,
-          currentUser: User.template, language: language
+          currentUser: User.template,
+          dateType: MockDate.self,
+          language: language
         ) {
           let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
@@ -170,24 +239,27 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
     }
   }
 
-  func testView_Editorial_LoggedOut() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
+  func testView_Editorial() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.lightsOn.rawValue: true]
 
-    combos(Language.allLanguages, Device.allCases).forEach {
-      language, device in
-      withEnvironment(config: mockConfig, currentUser: nil, language: language) {
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      withEnvironment(
+        language: language,
+        optimizelyClient: mockOptimizelyClient
+      ) {
         let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+        controller.tableView.refreshControl = nil
 
-        let defaultLoggedOutParams = DiscoveryParams.defaults
-          |> \.includePOTD .~ true
-
-        controller.change(filter: defaultLoggedOutParams)
+        controller.change(filter: DiscoveryParams.defaults)
 
         NotificationCenter.default.post(Notification(name: .ksr_configUpdated))
 
         self.scheduler.advance(by: .seconds(1))
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(language)_device_\(device)"
@@ -197,20 +269,21 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
   }
 
   func testView_Editorial_WithActivity() {
-    let mockConfig = Config.template
-      |> \.features .~ [Feature.goRewardless.rawValue: true]
     let backing = .template
       |> Activity.lens.category .~ .backing
       |> Activity.lens.id .~ 1_234
       |> Activity.lens.project .~ self.cosmicSurgeryNoPhoto
       |> Activity.lens.user .~ self.brandoNoAvatar
 
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.lightsOn.rawValue: true]
+
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(
         apiService: MockService(fetchActivitiesResponse: [backing]),
-        config: mockConfig,
         currentUser: .template,
         language: language,
+        optimizelyClient: mockOptimizelyClient,
         userDefaults: MockKeyValueStore()
       ) {
         let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
@@ -228,6 +301,110 @@ internal final class DiscoveryPageViewControllerTests: TestCase {
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(language)_device_\(device)"
         )
+      }
+    }
+  }
+
+  func testProjectCard_Experimental() {
+    let project = self.cosmicSurgeryNoPhoto
+      |> \.state .~ .live
+      |> \.staffPick .~ true
+
+    let states: [Project.State] = [.live, .successful, .failed, .canceled]
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    combos(Language.allLanguages, Device.allCases, states).forEach { language, device, state in
+      let discoveryResponse = .template
+        |> DiscoveryEnvelope.lens.projects .~ [project |> Project.lens.state .~ state]
+      let apiService = MockService(fetchActivitiesResponse: [], fetchDiscoveryResponse: discoveryResponse)
+
+      withEnvironment(apiService: apiService, language: language, optimizelyClient: mockOptimizelyClient) {
+        let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        controller.change(filter: .defaults)
+
+        self.scheduler.run()
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
+
+        FBSnapshotVerifyView(parent.view, identifier: "state_\(state)_lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testProjectCard_Experimental_Backer() {
+    let project = self.cosmicSurgeryNoPhoto
+      |> \.personalization.backing .~ Backing.template
+      |> \.staffPick .~ true
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      let discoveryResponse = .template
+        |> DiscoveryEnvelope.lens.projects .~ [project]
+      let apiService = MockService(fetchActivitiesResponse: [], fetchDiscoveryResponse: discoveryResponse)
+
+      withEnvironment(apiService: apiService, language: language, optimizelyClient: mockOptimizelyClient) {
+        let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        controller.change(filter: .defaults)
+
+        self.scheduler.run()
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
+
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
+  func testProjectCard_Experimental_Social() {
+    let friend1 = User.brando
+      |> \.avatar.small .~ ""
+
+    let friend2 = User.template
+      |> \.name .~ "Alfie"
+      |> \.avatar.small .~ ""
+
+    let project = self.cosmicSurgeryNoPhoto
+      |> \.personalization.friends .~ [friend1, friend2]
+
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    combos(Language.allLanguages, Device.allCases).forEach { language, device in
+      let discoveryResponse = .template
+        |> DiscoveryEnvelope.lens.projects .~ [project]
+      let apiService = MockService(fetchActivitiesResponse: [], fetchDiscoveryResponse: discoveryResponse)
+
+      withEnvironment(apiService: apiService, language: language, optimizelyClient: mockOptimizelyClient) {
+        let controller = DiscoveryPageViewController.configuredWith(sort: .magic)
+        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+
+        controller.change(filter: .defaults)
+
+        self.scheduler.run()
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
+
+        FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }

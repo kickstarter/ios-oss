@@ -25,6 +25,7 @@ final class PledgeViewModelTests: TestCase {
   private let configurePledgeViewCTAContainerViewIsLoggedIn = TestObserver<Bool, Never>()
   private let configurePledgeViewCTAContainerViewIsEnabled = TestObserver<Bool, Never>()
   private let configurePledgeViewCTAContainerViewContext = TestObserver<PledgeViewContext, Never>()
+  private let configurePledgeViewCTAContainerViewWillRetryPaymentMethod = TestObserver<Bool, Never>()
 
   private let configureStripeIntegrationMerchantId = TestObserver<String, Never>()
   private let configureStripeIntegrationPublishableKey = TestObserver<String, Never>()
@@ -83,6 +84,8 @@ final class PledgeViewModelTests: TestCase {
       .observe(self.configurePledgeViewCTAContainerViewIsEnabled.observer)
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.2 }
       .observe(self.configurePledgeViewCTAContainerViewContext.observer)
+    self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.3 }
+      .observe(self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.observer)
 
     self.vm.outputs.configureSummaryViewControllerWithData.map(third)
       .observe(self.configureSummaryViewControllerWithDataConfirmationLabelHidden.observer)
@@ -143,6 +146,14 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.termsOfUseTapped(with: .terms)
 
     self.showWebHelp.assertValues([HelpType.terms])
+  }
+
+  func testShowWebHelpLearnMore() {
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.pledgeDisclaimerViewDidTapLearnMore()
+
+    self.showWebHelp.assertValues([HelpType.trust])
   }
 
   func testPledgeContext_LoggedIn() {
@@ -365,6 +376,72 @@ final class PledgeViewModelTests: TestCase {
       self.pledgeAmountSummaryViewHidden.assertValues([false])
       self.sectionSeparatorsHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([true])
+
+      let pledgeAmountData: PledgeAmountData = (amount: 90, min: 10.00, max: 10_000, isValid: true)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 90])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project])
+
+      self.vm.inputs.shippingRuleSelected(shippingRule)
+
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 90, 100])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project, project])
+    }
+  }
+
+  func testFixPaymentMethodContext() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let shippingRule = ShippingRule.template
+        |> ShippingRule.lens.id .~ 123
+        |> ShippingRule.lens.cost .~ 10.0
+      let backing = Backing.template
+        |> Backing.lens.amount .~ 100
+        |> Backing.lens.locationId .~ .some(123)
+        |> Backing.lens.status .~ .errored
+      let project = Project.template
+        |> Project.lens.personalization.backing .~ backing
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.minimum .~ 10.00
+
+      self.vm.inputs.configureWith(
+        project: project, reward: reward, refTag: nil, context: .fixPaymentMethod
+      )
+      self.vm.inputs.viewDidLoad()
+
+      self.title.assertValues(["Fix payment method"])
+
+      self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
+      self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
+      self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
+      self.configurePaymentMethodsViewControllerWithContext.assertValues([.fixPaymentMethod])
+
+      self.configureSummaryViewControllerWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10.00])
+
+      self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
+      self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
+
+      self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false])
+
+      self.descriptionViewHidden.assertValues([true])
+
+      self.configureWithPledgeViewDataProject.assertValues([project])
+      self.configureWithPledgeViewDataReward.assertValues([reward])
+
+      self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false])
+      self.paymentMethodsViewHidden.assertValues([false])
+      self.pledgeAmountViewHidden.assertValues([true])
+      self.pledgeAmountSummaryViewHidden.assertValues([false])
+      self.sectionSeparatorsHidden.assertValues([true])
+      self.shippingLocationViewHidden.assertValues([true])
+
+      self.vm.inputs.creditCardSelected(with: backing.paymentSource?.id ?? "")
+
+      self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false, true])
 
       let pledgeAmountData: PledgeAmountData = (amount: 90, min: 10.00, max: 10_000, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
@@ -1227,11 +1304,6 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual(optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
       XCTAssertEqual(optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
       XCTAssertEqual(optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
-
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "project_page")
-      XCTAssertEqual(
-        optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String, "project_page"
-      )
       XCTAssertEqual(
         optimizelyClient.trackedAttributes?["session_os_version"] as? String, "MockSystemVersion"
       )
@@ -1241,17 +1313,6 @@ final class PledgeViewModelTests: TestCase {
       )
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
-
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_category"] as? String, nil)
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, nil)
-
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["checkout_amount"] as? Double, 5.0)
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["checkout_payment_type"] as? String, "APPLE_PAY")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["revenue"] as? Int, 500)
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["currency"] as? String, "USD")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["category"] as? String, "Art")
     }
   }
 
@@ -1534,9 +1595,6 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual(optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
       XCTAssertEqual(optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
       XCTAssertEqual(optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
-
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "activity")
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String, "activity")
       XCTAssertEqual(
         optimizelyClient.trackedAttributes?["session_os_version"] as? String, "MockSystemVersion"
       )
@@ -1546,17 +1604,6 @@ final class PledgeViewModelTests: TestCase {
       )
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
-
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_category"] as? String, nil)
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, nil)
-
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["checkout_amount"] as? Double, 25.0)
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["checkout_payment_type"] as? String, "CREDIT_CARD")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["revenue"] as? Int, 2_500)
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["currency"] as? String, "USD")
-      XCTAssertEqual(optimizelyClient.trackedEventTags?["category"] as? String, "Art")
     }
   }
 
@@ -3791,6 +3838,21 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  func testTrackingEvents_CheckoutPaymentPageViewed() {
+    self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil, context: .pledge)
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+
+    XCTAssertEqual(self.trackingClient.properties(forKey: "context_pledge_flow"), ["new_pledge"])
+
+    let properties = self.trackingClient.properties.last
+
+    XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
+    XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")
+    XCTAssertNotNil(properties?["optimizely_experiments"], "Event includes Optimizely properties")
+  }
+
   func testTrackingEvents_UpdatePaymentMethod() {
     self.vm.inputs.configureWith(
       project: .template, reward: .template,
@@ -3799,6 +3861,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+    XCTAssertEqual(self.trackingClient.properties(forKey: "context_pledge_flow"), ["manage_reward"])
 
     self.vm.inputs.submitButtonTapped()
 
@@ -3813,6 +3876,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+    XCTAssertEqual(self.trackingClient.properties(forKey: "context_pledge_flow"), ["manage_reward"])
 
     self.vm.inputs.submitButtonTapped()
 
@@ -3827,6 +3891,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+    XCTAssertEqual(self.trackingClient.properties(forKey: "context_pledge_flow"), ["change_reward"])
 
     self.vm.inputs.submitButtonTapped()
 
@@ -3837,6 +3902,41 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testTrackingEvents_PledgeScreenViewed_LoggedOut() {
+    let project = Project.template
+      |> \.category.name .~ Project.Category.illustration.name
+      |> \.category.parentId .~ Project.Category.art.id
+      |> \.category.parentName .~ Project.Category.art.name
+
+    let trackingClient = MockTrackingClient()
+    let koala = Koala(client: trackingClient, config: .template, loggedInUser: nil)
+
+    withEnvironment(currentUser: nil, koala: koala) {
+      self.vm.inputs.configureWith(project: project, reward: .template, refTag: .discovery, context: .pledge)
+
+      XCTAssertEqual([], self.trackingClient.events)
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(["Checkout Payment Page Viewed"], trackingClient.events)
+
+      XCTAssertEqual(trackingClient.properties(forKey: "context_pledge_flow"), ["new_pledge"])
+      XCTAssertEqual(trackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
+      XCTAssertEqual(
+        trackingClient.properties(forKey: "session_referrer_credit"),
+        ["discovery"]
+      )
+
+      XCTAssertEqual(trackingClient.properties(forKey: "session_user_logged_in", as: Bool.self), [false])
+      XCTAssertEqual(trackingClient.properties(forKey: "user_country"), ["US"])
+      XCTAssertEqual(trackingClient.properties(forKey: "user_uid", as: Int.self), [nil])
+
+      XCTAssertEqual(trackingClient.properties(forKey: "project_subcategory"), ["Illustration"])
+      XCTAssertEqual(trackingClient.properties(forKey: "project_category"), ["Art"])
+      XCTAssertEqual(trackingClient.properties(forKey: "project_country"), ["US"])
+      XCTAssertEqual(trackingClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+    }
+  }
+
+  func testTrackingEvents_OptimizelyClient_PledgeScreenViewed_LoggedOut() {
     let project = Project.template
       |> \.category.parentId .~ Project.Category.art.id
       |> \.category.parentName .~ Project.Category.art.name
@@ -3857,11 +3957,8 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
 
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "discovery")
-    XCTAssertEqual(
-      self.optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String,
-      "discovery"
-    )
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, nil)
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String, nil)
     XCTAssertEqual(
       self.optimizelyClient.trackedAttributes?["session_os_version"] as? String,
       "MockSystemVersion"
@@ -3873,14 +3970,9 @@ final class PledgeViewModelTests: TestCase {
     )
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
-
-    XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
-    XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_category"] as? String, "Art")
-    XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
-    XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_user_has_watched"] as? String, nil)
   }
 
-  func testTrackingEvents_PledgeScreenViewed_LoggedIn() {
+  func testTrackingEvents_OptimizelyClient_PledgeScreenViewed_LoggedIn() {
     let user = User.template
       |> \.location .~ Location.template
       |> \.stats.backedProjectsCount .~ 50
@@ -3912,12 +4004,6 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, true)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
-
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, "discovery")
-      XCTAssertEqual(
-        self.optimizelyClient.trackedAttributes?["session_referrer_credit"] as? String,
-        "discovery"
-      )
       XCTAssertEqual(
         self.optimizelyClient.trackedAttributes?["session_os_version"] as? String,
         "MockSystemVersion"
@@ -3929,11 +4015,50 @@ final class PledgeViewModelTests: TestCase {
       )
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
+    }
+  }
 
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_subcategory"] as? String, "Art")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_category"] as? String, "Art")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_country"] as? String, "us")
-      XCTAssertEqual(self.optimizelyClient.trackedEventTags?["project_user_has_watched"] as? Bool, true)
+  func testTrackingEvents_PledgeScreenViewed_LoggedIn() {
+    let user = User.template
+      |> \.location .~ Location.template
+      |> \.stats.backedProjectsCount .~ 50
+      |> \.stats.createdProjectsCount .~ 25
+      |> \.facebookConnected .~ true
+
+    let trackingClient = MockTrackingClient()
+    let koala = Koala(client: trackingClient, config: .template, loggedInUser: user)
+
+    withEnvironment(currentUser: user, koala: koala) {
+      let project = Project.template
+        |> \.category.name .~ Project.Category.illustration.name
+        |> \.category.parentId .~ Project.Category.art.id
+        |> \.category.parentName .~ Project.Category.art.name
+        |> Project.lens.stats.currentCurrency .~ "USD"
+        |> \.personalization.isStarred .~ true
+
+      self.vm.inputs.configureWith(
+        project: project, reward: .template, refTag: .discovery, context: .pledge
+      )
+
+      XCTAssertEqual([], self.trackingClient.events)
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual(["Checkout Payment Page Viewed"], trackingClient.events)
+
+      XCTAssertEqual(trackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
+      XCTAssertEqual(
+        trackingClient.properties(forKey: "session_referrer_credit"),
+        ["discovery"]
+      )
+
+      XCTAssertEqual(trackingClient.properties(forKey: "session_user_logged_in", as: Bool.self), [true])
+      XCTAssertEqual(trackingClient.properties(forKey: "user_country"), ["US"])
+      XCTAssertEqual(trackingClient.properties(forKey: "user_uid", as: Int.self), [1])
+
+      XCTAssertEqual(trackingClient.properties(forKey: "project_subcategory"), ["Illustration"])
+      XCTAssertEqual(trackingClient.properties(forKey: "project_category"), ["Art"])
+      XCTAssertEqual(trackingClient.properties(forKey: "project_country"), ["US"])
+      XCTAssertEqual(trackingClient.properties(forKey: "project_user_has_watched", as: Bool.self), [true])
     }
   }
 
@@ -4053,5 +4178,36 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual(1, props?["project_pid"] as? Int)
 
     XCTAssertEqual("discovery", props?["session_ref_tag"] as? String)
+  }
+
+  func testTrackingEvents_PledgeButtonSubmit_ContextIsFixPayment() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let backing = Backing.template
+        |> Backing.lens.amount .~ 100
+        |> Backing.lens.locationId .~ .some(123)
+        |> Backing.lens.status .~ .errored
+      let project = Project.template
+        |> Project.lens.personalization.backing .~ backing
+      let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.minimum .~ 10.00
+
+      self.vm.inputs.configureWith(
+        project: project, reward: reward, refTag: nil, context: .fixPaymentMethod
+      )
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.creditCardSelected(with: "12345")
+
+      XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+
+      self.vm.inputs.submitButtonTapped()
+
+      XCTAssertEqual(
+        ["Checkout Payment Page Viewed", "Update Pledge Button Clicked", "Pledge Submit Button Clicked"],
+        self.trackingClient.events
+      )
+    }
   }
 }

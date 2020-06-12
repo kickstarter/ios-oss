@@ -95,7 +95,7 @@ final class ProjectPamphletCreatorHeaderCell: UITableViewCell, ValueCell {
       |> projectCreationInfoLabelStyle
 
     _ = self.rootStackView
-      |> checkoutAdaptableStackViewStyle(
+      |> adaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
       |> rootStackViewStyle

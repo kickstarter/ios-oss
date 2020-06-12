@@ -19,8 +19,8 @@ final class PledgeAmountSummaryViewController: UIViewController {
 
   // MARK: Life cycle
 
-  public func configureWith(_ project: Project) {
-    self.viewModel.inputs.configureWith(project)
+  public func configureWith(_ data: PledgeAmountSummaryViewData) {
+    self.viewModel.inputs.configureWith(data)
   }
 
   override func viewDidLoad() {
@@ -39,13 +39,13 @@ final class PledgeAmountSummaryViewController: UIViewController {
     let isAccessibilityCategory = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
     _ = self.pledgeAmountStackView
-      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
+      |> adaptableStackViewStyle(isAccessibilityCategory)
 
     _ = self.rootStackView
       |> rootStackViewStyle
 
     _ = self.shippingLocationStackView
-      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
+      |> adaptableStackViewStyle(isAccessibilityCategory)
 
     _ = self.pledgeLabel
       |> pledgeLabelStyle

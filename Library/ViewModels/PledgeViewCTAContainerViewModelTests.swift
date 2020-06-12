@@ -39,7 +39,8 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     let pledgeData = PledgeViewCTAContainerViewData(
       isLoggedIn: false,
       isEnabled: true,
-      context: context
+      context: context,
+      willRetryPaymentMethod: false
     )
 
     self.submitButtonIsHidden.assertDidNotEmitValue()
@@ -55,36 +56,14 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     self.submitButtonIsEnabled.assertValues([true])
   }
 
-  func testPledgeView_UpdateContext_UserLoggedOut() {
-    let context = PledgeViewContext.update
-
-    let pledgeData = PledgeViewCTAContainerViewData(
-      isLoggedIn: true,
-      isEnabled: true,
-      context: context
-    )
-
-    self.submitButtonIsHidden.assertDidNotEmitValue()
-    self.applePayButtonIsHidden.assertDidNotEmitValue()
-    self.continueButtonIsHidden.assertDidNotEmitValue()
-    self.submitButtonIsEnabled.assertDidNotEmitValue()
-
-    self.vm.inputs.configureWith(value: pledgeData)
-
-    self.submitButtonIsHidden.assertValues([false])
-    self.applePayButtonIsHidden.assertValues([true])
-    self.continueButtonIsHidden.assertValues([true])
-    self.submitButtonIsEnabled.assertValues([true])
-    self.submitButtonTitle.assertValues(["Confirm"])
-  }
-
-  func testPledgeView_PledgeContext_UserLoggedOut() {
+  func testPledgeView_UserLoggedIn() {
     let context = PledgeViewContext.pledge
 
     let pledgeData = PledgeViewCTAContainerViewData(
       isLoggedIn: true,
       isEnabled: true,
-      context: context
+      context: context,
+      willRetryPaymentMethod: false
     )
 
     self.submitButtonIsHidden.assertDidNotEmitValue()
@@ -101,11 +80,84 @@ internal final class PledgeViewCTAContainerViewModelTests: TestCase {
     self.submitButtonTitle.assertValues(["Pledge"])
   }
 
+  func testPledgeView_UpdateContext() {
+    let context = PledgeViewContext.update
+
+    let pledgeData = PledgeViewCTAContainerViewData(
+      isLoggedIn: true,
+      isEnabled: true,
+      context: context,
+      willRetryPaymentMethod: false
+    )
+
+    self.submitButtonIsHidden.assertDidNotEmitValue()
+    self.applePayButtonIsHidden.assertDidNotEmitValue()
+    self.continueButtonIsHidden.assertDidNotEmitValue()
+    self.submitButtonIsEnabled.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(value: pledgeData)
+
+    self.submitButtonIsHidden.assertValues([false])
+    self.applePayButtonIsHidden.assertValues([true])
+    self.continueButtonIsHidden.assertValues([true])
+    self.submitButtonIsEnabled.assertValues([true])
+    self.submitButtonTitle.assertValues(["Confirm"])
+  }
+
+  func testPledgeView_ChangePaymentMethodContext() {
+    let context = PledgeViewContext.changePaymentMethod
+
+    let pledgeData = PledgeViewCTAContainerViewData(
+      isLoggedIn: true,
+      isEnabled: true,
+      context: context,
+      willRetryPaymentMethod: false
+    )
+
+    self.submitButtonIsHidden.assertDidNotEmitValue()
+    self.applePayButtonIsHidden.assertDidNotEmitValue()
+    self.continueButtonIsHidden.assertDidNotEmitValue()
+    self.submitButtonIsEnabled.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(value: pledgeData)
+
+    self.submitButtonIsHidden.assertValues([false])
+    self.applePayButtonIsHidden.assertValues([false])
+    self.continueButtonIsHidden.assertValues([true])
+    self.submitButtonIsEnabled.assertValues([true])
+    self.submitButtonTitle.assertValues(["Confirm"])
+  }
+
+  func testPledgeView_FixPaymentMethodContext_RetryingPaymentMethod() {
+    let context = PledgeViewContext.fixPaymentMethod
+
+    let pledgeData = PledgeViewCTAContainerViewData(
+      isLoggedIn: true,
+      isEnabled: true,
+      context: context,
+      willRetryPaymentMethod: true
+    )
+
+    self.submitButtonIsHidden.assertDidNotEmitValue()
+    self.applePayButtonIsHidden.assertDidNotEmitValue()
+    self.continueButtonIsHidden.assertDidNotEmitValue()
+    self.submitButtonIsEnabled.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(value: pledgeData)
+
+    self.submitButtonIsHidden.assertValues([false])
+    self.applePayButtonIsHidden.assertValues([false])
+    self.continueButtonIsHidden.assertValues([true])
+    self.submitButtonIsEnabled.assertValues([true])
+    self.submitButtonTitle.assertValues(["Retry"])
+  }
+
   func testContinueButtonTapped() {
     let pledgeData = PledgeViewCTAContainerViewData(
       isLoggedIn: false,
       isEnabled: true,
-      context: .pledge
+      context: .pledge,
+      willRetryPaymentMethod: false
     )
 
     self.vm.inputs.configureWith(value: pledgeData)

@@ -195,6 +195,7 @@
 "Find_projects_youll_love_in_art_design_film" = "Proyectos a tu gusto - en arte, diseño, cine, juegos, música y otras categorías. Una vez que hayas patrocinado un proyecto, verás todas las actividades pertinentes aquí.";
 "First_created" = "Primer proyecto creado";
 "Fix" = "Corregir";
+"Fix_payment_method" = "Corregir el método de pago";
 "Fix_your_payment_method" = "Corrige tu método de pago";
 "Follow_friend_name" = "Seguir a %{friend_name}.";
 "Follow_friends" = "Seguir amigos";
@@ -230,6 +231,7 @@
 "Get_reminded_about_this_project" = "¿Deseas recibir recordatorios sobre este proyecto?";
 "Get_started" = "¡Manos a la obra!";
 "Go_to_project_page" = "Ir a la página de proyecto";
+"Goal_met" = "Meta cumplida";
 "Got_it" = "¡Listo!";
 "Got_it_your_changes_have_been_saved" = "Listo. Se han guardado tus cambios.";
 "Got_it_your_survey_response_has_been_submitted" = "¡Listo! Hemos recibido tus respuestas a nuestro cuestionario.";
@@ -237,6 +239,7 @@
 "Happening_newsletter" = "Suscríbete para recibir una combinación de nuevos proyectos, historias persuasivas e inspiración visual, que se entregan una vez (y algunas veces dos veces) por semana.";
 "Help" = "Ayuda";
 "Help_center" = "Centro de ayuda";
+"Help_local_businesses_keep_the_lights" = "Ayuda a que los negocios locales sigan activos durante los cierres producidos por el COVID-19.";
 "Hide_password" = "Ocultar contraseña";
 "Home" = "Inicio";
 "How_backers_found_your_project" = "Cómo encontraron tu proyecto los patrocinadores";
@@ -252,6 +255,7 @@
 "Individual_Emails" = "Notificaciones por correo electrónico individuales";
 "Info" = "Información";
 "Introduce_yourself" = "Preséntate";
+"Introducing_Lights_On" = "Presentamos \"Seguimos activos\"";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "Puede demorar hasta 24 horas recopilar tus datos. Cuando estén listos, te enviaremos instrucciones para descargar tus datos al correo electrónico asociado con esta cuenta. Si no recibes noticias nuestras, vuelve aquí e inténtalo de nuevo.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es una plataforma para dar vida a proyectos creativos.";
 "Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "Es una forma de dar vida a proyectos creativos.<a href=\"%{trust_link}\">Más información sobre las responsabilidades</a>";
@@ -260,7 +264,6 @@
 "Its_our_birthday" = "¡Cumplimos años! Más de 160.000 proyectos creativos se han hecho realidad en Kickstarter durante la última década, gracias al apoyo de más de 16.000.000 de patrocinadores.";
 "Join_a_fruitful_community" = "Únete a una comunidad fructífera";
 "Join_our_secret_society" = "Únete a nuestra sociedad secreta.";
-"Join_us_in_supporting_creative_work_for_its_own_sake_this_holiday_season" = "En esta temporada navideña, apoya con nosotros el trabajo creativo sin esperar nada a cambio.";
 "Joining_the_live_stream" = "Abriendo conexión a Live Stream";
 "Just_for_you" = "Sólo para ti.";
 "Keep_in_touch_after_your_campaign" = "Mantente en contacto después de tu campaña y planifica tu próximo proyecto.";
@@ -360,6 +363,7 @@
 "Password_visibility" = "Visibilidad de la contraseña";
 "Passwords_matching_message" = "Las nuevas contraseñas deben coincidir.";
 "Past_live_stream" = "Live Stream pasado";
+"Payment_failure" = "Error de pago";
 "Payment_method" = "Método de pago";
 "Payment_method_was_successfully_charged" = "Cargo efectuado a método de pago indicado.";
 "Payment_methods" = "Métodos de pago";
@@ -388,6 +392,7 @@
 "Private_profile" = "Perfil privado";
 "Private_profile_more_info" = "Más información sobre el perfil privado";
 "Private_profile_more_info_content" = "Los perfiles de Kickstarter son privados por defecto. Para hacer que tu perfil sea público y visible para el mundo, desactiva esta opción.";
+"Processing" = "Procesando...";
 "Project_Cancelled" = "Proyecto cancelado.";
 "Project_Suspended" = "Proyecto suspendido.";
 "Project_activity" = "Actividad del proyecto";
@@ -428,6 +433,7 @@
 "Request_my_personal_data" = "Solicitar mis datos personales";
 "Resend_verification_email" = "Volver a enviar correo electrónico de verificación";
 "Retry" = "Volver a intentar";
+"Retry_or_select_another_method" = "Vuelve a intentarlo o selecciona otro método.";
 "Reward_Surveys.few" = "%{reward_survey_count} cuestionarios";
 "Reward_Surveys.many" = "%{reward_survey_count} cuestionarios";
 "Reward_Surveys.one" = "Cuestionario";
@@ -491,10 +497,17 @@
 "Ships_worldwide" = "Envíos a todo el mundo";
 "Show_me_projects" = "Múestrame proyectos";
 "Show_password" = "Mostrar contraseña";
+"Show_up_for_the_spaces_you_love" = "Apoya tus espacios culturales favoritos";
 "Shows_list_of_subcategories" = "Mostrar lista de subcategorías.";
 "Sign_up" = "Registrarse";
 "Sign_up_newsletter" = "Suscríbete a Nuestros favoritos para recibir una combinación semanal de proyectos destacados, seleccionados por el equipo de Kickstarter.";
 "Signs_up_with_Email" = "Registro con correo electrónico.";
+"Social_friend_is_backer.few" = "%{friend_name} y %{remaining_count} otros";
+"Social_friend_is_backer.many" = "%{friend_name} y %{remaining_count} otros";
+"Social_friend_is_backer.one" = "%{friend_name} y %{remaining_count} persona más";
+"Social_friend_is_backer.other" = "%{friend_name} y %{remaining_count} otros";
+"Social_friend_is_backer.two" = "%{friend_name} y %{remaining_count} otros";
+"Social_friend_is_backer.zero" = "%{friend_name} patrocina este proyecto";
 "Something_catch_your_eye" = "¿Algo que te haya llamado la atención?";
 "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "Hubo un error y no pudimos eliminar tu método de pago. Inténtalo de nuevo.";
 "Something_went_wrong_please_try_again" = "Ocurrió un error. Inténtalo nuevamente más tarde.";
@@ -511,6 +524,7 @@
 "Subscribes_to_upcoming_lives_streams" = "Activa subscripción a futuros Live-Streams.";
 "Successful_projects_have_been_created_on_kickstarter" = "Proyectos exitosos se han creado en Kickstarter.";
 "Support_creative_independence" = "Apoya la independencia creativa";
+"Support_creative_spaces_and_businesses_affected_by" = "Apoya espacios creativos y negocios afectados por el COVID-19.";
 "Survey" = "Cuestionario";
 "Tap_the_heart_on_a_project_to_get_notified" = "Haz clic en el icono de corazón de un proyecto para recibir una notificación 48 horas antes de que finalice.";
 "Tap_the_heart_on_each_project_page_to_save_it" = "Haz clic en el corazón en la página de cada proyecto para guardarlo. Te recordaremos 48 horas antes de que finalice el proyecto.";
@@ -585,7 +599,9 @@
 "View_your_rewards" = "Ver tus recompensas";
 "Watch_live" = "Ver en vivo";
 "We_cant_process_this_pledge_because_of_a_problem_with_the_backers_payment_method" = "No podemos procesar esta contribución por un problema con el método de pago del patrocinador.";
+"We_cant_process_your_pledge" = "No podemos procesar tu contribución.";
 "We_cant_process_your_pledge_Please_update_your_payment_method" = "No podemos procesar la contribución. Por favor actualiza tu método de pago.";
+"We_cant_process_your_pledge_for" = "No podemos procesar tu contribución para:";
 "We_collected_the_backers_pledge_for_this_project" = "Hemos recolectado la contribución del patrocinador a este proyecto.";
 "We_collected_your_pledge_for_this_project" = "Hemos recolectado tu contribución a este proyecto.";
 "We_couldnt_find_anything_for_search_term" = "La búsqueda \"%{search_term}\" no dio resultados.";
@@ -643,6 +659,7 @@
 "Your_shipping_destination" = "Tu destino de envío";
 "Your_shipping_location" = "Tu ubicación de envío";
 "Youre_a_backer" = "¡Eres un patrocinador!";
+"Youre_a_backer_no_punctuation" = "Eres patrocinador";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Estás a punto de crear una nueva cuenta de Kickstarter usando el correo electrónico associado a tu cuenta de Facebook. Por favor confírmalo antes de proceder.";
 "Youre_all_set" = "Ya está todo listo";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Estás conectado a través de Facebook (%{email}). Crea una contraseña para esta cuenta para editar tus credenciales de Kickstarter.";

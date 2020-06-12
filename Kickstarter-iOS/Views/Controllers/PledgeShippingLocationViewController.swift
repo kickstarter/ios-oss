@@ -70,7 +70,7 @@ final class PledgeShippingLocationViewController: UIViewController {
       |> checkoutBackgroundStyle
 
     _ = self.adaptableStackView
-      |> checkoutAdaptableStackViewStyle(
+      |> adaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
 

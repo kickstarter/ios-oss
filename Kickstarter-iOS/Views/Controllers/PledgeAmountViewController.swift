@@ -83,7 +83,7 @@ final class PledgeAmountViewController: UIViewController {
       |> checkoutBackgroundStyle
 
     _ = self.adaptableStackView
-      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
+      |> adaptableStackViewStyle(isAccessibilityCategory)
       |> \.spacing .~ Styles.grid(3)
 
     _ = self.horizontalSpacer
@@ -142,6 +142,10 @@ final class PledgeAmountViewController: UIViewController {
 
         self.delegate?.pledgeAmountViewController(self, didUpdateWith: data)
       }
+  }
+
+  override func didMove(toParent _: UIViewController?) {
+    self.verticalSpacer.isHidden = true
   }
 
   // MARK: - Configuration

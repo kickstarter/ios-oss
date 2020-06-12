@@ -18,35 +18,14 @@ internal final class EditorialProjectsViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testView_GoRewardless_LoggedOut() {
+  func testView_LightsOn() {
     combos(Language.allLanguages, Device.allCases).forEach {
       language, device in
-      withEnvironment(currentUser: nil, language: language) {
+      withEnvironment(language: language) {
         let controller = EditorialProjectsViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        controller.configure(with: .goRewardless)
-        controller.view.layoutIfNeeded()
-        controller.discoveryPageViewController.tableView.layoutIfNeeded()
-        controller.discoveryPageViewController.tableView.reloadData()
-
-        self.scheduler.run()
-
-        FBSnapshotVerifyView(
-          parent.view, identifier: "lang_\(language)_device_\(device)"
-        )
-      }
-    }
-  }
-
-  func testView_GoRewardless_LoggedIn() {
-    combos(Language.allLanguages, Device.allCases).forEach {
-      language, device in
-      withEnvironment(currentUser: .template, language: language) {
-        let controller = EditorialProjectsViewController.instantiate()
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-
-        controller.configure(with: .goRewardless)
+        controller.configure(with: .lightsOn)
         controller.view.layoutIfNeeded()
         controller.discoveryPageViewController.tableView.layoutIfNeeded()
         controller.discoveryPageViewController.tableView.reloadData()

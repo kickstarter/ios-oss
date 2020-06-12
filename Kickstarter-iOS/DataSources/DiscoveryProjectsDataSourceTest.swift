@@ -26,7 +26,7 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
     let section = DiscoveryProjectsDataSource.Section.editorial.rawValue
 
     let editorialValue: DiscoveryEditorialCellValue = .init(
-      title: "title", subtitle: "subtitle", imageName: "", tagId: .goRewardless
+      title: "title", subtitle: "subtitle", imageName: "", tagId: .lightsOn
     )
 
     self.dataSource.showEditorial(value: editorialValue)
@@ -83,5 +83,18 @@ final class DiscoveryProjectsDataSourceTests: XCTestCase {
 
     XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
+  }
+
+  func testProjects_ExperimentVariant() {
+    let section = DiscoveryProjectsDataSource.Section.projects.rawValue
+
+    self.dataSource.load(
+      projects: [.template, .template, .template],
+      params: DiscoveryParams.defaults,
+      projectCardVariant: .variant1
+    )
+
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(3, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
   }
 }

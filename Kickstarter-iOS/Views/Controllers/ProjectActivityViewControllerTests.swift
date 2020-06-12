@@ -28,19 +28,18 @@ internal final class ProjectActivityViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testProjectActivityViewController() {
+  func testProjectActivityView() {
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(language: language) {
         let controller = ProjectActivitiesViewController.configuredWith(project: project)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = device == .pad ? 2_600 : 2_200
 
         self.scheduler.run()
 
         FBSnapshotVerifyView(
           parent.view,
           identifier: "lang_\(language)_device_\(device)",
-          overallTolerance: 0.2
+          overallTolerance: 0.03
         )
       }
     }

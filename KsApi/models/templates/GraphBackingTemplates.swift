@@ -3,8 +3,9 @@ import Prelude
 extension GraphBacking {
   internal static let template = GraphBacking(
     errorReason: nil,
+    id: "UmV3YXJkLTE=",
     project: nil,
-    status: GraphBacking.Status.collected
+    status: GraphBacking.Status.errored
   )
 
   internal static let errored = GraphBacking.template
@@ -15,8 +16,9 @@ extension GraphBacking {
 
 extension GraphBacking.Project {
   internal static let template = GraphBacking.Project(
-    id: "1",
+    finalCollectionDate: "2020-04-08T15:15:05Z",
     name: "Cool project",
+    pid: 1,
     slug: "/cool-project"
   )
 }

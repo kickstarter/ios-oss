@@ -144,13 +144,17 @@ public protocol ServiceType {
   func fetchGraphUserAccountFields(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<GraphUser>, GraphError>
 
+  /// Fetch User's backings with a specific status.
+  func fetchGraphUserBackings(query: NonEmptySet<Query>)
+    -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError>
+
   /// Fetch User's email fields object using graphQL.
   func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
     -> SignalProducer<UserEnvelope<UserEmailFields>, GraphError>
 
-  /// Fetch User's backings with a specific status.
-  func fetchGraphUserBackings(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError>
+  /// Fetch Backing data for ManagePledgeViewController
+  func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
+    -> SignalProducer<ManagePledgeViewBackingEnvelope, GraphError>
 
   /// Fetches all of the messages in a particular message thread.
   func fetchMessageThread(messageThreadId: Int)
@@ -292,6 +296,10 @@ public protocol ServiceType {
   /// Sends a verification email (after updating the email from account settings).
   func sendVerificationEmail(input: EmptyInput)
     -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+
+  /// Signin with Apple
+  func signInWithApple(input: SignInWithAppleInput)
+    -> SignalProducer<SignInWithAppleEnvelope, GraphError>
 
   /// Signup with email.
   func signup(

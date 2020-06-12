@@ -137,12 +137,12 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       |> Project.lens.personalization.backing .~ backing
 
     self.vm.inputs.configureWith(value: (.left((project, nil)), false, .projectPamphlet))
-    self.buttonStyleType.assertValues([ButtonStyleType.black])
-    self.buttonTitleText.assertValues([Strings.View_your_pledge()])
-    self.titleText.assertValues([])
-    self.subtitleText.assertValues(["$10"])
-    self.spacerIsHidden.assertValues([true])
-    self.stackViewIsHidden.assertValues([true])
+    self.buttonStyleType.assertValues([ButtonStyleType.red])
+    self.buttonTitleText.assertValues([Strings.Manage()])
+    self.titleText.assertValues(["Payment failure"])
+    self.subtitleText.assertValues(["We can't process your pledge."])
+    self.spacerIsHidden.assertValues([false])
+    self.stackViewIsHidden.assertValues([false])
   }
 
   func testPledgeCTA_NonBacker_LiveProject_loggedIn() {
@@ -195,8 +195,6 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       )
       XCTAssertEqual(optimizelyClient.userAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.userAttributes?["session_device_format"] as? String, "phone")
-
-      XCTAssertNil(optimizelyClient.trackedEventTags)
     }
   }
 
@@ -241,8 +239,6 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       )
       XCTAssertEqual(optimizelyClient.userAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.userAttributes?["session_device_format"] as? String, "phone")
-
-      XCTAssertNil(optimizelyClient.trackedEventTags)
     }
   }
 
@@ -285,8 +281,6 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       )
       XCTAssertEqual(optimizelyClient.userAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.userAttributes?["session_device_format"] as? String, "phone")
-
-      XCTAssertNil(optimizelyClient.trackedEventTags)
     }
   }
 
@@ -331,8 +325,6 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       )
       XCTAssertEqual(optimizelyClient.userAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.userAttributes?["session_device_format"] as? String, "phone")
-
-      XCTAssertNil(optimizelyClient.trackedEventTags)
     }
   }
 
@@ -460,7 +452,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.notifyDelegateCTATapped.assertValueCount(1)
   }
 
-  func testTrackingEvents() {
+  func testTrackingEvents_ViewRewards() {
     let project = Project.template
       |> Project.lens.state .~ .successful
       |> Project.lens.personalization.isBacking .~ false
@@ -473,6 +465,41 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.vm.inputs.pledgeCTAButtonTapped()
     self.notifyDelegateCTATapped.assertValueCount(1)
+
     XCTAssertEqual(["View Rewards Button Clicked"], self.trackingClient.events)
+
+    XCTAssertEqual(
+      self.trackingClient.properties(forKey: "optimizely_api_key"),
+      [nil],
+      "Event does not include Optimizely properties"
+    )
+    XCTAssertEqual(
+      self.trackingClient.properties(forKey: "optimizely_environment"),
+      [nil],
+      "Event does not include Optimizely properties"
+    )
+    XCTAssertEqual(
+      self.trackingClient.properties(forKey: "optimizely_experiments"),
+      [nil],
+      "Event does not include Optimizely properties"
+    )
+  }
+
+  func testTrackingEvents_Pledge() {
+    self.vm.inputs.configureWith(value: (.left((Project.template, nil)), false, .projectPamphlet))
+
+    self.notifyDelegateCTATapped.assertDidNotEmitValue()
+
+    self.vm.inputs.pledgeCTAButtonTapped()
+
+    self.notifyDelegateCTATapped.assertValueCount(1)
+
+    XCTAssertEqual(["Project Page Pledge Button Clicked"], self.trackingClient.events)
+
+    let properties = self.trackingClient.properties.last
+
+    XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
+    XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")
+    XCTAssertNotNil(properties?["optimizely_experiments"], "Event includes Optimizely properties")
   }
 }

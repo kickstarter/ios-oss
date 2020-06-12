@@ -86,6 +86,8 @@
 
     fileprivate let publishUpdateError: ErrorEnvelope?
 
+    fileprivate let fetchManagePledgeViewBackingResult: Result<ManagePledgeViewBackingEnvelope, GraphError>?
+
     fileprivate let fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>?
     fileprivate let fetchMessageThreadsResponse: [MessageThread]
 
@@ -146,6 +148,8 @@
 
     fileprivate let sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope?
     fileprivate let sendEmailVerificationError: GraphError?
+
+    fileprivate let signInWithAppleResult: Result<SignInWithAppleEnvelope, GraphError>?
 
     fileprivate let signupResponse: AccessTokenEnvelope?
     fileprivate let signupError: ErrorEnvelope?
@@ -247,6 +251,7 @@
       removeAttachmentResponse: UpdateDraft.Image? = nil,
       removeAttachmentError: ErrorEnvelope? = nil,
       publishUpdateError: ErrorEnvelope? = nil,
+      fetchManagePledgeViewBackingResult: Result<ManagePledgeViewBackingEnvelope, GraphError>? = nil,
       fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
       fetchMessageThreadsResponse: [MessageThread]? = nil,
       fetchProjectResponse: Project? = nil,
@@ -285,6 +290,7 @@
       resetPasswordError: ErrorEnvelope? = nil,
       sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope? = nil,
       sendEmailVerificationError: GraphError? = nil,
+      signInWithAppleResult: Result<SignInWithAppleEnvelope, GraphError>? = nil,
       signupResponse: AccessTokenEnvelope? = nil,
       signupError: ErrorEnvelope? = nil,
       unfollowFriendError: ErrorEnvelope? = nil,
@@ -394,6 +400,8 @@
 
       self.publishUpdateError = publishUpdateError
 
+      self.fetchManagePledgeViewBackingResult = fetchManagePledgeViewBackingResult
+
       self.fetchMessageThreadResult = fetchMessageThreadResult
 
       self.fetchMessageThreadsResponse = fetchMessageThreadsResponse ?? [
@@ -480,6 +488,8 @@
       self.sendEmailVerificationResponse = sendEmailVerificationResponse
 
       self.sendEmailVerificationError = sendEmailVerificationError
+
+      self.signInWithAppleResult = signInWithAppleResult
 
       self.signupResponse = signupResponse
 
@@ -725,8 +735,12 @@
       if let error = fetchGraphUserBackingsError {
         return SignalProducer(error: error)
       }
-      let response = self.fetchGraphUserBackingsResponse ??
-        UserEnvelope<GraphBackingEnvelope>(me: GraphBackingEnvelope.template)
+      let backings = GraphBackingEnvelope.GraphBackingConnection(nodes: [])
+      let emptyEnvelope = GraphBackingEnvelope.template
+        |> \.backings .~ backings
+      let emptyResponse = UserEnvelope<GraphBackingEnvelope>(me: emptyEnvelope)
+
+      let response = self.fetchGraphUserBackingsResponse ?? emptyResponse
       return SignalProducer(value: response)
     }
 
@@ -827,6 +841,11 @@
       )
 
       return SignalProducer(value: envelope)
+    }
+
+    func fetchManagePledgeViewBacking(query _: NonEmptySet<Query>)
+      -> SignalProducer<ManagePledgeViewBackingEnvelope, GraphError> {
+      return producer(for: self.fetchManagePledgeViewBackingResult)
     }
 
     internal func fetchMessageThread(messageThreadId _: Int)
@@ -1244,6 +1263,14 @@
       return SignalProducer(value: GraphMutationEmptyResponseEnvelope())
     }
 
+    internal func signInWithApple(input _: SignInWithAppleInput)
+      -> SignalProducer<SignInWithAppleEnvelope, GraphError> {
+      if let error = self.signInWithAppleResult?.error {
+        return SignalProducer(error: error)
+      }
+      return SignalProducer(value: self.signInWithAppleResult?.value ?? SignInWithAppleEnvelope.template)
+    }
+
     internal func signup(
       name: String,
       email _: String,
@@ -1451,6 +1478,7 @@
             removeAttachmentResponse: $1.removeAttachmentResponse,
             removeAttachmentError: $1.removeAttachmentError,
             publishUpdateError: $1.publishUpdateError,
+            fetchManagePledgeViewBackingResult: $1.fetchManagePledgeViewBackingResult,
             fetchMessageThreadResult: $1.fetchMessageThreadResult,
             fetchMessageThreadsResponse: $1.fetchMessageThreadsResponse,
             fetchProjectResponse: $1.fetchProjectResponse,

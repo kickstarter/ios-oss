@@ -20,9 +20,9 @@ final class BackingPaymentSourceTests: XCTestCase {
     XCTAssertEqual(paymentSource?.expirationDate, "2020-02-21")
     XCTAssertEqual(paymentSource?.id, "2")
     XCTAssertEqual(paymentSource?.lastFour, "4111")
-    XCTAssertEqual(paymentSource?.paymentType, Backing.PaymentType.creditCard)
+    XCTAssertEqual(paymentSource?.paymentType, PaymentType.creditCard)
     XCTAssertEqual(paymentSource?.state, "ACTIVE")
-    XCTAssertEqual(paymentSource?.type, GraphUserCreditCard.CreditCardType.visa)
+    XCTAssertEqual(paymentSource?.type, CreditCardType.visa)
   }
 
   func testJSONDecoding_IncompleteData() {
@@ -42,7 +42,7 @@ final class BackingPaymentSourceTests: XCTestCase {
     XCTAssertNil(paymentSource?.id)
     XCTAssertNil(paymentSource?.lastFour)
     XCTAssertNil(paymentSource?.type)
-    XCTAssertEqual(paymentSource?.paymentType, Backing.PaymentType.creditCard)
+    XCTAssertEqual(paymentSource?.paymentType, PaymentType.creditCard)
     XCTAssertEqual(paymentSource?.state, "ACTIVE")
   }
 
@@ -62,9 +62,9 @@ final class BackingPaymentSourceTests: XCTestCase {
     XCTAssertEqual(paymentSource?.expirationDate, "2020-02-21")
     XCTAssertEqual(paymentSource?.id, "2")
     XCTAssertEqual(paymentSource?.lastFour, "4111")
-    XCTAssertEqual(paymentSource?.paymentType, Backing.PaymentType.applePay)
+    XCTAssertEqual(paymentSource?.paymentType, PaymentType.applePay)
     XCTAssertEqual(paymentSource?.state, "ACTIVE")
-    XCTAssertEqual(paymentSource?.type, GraphUserCreditCard.CreditCardType.visa)
+    XCTAssertEqual(paymentSource?.type, CreditCardType.visa)
   }
 
   func testJSONDecoding_GooglePay() {
@@ -83,9 +83,9 @@ final class BackingPaymentSourceTests: XCTestCase {
     XCTAssertEqual(paymentSource?.expirationDate, "2020-02-21")
     XCTAssertEqual(paymentSource?.id, "2")
     XCTAssertEqual(paymentSource?.lastFour, "4111")
-    XCTAssertEqual(paymentSource?.paymentType, Backing.PaymentType.googlePay)
+    XCTAssertEqual(paymentSource?.paymentType, PaymentType.googlePay)
     XCTAssertEqual(paymentSource?.state, "ACTIVE")
-    XCTAssertEqual(paymentSource?.type, GraphUserCreditCard.CreditCardType.visa)
+    XCTAssertEqual(paymentSource?.type, CreditCardType.visa)
   }
 
   func testDecodingFailure() {

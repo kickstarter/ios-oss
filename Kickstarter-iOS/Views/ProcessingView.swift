@@ -3,6 +3,13 @@ import Library
 import Prelude
 import UIKit
 
+protocol ProcessingViewPresenting {
+  var processingView: ProcessingView? { get set }
+
+  func showProcessingView()
+  func hideProcessingView()
+}
+
 final class ProcessingView: UIView {
   private lazy var activityIndicator = { UIActivityIndicatorView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -30,7 +37,7 @@ final class ProcessingView: UIView {
     super.bindStyles()
 
     _ = self
-      |> \.backgroundColor .~ UIColor.ksr_soft_black.withAlphaComponent(0.8)
+      |> processingViewStyle
 
     _ = self.activityIndicator
       |> activityIndicatorStyle
@@ -61,6 +68,15 @@ final class ProcessingView: UIView {
   }
 }
 
+// MARK: - Styles
+
+private let processingViewStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ UIColor.ksr_soft_black.withAlphaComponent(0.8)
+    |> \.isAccessibilityElement .~ true
+    |> \.accessibilityLabel %~ { _ in Strings.project_checkout_finalizing_title() }
+}
+
 private let activityIndicatorStyle: ActivityIndicatorStyle = { activityIndicator in
   activityIndicator
     |> \.style .~ .white
@@ -68,6 +84,7 @@ private let activityIndicatorStyle: ActivityIndicatorStyle = { activityIndicator
 
 private let processingLabelStyle: LabelStyle = { label in
   label
+    |> \.isAccessibilityElement .~ false
     |> \.font .~ UIFont.ksr_callout()
     |> \.textColor .~ UIColor.white
     |> \.textAlignment .~ .center
@@ -87,4 +104,29 @@ private let stackViewStyle: StackViewStyle = { stackView in
     |> \.alignment .~ .center
     |> \.distribution .~ .fill
     |> \.spacing .~ Styles.grid(3)
+}
+
+extension ProcessingViewPresenting where Self: UIViewController {
+  func showProcessingView() {
+    self.processingView?.removeFromSuperview()
+
+    guard let window = UIApplication.shared.keyWindow, let processingView = self.processingView else {
+      return
+    }
+
+    _ = (processingView, window)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    if AppEnvironment.current.isVoiceOverRunning() {
+      UIAccessibility.post(
+        notification: UIAccessibility.Notification.layoutChanged,
+        argument: processingView
+      )
+    }
+  }
+
+  func hideProcessingView() {
+    self.processingView?.removeFromSuperview()
+  }
 }

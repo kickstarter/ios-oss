@@ -40,8 +40,8 @@ final class ManagePledgeSummaryViewController: UIViewController {
 
   // MARK: - Lifecycle
 
-  public func configureWith(_ project: Project) {
-    self.viewModel.inputs.configureWith(project)
+  public func configureWith(_ data: ManagePledgeSummaryViewData) {
+    self.viewModel.inputs.configureWith(data)
   }
 
   override func viewDidLoad() {
@@ -62,7 +62,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
       |> ignoresInvertColorsImageViewStyle
 
     _ = self.backerInfoContainerStackView
-      |> checkoutAdaptableStackViewStyle(
+      |> adaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory)
       |> backerInfoContainerStackViewStyle
 
@@ -76,7 +76,7 @@ final class ManagePledgeSummaryViewController: UIViewController {
       |> rootStackViewStyle
 
     _ = self.totalAmountStackView
-      |> checkoutAdaptableStackViewStyle(
+      |> adaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
 
@@ -98,10 +98,10 @@ final class ManagePledgeSummaryViewController: UIViewController {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.configurePledgeAmountSummaryViewWithProject
+    self.viewModel.outputs.configurePledgeAmountSummaryViewWithData
       .observeForUI()
-      .observeValues { [weak self] project in
-        self?.pledgeAmountSummaryViewController.configureWith(project)
+      .observeValues { [weak self] data in
+        self?.pledgeAmountSummaryViewController.configureWith(data)
       }
 
     self.viewModel.outputs.configurePledgeStatusLabelViewWithProject

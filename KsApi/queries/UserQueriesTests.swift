@@ -39,11 +39,11 @@ final class UserQueriesTests: XCTestCase {
   func testBackingsQuery() {
     let query = Query.user(backingsQueryFields(status: GraphBacking.Status.errored.rawValue))
     XCTAssertEqual(
-      "me { backings(status: errored) { nodes { errorReason project { id name slug } status } totalCount } id }",
+      "me { backings(status: errored) { nodes { errorReason id project { finalCollectionDate name pid slug } status } totalCount } id }",
       query.description
     )
     XCTAssertEqual(
-      "{ me { backings(status: errored) { nodes { errorReason project { id name slug } status } totalCount } id } }",
+      "{ me { backings(status: errored) { nodes { errorReason id project { finalCollectionDate name pid slug } status } totalCount } id } }",
       Query.build(NonEmptySet(query))
     )
   }

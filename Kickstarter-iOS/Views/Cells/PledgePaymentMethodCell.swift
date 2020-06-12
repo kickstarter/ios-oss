@@ -64,9 +64,7 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
 
     NSLayoutConstraint.activate([
       self.cardImageView.widthAnchor.constraint(equalToConstant: Styles.grid(10)),
-      self.checkmarkImageView.widthAnchor.constraint(
-        equalTo: self.cardImageView.widthAnchor, multiplier: 0.4
-      ),
+      self.checkmarkImageView.widthAnchor.constraint(equalToConstant: Styles.grid(4)),
       self.checkmarkImageView.heightAnchor.constraint(equalTo: self.cardImageView.heightAnchor)
     ])
   }
@@ -93,10 +91,10 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
       |> labelsStackViewStyle
 
     _ = self.cardImageAndLabelsStackView
-      |> checkoutAdaptableStackViewStyle(
+      |> adaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
-      |> adaptableStackViewStyle
+      |> cardImageAndLabelsStackViewStyle
 
     _ = self.unavailableCardTypeLabel
       |> unavailableCardTypeLabelStyle
@@ -172,7 +170,7 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
 
 // MARK: - Styles
 
-private let adaptableStackViewStyle: StackViewStyle = { stackView in
+private let cardImageAndLabelsStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.spacing .~ Styles.grid(2)
 }
@@ -212,6 +210,7 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.axis .~ .horizontal
     |> \.layoutMargins .~ .init(all: Styles.grid(2))
     |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.insetsLayoutMarginsFromSafeArea .~ false
     |> \.spacing .~ Styles.grid(2)
 }
 

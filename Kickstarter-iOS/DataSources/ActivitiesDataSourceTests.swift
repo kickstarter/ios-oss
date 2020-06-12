@@ -94,4 +94,20 @@ final class ActivitiesDataSourceTests: XCTestCase {
     XCTAssertEqual(successActivity, self.dataSource[testItemSection: (2, section)] as? Activity)
     XCTAssertEqual("ActivityProjectStatusCell", self.dataSource.reusableId(item: 2, section: section))
   }
+
+  func testErroredBackings() {
+    let section = ActivitiesDataSource.Section.erroredBackings.rawValue
+
+    self.dataSource.load(erroredBackings: [GraphBacking.template])
+
+    XCTAssertEqual(section + 1, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
+    XCTAssertEqual("ActivityErroredBackingsCell", self.dataSource.reusableId(item: 0, section: section))
+
+    self.dataSource.load(erroredBackings: [])
+
+    XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(0, self.dataSource.tableView(self.tableView, numberOfRowsInSection: section))
+    XCTAssertEqual(nil, self.dataSource.reusableId(item: 0, section: section))
+  }
 }

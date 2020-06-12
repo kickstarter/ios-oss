@@ -99,8 +99,8 @@ final class CancelPledgeViewController: UIViewController, MessageBannerViewContr
 
   // MARK: - Configuration
 
-  internal func configure(with project: Project, backing: Backing) {
-    self.viewModel.inputs.configure(with: project, backing: backing)
+  internal func configure(with data: CancelPledgeViewData) {
+    self.viewModel.inputs.configure(with: data)
   }
 
   override func bindStyles() {

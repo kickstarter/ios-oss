@@ -186,6 +186,7 @@ private let logoImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.image .~ image(named: "kickstarter-logo")?.withRenderingMode(.alwaysTemplate)
     |> \.tintColor .~ UIColor.ksr_green_500
+    |> \.accessibilityLabel %~ { _ in Strings.general_accessibility_kickstarter() }
 }
 
 private let titleLabelStyle: LabelStyle = { label in

@@ -86,7 +86,7 @@ internal final class MessagesViewController: UITableViewController {
 
     self.viewModel.outputs.goToBacking
       .observeForControllerAction()
-      .observeValues { [weak self] project, user in self?.goToBacking(project: project, user: user) }
+      .observeValues { [weak self] params in self?.goToBacking(with: params) }
   }
 
   internal override func tableView(_: UITableView, estimatedHeightForRowAt _: IndexPath)
@@ -129,12 +129,15 @@ internal final class MessagesViewController: UITableViewController {
 
   fileprivate func goTo(project: Project, refTag: RefTag) {
     let vc = ProjectNavigatorViewController.configuredWith(project: project, refTag: refTag)
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      vc.modalPresentationStyle = .fullScreen
+    }
     self.present(vc, animated: true, completion: nil)
   }
 
-  fileprivate func goToBacking(project: Project, user: User) {
-    let vc = BackingViewController.configuredWith(project: project, backer: user)
-    self.navigationController?.pushViewController(vc, animated: true)
+  fileprivate func goToBacking(with params: ManagePledgeViewParamConfigData) {
+    let vc = ManagePledgeViewController.controller(with: params)
+    self.present(vc, animated: true)
   }
 }
 

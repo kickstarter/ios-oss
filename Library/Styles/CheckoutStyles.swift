@@ -4,21 +4,21 @@ import UIKit
 // MARK: - Types
 
 public enum ButtonStyleType: Equatable {
-  case apricot
   case black
   case blue
   case green
   case grey
   case none
+  case red
 
   public var style: ButtonStyle {
     switch self {
-    case .apricot: return apricotButtonStyle
     case .black: return blackButtonStyle
     case .blue: return blueButtonStyle
     case .green: return greenButtonStyle
     case .grey: return greyButtonStyle
     case .none: return { $0 }
+    case .red: return redButtonStyle
     }
   }
 }
@@ -39,14 +39,6 @@ public enum CheckoutConstants {
   public enum RewardCard {
     public enum Layout {
       public static let width: CGFloat = 294
-    }
-
-    public enum Transition {
-      public enum DepressAnimation {
-        public static let scaleFactor: CGFloat = 0.975
-        public static let duration: TimeInterval = 0.0967
-        public static let longPressMinimumDuration: TimeInterval = 0.001
-      }
     }
   }
 
@@ -88,21 +80,6 @@ public enum Layout {
   public enum Sheet {
     public static let offset: CGFloat = 222
     public static let offsetCompact: CGFloat = 44
-  }
-}
-
-public func checkoutAdaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
-  return { (stackView: UIStackView) in
-    let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .leading : .center)
-    let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
-    let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fill)
-    let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
-
-    return stackView
-      |> \.alignment .~ alignment
-      |> \.axis .~ axis
-      |> \.distribution .~ distribution
-      |> \.spacing .~ spacing
   }
 }
 

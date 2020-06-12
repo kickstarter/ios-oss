@@ -57,7 +57,7 @@ final class GraphUserCreditCardTests: XCTestCase {
         return
       }
 
-      XCTAssertEqual(firstCard.type, GraphUserCreditCard.CreditCardType.visa)
+      XCTAssertEqual(firstCard.type, CreditCardType.visa)
       XCTAssertEqual(firstCard.lastFour, "4242")
       XCTAssertEqual(firstCard.expirationDate, "2023-02-01")
       XCTAssertEqual(firstCard.id, "3021")
@@ -128,7 +128,7 @@ final class GraphUserCreditCardTests: XCTestCase {
         return
       }
 
-      XCTAssertEqual(GraphUserCreditCard.CreditCardType.generic, card.type)
+      XCTAssertEqual(CreditCardType.generic, card.type)
       XCTAssertEqual(card.lastFour, "1111")
       XCTAssertEqual(card.expirationDate, "2020-02-01")
       XCTAssertEqual(card.id, "2768")
