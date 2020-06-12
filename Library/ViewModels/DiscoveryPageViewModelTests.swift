@@ -438,8 +438,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       |> DiscoveryEnvelope.lens.projects .~ (
         (0...2).map { id in .template |> Project.lens.id .~ (100 + id) }
       )
+    let mockOptimizelyClient = MockOptimizelyClient()
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope)) {
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope),
+                    optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(sort: .magic)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.viewDidAppear()
@@ -456,6 +458,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       )
 
       XCTAssertEqual(["Explore Page Viewed", "Project Card Clicked"], self.trackingClient.events)
+      XCTAssertEqual("Project Card Clicked", mockOptimizelyClient.trackedEventKey)
 
       self.vm.inputs.selectedFilter(.defaults
         |> DiscoveryParams.lens.category .~ Category.art)
