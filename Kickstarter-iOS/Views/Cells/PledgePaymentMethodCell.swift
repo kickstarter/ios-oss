@@ -91,9 +91,10 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
       |> labelsStackViewStyle
 
     _ = self.cardImageAndLabelsStackView
-      |> cardImageAndLabelsStackViewStyle(
+      |> adaptableStackViewStyle(
         self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
       )
+      |> cardImageAndLabelsStackViewStyle
 
     _ = self.unavailableCardTypeLabel
       |> unavailableCardTypeLabelStyle
@@ -169,17 +170,9 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
 
 // MARK: - Styles
 
-private let adaptableStackViewStyle: StackViewStyle = { stackView in
+private let cardImageAndLabelsStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.spacing .~ Styles.grid(2)
-}
-
-private func cardImageAndLabelsStackViewStyle(_ isAccessibilityCategory: Bool) -> StackViewStyle {
-  return { stackView in
-    stackView
-      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
-      |> adaptableStackViewStyle
-  }
 }
 
 private let checkmarkImageViewStyle: ImageViewStyle = { imageView in

@@ -45,13 +45,13 @@ final class PledgeAmountSummaryViewController: UIViewController {
       |> rootStackViewStyle
 
     _ = self.bonusAmountStackView
-      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
+      |> adaptableStackViewStyle(isAccessibilityCategory)
 
     _ = self.pledgeAmountStackView
-      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
+      |> adaptableStackViewStyle(isAccessibilityCategory)
 
     _ = self.shippingLocationStackView
-      |> checkoutAdaptableStackViewStyle(isAccessibilityCategory)
+      |> adaptableStackViewStyle(isAccessibilityCategory)
 
     _ = self.bonusLabel
       |> titleLabelStyle

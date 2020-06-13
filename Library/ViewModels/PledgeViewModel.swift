@@ -622,6 +622,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
         let optimizelyProps = optimizelyProperties() ?? [:]
 
+        AppEnvironment.current.optimizelyClient?.track(eventName: "Pledge Screen Viewed")
         AppEnvironment.current.koala.trackCheckoutPaymentPageViewed(
           project: project,
           reward: reward,
@@ -647,6 +648,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           refTag: refTag
         )
       }
+    
+    createBackingDataAndIsApplePay.takeWhen(createBackingCompletionEvents)
+      .observeValues { data, isApplePay in
+      AppEnvironment.current.optimizelyClient?.track(eventName: "App Completed Checkout")
+    }
 
     Signal.combineLatest(project, updateBackingData, context)
       .takeWhen(updateButtonTapped)

@@ -607,6 +607,23 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("Apple", callBackProperties?["session_device_manufacturer"] as? String)
   }
 
+  func testProjectCardClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackProjectCardClicked(
+      project: Project.template,
+      params: DiscoveryParams.recommendedDefaults,
+      location: .discovery
+    )
+
+    XCTAssertEqual(["Project Card Clicked"], client.events)
+    XCTAssertEqual("explore_screen", client.properties.last?["context_location"] as? String)
+
+    self.assertProjectProperties(client.properties.last)
+    self.assertDiscoveryProperties(client.properties.last)
+  }
+
   func testWatchProjectButtonClicked_DiscoveryLocationContext() {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
@@ -1132,7 +1149,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("search", client.properties.last?["context_tab_bar_label"] as? String)
   }
 
-  func testLakeWhiteList() {
+  func testDataLakeApprovedEvents() {
     let koalaClient = MockTrackingClient()
     let dataLakeClient = MockTrackingClient()
     let koala = Koala(dataLakeClient: dataLakeClient, client: koalaClient)

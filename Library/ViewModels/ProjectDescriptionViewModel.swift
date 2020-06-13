@@ -160,6 +160,7 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
           cookieRefTag: cookieRefTag,
           optimizelyProperties: optimizelyProps
         )
+        AppEnvironment.current.optimizelyClient?.track(eventName: "Campaign Details Pledge Button Clicked")
       }
 
     project

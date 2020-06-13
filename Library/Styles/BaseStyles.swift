@@ -64,6 +64,21 @@ public func darkCardStyle<V: UIViewProtocol>
     <> V.lens.layer.borderColor .~ UIColor.ksr_text_dark_grey_500.cgColor
 }
 
+public func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
+  return { (stackView: UIStackView) in
+    let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .leading : .center)
+    let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
+    let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fill)
+    let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
+
+    return stackView
+      |> \.alignment .~ alignment
+      |> \.axis .~ axis
+      |> \.distribution .~ distribution
+      |> \.spacing .~ spacing
+  }
+}
+
 public let containerViewBackgroundStyle =
   UIView.lens.backgroundColor .~ .ksr_grey_100
 

@@ -10,21 +10,22 @@ import XCTest
 final class ThanksViewModelTests: TestCase {
   let vm: ThanksViewModelType = ThanksViewModel()
 
-  let backedProjectText = TestObserver<String, Never>()
-  let dismissToRootViewControllerAndPostNotification = TestObserver<Notification.Name, Never>()
-  let goToDiscovery = TestObserver<KsApi.Category, Never>()
-  let goToProject = TestObserver<Project, Never>()
-  let goToProjects = TestObserver<[Project], Never>()
-  let goToRefTag = TestObserver<RefTag, Never>()
-  let showRatingAlert = TestObserver<(), Never>()
-  let showGamesNewsletterAlert = TestObserver<(), Never>()
-  let showGamesNewsletterOptInAlert = TestObserver<String, Never>()
-  let showRecommendations = TestObserver<[Project], Never>()
-  let postContextualNotification = TestObserver<(), Never>()
-  let postUserUpdatedNotification = TestObserver<Notification.Name, Never>()
-  let updateUserInEnvironment = TestObserver<User, Never>()
-  let facebookButtonIsHidden = TestObserver<Bool, Never>()
-  let twitterButtonIsHidden = TestObserver<Bool, Never>()
+  private let backedProjectText = TestObserver<String, Never>()
+  private let dismissToRootViewControllerAndPostNotification = TestObserver<Notification.Name, Never>()
+  private let goToDiscovery = TestObserver<KsApi.Category, Never>()
+  private let goToProject = TestObserver<Project, Never>()
+  private let goToProjects = TestObserver<[Project], Never>()
+  private let goToRefTag = TestObserver<RefTag, Never>()
+  private let showRatingAlert = TestObserver<(), Never>()
+  private let showGamesNewsletterAlert = TestObserver<(), Never>()
+  private let showGamesNewsletterOptInAlert = TestObserver<String, Never>()
+  private let showRecommendationsProjects = TestObserver<[Project], Never>()
+  private let showRecommendationsVariant = TestObserver<OptimizelyExperiment.Variant, Never>()
+  private let postContextualNotification = TestObserver<(), Never>()
+  private let postUserUpdatedNotification = TestObserver<Notification.Name, Never>()
+  private let updateUserInEnvironment = TestObserver<User, Never>()
+  private let facebookButtonIsHidden = TestObserver<Bool, Never>()
+  private let twitterButtonIsHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -42,8 +43,9 @@ final class ThanksViewModelTests: TestCase {
     self.vm.outputs.showGamesNewsletterAlert.observe(self.showGamesNewsletterAlert.observer)
     self.vm.outputs.showGamesNewsletterOptInAlert.observe(self.showGamesNewsletterOptInAlert.observer)
     self.vm.outputs.showRatingAlert.observe(self.showRatingAlert.observer)
-    self.vm.outputs.showRecommendations.map { projects, _ in projects }
-      .observe(self.showRecommendations.observer)
+    self.vm.outputs.showRecommendations.map(first)
+      .observe(self.showRecommendationsProjects.observer)
+    self.vm.outputs.showRecommendations.map(third).observe(self.showRecommendationsVariant.observer)
     self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
   }
 
@@ -72,7 +74,7 @@ final class ThanksViewModelTests: TestCase {
 
       scheduler.advance()
 
-      showRecommendations.assertValueCount(1)
+      showRecommendationsProjects.assertValueCount(1)
 
       vm.inputs.categoryCellTapped(.illustration)
 
@@ -230,14 +232,18 @@ final class ThanksViewModelTests: TestCase {
 
     let project = Project.template
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
+    let mockOptimizelyClient = MockOptimizelyClient()
 
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+    withEnvironment(
+      apiService: MockService(fetchDiscoveryResponse: response),
+      optimizelyClient: mockOptimizelyClient
+    ) {
       self.vm.inputs.configure(with: (project, Reward.template, nil))
       self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
 
-      showRecommendations.assertValueCount(1)
+      showRecommendationsProjects.assertValueCount(1)
 
       vm.inputs.projectTapped(project)
 
@@ -248,10 +254,11 @@ final class ThanksViewModelTests: TestCase {
         [
           "Triggered App Store Rating Dialog",
           "Thanks Page Viewed",
-          "Checkout Finished Discover Open Project"
+          "Project Card Clicked"
         ],
         self.trackingClient.events
       )
+      XCTAssertEqual("Project Card Clicked", mockOptimizelyClient.trackedEventKey)
     }
   }
 
@@ -274,7 +281,8 @@ final class ThanksViewModelTests: TestCase {
 
       scheduler.advance()
 
-      showRecommendations.assertValueCount(1, "Recommended projects emit, shuffled.")
+      self.showRecommendationsProjects.assertValueCount(1, "Recommended projects emit, shuffled.")
+      self.showRecommendationsVariant.assertValues([.control])
     }
   }
 
@@ -288,7 +296,31 @@ final class ThanksViewModelTests: TestCase {
 
       scheduler.advance()
 
-      showRecommendations.assertValueCount(0, "Recommended projects did not emit")
+      self.showRecommendationsProjects.assertValueCount(0, "Recommended projects did not emit")
+      self.showRecommendationsVariant.assertDidNotEmitValue()
+    }
+  }
+
+  func testRecommendationsProjects_ExperimentalVariant() {
+    let recommendedProject = Project.template
+      |> \.id .~ 3
+    let response = .template |> DiscoveryEnvelope.lens.projects .~ [recommendedProject]
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(
+      apiService: MockService(fetchDiscoveryResponse: response),
+      optimizelyClient: mockOptimizelyClient
+    ) {
+      self.vm.inputs.configure(with: (Project.template, Reward.template, nil))
+      self.vm.inputs.viewDidLoad()
+
+      scheduler.advance()
+
+      self.showRecommendationsProjects.assertValues([[recommendedProject]])
+      self.showRecommendationsVariant.assertValues([.variant1])
     }
   }
 

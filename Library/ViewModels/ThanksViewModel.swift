@@ -60,7 +60,7 @@ public protocol ThanksViewModelOutputs {
   var showRatingAlert: Signal<(), Never> { get }
 
   /// Emits array of projects and a category when should show recommendations
-  var showRecommendations: Signal<([Project], KsApi.Category), Never> { get }
+  var showRecommendations: Signal<([Project], KsApi.Category, OptimizelyExperiment.Variant), Never> { get }
 
   /// Emits a User that can be used to replace the current user in the environment
   var updateUserInEnvironment: Signal<User, Never> { get }
@@ -136,7 +136,11 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       .flatMap { relatedProjects(toProject: $0.0, inCategory: $0.1) }
       .filter { projects in !projects.isEmpty }
 
-    self.showRecommendations = Signal.zip(projects, rootCategory)
+    self.showRecommendations = Signal.zip(projects, rootCategory).map { projects, category in
+      let variant = OptimizelyExperiment.nativeProjectCardsExperimentVariant()
+
+      return (projects, category, variant)
+    }
 
     self.goToProject = self.showRecommendations
       .map(first)
@@ -179,16 +183,25 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       }
 
     project
-      .takeWhen(self.goToProject)
-      .observeValues { project in
-        AppEnvironment.current.koala.trackCheckoutFinishJumpToProject(project: project)
-      }
-
-    project
       .takeWhen(self.showRatingAlert)
       .observeValues { project in
         AppEnvironment.current.koala.trackTriggeredAppStoreRatingDialog(project: project)
       }
+
+    self.projectTappedProperty.signal.skipNil().map { project in
+      (project, recommendedParams)
+    }.observeValues { project, params in
+      let optyProperties = optimizelyProperties() ?? [:]
+
+      AppEnvironment.current.koala.trackProjectCardClicked(
+        project: project,
+        params: params,
+        location: .thanks,
+        optimizelyProperties: optyProperties
+      )
+
+      AppEnvironment.current.optimizelyClient?.track(eventName: "Project Card Clicked")
+    }
 
     Signal.combineLatest(
       self.configureWithDataProperty.signal.skipNil(),
@@ -260,7 +273,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public let showRatingAlert: Signal<(), Never>
   public let showGamesNewsletterAlert: Signal<(), Never>
   public let showGamesNewsletterOptInAlert: Signal<String, Never>
-  public let showRecommendations: Signal<([Project], KsApi.Category), Never>
+  public let showRecommendations: Signal<([Project], KsApi.Category, OptimizelyExperiment.Variant), Never>
   public let updateUserInEnvironment: Signal<User, Never>
 }
 
@@ -283,10 +296,6 @@ private func relatedProjects(
 ) ->
   SignalProducer<[Project], Never> {
   let base = DiscoveryParams.lens.perPage .~ 3 <> DiscoveryParams.lens.backed .~ false
-
-  let recommendedParams = DiscoveryParams.defaults |> base
-    |> DiscoveryParams.lens.perPage .~ 6
-    |> DiscoveryParams.lens.recommended .~ true
 
   let similarToParams = DiscoveryParams.defaults |> base
     |> DiscoveryParams.lens.similarTo .~ project
@@ -341,3 +350,8 @@ private func shuffle(projects xs: [Project]) -> [Project] {
     return xs
   }
 }
+
+private let recommendedParams = DiscoveryParams.defaults
+  |> DiscoveryParams.lens.backed .~ false
+  |> DiscoveryParams.lens.perPage .~ 6
+  |> DiscoveryParams.lens.recommended .~ true

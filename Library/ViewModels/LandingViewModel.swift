@@ -31,6 +31,8 @@ public final class LandingViewModel: LandingViewModelType, LandingViewModelInput
 
         AppEnvironment.current.koala
           .trackOnboardingGetStartedButtonClicked(optimizelyProperties: optimizelyProps)
+        
+        AppEnvironment.current.optimizelyClient?.track(eventName: "Get Started Button Clicked")
       }
   }
 

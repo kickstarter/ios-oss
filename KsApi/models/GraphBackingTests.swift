@@ -6,20 +6,20 @@ final class GraphBackingTests: XCTestCase {
     let jsonString = """
     {
       "backings": {
-        "nodes": [
-          {
-            "id": "backing-id",
-            "errorReason": "no_reason",
-            "status": "errored",
-            "project": {
-              "finalCollectionDate": "2020-04-08T15:15:05Z",
-              "pid": 65,
-              "name": "Cool project",
-              "slug": "/cool-project"
-            }
-          }
-        ]
-      }
+        "nodes": [{
+          "id": "123412344",
+          "errorReason": "Your card does not have sufficient funds available.",
+          "project": {
+            "finalCollectionDate": "2020-06-17T11:41:29-04:00",
+            "name": "A summer dance festival",
+            "pid": 674816336,
+            "slug": "tequila/a-summer-dance-festival"
+          },
+          "status": "errored"
+        }],
+        "totalCount": 1
+      },
+      "id": "VXNlci00NzM1NjcxODQ="
     }
     """
 
@@ -32,18 +32,18 @@ final class GraphBackingTests: XCTestCase {
 
       let backing = envelope.backings.nodes.first
 
-      XCTAssertEqual("backing-id", backing?.id)
-      XCTAssertEqual("no_reason", backing?.errorReason)
+      XCTAssertEqual("123412344", backing?.id)
+      XCTAssertEqual("Your card does not have sufficient funds available.", backing?.errorReason)
       XCTAssertEqual(GraphBacking.Status.errored, backing?.status)
 
       let project = backing?.project
 
-      XCTAssertEqual("2020-04-08T15:15:05Z", project?.finalCollectionDate)
-      XCTAssertEqual(65, project?.pid)
-      XCTAssertEqual("Cool project", project?.name)
-      XCTAssertEqual("/cool-project", project?.slug)
+      XCTAssertEqual("2020-06-17T11:41:29-04:00", project?.finalCollectionDate)
+      XCTAssertEqual(674_816_336, project?.pid)
+      XCTAssertEqual("A summer dance festival", project?.name)
+      XCTAssertEqual("tequila/a-summer-dance-festival", project?.slug)
     } catch {
-      XCTFail("Failed to decode GraphBackingEnvelope")
+      XCTFail("Failed to decode GraphBackingEnvelope \(error)")
     }
   }
 }

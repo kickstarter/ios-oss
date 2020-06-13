@@ -31,7 +31,7 @@
 "Amounts_shown" = "Die angezeigten Beträge stellen nur eine ungefähre Umrechnung dar. Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der Währung des Erstellungslandes abgebucht. Dieser Betrag wird ebenso angezeigt.";
 "Any_payment_methods_you_saved_to_Kickstarter" = "Sämtliche auf Kickstarter gespeicherten Zahlungsmethoden sind hier (sicher) hinterlegt.";
 "App_version" = "App-Version";
-"Apple_ID" = "AppleID";
+"Apple_ID" = "Apple ID";
 "Are_you_sure" = "Bist du sicher?";
 "Are_you_sure_you_wish_to_cancel_your_amount_pledge_to_project_name" = "Bist du sicher, dass du deinen Beitrag von %{amount} für %{project_name} zurückziehen möchtest?";
 "Are_you_sure_you_wish_to_remove_this_card" = "Bist du sicher, dass du diese Karte aus deinen Zahlungsmethoden entfernen möchtest?";
@@ -231,6 +231,7 @@
 "Get_reminded_about_this_project" = "Möchtest du an dieses Projekt erinnert werden?";
 "Get_started" = "Jetzt loslegen";
 "Go_to_project_page" = "Zu Projektseite";
+"Goal_met" = "Ziel erreicht";
 "Got_it" = "Alles klar!";
 "Got_it_your_changes_have_been_saved" = "Alles klar! Deine Änderungen wurden gespeichert.";
 "Got_it_your_survey_response_has_been_submitted" = "Alles klar! Deine Antwort auf die Befragung wurde übermittelt.";
@@ -301,7 +302,7 @@
 "Make_a_pledge_without_a_reward" = "Ohne Belohnung unterstützen";
 "Making_this_change" = "Wenn du die Währung wechselst, werden das Finanzierungsziel und die Finanzierungsbeiträge in der von dir gewählten Währung angezeigt.";
 "Manage" = "Verwalten";
-"Manage_this_account" = "Manage this account in your AppleID settings.";
+"Manage_this_account" = "Verwalte dieses Konto in deinen Apple ID-Einstellungen.";
 "Manage_your_pledge" = "Meinen Beitrag verwalten";
 "Manage_your_pledge_below" = "Folgenden Beitrag verwalten";
 "Manage_your_reward" = "Belohnung verwalten";
@@ -391,6 +392,7 @@
 "Private_profile" = "Privates Profil";
 "Private_profile_more_info" = "Privates Profil - Mehr Info";
 "Private_profile_more_info_content" = "Die Standard-Einstellung für Profile sind auf Kickstarter ist privat. Um dein Profil öffentlich zu machen, hebe diese Einstellung bitte auf.";
+"Processing" = "Verarbeitung läuft...";
 "Project_Cancelled" = "Projekt abgebrochen.";
 "Project_Suspended" = "Projekt ausgesetzt.";
 "Project_activity" = "Projektaktivität";
@@ -500,6 +502,12 @@
 "Sign_up" = "Registrieren";
 "Sign_up_newsletter" = "Abonniere unsere \"Team Favoriten\" und wir schicken dir einmal pro Woche eine Auswahl von bemerkenswerten Projekten, handverlesen von unserem Team.";
 "Signs_up_with_Email" = "Mit E-Mail-Adresse registrieren.";
+"Social_friend_is_backer.few" = "%{friend_name} und %{remaining_count} weitere";
+"Social_friend_is_backer.many" = "%{friend_name} und %{remaining_count} weitere";
+"Social_friend_is_backer.one" = "%{friend_name} und %{remaining_count} weitere Person";
+"Social_friend_is_backer.other" = "%{friend_name} und %{remaining_count} weitere";
+"Social_friend_is_backer.two" = "%{friend_name} und %{remaining_count} weitere";
+"Social_friend_is_backer.zero" = "%{friend_name} unterstützt dieses Projekt";
 "Something_catch_your_eye" = "Etwas interessantes gefunden?";
 "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "Hier ist etwas schiefgelaufen, deine Zahlungsweise konnte leider nicht entfernt werden. Bitte versuche es noch einmal.";
 "Something_went_wrong_please_try_again" = "Da hat etwas nicht geklappt. Bitte versuche es später noch einmal.";
@@ -651,6 +659,7 @@
 "Your_shipping_destination" = "Dein Versandziel";
 "Your_shipping_location" = "Dein Versand-Standort";
 "Youre_a_backer" = "Du unterstützt das Projekt!";
+"Youre_a_backer_no_punctuation" = "Du bist ein Unterstützer";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte bestätige diesen Vorgang.";
 "Youre_all_set" = "Alles klar";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Du bist via Facebook (%{email}) verbunden. Erstelle ein Passwort für dieses Konto, um deine Anmeldedaten für Kickstarter zu ändern.";

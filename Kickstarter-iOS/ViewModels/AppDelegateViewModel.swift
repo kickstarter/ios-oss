@@ -78,6 +78,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when Optimizely has been configured with the given result
   func optimizelyConfigured(with result: OptimizelyResultType) -> Error?
 
+  /// Call when Optimizely configuration has failed
+  func optimizelyClientConfigurationFailed()
+
   /// Call with the result from initializing Qualtrics
   func qualtricsInitialized(with result: QualtricsResultType)
 
@@ -247,10 +250,15 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let optimizelyClientConfiguredNotification = self.didUpdateOptimizelyClientProperty.signal
       .mapConst(Notification(name: .ksr_optimizelyClientConfigured, object: nil))
 
+    let optimizelyClientConfigurationFailedNotification = self.optimizelyClientConfigurationFailedProperty
+      .signal
+      .mapConst(Notification(name: .ksr_optimizelyClientConfigurationFailed, object: nil))
+
     self.postNotification = Signal.merge(
       currentUserUpdatedNotification,
       configUpdatedNotification,
-      optimizelyClientConfiguredNotification
+      optimizelyClientConfiguredNotification,
+      optimizelyClientConfigurationFailedNotification
     )
 
     let openUrl = self.applicationOpenUrlProperty.signal.skipNil()
@@ -849,6 +857,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.optimizelyConfiguredWithResultProperty.value = result
 
     return self.optimizelyConfigurationReturnValue.value
+  }
+
+  fileprivate let optimizelyClientConfigurationFailedProperty = MutableProperty(())
+  public func optimizelyClientConfigurationFailed() {
+    self.optimizelyClientConfigurationFailedProperty.value = ()
   }
 
   public let applicationIconBadgeNumber: Signal<Int, Never>
