@@ -7,8 +7,8 @@ final class PledgeViewContextTests: TestCase {
 
     XCTAssertTrue(context.confirmationLabelHidden)
     XCTAssertTrue(context.continueViewHidden)
-    XCTAssertFalse(context.descriptionViewHidden)
-    XCTAssertFalse(context.expandableRewardViewHidden)
+    XCTAssertTrue(context.descriptionViewHidden)
+    XCTAssertTrue(context.expandableRewardViewHidden)
     XCTAssertTrue(context.isUpdating)
     XCTAssertFalse(context.isCreating)
     XCTAssertFalse(context.paymentMethodsViewHidden)
