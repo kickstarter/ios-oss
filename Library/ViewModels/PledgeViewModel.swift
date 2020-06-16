@@ -58,6 +58,7 @@ public protocol PledgeViewModelOutputs {
   var configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
   var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
   var descriptionViewHidden: Signal<Bool, Never> { get }
+  var descriptionSectionSeparatorHidden: Signal<Bool, Never> { get }
   var expandableRewardsHeaderViewHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
   var goToThanks: Signal<ThanksPageData, Never> { get }
@@ -69,11 +70,12 @@ public protocol PledgeViewModelOutputs {
   var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
   var popToRootViewController: Signal<(), Never> { get }
   var processingViewIsHidden: Signal<Bool, Never> { get }
-  var sectionSeparatorsHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
   var showApplePayAlert: Signal<(String, String), Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
+  var summarySectionSeparatorHidden: Signal<Bool, Never> { get }
+  var rootStackViewLayoutMargins: Signal<UIEdgeInsets, Never> { get }
   var title: Signal<String, Never> { get }
 }
 
@@ -104,7 +106,16 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
     self.pledgeAmountSummaryViewHidden = context.map { $0.pledgeAmountSummaryViewHidden }
-    self.sectionSeparatorsHidden = context.map { $0.sectionSeparatorsHidden }
+
+    self.descriptionSectionSeparatorHidden = Signal.combineLatest(context, reward)
+      .map { context, reward in
+        if context.isAny(of: .pledge, .updateReward) {
+          return reward.isNoReward == false
+        }
+
+        return context.sectionSeparatorsHidden
+      }
+    self.summarySectionSeparatorHidden = context.map { $0.sectionSeparatorsHidden }
 
     let isLoggedIn = Signal.merge(initialData.ignoreValues(), self.userSessionStartedSignal)
       .map { _ in AppEnvironment.current.currentUser }
@@ -605,7 +616,18 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       ([reward], project.country, project.stats.omitUSCurrencyCode)
     }
 
-    self.expandableRewardsHeaderViewHidden = reward.map(\.isNoReward)
+    self.expandableRewardsHeaderViewHidden = Signal.zip(context, reward)
+      .map { context, reward in
+        if context.isAny(of: .pledge, .updateReward) {
+          return reward.isNoReward
+        }
+
+        return context.expandableRewardViewHidden
+      }
+
+    self.rootStackViewLayoutMargins = self.expandableRewardsHeaderViewHidden.map { hidden in
+      hidden ? UIEdgeInsets(topBottom: Styles.grid(3)) : UIEdgeInsets(bottom: Styles.grid(3))
+    }
 
     self.title = context.map { $0.title }
     let contextAndProjectAndPledgeAmount = Signal.combineLatest(context, project, pledgeAmount)
@@ -786,6 +808,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
   public let configureWithData: Signal<(project: Project, reward: Reward), Never>
   public let descriptionViewHidden: Signal<Bool, Never>
+  public let descriptionSectionSeparatorHidden: Signal<Bool, Never>
   public let expandableRewardsHeaderViewHidden: Signal<Bool, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let goToThanks: Signal<ThanksPageData, Never>
@@ -797,11 +820,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>
   public let popToRootViewController: Signal<(), Never>
   public let processingViewIsHidden: Signal<Bool, Never>
-  public let sectionSeparatorsHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showApplePayAlert: Signal<(String, String), Never>
   public let showWebHelp: Signal<HelpType, Never>
+  public let summarySectionSeparatorHidden: Signal<Bool, Never>
+  public let rootStackViewLayoutMargins: Signal<UIEdgeInsets, Never>
   public let title: Signal<String, Never>
 
   public var inputs: PledgeViewModelInputs { return self }

@@ -28,6 +28,13 @@ public enum PledgeViewContext {
     }
   }
 
+  var expandableRewardViewHidden: Bool {
+    switch self {
+    case .pledge, .updateReward: return false
+    case .fixPaymentMethod, .update, .changePaymentMethod: return true
+    }
+  }
+
   var isCreating: Bool {
     switch self {
     case .pledge: return true

@@ -63,7 +63,7 @@ final class PledgeViewControllerTests: TestCase {
     combos([Language.en], [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: User.template, language: language) {
         let controller = PledgeViewController.instantiate()
-        controller.configureWith(project: project, reward: .template, refTag: nil, context: .pledge)
+        controller.configureWith(project: project, reward: .noReward, refTag: nil, context: .pledge)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 800
 

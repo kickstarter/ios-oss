@@ -4,7 +4,7 @@ import UIKit
 
 private enum Layout {
   enum Margin {
-    static let width: CGFloat = Styles.gridHalf(5)
+    static let width: CGFloat = Styles.grid(3)
   }
 }
 

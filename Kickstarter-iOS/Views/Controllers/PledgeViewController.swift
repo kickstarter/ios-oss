@@ -370,11 +370,15 @@ final class PledgeViewController: UIViewController,
         self?.rootScrollView.handleKeyboardVisibilityDidChange(change)
       }
 
-    self.viewModel.outputs.sectionSeparatorsHidden
-      .observeForUI()
-      .observeValues { [weak self] hidden in self?.sectionSeparatorViews.forEach { $0.isHidden = hidden } }
-
     self.pledgeDescriptionView.rac.hidden = self.viewModel.outputs.descriptionViewHidden
+    self.descriptionSectionSeparator.rac.hidden = self.viewModel.outputs.descriptionSectionSeparatorHidden
+    self.summarySectionSeparator.rac.hidden = self.viewModel.outputs.summarySectionSeparatorHidden
+
+    self.viewModel.outputs.rootStackViewLayoutMargins
+      .observeForUI()
+      .observeValues { margins in
+        self.rootStackView.layoutMargins = margins
+      }
 
     self.shippingLocationViewController.view.rac.hidden
       = self.viewModel.outputs.shippingLocationViewHidden
@@ -634,10 +638,6 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.axis .~ NSLayoutConstraint.Axis.vertical
     |> \.spacing .~ Styles.grid(4)
     |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ UIEdgeInsets(
-      topBottom: Layout.Margin.topBottom,
-      leftRight: 0
-    )
 }
 
 private let rootInsetStackViewStyle: StackViewStyle = { stackView in

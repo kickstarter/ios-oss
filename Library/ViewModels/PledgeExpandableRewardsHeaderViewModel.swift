@@ -13,6 +13,20 @@ public enum PledgeExpandableRewardsHeaderItem {
     case let .reward(data): return data
     }
   }
+
+  public var isHeader: Bool {
+    switch self {
+    case .header: return true
+    case .reward: return false
+    }
+  }
+
+  public var isReward: Bool {
+    switch self {
+    case .header: return false
+    case .reward: return true
+    }
+  }
 }
 
 public typealias PledgeExpandableRewardsHeaderViewData = (
@@ -108,7 +122,7 @@ private func items(
     guard let title = reward.title else { return nil }
 
     let amountAttributedText = attributedRewardCurrency(
-      with: data.projectCountry, amount: total, omitUSCurrencyCode: data.omitCurrencyCode
+      with: data.projectCountry, amount: reward.minimum, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
     return PledgeExpandableRewardsHeaderItem.reward((

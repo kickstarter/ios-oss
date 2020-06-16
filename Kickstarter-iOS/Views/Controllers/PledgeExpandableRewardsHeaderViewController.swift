@@ -40,7 +40,6 @@ final class PledgeExpandableRewardsHeaderViewController: UIViewController {
   private func configureSubviews() {
     _ = (self.tableView, self.view)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
 
     _ = (self.expandButton, self.view)
       |> ksr_addSubviewToParent()
@@ -62,6 +61,10 @@ final class PledgeExpandableRewardsHeaderViewController: UIViewController {
 
     NSLayoutConstraint.activate([
       centerYConstraint,
+      self.tableView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+      self.tableView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+      self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -Styles.grid(1)),
       self.expandButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
     ])
   }
@@ -71,8 +74,12 @@ final class PledgeExpandableRewardsHeaderViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self.view
+      |> checkoutWhiteBackgroundStyle
+
     _ = self.tableView
       |> checkoutWhiteBackgroundStyle
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
 
     _ = self.expandButton
       |> expandButtonStyle

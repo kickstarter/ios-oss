@@ -4,7 +4,7 @@ import UIKit
 
 private enum Layout {
   enum Margin {
-    static let width: CGFloat = Styles.gridHalf(5)
+    static let width: CGFloat = Styles.grid(3)
   }
 }
 
@@ -108,11 +108,4 @@ private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewSt
       |> \.isLayoutMarginsRelativeArrangement .~ true
       |> \.layoutMargins .~ .init(all: Layout.Margin.width)
   }
-}
-
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.alignment .~ .top
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Layout.Margin.width)
 }
