@@ -83,9 +83,9 @@ private func rewardItemsData(
 private func shippingData(
   from backingReward: ManagePledgeViewBackingEnvelope.Backing.Reward
 ) -> Reward.Shipping {
-  // For AddOns we are only concerned with whether or not shipping is enabled and the delivery date
+  // For AddOns we are only concerned with whether or not shipping is enabled
   return Reward.Shipping(
-    enabled: backingReward.estimatedDeliveryOn != nil,
+    enabled: [.restricted, .unrestricted].contains(backingReward.shippingPreference),
     location: nil,
     preference: nil,
     summary: nil,

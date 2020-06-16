@@ -444,9 +444,9 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     let personalizationCellTappedAndRefTag = self.personalizationCellTappedProperty.signal
       .mapConst(RefTag.onboarding)
-    
+
     self.personalizationCellTappedProperty.signal
-      .observeValues { refTag in
+      .observeValues { _ in
         AppEnvironment.current.optimizelyClient?.track(eventName: "Editorial Card Clicked")
       }
 

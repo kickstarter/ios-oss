@@ -1,9 +1,15 @@
 @testable import KsApi
+import Prelude
 import XCTest
 
 final class Reward_ManagePledgeViewTests: XCTestCase {
   func test() {
+    let shippingReward = ManagePledgeViewBackingEnvelope.Backing.Reward.template
+      |> \.shippingPreference .~ .restricted
+    let backing = ManagePledgeViewBackingEnvelope.Backing.template
+      |> \.reward .~ shippingReward
     let env = ManagePledgeViewBackingEnvelope.template
+      |> \.backing .~ backing
 
     guard let reward = env.backing.reward else {
       XCTFail("Should have a reward")

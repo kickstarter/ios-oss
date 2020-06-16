@@ -334,10 +334,9 @@ final class CategorySelectionViewModelTests: TestCase {
       self.vm.inputs.categorySelected(with: (artIndexPath, .art))
       self.vm.inputs.categorySelected(with: (illustrationIndexPath, .illustration))
       self.vm.inputs.categorySelected(with: (gamesIndexPath, .games))
-      
+
       XCTAssertNil(self.optimizelyClient.trackedEventKey)
       XCTAssertNil(self.optimizelyClient.trackedAttributes)
-
 
       XCTAssertNil(mockKVStore.onboardingCategories)
       XCTAssertFalse(mockKVStore.hasCompletedCategoryPersonalizationFlow)
@@ -353,7 +352,7 @@ final class CategorySelectionViewModelTests: TestCase {
 
       XCTAssertEqual(encodedCategories, mockKVStore.onboardingCategories)
       XCTAssertTrue(mockKVStore.hasCompletedCategoryPersonalizationFlow)
-      
+
       XCTAssertEqual("Continue Button Clicked", self.optimizelyClient.trackedEventKey)
       XCTAssertEqual(["Onboarding Continue Button Clicked"], self.trackingClient.events)
       XCTAssertEqual(self.trackingClient.properties(forKey: "context_location"), ["onboarding"])
@@ -428,15 +427,14 @@ final class CategorySelectionViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.dismiss.assertDidNotEmitValue()
-      
+
       XCTAssertNil(self.optimizelyClient.trackedEventKey)
       XCTAssertNil(self.optimizelyClient.trackedAttributes)
-
 
       self.vm.inputs.skipButtonTapped()
 
       self.dismiss.assertValueCount(1)
-      
+
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Skip Button Clicked")
       XCTAssertEqual(self.trackingClient.events, ["Onboarding Skip Button Clicked"])
       XCTAssertEqual(self.trackingClient.properties(forKey: "context_location"), ["onboarding"])

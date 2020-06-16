@@ -78,6 +78,8 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "isMaxPledge": false,
           "description": "For the typist who takes their keyboard everywhere.",
           "displayName": "Display name",
+          "endsAt": 1_587_602_131,
+          "startsAt": 1_587_562_131,
           "estimatedDeliveryOn": "2020-08-01",
           "items": [
             "nodes": [
@@ -91,6 +93,9 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
               ]
             ]
           ],
+          "limit": 5,
+          "remainingQuantity": 10,
+          "shippingPreference": "none",
           "amount": [
             "amount": "129.0",
             "currency": "USD",
@@ -161,6 +166,9 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
         value.backing.reward?.description,
         "For the typist who takes their keyboard everywhere."
       )
+
+      XCTAssertEqual(value.backing.reward?.endsAt, 1_587_602_131)
+      XCTAssertEqual(value.backing.reward?.startsAt, 1_587_562_131)
       XCTAssertEqual(value.backing.reward?.estimatedDeliveryOn, "2020-08-01")
       XCTAssertEqual(value.backing.reward?.items?[0].id, "UmV3YXJkSXRlbS03OTczNTM=")
       XCTAssertEqual(
@@ -170,7 +178,12 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.backing.reward?.items?[1].id, "UmV3YXJkSXRlbS04NzMzMDY=")
       XCTAssertEqual(value.backing.reward?.items?[1].name, "Travel case")
 
+      XCTAssertEqual(value.backing.reward?.limit, 5)
+      XCTAssertEqual(value.backing.reward?.remainingQuantity, 10)
+
       XCTAssertEqual(value.backing.reward?.amount, Money(amount: 129.0, currency: .usd, symbol: "$"))
+
+      XCTAssertEqual(value.backing.reward?.shippingPreference, .noShipping)
 
       XCTAssertEqual(value.backing.backer.uid, 565_656)
       XCTAssertEqual(value.backing.backer.name, "Backer McGee")

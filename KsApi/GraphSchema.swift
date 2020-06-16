@@ -212,9 +212,10 @@ public enum Query {
     case limit
     case name
     case remainingQuantity
+    case shippingPreference
     case startsAt
 
-    public enum Item {
+    public enum Item: String {
       case id
       case name
     }
@@ -564,6 +565,7 @@ extension Query.Reward: QueryType {
     case .limit: return "limit"
     case .name: return "name"
     case .remainingQuantity: return "remainingQuantity"
+    case .shippingPreference: return "shippingPreference"
     case .startsAt: return "startsAt"
     }
   }
@@ -571,10 +573,7 @@ extension Query.Reward: QueryType {
 
 extension Query.Reward.Item: QueryType {
   public var description: String {
-    switch self {
-    case .id: return "id"
-    case .name: return "name"
-    }
+    return self.rawValue
   }
 }
 

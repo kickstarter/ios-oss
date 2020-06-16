@@ -68,11 +68,18 @@ public struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
       public var limit: Int?
       public var name: String
       public var remainingQuantity: Int?
+      public var shippingPreference: ShippingPreference?
       public var startsAt: TimeInterval?
 
       public struct Item: Swift.Decodable {
         public var id: String
         public var name: String
+      }
+
+      public enum ShippingPreference: String, Swift.Decodable {
+        case noShipping = "none"
+        case restricted
+        case unrestricted
       }
     }
   }
@@ -99,12 +106,17 @@ public extension ManagePledgeViewBackingEnvelope.Backing.Reward {
     case backersCount
     case description
     case displayName
+    case endsAt
     case estimatedDeliveryOn
     case id
     case isMaxPledge
     case items
+    case limit
     case name
     case nodes
+    case remainingQuantity
+    case shippingPreference
+    case startsAt
   }
 
   init(from decoder: Decoder) throws {
@@ -114,12 +126,17 @@ public extension ManagePledgeViewBackingEnvelope.Backing.Reward {
     self.backersCount = try values.decode(Int.self, forKey: .backersCount)
     self.description = try values.decode(String.self, forKey: .description)
     self.displayName = try values.decode(String.self, forKey: .displayName)
+    self.endsAt = try values.decodeIfPresent(TimeInterval.self, forKey: .endsAt)
     self.estimatedDeliveryOn = try values.decode(String?.self, forKey: .estimatedDeliveryOn)
     self.id = try values.decode(String.self, forKey: .id)
     self.isMaxPledge = try values.decode(Bool.self, forKey: .isMaxPledge)
     self.items = try? values.nestedContainer(keyedBy: CodingKeys.self, forKey: .items)
       .decode([Item].self, forKey: .nodes)
+    self.limit = try values.decodeIfPresent(Int.self, forKey: .limit)
     self.name = try values.decode(String.self, forKey: .name)
+    self.remainingQuantity = try values.decodeIfPresent(Int.self, forKey: .remainingQuantity)
+    self.shippingPreference = try values.decodeIfPresent(ShippingPreference.self, forKey: .shippingPreference)
+    self.startsAt = try values.decodeIfPresent(TimeInterval.self, forKey: .startsAt)
   }
 }
 

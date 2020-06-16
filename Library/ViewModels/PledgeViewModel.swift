@@ -50,6 +50,7 @@ public protocol PledgeViewModelInputs {
 
 public protocol PledgeViewModelOutputs {
   var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
+  var configureExpandableRewardsHeaderWithData: Signal<PledgeExpandableRewardsHeaderViewData, Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
   var configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
@@ -57,6 +58,7 @@ public protocol PledgeViewModelOutputs {
   var configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
   var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
   var descriptionViewHidden: Signal<Bool, Never> { get }
+  var expandableRewardsHeaderViewHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
   var goToThanks: Signal<ThanksPageData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
@@ -96,7 +98,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let backing = project.map { $0.personalization.backing }.skipNil()
 
-    self.descriptionViewHidden = context.map { $0.descriptionViewHidden }
+    self.descriptionViewHidden = context
+      .zip(with: reward)
+      .map { context, reward in context.descriptionViewHidden || reward.isNoReward == false }
+
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
     self.pledgeAmountSummaryViewHidden = context.map { $0.pledgeAmountSummaryViewHidden }
     self.sectionSeparatorsHidden = context.map { $0.sectionSeparatorsHidden }
@@ -592,6 +597,16 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
     .map { $0 as PledgeViewCTAContainerViewData }
 
+    self.configureExpandableRewardsHeaderWithData = Signal.zip(
+      project,
+      reward.filter(\.isNoReward >>> isFalse)
+    )
+    .map { project, reward in
+      ([reward], project.country, project.stats.omitUSCurrencyCode)
+    }
+
+    self.expandableRewardsHeaderViewHidden = reward.map(\.isNoReward)
+
     self.title = context.map { $0.title }
     let contextAndProjectAndPledgeAmount = Signal.combineLatest(context, project, pledgeAmount)
 
@@ -648,11 +663,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           refTag: refTag
         )
       }
-    
+
     createBackingDataAndIsApplePay.takeWhen(createBackingCompletionEvents)
-      .observeValues { data, isApplePay in
-      AppEnvironment.current.optimizelyClient?.track(eventName: "App Completed Checkout")
-    }
+      .observeValues { _, _ in
+        AppEnvironment.current.optimizelyClient?.track(eventName: "App Completed Checkout")
+      }
 
     Signal.combineLatest(project, updateBackingData, context)
       .takeWhen(updateButtonTapped)
@@ -763,6 +778,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   // MARK: - Outputs
 
   public let beginSCAFlowWithClientSecret: Signal<String, Never>
+  public let configureExpandableRewardsHeaderWithData: Signal<PledgeExpandableRewardsHeaderViewData, Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
   public let configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
@@ -770,6 +786,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
   public let configureWithData: Signal<(project: Project, reward: Reward), Never>
   public let descriptionViewHidden: Signal<Bool, Never>
+  public let expandableRewardsHeaderViewHidden: Signal<Bool, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
   public let goToThanks: Signal<ThanksPageData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>

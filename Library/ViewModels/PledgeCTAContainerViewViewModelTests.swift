@@ -281,8 +281,6 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       )
       XCTAssertEqual(optimizelyClient.userAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(optimizelyClient.userAttributes?["session_device_format"] as? String, "phone")
-      
-
     }
   }
 
