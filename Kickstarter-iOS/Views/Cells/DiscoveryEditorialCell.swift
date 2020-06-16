@@ -90,7 +90,9 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
       |> \.accessibilityTraits .~ [UIAccessibilityTraits.button]
       |> \.accessibilityLabel %~ { _ in Strings.Introducing_Lights_On() }
       |> \.accessibilityHint %~ { _ in Strings.Support_creative_spaces_and_businesses_affected_by() }
-      |> \.backgroundColor .~ .clear
+
+    _ = self
+      |> \.backgroundColor .~ discoveryPageBackgroundColor()
 
     _ = self.rootStackView
       |> rootStackViewStyle

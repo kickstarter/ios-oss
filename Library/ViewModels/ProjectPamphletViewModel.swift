@@ -203,14 +203,13 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(cookieFrom(refTag:project:))
       .skipNil()
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
-    
-    
+
     let shouldTrackCTATappedEvent = ctaButtonTappedWithType
       .filter { [.pledge, .seeTheRewards, .viewTheRewards].contains($0) }
 
     Signal.combineLatest(project, refTag)
       .takeWhen(shouldTrackCTATappedEvent)
-      .observeValues { project, refTag in
+      .observeValues { _, _ in
         AppEnvironment.current.optimizelyClient?.track(eventName: "Project Page Pledge Button Clicked")
       }
   }

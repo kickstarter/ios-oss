@@ -114,7 +114,7 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
       trackOptimizelyClientButtonClicked(buttonTitle: "Skip")
     }
 
-    self.continueButtonTappedProperty.signal.observeValues { buttonTitle in
+    self.continueButtonTappedProperty.signal.observeValues { _ in
       let optimizelyProps = optimizelyProperties() ?? [:]
       AppEnvironment.current.koala.trackOnboardingContinueButtonClicked(optimizelyProperties: optimizelyProps)
       trackOptimizelyClientButtonClicked(buttonTitle: "Continue")
