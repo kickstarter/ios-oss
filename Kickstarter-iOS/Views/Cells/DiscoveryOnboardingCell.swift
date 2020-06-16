@@ -25,7 +25,7 @@ internal final class DiscoveryOnboardingCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     _ = self
       |> baseTableViewCellStyle()
-      |> \.backgroundColor .~ .clear
+      |> \.backgroundColor .~ discoveryPageBackgroundColor()
       |> DiscoveryOnboardingCell.lens.contentView.layoutMargins %~~ { layoutMargins, cell in
         cell.traitCollection.isRegularRegular
           ? .init(top: Styles.grid(5), left: Styles.grid(30), bottom: 0, right: Styles.grid(30))

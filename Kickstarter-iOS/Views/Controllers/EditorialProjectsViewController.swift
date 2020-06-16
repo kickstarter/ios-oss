@@ -13,7 +13,6 @@ public final class EditorialProjectsViewController: UIViewController {
 
   internal lazy var discoveryPageViewController: DiscoveryPageViewController = {
     DiscoveryPageViewController.configuredWith(sort: .distance)
-      |> \.preferredBackgroundColor .~ .clear
       |> \.delegate .~ self
   }()
 
@@ -100,6 +99,9 @@ public final class EditorialProjectsViewController: UIViewController {
     _ = self.view
       |> \.backgroundColor .~ UIColor.white
 
+    _ = self.discoveryPageViewController.view
+      |> \.backgroundColor .~ .clear
+
     _ = self.headerView
       |> UIView.lens.layoutMargins %~~ { _, view in
         view.traitCollection.isRegularRegular
@@ -181,12 +183,6 @@ public final class EditorialProjectsViewController: UIViewController {
         self?.setNeedsStatusBarAppearanceUpdate()
       }
 
-    self.viewModel.outputs.applyViewTransformsWithYOffset
-      .observeForControllerAction()
-      .observeValues { [weak self] y in
-        self?.applyViewTransforms(withYOffset: y)
-      }
-
     self.editorialTitleLabel.rac.text = self.viewModel.outputs.titleLabelText
     self.closeButton.rac.tintColor = self.viewModel.outputs.closeButtonImageTintColor
   }
@@ -194,12 +190,12 @@ public final class EditorialProjectsViewController: UIViewController {
   // MARK: - Layout
 
   private func configureSubviews() {
+    _ = (self.headerView, self.view)
+      |> ksr_addSubviewToParent()
+
     _ = (self.discoveryPageViewController.view, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
-
-    _ = (self.headerView, self.view)
-      |> ksr_addSubviewToParent()
 
     _ = (self.headerTopLayoutGuide, self.headerView)
       |> ksr_addLayoutGuideToView()

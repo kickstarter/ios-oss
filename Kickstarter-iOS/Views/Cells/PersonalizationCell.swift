@@ -76,6 +76,7 @@ final class PersonalizationCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
+      |> \.backgroundColor .~ discoveryPageBackgroundColor()
       |> \.accessibilityElements .~ [self.containerView, self.dismissButton]
       |> PersonalizationCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular

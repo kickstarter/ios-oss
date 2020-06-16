@@ -209,4 +209,28 @@ internal final class SharedFunctionsTests: XCTestCase {
   func testPledgeAmountSubtractingShippingAmount() {
     XCTAssertEqual(ksr_pledgeAmount(700.50, subtractingShippingAmount: 100), 600.50)
   }
+
+  func testDiscoveryPageBackgroundColor_Control() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+          OptimizelyExperiment.Variant.control.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      XCTAssertEqual(discoveryPageBackgroundColor(), .white)
+    }
+  }
+
+  func testDiscoveryPageBackgroundColor_Variant1() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.experiments .~ [
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue:
+          OptimizelyExperiment.Variant.variant1.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      XCTAssertEqual(discoveryPageBackgroundColor(), .ksr_grey_200)
+    }
+  }
 }
