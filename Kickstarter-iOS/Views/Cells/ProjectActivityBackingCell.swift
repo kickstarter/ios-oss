@@ -5,7 +5,7 @@ import Prelude_UIKit
 import UIKit
 
 internal protocol ProjectActivityBackingCellDelegate: AnyObject {
-  func projectActivityBackingCellGoToBacking(project: Project, user: User)
+  func projectActivityBackingCellGoToBacking(project: Project, backing: Backing)
   func projectActivityBackingCellGoToSendMessage(project: Project, backing: Backing)
 }
 
@@ -68,8 +68,8 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.notifyDelegateGoToBacking
       .observeForUI()
-      .observeValues { [weak self] project, user in
-        self?.delegate?.projectActivityBackingCellGoToBacking(project: project, user: user)
+      .observeValues { [weak self] project, backing in
+        self?.delegate?.projectActivityBackingCellGoToBacking(project: project, backing: backing)
       }
 
     self.viewModel.outputs.notifyDelegateGoToSendMessage
