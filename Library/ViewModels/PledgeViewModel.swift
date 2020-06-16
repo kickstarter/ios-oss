@@ -648,11 +648,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           refTag: refTag
         )
       }
-    
+
     createBackingDataAndIsApplePay.takeWhen(createBackingCompletionEvents)
-      .observeValues { data, isApplePay in
-      AppEnvironment.current.optimizelyClient?.track(eventName: "App Completed Checkout")
-    }
+      .observeValues { _, _ in
+        AppEnvironment.current.optimizelyClient?.track(eventName: "App Completed Checkout")
+      }
 
     Signal.combineLatest(project, updateBackingData, context)
       .takeWhen(updateButtonTapped)

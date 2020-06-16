@@ -680,7 +680,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       )
     }
   }
-  
+
   func testOptimizelyTrackingCreatorBylineTapped_LiveProject_LoggedIn_NonBacked() {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
 
@@ -726,7 +726,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
     }
   }
-  
+
   func testOptimizelyTrackingCampaignDetailsButtonTapped_NonLiveProject_LoggedIn_Backed() {
     let creatorDetails = ProjectCreatorDetailsEnvelope.template
     let user = User.template
@@ -749,7 +749,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Campaign Details Button Clicked")
-      
+
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_backed_projects_count"] as? Int, 50)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_launched_projects_count"] as? Int, nil)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_country"] as? String, "us")

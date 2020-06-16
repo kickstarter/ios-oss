@@ -894,7 +894,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertNotNil(properties?["optimizely_experiments"], "Event includes Optimizely properties")
     }
   }
-  
+
   func testOptimizelyTrackingProjectPageViewed_LoggedIn() {
     let user = User.template
       |> \.location .~ Location.template
@@ -928,7 +928,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
     }
   }
-  
+
   func testOptimizelyTrackingProjectPageViewed_LoggedOut() {
     withEnvironment(currentUser: nil) {
       self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
@@ -1031,7 +1031,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
     XCTAssertNil(self.optimizelyClient.trackedAttributes)
   }
-  
+
   func testOptimizelyTrackingPledgeCTAButtonTapped_SeeTheRewards() {
     let project = Project.cosmicSurgery
 
@@ -1057,7 +1057,7 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Project Page Pledge Button Clicked")
   }
-  
+
   func testOptimizelyTrackingPledgeCTAButtonTapped_LoggedIn_NonBacked() {
     let user = User.template
       |> \.location .~ Location.template
@@ -1071,13 +1071,11 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
       XCTAssertNil(self.optimizelyClient.trackedAttributes)
 
-
       self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
       XCTAssertNil(self.optimizelyClient.trackedAttributes)
-
 
       // Only track for non-backed, pledge state
       self.vm.inputs.pledgeCTAButtonTapped(with: .pledge)
@@ -1128,13 +1126,11 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
       XCTAssertNil(self.optimizelyClient.trackedAttributes)
 
-
       self.vm.inputs.pledgeCTAButtonTapped(with: .manage)
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
       XCTAssertNil(self.optimizelyClient.trackedAttributes)
-
 
       // Only track for non-backed, pledge state
       self.vm.inputs.pledgeCTAButtonTapped(with: .manage)

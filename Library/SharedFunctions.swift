@@ -249,3 +249,14 @@ public func ksr_pledgeAmount(
 
   return (pledgeAmount as NSDecimalNumber).doubleValue
 }
+
+public func discoveryPageBackgroundColor() -> UIColor {
+  let variant = OptimizelyExperiment.nativeProjectCardsExperimentVariant()
+
+  switch variant {
+  case .variant1:
+    return UIColor.ksr_grey_200
+  case .variant2, .control:
+    return UIColor.white
+  }
+}
