@@ -183,12 +183,6 @@ public final class EditorialProjectsViewController: UIViewController {
         self?.setNeedsStatusBarAppearanceUpdate()
       }
 
-    self.viewModel.outputs.applyViewTransformsWithYOffset
-      .observeForControllerAction()
-      .observeValues { [weak self] y in
-        self?.applyViewTransforms(withYOffset: y)
-      }
-
     self.editorialTitleLabel.rac.text = self.viewModel.outputs.titleLabelText
     self.closeButton.rac.tintColor = self.viewModel.outputs.closeButtonImageTintColor
   }
