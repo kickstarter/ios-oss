@@ -11,9 +11,9 @@ private enum Layout {
 final class PledgeExpandableHeaderRewardCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private lazy var amountLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var amountLabel: UILabel = UILabel(frame: .zero)
+  private lazy var rootStackView: UIStackView = UIStackView(frame: .zero)
+  private lazy var titleLabel: UILabel = UILabel(frame: .zero)
 
   private let viewModel: PledgeExpandableHeaderRewardCellViewModelType
     = PledgeExpandableHeaderRewardCellViewModel()
