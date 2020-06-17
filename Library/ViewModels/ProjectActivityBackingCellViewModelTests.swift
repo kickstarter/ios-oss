@@ -11,7 +11,7 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
   fileprivate let cellAccessibilityLabel = TestObserver<String, Never>()
   fileprivate let cellAccessibilityValue = TestObserver<String, Never>()
   fileprivate let defaultUser = User.template |> \.id .~ 90
-  fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, User), Never>()
+  fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, Backing), Never>()
   fileprivate let notifyDelegateGoToSendMessage = TestObserver<(Project, Backing), Never>()
   fileprivate let pledgeAmount = TestObserver<String, Never>()
   fileprivate let pledgeAmountLabelIsHidden = TestObserver<Bool, Never>()

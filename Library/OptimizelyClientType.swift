@@ -110,7 +110,7 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
     sdkKey = Secrets.OptimizelySDKKey.production
   case .staging:
     sdkKey = Secrets.OptimizelySDKKey.staging
-  case .development, .local:
+  case .development, .local, .custom:
     sdkKey = Secrets.OptimizelySDKKey.development
   }
 
@@ -129,7 +129,7 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
 
   return [
     "optimizely_api_key": sdkKey,
-    "optimizely_environment": environmentType.rawValue,
+    "optimizely_environment": environmentType.description,
     "optimizely_experiments": allExperiments
   ]
 }

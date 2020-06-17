@@ -204,9 +204,27 @@ internal final class BetaToolsViewController: UITableViewController {
       sourceView: sourceView
     )
 
+    let customAlertController = UIAlertController(
+      title: "Custom HQ",
+      message: "Enter the name of the HQ environment, e.g. for \"native.dev\" enter \"native\"",
+      preferredStyle: .alert
+    )
+    customAlertController.addTextField()
+    let submitAction = UIAlertAction(title: "Update", style: .default) { [weak self] _ in
+      guard let url = customAlertController.textFields?[0].text else { return }
+      self?.viewModel.inputs.setEnvironment(.custom(url))
+    }
+    customAlertController.addAction(submitAction)
+    customAlertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
     EnvironmentType.allCases.forEach { environment in
-      alert.addAction(UIAlertAction(title: environment.rawValue, style: .default) { [weak self] _ in
-        self?.viewModel.inputs.setEnvironment(environment)
+      alert.addAction(UIAlertAction(title: environment.description, style: .default) { [weak self] _ in
+        switch environment {
+        case .custom:
+          self?.present(customAlertController, animated: true)
+        default:
+          self?.viewModel.inputs.setEnvironment(environment)
+        }
       })
     }
 

@@ -25,7 +25,7 @@ public protocol ProjectActivityBackingCellViewModelOutputs {
   var cellAccessibilityValue: Signal<String, Never> { get }
 
   /// Emits when the delegate should go to the backing screen.
-  var notifyDelegateGoToBacking: Signal<(Project, User), Never> { get }
+  var notifyDelegateGoToBacking: Signal<(Project, Backing), Never> { get }
 
   /// Emits when the delegate should go to the send message screen.
   var notifyDelegateGoToSendMessage: Signal<(Project, Backing), Never> { get }
@@ -85,9 +85,9 @@ public final class ProjectActivityBackingCellViewModel: ProjectActivityBackingCe
 
     self.notifyDelegateGoToBacking = activityAndProject
       .takeWhen(self.backingButtonPressedProperty.signal)
-      .flatMap { activity, project -> SignalProducer<(Project, User), Never> in
-        guard let user = activity.user else { return .empty }
-        return .init(value: (project, user))
+      .flatMap { activity, project -> SignalProducer<(Project, Backing), Never> in
+        guard let backing = activity.memberData.backing else { return .empty }
+        return .init(value: (project, backing))
       }
 
     self.notifyDelegateGoToSendMessage = activityAndProject
@@ -160,7 +160,7 @@ public final class ProjectActivityBackingCellViewModel: ProjectActivityBackingCe
   public let backerImageURL: Signal<URL?, Never>
   public let cellAccessibilityLabel: Signal<String, Never>
   public let cellAccessibilityValue: Signal<String, Never>
-  public let notifyDelegateGoToBacking: Signal<(Project, User), Never>
+  public let notifyDelegateGoToBacking: Signal<(Project, Backing), Never>
   public let notifyDelegateGoToSendMessage: Signal<(Project, Backing), Never>
   public let pledgeAmount: Signal<String, Never>
   public let pledgeAmountLabelIsHidden: Signal<Bool, Never>

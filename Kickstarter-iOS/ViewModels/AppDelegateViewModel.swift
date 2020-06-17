@@ -1101,7 +1101,7 @@ private func optimizelyData(for environment: Environment) -> (String, Optimizely
     sdkKey = Secrets.OptimizelySDKKey.production
   case .staging:
     sdkKey = Secrets.OptimizelySDKKey.staging
-  case .development, .local:
+  case .development, .local, .custom:
     sdkKey = Secrets.OptimizelySDKKey.development
   }
 
