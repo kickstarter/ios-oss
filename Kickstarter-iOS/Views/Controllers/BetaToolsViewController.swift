@@ -215,6 +215,7 @@ internal final class BetaToolsViewController: UITableViewController {
       self?.viewModel.inputs.setEnvironment(.custom(url))
     }
     customAlertController.addAction(submitAction)
+    customAlertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
     EnvironmentType.allCases.forEach { environment in
       alert.addAction(UIAlertAction(title: environment.description, style: .default) { [weak self] _ in

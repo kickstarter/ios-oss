@@ -37,8 +37,7 @@ public enum EnvironmentType: CaseIterable, CustomStringConvertible, Equatable {
   public var description: String {
     switch self {
     case let .custom(url):
-      guard let url = url else { return "Custom" }
-      return url
+      return url ?? "Custom"
     case .production:
       return "Production"
     case .staging:
