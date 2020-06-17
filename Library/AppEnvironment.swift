@@ -369,7 +369,7 @@ public struct AppEnvironment: AppEnvironmentType {
     data["apiService.serverConfig.basicHTTPAuth.username"] = env.apiService.serverConfig.basicHTTPAuth?.username
     data["apiService.serverConfig.basicHTTPAuth.password"] = env.apiService.serverConfig.basicHTTPAuth?.password
     data["apiService.serverConfig.webBaseUrl"] = env.apiService.serverConfig.webBaseUrl.absoluteString
-    data["apiService.serverConfig.environment"] = env.apiService.serverConfig.environment.rawValue
+    data["apiService.serverConfig.environment"] = env.apiService.serverConfig.environment.description
     data["apiService.language"] = env.apiService.language
     data["apiService.currency"] = env.apiService.currency
     data["config"] = env.config?.encode()

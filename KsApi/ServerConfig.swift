@@ -90,6 +90,19 @@ public struct ServerConfig: ServerConfigType {
 
   public static func config(for environment: EnvironmentType) -> ServerConfigType {
     switch environment {
+    case let .custom(url):
+      guard let url = url else {
+        return ServerConfig.development
+      }
+      return ServerConfig(
+        apiBaseUrl: URL(string: "https://api-\(url).dev.kickstarter.com")!,
+        webBaseUrl: URL(string: "https://\(url).dev.kickstarter.com")!,
+        apiClientAuth: ClientAuth.development,
+        basicHTTPAuth: BasicHTTPAuth.development,
+        graphQLEndpointUrl: URL(string: "https://\(url).dev.kickstarter.com")!
+          .appendingPathComponent(gqlPath),
+        environment: EnvironmentType.custom(url)
+      )
     case .local:
       return ServerConfig.local
     case .development:

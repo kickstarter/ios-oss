@@ -16,7 +16,7 @@ enum QualtricsIntercept {
     switch AppEnvironment.current.environmentType {
     case .production:
       return "SI_eUKtARDK3785TQF"
-    case .development, .local, .staging:
+    case .development, .local, .staging, .custom:
       return "SI_emv4HRmzWkde0Jf"
     }
   }
