@@ -34,6 +34,8 @@ final class PledgeViewController: UIViewController,
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var projectTitleLabel = UILabel(frame: .zero)
+
   private lazy var sectionSeparatorViews = {
     [self.descriptionSectionSeparator, self.summarySectionSeparator]
   }()
@@ -56,12 +58,7 @@ final class PledgeViewController: UIViewController,
   }()
 
   private lazy var descriptionSectionViews = {
-    [self.pledgeDescriptionView, self.descriptionSectionSeparator]
-  }()
-
-  private lazy var pledgeDescriptionView: PledgeDescriptionView = {
-    PledgeDescriptionView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    [self.projectTitleLabel, self.descriptionSectionSeparator]
   }()
 
   private lazy var pledgeExpandableRewardsHeaderViewController = {
@@ -244,11 +241,11 @@ final class PledgeViewController: UIViewController,
     _ = self.view
       |> checkoutBackgroundStyle
 
-    _ = self.pledgeDescriptionView
-      |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
-
     _ = self.pledgeDisclaimerView
       |> pledgeDisclaimerViewStyle
+
+    _ = self.projectTitleLabel
+      |> projectTitleLabelStyle
 
     _ = self.rootScrollView
       |> rootScrollViewStyle
@@ -287,7 +284,6 @@ final class PledgeViewController: UIViewController,
     self.viewModel.outputs.configureWithData
       .observeForUI()
       .observeValues { [weak self] data in
-        self?.pledgeDescriptionView.configureWith(value: data)
         self?.pledgeAmountViewController.configureWith(value: data)
         self?.shippingLocationViewController.configureWith(value: data)
       }
@@ -370,7 +366,8 @@ final class PledgeViewController: UIViewController,
         self?.rootScrollView.handleKeyboardVisibilityDidChange(change)
       }
 
-    self.pledgeDescriptionView.rac.hidden = self.viewModel.outputs.descriptionViewHidden
+    self.projectTitleLabel.rac.text = self.viewModel.outputs.projectTitle
+    self.projectTitleLabel.rac.hidden = self.viewModel.outputs.projectTitleLabelHidden
     self.descriptionSectionSeparator.rac.hidden = self.viewModel.outputs.descriptionSectionSeparatorHidden
     self.summarySectionSeparator.rac.hidden = self.viewModel.outputs.summarySectionSeparatorHidden
 
@@ -625,6 +622,12 @@ extension PledgeViewController: PledgeDisclaimerViewDelegate {
 private let pledgeDisclaimerViewStyle: ViewStyle = { view in
   view
     |> roundedStyle(cornerRadius: Layout.Style.cornerRadius)
+}
+
+private let projectTitleLabelStyle: LabelStyle = { label in
+  label
+    |> \.font .~ UIFont.ksr_body().bolded
+    |> \.numberOfLines .~ 0
 }
 
 private let rootScrollViewStyle: ScrollStyle = { scrollView in
