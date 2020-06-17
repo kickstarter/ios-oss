@@ -112,7 +112,7 @@ public final class BetaToolsViewModel: BetaToolsViewModelType,
       serverConfigEnvironmentFromAppEnvironment,
       self.updateEnvironment
     )
-    .map { $0.rawValue }
+    .map { $0.description }
 
     self.reloadWithData = Signal.combineLatest(
       currentLanguageString,
