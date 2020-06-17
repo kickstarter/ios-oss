@@ -159,8 +159,8 @@ extension ProjectActivitiesViewController: MessageDialogViewControllerDelegate {
 }
 
 extension ProjectActivitiesViewController: ProjectActivityBackingCellDelegate {
-  internal func projectActivityBackingCellGoToBacking(project: Project, user: User) {
-    self.viewModel.inputs.projectActivityBackingCellGoToBacking(project: project, user: user)
+  internal func projectActivityBackingCellGoToBacking(project: Project, backing: Backing) {
+    self.viewModel.inputs.projectActivityBackingCellGoToBacking(project: project, backing: backing)
   }
 
   internal func projectActivityBackingCellGoToSendMessage(project: Project, backing: Backing) {
