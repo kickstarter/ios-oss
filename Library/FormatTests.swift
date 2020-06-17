@@ -124,6 +124,18 @@ final class FormatTests: TestCase {
         XCTAssertEqual(
           Format.attributedCurrency(1_000, country: .us, omitCurrencyCode: false)?.string, " US$ 1,000.00"
         )
+        XCTAssertEqual(
+          Format.attributedCurrency(
+            1_000, country: .us, omitCurrencyCode: true, maximumFractionDigits: 0, minimumFractionDigits: 0
+          )?.string,
+          "$1,000"
+        )
+        XCTAssertEqual(
+          Format.attributedCurrency(
+            1_000, country: .us, omitCurrencyCode: false, maximumFractionDigits: 0, minimumFractionDigits: 0
+          )?.string,
+          " US$ 1,000"
+        )
       }
     }
   }

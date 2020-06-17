@@ -64,6 +64,10 @@ final class PledgeViewController: UIViewController,
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var pledgeExpandableRewardsHeaderViewController = {
+    PledgeExpandableRewardsHeaderViewController(nibName: nil, bundle: nil)
+  }()
+
   private lazy var inputsSectionViews = {
     [self.pledgeAmountViewController.view, self.shippingLocationViewController.view]
   }()
@@ -115,17 +119,17 @@ final class PledgeViewController: UIViewController,
       |> \.delegate .~ self
   }()
 
-  private lazy var rootContainerView: UIView = {
-    UIView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   private lazy var rootScrollView: UIScrollView = {
     UIScrollView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var rootStackView: UIStackView = {
+    UIStackView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var rootInsetStackView: UIStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
@@ -166,16 +170,15 @@ final class PledgeViewController: UIViewController,
     _ = (self.rootScrollView, self.view)
       |> ksr_addSubviewToParent()
 
-    _ = (self.rootContainerView, self.rootScrollView)
+    _ = (self.rootStackView, self.rootScrollView)
       |> ksr_addSubviewToParent()
-
-    _ = (self.rootStackView, self.rootContainerView)
-      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     _ = (self.pledgeCTAContainerView, self.view)
       |> ksr_addSubviewToParent()
 
     let childViewControllers = [
+      self.pledgeExpandableRewardsHeaderViewController,
       self.pledgeAmountViewController,
       self.pledgeAmountSummaryViewController,
       self.shippingLocationViewController,
@@ -184,6 +187,12 @@ final class PledgeViewController: UIViewController,
     ]
 
     let arrangedSubviews = [
+      self.pledgeExpandableRewardsHeaderViewController.view,
+      self.rootInsetStackView
+    ]
+    .compact()
+
+    let arrangedInsetSubviews = [
       self.descriptionSectionViews,
       self.inputsSectionViews,
       self.summarySectionViews,
@@ -197,6 +206,10 @@ final class PledgeViewController: UIViewController,
       self.rootStackView.addArrangedSubview(view)
     }
 
+    arrangedInsetSubviews.forEach { view in
+      self.rootInsetStackView.addArrangedSubview(view)
+    }
+
     childViewControllers.forEach { viewController in
       self.addChild(viewController)
       viewController.didMove(toParent: self)
@@ -204,12 +217,6 @@ final class PledgeViewController: UIViewController,
   }
 
   private func setupConstraints() {
-    _ = (self.rootContainerView, self.rootScrollView)
-      |> ksr_constrainViewToEdgesInParent()
-
-    _ = (self.rootStackView, self.rootContainerView)
-      |> ksr_constrainViewToMarginsInParent()
-
     NSLayoutConstraint.activate([
       self.rootScrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
       self.rootScrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
@@ -218,7 +225,7 @@ final class PledgeViewController: UIViewController,
       self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
       self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
       self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-      self.rootContainerView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
+      self.rootStackView.widthAnchor.constraint(equalTo: self.view.widthAnchor)
     ])
 
     self.sectionSeparatorViews.forEach { view in
@@ -243,14 +250,14 @@ final class PledgeViewController: UIViewController,
     _ = self.pledgeDisclaimerView
       |> pledgeDisclaimerViewStyle
 
-    _ = self.rootContainerView
-      |> rootContainerViewStyle
-
     _ = self.rootScrollView
       |> rootScrollViewStyle
 
     _ = self.rootStackView
       |> rootStackViewStyle
+
+    _ = self.rootInsetStackView
+      |> rootInsetStackViewStyle
 
     _ = self.sectionSeparatorViews
       ||> separatorStyleDark
@@ -283,6 +290,12 @@ final class PledgeViewController: UIViewController,
         self?.pledgeDescriptionView.configureWith(value: data)
         self?.pledgeAmountViewController.configureWith(value: data)
         self?.shippingLocationViewController.configureWith(value: data)
+      }
+
+    self.viewModel.outputs.configureExpandableRewardsHeaderWithData
+      .observeForUI()
+      .observeValues { [weak self] data in
+        self?.pledgeExpandableRewardsHeaderViewController.configure(with: data)
       }
 
     self.viewModel.outputs.configurePledgeAmountSummaryViewControllerWithData
@@ -357,11 +370,15 @@ final class PledgeViewController: UIViewController,
         self?.rootScrollView.handleKeyboardVisibilityDidChange(change)
       }
 
-    self.viewModel.outputs.sectionSeparatorsHidden
-      .observeForUI()
-      .observeValues { [weak self] hidden in self?.sectionSeparatorViews.forEach { $0.isHidden = hidden } }
-
     self.pledgeDescriptionView.rac.hidden = self.viewModel.outputs.descriptionViewHidden
+    self.descriptionSectionSeparator.rac.hidden = self.viewModel.outputs.descriptionSectionSeparatorHidden
+    self.summarySectionSeparator.rac.hidden = self.viewModel.outputs.summarySectionSeparatorHidden
+
+    self.viewModel.outputs.rootStackViewLayoutMargins
+      .observeForUI()
+      .observeValues { margins in
+        self.rootStackView.layoutMargins = margins
+      }
 
     self.shippingLocationViewController.view.rac.hidden
       = self.viewModel.outputs.shippingLocationViewHidden
@@ -369,6 +386,8 @@ final class PledgeViewController: UIViewController,
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
     self.pledgeAmountSummaryViewController.view.rac.hidden
       = self.viewModel.outputs.pledgeAmountSummaryViewHidden
+    self.pledgeExpandableRewardsHeaderViewController.view.rac.hidden
+      = self.viewModel.outputs.expandableRewardsHeaderViewHidden
 
     self.viewModel.outputs.title
       .observeForUI()
@@ -614,18 +633,22 @@ private let rootScrollViewStyle: ScrollStyle = { scrollView in
     |> \.alwaysBounceVertical .~ true
 }
 
-private let rootContainerViewStyle: ViewStyle = { view in
-  view
-    |> \.layoutMargins .~ UIEdgeInsets(
-      topBottom: Layout.Margin.topBottom,
-      leftRight: Layout.Margin.leftRight
-    )
-}
-
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ NSLayoutConstraint.Axis.vertical
     |> \.spacing .~ Styles.grid(4)
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+}
+
+private let rootInsetStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ NSLayoutConstraint.Axis.vertical
+    |> \.spacing .~ Styles.grid(4)
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ UIEdgeInsets(
+      topBottom: 0,
+      leftRight: Layout.Margin.leftRight
+    )
 }
 
 // MARK: - Functions

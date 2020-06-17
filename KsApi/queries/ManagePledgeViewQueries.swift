@@ -35,6 +35,7 @@ public func managePledgeViewProjectBackingQuery(withBackingId backingId: String)
       .errorReason,
       .location(.name +| []),
       .pledgedOn,
+      .backerCompleted,
       .reward(
         .name +| [
           .id,
@@ -72,6 +73,7 @@ public func managePledgeViewProjectBackingQuery(withBackingId backingId: String)
               .limit,
               .items([], NonEmptySet(.nodes(.id +| [.name]))),
               .remainingQuantity,
+              .shippingPreference,
               .startsAt
             ]
           )

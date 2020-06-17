@@ -54,6 +54,7 @@ extension ManagePledgeViewBackingEnvelope.Backing.Reward {
     limit: 5,
     name: "Reward name",
     remainingQuantity: 10,
+    shippingPreference: .noShipping,
     startsAt: 1_487_502_131
   )
 }
