@@ -41,7 +41,6 @@ final class PledgeViewModelTests: TestCase {
   private let configureWithPledgeViewDataProject = TestObserver<Project, Never>()
   private let configureWithPledgeViewDataReward = TestObserver<Reward, Never>()
 
-  private let descriptionViewHidden = TestObserver<Bool, Never>()
   private let descriptionSectionSeparatorHidden = TestObserver<Bool, Never>()
   private let expandableRewardsHeaderViewHidden = TestObserver<Bool, Never>()
 
@@ -62,6 +61,8 @@ final class PledgeViewModelTests: TestCase {
   private let pledgeAmountSummaryViewHidden = TestObserver<Bool, Never>()
   private let popToRootViewController = TestObserver<(), Never>()
   private let processingViewIsHidden = TestObserver<Bool, Never>()
+  private let projectTitle = TestObserver<String, Never>()
+  private let projectTitleLabelHidden = TestObserver<Bool, Never>()
   private let shippingLocationViewHidden = TestObserver<Bool, Never>()
   private let showApplePayAlertMessage = TestObserver<String, Never>()
   private let showApplePayAlertTitle = TestObserver<String, Never>()
@@ -118,7 +119,8 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.configureStripeIntegration.map(second)
       .observe(self.configureStripeIntegrationPublishableKey.observer)
 
-    self.vm.outputs.descriptionViewHidden.observe(self.descriptionViewHidden.observer)
+    self.vm.outputs.projectTitle.observe(self.projectTitle.observer)
+    self.vm.outputs.projectTitleLabelHidden.observe(self.projectTitleLabelHidden.observer)
     self.vm.outputs.descriptionSectionSeparatorHidden.observe(self.descriptionSectionSeparatorHidden.observer)
     self.vm.outputs.expandableRewardsHeaderViewHidden.observe(self.expandableRewardsHeaderViewHidden.observer)
 
@@ -205,7 +207,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.configureSummaryViewControllerWithDataConfirmationLabelHidden.assertValues([false])
 
-      self.descriptionViewHidden.assertValues([true])
+      self.projectTitle.assertValues(["The Project"])
+      self.projectTitleLabelHidden.assertValues([true])
       self.expandableRewardsHeaderViewHidden.assertValues([false])
       self.rootStackViewLayoutMargins.assertValues([.init(bottom: Styles.grid(3))])
 
@@ -254,7 +257,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.configureSummaryViewControllerWithDataConfirmationLabelHidden.assertValues([false])
 
-      self.descriptionViewHidden.assertValues([true])
+      self.projectTitle.assertValues(["The Project"])
+      self.projectTitleLabelHidden.assertValues([true])
       self.expandableRewardsHeaderViewHidden.assertValues([false])
       self.rootStackViewLayoutMargins.assertValues([.init(bottom: Styles.grid(3))])
 
@@ -303,7 +307,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.configureSummaryViewControllerWithDataConfirmationLabelHidden.assertValues([false])
 
-      self.descriptionViewHidden.assertValues([true])
+      self.projectTitle.assertValues(["The Project"])
+      self.projectTitleLabelHidden.assertValues([true])
       self.expandableRewardsHeaderViewHidden.assertValues([true])
       self.rootStackViewLayoutMargins.assertValues([.init(topBottom: Styles.grid(3))])
 
@@ -354,7 +359,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.configureSummaryViewControllerWithDataConfirmationLabelHidden.assertValues([true])
 
-      self.descriptionViewHidden.assertValues([true])
+      self.projectTitle.assertValues(["The Project"])
+      self.projectTitleLabelHidden.assertValues([true])
       self.expandableRewardsHeaderViewHidden.assertValues([false])
       self.rootStackViewLayoutMargins.assertValues([.init(bottom: Styles.grid(3))])
 
@@ -416,7 +422,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.configureSummaryViewControllerWithDataConfirmationLabelHidden.assertValues([true])
 
-      self.descriptionViewHidden.assertValues([true])
+      self.projectTitle.assertValues(["The Project"])
+      self.projectTitleLabelHidden.assertValues([true])
       self.expandableRewardsHeaderViewHidden.assertValues([true])
       self.rootStackViewLayoutMargins.assertValues([.init(topBottom: Styles.grid(3))])
 
@@ -484,7 +491,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false])
 
-      self.descriptionViewHidden.assertValues([true])
+      self.projectTitle.assertValues(["The Project"])
+      self.projectTitleLabelHidden.assertValues([true])
       self.expandableRewardsHeaderViewHidden.assertValues([true])
       self.rootStackViewLayoutMargins.assertValues([.init(topBottom: Styles.grid(3))])
 
@@ -556,7 +564,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.configureSummaryViewControllerWithDataConfirmationLabelHidden.assertValues([true])
 
-      self.descriptionViewHidden.assertValues([true])
+      self.projectTitle.assertValues(["The Project"])
+      self.projectTitleLabelHidden.assertValues([true])
       self.expandableRewardsHeaderViewHidden.assertValues([true])
       self.rootStackViewLayoutMargins.assertValues([.init(topBottom: Styles.grid(3))])
 
