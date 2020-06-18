@@ -70,7 +70,6 @@ final class PledgeExpandableHeaderRewardHeaderCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] titleText in
         self?.subtitleLabel.text = titleText
-        self?.subtitleLabel.setNeedsLayout()
       }
   }
 
@@ -78,14 +77,12 @@ final class PledgeExpandableHeaderRewardHeaderCell: UITableViewCell, ValueCell {
 
   func configureWith(value: PledgeExpandableHeaderRewardCellData) {
     self.viewModel.inputs.configure(with: value)
-
-    self.contentView.layoutIfNeeded()
   }
 
   private func configureViews() {
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
+      |> ksr_constrainViewToEdgesInParent(priority: .defaultLow)
 
     _ = ([self.titleLabel, self.subtitleLabel], self.leftColumnStackView)
       |> ksr_addArrangedSubviewsToStackView()
