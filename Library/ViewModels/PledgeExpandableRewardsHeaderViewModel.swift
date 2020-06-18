@@ -37,11 +37,13 @@ public typealias PledgeExpandableRewardsHeaderViewData = (
 
 public protocol PledgeExpandableRewardsHeaderViewModelInputs {
   func configure(with data: PledgeExpandableRewardsHeaderViewData)
+  func expandButtonTapped()
   func viewDidLoad()
 }
 
 public protocol PledgeExpandableRewardsHeaderViewModelOutputs {
   var loadRewardsIntoDataSource: Signal<[PledgeExpandableRewardsHeaderItem], Never> { get }
+  var expandRewards: Signal<Bool, Never> { get }
 }
 
 public protocol PledgeExpandableRewardsHeaderViewModelType {
@@ -65,6 +67,9 @@ public final class PledgeExpandableRewardsHeaderViewModel: PledgeExpandableRewar
         .compactMap { $0.estimatedDeliveryOn }
         .reduce(0) { accum, value in max(accum, value) }
     }
+
+    self.expandRewards = self.expandButtonTappedProperty.signal
+      .scan(false) { current, _ in !current }
 
     let estimatedDeliveryString = latestRewardDeliveryDate.map { date -> String? in
       guard date > 0 else { return nil }
@@ -91,12 +96,18 @@ public final class PledgeExpandableRewardsHeaderViewModel: PledgeExpandableRewar
     self.configureWithRewardsProperty.value = data
   }
 
+  private let expandButtonTappedProperty = MutableProperty(())
+  public func expandButtonTapped() {
+    self.expandButtonTappedProperty.value = ()
+  }
+
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
   public let loadRewardsIntoDataSource: Signal<[PledgeExpandableRewardsHeaderItem], Never>
+  public let expandRewards: Signal<Bool, Never>
 
   public var inputs: PledgeExpandableRewardsHeaderViewModelInputs { return self }
   public var outputs: PledgeExpandableRewardsHeaderViewModelOutputs { return self }

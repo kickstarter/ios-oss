@@ -99,15 +99,15 @@ final class PledgeExpandableHeaderRewardHeaderCell: UITableViewCell, ValueCell {
 
 private let subtitleLabelStyle: LabelStyle = { label in
   label
-    |> \.font .~ UIFont.ksr_footnote()
-    |> \.textColor .~ .ksr_dark_grey_500
+    |> \.font .~ UIFont.ksr_caption1()
+    |> \.textColor .~ UIColor.ksr_text_navy_600
     |> \.numberOfLines .~ 0
 }
 
 private let titleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_headline().bolded
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_text_black
     |> \.numberOfLines .~ 0
     |> \.text .~ Strings.Your_reward()
 }
