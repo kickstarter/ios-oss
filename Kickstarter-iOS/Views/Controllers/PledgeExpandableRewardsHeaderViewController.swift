@@ -11,9 +11,10 @@ final class PledgeExpandableRewardsHeaderViewController: UIViewController {
 
   private let dataSource = PledgeExpandableRewardsHeaderDataSource()
 
-  private lazy var expandButton: UIButton = {
-    UIButton(type: .custom)
+  private lazy var expandButton: EasyButton = {
+    EasyButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+      |> \.hitMargin .~ 10
   }()
 
   private lazy var coverView: UIView = {
