@@ -8,11 +8,13 @@ final class PledgeExpandableRewardsHeaderViewModelTests: TestCase {
   internal let vm: PledgeExpandableRewardsHeaderViewModelType = PledgeExpandableRewardsHeaderViewModel()
 
   private let loadRewardsIntoDataSource = TestObserver<[PledgeExpandableRewardsHeaderItem], Never>()
+  private let expandRewards = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
 
     self.vm.outputs.loadRewardsIntoDataSource.observe(self.loadRewardsIntoDataSource.observer)
+    self.vm.outputs.expandRewards.observe(self.expandRewards.observer)
   }
 
   func testLoadRewardsIntoDataSource() {
@@ -70,5 +72,32 @@ final class PledgeExpandableRewardsHeaderViewModelTests: TestCase {
     XCTAssertEqual(itemData[3].data.amount.string, "US$ 40")
     XCTAssertEqual(itemData[3].isHeader, false)
     XCTAssertEqual(itemData[3].isReward, true)
+  }
+
+  func testExpandRewards() {
+    self.expandRewards.assertDidNotEmitValue()
+
+    let data: PledgeExpandableRewardsHeaderViewData = (
+      [.template, .template, .template],
+      .us,
+      false
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.expandRewards.assertDidNotEmitValue()
+
+    self.vm.inputs.expandButtonTapped()
+
+    self.expandRewards.assertValues([true])
+
+    self.vm.inputs.expandButtonTapped()
+
+    self.expandRewards.assertValues([true, false])
+
+    self.vm.inputs.expandButtonTapped()
+
+    self.expandRewards.assertValues([true, false, true])
   }
 }

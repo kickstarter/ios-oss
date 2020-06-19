@@ -63,6 +63,7 @@ final class PledgeViewController: UIViewController,
 
   private lazy var pledgeExpandableRewardsHeaderViewController = {
     PledgeExpandableRewardsHeaderViewController(nibName: nil, bundle: nil)
+      |> \.animatingViewDelegate .~ self.view
   }()
 
   private lazy var inputsSectionViews = {
@@ -211,6 +212,9 @@ final class PledgeViewController: UIViewController,
       self.addChild(viewController)
       viewController.didMove(toParent: self)
     }
+
+    self.rootStackView
+      .setCustomSpacing(Styles.grid(2), after: self.pledgeExpandableRewardsHeaderViewController.view)
   }
 
   private func setupConstraints() {

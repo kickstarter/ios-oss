@@ -36,6 +36,8 @@ final class PledgeViewControllerTests: TestCase {
 
         self.scheduler.advance(by: .seconds(1))
 
+        self.allowLayoutPass()
+
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
@@ -69,6 +71,8 @@ final class PledgeViewControllerTests: TestCase {
 
         self.scheduler.advance(by: .seconds(1))
 
+        self.allowLayoutPass()
+
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
@@ -92,6 +96,8 @@ final class PledgeViewControllerTests: TestCase {
           let loggedIn = currentUser != nil
           let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
           if loggedIn { parent.view.frame.size.height = 1_200 }
+
+          self.allowLayoutPass()
 
           FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
         }
@@ -121,6 +127,8 @@ final class PledgeViewControllerTests: TestCase {
           let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
           if loggedIn { parent.view.frame.size.height = 1_200 }
 
+          self.allowLayoutPass()
+
           FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
         }
       }
@@ -141,6 +149,8 @@ final class PledgeViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.advance(by: .seconds(1))
+
+        self.allowLayoutPass()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -163,6 +173,8 @@ final class PledgeViewControllerTests: TestCase {
 
         self.scheduler.advance(by: .seconds(1))
 
+        self.allowLayoutPass()
+
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
@@ -182,6 +194,8 @@ final class PledgeViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.advance(by: .seconds(1))
+
+        self.allowLayoutPass()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -218,6 +232,8 @@ final class PledgeViewControllerTests: TestCase {
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.advance(by: .seconds(1))
+
+        self.allowLayoutPass()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -257,6 +273,8 @@ final class PledgeViewControllerTests: TestCase {
 
         self.scheduler.advance(by: .seconds(1))
 
+        self.allowLayoutPass()
+
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
@@ -288,6 +306,8 @@ final class PledgeViewControllerTests: TestCase {
 
         self.scheduler.advance(by: .seconds(1))
 
+        self.allowLayoutPass()
+
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
@@ -309,6 +329,8 @@ final class PledgeViewControllerTests: TestCase {
           let loggedIn = currentUser != nil
           let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
           if loggedIn { parent.view.frame.size.height = 1_200 }
+
+          self.allowLayoutPass()
 
           FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
         }
