@@ -82,7 +82,7 @@ final class PledgeExpandableHeaderRewardHeaderCell: UITableViewCell, ValueCell {
   private func configureViews() {
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent(priority: .defaultLow)
+      |> ksr_constrainViewToEdgesInParent()
 
     _ = ([self.titleLabel, self.subtitleLabel], self.leftColumnStackView)
       |> ksr_addArrangedSubviewsToStackView()

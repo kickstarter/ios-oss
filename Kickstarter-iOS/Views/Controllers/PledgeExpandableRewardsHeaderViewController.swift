@@ -143,29 +143,31 @@ final class PledgeExpandableRewardsHeaderViewController: UIViewController {
   }
 
   private func updateTableViewContainerHeight(expanded: Bool, animated: Bool) {
-    guard animated else {
-      self.tableViewContainerHeightConstraint?.constant = self.collapsedHeight()
-      self.expandButton.transform = self.expandButton.transform.rotated(by: .pi)
-      return
-    }
-
-    if expanded {
-      self.tableViewContainerHeightConstraint?.constant = self.expandedHeight()
-    } else {
-      self.tableViewContainerHeightConstraint?.constant = self.collapsedHeight()
-    }
-
-    UIView.animate(
-      withDuration: 0.33,
-      delay: 0,
-      usingSpringWithDamping: 0.65,
-      initialSpringVelocity: 0.88,
-      options: .curveEaseInOut,
-      animations: {
-        self.expandButton.transform = expanded ? .identity : self.expandButton.transform.rotated(by: .pi)
-        self.animatingViewDelegate?.layoutIfNeeded()
+    DispatchQueue.main.async {
+      guard animated else {
+        self.tableViewContainerHeightConstraint?.constant = self.collapsedHeight()
+        self.expandButton.transform = self.expandButton.transform.rotated(by: .pi)
+        return
       }
-    ) { _ in }
+
+      if expanded {
+        self.tableViewContainerHeightConstraint?.constant = self.expandedHeight()
+      } else {
+        self.tableViewContainerHeightConstraint?.constant = self.collapsedHeight()
+      }
+
+      UIView.animate(
+        withDuration: 0.33,
+        delay: 0,
+        usingSpringWithDamping: 0.65,
+        initialSpringVelocity: 0.88,
+        options: .curveEaseInOut,
+        animations: {
+          self.expandButton.transform = expanded ? .identity : self.expandButton.transform.rotated(by: .pi)
+          self.animatingViewDelegate?.layoutIfNeeded()
+        }
+      ) { _ in }
+    }
   }
 
   // MARK: - Actions
