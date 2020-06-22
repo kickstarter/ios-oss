@@ -117,7 +117,7 @@ private let labelStyle: LabelStyle = { (label: UILabel) in
 private let textFieldStyle: TextFieldStyle = { (textField: UITextField) in
   textField
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.font .~ UIFont.ksr_title1()
+    |> \.font .~ UIFont.ksr_title1().monospaced
     |> \.keyboardType .~ UIKeyboardType.decimalPad
 }
 

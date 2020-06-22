@@ -52,6 +52,7 @@ public protocol PledgeViewModelOutputs {
   var beginSCAFlowWithClientSecret: Signal<String, Never> { get }
   var configureExpandableRewardsHeaderWithData: Signal<PledgeExpandableRewardsHeaderViewData, Never> { get }
   var configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never> { get }
+  var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
   var configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
@@ -139,13 +140,24 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.configureWithData = projectAndReward
 
-    self.configureSummaryViewControllerWithData = Signal.combineLatest(
-      project,
+    self.configurePledgeAmountViewWithData = projectAndReward.map { project, reward in
+      (project, reward, 0) // FIXME: initial amount temporarily hard-coded
+    }
+
+    let projectRewardConfirmationLabelHidden = Signal.combineLatest(
+      projectAndReward,
       context.map { $0.confirmationLabelHidden }
     )
-    .takePairWhen(pledgeTotal)
     .map(unpack)
-    .map { project, confirmationLabelHidden, total in (project, total, confirmationLabelHidden) }
+
+    self.configureSummaryViewControllerWithData = Signal.combineLatest(
+      projectRewardConfirmationLabelHidden,
+      pledgeTotal
+    )
+    .map { ($0.0, $0.1, $0.2, $1) }
+    .map { project, reward, confirmationLabelHidden, total in
+      (project, total, confirmationLabelHidden, reward.minimum, reward.isNoReward)
+    }
 
     self.configurePledgeAmountSummaryViewControllerWithData = project
       .map(pledgeAmountSummaryViewData)
@@ -805,6 +817,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let beginSCAFlowWithClientSecret: Signal<String, Never>
   public let configureExpandableRewardsHeaderWithData: Signal<PledgeExpandableRewardsHeaderViewData, Never>
   public let configurePaymentMethodsViewControllerWithValue: Signal<PledgePaymentMethodsValue, Never>
+  public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
   public let configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
