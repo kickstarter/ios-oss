@@ -28,7 +28,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
       parent.view.frame.size.height = regularHeight
 
-      controller.configureWith(value: (project: .template, reward: .template))
+      controller.configureWith(value: (project: .template, reward: .template, 0))
 
       FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
     }
@@ -40,7 +40,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       let (parent, _) = traitControllers(child: controller, additionalTraits: additionalTraits)
       parent.view.frame.size.height = expandedHeight
 
-      controller.configureWith(value: (project: .template, reward: .template))
+      controller.configureWith(value: (project: .template, reward: .template, 0))
 
       FBSnapshotVerifyView(
         parent.view, identifier: "trait_\(additionalTraits.preferredContentSizeCategory.rawValue)"
@@ -57,7 +57,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
       parent.view.frame.size.height = regularHeight
 
-      controller.configureWith(value: (project: project, reward: .template))
+      controller.configureWith(value: (project: project, reward: .template, 0))
 
       FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
     }
@@ -72,7 +72,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
       parent.view.frame.size.height = regularHeight
 
-      controller.configureWith(value: (project: .template, reward: reward))
+      controller.configureWith(value: (project: .template, reward: reward, 0))
       controller.stepperValueChanged(UIStepper(frame: .zero) |> \.value .~ 0)
       controller.textFieldDidChange(UITextField(frame: .zero) |> \.text .~ "0")
 
@@ -95,7 +95,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
       parent.view.frame.size.height = regularHeight
 
-      controller.configureWith(value: (project: .template, reward: .template))
+      controller.configureWith(value: (project: .template, reward: .template, 0))
       controller.stepperValueChanged(stepper)
       controller.textFieldDidChange(textField)
 
@@ -108,33 +108,14 @@ final class PledgeAmountViewControllerTests: TestCase {
       |> Reward.lens.minimum .~ 10
 
     let stepper = UIStepper(frame: .zero)
-      |> \.value .~ 5
+      |> \.value .~ 0
 
     [Device.phone4_7inch, Device.pad].forEach { device in
       let controller = PledgeAmountViewController.instantiate()
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
       parent.view.frame.size.height = regularHeight
 
-      controller.configureWith(value: (project: .template, reward: reward))
-      controller.stepperValueChanged(stepper)
-
-      FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
-    }
-  }
-
-  func testView_TextColorIsRedWhenBellowMinimumPledgeAmount() {
-    let reward = Reward.template
-      |> Reward.lens.minimum .~ 10
-
-    let stepper = UIStepper(frame: .zero)
-      |> \.value .~ 5
-
-    [Device.phone4_7inch, Device.pad].forEach { device in
-      let controller = PledgeAmountViewController.instantiate()
-      let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
-      parent.view.frame.size.height = regularHeight
-
-      controller.configureWith(value: (project: .template, reward: reward))
+      controller.configureWith(value: (project: .template, reward: reward, 0))
       controller.stepperValueChanged(stepper)
 
       FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
@@ -154,7 +135,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
       parent.view.frame.size.height = regularHeight
 
-      controller.configureWith(value: (project: project, reward: .template))
+      controller.configureWith(value: (project: project, reward: .template, 0))
       controller.stepperValueChanged(stepper)
 
       FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")
@@ -174,7 +155,7 @@ final class PledgeAmountViewControllerTests: TestCase {
       let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
       parent.view.frame.size.height = regularHeight
 
-      controller.configureWith(value: (project: project, reward: .template))
+      controller.configureWith(value: (project: project, reward: .template, 0))
       controller.stepperValueChanged(stepper)
 
       FBSnapshotVerifyView(parent.view, identifier: "device_\(device)")

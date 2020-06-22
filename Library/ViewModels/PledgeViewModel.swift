@@ -141,7 +141,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.configureWithData = projectAndReward
 
     self.configurePledgeAmountViewWithData = projectAndReward.map { project, reward in
-      (project, reward, 0) // FIXME: initial amount temporarily hard-coded
+      (project, reward, project.personalization.backing?.bonusSupportAmount ?? 0)
     }
 
     let projectRewardConfirmationLabelHidden = Signal.combineLatest(
