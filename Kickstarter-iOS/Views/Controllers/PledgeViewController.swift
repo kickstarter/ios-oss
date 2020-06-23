@@ -67,7 +67,7 @@ final class PledgeViewController: UIViewController,
   }()
 
   private lazy var inputsSectionViews = {
-    [self.pledgeAmountViewController.view, self.shippingLocationViewController.view]
+    [self.shippingLocationViewController.view, self.pledgeAmountViewController.view]
   }()
 
   fileprivate lazy var keyboardDimissingTapGestureRecognizer: UITapGestureRecognizer = {
@@ -288,8 +288,13 @@ final class PledgeViewController: UIViewController,
     self.viewModel.outputs.configureWithData
       .observeForUI()
       .observeValues { [weak self] data in
-        self?.pledgeAmountViewController.configureWith(value: data)
         self?.shippingLocationViewController.configureWith(value: data)
+      }
+
+    self.viewModel.outputs.configurePledgeAmountViewWithData
+      .observeForUI()
+      .observeValues { [weak self] data in
+        self?.pledgeAmountViewController.configureWith(value: data)
       }
 
     self.viewModel.outputs.configureExpandableRewardsHeaderWithData

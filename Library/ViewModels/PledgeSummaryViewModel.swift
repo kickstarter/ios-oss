@@ -3,7 +3,13 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias PledgeSummaryViewData = (project: Project, total: Double, confirmationLabelHidden: Bool)
+public typealias PledgeSummaryViewData = (
+  project: Project,
+  total: Double,
+  confirmationLabelHidden: Bool,
+  rewardMinimum: Double,
+  isNoReward: Bool
+)
 
 public protocol PledgeSummaryViewModelInputs {
   func configure(with data: PledgeSummaryViewData)
@@ -33,7 +39,10 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
     )
     .map(first)
 
-    let projectAndPledgeTotal = initialData.map { project, total, _ in (project, total) }
+    let projectAndPledgeTotal = initialData
+      .map { project, total, _, rewardMinimum, isNoReward in
+        (project, isNoReward ? total : total.addingCurrency(rewardMinimum))
+      }
 
     self.amountLabelAttributedText = projectAndPledgeTotal
       .map(attributedCurrency(with:total:))
@@ -76,7 +85,8 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
         )
       }
 
-    self.confirmationLabelHidden = initialData.map(third)
+    self.confirmationLabelHidden = initialData
+      .map { _, _, confirmationLabelHidden, _, _ in confirmationLabelHidden }
   }
 
   private let configureWithDataProperty = MutableProperty<PledgeSummaryViewData?>(nil)

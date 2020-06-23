@@ -35,8 +35,10 @@ final class PledgeViewModelTests: TestCase {
   private let configureStripeIntegrationPublishableKey = TestObserver<String, Never>()
 
   private let configureSummaryViewControllerWithDataConfirmationLabelHidden = TestObserver<Bool, Never>()
+  private let configureSummaryViewControllerWithDataIsNoReward = TestObserver<Bool, Never>()
   private let configureSummaryViewControllerWithDataPledgeTotal = TestObserver<Double, Never>()
   private let configureSummaryViewControllerWithDataProject = TestObserver<Project, Never>()
+  private let configureSummaryViewControllerWithDataRewardMinimum = TestObserver<Double, Never>()
 
   private let configureWithPledgeViewDataProject = TestObserver<Project, Never>()
   private let configureWithPledgeViewDataReward = TestObserver<Reward, Never>()
@@ -102,12 +104,16 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.configurePledgeViewCTAContainerView.map { $0.3 }
       .observe(self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.observer)
 
-    self.vm.outputs.configureSummaryViewControllerWithData.map(third)
+    self.vm.outputs.configureSummaryViewControllerWithData.map { $0.2 }
       .observe(self.configureSummaryViewControllerWithDataConfirmationLabelHidden.observer)
-    self.vm.outputs.configureSummaryViewControllerWithData.map(second)
+    self.vm.outputs.configureSummaryViewControllerWithData.map { $0.1 }
       .observe(self.configureSummaryViewControllerWithDataPledgeTotal.observer)
-    self.vm.outputs.configureSummaryViewControllerWithData.map(first)
+    self.vm.outputs.configureSummaryViewControllerWithData.map { $0.0 }
       .observe(self.configureSummaryViewControllerWithDataProject.observer)
+    self.vm.outputs.configureSummaryViewControllerWithData.map { $0.4 }
+      .observe(self.configureSummaryViewControllerWithDataIsNoReward.observer)
+    self.vm.outputs.configureSummaryViewControllerWithData.map { $0.3 }
+      .observe(self.configureSummaryViewControllerWithDataRewardMinimum.observer)
 
     self.vm.outputs.configureWithData.map { $0.project }
       .observe(self.configureWithPledgeViewDataProject.observer)
@@ -206,6 +212,8 @@ final class PledgeViewModelTests: TestCase {
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
 
       self.configureSummaryViewControllerWithDataConfirmationLabelHidden.assertValues([false])
+      self.configureSummaryViewControllerWithDataRewardMinimum.assertValues([10])
+      self.configureSummaryViewControllerWithDataIsNoReward.assertValues([false])
 
       self.projectTitle.assertValues(["The Project"])
       self.projectTitleLabelHidden.assertValues([true])
@@ -558,6 +566,8 @@ final class PledgeViewModelTests: TestCase {
 
       self.configureSummaryViewControllerWithDataProject.assertValues([project])
       self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([1])
+      self.configureSummaryViewControllerWithDataRewardMinimum.assertValues([1])
+      self.configureSummaryViewControllerWithDataIsNoReward.assertValues([true])
 
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
