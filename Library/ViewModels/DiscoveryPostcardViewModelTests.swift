@@ -397,24 +397,24 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.projectCategoryViewHidden.assertValue(true)
   }
 
-  func testLocationStackView_IsNotHidden_WhenSortIsByDistance() {
+  func testLocationStackView_IsNotHidden_WhenTagIsLightsOn() {
     let project = Project.template
       |> \.location .~ Location.template
 
     let params = DiscoveryParams.defaults
-      |> \.sort .~ .distance
+      |> \.tagId .~ DiscoveryParams.TagID.lightsOn
 
     self.vm.inputs.configure(with: (project, .illustration, params))
 
     self.locationStackViewHidden.assertValues([false])
   }
 
-  func testLocationStackView_IsHidden_WhenSortIsNotByDistance() {
+  func testLocationStackView_IsHidden_WhenTagIsNotLightsOn() {
     let project = Project.template
       |> \.location .~ Location.template
 
     let params = DiscoveryParams.defaults
-      |> \.sort .~ .magic
+      |> \.tagId .~ nil
 
     self.vm.inputs.configure(with: (project, .illustration, params))
 
