@@ -24,7 +24,6 @@ final class PledgeDisclaimerView: UIView {
     super.init(frame: frame)
 
     self.configureSubviews()
-    self.setupConstraints()
     self.bindStyles()
     self.bindViewModel()
   }
@@ -44,6 +43,7 @@ final class PledgeDisclaimerView: UIView {
   private func configureSubviews() {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     _ = ([self.leftColumnStackView, self.rightColumnStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -53,13 +53,6 @@ final class PledgeDisclaimerView: UIView {
 
     _ = ([self.iconImageView], self.leftColumnStackView)
       |> ksr_addArrangedSubviewsToStackView()
-  }
-
-  private func setupConstraints() {
-    _ = (self.rootStackView, self)
-      |> ksr_constrainViewToEdgesInParent()
-
-    self.leftColumnStackView.widthAnchor.constraint(equalToConstant: Styles.grid(6)).isActive = true
   }
 
   // MARK: - Styles
@@ -162,6 +155,6 @@ private let rightColumnStackViewStyle: StackViewStyle = { stackView in
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
-    |> \.spacing .~ Styles.grid(2)
+    |> \.spacing .~ Styles.grid(3)
     |> \.isLayoutMarginsRelativeArrangement .~ true
 }
