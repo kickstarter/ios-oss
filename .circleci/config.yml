@@ -569,7 +569,9 @@ workflows:
       - alpha:
           filters:
             branches:
-              only: /alpha-dist.*/
+              only:
+                - /alpha-dist.*/
+                - /.*feature.*/
           requires:
             - build-and-cache
             - kickstarter-tests
