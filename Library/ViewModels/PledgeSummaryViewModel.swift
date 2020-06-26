@@ -6,9 +6,7 @@ import ReactiveSwift
 public typealias PledgeSummaryViewData = (
   project: Project,
   total: Double,
-  confirmationLabelHidden: Bool,
-  rewardMinimum: Double,
-  isNoReward: Bool
+  confirmationLabelHidden: Bool
 )
 
 public protocol PledgeSummaryViewModelInputs {
@@ -40,9 +38,7 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
     .map(first)
 
     let projectAndPledgeTotal = initialData
-      .map { project, total, _, rewardMinimum, isNoReward in
-        (project, isNoReward ? total : total.addingCurrency(rewardMinimum))
-      }
+      .map { project, total, _ in (project, total) }
 
     self.amountLabelAttributedText = projectAndPledgeTotal
       .map(attributedCurrency(with:total:))
@@ -86,7 +82,7 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
       }
 
     self.confirmationLabelHidden = initialData
-      .map { _, _, confirmationLabelHidden, _, _ in confirmationLabelHidden }
+      .map(third)
   }
 
   private let configureWithDataProperty = MutableProperty<PledgeSummaryViewData?>(nil)

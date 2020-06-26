@@ -39,8 +39,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       locationName: "United States",
       omitUSCurrencyCode: true,
       projectCountry: Project.Country.us,
-      pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,
+      rewardMinimum: 23,
       shippingAmount: 7.0
     )
 
@@ -60,8 +60,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       locationName: "United States",
       omitUSCurrencyCode: true,
       projectCountry: Project.Country.us,
-      pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,
+      rewardMinimum: 30,
       shippingAmount: 0
     )
 
@@ -80,8 +80,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       locationName: nil,
       omitUSCurrencyCode: true,
       projectCountry: Project.Country.us,
-      pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,
+      rewardMinimum: 30,
       shippingAmount: 7.0
     )
 
@@ -98,8 +98,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       locationName: "United States",
       omitUSCurrencyCode: true,
       projectCountry: Project.Country.us,
-      pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,
+      rewardMinimum: 30,
       shippingAmount: 7.0
     )
 
@@ -116,8 +116,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       locationName: nil,
       omitUSCurrencyCode: true,
       projectCountry: Project.Country.us,
-      pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,
+      rewardMinimum: 30,
       shippingAmount: 7.0
     )
 
@@ -134,8 +134,8 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
       locationName: nil,
       omitUSCurrencyCode: true,
       projectCountry: Project.Country.us,
-      pledgeAmount: 30.0,
       pledgedOn: 1_568_666_243.0,
+      rewardMinimum: 30,
       shippingAmount: 7.0
     )
 

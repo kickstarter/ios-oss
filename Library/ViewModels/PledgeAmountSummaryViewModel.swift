@@ -9,8 +9,8 @@ public struct PledgeAmountSummaryViewData {
   public let locationName: String?
   public let omitUSCurrencyCode: Bool
   public let projectCountry: Project.Country
-  public let pledgeAmount: Double
   public let pledgedOn: TimeInterval
+  public let rewardMinimum: Double
   public let shippingAmount: Double?
 }
 
@@ -46,7 +46,7 @@ public class PledgeAmountSummaryViewModel: PledgeAmountSummaryViewModelType,
       .map {
         (
           $0.projectCountry,
-          ksr_pledgeAmount($0.pledgeAmount, subtractingShippingAmount: $0.shippingAmount),
+          $0.rewardMinimum,
           $0.omitUSCurrencyCode
         )
       }

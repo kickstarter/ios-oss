@@ -54,7 +54,7 @@ final class CreateBackingInputConstructorTests: XCTestCase {
     let data: CreateBackingData = (
       project: project,
       reward: reward,
-      pledgeAmount: 10,
+      pledgeAmount: 15,
       shippingRule: shippingRule,
       paymentSourceId: "123",
       applePayParams: applePayParams,

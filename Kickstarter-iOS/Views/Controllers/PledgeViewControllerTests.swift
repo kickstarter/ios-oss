@@ -58,8 +58,7 @@ final class PledgeViewControllerTests: TestCase {
           |> Backing.lens.status .~ .errored
           |> Backing.lens.reward .~ Reward.noReward
           |> Backing.lens.rewardId .~ Reward.noReward.id
-          |> Backing.lens.shippingAmount .~ 5
-          |> Backing.lens.amount .~ 700.0
+          |> Backing.lens.amount .~ 695.0
       )
 
     combos([Language.en], [Device.phone4_7inch]).forEach { language, device in
@@ -110,15 +109,25 @@ final class PledgeViewControllerTests: TestCase {
       GraphUserCreditCard.masterCard
     ]))
     let mockService = MockService(fetchGraphCreditCardsResponse: userEnvelope)
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 10.0
+
     let project = Project.template
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.visa
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.amount .~ 10.0
+      )
       |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.currentCurrencyRate .~ 2.0
+      |> Project.lens.stats.currentCurrencyRate .~ .some(2.0)
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
       .forEach { language, device, currentUser in
         withEnvironment(apiService: mockService, currentUser: currentUser, language: language) {
           let controller = PledgeViewController.instantiate()
-          controller.configureWith(project: project, reward: .template, refTag: nil, context: .pledge)
+          controller.configureWith(project: project, reward: reward, refTag: nil, context: .pledge)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
           self.scheduler.advance(by: .seconds(1))
@@ -136,11 +145,20 @@ final class PledgeViewControllerTests: TestCase {
 
   func testView_UpdateContext_NeedsConversion_IsFalse() {
     let reward = Reward.template
+      |> Reward.lens.minimum .~ 10.0
       |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
+
     let project = Project.template
       |> Project.lens.stats.currency .~ Currency.USD.rawValue
       |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
       |> Project.lens.country .~ .us
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.visa
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.amount .~ 15.0
+      )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(currentUser: .template, language: language) {
@@ -185,6 +203,7 @@ final class PledgeViewControllerTests: TestCase {
       |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
       |> Project.lens.stats.currentCurrencyRate .~ 2.0
     let reward = Reward.template
+      |> Reward.lens.minimum .~ 10
       |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
@@ -210,6 +229,8 @@ final class PledgeViewControllerTests: TestCase {
     let mockService = MockService(fetchGraphCreditCardsResponse: userEnvelope)
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.minimum .~ 695.0
+
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.isBacking .~ true
@@ -243,6 +264,7 @@ final class PledgeViewControllerTests: TestCase {
   func testView_ChangePaymentMethodContext_NeedsConversion_IsFalse() {
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.minimum .~ 695.0
 
     let project = Project.template
       |> Project.lens.state .~ .live
@@ -290,6 +312,8 @@ final class PledgeViewControllerTests: TestCase {
       |> Project.lens.personalization.backing .~ (Backing.template
         |> Backing.lens.paymentSource .~
         (.template |> \.id .~ "123")
+        |> Backing.lens.shippingAmount .~ 2
+        |> Backing.lens.amount .~ 12.0
       )
       |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
 
