@@ -86,6 +86,19 @@ deploy:
 
 	@echo "Deploy has been kicked off to CircleCI!"
 
+alpha:
+	@echo "Adding remotes..."
+	@git remote add oss https://github.com/kickstarter/ios-oss
+	@git remote add private https://github.com/kickstarter/ios-private
+
+	@echo "Deploying private/alpha-dist-$(COMMIT)..."
+
+	@git branch -f alpha-dist-$(COMMIT)
+	@git push -f private alpha-dist-$(COMMIT)
+	@git branch -d alpha-dist-$(COMMIT)
+
+	@echo "Deploy has been kicked off to CircleCI!"
+
 beta:
 	@echo "Adding remotes..."
 	@git remote add oss https://github.com/kickstarter/ios-oss

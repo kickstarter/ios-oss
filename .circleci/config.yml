@@ -276,6 +276,23 @@ jobs:
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
+  deploy_alpha:
+    <<: *base_job
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+      - checkout
+      - save_cache:
+          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ".git"
+      - run:
+          name: Deploy Alpha
+          command: make alpha
+
   deploy_beta:
     <<: *base_job
     steps:
@@ -546,6 +563,16 @@ workflows:
           filters:
             branches:
               only: /beta-dist-.*/
+      - deploy_alpha:
+          filters:
+            branches:
+              only: /.*feature.*/
+          requires:
+            - build-and-cache
+            - kickstarter-tests
+            - kickstarter-ui-tests
+            - library-tests
+            - ksapi-tests
       - deploy_beta:
           filters:
             branches:
@@ -571,7 +598,6 @@ workflows:
             branches:
               only:
                 - /alpha-dist.*/
-                - /.*feature.*/
           requires:
             - build-and-cache
             - kickstarter-tests
