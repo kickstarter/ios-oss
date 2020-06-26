@@ -238,7 +238,8 @@ platform :ios do
       app_name: options[:app_name],
       ipa: options[:ipa],
       dsym: options[:dsym],
-      notify_testers: true
+      notify_testers: true,
+      release_notes: notes
     )
   end
 
