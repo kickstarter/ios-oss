@@ -566,7 +566,7 @@ workflows:
       - deploy_alpha:
           filters:
             branches:
-              only: /.*feature.*/
+              only: /^((?!alpha\-dist).*feature.*)*$/
           requires:
             - build-and-cache
             - kickstarter-tests
