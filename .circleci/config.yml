@@ -276,6 +276,23 @@ jobs:
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
+  deploy_alpha:
+    <<: *base_job
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+      - checkout
+      - save_cache:
+          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ".git"
+      - run:
+          name: Deploy Alpha
+          command: make alpha
+
   deploy_beta:
     <<: *base_job
     steps:
@@ -545,7 +562,19 @@ workflows:
       - refresh_app_store_dsyms:
           filters:
             branches:
+              # matches all branches that begin with 'beta-dist'
               only: /beta-dist-.*/
+      - deploy_alpha:
+          filters:
+            branches:
+              # matches all branches that contain 'feature' but do not contain 'alpha-dist'
+              only: /^((?!alpha\-dist).*feature.*)*$/
+          requires:
+            - build-and-cache
+            - kickstarter-tests
+            - kickstarter-ui-tests
+            - library-tests
+            - ksapi-tests
       - deploy_beta:
           filters:
             branches:
@@ -559,6 +588,7 @@ workflows:
       - beta:
           filters:
             branches:
+              # matches all branches that begin with 'beta-dist'
               only: /beta-dist-.*/
           requires:
             - build-and-cache
@@ -569,6 +599,7 @@ workflows:
       - alpha:
           filters:
             branches:
+              # matches all branches that begin with 'alpha-dist'
               only: /alpha-dist.*/
           requires:
             - build-and-cache
@@ -579,6 +610,7 @@ workflows:
       - itunes:
           filters:
             branches:
+              # matches branch named exactly `itunes-dist`
               only: itunes-dist
           requires:
             - build-and-cache
@@ -591,7 +623,11 @@ experimental:
   notify:
     branches:
       only:
+        # matches branch named exactly `master`
         - master
+        # matches all branches that begin with 'alpha-dist'
         - /alpha-dist.*/
+        # matches all branches that begin with 'beta-dist'
         - /beta-dist-.*/
+        # matches branch named exactly `itunes-dist`
         - itunes-dist
