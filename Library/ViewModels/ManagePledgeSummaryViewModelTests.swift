@@ -49,6 +49,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectCountry: Project.Country.us,
       projectDeadline: 1_572_626_213.0,
       projectState: ProjectState.live,
+      rewardMinimum: 30,
       shippingAmount: nil
     )
 
@@ -81,6 +82,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectCountry: Project.Country.us,
       projectDeadline: 1_572_626_213.0,
       projectState: ProjectState.live,
+      rewardMinimum: 30,
       shippingAmount: nil
     )
 
@@ -116,6 +118,7 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectCountry: Project.Country.us,
       projectDeadline: 1_572_626_213.0,
       projectState: ProjectState.live,
+      rewardMinimum: 30,
       shippingAmount: nil
     )
 

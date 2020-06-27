@@ -192,6 +192,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       projectCountry: Project.Country.us,
       projectDeadline: 1_476_657_315.0,
       projectState: ProjectState.live,
+      rewardMinimum: 159.0,
       shippingAmount: envelope.backing.shippingAmount?.amount
     )
 
@@ -687,6 +688,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       projectCountry: project.country,
       projectDeadline: 1_476_657_315.0,
       projectState: ProjectState.live,
+      rewardMinimum: 159.0,
       shippingAmount: envelope.backing.shippingAmount?.amount
     )
 
@@ -707,6 +709,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       projectCountry: project.country,
       projectDeadline: 1_476_657_315.0,
       projectState: ProjectState.live,
+      rewardMinimum: 159.0,
       shippingAmount: envelope.backing.shippingAmount?.amount
     )
 

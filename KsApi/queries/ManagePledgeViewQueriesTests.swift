@@ -7,7 +7,7 @@ final class ManagePledgeViewQueriesTests: XCTestCase {
 
     // swiftformat:disable wrap
     let expected = """
-    { backing(id: "12345") { addOns { nodes { amount { amount currency symbol } backersCount description displayName estimatedDeliveryOn id isMaxPledge items { nodes { id name } } limit name remainingQuantity shippingPreference startsAt } } amount { amount currency symbol } backer { name uid } backerCompleted cancelable creditCard: paymentSource { ... on CreditCard { expirationDate id lastFour paymentType type } } errorReason id location { name } pledgedOn project { name pid state } reward { amount { amount currency symbol } backersCount description displayName estimatedDeliveryOn id isMaxPledge items { nodes { id name } } name } sequence status } }
+    { backing(id: "12345") { addOns { nodes { amount { amount currency symbol } backersCount description displayName estimatedDeliveryOn id isMaxPledge items { nodes { id name } } limit name remainingQuantity shippingPreference startsAt } } amount { amount currency symbol } backer { name uid } backerCompleted bonusAmount { amount currency symbol } cancelable creditCard: paymentSource { ... on CreditCard { expirationDate id lastFour paymentType type } } errorReason id location { name } pledgedOn project { name pid state } reward { amount { amount currency symbol } backersCount description displayName estimatedDeliveryOn id isMaxPledge items { nodes { id name } } name } sequence shippingAmount { amount currency symbol } status } }
     """
     // swiftformat:enable wrap
 

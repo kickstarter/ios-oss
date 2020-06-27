@@ -225,15 +225,9 @@ internal func sanitizedPledgeParameters(
   pledgeAmount: Double,
   shippingRule: ShippingRule?
 ) -> SanitizedPledgeParams {
-  var pledgeTotal = pledgeAmount
-  var shippingLocationId: String?
+  let shippingLocationId = (shippingRule?.location.id).flatMap(String.init)
 
-  if let shippingRule = shippingRule {
-    pledgeTotal = pledgeAmount.addingCurrency(shippingRule.cost)
-    shippingLocationId = String(shippingRule.location.id)
-  }
-
-  let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal)
+  let formattedPledgeTotal = Format.decimalCurrency(for: pledgeAmount)
   let rewardId = reward.graphID
 
   return (formattedPledgeTotal, rewardId, shippingLocationId)
@@ -248,6 +242,18 @@ public func ksr_pledgeAmount(
   let pledgeAmount = Decimal(pledgeAmount) - Decimal(shippingAmount)
 
   return (pledgeAmount as NSDecimalNumber).doubleValue
+}
+
+/// Returns the bonus support amount subtracting the reward minimum from the total pledge amount
+public func ksr_bonusSupportAmount(
+  pledgeAmount: Double,
+  shippingAmount: Double?,
+  rewardMinimum: Double
+) -> Double {
+  let pledgeAmount = ksr_pledgeAmount(pledgeAmount, subtractingShippingAmount: shippingAmount)
+  let bonusSupportAmount = Decimal(pledgeAmount) - Decimal(rewardMinimum)
+
+  return (bonusSupportAmount as NSDecimalNumber).doubleValue
 }
 
 public func discoveryPageBackgroundColor() -> UIColor {

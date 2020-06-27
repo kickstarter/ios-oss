@@ -19,6 +19,7 @@ public struct ManagePledgeSummaryViewData: Equatable {
   public let projectCountry: Project.Country
   public let projectDeadline: TimeInterval
   public let projectState: ProjectState
+  public let rewardMinimum: Double
   public let shippingAmount: Double?
 }
 
@@ -133,8 +134,8 @@ private func pledgeAmountSummaryViewData(
     locationName: data.locationName,
     omitUSCurrencyCode: data.omitUSCurrencyCode,
     projectCountry: data.projectCountry,
-    pledgeAmount: data.pledgeAmount,
     pledgedOn: data.pledgedOn,
+    rewardMinimum: data.rewardMinimum,
     shippingAmount: data.shippingAmount
   )
 }

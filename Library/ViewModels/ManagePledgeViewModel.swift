@@ -490,6 +490,7 @@ private func managePledgeSummaryViewData(
     projectCountry: project.country,
     projectDeadline: project.dates.deadline,
     projectState: envelope.project.state,
+    rewardMinimum: envelope.backing.reward?.amount.amount ?? 0,
     shippingAmount: envelope.backing.shippingAmount?.amount
   )
 }

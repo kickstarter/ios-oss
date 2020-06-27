@@ -34,7 +34,7 @@ final class ManagePledgeViewControllerTests: TestCase {
       )
       |> \.rewards .~ [reward]
 
-    let envelope = ManagePledgeViewBackingEnvelope.template
+    var envelope = ManagePledgeViewBackingEnvelope.template
       |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
         expirationDate: "2019-09-01",
         id: "556",
@@ -44,11 +44,17 @@ final class ManagePledgeViewControllerTests: TestCase {
       )
       |> \.backing.sequence .~ 10
       |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
+
+    envelope = envelope
       |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
       |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
       |> \.backing.shippingAmount .~ Money(amount: 2.0, currency: .gbp, symbol: "£")
       |> \.backing.backer.uid .~ user.id
       |> \.backing.backer.name .~ "Blob"
+      |> \.backing.reward .~ (
+        ManagePledgeViewBackingEnvelope.Backing.Reward.template
+          |> \.amount .~ Money(amount: 8.0, currency: .gbp, symbol: "£")
+      )
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope),
@@ -95,7 +101,7 @@ final class ManagePledgeViewControllerTests: TestCase {
       )
       |> \.rewards .~ [reward]
 
-    let envelope = ManagePledgeViewBackingEnvelope.template
+    var envelope = ManagePledgeViewBackingEnvelope.template
       |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
         expirationDate: "2019-09-01",
         id: "556",
@@ -105,11 +111,17 @@ final class ManagePledgeViewControllerTests: TestCase {
       )
       |> \.backing.sequence .~ 10
       |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
+
+    envelope = envelope
       |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
       |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
       |> \.backing.shippingAmount .~ Money(amount: 2.0, currency: .gbp, symbol: "£")
       |> \.backing.backer.uid .~ 5
       |> \.backing.backer.name .~ "Blob"
+      |> \.backing.reward .~ (
+        ManagePledgeViewBackingEnvelope.Backing.Reward.template
+          |> \.amount .~ Money(amount: 8.0, currency: .gbp, symbol: "£")
+      )
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope),
@@ -151,7 +163,7 @@ final class ManagePledgeViewControllerTests: TestCase {
       )
       |> \.rewards .~ [reward]
 
-    let envelope = ManagePledgeViewBackingEnvelope.template
+    var envelope = ManagePledgeViewBackingEnvelope.template
       |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
         expirationDate: "2019-10-01",
         id: "556",
@@ -162,10 +174,16 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> \.backing.sequence .~ 10
       |> \.backing.location .~ nil
       |> \.backing.shippingAmount .~ nil
+
+    envelope = envelope
       |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
       |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
       |> \.backing.backer.uid .~ user.id
       |> \.backing.backer.name .~ "Blob"
+      |> \.backing.reward .~ (
+        ManagePledgeViewBackingEnvelope.Backing.Reward.template
+          |> \.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
+      )
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope),
@@ -212,7 +230,7 @@ final class ManagePledgeViewControllerTests: TestCase {
       )
       |> \.rewards .~ [reward]
 
-    let envelope = ManagePledgeViewBackingEnvelope.template
+    var envelope = ManagePledgeViewBackingEnvelope.template
       |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
         expirationDate: "2019-10-01",
         id: "556",
@@ -222,11 +240,17 @@ final class ManagePledgeViewControllerTests: TestCase {
       )
       |> \.backing.sequence .~ 10
       |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
+
+    envelope = envelope
       |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
       |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
       |> \.backing.shippingAmount .~ Money(amount: 2.0, currency: .gbp, symbol: "£")
       |> \.backing.backer.uid .~ user.id
       |> \.backing.backer.name .~ "Blob"
+      |> \.backing.reward .~ (
+        ManagePledgeViewBackingEnvelope.Backing.Reward.template
+          |> \.amount .~ Money(amount: 8.0, currency: .gbp, symbol: "£")
+      )
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope),
@@ -271,7 +295,7 @@ final class ManagePledgeViewControllerTests: TestCase {
       )
       |> \.rewards .~ [reward]
 
-    let envelope = ManagePledgeViewBackingEnvelope.template
+    var envelope = ManagePledgeViewBackingEnvelope.template
       |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
         expirationDate: "2019-09-01",
         id: "556",
@@ -281,12 +305,18 @@ final class ManagePledgeViewControllerTests: TestCase {
       )
       |> \.backing.sequence .~ 10
       |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
+
+    envelope = envelope
       |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
       |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
       |> \.backing.shippingAmount .~ Money(amount: 2.0, currency: .gbp, symbol: "£")
       |> \.backing.backer.uid .~ user.id
       |> \.backing.backer.name .~ "Blob"
       |> \.backing.status .~ .errored
+      |> \.backing.reward .~ (
+        ManagePledgeViewBackingEnvelope.Backing.Reward.template
+          |> \.amount .~ Money(amount: 8.0, currency: .gbp, symbol: "£")
+      )
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope),

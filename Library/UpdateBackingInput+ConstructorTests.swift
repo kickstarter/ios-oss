@@ -14,7 +14,7 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
     let data: UpdateBackingData = (
       backing: Backing.template,
       reward: Reward.template,
-      pledgeAmount: 100,
+      pledgeAmount: 105,
       shippingRule: ShippingRule.template,
       paymentSourceId: GraphUserCreditCard.amex.id,
       applePayParams: applePayParams
@@ -41,7 +41,7 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
     let data: UpdateBackingData = (
       backing: Backing.template,
       reward: Reward.template,
-      pledgeAmount: 100,
+      pledgeAmount: 105,
       shippingRule: ShippingRule.template,
       paymentSourceId: GraphUserCreditCard.amex.id,
       applePayParams: applePayParams

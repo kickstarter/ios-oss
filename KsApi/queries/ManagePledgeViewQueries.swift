@@ -17,6 +17,18 @@ public func managePledgeViewProjectBackingQuery(withBackingId backingId: String)
           .symbol
         ]
       ),
+      .bonusAmount(
+        .amount +| [
+          .currency,
+          .symbol
+        ]
+      ),
+      .shippingAmount(
+        .amount +| [
+          .currency,
+          .symbol
+        ]
+      ),
       .sequence,
       .cancelable,
       .backer(
