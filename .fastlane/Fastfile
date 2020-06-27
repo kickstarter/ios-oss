@@ -231,14 +231,15 @@ platform :ios do
   end
 
   private_lane :upload_appcenter do |options|
-    notes = changelog
+    notes = "Branch: #{git_branch}, Recent changes: #{changelog}"
     appcenter_upload(
       api_token: ENV["APPCENTER_API_TOKEN"],
       owner_name: ENV["APPCENTER_OWNER_NAME"],
       app_name: options[:app_name],
       ipa: options[:ipa],
       dsym: options[:dsym],
-      notify_testers: true
+      notify_testers: true,
+      release_notes: notes
     )
   end
 
