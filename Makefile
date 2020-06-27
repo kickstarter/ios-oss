@@ -12,6 +12,7 @@ DIST_BRANCH = $(RELEASE)-dist
 FABRIC_SDK_VERSION ?= 3.13.2
 FABRIC_SDK_URL ?= https://s3.amazonaws.com/kits-crashlytics-com/ios/com.twitter.crashlytics.ios/INSERT_SDK_VERSION/com.crashlytics.ios-manual.zip
 COMMIT ?= $(CIRCLE_SHA1)
+CURRENT_BRANCH ?= $(CIRCLE_BRANCH)
 
 ifeq ($(PLATFORM),iOS)
 	DESTINATION ?= 'platform=iOS Simulator,name=$(IPHONE_NAME),OS=$(IOS_VERSION)'
@@ -83,6 +84,19 @@ deploy:
 	@git branch -f $(DIST_BRANCH) private/$(BRANCH)
 	@git push -f private $(DIST_BRANCH)
 	@git branch -d $(DIST_BRANCH)
+
+	@echo "Deploy has been kicked off to CircleCI!"
+
+alpha:
+	@echo "Adding remotes..."
+	@git remote add oss https://github.com/kickstarter/ios-oss
+	@git remote add private https://github.com/kickstarter/ios-private
+
+	@echo "Deploying private/alpha-dist-$(CURRENT_BRANCH)-$(COMMIT)..."
+
+	@git branch -f alpha-dist-$(CURRENT_BRANCH)-$(COMMIT)
+	@git push -f private alpha-dist-$(CURRENT_BRANCH)-$(COMMIT)
+	@git branch -d alpha-dist-$(CURRENT_BRANCH)-$(COMMIT)
 
 	@echo "Deploy has been kicked off to CircleCI!"
 
