@@ -171,10 +171,15 @@ platform :ios do
 
   desc "Upload Alpha to AppCenter"
   lane :alpha_appcenter do
+    notes = "Branch: #{git_branch}, Recent changes: #{changelog}"
+      .sub("alpha-dist-", "") # strip branch prefix and trailing hyphen
+      .sub("-#{last_git_commit[:commit_hash]}", "") # strip last hyphen and commit hash
+
     upload_appcenter(
       app_name: "KickAlpha",
       ipa: "#{gym_dir}/KickAlpha.ipa",
-      dsym: "#{gym_dir}/KickAlpha.app.dSYM.zip"
+      dsym: "#{gym_dir}/KickAlpha.app.dSYM.zip",
+      notes: notes
     )
 
     upload_dsyms(dsym: "#{gym_dir}/KickAlpha.app.dSYM.zip")
@@ -231,7 +236,7 @@ platform :ios do
   end
 
   private_lane :upload_appcenter do |options|
-    notes = "Branch: #{git_branch}, Recent changes: #{changelog}"
+    notes = (options[:notes] || changelog)
     appcenter_upload(
       api_token: ENV["APPCENTER_API_TOKEN"],
       owner_name: ENV["APPCENTER_OWNER_NAME"],
