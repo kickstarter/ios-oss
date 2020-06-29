@@ -46,7 +46,7 @@ public class PledgeAmountSummaryViewModel: PledgeAmountSummaryViewModelType,
       .map {
         (
           $0.projectCountry,
-          $0.rewardMinimum,
+          $0.isNoReward ? ($0.bonusAmount ?? 0) : $0.rewardMinimum,
           $0.omitUSCurrencyCode
         )
       }
