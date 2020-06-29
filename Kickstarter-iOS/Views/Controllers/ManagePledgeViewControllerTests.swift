@@ -176,14 +176,11 @@ final class ManagePledgeViewControllerTests: TestCase {
       |> \.backing.shippingAmount .~ nil
 
     envelope = envelope
+      |> \.backing.bonusAmount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
       |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
       |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
       |> \.backing.backer.uid .~ user.id
       |> \.backing.backer.name .~ "Blob"
-      |> \.backing.reward .~ (
-        ManagePledgeViewBackingEnvelope.Backing.Reward.template
-          |> \.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
-      )
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope),
