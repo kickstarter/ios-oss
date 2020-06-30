@@ -111,14 +111,14 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
 
   func testBonusAmountStackViewIsHidden_isTrue_WhenIsNoReward() {
     let data = PledgeAmountSummaryViewData(
-      bonusAmount: 0,
+      bonusAmount: 1,
       isNoReward: true,
       locationName: nil,
       omitUSCurrencyCode: true,
       projectCountry: Project.Country.us,
       pledgedOn: 1_568_666_243.0,
-      rewardMinimum: 30,
-      shippingAmount: 7.0
+      rewardMinimum: 0,
+      shippingAmount: 0
     )
 
     self.vm.inputs.configureWith(data)
@@ -143,5 +143,23 @@ final class PledgeAmountSummaryViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.shippingLocationStackViewIsHidden.assertValue(true)
+  }
+
+  func testPledgeAmountText_NoReward() {
+    let data = PledgeAmountSummaryViewData(
+      bonusAmount: 2,
+      isNoReward: true,
+      locationName: nil,
+      omitUSCurrencyCode: true,
+      projectCountry: Project.Country.us,
+      pledgedOn: 1_568_666_243.0,
+      rewardMinimum: 0,
+      shippingAmount: 0
+    )
+
+    self.vm.inputs.configureWith(data)
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeAmountText.assertValues(["$2.00"], "Bonus amount is used as pledge total for No Reward type")
   }
 }
