@@ -669,7 +669,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
       )
 
     let envelope = ManagePledgeViewBackingEnvelope.template
-      |> \.backing .~ (.template |> \.addOns .~ nil)
+      |> \.backing .~ (
+        .template
+          |> \.addOns .~ nil
+          |> \.reward .~ nil // no reward
+      )
 
     // Pledge amount 25
     let initialPledgeViewSummaryData = ManagePledgeSummaryViewData(
@@ -688,7 +692,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       projectCountry: project.country,
       projectDeadline: 1_476_657_315.0,
       projectState: ProjectState.live,
-      rewardMinimum: 159.0,
+      rewardMinimum: 0,
       shippingAmount: envelope.backing.shippingAmount?.amount
     )
 
@@ -709,7 +713,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       projectCountry: project.country,
       projectDeadline: 1_476_657_315.0,
       projectState: ProjectState.live,
-      rewardMinimum: 159.0,
+      rewardMinimum: 0,
       shippingAmount: envelope.backing.shippingAmount?.amount
     )
 
@@ -734,7 +738,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
     let expectedRewardReceivedData = ManageViewPledgeRewardReceivedViewData(
       project: project,
       backerCompleted: false,
-      estimatedDeliveryOn: 1_506_897_315.0,
+      estimatedDeliveryOn: 0,
       backingState: .pledged
     )
 
@@ -756,7 +760,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.configurePledgeSummaryView.assertValues([initialPledgeViewSummaryData])
 
       self.loadProjectAndRewardsIntoDataSourceProject.assertValues([project])
-      self.loadProjectAndRewardsIntoDataSourceReward.assertValues([[.template]])
+      self.loadProjectAndRewardsIntoDataSourceReward.assertValues([[.noReward]])
       self.configureRewardReceivedWithData.assertValues([expectedRewardReceivedData])
       self.title.assertValues(["Manage your pledge"])
     }
@@ -779,11 +783,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
       ])
       self.configurePledgeSummaryView.assertValues([
         initialPledgeViewSummaryData,
+        initialPledgeViewSummaryData,
         updatedPledgeViewSummaryData
       ])
 
       self.loadProjectAndRewardsIntoDataSourceProject.assertValues([project, project, project])
-      self.loadProjectAndRewardsIntoDataSourceReward.assertValues([[.template], [.template], [.template]])
+      self.loadProjectAndRewardsIntoDataSourceReward.assertValues([[.noReward], [.noReward], [.noReward]])
       self.configureRewardReceivedWithData.assertValues([
         expectedRewardReceivedData,
         expectedRewardReceivedData,
