@@ -10,6 +10,7 @@ extension Reward {
     estimatedDeliveryOn: Date(
       timeIntervalSince1970: 1_475_361_315
     ).timeIntervalSince1970 + 60.0 * 60.0 * 24.0 * 365.0,
+    hasAddOns: false,
     id: 1,
     limit: 100,
     minimum: 10.00,
@@ -33,6 +34,7 @@ extension Reward {
     description: "",
     endsAt: nil,
     estimatedDeliveryOn: nil,
+    hasAddOns: false,
     id: 0,
     limit: nil,
     minimum: 0,
@@ -56,6 +58,7 @@ extension Reward {
     description: "",
     endsAt: nil,
     estimatedDeliveryOn: nil,
+    hasAddOns: false,
     id: 9_999,
     limit: nil,
     minimum: 0,

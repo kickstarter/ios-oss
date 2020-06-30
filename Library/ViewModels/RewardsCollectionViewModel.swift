@@ -24,6 +24,7 @@ public protocol RewardsCollectionViewModelInputs {
 public protocol RewardsCollectionViewModelOutputs {
   var configureRewardsCollectionViewFooterWithCount: Signal<Int, Never> { get }
   var flashScrollIndicators: Signal<Void, Never> { get }
+  var goToAddOnSelection: Signal<(PledgeData, PledgeViewContext), Never> { get }
   var goToPledge: Signal<(PledgeData, PledgeViewContext), Never> { get }
   var navigationBarShadowImageHidden: Signal<Bool, Never> { get }
   var reloadDataWithValues: Signal<[RewardCardViewData], Never> { get }
@@ -100,13 +101,16 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       PledgeData(project: project, reward: reward, refTag: refTag)
     }
 
-    self.goToPledge = goToPledge
+    let goToData = goToPledge
       .filter { project, reward, _ in
         !userIsBacking(reward: reward, inProject: project)
       }
-      .map { data in
+      .map { data -> (PledgeData, PledgeViewContext) in
         (data, data.project.personalization.backing == nil ? .pledge : .updateReward)
       }
+
+    self.goToAddOnSelection = goToData.filter { data, _ in data.reward.hasAddOns }
+    self.goToPledge = goToData.filter { data, _ in !data.reward.hasAddOns }
 
     self.rewardsCollectionViewFooterIsHidden = self.traitCollectionChangedProperty.signal
       .skipNil()
@@ -177,6 +181,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
   public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>
   public let flashScrollIndicators: Signal<Void, Never>
+  public let goToAddOnSelection: Signal<(PledgeData, PledgeViewContext), Never>
   public let goToPledge: Signal<(PledgeData, PledgeViewContext), Never>
   public let navigationBarShadowImageHidden: Signal<Bool, Never>
   public let reloadDataWithValues: Signal<[RewardCardViewData], Never>

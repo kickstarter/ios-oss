@@ -15,6 +15,7 @@ public struct Reward {
   public let description: String
   public let endsAt: TimeInterval?
   public let estimatedDeliveryOn: TimeInterval?
+  public let hasAddOns: Bool
   public let id: Int
   public let limit: Int?
   public let minimum: Double
@@ -84,6 +85,7 @@ extension Reward: Argo.Decodable {
       <*> json <|? "ends_at"
       <*> json <|? "estimated_delivery_on"
     let tmp2 = tmp1
+      <*> ((json <| "has_addons") <|> .success(false))
       <*> json <| "id"
       <*> json <|? "limit"
       <*> json <| "minimum"
