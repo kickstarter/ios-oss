@@ -173,7 +173,7 @@ private func localizedDescription(project: Project, reward: Reward) -> String {
 }
 
 private func rewardTitle(project: Project, reward: Reward) -> NSAttributedString {
-  guard project.personalization.isBacking == true else {
+  guard project.personalization.isBacking == true || currentUserIsCreator(of: project) else {
     return NSAttributedString(
       string: reward.isNoReward ? Strings.Pledge_without_a_reward() : reward.title.coalesceWith("")
     )

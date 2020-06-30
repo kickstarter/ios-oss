@@ -166,8 +166,9 @@ public final class ManagePledgeViewModel:
 
     self.configurePaymentMethodView = backing.map(managePledgePaymentMethodViewData)
 
-    self.configurePledgeSummaryView = Signal.combineLatest(project, graphBackingEnvelope)
-      .filterMap { project, env in managePledgeSummaryViewData(with: project, envelope: env) }
+    self.configurePledgeSummaryView = Signal.combineLatest(projectAndReward, graphBackingEnvelope)
+      .map(unpack)
+      .filterMap(managePledgeSummaryViewData)
 
     let projectOrBackingFailedToLoad = Signal.merge(
       fetchProjectEvent.map { $0.error as Error? },
@@ -468,12 +469,9 @@ private func managePledgePaymentMethodViewData(
 
 private func managePledgeSummaryViewData(
   with project: Project,
+  backedReward: Reward,
   envelope: ManagePledgeViewBackingEnvelope
 ) -> ManagePledgeSummaryViewData? {
-  guard let backing = project.personalization.backing else { return nil }
-
-  let backedReward = reward(from: backing, inProject: project)
-
   return .init(
     backerId: envelope.backing.backer.uid,
     backerName: envelope.backing.backer.name,
@@ -511,8 +509,13 @@ private func rewardsData(
   let dateFormatter = DateFormatter()
   dateFormatter.dateFormat = "yyyy-MM-DD"
 
+  var existingAddOnIds = Set<String>()
+
   return addOns.compactMap { addOn in
-    Reward.addOnReward(
+    guard existingAddOnIds.contains(addOn.id) == false else { return nil }
+    existingAddOnIds.insert(addOn.id)
+
+    return Reward.addOnReward(
       from: addOn,
       project: project,
       selectedAddOnQuantities: selectedAddOnQuantities,
