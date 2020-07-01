@@ -52,6 +52,9 @@ final class RewardAddOnSelectionViewController: UITableViewController {
       |> checkoutBackgroundStyle
 
     _ = self.headerLabel
+      |> checkoutBackgroundStyle
+
+    _ = self.headerLabel
       |> \.numberOfLines .~ 0
       |> \.font .~ UIFont.ksr_title1().bolded
       |> \.text .~ localizedString(
