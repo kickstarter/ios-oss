@@ -140,6 +140,17 @@ final class RewardsCollectionViewController: UICollectionViewController {
         self?.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
       }
 
+    self.viewModel.outputs.goToAddOnSelection
+      .observeForControllerAction()
+      .observeValues { [weak self] data, context in
+        self?.goToAddOnSelection(
+          project: data.project,
+          reward: data.reward,
+          refTag: data.refTag,
+          context: context
+        )
+      }
+
     self.viewModel.outputs.goToPledge
       .observeForControllerAction()
       .observeValues { [weak self] data, context in
@@ -225,6 +236,16 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     _ = self.collectionViewBottomConstraintFooterView
       ?|> \.isActive .~ !isHidden
+  }
+
+  private func goToAddOnSelection(
+    project _: Project,
+    reward _: Reward,
+    refTag _: RefTag?,
+    context _: PledgeViewContext
+  ) {
+    let vc = RewardAddOnSelectionViewController.instantiate()
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   private func goToPledge(project: Project, reward: Reward, refTag: RefTag?, context: PledgeViewContext) {

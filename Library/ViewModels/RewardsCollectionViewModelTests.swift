@@ -11,6 +11,10 @@ final class RewardsCollectionViewModelTests: TestCase {
 
   private let configureRewardsCollectionViewFooterWithCount = TestObserver<Int, Never>()
   private let flashScrollIndicators = TestObserver<Void, Never>()
+  private let goToAddOnSelectionProject = TestObserver<Project, Never>()
+  private let goToAddOnSelectionRefTag = TestObserver<RefTag?, Never>()
+  private let goToAddOnSelectionReward = TestObserver<Reward, Never>()
+  private let goToAddOnSelectionContext = TestObserver<PledgeViewContext, Never>()
   private let goToPledgeProject = TestObserver<Project, Never>()
   private let goToPledgeRefTag = TestObserver<RefTag?, Never>()
   private let goToPledgeReward = TestObserver<Reward, Never>()
@@ -29,6 +33,13 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.outputs.configureRewardsCollectionViewFooterWithCount
       .observe(self.configureRewardsCollectionViewFooterWithCount.observer)
     self.vm.outputs.flashScrollIndicators.observe(self.flashScrollIndicators.observer)
+    self.vm.outputs.goToAddOnSelection.map(first).map { $0.project }
+      .observe(self.goToAddOnSelectionProject.observer)
+    self.vm.outputs.goToAddOnSelection.map(first).map { $0.reward }
+      .observe(self.goToAddOnSelectionReward.observer)
+    self.vm.outputs.goToAddOnSelection.map(first).map { $0.refTag }
+      .observe(self.goToAddOnSelectionRefTag.observer)
+    self.vm.outputs.goToAddOnSelection.map(second).observe(self.goToAddOnSelectionContext.observer)
     self.vm.outputs.goToPledge.map(first).map { $0.project }.observe(self.goToPledgeProject.observer)
     self.vm.outputs.goToPledge.map(first).map { $0.reward }.observe(self.goToPledgeReward.observer)
     self.vm.outputs.goToPledge.map(first).map { $0.refTag }.observe(self.goToPledgeRefTag.observer)
@@ -60,6 +71,38 @@ final class RewardsCollectionViewModelTests: TestCase {
     let value = self.reloadDataWithValues.values.last
 
     XCTAssertTrue(value?.count == rewardsCount)
+  }
+
+  func testGoToAddOnSelection() {
+    withEnvironment(config: .template) {
+      var rewards = Project.cosmicSurgery.rewards
+
+      let reward = rewards.first!
+        |> Reward.lens.hasAddOns .~ true
+
+      rewards[0] = reward
+
+      let project = Project.cosmicSurgery
+        |> Project.lens.rewards .~ rewards
+      let firstRewardId = reward.id
+
+      self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.goToAddOnSelectionProject.assertDidNotEmitValue()
+      self.goToAddOnSelectionReward.assertDidNotEmitValue()
+      self.goToAddOnSelectionContext.assertDidNotEmitValue()
+      self.goToAddOnSelectionRefTag.assertDidNotEmitValue()
+      XCTAssertNil(self.vm.outputs.selectedReward())
+
+      self.vm.inputs.rewardSelected(with: firstRewardId)
+
+      self.goToAddOnSelectionProject.assertValues([project])
+      self.goToAddOnSelectionReward.assertValues([project.rewards[0]])
+      self.goToAddOnSelectionContext.assertValues([.pledge])
+      self.goToAddOnSelectionRefTag.assertValues([.activity])
+      XCTAssertEqual(self.vm.outputs.selectedReward(), project.rewards[0])
+    }
   }
 
   func testGoToPledge() {

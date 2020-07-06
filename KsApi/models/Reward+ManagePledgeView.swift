@@ -35,6 +35,7 @@ public extension Reward {
       description: backingReward.description,
       endsAt: backingReward.endsAt,
       estimatedDeliveryOn: estimatedDeliveryOn,
+      hasAddOns: false, // This value is only sent via the v1 API to indicate that a base reward has add-ons
       id: rewardId,
       limit: backingReward.limit,
       minimum: backingReward.amount.amount,
