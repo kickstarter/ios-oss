@@ -48,7 +48,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       .materialize()
     }
 
-    let addOns = addOnsEvent.values().logEvents(identifier: "***")
+    let addOns = addOnsEvent.values()
 
     self.loadAddOnRewardsIntoDataSource = Signal.combineLatest(
       addOns,
