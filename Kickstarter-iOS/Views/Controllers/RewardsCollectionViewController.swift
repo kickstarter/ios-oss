@@ -239,12 +239,14 @@ final class RewardsCollectionViewController: UICollectionViewController {
   }
 
   private func goToAddOnSelection(
-    project _: Project,
-    reward _: Reward,
-    refTag _: RefTag?,
-    context _: PledgeViewContext
+    project: Project,
+    reward: Reward,
+    refTag: RefTag?,
+    context: PledgeViewContext
   ) {
     let vc = RewardAddOnSelectionViewController.instantiate()
+    vc.configureWith(project: project, reward: reward, refTag: refTag, context: context)
+    vc.navigationItem.title = self.title
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

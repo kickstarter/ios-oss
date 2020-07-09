@@ -169,9 +169,12 @@ public enum Query {
   }
 
   public indirect enum Project {
+    case actions(NonEmptySet<Actions>)
+    case addOns(Set<QueryArg<Never>>, NonEmptySet<Connection<Reward>>)
     case backing(NonEmptySet<Backing>)
     case creator(NonEmptySet<User>)
     case finalCollectionDate
+    case fxRate
     case id
     case name
     case pid
@@ -179,6 +182,10 @@ public enum Query {
     case slug
     case state
     case updates(Set<QueryArg<Never>>, NonEmptySet<Connection<Project.Update>>)
+
+    public enum Actions: String {
+      case displayConvertAmount
+    }
 
     public enum State: String {
       case failed = "FAILED"
@@ -202,6 +209,7 @@ public enum Query {
   public enum Reward {
     case amount(NonEmptySet<Money>)
     case backersCount
+    case convertedAmount(NonEmptySet<Money>)
     case description
     case displayName
     case endsAt
@@ -430,9 +438,12 @@ extension Query.Category.ProjectsConnection.Argument: CustomStringConvertible {
 extension Query.Project: QueryType {
   public var description: String {
     switch self {
+    case let .actions(fields): return "actions { \(join(fields)) }"
+    case let .addOns(args, fields): return "addOns\(connection(args, fields))"
     case let .backing(fields): return "backing { \(join(fields)) }"
     case let .creator(fields): return "creator { \(join(fields)) }"
     case .finalCollectionDate: return "finalCollectionDate"
+    case .fxRate: return "fxRate"
     case .id: return "id"
     case .name: return "name"
     case .pid: return "pid"
@@ -441,6 +452,14 @@ extension Query.Project: QueryType {
     case .state: return "state"
     case let .updates(args, fields): return "updates\(connection(args, fields))"
     }
+  }
+}
+
+// MARK: - Project.Actions
+
+extension Query.Project.Actions: QueryType {
+  public var description: String {
+    return self.rawValue
   }
 }
 
@@ -555,6 +574,7 @@ extension Query.Reward: QueryType {
     switch self {
     case let .amount(fields): return "amount { \(join(fields)) }"
     case .backersCount: return "backersCount"
+    case let .convertedAmount(fields): return "convertedAmount { \(join(fields)) }"
     case .description: return "description"
     case .displayName: return "displayName"
     case .endsAt: return "endsAt"
@@ -608,6 +628,8 @@ extension Query.Location: QueryType {
     return self.rawValue
   }
 }
+
+// MARK: - Money
 
 extension Query.Money: QueryType {
   public var description: String {

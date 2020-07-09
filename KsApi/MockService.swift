@@ -106,6 +106,9 @@
 
     fileprivate let fetchProjectSummaryResult: Result<ProjectSummaryEnvelope, GraphError>?
 
+    fileprivate let fetchRewardAddOnsSelectionViewRewardsResult:
+      Result<RewardAddOnSelectionViewEnvelope, GraphError>?
+
     fileprivate let fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>?
 
     fileprivate let fetchSurveyResponseResponse: SurveyResponse?
@@ -274,6 +277,8 @@
       followFriendError: ErrorEnvelope? = nil,
       incrementVideoCompletionError: ErrorEnvelope? = nil,
       incrementVideoStartError: ErrorEnvelope? = nil,
+      fetchRewardAddOnsSelectionViewRewardsResult: Result<RewardAddOnSelectionViewEnvelope, GraphError>? =
+        nil,
       fetchSurveyResponseResponse: SurveyResponse? = nil,
       fetchSurveyResponseError: ErrorEnvelope? = nil,
       fetchUnansweredSurveyResponsesResponse: [SurveyResponse] = [],
@@ -401,6 +406,8 @@
       self.publishUpdateError = publishUpdateError
 
       self.fetchManagePledgeViewBackingResult = fetchManagePledgeViewBackingResult
+
+      self.fetchRewardAddOnsSelectionViewRewardsResult = fetchRewardAddOnsSelectionViewRewardsResult
 
       self.fetchMessageThreadResult = fetchMessageThreadResult
 
@@ -846,6 +853,11 @@
     func fetchManagePledgeViewBacking(query _: NonEmptySet<Query>)
       -> SignalProducer<ManagePledgeViewBackingEnvelope, GraphError> {
       return producer(for: self.fetchManagePledgeViewBackingResult)
+    }
+
+    func fetchRewardAddOnsSelectionViewRewards(query _: NonEmptySet<Query>)
+      -> SignalProducer<RewardAddOnSelectionViewEnvelope, GraphError> {
+      return producer(for: self.fetchRewardAddOnsSelectionViewRewardsResult)
     }
 
     internal func fetchMessageThread(messageThreadId _: Int)

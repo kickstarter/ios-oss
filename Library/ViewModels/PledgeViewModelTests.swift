@@ -38,8 +38,9 @@ final class PledgeViewModelTests: TestCase {
   private let configureSummaryViewControllerWithDataPledgeTotal = TestObserver<Double, Never>()
   private let configureSummaryViewControllerWithDataProject = TestObserver<Project, Never>()
 
-  private let configureWithPledgeViewDataProject = TestObserver<Project, Never>()
-  private let configureWithPledgeViewDataReward = TestObserver<Reward, Never>()
+  private let configureShippingLocationViewWithDataProject = TestObserver<Project, Never>()
+  private let configureShippingLocationViewWithDataReward = TestObserver<Reward, Never>()
+  private let configureShippingLocationViewWithDataShowAmount = TestObserver<Bool, Never>()
 
   private let descriptionSectionSeparatorHidden = TestObserver<Bool, Never>()
   private let expandableRewardsHeaderViewHidden = TestObserver<Bool, Never>()
@@ -109,10 +110,12 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.configureSummaryViewControllerWithData.map { $0.0 }
       .observe(self.configureSummaryViewControllerWithDataProject.observer)
 
-    self.vm.outputs.configureWithData.map { $0.project }
-      .observe(self.configureWithPledgeViewDataProject.observer)
-    self.vm.outputs.configureWithData.map { $0.reward }
-      .observe(self.configureWithPledgeViewDataReward.observer)
+    self.vm.outputs.configureShippingLocationViewWithData.map { $0.project }
+      .observe(self.configureShippingLocationViewWithDataProject.observer)
+    self.vm.outputs.configureShippingLocationViewWithData.map { $0.reward }
+      .observe(self.configureShippingLocationViewWithDataReward.observer)
+    self.vm.outputs.configureShippingLocationViewWithData.map { $0.showAmount }
+      .observe(self.configureShippingLocationViewWithDataShowAmount.observer)
 
     self.vm.outputs.configureStripeIntegration.map(first)
       .observe(self.configureStripeIntegrationMerchantId.observer)
@@ -212,8 +215,9 @@ final class PledgeViewModelTests: TestCase {
       self.expandableRewardsHeaderViewHidden.assertValues([false])
       self.rootStackViewLayoutMargins.assertValues([.init(bottom: Styles.grid(3))])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -262,8 +266,9 @@ final class PledgeViewModelTests: TestCase {
       self.expandableRewardsHeaderViewHidden.assertValues([false])
       self.rootStackViewLayoutMargins.assertValues([.init(bottom: Styles.grid(3))])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -312,8 +317,9 @@ final class PledgeViewModelTests: TestCase {
       self.expandableRewardsHeaderViewHidden.assertValues([true])
       self.rootStackViewLayoutMargins.assertValues([.init(topBottom: Styles.grid(3))])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -364,8 +370,9 @@ final class PledgeViewModelTests: TestCase {
       self.expandableRewardsHeaderViewHidden.assertValues([false])
       self.rootStackViewLayoutMargins.assertValues([.init(bottom: Styles.grid(3))])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -427,8 +434,9 @@ final class PledgeViewModelTests: TestCase {
       self.expandableRewardsHeaderViewHidden.assertValues([true])
       self.rootStackViewLayoutMargins.assertValues([.init(topBottom: Styles.grid(3))])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([true])
@@ -496,8 +504,9 @@ final class PledgeViewModelTests: TestCase {
       self.expandableRewardsHeaderViewHidden.assertValues([true])
       self.rootStackViewLayoutMargins.assertValues([.init(topBottom: Styles.grid(3))])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
@@ -569,8 +578,9 @@ final class PledgeViewModelTests: TestCase {
       self.expandableRewardsHeaderViewHidden.assertValues([true])
       self.rootStackViewLayoutMargins.assertValues([.init(topBottom: Styles.grid(3))])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([true])
@@ -606,8 +616,9 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -636,8 +647,9 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -667,8 +679,9 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -697,8 +710,9 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -727,8 +741,9 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -766,8 +781,9 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -818,8 +834,9 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -833,8 +850,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data1)
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 76])
       self.configureSummaryViewControllerWithDataProject.assertValues([project, project])
@@ -843,8 +861,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data2)
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 76, 103])
       self.configureSummaryViewControllerWithDataProject.assertValues([project, project, project])
@@ -869,8 +888,9 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -889,8 +909,9 @@ final class PledgeViewModelTests: TestCase {
         self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false])
         self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge, .pledge])
 
-        self.configureWithPledgeViewDataProject.assertValues([project])
-        self.configureWithPledgeViewDataReward.assertValues([reward])
+        self.configureShippingLocationViewWithDataProject.assertValues([project])
+        self.configureShippingLocationViewWithDataReward.assertValues([reward])
+        self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
         self.paymentMethodsViewHidden.assertValues([true, false])
         self.shippingLocationViewHidden.assertValues([true])
@@ -912,8 +933,9 @@ final class PledgeViewModelTests: TestCase {
       self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
       self.configurePaymentMethodsViewControllerWithContext.assertValues([.pledge])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -928,8 +950,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.shippingRuleSelected(shippingRule1)
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([
         reward.minimum,
@@ -941,8 +964,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data1)
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.configureSummaryViewControllerWithDataPledgeTotal.assertValues(
         [
@@ -958,8 +982,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.shippingRuleSelected(shippingRule2)
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.configureSummaryViewControllerWithDataPledgeTotal.assertValues(
         [
@@ -975,8 +1000,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: data2)
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.configureSummaryViewControllerWithDataPledgeTotal.assertValues(
         [
@@ -1421,8 +1447,9 @@ final class PledgeViewModelTests: TestCase {
       self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
       self.configurePaymentMethodsViewControllerWithContext.assertValues([.pledge])
 
-      self.configureWithPledgeViewDataProject.assertValues([project])
-      self.configureWithPledgeViewDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataProject.assertValues([project])
+      self.configureShippingLocationViewWithDataReward.assertValues([reward])
+      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
       self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryViewControllerWithDataProject.assertValues([project])

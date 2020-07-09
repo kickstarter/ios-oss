@@ -55,9 +55,9 @@ public protocol PledgeViewModelOutputs {
   var configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never> { get }
   var configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
+  var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
-  var configureWithData: Signal<(project: Project, reward: Reward), Never> { get }
   var descriptionSectionSeparatorHidden: Signal<Bool, Never> { get }
   var expandableRewardsHeaderViewHidden: Signal<Bool, Never> { get }
   var goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never> { get }
@@ -136,8 +136,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let projectAndReward = initialData.map { (project: $0.0, reward: $0.1) }
 
-    self.configureWithData = projectAndReward
-
+    self.configureShippingLocationViewWithData = projectAndReward.map { project, reward in
+      (project, reward, true)
+    }
     self.configurePledgeAmountViewWithData = projectAndReward.combineLatest(with: shippingCost)
       .map(unpack)
       .map { project, reward, shippingCost in
@@ -845,9 +846,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let configurePledgeAmountViewWithData: Signal<PledgeAmountViewConfigData, Never>
   public let configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
+  public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
-  public let configureWithData: Signal<(project: Project, reward: Reward), Never>
   public let descriptionSectionSeparatorHidden: Signal<Bool, Never>
   public let expandableRewardsHeaderViewHidden: Signal<Bool, Never>
   public let goToApplePayPaymentAuthorization: Signal<PaymentAuthorizationData, Never>
