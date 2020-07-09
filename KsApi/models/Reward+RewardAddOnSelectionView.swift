@@ -4,7 +4,7 @@ public extension Reward {
   /**
    Create an add-on reward from a RewardAddOnSelectionViewEnvelope.Project.Reward
 
-    - parameter reward: The ManagePledgeViewBackingEnvelope.Backing.Reward data structure.
+    - parameter reward: The RewardAddOnSelectionViewEnvelope.Project.Reward data structure.
     - parameter project: The associated Project model.
     - parameter selectedAddOnQuantities: The selected quantity for this add-on.
     - parameter dateFormatter: A DateFormatter configured with the format "yyyy-MM-DD".
