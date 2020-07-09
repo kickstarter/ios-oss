@@ -20,6 +20,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
 
   private let adaptableStackViewIsHidden = TestObserver<Bool, Never>()
   private let amountText = TestObserver<String, Never>()
+  private let amountLabelIsHidden = TestObserver<Bool, Never>()
   private let dismissShippingRules = TestObserver<Void, Never>()
   private let presentShippingRulesProject = TestObserver<Project, Never>()
   private let presentShippingRulesAllRules = TestObserver<[ShippingRule], Never>()
@@ -34,6 +35,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
 
     self.vm.outputs.adaptableStackViewIsHidden.observe(self.adaptableStackViewIsHidden.observer)
     self.vm.outputs.amountAttributedText.map { $0.string }.observe(self.amountText.observer)
+    self.vm.outputs.amountLabelIsHidden.observe(self.amountLabelIsHidden.observer)
     self.vm.outputs.dismissShippingRules.observe(self.dismissShippingRules.observer)
     self.vm.outputs.shimmerLoadingViewIsHidden.observe(self.shimmerLoadingViewIsHidden.observer)
     self.vm.outputs.presentShippingRules.map { $0.0 }.observe(self.presentShippingRulesProject.observer)
@@ -52,7 +54,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(apiService: mockService, countryCode: "US") {
-      self.vm.inputs.configureWith(project: .template, reward: reward)
+      self.vm.inputs.configureWith(data: (project: .template, reward: reward, true))
       self.vm.inputs.viewDidLoad()
 
       self.amountText.assertValues(["+$0.00"])
@@ -60,6 +62,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.shimmerLoadingViewIsHidden.assertValues([false])
       self.notifyDelegateOfSelectedShippingRule.assertDidNotEmitValue()
       self.shippingLocationButtonTitle.assertValues([])
+      self.amountLabelIsHidden.assertValues([false])
 
       self.scheduler.advance()
 
@@ -74,6 +77,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       self.notifyDelegateOfSelectedShippingRule.assertValues([defaultShippingRule])
       self.shippingLocationButtonTitle.assertValues(["Brooklyn, NY"])
       self.shippingRulesError.assertDidNotEmitValue()
+      self.amountLabelIsHidden.assertValues([false])
 
       self.scheduler.advance(by: .seconds(1))
 
@@ -82,13 +86,31 @@ final class PledgeShippingLocationViewModelTests: TestCase {
     }
   }
 
+  func testAmountLabelIsHidden_IsHidden() {
+    self.amountLabelIsHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(data: (project: .template, reward: .template, showAmount: false))
+    self.vm.inputs.viewDidLoad()
+
+    self.amountLabelIsHidden.assertValues([true])
+  }
+
+  func testAmountLabelIsHidden_IsNotHidden() {
+    self.amountLabelIsHidden.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(data: (project: .template, reward: .template, showAmount: true))
+    self.vm.inputs.viewDidLoad()
+
+    self.amountLabelIsHidden.assertValues([false])
+  }
+
   func testShippingRulesSelection() {
     let mockService = MockService(fetchShippingRulesResult: Result.success(shippingRules))
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(apiService: mockService, countryCode: "US") {
-      self.vm.inputs.configureWith(project: .template, reward: reward)
+      self.vm.inputs.configureWith(data: (project: .template, reward: reward, false))
       self.vm.inputs.viewDidLoad()
 
       guard let defaultShippingRule = shippingRules.first(where: { $0.location == .brooklyn }) else {
@@ -129,7 +151,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(apiService: mockService, countryCode: "US") {
-      self.vm.inputs.configureWith(project: .template, reward: reward)
+      self.vm.inputs.configureWith(data: (project: .template, reward: reward, false))
       self.vm.inputs.viewDidLoad()
 
       guard let defaultShippingRule = shippingRules.first(where: { $0.location == .brooklyn }) else {
@@ -161,7 +183,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(apiService: MockService(fetchShippingRulesResult: Result.failure(error))) {
-      self.vm.inputs.configureWith(project: .template, reward: reward)
+      self.vm.inputs.configureWith(data: (project: .template, reward: reward, false))
       self.vm.inputs.viewDidLoad()
 
       self.shippingRulesError.assertValues([])
@@ -201,7 +223,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(apiService: mockService, countryCode: "US") {
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(data: (project: project, reward: reward, false))
       self.vm.inputs.viewDidLoad()
 
       self.amountText.assertValues(["+$0.00"])
@@ -252,7 +274,7 @@ final class PledgeShippingLocationViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(apiService: mockService, countryCode: "US") {
-      self.vm.inputs.configureWith(project: project, reward: reward)
+      self.vm.inputs.configureWith(data: (project: project, reward: reward, false))
       self.vm.inputs.viewDidLoad()
 
       self.amountText.assertValues(["+$0.00"])

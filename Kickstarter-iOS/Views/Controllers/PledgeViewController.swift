@@ -285,7 +285,7 @@ final class PledgeViewController: UIViewController,
         STPPaymentConfiguration.shared().appleMerchantIdentifier = merchantIdentifier
       }
 
-    self.viewModel.outputs.configureWithData
+    self.viewModel.outputs.configureShippingLocationViewWithData
       .observeForUI()
       .observeValues { [weak self] data in
         self?.shippingLocationViewController.configureWith(value: data)
@@ -587,6 +587,8 @@ extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
   ) {
     self.viewModel.inputs.shippingRuleSelected(shippingRule)
   }
+
+  func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {}
 }
 
 // MARK: - PledgeViewControllerMessageDisplaying

@@ -316,6 +316,11 @@ public struct Service: ServiceType {
     return fetch(query: query)
   }
 
+  public func fetchRewardAddOnsSelectionViewRewards(query: NonEmptySet<Query>)
+    -> SignalProducer<RewardAddOnSelectionViewEnvelope, GraphError> {
+    return fetch(query: query)
+  }
+
   public func fetchRewardShippingRules(projectId: Int, rewardId: Int)
     -> SignalProducer<ShippingRulesEnvelope, ErrorEnvelope> {
     return request(.shippingRules(projectId: projectId, rewardId: rewardId))

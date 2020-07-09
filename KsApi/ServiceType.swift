@@ -208,6 +208,10 @@ public protocol ServiceType {
   func fetchProjectSummary(query: NonEmptySet<Query>)
     -> SignalProducer<ProjectSummaryEnvelope, GraphError>
 
+  /// Fetch the add-on rewards for the add-on selection view with a given query.
+  func fetchRewardAddOnsSelectionViewRewards(query: NonEmptySet<Query>)
+    -> SignalProducer<RewardAddOnSelectionViewEnvelope, GraphError>
+
   /// Fetches a reward for a project and reward id.
   func fetchRewardShippingRules(projectId: Int, rewardId: Int)
     -> SignalProducer<ShippingRulesEnvelope, ErrorEnvelope>
