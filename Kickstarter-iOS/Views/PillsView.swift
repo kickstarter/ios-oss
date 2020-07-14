@@ -33,7 +33,7 @@ private class PillView: UIView {
     self.label.textAlignment = .center
     self.label.font = data.font
     self.label.textColor = data.textColor
-    self.label.backgroundColor = data.backgroundColor
+    self.backgroundColor = data.backgroundColor
 
     self.addSubview(self.label)
   }
