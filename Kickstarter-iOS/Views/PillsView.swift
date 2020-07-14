@@ -18,7 +18,7 @@ public struct PillData: Equatable {
 
 private class PillView: UIView {
   private var data: PillData
-  private var label: UILabel = UILabel(frame: .zero)
+  private var label = UILabel(frame: .zero)
 
   public init(with data: PillData) {
     self.data = data
