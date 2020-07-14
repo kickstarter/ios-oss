@@ -368,6 +368,7 @@
 		80D73AF61D50F1A60099231F /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E26A121D500C6A007B3022 /* Navigation.swift */; };
 		80E8EAC81D3EC65A007BDA4B /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E8EAC71D3EC65A007BDA4B /* Image.swift */; };
 		80EAEF051D243C4E008C2353 /* Backing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80EAEF031D243C4E008C2353 /* Backing.storyboard */; };
+		8A00CCFF24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A00CCFE24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift */; };
 		8A05CB0E23DB82D3002B01EE /* CookieRefTagFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */; };
 		8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A072D39230223B200BA1538 /* UIImage+Color.swift */; };
 		8A08B521249C3352009CF74E /* EasyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A08B520249C3352009CF74E /* EasyButton.swift */; };
@@ -422,6 +423,8 @@
 		8A49396524B54F9B00C3C3CE /* Reward+RewardAddOnSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A49396424B54F9B00C3C3CE /* Reward+RewardAddOnSelectionView.swift */; };
 		8A49396724B68FA500C3C3CE /* Reward+RewardAddOnSelectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A49396624B68FA500C3C3CE /* Reward+RewardAddOnSelectionViewTests.swift */; };
 		8A49396924B690E000C3C3CE /* RewardAddOnSelectionViewEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A49396824B690E000C3C3CE /* RewardAddOnSelectionViewEnvelopeTemplate.swift */; };
+		8A49396B24B7735100C3C3CE /* RewardAddOnCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A49396A24B7735100C3C3CE /* RewardAddOnCardView.swift */; };
+		8A49396F24B77B3500C3C3CE /* RewardAddOnCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A49396E24B77B3500C3C3CE /* RewardAddOnCardViewModel.swift */; };
 		8A4DDAB32373427000ADE31D /* PledgeStatusLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */; };
 		8A4DDAB52373429300ADE31D /* PledgeStatusLabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB42373429300ADE31D /* PledgeStatusLabelViewModel.swift */; };
 		8A4DDAB72373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB62373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift */; };
@@ -488,6 +491,7 @@
 		8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */; };
 		8AD79530239EBDF600998C79 /* MockTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */; };
 		8AD7953423A2C95000998C79 /* QualtricsTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD7953323A2C95000998C79 /* QualtricsTypes.swift */; };
+		8ADF4D7624BCCFD60018AD4B /* PillsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADF4D7524BCCFD60018AD4B /* PillsView.swift */; };
 		8AE09C3A244537BE00036043 /* PledgeDisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */; };
 		8AE09C3C2446330100036043 /* PledgeDisclaimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C3B2446330100036043 /* PledgeDisclaimerViewModel.swift */; };
 		8AE09C3E24463C4C00036043 /* PledgeDisclaimerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C3D24463C4C00036043 /* PledgeDisclaimerViewModelTests.swift */; };
@@ -1889,6 +1893,7 @@
 		80E26A121D500C6A007B3022 /* Navigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		80E8EAC71D3EC65A007BDA4B /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		80EAEF031D243C4E008C2353 /* Backing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Backing.storyboard; sourceTree = "<group>"; };
+		8A00CCFE24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnCardViewModelTests.swift; sourceTree = "<group>"; };
 		8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieRefTagFunctions.swift; sourceTree = "<group>"; };
 		8A072D39230223B200BA1538 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		8A08B520249C3352009CF74E /* EasyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyButton.swift; sourceTree = "<group>"; };
@@ -1943,6 +1948,8 @@
 		8A49396424B54F9B00C3C3CE /* Reward+RewardAddOnSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reward+RewardAddOnSelectionView.swift"; sourceTree = "<group>"; };
 		8A49396624B68FA500C3C3CE /* Reward+RewardAddOnSelectionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reward+RewardAddOnSelectionViewTests.swift"; sourceTree = "<group>"; };
 		8A49396824B690E000C3C3CE /* RewardAddOnSelectionViewEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewEnvelopeTemplate.swift; sourceTree = "<group>"; };
+		8A49396A24B7735100C3C3CE /* RewardAddOnCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnCardView.swift; sourceTree = "<group>"; };
+		8A49396E24B77B3500C3C3CE /* RewardAddOnCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnCardViewModel.swift; sourceTree = "<group>"; };
 		8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelView.swift; sourceTree = "<group>"; };
 		8A4DDAB42373429300ADE31D /* PledgeStatusLabelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelViewModel.swift; sourceTree = "<group>"; };
 		8A4DDAB62373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelViewModelTests.swift; sourceTree = "<group>"; };
@@ -2005,6 +2012,7 @@
 		8AD486342359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPPaymentHandler+StripePaymentHandlerActionStatus.swift"; sourceTree = "<group>"; };
 		8AD7953123A286D800998C79 /* Qualtrics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Qualtrics.framework; path = Carthage/Build/iOS/Qualtrics.framework; sourceTree = "<group>"; };
 		8AD7953323A2C95000998C79 /* QualtricsTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualtricsTypes.swift; sourceTree = "<group>"; };
+		8ADF4D7524BCCFD60018AD4B /* PillsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillsView.swift; sourceTree = "<group>"; };
 		8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerView.swift; sourceTree = "<group>"; };
 		8AE09C3B2446330100036043 /* PledgeDisclaimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerViewModel.swift; sourceTree = "<group>"; };
 		8AE09C3D24463C4C00036043 /* PledgeDisclaimerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerViewModelTests.swift; sourceTree = "<group>"; };
@@ -3197,6 +3205,7 @@
 				370C8B63234FCC6F00DE75DD /* LoadingButton.swift */,
 				77BF99B622652C9500513CE3 /* MultiLineButton.swift */,
 				D63BBD382180BE5D007E01F0 /* PaymentMethodsFooterView.swift */,
+				8ADF4D7524BCCFD60018AD4B /* PillsView.swift */,
 				D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */,
 				8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */,
 				374F507822614A1000DE6746 /* PledgeFooterView.swift */,
@@ -3205,6 +3214,7 @@
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
 				8AB0E00B24314967008E975E /* ProjectSummaryCarouselView.swift */,
 				A78012641D2EEA620027396E /* ReferralChartView.swift */,
+				8A49396A24B7735100C3C3CE /* RewardAddOnCardView.swift */,
 				8A8099EA22E213F100373E66 /* RewardCardContainerView.swift */,
 				8A23EF0722F11470001262E1 /* RewardCardContainerViewTests.swift */,
 				8A8099E922E213F100373E66 /* RewardCardView.swift */,
@@ -4119,6 +4129,8 @@
 				A7ED1FA11E831C5C00BFFA01 /* ProjectUpdatesViewModelTests.swift */,
 				A7F441A81D005A9400FE6FC5 /* ResetPasswordViewModel.swift */,
 				A7ED1F9B1E831C5C00BFFA01 /* ResetPasswordViewModelTests.swift */,
+				8A49396E24B77B3500C3C3CE /* RewardAddOnCardViewModel.swift */,
+				8A00CCFE24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift */,
 				8A45168C24B3D02700D8CAEF /* RewardAddOnSelectionViewModel.swift */,
 				8A49395E24B53D1900C3C3CE /* RewardAddOnSelectionViewModelTests.swift */,
 				8A8099F022E2142C00373E66 /* RewardCardContainerViewModel.swift */,
@@ -5195,6 +5207,7 @@
 				D67DF564232ABB960051D207 /* ManagePledgeViewModel.swift in Sources */,
 				D0A787BF2204D975006AE4F4 /* UITableView+AutoLayoutHeaderView.swift in Sources */,
 				D6050F4C240426FE00E029D2 /* LandingPageViewModel.swift in Sources */,
+				8A49396F24B77B3500C3C3CE /* RewardAddOnCardViewModel.swift in Sources */,
 				A76126B91C90C94000EDCCB9 /* UIView-Extensions.swift in Sources */,
 				A77D7B071CBAAF5D0077586B /* Paginate.swift in Sources */,
 				01F547ED1D53994B000A98EF /* TabBarItemStyles.swift in Sources */,
@@ -5402,6 +5415,7 @@
 				D798A748216698CE0053D097 /* SettingsAccountViewModelTests.swift in Sources */,
 				A7ED1F2D1E830FDC00BFFA01 /* LanguageTests.swift in Sources */,
 				8A13D17024985550007E2C0B /* PledgeExpandableRewardsHeaderViewModelTests.swift in Sources */,
+				8A00CCFF24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift in Sources */,
 				D76F0708241012C800072C7B /* CreatorBylineViewModelTests.swift in Sources */,
 				771E630E23426B74005967E8 /* CancelPledgeViewModelTests.swift in Sources */,
 				8A73EAD12339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift in Sources */,
@@ -5603,6 +5617,7 @@
 				59673CBD1D50ED380035AFD9 /* VideoViewController.swift in Sources */,
 				7727494523F350EE0065E9F2 /* CategorySelectionViewController.swift in Sources */,
 				D796867E20FF910300E54C61 /* SettingsPrivacyDataSource.swift in Sources */,
+				8ADF4D7624BCCFD60018AD4B /* PillsView.swift in Sources */,
 				77EFBAE72268E37200DA5C3C /* RewardsCollectionViewDataSource.swift in Sources */,
 				77F9A9B02135FB760082A11E /* FindFriendsCell.swift in Sources */,
 				771E3C632289DBA8003E7CF1 /* SheetOverlayViewController.swift in Sources */,
@@ -5819,6 +5834,7 @@
 				014D625B1E6E20BB0033D2BD /* BackerDashboardProjectsDataSource.swift in Sources */,
 				A78012651D2EEA620027396E /* ReferralChartView.swift in Sources */,
 				597073B21D07281800B00444 /* ProjectNotificationCell.swift in Sources */,
+				8A49396B24B7735100C3C3CE /* RewardAddOnCardView.swift in Sources */,
 				01DEFB961CB44A5D003709C0 /* TwoFactorViewController.swift in Sources */,
 				D6050F52240463AC00E029D2 /* LandingPageStatsView.swift in Sources */,
 				7717805A22F9ED130064A32F /* RewardsCollectionViewFooter.swift in Sources */,

@@ -30,6 +30,7 @@ public func rewardAddOnSelectionViewAddOnsQuery(withProjectSlug slug: String) ->
               .backersCount,
               .isMaxPledge,
               .limit,
+              .limitPerBacker,
               .items([], NonEmptySet(.nodes(.id +| [.name]))),
               .remainingQuantity,
               .shippingPreference,

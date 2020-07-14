@@ -29,6 +29,7 @@ public struct RewardAddOnSelectionViewEnvelope: Swift.Decodable {
       public var isMaxPledge: Bool
       public var items: Items?
       public var limit: Int?
+      public var limitPerBacker: Int?
       public var name: String
       public var remainingQuantity: Int?
       public var shippingPreference: ShippingPreference?

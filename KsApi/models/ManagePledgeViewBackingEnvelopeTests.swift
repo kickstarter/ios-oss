@@ -94,6 +94,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
             ]
           ],
           "limit": 5,
+          "limitPerBacker": 2,
           "remainingQuantity": 10,
           "shippingPreference": "none",
           "amount": [
@@ -179,6 +180,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.backing.reward?.items?[1].name, "Travel case")
 
       XCTAssertEqual(value.backing.reward?.limit, 5)
+      XCTAssertEqual(value.backing.reward?.limitPerBacker, 2)
       XCTAssertEqual(value.backing.reward?.remainingQuantity, 10)
 
       XCTAssertEqual(value.backing.reward?.amount, Money(amount: 129.0, currency: .usd, symbol: "$"))

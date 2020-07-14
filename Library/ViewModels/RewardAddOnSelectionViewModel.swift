@@ -5,6 +5,7 @@ import ReactiveSwift
 public struct RewardAddOnCellData: Equatable {
   public let project: Project
   public let reward: Reward
+  public let shippingRule: ShippingRule?
 }
 
 public protocol RewardAddOnSelectionViewModelInputs {
@@ -50,9 +51,15 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     let addOns = addOnsEvent.values()
 
+    let shippingRule = Signal.merge(
+      self.shippingRuleSelectedProperty.signal,
+      reward.filter { reward in !reward.shipping.enabled }.mapConst(nil)
+    )
+
     self.loadAddOnRewardsIntoDataSource = Signal.combineLatest(
       addOns,
-      project
+      project,
+      shippingRule
     )
     .map(rewardsData)
 
@@ -88,7 +95,8 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
 private func rewardsData(
   from envelope: RewardAddOnSelectionViewEnvelope,
-  with project: Project
+  with project: Project,
+  shippingRule: ShippingRule?
 ) -> [RewardAddOnCellData] {
   guard let addOns = envelope.project.addOns?.nodes else { return [] }
 
@@ -110,5 +118,5 @@ private func rewardsData(
       dateFormatter: dateFormatter
     )
   }
-  .map { reward in .init(project: project, reward: reward) }
+  .map { reward in .init(project: project, reward: reward, shippingRule: shippingRule) }
 }

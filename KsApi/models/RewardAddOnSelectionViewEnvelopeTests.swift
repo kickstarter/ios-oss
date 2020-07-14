@@ -33,6 +33,7 @@ final class RewardAddOnSelectionViewEnvelopeTests: XCTestCase {
                 "nodes": []
               ],
               "limit": nil,
+              "limitPerBacker": 2,
               "name": "Crowdfunding Special",
               "remainingQuantity": nil,
               "startsAt": nil
@@ -67,6 +68,7 @@ final class RewardAddOnSelectionViewEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.project.addOns?.nodes[0].isMaxPledge, false)
       XCTAssertEqual(value.project.addOns?.nodes[0].items?.nodes.count, 0)
       XCTAssertEqual(value.project.addOns?.nodes[0].limit, nil)
+      XCTAssertEqual(value.project.addOns?.nodes[0].limitPerBacker, 2)
       XCTAssertEqual(value.project.addOns?.nodes[0].remainingQuantity, nil)
       XCTAssertEqual(value.project.addOns?.nodes[0].startsAt, nil)
     } catch {

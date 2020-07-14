@@ -8,7 +8,7 @@ final class RewardAddOnCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   private lazy var containerView: UIView = { UIView(frame: .zero) }()
-  private lazy var rewardCardView: RewardCardView = { RewardCardView(frame: .zero) }()
+  private lazy var rewardAddOnCardView: RewardAddOnCardView = { RewardAddOnCardView(frame: .zero) }()
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -28,7 +28,7 @@ final class RewardAddOnCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    _ = (self.rewardCardView, self.containerView)
+    _ = (self.rewardAddOnCardView, self.containerView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent(priority: UILayoutPriority(rawValue: 999))
   }
@@ -50,7 +50,7 @@ final class RewardAddOnCell: UITableViewCell, ValueCell {
   }
 
   internal func configureWith(value: RewardAddOnCellData) {
-    self.rewardCardView.configure(with: (value.project, value.reward, .pledge))
+    self.rewardAddOnCardView.configure(with: (value.project, value.reward, .pledge, value.shippingRule))
 
     self.contentView.setNeedsLayout()
     self.contentView.layoutIfNeeded()
@@ -69,5 +69,5 @@ private let containerViewStyle: ViewStyle = { (view: UIView) in
 private let contentViewStyle: ViewStyle = { (view: UIView) in
   view
     |> checkoutBackgroundStyle
-    |> \.layoutMargins .~ .init(leftRight: Styles.grid(3))
+    |> \.layoutMargins .~ .init(leftRight: Styles.grid(4))
 }

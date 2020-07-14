@@ -1,6 +1,7 @@
 import KsApi
 import Library
 import Prelude
+import ReactiveSwift
 import UIKit
 
 protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
@@ -64,12 +65,6 @@ final class PledgeShippingLocationViewController: UIViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    self.delegate?.pledgeShippingLocationViewControllerLayoutDidUpdate(self)
-  }
-
   // MARK: - Styles
 
   override func bindStyles() {
@@ -116,6 +111,24 @@ final class PledgeShippingLocationViewController: UIViewController {
     self.amountLabel.rac.hidden = self.viewModel.outputs.amountLabelIsHidden
     self.shimmerLoadingView.rac.hidden = self.viewModel.outputs.shimmerLoadingViewIsHidden
     self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocationButtonTitle
+
+    /**
+     When any layout updates occur we need to notify the delegate. This is only necessary when
+     this view is contained within a view that is not fully supported by Auto Layout,
+     e.g. a `UITableView` header.
+     */
+    Signal.combineLatest(
+      self.viewModel.outputs.adaptableStackViewIsHidden,
+      self.viewModel.outputs.amountAttributedText,
+      self.viewModel.outputs.amountLabelIsHidden,
+      self.viewModel.outputs.shimmerLoadingViewIsHidden,
+      self.viewModel.outputs.shippingLocationButtonTitle
+    )
+    .observeForUI()
+    .observeValues { [weak self] _ in
+      guard let self = self else { return }
+      self.delegate?.pledgeShippingLocationViewControllerLayoutDidUpdate(self)
+    }
 
     self.viewModel.outputs.notifyDelegateOfSelectedShippingRule
       .observeForUI()

@@ -83,6 +83,7 @@ public func managePledgeViewProjectBackingQuery(withBackingId backingId: String)
               .backersCount,
               .isMaxPledge,
               .limit,
+              .limitPerBacker,
               .items([], NonEmptySet(.nodes(.id +| [.name]))),
               .remainingQuantity,
               .shippingPreference,
