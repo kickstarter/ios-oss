@@ -73,7 +73,7 @@ final class RewardAddOnSelectionViewController: UITableViewController {
 
     _ = self.headerLabel
       |> \.numberOfLines .~ 0
-      |> \.font .~ UIFont.ksr_title1().bolded
+      |> \.font .~ UIFont.ksr_title2().bolded
       |> \.text .~ localizedString(
         key: "Customize_your_reward_with_optional_addons",
         defaultValue: "Customize your reward with optional add-ons."
