@@ -96,8 +96,7 @@ internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?
   // The country on the project cannot be trusted to have the min/max values, so first try looking
   // up the country in our launched countries array that we get back from the server config.
   let country = AppEnvironment.current.launchedCountries.countries
-    .filter { $0 == project.country }
-    .first
+    .first { $0 == project.country }
     .coalesceWith(project.country)
 
   switch reward {
@@ -167,16 +166,14 @@ public func updatedUserWithClearedActivityCountProducer() -> SignalProducer<User
 
 public func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule]) -> ShippingRule? {
   let shippingRuleFromCurrentLocation = shippingRules
-    .filter { shippingRule in shippingRule.location.country == AppEnvironment.current.config?.countryCode }
-    .first
+    .first { shippingRule in shippingRule.location.country == AppEnvironment.current.config?.countryCode }
 
   if let shippingRuleFromCurrentLocation = shippingRuleFromCurrentLocation {
     return shippingRuleFromCurrentLocation
   }
 
   let shippingRuleInUSA = shippingRules
-    .filter { shippingRule in shippingRule.location.country == "US" }
-    .first
+    .first { shippingRule in shippingRule.location.country == "US" }
 
   return shippingRuleInUSA ?? shippingRules.first
 }

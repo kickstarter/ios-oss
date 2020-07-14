@@ -25,7 +25,8 @@ public extension Reward {
 
     let addOnData = AddOnData(
       isAddOn: true,
-      selectedQuantity: selectedAddOnQuantities[reward.id] ?? 0
+      selectedQuantity: selectedAddOnQuantities[reward.id] ?? 0,
+      limitPerBacker: reward.limitPerBacker
     )
 
     return Reward(

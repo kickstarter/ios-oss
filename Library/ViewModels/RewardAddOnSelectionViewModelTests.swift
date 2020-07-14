@@ -65,7 +65,8 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     let expected = RewardAddOnCellData(
       project: project,
-      reward: addOnReward
+      reward: addOnReward,
+      shippingRule: nil
     )
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))

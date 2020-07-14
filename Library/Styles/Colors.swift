@@ -18,6 +18,10 @@ extension UIColor {
         500: .ksr_blue_500
       ],
 
+      "Celebrate": [
+        100: .ksr_celebrate_100
+      ],
+
       "Cobalt": [
         500: .ksr_cobalt_500
       ],
@@ -99,6 +103,11 @@ extension UIColor {
   /// 0x2B60FF
   public static var ksr_blue_500: UIColor {
     return .hex(0x2B60FF)
+  }
+
+  /// 0xFFF2EC
+  public static var ksr_celebrate_100: UIColor {
+    return .hex(0xFFF2EC)
   }
 
   /// 0x4C6CF8

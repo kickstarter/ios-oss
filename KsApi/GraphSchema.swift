@@ -218,6 +218,7 @@ public enum Query {
     case isMaxPledge
     case items(Set<QueryArg<Never>>, NonEmptySet<Connection<Item>>)
     case limit
+    case limitPerBacker
     case name
     case remainingQuantity
     case shippingPreference
@@ -583,6 +584,7 @@ extension Query.Reward: QueryType {
     case .isMaxPledge: return "isMaxPledge"
     case let .items(args, fields): return "items" + connection(args, fields)
     case .limit: return "limit"
+    case .limitPerBacker: return "limitPerBacker"
     case .name: return "name"
     case .remainingQuantity: return "remainingQuantity"
     case .shippingPreference: return "shippingPreference"

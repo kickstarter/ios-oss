@@ -7,6 +7,14 @@ extension UIFont {
       .map { UIFont(descriptor: $0, size: 0.0) } ?? self
   }
 
+  /// Returns a version of `self` with the desired weight.
+  public func weighted(_ weight: UIFont.Weight) -> UIFont {
+    let descriptor = self.fontDescriptor.addingAttributes([
+      .traits: [UIFontDescriptor.TraitKey.weight: weight]
+    ])
+    return UIFont(descriptor: descriptor, size: 0.0)
+  }
+
   /// Returns a italicized version of `self`.
   public var italicized: UIFont {
     return self.fontDescriptor.withSymbolicTraits(.traitItalic)

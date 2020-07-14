@@ -66,6 +66,7 @@ public struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
       public var isMaxPledge: Bool
       public var items: [Item]?
       public var limit: Int?
+      public var limitPerBacker: Int?
       public var name: String
       public var remainingQuantity: Int?
       public var shippingPreference: ShippingPreference?
@@ -112,6 +113,7 @@ public extension ManagePledgeViewBackingEnvelope.Backing.Reward {
     case isMaxPledge
     case items
     case limit
+    case limitPerBacker
     case name
     case nodes
     case remainingQuantity
@@ -133,6 +135,7 @@ public extension ManagePledgeViewBackingEnvelope.Backing.Reward {
     self.items = try? values.nestedContainer(keyedBy: CodingKeys.self, forKey: .items)
       .decode([Item].self, forKey: .nodes)
     self.limit = try values.decodeIfPresent(Int.self, forKey: .limit)
+    self.limitPerBacker = try values.decodeIfPresent(Int.self, forKey: .limitPerBacker)
     self.name = try values.decode(String.self, forKey: .name)
     self.remainingQuantity = try values.decodeIfPresent(Int.self, forKey: .remainingQuantity)
     self.shippingPreference = try values.decodeIfPresent(ShippingPreference.self, forKey: .shippingPreference)

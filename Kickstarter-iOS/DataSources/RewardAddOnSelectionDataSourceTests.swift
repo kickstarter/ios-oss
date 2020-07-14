@@ -11,7 +11,7 @@ final class RewardsAddOnSelectionDataSourceTests: XCTestCase {
   func testLoadRewards() {
     let project = Project.cosmicSurgery
     let rewardsData = project.rewards.map { reward -> RewardAddOnCellData in
-      .init(project: project, reward: reward)
+      .init(project: project, reward: reward, shippingRule: .template)
     }
 
     self.dataSource.load(rewardsData)

@@ -104,7 +104,7 @@ final class RewardCardViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
 
     let reward = .template
-      |> \.addOnData .~ AddOnData(isAddOn: true, selectedQuantity: 2)
+      |> \.addOnData .~ AddOnData(isAddOn: true, selectedQuantity: 2, limitPerBacker: 0)
       |> Reward.lens.title .~ "The thing"
       |> Reward.lens.remaining .~ nil
 
