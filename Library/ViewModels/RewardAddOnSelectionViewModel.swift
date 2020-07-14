@@ -100,13 +100,6 @@ private func rewardsData(
 ) -> [RewardAddOnCellData] {
   guard let addOns = envelope.project.addOns?.nodes else { return [] }
 
-  var selectedAddOnQuantities: [String: Int] = [:]
-
-  addOns.forEach { addOn in
-    let quantity = (selectedAddOnQuantities[addOn.id] ?? 0) + 1
-    selectedAddOnQuantities[addOn.id] = quantity
-  }
-
   let dateFormatter = DateFormatter()
   dateFormatter.dateFormat = "yyyy-MM-DD"
 
@@ -114,7 +107,7 @@ private func rewardsData(
     Reward.addOnReward(
       from: addOn,
       project: project,
-      selectedAddOnQuantities: selectedAddOnQuantities,
+      selectedAddOnQuantities: [:],
       dateFormatter: dateFormatter
     )
   }

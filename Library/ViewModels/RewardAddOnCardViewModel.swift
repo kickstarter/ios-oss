@@ -15,12 +15,14 @@ public typealias RewardAddOnCardViewData = (
 )
 
 public protocol RewardAddOnCardViewModelInputs {
+  func addButtonTapped()
   func configure(with data: RewardAddOnCardViewData)
   func rewardAddOnCardTapped()
+  func stepperValueChanged(_ value: Double)
 }
 
 public protocol RewardAddOnCardViewModelOutputs {
-  var cardUserInteractionIsEnabled: Signal<Bool, Never> { get }
+  var addButtonHidden: Signal<Bool, Never> { get }
   var amountConversionLabelHidden: Signal<Bool, Never> { get }
   var amountConversionLabelText: Signal<String, Never> { get }
   var amountLabelAttributedText: Signal<NSAttributedString, Never> { get }
@@ -28,9 +30,13 @@ public protocol RewardAddOnCardViewModelOutputs {
   var includedItemsLabelAttributedText: Signal<NSAttributedString, Never> { get }
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
   var pillsViewHidden: Signal<Bool, Never> { get }
+  var quantityLabelText: Signal<String, Never> { get }
   var reloadPills: Signal<[String], Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
   var rewardTitleLabelText: Signal<String, Never> { get }
+  var stepperMaxValue: Signal<Double, Never> { get }
+  var stepperStackViewHidden: Signal<Bool, Never> { get }
+  var stepperValue: Signal<Double, Never> { get }
 }
 
 public protocol RewardAddOnCardViewModelType {
@@ -84,9 +90,6 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
     let rewardItemsIsEmpty = reward
       .map { $0.rewardsItems.isEmpty }
 
-    let rewardAvailable = reward
-      .map { $0.remaining == 0 }.negate()
-
     self.includedItemsStackViewHidden = rewardItemsIsEmpty.skipRepeats()
 
     self.includedItemsLabelAttributedText = reward.map(\.rewardsItems)
@@ -100,7 +103,30 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
       .takeWhen(self.rewardAddOnCardTappedProperty.signal)
       .map { $0.id }
 
-    self.cardUserInteractionIsEnabled = rewardAvailable
+    let selectedQuantity = Signal.merge(
+      reward.map { reward in reward.addOnData?.selectedQuantity ?? 0 },
+      self.addButtonTappedProperty.signal.mapConst(1),
+      self.stepperValueChangedProperty.signal.skipNil().map(Int.init)
+    )
+
+    self.addButtonHidden = selectedQuantity.map { $0 > 0 }
+
+    self.quantityLabelText = selectedQuantity.map(String.init)
+
+    self.stepperMaxValue = reward
+      .map { reward in reward.addOnData?.limitPerBacker ?? 0 }
+      .map(Double.init)
+
+    self.stepperStackViewHidden = selectedQuantity.map { $0 == 0 }
+
+    self.stepperValue = selectedQuantity
+      .map(Double.init)
+      .skipRepeats()
+  }
+
+  private let addButtonTappedProperty = MutableProperty(())
+  public func addButtonTapped() {
+    self.addButtonTappedProperty.value = ()
   }
 
   private let configDataProperty = MutableProperty<RewardAddOnCardViewData?>(nil)
@@ -113,17 +139,26 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
     self.rewardAddOnCardTappedProperty.value = ()
   }
 
+  private let stepperValueChangedProperty = MutableProperty<Double?>(nil)
+  public func stepperValueChanged(_ value: Double) {
+    self.stepperValueChangedProperty.value = value
+  }
+
+  public let addButtonHidden: Signal<Bool, Never>
   public let amountConversionLabelHidden: Signal<Bool, Never>
   public let amountConversionLabelText: Signal<String, Never>
   public let amountLabelAttributedText: Signal<NSAttributedString, Never>
-  public let cardUserInteractionIsEnabled: Signal<Bool, Never>
   public let descriptionLabelText: Signal<String, Never>
   public let includedItemsLabelAttributedText: Signal<NSAttributedString, Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
   public let pillsViewHidden: Signal<Bool, Never>
+  public let quantityLabelText: Signal<String, Never>
   public let reloadPills: Signal<[String], Never>
   public let rewardSelected: Signal<Int, Never>
   public let rewardTitleLabelText: Signal<String, Never>
+  public let stepperMaxValue: Signal<Double, Never>
+  public let stepperStackViewHidden: Signal<Bool, Never>
+  public let stepperValue: Signal<Double, Never>
 
   public var inputs: RewardAddOnCardViewModelInputs { return self }
   public var outputs: RewardAddOnCardViewModelOutputs { return self }
