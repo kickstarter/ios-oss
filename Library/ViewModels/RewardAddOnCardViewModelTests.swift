@@ -10,7 +10,7 @@ import XCTest
 final class RewardAddOnCardViewModelTests: TestCase {
   fileprivate let vm: RewardAddOnCardViewModelType = RewardAddOnCardViewModel()
 
-  private let cardUserInteractionIsEnabled = TestObserver<Bool, Never>()
+  private let addButtonHidden = TestObserver<Bool, Never>()
   private let amountConversionLabelHidden = TestObserver<Bool, Never>()
   private let amountConversionLabelText = TestObserver<String, Never>()
   private let amountLabelAttributedText = TestObserver<String, Never>()
@@ -20,26 +20,34 @@ final class RewardAddOnCardViewModelTests: TestCase {
   private let includedItemsLabelAttributedText = TestObserver<String, Never>()
   private let includedItemsStackViewHidden = TestObserver<Bool, Never>()
   private let pillsViewHidden = TestObserver<Bool, Never>()
+  private let quantityLabelText = TestObserver<String, Never>()
   private let reloadPills = TestObserver<[String], Never>()
   private let rewardSelected = TestObserver<Int, Never>()
   private let rewardTitleLabelText = TestObserver<String, Never>()
+  private let stepperMaxValue = TestObserver<Double, Never>()
+  private let stepperStackViewHidden = TestObserver<Bool, Never>()
+  private let stepperValue = TestObserver<Double, Never>()
 
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.addButtonHidden.observe(self.addButtonHidden.observer)
     self.vm.outputs.amountLabelAttributedText.map(\.string)
       .observe(self.amountLabelAttributedText.observer)
     self.vm.outputs.amountConversionLabelHidden.observe(self.amountConversionLabelHidden.observer)
     self.vm.outputs.amountConversionLabelText.observe(self.amountConversionLabelText.observer)
-    self.vm.outputs.cardUserInteractionIsEnabled.observe(self.cardUserInteractionIsEnabled.observer)
     self.vm.outputs.descriptionLabelText.observe(self.descriptionLabelText.observer)
     self.vm.outputs.includedItemsLabelAttributedText.map(\.string)
       .observe(self.includedItemsLabelAttributedText.observer)
     self.vm.outputs.includedItemsStackViewHidden.observe(self.includedItemsStackViewHidden.observer)
     self.vm.outputs.pillsViewHidden.observe(self.pillsViewHidden.observer)
+    self.vm.outputs.quantityLabelText.observe(self.quantityLabelText.observer)
     self.vm.outputs.reloadPills.observe(self.reloadPills.observer)
     self.vm.outputs.rewardSelected.observe(self.rewardSelected.observer)
     self.vm.outputs.rewardTitleLabelText.observe(self.rewardTitleLabelText.observer)
+    self.vm.outputs.stepperMaxValue.observe(self.stepperMaxValue.observer)
+    self.vm.outputs.stepperStackViewHidden.observe(self.stepperStackViewHidden.observer)
+    self.vm.outputs.stepperValue.observe(self.stepperValue.observer)
   }
 
   // MARK: - Reward Title
@@ -430,41 +438,6 @@ final class RewardAddOnCardViewModelTests: TestCase {
     }
   }
 
-  // MARK: - Card View
-
-  func testCardUserInteractionIsEnabled_NotLimitedReward() {
-    let project = Project.template
-    let reward = Reward.template
-      |> Reward.lens.remaining .~ nil
-      |> Reward.lens.minimum .~ 1_000
-
-    self.vm.inputs.configure(with: (project, reward, .pledge, nil))
-
-    self.cardUserInteractionIsEnabled.assertValues([true])
-  }
-
-  func testCardUserInteractionIsEnabled_NotAllGone() {
-    let project = Project.template
-    let reward = Reward.template
-      |> Reward.lens.remaining .~ 10
-      |> Reward.lens.minimum .~ 1_000.0
-
-    self.vm.inputs.configure(with: (project, reward, .pledge, nil))
-
-    self.cardUserInteractionIsEnabled.assertValues([true])
-  }
-
-  func testCardUserInteractionIsEnabled_AllGone() {
-    let project = Project.template
-    let reward = Reward.template
-      |> Reward.lens.remaining .~ 0
-      |> Reward.lens.minimum .~ 1_000.0
-
-    self.vm.inputs.configure(with: (project, reward, .pledge, nil))
-
-    self.cardUserInteractionIsEnabled.assertValues([false])
-  }
-
   // MARK: - Pills
 
   func testPillsLimitedReward() {
@@ -626,5 +599,44 @@ final class RewardAddOnCardViewModelTests: TestCase {
 
     self.pillsViewHidden.assertValues([false])
     self.reloadPills.assertValues([["50 left of 100"]])
+  }
+
+  func testAddButtonAndStepper() {
+    self.addButtonHidden.assertDidNotEmitValue()
+    self.quantityLabelText.assertDidNotEmitValue()
+    self.stepperMaxValue.assertDidNotEmitValue()
+    self.stepperStackViewHidden.assertDidNotEmitValue()
+    self.stepperValue.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.addOnData .~ AddOnData(
+        isAddOn: true,
+        selectedQuantity: 0,
+        limitPerBacker: 10
+      )
+
+    self.vm.inputs.configure(with: (.template, reward, .pledge, nil))
+
+    self.addButtonHidden.assertValues([false])
+    self.quantityLabelText.assertValues(["0"])
+    self.stepperMaxValue.assertValues([10])
+    self.stepperStackViewHidden.assertValues([true])
+    self.stepperValue.assertValues([0])
+
+    self.vm.inputs.addButtonTapped()
+
+    self.addButtonHidden.assertValues([false, true])
+    self.quantityLabelText.assertValues(["0", "1"])
+    self.stepperMaxValue.assertValues([10])
+    self.stepperStackViewHidden.assertValues([true, false])
+    self.stepperValue.assertValues([0, 1])
+
+    self.vm.inputs.stepperValueChanged(0)
+
+    self.addButtonHidden.assertValues([false, true, false])
+    self.quantityLabelText.assertValues(["0", "1", "0"])
+    self.stepperMaxValue.assertValues([10])
+    self.stepperStackViewHidden.assertValues([true, false, true])
+    self.stepperValue.assertValues([0, 1, 0])
   }
 }

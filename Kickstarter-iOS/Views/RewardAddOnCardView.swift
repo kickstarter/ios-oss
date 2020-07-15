@@ -20,6 +20,7 @@ public final class RewardAddOnCardView: UIView {
       |> \.insetsLayoutMarginsFromSafeArea .~ false
   }()
 
+  private let addButton = UIButton(type: .custom)
   private let amountConversionLabel = UILabel(frame: .zero)
   private let amountLabel = UILabel(frame: .zero)
   private let descriptionLabel = UILabel(frame: .zero)
@@ -27,14 +28,29 @@ public final class RewardAddOnCardView: UIView {
   private let includedItemsStackView = UIStackView(frame: .zero)
   private let includedItemsTitleLabel = UILabel(frame: .zero)
   private let includedItemsLabel = UILabel(frame: .zero)
+  private let quantityLabel = UILabel(frame: .zero)
+  private let quantityLabelContainer = UIView(frame: .zero)
   private let pillsView: PillsView = PillsView(frame: .zero)
   private var pillsViewHeightConstraint: NSLayoutConstraint?
-
+  private let stepper: UIStepper = UIStepper(frame: .zero)
+  private let stepperStackView = UIStackView(frame: .zero)
   private let rewardTitleLabel = UILabel(frame: .zero)
   private let titleAmountStackView = UIStackView(frame: .zero)
 
   override init(frame: CGRect) {
     super.init(frame: frame)
+
+    self.addButton.addTarget(
+      self,
+      action: #selector(RewardAddOnCardView.addButtonTapped),
+      for: .touchUpInside
+    )
+
+    self.stepper.addTarget(
+      self,
+      action: #selector(RewardAddOnCardView.stepperValueChanged(_:)),
+      for: .valueChanged
+    )
 
     self.configureViews()
     self.setupConstraints()
@@ -56,6 +72,10 @@ public final class RewardAddOnCardView: UIView {
 
     _ = self
       |> checkoutWhiteBackgroundStyle
+
+    _ = self.addButton
+      |> UIButton.lens.title(for: .normal) .~ Strings.Add()
+      |> blackButtonStyle
 
     _ = [
       self.rootStackView,
@@ -104,11 +124,29 @@ public final class RewardAddOnCardView: UIView {
     _ = self.amountConversionLabel
       |> baseRewardLabelStyle
       |> convertedAmountLabelStyle
+
+    _ = self.quantityLabelContainer
+      |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+      |> \.layer.borderColor .~ UIColor.ksr_grey_400.cgColor
+      |> \.layer.borderWidth .~ 1
+      |> checkoutRoundedCornersStyle
+
+    _ = self.quantityLabel
+      |> \.font .~ UIFont.ksr_headline().monospaced
+
+    _ = self.stepper
+      |> checkoutStepperStyle
+      |> UIStepper.lens.decrementImage(for: .normal) .~ image(named: "stepper-decrement-normal-grey")
+      |> UIStepper.lens.incrementImage(for: .normal) .~ image(named: "stepper-increment-normal-grey")
+
+    _ = self.stepperStackView
+      |> \.alignment .~ .center
   }
 
   public override func bindViewModel() {
     super.bindViewModel()
 
+    self.addButton.rac.hidden = self.viewModel.outputs.addButtonHidden
     self.amountConversionLabel.rac.hidden = self.viewModel.outputs.amountConversionLabelHidden
     self.amountConversionLabel.rac.text = self.viewModel.outputs.amountConversionLabelText
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
@@ -116,7 +154,11 @@ public final class RewardAddOnCardView: UIView {
     self.includedItemsLabel.rac.attributedText = self.viewModel.outputs.includedItemsLabelAttributedText
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountLabelAttributedText
     self.pillsView.rac.hidden = self.viewModel.outputs.pillsViewHidden
+    self.quantityLabel.rac.text = self.viewModel.outputs.quantityLabelText
     self.rewardTitleLabel.rac.text = self.viewModel.outputs.rewardTitleLabelText
+    self.stepperStackView.rac.hidden = self.viewModel.outputs.stepperStackViewHidden
+    self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
+    self.stepper.rac.value = self.viewModel.outputs.stepperValue
 
     self.viewModel.outputs.rewardSelected
       .observeForUI()
@@ -124,13 +166,6 @@ public final class RewardAddOnCardView: UIView {
         guard let self = self else { return }
 
         self.delegate?.rewardAddOnCardView(self, didTapWithRewardId: rewardId)
-      }
-
-    self.viewModel.outputs.cardUserInteractionIsEnabled
-      .observeForUI()
-      .observeValues { [weak self] isUserInteractionEnabled in
-        _ = self
-          ?|> \.isUserInteractionEnabled .~ isUserInteractionEnabled
       }
 
     self.viewModel.outputs.reloadPills
@@ -152,7 +187,9 @@ public final class RewardAddOnCardView: UIView {
       self.titleAmountStackView,
       self.descriptionLabel,
       self.includedItemsStackView,
-      self.pillsView
+      self.pillsView,
+      self.addButton,
+      self.stepperStackView
     ]
 
     _ = (rootSubviews, self.rootStackView)
@@ -172,8 +209,12 @@ public final class RewardAddOnCardView: UIView {
     _ = (includedItemsViews, self.includedItemsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.rewardCardTapped))
-    self.addGestureRecognizer(tapGestureRecognizer)
+    _ = (self.quantityLabel, self.quantityLabelContainer)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
+    _ = ([self.stepper, UIView(), self.quantityLabelContainer], self.stepperStackView)
+      |> ksr_addArrangedSubviewsToStackView()
   }
 
   private func setupConstraints() {
@@ -181,6 +222,8 @@ public final class RewardAddOnCardView: UIView {
     self.pillsViewHeightConstraint = pillsViewHeightConstraint
 
     let pillCollectionViewConstraints = [
+      self.addButton.heightAnchor.constraint(greaterThanOrEqualToConstant: Styles.minTouchSize.height),
+      self.stepperStackView.heightAnchor.constraint(equalTo: self.addButton.heightAnchor),
       self.includedItemsSeparator.heightAnchor.constraint(equalToConstant: 1),
       pillsViewHeightConstraint
     ]
@@ -217,10 +260,14 @@ public final class RewardAddOnCardView: UIView {
     self.layoutIfNeeded()
   }
 
-  // MARK: - Selectors
+  // MARK: - Actions
 
-  @objc func rewardCardTapped() {
-    self.viewModel.inputs.rewardAddOnCardTapped()
+  @objc func addButtonTapped() {
+    self.viewModel.inputs.addButtonTapped()
+  }
+
+  @objc func stepperValueChanged(_ stepper: UIStepper) {
+    self.viewModel.inputs.stepperValueChanged(stepper.value)
   }
 }
 
