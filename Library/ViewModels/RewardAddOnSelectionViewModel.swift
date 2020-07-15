@@ -133,7 +133,7 @@ private func addOns(
       return addOn.shippingPreference == .noShipping
     }
 
-    // For base reward's with unrestricted shipping, only return add-ons that have shipping.
+    // For base rewards with unrestricted shipping, only return add-ons that have shipping.
     if baseReward.shipping.preference == .unrestricted {
       return addOn.shippingPreference != .noShipping
     }
