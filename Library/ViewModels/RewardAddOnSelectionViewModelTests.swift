@@ -49,12 +49,18 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     let reward = Reward.template
     let project = Project.template
+
+    let noShippingAddOn = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.shippingPreference .~ .noShipping
+
     let env = RewardAddOnSelectionViewEnvelope.template
+      |> \.project.addOns .~ (
+        .template |> \.nodes .~ [noShippingAddOn]
+      )
 
     guard
-      let addOn = env.project.addOns?.nodes.first,
       let addOnReward = Reward.addOnReward(
-        from: addOn,
+        from: noShippingAddOn,
         project: project,
         selectedAddOnQuantities: [:],
         dateFormatter: DateFormatter()
@@ -78,6 +84,198 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.loadAddOnRewardsIntoDataSource.assertValues([[expected]])
+    }
+  }
+
+  func testLoadAddOnRewardsIntoDataSource_DigitalOnlyBaseReward() {
+    self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ false
+
+    let noShippingAddOn = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.shippingPreference .~ .noShipping
+
+    let shippingAddOn1 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.shippingPreference .~ .restricted
+
+    let shippingAddOn2 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.shippingPreference .~ .restricted
+
+    let project = Project.template
+    let env = RewardAddOnSelectionViewEnvelope.template
+      |> \.project.addOns .~ (
+        .template |> \.nodes .~ [shippingAddOn1, noShippingAddOn, shippingAddOn2]
+      )
+
+    guard
+      let addOnReward = Reward.addOnReward(
+        from: noShippingAddOn,
+        project: project,
+        selectedAddOnQuantities: [:],
+        dateFormatter: DateFormatter()
+      ) else {
+      XCTFail("Should have an add-on")
+      return
+    }
+
+    let expected = RewardAddOnCellData(
+      project: project,
+      reward: addOnReward,
+      shippingRule: nil
+    )
+
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .pledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.loadAddOnRewardsIntoDataSource.assertValues([[expected]])
+      XCTAssertEqual(
+        self.loadAddOnRewardsIntoDataSource.values.last?.count, 1,
+        "Only the single add-on reward without shipping is emitted for no-shipping base reward."
+      )
+    }
+  }
+
+  func testLoadAddOnRewardsIntoDataSource_UnrestrictedShippingBaseReward() {
+    self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
+
+    let noShippingAddOn = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.shippingPreference .~ .noShipping
+
+    let shippingAddOn1 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.shippingPreference .~ .restricted
+
+    let shippingAddOn2 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.shippingPreference .~ .restricted
+
+    let project = Project.template
+    let env = RewardAddOnSelectionViewEnvelope.template
+      |> \.project.addOns .~ (
+        .template |> \.nodes .~ [shippingAddOn1, noShippingAddOn, shippingAddOn2]
+      )
+
+    let expected = [shippingAddOn1, shippingAddOn2].compactMap { addOn in
+      Reward.addOnReward(
+        from: addOn,
+        project: project,
+        selectedAddOnQuantities: [:],
+        dateFormatter: DateFormatter()
+      )
+    }
+    .compactMap { reward in
+      RewardAddOnCellData(
+        project: project,
+        reward: reward,
+        shippingRule: .template
+      )
+    }
+
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .pledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue(
+        "Nothing is emitted until a shipping location is selected"
+      )
+
+      self.vm.inputs.shippingRuleSelected(.template)
+
+      self.loadAddOnRewardsIntoDataSource.assertValues([expected])
+      XCTAssertEqual(
+        self.loadAddOnRewardsIntoDataSource.values.last?.count, 2,
+        "Only the two restricted shipping add-on rewards are emitted for unrestricted shipping base reward."
+      )
+    }
+  }
+
+  func testLoadAddOnRewardsIntoDataSource_RestrictedShippingBaseReward() {
+    self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
+
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .restricted
+
+    let noShippingAddOn = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.shippingPreference .~ .noShipping
+
+    let shippingAddOn1 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.shippingPreference .~ .restricted
+      |> \.shippingRules .~ [
+        .template |> (\.location.id .~ "Location-99".toBase64())
+      ]
+
+    let shippingAddOn2 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.shippingPreference .~ .restricted
+      |> \.shippingRules .~ [
+        .template |> (\.location.id .~ "Location-99".toBase64())
+      ]
+
+    let shippingAddOn3 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.shippingPreference .~ .restricted
+      |> \.shippingRules .~ [
+        .template |> (\.location.id .~ "Location-3".toBase64())
+      ]
+
+    let project = Project.template
+    let env = RewardAddOnSelectionViewEnvelope.template
+      |> \.project.addOns .~ (
+        .template |> \.nodes .~ [shippingAddOn1, noShippingAddOn, shippingAddOn2, shippingAddOn3]
+      )
+
+    let expected = [shippingAddOn1, shippingAddOn2].compactMap { addOn in
+      Reward.addOnReward(
+        from: addOn,
+        project: project,
+        selectedAddOnQuantities: [:],
+        dateFormatter: DateFormatter()
+      )
+    }
+    .compactMap { reward in
+      RewardAddOnCellData(
+        project: project,
+        reward: reward,
+        shippingRule: shippingRule
+      )
+    }
+
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .pledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue(
+        "Nothing is emitted until a shipping location is selected"
+      )
+
+      self.vm.inputs.shippingRuleSelected(shippingRule)
+
+      self.loadAddOnRewardsIntoDataSource.assertValues([expected])
+      XCTAssertEqual(
+        self.loadAddOnRewardsIntoDataSource.values.last?.count, 2,
+        """
+        Only the two shipping add-on rewards that match on location ID are emitted for
+        restricted shipping base reward.
+        """
+      )
     }
   }
 

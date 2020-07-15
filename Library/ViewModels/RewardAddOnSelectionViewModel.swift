@@ -59,6 +59,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     self.loadAddOnRewardsIntoDataSource = Signal.combineLatest(
       addOns,
       project,
+      reward,
       shippingRule
     )
     .map(rewardsData)
@@ -96,14 +97,21 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 private func rewardsData(
   from envelope: RewardAddOnSelectionViewEnvelope,
   with project: Project,
+  baseReward: Reward,
   shippingRule: ShippingRule?
 ) -> [RewardAddOnCellData] {
-  guard let addOns = envelope.project.addOns?.nodes else { return [] }
+  guard let addOnNodes = envelope.project.addOns?.nodes else { return [] }
+
+  let filteredAddOns = addOns(
+    addOnNodes,
+    filteredBy: shippingRule,
+    baseReward: baseReward
+  )
 
   let dateFormatter = DateFormatter()
   dateFormatter.dateFormat = "yyyy-MM-DD"
 
-  return addOns.compactMap { addOn in
+  return filteredAddOns.compactMap { addOn in
     Reward.addOnReward(
       from: addOn,
       project: project,
@@ -112,4 +120,34 @@ private func rewardsData(
     )
   }
   .map { reward in .init(project: project, reward: reward, shippingRule: shippingRule) }
+}
+
+private func addOns(
+  _ addOns: [RewardAddOnSelectionViewEnvelope.Project.Reward],
+  filteredBy shippingRule: ShippingRule?,
+  baseReward: Reward
+) -> [RewardAddOnSelectionViewEnvelope.Project.Reward] {
+  return addOns.filter { addOn in
+    // For digital-only base rewards only return add-ons that are also digital-only.
+    if baseReward.shipping.enabled == false {
+      return addOn.shippingPreference == .noShipping
+    }
+
+    // For base reward's with unrestricted shipping, only return add-ons that have shipping.
+    if baseReward.shipping.preference == .unrestricted {
+      return addOn.shippingPreference != .noShipping
+    }
+
+    guard let selectedLocationId = shippingRule?.location.id else { return false }
+
+    /**
+     For a base reward that has restricted shipping, only return the add-on
+     if it can ship to the selected shipping location
+     */
+    let addOnShippingLocationIds: Set<Int> = Set(
+      addOn.shippingRules?.map(\.location).map(\.id).compactMap(decompose(id:)) ?? []
+    )
+
+    return addOnShippingLocationIds.contains(selectedLocationId)
+  }
 }

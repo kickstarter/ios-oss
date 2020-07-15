@@ -222,6 +222,7 @@ public enum Query {
     case name
     case remainingQuantity
     case shippingPreference
+    case shippingRules(NonEmptySet<ShippingRule>)
     case startsAt
 
     public enum Item: String {
@@ -311,6 +312,11 @@ public enum Query {
     case amount
     case currency
     case symbol
+  }
+
+  public enum ShippingRule {
+    case id
+    case location(NonEmptySet<Location>)
   }
 }
 
@@ -570,6 +576,15 @@ extension Query.BankAccount: QueryType {
   }
 }
 
+extension Query.ShippingRule: QueryType {
+  public var description: String {
+    switch self {
+    case .id: return "id"
+    case let .location(fields): return "location { \(join(fields)) }"
+    }
+  }
+}
+
 extension Query.Reward: QueryType {
   public var description: String {
     switch self {
@@ -588,6 +603,7 @@ extension Query.Reward: QueryType {
     case .name: return "name"
     case .remainingQuantity: return "remainingQuantity"
     case .shippingPreference: return "shippingPreference"
+    case let .shippingRules(fields): return "shippingRules { \(join(fields)) }"
     case .startsAt: return "startsAt"
     }
   }

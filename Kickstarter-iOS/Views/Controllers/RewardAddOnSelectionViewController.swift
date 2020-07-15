@@ -116,7 +116,6 @@ extension RewardAddOnSelectionViewController: PledgeShippingLocationViewControll
     _: PledgeShippingLocationViewController,
     didSelect shippingRule: ShippingRule
   ) {
-    self.tableView.ksr_sizeHeaderFooterViewsToFit()
     self.viewModel.inputs.shippingRuleSelected(shippingRule)
   }
 
