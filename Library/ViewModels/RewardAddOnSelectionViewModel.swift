@@ -133,21 +133,26 @@ private func addOns(
       return addOn.shippingPreference == .noShipping
     }
 
-    // For base reward	s with unrestricted shipping, only return add-ons that have shipping.
-    if baseReward.shipping.preference == .unrestricted {
-      return addOn.shippingPreference != .noShipping
-    }
+    // For restricted shipping base rewards, unrestricted shipping or digital-only add-ons are available.
+    let addOnIsDigitalOrUnrestricted = addOn.shippingPreference.isAny(of: .noShipping, .unrestricted)
 
-    guard let selectedLocationId = shippingRule?.location.id else { return false }
-
-    /**
-     For a base reward that has restricted shipping, only return the add-on
-     if it can ship to the selected shipping location
-     */
-    let addOnShippingLocationIds: Set<Int> = Set(
-      addOn.shippingRules?.map(\.location).map(\.id).compactMap(decompose(id:)) ?? []
-    )
-
-    return addOnShippingLocationIds.contains(selectedLocationId)
+    return addOnIsDigitalOrUnrestricted || addOnReward(addOn, shipsTo: shippingRule?.location.id)
   }
+}
+
+/**
+ For base rewards that have restricted shipping, only return
+ add-ons that can ship to the selected shipping location.
+ */
+private func addOnReward(
+  _ addOn: RewardAddOnSelectionViewEnvelope.Project.Reward,
+  shipsTo locationId: Int?
+) -> Bool {
+  guard let selectedLocationId = locationId else { return false }
+
+  let addOnShippingLocationIds: Set<Int> = Set(
+    addOn.shippingRules?.map(\.location).map(\.id).compactMap(decompose(id:)) ?? []
+  )
+
+  return addOnShippingLocationIds.contains(selectedLocationId)
 }

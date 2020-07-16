@@ -144,6 +144,9 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
   func testLoadAddOnRewardsIntoDataSource_UnrestrictedShippingBaseReward() {
     self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
 
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
+
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
@@ -153,17 +156,38 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     let shippingAddOn1 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
       |> \.shippingPreference .~ .restricted
+      |> \.shippingRules .~ [
+        .template |> (\.location.id .~ "Location-99".toBase64())
+      ]
 
     let shippingAddOn2 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
       |> \.shippingPreference .~ .restricted
+      |> \.shippingRules .~ [
+        .template |> (\.location.id .~ "Location-99".toBase64())
+      ]
+
+    let shippingAddOn3 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.shippingPreference .~ .restricted
+      |> \.shippingRules .~ [
+        .template |> (\.location.id .~ "Location-3".toBase64())
+      ]
+
+    let shippingAddOn4 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.shippingPreference .~ .unrestricted
 
     let project = Project.template
     let env = RewardAddOnSelectionViewEnvelope.template
       |> \.project.addOns .~ (
-        .template |> \.nodes .~ [shippingAddOn1, noShippingAddOn, shippingAddOn2]
+        .template |> \.nodes .~ [
+          shippingAddOn1,
+          noShippingAddOn,
+          shippingAddOn2,
+          shippingAddOn3,
+          shippingAddOn4
+        ]
       )
 
-    let expected = [shippingAddOn1, shippingAddOn2].compactMap { addOn in
+    let expected = [shippingAddOn1, noShippingAddOn, shippingAddOn2, shippingAddOn4].compactMap { addOn in
       Reward.addOnReward(
         from: addOn,
         project: project,
@@ -175,7 +199,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       RewardAddOnCellData(
         project: project,
         reward: reward,
-        shippingRule: .template
+        shippingRule: shippingRule
       )
     }
 
@@ -191,12 +215,15 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         "Nothing is emitted until a shipping location is selected"
       )
 
-      self.vm.inputs.shippingRuleSelected(.template)
+      self.vm.inputs.shippingRuleSelected(shippingRule)
 
       self.loadAddOnRewardsIntoDataSource.assertValues([expected])
       XCTAssertEqual(
-        self.loadAddOnRewardsIntoDataSource.values.last?.count, 2,
-        "Only the two restricted shipping add-on rewards are emitted for unrestricted shipping base reward."
+        self.loadAddOnRewardsIntoDataSource.values.last?.count, 4,
+        """
+        Digital and restricted shipping add-on rewards that ship to the
+        selected shipping location are emitted for unrestricted shipping base reward."
+        """
       )
     }
   }
@@ -238,7 +265,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         .template |> \.nodes .~ [shippingAddOn1, noShippingAddOn, shippingAddOn2, shippingAddOn3]
       )
 
-    let expected = [shippingAddOn1, shippingAddOn2].compactMap { addOn in
+    let expected = [noShippingAddOn, shippingAddOn1, shippingAddOn2].compactMap { addOn in
       Reward.addOnReward(
         from: addOn,
         project: project,
@@ -270,10 +297,10 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
       self.loadAddOnRewardsIntoDataSource.assertValues([expected])
       XCTAssertEqual(
-        self.loadAddOnRewardsIntoDataSource.values.last?.count, 2,
+        self.loadAddOnRewardsIntoDataSource.values.last?.count, 3,
         """
-        Only the two shipping add-on rewards that match on location ID are emitted for
-        restricted shipping base reward.
+        Only the two shipping add-on rewards that match on location ID and
+        the digital add-on are emitted for restricted shipping base reward.
         """
       )
     }
