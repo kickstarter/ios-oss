@@ -5,7 +5,7 @@ import Runes
 
 public struct AddOnData {
   public let isAddOn: Bool
-  public let selectedQuantity: Int
+  public var selectedQuantity: Int
   public let limitPerBacker: Int?
 }
 
