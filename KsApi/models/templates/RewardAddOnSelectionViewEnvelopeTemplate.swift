@@ -33,7 +33,15 @@ extension RewardAddOnSelectionViewEnvelope.Project.Reward {
     limit: 5,
     name: "Reward name",
     remainingQuantity: 10,
-    shippingPreference: .noShipping,
+    shippingPreference: .restricted,
+    shippingRules: [.template],
     startsAt: 1_487_502_131
+  )
+}
+
+extension RewardAddOnSelectionViewEnvelope.Project.Reward.ShippingRule {
+  static let template = RewardAddOnSelectionViewEnvelope.Project.Reward.ShippingRule(
+    id: "U2hpcHBpbmdSdWxlLTEwMzc5NTgz",
+    location: Location(id: "TG9jYXRpb24tMjM0MjQ5Nzc=")
   )
 }

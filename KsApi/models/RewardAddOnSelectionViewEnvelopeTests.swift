@@ -36,7 +36,16 @@ final class RewardAddOnSelectionViewEnvelopeTests: XCTestCase {
               "limitPerBacker": 2,
               "name": "Crowdfunding Special",
               "remainingQuantity": nil,
-              "startsAt": nil
+              "startsAt": nil,
+              "shippingPreference": "restricted",
+              "shippingRules": [
+                [
+                  "id": "U2hpcHBpbmdSdWxlLTEwMzc5NTgz",
+                  "location": [
+                    "id": "TG9jYXRpb24tMQ=="
+                  ]
+                ]
+              ]
             ]
           ]
         ]
@@ -71,6 +80,9 @@ final class RewardAddOnSelectionViewEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.project.addOns?.nodes[0].limitPerBacker, 2)
       XCTAssertEqual(value.project.addOns?.nodes[0].remainingQuantity, nil)
       XCTAssertEqual(value.project.addOns?.nodes[0].startsAt, nil)
+      XCTAssertEqual(value.project.addOns?.nodes[0].shippingPreference, .restricted)
+      XCTAssertEqual(value.project.addOns?.nodes[0].shippingRules?[0].id, "U2hpcHBpbmdSdWxlLTEwMzc5NTgz")
+      XCTAssertEqual(value.project.addOns?.nodes[0].shippingRules?[0].location.id, "TG9jYXRpb24tMQ==")
     } catch {
       XCTFail((error as NSError).description)
     }

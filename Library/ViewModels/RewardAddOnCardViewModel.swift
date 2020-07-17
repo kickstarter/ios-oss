@@ -2,17 +2,12 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public enum RewardAddOnCardViewContext {
-  case pledge
-  case manage
+public struct RewardAddOnCardViewData: Equatable {
+  public let project: Project
+  public let reward: Reward
+  public let context: RewardCardViewContext
+  public let shippingRule: ShippingRule?
 }
-
-public typealias RewardAddOnCardViewData = (
-  project: Project,
-  reward: Reward,
-  context: RewardAddOnCardViewContext,
-  shippingRule: ShippingRule?
-)
 
 public protocol RewardAddOnCardViewModelInputs {
   func addButtonTapped()
@@ -29,6 +24,7 @@ public protocol RewardAddOnCardViewModelOutputs {
   var descriptionLabelText: Signal<String, Never> { get }
   var includedItemsLabelAttributedText: Signal<NSAttributedString, Never> { get }
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
+  var notifiyDelegateDidSelectQuantity: Signal<(Int, Int), Never> { get }
   var pillsViewHidden: Signal<Bool, Never> { get }
   var quantityLabelText: Signal<String, Never> { get }
   var reloadPills: Signal<[String], Never> { get }
@@ -50,12 +46,12 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
     let configData = self.configDataProperty.signal
       .skipNil()
 
-    let project: Signal<Project, Never> = configData.map { $0.0 }
-    let reward: Signal<Reward, Never> = configData.map { $0.1 }
+    let project: Signal<Project, Never> = configData.map(\.project)
+    let reward: Signal<Reward, Never> = configData.map(\.reward)
 
     let projectAndReward = Signal.zip(project, reward)
     let projectRewardShippingRule = configData.map {
-      project, reward, _, shippingRule in (project, reward, shippingRule)
+      data in (data.project, data.reward, data.shippingRule)
     }
 
     self.amountConversionLabelHidden = project.map(needsConversion(project:) >>> negate)
@@ -103,25 +99,34 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
       .takeWhen(self.rewardAddOnCardTappedProperty.signal)
       .map { $0.id }
 
-    let selectedQuantity = Signal.merge(
-      reward.map { reward in reward.addOnData?.selectedQuantity ?? 0 },
+    let initialSelectedQuantity = reward
+      .map { reward in reward.addOnData?.selectedQuantity ?? 0 }
+
+    let updatedSelectedQuantity = Signal.merge(
       self.addButtonTappedProperty.signal.mapConst(1),
       self.stepperValueChangedProperty.signal.skipNil().map(Int.init)
     )
 
-    self.addButtonHidden = selectedQuantity.map { $0 > 0 }
+    let initialOrUpdatedSelectedQuantity = Signal.merge(
+      initialSelectedQuantity,
+      updatedSelectedQuantity
+    )
 
-    self.quantityLabelText = selectedQuantity.map(String.init)
+    self.addButtonHidden = initialOrUpdatedSelectedQuantity.map { $0 > 0 }
+
+    self.quantityLabelText = initialOrUpdatedSelectedQuantity.map(String.init)
+
+    self.notifiyDelegateDidSelectQuantity = updatedSelectedQuantity
+      .withLatest(from: reward.map(\.id))
 
     self.stepperMaxValue = reward
       .map { reward in reward.addOnData?.limitPerBacker ?? 0 }
       .map(Double.init)
 
-    self.stepperStackViewHidden = selectedQuantity.map { $0 == 0 }
+    self.stepperStackViewHidden = initialOrUpdatedSelectedQuantity.map { $0 == 0 }
 
-    self.stepperValue = selectedQuantity
+    self.stepperValue = initialOrUpdatedSelectedQuantity
       .map(Double.init)
-      .skipRepeats()
   }
 
   private let addButtonTappedProperty = MutableProperty(())
@@ -151,6 +156,7 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
   public let descriptionLabelText: Signal<String, Never>
   public let includedItemsLabelAttributedText: Signal<NSAttributedString, Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
+  public let notifiyDelegateDidSelectQuantity: Signal<(Int, Int), Never>
   public let pillsViewHidden: Signal<Bool, Never>
   public let quantityLabelText: Signal<String, Never>
   public let reloadPills: Signal<[String], Never>

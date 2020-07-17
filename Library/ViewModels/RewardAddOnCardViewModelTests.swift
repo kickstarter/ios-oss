@@ -19,6 +19,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
   private let estimatedDeliveryDateLabelText = TestObserver<String, Never>()
   private let includedItemsLabelAttributedText = TestObserver<String, Never>()
   private let includedItemsStackViewHidden = TestObserver<Bool, Never>()
+  private let notifiyDelegateDidSelectQuantityQuantity = TestObserver<Int, Never>()
+  private let notifiyDelegateDidSelectQuantityRewardId = TestObserver<Int, Never>()
   private let pillsViewHidden = TestObserver<Bool, Never>()
   private let quantityLabelText = TestObserver<String, Never>()
   private let reloadPills = TestObserver<[String], Never>()
@@ -40,6 +42,10 @@ final class RewardAddOnCardViewModelTests: TestCase {
     self.vm.outputs.includedItemsLabelAttributedText.map(\.string)
       .observe(self.includedItemsLabelAttributedText.observer)
     self.vm.outputs.includedItemsStackViewHidden.observe(self.includedItemsStackViewHidden.observer)
+    self.vm.outputs.notifiyDelegateDidSelectQuantity.map(first)
+      .observe(self.notifiyDelegateDidSelectQuantityQuantity.observer)
+    self.vm.outputs.notifiyDelegateDidSelectQuantity.map(second)
+      .observe(self.notifiyDelegateDidSelectQuantityRewardId.observer)
     self.vm.outputs.pillsViewHidden.observe(self.pillsViewHidden.observer)
     self.vm.outputs.quantityLabelText.observe(self.quantityLabelText.observer)
     self.vm.outputs.reloadPills.observe(self.reloadPills.observer)
@@ -57,7 +63,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.title .~ "The thing"
       |> Reward.lens.remaining .~ nil
 
-    self.vm.inputs.configure(with: (.template, reward, .pledge, nil))
+    self.vm.inputs
+      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
 
     self.rewardTitleLabelText.assertValues(["The thing"])
   }
@@ -67,7 +74,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.title .~ nil
       |> Reward.lens.remaining .~ nil
 
-    self.vm.inputs.configure(with: (.template, reward, .pledge, nil))
+    self.vm.inputs
+      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
 
     self.rewardTitleLabelText.assertValues([])
   }
@@ -81,7 +89,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.title .~ "The thing"
       |> Reward.lens.remaining .~ nil
 
-    self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+    self.vm.inputs
+      .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
     self.rewardTitleLabelText.assertValues(["The thing"])
   }
@@ -94,7 +103,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+      self.vm.inputs
+        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
       self.amountLabelAttributedText.assertValues(
         ["$1,000"],
@@ -109,7 +119,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(countryCode: "MX") {
-      self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+      self.vm.inputs
+        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
       self.amountLabelAttributedText.assertValues(
         ["US$ 1,000"],
@@ -127,7 +138,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+      self.vm.inputs
+        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
       self.amountLabelAttributedText.assertValues(
         ["£1,000"],
@@ -145,7 +157,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(countryCode: "MX") {
-      self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+      self.vm.inputs
+        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
       self.amountLabelAttributedText.assertValues(
         ["£1,000"],
@@ -160,7 +173,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let reward = Reward.noReward
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+      self.vm.inputs
+        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
       self.amountLabelAttributedText.assertValues(
         ["$1"],
@@ -175,7 +189,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let reward = Reward.noReward
 
     withEnvironment(countryCode: "MX") {
-      self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+      self.vm.inputs
+        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
       self.amountLabelAttributedText.assertValues(
         ["US$ 1"],
@@ -190,7 +205,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let reward = Reward.noReward
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+      self.vm.inputs
+        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
       self.amountLabelAttributedText.assertValues(
         ["MX$ 10"],
@@ -208,7 +224,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let reward = Reward.noReward
 
     withEnvironment(countryCode: "CA") {
-      self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+      self.vm.inputs
+        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
       self.amountLabelAttributedText.assertValues(
         ["MX$ 10"],
@@ -238,18 +255,19 @@ final class RewardAddOnCardViewModelTests: TestCase {
           )
       ]
 
-    self.vm.inputs.configure(with: (.template, reward, .pledge, nil))
+    self.vm.inputs
+      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
 
     self.includedItemsLabelAttributedText.assertValues(["•  The thing•  1,000 x The other thing"])
     self.includedItemsStackViewHidden.assertValues([false])
   }
 
   func testItemsContainerHidden_WithNoItems() {
-    self.vm.inputs.configure(with: (
+    self.vm.inputs.configure(with: .init(
       project: .template,
       reward: .template |> Reward.lens.rewardsItems .~ [],
       context: .pledge,
-      nil
+      shippingRule: nil
     ))
 
     self.includedItemsStackViewHidden.assertValues([true])
@@ -261,7 +279,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let project = Project.template
     let reward = Reward.template
 
-    self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+    self.vm.inputs
+      .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
     self.descriptionLabelText.assertValues([reward.description])
   }
@@ -276,7 +295,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+      self.vm.inputs
+        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
       self.amountConversionLabelHidden.assertValues(
         [true],
@@ -295,7 +315,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.minimum .~ 1
 
     withEnvironment(countryCode: "US") {
-      self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+      self.vm.inputs
+        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
       self.amountConversionLabelHidden.assertValues(
         [false],
@@ -316,7 +337,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.minimum .~ 1
 
     withEnvironment(countryCode: "MX") {
-      self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+      self.vm.inputs
+        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
       self.amountConversionLabelHidden.assertValues(
         [false],
@@ -337,7 +359,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.minimum .~ 1
 
     withEnvironment(countryCode: "XX") {
-      self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+      self.vm.inputs
+        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
       self.amountConversionLabelHidden.assertValues(
         [true],
@@ -356,7 +379,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.minimum .~ 2
 
     withEnvironment(countryCode: "XX") {
-      self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+      self.vm.inputs
+        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
       self.amountConversionLabelHidden.assertValues(
         [false],
@@ -381,7 +405,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(currency: "MXN"), countryCode: "MX"
     ) {
-      self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+      self.vm.inputs
+        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
       self.amountConversionLabelHidden.assertValues(
         [false],
@@ -407,7 +432,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(currency: "MXN"), countryCode: "MX"
     ) {
-      self.vm.inputs.configure(with: (project, reward, .pledge, .template))
+      self.vm.inputs
+        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: .template))
 
       self.amountConversionLabelHidden.assertValues(
         [false],
@@ -428,7 +454,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let reward = .template |> Reward.lens.minimum .~ 1_000
 
     withEnvironment(countryCode: "GB") {
-      self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+      self.vm.inputs
+        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
       self.amountConversionLabelHidden.assertValues(
         [true],
@@ -448,7 +475,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.limit .~ 100
       |> Reward.lens.remaining .~ 25
 
-    self.vm.inputs.configure(with: (.template, reward, .pledge, nil))
+    self.vm.inputs
+      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
 
     self.pillsViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -465,7 +493,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.backersCount .~ 25
       |> Reward.lens.remaining .~ 25
 
-    self.vm.inputs.configure(with: (.template, reward, .pledge, nil))
+    self.vm.inputs
+      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
 
     self.pillsViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -483,7 +512,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
 
-    self.vm.inputs.configure(with: (.template, reward, .pledge, nil))
+    self.vm.inputs
+      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
 
     self.pillsViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -503,7 +533,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
 
-    self.vm.inputs.configure(with: (.template, reward, .pledge, nil))
+    self.vm.inputs
+      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
 
     self.pillsViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -523,7 +554,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ 75
       |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
 
-    self.vm.inputs.configure(with: (.template, reward, .pledge, nil))
+    self.vm.inputs
+      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
 
     self.pillsViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -544,7 +576,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ 75
       |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
 
-    self.vm.inputs.configure(with: (.template, reward, .pledge, nil))
+    self.vm.inputs
+      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
 
     self.pillsViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -562,7 +595,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ 0
       |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
 
-    self.vm.inputs.configure(with: (.template, reward, .pledge, nil))
+    self.vm.inputs
+      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
 
     self.pillsViewHidden.assertValues([true])
     self.reloadPills.assertValues([[]])
@@ -577,7 +611,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.backersCount .~ nil
       |> Reward.lens.endsAt .~ nil
 
-    self.vm.inputs.configure(with: (.template, reward, .pledge, nil))
+    self.vm.inputs
+      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
 
     self.pillsViewHidden.assertValues([true])
     self.reloadPills.assertValues([[]])
@@ -595,7 +630,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.state .~ .live
 
-    self.vm.inputs.configure(with: (project, reward, .pledge, nil))
+    self.vm.inputs
+      .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
 
     self.pillsViewHidden.assertValues([false])
     self.reloadPills.assertValues([["50 left of 100"]])
@@ -615,7 +651,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
         limitPerBacker: 10
       )
 
-    self.vm.inputs.configure(with: (.template, reward, .pledge, nil))
+    self.vm.inputs
+      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
 
     self.addButtonHidden.assertValues([false])
     self.quantityLabelText.assertValues(["0"])
@@ -638,5 +675,69 @@ final class RewardAddOnCardViewModelTests: TestCase {
     self.stepperMaxValue.assertValues([10])
     self.stepperStackViewHidden.assertValues([true, false, true])
     self.stepperValue.assertValues([0, 1, 0])
+  }
+
+  func testNotifiyDelegateDidSelectQuantity_NoPreviousSelection() {
+    self.notifiyDelegateDidSelectQuantityRewardId.assertDidNotEmitValue()
+    self.notifiyDelegateDidSelectQuantityQuantity.assertDidNotEmitValue()
+    self.quantityLabelText.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.addOnData .~ AddOnData(
+        isAddOn: true,
+        selectedQuantity: 0,
+        limitPerBacker: 10
+      )
+
+    self.vm.inputs
+      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
+
+    self.quantityLabelText.assertValues(["0"])
+    self.notifiyDelegateDidSelectQuantityRewardId.assertDidNotEmitValue()
+    self.notifiyDelegateDidSelectQuantityQuantity.assertDidNotEmitValue()
+
+    self.vm.inputs.addButtonTapped()
+
+    self.quantityLabelText.assertValues(["0", "1"])
+    self.notifiyDelegateDidSelectQuantityRewardId.assertValues([1])
+    self.notifiyDelegateDidSelectQuantityQuantity.assertValues([1])
+
+    self.vm.inputs.stepperValueChanged(2)
+
+    self.quantityLabelText.assertValues(["0", "1", "2"])
+    self.notifiyDelegateDidSelectQuantityRewardId.assertValues([1, 1])
+    self.notifiyDelegateDidSelectQuantityQuantity.assertValues([1, 2])
+  }
+
+  func testNotifiyDelegateDidSelectQuantity_HasPreviousSelection() {
+    self.notifiyDelegateDidSelectQuantityRewardId.assertDidNotEmitValue()
+    self.notifiyDelegateDidSelectQuantityQuantity.assertDidNotEmitValue()
+    self.quantityLabelText.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.addOnData .~ AddOnData(
+        isAddOn: true,
+        selectedQuantity: 5,
+        limitPerBacker: 10
+      )
+
+    self.vm.inputs
+      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
+
+    self.quantityLabelText.assertValues(["5"])
+    self.notifiyDelegateDidSelectQuantityRewardId.assertDidNotEmitValue()
+    self.notifiyDelegateDidSelectQuantityQuantity.assertDidNotEmitValue()
+
+    self.vm.inputs.stepperValueChanged(4)
+
+    self.quantityLabelText.assertValues(["5", "4"])
+    self.notifiyDelegateDidSelectQuantityRewardId.assertValues([1])
+    self.notifiyDelegateDidSelectQuantityQuantity.assertValues([4])
+
+    self.vm.inputs.stepperValueChanged(3)
+
+    self.quantityLabelText.assertValues(["5", "4", "3"])
+    self.notifiyDelegateDidSelectQuantityRewardId.assertValues([1, 1])
+    self.notifiyDelegateDidSelectQuantityQuantity.assertValues([4, 3])
   }
 }

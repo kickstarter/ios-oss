@@ -33,6 +33,7 @@ public struct RewardAddOnSelectionViewEnvelope: Swift.Decodable {
       public var name: String
       public var remainingQuantity: Int?
       public var shippingPreference: ShippingPreference?
+      public var shippingRules: [ShippingRule]?
       public var startsAt: TimeInterval?
 
       public struct Items: Swift.Decodable {
@@ -48,6 +49,15 @@ public struct RewardAddOnSelectionViewEnvelope: Swift.Decodable {
         case noShipping = "none"
         case restricted
         case unrestricted
+      }
+
+      public struct ShippingRule: Swift.Decodable {
+        public var id: String
+        public var location: Location
+
+        public struct Location: Swift.Decodable {
+          public var id: String
+        }
       }
     }
   }

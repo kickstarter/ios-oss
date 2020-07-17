@@ -34,6 +34,9 @@ public func rewardAddOnSelectionViewAddOnsQuery(withProjectSlug slug: String) ->
               .items([], NonEmptySet(.nodes(.id +| [.name]))),
               .remainingQuantity,
               .shippingPreference,
+              .shippingRules(.id +| [
+                .location(.id +| [])
+              ]),
               .startsAt
             ]
           )

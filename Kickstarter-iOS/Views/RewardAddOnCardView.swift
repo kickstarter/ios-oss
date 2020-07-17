@@ -5,7 +5,11 @@ import Prelude
 import ReactiveSwift
 
 protocol RewardAddOnCardViewDelegate: AnyObject {
-  func rewardAddOnCardView(_ rewardAddOnCardView: RewardAddOnCardView, didTapWithRewardId rewardId: Int)
+  func rewardAddOnCardView(
+    _ cardView: RewardAddOnCardView,
+    didSelectQuantity quantity: Int,
+    rewardId: Int
+  )
 }
 
 public final class RewardAddOnCardView: UIView {
@@ -160,12 +164,11 @@ public final class RewardAddOnCardView: UIView {
     self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
     self.stepper.rac.value = self.viewModel.outputs.stepperValue
 
-    self.viewModel.outputs.rewardSelected
+    self.viewModel.outputs.notifiyDelegateDidSelectQuantity
       .observeForUI()
-      .observeValues { [weak self] rewardId in
+      .observeValues { [weak self] quantity, rewardId in
         guard let self = self else { return }
-
-        self.delegate?.rewardAddOnCardView(self, didTapWithRewardId: rewardId)
+        self.delegate?.rewardAddOnCardView(self, didSelectQuantity: quantity, rewardId: rewardId)
       }
 
     self.viewModel.outputs.reloadPills

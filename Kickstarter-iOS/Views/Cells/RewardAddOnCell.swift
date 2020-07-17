@@ -8,7 +8,7 @@ final class RewardAddOnCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   private lazy var containerView: UIView = { UIView(frame: .zero) }()
-  private lazy var rewardAddOnCardView: RewardAddOnCardView = { RewardAddOnCardView(frame: .zero) }()
+  internal lazy var rewardAddOnCardView: RewardAddOnCardView = { RewardAddOnCardView(frame: .zero) }()
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -49,10 +49,9 @@ final class RewardAddOnCell: UITableViewCell, ValueCell {
       |> containerViewStyle
   }
 
-  internal func configureWith(value: RewardAddOnCellData) {
-    self.rewardAddOnCardView.configure(with: (value.project, value.reward, .pledge, value.shippingRule))
+  internal func configureWith(value: RewardAddOnCardViewData) {
+    self.rewardAddOnCardView.configure(with: value)
 
-    self.contentView.setNeedsLayout()
     self.contentView.layoutIfNeeded()
   }
 }
