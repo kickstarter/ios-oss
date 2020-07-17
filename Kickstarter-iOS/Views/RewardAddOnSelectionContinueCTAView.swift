@@ -3,10 +3,6 @@ import Library
 import Prelude
 import UIKit
 
-protocol RewardAddOnSelectionContinueCTAViewDelegate: AnyObject {
-  func continueButtonTapped()
-}
-
 private enum Layout {
   enum Button {
     static let minHeight: CGFloat = 48.0
@@ -20,8 +16,6 @@ final class RewardAddOnSelectionContinueCTAView: UIView {
     UIButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-
-  weak var delegate: RewardAddOnSelectionContinueCTAViewDelegate?
 
   private let viewModel: RewardAddOnSelectionContinueCTAViewModelType
     = RewardAddOnSelectionContinueCTAViewModel()
