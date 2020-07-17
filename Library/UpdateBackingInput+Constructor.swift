@@ -7,9 +7,9 @@ extension UpdateBackingInput {
     isApplePay: Bool
   ) -> UpdateBackingInput {
     let backingId = updateBackingData.backing.graphID
-    let (pledgeTotal, rewardId, locationId) = sanitizedPledgeParameters(
-      from: updateBackingData.reward,
-      pledgeAmount: updateBackingData.pledgeAmount,
+    let (pledgeTotal, rewardIds, locationId) = sanitizedPledgeParameters(
+      from: updateBackingData.rewards,
+      pledgeTotal: updateBackingData.pledgeTotal,
       shippingRule: updateBackingData.shippingRule
     )
 
@@ -19,7 +19,7 @@ extension UpdateBackingInput {
       id: backingId,
       locationId: locationId,
       paymentSourceId: isApplePay ? nil : updateBackingData.paymentSourceId,
-      rewardId: rewardId
+      rewardIds: rewardIds
     )
   }
 }

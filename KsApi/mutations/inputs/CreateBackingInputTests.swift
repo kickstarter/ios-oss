@@ -16,7 +16,7 @@ final class CreateBackingInputTests: XCTestCase {
       paymentSourceId: "paymentSourceId",
       projectId: "projectId",
       refParam: "activity",
-      rewardId: "rewardId"
+      rewardIds: ["rewardId"]
     )
 
     let input = createBackingInput.toInputDictionary()
@@ -30,7 +30,7 @@ final class CreateBackingInputTests: XCTestCase {
     XCTAssertEqual(input["locationId"] as? String, "NY")
     XCTAssertEqual(input["paymentSourceId"] as? String, "paymentSourceId")
     XCTAssertEqual(input["projectId"] as? String, "projectId")
-    XCTAssertEqual(input["rewardId"] as? String, "rewardId")
+    XCTAssertEqual(input["rewardIds"] as? [String], ["rewardId"])
     XCTAssertEqual(input["refParam"] as? String, "activity")
   }
 
@@ -42,7 +42,7 @@ final class CreateBackingInputTests: XCTestCase {
       paymentSourceId: "paymentSourceId",
       projectId: "projectId",
       refParam: "activity",
-      rewardId: "rewardId"
+      rewardIds: ["rewardId"]
     )
 
     let input = createBackingInput.toInputDictionary()
@@ -53,7 +53,7 @@ final class CreateBackingInputTests: XCTestCase {
     XCTAssertEqual(input["locationId"] as? String, "NY")
     XCTAssertEqual(input["paymentSourceId"] as? String, "paymentSourceId")
     XCTAssertEqual(input["projectId"] as? String, "projectId")
-    XCTAssertEqual(input["rewardId"] as? String, "rewardId")
+    XCTAssertEqual(input["rewardIds"] as? [String], ["rewardId"])
     XCTAssertEqual(input["refParam"] as? String, "activity")
   }
 
@@ -70,7 +70,7 @@ final class CreateBackingInputTests: XCTestCase {
       paymentSourceId: "paymentSourceId",
       projectId: "projectId",
       refParam: nil,
-      rewardId: "rewardId"
+      rewardIds: ["rewardId"]
     )
 
     let input = createBackingInput.toInputDictionary()
@@ -79,7 +79,7 @@ final class CreateBackingInputTests: XCTestCase {
     XCTAssertNil(input["locationId"])
     XCTAssertEqual(input["paymentSourceId"] as? String, "paymentSourceId")
     XCTAssertEqual(input["projectId"] as? String, "projectId")
-    XCTAssertEqual(input["rewardId"] as? String, "rewardId")
+    XCTAssertEqual(input["rewardIds"] as? [String], ["rewardId"])
     XCTAssertNil(input["refParam"])
   }
 }
