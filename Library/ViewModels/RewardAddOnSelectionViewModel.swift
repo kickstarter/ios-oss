@@ -134,15 +134,15 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     )
 
     let selectedRewards = baseRewardAndAddOnRewards
-      .combineLatest(with: selectedQuantities)
+      .combineLatest(with: latestSelectedQuantities)
       .map(unpack)
       .map { baseReward, rewardsData, selectedQuantities -> [Reward] in
-        [baseReward] + rewardsData.map(\.reward)
-          .filter {
-            reward in selectedQuantities
-              .filter { _, qty in qty > 0 }
-              .keys.contains(reward.id)
-          }
+        let selectedRewardIds = selectedQuantities
+          .filter { _, qty in qty > 0 }
+          .keys
+
+        return [baseReward] + rewardsData.map(\.reward)
+          .filter { reward in selectedRewardIds.contains(reward.id) }
       }
 
     self.goToPledge = Signal.combineLatest(

@@ -35,10 +35,11 @@ final class PledgeExpandableRewardsHeaderViewModelTests: TestCase {
       |> Reward.lens.estimatedDeliveryOn .~ 1_475_561_315
       |> Reward.lens.minimum .~ 40
 
-    let data: PledgeExpandableRewardsHeaderViewData = (
-      [reward1, reward2, reward3],
-      .us,
-      false
+    let data = PledgeExpandableRewardsHeaderViewData(
+      rewards: [reward1, reward2, reward3],
+      selectedQuantities: [:],
+      projectCountry: .us,
+      omitCurrencyCode: false
     )
 
     self.vm.inputs.configure(with: data)
@@ -77,10 +78,11 @@ final class PledgeExpandableRewardsHeaderViewModelTests: TestCase {
   func testExpandRewards() {
     self.expandRewards.assertDidNotEmitValue()
 
-    let data: PledgeExpandableRewardsHeaderViewData = (
-      [.template, .template, .template],
-      .us,
-      false
+    let data = PledgeExpandableRewardsHeaderViewData(
+      rewards: [.template, .template, .template],
+      selectedQuantities: [:],
+      projectCountry: .us,
+      omitCurrencyCode: false
     )
 
     self.vm.inputs.configure(with: data)
