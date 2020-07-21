@@ -267,7 +267,7 @@ private func addOns(
       return addOn.shippingPreference == .noShipping
     }
 
-    // For restricted shipping base rewards, unrestricted shipping or digital-only add-ons are available.
+    // For restricted or unrestricted shipping base rewards, unrestricted shipping or digital-only add-ons are available.
     let addOnIsDigitalOrUnrestricted = addOn.shippingPreference.isAny(of: .noShipping, .unrestricted)
 
     return addOnIsDigitalOrUnrestricted || addOnReward(addOn, shipsTo: shippingRule?.location.id)
