@@ -47,6 +47,12 @@ final class RewardAddOnSelectionViewController: UIViewController {
 
     self.tableView.registerCellClass(RewardAddOnCell.self)
 
+    self.continueCTAView.continueButton.addTarget(
+      self,
+      action: #selector(RewardAddOnSelectionViewController.continueButtonTapped),
+      for: .touchUpInside
+    )
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -58,8 +64,8 @@ final class RewardAddOnSelectionViewController: UIViewController {
 
   // MARK: - Accessors
 
-  func configureWith(project: Project, reward: Reward, refTag: RefTag?, context: PledgeViewContext) {
-    self.viewModel.inputs.configureWith(project: project, reward: reward, refTag: refTag, context: context)
+  func configure(with data: PledgeViewData) {
+    self.viewModel.inputs.configure(with: data)
   }
 
   // MARK: - Configuration
@@ -157,6 +163,20 @@ final class RewardAddOnSelectionViewController: UIViewController {
       .observeValues { [weak self] rewards in
         self?.dataSource.load(rewards)
       }
+
+    self.viewModel.outputs.goToPledge
+      .observeForControllerAction()
+      .observeValues { data in
+        let vc = PledgeViewController.instantiate()
+        vc.configure(with: data)
+        self.navigationController?.pushViewController(vc, animated: true)
+      }
+  }
+
+  // MARK: - Actions
+
+  @objc func continueButtonTapped() {
+    self.viewModel.inputs.continueButtonTapped()
   }
 }
 

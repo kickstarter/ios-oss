@@ -24,7 +24,7 @@ public protocol RewardAddOnCardViewModelOutputs {
   var descriptionLabelText: Signal<String, Never> { get }
   var includedItemsLabelAttributedText: Signal<NSAttributedString, Never> { get }
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
-  var notifiyDelegateDidSelectQuantity: Signal<(Int, Int), Never> { get }
+  var notifiyDelegateDidSelectQuantity: Signal<(SelectedRewardQuantity, SelectedRewardId), Never> { get }
   var pillsViewHidden: Signal<Bool, Never> { get }
   var quantityLabelText: Signal<String, Never> { get }
   var reloadPills: Signal<[String], Never> { get }
@@ -156,7 +156,7 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
   public let descriptionLabelText: Signal<String, Never>
   public let includedItemsLabelAttributedText: Signal<NSAttributedString, Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
-  public let notifiyDelegateDidSelectQuantity: Signal<(Int, Int), Never>
+  public let notifiyDelegateDidSelectQuantity: Signal<(SelectedRewardQuantity, SelectedRewardId), Never>
   public let pillsViewHidden: Signal<Bool, Never>
   public let quantityLabelText: Signal<String, Never>
   public let reloadPills: Signal<[String], Never>

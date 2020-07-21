@@ -144,6 +144,7 @@ public enum Query {
 
   public enum Location: String {
     case country
+    case countryName
     case displayableName
     case id
     case name

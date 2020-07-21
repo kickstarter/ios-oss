@@ -210,10 +210,6 @@ internal final class SharedFunctionsTests: XCTestCase {
     XCTAssertEqual(ksr_pledgeAmount(700.50, subtractingShippingAmount: 100), 600.50)
   }
 
-  func testBonusSupportAmount() {
-    XCTAssertEqual(ksr_bonusSupportAmount(pledgeAmount: 100, shippingAmount: 50, rewardMinimum: 20), 30)
-  }
-
   func testDiscoveryPageBackgroundColor_Control() {
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [

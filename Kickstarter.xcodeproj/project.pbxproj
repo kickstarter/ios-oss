@@ -384,6 +384,9 @@
 		8A13D17024985550007E2C0B /* PledgeExpandableRewardsHeaderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13D16F24985550007E2C0B /* PledgeExpandableRewardsHeaderViewModelTests.swift */; };
 		8A142EBD23354BFD00FB43AB /* AddNewCardIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */; };
 		8A14E09723971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */; };
+		8A1A93D024C601CA0012FB43 /* PledgeShippingSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A93CF24C601CA0012FB43 /* PledgeShippingSummaryView.swift */; };
+		8A1A93D224C602300012FB43 /* PledgeShippingSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A93D124C602300012FB43 /* PledgeShippingSummaryViewModel.swift */; };
+		8A1A93D424C658180012FB43 /* ShippingRule+ManagePledgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A93D324C658180012FB43 /* ShippingRule+ManagePledgeView.swift */; };
 		8A1E3CE6240F45FA0093BDA7 /* ProjectCreatorDetailsShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1E3CE5240F45FA0093BDA7 /* ProjectCreatorDetailsShimmerLoadingView.swift */; };
 		8A213CEB239EAEA400BBB4C7 /* TrackingClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */; };
 		8A213CEC239EAEA400BBB4C7 /* TrackingClientConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE5239EAEA400BBB4C7 /* TrackingClientConfiguration.swift */; };
@@ -1913,6 +1916,9 @@
 		8A13D16F24985550007E2C0B /* PledgeExpandableRewardsHeaderViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeExpandableRewardsHeaderViewModelTests.swift; sourceTree = "<group>"; };
 		8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCardIntent.swift; sourceTree = "<group>"; };
 		8A14E09623971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationShimmerLoadingView.swift; sourceTree = "<group>"; };
+		8A1A93CF24C601CA0012FB43 /* PledgeShippingSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryView.swift; sourceTree = "<group>"; };
+		8A1A93D124C602300012FB43 /* PledgeShippingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryViewModel.swift; sourceTree = "<group>"; };
+		8A1A93D324C658180012FB43 /* ShippingRule+ManagePledgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShippingRule+ManagePledgeView.swift"; sourceTree = "<group>"; };
 		8A1E3CE5240F45FA0093BDA7 /* ProjectCreatorDetailsShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCreatorDetailsShimmerLoadingView.swift; sourceTree = "<group>"; };
 		8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientType.swift; sourceTree = "<group>"; };
 		8A213CE5239EAEA400BBB4C7 /* TrackingClientConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientConfiguration.swift; sourceTree = "<group>"; };
@@ -3217,6 +3223,7 @@
 				D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */,
 				8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */,
 				374F507822614A1000DE6746 /* PledgeFooterView.swift */,
+				8A1A93CF24C601CA0012FB43 /* PledgeShippingSummaryView.swift */,
 				8AF2ABD5247ED338009BF5E7 /* PledgeViewCTAContainerView.swift */,
 				77636FC0243CFE25007F67B9 /* ProcessingView.swift */,
 				015706BA1E68DE580087DD68 /* ProfileSortBarView.swift */,
@@ -4085,6 +4092,7 @@
 				D6534D3D22E789B900E9D279 /* PledgePaymentMethodsViewModelTests.swift */,
 				3706408522A8A6D700889CBD /* PledgeShippingLocationViewModel.swift */,
 				3706408722A8A6F200889CBD /* PledgeShippingLocationViewModelTests.swift */,
+				8A1A93D124C602300012FB43 /* PledgeShippingSummaryViewModel.swift */,
 				8A4DDAB42373429300ADE31D /* PledgeStatusLabelViewModel.swift */,
 				8A4DDAB62373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift */,
 				D0237C2522BD7B540092C792 /* PledgeSummaryViewModel.swift */,
@@ -4142,6 +4150,7 @@
 				8A49396E24B77B3500C3C3CE /* RewardAddOnCardViewModel.swift */,
 				8A00CCFE24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift */,
 				8A6C978F24BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift */,
+				8A5CB28324C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift */,
 				8A45168C24B3D02700D8CAEF /* RewardAddOnSelectionViewModel.swift */,
 				8A49395E24B53D1900C3C3CE /* RewardAddOnSelectionViewModelTests.swift */,
 				8A8099F022E2142C00373E66 /* RewardCardContainerViewModel.swift */,
@@ -4213,7 +4222,6 @@
 				D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */,
 				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
 				A7ED1F8A1E831C5C00BFFA01 /* WebModalViewModelTests.swift */,
-				8A5CB28324C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -4379,6 +4387,7 @@
 				D01587E61EEB2ED7006E7684 /* RewardTests.swift */,
 				D6AE52261FD1B41200BEC788 /* RootCategoriesEnvelope.swift */,
 				D01587E71EEB2ED7006E7684 /* ShippingRule.swift */,
+				8A1A93D324C658180012FB43 /* ShippingRule+ManagePledgeView.swift */,
 				D01587E81EEB2ED7006E7684 /* ShippingRulesEnvelope.swift */,
 				D68F0B15243CFF3E009FC948 /* SignInWithAppleEnvelope.swift */,
 				D68F0B19243FB688009FC948 /* SignInWithAppleEnvelopeTests.swift */,
@@ -5303,6 +5312,7 @@
 				8A142EBD23354BFD00FB43AB /* AddNewCardIntent.swift in Sources */,
 				D6B6F9C020F403F400A295F7 /* UserAttribute.swift in Sources */,
 				374CB94F22C17D4E00B84219 /* CharacterSet.swift in Sources */,
+				8A1A93D224C602300012FB43 /* PledgeShippingSummaryViewModel.swift in Sources */,
 				A755116C1C8642C3005355CF /* UIPress-Extensions.swift in Sources */,
 				D798A6AE21656D970053D097 /* Currency.swift in Sources */,
 				77F6E73521222E7C005A5C55 /* EmailFrequency.swift in Sources */,
@@ -5710,6 +5720,7 @@
 				D0A787B52204D40E006AE4F4 /* SelectCurrencyViewController.swift in Sources */,
 				9D7536CD1D78D78600A7623B /* SurveyResponseViewController.swift in Sources */,
 				59392BEC1D7094B0001C99A4 /* ProjectUpdatesViewController.swift in Sources */,
+				8A1A93D024C601CA0012FB43 /* PledgeShippingSummaryView.swift in Sources */,
 				8AE09C3A244537BE00036043 /* PledgeDisclaimerView.swift in Sources */,
 				D7A37C8F1E2EB01700EA066D /* SearchEmptyStateCell.swift in Sources */,
 				D6A45DB72319A7E1006DDB01 /* ManagePledgeViewController.swift in Sources */,
@@ -6040,6 +6051,7 @@
 				D0158A321EEB30A2006E7684 /* User.StatsTemplates.swift in Sources */,
 				D01588C31EEB2ED7006E7684 /* PushEnvelopeLenses.swift in Sources */,
 				D015887B1EEB2ED7006E7684 /* Item.swift in Sources */,
+				8A1A93D424C658180012FB43 /* ShippingRule+ManagePledgeView.swift in Sources */,
 				7798B5612174F3CD008BC50D /* UserQueries.swift in Sources */,
 				D0158A231EEB30A2006E7684 /* ProjectTemplates.swift in Sources */,
 				D6B9DF3F1F72E25A0064A4D8 /* Category.swift in Sources */,

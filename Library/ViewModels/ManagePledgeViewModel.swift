@@ -34,11 +34,11 @@ public protocol ManagePledgeViewModelOutputs {
   var configureRewardReceivedWithData: Signal<ManageViewPledgeRewardReceivedViewData, Never> { get }
   var endRefreshing: Signal<Void, Never> { get }
   var goToCancelPledge: Signal<CancelPledgeViewData, Never> { get }
-  var goToChangePaymentMethod: Signal<(Project, Reward), Never> { get }
+  var goToChangePaymentMethod: Signal<PledgeViewData, Never> { get }
   var goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never> { get }
-  var goToFixPaymentMethod: Signal<(Project, Reward), Never> { get }
+  var goToFixPaymentMethod: Signal<PledgeViewData, Never> { get }
   var goToRewards: Signal<Project, Never> { get }
-  var goToUpdatePledge: Signal<(Project, Reward), Never> { get }
+  var goToUpdatePledge: Signal<PledgeViewData, Never> { get }
   var loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never> { get }
   var loadPullToRefreshHeaderView: Signal<(), Never> { get }
   var notifyDelegateManagePledgeViewControllerFinishedWithMessage: Signal<String?, Never> { get }
@@ -242,8 +242,14 @@ public final class ManagePledgeViewModel:
     self.showActionSheetMenuWithOptions = menuOptions
       .takeWhen(self.menuButtonTappedSignal)
 
-    self.goToUpdatePledge = projectAndReward
+    let backedRewards = self.loadProjectAndRewardsIntoDataSource.map(second)
+
+    let backedShippingRule = backing.map(ShippingRule.shippingRule(from:))
+
+    self.goToUpdatePledge = Signal.combineLatest(project, backedRewards, backedShippingRule)
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .updatePledge })
+      .map { project, rewards, shippingRule in (project, rewards, shippingRule, .update) }
+      .map(pledgeViewData)
 
     self.goToRewards = project
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .chooseAnotherReward || $0 == .viewRewards })
@@ -261,15 +267,15 @@ public final class ManagePledgeViewModel:
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .contactCreator })
       .map { project in (MessageSubject.project(project), .backerModal) }
 
-    let goToChangePaymentMethod = self.menuOptionSelectedSignal
-      .filter { $0 == .changePaymentMethod }
-      .ignoreValues()
+    self.goToChangePaymentMethod = Signal.combineLatest(project, backedRewards, backedShippingRule)
+      .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .changePaymentMethod })
+      .map { project, rewards, shippingRule in (project, rewards, shippingRule, .changePaymentMethod) }
+      .map(pledgeViewData)
 
-    self.goToChangePaymentMethod = projectAndReward
-      .takeWhen(goToChangePaymentMethod)
-
-    self.goToFixPaymentMethod = projectAndReward
+    self.goToFixPaymentMethod = Signal.combineLatest(project, backedRewards, backedShippingRule)
       .takeWhen(self.fixButtonTappedSignal)
+      .map { project, rewards, shippingRule in (project, rewards, shippingRule, .fixPaymentMethod) }
+      .map(pledgeViewData)
 
     self.notifyDelegateManagePledgeViewControllerFinishedWithMessage = Signal.merge(
       self.cancelPledgeDidFinishWithMessageProperty.signal,
@@ -370,11 +376,11 @@ public final class ManagePledgeViewModel:
   public let configureRewardReceivedWithData: Signal<ManageViewPledgeRewardReceivedViewData, Never>
   public let endRefreshing: Signal<Void, Never>
   public let goToCancelPledge: Signal<CancelPledgeViewData, Never>
-  public let goToChangePaymentMethod: Signal<(Project, Reward), Never>
+  public let goToChangePaymentMethod: Signal<PledgeViewData, Never>
   public let goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never>
-  public let goToFixPaymentMethod: Signal<(Project, Reward), Never>
+  public let goToFixPaymentMethod: Signal<PledgeViewData, Never>
   public let goToRewards: Signal<Project, Never>
-  public let goToUpdatePledge: Signal<(Project, Reward), Never>
+  public let goToUpdatePledge: Signal<PledgeViewData, Never>
   public let loadProjectAndRewardsIntoDataSource: Signal<(Project, [Reward]), Never>
   public let loadPullToRefreshHeaderView: Signal<(), Never>
   public let paymentMethodViewHidden: Signal<Bool, Never>
@@ -394,6 +400,31 @@ public final class ManagePledgeViewModel:
 }
 
 // MARK: - Functions
+
+private func pledgeViewData(
+  project: Project,
+  rewards: [Reward],
+  shippingRule: ShippingRule?,
+  context: PledgeViewContext
+) -> PledgeViewData {
+  let selectedQuantities = rewards.reduce([:]) { (accum: [Int: Int], reward) in
+    var mutableAccum = accum
+    // Coalesce to 1 for the non-add-on base reward
+    mutableAccum[reward.id] = reward.addOnData?.isAddOn == true
+      ? (reward.addOnData?.selectedQuantity ?? 0)
+      : 1
+    return mutableAccum
+  }
+
+  return PledgeViewData(
+    project: project,
+    rewards: rewards,
+    selectedQuantities: selectedQuantities,
+    selectedShippingRule: shippingRule,
+    refTag: nil,
+    context: context
+  )
+}
 
 private func actionSheetMenuOptionsFor(
   project: Project,

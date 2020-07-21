@@ -9,6 +9,7 @@ extension UpdateBackingInput {
     let backingId = updateBackingData.backing.graphID
     let (pledgeTotal, rewardIds, locationId) = sanitizedPledgeParameters(
       from: updateBackingData.rewards,
+      selectedQuantities: updateBackingData.selectedQuantities,
       pledgeTotal: updateBackingData.pledgeTotal,
       shippingRule: updateBackingData.shippingRule
     )

@@ -15,7 +15,8 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
   private let configurePledgeShippingLocationViewControllerWithDataReward = TestObserver<Reward, Never>()
   private let configurePledgeShippingLocationViewControllerWithDataShowAmount = TestObserver<Bool, Never>()
   private let loadAddOnRewardsIntoDataSource = TestObserver<[RewardAddOnCardViewData], Never>()
-  private let loadAddOnRewardsIntoDataSourceAndReloadTableView = TestObserver<[RewardAddOnCardViewData], Never>()
+  private let loadAddOnRewardsIntoDataSourceAndReloadTableView
+    = TestObserver<[RewardAddOnCardViewData], Never>()
   private let shippingLocationViewIsHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
@@ -338,20 +339,20 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     let addOn2 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
       |> \.id .~ "Reward-2".toBase64()
-    |> \.shippingPreference .~ .unrestricted
+      |> \.shippingPreference .~ .unrestricted
 
     let addOn3 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
       |> \.id .~ "Reward-3".toBase64()
-    |> \.shippingPreference .~ .unrestricted
+      |> \.shippingPreference .~ .unrestricted
 
     let addOn4 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
       |> \.id .~ "Reward-4".toBase64()
-    |> \.shippingPreference .~ .unrestricted
+      |> \.shippingPreference .~ .unrestricted
 
     let project = Project.template
     let env = RewardAddOnSelectionViewEnvelope.template
       |> \.project.addOns .~ (
-        .template |> \.nodes .~ [addOn1,addOn2,addOn3,addOn4]
+        .template |> \.nodes .~ [addOn1, addOn2, addOn3, addOn4]
       )
 
     let expected = [addOn1, addOn2, addOn3, addOn4].compactMap { addOn in

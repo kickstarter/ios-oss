@@ -236,7 +236,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
         self?.dataSource.load(project: project, rewards: rewards)
         self?.configureHeaderView()
         self?.tableView.reloadData()
-        self?.tableView.layoutIfNeeded()
+        self?.tableView.setNeedsLayout()
       }
 
     self.viewModel.outputs.loadPullToRefreshHeaderView
@@ -272,20 +272,20 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     self.viewModel.outputs.goToUpdatePledge
       .observeForControllerAction()
-      .observeValues { [weak self] project, reward in
-        self?.goToUpdatePledge(project: project, reward: reward)
+      .observeValues { [weak self] data in
+        self?.goToUpdatePledge(data: data)
       }
 
     self.viewModel.outputs.goToChangePaymentMethod
       .observeForControllerAction()
-      .observeValues { [weak self] project, reward in
-        self?.goToChangePaymentMethod(project: project, reward: reward)
+      .observeValues { [weak self] data in
+        self?.goToChangePaymentMethod(data: data)
       }
 
     self.viewModel.outputs.goToFixPaymentMethod
       .observeForControllerAction()
-      .observeValues { [weak self] project, reward in
-        self?.goToFixPaymentMethod(project: project, reward: reward)
+      .observeValues { [weak self] data in
+        self?.goToFixPaymentMethod(data: data)
       }
 
     self.viewModel.outputs.goToContactCreator
@@ -514,9 +514,9 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func goToUpdatePledge(project: Project, reward: Reward) {
+  private func goToUpdatePledge(data: PledgeViewData) {
     let vc = PledgeViewController.instantiate()
-    vc.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+    vc.configure(with: data)
     vc.delegate = self
 
     self.navigationController?.pushViewController(vc, animated: true)
@@ -530,17 +530,17 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
     self.navigationController?.pushViewController(cancelPledgeViewController, animated: true)
   }
 
-  private func goToChangePaymentMethod(project: Project, reward: Reward) {
+  private func goToChangePaymentMethod(data: PledgeViewData) {
     let vc = PledgeViewController.instantiate()
-    vc.configureWith(project: project, reward: reward, refTag: nil, context: .changePaymentMethod)
+    vc.configure(with: data)
     vc.delegate = self
 
     self.navigationController?.pushViewController(vc, animated: true)
   }
 
-  private func goToFixPaymentMethod(project: Project, reward: Reward) {
+  private func goToFixPaymentMethod(data: PledgeViewData) {
     let vc = PledgeViewController.instantiate()
-    vc.configureWith(project: project, reward: reward, refTag: nil, context: .fixPaymentMethod)
+    vc.configure(with: data)
     vc.delegate = self
 
     self.navigationController?.pushViewController(vc, animated: true)

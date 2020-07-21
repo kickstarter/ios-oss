@@ -8,6 +8,7 @@ extension CreateBackingInput {
   ) -> CreateBackingInput {
     let pledgeParams = sanitizedPledgeParameters(
       from: createBackingData.rewards,
+      selectedQuantities: createBackingData.selectedQuantities,
       pledgeTotal: createBackingData.pledgeTotal,
       shippingRule: createBackingData.shippingRule
     )

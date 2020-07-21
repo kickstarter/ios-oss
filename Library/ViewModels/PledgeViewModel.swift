@@ -7,8 +7,9 @@ import ReactiveSwift
 public typealias StripeConfigurationData = (merchantIdentifier: String, publishableKey: String)
 public typealias CreateBackingData = (
   project: Project,
-  reward: Reward,
-  pledgeAmount: Double,
+  rewards: [Reward],
+  pledgeTotal: Double,
+  selectedQuantities: SelectedRewardQuantities,
   shippingRule: ShippingRule?,
   paymentSourceId: String?,
   applePayParams: ApplePayParams?,
@@ -16,21 +17,34 @@ public typealias CreateBackingData = (
 )
 public typealias UpdateBackingData = (
   backing: Backing,
-  reward: Reward,
-  pledgeAmount: Double,
+  rewards: [Reward],
+  pledgeTotal: Double,
+  selectedQuantities: SelectedRewardQuantities,
   shippingRule: ShippingRule?,
   paymentSourceId: String?,
   applePayParams: ApplePayParams?
 )
 public typealias PaymentAuthorizationData = (
-  project: Project, reward: Reward, pledgeAmount: Double,
-  selectedShippingRule: ShippingRule?, merchantIdentifier: String
+  project: Project,
+  reward: Reward,
+  pledgeAmount: Double,
+  selectedShippingRule: ShippingRule?,
+  merchantIdentifier: String
 )
 public typealias PKPaymentData = (displayName: String, network: String, transactionIdentifier: String)
 
+public struct PledgeViewData: Equatable {
+  public let project: Project
+  public let rewards: [Reward]
+  public let selectedQuantities: SelectedRewardQuantities
+  public let selectedShippingRule: ShippingRule?
+  public let refTag: RefTag?
+  public let context: PledgeViewContext
+}
+
 public protocol PledgeViewModelInputs {
   func applePayButtonTapped()
-  func configureWith(project: Project, reward: Reward, refTag: RefTag?, context: PledgeViewContext)
+  func configure(with data: PledgeViewData)
   func creditCardSelected(with paymentSourceId: String)
   func goToLoginSignupTapped()
   func paymentAuthorizationDidAuthorizePayment(
@@ -56,6 +70,7 @@ public protocol PledgeViewModelOutputs {
   var configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never> { get }
   var configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never> { get }
   var configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never> { get }
+  var configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never> { get }
   var configureStripeIntegration: Signal<StripeConfigurationData, Never> { get }
   var configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never> { get }
   var descriptionSectionSeparatorHidden: Signal<Bool, Never> { get }
@@ -73,6 +88,7 @@ public protocol PledgeViewModelOutputs {
   var projectTitle: Signal<String, Never> { get }
   var projectTitleLabelHidden: Signal<Bool, Never> { get }
   var shippingLocationViewHidden: Signal<Bool, Never> { get }
+  var shippingSummaryViewHidden: Signal<Bool, Never> { get }
   var showApplePayAlert: Signal<(String, String), Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showWebHelp: Signal<HelpType, Never> { get }
@@ -95,21 +111,26 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .map(first)
     .skipNil()
 
-    let project = initialData.map { $0.0 }
-    let reward = initialData.map { $0.1 }
-    let refTag = initialData.map { $0.2 }
-    let context = initialData.map { $0.3 }
+    let project = initialData.map(\.project)
+    let baseReward = initialData.map(\.rewards).map(\.first).skipNil()
+    let rewards = initialData.map(\.rewards)
+    let selectedQuantities = initialData.map(\.selectedQuantities)
+    let initialShippingRule = initialData.map(\.selectedShippingRule)
+    let refTag = initialData.map(\.refTag)
+    let context = initialData.map(\.context)
+
+    let initialDataUnpacked = Signal.zip(project, baseReward, refTag, context)
 
     let backing = project.map { $0.personalization.backing }.skipNil()
 
     self.projectTitleLabelHidden = context
-      .zip(with: reward)
+      .zip(with: baseReward)
       .map { context, reward in context.descriptionViewHidden || reward.isNoReward == false }
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
     self.pledgeAmountSummaryViewHidden = context.map { $0.pledgeAmountSummaryViewHidden }
 
-    self.descriptionSectionSeparatorHidden = Signal.combineLatest(context, reward)
+    self.descriptionSectionSeparatorHidden = Signal.combineLatest(context, baseReward)
       .map { context, reward in
         if context.isAny(of: .pledge, .updateReward) {
           return reward.isNoReward == false
@@ -123,45 +144,101 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
-    let pledgeAmount = Signal.merge(
-      self.pledgeAmountDataSignal.map { $0.amount },
-      reward.map { reward in reward.isNoReward ? reward.minimum : 0 }
+    // Provide a default shipping cost when we're not backing this reward (creator context) or it is No Reward
+    let defaultShippingCost = initialData
+      .filter { data in
+        data.project.personalization.backing == nil || data.rewards.first?.isNoReward == true
+      }
+      .mapConst(0.0)
+
+    let shippingCost = Signal.merge(
+      defaultShippingCost,
+      initialShippingRule.skipNil().map(\.cost),
+      self.shippingRuleSelectedSignal.map { $0.cost }
     )
 
-    let initialShippingAmount = initialData.mapConst(0.0)
-    let shippingAmount = self.shippingRuleSelectedSignal.map { $0.cost }
-    let shippingCost = Signal.merge(shippingAmount, initialShippingAmount)
+    let allRewardsTotal = Signal.combineLatest(
+      rewards,
+      selectedQuantities
+    )
+    .map { rewards, selectedQuantities -> Double in
+      rewards.filter { !$0.isNoReward }
+        .reduce(0.0) { total, reward -> Double in
+          let totalForReward = reward.minimum
+            .multiplyingCurrency(Double(selectedQuantities[reward.id] ?? 0))
+
+          return total.addingCurrency(totalForReward)
+        }
+    }
+
+    let allRewardsShippingTotal = Signal.combineLatest(
+      shippingCost,
+      rewards,
+      selectedQuantities
+    )
+    .map { shippingCost, rewards, selectedQuantities -> Double in
+      rewards.reduce(0.0) { total, reward in
+        let totalShippingForReward = shippingCost
+          .multiplyingCurrency(Double(selectedQuantities[reward.id] ?? 0))
+
+        return total.addingCurrency(totalShippingForReward)
+      }
+    }
+
+    let backedAdditionalPledgeAmount = Signal.combineLatest(backing.map(\.pledgeAmount), allRewardsTotal)
+      .map { pledgeAmount, allRewardsTotal in
+        pledgeAmount.subtractingCurrency(allRewardsTotal)
+      }
+
+    let initialAdditionalPledgeAmount = Signal.merge(
+      initialData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
+      backedAdditionalPledgeAmount
+    )
+
+    let additionalPledgeAmount = Signal.merge(
+      self.pledgeAmountDataSignal.map { $0.amount },
+      initialAdditionalPledgeAmount
+    )
+    .logEvents(identifier: "***")
 
     self.notifyPledgeAmountViewControllerShippingAmountChanged = shippingCost
 
-    let projectAndReward = initialData.map { (project: $0.0, reward: $0.1) }
+    let projectAndReward = Signal.zip(project, baseReward)
 
+    // Only shown for regular non-add-ons based rewards
     self.configureShippingLocationViewWithData = projectAndReward.map { project, reward in
       (project, reward, true)
     }
-    self.configurePledgeAmountViewWithData = projectAndReward.combineLatest(with: shippingCost)
-      .map(unpack)
-      .map { project, reward, shippingCost in
-        (
-          project,
-          reward,
-          ksr_bonusSupportAmount(
-            pledgeAmount: project.personalization.backing?.amount ?? 0,
-            shippingAmount: shippingCost,
-            rewardMinimum: reward.minimum
-          )
-        )
-      }
 
-    let rewardBaseAmount = reward.map { reward in
-      reward.isNoReward ? 0 : reward.minimum
+    // Only shown for add-ons based rewards
+    self.configureShippingSummaryViewWithData = Signal.combineLatest(
+      initialShippingRule.skipNil().map(\.location.localizedName),
+      project.map(\.stats.omitUSCurrencyCode),
+      project.map(\.country),
+      allRewardsShippingTotal
+    )
+    .map(PledgeShippingSummaryViewData.init)
+
+    self.configurePledgeAmountViewWithData = Signal.combineLatest(
+      projectAndReward,
+      initialAdditionalPledgeAmount
+    )
+    .map(unpack)
+    .map { project, reward, additionalPledgeAmount in
+      (
+        project,
+        reward,
+        additionalPledgeAmount
+      )
     }
 
-    /* The total pledge amount that will be used to create the backing.
-     * For a regular reward this includes the bonus support amount, the reward minimum and shipping cost.
+    /**
+     * The total pledge amount that will be used to create the backing.
+     * For a regular reward this includes the bonus support amount,
+     * the total of all rewards and their respective shipping costs.
      * For No Reward this is only the pledge amount.
      */
-    let pledgeTotal = Signal.combineLatest(pledgeAmount, shippingCost, rewardBaseAmount)
+    let pledgeTotal = Signal.combineLatest(additionalPledgeAmount, allRewardsShippingTotal, allRewardsTotal)
       .map { pledgeAmount, shippingCost, rewardBaseAmount in
         [pledgeAmount, shippingCost, rewardBaseAmount].reduce(0) { accum, amount in
           accum.addingCurrency(amount)
@@ -182,12 +259,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .map(pledgeSummaryViewData)
 
     self.configurePledgeAmountSummaryViewControllerWithData = projectAndReward
+      .combineLatest(with: additionalPledgeAmount)
+      .map(unpack)
       .map(pledgeAmountSummaryViewData)
       .skipNil()
 
     let configurePaymentMethodsViewController = Signal.merge(
-      initialData,
-      initialData.takeWhen(self.userSessionStartedSignal)
+      initialDataUnpacked,
+      initialDataUnpacked.takeWhen(self.userSessionStartedSignal)
     )
 
     self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsViewController
@@ -198,7 +277,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         return (user, project, reward, context, refTag)
       }
 
-    self.goToLoginSignup = Signal.combineLatest(project, reward, self.goToLoginSignupSignal)
+    self.goToLoginSignup = Signal.combineLatest(project, baseReward, self.goToLoginSignupSignal)
       .map { (LoginIntent.backProject, $0.0, $0.1) }
 
     self.paymentMethodsViewHidden = Signal.combineLatest(isLoggedIn, context)
@@ -207,11 +286,33 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let pledgeAmountIsValid = self.pledgeAmountDataSignal
       .map { $0.isValid }
 
-    self.shippingLocationViewHidden = reward
-      .map { $0.shipping.enabled }
-      .negate()
-      .combineLatest(with: context)
-      .map { $0 || $1.shippingLocationViewHidden }
+    /**
+     Shipping location selector is hidden if the context hides it,
+     if the base reward has no shipping or when add-ons were selected.
+     */
+    self.shippingLocationViewHidden = Signal.combineLatest(baseReward, rewards, context)
+      .map { baseReward, rewards, context in
+        [
+          context.shippingLocationViewHidden,
+          !baseReward.shipping.enabled,
+          rewards.count > 1
+        ]
+        .contains(true)
+      }
+
+    /**
+     Shipping summary view is hidden if the context hides it,
+     if the base reward has no shipping or when NO add-ons were selected.
+     */
+    self.shippingSummaryViewHidden = Signal.combineLatest(baseReward, rewards, context)
+      .map { baseReward, rewards, context in
+        [
+          context.shippingLocationViewHidden,
+          !baseReward.shipping.enabled,
+          rewards.count == 1
+        ]
+        .contains(true)
+      }
 
     self.configureStripeIntegration = Signal.combineLatest(
       initialData,
@@ -227,7 +328,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
 
     let selectedShippingRule = Signal.merge(
-      initialData.mapConst(nil),
+      initialShippingRule,
       self.shippingRuleSelectedSignal.wrapInOptional()
     )
 
@@ -245,7 +346,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let paymentAuthorizationData = Signal.combineLatest(
       project,
-      reward,
+      baseReward,
       pledgeTotal,
       selectedShippingRule
     )
@@ -332,8 +433,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let createBackingData = Signal.combineLatest(
       project,
-      reward,
+      rewards,
       pledgeTotal,
+      selectedQuantities,
       selectedShippingRule,
       selectedPaymentSourceId,
       applePayParamsData,
@@ -383,8 +485,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let updateBackingData = Signal.combineLatest(
       backing,
-      reward,
+      rewards,
       pledgeTotal,
+      selectedQuantities,
       selectedShippingRule,
       selectedPaymentSourceId,
       applePayParamsData
@@ -436,23 +539,20 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.processingViewIsHidden = processingViewIsHidden.signal
 
-    let pledgeTotalWithoutShipping = Signal.combineLatest(pledgeAmount, rewardBaseAmount)
-      .map { $0.addingCurrency($1) }
-
     // MARK: - Form Validation
 
     let amountChangedAndValid = Signal.combineLatest(
       project,
-      reward,
+      baseReward,
       self.pledgeAmountDataSignal,
-      pledgeTotalWithoutShipping,
+      initialAdditionalPledgeAmount,
       context
     )
     .map(amountValid)
 
     let shippingRuleChangedAndValid = Signal.combineLatest(
       project,
-      reward,
+      baseReward,
       selectedShippingRule,
       context
     )
@@ -483,7 +583,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       notChangingPaymentMethod.mapConst(false),
       Signal.combineLatest(
         project,
-        reward,
+        baseReward,
         self.creditCardSelectedSignal,
         context
       )
@@ -572,17 +672,29 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       scaFlowCompletedWithSuccess.combineLatest(with: creatingContext).ignoreValues()
     )
 
-    let thanksPageData = createBackingDataAndIsApplePay.combineLatest(with: checkoutIdProperty.signal)
-      .map(unpack)
-      .map { data, isApplePay, checkoutId -> ThanksPageData in
-        let checkoutPropsData = checkoutPropertiesData(
-          from: data,
-          checkoutId: checkoutId,
-          isApplePay: isApplePay
-        )
+    let thanksPageData = Signal.combineLatest(
+      createBackingDataAndIsApplePay,
+      checkoutIdProperty.signal,
+      baseReward,
+      additionalPledgeAmount
+    )
+    .map { dataAndIsApplePay, checkoutId, baseReward, additionalPledgeAmount
+      -> (CreateBackingData, Bool, Int?, Reward, Double) in
+      let (data, isApplePay) = dataAndIsApplePay
+      return (data, isApplePay, checkoutId, baseReward, additionalPledgeAmount)
+    }
+    .map { data, isApplePay, checkoutId, baseReward, additionalPledgeAmount -> ThanksPageData? in
+      let checkoutPropsData = checkoutPropertiesData(
+        from: data,
+        baseReward: baseReward,
+        additionalPledgeAmount: additionalPledgeAmount,
+        checkoutId: checkoutId,
+        isApplePay: isApplePay
+      )
 
-        return (data.project, data.reward, checkoutPropsData)
-      }
+      return (data.project, baseReward, checkoutPropsData)
+    }
+    .skipNil()
 
     self.goToThanks = thanksPageData
       .takeWhen(createBackingCompletionEvents)
@@ -649,13 +761,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.configureExpandableRewardsHeaderWithData = Signal.zip(
       project,
-      reward.filter(\.isNoReward >>> isFalse)
+      rewards,
+      selectedQuantities
     )
-    .map { project, reward in
-      ([reward], project.country, project.stats.omitUSCurrencyCode)
+    .map { project, rewards, selectedQuantities in
+      (rewards, selectedQuantities, project.country, project.stats.omitUSCurrencyCode)
     }
+    .map(PledgeExpandableRewardsHeaderViewData.init)
 
-    self.expandableRewardsHeaderViewHidden = Signal.zip(context, reward)
+    self.expandableRewardsHeaderViewHidden = Signal.zip(context, baseReward)
       .map { context, reward in
         if context.isAny(of: .pledge, .updateReward) {
           return reward.isNoReward
@@ -695,7 +809,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         )
       }
 
-    initialData
+    initialDataUnpacked
       .observeValues { project, reward, refTag, context in
         let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
         let optimizelyProps = optimizelyProperties() ?? [:]
@@ -711,12 +825,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         )
       }
 
-    createBackingData
+    Signal.combineLatest(createBackingData, baseReward, additionalPledgeAmount)
       .takeWhen(createButtonTapped)
-      .map { data in
-        let checkoutData = checkoutPropertiesData(from: data, isApplePay: false)
+      .map { data, baseReward, additionalPledgeAmount in
+        let checkoutData = checkoutPropertiesData(
+          from: data,
+          baseReward: baseReward,
+          additionalPledgeAmount: additionalPledgeAmount,
+          isApplePay: false
+        )
 
-        return (data.project, data.reward, data.refTag, checkoutData)
+        return (data.project, baseReward, data.refTag, checkoutData)
       }
       .observeValues { project, reward, refTag, checkoutData in
         AppEnvironment.current.koala.trackPledgeSubmitButtonClicked(
@@ -732,12 +851,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         AppEnvironment.current.optimizelyClient?.track(eventName: "App Completed Checkout")
       }
 
-    Signal.combineLatest(project, updateBackingData, context)
+    Signal.combineLatest(project, baseReward, context)
       .takeWhen(updateButtonTapped)
-      .observeValues { project, data, context in
+      .observeValues { project, reward, context in
         AppEnvironment.current.koala.trackPledgeSubmitButtonClicked(
           project: project,
-          reward: data.reward,
+          reward: reward,
           context: TrackingHelpers.pledgeContext(for: context),
           refTag: nil
         )
@@ -751,9 +870,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.applePayButtonTappedObserver.send(value: ())
   }
 
-  private let configureWithDataProperty = MutableProperty<(Project, Reward, RefTag?, PledgeViewContext)?>(nil)
-  public func configureWith(project: Project, reward: Reward, refTag: RefTag?, context: PledgeViewContext) {
-    self.configureWithDataProperty.value = (project, reward, refTag, context)
+  private let configureWithDataProperty = MutableProperty<PledgeViewData?>(nil)
+  public func configure(with data: PledgeViewData) {
+    self.configureWithDataProperty.value = data
   }
 
   private let (creditCardSelectedSignal, creditCardSelectedObserver) = Signal<String, Never>.pipe()
@@ -761,15 +880,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.creditCardSelectedObserver.send(value: paymentSourceId)
   }
 
-  private let (pkPaymentSignal, pkPaymentObserver) = Signal<
-    (
-      displayName: String?,
-      network: String?, transactionIdentifier: String
-    ), Never
-  >.pipe()
+  private let (pkPaymentSignal, pkPaymentObserver) = Signal<(
+    displayName: String?,
+    network: String?,
+    transactionIdentifier: String
+  ), Never>.pipe()
   public func paymentAuthorizationDidAuthorizePayment(paymentData: (
     displayName: String?,
-    network: String?, transactionIdentifier: String
+    network: String?,
+    transactionIdentifier: String
   )) {
     self.pkPaymentObserver.send(value: paymentData)
   }
@@ -847,6 +966,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let configurePledgeAmountSummaryViewControllerWithData: Signal<PledgeAmountSummaryViewData, Never>
   public let configurePledgeViewCTAContainerView: Signal<PledgeViewCTAContainerViewData, Never>
   public let configureShippingLocationViewWithData: Signal<PledgeShippingLocationViewData, Never>
+  public let configureShippingSummaryViewWithData: Signal<PledgeShippingSummaryViewData, Never>
   public let configureStripeIntegration: Signal<StripeConfigurationData, Never>
   public let configureSummaryViewControllerWithData: Signal<PledgeSummaryViewData, Never>
   public let descriptionSectionSeparatorHidden: Signal<Bool, Never>
@@ -864,6 +984,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let projectTitle: Signal<String, Never>
   public let projectTitleLabelHidden: Signal<Bool, Never>
   public let shippingLocationViewHidden: Signal<Bool, Never>
+  public let shippingSummaryViewHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showApplePayAlert: Signal<(String, String), Never>
   public let showWebHelp: Signal<HelpType, Never>
@@ -887,11 +1008,11 @@ private func amountValid(
   project: Project,
   reward: Reward,
   pledgeAmountData: PledgeAmountData,
-  pledgeTotalWithoutShipping: Double,
+  initialAdditionalPledgeAmount: Double,
   context: PledgeViewContext
 ) -> Bool {
   guard
-    let backing = project.personalization.backing,
+    project.personalization.backing != nil,
     context.isUpdating,
     userIsBacking(reward: reward, inProject: project)
   else {
@@ -899,7 +1020,7 @@ private func amountValid(
   }
 
   return [
-    backing.pledgeAmount != pledgeTotalWithoutShipping,
+    pledgeAmountData.amount != initialAdditionalPledgeAmount,
     pledgeAmountData.isValid
   ]
   .allSatisfy(isTrue)
@@ -974,19 +1095,13 @@ private func pledgeSummaryViewData(
 
 private func pledgeAmountSummaryViewData(
   with project: Project,
-  reward: Reward
+  reward: Reward,
+  additionalPledgeAmount: Double
 ) -> PledgeAmountSummaryViewData? {
   guard let backing = project.personalization.backing else { return nil }
-  let shippingAmount = backing.shippingAmount.flatMap(Double.init)
-
-  let bonusAmount = ksr_bonusSupportAmount(
-    pledgeAmount: backing.amount,
-    shippingAmount: shippingAmount,
-    rewardMinimum: reward.minimum
-  )
 
   return .init(
-    bonusAmount: bonusAmount,
+    bonusAmount: additionalPledgeAmount,
     isNoReward: backing.reward?.isNoReward ?? false,
     locationName: backing.locationName,
     omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
@@ -999,32 +1114,43 @@ private func pledgeAmountSummaryViewData(
 
 private func checkoutPropertiesData(
   from createBackingData: CreateBackingData,
+  baseReward: Reward,
+  additionalPledgeAmount: Double,
   checkoutId: Int? = nil,
   isApplePay: Bool
 ) -> Koala.CheckoutPropertiesData {
-  let pledgeTotal = createBackingData.pledgeAmount
+  let pledgeTotal = createBackingData.pledgeTotal
 
   let pledgeTotalUsdCents = pledgeTotal
     .multiplyingCurrency(Double(createBackingData.project.stats.staticUsdRate))
     .multiplyingCurrency(100.0)
     .rounded()
 
+  let bonusAmountUsdCents = additionalPledgeAmount
+    .multiplyingCurrency(Double(createBackingData.project.stats.staticUsdRate))
+    .multiplyingCurrency(100.0)
+    .rounded()
+
   let amount = Format.decimalCurrency(for: pledgeTotal)
+  let bonusAmount = Format.decimalCurrency(for: additionalPledgeAmount)
   let revenueInUsdCents = Int(pledgeTotalUsdCents)
-  let rewardId = createBackingData.reward.id
-  let estimatedDelivery = createBackingData.reward.estimatedDeliveryOn
+  let bonusAmountInUsdCents = Int(bonusAmountUsdCents)
+  let rewardId = baseReward.id
+  let estimatedDelivery = baseReward.estimatedDeliveryOn
   let paymentType = isApplePay
     ? PaymentType.applePay.rawValue
     : PaymentType.creditCard.rawValue
-  let shippingEnabled = createBackingData.reward.shipping.enabled
+  let shippingEnabled = baseReward.shipping.enabled
   let shippingAmount = createBackingData.shippingRule?.cost
-  let rewardTitle = createBackingData.reward.title
+  let rewardTitle = baseReward.title
   let userHasEligibleStoredApplePayCard = AppEnvironment.current
     .applePayCapabilities
     .applePayCapable(for: createBackingData.project)
 
   return Koala.CheckoutPropertiesData(
     amount: amount,
+    bonusAmount: bonusAmount,
+    bonusAmountInUsdCents: bonusAmountInUsdCents,
     checkoutId: checkoutId,
     estimatedDelivery: estimatedDelivery,
     paymentType: paymentType,
@@ -1041,7 +1167,7 @@ private func optimizelyCheckoutEventTags(
   createBackingData: CreateBackingData,
   isApplePay: Bool
 ) -> [String: Any] {
-  let pledgeTotal = createBackingData.pledgeAmount
+  let pledgeTotal = createBackingData.pledgeTotal
 
   let pledgeTotalUsdCents = pledgeTotal
     .multiplyingCurrency(Double(createBackingData.project.stats.staticUsdRate))
