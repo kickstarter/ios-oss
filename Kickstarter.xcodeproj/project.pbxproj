@@ -387,6 +387,7 @@
 		8A1A93D024C601CA0012FB43 /* PledgeShippingSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A93CF24C601CA0012FB43 /* PledgeShippingSummaryView.swift */; };
 		8A1A93D224C602300012FB43 /* PledgeShippingSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A93D124C602300012FB43 /* PledgeShippingSummaryViewModel.swift */; };
 		8A1A93D424C658180012FB43 /* ShippingRule+ManagePledgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A93D324C658180012FB43 /* ShippingRule+ManagePledgeView.swift */; };
+		8A1A93D624C745F80012FB43 /* ShippingRule+ManagePledgeViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A93D524C745F80012FB43 /* ShippingRule+ManagePledgeViewTests.swift */; };
 		8A1E3CE6240F45FA0093BDA7 /* ProjectCreatorDetailsShimmerLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1E3CE5240F45FA0093BDA7 /* ProjectCreatorDetailsShimmerLoadingView.swift */; };
 		8A213CEB239EAEA400BBB4C7 /* TrackingClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */; };
 		8A213CEC239EAEA400BBB4C7 /* TrackingClientConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE5239EAEA400BBB4C7 /* TrackingClientConfiguration.swift */; };
@@ -1919,6 +1920,7 @@
 		8A1A93CF24C601CA0012FB43 /* PledgeShippingSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryView.swift; sourceTree = "<group>"; };
 		8A1A93D124C602300012FB43 /* PledgeShippingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryViewModel.swift; sourceTree = "<group>"; };
 		8A1A93D324C658180012FB43 /* ShippingRule+ManagePledgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShippingRule+ManagePledgeView.swift"; sourceTree = "<group>"; };
+		8A1A93D524C745F80012FB43 /* ShippingRule+ManagePledgeViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShippingRule+ManagePledgeViewTests.swift"; sourceTree = "<group>"; };
 		8A1E3CE5240F45FA0093BDA7 /* ProjectCreatorDetailsShimmerLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCreatorDetailsShimmerLoadingView.swift; sourceTree = "<group>"; };
 		8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientType.swift; sourceTree = "<group>"; };
 		8A213CE5239EAEA400BBB4C7 /* TrackingClientConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientConfiguration.swift; sourceTree = "<group>"; };
@@ -4150,7 +4152,6 @@
 				8A49396E24B77B3500C3C3CE /* RewardAddOnCardViewModel.swift */,
 				8A00CCFE24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift */,
 				8A6C978F24BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift */,
-				8A5CB28324C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift */,
 				8A45168C24B3D02700D8CAEF /* RewardAddOnSelectionViewModel.swift */,
 				8A49395E24B53D1900C3C3CE /* RewardAddOnSelectionViewModelTests.swift */,
 				8A8099F022E2142C00373E66 /* RewardCardContainerViewModel.swift */,
@@ -4389,6 +4390,7 @@
 				D6AE52261FD1B41200BEC788 /* RootCategoriesEnvelope.swift */,
 				D01587E71EEB2ED7006E7684 /* ShippingRule.swift */,
 				8A1A93D324C658180012FB43 /* ShippingRule+ManagePledgeView.swift */,
+				8A1A93D524C745F80012FB43 /* ShippingRule+ManagePledgeViewTests.swift */,
 				D01587E81EEB2ED7006E7684 /* ShippingRulesEnvelope.swift */,
 				D68F0B15243CFF3E009FC948 /* SignInWithAppleEnvelope.swift */,
 				D68F0B19243FB688009FC948 /* SignInWithAppleEnvelopeTests.swift */,
@@ -6328,6 +6330,7 @@
 				8A49396724B68FA500C3C3CE /* Reward+RewardAddOnSelectionViewTests.swift in Sources */,
 				8A4E953D2451058F00A578CF /* ManagePledgeViewBackingEnvelopeTests.swift in Sources */,
 				D0D10C161EEB4550005EBAD0 /* ProjectTests.swift in Sources */,
+				8A1A93D624C745F80012FB43 /* ShippingRule+ManagePledgeViewTests.swift in Sources */,
 				777B88E522BD911F0027640F /* CategoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
