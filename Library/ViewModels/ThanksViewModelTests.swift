@@ -327,6 +327,8 @@ final class ThanksViewModelTests: TestCase {
   func testThanksPageViewed_Properties() {
     let checkoutData = Koala.CheckoutPropertiesData(
       amount: "10.00",
+      bonusAmount: "20.00",
+      bonusAmountInUsdCents: 200,
       checkoutId: 1,
       estimatedDelivery: nil,
       paymentType: "CREDIT_CARD",
@@ -347,6 +349,8 @@ final class ThanksViewModelTests: TestCase {
 
     // Checkout properties
     XCTAssertEqual("10.00", props?["checkout_amount"] as? String)
+    XCTAssertEqual("20.00", props?["checkout_bonus_amount"] as? String)
+    XCTAssertEqual(200, props?["checkout_bonus_amount_usd"] as? Int)
     XCTAssertEqual("CREDIT_CARD", props?["checkout_payment_type"] as? String)
     XCTAssertEqual("SUPER reward", props?["checkout_reward_title"] as? String)
     XCTAssertEqual(2, props?["checkout_reward_id"] as? Int)
