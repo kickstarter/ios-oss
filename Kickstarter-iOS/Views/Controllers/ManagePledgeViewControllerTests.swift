@@ -43,7 +43,10 @@ final class ManagePledgeViewControllerTests: TestCase {
         type: .visa
       )
       |> \.backing.sequence .~ 10
-      |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
+      |> \.backing.location .~ (
+        ManagePledgeViewBackingEnvelope.Backing.Location.template
+          |> \.name .~ "United States"
+      )
 
     envelope = envelope
       |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
@@ -110,7 +113,10 @@ final class ManagePledgeViewControllerTests: TestCase {
         type: .visa
       )
       |> \.backing.sequence .~ 10
-      |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
+      |> \.backing.location .~ (
+        ManagePledgeViewBackingEnvelope.Backing.Location.template
+          |> \.name .~ "United States"
+      )
 
     envelope = envelope
       |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
@@ -236,7 +242,10 @@ final class ManagePledgeViewControllerTests: TestCase {
         type: .visa
       )
       |> \.backing.sequence .~ 10
-      |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
+      |> \.backing.location .~ (
+        ManagePledgeViewBackingEnvelope.Backing.Location.template
+          |> \.name .~ "United States"
+      )
 
     envelope = envelope
       |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
@@ -301,7 +310,10 @@ final class ManagePledgeViewControllerTests: TestCase {
         type: .visa
       )
       |> \.backing.sequence .~ 10
-      |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
+      |> \.backing.location .~ (
+        ManagePledgeViewBackingEnvelope.Backing.Location.template
+          |> \.name .~ "United States"
+      )
 
     envelope = envelope
       |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)

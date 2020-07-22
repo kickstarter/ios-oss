@@ -36,7 +36,16 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService) {
         let controller = RewardAddOnSelectionViewController.instantiate()
-        controller.configureWith(project: project, reward: reward, refTag: nil, context: .pledge)
+
+        let data = PledgeViewData(
+          project: project,
+          rewards: [reward],
+          selectedQuantities: [:],
+          selectedShippingRule: nil,
+          refTag: nil,
+          context: .pledge
+        )
+        controller.configure(with: data)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 600
 
@@ -80,7 +89,15 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService) {
         let controller = RewardAddOnSelectionViewController.instantiate()
-        controller.configureWith(project: project, reward: reward, refTag: nil, context: .pledge)
+        let data = PledgeViewData(
+          project: project,
+          rewards: [reward],
+          selectedQuantities: [:],
+          selectedShippingRule: nil,
+          refTag: nil,
+          context: .pledge
+        )
+        controller.configure(with: data)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 600
 

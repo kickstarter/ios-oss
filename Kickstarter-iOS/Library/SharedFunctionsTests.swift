@@ -65,12 +65,13 @@ internal final class SharedFunctionsTests: XCTestCase {
       |> ShippingRule.lens.location .~ (Location.template |> Location.lens.id .~ 123)
 
     let params = sanitizedPledgeParameters(
-      from: reward,
-      pledgeAmount: 13,
+      from: [reward],
+      selectedQuantities: [reward.id: 1],
+      pledgeTotal: 13,
       shippingRule: selectedShippingRule
     )
 
-    XCTAssertEqual(params.rewardId, "UmV3YXJkLTE=")
+    XCTAssertEqual(params.rewardIds, ["UmV3YXJkLTE="])
     XCTAssertEqual(params.pledgeTotal, "13.00")
     XCTAssertEqual(params.locationId, "123")
   }
@@ -79,12 +80,13 @@ internal final class SharedFunctionsTests: XCTestCase {
     let reward = Reward.noReward
 
     let params = sanitizedPledgeParameters(
-      from: reward,
-      pledgeAmount: 10,
+      from: [reward],
+      selectedQuantities: [reward.id: 1],
+      pledgeTotal: 10,
       shippingRule: nil
     )
 
-    XCTAssertEqual(params.rewardId, "UmV3YXJkLTA=")
+    XCTAssertEqual(params.rewardIds, ["UmV3YXJkLTA="])
     XCTAssertEqual(params.pledgeTotal, "10.00")
     XCTAssertNil(params.locationId)
   }
