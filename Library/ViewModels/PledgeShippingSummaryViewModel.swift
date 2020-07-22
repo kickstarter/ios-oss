@@ -3,7 +3,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public struct PledgeShippingSummaryViewData {
+public struct PledgeShippingSummaryViewData: Equatable {
   public let locationName: String
   public let omitUSCurrencyCode: Bool
   public let projectCountry: Project.Country

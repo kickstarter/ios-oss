@@ -219,4 +219,8 @@ extension RewardAddOnSelectionViewController: UITableViewDelegate {
 
     cell.rewardAddOnCardView.delegate = self
   }
+
+  func tableView(_: UITableView, willSelectRowAt _: IndexPath) -> IndexPath? {
+    return nil
+  }
 }
