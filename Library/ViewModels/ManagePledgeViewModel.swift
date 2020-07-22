@@ -407,7 +407,7 @@ private func pledgeViewData(
   shippingRule: ShippingRule?,
   context: PledgeViewContext
 ) -> PledgeViewData {
-  let selectedQuantities = rewards.reduce([:]) { (accum: [Int: Int], reward) in
+  let selectedQuantities = rewards.reduce([:]) { (accum: SelectedRewardQuantities, reward) in
     var mutableAccum = accum
     // Coalesce to 1 for the non-add-on base reward
     mutableAccum[reward.id] = reward.addOnData?.isAddOn == true
