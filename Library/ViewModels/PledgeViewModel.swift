@@ -208,7 +208,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.pledgeAmountDataSignal.map { $0.amount },
       initialAdditionalPledgeAmount
     )
-    .logEvents(identifier: "***")
 
     self.notifyPledgeAmountViewControllerShippingAmountChanged = shippingCost
 
