@@ -578,6 +578,72 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
+  func testGoToUpdatePledge_WithAddOns() {
+    var project = Project.template
+
+    let baseRewardInBacking = ManagePledgeViewBackingEnvelope.Backing.Reward.template
+      |> \.id .~ "Reward-99".toBase64()
+
+    let addOn1 = ManagePledgeViewBackingEnvelope.Backing.Reward.template
+      |> \.id .~ "Reward-1".toBase64()
+    let addOn2 = ManagePledgeViewBackingEnvelope.Backing.Reward.template
+      |> \.id .~ "Reward-2".toBase64()
+
+    let baseReward = Reward.template
+      |> Reward.lens.id .~ 99
+
+    let dateFormatter = DateFormatter()
+
+    let addOnReward1 = Reward.addOnReward(
+      from: addOn1,
+      project: project,
+      selectedAddOnQuantities: [addOn1.id: 3],
+      dateFormatter: dateFormatter
+    ) ?? .template
+
+    let addOnReward2 = Reward.addOnReward(
+      from: addOn2,
+      project: project,
+      selectedAddOnQuantities: [addOn2.id: 2],
+      dateFormatter: dateFormatter
+    ) ?? .template
+
+    project = Project.template
+      |> Project.lens.rewards .~ [baseReward]
+
+    let env = ManagePledgeViewBackingEnvelope.template
+      |> \.backing.addOns .~ .init(nodes: [addOn1, addOn2, addOn2])
+      |> \.backing.reward .~ baseRewardInBacking
+      |> \.backing.location .~ nil
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.goToUpdatePledge.assertDidNotEmitValue()
+
+      self.vm.inputs.menuButtonTapped()
+      self.vm.inputs.menuOptionSelected(with: .updatePledge)
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [baseReward, addOnReward1, addOnReward2],
+        selectedQuantities: [baseReward.id: 1, addOnReward1.id: 1, addOnReward2.id: 2],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .update
+      )
+      self.goToUpdatePledge.assertValues([data])
+    }
+  }
+
   func testRewardReceivedViewControllerIsHidden_EstimatedDeliveryOnIsNil() {
     let reward = Reward.noReward
 
