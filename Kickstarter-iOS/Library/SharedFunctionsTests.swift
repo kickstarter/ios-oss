@@ -58,7 +58,7 @@ internal final class SharedFunctionsTests: XCTestCase {
     XCTAssertTrue(mockViewController.dismissAnimatedWasCalled)
   }
 
-  func testFormattedPledgeParameters_WithShipping() {
+  func testSanitizedPledgeParameters_WithShipping() {
     let reward = Reward.template
     let selectedShippingRule = ShippingRule.template
       |> ShippingRule.lens.cost .~ 3.0
@@ -76,7 +76,35 @@ internal final class SharedFunctionsTests: XCTestCase {
     XCTAssertEqual(params.locationId, "123")
   }
 
-  func testFormattedPledgeParameters_NoShipping_NoReward() {
+  func testSanitizedPledgeParameters_WithShipping_WithAddOns() {
+    let reward = Reward.template
+    let selectedShippingRule = ShippingRule.template
+      |> ShippingRule.lens.cost .~ 3.0
+      |> ShippingRule.lens.location .~ (Location.template |> Location.lens.id .~ 123)
+
+    let baseReward = Reward.template
+      |> Reward.lens.id .~ 1
+    let addOn1 = Reward.template
+      |> Reward.lens.id .~ 2
+    let addOn2 = Reward.template
+      |> Reward.lens.id .~ 3
+
+    let params = sanitizedPledgeParameters(
+      from: [baseReward, addOn1, addOn2],
+      selectedQuantities: [reward.id: 1, addOn1.id: 2, addOn2.id: 1],
+      pledgeTotal: 13,
+      shippingRule: selectedShippingRule
+    )
+
+    XCTAssertEqual(
+      params.rewardIds,
+      ["UmV3YXJkLTE=", "UmV3YXJkLTI=", "UmV3YXJkLTI=", "UmV3YXJkLTM="]
+    )
+    XCTAssertEqual(params.pledgeTotal, "13.00")
+    XCTAssertEqual(params.locationId, "123")
+  }
+
+  func testSanitizedPledgeParameters_NoShipping_NoReward() {
     let reward = Reward.noReward
 
     let params = sanitizedPledgeParameters(
