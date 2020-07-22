@@ -516,7 +516,6 @@
 		8AF34C802343C41C000B211D /* UpdateBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C7B2343C2FD000B211D /* UpdateBackingEnvelope.swift */; };
 		8AF34C8423440327000B211D /* ApplePayParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C8323440327000B211D /* ApplePayParams.swift */; };
 		8AF34C8623440565000B211D /* ApplePayParamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF34C8523440565000B211D /* ApplePayParamsTests.swift */; };
-		8AF3EBD42466134A007598BF /* Backing+PledgeAmount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3EBD32466134A007598BF /* Backing+PledgeAmount.swift */; };
 		8AF91CDD22EF5AF8005F9C90 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF91CDC22EF5AF7005F9C90 /* Feature.swift */; };
 		8AFB8C97233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB8C96233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift */; };
 		8AFB8C99233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */; };
@@ -2045,7 +2044,6 @@
 		8AF34C7E2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateBackingEnvelopeTests.swift; sourceTree = "<group>"; };
 		8AF34C8323440327000B211D /* ApplePayParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayParams.swift; sourceTree = "<group>"; };
 		8AF34C8523440565000B211D /* ApplePayParamsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayParamsTests.swift; sourceTree = "<group>"; };
-		8AF3EBD32466134A007598BF /* Backing+PledgeAmount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Backing+PledgeAmount.swift"; sourceTree = "<group>"; };
 		8AF91CDC22EF5AF7005F9C90 /* Feature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 		8AFB8C96233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceInput+Constructor.swift"; sourceTree = "<group>"; };
 		8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceInput+ConstructorTests.swift"; sourceTree = "<group>"; };
@@ -3685,7 +3683,6 @@
 				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
 				8A213CE3239EAEA400BBB4C7 /* Tracking */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
-				8AF3EBD32466134A007598BF /* Backing+PledgeAmount.swift */,
 				8A6C58922475E5950098D5A2 /* UIRefreshControl+StartRefreshing.swift */,
 			);
 			path = Library;
@@ -5270,7 +5267,6 @@
 				A7F441BD1D005A9400FE6FC5 /* CommentsViewModel.swift in Sources */,
 				015706551E64BFC80087DD68 /* BackerDashboardViewModel.swift in Sources */,
 				A74900181D00E23000BC3BE7 /* SignupViewModel.swift in Sources */,
-				8AF3EBD42466134A007598BF /* Backing+PledgeAmount.swift in Sources */,
 				8A8F5CD724355A4600007DB4 /* ProjectSummaryCarouselCellViewModel.swift in Sources */,
 				D04AAC33218BB70D00CF713E /* SettingsPrivacySwitchCellViewModel.swift in Sources */,
 				A7169BF61DDD064200480C0D /* UIScrollView+Extensions.swift in Sources */,

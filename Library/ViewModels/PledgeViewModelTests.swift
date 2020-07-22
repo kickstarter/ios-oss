@@ -18,6 +18,8 @@ final class PledgeViewModelTests: TestCase {
   private let beginSCAFlowWithClientSecret = TestObserver<String, Never>()
 
   private let configureExpandableRewardsHeaderWithDataRewards = TestObserver<[Reward], Never>()
+  private let configureExpandableRewardsHeaderWithDataSelectedQuantities
+    = TestObserver<SelectedRewardQuantities, Never>()
   private let configureExpandableRewardsHeaderWithDataProjectCountry = TestObserver<Project.Country, Never>()
   private let configureExpandableRewardsHeaderWithDataOmitCurrencyCode = TestObserver<Bool, Never>()
 
@@ -78,11 +80,13 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.outputs.beginSCAFlowWithClientSecret.observe(self.beginSCAFlowWithClientSecret.observer)
 
-    self.vm.outputs.configureExpandableRewardsHeaderWithData.map(first)
+    self.vm.outputs.configureExpandableRewardsHeaderWithData.map(\.rewards)
       .observe(self.configureExpandableRewardsHeaderWithDataRewards.observer)
-    self.vm.outputs.configureExpandableRewardsHeaderWithData.map(second)
+    self.vm.outputs.configureExpandableRewardsHeaderWithData.map(\.selectedQuantities)
+      .observe(self.configureExpandableRewardsHeaderWithDataSelectedQuantities.observer)
+    self.vm.outputs.configureExpandableRewardsHeaderWithData.map(\.projectCountry)
       .observe(self.configureExpandableRewardsHeaderWithDataProjectCountry.observer)
-    self.vm.outputs.configureExpandableRewardsHeaderWithData.map(third)
+    self.vm.outputs.configureExpandableRewardsHeaderWithData.map(\.omitCurrencyCode)
       .observe(self.configureExpandableRewardsHeaderWithDataOmitCurrencyCode.observer)
 
     self.vm.outputs.configurePaymentMethodsViewControllerWithValue.map { $0.0 }
@@ -187,7 +191,16 @@ final class PledgeViewModelTests: TestCase {
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.title.assertValues(["Back this project"])
@@ -238,7 +251,16 @@ final class PledgeViewModelTests: TestCase {
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.title.assertValues(["Back this project"])
@@ -289,7 +311,16 @@ final class PledgeViewModelTests: TestCase {
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .update)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .update
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.title.assertValues(["Update pledge"])
@@ -340,9 +371,16 @@ final class PledgeViewModelTests: TestCase {
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
 
-      self.vm.inputs.configureWith(
-        project: project, reward: reward, refTag: .projectPage, context: .updateReward
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .updateReward
       )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.title.assertValues(["Update pledge"])
@@ -394,6 +432,7 @@ final class PledgeViewModelTests: TestCase {
         |> ShippingRule.lens.cost .~ 10.0
       let backing = Backing.template
         |> Backing.lens.amount .~ 100
+        |> Backing.lens.shippingAmount .~ .some(10)
         |> Backing.lens.locationId .~ .some(123)
       let project = Project.template
         |> Project.lens.personalization.backing .~ backing
@@ -401,9 +440,16 @@ final class PledgeViewModelTests: TestCase {
         |> Reward.lens.shipping.enabled .~ true
         |> Reward.lens.minimum .~ 10.00
 
-      self.vm.inputs.configureWith(
-        project: project, reward: reward, refTag: nil, context: .changePaymentMethod
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: shippingRule,
+        refTag: .projectPage,
+        context: .changePaymentMethod
       )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.title.assertValues(["Change payment method"])
@@ -422,7 +468,7 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewContext.assertValues([.changePaymentMethod])
 
       self.configureSummaryViewControllerWithDataProject.assertValues([project])
-      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10.00])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([100.00])
 
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
@@ -445,15 +491,18 @@ final class PledgeViewModelTests: TestCase {
       self.summarySectionSeparatorHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([true])
 
-      let pledgeAmountData: PledgeAmountData = (amount: 80, min: 10.00, max: 10_000, isValid: true)
+      let pledgeAmountData: PledgeAmountData = (amount: 70, min: 10.00, max: 10_000, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
-      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 90])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([100, 90])
       self.configureSummaryViewControllerWithDataProject.assertValues([project, project])
 
-      self.vm.inputs.shippingRuleSelected(shippingRule)
+      let newShippingRule = ShippingRule.template
+        |> ShippingRule.lens.cost .~ 20
 
-      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 90, 100])
+      self.vm.inputs.shippingRuleSelected(newShippingRule)
+
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([100, 90, 100])
       self.configureSummaryViewControllerWithDataProject.assertValues([project, project, project])
     }
   }
@@ -467,6 +516,7 @@ final class PledgeViewModelTests: TestCase {
         |> ShippingRule.lens.cost .~ 10.0
       let backing = Backing.template
         |> Backing.lens.amount .~ 100
+        |> Backing.lens.shippingAmount .~ .some(10)
         |> Backing.lens.locationId .~ .some(123)
         |> Backing.lens.status .~ .errored
       let project = Project.template
@@ -475,9 +525,16 @@ final class PledgeViewModelTests: TestCase {
         |> Reward.lens.shipping.enabled .~ true
         |> Reward.lens.minimum .~ 10.00
 
-      self.vm.inputs.configureWith(
-        project: project, reward: reward, refTag: nil, context: .fixPaymentMethod
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: shippingRule,
+        refTag: .projectPage,
+        context: .fixPaymentMethod
       )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.title.assertValues(["Fix payment method"])
@@ -492,7 +549,7 @@ final class PledgeViewModelTests: TestCase {
       self.configurePaymentMethodsViewControllerWithContext.assertValues([.fixPaymentMethod])
 
       self.configureSummaryViewControllerWithDataProject.assertValues([project])
-      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10.00])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([100.00])
 
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
@@ -520,15 +577,18 @@ final class PledgeViewModelTests: TestCase {
 
       self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false, true])
 
-      let pledgeAmountData: PledgeAmountData = (amount: 80, min: 10.00, max: 10_000, isValid: true)
+      let pledgeAmountData: PledgeAmountData = (amount: 70, min: 10.00, max: 10_000, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
-      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 90])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([100, 90])
       self.configureSummaryViewControllerWithDataProject.assertValues([project, project])
 
-      self.vm.inputs.shippingRuleSelected(shippingRule)
+      let newShippingRule = ShippingRule.template
+        |> ShippingRule.lens.cost .~ 20
 
-      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 90, 100])
+      self.vm.inputs.shippingRuleSelected(newShippingRule)
+
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([100, 90, 100])
       self.configureSummaryViewControllerWithDataProject.assertValues([project, project, project])
     }
   }
@@ -536,6 +596,7 @@ final class PledgeViewModelTests: TestCase {
   func testChangePaymentMethodContext_NoReward() {
     let backing = Backing.template
       |> Backing.lens.amount .~ 10
+      |> Backing.lens.shippingAmount .~ .some(0)
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ backing
@@ -545,9 +606,16 @@ final class PledgeViewModelTests: TestCase {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(
-        project: project, reward: reward, refTag: nil, context: .changePaymentMethod
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .changePaymentMethod
       )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.title.assertValues(["Change payment method"])
@@ -566,7 +634,7 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewContext.assertValues([.changePaymentMethod])
 
       self.configureSummaryViewControllerWithDataProject.assertValues([project])
-      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([1])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10])
 
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
       self.configureStripeIntegrationPublishableKey.assertValues([Secrets.StripePublishableKey.staging])
@@ -589,11 +657,11 @@ final class PledgeViewModelTests: TestCase {
       self.summarySectionSeparatorHidden.assertValues([true])
       self.shippingLocationViewHidden.assertValues([true])
 
-      let pledgeAmountData: PledgeAmountData = (amount: 10.0, min: 1.0, max: 10_000, isValid: true)
+      let pledgeAmountData: PledgeAmountData = (amount: 12.0, min: 1.0, max: 10_000, isValid: true)
 
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
-      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([1, 10])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([10, 12])
       self.configureSummaryViewControllerWithDataProject.assertValues([project, project])
     }
   }
@@ -604,7 +672,16 @@ final class PledgeViewModelTests: TestCase {
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ false
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
@@ -635,7 +712,16 @@ final class PledgeViewModelTests: TestCase {
       let reward = Reward.template
         |> Reward.lens.shipping.enabled .~ true
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
@@ -667,7 +753,16 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ false
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -698,7 +793,16 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -729,7 +833,16 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -769,7 +882,16 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -822,7 +944,16 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -876,7 +1007,16 @@ final class PledgeViewModelTests: TestCase {
     let user = User.template
 
     withEnvironment(currentUser: nil) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertDidNotEmitValue()
@@ -925,7 +1065,16 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -1025,9 +1174,19 @@ final class PledgeViewModelTests: TestCase {
       self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
       self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(
-        project: .template, reward: .template, refTag: .projectPage, context: .pledge
+      let project = Project.template
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
       )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
@@ -1042,7 +1201,19 @@ final class PledgeViewModelTests: TestCase {
       self.configureStripeIntegrationMerchantId.assertDidNotEmitValue()
       self.configureStripeIntegrationPublishableKey.assertDidNotEmitValue()
 
-      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity, context: .pledge)
+      let project = Project.template
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .activity,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.configureStripeIntegrationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
@@ -1053,12 +1224,22 @@ final class PledgeViewModelTests: TestCase {
   func testGoToApplePayPaymentAuthorization_WhenApplePayButtonTapped_ShippingDisabled() {
     let project = Project.template
     let reward = Reward.noReward
-      |> Reward.lens.minimum .~ 5
-    let pledgeAmountData = (amount: 93.0, min: 5.0, max: 10_000.0, isValid: true)
+      |> Reward.lens.minimum .~ 1
+    let pledgeAmountData = (amount: 5.0, min: 1.0, max: 10_000.0, isValid: true)
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
     self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
@@ -1085,7 +1266,16 @@ final class PledgeViewModelTests: TestCase {
     let shippingRule = ShippingRule.template
     let pledgeAmountData = (amount: 93.0, min: 25.0, max: 10_000.0, isValid: true)
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
     self.vm.inputs.viewDidLoad()
 
@@ -1114,7 +1304,16 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.minimum .~ 25
     let pledgeAmountData = (amount: 20_000.0, min: 25.0, max: 10_000.0, isValid: false)
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
     self.vm.inputs.viewDidLoad()
 
@@ -1135,7 +1334,16 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.minimum .~ 25
     let pledgeAmountData = (amount: 10.0, min: 25.0, max: 10_000.0, isValid: false)
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
     self.vm.inputs.viewDidLoad()
 
@@ -1158,7 +1366,16 @@ final class PledgeViewModelTests: TestCase {
     let shippingRule = ShippingRule.template
     let pledgeAmountData = (amount: 93.0, min: 25.0, max: 10_000.0, isValid: true)
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
     self.vm.inputs.viewDidLoad()
 
@@ -1184,7 +1401,16 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.applePayButtonTapped()
@@ -1204,7 +1430,16 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.applePayButtonTapped()
@@ -1226,7 +1461,16 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.applePayButtonTapped()
@@ -1245,7 +1489,16 @@ final class PledgeViewModelTests: TestCase {
     let project = Project.template
     let reward = Reward.noReward
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.applePayButtonTapped()
@@ -1267,7 +1520,16 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.applePayButtonTapped()
@@ -1297,10 +1559,19 @@ final class PledgeViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService, currentUser: .template) {
       let project = Project.template
-      let reward = Reward.noReward
+      let reward = Reward.template
         |> Reward.lens.minimum .~ 5
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.vm.inputs.applePayButtonTapped()
@@ -1311,6 +1582,9 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
         paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
       )
+
+      let pledgeAmountData = (amount: 10.0, min: 5.0, max: 10_000.0, isValid: true)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
       XCTAssertEqual(
         PKPaymentAuthorizationStatus.success,
@@ -1330,12 +1604,14 @@ final class PledgeViewModelTests: TestCase {
       self.scheduler.run()
 
       let checkoutData = Koala.CheckoutPropertiesData(
-        amount: "5.00",
+        amount: "15.00",
+        bonusAmount: "10.00",
+        bonusAmountInUsdCents: 1_000,
         checkoutId: 1,
-        estimatedDelivery: nil,
+        estimatedDelivery: 1_506_897_315.0,
         paymentType: "APPLE_PAY",
-        revenueInUsdCents: 500,
-        rewardId: 0,
+        revenueInUsdCents: 1_500,
+        rewardId: 1,
         rewardTitle: nil,
         shippingEnabled: false,
         shippingAmount: nil,
@@ -1381,7 +1657,16 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertNil(optimizelyClient.trackedAttributes)
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       XCTAssertEqual(optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
@@ -1436,10 +1721,19 @@ final class PledgeViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService, currentUser: .template) {
       let project = Project.template
-      let reward = Reward.noReward
+      let reward = Reward.template
         |> Reward.lens.minimum .~ 5
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
@@ -1480,11 +1774,13 @@ final class PledgeViewModelTests: TestCase {
 
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "5.00",
+        bonusAmount: "0.00",
+        bonusAmountInUsdCents: 0,
         checkoutId: 1,
-        estimatedDelivery: nil,
+        estimatedDelivery: 1_506_897_315.0,
         paymentType: "APPLE_PAY",
         revenueInUsdCents: 500,
-        rewardId: 0,
+        rewardId: 1,
         rewardTitle: nil,
         shippingEnabled: false,
         shippingAmount: nil,
@@ -1508,7 +1804,16 @@ final class PledgeViewModelTests: TestCase {
       let project = Project.template
       let reward = Reward.noReward
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.vm.inputs.applePayButtonTapped()
@@ -1547,7 +1852,16 @@ final class PledgeViewModelTests: TestCase {
       let reward = Reward.noReward
         |> Reward.lens.minimum .~ 5
 
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: .projectPage, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.vm.inputs.applePayButtonTapped()
@@ -1601,7 +1915,19 @@ final class PledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity, context: .pledge)
+      let project = Project.template
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .activity,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -1637,6 +1963,8 @@ final class PledgeViewModelTests: TestCase {
 
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "25.00",
+        bonusAmount: "15.00",
+        bonusAmountInUsdCents: 1_500,
         checkoutId: 1,
         estimatedDelivery: Reward.template.estimatedDeliveryOn,
         paymentType: "CREDIT_CARD",
@@ -1680,7 +2008,19 @@ final class PledgeViewModelTests: TestCase {
     withEnvironment(apiService: mockService, currentUser: .template, optimizelyClient: optimizelyClient) {
       XCTAssertNil(optimizelyClient.trackedAttributes)
 
-      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity, context: .pledge)
+      let project = Project.template
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .activity,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       XCTAssertEqual(optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
@@ -1720,7 +2060,19 @@ final class PledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .activity, context: .pledge)
+      let project = Project.template
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .activity,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -1798,7 +2150,16 @@ final class PledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .discovery,
+        context: .update
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -1872,7 +2233,16 @@ final class PledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .discovery,
+        context: .update
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -1927,6 +2297,10 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.minimum .~ 10.0
 
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.location .~ .brooklyn
+      |> ShippingRule.lens.cost .~ 10
+
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.isBacking .~ true
@@ -1936,13 +2310,23 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.status .~ .pledged
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.locationId .~ shippingRule.location.id
           |> Backing.lens.shippingAmount .~ 10
           |> Backing.lens.amount .~ 700.0
       )
 
     self.configurePledgeViewCTAContainerViewIsEnabled.assertDidNotEmitValue()
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: shippingRule,
+      refTag: .discovery,
+      context: .update
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
@@ -1953,7 +2337,7 @@ final class PledgeViewModelTests: TestCase {
 
     self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false], "Amount unchanged")
 
-    self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
+    self.vm.inputs.shippingRuleSelected(shippingRule)
 
     self.configurePledgeViewCTAContainerViewIsEnabled
       .assertValues([false], "Shipping rule and amount unchanged")
@@ -2007,7 +2391,16 @@ final class PledgeViewModelTests: TestCase {
 
     self.configurePledgeViewCTAContainerViewIsEnabled.assertDidNotEmitValue()
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: .discovery,
+      context: .update
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(
@@ -2066,7 +2459,16 @@ final class PledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .updateReward)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .updateReward
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
@@ -2130,7 +2532,16 @@ final class PledgeViewModelTests: TestCase {
 
     self.configurePledgeViewCTAContainerViewIsEnabled.assertDidNotEmitValue()
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: .discovery,
+      context: .update
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
@@ -2223,6 +2634,7 @@ final class PledgeViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       let reward = Reward.postcards
         |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.minimum .~ 0
 
       let project = Project.cosmicSurgery
         |> Project.lens.state .~ .live
@@ -2237,12 +2649,19 @@ final class PledgeViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
-      self.vm.inputs.configureWith(
-        project: project, reward: reward, refTag: .projectPage, context: .changePaymentMethod
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .changePaymentMethod
       )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      let pledgeAmountData = (amount: 93.0, min: 5.0, max: 10_000.0, isValid: true)
+      let pledgeAmountData = (amount: 90.0, min: 5.0, max: 10_000.0, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
       self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
@@ -2263,7 +2682,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([100])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2280,7 +2699,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([100])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2298,7 +2717,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([100])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2313,7 +2732,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([100])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2328,7 +2747,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([100])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2390,9 +2809,16 @@ final class PledgeViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
-      self.vm.inputs.configureWith(
-        project: project, reward: reward, refTag: .projectPage, context: .changePaymentMethod
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .changePaymentMethod
       )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       let pledgeAmountData = (amount: 93.0, min: 5.0, max: 10_000.0, isValid: true)
@@ -2416,7 +2842,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2434,7 +2860,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2449,7 +2875,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2464,7 +2890,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2510,9 +2936,16 @@ final class PledgeViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
-      self.vm.inputs.configureWith(
-        project: project, reward: reward, refTag: .projectPage, context: .changePaymentMethod
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .changePaymentMethod
       )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       let pledgeAmountData = (amount: 93.0, min: 5.0, max: 10_000.0, isValid: true)
@@ -2535,7 +2968,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2552,7 +2985,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2570,7 +3003,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2585,7 +3018,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2600,7 +3033,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2646,9 +3079,16 @@ final class PledgeViewModelTests: TestCase {
     self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService1) {
-      self.vm.inputs.configureWith(
-        project: project, reward: reward, refTag: .projectPage, context: .update
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .update
       )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       let pledgeAmountData = (amount: 93.0, min: 5.0, max: 10_000.0, isValid: true)
@@ -2671,7 +3111,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2688,7 +3128,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2706,7 +3146,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2721,7 +3161,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2736,7 +3176,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2770,7 +3210,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project, project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward, reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil, nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99, 99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109, 109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([
         Secrets.ApplePay.merchantIdentifier,
         Secrets.ApplePay.merchantIdentifier
@@ -2783,7 +3223,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project, project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward, reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil, nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99, 99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109, 109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([
         Secrets.ApplePay.merchantIdentifier,
         Secrets.ApplePay.merchantIdentifier
@@ -2804,7 +3244,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project, project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward, reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil, nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99, 99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109, 109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([
         Secrets.ApplePay.merchantIdentifier,
         Secrets.ApplePay.merchantIdentifier
@@ -2822,7 +3262,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project, project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward, reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil, nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99, 99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109, 109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([
         Secrets.ApplePay.merchantIdentifier,
         Secrets.ApplePay.merchantIdentifier
@@ -2840,7 +3280,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project, project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward, reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil, nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99, 99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109, 109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([
         Secrets.ApplePay.merchantIdentifier,
         Secrets.ApplePay.merchantIdentifier
@@ -2891,9 +3331,16 @@ final class PledgeViewModelTests: TestCase {
     self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService1) {
-      self.vm.inputs.configureWith(
-        project: project, reward: reward, refTag: .projectPage, context: .update
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .update
       )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       let pledgeAmountData = (amount: 93.0, min: 5.0, max: 10_000.0, isValid: true)
@@ -2917,7 +3364,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2934,7 +3381,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2952,7 +3399,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2967,7 +3414,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2982,7 +3429,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3016,7 +3463,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3031,7 +3478,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3046,7 +3493,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3095,9 +3542,16 @@ final class PledgeViewModelTests: TestCase {
     self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService1) {
-      self.vm.inputs.configureWith(
-        project: project, reward: reward, refTag: .projectPage, context: .update
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .update
       )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       let pledgeAmountData = (amount: 93.0, min: 5.0, max: 10_000.0, isValid: true)
@@ -3172,7 +3626,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3189,7 +3643,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3207,7 +3661,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3222,7 +3676,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3237,7 +3691,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3286,9 +3740,16 @@ final class PledgeViewModelTests: TestCase {
     self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(
-        project: project, reward: reward, refTag: .projectPage, context: .update
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .update
       )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       let pledgeAmountData = (amount: 93.0, min: 5.0, max: 10_000.0, isValid: true)
@@ -3344,7 +3805,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3361,7 +3822,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3379,7 +3840,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3394,7 +3855,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3409,7 +3870,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
       self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([99])
+      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3442,10 +3903,20 @@ final class PledgeViewModelTests: TestCase {
     self.goToThanksProject.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-    let project = Project.template
-
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: .template, refTag: .activity, context: .pledge)
+      let project = Project.template
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .activity,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3496,6 +3967,8 @@ final class PledgeViewModelTests: TestCase {
 
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "25.00",
+        bonusAmount: "15.00",
+        bonusAmountInUsdCents: 1_500,
         checkoutId: 1,
         estimatedDelivery: Reward.template.estimatedDeliveryOn,
         paymentType: "CREDIT_CARD",
@@ -3536,10 +4009,20 @@ final class PledgeViewModelTests: TestCase {
     self.goToThanksProject.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-    let project = Project.template
-
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: .template, refTag: .activity, context: .pledge)
+      let project = Project.template
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .activity,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3618,10 +4101,20 @@ final class PledgeViewModelTests: TestCase {
     self.goToThanksProject.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-    let project = Project.template
-
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: .template, refTag: .activity, context: .pledge)
+      let project = Project.template
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .activity,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3711,7 +4204,16 @@ final class PledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .discovery,
+        context: .update
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3806,7 +4308,16 @@ final class PledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .discovery,
+        context: .update
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3901,7 +4412,16 @@ final class PledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .discovery,
+        context: .update
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3948,7 +4468,19 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testTrackingEvents_CheckoutPaymentPageViewed() {
-    self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil, context: .pledge)
+    let project = Project.template
+    let reward = Reward.template
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: nil,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
@@ -3962,11 +4494,20 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertNotNil(properties?["optimizely_experiments"], "Event includes Optimizely properties")
   }
 
-  func testTrackingEvents_UpdatePaymentMethod() {
-    self.vm.inputs.configureWith(
-      project: .template, reward: .template,
-      refTag: nil, context: .changePaymentMethod
+  func testTrackingEvents_ChangePaymentMethod() {
+    let project = Project.template
+    let reward = Reward.template
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: nil,
+      context: .changePaymentMethod
     )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
@@ -3981,7 +4522,19 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testTrackingEvents_ContextIsUpdate() {
-    self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil, context: .update)
+    let project = Project.template
+    let reward = Reward.template
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: nil,
+      context: .update
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
@@ -3996,7 +4549,19 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testTrackingEvents_ContextIsUpdateReward() {
-    self.vm.inputs.configureWith(project: .template, reward: .template, refTag: nil, context: .updateReward)
+    let project = Project.template
+    let reward = Reward.template
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: nil,
+      context: .updateReward
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
@@ -4016,11 +4581,22 @@ final class PledgeViewModelTests: TestCase {
       |> \.category.parentId .~ Project.Category.art.id
       |> \.category.parentName .~ Project.Category.art.name
 
+    let reward = Reward.template
+
     let trackingClient = MockTrackingClient()
     let koala = Koala(client: trackingClient, config: .template, loggedInUser: nil)
 
     withEnvironment(currentUser: nil, koala: koala) {
-      self.vm.inputs.configureWith(project: project, reward: .template, refTag: .discovery, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .discovery,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
 
       XCTAssertEqual([], self.trackingClient.events)
       self.vm.inputs.viewDidLoad()
@@ -4050,7 +4626,18 @@ final class PledgeViewModelTests: TestCase {
       |> \.category.parentId .~ Project.Category.art.id
       |> \.category.parentName .~ Project.Category.art.name
 
-    self.vm.inputs.configureWith(project: project, reward: .template, refTag: .discovery, context: .pledge)
+    let reward = Reward.template
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: .discovery,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
 
     XCTAssertEqual([], self.trackingClient.events)
     self.vm.inputs.viewDidLoad()
@@ -4095,9 +4682,18 @@ final class PledgeViewModelTests: TestCase {
         |> Project.lens.stats.currentCurrency .~ "USD"
         |> \.personalization.isStarred .~ true
 
-      self.vm.inputs.configureWith(
-        project: project, reward: .template, refTag: .discovery, context: .pledge
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .discovery,
+        context: .pledge
       )
+
+      self.vm.inputs.configure(with: data)
 
       XCTAssertEqual([], self.trackingClient.events)
       self.vm.inputs.viewDidLoad()
@@ -4145,9 +4741,18 @@ final class PledgeViewModelTests: TestCase {
         |> Project.lens.stats.currentCurrency .~ "USD"
         |> \.personalization.isStarred .~ true
 
-      self.vm.inputs.configureWith(
-        project: project, reward: .template, refTag: .discovery, context: .pledge
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .discovery,
+        context: .pledge
       )
+
+      self.vm.inputs.configure(with: data)
 
       XCTAssertEqual([], self.trackingClient.events)
       self.vm.inputs.viewDidLoad()
@@ -4192,9 +4797,18 @@ final class PledgeViewModelTests: TestCase {
         |> Project.lens.stats.currentCurrency .~ "USD"
         |> \.personalization.isStarred .~ true
 
-      self.vm.inputs.configureWith(
-        project: project, reward: .template, refTag: .discovery, context: .pledge
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .discovery,
+        context: .pledge
       )
+
+      self.vm.inputs.configure(with: data)
 
       XCTAssertEqual([], self.trackingClient.events)
       self.vm.inputs.viewDidLoad()
@@ -4227,9 +4841,18 @@ final class PledgeViewModelTests: TestCase {
         |> Project.lens.stats.currentCurrency .~ "USD"
         |> \.personalization.isStarred .~ true
 
-      self.vm.inputs.configureWith(
-        project: project, reward: .template, refTag: .discovery, context: .pledge
+      let reward = Reward.template
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .discovery,
+        context: .pledge
       )
+
+      self.vm.inputs.configure(with: data)
 
       XCTAssertEqual([], self.trackingClient.events)
       self.vm.inputs.viewDidLoad()
@@ -4239,7 +4862,19 @@ final class PledgeViewModelTests: TestCase {
   }
 
   func testTrackingEvents_PledgeSubmitButtonClicked() {
-    self.vm.inputs.configureWith(project: .template, reward: .template, refTag: .discovery, context: .pledge)
+    let project = Project.template
+    let reward = Reward.template
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: .discovery,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
@@ -4289,7 +4924,7 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual("discovery", props?["session_ref_tag"] as? String)
   }
 
-  func testTrackingEvents_PledgeButtonSubmit_ContextIsFixPayment() {
+  func testTrackingEvents_UpdatePledgeButtonSubmit_ContextIsFixPayment() {
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
     withEnvironment(apiService: mockService, currentUser: .template) {
@@ -4303,9 +4938,16 @@ final class PledgeViewModelTests: TestCase {
         |> Reward.lens.shipping.enabled .~ true
         |> Reward.lens.minimum .~ 10.00
 
-      self.vm.inputs.configureWith(
-        project: project, reward: reward, refTag: nil, context: .fixPaymentMethod
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .fixPaymentMethod
       )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.creditCardSelected(with: "12345")
 
@@ -4314,7 +4956,7 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.submitButtonTapped()
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "Update Pledge Button Clicked", "Pledge Submit Button Clicked"],
+        ["Checkout Payment Page Viewed", "Update Pledge Button Clicked"],
         self.trackingClient.events
       )
     }

@@ -144,16 +144,20 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
-    // Provide a default shipping cost when we're not backing this reward (creator context) or it is No Reward
-    let defaultShippingCost = initialData
-      .filter { data in
-        data.project.personalization.backing == nil || data.rewards.first?.isNoReward == true
+    let initialShippingCost = Signal.combineLatest(
+      initialData.map(\.project.personalization.backing),
+      initialShippingRule
+    )
+    .map { backing, initialShippingRule -> Double in
+      guard let backing = backing else {
+        return initialShippingRule?.cost ?? 0.0
       }
-      .mapConst(0.0)
+
+      return Double(backing.shippingAmount ?? 0)
+    }
 
     let shippingCost = Signal.merge(
-      defaultShippingCost,
-      initialShippingRule.skipNil().map(\.cost),
+      initialShippingCost,
       self.shippingRuleSelectedSignal.map { $0.cost }
     )
 
@@ -185,21 +189,24 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
     }
 
-    let backedAdditionalPledgeAmount = Signal.combineLatest(backing.map(\.pledgeAmount), allRewardsTotal)
-      .map { pledgeAmount, allRewardsTotal in
-        pledgeAmount.subtractingCurrency(allRewardsTotal)
+    let backedAdditionalPledgeAmount = Signal
+      .combineLatest(backing.map(\.amount), allRewardsTotal, allRewardsShippingTotal)
+      .map { pledgeAmount, allRewardsTotal, allRewardsShippingTotal in
+        pledgeAmount
+          .subtractingCurrency(allRewardsTotal)
+          .subtractingCurrency(allRewardsShippingTotal)
       }
 
     let initialAdditionalPledgeAmount = Signal.merge(
       initialData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
       backedAdditionalPledgeAmount
     )
+    .take(first: 1)
 
     let additionalPledgeAmount = Signal.merge(
       self.pledgeAmountDataSignal.map { $0.amount },
       initialAdditionalPledgeAmount
     )
-    .logEvents(identifier: "***")
 
     self.notifyPledgeAmountViewControllerShippingAmountChanged = shippingCost
 
@@ -760,11 +767,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .map { $0 as PledgeViewCTAContainerViewData }
 
     self.configureExpandableRewardsHeaderWithData = Signal.zip(
+      baseReward.map(\.isNoReward).filter(isFalse),
       project,
       rewards,
       selectedQuantities
     )
-    .map { project, rewards, selectedQuantities in
+    .map { _, project, rewards, selectedQuantities in
       (rewards, selectedQuantities, project.country, project.stats.omitUSCurrencyCode)
     }
     .map(PledgeExpandableRewardsHeaderViewData.init)
@@ -849,17 +857,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     createBackingDataAndIsApplePay.takeWhen(createBackingCompletionEvents)
       .observeValues { _, _ in
         AppEnvironment.current.optimizelyClient?.track(eventName: "App Completed Checkout")
-      }
-
-    Signal.combineLatest(project, baseReward, context)
-      .takeWhen(updateButtonTapped)
-      .observeValues { project, reward, context in
-        AppEnvironment.current.koala.trackPledgeSubmitButtonClicked(
-          project: project,
-          reward: reward,
-          context: TrackingHelpers.pledgeContext(for: context),
-          refTag: nil
-        )
       }
   }
 
