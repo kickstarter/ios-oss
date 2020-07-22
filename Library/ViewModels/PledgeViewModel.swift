@@ -27,8 +27,9 @@ public typealias UpdateBackingData = (
 public typealias PaymentAuthorizationData = (
   project: Project,
   reward: Reward,
-  pledgeAmount: Double,
-  selectedShippingRule: ShippingRule?,
+  allRewardsTotal: Double,
+  additionalPledgeAmount: Double,
+  allRewardsShippingTotal: Double,
   merchantIdentifier: String
 )
 public typealias PKPaymentData = (displayName: String, network: String, transactionIdentifier: String)
@@ -207,6 +208,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.pledgeAmountDataSignal.map { $0.amount },
       initialAdditionalPledgeAmount
     )
+    .logEvents(identifier: "***")
 
     self.notifyPledgeAmountViewControllerShippingAmountChanged = shippingCost
 
@@ -354,15 +356,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let paymentAuthorizationData = Signal.combineLatest(
       project,
       baseReward,
-      pledgeTotal,
-      selectedShippingRule
+      allRewardsTotal,
+      additionalPledgeAmount,
+      allRewardsShippingTotal
     )
-    .map { project, reward, pledgeTotal, shippingRule in
+    .map { project, reward, allRewardsTotal, additionalPledgeAmount, allRewardsShippingTotal in
       (
         project,
         reward,
-        pledgeTotal,
-        shippingRule,
+        allRewardsTotal,
+        additionalPledgeAmount,
+        allRewardsShippingTotal,
         Secrets.ApplePay.merchantIdentifier
       ) as PaymentAuthorizationData
     }

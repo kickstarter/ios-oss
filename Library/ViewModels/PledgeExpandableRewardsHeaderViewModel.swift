@@ -86,8 +86,17 @@ public final class PledgeExpandableRewardsHeaderViewModel: PledgeExpandableRewar
     }
     .skipNil()
 
-    let total: Signal<Double, Never> = rewards.map { rewards in
-      rewards.map { $0.minimum }.reduce(0, +)
+    let total: Signal<Double, Never> = Signal.combineLatest(
+      rewards,
+      selectedQuantities
+    )
+    .map { rewards, selectedQuantities in
+      rewards.reduce(0.0) { total, reward in
+        let totalForReward = reward.minimum
+          .multiplyingCurrency(Double(selectedQuantities[reward.id] ?? 0))
+
+        return total.addingCurrency(totalForReward)
+      }
     }
 
     self.loadRewardsIntoDataSource = Signal.zip(

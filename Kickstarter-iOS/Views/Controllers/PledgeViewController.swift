@@ -457,8 +457,9 @@ final class PledgeViewController: UIViewController,
       .paymentRequest(
         for: paymentAuthorizationData.project,
         reward: paymentAuthorizationData.reward,
-        pledgeAmount: paymentAuthorizationData.pledgeAmount,
-        selectedShippingRule: paymentAuthorizationData.selectedShippingRule,
+        allRewardsTotal: paymentAuthorizationData.allRewardsTotal,
+        additionalPledgeAmount: paymentAuthorizationData.additionalPledgeAmount,
+        allRewardsShippingTotal: paymentAuthorizationData.allRewardsShippingTotal,
         merchantIdentifier: paymentAuthorizationData.merchantIdentifier
       )
 

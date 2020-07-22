@@ -49,8 +49,9 @@ final class PledgeViewModelTests: TestCase {
 
   private let goToApplePayPaymentAuthorizationProject = TestObserver<Project, Never>()
   private let goToApplePayPaymentAuthorizationReward = TestObserver<Reward, Never>()
-  private let goToApplePayPaymentAuthorizationPledgeAmount = TestObserver<Double, Never>()
-  private let goToApplePayPaymentAuthorizationShippingRule = TestObserver<ShippingRule?, Never>()
+  private let goToApplePayPaymentAuthorizationPledgeTotal = TestObserver<Double, Never>()
+  private let goToApplePayPaymentAuthorizationAdditionalPledgeAmount = TestObserver<Double, Never>()
+  private let goToApplePayPaymentAuthorizationShippingTotal = TestObserver<Double, Never>()
   private let goToApplePayPaymentAuthorizationMerchantId = TestObserver<String, Never>()
 
   private let goToThanksCheckoutData = TestObserver<Koala.CheckoutPropertiesData?, Never>()
@@ -135,10 +136,12 @@ final class PledgeViewModelTests: TestCase {
       .observe(self.goToApplePayPaymentAuthorizationProject.observer)
     self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.reward }
       .observe(self.goToApplePayPaymentAuthorizationReward.observer)
-    self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.pledgeAmount }
-      .observe(self.goToApplePayPaymentAuthorizationPledgeAmount.observer)
-    self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.selectedShippingRule }
-      .observe(self.goToApplePayPaymentAuthorizationShippingRule.observer)
+    self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.allRewardsTotal }
+      .observe(self.goToApplePayPaymentAuthorizationPledgeTotal.observer)
+    self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.additionalPledgeAmount }
+      .observe(self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.observer)
+    self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.allRewardsShippingTotal }
+      .observe(self.goToApplePayPaymentAuthorizationShippingTotal.observer)
     self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.merchantIdentifier }
       .observe(self.goToApplePayPaymentAuthorizationMerchantId.observer)
 
@@ -1244,8 +1247,9 @@ final class PledgeViewModelTests: TestCase {
     self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
     self.vm.inputs.applePayButtonTapped()
@@ -1253,8 +1257,9 @@ final class PledgeViewModelTests: TestCase {
     self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationProject.assertValues([project])
     self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-    self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-    self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([5])
+    self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([0])
+    self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([0])
+    self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([5])
     self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
   }
 
@@ -1264,7 +1269,7 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.minimum .~ 20
       |> Reward.lens.shipping.enabled .~ true
     let shippingRule = ShippingRule.template
-    let pledgeAmountData = (amount: 93.0, min: 25.0, max: 10_000.0, isValid: true)
+    let pledgeAmountData = (amount: 25.0, min: 25.0, max: 10_000.0, isValid: true)
 
     let data = PledgeViewData(
       project: project,
@@ -1276,25 +1281,28 @@ final class PledgeViewModelTests: TestCase {
     )
 
     self.vm.inputs.configure(with: data)
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
     self.vm.inputs.viewDidLoad()
 
     self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
     self.vm.inputs.shippingRuleSelected(shippingRule)
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
     self.vm.inputs.applePayButtonTapped()
 
     self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationProject.assertValues([project])
     self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-    self.goToApplePayPaymentAuthorizationShippingRule.assertValues([shippingRule])
-    self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([25])
+    self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([shippingRule.cost])
+    self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([20])
+    self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([25])
     self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
   }
 
@@ -1364,7 +1372,7 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.minimum .~ 20
       |> Reward.lens.shipping.enabled .~ true
     let shippingRule = ShippingRule.template
-    let pledgeAmountData = (amount: 93.0, min: 25.0, max: 10_000.0, isValid: true)
+    let pledgeAmountData = (amount: 25.0, min: 25.0, max: 10_000.0, isValid: true)
 
     let data = PledgeViewData(
       project: project,
@@ -1376,18 +1384,20 @@ final class PledgeViewModelTests: TestCase {
     )
 
     self.vm.inputs.configure(with: data)
-    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.shippingRuleSelected(shippingRule)
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
     self.vm.inputs.applePayButtonTapped()
 
     self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationProject.assertValues([project])
     self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-    self.goToApplePayPaymentAuthorizationShippingRule.assertValues([shippingRule])
-    self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([25])
+    self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([shippingRule.cost])
+    self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([20])
+    self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([25])
     self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
     self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
@@ -2620,8 +2630,9 @@ final class PledgeViewModelTests: TestCase {
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
     self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2634,7 +2645,7 @@ final class PledgeViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       let reward = Reward.postcards
         |> Reward.lens.shipping.enabled .~ true
-        |> Reward.lens.minimum .~ 0
+        |> Reward.lens.minimum .~ 10
 
       let project = Project.cosmicSurgery
         |> Project.lens.state .~ .live
@@ -2661,13 +2672,14 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      let pledgeAmountData = (amount: 90.0, min: 5.0, max: 10_000.0, isValid: true)
+      let pledgeAmountData = (amount: 15.0, min: 5.0, max: 10_000.0, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
       self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2681,8 +2693,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([100])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2698,8 +2711,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([100])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2716,8 +2730,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([100])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2731,8 +2746,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([100])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2746,8 +2762,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([100])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2781,8 +2798,9 @@ final class PledgeViewModelTests: TestCase {
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
     self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2821,13 +2839,14 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      let pledgeAmountData = (amount: 93.0, min: 5.0, max: 10_000.0, isValid: true)
+      let pledgeAmountData = (amount: 15.0, min: 5.0, max: 10_000.0, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
       self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2841,8 +2860,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2859,8 +2879,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2874,8 +2895,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2889,8 +2911,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2909,8 +2932,9 @@ final class PledgeViewModelTests: TestCase {
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
     self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
@@ -2948,13 +2972,14 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      let pledgeAmountData = (amount: 93.0, min: 5.0, max: 10_000.0, isValid: true)
+      let pledgeAmountData = (amount: 15.0, min: 5.0, max: 10_000.0, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
       self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
@@ -2967,8 +2992,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -2984,8 +3010,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3002,8 +3029,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3017,8 +3045,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3032,8 +3061,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3068,8 +3098,9 @@ final class PledgeViewModelTests: TestCase {
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
     self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
@@ -3091,13 +3122,14 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      let pledgeAmountData = (amount: 93.0, min: 5.0, max: 10_000.0, isValid: true)
+      let pledgeAmountData = (amount: 15.0, min: 5.0, max: 10_000.0, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
       self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
       self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
@@ -3110,8 +3142,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3127,8 +3160,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3145,8 +3179,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3160,8 +3195,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3175,8 +3211,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3209,8 +3246,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project, project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward, reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil, nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109, 109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10, 10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6, 6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15, 15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([
         Secrets.ApplePay.merchantIdentifier,
         Secrets.ApplePay.merchantIdentifier
@@ -3222,8 +3260,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project, project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward, reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil, nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109, 109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10, 10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6, 6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15, 15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([
         Secrets.ApplePay.merchantIdentifier,
         Secrets.ApplePay.merchantIdentifier
@@ -3243,8 +3282,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project, project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward, reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil, nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109, 109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10, 10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6, 6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15, 15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([
         Secrets.ApplePay.merchantIdentifier,
         Secrets.ApplePay.merchantIdentifier
@@ -3261,8 +3301,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project, project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward, reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil, nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109, 109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10, 10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6, 6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15, 15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([
         Secrets.ApplePay.merchantIdentifier,
         Secrets.ApplePay.merchantIdentifier
@@ -3279,8 +3320,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project, project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward, reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil, nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109, 109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10, 10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6, 6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15, 15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([
         Secrets.ApplePay.merchantIdentifier,
         Secrets.ApplePay.merchantIdentifier
@@ -3320,8 +3362,9 @@ final class PledgeViewModelTests: TestCase {
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
     self.notifyDelegateUpdatePledgeDidSucceedWithMessage.assertDidNotEmitValue()
@@ -3343,13 +3386,14 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      let pledgeAmountData = (amount: 93.0, min: 5.0, max: 10_000.0, isValid: true)
+      let pledgeAmountData = (amount: 15.0, min: 5.0, max: 10_000.0, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
       self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3363,8 +3407,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3380,8 +3425,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3398,8 +3444,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3413,8 +3460,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3428,8 +3476,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3462,8 +3511,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3477,8 +3527,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3492,8 +3543,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3530,8 +3582,9 @@ final class PledgeViewModelTests: TestCase {
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
     self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3554,15 +3607,16 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      let pledgeAmountData = (amount: 93.0, min: 5.0, max: 10_000.0, isValid: true)
+      let pledgeAmountData = (amount: 15.0, min: 5.0, max: 10_000.0, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
       self.vm.inputs.creditCardSelected(with: "123")
 
       self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3576,8 +3630,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3591,8 +3646,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3625,8 +3681,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3642,8 +3699,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3660,8 +3718,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3675,8 +3734,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3690,8 +3750,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3728,8 +3789,9 @@ final class PledgeViewModelTests: TestCase {
 
     self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-    self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+    self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
     self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
     self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3752,15 +3814,16 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      let pledgeAmountData = (amount: 93.0, min: 5.0, max: 10_000.0, isValid: true)
+      let pledgeAmountData = (amount: 15.0, min: 5.0, max: 10_000.0, isValid: true)
       self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
 
       self.vm.inputs.creditCardSelected(with: "123")
 
       self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3774,8 +3837,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3789,8 +3853,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationReward.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertDidNotEmitValue()
-      self.goToApplePayPaymentAuthorizationShippingRule.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertDidNotEmitValue()
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertDidNotEmitValue()
       self.goToApplePayPaymentAuthorizationMerchantId.assertDidNotEmitValue()
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3804,8 +3869,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3821,8 +3887,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3839,8 +3906,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3854,8 +3922,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
@@ -3869,8 +3938,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToApplePayPaymentAuthorizationProject.assertValues([project])
       self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-      self.goToApplePayPaymentAuthorizationShippingRule.assertValues([nil])
-      self.goToApplePayPaymentAuthorizationPledgeAmount.assertValues([109])
+      self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
+      self.goToApplePayPaymentAuthorizationPledgeTotal.assertValues([6])
+      self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
       self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
