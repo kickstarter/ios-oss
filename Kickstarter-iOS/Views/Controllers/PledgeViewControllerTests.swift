@@ -450,4 +450,42 @@ final class PledgeViewControllerTests: TestCase {
         }
       }
   }
+
+  func testView_HasAddOns_ShippingSelected() {
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.id .~ 99
+    let addOnReward1 = Reward.template
+      |> Reward.lens.id .~ 1
+    let addOnReward2 = Reward.template
+      |> Reward.lens.id .~ 2
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward, addOnReward1, addOnReward2],
+      selectedQuantities: [reward.id: 1, addOnReward1.id: 2, addOnReward2.id: 1],
+      selectedShippingRule: ShippingRule.template,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
+      .forEach { language, device, currentUser in
+        withEnvironment(language: language) {
+          let controller = PledgeViewController.instantiate()
+          controller.configure(with: data)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+          self.scheduler.advance(by: .seconds(1))
+
+          let loggedIn = currentUser != nil
+          let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
+          if loggedIn { parent.view.frame.size.height = 1_200 }
+
+          self.allowLayoutPass()
+
+          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
+        }
+      }
+  }
 }
