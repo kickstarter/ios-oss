@@ -457,8 +457,10 @@ final class PledgeViewControllerTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.id .~ 99
     let addOnReward1 = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.id .~ 1
     let addOnReward2 = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.id .~ 2
 
     let data = PledgeViewData(
