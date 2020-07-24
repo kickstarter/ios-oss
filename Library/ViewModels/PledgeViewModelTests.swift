@@ -2723,6 +2723,7 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.id .~ 99
     let addOnReward1 = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.id .~ 1
     let addOnReward2 = Reward.template
       |> Reward.lens.id .~ 2
@@ -2746,7 +2747,7 @@ final class PledgeViewModelTests: TestCase {
 
     self.goToApplePayPaymentAuthorizationProject.assertValues([project])
     self.goToApplePayPaymentAuthorizationReward.assertValues([reward])
-    self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([20])
+    self.goToApplePayPaymentAuthorizationShippingTotal.assertValues([10])
     self.goToApplePayPaymentAuthorizationAllRewardsTotal.assertValues([40])
     self.goToApplePayPaymentAuthorizationAdditionalPledgeAmount.assertValues([15])
     self.goToApplePayPaymentAuthorizationMerchantId.assertValues([Secrets.ApplePay.merchantIdentifier])
@@ -4194,13 +4195,13 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       let checkoutData = Koala.CheckoutPropertiesData(
-        amount: "35.00",
+        amount: "25.00",
         bonusAmount: "15.00",
         bonusAmountInUsdCents: 1_500,
         checkoutId: 1,
         estimatedDelivery: Reward.template.estimatedDeliveryOn,
         paymentType: "CREDIT_CARD",
-        revenueInUsdCents: 3_500,
+        revenueInUsdCents: 2_500,
         rewardId: Reward.template.id,
         rewardTitle: Reward.template.title,
         shippingEnabled: Reward.template.shipping.enabled,
@@ -4835,6 +4836,7 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
     let addOnReward1 = Reward.template
       |> Reward.lens.id .~ 2
+      |> Reward.lens.shipping.enabled .~ true
     let project = Project.template
       |> Project.lens.rewards .~ [reward]
 
@@ -4842,6 +4844,43 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward, addOnReward1],
       selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
+      selectedShippingRule: ShippingRule.template,
+      refTag: nil,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.configureShippingSummaryViewWithData.assertValues([
+      PledgeShippingSummaryViewData(
+        locationName: "Brooklyn, NY",
+        omitUSCurrencyCode: true,
+        projectCountry: .us,
+        total: 10
+      )
+    ])
+  }
+
+  func testConfigureShippingSummaryViewWithData_HasAddOns_OnlyOneHasShipping() {
+    self.configureShippingSummaryViewWithData.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+    let addOnReward1 = Reward.template
+      |> Reward.lens.id .~ 2
+      |> Reward.lens.shipping.enabled .~ true
+    let addOnReward2 = Reward.template
+      |> Reward.lens.id .~ 3
+      |> Reward.lens.shipping.enabled .~ false
+
+    let project = Project.template
+      |> Project.lens.rewards .~ [reward]
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward, addOnReward1, addOnReward2],
+      selectedQuantities: [reward.id: 1, addOnReward1.id: 1, addOnReward2.id: 2],
       selectedShippingRule: ShippingRule.template,
       refTag: nil,
       context: .pledge
@@ -5257,6 +5296,7 @@ final class PledgeViewModelTests: TestCase {
   func testTrackingEvents_PledgeSubmitButtonClicked() {
     let project = Project.template
     let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
 
     let data = PledgeViewData(
       project: project,
@@ -5295,7 +5335,7 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual("CREDIT_CARD", props?["checkout_payment_type"] as? String)
     XCTAssertEqual(1, props?["checkout_reward_id"] as? Int)
     XCTAssertEqual(5_500, props?["checkout_revenue_in_usd_cents"] as? Int)
-    XCTAssertEqual(false, props?["checkout_reward_shipping_enabled"] as? Bool)
+    XCTAssertEqual(true, props?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
     XCTAssertEqual(5.0, props?["checkout_shipping_amount"] as? Double)
     XCTAssertEqual(1_506_897_315.0, props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
@@ -5307,7 +5347,7 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual(true, props?["pledge_backer_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_time"] as? Bool)
     XCTAssertEqual(10.00, props?["pledge_backer_reward_minimum"] as? Double)
-    XCTAssertEqual(false, props?["pledge_backer_reward_shipping_enabled"] as? Bool)
+    XCTAssertEqual(true, props?["pledge_backer_reward_shipping_enabled"] as? Bool)
 
     XCTAssertNil(props?["pledge_backer_reward_shipping_preference"] as? String)
 

@@ -247,11 +247,11 @@ private func rewardsData(
     )
   }
   .map { reward in
-    .init(
+    RewardAddOnCardViewData(
       project: project,
       reward: reward,
       context: context == .pledge ? .pledge : .manage,
-      shippingRule: shippingRule
+      shippingRule: reward.shipping.enabled ? shippingRule : nil
     )
   }
 }

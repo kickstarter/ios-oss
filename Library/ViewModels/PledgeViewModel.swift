@@ -174,6 +174,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
     .map { shippingCost, rewards, selectedQuantities -> Double in
       rewards.reduce(0.0) { total, reward in
+        guard reward.shipping.enabled else { return total }
+
         let totalShippingForReward = shippingCost
           .multiplyingCurrency(Double(selectedQuantities[reward.id] ?? 0))
 

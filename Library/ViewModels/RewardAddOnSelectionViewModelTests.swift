@@ -191,29 +191,35 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.id .~ 99
 
     let noShippingAddOn = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-1".toBase64()
       |> \.shippingPreference .~ .noShipping
 
     let shippingAddOn1 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-2".toBase64()
       |> \.shippingPreference .~ .restricted
       |> \.shippingRules .~ [
         .template |> (\.location.id .~ "Location-99".toBase64())
       ]
 
     let shippingAddOn2 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-3".toBase64()
       |> \.shippingPreference .~ .restricted
       |> \.shippingRules .~ [
         .template |> (\.location.id .~ "Location-99".toBase64())
       ]
 
     let shippingAddOn3 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-4".toBase64()
       |> \.shippingPreference .~ .restricted
       |> \.shippingRules .~ [
         .template |> (\.location.id .~ "Location-3".toBase64())
       ]
 
     let shippingAddOn4 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-5".toBase64()
       |> \.shippingPreference .~ .unrestricted
 
     let project = Project.template
@@ -241,7 +247,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         project: project,
         reward: reward,
         context: .pledge,
-        shippingRule: shippingRule
+        shippingRule: reward.shipping.enabled ? shippingRule : nil
       )
     }
 
@@ -288,23 +294,28 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .restricted
+      |> Reward.lens.id .~ 99
 
     let noShippingAddOn = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-1".toBase64()
       |> \.shippingPreference .~ .noShipping
 
     let shippingAddOn1 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-2".toBase64()
       |> \.shippingPreference .~ .restricted
       |> \.shippingRules .~ [
         .template |> (\.location.id .~ "Location-99".toBase64())
       ]
 
     let shippingAddOn2 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-3".toBase64()
       |> \.shippingPreference .~ .restricted
       |> \.shippingRules .~ [
         .template |> (\.location.id .~ "Location-99".toBase64())
       ]
 
     let shippingAddOn3 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-4".toBase64()
       |> \.shippingPreference .~ .restricted
       |> \.shippingRules .~ [
         .template |> (\.location.id .~ "Location-3".toBase64())
@@ -316,7 +327,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         .template |> \.nodes .~ [shippingAddOn1, noShippingAddOn, shippingAddOn2, shippingAddOn3]
       )
 
-    let expected = [noShippingAddOn, shippingAddOn1, shippingAddOn2].compactMap { addOn in
+    let expected = [shippingAddOn1, noShippingAddOn, shippingAddOn2].compactMap { addOn in
       Reward.addOnReward(
         from: addOn,
         project: project,
@@ -329,7 +340,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         project: project,
         reward: reward,
         context: .pledge,
-        shippingRule: shippingRule
+        shippingRule: reward.shipping.enabled ? shippingRule : nil
       )
     }
 
