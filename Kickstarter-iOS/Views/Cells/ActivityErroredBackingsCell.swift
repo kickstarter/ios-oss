@@ -93,8 +93,7 @@ final class ActivityErroredBackingsCell: UITableViewCell, ValueCell {
   // MARK: - Private Helpers
 
   private func configureErroredBackingViews(with backings: [GraphBacking]) {
-    self.erroredBackingsStackView.arrangedSubviews
-      .forEach(self.erroredBackingsStackView.removeArrangedSubview)
+    self.erroredBackingsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
     let erroredBackingsViews = backings.map { backing -> ErroredBackingView in
       let view = ErroredBackingView(frame: .zero)
@@ -131,7 +130,7 @@ private let backgroundContainerViewStyle: ViewStyle = { view in
 private let cellStyle: TableViewCellStyle = { cell in
   cell
     |> \.selectionStyle .~ .none
-    |> \.layoutMargins .~ UIEdgeInsets(all: Styles.grid(2))
+    |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
     |> \.preservesSuperviewLayoutMargins .~ false
 }
 
