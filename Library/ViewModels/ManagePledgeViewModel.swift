@@ -519,9 +519,17 @@ private func managePledgeSummaryViewData(
     projectCountry: project.country,
     projectDeadline: project.dates.deadline,
     projectState: envelope.project.state,
-    rewardMinimum: envelope.backing.reward?.amount.amount ?? 0,
+    rewardMinimum: allRewardsTotal(for: envelope.backing),
     shippingAmount: envelope.backing.shippingAmount?.amount
   )
+}
+
+private func allRewardsTotal(for backing: ManagePledgeViewBackingEnvelope.Backing) -> Double {
+  let baseRewardAmount = backing.reward?.amount.amount ?? 0
+
+  guard let addOns = backing.addOns?.nodes else { return baseRewardAmount }
+
+  return baseRewardAmount + addOns.reduce(0.0) { total, addOn in total.addingCurrency(addOn.amount.amount) }
 }
 
 private func rewardsData(

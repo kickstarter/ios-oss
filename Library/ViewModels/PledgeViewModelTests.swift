@@ -2641,11 +2641,13 @@ final class PledgeViewModelTests: TestCase {
 
     self.configurePledgeViewCTAContainerViewIsEnabled.assertDidNotEmitValue()
 
+    let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedShippingRule: defaultShippingRule,
       refTag: .discovery,
       context: .update
     )
@@ -2659,7 +2661,7 @@ final class PledgeViewModelTests: TestCase {
       with: (amount: 680, min: 25.0, max: 10_000.0, isValid: true)
     )
 
-    self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
+    self.vm.inputs.shippingRuleSelected(defaultShippingRule)
 
     self.configurePledgeViewCTAContainerViewIsEnabled
       .assertValues([false], "Shipping rule and amount unchanged")
@@ -2687,7 +2689,7 @@ final class PledgeViewModelTests: TestCase {
     self.configurePledgeViewCTAContainerViewIsEnabled
       .assertValues([false, true, false, true], "Shipping rule changed")
 
-    self.vm.inputs.shippingRuleSelected(.init(cost: 1, id: 1, location: .brooklyn))
+    self.vm.inputs.shippingRuleSelected(defaultShippingRule)
 
     self.configurePledgeViewCTAContainerViewIsEnabled.assertValues(
       [false, true, false, true, false],
@@ -2800,11 +2802,13 @@ final class PledgeViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
+      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedShippingRule: defaultShippingRule,
         refTag: .projectPage,
         context: .changePaymentMethod
       )
@@ -2967,11 +2971,13 @@ final class PledgeViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
+      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedShippingRule: defaultShippingRule,
         refTag: .projectPage,
         context: .changePaymentMethod
       )
@@ -3100,11 +3106,13 @@ final class PledgeViewModelTests: TestCase {
             |> Backing.lens.amount .~ 700.0
         )
 
+      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedShippingRule: defaultShippingRule,
         refTag: .projectPage,
         context: .changePaymentMethod
       )
@@ -3250,11 +3258,13 @@ final class PledgeViewModelTests: TestCase {
     self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService1) {
+      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedShippingRule: defaultShippingRule,
         refTag: .projectPage,
         context: .update
       )
@@ -3514,11 +3524,13 @@ final class PledgeViewModelTests: TestCase {
     self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService1) {
+      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedShippingRule: defaultShippingRule,
         refTag: .projectPage,
         context: .update
       )
@@ -3735,11 +3747,13 @@ final class PledgeViewModelTests: TestCase {
     self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService1) {
+      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedShippingRule: defaultShippingRule,
         refTag: .projectPage,
         context: .update
       )
@@ -3942,11 +3956,13 @@ final class PledgeViewModelTests: TestCase {
     self.goToThanksProject.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService) {
+      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedShippingRule: defaultShippingRule,
         refTag: .projectPage,
         context: .update
       )
@@ -4117,11 +4133,13 @@ final class PledgeViewModelTests: TestCase {
       let project = Project.template
       let reward = Reward.template
 
+      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedShippingRule: defaultShippingRule,
         refTag: .activity,
         context: .pledge
       )
@@ -4176,17 +4194,17 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       let checkoutData = Koala.CheckoutPropertiesData(
-        amount: "25.00",
+        amount: "35.00",
         bonusAmount: "15.00",
         bonusAmountInUsdCents: 1_500,
         checkoutId: 1,
         estimatedDelivery: Reward.template.estimatedDeliveryOn,
         paymentType: "CREDIT_CARD",
-        revenueInUsdCents: 2_500,
+        revenueInUsdCents: 3_500,
         rewardId: Reward.template.id,
         rewardTitle: Reward.template.title,
         shippingEnabled: Reward.template.shipping.enabled,
-        shippingAmount: nil,
+        shippingAmount: 10,
         userHasStoredApplePayCard: true
       )
 
@@ -4223,11 +4241,13 @@ final class PledgeViewModelTests: TestCase {
       let project = Project.template
       let reward = Reward.template
 
+      let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
+
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedShippingRule: defaultShippingRule,
         refTag: .activity,
         context: .pledge
       )

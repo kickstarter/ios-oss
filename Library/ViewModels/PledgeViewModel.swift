@@ -145,17 +145,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
-    let initialShippingCost = Signal.combineLatest(
-      initialData.map(\.project.personalization.backing),
-      initialShippingRule
-    )
-    .map { backing, initialShippingRule -> Double in
-      guard let backing = backing else {
-        return initialShippingRule?.cost ?? 0.0
-      }
-
-      return Double(backing.shippingAmount ?? 0)
-    }
+    let initialShippingCost = initialShippingRule
+      .map { shippingRule in Double(shippingRule?.cost ?? 0) }
 
     let shippingCost = Signal.merge(
       initialShippingCost,

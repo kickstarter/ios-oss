@@ -164,6 +164,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       )
 
     let envelope = ManagePledgeViewBackingEnvelope.template
+      |> \.backing.addOns .~ nil
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope),
