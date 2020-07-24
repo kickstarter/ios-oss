@@ -331,14 +331,25 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
         return SignalProducer(value: (project, update))
       }
 
-    self.goToManagePledge = self.erroredBackingViewDidTapManageWithBackingProperty.signal
+    let goToManagePledgeWithBacking = self.erroredBackingViewDidTapManageWithBackingProperty.signal
       .skipNil()
+
+    self.goToManagePledge = goToManagePledgeWithBacking
       .map { backing -> ManagePledgeViewParamConfigData? in
         guard let pid = backing.project?.pid, let backingId = decompose(id: backing.id) else { return nil }
 
         return (projectParam: Param.id(pid), backingParam: Param.id(backingId))
       }
       .skipNil()
+
+    self.activities.takePairWhen(goToManagePledgeWithBacking)
+      .observeValues { activities, backing in
+        let activity = activities.first { $0.project?.id == backing.project?.pid }
+
+        guard let project = activity?.project else { return }
+
+        AppEnvironment.current.koala.trackActivitiesManagePledgeButtonClicked(project: project)
+      }
 
     Signal.zip(pageCount, paginatedActivities)
       .filter { pageCount, _ in

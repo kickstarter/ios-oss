@@ -550,6 +550,30 @@ final class ActivitiesViewModelTests: TestCase {
     self.goToManagePledgeBackingParam.assertValues([.id(backingId)])
   }
 
+  func testTracking_GoToManagePledge() {
+    withEnvironment(
+      apiService: MockService(fetchActivitiesResponse: [.template]),
+      currentUser: .template
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.userSessionStarted()
+      self.scheduler.advance()
+
+      let backing = GraphBacking.template
+        |> \.project .~ .template
+
+      XCTAssertEqual(self.trackingClient.events, ["Activity Feed Viewed"])
+
+      self.vm.inputs.erroredBackingViewDidTapManage(with: backing)
+
+      XCTAssertEqual(
+        self.trackingClient.events,
+        ["Activity Feed Viewed", "Manage Pledge Button Clicked"]
+      )
+    }
+  }
+
   func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish() {
     let user = User.template
 
