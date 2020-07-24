@@ -52,6 +52,10 @@ public struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
     }
 
     public struct Location: Swift.Decodable {
+      public var country: String
+      public var countryName: String
+      public var displayableName: String
+      public var id: String
       public var name: String
     }
 

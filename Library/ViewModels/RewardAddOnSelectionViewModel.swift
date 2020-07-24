@@ -2,8 +2,13 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public typealias SelectedRewardId = Int
+public typealias SelectedRewardQuantity = Int
+public typealias SelectedRewardQuantities = [SelectedRewardId: SelectedRewardQuantity]
+
 public protocol RewardAddOnSelectionViewModelInputs {
-  func configureWith(project: Project, reward: Reward, refTag: RefTag?, context: PledgeViewContext)
+  func configure(with data: PledgeViewData)
+  func continueButtonTapped()
   func rewardAddOnCardViewDidSelectQuantity(quantity: Int, rewardId: Int)
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func viewDidLoad()
@@ -13,6 +18,7 @@ public protocol RewardAddOnSelectionViewModelOutputs {
   var configureContinueCTAViewWithData: Signal<RewardAddOnSelectionContinueCTAViewData, Never> { get }
   var configurePledgeShippingLocationViewControllerWithData:
     Signal<PledgeShippingLocationViewData, Never> { get }
+  var goToPledge: Signal<PledgeViewData, Never> { get }
   var loadAddOnRewardsIntoDataSource: Signal<[RewardAddOnCardViewData], Never> { get }
   var loadAddOnRewardsIntoDataSourceAndReloadTableView: Signal<[RewardAddOnCardViewData], Never> { get }
   var shippingLocationViewIsHidden: Signal<Bool, Never> { get }
@@ -32,11 +38,13 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     )
     .map(first)
 
-    let project = configData.map { $0.0 }
-    let reward = configData.map { $0.1 }
-    let context = configData.map { $0.3 }
+    let project = configData.map(\.project)
+    let baseReward = configData.map(\.rewards).map(\.first).skipNil()
+    let baseRewardQuantities = configData.map(\.selectedQuantities)
+    let refTag = configData.map(\.refTag)
+    let context = configData.map(\.context)
 
-    self.configurePledgeShippingLocationViewControllerWithData = Signal.zip(project, reward)
+    self.configurePledgeShippingLocationViewControllerWithData = Signal.zip(project, baseReward)
       .map { project, reward in (project, reward, false) }
 
     let addOnsEvent = project.map(\.slug).flatMap { slug in
@@ -51,29 +59,40 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     let shippingRule = Signal.merge(
       self.shippingRuleSelectedProperty.signal,
-      reward.filter { reward in !reward.shipping.enabled }.mapConst(nil)
+      baseReward.filter { reward in !reward.shipping.enabled }.mapConst(nil)
     )
 
     let rewardAddOnCardsViewData = Signal.combineLatest(
       addOns,
       project,
-      reward,
+      baseReward,
       context,
       shippingRule
     )
     .map(rewardsData)
 
-    let selectedQuantities = self.rewardAddOnCardViewDidSelectQuantityProperty.signal
-      .skipNil()
-      .scan([:]) { current, new -> [Int: Int] in
-        let (quantity, rewardId) = new
-        var mutableCurrent = current
-        mutableCurrent[rewardId] = quantity
-        return mutableCurrent
-      }
+    let selectedAddOnQuantities = Signal.merge(
+      self.rewardAddOnCardViewDidSelectQuantityProperty.signal
+        .skipNil()
+        .scan([:]) { current, new -> SelectedRewardQuantities in
+          let (quantity, rewardId) = new
+          var mutableCurrent = current
+          mutableCurrent[rewardId] = quantity
+          return mutableCurrent
+        },
+      configData.mapConst([:])
+    )
+
+    let selectedQuantities = Signal.combineLatest(
+      selectedAddOnQuantities,
+      baseRewardQuantities
+    )
+    .map { selectedAddOnQuantities, baseRewardQuantities in
+      selectedAddOnQuantities.withAllValuesFrom(baseRewardQuantities)
+    }
 
     let latestSelectedQuantities = Signal.merge(
-      configData.mapConst([:]),
+      baseRewardQuantities,
       selectedQuantities
     )
 
@@ -85,25 +104,67 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       .takePairWhen(latestSelectedQuantities)
       .map(rewardsData)
 
-    self.shippingLocationViewIsHidden = reward.map(\.shipping.enabled)
+    self.shippingLocationViewIsHidden = baseReward.map(\.shipping.enabled)
       .negate()
 
-    let totalSelectedQuantity = latestSelectedQuantities.map { quantities in
-      quantities.reduce(0) { accum, keyValue in
-        let (_, value) = keyValue
-        return accum + value
-      }
+    let totalSelectedAddOnsQuantity = Signal.combineLatest(
+      latestSelectedQuantities,
+      baseReward
+    )
+    .map { quantities, baseReward in
+      quantities
+        // Filter out the base reward for determining the add-on quantities
+        .filter { key, _ in key != baseReward.id }
+        .reduce(0) { accum, keyValue in
+          let (_, value) = keyValue
+          return accum + value
+        }
     }
 
-    self.configureContinueCTAViewWithData = Signal.merge(
-      configData.mapConst((0, true)),
-      totalSelectedQuantity.map { qty in (qty, true) }
+    self.configureContinueCTAViewWithData = totalSelectedAddOnsQuantity.map { qty in (qty, true) }
+
+    let addOnRewards = Signal.merge(
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView,
+      self.loadAddOnRewardsIntoDataSource
     )
+
+    let baseRewardAndAddOnRewards = Signal.combineLatest(
+      baseReward,
+      addOnRewards
+    )
+
+    let selectedRewards = baseRewardAndAddOnRewards
+      .combineLatest(with: latestSelectedQuantities)
+      .map(unpack)
+      .map { baseReward, rewardsData, selectedQuantities -> [Reward] in
+        let selectedRewardIds = selectedQuantities
+          .filter { _, qty in qty > 0 }
+          .keys
+
+        return [baseReward] + rewardsData.map(\.reward)
+          .filter { reward in selectedRewardIds.contains(reward.id) }
+      }
+
+    self.goToPledge = Signal.combineLatest(
+      project,
+      selectedRewards,
+      selectedQuantities,
+      shippingRule,
+      refTag,
+      context
+    )
+    .map(PledgeViewData.init)
+    .takeWhen(self.continueButtonTappedProperty.signal)
   }
 
-  private let configureWithDataProperty = MutableProperty<(Project, Reward, RefTag?, PledgeViewContext)?>(nil)
-  public func configureWith(project: Project, reward: Reward, refTag: RefTag?, context: PledgeViewContext) {
-    self.configureWithDataProperty.value = (project, reward, refTag, context)
+  private let configureWithDataProperty = MutableProperty<PledgeViewData?>(nil)
+  public func configure(with data: PledgeViewData) {
+    self.configureWithDataProperty.value = data
+  }
+
+  private let continueButtonTappedProperty = MutableProperty(())
+  public func continueButtonTapped() {
+    self.continueButtonTappedProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -111,8 +172,12 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     self.viewDidLoadProperty.value = ()
   }
 
-  private let rewardAddOnCardViewDidSelectQuantityProperty = MutableProperty<(Int, Int)?>(nil)
-  public func rewardAddOnCardViewDidSelectQuantity(quantity: Int, rewardId: Int) {
+  private let rewardAddOnCardViewDidSelectQuantityProperty
+    = MutableProperty<(SelectedRewardQuantity, SelectedRewardId)?>(nil)
+  public func rewardAddOnCardViewDidSelectQuantity(
+    quantity: SelectedRewardQuantity,
+    rewardId: SelectedRewardId
+  ) {
     self.rewardAddOnCardViewDidSelectQuantityProperty.value = (quantity, rewardId)
   }
 
@@ -124,6 +189,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
   public let configureContinueCTAViewWithData: Signal<RewardAddOnSelectionContinueCTAViewData, Never>
   public let configurePledgeShippingLocationViewControllerWithData:
     Signal<PledgeShippingLocationViewData, Never>
+  public let goToPledge: Signal<PledgeViewData, Never>
   public let loadAddOnRewardsIntoDataSource: Signal<[RewardAddOnCardViewData], Never>
   public let loadAddOnRewardsIntoDataSourceAndReloadTableView: Signal<[RewardAddOnCardViewData], Never>
   public let shippingLocationViewIsHidden: Signal<Bool, Never>
@@ -136,7 +202,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
 private func rewardsData(
   _ data: [RewardAddOnCardViewData],
-  updatingQuantities quantities: [Int: Int]
+  updatingQuantities quantities: SelectedRewardQuantities
 ) -> [RewardAddOnCardViewData] {
   return data.map { datum in
     // Drill down into the reward and update its selectedQuantity
@@ -181,11 +247,11 @@ private func rewardsData(
     )
   }
   .map { reward in
-    .init(
+    RewardAddOnCardViewData(
       project: project,
       reward: reward,
       context: context == .pledge ? .pledge : .manage,
-      shippingRule: shippingRule
+      shippingRule: reward.shipping.enabled ? shippingRule : nil
     )
   }
 }

@@ -215,19 +215,24 @@ public func deviceIdentifier(uuid: UUIDType, env: Environment = AppEnvironment.c
   return identifier.uuidString
 }
 
-typealias SanitizedPledgeParams = (pledgeTotal: String, rewardId: String, locationId: String?)
+typealias SanitizedPledgeParams = (pledgeTotal: String, rewardIds: [String], locationId: String?)
 
 internal func sanitizedPledgeParameters(
-  from reward: Reward,
-  pledgeAmount: Double,
+  from rewards: [Reward],
+  selectedQuantities: SelectedRewardQuantities,
+  pledgeTotal: Double,
   shippingRule: ShippingRule?
 ) -> SanitizedPledgeParams {
   let shippingLocationId = (shippingRule?.location.id).flatMap(String.init)
 
-  let formattedPledgeTotal = Format.decimalCurrency(for: pledgeAmount)
-  let rewardId = reward.graphID
+  let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal)
+  let rewardIds = rewards.map { reward -> [String] in
+    guard let selectedRewardQuantity = selectedQuantities[reward.id] else { return [] }
+    return Array(0..<selectedRewardQuantity).map { _ in reward.graphID }
+  }
+  .flatMap { $0 }
 
-  return (formattedPledgeTotal, rewardId, shippingLocationId)
+  return (formattedPledgeTotal, rewardIds, shippingLocationId)
 }
 
 public func ksr_pledgeAmount(
@@ -239,18 +244,6 @@ public func ksr_pledgeAmount(
   let pledgeAmount = Decimal(pledgeAmount) - Decimal(shippingAmount)
 
   return (pledgeAmount as NSDecimalNumber).doubleValue
-}
-
-/// Returns the bonus support amount subtracting the reward minimum from the total pledge amount
-public func ksr_bonusSupportAmount(
-  pledgeAmount: Double,
-  shippingAmount: Double?,
-  rewardMinimum: Double
-) -> Double {
-  let pledgeAmount = ksr_pledgeAmount(pledgeAmount, subtractingShippingAmount: shippingAmount)
-  let bonusSupportAmount = Decimal(pledgeAmount) - Decimal(rewardMinimum)
-
-  return (bonusSupportAmount as NSDecimalNumber).doubleValue
 }
 
 public func discoveryPageBackgroundColor() -> UIColor {

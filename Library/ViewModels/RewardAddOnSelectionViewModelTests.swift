@@ -14,8 +14,10 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
   private let configurePledgeShippingLocationViewControllerWithDataProject = TestObserver<Project, Never>()
   private let configurePledgeShippingLocationViewControllerWithDataReward = TestObserver<Reward, Never>()
   private let configurePledgeShippingLocationViewControllerWithDataShowAmount = TestObserver<Bool, Never>()
+  private let goToPledge = TestObserver<PledgeViewData, Never>()
   private let loadAddOnRewardsIntoDataSource = TestObserver<[RewardAddOnCardViewData], Never>()
-  private let loadAddOnRewardsIntoDataSourceAndReloadTableView = TestObserver<[RewardAddOnCardViewData], Never>()
+  private let loadAddOnRewardsIntoDataSourceAndReloadTableView
+    = TestObserver<[RewardAddOnCardViewData], Never>()
   private let shippingLocationViewIsHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
@@ -31,6 +33,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       .observe(self.configurePledgeShippingLocationViewControllerWithDataReward.observer)
     self.vm.outputs.configurePledgeShippingLocationViewControllerWithData.map(third)
       .observe(self.configurePledgeShippingLocationViewControllerWithDataShowAmount.observer)
+    self.vm.outputs.goToPledge.observe(self.goToPledge.observer)
     self.vm.outputs.loadAddOnRewardsIntoDataSource.observe(self.loadAddOnRewardsIntoDataSource.observer)
     self.vm.outputs.loadAddOnRewardsIntoDataSourceAndReloadTableView
       .observe(self.loadAddOnRewardsIntoDataSourceAndReloadTableView.observer)
@@ -45,7 +48,16 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let reward = Reward.template
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .pledge)
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: nil,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     self.configurePledgeShippingLocationViewControllerWithDataProject.assertValues([project])
@@ -88,7 +100,16 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -139,7 +160,16 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -161,29 +191,35 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.id .~ 99
 
     let noShippingAddOn = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-1".toBase64()
       |> \.shippingPreference .~ .noShipping
 
     let shippingAddOn1 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-2".toBase64()
       |> \.shippingPreference .~ .restricted
       |> \.shippingRules .~ [
         .template |> (\.location.id .~ "Location-99".toBase64())
       ]
 
     let shippingAddOn2 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-3".toBase64()
       |> \.shippingPreference .~ .restricted
       |> \.shippingRules .~ [
         .template |> (\.location.id .~ "Location-99".toBase64())
       ]
 
     let shippingAddOn3 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-4".toBase64()
       |> \.shippingPreference .~ .restricted
       |> \.shippingRules .~ [
         .template |> (\.location.id .~ "Location-3".toBase64())
       ]
 
     let shippingAddOn4 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-5".toBase64()
       |> \.shippingPreference .~ .unrestricted
 
     let project = Project.template
@@ -211,14 +247,23 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         project: project,
         reward: reward,
         context: .pledge,
-        shippingRule: shippingRule
+        shippingRule: reward.shipping.enabled ? shippingRule : nil
       )
     }
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -249,23 +294,28 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .restricted
+      |> Reward.lens.id .~ 99
 
     let noShippingAddOn = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-1".toBase64()
       |> \.shippingPreference .~ .noShipping
 
     let shippingAddOn1 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-2".toBase64()
       |> \.shippingPreference .~ .restricted
       |> \.shippingRules .~ [
         .template |> (\.location.id .~ "Location-99".toBase64())
       ]
 
     let shippingAddOn2 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-3".toBase64()
       |> \.shippingPreference .~ .restricted
       |> \.shippingRules .~ [
         .template |> (\.location.id .~ "Location-99".toBase64())
       ]
 
     let shippingAddOn3 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-4".toBase64()
       |> \.shippingPreference .~ .restricted
       |> \.shippingRules .~ [
         .template |> (\.location.id .~ "Location-3".toBase64())
@@ -277,7 +327,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         .template |> \.nodes .~ [shippingAddOn1, noShippingAddOn, shippingAddOn2, shippingAddOn3]
       )
 
-    let expected = [noShippingAddOn, shippingAddOn1, shippingAddOn2].compactMap { addOn in
+    let expected = [shippingAddOn1, noShippingAddOn, shippingAddOn2].compactMap { addOn in
       Reward.addOnReward(
         from: addOn,
         project: project,
@@ -290,14 +340,23 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         project: project,
         reward: reward,
         context: .pledge,
-        shippingRule: shippingRule
+        shippingRule: reward.shipping.enabled ? shippingRule : nil
       )
     }
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -331,6 +390,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.id .~ 99
 
     let addOn1 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
       |> \.id .~ "Reward-1".toBase64()
@@ -338,20 +398,20 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     let addOn2 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
       |> \.id .~ "Reward-2".toBase64()
-    |> \.shippingPreference .~ .unrestricted
+      |> \.shippingPreference .~ .unrestricted
 
     let addOn3 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
       |> \.id .~ "Reward-3".toBase64()
-    |> \.shippingPreference .~ .unrestricted
+      |> \.shippingPreference .~ .unrestricted
 
     let addOn4 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
       |> \.id .~ "Reward-4".toBase64()
-    |> \.shippingPreference .~ .unrestricted
+      |> \.shippingPreference .~ .unrestricted
 
     let project = Project.template
     let env = RewardAddOnSelectionViewEnvelope.template
       |> \.project.addOns .~ (
-        .template |> \.nodes .~ [addOn1,addOn2,addOn3,addOn4]
+        .template |> \.nodes .~ [addOn1, addOn2, addOn3, addOn4]
       )
 
     let expected = [addOn1, addOn2, addOn3, addOn4].compactMap { addOn in
@@ -374,7 +434,16 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
 
     withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .pledge)
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
       self.scheduler.advance()
@@ -419,7 +488,16 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       )
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .pledge)
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: nil,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     self.shippingLocationViewIsHidden.assertValues([false])
@@ -434,9 +512,176 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       )
     let project = Project.template
 
-    self.vm.inputs.configureWith(project: project, reward: reward, refTag: nil, context: .pledge)
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedShippingRule: nil,
+      refTag: nil,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
     self.shippingLocationViewIsHidden.assertValues([true])
+  }
+
+  func testGoToPledge_AddOnsSkipped() {
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.id .~ 99
+
+    let addOn1 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-1".toBase64()
+      |> \.shippingPreference .~ .unrestricted
+
+    let addOn2 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-2".toBase64()
+      |> \.shippingPreference .~ .unrestricted
+
+    let addOn3 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-3".toBase64()
+      |> \.shippingPreference .~ .unrestricted
+
+    let addOn4 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-4".toBase64()
+      |> \.shippingPreference .~ .unrestricted
+
+    let project = Project.template
+    let env = RewardAddOnSelectionViewEnvelope.template
+      |> \.project.addOns .~ (
+        .template |> \.nodes .~ [addOn1, addOn2, addOn3, addOn4]
+      )
+
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
+
+    withEnvironment(apiService: mockService) {
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+      self.vm.inputs.shippingRuleSelected(shippingRule)
+
+      self.vm.inputs.continueButtonTapped()
+
+      let expectedGoToPledgeData = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: shippingRule,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.goToPledge.assertValues([expectedGoToPledgeData])
+    }
+  }
+
+  func testGoToPledge_AddOnsIncluded() {
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.id .~ 99
+
+    let addOn1 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-1".toBase64()
+      |> \.shippingPreference .~ .unrestricted
+
+    let addOn2 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-2".toBase64()
+      |> \.shippingPreference .~ .unrestricted
+
+    let addOn3 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-3".toBase64()
+      |> \.shippingPreference .~ .unrestricted
+
+    let addOn4 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-4".toBase64()
+      |> \.shippingPreference .~ .unrestricted
+
+    let project = Project.template
+    let env = RewardAddOnSelectionViewEnvelope.template
+      |> \.project.addOns .~ (
+        .template |> \.nodes .~ [addOn1, addOn2, addOn3, addOn4]
+      )
+
+    let addOnReward1 = Reward.addOnReward(
+      from: addOn1,
+      project: project,
+      selectedAddOnQuantities: [:],
+      dateFormatter: DateFormatter()
+    ) ?? .template
+
+    let addOnReward2 = Reward.addOnReward(
+      from: addOn2,
+      project: project,
+      selectedAddOnQuantities: [:],
+      dateFormatter: DateFormatter()
+    ) ?? .template
+
+    let addOnReward4 = Reward.addOnReward(
+      from: addOn4,
+      project: project,
+      selectedAddOnQuantities: [:],
+      dateFormatter: DateFormatter()
+    ) ?? .template
+
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
+
+    withEnvironment(apiService: mockService) {
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+      self.vm.inputs.shippingRuleSelected(shippingRule)
+
+      self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 3, rewardId: 2)
+      self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 2, rewardId: 1)
+      self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 4, rewardId: 4)
+
+      self.goToPledge.assertValueCount(0)
+
+      self.vm.inputs.continueButtonTapped()
+
+      self.goToPledge.assertValueCount(1)
+      XCTAssertEqual(self.goToPledge.values.last?.project, project)
+      XCTAssertEqual(
+        self.goToPledge.values.last?.rewards.count,
+        1
+      )
+      XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[reward.id], 1)
+      XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOnReward2.id], 3)
+      XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOnReward1.id], 2)
+      XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOnReward4.id], 4)
+      XCTAssertEqual(self.goToPledge.values.last?.selectedShippingRule, shippingRule)
+      XCTAssertEqual(self.goToPledge.values.last?.refTag, nil)
+      XCTAssertEqual(self.goToPledge.values.last?.context, .pledge)
+    }
   }
 }

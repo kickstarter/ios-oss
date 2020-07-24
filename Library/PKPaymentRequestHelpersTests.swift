@@ -15,8 +15,9 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
     let paymentRequest = PKPaymentRequest.paymentRequest(
       for: project,
       reward: reward,
-      pledgeAmount: 100,
-      selectedShippingRule: nil,
+      allRewardsTotal: 100,
+      additionalPledgeAmount: 50,
+      allRewardsShippingTotal: 0,
       merchantIdentifier: merchantId
     )
 
@@ -26,11 +27,11 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
     XCTAssertEqual(paymentRequest.currencyCode, "USD")
     XCTAssertEqual(paymentRequest.shippingType, .shipping)
     XCTAssertEqual(paymentRequest.paymentSummaryItems.count, 2)
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.first?.label, "The Project")
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.first?.amount.doubleValue, 100)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems.first?.label, "Total")
+    XCTAssertEqual(paymentRequest.paymentSummaryItems.first?.amount.doubleValue, 50)
     XCTAssertEqual(paymentRequest.paymentSummaryItems.first?.type, .final)
     XCTAssertEqual(paymentRequest.paymentSummaryItems.last?.label, "Kickstarter (if funded)")
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.last?.amount.doubleValue, 100)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems.last?.amount.doubleValue, 50)
     XCTAssertEqual(paymentRequest.paymentSummaryItems.last?.type, .final)
   }
 
@@ -40,6 +41,7 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
     let reward = Reward.template
       |> Reward.lens.title .~ "A cool reward"
       |> Reward.lens.minimum .~ 5
+      |> Reward.lens.shipping.enabled .~ true
     let shippingRule = ShippingRule.template
       |> ShippingRule.lens.cost .~ 6
     let merchantId = "merchant_id"
@@ -47,8 +49,9 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
     let paymentRequest = PKPaymentRequest.paymentRequest(
       for: project,
       reward: reward,
-      pledgeAmount: 5,
-      selectedShippingRule: shippingRule,
+      allRewardsTotal: 5,
+      additionalPledgeAmount: 50,
+      allRewardsShippingTotal: shippingRule.cost,
       merchantIdentifier: merchantId
     )
 
@@ -57,16 +60,19 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
     XCTAssertEqual(paymentRequest.countryCode, "CA")
     XCTAssertEqual(paymentRequest.currencyCode, "CAD")
     XCTAssertEqual(paymentRequest.shippingType, .shipping)
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.count, 3)
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.first?.label, "A cool reward")
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.first?.amount.doubleValue, 5)
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.first?.type, .final)
-    XCTAssertEqual(paymentRequest.paymentSummaryItems[1].label, "Shipping")
-    XCTAssertEqual(paymentRequest.paymentSummaryItems[1].amount.doubleValue, 6)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems.count, 4)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[0].label, "Reward")
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[0].amount.doubleValue, 5)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[0].type, .final)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[1].label, "Bonus")
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[1].amount.doubleValue, 50)
     XCTAssertEqual(paymentRequest.paymentSummaryItems[1].type, .final)
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.last?.label, "Kickstarter (if funded)")
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.last?.amount.doubleValue, 11)
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.last?.type, .final)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[2].label, "Shipping")
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[2].amount.doubleValue, 6)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[2].type, .final)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[3].label, "Kickstarter (if funded)")
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[3].amount.doubleValue, 61)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[3].type, .final)
   }
 
   func testPaymentRequest_WithShipping_NonWholeNumberPledgeAmount() {
@@ -75,6 +81,7 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
     let reward = Reward.template
       |> Reward.lens.title .~ "A cool reward"
       |> Reward.lens.minimum .~ 5
+      |> Reward.lens.shipping.enabled .~ true
     let shippingRule = ShippingRule.template
       |> ShippingRule.lens.cost .~ 6
     let merchantId = "merchant_id"
@@ -82,8 +89,9 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
     let paymentRequest = PKPaymentRequest.paymentRequest(
       for: project,
       reward: reward,
-      pledgeAmount: 10.60,
-      selectedShippingRule: shippingRule,
+      allRewardsTotal: 10.60,
+      additionalPledgeAmount: 20,
+      allRewardsShippingTotal: shippingRule.cost,
       merchantIdentifier: merchantId
     )
 
@@ -92,15 +100,18 @@ final class PKPaymentRequestHelpersTests: XCTestCase {
     XCTAssertEqual(paymentRequest.countryCode, "CA")
     XCTAssertEqual(paymentRequest.currencyCode, "CAD")
     XCTAssertEqual(paymentRequest.shippingType, .shipping)
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.count, 3)
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.first?.label, "A cool reward")
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.first?.amount.doubleValue, 10.60)
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.first?.type, .final)
-    XCTAssertEqual(paymentRequest.paymentSummaryItems[1].label, "Shipping")
-    XCTAssertEqual(paymentRequest.paymentSummaryItems[1].amount.doubleValue, 6)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems.count, 4)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[0].label, "Reward")
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[0].amount.doubleValue, 10.6)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[0].type, .final)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[1].label, "Bonus")
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[1].amount.doubleValue, 20)
     XCTAssertEqual(paymentRequest.paymentSummaryItems[1].type, .final)
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.last?.label, "Kickstarter (if funded)")
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.last?.amount.doubleValue, 16.60)
-    XCTAssertEqual(paymentRequest.paymentSummaryItems.last?.type, .final)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[2].label, "Shipping")
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[2].amount.doubleValue, 6)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[2].type, .final)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[3].label, "Kickstarter (if funded)")
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[3].amount.doubleValue, 36.6)
+    XCTAssertEqual(paymentRequest.paymentSummaryItems[3].type, .final)
   }
 }

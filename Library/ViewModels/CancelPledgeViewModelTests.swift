@@ -183,7 +183,7 @@ final class CancelPledgeViewModelTests: TestCase {
         projectName: project.name,
         omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
         backingId: String(project.personalization.backing?.id ?? 0),
-        pledgeAmount: project.personalization.backing?.pledgeAmount ?? 0
+        pledgeAmount: project.personalization.backing?.amount ?? 0
       )
 
       self.vm.inputs.configure(with: data)
@@ -225,7 +225,7 @@ final class CancelPledgeViewModelTests: TestCase {
         projectName: project.name,
         omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
         backingId: String(project.personalization.backing?.id ?? 0),
-        pledgeAmount: project.personalization.backing?.pledgeAmount ?? 0
+        pledgeAmount: project.personalization.backing?.amount ?? 0
       )
 
       self.vm.inputs.configure(with: data)
@@ -281,7 +281,7 @@ final class CancelPledgeViewModelTests: TestCase {
         projectName: project.name,
         omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
         backingId: String(project.personalization.backing?.id ?? 0),
-        pledgeAmount: project.personalization.backing?.pledgeAmount ?? 0
+        pledgeAmount: project.personalization.backing?.amount ?? 0
       )
 
       self.vm.inputs.configure(with: data)
@@ -316,7 +316,7 @@ final class CancelPledgeViewModelTests: TestCase {
         projectName: project.name,
         omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
         backingId: String(project.personalization.backing?.id ?? 0),
-        pledgeAmount: project.personalization.backing?.pledgeAmount ?? 0
+        pledgeAmount: project.personalization.backing?.amount ?? 0
       )
 
       self.vm.inputs.configure(with: data)

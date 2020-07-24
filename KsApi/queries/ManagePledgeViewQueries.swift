@@ -45,7 +45,13 @@ public func managePledgeViewProjectBackingQuery(withBackingId backingId: String)
         ]
       ),
       .errorReason,
-      .location(.name +| []),
+      .location(
+        .name +| [
+          .country,
+          .countryName,
+          .displayableName,
+          .id
+        ]),
       .pledgedOn,
       .backerCompleted,
       .reward(

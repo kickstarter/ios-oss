@@ -24,12 +24,22 @@ extension ManagePledgeViewBackingEnvelope.Backing {
     ),
     errorReason: "Error",
     id: "123412",
-    location: ManagePledgeViewBackingEnvelope.Backing.Location(name: "Brooklyn, NY"),
+    location: .template,
     pledgedOn: 1_587_502_131,
     reward: .template,
     sequence: 1,
     shippingAmount: Money(amount: 20.0, currency: .usd, symbol: "$"),
     status: .pledged
+  )
+}
+
+extension ManagePledgeViewBackingEnvelope.Backing.Location {
+  static let template = ManagePledgeViewBackingEnvelope.Backing.Location(
+    country: "CA",
+    countryName: "Canada",
+    displayableName: "Canada",
+    id: "TG9jYXRpb24tMjM0MjQ3NzU=",
+    name: "Canada"
   )
 }
 

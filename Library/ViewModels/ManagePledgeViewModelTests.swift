@@ -14,15 +14,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let configureRewardReceivedWithData = TestObserver<ManageViewPledgeRewardReceivedViewData, Never>()
   private let endRefreshing = TestObserver<Void, Never>()
   private let goToCancelPledge = TestObserver<CancelPledgeViewData, Never>()
-  private let goToChangePaymentMethodProject = TestObserver<Project, Never>()
-  private let goToChangePaymentMethodReward = TestObserver<Reward, Never>()
+  private let goToChangePaymentMethod = TestObserver<PledgeViewData, Never>()
   private let goToContactCreatorSubject = TestObserver<MessageSubject, Never>()
   private let goToContactCreatorContext = TestObserver<Koala.MessageDialogContext, Never>()
-  private let goToFixPaymentMethodProject = TestObserver<Project, Never>()
-  private let goToFixPaymentMethodReward = TestObserver<Reward, Never>()
+  private let goToFixPaymentMethod = TestObserver<PledgeViewData, Never>()
   private let goToRewards = TestObserver<Project, Never>()
-  private let goToUpdatePledgeProject = TestObserver<Project, Never>()
-  private let goToUpdatePledgeReward = TestObserver<Reward, Never>()
+  private let goToUpdatePledge = TestObserver<PledgeViewData, Never>()
   private let loadProjectAndRewardsIntoDataSourceProject = TestObserver<Project, Never>()
   private let loadProjectAndRewardsIntoDataSourceReward = TestObserver<[Reward], Never>()
   private let loadPullToRefreshHeaderView = TestObserver<(), Never>()
@@ -58,15 +55,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
     self.vm.outputs.loadPullToRefreshHeaderView.observe(self.loadPullToRefreshHeaderView.observer)
     self.vm.outputs.endRefreshing.observe(self.endRefreshing.observer)
     self.vm.outputs.goToCancelPledge.observe(self.goToCancelPledge.observer)
-    self.vm.outputs.goToChangePaymentMethod.map(first).observe(self.goToChangePaymentMethodProject.observer)
-    self.vm.outputs.goToChangePaymentMethod.map(second).observe(self.goToChangePaymentMethodReward.observer)
+    self.vm.outputs.goToChangePaymentMethod.observe(self.goToChangePaymentMethod.observer)
     self.vm.outputs.goToContactCreator.map(first).observe(self.goToContactCreatorSubject.observer)
     self.vm.outputs.goToContactCreator.map(second).observe(self.goToContactCreatorContext.observer)
-    self.vm.outputs.goToFixPaymentMethod.map(first).observe(self.goToFixPaymentMethodProject.observer)
-    self.vm.outputs.goToFixPaymentMethod.map(second).observe(self.goToFixPaymentMethodReward.observer)
+    self.vm.outputs.goToFixPaymentMethod.observe(self.goToFixPaymentMethod.observer)
     self.vm.outputs.goToRewards.observe(self.goToRewards.observer)
-    self.vm.outputs.goToUpdatePledge.map(first).observe(self.goToUpdatePledgeProject.observer)
-    self.vm.outputs.goToUpdatePledge.map(second).observe(self.goToUpdatePledgeReward.observer)
+    self.vm.outputs.goToUpdatePledge.observe(self.goToUpdatePledge.observer)
     self.vm.outputs.notifyDelegateManagePledgeViewControllerFinishedWithMessage
       .observe(self.notifyDelegateManagePledgeViewControllerFinishedWithMessage.observer)
     self.vm.outputs.paymentMethodViewHidden.observe(self.paymentMethodViewHidden.observer)
@@ -170,6 +164,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       )
 
     let envelope = ManagePledgeViewBackingEnvelope.template
+      |> \.backing.addOns .~ nil
 
     let mockService = MockService(
       fetchManagePledgeViewBackingResult: .success(envelope),
@@ -184,7 +179,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       bonusAmount: nil,
       currentUserIsCreatorOfProject: false,
       isNoReward: true,
-      locationName: "Brooklyn, NY",
+      locationName: "Canada",
       needsConversion: false,
       omitUSCurrencyCode: true,
       pledgeAmount: envelope.backing.amount.amount,
@@ -461,11 +456,17 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testGoToChangePaymentMethod() {
+    let reward = Reward.template
+
     let project = Project.template
-      |> Project.lens.rewards .~ [.template]
+      |> Project.lens.rewards .~ [reward]
+
+    let env = ManagePledgeViewBackingEnvelope.template
+      |> \.backing.addOns .~ nil
+      |> \.backing.location .~ nil
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchManagePledgeViewBackingResult: .success(env),
       fetchProjectResponse: project
     )
 
@@ -475,14 +476,21 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.goToChangePaymentMethodProject.assertDidNotEmitValue()
-      self.goToChangePaymentMethodReward.assertDidNotEmitValue()
+      self.goToChangePaymentMethod.assertDidNotEmitValue()
 
       self.vm.inputs.menuButtonTapped()
       self.vm.inputs.menuOptionSelected(with: .changePaymentMethod)
 
-      self.goToChangePaymentMethodProject.assertValues([project])
-      self.goToChangePaymentMethodReward.assertValues([Reward.template])
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .changePaymentMethod
+      )
+
+      self.goToChangePaymentMethod.assertValues([data])
     }
   }
 
@@ -533,11 +541,17 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testGoToUpdatePledge() {
+    let reward = Reward.template
+
     let project = Project.template
-      |> Project.lens.rewards .~ [.template]
+      |> Project.lens.rewards .~ [reward]
+
+    let env = ManagePledgeViewBackingEnvelope.template
+      |> \.backing.addOns .~ nil
+      |> \.backing.location .~ nil
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchManagePledgeViewBackingResult: .success(env),
       fetchProjectResponse: project
     )
 
@@ -547,14 +561,87 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.goToUpdatePledgeProject.assertDidNotEmitValue()
-      self.goToUpdatePledgeReward.assertDidNotEmitValue()
+      self.goToUpdatePledge.assertDidNotEmitValue()
 
       self.vm.inputs.menuButtonTapped()
       self.vm.inputs.menuOptionSelected(with: .updatePledge)
 
-      self.goToUpdatePledgeProject.assertValues([project])
-      self.goToUpdatePledgeReward.assertValues([Reward.template])
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .update
+      )
+
+      self.goToUpdatePledge.assertValues([data])
+    }
+  }
+
+  func testGoToUpdatePledge_WithAddOns() {
+    var project = Project.template
+
+    let baseRewardInBacking = ManagePledgeViewBackingEnvelope.Backing.Reward.template
+      |> \.id .~ "Reward-99".toBase64()
+
+    let addOn1 = ManagePledgeViewBackingEnvelope.Backing.Reward.template
+      |> \.id .~ "Reward-1".toBase64()
+    let addOn2 = ManagePledgeViewBackingEnvelope.Backing.Reward.template
+      |> \.id .~ "Reward-2".toBase64()
+
+    let baseReward = Reward.template
+      |> Reward.lens.id .~ 99
+
+    let dateFormatter = DateFormatter()
+
+    let addOnReward1 = Reward.addOnReward(
+      from: addOn1,
+      project: project,
+      selectedAddOnQuantities: [addOn1.id: 3],
+      dateFormatter: dateFormatter
+    ) ?? .template
+
+    let addOnReward2 = Reward.addOnReward(
+      from: addOn2,
+      project: project,
+      selectedAddOnQuantities: [addOn2.id: 2],
+      dateFormatter: dateFormatter
+    ) ?? .template
+
+    project = Project.template
+      |> Project.lens.rewards .~ [baseReward]
+
+    let env = ManagePledgeViewBackingEnvelope.template
+      |> \.backing.addOns .~ .init(nodes: [addOn1, addOn2, addOn2])
+      |> \.backing.reward .~ baseRewardInBacking
+      |> \.backing.location .~ nil
+
+    let mockService = MockService(
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
+    )
+
+    withEnvironment(apiService: mockService) {
+      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.goToUpdatePledge.assertDidNotEmitValue()
+
+      self.vm.inputs.menuButtonTapped()
+      self.vm.inputs.menuOptionSelected(with: .updatePledge)
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [baseReward, addOnReward1, addOnReward2],
+        selectedQuantities: [baseReward.id: 1, addOnReward1.id: 1, addOnReward2.id: 2],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .update
+      )
+      self.goToUpdatePledge.assertValues([data])
     }
   }
 
@@ -684,7 +771,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       bonusAmount: nil,
       currentUserIsCreatorOfProject: false,
       isNoReward: true,
-      locationName: "Brooklyn, NY",
+      locationName: "Canada",
       needsConversion: true,
       omitUSCurrencyCode: true,
       pledgeAmount: 25,
@@ -705,7 +792,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
       bonusAmount: nil,
       currentUserIsCreatorOfProject: false,
       isNoReward: true,
-      locationName: "Brooklyn, NY",
+      locationName: "Canada",
       needsConversion: true,
       omitUSCurrencyCode: true,
       pledgeAmount: 50,
@@ -1271,14 +1358,19 @@ internal final class ManagePledgeViewModelTests: TestCase {
   }
 
   func testFixButtonTapped() {
-    self.goToChangePaymentMethodReward.assertDidNotEmitValue()
-    self.goToChangePaymentMethodProject.assertDidNotEmitValue()
+    self.goToFixPaymentMethod.assertDidNotEmitValue()
 
-    let project = Project.cosmicSurgery
     let reward = Project.cosmicSurgery.rewards.filter { $0.id == Backing.template.rewardId }.first!
 
+    let project = Project.cosmicSurgery
+      |> Project.lens.rewards .~ [reward]
+
+    let env = ManagePledgeViewBackingEnvelope.template
+      |> \.backing.addOns .~ nil
+      |> \.backing.location .~ nil
+
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
+      fetchManagePledgeViewBackingResult: .success(env),
       fetchProjectResponse: project
     )
 
@@ -1290,8 +1382,16 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.fixButtonTapped()
 
-      self.goToFixPaymentMethodProject.assertValues([project])
-      self.goToFixPaymentMethodReward.assertValues([reward])
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .fixPaymentMethod
+      )
+
+      self.goToFixPaymentMethod.assertValues([data])
     }
   }
 

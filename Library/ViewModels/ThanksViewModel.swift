@@ -4,7 +4,8 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public typealias ThanksPageData = (
-  project: Project, reward: Reward,
+  project: Project,
+  reward: Reward,
   checkoutData: Koala.CheckoutPropertiesData?
 )
 

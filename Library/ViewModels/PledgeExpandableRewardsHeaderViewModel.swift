@@ -29,11 +29,12 @@ public enum PledgeExpandableRewardsHeaderItem {
   }
 }
 
-public typealias PledgeExpandableRewardsHeaderViewData = (
-  rewards: [Reward],
-  projectCountry: Project.Country,
-  omitCurrencyCode: Bool
-)
+public struct PledgeExpandableRewardsHeaderViewData {
+  public let rewards: [Reward]
+  public let selectedQuantities: SelectedRewardQuantities
+  public let projectCountry: Project.Country
+  public let omitCurrencyCode: Bool
+}
 
 public protocol PledgeExpandableRewardsHeaderViewModelInputs {
   func configure(with data: PledgeExpandableRewardsHeaderViewData)
@@ -60,7 +61,8 @@ public final class PledgeExpandableRewardsHeaderViewModel: PledgeExpandableRewar
     )
     .map(first)
 
-    let rewards = data.map(first)
+    let rewards = data.map(\.rewards)
+    let selectedQuantities = data.map(\.selectedQuantities)
 
     let latestRewardDeliveryDate = rewards.map { rewards in
       rewards
@@ -84,11 +86,26 @@ public final class PledgeExpandableRewardsHeaderViewModel: PledgeExpandableRewar
     }
     .skipNil()
 
-    let total: Signal<Double, Never> = rewards.map { rewards in
-      rewards.map { $0.minimum }.reduce(0, +)
+    let total: Signal<Double, Never> = Signal.combineLatest(
+      rewards,
+      selectedQuantities
+    )
+    .map { rewards, selectedQuantities in
+      rewards.reduce(0.0) { total, reward in
+        let totalForReward = reward.minimum
+          .multiplyingCurrency(Double(selectedQuantities[reward.id] ?? 0))
+
+        return total.addingCurrency(totalForReward)
+      }
     }
 
-    self.loadRewardsIntoDataSource = Signal.zip(data, estimatedDeliveryString, total).map(items)
+    self.loadRewardsIntoDataSource = Signal.zip(
+      data,
+      selectedQuantities,
+      estimatedDeliveryString,
+      total
+    )
+    .map(items)
   }
 
   private let configureWithRewardsProperty = MutableProperty<PledgeExpandableRewardsHeaderViewData?>(nil)
@@ -117,6 +134,7 @@ public final class PledgeExpandableRewardsHeaderViewModel: PledgeExpandableRewar
 
 private func items(
   with data: PledgeExpandableRewardsHeaderViewData,
+  selectedQuantities: SelectedRewardQuantities,
   estimatedDeliveryString: String,
   total: Double
 ) -> [PledgeExpandableRewardsHeaderItem] {
@@ -132,12 +150,16 @@ private func items(
   let rewardItems = data.rewards.compactMap { reward -> PledgeExpandableRewardsHeaderItem? in
     guard let title = reward.title else { return nil }
 
+    let quantity = selectedQuantities[reward.id] ?? 0
+
+    let itemString = quantity > 1 ? "\(Format.wholeNumber(quantity)) x \(title)" : title
+
     let amountAttributedText = attributedRewardCurrency(
       with: data.projectCountry, amount: reward.minimum, omitUSCurrencyCode: data.omitCurrencyCode
     )
 
     return PledgeExpandableRewardsHeaderItem.reward((
-      text: title,
+      text: itemString,
       amount: amountAttributedText
     ))
   }

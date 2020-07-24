@@ -43,11 +43,14 @@ final class ManagePledgeViewControllerTests: TestCase {
         type: .visa
       )
       |> \.backing.sequence .~ 10
-      |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
+      |> \.backing.location .~ (
+        ManagePledgeViewBackingEnvelope.Backing.Location.template
+          |> \.name .~ "United States"
+      )
 
     envelope = envelope
       |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-      |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
+      |> \.backing.amount .~ Money(amount: 169.0, currency: .gbp, symbol: "£")
       |> \.backing.shippingAmount .~ Money(amount: 2.0, currency: .gbp, symbol: "£")
       |> \.backing.backer.uid .~ user.id
       |> \.backing.backer.name .~ "Blob"
@@ -110,11 +113,14 @@ final class ManagePledgeViewControllerTests: TestCase {
         type: .visa
       )
       |> \.backing.sequence .~ 10
-      |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
+      |> \.backing.location .~ (
+        ManagePledgeViewBackingEnvelope.Backing.Location.template
+          |> \.name .~ "United States"
+      )
 
     envelope = envelope
       |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-      |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
+      |> \.backing.amount .~ Money(amount: 169.0, currency: .gbp, symbol: "£")
       |> \.backing.shippingAmount .~ Money(amount: 2.0, currency: .gbp, symbol: "£")
       |> \.backing.backer.uid .~ 5
       |> \.backing.backer.name .~ "Blob"
@@ -177,8 +183,8 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     envelope = envelope
       |> \.backing.bonusAmount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
+      |> \.backing.amount .~ Money(amount: 10, currency: .gbp, symbol: "£")
       |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-      |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
       |> \.backing.backer.uid .~ user.id
       |> \.backing.backer.name .~ "Blob"
 
@@ -236,11 +242,14 @@ final class ManagePledgeViewControllerTests: TestCase {
         type: .visa
       )
       |> \.backing.sequence .~ 10
-      |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
+      |> \.backing.location .~ (
+        ManagePledgeViewBackingEnvelope.Backing.Location.template
+          |> \.name .~ "United States"
+      )
 
     envelope = envelope
       |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-      |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
+      |> \.backing.amount .~ Money(amount: 169.0, currency: .gbp, symbol: "£")
       |> \.backing.shippingAmount .~ Money(amount: 2.0, currency: .gbp, symbol: "£")
       |> \.backing.backer.uid .~ user.id
       |> \.backing.backer.name .~ "Blob"
@@ -301,11 +310,14 @@ final class ManagePledgeViewControllerTests: TestCase {
         type: .visa
       )
       |> \.backing.sequence .~ 10
-      |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
+      |> \.backing.location .~ (
+        ManagePledgeViewBackingEnvelope.Backing.Location.template
+          |> \.name .~ "United States"
+      )
 
     envelope = envelope
       |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-      |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
+      |> \.backing.amount .~ Money(amount: 169.0, currency: .gbp, symbol: "£")
       |> \.backing.shippingAmount .~ Money(amount: 2.0, currency: .gbp, symbol: "£")
       |> \.backing.backer.uid .~ user.id
       |> \.backing.backer.name .~ "Blob"

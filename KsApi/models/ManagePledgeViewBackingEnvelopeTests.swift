@@ -63,7 +63,11 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "type": "VISA"
         ],
         "location": [
-          "name": "Brooklyn, NY"
+          "country": "CA",
+          "countryName": "Canada",
+          "displayableName": "Canada",
+          "id": "TG9jYXRpb24tMjM0MjQ3NzU=",
+          "name": "Canada"
         ],
         "sequence": 5,
         "shippingAmount": [
@@ -144,7 +148,11 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.backing.creditCard?.paymentType, .creditCard)
       XCTAssertEqual(value.backing.creditCard?.type, .visa)
 
-      XCTAssertEqual(value.backing.location?.name, "Brooklyn, NY")
+      XCTAssertEqual(value.backing.location?.name, "Canada")
+      XCTAssertEqual(value.backing.location?.countryName, "Canada")
+      XCTAssertEqual(value.backing.location?.country, "CA")
+      XCTAssertEqual(value.backing.location?.displayableName, "Canada")
+      XCTAssertEqual(value.backing.location?.id, "TG9jYXRpb24tMjM0MjQ3NzU=")
 
       XCTAssertEqual(value.backing.shippingAmount, Money(amount: 17.0, currency: .usd, symbol: "$"))
 
