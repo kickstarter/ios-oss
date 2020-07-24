@@ -70,7 +70,7 @@ final class ErroredBackingView: UIView {
 
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
+      |> ksr_constrainViewToMarginsInParent()
   }
 
   private func configureConstraints() {
@@ -155,7 +155,6 @@ private let finalCollectionStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ NSLayoutConstraint.Axis.horizontal
     |> \.spacing .~ Styles.grid(1)
-    |> \.distribution .~ .fill
 }
 
 private let manageButtonStyle: ButtonStyle = { button in
@@ -183,7 +182,6 @@ private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewSt
       |> \.alignment .~ .center
       |> \.axis .~ NSLayoutConstraint.Axis.horizontal
       |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
       |> \.spacing .~ spacing
   }
 }
