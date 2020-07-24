@@ -389,7 +389,7 @@ final class PledgeViewControllerTests: TestCase {
       |> Project.lens.personalization.backing .~ (Backing.template
         |> Backing.lens.paymentSource .~
         (.template |> \.id .~ "123")
-        |> Backing.lens.shippingAmount .~ 2
+        |> Backing.lens.shippingAmount .~ 0
         |> Backing.lens.amount .~ 12.0
       )
       |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
