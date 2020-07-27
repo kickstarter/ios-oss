@@ -849,6 +849,20 @@ public final class Koala {
     )
   }
 
+  /** Call when the Manage button is tapped on the activity feed to fix an errored pledge.
+
+   - parameter project: the project that was pledged to.
+   */
+  public func trackActivitiesManagePledgeButtonClicked(project: Project) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
+    self.track(
+      event: DataLakeApprovedEvent.managePledgeButtonClicked.rawValue,
+      location: .activities,
+      properties: props
+    )
+  }
+
   // MARK: - Login/Signup Events
 
   /* Call when the Login or Signup button entry-point is tapped
