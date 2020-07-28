@@ -251,7 +251,9 @@ private func rewardsData(
       project: project,
       reward: reward,
       context: context == .pledge ? .pledge : .manage,
-      shippingRule: reward.shipping.enabled ? shippingRule : nil
+      shippingRule: reward.shipping.enabled
+        ? reward.shippingRule(matching: shippingRule)
+        : nil
     )
   }
 }

@@ -18,6 +18,7 @@ extension Reward {
         remaining: $1.remaining,
         rewardsItems: $1.rewardsItems,
         shipping: $1.shipping,
+        shippingRules: $1.shippingRules,
         startsAt: $1.startsAt,
         title: $1.title
       ) }
@@ -39,6 +40,7 @@ extension Reward {
         remaining: $1.remaining,
         rewardsItems: $1.rewardsItems,
         shipping: $1.shipping,
+        shippingRules: $1.shippingRules,
         startsAt: $1.startsAt,
         title: $1.title
       ) }
@@ -60,6 +62,7 @@ extension Reward {
         remaining: $1.remaining,
         rewardsItems: $1.rewardsItems,
         shipping: $1.shipping,
+        shippingRules: $1.shippingRules,
         startsAt: $1.startsAt,
         title: $1.title
       ) }
@@ -81,6 +84,7 @@ extension Reward {
         remaining: $1.remaining,
         rewardsItems: $1.rewardsItems,
         shipping: $1.shipping,
+        shippingRules: $1.shippingRules,
         startsAt: $1.startsAt,
         title: $1.title
       ) }
@@ -102,6 +106,7 @@ extension Reward {
         remaining: $1.remaining,
         rewardsItems: $1.rewardsItems,
         shipping: $1.shipping,
+        shippingRules: $1.shippingRules,
         startsAt: $1.startsAt,
         title: $1.title
       ) }
@@ -123,6 +128,7 @@ extension Reward {
         remaining: $1.remaining,
         rewardsItems: $1.rewardsItems,
         shipping: $1.shipping,
+        shippingRules: $1.shippingRules,
         startsAt: $1.startsAt,
         title: $1.title
       ) }
@@ -144,6 +150,7 @@ extension Reward {
         remaining: $1.remaining,
         rewardsItems: $1.rewardsItems,
         shipping: $1.shipping,
+        shippingRules: $1.shippingRules,
         startsAt: $1.startsAt,
         title: $1.title
       ) }
@@ -165,6 +172,7 @@ extension Reward {
         remaining: $1.remaining,
         rewardsItems: $1.rewardsItems,
         shipping: $1.shipping,
+        shippingRules: $1.shippingRules,
         startsAt: $1.startsAt,
         title: $1.title
       ) }
@@ -186,6 +194,7 @@ extension Reward {
         remaining: $1.remaining,
         rewardsItems: $1.rewardsItems,
         shipping: $1.shipping,
+        shippingRules: $1.shippingRules,
         startsAt: $1.startsAt,
         title: $1.title
       ) }
@@ -207,6 +216,7 @@ extension Reward {
         remaining: $1.remaining,
         rewardsItems: $1.rewardsItems,
         shipping: $1.shipping,
+        shippingRules: $1.shippingRules,
         startsAt: $1.startsAt,
         title: $1.title
       ) }
@@ -228,6 +238,7 @@ extension Reward {
         remaining: $0,
         rewardsItems: $1.rewardsItems,
         shipping: $1.shipping,
+        shippingRules: $1.shippingRules,
         startsAt: $1.startsAt,
         title: $1.title
       ) }
@@ -249,6 +260,7 @@ extension Reward {
         remaining: $1.remaining,
         rewardsItems: $0,
         shipping: $1.shipping,
+        shippingRules: $1.shippingRules,
         startsAt: $1.startsAt,
         title: $1.title
       ) }
@@ -270,6 +282,29 @@ extension Reward {
         remaining: $1.remaining,
         rewardsItems: $1.rewardsItems,
         shipping: $0,
+        shippingRules: $1.shippingRules,
+        startsAt: $1.startsAt,
+        title: $1.title
+      ) }
+    )
+
+    public static let shippingRules = Lens<Reward, [ShippingRule]?>(
+      view: { $0.shippingRules },
+      set: { Reward(
+        addOnData: $1.addOnData,
+        backersCount: $1.backersCount,
+        convertedMinimum: $1.convertedMinimum,
+        description: $1.description,
+        endsAt: $1.endsAt,
+        estimatedDeliveryOn: $1.estimatedDeliveryOn,
+        hasAddOns: $1.hasAddOns,
+        id: $1.id,
+        limit: $1.limit,
+        minimum: $1.minimum,
+        remaining: $1.remaining,
+        rewardsItems: $1.rewardsItems,
+        shipping: $1.shipping,
+        shippingRules: $0,
         startsAt: $1.startsAt,
         title: $1.title
       ) }
@@ -291,6 +326,7 @@ extension Reward {
         remaining: $1.remaining,
         rewardsItems: $1.rewardsItems,
         shipping: $1.shipping,
+        shippingRules: $1.shippingRules,
         startsAt: $0,
         title: $1.title
       ) }
@@ -312,6 +348,7 @@ extension Reward {
         remaining: $1.remaining,
         rewardsItems: $1.rewardsItems,
         shipping: $1.shipping,
+        shippingRules: $1.shippingRules,
         startsAt: $1.startsAt,
         title: $0
       ) }

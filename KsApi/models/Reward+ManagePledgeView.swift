@@ -43,6 +43,7 @@ public extension Reward {
       remaining: backingReward.remainingQuantity,
       rewardsItems: rewardItemsData(from: backingReward, with: project),
       shipping: shippingData(from: backingReward),
+      shippingRules: nil,
       startsAt: backingReward.startsAt,
       title: backingReward.name
     )

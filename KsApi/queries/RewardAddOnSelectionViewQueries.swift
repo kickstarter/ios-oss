@@ -35,7 +35,19 @@ public func rewardAddOnSelectionViewAddOnsQuery(withProjectSlug slug: String) ->
               .remainingQuantity,
               .shippingPreference,
               .shippingRules(.id +| [
-                .location(.id +| [])
+                .cost(
+                  .amount +| [
+                    .currency,
+                    .symbol
+                  ]
+                ),
+                .location(
+                  .name +| [
+                    .country,
+                    .countryName,
+                    .displayableName,
+                    .id
+                  ])
               ]),
               .startsAt
             ]

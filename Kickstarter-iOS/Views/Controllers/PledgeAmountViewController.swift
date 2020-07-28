@@ -198,8 +198,8 @@ final class PledgeAmountViewController: UIViewController {
 
   // MARK: - Accessors
 
-  func selectedShippingAmountChanged(to amount: Double) {
-    self.viewModel.inputs.selectedShippingAmountChanged(to: amount)
+  func unavailableAmountChanged(to amount: Double) {
+    self.viewModel.inputs.unavailableAmountChanged(to: amount)
   }
 }
 

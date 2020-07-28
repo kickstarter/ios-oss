@@ -91,7 +91,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.amountMax.assertValues([10_000])
 
-    self.vm.inputs.selectedShippingAmountChanged(to: 20)
+    self.vm.inputs.unavailableAmountChanged(to: 20)
 
     self.amountMax.assertValues([10_000, 9_980])
   }
@@ -251,12 +251,12 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.doneButtonIsEnabled.assertValues([true])
 
-    self.vm.inputs.selectedShippingAmountChanged(to: 10)
+    self.vm.inputs.unavailableAmountChanged(to: 10)
 
     self.amountMax.assertValues([10_000, 10_000, 9_990])
     self.doneButtonIsEnabled.assertValues([true, false])
 
-    self.vm.inputs.selectedShippingAmountChanged(to: 0)
+    self.vm.inputs.unavailableAmountChanged(to: 0)
 
     self.amountMax.assertValues([10_000, 10_000, 9_990, 10_000])
     self.doneButtonIsEnabled.assertValues([true, false, true])
@@ -868,7 +868,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.vm.inputs.stepperValueChanged(10_000)
     self.labelTextColor.assertValues([green])
 
-    self.vm.inputs.selectedShippingAmountChanged(to: 30)
+    self.vm.inputs.unavailableAmountChanged(to: 30)
     self.labelTextColor.assertValues([green, red])
 
     self.vm.inputs.stepperValueChanged(9_970)
@@ -890,7 +890,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.maxPledgeAmountErrorLabelIsHidden.assertValues([true, false, true])
 
     let shippingAmount = 30.0
-    self.vm.inputs.selectedShippingAmountChanged(to: shippingAmount)
+    self.vm.inputs.unavailableAmountChanged(to: shippingAmount)
     self.maxPledgeAmountErrorLabelIsHidden.assertValues([true, false, true, false])
   }
 
@@ -906,7 +906,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
       "The maximum pledge is US$ 10,000."
     ])
 
-    self.vm.inputs.selectedShippingAmountChanged(to: 30.0)
+    self.vm.inputs.unavailableAmountChanged(to: 30.0)
 
     self.maxPledgeAmountErrorLabelText.assertValues([
       "The maximum pledge is US$ 10,000.",

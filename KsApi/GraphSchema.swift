@@ -316,6 +316,7 @@ public enum Query {
   }
 
   public enum ShippingRule {
+    case cost(NonEmptySet<Money>)
     case id
     case location(NonEmptySet<Location>)
   }
@@ -580,6 +581,7 @@ extension Query.BankAccount: QueryType {
 extension Query.ShippingRule: QueryType {
   public var description: String {
     switch self {
+    case let .cost(fields): return "cost { \(join(fields)) }"
     case .id: return "id"
     case let .location(fields): return "location { \(join(fields)) }"
     }

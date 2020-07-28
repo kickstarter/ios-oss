@@ -52,11 +52,16 @@ public struct RewardAddOnSelectionViewEnvelope: Swift.Decodable {
       }
 
       public struct ShippingRule: Swift.Decodable {
+        public var cost: Money
         public var id: String
         public var location: Location
 
         public struct Location: Swift.Decodable {
+          public var country: String
+          public var countryName: String
+          public var displayableName: String
           public var id: String
+          public var name: String
         }
       }
     }
