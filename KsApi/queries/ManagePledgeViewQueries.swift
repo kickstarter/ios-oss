@@ -93,7 +93,8 @@ public func managePledgeViewProjectBackingQuery(withBackingId backingId: String)
               .items([], NonEmptySet(.nodes(.id +| [.name]))),
               .remainingQuantity,
               .shippingPreference,
-              .startsAt
+              .startsAt,
+              .endsAt
             ]
           )
         )

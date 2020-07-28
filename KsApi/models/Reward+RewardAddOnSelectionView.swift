@@ -56,7 +56,7 @@ private func rewardItemsData(
 ) -> [RewardsItem] {
   return reward.items?.nodes.compactMap { item -> RewardsItem? in
     guard
-      let id = Int(item.id),
+      let id = decompose(id: item.id),
       let rewardId = decompose(id: reward.id)
     else { return nil }
 
