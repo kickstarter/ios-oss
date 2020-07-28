@@ -177,7 +177,7 @@ private func amountStringForReward(
   reward: Reward,
   shippingRule: ShippingRule?
 ) -> NSAttributedString {
-  let font: UIFont = UIFont.ksr_footnote().weighted(.medium)
+  let font: UIFont = UIFont.ksr_subhead().weighted(.medium)
   let foregroundColor: UIColor = UIColor.ksr_green_500
 
   let min = minPledgeAmount(forProject: project, reward: reward)
@@ -187,7 +187,7 @@ private func amountStringForReward(
     omitCurrencyCode: project.stats.omitUSCurrencyCode
   )
 
-  if let shippingRule = shippingRule {
+  if let shippingRule = shippingRule, shippingRule.cost > 0 {
     let shippingAmount = Format.currency(
       shippingRule.cost,
       country: project.country,
@@ -200,19 +200,26 @@ private func amountStringForReward(
       substitutions: ["reward_amount": amountString, "shipping_cost": shippingAmount]
     )
 
-    return combinedString.attributed(
-      with: font,
+    let attributedString = combinedString.attributed(
+      with: UIFont.ksr_footnote().weighted(.medium),
       foregroundColor: foregroundColor,
       attributes: [:],
-      bolding: [amountString]
+      bolding: []
     )
+
+    let mutableString = NSMutableAttributedString(attributedString: attributedString)
+    let amountRange = (combinedString as NSString).localizedStandardRange(of: amountString)
+
+    mutableString.setAttributes([.font: font], range: amountRange)
+
+    return mutableString
   }
 
   return amountString.attributed(
     with: font,
     foregroundColor: foregroundColor,
     attributes: [:],
-    bolding: [amountString]
+    bolding: []
   )
 }
 
@@ -237,7 +244,7 @@ private func itemsLabelAttributedText(_ items: [RewardsItem]) -> NSAttributedStr
       ? "\(Format.wholeNumber(rewardsItem.quantity)) x \(rewardsItem.item.name)"
       : rewardsItem.item.name
 
-    let suffix = rewardsItem.id == items.last?.id ? "" : "\n"
+    let suffix = rewardsItem.item.id == items.last?.item.id ? "" : "\n"
 
     return NSAttributedString(
       string: "\(bulletPrefix)\(itemString)\(suffix)",

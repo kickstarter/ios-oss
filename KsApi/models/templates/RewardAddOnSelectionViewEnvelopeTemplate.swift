@@ -27,8 +27,8 @@ extension RewardAddOnSelectionViewEnvelope.Project.Reward {
     id: "UmV3YXJkLTE=",
     isMaxPledge: false,
     items: Items(nodes: [
-      .init(id: "432", name: "Item 1"),
-      .init(id: "442", name: "Item 2")
+      .init(id: "UmV3YXJkSXRlbS05MjEwOTU=", name: "Item 1"),
+      .init(id: "UmV3YXJkSXRlbS05MjEwOTM=", name: "Item 2")
     ]),
     limit: 5,
     name: "Reward name",

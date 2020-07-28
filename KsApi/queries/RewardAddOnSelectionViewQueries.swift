@@ -49,7 +49,8 @@ public func rewardAddOnSelectionViewAddOnsQuery(withProjectSlug slug: String) ->
                     .id
                   ])
               ]),
-              .startsAt
+              .startsAt,
+              .endsAt
             ]
           )
         )
