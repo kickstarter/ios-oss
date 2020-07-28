@@ -329,10 +329,10 @@ final class PledgeViewController: UIViewController,
         self?.pledgeCTAContainerView.configureWith(value: value)
       }
 
-    self.viewModel.outputs.notifyPledgeAmountViewControllerShippingAmountChanged
+    self.viewModel.outputs.notifyPledgeAmountViewControllerUnavailableAmountChanged
       .observeForUI()
       .observeValues { [weak self] amount in
-        self?.pledgeAmountViewController.selectedShippingAmountChanged(to: amount)
+        self?.pledgeAmountViewController.unavailableAmountChanged(to: amount)
       }
 
     self.viewModel.outputs.configureSummaryViewControllerWithData

@@ -80,7 +80,7 @@ public protocol PledgeViewModelOutputs {
   var goToThanks: Signal<ThanksPageData, Never> { get }
   var goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never> { get }
   var notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never> { get }
-  var notifyPledgeAmountViewControllerShippingAmountChanged: Signal<Double, Never> { get }
+  var notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never> { get }
   var paymentMethodsViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountViewHidden: Signal<Bool, Never> { get }
   var pledgeAmountSummaryViewHidden: Signal<Bool, Never> { get }
@@ -145,12 +145,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
-    let initialShippingCost = initialShippingRule
-      .map { shippingRule in Double(shippingRule?.cost ?? 0) }
-
-    let shippingCost = Signal.merge(
-      initialShippingCost,
-      self.shippingRuleSelectedSignal.map { $0.cost }
+    let shippingRule = Signal.merge(
+      initialShippingRule,
+      self.shippingRuleSelectedSignal.wrapInOptional()
     )
 
     let allRewardsTotal = Signal.combineLatest(
@@ -168,15 +165,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
 
     let allRewardsShippingTotal = Signal.combineLatest(
-      shippingCost,
+      shippingRule,
       rewards,
       selectedQuantities
     )
-    .map { shippingCost, rewards, selectedQuantities -> Double in
+    .map { shippingRule, rewards, selectedQuantities -> Double in
       rewards.reduce(0.0) { total, reward in
         guard reward.shipping.enabled else { return total }
 
-        let totalShippingForReward = shippingCost
+        let shippingCostForReward = reward.shippingRule(matching: shippingRule)?.cost ?? 0
+
+        let totalShippingForReward = shippingCostForReward
           .multiplyingCurrency(Double(selectedQuantities[reward.id] ?? 0))
 
         return total.addingCurrency(totalShippingForReward)
@@ -202,7 +201,11 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       initialAdditionalPledgeAmount
     )
 
-    self.notifyPledgeAmountViewControllerShippingAmountChanged = shippingCost
+    self.notifyPledgeAmountViewControllerUnavailableAmountChanged = Signal.combineLatest(
+      allRewardsTotal,
+      allRewardsShippingTotal
+    )
+    .map { $0.addingCurrency($1) }
 
     let projectAndReward = Signal.zip(project, baseReward)
 
@@ -968,7 +971,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
   public let goToThanks: Signal<ThanksPageData, Never>
   public let goToLoginSignup: Signal<(LoginIntent, Project, Reward), Never>
   public let notifyDelegateUpdatePledgeDidSucceedWithMessage: Signal<String, Never>
-  public let notifyPledgeAmountViewControllerShippingAmountChanged: Signal<Double, Never>
+  public let notifyPledgeAmountViewControllerUnavailableAmountChanged: Signal<Double, Never>
   public let paymentMethodsViewHidden: Signal<Bool, Never>
   public let pledgeAmountViewHidden: Signal<Bool, Never>
   public let pledgeAmountSummaryViewHidden: Signal<Bool, Never>

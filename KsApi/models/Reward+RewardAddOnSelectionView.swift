@@ -43,6 +43,7 @@ public extension Reward {
       remaining: reward.remainingQuantity,
       rewardsItems: rewardItemsData(from: reward, with: project),
       shipping: shippingData(from: reward),
+      shippingRules: shippingRulesData(from: reward),
       startsAt: reward.startsAt,
       title: reward.name
     )
@@ -84,4 +85,24 @@ private func shippingData(
     summary: nil,
     type: nil
   )
+}
+
+private func shippingRulesData(
+  from reward: RewardAddOnSelectionViewEnvelope.Project.Reward
+) -> [ShippingRule]? {
+  guard let shippingRules = reward.shippingRules else { return nil }
+
+  return shippingRules.map { shippingRule in
+    ShippingRule(
+      cost: shippingRule.cost.amount,
+      id: decompose(id: shippingRule.id),
+      location: Location(
+        country: shippingRule.location.country,
+        displayableName: shippingRule.location.displayableName,
+        id: decompose(id: shippingRule.location.id) ?? 0,
+        localizedName: shippingRule.location.countryName,
+        name: shippingRule.location.name
+      )
+    )
+  }
 }

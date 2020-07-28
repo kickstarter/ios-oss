@@ -40,9 +40,18 @@ final class RewardAddOnSelectionViewEnvelopeTests: XCTestCase {
               "shippingPreference": "restricted",
               "shippingRules": [
                 [
+                  "cost": [
+                    "amount": "15.0",
+                    "currency": "USD",
+                    "symbol": "$"
+                  ],
                   "id": "U2hpcHBpbmdSdWxlLTEwMzc5NTgz",
                   "location": [
-                    "id": "TG9jYXRpb24tMQ=="
+                    "country": "CA",
+                    "countryName": "Canada",
+                    "displayableName": "Canada",
+                    "id": "TG9jYXRpb24tMjM0MjQ3NzU=",
+                    "name": "Canada"
                   ]
                 ]
               ]
@@ -81,8 +90,17 @@ final class RewardAddOnSelectionViewEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.project.addOns?.nodes[0].remainingQuantity, nil)
       XCTAssertEqual(value.project.addOns?.nodes[0].startsAt, nil)
       XCTAssertEqual(value.project.addOns?.nodes[0].shippingPreference, .restricted)
+      XCTAssertEqual(
+        value.project.addOns?.nodes[0].shippingRules?[0].cost,
+        Money(amount: 15.0, currency: .usd, symbol: "$")
+      )
       XCTAssertEqual(value.project.addOns?.nodes[0].shippingRules?[0].id, "U2hpcHBpbmdSdWxlLTEwMzc5NTgz")
-      XCTAssertEqual(value.project.addOns?.nodes[0].shippingRules?[0].location.id, "TG9jYXRpb24tMQ==")
+      XCTAssertEqual(value.project.addOns?.nodes[0].shippingRules?[0].location.id, "TG9jYXRpb24tMjM0MjQ3NzU=")
+      XCTAssertEqual(value.project.addOns?.nodes[0].shippingRules?[0].location.country, "CA")
+      XCTAssertEqual(value.project.addOns?.nodes[0].shippingRules?[0].location.countryName, "Canada")
+      XCTAssertEqual(value.project.addOns?.nodes[0].shippingRules?[0].location.displayableName, "Canada")
+      XCTAssertEqual(value.project.addOns?.nodes[0].shippingRules?[0].location.name, "Canada")
+
     } catch {
       XCTFail((error as NSError).description)
     }

@@ -39,9 +39,20 @@ extension RewardAddOnSelectionViewEnvelope.Project.Reward {
   )
 }
 
+extension RewardAddOnSelectionViewEnvelope.Project.Reward.ShippingRule.Location {
+  static let template = RewardAddOnSelectionViewEnvelope.Project.Reward.ShippingRule.Location(
+    country: "CA",
+    countryName: "Canada",
+    displayableName: "Canada",
+    id: "TG9jYXRpb24tMjM0MjQ3NzU=",
+    name: "Canada"
+  )
+}
+
 extension RewardAddOnSelectionViewEnvelope.Project.Reward.ShippingRule {
   static let template = RewardAddOnSelectionViewEnvelope.Project.Reward.ShippingRule(
+    cost: Money(amount: 10, currency: .usd, symbol: "$"),
     id: "U2hpcHBpbmdSdWxlLTEwMzc5NTgz",
-    location: Location(id: "TG9jYXRpb24tMjM0MjQ5Nzc=")
+    location: .template
   )
 }

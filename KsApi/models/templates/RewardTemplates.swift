@@ -23,6 +23,7 @@ extension Reward {
       summary: nil,
       type: nil
     ),
+    shippingRules: nil,
     startsAt: nil,
     title: nil
   )
@@ -47,6 +48,7 @@ extension Reward {
       summary: nil,
       type: nil
     ),
+    shippingRules: nil,
     startsAt: nil,
     title: nil
   )
@@ -71,6 +73,7 @@ extension Reward {
       summary: nil,
       type: nil
     ),
+    shippingRules: nil,
     startsAt: nil,
     title: nil
   )

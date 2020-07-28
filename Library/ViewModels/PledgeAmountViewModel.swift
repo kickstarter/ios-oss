@@ -19,10 +19,10 @@ public enum PledgeAmountStepperConstants {
 public protocol PledgeAmountViewModelInputs {
   func configureWith(data: PledgeAmountViewConfigData)
   func doneButtonTapped()
-  func selectedShippingAmountChanged(to amount: Double)
   func stepperValueChanged(_ value: Double)
   func textFieldDidEndEditing(_ value: String?)
   func textFieldValueChanged(_ value: String?)
+  func unavailableAmountChanged(to amount: Double)
 }
 
 public protocol PledgeAmountViewModelOutputs {
@@ -79,14 +79,14 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     let minValue = minAndMax
       .map(first)
 
-    let shippingAmount = Signal.merge(
+    let unavailableAmount = Signal.merge(
       self.projectAndRewardProperty.signal.mapConst(0),
-      self.selectedShippingAmountChangedProperty.signal
+      self.unavailableAmountChangedProperty.signal
     )
 
     let maxValue = minAndMax
       .map(second)
-      .combineLatest(with: shippingAmount)
+      .combineLatest(with: unavailableAmount)
       .map(-)
 
     let textFieldInputValue = self.textFieldDidEndEditingProperty.signal
@@ -234,9 +234,9 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.textFieldValueProperty.value = value
   }
 
-  private let selectedShippingAmountChangedProperty = MutableProperty<Double>(0)
-  public func selectedShippingAmountChanged(to amount: Double) {
-    self.selectedShippingAmountChangedProperty.value = amount
+  private let unavailableAmountChangedProperty = MutableProperty<Double>(0)
+  public func unavailableAmountChanged(to amount: Double) {
+    self.unavailableAmountChangedProperty.value = amount
   }
 
   public let currency: Signal<String, Never>

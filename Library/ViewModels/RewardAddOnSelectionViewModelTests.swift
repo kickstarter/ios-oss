@@ -186,7 +186,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
 
     let shippingRule = ShippingRule.template
-      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
+      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 8)
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
@@ -201,14 +201,16 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> \.id .~ "Reward-2".toBase64()
       |> \.shippingPreference .~ .restricted
       |> \.shippingRules .~ [
-        .template |> (\.location.id .~ "Location-99".toBase64())
+        .template |> (\.location.id .~ "Location-99".toBase64()),
+        .template |> (\.location.id .~ "Location-8".toBase64())
       ]
 
     let shippingAddOn2 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
       |> \.id .~ "Reward-3".toBase64()
       |> \.shippingPreference .~ .restricted
       |> \.shippingRules .~ [
-        .template |> (\.location.id .~ "Location-99".toBase64())
+        .template |> (\.location.id .~ "Location-99".toBase64()),
+        .template |> (\.location.id .~ "Location-8".toBase64())
       ]
 
     let shippingAddOn3 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
