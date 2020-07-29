@@ -297,7 +297,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.inputs.configure(with: Project.cosmicSurgery, refTag: .activity, context: .managePledge)
     self.vm.inputs.viewDidLoad()
 
-    self.title.assertValue("Choose another reward")
+    self.title.assertValue("Edit reward")
   }
 
   func testTitle_CreatePledgeContext_IsCreator() {
@@ -360,7 +360,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.vm.inputs.configure(with: project, refTag: .activity, context: .managePledge)
       self.vm.inputs.viewDidLoad()
 
-      self.title.assertValue("Choose another reward")
+      self.title.assertValue("Edit reward")
     }
   }
 

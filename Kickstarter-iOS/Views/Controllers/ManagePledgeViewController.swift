@@ -471,7 +471,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       case .changePaymentMethod:
         title = Strings.Change_payment_method()
       case .chooseAnotherReward:
-        title = Strings.Choose_another_reward()
+        title = localizedString(key: "Edit_reward", defaultValue: "Edit reward")
       case .contactCreator:
         title = Strings.Contact_creator()
       case .cancelPledge:
