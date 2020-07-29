@@ -484,6 +484,24 @@ final class RewardCardViewModelTests: TestCase {
 
   // MARK: - Pills
 
+  func testPillsRewardHasAddOns() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let reward = Reward.postcards
+      |> Reward.lens.backersCount .~ nil
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.hasAddOns .~ true
+
+    self.vm.inputs.configure(with: (.template, reward, .pledge))
+
+    self.pillCollectionViewHidden.assertValues([false])
+    self.reloadPills.assertValues([
+      ["Add-ons"]
+    ])
+  }
+
   func testPillsLimitedReward() {
     self.pillCollectionViewHidden.assertValueCount(0)
     self.reloadPills.assertValueCount(0)

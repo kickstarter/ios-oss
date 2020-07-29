@@ -218,9 +218,16 @@ private func pillValues(project: Project, reward: Reward) -> [String] {
   return [
     timeLeftString(project: project, reward: reward),
     backerCountOrRemainingString(project: project, reward: reward),
-    shippingSummaryString(project: project, reward: reward)
+    shippingSummaryString(project: project, reward: reward),
+    addOnsString(reward: reward)
   ]
   .compact()
+}
+
+private func addOnsString(reward: Reward) -> String? {
+  guard reward.hasAddOns else { return nil }
+
+  return localizedString(key: "Add_ons", defaultValue: "Add-ons")
 }
 
 private func timeLeftString(project: Project, reward: Reward) -> String? {
