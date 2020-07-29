@@ -73,7 +73,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
 
-    _ = (self.backerLabelContainer, self.contentView)
+    _ = (self.backerLabelContainer, self.rewardCardContainerView)
       |> ksr_addSubviewToParent()
 
     _ = (self.rewardCardContainerView, self.scrollView)

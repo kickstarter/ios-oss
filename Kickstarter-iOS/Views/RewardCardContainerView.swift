@@ -24,6 +24,11 @@ public final class RewardCardContainerView: UIView {
   private var pledgeButtonMarginConstraints: [NSLayoutConstraint]?
   private var pledgeButtonShownConstraints: [NSLayoutConstraint] = []
   private var pledgeButtonHiddenConstraints: [NSLayoutConstraint] = []
+  private let rewardCardMaskView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private let rewardCardView: RewardCardView = {
     RewardCardView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -46,9 +51,12 @@ public final class RewardCardContainerView: UIView {
     super.bindStyles()
 
     _ = self
+      |> checkoutBackgroundStyle
+
+    _ = self.rewardCardMaskView
       |> checkoutWhiteBackgroundStyle
-      |> roundedStyle(cornerRadius: Styles.grid(3))
       |> \.layoutMargins .~ .init(all: Styles.grid(3))
+      |> roundedStyle(cornerRadius: Styles.grid(3))
   }
 
   public override func bindViewModel() {
@@ -97,7 +105,11 @@ public final class RewardCardContainerView: UIView {
   // MARK: - Functions
 
   private func configureViews() {
-    _ = (self.rewardCardView, self)
+    _ = (self.rewardCardMaskView, self)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.rewardCardView, self.rewardCardMaskView)
       |> ksr_addSubviewToParent()
 
     _ = (self.pledgeButtonLayoutGuide, self)
@@ -117,7 +129,7 @@ public final class RewardCardContainerView: UIView {
   }
 
   private func hiddenPledgeHiddenConstraints() -> [NSLayoutConstraint] {
-    let containerMargins = self.layoutMarginsGuide
+    let containerMargins = self.rewardCardMaskView.layoutMarginsGuide
 
     let rewardCardViewConstraints = [
       self.rewardCardView.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
@@ -130,7 +142,7 @@ public final class RewardCardContainerView: UIView {
   }
 
   private func shownPledgeButtonConstraints() -> [NSLayoutConstraint] {
-    let containerMargins = self.layoutMarginsGuide
+    let containerMargins = self.rewardCardMaskView.layoutMarginsGuide
 
     let rewardCardViewConstraints = [
       self.rewardCardView.leftAnchor.constraint(equalTo: containerMargins.leftAnchor),
@@ -143,7 +155,7 @@ public final class RewardCardContainerView: UIView {
       |> \.priority .~ .defaultLow
 
     // sometimes this is provided by the parent cell for pinning of the button
-    self.addBottomViewsMarginConstraints(with: self.layoutMarginsGuide)
+    self.addBottomViewsMarginConstraints(with: self.rewardCardMaskView.layoutMarginsGuide)
 
     let pledgeButtonLayoutGuideConstraints = [
       self.pledgeButtonLayoutGuide.bottomAnchor.constraint(equalTo: containerMargins.bottomAnchor),
