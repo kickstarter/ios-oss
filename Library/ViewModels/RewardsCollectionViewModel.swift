@@ -208,7 +208,9 @@ private func titleForContext(_ context: RewardsCollectionViewContext, project: P
     return Strings.View_rewards()
   }
 
-  return context == .createPledge ? Strings.Back_this_project() : Strings.Choose_another_reward()
+  return context == .createPledge
+    ? Strings.Back_this_project()
+    : localizedString(key: "Edit_reward", defaultValue: "Edit reward")
 }
 
 private func backedReward(_ project: Project, rewards: [Reward]) -> IndexPath? {
