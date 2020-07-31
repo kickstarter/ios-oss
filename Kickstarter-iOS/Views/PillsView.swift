@@ -129,7 +129,7 @@ public final class PillsView: UIView {
         size: size
       )
 
-      x += pillView.frame.maxX + data.interimPillSpacing
+      x += size.width + data.interimPillSpacing
 
       prevViewSize = size
     }
