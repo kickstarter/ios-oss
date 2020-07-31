@@ -1122,15 +1122,14 @@ private func checkoutPropertiesData(
     .multiplyingCurrency(100.0)
     .rounded()
 
-  let bonusAmountUsdCents = additionalPledgeAmount
+  let bonusAmountUsd = additionalPledgeAmount
     .multiplyingCurrency(Double(createBackingData.project.stats.staticUsdRate))
-    .multiplyingCurrency(100.0)
     .rounded()
 
   let amount = Format.decimalCurrency(for: pledgeTotal)
   let bonusAmount = Format.decimalCurrency(for: additionalPledgeAmount)
   let revenueInUsdCents = Int(pledgeTotalUsdCents)
-  let bonusAmountInUsdCents = Int(bonusAmountUsdCents)
+  let bonusAmountInUsd = Format.decimalCurrency(for: bonusAmountUsd)
   let rewardId = baseReward.id
   let estimatedDelivery = baseReward.estimatedDeliveryOn
   let paymentType = isApplePay
@@ -1146,7 +1145,7 @@ private func checkoutPropertiesData(
   return Koala.CheckoutPropertiesData(
     amount: amount,
     bonusAmount: bonusAmount,
-    bonusAmountInUsdCents: bonusAmountInUsdCents,
+    bonusAmountInUsd: bonusAmountInUsd,
     checkoutId: checkoutId,
     estimatedDelivery: estimatedDelivery,
     paymentType: paymentType,
