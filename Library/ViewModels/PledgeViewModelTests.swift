@@ -1623,11 +1623,99 @@ final class PledgeViewModelTests: TestCase {
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "15.00",
         bonusAmount: "10.00",
-        bonusAmountInUsdCents: 1_000,
+        bonusAmountInUsd: "10.00",
         checkoutId: 1,
         estimatedDelivery: 1_506_897_315.0,
         paymentType: "APPLE_PAY",
         revenueInUsdCents: 1_500,
+        rewardId: 1,
+        rewardTitle: nil,
+        shippingEnabled: false,
+        shippingAmount: nil,
+        userHasStoredApplePayCard: true
+      )
+
+      self.processingViewIsHidden.assertValues([false, true])
+      self.goToThanksProject.assertValues([project])
+      self.goToThanksReward.assertValues([reward])
+      self.goToThanksCheckoutData.assertValues([checkoutData])
+
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      XCTAssertEqual(
+        ["Checkout Payment Page Viewed"],
+        self.trackingClient.events
+      )
+    }
+  }
+
+  func testApplePay_GoToThanks_NonUSDProject() {
+    let createBacking = CreateBackingEnvelope.CreateBacking(
+      checkout: Checkout(
+        id: "Q2hlY2tvdXQtMQ==",
+        state: .successful,
+        backing: .init(clientSecret: nil, requiresAction: false)
+      )
+    )
+    let mockService = MockService(
+      createBackingResult:
+      Result.success(CreateBackingEnvelope(createBacking: createBacking))
+    )
+
+    withEnvironment(apiService: mockService, currentUser: .template) {
+      let project = Project.cosmicSurgery
+      let reward = Reward.template
+        |> Reward.lens.minimum .~ 5
+
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: .projectPage,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.applePayButtonTapped()
+
+      self.goToThanksProject.assertDidNotEmitValue()
+      self.processingViewIsHidden.assertDidNotEmitValue()
+
+      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
+        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
+      )
+
+      let pledgeAmountData = (amount: 10.0, min: 5.0, max: 10_000.0, isValid: true)
+      self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
+
+      XCTAssertEqual(
+        PKPaymentAuthorizationStatus.success,
+        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
+      )
+
+      self.goToThanksProject.assertDidNotEmitValue()
+
+      self.processingViewIsHidden.assertValues([false])
+
+      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
+
+      self.processingViewIsHidden.assertValues([false])
+      self.goToThanksProject.assertDidNotEmitValue("Signal waits for Create Backing to complete")
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+
+      self.scheduler.run()
+
+      let checkoutData = Koala.CheckoutPropertiesData(
+        amount: "15.00",
+        bonusAmount: "10.00",
+        bonusAmountInUsd: "13.00",
+        checkoutId: 1,
+        estimatedDelivery: 1_506_897_315.0,
+        paymentType: "APPLE_PAY",
+        revenueInUsdCents: 1_965,
         rewardId: 1,
         rewardTitle: nil,
         shippingEnabled: false,
@@ -1792,7 +1880,7 @@ final class PledgeViewModelTests: TestCase {
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "5.00",
         bonusAmount: "0.00",
-        bonusAmountInUsdCents: 0,
+        bonusAmountInUsd: "0.00",
         checkoutId: 1,
         estimatedDelivery: 1_506_897_315.0,
         paymentType: "APPLE_PAY",
@@ -1981,7 +2069,7 @@ final class PledgeViewModelTests: TestCase {
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "25.00",
         bonusAmount: "15.00",
-        bonusAmountInUsdCents: 1_500,
+        bonusAmountInUsd: "15.00",
         checkoutId: 1,
         estimatedDelivery: Reward.template.estimatedDeliveryOn,
         paymentType: "CREDIT_CARD",
@@ -2073,7 +2161,7 @@ final class PledgeViewModelTests: TestCase {
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "35.00",
         bonusAmount: "25.00",
-        bonusAmountInUsdCents: 2_500,
+        bonusAmountInUsd: "25.00",
         checkoutId: 1,
         estimatedDelivery: reward.estimatedDeliveryOn,
         paymentType: "CREDIT_CARD",
@@ -4197,7 +4285,7 @@ final class PledgeViewModelTests: TestCase {
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "25.00",
         bonusAmount: "15.00",
-        bonusAmountInUsdCents: 1_500,
+        bonusAmountInUsd: "15.00",
         checkoutId: 1,
         estimatedDelivery: Reward.template.estimatedDeliveryOn,
         paymentType: "CREDIT_CARD",
