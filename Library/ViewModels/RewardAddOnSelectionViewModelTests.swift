@@ -14,11 +14,13 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
   private let configurePledgeShippingLocationViewControllerWithDataProject = TestObserver<Project, Never>()
   private let configurePledgeShippingLocationViewControllerWithDataReward = TestObserver<Reward, Never>()
   private let configurePledgeShippingLocationViewControllerWithDataShowAmount = TestObserver<Bool, Never>()
+  private let endRefreshing = TestObserver<(), Never>()
   private let goToPledge = TestObserver<PledgeViewData, Never>()
-  private let loadAddOnRewardsIntoDataSource = TestObserver<[RewardAddOnCardViewData], Never>()
+  private let loadAddOnRewardsIntoDataSource = TestObserver<[RewardAddOnSelectionDataSourceItem], Never>()
   private let loadAddOnRewardsIntoDataSourceAndReloadTableView
-    = TestObserver<[RewardAddOnCardViewData], Never>()
+    = TestObserver<[RewardAddOnSelectionDataSourceItem], Never>()
   private let shippingLocationViewIsHidden = TestObserver<Bool, Never>()
+  private let startRefreshing = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()
@@ -33,11 +35,13 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       .observe(self.configurePledgeShippingLocationViewControllerWithDataReward.observer)
     self.vm.outputs.configurePledgeShippingLocationViewControllerWithData.map(third)
       .observe(self.configurePledgeShippingLocationViewControllerWithDataShowAmount.observer)
+    self.vm.outputs.endRefreshing.observe(self.endRefreshing.observer)
     self.vm.outputs.goToPledge.observe(self.goToPledge.observer)
     self.vm.outputs.loadAddOnRewardsIntoDataSource.observe(self.loadAddOnRewardsIntoDataSource.observer)
     self.vm.outputs.loadAddOnRewardsIntoDataSourceAndReloadTableView
       .observe(self.loadAddOnRewardsIntoDataSourceAndReloadTableView.observer)
     self.vm.outputs.shippingLocationViewIsHidden.observe(self.shippingLocationViewIsHidden.observer)
+    self.vm.outputs.startRefreshing.observe(self.startRefreshing.observer)
   }
 
   func testConfigurePledgeShippingLocationViewControllerWithData() {
@@ -99,6 +103,42 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
 
+    self.startRefreshing.assertDidNotEmitValue()
+    self.endRefreshing.assertDidNotEmitValue()
+
+    withEnvironment(apiService: mockService) {
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertValueCount(0)
+
+      self.scheduler.advance()
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertValueCount(1)
+
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[.rewardAddOn(expected)]])
+    }
+  }
+
+  func testLoadAddOnRewardsIntoDataSource_Error() {
+    self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
+
+    let reward = Reward.template
+    let project = Project.template
+
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .failure(.invalidInput))
+
     withEnvironment(apiService: mockService) {
       let data = PledgeViewData(
         project: project,
@@ -114,7 +154,88 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[expected]])
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[.emptyState(.errorPullToRefresh)]])
+    }
+  }
+
+  func testLoadAddOnRewardsIntoDataSource_Error_SuccessOnRefresh() {
+    self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
+
+    let reward = Reward.template
+    let project = Project.template
+
+    let mockService1 = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .failure(.invalidInput))
+
+    self.startRefreshing.assertDidNotEmitValue()
+    self.endRefreshing.assertDidNotEmitValue()
+
+    withEnvironment(apiService: mockService1) {
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertValueCount(0)
+
+      self.scheduler.advance()
+
+      self.startRefreshing.assertValueCount(1)
+      self.endRefreshing.assertValueCount(1)
+
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[.emptyState(.errorPullToRefresh)]])
+    }
+
+    let noShippingAddOn = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.shippingPreference .~ .noShipping
+
+    let env = RewardAddOnSelectionViewEnvelope.template
+      |> \.project.addOns .~ (
+        .template |> \.nodes .~ [noShippingAddOn]
+      )
+
+    guard
+      let addOnReward = Reward.addOnReward(
+        from: noShippingAddOn,
+        project: project,
+        selectedAddOnQuantities: [:],
+        dateFormatter: DateFormatter()
+      ) else {
+      XCTFail("Should have an add-on")
+      return
+    }
+
+    let expected = RewardAddOnCardViewData(
+      project: project,
+      reward: addOnReward,
+      context: .pledge,
+      shippingRule: nil
+    )
+
+    let mockService2 = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
+
+    withEnvironment(apiService: mockService2) {
+      self.vm.inputs.beginRefresh()
+
+      self.startRefreshing.assertValueCount(2)
+      self.endRefreshing.assertValueCount(1)
+
+      self.scheduler.advance()
+
+      self.startRefreshing.assertValueCount(2)
+      self.endRefreshing.assertValueCount(2)
+
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([
+        [.emptyState(.errorPullToRefresh)],
+        [.rewardAddOn(expected)]
+      ])
     }
   }
 
@@ -174,7 +295,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[expected]])
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[.rewardAddOn(expected)]])
       XCTAssertEqual(
         self.loadAddOnRewardsIntoDataSourceAndReloadTableView.values.last?.count, 1,
         "Only the single add-on reward without shipping is emitted for no-shipping base reward."
@@ -252,6 +373,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         shippingRule: reward.shipping.enabled ? shippingRule : nil
       )
     }
+    .map(RewardAddOnSelectionDataSourceItem.rewardAddOn)
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
 
@@ -345,6 +467,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         shippingRule: reward.shipping.enabled ? shippingRule : nil
       )
     }
+    .map(RewardAddOnSelectionDataSourceItem.rewardAddOn)
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
 
@@ -376,6 +499,75 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         Only the two shipping add-on rewards that match on location ID and
         the digital add-on are emitted for restricted shipping base reward.
         """
+      )
+    }
+  }
+
+  func testLoadAddOnRewardsIntoDataSource_RestrictedShippingBaseReward_NoRewardsMatchOnLocation() {
+    self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
+
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 55)
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .restricted
+      |> Reward.lens.id .~ 99
+
+    let shippingAddOn1 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-2".toBase64()
+      |> \.shippingPreference .~ .restricted
+      |> \.shippingRules .~ [
+        .template |> (\.location.id .~ "Location-99".toBase64())
+      ]
+
+    let shippingAddOn2 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-3".toBase64()
+      |> \.shippingPreference .~ .restricted
+      |> \.shippingRules .~ [
+        .template |> (\.location.id .~ "Location-99".toBase64())
+      ]
+
+    let shippingAddOn3 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
+      |> \.id .~ "Reward-4".toBase64()
+      |> \.shippingPreference .~ .restricted
+      |> \.shippingRules .~ [
+        .template |> (\.location.id .~ "Location-3".toBase64())
+      ]
+
+    let project = Project.template
+    let env = RewardAddOnSelectionViewEnvelope.template
+      |> \.project.addOns .~ (
+        .template |> \.nodes .~ [shippingAddOn1, shippingAddOn2, shippingAddOn3]
+      )
+
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
+
+    withEnvironment(apiService: mockService) {
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedShippingRule: nil,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
+        "Nothing is emitted until a shipping location is selected"
+      )
+
+      self.vm.inputs.shippingRuleSelected(shippingRule)
+
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[.emptyState(.addOnsUnavailable)]])
+      XCTAssertEqual(
+        self.loadAddOnRewardsIntoDataSourceAndReloadTableView.values.last?.count, 1,
+        "Empty state is emitted"
       )
     }
   }
@@ -432,6 +624,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         shippingRule: shippingRule
       )
     }
+    .map(RewardAddOnSelectionDataSourceItem.rewardAddOn)
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
 
@@ -462,14 +655,15 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         self.loadAddOnRewardsIntoDataSourceAndReloadTableView.values.last?.count, 4,
         "All rewards emit and tableView reloads"
       )
-      self.configureContinueCTAViewWithDataQuantity.assertValues([0, 0])
-      self.configureContinueCTAViewWithDataIsValid.assertValues([true, true])
+      self.configureContinueCTAViewWithDataQuantity.assertValues([0])
+      self.configureContinueCTAViewWithDataIsValid.assertValues([true])
 
       self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 5, rewardId: 1)
 
       self.loadAddOnRewardsIntoDataSource.assertValueCount(1, "DataSource is updated")
       XCTAssertEqual(
-        self.loadAddOnRewardsIntoDataSource.values[0][0].reward.addOnData?.selectedQuantity,
+        self.loadAddOnRewardsIntoDataSource.values[0][0]
+          .rewardAddOnCardViewData?.reward.addOnData?.selectedQuantity,
         5,
         "Add-on at index 1 with ID 1 has its quantity updated to 5"
       )

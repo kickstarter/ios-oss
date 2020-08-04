@@ -22,6 +22,8 @@ final class RewardAddOnSelectionViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var refreshControl: UIRefreshControl = { UIRefreshControl() }()
+
   private lazy var tableView: UITableView = {
     let tv = UITableView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -46,11 +48,18 @@ final class RewardAddOnSelectionViewController: UIViewController {
     self.setupConstraints()
 
     self.tableView.registerCellClass(RewardAddOnCell.self)
+    self.tableView.registerCellClass(EmptyStateCell.self)
 
     self.continueCTAView.continueButton.addTarget(
       self,
       action: #selector(RewardAddOnSelectionViewController.continueButtonTapped),
       for: .touchUpInside
+    )
+
+    self.refreshControl.addTarget(
+      self,
+      action: #selector(RewardAddOnSelectionViewController.beginRefresh),
+      for: .valueChanged
     )
 
     self.viewModel.inputs.viewDidLoad()
@@ -76,6 +85,9 @@ final class RewardAddOnSelectionViewController: UIViewController {
 
     _ = (self.continueCTAView, self.view)
       |> ksr_addSubviewToParent()
+
+    _ = self.tableView
+      |> \.refreshControl .~ self.refreshControl
   }
 
   private func configureHeaderView() {
@@ -153,15 +165,15 @@ final class RewardAddOnSelectionViewController: UIViewController {
 
     self.viewModel.outputs.loadAddOnRewardsIntoDataSourceAndReloadTableView
       .observeForUI()
-      .observeValues { [weak self] rewards in
-        self?.dataSource.load(rewards)
+      .observeValues { [weak self] items in
+        self?.dataSource.load(items)
         self?.tableView.reloadData()
       }
 
     self.viewModel.outputs.loadAddOnRewardsIntoDataSource
       .observeForUI()
-      .observeValues { [weak self] rewards in
-        self?.dataSource.load(rewards)
+      .observeValues { [weak self] items in
+        self?.dataSource.load(items)
       }
 
     self.viewModel.outputs.goToPledge
@@ -171,12 +183,28 @@ final class RewardAddOnSelectionViewController: UIViewController {
         vc.configure(with: data)
         self.navigationController?.pushViewController(vc, animated: true)
       }
+
+    self.viewModel.outputs.startRefreshing
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.refreshControl.ksr_beginRefreshing()
+      }
+
+    self.viewModel.outputs.endRefreshing
+      .observeForUI()
+      .observeValues { [weak self] in
+        self?.refreshControl.endRefreshing()
+      }
   }
 
   // MARK: - Actions
 
   @objc func continueButtonTapped() {
     self.viewModel.inputs.continueButtonTapped()
+  }
+
+  @objc private func beginRefresh() {
+    self.viewModel.inputs.beginRefresh()
   }
 }
 
@@ -222,5 +250,15 @@ extension RewardAddOnSelectionViewController: UITableViewDelegate {
 
   func tableView(_: UITableView, willSelectRowAt _: IndexPath) -> IndexPath? {
     return nil
+  }
+
+  func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    if self.dataSource.isEmptyStateIndexPath(indexPath) {
+      return (self.view.safeAreaLayoutGuide.layoutFrame.height * 0.90)
+        - self.headerView.frame.size.height
+        - self.continueCTAView.frame.size.height
+    }
+
+    return UITableView.automaticDimension
   }
 }
