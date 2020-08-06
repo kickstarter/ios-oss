@@ -228,7 +228,7 @@ internal final class ActivitiesViewControllerTests: TestCase {
     let backing = GraphBacking.template
       |> \.project .~ project
 
-    let backings = GraphBackingEnvelope.GraphBackingConnection(nodes: [backing])
+    let backings = GraphBackingEnvelope.GraphBackingConnection(nodes: [backing, backing])
 
     let envelope = GraphBackingEnvelope.template
       |> \.backings .~ backings

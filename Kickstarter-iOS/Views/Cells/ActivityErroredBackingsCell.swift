@@ -7,6 +7,7 @@ final class ActivityErroredBackingsCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   private let backgroundContainerView: UIView = { UIView(frame: .zero) }()
+  private let erroredBackingsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private let headerView: ActivityErroredBackingsCellHeader = {
     ActivityErroredBackingsCellHeader(frame: .zero)
   }()
@@ -51,6 +52,9 @@ final class ActivityErroredBackingsCell: UITableViewCell, ValueCell {
     _ = (self.rootStackView, self.backgroundContainerView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
+
+    _ = ([self.headerView, self.erroredBackingsStackView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
   }
 
   // MARK: - View model
@@ -81,15 +85,18 @@ final class ActivityErroredBackingsCell: UITableViewCell, ValueCell {
 
     _ = self.rootStackView
       |> rootStackViewStyle
+
+    _ = self.erroredBackingsStackView
+      |> \.axis .~ .vertical
   }
 
   // MARK: - Private Helpers
 
   private func configureErroredBackingViews(with backings: [GraphBacking]) {
-    self.rootStackView.addArrangedSubview(self.headerView)
+    self.erroredBackingsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
     let erroredBackingsViews = backings.map { backing -> ErroredBackingView in
-      let view = ErroredBackingView()
+      let view = ErroredBackingView(frame: .zero)
         |> \.delegate .~ self.delegate
       view.configureWith(value: backing)
       return view
@@ -106,7 +113,7 @@ final class ActivityErroredBackingsCell: UITableViewCell, ValueCell {
 
     let allItemViews = erroredBackingsViewsWithSeparators + [erroredBackingsViews.last].compact()
 
-    _ = (allItemViews, self.rootStackView)
+    _ = (allItemViews, self.erroredBackingsStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 }
@@ -123,7 +130,7 @@ private let backgroundContainerViewStyle: ViewStyle = { view in
 private let cellStyle: TableViewCellStyle = { cell in
   cell
     |> \.selectionStyle .~ .none
-    |> \.layoutMargins .~ UIEdgeInsets(all: Styles.grid(2))
+    |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
     |> \.preservesSuperviewLayoutMargins .~ false
 }
 

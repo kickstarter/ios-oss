@@ -82,7 +82,11 @@ platform :ios do
       dsym: "#{gym_dir}/KickBeta.app.dSYM.zip"
     )
 
-    upload_dsyms(dsym: "#{gym_dir}/KickBeta.app.dSYM.zip")
+    upload_dsyms(
+      dsym: "#{gym_dir}/KickBeta.app.dSYM.zip",
+      gsp_file_name: "GoogleService-Info-Beta.plist",
+      firebase_app_id: ENV["FIREBASE_BETA_APP_ID"]
+    )
 
     slack(
       slack_url: ENV["SLACK_WEBHOOK"],
@@ -150,7 +154,11 @@ platform :ios do
       )
     )
 
-    upload_dsyms(dsym: "#{gym_dir}/Kickstarter.app.dSYM.zip")
+    upload_dsyms(
+      dsym: "#{gym_dir}/Kickstarter.app.dSYM.zip",
+      gsp_file_name: "GoogleService-Info.plist",
+      firebase_app_id: ENV["FIREBASE_APP_ID"]
+    )
   end
 
   ### ALPHA
@@ -182,7 +190,11 @@ platform :ios do
       notes: notes
     )
 
-    upload_dsyms(dsym: "#{gym_dir}/KickAlpha.app.dSYM.zip")
+    upload_dsyms(
+      dsym: "#{gym_dir}/KickAlpha.app.dSYM.zip",
+      gsp_file_name: "GoogleService-Info-Alpha.plist",
+      firebase_app_id: ENV["FIREBASE_ALPHA_APP_ID"]
+    )
 
     slack(
       slack_url: ENV["SLACK_WEBHOOK"],
@@ -251,7 +263,8 @@ platform :ios do
   private_lane :upload_dsyms do |options|
     upload_symbols_to_crashlytics(
       dsym_path: options[:dsym],
-      api_token: ENV["FABRIC_API_KEY"],
+      gsp_path: "./Frameworks/native-secrets/ios/#{options[:gsp_file_name]}",
+      app_id: options[:firebase_app_id],
       binary_path: "./bin/upload-symbols"
     )
   end
