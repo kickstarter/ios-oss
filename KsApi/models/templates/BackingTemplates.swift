@@ -2,6 +2,7 @@ import Foundation
 
 extension Backing {
   internal static let template = Backing(
+    addOns: [.template],
     amount: 10.00,
     backer: .template,
     backerId: 1,

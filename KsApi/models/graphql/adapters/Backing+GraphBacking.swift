@@ -16,6 +16,7 @@ extension Backing {
     let reward = backingReward(from: graphBacking, projectId: projectId)
 
     return Backing(
+      addOns: backingAddOns(from: graphBacking, projectId: projectId),
       amount: graphBacking.amount.amount,
       backer: nil,
       backerId: backerId,
@@ -35,6 +36,10 @@ extension Backing {
       status: backingStatus
     )
   }
+}
+
+private func backingAddOns(from graphBacking: GraphBacking, projectId: Int) -> [Reward]? {
+  return graphBacking.addOns?.nodes.compactMap { addOn in Reward.reward(from: addOn, projectId: projectId) }
 }
 
 private func backingStatus(from graphBacking: GraphBacking) -> Backing.Status? {
