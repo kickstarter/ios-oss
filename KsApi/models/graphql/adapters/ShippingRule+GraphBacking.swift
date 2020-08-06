@@ -1,7 +1,7 @@
 import Foundation
 
-public extension ShippingRule {
-  static func shippingRule(from backing: ManagePledgeViewBackingEnvelope.Backing) -> ShippingRule? {
+extension ShippingRule {
+  static func shippingRule(from backing: GraphBacking) -> ShippingRule? {
     guard
       let location = backing.location,
       let locationId = decompose(id: location.id),
@@ -17,6 +17,8 @@ public extension ShippingRule {
     let addOns = backing.addOns?.nodes ?? []
     let shippingRewardsCount = backing.reward?.shippingPreference == .noShipping ? 0 : 1
       + addOns.reduce(0) { accum, addOn in accum + (addOn.shippingPreference == .noShipping ? 0 : 1) }
+
+    // FIXME: this isn't correct, it's not a simple division, shipping costs can differ
 
     let shippingRuleCost = shippingRewardsCount > 0 ? NSDecimalNumber(value: shippingAmount)
       .dividing(by: NSDecimalNumber(value: shippingRewardsCount))

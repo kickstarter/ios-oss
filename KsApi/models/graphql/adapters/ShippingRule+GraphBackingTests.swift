@@ -4,13 +4,13 @@ import XCTest
 
 final class ShippingRule_ManagePledgeViewTests: XCTestCase {
   func test() {
-    let addOn1 = ManagePledgeViewBackingEnvelope.Backing.Reward.template
+    let addOn1 = GraphReward.template
       |> \.shippingPreference .~ .restricted
-    let addOn2 = ManagePledgeViewBackingEnvelope.Backing.Reward.template
+    let addOn2 = GraphReward.template
       |> \.shippingPreference .~ .restricted
 
-    let addOns = ManagePledgeViewBackingEnvelope.Backing.AddOns(nodes: [addOn1, addOn2])
-    let backing = ManagePledgeViewBackingEnvelope.Backing.template
+    let addOns = GraphBacking.AddOns(nodes: [addOn1, addOn2])
+    let backing = GraphBacking.template
       |> \.shippingAmount .~ Money(amount: 30, currency: .cad, symbol: "$")
       |> \.reward .~ (
         .template
@@ -29,5 +29,9 @@ final class ShippingRule_ManagePledgeViewTests: XCTestCase {
     XCTAssertEqual(shippingRule?.location.localizedName, "Canada")
     XCTAssertEqual(shippingRule?.location.displayableName, "Canada")
     XCTAssertEqual(shippingRule?.location.id, 23_424_775)
+  }
+
+  func testTemplate() {
+    XCTAssertNotNil(ShippingRule.shippingRule(from: .template))
   }
 }

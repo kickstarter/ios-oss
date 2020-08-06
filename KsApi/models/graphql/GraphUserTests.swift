@@ -9,9 +9,12 @@ final class GraphUserTests: XCTestCase {
       "chosenCurrency": "USD",
       "email": "blob@me.com",
       "hasPassword": true,
+      "id": "VXNlci0yMDY5MTc2OTk5",
+      "imageUrl": "http://www.kickstarter.com/avatar.jpg",
       "isAppleConnected": false,
       "isDeliverable": true,
-      "isEmailVerified": true
+      "isEmailVerified": true,
+      "name": "User Name"
     }
     """
 
@@ -26,12 +29,15 @@ final class GraphUserTests: XCTestCase {
 
       XCTAssertEqual(user.email, "blob@me.com")
       XCTAssertEqual(user.chosenCurrency, "USD")
+      XCTAssertEqual(user.imageUrl, "http://www.kickstarter.com/avatar.jpg")
+      XCTAssertEqual(user.id, "VXNlci0yMDY5MTc2OTk5")
+      XCTAssertEqual(user.name, "User Name")
       XCTAssertEqual(true, user.hasPassword)
       XCTAssertEqual(true, user.isDeliverable)
       XCTAssertEqual(true, user.isEmailVerified)
       XCTAssertEqual(false, user.isAppleConnected)
     } catch {
-      XCTFail("Failed to decode GraphUserCreditCard")
+      XCTFail("Failed to decode \(error)")
     }
   }
 
@@ -41,9 +47,12 @@ final class GraphUserTests: XCTestCase {
       "chosenCurrency": null,
       "email": "blob@me.com",
       "hasPassword": null,
+      "id": "VXNlci0yMDY5MTc2OTk5",
+      "imageUrl": "http://www.kickstarter.com/avatar.jpg",
       "isAppleConnected": null,
       "isDeliverable": null,
-      "isEmailVerified": null
+      "isEmailVerified": null,
+      "name": "User Name"
     }
     """
 
@@ -59,11 +68,14 @@ final class GraphUserTests: XCTestCase {
       XCTAssertEqual(user.email, "blob@me.com")
       XCTAssertNil(user.chosenCurrency)
       XCTAssertNil(user.hasPassword)
+      XCTAssertEqual(user.id, "VXNlci0yMDY5MTc2OTk5")
+      XCTAssertEqual(user.imageUrl, "http://www.kickstarter.com/avatar.jpg")
+      XCTAssertEqual(user.name, "User Name")
       XCTAssertNil(user.isDeliverable)
       XCTAssertNil(user.isEmailVerified)
       XCTAssertNil(user.isAppleConnected)
     } catch {
-      XCTFail("Failed to decode GraphUserCreditCard")
+      XCTFail("Failed to decode \(error)")
     }
   }
 }

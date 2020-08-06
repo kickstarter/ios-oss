@@ -243,8 +243,10 @@ public struct Service: ServiceType {
   }
 
   public func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
-    -> SignalProducer<ManagePledgeViewBackingEnvelope, GraphError> {
+    -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
     return fetch(query: query)
+      .mapError(ErrorEnvelope.envelope(from:))
+      .flatMap(ProjectAndBackingEnvelope.envelopeProducer(from:))
   }
 
   public func fetchMessageThread(messageThreadId: Int)
@@ -317,8 +319,10 @@ public struct Service: ServiceType {
   }
 
   public func fetchRewardAddOnsSelectionViewRewards(query: NonEmptySet<Query>)
-    -> SignalProducer<RewardAddOnSelectionViewEnvelope, GraphError> {
+    -> SignalProducer<Project, ErrorEnvelope> {
     return fetch(query: query)
+      .mapError(ErrorEnvelope.envelope(from:))
+      .flatMap(Project.projectProducer(from:))
   }
 
   public func fetchRewardShippingRules(projectId: Int, rewardId: Int)

@@ -2,32 +2,9 @@ import Prelude
 
 extension Reward {
   public enum lens {
-    public static let addOnData = Lens<Reward, AddOnData?>(
-      view: { $0.addOnData },
-      set: { Reward(
-        addOnData: $0,
-        backersCount: $1.backersCount,
-        convertedMinimum: $1.convertedMinimum,
-        description: $1.description,
-        endsAt: $1.endsAt,
-        estimatedDeliveryOn: $1.estimatedDeliveryOn,
-        hasAddOns: $1.hasAddOns,
-        id: $1.id,
-        limit: $1.limit,
-        minimum: $1.minimum,
-        remaining: $1.remaining,
-        rewardsItems: $1.rewardsItems,
-        shipping: $1.shipping,
-        shippingRules: $1.shippingRules,
-        startsAt: $1.startsAt,
-        title: $1.title
-      ) }
-    )
-
     public static let backersCount = Lens<Reward, Int?>(
       view: { $0.backersCount },
       set: { Reward(
-        addOnData: $1.addOnData,
         backersCount: $0,
         convertedMinimum: $1.convertedMinimum,
         description: $1.description,
@@ -49,7 +26,6 @@ extension Reward {
     public static let convertedMinimum = Lens<Reward, Double>(
       view: { $0.convertedMinimum },
       set: { Reward(
-        addOnData: $1.addOnData,
         backersCount: $1.backersCount,
         convertedMinimum: $0,
         description: $1.description,
@@ -71,7 +47,6 @@ extension Reward {
     public static let description = Lens<Reward, String>(
       view: { $0.description },
       set: { Reward(
-        addOnData: $1.addOnData,
         backersCount: $1.backersCount,
         convertedMinimum: $1.convertedMinimum,
         description: $0,
@@ -93,7 +68,6 @@ extension Reward {
     public static let endsAt = Lens<Reward, TimeInterval?>(
       view: { $0.endsAt },
       set: { Reward(
-        addOnData: $1.addOnData,
         backersCount: $1.backersCount,
         convertedMinimum: $1.convertedMinimum,
         description: $1.description,
@@ -115,7 +89,6 @@ extension Reward {
     public static let estimatedDeliveryOn = Lens<Reward, TimeInterval?>(
       view: { $0.estimatedDeliveryOn },
       set: { Reward(
-        addOnData: $1.addOnData,
         backersCount: $1.backersCount,
         convertedMinimum: $1.convertedMinimum,
         description: $1.description,
@@ -137,7 +110,6 @@ extension Reward {
     public static let hasAddOns = Lens<Reward, Bool>(
       view: { $0.hasAddOns },
       set: { Reward(
-        addOnData: $1.addOnData,
         backersCount: $1.backersCount,
         convertedMinimum: $1.convertedMinimum,
         description: $1.description,
@@ -159,7 +131,6 @@ extension Reward {
     public static let id = Lens<Reward, Int>(
       view: { $0.id },
       set: { Reward(
-        addOnData: $1.addOnData,
         backersCount: $1.backersCount,
         convertedMinimum: $1.convertedMinimum,
         description: $1.description,
@@ -181,7 +152,6 @@ extension Reward {
     public static let limit = Lens<Reward, Int?>(
       view: { $0.limit },
       set: { Reward(
-        addOnData: $1.addOnData,
         backersCount: $1.backersCount,
         convertedMinimum: $1.convertedMinimum,
         description: $1.description,
@@ -203,7 +173,6 @@ extension Reward {
     public static let minimum = Lens<Reward, Double>(
       view: { $0.minimum },
       set: { Reward(
-        addOnData: $1.addOnData,
         backersCount: $1.backersCount,
         convertedMinimum: $1.convertedMinimum,
         description: $1.description,
@@ -225,7 +194,6 @@ extension Reward {
     public static let remaining = Lens<Reward, Int?>(
       view: { $0.remaining },
       set: { Reward(
-        addOnData: $1.addOnData,
         backersCount: $1.backersCount,
         convertedMinimum: $1.convertedMinimum,
         description: $1.description,
@@ -247,7 +215,6 @@ extension Reward {
     public static let rewardsItems = Lens<Reward, [RewardsItem]>(
       view: { $0.rewardsItems },
       set: { Reward(
-        addOnData: $1.addOnData,
         backersCount: $1.backersCount,
         convertedMinimum: $1.convertedMinimum,
         description: $1.description,
@@ -269,7 +236,6 @@ extension Reward {
     public static let shipping = Lens<Reward, Reward.Shipping>(
       view: { $0.shipping },
       set: { Reward(
-        addOnData: $1.addOnData,
         backersCount: $1.backersCount,
         convertedMinimum: $1.convertedMinimum,
         description: $1.description,
@@ -291,7 +257,6 @@ extension Reward {
     public static let shippingRules = Lens<Reward, [ShippingRule]?>(
       view: { $0.shippingRules },
       set: { Reward(
-        addOnData: $1.addOnData,
         backersCount: $1.backersCount,
         convertedMinimum: $1.convertedMinimum,
         description: $1.description,
@@ -313,7 +278,6 @@ extension Reward {
     public static let startsAt = Lens<Reward, TimeInterval?>(
       view: { $0.startsAt },
       set: { Reward(
-        addOnData: $1.addOnData,
         backersCount: $1.backersCount,
         convertedMinimum: $1.convertedMinimum,
         description: $1.description,
@@ -335,7 +299,6 @@ extension Reward {
     public static let title = Lens<Reward, String?>(
       view: { $0.title },
       set: { Reward(
-        addOnData: $1.addOnData,
         backersCount: $1.backersCount,
         convertedMinimum: $1.convertedMinimum,
         description: $1.description,

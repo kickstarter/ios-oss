@@ -1,6 +1,7 @@
 import Argo
 import Curry
 import Prelude
+import ReactiveSwift
 import Runes
 
 public struct Project {
@@ -17,7 +18,7 @@ public struct Project {
   public var personalization: Personalization
   public var photo: Photo
   public var prelaunchActivated: Bool?
-  public var rewards: [Reward]
+  public var rewardData: RewardData
   public var slug: String
   public var staffPick: Bool
   public var state: State
@@ -190,6 +191,23 @@ public struct Project {
     public var small: String
   }
 
+  public struct RewardData {
+    public var addOns: [Reward]?
+    public var rewards: [Reward]
+  }
+
+  public var hasAddOns: Bool {
+    return self.addOns?.isEmpty == false
+  }
+
+  public var addOns: [Reward]? {
+    return self.rewardData.addOns
+  }
+
+  public var rewards: [Reward] {
+    return self.rewardData.rewards
+  }
+
   public func endsIn48Hours(today: Date = Date()) -> Bool {
     let twoDays: TimeInterval = 60.0 * 60.0 * 48.0
     return self.dates.deadline - today.timeIntervalSince1970 <= twoDays
@@ -235,7 +253,7 @@ extension Project: Argo.Decodable {
       <*> Project.Personalization.decode(json)
       <*> json <| "photo"
       <*> json <|? "prelaunch_activated"
-      <*> (json <|| "rewards" <|> .success([]))
+      <*> Project.RewardData.decode(json)
       <*> json <| "slug"
     return tmp3
       <*> json <| "staff_pick"
@@ -308,6 +326,14 @@ extension Project.Personalization: Argo.Decodable {
   }
 }
 
+extension Project.RewardData: Argo.Decodable {
+  public static func decode(_ json: JSON) -> Decoded<Project.RewardData> {
+    return curry(Project.RewardData.init)
+      <^> json <||? "add_ons"
+      <*> (json <|| "rewards" <|> .success([]))
+  }
+}
+
 extension Project.Category: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Category> {
     return curry(Project.Category.init)
@@ -353,5 +379,19 @@ private func toInt(string: String) -> Decoded<Int> {
 extension Project: GraphIDBridging {
   public static var modelName: String {
     return "Project"
+  }
+}
+
+// MARK: - GraphQL Adapters
+
+extension Project {
+  static func projectProducer(
+    from envelope: RewardAddOnSelectionViewEnvelope
+  ) -> SignalProducer<Project, ErrorEnvelope> {
+    guard let project = Project.project(from: envelope.project) else {
+      return SignalProducer(error: .couldNotParseJSON)
+    }
+
+    return SignalProducer(value: project)
   }
 }

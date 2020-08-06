@@ -86,7 +86,8 @@
 
     fileprivate let publishUpdateError: ErrorEnvelope?
 
-    fileprivate let fetchManagePledgeViewBackingResult: Result<ManagePledgeViewBackingEnvelope, GraphError>?
+    fileprivate let fetchManagePledgeViewBackingResult:
+      Result<ProjectAndBackingEnvelope, ErrorEnvelope>?
 
     fileprivate let fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>?
     fileprivate let fetchMessageThreadsResponse: [MessageThread]
@@ -107,7 +108,7 @@
     fileprivate let fetchProjectSummaryResult: Result<ProjectSummaryEnvelope, GraphError>?
 
     fileprivate let fetchRewardAddOnsSelectionViewRewardsResult:
-      Result<RewardAddOnSelectionViewEnvelope, GraphError>?
+      Result<Project, ErrorEnvelope>?
 
     fileprivate let fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>?
 
@@ -254,7 +255,7 @@
       removeAttachmentResponse: UpdateDraft.Image? = nil,
       removeAttachmentError: ErrorEnvelope? = nil,
       publishUpdateError: ErrorEnvelope? = nil,
-      fetchManagePledgeViewBackingResult: Result<ManagePledgeViewBackingEnvelope, GraphError>? = nil,
+      fetchManagePledgeViewBackingResult: Result<ProjectAndBackingEnvelope, ErrorEnvelope>? = nil,
       fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
       fetchMessageThreadsResponse: [MessageThread]? = nil,
       fetchProjectResponse: Project? = nil,
@@ -277,7 +278,7 @@
       followFriendError: ErrorEnvelope? = nil,
       incrementVideoCompletionError: ErrorEnvelope? = nil,
       incrementVideoStartError: ErrorEnvelope? = nil,
-      fetchRewardAddOnsSelectionViewRewardsResult: Result<RewardAddOnSelectionViewEnvelope, GraphError>? =
+      fetchRewardAddOnsSelectionViewRewardsResult: Result<Project, ErrorEnvelope>? =
         nil,
       fetchSurveyResponseResponse: SurveyResponse? = nil,
       fetchSurveyResponseError: ErrorEnvelope? = nil,
@@ -851,12 +852,12 @@
     }
 
     func fetchManagePledgeViewBacking(query _: NonEmptySet<Query>)
-      -> SignalProducer<ManagePledgeViewBackingEnvelope, GraphError> {
+      -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchManagePledgeViewBackingResult)
     }
 
     func fetchRewardAddOnsSelectionViewRewards(query _: NonEmptySet<Query>)
-      -> SignalProducer<RewardAddOnSelectionViewEnvelope, GraphError> {
+      -> SignalProducer<Project, ErrorEnvelope> {
       return producer(for: self.fetchRewardAddOnsSelectionViewRewardsResult)
     }
 
