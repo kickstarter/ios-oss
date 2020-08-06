@@ -70,7 +70,7 @@ final class ErroredBackingView: UIView {
 
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
+      |> ksr_constrainViewToMarginsInParent()
   }
 
   private func configureConstraints() {
@@ -137,9 +137,7 @@ final class ErroredBackingView: UIView {
       |> projectNameLabelStyle
 
     _ = self.rootStackView
-      |> rootStackViewStyle(
-        self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
-      )
+      |> rootStackViewStyle
   }
 }
 
@@ -148,14 +146,13 @@ final class ErroredBackingView: UIView {
 private let backingInfoStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> verticalStackViewStyle
-    |> \.spacing .~ Styles.grid(1)
+    |> \.spacing .~ Styles.grid(2)
 }
 
 private let finalCollectionStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ NSLayoutConstraint.Axis.horizontal
     |> \.spacing .~ Styles.grid(1)
-    |> \.distribution .~ .fill
 }
 
 private let manageButtonStyle: ButtonStyle = { button in
@@ -175,15 +172,11 @@ private let projectNameLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 0
 }
 
-private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
-  return { (stackView: UIStackView) in
-    let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
-
-    return stackView
-      |> \.alignment .~ .center
-      |> \.axis .~ NSLayoutConstraint.Axis.horizontal
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ UIEdgeInsets.init(topBottom: Styles.grid(2), leftRight: Styles.grid(1))
-      |> \.spacing .~ spacing
-  }
+private let rootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.alignment .~ .center
+    |> \.axis .~ NSLayoutConstraint.Axis.horizontal
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.layoutMargins .~ .init(topBottom: Styles.grid(1))
+    |> \.spacing .~ Styles.grid(1)
 }
