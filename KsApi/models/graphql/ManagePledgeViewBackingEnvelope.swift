@@ -2,12 +2,12 @@ import Argo
 import Foundation
 import ReactiveSwift
 
-public struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
-  public var project: GraphProject
-  public var backing: GraphBacking
+struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
+  var project: GraphProject
+  var backing: GraphBacking
 }
 
-public extension ManagePledgeViewBackingEnvelope {
+extension ManagePledgeViewBackingEnvelope {
   private enum CodingKeys: CodingKey {
     case backing
     case project

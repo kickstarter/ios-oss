@@ -76,8 +76,7 @@
     fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>?
     fileprivate let fetchGraphUserAccountFieldsError: GraphError?
 
-    fileprivate let fetchGraphUserBackingsResponse: UserEnvelope<GraphBackingEnvelope>?
-    fileprivate let fetchGraphUserBackingsError: GraphError?
+    fileprivate let fetchGraphUserBackingsResult: Result<BackingsEnvelope, ErrorEnvelope>?
 
     fileprivate let addAttachmentResponse: UpdateDraft.Image?
     fileprivate let addAttachmentError: ErrorEnvelope?
@@ -248,8 +247,7 @@
       fetchGraphUserEmailFieldsResponse: UserEmailFields? = nil,
       fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>? = nil,
       fetchGraphUserAccountFieldsError: GraphError? = nil,
-      fetchGraphUserBackingsResponse: UserEnvelope<GraphBackingEnvelope>? = nil,
-      fetchGraphUserBackingsError: GraphError? = nil,
+      fetchGraphUserBackingsResult: Result<BackingsEnvelope, ErrorEnvelope>? = nil,
       addAttachmentResponse: UpdateDraft.Image? = nil,
       addAttachmentError: ErrorEnvelope? = nil,
       removeAttachmentResponse: UpdateDraft.Image? = nil,
@@ -370,8 +368,7 @@
 
       self.fetchGraphUserEmailFieldsResponse = fetchGraphUserEmailFieldsResponse
 
-      self.fetchGraphUserBackingsResponse = fetchGraphUserBackingsResponse
-      self.fetchGraphUserBackingsError = fetchGraphUserBackingsError
+      self.fetchGraphUserBackingsResult = fetchGraphUserBackingsResult
 
       self.fetchCommentsResponse = fetchCommentsResponse ?? [
         .template |> Comment.lens.id .~ 2,
@@ -739,17 +736,8 @@
     }
 
     internal func fetchGraphUserBackings(query _: NonEmptySet<Query>)
-      -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError> {
-      if let error = fetchGraphUserBackingsError {
-        return SignalProducer(error: error)
-      }
-      let backings = GraphBackingEnvelope.GraphBackingConnection(nodes: [])
-      let emptyEnvelope = GraphBackingEnvelope.template
-        |> \.backings .~ backings
-      let emptyResponse = UserEnvelope<GraphBackingEnvelope>(me: emptyEnvelope)
-
-      let response = self.fetchGraphUserBackingsResponse ?? emptyResponse
-      return SignalProducer(value: response)
+      -> SignalProducer<BackingsEnvelope, ErrorEnvelope> {
+      return producer(for: self.fetchGraphUserBackingsResult)
     }
 
     internal func fetchGraph<A>(

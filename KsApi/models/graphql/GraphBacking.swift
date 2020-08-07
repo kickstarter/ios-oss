@@ -1,7 +1,7 @@
 import Foundation
 import Prelude
 
-public struct GraphBacking: Swift.Decodable {
+struct GraphBacking: Swift.Decodable {
   public var addOns: AddOns?
   public var amount: Money
   public var backer: Backer?

@@ -1,12 +1,12 @@
 import Foundation
 import Prelude
 
-public struct GraphLocation: Swift.Decodable {
-  public var country: String
-  public var countryName: String
-  public var displayableName: String
-  public var id: String
-  public var name: String
+struct GraphLocation: Swift.Decodable {
+  var country: String
+  var countryName: String
+  var displayableName: String
+  var id: String
+  var name: String
 }
 
 extension GraphLocation {

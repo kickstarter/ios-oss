@@ -1,48 +1,48 @@
 import Foundation
 import Prelude
 
-public struct GraphProject: Swift.Decodable {
-  public var actions: Actions
-  public var addOns: AddOns?
-  public var backersCount: Int
-  public var category: GraphCategory?
-  public var country: GraphCountry?
-  public var creator: GraphUser
-  public var currency: String
-  public var deadlineAt: TimeInterval?
-  public var description: String
-  public var finalCollectionDate: String?
-  public var fxRate: Double
-  public var goal: Money?
-  public var image: Image?
-  public var isProjectWeLove: Bool?
-  public var launchedAt: TimeInterval?
-  public var location: GraphLocation?
-  public var name: String
-  public var pid: Int
-  public var pledged: Money
-  public var prelaunchActivated: Bool?
-  public var rewards: Rewards?
-  public var slug: String
-  public var state: ProjectState
-  public var stateChangedAt: TimeInterval
-  public var url: String
+struct GraphProject: Swift.Decodable {
+  var actions: Actions
+  var addOns: AddOns?
+  var backersCount: Int
+  var category: GraphCategory?
+  var country: GraphCountry?
+  var creator: GraphUser
+  var currency: String
+  var deadlineAt: TimeInterval?
+  var description: String
+  var finalCollectionDate: String?
+  var fxRate: Double
+  var goal: Money?
+  var image: Image?
+  var isProjectWeLove: Bool?
+  var launchedAt: TimeInterval?
+  var location: GraphLocation?
+  var name: String
+  var pid: Int
+  var pledged: Money
+  var prelaunchActivated: Bool?
+  var rewards: Rewards?
+  var slug: String
+  var state: ProjectState
+  var stateChangedAt: TimeInterval
+  var url: String
 
-  public struct Actions: Swift.Decodable {
-    public var displayConvertAmount: Bool
+  struct Actions: Swift.Decodable {
+    var displayConvertAmount: Bool
   }
 
-  public struct AddOns: Swift.Decodable {
-    public var nodes: [GraphReward]
+  struct AddOns: Swift.Decodable {
+    var nodes: [GraphReward]
   }
 
-  public struct Image: Swift.Decodable {
-    public var id: String
-    public var url: String
+  struct Image: Swift.Decodable {
+    var id: String
+    var url: String
   }
 
-  public struct Rewards: Swift.Decodable {
-    public var nodes: [GraphReward]
+  struct Rewards: Swift.Decodable {
+    var nodes: [GraphReward]
   }
 }
 

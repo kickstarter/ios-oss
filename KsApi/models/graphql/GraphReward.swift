@@ -1,53 +1,53 @@
 import Foundation
 import Prelude
 
-public struct GraphReward: Swift.Decodable {
-  public var amount: Money
-  public var backersCount: Int
-  public var convertedAmount: Money
-  public var description: String
-  public var displayName: String
-  public var endsAt: TimeInterval?
-  public var estimatedDeliveryOn: String?
-  public var id: String
-  public var isMaxPledge: Bool
-  public var items: Items?
-  public var limit: Int?
-  public var limitPerBacker: Int?
-  public var name: String
-  public var remainingQuantity: Int?
-  public var shippingPreference: ShippingPreference?
-  public var shippingRules: [ShippingRule]?
-  public var startsAt: TimeInterval?
+struct GraphReward: Swift.Decodable {
+  var amount: Money
+  var backersCount: Int
+  var convertedAmount: Money
+  var description: String
+  var displayName: String
+  var endsAt: TimeInterval?
+  var estimatedDeliveryOn: String?
+  var id: String
+  var isMaxPledge: Bool
+  var items: Items?
+  var limit: Int?
+  var limitPerBacker: Int?
+  var name: String
+  var remainingQuantity: Int?
+  var shippingPreference: ShippingPreference?
+  var shippingRules: [ShippingRule]?
+  var startsAt: TimeInterval?
 
-  public struct Items: Swift.Decodable {
-    public let nodes: [Item]
+  struct Items: Swift.Decodable {
+    let nodes: [Item]
 
-    public struct Item: Swift.Decodable {
-      public var id: String
-      public var name: String
+    struct Item: Swift.Decodable {
+      var id: String
+      var name: String
     }
   }
 
   // TODO: Extract to global scope as `GraphShippingPreference` when needed.
-  public enum ShippingPreference: String, Swift.Decodable {
+  enum ShippingPreference: String, Swift.Decodable {
     case noShipping = "none"
     case restricted
     case unrestricted
   }
 
   // TODO: Extract to global scope as `GraphShippingRule` when needed.
-  public struct ShippingRule: Swift.Decodable {
-    public var cost: Money
-    public var id: String
-    public var location: GraphLocation
+  struct ShippingRule: Swift.Decodable {
+    var cost: Money
+    var id: String
+    var location: GraphLocation
 
-    public struct Location: Swift.Decodable {
-      public var country: String
-      public var countryName: String
-      public var displayableName: String
-      public var id: String
-      public var name: String
+    struct Location: Swift.Decodable {
+      var country: String
+      var countryName: String
+      var displayableName: String
+      var id: String
+      var name: String
     }
   }
 }

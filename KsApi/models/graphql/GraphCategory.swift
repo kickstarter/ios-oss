@@ -2,14 +2,14 @@ import Foundation
 import Prelude
 
 // TODO: This should be reconciled with the global-scope Category
-public struct GraphCategory: Swift.Decodable {
-  public var id: String
-  public var name: String
-  public var parentCategory: ParentCategory?
+struct GraphCategory: Swift.Decodable {
+  var id: String
+  var name: String
+  var parentCategory: ParentCategory?
 
-  public struct ParentCategory: Swift.Decodable {
-    public var id: String
-    public var name: String
+  struct ParentCategory: Swift.Decodable {
+    var id: String
+    var name: String
   }
 }
 
