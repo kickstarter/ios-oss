@@ -3,7 +3,7 @@ import Prelude
 
 struct GraphLocation: Swift.Decodable {
   var country: String
-  var countryName: String
+  var countryName: String?
   var displayableName: String
   var id: String
   var name: String

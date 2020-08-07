@@ -83,15 +83,16 @@ private func shippingRulesData(
 ) -> [ShippingRule]? {
   guard let shippingRules = graphReward.shippingRules else { return nil }
 
-  return shippingRules.map { shippingRule in
-    ShippingRule(
+  return shippingRules.compactMap { shippingRule -> ShippingRule? in
+    guard let locationId = decompose(id: shippingRule.location.id) else { return nil }
+    return ShippingRule(
       cost: shippingRule.cost.amount,
       id: decompose(id: shippingRule.id),
       location: Location(
         country: shippingRule.location.country,
         displayableName: shippingRule.location.displayableName,
-        id: decompose(id: shippingRule.location.id) ?? 0,
-        localizedName: shippingRule.location.countryName,
+        id: locationId,
+        localizedName: shippingRule.location.name,
         name: shippingRule.location.name
       )
     )

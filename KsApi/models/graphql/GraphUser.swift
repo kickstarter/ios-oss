@@ -12,6 +12,7 @@ public struct GraphUser: Swift.Decodable, Equatable {
   public var isEmailVerified: Bool?
   public var isDeliverable: Bool?
   public var name: String
+  public var uid: String
 }
 
 extension GraphUser {
@@ -20,6 +21,7 @@ extension GraphUser {
     return Query.User.id +| [
       .imageUrl(alias: "imageUrl", blur: false, width: Constants.imageWidth),
       .id,
+      .uid,
       .name
     ]
   }

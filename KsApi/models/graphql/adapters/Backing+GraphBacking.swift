@@ -7,18 +7,20 @@ extension Backing {
   static func backing(from graphBacking: GraphBacking) -> Backing? {
     guard
       let id = decompose(id: graphBacking.id),
-      let backerId = graphBacking.backer?.uid,
+      let backerId = graphBacking.backer.map(\.uid).flatMap(Int.init),
       let projectCountry = graphBacking.project?.country?.code,
       let projectId = graphBacking.project?.pid,
-      let backingStatus = backingStatus(from: graphBacking)
+      let backingStatus = backingStatus(from: graphBacking),
+      let user = graphBacking.backer
     else { return nil }
 
     let reward = backingReward(from: graphBacking, projectId: projectId)
+    let backer = User.user(from: user)
 
     return Backing(
       addOns: backingAddOns(from: graphBacking, projectId: projectId),
       amount: graphBacking.amount.amount,
-      backer: nil,
+      backer: backer,
       backerId: backerId,
       backerCompleted: graphBacking.backerCompleted,
       cancelable: graphBacking.cancelable,

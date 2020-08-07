@@ -31,7 +31,7 @@ extension ShippingRule {
         country: location.country,
         displayableName: location.displayableName,
         id: locationId,
-        localizedName: location.countryName,
+        localizedName: location.name,
         name: location.name
       )
     )

@@ -4,7 +4,7 @@ import Prelude
 struct GraphBacking: Swift.Decodable {
   public var addOns: AddOns?
   public var amount: Money
-  public var backer: Backer?
+  public var backer: GraphUser?
   public var backerCompleted: Bool
   public var bankAccount: BankAccount?
   public var bonusAmount: Money
@@ -24,11 +24,6 @@ struct GraphBacking: Swift.Decodable {
     public var nodes: [GraphReward]
   }
 
-  public struct Backer: Swift.Decodable {
-    public var uid: Int
-    public var name: String
-  }
-
   public struct BankAccount: Swift.Decodable {
     public var bankName: String
     public var id: String
@@ -45,26 +40,6 @@ struct GraphBacking: Swift.Decodable {
   }
 }
 
-extension GraphBacking.Backer {
-  private enum CodingKeys: CodingKey {
-    case uid
-    case name
-  }
-
-  public init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-
-    guard let uid = Int(try values.decode(String.self, forKey: .uid)) else {
-      throw DecodingError.dataCorruptedError(
-        forKey: .uid, in: values, debugDescription: "Not a valid integer"
-      )
-    }
-
-    self.uid = uid
-    self.name = try values.decode(String.self, forKey: .name)
-  }
-}
-
 extension GraphBacking {
   /// All properties required to instantiate a `Backing` via a `GraphBacking`
   static var baseQueryProperties: NonEmptySet<Query.Backing> {
@@ -73,7 +48,7 @@ extension GraphBacking {
       .amount(Money.baseQueryProperties),
       .bonusAmount(Money.baseQueryProperties),
       .backerCompleted,
-      .backer(.uid +| [.name]),
+      .backer(GraphUser.baseQueryProperties),
       .project(GraphProject.baseQueryProperties),
       .status,
       .cancelable,
@@ -83,6 +58,7 @@ extension GraphBacking {
           .expirationDate,
           .lastFour,
           .paymentType,
+          .state,
           .type
         ]
       ),

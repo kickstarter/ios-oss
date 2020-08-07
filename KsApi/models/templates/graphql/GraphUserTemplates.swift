@@ -10,6 +10,7 @@ extension GraphUser {
     isAppleConnected: false,
     isEmailVerified: true,
     isDeliverable: true,
-    name: "Backer McGee"
+    name: "Backer McGee",
+    uid: "12345"
   )
 }

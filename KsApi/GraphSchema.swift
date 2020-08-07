@@ -331,6 +331,7 @@ public enum Query {
     case id
     case lastFour
     case paymentType
+    case state
     case type
   }
 

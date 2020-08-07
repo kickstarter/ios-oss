@@ -4,7 +4,7 @@ extension GraphBacking {
   static let template = GraphBacking(
     addOns: .template,
     amount: Money(amount: 179.0, currency: .usd, symbol: "$"),
-    backer: .init(uid: 1_234, name: "Backer McGee"),
+    backer: .template,
     backerCompleted: false,
     bankAccount: BankAccount(bankName: "Best Bank", id: "1123", lastFour: "5555"),
     bonusAmount: Money(amount: 5.0, currency: .usd, symbol: "$"),

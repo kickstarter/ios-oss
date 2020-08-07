@@ -11,7 +11,7 @@ extension Location {
       country: graphLocation.country,
       displayableName: graphLocation.displayableName,
       id: id,
-      localizedName: graphLocation.countryName,
+      localizedName: graphLocation.name,
       name: graphLocation.name
     )
   }
