@@ -24,7 +24,6 @@ extension BackingsEnvelope {
   internal static func envelopeProducer(
     from envelope: GraphBackingEnvelope
   ) -> SignalProducer<BackingsEnvelope, ErrorEnvelope> {
-
     let envelopes = envelope.backings.nodes.compactMap { graphBacking -> ProjectAndBackingEnvelope? in
       guard
         let backing = Backing.backing(from: graphBacking),

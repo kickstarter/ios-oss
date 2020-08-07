@@ -71,9 +71,19 @@ private func projectDates(from graphProject: GraphProject) -> Project.Dates? {
   return Project.Dates(
     deadline: deadline,
     featuredAt: nil,
+    finalCollectionDate: finalCollectionDateTimeInterval(from: graphProject.finalCollectionDate),
     launchedAt: launchedAt,
     stateChangedAt: graphProject.stateChangedAt
   )
+}
+
+private func finalCollectionDateTimeInterval(
+  from string: String?,
+  dateFormatter: ISO8601DateFormatter = ISO8601DateFormatter()
+) -> TimeInterval? {
+  guard let string = string else { return nil }
+
+  return dateFormatter.date(from: string)?.timeIntervalSince1970
 }
 
 /**

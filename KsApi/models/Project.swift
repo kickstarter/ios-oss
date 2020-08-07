@@ -153,6 +153,7 @@ public struct Project {
   public struct Dates {
     public var deadline: TimeInterval
     public var featuredAt: TimeInterval?
+    public var finalCollectionDate: TimeInterval?
     public var launchedAt: TimeInterval
     public var stateChangedAt: TimeInterval
 
@@ -311,6 +312,7 @@ extension Project.Dates: Argo.Decodable {
     return curry(Project.Dates.init)
       <^> json <| "deadline"
       <*> json <|? "featured_at"
+      <*> json <|? "final_collection_date"
       <*> json <| "launched_at"
       <*> json <| "state_changed_at"
   }
