@@ -23,6 +23,7 @@ extension Backing {
       backer: backer,
       backerId: backerId,
       backerCompleted: graphBacking.backerCompleted,
+      bonusAmount: graphBacking.bonusAmount.amount,
       cancelable: graphBacking.cancelable,
       id: id,
       locationId: graphBacking.location.map(\.id).flatMap(decompose(id:)),

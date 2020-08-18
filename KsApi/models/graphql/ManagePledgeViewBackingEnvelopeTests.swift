@@ -39,6 +39,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "creator": [
             "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci0xMjA3OTk3NjQ5",
+            "uid": "1100793144",
             "name": "Creator McBaggins"
           ],
           "currency": "USD",
@@ -172,6 +173,8 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           ]
         ],
         "backer": [
+          "id": "UmV3YXJkSXRlbS04NzMzMDY=",
+          "imageUrl": "http://www.kickstarter.com/avatar.jpg",
           "uid": "565656",
           "name": "Backer McGee"
         ]
@@ -218,6 +221,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.project.category?.parentCategory?.name, "Technology")
 
       XCTAssertEqual(value.project.creator.id, "VXNlci0xMjA3OTk3NjQ5")
+      XCTAssertEqual(value.project.creator.uid, "1100793144")
       XCTAssertEqual(value.project.creator.name, "Creator McBaggins")
       XCTAssertEqual(value.project.creator.imageUrl, "http://www.kickstarter.com/avatar.jpg")
 
@@ -299,7 +303,9 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
 
       XCTAssertEqual(value.backing.reward?.shippingPreference, .noShipping)
 
-      XCTAssertEqual(value.backing.backer?.uid, 565_656)
+      XCTAssertEqual(value.backing.backer?.uid, "565656")
+      XCTAssertEqual(value.backing.backer?.id, "UmV3YXJkSXRlbS04NzMzMDY=")
+      XCTAssertEqual(value.backing.backer?.imageUrl, "http://www.kickstarter.com/avatar.jpg")
       XCTAssertEqual(value.backing.backer?.name, "Backer McGee")
 
       XCTAssertNotNil(
@@ -341,6 +347,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "creator": [
             "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci0xMjA3OTk3NjQ5",
+            "uid": "1100793144",
             "name": "Creator McBaggins"
           ],
           "currency": "USD",
@@ -398,6 +405,8 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           ]
         ],
         "backer": [
+          "id": "UmV3YXJkSXRlbS04NzMzMDY=",
+          "imageUrl": "http://www.kickstarter.com/avatar.jpg",
           "uid": "565656",
           "name": "Backer McGee"
         ]
@@ -444,7 +453,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
 
       XCTAssertEqual(value.backing.reward?.amount, Money(amount: 129.0, currency: .usd, symbol: "$"))
 
-      XCTAssertEqual(value.backing.backer?.uid, 565_656)
+      XCTAssertEqual(value.backing.backer?.uid, "565656")
       XCTAssertEqual(value.backing.backer?.name, "Backer McGee")
     } catch {
       XCTFail((error as NSError).description)
@@ -468,6 +477,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "creator": [
             "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci0xMjA3OTk3NjQ5",
+            "uid": "1100793144",
             "name": "Creator McBaggins"
           ],
           "currency": "USD",
@@ -506,6 +516,8 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
         "shippingAmount": nil,
         "reward": nil,
         "backer": [
+          "id": "UmV3YXJkSXRlbS04NzMzMDY=",
+          "imageUrl": "http://www.kickstarter.com/avatar.jpg",
           "uid": "565656",
           "name": "Backer McGee"
         ]
@@ -542,7 +554,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
 
       XCTAssertNil(value.backing.reward)
 
-      XCTAssertEqual(value.backing.backer?.uid, 565_656)
+      XCTAssertEqual(value.backing.backer?.uid, "565656")
       XCTAssertEqual(value.backing.backer?.name, "Backer McGee")
     } catch {
       XCTFail((error as NSError).description)
@@ -564,6 +576,8 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
         ],
         "backerCompleted": false,
         "backer": [
+          "id": "UmV3YXJkSXRlbS04NzMzMDY=",
+          "imageUrl": "http://www.kickstarter.com/avatar.jpg",
           "name": "Backer McGee",
           "uid": "110079315"
         ],
@@ -586,6 +600,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "creator": [
             "imageUrl": "http://www.kickstarter.com/avatar.jpg",
             "id": "VXNlci0xMjA3OTk3NjQ5",
+            "uid": "1100793144",
             "name": "Creator McBaggins"
           ],
           "currency": "USD",
@@ -683,7 +698,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.backing.reward?.items?.nodes[1].id, "UmV3YXJkSXRlbS04NzMzMDY=")
       XCTAssertEqual(value.backing.reward?.items?.nodes[1].name, "Travel case")
 
-      XCTAssertEqual(value.backing.backer?.uid, 110_079_315)
+      XCTAssertEqual(value.backing.backer?.uid, "110079315")
       XCTAssertEqual(value.backing.backer?.name, "Backer McGee")
     } catch {
       XCTFail((error as NSError).description)

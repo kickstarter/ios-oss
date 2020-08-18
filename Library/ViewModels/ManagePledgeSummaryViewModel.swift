@@ -7,7 +7,7 @@ public struct ManagePledgeSummaryViewData: Equatable {
   public let backerId: Int
   public let backerName: String
   public let backerSequence: Int
-  public let backingState: BackingState
+  public let backingState: Backing.Status
   public let bonusAmount: Double?
   public let currentUserIsCreatorOfProject: Bool
   public let isNoReward: Bool
@@ -18,7 +18,7 @@ public struct ManagePledgeSummaryViewData: Equatable {
   public let pledgedOn: TimeInterval
   public let projectCountry: Project.Country
   public let projectDeadline: TimeInterval
-  public let projectState: ProjectState
+  public let projectState: Project.State
   public let rewardMinimum: Double
   public let shippingAmount: Double?
 }
@@ -141,7 +141,7 @@ private func pledgeAmountSummaryViewData(
 }
 
 private func pledgeStatusLabelViewData(with data: ManagePledgeSummaryViewData) -> PledgeStatusLabelViewData {
-  return .init(
+  return PledgeStatusLabelViewData(
     currentUserIsCreatorOfProject: data.currentUserIsCreatorOfProject,
     needsConversion: data.needsConversion,
     pledgeAmount: data.pledgeAmount,

@@ -7,6 +7,7 @@ public struct RewardAddOnCardViewData: Equatable {
   public let reward: Reward
   public let context: RewardCardViewContext
   public let shippingRule: ShippingRule?
+  public let selectedQuantities: SelectedRewardQuantities
 }
 
 public protocol RewardAddOnCardViewModelInputs {
@@ -48,6 +49,7 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
 
     let project: Signal<Project, Never> = configData.map(\.project)
     let reward: Signal<Reward, Never> = configData.map(\.reward)
+    let selectedQuantities: Signal<SelectedRewardQuantities, Never> = configData.map(\.selectedQuantities)
 
     let projectAndReward = Signal.zip(project, reward)
     let projectRewardShippingRule = configData.map {
@@ -99,8 +101,11 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
       .takeWhen(self.rewardAddOnCardTappedProperty.signal)
       .map { $0.id }
 
-    let initialSelectedQuantity = reward
-      .map { reward in reward.addOnData?.selectedQuantity ?? 0 }
+    let initialSelectedQuantity = Signal.combineLatest(
+      reward,
+      selectedQuantities
+    )
+    .map { reward, selectedQuantities in selectedQuantities[reward.id] ?? 0 }
 
     let updatedSelectedQuantity = Signal.merge(
       self.addButtonTappedProperty.signal.mapConst(1),
@@ -120,7 +125,7 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
       .withLatest(from: reward.map(\.id))
 
     self.stepperMaxValue = reward
-      .map { reward in reward.addOnData?.limitPerBacker ?? 0 }
+      .map { reward in reward.limitPerBacker ?? 0 }
       .map(Double.init)
 
     self.stepperStackViewHidden = initialOrUpdatedSelectedQuantity.map { $0 == 0 }
@@ -299,8 +304,7 @@ private func timeLeftString(project: Project, reward: Reward) -> String? {
 }
 
 private func limitPerBackerString(reward: Reward) -> String? {
-  guard let limit = reward.addOnData?.limitPerBacker, limit > 0 else { return nil }
-
+  guard let limit = reward.limitPerBacker, limit > 0 else { return nil }
   return localizedString(
     key: "limit_limit_per_backer",
     defaultValue: "Limit %{limit_per_backer}",

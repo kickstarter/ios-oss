@@ -7,6 +7,7 @@ extension Backing {
     backer: .template,
     backerId: 1,
     backerCompleted: true,
+    bonusAmount: 0,
     cancelable: true,
     id: 1,
     locationId: 1,

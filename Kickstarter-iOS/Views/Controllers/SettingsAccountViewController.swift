@@ -65,7 +65,7 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
           isAppleConnected: isAppleConnectedAccount
         )
 
-        if isAppleConnectedAccount {
+        if let email = email, isAppleConnectedAccount {
           self?.showAppleHeader(with: email)
         }
 
@@ -170,9 +170,9 @@ extension SettingsAccountViewController: UITableViewDelegate {
       return nil
     }
 
-    let (shouldShowCreatePasswordFooter, email) = data
+    let (shouldShowCreatePasswordFooter, anEmail) = data
 
-    guard shouldShowCreatePasswordFooter,
+    guard let email = anEmail, shouldShowCreatePasswordFooter,
       section == SettingsAccountSectionType.createPassword.rawValue else {
       return nil
     }

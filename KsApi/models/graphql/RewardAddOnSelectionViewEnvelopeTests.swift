@@ -37,7 +37,8 @@ final class RewardAddOnSelectionViewEnvelopeTests: XCTestCase {
         "creator": [
           "imageUrl": "http://www.kickstarter.com/avatar.jpg",
           "id": "VXNlci0xMjA3OTk3NjQ5",
-          "name": "Creator McBaggins"
+          "name": "Creator McBaggins",
+          "uid": "32434234"
         ],
         "currency": "USD",
         "country": [
@@ -153,6 +154,7 @@ final class RewardAddOnSelectionViewEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.project.category?.parentCategory?.name, "Technology")
 
       XCTAssertEqual(value.project.creator.id, "VXNlci0xMjA3OTk3NjQ5")
+      XCTAssertEqual(value.project.creator.uid, "32434234")
       XCTAssertEqual(value.project.creator.name, "Creator McBaggins")
       XCTAssertEqual(value.project.creator.imageUrl, "http://www.kickstarter.com/avatar.jpg")
 

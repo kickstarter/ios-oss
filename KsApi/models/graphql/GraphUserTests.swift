@@ -14,7 +14,8 @@ final class GraphUserTests: XCTestCase {
       "isAppleConnected": false,
       "isDeliverable": true,
       "isEmailVerified": true,
-      "name": "User Name"
+      "name": "User Name",
+      "uid": "45454545"
     }
     """
 
@@ -32,6 +33,7 @@ final class GraphUserTests: XCTestCase {
       XCTAssertEqual(user.imageUrl, "http://www.kickstarter.com/avatar.jpg")
       XCTAssertEqual(user.id, "VXNlci0yMDY5MTc2OTk5")
       XCTAssertEqual(user.name, "User Name")
+      XCTAssertEqual(user.uid, "45454545")
       XCTAssertEqual(true, user.hasPassword)
       XCTAssertEqual(true, user.isDeliverable)
       XCTAssertEqual(true, user.isEmailVerified)
@@ -52,7 +54,8 @@ final class GraphUserTests: XCTestCase {
       "isAppleConnected": null,
       "isDeliverable": null,
       "isEmailVerified": null,
-      "name": "User Name"
+      "name": "User Name",
+      "uid": "45454545"
     }
     """
 
@@ -71,6 +74,7 @@ final class GraphUserTests: XCTestCase {
       XCTAssertEqual(user.id, "VXNlci0yMDY5MTc2OTk5")
       XCTAssertEqual(user.imageUrl, "http://www.kickstarter.com/avatar.jpg")
       XCTAssertEqual(user.name, "User Name")
+      XCTAssertEqual(user.uid, "45454545")
       XCTAssertNil(user.isDeliverable)
       XCTAssertNil(user.isEmailVerified)
       XCTAssertNil(user.isAppleConnected)

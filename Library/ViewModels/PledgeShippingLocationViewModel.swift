@@ -7,7 +7,8 @@ import ReactiveSwift
 public typealias PledgeShippingLocationViewData = (
   project: Project,
   reward: Reward,
-  showAmount: Bool
+  showAmount: Bool,
+  selectedLocationId: Int?
 )
 
 public protocol PledgeShippingLocationViewModelInputs {
@@ -45,9 +46,11 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
     .map(first)
 
     let project = configData
-      .map(first)
+      .map { $0.0 }
     let reward = configData
-      .map(second)
+      .map { $0.1 }
+    let selectedLocationId = configData
+      .map { $0.3 }
 
     let shippingShouldBeginLoading = reward
       .map { $0.shipping.enabled }
@@ -79,9 +82,10 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
 
     let initialShippingRule = Signal.combineLatest(
       project,
-      shippingRules
+      shippingRules,
+      selectedLocationId
     )
-    .map(determineShippingRule(with:shippingRules:))
+    .map(determineShippingRule)
 
     self.shippingRulesError = shippingRulesEvent.errors().map { _ in
       Strings.We_were_unable_to_load_the_shipping_destinations()
@@ -118,7 +122,7 @@ public final class PledgeShippingLocationViewModel: PledgeShippingLocationViewMo
         .ksr_debounce(.milliseconds(300), on: AppEnvironment.current.scheduler)
     )
 
-    self.amountLabelIsHidden = configData.map(third).negate()
+    self.amountLabelIsHidden = configData.map { $0.2 }.negate()
   }
 
   private let configDataProperty = MutableProperty<PledgeShippingLocationViewData?>(nil)
@@ -180,11 +184,14 @@ private func shippingValue(of project: Project, with shippingRuleCost: Double) -
   return Format.attributedPlusSign(combinedAttributes) + attributedCurrency
 }
 
-private func determineShippingRule(with project: Project, shippingRules: [ShippingRule]) -> ShippingRule? {
-  guard
-    let backing = project.personalization.backing,
-    let selectedRule = shippingRules.filter({ $0.location.id == backing.locationId }).first
-  else { return defaultShippingRule(fromShippingRules: shippingRules) }
+private func determineShippingRule(
+  with project: Project,
+  shippingRules: [ShippingRule],
+  selectedLocationId: Int?
+) -> ShippingRule? {
+  if let locationId = selectedLocationId ?? project.personalization.backing?.locationId {
+    return shippingRules.first { $0.location.id == locationId }
+  }
 
-  return selectedRule
+  return defaultShippingRule(fromShippingRules: shippingRules)
 }

@@ -30,6 +30,7 @@ extension Reward {
       hasAddOns: false, // This value is only sent via the v1 API to indicate that a base reward has add-ons
       id: rewardId,
       limit: graphReward.limit,
+      limitPerBacker: graphReward.limitPerBacker,
       minimum: graphReward.amount.amount,
       remaining: graphReward.remainingQuantity,
       rewardsItems: rewardItemsData(from: graphReward, with: projectId),

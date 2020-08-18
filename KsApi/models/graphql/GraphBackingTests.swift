@@ -19,8 +19,10 @@ final class GraphBackingTests: XCTestCase {
               "symbol": "$"
             ],
             "backer": [
+              "id": "QmFja2luZy0xMTMzMTC5ODE=",
               "uid": "565656",
-              "name": "Backer McGee"
+              "name": "Backer McGee",
+              "imageUrl": "http://www.kickstarter.com/avatar.jpg"
             ],
             "backerCompleted": false,
             "cancelable": true,
@@ -59,7 +61,8 @@ final class GraphBackingTests: XCTestCase {
               "creator": [
                 "imageUrl": "http://www.kickstarter.com/avatar.jpg",
                 "id": "VXNlci0xMjA3OTk3NjQ5",
-                "name": "Creator McBaggins"
+                "name": "Creator McBaggins",
+                "uid": "32434234"
               ],
               "currency": "USD",
               "country": [

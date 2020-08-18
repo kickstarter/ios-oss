@@ -12,6 +12,7 @@ public struct Reward {
   public let hasAddOns: Bool
   public let id: Int
   public let limit: Int?
+  public let limitPerBacker: Int?
   public let minimum: Double
   public let remaining: Int?
   public let rewardsItems: [RewardsItem]
@@ -92,6 +93,7 @@ extension Reward: Argo.Decodable {
       <*> ((json <| "has_addons") <|> .success(false))
       <*> json <| "id"
       <*> json <|? "limit"
+      <*> json <|? "limit_per_backer"
       <*> json <| "minimum"
       <*> json <|? "remaining"
     return tmp2
