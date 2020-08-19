@@ -37,7 +37,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       .observe(self.configurePledgeShippingLocationViewControllerWithDataReward.observer)
     self.vm.outputs.configurePledgeShippingLocationViewControllerWithData.map { $0.2 }
       .observe(self.configurePledgeShippingLocationViewControllerWithDataShowAmount.observer)
-    self.vm.outputs.configurePledgeShippingLocationViewControllerWithData.map { $0.3 } // FIXME: test
+    self.vm.outputs.configurePledgeShippingLocationViewControllerWithData.map { $0.3 }
       .observe(self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.observer)
     self.vm.outputs.endRefreshing.observe(self.endRefreshing.observer)
     self.vm.outputs.goToPledge.observe(self.goToPledge.observer)
@@ -60,7 +60,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [:],
-      selectedLocationId: nil,
+      selectedLocationId: 2,
       refTag: nil,
       context: .pledge
     )
@@ -71,6 +71,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.configurePledgeShippingLocationViewControllerWithDataProject.assertValues([project])
     self.configurePledgeShippingLocationViewControllerWithDataReward.assertValues([reward])
     self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertValues([false])
+    self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertValues([2])
   }
 
   func testLoadAddOnRewardsIntoDataSource() {

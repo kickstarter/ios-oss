@@ -66,9 +66,11 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     let baseRewardQuantities = configData.map(\.selectedQuantities)
     let refTag = configData.map(\.refTag)
     let context = configData.map(\.context)
+    let initialLocationId = configData.map(\.selectedLocationId)
 
-    self.configurePledgeShippingLocationViewControllerWithData = Signal.zip(project, baseReward)
-      .map { project, reward in (project, reward, false, nil) }
+    self.configurePledgeShippingLocationViewControllerWithData = Signal
+      .zip(project, baseReward, initialLocationId)
+      .map { project, reward, initialLocationId in (project, reward, false, initialLocationId) }
 
     let slug = project.map(\.slug)
 
@@ -192,7 +194,10 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
           .filter { reward in selectedRewardIds.contains(reward.id) }
       }
 
-    let selectedLocationId = shippingRule.map { $0?.location.id }
+    let selectedLocationId = Signal.merge(
+      initialLocationId,
+      shippingRule.map { $0?.location.id }
+    )
 
     self.goToPledge = Signal.combineLatest(
       project,
