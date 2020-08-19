@@ -21,17 +21,16 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
   func testView_NoShipping() {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ false
+
+    let noShippingAddOn = Reward.template
+      |> Reward.lens.shipping.enabled .~ false
+      |> Reward.lens.shipping.preference .~ Reward.Shipping.Preference.none
+
     let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+      |> Project.lens.rewardData.addOns .~ [noShippingAddOn]
 
-    let noShippingAddOn = RewardAddOnSelectionViewEnvelope.Project.Reward.template
-      |> \.shippingPreference .~ .noShipping
-
-    let env = RewardAddOnSelectionViewEnvelope.template
-      |> \.project.addOns .~ (
-        .template |> \.nodes .~ [noShippingAddOn]
-      )
-
-    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(env))
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService) {
@@ -41,7 +40,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
           project: project,
           rewards: [reward],
           selectedQuantities: [:],
-          selectedShippingRule: nil,
+          selectedLocationId: nil,
           refTag: nil,
           context: .pledge
         )
@@ -67,23 +66,20 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
     ]
 
     let reward = Reward.template
-      |> Reward.lens.shipping .~ (
-        .template |> Reward.Shipping.lens.enabled .~ true
-      )
+      |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+
+    let shippingAddOn = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
+
     let project = Project.template
-
-    let shippingAddOn = RewardAddOnSelectionViewEnvelope.Project.Reward.template
-      |> \.shippingPreference .~ .unrestricted
-
-    let env = RewardAddOnSelectionViewEnvelope.template
-      |> \.project.addOns .~ (
-        .template |> \.nodes .~ [shippingAddOn]
-      )
+      |> Project.lens.rewardData.rewards .~ [reward]
+      |> Project.lens.rewardData.addOns .~ [shippingAddOn]
 
     let mockService = MockService(
       fetchShippingRulesResult: .success(shippingRules),
-      fetchRewardAddOnsSelectionViewRewardsResult: .success(env)
+      fetchRewardAddOnsSelectionViewRewardsResult: .success(project)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -93,7 +89,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
           project: project,
           rewards: [reward],
           selectedQuantities: [:],
-          selectedShippingRule: nil,
+          selectedLocationId: nil,
           refTag: nil,
           context: .pledge
         )
@@ -132,37 +128,48 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .restricted
       |> Reward.lens.id .~ 99
+      |> Reward.lens.shippingRules .~ [shippingRule]
 
-    let shippingAddOn1 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
-      |> \.id .~ "Reward-2".toBase64()
-      |> \.shippingPreference .~ .restricted
-      |> \.shippingRules .~ [
-        .template |> (\.location.id .~ "Location-99".toBase64())
+    let shippingAddOn1 = Reward.template
+      |> Reward.lens.id .~ 2
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shippingRules .~ [
+        shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
       ]
 
-    let shippingAddOn2 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
-      |> \.id .~ "Reward-3".toBase64()
-      |> \.shippingPreference .~ .restricted
-      |> \.shippingRules .~ [
-        .template |> (\.location.id .~ "Location-99".toBase64())
+    let shippingAddOn2 = Reward.template
+      |> Reward.lens.id .~ 3
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shippingRules .~ [
+        shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
       ]
 
-    let shippingAddOn3 = RewardAddOnSelectionViewEnvelope.Project.Reward.template
-      |> \.id .~ "Reward-4".toBase64()
-      |> \.shippingPreference .~ .restricted
-      |> \.shippingRules .~ [
-        .template |> (\.location.id .~ "Location-3".toBase64())
+    let shippingAddOn3 = Reward.template
+      |> Reward.lens.id .~ 4
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shippingRules .~ [
+        shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 3)
+      ]
+
+    let shippingAddOn4 = Reward.template
+      |> Reward.lens.id .~ 5
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shippingRules .~ [
+        shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 3)
       ]
 
     let project = Project.template
-    let env = RewardAddOnSelectionViewEnvelope.template
-      |> \.project.addOns .~ (
-        .template |> \.nodes .~ [shippingAddOn1, shippingAddOn2, shippingAddOn3]
-      )
+      |> Project.lens.rewardData.rewards .~ [reward]
+      |> Project.lens.rewardData.addOns .~ [
+        shippingAddOn1,
+        shippingAddOn2,
+        shippingAddOn3,
+        shippingAddOn4
+      ]
 
     let mockService = MockService(
       fetchShippingRulesResult: .success(shippingRules),
-      fetchRewardAddOnsSelectionViewRewardsResult: .success(env)
+      fetchRewardAddOnsSelectionViewRewardsResult: .success(project)
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -172,7 +179,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
           project: project,
           rewards: [reward],
           selectedQuantities: [:],
-          selectedShippingRule: nil,
+          selectedLocationId: nil,
           refTag: nil,
           context: .pledge
         )
@@ -199,7 +206,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
       |> Reward.lens.shipping.enabled .~ false
     let project = Project.template
 
-    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .failure(.invalidInput))
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .failure(.couldNotParseJSON))
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService) {
@@ -209,7 +216,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
           project: project,
           rewards: [reward],
           selectedQuantities: [:],
-          selectedShippingRule: nil,
+          selectedLocationId: nil,
           refTag: nil,
           context: .pledge
         )

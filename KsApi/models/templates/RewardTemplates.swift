@@ -15,7 +15,7 @@ extension Reward {
     limitPerBacker: nil,
     minimum: 10.00,
     remaining: 50,
-    rewardsItems: [],
+    rewardsItems: [RewardsItem.template],
     shipping: Reward.Shipping(
       enabled: false,
       location: nil,
@@ -25,7 +25,7 @@ extension Reward {
     ),
     shippingRules: nil,
     startsAt: nil,
-    title: nil
+    title: "My Reward"
   )
 
   public static let noReward = Reward(

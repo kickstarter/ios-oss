@@ -137,7 +137,6 @@ public final class ManagePledgeViewModel:
 
     let backing = graphBackingEnvelope
       .map { $0.backing }
-      .logEvents(identifier: "***")
 
     let endRefreshingWhenProjectFailed = fetchProjectEvent.errors()
       .ignoreValues()

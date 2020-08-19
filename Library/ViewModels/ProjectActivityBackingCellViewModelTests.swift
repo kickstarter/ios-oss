@@ -298,6 +298,7 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Reward.lens.id .~ 32
       |> Reward.lens.title .~ "Sick Skull Graphic Notepad"
     let reward2 = .template
+      |> Reward.lens.title .~ nil
       |> Reward.lens.description .~ "Sick Skull Graphic Binder"
       |> Reward.lens.id .~ 33
     let project = .template

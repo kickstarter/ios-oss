@@ -1633,7 +1633,7 @@ final class PledgeViewModelTests: TestCase {
         paymentType: "APPLE_PAY",
         revenueInUsdCents: 1_500,
         rewardId: 1,
-        rewardTitle: nil,
+        rewardTitle: "My Reward",
         shippingEnabled: false,
         shippingAmount: nil,
         userHasStoredApplePayCard: true
@@ -1721,7 +1721,7 @@ final class PledgeViewModelTests: TestCase {
         paymentType: "APPLE_PAY",
         revenueInUsdCents: 1_965,
         rewardId: 1,
-        rewardTitle: nil,
+        rewardTitle: "My Reward",
         shippingEnabled: false,
         shippingAmount: nil,
         userHasStoredApplePayCard: true
@@ -1890,7 +1890,7 @@ final class PledgeViewModelTests: TestCase {
         paymentType: "APPLE_PAY",
         revenueInUsdCents: 500,
         rewardId: 1,
-        rewardTitle: nil,
+        rewardTitle: "My Reward",
         shippingEnabled: false,
         shippingAmount: nil,
         userHasStoredApplePayCard: true
@@ -5448,10 +5448,10 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
     XCTAssertEqual(5.0, props?["checkout_shipping_amount"] as? Double)
     XCTAssertEqual(1_506_897_315.0, props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
-    XCTAssertNil(props?["checkout_reward_title"] as? String)
+    XCTAssertEqual("My Reward", props?["checkout_reward_title"] as? String)
 
     // Pledge properties
-    XCTAssertEqual(false, props?["pledge_backer_reward_has_items"] as? Bool)
+    XCTAssertEqual(true, props?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(1, props?["pledge_backer_reward_id"] as? Int)
     XCTAssertEqual(true, props?["pledge_backer_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_time"] as? Bool)
