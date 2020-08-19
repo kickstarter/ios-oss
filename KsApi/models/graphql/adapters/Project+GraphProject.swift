@@ -99,7 +99,7 @@ private func projectStats(from graphProject: GraphProject) -> Project.Stats {
     currentCurrencyRate: nil,
     goal: graphProject.goal.map(\.amount).flatMap(Int.init) ?? 0,
     pledged: Int(graphProject.pledged.amount),
-    staticUsdRate: 0, // FIXME: Update when related PR merges
+    staticUsdRate: graphProject.usdExchangeRate.flatMap(Float.init) ?? 0,
     updatesCount: nil
   )
 }

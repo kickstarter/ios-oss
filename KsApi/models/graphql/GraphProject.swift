@@ -27,6 +27,7 @@ struct GraphProject: Swift.Decodable {
   var state: ProjectState
   var stateChangedAt: TimeInterval
   var url: String
+  var usdExchangeRate: Double?
 
   struct Actions: Swift.Decodable {
     var displayConvertAmount: Bool
@@ -69,7 +70,8 @@ extension GraphProject {
       .slug,
       .state,
       .stateChangedAt,
-      .url
+      .url,
+      .usdExchangeRate
     ]
   }
 }

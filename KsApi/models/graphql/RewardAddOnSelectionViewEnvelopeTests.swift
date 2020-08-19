@@ -57,6 +57,7 @@ final class RewardAddOnSelectionViewEnvelopeTests: XCTestCase {
           "symbol": "$"
         ],
         "url": "http://www.kickstarter.com/my/project",
+        "usdExchangeRate": 1,
         "image": [
           "id": "UGhvdG8tMTEyNTczMzI=",
           "url": "http://www.kickstarter.com/my/image.jpg"
@@ -138,6 +139,7 @@ final class RewardAddOnSelectionViewEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.project.goal, Money(amount: 150, currency: .usd, symbol: "$"))
       XCTAssertEqual(value.project.pledged, Money(amount: 173_434.0, currency: .usd, symbol: "$"))
       XCTAssertEqual(value.project.url, "http://www.kickstarter.com/my/project")
+      XCTAssertEqual(value.project.usdExchangeRate, 1)
 
       XCTAssertEqual(value.project.location?.name, "Canada")
       XCTAssertEqual(value.project.location?.countryName, "Canada")

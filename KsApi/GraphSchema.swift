@@ -197,6 +197,7 @@ public enum Query {
     case stateChangedAt
     case updates(Set<QueryArg<Never>>, NonEmptySet<Connection<Project.Update>>)
     case url
+    case usdExchangeRate
 
     public enum Actions: String {
       case displayConvertAmount
@@ -506,6 +507,7 @@ extension Query.Project: QueryType {
     case .stateChangedAt: return "stateChangedAt"
     case let .updates(args, fields): return "updates\(connection(args, fields))"
     case .url: return "url"
+    case .usdExchangeRate: return "usdExchangeRate"
     }
   }
 }

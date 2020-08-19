@@ -26,6 +26,7 @@ extension GraphProject {
     slug: "/cool-project",
     state: .live,
     stateChangedAt: 23_452_223,
-    url: "http://www.kickstarter.com/cool/project"
+    url: "http://www.kickstarter.com/cool/project",
+    usdExchangeRate: 1
   )
 }
