@@ -68,7 +68,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       rewards[0] = reward
 
       let project = Project.cosmicSurgery
-        |> Project.lens.rewards .~ rewards
+        |> Project.lens.rewardData.rewards .~ rewards
       let firstRewardId = reward.id
 
       self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
@@ -83,7 +83,7 @@ final class RewardsCollectionViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .activity,
         context: .pledge
       )
@@ -111,7 +111,7 @@ final class RewardsCollectionViewModelTests: TestCase {
         project: project,
         rewards: [firstReward],
         selectedQuantities: [firstReward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .activity,
         context: .pledge
       )
@@ -126,7 +126,7 @@ final class RewardsCollectionViewModelTests: TestCase {
         project: project,
         rewards: [secondReward],
         selectedQuantities: [secondReward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .activity,
         context: .pledge
       )
@@ -261,7 +261,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       |> Backing.lens.rewardId .~ nil
 
     let project = Project.template
-      |> Project.lens.rewards .~ [Reward.noReward, Reward.template]
+      |> Project.lens.rewardData.rewards .~ [Reward.noReward, Reward.template]
       |> Project.lens.state .~ .successful
       |> Project.lens.personalization.backing .~ backing
       |> Project.lens.personalization.isBacking .~ true
@@ -395,7 +395,7 @@ final class RewardsCollectionViewModelTests: TestCase {
       |> Backing.lens.rewardId .~ 5
 
     let project = Project.template
-      |> Project.lens.rewards .~ rewards
+      |> Project.lens.rewardData.rewards .~ rewards
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.backing .~ backing
       |> Project.lens.personalization.isBacking .~ true
@@ -425,7 +425,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     ]
 
     let project = Project.template
-      |> \.rewards .~ rewards
+      |> \.rewardData.rewards .~ rewards
 
     self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
     self.vm.inputs.viewDidLoad()

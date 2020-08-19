@@ -64,7 +64,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ nil
 
     self.vm.inputs
-      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
 
     self.rewardTitleLabelText.assertValues(["The thing"])
   }
@@ -75,7 +81,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ nil
 
     self.vm.inputs
-      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
 
     self.rewardTitleLabelText.assertValues([])
   }
@@ -85,12 +97,17 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
 
     let reward = .template
-      |> \.addOnData .~ AddOnData(isAddOn: true, selectedQuantity: 2, limitPerBacker: 2)
       |> Reward.lens.title .~ "The thing"
       |> Reward.lens.remaining .~ nil
 
     self.vm.inputs
-      .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: project,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [reward.id: 2]
+      ))
 
     self.rewardTitleLabelText.assertValues(["The thing"])
   }
@@ -104,7 +121,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
 
     withEnvironment(countryCode: "US") {
       self.vm.inputs
-        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [:]
+        ))
 
       self.amountLabelAttributedText.assertValues(
         ["$1,000"],
@@ -120,7 +143,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
 
     withEnvironment(countryCode: "MX") {
       self.vm.inputs
-        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [:]
+        ))
 
       self.amountLabelAttributedText.assertValues(
         ["US$ 1,000"],
@@ -139,7 +168,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
 
     withEnvironment(countryCode: "US") {
       self.vm.inputs
-        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [:]
+        ))
 
       self.amountLabelAttributedText.assertValues(
         ["£1,000"],
@@ -158,7 +193,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
 
     withEnvironment(countryCode: "MX") {
       self.vm.inputs
-        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [:]
+        ))
 
       self.amountLabelAttributedText.assertValues(
         ["£1,000"],
@@ -174,7 +215,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
 
     withEnvironment(countryCode: "US") {
       self.vm.inputs
-        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [:]
+        ))
 
       self.amountLabelAttributedText.assertValues(
         ["$1"],
@@ -190,7 +237,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
 
     withEnvironment(countryCode: "MX") {
       self.vm.inputs
-        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [:]
+        ))
 
       self.amountLabelAttributedText.assertValues(
         ["US$ 1"],
@@ -206,7 +259,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
 
     withEnvironment(countryCode: "US") {
       self.vm.inputs
-        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [:]
+        ))
 
       self.amountLabelAttributedText.assertValues(
         ["MX$ 10"],
@@ -225,7 +284,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
 
     withEnvironment(countryCode: "CA") {
       self.vm.inputs
-        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [:]
+        ))
 
       self.amountLabelAttributedText.assertValues(
         ["MX$ 10"],
@@ -256,7 +321,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
       ]
 
     self.vm.inputs
-      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
 
     self.includedItemsLabelAttributedText.assertValues(["•  The thing•  1,000 x The other thing"])
     self.includedItemsStackViewHidden.assertValues([false])
@@ -267,7 +338,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
       project: .template,
       reward: .template |> Reward.lens.rewardsItems .~ [],
       context: .pledge,
-      shippingRule: nil
+      shippingRule: nil,
+      selectedQuantities: [:]
     ))
 
     self.includedItemsStackViewHidden.assertValues([true])
@@ -280,7 +352,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let reward = Reward.template
 
     self.vm.inputs
-      .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: project,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
 
     self.descriptionLabelText.assertValues([reward.description])
   }
@@ -296,7 +374,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
 
     withEnvironment(countryCode: "US") {
       self.vm.inputs
-        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [:]
+        ))
 
       self.amountConversionLabelHidden.assertValues(
         [true],
@@ -316,7 +400,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
 
     withEnvironment(countryCode: "US") {
       self.vm.inputs
-        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [:]
+        ))
 
       self.amountConversionLabelHidden.assertValues(
         [false],
@@ -338,7 +428,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
 
     withEnvironment(countryCode: "MX") {
       self.vm.inputs
-        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [:]
+        ))
 
       self.amountConversionLabelHidden.assertValues(
         [false],
@@ -360,7 +456,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
 
     withEnvironment(countryCode: "XX") {
       self.vm.inputs
-        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [:]
+        ))
 
       self.amountConversionLabelHidden.assertValues(
         [true],
@@ -380,7 +482,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
 
     withEnvironment(countryCode: "XX") {
       self.vm.inputs
-        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [:]
+        ))
 
       self.amountConversionLabelHidden.assertValues(
         [false],
@@ -406,7 +514,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
       apiService: MockService(currency: "MXN"), countryCode: "MX"
     ) {
       self.vm.inputs
-        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [:]
+        ))
 
       self.amountConversionLabelHidden.assertValues(
         [false],
@@ -433,7 +547,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
       apiService: MockService(currency: "MXN"), countryCode: "MX"
     ) {
       self.vm.inputs
-        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: .template))
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: .template,
+          selectedQuantities: [:]
+        ))
 
       self.amountConversionLabelHidden.assertValues(
         [false],
@@ -455,7 +575,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
 
     withEnvironment(countryCode: "GB") {
       self.vm.inputs
-        .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [:]
+        ))
 
       self.amountConversionLabelHidden.assertValues(
         [true],
@@ -476,7 +602,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ 25
 
     self.vm.inputs
-      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
 
     self.pillsViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -494,7 +626,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.remaining .~ 25
 
     self.vm.inputs
-      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
 
     self.pillsViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -513,7 +651,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60.0 * 60.0 * 24.0)
 
     self.vm.inputs
-      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
 
     self.pillsViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -534,7 +678,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
 
     self.vm.inputs
-      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
 
     self.pillsViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -555,7 +705,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
 
     self.vm.inputs
-      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
 
     self.pillsViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -570,14 +726,20 @@ final class RewardAddOnCardViewModelTests: TestCase {
     let date = AppEnvironment.current.calendar.date(byAdding: DateComponents(day: 4), to: MockDate().date)
 
     let reward = Reward.postcards
-      |> Reward.lens.addOnData .~ AddOnData(isAddOn: true, selectedQuantity: 0, limitPerBacker: 2)
       |> Reward.lens.limit .~ 100
+      |> Reward.lens.limitPerBacker .~ 2
       |> Reward.lens.backersCount .~ nil
       |> Reward.lens.remaining .~ 75
       |> Reward.lens.endsAt .~ date?.timeIntervalSince1970
 
     self.vm.inputs
-      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
 
     self.pillsViewHidden.assertValues([false])
     self.reloadPills.assertValues([
@@ -596,7 +758,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
 
     self.vm.inputs
-      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
 
     self.pillsViewHidden.assertValues([true])
     self.reloadPills.assertValues([[]])
@@ -612,7 +780,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Reward.lens.endsAt .~ nil
 
     self.vm.inputs
-      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
 
     self.pillsViewHidden.assertValues([true])
     self.reloadPills.assertValues([[]])
@@ -631,7 +805,13 @@ final class RewardAddOnCardViewModelTests: TestCase {
       |> Project.lens.state .~ .live
 
     self.vm.inputs
-      .configure(with: .init(project: project, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: project,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
 
     self.pillsViewHidden.assertValues([false])
     self.reloadPills.assertValues([["50 left of 100"]])
@@ -645,14 +825,16 @@ final class RewardAddOnCardViewModelTests: TestCase {
     self.stepperValue.assertDidNotEmitValue()
 
     let reward = Reward.template
-      |> Reward.lens.addOnData .~ AddOnData(
-        isAddOn: true,
-        selectedQuantity: 0,
-        limitPerBacker: 10
-      )
+      |> Reward.lens.limitPerBacker .~ 10
 
     self.vm.inputs
-      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
 
     self.addButtonHidden.assertValues([false])
     self.quantityLabelText.assertValues(["0"])
@@ -683,14 +865,16 @@ final class RewardAddOnCardViewModelTests: TestCase {
     self.quantityLabelText.assertDidNotEmitValue()
 
     let reward = Reward.template
-      |> Reward.lens.addOnData .~ AddOnData(
-        isAddOn: true,
-        selectedQuantity: 0,
-        limitPerBacker: 10
-      )
+      |> Reward.lens.limitPerBacker .~ 10
 
     self.vm.inputs
-      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
 
     self.quantityLabelText.assertValues(["0"])
     self.notifiyDelegateDidSelectQuantityRewardId.assertDidNotEmitValue()
@@ -715,14 +899,16 @@ final class RewardAddOnCardViewModelTests: TestCase {
     self.quantityLabelText.assertDidNotEmitValue()
 
     let reward = Reward.template
-      |> Reward.lens.addOnData .~ AddOnData(
-        isAddOn: true,
-        selectedQuantity: 5,
-        limitPerBacker: 10
-      )
+      |> Reward.lens.limitPerBacker .~ 10
 
     self.vm.inputs
-      .configure(with: .init(project: .template, reward: reward, context: .pledge, shippingRule: nil))
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [reward.id: 5]
+      ))
 
     self.quantityLabelText.assertValues(["5"])
     self.notifiyDelegateDidSelectQuantityRewardId.assertDidNotEmitValue()

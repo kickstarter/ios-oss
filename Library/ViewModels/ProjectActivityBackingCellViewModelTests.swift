@@ -80,7 +80,7 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Reward.lens.id .~ 10
       |> Reward.lens.title .~ title
     let project = .template
-      |> Project.lens.rewards .~ [reward]
+      |> Project.lens.rewardData.rewards .~ [reward]
     let user = User.template
     let activity = .template
       |> Activity.lens.category .~ .backing
@@ -108,7 +108,7 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Reward.lens.id .~ 11
       |> Reward.lens.title .~ title
     let project = .template
-      |> Project.lens.rewards .~ [oldReward, newReward]
+      |> Project.lens.rewardData.rewards .~ [oldReward, newReward]
     let user = User.template
     let activity = .template
       |> Activity.lens.category .~ .backingAmount
@@ -138,7 +138,7 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Reward.lens.id .~ 11
       |> Reward.lens.title .~ title
     let project = .template
-      |> Project.lens.rewards .~ [oldReward, newReward]
+      |> Project.lens.rewardData.rewards .~ [oldReward, newReward]
     let user = User.template
     let activity = .template
       |> Activity.lens.category .~ .backingReward
@@ -218,7 +218,7 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Reward.lens.title .~ "Sick Skull Graphic Skateboard"
 
     let project = .template
-      |> Project.lens.rewards .~ [.noReward, reward1]
+      |> Project.lens.rewardData.rewards .~ [.noReward, reward1]
 
     let activity1 = .template
       |> Activity.lens.category .~ .backing
@@ -301,7 +301,7 @@ internal final class ProjectActivityBackingCellViewModelTests: TestCase {
       |> Reward.lens.description .~ "Sick Skull Graphic Binder"
       |> Reward.lens.id .~ 33
     let project = .template
-      |> Project.lens.rewards .~ [.noReward, reward1, reward2]
+      |> Project.lens.rewardData.rewards .~ [.noReward, reward1, reward2]
 
     let activity1 = .template
       |> Activity.lens.category .~ .backing

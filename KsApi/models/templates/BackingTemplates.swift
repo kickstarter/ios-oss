@@ -1,4 +1,5 @@
 import Foundation
+import Prelude
 
 extension Backing {
   internal static let template = Backing(
@@ -22,4 +23,6 @@ extension Backing {
     shippingAmount: 2,
     status: .pledged
   )
+
+  internal static let errored = Backing.template |> Backing.lens.status .~ .errored
 }

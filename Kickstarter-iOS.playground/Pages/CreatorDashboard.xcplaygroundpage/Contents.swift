@@ -94,7 +94,7 @@ AppEnvironment.replaceCurrentEnvironment(
         |> Project.lens.memberData.unreadMessagesCount .~ 42
         |> Project.lens.memberData.unseenActivityCount .~ 1_299
         |> Project.lens.memberData.permissions .~ [.post, .viewPledges]
-        |> Project.lens.rewards .~ rewards
+        |> Project.lens.rewardData.rewards .~ rewards
     ],
     fetchProjectStatsResponse: .template
       |> ProjectStatsEnvelope.lens.cumulativeStats .~ cumulativeStats

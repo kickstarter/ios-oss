@@ -160,7 +160,7 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client, loggedInUser: nil)
     let project = Project.template
-      |> Project.lens.rewards .~ [Reward.template]
+      |> Project.lens.rewardData.rewards .~ [Reward.template]
       |> \.category .~ (.illustration
         |> \.id .~ 123
         |> \.parentId .~ 321

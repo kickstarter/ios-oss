@@ -189,8 +189,10 @@ private func determineShippingRule(
   shippingRules: [ShippingRule],
   selectedLocationId: Int?
 ) -> ShippingRule? {
-  if let locationId = selectedLocationId ?? project.personalization.backing?.locationId {
-    return shippingRules.first { $0.location.id == locationId }
+  if
+    let locationId = selectedLocationId ?? project.personalization.backing?.locationId,
+    let selectedShippingRule = shippingRules.first(where: { $0.location.id == locationId }) {
+    return selectedShippingRule
   }
 
   return defaultShippingRule(fromShippingRules: shippingRules)

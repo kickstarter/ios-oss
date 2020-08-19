@@ -145,7 +145,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
-    let shippingRule = self.shippingRuleSelectedSignal
+    let selectedShippingRule = Signal.merge(
+      project.mapConst(nil),
+      self.shippingRuleSelectedSignal.wrapInOptional()
+    )
 
     let allRewardsTotal = Signal.combineLatest(
       rewards,
@@ -161,8 +164,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         }
     }
 
-    let allRewardsShippingTotal = Signal.combineLatest(
-      shippingRule,
+    let calculatedShippingTotal = Signal.combineLatest(
+      selectedShippingRule.skipNil(),
       rewards,
       selectedQuantities
     )
@@ -179,17 +182,18 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
     }
 
-    let backedAdditionalPledgeAmount = Signal
-      .combineLatest(backing.map(\.amount), allRewardsTotal, allRewardsShippingTotal)
-      .map { pledgeAmount, allRewardsTotal, allRewardsShippingTotal in
-        pledgeAmount
-          .subtractingCurrency(allRewardsTotal)
-          .subtractingCurrency(allRewardsShippingTotal)
-      }
+    let unbackedInitialZeroAmount = initialData
+      .filter { $0.project.personalization.backing == nil }.mapConst(0.0)
+
+    let allRewardsShippingTotal = Signal.merge(
+      backing.map(\.shippingAmount).skipNil().map(Double.init),
+      calculatedShippingTotal,
+      unbackedInitialZeroAmount
+    )
 
     let initialAdditionalPledgeAmount = Signal.merge(
-      initialData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
-      backedAdditionalPledgeAmount
+      unbackedInitialZeroAmount,
+      backing.map(\.bonusAmount)
     )
     .take(first: 1)
 
@@ -215,7 +219,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     // Only shown for add-ons based rewards
     self.configureShippingSummaryViewWithData = Signal.combineLatest(
-      shippingRule.map(\.location.localizedName),
+      selectedShippingRule.skipNil().map(\.location.localizedName),
       project.map(\.stats.omitUSCurrencyCode),
       project.map(\.country),
       allRewardsShippingTotal
@@ -241,12 +245,21 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
      * the total of all rewards and their respective shipping costs.
      * For No Reward this is only the pledge amount.
      */
-    let pledgeTotal = Signal.combineLatest(additionalPledgeAmount, allRewardsShippingTotal, allRewardsTotal)
-      .map { pledgeAmount, shippingCost, rewardBaseAmount in
-        [pledgeAmount, shippingCost, rewardBaseAmount].reduce(0) { accum, amount in
-          accum.addingCurrency(amount)
-        }
+    let calculatedPledgeTotal = Signal.combineLatest(
+      additionalPledgeAmount,
+      allRewardsShippingTotal,
+      allRewardsTotal
+    )
+    .map { pledgeAmount, shippingCost, rewardBaseAmount in
+      [pledgeAmount, shippingCost, rewardBaseAmount].reduce(0) { accum, amount in
+        accum.addingCurrency(amount)
       }
+    }
+
+    let pledgeTotal = Signal.merge(
+      backing.map(\.amount),
+      calculatedPledgeTotal
+    )
 
     let projectAndConfirmationLabelHidden = Signal.combineLatest(
       project,
@@ -329,8 +342,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         AppEnvironment.current.environmentType.stripePublishableKey
       )
     }
-
-    let selectedShippingRule = self.shippingRuleSelectedSignal
 
     let selectedPaymentSourceId = Signal.merge(
       initialData.mapConst(nil),

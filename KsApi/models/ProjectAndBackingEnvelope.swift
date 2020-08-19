@@ -2,7 +2,7 @@ import Argo
 import Foundation
 import ReactiveSwift
 
-public struct ProjectAndBackingEnvelope {
+public struct ProjectAndBackingEnvelope: Equatable {
   public var project: Project
   public var backing: Backing
 }

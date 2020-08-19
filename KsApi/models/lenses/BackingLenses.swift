@@ -127,7 +127,7 @@ extension Backing {
       ) }
     )
 
-    public static let backebonusAmountrCompleted = Lens<Backing, Double>(
+    public static let bonusAmount = Lens<Backing, Double>(
       view: { $0.bonusAmount },
       set: { Backing(
         addOns: $1.addOns,
