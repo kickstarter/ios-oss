@@ -98,13 +98,13 @@ public final class ManagePledgeViewModel:
           .materialize()
       }
 
-    let project = fetchProjectEvent.values()
+    let initialProject = fetchProjectEvent.values()
       // Once we know we have a project value, keep track of that.
       .on(value: { [projectLoaded] _ in projectLoaded.value = true })
 
     let backingParamFromConfigData = params.map(second)
       .skipNil()
-    let backingParamFromProject = project.map { $0.personalization.backing?.id }
+    let backingParamFromProject = initialProject.map { $0.personalization.backing?.id }
       .skipNil()
       .map(Param.id)
 
@@ -152,6 +152,15 @@ public final class ManagePledgeViewModel:
     )
     .ignoreValues()
 
+    let project = initialProject.combineLatest(with: backing)
+      .map { project, backing in
+        /**
+         Here we are updating the `Project`'s `Backing` with an updated one from GraphQL.
+         This is because, at the time of writing, v1 does not return add-ons or bonus amount but GraphQL does.
+         */
+        project |> Project.lens.personalization.backing .~ backing
+      }
+
     let userIsCreatorOfProject = project.map { project in
       currentUserIsCreator(of: project)
     }
@@ -192,13 +201,7 @@ public final class ManagePledgeViewModel:
     self.loadProjectAndRewardsIntoDataSource = projectAndReward.combineLatest(with: backing)
       .map(unpack)
       .map { project, reward, backing -> (Project, [Reward]) in
-        /**
-         Here we are updating the `Project`'s `Backing` with an updated one from GraphQL.
-         This is because, at the time of writing, v1 does not return add-ons but GraphQL does.
-         */
-        let projectWithBacking = project
-          |> Project.lens.personalization.backing .~ backing
-        return (projectWithBacking, distinctRewards([reward] + (backing.addOns ?? [])))
+        (project, distinctRewards([reward] + (backing.addOns ?? [])))
       }
 
     self.rightBarButtonItemHidden = Signal.merge(
