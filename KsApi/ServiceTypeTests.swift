@@ -323,11 +323,6 @@ private func userAgent() -> String {
 
 // swiftformat:enable wrap
 
-private func testToolBuildNumber() -> Int {
-  guard
-    let buildString = Bundle.main.infoDictionary?["CFBundleVersion"] as? String,
-    let buildNumber = Int(buildString)
-  else { return 0 }
-
-  return buildNumber
+private func testToolBuildNumber() -> String {
+  return Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
 }
