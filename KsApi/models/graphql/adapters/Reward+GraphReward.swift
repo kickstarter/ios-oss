@@ -73,10 +73,20 @@ private func shippingData(
   return Reward.Shipping(
     enabled: [.restricted, .unrestricted].contains(graphReward.shippingPreference),
     location: nil,
-    preference: nil,
+    preference: shippingPreference(from: graphReward),
     summary: nil,
     type: nil
   )
+}
+
+private func shippingPreference(from graphReward: GraphReward) -> Reward.Shipping.Preference {
+  guard let preference = graphReward.shippingPreference else { return .none }
+
+  switch preference {
+  case .noShipping: return Reward.Shipping.Preference.none
+  case .restricted: return .restricted
+  case .unrestricted: return .unrestricted
+  }
 }
 
 private func shippingRulesData(
