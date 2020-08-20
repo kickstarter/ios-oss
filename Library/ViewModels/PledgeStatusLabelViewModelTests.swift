@@ -24,8 +24,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       pledgeAmount: 10,
       projectCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
-      projectState: ProjectState.canceled,
-      backingState: BackingState.pledged
+      projectState: Project.State.canceled,
+      backingState: Backing.Status.pledged
     )
 
     self.vm.inputs.configure(with: data)
@@ -42,8 +42,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       pledgeAmount: 10,
       projectCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
-      projectState: ProjectState.failed,
-      backingState: BackingState.pledged
+      projectState: Project.State.failed,
+      backingState: Backing.Status.pledged
     )
 
     self.vm.inputs.configure(with: data)
@@ -60,8 +60,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       pledgeAmount: 10,
       projectCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
-      projectState: ProjectState.live,
-      backingState: BackingState.canceled
+      projectState: Project.State.live,
+      backingState: Backing.Status.canceled
     )
 
     self.vm.inputs.configure(with: data)
@@ -78,8 +78,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       pledgeAmount: 10,
       projectCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
-      projectState: ProjectState.successful,
-      backingState: BackingState.collected
+      projectState: Project.State.successful,
+      backingState: Backing.Status.collected
     )
 
     self.vm.inputs.configure(with: data)
@@ -96,8 +96,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       pledgeAmount: 10,
       projectCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
-      projectState: ProjectState.successful,
-      backingState: BackingState.dropped
+      projectState: Project.State.successful,
+      backingState: Backing.Status.dropped
     )
 
     self.vm.inputs.configure(with: data)
@@ -114,8 +114,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       pledgeAmount: 10,
       projectCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
-      projectState: ProjectState.successful,
-      backingState: BackingState.errored
+      projectState: Project.State.successful,
+      backingState: Backing.Status.errored
     )
 
     self.vm.inputs.configure(with: data)
@@ -132,8 +132,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       pledgeAmount: 10,
       projectCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
-      projectState: ProjectState.live,
-      backingState: BackingState.preauth
+      projectState: Project.State.live,
+      backingState: Backing.Status.preauth
     )
 
     self.vm.inputs.configure(with: data)
@@ -150,8 +150,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       pledgeAmount: 10,
       projectCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
-      projectState: ProjectState.successful,
-      backingState: BackingState.pledged
+      projectState: Project.State.successful,
+      backingState: Backing.Status.pledged
     )
 
     self.vm.inputs.configure(with: data)
@@ -169,8 +169,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         pledgeAmount: 10,
         projectCountry: Project.Country.hk,
         projectDeadline: 1_476_657_315,
-        projectState: ProjectState.successful,
-        backingState: BackingState.pledged
+        projectState: Project.State.successful,
+        backingState: Backing.Status.pledged
       )
 
       self.vm.inputs.configure(with: data)
@@ -182,7 +182,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testBackingStatus_AllOtherStatuses_Backer() {
-    let statuses = BackingState.allCases
+    let statuses = Backing.Status.allCases
       .filter { ![.canceled, .collected, .dropped, .errored, .pledged, .preauth].contains($0) }
 
     statuses.forEach { backingState in
@@ -192,7 +192,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         pledgeAmount: 10,
         projectCountry: Project.Country.hk,
         projectDeadline: 1_476_657_315,
-        projectState: ProjectState.successful,
+        projectState: Project.State.successful,
         backingState: backingState
       )
 
@@ -209,8 +209,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       pledgeAmount: 10,
       projectCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
-      projectState: ProjectState.canceled,
-      backingState: BackingState.pledged
+      projectState: Project.State.canceled,
+      backingState: Backing.Status.pledged
     )
 
     self.vm.inputs.configure(with: data)
@@ -227,8 +227,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       pledgeAmount: 10,
       projectCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
-      projectState: ProjectState.failed,
-      backingState: BackingState.pledged
+      projectState: Project.State.failed,
+      backingState: Backing.Status.pledged
     )
 
     self.vm.inputs.configure(with: data)
@@ -245,8 +245,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       pledgeAmount: 10,
       projectCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
-      projectState: ProjectState.live,
-      backingState: BackingState.canceled
+      projectState: Project.State.live,
+      backingState: Backing.Status.canceled
     )
 
     self.vm.inputs.configure(with: data)
@@ -263,8 +263,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       pledgeAmount: 10,
       projectCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
-      projectState: ProjectState.successful,
-      backingState: BackingState.collected
+      projectState: Project.State.successful,
+      backingState: Backing.Status.collected
     )
 
     self.vm.inputs.configure(with: data)
@@ -281,8 +281,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       pledgeAmount: 10,
       projectCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
-      projectState: ProjectState.successful,
-      backingState: BackingState.dropped
+      projectState: Project.State.successful,
+      backingState: Backing.Status.dropped
     )
 
     self.vm.inputs.configure(with: data)
@@ -299,8 +299,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       pledgeAmount: 10,
       projectCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
-      projectState: ProjectState.successful,
-      backingState: BackingState.errored
+      projectState: Project.State.successful,
+      backingState: Backing.Status.errored
     )
 
     self.vm.inputs.configure(with: data)
@@ -317,8 +317,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       pledgeAmount: 10,
       projectCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
-      projectState: ProjectState.live,
-      backingState: BackingState.pledged
+      projectState: Project.State.live,
+      backingState: Backing.Status.pledged
     )
 
     self.vm.inputs.configure(with: data)
@@ -336,8 +336,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         pledgeAmount: 10,
         projectCountry: Project.Country.hk,
         projectDeadline: 1_476_657_315,
-        projectState: ProjectState.successful,
-        backingState: BackingState.pledged
+        projectState: Project.State.successful,
+        backingState: Backing.Status.pledged
       )
 
       self.vm.inputs.configure(with: data)
@@ -355,8 +355,8 @@ final class PledgeStatusLabelViewModelTests: TestCase {
       pledgeAmount: 10,
       projectCountry: Project.Country.hk,
       projectDeadline: 1_476_657_315,
-      projectState: ProjectState.successful,
-      backingState: BackingState.preauth
+      projectState: Project.State.successful,
+      backingState: Backing.Status.preauth
     )
 
     self.vm.inputs.configure(with: data)
@@ -367,7 +367,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
   }
 
   func testBackingStatus_AllOtherStatuses_Creator() {
-    let statuses = BackingState.allCases
+    let statuses = Backing.Status.allCases
       .filter { ![.canceled, .collected, .dropped, .errored, .pledged, .preauth].contains($0) }
 
     statuses.forEach { backingState in
@@ -377,7 +377,7 @@ final class PledgeStatusLabelViewModelTests: TestCase {
         pledgeAmount: 10,
         projectCountry: Project.Country.hk,
         projectDeadline: 1_476_657_315,
-        projectState: ProjectState.successful,
+        projectState: Project.State.successful,
         backingState: backingState
       )
 

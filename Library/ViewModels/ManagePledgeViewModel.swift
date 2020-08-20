@@ -83,6 +83,12 @@ public final class ManagePledgeViewModel:
       projectParam.takeWhen(shouldBeginRefresh)
     )
 
+    /**
+     FIXME: This should be refactored so that the VM is configured with a `Project` or `Param` and `Backing?`
+     so that it behaves similarly to `ProjectPamphletViewModel` i.e it's initially configured with the objects
+     that are passed to it and then those objects are refreshed via these calls with more update-to-date
+     information.
+     */
     let fetchProjectEvent = shouldFetchProjectWithParam
       // Only fetch the project if it hasn't yet succeeded, to avoid this call occurring with each refresh.
       .filter { [projectLoaded] _ in projectLoaded.value == false }
@@ -92,13 +98,13 @@ public final class ManagePledgeViewModel:
           .materialize()
       }
 
-    let project = fetchProjectEvent.values()
+    let initialProject = fetchProjectEvent.values()
       // Once we know we have a project value, keep track of that.
       .on(value: { [projectLoaded] _ in projectLoaded.value = true })
 
     let backingParamFromConfigData = params.map(second)
       .skipNil()
-    let backingParamFromProject = project.map { $0.personalization.backing?.id }
+    let backingParamFromProject = initialProject.map { $0.personalization.backing?.id }
       .skipNil()
       .map(Param.id)
 
@@ -146,27 +152,32 @@ public final class ManagePledgeViewModel:
     )
     .ignoreValues()
 
+    let project = initialProject.combineLatest(with: backing)
+      .map { project, backing in
+        /**
+         Here we are updating the `Project`'s `Backing` with an updated one from GraphQL.
+         This is because, at the time of writing, v1 does not return add-ons or bonus amount but GraphQL does.
+         */
+        project |> Project.lens.personalization.backing .~ backing
+      }
+
     let userIsCreatorOfProject = project.map { project in
       currentUserIsCreator(of: project)
     }
 
     let projectAndReward = Signal.combineLatest(project, backing)
-      .filterMap { project, backing -> (Project, Int)? in
-        guard
-          let rewardRelayId = backing.reward?.id,
-          let rewardId = decompose(id: rewardRelayId)
-        else { return (project, Reward.noReward.id) }
+      .filterMap { project, backing -> (Project, Reward)? in
+        guard let reward = backing.reward else { return nil }
 
-        return (project, rewardId)
+        return (project, reward)
       }
-      .map { project, rewardId in (project, reward(withId: rewardId, inProject: project)) }
 
     self.title = graphBackingProject.combineLatest(with: userIsCreatorOfProject)
       .map(navigationBarTitle(with:userIsCreatorOfProject:))
 
     self.configurePaymentMethodView = backing.map(managePledgePaymentMethodViewData)
 
-    self.configurePledgeSummaryView = Signal.combineLatest(projectAndReward, graphBackingEnvelope)
+    self.configurePledgeSummaryView = Signal.combineLatest(projectAndReward, backing)
       .map(unpack)
       .filterMap(managePledgeSummaryViewData)
 
@@ -182,15 +193,15 @@ public final class ManagePledgeViewModel:
 
     self.paymentMethodViewHidden = Signal.combineLatest(
       userIsCreatorOfProject,
-      backing.map { backing in backing.creditCard }
+      backing.map { backing in backing.paymentSource }
     )
     .map { userIsCreatorOfProject, creditCard in userIsCreatorOfProject || creditCard == nil }
     .skipRepeats()
 
     self.loadProjectAndRewardsIntoDataSource = projectAndReward.combineLatest(with: backing)
       .map(unpack)
-      .map { project, reward, backing in
-        (project, [reward] + rewardsData(from: backing, with: project))
+      .map { project, reward, backing -> (Project, [Reward]) in
+        (project, distinctRewards([reward] + (backing.addOns ?? [])))
       }
 
     self.rightBarButtonItemHidden = Signal.merge(
@@ -230,7 +241,7 @@ public final class ManagePledgeViewModel:
       .map { project, backing, latestRewardDeliveryDate in
         ManageViewPledgeRewardReceivedViewData(
           project: project,
-          backerCompleted: backing.backerCompleted,
+          backerCompleted: backing.backerCompleted ?? false,
           estimatedDeliveryOn: latestRewardDeliveryDate,
           backingState: backing.status
         )
@@ -244,11 +255,9 @@ public final class ManagePledgeViewModel:
 
     let backedRewards = self.loadProjectAndRewardsIntoDataSource.map(second)
 
-    let backedShippingRule = backing.map(ShippingRule.shippingRule(from:))
-
-    self.goToUpdatePledge = Signal.combineLatest(project, backedRewards, backedShippingRule)
+    self.goToUpdatePledge = Signal.combineLatest(project, backing, backedRewards)
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .updatePledge })
-      .map { project, rewards, shippingRule in (project, rewards, shippingRule, .update) }
+      .map { project, backing, rewards in (project, backing, rewards, .update) }
       .map(pledgeViewData)
 
     self.goToRewards = project
@@ -267,14 +276,18 @@ public final class ManagePledgeViewModel:
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .contactCreator })
       .map { project in (MessageSubject.project(project), .backerModal) }
 
-    self.goToChangePaymentMethod = Signal.combineLatest(project, backedRewards, backedShippingRule)
+    self.goToChangePaymentMethod = Signal.combineLatest(project, backing, backedRewards)
       .takeWhen(self.menuOptionSelectedSignal.filter { $0 == .changePaymentMethod })
-      .map { project, rewards, shippingRule in (project, rewards, shippingRule, .changePaymentMethod) }
+      .map { project, backing, rewards in
+        (project, backing, rewards, .changePaymentMethod)
+      }
       .map(pledgeViewData)
 
-    self.goToFixPaymentMethod = Signal.combineLatest(project, backedRewards, backedShippingRule)
+    self.goToFixPaymentMethod = Signal.combineLatest(project, backing, backedRewards)
       .takeWhen(self.fixButtonTappedSignal)
-      .map { project, rewards, shippingRule in (project, rewards, shippingRule, .fixPaymentMethod) }
+      .map { project, backing, rewards in
+        (project, backing, rewards, .fixPaymentMethod)
+      }
       .map(pledgeViewData)
 
     self.notifyDelegateManagePledgeViewControllerFinishedWithMessage = Signal.merge(
@@ -403,24 +416,15 @@ public final class ManagePledgeViewModel:
 
 private func pledgeViewData(
   project: Project,
+  backing: Backing,
   rewards: [Reward],
-  shippingRule: ShippingRule?,
   context: PledgeViewContext
 ) -> PledgeViewData {
-  let selectedQuantities = rewards.reduce([:]) { (accum: SelectedRewardQuantities, reward) in
-    var mutableAccum = accum
-    // Coalesce to 1 for the non-add-on base reward
-    mutableAccum[reward.id] = reward.addOnData?.isAddOn == true
-      ? (reward.addOnData?.selectedQuantity ?? 0)
-      : 1
-    return mutableAccum
-  }
-
   return PledgeViewData(
     project: project,
     rewards: rewards,
-    selectedQuantities: selectedQuantities,
-    selectedShippingRule: shippingRule,
+    selectedQuantities: selectedRewardQuantities(in: backing),
+    selectedLocationId: backing.locationId,
     refTag: nil,
     context: context
   )
@@ -428,7 +432,7 @@ private func pledgeViewData(
 
 private func actionSheetMenuOptionsFor(
   project: Project,
-  backing: ManagePledgeViewBackingEnvelope.Backing,
+  backing: Backing,
   userIsCreatorOfProject: Bool
 ) -> [ManagePledgeAlertAction] {
   if userIsCreatorOfProject {
@@ -447,7 +451,7 @@ private func actionSheetMenuOptionsFor(
 }
 
 private func navigationBarTitle(
-  with project: ManagePledgeViewBackingEnvelope.Project,
+  with project: Project,
   userIsCreatorOfProject: Bool
 ) -> String {
   if userIsCreatorOfProject {
@@ -474,91 +478,69 @@ private func managePledgeMenuCTAType(for managePledgeAlertAction: ManagePledgeAl
 
 private func cancelPledgeViewData(
   with project: Project,
-  backing: ManagePledgeViewBackingEnvelope.Backing
+  backing: Backing
 ) -> CancelPledgeViewData {
   return .init(
     project: project,
     projectCountry: project.country,
     projectName: project.name,
     omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
-    backingId: backing.id,
-    pledgeAmount: backing.amount.amount
+    backingId: backing.graphID,
+    pledgeAmount: backing.amount
   )
 }
 
 private func managePledgePaymentMethodViewData(
-  with backing: ManagePledgeViewBackingEnvelope.Backing
+  with backing: Backing
 ) -> ManagePledgePaymentMethodViewData {
   ManagePledgePaymentMethodViewData(
     backingState: backing.status,
-    expirationDate: backing.creditCard?.expirationDate,
-    lastFour: backing.creditCard?.lastFour,
-    creditCardType: backing.creditCard?.type,
-    paymentType: backing.creditCard?.paymentType
+    expirationDate: backing.paymentSource?.expirationDate,
+    lastFour: backing.paymentSource?.lastFour,
+    creditCardType: backing.paymentSource?.type,
+    paymentType: backing.paymentSource?.paymentType
   )
 }
 
 private func managePledgeSummaryViewData(
   with project: Project,
   backedReward: Reward,
-  envelope: ManagePledgeViewBackingEnvelope
+  backing: Backing
 ) -> ManagePledgeSummaryViewData? {
-  return .init(
-    backerId: envelope.backing.backer.uid,
-    backerName: envelope.backing.backer.name,
-    backerSequence: envelope.backing.sequence,
-    backingState: envelope.backing.status,
-    bonusAmount: envelope.backing.bonusAmount?.amount,
+  guard let backer = backing.backer else { return nil }
+  return ManagePledgeSummaryViewData(
+    backerId: backer.id,
+    backerName: backer.name,
+    backerSequence: backing.sequence,
+    backingState: backing.status,
+    bonusAmount: backing.bonusAmount,
     currentUserIsCreatorOfProject: currentUserIsCreator(of: project),
     isNoReward: backedReward.id == Reward.noReward.id,
-    locationName: envelope.backing.location?.name,
+    locationName: backing.locationName,
     needsConversion: project.stats.needsConversion,
     omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
-    pledgeAmount: envelope.backing.amount.amount,
-    pledgedOn: envelope.backing.pledgedOn,
+    pledgeAmount: backing.amount,
+    pledgedOn: backing.pledgedAt,
     projectCountry: project.country,
     projectDeadline: project.dates.deadline,
-    projectState: envelope.project.state,
-    rewardMinimum: allRewardsTotal(for: envelope.backing),
-    shippingAmount: envelope.backing.shippingAmount?.amount
+    projectState: project.state,
+    rewardMinimum: allRewardsTotal(for: backing),
+    shippingAmount: backing.shippingAmount.flatMap(Double.init)
   )
 }
 
-private func allRewardsTotal(for backing: ManagePledgeViewBackingEnvelope.Backing) -> Double {
-  let baseRewardAmount = backing.reward?.amount.amount ?? 0
+private func allRewardsTotal(for backing: Backing) -> Double {
+  let baseRewardAmount = backing.reward?.minimum ?? 0
 
-  guard let addOns = backing.addOns?.nodes else { return baseRewardAmount }
+  guard let addOns = backing.addOns else { return baseRewardAmount }
 
-  return baseRewardAmount + addOns.reduce(0.0) { total, addOn in total.addingCurrency(addOn.amount.amount) }
+  return baseRewardAmount + addOns.reduce(0.0) { total, addOn in total.addingCurrency(addOn.minimum) }
 }
 
-private func rewardsData(
-  from backing: ManagePledgeViewBackingEnvelope.Backing,
-  with project: Project
-) -> [Reward] {
-  guard let addOns = backing.addOns?.nodes else { return [] }
-
-  var selectedAddOnQuantities: [String: Int] = [:]
-
-  addOns.forEach { addOn in
-    let quantity = (selectedAddOnQuantities[addOn.id] ?? 0) + 1
-    selectedAddOnQuantities[addOn.id] = quantity
-  }
-
-  let dateFormatter = DateFormatter()
-  dateFormatter.dateFormat = "yyyy-MM-DD"
-
-  var existingAddOnIds = Set<String>()
-
-  return addOns.compactMap { addOn in
-    guard existingAddOnIds.contains(addOn.id) == false else { return nil }
-    existingAddOnIds.insert(addOn.id)
-
-    return Reward.addOnReward(
-      from: addOn,
-      project: project,
-      selectedAddOnQuantities: selectedAddOnQuantities,
-      dateFormatter: dateFormatter
-    )
+private func distinctRewards(_ rewards: [Reward]) -> [Reward] {
+  var rewardIds: Set<Int> = []
+  return rewards.filter { reward in
+    defer { rewardIds.insert(reward.id) }
+    return !rewardIds.contains(reward.id)
   }
 }

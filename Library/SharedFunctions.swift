@@ -256,3 +256,15 @@ public func discoveryPageBackgroundColor() -> UIColor {
     return UIColor.white
   }
 }
+
+public func selectedRewardQuantities(in backing: Backing) -> SelectedRewardQuantities {
+  var quantities: [SelectedRewardId: SelectedRewardQuantity] = [:]
+
+  let rewards = [backing.reward].compact() + (backing.addOns ?? [])
+
+  rewards.forEach { reward in
+    quantities[reward.id] = (quantities[reward.id] ?? 0) + 1
+  }
+
+  return quantities
+}

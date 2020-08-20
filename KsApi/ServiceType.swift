@@ -146,7 +146,7 @@ public protocol ServiceType {
 
   /// Fetch User's backings with a specific status.
   func fetchGraphUserBackings(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError>
+    -> SignalProducer<BackingsEnvelope, ErrorEnvelope>
 
   /// Fetch User's email fields object using graphQL.
   func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
@@ -154,7 +154,7 @@ public protocol ServiceType {
 
   /// Fetch Backing data for ManagePledgeViewController
   func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
-    -> SignalProducer<ManagePledgeViewBackingEnvelope, GraphError>
+    -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
 
   /// Fetches all of the messages in a particular message thread.
   func fetchMessageThread(messageThreadId: Int)
@@ -210,7 +210,7 @@ public protocol ServiceType {
 
   /// Fetch the add-on rewards for the add-on selection view with a given query.
   func fetchRewardAddOnsSelectionViewRewards(query: NonEmptySet<Query>)
-    -> SignalProducer<RewardAddOnSelectionViewEnvelope, GraphError>
+    -> SignalProducer<Project, ErrorEnvelope>
 
   /// Fetches a reward for a project and reward id.
   func fetchRewardShippingRules(projectId: Int, rewardId: Int)

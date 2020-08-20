@@ -7,8 +7,63 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       "backing": [
         "project": [
           "pid": 747_474_738,
+          "slug": "project-slug",
           "name": "The Keyboardio Atreus",
-          "state": "LIVE"
+          "state": "LIVE",
+          "fxRate": 1.082342,
+          "actions": [
+            "displayConvertAmount": true
+          ],
+          "category": [
+            "id": "Q2F0ZWdvcnktNTI=",
+            "name": "Hardware",
+            "parentCategory": [
+              "id": "Q2F0ZWdvcnktMTY=",
+              "name": "Technology"
+            ]
+          ],
+          "finalCollectionDate": "2020-06-17T11:41:29-04:00",
+          "location": [
+            "country": "CA",
+            "countryName": "Canada",
+            "displayableName": "Canada",
+            "id": "TG9jYXRpb24tMjM0MjQ3NzU=",
+            "name": "Canada"
+          ],
+          "isProjectWeLove": true,
+          "prelaunchActivated": false,
+          "deadlineAt": 158_750_211,
+          "launchedAt": 158_740_211,
+          "stateChangedAt": 1_587_502_131,
+          "backersCount": 5,
+          "creator": [
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
+            "id": "VXNlci0xMjA3OTk3NjQ5",
+            "uid": "1100793144",
+            "name": "Creator McBaggins"
+          ],
+          "currency": "USD",
+          "country": [
+            "code": "CA",
+            "name": "Canada"
+          ],
+          "description": "Project description",
+          "goal": [
+            "amount": "150",
+            "currency": "USD",
+            "symbol": "$"
+          ],
+          "pledged": [
+            "amount": "173434.0",
+            "currency": "USD",
+            "symbol": "$"
+          ],
+          "url": "http://www.kickstarter.com/my/project",
+          "usdExchangeRate": 1,
+          "image": [
+            "id": "UGhvdG8tMTEyNTczMzI=",
+            "url": "http://www.kickstarter.com/my/image.jpg"
+          ]
         ],
         "backerCompleted": false,
         "addOns": [
@@ -16,6 +71,11 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
             [
               "amount": [
                 "amount": "179.0",
+                "currency": "USD",
+                "symbol": "$"
+              ],
+              "convertedAmount": [
+                "amount": "150.0",
                 "currency": "USD",
                 "symbol": "$"
               ],
@@ -35,7 +95,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
             ]
           ]
         ],
-        "id": "UHJvamVjdC00NDc0NzMM=",
+        "id": "QmFja2luZy0xMTMzMTQ5ODE=",
         "status": "pledged",
         "errorReason": "This just isn't your day.",
         "pledgedOn": 1_587_502_131,
@@ -60,6 +120,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "lastFour": "1234",
           "expirationDate": "2023-04-01",
           "paymentType": "CREDIT_CARD",
+          "state": "ACTIVE",
           "type": "VISA"
         ],
         "location": [
@@ -76,7 +137,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "symbol": "$"
         ],
         "reward": [
-          "id": "reward-id",
+          "id": "UmV3YXJkLTc2MDEyNDk=",
           "name": "Everyday Carry",
           "backersCount": 593,
           "isMaxPledge": false,
@@ -105,9 +166,16 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
             "amount": "129.0",
             "currency": "USD",
             "symbol": "$"
+          ],
+          "convertedAmount": [
+            "amount": "150.0",
+            "currency": "USD",
+            "symbol": "$"
           ]
         ],
         "backer": [
+          "id": "UmV3YXJkSXRlbS04NzMzMDY=",
+          "imageUrl": "http://www.kickstarter.com/avatar.jpg",
           "uid": "565656",
           "name": "Backer McGee"
         ]
@@ -124,9 +192,42 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
 
       XCTAssertEqual(value.project.pid, 747_474_738)
       XCTAssertEqual(value.project.name, "The Keyboardio Atreus")
+      XCTAssertEqual(value.project.slug, "project-slug")
       XCTAssertEqual(value.project.state, .live)
+      XCTAssertEqual(value.project.actions.displayConvertAmount, true)
+      XCTAssertEqual(value.project.fxRate, 1.082342)
+      XCTAssertEqual(value.project.deadlineAt, 158_750_211.0)
+      XCTAssertEqual(value.project.launchedAt, 158_740_211)
+      XCTAssertEqual(value.project.stateChangedAt, 1_587_502_131.0)
+      XCTAssertEqual(value.project.description, "Project description")
+      XCTAssertEqual(value.project.finalCollectionDate, "2020-06-17T11:41:29-04:00")
+      XCTAssertEqual(value.project.isProjectWeLove, true)
+      XCTAssertEqual(value.project.prelaunchActivated, false)
+      XCTAssertEqual(value.project.goal, Money(amount: 150, currency: .usd, symbol: "$"))
+      XCTAssertEqual(value.project.pledged, Money(amount: 173_434.0, currency: .usd, symbol: "$"))
+      XCTAssertEqual(value.project.url, "http://www.kickstarter.com/my/project")
+      XCTAssertEqual(value.project.usdExchangeRate, 1)
 
-      XCTAssertEqual(value.backing.id, "UHJvamVjdC00NDc0NzMM=")
+      XCTAssertEqual(value.project.location?.name, "Canada")
+      XCTAssertEqual(value.project.location?.countryName, "Canada")
+      XCTAssertEqual(value.project.location?.country, "CA")
+      XCTAssertEqual(value.project.location?.displayableName, "Canada")
+      XCTAssertEqual(value.project.location?.id, "TG9jYXRpb24tMjM0MjQ3NzU=")
+
+      XCTAssertEqual(value.project.image?.id, "UGhvdG8tMTEyNTczMzI=")
+      XCTAssertEqual(value.project.image?.url, "http://www.kickstarter.com/my/image.jpg")
+
+      XCTAssertEqual(value.project.category?.id, "Q2F0ZWdvcnktNTI=")
+      XCTAssertEqual(value.project.category?.name, "Hardware")
+      XCTAssertEqual(value.project.category?.parentCategory?.id, "Q2F0ZWdvcnktMTY=")
+      XCTAssertEqual(value.project.category?.parentCategory?.name, "Technology")
+
+      XCTAssertEqual(value.project.creator.id, "VXNlci0xMjA3OTk3NjQ5")
+      XCTAssertEqual(value.project.creator.uid, "1100793144")
+      XCTAssertEqual(value.project.creator.name, "Creator McBaggins")
+      XCTAssertEqual(value.project.creator.imageUrl, "http://www.kickstarter.com/avatar.jpg")
+
+      XCTAssertEqual(value.backing.id, "QmFja2luZy0xMTMzMTQ5ODE=")
       XCTAssertEqual(value.backing.status, .pledged)
       XCTAssertEqual(value.backing.sequence, 5)
       XCTAssertEqual(value.backing.errorReason, "This just isn't your day.")
@@ -146,6 +247,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.backing.creditCard?.lastFour, "1234")
       XCTAssertEqual(value.backing.creditCard?.expirationDate, "2023-04-01")
       XCTAssertEqual(value.backing.creditCard?.paymentType, .creditCard)
+      XCTAssertEqual(value.backing.creditCard?.state, "ACTIVE")
       XCTAssertEqual(value.backing.creditCard?.type, .visa)
 
       XCTAssertEqual(value.backing.location?.name, "Canada")
@@ -158,17 +260,21 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
 
       XCTAssertEqual(value.backing.addOns?.nodes[0].id, "UmV3YXJkLTc2MDEyNDk=")
       XCTAssertEqual(value.backing.addOns?.nodes[0].amount, Money(amount: 179.0, currency: .usd, symbol: "$"))
+      XCTAssertEqual(
+        value.backing.addOns?.nodes[0].convertedAmount,
+        Money(amount: 150.0, currency: .usd, symbol: "$")
+      )
       XCTAssertEqual(value.backing.addOns?.nodes[0].backersCount, 2)
       XCTAssertEqual(value.backing.addOns?.nodes[0].description, "Best Add-on")
       XCTAssertEqual(value.backing.addOns?.nodes[0].displayName, "Crowdfunding Special ($179)")
       XCTAssertEqual(value.backing.addOns?.nodes[0].name, "Crowdfunding Special")
       XCTAssertEqual(value.backing.addOns?.nodes[0].isMaxPledge, false)
-      XCTAssertEqual(value.backing.addOns?.nodes[0].items?.count, 0)
+      XCTAssertEqual(value.backing.addOns?.nodes[0].items?.nodes.count, 0)
       XCTAssertEqual(value.backing.addOns?.nodes[0].limit, nil)
       XCTAssertEqual(value.backing.addOns?.nodes[0].remainingQuantity, nil)
       XCTAssertEqual(value.backing.addOns?.nodes[0].startsAt, nil)
 
-      XCTAssertEqual(value.backing.reward?.id, "reward-id")
+      XCTAssertEqual(value.backing.reward?.id, "UmV3YXJkLTc2MDEyNDk=")
       XCTAssertEqual(value.backing.reward?.name, "Everyday Carry")
       XCTAssertEqual(value.backing.reward?.backersCount, 593)
       XCTAssertEqual(
@@ -179,24 +285,48 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.backing.reward?.endsAt, 1_587_602_131)
       XCTAssertEqual(value.backing.reward?.startsAt, 1_587_562_131)
       XCTAssertEqual(value.backing.reward?.estimatedDeliveryOn, "2020-08-01")
-      XCTAssertEqual(value.backing.reward?.items?[0].id, "UmV3YXJkSXRlbS03OTczNTM=")
+      XCTAssertEqual(value.backing.reward?.items?.nodes[0].id, "UmV3YXJkSXRlbS03OTczNTM=")
       XCTAssertEqual(
-        value.backing.reward?.items?[0].name,
+        value.backing.reward?.items?.nodes[0].name,
         "Keyboardio Atreus (Choose switches after campaign)"
       )
-      XCTAssertEqual(value.backing.reward?.items?[1].id, "UmV3YXJkSXRlbS04NzMzMDY=")
-      XCTAssertEqual(value.backing.reward?.items?[1].name, "Travel case")
+      XCTAssertEqual(value.backing.reward?.items?.nodes[1].id, "UmV3YXJkSXRlbS04NzMzMDY=")
+      XCTAssertEqual(value.backing.reward?.items?.nodes[1].name, "Travel case")
 
       XCTAssertEqual(value.backing.reward?.limit, 5)
       XCTAssertEqual(value.backing.reward?.limitPerBacker, 2)
       XCTAssertEqual(value.backing.reward?.remainingQuantity, 10)
 
       XCTAssertEqual(value.backing.reward?.amount, Money(amount: 129.0, currency: .usd, symbol: "$"))
+      XCTAssertEqual(
+        value.backing.reward?.convertedAmount,
+        Money(amount: 150.0, currency: .usd, symbol: "$")
+      )
 
       XCTAssertEqual(value.backing.reward?.shippingPreference, .noShipping)
 
-      XCTAssertEqual(value.backing.backer.uid, 565_656)
-      XCTAssertEqual(value.backing.backer.name, "Backer McGee")
+      XCTAssertEqual(value.backing.backer?.uid, "565656")
+      XCTAssertEqual(value.backing.backer?.id, "UmV3YXJkSXRlbS04NzMzMDY=")
+      XCTAssertEqual(value.backing.backer?.imageUrl, "http://www.kickstarter.com/avatar.jpg")
+      XCTAssertEqual(value.backing.backer?.name, "Backer McGee")
+
+      XCTAssertNotNil(
+        Backing.backing(from: value.backing),
+        "A Backing can be created from this GraphBacking"
+      )
+      XCTAssertNotNil(
+        Project.project(from: value.project),
+        "A Project can be created from this GraphProject"
+      )
+
+      guard let reward = value.backing.reward else {
+        XCTFail("Should have a reward")
+        return
+      }
+      XCTAssertNotNil(
+        Reward.reward(from: reward, projectId: 1),
+        "A Reward can be created from this GraphReward"
+      )
     } catch {
       XCTFail((error as NSError).description)
     }
@@ -207,8 +337,33 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       "backing": [
         "project": [
           "pid": 747_474_738,
+          "slug": "project-slug",
           "name": "The Keyboardio Atreus",
-          "state": "LIVE"
+          "state": "LIVE",
+          "stateChangedAt": 1_587_502_131,
+          "fxRate": 1.082342,
+          "actions": [
+            "displayConvertAmount": true
+          ],
+          "backersCount": 5,
+          "creator": [
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
+            "id": "VXNlci0xMjA3OTk3NjQ5",
+            "uid": "1100793144",
+            "name": "Creator McBaggins"
+          ],
+          "currency": "USD",
+          "country": [
+            "code": "CA",
+            "name": "Canada"
+          ],
+          "description": "Project description",
+          "pledged": [
+            "amount": "173434.0",
+            "currency": "USD",
+            "symbol": "$"
+          ],
+          "url": "http://www.kickstarter.com/my/project"
         ],
         "backerCompleted": false,
         "id": "UHJvamVjdC00NDc0NzMM=",
@@ -218,6 +373,11 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
         "pledgedOn": 1_587_502_131,
         "amount": [
           "amount": "146.0",
+          "currency": "USD",
+          "symbol": "$"
+        ],
+        "bonusAmount": [
+          "amount": "5.0",
           "currency": "USD",
           "symbol": "$"
         ],
@@ -239,9 +399,16 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
             "amount": "129.0",
             "currency": "USD",
             "symbol": "$"
+          ],
+          "convertedAmount": [
+            "amount": "150.0",
+            "currency": "USD",
+            "symbol": "$"
           ]
         ],
         "backer": [
+          "id": "UmV3YXJkSXRlbS04NzMzMDY=",
+          "imageUrl": "http://www.kickstarter.com/avatar.jpg",
           "uid": "565656",
           "name": "Backer McGee"
         ]
@@ -288,8 +455,8 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
 
       XCTAssertEqual(value.backing.reward?.amount, Money(amount: 129.0, currency: .usd, symbol: "$"))
 
-      XCTAssertEqual(value.backing.backer.uid, 565_656)
-      XCTAssertEqual(value.backing.backer.name, "Backer McGee")
+      XCTAssertEqual(value.backing.backer?.uid, "565656")
+      XCTAssertEqual(value.backing.backer?.name, "Backer McGee")
     } catch {
       XCTFail((error as NSError).description)
     }
@@ -300,8 +467,33 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       "backing": [
         "project": [
           "pid": 747_474_738,
+          "slug": "project-slug",
           "name": "The Keyboardio Atreus",
-          "state": "LIVE"
+          "state": "LIVE",
+          "stateChangedAt": 1_587_502_131,
+          "fxRate": 1.082342,
+          "actions": [
+            "displayConvertAmount": true
+          ],
+          "backersCount": 5,
+          "creator": [
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
+            "id": "VXNlci0xMjA3OTk3NjQ5",
+            "uid": "1100793144",
+            "name": "Creator McBaggins"
+          ],
+          "currency": "USD",
+          "country": [
+            "code": "CA",
+            "name": "Canada"
+          ],
+          "description": "Project description",
+          "pledged": [
+            "amount": "173434.0",
+            "currency": "USD",
+            "symbol": "$"
+          ],
+          "url": "http://www.kickstarter.com/my/project"
         ],
         "backerCompleted": false,
         "id": "UHJvamVjdC00NDc0NzMM=",
@@ -314,6 +506,11 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "currency": "USD",
           "symbol": "$"
         ],
+        "bonusAmount": [
+          "amount": "5.0",
+          "currency": "USD",
+          "symbol": "$"
+        ],
         "bankAccount": nil,
         "cancelable": true,
         "creditCard": nil,
@@ -321,6 +518,8 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
         "shippingAmount": nil,
         "reward": nil,
         "backer": [
+          "id": "UmV3YXJkSXRlbS04NzMzMDY=",
+          "imageUrl": "http://www.kickstarter.com/avatar.jpg",
           "uid": "565656",
           "name": "Backer McGee"
         ]
@@ -357,8 +556,8 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
 
       XCTAssertNil(value.backing.reward)
 
-      XCTAssertEqual(value.backing.backer.uid, 565_656)
-      XCTAssertEqual(value.backing.backer.name, "Backer McGee")
+      XCTAssertEqual(value.backing.backer?.uid, "565656")
+      XCTAssertEqual(value.backing.backer?.name, "Backer McGee")
     } catch {
       XCTFail((error as NSError).description)
     }
@@ -372,8 +571,15 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
           "currency": "USD",
           "symbol": "$"
         ],
+        "bonusAmount": [
+          "amount": "5.0",
+          "currency": "USD",
+          "symbol": "$"
+        ],
         "backerCompleted": false,
         "backer": [
+          "id": "UmV3YXJkSXRlbS04NzMzMDY=",
+          "imageUrl": "http://www.kickstarter.com/avatar.jpg",
           "name": "Backer McGee",
           "uid": "110079315"
         ],
@@ -383,15 +589,45 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
         "id": "QmFja2luZy02NDUxNTcyMg==",
         "pledgedOn": 1_502_727_496,
         "project": [
-          "name": "The Keyboardio Atreus",
           "pid": 747_474_738,
-          "state": "SUCCESSFUL"
+          "slug": "project-slug",
+          "name": "The Keyboardio Atreus",
+          "state": "LIVE",
+          "stateChangedAt": 1_587_502_131,
+          "fxRate": 1.082342,
+          "actions": [
+            "displayConvertAmount": true
+          ],
+          "backersCount": 5,
+          "creator": [
+            "imageUrl": "http://www.kickstarter.com/avatar.jpg",
+            "id": "VXNlci0xMjA3OTk3NjQ5",
+            "uid": "1100793144",
+            "name": "Creator McBaggins"
+          ],
+          "currency": "USD",
+          "country": [
+            "code": "CA",
+            "name": "Canada"
+          ],
+          "description": "Project description",
+          "pledged": [
+            "amount": "173434.0",
+            "currency": "USD",
+            "symbol": "$"
+          ],
+          "url": "http://www.kickstarter.com/my/project"
         ],
         "reward": [
           "id": "reward-id",
           "isMaxPledge": false,
           "amount": [
             "amount": "1.0",
+            "currency": "USD",
+            "symbol": "$"
+          ],
+          "convertedAmount": [
+            "amount": "150.0",
             "currency": "USD",
             "symbol": "$"
           ],
@@ -433,7 +669,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
 
       XCTAssertEqual(value.project.pid, 747_474_738)
       XCTAssertEqual(value.project.name, "The Keyboardio Atreus")
-      XCTAssertEqual(value.project.state, .successful)
+      XCTAssertEqual(value.project.state, .live)
 
       XCTAssertEqual(value.backing.id, "QmFja2luZy02NDUxNTcyMg==")
       XCTAssertEqual(value.backing.sequence, 1)
@@ -456,16 +692,16 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.backing.reward?.backersCount, 1)
       XCTAssertEqual(value.backing.reward?.description, "Best description")
       XCTAssertEqual(value.backing.reward?.estimatedDeliveryOn, "2017-08-01")
-      XCTAssertEqual(value.backing.reward?.items?[0].id, "UmV3YXJkSXRlbS03OTczNTM=")
+      XCTAssertEqual(value.backing.reward?.items?.nodes[0].id, "UmV3YXJkSXRlbS03OTczNTM=")
       XCTAssertEqual(
-        value.backing.reward?.items?[0].name,
+        value.backing.reward?.items?.nodes[0].name,
         "Keyboardio Atreus (Choose switches after campaign)"
       )
-      XCTAssertEqual(value.backing.reward?.items?[1].id, "UmV3YXJkSXRlbS04NzMzMDY=")
-      XCTAssertEqual(value.backing.reward?.items?[1].name, "Travel case")
+      XCTAssertEqual(value.backing.reward?.items?.nodes[1].id, "UmV3YXJkSXRlbS04NzMzMDY=")
+      XCTAssertEqual(value.backing.reward?.items?.nodes[1].name, "Travel case")
 
-      XCTAssertEqual(value.backing.backer.uid, 110_079_315)
-      XCTAssertEqual(value.backing.backer.name, "Backer McGee")
+      XCTAssertEqual(value.backing.backer?.uid, "110079315")
+      XCTAssertEqual(value.backing.backer?.name, "Backer McGee")
     } catch {
       XCTFail((error as NSError).description)
     }

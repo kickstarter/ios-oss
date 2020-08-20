@@ -66,9 +66,11 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     let baseRewardQuantities = configData.map(\.selectedQuantities)
     let refTag = configData.map(\.refTag)
     let context = configData.map(\.context)
+    let initialLocationId = configData.map(\.selectedLocationId)
 
-    self.configurePledgeShippingLocationViewControllerWithData = Signal.zip(project, baseReward)
-      .map { project, reward in (project, reward, false) }
+    self.configurePledgeShippingLocationViewControllerWithData = Signal
+      .zip(project, baseReward, initialLocationId)
+      .map { project, reward, initialLocationId in (project, reward, false, initialLocationId) }
 
     let slug = project.map(\.slug)
 
@@ -77,7 +79,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       slug.takeWhen(self.beginRefreshSignal)
     )
 
-    let addOnsEvent = fetchAddOnsWithSlug.switchMap { slug in
+    let projectEvent = fetchAddOnsWithSlug.switchMap { slug in
       AppEnvironment.current.apiService.fetchRewardAddOnsSelectionViewRewards(
         query: rewardAddOnSelectionViewAddOnsQuery(withProjectSlug: slug)
       )
@@ -86,24 +88,15 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     }
 
     self.startRefreshing = fetchAddOnsWithSlug.ignoreValues()
-    self.endRefreshing = addOnsEvent.filter { $0.isTerminating }.ignoreValues()
+    self.endRefreshing = projectEvent.filter { $0.isTerminating }.ignoreValues()
 
-    let addOns = addOnsEvent.values()
-    let requestErrored = addOnsEvent.map(\.error).map(isNotNil)
+    let addOns = projectEvent.values().map(\.rewardData.addOns).skipNil()
+    let requestErrored = projectEvent.map(\.error).map(isNotNil)
 
     let shippingRule = Signal.merge(
       self.shippingRuleSelectedProperty.signal,
       baseReward.filter { reward in !reward.shipping.enabled }.mapConst(nil)
     )
-
-    let rewardAddOnCardsViewData = Signal.combineLatest(
-      addOns,
-      project,
-      baseReward,
-      context,
-      shippingRule
-    )
-    .map(rewardsData)
 
     let selectedAddOnQuantities = Signal.merge(
       self.rewardAddOnCardViewDidSelectQuantityProperty.signal
@@ -130,8 +123,17 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       selectedQuantities
     )
 
+    let rewardAddOnCardsViewData = Signal.combineLatest(
+      addOns,
+      project,
+      baseReward,
+      context,
+      shippingRule
+    )
+
     let reloadRewardsIntoDataSource = rewardAddOnCardsViewData
       .withLatest(from: latestSelectedQuantities)
+      .map(unpack)
       .map(rewardsData)
 
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView = Signal.merge(
@@ -141,6 +143,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     self.loadAddOnRewardsIntoDataSource = rewardAddOnCardsViewData
       .takePairWhen(latestSelectedQuantities)
+      .map(unpack)
       .map(rewardsData)
 
     self.shippingLocationViewIsHidden = baseReward.map(\.shipping.enabled)
@@ -191,11 +194,16 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
           .filter { reward in selectedRewardIds.contains(reward.id) }
       }
 
+    let selectedLocationId = Signal.merge(
+      initialLocationId,
+      shippingRule.map { $0?.location.id }
+    )
+
     self.goToPledge = Signal.combineLatest(
       project,
       selectedRewards,
       selectedQuantities,
-      shippingRule,
+      selectedLocationId,
       refTag,
       context
     )
@@ -254,82 +262,63 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
 // MARK: - Functions
 
-private func rewardsData(
-  _ data: [RewardAddOnCardViewData],
-  updatingQuantities quantities: SelectedRewardQuantities
-) -> [RewardAddOnSelectionDataSourceItem] {
-  guard !data.isEmpty else {
-    return [.emptyState(.addOnsUnavailable)]
-  }
-
-  return data.map { datum in
-    // Drill down into the reward and update its selectedQuantity
-    let quantity = quantities[datum.reward.id] ?? datum.reward.addOnData?.selectedQuantity
-
-    return RewardAddOnCardViewData(
-      project: datum.project,
-      reward: datum.reward
-        |> Reward.lens.addOnData .~ (
-          datum.reward.addOnData ?|> \.selectedQuantity .~ (quantity ?? 0)
-        ),
-      context: datum.context,
-      shippingRule: datum.shippingRule
-    )
-  }
-  .map(RewardAddOnSelectionDataSourceItem.rewardAddOn)
+private func unpack(
+  rewardsData: ([Reward], Project, Reward, PledgeViewContext, ShippingRule?),
+  selectedQuantities: SelectedRewardQuantities
+) -> ([Reward], Project, Reward, PledgeViewContext, ShippingRule?, SelectedRewardQuantities) {
+  return (rewardsData.0, rewardsData.1, rewardsData.2, rewardsData.3, rewardsData.4, selectedQuantities)
 }
 
 private func rewardsData(
-  from envelope: RewardAddOnSelectionViewEnvelope,
-  with project: Project,
+  addOns: [Reward],
+  project: Project,
   baseReward: Reward,
   context: PledgeViewContext,
-  shippingRule: ShippingRule?
-) -> [RewardAddOnCardViewData] {
-  guard let addOnNodes = envelope.project.addOns?.nodes else { return [] }
-
-  let filteredAddOns = addOns(
-    addOnNodes,
+  shippingRule: ShippingRule?,
+  selectedQuantities: SelectedRewardQuantities
+) -> [RewardAddOnSelectionDataSourceItem] {
+  let addOnsFilteredByShippingRule = filteredAddOns(
+    addOns,
     filteredBy: shippingRule,
     baseReward: baseReward
   )
 
-  let dateFormatter = DateFormatter()
-  dateFormatter.dateFormat = "yyyy-MM-DD"
+  guard !addOnsFilteredByShippingRule.isEmpty else {
+    return [.emptyState(.addOnsUnavailable)]
+  }
 
-  return filteredAddOns.compactMap { addOn in
-    Reward.addOnReward(
-      from: addOn,
-      project: project,
-      selectedAddOnQuantities: [:],
-      dateFormatter: dateFormatter
-    )
-  }
-  .map { reward in
-    RewardAddOnCardViewData(
-      project: project,
-      reward: reward,
-      context: context == .pledge ? .pledge : .manage,
-      shippingRule: reward.shipping.enabled
-        ? reward.shippingRule(matching: shippingRule)
-        : nil
-    )
-  }
+  return addOnsFilteredByShippingRule
+    .map { reward in
+      RewardAddOnCardViewData(
+        project: project,
+        reward: reward,
+        context: context == .pledge ? .pledge : .manage,
+        shippingRule: reward.shipping.enabled
+          ? reward.shippingRule(matching: shippingRule)
+          : nil,
+        selectedQuantities: selectedQuantities
+      )
+    }
+    .map(RewardAddOnSelectionDataSourceItem.rewardAddOn)
 }
 
-private func addOns(
-  _ addOns: [RewardAddOnSelectionViewEnvelope.Project.Reward],
+private func filteredAddOns(
+  _ addOns: [Reward],
   filteredBy shippingRule: ShippingRule?,
   baseReward: Reward
-) -> [RewardAddOnSelectionViewEnvelope.Project.Reward] {
+) -> [Reward] {
   return addOns.filter { addOn in
     // For digital-only base rewards only return add-ons that are also digital-only.
     if baseReward.shipping.enabled == false {
-      return addOn.shippingPreference == .noShipping
+      return addOn.shipping.enabled == false
     }
 
-    // For restricted or unrestricted shipping base rewards, unrestricted shipping or digital-only add-ons are available.
-    let addOnIsDigitalOrUnrestricted = addOn.shippingPreference.isAny(of: .noShipping, .unrestricted)
+    /**
+     For restricted or unrestricted shipping base rewards, unrestricted shipping
+     or digital-only add-ons are available.
+     */
+    let addOnIsDigitalOrUnrestricted = addOn.shipping.preference
+      .isAny(of: Reward.Shipping.Preference.none, .unrestricted)
 
     return addOnIsDigitalOrUnrestricted || addOnReward(addOn, shipsTo: shippingRule?.location.id)
   }
@@ -340,13 +329,13 @@ private func addOns(
  add-ons that can ship to the selected shipping location.
  */
 private func addOnReward(
-  _ addOn: RewardAddOnSelectionViewEnvelope.Project.Reward,
+  _ addOn: Reward,
   shipsTo locationId: Int?
 ) -> Bool {
   guard let selectedLocationId = locationId else { return false }
 
   let addOnShippingLocationIds: Set<Int> = Set(
-    addOn.shippingRules?.map(\.location).map(\.id).compactMap(decompose(id:)) ?? []
+    addOn.shippingRules?.map(\.location).map(\.id) ?? []
   )
 
   return addOnShippingLocationIds.contains(selectedLocationId)

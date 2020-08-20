@@ -5,8 +5,12 @@ extension GraphUser {
     chosenCurrency: "USD",
     email: "nativesquad@ksr.com",
     hasPassword: true,
+    id: "VXNlci0xNTQ2MjM2ODI=",
+    imageUrl: "http://www.kickstarter.com/image.jpg",
     isAppleConnected: false,
     isEmailVerified: true,
-    isDeliverable: true
+    isDeliverable: true,
+    name: "Backer McGee",
+    uid: "12345"
   )
 }

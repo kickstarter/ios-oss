@@ -2,7 +2,6 @@ import Prelude
 
 extension Reward {
   internal static let template = Reward(
-    addOnData: nil,
     backersCount: 50,
     convertedMinimum: 10.00,
     description: "A cool thing",
@@ -13,9 +12,10 @@ extension Reward {
     hasAddOns: false,
     id: 1,
     limit: 100,
+    limitPerBacker: nil,
     minimum: 10.00,
     remaining: 50,
-    rewardsItems: [],
+    rewardsItems: [RewardsItem.template],
     shipping: Reward.Shipping(
       enabled: false,
       location: nil,
@@ -25,11 +25,10 @@ extension Reward {
     ),
     shippingRules: nil,
     startsAt: nil,
-    title: nil
+    title: "My Reward"
   )
 
   public static let noReward = Reward(
-    addOnData: nil,
     backersCount: nil,
     convertedMinimum: 0,
     description: "",
@@ -38,6 +37,7 @@ extension Reward {
     hasAddOns: false,
     id: 0,
     limit: nil,
+    limitPerBacker: nil,
     minimum: 0,
     remaining: nil,
     rewardsItems: [],
@@ -54,7 +54,6 @@ extension Reward {
   )
 
   public static let otherReward = Reward(
-    addOnData: nil,
     backersCount: nil,
     convertedMinimum: 0,
     description: "",
@@ -63,6 +62,7 @@ extension Reward {
     hasAddOns: false,
     id: 9_999,
     limit: nil,
+    limitPerBacker: nil,
     minimum: 0,
     remaining: nil,
     rewardsItems: [],

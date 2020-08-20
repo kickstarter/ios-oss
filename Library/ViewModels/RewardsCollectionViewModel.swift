@@ -102,7 +102,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil, // Set during add-ons selection.
         refTag: refTag,
         context: project.personalization.backing == nil ? .pledge : .updateReward
       )

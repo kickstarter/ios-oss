@@ -119,7 +119,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       |> Backing.lens.reward .~ self.cosmicSurgery.rewards.first
 
     self.cosmicSurgery = self.cosmicSurgery
-      |> Project.lens.rewards %~ { rewards in [rewards[0], rewards[2]] }
+      |> Project.lens.rewardData.rewards %~ { rewards in [rewards[0], rewards[2]] }
       |> Project.lens.dates.stateChangedAt .~ deadline
       |> Project.lens.dates.deadline .~ deadline
       |> Project.lens.state .~ .successful
@@ -149,7 +149,7 @@ internal final class ProjectPamphletContentViewControllerConversionTests: TestCa
       .map { $0 |> Reward.lens.convertedMinimum .~ ($0.minimum * 3.0) }
 
     self.cosmicSurgery = self.cosmicSurgery
-      |> Project.lens.rewards .~ rewards
+      |> Project.lens.rewardData.rewards .~ rewards
       |> Project.lens.country .~ .us
       |> Project.lens.stats.currency .~ "USD"
       |> Project.lens.stats.currentCurrency .~ "SEK"

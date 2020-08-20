@@ -8,16 +8,22 @@ public struct ErrorEnvelope {
   public let httpCode: Int
   public let exception: Exception?
   public let facebookUser: FacebookUser?
+  public let graphError: GraphError?
 
   public init(
-    errorMessages: [String], ksrCode: KsrCode?, httpCode: Int, exception: Exception?,
-    facebookUser: FacebookUser? = nil
+    errorMessages: [String],
+    ksrCode: KsrCode?,
+    httpCode: Int,
+    exception: Exception?,
+    facebookUser: FacebookUser? = nil,
+    graphError: GraphError? = nil
   ) {
     self.errorMessages = errorMessages
     self.ksrCode = ksrCode
     self.httpCode = httpCode
     self.exception = exception
     self.facebookUser = facebookUser
+    self.graphError = graphError
   }
 
   public enum KsrCode: String {
@@ -61,7 +67,8 @@ public struct ErrorEnvelope {
     ksrCode: .JSONParsingFailed,
     httpCode: 400,
     exception: nil,
-    facebookUser: nil
+    facebookUser: nil,
+    graphError: nil
   )
 
   /**
@@ -72,7 +79,8 @@ public struct ErrorEnvelope {
     ksrCode: .ErrorEnvelopeJSONParsingFailed,
     httpCode: 400,
     exception: nil,
-    facebookUser: nil
+    facebookUser: nil,
+    graphError: nil
   )
 
   /**
@@ -88,7 +96,8 @@ public struct ErrorEnvelope {
       ksrCode: .DecodingJSONFailed,
       httpCode: 400,
       exception: nil,
-      facebookUser: nil
+      facebookUser: nil,
+      graphError: nil
     )
   }
 
@@ -104,7 +113,8 @@ public struct ErrorEnvelope {
     ksrCode: .InvalidPaginationUrl,
     httpCode: 400,
     exception: nil,
-    facebookUser: nil
+    facebookUser: nil,
+    graphError: nil
   )
 }
 
@@ -119,6 +129,7 @@ extension ErrorEnvelope: Argo.Decodable {
       <*> json <| "http_code"
       <*> json <|? "exception"
       <*> json <|? "facebook_user"
+      <*> .success(nil)
 
     // ...but sometimes we make requests to the www server and JSON errors come back in a different envelope
     let nonStandardErrorEnvelope = {
@@ -129,6 +140,7 @@ extension ErrorEnvelope: Argo.Decodable {
         ])
         <*> .success(ErrorEnvelope.KsrCode.UnknownCode)
         <*> json <| "status"
+        <*> .success(nil)
         <*> .success(nil)
         <*> .success(nil)
     }
@@ -170,5 +182,20 @@ extension ErrorEnvelope.FacebookUser: Argo.Decodable {
 private func concatSuccesses<A>(_ decodeds: [Decoded<[A]>]) -> Decoded<[A]> {
   return decodeds.reduce(Decoded.success([])) { accum, decoded in
     .success((accum.value ?? []) + (decoded.value ?? []))
+  }
+}
+
+// MARK: - GraphError
+
+// FIXME: We should try to included error messages and/or httpCode
+extension ErrorEnvelope {
+  public static func envelope(from graphError: GraphError) -> ErrorEnvelope {
+    return ErrorEnvelope(
+      errorMessages: [],
+      ksrCode: nil,
+      httpCode: 0,
+      exception: nil,
+      graphError: graphError
+    )
   }
 }

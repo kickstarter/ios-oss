@@ -38,7 +38,7 @@ public struct PledgeViewData: Equatable {
   public let project: Project
   public let rewards: [Reward]
   public let selectedQuantities: SelectedRewardQuantities
-  public let selectedShippingRule: ShippingRule?
+  public let selectedLocationId: Int?
   public let refTag: RefTag?
   public let context: PledgeViewContext
 }
@@ -116,7 +116,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let baseReward = initialData.map(\.rewards).map(\.first).skipNil()
     let rewards = initialData.map(\.rewards)
     let selectedQuantities = initialData.map(\.selectedQuantities)
-    let initialShippingRule = initialData.map(\.selectedShippingRule)
+    let selectedLocationId = initialData.map(\.selectedLocationId)
     let refTag = initialData.map(\.refTag)
     let context = initialData.map(\.context)
 
@@ -145,8 +145,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNotNil)
 
-    let shippingRule = Signal.merge(
-      initialShippingRule,
+    let selectedShippingRule = Signal.merge(
+      project.mapConst(nil),
       self.shippingRuleSelectedSignal.wrapInOptional()
     )
 
@@ -164,8 +164,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         }
     }
 
-    let allRewardsShippingTotal = Signal.combineLatest(
-      shippingRule,
+    let calculatedShippingTotal = Signal.combineLatest(
+      selectedShippingRule.skipNil(),
       rewards,
       selectedQuantities
     )
@@ -182,17 +182,18 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
     }
 
-    let backedAdditionalPledgeAmount = Signal
-      .combineLatest(backing.map(\.amount), allRewardsTotal, allRewardsShippingTotal)
-      .map { pledgeAmount, allRewardsTotal, allRewardsShippingTotal in
-        pledgeAmount
-          .subtractingCurrency(allRewardsTotal)
-          .subtractingCurrency(allRewardsShippingTotal)
-      }
+    let unbackedInitialZeroAmount = initialData
+      .filter { $0.project.personalization.backing == nil }.mapConst(0.0)
+
+    let allRewardsShippingTotal = Signal.merge(
+      backing.map(\.shippingAmount).skipNil().map(Double.init),
+      calculatedShippingTotal,
+      unbackedInitialZeroAmount
+    )
 
     let initialAdditionalPledgeAmount = Signal.merge(
-      initialData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
-      backedAdditionalPledgeAmount
+      unbackedInitialZeroAmount,
+      backing.map(\.bonusAmount)
     )
     .take(first: 1)
 
@@ -210,13 +211,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let projectAndReward = Signal.zip(project, baseReward)
 
     // Only shown for regular non-add-ons based rewards
-    self.configureShippingLocationViewWithData = projectAndReward.map { project, reward in
-      (project, reward, true)
-    }
+    self.configureShippingLocationViewWithData = projectAndReward.combineLatest(with: selectedLocationId)
+      .map(unpack)
+      .map { project, reward, locationId in
+        (project, reward, true, locationId)
+      }
 
     // Only shown for add-ons based rewards
     self.configureShippingSummaryViewWithData = Signal.combineLatest(
-      initialShippingRule.skipNil().map(\.location.localizedName),
+      selectedShippingRule.skipNil().map(\.location.localizedName),
       project.map(\.stats.omitUSCurrencyCode),
       project.map(\.country),
       allRewardsShippingTotal
@@ -242,12 +245,21 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
      * the total of all rewards and their respective shipping costs.
      * For No Reward this is only the pledge amount.
      */
-    let pledgeTotal = Signal.combineLatest(additionalPledgeAmount, allRewardsShippingTotal, allRewardsTotal)
-      .map { pledgeAmount, shippingCost, rewardBaseAmount in
-        [pledgeAmount, shippingCost, rewardBaseAmount].reduce(0) { accum, amount in
-          accum.addingCurrency(amount)
-        }
+    let calculatedPledgeTotal = Signal.combineLatest(
+      additionalPledgeAmount,
+      allRewardsShippingTotal,
+      allRewardsTotal
+    )
+    .map { pledgeAmount, shippingCost, rewardBaseAmount in
+      [pledgeAmount, shippingCost, rewardBaseAmount].reduce(0) { accum, amount in
+        accum.addingCurrency(amount)
       }
+    }
+
+    let pledgeTotal = Signal.merge(
+      backing.map(\.amount),
+      calculatedPledgeTotal
+    )
 
     let projectAndConfirmationLabelHidden = Signal.combineLatest(
       project,
@@ -330,11 +342,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         AppEnvironment.current.environmentType.stripePublishableKey
       )
     }
-
-    let selectedShippingRule = Signal.merge(
-      initialShippingRule,
-      self.shippingRuleSelectedSignal.wrapInOptional()
-    )
 
     let selectedPaymentSourceId = Signal.merge(
       initialData.mapConst(nil),

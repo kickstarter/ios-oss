@@ -127,7 +127,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       .timeIntervalSince1970
 
     let project = self.cosmicSurgery
-      |> Project.lens.rewards %~ { rewards in
+      |> Project.lens.rewardData.rewards %~ { rewards in
         [
           rewards[0]
             |> Reward.lens.startsAt .~ 0
@@ -170,7 +170,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
   func testBacker_LiveProject_NoReward() {
     let project = self.cosmicSurgery
-      |> Project.lens.rewards %~ { rewards in [rewards[0]] }
+      |> Project.lens.rewardData.rewards %~ { rewards in [rewards[0]] }
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
@@ -212,7 +212,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Backing.lens.reward .~ self.cosmicSurgery.rewards.first
 
     let project = self.cosmicSurgery
-      |> Project.lens.rewards %~ { rewards in [rewards[0], rewards[2]] }
+      |> Project.lens.rewardData.rewards %~ { rewards in [rewards[0], rewards[2]] }
       |> Project.lens.dates.stateChangedAt .~ deadline
       |> Project.lens.dates.deadline .~ deadline
       |> Project.lens.state .~ .successful
@@ -247,7 +247,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       return
     }
     let project = self.cosmicSurgery
-      |> Project.lens.rewards .~ [soldOutReward]
+      |> Project.lens.rewardData.rewards .~ [soldOutReward]
       |> Project.lens.state .~ .live
       |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
       |> Project.lens.personalization.isBacking .~ true

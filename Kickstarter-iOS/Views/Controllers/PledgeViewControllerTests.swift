@@ -36,7 +36,7 @@ final class PledgeViewControllerTests: TestCase {
           project: project,
           rewards: [reward],
           selectedQuantities: [reward.id: 1],
-          selectedShippingRule: nil,
+          selectedLocationId: nil,
           refTag: nil,
           context: .pledge
         )
@@ -70,6 +70,7 @@ final class PledgeViewControllerTests: TestCase {
           |> Backing.lens.reward .~ Reward.noReward
           |> Backing.lens.rewardId .~ Reward.noReward.id
           |> Backing.lens.amount .~ 695.0
+          |> Backing.lens.bonusAmount .~ 695.0
           |> Backing.lens.shippingAmount .~ 0
       )
 
@@ -81,7 +82,7 @@ final class PledgeViewControllerTests: TestCase {
           project: project,
           rewards: [reward],
           selectedQuantities: [reward.id: 1],
-          selectedShippingRule: nil,
+          selectedLocationId: nil,
           refTag: nil,
           context: .pledge
         )
@@ -114,7 +115,7 @@ final class PledgeViewControllerTests: TestCase {
             project: project,
             rewards: [reward],
             selectedQuantities: [reward.id: 1],
-            selectedShippingRule: nil,
+            selectedLocationId: nil,
             refTag: nil,
             context: .pledge
           )
@@ -163,7 +164,7 @@ final class PledgeViewControllerTests: TestCase {
             project: project,
             rewards: [reward],
             selectedQuantities: [reward.id: 1],
-            selectedShippingRule: nil,
+            selectedLocationId: nil,
             refTag: nil,
             context: .pledge
           )
@@ -208,7 +209,7 @@ final class PledgeViewControllerTests: TestCase {
           project: project,
           rewards: [reward],
           selectedQuantities: [reward.id: 1],
-          selectedShippingRule: nil,
+          selectedLocationId: nil,
           refTag: nil,
           context: .update
         )
@@ -239,7 +240,7 @@ final class PledgeViewControllerTests: TestCase {
           project: project,
           rewards: [reward],
           selectedQuantities: [reward.id: 1],
-          selectedShippingRule: nil,
+          selectedLocationId: nil,
           refTag: nil,
           context: .update
         )
@@ -270,7 +271,7 @@ final class PledgeViewControllerTests: TestCase {
           project: project,
           rewards: [reward],
           selectedQuantities: [reward.id: 1],
-          selectedShippingRule: nil,
+          selectedLocationId: nil,
           refTag: nil,
           context: .update
         )
@@ -305,6 +306,7 @@ final class PledgeViewControllerTests: TestCase {
           |> Backing.lens.status .~ .pledged
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.bonusAmount .~ 5.0
           |> Backing.lens.shippingAmount .~ 5
           |> Backing.lens.amount .~ 700.0
       )
@@ -316,7 +318,7 @@ final class PledgeViewControllerTests: TestCase {
           project: project,
           rewards: [reward],
           selectedQuantities: [reward.id: 1],
-          selectedShippingRule: nil,
+          selectedLocationId: nil,
           refTag: nil,
           context: .changePaymentMethod
         )
@@ -347,6 +349,7 @@ final class PledgeViewControllerTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 5
+          |> Backing.lens.bonusAmount .~ 5.0
           |> Backing.lens.amount .~ 700.0
       )
 
@@ -363,7 +366,7 @@ final class PledgeViewControllerTests: TestCase {
           project: project,
           rewards: [reward],
           selectedQuantities: [reward.id: 1],
-          selectedShippingRule: nil,
+          selectedLocationId: nil,
           refTag: nil,
           context: .changePaymentMethod
         )
@@ -390,6 +393,7 @@ final class PledgeViewControllerTests: TestCase {
         |> Backing.lens.paymentSource .~
         (.template |> \.id .~ "123")
         |> Backing.lens.shippingAmount .~ 0
+        |> Backing.lens.bonusAmount .~ 2.0
         |> Backing.lens.amount .~ 12.0
       )
       |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
@@ -403,7 +407,7 @@ final class PledgeViewControllerTests: TestCase {
           project: project,
           rewards: [reward],
           selectedQuantities: [reward.id: 1],
-          selectedShippingRule: nil,
+          selectedLocationId: nil,
           refTag: nil,
           context: .changePaymentMethod
         )
@@ -431,7 +435,7 @@ final class PledgeViewControllerTests: TestCase {
             project: .template,
             rewards: [reward],
             selectedQuantities: [reward.id: 1],
-            selectedShippingRule: nil,
+            selectedLocationId: nil,
             refTag: nil,
             context: .pledge
           )
@@ -467,7 +471,7 @@ final class PledgeViewControllerTests: TestCase {
       project: project,
       rewards: [reward, addOnReward1, addOnReward2],
       selectedQuantities: [reward.id: 1, addOnReward1.id: 2, addOnReward2.id: 1],
-      selectedShippingRule: ShippingRule.template,
+      selectedLocationId: ShippingRule.template.id,
       refTag: .projectPage,
       context: .pledge
     )

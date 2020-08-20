@@ -14,7 +14,7 @@ internal final class ProjectPamphletViewControllerTests: TestCase {
     self.project = Project.cosmicSurgery
       |> Project.lens.photo.full .~ "" // prevents flaky tests caused by async photo download
       |> (Project.lens.creator.avatar .. User.Avatar.lens.small) .~ ""
-      |> Project.lens.rewards %~ { rewards in
+      |> Project.lens.rewardData.rewards %~ { rewards in
         [
           rewards[0]
             |> Reward.lens.startsAt .~ 0,

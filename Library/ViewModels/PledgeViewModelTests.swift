@@ -205,7 +205,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -265,7 +265,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -325,7 +325,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .update
       )
@@ -385,7 +385,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .updateReward
       )
@@ -442,6 +442,7 @@ final class PledgeViewModelTests: TestCase {
         |> ShippingRule.lens.cost .~ 10.0
       let backing = Backing.template
         |> Backing.lens.amount .~ 100
+        |> Backing.lens.bonusAmount .~ 80
         |> Backing.lens.shippingAmount .~ .some(10)
         |> Backing.lens.locationId .~ .some(123)
       let project = Project.template
@@ -454,7 +455,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: shippingRule,
+        selectedLocationId: shippingRule.location.id,
         refTag: .projectPage,
         context: .changePaymentMethod
       )
@@ -526,6 +527,7 @@ final class PledgeViewModelTests: TestCase {
         |> ShippingRule.lens.cost .~ 10.0
       let backing = Backing.template
         |> Backing.lens.amount .~ 100
+        |> Backing.lens.bonusAmount .~ 80
         |> Backing.lens.shippingAmount .~ .some(10)
         |> Backing.lens.locationId .~ .some(123)
         |> Backing.lens.status .~ .errored
@@ -539,7 +541,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: shippingRule,
+        selectedLocationId: shippingRule.location.id,
         refTag: .projectPage,
         context: .fixPaymentMethod
       )
@@ -606,12 +608,14 @@ final class PledgeViewModelTests: TestCase {
   func testChangePaymentMethodContext_NoReward() {
     let backing = Backing.template
       |> Backing.lens.amount .~ 10
+      |> Backing.lens.bonusAmount .~ 10
       |> Backing.lens.shippingAmount .~ .some(0)
+    let reward = Reward.noReward
+      |> Reward.lens.minimum .~ 1.0
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.backing .~ backing
-    let reward = Reward.noReward
-      |> Reward.lens.minimum .~ 1.0
+      |> Project.lens.rewardData.rewards .~ [reward]
 
     let mockService = MockService(serverConfig: ServerConfig.staging)
 
@@ -620,7 +624,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .changePaymentMethod
       )
@@ -686,7 +690,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -726,7 +730,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -767,7 +771,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -807,7 +811,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -847,7 +851,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -896,7 +900,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -958,7 +962,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -1021,7 +1025,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -1079,7 +1083,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -1191,7 +1195,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -1218,7 +1222,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .activity,
         context: .pledge
       )
@@ -1241,7 +1245,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: .projectPage,
       context: .pledge
     )
@@ -1282,7 +1286,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: .projectPage,
       context: .pledge
     )
@@ -1323,7 +1327,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: .projectPage,
       context: .pledge
     )
@@ -1353,7 +1357,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: .projectPage,
       context: .pledge
     )
@@ -1385,7 +1389,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: .projectPage,
       context: .pledge
     )
@@ -1422,7 +1426,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: .projectPage,
       context: .pledge
     )
@@ -1451,7 +1455,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: .projectPage,
       context: .pledge
     )
@@ -1482,7 +1486,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: .projectPage,
       context: .pledge
     )
@@ -1510,7 +1514,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: .projectPage,
       context: .pledge
     )
@@ -1541,7 +1545,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: .projectPage,
       context: .pledge
     )
@@ -1583,7 +1587,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -1629,7 +1633,7 @@ final class PledgeViewModelTests: TestCase {
         paymentType: "APPLE_PAY",
         revenueInUsdCents: 1_500,
         rewardId: 1,
-        rewardTitle: nil,
+        rewardTitle: "My Reward",
         shippingEnabled: false,
         shippingAmount: nil,
         userHasStoredApplePayCard: true
@@ -1671,7 +1675,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -1717,7 +1721,7 @@ final class PledgeViewModelTests: TestCase {
         paymentType: "APPLE_PAY",
         revenueInUsdCents: 1_965,
         rewardId: 1,
-        rewardTitle: nil,
+        rewardTitle: "My Reward",
         shippingEnabled: false,
         shippingAmount: nil,
         userHasStoredApplePayCard: true
@@ -1766,7 +1770,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -1833,7 +1837,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: nil,
         context: .pledge
       )
@@ -1886,7 +1890,7 @@ final class PledgeViewModelTests: TestCase {
         paymentType: "APPLE_PAY",
         revenueInUsdCents: 500,
         rewardId: 1,
-        rewardTitle: nil,
+        rewardTitle: "My Reward",
         shippingEnabled: false,
         shippingAmount: nil,
         userHasStoredApplePayCard: true
@@ -1913,7 +1917,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -1961,7 +1965,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .projectPage,
         context: .pledge
       )
@@ -2027,7 +2031,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .activity,
         context: .pledge
       )
@@ -2119,7 +2123,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1, addOnReward1.id: 2, addOnReward2.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .activity,
         context: .pledge
       )
@@ -2212,7 +2216,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .activity,
         context: .pledge
       )
@@ -2264,7 +2268,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .activity,
         context: .pledge
       )
@@ -2351,7 +2355,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .discovery,
         context: .update
       )
@@ -2434,7 +2438,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .discovery,
         context: .update
       )
@@ -2509,6 +2513,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.locationId .~ shippingRule.location.id
           |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.bonusAmount .~ 680.0
           |> Backing.lens.amount .~ 700.0
       )
 
@@ -2518,7 +2523,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: shippingRule,
+      selectedLocationId: shippingRule.location.id,
       refTag: .discovery,
       context: .update
     )
@@ -2583,6 +2588,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ nil
+          |> Backing.lens.bonusAmount .~ 690.0
           |> Backing.lens.amount .~ 700
       )
 
@@ -2592,7 +2598,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: .discovery,
       context: .update
     )
@@ -2660,7 +2666,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: nil,
         context: .updateReward
       )
@@ -2724,6 +2730,7 @@ final class PledgeViewModelTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.bonusAmount .~ 680.0
           |> Backing.lens.amount .~ 700.0
       )
 
@@ -2735,7 +2742,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: defaultShippingRule,
+      selectedLocationId: defaultShippingRule.location.id,
       refTag: .discovery,
       context: .update
     )
@@ -2816,17 +2823,21 @@ final class PledgeViewModelTests: TestCase {
     let addOnReward2 = Reward.template
       |> Reward.lens.id .~ 2
 
+    let shippingRule = ShippingRule.template
+
     let data = PledgeViewData(
       project: project,
       rewards: [reward, addOnReward1, addOnReward2],
       selectedQuantities: [reward.id: 1, addOnReward1.id: 2, addOnReward2.id: 1],
-      selectedShippingRule: ShippingRule.template,
+      selectedLocationId: shippingRule.location.id,
       refTag: .projectPage,
       context: .pledge
     )
 
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.shippingRuleSelected(shippingRule)
 
     let pledgeAmountData = (amount: 15.0, min: 5.0, max: 10_000.0, isValid: true)
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: pledgeAmountData)
@@ -2897,7 +2908,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: defaultShippingRule,
+        selectedLocationId: defaultShippingRule.location.id,
         refTag: .projectPage,
         context: .changePaymentMethod
       )
@@ -3066,7 +3077,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: defaultShippingRule,
+        selectedLocationId: defaultShippingRule.location.id,
         refTag: .projectPage,
         context: .changePaymentMethod
       )
@@ -3201,7 +3212,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: defaultShippingRule,
+        selectedLocationId: defaultShippingRule.location.id,
         refTag: .projectPage,
         context: .changePaymentMethod
       )
@@ -3353,7 +3364,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: defaultShippingRule,
+        selectedLocationId: defaultShippingRule.location.id,
         refTag: .projectPage,
         context: .update
       )
@@ -3619,7 +3630,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: defaultShippingRule,
+        selectedLocationId: defaultShippingRule.location.id,
         refTag: .projectPage,
         context: .update
       )
@@ -3842,7 +3853,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: defaultShippingRule,
+        selectedLocationId: defaultShippingRule.location.id,
         refTag: .projectPage,
         context: .update
       )
@@ -4051,7 +4062,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: defaultShippingRule,
+        selectedLocationId: defaultShippingRule.location.id,
         refTag: .projectPage,
         context: .update
       )
@@ -4228,13 +4239,15 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: defaultShippingRule,
+        selectedLocationId: defaultShippingRule.location.id,
         refTag: .activity,
         context: .pledge
       )
 
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.shippingRuleSelected(defaultShippingRule)
 
       self.beginSCAFlowWithClientSecret.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
@@ -4336,7 +4349,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: defaultShippingRule,
+        selectedLocationId: defaultShippingRule.location.id,
         refTag: .activity,
         context: .pledge
       )
@@ -4428,7 +4441,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .activity,
         context: .pledge
       )
@@ -4527,7 +4540,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .discovery,
         context: .update
       )
@@ -4631,7 +4644,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .discovery,
         context: .update
       )
@@ -4735,7 +4748,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .discovery,
         context: .update
       )
@@ -4792,13 +4805,13 @@ final class PledgeViewModelTests: TestCase {
 
     let reward = Reward.noReward
     let project = Project.template
-      |> Project.lens.rewards .~ [reward]
+      |> Project.lens.rewardData.rewards .~ [reward]
 
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: nil,
       context: .pledge
     )
@@ -4817,13 +4830,13 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ false
     let project = Project.template
-      |> Project.lens.rewards .~ [reward]
+      |> Project.lens.rewardData.rewards .~ [reward]
 
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: nil,
       context: .pledge
     )
@@ -4842,13 +4855,13 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
     let project = Project.template
-      |> Project.lens.rewards .~ [reward]
+      |> Project.lens.rewardData.rewards .~ [reward]
 
     let data = PledgeViewData(
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: nil,
       context: .pledge
     )
@@ -4869,13 +4882,13 @@ final class PledgeViewModelTests: TestCase {
     let addOnReward1 = Reward.template
       |> Reward.lens.id .~ 2
     let project = Project.template
-      |> Project.lens.rewards .~ [reward]
+      |> Project.lens.rewardData.rewards .~ [reward]
 
     let data = PledgeViewData(
       project: project,
       rewards: [reward, addOnReward1],
       selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: nil,
       context: .changePaymentMethod
     )
@@ -4899,13 +4912,13 @@ final class PledgeViewModelTests: TestCase {
     let addOnReward1 = Reward.template
       |> Reward.lens.id .~ 2
     let project = Project.template
-      |> Project.lens.rewards .~ [reward]
+      |> Project.lens.rewardData.rewards .~ [reward]
 
     let data = PledgeViewData(
       project: project,
       rewards: [reward, addOnReward1],
       selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: nil,
       context: .pledge
     )
@@ -4926,19 +4939,23 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
     let project = Project.template
-      |> Project.lens.rewards .~ [reward]
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let shippingRule = ShippingRule.template
 
     let data = PledgeViewData(
       project: project,
       rewards: [reward, addOnReward1],
       selectedQuantities: [reward.id: 1, addOnReward1.id: 1],
-      selectedShippingRule: ShippingRule.template,
+      selectedLocationId: shippingRule.id,
       refTag: nil,
       context: .pledge
     )
 
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.shippingRuleSelected(shippingRule)
 
     self.configureShippingSummaryViewWithData.assertValues([
       PledgeShippingSummaryViewData(
@@ -4963,19 +4980,23 @@ final class PledgeViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ false
 
     let project = Project.template
-      |> Project.lens.rewards .~ [reward]
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    let shippingRule = ShippingRule.template
 
     let data = PledgeViewData(
       project: project,
       rewards: [reward, addOnReward1, addOnReward2],
       selectedQuantities: [reward.id: 1, addOnReward1.id: 1, addOnReward2.id: 2],
-      selectedShippingRule: ShippingRule.template,
+      selectedLocationId: shippingRule.location.id,
       refTag: nil,
       context: .pledge
     )
 
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.shippingRuleSelected(shippingRule)
 
     self.configureShippingSummaryViewWithData.assertValues([
       PledgeShippingSummaryViewData(
@@ -4995,7 +5016,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: nil,
       context: .pledge
     )
@@ -5022,7 +5043,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: nil,
       context: .changePaymentMethod
     )
@@ -5049,7 +5070,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: nil,
       context: .update
     )
@@ -5076,7 +5097,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: nil,
       context: .updateReward
     )
@@ -5111,7 +5132,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .discovery,
         context: .pledge
       )
@@ -5152,7 +5173,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: .discovery,
       context: .pledge
     )
@@ -5208,7 +5229,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .discovery,
         context: .pledge
       )
@@ -5267,7 +5288,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .discovery,
         context: .pledge
       )
@@ -5323,7 +5344,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .discovery,
         context: .pledge
       )
@@ -5367,7 +5388,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: .discovery,
         context: .pledge
       )
@@ -5390,7 +5411,7 @@ final class PledgeViewModelTests: TestCase {
       project: project,
       rewards: [reward],
       selectedQuantities: [reward.id: 1],
-      selectedShippingRule: nil,
+      selectedLocationId: nil,
       refTag: .discovery,
       context: .pledge
     )
@@ -5427,10 +5448,10 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
     XCTAssertEqual(5.0, props?["checkout_shipping_amount"] as? Double)
     XCTAssertEqual(1_506_897_315.0, props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
-    XCTAssertNil(props?["checkout_reward_title"] as? String)
+    XCTAssertEqual("My Reward", props?["checkout_reward_title"] as? String)
 
     // Pledge properties
-    XCTAssertEqual(false, props?["pledge_backer_reward_has_items"] as? Bool)
+    XCTAssertEqual(true, props?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(1, props?["pledge_backer_reward_id"] as? Int)
     XCTAssertEqual(true, props?["pledge_backer_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_time"] as? Bool)
@@ -5463,7 +5484,7 @@ final class PledgeViewModelTests: TestCase {
         project: project,
         rewards: [reward],
         selectedQuantities: [reward.id: 1],
-        selectedShippingRule: nil,
+        selectedLocationId: nil,
         refTag: nil,
         context: .fixPaymentMethod
       )

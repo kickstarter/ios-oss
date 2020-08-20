@@ -3,14 +3,7 @@ import Curry
 import Prelude
 import Runes
 
-public struct AddOnData {
-  public let isAddOn: Bool
-  public var selectedQuantity: Int
-  public let limitPerBacker: Int?
-}
-
 public struct Reward {
-  public var addOnData: AddOnData? // FIXME: to be removed in future
   public let backersCount: Int?
   public let convertedMinimum: Double
   public let description: String
@@ -19,6 +12,7 @@ public struct Reward {
   public let hasAddOns: Bool
   public let id: Int
   public let limit: Int?
+  public let limitPerBacker: Int?
   public let minimum: Double
   public let remaining: Int?
   public let rewardsItems: [RewardsItem]
@@ -90,9 +84,7 @@ public func < (lhs: Reward, rhs: Reward) -> Bool {
 extension Reward: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Reward> {
     let tmp1 = curry(Reward.init)
-      // Add-On data is not de-serialized, it's injected from GraphQL backing info.
-      <^> .success(AddOnData(isAddOn: false, selectedQuantity: 0, limitPerBacker: 0))
-      <*> json <|? "backers_count"
+      <^> json <|? "backers_count"
       <*> json <| "converted_minimum"
       <*> (json <| "description" <|> json <| "reward")
       <*> json <|? "ends_at"
@@ -101,6 +93,7 @@ extension Reward: Argo.Decodable {
       <*> ((json <| "has_addons") <|> .success(false))
       <*> json <| "id"
       <*> json <|? "limit"
+      <*> json <|? "limit_per_backer"
       <*> json <| "minimum"
       <*> json <|? "remaining"
     return tmp2

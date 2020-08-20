@@ -136,7 +136,7 @@ internal final class SharedFunctionsTests: XCTestCase {
       |> Reward.lens.id .~ 123
     let project = Project.template
       |> Project.lens.personalization.backing .~ backing
-      |> Project.lens.rewards .~ [
+      |> Project.lens.rewardData.rewards .~ [
         backedReward,
         Reward.template
           |> Reward.lens.id .~ 456
@@ -153,7 +153,7 @@ internal final class SharedFunctionsTests: XCTestCase {
       |> Reward.lens.minimum .~ 10
     let project = Project.template
       |> Project.lens.personalization.backing .~ backing
-      |> Project.lens.rewards .~ [
+      |> Project.lens.rewardData.rewards .~ [
         noReward, // No Reward "reward" is available
         Reward.template
           |> Reward.lens.id .~ 456
@@ -168,7 +168,7 @@ internal final class SharedFunctionsTests: XCTestCase {
       |> Backing.lens.rewardId .~ 123
     let project = Project.template
       |> Project.lens.personalization.backing .~ backing
-      |> Project.lens.rewards .~ [
+      |> Project.lens.rewardData.rewards .~ [
         Reward.template
           |> Reward.lens.id .~ 456
       ]
@@ -182,7 +182,7 @@ internal final class SharedFunctionsTests: XCTestCase {
       |> Backing.lens.rewardId .~ nil
 
     let project = Project.template
-      |> Project.lens.rewards .~ []
+      |> Project.lens.rewardData.rewards .~ []
       |> Project.lens.personalization.backing .~ backing
 
     XCTAssertEqual(

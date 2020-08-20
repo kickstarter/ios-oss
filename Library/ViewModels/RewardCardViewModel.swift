@@ -199,9 +199,13 @@ private func rewardTitle(project: Project, reward: Reward) -> NSAttributedString
   )
 
   guard
-    let selectedQuantity = reward.addOnData?.selectedQuantity,
-    selectedQuantity > 0
-  else { return titleAttributed }
+    let backing = project.personalization.backing,
+    // Not the base reward, for that we just return the title without quantity.
+    reward.id != backing.reward?.id,
+    let selectedQuantity = selectedRewardQuantities(in: backing)[reward.id],
+    selectedQuantity > 0 else {
+    return titleAttributed
+  }
 
   let qty = "\(selectedQuantity) x "
   let qtyAttributed = qty.attributed(
