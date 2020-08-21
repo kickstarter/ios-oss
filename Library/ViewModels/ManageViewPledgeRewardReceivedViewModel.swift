@@ -7,7 +7,7 @@ public struct ManageViewPledgeRewardReceivedViewData: Equatable {
   public let project: Project
   public let backerCompleted: Bool
   public let estimatedDeliveryOn: TimeInterval
-  public let backingState: BackingState
+  public let backingState: Backing.Status
 }
 
 public protocol ManageViewPledgeRewardReceivedViewModelInputs {

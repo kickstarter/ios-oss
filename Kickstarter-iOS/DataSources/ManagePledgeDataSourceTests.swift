@@ -12,7 +12,7 @@ final class ManagePledgeDataSourceTests: TestCase {
   func testLoadDataIntoDataSource() {
     let rewards = [Reward.template, .template]
     let project = Project.template
-      |> \.rewards .~ rewards
+      |> Project.lens.rewardData.rewards .~ rewards
 
     self.dataSource.load(project: project, rewards: rewards)
 

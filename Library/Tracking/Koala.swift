@@ -341,6 +341,8 @@ public final class Koala {
 
   public struct CheckoutPropertiesData: Equatable {
     let amount: String
+    let bonusAmount: String
+    let bonusAmountInUsd: String
     let checkoutId: Int?
     let estimatedDelivery: TimeInterval?
     let paymentType: String?
@@ -2304,6 +2306,8 @@ private func checkoutProperties(from data: Koala.CheckoutPropertiesData, prefix:
   var result: [String: Any] = [:]
 
   result["amount"] = data.amount
+  result["bonus_amount"] = data.bonusAmount
+  result["bonus_amount_usd"] = data.bonusAmountInUsd
   result["id"] = data.checkoutId
   result["payment_type"] = data.paymentType
   result["reward_id"] = data.rewardId

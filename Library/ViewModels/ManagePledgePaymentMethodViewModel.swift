@@ -4,7 +4,7 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public struct ManagePledgePaymentMethodViewData: Equatable {
-  public let backingState: BackingState
+  public let backingState: Backing.Status
   public let expirationDate: String?
   public let lastFour: String?
   public let creditCardType: CreditCardType?

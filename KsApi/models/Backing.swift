@@ -3,10 +3,12 @@ import Curry
 import Runes
 
 public struct Backing {
+  public let addOns: [Reward]?
   public let amount: Double
   public let backer: User?
   public let backerId: Int
   public let backerCompleted: Bool?
+  public let bonusAmount: Double
   public let cancelable: Bool
   public let id: Int
   public let locationId: Int?
@@ -49,20 +51,22 @@ public func == (lhs: Backing, rhs: Backing) -> Bool {
 extension Backing: Argo.Decodable {
   public static func decode(_ json: JSON) -> Decoded<Backing> {
     let tmp1 = curry(Backing.init)
-      <^> json <| "amount"
+      <^> json <||? "add_ons"
+      <*> json <| "amount"
       <*> json <|? "backer"
       <*> json <| "backer_id"
       <*> json <|? "backer_completed_at"
+      <*> (json <| "bonus_amount" <|> .success(0.0))
       <*> json <| "cancelable"
-      <*> json <| "id"
     let tmp2 = tmp1
+      <*> json <| "id"
       <*> json <|? "location_id"
       <*> json <|? "location_name"
       <*> (json <|? "payment_source" >>- tryDecodePaymentSource)
       <*> json <| "pledged_at"
       <*> json <| "project_country"
-      <*> json <| "project_id"
     return tmp2
+      <*> json <| "project_id"
       <*> json <|? "reward"
       <*> json <|? "reward_id"
       <*> json <| "sequence"

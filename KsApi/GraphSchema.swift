@@ -144,6 +144,7 @@ public enum Query {
 
   public enum Location: String {
     case country
+    case countryName
     case displayableName
     case id
     case name
@@ -169,21 +170,60 @@ public enum Query {
   }
 
   public indirect enum Project {
+    case actions(NonEmptySet<Actions>)
+    case addOns(Set<QueryArg<Never>>, NonEmptySet<Connection<Reward>>)
+    case backersCount
     case backing(NonEmptySet<Backing>)
+    case category(NonEmptySet<Category>)
+    case country(NonEmptySet<Country>)
     case creator(NonEmptySet<User>)
+    case currency
+    case deadlineAt
+    case description
     case finalCollectionDate
+    case fxRate
+    case goal(NonEmptySet<Money>)
     case id
+    case image(NonEmptySet<Photo>)
+    case isProjectWeLove
+    case launchedAt
+    case location(NonEmptySet<Location>)
     case name
     case pid
+    case pledged(NonEmptySet<Money>)
     case projectSummary(NonEmptySet<ProjectSummary>)
     case slug
     case state
+    case stateChangedAt
     case updates(Set<QueryArg<Never>>, NonEmptySet<Connection<Project.Update>>)
+    case url
+    case usdExchangeRate
+
+    public enum Actions: String {
+      case displayConvertAmount
+    }
+
+    // TODO: This should be reconciled with the global-scope Category
+    public indirect enum Category {
+      case id
+      case name
+      case parentCategory(NonEmptySet<Category>)
+    }
+
+    public enum Country: String {
+      case code
+      case name
+    }
 
     public enum State: String {
       case failed = "FAILED"
       case live = "LIVE"
       case successful = "SUCCESSFUL"
+    }
+
+    public enum Photo {
+      case id
+      case url(width: Int)
     }
 
     public enum Update {
@@ -202,6 +242,7 @@ public enum Query {
   public enum Reward {
     case amount(NonEmptySet<Money>)
     case backersCount
+    case convertedAmount(NonEmptySet<Money>)
     case description
     case displayName
     case endsAt
@@ -210,9 +251,11 @@ public enum Query {
     case isMaxPledge
     case items(Set<QueryArg<Never>>, NonEmptySet<Connection<Item>>)
     case limit
+    case limitPerBacker
     case name
     case remainingQuantity
     case shippingPreference
+    case shippingRules(NonEmptySet<ShippingRule>)
     case startsAt
 
     public enum Item: String {
@@ -289,6 +332,7 @@ public enum Query {
     case id
     case lastFour
     case paymentType
+    case state
     case type
   }
 
@@ -302,6 +346,12 @@ public enum Query {
     case amount
     case currency
     case symbol
+  }
+
+  public enum ShippingRule {
+    case cost(NonEmptySet<Money>)
+    case id
+    case location(NonEmptySet<Location>)
   }
 }
 
@@ -430,17 +480,74 @@ extension Query.Category.ProjectsConnection.Argument: CustomStringConvertible {
 extension Query.Project: QueryType {
   public var description: String {
     switch self {
+    case let .actions(fields): return "actions { \(join(fields)) }"
+    case let .addOns(args, fields): return "addOns\(connection(args, fields))"
     case let .backing(fields): return "backing { \(join(fields)) }"
+    case .backersCount: return "backersCount"
+    case let .category(fields): return "category { \(join(fields)) }"
+    case let .country(fields): return "country { \(join(fields)) }"
     case let .creator(fields): return "creator { \(join(fields)) }"
+    case .currency: return "currency"
+    case .deadlineAt: return "deadlineAt"
+    case .description: return "description"
     case .finalCollectionDate: return "finalCollectionDate"
+    case .fxRate: return "fxRate"
+    case let .goal(fields): return "goal { \(join(fields)) }"
     case .id: return "id"
+    case .isProjectWeLove: return "isProjectWeLove"
+    case let .image(fields): return "image { \(join(fields)) }"
+    case .launchedAt: return "launchedAt"
+    case let .location(fields): return "location { \(join(fields)) }"
     case .name: return "name"
     case .pid: return "pid"
+    case let .pledged(fields): return "pledged { \(join(fields)) }"
     case let .projectSummary(fields): return "projectSummary { \(join(fields)) }"
     case .slug: return "slug"
     case .state: return "state"
+    case .stateChangedAt: return "stateChangedAt"
     case let .updates(args, fields): return "updates\(connection(args, fields))"
+    case .url: return "url"
+    case .usdExchangeRate: return "usdExchangeRate"
     }
+  }
+}
+
+// MARK: - Project.Category
+
+extension Query.Project.Category: QueryType {
+  public var description: String {
+    switch self {
+    case .id: return "id"
+    case .name: return "name"
+    case let .parentCategory(fields): return "parentCategory { \(join(fields)) }"
+    }
+  }
+}
+
+// MARK: - Project.Country
+
+extension Query.Project.Country: QueryType {
+  public var description: String {
+    return self.rawValue
+  }
+}
+
+// MARK: - Project.Photo
+
+extension Query.Project.Photo: QueryType {
+  public var description: String {
+    switch self {
+    case .id: return "id"
+    case let .url(width): return "url(width: \(width))"
+    }
+  }
+}
+
+// MARK: - Project.Actions
+
+extension Query.Project.Actions: QueryType {
+  public var description: String {
+    return self.rawValue
   }
 }
 
@@ -550,11 +657,22 @@ extension Query.BankAccount: QueryType {
   }
 }
 
+extension Query.ShippingRule: QueryType {
+  public var description: String {
+    switch self {
+    case let .cost(fields): return "cost { \(join(fields)) }"
+    case .id: return "id"
+    case let .location(fields): return "location { \(join(fields)) }"
+    }
+  }
+}
+
 extension Query.Reward: QueryType {
   public var description: String {
     switch self {
     case let .amount(fields): return "amount { \(join(fields)) }"
     case .backersCount: return "backersCount"
+    case let .convertedAmount(fields): return "convertedAmount { \(join(fields)) }"
     case .description: return "description"
     case .displayName: return "displayName"
     case .endsAt: return "endsAt"
@@ -563,9 +681,11 @@ extension Query.Reward: QueryType {
     case .isMaxPledge: return "isMaxPledge"
     case let .items(args, fields): return "items" + connection(args, fields)
     case .limit: return "limit"
+    case .limitPerBacker: return "limitPerBacker"
     case .name: return "name"
     case .remainingQuantity: return "remainingQuantity"
     case .shippingPreference: return "shippingPreference"
+    case let .shippingRules(fields): return "shippingRules { \(join(fields)) }"
     case .startsAt: return "startsAt"
     }
   }
@@ -608,6 +728,8 @@ extension Query.Location: QueryType {
     return self.rawValue
   }
 }
+
+// MARK: - Money
 
 extension Query.Money: QueryType {
   public var description: String {

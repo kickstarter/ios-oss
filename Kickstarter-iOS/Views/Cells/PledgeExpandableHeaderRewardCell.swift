@@ -2,12 +2,6 @@ import Library
 import Prelude
 import UIKit
 
-private enum Layout {
-  enum Margin {
-    static let width: CGFloat = Styles.grid(3)
-  }
-}
-
 final class PledgeExpandableHeaderRewardCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
@@ -38,7 +32,7 @@ final class PledgeExpandableHeaderRewardCell: UITableViewCell, ValueCell {
 
     _ = self
       |> \.selectionStyle .~ .none
-      |> \.separatorInset .~ .init(leftRight: Layout.Margin.width)
+      |> \.separatorInset .~ .init(leftRight: CheckoutConstants.PledgeView.Inset.leftRight)
 
     _ = self.amountLabel
       |> UILabel.lens.contentHuggingPriority(for: .horizontal) .~ .required
@@ -106,6 +100,9 @@ private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewSt
       |> \.distribution .~ distribution
       |> \.spacing .~ spacing
       |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ .init(all: Layout.Margin.width)
+      |> \.layoutMargins .~ .init(
+        topBottom: Styles.grid(3),
+        leftRight: CheckoutConstants.PledgeView.Inset.leftRight
+      )
   }
 }

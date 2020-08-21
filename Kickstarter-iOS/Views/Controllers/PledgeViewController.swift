@@ -67,7 +67,11 @@ final class PledgeViewController: UIViewController,
   }()
 
   private lazy var inputsSectionViews = {
-    [self.shippingLocationViewController.view, self.pledgeAmountViewController.view]
+    [
+      self.shippingLocationViewController.view,
+      self.shippingSummaryView,
+      self.pledgeAmountViewController.view
+    ]
   }()
 
   fileprivate lazy var keyboardDimissingTapGestureRecognizer: UITapGestureRecognizer = {
@@ -97,6 +101,10 @@ final class PledgeViewController: UIViewController,
   private lazy var shippingLocationViewController = {
     PledgeShippingLocationViewController.instantiate()
       |> \.delegate .~ self
+  }()
+
+  private lazy var shippingSummaryView: PledgeShippingSummaryView = {
+    PledgeShippingSummaryView(frame: .zero)
   }()
 
   private lazy var summarySectionViews = {
@@ -137,8 +145,8 @@ final class PledgeViewController: UIViewController,
 
   // MARK: - Lifecycle
 
-  func configureWith(project: Project, reward: Reward, refTag: RefTag?, context: PledgeViewContext) {
-    self.viewModel.inputs.configureWith(project: project, reward: reward, refTag: refTag, context: context)
+  func configure(with data: PledgeViewData) {
+    self.viewModel.inputs.configure(with: data)
   }
 
   override func viewDidLoad() {
@@ -285,10 +293,16 @@ final class PledgeViewController: UIViewController,
         STPPaymentConfiguration.shared().appleMerchantIdentifier = merchantIdentifier
       }
 
-    self.viewModel.outputs.configureWithData
+    self.viewModel.outputs.configureShippingLocationViewWithData
       .observeForUI()
       .observeValues { [weak self] data in
         self?.shippingLocationViewController.configureWith(value: data)
+      }
+
+    self.viewModel.outputs.configureShippingSummaryViewWithData
+      .observeForUI()
+      .observeValues { [weak self] data in
+        self?.shippingSummaryView.configure(with: data)
       }
 
     self.viewModel.outputs.configurePledgeAmountViewWithData
@@ -315,10 +329,10 @@ final class PledgeViewController: UIViewController,
         self?.pledgeCTAContainerView.configureWith(value: value)
       }
 
-    self.viewModel.outputs.notifyPledgeAmountViewControllerShippingAmountChanged
+    self.viewModel.outputs.notifyPledgeAmountViewControllerUnavailableAmountChanged
       .observeForUI()
       .observeValues { [weak self] amount in
-        self?.pledgeAmountViewController.selectedShippingAmountChanged(to: amount)
+        self?.pledgeAmountViewController.unavailableAmountChanged(to: amount)
       }
 
     self.viewModel.outputs.configureSummaryViewControllerWithData
@@ -388,6 +402,8 @@ final class PledgeViewController: UIViewController,
 
     self.shippingLocationViewController.view.rac.hidden
       = self.viewModel.outputs.shippingLocationViewHidden
+    self.shippingSummaryView.rac.hidden
+      = self.viewModel.outputs.shippingSummaryViewHidden
     self.paymentMethodsViewController.view.rac.hidden = self.viewModel.outputs.paymentMethodsViewHidden
     self.pledgeAmountViewController.view.rac.hidden = self.viewModel.outputs.pledgeAmountViewHidden
     self.pledgeAmountSummaryViewController.view.rac.hidden
@@ -441,8 +457,9 @@ final class PledgeViewController: UIViewController,
       .paymentRequest(
         for: paymentAuthorizationData.project,
         reward: paymentAuthorizationData.reward,
-        pledgeAmount: paymentAuthorizationData.pledgeAmount,
-        selectedShippingRule: paymentAuthorizationData.selectedShippingRule,
+        allRewardsTotal: paymentAuthorizationData.allRewardsTotal,
+        additionalPledgeAmount: paymentAuthorizationData.additionalPledgeAmount,
+        allRewardsShippingTotal: paymentAuthorizationData.allRewardsShippingTotal,
         merchantIdentifier: paymentAuthorizationData.merchantIdentifier
       )
 
@@ -587,6 +604,8 @@ extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
   ) {
     self.viewModel.inputs.shippingRuleSelected(shippingRule)
   }
+
+  func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {}
 }
 
 // MARK: - PledgeViewControllerMessageDisplaying

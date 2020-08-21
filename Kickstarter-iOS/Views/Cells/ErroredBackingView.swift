@@ -16,7 +16,7 @@ private enum Layout {
 }
 
 protocol ErroredBackingViewDelegate: AnyObject {
-  func erroredBackingViewDidTapManage(_ view: ErroredBackingView, backing: GraphBacking)
+  func erroredBackingViewDidTapManage(_ view: ErroredBackingView, backing: ProjectAndBackingEnvelope)
 }
 
 final class ErroredBackingView: UIView {
@@ -54,7 +54,7 @@ final class ErroredBackingView: UIView {
 
   // MARK: - Configuration
 
-  func configureWith(value: GraphBacking) {
+  func configureWith(value: ProjectAndBackingEnvelope) {
     self.viewModel.inputs.configure(with: value)
   }
 

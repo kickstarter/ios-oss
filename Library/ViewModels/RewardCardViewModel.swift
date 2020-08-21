@@ -199,9 +199,13 @@ private func rewardTitle(project: Project, reward: Reward) -> NSAttributedString
   )
 
   guard
-    let selectedQuantity = reward.addOnData?.selectedQuantity,
-    selectedQuantity > 0
-  else { return titleAttributed }
+    let backing = project.personalization.backing,
+    // Not the base reward, for that we just return the title without quantity.
+    reward.id != backing.reward?.id,
+    let selectedQuantity = selectedRewardQuantities(in: backing)[reward.id],
+    selectedQuantity > 0 else {
+    return titleAttributed
+  }
 
   let qty = "\(selectedQuantity) x "
   let qtyAttributed = qty.attributed(
@@ -218,9 +222,16 @@ private func pillValues(project: Project, reward: Reward) -> [String] {
   return [
     timeLeftString(project: project, reward: reward),
     backerCountOrRemainingString(project: project, reward: reward),
-    shippingSummaryString(project: project, reward: reward)
+    shippingSummaryString(project: project, reward: reward),
+    addOnsString(reward: reward)
   ]
   .compact()
+}
+
+private func addOnsString(reward: Reward) -> String? {
+  guard reward.hasAddOns else { return nil }
+
+  return localizedString(key: "Add_ons", defaultValue: "Add-ons")
 }
 
 private func timeLeftString(project: Project, reward: Reward) -> String? {

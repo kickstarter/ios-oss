@@ -7,7 +7,7 @@ import XCTest
 final class ActivityErroredBackingsCellViewModelTests: TestCase {
   private let vm: ActivityErroredBackingsCellViewModelType = ActivityErroredBackingsCellViewModel()
 
-  private let erroredBackings = TestObserver<[GraphBacking], Never>()
+  private let erroredBackings = TestObserver<[ProjectAndBackingEnvelope], Never>()
 
   override func setUp() {
     super.setUp()
@@ -16,7 +16,7 @@ final class ActivityErroredBackingsCellViewModelTests: TestCase {
   }
 
   func testErroredBackings() {
-    let backings = GraphBackingEnvelope.template.backings.nodes
+    let backings = [ProjectAndBackingEnvelope(project: .template, backing: .errored)]
 
     self.erroredBackings.assertDidNotEmitValue()
 

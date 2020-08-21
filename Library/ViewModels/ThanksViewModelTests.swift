@@ -327,6 +327,8 @@ final class ThanksViewModelTests: TestCase {
   func testThanksPageViewed_Properties() {
     let checkoutData = Koala.CheckoutPropertiesData(
       amount: "10.00",
+      bonusAmount: "20.00",
+      bonusAmountInUsd: "20.00",
       checkoutId: 1,
       estimatedDelivery: nil,
       paymentType: "CREDIT_CARD",
@@ -347,6 +349,8 @@ final class ThanksViewModelTests: TestCase {
 
     // Checkout properties
     XCTAssertEqual("10.00", props?["checkout_amount"] as? String)
+    XCTAssertEqual("20.00", props?["checkout_bonus_amount"] as? String)
+    XCTAssertEqual("20.00", props?["checkout_bonus_amount_usd"] as? String)
     XCTAssertEqual("CREDIT_CARD", props?["checkout_payment_type"] as? String)
     XCTAssertEqual("SUPER reward", props?["checkout_reward_title"] as? String)
     XCTAssertEqual(2, props?["checkout_reward_id"] as? Int)
@@ -357,7 +361,7 @@ final class ThanksViewModelTests: TestCase {
     XCTAssertNil(props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
 
     // Pledge properties
-    XCTAssertEqual(false, props?["pledge_backer_reward_has_items"] as? Bool)
+    XCTAssertEqual(true, props?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(1, props?["pledge_backer_reward_id"] as? Int)
     XCTAssertEqual(true, props?["pledge_backer_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_time"] as? Bool)

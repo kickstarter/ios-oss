@@ -123,7 +123,7 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.buttonStyleType.assertValues([ButtonStyleType.blue])
     self.buttonTitleText.assertValues([Strings.Manage()])
     self.titleText.assertValues([Strings.Youre_a_backer()])
-    self.subtitleText.assertValues(["$10"])
+    self.subtitleText.assertValues(["$10 • My Reward"])
     self.spacerIsHidden.assertValues([false])
     self.stackViewIsHidden.assertValues([false])
   }

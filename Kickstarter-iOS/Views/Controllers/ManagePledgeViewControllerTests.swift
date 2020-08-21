@@ -22,43 +22,29 @@ final class ManagePledgeViewControllerTests: TestCase {
   func testView_CurrentUser_IsBacker() {
     let user = User.template
       |> User.lens.id .~ 1
-      |> User.lens.avatar.small .~ ""
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
-    let backedProject = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.reward .~ reward
-          |> Backing.lens.rewardId .~ reward.id
-      )
-      |> \.rewards .~ [reward]
 
-    var envelope = ManagePledgeViewBackingEnvelope.template
-      |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
-        expirationDate: "2019-09-01",
-        id: "556",
-        lastFour: "1111",
-        paymentType: .creditCard,
-        type: .visa
-      )
-      |> \.backing.sequence .~ 10
-      |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
+    let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
 
-    envelope = envelope
-      |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-      |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
-      |> \.backing.shippingAmount .~ Money(amount: 2.0, currency: .gbp, symbol: "£")
-      |> \.backing.backer.uid .~ user.id
-      |> \.backing.backer.name .~ "Blob"
-      |> \.backing.reward .~ (
-        ManagePledgeViewBackingEnvelope.Backing.Reward.template
-          |> \.amount .~ Money(amount: 8.0, currency: .gbp, symbol: "£")
-      )
+    let backing = Backing.template
+      |> Backing.lens.addOns .~ addOns
+      |> Backing.lens.amount .~ 22
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.rewardId .~ reward.id
+      |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ backing
+      |> \.rewardData.rewards .~ [reward]
+      |> \.rewardData.addOns .~ addOns
+
+    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(envelope),
-      fetchProjectResponse: backedProject
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
@@ -88,44 +74,30 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let user = User.template
       |> User.lens.id .~ 1
-      |> User.lens.avatar.small .~ ""
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
-    let backedProject = Project.cosmicSurgery
+
+    let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
+
+    let backing = Backing.template
+      |> Backing.lens.addOns .~ addOns
+      |> Backing.lens.amount .~ 22
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.rewardId .~ reward.id
+      |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ backing
       |> Project.lens.creator.id .~ 1
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.reward .~ reward
-          |> Backing.lens.rewardId .~ reward.id
-      )
-      |> \.rewards .~ [reward]
+      |> \.rewardData.rewards .~ [reward]
+      |> \.rewardData.addOns .~ addOns
 
-    var envelope = ManagePledgeViewBackingEnvelope.template
-      |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
-        expirationDate: "2019-09-01",
-        id: "556",
-        lastFour: "1111",
-        paymentType: .creditCard,
-        type: .visa
-      )
-      |> \.backing.sequence .~ 10
-      |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
-
-    envelope = envelope
-      |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-      |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
-      |> \.backing.shippingAmount .~ Money(amount: 2.0, currency: .gbp, symbol: "£")
-      |> \.backing.backer.uid .~ 5
-      |> \.backing.backer.name .~ "Blob"
-      |> \.backing.reward .~ (
-        ManagePledgeViewBackingEnvelope.Backing.Reward.template
-          |> \.amount .~ Money(amount: 8.0, currency: .gbp, symbol: "£")
-      )
+    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(envelope),
-      fetchProjectResponse: backedProject
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
     )
 
     withEnvironment(apiService: mockService, currentUser: user, language: language) {
@@ -149,42 +121,35 @@ final class ManagePledgeViewControllerTests: TestCase {
   func testView_NoReward_ApplePay() {
     let language = Language.en
     let device = Device.phone4_7inch
+
     let user = User.template
       |> User.lens.id .~ 1
-      |> User.lens.avatar.small .~ ""
 
-    let reward = Reward.noReward
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
 
-    let backedProject = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.reward .~ reward
-          |> Backing.lens.rewardId .~ reward.id
+    let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
+
+    let backing = Backing.template
+      |> Backing.lens.addOns .~ addOns
+      |> Backing.lens.amount .~ 22
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.rewardId .~ reward.id
+      |> Backing.lens.paymentSource .~ (
+        Backing.PaymentSource.template
+          |> \.paymentType .~ .applePay
       )
-      |> \.rewards .~ [reward]
 
-    var envelope = ManagePledgeViewBackingEnvelope.template
-      |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
-        expirationDate: "2019-10-01",
-        id: "556",
-        lastFour: "1111",
-        paymentType: .applePay,
-        type: .visa
-      )
-      |> \.backing.sequence .~ 10
-      |> \.backing.location .~ nil
-      |> \.backing.shippingAmount .~ nil
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ backing
+      |> \.rewardData.rewards .~ [reward]
+      |> \.rewardData.addOns .~ addOns
 
-    envelope = envelope
-      |> \.backing.bonusAmount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
-      |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-      |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
-      |> \.backing.backer.uid .~ user.id
-      |> \.backing.backer.name .~ "Blob"
+    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(envelope),
-      fetchProjectResponse: backedProject
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
     )
 
     withEnvironment(apiService: mockService, currentUser: user, language: language) {
@@ -212,46 +177,35 @@ final class ManagePledgeViewControllerTests: TestCase {
   func testView_GooglePay() {
     let language = Language.en
     let device = Device.phone4_7inch
+
     let user = User.template
       |> User.lens.id .~ 1
-      |> User.lens.avatar.small .~ ""
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
 
-    let backedProject = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.reward .~ reward
-          |> Backing.lens.rewardId .~ reward.id
-      )
-      |> \.rewards .~ [reward]
+    let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
 
-    var envelope = ManagePledgeViewBackingEnvelope.template
-      |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
-        expirationDate: "2019-10-01",
-        id: "556",
-        lastFour: "4111",
-        paymentType: .googlePay,
-        type: .visa
+    let backing = Backing.template
+      |> Backing.lens.addOns .~ addOns
+      |> Backing.lens.amount .~ 22
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.rewardId .~ reward.id
+      |> Backing.lens.paymentSource .~ (
+        Backing.PaymentSource.template
+          |> \.paymentType .~ .googlePay
       )
-      |> \.backing.sequence .~ 10
-      |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
 
-    envelope = envelope
-      |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-      |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
-      |> \.backing.shippingAmount .~ Money(amount: 2.0, currency: .gbp, symbol: "£")
-      |> \.backing.backer.uid .~ user.id
-      |> \.backing.backer.name .~ "Blob"
-      |> \.backing.reward .~ (
-        ManagePledgeViewBackingEnvelope.Backing.Reward.template
-          |> \.amount .~ Money(amount: 8.0, currency: .gbp, symbol: "£")
-      )
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ backing
+      |> \.rewardData.rewards .~ [reward]
+      |> \.rewardData.addOns .~ addOns
+
+    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(envelope),
-      fetchProjectResponse: backedProject
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
     )
 
     withEnvironment(apiService: mockService, currentUser: user, language: language) {
@@ -279,45 +233,30 @@ final class ManagePledgeViewControllerTests: TestCase {
   func testView_ErroredBacking() {
     let user = User.template
       |> User.lens.id .~ 1
-      |> User.lens.avatar.small .~ ""
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
 
-    let backedProject = Project.cosmicSurgery
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.reward .~ reward
-          |> Backing.lens.rewardId .~ reward.id
-      )
-      |> \.rewards .~ [reward]
+    let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
 
-    var envelope = ManagePledgeViewBackingEnvelope.template
-      |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
-        expirationDate: "2019-09-01",
-        id: "556",
-        lastFour: "1111",
-        paymentType: .creditCard,
-        type: .visa
-      )
-      |> \.backing.sequence .~ 10
-      |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
+    let backing = Backing.template
+      |> Backing.lens.addOns .~ addOns
+      |> Backing.lens.amount .~ 22
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.rewardId .~ reward.id
+      |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+      |> Backing.lens.status .~ .errored
 
-    envelope = envelope
-      |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-      |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
-      |> \.backing.shippingAmount .~ Money(amount: 2.0, currency: .gbp, symbol: "£")
-      |> \.backing.backer.uid .~ user.id
-      |> \.backing.backer.name .~ "Blob"
-      |> \.backing.status .~ .errored
-      |> \.backing.reward .~ (
-        ManagePledgeViewBackingEnvelope.Backing.Reward.template
-          |> \.amount .~ Money(amount: 8.0, currency: .gbp, symbol: "£")
-      )
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ backing
+      |> \.rewardData.rewards .~ [reward]
+      |> \.rewardData.addOns .~ addOns
+
+    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(envelope),
-      fetchProjectResponse: backedProject
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in

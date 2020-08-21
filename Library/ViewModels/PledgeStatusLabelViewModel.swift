@@ -9,8 +9,8 @@ public struct PledgeStatusLabelViewData {
   public let pledgeAmount: Double
   public let projectCountry: Project.Country
   public let projectDeadline: TimeInterval
-  public let projectState: ProjectState
-  public let backingState: BackingState
+  public let projectState: Project.State
+  public let backingState: Backing.Status
 }
 
 public protocol PledgeStatusLabelViewModelInputs {
@@ -102,7 +102,7 @@ private func statusLabelText(with data: PledgeStatusLabelViewData) -> NSAttribut
   return NSAttributedString(string: string, attributes: attributes)
 }
 
-private func projectStatusLabelText(with projectState: ProjectState, isCreator: Bool) -> String? {
+private func projectStatusLabelText(with projectState: Project.State, isCreator: Bool) -> String? {
   let string: String
 
   switch (projectState, isCreator) {

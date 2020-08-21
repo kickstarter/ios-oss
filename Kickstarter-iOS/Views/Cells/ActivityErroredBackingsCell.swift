@@ -40,7 +40,7 @@ final class ActivityErroredBackingsCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  internal func configureWith(value backings: [GraphBacking]) {
+  internal func configureWith(value backings: [ProjectAndBackingEnvelope]) {
     self.viewModel.inputs.configure(with: backings)
   }
 
@@ -92,7 +92,7 @@ final class ActivityErroredBackingsCell: UITableViewCell, ValueCell {
 
   // MARK: - Private Helpers
 
-  private func configureErroredBackingViews(with backings: [GraphBacking]) {
+  private func configureErroredBackingViews(with backings: [ProjectAndBackingEnvelope]) {
     self.erroredBackingsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
     let erroredBackingsViews = backings.map { backing -> ErroredBackingView in

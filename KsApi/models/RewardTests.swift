@@ -186,4 +186,38 @@ final class RewardTests: XCTestCase {
     XCTAssertEqual(false, reward.value?.shipping.enabled)
     XCTAssertEqual(.noShipping, reward.value?.shipping.type)
   }
+
+  func testRewardShippingRule_Match() {
+    let shippingRule1 = ShippingRule.template
+      |> ShippingRule.lens.cost .~ 5.0
+      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 1)
+    let shippingRule2 = ShippingRule.template
+      |> ShippingRule.lens.cost .~ 1.0
+      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 2)
+    let reward = Reward.template
+      |> Reward.lens.shippingRules .~ [shippingRule1, shippingRule2]
+
+    let match = ShippingRule.template
+      |> ShippingRule.lens.cost .~ 500.0
+      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 1)
+
+    XCTAssertEqual(reward.shippingRule(matching: match), shippingRule1)
+  }
+
+  func testRewardShippingRule_NoMatch() {
+    let shippingRule1 = ShippingRule.template
+      |> ShippingRule.lens.cost .~ 5.0
+      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 5)
+    let shippingRule2 = ShippingRule.template
+      |> ShippingRule.lens.cost .~ 1.0
+      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 2)
+    let reward = Reward.template
+      |> Reward.lens.shippingRules .~ [shippingRule1, shippingRule2]
+
+    let match = ShippingRule.template
+      |> ShippingRule.lens.cost .~ 500.0
+      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 1)
+
+    XCTAssertEqual(reward.shippingRule(matching: match), match)
+  }
 }

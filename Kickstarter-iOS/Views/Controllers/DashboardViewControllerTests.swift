@@ -121,7 +121,7 @@ private let cosmicSurgery = .cosmicSurgery
   |> Project.lens.memberData.unreadMessagesCount .~ .some(42)
   |> Project.lens.memberData.unseenActivityCount .~ .some(1_299)
   |> Project.lens.memberData.permissions .~ [.post, .viewPledges]
-  |> Project.lens.rewards .~ rewards
+  |> Project.lens.rewardData.rewards .~ rewards
 
 private let stats = [3_000, 4_000, 5_000, 7_000, 8_000, 13_000, 14_000, 15_000, 17_000, 18_000]
 

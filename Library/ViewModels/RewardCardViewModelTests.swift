@@ -100,13 +100,17 @@ final class RewardCardViewModelTests: TestCase {
   }
 
   func testTitleLabel_Backed_AddOn() {
-    let project = Project.template
-      |> Project.lens.personalization.isBacking .~ true
-
     let reward = .template
-      |> \.addOnData .~ AddOnData(isAddOn: true, selectedQuantity: 2)
+      |> Reward.lens.id .~ 99
       |> Reward.lens.title .~ "The thing"
       |> Reward.lens.remaining .~ nil
+
+    let backing = Backing.template
+      |> Backing.lens.addOns .~ [reward, reward]
+
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ backing
 
     self.vm.inputs.configure(with: (project, reward, .pledge))
 
@@ -483,6 +487,24 @@ final class RewardCardViewModelTests: TestCase {
   }
 
   // MARK: - Pills
+
+  func testPillsRewardHasAddOns() {
+    self.pillCollectionViewHidden.assertValueCount(0)
+    self.reloadPills.assertValueCount(0)
+
+    let reward = Reward.postcards
+      |> Reward.lens.backersCount .~ nil
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.hasAddOns .~ true
+
+    self.vm.inputs.configure(with: (.template, reward, .pledge))
+
+    self.pillCollectionViewHidden.assertValues([false])
+    self.reloadPills.assertValues([
+      ["Add-ons"]
+    ])
+  }
 
   func testPillsLimitedReward() {
     self.pillCollectionViewHidden.assertValueCount(0)

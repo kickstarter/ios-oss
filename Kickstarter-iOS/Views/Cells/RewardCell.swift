@@ -12,6 +12,16 @@ protocol RewardCellDelegate: AnyObject {
 final class RewardCell: UICollectionViewCell, ValueCell {
   // MARK: - Properties
 
+  private lazy var backerLabelContainer: UIView = {
+    UIView(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  private lazy var backerLabel: UILabel = {
+    UILabel(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   internal weak var delegate: RewardCellDelegate?
   private let viewModel: RewardCellViewModelType = RewardCellViewModel()
 
@@ -35,6 +45,8 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   override func bindViewModel() {
     super.bindViewModel()
 
+    self.backerLabelContainer.rac.hidden = self.viewModel.outputs.backerLabelHidden
+
     self.viewModel.outputs.scrollScrollViewToTop
       .observeForUI()
       .observeValues { [weak self] in
@@ -57,6 +69,13 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
+    _ = (self.backerLabel, self.backerLabelContainer)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
+
+    _ = (self.backerLabelContainer, self.rewardCardContainerView)
+      |> ksr_addSubviewToParent()
+
     _ = (self.rewardCardContainerView, self.scrollView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
@@ -69,7 +88,21 @@ final class RewardCell: UICollectionViewCell, ValueCell {
   private func setupConstraints() {
     self.rewardCardContainerView.pinBottomViews(to: self.contentView.layoutMarginsGuide)
 
+    let backerLabelContainerYConstraint = NSLayoutConstraint(
+      item: self.backerLabelContainer,
+      attribute: .centerY,
+      relatedBy: .equal,
+      toItem: self.rewardCardContainerView,
+      attribute: .top,
+      multiplier: 0.9,
+      constant: 0
+    )
+
     NSLayoutConstraint.activate([
+      backerLabelContainerYConstraint,
+      self.backerLabelContainer.leftAnchor.constraint(
+        equalTo: self.rewardCardContainerView.leftAnchor, constant: Styles.grid(3)
+      ),
       self.rewardCardContainerView.widthAnchor.constraint(equalTo: self.contentView.widthAnchor)
     ])
   }
@@ -81,11 +114,22 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> contentViewStyle
       |> checkoutBackgroundStyle
 
+    _ = self.backerLabelContainer
+      |> \.backgroundColor .~ .ksr_cobalt_500
+      |> roundedStyle(cornerRadius: Styles.grid(1))
+      |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
+
+    _ = self.backerLabel
+      |> \.text %~ { _ in localizedString(key: "You_backed", defaultValue: "You backed") }
+      |> \.font .~ UIFont.ksr_footnote().weighted(.medium)
+      |> \.textColor .~ .white
+
     _ = self.scrollView
       |> scrollViewStyle
   }
 
   internal func configureWith(value: RewardCardViewData) {
+    self.viewModel.inputs.configure(with: value)
     self.rewardCardContainerView.configure(with: value)
   }
 

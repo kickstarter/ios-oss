@@ -140,10 +140,16 @@ final class RewardsCollectionViewController: UICollectionViewController {
         self?.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
       }
 
+    self.viewModel.outputs.goToAddOnSelection
+      .observeForControllerAction()
+      .observeValues { [weak self] data in
+        self?.goToAddOnSelection(data: data)
+      }
+
     self.viewModel.outputs.goToPledge
       .observeForControllerAction()
-      .observeValues { [weak self] data, context in
-        self?.goToPledge(project: data.project, reward: data.reward, refTag: data.refTag, context: context)
+      .observeValues { [weak self] data in
+        self?.goToPledge(data: data)
       }
 
     self.viewModel.outputs.rewardsCollectionViewFooterIsHidden
@@ -227,10 +233,17 @@ final class RewardsCollectionViewController: UICollectionViewController {
       ?|> \.isActive .~ !isHidden
   }
 
-  private func goToPledge(project: Project, reward: Reward, refTag: RefTag?, context: PledgeViewContext) {
+  private func goToAddOnSelection(data: PledgeViewData) {
+    let vc = RewardAddOnSelectionViewController.instantiate()
+    vc.configure(with: data)
+    vc.navigationItem.title = self.title
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  private func goToPledge(data: PledgeViewData) {
     let pledgeViewController = PledgeViewController.instantiate()
     pledgeViewController.delegate = self.pledgeViewDelegate
-    pledgeViewController.configureWith(project: project, reward: reward, refTag: refTag, context: context)
+    pledgeViewController.configure(with: data)
 
     self.navigationController?.pushViewController(pledgeViewController, animated: true)
   }

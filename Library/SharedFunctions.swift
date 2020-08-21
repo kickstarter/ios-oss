@@ -96,8 +96,7 @@ internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?
   // The country on the project cannot be trusted to have the min/max values, so first try looking
   // up the country in our launched countries array that we get back from the server config.
   let country = AppEnvironment.current.launchedCountries.countries
-    .filter { $0 == project.country }
-    .first
+    .first { $0 == project.country }
     .coalesceWith(project.country)
 
   switch reward {
@@ -167,16 +166,14 @@ public func updatedUserWithClearedActivityCountProducer() -> SignalProducer<User
 
 public func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule]) -> ShippingRule? {
   let shippingRuleFromCurrentLocation = shippingRules
-    .filter { shippingRule in shippingRule.location.country == AppEnvironment.current.config?.countryCode }
-    .first
+    .first { shippingRule in shippingRule.location.country == AppEnvironment.current.config?.countryCode }
 
   if let shippingRuleFromCurrentLocation = shippingRuleFromCurrentLocation {
     return shippingRuleFromCurrentLocation
   }
 
   let shippingRuleInUSA = shippingRules
-    .filter { shippingRule in shippingRule.location.country == "US" }
-    .first
+    .first { shippingRule in shippingRule.location.country == "US" }
 
   return shippingRuleInUSA ?? shippingRules.first
 }
@@ -218,19 +215,24 @@ public func deviceIdentifier(uuid: UUIDType, env: Environment = AppEnvironment.c
   return identifier.uuidString
 }
 
-typealias SanitizedPledgeParams = (pledgeTotal: String, rewardId: String, locationId: String?)
+typealias SanitizedPledgeParams = (pledgeTotal: String, rewardIds: [String], locationId: String?)
 
 internal func sanitizedPledgeParameters(
-  from reward: Reward,
-  pledgeAmount: Double,
+  from rewards: [Reward],
+  selectedQuantities: SelectedRewardQuantities,
+  pledgeTotal: Double,
   shippingRule: ShippingRule?
 ) -> SanitizedPledgeParams {
   let shippingLocationId = (shippingRule?.location.id).flatMap(String.init)
 
-  let formattedPledgeTotal = Format.decimalCurrency(for: pledgeAmount)
-  let rewardId = reward.graphID
+  let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal)
+  let rewardIds = rewards.map { reward -> [String] in
+    guard let selectedRewardQuantity = selectedQuantities[reward.id] else { return [] }
+    return Array(0..<selectedRewardQuantity).map { _ in reward.graphID }
+  }
+  .flatMap { $0 }
 
-  return (formattedPledgeTotal, rewardId, shippingLocationId)
+  return (formattedPledgeTotal, rewardIds, shippingLocationId)
 }
 
 public func ksr_pledgeAmount(
@@ -244,18 +246,6 @@ public func ksr_pledgeAmount(
   return (pledgeAmount as NSDecimalNumber).doubleValue
 }
 
-/// Returns the bonus support amount subtracting the reward minimum from the total pledge amount
-public func ksr_bonusSupportAmount(
-  pledgeAmount: Double,
-  shippingAmount: Double?,
-  rewardMinimum: Double
-) -> Double {
-  let pledgeAmount = ksr_pledgeAmount(pledgeAmount, subtractingShippingAmount: shippingAmount)
-  let bonusSupportAmount = Decimal(pledgeAmount) - Decimal(rewardMinimum)
-
-  return (bonusSupportAmount as NSDecimalNumber).doubleValue
-}
-
 public func discoveryPageBackgroundColor() -> UIColor {
   let variant = OptimizelyExperiment.nativeProjectCardsExperimentVariant()
 
@@ -265,4 +255,16 @@ public func discoveryPageBackgroundColor() -> UIColor {
   case .variant2, .control:
     return UIColor.white
   }
+}
+
+public func selectedRewardQuantities(in backing: Backing) -> SelectedRewardQuantities {
+  var quantities: [SelectedRewardId: SelectedRewardQuantity] = [:]
+
+  let rewards = [backing.reward].compact() + (backing.addOns ?? [])
+
+  rewards.forEach { reward in
+    quantities[reward.id] = (quantities[reward.id] ?? 0) + 1
+  }
+
+  return quantities
 }

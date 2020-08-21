@@ -3,8 +3,6 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias PledgeData = (project: Project, reward: Reward, refTag: RefTag?)
-
 public enum RewardsCollectionViewContext {
   case createPledge
   case managePledge
@@ -24,7 +22,8 @@ public protocol RewardsCollectionViewModelInputs {
 public protocol RewardsCollectionViewModelOutputs {
   var configureRewardsCollectionViewFooterWithCount: Signal<Int, Never> { get }
   var flashScrollIndicators: Signal<Void, Never> { get }
-  var goToPledge: Signal<(PledgeData, PledgeViewContext), Never> { get }
+  var goToAddOnSelection: Signal<PledgeViewData, Never> { get }
+  var goToPledge: Signal<PledgeViewData, Never> { get }
   var navigationBarShadowImageHidden: Signal<Bool, Never> { get }
   var reloadDataWithValues: Signal<[RewardCardViewData], Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
@@ -95,18 +94,24 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       selectedRewardFromId,
       refTag
     )
-    .filter { project, _, _ in project.state == .live }
-    .map { project, reward, refTag in
-      PledgeData(project: project, reward: reward, refTag: refTag)
+    .filter { project, reward, _ in
+      project.state == .live && !userIsBacking(reward: reward, inProject: project)
+    }
+    .map { project, reward, refTag -> (PledgeViewData, Bool) in
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil, // Set during add-ons selection.
+        refTag: refTag,
+        context: project.personalization.backing == nil ? .pledge : .updateReward
+      )
+
+      return (data, reward.hasAddOns)
     }
 
-    self.goToPledge = goToPledge
-      .filter { project, reward, _ in
-        !userIsBacking(reward: reward, inProject: project)
-      }
-      .map { data in
-        (data, data.project.personalization.backing == nil ? .pledge : .updateReward)
-      }
+    self.goToAddOnSelection = goToPledge.filter(second >>> isTrue).map(first)
+    self.goToPledge = goToPledge.filter(second >>> isFalse).map(first)
 
     self.rewardsCollectionViewFooterIsHidden = self.traitCollectionChangedProperty.signal
       .skipNil()
@@ -177,7 +182,8 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
   public let configureRewardsCollectionViewFooterWithCount: Signal<Int, Never>
   public let flashScrollIndicators: Signal<Void, Never>
-  public let goToPledge: Signal<(PledgeData, PledgeViewContext), Never>
+  public let goToAddOnSelection: Signal<PledgeViewData, Never>
+  public let goToPledge: Signal<PledgeViewData, Never>
   public let navigationBarShadowImageHidden: Signal<Bool, Never>
   public let reloadDataWithValues: Signal<[RewardCardViewData], Never>
   public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
@@ -202,7 +208,9 @@ private func titleForContext(_ context: RewardsCollectionViewContext, project: P
     return Strings.View_rewards()
   }
 
-  return context == .createPledge ? Strings.Back_this_project() : Strings.Choose_another_reward()
+  return context == .createPledge
+    ? Strings.Back_this_project()
+    : localizedString(key: "Edit_reward", defaultValue: "Edit reward")
 }
 
 private func backedReward(_ project: Project, rewards: [Reward]) -> IndexPath? {

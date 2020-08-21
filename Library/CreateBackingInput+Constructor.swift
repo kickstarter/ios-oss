@@ -7,8 +7,9 @@ extension CreateBackingInput {
     isApplePay: Bool
   ) -> CreateBackingInput {
     let pledgeParams = sanitizedPledgeParameters(
-      from: createBackingData.reward,
-      pledgeAmount: createBackingData.pledgeAmount,
+      from: createBackingData.rewards,
+      selectedQuantities: createBackingData.selectedQuantities,
+      pledgeTotal: createBackingData.pledgeTotal,
       shippingRule: createBackingData.shippingRule
     )
 
@@ -19,7 +20,7 @@ extension CreateBackingInput {
       paymentSourceId: isApplePay ? nil : createBackingData.paymentSourceId,
       projectId: createBackingData.project.graphID,
       refParam: createBackingData.refTag?.description,
-      rewardId: pledgeParams.rewardId
+      rewardIds: pledgeParams.rewardIds
     )
   }
 }
