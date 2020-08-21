@@ -1131,7 +1131,6 @@ private func checkoutPropertiesData(
 
   let bonusAmountUsd = additionalPledgeAmount
     .multiplyingCurrency(Double(createBackingData.project.stats.staticUsdRate))
-    .rounded()
 
   let amount = Format.decimalCurrency(for: pledgeTotal)
   let bonusAmount = Format.decimalCurrency(for: additionalPledgeAmount)

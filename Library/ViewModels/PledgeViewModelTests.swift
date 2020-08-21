@@ -1715,7 +1715,7 @@ final class PledgeViewModelTests: TestCase {
       let checkoutData = Koala.CheckoutPropertiesData(
         amount: "15.00",
         bonusAmount: "10.00",
-        bonusAmountInUsd: "13.00",
+        bonusAmountInUsd: "13.09",
         checkoutId: 1,
         estimatedDelivery: 1_506_897_315.0,
         paymentType: "APPLE_PAY",
