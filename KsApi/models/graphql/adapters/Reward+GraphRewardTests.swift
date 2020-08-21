@@ -40,6 +40,7 @@ final class Reward_GraphRewardTests: XCTestCase {
     XCTAssertEqual(v1Reward?.rewardsItems[1].item.name, "Item 2")
 
     XCTAssertEqual(v1Reward?.shipping.enabled, true)
+    XCTAssertEqual(v1Reward?.shipping.preference, .restricted)
     XCTAssertEqual(v1Reward?.startsAt, 1_487_502_131)
     XCTAssertEqual(v1Reward?.title, "Reward name")
   }
