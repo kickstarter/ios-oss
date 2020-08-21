@@ -177,9 +177,13 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .map(second)
       .combineLatest(with: project)
       .map { max, project in
-        Strings.The_maximum_pledge_is_max_pledge(
-          max_pledge:
-          Format.currency(max, country: project.country, omitCurrencyCode: false)
+        let maxPledge = Format.currency(max, country: project.country, omitCurrencyCode: false)
+
+        return localizedString(
+          key: "Enter_an_amount_less_than_max_pledge",
+          defaultValue: "Enter an amount less than %{max_pledge}.",
+          count: nil,
+          substitutions: ["max_pledge": maxPledge]
         )
       }
       .skipRepeats()
