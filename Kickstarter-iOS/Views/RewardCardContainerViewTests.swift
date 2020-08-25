@@ -41,6 +41,36 @@ final class RewardCardContainerViewTests: TestCase {
     }
   }
 
+  func testLive_BackedProject_BackedReward_LoggedIn() {
+    let user = User.template
+
+    combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
+      withEnvironment(currentUser: user, language: language) {
+        let (rewardDescription, reward) = rewardTuple
+
+        let project = Project.cosmicSurgery
+          |> Project.lens.state .~ .live
+          |> Project.lens.personalization.isBacking .~ true
+          |> Project.lens.personalization.backing .~ (
+            .template
+              |> Backing.lens.reward .~ reward
+              |> Backing.lens.rewardId .~ reward.id
+              |> Backing.lens.shippingAmount .~ 10
+              |> Backing.lens.amount .~ 700.0
+          )
+
+        let vc = rewardCardInViewController(
+          language: language,
+          device: device,
+          project: project,
+          reward: reward
+        )
+
+        FBSnapshotVerifyView(vc.view, identifier: "\(rewardDescription)_lang_\(language)_device_\(device)")
+      }
+    }
+  }
+
   func testLive_BackedProject_NonBackedReward() {
     combos([Language.en], [Device.phone4_7inch], allRewards).forEach { language, device, rewardTuple in
       withEnvironment(language: language) {
@@ -345,6 +375,10 @@ private func rewardCardInViewController(
 }
 
 let allRewards: [(String, Reward)] = {
+  let availableAddOnsReward = Reward.postcards
+    |> Reward.lens.hasAddOns .~ true
+    |> Reward.lens.limit .~ nil
+    |> Reward.lens.remaining .~ nil
   let availableLimitedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 25
@@ -404,6 +438,7 @@ let allRewards: [(String, Reward)] = {
     |> Reward.lens.convertedMinimum .~ 1
 
   return [
+    ("AvailableAddOnsReward", availableAddOnsReward),
     ("AvailableLimitedReward", availableLimitedReward),
     ("AvailableTimebasedReward", availableTimebasedReward),
     ("AvailableLimitedTimebasedReward", availableLimitedTimebasedReward),

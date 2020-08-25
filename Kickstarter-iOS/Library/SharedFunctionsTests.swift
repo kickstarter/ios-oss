@@ -299,7 +299,6 @@ internal final class SharedFunctionsTests: TestCase {
       |> Reward.lens.limit .~ nil
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.limitPerBacker .~ nil
-      |> Reward.lens.rewardType .~ .base
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.personalization.backing .~ nil
@@ -311,7 +310,6 @@ internal final class SharedFunctionsTests: TestCase {
 
   func testRewardIsAvailable_NotLimitedBaseReward_Backed() {
     let reward = Reward.template
-      |> Reward.lens.rewardType .~ .base
       |> Reward.lens.limit .~ nil
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.limitPerBacker .~ nil
@@ -330,7 +328,6 @@ internal final class SharedFunctionsTests: TestCase {
 
   func testRewardIsAvailable_LimitedBaseReward_NotBacked() {
     let reward = Reward.template
-      |> Reward.lens.rewardType .~ .base
       |> Reward.lens.limitPerBacker .~ nil
       |> Reward.lens.limit .~ 5
       |> Reward.lens.remaining .~ 0
@@ -345,7 +342,6 @@ internal final class SharedFunctionsTests: TestCase {
 
   func testRewardIsAvailable_LimitedBaseReward_Backed() {
     let reward = Reward.template
-      |> Reward.lens.rewardType .~ .base
       |> Reward.lens.limitPerBacker .~ nil
       |> Reward.lens.limit .~ 5
       |> Reward.lens.remaining .~ 0
@@ -365,7 +361,6 @@ internal final class SharedFunctionsTests: TestCase {
 
   func testRewardIsAvailable_LimitedAddOnReward_Backed() {
     let reward = Reward.template
-      |> Reward.lens.rewardType .~ .addOn
       |> Reward.lens.limitPerBacker .~ 5
       |> Reward.lens.limit .~ 4
       |> Reward.lens.remaining .~ 0
@@ -384,7 +379,6 @@ internal final class SharedFunctionsTests: TestCase {
 
   func testRewardIsAvailable_LimitedAddOnReward_NotBacked() {
     let reward = Reward.template
-      |> Reward.lens.rewardType .~ .addOn
       |> Reward.lens.limitPerBacker .~ 5
       |> Reward.lens.limit .~ 15
       |> Reward.lens.remaining .~ 4
@@ -404,7 +398,6 @@ internal final class SharedFunctionsTests: TestCase {
       |> Reward.lens.limit .~ nil
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.limitPerBacker .~ nil
-      |> Reward.lens.rewardType .~ .base
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.personalization.backing .~ nil
@@ -420,7 +413,6 @@ internal final class SharedFunctionsTests: TestCase {
       |> Reward.lens.limit .~ nil
       |> Reward.lens.remaining .~ nil
       |> Reward.lens.limitPerBacker .~ nil
-      |> Reward.lens.rewardType .~ .base
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.personalization.backing .~ nil

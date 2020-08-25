@@ -25,6 +25,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.remaining .~ 49
 
     let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
 
@@ -236,6 +237,7 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.remaining .~ 49
 
     let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
 
