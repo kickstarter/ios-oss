@@ -93,7 +93,7 @@ private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
 
   let projectBackingState = RewardCellProjectBackingStateType.state(with: project)
   let isBackingThisReward = userIsBacking(reward: reward, inProject: project)
-  let isRewardAvailable = rewardIsAvailable(reward: reward)
+  let isRewardAvailable = rewardIsAvailable(project: project, reward: reward)
 
   switch (projectBackingState, isBackingThisReward, isRewardAvailable) {
   case (.backedError, false, true):
@@ -103,6 +103,9 @@ private func pledgeButtonTitle(project: Project, reward: Reward) -> String? {
   case (.backed(.live), false, true):
     return Strings.Select()
   case (.backed(.live), true, _), (.backed(.nonLive), true, _):
+    if reward.hasAddOns, project.state == .live {
+      return Strings.Continue()
+    }
     return Strings.Selected()
   case (.nonBacked(.live), _, true):
     return Strings.Select()
@@ -127,6 +130,9 @@ private func buttonStyleType(project: Project, reward: Reward) -> ButtonStyleTyp
     }
   case .backed(.live):
     if isBackingThisReward {
+      if reward.hasAddOns {
+        return .green
+      }
       return .black
     }
   case .nonBacked(.live):
@@ -146,21 +152,13 @@ private func buttonStyleType(project: Project, reward: Reward) -> ButtonStyleTyp
 private func pledgeButtonIsEnabled(project: Project, reward: Reward) -> Bool {
   if currentUserIsCreator(of: project) { return false }
 
-  let isAvailable = rewardIsAvailable(reward: reward)
+  let isAvailable = rewardIsAvailable(project: project, reward: reward)
   let isBacking = userIsBacking(reward: reward, inProject: project)
 
-  return (project.state == .live && isAvailable && !isBacking)
-}
-
-private func rewardIsAvailable(reward: Reward) -> Bool {
-  let isLimited = reward.remaining != nil || reward.endsAt != nil
-
-  guard isLimited else { return true }
-
-  let remaining = reward.remaining.coalesceWith(0) > 0
-  let endsAt = reward.endsAt.coalesceWith(0)
-  let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
-  let timeLimitNotReached = endsAt > now
-
-  return remaining || timeLimitNotReached
+  return [
+    project.state == .live,
+    isAvailable,
+    !isBacking || reward.hasAddOns
+  ]
+  .allSatisfy(isTrue)
 }

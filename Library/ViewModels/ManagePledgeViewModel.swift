@@ -167,7 +167,7 @@ public final class ManagePledgeViewModel:
 
     let projectAndReward = Signal.combineLatest(project, backing)
       .filterMap { project, backing -> (Project, Reward)? in
-        guard let reward = backing.reward else { return nil }
+        guard let reward = backing.reward else { return (project, .noReward) }
 
         return (project, reward)
       }

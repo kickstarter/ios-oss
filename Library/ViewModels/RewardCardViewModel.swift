@@ -257,7 +257,7 @@ private func timeLeftString(project: Project, reward: Reward) -> String? {
 private func backerCountOrRemainingString(project: Project, reward: Reward) -> String? {
   guard
     let limit = reward.limit,
-    let remaining = reward.remaining,
+    let remaining = rewardLimitRemainingForBacker(project: project, reward: reward),
     remaining > 0,
     project.state == .live
   else {

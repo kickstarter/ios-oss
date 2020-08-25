@@ -12,8 +12,8 @@ private enum Layout {
 final class RewardAddOnSelectionContinueCTAView: UIView {
   // MARK: - Properties
 
-  private(set) lazy var continueButton: UIButton = {
-    UIButton(type: .custom)
+  private(set) lazy var continueButton: LoadingButton = {
+    LoadingButton(type: .custom)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -53,6 +53,14 @@ final class RewardAddOnSelectionContinueCTAView: UIView {
         CACornerMask.layerMaxXMinYCorner,
         CACornerMask.layerMinXMinYCorner
       ]
+
+    _ = self.continueButton
+      |> greenButtonStyle
+
+    guard let buttonFont = self.continueButton.titleLabel?.font else { return }
+
+    _ = self.continueButton
+      |> UIButton.lens.titleLabel.font .~ buttonFont.monospaced
   }
 
   // MARK: - View Model
@@ -60,18 +68,23 @@ final class RewardAddOnSelectionContinueCTAView: UIView {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.continueButton.rac.title = self.viewModel.outputs.buttonTitle
+    self.continueButton.rac.enabled = self.viewModel.outputs.buttonEnabled
 
-    self.viewModel.outputs.buttonStyle
+    self.viewModel.outputs.buttonTitle
       .observeForUI()
-      .observeValues { [weak self] buttonStyleType in
-        _ = self?.continueButton
-          ?|> buttonStyleType.style
+      .observeValues { [weak self] text in
+        guard let self = self else { return }
 
-        guard let buttonFont = self?.continueButton.titleLabel?.font else { return }
+        /// Required to work around a quirk with titles in `LoadingButton`.
+        [UIControl.State.normal, .highlighted, .disabled, .selected]
+          .map { state in (text, state) }
+          .forEach(self.continueButton.setTitle)
+      }
 
-        _ = self?.continueButton
-          ?|> UIButton.lens.titleLabel.font .~ buttonFont.monospaced
+    self.viewModel.outputs.isLoading
+      .observeForUI()
+      .observeValues { [weak self] isLoading in
+        self?.continueButton.isLoading = isLoading
       }
   }
 

@@ -9,6 +9,7 @@ import XCTest
 final class RewardAddOnSelectionViewModelTests: TestCase {
   private let vm: RewardAddOnSelectionViewModelType = RewardAddOnSelectionViewModel()
 
+  private let configureContinueCTAViewWithDataIsLoading = TestObserver<Bool, Never>()
   private let configureContinueCTAViewWithDataIsValid = TestObserver<Bool, Never>()
   private let configureContinueCTAViewWithDataQuantity = TestObserver<Int, Never>()
   private let configurePledgeShippingLocationViewControllerWithDataProject = TestObserver<Project, Never>()
@@ -31,6 +32,8 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       .observe(self.configureContinueCTAViewWithDataQuantity.observer)
     self.vm.outputs.configureContinueCTAViewWithData.map(second)
       .observe(self.configureContinueCTAViewWithDataIsValid.observer)
+    self.vm.outputs.configureContinueCTAViewWithData.map(third)
+      .observe(self.configureContinueCTAViewWithDataIsLoading.observer)
     self.vm.outputs.configurePledgeShippingLocationViewControllerWithData.map { $0.0 }
       .observe(self.configurePledgeShippingLocationViewControllerWithDataProject.observer)
     self.vm.outputs.configurePledgeShippingLocationViewControllerWithData.map { $0.1 }
@@ -108,12 +111,12 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.startRefreshing.assertValueCount(1)
+      self.startRefreshing.assertValueCount(0)
       self.endRefreshing.assertValueCount(0)
 
       self.scheduler.advance()
 
-      self.startRefreshing.assertValueCount(1)
+      self.startRefreshing.assertValueCount(0)
       self.endRefreshing.assertValueCount(1)
 
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[.rewardAddOn(expected)]])
@@ -173,12 +176,12 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.startRefreshing.assertValueCount(1)
+      self.startRefreshing.assertValueCount(0)
       self.endRefreshing.assertValueCount(0)
 
       self.scheduler.advance()
 
-      self.startRefreshing.assertValueCount(1)
+      self.startRefreshing.assertValueCount(0)
       self.endRefreshing.assertValueCount(1)
 
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[.emptyState(.errorPullToRefresh)]])
@@ -197,12 +200,12 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     withEnvironment(apiService: mockService2) {
       self.vm.inputs.beginRefresh()
 
-      self.startRefreshing.assertValueCount(2)
+      self.startRefreshing.assertValueCount(1)
       self.endRefreshing.assertValueCount(1)
 
       self.scheduler.advance()
 
-      self.startRefreshing.assertValueCount(2)
+      self.startRefreshing.assertValueCount(1)
       self.endRefreshing.assertValueCount(2)
 
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([
@@ -596,6 +599,12 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
 
+    self.configureContinueCTAViewWithDataQuantity.assertDidNotEmitValue()
+    self.configureContinueCTAViewWithDataIsValid.assertDidNotEmitValue()
+    self.configureContinueCTAViewWithDataIsLoading.assertDidNotEmitValue()
+    self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
+    self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
+
     withEnvironment(apiService: mockService) {
       let data = PledgeViewData(
         project: project,
@@ -623,8 +632,9 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         self.loadAddOnRewardsIntoDataSourceAndReloadTableView.values.last?.count, 4,
         "All rewards emit and tableView reloads"
       )
-      self.configureContinueCTAViewWithDataQuantity.assertValues([0])
-      self.configureContinueCTAViewWithDataIsValid.assertValues([true])
+      self.configureContinueCTAViewWithDataQuantity.assertValues([0, 0])
+      self.configureContinueCTAViewWithDataIsValid.assertValues([true, true])
+      self.configureContinueCTAViewWithDataIsLoading.assertValues([true, false])
 
       self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 5, rewardId: 1)
 
@@ -638,8 +648,131 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues(
         [expected], "TableView does not reload again"
       )
-      self.configureContinueCTAViewWithDataQuantity.assertValues([0, 0, 5])
-      self.configureContinueCTAViewWithDataIsValid.assertValues([true, true, true])
+      self.configureContinueCTAViewWithDataQuantity.assertValues([0, 0, 0, 5, 5])
+      self.configureContinueCTAViewWithDataIsValid.assertValues([true, true, true, true, true])
+      self.configureContinueCTAViewWithDataIsLoading.assertValues([true, false, false, false, false])
+    }
+  }
+
+  func testUpdatingQuantities_ProjectBacked() {
+    self.configureContinueCTAViewWithDataQuantity.assertDidNotEmitValue()
+    self.configureContinueCTAViewWithDataIsValid.assertDidNotEmitValue()
+    self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
+    self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
+
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
+
+    let reward = Reward.template
+      |> Reward.lens.id .~ 99
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
+
+    let addOn1 = Reward.template
+      |> Reward.lens.id .~ 1
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
+
+    let addOn2 = Reward.template
+      |> Reward.lens.id .~ 2
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
+
+    let addOn3 = Reward.template
+      |> Reward.lens.id .~ 3
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
+
+    let addOn4 = Reward.template
+      |> Reward.lens.id .~ 4
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.shipping.preference .~ .unrestricted
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+      |> Project.lens.rewardData.addOns .~ [addOn1, addOn2, addOn3, addOn4]
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+          |> Backing.lens.status .~ .pledged
+          |> Backing.lens.addOns .~ [addOn1, addOn1, addOn2]
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.locationId .~ shippingRule.location.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.bonusAmount .~ 680.0
+          |> Backing.lens.amount .~ 700.0
+      )
+
+    let expected = [addOn1, addOn2, addOn3, addOn4].map { addOn in
+      RewardAddOnCardViewData(
+        project: project,
+        reward: addOn,
+        context: .pledge,
+        shippingRule: shippingRule,
+        selectedQuantities: [
+          addOn1.id: 2,
+          addOn2.id: 1,
+          reward.id: 1
+        ]
+      )
+    }
+    .map(RewardAddOnSelectionDataSourceItem.rewardAddOn)
+
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
+
+    self.configureContinueCTAViewWithDataQuantity.assertDidNotEmitValue()
+    self.configureContinueCTAViewWithDataIsValid.assertDidNotEmitValue()
+    self.configureContinueCTAViewWithDataIsLoading.assertDidNotEmitValue()
+    self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
+    self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
+
+    withEnvironment(apiService: mockService) {
+      let data = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [:],
+        selectedLocationId: nil,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
+        "Nothing is emitted until a shipping location is selected"
+      )
+
+      self.vm.inputs.shippingRuleSelected(shippingRule)
+
+      self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected])
+      XCTAssertEqual(
+        self.loadAddOnRewardsIntoDataSourceAndReloadTableView.values.last?.count, 4,
+        "All rewards emit and tableView reloads"
+      )
+      self.configureContinueCTAViewWithDataQuantity.assertValues([0, 3])
+      self.configureContinueCTAViewWithDataIsValid.assertValues([true, false])
+      self.configureContinueCTAViewWithDataIsLoading.assertValues([true, false])
+
+      self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 5, rewardId: 1)
+
+      self.loadAddOnRewardsIntoDataSource.assertValueCount(1, "DataSource is updated")
+      XCTAssertEqual(
+        self.loadAddOnRewardsIntoDataSource.values[0][0]
+          .rewardAddOnCardViewData?.selectedQuantities[1],
+        5,
+        "Add-on at index 1 with ID 1 has its quantity updated to 5"
+      )
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues(
+        [expected], "TableView does not reload again"
+      )
+      self.configureContinueCTAViewWithDataQuantity.assertValues([0, 3, 3, 6, 6])
+      self.configureContinueCTAViewWithDataIsValid.assertValues([true, false, false, false, true])
+      self.configureContinueCTAViewWithDataIsLoading.assertValues([true, false, false, false, false])
     }
   }
 

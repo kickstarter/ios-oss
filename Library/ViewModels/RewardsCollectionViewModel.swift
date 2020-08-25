@@ -94,9 +94,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       selectedRewardFromId,
       refTag
     )
-    .filter { project, reward, _ in
-      project.state == .live && !userIsBacking(reward: reward, inProject: project)
-    }
+    .filter(shouldNavigateToReward)
     .map { project, reward, refTag -> (PledgeViewData, Bool) in
       let data = PledgeViewData(
         project: project,
@@ -211,6 +209,10 @@ private func titleForContext(_ context: RewardsCollectionViewContext, project: P
   return context == .createPledge
     ? Strings.Back_this_project()
     : localizedString(key: "Edit_reward", defaultValue: "Edit reward")
+}
+
+private func shouldNavigateToReward(project: Project, reward: Reward, refTag _: RefTag?) -> Bool {
+  project.state == .live && (!userIsBacking(reward: reward, inProject: project) || reward.hasAddOns)
 }
 
 private func backedReward(_ project: Project, rewards: [Reward]) -> IndexPath? {

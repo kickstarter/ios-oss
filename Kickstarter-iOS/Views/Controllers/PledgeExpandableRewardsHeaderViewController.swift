@@ -7,7 +7,7 @@ import UIKit
 final class PledgeExpandableRewardsHeaderViewController: UIViewController {
   // MARK: - Properties
 
-  public var animatingViewDelegate: UIView?
+  public weak var animatingViewDelegate: UIView?
 
   private let dataSource = PledgeExpandableRewardsHeaderDataSource()
 

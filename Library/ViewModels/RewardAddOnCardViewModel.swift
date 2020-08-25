@@ -124,8 +124,10 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
     self.notifiyDelegateDidSelectQuantity = updatedSelectedQuantity
       .withLatest(from: reward.map(\.id))
 
-    self.stepperMaxValue = reward
-      .map { reward in reward.limitPerBacker ?? 0 }
+    self.stepperMaxValue = projectAndReward
+      .map { project, reward in
+        rewardLimitPerBackerRemainingForBacker(project: project, reward: reward) ?? 0
+      }
       .map(Double.init)
 
     self.stepperStackViewHidden = initialOrUpdatedSelectedQuantity.map { $0 == 0 }
@@ -278,8 +280,8 @@ private func backingReward(fromProject project: Project) -> Reward? {
 private func pillValues(project: Project, reward: Reward) -> [String] {
   return [
     timeLeftString(project: project, reward: reward),
-    remainingString(reward: reward),
-    limitPerBackerString(reward: reward)
+    remainingString(project: project, reward: reward),
+    limitPerBackerString(project: project, reward: reward)
   ]
   .compact()
 }
@@ -303,19 +305,23 @@ private func timeLeftString(project: Project, reward: Reward) -> String? {
   return nil
 }
 
-private func limitPerBackerString(reward: Reward) -> String? {
-  guard let limit = reward.limitPerBacker, limit > 0 else { return nil }
+private func limitPerBackerString(project: Project, reward: Reward) -> String? {
+  guard
+    let limitPerBacker = rewardLimitPerBackerRemainingForBacker(project: project, reward: reward),
+    limitPerBacker > 0
+  else { return nil }
+
   return localizedString(
     key: "limit_limit_per_backer",
     defaultValue: "Limit %{limit_per_backer}",
-    substitutions: ["limit_per_backer": "\(limit)"]
+    substitutions: ["limit_per_backer": "\(limitPerBacker)"]
   )
 }
 
-private func remainingString(reward: Reward) -> String? {
+private func remainingString(project: Project, reward: Reward) -> String? {
   guard
     let limit = reward.limit,
-    let remaining = reward.remaining,
+    let remaining = rewardLimitRemainingForBacker(project: project, reward: reward),
     remaining > 0
   else { return nil }
 

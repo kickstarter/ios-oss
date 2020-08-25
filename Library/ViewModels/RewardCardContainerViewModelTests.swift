@@ -15,6 +15,8 @@ final class RewardCardContainerViewModelTests: TestCase {
   private let pledgeButtonTitleText = TestObserver<String?, Never>()
   private let rewardSelected = TestObserver<Int, Never>()
 
+  let availableHasAddOns = Reward.postcards
+    |> Reward.lens.hasAddOns .~ true
   let availableLimitedReward = Reward.postcards
     |> Reward.lens.limit .~ 100
     |> Reward.lens.remaining .~ 25
@@ -45,6 +47,7 @@ final class RewardCardContainerViewModelTests: TestCase {
 
   private var allRewards: [Reward] {
     return [
+      availableHasAddOns,
       availableLimitedReward,
       availableTimebasedReward,
       availableLimitedTimebasedReward,
@@ -99,10 +102,14 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
-    self.pledgeButtonStyleType.assertValues([.black, .black, .black, .black, .black, .black, .black, .black])
-    self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false])
-    self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
+    self.pledgeButtonStyleType.assertValues([
+      .green, .black, .black, .black, .black, .black, .black, .black, .black
+    ]
+    )
+    self.pledgeButtonEnabled.assertValues([true, false, false, false, false, false, false, false, false])
+    self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false, false])
     self.pledgeButtonTitleText.assertValues([
+      "Continue",
       "Selected",
       "Selected",
       "Selected",
@@ -147,10 +154,13 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
-    self.pledgeButtonStyleType.assertValues([.green, .green, .green, .green, .green, .green, .green, .green])
-    self.pledgeButtonEnabled.assertValues([true, true, true, true, false, false, false, true])
-    self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
+    self.pledgeButtonStyleType.assertValues(
+      [.green, .green, .green, .green, .green, .green, .green, .green, .green]
+    )
+    self.pledgeButtonEnabled.assertValues([true, true, true, true, true, false, false, false, true])
+    self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false, false])
     self.pledgeButtonTitleText.assertValues([
+      "Select",
       "Select",
       "Select",
       "Select",
@@ -190,11 +200,12 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
       self.pledgeButtonStyleType.assertValues(
-        [.green, .green, .green, .green, .green, .green, .green, .green]
+        [.green, .green, .green, .green, .green, .green, .green, .green, .green]
       )
-      self.pledgeButtonEnabled.assertValues([true, true, true, true, false, false, false, true])
-      self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
+      self.pledgeButtonEnabled.assertValues([true, true, true, true, true, false, false, false, true])
+      self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false, false])
       self.pledgeButtonTitleText.assertValues([
+        "Select",
         "Select",
         "Select",
         "Select",
@@ -236,11 +247,12 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
       self.pledgeButtonStyleType.assertValues(
-        [.green, .green, .green, .green, .green, .green, .green, .green]
+        [.green, .green, .green, .green, .green, .green, .green, .green, .green]
       )
-      self.pledgeButtonEnabled.assertValues([true, true, true, true, false, false, false, true])
-      self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
+      self.pledgeButtonEnabled.assertValues([true, true, true, true, true, false, false, false, true])
+      self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false, false])
       self.pledgeButtonTitleText.assertValues([
+        "Select",
         "Select",
         "Select",
         "Select",
@@ -286,10 +298,13 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
-    self.pledgeButtonStyleType.assertValues([.black, .black, .black, .black, .black, .black, .black, .black])
-    self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false])
-    self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false])
+    self.pledgeButtonStyleType.assertValues(
+      [.black, .black, .black, .black, .black, .black, .black, .black, .black]
+    )
+    self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false, false])
+    self.pledgeButtonHidden.assertValues([false, false, false, false, false, false, false, false, false])
     self.pledgeButtonTitleText.assertValues([
+      "Selected",
       "Selected",
       "Selected",
       "Selected",
@@ -334,10 +349,12 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
-    self.pledgeButtonStyleType.assertValues([.none, .none, .none, .none, .none, .none, .none, .none])
-    self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false])
-    self.pledgeButtonHidden.assertValues([true, true, true, true, true, true, true, true])
-    self.pledgeButtonTitleText.assertValues([nil, nil, nil, nil, nil, nil, nil, nil])
+    self.pledgeButtonStyleType.assertValues([
+      .none, .none, .none, .none, .none, .none, .none, .none, .none
+    ])
+    self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false, false])
+    self.pledgeButtonHidden.assertValues([true, true, true, true, true, true, true, true, true])
+    self.pledgeButtonTitleText.assertValues([nil, nil, nil, nil, nil, nil, nil, nil, nil])
   }
 
   func testNonLive_NonBackedProject() {
@@ -366,10 +383,12 @@ final class RewardCardContainerViewModelTests: TestCase {
     self.pledgeButtonHidden.assertValueCount(self.allRewards.count)
     self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
-    self.pledgeButtonStyleType.assertValues([.none, .none, .none, .none, .none, .none, .none, .none])
-    self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false])
-    self.pledgeButtonHidden.assertValues([true, true, true, true, true, true, true, true])
-    self.pledgeButtonTitleText.assertValues([nil, nil, nil, nil, nil, nil, nil, nil])
+    self.pledgeButtonStyleType.assertValues([
+      .none, .none, .none, .none, .none, .none, .none, .none, .none
+    ])
+    self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false, false])
+    self.pledgeButtonHidden.assertValues([true, true, true, true, true, true, true, true, true])
+    self.pledgeButtonTitleText.assertValues([nil, nil, nil, nil, nil, nil, nil, nil, nil])
   }
 
   func testLive_BackedProject_BackedReward_Errored() {
@@ -513,11 +532,11 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
       self.pledgeButtonStyleType.assertValues(
-        [.none, .none, .none, .none, .none, .none, .none, .none]
+        [.none, .none, .none, .none, .none, .none, .none, .none, .none]
       )
-      self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false])
-      self.pledgeButtonHidden.assertValues([true, true, true, true, true, true, true, true])
-      self.pledgeButtonTitleText.assertValues([nil, nil, nil, nil, nil, nil, nil, nil])
+      self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false, false])
+      self.pledgeButtonHidden.assertValues([true, true, true, true, true, true, true, true, true])
+      self.pledgeButtonTitleText.assertValues([nil, nil, nil, nil, nil, nil, nil, nil, nil])
     }
   }
 
@@ -553,11 +572,11 @@ final class RewardCardContainerViewModelTests: TestCase {
       self.pledgeButtonTitleText.assertValueCount(self.allRewards.count)
 
       self.pledgeButtonStyleType.assertValues(
-        [.none, .none, .none, .none, .none, .none, .none, .none]
+        [.none, .none, .none, .none, .none, .none, .none, .none, .none]
       )
-      self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false])
-      self.pledgeButtonHidden.assertValues([true, true, true, true, true, true, true, true])
-      self.pledgeButtonTitleText.assertValues([nil, nil, nil, nil, nil, nil, nil, nil])
+      self.pledgeButtonEnabled.assertValues([false, false, false, false, false, false, false, false, false])
+      self.pledgeButtonHidden.assertValues([true, true, true, true, true, true, true, true, true])
+      self.pledgeButtonTitleText.assertValues([nil, nil, nil, nil, nil, nil, nil, nil, nil])
     }
   }
 

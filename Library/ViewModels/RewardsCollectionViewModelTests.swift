@@ -139,6 +139,42 @@ final class RewardsCollectionViewModelTests: TestCase {
     }
   }
 
+  func testGoToAddOnSelection_IsBacked_HasAddOns() {
+    withEnvironment(config: .template) {
+      let reward = Reward.template
+        |> Reward.lens.hasAddOns .~ true
+
+      let project = Project.cosmicSurgery
+        |> Project.lens.rewardData.rewards .~ [reward]
+        |> Project.lens.personalization.backing .~ (
+          .template
+            |> Backing.lens.reward .~ reward
+            |> Backing.lens.rewardId .~ reward.id
+        )
+
+      self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.goToPledge.assertDidNotEmitValue()
+      XCTAssertNil(self.vm.outputs.selectedReward())
+
+      let expected1 = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .activity,
+        context: .updateReward
+      )
+
+      self.vm.inputs.rewardSelected(with: reward.id)
+
+      self.goToAddOnSelection.assertValues([expected1])
+      self.goToPledge.assertDidNotEmitValue()
+      XCTAssertEqual(self.vm.outputs.selectedReward(), reward)
+    }
+  }
+
   func testRewardsCollectionViewFooterViewIsHidden() {
     self.vm.inputs.configure(with: Project.cosmicSurgery, refTag: .activity, context: .createPledge)
     self.vm.inputs.viewDidLoad()

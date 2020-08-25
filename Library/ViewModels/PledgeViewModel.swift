@@ -182,17 +182,21 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       }
     }
 
-    let unbackedInitialZeroAmount = initialData
-      .filter { $0.project.personalization.backing == nil }.mapConst(0.0)
+    let defaultShippingTotal = Signal.zip(project, baseReward)
+      .map { project, baseReward -> Double in
+        guard baseReward.shipping.enabled, let backing = project.personalization.backing else { return 0.0 }
+
+        return backing.shippingAmount.flatMap(Double.init) ?? 0.0
+      }
 
     let allRewardsShippingTotal = Signal.merge(
-      backing.map(\.shippingAmount).skipNil().map(Double.init),
-      calculatedShippingTotal,
-      unbackedInitialZeroAmount
+      defaultShippingTotal,
+      calculatedShippingTotal
     )
 
+    // Initial pledge amount is zero if not backed.
     let initialAdditionalPledgeAmount = Signal.merge(
-      unbackedInitialZeroAmount,
+      initialData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
       backing.map(\.bonusAmount)
     )
     .take(first: 1)
@@ -1022,8 +1026,13 @@ private func amountValid(
     return pledgeAmountData.isValid
   }
 
+  /**
+   The amount is valid if it's changed or if the reward has add-ons.
+   This works because of the validation that would have occurred during add-ons selection,
+   that is, in `RewardAddOnSelectionViewController` we don't navigate further unless the selection changes.
+   */
   return [
-    pledgeAmountData.amount != initialAdditionalPledgeAmount,
+    pledgeAmountData.amount != initialAdditionalPledgeAmount || reward.hasAddOns,
     pledgeAmountData.isValid
   ]
   .allSatisfy(isTrue)

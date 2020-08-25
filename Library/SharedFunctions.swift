@@ -257,6 +257,80 @@ public func discoveryPageBackgroundColor() -> UIColor {
   }
 }
 
+public func rewardIsAvailable(project: Project, reward: Reward) -> Bool {
+  let isLimited = reward.limit != nil
+  let isTimebased = reward.endsAt != nil
+
+  guard isLimited || isTimebased else { return true }
+
+  let remainingQty = rewardLimitRemainingForBacker(project: project, reward: reward)
+  let isRemaining = remainingQty == nil || (remainingQty ?? 0) > 0
+
+  let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
+  let endsAt = reward.endsAt.coalesceWith(now)
+  let timeLimitNotReached = endsAt > now
+
+  return (isLimited && isRemaining) || (isTimebased && timeLimitNotReached)
+}
+
+public func rewardLimitRemainingForBacker(project: Project, reward: Reward) -> Int? {
+  guard let remaining = reward.remaining else {
+    return nil
+  }
+
+  // If the reward is limited, determine the currently backed quantity.
+  var backedQuantity: Int = 0
+  if let backing = project.personalization.backing {
+    let rewardQuantities = selectedRewardQuantities(in: backing)
+    backedQuantity = rewardQuantities[reward.id] ?? 0
+  }
+
+  /**
+   Remaining limit for the backer is the minimum of the total remaining quantity
+   (including what has been backed).
+
+   For example, let `remaining` be 1 and `backedQuantity` be 3:
+
+   `remainingForBacker` will be 4 as the backer as already backed 3, 1 is available.
+   */
+
+  return remaining + backedQuantity
+}
+
+public func rewardLimitPerBackerRemainingForBacker(project: Project, reward: Reward) -> Int? {
+  /// Be sure that there is a `limitPerBacker` set
+  guard let limitPerBacker = reward.limitPerBacker else { return nil }
+
+  /**
+   If this is not a limited reward, the `limitPerBacker` is remaining when creating/editing a pledge.
+   This amount will include any backed quantity as the user is able to edit their pledge.
+   */
+  guard let remaining = reward.remaining else {
+    return limitPerBacker
+  }
+
+  // If the reward is limited, determine the currently backed quantity.
+  var backedQuantity: Int = 0
+  if let backing = project.personalization.backing {
+    let rewardQuantities = selectedRewardQuantities(in: backing)
+    backedQuantity = rewardQuantities[reward.id] ?? 0
+  }
+
+  /**
+   Remaining for the backer is the minimum of the total remaining quantity
+   (including what has been backed) or `limitPerBacker`.
+
+   For example, let `remaining` be 1, `limitPerBacker` be 5 and `backedQuantity` be 3:
+
+   `remainingForBacker` will be 4 as the backer as already backed 3, 1 is available and this amount is less
+   than `limitPerBacker`.
+   */
+
+  let remainingPlusBacked = remaining + backedQuantity
+
+  return min(remainingPlusBacked, limitPerBacker)
+}
+
 public func selectedRewardQuantities(in backing: Backing) -> SelectedRewardQuantities {
   var quantities: [SelectedRewardId: SelectedRewardQuantity] = [:]
 
