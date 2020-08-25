@@ -19,6 +19,7 @@ final class RewardsCollectionViewModelTests: TestCase {
   private let reloadDataWithValuesRewardOrBacking = TestObserver<[Reward], Never>()
   private let rewardsCollectionViewFooterIsHidden = TestObserver<Bool, Never>()
   private let scrollToBackedRewardIndexPath = TestObserver<IndexPath, Never>()
+  private let showEditRewardConfirmationPrompt = TestObserver<String, Never>()
   private let title = TestObserver<String, Never>()
 
   override func setUp() {
@@ -38,6 +39,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.outputs.rewardsCollectionViewFooterIsHidden
       .observe(self.rewardsCollectionViewFooterIsHidden.observer)
     self.vm.outputs.scrollToBackedRewardIndexPath.observe(self.scrollToBackedRewardIndexPath.observer)
+    self.vm.outputs.showEditRewardConfirmationPrompt.observe(self.showEditRewardConfirmationPrompt.observer)
     self.vm.outputs.title.observe(self.title.observer)
   }
 
@@ -58,7 +60,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     XCTAssertTrue(value?.count == rewardsCount)
   }
 
-  func testGoToAddOnSelection() {
+  func testGoToAddOnSelection_NotBacked() {
     withEnvironment(config: .template) {
       var rewards = Project.cosmicSurgery.rewards
 
@@ -75,6 +77,8 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.goToAddOnSelection.assertDidNotEmitValue()
+      self.goToPledge.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPrompt.assertDidNotEmitValue()
       XCTAssertNil(self.vm.outputs.selectedReward())
 
       self.vm.inputs.rewardSelected(with: firstRewardId)
@@ -88,13 +92,14 @@ final class RewardsCollectionViewModelTests: TestCase {
         context: .pledge
       )
 
-      self.goToPledge.assertDidNotEmitValue()
       self.goToAddOnSelection.assertValues([expected])
+      self.goToPledge.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPrompt.assertDidNotEmitValue()
       XCTAssertEqual(self.vm.outputs.selectedReward(), reward)
     }
   }
 
-  func testGoToPledge() {
+  func testGoToPledge_NotBacked() {
     withEnvironment(config: .template) {
       let project = Project.cosmicSurgery
 
@@ -120,6 +125,7 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.goToAddOnSelection.assertDidNotEmitValue()
       self.goToPledge.assertValues([expected1])
+      self.showEditRewardConfirmationPrompt.assertDidNotEmitValue()
       XCTAssertEqual(self.vm.outputs.selectedReward(), firstReward)
 
       let expected2 = PledgeViewData(
@@ -135,11 +141,12 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.goToAddOnSelection.assertDidNotEmitValue()
       self.goToPledge.assertValues([expected1, expected2])
+      self.showEditRewardConfirmationPrompt.assertDidNotEmitValue()
       XCTAssertEqual(self.vm.outputs.selectedReward(), secondReward)
     }
   }
 
-  func testGoToAddOnSelection_IsBacked_HasAddOns() {
+  func testGoToAddOnSelection_IsBackedWithAddOns_RewardUnchanged() {
     withEnvironment(config: .template) {
       let reward = Reward.template
         |> Reward.lens.hasAddOns .~ true
@@ -155,7 +162,9 @@ final class RewardsCollectionViewModelTests: TestCase {
       self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
       self.vm.inputs.viewDidLoad()
 
+      self.goToAddOnSelection.assertDidNotEmitValue()
       self.goToPledge.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPrompt.assertDidNotEmitValue()
       XCTAssertNil(self.vm.outputs.selectedReward())
 
       let expected1 = PledgeViewData(
@@ -171,6 +180,113 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.goToAddOnSelection.assertValues([expected1])
       self.goToPledge.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPrompt.assertDidNotEmitValue()
+      XCTAssertEqual(self.vm.outputs.selectedReward(), reward)
+    }
+  }
+
+  func testGoToAddOnSelection_IsBackedWithAddOns_Changed_BackingWithAddOns() {
+    withEnvironment(config: .template) {
+      let reward = Reward.template
+        |> Reward.lens.hasAddOns .~ true
+
+      let backedReward = Reward.template
+        |> Reward.lens.id .~ 55
+
+      let project = Project.cosmicSurgery
+        |> Project.lens.rewardData.rewards .~ [reward, backedReward]
+        |> Project.lens.personalization.backing .~ (
+          .template
+            |> Backing.lens.reward .~ backedReward
+            |> Backing.lens.rewardId .~ backedReward.id
+        )
+
+      self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.goToAddOnSelection.assertDidNotEmitValue()
+      self.goToPledge.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPrompt.assertDidNotEmitValue()
+      XCTAssertNil(self.vm.outputs.selectedReward())
+
+      let expected1 = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .activity,
+        context: .updateReward
+      )
+
+      self.vm.inputs.rewardSelected(with: reward.id)
+
+      self.goToAddOnSelection.assertDidNotEmitValue()
+      self.goToPledge.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPrompt.assertValues([
+        "Continue with this reward? It may not offer some or all of your add-ons."
+      ])
+      XCTAssertEqual(self.vm.outputs.selectedReward(), reward)
+
+      self.vm.inputs.confirmedEditReward()
+
+      self.goToAddOnSelection.assertValues([expected1])
+      self.goToPledge.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPrompt.assertValues([
+        "Continue with this reward? It may not offer some or all of your add-ons."
+      ])
+      XCTAssertEqual(self.vm.outputs.selectedReward(), reward)
+    }
+  }
+
+  func testGoToAddOnSelection_IsBackedWithAddOns_Changed_BackingWithoutAddOns() {
+    withEnvironment(config: .template) {
+      let reward = Reward.template
+        |> Reward.lens.hasAddOns .~ false
+
+      let backedReward = Reward.template
+        |> Reward.lens.id .~ 55
+
+      let project = Project.cosmicSurgery
+        |> Project.lens.rewardData.rewards .~ [reward, backedReward]
+        |> Project.lens.personalization.backing .~ (
+          .template
+            |> Backing.lens.reward .~ backedReward
+            |> Backing.lens.rewardId .~ backedReward.id
+        )
+
+      self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.goToAddOnSelection.assertDidNotEmitValue()
+      self.goToPledge.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPrompt.assertDidNotEmitValue()
+      XCTAssertNil(self.vm.outputs.selectedReward())
+
+      let expected1 = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .activity,
+        context: .updateReward
+      )
+
+      self.vm.inputs.rewardSelected(with: reward.id)
+
+      self.goToAddOnSelection.assertDidNotEmitValue()
+      self.goToPledge.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPrompt.assertValues([
+        "Continue with this reward? It may not offer some or all of your add-ons."
+      ])
+      XCTAssertEqual(self.vm.outputs.selectedReward(), reward)
+
+      self.vm.inputs.confirmedEditReward()
+
+      self.goToAddOnSelection.assertDidNotEmitValue()
+      self.goToPledge.assertValues([expected1])
+      self.showEditRewardConfirmationPrompt.assertValues([
+        "Continue with this reward? It may not offer some or all of your add-ons."
+      ])
       XCTAssertEqual(self.vm.outputs.selectedReward(), reward)
     }
   }
