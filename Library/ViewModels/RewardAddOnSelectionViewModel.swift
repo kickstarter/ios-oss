@@ -30,6 +30,7 @@ public protocol RewardAddOnSelectionViewModelInputs {
   func configure(with data: PledgeViewData)
   func continueButtonTapped()
   func rewardAddOnCardViewDidSelectQuantity(quantity: Int, rewardId: Int)
+  func shippingLocationViewDidFailToLoad()
   func shippingRuleSelected(_ shippingRule: ShippingRule)
   func viewDidLoad()
 }
@@ -68,8 +69,15 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     let context = configData.map(\.context)
     let initialLocationId = configData.map(\.selectedLocationId)
 
-    self.configurePledgeShippingLocationViewControllerWithData = Signal
-      .zip(project, baseReward, initialLocationId)
+    let shippingLocationViewConfigData = Signal.zip(project, baseReward, initialLocationId)
+
+    let fetchShippingLocations = Signal.merge(
+      shippingLocationViewConfigData,
+      shippingLocationViewConfigData.takeWhen(self.beginRefreshSignal)
+    )
+    .filter { _, reward, _ in reward.shipping.enabled }
+
+    self.configurePledgeShippingLocationViewControllerWithData = fetchShippingLocations
       .map { project, reward, initialLocationId in (project, reward, false, initialLocationId) }
 
     let slug = project.map(\.slug)
@@ -146,8 +154,12 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       .map(unpack)
       .map(rewardsData)
 
-    self.shippingLocationViewIsHidden = baseReward.map(\.shipping.enabled)
-      .negate()
+    self.shippingLocationViewIsHidden = Signal.merge(
+      baseReward.map(\.shipping.enabled).negate(),
+      self.shippingLocationViewDidFailToLoadProperty.signal.mapConst(true),
+      fetchShippingLocations.mapConst(false)
+    )
+    .skipRepeats()
 
     let dataSourceItems = Signal.merge(
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView,
@@ -238,6 +250,11 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     rewardId: SelectedRewardId
   ) {
     self.rewardAddOnCardViewDidSelectQuantityProperty.value = (quantity, rewardId)
+  }
+
+  private let shippingLocationViewDidFailToLoadProperty = MutableProperty(())
+  public func shippingLocationViewDidFailToLoad() {
+    self.shippingLocationViewDidFailToLoadProperty.value = ()
   }
 
   private let shippingRuleSelectedProperty = MutableProperty<ShippingRule?>(nil)
