@@ -22,6 +22,8 @@ final class RewardAddOnSelectionViewController: UIViewController {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  public weak var pledgeViewDelegate: PledgeViewControllerDelegate?
+
   private lazy var refreshControl: UIRefreshControl = { UIRefreshControl() }()
 
   private lazy var tableView: UITableView = {
@@ -180,6 +182,7 @@ final class RewardAddOnSelectionViewController: UIViewController {
       .observeForControllerAction()
       .observeValues { data in
         let vc = PledgeViewController.instantiate()
+        vc.delegate = self.pledgeViewDelegate
         vc.configure(with: data)
         self.navigationController?.pushViewController(vc, animated: true)
       }

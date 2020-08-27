@@ -87,7 +87,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       .materialize()
     }
 
-    self.startRefreshing = fetchAddOnsWithSlug.ignoreValues()
+    self.startRefreshing = self.beginRefreshSignal
     self.endRefreshing = projectEvent.filter { $0.isTerminating }.ignoreValues()
 
     let addOns = projectEvent.values().map(\.rewardData.addOns).skipNil()
@@ -98,7 +98,8 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       baseReward.filter { reward in !reward.shipping.enabled }.mapConst(nil)
     )
 
-    let selectedAddOnQuantities = Signal.merge(
+    // Quantities updated as the user selects them, merged with an empty initial value.
+    let updatedSelectedQuantities = Signal.merge(
       self.rewardAddOnCardViewDidSelectQuantityProperty.signal
         .skipNil()
         .scan([:]) { current, new -> SelectedRewardQuantities in
@@ -110,6 +111,22 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       configData.mapConst([:])
     )
 
+    let backedQuantities = project.map { project -> SelectedRewardQuantities in
+      guard let backing = project.personalization.backing else { return [:] }
+
+      return selectedRewardQuantities(in: backing)
+    }
+
+    // Backed quantities overwritten by user-selected quantities.
+    let selectedAddOnQuantities = Signal.combineLatest(
+      updatedSelectedQuantities,
+      backedQuantities
+    )
+    .map { updatedSelectedQuantities, backedQuantities in
+      backedQuantities.withAllValuesFrom(updatedSelectedQuantities)
+    }
+
+    // User-selected and backed quantities combined with the base reward selection.
     let selectedQuantities = Signal.combineLatest(
       selectedAddOnQuantities,
       baseRewardQuantities
@@ -180,7 +197,14 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
         }
     }
 
-    self.configureContinueCTAViewWithData = totalSelectedAddOnsQuantity.map { qty in (qty, true) }
+    let selectionChanged = Signal.combineLatest(project, latestSelectedQuantities, shippingRule)
+      .map(isValid)
+
+    self.configureContinueCTAViewWithData = Signal.merge(
+      Signal.combineLatest(totalSelectedAddOnsQuantity, selectionChanged)
+        .map { qty, isValid in (qty, isValid, false) },
+      configData.mapConst((0, true, true))
+    )
 
     let selectedRewards = baseRewardAndAddOnRewards
       .combineLatest(with: latestSelectedQuantities)
@@ -339,4 +363,15 @@ private func addOnReward(
   )
 
   return addOnShippingLocationIds.contains(selectedLocationId)
+}
+
+private func isValid(
+  project: Project,
+  latestSelectedQuantities: SelectedRewardQuantities,
+  selectedShippingRule: ShippingRule?
+) -> Bool {
+  guard let backing = project.personalization.backing else { return true }
+
+  return latestSelectedQuantities != selectedRewardQuantities(in: backing)
+    || backing.locationId != selectedShippingRule?.location.id
 }

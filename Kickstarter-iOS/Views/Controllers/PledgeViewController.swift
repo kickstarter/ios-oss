@@ -396,8 +396,8 @@ final class PledgeViewController: UIViewController,
 
     self.viewModel.outputs.rootStackViewLayoutMargins
       .observeForUI()
-      .observeValues { margins in
-        self.rootStackView.layoutMargins = margins
+      .observeValues { [weak self] margins in
+        self?.rootStackView.layoutMargins = margins
       }
 
     self.shippingLocationViewController.view.rac.hidden

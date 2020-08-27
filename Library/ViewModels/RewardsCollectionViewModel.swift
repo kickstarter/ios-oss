@@ -10,6 +10,7 @@ public enum RewardsCollectionViewContext {
 
 public protocol RewardsCollectionViewModelInputs {
   func configure(with project: Project, refTag: RefTag?, context: RewardsCollectionViewContext)
+  func confirmedEditReward()
   func rewardCellShouldShowDividerLine(_ show: Bool)
   func rewardSelected(with rewardId: Int)
   func traitCollectionDidChange(_ traitCollection: UITraitCollection)
@@ -28,6 +29,7 @@ public protocol RewardsCollectionViewModelOutputs {
   var reloadDataWithValues: Signal<[RewardCardViewData], Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
   var scrollToBackedRewardIndexPath: Signal<IndexPath, Never> { get }
+  var showEditRewardConfirmationPrompt: Signal<String, Never> { get }
   var title: Signal<String, Never> { get }
 
   func selectedReward() -> Reward?
@@ -94,9 +96,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       selectedRewardFromId,
       refTag
     )
-    .filter { project, reward, _ in
-      project.state == .live && !userIsBacking(reward: reward, inProject: project)
-    }
+    .filter(shouldNavigateToReward)
     .map { project, reward, refTag -> (PledgeViewData, Bool) in
       let data = PledgeViewData(
         project: project,
@@ -110,8 +110,61 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       return (data, reward.hasAddOns)
     }
 
-    self.goToAddOnSelection = goToPledge.filter(second >>> isTrue).map(first)
-    self.goToPledge = goToPledge.filter(second >>> isFalse).map(first)
+    // Reward has add-ons, project is not backed, navigates to add-on selection without prompt.
+    let goToAddOnSelectionNotBackedWithAddOns = goToPledge
+      .filter(second >>> isTrue)
+      .map(first)
+      .filter(shouldTriggerEditRewardPrompt >>> isFalse)
+
+    // Reward has add-ons, project is backed with add-ons, triggers prompt before add-on selection.
+    let goToAddOnSelectionBackedWithAddOns = goToPledge
+      .filter(second >>> isTrue)
+      .map(first)
+      .filter(shouldTriggerEditRewardPrompt >>> isTrue)
+
+    // Reward does not have add-ons, project is not backed, navigates to pledge without prompt.
+    let goToPledgeNotBackedWithAddOns = goToPledge
+      .filter(second >>> isFalse)
+      .map(first)
+      .filter(shouldTriggerEditRewardPrompt >>> isFalse)
+
+    // Reward does not have add-ons, project is backed with add-ons, triggers prompt before pledge.
+    let goToPledgeBackedWithAddOns = goToPledge
+      .filter(second >>> isFalse)
+      .map(first)
+      .filter(shouldTriggerEditRewardPrompt >>> isTrue)
+
+    self.showEditRewardConfirmationPrompt = Signal.merge(
+      goToAddOnSelectionBackedWithAddOns,
+      goToPledgeBackedWithAddOns
+    )
+    .map { _ in
+      localizedString(
+        key: "Continue_with_this_reward_It_may_not_offer_some_or_all_of_your_add_ons",
+        defaultValue: "Continue with this reward? It may not offer some or all of your add-ons."
+      )
+    }
+
+    let goToAddOnSelectionBackedConfirmed = Signal.zip(
+      goToAddOnSelectionBackedWithAddOns,
+      self.confirmedEditRewardProperty.signal
+    )
+    .map(first)
+
+    let goToPledgeBackedConfirmed = Signal.zip(
+      goToPledgeBackedWithAddOns,
+      self.confirmedEditRewardProperty.signal
+    )
+    .map(first)
+
+    self.goToAddOnSelection = Signal.merge(
+      goToAddOnSelectionNotBackedWithAddOns,
+      goToAddOnSelectionBackedConfirmed
+    )
+    self.goToPledge = Signal.merge(
+      goToPledgeNotBackedWithAddOns,
+      goToPledgeBackedConfirmed
+    )
 
     self.rewardsCollectionViewFooterIsHidden = self.traitCollectionChangedProperty.signal
       .skipNil()
@@ -143,6 +196,11 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   private let configDataProperty = MutableProperty<(Project, RefTag?, RewardsCollectionViewContext)?>(nil)
   public func configure(with project: Project, refTag: RefTag?, context: RewardsCollectionViewContext) {
     self.configDataProperty.value = (project, refTag, context)
+  }
+
+  private let confirmedEditRewardProperty = MutableProperty(())
+  public func confirmedEditReward() {
+    self.confirmedEditRewardProperty.value = ()
   }
 
   private let rewardCellShouldShowDividerLineProperty = MutableProperty<Bool>(false)
@@ -188,6 +246,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public let reloadDataWithValues: Signal<[RewardCardViewData], Never>
   public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
   public let scrollToBackedRewardIndexPath: Signal<IndexPath, Never>
+  public let showEditRewardConfirmationPrompt: Signal<String, Never>
   public let title: Signal<String, Never>
 
   private let selectedRewardProperty = MutableProperty<Reward?>(nil)
@@ -211,6 +270,23 @@ private func titleForContext(_ context: RewardsCollectionViewContext, project: P
   return context == .createPledge
     ? Strings.Back_this_project()
     : localizedString(key: "Edit_reward", defaultValue: "Edit reward")
+}
+
+private func shouldNavigateToReward(project: Project, reward: Reward, refTag _: RefTag?) -> Bool {
+  project.state == .live && (!userIsBacking(reward: reward, inProject: project) || reward.hasAddOns)
+}
+
+private func shouldTriggerEditRewardPrompt(_ data: PledgeViewData) -> Bool {
+  // If the user is not backing the project then there is no need to show the prompt.
+  guard
+    userIsBackingProject(data.project),
+    let backing = data.project.personalization.backing
+  else { return false }
+
+  let rewardChanged = data.rewards.first?.id != backing.reward?.id
+
+  // We show the prompt if they have previously backed with add-ons and they are selecting a new reward.
+  return backing.addOns?.isEmpty == false && rewardChanged
 }
 
 private func backedReward(_ project: Project, rewards: [Reward]) -> IndexPath? {

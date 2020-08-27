@@ -4,7 +4,8 @@ import ReactiveSwift
 
 public typealias RewardAddOnSelectionContinueCTAViewData = (
   selectedQuantity: Int,
-  isValid: Bool
+  isValid: Bool,
+  isLoading: Bool
 )
 
 public protocol RewardAddOnSelectionContinueCTAViewModelInputs {
@@ -12,8 +13,9 @@ public protocol RewardAddOnSelectionContinueCTAViewModelInputs {
 }
 
 public protocol RewardAddOnSelectionContinueCTAViewModelOutputs {
-  var buttonStyle: Signal<ButtonStyleType, Never> { get }
+  var buttonEnabled: Signal<Bool, Never> { get }
   var buttonTitle: Signal<String, Never> { get }
+  var isLoading: Signal<Bool, Never> { get }
 }
 
 public protocol RewardAddOnSelectionContinueCTAViewModelType {
@@ -26,8 +28,8 @@ public final class RewardAddOnSelectionContinueCTAViewModel: RewardAddOnSelectio
   public init() {
     let selectedQuantity = self.configDataProperty.signal.skipNil().map(first)
     let isValid = self.configDataProperty.signal.skipNil().map(second)
+    let isLoading = self.configDataProperty.signal.skipNil().map(third)
 
-    self.buttonStyle = isValid.map { $0 ? .green : .black }
     self.buttonTitle = selectedQuantity.map { quantity in
       if quantity > 0 {
         return localizedString(
@@ -40,6 +42,14 @@ public final class RewardAddOnSelectionContinueCTAViewModel: RewardAddOnSelectio
 
       return localizedString(key: "Skip_add_ons", defaultValue: "Skip add-ons")
     }
+
+    self.buttonEnabled = isValid
+
+    self.isLoading = Signal.combineLatest(
+      isLoading,
+      self.buttonTitle
+    )
+    .map(first)
   }
 
   private let configDataProperty = MutableProperty<RewardAddOnSelectionContinueCTAViewData?>(nil)
@@ -47,8 +57,9 @@ public final class RewardAddOnSelectionContinueCTAViewModel: RewardAddOnSelectio
     self.configDataProperty.value = data
   }
 
-  public let buttonStyle: Signal<ButtonStyleType, Never>
+  public let buttonEnabled: Signal<Bool, Never>
   public let buttonTitle: Signal<String, Never>
+  public let isLoading: Signal<Bool, Never>
 
   public var inputs: RewardAddOnSelectionContinueCTAViewModelInputs { return self }
   public var outputs: RewardAddOnSelectionContinueCTAViewModelOutputs { return self }

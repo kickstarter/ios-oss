@@ -180,6 +180,12 @@ final class RewardsCollectionViewController: UICollectionViewController {
           ? UIImage()
           : self.navigationBarShadowImage
       }
+
+    self.viewModel.outputs.showEditRewardConfirmationPrompt
+      .observeForControllerAction()
+      .observeValues { [weak self] message in
+        self?.showEditRewardConfirmationPrompt(message: message)
+      }
   }
 
   // MARK: - Functions
@@ -235,6 +241,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
   private func goToAddOnSelection(data: PledgeViewData) {
     let vc = RewardAddOnSelectionViewController.instantiate()
+    vc.pledgeViewDelegate = self.pledgeViewDelegate
     vc.configure(with: data)
     vc.navigationItem.title = self.title
     self.navigationController?.pushViewController(vc, animated: true)
@@ -246,6 +253,28 @@ final class RewardsCollectionViewController: UICollectionViewController {
     pledgeViewController.configure(with: data)
 
     self.navigationController?.pushViewController(pledgeViewController, animated: true)
+  }
+
+  private func showEditRewardConfirmationPrompt(message: String) {
+    let alert = UIAlertController(
+      title: message,
+      message: nil,
+      preferredStyle: .alert
+    )
+
+    // FIXME: replace once translations are generated.
+    let yes = localizedString(key: "Yes_continue", defaultValue: "Yes, continue")
+    let no = localizedString(key: "No_go_back", defaultValue: "No, go back")
+
+    let continueAction = UIAlertAction(title: yes, style: .default) { [weak self] _ in
+      self?.viewModel.inputs.confirmedEditReward()
+    }
+
+    alert.addAction(continueAction)
+    alert.addAction(UIAlertAction(title: no, style: .cancel))
+    alert.preferredAction = continueAction
+
+    self.present(alert, animated: true)
   }
 
   // MARK: - Actions

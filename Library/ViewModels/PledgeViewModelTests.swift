@@ -2493,6 +2493,99 @@ final class PledgeViewModelTests: TestCase {
     }
   }
 
+  func testUpdatingSubmitButtonEnabled_BackingHasAddOns() {
+    let addOn = Reward.template
+      |> Reward.lens.id .~ 55
+
+    let reward = Reward.postcards
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.minimum .~ 10.0
+      |> Reward.lens.hasAddOns .~ true
+
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.location .~ .brooklyn
+      |> ShippingRule.lens.cost .~ 10
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.rewardData.addOns .~ [addOn]
+      |> Project.lens.rewardData.rewards .~ [reward]
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+          |> Backing.lens.status .~ .pledged
+          |> Backing.lens.addOns .~ [addOn]
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.locationId .~ shippingRule.location.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.bonusAmount .~ 680.0
+          |> Backing.lens.amount .~ 700.0
+      )
+
+    self.configurePledgeViewCTAContainerViewIsEnabled.assertDidNotEmitValue()
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: shippingRule.location.id,
+      refTag: .discovery,
+      context: .update
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+      with: (amount: 680, min: 25.0, max: 10_000.0, isValid: true)
+    )
+
+    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues(
+      [false, true],
+      "Amount unchanged, but is enabled because Reward has add-ons"
+    )
+
+    self.vm.inputs.shippingRuleSelected(shippingRule)
+
+    self.configurePledgeViewCTAContainerViewIsEnabled
+      .assertValues(
+        [false, true],
+        "Shipping rule and amount unchanged, but is enabled because Reward has add-ons"
+      )
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+      with: (amount: 680, min: 25.0, max: 10_000.0, isValid: true)
+    )
+
+    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true], "Amount unchanged")
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+      with: (amount: 550, min: 25.0, max: 10_000.0, isValid: true)
+    )
+
+    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true], "Amount changed")
+
+    self.vm.inputs.pledgeAmountViewControllerDidUpdate(
+      with: (amount: 680, min: 25.0, max: 10_000.0, isValid: true)
+    )
+
+    self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true], "Amount unchanged")
+
+    self.vm.inputs.shippingRuleSelected(.template)
+
+    self.configurePledgeViewCTAContainerViewIsEnabled
+      .assertValues([false, true], "Shipping rule changed")
+
+    self.vm.inputs.shippingRuleSelected(.init(cost: 10, id: 1, location: .brooklyn))
+
+    self.configurePledgeViewCTAContainerViewIsEnabled
+      .assertValues([false, true], "Shipping rule unchanged")
+  }
+
   func testUpdatingSubmitButtonEnabled_ShippingEnabled() {
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
