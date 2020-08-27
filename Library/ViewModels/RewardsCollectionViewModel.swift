@@ -285,7 +285,7 @@ private func shouldTriggerEditRewardPrompt(_ data: PledgeViewData) -> Bool {
 
   let rewardChanged = data.rewards.first?.id != backing.reward?.id
 
-  // We show the prompt if they have previously backed with add-ons and they selecting a new reward.
+  // We show the prompt if they have previously backed with add-ons and they are selecting a new reward.
   return backing.addOns?.isEmpty == false && rewardChanged
 }
 
