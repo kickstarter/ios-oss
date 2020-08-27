@@ -283,10 +283,10 @@ private func shouldTriggerEditRewardPrompt(_ data: PledgeViewData) -> Bool {
     let backing = data.project.personalization.backing
   else { return false }
 
-  let rewardUnchanged = data.rewards.first?.id == backing.reward?.id
+  let rewardChanged = data.rewards.first?.id != backing.reward?.id
 
   // We show the prompt if they have previously backed with add-ons and they selecting a new reward.
-  return backing.addOns?.isEmpty == false && !rewardUnchanged
+  return backing.addOns?.isEmpty == false && rewardChanged
 }
 
 private func backedReward(_ project: Project, rewards: [Reward]) -> IndexPath? {
