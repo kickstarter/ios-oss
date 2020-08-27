@@ -129,6 +129,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       .map { context, reward in context.descriptionViewHidden || reward.isNoReward == false }
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
+    self.summarySectionSeparatorHidden = self.pledgeAmountViewHidden
     self.pledgeAmountSummaryViewHidden = context.map { $0.pledgeAmountSummaryViewHidden }
 
     self.descriptionSectionSeparatorHidden = Signal.combineLatest(context, baseReward)
@@ -139,7 +140,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
         return context.sectionSeparatorsHidden
       }
-    self.summarySectionSeparatorHidden = context.map { $0.sectionSeparatorsHidden }
 
     let isLoggedIn = Signal.merge(initialData.ignoreValues(), self.userSessionStartedSignal)
       .map { _ in AppEnvironment.current.currentUser }
@@ -214,12 +214,52 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let projectAndReward = Signal.zip(project, baseReward)
 
-    // Only shown for regular non-add-ons based rewards
-    self.configureShippingLocationViewWithData = projectAndReward.combineLatest(with: selectedLocationId)
-      .map(unpack)
-      .map { project, reward, locationId in
-        (project, reward, true, locationId)
+    /**
+     Shipping location selector is hidden if the context hides it,
+     if the base reward has no shipping or when add-ons were selected.
+     */
+    self.shippingLocationViewHidden = Signal.combineLatest(baseReward, rewards, context)
+      .map { baseReward, rewards, context in
+        [
+          context.shippingLocationViewHidden,
+          !baseReward.shipping.enabled,
+          rewards.count > 1
+        ]
+        .contains(true)
       }
+
+    /**
+     Shipping summary view is hidden when updating,
+     if the base reward has no shipping or when NO add-ons were selected.
+     */
+    self.shippingSummaryViewHidden = Signal.combineLatest(baseReward, rewards, context)
+      .map { baseReward, rewards, context in
+        [
+          context.isAny(of: .update, .changePaymentMethod, .fixPaymentMethod),
+          !baseReward.shipping.enabled,
+          rewards.count == 1
+        ]
+        .contains(true)
+      }
+
+    let shippingViewsHidden = Signal.combineLatest(
+      self.shippingSummaryViewHidden,
+      self.shippingLocationViewHidden
+    )
+    .map { $0 && $1 }
+
+    // Only shown for regular non-add-ons based rewards
+    self.configureShippingLocationViewWithData = Signal.combineLatest(
+      projectAndReward,
+      shippingViewsHidden.filter(isFalse),
+      selectedLocationId
+    )
+    .map { projectAndReward, _, selectedLocationId in
+      (projectAndReward.0, projectAndReward.1, selectedLocationId)
+    }
+    .map { project, reward, locationId in
+      (project, reward, true, locationId)
+    }
 
     // Only shown for add-ons based rewards
     self.configureShippingSummaryViewWithData = Signal.combineLatest(
@@ -278,11 +318,18 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     .map { project, confirmationLabelHidden, total in (project, total, confirmationLabelHidden) }
     .map(pledgeSummaryViewData)
 
-    self.configurePledgeAmountSummaryViewControllerWithData = projectAndReward
-      .combineLatest(with: additionalPledgeAmount)
-      .map(unpack)
-      .map(pledgeAmountSummaryViewData)
-      .skipNil()
+    self.configurePledgeAmountSummaryViewControllerWithData = Signal.combineLatest(
+      projectAndReward,
+      allRewardsTotal,
+      additionalPledgeAmount,
+      shippingViewsHidden,
+      context
+    )
+    .map { projectAndReward, allRewardsTotal, amount, shippingViewsHidden, context in
+      (projectAndReward.0, projectAndReward.1, allRewardsTotal, amount, shippingViewsHidden, context)
+    }
+    .map(pledgeAmountSummaryViewData)
+    .skipNil()
 
     let configurePaymentMethodsViewController = Signal.merge(
       initialDataUnpacked,
@@ -305,34 +352,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     let pledgeAmountIsValid = self.pledgeAmountDataSignal
       .map { $0.isValid }
-
-    /**
-     Shipping location selector is hidden if the context hides it,
-     if the base reward has no shipping or when add-ons were selected.
-     */
-    self.shippingLocationViewHidden = Signal.combineLatest(baseReward, rewards, context)
-      .map { baseReward, rewards, context in
-        [
-          context.shippingLocationViewHidden,
-          !baseReward.shipping.enabled,
-          rewards.count > 1
-        ]
-        .contains(true)
-      }
-
-    /**
-     Shipping summary view is hidden if the context hides it,
-     if the base reward has no shipping or when NO add-ons were selected.
-     */
-    self.shippingSummaryViewHidden = Signal.combineLatest(baseReward, rewards, context)
-      .map { baseReward, rewards, context in
-        [
-          context.shippingLocationViewHidden,
-          !baseReward.shipping.enabled,
-          rewards.count == 1
-        ]
-        .contains(true)
-      }
 
     self.configureStripeIntegration = Signal.combineLatest(
       initialData,
@@ -1107,20 +1126,25 @@ private func pledgeSummaryViewData(
 
 private func pledgeAmountSummaryViewData(
   with project: Project,
-  reward: Reward,
-  additionalPledgeAmount: Double
+  reward _: Reward,
+  allRewardsTotal: Double,
+  additionalPledgeAmount: Double,
+  shippingViewsHidden: Bool,
+  context: PledgeViewContext
 ) -> PledgeAmountSummaryViewData? {
   guard let backing = project.personalization.backing else { return nil }
 
   return .init(
     bonusAmount: additionalPledgeAmount,
+    bonusAmountHidden: context == .update,
     isNoReward: backing.reward?.isNoReward ?? false,
     locationName: backing.locationName,
     omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
     projectCountry: project.country,
     pledgedOn: backing.pledgedAt,
-    rewardMinimum: reward.minimum,
-    shippingAmount: backing.shippingAmount.flatMap(Double.init)
+    rewardMinimum: allRewardsTotal,
+    shippingAmount: backing.shippingAmount.flatMap(Double.init),
+    shippingAmountHidden: !shippingViewsHidden
   )
 }
 

@@ -130,13 +130,15 @@ private func pledgeAmountSummaryViewData(
 ) -> PledgeAmountSummaryViewData {
   return .init(
     bonusAmount: data.bonusAmount,
+    bonusAmountHidden: false,
     isNoReward: data.isNoReward,
     locationName: data.locationName,
     omitUSCurrencyCode: data.omitUSCurrencyCode,
     projectCountry: data.projectCountry,
     pledgedOn: data.pledgedOn,
     rewardMinimum: data.rewardMinimum,
-    shippingAmount: data.shippingAmount
+    shippingAmount: data.shippingAmount,
+    shippingAmountHidden: false
   )
 }
 
@@ -158,7 +160,7 @@ private func attributedCurrency(
   omitUSCurrencyCode: Bool
 ) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
-    .withAllValuesFrom([.foregroundColor: UIColor.ksr_green_500])
+    .withAllValuesFrom([.foregroundColor: UIColor.ksr_soft_black])
   let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
   guard
     let attributedCurrency = Format.attributedCurrency(

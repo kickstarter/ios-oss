@@ -65,8 +65,8 @@ public enum PledgeViewContext {
 
   var pledgeAmountSummaryViewHidden: Bool {
     switch self {
-    case .fixPaymentMethod, .changePaymentMethod: return false
-    case .pledge, .update, .updateReward: return true
+    case .fixPaymentMethod, .changePaymentMethod, .update: return false
+    case .pledge, .updateReward: return true
     }
   }
 
