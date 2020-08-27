@@ -224,6 +224,10 @@ extension RewardAddOnSelectionViewController: PledgeShippingLocationViewControll
   func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {
     self.tableView.ksr_sizeHeaderFooterViewsToFit()
   }
+
+  func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {
+    self.viewModel.inputs.shippingLocationViewDidFailToLoad()
+  }
 }
 
 // MARK: - RewardAddOnCardViewDelegate

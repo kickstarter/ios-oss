@@ -12,6 +12,9 @@ protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
   func pledgeShippingLocationViewControllerLayoutDidUpdate(
     _ viewController: PledgeShippingLocationViewController
   )
+  func pledgeShippingLocationViewControllerFailedToLoad(
+    _ viewController: PledgeShippingLocationViewController
+  )
 }
 
 final class PledgeShippingLocationViewController: UIViewController {
@@ -150,6 +153,14 @@ final class PledgeShippingLocationViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         self?.dismiss(animated: true)
+      }
+
+    self.viewModel.outputs.shippingRulesError
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        guard let self = self else { return }
+
+        self.delegate?.pledgeShippingLocationViewControllerFailedToLoad(self)
       }
   }
 

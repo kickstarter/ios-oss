@@ -51,12 +51,15 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.vm.outputs.startRefreshing.observe(self.startRefreshing.observer)
   }
 
-  func testConfigurePledgeShippingLocationViewControllerWithData() {
+  func testConfigurePledgeShippingLocationViewControllerWithData_ShippingEnabled() {
     self.configurePledgeShippingLocationViewControllerWithDataProject.assertDidNotEmitValue()
     self.configurePledgeShippingLocationViewControllerWithDataReward.assertDidNotEmitValue()
     self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertDidNotEmitValue()
+    self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertDidNotEmitValue()
 
     let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+
     let project = Project.template
 
     let data = PledgeViewData(
@@ -75,6 +78,82 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.configurePledgeShippingLocationViewControllerWithDataReward.assertValues([reward])
     self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertValues([false])
     self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertValues([2])
+  }
+
+  func testConfigurePledgeShippingLocationViewControllerWithData_ShippingDisabled() {
+    self.configurePledgeShippingLocationViewControllerWithDataProject.assertDidNotEmitValue()
+    self.configurePledgeShippingLocationViewControllerWithDataReward.assertDidNotEmitValue()
+    self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertDidNotEmitValue()
+    self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ false
+
+    let project = Project.template
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [:],
+      selectedLocationId: 2,
+      refTag: nil,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.configurePledgeShippingLocationViewControllerWithDataProject.assertDidNotEmitValue()
+    self.configurePledgeShippingLocationViewControllerWithDataReward.assertDidNotEmitValue()
+    self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertDidNotEmitValue()
+    self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertDidNotEmitValue()
+  }
+
+  func testConfigurePledgeShippingLocationViewControllerWithData_ShippingEnabled_FailedThenRefreshed() {
+    self.configurePledgeShippingLocationViewControllerWithDataProject.assertDidNotEmitValue()
+    self.configurePledgeShippingLocationViewControllerWithDataReward.assertDidNotEmitValue()
+    self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertDidNotEmitValue()
+    self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertDidNotEmitValue()
+    self.shippingLocationViewIsHidden.assertDidNotEmitValue()
+
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+
+    let project = Project.template
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [:],
+      selectedLocationId: 2,
+      refTag: nil,
+      context: .pledge
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.configurePledgeShippingLocationViewControllerWithDataProject.assertValues([project])
+    self.configurePledgeShippingLocationViewControllerWithDataReward.assertValues([reward])
+    self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertValues([false])
+    self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertValues([2])
+    self.shippingLocationViewIsHidden.assertValues([false])
+
+    self.vm.inputs.shippingLocationViewDidFailToLoad()
+
+    self.configurePledgeShippingLocationViewControllerWithDataProject.assertValues([project])
+    self.configurePledgeShippingLocationViewControllerWithDataReward.assertValues([reward])
+    self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertValues([false])
+    self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertValues([2])
+    self.shippingLocationViewIsHidden.assertValues([false, true])
+
+    self.vm.inputs.beginRefresh()
+
+    self.configurePledgeShippingLocationViewControllerWithDataProject.assertValues([project, project])
+    self.configurePledgeShippingLocationViewControllerWithDataReward.assertValues([reward, reward])
+    self.configurePledgeShippingLocationViewControllerWithDataShowAmount.assertValues([false, false])
+    self.configurePledgeShippingLocationViewControllerWithDataSelectedLocationId.assertValues([2, 2])
+    self.shippingLocationViewIsHidden.assertValues([false, true, false])
   }
 
   func testLoadAddOnRewardsIntoDataSource() {
@@ -780,9 +859,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.shippingLocationViewIsHidden.assertDidNotEmitValue()
 
     let reward = Reward.template
-      |> Reward.lens.shipping .~ (
-        .template |> Reward.Shipping.lens.enabled .~ true
-      )
+      |> Reward.lens.shipping.enabled .~ true
     let project = Project.template
 
     let data = PledgeViewData(

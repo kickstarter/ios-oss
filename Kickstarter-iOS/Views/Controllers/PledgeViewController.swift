@@ -606,6 +606,7 @@ extension PledgeViewController: PledgeShippingLocationViewControllerDelegate {
   }
 
   func pledgeShippingLocationViewControllerLayoutDidUpdate(_: PledgeShippingLocationViewController) {}
+  func pledgeShippingLocationViewControllerFailedToLoad(_: PledgeShippingLocationViewController) {}
 }
 
 // MARK: - PledgeViewControllerMessageDisplaying
