@@ -5,6 +5,7 @@ import ReactiveSwift
 
 public struct PledgeAmountSummaryViewData {
   public let bonusAmount: Double?
+  public let bonusAmountHidden: Bool
   public let isNoReward: Bool
   public let locationName: String?
   public let omitUSCurrencyCode: Bool
@@ -12,6 +13,7 @@ public struct PledgeAmountSummaryViewData {
   public let pledgedOn: TimeInterval
   public let rewardMinimum: Double
   public let shippingAmount: Double?
+  public let shippingAmountHidden: Bool
 }
 
 public protocol PledgeAmountSummaryViewModelInputs {
@@ -66,8 +68,10 @@ public class PledgeAmountSummaryViewModel: PledgeAmountSummaryViewModelType,
       .skipNil()
       .map { Strings.Shipping_to_country(country: $0) }
 
-    self.bonusAmountStackViewIsHidden = data.map { $0.isNoReward }
-    self.shippingLocationStackViewIsHidden = data.map { $0.locationName }.map(isNil)
+    self.bonusAmountStackViewIsHidden = data.map { $0.isNoReward || $0.bonusAmountHidden }
+    self.shippingLocationStackViewIsHidden = data.map {
+      $0.locationName == nil || $0.shippingAmountHidden
+    }
   }
 
   private let (configureWithDataSignal, configureWithDataObserver)
@@ -103,7 +107,6 @@ private func attributedCurrency(
   omitUSCurrencyCode: Bool
 ) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
-    .withAllValuesFrom([.foregroundColor: UIColor.ksr_green_500])
   let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
   guard
     let attributedCurrency = Format.attributedCurrency(

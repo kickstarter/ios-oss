@@ -110,7 +110,6 @@ final class PledgeViewController: UIViewController,
   private lazy var summarySectionViews = {
     [
       self.summarySectionSeparator,
-      self.pledgeAmountSummaryViewController.view,
       self.summaryViewController.view
     ]
   }()
@@ -185,8 +184,8 @@ final class PledgeViewController: UIViewController,
 
     let childViewControllers = [
       self.pledgeExpandableRewardsHeaderViewController,
-      self.pledgeAmountViewController,
       self.pledgeAmountSummaryViewController,
+      self.pledgeAmountViewController,
       self.shippingLocationViewController,
       self.summaryViewController,
       self.paymentMethodsViewController
@@ -200,6 +199,7 @@ final class PledgeViewController: UIViewController,
 
     let arrangedInsetSubviews = [
       self.descriptionSectionViews,
+      [self.pledgeAmountSummaryViewController.view],
       self.inputsSectionViews,
       self.summarySectionViews,
       self.paymentMethodsSectionViews,
