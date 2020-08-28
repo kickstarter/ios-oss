@@ -48,7 +48,7 @@ final class PledgeViewContextTests: TestCase {
     XCTAssertFalse(context.isCreating)
     XCTAssertTrue(context.paymentMethodsViewHidden)
     XCTAssertFalse(context.pledgeAmountViewHidden)
-    XCTAssertTrue(context.pledgeAmountSummaryViewHidden)
+    XCTAssertFalse(context.pledgeAmountSummaryViewHidden)
     XCTAssertTrue(context.sectionSeparatorsHidden)
     XCTAssertEqual(context.submitButtonTitle, "Confirm")
     XCTAssertEqual(context.title, "Update pledge")

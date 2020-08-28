@@ -364,9 +364,9 @@ final class PledgeViewModelTests: TestCase {
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
-      self.pledgeAmountSummaryViewHidden.assertValues([true])
+      self.pledgeAmountSummaryViewHidden.assertValues([false])
       self.descriptionSectionSeparatorHidden.assertValues([true])
-      self.summarySectionSeparatorHidden.assertValues([true])
+      self.summarySectionSeparatorHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
       self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
       self.configureSummaryViewControllerWithDataProject.assertValues([project])
@@ -491,9 +491,9 @@ final class PledgeViewModelTests: TestCase {
       self.expandableRewardsHeaderViewHidden.assertValues([true])
       self.rootStackViewLayoutMargins.assertValues([.init(topBottom: Styles.grid(3))])
 
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
+      self.configureShippingLocationViewWithDataProject.assertDidNotEmitValue()
+      self.configureShippingLocationViewWithDataReward.assertDidNotEmitValue()
+      self.configureShippingLocationViewWithDataShowAmount.assertDidNotEmitValue()
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([true])
@@ -573,9 +573,9 @@ final class PledgeViewModelTests: TestCase {
       self.expandableRewardsHeaderViewHidden.assertValues([true])
       self.rootStackViewLayoutMargins.assertValues([.init(topBottom: Styles.grid(3))])
 
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
+      self.configureShippingLocationViewWithDataProject.assertDidNotEmitValue()
+      self.configureShippingLocationViewWithDataReward.assertDidNotEmitValue()
+      self.configureShippingLocationViewWithDataShowAmount.assertDidNotEmitValue()
 
       self.configurePledgeViewCTAContainerViewWillRetryPaymentMethod.assertValues([false])
       self.paymentMethodsViewHidden.assertValues([false])
@@ -660,9 +660,9 @@ final class PledgeViewModelTests: TestCase {
       self.expandableRewardsHeaderViewHidden.assertValues([true])
       self.rootStackViewLayoutMargins.assertValues([.init(topBottom: Styles.grid(3))])
 
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
+      self.configureShippingLocationViewWithDataProject.assertDidNotEmitValue()
+      self.configureShippingLocationViewWithDataReward.assertDidNotEmitValue()
+      self.configureShippingLocationViewWithDataShowAmount.assertDidNotEmitValue()
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([true])
@@ -707,9 +707,9 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
+      self.configureShippingLocationViewWithDataProject.assertDidNotEmitValue()
+      self.configureShippingLocationViewWithDataReward.assertDidNotEmitValue()
+      self.configureShippingLocationViewWithDataShowAmount.assertDidNotEmitValue()
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -788,9 +788,9 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
+      self.configureShippingLocationViewWithDataProject.assertDidNotEmitValue()
+      self.configureShippingLocationViewWithDataReward.assertDidNotEmitValue()
+      self.configureShippingLocationViewWithDataShowAmount.assertDidNotEmitValue()
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -1042,9 +1042,9 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false])
       self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge])
 
-      self.configureShippingLocationViewWithDataProject.assertValues([project])
-      self.configureShippingLocationViewWithDataReward.assertValues([reward])
-      self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
+      self.configureShippingLocationViewWithDataProject.assertDidNotEmitValue()
+      self.configureShippingLocationViewWithDataReward.assertDidNotEmitValue()
+      self.configureShippingLocationViewWithDataShowAmount.assertDidNotEmitValue()
 
       self.paymentMethodsViewHidden.assertValues([true])
       self.pledgeAmountViewHidden.assertValues([false])
@@ -1063,9 +1063,9 @@ final class PledgeViewModelTests: TestCase {
         self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, false])
         self.configurePledgeViewCTAContainerViewContext.assertValues([.pledge, .pledge])
 
-        self.configureShippingLocationViewWithDataProject.assertValues([project])
-        self.configureShippingLocationViewWithDataReward.assertValues([reward])
-        self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
+        self.configureShippingLocationViewWithDataProject.assertDidNotEmitValue()
+        self.configureShippingLocationViewWithDataReward.assertDidNotEmitValue()
+        self.configureShippingLocationViewWithDataShowAmount.assertDidNotEmitValue()
 
         self.paymentMethodsViewHidden.assertValues([true, false])
         self.shippingLocationViewHidden.assertValues([true])
@@ -1832,6 +1832,7 @@ final class PledgeViewModelTests: TestCase {
       let project = Project.template
       let reward = Reward.template
         |> Reward.lens.minimum .~ 5
+        |> Reward.lens.shipping.enabled .~ true
 
       let data = PledgeViewData(
         project: project,
@@ -1858,7 +1859,7 @@ final class PledgeViewModelTests: TestCase {
       self.configureSummaryViewControllerWithDataProject.assertValues([project])
 
       self.paymentMethodsViewHidden.assertValues([false])
-      self.shippingLocationViewHidden.assertValues([true])
+      self.shippingLocationViewHidden.assertValues([false])
 
       self.vm.inputs.applePayButtonTapped()
 
@@ -1891,7 +1892,7 @@ final class PledgeViewModelTests: TestCase {
         revenueInUsdCents: 500,
         rewardId: 1,
         rewardTitle: "My Reward",
-        shippingEnabled: false,
+        shippingEnabled: true,
         shippingAmount: nil,
         userHasStoredApplePayCard: true
       )

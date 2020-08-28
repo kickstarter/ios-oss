@@ -227,11 +227,20 @@ final class PledgeViewControllerTests: TestCase {
 
   func testView_UpdateContext_withConversionLabel() {
     let reward = Reward.template
+      |> Reward.lens.minimum .~ 10.0
       |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
     let project = Project.template
       |> Project.lens.stats.currency .~ Currency.HKD.rawValue
       |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
       |> Project.lens.country .~ .hk
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.visa
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 0
+          |> Backing.lens.amount .~ 10.0
+      )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(currentUser: .template, language: language) {
@@ -257,12 +266,22 @@ final class PledgeViewControllerTests: TestCase {
   }
 
   func testView_UpdateContext_NeedsConversion_IsTrue() {
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 10.0
+      |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
+
     let project = Project.template
       |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.currentCurrencyRate .~ 2.0
-    let reward = Reward.template
-      |> Reward.lens.minimum .~ 10
-      |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
+      |> Project.lens.stats.currentCurrencyRate .~ .some(2.0)
+      |> Project.lens.country .~ .us
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.visa
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 0
+          |> Backing.lens.amount .~ 10.0
+      )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(currentUser: .template, language: language) {
