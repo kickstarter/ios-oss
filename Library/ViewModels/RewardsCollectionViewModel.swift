@@ -145,17 +145,15 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       )
     }
 
-    let goToAddOnSelectionBackedConfirmed = Signal.zip(
-      goToAddOnSelectionBackedWithAddOns,
-      self.confirmedEditRewardProperty.signal
-    )
-    .map(first)
+    let goToAddOnSelectionBackedConfirmed = goToPledge
+      .takeWhen(self.confirmedEditRewardProperty.signal)
+      .filter(second >>> isTrue)
+      .map(first)
 
-    let goToPledgeBackedConfirmed = Signal.zip(
-      goToPledgeBackedWithAddOns,
-      self.confirmedEditRewardProperty.signal
-    )
-    .map(first)
+    let goToPledgeBackedConfirmed = goToPledge
+      .takeWhen(self.confirmedEditRewardProperty.signal)
+      .filter(second >>> isFalse)
+      .map(first)
 
     self.goToAddOnSelection = Signal.merge(
       goToAddOnSelectionNotBackedWithAddOns,
