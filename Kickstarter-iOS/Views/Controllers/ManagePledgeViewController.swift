@@ -334,15 +334,8 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
   // MARK: Functions
 
   private func configureDisclaimerView() {
-    let string1 = localizedString(
-      key: "Remember_that_delivery_dates_are_not_guaranteed",
-      defaultValue: "Remember that delivery dates are not guaranteed."
-    )
-
-    let string2 = localizedString(
-      key: "Delays_or_changes_are_possible",
-      defaultValue: "Delays or changes are possible."
-    )
+    let string1 = Strings.Remember_that_delivery_dates_are_not_guaranteed()
+    let string2 = Strings.Delays_or_changes_are_possible()
 
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.lineSpacing = 2
@@ -419,10 +412,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
     _ = self.pullToRefreshLabel
       |> \.text %~ { _ in
-        localizedString(
-          key: "Something_went_wrong_pull_to_refresh",
-          defaultValue: "Something went wrong, pull to refresh."
-        )
+        Strings.Something_went_wrong_pull_to_refresh()
       }
 
     _ = self.pullToRefreshStackView
@@ -471,7 +461,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       case .changePaymentMethod:
         title = Strings.Change_payment_method()
       case .chooseAnotherReward:
-        title = localizedString(key: "Edit_reward", defaultValue: "Edit reward")
+        title = Strings.Edit_reward()
       case .contactCreator:
         title = Strings.Contact_creator()
       case .cancelPledge:

@@ -43,19 +43,13 @@ extension PKPaymentRequest {
     if !reward.isNoReward {
       paymentSummaryItems.append(
         PKPaymentSummaryItem(
-          label: localizedString(
-            key: "Reward",
-            defaultValue: "Reward"
-          ),
+          label: Strings.activity_creator_reward(),
           amount: NSDecimalNumber(value: allRewardsTotal),
           type: .final
         )
       )
 
-      let title = localizedString(
-        key: "Bonus",
-        defaultValue: "Bonus"
-      )
+      let title = Strings.Bonus()
 
       paymentSummaryItems.append(
         PKPaymentSummaryItem(

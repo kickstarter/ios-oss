@@ -55,7 +55,7 @@ final class PledgeAmountSummaryViewController: UIViewController {
 
     _ = self.bonusLabel
       |> titleLabelStyle
-      |> \.text %~ { _ in localizedString(key: "Bonus", defaultValue: "Bonus") }
+      |> \.text %~ { _ in Strings.Bonus() }
 
     _ = self.pledgeLabel
       |> titleLabelStyle

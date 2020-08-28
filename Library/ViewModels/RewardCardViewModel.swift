@@ -231,7 +231,7 @@ private func pillValues(project: Project, reward: Reward) -> [String] {
 private func addOnsString(reward: Reward) -> String? {
   guard reward.hasAddOns else { return nil }
 
-  return localizedString(key: "Add_ons", defaultValue: "Add-ons")
+  return Strings.Add_ons()
 }
 
 private func timeLeftString(project: Project, reward: Reward) -> String? {

@@ -180,12 +180,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .map { max, project in
         let maxPledge = Format.currency(max, country: project.country, omitCurrencyCode: false)
 
-        return localizedString(
-          key: "Enter_an_amount_less_than_max_pledge",
-          defaultValue: "Enter an amount less than %{max_pledge}.",
-          count: nil,
-          substitutions: ["max_pledge": maxPledge]
-        )
+        return Strings.Enter_an_amount_less_than_max_pledge(max_pledge: maxPledge)
       }
       .skipRepeats()
 
@@ -207,10 +202,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.plusSignLabelHidden = reward.map(\.isNoReward)
     self.subTitleLabelHidden = reward.map(\.isNoReward)
     self.titleLabelText = reward.map(\.isNoReward).map {
-      $0 ? Strings.Your_pledge_amount() : localizedString(
-        key: "Bonus_support",
-        defaultValue: "Bonus support"
-      )
+      $0 ? Strings.Your_pledge_amount() : Strings.Bonus_support()
     }
   }
 

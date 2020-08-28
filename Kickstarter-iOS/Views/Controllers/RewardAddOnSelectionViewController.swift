@@ -133,10 +133,7 @@ final class RewardAddOnSelectionViewController: UIViewController {
     _ = self.headerLabel
       |> \.numberOfLines .~ 0
       |> \.font .~ UIFont.ksr_title2().bolded
-      |> \.text .~ localizedString(
-        key: "Customize_your_reward_with_optional_addons",
-        defaultValue: "Customize your reward with optional add-ons."
-      )
+      |> \.text .~ Strings.Customize_your_reward_with_optional_addons()
 
     _ = self.headerRootStackView
       |> \.isLayoutMarginsRelativeArrangement .~ true

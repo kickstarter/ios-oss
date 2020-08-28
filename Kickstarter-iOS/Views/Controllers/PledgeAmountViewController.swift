@@ -233,10 +233,7 @@ private let subtitleLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_footnote()
     |> \.numberOfLines .~ 0
     |> \.textColor .~ UIColor.ksr_text_navy_600
-    |> \.text .~ localizedString(
-      key: "A_little_extra_to_help_bring_this_project_to_life",
-      defaultValue: "A little extra to help bring this project to life."
-    )
+    |> \.text .~ Strings.A_little_extra_to_help()
 }
 
 private let maxPledgeAmountErrorLabelStyle: LabelStyle = { label in
