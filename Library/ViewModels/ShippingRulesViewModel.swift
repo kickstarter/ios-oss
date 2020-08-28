@@ -4,7 +4,6 @@ import Prelude
 import ReactiveSwift
 
 public struct ShippingRuleData: Equatable {
-  public let project: Project
   public let selectedShippingRule: ShippingRule
   public let shippingRule: ShippingRule
 }
@@ -85,13 +84,14 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
       .skipRepeats()
 
     let reloadDataInitial = initialData
-      .map(shippingRulesData(project:shippingRules:selectedShippingRule:))
+      .map { _, shippingRules, selectedShippingRule in (shippingRules, selectedShippingRule) }
+      .map(shippingRulesData)
       .map { ($0, true) }
 
     let reloadDataFiltered = filteredData
       .withLatest(from: selectedShippingRuleCurrent)
-      .map { data, selectedShippingRule in (data.project, data.shippingRules, selectedShippingRule) }
-      .map(shippingRulesData(project:shippingRules:selectedShippingRule:))
+      .map { data, selectedShippingRule in (data.shippingRules, selectedShippingRule) }
+      .map(shippingRulesData)
       .map { ($0, true) }
 
     let reloadDataSelected = Signal.merge(
@@ -99,8 +99,8 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
       filteredData
     )
     .takePairWhen(selectedShippingRule)
-    .map { data, selectedShippingRule in (data.project, data.shippingRules, selectedShippingRule) }
-    .map(shippingRulesData(project:shippingRules:selectedShippingRule:))
+    .map { data, selectedShippingRule in (data.shippingRules, selectedShippingRule) }
+    .map(shippingRulesData)
     .map { ($0, false) }
 
     let viewDidLayoutSubviews = self.viewDidLayoutSubviewsProperty.signal
@@ -171,12 +171,11 @@ public final class ShippingRulesViewModel: ShippingRulesViewModelType,
 // MARK: - Functions
 
 private func shippingRulesData(
-  project: Project,
   shippingRules: [ShippingRule],
   selectedShippingRule: ShippingRule
 ) -> [ShippingRuleData] {
   return shippingRules.map {
-    ShippingRuleData(project: project, selectedShippingRule: selectedShippingRule, shippingRule: $0)
+    ShippingRuleData(selectedShippingRule: selectedShippingRule, shippingRule: $0)
   }
 }
 
