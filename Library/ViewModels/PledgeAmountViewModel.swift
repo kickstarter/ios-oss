@@ -80,7 +80,8 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .map(first)
 
     let unavailableAmount = Signal.merge(
-      self.projectAndRewardProperty.signal.mapConst(0),
+      self.projectAndRewardProperty.signal.mapConst(0)
+        .take(until: self.unavailableAmountChangedProperty.signal.ignoreValues()),
       self.unavailableAmountChangedProperty.signal
     )
 
