@@ -1625,6 +1625,9 @@ final class PledgeViewModelTests: TestCase {
       self.scheduler.run()
 
       let checkoutData = Koala.CheckoutPropertiesData(
+        addOnsCountTotal: 0,
+        addOnsCountUnique: 0,
+        addOnsMinimumUsd: "0.00",
         amount: "15.00",
         bonusAmount: "10.00",
         bonusAmountInUsd: "10.00",
@@ -1633,9 +1636,11 @@ final class PledgeViewModelTests: TestCase {
         paymentType: "APPLE_PAY",
         revenueInUsdCents: 1_500,
         rewardId: 1,
+        rewardMinimumUsd: "5.00",
         rewardTitle: "My Reward",
         shippingEnabled: false,
         shippingAmount: nil,
+        shippingAmountUsd: nil,
         userHasStoredApplePayCard: true
       )
 
@@ -1713,6 +1718,9 @@ final class PledgeViewModelTests: TestCase {
       self.scheduler.run()
 
       let checkoutData = Koala.CheckoutPropertiesData(
+        addOnsCountTotal: 0,
+        addOnsCountUnique: 0,
+        addOnsMinimumUsd: "0.00",
         amount: "15.00",
         bonusAmount: "10.00",
         bonusAmountInUsd: "13.09",
@@ -1721,9 +1729,11 @@ final class PledgeViewModelTests: TestCase {
         paymentType: "APPLE_PAY",
         revenueInUsdCents: 1_965,
         rewardId: 1,
+        rewardMinimumUsd: "6.54",
         rewardTitle: "My Reward",
         shippingEnabled: false,
         shippingAmount: nil,
+        shippingAmountUsd: nil,
         userHasStoredApplePayCard: true
       )
 
@@ -1830,9 +1840,13 @@ final class PledgeViewModelTests: TestCase {
 
     withEnvironment(apiService: mockService, currentUser: .template) {
       let project = Project.template
+
+      let shippingRule = ShippingRule.template
+
       let reward = Reward.template
         |> Reward.lens.minimum .~ 5
         |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.shippingRules .~ [shippingRule]
 
       let data = PledgeViewData(
         project: project,
@@ -1846,6 +1860,8 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
+      self.vm.inputs.shippingRuleSelected(shippingRule)
+
       self.configurePaymentMethodsViewControllerWithUser.assertValues([User.template])
       self.configurePaymentMethodsViewControllerWithProject.assertValues([project])
       self.configurePaymentMethodsViewControllerWithReward.assertValues([reward])
@@ -1855,8 +1871,8 @@ final class PledgeViewModelTests: TestCase {
       self.configureShippingLocationViewWithDataReward.assertValues([reward])
       self.configureShippingLocationViewWithDataShowAmount.assertValues([true])
 
-      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([reward.minimum])
-      self.configureSummaryViewControllerWithDataProject.assertValues([project])
+      self.configureSummaryViewControllerWithDataPledgeTotal.assertValues([5, 10])
+      self.configureSummaryViewControllerWithDataProject.assertValues([project, project])
 
       self.paymentMethodsViewHidden.assertValues([false])
       self.shippingLocationViewHidden.assertValues([false])
@@ -1883,17 +1899,22 @@ final class PledgeViewModelTests: TestCase {
       self.scheduler.run()
 
       let checkoutData = Koala.CheckoutPropertiesData(
-        amount: "5.00",
+        addOnsCountTotal: 0,
+        addOnsCountUnique: 0,
+        addOnsMinimumUsd: "0.00",
+        amount: "10.00",
         bonusAmount: "0.00",
         bonusAmountInUsd: "0.00",
         checkoutId: 1,
         estimatedDelivery: 1_506_897_315.0,
         paymentType: "APPLE_PAY",
-        revenueInUsdCents: 500,
+        revenueInUsdCents: 1_000,
         rewardId: 1,
+        rewardMinimumUsd: "5.00",
         rewardTitle: "My Reward",
         shippingEnabled: true,
-        shippingAmount: nil,
+        shippingAmount: 5.0,
+        shippingAmountUsd: "5.00",
         userHasStoredApplePayCard: true
       )
 
@@ -2025,14 +2046,35 @@ final class PledgeViewModelTests: TestCase {
     )
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      let project = Project.template
+      let shippingRule = ShippingRule.template
+
       let reward = Reward.template
+        |> Reward.lens.id .~ 1
+        |> Reward.lens.hasAddOns .~ true
+        |> Reward.lens.minimum .~ 10.0
+        |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.shippingRules .~ [shippingRule]
+
+      let addOn1 = Reward.template
+        |> Reward.lens.id .~ 2
+        |> Reward.lens.minimum .~ 5.0
+        |> Reward.lens.shipping.enabled .~ true
+        |> Reward.lens.shippingRules .~ [shippingRule]
+
+      let addOn2 = Reward.template
+        |> Reward.lens.id .~ 3
+        |> Reward.lens.minimum .~ 8.0
+        |> Reward.lens.shipping.enabled .~ false
+
+      let project = Project.template
+        |> Project.lens.rewardData.rewards .~ [reward]
+        |> Project.lens.rewardData.addOns .~ [addOn1, addOn2]
 
       let data = PledgeViewData(
         project: project,
-        rewards: [reward],
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
+        rewards: [reward, addOn1, addOn2],
+        selectedQuantities: [reward.id: 1, addOn1.id: 2, addOn2.id: 1],
+        selectedLocationId: shippingRule.location.id,
         refTag: .activity,
         context: .pledge
       )
@@ -2053,6 +2095,8 @@ final class PledgeViewModelTests: TestCase {
         with: (amount: 15.0, min: 10.0, max: 10_000.0, isValid: true)
       )
 
+      self.vm.inputs.shippingRuleSelected(shippingRule)
+
       self.processingViewIsHidden.assertDidNotEmitValue()
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true])
 
@@ -2072,17 +2116,22 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       let checkoutData = Koala.CheckoutPropertiesData(
-        amount: "25.00",
+        addOnsCountTotal: 3,
+        addOnsCountUnique: 2,
+        addOnsMinimumUsd: "18.00",
+        amount: "58.00",
         bonusAmount: "15.00",
         bonusAmountInUsd: "15.00",
         checkoutId: 1,
-        estimatedDelivery: Reward.template.estimatedDeliveryOn,
+        estimatedDelivery: reward.estimatedDeliveryOn,
         paymentType: "CREDIT_CARD",
-        revenueInUsdCents: 2_500,
-        rewardId: Reward.template.id,
-        rewardTitle: Reward.template.title,
-        shippingEnabled: Reward.template.shipping.enabled,
-        shippingAmount: nil,
+        revenueInUsdCents: 5_800,
+        rewardId: reward.id,
+        rewardMinimumUsd: "10.00",
+        rewardTitle: reward.title,
+        shippingEnabled: true,
+        shippingAmount: 15.0,
+        shippingAmountUsd: "15.00",
         userHasStoredApplePayCard: true
       )
 
@@ -2164,6 +2213,9 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       let checkoutData = Koala.CheckoutPropertiesData(
+        addOnsCountTotal: 0,
+        addOnsCountUnique: 0,
+        addOnsMinimumUsd: "0.00",
         amount: "35.00",
         bonusAmount: "25.00",
         bonusAmountInUsd: "25.00",
@@ -2172,9 +2224,11 @@ final class PledgeViewModelTests: TestCase {
         paymentType: "CREDIT_CARD",
         revenueInUsdCents: 3_500,
         rewardId: reward.id,
+        rewardMinimumUsd: "10.00",
         rewardTitle: reward.title,
         shippingEnabled: reward.shipping.enabled,
         shippingAmount: nil,
+        shippingAmountUsd: nil,
         userHasStoredApplePayCard: true
       )
 
@@ -4324,8 +4378,10 @@ final class PledgeViewModelTests: TestCase {
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
     withEnvironment(apiService: mockService, currentUser: .template) {
-      let project = Project.template
       let reward = Reward.template
+        |> Reward.lens.shipping.enabled .~ true
+      let project = Project.template
+        |> Project.lens.rewardData.rewards .~ [reward]
 
       let defaultShippingRule = ShippingRule(cost: 10, id: 1, location: .brooklyn)
 
@@ -4390,17 +4446,22 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       let checkoutData = Koala.CheckoutPropertiesData(
-        amount: "25.00",
+        addOnsCountTotal: 0,
+        addOnsCountUnique: 0,
+        addOnsMinimumUsd: "0.00",
+        amount: "35.00",
         bonusAmount: "15.00",
         bonusAmountInUsd: "15.00",
         checkoutId: 1,
         estimatedDelivery: Reward.template.estimatedDeliveryOn,
         paymentType: "CREDIT_CARD",
-        revenueInUsdCents: 2_500,
-        rewardId: Reward.template.id,
-        rewardTitle: Reward.template.title,
-        shippingEnabled: Reward.template.shipping.enabled,
+        revenueInUsdCents: 3_500,
+        rewardId: reward.id,
+        rewardMinimumUsd: "10.00",
+        rewardTitle: reward.title,
+        shippingEnabled: reward.shipping.enabled,
         shippingAmount: 10,
+        shippingAmountUsd: "10.00",
         userHasStoredApplePayCard: true
       )
 

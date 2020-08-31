@@ -712,18 +712,21 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       createBackingDataAndIsApplePay,
       checkoutIdProperty.signal,
       baseReward,
-      additionalPledgeAmount
+      additionalPledgeAmount,
+      allRewardsShippingTotal
     )
-    .map { dataAndIsApplePay, checkoutId, baseReward, additionalPledgeAmount
-      -> (CreateBackingData, Bool, Int?, Reward, Double) in
+    .map { dataAndIsApplePay, checkoutId, baseReward, additionalPledgeAmount, allRewardsShippingTotal
+      -> (CreateBackingData, Bool, Int?, Reward, Double, Double) in
       let (data, isApplePay) = dataAndIsApplePay
-      return (data, isApplePay, checkoutId, baseReward, additionalPledgeAmount)
+      return (data, isApplePay, checkoutId, baseReward, additionalPledgeAmount, allRewardsShippingTotal)
     }
-    .map { data, isApplePay, checkoutId, baseReward, additionalPledgeAmount -> ThanksPageData? in
+    .map { data, isApplePay, checkoutId, baseReward, additionalPledgeAmount, allRewardsShippingTotal
+      -> ThanksPageData? in
       let checkoutPropsData = checkoutPropertiesData(
         from: data,
         baseReward: baseReward,
         additionalPledgeAmount: additionalPledgeAmount,
+        allRewardsShippingTotal: allRewardsShippingTotal,
         checkoutId: checkoutId,
         isApplePay: isApplePay
       )
@@ -862,13 +865,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         )
       }
 
-    Signal.combineLatest(createBackingData, baseReward, additionalPledgeAmount)
+    Signal.combineLatest(createBackingData, baseReward, additionalPledgeAmount, allRewardsShippingTotal)
       .takeWhen(createButtonTapped)
-      .map { data, baseReward, additionalPledgeAmount in
+      .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
         let checkoutData = checkoutPropertiesData(
           from: data,
           baseReward: baseReward,
           additionalPledgeAmount: additionalPledgeAmount,
+          allRewardsShippingTotal: allRewardsShippingTotal,
           isApplePay: false
         )
 
@@ -1152,18 +1156,39 @@ private func checkoutPropertiesData(
   from createBackingData: CreateBackingData,
   baseReward: Reward,
   additionalPledgeAmount: Double,
+  allRewardsShippingTotal: Double?,
   checkoutId: Int? = nil,
   isApplePay: Bool
 ) -> Koala.CheckoutPropertiesData {
   let pledgeTotal = createBackingData.pledgeTotal
 
+  let staticUsdRate = Double(createBackingData.project.stats.staticUsdRate)
+
   let pledgeTotalUsdCents = pledgeTotal
-    .multiplyingCurrency(Double(createBackingData.project.stats.staticUsdRate))
+    .multiplyingCurrency(staticUsdRate)
     .multiplyingCurrency(100.0)
     .rounded()
 
   let bonusAmountUsd = additionalPledgeAmount
-    .multiplyingCurrency(Double(createBackingData.project.stats.staticUsdRate))
+    .multiplyingCurrency(staticUsdRate)
+
+  let addOnRewards = createBackingData.rewards
+    .filter { reward in reward.id != baseReward.id }
+    .map { reward -> [Reward] in
+      guard let selectedRewardQuantity = createBackingData.selectedQuantities[reward.id] else { return [] }
+      return Array(0..<selectedRewardQuantity).map { _ in reward }
+    }
+    .flatMap { $0 }
+
+  let addOnsCountTotal = addOnRewards.map(\.id).count
+  let addOnsCountUnique = Set(addOnRewards.map(\.id)).count
+  let addOnsMinimumUsd = Format.decimalCurrency(
+    for: addOnRewards
+      .reduce(0.0) { accum, addOn in accum.addingCurrency(addOn.minimum) }
+      .multiplyingCurrency(staticUsdRate)
+  )
+
+  let shippingAmount: Double? = baseReward.shipping.enabled ? allRewardsShippingTotal : nil
 
   let amount = Format.decimalCurrency(for: pledgeTotal)
   let bonusAmount = Format.decimalCurrency(for: additionalPledgeAmount)
@@ -1175,13 +1200,18 @@ private func checkoutPropertiesData(
     ? PaymentType.applePay.rawValue
     : PaymentType.creditCard.rawValue
   let shippingEnabled = baseReward.shipping.enabled
-  let shippingAmount = createBackingData.shippingRule?.cost
+  let shippingAmountUsd = (shippingAmount?.multiplyingCurrency(staticUsdRate))
+    .flatMap(Format.decimalCurrency)
   let rewardTitle = baseReward.title
+  let rewardMinimumUsd = Format.decimalCurrency(for: baseReward.minimum.multiplyingCurrency(staticUsdRate))
   let userHasEligibleStoredApplePayCard = AppEnvironment.current
     .applePayCapabilities
     .applePayCapable(for: createBackingData.project)
 
   return Koala.CheckoutPropertiesData(
+    addOnsCountTotal: addOnsCountTotal,
+    addOnsCountUnique: addOnsCountUnique,
+    addOnsMinimumUsd: addOnsMinimumUsd,
     amount: amount,
     bonusAmount: bonusAmount,
     bonusAmountInUsd: bonusAmountInUsd,
@@ -1190,9 +1220,11 @@ private func checkoutPropertiesData(
     paymentType: paymentType,
     revenueInUsdCents: revenueInUsdCents,
     rewardId: rewardId,
+    rewardMinimumUsd: rewardMinimumUsd,
     rewardTitle: rewardTitle,
     shippingEnabled: shippingEnabled,
     shippingAmount: shippingAmount,
+    shippingAmountUsd: shippingAmountUsd,
     userHasStoredApplePayCard: userHasEligibleStoredApplePayCard
   )
 }

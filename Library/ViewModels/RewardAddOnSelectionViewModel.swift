@@ -245,6 +245,32 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     )
     .map(PledgeViewData.init)
     .takeWhen(self.continueButtonTappedProperty.signal)
+
+    // MARK: - Tracking
+
+    Signal.zip(project, baseReward, context, refTag)
+      .take(first: 1)
+      .observeForUI()
+      .observeValues { project, baseReward, context, refTag in
+        AppEnvironment.current.koala.trackAddOnsPageViewed(
+          project: project,
+          reward: baseReward,
+          context: TrackingHelpers.pledgeContext(for: context),
+          refTag: refTag
+        )
+      }
+
+    Signal.zip(project, baseReward, context, refTag)
+      .takeWhen(self.continueButtonTappedProperty.signal)
+      .observeForUI()
+      .observeValues { project, baseReward, context, refTag in
+        AppEnvironment.current.koala.trackAddOnsContinueButtonClicked(
+          project: project,
+          reward: baseReward,
+          context: TrackingHelpers.pledgeContext(for: context),
+          refTag: refTag
+        )
+      }
   }
 
   private let (beginRefreshSignal, beginRefreshObserver) = Signal<Void, Never>.pipe()

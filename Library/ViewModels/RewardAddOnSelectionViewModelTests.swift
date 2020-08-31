@@ -936,35 +936,44 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
 
-    withEnvironment(apiService: mockService) {
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: nil,
-        context: .pledge
-      )
+    AppEnvironment.login(.init(accessToken: "deadbeef", user: User.brando))
+    AppEnvironment.replaceCurrentEnvironment(apiService: mockService)
 
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: nil,
+      context: .pledge
+    )
 
-      self.scheduler.advance()
-      self.vm.inputs.shippingRuleSelected(shippingRule)
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
 
-      self.vm.inputs.continueButtonTapped()
+    XCTAssertEqual(["Add-Ons Page Viewed"], self.trackingClient.events)
 
-      let expectedGoToPledgeData = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: shippingRule.location.id,
-        refTag: nil,
-        context: .pledge
-      )
+    self.scheduler.advance()
+    self.vm.inputs.shippingRuleSelected(shippingRule)
 
-      self.goToPledge.assertValues([expectedGoToPledgeData])
-    }
+    self.vm.inputs.continueButtonTapped()
+
+    XCTAssertEqual(["Add-Ons Page Viewed", "Add-Ons Continue Button Clicked"], self.trackingClient.events)
+    XCTAssertTrue(self.trackingClient.containsKeyPrefix("context_"))
+    XCTAssertTrue(self.trackingClient.containsKeyPrefix("session_"))
+    XCTAssertTrue(self.trackingClient.containsKeyPrefix("project_"))
+    XCTAssertTrue(self.trackingClient.containsKeyPrefix("user_"))
+
+    let expectedGoToPledgeData = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: shippingRule.location.id,
+      refTag: nil,
+      context: .pledge
+    )
+
+    self.goToPledge.assertValues([expectedGoToPledgeData])
   }
 
   func testGoToPledge_AddOnsIncluded() {
@@ -1002,43 +1011,52 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
 
-    withEnvironment(apiService: mockService) {
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: nil,
-        context: .pledge
-      )
+    AppEnvironment.login(.init(accessToken: "deadbeef", user: User.brando))
+    AppEnvironment.replaceCurrentEnvironment(apiService: mockService)
 
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: .activity,
+      context: .pledge
+    )
 
-      self.scheduler.advance()
-      self.vm.inputs.shippingRuleSelected(shippingRule)
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
 
-      self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 3, rewardId: 2)
-      self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 2, rewardId: 1)
-      self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 4, rewardId: 4)
+    XCTAssertEqual(["Add-Ons Page Viewed"], self.trackingClient.events)
 
-      self.goToPledge.assertValueCount(0)
+    self.scheduler.advance()
+    self.vm.inputs.shippingRuleSelected(shippingRule)
 
-      self.vm.inputs.continueButtonTapped()
+    self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 3, rewardId: 2)
+    self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 2, rewardId: 1)
+    self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 4, rewardId: 4)
 
-      self.goToPledge.assertValueCount(1)
-      XCTAssertEqual(self.goToPledge.values.last?.project, project)
-      XCTAssertEqual(
-        self.goToPledge.values.last?.rewards.count,
-        4
-      )
-      XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[reward.id], 1)
-      XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOn2.id], 3)
-      XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOn1.id], 2)
-      XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOn4.id], 4)
-      XCTAssertEqual(self.goToPledge.values.last?.selectedLocationId, shippingRule.location.id)
-      XCTAssertEqual(self.goToPledge.values.last?.refTag, nil)
-      XCTAssertEqual(self.goToPledge.values.last?.context, .pledge)
-    }
+    self.goToPledge.assertValueCount(0)
+
+    self.vm.inputs.continueButtonTapped()
+
+    XCTAssertEqual(["Add-Ons Page Viewed", "Add-Ons Continue Button Clicked"], self.trackingClient.events)
+    XCTAssertTrue(self.trackingClient.containsKeyPrefix("context_"))
+    XCTAssertTrue(self.trackingClient.containsKeyPrefix("session_"))
+    XCTAssertTrue(self.trackingClient.containsKeyPrefix("project_"))
+    XCTAssertTrue(self.trackingClient.containsKeyPrefix("user_"))
+
+    self.goToPledge.assertValueCount(1)
+    XCTAssertEqual(self.goToPledge.values.last?.project, project)
+    XCTAssertEqual(
+      self.goToPledge.values.last?.rewards.count,
+      4
+    )
+    XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[reward.id], 1)
+    XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOn2.id], 3)
+    XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOn1.id], 2)
+    XCTAssertEqual(self.goToPledge.values.last?.selectedQuantities[addOn4.id], 4)
+    XCTAssertEqual(self.goToPledge.values.last?.selectedLocationId, shippingRule.location.id)
+    XCTAssertEqual(self.goToPledge.values.last?.refTag, .activity)
+    XCTAssertEqual(self.goToPledge.values.last?.context, .pledge)
   }
 }
