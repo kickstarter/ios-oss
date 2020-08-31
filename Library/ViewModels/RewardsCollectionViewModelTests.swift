@@ -99,6 +99,22 @@ final class RewardsCollectionViewModelTests: TestCase {
     }
   }
 
+  func testGoToPledge_DoesNotEmitIfCreatorOfProject() {
+    let user = User.template
+    let project = Project.cosmicSurgery
+      |> Project.lens.creator .~ user
+
+    withEnvironment(config: .template, currentUser: user) {
+      self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.rewardSelected(with: project.rewards[0].id)
+
+      self.goToAddOnSelection.assertDidNotEmitValue()
+      self.goToPledge.assertDidNotEmitValue()
+    }
+  }
+
   func testGoToPledge_NotBacked() {
     withEnvironment(config: .template) {
       let project = Project.cosmicSurgery
