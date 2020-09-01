@@ -367,6 +367,10 @@ jobs:
           no_output_timeout: "30m" # 30 minutes
 
       - run:
+        name: Upload dSYMs
+        command: bin/upload-dysms-firebase.sh Firebase-Alpha output/KickBeta.app.dSYM.zip
+
+      - run:
           name: Cleanup Temp Branch
           command: make cleanup
 
@@ -431,6 +435,10 @@ jobs:
           name: Fastlane
           command: bundle exec fastlane alpha_match_gym_appcenter --verbose
           no_output_timeout: "30m" # 30 minutes
+
+      - run:
+        name: Upload dSYMs
+        command: bin/upload-dysms-firebase.sh Firebase-Alpha output/KickAlpha.app.dSYM.zip
 
       - store_artifacts:
           path: /tmp/xcode_raw.log
@@ -542,6 +550,10 @@ jobs:
           name: Fastlane
           command: bundle exec fastlane itunes_match_gym_deliver --verbose
           no_output_timeout: "30m" # 30 minutes
+
+      - run:
+        name: Upload dSYMs
+        command: bin/upload-dysms-firebase.sh Firebase-Production output/Kickstarter.app.dSYM.zip
 
       - store_artifacts:
           path: /tmp/xcode_raw.log

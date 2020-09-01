@@ -9,8 +9,6 @@ IOS_VERSION ?= 13.6
 IPHONE_NAME ?= iPhone 8
 BRANCH ?= master
 DIST_BRANCH = $(RELEASE)-dist
-FABRIC_SDK_VERSION ?= 3.13.2
-FABRIC_SDK_URL ?= https://s3.amazonaws.com/kits-crashlytics-com/ios/com.twitter.crashlytics.ios/INSERT_SDK_VERSION/com.crashlytics.ios-manual.zip
 COMMIT ?= $(CIRCLE_SHA1)
 CURRENT_BRANCH ?= $(CIRCLE_BRANCH)
 
@@ -144,8 +142,5 @@ secrets:
 		&& cp -n Configs/Secrets.swift.example Frameworks/native-secrets/ios/Secrets.swift \
 		|| true; \
 	fi
-
-fabric:
-	bin/download_framework.sh Fabric $(FABRIC_SDK_VERSION) $(FABRIC_SDK_URL); \
 
 .PHONY: test-all test clean dependencies submodules deploy secrets strings fabric
