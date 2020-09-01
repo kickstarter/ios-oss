@@ -367,8 +367,8 @@ jobs:
           no_output_timeout: "30m" # 30 minutes
 
       - run:
-        name: Upload dSYMs
-        command: bin/upload-dysms-firebase.sh Firebase-Alpha output/KickBeta.app.dSYM.zip
+          name: Upload dSYMs
+          command: bin/upload-dysms-firebase.sh Firebase-Alpha output/KickBeta.app.dSYM.zip
 
       - run:
           name: Cleanup Temp Branch
@@ -437,8 +437,8 @@ jobs:
           no_output_timeout: "30m" # 30 minutes
 
       - run:
-        name: Upload dSYMs
-        command: bin/upload-dysms-firebase.sh Firebase-Alpha output/KickAlpha.app.dSYM.zip
+          name: Upload dSYMs
+          command: bin/upload-dysms-firebase.sh Firebase-Alpha output/KickAlpha.app.dSYM.zip
 
       - store_artifacts:
           path: /tmp/xcode_raw.log
@@ -552,8 +552,8 @@ jobs:
           no_output_timeout: "30m" # 30 minutes
 
       - run:
-        name: Upload dSYMs
-        command: bin/upload-dysms-firebase.sh Firebase-Production output/Kickstarter.app.dSYM.zip
+          name: Upload dSYMs
+          command: bin/upload-dysms-firebase.sh Firebase-Production output/Kickstarter.app.dSYM.zip
 
       - store_artifacts:
           path: /tmp/xcode_raw.log
