@@ -23,6 +23,8 @@ public protocol RewardAddOnCardViewModelOutputs {
   var amountConversionLabelText: Signal<String, Never> { get }
   var amountLabelAttributedText: Signal<NSAttributedString, Never> { get }
   var descriptionLabelText: Signal<String, Never> { get }
+  var generateSelectionFeedback: Signal<Void, Never> { get }
+  var generateNotificationWarningFeedback: Signal<Void, Never> { get }
   var includedItemsLabelAttributedText: Signal<NSAttributedString, Never> { get }
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
   var notifiyDelegateDidSelectQuantity: Signal<(SelectedRewardQuantity, SelectedRewardId), Never> { get }
@@ -134,6 +136,20 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
 
     self.stepperValue = initialOrUpdatedSelectedQuantity
       .map(Double.init)
+
+    self.generateSelectionFeedback = Signal.combineLatest(
+      updatedSelectedQuantity.map(Double.init),
+      self.stepperMaxValue
+    )
+    .filter { value, max in value > 0 && value < max }
+    .ignoreValues()
+
+    self.generateNotificationWarningFeedback = Signal.combineLatest(
+      updatedSelectedQuantity.map(Double.init),
+      self.stepperMaxValue
+    )
+    .filter { value, max in value == 0 || value >= max }
+    .ignoreValues()
   }
 
   private let addButtonTappedProperty = MutableProperty(())
@@ -161,6 +177,8 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
   public let amountConversionLabelText: Signal<String, Never>
   public let amountLabelAttributedText: Signal<NSAttributedString, Never>
   public let descriptionLabelText: Signal<String, Never>
+  public let generateSelectionFeedback: Signal<Void, Never>
+  public let generateNotificationWarningFeedback: Signal<Void, Never>
   public let includedItemsLabelAttributedText: Signal<NSAttributedString, Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
   public let notifiyDelegateDidSelectQuantity: Signal<(SelectedRewardQuantity, SelectedRewardId), Never>

@@ -176,6 +176,14 @@ public final class RewardAddOnCardView: UIView {
       .observeValues { [weak self] values in
         self?.configurePillsView(values)
       }
+
+    self.viewModel.outputs.generateSelectionFeedback
+      .observeForUI()
+      .observeValues { generateSelectionFeedback() }
+
+    self.viewModel.outputs.generateNotificationWarningFeedback
+      .observeForUI()
+      .observeValues { generateNotificationWarningFeedback() }
   }
 
   // MARK: - Private Helpers

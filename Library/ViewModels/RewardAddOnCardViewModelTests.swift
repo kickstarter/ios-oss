@@ -17,6 +17,8 @@ final class RewardAddOnCardViewModelTests: TestCase {
   private let descriptionLabelText = TestObserver<String, Never>()
   private let estimatedDeliveryDateLabelHidden = TestObserver<Bool, Never>()
   private let estimatedDeliveryDateLabelText = TestObserver<String, Never>()
+  private let generateSelectionFeedback = TestObserver<Void, Never>()
+  private let generateNotificationWarningFeedback = TestObserver<Void, Never>()
   private let includedItemsLabelAttributedText = TestObserver<String, Never>()
   private let includedItemsStackViewHidden = TestObserver<Bool, Never>()
   private let notifiyDelegateDidSelectQuantityQuantity = TestObserver<Int, Never>()
@@ -39,6 +41,10 @@ final class RewardAddOnCardViewModelTests: TestCase {
     self.vm.outputs.amountConversionLabelHidden.observe(self.amountConversionLabelHidden.observer)
     self.vm.outputs.amountConversionLabelText.observe(self.amountConversionLabelText.observer)
     self.vm.outputs.descriptionLabelText.observe(self.descriptionLabelText.observer)
+    self.vm.outputs.generateSelectionFeedback.observe(self.generateSelectionFeedback.observer)
+    self.vm.outputs.generateNotificationWarningFeedback.observe(
+      self.generateNotificationWarningFeedback.observer
+    )
     self.vm.outputs.includedItemsLabelAttributedText.map(\.string)
       .observe(self.includedItemsLabelAttributedText.observer)
     self.vm.outputs.includedItemsStackViewHidden.observe(self.includedItemsStackViewHidden.observer)
@@ -925,5 +931,42 @@ final class RewardAddOnCardViewModelTests: TestCase {
     self.quantityLabelText.assertValues(["5", "4", "3"])
     self.notifiyDelegateDidSelectQuantityRewardId.assertValues([1, 1])
     self.notifiyDelegateDidSelectQuantityQuantity.assertValues([4, 3])
+  }
+
+  func testGenerateFeedback() {
+    let reward = Reward.template
+      |> Reward.lens.limitPerBacker .~ 10
+
+    self.vm.inputs
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
+
+    self.generateSelectionFeedback.assertDidNotEmitValue()
+    self.generateNotificationWarningFeedback.assertDidNotEmitValue()
+
+    self.vm.inputs.stepperValueChanged(1)
+    self.generateSelectionFeedback.assertValueCount(1)
+    self.generateNotificationWarningFeedback.assertValueCount(0)
+
+    self.vm.inputs.stepperValueChanged(5)
+    self.generateSelectionFeedback.assertValueCount(2)
+    self.generateNotificationWarningFeedback.assertValueCount(0)
+
+    self.vm.inputs.stepperValueChanged(10)
+    self.generateSelectionFeedback.assertValueCount(2)
+    self.generateNotificationWarningFeedback.assertValueCount(1)
+
+    self.vm.inputs.stepperValueChanged(4)
+    self.generateSelectionFeedback.assertValueCount(3)
+    self.generateNotificationWarningFeedback.assertValueCount(1)
+
+    self.vm.inputs.stepperValueChanged(0)
+    self.generateSelectionFeedback.assertValueCount(3)
+    self.generateNotificationWarningFeedback.assertValueCount(2)
   }
 }
