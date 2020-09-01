@@ -310,7 +310,7 @@ jobs:
 
       - run:
           name: Upload dSYMs
-          command: bin/upload-dysms-firebase.sh Firebase-Alpha output/KickBeta.app.dSYM.zip
+          command: bin/upload-dysms-firebase.sh Firebase-Alpha KickBeta.app.dSYM.zip
 
       - run:
           name: Cleanup Temp Branch
@@ -372,7 +372,7 @@ jobs:
 
       - run:
           name: Upload dSYMs
-          command: bin/upload-dysms-firebase.sh Firebase-Alpha output/KickAlpha.app.dSYM.zip
+          command: bin/upload-dysms-firebase.sh Firebase-Alpha KickAlpha.app.dSYM.zip
 
       - store_artifacts:
           path: /tmp/xcode_raw.log
@@ -471,7 +471,7 @@ jobs:
 
       - run:
           name: Upload dSYMs
-          command: bin/upload-dysms-firebase.sh Firebase-Production output/Kickstarter.app.dSYM.zip
+          command: bin/upload-dysms-firebase.sh Firebase-Production Kickstarter.app.dSYM.zip
 
       - store_artifacts:
           path: /tmp/xcode_raw.log
