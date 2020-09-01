@@ -326,17 +326,22 @@ final class ThanksViewModelTests: TestCase {
 
   func testThanksPageViewed_Properties() {
     let checkoutData = Koala.CheckoutPropertiesData(
-      amount: "10.00",
-      bonusAmount: "20.00",
-      bonusAmountInUsd: "20.00",
+      addOnsCountTotal: 2,
+      addOnsCountUnique: 1,
+      addOnsMinimumUsd: "8.00",
+      amount: "43.00",
+      bonusAmount: "10.00",
+      bonusAmountInUsd: "10.00",
       checkoutId: 1,
-      estimatedDelivery: nil,
+      estimatedDelivery: 12_345_678,
       paymentType: "CREDIT_CARD",
-      revenueInUsdCents: 500,
+      revenueInUsdCents: 2_000,
       rewardId: 2,
+      rewardMinimumUsd: "5.00",
       rewardTitle: "SUPER reward",
-      shippingEnabled: false,
-      shippingAmount: nil,
+      shippingEnabled: true,
+      shippingAmount: 10,
+      shippingAmountUsd: "10.00",
       userHasStoredApplePayCard: true
     )
 
@@ -348,17 +353,22 @@ final class ThanksViewModelTests: TestCase {
     XCTAssertEqual(["Triggered App Store Rating Dialog", "Thanks Page Viewed"], self.trackingClient.events)
 
     // Checkout properties
-    XCTAssertEqual("10.00", props?["checkout_amount"] as? String)
-    XCTAssertEqual("20.00", props?["checkout_bonus_amount"] as? String)
-    XCTAssertEqual("20.00", props?["checkout_bonus_amount_usd"] as? String)
+    XCTAssertEqual(2, props?["checkout_add_ons_count_total"] as? Int)
+    XCTAssertEqual(1, props?["checkout_add_ons_count_unique"] as? Int)
+    XCTAssertEqual("8.00", props?["checkout_add_ons_minimum_usd"] as? String)
+    XCTAssertEqual("43.00", props?["checkout_amount"] as? String)
+    XCTAssertEqual("10.00", props?["checkout_bonus_amount"] as? String)
+    XCTAssertEqual("10.00", props?["checkout_bonus_amount_usd"] as? String)
     XCTAssertEqual("CREDIT_CARD", props?["checkout_payment_type"] as? String)
     XCTAssertEqual("SUPER reward", props?["checkout_reward_title"] as? String)
+    XCTAssertEqual("5.00", props?["checkout_reward_minimum_usd"] as? String)
     XCTAssertEqual(2, props?["checkout_reward_id"] as? Int)
-    XCTAssertEqual(500, props?["checkout_revenue_in_usd_cents"] as? Int)
-    XCTAssertEqual(false, props?["checkout_reward_shipping_enabled"] as? Bool)
+    XCTAssertEqual(2_000, props?["checkout_revenue_in_usd_cents"] as? Int)
+    XCTAssertEqual(true, props?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
-    XCTAssertNil(props?["checkout_shipping_amount"] as? Double)
-    XCTAssertNil(props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
+    XCTAssertEqual(10.00, props?["checkout_shipping_amount"] as? Double)
+    XCTAssertEqual("10.00", props?["checkout_shipping_amount_usd"] as? String)
+    XCTAssertEqual(12_345_678, props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
 
     // Pledge properties
     XCTAssertEqual(true, props?["pledge_backer_reward_has_items"] as? Bool)
