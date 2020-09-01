@@ -37,7 +37,7 @@ test: bootstrap
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
-dependencies: carthage-bootstrap configs secrets fabric
+dependencies: carthage-bootstrap configs secrets
 
 bootstrap: hooks dependencies
 
@@ -135,7 +135,7 @@ strings:
 
 secrets:
 	-@rm -rf Frameworks/native-secrets
-	-@git clone https://github.com/kickstarter/native-secrets Frameworks/native-secrets 2>/dev/null || echo '(Skipping secrets.)'
+	-@git clone https://github.com/kickstarter/native-secrets -b move-firebase Frameworks/native-secrets 2>/dev/null || echo '(Skipping secrets.)'
 	if [ ! -d Frameworks/native-secrets ]; \
 	then \
 		mkdir -p Frameworks/native-secrets/ios \
@@ -143,4 +143,4 @@ secrets:
 		|| true; \
 	fi
 
-.PHONY: test-all test clean dependencies submodules deploy secrets strings fabric
+.PHONY: test-all test clean dependencies submodules deploy secrets strings
