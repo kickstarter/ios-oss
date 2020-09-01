@@ -219,10 +219,9 @@ private func amountStringForReward(
       omitCurrencyCode: project.stats.omitUSCurrencyCode
     )
 
-    let combinedString = localizedString(
-      key: "reward_amount_plus_shipping_cost_each",
-      defaultValue: "%{reward_amount} + %{shipping_cost} shipping each",
-      substitutions: ["reward_amount": amountString, "shipping_cost": shippingAmount]
+    let combinedString = Strings.reward_amount_plus_shipping_cost_each(
+      reward_amount: amountString,
+      shipping_cost: shippingAmount
     )
 
     let attributedString = combinedString.attributed(
@@ -329,11 +328,7 @@ private func limitPerBackerString(project: Project, reward: Reward) -> String? {
     limitPerBacker > 0
   else { return nil }
 
-  return localizedString(
-    key: "limit_limit_per_backer",
-    defaultValue: "Limit %{limit_per_backer}",
-    substitutions: ["limit_per_backer": "\(limitPerBacker)"]
-  )
+  return Strings.limit_limit_per_backer(limit_per_backer: "\(limitPerBacker)")
 }
 
 private func remainingString(project: Project, reward: Reward) -> String? {

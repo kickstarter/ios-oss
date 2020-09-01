@@ -32,15 +32,10 @@ public final class RewardAddOnSelectionContinueCTAViewModel: RewardAddOnSelectio
 
     self.buttonTitle = selectedQuantity.map { quantity in
       if quantity > 0 {
-        return localizedString(
-          key: "Continue_with_quantity_add_ons",
-          defaultValue: "Continue with %{quantity} add-ons",
-          count: quantity,
-          substitutions: ["quantity": Format.wholeNumber(quantity)]
-        )
+        return Strings.Continue_with_quantity_count_add_ons(quantity_count: quantity)
       }
 
-      return localizedString(key: "Skip_add_ons", defaultValue: "Skip add-ons")
+      return Strings.Skip_add_ons()
     }
 
     self.buttonEnabled = isValid

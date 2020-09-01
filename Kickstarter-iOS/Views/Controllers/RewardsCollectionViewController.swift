@@ -262,16 +262,12 @@ final class RewardsCollectionViewController: UICollectionViewController {
       preferredStyle: .alert
     )
 
-    // FIXME: replace once translations are generated.
-    let yes = localizedString(key: "Yes_continue", defaultValue: "Yes, continue")
-    let no = localizedString(key: "No_go_back", defaultValue: "No, go back")
-
-    let continueAction = UIAlertAction(title: yes, style: .default) { [weak self] _ in
+    let continueAction = UIAlertAction(title: Strings.Yes_continue(), style: .default) { [weak self] _ in
       self?.viewModel.inputs.confirmedEditReward()
     }
 
     alert.addAction(continueAction)
-    alert.addAction(UIAlertAction(title: no, style: .cancel))
+    alert.addAction(UIAlertAction(title: Strings.No_go_back(), style: .cancel))
     alert.preferredAction = continueAction
 
     self.present(alert, animated: true)

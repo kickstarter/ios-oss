@@ -120,7 +120,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
 
     _ = self.backerLabel
-      |> \.text %~ { _ in localizedString(key: "You_backed", defaultValue: "You backed") }
+      |> \.text %~ { _ in Strings.You_backed() }
       |> \.font .~ UIFont.ksr_footnote().weighted(.medium)
       |> \.textColor .~ .white
 

@@ -35,25 +35,16 @@ public enum EmptyStateViewType {
     switch self {
     case .errorPullToRefresh: return ""
     case .addOnsUnavailable:
-      return localizedString(
-        key: "Add_ons_unavailable",
-        defaultValue: "Add-ons unavailable"
-      )
+      return Strings.Add_ons_unavailable()
     }
   }
 
   var bodyLabelText: String {
     switch self {
     case .errorPullToRefresh:
-      return localizedString(
-        key: "Something_went_wrong_pull_to_refresh",
-        defaultValue: "Something went wrong, pull to refresh."
-      )
+      return Strings.Something_went_wrong_pull_to_refresh()
     case .addOnsUnavailable:
-      return localizedString(
-        key: "Change_your_shipping_location_or_skip_add_ons_to_continue",
-        defaultValue: "Change your shipping location or skip add-ons to continue."
-      )
+      return Strings.Change_your_shipping_location_or_skip_add_ons_to_continue()
     }
   }
 

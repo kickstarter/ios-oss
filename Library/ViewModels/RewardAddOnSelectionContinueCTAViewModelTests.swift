@@ -75,7 +75,7 @@ final class RewardAddOnSelectionContinueCTAViewModelTests: TestCase {
       "Skip add-ons",
       "Continue with 2 add-ons",
       "Skip add-ons",
-      "Continue with 1 add-ons" // FIXME: Once translations are in, this should drop the plural in add-ons
+      "Continue with 1 add-on"
     ])
   }
 }

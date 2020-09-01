@@ -221,9 +221,7 @@ public final class ManagePledgeViewModel:
     }
 
     self.pledgeDetailsSectionLabelText = userIsCreatorOfProject.map {
-      $0
-        ? localizedString(key: "Pledge_details", defaultValue: "Pledge details")
-        : localizedString(key: "Your_pledge_details", defaultValue: "Your pledge details")
+      $0 ? Strings.Pledge_details() : Strings.Your_pledge_details()
     }
 
     self.startRefreshing = Signal.merge(
@@ -455,10 +453,7 @@ private func navigationBarTitle(
   userIsCreatorOfProject: Bool
 ) -> String {
   if userIsCreatorOfProject {
-    return localizedString(
-      key: "Pledge_details",
-      defaultValue: "Pledge details"
-    )
+    return Strings.Pledge_details()
   }
 
   return project.state == .live ? Strings.Manage_your_pledge() : Strings.Your_pledge()

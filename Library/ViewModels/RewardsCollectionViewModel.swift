@@ -139,10 +139,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       goToPledgeBackedWithAddOns
     )
     .map { _ in
-      localizedString(
-        key: "Continue_with_this_reward_It_may_not_offer_some_or_all_of_your_add_ons",
-        defaultValue: "Continue with this reward? It may not offer some or all of your add-ons."
-      )
+      Strings.Continue_with_this_reward_It_may_not_offer_some_or_all_of_your_add_ons()
     }
 
     let goToAddOnSelectionBackedConfirmed = Signal.zip(
@@ -267,9 +264,7 @@ private func titleForContext(_ context: RewardsCollectionViewContext, project: P
     return Strings.View_rewards()
   }
 
-  return context == .createPledge
-    ? Strings.Back_this_project()
-    : localizedString(key: "Edit_reward", defaultValue: "Edit reward")
+  return context == .createPledge ? Strings.Back_this_project() : Strings.Edit_reward()
 }
 
 private func shouldNavigateToReward(project: Project, reward: Reward, refTag _: RefTag?) -> Bool {

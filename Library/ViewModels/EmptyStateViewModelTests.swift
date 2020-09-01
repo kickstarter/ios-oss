@@ -39,7 +39,7 @@ final class EmptyStateViewModelTests: TestCase {
     self.vm.inputs.configure(with: .errorPullToRefresh)
 
     self.bodyLabelHidden.assertValues([false])
-    self.bodyLabelText.assertValues(["Something went wrong, pull to refresh."])
+    self.bodyLabelText.assertValues(["Something went wrong—pull to refresh."])
     self.bodyLabelTextColor.assertValues([.ksr_soft_black])
     self.imageName.assertValues(["icon-exclamation"])
     self.leftRightMargins.assertValues([Styles.grid(10)])
