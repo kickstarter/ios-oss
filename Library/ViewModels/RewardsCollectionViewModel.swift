@@ -142,17 +142,15 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       Strings.Continue_with_this_reward_It_may_not_offer_some_or_all_of_your_add_ons()
     }
 
-    let goToAddOnSelectionBackedConfirmed = Signal.zip(
-      goToAddOnSelectionBackedWithAddOns,
-      self.confirmedEditRewardProperty.signal
-    )
-    .map(first)
+    let goToAddOnSelectionBackedConfirmed = goToPledge
+      .takeWhen(self.confirmedEditRewardProperty.signal)
+      .filter(second >>> isTrue)
+      .map(first)
 
-    let goToPledgeBackedConfirmed = Signal.zip(
-      goToPledgeBackedWithAddOns,
-      self.confirmedEditRewardProperty.signal
-    )
-    .map(first)
+    let goToPledgeBackedConfirmed = goToPledge
+      .takeWhen(self.confirmedEditRewardProperty.signal)
+      .filter(second >>> isFalse)
+      .map(first)
 
     self.goToAddOnSelection = Signal.merge(
       goToAddOnSelectionNotBackedWithAddOns,
@@ -268,7 +266,9 @@ private func titleForContext(_ context: RewardsCollectionViewContext, project: P
 }
 
 private func shouldNavigateToReward(project: Project, reward: Reward, refTag _: RefTag?) -> Bool {
-  project.state == .live && (!userIsBacking(reward: reward, inProject: project) || reward.hasAddOns)
+  guard !currentUserIsCreator(of: project) else { return false }
+
+  return project.state == .live && (!userIsBacking(reward: reward, inProject: project) || reward.hasAddOns)
 }
 
 private func shouldTriggerEditRewardPrompt(_ data: PledgeViewData) -> Bool {
