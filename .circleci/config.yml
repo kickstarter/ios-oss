@@ -2,8 +2,6 @@ version: 2
 
 xcode_version: &xcode_version 11.6.0
 iphone_name: &iphone_name iPhone 8
-fabric_sdk_version: &fabric_sdk_version 3.10.5
-store_fabric_sdk_version: &store_fabric_sdk_version echo "$FABRIC_SDK_VERSION" > fabric_version.txt
 preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (13.6) [" || true
 
 base_job: &base_job
@@ -16,7 +14,6 @@ base_job: &base_job
     FL_OUTPUT_DIR: output
     LC_ALL: en_US.UTF-8
     LANG: en_US.UTF-8
-    FABRIC_SDK_VERSION: *fabric_sdk_version
     IPHONE_NAME: *iphone_name
     XCODE_VERSION: *xcode_version
 
@@ -31,15 +28,6 @@ jobs:
             - source-v1-
 
       - checkout
-
-      - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          name: Restore Fabric SDK
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -65,12 +53,6 @@ jobs:
           key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
-
-      - save_cache:
-          name: Cache Fabric SDK
-          key: fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-          paths:
-            - "Frameworks/Fabric"
 
       - restore_cache:
           name: Restore Bundler
@@ -105,14 +87,6 @@ jobs:
             - source-v1-
 
       - checkout
-
-      - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -154,14 +128,6 @@ jobs:
       - checkout
 
       - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
@@ -199,14 +165,6 @@ jobs:
       - checkout
 
       - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
@@ -242,14 +200,6 @@ jobs:
             - source-v1-
 
       - checkout
-
-      - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Store Xcode Version
@@ -323,14 +273,6 @@ jobs:
       - checkout
 
       - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
@@ -393,14 +335,6 @@ jobs:
       - checkout
 
       - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
@@ -458,14 +392,6 @@ jobs:
       - checkout
 
       - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
@@ -506,14 +432,6 @@ jobs:
             - source-v1-
 
       - checkout
-
-      - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
 
       - run:
           name: Store Xcode Version
