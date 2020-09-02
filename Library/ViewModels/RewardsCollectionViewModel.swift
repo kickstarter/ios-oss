@@ -29,7 +29,7 @@ public protocol RewardsCollectionViewModelOutputs {
   var reloadDataWithValues: Signal<[RewardCardViewData], Never> { get }
   var rewardsCollectionViewFooterIsHidden: Signal<Bool, Never> { get }
   var scrollToBackedRewardIndexPath: Signal<IndexPath, Never> { get }
-  var showEditRewardConfirmationPrompt: Signal<String, Never> { get }
+  var showEditRewardConfirmationPrompt: Signal<(String, String), Never> { get }
   var title: Signal<String, Never> { get }
 
   func selectedReward() -> Reward?
@@ -139,7 +139,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       goToPledgeBackedWithAddOns
     )
     .map { _ in
-      Strings.Continue_with_this_reward_It_may_not_offer_some_or_all_of_your_add_ons()
+      (Strings.Continue_with_this_reward(), Strings.It_may_not_offer_some_or_all_of_your_add_ons())
     }
 
     let goToAddOnSelectionBackedConfirmed = goToPledge
@@ -241,7 +241,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public let reloadDataWithValues: Signal<[RewardCardViewData], Never>
   public let rewardsCollectionViewFooterIsHidden: Signal<Bool, Never>
   public let scrollToBackedRewardIndexPath: Signal<IndexPath, Never>
-  public let showEditRewardConfirmationPrompt: Signal<String, Never>
+  public let showEditRewardConfirmationPrompt: Signal<(String, String), Never>
   public let title: Signal<String, Never>
 
   private let selectedRewardProperty = MutableProperty<Reward?>(nil)

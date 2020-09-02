@@ -19,7 +19,8 @@ final class RewardsCollectionViewModelTests: TestCase {
   private let reloadDataWithValuesRewardOrBacking = TestObserver<[Reward], Never>()
   private let rewardsCollectionViewFooterIsHidden = TestObserver<Bool, Never>()
   private let scrollToBackedRewardIndexPath = TestObserver<IndexPath, Never>()
-  private let showEditRewardConfirmationPrompt = TestObserver<String, Never>()
+  private let showEditRewardConfirmationPromptMessage = TestObserver<String, Never>()
+  private let showEditRewardConfirmationPromptTitle = TestObserver<String, Never>()
   private let title = TestObserver<String, Never>()
 
   override func setUp() {
@@ -39,7 +40,10 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.outputs.rewardsCollectionViewFooterIsHidden
       .observe(self.rewardsCollectionViewFooterIsHidden.observer)
     self.vm.outputs.scrollToBackedRewardIndexPath.observe(self.scrollToBackedRewardIndexPath.observer)
-    self.vm.outputs.showEditRewardConfirmationPrompt.observe(self.showEditRewardConfirmationPrompt.observer)
+    self.vm.outputs.showEditRewardConfirmationPrompt.map(first)
+      .observe(self.showEditRewardConfirmationPromptTitle.observer)
+    self.vm.outputs.showEditRewardConfirmationPrompt.map(second)
+      .observe(self.showEditRewardConfirmationPromptMessage.observer)
     self.vm.outputs.title.observe(self.title.observer)
   }
 
@@ -78,7 +82,8 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.goToAddOnSelection.assertDidNotEmitValue()
       self.goToPledge.assertDidNotEmitValue()
-      self.showEditRewardConfirmationPrompt.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptTitle.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptMessage.assertDidNotEmitValue()
       XCTAssertNil(self.vm.outputs.selectedReward())
 
       self.vm.inputs.rewardSelected(with: firstRewardId)
@@ -94,7 +99,8 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.goToAddOnSelection.assertValues([expected])
       self.goToPledge.assertDidNotEmitValue()
-      self.showEditRewardConfirmationPrompt.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptTitle.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptMessage.assertDidNotEmitValue()
       XCTAssertEqual(self.vm.outputs.selectedReward(), reward)
     }
   }
@@ -141,7 +147,8 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.goToAddOnSelection.assertDidNotEmitValue()
       self.goToPledge.assertValues([expected1])
-      self.showEditRewardConfirmationPrompt.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptTitle.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptMessage.assertDidNotEmitValue()
       XCTAssertEqual(self.vm.outputs.selectedReward(), firstReward)
 
       let expected2 = PledgeViewData(
@@ -157,7 +164,8 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.goToAddOnSelection.assertDidNotEmitValue()
       self.goToPledge.assertValues([expected1, expected2])
-      self.showEditRewardConfirmationPrompt.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptTitle.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptMessage.assertDidNotEmitValue()
       XCTAssertEqual(self.vm.outputs.selectedReward(), secondReward)
     }
   }
@@ -180,7 +188,8 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.goToAddOnSelection.assertDidNotEmitValue()
       self.goToPledge.assertDidNotEmitValue()
-      self.showEditRewardConfirmationPrompt.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptTitle.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptMessage.assertDidNotEmitValue()
       XCTAssertNil(self.vm.outputs.selectedReward())
 
       let expected1 = PledgeViewData(
@@ -196,7 +205,8 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.goToAddOnSelection.assertValues([expected1])
       self.goToPledge.assertDidNotEmitValue()
-      self.showEditRewardConfirmationPrompt.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptTitle.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptMessage.assertDidNotEmitValue()
       XCTAssertEqual(self.vm.outputs.selectedReward(), reward)
     }
   }
@@ -222,7 +232,8 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.goToAddOnSelection.assertDidNotEmitValue()
       self.goToPledge.assertDidNotEmitValue()
-      self.showEditRewardConfirmationPrompt.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptTitle.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptMessage.assertDidNotEmitValue()
       XCTAssertNil(self.vm.outputs.selectedReward())
 
       let expected1 = PledgeViewData(
@@ -238,8 +249,11 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.goToAddOnSelection.assertDidNotEmitValue()
       self.goToPledge.assertDidNotEmitValue()
-      self.showEditRewardConfirmationPrompt.assertValues([
-        "Continue with this reward? It may not offer some or all of your add-ons."
+      self.showEditRewardConfirmationPromptTitle.assertValues([
+        "Continue with this reward?"
+      ])
+      self.showEditRewardConfirmationPromptMessage.assertValues([
+        "It may not offer some or all of your add-ons."
       ])
       XCTAssertEqual(self.vm.outputs.selectedReward(), reward)
 
@@ -247,8 +261,11 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.goToAddOnSelection.assertValues([expected1])
       self.goToPledge.assertDidNotEmitValue()
-      self.showEditRewardConfirmationPrompt.assertValues([
-        "Continue with this reward? It may not offer some or all of your add-ons."
+      self.showEditRewardConfirmationPromptTitle.assertValues([
+        "Continue with this reward?"
+      ])
+      self.showEditRewardConfirmationPromptMessage.assertValues([
+        "It may not offer some or all of your add-ons."
       ])
       XCTAssertEqual(self.vm.outputs.selectedReward(), reward)
     }
@@ -275,7 +292,8 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.goToAddOnSelection.assertDidNotEmitValue()
       self.goToPledge.assertDidNotEmitValue()
-      self.showEditRewardConfirmationPrompt.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptTitle.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptMessage.assertDidNotEmitValue()
       XCTAssertNil(self.vm.outputs.selectedReward())
 
       let expected1 = PledgeViewData(
@@ -291,8 +309,11 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.goToAddOnSelection.assertDidNotEmitValue()
       self.goToPledge.assertDidNotEmitValue()
-      self.showEditRewardConfirmationPrompt.assertValues([
-        "Continue with this reward? It may not offer some or all of your add-ons."
+      self.showEditRewardConfirmationPromptTitle.assertValues([
+        "Continue with this reward?"
+      ])
+      self.showEditRewardConfirmationPromptMessage.assertValues([
+        "It may not offer some or all of your add-ons."
       ])
       XCTAssertEqual(self.vm.outputs.selectedReward(), reward)
 
@@ -300,8 +321,11 @@ final class RewardsCollectionViewModelTests: TestCase {
 
       self.goToAddOnSelection.assertDidNotEmitValue()
       self.goToPledge.assertValues([expected1])
-      self.showEditRewardConfirmationPrompt.assertValues([
-        "Continue with this reward? It may not offer some or all of your add-ons."
+      self.showEditRewardConfirmationPromptTitle.assertValues([
+        "Continue with this reward?"
+      ])
+      self.showEditRewardConfirmationPromptMessage.assertValues([
+        "It may not offer some or all of your add-ons."
       ])
       XCTAssertEqual(self.vm.outputs.selectedReward(), reward)
     }

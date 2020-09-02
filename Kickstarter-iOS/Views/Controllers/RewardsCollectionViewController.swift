@@ -183,8 +183,8 @@ final class RewardsCollectionViewController: UICollectionViewController {
 
     self.viewModel.outputs.showEditRewardConfirmationPrompt
       .observeForControllerAction()
-      .observeValues { [weak self] message in
-        self?.showEditRewardConfirmationPrompt(message: message)
+      .observeValues { [weak self] title, message in
+        self?.showEditRewardConfirmationPrompt(title: title, message: message)
       }
   }
 
@@ -255,10 +255,10 @@ final class RewardsCollectionViewController: UICollectionViewController {
     self.navigationController?.pushViewController(pledgeViewController, animated: true)
   }
 
-  private func showEditRewardConfirmationPrompt(message: String) {
+  private func showEditRewardConfirmationPrompt(title: String, message: String) {
     let alert = UIAlertController(
-      title: message,
-      message: nil,
+      title: title,
+      message: message,
       preferredStyle: .alert
     )
 
