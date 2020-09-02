@@ -80,6 +80,16 @@ internal class TestCase: FBSnapshotTestCase {
     super.tearDown()
     AppEnvironment.popEnvironment()
   }
+
+  /// Fulfills an expectation on the next run loop to allow a layout pass when required in some tests.
+  internal func allowLayoutPass() {
+    let exp = self.expectation(description: "layoutPass")
+    DispatchQueue.main.async {
+      exp.fulfill()
+    }
+
+    waitForExpectations(timeout: 0.01)
+  }
 }
 
 internal func preferredSimulatorCheck() {

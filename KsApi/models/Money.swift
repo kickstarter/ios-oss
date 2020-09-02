@@ -1,4 +1,5 @@
 import Foundation
+import Prelude
 
 public struct Money: Swift.Decodable, Equatable {
   public var amount: Double
@@ -43,5 +44,14 @@ extension Money {
     self.amount = amount
     self.currency = try values.decode(CurrencyCode.self, forKey: .currency)
     self.symbol = try values.decode(String.self, forKey: .symbol)
+  }
+}
+
+extension Money {
+  static var baseQueryProperties: NonEmptySet<Query.Money> {
+    return Query.Money.currency +| [
+      .amount,
+      .symbol
+    ]
   }
 }

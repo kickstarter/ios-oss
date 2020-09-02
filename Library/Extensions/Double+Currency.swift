@@ -18,4 +18,13 @@ extension Double {
 
     return multiplied.doubleValue
   }
+
+  public func subtractingCurrency(_ otherDouble: Double) -> Double {
+    let amountDecimal = Decimal(self)
+    let otherDecimal = Decimal(otherDouble)
+
+    let subtraction = NSDecimalNumber(decimal: amountDecimal - otherDecimal)
+
+    return subtraction.doubleValue
+  }
 }

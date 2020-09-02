@@ -26,6 +26,9 @@ public func accountQueryFields() -> NonEmptySet<Query.User> {
       .isAppleConnected,
       .isEmailVerified,
       .isEmailDeliverable,
+      .id,
+      .imageUrl(alias: "imageUrl", blur: false, width: Constants.imageWidth),
+      .name,
       .hasPassword,
       .email
     ]
@@ -49,7 +52,13 @@ public func storedCardsQueryFields() -> NonEmptySet<Query.User> {
 }
 
 public func changeEmailQueryFields() -> NonEmptySet<Query.User> {
-  return .email +| [.isEmailVerified, .isEmailDeliverable]
+  return .email +| [
+    .isEmailVerified,
+    .isEmailDeliverable,
+    .id,
+    .imageUrl(alias: "imageUrl", blur: false, width: Constants.imageWidth),
+    .name
+  ]
 }
 
 public func backingsQueryFields(status: String) -> NonEmptySet<Query.User> {

@@ -9,9 +9,9 @@ final class ShippingRulesDataSourceTests: XCTestCase {
 
   func testLoad() {
     self.dataSource.load([
-      ShippingRuleData(project: .template, selectedShippingRule: .template, shippingRule: .template),
-      ShippingRuleData(project: .template, selectedShippingRule: .template, shippingRule: .template),
-      ShippingRuleData(project: .template, selectedShippingRule: .template, shippingRule: .template)
+      ShippingRuleData(selectedShippingRule: .template, shippingRule: .template),
+      ShippingRuleData(selectedShippingRule: .template, shippingRule: .template),
+      ShippingRuleData(selectedShippingRule: .template, shippingRule: .template)
     ])
 
     XCTAssertEqual(3, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))

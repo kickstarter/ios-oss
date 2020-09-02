@@ -23,6 +23,8 @@ public final class Koala {
   private enum DataLakeApprovedEvent: String, CaseIterable {
     case activityFeedViewed = "Activity Feed Viewed"
     case addNewCardButtonClicked = "Add New Card Button Clicked"
+    case addOnsContinueButtonClicked = "Add-Ons Continue Button Clicked"
+    case addOnsPageViewed = "Add-Ons Page Viewed"
     case campaignDetailsButtonClicked = "Campaign Details Button Clicked"
     case campaignDetailsPledgeButtonClicked = "Campaign Details Pledge Button Clicked"
     case creatorDetailsClicked = "Creator Details Clicked"
@@ -68,6 +70,7 @@ public final class Koala {
   /// Determines the screen from which the event is sent.
   public enum LocationContext: String {
     case activities = "activity_feed_screen" // ActivitiesViewController
+    case addOnsSelection = "add_ons_selection" // RewardAddOnSelectionViewController
     case campaign = "campaign_screen" // ProjectDescriptionViewController
     case discovery = "explore_screen" // DiscoveryViewController
     case editorialProjects = "editorial_collection_screen" // EditorialProjectsViewController
@@ -340,15 +343,22 @@ public final class Koala {
   }
 
   public struct CheckoutPropertiesData: Equatable {
+    let addOnsCountTotal: Int?
+    let addOnsCountUnique: Int?
+    let addOnsMinimumUsd: String?
     let amount: String
+    let bonusAmount: String
+    let bonusAmountInUsd: String
     let checkoutId: Int?
     let estimatedDelivery: TimeInterval?
     let paymentType: String?
     let revenueInUsdCents: Int
     let rewardId: Int
+    let rewardMinimumUsd: String
     let rewardTitle: String?
     let shippingEnabled: Bool
     let shippingAmount: Double?
+    let shippingAmountUsd: String?
     let userHasStoredApplePayCard: Bool
   }
 
@@ -611,6 +621,42 @@ public final class Koala {
   }
 
   // MARK: - Pledge Events
+
+  public func trackAddOnsContinueButtonClicked(
+    project: Project,
+    reward: Reward,
+    context: PledgeContext,
+    refTag: RefTag?
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(pledgeProperties(from: reward))
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
+
+    self.track(
+      event: DataLakeApprovedEvent.addOnsContinueButtonClicked.rawValue,
+      location: .addOnsSelection,
+      properties: props,
+      refTag: refTag?.stringTag
+    )
+  }
+
+  public func trackAddOnsPageViewed(
+    project: Project,
+    reward: Reward,
+    context: PledgeContext,
+    refTag: RefTag?
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(pledgeProperties(from: reward))
+      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
+
+    self.track(
+      event: DataLakeApprovedEvent.addOnsPageViewed.rawValue,
+      location: .addOnsSelection,
+      properties: props,
+      refTag: refTag?.stringTag
+    )
+  }
 
   public func trackPledgeCTAButtonClicked(
     stateType: PledgeStateCTAType,
@@ -2304,14 +2350,23 @@ private func checkoutProperties(from data: Koala.CheckoutPropertiesData, prefix:
   var result: [String: Any] = [:]
 
   result["amount"] = data.amount
+  result["add_ons_count_total"] = data.addOnsCountTotal
+  result["add_ons_count_unique"] = data.addOnsCountUnique
+  result["add_ons_minimum_usd"] = data.addOnsMinimumUsd
+  result["bonus_amount"] = data.bonusAmount
+  result["bonus_amount_usd"] = data.bonusAmountInUsd
   result["id"] = data.checkoutId
   result["payment_type"] = data.paymentType
   result["reward_id"] = data.rewardId
   result["reward_title"] = data.rewardTitle
+  result["reward_minimum_usd"] = data.rewardMinimumUsd
   result["shipping_amount"] = data.shippingAmount
   result["revenue_in_usd_cents"] = data.revenueInUsdCents
   result["reward_estimated_delivery_on"] = data.estimatedDelivery
   result["reward_shipping_enabled"] = data.shippingEnabled
+  result["shipping_amount"] = data.shippingAmount
+  result["shipping_amount_usd"] = data.shippingAmountUsd
+  result["reward_estimated_delivery_on"] = data.estimatedDelivery
   result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
 
   return result.prefixedKeys(prefix)

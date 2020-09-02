@@ -581,7 +581,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     let config = Config.template
     let project = Project.template
     let projectFull = Project.template
-      |> Project.lens.rewards .~ [Reward.noReward, Reward.template]
+      |> Project.lens.rewardData.rewards .~ [Reward.noReward, Reward.template]
 
     let backedProject = Project.template
       |> Project.lens.personalization.backing .~ Backing.template

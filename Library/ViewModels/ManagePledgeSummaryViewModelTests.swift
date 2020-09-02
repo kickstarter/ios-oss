@@ -37,8 +37,10 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       backerId: 1,
       backerName: "Backer McGee",
       backerSequence: 999,
-      backingState: BackingState.pledged,
+      backingState: Backing.Status.pledged,
+      bonusAmount: nil,
       currentUserIsCreatorOfProject: false,
+      isNoReward: false,
       locationName: nil,
       needsConversion: false,
       omitUSCurrencyCode: true,
@@ -46,7 +48,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       projectCountry: Project.Country.us,
       projectDeadline: 1_572_626_213.0,
-      projectState: ProjectState.live,
+      projectState: Project.State.live,
+      rewardMinimum: 30,
       shippingAmount: nil
     )
 
@@ -67,8 +70,10 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       backerId: 123,
       backerName: "Blob",
       backerSequence: 999,
-      backingState: BackingState.pledged,
+      backingState: Backing.Status.pledged,
+      bonusAmount: nil,
       currentUserIsCreatorOfProject: false,
+      isNoReward: false,
       locationName: nil,
       needsConversion: false,
       omitUSCurrencyCode: true,
@@ -76,7 +81,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       projectCountry: Project.Country.us,
       projectDeadline: 1_572_626_213.0,
-      projectState: ProjectState.live,
+      projectState: Project.State.live,
+      rewardMinimum: 30,
       shippingAmount: nil
     )
 
@@ -100,8 +106,10 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       backerId: 321,
       backerName: "Backer McGee",
       backerSequence: 999,
-      backingState: BackingState.pledged,
+      backingState: Backing.Status.pledged,
+      bonusAmount: nil,
       currentUserIsCreatorOfProject: false,
+      isNoReward: false,
       locationName: nil,
       needsConversion: false,
       omitUSCurrencyCode: true,
@@ -109,7 +117,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       pledgedOn: 1_568_666_243.0,
       projectCountry: Project.Country.us,
       projectDeadline: 1_572_626_213.0,
-      projectState: ProjectState.live,
+      projectState: Project.State.live,
+      rewardMinimum: 30,
       shippingAmount: nil
     )
 

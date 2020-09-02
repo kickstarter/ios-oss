@@ -19,9 +19,12 @@ final class PledgeAmountViewController: UIViewController {
 
   private lazy var adaptableStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var amountInputView: AmountInputView = { AmountInputView(frame: .zero) }()
+  private lazy var amountInputStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var maxPledgeAmountErrorLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var minPledgeAmountLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var plusSignLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var titlesStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var subtitleLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var horizontalSpacer: UIView = { UIView(frame: .zero) }()
   private lazy var stepper: UIStepper = { UIStepper(frame: .zero) }()
@@ -33,22 +36,36 @@ final class PledgeAmountViewController: UIViewController {
     super.viewDidLoad()
 
     _ = self
-      |> \.accessibilityElements .~ [self.titleLabel, self.stepper, self.amountInputView]
+      |> \.accessibilityElements .~ [
+        self.titleLabel,
+        self.subtitleLabel,
+        self.stepper,
+        self.amountInputView
+      ]
 
     _ = (self.rootStackView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
+    _ = ([self.titleLabel, self.subtitleLabel], self.titlesStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
     _ = ([
-      self.titleLabel,
-      self.minPledgeAmountLabel,
+      self.titlesStackView,
       self.adaptableStackView,
       self.maxPledgeAmountErrorLabel,
       self.verticalSpacer
     ], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.stepper, self.horizontalSpacer, self.amountInputView], self.adaptableStackView)
+    _ = ([self.plusSignLabel, self.amountInputView], self.amountInputStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([
+      self.stepper,
+      self.horizontalSpacer,
+      self.amountInputStackView
+    ], self.adaptableStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     self.amountInputView.textField.delegate = self
@@ -86,23 +103,33 @@ final class PledgeAmountViewController: UIViewController {
       |> adaptableStackViewStyle(isAccessibilityCategory)
       |> \.spacing .~ Styles.grid(3)
 
+    _ = self.titlesStackView
+      |> \.axis .~ .vertical
+      |> \.spacing .~ Styles.grid(1)
+
+    _ = self.amountInputStackView
+      |> \.alignment .~ .center
+      |> \.spacing .~ Styles.grid(1)
+
     _ = self.horizontalSpacer
       |> \.isHidden .~ isAccessibilityCategory
 
     _ = self.titleLabel
-      |> checkoutBackgroundStyle
-    _ = self.titleLabel
       |> checkoutTitleLabelStyle
-      |> \.text %~ { _ in Strings.Your_pledge_amount() }
+      |> checkoutBackgroundStyle
+
+    _ = self.plusSignLabel
+      |> \.text .~ "+"
+      |> \.textColor .~ UIColor.ksr_dark_grey_400
+
+    _ = self.subtitleLabel
+      |> subtitleLabelStyle
 
     _ = self.rootStackView
       |> checkoutStackViewStyle
 
     _ = self.stepper
-      |> stepperStyle
-
-    _ = self.minPledgeAmountLabel
-      |> minPledgeAmountLabelStyle
+      |> checkoutStepperStyle
 
     _ = self.maxPledgeAmountErrorLabel
       |> maxPledgeAmountErrorLabelStyle
@@ -121,11 +148,12 @@ final class PledgeAmountViewController: UIViewController {
     self.amountInputView.textField.rac.textColor = self.viewModel.outputs.textFieldTextColor
     self.maxPledgeAmountErrorLabel.rac.hidden = self.viewModel.outputs.maxPledgeAmountErrorLabelIsHidden
     self.maxPledgeAmountErrorLabel.rac.text = self.viewModel.outputs.maxPledgeAmountErrorLabelText
-    self.minPledgeAmountLabel.rac.hidden = self.viewModel.outputs.minPledgeAmountLabelIsHidden
-    self.minPledgeAmountLabel.rac.text = self.viewModel.outputs.minPledgeAmountLabelText
+    self.plusSignLabel.rac.hidden = self.viewModel.outputs.plusSignLabelHidden
     self.stepper.rac.maximumValue = self.viewModel.outputs.stepperMaxValue
     self.stepper.rac.minimumValue = self.viewModel.outputs.stepperMinValue
     self.stepper.rac.value = self.viewModel.outputs.stepperValue
+    self.subtitleLabel.rac.hidden = self.viewModel.outputs.subTitleLabelHidden
+    self.titleLabel.rac.text = self.viewModel.outputs.titleLabelText
 
     self.viewModel.outputs.generateSelectionFeedback
       .observeForUI()
@@ -150,8 +178,8 @@ final class PledgeAmountViewController: UIViewController {
 
   // MARK: - Configuration
 
-  func configureWith(value: (project: Project, reward: Reward)) {
-    self.viewModel.inputs.configureWith(project: value.project, reward: value.reward)
+  func configureWith(value: PledgeAmountViewConfigData) {
+    self.viewModel.inputs.configureWith(data: value)
   }
 
   // MARK: - Actions
@@ -170,8 +198,8 @@ final class PledgeAmountViewController: UIViewController {
 
   // MARK: - Accessors
 
-  func selectedShippingAmountChanged(to amount: Double) {
-    self.viewModel.inputs.selectedShippingAmountChanged(to: amount)
+  func unavailableAmountChanged(to amount: Double) {
+    self.viewModel.inputs.unavailableAmountChanged(to: amount)
   }
 }
 
@@ -200,23 +228,12 @@ extension PledgeAmountViewController: UITextFieldDelegate {
 
 // MARK: - Styles
 
-private func stepperStyle(_ stepper: UIStepper) -> UIStepper {
-  return stepper
-    |> \.stepValue .~ 1.0
-    |> \.tintColor .~ UIColor.clear
-    <> UIStepper.lens.decrementImage(for: .normal) .~ image(named: "stepper-decrement-normal")
-    <> UIStepper.lens.decrementImage(for: .disabled) .~ image(named: "stepper-decrement-disabled")
-    <> UIStepper.lens.decrementImage(for: .highlighted) .~ image(named: "stepper-decrement-highlighted")
-    <> UIStepper.lens.incrementImage(for: .normal) .~ image(named: "stepper-increment-normal")
-    <> UIStepper.lens.incrementImage(for: .disabled) .~ image(named: "stepper-increment-disabled")
-    <> UIStepper.lens.incrementImage(for: .highlighted) .~ image(named: "stepper-increment-highlighted")
-}
-
-private let minPledgeAmountLabelStyle: LabelStyle = { label in
+private let subtitleLabelStyle: LabelStyle = { label in
   label
-    |> \.font .~ UIFont.ksr_caption1()
+    |> \.font .~ UIFont.ksr_footnote()
     |> \.numberOfLines .~ 0
     |> \.textColor .~ UIColor.ksr_text_navy_600
+    |> \.text .~ Strings.A_little_extra_to_help()
 }
 
 private let maxPledgeAmountErrorLabelStyle: LabelStyle = { label in

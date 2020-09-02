@@ -28,8 +28,7 @@ public final class ShippingRuleCellViewModel: ShippingRuleCellViewModelType,
       .map { $0.selectedShippingRule == $0.shippingRule }
 
     self.textLabelText = data
-      .map { ($0.project, $0.shippingRule) }
-      .map(formattedValue(_:shippingRule:))
+      .map(\.shippingRule.location.localizedName)
   }
 
   private let configDataProperty = MutableProperty<ShippingRuleData?>(nil)
@@ -42,15 +41,4 @@ public final class ShippingRuleCellViewModel: ShippingRuleCellViewModelType,
 
   public var inputs: ShippingRuleCellViewModelInputs { return self }
   public var outputs: ShippingRuleCellViewModelOutputs { return self }
-}
-
-// MARK: - Functions
-
-private func formattedValue(_ project: Project, shippingRule: ShippingRule) -> String {
-  let locationName = shippingRule.location.localizedName
-  let shippingCost = Strings.plus_shipping_cost(
-    shipping_cost: Format.currency(shippingRule.cost, country: project.country)
-  )
-
-  return "\(locationName) (\(shippingCost))"
 }

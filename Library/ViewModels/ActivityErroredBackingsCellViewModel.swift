@@ -2,11 +2,11 @@ import KsApi
 import ReactiveSwift
 
 public protocol ActivityErroredBackingsCellInputs {
-  func configure(with value: [GraphBacking])
+  func configure(with value: [ProjectAndBackingEnvelope])
 }
 
 public protocol ActivityErroredBackingsCellOutputs {
-  var erroredBackings: Signal<[GraphBacking], Never> { get }
+  var erroredBackings: Signal<[ProjectAndBackingEnvelope], Never> { get }
 }
 
 public protocol ActivityErroredBackingsCellViewModelType {
@@ -20,12 +20,12 @@ public final class ActivityErroredBackingsCellViewModel: ActivityErroredBackings
     self.erroredBackings = self.backingsSignal
   }
 
-  private let (backingsSignal, backingsObserver) = Signal<[GraphBacking], Never>.pipe()
-  public func configure(with value: [GraphBacking]) {
+  private let (backingsSignal, backingsObserver) = Signal<[ProjectAndBackingEnvelope], Never>.pipe()
+  public func configure(with value: [ProjectAndBackingEnvelope]) {
     self.backingsObserver.send(value: value)
   }
 
-  public let erroredBackings: Signal<[GraphBacking], Never>
+  public let erroredBackings: Signal<[ProjectAndBackingEnvelope], Never>
 
   public var inputs: ActivityErroredBackingsCellInputs { return self }
   public var outputs: ActivityErroredBackingsCellOutputs { return self }

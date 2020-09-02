@@ -147,14 +147,16 @@ public enum Format {
     omitCurrencyCode: Bool = true,
     defaultAttributes: String.Attributes = [:],
     superscriptAttributes: String.Attributes = [:],
+    maximumFractionDigits: Int = 2,
+    minimumFractionDigits: Int = 2,
     env: Environment = AppEnvironment.current
   ) -> NSAttributedString? {
     let symbol = currencySymbol(forCountry: country, omitCurrencyCode: omitCurrencyCode, env: env)
     let config = NumberFormatterConfig.defaultCurrencyConfig
       |> NumberFormatterConfig.lens.locale .~ env.locale
       |> NumberFormatterConfig.lens.currencySymbol .~ symbol
-      |> NumberFormatterConfig.lens.minimumFractionDigits .~ 2
-      |> NumberFormatterConfig.lens.maximumFractionDigits .~ 2
+      |> NumberFormatterConfig.lens.minimumFractionDigits .~ maximumFractionDigits
+      |> NumberFormatterConfig.lens.maximumFractionDigits .~ minimumFractionDigits
 
     guard let formatter = NumberFormatterConfig.cachedFormatter(forConfig: config)
       as? AttributedNumberFormatter else { return nil }

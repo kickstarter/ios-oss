@@ -13,7 +13,7 @@ internal final class SettingsAccountViewModelTests: TestCase {
 
   private let fetchAccountFieldsError = TestObserver<Void, Never>()
   private let reloadDataCurrency = TestObserver<Currency, Never>()
-  private let reloadDataEmail = TestObserver<String, Never>()
+  private let reloadDataEmail = TestObserver<String?, Never>()
   private let reloadDataIsAppleConnectedAccount = TestObserver<Bool, Never>()
   private let reloadDataShouldHideEmailPasswordSection = TestObserver<Bool, Never>()
   private let reloadDataShouldHideWarningIcon = TestObserver<Bool, Never>()

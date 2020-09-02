@@ -76,8 +76,7 @@
     fileprivate let fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>?
     fileprivate let fetchGraphUserAccountFieldsError: GraphError?
 
-    fileprivate let fetchGraphUserBackingsResponse: UserEnvelope<GraphBackingEnvelope>?
-    fileprivate let fetchGraphUserBackingsError: GraphError?
+    fileprivate let fetchGraphUserBackingsResult: Result<BackingsEnvelope, ErrorEnvelope>?
 
     fileprivate let addAttachmentResponse: UpdateDraft.Image?
     fileprivate let addAttachmentError: ErrorEnvelope?
@@ -86,7 +85,8 @@
 
     fileprivate let publishUpdateError: ErrorEnvelope?
 
-    fileprivate let fetchManagePledgeViewBackingResult: Result<ManagePledgeViewBackingEnvelope, GraphError>?
+    fileprivate let fetchManagePledgeViewBackingResult:
+      Result<ProjectAndBackingEnvelope, ErrorEnvelope>?
 
     fileprivate let fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>?
     fileprivate let fetchMessageThreadsResponse: [MessageThread]
@@ -105,6 +105,9 @@
     fileprivate let fetchProjectStatsError: ErrorEnvelope?
 
     fileprivate let fetchProjectSummaryResult: Result<ProjectSummaryEnvelope, GraphError>?
+
+    fileprivate let fetchRewardAddOnsSelectionViewRewardsResult:
+      Result<Project, ErrorEnvelope>?
 
     fileprivate let fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>?
 
@@ -244,14 +247,13 @@
       fetchGraphUserEmailFieldsResponse: UserEmailFields? = nil,
       fetchGraphUserAccountFieldsResponse: UserEnvelope<GraphUser>? = nil,
       fetchGraphUserAccountFieldsError: GraphError? = nil,
-      fetchGraphUserBackingsResponse: UserEnvelope<GraphBackingEnvelope>? = nil,
-      fetchGraphUserBackingsError: GraphError? = nil,
+      fetchGraphUserBackingsResult: Result<BackingsEnvelope, ErrorEnvelope>? = nil,
       addAttachmentResponse: UpdateDraft.Image? = nil,
       addAttachmentError: ErrorEnvelope? = nil,
       removeAttachmentResponse: UpdateDraft.Image? = nil,
       removeAttachmentError: ErrorEnvelope? = nil,
       publishUpdateError: ErrorEnvelope? = nil,
-      fetchManagePledgeViewBackingResult: Result<ManagePledgeViewBackingEnvelope, GraphError>? = nil,
+      fetchManagePledgeViewBackingResult: Result<ProjectAndBackingEnvelope, ErrorEnvelope>? = nil,
       fetchMessageThreadResult: Result<MessageThread?, ErrorEnvelope>? = nil,
       fetchMessageThreadsResponse: [MessageThread]? = nil,
       fetchProjectResponse: Project? = nil,
@@ -274,6 +276,8 @@
       followFriendError: ErrorEnvelope? = nil,
       incrementVideoCompletionError: ErrorEnvelope? = nil,
       incrementVideoStartError: ErrorEnvelope? = nil,
+      fetchRewardAddOnsSelectionViewRewardsResult: Result<Project, ErrorEnvelope>? =
+        nil,
       fetchSurveyResponseResponse: SurveyResponse? = nil,
       fetchSurveyResponseError: ErrorEnvelope? = nil,
       fetchUnansweredSurveyResponsesResponse: [SurveyResponse] = [],
@@ -364,8 +368,7 @@
 
       self.fetchGraphUserEmailFieldsResponse = fetchGraphUserEmailFieldsResponse
 
-      self.fetchGraphUserBackingsResponse = fetchGraphUserBackingsResponse
-      self.fetchGraphUserBackingsError = fetchGraphUserBackingsError
+      self.fetchGraphUserBackingsResult = fetchGraphUserBackingsResult
 
       self.fetchCommentsResponse = fetchCommentsResponse ?? [
         .template |> Comment.lens.id .~ 2,
@@ -401,6 +404,8 @@
       self.publishUpdateError = publishUpdateError
 
       self.fetchManagePledgeViewBackingResult = fetchManagePledgeViewBackingResult
+
+      self.fetchRewardAddOnsSelectionViewRewardsResult = fetchRewardAddOnsSelectionViewRewardsResult
 
       self.fetchMessageThreadResult = fetchMessageThreadResult
 
@@ -731,17 +736,8 @@
     }
 
     internal func fetchGraphUserBackings(query _: NonEmptySet<Query>)
-      -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError> {
-      if let error = fetchGraphUserBackingsError {
-        return SignalProducer(error: error)
-      }
-      let backings = GraphBackingEnvelope.GraphBackingConnection(nodes: [])
-      let emptyEnvelope = GraphBackingEnvelope.template
-        |> \.backings .~ backings
-      let emptyResponse = UserEnvelope<GraphBackingEnvelope>(me: emptyEnvelope)
-
-      let response = self.fetchGraphUserBackingsResponse ?? emptyResponse
-      return SignalProducer(value: response)
+      -> SignalProducer<BackingsEnvelope, ErrorEnvelope> {
+      return producer(for: self.fetchGraphUserBackingsResult)
     }
 
     internal func fetchGraph<A>(
@@ -844,8 +840,13 @@
     }
 
     func fetchManagePledgeViewBacking(query _: NonEmptySet<Query>)
-      -> SignalProducer<ManagePledgeViewBackingEnvelope, GraphError> {
+      -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope> {
       return producer(for: self.fetchManagePledgeViewBackingResult)
+    }
+
+    func fetchRewardAddOnsSelectionViewRewards(query _: NonEmptySet<Query>)
+      -> SignalProducer<Project, ErrorEnvelope> {
+      return producer(for: self.fetchRewardAddOnsSelectionViewRewardsResult)
     }
 
     internal func fetchMessageThread(messageThreadId _: Int)

@@ -21,7 +21,6 @@ final class ShippingRuleCellViewModelTests: TestCase {
     let selectedShippingRule: ShippingRule = .template
       |> ShippingRule.lens.location .~ Location.canada
     let data = ShippingRuleData(
-      project: .template,
       selectedShippingRule: selectedShippingRule,
       shippingRule: .template
     )
@@ -33,7 +32,6 @@ final class ShippingRuleCellViewModelTests: TestCase {
 
   func testIsSelected_True() {
     let data = ShippingRuleData(
-      project: .template,
       selectedShippingRule: .template,
       shippingRule: .template
     )
@@ -45,13 +43,12 @@ final class ShippingRuleCellViewModelTests: TestCase {
 
   func testTextLabelText() {
     let data = ShippingRuleData(
-      project: .template,
       selectedShippingRule: .template,
       shippingRule: .template
     )
 
     self.vm.inputs.configureWith(data)
 
-    self.textLabelText.assertValues(["Brooklyn, NY (+$5)"])
+    self.textLabelText.assertValues(["Brooklyn, NY"])
   }
 }
