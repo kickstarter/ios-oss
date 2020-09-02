@@ -38,10 +38,9 @@ public final class RewardCardView: UIView {
         sectionInset: UIEdgeInsets(topBottom: Styles.grid(1))
       )
     )
-      |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.always
+      |> \.contentInsetAdjustmentBehavior .~ .never
       |> \.dataSource .~ self.pillDataSource
       |> \.delegate .~ self
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var pillCollectionViewHeightConstraint: NSLayoutConstraint = {
@@ -133,9 +132,6 @@ public final class RewardCardView: UIView {
 
     _ = (self.pillCollectionView, self.backgroundColor)
       |> pillCollectionViewStyle
-
-    _ = self.titleStackView
-      |> titleStackViewStyle
   }
 
   public override func bindViewModel() {
@@ -150,7 +146,7 @@ public final class RewardCardView: UIView {
     self.minimumPriceLabel.rac.text = self.viewModel.outputs.rewardMinimumLabelText
     self.pillCollectionView.rac.hidden = self.viewModel.outputs.pillCollectionViewHidden
     self.rewardTitleLabel.rac.hidden = self.viewModel.outputs.rewardTitleLabelHidden
-    self.rewardTitleLabel.rac.text = self.viewModel.outputs.rewardTitleLabelText
+    self.rewardTitleLabel.rac.attributedText = self.viewModel.outputs.rewardTitleLabelAttributedText
 
     self.viewModel.outputs.items
       .observeForUI()
@@ -176,6 +172,7 @@ public final class RewardCardView: UIView {
       .observeValues { [weak self] values in
         self?.pillDataSource.load(values)
         self?.pillCollectionView.reloadData()
+        self?.updateCollectionViewConstraints()
       }
   }
 
@@ -230,6 +227,8 @@ public final class RewardCardView: UIView {
     self.pillCollectionView.layoutIfNeeded()
 
     self.pillCollectionViewHeightConstraint.constant = self.pillCollectionView.contentSize.height
+
+    self.layoutIfNeeded()
   }
 
   fileprivate func load(items: [String]) {
@@ -264,8 +263,8 @@ public final class RewardCardView: UIView {
 
   // MARK: - Configuration
 
-  internal func configure(with value: (Project, Either<Reward, Backing>)) {
-    self.viewModel.inputs.configureWith(project: value.0, rewardOrBacking: value.1)
+  internal func configure(with data: RewardCardViewData) {
+    self.viewModel.inputs.configure(with: data)
   }
 
   // MARK: - Selectors
@@ -325,8 +324,6 @@ private let rewardTitleLabelStyle: LabelStyle = { label in
 private let sectionStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
-    |> \.alignment .~ .fill
-    |> \.distribution .~ .fill
     |> \.spacing .~ Styles.grid(1)
 }
 
@@ -339,11 +336,6 @@ private let sectionBodyLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_soft_black
     |> \.font .~ UIFont.ksr_body()
-}
-
-private let titleStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.alignment .~ UIStackView.Alignment.top
 }
 
 // MARK: - UICollectionViewDelegate

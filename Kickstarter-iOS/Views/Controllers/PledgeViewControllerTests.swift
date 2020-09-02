@@ -30,11 +30,24 @@ final class PledgeViewControllerTests: TestCase {
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: User.template, language: language) {
         let controller = PledgeViewController.instantiate()
-        controller.configureWith(project: project, reward: .template, refTag: nil, context: .pledge)
+
+        let reward = Reward.template
+        let data = PledgeViewData(
+          project: project,
+          rewards: [reward],
+          selectedQuantities: [reward.id: 1],
+          selectedLocationId: nil,
+          refTag: nil,
+          context: .pledge
+        )
+        controller.configure(with: data)
+
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_200
 
         self.scheduler.advance(by: .seconds(1))
+
+        self.allowLayoutPass()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -56,18 +69,30 @@ final class PledgeViewControllerTests: TestCase {
           |> Backing.lens.status .~ .errored
           |> Backing.lens.reward .~ Reward.noReward
           |> Backing.lens.rewardId .~ Reward.noReward.id
-          |> Backing.lens.shippingAmount .~ 5
-          |> Backing.lens.amount .~ 700.0
+          |> Backing.lens.amount .~ 695.0
+          |> Backing.lens.bonusAmount .~ 695.0
+          |> Backing.lens.shippingAmount .~ 0
       )
 
     combos([Language.en], [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: User.template, language: language) {
         let controller = PledgeViewController.instantiate()
-        controller.configureWith(project: project, reward: .template, refTag: nil, context: .pledge)
+        let reward = Reward.noReward
+        let data = PledgeViewData(
+          project: project,
+          rewards: [reward],
+          selectedQuantities: [reward.id: 1],
+          selectedLocationId: nil,
+          refTag: nil,
+          context: .pledge
+        )
+        controller.configure(with: data)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 800
 
         self.scheduler.advance(by: .seconds(1))
+
+        self.allowLayoutPass()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -84,7 +109,17 @@ final class PledgeViewControllerTests: TestCase {
       .forEach { language, device, currentUser in
         withEnvironment(apiService: mockService, currentUser: currentUser, language: language) {
           let controller = PledgeViewController.instantiate()
-          controller.configureWith(project: .template, reward: .template, refTag: nil, context: .pledge)
+          let reward = Reward.template
+          let project = Project.template
+          let data = PledgeViewData(
+            project: project,
+            rewards: [reward],
+            selectedQuantities: [reward.id: 1],
+            selectedLocationId: nil,
+            refTag: nil,
+            context: .pledge
+          )
+          controller.configure(with: data)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
           self.scheduler.advance(by: .seconds(1))
@@ -92,6 +127,8 @@ final class PledgeViewControllerTests: TestCase {
           let loggedIn = currentUser != nil
           let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
           if loggedIn { parent.view.frame.size.height = 1_200 }
+
+          self.allowLayoutPass()
 
           FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
         }
@@ -104,15 +141,34 @@ final class PledgeViewControllerTests: TestCase {
       GraphUserCreditCard.masterCard
     ]))
     let mockService = MockService(fetchGraphCreditCardsResponse: userEnvelope)
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 10.0
+
     let project = Project.template
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.visa
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 0
+          |> Backing.lens.amount .~ 10.0
+      )
       |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.currentCurrencyRate .~ 2.0
+      |> Project.lens.stats.currentCurrencyRate .~ .some(2.0)
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
       .forEach { language, device, currentUser in
         withEnvironment(apiService: mockService, currentUser: currentUser, language: language) {
           let controller = PledgeViewController.instantiate()
-          controller.configureWith(project: project, reward: .template, refTag: nil, context: .pledge)
+          let data = PledgeViewData(
+            project: project,
+            rewards: [reward],
+            selectedQuantities: [reward.id: 1],
+            selectedLocationId: nil,
+            refTag: nil,
+            context: .pledge
+          )
+          controller.configure(with: data)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
           self.scheduler.advance(by: .seconds(1))
@@ -121,6 +177,8 @@ final class PledgeViewControllerTests: TestCase {
           let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
           if loggedIn { parent.view.frame.size.height = 1_200 }
 
+          self.allowLayoutPass()
+
           FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
         }
       }
@@ -128,19 +186,39 @@ final class PledgeViewControllerTests: TestCase {
 
   func testView_UpdateContext_NeedsConversion_IsFalse() {
     let reward = Reward.template
+      |> Reward.lens.minimum .~ 10.0
       |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
+
     let project = Project.template
       |> Project.lens.stats.currency .~ Currency.USD.rawValue
       |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
       |> Project.lens.country .~ .us
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.visa
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 0
+          |> Backing.lens.amount .~ 10.0
+      )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(currentUser: .template, language: language) {
         let controller = PledgeViewController.instantiate()
-        controller.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+        let data = PledgeViewData(
+          project: project,
+          rewards: [reward],
+          selectedQuantities: [reward.id: 1],
+          selectedLocationId: nil,
+          refTag: nil,
+          context: .update
+        )
+        controller.configure(with: data)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.advance(by: .seconds(1))
+
+        self.allowLayoutPass()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -149,19 +227,38 @@ final class PledgeViewControllerTests: TestCase {
 
   func testView_UpdateContext_withConversionLabel() {
     let reward = Reward.template
+      |> Reward.lens.minimum .~ 10.0
       |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
     let project = Project.template
       |> Project.lens.stats.currency .~ Currency.HKD.rawValue
       |> Project.lens.stats.currentCurrency .~ Currency.USD.rawValue
       |> Project.lens.country .~ .hk
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.visa
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 0
+          |> Backing.lens.amount .~ 10.0
+      )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(currentUser: .template, language: language) {
         let controller = PledgeViewController.instantiate()
-        controller.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+        let data = PledgeViewData(
+          project: project,
+          rewards: [reward],
+          selectedQuantities: [reward.id: 1],
+          selectedLocationId: nil,
+          refTag: nil,
+          context: .update
+        )
+        controller.configure(with: data)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.advance(by: .seconds(1))
+
+        self.allowLayoutPass()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -169,19 +266,40 @@ final class PledgeViewControllerTests: TestCase {
   }
 
   func testView_UpdateContext_NeedsConversion_IsTrue() {
+    let reward = Reward.template
+      |> Reward.lens.minimum .~ 10.0
+      |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
+
     let project = Project.template
       |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
-      |> Project.lens.stats.currentCurrencyRate .~ 2.0
-    let reward = Reward.template
-      |> (Reward.lens.shipping .. Reward.Shipping.lens.enabled) .~ true
+      |> Project.lens.stats.currentCurrencyRate .~ .some(2.0)
+      |> Project.lens.country .~ .us
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.paymentSource .~ Backing.PaymentSource.visa
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 0
+          |> Backing.lens.amount .~ 10.0
+      )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(currentUser: .template, language: language) {
         let controller = PledgeViewController.instantiate()
-        controller.configureWith(project: project, reward: reward, refTag: nil, context: .update)
+        let data = PledgeViewData(
+          project: project,
+          rewards: [reward],
+          selectedQuantities: [reward.id: 1],
+          selectedLocationId: nil,
+          refTag: nil,
+          context: .update
+        )
+        controller.configure(with: data)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.advance(by: .seconds(1))
+
+        self.allowLayoutPass()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -196,6 +314,8 @@ final class PledgeViewControllerTests: TestCase {
     let mockService = MockService(fetchGraphCreditCardsResponse: userEnvelope)
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.minimum .~ 695.0
+
     let project = Project.cosmicSurgery
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.isBacking .~ true
@@ -205,6 +325,7 @@ final class PledgeViewControllerTests: TestCase {
           |> Backing.lens.status .~ .pledged
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.bonusAmount .~ 5.0
           |> Backing.lens.shippingAmount .~ 5
           |> Backing.lens.amount .~ 700.0
       )
@@ -212,12 +333,20 @@ final class PledgeViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = PledgeViewController.instantiate()
-        controller.configureWith(
-          project: project, reward: reward, refTag: nil, context: .changePaymentMethod
+        let data = PledgeViewData(
+          project: project,
+          rewards: [reward],
+          selectedQuantities: [reward.id: 1],
+          selectedLocationId: nil,
+          refTag: nil,
+          context: .changePaymentMethod
         )
+        controller.configure(with: data)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.advance(by: .seconds(1))
+
+        self.allowLayoutPass()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -227,6 +356,7 @@ final class PledgeViewControllerTests: TestCase {
   func testView_ChangePaymentMethodContext_NeedsConversion_IsFalse() {
     let reward = Reward.postcards
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.minimum .~ 695.0
 
     let project = Project.template
       |> Project.lens.state .~ .live
@@ -238,6 +368,7 @@ final class PledgeViewControllerTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
           |> Backing.lens.shippingAmount .~ 5
+          |> Backing.lens.bonusAmount .~ 5.0
           |> Backing.lens.amount .~ 700.0
       )
 
@@ -250,12 +381,20 @@ final class PledgeViewControllerTests: TestCase {
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = PledgeViewController.instantiate()
-        controller.configureWith(
-          project: project, reward: reward, refTag: nil, context: .changePaymentMethod
+        let data = PledgeViewData(
+          project: project,
+          rewards: [reward],
+          selectedQuantities: [reward.id: 1],
+          selectedLocationId: nil,
+          refTag: nil,
+          context: .changePaymentMethod
         )
+        controller.configure(with: data)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.advance(by: .seconds(1))
+
+        self.allowLayoutPass()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -272,21 +411,31 @@ final class PledgeViewControllerTests: TestCase {
       |> Project.lens.personalization.backing .~ (Backing.template
         |> Backing.lens.paymentSource .~
         (.template |> \.id .~ "123")
+        |> Backing.lens.shippingAmount .~ 0
+        |> Backing.lens.bonusAmount .~ 2.0
+        |> Backing.lens.amount .~ 12.0
       )
       |> \.availableCardTypes .~ [CreditCardType.discover.rawValue]
+
+    let reward = Reward.template
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
       withEnvironment(apiService: mockService, currentUser: User.template, language: language) {
         let controller = PledgeViewController.instantiate()
-        controller.configureWith(
+        let data = PledgeViewData(
           project: project,
-          reward: .template,
+          rewards: [reward],
+          selectedQuantities: [reward.id: 1],
+          selectedLocationId: nil,
           refTag: nil,
           context: .changePaymentMethod
         )
+        controller.configure(with: data)
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
         self.scheduler.advance(by: .seconds(1))
+
+        self.allowLayoutPass()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
@@ -301,7 +450,15 @@ final class PledgeViewControllerTests: TestCase {
       .forEach { language, device, currentUser in
         withEnvironment(language: language) {
           let controller = PledgeViewController.instantiate()
-          controller.configureWith(project: .template, reward: reward, refTag: nil, context: .pledge)
+          let data = PledgeViewData(
+            project: .template,
+            rewards: [reward],
+            selectedQuantities: [reward.id: 1],
+            selectedLocationId: nil,
+            refTag: nil,
+            context: .pledge
+          )
+          controller.configure(with: data)
           let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
           self.scheduler.advance(by: .seconds(1))
@@ -309,6 +466,48 @@ final class PledgeViewControllerTests: TestCase {
           let loggedIn = currentUser != nil
           let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
           if loggedIn { parent.view.frame.size.height = 1_200 }
+
+          self.allowLayoutPass()
+
+          FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
+        }
+      }
+  }
+
+  func testView_HasAddOns_ShippingSelected() {
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.id .~ 99
+    let addOnReward1 = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.id .~ 1
+    let addOnReward2 = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.id .~ 2
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward, addOnReward1, addOnReward2],
+      selectedQuantities: [reward.id: 1, addOnReward1.id: 2, addOnReward2.id: 1],
+      selectedLocationId: ShippingRule.template.id,
+      refTag: .projectPage,
+      context: .pledge
+    )
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad], [nil, User.template])
+      .forEach { language, device, currentUser in
+        withEnvironment(language: language) {
+          let controller = PledgeViewController.instantiate()
+          controller.configure(with: data)
+          let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
+          self.scheduler.advance(by: .seconds(1))
+
+          let loggedIn = currentUser != nil
+          let loggedInString = loggedIn ? "LoggedIn" : "LoggedOut"
+          if loggedIn { parent.view.frame.size.height = 1_200 }
+
+          self.allowLayoutPass()
 
           FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)_\(loggedInString)")
         }

@@ -22,32 +22,30 @@ final class ManagePledgeViewControllerTests: TestCase {
   func testView_CurrentUser_IsBacker() {
     let user = User.template
       |> User.lens.id .~ 1
-      |> User.lens.avatar.small .~ ""
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
-    let backedProject = Project.cosmicSurgery
-      |> \.rewards .~ [reward]
+      |> Reward.lens.remaining .~ 49
 
-    let envelope = ManagePledgeViewBackingEnvelope.template
-      |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
-        expirationDate: "2019-09-01",
-        id: "556",
-        lastFour: "1111",
-        paymentType: .creditCard,
-        type: .visa
-      )
-      |> \.backing.sequence .~ 10
-      |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
-      |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-      |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
-      |> \.backing.shippingAmount .~ Money(amount: 2.0, currency: .gbp, symbol: "£")
-      |> \.backing.backer.uid .~ user.id
-      |> \.backing.backer.name .~ "Blob"
+    let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
+
+    let backing = Backing.template
+      |> Backing.lens.addOns .~ addOns
+      |> Backing.lens.amount .~ 22
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.rewardId .~ reward.id
+      |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ backing
+      |> \.rewardData.rewards .~ [reward]
+      |> \.rewardData.addOns .~ addOns
+
+    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(envelope),
-      fetchProjectResponse: backedProject
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach { language, device in
@@ -63,6 +61,9 @@ final class ManagePledgeViewControllerTests: TestCase {
         // endRefreshing is delayed by 300ms for animation duration
         self.scheduler.advance(by: .milliseconds(300))
 
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
+
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
@@ -74,33 +75,30 @@ final class ManagePledgeViewControllerTests: TestCase {
 
     let user = User.template
       |> User.lens.id .~ 1
-      |> User.lens.avatar.small .~ ""
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
-    let backedProject = Project.cosmicSurgery
-      |> Project.lens.creator.id .~ 1
-      |> \.rewards .~ [reward]
 
-    let envelope = ManagePledgeViewBackingEnvelope.template
-      |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
-        expirationDate: "2019-09-01",
-        id: "556",
-        lastFour: "1111",
-        paymentType: .creditCard,
-        type: .visa
-      )
-      |> \.backing.sequence .~ 10
-      |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
-      |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-      |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
-      |> \.backing.shippingAmount .~ Money(amount: 2.0, currency: .gbp, symbol: "£")
-      |> \.backing.backer.uid .~ 5
-      |> \.backing.backer.name .~ "Blob"
+    let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
+
+    let backing = Backing.template
+      |> Backing.lens.addOns .~ addOns
+      |> Backing.lens.amount .~ 22
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.rewardId .~ reward.id
+      |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ backing
+      |> Project.lens.creator.id .~ 1
+      |> \.rewardData.rewards .~ [reward]
+      |> \.rewardData.addOns .~ addOns
+
+    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(envelope),
-      fetchProjectResponse: backedProject
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
     )
 
     withEnvironment(apiService: mockService, currentUser: user, language: language) {
@@ -114,6 +112,9 @@ final class ManagePledgeViewControllerTests: TestCase {
       // endRefreshing is delayed by 300ms for animation duration
       self.scheduler.advance(by: .milliseconds(300))
 
+      controller.tableView.layoutIfNeeded()
+      controller.tableView.reloadData()
+
       FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
     }
   }
@@ -121,34 +122,35 @@ final class ManagePledgeViewControllerTests: TestCase {
   func testView_NoReward_ApplePay() {
     let language = Language.en
     let device = Device.phone4_7inch
+
     let user = User.template
       |> User.lens.id .~ 1
-      |> User.lens.avatar.small .~ ""
 
-    let reward = Reward.noReward
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
 
-    let backedProject = Project.cosmicSurgery
-      |> \.rewards .~ [reward]
+    let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
 
-    let envelope = ManagePledgeViewBackingEnvelope.template
-      |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
-        expirationDate: "2019-10-01",
-        id: "556",
-        lastFour: "1111",
-        paymentType: .applePay,
-        type: .visa
+    let backing = Backing.template
+      |> Backing.lens.addOns .~ addOns
+      |> Backing.lens.amount .~ 22
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.rewardId .~ reward.id
+      |> Backing.lens.paymentSource .~ (
+        Backing.PaymentSource.template
+          |> \.paymentType .~ .applePay
       )
-      |> \.backing.sequence .~ 10
-      |> \.backing.location .~ nil
-      |> \.backing.shippingAmount .~ nil
-      |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-      |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
-      |> \.backing.backer.uid .~ user.id
-      |> \.backing.backer.name .~ "Blob"
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ backing
+      |> \.rewardData.rewards .~ [reward]
+      |> \.rewardData.addOns .~ addOns
+
+    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(envelope),
-      fetchProjectResponse: backedProject
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
     )
 
     withEnvironment(apiService: mockService, currentUser: user, language: language) {
@@ -165,6 +167,9 @@ final class ManagePledgeViewControllerTests: TestCase {
 
       // endRefreshing is delayed by 300ms for animation duration
       self.scheduler.advance(by: .milliseconds(300))
+
+      controller.tableView.layoutIfNeeded()
+      controller.tableView.reloadData()
 
       FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
     }
@@ -173,35 +178,35 @@ final class ManagePledgeViewControllerTests: TestCase {
   func testView_GooglePay() {
     let language = Language.en
     let device = Device.phone4_7inch
+
     let user = User.template
       |> User.lens.id .~ 1
-      |> User.lens.avatar.small .~ ""
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
 
-    let backedProject = Project.cosmicSurgery
-      |> \.rewards .~ [reward]
+    let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
 
-    let envelope = ManagePledgeViewBackingEnvelope.template
-      |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
-        expirationDate: "2019-10-01",
-        id: "556",
-        lastFour: "4111",
-        paymentType: .googlePay,
-        type: .visa
+    let backing = Backing.template
+      |> Backing.lens.addOns .~ addOns
+      |> Backing.lens.amount .~ 22
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.rewardId .~ reward.id
+      |> Backing.lens.paymentSource .~ (
+        Backing.PaymentSource.template
+          |> \.paymentType .~ .googlePay
       )
-      |> \.backing.sequence .~ 10
-      |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
-      |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-      |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
-      |> \.backing.shippingAmount .~ Money(amount: 2.0, currency: .gbp, symbol: "£")
-      |> \.backing.backer.uid .~ user.id
-      |> \.backing.backer.name .~ "Blob"
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ backing
+      |> \.rewardData.rewards .~ [reward]
+      |> \.rewardData.addOns .~ addOns
+
+    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(envelope),
-      fetchProjectResponse: backedProject
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
     )
 
     withEnvironment(apiService: mockService, currentUser: user, language: language) {
@@ -219,6 +224,9 @@ final class ManagePledgeViewControllerTests: TestCase {
       // endRefreshing is delayed by 300ms for animation duration
       self.scheduler.advance(by: .milliseconds(300))
 
+      controller.tableView.layoutIfNeeded()
+      controller.tableView.reloadData()
+
       FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
     }
   }
@@ -226,34 +234,31 @@ final class ManagePledgeViewControllerTests: TestCase {
   func testView_ErroredBacking() {
     let user = User.template
       |> User.lens.id .~ 1
-      |> User.lens.avatar.small .~ ""
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
+      |> Reward.lens.remaining .~ 49
 
-    let backedProject = Project.cosmicSurgery
-      |> \.rewards .~ [reward]
+    let addOns = [Reward.postcards |> Reward.lens.minimum .~ 10]
 
-    let envelope = ManagePledgeViewBackingEnvelope.template
-      |> \.backing.creditCard .~ ManagePledgeViewBackingEnvelope.Backing.CreditCard(
-        expirationDate: "2019-09-01",
-        id: "556",
-        lastFour: "1111",
-        paymentType: .creditCard,
-        type: .visa
-      )
-      |> \.backing.sequence .~ 10
-      |> \.backing.location .~ ManagePledgeViewBackingEnvelope.Backing.Location(name: "United States")
-      |> \.backing.pledgedOn .~ TimeInterval(1_475_361_315)
-      |> \.backing.amount .~ Money(amount: 10.0, currency: .gbp, symbol: "£")
-      |> \.backing.shippingAmount .~ Money(amount: 2.0, currency: .gbp, symbol: "£")
-      |> \.backing.backer.uid .~ user.id
-      |> \.backing.backer.name .~ "Blob"
-      |> \.backing.status .~ .errored
+    let backing = Backing.template
+      |> Backing.lens.addOns .~ addOns
+      |> Backing.lens.amount .~ 22
+      |> Backing.lens.reward .~ reward
+      |> Backing.lens.rewardId .~ reward.id
+      |> Backing.lens.paymentSource .~ Backing.PaymentSource.template
+      |> Backing.lens.status .~ .errored
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.personalization.backing .~ backing
+      |> \.rewardData.rewards .~ [reward]
+      |> \.rewardData.addOns .~ addOns
+
+    let env = ProjectAndBackingEnvelope(project: project, backing: backing)
 
     let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(envelope),
-      fetchProjectResponse: backedProject
+      fetchManagePledgeViewBackingResult: .success(env),
+      fetchProjectResponse: project
     )
 
     combos(Language.allLanguages, Device.allCases).forEach { language, device in
@@ -267,6 +272,9 @@ final class ManagePledgeViewControllerTests: TestCase {
 
         // endRefreshing is delayed by 300ms for animation duration
         self.scheduler.advance(by: .milliseconds(300))
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
 
         FBSnapshotVerifyView(parent.view, identifier: "lang_\(language)_device_\(device)")
       }

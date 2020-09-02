@@ -230,17 +230,6 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(1)
 }
 
-private let disclaimerLabelStyle: LabelStyle = { label in
-  label
-    |> \.font .~ .ksr_footnote()
-    |> \.textColor .~ .ksr_text_dark_grey_500
-    |> \.numberOfLines .~ 0
-    |> \.textAlignment .~ .center
-    |> \.text %~ { _ in
-      "By pledging you agree to Kickstarter's Terms of Use, Privacy Policy and Cookie Policy"
-    }
-}
-
 private let ctaStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .horizontal

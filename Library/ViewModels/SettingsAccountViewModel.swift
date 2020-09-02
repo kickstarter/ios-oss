@@ -4,7 +4,7 @@ import ReactiveSwift
 
 public typealias SettingsAccountData = (
   currency: Currency,
-  email: String,
+  email: String?,
   shouldHideEmailWarning: Bool,
   shouldHideEmailPasswordSection: Bool,
   isAppleConnectedAccount: Bool
@@ -22,7 +22,7 @@ public protocol SettingsAccountViewModelOutputs {
   var reloadData: Signal<SettingsAccountData, Never> { get }
   var transitionToViewController: Signal<UIViewController, Never> { get }
 
-  func shouldShowCreatePasswordFooter() -> (Bool, String)?
+  func shouldShowCreatePasswordFooter() -> (Bool, String?)?
 }
 
 public protocol SettingsAccountViewModelType {
@@ -66,7 +66,7 @@ public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
       .map { $0.hasPassword == .some(false) || $0.isAppleConnected == .some(true) }
 
     let shouldShowCreatePasswordFooter = user
-      .map { user -> (Bool, String) in
+      .map { user -> (Bool, String?) in
         let isAppleConnected = user.isAppleConnected == .some(true)
         let userHasPassword = user.hasPassword == .some(true)
         let shouldShow = !userHasPassword && !isAppleConnected
@@ -119,8 +119,8 @@ public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
     self.viewDidLoadProperty.value = ()
   }
 
-  fileprivate let shouldShowCreatePasswordFooterAndEmailProperty = MutableProperty<(Bool, String)?>(nil)
-  public func shouldShowCreatePasswordFooter() -> (Bool, String)? {
+  fileprivate let shouldShowCreatePasswordFooterAndEmailProperty = MutableProperty<(Bool, String?)?>(nil)
+  public func shouldShowCreatePasswordFooter() -> (Bool, String?)? {
     return self.shouldShowCreatePasswordFooterAndEmailProperty.value
   }
 

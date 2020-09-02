@@ -1,12 +1,14 @@
 import Foundation
 import ReactiveSwift
 
-public protocol RewardCellViewModelOutputs {
-  var scrollScrollViewToTop: Signal<Void, Never> { get }
+public protocol RewardCellViewModelInputs {
+  func configure(with data: RewardCardViewData)
+  func prepareForReuse()
 }
 
-public protocol RewardCellViewModelInputs {
-  func prepareForReuse()
+public protocol RewardCellViewModelOutputs {
+  var backerLabelHidden: Signal<Bool, Never> { get }
+  var scrollScrollViewToTop: Signal<Void, Never> { get }
 }
 
 public protocol RewardCellViewModelType {
@@ -18,6 +20,16 @@ public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewM
   RewardCellViewModelOutputs {
   public init() {
     self.scrollScrollViewToTop = self.prepareForReuseProperty.signal
+    self.backerLabelHidden = self.configDataProperty.signal.skipNil()
+      .map { project, reward, _ in
+        userIsBacking(reward: reward, inProject: project)
+      }
+      .negate()
+  }
+
+  private let configDataProperty = MutableProperty<RewardCardViewData?>(nil)
+  public func configure(with data: RewardCardViewData) {
+    self.configDataProperty.value = data
   }
 
   private let prepareForReuseProperty = MutableProperty(())
@@ -25,6 +37,7 @@ public final class RewardCellViewModel: RewardCellViewModelType, RewardCellViewM
     self.prepareForReuseProperty.value = ()
   }
 
+  public let backerLabelHidden: Signal<Bool, Never>
   public let scrollScrollViewToTop: Signal<Void, Never>
 
   public var inputs: RewardCellViewModelInputs { return self }

@@ -14,7 +14,7 @@ final class UpdateBackingInputTests: XCTestCase {
       id: "id-123",
       locationId: "12345",
       paymentSourceId: "33234234",
-      rewardId: "234442"
+      rewardIds: ["234442"]
     )
 
     let inputDictionary = input.toInputDictionary()
@@ -29,7 +29,7 @@ final class UpdateBackingInputTests: XCTestCase {
     XCTAssertEqual(inputDictionary["id"] as? String, "id-123")
     XCTAssertEqual(inputDictionary["locationId"] as? String, "12345")
     XCTAssertEqual(inputDictionary["paymentSourceId"] as? String, "33234234")
-    XCTAssertEqual(inputDictionary["rewardId"] as? String, "234442")
+    XCTAssertEqual(inputDictionary["rewardIds"] as? [String], ["234442"])
   }
 
   func testInput_NoApplePay() {
@@ -39,7 +39,7 @@ final class UpdateBackingInputTests: XCTestCase {
       id: "id-123",
       locationId: "12345",
       paymentSourceId: "33234234",
-      rewardId: "234442"
+      rewardIds: ["234442"]
     )
 
     let inputDictionary = input.toInputDictionary()
@@ -50,6 +50,6 @@ final class UpdateBackingInputTests: XCTestCase {
     XCTAssertEqual(inputDictionary["id"] as? String, "id-123")
     XCTAssertEqual(inputDictionary["locationId"] as? String, "12345")
     XCTAssertEqual(inputDictionary["paymentSourceId"] as? String, "33234234")
-    XCTAssertEqual(inputDictionary["rewardId"] as? String, "234442")
+    XCTAssertEqual(inputDictionary["rewardIds"] as? [String], ["234442"])
   }
 }

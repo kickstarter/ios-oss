@@ -1,12 +1,19 @@
 import KsApi
 import Library
 import Prelude
+import ReactiveSwift
 import UIKit
 
 protocol PledgeShippingLocationViewControllerDelegate: AnyObject {
   func pledgeShippingLocationViewController(
     _ viewController: PledgeShippingLocationViewController,
     didSelect shippingRule: ShippingRule
+  )
+  func pledgeShippingLocationViewControllerLayoutDidUpdate(
+    _ viewController: PledgeShippingLocationViewController
+  )
+  func pledgeShippingLocationViewControllerFailedToLoad(
+    _ viewController: PledgeShippingLocationViewController
   )
 }
 
@@ -104,8 +111,27 @@ final class PledgeShippingLocationViewController: UIViewController {
 
     self.adaptableStackView.rac.hidden = self.viewModel.outputs.adaptableStackViewIsHidden
     self.amountLabel.rac.attributedText = self.viewModel.outputs.amountAttributedText
+    self.amountLabel.rac.hidden = self.viewModel.outputs.amountLabelIsHidden
     self.shimmerLoadingView.rac.hidden = self.viewModel.outputs.shimmerLoadingViewIsHidden
     self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocationButtonTitle
+
+    /**
+     When any layout updates occur we need to notify the delegate. This is only necessary when
+     this view is contained within a view that is not fully supported by Auto Layout,
+     e.g. a `UITableView` header.
+     */
+    Signal.combineLatest(
+      self.viewModel.outputs.adaptableStackViewIsHidden,
+      self.viewModel.outputs.amountAttributedText,
+      self.viewModel.outputs.amountLabelIsHidden,
+      self.viewModel.outputs.shimmerLoadingViewIsHidden,
+      self.viewModel.outputs.shippingLocationButtonTitle
+    )
+    .observeForUI()
+    .observeValues { [weak self] _ in
+      guard let self = self else { return }
+      self.delegate?.pledgeShippingLocationViewControllerLayoutDidUpdate(self)
+    }
 
     self.viewModel.outputs.notifyDelegateOfSelectedShippingRule
       .observeForUI()
@@ -128,12 +154,20 @@ final class PledgeShippingLocationViewController: UIViewController {
       .observeValues { [weak self] in
         self?.dismiss(animated: true)
       }
+
+    self.viewModel.outputs.shippingRulesError
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        guard let self = self else { return }
+
+        self.delegate?.pledgeShippingLocationViewControllerFailedToLoad(self)
+      }
   }
 
   // MARK: - Configuration
 
-  func configureWith(value: (project: Project, reward: Reward)) {
-    self.viewModel.inputs.configureWith(project: value.project, reward: value.reward)
+  func configureWith(value: PledgeShippingLocationViewData) {
+    self.viewModel.inputs.configureWith(data: value)
   }
 
   // MARK: - Actions
@@ -182,12 +216,15 @@ private let amountLabelStyle: LabelStyle = { (label: UILabel) in
 
 private let countryButtonStyle: ButtonStyle = { (button: UIButton) in
   button
-    |> \.contentEdgeInsets .~ UIEdgeInsets(
-      topBottom: Styles.grid(1) + Styles.gridHalf(1), leftRight: Styles.grid(2)
+    |> UIButton.lens.contentEdgeInsets .~ UIEdgeInsets(
+      top: Styles.gridHalf(3), left: Styles.grid(2), bottom: Styles.gridHalf(3), right: Styles.grid(5)
     )
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_body().bolded
     |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_green_500
     |> UIButton.lens.titleColor(for: .highlighted) .~ UIColor.ksr_green_700
+    |> UIButton.lens.image(for: .normal) .~ Library.image(named: "icon-dropdown-small")
+    |> UIButton.lens.semanticContentAttribute .~ .forceRightToLeft
+    |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(top: 0, left: Styles.grid(6), bottom: 0, right: 0)
 }
 
 private let countryButtonTitleLabelStyle: LabelStyle = { (label: UILabel) in

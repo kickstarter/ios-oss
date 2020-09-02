@@ -6,16 +6,19 @@ import XCTest
 final class PledgeDisclaimerViewModelTests: TestCase {
   private let vm: PledgeDisclaimerViewModelType = PledgeDisclaimerViewModel()
 
-  private let notifyDelegatePresentTrustAndSafety = TestObserver<Void, Never>()
+  private let notifyDelegateLinkTappedWithURL = TestObserver<URL, Never>()
 
   override func setUp() {
-    self.vm.outputs.notifyDelegatePresentTrustAndSafety
-      .observe(self.notifyDelegatePresentTrustAndSafety.observer)
+    self.vm.outputs.notifyDelegateLinkTappedWithURL
+      .observe(self.notifyDelegateLinkTappedWithURL.observer)
   }
 
   func testPresentTrustAndSafety() {
-    self.vm.inputs.learnMoreTapped()
+    self.notifyDelegateLinkTappedWithURL.assertDidNotEmitValue()
 
-    self.notifyDelegatePresentTrustAndSafety.assertDidEmitValue()
+    let url = URL(string: "http://www.kickstarter.com")!
+    self.vm.inputs.linkTapped(url: url)
+
+    self.notifyDelegateLinkTappedWithURL.assertValues([url])
   }
 }

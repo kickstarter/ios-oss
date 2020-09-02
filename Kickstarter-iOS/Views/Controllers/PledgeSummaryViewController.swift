@@ -3,8 +3,6 @@ import Library
 import Prelude
 import UIKit
 
-public typealias PledgeSummaryCellData = (project: Project, total: Double)
-
 final class PledgeSummaryViewController: UIViewController {
   // MARK: - Properties
 

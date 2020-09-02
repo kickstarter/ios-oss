@@ -7,11 +7,11 @@ final class UserQueriesTests: XCTestCase {
     let query = Query.user(accountQueryFields())
 
     XCTAssertEqual(
-      "me { chosenCurrency email hasPassword isAppleConnected isDeliverable isEmailVerified }",
+      "me { chosenCurrency email hasPassword id imageUrl: imageUrl(blur: false, width: 1024) isAppleConnected isDeliverable isEmailVerified name }",
       query.description
     )
     XCTAssertEqual(
-      "{ me { chosenCurrency email hasPassword isAppleConnected isDeliverable isEmailVerified } }",
+      "{ me { chosenCurrency email hasPassword id imageUrl: imageUrl(blur: false, width: 1024) isAppleConnected isDeliverable isEmailVerified name } }",
       Query.build(NonEmptySet(query))
     )
   }
@@ -19,8 +19,14 @@ final class UserQueriesTests: XCTestCase {
   func testChangeEmailQuery() {
     let query = Query.user(changeEmailQueryFields())
 
-    XCTAssertEqual("me { email isDeliverable isEmailVerified }", query.description)
-    XCTAssertEqual("{ me { email isDeliverable isEmailVerified } }", Query.build(NonEmptySet(query)))
+    XCTAssertEqual(
+      "me { email id imageUrl: imageUrl(blur: false, width: 1024) isDeliverable isEmailVerified name }",
+      query.description
+    )
+    XCTAssertEqual(
+      "{ me { email id imageUrl: imageUrl(blur: false, width: 1024) isDeliverable isEmailVerified name } }",
+      Query.build(NonEmptySet(query))
+    )
   }
 
   func testStoredCardsQuery() {
@@ -37,7 +43,7 @@ final class UserQueriesTests: XCTestCase {
   }
 
   func testBackingsQuery() {
-    let query = Query.user(backingsQueryFields(status: GraphBacking.Status.errored.rawValue))
+    let query = Query.user(backingsQueryFields(status: BackingState.errored.rawValue))
     XCTAssertEqual(
       "me { backings(status: errored) { nodes { errorReason id project { finalCollectionDate name pid slug } status } totalCount } id }",
       query.description

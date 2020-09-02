@@ -22,4 +22,10 @@ internal final class MockTrackingClient: TrackingClientType {
   internal func properties<A>(forKey key: String, as _: A.Type) -> [A?] {
     return self.tracks.map { $0.properties[key] as? A }
   }
+
+  internal func containsKeyPrefix(_ prefix: String) -> Bool {
+    for key in self.properties.map(\.keys).flatMap({ $0 }) where key.hasPrefix(prefix) { return true }
+
+    return false
+  }
 }

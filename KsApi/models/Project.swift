@@ -1,6 +1,7 @@
 import Argo
 import Curry
 import Prelude
+import ReactiveSwift
 import Runes
 
 public struct Project {
@@ -17,7 +18,7 @@ public struct Project {
   public var personalization: Personalization
   public var photo: Photo
   public var prelaunchActivated: Bool?
-  public var rewards: [Reward]
+  public var rewardData: RewardData
   public var slug: String
   public var staffPick: Bool
   public var state: State
@@ -152,6 +153,7 @@ public struct Project {
   public struct Dates {
     public var deadline: TimeInterval
     public var featuredAt: TimeInterval?
+    public var finalCollectionDate: TimeInterval?
     public var launchedAt: TimeInterval
     public var stateChangedAt: TimeInterval
 
@@ -188,6 +190,23 @@ public struct Project {
     public var med: String
     public var size1024x768: String?
     public var small: String
+  }
+
+  public struct RewardData {
+    public var addOns: [Reward]?
+    public var rewards: [Reward]
+  }
+
+  public var hasAddOns: Bool {
+    return self.addOns?.isEmpty == false
+  }
+
+  public var addOns: [Reward]? {
+    return self.rewardData.addOns
+  }
+
+  public var rewards: [Reward] {
+    return self.rewardData.rewards
   }
 
   public func endsIn48Hours(today: Date = Date()) -> Bool {
@@ -235,7 +254,7 @@ extension Project: Argo.Decodable {
       <*> Project.Personalization.decode(json)
       <*> json <| "photo"
       <*> json <|? "prelaunch_activated"
-      <*> (json <|| "rewards" <|> .success([]))
+      <*> Project.RewardData.decode(json)
       <*> json <| "slug"
     return tmp3
       <*> json <| "staff_pick"
@@ -293,6 +312,7 @@ extension Project.Dates: Argo.Decodable {
     return curry(Project.Dates.init)
       <^> json <| "deadline"
       <*> json <|? "featured_at"
+      <*> json <|? "final_collection_date"
       <*> json <| "launched_at"
       <*> json <| "state_changed_at"
   }
@@ -305,6 +325,14 @@ extension Project.Personalization: Argo.Decodable {
       <*> json <||? "friends"
       <*> json <|? "is_backing"
       <*> json <|? "is_starred"
+  }
+}
+
+extension Project.RewardData: Argo.Decodable {
+  public static func decode(_ json: JSON) -> Decoded<Project.RewardData> {
+    return curry(Project.RewardData.init)
+      <^> json <||? "add_ons"
+      <*> (json <|| "rewards" <|> .success([]))
   }
 }
 
@@ -353,5 +381,19 @@ private func toInt(string: String) -> Decoded<Int> {
 extension Project: GraphIDBridging {
   public static var modelName: String {
     return "Project"
+  }
+}
+
+// MARK: - GraphQL Adapters
+
+extension Project {
+  static func projectProducer(
+    from envelope: RewardAddOnSelectionViewEnvelope
+  ) -> SignalProducer<Project, ErrorEnvelope> {
+    guard let project = Project.project(from: envelope.project) else {
+      return SignalProducer(error: .couldNotParseJSON)
+    }
+
+    return SignalProducer(value: project)
   }
 }

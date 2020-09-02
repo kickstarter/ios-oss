@@ -10,7 +10,7 @@ let project = .cosmicSurgery
   |> Project.lens.state .~ .failed
   |> Project.lens.dates.deadline .~ (NSDate().timeIntervalSince1970 + 60 * 60 * 24 * 2)
   |> Project.lens.stats.staticUsdRate .~ 1.32
-  |> Project.lens.rewards .~ [Project.cosmicSurgery.rewards.last! |> Reward.lens.remaining .~ 0]
+  |> Project.lens.rewardData.rewards .~ [Project.cosmicSurgery.rewards.last! |> Reward.lens.remaining .~ 0]
 //  |> Project.lens.personalization.isBacking .~ true
 //  |> Project.lens.personalization.backing %~~ { _, project in
 //    .template

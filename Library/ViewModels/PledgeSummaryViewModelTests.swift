@@ -41,14 +41,21 @@ internal final class PledgeSummaryViewModelTests: TestCase {
     self.notifyDelegateOpenHelpType.assertValues(allCases)
   }
 
-  func testAmountAttributedText() {
+  func testAmountAttributedText_RegularReward() {
+    self.vm.inputs.configure(with: (.template, total: 30, false))
+    self.vm.inputs.viewDidLoad()
+
+    self.amountLabelText.assertValues(["$30.00"], "Total is added to reward minimum")
+  }
+
+  func testAmountAttributedText_NoReward() {
     self.vm.inputs.configure(with: (.template, total: 10, false))
     self.vm.inputs.viewDidLoad()
 
-    self.amountLabelText.assertValues(["$10.00"])
+    self.amountLabelText.assertValues(["$10.00"], "Total is used directly")
   }
 
-  func testTotalConversionText_NeedsConversion() {
+  func testTotalConversionText_NeedsConversion_NoReward() {
     let project = Project.template
       |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
       |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
@@ -58,6 +65,18 @@ internal final class PledgeSummaryViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.totalConversionLabelText.assertValues(["About £20.00"])
+  }
+
+  func testTotalConversionText_NeedsConversion_RegularReward() {
+    let project = Project.template
+      |> Project.lens.stats.currency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.gb.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 2.0
+
+    self.vm.inputs.configure(with: (project, total: 20, false))
+    self.vm.inputs.viewDidLoad()
+
+    self.totalConversionLabelText.assertValues(["About £40.00"])
   }
 
   func testTotalConversionText_NoConversionNeeded() {

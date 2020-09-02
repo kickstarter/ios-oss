@@ -6,8 +6,9 @@ extension PKPaymentRequest {
   public static func paymentRequest(
     for project: Project,
     reward: Reward,
-    pledgeAmount: Double,
-    selectedShippingRule: ShippingRule?,
+    allRewardsTotal: Double,
+    additionalPledgeAmount: Double,
+    allRewardsShippingTotal: Double,
     merchantIdentifier: String,
     env: Environment = AppEnvironment.current
   ) -> PKPaymentRequest {
@@ -22,34 +23,56 @@ extension PKPaymentRequest {
     request.paymentSummaryItems = self.paymentSummaryItems(
       forProject: project,
       reward: reward,
-      pledgeAmount: pledgeAmount,
-      selectedShippingRule: selectedShippingRule
+      allRewardsTotal: allRewardsTotal,
+      additionalPledgeAmount: additionalPledgeAmount,
+      allRewardsShippingTotal: allRewardsShippingTotal
     )
 
     return request
   }
 
   private static func paymentSummaryItems(
-    forProject project: Project,
+    forProject _: Project,
     reward: Reward,
-    pledgeAmount: Double,
-    selectedShippingRule: ShippingRule?
+    allRewardsTotal: Double,
+    additionalPledgeAmount: Double,
+    allRewardsShippingTotal: Double
   ) -> [PKPaymentSummaryItem] {
     var paymentSummaryItems: [PKPaymentSummaryItem] = []
 
-    paymentSummaryItems.append(
-      PKPaymentSummaryItem(
-        label: reward.title ?? project.name,
-        amount: NSDecimalNumber(value: pledgeAmount),
-        type: .final
+    if !reward.isNoReward {
+      paymentSummaryItems.append(
+        PKPaymentSummaryItem(
+          label: Strings.activity_creator_reward(),
+          amount: NSDecimalNumber(value: allRewardsTotal),
+          type: .final
+        )
       )
-    )
 
-    if let selectedShippingRule = selectedShippingRule {
+      let title = Strings.Bonus()
+
+      paymentSummaryItems.append(
+        PKPaymentSummaryItem(
+          label: title,
+          amount: NSDecimalNumber(value: additionalPledgeAmount),
+          type: .final
+        )
+      )
+    } else {
+      paymentSummaryItems.append(
+        PKPaymentSummaryItem(
+          label: Strings.Total(),
+          amount: NSDecimalNumber(value: additionalPledgeAmount),
+          type: .final
+        )
+      )
+    }
+
+    if reward.shipping.enabled {
       paymentSummaryItems.append(
         PKPaymentSummaryItem(
           label: Strings.Shipping(),
-          amount: NSDecimalNumber(value: selectedShippingRule.cost),
+          amount: NSDecimalNumber(value: allRewardsShippingTotal),
           type: .final
         )
       )

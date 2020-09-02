@@ -93,35 +93,35 @@ final class ShippingRulesViewModelTests: TestCase {
         // Sorted list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule,
+            selectedShippingRule: selectedShippingRule,
             shippingRule: shippingRulesUnsorted[7]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule,
+            selectedShippingRule: selectedShippingRule,
             shippingRule: shippingRulesUnsorted[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule,
+            selectedShippingRule: selectedShippingRule,
             shippingRule: shippingRulesUnsorted[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule,
+            selectedShippingRule: selectedShippingRule,
             shippingRule: shippingRulesUnsorted[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule,
+            selectedShippingRule: selectedShippingRule,
             shippingRule: shippingRulesUnsorted[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule,
+            selectedShippingRule: selectedShippingRule,
             shippingRule: shippingRulesUnsorted[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule,
+            selectedShippingRule: selectedShippingRule,
             shippingRule: shippingRulesUnsorted[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule,
+            selectedShippingRule: selectedShippingRule,
             shippingRule: shippingRulesUnsorted[0]
           )
         ]
@@ -201,28 +201,28 @@ final class ShippingRulesViewModelTests: TestCase {
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
           )
         ]
       ]
@@ -239,38 +239,38 @@ final class ShippingRulesViewModelTests: TestCase {
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
           )
         ],
         // Filtered list by "Lo"
         // [London, Los Angeles]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           )
         ]
       ]
@@ -287,45 +287,45 @@ final class ShippingRulesViewModelTests: TestCase {
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
           )
         ],
         // Filtered list by "Lo"
         // [London, Los Angeles]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           )
         ],
         // Filtered list by "a"
         // [Australia]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           )
         ]
       ]
@@ -341,45 +341,45 @@ final class ShippingRulesViewModelTests: TestCase {
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
           )
         ],
         // Filtered list by "Lo"
         // [London, Los Angeles]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           )
         ],
         // Filtered list by "a"
         // [Australia]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           )
         ],
         // Filtered list by "x"
@@ -399,45 +399,45 @@ final class ShippingRulesViewModelTests: TestCase {
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
           )
         ],
         // Filtered list by "Lo"
         // [London, Los Angeles]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           )
         ],
         // Filtered list by "a"
         // [Australia]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           )
         ],
         // Filtered list by "x"
@@ -447,28 +447,28 @@ final class ShippingRulesViewModelTests: TestCase {
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
           )
         ]
       ]
@@ -484,45 +484,45 @@ final class ShippingRulesViewModelTests: TestCase {
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
           )
         ],
         // Filtered list by "Lo"
         // [London, Los Angeles]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           )
         ],
         // Filtered list by "a"
         // [Australia]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           )
         ],
         // Filtered list by "x"
@@ -532,35 +532,35 @@ final class ShippingRulesViewModelTests: TestCase {
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
           )
         ],
         // Filtered list by "c"
         // [Canada]
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           )
         ]
       ]
@@ -604,28 +604,28 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Australia
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
           )
         ]
       ]
@@ -643,38 +643,38 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Australia
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
           )
         ],
         // Filtered list by "Lo": [London, Los Angeles]
         // Selected rule: Australia
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           )
         ]
       ]
@@ -693,49 +693,49 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Australia
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
           )
         ],
         // Filtered list by "Lo": [London, Los Angeles]
         // Selected rule: Australia
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           )
         ],
         // Filtered list by "Lo": [London, Los Angeles]
         // Selected rule: Los Angeles
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[5]
           )
         ]
@@ -755,49 +755,49 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Australia
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
           )
         ],
         // Filtered list by "Lo": [London, Los Angeles]
         // Selected rule: Australia
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           )
         ],
         // Filtered list by "Lo": [London, Los Angeles]
         // Selected rule: Los Angeles
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[5]
           )
         ],
@@ -805,7 +805,7 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Los Angeles
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[2]
           )
         ]
@@ -827,49 +827,49 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Australia
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
           )
         ],
         // Filtered list by "Lo": [London, Los Angeles]
         // Selected rule: Australia
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           )
         ],
         // Filtered list by "Lo": [London, Los Angeles]
         // Selected rule: Los Angeles
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[5]
           )
         ],
@@ -877,7 +877,7 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Los Angeles
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[2]
           )
         ],
@@ -885,7 +885,7 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Canada
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            selectedShippingRule: secondManuallySelectedShippingRule,
             shippingRule: shippingRules[2]
           )
         ]
@@ -925,28 +925,28 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Brooklyn
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
           )
         ]
       ]
@@ -965,63 +965,63 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Australia
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
           )
         ],
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
         // Selected rule: Portland
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[7]
           )
         ]
@@ -1044,63 +1044,63 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Great Britain
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
+            selectedShippingRule: selectedShippingRule, shippingRule: shippingRules[7]
           )
         ],
         // Unfiltered list: [Australia, Brooklyn, Canada, Great Britain, London, Los Angeles, Portland, USA]
         // Selected rule: Portland
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: firstManuallySelectedShippingRule,
+            selectedShippingRule: firstManuallySelectedShippingRule,
             shippingRule: shippingRules[7]
           )
         ],
@@ -1108,35 +1108,35 @@ final class ShippingRulesViewModelTests: TestCase {
         // Selected rule: Great Britain
         [
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            selectedShippingRule: secondManuallySelectedShippingRule,
             shippingRule: shippingRules[0]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            selectedShippingRule: secondManuallySelectedShippingRule,
             shippingRule: shippingRules[1]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            selectedShippingRule: secondManuallySelectedShippingRule,
             shippingRule: shippingRules[2]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            selectedShippingRule: secondManuallySelectedShippingRule,
             shippingRule: shippingRules[3]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            selectedShippingRule: secondManuallySelectedShippingRule,
             shippingRule: shippingRules[4]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            selectedShippingRule: secondManuallySelectedShippingRule,
             shippingRule: shippingRules[5]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            selectedShippingRule: secondManuallySelectedShippingRule,
             shippingRule: shippingRules[6]
           ),
           ShippingRuleData(
-            project: project, selectedShippingRule: secondManuallySelectedShippingRule,
+            selectedShippingRule: secondManuallySelectedShippingRule,
             shippingRule: shippingRules[7]
           )
         ]
