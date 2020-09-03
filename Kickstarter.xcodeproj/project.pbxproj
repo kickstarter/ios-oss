@@ -448,6 +448,7 @@
 		8A61E1E423D1202000CA9603 /* MockQualtricsPropertiesType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A61E1E323D1202000CA9603 /* MockQualtricsPropertiesType.swift */; };
 		8A64F16624BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A64F16524BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift */; };
 		8A65E79B25016A22006F81CC /* FirebaseInstallations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A65E79A25016A22006F81CC /* FirebaseInstallations.framework */; };
+		8A65E79E2501AE89006F81CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */; };
 		8A67DDB424DCA41400B4AB10 /* User+GraphUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A67DDB324DCA41400B4AB10 /* User+GraphUserTests.swift */; };
 		8A67DDB624DCB7D500B4AB10 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A67DDB524DCB7D500B4AB10 /* Constants.swift */; };
 		8A67DDB824DDB21100B4AB10 /* BackingsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A67DDB724DDB21100B4AB10 /* BackingsEnvelope.swift */; };
@@ -2008,6 +2009,7 @@
 		8A61E1E323D1202000CA9603 /* MockQualtricsPropertiesType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockQualtricsPropertiesType.swift; sourceTree = "<group>"; };
 		8A64F16524BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewControllerTests.swift; sourceTree = "<group>"; };
 		8A65E79A25016A22006F81CC /* FirebaseInstallations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstallations.framework; path = Carthage/Build/iOS/FirebaseInstallations.framework; sourceTree = "<group>"; };
+		8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "Configs/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8A67DDB324DCA41400B4AB10 /* User+GraphUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+GraphUserTests.swift"; sourceTree = "<group>"; };
 		8A67DDB524DCB7D500B4AB10 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8A67DDB724DDB21100B4AB10 /* BackingsEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackingsEnvelope.swift; sourceTree = "<group>"; };
@@ -3138,6 +3140,7 @@
 				8A86D7F024FED00F00037A7B /* GoogleService-Info.plist */,
 				8A86D7F224FED01C00037A7B /* GoogleService-Info.plist */,
 				8A86D7F424FED02A00037A7B /* GoogleService-Info.plist */,
+				8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */,
 				D0158A511EEB3730006E7684 /* Secrets.swift */,
 				802800571C88F64D00141235 /* Base.xcconfig */,
 			);
@@ -5041,6 +5044,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D50E9471D2EDBE50096DAEC /* Assets.xcassets in Resources */,
+				8A65E79E2501AE89006F81CC /* GoogleService-Info.plist in Resources */,
 				01F219561DC12BF7005DD2E4 /* LaunchScreen.storyboard in Resources */,
 				8A86D7F124FED00F00037A7B /* GoogleService-Info.plist in Resources */,
 				A73924051D27247E004524C3 /* Main.storyboard in Resources */,
@@ -6586,6 +6590,7 @@
 				EXCLUDED_SOURCE_FILE_NAMES = (
 					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Alpha/GoogleService-Info.plist",
 					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Production/GoogleService-Info.plist",
+					"${PROJECT_DIR}/Configs/GoogleService-Info.plist",
 				);
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
@@ -7020,6 +7025,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				EXCLUDED_SOURCE_FILE_NAMES = (
+					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Alpha/GoogleService-Info.plist",
 					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Beta/GoogleService-Info.plist",
 					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Production/GoogleService-Info.plist",
 				);
@@ -7096,6 +7102,7 @@
 				EXCLUDED_SOURCE_FILE_NAMES = (
 					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Alpha/GoogleService-Info.plist",
 					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Beta/GoogleService-Info.plist",
+					"${PROJECT_DIR}/Configs/GoogleService-Info.plist",
 				);
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Frameworks",
@@ -7467,6 +7474,7 @@
 				EXCLUDED_SOURCE_FILE_NAMES = (
 					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Beta/GoogleService-Info.plist",
 					"${PROJECT_DIR}/Frameworks/native-secrets/ios/Firebase-Production/GoogleService-Info.plist",
+					"${PROJECT_DIR}/Configs/GoogleService-Info.plist",
 				);
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SYMROOT)/Release$(EFFECTIVE_PLATFORM_NAME)",
