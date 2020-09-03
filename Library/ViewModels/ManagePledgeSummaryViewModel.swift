@@ -21,6 +21,7 @@ public struct ManagePledgeSummaryViewData: Equatable {
   public let projectState: Project.State
   public let rewardMinimum: Double
   public let shippingAmount: Double?
+  public let shippingAmountHidden: Bool
 }
 
 public protocol ManagePledgeSummaryViewModelInputs {
@@ -138,7 +139,7 @@ private func pledgeAmountSummaryViewData(
     pledgedOn: data.pledgedOn,
     rewardMinimum: data.rewardMinimum,
     shippingAmount: data.shippingAmount,
-    shippingAmountHidden: false
+    shippingAmountHidden: data.shippingAmountHidden
   )
 }
 
