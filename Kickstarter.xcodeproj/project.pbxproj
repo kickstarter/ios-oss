@@ -447,6 +447,8 @@
 		8A5CB28424C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5CB28324C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift */; };
 		8A61E1E423D1202000CA9603 /* MockQualtricsPropertiesType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A61E1E323D1202000CA9603 /* MockQualtricsPropertiesType.swift */; };
 		8A64F16624BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A64F16524BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift */; };
+		8A65E79B25016A22006F81CC /* FirebaseInstallations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A65E79A25016A22006F81CC /* FirebaseInstallations.framework */; };
+		8A65E79C25016A22006F81CC /* FirebaseInstallations.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A65E79A25016A22006F81CC /* FirebaseInstallations.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A67DDB424DCA41400B4AB10 /* User+GraphUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A67DDB324DCA41400B4AB10 /* User+GraphUserTests.swift */; };
 		8A67DDB624DCB7D500B4AB10 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A67DDB524DCB7D500B4AB10 /* Constants.swift */; };
 		8A67DDB824DDB21100B4AB10 /* BackingsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A67DDB724DDB21100B4AB10 /* BackingsEnvelope.swift */; };
@@ -1496,6 +1498,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				A73924011D272312004524C3 /* Kickstarter_Framework.framework in Embed Frameworks */,
+				8A65E79C25016A22006F81CC /* FirebaseInstallations.framework in Embed Frameworks */,
 				D0B45B6C1EF858C00020A8DA /* KsApi.framework in Embed Frameworks */,
 				A7B693E71C8772CE00C49A4F /* Library.framework in Embed Frameworks */,
 			);
@@ -2006,6 +2009,7 @@
 		8A5CB28324C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionContinueCTAViewModelTests.swift; sourceTree = "<group>"; };
 		8A61E1E323D1202000CA9603 /* MockQualtricsPropertiesType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockQualtricsPropertiesType.swift; sourceTree = "<group>"; };
 		8A64F16524BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewControllerTests.swift; sourceTree = "<group>"; };
+		8A65E79A25016A22006F81CC /* FirebaseInstallations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstallations.framework; path = Carthage/Build/iOS/FirebaseInstallations.framework; sourceTree = "<group>"; };
 		8A67DDB324DCA41400B4AB10 /* User+GraphUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+GraphUserTests.swift"; sourceTree = "<group>"; };
 		8A67DDB524DCB7D500B4AB10 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8A67DDB724DDB21100B4AB10 /* BackingsEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackingsEnvelope.swift; sourceTree = "<group>"; };
@@ -2968,6 +2972,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A65E79B25016A22006F81CC /* FirebaseInstallations.framework in Frameworks */,
 				8AA5B068235E25820022F5F0 /* AppCenter.framework in Frameworks */,
 				8AA5B06B235E25820022F5F0 /* AppCenterAnalytics.framework in Frameworks */,
 				8AA5B06A235E25820022F5F0 /* AppCenterCrashes.framework in Frameworks */,
@@ -3905,6 +3910,7 @@
 				D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */,
 				8A86D7DE24FDC7DF00037A7B /* FirebaseAnalytics.framework */,
 				8A86D7B524FDAE6400037A7B /* FirebaseCrashlytics.framework */,
+				8A65E79A25016A22006F81CC /* FirebaseInstallations.framework */,
 				8A86D7ED24FDC84400037A7B /* GoogleAppMeasurement.framework */,
 				8A86D7D824FDC7B000037A7B /* GoogleUtilities.framework */,
 				D7B962AA23888A0B003AA616 /* Optimizely.framework */,

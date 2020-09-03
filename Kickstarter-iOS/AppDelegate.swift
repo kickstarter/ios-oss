@@ -3,6 +3,7 @@ import AppCenterAnalytics
 import AppCenterCrashes
 import AppCenterDistribute
 import FBSDKCoreKit
+import Firebase
 import FirebaseAnalytics
 import FirebaseCrashlytics
 import Foundation
@@ -201,7 +202,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       }
 
     #if RELEASE || APPCENTER
-      self.viewModel.outputs.configureFabric
+      self.viewModel.outputs.configureFirebase
         .observeForUI()
         .observeValues {
           FirebaseApp.configure()
