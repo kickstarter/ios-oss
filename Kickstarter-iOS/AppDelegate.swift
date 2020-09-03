@@ -3,7 +3,7 @@ import AppCenterAnalytics
 import AppCenterCrashes
 import AppCenterDistribute
 import FBSDKCoreKit
-import Firebase
+import FirebaseCore
 import FirebaseAnalytics
 import FirebaseCrashlytics
 import Foundation
