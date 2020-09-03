@@ -205,6 +205,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
   private let rewardSelectedWithRewardIdProperty = MutableProperty<Int?>(nil)
   public func rewardSelected(with rewardId: Int) {
+    fatalError() // FIXME: remove this :)
     self.rewardSelectedWithRewardIdProperty.value = rewardId
   }
 
