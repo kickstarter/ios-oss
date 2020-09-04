@@ -3,8 +3,8 @@ import AppCenterAnalytics
 import AppCenterCrashes
 import AppCenterDistribute
 import FBSDKCoreKit
-import FirebaseCore
 import FirebaseAnalytics
+import FirebaseCore
 import FirebaseCrashlytics
 import Foundation
 #if DEBUG
@@ -189,13 +189,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         MSAppCenter.setUserId(data.userId)
         MSAppCenter.setCustomProperties(customProperties)
 
-        MSCrashes.setDelegate(self)
-
         MSAppCenter.start(
           data.appSecret,
           withServices: [
-            MSAnalytics.self,
-            MSCrashes.self,
             MSDistribute.self
           ]
         )
@@ -285,6 +281,18 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     UNUserNotificationCenter.current().delegate = self
+
+    #if RELEASE || APPCENTER
+      // FIXME: Used for testing, tries to record an error 5 seconds after startup
+      DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+        let userInfo: [String: Any] = [
+          NSLocalizedDescriptionKey: NSLocalizedString("Test", value: "Test", comment: ""),
+          NSLocalizedFailureReasonErrorKey: NSLocalizedString("Test", value: "Test", comment: "")
+        ]
+
+        Crashlytics.crashlytics().record(error: NSError(domain: "Test", code: 1, userInfo: userInfo))
+      }
+    #endif
 
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
