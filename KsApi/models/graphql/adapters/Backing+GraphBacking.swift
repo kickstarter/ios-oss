@@ -35,7 +35,7 @@ extension Backing {
       reward: reward,
       rewardId: reward?.id,
       sequence: graphBacking.sequence ?? 0,
-      shippingAmount: Int(graphBacking.shippingAmount?.amount ?? 0),
+      shippingAmount: graphBacking.shippingAmount.map(\.amount).flatMap(Int.init),
       status: backingStatus
     )
   }
