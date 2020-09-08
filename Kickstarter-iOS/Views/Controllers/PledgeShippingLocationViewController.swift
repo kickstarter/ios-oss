@@ -115,6 +115,12 @@ final class PledgeShippingLocationViewController: UIViewController {
     self.shimmerLoadingView.rac.hidden = self.viewModel.outputs.shimmerLoadingViewIsHidden
     self.shippingLocationButton.rac.title = self.viewModel.outputs.shippingLocationButtonTitle
 
+    self.viewModel.outputs.amountLabelIsHidden
+      .observeForUI()
+      .observeValues { [weak self] isHidden in
+        self?.shimmerLoadingView.amountPlaceholder.alpha = isHidden ? 0 : 1
+    }
+
     /**
      When any layout updates occur we need to notify the delegate. This is only necessary when
      this view is contained within a view that is not fully supported by Auto Layout,
