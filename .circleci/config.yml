@@ -48,7 +48,7 @@ jobs:
       - restore_cache:
           name: Restore Carthage
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -56,7 +56,7 @@ jobs:
 
       - save_cache:
           name: Cache Carthage
-          key: carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+          key: carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
           paths:
             - Carthage
 
@@ -121,7 +121,7 @@ jobs:
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -168,7 +168,7 @@ jobs:
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -213,7 +213,7 @@ jobs:
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -258,7 +258,7 @@ jobs:
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -337,7 +337,7 @@ jobs:
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -403,7 +403,7 @@ jobs:
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -464,7 +464,7 @@ jobs:
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -514,7 +514,7 @@ jobs:
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
