@@ -276,5 +276,5 @@ private func initialPledgeAmount(
 ) -> Double {
   guard userIsBackingProject(project) else { return minValue }
 
-  return currentAmount
+  return max(currentAmount, minValue)
 }
