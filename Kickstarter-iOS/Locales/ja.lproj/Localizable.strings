@@ -119,7 +119,7 @@
 "Continue_with_quantity_count_add_ons.other" = "%{quantity_count} 個のアドオンで続行する";
 "Continue_with_quantity_count_add_ons.two" = "%{quantity_count} 個のアドオンで続行する";
 "Continue_with_quantity_count_add_ons.zero" = "%{quantity_count} 個のアドオンで続行する";
-"Continue_with_this_reward" = "Continue with this reward?";
+"Continue_with_this_reward" = "このリワードで続けますか？";
 "Continue_with_this_reward_It_doesnt_offer_these_add_ons" = "このリワードで続行しますか？このリワードでは以下のアドオン (追加リワード) は提供されません：";
 "Couldnt_add_attachment" = "添付ファイルを追加できませんでした";
 "Couldnt_open_live_stream_Try_again_later" = "ライブ配信を開けませんでした。後ほどお試しください。";
@@ -284,7 +284,7 @@
 "Info" = "インフォメーション";
 "Introduce_yourself" = "自己紹介";
 "Introducing_Lights_On" = "新企画「Lights On」";
-"It_may_not_offer_some_or_all_of_your_add_ons" = "It may not offer some or all of your add-ons.";
+"It_may_not_offer_some_or_all_of_your_add_ons" = "このリワードでは、アドオン (追加リワード）の一部または全てが提供されない場合があります。";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "データの収集には最大で24時間かかる場合があります。ダウンロードの準備が整いましたら、このアカウントに登録されているメールアドレス宛てにデータのダウンロード手順が記載されたメールをお送りします。メールが届かなかった場合には、お手数ですがこちらに戻って再試行してください。";
 "Its_a_way_to_bring_creative_projects_to_life" = "クリエイティブなプロジェクトを実現するためのプラットフォームです。";
 "Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "クリエイティブなプロジェクトに生命を吹き込む場です。<a href=\"%{trust_link}\">アカウンタビリティについて詳しくみる。</a>";
