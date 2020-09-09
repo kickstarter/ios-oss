@@ -119,7 +119,7 @@
 "Continue_with_quantity_count_add_ons.other" = "Weiter mit %{quantity_count} Add-ons";
 "Continue_with_quantity_count_add_ons.two" = "Weiter mit %{quantity_count} Add-ons";
 "Continue_with_quantity_count_add_ons.zero" = "Weiter mit %{quantity_count} Add-ons";
-"Continue_with_this_reward" = "Continue with this reward?";
+"Continue_with_this_reward" = "Weiter mit dieser Belohnung?";
 "Continue_with_this_reward_It_doesnt_offer_these_add_ons" = "Weiter mit dieser Belohnung? Die folgenden Add-Ons werden dafür nicht angeboten:";
 "Couldnt_add_attachment" = "Anhang konnte nicht hinzugefügt werden";
 "Couldnt_open_live_stream_Try_again_later" = "Live-Stream konnte nicht geöffnet werden. Bitte versuche es später noch einmal.";
@@ -284,7 +284,7 @@
 "Info" = "Info";
 "Introduce_yourself" = "Stelle dich vor";
 "Introducing_Lights_On" = "Wir stellen vor: Lights On";
-"It_may_not_offer_some_or_all_of_your_add_ons" = "It may not offer some or all of your add-ons.";
+"It_may_not_offer_some_or_all_of_your_add_ons" = "Einige oder alle deiner Add-Ons werden dafür eventuell nicht angeboten.";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "Die Zusammenstellung deiner Daten kann bis zu 24 Stunden dauern. Sobald sie zum Download bereitstehen, werden wir dir eine Anleitung dazu per E-Mail schicken. Solltest du nichts von uns hören, versuche es von hier aus noch einmal.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es ist eine Plattform, um kreative Projekte ins Leben zu rufen.";
 "Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "Es ist eine Plattform, um kreative Projekte zu verwirklichen. <a href=\"%{trust_link}\">Hier findest du mehr Info zur Rechenschaftspflicht</a>";

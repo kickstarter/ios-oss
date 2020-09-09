@@ -937,8 +937,7 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count}
-バッカー"
+   - **ja**: "%{backers_count} バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -1847,10 +1846,10 @@ Haz clic para volver a intentarlo."
    "Continue with this reward?"
 
    - **en**: "Continue with this reward?"
-   - **de**: "Continue with this reward?"
-   - **es**: "Continue with this reward?"
-   - **fr**: "Continue with this reward?"
-   - **ja**: "Continue with this reward?"
+   - **de**: "Weiter mit dieser Belohnung?"
+   - **es**: "¿Continuar con esta recompensa?"
+   - **fr**: "Continuer avec cette récompense ?"
+   - **ja**: "このリワードで続けますか？"
   */
   public static func Continue_with_this_reward() -> String {
     return localizedString(
@@ -4568,10 +4567,10 @@ Haz clic para volver a intentarlo."
    "It may not offer some or all of your add-ons."
 
    - **en**: "It may not offer some or all of your add-ons."
-   - **de**: "It may not offer some or all of your add-ons."
-   - **es**: "It may not offer some or all of your add-ons."
-   - **fr**: "It may not offer some or all of your add-ons."
-   - **ja**: "It may not offer some or all of your add-ons."
+   - **de**: "Einige oder alle deiner Add-Ons werden dafür eventuell nicht angeboten."
+   - **es**: "Es posible que no ofrezca algunos o todos tus complementos."
+   - **fr**: "Une partie ou la totalité des compléments pourraient être indisponibles."
+   - **ja**: "このリワードでは、アドオン (追加リワード）の一部または全てが提供されない場合があります。"
   */
   public static func It_may_not_offer_some_or_all_of_your_add_ons() -> String {
     return localizedString(
@@ -17048,7 +17047,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -20425,7 +20424,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -23536,7 +23535,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -24488,7 +24487,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
