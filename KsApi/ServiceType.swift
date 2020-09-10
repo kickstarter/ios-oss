@@ -188,10 +188,6 @@ public protocol ServiceType {
   func fetchProjectActivities(paginationUrl: String) ->
     SignalProducer<ProjectActivityEnvelope, ErrorEnvelope>
 
-  /// Fetch the project creator details for a project with a given query.
-  func fetchProjectCreatorDetails(query: NonEmptySet<Query>)
-    -> SignalProducer<ProjectCreatorDetailsEnvelope, GraphError>
-
   /// Fetch the user's project notifications.
   func fetchProjectNotifications() -> SignalProducer<[ProjectNotification], ErrorEnvelope>
 
@@ -203,10 +199,6 @@ public protocol ServiceType {
 
   /// Fetches the stats for a particular project.
   func fetchProjectStats(projectId: Int) -> SignalProducer<ProjectStatsEnvelope, ErrorEnvelope>
-
-  /// Fetch the project summary for a project with a given query.
-  func fetchProjectSummary(query: NonEmptySet<Query>)
-    -> SignalProducer<ProjectSummaryEnvelope, GraphError>
 
   /// Fetch the add-on rewards for the add-on selection view with a given query.
   func fetchRewardAddOnsSelectionViewRewards(query: NonEmptySet<Query>)

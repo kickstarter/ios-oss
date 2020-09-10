@@ -29,20 +29,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
   fileprivate weak var videoController: VideoViewController?
 
-  private lazy var creatorBylineView: CreatorBylineView = {
-    CreatorBylineView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
-  private lazy var creatorBylineTapGesture: UITapGestureRecognizer = {
-    UITapGestureRecognizer(target: self, action: #selector(creatorBylineTapped))
-  }()
-
-  private lazy var creatorBylineShimmerLoadingView: ProjectCreatorDetailsShimmerLoadingView = {
-    ProjectCreatorDetailsShimmerLoadingView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   @IBOutlet fileprivate var backersSubtitleLabel: UILabel!
   @IBOutlet fileprivate var backersTitleLabel: UILabel!
   @IBOutlet fileprivate var blurbAndReadMoreStackView: UIStackView!
@@ -70,10 +56,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var projectImageContainerView: UIView!
   @IBOutlet fileprivate var projectNameAndCreatorStackView: UIStackView!
   @IBOutlet fileprivate var projectNameLabel: UILabel!
-  private lazy var projectSummaryCarouselView: ProjectSummaryCarouselView = {
-    ProjectSummaryCarouselView(frame: .zero)
-  }()
-
   @IBOutlet fileprivate var progressBarAndStatsStackView: UIStackView!
   @IBOutlet fileprivate var readMoreButton: UIButton!
   fileprivate lazy var readMoreButtonLarge: LoadingButton = {
@@ -109,12 +91,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.readMoreButtonLarge.heightAnchor
       .constraint(greaterThanOrEqualToConstant: Layout.Button.height).isActive = true
 
-    _ = ([self.creatorBylineView, self.creatorBylineShimmerLoadingView], self.projectNameAndCreatorStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    self.creatorBylineView.addGestureRecognizer(self.creatorBylineTapGesture)
-
-    self.blurbAndReadMoreStackView.insertArrangedSubview(self.projectSummaryCarouselView, at: 1)
     self.readMoreStackView.addArrangedSubview(self.readMoreButtonLarge)
 
     self.viewModel.inputs.awakeFromNib()
@@ -328,10 +304,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.conversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.creatorButton.rac.accessibilityLabel = self.viewModel.outputs.creatorLabelText
     self.creatorLabel.rac.text = self.viewModel.outputs.creatorLabelText
-    self.creatorButton.rac.hidden = self.viewModel.outputs.creatorButtonIsHidden
-    self.creatorBylineView.rac.hidden = self.viewModel.outputs.creatorBylineViewHidden
-    self.creatorBylineShimmerLoadingView.rac.hidden = self.viewModel.outputs.creatorBylineShimmerViewHidden
-    self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorStackViewHidden
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
     self.deadlineTitleLabel.rac.textColor = self.viewModel.outputs.projectUnsuccessfulLabelTextColor
@@ -344,7 +316,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.pledgedTitleLabel.rac.textColor = self.viewModel.outputs.pledgedTitleLabelTextColor
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
-    self.projectSummaryCarouselView.rac.hidden = self.viewModel.outputs.projectSummaryCarouselViewHidden
     self.readMoreButton.rac.hidden = self.viewModel.outputs.readMoreButtonIsHidden
     self.readMoreButtonLarge.rac.hidden = self.viewModel.outputs.readMoreButtonLargeIsHidden
     self.stateLabel.rac.text = self.viewModel.outputs.projectStateLabelText
@@ -363,18 +334,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] in self?.configureVideoPlayerController(forProject: $0) }
 
-    self.viewModel.outputs.configureCreatorBylineView
-      .observeForUI()
-      .observeValues { [weak self] project, creatorDetails in
-        self?.creatorBylineView.configureWith(project: project, creatorDetails: creatorDetails)
-      }
-
-    self.viewModel.outputs.configureProjectSummaryCarouselView
-      .observeForUI()
-      .observeValues { [weak self] projectSummaryItems in
-        self?.projectSummaryCarouselView.configure(with: projectSummaryItems)
-      }
-
     self.viewModel.outputs.creatorImageUrl
       .observeForUI()
       .on(event: { [weak self] _ in self?.creatorImageView.image = nil })
@@ -389,13 +348,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       }
 
     self.viewModel.outputs.notifyDelegateToGoToCreator
-      .observeForControllerAction()
-      .observeValues { [weak self] in
-        guard let self = self else { return }
-        self.delegate?.projectPamphletMainCell(self, goToCreatorForProject: $0)
-      }
-
-    self.viewModel.outputs.notifyDelegateToGoToCreatorFromByline
       .observeForControllerAction()
       .observeValues { [weak self] in
         guard let self = self else { return }
@@ -447,10 +399,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
   @objc fileprivate func readMoreButtonTapped() {
     self.viewModel.inputs.readMoreButtonTapped()
-  }
-
-  @objc fileprivate func creatorBylineTapped() {
-    self.viewModel.inputs.creatorBylineTapped()
   }
 
   @objc fileprivate func creatorButtonTapped() {

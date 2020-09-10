@@ -293,11 +293,6 @@ public struct Service: ServiceType {
     return requestPagination(paginationUrl)
   }
 
-  public func fetchProjectCreatorDetails(query: NonEmptySet<Query>)
-    -> SignalProducer<ProjectCreatorDetailsEnvelope, GraphError> {
-    return fetch(query: query)
-  }
-
   public func fetchProjectNotifications() -> SignalProducer<[ProjectNotification], ErrorEnvelope> {
     return request(.projectNotifications)
   }
@@ -313,11 +308,6 @@ public struct Service: ServiceType {
   public func fetchProjectStats(projectId: Int) ->
     SignalProducer<ProjectStatsEnvelope, ErrorEnvelope> {
     return request(.projectStats(projectId: projectId))
-  }
-
-  public func fetchProjectSummary(query: NonEmptySet<Query>)
-    -> SignalProducer<ProjectSummaryEnvelope, GraphError> {
-    return fetch(query: query)
   }
 
   public func fetchRewardAddOnsSelectionViewRewards(query: NonEmptySet<Query>)
