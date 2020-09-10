@@ -452,6 +452,34 @@ final class RewardAddOnCardViewModelTests: TestCase {
     }
   }
 
+  func testConversionLabel_US_Currency_NonUS_Location_NonUS_Project_ConversionRoundedUp() {
+    let project = .template
+      |> Project.lens.country .~ .mx
+      |> Project.lens.stats.currency .~ Project.Country.mx.currencyCode
+      |> Project.lens.stats.currentCurrency .~ Project.Country.us.currencyCode
+      |> Project.lens.stats.currentCurrencyRate .~ 0.05
+    let reward = .template |> Reward.lens.minimum .~ 10
+
+    withEnvironment(countryCode: "CA") {
+      self.vm.inputs
+        .configure(with: .init(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [:]
+        ))
+
+      self.amountConversionLabelHidden.assertValues(
+        [false],
+        """
+        User with US currency preferences, non-US location, viewing non-US project sees conversion rounded up.
+        """
+      )
+      self.amountConversionLabelText.assertValues(["About US$ 1"], "Conversion label shows US symbol.")
+    }
+  }
+
   func testConversionLabel_Unknown_Location_US_Project_ConfiguredWithReward_WithoutUserCurrency() {
     let project = .template
       |> Project.lens.country .~ .us
