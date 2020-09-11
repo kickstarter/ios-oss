@@ -3,17 +3,11 @@ import Library
 import Prelude
 import UIKit
 
-private enum Layout {
-  enum Button {
-    static let height: CGFloat = 48
-  }
-}
-
 internal protocol ProjectPamphletMainCellDelegate: VideoViewControllerDelegate {
   func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, addChildController child: UIViewController)
   func projectPamphletMainCell(
     _ cell: ProjectPamphletMainCell,
-    goToCampaignForProjectWith projectAndRefTag: (project: Project, refTag: RefTag?)
+    goToCampaignForProjectWith project: Project
   )
   func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, goToCreatorForProject project: Project)
 }
@@ -58,10 +52,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var projectNameLabel: UILabel!
   @IBOutlet fileprivate var progressBarAndStatsStackView: UIStackView!
   @IBOutlet fileprivate var readMoreButton: UIButton!
-  fileprivate lazy var readMoreButtonLarge: LoadingButton = {
-    LoadingButton(type: .custom)
-  }()
-
   @IBOutlet fileprivate var readMoreStackView: UIStackView!
   @IBOutlet fileprivate var stateLabel: UILabel!
   @IBOutlet fileprivate var statsStackView: UIStackView!
@@ -82,16 +72,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       action: #selector(self.readMoreButtonTapped),
       for: .touchUpInside
     )
-    self.readMoreButtonLarge.addTarget(
-      self,
-      action: #selector(self.readMoreButtonTapped),
-      for: .touchUpInside
-    )
-
-    self.readMoreButtonLarge.heightAnchor
-      .constraint(greaterThanOrEqualToConstant: Layout.Button.height).isActive = true
-
-    self.readMoreStackView.addArrangedSubview(self.readMoreButtonLarge)
 
     self.viewModel.inputs.awakeFromNib()
   }
@@ -286,11 +266,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.readMoreButton
       |> readMoreButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
-
-    _ = self.readMoreButtonLarge
-      |> \.activityIndicatorStyle .~ .gray
-      |> greyReadMoreButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign() }
   }
 
   internal override func bindViewModel() {
@@ -316,19 +291,11 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.pledgedTitleLabel.rac.textColor = self.viewModel.outputs.pledgedTitleLabelTextColor
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
-    self.readMoreButton.rac.hidden = self.viewModel.outputs.readMoreButtonIsHidden
-    self.readMoreButtonLarge.rac.hidden = self.viewModel.outputs.readMoreButtonLargeIsHidden
     self.stateLabel.rac.text = self.viewModel.outputs.projectStateLabelText
     self.stateLabel.rac.textColor = self.viewModel.outputs.projectStateLabelTextColor
     self.stateLabel.rac.hidden = self.viewModel.outputs.stateLabelHidden
     self.statsStackView.rac.accessibilityLabel = self.viewModel.outputs.statsStackViewAccessibilityLabel
     self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerLabelHidden
-
-    self.viewModel.outputs.readMoreButtonIsLoading
-      .observeForUI()
-      .observeValues { [weak self] isLoading in
-        self?.readMoreButtonLarge.isLoading = isLoading
-      }
 
     self.viewModel.outputs.configureVideoPlayerController
       .observeForUI()
@@ -340,7 +307,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       .skipNil()
       .observeValues { [weak self] in self?.creatorImageView.af.setImage(withURL: $0) }
 
-    self.viewModel.outputs.notifyDelegateToGoToCampaignWithProjectAndRefTag
+    self.viewModel.outputs.notifyDelegateToGoToCampaignWithProject
       .observeForControllerAction()
       .observeValues { [weak self] in
         guard let self = self else { return }

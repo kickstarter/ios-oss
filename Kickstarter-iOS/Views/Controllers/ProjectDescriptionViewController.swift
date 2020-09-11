@@ -8,15 +8,9 @@ import WebKit
 
 internal final class ProjectDescriptionViewController: WebViewController {
   private let loadingIndicator = UIActivityIndicatorView()
-  private lazy var pledgeCTAContainerView: PledgeCTAContainerView = {
-    PledgeCTAContainerView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      |> \.delegate .~ self
-  }()
-
   private let viewModel: ProjectDescriptionViewModelType = ProjectDescriptionViewModel()
 
-  internal static func configuredWith(value: (Project, RefTag?)) -> ProjectDescriptionViewController {
+  internal static func configuredWith(value: Project) -> ProjectDescriptionViewController {
     let vc = ProjectDescriptionViewController()
     vc.viewModel.inputs.configureWith(value: value)
     return vc
@@ -26,8 +20,6 @@ internal final class ProjectDescriptionViewController: WebViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    self.configurePledgeCTAContainerView()
 
     self.loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
     self.view.addSubview(self.loadingIndicator)
@@ -44,13 +36,6 @@ internal final class ProjectDescriptionViewController: WebViewController {
   internal override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.navigationController?.setNavigationBarHidden(false, animated: animated)
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    self.bottomAnchorConstraint?.constant = -(!self.pledgeCTAContainerView.isHidden ?
-      self.pledgeCTAContainerView.frame.size.height : 0)
   }
 
   // MARK: - Styles
@@ -74,7 +59,6 @@ internal final class ProjectDescriptionViewController: WebViewController {
     super.bindViewModel()
 
     self.loadingIndicator.rac.animating = self.viewModel.outputs.isLoading
-    self.pledgeCTAContainerView.rac.hidden = self.viewModel.outputs.pledgeCTAContainerViewIsHidden
 
     self.viewModel.outputs.goToMessageDialog
       .observeForControllerAction()
@@ -107,35 +91,6 @@ internal final class ProjectDescriptionViewController: WebViewController {
           completion: nil
         )
       }
-
-    self.viewModel.outputs.configurePledgeCTAContainerView
-      .observeForUI()
-      .observeValues { [weak self] value in
-        self?.pledgeCTAContainerView.configureWith(value: value)
-      }
-
-    self.viewModel.outputs.goToRewards
-      .observeForControllerAction()
-      .observeValues { value in
-        let vc = RewardsCollectionViewController.controller(with: value.0, refTag: value.1)
-
-        self.present(vc, animated: true)
-      }
-  }
-
-  // MARK: - Subviews
-
-  private func configurePledgeCTAContainerView() {
-    _ = (self.pledgeCTAContainerView, self.view)
-      |> ksr_addSubviewToParent()
-
-    let pledgeCTAContainerViewConstraints = [
-      self.pledgeCTAContainerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-      self.pledgeCTAContainerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-      self.pledgeCTAContainerView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-    ]
-
-    NSLayoutConstraint.activate(pledgeCTAContainerViewConstraints)
   }
 
   // MARK: - WKNavigationDelegate
@@ -186,12 +141,4 @@ extension ProjectDescriptionViewController: MessageDialogViewControllerDelegate 
   }
 
   internal func messageDialog(_: MessageDialogViewController, postedMessage _: Message) {}
-}
-
-// MARK: - PledgeCTAContainerViewDelegate
-
-extension ProjectDescriptionViewController: PledgeCTAContainerViewDelegate {
-  func pledgeCTAButtonTapped(with state: PledgeStateCTAType) {
-    self.viewModel.inputs.pledgeCTAButtonTapped(with: state)
-  }
 }
