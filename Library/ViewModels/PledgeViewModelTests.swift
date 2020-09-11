@@ -1766,7 +1766,7 @@ final class PledgeViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
       ]
 
     withEnvironment(apiService: mockService, currentUser: .template, optimizelyClient: optimizelyClient) {
@@ -2258,7 +2258,7 @@ final class PledgeViewModelTests: TestCase {
 
     let optimizelyClient = MockOptimizelyClient()
       |> \.experiments .~ [
-        OptimizelyExperiment.Key.pledgeCTACopy.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
       ]
 
     withEnvironment(apiService: mockService, currentUser: .template, optimizelyClient: optimizelyClient) {

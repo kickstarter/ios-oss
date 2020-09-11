@@ -672,7 +672,7 @@ public final class Koala {
         location: .projectPage,
         properties: props.withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
       )
-    case .pledge, .seeTheRewards, .viewTheRewards:
+    case .pledge:
       let allProps = props
         .withAllValuesFrom(optimizelyProperties)
 
