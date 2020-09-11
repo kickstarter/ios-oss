@@ -475,6 +475,8 @@
 		8AA3DB34250AE410009AC8EA /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04AAC09218BB70800CF713E /* SettingsViewModelTests.swift */; };
 		8AA3DB35250AE46D009AC8EA /* SettingsAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8BEA21430BC200D96152 /* SettingsAccountViewModel.swift */; };
 		8AA3DB36250AE470009AC8EA /* SettingsAccountViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D798A70F216695090053D097 /* SettingsAccountViewModelTests.swift */; };
+		8AA3DB38250AF691009AC8EA /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
+		8AA3DB39250AF692009AC8EA /* MockPushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B4B721A8B0E000910962 /* MockPushRegistration.swift */; };
 		8AA407C024DA43D8008C5FB0 /* GraphCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA407BF24DA43D8008C5FB0 /* GraphCategory.swift */; };
 		8AA407C224DB0C8D008C5FB0 /* GraphCountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA407C124DB0C8D008C5FB0 /* GraphCountry.swift */; };
 		8AA407C624DB36E8008C5FB0 /* Project.Country+GraphCountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA407C524DB36E8008C5FB0 /* Project.Country+GraphCountry.swift */; };
@@ -5500,6 +5502,7 @@
 				A7ED1F4C1E831BA200BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */,
 				778AA7802410542900E67293 /* LandingViewModelTests.swift in Sources */,
 				D6B6876E21937182005F5DA7 /* CreditCardCellViewModelTests.swift in Sources */,
+				8AA3DB39250AF692009AC8EA /* MockPushRegistration.swift in Sources */,
 				A7ED1FFC1E831C5C00BFFA01 /* ProjectPamphletSubpageCellViewModelTests.swift in Sources */,
 				A7ED20031E831C5C00BFFA01 /* TwoFactorViewModelTests.swift in Sources */,
 				D09362B0225D803600E1411A /* UIViewController+URLTests.swift in Sources */,
@@ -6377,6 +6380,7 @@
 				1611EF6B23B2792F0051CDCC /* MockUUID.swift in Sources */,
 				D033E2C422A05B7400464E43 /* MockApplication.swift in Sources */,
 				77C9122D23C5082900F3D2C9 /* MockApplePayCapable.swift in Sources */,
+				8AA3DB38250AF691009AC8EA /* MockPushRegistration.swift in Sources */,
 				D05DFC4D227A5842006F3B68 /* TestCase.swift in Sources */,
 				774D98E123B162CA00FC81C2 /* MockOptimizelyClient.swift in Sources */,
 				8AD79530239EBDF600998C79 /* MockTrackingClient.swift in Sources */,
