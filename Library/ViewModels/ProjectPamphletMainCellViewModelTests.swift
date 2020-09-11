@@ -19,7 +19,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let deadlineTitleLabelText = TestObserver<String, Never>()
   private let fundingProgressBarViewBackgroundColor = TestObserver<UIColor, Never>()
   private let notifyDelegateToGoToCampaignWithProject = TestObserver<Project, Never>()
-  private let notifyDelegateToGoToCampaignWithRefTag = TestObserver<RefTag?, Never>()
   private let notifyDelegateToGoToCreator = TestObserver<Project, Never>()
   private let opacityForViews = TestObserver<CGFloat, Never>()
   private let pledgedSubtitleLabelText = TestObserver<String, Never>()
@@ -52,10 +51,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.deadlineTitleLabelText.observe(self.deadlineTitleLabelText.observer)
     self.vm.outputs.fundingProgressBarViewBackgroundColor
       .observe(self.fundingProgressBarViewBackgroundColor.observer)
-    self.vm.outputs.notifyDelegateToGoToCampaignWithProjectAndRefTag.map(first)
+    self.vm.outputs.notifyDelegateToGoToCampaignWithProject
       .observe(self.notifyDelegateToGoToCampaignWithProject.observer)
-    self.vm.outputs.notifyDelegateToGoToCampaignWithProjectAndRefTag.map(second)
-      .observe(self.notifyDelegateToGoToCampaignWithRefTag.observer)
     self.vm.outputs.notifyDelegateToGoToCreator.observe(self.notifyDelegateToGoToCreator.observer)
     self.vm.outputs.opacityForViews.observe(self.opacityForViews.observer)
     self.vm.outputs.pledgedSubtitleLabelText.observe(self.pledgedSubtitleLabelText.observer)
@@ -485,18 +482,15 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let refTag = RefTag.discovery
 
     self.notifyDelegateToGoToCampaignWithProject.assertValues([])
-    self.notifyDelegateToGoToCampaignWithRefTag.assertValues([])
 
     self.vm.inputs.configureWith(value: (project, refTag))
     self.vm.inputs.awakeFromNib()
 
     self.notifyDelegateToGoToCampaignWithProject.assertValues([])
-    self.notifyDelegateToGoToCampaignWithRefTag.assertValues([])
 
     self.vm.inputs.readMoreButtonTapped()
 
     self.notifyDelegateToGoToCampaignWithProject.assertValues([project])
-    self.notifyDelegateToGoToCampaignWithRefTag.assertValues([refTag])
   }
 
   func testNotifyDelegateToGoToCreator() {
@@ -601,7 +595,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       self.vm.inputs.readMoreButtonTapped()
 
       self.notifyDelegateToGoToCampaignWithProject.assertValues([project])
-      self.notifyDelegateToGoToCampaignWithRefTag.assertValues([.discovery])
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Campaign Details Button Clicked")
@@ -643,7 +636,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       self.vm.inputs.readMoreButtonTapped()
 
       self.notifyDelegateToGoToCampaignWithProject.assertValues([project])
-      self.notifyDelegateToGoToCampaignWithRefTag.assertValues([.discovery])
 
       XCTAssertEqual(self.trackingClient.events, ["Campaign Details Button Clicked"])
 
