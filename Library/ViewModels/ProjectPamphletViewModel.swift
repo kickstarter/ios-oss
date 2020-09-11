@@ -84,7 +84,6 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       ))
       .map(unpack)
       .switchMap { projectOrParam, refTag, shouldPrefix in
-
         fetchProject(projectOrParam: projectOrParam, shouldPrefix: shouldPrefix)
           .on(
             starting: { isLoading.value = true },
@@ -117,7 +116,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .skipNil()
 
     let shouldGoToRewards = ctaButtonTappedWithType
-      .filter { [.pledge, .viewRewards, .viewYourRewards, .seeTheRewards, .viewTheRewards].contains($0) }
+      .filter { $0.isAny(of: .pledge, .viewRewards, .viewYourRewards) }
       .ignoreValues()
 
     let shouldGoToManagePledge = ctaButtonTappedWithType
@@ -205,7 +204,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
 
     let shouldTrackCTATappedEvent = ctaButtonTappedWithType
-      .filter { [.pledge, .seeTheRewards, .viewTheRewards].contains($0) }
+      .filter { $0 == .pledge }
 
     Signal.combineLatest(project, refTag)
       .takeWhen(shouldTrackCTATappedEvent)
