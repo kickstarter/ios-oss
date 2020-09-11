@@ -64,8 +64,8 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string to use for the location name label.
   var locationNameLabelText: Signal<String, Never> { get }
 
-  /// Emits the project and refTag when we should go to the campaign view for the project.
-  var notifyDelegateToGoToCampaignWithProjectAndRefTag: Signal<(Project, RefTag?), Never> { get }
+  /// Emits the project when we should go to the campaign view for the project.
+  var notifyDelegateToGoToCampaignWithProject: Signal<Project, Never> { get }
 
   /// Emits the project when we should go to the creator's view for the project.
   var notifyDelegateToGoToCreator: Signal<Project, Never> { get }
@@ -103,15 +103,6 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits the text color of the backer and deadline title label.
   var projectUnsuccessfulLabelTextColor: Signal<UIColor, Never> { get }
 
-  /// Emits when the read more button should be hidden.
-  var readMoreButtonIsHidden: Signal<Bool, Never> { get }
-
-  /// Emits when the read more button is loading.
-  var readMoreButtonIsLoading: Signal<Bool, Never> { get }
-
-  /// Emits when the large read more button should be hidden.
-  var readMoreButtonLargeIsHidden: Signal<Bool, Never> { get }
-
   /// Emits a boolean that determines if the project state label should be hidden.
   var stateLabelHidden: Signal<Bool, Never> { get }
 
@@ -148,14 +139,6 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.creatorImageUrl = project.map { URL(string: $0.creator.avatar.small) }
 
     self.stateLabelHidden = project.map { $0.state == .live }
-
-    let projectCampaignExperimentVariant = data
-      .map(OptimizelyExperiment.projectCampaignExperiment)
-
-    let isProjectCampaignExperimentVariant = projectCampaignExperimentVariant.map { $0 != .control }
-
-    self.readMoreButtonIsHidden = isProjectCampaignExperimentVariant
-    self.readMoreButtonLargeIsHidden = isProjectCampaignExperimentVariant.negate()
 
     self.projectStateLabelText = project
       .filter { $0.state != .live }
@@ -240,7 +223,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .map(Project.lens.stats.fundingProgress.view)
       .map(clamp(0, 1))
 
-    self.notifyDelegateToGoToCampaignWithProjectAndRefTag = data.map { $0 as (Project, RefTag?) }
+    self.notifyDelegateToGoToCampaignWithProject = project
       .takeWhen(self.readMoreButtonTappedProperty.signal)
 
     self.notifyDelegateToGoToCreator = project
@@ -254,17 +237,6 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       self.dataProperty.signal.skipNil().mapConst(1.0),
       self.awakeFromNibProperty.signal.mapConst(0.0)
     )
-
-    /* Read more button has initial loading state in second experiment variant
-     * while rewards are being loaded.
-     */
-    self.readMoreButtonIsLoading = Signal.combineLatest(
-      project,
-      projectCampaignExperimentVariant
-    )
-    .map { project, variant in
-      project.rewards.isEmpty && variant == .variant2
-    }
 
     // Tracking
 
@@ -336,7 +308,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let deadlineTitleLabelText: Signal<String, Never>
   public let fundingProgressBarViewBackgroundColor: Signal<UIColor, Never>
   public let locationNameLabelText: Signal<String, Never>
-  public let notifyDelegateToGoToCampaignWithProjectAndRefTag: Signal<(Project, RefTag?), Never>
+  public let notifyDelegateToGoToCampaignWithProject: Signal<Project, Never>
   public let notifyDelegateToGoToCreator: Signal<Project, Never>
   public let opacityForViews: Signal<CGFloat, Never>
   public let pledgedSubtitleLabelText: Signal<String, Never>
@@ -349,9 +321,6 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let projectStateLabelText: Signal<String, Never>
   public let projectStateLabelTextColor: Signal<UIColor, Never>
   public let projectUnsuccessfulLabelTextColor: Signal<UIColor, Never>
-  public let readMoreButtonIsHidden: Signal<Bool, Never>
-  public let readMoreButtonIsLoading: Signal<Bool, Never>
-  public let readMoreButtonLargeIsHidden: Signal<Bool, Never>
   public let stateLabelHidden: Signal<Bool, Never>
   public let statsStackViewAccessibilityLabel: Signal<String, Never>
   public let youreABackerLabelHidden: Signal<Bool, Never>

@@ -185,9 +185,9 @@ public final class ProjectPamphletContentViewController: UITableViewController {
 extension ProjectPamphletContentViewController: ProjectPamphletMainCellDelegate {
   internal func projectPamphletMainCell(
     _: ProjectPamphletMainCell,
-    goToCampaignForProjectWith projectAndRefTag: (project: Project, refTag: RefTag?)
+    goToCampaignForProjectWith project: Project
   ) {
-    let vc = ProjectDescriptionViewController.configuredWith(value: projectAndRefTag)
+    let vc = ProjectDescriptionViewController.configuredWith(value: project)
     self.navigationController?.pushViewController(vc, animated: true)
   }
 

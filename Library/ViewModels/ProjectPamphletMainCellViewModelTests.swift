@@ -68,9 +68,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.projectStateLabelText.observe(self.projectStateLabelText.observer)
     self.vm.outputs.projectStateLabelTextColor.observe(self.projectStateLabelTextColor.observer)
     self.vm.outputs.projectUnsuccessfulLabelTextColor.observe(self.projectUnsuccessfulLabelTextColor.observer)
-    self.vm.outputs.readMoreButtonIsLoading.observe(self.readMoreButtonIsLoading.observer)
-    self.vm.outputs.readMoreButtonIsHidden.observe(self.readMoreButtonIsHidden.observer)
-    self.vm.outputs.readMoreButtonLargeIsHidden.observe(self.readMoreButtonLargeIsHidden.observer)
     self.vm.outputs.stateLabelHidden.observe(self.stateLabelHidden.observer)
     self.vm.outputs.youreABackerLabelHidden.observe(self.youreABackerLabelHidden.observer)
   }
@@ -483,73 +480,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.opacityForViews.assertValues([0.0, 1.0], "Fade in views after project comes in.")
   }
 
-  func testProjectCampaignCTA_OptimizelyControl() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue:
-          OptimizelyExperiment.Variant.control.rawValue
-      ]
-
-    self.readMoreButtonIsHidden.assertDidNotEmitValue()
-    self.readMoreButtonLargeIsHidden.assertDidNotEmitValue()
-
-    withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (.template, nil))
-      self.vm.inputs.awakeFromNib()
-
-      self.readMoreButtonIsHidden.assertValues([false])
-      self.readMoreButtonLargeIsHidden.assertValues([true])
-    }
-  }
-
-  func testProjectCampaignCTA_OptimizelyControl_OptimizelyClientNotConfigured() {
-    self.readMoreButtonIsHidden.assertDidNotEmitValue()
-    self.readMoreButtonLargeIsHidden.assertDidNotEmitValue()
-
-    withEnvironment(optimizelyClient: nil) {
-      self.vm.inputs.configureWith(value: (.template, nil))
-      self.vm.inputs.awakeFromNib()
-
-      self.readMoreButtonIsHidden.assertValues([false])
-      self.readMoreButtonLargeIsHidden.assertValues([true])
-    }
-  }
-
-  func testProjectCampaignCTA_OptimizelyExperimental_Variant1() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    self.readMoreButtonIsHidden.assertDidNotEmitValue()
-    self.readMoreButtonLargeIsHidden.assertDidNotEmitValue()
-
-    withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (.template, nil))
-      self.vm.inputs.awakeFromNib()
-
-      self.readMoreButtonIsHidden.assertValues([true])
-      self.readMoreButtonLargeIsHidden.assertValues([false])
-    }
-  }
-
-  func testProjectCampaignCTA_OptimizelyExperimental_Variant2() {
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue:
-          OptimizelyExperiment.Variant.variant2.rawValue
-      ]
-
-    withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (.template, nil))
-      self.vm.inputs.awakeFromNib()
-
-      self.readMoreButtonIsHidden.assertValues([true])
-      self.readMoreButtonLargeIsHidden.assertValues([false])
-    }
-  }
-
   func testNotifyDelegateToGoToCampaign() {
     let project = Project.template
     let refTag = RefTag.discovery
@@ -740,88 +670,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
         properties?["optimizely_experiments"],
         "Event includes Optimizely properties"
       )
-    }
-  }
-
-  func testReadMoreButtonIsLoading_Control() {
-    let project = Project.template
-
-    self.readMoreButtonIsLoading.assertDidNotEmitValue()
-
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
-          .control.rawValue
-      ]
-
-    withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (project, nil))
-      self.vm.inputs.awakeFromNib()
-
-      self.readMoreButtonIsLoading.assertValues([false])
-    }
-  }
-
-  func testReadMoreButtonIsLoading_Variant1() {
-    let project = Project.template
-
-    self.readMoreButtonIsLoading.assertDidNotEmitValue()
-
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
-          .variant1.rawValue
-      ]
-
-    withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (project, nil))
-      self.vm.inputs.awakeFromNib()
-
-      self.readMoreButtonIsLoading.assertValues([false])
-    }
-  }
-
-  func testReadMoreButtonIsLoading_Variant2_NoRewards() {
-    let project = Project.template
-
-    self.readMoreButtonIsLoading.assertDidNotEmitValue()
-
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
-          .variant2.rawValue
-      ]
-
-    withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (project, nil))
-      self.vm.inputs.awakeFromNib()
-
-      self.readMoreButtonIsLoading.assertValues([true])
-
-      let projectWithRewards = Project.cosmicSurgery
-
-      self.vm.inputs.configureWith(value: (projectWithRewards, nil))
-
-      self.readMoreButtonIsLoading.assertValues([true, false, false])
-    }
-  }
-
-  func testReadMoreButtonIsLoading_Variant2_HasRewards() {
-    let project = Project.cosmicSurgery
-
-    self.readMoreButtonIsLoading.assertDidNotEmitValue()
-
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageCampaignDetails.rawValue: OptimizelyExperiment.Variant
-          .variant2.rawValue
-      ]
-
-    withEnvironment(optimizelyClient: optimizelyClient) {
-      self.vm.inputs.configureWith(value: (project, nil))
-      self.vm.inputs.awakeFromNib()
-
-      self.readMoreButtonIsLoading.assertValues([false])
     }
   }
 }
