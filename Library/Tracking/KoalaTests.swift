@@ -1,4 +1,3 @@
-@testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -452,25 +451,6 @@ final class KoalaTests: TestCase {
   }
 
   // MARK: - Project Page Tracking
-
-  func testTrackCreatorDetailsClicked() {
-    let client = MockTrackingClient()
-    let koala = Koala(client: client)
-
-    koala.trackCreatorDetailsClicked(
-      project: .template,
-      location: .projectPage,
-      refTag: .discovery,
-      cookieRefTag: .discovery
-    )
-
-    XCTAssertEqual(["Creator Details Clicked"], client.events)
-    XCTAssertEqual(["project_screen"], client.properties(forKey: "context_location"))
-    XCTAssertEqual(["discovery"], client.properties(forKey: "session_ref_tag"))
-    XCTAssertEqual(["discovery"], client.properties(forKey: "session_referrer_credit"))
-
-    self.assertProjectProperties(client.properties.last)
-  }
 
   func testTrackCampaignDetailsButtonClicked() {
     let client = MockTrackingClient()

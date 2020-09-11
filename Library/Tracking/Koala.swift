@@ -27,7 +27,6 @@ public final class Koala {
     case addOnsPageViewed = "Add-Ons Page Viewed"
     case campaignDetailsButtonClicked = "Campaign Details Button Clicked"
     case campaignDetailsPledgeButtonClicked = "Campaign Details Pledge Button Clicked"
-    case creatorDetailsClicked = "Creator Details Clicked"
     case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
     case collectionViewed = "Collection Viewed"
     case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
@@ -1584,25 +1583,6 @@ public final class Koala {
       event: DataLakeApprovedEvent.watchProjectButtonClicked.rawValue,
       location: location,
       properties: props
-    )
-  }
-
-  public func trackCreatorDetailsClicked(
-    project: Project,
-    location: LocationContext,
-    refTag: RefTag?,
-    cookieRefTag: RefTag? = nil,
-    optimizelyProperties: [String: Any] = [:]
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(optimizelyProperties)
-
-    self.track(
-      event: DataLakeApprovedEvent.creatorDetailsClicked.rawValue,
-      location: location,
-      properties: props,
-      refTag: refTag?.stringTag,
-      referrerCredit: cookieRefTag?.stringTag
     )
   }
 

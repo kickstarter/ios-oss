@@ -4,9 +4,7 @@ import ReactiveSwift
 
 public typealias ProjectPamphletMainCellData = (
   project: Project,
-  refTag: RefTag?,
-  creatorDetailsData: ProjectCreatorDetailsData,
-  projectSummaryitems: [ProjectSummaryEnvelope.ProjectSummaryItem]
+  refTag: RefTag?
 )
 
 public protocol ProjectPamphletMainCellViewModelInputs {
@@ -18,9 +16,6 @@ public protocol ProjectPamphletMainCellViewModelInputs {
 
   /// Call when the creator button is tapped.
   func creatorButtonTapped()
-
-  /// Call when the creatorByline is tapped.
-  func creatorBylineTapped()
 
   /// Call when the delegate has been set on the cell.
   func delegateDidSet()
@@ -42,14 +37,8 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string to use for the category name label.
   var categoryNameLabelText: Signal<String, Never> { get }
 
-  /// Emits a project when the creator by line view should be configured.
-  var configureCreatorBylineView: Signal<(Project, ProjectCreatorDetailsEnvelope), Never> { get }
-
   /// Emits a project when the video player controller should be configured.
   var configureVideoPlayerController: Signal<Project, Never> { get }
-
-  /// Emits the data to configure the configureProjectSummaryCarouselView.
-  var configureProjectSummaryCarouselView: Signal<[ProjectSummaryEnvelope.ProjectSummaryItem], Never> { get }
 
   /// Emits a boolean that determines if the conversion labels should be hidden.
   var conversionLabelHidden: Signal<Bool, Never> { get }
@@ -57,23 +46,11 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string for the conversion label.
   var conversionLabelText: Signal<String, Never> { get }
 
-  /// Emits a bool to determine that creatorButton should be hidden.
-  var creatorButtonIsHidden: Signal<Bool, Never> { get }
-
-  /// Emits whether the CreatorBylineView should be hidden.
-  var creatorBylineViewHidden: Signal<Bool, Never> { get }
-
-  /// Emits whether the CreatorBylineView loading shimmer view should be hidden.
-  var creatorBylineShimmerViewHidden: Signal<Bool, Never> { get }
-
   /// Emits an image url to be loaded into the creator's image view.
   var creatorImageUrl: Signal<URL?, Never> { get }
 
   /// Emits text to be put into the creator label.
   var creatorLabelText: Signal<String, Never> { get }
-
-  /// Emits whether the creator stack view should be hidden.
-  var creatorStackViewHidden: Signal<Bool, Never> { get }
 
   /// Emits the text for the deadline subtitle label.
   var deadlineSubtitleLabelText: Signal<String, Never> { get }
@@ -87,14 +64,11 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string to use for the location name label.
   var locationNameLabelText: Signal<String, Never> { get }
 
-  /// Emits the project and refTag when we should go to the campaign view for the project.
-  var notifyDelegateToGoToCampaignWithProjectAndRefTag: Signal<(Project, RefTag?), Never> { get }
+  /// Emits the project when we should go to the campaign view for the project.
+  var notifyDelegateToGoToCampaignWithProject: Signal<Project, Never> { get }
 
   /// Emits the project when we should go to the creator's view for the project.
   var notifyDelegateToGoToCreator: Signal<Project, Never> { get }
-
-  /// Emits the project when we should go to the creator's view from creatorByline for the project.
-  var notifyDelegateToGoToCreatorFromByline: Signal<Project, Never> { get }
 
   /// Emits an alpha value for views to create transition after full project loads.
   var opacityForViews: Signal<CGFloat, Never> { get }
@@ -126,20 +100,8 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits the text color of the project state label.
   var projectStateLabelTextColor: Signal<UIColor, Never> { get }
 
-  /// Emits whether the projectSummaryCarouselViewHidden should be hidden
-  var projectSummaryCarouselViewHidden: Signal<Bool, Never> { get }
-
   /// Emits the text color of the backer and deadline title label.
   var projectUnsuccessfulLabelTextColor: Signal<UIColor, Never> { get }
-
-  /// Emits when the read more button should be hidden.
-  var readMoreButtonIsHidden: Signal<Bool, Never> { get }
-
-  /// Emits when the read more button is loading.
-  var readMoreButtonIsLoading: Signal<Bool, Never> { get }
-
-  /// Emits when the large read more button should be hidden.
-  var readMoreButtonLargeIsHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if the project state label should be hidden.
   var stateLabelHidden: Signal<Bool, Never> { get }
@@ -165,41 +127,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     )
     .map(first)
 
-    let projectAndRefTag = data.map {
-      project, refTag, _, _ in (project, refTag)
-    }
-    let projectAndCreatorDetails = data.map { project, _, creatorDetails, _ in
-      (project, creatorDetails)
-    }
-    let creatorDetails = projectAndCreatorDetails.map { _, creatorDetails in creatorDetails.0 }.skipNil()
-    let projectSummaryItems = data.map { $0.projectSummaryitems }
-
-    self.creatorBylineViewHidden = projectAndCreatorDetails
-      .map(second)
-      .map { creatorDetails, isLoading in
-        creatorDetails == nil || isLoading
-      }
-
-    self.creatorBylineShimmerViewHidden = projectAndCreatorDetails
-      .map(second)
-      .map(second >>> isFalse)
-
-    self.creatorStackViewHidden = Signal.combineLatest(
-      self.creatorBylineViewHidden,
-      self.creatorBylineShimmerViewHidden
-    )
-    .map { creatorBylineViewHidden, creatorBylineShimmerViewHidden in
-      creatorBylineViewHidden && creatorBylineShimmerViewHidden
-    }
-    .negate()
-
-    self.configureProjectSummaryCarouselView = projectSummaryItems
-
-    self.projectSummaryCarouselViewHidden = projectSummaryItems.map { $0.isEmpty }
-
-    self.creatorButtonIsHidden = self.creatorStackViewHidden
-
-    let project = projectAndRefTag.map(first)
+    let project = data.map(first)
 
     self.projectNameLabelText = project.map(Project.lens.name.view)
     self.projectBlurbLabelText = project.map(Project.lens.blurb.view)
@@ -211,16 +139,6 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     self.creatorImageUrl = project.map { URL(string: $0.creator.avatar.small) }
 
     self.stateLabelHidden = project.map { $0.state == .live }
-
-    let projectCampaignExperimentVariant = projectAndRefTag
-      .map(OptimizelyExperiment.projectCampaignExperiment)
-
-    self.configureCreatorBylineView = Signal.combineLatest(project, creatorDetails)
-
-    let isProjectCampaignExperimentVariant = projectCampaignExperimentVariant.map { $0 != .control }
-
-    self.readMoreButtonIsHidden = isProjectCampaignExperimentVariant
-    self.readMoreButtonLargeIsHidden = isProjectCampaignExperimentVariant.negate()
 
     self.projectStateLabelText = project
       .filter { $0.state != .live }
@@ -305,14 +223,11 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .map(Project.lens.stats.fundingProgress.view)
       .map(clamp(0, 1))
 
-    self.notifyDelegateToGoToCampaignWithProjectAndRefTag = projectAndRefTag
+    self.notifyDelegateToGoToCampaignWithProject = project
       .takeWhen(self.readMoreButtonTappedProperty.signal)
 
     self.notifyDelegateToGoToCreator = project
       .takeWhen(self.creatorButtonTappedProperty.signal)
-
-    self.notifyDelegateToGoToCreatorFromByline = project
-      .takeWhen(self.creatorBylineTappedProperty.signal)
 
     self.configureVideoPlayerController = Signal.combineLatest(project, self.delegateDidSetProperty.signal)
       .map(first)
@@ -323,20 +238,9 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       self.awakeFromNibProperty.signal.mapConst(0.0)
     )
 
-    /* Read more button has initial loading state in second experiment variant
-     * while rewards are being loaded.
-     */
-    self.readMoreButtonIsLoading = Signal.combineLatest(
-      project,
-      projectCampaignExperimentVariant
-    )
-    .map { project, variant in
-      project.rewards.isEmpty && variant == .variant2
-    }
-
     // Tracking
 
-    projectAndRefTag
+    data
       .takeWhen(self.readMoreButtonTappedProperty.signal)
       .observeValues { projectAndRefTag in
         let (project, refTag) = projectAndRefTag
@@ -354,25 +258,6 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
         AppEnvironment.current.optimizelyClient?.track(eventName: "Campaign Details Button Clicked")
       }
-
-    projectAndRefTag
-      .takeWhen(self.creatorBylineTappedProperty.signal)
-      .observeValues { projectAndRefTag in
-        let (project, refTag) = projectAndRefTag
-        let includeOptimizelyProperties = project.state == .live && userIsBackingProject(project) == false
-        let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
-        let optyProperties = includeOptimizelyProperties ? optimizelyProperties() : [:]
-
-        AppEnvironment.current.koala.trackCreatorDetailsClicked(
-          project: project,
-          location: .projectPage,
-          refTag: refTag,
-          cookieRefTag: cookieRefTag,
-          optimizelyProperties: optyProperties ?? [:]
-        )
-
-        AppEnvironment.current.optimizelyClient?.track(eventName: "Creator Details Clicked")
-      }
   }
 
   private let awakeFromNibProperty = MutableProperty(())
@@ -389,11 +274,6 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   fileprivate let creatorButtonTappedProperty = MutableProperty(())
   public func creatorButtonTapped() {
     self.creatorButtonTappedProperty.value = ()
-  }
-
-  fileprivate let creatorBylineTappedProperty = MutableProperty(())
-  public func creatorBylineTapped() {
-    self.creatorBylineTappedProperty.value = ()
   }
 
   fileprivate let delegateDidSetProperty = MutableProperty(())
@@ -419,24 +299,17 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let backersSubtitleLabelText: Signal<String, Never>
   public let backersTitleLabelText: Signal<String, Never>
   public let categoryNameLabelText: Signal<String, Never>
-  public let configureCreatorBylineView: Signal<(Project, ProjectCreatorDetailsEnvelope), Never>
   public let configureVideoPlayerController: Signal<Project, Never>
-  public let configureProjectSummaryCarouselView: Signal<[ProjectSummaryEnvelope.ProjectSummaryItem], Never>
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>
-  public let creatorButtonIsHidden: Signal<Bool, Never>
-  public let creatorBylineViewHidden: Signal<Bool, Never>
-  public let creatorBylineShimmerViewHidden: Signal<Bool, Never>
   public let creatorImageUrl: Signal<URL?, Never>
   public let creatorLabelText: Signal<String, Never>
-  public let creatorStackViewHidden: Signal<Bool, Never>
   public let deadlineSubtitleLabelText: Signal<String, Never>
   public let deadlineTitleLabelText: Signal<String, Never>
   public let fundingProgressBarViewBackgroundColor: Signal<UIColor, Never>
   public let locationNameLabelText: Signal<String, Never>
-  public let notifyDelegateToGoToCampaignWithProjectAndRefTag: Signal<(Project, RefTag?), Never>
+  public let notifyDelegateToGoToCampaignWithProject: Signal<Project, Never>
   public let notifyDelegateToGoToCreator: Signal<Project, Never>
-  public let notifyDelegateToGoToCreatorFromByline: Signal<Project, Never>
   public let opacityForViews: Signal<CGFloat, Never>
   public let pledgedSubtitleLabelText: Signal<String, Never>
   public let pledgedTitleLabelText: Signal<String, Never>
@@ -447,11 +320,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let projectNameLabelText: Signal<String, Never>
   public let projectStateLabelText: Signal<String, Never>
   public let projectStateLabelTextColor: Signal<UIColor, Never>
-  public let projectSummaryCarouselViewHidden: Signal<Bool, Never>
   public let projectUnsuccessfulLabelTextColor: Signal<UIColor, Never>
-  public let readMoreButtonIsHidden: Signal<Bool, Never>
-  public let readMoreButtonIsLoading: Signal<Bool, Never>
-  public let readMoreButtonLargeIsHidden: Signal<Bool, Never>
   public let stateLabelHidden: Signal<Bool, Never>
   public let statsStackViewAccessibilityLabel: Signal<String, Never>
   public let youreABackerLabelHidden: Signal<Bool, Never>

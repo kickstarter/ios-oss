@@ -97,14 +97,10 @@
     fileprivate let fetchProjectsResponse: [Project]?
     fileprivate let fetchProjectsError: ErrorEnvelope?
 
-    fileprivate let fetchProjectCreatorDetailsResult: Result<ProjectCreatorDetailsEnvelope, GraphError>?
-
     fileprivate let fetchProjectNotificationsResponse: [ProjectNotification]
 
     fileprivate let fetchProjectStatsResponse: ProjectStatsEnvelope?
     fileprivate let fetchProjectStatsError: ErrorEnvelope?
-
-    fileprivate let fetchProjectSummaryResult: Result<ProjectSummaryEnvelope, GraphError>?
 
     fileprivate let fetchRewardAddOnsSelectionViewRewardsResult:
       Result<Project, ErrorEnvelope>?
@@ -260,13 +256,11 @@
       fetchProjectError: ErrorEnvelope? = nil,
       fetchProjectActivitiesResponse: [Activity]? = nil,
       fetchProjectActivitiesError: ErrorEnvelope? = nil,
-      fetchProjectCreatorDetailsResult: Result<ProjectCreatorDetailsEnvelope, GraphError>? = nil,
       fetchProjectNotificationsResponse: [ProjectNotification]? = nil,
       fetchProjectsResponse: [Project]? = nil,
       fetchProjectsError: ErrorEnvelope? = nil,
       fetchProjectStatsResponse: ProjectStatsEnvelope? = nil,
       fetchProjectStatsError: ErrorEnvelope? = nil,
-      fetchProjectSummaryResult: Result<ProjectSummaryEnvelope, GraphError>? = nil,
       fetchShippingRulesResult: Result<[ShippingRule], ErrorEnvelope>? = nil,
       fetchUserProjectsBackedResponse: [Project]? = nil,
       fetchUserProjectsBackedError: ErrorEnvelope? = nil,
@@ -436,14 +430,10 @@
 
       self.fetchProjectsResponse = fetchProjectsResponse ?? []
 
-      self.fetchProjectCreatorDetailsResult = fetchProjectCreatorDetailsResult
-
       self.fetchProjectsError = fetchProjectsError
 
       self.fetchProjectStatsResponse = fetchProjectStatsResponse
       self.fetchProjectStatsError = fetchProjectStatsError
-
-      self.fetchProjectSummaryResult = fetchProjectSummaryResult
 
       self.fetchShippingRulesResult = fetchShippingRulesResult
 
@@ -1002,11 +992,6 @@
       return .empty
     }
 
-    func fetchProjectCreatorDetails(query _: NonEmptySet<Query>)
-      -> SignalProducer<ProjectCreatorDetailsEnvelope, GraphError> {
-      return producer(for: self.fetchProjectCreatorDetailsResult)
-    }
-
     internal func fetchProjects(member _: Bool) -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
       if let error = fetchProjectsError {
         return SignalProducer(error: error)
@@ -1039,11 +1024,6 @@
       }
 
       return SignalProducer(value: .template)
-    }
-
-    internal func fetchProjectSummary(query _: NonEmptySet<Query>)
-      -> SignalProducer<ProjectSummaryEnvelope, GraphError> {
-      return producer(for: self.fetchProjectSummaryResult)
     }
 
     internal func fetchRewardShippingRules(projectId _: Int, rewardId _: Int)
@@ -1485,13 +1465,11 @@
             fetchProjectResponse: $1.fetchProjectResponse,
             fetchProjectActivitiesResponse: $1.fetchProjectActivitiesResponse,
             fetchProjectActivitiesError: $1.fetchProjectActivitiesError,
-            fetchProjectCreatorDetailsResult: $1.fetchProjectCreatorDetailsResult,
             fetchProjectNotificationsResponse: $1.fetchProjectNotificationsResponse,
             fetchProjectsResponse: $1.fetchProjectsResponse,
             fetchProjectsError: $1.fetchProjectsError,
             fetchProjectStatsResponse: $1.fetchProjectStatsResponse,
             fetchProjectStatsError: $1.fetchProjectStatsError,
-            fetchProjectSummaryResult: $1.fetchProjectSummaryResult,
             fetchShippingRulesResult: $1.fetchShippingRulesResult,
             fetchUserProjectsBackedResponse: $1.fetchUserProjectsBackedResponse,
             fetchUserProjectsBackedError: $1.fetchUserProjectsBackedError,
