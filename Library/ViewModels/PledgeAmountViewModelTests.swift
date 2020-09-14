@@ -139,15 +139,15 @@ internal final class PledgeAmountViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(data: (project, reward: noReward, 0))
 
-    self.amountIsValid.assertValues([false])
+    self.amountIsValid.assertValues([true])
     self.amountMin.assertValues([1])
     self.amountMax.assertValues([10_000])
-    self.amountValue.assertValues([0])
+    self.amountValue.assertValues([1])
     self.currency.assertValues(["$"])
-    self.stepperMinValue.assertValue(0)
+    self.stepperMinValue.assertValue(1)
     self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
-    self.stepperValue.assertValues([0])
-    self.textFieldValue.assertValues(["0"])
+    self.stepperValue.assertValues([1])
+    self.textFieldValue.assertValues(["1"])
   }
 
   func testAmountCurrencyAndStepper_NoReward() {
@@ -1308,7 +1308,7 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.titleLabelText.assertValues(["Bonus support"])
   }
 
-  func testCurrentAmount_BackedReward() {
+  func testCurrentAmount_BackedReward_EditingSameReward() {
     let reward = Reward.template
 
     let project = Project.cosmicSurgery
@@ -1334,6 +1334,46 @@ internal final class PledgeAmountViewModelTests: TestCase {
     self.textFieldValue.assertDidNotEmitValue()
 
     self.vm.inputs.configureWith(data: (project, reward: reward, 50))
+
+    self.amountIsValid.assertValues([true])
+    self.amountMin.assertValues([0])
+    self.amountMax.assertValues([8_000])
+    self.amountValue.assertValues([50])
+    self.currency.assertValues(["£"])
+    self.stepperMinValue.assertValue(0)
+    self.stepperMaxValue.assertValue(PledgeAmountStepperConstants.max)
+    self.stepperValue.assertValues([50.0])
+    self.textFieldValue.assertValues(["50"])
+  }
+
+  func testCurrentAmount_BackedReward_EditingDifferentReward() {
+    let reward = Reward.template
+    let otherReward = Reward.template
+      |> Reward.lens.id .~ 5
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700.0
+          |> Backing.lens.status .~ .pledged
+      )
+
+    self.amountIsValid.assertDidNotEmitValue()
+    self.amountMin.assertDidNotEmitValue()
+    self.amountMax.assertDidNotEmitValue()
+    self.amountValue.assertDidNotEmitValue()
+    self.currency.assertDidNotEmitValue()
+    self.stepperMinValue.assertDidNotEmitValue()
+    self.stepperMaxValue.assertDidNotEmitValue()
+    self.stepperValue.assertDidNotEmitValue()
+    self.textFieldValue.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(data: (project, reward: otherReward, 50))
 
     self.amountIsValid.assertValues([true])
     self.amountMin.assertValues([0])

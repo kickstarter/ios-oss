@@ -98,7 +98,6 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     let initialValue = Signal.combineLatest(
       project,
-      reward,
       currentAmount,
       minValue
     )
@@ -272,11 +271,10 @@ private func rounded(_ value: Double) -> Double {
 
 private func initialPledgeAmount(
   from project: Project,
-  reward: Reward,
   currentAmount: Double,
   minValue: Double
 ) -> Double {
-  guard userIsBacking(reward: reward, inProject: project) else { return minValue }
+  guard userIsBackingProject(project) else { return minValue }
 
-  return currentAmount
+  return max(currentAmount, minValue)
 }

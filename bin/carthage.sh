@@ -1,12 +1,6 @@
 #!/bin/sh
 
-# Ensure correct version of Carthage
-# Unlink existing version
-brew unlink carthage
-# Install 0.35.0
-brew install https://github.com/Homebrew/homebrew-core/raw/27c7544d9bf5f9e4f09d7e47ba505f250b1259f2/Formula/carthage.rb
-# Switch to 0.35.0
-brew switch carthage 0.35.0
+brew install carthage
 
 # Cache Cartfile
 if [ -n "$FORCE_CARTHAGE" ] || ! cmp -s Cartfile.resolved Carthage/Cartfile.resolved; then

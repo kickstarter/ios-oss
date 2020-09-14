@@ -1,4 +1,3 @@
-@testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -453,25 +452,6 @@ final class KoalaTests: TestCase {
 
   // MARK: - Project Page Tracking
 
-  func testTrackCreatorDetailsClicked() {
-    let client = MockTrackingClient()
-    let koala = Koala(client: client)
-
-    koala.trackCreatorDetailsClicked(
-      project: .template,
-      location: .projectPage,
-      refTag: .discovery,
-      cookieRefTag: .discovery
-    )
-
-    XCTAssertEqual(["Creator Details Clicked"], client.events)
-    XCTAssertEqual(["project_screen"], client.properties(forKey: "context_location"))
-    XCTAssertEqual(["discovery"], client.properties(forKey: "session_ref_tag"))
-    XCTAssertEqual(["discovery"], client.properties(forKey: "session_referrer_credit"))
-
-    self.assertProjectProperties(client.properties.last)
-  }
-
   func testTrackCampaignDetailsButtonClicked() {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
@@ -787,30 +767,6 @@ final class KoalaTests: TestCase {
     koala.trackPledgeCTAButtonClicked(stateType: .viewRewards, project: project)
 
     XCTAssertEqual(["View Rewards Button Clicked"], client.events)
-  }
-
-  func testTrackPledgeCTAButtonClicked_ViewTheRewardsState() {
-    let client = MockTrackingClient()
-    let project = Project.template
-    let loggedInUser = User.template |> \.id .~ 42
-
-    let koala = Koala(client: client, loggedInUser: loggedInUser)
-
-    koala.trackPledgeCTAButtonClicked(stateType: .viewTheRewards, project: project)
-
-    XCTAssertEqual(["Project Page Pledge Button Clicked"], client.events)
-  }
-
-  func testTrackPledgeCTAButtonClicked_SeeTheRewardsState() {
-    let client = MockTrackingClient()
-    let project = Project.template
-    let loggedInUser = User.template |> \.id .~ 42
-
-    let koala = Koala(client: client, loggedInUser: loggedInUser)
-
-    koala.trackPledgeCTAButtonClicked(stateType: .seeTheRewards, project: project)
-
-    XCTAssertEqual(["Project Page Pledge Button Clicked"], client.events)
   }
 
   func testTrackPledgeCTAButtonClicked_ViewYourRewardsState() {

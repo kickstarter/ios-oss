@@ -42,7 +42,7 @@ dependencies: carthage-bootstrap configs secrets
 bootstrap: hooks dependencies
 
 carthage-bootstrap:
-	set -o pipefail; bin/carthage.sh;
+	bin/carthage.sh || (echo "Carthage failed $$?"; exit 1)
 
 configs = $(basename $(wildcard Kickstarter-iOS/Configs/*.example))
 $(configs):

@@ -188,7 +188,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       projectDeadline: 1_476_657_315.0,
       projectState: Project.State.live,
       rewardMinimum: 10.0,
-      shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init)
+      shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init),
+      shippingAmountHidden: true
     )
 
     withEnvironment(apiService: mockService) {
@@ -781,7 +782,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       projectDeadline: 1_476_657_315.0,
       projectState: Project.State.live,
       rewardMinimum: 0,
-      shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init)
+      shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init),
+      shippingAmountHidden: true
     )
 
     // Pledge amount 50
@@ -802,7 +804,8 @@ internal final class ManagePledgeViewModelTests: TestCase {
       projectDeadline: 1_476_657_315.0,
       projectState: Project.State.live,
       rewardMinimum: 0,
-      shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init)
+      shippingAmount: envelope.backing.shippingAmount.flatMap(Double.init),
+      shippingAmountHidden: true
     )
 
     let pledgePaymentMethodViewData = ManagePledgePaymentMethodViewData(

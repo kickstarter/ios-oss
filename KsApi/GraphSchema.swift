@@ -191,7 +191,6 @@ public enum Query {
     case name
     case pid
     case pledged(NonEmptySet<Money>)
-    case projectSummary(NonEmptySet<ProjectSummary>)
     case slug
     case state
     case stateChangedAt
@@ -231,11 +230,6 @@ public enum Query {
       case id
       case publishedAt
       case title
-    }
-
-    public enum ProjectSummary: String {
-      case question
-      case response
     }
   }
 
@@ -501,7 +495,6 @@ extension Query.Project: QueryType {
     case .name: return "name"
     case .pid: return "pid"
     case let .pledged(fields): return "pledged { \(join(fields)) }"
-    case let .projectSummary(fields): return "projectSummary { \(join(fields)) }"
     case .slug: return "slug"
     case .state: return "state"
     case .stateChangedAt: return "stateChangedAt"
@@ -607,14 +600,6 @@ extension Query.User: QueryType {
     case .url: return "url"
     case .userId: return "uid"
     }
-  }
-}
-
-// MARK: - ProjectSummary
-
-extension Query.Project.ProjectSummary: QueryType {
-  public var description: String {
-    return self.rawValue
   }
 }
 
@@ -790,12 +775,6 @@ extension PageInfo {
 }
 
 extension Query.Notifications {
-  public func hash(into hasher: inout Hasher) {
-    hasher.combine(self.description)
-  }
-}
-
-extension Query.Project.ProjectSummary {
   public func hash(into hasher: inout Hasher) {
     hasher.combine(self.description)
   }

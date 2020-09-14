@@ -1,4 +1,9 @@
+/**
+ FIXME: This VM and its tests should be moved to the Library framework and refactored to not need the
+ `viewControllerFactory` passed to its initializer.
+ */
 import KsApi
+import Library
 import Prelude
 import ReactiveSwift
 

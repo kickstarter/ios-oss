@@ -50,7 +50,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
-      shippingAmount: nil
+      shippingAmount: nil,
+      shippingAmountHidden: true
     )
 
     self.vm.inputs.configureWith(data)
@@ -83,7 +84,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
-      shippingAmount: nil
+      shippingAmount: nil,
+      shippingAmountHidden: true
     )
 
     withEnvironment(currentUser: user) {
@@ -119,7 +121,8 @@ final class ManagePledgeSummaryViewModelTests: TestCase {
       projectDeadline: 1_572_626_213.0,
       projectState: Project.State.live,
       rewardMinimum: 30,
-      shippingAmount: nil
+      shippingAmount: nil,
+      shippingAmountHidden: true
     )
 
     withEnvironment(currentUser: user) {

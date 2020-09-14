@@ -54,11 +54,6 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .skipNil()
       .map(first)
 
-    let refTag = projectOrError
-      .map(Either.left)
-      .skipNil()
-      .map(second)
-
     let projectError = projectOrError
       .map(Either.right)
       .skipNil()
@@ -67,8 +62,8 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
       .negate()
 
     let backing = project.map { $0.personalization.backing }
-    let pledgeState = Signal.combineLatest(project, refTag, backing)
-      .map(pledgeCTA(project:refTag:backing:))
+    let pledgeState = Signal.combineLatest(project, backing)
+      .map(pledgeCTA(project:backing:))
 
     let inError = Signal.merge(
       projectError.ignoreValues().mapConst(true),
@@ -148,27 +143,10 @@ public final class PledgeCTAContainerViewViewModel: PledgeCTAContainerViewViewMo
 
 // MARK: - Functions
 
-private func pledgeCTA(project: Project, refTag: RefTag?, backing: Backing?) -> PledgeStateCTAType {
+private func pledgeCTA(project: Project, backing: Backing?) -> PledgeStateCTAType {
   guard let projectBacking = backing, project.personalization.isBacking == .some(true) else {
     if currentUserIsCreator(of: project) {
       return PledgeStateCTAType.viewYourRewards
-    }
-
-    let optimizelyVariant = AppEnvironment.current.optimizelyClient?
-      .variant(
-        for: OptimizelyExperiment.Key.pledgeCTACopy,
-        userAttributes: optimizelyUserAttributes(with: project, refTag: refTag)
-      )
-
-    if let variant = optimizelyVariant, project.state == .live {
-      switch variant {
-      case .variant1:
-        return PledgeStateCTAType.seeTheRewards
-      case .variant2:
-        return PledgeStateCTAType.viewTheRewards
-      case .control:
-        return PledgeStateCTAType.pledge
-      }
     }
 
     return project.state == .live ? PledgeStateCTAType.pledge : PledgeStateCTAType.viewRewards

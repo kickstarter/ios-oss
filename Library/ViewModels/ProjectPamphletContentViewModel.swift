@@ -2,13 +2,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public typealias ProjectCreatorDetailsData = (ProjectCreatorDetailsEnvelope?, isLoading: Bool)
-public typealias ProjectPamphletContentData = (
-  Project,
-  ProjectCreatorDetailsData,
-  [ProjectSummaryEnvelope.ProjectSummaryItem],
-  RefTag?
-)
+public typealias ProjectPamphletContentData = (Project, RefTag?)
 
 public protocol ProjectPamphletContentViewModelInputs {
   func configureWith(value: (Project, RefTag?))
@@ -66,95 +60,8 @@ public final class ProjectPamphletContentViewModel: ProjectPamphletContentViewMo
     )
     .take(first: 1)
 
-    let projectCreatorDetails = project
-      .take(first: 1)
-      .map(\.slug)
-      .switchMap { slug in
-        AppEnvironment.current.apiService
-          .fetchProjectCreatorDetails(query: projectCreatorDetailsQuery(withSlug: slug))
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { result in (result, false) }
-          .prefix(value: (nil, true))
-          .demoteErrors(replaceErrorWith: (nil, false))
-          .materialize()
-      }
-
-    let projectCreatorDetailsLoadingValues = projectCreatorDetails.values()
-      .filter(second >>> isTrue)
-      .map { $0 as ProjectCreatorDetailsData }
-
-    let projectCreatorDetailsHasLoadedValues = projectCreatorDetails.values()
-      .filter(second >>> isFalse)
-
-    let projectCreatorDetailsExperimentValues = projectAndRefTag
-      .takePairWhen(projectCreatorDetailsHasLoadedValues)
-      .map { projectAndRefTag, creatorDetails in
-        (projectAndRefTag.0, projectAndRefTag.1, creatorDetails.0, creatorDetails.1)
-      }
-      .map { project, refTag, result, isLoading -> ProjectCreatorDetailsData in
-        let controlData: ProjectCreatorDetailsData = (nil, isLoading)
-
-        // Nil result indicates loading failed, errors demoted. No need to activate experiment.
-        guard result != nil else { return controlData }
-
-        guard
-          projectPageConversionCreatorDetailsExperiment(project: project, refTag: refTag) != .control
-        else { return controlData }
-
-        return (result, isLoading)
-      }
-
-    let projectCreatorDetailsValues = Signal.merge(
-      projectCreatorDetailsLoadingValues,
-      projectCreatorDetailsExperimentValues
-    )
-
-    let projectSummaryRequestValues = project
-      .take(first: 1)
-      .map(\.slug)
-      .switchMap { slug in
-        AppEnvironment.current.apiService
-          .fetchProjectSummary(query: projectSummaryQuery(withSlug: slug))
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .map { $0.projectSummary }
-          .demoteErrors(replaceErrorWith: [])
-          .filter { !$0.isEmpty }
-          .prefix(value: [])
-          .materialize()
-      }
-      .values()
-
-    let projectSummaryHasLoadedValues = projectSummaryRequestValues.filter { $0.isEmpty == false }
-
-    let projectSummaryExperimentValues = projectAndRefTag
-      .takePairWhen(projectSummaryHasLoadedValues)
-      .map { projectAndRefTag, projectSummaryItems in
-        (projectAndRefTag.0, projectAndRefTag.1, projectSummaryItems)
-      }
-      .map { project, refTag, projectSummaryItems -> [ProjectSummaryEnvelope.ProjectSummaryItem] in
-        guard
-          projectPageConversionProjectSummaryExperiment(project: project, refTag: refTag) != .control
-        else { return [] }
-
-        return projectSummaryItems
-      }
-
-    let projectSummaryValues = Signal.merge(
-      projectSummaryRequestValues.take(first: 1),
-      projectSummaryExperimentValues
-    )
-
-    let data = Signal.combineLatest(
-      projectAndRefTag,
-      projectCreatorDetailsValues,
-      projectSummaryValues
-    )
-    .map { projectAndRefTag, creatorDetails, projectSummaryValues in
-      (projectAndRefTag.0, creatorDetails, projectSummaryValues, projectAndRefTag.1)
-    }
-
     self.loadProjectPamphletContentDataIntoDataSource = Signal.combineLatest(
-      data,
+      projectAndRefTag,
       timeToLoadDataSource
     )
     .map(first)
@@ -277,57 +184,4 @@ private func goToBackingData(forProject project: Project, rewardOrBacking: Eithe
   }
 
   return (projectParam: Param.slug(project.slug), backingParam: Param.id(backing.id))
-}
-
-private func projectCreatorDetailsQuery(withSlug slug: String) -> NonEmptySet<Query> {
-  return Query.project(
-    slug: slug,
-    .id +| [
-      .creator(
-        .id +| [
-          .backingsCount,
-          .launchedProjects(
-            .totalCount +| []
-          )
-        ]
-      )
-    ]
-  ) +| []
-}
-
-private func projectSummaryQuery(withSlug slug: String) -> NonEmptySet<Query> {
-  return Query.project(
-    slug: slug,
-    .id +| [
-      .projectSummary(
-        .question +| [
-          .response
-        ]
-      )
-    ]
-  ) +| []
-}
-
-private func projectPageConversionCreatorDetailsExperiment(
-  project: Project, refTag: RefTag?
-) -> OptimizelyExperiment.Variant {
-  let optimizelyVariant = AppEnvironment.current.optimizelyClient?
-    .variant(
-      for: OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails,
-      userAttributes: optimizelyUserAttributes(with: project, refTag: refTag)
-    ) ?? .control
-
-  return optimizelyVariant
-}
-
-private func projectPageConversionProjectSummaryExperiment(
-  project: Project, refTag: RefTag?
-) -> OptimizelyExperiment.Variant {
-  let optimizelyVariant = AppEnvironment.current.optimizelyClient?
-    .variant(
-      for: OptimizelyExperiment.Key.nativeMeProjectSummary,
-      userAttributes: optimizelyUserAttributes(with: project, refTag: refTag)
-    ) ?? .control
-
-  return optimizelyVariant
 }

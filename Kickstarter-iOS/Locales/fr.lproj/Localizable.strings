@@ -119,7 +119,7 @@
 "Continue_with_quantity_count_add_ons.other" = "Continuer avec %{quantity_count} compléments";
 "Continue_with_quantity_count_add_ons.two" = "Continuer avec %{quantity_count} compléments";
 "Continue_with_quantity_count_add_ons.zero" = "Continuer avec %{quantity_count} compléments";
-"Continue_with_this_reward" = "Continue with this reward?";
+"Continue_with_this_reward" = "Continuer avec cette récompense ?";
 "Continue_with_this_reward_It_doesnt_offer_these_add_ons" = "Continuer avec cette récompense ? Les compléments suivants ne sont pas proposés :";
 "Couldnt_add_attachment" = "Impossible d'ajouter la pièce jointe";
 "Couldnt_open_live_stream_Try_again_later" = "Impossible d'ouvrir la diffusion en direct. Veuillez réessayer plus tard.";
@@ -284,7 +284,7 @@
 "Info" = "Info";
 "Introduce_yourself" = "Présentez-vous ici.";
 "Introducing_Lights_On" = "Voici Lueurs d'espoir";
-"It_may_not_offer_some_or_all_of_your_add_ons" = "It may not offer some or all of your add-ons.";
+"It_may_not_offer_some_or_all_of_your_add_ons" = "Une partie ou la totalité des compléments pourraient être indisponibles.";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "La préparation de vos données personnelles peut prendre jusqu'à 24 heures. Nous vous enverrons des instructions de téléchargement à l'adresse e-mail associée à ce compte une fois que tout sera prêt. Si vous ne recevez rien, revenez ici pour réessayer.";
 "Its_a_way_to_bring_creative_projects_to_life" = "C'est un outil qui permet de donner vie à des projets créatifs.";
 "Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "Notre plateforme est un moyen de faire vivre des projets créatifs. <a href=\"%{trust_link}\">En savoir plus sur la notion de responsabilité</a>";

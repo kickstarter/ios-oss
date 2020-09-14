@@ -520,7 +520,8 @@ private func managePledgeSummaryViewData(
     projectDeadline: project.dates.deadline,
     projectState: project.state,
     rewardMinimum: allRewardsTotal(for: backing),
-    shippingAmount: backing.shippingAmount.flatMap(Double.init)
+    shippingAmount: backing.shippingAmount.flatMap(Double.init),
+    shippingAmountHidden: backing.reward?.shipping.enabled == false
   )
 }
 

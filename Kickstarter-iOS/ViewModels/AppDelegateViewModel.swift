@@ -539,8 +539,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let campaignFaqLink = projectLink
       .filter { _, subpage, _, _ in subpage == .faqs }
-      .map { project, _, vcs, refTag in
-        vcs + [ProjectDescriptionViewController.configuredWith(value: (project, refTag))]
+      .map { project, _, vcs, _ in
+        vcs + [ProjectDescriptionViewController.configuredWith(value: project)]
       }
 
     let updatesLink = projectLink

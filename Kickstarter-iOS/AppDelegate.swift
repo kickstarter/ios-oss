@@ -361,7 +361,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       defaultLogLevel: logLevel.logLevel
     )
 
-    optimizelyClient.start { [weak self] result in
+    optimizelyClient.start(resourceTimeout: 3) { [weak self] result in
       guard let self = self else { return }
 
       let optimizelyConfigurationError = self.viewModel.inputs.optimizelyConfigured(with: result)
