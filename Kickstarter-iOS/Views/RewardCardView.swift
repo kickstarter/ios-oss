@@ -26,13 +26,10 @@ public final class RewardCardView: UIView {
   private let includedItemsTitleLabel = UILabel(frame: .zero)
   private let minimumPriceConversionLabel = UILabel(frame: .zero)
   private let minimumPriceLabel = UILabel(frame: .zero)
-  private let priceStackView = UIStackView(frame: .zero)
-
   private let pillsView: PillsView = PillsView(frame: .zero)
   private var pillsViewHeightConstraint: NSLayoutConstraint?
-
+  private let priceStackView = UIStackView(frame: .zero)
   private let rewardTitleLabel = UILabel(frame: .zero)
-
   private let titleStackView = UIStackView(frame: .zero)
 
   override init(frame: CGRect) {
@@ -206,7 +203,8 @@ public final class RewardCardView: UIView {
         font: UIFont.ksr_footnote().bolded,
         margins: UIEdgeInsets(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3)),
         text: text,
-        textColor: .ksr_green_500
+        textColor: .ksr_green_500,
+        imageName: nil
       )
     }
 
