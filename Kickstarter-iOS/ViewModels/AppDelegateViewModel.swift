@@ -104,8 +104,8 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits an app secret that should be used to configure AppCenter.
   var configureAppCenterWithData: Signal<AppCenterConfigData, Never> { get }
 
-  /// Emits when the application should configure Fabric
-  var configureFabric: Signal<(), Never> { get }
+  /// Emits when the application should configure Firebase
+  var configureFirebase: Signal<(), Never> { get }
 
   /// Emits when the application should configure Optimizely
   var configureOptimizely: Signal<(String, OptimizelyLogLevelType, TimeInterval), Never> { get }
@@ -602,7 +602,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       fixErroredPledgeLink.map { $0 as UIViewController }
     )
 
-    self.configureFabric = self.applicationLaunchOptionsProperty.signal.ignoreValues()
+    self.configureFirebase = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
     self.configureOptimizely = self.applicationLaunchOptionsProperty.signal
       .map { _ in AppEnvironment.current }
@@ -866,7 +866,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
-  public let configureFabric: Signal<(), Never>
+  public let configureFirebase: Signal<(), Never>
   public let configureOptimizely: Signal<(String, OptimizelyLogLevelType, TimeInterval), Never>
   public let configureQualtrics: Signal<QualtricsConfigData, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
