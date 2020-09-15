@@ -2,9 +2,10 @@ import AppCenter
 import AppCenterAnalytics
 import AppCenterCrashes
 import AppCenterDistribute
-import Crashlytics
-import Fabric
 import FBSDKCoreKit
+import FirebaseAnalytics
+import FirebaseCore
+import FirebaseCrashlytics
 import Foundation
 #if DEBUG
   @testable import KsApi
@@ -188,25 +189,21 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         MSAppCenter.setUserId(data.userId)
         MSAppCenter.setCustomProperties(customProperties)
 
-        MSCrashes.setDelegate(self)
-
         MSAppCenter.start(
           data.appSecret,
           withServices: [
-            MSAnalytics.self,
-            MSCrashes.self,
             MSDistribute.self
           ]
         )
       }
 
     #if RELEASE || APPCENTER
-      self.viewModel.outputs.configureFabric
+      self.viewModel.outputs.configureFirebase
         .observeForUI()
         .observeValues {
-          Fabric.with([Crashlytics.self])
+          FirebaseApp.configure()
           AppEnvironment.current.koala.logEventCallback = { event, _ in
-            CLSLogv("%@", getVaList([event]))
+            Crashlytics.crashlytics().log(format: "%@", arguments: getVaList([event]))
           }
         }
     #endif
@@ -380,7 +377,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
       print("🔴 Optimizely SDK Configuration Failed with Error: \(optimizelyError.localizedDescription)")
 
-      Crashlytics.sharedInstance().recordError(optimizelyError)
+      Crashlytics.crashlytics().record(error: optimizelyError)
     }
   }
 

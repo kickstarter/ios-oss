@@ -16,7 +16,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let configureOptimizelySDKKey = TestObserver<String, Never>()
   private let configureOptimizelyLogLevel = TestObserver<OptimizelyLogLevelType, Never>()
   private let configureOptimizelyDispatchInterval = TestObserver<TimeInterval, Never>()
-  private let configureFabric = TestObserver<(), Never>()
+  private let configureFirebase = TestObserver<(), Never>()
   private let configureQualtrics = TestObserver<QualtricsConfigData, Never>()
   private let didAcceptReceivingRemoteNotifications = TestObserver<(), Never>()
   private let displayQualtricsSurvey = TestObserver<(), Never>()
@@ -50,7 +50,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.vm.outputs.applicationIconBadgeNumber.observe(self.applicationIconBadgeNumber.observer)
     self.vm.outputs.configureAppCenterWithData.observe(self.configureAppCenterWithData.observer)
-    self.vm.outputs.configureFabric.observe(self.configureFabric.observer)
+    self.vm.outputs.configureFirebase.observe(self.configureFirebase.observer)
     self.vm.outputs.configureOptimizely.map(first).observe(self.configureOptimizelySDKKey.observer)
     self.vm.outputs.configureOptimizely.map(second).observe(self.configureOptimizelyLogLevel.observer)
     self.vm.outputs.configureOptimizely.map(third).observe(self.configureOptimizelyDispatchInterval.observer)
@@ -130,10 +130,10 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testConfigureFabric() {
+  func testConfigureFirebase() {
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
-    self.configureFabric.assertValueCount(1)
+    self.configureFirebase.assertValueCount(1)
   }
 
   // MARK: - Optimizely

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+brew install carthage
+
 # Cache Cartfile
 if [ -n "$FORCE_CARTHAGE" ] || ! cmp -s Cartfile.resolved Carthage/Cartfile.resolved; then
   # If not running on CircleCI, update dependencies
