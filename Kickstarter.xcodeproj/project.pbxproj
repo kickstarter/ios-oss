@@ -443,7 +443,6 @@
 		8A4E954924525EC100A578CF /* BackingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954824525EC100A578CF /* BackingState.swift */; };
 		8A4E954B245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954A245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift */; };
 		8A5CB28424C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5CB28324C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift */; };
-		8A61E1E423D1202000CA9603 /* MockQualtricsPropertiesType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A61E1E323D1202000CA9603 /* MockQualtricsPropertiesType.swift */; };
 		8A64F16624BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A64F16524BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift */; };
 		8A65E79B25016A22006F81CC /* FirebaseInstallations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A65E79A25016A22006F81CC /* FirebaseInstallations.framework */; };
 		8A65E79E2501AE89006F81CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */; };
@@ -475,8 +474,6 @@
 		8A8831C524DA2B9D002BCA5E /* Backing+GraphBackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8831C424DA2B9D002BCA5E /* Backing+GraphBackingTests.swift */; };
 		8A8C6134243F99AB0092B682 /* ContentSizeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8C6133243F99AB0092B682 /* ContentSizeTableView.swift */; };
 		8A8C6136243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8C6135243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift */; };
-		8AA117F323A414BF00F7E339 /* Qualtrics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AD7953123A286D800998C79 /* Qualtrics.framework */; };
-		8AA117F523A4160800F7E339 /* MockQualtricsResultType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA117F423A4160800F7E339 /* MockQualtricsResultType.swift */; };
 		8AA3DB30250AB4AB009AC8EA /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B4181D10B419000C4252 /* UIAlertController.swift */; };
 		8AA3DB31250AB4E5009AC8EA /* UIStackView+BackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */; };
 		8AA3DB32250AC42F009AC8EA /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; };
@@ -506,7 +503,6 @@
 		8AA8A38424EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA8A38324EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift */; };
 		8AAA9BD822F49EC200F12976 /* UIColor+Mixing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */; };
 		8AB3BDA6246DC8BE00D69624 /* DiscoveryEditorialViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C25FBE2385FDA5006E2010 /* DiscoveryEditorialViewModelTests.swift */; };
-		8AB55D5023C3FAA6002F5E64 /* Qualtrics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AD7953123A286D800998C79 /* Qualtrics.framework */; };
 		8AB87DF3243FF22B006D7451 /* PledgePaymentMethodAddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB87DF2243FF22B006D7451 /* PledgePaymentMethodAddCell.swift */; };
 		8ACB32A824ABC2DB00A03968 /* RewardAddOnSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACB32A724ABC2DB00A03968 /* RewardAddOnSelectionViewController.swift */; };
 		8ACD29F7243E48260044BC17 /* PledgePaymentMethodsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACD29F6243E48260044BC17 /* PledgePaymentMethodsDataSource.swift */; };
@@ -518,7 +514,6 @@
 		8AD486352359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD486342359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift */; };
 		8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */; };
 		8AD79530239EBDF600998C79 /* MockTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */; };
-		8AD7953423A2C95000998C79 /* QualtricsTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD7953323A2C95000998C79 /* QualtricsTypes.swift */; };
 		8AD9CF1424C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD9CF1324C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift */; };
 		8ADF4D7624BCCFD60018AD4B /* PillsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADF4D7524BCCFD60018AD4B /* PillsView.swift */; };
 		8AE09C3A244537BE00036043 /* PledgeDisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */; };
@@ -1988,7 +1983,6 @@
 		8A4E954824525EC100A578CF /* BackingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackingState.swift; sourceTree = "<group>"; };
 		8A4E954A245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewBackingEnvelopeTemplate.swift; sourceTree = "<group>"; };
 		8A5CB28324C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionContinueCTAViewModelTests.swift; sourceTree = "<group>"; };
-		8A61E1E323D1202000CA9603 /* MockQualtricsPropertiesType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockQualtricsPropertiesType.swift; sourceTree = "<group>"; };
 		8A64F16524BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewControllerTests.swift; sourceTree = "<group>"; };
 		8A65E79A25016A22006F81CC /* FirebaseInstallations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstallations.framework; path = Carthage/Build/iOS/FirebaseInstallations.framework; sourceTree = "<group>"; };
 		8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "Configs/GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -2020,7 +2014,6 @@
 		8A8831C424DA2B9D002BCA5E /* Backing+GraphBackingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Backing+GraphBackingTests.swift"; sourceTree = "<group>"; };
 		8A8C6133243F99AB0092B682 /* ContentSizeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizeTableView.swift; sourceTree = "<group>"; };
 		8A8C6135243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsDataSourceTests.swift; sourceTree = "<group>"; };
-		8AA117F423A4160800F7E339 /* MockQualtricsResultType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockQualtricsResultType.swift; sourceTree = "<group>"; };
 		8AA407BF24DA43D8008C5FB0 /* GraphCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategory.swift; sourceTree = "<group>"; };
 		8AA407C124DB0C8D008C5FB0 /* GraphCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCountry.swift; sourceTree = "<group>"; };
 		8AA407C524DB36E8008C5FB0 /* Project.Country+GraphCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project.Country+GraphCountry.swift"; sourceTree = "<group>"; };
@@ -2049,8 +2042,6 @@
 		8ACF95AD248957B10064FC4C /* ManagePledgeDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeDataSourceTests.swift; sourceTree = "<group>"; };
 		8AD48632235939AF00A1463E /* StripeTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeTypes.swift; sourceTree = "<group>"; };
 		8AD486342359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPPaymentHandler+StripePaymentHandlerActionStatus.swift"; sourceTree = "<group>"; };
-		8AD7953123A286D800998C79 /* Qualtrics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Qualtrics.framework; path = Carthage/Build/iOS/Qualtrics.framework; sourceTree = "<group>"; };
-		8AD7953323A2C95000998C79 /* QualtricsTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualtricsTypes.swift; sourceTree = "<group>"; };
 		8AD9CF1324C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryViewModelTests.swift; sourceTree = "<group>"; };
 		8ADF4D7524BCCFD60018AD4B /* PillsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillsView.swift; sourceTree = "<group>"; };
 		8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerView.swift; sourceTree = "<group>"; };
@@ -2927,7 +2918,6 @@
 				D0D58DC52257FD0200532AC1 /* Prelude_UIKit.framework in Frameworks */,
 				D09D4ED62289D6D100C33B77 /* ReactiveExtensions.framework in Frameworks */,
 				D09D4ED72289D6E600C33B77 /* ReactiveSwift.framework in Frameworks */,
-				8AA117F323A414BF00F7E339 /* Qualtrics.framework in Frameworks */,
 				D09D4ED02289D63500C33B77 /* Runes.framework in Frameworks */,
 				774D98D223A818A800FC81C2 /* Optimizely.framework in Frameworks */,
 				D09362A9225D693000E1411A /* Stripe.framework in Frameworks */,
@@ -2947,7 +2937,6 @@
 				D0D58D902257FAE000532AC1 /* Curry.framework in Frameworks */,
 				D0B7124622AEEDBC00317BAF /* FBSDKCoreKit.framework in Frameworks */,
 				D08C68A822AF104B001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
-				8AB55D5023C3FAA6002F5E64 /* Qualtrics.framework in Frameworks */,
 				8A86D7B624FDAE6500037A7B /* FirebaseCrashlytics.framework in Frameworks */,
 				8A86D7DC24FDC7CA00037A7B /* PromisesObjC.framework in Frameworks */,
 				8A86D7DF24FDC7DF00037A7B /* FirebaseAnalytics.framework in Frameworks */,
@@ -3015,14 +3004,11 @@
 				8A8C6133243F99AB0092B682 /* ContentSizeTableView.swift */,
 				8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */,
 				379CFFEF2242DAC300F6F0C2 /* MFMailComposeViewController.swift */,
-				8A61E1E323D1202000CA9603 /* MockQualtricsPropertiesType.swift */,
-				8AA117F423A4160800F7E339 /* MockQualtricsResultType.swift */,
 				379CFFF02242DAC400F6F0C2 /* Nib.swift */,
 				379CFFEB2242DAC200F6F0C2 /* NSBundle-Framework.swift */,
 				774D98D523A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift */,
 				1611EF6123ABD7C00051CDCC /* OptimizelyResultTypeTests.swift */,
 				770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */,
-				8AD7953323A2C95000998C79 /* QualtricsTypes.swift */,
 				D76436D1224040B700DAFC9E /* SharedFunctions.swift */,
 				D764377A2241707D00DAFC9E /* SharedFunctionsTests.swift */,
 				379CFFEE2242DAC300F6F0C2 /* Storyboard.swift */,
@@ -3883,7 +3869,6 @@
 				D0D58D812257FAE000532AC1 /* Prelude_UIKit.framework */,
 				D0D58D792257FADE00532AC1 /* Prelude.framework */,
 				8A86D7DB24FDC7C900037A7B /* PromisesObjC.framework */,
-				8AD7953123A286D800998C79 /* Qualtrics.framework */,
 				D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */,
 				D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */,
 				D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */,
@@ -5724,7 +5709,6 @@
 				015A07461D247564007AE210 /* UpdateDraftViewController.swift in Sources */,
 				7720BA6E22DE79BF0071FDA1 /* UIViewController+Presentation.swift in Sources */,
 				7793B16D21077AEB007857C0 /* SettingsHeaderView.swift in Sources */,
-				8AD7953423A2C95000998C79 /* QualtricsTypes.swift in Sources */,
 				8A8099EB22E213F100373E66 /* RewardCardView.swift in Sources */,
 				A70F1F321D8A3E85007DA8E9 /* ProjectPamphletViewController.swift in Sources */,
 				77FA6C7120F3DD6C00809E31 /* SettingsDataSource.swift in Sources */,
@@ -5981,7 +5965,6 @@
 				A783560A1E85BE890021DA5A /* BackerDashboardProjectsViewControllerTests.swift in Sources */,
 				77941D2E216FCB0100398B89 /* ChangePasswordViewControllerTests.swift in Sources */,
 				A7ED20661E83256700BFFA01 /* UpdateViewModelTests.swift in Sources */,
-				8AA117F523A4160800F7E339 /* MockQualtricsResultType.swift in Sources */,
 				A7ED204E1E8323E900BFFA01 /* ProjectActivityViewControllerTests.swift in Sources */,
 				A7ED201B1E83229E00BFFA01 /* ProjectActivitiesDataSourceTests.swift in Sources */,
 				3767EDAF22CFFF010088E8E4 /* ShippingRulesTableViewControllerTests.swift in Sources */,
@@ -5996,7 +5979,6 @@
 				A7ED20491E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift in Sources */,
 				A7ED20151E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift in Sources */,
 				77A3C53D219CCF1300824FC1 /* SettingsAccountDataSourceTests.swift in Sources */,
-				8A61E1E423D1202000CA9603 /* MockQualtricsPropertiesType.swift in Sources */,
 				D60CAB922208A1B60083FA40 /* SelectCurrencyViewControllerTests.swift in Sources */,
 				77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */,
 				8A64F16624BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift in Sources */,
