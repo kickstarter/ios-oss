@@ -342,6 +342,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       cell.delegate = self
     } else if let cell = cell as? DiscoveryProjectCardCell {
       cell.delegate = self
+      cell.layoutIfNeeded()
     }
 
     self.viewModel.inputs.willDisplayRow(

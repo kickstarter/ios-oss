@@ -12,7 +12,6 @@ public final class RewardCardView: UIView {
   // MARK: - Properties
 
   weak var delegate: RewardCardViewDelegate?
-  private let pillDataSource = PillCollectionViewDataSource()
   private let viewModel: RewardCardViewModelType = RewardCardViewModel()
 
   private let baseStackView: UIStackView = {
@@ -27,29 +26,10 @@ public final class RewardCardView: UIView {
   private let includedItemsTitleLabel = UILabel(frame: .zero)
   private let minimumPriceConversionLabel = UILabel(frame: .zero)
   private let minimumPriceLabel = UILabel(frame: .zero)
+  private let pillsView: PillsView = PillsView(frame: .zero)
+  private var pillsViewHeightConstraint: NSLayoutConstraint?
   private let priceStackView = UIStackView(frame: .zero)
-
-  private lazy var pillCollectionView: UICollectionView = {
-    UICollectionView(
-      frame: .zero,
-      collectionViewLayout: PillLayout(
-        minimumInteritemSpacing: Styles.grid(1),
-        minimumLineSpacing: Styles.grid(1),
-        sectionInset: UIEdgeInsets(topBottom: Styles.grid(1))
-      )
-    )
-      |> \.contentInsetAdjustmentBehavior .~ .never
-      |> \.dataSource .~ self.pillDataSource
-      |> \.delegate .~ self
-  }()
-
-  private lazy var pillCollectionViewHeightConstraint: NSLayoutConstraint = {
-    self.pillCollectionView.heightAnchor.constraint(equalToConstant: 0)
-      |> \.priority .~ .defaultHigh
-  }()
-
   private let rewardTitleLabel = UILabel(frame: .zero)
-
   private let titleStackView = UIStackView(frame: .zero)
 
   override init(frame: CGRect) {
@@ -67,7 +47,7 @@ public final class RewardCardView: UIView {
   public override func layoutSubviews() {
     super.layoutSubviews()
 
-    self.updateCollectionViewConstraints()
+    self.pillsViewHeightConstraint?.constant = self.pillsView.intrinsicContentSize.height
   }
 
   public override func bindStyles() {
@@ -130,8 +110,8 @@ public final class RewardCardView: UIView {
       |> baseRewardLabelStyle
       |> minimumPriceConversionLabelStyle
 
-    _ = (self.pillCollectionView, self.backgroundColor)
-      |> pillCollectionViewStyle
+    _ = self.pillsView
+      |> \.backgroundColor .~ self.backgroundColor
   }
 
   public override func bindViewModel() {
@@ -144,7 +124,7 @@ public final class RewardCardView: UIView {
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
     self.includedItemsStackView.rac.hidden = self.viewModel.outputs.includedItemsStackViewHidden
     self.minimumPriceLabel.rac.text = self.viewModel.outputs.rewardMinimumLabelText
-    self.pillCollectionView.rac.hidden = self.viewModel.outputs.pillCollectionViewHidden
+    self.pillsView.rac.hidden = self.viewModel.outputs.pillCollectionViewHidden
     self.rewardTitleLabel.rac.hidden = self.viewModel.outputs.rewardTitleLabelHidden
     self.rewardTitleLabel.rac.attributedText = self.viewModel.outputs.rewardTitleLabelAttributedText
 
@@ -170,9 +150,7 @@ public final class RewardCardView: UIView {
     self.viewModel.outputs.reloadPills
       .observeForUI()
       .observeValues { [weak self] values in
-        self?.pillDataSource.load(values)
-        self?.pillCollectionView.reloadData()
-        self?.updateCollectionViewConstraints()
+        self?.configurePillsView(values)
       }
   }
 
@@ -189,7 +167,7 @@ public final class RewardCardView: UIView {
       self.descriptionStackView,
       self.includedItemsStackView,
       self.estimatedDeliveryDateLabel,
-      self.pillCollectionView
+      self.pillsView
     ]
 
     _ = (baseSubviews, self.baseStackView)
@@ -207,28 +185,37 @@ public final class RewardCardView: UIView {
     _ = ([self.priceStackView], self.titleStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.pillCollectionView.register(PillCell.self)
-
     let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.rewardCardTapped))
     self.addGestureRecognizer(tapGestureRecognizer)
   }
 
   private func setupConstraints() {
-    let pillCollectionViewConstraints = [
-      self.pillCollectionView.leftAnchor.constraint(equalTo: self.leftAnchor),
-      self.pillCollectionView.rightAnchor.constraint(equalTo: self.rightAnchor),
-      self.pillCollectionViewHeightConstraint
-    ]
+    let pillsViewHeightConstraint = self.pillsView.heightAnchor.constraint(equalToConstant: 0)
+    self.pillsViewHeightConstraint = pillsViewHeightConstraint
 
-    NSLayoutConstraint.activate(pillCollectionViewConstraints)
+    NSLayoutConstraint.activate([pillsViewHeightConstraint])
   }
 
-  private func updateCollectionViewConstraints() {
-    self.pillCollectionView.layoutIfNeeded()
+  private func configurePillsView(_ pills: [String]) {
+    let pillData = pills.map { text -> PillData in
+      PillData(
+        backgroundColor: UIColor.ksr_green_500.withAlphaComponent(0.06),
+        font: UIFont.ksr_footnote().bolded,
+        margins: UIEdgeInsets(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3)),
+        text: text,
+        textColor: .ksr_green_500,
+        imageName: nil
+      )
+    }
 
-    self.pillCollectionViewHeightConstraint.constant = self.pillCollectionView.contentSize.height
+    let data = PillsViewData(
+      interimLineSpacing: Styles.grid(1),
+      interimPillSpacing: Styles.grid(1),
+      margins: .zero,
+      pills: pillData
+    )
 
-    self.layoutIfNeeded()
+    self.pillsView.configure(with: data)
   }
 
   fileprivate func load(items: [String]) {
@@ -303,12 +290,6 @@ private let minimumPriceConversionLabelStyle: LabelStyle = { label in
     |> \.textColor .~ .ksr_green_500
     |> \.font .~ UIFont.ksr_caption1().bolded
 }
-
-private let pillCollectionViewStyle: (UICollectionView, UIColor?)
-  -> UICollectionView = { collectionView, backgroundColor in
-    collectionView
-      |> \.backgroundColor .~ backgroundColor
-  }
 
 private let priceStackViewStyle: StackViewStyle = { stackView in
   stackView

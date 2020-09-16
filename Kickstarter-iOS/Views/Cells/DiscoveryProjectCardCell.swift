@@ -10,11 +10,6 @@ private enum FacepileAvatarSize {
 }
 
 final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
-  private enum IconImageSize {
-    static let height: CGFloat = 13.0
-    static let width: CGFloat = 13.0
-  }
-
   internal weak var delegate: DiscoveryPostcardCellDelegate?
 
   // MARK: - Properties
@@ -23,7 +18,6 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private lazy var backersCountIconImageView = { UIImageView(frame: .zero) }()
   private lazy var backersCountStackView = { UIStackView(frame: .zero) }()
   private lazy var cardContainerView = { UIView(frame: .zero) }()
-  private lazy var dataSource = { DiscoveryProjectTagsCollectionViewDataSource() }()
   private lazy var facepileAvatarContainerView = { UIView(frame: .zero) }()
   private var facepileAvatarImageViews: [UIImageView] = [UIImageView]()
   private lazy var facepileDescriptionLabel = { UILabel(frame: .zero) }()
@@ -31,14 +25,9 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private lazy var goalMetIconImageView = { UIImageView(frame: .zero) }()
   private lazy var goalPercentFundedStackView = { UIStackView(frame: .zero) }()
   private lazy var percentFundedLabel = { UILabel(frame: .zero) }()
-  private lazy var pillLayout: PillLayout = {
-    PillLayout(
-      minimumInteritemSpacing: Styles.grid(1),
-      minimumLineSpacing: Styles.grid(1),
-      sectionInset: .init(top: Styles.grid(1))
-    )
-  }()
-
+  private let pillsViewContainer: UIView = UIView(frame: .zero)
+  private let pillsView: PillsView = PillsView(frame: .zero)
+  private var pillsViewHeightConstraint: NSLayoutConstraint?
   private lazy var projectDetailsStackView = { UIStackView(frame: .zero) }()
   private lazy var projectBlurbLabel = { UILabel(frame: .zero) }()
   private lazy var projectImageView = { UIImageView(frame: .zero) }()
@@ -51,17 +40,6 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   private lazy var projectStatusStackView = { UIStackView(frame: .zero) }()
   private lazy var rootStackView = { UIStackView(frame: .zero) }()
   private lazy var saveButton = { UIButton(type: .custom) }()
-
-  private lazy var tagsCollectionView: UICollectionView = {
-    UICollectionView(
-      frame: .zero,
-      collectionViewLayout: self.pillLayout
-    )
-      |> \.contentInsetAdjustmentBehavior .~ UIScrollView.ContentInsetAdjustmentBehavior.never
-      |> \.dataSource .~ self.dataSource
-      |> \.allowsSelection .~ false
-  }()
-
   private var tagsCollectionViewHeightConstraint: NSLayoutConstraint?
   private lazy var youreABackerLabel = { UILabel(frame: .zero) }()
   private lazy var youreABackerView = { UIView(frame: .zero) }()
@@ -83,10 +61,6 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.addShadowLayers()
     self.configureWatchProjectObservers()
 
-    self.tagsCollectionView.registerCellClass(DiscoveryProjectTagPillCell.self)
-
-    self.dataSource.collectionView = self.tagsCollectionView
-
     self.bindStyles()
     self.bindViewModel()
   }
@@ -107,7 +81,6 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
   override func layoutSubviews() {
     super.layoutSubviews()
 
-    self.updateCollectionViewConstraints()
     self.updateShadowLayerPaths()
   }
 
@@ -120,8 +93,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       value.params
     ))
 
-    self.setNeedsLayout()
-    self.layoutIfNeeded()
+    self.pillsViewHeightConstraint?.constant = self.pillsView.intrinsicContentSize.height
   }
 
   override func bindStyles() {
@@ -216,8 +188,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     _ = self.facepileStackView
       |> facepileStackViewStyle
 
-    _ = self.tagsCollectionView
-      |> collectionViewStyle
+    _ = self.pillsViewContainer
+      |> \.layoutMargins .~ (UIEdgeInsets.zero |> UIEdgeInsets.lens.top .~ Styles.grid(1))
 
     _ = self.youreABackerView
       |> youreABackerViewStyle
@@ -232,7 +204,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.goalMetIconImageView.rac.hidden = self.viewModel.outputs.goalMetIconHidden
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
-    self.tagsCollectionView.rac.hidden = self.viewModel.outputs.tagsCollectionViewHidden
+    self.pillsViewContainer.rac.hidden = self.viewModel.outputs.tagsCollectionViewHidden
     self.facepileDescriptionLabel.rac.text = self.viewModel.outputs.facepileViewData.map(second)
     self.facepileStackView.rac.hidden = self.viewModel.outputs.facepileViewHidden
     self.youreABackerView.rac.hidden = self.viewModel.outputs.youreABackerViewHidden
@@ -299,12 +271,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.loadProjectTags
       .observeForUI()
-      .observeValues { [weak self] tags in
-        self?.dataSource.load(with: tags)
-
-        self?.tagsCollectionView.reloadData()
-
-        self?.updateCollectionViewConstraints()
+      .observeValues { [weak self] values in
+        self?.configurePillsView(values)
       }
 
     // Watch Project View Model
@@ -351,7 +319,11 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     _ = (self.rootStackView, self.cardContainerView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent(priority: UILayoutPriority(rawValue: 999))
+      |> ksr_constrainViewToEdgesInParent()
+
+    _ = (self.pillsView, self.pillsViewContainer)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
 
     _ = ([self.projectImageView, self.projectDetailsStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -384,7 +356,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       self.projectBlurbLabel,
       self.projectInfoStackView,
       self.facepileStackView,
-      self.tagsCollectionView
+      self.pillsViewContainer
     ], self.projectDetailsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
@@ -413,17 +385,17 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       self.goalMetIconImageView,
       self.backersCountIconImageView,
       self.saveButton,
-      self.tagsCollectionView
+      self.pillsView
     ]
       ||> \.translatesAutoresizingMaskIntoConstraints .~ false
 
     let aspectRatio = CGFloat(9.0 / 16.0)
 
-    self.tagsCollectionViewHeightConstraint = self.tagsCollectionView.heightAnchor
-      .constraint(greaterThanOrEqualToConstant: 0)
-      |> \.isActive .~ true
+    let pillsViewHeightConstraint = self.pillsView.heightAnchor.constraint(equalToConstant: 0)
+    self.pillsViewHeightConstraint = pillsViewHeightConstraint
 
     NSLayoutConstraint.activate([
+      pillsViewHeightConstraint,
       self.projectImageView.widthAnchor.constraint(equalTo: self.cardContainerView.widthAnchor),
       self.projectImageView.heightAnchor.constraint(
         equalTo: self.projectImageView.widthAnchor,
@@ -465,6 +437,28 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     ])
   }
 
+  private func configurePillsView(_ pills: [DiscoveryPillData]) {
+    let pillData = pills.map { data -> PillData in
+      PillData(
+        backgroundColor: data.type.backgroundColor,
+        font: UIFont.ksr_caption1().bolded,
+        margins: UIEdgeInsets(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3)),
+        text: data.text,
+        textColor: data.type.textColor,
+        imageName: data.imageName
+      )
+    }
+
+    let data = PillsViewData(
+      interimLineSpacing: Styles.grid(1),
+      interimPillSpacing: Styles.grid(1),
+      margins: .zero,
+      pills: pillData
+    )
+
+    self.pillsView.configure(with: data)
+  }
+
   private func attributedString(bolding boldedString: String, in fullString: String) -> NSAttributedString {
     let attributedString: NSMutableAttributedString = NSMutableAttributedString.init(string: fullString)
     let regularFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_footnote().bolded]
@@ -501,14 +495,6 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
       }
 
     self.watchProjectViewModel.inputs.awakeFromNib()
-  }
-
-  private func updateCollectionViewConstraints() {
-    self.tagsCollectionView.layoutIfNeeded()
-
-    self.tagsCollectionViewHeightConstraint?.constant = self.tagsCollectionView.contentSize.height
-
-    self.layoutIfNeeded()
   }
 
   private func addShadowLayers() {
