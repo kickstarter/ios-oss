@@ -249,7 +249,8 @@ public final class RewardAddOnCardView: UIView {
         font: UIFont.ksr_footnote().bolded,
         margins: UIEdgeInsets(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3)),
         text: text,
-        textColor: .ksr_dark_grey_500
+        textColor: .ksr_dark_grey_500,
+        imageName: nil
       )
     }
 
