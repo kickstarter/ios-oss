@@ -3,17 +3,11 @@ import Library
 import Prelude
 import UIKit
 
-private enum Layout {
-  enum Button {
-    static let height: CGFloat = 48
-  }
-}
-
 internal protocol ProjectPamphletMainCellDelegate: VideoViewControllerDelegate {
   func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, addChildController child: UIViewController)
   func projectPamphletMainCell(
     _ cell: ProjectPamphletMainCell,
-    goToCampaignForProjectWith projectAndRefTag: (project: Project, refTag: RefTag?)
+    goToCampaignForProjectWith project: Project
   )
   func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, goToCreatorForProject project: Project)
 }
@@ -28,20 +22,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: ProjectPamphletMainCellViewModelType = ProjectPamphletMainCellViewModel()
 
   fileprivate weak var videoController: VideoViewController?
-
-  private lazy var creatorBylineView: CreatorBylineView = {
-    CreatorBylineView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
-  private lazy var creatorBylineTapGesture: UITapGestureRecognizer = {
-    UITapGestureRecognizer(target: self, action: #selector(creatorBylineTapped))
-  }()
-
-  private lazy var creatorBylineShimmerLoadingView: ProjectCreatorDetailsShimmerLoadingView = {
-    ProjectCreatorDetailsShimmerLoadingView(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
 
   @IBOutlet fileprivate var backersSubtitleLabel: UILabel!
   @IBOutlet fileprivate var backersTitleLabel: UILabel!
@@ -70,16 +50,8 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
   @IBOutlet fileprivate var projectImageContainerView: UIView!
   @IBOutlet fileprivate var projectNameAndCreatorStackView: UIStackView!
   @IBOutlet fileprivate var projectNameLabel: UILabel!
-  private lazy var projectSummaryCarouselView: ProjectSummaryCarouselView = {
-    ProjectSummaryCarouselView(frame: .zero)
-  }()
-
   @IBOutlet fileprivate var progressBarAndStatsStackView: UIStackView!
   @IBOutlet fileprivate var readMoreButton: UIButton!
-  fileprivate lazy var readMoreButtonLarge: LoadingButton = {
-    LoadingButton(type: .custom)
-  }()
-
   @IBOutlet fileprivate var readMoreStackView: UIStackView!
   @IBOutlet fileprivate var stateLabel: UILabel!
   @IBOutlet fileprivate var statsStackView: UIStackView!
@@ -100,22 +72,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       action: #selector(self.readMoreButtonTapped),
       for: .touchUpInside
     )
-    self.readMoreButtonLarge.addTarget(
-      self,
-      action: #selector(self.readMoreButtonTapped),
-      for: .touchUpInside
-    )
-
-    self.readMoreButtonLarge.heightAnchor
-      .constraint(greaterThanOrEqualToConstant: Layout.Button.height).isActive = true
-
-    _ = ([self.creatorBylineView, self.creatorBylineShimmerLoadingView], self.projectNameAndCreatorStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    self.creatorBylineView.addGestureRecognizer(self.creatorBylineTapGesture)
-
-    self.blurbAndReadMoreStackView.insertArrangedSubview(self.projectSummaryCarouselView, at: 1)
-    self.readMoreStackView.addArrangedSubview(self.readMoreButtonLarge)
 
     self.viewModel.inputs.awakeFromNib()
   }
@@ -310,11 +266,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.readMoreButton
       |> readMoreButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign_arrow() }
-
-    _ = self.readMoreButtonLarge
-      |> \.activityIndicatorStyle .~ .gray
-      |> greyReadMoreButtonStyle
-      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Read_more_about_the_campaign() }
   }
 
   internal override func bindViewModel() {
@@ -328,10 +279,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.conversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.creatorButton.rac.accessibilityLabel = self.viewModel.outputs.creatorLabelText
     self.creatorLabel.rac.text = self.viewModel.outputs.creatorLabelText
-    self.creatorButton.rac.hidden = self.viewModel.outputs.creatorButtonIsHidden
-    self.creatorBylineView.rac.hidden = self.viewModel.outputs.creatorBylineViewHidden
-    self.creatorBylineShimmerLoadingView.rac.hidden = self.viewModel.outputs.creatorBylineShimmerViewHidden
-    self.creatorStackView.rac.hidden = self.viewModel.outputs.creatorStackViewHidden
     self.deadlineSubtitleLabel.rac.text = self.viewModel.outputs.deadlineSubtitleLabelText
     self.deadlineTitleLabel.rac.text = self.viewModel.outputs.deadlineTitleLabelText
     self.deadlineTitleLabel.rac.textColor = self.viewModel.outputs.projectUnsuccessfulLabelTextColor
@@ -344,36 +291,15 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     self.pledgedTitleLabel.rac.textColor = self.viewModel.outputs.pledgedTitleLabelTextColor
     self.projectBlurbLabel.rac.text = self.viewModel.outputs.projectBlurbLabelText
     self.projectNameLabel.rac.text = self.viewModel.outputs.projectNameLabelText
-    self.projectSummaryCarouselView.rac.hidden = self.viewModel.outputs.projectSummaryCarouselViewHidden
-    self.readMoreButton.rac.hidden = self.viewModel.outputs.readMoreButtonIsHidden
-    self.readMoreButtonLarge.rac.hidden = self.viewModel.outputs.readMoreButtonLargeIsHidden
     self.stateLabel.rac.text = self.viewModel.outputs.projectStateLabelText
     self.stateLabel.rac.textColor = self.viewModel.outputs.projectStateLabelTextColor
     self.stateLabel.rac.hidden = self.viewModel.outputs.stateLabelHidden
     self.statsStackView.rac.accessibilityLabel = self.viewModel.outputs.statsStackViewAccessibilityLabel
     self.youreABackerContainerView.rac.hidden = self.viewModel.outputs.youreABackerLabelHidden
 
-    self.viewModel.outputs.readMoreButtonIsLoading
-      .observeForUI()
-      .observeValues { [weak self] isLoading in
-        self?.readMoreButtonLarge.isLoading = isLoading
-      }
-
     self.viewModel.outputs.configureVideoPlayerController
       .observeForUI()
       .observeValues { [weak self] in self?.configureVideoPlayerController(forProject: $0) }
-
-    self.viewModel.outputs.configureCreatorBylineView
-      .observeForUI()
-      .observeValues { [weak self] project, creatorDetails in
-        self?.creatorBylineView.configureWith(project: project, creatorDetails: creatorDetails)
-      }
-
-    self.viewModel.outputs.configureProjectSummaryCarouselView
-      .observeForUI()
-      .observeValues { [weak self] projectSummaryItems in
-        self?.projectSummaryCarouselView.configure(with: projectSummaryItems)
-      }
 
     self.viewModel.outputs.creatorImageUrl
       .observeForUI()
@@ -381,7 +307,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       .skipNil()
       .observeValues { [weak self] in self?.creatorImageView.af.setImage(withURL: $0) }
 
-    self.viewModel.outputs.notifyDelegateToGoToCampaignWithProjectAndRefTag
+    self.viewModel.outputs.notifyDelegateToGoToCampaignWithProject
       .observeForControllerAction()
       .observeValues { [weak self] in
         guard let self = self else { return }
@@ -389,13 +315,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       }
 
     self.viewModel.outputs.notifyDelegateToGoToCreator
-      .observeForControllerAction()
-      .observeValues { [weak self] in
-        guard let self = self else { return }
-        self.delegate?.projectPamphletMainCell(self, goToCreatorForProject: $0)
-      }
-
-    self.viewModel.outputs.notifyDelegateToGoToCreatorFromByline
       .observeForControllerAction()
       .observeValues { [weak self] in
         guard let self = self else { return }
@@ -447,10 +366,6 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
   @objc fileprivate func readMoreButtonTapped() {
     self.viewModel.inputs.readMoreButtonTapped()
-  }
-
-  @objc fileprivate func creatorBylineTapped() {
-    self.viewModel.inputs.creatorBylineTapped()
   }
 
   @objc fileprivate func creatorButtonTapped() {

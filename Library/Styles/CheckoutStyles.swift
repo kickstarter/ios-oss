@@ -110,6 +110,18 @@ public let checkoutSwitchControlStyle: SwitchControlStyle = { switchControl in
     |> \.tintColor .~ UIColor.ksr_grey_500
 }
 
+public let checkoutStepperStyle: (UIStepper) -> UIStepper = { stepper in
+  stepper
+    |> \.stepValue .~ 1.0
+    |> \.tintColor .~ UIColor.clear
+    <> UIStepper.lens.decrementImage(for: .normal) .~ image(named: "stepper-decrement-normal")
+    <> UIStepper.lens.decrementImage(for: .disabled) .~ image(named: "stepper-decrement-disabled")
+    <> UIStepper.lens.decrementImage(for: .highlighted) .~ image(named: "stepper-decrement-highlighted")
+    <> UIStepper.lens.incrementImage(for: .normal) .~ image(named: "stepper-increment-normal")
+    <> UIStepper.lens.incrementImage(for: .disabled) .~ image(named: "stepper-increment-disabled")
+    <> UIStepper.lens.incrementImage(for: .highlighted) .~ image(named: "stepper-increment-highlighted")
+}
+
 public let checkoutTitleLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.accessibilityTraits .~ UIAccessibilityTraits.header

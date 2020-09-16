@@ -9,7 +9,7 @@ final class ActivitiesViewModelTests: TestCase {
 
   fileprivate let activitiesPresent = TestObserver<Bool, Never>()
   fileprivate let clearBadgeValue = TestObserver<(), Never>()
-  fileprivate let erroredBackings = TestObserver<[GraphBacking], Never>()
+  fileprivate let erroredBackings = TestObserver<[ProjectAndBackingEnvelope], Never>()
   fileprivate let isRefreshing = TestObserver<Bool, Never>()
   fileprivate let goToProject = TestObserver<Project, Never>()
   fileprivate let goToSurveyResponse = TestObserver<SurveyResponse, Never>()
@@ -533,37 +533,47 @@ final class ActivitiesViewModelTests: TestCase {
     self.goToManagePledgeProjectParam.assertDidNotEmitValue()
     self.goToManagePledgeBackingParam.assertDidNotEmitValue()
 
-    let backing = GraphBacking.template
+    let env = ProjectAndBackingEnvelope.template
       |> \.project .~ .template
 
-    self.vm.inputs.erroredBackingViewDidTapManage(with: backing)
+    self.vm.inputs.erroredBackingViewDidTapManage(with: env)
 
-    guard
-      let projectId = backing.project?.pid,
-      let backingId = decompose(id: backing.id)
-    else {
-      XCTFail("Should have projectId and backingId")
-      return
+    self.goToManagePledgeProjectParam.assertValues([.id(env.project.id)])
+    self.goToManagePledgeBackingParam.assertValues([.id(env.backing.id)])
+  }
+
+  func testTracking_GoToManagePledge() {
+    withEnvironment(
+      apiService: MockService(fetchActivitiesResponse: [.template]),
+      currentUser: .template
+    ) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.userSessionStarted()
+      self.scheduler.advance()
+
+      let env = ProjectAndBackingEnvelope.template
+        |> \.project .~ .template
+
+      XCTAssertEqual(self.trackingClient.events, ["Activity Feed Viewed"])
+
+      self.vm.inputs.erroredBackingViewDidTapManage(with: env)
+
+      XCTAssertEqual(
+        self.trackingClient.events,
+        ["Activity Feed Viewed", "Manage Pledge Button Clicked"]
+      )
     }
-
-    self.goToManagePledgeProjectParam.assertValues([.id(projectId)])
-    self.goToManagePledgeBackingParam.assertValues([.id(backingId)])
   }
 
   func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish() {
     let user = User.template
 
-    let backing = GraphBacking.template
-      |> \.project .~ .template
+    let env = BackingsEnvelope(projectsAndBackings: [
+      ProjectAndBackingEnvelope.template
+    ])
 
-    let backings = GraphBackingEnvelope.GraphBackingConnection(nodes: [backing])
-
-    let envelope = GraphBackingEnvelope.template
-      |> \.backings .~ backings
-
-    let backingsResponse = UserEnvelope<GraphBackingEnvelope>(me: envelope)
-
-    let mockService = MockService(fetchGraphUserBackingsResponse: backingsResponse)
+    let mockService = MockService(fetchGraphUserBackingsResult: .success(env))
 
     withEnvironment(apiService: mockService, currentUser: user) {
       self.updateUserInEnvironment.assertDidNotEmitValue()
@@ -581,7 +591,7 @@ final class ActivitiesViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.updateUserInEnvironment.assertValues([user])
-      self.erroredBackings.assertValues([backingsResponse.me.backings.nodes])
+      self.erroredBackings.assertValues([env.projectsAndBackings])
     }
   }
 

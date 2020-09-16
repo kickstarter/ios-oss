@@ -1,4 +1,6 @@
+"A_little_extra_to_help" = "Ein kleines Extra, um dieses Projekt zu veröffentlichen.";
 "A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency" = "Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der Währung des Erstellungslandes abgebucht. Bis dahin können nur ungefähre Beträge angezeigt werden.";
+"A_weekly_mix_of_handpicked_projects" = "Ein wöchentlicher Mix handverlesener Projekte plus gelegentliche Nachrichten von Kickstarter";
 "A_weekly_roundup_of_the_best_and_brightest" = "Eine wöchentliche Zusammenfassung der besten und cleversten Projekte auf Kickstarter, handverlesen von unserem Team.";
 "About_reward_amount" = "Ungefähr %{reward_amount}";
 "Accessibility_statement" = "Barrierefreiheit";
@@ -6,6 +8,9 @@
 "Add" = "Hinzufügen";
 "Add_attachments" = "Anhänge hinzufügen ...";
 "Add_new_card" = "Kreditkarte hinzufügen";
+"Add_ons" = "Add-ons";
+"Add_ons_unavailable" = "Add-ons nicht verfügbar";
+"Alert" = "Hinweis";
 "All_Art_Projects" = "Alle Projekte der Kategorie Kunst";
 "All_Comics_Projects" = "Alle Projekte der Kategorie Comics";
 "All_Crafts_Projects" = "Alle Projekte der Kategorie Kunsthandwerk";
@@ -29,6 +34,7 @@
 "Amount_previous_amount" = "Jetziger Betrag: %{amount}, vorheriger Betrag: %{previous_amount}";
 "Amount_reward" = "Betrag: %{amount}, %{reward}";
 "Amounts_shown" = "Die angezeigten Beträge stellen nur eine ungefähre Umrechnung dar. Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der Währung des Erstellungslandes abgebucht. Dieser Betrag wird ebenso angezeigt.";
+"Announcements" = "Ankündigungen";
 "Any_payment_methods_you_saved_to_Kickstarter" = "Sämtliche auf Kickstarter gespeicherten Zahlungsmethoden sind hier (sicher) hinterlegt.";
 "App_version" = "App-Version";
 "Apple_ID" = "Apple ID";
@@ -56,6 +62,8 @@
 "Become_a_backer_to_leave_a_comment" = "Werde Unterstützer, um einen Kommentar zu hinterlassen.";
 "Big_Kickstarter_news_and_events_near_you" = "Ein paar Mal pro Jahr: Kickstarter-Neuigkeiten und Events in deiner Nähe.";
 "Biography" = "Biografie";
+"Bonus" = "Bonus";
+"Bonus_support" = "Bonus-Unterstützung";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Bei Leistung eines Finanzierungsbeitrags erkennst du Kickstarters <a href=\"%{terms_of_use_link}\">Nutzungsbedingungen</a>, <a href=\"%{privacy_policy_link}\">Datenschutzrichtlinien</a> und <a href=\"%{cookie_policy_link}\">Cookie-Richtlinien</a> an.";
@@ -72,6 +80,7 @@
 "Change_email" = "E-Mail-Adresse ändern";
 "Change_password" = "Passwort ändern";
 "Change_payment_method" = "Zahlungsmethode ändern";
+"Change_your_shipping_location_or_skip_add_ons_to_continue" = "Um fortzufahren, ändere dein Versandziel oder überspringe Add-ons.";
 "Chat" = "Chat";
 "Check_back_later_for_an_update_on_your_export" = "Der Fortschritt des Exports wird in Kürze verfügbar sein- schau später noch einmal vorbei.";
 "Check_out_these_handpicked_projects" = "Sieh dir dieses speziell für dich ausgesuchten Projekte an.";
@@ -98,6 +107,20 @@
 "Continue_to_payment" = "Weiter zur Zahlung";
 "Continue_to_update_pledge" = "Weiter zu Beitrag aktualisieren";
 "Continue_with_Facebook" = "Weiter mit Facebook";
+"Continue_with_quantity_add_ons.few" = "Weiter mit %{quantity} Add-ons";
+"Continue_with_quantity_add_ons.many" = "Weiter mit %{quantity} Add-ons";
+"Continue_with_quantity_add_ons.one" = "Weiter mit %{quantity} Add-on";
+"Continue_with_quantity_add_ons.other" = "Weiter mit %{quantity} Add-ons";
+"Continue_with_quantity_add_ons.two" = "Weiter mit %{quantity} Add-ons";
+"Continue_with_quantity_add_ons.zero" = "Weiter mit %{quantity} Add-ons";
+"Continue_with_quantity_count_add_ons.few" = "Weiter mit %{quantity_count} Add-ons";
+"Continue_with_quantity_count_add_ons.many" = "Weiter mit %{quantity_count} Add-ons";
+"Continue_with_quantity_count_add_ons.one" = "Weiter mit %{quantity_count} Add-on";
+"Continue_with_quantity_count_add_ons.other" = "Weiter mit %{quantity_count} Add-ons";
+"Continue_with_quantity_count_add_ons.two" = "Weiter mit %{quantity_count} Add-ons";
+"Continue_with_quantity_count_add_ons.zero" = "Weiter mit %{quantity_count} Add-ons";
+"Continue_with_this_reward" = "Weiter mit dieser Belohnung?";
+"Continue_with_this_reward_It_doesnt_offer_these_add_ons" = "Weiter mit dieser Belohnung? Die folgenden Add-Ons werden dafür nicht angeboten:";
 "Couldnt_add_attachment" = "Anhang konnte nicht hinzugefügt werden";
 "Couldnt_open_live_stream_Try_again_later" = "Live-Stream konnte nicht geöffnet werden. Bitte versuche es später noch einmal.";
 "Couldnt_remove_attachment" = "Anhang konnte nicht entfernt werden";
@@ -130,10 +153,12 @@
 "Currency_USD" = "$ US-Dollar (USD)";
 "Current_email" = "Derzeitige E-Mail";
 "Current_password" = "Derzeitiges Passwort";
+"Customize_your_reward_with_optional_addons" = "Personalisiere deine Belohnung mit optionalen Add-ons.";
 "Daily_digest" = "Tägliche Zusammenfassung";
 "Daily_summary" = "Übersicht (einmal täglich)";
 "Data_will_appear_here_once" = "Info wird hier angezeigt, sobald jemand dein Projekt unterstützt.";
 "Decrease_pledge" = "Finanzierungsbeitrag reduzieren";
+"Delays_or_changes_are_possible" = "Es können sich Verzögerungen oder Änderungen ergeben.";
 "Delete_my_Kickstarter_Account" = "Mein Kickstarter-Konto löschen";
 "Delivered" = "Verschickt";
 "Description" = "Beschreibung";
@@ -148,6 +173,7 @@
 "Download_your_personal_data" = "Lade deine persönlichen Daten herunter";
 "Earth" = "Erde";
 "Edit_profile" = "Profil bearbeiten";
+"Edit_reward" = "Belohnung bearbeiten";
 "Either_the_pledge_or_the_project_was_canceled" = "Entweder der Finanzierungsbeitrag wurde zurückgezogen oder das Projekt wurde abgebrochen, bevor die Frist abgelaufen war.";
 "Email" = "E-Mail";
 "Email_frequency" = "Häufigkeit der E-Mails";
@@ -156,6 +182,7 @@
 "Email_unverified" = "Diese E-Mail-Adresse wurde noch nicht verifiziert.";
 "Ending_in_last_four" = "Endet auf %{last_four}";
 "Ending_soon" = "Endet bald";
+"Enter_an_amount_less_than_max_pledge" = "Gib einen Betrag unter %{max_pledge} ein.";
 "Estimated_delivery" = "Voraussichtliche Lieferung:";
 "Estimated_delivery_colon" = "Voraussichtliche Lieferung:";
 "Estimated_delivery_of" = "Voraussichtliches Lieferdatum";
@@ -196,6 +223,7 @@
 "First_created" = "Erstes Projekt";
 "Fix" = "Korrigieren";
 "Fix_payment_method" = "Zahlungsmethode ändern";
+"Fix_within_time_remaining" = "Innerhalb von %{time_remaining} korrigieren";
 "Fix_your_payment_method" = "Zahlungsmethode ändern";
 "Follow_friend_name" = "%{friend_name} folgen.";
 "Follow_friends" = "Freunden folgen";
@@ -256,6 +284,7 @@
 "Info" = "Info";
 "Introduce_yourself" = "Stelle dich vor";
 "Introducing_Lights_On" = "Wir stellen vor: Lights On";
+"It_may_not_offer_some_or_all_of_your_add_ons" = "Einige oder alle deiner Add-Ons werden dafür eventuell nicht angeboten.";
 "It_may_take_up_to_24_hours_to_collect_your_data" = "Die Zusammenstellung deiner Daten kann bis zu 24 Stunden dauern. Sobald sie zum Download bereitstehen, werden wir dir eine Anleitung dazu per E-Mail schicken. Solltest du nichts von uns hören, versuche es von hier aus noch einmal.";
 "Its_a_way_to_bring_creative_projects_to_life" = "Es ist eine Plattform, um kreative Projekte ins Leben zu rufen.";
 "Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "Es ist eine Plattform, um kreative Projekte zu verwirklichen. <a href=\"%{trust_link}\">Hier findest du mehr Info zur Rechenschaftspflicht</a>";
@@ -378,6 +407,7 @@
 "Pledge_activity" = "Finanzierungsbeiträge";
 "Pledge_amount" = "Beitragshöhe";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Du kannst jeden beliebigen Betrag eingeben, um das Projekt zu unterstützen.";
+"Pledge_details" = "Dein Finanzierungsbeitrag";
 "Pledge_to_projects_and_view_all_your_saved_and_backed_projects_in_one_place" = "Unterstütze Projekte und sehe alle deine Projekte auf einen Blick.";
 "Pledge_to_your_favorites_then_view_all_the_projects" = "Unterstütze deine Favoriten - alle von dir unterstützten Projekte werden hier angezeigt.";
 "Pledge_was_dropped" = "Finanzierungsbeitrag wurde nicht übernommen.";
@@ -421,6 +451,7 @@
 "Recommended_For_You" = "Empfehlungen für dich";
 "Recorded_Live" = "Live aufgenommen";
 "Recorded_live_with_creator_name" = "Live aufgenommen von <b>%{creator_name}</b>";
+"Remember_that_delivery_dates_are_not_guaranteed" = "Denke daran, dass es keine Garantie für das Lieferdatum gibt.";
 "Remember_this_card" = "Karte speichern";
 "Remove_this_card" = "Karte entfernen";
 "Replay" = "Wiedergabe";
@@ -473,11 +504,13 @@
 "Select_an_option" = "Bitte eine Option wählen";
 "Select_another_project" = "Wähle ein anderes Projekt aus";
 "Select_fewer_categories" = "Reduziere die Anzahl der Kategorien";
+"Select_this_card" = "Diese Karte auswählen";
 "Select_this_instead" = "Stattdessen diese auswählen";
 "Select_this_reward" = "Diese Belohnung wählen";
 "Select_this_reward_instead" = "Diese Belohnung auswählen";
 "Select_up_to_five" = "Wähle bis zu fünf aus den unten stehenden Optionen aus.";
 "Selected" = "Ausgewählt";
+"Selected_card" = "Ausgewählte Karte";
 "Selected_reward" = "Gewählte Belohnung";
 "Send" = "Senden";
 "Send_verfication_email" = "Verifizeirungs-E-Mail senden";
@@ -502,6 +535,7 @@
 "Sign_up" = "Registrieren";
 "Sign_up_newsletter" = "Abonniere unsere \"Team Favoriten\" und wir schicken dir einmal pro Woche eine Auswahl von bemerkenswerten Projekten, handverlesen von unserem Team.";
 "Signs_up_with_Email" = "Mit E-Mail-Adresse registrieren.";
+"Skip_add_ons" = "Keine Add-ons";
 "Social_friend_is_backer.few" = "%{friend_name} und %{remaining_count} weitere";
 "Social_friend_is_backer.many" = "%{friend_name} und %{remaining_count} weitere";
 "Social_friend_is_backer.one" = "%{friend_name} und %{remaining_count} weitere Person";
@@ -511,6 +545,7 @@
 "Something_catch_your_eye" = "Etwas interessantes gefunden?";
 "Something_went_wrong_and_we_were_unable_to_remove_your_payment_method_please_try_again" = "Hier ist etwas schiefgelaufen, deine Zahlungsweise konnte leider nicht entfernt werden. Bitte versuche es noch einmal.";
 "Something_went_wrong_please_try_again" = "Da hat etwas nicht geklappt. Bitte versuche es später noch einmal.";
+"Something_went_wrong_pull_to_refresh" = "Da hat etwas nicht geklappt, bitte nach unten streichen.";
 "Start_the_request" = "Daten zusammenstellen";
 "Starting_soon" = "Beginnt in Kürze";
 "Status" = "Status:";
@@ -553,7 +588,9 @@
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Dieses Facebook-Konto ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
 "This_holiday_season_support_a_project_for_no_reward" = "Weihnachten steht kurz vor der Tür - unterstütze ein Projekt ohne Belohnung. Einfach, weil es dich anspricht.";
 "This_pledge_was_dropped_because_of_payment_errors" = "Dieser Finanzierungsbeitrag wurde aufgrund von Fehlern, die bei der Zahlung auftraten, nicht übernommen.";
+"This_post_is_for_backers_only" = "Dieser Beitrag ist nur für Unterstützer";
 "This_project_didnt_reach_its_funding_goal_so_your_payment_method_was_never_charged" = "Bei diesem Projekt wurde das Finanzierungsziel nicht erreicht. Daher wurde deine Zahlungsmethode nicht belastet.";
+"This_project_has_a_set_currency_that_cant_process_this_option" = "Diese Option ist für die Währung dieses Projekts nicht verfügbar.";
 "This_project_will_only_be_funded_on_if_at_least_amount_is_pledged_by_date" = "Dieses Projekt wird nur finanziert, wenn bis am %{date} Unterstützungsbeiträge von mindestens %{amount} geleistet werden.";
 "Time_left_left" = "%{time_left} übrig";
 "To_access_all_your_favorite_categories_tap_the_explore_dropdown" = "Für schnellen Zugriff auf deine meist besuchten Kategorien, tippe auf das Dropdown-Menü oben.";
@@ -628,9 +665,11 @@
 "Yes_cancel_it" = "Ja, abbrechen";
 "Yes_cancel_my_pledge" = "Ja, ich möchte meinen Beitrag zurückziehen";
 "Yes_change_currency" = "Ja, Währung ändern";
+"Yes_continue" = "Ja, weiter";
 "Yes_remove" = "Ja, entfernen";
 "Yes_turn_off" = "Ja, deaktivieren";
 "You_Launched" = "Dein Projekt ist live!";
+"You_backed" = "Deine unterstützten Projekte";
 "You_backed_this_project" = "Du hast dieses Projekt unterstützt.";
 "You_canceled_this_project_so_the_backers_payment_method_was_never_charged" = "Du hast dieses Projekt abgebrochen. Daher wurde die Zahlungsmethode des Unterstützers nicht belastet.";
 "You_canceled_your_pledge_for_this_project" = "Du hast den Finanzierungsbeitrag für dieses Projekt zurückgezogen.";
@@ -650,6 +689,7 @@
 "Your_payment_method_was_successfully_charged" = "Deine Zahlungsmethode wurde erfolgreich belastet.";
 "Your_pledge" = "Dein Beitrag";
 "Your_pledge_amount" = "Dein Beitrag:";
+"Your_pledge_details" = "Einzelheiten deines Beitrags";
 "Your_pledge_was_canceled_or_the_creator_canceled" = "Entweder dein Finanzierungsbeitrag wurde zurückgezogen oder das Projekt abgebrochen, bevor die Frist erreicht wurde.";
 "Your_pledge_was_dropped" = "Dein Finanzierungsbeitrag wurde nicht übernommen.";
 "Your_pledge_was_dropped_because_of_payment_errors" = "Dein Finanzierungsbeitrag wurde aufgrund von Fehlern, die bei der Zahlung auftraten, nicht übernommen.";
@@ -1258,6 +1298,7 @@
 "likes_count_likes.other" = "%{likes_count} Personen gefällt das";
 "likes_count_likes.two" = "%{likes_count} Personen gefällt das";
 "likes_count_likes.zero" = "%{likes_count} Personen gefällt das";
+"limit_limit_per_backer" = "Max. %{limit_per_backer}";
 "location_name_only" = "Nur %{location_name}";
 "login.buttons.forgot_password" = "Passwort vergessen?";
 "login.buttons.forgot_password_html" = "<u>Passwort vergessen?</u>";
@@ -1560,6 +1601,7 @@
 "push_notifications.alert.buttons.close" = "Schließen";
 "push_notifications.alert.buttons.view" = "Anzeigen";
 "remaining_count_left_of_limit_count" = "%{remaining_count} übrig von %{limit_count}";
+"reward_amount_plus_shipping_cost_each" = "Jeweils %{reward_amount} + %{shipping_cost} Versandkosten";
 "rewards.info.all_gone" = "Alle weg";
 "rewards.info.backer_count_backers.few" = "%{backer_count} Unterstützer";
 "rewards.info.backer_count_backers.many" = "%{backer_count} Unterstützer";

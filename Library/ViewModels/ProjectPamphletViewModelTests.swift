@@ -581,7 +581,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     let config = Config.template
     let project = Project.template
     let projectFull = Project.template
-      |> Project.lens.rewards .~ [Reward.noReward, Reward.template]
+      |> Project.lens.rewardData.rewards .~ [Reward.noReward, Reward.template]
 
     let backedProject = Project.template
       |> Project.lens.personalization.backing .~ Backing.template
@@ -1030,32 +1030,6 @@ final class ProjectPamphletViewModelTests: TestCase {
     XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
     XCTAssertNil(self.optimizelyClient.trackedAttributes)
-  }
-
-  func testOptimizelyTrackingPledgeCTAButtonTapped_SeeTheRewards() {
-    let project = Project.cosmicSurgery
-
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
-    self.vm.inputs.viewDidLoad()
-
-    XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
-
-    self.vm.inputs.pledgeCTAButtonTapped(with: .seeTheRewards)
-
-    XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Project Page Pledge Button Clicked")
-  }
-
-  func testOptimizelyTrackingPledgeCTAButtonTapped_ViewTheRewards() {
-    let project = Project.cosmicSurgery
-
-    self.vm.inputs.configureWith(projectOrParam: .left(project), refTag: .discovery)
-    self.vm.inputs.viewDidLoad()
-
-    XCTAssertEqual(self.optimizelyClient.trackedEventKey, nil)
-
-    self.vm.inputs.pledgeCTAButtonTapped(with: .viewTheRewards)
-
-    XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Project Page Pledge Button Clicked")
   }
 
   func testOptimizelyTrackingPledgeCTAButtonTapped_LoggedIn_NonBacked() {

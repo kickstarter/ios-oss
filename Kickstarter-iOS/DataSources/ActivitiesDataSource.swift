@@ -40,7 +40,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
     return [IndexPath(row: 0, section: Section.findFriends.rawValue)]
   }
 
-  internal func load(erroredBackings: [GraphBacking]) {
+  internal func load(erroredBackings: [ProjectAndBackingEnvelope]) {
     self.clearValues(section: Section.erroredBackings.rawValue)
 
     guard !erroredBackings.isEmpty else { return }
@@ -87,7 +87,7 @@ internal final class ActivitiesDataSource: ValueCellDataSource {
 
   override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as ActivityErroredBackingsCell, value as [GraphBacking]):
+    case let (cell as ActivityErroredBackingsCell, value as [ProjectAndBackingEnvelope]):
       cell.configureWith(value: value)
     case let (cell as ActivityUpdateCell, activity as Activity):
       cell.configureWith(value: activity)

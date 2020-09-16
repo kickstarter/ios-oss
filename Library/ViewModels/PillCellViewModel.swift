@@ -3,6 +3,12 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
+public typealias PillCellData = (
+  text: String,
+  textColor: UIColor,
+  backgroundColor: UIColor
+)
+
 public protocol PillCellViewModelInputs {
   func configure(with value: String)
 }

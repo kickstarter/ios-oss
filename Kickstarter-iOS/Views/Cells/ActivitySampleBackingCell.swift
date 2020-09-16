@@ -35,6 +35,7 @@ internal final class ActivitySampleBackingCell: UITableViewCell, ValueCell {
 
     _ = self
       |> activitySampleCellStyle
+      |> \.backgroundColor .~ discoveryPageBackgroundColor()
       |> UITableViewCell.lens.accessibilityHint %~ { _ in
         Strings.dashboard_tout_accessibility_hint_opens_project()
       }

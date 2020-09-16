@@ -5,13 +5,12 @@ SCHEME ?= $(TARGET)-$(PLATFORM)
 TARGET ?= Kickstarter-Framework
 PLATFORM ?= iOS
 RELEASE ?= itunes
-IOS_VERSION ?= 13.5
+IOS_VERSION ?= 13.6
 IPHONE_NAME ?= iPhone 8
 BRANCH ?= master
 DIST_BRANCH = $(RELEASE)-dist
-FABRIC_SDK_VERSION ?= 3.13.2
-FABRIC_SDK_URL ?= https://s3.amazonaws.com/kits-crashlytics-com/ios/com.twitter.crashlytics.ios/INSERT_SDK_VERSION/com.crashlytics.ios-manual.zip
 COMMIT ?= $(CIRCLE_SHA1)
+CURRENT_BRANCH ?= $(CIRCLE_BRANCH)
 
 ifeq ($(PLATFORM),iOS)
 	DESTINATION ?= 'platform=iOS Simulator,name=$(IPHONE_NAME),OS=$(IOS_VERSION)'
@@ -38,12 +37,12 @@ test: bootstrap
 clean:
 	$(XCODEBUILD) clean $(BUILD_FLAGS) $(XCPRETTY)
 
-dependencies: carthage-bootstrap configs secrets fabric
+dependencies: carthage-bootstrap configs secrets
 
 bootstrap: hooks dependencies
 
 carthage-bootstrap:
-	set -o pipefail; bin/carthage.sh;
+	bin/carthage.sh || (echo "Carthage failed $$?"; exit 1)
 
 configs = $(basename $(wildcard Kickstarter-iOS/Configs/*.example))
 $(configs):
@@ -83,6 +82,19 @@ deploy:
 	@git branch -f $(DIST_BRANCH) private/$(BRANCH)
 	@git push -f private $(DIST_BRANCH)
 	@git branch -d $(DIST_BRANCH)
+
+	@echo "Deploy has been kicked off to CircleCI!"
+
+alpha:
+	@echo "Adding remotes..."
+	@git remote add oss https://github.com/kickstarter/ios-oss
+	@git remote add private https://github.com/kickstarter/ios-private
+
+	@echo "Deploying private/alpha-dist-$(CURRENT_BRANCH)-$(COMMIT)..."
+
+	@git branch -f alpha-dist-$(CURRENT_BRANCH)-$(COMMIT)
+	@git push -f private alpha-dist-$(CURRENT_BRANCH)-$(COMMIT)
+	@git branch -d alpha-dist-$(CURRENT_BRANCH)-$(COMMIT)
 
 	@echo "Deploy has been kicked off to CircleCI!"
 
@@ -131,7 +143,4 @@ secrets:
 		|| true; \
 	fi
 
-fabric:
-	bin/download_framework.sh Fabric $(FABRIC_SDK_VERSION) $(FABRIC_SDK_URL); \
-
-.PHONY: test-all test clean dependencies submodules deploy secrets strings fabric
+.PHONY: test-all test clean dependencies submodules deploy secrets strings

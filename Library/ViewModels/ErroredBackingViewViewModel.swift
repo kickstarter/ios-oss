@@ -1,14 +1,15 @@
 import KsApi
+import Prelude
 import ReactiveSwift
 
 public protocol ErroredBackingViewViewModelInputs {
-  func configure(with value: GraphBacking)
+  func configure(with value: ProjectAndBackingEnvelope)
   func manageButtonTapped()
 }
 
 public protocol ErroredBackingViewViewModelOutputs {
   var finalCollectionDateText: Signal<String, Never> { get }
-  var notifyDelegateManageButtonTapped: Signal<GraphBacking, Never> { get }
+  var notifyDelegateManageButtonTapped: Signal<ProjectAndBackingEnvelope, Never> { get }
   var projectName: Signal<String, Never> { get }
 }
 
@@ -20,25 +21,25 @@ public protocol ErroredBackingViewViewModelType {
 public final class ErroredBackingViewViewModel: ErroredBackingViewViewModelType,
   ErroredBackingViewViewModelInputs, ErroredBackingViewViewModelOutputs {
   public init() {
-    self.projectName = self.backingSignal
-      .map(\.project?.name)
-      .skipNil()
+    let project = self.configDataSignal.map(\.project)
 
-    let collectionDate = self.backingSignal
-      .map(\.project?.finalCollectionDate)
+    self.projectName = project
+      .map(\.name)
+
+    let collectionDate = project
+      .map(\.dates.finalCollectionDate)
       .skipNil()
 
     self.finalCollectionDateText = collectionDate
-      .map { timeLeftString(date: $0) }
-      .skipNil()
+      .map(timeLeftString)
 
-    self.notifyDelegateManageButtonTapped = self.backingSignal
+    self.notifyDelegateManageButtonTapped = self.configDataSignal
       .takeWhen(self.manageButtonTappedSignal)
   }
 
-  private let (backingSignal, backingObserver) = Signal<GraphBacking, Never>.pipe()
-  public func configure(with value: GraphBacking) {
-    self.backingObserver.send(value: value)
+  private let (configDataSignal, configDataObserver) = Signal<ProjectAndBackingEnvelope, Never>.pipe()
+  public func configure(with value: ProjectAndBackingEnvelope) {
+    self.configDataObserver.send(value: value)
   }
 
   private let (manageButtonTappedSignal, manageButtonTappedObserver) = Signal<Void, Never>.pipe()
@@ -47,21 +48,16 @@ public final class ErroredBackingViewViewModel: ErroredBackingViewViewModelType,
   }
 
   public let finalCollectionDateText: Signal<String, Never>
-  public let notifyDelegateManageButtonTapped: Signal<GraphBacking, Never>
+  public let notifyDelegateManageButtonTapped: Signal<ProjectAndBackingEnvelope, Never>
   public let projectName: Signal<String, Never>
 
   public var inputs: ErroredBackingViewViewModelInputs { return self }
   public var outputs: ErroredBackingViewViewModelOutputs { return self }
 }
 
-private func timeLeftString(date: String) -> String? {
-  let dateFormatter = ISO8601DateFormatter.cachedFormatter()
-  guard let finalCollectionDate = dateFormatter.date(from: date) else { return nil }
-
-  let timeInterval = finalCollectionDate.timeIntervalSince1970
-
+private func timeLeftString(finalCollectionDate: TimeInterval) -> String {
   let (time, unit) = timeLeft(
-    secondsInUTC: timeInterval
+    secondsInUTC: finalCollectionDate
   )
   return Strings.Time_left_left(time_left: time + " " + unit)
 }

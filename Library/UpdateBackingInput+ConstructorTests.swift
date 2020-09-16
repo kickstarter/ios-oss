@@ -1,5 +1,6 @@
 @testable import KsApi
 @testable import Library
+import Prelude
 import XCTest
 
 final class UpdateBackingInput_ConstructorTests: TestCase {
@@ -11,10 +12,13 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       token: "token"
     )
 
+    let reward = Reward.template
+
     let data: UpdateBackingData = (
       backing: Backing.template,
-      reward: Reward.template,
-      pledgeAmount: 100,
+      rewards: [reward],
+      pledgeTotal: 105,
+      selectedQuantities: [reward.id: 1],
       shippingRule: ShippingRule.template,
       paymentSourceId: GraphUserCreditCard.amex.id,
       applePayParams: applePayParams
@@ -27,7 +31,7 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
     XCTAssertEqual(input.id, "QmFja2luZy0x")
     XCTAssertEqual(input.locationId, "42")
     XCTAssertEqual(input.paymentSourceId, "6")
-    XCTAssertEqual(input.rewardId, "UmV3YXJkLTE=")
+    XCTAssertEqual(input.rewardIds, ["UmV3YXJkLTE="])
   }
 
   func testUpdateBackingInput_UpdateBackingData_IsApplePay() {
@@ -38,10 +42,13 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
       token: "token"
     )
 
+    let reward = Reward.template
+
     let data: UpdateBackingData = (
       backing: Backing.template,
-      reward: Reward.template,
-      pledgeAmount: 100,
+      rewards: [reward],
+      pledgeTotal: 105,
+      selectedQuantities: [reward.id: 1],
       shippingRule: ShippingRule.template,
       paymentSourceId: GraphUserCreditCard.amex.id,
       applePayParams: applePayParams
@@ -54,6 +61,47 @@ final class UpdateBackingInput_ConstructorTests: TestCase {
     XCTAssertEqual(input.id, "QmFja2luZy0x")
     XCTAssertEqual(input.locationId, "42")
     XCTAssertNil(input.paymentSourceId)
-    XCTAssertEqual(input.rewardId, "UmV3YXJkLTE=")
+    XCTAssertEqual(input.rewardIds, ["UmV3YXJkLTE="])
+  }
+
+  func testUpdateBackingInput_WithShipping_RefTag_HasAddOns() {
+    let reward = Reward.template
+    let shippingRule = ShippingRule.template
+      |> ShippingRule.lens.location .. Location.lens.id .~ 1
+      |> ShippingRule.lens.cost .~ 5.0
+
+    let applePayParams = ApplePayParams(
+      paymentInstrumentName: "paymentInstrumentName",
+      paymentNetwork: "paymentNetwork",
+      transactionIdentifier: "transactionIdentifier",
+      token: "token"
+    )
+
+    let addOn1 = Reward.template
+      |> Reward.lens.id .~ 2
+    let addOn2 = Reward.template
+      |> Reward.lens.id .~ 3
+
+    let data: UpdateBackingData = (
+      backing: Backing.template,
+      rewards: [reward, addOn1, addOn2],
+      pledgeTotal: 15,
+      selectedQuantities: [reward.id: 1, addOn1.id: 2, addOn2.id: 3],
+      shippingRule: shippingRule,
+      paymentSourceId: "123",
+      applePayParams: applePayParams
+    )
+
+    let input = UpdateBackingInput.input(from: data, isApplePay: true)
+
+    XCTAssertEqual(input.amount, "15.00")
+    XCTAssertEqual(input.applePay, applePayParams)
+    XCTAssertEqual(input.locationId, "1")
+    XCTAssertEqual(input.id, "QmFja2luZy0x")
+    XCTAssertEqual(
+      input.rewardIds,
+      ["UmV3YXJkLTE=", "UmV3YXJkLTI=", "UmV3YXJkLTI=", "UmV3YXJkLTM=", "UmV3YXJkLTM=", "UmV3YXJkLTM="]
+    )
+    XCTAssertNil(input.paymentSourceId)
   }
 }

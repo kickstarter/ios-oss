@@ -218,26 +218,22 @@ internal final class ActivitiesViewControllerTests: TestCase {
 
   func testErroredBackings() {
     let date = AppEnvironment.current.calendar.date(byAdding: DateComponents(day: 4), to: MockDate().date)
-    let dateFormatter = ISO8601DateFormatter()
-    let collectionDate = dateFormatter.string(from: date ?? Date())
 
-    let project = GraphBacking.Project.template
+    let backing = Backing.template
+      |> Backing.lens.status .~ .errored
+
+    let project = Project.template
       |> \.name .~ "Awesome tabletop collection"
-      |> \.finalCollectionDate .~ collectionDate
+      |> Project.lens.personalization.backing .~ backing
+      |> \.dates.finalCollectionDate .~ date?.timeIntervalSince1970
 
-    let backing = GraphBacking.template
-      |> \.project .~ project
+    let projectAndBacking = ProjectAndBackingEnvelope(project: project, backing: backing)
 
-    let backings = GraphBackingEnvelope.GraphBackingConnection(nodes: [backing])
-
-    let envelope = GraphBackingEnvelope.template
-      |> \.backings .~ backings
-
-    let backingsResponse = UserEnvelope<GraphBackingEnvelope>(me: envelope)
+    let env = BackingsEnvelope(projectsAndBackings: [projectAndBacking, projectAndBacking])
 
     combos(Language.allLanguages, [Device.phone4_7inch]).forEach { language, device in
       withEnvironment(
-        apiService: MockService(fetchGraphUserBackingsResponse: backingsResponse),
+        apiService: MockService(fetchGraphUserBackingsResult: .success(env)),
         currentUser: .template |> \.facebookConnected .~ true |> \.needsFreshFacebookToken .~ false,
         language: language
       ) {

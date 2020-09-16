@@ -146,7 +146,7 @@ public protocol ServiceType {
 
   /// Fetch User's backings with a specific status.
   func fetchGraphUserBackings(query: NonEmptySet<Query>)
-    -> SignalProducer<UserEnvelope<GraphBackingEnvelope>, GraphError>
+    -> SignalProducer<BackingsEnvelope, ErrorEnvelope>
 
   /// Fetch User's email fields object using graphQL.
   func fetchGraphUserEmailFields(query: NonEmptySet<Query>)
@@ -154,7 +154,7 @@ public protocol ServiceType {
 
   /// Fetch Backing data for ManagePledgeViewController
   func fetchManagePledgeViewBacking(query: NonEmptySet<Query>)
-    -> SignalProducer<ManagePledgeViewBackingEnvelope, GraphError>
+    -> SignalProducer<ProjectAndBackingEnvelope, ErrorEnvelope>
 
   /// Fetches all of the messages in a particular message thread.
   func fetchMessageThread(messageThreadId: Int)
@@ -188,10 +188,6 @@ public protocol ServiceType {
   func fetchProjectActivities(paginationUrl: String) ->
     SignalProducer<ProjectActivityEnvelope, ErrorEnvelope>
 
-  /// Fetch the project creator details for a project with a given query.
-  func fetchProjectCreatorDetails(query: NonEmptySet<Query>)
-    -> SignalProducer<ProjectCreatorDetailsEnvelope, GraphError>
-
   /// Fetch the user's project notifications.
   func fetchProjectNotifications() -> SignalProducer<[ProjectNotification], ErrorEnvelope>
 
@@ -204,9 +200,9 @@ public protocol ServiceType {
   /// Fetches the stats for a particular project.
   func fetchProjectStats(projectId: Int) -> SignalProducer<ProjectStatsEnvelope, ErrorEnvelope>
 
-  /// Fetch the project summary for a project with a given query.
-  func fetchProjectSummary(query: NonEmptySet<Query>)
-    -> SignalProducer<ProjectSummaryEnvelope, GraphError>
+  /// Fetch the add-on rewards for the add-on selection view with a given query.
+  func fetchRewardAddOnsSelectionViewRewards(query: NonEmptySet<Query>)
+    -> SignalProducer<Project, ErrorEnvelope>
 
   /// Fetches a reward for a project and reward id.
   func fetchRewardShippingRules(projectId: Int, rewardId: Int)

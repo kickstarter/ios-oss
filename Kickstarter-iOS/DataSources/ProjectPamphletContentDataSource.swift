@@ -28,7 +28,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
   internal func load(data: ProjectPamphletContentData) {
     self.clearValues()
 
-    let (project, creatorDetails, projectSummaryItems, refTag) = data
+    let (project, refTag) = data
 
     if currentUserIsCreator(of: project) {
       self.set(
@@ -39,7 +39,7 @@ internal final class ProjectPamphletContentDataSource: ValueCellDataSource {
     }
 
     self.set(
-      values: [(project, refTag, creatorDetails, projectSummaryItems)],
+      values: [(project, refTag)],
       cellClass: ProjectPamphletMainCell.self,
       inSection: Section.main.rawValue
     )

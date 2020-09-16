@@ -11,7 +11,7 @@ public protocol ActitiviesViewModelInputs {
   func currentUserUpdated()
 
   /// Called when the user tapped to fix an errored pledge.
-  func erroredBackingViewDidTapManage(with backing: GraphBacking)
+  func erroredBackingViewDidTapManage(with backing: ProjectAndBackingEnvelope)
 
   /// Call when the Find Friends section is dismissed.
   func findFriendsHeaderCellDismissHeader()
@@ -78,7 +78,7 @@ public protocol ActivitiesViewModelOutputs {
   var deleteFindFriendsSection: Signal<(), Never> { get }
 
   /// Emits an array of errored backings to be displayed on the top of the list of projects.
-  var erroredBackings: Signal<[GraphBacking], Never> { get }
+  var erroredBackings: Signal<[ProjectAndBackingEnvelope], Never> { get }
 
   /// Emits when we should dismiss the empty state controller.
   var hideEmptyState: Signal<(), Never> { get }
@@ -215,16 +215,13 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       .skipNil()
       .switchMap { _ in
         AppEnvironment.current.apiService.fetchGraphUserBackings(
-          query: UserQueries.backings(GraphBacking.Status.errored.rawValue).query
+          query: UserQueries.backings(BackingState.errored.rawValue).query
         )
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .map { envelope in
-          envelope.me.backings.nodes
-        }
         .materialize()
       }
 
-    self.erroredBackings = erroredBackingsEvent.values()
+    self.erroredBackings = erroredBackingsEvent.values().map(\.projectsAndBackings)
 
     let loggedInForEmptyState = self.activities
       .filter { AppEnvironment.current.currentUser != nil && $0.isEmpty }
@@ -331,14 +328,23 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
         return SignalProducer(value: (project, update))
       }
 
-    self.goToManagePledge = self.erroredBackingViewDidTapManageWithBackingProperty.signal
+    let goToManagePledgeWithBacking = self.erroredBackingViewDidTapManageWithBackingProperty.signal
       .skipNil()
-      .map { backing -> ManagePledgeViewParamConfigData? in
-        guard let pid = backing.project?.pid, let backingId = decompose(id: backing.id) else { return nil }
 
-        return (projectParam: Param.id(pid), backingParam: Param.id(backingId))
+    self.goToManagePledge = goToManagePledgeWithBacking
+      .map { env -> ManagePledgeViewParamConfigData? in
+        (projectParam: Param.id(env.project.id), backingParam: Param.id(env.backing.id))
       }
       .skipNil()
+
+    self.activities.takePairWhen(goToManagePledgeWithBacking)
+      .observeValues { activities, env in
+        let activity = activities.first { $0.project?.id == env.project.id }
+
+        guard let project = activity?.project else { return }
+
+        AppEnvironment.current.koala.trackActivitiesManagePledgeButtonClicked(project: project)
+      }
 
     Signal.zip(pageCount, paginatedActivities)
       .filter { pageCount, _ in
@@ -364,8 +370,9 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
     self.dismissFindFriendsSectionProperty.value = ()
   }
 
-  fileprivate let erroredBackingViewDidTapManageWithBackingProperty = MutableProperty<GraphBacking?>(nil)
-  public func erroredBackingViewDidTapManage(with backing: GraphBacking) {
+  fileprivate let erroredBackingViewDidTapManageWithBackingProperty
+    = MutableProperty<ProjectAndBackingEnvelope?>(nil)
+  public func erroredBackingViewDidTapManage(with backing: ProjectAndBackingEnvelope) {
     self.erroredBackingViewDidTapManageWithBackingProperty.value = backing
   }
 
@@ -443,7 +450,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
   public let clearBadgeValue: Signal<(), Never>
   public let deleteFacebookConnectSection: Signal<(), Never>
   public let deleteFindFriendsSection: Signal<(), Never>
-  public let erroredBackings: Signal<[GraphBacking], Never>
+  public let erroredBackings: Signal<[ProjectAndBackingEnvelope], Never>
   public let hideEmptyState: Signal<(), Never>
   public let isRefreshing: Signal<Bool, Never>
   public let goToFriends: Signal<FriendsSource, Never>

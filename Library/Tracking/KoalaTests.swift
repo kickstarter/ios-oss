@@ -1,4 +1,3 @@
-@testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
 import Prelude
@@ -160,7 +159,7 @@ final class KoalaTests: TestCase {
     let client = MockTrackingClient()
     let koala = Koala(client: client, loggedInUser: nil)
     let project = Project.template
-      |> Project.lens.rewards .~ [Reward.template]
+      |> Project.lens.rewardData.rewards .~ [Reward.template]
       |> \.category .~ (.illustration
         |> \.id .~ 123
         |> \.parentId .~ 321
@@ -399,7 +398,7 @@ final class KoalaTests: TestCase {
 
     let props = client.properties.last
 
-    XCTAssertEqual(false, props?["pledge_backer_reward_has_items"] as? Bool)
+    XCTAssertEqual(true, props?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(1, props?["pledge_backer_reward_id"] as? Int)
     XCTAssertEqual(true, props?["pledge_backer_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_time"] as? Bool)
@@ -452,25 +451,6 @@ final class KoalaTests: TestCase {
   }
 
   // MARK: - Project Page Tracking
-
-  func testTrackCreatorDetailsClicked() {
-    let client = MockTrackingClient()
-    let koala = Koala(client: client)
-
-    koala.trackCreatorDetailsClicked(
-      project: .template,
-      location: .projectPage,
-      refTag: .discovery,
-      cookieRefTag: .discovery
-    )
-
-    XCTAssertEqual(["Creator Details Clicked"], client.events)
-    XCTAssertEqual(["project_screen"], client.properties(forKey: "context_location"))
-    XCTAssertEqual(["discovery"], client.properties(forKey: "session_ref_tag"))
-    XCTAssertEqual(["discovery"], client.properties(forKey: "session_referrer_credit"))
-
-    self.assertProjectProperties(client.properties.last)
-  }
 
   func testTrackCampaignDetailsButtonClicked() {
     let client = MockTrackingClient()
@@ -789,30 +769,6 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(["View Rewards Button Clicked"], client.events)
   }
 
-  func testTrackPledgeCTAButtonClicked_ViewTheRewardsState() {
-    let client = MockTrackingClient()
-    let project = Project.template
-    let loggedInUser = User.template |> \.id .~ 42
-
-    let koala = Koala(client: client, loggedInUser: loggedInUser)
-
-    koala.trackPledgeCTAButtonClicked(stateType: .viewTheRewards, project: project)
-
-    XCTAssertEqual(["Project Page Pledge Button Clicked"], client.events)
-  }
-
-  func testTrackPledgeCTAButtonClicked_SeeTheRewardsState() {
-    let client = MockTrackingClient()
-    let project = Project.template
-    let loggedInUser = User.template |> \.id .~ 42
-
-    let koala = Koala(client: client, loggedInUser: loggedInUser)
-
-    koala.trackPledgeCTAButtonClicked(stateType: .seeTheRewards, project: project)
-
-    XCTAssertEqual(["Project Page Pledge Button Clicked"], client.events)
-  }
-
   func testTrackPledgeCTAButtonClicked_ViewYourRewardsState() {
     let client = MockTrackingClient()
     let user = User.template |> \.id .~ 42
@@ -905,7 +861,8 @@ final class KoalaTests: TestCase {
     koala.trackPledgeSubmitButtonClicked(
       project: .template,
       reward: .template,
-      checkoutData: .template, refTag: nil
+      checkoutData: .template,
+      refTag: nil
     )
 
     let props = client.properties.last
@@ -1333,7 +1290,7 @@ final class KoalaTests: TestCase {
    Helper for testing pledgeProperties from a template Reward
    */
   private func assertPledgeProperties(_ props: [String: Any]?) {
-    XCTAssertEqual(false, props?["pledge_backer_reward_has_items"] as? Bool)
+    XCTAssertEqual(true, props?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(1, props?["pledge_backer_reward_id"] as? Int)
     XCTAssertEqual(true, props?["pledge_backer_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_time"] as? Bool)
@@ -1347,29 +1304,43 @@ final class KoalaTests: TestCase {
    Helper for testing checkoutProperties from a template Koala.CheckoutPropertiesData
    */
   private func assertCheckoutProperties(_ props: [String: Any]?) {
-    XCTAssertEqual("20.00", props?["checkout_amount"] as? String)
+    XCTAssertEqual(2, props?["checkout_add_ons_count_total"] as? Int)
+    XCTAssertEqual(1, props?["checkout_add_ons_count_unique"] as? Int)
+    XCTAssertEqual("8.00", props?["checkout_add_ons_minimum_usd"] as? String)
+    XCTAssertEqual("43.00", props?["checkout_amount"] as? String)
+    XCTAssertEqual("10.00", props?["checkout_bonus_amount"] as? String)
+    XCTAssertEqual("10.00", props?["checkout_bonus_amount_usd"] as? String)
     XCTAssertEqual("CREDIT_CARD", props?["checkout_payment_type"] as? String)
     XCTAssertEqual("SUPER reward", props?["checkout_reward_title"] as? String)
+    XCTAssertEqual("5.00", props?["checkout_reward_minimum_usd"] as? String)
     XCTAssertEqual(2, props?["checkout_reward_id"] as? Int)
     XCTAssertEqual(2_000, props?["checkout_revenue_in_usd_cents"] as? Int)
-    XCTAssertEqual(false, props?["checkout_reward_shipping_enabled"] as? Bool)
+    XCTAssertEqual(true, props?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
-    XCTAssertNil(props?["checkout_shipping_amount"] as? Double)
-    XCTAssertNil(props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
+    XCTAssertEqual(10.00, props?["checkout_shipping_amount"] as? Double)
+    XCTAssertEqual("10.00", props?["checkout_shipping_amount_usd"] as? String)
+    XCTAssertEqual(12_345_678, props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
   }
 }
 
 extension Koala.CheckoutPropertiesData {
   static let template = Koala.CheckoutPropertiesData(
-    amount: "20.00",
+    addOnsCountTotal: 2,
+    addOnsCountUnique: 1,
+    addOnsMinimumUsd: "8.00",
+    amount: "43.00",
+    bonusAmount: "10.00",
+    bonusAmountInUsd: "10.00",
     checkoutId: 1,
-    estimatedDelivery: nil,
+    estimatedDelivery: 12_345_678,
     paymentType: "CREDIT_CARD",
     revenueInUsdCents: 2_000,
     rewardId: 2,
+    rewardMinimumUsd: "5.00",
     rewardTitle: "SUPER reward",
-    shippingEnabled: false,
-    shippingAmount: nil,
+    shippingEnabled: true,
+    shippingAmount: 10,
+    shippingAmountUsd: "10.00",
     userHasStoredApplePayCard: true
   )
 }

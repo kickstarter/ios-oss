@@ -20,15 +20,22 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
   }
 
   func testView_Toggle_Off() {
+    let data = ManageViewPledgeRewardReceivedViewData(
+      project: .template,
+      backerCompleted: false,
+      estimatedDeliveryOn: 1_475_361_315,
+      backingState: .collected
+    )
+
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(language: language) {
         let controller = ManageViewPledgeRewardReceivedViewController.instantiate()
-        controller.configureWith(project: .template)
+        controller.configureWith(data: data)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        parent.view.frame.size.height = 60
+        parent.view.frame.size.height = 80
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(language)_device_\(device)"
@@ -38,18 +45,22 @@ final class ManageViewPledgeRewardReceivedViewControllerTests: TestCase {
   }
 
   func testView_Toggle_On() {
+    let data = ManageViewPledgeRewardReceivedViewData(
+      project: .template,
+      backerCompleted: false,
+      estimatedDeliveryOn: 1_475_361_315,
+      backingState: .collected
+    )
+
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(language: language) {
-        let project = Project.template
-          |> Project.lens.personalization .. Project.Personalization.lens.backing .~ .template
-
         let controller = ManageViewPledgeRewardReceivedViewController.instantiate()
-        controller.configureWith(project: project)
+        controller.configureWith(data: data)
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 
-        parent.view.frame.size.height = 60
+        parent.view.frame.size.height = 80
 
         FBSnapshotVerifyView(
           parent.view, identifier: "lang_\(language)_device_\(device)"

@@ -81,7 +81,7 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
   func testRewards() {
     let rewards = [reward1, reward2, reward3]
     let project = .template
-      |> Project.lens.rewards .~ rewards
+      |> Project.lens.rewardData.rewards .~ rewards
       |> Project.lens.stats.pledged .~ 1_500
     let stats = [stat1, stat2]
 
@@ -104,7 +104,7 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
   func testShowAllRewards() {
     let rewards = [reward1, reward2, reward3, reward4, reward5, reward6, reward7]
     let project = .template
-      |> Project.lens.rewards .~ rewards
+      |> Project.lens.rewardData.rewards .~ rewards
       |> Project.lens.stats.pledged .~ 5_000
     let stats = [stat1, stat2, stat3, stat4, stat5]
 
@@ -146,7 +146,7 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
 
   func testSorting() {
     let rewards = [reward1, reward2, reward3, reward4, reward5, reward6, reward7]
-    let project = Project.template |> Project.lens.rewards .~ rewards
+    let project = Project.template |> Project.lens.rewardData.rewards .~ rewards
     let stats = [stat1, stat2, stat3, stat4, stat5]
 
     self.rewardsRowRewards.assertValueCount(0)

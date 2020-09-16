@@ -96,8 +96,7 @@ internal func minAndMaxPledgeAmount(forProject project: Project, reward: Reward?
   // The country on the project cannot be trusted to have the min/max values, so first try looking
   // up the country in our launched countries array that we get back from the server config.
   let country = AppEnvironment.current.launchedCountries.countries
-    .filter { $0 == project.country }
-    .first
+    .first { $0 == project.country }
     .coalesceWith(project.country)
 
   switch reward {
@@ -167,16 +166,14 @@ public func updatedUserWithClearedActivityCountProducer() -> SignalProducer<User
 
 public func defaultShippingRule(fromShippingRules shippingRules: [ShippingRule]) -> ShippingRule? {
   let shippingRuleFromCurrentLocation = shippingRules
-    .filter { shippingRule in shippingRule.location.country == AppEnvironment.current.config?.countryCode }
-    .first
+    .first { shippingRule in shippingRule.location.country == AppEnvironment.current.config?.countryCode }
 
   if let shippingRuleFromCurrentLocation = shippingRuleFromCurrentLocation {
     return shippingRuleFromCurrentLocation
   }
 
   let shippingRuleInUSA = shippingRules
-    .filter { shippingRule in shippingRule.location.country == "US" }
-    .first
+    .first { shippingRule in shippingRule.location.country == "US" }
 
   return shippingRuleInUSA ?? shippingRules.first
 }
@@ -218,25 +215,24 @@ public func deviceIdentifier(uuid: UUIDType, env: Environment = AppEnvironment.c
   return identifier.uuidString
 }
 
-typealias SanitizedPledgeParams = (pledgeTotal: String, rewardId: String, locationId: String?)
+typealias SanitizedPledgeParams = (pledgeTotal: String, rewardIds: [String], locationId: String?)
 
 internal func sanitizedPledgeParameters(
-  from reward: Reward,
-  pledgeAmount: Double,
+  from rewards: [Reward],
+  selectedQuantities: SelectedRewardQuantities,
+  pledgeTotal: Double,
   shippingRule: ShippingRule?
 ) -> SanitizedPledgeParams {
-  var pledgeTotal = pledgeAmount
-  var shippingLocationId: String?
-
-  if let shippingRule = shippingRule {
-    pledgeTotal = pledgeAmount.addingCurrency(shippingRule.cost)
-    shippingLocationId = String(shippingRule.location.id)
-  }
+  let shippingLocationId = (shippingRule?.location.id).flatMap(String.init)
 
   let formattedPledgeTotal = Format.decimalCurrency(for: pledgeTotal)
-  let rewardId = reward.graphID
+  let rewardIds = rewards.map { reward -> [String] in
+    guard let selectedRewardQuantity = selectedQuantities[reward.id] else { return [] }
+    return Array(0..<selectedRewardQuantity).map { _ in reward.graphID }
+  }
+  .flatMap { $0 }
 
-  return (formattedPledgeTotal, rewardId, shippingLocationId)
+  return (formattedPledgeTotal, rewardIds, shippingLocationId)
 }
 
 public func ksr_pledgeAmount(
@@ -248,4 +244,101 @@ public func ksr_pledgeAmount(
   let pledgeAmount = Decimal(pledgeAmount) - Decimal(shippingAmount)
 
   return (pledgeAmount as NSDecimalNumber).doubleValue
+}
+
+public func discoveryPageBackgroundColor() -> UIColor {
+  let variant = OptimizelyExperiment.nativeProjectCardsExperimentVariant()
+
+  switch variant {
+  case .variant1:
+    return UIColor.ksr_grey_200
+  case .variant2, .control:
+    return UIColor.white
+  }
+}
+
+public func rewardIsAvailable(project: Project, reward: Reward) -> Bool {
+  let isLimited = reward.limit != nil
+  let isTimebased = reward.endsAt != nil
+
+  guard isLimited || isTimebased else { return true }
+
+  let remainingQty = rewardLimitRemainingForBacker(project: project, reward: reward)
+  let isRemaining = remainingQty == nil || (remainingQty ?? 0) > 0
+
+  let now = AppEnvironment.current.dateType.init().timeIntervalSince1970
+  let endsAt = reward.endsAt.coalesceWith(now)
+  let timeLimitNotReached = endsAt > now
+
+  return (isLimited && isRemaining) || (isTimebased && timeLimitNotReached)
+}
+
+public func rewardLimitRemainingForBacker(project: Project, reward: Reward) -> Int? {
+  guard let remaining = reward.remaining else {
+    return nil
+  }
+
+  // If the reward is limited, determine the currently backed quantity.
+  var backedQuantity: Int = 0
+  if let backing = project.personalization.backing {
+    let rewardQuantities = selectedRewardQuantities(in: backing)
+    backedQuantity = rewardQuantities[reward.id] ?? 0
+  }
+
+  /**
+   Remaining limit for the backer is the minimum of the total remaining quantity
+   (including what has been backed).
+
+   For example, let `remaining` be 1 and `backedQuantity` be 3:
+
+   `remainingForBacker` will be 4 as the backer as already backed 3, 1 is available.
+   */
+
+  return remaining + backedQuantity
+}
+
+public func rewardLimitPerBackerRemainingForBacker(project: Project, reward: Reward) -> Int? {
+  /// Be sure that there is a `limitPerBacker` set
+  guard let limitPerBacker = reward.limitPerBacker else { return nil }
+
+  /**
+   If this is not a limited reward, the `limitPerBacker` is remaining when creating/editing a pledge.
+   This amount will include any backed quantity as the user is able to edit their pledge.
+   */
+  guard let remaining = reward.remaining else {
+    return limitPerBacker
+  }
+
+  // If the reward is limited, determine the currently backed quantity.
+  var backedQuantity: Int = 0
+  if let backing = project.personalization.backing {
+    let rewardQuantities = selectedRewardQuantities(in: backing)
+    backedQuantity = rewardQuantities[reward.id] ?? 0
+  }
+
+  /**
+   Remaining for the backer is the minimum of the total remaining quantity
+   (including what has been backed) or `limitPerBacker`.
+
+   For example, let `remaining` be 1, `limitPerBacker` be 5 and `backedQuantity` be 3:
+
+   `remainingForBacker` will be 4 as the backer as already backed 3, 1 is available and this amount is less
+   than `limitPerBacker`.
+   */
+
+  let remainingPlusBacked = remaining + backedQuantity
+
+  return min(remainingPlusBacked, limitPerBacker)
+}
+
+public func selectedRewardQuantities(in backing: Backing) -> SelectedRewardQuantities {
+  var quantities: [SelectedRewardId: SelectedRewardQuantity] = [:]
+
+  let rewards = [backing.reward].compact() + (backing.addOns ?? [])
+
+  rewards.forEach { reward in
+    quantities[reward.id] = (quantities[reward.id] ?? 0) + 1
+  }
+
+  return quantities
 }

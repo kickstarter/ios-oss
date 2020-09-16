@@ -7,18 +7,18 @@ public struct CreateBackingInput: GraphMutationInput, Encodable {
   let paymentSourceId: String?
   let projectId: String
   let refParam: String?
-  let rewardId: String
+  let rewardIds: [String]
 
   /**
    Initializes a CreateBackingInput.
 
-   - parameter amount: The optional amount.
+   - parameter amount: The amount.
    - parameter applePay: The optional ApplePayParams.
    - parameter locationId: The optional ID of the ShippingRule's Location.
    - parameter paymentSourceId: The optional ID of the PaymentSource.
    - parameter projectId: The GraphID of the Project.
    - parameter refParam: The optional RefParam.
-   - parameter rewardId: The GraphID of the Reward.
+   - parameter rewardIds: The GraphIDs of the Rewards.
    */
   public init(
     amount: String,
@@ -27,7 +27,7 @@ public struct CreateBackingInput: GraphMutationInput, Encodable {
     paymentSourceId: String?,
     projectId: String,
     refParam: String?,
-    rewardId: String
+    rewardIds: [String]
   ) {
     self.amount = amount
     self.applePay = applePay
@@ -35,6 +35,6 @@ public struct CreateBackingInput: GraphMutationInput, Encodable {
     self.paymentSourceId = paymentSourceId
     self.projectId = projectId
     self.refParam = refParam
-    self.rewardId = rewardId
+    self.rewardIds = rewardIds
   }
 }

@@ -55,11 +55,6 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the user taps "OK" from the contextual alert.
   func didAcceptReceivingRemoteNotifications()
 
-  /// Call with the result of evaluating Qualtrics Targeting Logic and current Qualtrics.Properties
-  func didEvaluateQualtricsTargetingLogic(
-    with result: QualtricsResultType, properties: QualtricsPropertiesType
-  )
-
   /// Call when the app delegate receives a remote notification.
   func didReceive(remoteNotification notification: [AnyHashable: Any])
 
@@ -81,9 +76,6 @@ public protocol AppDelegateViewModelInputs {
   /// Call when Optimizely configuration has failed
   func optimizelyClientConfigurationFailed()
 
-  /// Call with the result from initializing Qualtrics
-  func qualtricsInitialized(with result: QualtricsResultType)
-
   /// Call when the contextual PushNotification dialog should be presented.
   func showNotificationDialog(notification: Notification)
 
@@ -104,23 +96,14 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits an app secret that should be used to configure AppCenter.
   var configureAppCenterWithData: Signal<AppCenterConfigData, Never> { get }
 
-  /// Emits when the application should configure Fabric
-  var configureFabric: Signal<(), Never> { get }
+  /// Emits when the application should configure Firebase
+  var configureFirebase: Signal<(), Never> { get }
 
   /// Emits when the application should configure Optimizely
   var configureOptimizely: Signal<(String, OptimizelyLogLevelType, TimeInterval), Never> { get }
 
-  /// Emits when the application should configure Qualtrics
-  var configureQualtrics: Signal<QualtricsConfigData, Never> { get }
-
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
-
-  /// Emits when we should display the Qualtrics survey.
-  var displayQualtricsSurvey: Signal<(), Never> { get }
-
-  /// Emits when we should ask Qualtrics to evaluate its targeting logic.
-  var evaluateQualtricsTargetingLogic: Signal<(), Never> { get }
 
   /// Emits when the view needs to figure out the redirect URL for the emitted URL.
   var findRedirectUrl: Signal<URL, Never> { get }
@@ -539,8 +522,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
     let campaignFaqLink = projectLink
       .filter { _, subpage, _, _ in subpage == .faqs }
-      .map { project, _, vcs, refTag in
-        vcs + [ProjectDescriptionViewController.configuredWith(value: (project, refTag))]
+      .map { project, _, vcs, _ in
+        vcs + [ProjectDescriptionViewController.configuredWith(value: project)]
       }
 
     let updatesLink = projectLink
@@ -602,7 +585,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       fixErroredPledgeLink.map { $0 as UIViewController }
     )
 
-    self.configureFabric = self.applicationLaunchOptionsProperty.signal.ignoreValues()
+    self.configureFirebase = self.applicationLaunchOptionsProperty.signal.ignoreValues()
 
     self.configureOptimizely = self.applicationLaunchOptionsProperty.signal
       .map { _ in AppEnvironment.current }
@@ -700,26 +683,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.optimizelyConfigurationReturnValue <~ self.optimizelyConfiguredWithResultProperty.signal
       .skipNil()
       .map { $0.hasError }
-
-    self.configureQualtrics = Signal.zip(
-      self.applicationLaunchOptionsProperty.signal,
-      self.didUpdateConfigProperty.signal
-    )
-    .filter { _ in featureQualtricsIsEnabled() }
-    .ignoreValues()
-    .map(qualtricsConfigData)
-
-    self.evaluateQualtricsTargetingLogic = self.qualtricsInitializedWithResultProperty.signal
-      .skipNil()
-      .filter { $0.passed() }
-      .ksr_delay(.seconds(2), on: AppEnvironment.current.scheduler)
-      .ignoreValues()
-
-    self.displayQualtricsSurvey = self.didEvaluateQualtricsTargetingLogicWithResultProperty.signal
-      .skipNil()
-      .on(value: { _, properties in properties.setNumber(number: 0, for: "first_app_session") })
-      .filter { result, _ in result.passed() }
-      .ignoreValues()
   }
 
   public var inputs: AppDelegateViewModelInputs { return self }
@@ -782,15 +745,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.didAcceptReceivingRemoteNotificationsProperty.value = ()
   }
 
-  fileprivate let didEvaluateQualtricsTargetingLogicWithResultProperty
-    = MutableProperty<(QualtricsResultType, QualtricsPropertiesType)?>(nil)
-  public func didEvaluateQualtricsTargetingLogic(
-    with result: QualtricsResultType,
-    properties: QualtricsPropertiesType
-  ) {
-    self.didEvaluateQualtricsTargetingLogicWithResultProperty.value = (result, properties)
-  }
-
   fileprivate let didUpdateConfigProperty = MutableProperty<Config?>(nil)
   public func didUpdateConfig(_ config: Config) {
     self.didUpdateConfigProperty.value = config
@@ -824,11 +778,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   ) -> Bool {
     self.applicationOpenUrlProperty.value = (application, url, options)
     return true
-  }
-
-  fileprivate let qualtricsInitializedWithResultProperty = MutableProperty<QualtricsResultType?>(nil)
-  public func qualtricsInitialized(with result: QualtricsResultType) {
-    self.qualtricsInitializedWithResultProperty.value = result
   }
 
   fileprivate let showNotificationDialogProperty = MutableProperty<Notification?>(nil)
@@ -866,12 +815,9 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
-  public let configureFabric: Signal<(), Never>
+  public let configureFirebase: Signal<(), Never>
   public let configureOptimizely: Signal<(String, OptimizelyLogLevelType, TimeInterval), Never>
-  public let configureQualtrics: Signal<QualtricsConfigData, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
-  public let displayQualtricsSurvey: Signal<(), Never>
-  public let evaluateQualtricsTargetingLogic: Signal<(), Never>
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
   public let goToActivity: Signal<(), Never>
@@ -1101,7 +1047,7 @@ private func optimizelyData(for environment: Environment) -> (String, Optimizely
     sdkKey = Secrets.OptimizelySDKKey.production
   case .staging:
     sdkKey = Secrets.OptimizelySDKKey.staging
-  case .development, .local:
+  case .development, .local, .custom:
     sdkKey = Secrets.OptimizelySDKKey.development
   }
 
@@ -1137,22 +1083,6 @@ private func visitorCookies() -> [HTTPCookie] {
     )
   )
   .compact()
-}
-
-private func qualtricsConfigData() -> QualtricsConfigData {
-  return .init(
-    brandId: Secrets.Qualtrics.brandId,
-    zoneId: Secrets.Qualtrics.zoneId,
-    interceptId: QualtricsIntercept.survey.interceptId,
-    stringProperties: [
-      "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier,
-      "language": AppEnvironment.current.language.rawValue,
-      "logged_in": "\(AppEnvironment.current.currentUser != nil)",
-      "distinct_id": AppEnvironment.current.device.identifierForVendor?.uuidString,
-      "user_uid": AppEnvironment.current.currentUser.flatMap { $0.id }.map(String.init)
-    ]
-    .compact()
-  )
 }
 
 private func shouldSeeCategoryPersonalization() -> Bool {

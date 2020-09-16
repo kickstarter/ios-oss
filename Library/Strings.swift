@@ -8,6 +8,23 @@
 // swiftlint:disable line_length
 public enum Strings {
   /**
+   "A little extra to help bring this project to life."
+
+   - **en**: "A little extra to help bring this project to life."
+   - **de**: "Ein kleines Extra, um dieses Projekt zu veröffentlichen."
+   - **es**: "Algo extra para ayudar a que este proyecto se pueda realizar."
+   - **fr**: "Du soutien supplémentaire pour faire vivre ce projet."
+   - **ja**: "プロジェクトを実現させるための追加支援。"
+  */
+  public static func A_little_extra_to_help() -> String {
+    return localizedString(
+      key: "A_little_extra_to_help",
+      defaultValue: "A little extra to help bring this project to life.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "A successfully funded project will collect your pledge in its native currency. The amounts shown are approximate."
 
    - **en**: "A successfully funded project will collect your pledge in its native currency. The amounts shown are approximate."
@@ -156,6 +173,40 @@ public enum Strings {
     return localizedString(
       key: "Add_new_card",
       defaultValue: "Add new card",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Add-ons"
+
+   - **en**: "Add-ons"
+   - **de**: "Add-ons"
+   - **es**: "Complementos"
+   - **fr**: "Compléments"
+   - **ja**: "アドオン (追加リワード)"
+  */
+  public static func Add_ons() -> String {
+    return localizedString(
+      key: "Add_ons",
+      defaultValue: "Add-ons",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Add-ons unavailable"
+
+   - **en**: "Add-ons unavailable"
+   - **de**: "Add-ons nicht verfügbar"
+   - **es**: "Complementos no disponibles"
+   - **fr**: "Compléments non disponibles"
+   - **ja**: "アドオン (追加リワード) は利用できません"
+  */
+  public static func Add_ons_unavailable() -> String {
+    return localizedString(
+      key: "Add_ons_unavailable",
+      defaultValue: "Add-ons unavailable",
       count: nil,
       substitutions: [:]
     )
@@ -987,6 +1038,40 @@ contributeurs"
     )
   }
   /**
+   "Bonus"
+
+   - **en**: "Bonus"
+   - **de**: "Bonus"
+   - **es**: "Extra"
+   - **fr**: "Bonus"
+   - **ja**: "ボーナス"
+  */
+  public static func Bonus() -> String {
+    return localizedString(
+      key: "Bonus",
+      defaultValue: "Bonus",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Bonus support"
+
+   - **en**: "Bonus support"
+   - **de**: "Bonus-Unterstützung"
+   - **es**: "Apoyo extra"
+   - **fr**: "Coup de pouce"
+   - **ja**: "ボーナスサポート"
+  */
+  public static func Bonus_support() -> String {
+    return localizedString(
+      key: "Bonus_support",
+      defaultValue: "Bonus support",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Bookmarks"
 
    - **en**: "Bookmarks"
@@ -1254,6 +1339,23 @@ contributeurs"
     return localizedString(
       key: "Change_payment_method",
       defaultValue: "Change payment method",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Change your shipping location or skip add-ons to continue."
+
+   - **en**: "Change your shipping location or skip add-ons to continue."
+   - **de**: "Um fortzufahren, ändere dein Versandziel oder überspringe Add-ons."
+   - **es**: "Cambia tu ubicación de envío u omite los complementos para continuar."
+   - **fr**: "Changez de lieu de livraison ou ignorez les compléments pour continuer."
+   - **ja**: "配送先を変更するか、アドオン (追加リワード) をスキップして続行してください。"
+  */
+  public static func Change_your_shipping_location_or_skip_add_ons_to_continue() -> String {
+    return localizedString(
+      key: "Change_your_shipping_location_or_skip_add_ons_to_continue",
+      defaultValue: "Change your shipping location or skip add-ons to continue.",
       count: nil,
       substitutions: [:]
     )
@@ -1702,6 +1804,57 @@ Haz clic para volver a intentarlo."
     return localizedString(
       key: "Continue_with_Facebook",
       defaultValue: "Continue with Facebook",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Continue with %{quantity_count} add-ons"
+
+   - **en**: "Continue with %{quantity_count} add-ons"
+   - **de**: "Weiter mit %{quantity_count} Add-ons"
+   - **es**: "Continuar con %{quantity_count} complementos"
+   - **fr**: "Continuer avec %{quantity_count} compléments"
+   - **ja**: "%{quantity_count} 個のアドオンで続行する"
+  */
+  public static func Continue_with_quantity_count_add_ons(quantity_count: Int) -> String {
+    return localizedString(
+      key: "Continue_with_quantity_count_add_ons",
+      defaultValue: "Continue with %{quantity_count} add-ons",
+      count: quantity_count,
+      substitutions: ["quantity_count": Format.wholeNumber(quantity_count)]
+    )
+  }
+  /**
+   "Continue with %{quantity_count} add-ons"
+
+   - **en**: "Continue with %{quantity_count} add-ons"
+   - **de**: "Weiter mit %{quantity_count} Add-ons"
+   - **es**: "Continuar con %{quantity_count} complementos"
+   - **fr**: "Continuer avec %{quantity_count} compléments"
+   - **ja**: "%{quantity_count} 個のアドオンで続行する"
+  */
+  public static func Continue_with_quantity_count_add_ons_other(quantity_count: String) -> String {
+    return localizedString(
+      key: "Continue_with_quantity_count_add_ons.other",
+      defaultValue: "Continue with %{quantity_count} add-ons",
+      count: nil,
+      substitutions: ["quantity_count": quantity_count]
+    )
+  }
+  /**
+   "Continue with this reward?"
+
+   - **en**: "Continue with this reward?"
+   - **de**: "Weiter mit dieser Belohnung?"
+   - **es**: "¿Continuar con esta recompensa?"
+   - **fr**: "Continuer avec cette récompense ?"
+   - **ja**: "このリワードで続けますか？"
+  */
+  public static func Continue_with_this_reward() -> String {
+    return localizedString(
+      key: "Continue_with_this_reward",
+      defaultValue: "Continue with this reward?",
       count: nil,
       substitutions: [:]
     )
@@ -2251,6 +2404,23 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
+   "Customize your reward with optional add-ons."
+
+   - **en**: "Customize your reward with optional add-ons."
+   - **de**: "Personalisiere deine Belohnung mit optionalen Add-ons."
+   - **es**: "Personaliza tu recompensa con complementos opcionales."
+   - **fr**: "Personnalisez votre récompense avec des compléments."
+   - **ja**: "オプションとしてアドオン (追加リワード) を追加しリワードをカスタマイズしましょう。"
+  */
+  public static func Customize_your_reward_with_optional_addons() -> String {
+    return localizedString(
+      key: "Customize_your_reward_with_optional_addons",
+      defaultValue: "Customize your reward with optional add-ons.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Daily digest"
 
    - **en**: "Daily digest"
@@ -2314,6 +2484,23 @@ Haz clic para volver a intentarlo."
     return localizedString(
       key: "Decrease_pledge",
       defaultValue: "Decrease pledge",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Delays or changes are possible."
+
+   - **en**: "Delays or changes are possible."
+   - **de**: "Es können sich Verzögerungen oder Änderungen ergeben."
+   - **es**: "Es posible que haya retrasos o cambios."
+   - **fr**: "Des retards ou des changements sont possibles."
+   - **ja**: "遅延や変更が発生することもあります。"
+  */
+  public static func Delays_or_changes_are_possible() -> String {
+    return localizedString(
+      key: "Delays_or_changes_are_possible",
+      defaultValue: "Delays or changes are possible.",
       count: nil,
       substitutions: [:]
     )
@@ -2557,6 +2744,23 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
+   "Edit reward"
+
+   - **en**: "Edit reward"
+   - **de**: "Belohnung bearbeiten"
+   - **es**: "Editar recompensa"
+   - **fr**: "Modifier la récompense"
+   - **ja**: "リワードを編集する"
+  */
+  public static func Edit_reward() -> String {
+    return localizedString(
+      key: "Edit_reward",
+      defaultValue: "Edit reward",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Either the pledge or the project was canceled before the deadline."
 
    - **en**: "Either the pledge or the project was canceled before the deadline."
@@ -2690,6 +2894,23 @@ Haz clic para volver a intentarlo."
       defaultValue: "Ending Soon",
       count: nil,
       substitutions: [:]
+    )
+  }
+  /**
+   "Enter an amount less than %{max_pledge}."
+
+   - **en**: "Enter an amount less than %{max_pledge}."
+   - **de**: "Gib einen Betrag unter %{max_pledge} ein."
+   - **es**: "Ingresa una cantidad inferior a %{max_pledge}."
+   - **fr**: "Veuillez saisir un montant inférieur à %{max_pledge}."
+   - **ja**: "%{max_pledge} 以下の額を入力してください。"
+  */
+  public static func Enter_an_amount_less_than_max_pledge(max_pledge: String) -> String {
+    return localizedString(
+      key: "Enter_an_amount_less_than_max_pledge",
+      defaultValue: "Enter an amount less than %{max_pledge}.",
+      count: nil,
+      substitutions: ["max_pledge": max_pledge]
     )
   }
   /**
@@ -3293,7 +3514,7 @@ Haz clic para volver a intentarlo."
    - **en**: "Fix payment method"
    - **de**: "Zahlungsmethode ändern"
    - **es**: "Corregir el método de pago"
-   - **fr**: "Fix payment method"
+   - **fr**: "Correction du moyen de paiement"
    - **ja**: "お支払い方法を修正"
   */
   public static func Fix_payment_method() -> String {
@@ -4338,6 +4559,23 @@ Haz clic para volver a intentarlo."
     return localizedString(
       key: "Introducing_Lights_On",
       defaultValue: "Introducing Lights On",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "It may not offer some or all of your add-ons."
+
+   - **en**: "It may not offer some or all of your add-ons."
+   - **de**: "Einige oder alle deiner Add-Ons werden dafür eventuell nicht angeboten."
+   - **es**: "Es posible que no ofrezca algunos o todos tus complementos."
+   - **fr**: "Une partie ou la totalité des compléments pourraient être indisponibles."
+   - **ja**: "このリワードでは、アドオン (追加リワード）の一部または全てが提供されない場合があります。"
+  */
+  public static func It_may_not_offer_some_or_all_of_your_add_ons() -> String {
+    return localizedString(
+      key: "It_may_not_offer_some_or_all_of_your_add_ons",
+      defaultValue: "It may not offer some or all of your add-ons.",
       count: nil,
       substitutions: [:]
     )
@@ -6354,6 +6592,23 @@ n'ont rien soutenu."
     )
   }
   /**
+   "Pledge details"
+
+   - **en**: "Pledge details"
+   - **de**: "Dein Finanzierungsbeitrag"
+   - **es**: "Detalles de la contribución"
+   - **fr**: "Détails de mon engagement"
+   - **ja**: "プレッジ詳細"
+  */
+  public static func Pledge_details() -> String {
+    return localizedString(
+      key: "Pledge_details",
+      defaultValue: "Pledge details",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Pledge to projects and view all your saved and backed projects in one place."
 
    - **en**: "Pledge to projects and view all your saved and backed projects in one place."
@@ -7085,6 +7340,23 @@ daring ideas."
       defaultValue: "Recorded live with <b>%{creator_name}</b>",
       count: nil,
       substitutions: ["creator_name": creator_name]
+    )
+  }
+  /**
+   "Remember that delivery dates are not guaranteed."
+
+   - **en**: "Remember that delivery dates are not guaranteed."
+   - **de**: "Denke daran, dass es keine Garantie für das Lieferdatum gibt."
+   - **es**: "Recuerda que las fechas de entrega no están garantizadas."
+   - **fr**: "N'oubliez pas que les dates de livraison ne sont pas garanties."
+   - **ja**: "配送日は保証されませんのでご注意ください。"
+  */
+  public static func Remember_that_delivery_dates_are_not_guaranteed() -> String {
+    return localizedString(
+      key: "Remember_that_delivery_dates_are_not_guaranteed",
+      defaultValue: "Remember that delivery dates are not guaranteed.",
+      count: nil,
+      substitutions: [:]
     )
   }
   /**
@@ -8295,18 +8567,35 @@ daring ideas."
     )
   }
   /**
-   "%{friend_name} and %{remaining_count} other"
+   "Skip add-ons"
 
-   - **en**: "%{friend_name} and %{remaining_count} other"
-   - **de**: "%{friend_name} und %{remaining_count} weitere Person"
-   - **es**: "%{friend_name} y %{remaining_count} persona más"
-   - **fr**: "%{friend_name} et %{remaining_count} autre"
+   - **en**: "Skip add-ons"
+   - **de**: "Keine Add-ons"
+   - **es**: "Omitir complementos"
+   - **fr**: "Passer les compléments"
+   - **ja**: "アドオンをスキップする"
+  */
+  public static func Skip_add_ons() -> String {
+    return localizedString(
+      key: "Skip_add_ons",
+      defaultValue: "Skip add-ons",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "%{friend_name} and %{remaining_count} others"
+
+   - **en**: "%{friend_name} and %{remaining_count} others"
+   - **de**: "%{friend_name} und %{remaining_count} weitere"
+   - **es**: "%{friend_name} y %{remaining_count} otros"
+   - **fr**: "%{friend_name} et %{remaining_count} autre(s)"
    - **ja**: "%{friend_name} さんと他%{remaining_count} 人"
   */
   public static func Social_friend_is_backer(friend_name: String, remaining_count: Int) -> String {
     return localizedString(
       key: "Social_friend_is_backer",
-      defaultValue: "%{friend_name} and %{remaining_count} other",
+      defaultValue: "%{friend_name} and %{remaining_count} others",
       count: remaining_count,
       substitutions: ["friend_name": friend_name, "remaining_count": Format.wholeNumber(remaining_count)]
     )
@@ -8377,6 +8666,23 @@ catch your eye?"
     return localizedString(
       key: "Something_went_wrong_please_try_again",
       defaultValue: "Something went wrong, please try again.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Something went wrong—pull to refresh."
+
+   - **en**: "Something went wrong—pull to refresh."
+   - **de**: "Da hat etwas nicht geklappt, bitte nach unten streichen."
+   - **es**: "Ocurrió un error. Desliza para actualizar."
+   - **fr**: "Une erreur s'est produite, faites glisser l'écran vers le bas pour l'actualiser."
+   - **ja**: "何らかのエラーが発生しました。リフレッシュするにはプルダウンしてください。"
+  */
+  public static func Something_went_wrong_pull_to_refresh() -> String {
+    return localizedString(
+      key: "Something_went_wrong_pull_to_refresh",
+      defaultValue: "Something went wrong—pull to refresh.",
       count: nil,
       substitutions: [:]
     )
@@ -10411,6 +10717,23 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "Yes, continue"
+
+   - **en**: "Yes, continue"
+   - **de**: "Ja, weiter"
+   - **es**: "Sí, continuar"
+   - **fr**: "Oui, continuer"
+   - **ja**: "はい、続行します"
+  */
+  public static func Yes_continue() -> String {
+    return localizedString(
+      key: "Yes_continue",
+      defaultValue: "Yes, continue",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Yes, remove"
 
    - **en**: "Yes, remove"
@@ -10457,6 +10780,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "You_Launched",
       defaultValue: "You Launched!",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You backed"
+
+   - **en**: "You backed"
+   - **de**: "Deine unterstützten Projekte"
+   - **es**: "Patrocinaste"
+   - **fr**: "Projet soutenu"
+   - **ja**: "あなたがバックしたプロジェクト"
+  */
+  public static func You_backed() -> String {
+    return localizedString(
+      key: "You_backed",
+      defaultValue: "You backed",
       count: nil,
       substitutions: [:]
     )
@@ -10780,6 +11120,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "Your_pledge_amount",
       defaultValue: "Your pledge amount",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Your pledge details"
+
+   - **en**: "Your pledge details"
+   - **de**: "Einzelheiten deines Beitrags"
+   - **es**: "Los detalles de tu contribución"
+   - **fr**: "Votre engagement"
+   - **ja**: "プレッジの詳細"
+  */
+  public static func Your_pledge_details() -> String {
+    return localizedString(
+      key: "Your_pledge_details",
+      defaultValue: "Your pledge details",
       count: nil,
       substitutions: [:]
     )
@@ -16690,7 +17047,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -18640,6 +18997,23 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "Limit %{limit_per_backer}"
+
+   - **en**: "Limit %{limit_per_backer}"
+   - **de**: "Max. %{limit_per_backer}"
+   - **es**: "Límite %{limit_per_backer}"
+   - **fr**: "Limite de %{limit_per_backer}"
+   - **ja**: "1人限定%{limit_per_backer}個"
+  */
+  public static func limit_limit_per_backer(limit_per_backer: String) -> String {
+    return localizedString(
+      key: "limit_limit_per_backer",
+      defaultValue: "Limit %{limit_per_backer}",
+      count: nil,
+      substitutions: ["limit_per_backer": limit_per_backer]
+    )
+  }
+  /**
    "%{location_name} only"
 
    - **en**: "%{location_name} only"
@@ -20050,7 +20424,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS APOYADOS"
+   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -23161,7 +23535,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count}\n件バック済み"
+   - **ja**: "%{projects_count} \n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -23305,6 +23679,23 @@ projets enregistrés"
       defaultValue: "%{remaining_count} left of %{limit_count}",
       count: nil,
       substitutions: ["remaining_count": remaining_count, "limit_count": limit_count]
+    )
+  }
+  /**
+   "%{reward_amount} + %{shipping_cost} shipping each"
+
+   - **en**: "%{reward_amount} + %{shipping_cost} shipping each"
+   - **de**: "Jeweils %{reward_amount} + %{shipping_cost} Versandkosten"
+   - **es**: "%{reward_amount} + %{shipping_cost} de envío cada una"
+   - **fr**: "%{reward_amount} + %{shipping_cost} de frais de port par unité"
+   - **ja**: "%{reward_amount} + 送料各 %{shipping_cost} "
+  */
+  public static func reward_amount_plus_shipping_cost_each(reward_amount: String, shipping_cost: String) -> String {
+    return localizedString(
+      key: "reward_amount_plus_shipping_cost_each",
+      defaultValue: "%{reward_amount} + %{shipping_cost} shipping each",
+      count: nil,
+      substitutions: ["reward_amount": reward_amount, "shipping_cost": shipping_cost]
     )
   }
   /**
@@ -24096,7 +24487,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count}プロジェクト"
+   - **ja**: "%{created_count} プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(

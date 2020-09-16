@@ -7,8 +7,10 @@ public struct ManagePledgeSummaryViewData: Equatable {
   public let backerId: Int
   public let backerName: String
   public let backerSequence: Int
-  public let backingState: BackingState
+  public let backingState: Backing.Status
+  public let bonusAmount: Double?
   public let currentUserIsCreatorOfProject: Bool
+  public let isNoReward: Bool
   public let locationName: String?
   public let needsConversion: Bool
   public let omitUSCurrencyCode: Bool
@@ -16,8 +18,10 @@ public struct ManagePledgeSummaryViewData: Equatable {
   public let pledgedOn: TimeInterval
   public let projectCountry: Project.Country
   public let projectDeadline: TimeInterval
-  public let projectState: ProjectState
+  public let projectState: Project.State
+  public let rewardMinimum: Double
   public let shippingAmount: Double?
+  public let shippingAmountHidden: Bool
 }
 
 public protocol ManagePledgeSummaryViewModelInputs {
@@ -126,17 +130,21 @@ private func pledgeAmountSummaryViewData(
   with data: ManagePledgeSummaryViewData
 ) -> PledgeAmountSummaryViewData {
   return .init(
-    projectCountry: data.projectCountry,
-    pledgeAmount: data.pledgeAmount,
-    pledgedOn: data.pledgedOn,
-    shippingAmount: data.shippingAmount,
+    bonusAmount: data.bonusAmount,
+    bonusAmountHidden: false,
+    isNoReward: data.isNoReward,
     locationName: data.locationName,
-    omitUSCurrencyCode: data.omitUSCurrencyCode
+    omitUSCurrencyCode: data.omitUSCurrencyCode,
+    projectCountry: data.projectCountry,
+    pledgedOn: data.pledgedOn,
+    rewardMinimum: data.rewardMinimum,
+    shippingAmount: data.shippingAmount,
+    shippingAmountHidden: data.shippingAmountHidden
   )
 }
 
 private func pledgeStatusLabelViewData(with data: ManagePledgeSummaryViewData) -> PledgeStatusLabelViewData {
-  return .init(
+  return PledgeStatusLabelViewData(
     currentUserIsCreatorOfProject: data.currentUserIsCreatorOfProject,
     needsConversion: data.needsConversion,
     pledgeAmount: data.pledgeAmount,
@@ -153,7 +161,7 @@ private func attributedCurrency(
   omitUSCurrencyCode: Bool
 ) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
-    .withAllValuesFrom([.foregroundColor: UIColor.ksr_green_500])
+    .withAllValuesFrom([.foregroundColor: UIColor.ksr_soft_black])
   let superscriptAttributes = checkoutCurrencySuperscriptAttributes()
   guard
     let attributedCurrency = Format.attributedCurrency(

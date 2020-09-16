@@ -3,6 +3,31 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+public struct DiscoveryPillData: Equatable {
+  public let imageName: String
+  public let text: String
+  public let type: DiscoveryProjectTagPillCellType
+}
+
+public enum DiscoveryProjectTagPillCellType: Equatable {
+  case green
+  case grey
+
+  public var backgroundColor: UIColor {
+    switch self {
+    case .green: return UIColor.ksr_green_500.withAlphaComponent(0.07)
+    case .grey: return .ksr_grey_300
+    }
+  }
+
+  public var textColor: UIColor {
+    switch self {
+    case .green: return .ksr_green_500
+    case .grey: return .ksr_dark_grey_500
+    }
+  }
+}
+
 public typealias BoldedAttributedLabelData = (boldedString: String, inString: String)
 public typealias FacepileViewData = (avatars: [URL], description: String)
 
@@ -15,7 +40,7 @@ public protocol DiscoveryProjectCardViewModelOutputs {
   var facepileViewData: Signal<FacepileViewData, Never> { get }
   var facepileViewHidden: Signal<Bool, Never> { get }
   var goalMetIconHidden: Signal<Bool, Never> { get }
-  var loadProjectTags: Signal<[DiscoveryProjectTagPillCellValue], Never> { get }
+  var loadProjectTags: Signal<[DiscoveryPillData], Never> { get }
   var percentFundedLabelData: Signal<BoldedAttributedLabelData, Never> { get }
   var projectBlurbLabelText: Signal<String, Never> { get }
   var projectImageURL: Signal<URL, Never> { get }
@@ -114,7 +139,7 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
   public let facepileViewHidden: Signal<Bool, Never>
   public let facepileViewData: Signal<FacepileViewData, Never>
   public let goalMetIconHidden: Signal<Bool, Never>
-  public let loadProjectTags: Signal<[DiscoveryProjectTagPillCellValue], Never>
+  public let loadProjectTags: Signal<[DiscoveryPillData], Never>
   public let percentFundedLabelData: Signal<BoldedAttributedLabelData, Never>
   public let projectBlurbLabelText: Signal<String, Never>
   public let projectImageURL: Signal<URL, Never>
@@ -148,27 +173,27 @@ private func projectPWLTagShouldHide(project: Project) -> Bool {
   return !project.staffPick
 }
 
-private func projectTags(project: Project, category: KsApi.Category?) -> [DiscoveryProjectTagPillCellValue] {
+private func projectTags(project: Project, category: KsApi.Category?) -> [DiscoveryPillData] {
   let shouldShowCategoryTag = !projectCategoryTagShouldHide(for: project, in: category)
   let shouldShowPWLTag = !projectPWLTagShouldHide(project: project)
 
-  var tags: [DiscoveryProjectTagPillCellValue] = []
+  var tags: [DiscoveryPillData] = []
 
   if shouldShowPWLTag {
-    let pwlTag = DiscoveryProjectTagPillCellValue(
-      type: .green,
-      tagIconImageName: "icon--small-k",
-      tagLabelText: Strings.Projects_We_Love()
+    let pwlTag = DiscoveryPillData(
+      imageName: "icon--small-k",
+      text: Strings.Projects_We_Love(),
+      type: .green
     )
 
     tags.append(pwlTag)
   }
 
   if shouldShowCategoryTag {
-    let categoryTag = DiscoveryProjectTagPillCellValue(
-      type: .grey,
-      tagIconImageName: "icon--compass",
-      tagLabelText: project.category.name
+    let categoryTag = DiscoveryPillData(
+      imageName: "icon--compass",
+      text: project.category.name,
+      type: .grey
     )
 
     tags.append(categoryTag)

@@ -1,10 +1,8 @@
 version: 2.1
 
-xcode_version: &xcode_version 11.5.0
+xcode_version: &xcode_version 11.6.0
 iphone_name: &iphone_name iPhone 8
-fabric_sdk_version: &fabric_sdk_version 3.10.5
-store_fabric_sdk_version: &store_fabric_sdk_version echo "$FABRIC_SDK_VERSION" > fabric_version.txt
-preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (13.5) [" || true
+preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (13.6) [" || true
 
 base_job: &base_job
   macos:
@@ -16,7 +14,6 @@ base_job: &base_job
     FL_OUTPUT_DIR: output
     LC_ALL: en_US.UTF-8
     LANG: en_US.UTF-8
-    FABRIC_SDK_VERSION: *fabric_sdk_version
     IPHONE_NAME: *iphone_name
     XCODE_VERSION: *xcode_version
 
@@ -36,22 +33,13 @@ jobs:
       - checkout
 
       - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          name: Restore Fabric SDK
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
       - restore_cache:
           name: Restore Carthage
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -59,7 +47,7 @@ jobs:
 
       - save_cache:
           name: Cache Carthage
-          key: carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+          key: carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
           paths:
             - Carthage
 
@@ -68,12 +56,6 @@ jobs:
           key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
-
-      - save_cache:
-          name: Cache Fabric SDK
-          key: fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-          paths:
-            - "Frameworks/Fabric"
 
       - restore_cache:
           name: Restore Bundler
@@ -110,21 +92,13 @@ jobs:
       - checkout
 
       - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -154,21 +128,13 @@ jobs:
       - checkout
 
       - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -198,21 +164,13 @@ jobs:
       - checkout
 
       - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -240,21 +198,13 @@ jobs:
       - checkout
 
       - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -270,6 +220,23 @@ jobs:
           no_output_timeout: "20m" # 20 minutes
 
       - codecov/upload
+
+  deploy_alpha:
+    <<: *base_job
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+      - checkout
+      - save_cache:
+          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ".git"
+      - run:
+          name: Deploy Alpha
+          command: make alpha
 
   deploy_beta:
     <<: *base_job
@@ -301,21 +268,13 @@ jobs:
       - checkout
 
       - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -345,6 +304,10 @@ jobs:
           no_output_timeout: "30m" # 30 minutes
 
       - run:
+          name: Upload dSYMs
+          command: bin/upload-dysms-firebase.sh Firebase-Alpha KickBeta.app.dSYM.zip
+
+      - run:
           name: Cleanup Temp Branch
           command: make cleanup
 
@@ -367,21 +330,13 @@ jobs:
       - checkout
 
       - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -410,6 +365,10 @@ jobs:
           command: bundle exec fastlane alpha_match_gym_appcenter --verbose
           no_output_timeout: "30m" # 30 minutes
 
+      - run:
+          name: Upload dSYMs
+          command: bin/upload-dysms-firebase.sh Firebase-Alpha KickAlpha.app.dSYM.zip
+
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
@@ -428,21 +387,13 @@ jobs:
       - checkout
 
       - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -478,21 +429,13 @@ jobs:
       - checkout
 
       - run:
-          name: Store Fabric SDK Version
-          command: *store_fabric_sdk_version
-
-      - restore_cache:
-          keys:
-            - fabric-sdk-cache-{{ checksum "fabric_version.txt" }}
-
-      - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
 
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
 
       - run:
           name: Bootstrap
@@ -521,6 +464,10 @@ jobs:
           command: bundle exec fastlane itunes_match_gym_deliver --verbose
           no_output_timeout: "30m" # 30 minutes
 
+      - run:
+          name: Upload dSYMs
+          command: bin/upload-dysms-firebase.sh Firebase-Production Kickstarter.app.dSYM.zip
+
       - store_artifacts:
           path: /tmp/xcode_raw.log
 
@@ -540,7 +487,19 @@ workflows:
       - refresh_app_store_dsyms:
           filters:
             branches:
+              # matches all branches that begin with 'beta-dist'
               only: /beta-dist-.*/
+      - deploy_alpha:
+          filters:
+            branches:
+              # matches all branches that contain 'feature' but do not contain 'alpha-dist'
+              only: /^((?!alpha\-dist).*feature.*)*$/
+          requires:
+            - build-and-cache
+            - kickstarter-tests
+            - kickstarter-ui-tests
+            - library-tests
+            - ksapi-tests
       - deploy_beta:
           filters:
             branches:
@@ -554,6 +513,7 @@ workflows:
       - beta:
           filters:
             branches:
+              # matches all branches that begin with 'beta-dist'
               only: /beta-dist-.*/
           requires:
             - build-and-cache
@@ -564,6 +524,7 @@ workflows:
       - alpha:
           filters:
             branches:
+              # matches all branches that begin with 'alpha-dist'
               only: /alpha-dist.*/
           requires:
             - build-and-cache
@@ -574,6 +535,7 @@ workflows:
       - itunes:
           filters:
             branches:
+              # matches branch named exactly `itunes-dist`
               only: itunes-dist
           requires:
             - build-and-cache
@@ -586,7 +548,11 @@ experimental:
   notify:
     branches:
       only:
+        # matches branch named exactly `master`
         - master
+        # matches all branches that begin with 'alpha-dist'
         - /alpha-dist.*/
+        # matches all branches that begin with 'beta-dist'
         - /beta-dist-.*/
+        # matches branch named exactly `itunes-dist`
         - itunes-dist

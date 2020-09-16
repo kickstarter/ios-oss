@@ -37,8 +37,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
 
     let mockService = MockService(
-      fetchProjectResponse: project,
-      fetchProjectCreatorDetailsResult: .success(.template)
+      fetchProjectResponse: project
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
@@ -57,41 +56,6 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     }
   }
 
-  func testNonBacker_LiveProject_CreatorDetailsExperiment() {
-    let project = self.cosmicSurgery
-      |> Project.lens.state .~ .live
-      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
-
-    let mockService = MockService(
-      fetchProjectResponse: project,
-      fetchProjectCreatorDetailsResult: .success(.template)
-    )
-
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectPageConversionCreatorDetails.rawValue: OptimizelyExperiment
-          .Variant.variant1.rawValue
-      ]
-
-    combos(Language.allLanguages, [Device.phone4_7inch]).forEach {
-      language, device in
-      withEnvironment(
-        apiService: mockService,
-        language: language,
-        locale: .init(identifier: language.rawValue),
-        optimizelyClient: optimizelyClient
-      ) {
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 1_200 : 900
-
-        self.scheduler.run()
-
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)", overallTolerance: 0.01)
-      }
-    }
-  }
-
   func testNonBacker_SuccessfulProject() {
     let deadline = self.dateType.init().addingTimeInterval(-100).timeIntervalSince1970
 
@@ -102,8 +66,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     let mockService = MockService(
-      fetchProjectResponse: project,
-      fetchProjectCreatorDetailsResult: .success(.template)
+      fetchProjectResponse: project
     )
 
     Language.allLanguages.forEach { language in
@@ -127,7 +90,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       .timeIntervalSince1970
 
     let project = self.cosmicSurgery
-      |> Project.lens.rewards %~ { rewards in
+      |> Project.lens.rewardData.rewards %~ { rewards in
         [
           rewards[0]
             |> Reward.lens.startsAt .~ 0
@@ -148,8 +111,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       }
 
     let mockService = MockService(
-      fetchProjectResponse: project,
-      fetchProjectCreatorDetailsResult: .success(.template)
+      fetchProjectResponse: project
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
@@ -170,7 +132,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
 
   func testBacker_LiveProject_NoReward() {
     let project = self.cosmicSurgery
-      |> Project.lens.rewards %~ { rewards in [rewards[0]] }
+      |> Project.lens.rewardData.rewards %~ { rewards in [rewards[0]] }
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
@@ -182,8 +144,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       }
 
     let mockService = MockService(
-      fetchProjectResponse: project,
-      fetchProjectCreatorDetailsResult: .success(.template)
+      fetchProjectResponse: project
     )
 
     Language.allLanguages.forEach { language in
@@ -212,7 +173,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Backing.lens.reward .~ self.cosmicSurgery.rewards.first
 
     let project = self.cosmicSurgery
-      |> Project.lens.rewards %~ { rewards in [rewards[0], rewards[2]] }
+      |> Project.lens.rewardData.rewards %~ { rewards in [rewards[0], rewards[2]] }
       |> Project.lens.dates.stateChangedAt .~ deadline
       |> Project.lens.dates.deadline .~ deadline
       |> Project.lens.state .~ .successful
@@ -221,8 +182,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     let mockService = MockService(
-      fetchProjectResponse: project,
-      fetchProjectCreatorDetailsResult: .success(.template)
+      fetchProjectResponse: project
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
@@ -247,7 +207,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       return
     }
     let project = self.cosmicSurgery
-      |> Project.lens.rewards .~ [soldOutReward]
+      |> Project.lens.rewardData.rewards .~ [soldOutReward]
       |> Project.lens.state .~ .live
       |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
       |> Project.lens.personalization.isBacking .~ true
@@ -259,8 +219,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       }
 
     let mockService = MockService(
-      fetchProjectResponse: project,
-      fetchProjectCreatorDetailsResult: .success(.template)
+      fetchProjectResponse: project
     )
 
     withEnvironment(apiService: mockService) {
@@ -281,8 +240,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.creator .~ user
 
     let mockService = MockService(
-      fetchProjectResponse: project,
-      fetchProjectCreatorDetailsResult: .success(.template)
+      fetchProjectResponse: project
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
@@ -311,8 +269,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.creator .~ user
 
     let mockService = MockService(
-      fetchProjectResponse: project,
-      fetchProjectCreatorDetailsResult: .success(.template)
+      fetchProjectResponse: project
     )
 
     combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
@@ -341,8 +298,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.state .~ .failed
 
     let mockService = MockService(
-      fetchProjectResponse: project,
-      fetchProjectCreatorDetailsResult: .success(.template)
+      fetchProjectResponse: project
     )
 
     Language.allLanguages.forEach { language in
@@ -364,8 +320,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     let project = self.cosmicSurgery!
 
     let mockService = MockService(
-      fetchProjectResponse: project,
-      fetchProjectCreatorDetailsResult: .success(.template)
+      fetchProjectResponse: project
     )
 
     [Device.phone4_7inch, Device.phone5_8inch, Device.pad].forEach { device in
@@ -389,8 +344,7 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
       |> Project.lens.stats.convertedPledgedAmount .~ 29_236
 
     let mockService = MockService(
-      fetchProjectResponse: project,
-      fetchProjectCreatorDetailsResult: .success(.template)
+      fetchProjectResponse: project
     )
 
     withEnvironment(apiService: mockService) {
@@ -420,52 +374,6 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
         self.scheduler.run()
 
         FBSnapshotVerifyView(snapshotView, identifier: "device_\(device)")
-      }
-    }
-  }
-
-  func testNonBacker_LiveProject_ProjectSummaryExperiment() {
-    let project = self.cosmicSurgery
-      |> Project.lens.state .~ .live
-      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
-
-    let items = [
-      ProjectSummaryEnvelope.ProjectSummaryItem(
-        question: .whatIsTheProject,
-        response: "Short copy words words words words words words words words words"
-      ),
-      ProjectSummaryEnvelope.ProjectSummaryItem(
-        question: .whatWillYouDoWithTheMoney,
-        response: "Long copy " + Array(0...50).map { _ in "words" }.joined(separator: " ")
-      )
-    ]
-
-    let mockService = MockService(
-      fetchProjectResponse: project,
-      fetchProjectSummaryResult: .success(ProjectSummaryEnvelope(projectSummary: items))
-    )
-
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeMeProjectSummary.rawValue: OptimizelyExperiment.Variant.variant1
-          .rawValue
-      ]
-
-    combos([Language.en], [Device.phone4_7inch]).forEach {
-      language, device in
-      withEnvironment(
-        apiService: mockService,
-        language: language,
-        locale: .init(identifier: language.rawValue),
-        optimizelyClient: optimizelyClient
-      ) {
-        let vc = ProjectPamphletViewController.configuredWith(projectOrParam: .left(project), refTag: nil)
-        let (parent, _) = traitControllers(device: device, orientation: .portrait, child: vc)
-        parent.view.frame.size.height = device == .pad ? 1_200 : 900
-
-        self.scheduler.run()
-
-        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
       }
     }
   }

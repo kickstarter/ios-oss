@@ -23,7 +23,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
   fileprivate var emptyStatesController: EmptyStatesViewController?
   private lazy var headerLabel = { UILabel(frame: .zero) }()
   private var onboardingCompletedObserver: Any?
-  internal var preferredBackgroundColor: UIColor?
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
 
@@ -134,10 +133,11 @@ internal final class DiscoveryPageViewController: UITableViewController {
       |> \.rowHeight .~ UITableView.automaticDimension
       |> \.estimatedRowHeight .~ 200.0
 
-    if let preferredBackgroundColor = self.preferredBackgroundColor {
-      _ = self
-        |> \.view.backgroundColor .~ preferredBackgroundColor
-    }
+    _ = self.view
+      |> \.backgroundColor .~ (
+        // Update the background if it is not currently clear (contained in EditorialProjectsViewController)
+        self.view.backgroundColor != .clear ? discoveryPageBackgroundColor() : self.view.backgroundColor
+      )
 
     _ = self.headerLabel
       |> headerLabelStyle
@@ -311,20 +311,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.present(nav, animated: true, completion: nil)
       }
 
-    self.viewModel.outputs.backgroundColor
-      .observeForUI()
-      .observeValues { [weak self] backgroundColor in
-        guard let self = self else { return }
-
-        _ = self.view
-          |> \.backgroundColor .~ backgroundColor
-
-        _ = self.tableView
-          |> \.backgroundColor .~ backgroundColor
-
-        self.preferredBackgroundColor = backgroundColor
-      }
-
     self.viewModel.outputs.contentInset
       .observeForUI()
       .observeValues { [weak self] inset in
@@ -356,6 +342,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       cell.delegate = self
     } else if let cell = cell as? DiscoveryProjectCardCell {
       cell.delegate = self
+      cell.layoutIfNeeded()
     }
 
     self.viewModel.inputs.willDisplayRow(

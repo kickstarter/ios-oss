@@ -13,7 +13,7 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
   private let facepileViewHidden = TestObserver<Bool, Never>()
   private let backerCountLabelFullString = TestObserver<String, Never>()
   private let goalMetIconHidden = TestObserver<Bool, Never>()
-  private let loadProjectTags = TestObserver<[DiscoveryProjectTagPillCellValue], Never>()
+  private let loadProjectTags = TestObserver<[DiscoveryPillData], Never>()
   private let percentFundedLabelBoldedString = TestObserver<String, Never>()
   private let percentFundedLabelFullString = TestObserver<String, Never>()
   private let projectBlurbLabelText = TestObserver<String, Never>()
@@ -164,10 +164,10 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
     self.tagsCollectionViewHidden.assertValues([false])
     self.loadProjectTags.assertValues([
-      [DiscoveryProjectTagPillCellValue(
-        type: .grey,
-        tagIconImageName: "icon--compass",
-        tagLabelText: "Illustration"
+      [DiscoveryPillData(
+        imageName: "icon--compass",
+        text: "Illustration",
+        type: .grey
       )]
     ])
   }
@@ -184,10 +184,10 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
 
     self.tagsCollectionViewHidden.assertValues([false])
     self.loadProjectTags.assertValues([
-      [DiscoveryProjectTagPillCellValue(
-        type: .grey,
-        tagIconImageName: "icon--compass",
-        tagLabelText: "Illustration"
+      [DiscoveryPillData(
+        imageName: "icon--compass",
+        text: "Illustration",
+        type: .grey
       )]
     ])
   }
@@ -205,15 +205,15 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
     self.tagsCollectionViewHidden.assertValues([false])
     self.loadProjectTags.assertValues([
       [
-        DiscoveryProjectTagPillCellValue(
-          type: .green,
-          tagIconImageName: "icon--small-k",
-          tagLabelText: "Projects We Love"
+        DiscoveryPillData(
+          imageName: "icon--small-k",
+          text: "Projects We Love",
+          type: .green
         ),
-        DiscoveryProjectTagPillCellValue(
-          type: .grey,
-          tagIconImageName: "icon--compass",
-          tagLabelText: "Illustration"
+        DiscoveryPillData(
+          imageName: "icon--compass",
+          text: "Illustration",
+          type: .grey
         )
       ]
     ])
@@ -232,10 +232,10 @@ final class DiscoveryProjectCardViewModelTests: TestCase {
     self.tagsCollectionViewHidden.assertValues([false])
     self.loadProjectTags.assertValues([
       [
-        DiscoveryProjectTagPillCellValue(
-          type: .green,
-          tagIconImageName: "icon--small-k",
-          tagLabelText: "Projects We Love"
+        DiscoveryPillData(
+          imageName: "icon--small-k",
+          text: "Projects We Love",
+          type: .green
         )
       ]
     ])

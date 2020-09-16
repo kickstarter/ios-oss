@@ -228,5 +228,5 @@ private let totalLabelStyle: LabelStyle = { label in
     |> \.textColor .~ UIColor.black
     |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.text %~ { _ in Strings.Total_amount() }
+    |> \.text %~ { _ in Strings.Total() }
 }

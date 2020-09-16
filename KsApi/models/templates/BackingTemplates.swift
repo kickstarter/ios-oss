@@ -1,11 +1,14 @@
 import Foundation
+import Prelude
 
 extension Backing {
   internal static let template = Backing(
+    addOns: [.template],
     amount: 10.00,
     backer: .template,
     backerId: 1,
     backerCompleted: true,
+    bonusAmount: 0,
     cancelable: true,
     id: 1,
     locationId: 1,
@@ -20,4 +23,6 @@ extension Backing {
     shippingAmount: 2,
     status: .pledged
   )
+
+  internal static let errored = Backing.template |> Backing.lens.status .~ .errored
 }

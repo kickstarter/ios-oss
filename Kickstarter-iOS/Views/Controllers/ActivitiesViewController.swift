@@ -361,7 +361,7 @@ extension ActivitiesViewController: TabBarControllerScrollable {}
 // MARK: - ErroredBackingViewDelegate
 
 extension ActivitiesViewController: ErroredBackingViewDelegate {
-  func erroredBackingViewDidTapManage(_: ErroredBackingView, backing: GraphBacking) {
+  func erroredBackingViewDidTapManage(_: ErroredBackingView, backing: ProjectAndBackingEnvelope) {
     self.viewModel.inputs.erroredBackingViewDidTapManage(with: backing)
   }
 }
