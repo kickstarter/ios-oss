@@ -113,6 +113,18 @@ jobs:
           command: PLATFORM=iOS make test
           no_output_timeout: "20m" # 20 minutes
 
+      - restore_cache:
+          name: Restore Bundler
+          keys:
+            - v1-gems-{{ checksum "Gemfile.lock" }}
+
+      - run:
+          name: Install Bundler
+          command: bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
+
       - run:
           name: Generate Slather coverage report
           command: bundle exec slather coverage -x --scheme Kickstarter-Framework-iOS ./Kickstarter.xcodeproj
@@ -154,6 +166,18 @@ jobs:
           name: Library tests
           command: PLATFORM=iOS TARGET=Library make test
           no_output_timeout: "20m" # 20 minutes
+
+      - restore_cache:
+          name: Restore Bundler
+          keys:
+            - v1-gems-{{ checksum "Gemfile.lock" }}
+
+      - run:
+          name: Install Bundler
+          command: bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
 
       - run:
           name: Generate Slather coverage report
@@ -230,6 +254,18 @@ jobs:
           name: KsApi tests
           command: SCHEME=KsApi make test
           no_output_timeout: "20m" # 20 minutes
+
+      - restore_cache:
+          name: Restore Bundler
+          keys:
+            - v1-gems-{{ checksum "Gemfile.lock" }}
+
+      - run:
+          name: Install Bundler
+          command: bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
 
       - run:
           name: Generate Slather coverage report
