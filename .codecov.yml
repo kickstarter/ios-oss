@@ -18,7 +18,3 @@ comment:
   layout: "reach,diff,flags,tree"
   behavior: default
   require_changes: no
-
-ignore:
-  - "**/*Tests.swift" # ignore coverage reports for test files
-  - "**/*.framework" # ignore all files in .framework directories
