@@ -16,7 +16,6 @@ import Kickstarter_Framework
 import Library
 import Optimizely
 import Prelude
-import Qualtrics
 import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
@@ -224,27 +223,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { [weak self] in self?.findRedirectUrl($0) }
 
-    self.viewModel.outputs.configureQualtrics
-      .observeValues { [weak self] config in
-        self?.configureQualtrics(with: config)
-      }
-
-    self.viewModel.outputs.evaluateQualtricsTargetingLogic
-      .observeValues { [weak self] in
-        Qualtrics.shared.evaluateTargetingLogic { result in
-          self?.viewModel.inputs.didEvaluateQualtricsTargetingLogic(
-            with: result, properties: Qualtrics.shared.properties
-          )
-        }
-      }
-
-    self.viewModel.outputs.displayQualtricsSurvey
-      .observeForUI()
-      .observeValues { [weak self] in
-        guard let vc = self?.rootTabBarController else { return }
-        _ = Qualtrics.shared.display(viewController: vc)
-      }
-
     self.viewModel.outputs.goToCategoryPersonalizationOnboarding
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -427,22 +405,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     let task = session.dataTask(with: url)
     task.resume()
   }
-
-  // MARK: - Qualtrics Configuration
-
-  private func configureQualtrics(with config: QualtricsConfigData) {
-    config.stringProperties.forEach { key, value in
-      Qualtrics.shared.properties.setString(string: value, for: key)
-    }
-
-    Qualtrics.shared.initialize(
-      brandId: config.brandId,
-      zoneId: config.zoneId,
-      interceptId: config.interceptId
-    ) { result in
-      self.viewModel.inputs.qualtricsInitialized(with: result)
-    }
-  }
 }
 
 // MARK: - MSCrashesDelegate
@@ -482,18 +444,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
   public func userNotificationCenter(
     _: UNUserNotificationCenter,
-    didReceive response: UNNotificationResponse,
+    didReceive _: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
-    guard let rootTabBarController = self.rootTabBarController else {
-      completion()
-      return
-    }
-
-    if !Qualtrics.shared.handleLocalNotification(response: response, displayOn: rootTabBarController) {
-      self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
-      rootTabBarController.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
-    }
     completion()
   }
 }

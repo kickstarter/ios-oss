@@ -19,4 +19,3 @@ github "thoughtbot/Curry" "b6bf27ec9d711f607a8c7da9ca69ee9eaa201a22"
 
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAnalyticsBinary.json" == 6.32.0
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseCrashlyticsBinary.json" == 6.32.0
-binary "https://s3-us-west-2.amazonaws.com/si-mobile-sdks/ios/Qualtrics.json" == 1.18
