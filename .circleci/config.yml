@@ -24,12 +24,6 @@ jobs:
   build-and-cache:
     <<: *base_job
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
       - checkout
 
       - run:
@@ -50,12 +44,6 @@ jobs:
           key: carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
           paths:
             - Carthage
-
-      - save_cache:
-          name: Cache git
-          key: source-v1-{{ .Branch }}-{{ .Revision }}
-          paths:
-            - ".git"
 
       - restore_cache:
           name: Restore Bundler
