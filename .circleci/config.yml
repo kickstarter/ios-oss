@@ -15,6 +15,7 @@ default_environment: &default_environment
   LANG: en_US.UTF-8
   IPHONE_NAME: *iphone_name
   XCODE_VERSION: *xcode_version
+  PLATFORM: iOS
 
 base_job: &base_job
   macos:
@@ -36,7 +37,7 @@ test_job: &test_job
         command: make bootstrap
     - run:
         name: Pre-load simulator
-        command: *preload_simulator
+        command: *preload_simulator # Note we may no longer need to preload the simulator, this was a workaround before.
     - run:
         name: Kickstarter tests
         command: make test
@@ -57,24 +58,29 @@ test_job: &test_job
     - codecov/upload:
         file: cobertura.xml
 
+build: &build
+  - run:
+      name: Store Xcode Version
+      command: xcodebuild -version > xcode_version.txt
+
+  - restore_cache:
+      name: Restore Carthage Cache
+      keys:
+        - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+
+  - run:
+      name: Bootstrap
+      command: make bootstrap
+
 jobs:
   build-and-cache:
     <<: *base_job
+    environment:
+      - *default_environment
     steps:
       - checkout
 
-      - run:
-          name: Store Xcode Version
-          command: xcodebuild -version > xcode_version.txt
-
-      - restore_cache:
-          name: Restore Carthage Cache
-          keys:
-            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
-      - run:
-          name: Bootstrap
-          command: make bootstrap
+      - *build
 
       - save_cache:
           name: Cache Carthage
@@ -110,59 +116,22 @@ jobs:
     <<: *test_job
     environment:
       - *default_environment
-      - PLATFORM=iOS
       - SCHEME=Kickstarter-Framework-iOS
 
   # Library tests
   library-tests:
     <<: *base_job
-    steps:
-      - checkout
-
-      - run:
-          name: Store Xcode Version
-          command: xcodebuild -version > xcode_version.txt
-
-      - restore_cache:
-          name: Restore Carthage Cache
-          keys:
-            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
-      - run:
-          name: Bootstrap
-          command: make bootstrap
-
-      - run:
-          name: Pre-load simulator
-          command: *preload_simulator
-
-      - run:
-          name: Library tests
-          command: PLATFORM=iOS TARGET=Library make test
-          no_output_timeout: "20m" # 20 minutes
-
-      - restore_cache:
-          name: Restore Bundler
-          keys:
-            - v1-gems-{{ checksum "Gemfile.lock" }}
-
-      - run:
-          name: Install Bundler
-          command: bundle check || bundle install
-          environment:
-            BUNDLE_JOBS: 4
-            BUNDLE_RETRY: 3
-
-      - run:
-          name: Generate Slather coverage report
-          command: bundle exec slather coverage -x --scheme Library-iOS ./Kickstarter.xcodeproj
-
-      - codecov/upload:
-          file: cobertura.xml
+    <<: *test_job
+    environment:
+      - *default_environment
+      - TARGET=Library
+      - SCHEME=Library-iOS
 
   # Kickstarter UI Tests
   kickstarter-ui-tests:
     <<: *base_job
+    environment:
+      - *default_environment
     steps:
       - checkout
 
@@ -191,64 +160,27 @@ jobs:
   # KsApi tests
   ksapi-tests:
     <<: *base_job
-    steps:
-      - checkout
-
-      - run:
-          name: Store Xcode Version
-          command: xcodebuild -version > xcode_version.txt
-
-      - restore_cache:
-          name: Restore Carthage Cache
-          keys:
-            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
-      - run:
-          name: Bootstrap
-          command: make bootstrap
-
-      - run:
-          name: Pre-load simulator
-          command: *preload_simulator
-
-      - run:
-          name: KsApi tests
-          command: SCHEME=KsApi make test
-          no_output_timeout: "20m" # 20 minutes
-
-      - restore_cache:
-          name: Restore Bundler
-          keys:
-            - v1-gems-{{ checksum "Gemfile.lock" }}
-
-      - run:
-          name: Install Bundler
-          command: bundle check || bundle install
-          environment:
-            BUNDLE_JOBS: 4
-            BUNDLE_RETRY: 3
-
-      - run:
-          name: Generate Slather coverage report
-          command: bundle exec slather coverage -x --scheme KsApi ./Kickstarter.xcodeproj
-
-      - codecov/upload:
-          file: cobertura.xml
+    <<: *test_job
+    environment:
+      - *default_environment
+      - SCHEME=KsApi
 
   deploy_alpha:
     <<: *base_job
+    environment:
+      - *default_environment
     steps:
       - checkout
-
       - run:
           name: Deploy Alpha
           command: make alpha
 
   deploy_beta:
     <<: *base_job
+    environment:
+      - *default_environment
     steps:
       - checkout
-
       - run:
           name: Deploy Beta
           command: make beta
@@ -256,6 +188,8 @@ jobs:
   # AppCenter and S3 bucket beta
   beta:
     <<: *base_job
+    environment:
+      - *default_environment
     steps:
       - checkout
 
@@ -312,6 +246,8 @@ jobs:
   # AppCenter Alpha
   alpha:
     <<: *base_job
+    environment:
+      - *default_environment
     steps:
       - checkout
 
@@ -363,6 +299,8 @@ jobs:
 
   refresh_app_store_dsyms:
     <<: *base_job
+    environment:
+      - *default_environment
     steps:
       - checkout
 
@@ -399,6 +337,8 @@ jobs:
   # iTunes
   itunes:
     <<: *base_job
+    environment:
+      - *default_environment
     steps:
       - checkout
 
@@ -448,16 +388,19 @@ jobs:
       - store_artifacts:
           path: output
 
+all_jobs: &all_jobs
+  - build-and-cache
+  - kickstarter-tests
+  - kickstarter-ui-tests
+  - library-tests
+  - ksapi-tests
+
 # Workflows
 workflows:
   version: 2
   build:
     jobs:
-      - build-and-cache
-      - kickstarter-tests
-      - kickstarter-ui-tests
-      - library-tests
-      - ksapi-tests
+      - *all_jobs
       - refresh_app_store_dsyms:
           filters:
             branches:
