@@ -119,7 +119,7 @@ final class PledgeShippingLocationViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] isHidden in
         self?.shimmerLoadingView.amountPlaceholder.alpha = isHidden ? 0 : 1
-    }
+      }
 
     /**
      When any layout updates occur we need to notify the delegate. This is only necessary when
