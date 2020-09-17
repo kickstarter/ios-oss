@@ -20,27 +20,24 @@ base_job: &base_job
 orbs:
   codecov: codecov/codecov@1.1.1
 
-build: &build
-  - run:
-      name: Store Xcode Version
-      command: xcodebuild -version > xcode_version.txt
-
-  - restore_cache:
-      name: Restore Carthage Cache
-      keys:
-        - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
-  - run:
-      name: Bootstrap
-      command: make bootstrap
-
 jobs:
   build-and-cache:
     <<: *base_job
     steps:
       - checkout
 
-      - *build
+      - run:
+          name: Store Xcode Version
+          command: xcodebuild -version > xcode_version.txt
+
+      - restore_cache:
+          name: Restore Carthage Cache
+          keys:
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+
+      - run:
+          name: Bootstrap
+          command: make bootstrap
 
       - save_cache:
           name: Cache Carthage
