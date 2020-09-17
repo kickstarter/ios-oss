@@ -20,24 +20,27 @@ base_job: &base_job
 orbs:
   codecov: codecov/codecov@1.1.1
 
+build: &build
+  - run:
+      name: Store Xcode Version
+      command: xcodebuild -version > xcode_version.txt
+
+  - restore_cache:
+      name: Restore Carthage Cache
+      keys:
+        - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+
+  - run:
+      name: Bootstrap
+      command: make bootstrap
+
 jobs:
   build-and-cache:
     <<: *base_job
     steps:
       - checkout
 
-      - run:
-          name: Store Xcode Version
-          command: xcodebuild -version > xcode_version.txt
-
-      - restore_cache:
-          name: Restore Carthage
-          keys:
-            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
-      - run:
-          name: Bootstrap
-          command: make bootstrap
+      <<: *build
 
       - save_cache:
           name: Cache Carthage
@@ -71,12 +74,6 @@ jobs:
   kickstarter-tests:
     <<: *base_job
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
       - checkout
 
       - run:
@@ -124,12 +121,6 @@ jobs:
   library-tests:
     <<: *base_job
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
       - checkout
 
       - run:
@@ -177,12 +168,6 @@ jobs:
   kickstarter-ui-tests:
     <<: *base_job
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
       - checkout
 
       - run:
@@ -211,12 +196,6 @@ jobs:
   ksapi-tests:
     <<: *base_job
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
       - checkout
 
       - run:
@@ -263,16 +242,8 @@ jobs:
   deploy_alpha:
     <<: *base_job
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
       - checkout
-      - save_cache:
-          key: source-v1-{{ .Branch }}-{{ .Revision }}
-          paths:
-            - ".git"
+
       - run:
           name: Deploy Alpha
           command: make alpha
@@ -280,16 +251,8 @@ jobs:
   deploy_beta:
     <<: *base_job
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
       - checkout
-      - save_cache:
-          key: source-v1-{{ .Branch }}-{{ .Revision }}
-          paths:
-            - ".git"
+
       - run:
           name: Deploy Beta
           command: make beta
@@ -298,12 +261,6 @@ jobs:
   beta:
     <<: *base_job
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
       - checkout
 
       - run:
@@ -360,12 +317,6 @@ jobs:
   alpha:
     <<: *base_job
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
       - checkout
 
       - run:
@@ -417,12 +368,6 @@ jobs:
   refresh_app_store_dsyms:
     <<: *base_job
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
       - checkout
 
       - run:
@@ -459,12 +404,6 @@ jobs:
   itunes:
     <<: *base_job
     steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-
       - checkout
 
       - run:
