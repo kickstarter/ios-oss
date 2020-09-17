@@ -39,7 +39,7 @@ test_job: &test_job
         name: Pre-load simulator
         command: *preload_simulator # Note we may no longer need to preload the simulator, this was a workaround before.
     - run:
-        name: Kickstarter tests
+        name: Run tests
         command: make test
         no_output_timeout: "20m" # 20 minutes
     - restore_cache:
