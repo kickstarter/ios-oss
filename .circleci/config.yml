@@ -40,7 +40,7 @@ jobs:
     steps:
       - checkout
 
-      - <<: *build
+      - *build
 
       - save_cache:
           name: Cache Carthage
