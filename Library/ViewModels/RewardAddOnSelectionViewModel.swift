@@ -373,9 +373,7 @@ private func rewardsData(
 
 private func addOnIsAvailable(_ addOn: Reward, in project: Project) -> Bool {
   // If the user is backing this addOn, it's available for editing
-  if
-    let backedAddOns = project.personalization.backing?.addOns,
-    backedAddOns.map(\.id).contains(addOn.id) {
+  if let backedAddOns = project.personalization.backing?.addOns, backedAddOns.map(\.id).contains(addOn.id) {
     return true
   }
 
