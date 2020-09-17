@@ -18,7 +18,7 @@ base_job: &base_job
     XCODE_VERSION: *xcode_version
 
 orbs:
-  codecov: codecov/codecov@1.0.5
+  codecov: codecov/codecov@1.1.1
 
 jobs:
   build-and-cache:
@@ -129,9 +129,8 @@ jobs:
           name: Generate Slather coverage report
           command: bundle exec slather coverage -x --scheme Kickstarter-Framework-iOS ./Kickstarter.xcodeproj
 
-      - run:
-          name: Upload report to codecov
-          command: bash <(curl -s https://codecov.io/bash) -f ./cobertura.xml
+      - codecov/upload:
+          file: cobertura.xml
 
   # Library tests
   library-tests:
@@ -183,9 +182,8 @@ jobs:
           name: Generate Slather coverage report
           command: bundle exec slather coverage -x --scheme Library-iOS ./Kickstarter.xcodeproj
 
-      - run:
-          name: Upload report to codecov
-          command: bash <(curl -s https://codecov.io/bash) -f ./cobertura.xml
+      - codecov/upload:
+          file: cobertura.xml
 
   # Kickstarter UI Tests
   kickstarter-ui-tests:
@@ -271,9 +269,8 @@ jobs:
           name: Generate Slather coverage report
           command: bundle exec slather coverage -x --scheme KsApi ./Kickstarter.xcodeproj
 
-      - run:
-          name: Upload report to codecov
-          command: bash <(curl -s https://codecov.io/bash) -f ./cobertura.xml
+      - codecov/upload:
+          file: cobertura.xml
 
   deploy_alpha:
     <<: *base_job
