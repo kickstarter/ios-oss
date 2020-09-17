@@ -58,20 +58,6 @@ test_job: &test_job
     - codecov/upload:
         file: cobertura.xml
 
-build: &build
-  - run:
-      name: Store Xcode Version
-      command: xcodebuild -version > xcode_version.txt
-
-  - restore_cache:
-      name: Restore Carthage Cache
-      keys:
-        - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
-  - run:
-      name: Bootstrap
-      command: make bootstrap
-
 jobs:
   build-and-cache:
     <<: *base_job
@@ -80,7 +66,18 @@ jobs:
     steps:
       - checkout
 
-      - *build
+      - run:
+          name: Store Xcode Version
+          command: xcodebuild -version > xcode_version.txt
+
+      - restore_cache:
+          name: Restore Carthage Cache
+          keys:
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+
+      - run:
+          name: Bootstrap
+          command: make bootstrap
 
       - save_cache:
           name: Cache Carthage
@@ -388,19 +385,16 @@ jobs:
       - store_artifacts:
           path: output
 
-all_jobs: &all_jobs
-  - build-and-cache
-  - kickstarter-tests
-  - kickstarter-ui-tests
-  - library-tests
-  - ksapi-tests
-
 # Workflows
 workflows:
   version: 2
   build:
     jobs:
-      - *all_jobs
+      - build-and-cache
+      - kickstarter-tests
+      - kickstarter-ui-tests
+      - library-tests
+      - ksapi-tests
       - refresh_app_store_dsyms:
           filters:
             branches:
