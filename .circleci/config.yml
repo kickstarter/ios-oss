@@ -63,20 +63,16 @@ test_job: &test_job
 distribute_job: &distribute_job
   steps:
     - checkout
-
     - run:
         name: Store Xcode Version
         command: xcodebuild -version > xcode_version.txt
-
     - restore_cache:
         name: Restore Carthage Cache
         keys:
           - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
     - run:
         name: Bootstrap
         command: make bootstrap
-
     - restore_cache:
         keys:
           - v1-gems-{{ checksum "Gemfile.lock" }}
@@ -90,24 +86,19 @@ distribute_job: &distribute_job
         key: v1-gems-{{ checksum "Gemfile.lock" }}
         paths:
           - vendor/bundle
-
     - run:
         name: Increment build number
         command: agvtool new-version -all $(($(date +%s)/100))
-
     - run:
         name: Fastlane
         command: bundle exec fastlane $LANE --verbose
         no_output_timeout: "30m" # 30 minutes
-
     - run:
         name: Upload dSYMs
         command: bin/upload-dysms-firebase.sh $FIREBASE_DIR $DSYMS_FILE
-
     - run:
         name: Cleanup Temp Branch
         command: make cleanup
-
     - store_artifacts:
         path: output
 
@@ -125,44 +116,36 @@ jobs:
       - *default_environment
     steps:
       - checkout
-
       - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
-
       - restore_cache:
           name: Restore Carthage Cache
           keys:
             - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
       - run:
           name: Bootstrap
           command: make bootstrap
-
       - save_cache:
           name: Cache Carthage
           key: carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
           paths:
             - Carthage
-
       - restore_cache:
           name: Restore Bundler
           keys:
             - v1-gems-{{ checksum "Gemfile.lock" }}
-
       - run:
           name: Install Bundler
           command: bundle check || bundle install
           environment:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
-
       - save_cache:
           name: Cache Bundler
           key: v1-gems-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
-
       - run:
           name: Danger
           command: bin/danger.sh
