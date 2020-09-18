@@ -69,17 +69,17 @@ public func backingsQueryFields(status: String) -> NonEmptySet<Query.User> {
         [],
         .totalCount +| [
           .nodes(
-            .status +| [
-              .id,
-              .errorReason,
-              .project(
-                .pid +| [
-                  .name,
-                  .slug,
-                  .finalCollectionDate
+            GraphBacking.baseQueryProperties
+              .op(
+                .errorReason +| [
+                  .project(
+                    GraphProject.baseQueryProperties
+                      .op(
+                        .finalCollectionDate +| []
+                      )
+                  )
                 ]
               )
-            ]
           )
         ]
       ) +| []

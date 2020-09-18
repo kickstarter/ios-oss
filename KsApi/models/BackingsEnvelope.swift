@@ -22,9 +22,9 @@ extension BackingsEnvelope: Argo.Decodable {
 
 extension BackingsEnvelope {
   internal static func envelopeProducer(
-    from envelope: GraphBackingEnvelope
+    from envelope: UserEnvelope<GraphBackingEnvelope>
   ) -> SignalProducer<BackingsEnvelope, ErrorEnvelope> {
-    let envelopes = envelope.backings.nodes.compactMap { graphBacking -> ProjectAndBackingEnvelope? in
+    let envelopes = envelope.me.backings.nodes.compactMap { graphBacking -> ProjectAndBackingEnvelope? in
       guard
         let backing = Backing.backing(from: graphBacking),
         let graphProject = graphBacking.project,
