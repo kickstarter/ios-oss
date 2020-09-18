@@ -350,6 +350,95 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     }
   }
 
+  func testLoadAddOnRewardsIntoDataSource_FilteredOutUnavailableUnbackedAddOns() {
+    self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
+
+    let baseReward = Reward.template
+      |> Reward.lens.id .~ 99
+
+    // regular, no limit add-on.
+    let addOn1 = Reward.template
+      |> Reward.lens.id .~ 1
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.endsAt .~ nil
+
+    // timebased add-on, ended 60 secs ago.
+    let addOn2 = Reward.template
+      |> Reward.lens.id .~ 2
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 - 60)
+
+    // timebased add-on, ended 60 secs ago (backed).
+    let addOn3 = Reward.template
+      |> Reward.lens.id .~ 3
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 - 60)
+
+    // limited, unavailable add-on.
+    let addOn4 = Reward.template
+      |> Reward.lens.id .~ 4
+      |> Reward.lens.limit .~ 5
+      |> Reward.lens.remaining .~ 0
+
+    // time-based, available add-on, ends in 60 secs.
+    let addOn5 = Reward.template
+      |> Reward.lens.id .~ 5
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+
+    // limited, available add-on.
+    let addOn6 = Reward.template
+      |> Reward.lens.id .~ 6
+      |> Reward.lens.limit .~ 5
+      |> Reward.lens.remaining .~ 2
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [baseReward]
+      |> Project.lens.rewardData.addOns .~ [addOn1, addOn2, addOn3, addOn4, addOn5, addOn6]
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.addOns .~ [addOn3]
+          |> Backing.lens.reward .~ baseReward
+          |> Backing.lens.rewardId .~ baseReward.id
+      )
+
+    let expectedAddOns = [addOn1, addOn3, addOn5, addOn6]
+
+    let expected = expectedAddOns
+      .map { reward in
+        RewardAddOnCardViewData(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: nil,
+          selectedQuantities: [baseReward.id: 1, addOn3.id: 1]
+        )
+      }
+      .map(RewardAddOnSelectionDataSourceItem.rewardAddOn)
+
+    let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
+
+    withEnvironment(apiService: mockService) {
+      let data = PledgeViewData(
+        project: project,
+        rewards: [baseReward],
+        selectedQuantities: [:],
+        selectedLocationId: nil,
+        refTag: nil,
+        context: .pledge
+      )
+
+      self.vm.inputs.configure(with: data)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected])
+    }
+  }
+
   func testLoadAddOnRewardsIntoDataSource_UnrestrictedShippingBaseReward() {
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
 
