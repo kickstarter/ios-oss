@@ -33,11 +33,11 @@ final class UserQueriesTests: XCTestCase {
     let query = Query.user(storedCardsQueryFields())
 
     XCTAssertEqual(
-      "me { chosenCurrency id imageUrl: imageUrl(blur: false, width: 1024) name storedCards { nodes { expirationDate id lastFour type } totalCount } uid }",
+      "me { id imageUrl: imageUrl(blur: false, width: 1024) name storedCards { nodes { expirationDate id lastFour type } totalCount } uid }",
       query.description
     )
     XCTAssertEqual(
-      "{ me { chosenCurrency id imageUrl: imageUrl(blur: false, width: 1024) name storedCards { nodes { expirationDate id lastFour type } totalCount } uid } }",
+      "{ me { id imageUrl: imageUrl(blur: false, width: 1024) name storedCards { nodes { expirationDate id lastFour type } totalCount } uid } }",
       Query.build(NonEmptySet(query))
     )
   }

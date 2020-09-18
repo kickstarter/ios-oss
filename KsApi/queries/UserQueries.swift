@@ -36,20 +36,18 @@ public func accountQueryFields() -> NonEmptySet<Query.User> {
 public func storedCardsQueryFields() -> NonEmptySet<Query.User> {
   return GraphUser.baseQueryProperties
     .op(
-      .chosenCurrency +| [
-        .storedCards(
-          [],
-          .totalCount +| [
-            .nodes(
-              .id +| [
-                .expirationDate,
-                .lastFour,
-                .type
-              ]
-            )
-          ]
-        )
-      ]
+      Query.User.storedCards(
+        [],
+        .totalCount +| [
+          .nodes(
+            .id +| [
+              .expirationDate,
+              .lastFour,
+              .type
+            ]
+          )
+        ]
+      ) +| []
     )
 }
 
