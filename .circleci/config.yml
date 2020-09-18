@@ -124,36 +124,6 @@ jobs:
       - TARGET=Library
       - SCHEME=Library-iOS
 
-  # Kickstarter UI Tests
-  kickstarter-ui-tests:
-    <<: *base_job
-    environment:
-      - *default_environment
-    steps:
-      - checkout
-
-      - run:
-          name: Store Xcode Version
-          command: xcodebuild -version > xcode_version.txt
-
-      - restore_cache:
-          name: Restore Carthage Cache
-          keys:
-            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
-      - run:
-          name: Bootstrap
-          command: make bootstrap
-
-      - run:
-          name: Pre-load simulator
-          command: *preload_simulator
-
-      - run:
-          name: Kickstarter UI Tests
-          command: SCHEME=KickstarterUITests make test
-          no_output_timeout: "20m" # 20 minutes
-
   # KsApi tests
   ksapi-tests:
     <<: *base_job
@@ -161,6 +131,15 @@ jobs:
     environment:
       - *default_environment
       - SCHEME=KsApi
+
+  # Kickstarter UI Tests
+  kickstarter-ui-tests:
+    <<: *base_job
+    <<: *test_job
+    environment:
+      - *default_environment
+      - TARGET=Library
+      - SCHEME=KickstarterUITests
 
   deploy_alpha:
     <<: *base_job
@@ -181,6 +160,8 @@ jobs:
       - run:
           name: Deploy Beta
           command: make beta
+
+# jobs that can be grouped: beta, alpha, itunes
 
   # AppCenter and S3 bucket beta
   beta:
@@ -223,12 +204,12 @@ jobs:
 
       - run:
           name: Fastlane
-          command: bundle exec fastlane beta_match_gym_appcenter_s3 --verbose
+          command: bundle exec fastlane beta_match_gym_appcenter_s3 --verbose # beta_match_gym_appcenter_s3 is the variable here
           no_output_timeout: "30m" # 30 minutes
 
       - run:
           name: Upload dSYMs
-          command: bin/upload-dysms-firebase.sh Firebase-Alpha KickBeta.app.dSYM.zip
+          command: bin/upload-dysms-firebase.sh Firebase-Alpha KickBeta.app.dSYM.zip # Firebase-Alpha and are the variables here
 
       - run:
           name: Cleanup Temp Branch
@@ -293,6 +274,8 @@ jobs:
 
       - store_artifacts:
           path: output
+
+# don't know if we need to restore carthage here, also this includes base_job which already does this
 
   refresh_app_store_dsyms:
     <<: *base_job
@@ -384,6 +367,8 @@ jobs:
 
       - store_artifacts:
           path: output
+
+# any way to group these lists of jobs? :thinking-face:
 
 # Workflows
 workflows:
