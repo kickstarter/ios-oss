@@ -7,6 +7,8 @@ xcode_version: &xcode_version 11.6.0
 iphone_name: &iphone_name iPhone 8
 preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (13.6) [" || true
 
+# Templates
+
 default_environment: &default_environment
   CIRCLE_ARTIFACTS: /tmp
   BUNDLE_PATH: vendor/bundle
@@ -107,9 +109,6 @@ distribute_job: &distribute_job
         command: make cleanup
 
     - store_artifacts:
-        path: /tmp/xcode_raw.log
-
-    - store_artifacts:
         path: output
 
 all_jobs: &all_jobs
@@ -167,6 +166,8 @@ jobs:
       - run:
           name: Danger
           command: bin/danger.sh
+
+# Jobs
 
   # Kickstarter tests
   kickstarter-tests:
