@@ -12,7 +12,7 @@ extension Project {
 
     /*
      FIXME: The amount for maximum pledge can be found here:
-     https://github.com/kickstarter/kickstarter/blob/master/config/countries.yml
+     https://github.com/kickstarter/kickstarter/blob/master/config/currencies.yml
      Ideally we should get the amounts from the API. But for now we have to update them manually.
      */
 
@@ -43,13 +43,12 @@ extension Project {
     public static let sg = Country(countryCode: "SG", currencyCode: "SGD", currencySymbol: "$", maxPledge: 13_000, minPledge: 2, trailingCode: true)
     public static let si = Country(countryCode: "SI", currencyCode: "EUR", currencySymbol: "€", maxPledge: eurMaxPledge, minPledge: eurMinPledge, trailingCode: false)
     public static let us = Country(countryCode: "US", currencyCode: "USD", currencySymbol: "$", maxPledge: 10_000, minPledge: 1, trailingCode: true)
-    // swiftformat:enable wrap
-    // swiftformat:enable wrapArguments
 
     public static let all: [Country] = [
-      .au, .at, .be, .ca, .ch, .de, .dk, .es, .fr, .gb, .gr, .hk, .ie, .it, .jp, .lu, .mx, .nl, .no, .nz, .pl,
-      .se, .sg, si, .us
+      .au, .at, .be, .ca, .ch, .de, .dk, .es, .fr, .gb, .gr, .hk, .ie, .it, .jp, .lu, .mx, .nl, .no, .nz, .pl, .se, .sg, si, .us
     ]
+    // swiftformat:enable wrap
+    // swiftformat:enable wrapArguments
   }
 }
 
