@@ -7,6 +7,8 @@ xcode_version: &xcode_version 11.6.0
 iphone_name: &iphone_name iPhone 8
 preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (13.6) [" || true
 
+# Templates
+
 default_environment: &default_environment
   CIRCLE_ARTIFACTS: /tmp
   BUNDLE_PATH: vendor/bundle
@@ -58,6 +60,55 @@ test_job: &test_job
     - codecov/upload:
         file: cobertura.xml
 
+distribute_job: &distribute_job
+  steps:
+    - checkout
+    - run:
+        name: Store Xcode Version
+        command: xcodebuild -version > xcode_version.txt
+    - restore_cache:
+        name: Restore Carthage Cache
+        keys:
+          - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+    - run:
+        name: Bootstrap
+        command: make bootstrap
+    - restore_cache:
+        keys:
+          - v1-gems-{{ checksum "Gemfile.lock" }}
+    - run:
+        name: Bundle install
+        command: bundle check || bundle install
+        environment:
+          BUNDLE_JOBS: 4
+          BUNDLE_RETRY: 3
+    - save_cache:
+        key: v1-gems-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+    - run:
+        name: Increment build number
+        command: agvtool new-version -all $(($(date +%s)/100))
+    - run:
+        name: Fastlane
+        command: bundle exec fastlane $LANE --verbose
+        no_output_timeout: "30m" # 30 minutes
+    - run:
+        name: Upload dSYMs
+        command: bin/upload-dysms-firebase.sh $FIREBASE_DIR $DSYMS_FILE
+    - run:
+        name: Cleanup Temp Branch
+        command: make cleanup
+    - store_artifacts:
+        path: output
+
+all_jobs: &all_jobs
+  - build-and-cache
+  - kickstarter-tests
+  - kickstarter-ui-tests
+  - library-tests
+  - ksapi-tests
+
 jobs:
   build-and-cache:
     <<: *base_job
@@ -65,47 +116,41 @@ jobs:
       - *default_environment
     steps:
       - checkout
-
       - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
-
       - restore_cache:
           name: Restore Carthage Cache
           keys:
             - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
       - run:
           name: Bootstrap
           command: make bootstrap
-
       - save_cache:
           name: Cache Carthage
           key: carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
           paths:
             - Carthage
-
       - restore_cache:
           name: Restore Bundler
           keys:
             - v1-gems-{{ checksum "Gemfile.lock" }}
-
       - run:
           name: Install Bundler
           command: bundle check || bundle install
           environment:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
-
       - save_cache:
           name: Cache Bundler
           key: v1-gems-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
-
       - run:
           name: Danger
           command: bin/danger.sh
+
+# Jobs
 
   # Kickstarter tests
   kickstarter-tests:
@@ -124,36 +169,6 @@ jobs:
       - TARGET=Library
       - SCHEME=Library-iOS
 
-  # Kickstarter UI Tests
-  kickstarter-ui-tests:
-    <<: *base_job
-    environment:
-      - *default_environment
-    steps:
-      - checkout
-
-      - run:
-          name: Store Xcode Version
-          command: xcodebuild -version > xcode_version.txt
-
-      - restore_cache:
-          name: Restore Carthage Cache
-          keys:
-            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
-      - run:
-          name: Bootstrap
-          command: make bootstrap
-
-      - run:
-          name: Pre-load simulator
-          command: *preload_simulator
-
-      - run:
-          name: Kickstarter UI Tests
-          command: SCHEME=KickstarterUITests make test
-          no_output_timeout: "20m" # 20 minutes
-
   # KsApi tests
   ksapi-tests:
     <<: *base_job
@@ -161,6 +176,31 @@ jobs:
     environment:
       - *default_environment
       - SCHEME=KsApi
+
+  # Kickstarter UI Tests
+  kickstarter-ui-tests:
+    <<: *base_job
+    environment:
+      - *default_environment
+    steps:
+      - checkout
+      - run:
+          name: Store Xcode Version
+          command: xcodebuild -version > xcode_version.txt
+      - restore_cache:
+          name: Restore Carthage Cache
+          keys:
+            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+      - run:
+          name: Bootstrap
+          command: make bootstrap
+      - run:
+          name: Pre-load simulator
+          command: *preload_simulator
+      - run:
+          name: Kickstarter UI Tests
+          command: SCHEME=KickstarterUITests make test
+          no_output_timeout: "20m" # 20 minutes
 
   deploy_alpha:
     <<: *base_job
@@ -185,114 +225,22 @@ jobs:
   # AppCenter and S3 bucket beta
   beta:
     <<: *base_job
+    <<: *distribute_job
     environment:
       - *default_environment
-    steps:
-      - checkout
-
-      - run:
-          name: Store Xcode Version
-          command: xcodebuild -version > xcode_version.txt
-
-      - restore_cache:
-          name: Restore Carthage Cache
-          keys:
-            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
-      - run:
-          name: Bootstrap
-          command: make bootstrap
-
-      - restore_cache:
-          keys:
-            - v1-gems-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: Bundle install
-          command: bundle check || bundle install
-          environment:
-            BUNDLE_JOBS: 4
-            BUNDLE_RETRY: 3
-      - save_cache:
-          key: v1-gems-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-
-      - run:
-          name: Increment build number
-          command: agvtool new-version -all $(($(date +%s)/100))
-
-      - run:
-          name: Fastlane
-          command: bundle exec fastlane beta_match_gym_appcenter_s3 --verbose
-          no_output_timeout: "30m" # 30 minutes
-
-      - run:
-          name: Upload dSYMs
-          command: bin/upload-dysms-firebase.sh Firebase-Alpha KickBeta.app.dSYM.zip
-
-      - run:
-          name: Cleanup Temp Branch
-          command: make cleanup
-
-      - store_artifacts:
-          path: /tmp/xcode_raw.log
-
-      - store_artifacts:
-          path: output
+      - LANE=beta_match_gym_appcenter_s3
+      - FIREBASE_DIR=Firebase-Beta
+      - DSYMS_FILE=KickBeta.app.dSYM.zip
 
   # AppCenter Alpha
   alpha:
     <<: *base_job
+    <<: *distribute_job
     environment:
       - *default_environment
-    steps:
-      - checkout
-
-      - run:
-          name: Store Xcode Version
-          command: xcodebuild -version > xcode_version.txt
-
-      - restore_cache:
-          name: Restore Carthage Cache
-          keys:
-            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
-      - run:
-          name: Bootstrap
-          command: make bootstrap
-
-      - restore_cache:
-          keys:
-            - v1-gems-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: Bundle install
-          command: bundle check || bundle install
-          environment:
-            BUNDLE_JOBS: 4
-            BUNDLE_RETRY: 3
-      - save_cache:
-          key: v1-gems-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-
-      - run:
-          name: Increment build number
-          command: agvtool new-version -all $(($(date +%s)/100))
-
-      - run:
-          name: Fastlane
-          command: bundle exec fastlane alpha_match_gym_appcenter --verbose
-          no_output_timeout: "30m" # 30 minutes
-
-      - run:
-          name: Upload dSYMs
-          command: bin/upload-dysms-firebase.sh Firebase-Alpha KickAlpha.app.dSYM.zip
-
-      - store_artifacts:
-          path: /tmp/xcode_raw.log
-
-      - store_artifacts:
-          path: output
+      - LANE=alpha_match_gym_appcenter_s3
+      - FIREBASE_DIR=Firebase-Alpha
+      - DSYMS_FILE=KickAlpha.app.dSYM.zip
 
   refresh_app_store_dsyms:
     <<: *base_job
@@ -300,20 +248,6 @@ jobs:
       - *default_environment
     steps:
       - checkout
-
-      - run:
-          name: Store Xcode Version
-          command: xcodebuild -version > xcode_version.txt
-
-      - restore_cache:
-          name: Restore Carthage Cache
-          keys:
-            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
-      - run:
-          name: Bootstrap
-          command: make bootstrap
-
       - restore_cache:
           keys:
             - v1-gems-{{ checksum "Gemfile.lock" }}
@@ -334,61 +268,18 @@ jobs:
   # iTunes
   itunes:
     <<: *base_job
+    <<: *distribute_job
     environment:
       - *default_environment
-    steps:
-      - checkout
-
-      - run:
-          name: Store Xcode Version
-          command: xcodebuild -version > xcode_version.txt
-
-      - restore_cache:
-          name: Restore Carthage Cache
-          keys:
-            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
-
-      - run:
-          name: Bootstrap
-          command: make bootstrap
-
-      - restore_cache:
-          keys:
-            - v1-gems-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: Bundle install
-          command: bundle check || bundle install
-          environment:
-            BUNDLE_JOBS: 4
-            BUNDLE_RETRY: 3
-      - save_cache:
-          key: v1-gems-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-
-      - run:
-          name: Increment build number
-          command: agvtool new-version -all $(($(date +%s)/100))
-
-      - run:
-          name: Fastlane
-          command: bundle exec fastlane itunes_match_gym_deliver --verbose
-          no_output_timeout: "30m" # 30 minutes
-
-      - run:
-          name: Upload dSYMs
-          command: bin/upload-dysms-firebase.sh Firebase-Production Kickstarter.app.dSYM.zip
-
-      - store_artifacts:
-          path: /tmp/xcode_raw.log
-
-      - store_artifacts:
-          path: output
+      - LANE=itunes_match_gym_appcenter_s3
+      - FIREBASE_DIR=Firebase-Production
+      - DSYMS_FILE=Kickstarter.app.dSYM.zip
 
 # Workflows
 workflows:
   version: 2
   build:
+    # Matches all_jobs
     jobs:
       - build-and-cache
       - kickstarter-tests
@@ -405,55 +296,30 @@ workflows:
             branches:
               # matches all branches that contain 'feature' but do not contain 'alpha-dist'
               only: /^((?!alpha\-dist).*feature.*)*$/
-          requires:
-            - build-and-cache
-            - kickstarter-tests
-            - kickstarter-ui-tests
-            - library-tests
-            - ksapi-tests
+          requires: *all_jobs
       - deploy_beta:
           filters:
             branches:
               only: master
-          requires:
-            - build-and-cache
-            - kickstarter-tests
-            - kickstarter-ui-tests
-            - library-tests
-            - ksapi-tests
+          requires: *all_jobs
       - beta:
           filters:
             branches:
               # matches all branches that begin with 'beta-dist'
               only: /beta-dist-.*/
-          requires:
-            - build-and-cache
-            - kickstarter-tests
-            - kickstarter-ui-tests
-            - library-tests
-            - ksapi-tests
+          requires: *all_jobs
       - alpha:
           filters:
             branches:
               # matches all branches that begin with 'alpha-dist'
               only: /alpha-dist.*/
-          requires:
-            - build-and-cache
-            - kickstarter-tests
-            - kickstarter-ui-tests
-            - library-tests
-            - ksapi-tests
+          requires: *all_jobs
       - itunes:
           filters:
             branches:
               # matches branch named exactly `itunes-dist`
               only: itunes-dist
-          requires:
-            - build-and-cache
-            - kickstarter-tests
-            - kickstarter-ui-tests
-            - library-tests
-            - ksapi-tests
+          requires: *all_jobs
 
 experimental:
   notify:
