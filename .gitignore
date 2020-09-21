@@ -24,6 +24,8 @@ xcuserdata
 *.moved-aside
 *.xcuserstate
 *.xcscmblueprint
+vendor/bundle
+.bundle/config
 
 ## Obj-C/Swift specific
 *.hmap
