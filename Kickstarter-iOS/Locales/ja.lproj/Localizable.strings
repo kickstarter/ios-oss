@@ -696,6 +696,7 @@
 "Your_project_didnt_reach_its_funding_goal_so_the_backers_payment_method_was_never_charged" = "あなたのプロジェクトはファンディングゴールに到達しなかったため、お支払い方法への請求は行われませんでした。";
 "Your_reward" = "リワード";
 "Your_reward_estimated_for_delivery_in_date" = "<b>リワード</b>の配送予定日は%{delivery_date}";
+"Your_selection" = "Your selection";
 "Your_shipping_destination" = "配送地域";
 "Your_shipping_location" = "配送地域";
 "Youre_a_backer" = "バッカーになりました！";

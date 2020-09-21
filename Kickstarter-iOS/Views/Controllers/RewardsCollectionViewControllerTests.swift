@@ -56,4 +56,32 @@ final class RewardsCollectionViewControllerTests: TestCase {
       }
     }
   }
+
+  func testRewards_Backer_LiveProject_Landscape() {
+    let reward = Project.cosmicSurgery.rewards[1]
+    let project = Project.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700.0
+      )
+
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+      language, device in
+      withEnvironment(language: language, locale: .init(identifier: language.rawValue)) {
+        let vc = RewardsCollectionViewController.instantiate(
+          with: project,
+          refTag: nil,
+          context: .createPledge
+        )
+        _ = traitControllers(device: device, orientation: .landscape, child: vc)
+
+        FBSnapshotVerifyView(vc.view, identifier: "lang_\(language)_device_\(device)")
+      }
+    }
+  }
 }

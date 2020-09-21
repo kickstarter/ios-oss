@@ -11244,6 +11244,23 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "Your selection"
+
+   - **en**: "Your selection"
+   - **de**: "Your selection"
+   - **es**: "Your selection"
+   - **fr**: "Votre sélection"
+   - **ja**: "Your selection"
+  */
+  public static func Your_selection() -> String {
+    return localizedString(
+      key: "Your_selection",
+      defaultValue: "Your selection",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Your shipping destination"
 
    - **en**: "Your shipping destination"
