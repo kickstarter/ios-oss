@@ -2256,7 +2256,7 @@ Haz clic para volver a intentarlo."
    - **en**: "¥ Japanese Yen (JPY)"
    - **de**: "¥ Yen (JPY)"
    - **es**: "¥ Yen (JPY)"
-   - **fr**: "Yen – ¥ (JPY)"
+   - **fr**: "Yen japonais – ¥ (JPY)"
    - **ja**: "¥ 円 (JPY)"
   */
   public static func Currency_JPY() -> String {
@@ -2314,6 +2314,23 @@ Haz clic para volver a intentarlo."
     return localizedString(
       key: "Currency_NZD",
       defaultValue: "$ New Zealand Dollar (NZD)",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "zł Polish Złoty (PLN)"
+
+   - **en**: "zł Polish Złoty (PLN)"
+   - **de**: "zł Polish Złoty (PLN)"
+   - **es**: "zł Polish Złoty (PLN)"
+   - **fr**: "Złoty polonais – zł (PLN)"
+   - **ja**: "zł Polish Złoty (PLN)"
+  */
+  public static func Currency_PLN() -> String {
+    return localizedString(
+      key: "Currency_PLN",
+      defaultValue: "zł Polish Złoty (PLN)",
       count: nil,
       substitutions: [:]
     )
