@@ -248,6 +248,9 @@ jobs:
       - *default_environment
     steps:
       - checkout
+      - run:
+          name: Secrets
+          command: make secrets
       - restore_cache:
           keys:
             - v1-gems-{{ checksum "Gemfile.lock" }}
