@@ -249,8 +249,8 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Secrets
-        commmand: make secrets
+          name: Secrets
+          commmand: make secrets
       - restore_cache:
           keys:
             - v1-gems-{{ checksum "Gemfile.lock" }}
