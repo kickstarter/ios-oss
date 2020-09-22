@@ -144,10 +144,11 @@
 "Currency_EUR" = "Euro – € (EUR)";
 "Currency_GBP" = "Livre sterling – £ (GBP)";
 "Currency_HKD" = "Dollar de Hong Kong – $ (HKD)";
-"Currency_JPY" = "Yen – ¥ (JPY)";
+"Currency_JPY" = "Yen japonais – ¥ (JPY)";
 "Currency_MXN" = "Pesos mexicain – $ (MXN)";
 "Currency_NOK" = "Couronne norvégienne – kr (NOK)";
 "Currency_NZD" = "Dollar néo-zélandais – $ (NZD)";
+"Currency_PLN" = "Złoty polonais – zł (PLN)";
 "Currency_SEK" = "Couronne suédoise – kr (SEK)";
 "Currency_SGD" = "Dollar singapourien – $ (SGD)";
 "Currency_USD" = "Dollar américain – $ (USD)";

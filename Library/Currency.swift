@@ -13,6 +13,7 @@ public enum Currency: String, Encodable, CaseIterable, Equatable {
   case MXN
   case NOK
   case NZD
+  case PLN
   case SEK
   case SGD
   case USD
@@ -41,6 +42,8 @@ public enum Currency: String, Encodable, CaseIterable, Equatable {
       return Strings.Currency_NOK()
     case .NZD:
       return Strings.Currency_NZD()
+    case .PLN:
+      return Strings.Currency_PLN()
     case .SEK:
       return Strings.Currency_SEK()
     case .SGD:
