@@ -138,19 +138,16 @@ public final class RewardAddOnCardViewModel: RewardAddOnCardViewModelType, Rewar
     self.stepperValue = initialOrUpdatedSelectedQuantity
       .map(Double.init)
 
-    self.generateSelectionFeedback = Signal.combineLatest(
-      updatedSelectedQuantity.map(Double.init),
-      self.stepperMaxValue
-    )
-    .filter { value, max in value > 0 && value < max }
-    .ignoreValues()
+    let generateFeedbackWithValues = updatedSelectedQuantity.map(Double.init)
+      .withLatestFrom(self.stepperMaxValue)
 
-    self.generateNotificationWarningFeedback = Signal.combineLatest(
-      updatedSelectedQuantity.map(Double.init),
-      self.stepperMaxValue
-    )
-    .filter { value, max in value == 0 || value >= max }
-    .ignoreValues()
+    self.generateSelectionFeedback = generateFeedbackWithValues
+      .filter { value, max in value > 0 && value < max }
+      .ignoreValues()
+
+    self.generateNotificationWarningFeedback = generateFeedbackWithValues
+      .filter { value, max in value == 0 || value >= max }
+      .ignoreValues()
   }
 
   private let addButtonTappedProperty = MutableProperty(())

@@ -996,5 +996,18 @@ final class RewardAddOnCardViewModelTests: TestCase {
     self.vm.inputs.stepperValueChanged(0)
     self.generateSelectionFeedback.assertValueCount(3)
     self.generateNotificationWarningFeedback.assertValueCount(2)
+
+    self.vm.inputs
+      .configure(with: .init(
+        project: .template,
+        reward: reward,
+        context: .pledge,
+        shippingRule: nil,
+        selectedQuantities: [:]
+      ))
+
+    // Does not generate feedback when reconfigured for cell re-use.
+    self.generateSelectionFeedback.assertValueCount(3)
+    self.generateNotificationWarningFeedback.assertValueCount(2)
   }
 }
