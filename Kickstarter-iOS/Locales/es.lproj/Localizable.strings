@@ -697,6 +697,7 @@
 "Your_project_didnt_reach_its_funding_goal_so_the_backers_payment_method_was_never_charged" = "Tu proyecto no alcanzó su meta de financiamiento, así que no se realizó ningún cargo al método de pago del patrocinador.";
 "Your_reward" = "Tu recompensa";
 "Your_reward_estimated_for_delivery_in_date" = "<b>Tu recompensa</b> estimada para entregarse en %{delivery_date}";
+"Your_selection" = "Your selection";
 "Your_shipping_destination" = "Tu destino de envío";
 "Your_shipping_location" = "Tu ubicación de envío";
 "Youre_a_backer" = "¡Eres un patrocinador!";

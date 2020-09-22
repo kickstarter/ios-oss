@@ -690,6 +690,7 @@
 "Your_project_didnt_reach_its_funding_goal_so_the_backers_payment_method_was_never_charged" = "Your project didn’t reach its funding goal, so the backer’s payment method was never charged.";
 "Your_reward" = "Your reward";
 "Your_reward_estimated_for_delivery_in_date" = "<b>Your reward</b> estimated for delivery in %{delivery_date}";
+"Your_selection" = "Your selection";
 "Your_shipping_destination" = "Your shipping destination";
 "Your_shipping_location" = "Your shipping location";
 "Youre_a_backer" = "You’re a backer!";
