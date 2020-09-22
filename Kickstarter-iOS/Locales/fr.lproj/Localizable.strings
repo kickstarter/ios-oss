@@ -697,6 +697,7 @@
 "Your_project_didnt_reach_its_funding_goal_so_the_backers_payment_method_was_never_charged" = "L'objectif de financement de votre projet n'a pas été atteint, donc le moyen de paiement du contributeur n'a pas été débité.";
 "Your_reward" = "Votre récompense";
 "Your_reward_estimated_for_delivery_in_date" = "<b>Votre récompense</b> prévue pour %{delivery_date}";
+"Your_selection" = "Votre sélection";
 "Your_shipping_destination" = "Destination d'expédition";
 "Your_shipping_location" = "Votre destination de livraison";
 "Youre_a_backer" = "Vous êtes contributeur !";
