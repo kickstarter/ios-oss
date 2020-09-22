@@ -250,7 +250,7 @@ jobs:
       - checkout
       - run:
           name: Secrets
-          commmand: make secrets
+          command: make secrets
       - restore_cache:
           keys:
             - v1-gems-{{ checksum "Gemfile.lock" }}
