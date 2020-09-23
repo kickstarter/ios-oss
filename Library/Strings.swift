@@ -11264,10 +11264,10 @@ Veuillez réessayer ultérieurement."
    "Your selection"
 
    - **en**: "Your selection"
-   - **de**: "Your selection"
-   - **es**: "Your selection"
+   - **de**: "Deine Auswahl"
+   - **es**: "Tu selección"
    - **fr**: "Votre sélection"
-   - **ja**: "Your selection"
+   - **ja**: "選択内容"
   */
   public static func Your_selection() -> String {
     return localizedString(
