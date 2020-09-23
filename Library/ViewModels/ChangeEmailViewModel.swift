@@ -101,7 +101,10 @@ public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailVi
     let isEmailVerified = userEmailEvent.values().map { $0.me.isEmailVerified }.skipNil()
     let isEmailDeliverable = userEmailEvent.values().map { $0.me.isDeliverable }.skipNil()
     let emailVerifiedAndDeliverable = Signal.combineLatest(isEmailVerified, isEmailDeliverable)
-      .map { $0 && $1 }
+      .map { isEmailVerified, isEmailDeliverable -> Bool in
+        let r = isEmailVerified && isEmailDeliverable
+        return r
+      }
 
     self.resendVerificationEmailViewIsHidden = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(true),

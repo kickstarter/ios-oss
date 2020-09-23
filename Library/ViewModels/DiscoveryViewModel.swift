@@ -85,12 +85,12 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
   public init() {
     let optimizelyReadyOrContinue = Signal.merge(
       self.optimizelyClientConfiguredProperty.signal,
-      self.viewDidLoadProperty.signal.map { AppEnvironment.current.optimizelyClient }
+      self.viewDidLoadProperty.signal.map { _ in AppEnvironment.current.optimizelyClient }
         .skipNil()
         .ignoreValues(),
       self.optimizelyClientConfigurationFailedProperty.signal
     ).take(first: 1)
-      .map {
+      .map { _ in
         // Immediately activate the nativeProjectCards experiment
         activateNativeProjectCardsExperiment()
       }.ignoreValues()

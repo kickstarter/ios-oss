@@ -58,7 +58,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
   public init() {
     let initialTopFilters = self.viewDidLoadProperty.signal
       .take(first: 1)
-      .map { topFilters(forUser: AppEnvironment.current.currentUser) }
+      .map { _ in topFilters(forUser: AppEnvironment.current.currentUser) }
 
     let initialSelectedRow = Signal.combineLatest(
       self.initialSelectedRowProperty.signal.skipNil(),

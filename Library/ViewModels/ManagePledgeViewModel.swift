@@ -153,12 +153,13 @@ public final class ManagePledgeViewModel:
     .ignoreValues()
 
     let project = initialProject.combineLatest(with: backing)
-      .map { project, backing in
+      .map { project, backing -> Project in
         /**
          Here we are updating the `Project`'s `Backing` with an updated one from GraphQL.
          This is because, at the time of writing, v1 does not return add-ons or bonus amount but GraphQL does.
          */
-        project |> Project.lens.personalization.backing .~ backing
+        let p = (project |> Project.lens.personalization.backing .~ backing)
+        return p
       }
 
     let userIsCreatorOfProject = project.map { project in

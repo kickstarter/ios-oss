@@ -163,7 +163,7 @@ public final class DashboardReferrersCellViewModel: DashboardReferrersCellViewMo
     )
 
     let allReferrersRowData = Signal.combineLatest(country, allReferrers)
-      .map { ReferrersRowData(country: $0, referrers: $1) }
+      .map(ReferrersRowData.init)
 
     let showMoreReferrersButtonIsHidden = Signal.merge(
       referrers.map { $0.count < 6 },
