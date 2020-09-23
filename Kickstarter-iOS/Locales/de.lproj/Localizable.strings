@@ -697,7 +697,7 @@
 "Your_project_didnt_reach_its_funding_goal_so_the_backers_payment_method_was_never_charged" = "Dein Projekt hat das Finanzierungsziel leider nicht erreicht. Daher wurde die Zahlungsmethode des Unterstützers nicht belastet.";
 "Your_reward" = "Deine Belohnung";
 "Your_reward_estimated_for_delivery_in_date" = "<b>Deine Belohnung</b> wird voraussichtlich im %{delivery_date} geliefert";
-"Your_selection" = "Your selection";
+"Your_selection" = "Deine Auswahl";
 "Your_shipping_destination" = "Dein Versandziel";
 "Your_shipping_location" = "Dein Versand-Standort";
 "Youre_a_backer" = "Du unterstützt das Projekt!";
