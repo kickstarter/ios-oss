@@ -17,8 +17,9 @@ final class CancelPledgeViewController: UIViewController, MessageBannerViewContr
 
   // MARK: - Properties
 
-  private lazy var cancelPledgeButton = { UIButton(type: .custom)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  private lazy var cancelPledgeButton: LoadingButton = {
+    LoadingButton(type: .custom)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var cancellationDetailsTextLabel = { UILabel(frame: .zero) }()
@@ -168,6 +169,12 @@ final class CancelPledgeViewController: UIViewController, MessageBannerViewContr
       .observeForControllerAction()
       .observeValues { [weak self] in
         self?.navigationController?.popViewController(animated: true)
+      }
+
+    self.viewModel.outputs.isLoading
+      .observeForUI()
+      .observeValues { [weak self] isLoading in
+        self?.cancelPledgeButton.isLoading = isLoading
       }
 
     self.cancellationDetailsTextLabel.rac.attributedText = self.viewModel.outputs
