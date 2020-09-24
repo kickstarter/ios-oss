@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -33,7 +31,6 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" red="0.97556585073471069" green="0.032535631209611893" blue="0.018401686102151871" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </stackView>
                 <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="QQz-Fr-vLT" customClass="UIImageView">
                     <rect key="frame" x="375" y="0.0" width="5" height="667"/>
@@ -43,6 +40,7 @@
                     </constraints>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <constraints>
                 <constraint firstItem="QQz-Fr-vLT" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" constant="5" id="3Ty-NO-Etk"/>
                 <constraint firstItem="NgN-c7-cxN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="5Rz-ax-21R"/>
@@ -53,7 +51,6 @@
                 <constraint firstItem="QQz-Fr-vLT" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="eOe-fO-QFj"/>
                 <constraint firstItem="QQz-Fr-vLT" firstAttribute="leading" secondItem="NgN-c7-cxN" secondAttribute="trailing" priority="400" id="qv1-qy-5cb"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="blurView" destination="QQz-Fr-vLT" id="BAV-XD-nTX"/>
                 <outlet property="categoryStackView" destination="NgN-c7-cxN" id="E5F-yg-nhr"/>

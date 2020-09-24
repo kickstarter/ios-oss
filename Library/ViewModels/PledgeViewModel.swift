@@ -246,7 +246,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       self.shippingSummaryViewHidden,
       self.shippingLocationViewHidden
     )
-    .map { $0 && $1 }
+    .map { a, b -> Bool in
+      let r = a && b
+      return r
+    }
 
     // Only shown for regular non-add-ons based rewards
     self.configureShippingLocationViewWithData = Signal.combineLatest(
@@ -294,10 +297,12 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       allRewardsShippingTotal,
       allRewardsTotal
     )
-    .map { pledgeAmount, shippingCost, rewardBaseAmount in
-      [pledgeAmount, shippingCost, rewardBaseAmount].reduce(0) { accum, amount in
+    .map { pledgeAmount, shippingCost, rewardBaseAmount -> Double in
+      let r = [pledgeAmount, shippingCost, rewardBaseAmount].reduce(0) { accum, amount in
         accum.addingCurrency(amount)
       }
+
+      return r
     }
 
     let pledgeTotal = Signal.merge(
@@ -385,8 +390,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       additionalPledgeAmount,
       allRewardsShippingTotal
     )
-    .map { project, reward, allRewardsTotal, additionalPledgeAmount, allRewardsShippingTotal in
-      (
+    .map { project, reward, allRewardsTotal, additionalPledgeAmount, allRewardsShippingTotal -> PaymentAuthorizationData in
+      let r = (
         project,
         reward,
         allRewardsTotal,
@@ -394,6 +399,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         allRewardsShippingTotal,
         Secrets.ApplePay.merchantIdentifier
       ) as PaymentAuthorizationData
+
+      return r
     }
 
     let goToApplePayPaymentAuthorization = pledgeAmountIsValid

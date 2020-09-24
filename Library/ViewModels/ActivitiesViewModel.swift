@@ -209,7 +209,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
         self.userSessionStartedProperty.signal,
         self.userSessionEndedProperty.signal
       )
-      .map { AppEnvironment.current.currentUser }
+      .map { _ in AppEnvironment.current.currentUser }
 
     let erroredBackingsEvent = currentUser
       .skipNil()

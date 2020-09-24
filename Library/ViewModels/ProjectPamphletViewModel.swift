@@ -168,8 +168,9 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .skipNil()
 
     let cookieRefTag = freshProjectAndRefTag
-      .map { project, refTag in
-        cookieRefTagFor(project: project) ?? refTag
+      .map { project, refTag -> RefTag? in
+        let r = cookieRefTagFor(project: project) ?? refTag
+        return r
       }
       .take(first: 1)
 
