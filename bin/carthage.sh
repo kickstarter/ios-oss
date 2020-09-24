@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # brew upgrade carthage
 
@@ -32,7 +32,7 @@ export XCODE_XCCONFIG_FILE="$xcconfig"
 echo $XCODE_XCCONFIG_FILE
 
 # Cache Cartfile
-if [ -n "$FORCE_CARTHAGE" ] || ! cmp -s Cartfile.resolved Carthage/Cartfile.resolved; then
+if [ ! -z ${FORCE_CARTHAGE:-} ] || ! cmp -s Cartfile.resolved Carthage/Cartfile.resolved; then
   # If not running on CircleCI, update dependencies
   if [ -z "${CIRCLECI:-}" ]; then
     echo "Updating dependencies"
