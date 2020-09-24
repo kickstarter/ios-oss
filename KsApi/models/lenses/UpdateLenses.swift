@@ -101,17 +101,16 @@ extension Update {
         visible: $1.visible
       ) }
     )
-    
+
     public static let urls = Lens<Update, Update.UrlsEnvelope>(
       view: { $0.urls },
       set: { Update(
-      body: $1.body, commentsCount: $1.commentsCount, hasLiked: $1.hasLiked, id: $1.id,
-      isPublic: $1.isPublic, likesCount: $1.likesCount, projectId: $1.projectId,
-      publishedAt: $1.publishedAt, sequence: $1.sequence, title: $1.title, urls: $0, user: $1.user,
-      visible: $1.visible
+        body: $1.body, commentsCount: $1.commentsCount, hasLiked: $1.hasLiked, id: $1.id,
+        isPublic: $1.isPublic, likesCount: $1.likesCount, projectId: $1.projectId,
+        publishedAt: $1.publishedAt, sequence: $1.sequence, title: $1.title, urls: $0, user: $1.user,
+        visible: $1.visible
       ) }
     )
-    
   }
 }
 
@@ -128,7 +127,7 @@ extension Update.UrlsEnvelope.WebEnvelope {
   public enum lens {
     public static let update = Lens<Update.UrlsEnvelope.WebEnvelope, String>(
       view: { $0.update },
-      set: {  part, _ in .init(update: part) }
+      set: { part, _ in .init(update: part) }
     )
   }
 }

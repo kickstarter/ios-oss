@@ -34,9 +34,8 @@ public final class UpdateActivityItemProvider: UIActivityItemProvider {
       )
     }
   }
-  
+
   private func formattedString(for update: Update) -> String {
     return [update.title, update.urls.web.update].joined(separator: "\n")
   }
-  
 }
