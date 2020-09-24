@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# brew upgrade carthage
+brew upgrade carthage
 
 # Ref for below Xcode 12 workaround: https://github.com/Carthage/Carthage/issues/3019
 # Remove workaround once Carthage team have fixed this.
