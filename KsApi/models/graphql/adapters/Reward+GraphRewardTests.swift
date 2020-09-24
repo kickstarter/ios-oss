@@ -16,7 +16,7 @@ final class Reward_GraphRewardTests: XCTestCase {
 
     let dateFormatter = DateFormatter()
     dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-    dateFormatter.dateFormat = "yyyy-MM-DD"
+    dateFormatter.dateFormat = "yyyy-MM-dd"
 
     let v1Reward = Reward.reward(
       from: reward,
@@ -29,7 +29,7 @@ final class Reward_GraphRewardTests: XCTestCase {
     XCTAssertEqual(v1Reward?.convertedMinimum, 180.0)
     XCTAssertEqual(v1Reward?.description, "Description")
     XCTAssertEqual(v1Reward?.endsAt, 1_887_502_131)
-    XCTAssertEqual(v1Reward?.estimatedDeliveryOn, 1_577_836_800.0)
+    XCTAssertEqual(v1Reward?.estimatedDeliveryOn, 1_596_240_000.0)
     XCTAssertEqual(v1Reward?.id, 1)
     XCTAssertEqual(v1Reward?.limit, 5)
     XCTAssertEqual(v1Reward?.minimum, 159.0)
@@ -46,6 +46,8 @@ final class Reward_GraphRewardTests: XCTestCase {
   }
 
   func testTemplate() {
-    XCTAssertNotNil(Reward.reward(from: .template, projectId: 12_345))
+    let reward = Reward.reward(from: .template, projectId: 12_345)
+    XCTAssertNotNil(reward)
+    XCTAssertEqual(reward?.estimatedDeliveryOn, 1_596_240_000.0)
   }
 }
