@@ -50,7 +50,7 @@ private func backingStatus(from graphBacking: GraphBacking) -> Backing.Status? {
 }
 
 private func backingReward(from graphBacking: GraphBacking, projectId: Int) -> Reward? {
-  guard let graphReward = graphBacking.reward else { return nil }
+  guard let graphReward = graphBacking.reward else { return .noReward }
 
   return Reward.reward(from: graphReward, projectId: projectId)
 }
