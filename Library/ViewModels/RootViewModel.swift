@@ -159,21 +159,27 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       self.userSessionEndedProperty.signal,
       self.currentUserUpdatedProperty.signal
     )
-    .map { AppEnvironment.current.currentUser }
+    .map { _ in AppEnvironment.current.currentUser }
 
     let userState: Signal<(isLoggedIn: Bool, isMember: Bool), Never> = currentUser
       .map { ($0 != nil, ($0?.stats.memberProjectsCount ?? 0) > 0) }
       .skipRepeats(==)
 
-    let standardViewControllers = self.viewDidLoadProperty.signal.map { generateStandardViewControllers() }
-    let personalizedViewControllers = userState.map { generatePersonalizedViewControllers(userState: $0) }
+    let standardViewControllers = self.viewDidLoadProperty.signal.map { _ -> [RootViewControllerData] in
+      generateStandardViewControllers()
+    }
+    let personalizedViewControllers = userState.map { userState -> [RootViewControllerData] in
+      generatePersonalizedViewControllers(userState: (userState.isMember, userState.isLoggedIn))
+    }
 
     let viewControllers = Signal.combineLatest(standardViewControllers, personalizedViewControllers).map(+)
 
     let refreshedViewControllers = userState.takeWhen(self.userLocalePreferencesChangedProperty.signal)
       .map { userState -> [RootViewControllerData] in
         let standard = generateStandardViewControllers()
-        let personalized = generatePersonalizedViewControllers(userState: userState)
+        let personalized = generatePersonalizedViewControllers(
+          userState: (userState.isMember, userState.isLoggedIn)
+        )
 
         return standard + personalized
       }

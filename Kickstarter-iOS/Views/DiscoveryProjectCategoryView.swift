@@ -23,7 +23,7 @@ import UIKit
     super.bindStyles()
 
     _ = self.blurView
-      |> UIImageView.lens.image .~ UIImage(named: "white--gradient--layer")
+      |> UIImageView.lens.image .~ Library.image(named: "white--gradient--layer")
 
     _ = self.categoryViewLabel
       |> postcardCategoryLabelStyle

@@ -29,7 +29,7 @@ public final class SettingsPrivacyViewModel: SettingsPrivacyViewModelType,
   SettingsPrivacyViewModelInputs, SettingsPrivacyViewModelOutputs {
   public init() {
     let initialUser = self.viewDidLoadProperty.signal
-      .flatMap {
+      .flatMap { _ in
         AppEnvironment.current.apiService.fetchUserSelf()
           .wrapInOptional()
           .prefix(value: AppEnvironment.current.currentUser)
@@ -44,7 +44,7 @@ public final class SettingsPrivacyViewModel: SettingsPrivacyViewModelType,
         .map { (UserAttribute.privacy(UserAttribute.Privacy.showPublicProfile), $0) }
 
     let followingAttributeChanged = self.didConfirmSocialOptOutProperty.signal
-      .map {
+      .map { _ in
         (UserAttribute.privacy(UserAttribute.Privacy.following), false)
       }
 

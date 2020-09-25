@@ -37,10 +37,12 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
 
     let toggledNotification = notification
       .takePairWhen(self.notificationTappedProperty.signal)
-      .map { notification, on in
-        notification
+      .map { notification, on -> ProjectNotification in
+        let n = (notification
           |> ProjectNotification.lens.email .~ on
-          |> ProjectNotification.lens.mobile .~ on
+          |> ProjectNotification.lens.mobile .~ on)
+
+        return n
       }
 
     let updateEvent = toggledNotification

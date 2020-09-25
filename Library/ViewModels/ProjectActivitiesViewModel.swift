@@ -153,7 +153,7 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
 
     let projectActivityCommentCellGoToSendReply =
       self.projectActivityCommentCellGoToSendReplyProperty.signal.skipNil()
-        .map { project, update, comment in ProjectActivitiesGoTo.sendReply(project, update, comment) }
+        .map(ProjectActivitiesGoTo.sendReply)
 
     self.goTo = Signal.merge(
       cellTappedGoTo,

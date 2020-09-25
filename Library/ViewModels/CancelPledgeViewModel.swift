@@ -28,6 +28,7 @@ public protocol CancelPledgeViewModelOutputs {
   var cancelPledgeButtonEnabled: Signal<Bool, Never> { get }
   var cancelPledgeError: Signal<String, Never> { get }
   var dismissKeyboard: Signal<Void, Never> { get }
+  var isLoading: Signal<Bool, Never> { get }
   var notifyDelegateCancelPledgeSuccess: Signal<String, Never> { get }
   var popCancelPledgeViewController: Signal<Void, Never> { get }
 }
@@ -85,6 +86,11 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .materialize()
       }
+
+    self.isLoading = Signal.merge(
+      self.cancelPledgeButtonTappedProperty.signal.mapConst(true),
+      cancelPledgeEvent.filter { $0.isTerminating }.mapConst(false)
+    )
 
     self.notifyDelegateCancelPledgeSuccess = cancelPledgeEvent.values()
       .map { _ in Strings.Youve_canceled_your_pledge() }
@@ -156,6 +162,7 @@ public final class CancelPledgeViewModel: CancelPledgeViewModelType, CancelPledg
   public let cancelPledgeButtonEnabled: Signal<Bool, Never>
   public let cancelPledgeError: Signal<String, Never>
   public let dismissKeyboard: Signal<Void, Never>
+  public let isLoading: Signal<Bool, Never>
   public let notifyDelegateCancelPledgeSuccess: Signal<String, Never>
   public let popCancelPledgeViewController: Signal<Void, Never>
 

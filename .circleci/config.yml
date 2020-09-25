@@ -3,9 +3,9 @@ version: 2.1
 orbs:
   codecov: codecov/codecov@1.1.1
 
-xcode_version: &xcode_version 11.6.0
+xcode_version: &xcode_version 12.0.0
 iphone_name: &iphone_name iPhone 8
-preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (13.6) [" || true
+preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (14.0) [" || true
 
 # Templates
 
@@ -33,7 +33,7 @@ test_job: &test_job
     - restore_cache:
         name: Restore Carthage Cache
         keys:
-          - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+          - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
     - run:
         name: Bootstrap
         command: make bootstrap
@@ -69,7 +69,7 @@ distribute_job: &distribute_job
     - restore_cache:
         name: Restore Carthage Cache
         keys:
-          - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+          - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
     - run:
         name: Bootstrap
         command: make bootstrap
@@ -122,13 +122,13 @@ jobs:
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
       - run:
           name: Bootstrap
           command: make bootstrap
       - save_cache:
           name: Cache Carthage
-          key: carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+          key: carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
           paths:
             - Carthage
       - restore_cache:
@@ -190,7 +190,7 @@ jobs:
       - restore_cache:
           name: Restore Carthage Cache
           keys:
-            - carthage-cache-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
+            - carthage-cache-v1-{{ checksum "Cartfile.resolved" }}-{{ checksum "xcode_version.txt" }}
       - run:
           name: Bootstrap
           command: make bootstrap

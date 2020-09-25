@@ -95,7 +95,7 @@ public final class CommentsViewModel: CommentsViewModelType, CommentsViewModelIn
       self.viewDidLoadProperty.signal,
       self.userSessionStartedProperty.signal
     )
-    .map { AppEnvironment.current.currentUser }
+    .map { _ in AppEnvironment.current.currentUser }
 
     let requestFirstPageWith = Signal.merge(
       projectOrUpdate,

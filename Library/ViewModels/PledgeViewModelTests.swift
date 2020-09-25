@@ -5163,6 +5163,50 @@ final class PledgeViewModelTests: TestCase {
     ])
   }
 
+  func testPledgeAmountSummaryViewHidden_UpdateContext_NoReward_IsHidden() {
+    self.pledgeAmountSummaryViewHidden.assertDidNotEmitValue()
+
+    let project = Project.template
+    let reward = Reward.noReward
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: .projectPage,
+      context: .update
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeAmountSummaryViewHidden.assertValues([true])
+  }
+
+  func testPledgeAmountSummaryViewHidden_UpdateContext_RegularReward_IsNotHidden() {
+    self.pledgeAmountSummaryViewHidden.assertDidNotEmitValue()
+
+    let project = Project.template
+    let reward = Reward.template
+
+    let data = PledgeViewData(
+      project: project,
+      rewards: [reward],
+      selectedQuantities: [reward.id: 1],
+      selectedLocationId: nil,
+      refTag: .projectPage,
+      context: .update
+    )
+
+    self.vm.inputs.configure(with: data)
+    self.vm.inputs.viewDidLoad()
+
+    self.pledgeAmountSummaryViewHidden.assertValues([false])
+  }
+
+  // MARK: - Tracking
+
   func testTrackingEvents_CheckoutPaymentPageViewed() {
     let project = Project.template
     let reward = Reward.template
