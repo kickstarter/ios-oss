@@ -19,24 +19,23 @@ public final class UpdateActivityItemProvider: UIActivityItemProvider {
     }
 
     switch type {
-    case UIActivity.ActivityType.mail:
-      return Strings.social_update_sequence_and_title(
-        update_number: String(update.sequence),
-        update_title: update.title
-      )
     case UIActivity.ActivityType.message:
-      return update.title
+      return self.formattedString(for: update)
     case UIActivity.ActivityType.postToTwitter:
       return Strings.project_checkout_share_twitter_via_kickstarter(
-        project_or_update_title: update.title
+        project_or_update_title: self.formattedString(for: update)
       )
     case UIActivity.ActivityType.copyToPasteboard, UIActivity.ActivityType.postToFacebook:
       return update.urls.web.update
     default:
       return Strings.social_update_sequence_and_title(
         update_number: String(update.sequence),
-        update_title: update.title
+        update_title: self.formattedString(for: update)
       )
     }
+  }
+
+  private func formattedString(for update: Update) -> String {
+    return [update.title, update.urls.web.update].joined(separator: "\n")
   }
 }
