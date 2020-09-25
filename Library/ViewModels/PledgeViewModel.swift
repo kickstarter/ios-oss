@@ -130,7 +130,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.pledgeAmountViewHidden = context.map { $0.pledgeAmountViewHidden }
     self.summarySectionSeparatorHidden = self.pledgeAmountViewHidden
-    self.pledgeAmountSummaryViewHidden = context.map { $0.pledgeAmountSummaryViewHidden }
+    self.pledgeAmountSummaryViewHidden = Signal.zip(baseReward, context).map { baseReward, context in
+      (baseReward.isNoReward && context == .update) || context.pledgeAmountSummaryViewHidden
+    }
 
     self.descriptionSectionSeparatorHidden = Signal.combineLatest(context, baseReward)
       .map { context, reward in
