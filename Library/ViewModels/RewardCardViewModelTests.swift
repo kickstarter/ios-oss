@@ -118,6 +118,24 @@ final class RewardCardViewModelTests: TestCase {
     XCTAssertEqual(self.rewardTitleLabelAttributedText.values.map { $0.string }, ["2 x The thing"])
   }
 
+  func testTitleLabel_Backed_AddOn_Single() {
+    let reward = .template
+      |> Reward.lens.id .~ 99
+      |> Reward.lens.title .~ "The thing"
+      |> Reward.lens.remaining .~ nil
+
+    let backing = Backing.template
+      |> Backing.lens.addOns .~ [reward]
+
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ true
+      |> Project.lens.personalization.backing .~ backing
+
+    self.vm.inputs.configure(with: (project, reward, .pledge))
+
+    XCTAssertEqual(self.rewardTitleLabelAttributedText.values.map { $0.string }, ["The thing"])
+  }
+
   // MARK: - Reward Minimum
 
   func testMinimumLabel_US_Project_US_UserLocation() {
