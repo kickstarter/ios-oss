@@ -270,7 +270,15 @@ public func rewardIsAvailable(project: Project, reward: Reward) -> Bool {
   let endsAt = reward.endsAt.coalesceWith(now)
   let timeLimitNotReached = endsAt > now
 
-  return (isLimited && isRemaining) || (isTimebased && timeLimitNotReached)
+  // Limited availability is valid if the reward is limited and remaining > 0 OR this reward is not limited.
+  let limitedAvailabilityValid = (isLimited && isRemaining) || !isLimited
+
+  // Timebased availability is valid if the reward is timebased and the time limit has not been reached
+  // OR the reward is not timebased.
+  let timebasedAvailabilityValid = (isTimebased && timeLimitNotReached) || !isTimebased
+
+  // Both type of availability must be valid in order for this reward to be considered available.
+  return limitedAvailabilityValid && timebasedAvailabilityValid
 }
 
 public func rewardLimitRemainingForBacker(project: Project, reward: Reward) -> Int? {
