@@ -277,7 +277,7 @@ public func rewardIsAvailable(project: Project, reward: Reward) -> Bool {
   // OR the reward is not timebased.
   let timebasedAvailabilityValid = (isTimebased && timeLimitNotReached) || !isTimebased
 
-  // Both type of availability must be valid in order for this reward to be considered available.
+  // Both types of availability must be valid in order for this reward to be considered available.
   return limitedAvailabilityValid && timebasedAvailabilityValid
 }
 
