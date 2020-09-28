@@ -268,7 +268,15 @@ private func titleForContext(_ context: RewardsCollectionViewContext, project: P
 private func shouldNavigateToReward(project: Project, reward: Reward, refTag _: RefTag?) -> Bool {
   guard !currentUserIsCreator(of: project) else { return false }
 
-  return project.state == .live && (!userIsBacking(reward: reward, inProject: project) || reward.hasAddOns)
+  let isAvailable = rewardIsAvailable(project: project, reward: reward)
+  let isBacking = userIsBacking(reward: reward, inProject: project)
+
+  return [
+    project.state == .live,
+    isAvailable,
+    !isBacking || reward.hasAddOns
+  ]
+  .allSatisfy(isTrue)
 }
 
 private func shouldTriggerEditRewardPrompt(_ data: PledgeViewData) -> Bool {
