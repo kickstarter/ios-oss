@@ -203,7 +203,7 @@ private func rewardTitle(project: Project, reward: Reward) -> NSAttributedString
     // Not the base reward, for that we just return the title without quantity.
     reward.id != backing.reward?.id,
     let selectedQuantity = selectedRewardQuantities(in: backing)[reward.id],
-    selectedQuantity > 0 else {
+    selectedQuantity > 1 else {
     return titleAttributed
   }
 
@@ -214,7 +214,6 @@ private func rewardTitle(project: Project, reward: Reward) -> NSAttributedString
     attributes: attributes,
     bolding: [title]
   )
-
   return qtyAttributed + titleAttributed
 }
 
