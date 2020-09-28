@@ -214,6 +214,7 @@ private func rewardTitle(project: Project, reward: Reward) -> NSAttributedString
     attributes: attributes,
     bolding: [title]
   )
+  
   return qtyAttributed + titleAttributed
 }
 
