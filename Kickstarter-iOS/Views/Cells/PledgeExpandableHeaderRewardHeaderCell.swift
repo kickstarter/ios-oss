@@ -20,6 +20,7 @@ final class PledgeExpandableHeaderRewardHeaderCell: UITableViewCell, ValueCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.configureViews()
+    self.setupConstraints()
     self.bindViewModel()
   }
 
@@ -38,19 +39,25 @@ final class PledgeExpandableHeaderRewardHeaderCell: UITableViewCell, ValueCell {
 
     _ = self.amountLabel
       |> \.adjustsFontForContentSizeCategory .~ true
+      |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ UILayoutPriority.required
+    
 
     _ = self.rootStackView
       |> rootStackViewStyle(self.traitCollection.preferredContentSizeCategory > .accessibilityLarge)
 
     _ = self.titleLabel
       |> titleLabelStyle
+      |> UILabel.lens.contentCompressionResistancePriority(for: .vertical) .~ UILayoutPriority.required
 
     _ = self.subtitleLabel
       |> subtitleLabelStyle
+      |> UILabel.lens.contentCompressionResistancePriority(for: .vertical) .~ UILayoutPriority.required
 
     _ = self.leftColumnStackView
       |> verticalStackViewStyle
+      |> UIStackView.lens.contentCompressionResistancePriority(for: .vertical) .~ UILayoutPriority.required
       |> \.spacing .~ Styles.grid(1)
+      
   }
 
   // MARK: - View model
@@ -64,13 +71,22 @@ final class PledgeExpandableHeaderRewardHeaderCell: UITableViewCell, ValueCell {
       .observeForUI()
       .observeValues { [weak self] titleText in
         self?.subtitleLabel.text = titleText
+        self?.subtitleLabel.setNeedsLayout()
       }
   }
 
   // MARK: - Configuration
+  
+  private func setupConstraints() {
+    NSLayoutConstraint.activate([
+      self.leftColumnStackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 40),
+    ])
+  }
 
   func configureWith(value: PledgeExpandableHeaderRewardCellData) {
     self.viewModel.inputs.configure(with: value)
+    
+    self.contentView.layoutIfNeeded()
   }
 
   private func configureViews() {
@@ -83,6 +99,7 @@ final class PledgeExpandableHeaderRewardHeaderCell: UITableViewCell, ValueCell {
 
     _ = ([self.leftColumnStackView, UIView(), self.amountLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+  
   }
 }
 
