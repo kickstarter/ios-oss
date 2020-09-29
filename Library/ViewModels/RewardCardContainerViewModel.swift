@@ -52,7 +52,9 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
       .map(buttonStyleType(project:reward:))
 
     self.pledgeButtonEnabled = projectAndReward
-      .map(pledgeButtonIsEnabled(project:reward:))
+      .map { project, reward in
+        RewardsCollectionViewModel.rewardsCarouselCanNavigateToReward(reward, in: project)
+      }
 
     self.pledgeButtonHidden = pledgeButtonTitleText.map(isNil)
 
@@ -147,18 +149,4 @@ private func buttonStyleType(project: Project, reward: Reward) -> ButtonStyleTyp
   }
 
   return .green
-}
-
-private func pledgeButtonIsEnabled(project: Project, reward: Reward) -> Bool {
-  if currentUserIsCreator(of: project) { return false }
-
-  let isAvailable = rewardIsAvailable(project: project, reward: reward)
-  let isBacking = userIsBacking(reward: reward, inProject: project)
-
-  return [
-    project.state == .live,
-    isAvailable,
-    !isBacking || reward.hasAddOns
-  ]
-  .allSatisfy(isTrue)
 }

@@ -96,7 +96,9 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       selectedRewardFromId,
       refTag
     )
-    .filter(shouldNavigateToReward)
+    .filter { project, reward, _ in
+      RewardsCollectionViewModel.rewardsCarouselCanNavigateToReward(reward, in: project)
+    }
     .map { project, reward, refTag -> (PledgeViewData, Bool) in
       let data = PledgeViewData(
         project: project,
@@ -265,12 +267,6 @@ private func titleForContext(_ context: RewardsCollectionViewContext, project: P
   return context == .createPledge ? Strings.Back_this_project() : Strings.Edit_reward()
 }
 
-private func shouldNavigateToReward(project: Project, reward: Reward, refTag _: RefTag?) -> Bool {
-  guard !currentUserIsCreator(of: project) else { return false }
-
-  return project.state == .live && (!userIsBacking(reward: reward, inProject: project) || reward.hasAddOns)
-}
-
 private func shouldTriggerEditRewardPrompt(_ data: PledgeViewData) -> Bool {
   // If the user is not backing the project then there is no need to show the prompt.
   guard
@@ -301,5 +297,21 @@ private func trackingPledgeContext(for rewardsContext: RewardsCollectionViewCont
     return Koala.PledgeContext.newPledge
   case .managePledge:
     return Koala.PledgeContext.changeReward
+  }
+}
+
+extension RewardsCollectionViewModel {
+  public static func rewardsCarouselCanNavigateToReward(_ reward: Reward, in project: Project) -> Bool {
+    guard !currentUserIsCreator(of: project) else { return false }
+
+    let isAvailable = rewardIsAvailable(project: project, reward: reward)
+    let isBacking = userIsBacking(reward: reward, inProject: project)
+
+    return [
+      project.state == .live,
+      isAvailable,
+      !isBacking || reward.hasAddOns
+    ]
+    .allSatisfy(isTrue)
   }
 }

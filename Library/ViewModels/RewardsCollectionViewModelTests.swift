@@ -121,12 +121,60 @@ final class RewardsCollectionViewModelTests: TestCase {
     }
   }
 
+  func testGoToPledge_DoesNotEmitIfUnavailable() {
+    let user = User.template
+
+    let reward = Reward.template
+      |> Reward.lens.limit .~ 5
+      |> Reward.lens.remaining .~ 0
+      |> Reward.lens.startsAt .~ (MockDate().date.timeIntervalSince1970 - 60)
+      |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 + 60)
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    withEnvironment(config: .template, currentUser: user) {
+      self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.rewardSelected(with: project.rewards[0].id)
+
+      self.goToAddOnSelection.assertDidNotEmitValue()
+      self.goToPledge.assertDidNotEmitValue()
+    }
+  }
+
+  func testGoToPledge_DoesNotEmitIfEnded() {
+    let user = User.template
+
+    let reward = Reward.template
+      |> Reward.lens.limit .~ 5
+      |> Reward.lens.remaining .~ 2
+      |> Reward.lens.startsAt .~ (MockDate().date.timeIntervalSince1970 - 60)
+      |> Reward.lens.endsAt .~ (MockDate().date.timeIntervalSince1970 - 1)
+
+    let project = Project.cosmicSurgery
+      |> Project.lens.rewardData.rewards .~ [reward]
+
+    withEnvironment(config: .template, currentUser: user) {
+      self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.vm.inputs.rewardSelected(with: project.rewards[0].id)
+
+      self.goToAddOnSelection.assertDidNotEmitValue()
+      self.goToPledge.assertDidNotEmitValue()
+    }
+  }
+
   func testGoToPledge_NotBacked() {
     withEnvironment(config: .template) {
-      let project = Project.cosmicSurgery
+      let firstReward = Project.cosmicSurgery.rewards[0]
+      let secondReward = Project.cosmicSurgery.rewards[1]
+        |> Reward.lens.remaining .~ 5
 
-      let firstReward = project.rewards[0]
-      let secondReward = project.rewards[1]
+      let project = Project.cosmicSurgery
+        |> Project.lens.rewardData.rewards .~ [firstReward, secondReward]
 
       self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
       self.vm.inputs.viewDidLoad()
