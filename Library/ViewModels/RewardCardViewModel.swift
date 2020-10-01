@@ -28,7 +28,7 @@ public protocol RewardCardViewModelOutputs {
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
   var items: Signal<[String], Never> { get }
   var pillCollectionViewHidden: Signal<Bool, Never> { get }
-  var reloadPills: Signal<[String], Never> { get }
+  var reloadPills: Signal<[(String, UIColor, UIColor)], Never> { get }
   var rewardMinimumLabelText: Signal<String, Never> { get }
   var rewardSelected: Signal<Int, Never> { get }
   var rewardTitleLabelHidden: Signal<Bool, Never> { get }
@@ -131,7 +131,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let items: Signal<[String], Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>
   public let pillCollectionViewHidden: Signal<Bool, Never>
-  public let reloadPills: Signal<[String], Never>
+  public let reloadPills: Signal<[(String, UIColor, UIColor)], Never>
   public let rewardMinimumLabelText: Signal<String, Never>
   public let rewardSelected: Signal<Int, Never>
   public let rewardTitleLabelHidden: Signal<Bool, Never>
@@ -217,7 +217,7 @@ private func rewardTitle(project: Project, reward: Reward) -> NSAttributedString
   return qtyAttributed + titleAttributed
 }
 
-private func pillValues(project: Project, reward: Reward) -> [String] {
+private func pillValues(project: Project, reward: Reward) -> [(String, UIColor, UIColor)] {
   return [
     timeLeftString(project: project, reward: reward),
     backerCountOrRemainingString(project: project, reward: reward),
@@ -227,13 +227,13 @@ private func pillValues(project: Project, reward: Reward) -> [String] {
   .compact()
 }
 
-private func addOnsString(reward: Reward) -> String? {
+private func addOnsString(reward: Reward) -> (String, UIColor, UIColor)? {
   guard reward.hasAddOns else { return nil }
 
-  return Strings.Add_ons()
+  return (Strings.Add_ons(), UIColor.ksr_green_500.withAlphaComponent(0.06), UIColor.ksr_green_500)
 }
 
-private func timeLeftString(project: Project, reward: Reward) -> String? {
+private func timeLeftString(project: Project, reward: Reward) -> (String, UIColor, UIColor)? {
   let isUnlimitedOrAvailable = reward.limit == nil || reward.remaining ?? 0 > 0
 
   if project.state == .live,
@@ -247,13 +247,17 @@ private func timeLeftString(project: Project, reward: Reward) -> String? {
       useToGo: false
     )
 
-    return Strings.Time_left_left(time_left: time + " " + unit)
+    return (
+      Strings.Time_left_left(time_left: time + " " + unit),
+      UIColor.ksr_celebrate_100,
+      UIColor.ksr_dark_grey_500
+    )
   }
 
   return nil
 }
 
-private func backerCountOrRemainingString(project: Project, reward: Reward) -> String? {
+private func backerCountOrRemainingString(project: Project, reward: Reward) -> (String, UIColor, UIColor)? {
   guard
     let limit = reward.limit,
     let remaining = rewardLimitRemainingForBacker(project: project, reward: reward),
@@ -263,27 +267,44 @@ private func backerCountOrRemainingString(project: Project, reward: Reward) -> S
     let backersCount = reward.backersCount ?? 0
 
     return backersCount > 0
-      ? Strings.general_backer_count_backers(backer_count: backersCount)
+      ?
+      (
+        Strings.general_backer_count_backers(backer_count: backersCount),
+        UIColor.ksr_green_500.withAlphaComponent(0.06),
+        UIColor.ksr_green_500
+      )
       : nil
   }
 
-  return Strings.remaining_count_left_of_limit_count(
+  return (Strings.remaining_count_left_of_limit_count(
     remaining_count: "\(remaining)",
     limit_count: "\(limit)"
-  )
+  ), UIColor.ksr_celebrate_100, UIColor.ksr_dark_grey_500)
 }
 
-private func shippingSummaryString(project: Project, reward: Reward) -> String? {
+private func shippingSummaryString(project: Project, reward: Reward) -> (String, UIColor, UIColor)? {
   if project.state == .live, reward.shipping.enabled, let type = reward.shipping.type {
     switch type {
     case .anywhere:
-      return Strings.Ships_worldwide()
+      return (
+        Strings.Ships_worldwide(),
+        UIColor.ksr_green_500.withAlphaComponent(0.06),
+        UIColor.ksr_green_500
+      )
     case .multipleLocations:
-      return Strings.Limited_shipping()
+      return (
+        Strings.Limited_shipping(),
+        UIColor.ksr_green_500.withAlphaComponent(0.06),
+        UIColor.ksr_green_500
+      )
     case .noShipping: return nil
     case .singleLocation:
       if let name = reward.shipping.location?.localizedName {
-        return Strings.location_name_only(location_name: name)
+        return (
+          Strings.location_name_only(location_name: name),
+          UIColor.ksr_green_500.withAlphaComponent(0.06),
+          UIColor.ksr_green_500
+        )
       }
 
       return nil
