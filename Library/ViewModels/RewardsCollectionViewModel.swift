@@ -304,13 +304,13 @@ extension RewardsCollectionViewModel {
   public static func rewardsCarouselCanNavigateToReward(_ reward: Reward, in project: Project) -> Bool {
     guard !currentUserIsCreator(of: project) else { return false }
 
-    let isAvailable = rewardIsAvailable(project: project, reward: reward)
     let isBacking = userIsBacking(reward: reward, inProject: project)
+    let isAvailableForNewBacker = rewardIsAvailable(project: project, reward: reward) && !isBacking
+    let isAvailableForExistingBackerToEdit = (isBacking && reward.hasAddOns)
 
     return [
       project.state == .live,
-      isAvailable,
-      !isBacking || reward.hasAddOns
+      isAvailableForNewBacker || isAvailableForExistingBackerToEdit
     ]
     .allSatisfy(isTrue)
   }
