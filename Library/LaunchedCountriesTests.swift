@@ -1,3 +1,4 @@
+@testable import KsApi
 @testable import Library
 import XCTest
 
@@ -10,7 +11,12 @@ final class LaunchedCountriesTests: XCTestCase {
 
     XCTAssertFalse(launchedCountries.currencyNeedsCode("£"))
     XCTAssertFalse(launchedCountries.currencyNeedsCode("€"))
+    XCTAssertFalse(launchedCountries.currencyNeedsCode("zł"))
 
     XCTAssertFalse(launchedCountries.currencyNeedsCode("XYZ"))
+  }
+
+  func testAllCountriesSupported() {
+    XCTAssertEqual(LaunchedCountries().countries, Project.Country.all)
   }
 }
