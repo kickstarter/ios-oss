@@ -196,14 +196,14 @@ public final class RewardCardView: UIView {
     NSLayoutConstraint.activate([pillsViewHeightConstraint])
   }
 
-  private func configurePillsView(_ pills: [(String, UIColor, UIColor)]) {
-    let pillData = pills.map { text, backgroundColor, textColor -> PillData in
+  private func configurePillsView(_ pills: [RewardCardPillData]) {
+    let pillData = pills.map { rewardCardPillData -> PillData in
       PillData(
-        backgroundColor: backgroundColor,
+        backgroundColor: rewardCardPillData.backgroundColor,
         font: UIFont.ksr_footnote().bolded,
         margins: UIEdgeInsets(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3)),
-        text: text,
-        textColor: textColor,
+        text: rewardCardPillData.text,
+        textColor: rewardCardPillData.textColor,
         imageName: nil
       )
     }

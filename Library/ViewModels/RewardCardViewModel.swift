@@ -3,9 +3,9 @@ import Prelude
 import ReactiveSwift
 
 public struct RewardCardPillData: Equatable {
-  let backgroundColor: UIColor
-  let text: String
-  let textColor: UIColor
+  public let backgroundColor: UIColor
+  public let text: String
+  public let textColor: UIColor
 }
 
 public enum RewardCardViewContext {
