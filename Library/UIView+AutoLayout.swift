@@ -44,7 +44,7 @@ public func ksr_constrainViewToTrailingMarginInParent() -> ((UIView, UIView) -> 
 
     let constraints = [
       subview.trailingAnchor.constraint(equalTo: parent.layoutMarginsGuide.trailingAnchor),
-      subview.centerYAnchor.constraint(equalTo: parent.centerYAnchor),
+      subview.centerYAnchor.constraint(equalTo: parent.centerYAnchor)
     ]
 
     NSLayoutConstraint.activate(constraints)

@@ -12,7 +12,7 @@ final class PledgeExpandableHeaderRewardHeaderCell: UITableViewCell, ValueCell {
 
   // MARK: - Lifecycle
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+  override init(style _: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
 
     self.configureViews()
@@ -35,13 +35,12 @@ final class PledgeExpandableHeaderRewardHeaderCell: UITableViewCell, ValueCell {
     _ = self.amountLabel
       |> \.adjustsFontForContentSizeCategory .~ true
       |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ UILayoutPriority.required
-    
+
     _ = self.textLabel!
       |> titleLabelStyle
 
     _ = self.detailTextLabel!
       |> subtitleLabelStyle
-    
   }
 
   // MARK: - View model
@@ -67,8 +66,8 @@ final class PledgeExpandableHeaderRewardHeaderCell: UITableViewCell, ValueCell {
 
   private func configureViews() {
     _ = (self.amountLabel, self.contentView)
-     |> ksr_addSubviewToParent()
-     |> ksr_constrainViewToTrailingMarginInParent()
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToTrailingMarginInParent()
   }
 }
 
