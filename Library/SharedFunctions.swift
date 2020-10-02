@@ -350,3 +350,17 @@ public func selectedRewardQuantities(in backing: Backing) -> SelectedRewardQuant
 
   return quantities
 }
+
+public func rewardsCarouselCanNavigateToReward(_ reward: Reward, in project: Project) -> Bool {
+  guard !currentUserIsCreator(of: project) else { return false }
+
+  let isBacking = userIsBacking(reward: reward, inProject: project)
+  let isAvailableForNewBacker = rewardIsAvailable(project: project, reward: reward) && !isBacking
+  let isAvailableForExistingBackerToEdit = (isBacking && reward.hasAddOns)
+
+  return [
+    project.state == .live,
+    isAvailableForNewBacker || isAvailableForExistingBackerToEdit
+  ]
+  .allSatisfy(isTrue)
+}

@@ -53,7 +53,7 @@ public final class RewardCardContainerViewModel: RewardCardContainerViewModelTyp
 
     self.pledgeButtonEnabled = projectAndReward
       .map { project, reward in
-        RewardsCollectionViewModel.rewardsCarouselCanNavigateToReward(reward, in: project)
+        rewardsCarouselCanNavigateToReward(reward, in: project)
       }
 
     self.pledgeButtonHidden = pledgeButtonTitleText.map(isNil)

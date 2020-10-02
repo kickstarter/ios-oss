@@ -259,6 +259,50 @@ final class RewardsCollectionViewModelTests: TestCase {
     }
   }
 
+  func testGoToAddOnSelection_IsBackedWithAddOns_RewardUnavailableButEditableBecauseBacked() {
+    withEnvironment(config: .template) {
+      let reward = Reward.template
+        |> Reward.lens.hasAddOns .~ true
+        |> Reward.lens.limit .~ 5
+        |> Reward.lens.remaining .~ 0
+        |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 - 1)
+
+      let project = Project.cosmicSurgery
+        |> Project.lens.rewardData.rewards .~ [reward]
+        |> Project.lens.personalization.backing .~ (
+          .template
+            |> Backing.lens.reward .~ reward
+            |> Backing.lens.rewardId .~ reward.id
+        )
+
+      self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
+      self.vm.inputs.viewDidLoad()
+
+      self.goToAddOnSelection.assertDidNotEmitValue()
+      self.goToPledge.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptTitle.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptMessage.assertDidNotEmitValue()
+      XCTAssertNil(self.vm.outputs.selectedReward())
+
+      let expected1 = PledgeViewData(
+        project: project,
+        rewards: [reward],
+        selectedQuantities: [reward.id: 1],
+        selectedLocationId: nil,
+        refTag: .activity,
+        context: .updateReward
+      )
+
+      self.vm.inputs.rewardSelected(with: reward.id)
+
+      self.goToAddOnSelection.assertValues([expected1])
+      self.goToPledge.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptTitle.assertDidNotEmitValue()
+      self.showEditRewardConfirmationPromptMessage.assertDidNotEmitValue()
+      XCTAssertEqual(self.vm.outputs.selectedReward(), reward)
+    }
+  }
+
   func testGoToAddOnSelection_IsBackedWithAddOns_Changed_BackingWithAddOns() {
     withEnvironment(config: .template) {
       let reward = Reward.template
