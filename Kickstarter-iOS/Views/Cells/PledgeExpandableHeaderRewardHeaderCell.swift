@@ -6,10 +6,6 @@ final class PledgeExpandableHeaderRewardHeaderCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   private lazy var amountLabel: UILabel = UILabel(frame: .zero)
-  private lazy var leftColumnStackView: UIStackView = UIStackView(frame: .zero)
-  private lazy var rootStackView: UIStackView = UIStackView(frame: .zero)
-  private lazy var subtitleLabel: UILabel = UILabel(frame: .zero)
-  private lazy var titleLabel: UILabel = UILabel(frame: .zero)
 
   private let viewModel: PledgeExpandableHeaderRewardCellViewModelType
     = PledgeExpandableHeaderRewardCellViewModel()
@@ -17,10 +13,9 @@ final class PledgeExpandableHeaderRewardHeaderCell: UITableViewCell, ValueCell {
   // MARK: - Lifecycle
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
+    super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
 
     self.configureViews()
-    self.setupConstraints()
     self.bindViewModel()
   }
 
@@ -41,23 +36,12 @@ final class PledgeExpandableHeaderRewardHeaderCell: UITableViewCell, ValueCell {
       |> \.adjustsFontForContentSizeCategory .~ true
       |> UIView.lens.contentCompressionResistancePriority(for: .vertical) .~ UILayoutPriority.required
     
-
-    _ = self.rootStackView
-      |> rootStackViewStyle(self.traitCollection.preferredContentSizeCategory > .accessibilityLarge)
-
-    _ = self.titleLabel
+    _ = self.textLabel!
       |> titleLabelStyle
-      |> UILabel.lens.contentCompressionResistancePriority(for: .vertical) .~ UILayoutPriority.required
 
-    _ = self.subtitleLabel
+    _ = self.detailTextLabel!
       |> subtitleLabelStyle
-      |> UILabel.lens.contentCompressionResistancePriority(for: .vertical) .~ UILayoutPriority.required
-
-    _ = self.leftColumnStackView
-      |> verticalStackViewStyle
-      |> UIStackView.lens.contentCompressionResistancePriority(for: .vertical) .~ UILayoutPriority.required
-      |> \.spacing .~ Styles.grid(1)
-      
+    
   }
 
   // MARK: - View model
@@ -70,36 +54,21 @@ final class PledgeExpandableHeaderRewardHeaderCell: UITableViewCell, ValueCell {
     self.viewModel.outputs.labelText
       .observeForUI()
       .observeValues { [weak self] titleText in
-        self?.subtitleLabel.text = titleText
-        self?.subtitleLabel.setNeedsLayout()
+        self?.detailTextLabel?.text = titleText
       }
   }
 
   // MARK: - Configuration
-  
-  private func setupConstraints() {
-    NSLayoutConstraint.activate([
-      self.leftColumnStackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 40),
-    ])
-  }
 
   func configureWith(value: PledgeExpandableHeaderRewardCellData) {
     self.viewModel.inputs.configure(with: value)
-    
     self.contentView.layoutIfNeeded()
   }
 
   private func configureViews() {
-    _ = (self.rootStackView, self.contentView)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
-
-    _ = ([self.titleLabel, self.subtitleLabel], self.leftColumnStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = ([self.leftColumnStackView, UIView(), self.amountLabel], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-  
+    _ = (self.amountLabel, self.contentView)
+     |> ksr_addSubviewToParent()
+     |> ksr_constrainViewToTrailingMarginInParent()
   }
 }
 
@@ -118,24 +87,4 @@ private let titleLabelStyle: LabelStyle = { label in
     |> \.textColor .~ .ksr_text_black
     |> \.numberOfLines .~ 0
     |> \.text .~ Strings.Your_reward()
-}
-
-private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
-  let alignment: UIStackView.Alignment = (isAccessibilityCategory ? .leading : .top)
-  let axis: NSLayoutConstraint.Axis = (isAccessibilityCategory ? .vertical : .horizontal)
-  let distribution: UIStackView.Distribution = (isAccessibilityCategory ? .equalSpacing : .fill)
-  let spacing: CGFloat = (isAccessibilityCategory ? Styles.grid(1) : 0)
-
-  return { (stackView: UIStackView) in
-    stackView
-      |> \.alignment .~ alignment
-      |> \.axis .~ axis
-      |> \.distribution .~ distribution
-      |> \.spacing .~ spacing
-      |> \.isLayoutMarginsRelativeArrangement .~ true
-      |> \.layoutMargins .~ .init(
-        topBottom: Styles.grid(3),
-        leftRight: CheckoutConstants.PledgeView.Inset.leftRight
-      )
-  }
 }

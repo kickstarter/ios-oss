@@ -38,6 +38,21 @@ public func ksr_constrainViewToCenterInParent() -> ((UIView, UIView) -> (UIView,
   }
 }
 
+public func ksr_constrainViewToTrailingMarginInParent() -> ((UIView, UIView) -> (UIView, UIView)) {
+  return { subview, parent in
+    subview.translatesAutoresizingMaskIntoConstraints = false
+
+    let constraints = [
+      subview.trailingAnchor.constraint(equalTo: parent.layoutMarginsGuide.trailingAnchor),
+      subview.centerYAnchor.constraint(equalTo: parent.centerYAnchor),
+    ]
+
+    NSLayoutConstraint.activate(constraints)
+
+    return (subview, parent)
+  }
+}
+
 public func ksr_addLayoutGuideToView() -> ((UILayoutGuide, UIView) -> (UILayoutGuide, UIView)) {
   return { layoutGuide, view in
     view.addLayoutGuide(layoutGuide)
