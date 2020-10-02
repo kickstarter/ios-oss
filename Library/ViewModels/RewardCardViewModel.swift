@@ -82,9 +82,6 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
     let rewardItemsIsEmpty = reward
       .map { $0.rewardsItems.isEmpty }
 
-    let rewardAvailable = reward
-      .map { $0.remaining == 0 }.negate()
-
     self.includedItemsStackViewHidden = rewardItemsIsEmpty.skipRepeats()
 
     self.items = reward
@@ -103,7 +100,9 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
       .takeWhen(self.rewardCardTappedProperty.signal)
       .map { $0.id }
 
-    self.cardUserInteractionIsEnabled = rewardAvailable
+    self.cardUserInteractionIsEnabled = projectAndReward.map { project, reward in
+      rewardsCarouselCanNavigateToReward(reward, in: project)
+    }
 
     self.estimatedDeliveryDateLabelHidden = context.combineLatest(with: reward)
       .map { context, reward in
