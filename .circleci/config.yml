@@ -238,7 +238,7 @@ jobs:
     <<: *distribute_job
     environment:
       - *default_environment
-      - LANE=alpha_match_gym_appcenter_s3
+      - LANE=alpha_match_gym_appcenter
       - FIREBASE_DIR=Firebase-Alpha
       - DSYMS_FILE=KickAlpha.app.dSYM.zip
 
@@ -274,7 +274,7 @@ jobs:
     <<: *distribute_job
     environment:
       - *default_environment
-      - LANE=itunes_match_gym_appcenter_s3
+      - LANE=itunes_match_gym_deliver
       - FIREBASE_DIR=Firebase-Production
       - DSYMS_FILE=Kickstarter.app.dSYM.zip
 

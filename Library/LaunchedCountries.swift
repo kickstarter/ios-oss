@@ -4,10 +4,7 @@ public struct LaunchedCountries {
   public let countries: [Project.Country]
 
   public init() {
-    self.countries = [
-      .au, .at, .be, .ca, .ch, .de, .dk, .es, .fr, .gb, .hk, .ie, .it, .jp, .lu, .mx, .nl, .no, .nz, .se, .sg,
-      .us
-    ]
+    self.countries = Project.Country.all
   }
 
   /**

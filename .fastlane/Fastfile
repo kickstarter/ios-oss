@@ -126,7 +126,6 @@ platform :ios do
 
   desc "Upload to the App Store"
   lane :itunes_deliver do
-
     deliver(
       force: true,
       username: ENV["ITUNES_CONNECT_ACCOUNT"],

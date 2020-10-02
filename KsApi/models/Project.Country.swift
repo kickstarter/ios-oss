@@ -38,14 +38,14 @@ extension Project {
     public static let nl = Country(countryCode: "NL", currencyCode: "EUR", currencySymbol: "€", maxPledge: eurMaxPledge, minPledge: eurMinPledge, trailingCode: false)
     public static let no = Country(countryCode: "NO", currencyCode: "NOK", currencySymbol: "kr", maxPledge: 80_000, minPledge: 5, trailingCode: true)
     public static let nz = Country(countryCode: "NZ", currencyCode: "NZD", currencySymbol: "$", maxPledge: 14_000, minPledge: 1, trailingCode: true)
-    public static let pl = Country(countryCode: "PL", currencyCode: "PLN", currencySymbol: "zł", maxPledge: 37_250, minPledge: 5, trailingCode: true)
+    public static let pl = Country(countryCode: "PL", currencyCode: "PLN", currencySymbol: "zł", maxPledge: 37_250, minPledge: 5, trailingCode: false)
     public static let se = Country(countryCode: "SE", currencyCode: "SEK", currencySymbol: "kr", maxPledge: 85_000, minPledge: 5, trailingCode: true)
     public static let sg = Country(countryCode: "SG", currencyCode: "SGD", currencySymbol: "$", maxPledge: 13_000, minPledge: 2, trailingCode: true)
     public static let si = Country(countryCode: "SI", currencyCode: "EUR", currencySymbol: "€", maxPledge: eurMaxPledge, minPledge: eurMinPledge, trailingCode: false)
     public static let us = Country(countryCode: "US", currencyCode: "USD", currencySymbol: "$", maxPledge: 10_000, minPledge: 1, trailingCode: true)
 
     public static let all: [Country] = [
-      .au, .at, .be, .ca, .ch, .de, .dk, .es, .fr, .gb, .gr, .hk, .ie, .it, .jp, .lu, .mx, .nl, .no, .nz, .pl, .se, .sg, si, .us
+      .au, .at, .be, .ca, .ch, .de, .dk, .es, .fr, .gb, .gr, .hk, .ie, .it, .jp, .lu, .mx, .nl, .no, .nz, .pl, .se, .sg, .si, .us
     ]
     // swiftformat:enable wrap
     // swiftformat:enable wrapArguments
