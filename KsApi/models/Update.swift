@@ -49,7 +49,7 @@ extension Update: Argo.Decodable {
       <*> json <| "sequence"
       <*> (json <| "title" <|> .success(""))
     return tmp3
-      <*> json <| "urls"
+      <*> ((json <| "urls" >>- tryDecodable) as Decoded<Update.UrlsEnvelope>)
       <*> json <|? "user"
       <*> json <|? "visible"
   }
@@ -68,3 +68,7 @@ extension Update.UrlsEnvelope.WebEnvelope: Argo.Decodable {
       <^> json <| "update"
   }
 }
+
+extension Update.UrlsEnvelope.WebEnvelope: Swift.Codable {}
+
+extension Update.UrlsEnvelope: Swift.Codable {}
