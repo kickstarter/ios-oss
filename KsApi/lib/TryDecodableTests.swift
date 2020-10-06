@@ -137,4 +137,40 @@ final class TryDecodableTests: XCTestCase {
 
     XCTAssertEqual(argoDecoded.value, expected)
   }
+
+  func testTryDecodableMissingKeyError() {
+    let data: [String: Any?] = [
+      "id": 3,
+      "name": "Missing Key"
+    ]
+
+    let argoDecoded = SingleValueArgoModel.decodeJSONDictionary(data as [String: Any])
+
+    XCTAssertNil(argoDecoded.value, "decoded value should be nil")
+    XCTAssert(argoDecoded.error == DecodeError.missingKey("model"))
+  }
+
+  func testTryDecodableTypeMismatchError() {
+    let data: [String: Any?] = [
+      "id": 4,
+      "name": "value",
+      "model": [
+        "array": ["string1", "string2"],
+        "bool": true,
+        "dict": ["key1": "value1", "key2": "value2"],
+        "id": "wrong type",
+        "name": "Swift Name"
+      ]
+    ]
+
+    let argoDecoded = MyArgoModel.decodeJSONDictionary(data as [String: Any])
+
+    XCTAssertNil(argoDecoded.value, "decoded value should be nil")
+    switch argoDecoded.error! {
+    case DecodeError.custom:
+      XCTAssertTrue(true, "custom error type expected")
+    default:
+      XCTAssertTrue(false, "custom error type expected")
+    }
+  }
 }
