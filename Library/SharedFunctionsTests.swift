@@ -239,7 +239,6 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
   }
 
-
   func testRewardsCarouselCanNavigateToReward_Reward_Unavailable_NotBacked_HasAddOns() {
     let reward = Reward.template
       |> Reward.lens.limit .~ 5
@@ -304,5 +303,26 @@ final class SharedFunctionsTests: TestCase {
       )
 
     XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
+  }
+
+  func testIsStartDateBeforeToday_Reward_StartsAt_Nil() {
+    let reward = Reward.template
+      |> Reward.lens.startsAt .~ nil
+
+    XCTAssertTrue(isStartDateBeforeToday(for: reward))
+  }
+
+  func testIsStartDateBeforeToday_Reward_StartsAt_PastDate() {
+    let reward = Reward.template
+      |> Reward.lens.startsAt .~ (MockDate().timeIntervalSince1970 - 60)
+
+    XCTAssertTrue(isStartDateBeforeToday(for: reward))
+  }
+
+  func testIsStartDateBeforeToday_Reward_StartsAt_FutureDate() {
+    let reward = Reward.template
+      |> Reward.lens.startsAt .~ (MockDate().timeIntervalSince1970 + 60)
+
+    XCTAssertFalse(isStartDateBeforeToday(for: reward))
   }
 }

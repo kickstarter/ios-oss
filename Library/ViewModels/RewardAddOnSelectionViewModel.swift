@@ -378,14 +378,14 @@ private func addOnIsAvailable(_ addOn: Reward, in project: Project) -> Bool {
   }
 
   let isUnlimitedOrAvailable = addOn.limit == nil || addOn.remaining ?? 0 > 0
-  let hasNoTimeLimitOrHasNotEnded = (
-    addOn.endsAt == nil ||
-      (addOn.endsAt ?? 0) >= AppEnvironment.current.dateType.init().timeIntervalSince1970
-  )
 
+  // Assuming the user has not backed the addOn, we only display if it's within range of the start and end date
+  let hasNoTimeLimitOrIsWithinRange = isStartDateBeforeToday(for: addOn) &&
+    (addOn.endsAt == nil || (addOn.endsAt ?? 0) >= AppEnvironment.current.dateType.init()
+      .timeIntervalSince1970)
   return [
     project.state == .live,
-    hasNoTimeLimitOrHasNotEnded,
+    hasNoTimeLimitOrIsWithinRange,
     isUnlimitedOrAvailable
   ]
   .allSatisfy(isTrue)
