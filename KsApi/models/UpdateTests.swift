@@ -70,4 +70,40 @@ internal final class UpdateTests: XCTestCase {
       update.value?.urls.web.update
     )
   }
+
+  func testJSONDecoding_WithBadUrls_WebData_WrongType() {
+    let update = Update.decodeJSONDictionary([
+      "body": "world",
+      "id": 1,
+      "public": true,
+      "project_id": 2,
+      "sequence": 3,
+      "title": "hello",
+      "visible": true,
+      "urls": [
+        "web": [
+          "update": 0xBAAAAAAD
+        ]
+      ]
+    ])
+
+    XCTAssertNotNil(update.error)
+  }
+
+  func testJSONDecoding_WithBadUrls_WebData_WrongKey() {
+    let update = Update.decodeJSONDictionary([
+      "body": "world",
+      "id": 1,
+      "public": true,
+      "project_id": 2,
+      "sequence": 3,
+      "title": "hello",
+      "visible": true,
+      "urls": [
+        "wrong_key": "data"
+      ]
+    ])
+
+    XCTAssertNotNil(update.error)
+  }
 }
