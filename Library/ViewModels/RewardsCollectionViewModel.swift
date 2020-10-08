@@ -71,7 +71,8 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
 
     self.reloadDataWithValues = Signal.combineLatest(project, rewards)
       .map { project, rewards in
-        rewards.map { reward in (project, reward, .pledge) }
+        rewards.filter { reward in isStartDateBeforeToday(for: reward) }
+          .map { reward in (project, reward, .pledge) }
       }
 
     self.configureRewardsCollectionViewFooterWithCount = self.reloadDataWithValues
@@ -254,6 +255,8 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
   public var inputs: RewardsCollectionViewModelInputs { return self }
   public var outputs: RewardsCollectionViewModelOutputs { return self }
 }
+
+// MARK: - Functions
 
 private func titleForContext(_ context: RewardsCollectionViewContext, project: Project) -> String {
   if currentUserIsCreator(of: project) {

@@ -394,9 +394,40 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.limit .~ 5
       |> Reward.lens.remaining .~ 2
 
+    // timebased add-on, starts in 60 seconds
+    let addOn7 = Reward.template
+      |> Reward.lens.id .~ 7
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.startsAt .~ (MockDate().timeIntervalSince1970 + 60)
+
+    // timebased add-on, started 60 seconds ago.
+    let addOn8 = Reward.template
+      |> Reward.lens.id .~ 8
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.startsAt .~ (MockDate().timeIntervalSince1970 - 60)
+
+    // timebased add-on, both startsAt and endsAt are within a valid range
+    let addOn9 = Reward.template
+      |> Reward.lens.id .~ 9
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.startsAt .~ (MockDate().timeIntervalSince1970 - 60)
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+
+    // timebased add-on, invalid range
+    let addOn10 = Reward.template
+      |> Reward.lens.id .~ 10
+      |> Reward.lens.limit .~ nil
+      |> Reward.lens.remaining .~ nil
+      |> Reward.lens.startsAt .~ (MockDate().timeIntervalSince1970 + 30)
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [baseReward]
-      |> Project.lens.rewardData.addOns .~ [addOn1, addOn2, addOn3, addOn4, addOn5, addOn6]
+      |> Project.lens.rewardData
+      .addOns .~ [addOn1, addOn2, addOn3, addOn4, addOn5, addOn6, addOn7, addOn8, addOn9, addOn10]
       |> Project.lens.personalization.backing .~ (
         .template
           |> Backing.lens.addOns .~ [addOn3]
@@ -404,7 +435,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
           |> Backing.lens.rewardId .~ baseReward.id
       )
 
-    let expectedAddOns = [addOn1, addOn3, addOn5, addOn6]
+    let expectedAddOns = [addOn1, addOn3, addOn5, addOn6, addOn8, addOn9]
 
     let expected = expectedAddOns
       .map { reward in
