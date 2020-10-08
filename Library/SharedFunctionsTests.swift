@@ -325,4 +325,25 @@ final class SharedFunctionsTests: TestCase {
 
     XCTAssertFalse(isStartDateBeforeToday(for: reward))
   }
+
+  func testIsEndDateAfterToday_Reward_EndsAt_Nil() {
+    let reward = Reward.template
+      |> Reward.lens.endsAt .~ nil
+
+    XCTAssertTrue(isEndDateAfterToday(for: reward))
+  }
+
+  func testIsEndDateAfterToday_Reward_EndsAt_PastDate() {
+    let reward = Reward.template
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 - 60)
+
+    XCTAssertFalse(isEndDateAfterToday(for: reward))
+  }
+
+  func testIsEndDateAfterToday_Reward_EndsAt_FutureDate() {
+    let reward = Reward.template
+      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
+
+    XCTAssertTrue(isEndDateAfterToday(for: reward))
+  }
 }
