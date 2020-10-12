@@ -7,63 +7,6 @@ import ReactiveSwift
 extension Service {
   private static let session = URLSession(configuration: .default)
 
-  private func decodeModel<M: Argo.Decodable>(_ json: Any) ->
-    SignalProducer<M, ErrorEnvelope> where M == M.DecodedType {
-    return SignalProducer(value: json)
-      .map { json in decode(json) as Decoded<M> }
-      .flatMap(.concat) { (decoded: Decoded<M>) -> SignalProducer<M, ErrorEnvelope> in
-        switch decoded {
-        case let .success(value):
-          return .init(value: value)
-        case let .failure(error):
-          print("Argo decoding model \(M.self) error: \(error)")
-          return .init(error: .couldNotDecodeJSON(error))
-        }
-      }
-  }
-
-  private func decodeModels<M: Argo.Decodable>(_ json: Any)
-    -> SignalProducer<[M], ErrorEnvelope> where M == M.DecodedType {
-    return SignalProducer(value: json)
-      .map { json in decode(json) as Decoded<[M]> }
-      .flatMap(.concat) { (decoded: Decoded<[M]>) -> SignalProducer<[M], ErrorEnvelope> in
-        switch decoded {
-        case let .success(value):
-          return .init(value: value)
-        case let .failure(error):
-          print("Argo decoding model error: \(error)")
-          return .init(error: .couldNotDecodeJSON(error))
-        }
-      }
-  }
-
-  private func decodeModel<M: Argo.Decodable>(_ json: Any) ->
-    SignalProducer<M?, ErrorEnvelope> where M == M.DecodedType {
-    return SignalProducer(value: json)
-      .map { json in decode(json) as M? }
-  }
-
-  private func decodeGraphModel<T: Swift.Decodable>(_ jsonData: Data) -> SignalProducer<T, GraphError> {
-    return SignalProducer(value: jsonData)
-      .flatMap { data -> SignalProducer<T, GraphError> in
-        do {
-          let decodedObject = try JSONDecoder().decode(GraphResponse<T>.self, from: data)
-
-          print("🔵 [KsApi] Successfully Decoded Data")
-
-          return .init(value: decodedObject.data)
-        } catch {
-          print("🔴 [KsApi] Failure - Decoding error: \((error as NSError).description)")
-          return .init(error: .jsonDecodingError(
-            responseString: String(data: data, encoding: .utf8),
-            error: error
-          ))
-        }
-      }
-  }
-
-  // MARK: - Public Request Functions
-
   func fetch<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> {
     let queryString: String = Query.build(query)
 

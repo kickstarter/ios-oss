@@ -239,7 +239,6 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
   }
 
-
   func testRewardsCarouselCanNavigateToReward_Reward_Unavailable_NotBacked_HasAddOns() {
     let reward = Reward.template
       |> Reward.lens.limit .~ 5
