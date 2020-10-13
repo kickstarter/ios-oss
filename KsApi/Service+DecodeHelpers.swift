@@ -14,7 +14,7 @@ extension Service {
         case let .success(value):
           return .init(value: value)
         case let .failure(error):
-          print("Argo decoding model \(M.self) error: \(error)")
+          print("🔴 [KsApi] Failure - Argo decoding model \(M.self) error: \(error)")
           return .init(error: .couldNotDecodeJSON(error))
         }
       }
@@ -29,7 +29,7 @@ extension Service {
         case let .success(value):
           return .init(value: value)
         case let .failure(error):
-          print("Argo decoding model error: \(error)")
+          print("🔴 [KsApi] Failure - Argo decoding model error: \(error)")
           return .init(error: .couldNotDecodeJSON(error))
         }
       }
@@ -41,7 +41,7 @@ extension Service {
       .map { json in decode(json) as M? }
   }
 
-  // MARK: Swift.Codable
+  // MARK: - Swift.Codable
 
   func decodeGraphModel<T: Swift.Decodable>(_ jsonData: Data) -> SignalProducer<T, GraphError> {
     return SignalProducer(value: jsonData)
