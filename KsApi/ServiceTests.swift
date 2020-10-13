@@ -1,4 +1,6 @@
 @testable import KsApi
+import ReactiveExtensions
+import ReactiveSwift
 import XCTest
 
 final class ServiceTests: XCTestCase {
@@ -41,5 +43,208 @@ final class ServiceTests: XCTestCase {
     let loggedOut = loggedIn.logout()
 
     XCTAssertTrue(loggedOut == Service())
+  }
+
+  func testArgoDecodeModel_ValidModel() {
+    let data: [String: Any] = [
+      "id": 1,
+      "name": "Argo Name",
+      "model": [
+        "array": ["string1", "string2"],
+        "bool": true,
+        "dict": ["key1": "value1", "key2": "value2"],
+        "id": 5,
+        "name": "Swift Name"
+      ]
+    ]
+
+    let expectedResult = MyArgoModel.decodeJSONDictionary(data).value
+
+    let service = Service()
+    let model: SignalProducer<MyArgoModel, ErrorEnvelope> = service.decodeModel(data)
+    let result = try! model.single()?.get()
+    XCTAssertEqual(result, expectedResult)
+  }
+
+  func testArgoDecodeModel_WrongKeyModel() {
+    let data: [String: Any] = [
+      "id": 1,
+      "name": "Argo Name",
+      "model": [
+        "array": ["string1", "string2"],
+        "bool": true,
+        "dict": ["key1": "value1", "key2": "value2"],
+        "id": 5,
+        "wrong_key": "Swift Name"
+      ]
+    ]
+
+    let model: SignalProducer<MyArgoModel, ErrorEnvelope> = Service().decodeModel(data)
+    XCTAssertThrowsError(try model.single()?.get(), "wrong key should throw an error")
+  }
+
+  func testArgoDecodeModel_WrongTypeModel() {
+    let data: [String: Any] = [
+      "id": 1,
+      "name": "Argo Name",
+      "model": [
+        "array": ["string1", "string2"],
+        "bool": "wrong type",
+        "dict": ["key1": "value1", "key2": "value2"],
+        "id": 5,
+        "name": "Swift Name"
+      ]
+    ]
+
+    let model: SignalProducer<MyArgoModel, ErrorEnvelope> = Service().decodeModel(data)
+    XCTAssertThrowsError(try model.single()?.get(), "wrong type should throw an error")
+  }
+
+  func test_Array_ArgoDecodeModel_ValidModel() {
+    let data: [[String: Any]] = [[
+      "id": 1,
+      "name": "Argo Name",
+      "model": [
+        "array": ["string1", "string2"],
+        "bool": true,
+        "dict": ["key1": "value1", "key2": "value2"],
+        "id": 5,
+        "name": "Swift Name"
+      ]
+    ]]
+
+    let expectedResult = data.map { (dict) -> MyArgoModel in
+      MyArgoModel.decodeJSONDictionary(dict).value!
+    }
+
+    let model: SignalProducer<[MyArgoModel], ErrorEnvelope> = Service().decodeModels(data)
+    let result = try! model.single()?.get()
+    XCTAssertEqual(result, expectedResult)
+  }
+
+  func test_Array_ArgoDecodeModel_EmptyArray() {
+    let data: [[String: Any]] = [[:]]
+
+    let model: SignalProducer<[MyArgoModel], ErrorEnvelope> = Service().decodeModels(data)
+    XCTAssertThrowsError(try model.single()?.get(), "empty array should throw an error")
+  }
+
+  func testSwiftDecodeModel_ValidModel() {
+    let jsonData: String = """
+    {
+        "array": ["string1", "string2"],
+        "bool": true,
+        "dict": {"key1": "value1", "key2": "value2"},
+        "id": 5,
+        "name": "Swift Name"
+    }
+    """
+
+    let expectedResult = try! JSONDecoder().decode(MySwiftModel.self, from: jsonData.data(using: .utf8)!)
+
+    let model: SignalProducer<MySwiftModel, ErrorEnvelope> = Service()
+      .decodeModel(jsonData.data(using: .utf8)!)
+    let result = try! model.single()?.get()
+    XCTAssertEqual(result, expectedResult)
+  }
+
+  func testSwiftDecodeModel_WrongKeyModel() {
+    let jsonData: String = """
+    {
+        "array": ["string1", "string2"],
+        "bool": true,
+        "dict": {"key1": "value1", "key2": "value2"},
+        "id": 5,
+        "wrong_key": "Swift Name"
+    }
+    """
+
+    let model: SignalProducer<MySwiftModel, ErrorEnvelope> = Service()
+      .decodeModel(jsonData.data(using: .utf8)!)
+    XCTAssertThrowsError(try model.single()?.get(), "wrong key should throw an error")
+  }
+
+  func testSwiftDecodeModel_WrongTypeModel() {
+    let jsonData: String = """
+    {
+        "array": ["string1", "string2"],
+        "bool": "wrong_type",
+        "dict": {"key1": "value1", "key2": "value2"},
+        "id": 5,
+        "name": "Swift Name"
+    }
+    """
+
+    let model: SignalProducer<MySwiftModel, ErrorEnvelope> = Service()
+      .decodeModel(jsonData.data(using: .utf8)!)
+    XCTAssertThrowsError(try model.single()?.get(), "wrong key should throw an error")
+  }
+
+  func testSwiftDecodeModel_Optional_WrongTypeModel() {
+    let jsonData: String = """
+    {
+        "array": ["string1", "string2"],
+        "bool": "wrong_type",
+        "dict": {"key1": "value1", "key2": "value2"},
+        "id": 5,
+        "name": "Swift Name"
+    }
+    """
+    let data = jsonData.data(using: .utf8)!
+    let model: SignalProducer<MySwiftModel?, ErrorEnvelope> = Service().decodeModel(data: data)
+    let result = try! model.single()?.get()
+    XCTAssertNil(result)
+  }
+
+  func test_Array_SwiftDecodeModel_ValidModel() {
+    let jsonData: String = """
+    [
+       {
+          "array":[
+             "string1",
+             "string2"
+          ],
+          "bool":true,
+          "dict":{
+             "key1":"value1",
+             "key2":"value2"
+          },
+          "id":5,
+          "name":"Swift Name"
+       },
+       {
+          "array":[
+             "string1",
+             "string2"
+          ],
+          "bool":true,
+          "dict":{
+             "key1":"value1",
+             "key2":"value2"
+          },
+          "id":6,
+          "name":"Swift Name"
+       }
+    ]
+    """
+
+    let expectedResult = try! JSONDecoder().decode([MySwiftModel].self, from: jsonData.data(using: .utf8)!)
+
+    let model: SignalProducer<[MySwiftModel], ErrorEnvelope> = Service()
+      .decodeModels(jsonData.data(using: .utf8)!)
+    let result = try! model.single()?.get()
+    XCTAssertEqual(result, expectedResult)
+  }
+
+  func test_Array_SwiftDecodeModel_EmptyArray() {
+    let jsonData: String = """
+    [
+    ]
+    """
+
+    let model: SignalProducer<[MySwiftModel], ErrorEnvelope> = Service()
+      .decodeModels(jsonData.data(using: .utf8)!)
+    let result = try! model.single()?.get()
+    XCTAssertEqual(result?.count, 0)
   }
 }
