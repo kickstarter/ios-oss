@@ -41,7 +41,10 @@ extension DecodeError: Hashable {
 
 public func == (lhs: DecodeError, rhs: DecodeError) -> Bool {
   switch (lhs, rhs) {
-  case let (.typeMismatch(expected: expected1, actual: actual1), .typeMismatch(expected: expected2, actual: actual2)):
+  case let (
+    .typeMismatch(expected: expected1, actual: actual1),
+    .typeMismatch(expected: expected2, actual: actual2)
+  ):
     return expected1 == expected2 && actual1 == actual2
 
   case let (.missingKey(string1), .missingKey(string2)):

@@ -6,7 +6,7 @@ precedencegroup ArgoDecodePrecedence {
   lowerThan: NilCoalescingPrecedence
 }
 
-infix operator <| : ArgoDecodePrecedence
-infix operator <|? : ArgoDecodePrecedence
-infix operator <|| : ArgoDecodePrecedence
-infix operator <||? : ArgoDecodePrecedence
+infix operator <|: ArgoDecodePrecedence
+infix operator <|?: ArgoDecodePrecedence
+infix operator <||: ArgoDecodePrecedence
+infix operator <||?: ArgoDecodePrecedence

@@ -12,16 +12,15 @@ public enum JSON {
 
 public extension JSON {
   /**
-    Transform an `Any` instance into `JSON`.
+   Transform an `Any` instance into `JSON`.
 
-    This is used to move from a loosely typed object (like those returned from
-    `NSJSONSerialization`) to the strongly typed `JSON` tree structure.
+   This is used to move from a loosely typed object (like those returned from
+   `NSJSONSerialization`) to the strongly typed `JSON` tree structure.
 
-    - parameter json: A loosely typed object
-  */
+   - parameter json: A loosely typed object
+   */
   init(_ json: Any) {
     switch json {
-
     case let v as [Any]:
       self = .array(v.map(JSON.init))
 
@@ -46,16 +45,16 @@ public extension JSON {
 
 extension JSON: Decodable {
   /**
-    Decode `JSON` into `Decoded<JSON>`.
+   Decode `JSON` into `Decoded<JSON>`.
 
-    This simply wraps the provided `JSON` in `.Success`. This is useful because
-    it means we can use `JSON` values with the `<|` family of operators to pull
-    out sub-keys.
+   This simply wraps the provided `JSON` in `.Success`. This is useful because
+   it means we can use `JSON` values with the `<|` family of operators to pull
+   out sub-keys.
 
-    - parameter json: The `JSON` value to decode
+   - parameter json: The `JSON` value to decode
 
-    - returns: The provided `JSON` wrapped in `.Success`
-  */
+   - returns: The provided `JSON` wrapped in `.Success`
+   */
   public static func decode(_ json: JSON) -> Decoded<JSON> {
     return pure(json)
   }
@@ -74,7 +73,7 @@ extension JSON: CustomStringConvertible {
   }
 }
 
-extension JSON: Equatable { }
+extension JSON: Equatable {}
 
 public func == (lhs: JSON, rhs: JSON) -> Bool {
   switch (lhs, rhs) {
@@ -88,7 +87,7 @@ public func == (lhs: JSON, rhs: JSON) -> Bool {
   }
 }
 
-/// MARK: Deprecations
+// MARK: Deprecations
 
 extension JSON {
   @available(*, deprecated: 3.0, renamed: "init")

@@ -6,10 +6,10 @@ public enum Decoded<T> {
 
 public extension Decoded {
   /**
-    Get the unwrapped value as an `Optional`.
+   Get the unwrapped value as an `Optional`.
 
-    - returns: The unwrapped value if it exists, otherwise `.None`
-  */
+   - returns: The unwrapped value if it exists, otherwise `.None`
+   */
   var value: T? {
     switch self {
     case let .success(value): return value
@@ -18,10 +18,10 @@ public extension Decoded {
   }
 
   /**
-    Get the error value as an `Optional`.
+   Get the error value as an `Optional`.
 
-    - returns: The unwrapped error if it exists, otherwise `.None`
-  */
+   - returns: The unwrapped error if it exists, otherwise `.None`
+   */
   var error: DecodeError? {
     switch self {
     case .success: return .none
@@ -32,27 +32,27 @@ public extension Decoded {
 
 public extension Decoded {
   /**
-    Convert a `Decoded` type into a `Decoded` `Optional` type.
+   Convert a `Decoded` type into a `Decoded` `Optional` type.
 
-    This is useful for when a decode operation should be allowed to fail, such
-    as when decoding an optional property.
+   This is useful for when a decode operation should be allowed to fail, such
+   as when decoding an optional property.
 
-    - parameter x: A `Decoded` type
+   - parameter x: A `Decoded` type
 
-    - returns: The `Decoded` type with any failure converted to `.success(.none)`
-  */
+   - returns: The `Decoded` type with any failure converted to `.success(.none)`
+   */
   static func optional<T>(_ x: Decoded<T>) -> Decoded<T?> {
     return .success(x.value)
   }
 
   /**
-    Convert an `Optional` into a `Decoded` value.
+   Convert an `Optional` into a `Decoded` value.
 
-    If the provided optional is `.Some`, this method extracts the value and
-    wraps it in `.Success`. Otherwise, it returns a `.TypeMismatch` error.
+   If the provided optional is `.Some`, this method extracts the value and
+   wraps it in `.Success`. Otherwise, it returns a `.TypeMismatch` error.
 
-    - returns: The provided `Optional` value transformed into a `Decoded` value
-  */
+   - returns: The provided `Optional` value transformed into a `Decoded` value
+   */
   static func fromOptional<T>(_ x: T?) -> Decoded<T> {
     switch x {
     case let .some(value): return .success(value)
@@ -63,38 +63,38 @@ public extension Decoded {
 
 public extension Decoded {
   /**
-    Convenience function for creating `.TypeMismatch` errors.
+   Convenience function for creating `.TypeMismatch` errors.
 
-    - parameter expected: A string describing the expected type
-    - parameter actual: A string describing the actual type
+   - parameter expected: A string describing the expected type
+   - parameter actual: A string describing the actual type
 
-    - returns: A `Decoded.Failure` with a `.TypeMismatch` error constructed
-               from the provided `expected` and `actual` values
-  */
+   - returns: A `Decoded.Failure` with a `.TypeMismatch` error constructed
+              from the provided `expected` and `actual` values
+   */
   static func typeMismatch<T, U>(expected: String, actual: U) -> Decoded<T> {
     return .failure(.typeMismatch(expected: expected, actual: String(describing: actual)))
   }
 
   /**
-    Convenience function for creating `.MissingKey` errors.
+   Convenience function for creating `.MissingKey` errors.
 
-    - parameter name: The name of the missing key
+   - parameter name: The name of the missing key
 
-    - returns: A `Decoded.Failure` with a `.MissingKey` error constructed from
-               the provided `name` value
-  */
+   - returns: A `Decoded.Failure` with a `.MissingKey` error constructed from
+              the provided `name` value
+   */
   static func missingKey<T>(_ name: String) -> Decoded<T> {
     return .failure(.missingKey(name))
   }
 
   /**
-    Convenience function for creating `.Custom` errors
+   Convenience function for creating `.Custom` errors
 
-    - parameter message: The custom error message
+   - parameter message: The custom error message
 
-    - returns: A `Decoded.Failure` with a `.Custom` error constructed from the
-               provided `message` value
-  */
+   - returns: A `Decoded.Failure` with a `.Custom` error constructed from the
+              provided `message` value
+   */
   static func customError<T>(_ message: String) -> Decoded<T> {
     return .failure(.custom(message))
   }
@@ -123,16 +123,16 @@ extension Decoded: CustomStringConvertible {
 
 public extension Decoded {
   /**
-    Extract the `.Success` value or throw an error.
+   Extract the `.Success` value or throw an error.
 
-    This can be used to move from `Decoded` types into the world of `throws`.
-    If the value exists, this will return it. Otherwise, it will throw the error
-    information.
+   This can be used to move from `Decoded` types into the world of `throws`.
+   If the value exists, this will return it. Otherwise, it will throw the error
+   information.
 
-    - throws: `DecodeError` if `self` is `.Failure`
+   - throws: `DecodeError` if `self` is `.Failure`
 
-    - returns: The unwrapped value
-  */
+   - returns: The unwrapped value
+   */
   func dematerialize() throws -> T {
     switch self {
     case let .success(value): return value
@@ -142,17 +142,17 @@ public extension Decoded {
 }
 
 /**
-  Construct a `Decoded` type from a throwing function.
+ Construct a `Decoded` type from a throwing function.
 
-  This can be used to move from the world of `throws` into a `Decoded` type. If
-  the function succeeds, it will wrap the returned value in a minimal context of
-  `.Success`. Otherwise, it will return a custom error with the thrown error from
-  the function.
+ This can be used to move from the world of `throws` into a `Decoded` type. If
+ the function succeeds, it will wrap the returned value in a minimal context of
+ `.Success`. Otherwise, it will return a custom error with the thrown error from
+ the function.
 
-  - parameter f: A function from `Void` to `T` that can `throw` an error
+ - parameter f: A function from `Void` to `T` that can `throw` an error
 
-  - returns: A `Decoded` type representing the success or failure of the function
-*/
+ - returns: A `Decoded` type representing the success or failure of the function
+ */
 public func materialize<T>(_ f: () throws -> T) -> Decoded<T> {
   do {
     return .success(try f())

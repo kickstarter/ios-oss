@@ -3,14 +3,14 @@ import Runes
 
 extension String: Decodable {
   /**
-    Decode `JSON` into `Decoded<String>`.
+   Decode `JSON` into `Decoded<String>`.
 
-    Succeeds if the value is a string, otherwise it returns a type mismatch.
+   Succeeds if the value is a string, otherwise it returns a type mismatch.
 
-    - parameter json: The `JSON` value to decode
+   - parameter json: The `JSON` value to decode
 
-    - returns: A decoded `String` value
-  */
+   - returns: A decoded `String` value
+   */
   public static func decode(_ json: JSON) -> Decoded<String> {
     switch json {
     case let .string(s): return pure(s)
@@ -21,15 +21,15 @@ extension String: Decodable {
 
 extension Int: Decodable {
   /**
-    Decode `JSON` into `Decoded<Int>`.
+   Decode `JSON` into `Decoded<Int>`.
 
-    Succeeds if the value is a number that can be converted to an `Int`,
-    otherwise it returns a type mismatch.
+   Succeeds if the value is a number that can be converted to an `Int`,
+   otherwise it returns a type mismatch.
 
-    - parameter json: The `JSON` value to decode
+   - parameter json: The `JSON` value to decode
 
-    - returns: A decoded `Int` value
-  */
+   - returns: A decoded `Int` value
+   */
   public static func decode(_ json: JSON) -> Decoded<Int> {
     switch json {
     case let .number(n): return pure(n.intValue)
@@ -40,15 +40,15 @@ extension Int: Decodable {
 
 extension UInt: Decodable {
   /**
-    Decode `JSON` into `Decoded<UInt>`.
+   Decode `JSON` into `Decoded<UInt>`.
 
-    Succeeds if the value is a number that can be converted to a `UInt`,
-    otherwise it returns a type mismatch.
+   Succeeds if the value is a number that can be converted to a `UInt`,
+   otherwise it returns a type mismatch.
 
-    - parameter json: The `JSON` value to decode
+   - parameter json: The `JSON` value to decode
 
-    - returns: A decoded `UInt` value
-  */
+   - returns: A decoded `UInt` value
+   */
   public static func decode(_ json: JSON) -> Decoded<UInt> {
     switch json {
     case let .number(n): return pure(n.uintValue)
@@ -59,16 +59,16 @@ extension UInt: Decodable {
 
 extension Int64: Decodable {
   /**
-    Decode `JSON` into `Decoded<Int64>`.
+   Decode `JSON` into `Decoded<Int64>`.
 
-    Succeeds if the value is a number that can be converted to an `Int64` or a
-    string that represents a large number, otherwise it returns a type
-    mismatch.
+   Succeeds if the value is a number that can be converted to an `Int64` or a
+   string that represents a large number, otherwise it returns a type
+   mismatch.
 
-    - parameter json: The `JSON` value to decode
+   - parameter json: The `JSON` value to decode
 
-    - returns: A decoded `Int64` value
-  */
+   - returns: A decoded `Int64` value
+   */
   public static func decode(_ json: JSON) -> Decoded<Int64> {
     switch json {
     case let .number(n): return pure(n.int64Value)
@@ -82,16 +82,16 @@ extension Int64: Decodable {
 
 extension UInt64: Decodable {
   /**
-    Decode `JSON` into `Decoded<UInt64>`.
+   Decode `JSON` into `Decoded<UInt64>`.
 
-    Succeeds if the value is a number that can be converted to an `UInt64` or a
-    string that represents a large number, otherwise it returns a type
-    mismatch.
+   Succeeds if the value is a number that can be converted to an `UInt64` or a
+   string that represents a large number, otherwise it returns a type
+   mismatch.
 
-    - parameter json: The `JSON` value to decode
+   - parameter json: The `JSON` value to decode
 
-    - returns: A decoded `UInt` value
-  */
+   - returns: A decoded `UInt` value
+   */
   public static func decode(_ json: JSON) -> Decoded<UInt64> {
     switch json {
     case let .number(n): return pure(n.uint64Value)
@@ -105,15 +105,15 @@ extension UInt64: Decodable {
 
 extension Double: Decodable {
   /**
-    Decode `JSON` into `Decoded<Double>`.
+   Decode `JSON` into `Decoded<Double>`.
 
-    Succeeds if the value is a number that can be converted to a `Double`,
-    otherwise it returns a type mismatch.
+   Succeeds if the value is a number that can be converted to a `Double`,
+   otherwise it returns a type mismatch.
 
-    - parameter json: The `JSON` value to decode
+   - parameter json: The `JSON` value to decode
 
-    - returns: A decoded `Double` value
-  */
+   - returns: A decoded `Double` value
+   */
   public static func decode(_ json: JSON) -> Decoded<Double> {
     switch json {
     case let .number(n): return pure(n.doubleValue)
@@ -124,15 +124,15 @@ extension Double: Decodable {
 
 extension Float: Decodable {
   /**
-    Decode `JSON` into `Decoded<Float>`.
+   Decode `JSON` into `Decoded<Float>`.
 
-    Succeeds if the value is a number that can be converted to a `Float`,
-    otherwise it returns a type mismatch.
+   Succeeds if the value is a number that can be converted to a `Float`,
+   otherwise it returns a type mismatch.
 
-    - parameter json: The `JSON` value to decode
+   - parameter json: The `JSON` value to decode
 
-    - returns: A decoded `Float` value
-  */
+   - returns: A decoded `Float` value
+   */
   public static func decode(_ json: JSON) -> Decoded<Float> {
     switch json {
     case let .number(n): return pure(n.floatValue)
@@ -143,15 +143,15 @@ extension Float: Decodable {
 
 extension Bool: Decodable {
   /**
-    Decode `JSON` into `Decoded<Bool>`.
+   Decode `JSON` into `Decoded<Bool>`.
 
-    Succeeds if the value is a boolean or if the value is a number that is able
-    to be converted to a boolean, otherwise it returns a type mismatch.
+   Succeeds if the value is a boolean or if the value is a number that is able
+   to be converted to a boolean, otherwise it returns a type mismatch.
 
-    - parameter json: The `JSON` value to decode
+   - parameter json: The `JSON` value to decode
 
-    - returns: A decoded `Bool` value
-  */
+   - returns: A decoded `Bool` value
+   */
   public static func decode(_ json: JSON) -> Decoded<Bool> {
     switch json {
     case let .bool(n): return pure(n)
@@ -163,37 +163,38 @@ extension Bool: Decodable {
 
 public extension Optional where Wrapped: Decodable, Wrapped == Wrapped.DecodedType {
   /**
-    Decode `JSON` into an `Optional<Wrapped>` value where `Wrapped` is `Decodable`.
+   Decode `JSON` into an `Optional<Wrapped>` value where `Wrapped` is `Decodable`.
 
-    Returns a decoded optional value from the result of performing `decode` on
-    the internal wrapped type.
+   Returns a decoded optional value from the result of performing `decode` on
+   the internal wrapped type.
 
-    - parameter json: The `JSON` value to decode
+   - parameter json: The `JSON` value to decode
 
-    - returns: A decoded optional `Wrapped` value
-  */
+   - returns: A decoded optional `Wrapped` value
+   */
   static func decode(_ json: JSON) -> Decoded<Wrapped?> {
     return Wrapped.decode(json) >>- { .success(.some($0)) }
   }
 }
 
-public extension Collection where Iterator.Element: Decodable, Iterator.Element == Iterator.Element.DecodedType {
+public extension Collection where Iterator.Element: Decodable,
+  Iterator.Element == Iterator.Element.DecodedType {
   /**
-    Decode `JSON` into an array of values where the elements of the array are
-    `Decodable`.
+   Decode `JSON` into an array of values where the elements of the array are
+   `Decodable`.
 
-    If the `JSON` is an array of `JSON` objects, this returns a decoded array
-    of values by mapping the element's `decode` function over the `JSON` and
-    then applying `sequence` to the result. This makes this `decode` function
-    an all-or-nothing operation (See the documentation for `sequence` for more
-    info).
+   If the `JSON` is an array of `JSON` objects, this returns a decoded array
+   of values by mapping the element's `decode` function over the `JSON` and
+   then applying `sequence` to the result. This makes this `decode` function
+   an all-or-nothing operation (See the documentation for `sequence` for more
+   info).
 
-    If the `JSON` is not an array, this returns a type mismatch.
+   If the `JSON` is not an array, this returns a type mismatch.
 
-    - parameter json: The `JSON` value to decode
+   - parameter json: The `JSON` value to decode
 
-    - returns: A decoded array of values
-  */
+   - returns: A decoded array of values
+   */
   static func decode(_ json: JSON) -> Decoded<[Iterator.Element]> {
     switch json {
     case let .array(a): return sequence(a.map(Iterator.Element.decode))
@@ -203,47 +204,47 @@ public extension Collection where Iterator.Element: Decodable, Iterator.Element 
 }
 
 /**
-  Decode `JSON` into an array of values where the elements of the array are
-  `Decodable`.
+ Decode `JSON` into an array of values where the elements of the array are
+ `Decodable`.
 
-  If the `JSON` is an array of `JSON` objects, this returns a decoded array
-  of values by mapping the element's `decode` function over the `JSON` and
-  then applying `sequence` to the result. This makes `decodeArray` an
-  all-or-nothing operation (See the documentation for `sequence` for more
-  info).
+ If the `JSON` is an array of `JSON` objects, this returns a decoded array
+ of values by mapping the element's `decode` function over the `JSON` and
+ then applying `sequence` to the result. This makes `decodeArray` an
+ all-or-nothing operation (See the documentation for `sequence` for more
+ info).
 
-  If the `JSON` is not an array, this returns a type mismatch.
+ If the `JSON` is not an array, this returns a type mismatch.
 
-  This is a convenience function that is the same as `[T].decode(json)` (where `T`
-  is `Decodable`) and only exists to ease some pain around needing to use the
-  full type of the array when calling `decode`. We expect this function to be
-  removed in a future version.
+ This is a convenience function that is the same as `[T].decode(json)` (where `T`
+ is `Decodable`) and only exists to ease some pain around needing to use the
+ full type of the array when calling `decode`. We expect this function to be
+ removed in a future version.
 
-  - parameter json: The `JSON` value to decode
+ - parameter json: The `JSON` value to decode
 
-  - returns: A decoded array of values
-*/
+ - returns: A decoded array of values
+ */
 public func decodeArray<T: Decodable>(_ json: JSON) -> Decoded<[T]> where T.DecodedType == T {
   return [T].decode(json)
 }
 
 public extension ExpressibleByDictionaryLiteral where Value: Decodable, Value == Value.DecodedType {
   /**
-    Decode `JSON` into a dictionary of keys and values where the keys are
-    `String`s and the values are `Decodable`.
+   Decode `JSON` into a dictionary of keys and values where the keys are
+   `String`s and the values are `Decodable`.
 
-    If the `JSON` is a dictionary of `String`/`JSON` pairs, this returns a decoded dictionary
-    of key/value pairs by mapping the value's `decode` function over the `JSON` and
-    then applying `sequence` to the result. This makes this `decode` function
-    an all-or-nothing operation (See the documentation for `sequence` for more
-    info).
+   If the `JSON` is a dictionary of `String`/`JSON` pairs, this returns a decoded dictionary
+   of key/value pairs by mapping the value's `decode` function over the `JSON` and
+   then applying `sequence` to the result. This makes this `decode` function
+   an all-or-nothing operation (See the documentation for `sequence` for more
+   info).
 
-    If the `JSON` is not a dictionary, this returns a type mismatch.
+   If the `JSON` is not a dictionary, this returns a type mismatch.
 
-    - parameter json: The `JSON` value to decode
+   - parameter json: The `JSON` value to decode
 
-    - returns: A decoded dictionary of key/value pairs
-  */
+   - returns: A decoded dictionary of key/value pairs
+   */
   static func decode(_ json: JSON) -> Decoded<[String: Value]> {
     switch json {
     case let .object(o): return sequence(Value.decode <^> o)
@@ -253,47 +254,47 @@ public extension ExpressibleByDictionaryLiteral where Value: Decodable, Value ==
 }
 
 /**
-  Decode `JSON` into a dictionary of keys and values where the keys are
-  `String`s and the values are `Decodable`.
+ Decode `JSON` into a dictionary of keys and values where the keys are
+ `String`s and the values are `Decodable`.
 
-  If the `JSON` is a dictionary of `String`/`JSON` pairs, this returns a
-  decoded dictionary of key/value pairs by mapping the value's `decode`
-  function over the `JSON` and then applying `sequence` to the result. This
-  makes `decodeObject` an all-or-nothing operation (See the documentation for
-  `sequence` for more info).
+ If the `JSON` is a dictionary of `String`/`JSON` pairs, this returns a
+ decoded dictionary of key/value pairs by mapping the value's `decode`
+ function over the `JSON` and then applying `sequence` to the result. This
+ makes `decodeObject` an all-or-nothing operation (See the documentation for
+ `sequence` for more info).
 
-  If the `JSON` is not a dictionary, this returns a type mismatch.
+ If the `JSON` is not a dictionary, this returns a type mismatch.
 
-  This is a convenience function that is the same as `[String: T].decode(json)`
-  (where `T` is `Decodable`) and only exists to ease some pain around needing to
-  use the full type of the dictionary when calling `decode`. We expect this
-  function to be removed in a future version.
+ This is a convenience function that is the same as `[String: T].decode(json)`
+ (where `T` is `Decodable`) and only exists to ease some pain around needing to
+ use the full type of the dictionary when calling `decode`. We expect this
+ function to be removed in a future version.
 
-  - parameter json: The `JSON` value to decode
+ - parameter json: The `JSON` value to decode
 
-  - returns: A decoded dictionary of key/value pairs
-*/
+ - returns: A decoded dictionary of key/value pairs
+ */
 public func decodeObject<T: Decodable>(_ json: JSON) -> Decoded<[String: T]> where T.DecodedType == T {
   return [String: T].decode(json)
 }
 
 /**
-  Pull an embedded `JSON` value from a specified key.
+ Pull an embedded `JSON` value from a specified key.
 
-  If the `JSON` value is an object, it will attempt to return the embedded
-  `JSON` value at the specified key, failing if the key doesn't exist.
+ If the `JSON` value is an object, it will attempt to return the embedded
+ `JSON` value at the specified key, failing if the key doesn't exist.
 
-  If the `JSON` value is not an object, this will return a type mismatch.
+ If the `JSON` value is not an object, this will return a type mismatch.
 
-  This is similar to adding a subscript to `JSON`, except that it returns a
-  `Decoded` type.
+ This is similar to adding a subscript to `JSON`, except that it returns a
+ `Decoded` type.
 
-  - parameter json: The `JSON` value that contains the key
-  - parameter key: The key containing the embedded `JSON` object
+ - parameter json: The `JSON` value that contains the key
+ - parameter key: The key containing the embedded `JSON` object
 
-  - returns: A decoded `JSON` value representing the success or failure of
-             extracting the value from the object
-*/
+ - returns: A decoded `JSON` value representing the success or failure of
+            extracting the value from the object
+ */
 public func decodedJSON(_ json: JSON, forKey key: String) -> Decoded<JSON> {
   switch json {
   case let .object(o): return guardNull(key, o[key] ?? .null)

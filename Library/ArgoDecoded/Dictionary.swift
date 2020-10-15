@@ -12,7 +12,7 @@ func + <T, U>(lhs: [T: U], rhs: [T: U]) -> [T: U] {
 
 extension Dictionary {
   func map<T>(_ f: (Value) -> T) -> [Key: T] {
-    var accum = Dictionary<Key, T>(minimumCapacity: self.count)
+    var accum = [Key: T](minimumCapacity: self.count)
 
     for (key, value) in self {
       accum[key] = f(value)
