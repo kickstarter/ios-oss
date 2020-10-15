@@ -70,11 +70,10 @@ extension GraphReward {
       .items([], NonEmptySet(.nodes(.id +| [.name]))),
       .remainingQuantity,
       .shippingPreference,
-      .shippingRulesExpanded(
-        [],
-        NonEmptySet(.nodes(.id +|
-            [.cost(Money.baseQueryProperties), .location(GraphLocation.baseQueryProperties)]))
-      ),
+      .shippingRules(.id +| [
+        .cost(Money.baseQueryProperties),
+        .location(GraphLocation.baseQueryProperties)
+      ]),
       .startsAt,
       .endsAt
     ]

@@ -255,6 +255,7 @@ public enum Query {
     case name
     case remainingQuantity
     case shippingPreference
+    case shippingRules(NonEmptySet<ShippingRule>)
     case shippingRulesExpanded(
       Set<QueryArg<ShippingRulesExpandedConnection.Argument>>,
       NonEmptySet<Connection<ShippingRule>>
@@ -679,6 +680,7 @@ extension Query.Reward: QueryType {
     case .name: return "name"
     case .remainingQuantity: return "remainingQuantity"
     case .shippingPreference: return "shippingPreference"
+    case let .shippingRules(fields): return "shippingRules { \(join(fields)) }"
     case let .shippingRulesExpanded(args, fields): return "shippingRulesExpanded" + connection(args, fields)
     case .startsAt: return "startsAt"
     }
