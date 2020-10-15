@@ -139,12 +139,12 @@ public func optimizelyUserAttributes(
   refTag: RefTag? = nil
 ) -> [String: Any] {
   let user = AppEnvironment.current.currentUser
-
+  let user_country = user?.location?.country
   let properties: [String: Any] = [
     "user_distinct_id": debugDeviceIdentifier(),
     "user_backed_projects_count": user?.stats.backedProjectsCount,
     "user_launched_projects_count": user?.stats.createdProjectsCount,
-    "user_country": (user?.location?.country ?? AppEnvironment.current.config?.countryCode)?.lowercased(),
+    "user_country": (user_country ?? AppEnvironment.current.config?.countryCode)?.lowercased(),
     "user_facebook_account": user?.facebookConnected,
     "user_display_language": AppEnvironment.current.language.rawValue,
     "session_os_version": AppEnvironment.current.device.systemVersion,
