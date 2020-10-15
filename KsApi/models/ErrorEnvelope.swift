@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Runes
 
@@ -138,7 +137,7 @@ public struct ErrorEnvelope {
 
 extension ErrorEnvelope: Error {}
 
-extension ErrorEnvelope: Argo.Decodable {
+extension ErrorEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ErrorEnvelope> {
     // Typically API errors come back in this form...
     let standardErrorEnvelope = curry(ErrorEnvelope.init)
@@ -167,7 +166,7 @@ extension ErrorEnvelope: Argo.Decodable {
   }
 }
 
-extension ErrorEnvelope.Exception: Argo.Decodable {
+extension ErrorEnvelope.Exception: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ErrorEnvelope.Exception> {
     return curry(ErrorEnvelope.Exception.init)
       <^> json <||? "backtrace"
@@ -175,7 +174,7 @@ extension ErrorEnvelope.Exception: Argo.Decodable {
   }
 }
 
-extension ErrorEnvelope.KsrCode: Argo.Decodable {
+extension ErrorEnvelope.KsrCode: Decodable {
   public static func decode(_ j: JSON) -> Decoded<ErrorEnvelope.KsrCode> {
     switch j {
     case let .string(s):
@@ -186,7 +185,7 @@ extension ErrorEnvelope.KsrCode: Argo.Decodable {
   }
 }
 
-extension ErrorEnvelope.FacebookUser: Argo.Decodable {
+extension ErrorEnvelope.FacebookUser: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ErrorEnvelope.FacebookUser> {
     return curry(ErrorEnvelope.FacebookUser.init)
       <^> json <| "id"

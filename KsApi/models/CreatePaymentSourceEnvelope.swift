@@ -1,9 +1,9 @@
 import Foundation
 
-public struct CreatePaymentSourceEnvelope: Decodable {
+public struct CreatePaymentSourceEnvelope: Swift.Decodable {
   public var createPaymentSource: CreatePaymentSource
 
-  public struct CreatePaymentSource: Decodable {
+  public struct CreatePaymentSource: Swift.Decodable {
     public var errorMessage: String?
     public var isSuccessful: Bool
     public var paymentSource: GraphUserCreditCard.CreditCard

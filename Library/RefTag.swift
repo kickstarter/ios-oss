@@ -1,4 +1,3 @@
-import Argo
 import KsApi
 import Runes
 
@@ -197,7 +196,7 @@ private func sortRefTagSuffix(_ sort: DiscoveryParams.Sort) -> String {
   }
 }
 
-extension RefTag: Argo.Decodable {
+extension RefTag: Decodable {
   public static func decode(_ json: JSON) -> Decoded<RefTag> {
     switch json {
     case let .string(code):

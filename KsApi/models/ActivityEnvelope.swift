@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Runes
 
@@ -15,7 +14,7 @@ public struct ActivityEnvelope {
   }
 }
 
-extension ActivityEnvelope: Argo.Decodable {
+extension ActivityEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ActivityEnvelope> {
     return curry(ActivityEnvelope.init)
       <^> json <|| "activities"
@@ -23,14 +22,14 @@ extension ActivityEnvelope: Argo.Decodable {
   }
 }
 
-extension ActivityEnvelope.UrlsEnvelope: Argo.Decodable {
+extension ActivityEnvelope.UrlsEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ActivityEnvelope.UrlsEnvelope> {
     return curry(ActivityEnvelope.UrlsEnvelope.init)
       <^> json <| "api"
   }
 }
 
-extension ActivityEnvelope.UrlsEnvelope.ApiEnvelope: Argo.Decodable {
+extension ActivityEnvelope.UrlsEnvelope.ApiEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ActivityEnvelope.UrlsEnvelope.ApiEnvelope> {
     return curry(ActivityEnvelope.UrlsEnvelope.ApiEnvelope.init)
       <^> (json <| "more_activities" <|> .success(""))

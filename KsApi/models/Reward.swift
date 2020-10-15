@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Prelude
 import Runes
@@ -81,7 +80,7 @@ public func < (lhs: Reward, rhs: Reward) -> Bool {
   return minimumAndIdComparator.isOrdered(lhs, rhs)
 }
 
-extension Reward: Argo.Decodable {
+extension Reward: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Reward> {
     let tmp1 = curry(Reward.init)
       <^> json <|? "backers_count"

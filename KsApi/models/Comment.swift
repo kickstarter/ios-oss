@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Runes
 
@@ -29,7 +28,7 @@ extension Comment: Swift.Decodable {
   }
 }
 
-extension Comment: Argo.Decodable {
+extension Comment: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Comment> {
     let tmp = curry(Comment.init)
       <^> json <| "author"

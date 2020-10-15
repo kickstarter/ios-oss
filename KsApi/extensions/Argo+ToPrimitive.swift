@@ -1,7 +1,6 @@
-import Argo
 import Foundation
 
-extension Argo.JSON {
+extension JSON {
   func toPrimitive() -> Any? {
     switch self {
     case let .array(json):

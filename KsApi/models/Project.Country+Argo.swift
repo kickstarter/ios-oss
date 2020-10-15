@@ -1,8 +1,7 @@
-import Argo
 import Curry
 import Runes
 
-extension Project.Country: Argo.Decodable {
+extension Project.Country: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Country> {
     let tmp = curry(Project.Country.init)
       <^> (json <| "country" <|> json <| "name")

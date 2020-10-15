@@ -1,11 +1,10 @@
-import Argo
 import Curry
 import Foundation
 import KsApi
 import Runes
 import XCTest
 
-struct MyArgoModel: Argo.Decodable, Equatable {
+struct MyArgoModel: Decodable, Equatable {
   public let id: Int
   public let name: String
   public let model: MySwiftModel
@@ -26,7 +25,7 @@ struct MySwiftModel: Swift.Decodable, Equatable {
   public let name: String
 }
 
-struct SingleValueArgoModel: Argo.Decodable, Equatable {
+struct SingleValueArgoModel: Decodable, Equatable {
   public let id: Int
   public let name: String
   public let model: SingleValueSwiftModel

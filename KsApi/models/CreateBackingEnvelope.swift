@@ -1,9 +1,9 @@
 import Foundation
 
-public struct CreateBackingEnvelope: Decodable {
+public struct CreateBackingEnvelope: Swift.Decodable {
   public var createBacking: CreateBacking
 
-  public struct CreateBacking: Decodable {
+  public struct CreateBacking: Swift.Decodable {
     public var checkout: Checkout
   }
 }

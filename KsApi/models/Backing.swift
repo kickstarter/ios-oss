@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Runes
 
@@ -48,7 +47,7 @@ public func == (lhs: Backing, rhs: Backing) -> Bool {
   return lhs.id == rhs.id
 }
 
-extension Backing: Argo.Decodable {
+extension Backing: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Backing> {
     let tmp1 = curry(Backing.init)
       <^> json <||? "add_ons"
@@ -104,7 +103,7 @@ extension Backing: EncodableType {
   }
 }
 
-extension Backing.PaymentSource: Argo.Decodable {
+extension Backing.PaymentSource: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Backing.PaymentSource?> {
     return curry(Backing.PaymentSource.init)
       <^> json <|? "expiration_date"
@@ -116,7 +115,7 @@ extension Backing.PaymentSource: Argo.Decodable {
   }
 }
 
-extension Backing.Status: Argo.Decodable {}
+extension Backing.Status: Decodable {}
 
 extension Backing.PaymentSource: Equatable {}
 public func == (lhs: Backing.PaymentSource, rhs: Backing.PaymentSource) -> Bool {

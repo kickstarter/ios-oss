@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Prelude
 import Runes
@@ -23,13 +22,13 @@ public struct DiscoveryParams {
   public var state: State?
   public var tagId: TagID?
 
-  public enum State: String, Argo.Decodable {
+  public enum State: String, Decodable {
     case all
     case live
     case successful
   }
 
-  public enum Sort: String, Argo.Decodable {
+  public enum Sort: String, Decodable {
     case endingSoon = "end_date"
     case magic
     case newest
@@ -37,7 +36,7 @@ public struct DiscoveryParams {
     case distance
   }
 
-  public enum TagID: String, Argo.Decodable {
+  public enum TagID: String, Decodable {
     case lightsOn = "557"
   }
 
@@ -99,7 +98,7 @@ extension DiscoveryParams: CustomStringConvertible, CustomDebugStringConvertible
   }
 }
 
-extension DiscoveryParams: Argo.Decodable {
+extension DiscoveryParams: Decodable {
   public static func decode(_ json: JSON) -> Decoded<DiscoveryParams> {
     let tmp1 = curry(DiscoveryParams.init)
       <^> ((json <|? "backed" >>- stringIntToBool) as Decoded<Bool?>)

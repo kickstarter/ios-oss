@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Runes
 
@@ -7,7 +6,7 @@ public struct UpdatePledgeEnvelope {
   public let status: Int
 }
 
-extension UpdatePledgeEnvelope: Argo.Decodable {
+extension UpdatePledgeEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<UpdatePledgeEnvelope> {
     return curry(UpdatePledgeEnvelope.init)
       <^> json <|? ["data", "new_checkout_url"]

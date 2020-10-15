@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Runes
 
@@ -61,7 +60,7 @@ public func == (lhs: UpdateDraft.Attachment, rhs: UpdateDraft.Attachment) -> Boo
   return lhs.id == rhs.id
 }
 
-extension UpdateDraft: Argo.Decodable {
+extension UpdateDraft: Decodable {
   public static func decode(_ json: JSON) -> Decoded<UpdateDraft> {
     return curry(UpdateDraft.init)
       <^> Update.decode(json)
@@ -70,7 +69,7 @@ extension UpdateDraft: Argo.Decodable {
   }
 }
 
-extension UpdateDraft.Image: Argo.Decodable {
+extension UpdateDraft.Image: Decodable {
   public static func decode(_ json: JSON) -> Decoded<UpdateDraft.Image> {
     return curry(UpdateDraft.Image.init)
       <^> json <| "id"
@@ -79,7 +78,7 @@ extension UpdateDraft.Image: Argo.Decodable {
   }
 }
 
-extension UpdateDraft.Video: Argo.Decodable {
+extension UpdateDraft.Video: Decodable {
   public static func decode(_ json: JSON) -> Decoded<UpdateDraft.Video> {
     return curry(UpdateDraft.Video.init)
       <^> json <| "id"
@@ -88,4 +87,4 @@ extension UpdateDraft.Video: Argo.Decodable {
   }
 }
 
-extension UpdateDraft.Video.Status: Argo.Decodable {}
+extension UpdateDraft.Video.Status: Decodable {}

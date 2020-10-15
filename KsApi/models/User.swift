@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Runes
 
@@ -107,7 +106,7 @@ extension User: CustomDebugStringConvertible {
   }
 }
 
-extension User: Argo.Decodable {
+extension User: Decodable {
   public static func decode(_ json: JSON) -> Decoded<User> {
     let tmp1 = pure(curry(User.init))
       <*> json <| "avatar"
@@ -153,7 +152,7 @@ extension User: EncodableType {
   }
 }
 
-extension User.Avatar: Argo.Decodable {
+extension User.Avatar: Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.Avatar> {
     return curry(User.Avatar.init)
       <^> json <|? "large"
@@ -175,7 +174,7 @@ extension User.Avatar: EncodableType {
   }
 }
 
-extension User.NewsletterSubscriptions: Argo.Decodable {
+extension User.NewsletterSubscriptions: Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.NewsletterSubscriptions> {
     return curry(User.NewsletterSubscriptions.init)
       <^> json <|? "arts_culture_newsletter"
@@ -221,7 +220,7 @@ public func == (lhs: User.NewsletterSubscriptions, rhs: User.NewsletterSubscript
     lhs.alumni == rhs.alumni
 }
 
-extension User.Notifications: Argo.Decodable {
+extension User.Notifications: Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.Notifications> {
     let tmp1 = curry(User.Notifications.init)
       <^> json <|? "notify_of_backings"
@@ -291,7 +290,7 @@ public func == (lhs: User.Notifications, rhs: User.Notifications) -> Bool {
     lhs.updates == rhs.updates
 }
 
-extension User.Stats: Argo.Decodable {
+extension User.Stats: Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.Stats> {
     return curry(User.Stats.init)
       <^> json <|? "backed_projects_count"

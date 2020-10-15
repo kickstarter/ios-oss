@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Runes
 
@@ -65,7 +64,7 @@ public struct ProjectStatsEnvelope {
   }
 }
 
-extension ProjectStatsEnvelope: Argo.Decodable {
+extension ProjectStatsEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope> {
     return curry(ProjectStatsEnvelope.init)
       <^> json <| "cumulative"
@@ -77,7 +76,7 @@ extension ProjectStatsEnvelope: Argo.Decodable {
   }
 }
 
-extension ProjectStatsEnvelope.CumulativeStats: Argo.Decodable {
+extension ProjectStatsEnvelope.CumulativeStats: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.CumulativeStats> {
     return curry(ProjectStatsEnvelope.CumulativeStats.init)
       <^> json <| "average_pledge"
@@ -94,7 +93,7 @@ public func == (lhs: ProjectStatsEnvelope.CumulativeStats, rhs: ProjectStatsEnve
   return lhs.averagePledge == rhs.averagePledge
 }
 
-extension ProjectStatsEnvelope.FundingDateStats: Argo.Decodable {
+extension ProjectStatsEnvelope.FundingDateStats: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.FundingDateStats> {
     return curry(ProjectStatsEnvelope.FundingDateStats.init)
       <^> (json <| "backers_count" <|> .success(0))
@@ -111,7 +110,7 @@ public func == (lhs: ProjectStatsEnvelope.FundingDateStats, rhs: ProjectStatsEnv
   return lhs.date == rhs.date
 }
 
-extension ProjectStatsEnvelope.ReferralAggregateStats: Argo.Decodable {
+extension ProjectStatsEnvelope.ReferralAggregateStats: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.ReferralAggregateStats> {
     return curry(ProjectStatsEnvelope.ReferralAggregateStats.init)
       <^> json <| "custom"
@@ -130,7 +129,7 @@ public func == (
     lhs.kickstarter == rhs.kickstarter
 }
 
-extension ProjectStatsEnvelope.ReferrerStats: Argo.Decodable {
+extension ProjectStatsEnvelope.ReferrerStats: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.ReferrerStats> {
     let tmp = curry(ProjectStatsEnvelope.ReferrerStats.init)
       <^> json <| "backers_count"
@@ -148,7 +147,7 @@ public func == (lhs: ProjectStatsEnvelope.ReferrerStats, rhs: ProjectStatsEnvelo
   return lhs.code == rhs.code
 }
 
-extension ProjectStatsEnvelope.ReferrerStats.ReferrerType: Argo.Decodable {
+extension ProjectStatsEnvelope.ReferrerStats.ReferrerType: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.ReferrerStats.ReferrerType> {
     if case let .string(referrerType) = json {
       switch referrerType.lowercased() {
@@ -166,7 +165,7 @@ extension ProjectStatsEnvelope.ReferrerStats.ReferrerType: Argo.Decodable {
   }
 }
 
-extension ProjectStatsEnvelope.RewardStats: Argo.Decodable {
+extension ProjectStatsEnvelope.RewardStats: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.RewardStats> {
     return curry(ProjectStatsEnvelope.RewardStats.init)
       <^> json <| "backers_count"
@@ -182,7 +181,7 @@ public func == (lhs: ProjectStatsEnvelope.RewardStats, rhs: ProjectStatsEnvelope
   return lhs.rewardId == rhs.rewardId
 }
 
-extension ProjectStatsEnvelope.VideoStats: Argo.Decodable {
+extension ProjectStatsEnvelope.VideoStats: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.VideoStats> {
     return curry(ProjectStatsEnvelope.VideoStats.init)
       <^> json <| "external_completions"

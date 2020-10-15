@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Runes
 
@@ -11,14 +10,14 @@ public struct FriendStatsEnvelope {
   }
 }
 
-extension FriendStatsEnvelope: Argo.Decodable {
+extension FriendStatsEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<FriendStatsEnvelope> {
     return curry(FriendStatsEnvelope.init)
       <^> json <| "stats"
   }
 }
 
-extension FriendStatsEnvelope.Stats: Argo.Decodable {
+extension FriendStatsEnvelope.Stats: Decodable {
   public static func decode(_ json: JSON) -> Decoded<FriendStatsEnvelope.Stats> {
     return curry(FriendStatsEnvelope.Stats.init)
       <^> json <| "friend_projects_count"

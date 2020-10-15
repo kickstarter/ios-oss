@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Runes
 
@@ -7,7 +6,7 @@ public struct ChangePaymentMethodEnvelope {
   public let status: Int
 }
 
-extension ChangePaymentMethodEnvelope: Argo.Decodable {
+extension ChangePaymentMethodEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ChangePaymentMethodEnvelope> {
     return curry(ChangePaymentMethodEnvelope.init)
       <^> json <|? ["data", "new_checkout_url"]

@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Runes
 
@@ -8,7 +7,7 @@ public struct MessageThreadEnvelope {
   public let messageThread: MessageThread
 }
 
-extension MessageThreadEnvelope: Argo.Decodable {
+extension MessageThreadEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<MessageThreadEnvelope> {
     return curry(MessageThreadEnvelope.init)
       <^> json <|| "participants"

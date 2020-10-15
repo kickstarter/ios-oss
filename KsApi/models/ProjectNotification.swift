@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Foundation
 import Runes
@@ -15,7 +14,7 @@ public struct ProjectNotification {
   }
 }
 
-extension ProjectNotification: Argo.Decodable {
+extension ProjectNotification: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectNotification> {
     return curry(ProjectNotification.init)
       <^> json <| "email"
@@ -25,7 +24,7 @@ extension ProjectNotification: Argo.Decodable {
   }
 }
 
-extension ProjectNotification.Project: Argo.Decodable {
+extension ProjectNotification.Project: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectNotification.Project> {
     return curry(ProjectNotification.Project.init)
       <^> json <| "id"
