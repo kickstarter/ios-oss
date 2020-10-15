@@ -87,9 +87,19 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       slug.takeWhen(self.beginRefreshSignal)
     )
 
-    let projectEvent = fetchAddOnsWithSlug.switchMap { slug in
+    let shippingRule = Signal.merge(
+      self.shippingRuleSelectedProperty.signal,
+      baseReward.filter { reward in !reward.shipping.enabled }.mapConst(nil)
+    )
+
+    let slugAndShippingRule = Signal.zip(fetchAddOnsWithSlug, shippingRule)
+
+    let projectEvent = slugAndShippingRule.switchMap { slug, shippingRule in
       AppEnvironment.current.apiService.fetchRewardAddOnsSelectionViewRewards(
-        query: rewardAddOnSelectionViewAddOnsQuery(withProjectSlug: slug)
+        query: rewardAddOnSelectionViewAddOnsQuery(
+          withProjectSlug: slug,
+          andLocationId: shippingRule?.location.id
+        )
       )
       .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
       .materialize()
@@ -100,11 +110,6 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     let addOns = projectEvent.values().map(\.rewardData.addOns).skipNil()
     let requestErrored = projectEvent.map(\.error).map(isNotNil)
-
-    let shippingRule = Signal.merge(
-      self.shippingRuleSelectedProperty.signal,
-      baseReward.filter { reward in !reward.shipping.enabled }.mapConst(nil)
-    )
 
     // Quantities updated as the user selects them, merged with an empty initial value.
     let updatedSelectedQuantities = Signal.merge(

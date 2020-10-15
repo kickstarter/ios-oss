@@ -1,6 +1,7 @@
 import Prelude
 
-public func rewardAddOnSelectionViewAddOnsQuery(withProjectSlug slug: String) -> NonEmptySet<Query> {
+public func rewardAddOnSelectionViewAddOnsQuery(withProjectSlug slug: String,
+                                                andLocationId _: Int?) -> NonEmptySet<Query> {
   return Query.project(
     slug: slug,
     GraphProject.baseQueryProperties
