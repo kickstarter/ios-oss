@@ -351,17 +351,16 @@ private func rewardsData(
 ) -> [RewardAddOnSelectionDataSourceItem] {
   let addOnsFilteredByAvailability = addOns.filter { addOnIsAvailable($0, in: project) }
 
-  let addOnsFilteredByShippingRule = filteredAddOns(
+  let addOnsFilteredByExpandedShippingRule = filteredAddOns(
     addOnsFilteredByAvailability,
-    filteredBy: shippingRule,
     baseReward: baseReward
   )
 
-  guard !addOnsFilteredByShippingRule.isEmpty else {
+  guard !addOnsFilteredByExpandedShippingRule.isEmpty else {
     return [.emptyState(.addOnsUnavailable)]
   }
 
-  return addOnsFilteredByShippingRule
+  return addOnsFilteredByExpandedShippingRule
     .map { reward in
       RewardAddOnCardViewData(
         project: project,
@@ -397,7 +396,6 @@ private func addOnIsAvailable(_ addOn: Reward, in project: Project) -> Bool {
 
 private func filteredAddOns(
   _ addOns: [Reward],
-  filteredBy shippingRule: ShippingRule?,
   baseReward: Reward
 ) -> [Reward] {
   return addOns.filter { addOn in
@@ -406,19 +404,21 @@ private func filteredAddOns(
       return addOn.shipping.enabled == false
     }
 
+    // When performing the query with shippingRulesExpanded, we filter by graphID and get specifically one back.
+    let shippingRuleExpanded = addOn.shippingRulesExpanded?.first
     /**
      For restricted or unrestricted shipping base rewards, unrestricted shipping
      or digital-only add-ons are available.
      */
-    let addOnIsDigitalOrUnrestricted = addOn.shipping.preference
-      .isAny(of: Reward.Shipping.Preference.none, .unrestricted)
+    let addOnIsDigital = addOn.shipping.preference
+      .isAny(of: Reward.Shipping.Preference.none)
 
-    return addOnIsDigitalOrUnrestricted || addOnReward(addOn, shipsTo: shippingRule?.location.id)
+    return addOnIsDigital || addOnReward(addOn, shipsTo: shippingRuleExpanded?.location.id)
   }
 }
 
 /**
- For base rewards that have restricted shipping, only return
+ For base rewards that have restricted or unrestricted shipping, only return
  add-ons that can ship to the selected shipping location.
  */
 private func addOnReward(
@@ -428,7 +428,7 @@ private func addOnReward(
   guard let selectedLocationId = locationId else { return false }
 
   let addOnShippingLocationIds: Set<Int> = Set(
-    addOn.shippingRules?.map(\.location).map(\.id) ?? []
+    addOn.shippingRulesExpanded?.map(\.location).map(\.id) ?? []
   )
 
   return addOnShippingLocationIds.contains(selectedLocationId)
