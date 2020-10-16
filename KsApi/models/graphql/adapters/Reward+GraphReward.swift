@@ -36,6 +36,7 @@ extension Reward {
       rewardsItems: rewardItemsData(from: graphReward, with: projectId),
       shipping: shippingData(from: graphReward),
       shippingRules: shippingRulesData(from: graphReward),
+      shippingRulesExpanded: shippingRulesExpandedData(from: graphReward),
       startsAt: graphReward.startsAt,
       title: graphReward.name
     )
@@ -93,6 +94,27 @@ private func shippingRulesData(
   from graphReward: GraphReward
 ) -> [ShippingRule]? {
   guard let shippingRules = graphReward.shippingRules else { return nil }
+
+  return shippingRules.compactMap { shippingRule -> ShippingRule? in
+    guard let locationId = decompose(id: shippingRule.location.id) else { return nil }
+    return ShippingRule(
+      cost: shippingRule.cost.amount,
+      id: decompose(id: shippingRule.id),
+      location: Location(
+        country: shippingRule.location.country,
+        displayableName: shippingRule.location.displayableName,
+        id: locationId,
+        localizedName: shippingRule.location.name,
+        name: shippingRule.location.name
+      )
+    )
+  }
+}
+
+private func shippingRulesExpandedData(
+  from graphReward: GraphReward
+) -> [ShippingRule]? {
+  guard let shippingRules = graphReward.shippingRulesExpanded?.nodes else { return nil }
 
   return shippingRules.compactMap { shippingRule -> ShippingRule? in
     guard let locationId = decompose(id: shippingRule.location.id) else { return nil }

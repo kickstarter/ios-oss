@@ -18,6 +18,7 @@ public struct Reward {
   public let rewardsItems: [RewardsItem]
   public let shipping: Shipping // only v1
   public let shippingRules: [ShippingRule]? // only GraphQL
+  public let shippingRulesExpanded: [ShippingRule]? // only GraphQL
   public let startsAt: TimeInterval?
   public let title: String?
 
@@ -100,6 +101,7 @@ extension Reward: Argo.Decodable {
       <*> ((json <|| "rewards_items") <|> .success([]))
       <*> tryDecodable(json)
       <*> json <||? "shipping_rules"
+      <*> json <||? "shipping_rules_expanded"
       <*> json <|? "starts_at"
       <*> json <|? "title"
   }
