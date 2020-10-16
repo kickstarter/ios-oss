@@ -1,11 +1,11 @@
 import Prelude
 
 public func rewardAddOnSelectionViewAddOnsQuery(withProjectSlug slug: String,
-                                                andLocationId locationId: Int?) -> NonEmptySet<Query> {
+                                                andGraphId id: String?) -> NonEmptySet<Query> {
   var shippingRulesExpandedArg: Set<QueryArg<Query.Reward.ShippingRulesExpandedConnection.Argument>>
 
-  if let id = locationId {
-    shippingRulesExpandedArg = [.arg(.locationId(String(id)))]
+  if let graphID = id {
+    shippingRulesExpandedArg = [.arg(.locationId(graphID))]
   } else {
     shippingRulesExpandedArg = []
   }
