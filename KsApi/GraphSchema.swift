@@ -696,7 +696,7 @@ extension Query.Reward.Item: QueryType {
 extension Query.Reward.ShippingRulesExpandedConnection.Argument: CustomStringConvertible {
   public var description: String {
     switch self {
-    case let .locationId(id): return "forLocation: \(id)"
+    case let .locationId(id): return "forLocation: \"\(id)\""
     }
   }
 }
