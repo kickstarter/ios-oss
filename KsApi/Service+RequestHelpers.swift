@@ -1,4 +1,3 @@
-import Argo
 import Foundation
 import Prelude
 import ReactiveExtensions
@@ -37,7 +36,7 @@ extension Service {
     }
   }
 
-  func requestPagination<M: Argo.Decodable>(_ paginationUrl: String)
+  func requestPagination<M: Decodable>(_ paginationUrl: String)
     -> SignalProducer<M, ErrorEnvelope> where M == M.DecodedType {
     guard let paginationUrl = URL(string: paginationUrl) else {
       return .init(error: .invalidPaginationUrl)
@@ -47,7 +46,7 @@ extension Service {
       .flatMap(self.decodeModel)
   }
 
-  func request<M: Argo.Decodable>(_ route: Route)
+  func request<M: Decodable>(_ route: Route)
     -> SignalProducer<M, ErrorEnvelope> where M == M.DecodedType {
     let properties = route.requestProperties
 
@@ -64,7 +63,7 @@ extension Service {
     .flatMap(self.decodeModel)
   }
 
-  func request<M: Argo.Decodable>(_ route: Route)
+  func request<M: Decodable>(_ route: Route)
     -> SignalProducer<[M], ErrorEnvelope> where M == M.DecodedType {
     let properties = route.requestProperties
 
@@ -77,7 +76,7 @@ extension Service {
     .flatMap(self.decodeModels)
   }
 
-  func request<M: Argo.Decodable>(_ route: Route)
+  func request<M: Decodable>(_ route: Route)
     -> SignalProducer<M?, ErrorEnvelope> where M == M.DecodedType {
     let properties = route.requestProperties
 

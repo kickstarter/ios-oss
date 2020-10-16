@@ -1,11 +1,10 @@
-import Argo
 import Foundation
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
 extension Service {
-  func decodeModel<M: Argo.Decodable>(_ json: Any) ->
+  func decodeModel<M: Decodable>(_ json: Any) ->
     SignalProducer<M, ErrorEnvelope> where M == M.DecodedType {
     return SignalProducer(value: json)
       .map { json in decode(json) as Decoded<M> }
@@ -20,7 +19,7 @@ extension Service {
       }
   }
 
-  func decodeModels<M: Argo.Decodable>(_ json: Any)
+  func decodeModels<M: Decodable>(_ json: Any)
     -> SignalProducer<[M], ErrorEnvelope> where M == M.DecodedType {
     return SignalProducer(value: json)
       .map { json in decode(json) as Decoded<[M]> }
@@ -35,7 +34,7 @@ extension Service {
       }
   }
 
-  func decodeModel<M: Argo.Decodable>(_ json: Any) ->
+  func decodeModel<M: Decodable>(_ json: Any) ->
     SignalProducer<M?, ErrorEnvelope> where M == M.DecodedType {
     return SignalProducer(value: json)
       .map { json in decode(json) as M? }

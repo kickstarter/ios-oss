@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Foundation
 import Runes
@@ -50,7 +49,7 @@ public func == (lhs: Activity, rhs: Activity) -> Bool {
   return lhs.id == rhs.id
 }
 
-extension Activity: Argo.Decodable {
+extension Activity: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Activity> {
     let tmp = curry(Activity.init)
       <^> json <| "category"
@@ -65,7 +64,7 @@ extension Activity: Argo.Decodable {
   }
 }
 
-extension Activity.Category: Argo.Decodable {
+extension Activity.Category: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Activity.Category> {
     switch json {
     case let .string(category):
@@ -76,7 +75,7 @@ extension Activity.Category: Argo.Decodable {
   }
 }
 
-extension Activity.MemberData: Argo.Decodable {
+extension Activity.MemberData: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Activity.MemberData> {
     let tmp = curry(Activity.MemberData.init)
       <^> json <|? "amount"

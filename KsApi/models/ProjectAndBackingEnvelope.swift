@@ -1,4 +1,3 @@
-import Argo
 import Foundation
 import ReactiveSwift
 
@@ -7,9 +6,9 @@ public struct ProjectAndBackingEnvelope: Equatable {
   public var backing: Backing
 }
 
-extension ProjectAndBackingEnvelope: Argo.Decodable {
+extension ProjectAndBackingEnvelope: Decodable {
   public static func decode(_: JSON) -> Decoded<ProjectAndBackingEnvelope> {
-    fatalError("Conformance is to satisfy the compiler, do not create this model using Argo.")
+    fatalError("Conformance is to satisfy the compiler, do not create this model using Argo")
   }
 }
 

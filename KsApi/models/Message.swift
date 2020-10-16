@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Foundation
 import Runes
@@ -11,7 +10,7 @@ public struct Message {
   public let sender: User
 }
 
-extension Message: Argo.Decodable {
+extension Message: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Message> {
     return curry(Message.init)
       <^> json <| "body"

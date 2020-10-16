@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Runes
 
@@ -9,7 +8,7 @@ public struct Item {
   public let projectId: Int
 }
 
-extension Item: Argo.Decodable {
+extension Item: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Item> {
     return curry(Item.init)
       <^> json <|? "description"

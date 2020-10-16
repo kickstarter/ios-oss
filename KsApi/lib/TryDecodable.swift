@@ -1,7 +1,6 @@
-import Argo
 import Foundation
 
-public func tryDecodable<T: Swift.Decodable>(_ json: JSON) -> Argo.Decoded<T> {
+public func tryDecodable<T: Swift.Decodable>(_ json: JSON) -> Decoded<T> {
   guard
     // Convert Argo.JSON to primitive types, e.g. [String: Any].
     let primitive = json.toPrimitive(),

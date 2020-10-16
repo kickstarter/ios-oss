@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Prelude
 import ReactiveSwift
@@ -52,7 +51,7 @@ public struct Project {
     public var hls: String?
   }
 
-  public enum State: String, Argo.Decodable, CaseIterable {
+  public enum State: String, Decodable, CaseIterable {
     case canceled
     case failed
     case live
@@ -236,7 +235,7 @@ extension Project: CustomDebugStringConvertible {
   }
 }
 
-extension Project: Argo.Decodable {
+extension Project: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project> {
     let tmp1 = curry(Project.init)
       <^> json <||? "available_card_types"
@@ -265,14 +264,14 @@ extension Project: Argo.Decodable {
   }
 }
 
-extension Project.UrlsEnvelope: Argo.Decodable {
+extension Project.UrlsEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.UrlsEnvelope> {
     return curry(Project.UrlsEnvelope.init)
       <^> json <| "web"
   }
 }
 
-extension Project.UrlsEnvelope.WebEnvelope: Argo.Decodable {
+extension Project.UrlsEnvelope.WebEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.UrlsEnvelope.WebEnvelope> {
     return curry(Project.UrlsEnvelope.WebEnvelope.init)
       <^> json <| "project"
@@ -280,7 +279,7 @@ extension Project.UrlsEnvelope.WebEnvelope: Argo.Decodable {
   }
 }
 
-extension Project.Stats: Argo.Decodable {
+extension Project.Stats: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Stats> {
     let tmp1 = curry(Project.Stats.init)
       <^> json <| "backers_count"
@@ -297,7 +296,7 @@ extension Project.Stats: Argo.Decodable {
   }
 }
 
-extension Project.MemberData: Argo.Decodable {
+extension Project.MemberData: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.MemberData> {
     return curry(Project.MemberData.init)
       <^> json <|? "last_update_published_at"
@@ -307,7 +306,7 @@ extension Project.MemberData: Argo.Decodable {
   }
 }
 
-extension Project.Dates: Argo.Decodable {
+extension Project.Dates: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Dates> {
     return curry(Project.Dates.init)
       <^> json <| "deadline"
@@ -318,7 +317,7 @@ extension Project.Dates: Argo.Decodable {
   }
 }
 
-extension Project.Personalization: Argo.Decodable {
+extension Project.Personalization: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Personalization> {
     return curry(Project.Personalization.init)
       <^> json <|? "backing"
@@ -328,7 +327,7 @@ extension Project.Personalization: Argo.Decodable {
   }
 }
 
-extension Project.RewardData: Argo.Decodable {
+extension Project.RewardData: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.RewardData> {
     return curry(Project.RewardData.init)
       <^> json <||? "add_ons"
@@ -336,7 +335,7 @@ extension Project.RewardData: Argo.Decodable {
   }
 }
 
-extension Project.Category: Argo.Decodable {
+extension Project.Category: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Category> {
     return curry(Project.Category.init)
       <^> json <| "id"
@@ -346,7 +345,7 @@ extension Project.Category: Argo.Decodable {
   }
 }
 
-extension Project.Photo: Argo.Decodable {
+extension Project.Photo: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Photo> {
     let url1024: Decoded<String?> = ((json <| "1024x768") <|> (json <| "1024x576"))
       .map(Optional<String>.init)
@@ -360,7 +359,7 @@ extension Project.Photo: Argo.Decodable {
   }
 }
 
-extension Project.MemberData.Permission: Argo.Decodable {
+extension Project.MemberData.Permission: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.MemberData.Permission> {
     if case let .string(permission) = json {
       return self.init(rawValue: permission).map(pure) ?? .success(.unknown)

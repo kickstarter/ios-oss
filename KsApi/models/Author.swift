@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Foundation
 import Runes
@@ -37,7 +36,7 @@ extension Author.Url: Swift.Decodable {
   }
 }
 
-extension Author: Argo.Decodable {
+extension Author: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Author> {
     return curry(Author.init)
       <^> json <| "avatar"
@@ -47,7 +46,7 @@ extension Author: Argo.Decodable {
   }
 }
 
-extension Author.Avatar: Argo.Decodable {
+extension Author.Avatar: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Author.Avatar> {
     return curry(Author.Avatar.init)
       <^> json <|? "medium"
@@ -56,7 +55,7 @@ extension Author.Avatar: Argo.Decodable {
   }
 }
 
-extension Author.Url: Argo.Decodable {
+extension Author.Url: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Author.Url> {
     return curry(Author.Url.init)
       <^> json <| ["api", "user"]

@@ -1,4 +1,3 @@
-import Argo
 import Foundation
 
 public enum CreditCardType: String, Swift.Decodable, CaseIterable {
@@ -31,4 +30,4 @@ public enum CreditCardType: String, Swift.Decodable, CaseIterable {
   }
 }
 
-extension CreditCardType: Argo.Decodable {}
+extension CreditCardType: Decodable {}

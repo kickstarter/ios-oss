@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Runes
 
@@ -12,7 +11,7 @@ public struct MessageThread {
   public let unreadMessagesCount: Int
 }
 
-extension MessageThread: Argo.Decodable {
+extension MessageThread: Decodable {
   public static func decode(_ json: JSON) -> Decoded<MessageThread> {
     let tmp = curry(MessageThread.init)
       <^> json <|? "backing"

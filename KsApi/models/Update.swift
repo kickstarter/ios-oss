@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Foundation
 import Runes
@@ -33,7 +32,7 @@ public func == (lhs: Update, rhs: Update) -> Bool {
   return lhs.id == rhs.id
 }
 
-extension Update: Argo.Decodable {
+extension Update: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Update> {
     let tmp1 = curry(Update.init)
       <^> json <|? "body"
@@ -55,14 +54,14 @@ extension Update: Argo.Decodable {
   }
 }
 
-extension Update.UrlsEnvelope: Argo.Decodable {
+extension Update.UrlsEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Update.UrlsEnvelope> {
     return curry(Update.UrlsEnvelope.init)
       <^> json <| "web"
   }
 }
 
-extension Update.UrlsEnvelope.WebEnvelope: Argo.Decodable {
+extension Update.UrlsEnvelope.WebEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Update.UrlsEnvelope.WebEnvelope> {
     return curry(Update.UrlsEnvelope.WebEnvelope.init)
       <^> json <| "update"

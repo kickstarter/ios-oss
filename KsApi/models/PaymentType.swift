@@ -1,4 +1,3 @@
-import Argo
 import Foundation
 
 public enum PaymentType: String, Swift.Decodable {
@@ -18,4 +17,4 @@ public enum PaymentType: String, Swift.Decodable {
   }
 }
 
-extension PaymentType: Argo.Decodable {}
+extension PaymentType: Decodable {}
