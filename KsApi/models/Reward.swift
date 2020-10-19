@@ -33,8 +33,10 @@ public struct Reward {
    with v1 Rewards that do not include the `shippingRules` array.
    */
   public func shippingRule(matching otherShippingRule: ShippingRule?) -> ShippingRule? {
-    return self.shippingRules?
-      .first { shippingRule in shippingRule.location.id == otherShippingRule?.location.id }
+    return self.shippingRulesExpanded?
+      .first { shippingRule in
+        shippingRule.location.id == otherShippingRule?.location.id
+      }
       ?? otherShippingRule
   }
 
