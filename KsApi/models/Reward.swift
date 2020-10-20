@@ -30,7 +30,7 @@ public struct Reward {
   /**
    Returns the closest matching `ShippingRule` for this `Reward` to `otherShippingRule`.
    If no match is found `otherShippingRule` is returned, this is to be backward-compatible
-   with v1 Rewards that do not include the `shippingRules` array.
+   with v1 Rewards that do not include the `shippingRulesExpanded` array.
    */
   public func shippingRule(matching otherShippingRule: ShippingRule?) -> ShippingRule? {
     return self.shippingRulesExpanded?

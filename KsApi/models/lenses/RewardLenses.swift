@@ -325,7 +325,7 @@ extension Reward {
     )
 
     public static let shippingRulesExpanded = Lens<Reward, [ShippingRule]?>(
-      view: { $0.shippingRules },
+      view: { $0.shippingRulesExpanded },
       set: { Reward(
         backersCount: $1.backersCount,
         convertedMinimum: $1.convertedMinimum,

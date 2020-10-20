@@ -110,7 +110,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     let addOns = projectEvent.values().map(\.rewardData.addOns).skipNil()
     let shippingRuleExpanded = projectEvent.values()
-      .map(\.rewardData.addOns?.first?.shippingRulesExpanded?.first).skipNil()
+      .map(\.rewardData.addOns?.first?.shippingRulesExpanded?.first)
     let requestErrored = projectEvent.map(\.error).map(isNotNil)
 
     // Quantities updated as the user selects them, merged with an empty initial value.
@@ -239,7 +239,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     let selectedLocationId = Signal.merge(
       initialLocationId,
-      shippingRuleExpanded.map { $0.location.id }
+      shippingRuleExpanded.map { $0?.location.id }
     )
 
     self.goToPledge = Signal.combineLatest(
@@ -412,10 +412,10 @@ private func filteredAddOns(
      For restricted or unrestricted shipping base rewards, unrestricted shipping
      or digital-only add-ons are available.
      */
-    let addOnIsDigitalOrUnrestricted = addOn.shipping.preference
-      .isAny(of: Reward.Shipping.Preference.none, .unrestricted)
+    let addOnIsDigital = addOn.shipping.preference
+      .isAny(of: Reward.Shipping.Preference.none)
 
-    return addOnIsDigitalOrUnrestricted || addOnReward(addOn, shipsTo: shippingRule?.location.id)
+    return addOnIsDigital || addOnReward(addOn, shipsTo: shippingRule?.location.id)
   }
 }
 
