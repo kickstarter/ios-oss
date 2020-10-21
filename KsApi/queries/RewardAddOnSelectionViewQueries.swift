@@ -10,7 +10,7 @@ public func rewardAddOnSelectionViewAddOnsQuery(withProjectSlug slug: String,
         NonEmptySet(.nodes(GraphReward.baseQueryProperties
             .op(NonEmptySet(Query.Reward
                 .shippingRulesExpanded(
-                  [.arg(.locationId(id ?? ""))],
+                  [.arg(.locationId(id ?? ""))], // An empty string will fetch only digital rewards
                   NonEmptySet(.nodes(.id +|
                       [.cost(Money.baseQueryProperties), .location(GraphLocation.baseQueryProperties)]))
                 )))))
