@@ -106,6 +106,44 @@ extension User: CustomDebugStringConvertible {
   }
 }
 
+extension User: Swift.Decodable {
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.avatar = try values.decode(Avatar.self, forKey: .avatar)
+    self.erroredBackingsCount = try values.decodeIfPresent(Int.self, forKey: .erroredBackingsCount)
+    self.facebookConnected = try values.decodeIfPresent(Bool.self, forKey: .facebookConnected)
+    self.id = try values.decode(Int.self, forKey: .id)
+    self.isAdmin = try values.decodeIfPresent(Bool.self, forKey: .isAdmin)
+    self.isFriend = try values.decodeIfPresent(Bool.self, forKey: .isFriend)
+    self.location = try values.decodeIfPresent(Location.self, forKey: .location)
+    self.name  = try values.decode(String.self, forKey: .name)
+    self.needsFreshFacebookToken = try values.decodeIfPresent(Bool.self, forKey: .needsFreshFacebookToken)
+    self.newsletters = try User.NewsletterSubscriptions(from: decoder)
+    self.notifications = try User.Notifications(from: decoder)
+    self.optedOutOfRecommendations = try values.decodeIfPresent(Bool.self, forKey: .optedOutOfRecommendations)
+    self.showPublicProfile = try values.decodeIfPresent(Bool.self, forKey: .showPublicProfile)
+    self.social = try values.decodeIfPresent(Bool.self, forKey: .social)
+    self.stats = try User.Stats(from: decoder)
+    self.unseenActivityCount = try values.decodeIfPresent(Int.self, forKey: .unseenActivityCount)
+  }
+
+  enum CodingKeys: String, CodingKey {
+    case avatar = "avatar"
+    case erroredBackingsCount = "errored_backings_count"
+    case facebookConnected = "facebook_connected"
+    case id = "id"
+    case isAdmin = "is_admin"
+    case isFriend = "is_friend"
+    case location = "location"
+    case name = "name"
+    case needsFreshFacebookToken = "needs_fresh_facebook_token"
+    case optedOutOfRecommendations = "opted_out_of_recommendations"
+    case showPublicProfile = "show_public_profile"
+    case social = "social"
+    case unseenActivityCount = "unseen_activity_count"
+  }
+}
+
 extension User: Decodable {
   public static func decode(_ json: JSON) -> Decoded<User> {
     let tmp1 = pure(curry(User.init))
@@ -152,6 +190,14 @@ extension User: EncodableType {
   }
 }
 
+extension User.Avatar: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case large = "large"
+    case medium = "medium"
+    case small = "small"
+  }
+}
+
 extension User.Avatar: Decodable {
   public static func decode(_ json: JSON) -> Decoded<User.Avatar> {
     return curry(User.Avatar.init)
@@ -167,10 +213,25 @@ extension User.Avatar: EncodableType {
       "medium": self.medium,
       "small": self.small
     ]
-
     ret["large"] = self.large
-
     return ret
+  }
+}
+
+extension User.NewsletterSubscriptions: Swift.Decodable {
+
+  enum CodingKeys: String, CodingKey {
+    case arts = "arts_culture_newsletter"
+    case games = "games_newsletter"
+    case happening = "happening_newsletter"
+    case invent = "invent_newsletter"
+    case promo = "promo_newsletter"
+    case weekly = "weekly_newsletter"
+    case films = "film_newsletter"
+    case publishing = "publishing_newsletter"
+    case alumni = "alumni_newsletter"
+    case music = "music_newsletter"
+
   }
 }
 
@@ -218,6 +279,28 @@ public func == (lhs: User.NewsletterSubscriptions, rhs: User.NewsletterSubscript
     lhs.films == rhs.films &&
     lhs.publishing == rhs.publishing &&
     lhs.alumni == rhs.alumni
+}
+
+extension User.Notifications: Swift.Decodable {
+
+  enum CodingKeys: String, CodingKey {
+  case backings = "notify_of_backings"
+  case commentReplies = "notify_of_comment_replies"
+  case comments = "notify_of_comments"
+  case creatorDigest = "notify_of_creator_digest"
+  case creatorTips = "notify_of_creator_edu"
+  case follower = "notify_of_follower"
+  case friendActivity = "notify_of_friend_activity"
+  case messages = "notify_of_messages"
+  case mobileBackings = "notify_mobile_of_backings"
+  case mobileComments = "notify_mobile_of_comments"
+  case mobileFriendActivity = "notify_mobile_of_friend_activity"
+  case mobileMessages = "notify_mobile_of_messages"
+  case mobilePostLikes = "notify_mobile_of_post_likes"
+  case mobileUpdates = "notify_mobile_of_updates"
+  case postLikes = "notify_of_post_likes"
+  case updates = "notify_of_updates"
+  }
 }
 
 extension User.Notifications: Decodable {
@@ -288,6 +371,17 @@ public func == (lhs: User.Notifications, rhs: User.Notifications) -> Bool {
     lhs.mobileUpdates == rhs.mobileUpdates &&
     lhs.postLikes == rhs.postLikes &&
     lhs.updates == rhs.updates
+}
+
+extension User.Stats: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case backedProjectsCount = "backed_projects_count"
+    case createdProjectsCount = "created_projects_count"
+    case memberProjectsCount = "member_projects_count"
+    case starredProjectsCount = "starred_projects_count"
+    case unansweredSurveysCount = "unanswered_surveys_count"
+    case unreadMessagesCount = "unread_messages_count"
+  }
 }
 
 extension User.Stats: Decodable {

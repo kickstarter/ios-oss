@@ -18,3 +18,11 @@ extension AccessTokenEnvelope: Decodable {
       <*> json <| "user"
   }
 }
+/*
+extension AccessTokenEnvelope: Swift.Codable {
+  enum CodingKeys: String, CodingKey {
+    case accessToken = "access_token"
+    case user = "user"
+  }
+}
+*/
