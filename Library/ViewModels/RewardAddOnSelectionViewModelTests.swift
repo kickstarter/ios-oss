@@ -552,15 +552,15 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
-      
+
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
         "Nothing is emitted until a shipping location is selected"
       )
-      
+
       self.scheduler.advance()
 
       self.vm.inputs.shippingRuleSelected(shippingRule)
-      
+
       self.scheduler.advance()
 
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected])
@@ -653,11 +653,11 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
         "Nothing is emitted until a shipping location is selected"
       )
-      
+
       self.scheduler.advance()
 
       self.vm.inputs.shippingRuleSelected(shippingRule)
-      
+
       self.scheduler.advance()
 
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected])
@@ -719,9 +719,9 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         shippingAddOn3,
         shippingAddOn4
       ]
-    
+
     let expectedAddOns = [shippingAddOn1, shippingAddOn2]
-    
+
     let expected = expectedAddOns
       .map { reward in
         RewardAddOnCardViewData(
@@ -752,13 +752,13 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
         "Nothing is emitted until a shipping location is selected"
       )
-      
+
       self.scheduler.advance()
 
       self.vm.inputs.shippingRuleSelected(shippingRule)
-      
+
       self.scheduler.advance()
-      
+
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected])
       XCTAssertEqual(
         self.loadAddOnRewardsIntoDataSourceAndReloadTableView.values.last?.count, 2,
@@ -844,11 +844,11 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
         "Nothing is emitted until a shipping location is selected"
       )
-      
+
       self.scheduler.advance()
 
       self.vm.inputs.shippingRuleSelected(shippingRule)
-      
+
       self.scheduler.advance()
 
       self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
@@ -976,7 +976,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       )
 
       self.vm.inputs.shippingRuleSelected(shippingRule)
-      
+
       self.scheduler.advance()
 
       self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
