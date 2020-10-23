@@ -44,21 +44,16 @@ internal final class DiscoveryViewModelTests: TestCase {
   }
 
   func testConfigureDataSourceOptimizelyConfiguration() {
-    withEnvironment(optimizelyClient: nil) {
+    let mockOptimizelyClient = MockOptimizelyClient()
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
+      self.vm.inputs.optimizelyClientConfigured()
 
-      self.configureDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
+      XCTAssertTrue(mockOptimizelyClient.activatePathCalled)
 
-      let mockOptimizelyClient = MockOptimizelyClient()
-
-      withEnvironment(optimizelyClient: mockOptimizelyClient) {
-        self.vm.inputs.optimizelyClientConfigured()
-
-        XCTAssertTrue(mockOptimizelyClient.activatePathCalled)
-
-        self.configureDataSource.assertValueCount(1)
-      }
+      self.configureDataSource.assertValueCount(1)
     }
   }
 
@@ -66,8 +61,6 @@ internal final class DiscoveryViewModelTests: TestCase {
     withEnvironment(optimizelyClient: nil) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
-
-      self.configureDataSource.assertDidNotEmitValue("Waits for Optimizely configuration")
 
       self.vm.inputs.optimizelyClientConfigurationFailed()
 
