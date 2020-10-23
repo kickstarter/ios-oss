@@ -356,6 +356,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       print("🔴 Optimizely SDK Configuration Failed with Error: \(optimizelyError.localizedDescription)")
 
       Crashlytics.crashlytics().record(error: optimizelyError)
+      self.viewModel.inputs.optimizelyClientConfigurationFailed()
     }
   }
 
