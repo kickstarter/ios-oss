@@ -489,7 +489,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let shippingAddOn1 = Reward.template
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shippingRules .~ [
+      |> Reward.lens.shippingRulesExpanded .~ [
         shippingRule,
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
       ]
@@ -497,7 +497,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let shippingAddOn2 = Reward.template
       |> Reward.lens.id .~ 3
       |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shippingRules .~ [
+      |> Reward.lens.shippingRulesExpanded .~ [
         shippingRule,
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
       ]
@@ -505,14 +505,14 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let shippingAddOn3 = Reward.template
       |> Reward.lens.id .~ 4
       |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shippingRules .~ [
+      |> Reward.lens.shippingRulesExpanded .~ [
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 3)
       ]
 
     let shippingAddOn4 = Reward.template
       |> Reward.lens.id .~ 5
       |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shippingRules .~ [shippingRule]
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -532,7 +532,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
           project: project,
           reward: reward,
           context: .pledge,
-          shippingRule: reward.shippingRules?.first,
+          shippingRule: reward.shippingRulesExpanded?.first,
           selectedQuantities: [:]
         )
       }
@@ -553,13 +553,15 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
-
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
         "Nothing is emitted until a shipping location is selected"
       )
 
+      self.scheduler.advance()
+
       self.vm.inputs.shippingRuleSelected(shippingRule)
+
+      self.scheduler.advance()
 
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected])
       XCTAssertEqual(
@@ -591,17 +593,17 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let shippingAddOn1 = Reward.template
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shippingRules .~ [shippingRule]
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let shippingAddOn2 = Reward.template
       |> Reward.lens.id .~ 3
       |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shippingRules .~ [shippingRule]
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let shippingAddOn3 = Reward.template
       |> Reward.lens.id .~ 4
       |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shippingRules .~ [
+      |> Reward.lens.shippingRulesExpanded .~ [
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 3)
       ]
 
@@ -627,7 +629,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
           project: project,
           reward: reward,
           context: .pledge,
-          shippingRule: reward.shippingRules?.first,
+          shippingRule: reward.shippingRulesExpanded?.first,
           selectedQuantities: [:]
         )
       }
@@ -648,13 +650,15 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
-
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
         "Nothing is emitted until a shipping location is selected"
       )
 
+      self.scheduler.advance()
+
       self.vm.inputs.shippingRuleSelected(shippingRule)
+
+      self.scheduler.advance()
 
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected])
       XCTAssertEqual(
@@ -667,7 +671,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     }
   }
 
-  func testLoadAddOnRewardsIntoDataSource_RestrictedShippingBaseReward_NoRewardsMatchOnLocation() {
+  func testLoadAddOnRewardsIntoDataSource_RestrictedShippingBaseReward_MatchBasedOnAddOnLocation() {
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
 
     let shippingRule = ShippingRule.template
@@ -677,33 +681,33 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .restricted
       |> Reward.lens.id .~ 99
-      |> Reward.lens.shippingRules .~ [shippingRule]
 
+    // The first addOns shippingRulesExpanded value determines what is visible
     let shippingAddOn1 = Reward.template
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shippingRules .~ [
+      |> Reward.lens.shippingRulesExpanded .~ [
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
       ]
 
     let shippingAddOn2 = Reward.template
       |> Reward.lens.id .~ 3
       |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shippingRules .~ [
+      |> Reward.lens.shippingRulesExpanded .~ [
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
       ]
 
     let shippingAddOn3 = Reward.template
       |> Reward.lens.id .~ 4
       |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shippingRules .~ [
+      |> Reward.lens.shippingRulesExpanded .~ [
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 3)
       ]
 
     let shippingAddOn4 = Reward.template
       |> Reward.lens.id .~ 5
       |> Reward.lens.shipping.enabled .~ true
-      |> Reward.lens.shippingRules .~ [
+      |> Reward.lens.shippingRulesExpanded .~ [
         shippingRule |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 3)
       ]
 
@@ -715,6 +719,20 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
         shippingAddOn3,
         shippingAddOn4
       ]
+
+    let expectedAddOns = [shippingAddOn1, shippingAddOn2]
+
+    let expected = expectedAddOns
+      .map { reward in
+        RewardAddOnCardViewData(
+          project: project,
+          reward: reward,
+          context: .pledge,
+          shippingRule: reward.shippingRulesExpanded?.first,
+          selectedQuantities: [:]
+        )
+      }
+      .map(RewardAddOnSelectionDataSourceItem.rewardAddOn)
 
     let mockService = MockService(fetchRewardAddOnsSelectionViewRewardsResult: .success(project))
 
@@ -731,18 +749,20 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
-
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
         "Nothing is emitted until a shipping location is selected"
       )
 
+      self.scheduler.advance()
+
       self.vm.inputs.shippingRuleSelected(shippingRule)
 
-      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([[.emptyState(.addOnsUnavailable)]])
+      self.scheduler.advance()
+
+      self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected])
       XCTAssertEqual(
-        self.loadAddOnRewardsIntoDataSourceAndReloadTableView.values.last?.count, 1,
-        "Empty state is emitted"
+        self.loadAddOnRewardsIntoDataSourceAndReloadTableView.values.last?.count, 2,
+        "Only addOns with the same location ID given from the shippingRulesExpanded should be visible"
       )
     }
   }
@@ -765,21 +785,25 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.id .~ 1
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let addOn2 = Reward.template
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let addOn3 = Reward.template
       |> Reward.lens.id .~ 3
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let addOn4 = Reward.template
       |> Reward.lens.id .~ 4
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -817,13 +841,15 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       self.vm.inputs.configure(with: data)
       self.vm.inputs.viewDidLoad()
 
-      self.scheduler.advance()
-
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue(
         "Nothing is emitted until a shipping location is selected"
       )
 
+      self.scheduler.advance()
+
       self.vm.inputs.shippingRuleSelected(shippingRule)
+
+      self.scheduler.advance()
 
       self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected])
@@ -871,21 +897,25 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.id .~ 1
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let addOn2 = Reward.template
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let addOn3 = Reward.template
       |> Reward.lens.id .~ 3
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let addOn4 = Reward.template
       |> Reward.lens.id .~ 4
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -946,6 +976,8 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       )
 
       self.vm.inputs.shippingRuleSelected(shippingRule)
+
+      self.scheduler.advance()
 
       self.loadAddOnRewardsIntoDataSource.assertDidNotEmitValue()
       self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertValues([expected])
@@ -1034,21 +1066,25 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.id .~ 1
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let addOn2 = Reward.template
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let addOn3 = Reward.template
       |> Reward.lens.id .~ 3
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let addOn4 = Reward.template
       |> Reward.lens.id .~ 4
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -1075,6 +1111,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     self.scheduler.advance()
     self.vm.inputs.shippingRuleSelected(shippingRule)
+    self.scheduler.advance()
 
     self.vm.inputs.continueButtonTapped()
 
@@ -1109,21 +1146,25 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
       |> Reward.lens.id .~ 1
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let addOn2 = Reward.template
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let addOn3 = Reward.template
       |> Reward.lens.id .~ 3
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let addOn4 = Reward.template
       |> Reward.lens.id .~ 4
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ [shippingRule]
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
@@ -1150,6 +1191,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     self.scheduler.advance()
     self.vm.inputs.shippingRuleSelected(shippingRule)
+    self.scheduler.advance()
 
     self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 3, rewardId: 2)
     self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 2, rewardId: 1)

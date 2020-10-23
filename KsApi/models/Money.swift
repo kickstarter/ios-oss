@@ -3,8 +3,8 @@ import Prelude
 
 public struct Money: Swift.Decodable, Equatable {
   public var amount: Double
-  public var currency: CurrencyCode
-  public var symbol: String
+  public var currency: CurrencyCode?
+  public var symbol: String?
 
   public enum CurrencyCode: String, CaseIterable, Swift.Decodable, Equatable {
     case aud = "AUD"
@@ -42,8 +42,8 @@ extension Money {
     }
 
     self.amount = amount
-    self.currency = try values.decode(CurrencyCode.self, forKey: .currency)
-    self.symbol = try values.decode(String.self, forKey: .symbol)
+    self.currency = try values.decodeIfPresent(CurrencyCode.self, forKey: .currency)
+    self.symbol = try values.decodeIfPresent(String.self, forKey: .symbol)
   }
 }
 

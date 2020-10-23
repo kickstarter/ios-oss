@@ -20,6 +20,7 @@ extension GraphReward {
     remainingQuantity: 10,
     shippingPreference: .restricted,
     shippingRules: [.template],
+    shippingRulesExpanded: ShippingRuleExpanded(nodes: [.template]),
     startsAt: 1_487_502_131
   )
 }

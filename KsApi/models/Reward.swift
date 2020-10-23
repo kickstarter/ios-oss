@@ -18,6 +18,7 @@ public struct Reward {
   public let rewardsItems: [RewardsItem]
   public let shipping: Shipping // only v1
   public let shippingRules: [ShippingRule]? // only GraphQL
+  public let shippingRulesExpanded: [ShippingRule]? // only GraphQL
   public let startsAt: TimeInterval?
   public let title: String?
 
@@ -29,11 +30,13 @@ public struct Reward {
   /**
    Returns the closest matching `ShippingRule` for this `Reward` to `otherShippingRule`.
    If no match is found `otherShippingRule` is returned, this is to be backward-compatible
-   with v1 Rewards that do not include the `shippingRules` array.
+   with v1 Rewards that do not include the `shippingRulesExpanded` array.
    */
   public func shippingRule(matching otherShippingRule: ShippingRule?) -> ShippingRule? {
-    return self.shippingRules?
-      .first { shippingRule in shippingRule.location.id == otherShippingRule?.location.id }
+    return self.shippingRulesExpanded?
+      .first { shippingRule in
+        shippingRule.location.id == otherShippingRule?.location.id
+      }
       ?? otherShippingRule
   }
 
@@ -100,6 +103,7 @@ extension Reward: Argo.Decodable {
       <*> ((json <|| "rewards_items") <|> .success([]))
       <*> tryDecodable(json)
       <*> json <||? "shipping_rules"
+      <*> json <||? "shipping_rules_expanded"
       <*> json <|? "starts_at"
       <*> json <|? "title"
   }

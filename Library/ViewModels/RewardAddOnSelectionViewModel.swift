@@ -87,9 +87,19 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       slug.takeWhen(self.beginRefreshSignal)
     )
 
-    let projectEvent = fetchAddOnsWithSlug.switchMap { slug in
+    let shippingRule = Signal.merge(
+      self.shippingRuleSelectedProperty.signal,
+      baseReward.filter { reward in !reward.shipping.enabled }.mapConst(nil)
+    )
+
+    let slugAndShippingRule = Signal.combineLatest(fetchAddOnsWithSlug, shippingRule)
+
+    let projectEvent = slugAndShippingRule.switchMap { slug, shippingRule in
       AppEnvironment.current.apiService.fetchRewardAddOnsSelectionViewRewards(
-        query: rewardAddOnSelectionViewAddOnsQuery(withProjectSlug: slug)
+        query: rewardAddOnSelectionViewAddOnsQuery(
+          withProjectSlug: slug,
+          andGraphId: shippingRule?.location.graphID
+        )
       )
       .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
       .materialize()
@@ -99,12 +109,9 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     self.endRefreshing = projectEvent.filter { $0.isTerminating }.ignoreValues()
 
     let addOns = projectEvent.values().map(\.rewardData.addOns).skipNil()
+    let shippingRuleExpanded = projectEvent.values()
+      .map(\.rewardData.addOns?.first?.shippingRulesExpanded?.first)
     let requestErrored = projectEvent.map(\.error).map(isNotNil)
-
-    let shippingRule = Signal.merge(
-      self.shippingRuleSelectedProperty.signal,
-      baseReward.filter { reward in !reward.shipping.enabled }.mapConst(nil)
-    )
 
     // Quantities updated as the user selects them, merged with an empty initial value.
     let updatedSelectedQuantities = Signal.merge(
@@ -153,7 +160,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       project,
       baseReward,
       context,
-      shippingRule
+      shippingRuleExpanded
     )
 
     let reloadRewardsIntoDataSource = rewardAddOnCardsViewData
@@ -209,7 +216,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
         }
     }
 
-    let selectionChanged = Signal.combineLatest(project, latestSelectedQuantities, shippingRule)
+    let selectionChanged = Signal.combineLatest(project, latestSelectedQuantities, shippingRuleExpanded)
       .map(isValid)
 
     self.configureContinueCTAViewWithData = Signal.merge(
@@ -232,7 +239,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     let selectedLocationId = Signal.merge(
       initialLocationId,
-      shippingRule.map { $0?.location.id }
+      shippingRuleExpanded.map { $0?.location.id }
     )
 
     self.goToPledge = Signal.combineLatest(
@@ -346,17 +353,17 @@ private func rewardsData(
 ) -> [RewardAddOnSelectionDataSourceItem] {
   let addOnsFilteredByAvailability = addOns.filter { addOnIsAvailable($0, in: project) }
 
-  let addOnsFilteredByShippingRule = filteredAddOns(
+  let addOnsFilteredByExpandedShippingRule = filteredAddOns(
     addOnsFilteredByAvailability,
     filteredBy: shippingRule,
     baseReward: baseReward
   )
 
-  guard !addOnsFilteredByShippingRule.isEmpty else {
+  guard !addOnsFilteredByExpandedShippingRule.isEmpty else {
     return [.emptyState(.addOnsUnavailable)]
   }
 
-  return addOnsFilteredByShippingRule
+  return addOnsFilteredByExpandedShippingRule
     .map { reward in
       RewardAddOnCardViewData(
         project: project,
@@ -405,15 +412,15 @@ private func filteredAddOns(
      For restricted or unrestricted shipping base rewards, unrestricted shipping
      or digital-only add-ons are available.
      */
-    let addOnIsDigitalOrUnrestricted = addOn.shipping.preference
-      .isAny(of: Reward.Shipping.Preference.none, .unrestricted)
+    let addOnIsDigital = addOn.shipping.preference
+      .isAny(of: Reward.Shipping.Preference.none)
 
-    return addOnIsDigitalOrUnrestricted || addOnReward(addOn, shipsTo: shippingRule?.location.id)
+    return addOnIsDigital || addOnReward(addOn, shipsTo: shippingRule?.location.id)
   }
 }
 
 /**
- For base rewards that have restricted shipping, only return
+ For base rewards that have restricted or unrestricted shipping, only return
  add-ons that can ship to the selected shipping location.
  */
 private func addOnReward(
@@ -423,7 +430,7 @@ private func addOnReward(
   guard let selectedLocationId = locationId else { return false }
 
   let addOnShippingLocationIds: Set<Int> = Set(
-    addOn.shippingRules?.map(\.location).map(\.id) ?? []
+    addOn.shippingRulesExpanded?.map(\.location).map(\.id) ?? []
   )
 
   return addOnShippingLocationIds.contains(selectedLocationId)

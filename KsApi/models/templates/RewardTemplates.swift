@@ -24,6 +24,7 @@ extension Reward {
       type: nil
     ),
     shippingRules: nil,
+    shippingRulesExpanded: nil,
     startsAt: nil,
     title: "My Reward"
   )
@@ -49,6 +50,7 @@ extension Reward {
       type: nil
     ),
     shippingRules: nil,
+    shippingRulesExpanded: nil,
     startsAt: nil,
     title: nil
   )
@@ -74,6 +76,7 @@ extension Reward {
       type: nil
     ),
     shippingRules: nil,
+    shippingRulesExpanded: nil,
     startsAt: nil,
     title: nil
   )
