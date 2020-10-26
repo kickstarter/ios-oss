@@ -8,6 +8,15 @@ public struct RewardsItem {
   public let rewardId: Int
 }
 
+extension RewardsItem: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case id = "id"
+    case item = "item"
+    case quantity = "quantity"
+    case rewardId = "reward_id"
+  }
+}
+
 extension RewardsItem: Decodable {
   public static func decode(_ json: JSON) -> Decoded<RewardsItem> {
     return curry(RewardsItem.init)

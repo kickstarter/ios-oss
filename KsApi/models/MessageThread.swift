@@ -11,20 +11,33 @@ public struct MessageThread {
   public let unreadMessagesCount: Int
 }
 
+extension MessageThread: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case backing = "body"
+    case closed = "created_at"
+    case id = "id"
+    case lastMessage = "recipient"
+    case participant = "participant"
+    case project = "project"
+    case unreadMessagesCount = "unread_messages_count"
+  }
+}
+
+/*
 extension MessageThread: Decodable {
   public static func decode(_ json: JSON) -> Decoded<MessageThread> {
     let tmp = curry(MessageThread.init)
       <^> json <|? "backing"
       <*> json <| "closed"
       <*> json <| "id"
-      <*> json <| "last_message"
+      <*> ((json <| "last_message" >>- tryDecodable) as Decoded<Message>)
     return tmp
-      <*> json <| "participant"
+      <*> ((json <| "participant" >>- tryDecodable) as Decoded<User>)
       <*> json <| "project"
       <*> json <| "unread_messages_count"
   }
 }
-
+*/
 extension MessageThread: Equatable {}
 public func == (lhs: MessageThread, rhs: MessageThread) -> Bool {
   return lhs.id == rhs.id

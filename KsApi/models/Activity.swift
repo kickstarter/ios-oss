@@ -58,9 +58,9 @@ extension Activity: Decodable {
       <*> json <| "id"
     return tmp
       <*> Activity.MemberData.decode(json)
-      <*> json <|? "project"
+      <*> ((json <|? "project" >>- tryDecodable) as Decoded<Project?>) 
       <*> json <|? "update"
-      <*> json <|? "user"
+      <*> ((json <|? "user" >>- tryDecodable) as Decoded<User?>)
   }
 }
 

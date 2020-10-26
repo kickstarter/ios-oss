@@ -51,7 +51,7 @@ public struct Project {
     public var hls: String?
   }
 
-  public enum State: String, Decodable, CaseIterable {
+public enum State: String, Decodable, CaseIterable, Swift.Decodable {
     case canceled
     case failed
     case live
@@ -235,6 +235,32 @@ extension Project: CustomDebugStringConvertible {
   }
 }
 
+extension Project: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case availableCardTypes = "available_card_types"
+    case blurb = "blurb"
+    case category = "category"
+    case country
+    case creator = "creator"
+    case memberData
+    case dates
+    case id = "id"
+    case location = "location"
+    case name = "name"
+    case personalization
+    case photo = "photo"
+    case prelaunchActivated = "prelaunch_activated"
+    case rewardData
+    case slug = "slug"
+    case staffPick = "staffPick"
+    case state = "state"
+    case stats
+    case urls = "urls"
+    case video = "video"
+    //TODO finish mapping flat str
+  }
+}
+/*
 extension Project: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project> {
     let tmp1 = curry(Project.init)
@@ -263,6 +289,19 @@ extension Project: Decodable {
       <*> json <|? "video"
   }
 }
+*/
+extension Project.UrlsEnvelope: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case web = "web"
+  }
+}
+
+extension Project.UrlsEnvelope.WebEnvelope: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case project = "project"
+    case updates = "updates"
+  }
+}
 
 extension Project.UrlsEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.UrlsEnvelope> {
@@ -278,6 +317,37 @@ extension Project.UrlsEnvelope.WebEnvelope: Decodable {
       <*> json <|? "updates"
   }
 }
+
+extension Project.Stats: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case backersCount = "backers_count"
+    case commentsCount = "comments_count"
+    case convertedPledgedAmount = "converted_pledged_amount"
+    case currency = "currency"
+    case currentCurrency = "current_currency"
+    case currentCurrencyRate = "fx_rate"
+    case goal = "goal"
+    case pledged = "pledged"
+    case staticUsdRate = "static_usd_rate"
+    case updatesCount = "updates_count"
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.backersCount = try values.decode(Int.self, forKey: .backersCount)
+    self.commentsCount = try values.decodeIfPresent(Int.self, forKey: .commentsCount)
+    self.convertedPledgedAmount = try values.decodeIfPresent(Int.self, forKey: .convertedPledgedAmount)
+    self.currency = try values.decode(String.self, forKey: .currency)
+    self.currentCurrency = try values.decodeIfPresent(String.self, forKey: .currentCurrency)
+    self.currentCurrencyRate = try values.decodeIfPresent(Float.self, forKey: .currentCurrencyRate)
+    self.goal = try values.decode(Int.self, forKey: .goal)
+    self.pledged = try values.decode(Int.self, forKey: .pledged)
+    self.staticUsdRate = try values.decodeIfPresent(Float.self, forKey: .staticUsdRate) ?? 1.0
+    self.updatesCount = try values.decodeIfPresent(Int.self, forKey: .updatesCount)
+  }
+
+}
+
 
 extension Project.Stats: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Stats> {
@@ -296,6 +366,15 @@ extension Project.Stats: Decodable {
   }
 }
 
+extension Project.MemberData: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case lastUpdatePublishedAt = "last_update_published_at"
+    case permissions = "permissions"
+    case unreadMessagesCount = "unread_messages_count"
+    case unseenActivityCount = "unseen_activity_count"
+  }
+}
+
 extension Project.MemberData: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.MemberData> {
     return curry(Project.MemberData.init)
@@ -303,6 +382,16 @@ extension Project.MemberData: Decodable {
       <*> (removeUnknowns <^> (json <|| "permissions") <|> .success([]))
       <*> json <|? "unread_messages_count"
       <*> json <|? "unseen_activity_count"
+  }
+}
+
+extension Project.Dates: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case deadline = "deadline"
+    case featuredAt = "featured_at"
+    case finalCollectionDate = "final_collection_date"
+    case launchedAt = "launched_at"
+    case stateChangedAt = "state_changed_at"
   }
 }
 
@@ -317,6 +406,16 @@ extension Project.Dates: Decodable {
   }
 }
 
+extension Project.Personalization: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case backing = "backing"
+    case friends = "friends"
+    case isBacking = "is_backing"
+    case isStarred = "is_starred"
+  }
+}
+
+/*
 extension Project.Personalization: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Personalization> {
     return curry(Project.Personalization.init)
@@ -324,6 +423,19 @@ extension Project.Personalization: Decodable {
       <*> json <||? "friends"
       <*> json <|? "is_backing"
       <*> json <|? "is_starred"
+  }
+}
+*/
+extension Project.RewardData: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case addOns = "add_ons"
+    case rewards = "rewards"
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.addOns = try values.decodeIfPresent([Reward].self, forKey: .addOns)
+    self.rewards = try values.decodeIfPresent([Reward].self, forKey: .addOns) ?? []
   }
 }
 
@@ -335,6 +447,15 @@ extension Project.RewardData: Decodable {
   }
 }
 
+extension Project.Category: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case id = "id"
+    case name = "name"
+    case parentId = "parent_id"
+    case parentName = "parent_name"
+  }
+}
+
 extension Project.Category: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Category> {
     return curry(Project.Category.init)
@@ -342,6 +463,26 @@ extension Project.Category: Decodable {
       <*> json <| "name"
       <*> json <|? "parent_id"
       <*> json <|? "parent_name"
+  }
+}
+
+extension Project.Photo: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case full = "full"
+    case med = "med"
+    case size1024x768 = "1024x768"
+    case size1024x576 = "1024x576"
+    case small = "small"
+  }
+
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.full = try values.decode(String.self, forKey: .full)
+    self.med = try values.decode(String.self, forKey: .med)
+    //TODO - fix type
+    self.size1024x768 = try values.decodeIfPresent(String.self, forKey: .size1024x768) ?? (try values.decodeIfPresent(String.self, forKey: .size1024x576))
+    self.small = try values.decode(String.self, forKey: .small)
   }
 }
 
@@ -357,6 +498,14 @@ extension Project.Photo: Decodable {
       <*> url1024
       <*> json <| "small"
   }
+}
+
+extension Project.MemberData.Permission: Swift.Decodable {
+  
+  public init(from decoder: Decoder) throws {
+    self = try Project.MemberData.Permission(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
+  }
+  
 }
 
 extension Project.MemberData.Permission: Decodable {
@@ -396,3 +545,5 @@ extension Project {
     return SignalProducer(value: project)
   }
 }
+
+extension Project.Video: Swift.Decodable {}

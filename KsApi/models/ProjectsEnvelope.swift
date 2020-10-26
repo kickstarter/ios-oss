@@ -1,19 +1,30 @@
 import Curry
 import Runes
 
-public struct ProjectsEnvelope {
+public struct ProjectsEnvelope: Swift.Decodable {
   public let projects: [Project]
   public let urls: UrlsEnvelope
 
-  public struct UrlsEnvelope {
+  public struct UrlsEnvelope: Swift.Decodable {
     public let api: ApiEnvelope
 
-    public struct ApiEnvelope {
+    public struct ApiEnvelope{
       public let moreProjects: String
     }
   }
 }
 
+extension ProjectsEnvelope.UrlsEnvelope.ApiEnvelope: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case moreProjects = "more_projects"
+  }
+  
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.moreProjects = try values.decodeIfPresent(String.self, forKey: .moreProjects) ?? ""
+  }
+}
+/*
 extension ProjectsEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectsEnvelope> {
     return curry(ProjectsEnvelope.init)
@@ -35,3 +46,4 @@ extension ProjectsEnvelope.UrlsEnvelope.ApiEnvelope: Decodable {
       <^> (json <| "more_projects" <|> .success(""))
   }
 }
+*/

@@ -31,7 +31,7 @@ public struct Backing {
     public var type: CreditCardType?
   }
 
-  public enum Status: String, CaseIterable {
+  public enum Status: String, CaseIterable, Swift.Decodable {
     case canceled
     case collected
     case dropped
@@ -47,12 +47,59 @@ public func == (lhs: Backing, rhs: Backing) -> Bool {
   return lhs.id == rhs.id
 }
 
+extension Backing: Swift.Decodable{
+  private enum CodingKeys: String, CodingKey {
+    case addOns = "add_ons"
+    case amount = "amount"
+    case backer = "backer"
+    case backerId = "backer_id"
+    case backerCompleted = "backer_completed_at"
+    case bonusAmount = "bonus_amount"
+    case cancelable = "cancelable"
+    case id = "id"
+    case locationId = "location_id"
+    case locationName = "location_name"
+    case paymentSource = "payment_source"
+    case pledgedAt = "pledged_at"
+    case projectCountry = "project_country"
+    case projectId = "project_id"
+    case reward = "reward"
+    case rewardId = "reward_id"
+    case sequence = "sequence"
+    case shippingAmount = "shipping_amount"
+    case status = "status"
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.addOns = try values.decodeIfPresent([Reward].self, forKey: .reward)
+    self.amount = try values.decode(Double.self, forKey: .amount)
+    self.backer = try values.decodeIfPresent(User.self, forKey: .backer)
+    self.backerId = try values.decode(Int.self, forKey: .backerId)
+    self.backerCompleted = try values.decodeIfPresent(Bool.self, forKey: .backerCompleted)
+    self.bonusAmount = try values.decodeIfPresent(Double.self, forKey: .bonusAmount) ?? 0.0
+    self.cancelable = try values.decode(Bool.self, forKey: .cancelable)
+    self.id = try values.decode(Int.self, forKey: .id)
+    self.locationId = try values.decodeIfPresent(Int.self, forKey: .locationId)
+    self.locationName = try values.decodeIfPresent(String.self, forKey: .locationName)
+    self.paymentSource = try values.decodeIfPresent(PaymentSource.self, forKey: .paymentSource)
+    self.pledgedAt = try values.decode(TimeInterval.self, forKey: .pledgedAt)
+    self.projectCountry = try values.decode(String.self, forKey: .projectCountry)
+    self.projectId = try values.decode(Int.self, forKey: .projectId)
+    self.reward = try values.decodeIfPresent(Reward.self, forKey: .reward)
+    self.rewardId = try values.decodeIfPresent(Int.self, forKey: .rewardId)
+    self.sequence = try values.decode(Int.self, forKey: .sequence)
+    self.shippingAmount = try values.decodeIfPresent(Int.self, forKey: .shippingAmount)
+    self.status = try values.decode(Status.self, forKey: .status)
+  }
+}
+
 extension Backing: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Backing> {
     let tmp1 = curry(Backing.init)
       <^> json <||? "add_ons"
       <*> json <| "amount"
-      <*> json <|? "backer"
+      <*> ((json <|? "backer" >>- tryDecodable) as Decoded<User?>)
       <*> json <| "backer_id"
       <*> json <|? "backer_completed_at"
       <*> (json <| "bonus_amount" <|> .success(0.0))
@@ -100,6 +147,17 @@ extension Backing: EncodableType {
     var result: [String: Any] = [:]
     result["backer_completed_at"] = self.backerCompleted
     return result
+  }
+}
+
+extension Backing.PaymentSource: Swift.Decodable{
+  private enum CodingKeys: String, CodingKey {
+    case expirationDate = "expiration_date"
+    case id = "id"
+    case lastFour = "last_four"
+    case paymentType = "payment_type"
+    case state = "state"
+    case type = "type"
   }
 }
 

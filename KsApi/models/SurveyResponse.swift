@@ -26,7 +26,7 @@ extension SurveyResponse: Decodable {
     return curry(SurveyResponse.init)
       <^> json <|? "answered_at"
       <*> json <| "id"
-      <*> json <|? "project"
+      <*> ((json <|? "project" >>- tryDecodable) as Decoded<Project?>)
       <*> json <| "urls"
   }
 }

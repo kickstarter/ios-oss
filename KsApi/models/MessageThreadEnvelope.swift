@@ -7,6 +7,15 @@ public struct MessageThreadEnvelope {
   public let messageThread: MessageThread
 }
 
+extension MessageThreadEnvelope: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case participants = "participants"
+    case messages = "messages"
+    case messageThread = "message_thread"
+  }
+}
+
+/*
 extension MessageThreadEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<MessageThreadEnvelope> {
     return curry(MessageThreadEnvelope.init)
@@ -15,3 +24,4 @@ extension MessageThreadEnvelope: Decodable {
       <*> json <| "message_thread"
   }
 }
+ */

@@ -47,9 +47,10 @@ extension Update: Decodable {
       <*> json <|? "published_at"
       <*> json <| "sequence"
       <*> (json <| "title" <|> .success(""))
+    
     return tmp3
       <*> ((json <| "urls" >>- tryDecodable) as Decoded<Update.UrlsEnvelope>)
-      <*> json <|? "user"
+      <*> ((json <|? "user" >>- tryDecodable) as Decoded<User?>)
       <*> json <|? "visible"
   }
 }

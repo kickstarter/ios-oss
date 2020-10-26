@@ -15,7 +15,7 @@ extension AccessTokenEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<AccessTokenEnvelope> {
     return curry(AccessTokenEnvelope.init)
       <^> json <| "access_token"
-      <*> json <| "user"
+      <*> ((json <| "user" >>- tryDecodable) as Decoded<User>)
   }
 }
 /*

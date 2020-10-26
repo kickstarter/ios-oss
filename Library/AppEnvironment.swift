@@ -1,4 +1,3 @@
-import Argo
 import FBSDKCoreKit
 import Foundation
 import KsApi
@@ -343,7 +342,7 @@ public struct AppEnvironment: AppEnvironmentType {
 
     // Try restore the current user
     if service.oauthToken != nil {
-      currentUser = data["currentUser"].flatMap(decode)
+      currentUser = data["currentUser"].flatMap(tryDecode)
     }
 
     return Environment(

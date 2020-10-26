@@ -63,7 +63,7 @@ public struct Service: ServiceType {
   }
 
   public func facebookConnect(facebookAccessToken token: String) -> SignalProducer<User, ErrorEnvelope> {
-    return request(.facebookConnect(facebookAccessToken: token))
+    return requestDecodable(.facebookConnect(facebookAccessToken: token))
   }
 
   public func addImage(file fileURL: URL, toDraft draft: UpdateDraft)
@@ -191,21 +191,21 @@ public struct Service: ServiceType {
 
   public func fetchDiscovery(paginationUrl: String)
     -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
-    return requestPagination(paginationUrl)
+    return requestPaginationDecodable(paginationUrl)
   }
 
   public func fetchDiscovery(params: DiscoveryParams)
     -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
-    return request(.discover(params))
+    return requestDecodable(.discover(params))
   }
 
   public func fetchFriends() -> SignalProducer<FindFriendsEnvelope, ErrorEnvelope> {
-    return request(.friends)
+    return requestDecodable(.friends)
   }
 
   public func fetchFriends(paginationUrl: String)
     -> SignalProducer<FindFriendsEnvelope, ErrorEnvelope> {
-    return requestPagination(paginationUrl)
+    return requestPaginationDecodable(paginationUrl)
   }
 
   public func fetchFriendStats() -> SignalProducer<FriendStatsEnvelope, ErrorEnvelope> {
@@ -253,34 +253,34 @@ public struct Service: ServiceType {
 
   public func fetchMessageThread(messageThreadId: Int)
     -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope> {
-    return request(.messagesForThread(messageThreadId: messageThreadId))
+    return requestDecodable(.messagesForThread(messageThreadId: messageThreadId))
   }
 
   public func fetchMessageThread(backing: Backing)
     -> SignalProducer<MessageThreadEnvelope?, ErrorEnvelope> {
-    return request(.messagesForBacking(backing))
+    return requestDecodable(.messagesForBacking(backing))
   }
 
   public func fetchMessageThreads(mailbox: Mailbox, project: Project?)
     -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope> {
-    return request(.messageThreads(mailbox: mailbox, project: project))
+    return requestDecodable(.messageThreads(mailbox: mailbox, project: project))
   }
 
   public func fetchMessageThreads(paginationUrl: String)
     -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope> {
-    return requestPagination(paginationUrl)
+    return requestPaginationDecodable(paginationUrl)
   }
 
   public func fetchProject(param: Param) -> SignalProducer<Project, ErrorEnvelope> {
-    return request(.project(param))
+    return requestDecodable(.project(param))
   }
 
   public func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
-    return request(.discover(params |> DiscoveryParams.lens.perPage .~ 1))
+    return requestDecodable(.discover(params |> DiscoveryParams.lens.perPage .~ 1))
   }
 
   public func fetchProject(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
-    return request(.project(.id(project.id)))
+    return requestDecodable(.project(.id(project.id)))
   }
 
   public func fetchProjectActivities(forProject project: Project) ->
@@ -298,11 +298,11 @@ public struct Service: ServiceType {
   }
 
   public func fetchProjects(member: Bool) -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
-    return request(.projects(member: member))
+    return requestDecodable(.projects(member: member))
   }
 
   public func fetchProjects(paginationUrl url: String) -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
-    return requestPagination(url)
+    return requestPaginationDecodable(url)
   }
 
   public func fetchProjectStats(projectId: Int) ->
@@ -327,20 +327,20 @@ public struct Service: ServiceType {
   }
 
   public func fetchUserProjectsBacked() -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
-    return request(.userProjectsBacked)
+    return requestDecodable(.userProjectsBacked)
   }
 
   public func fetchUserProjectsBacked(paginationUrl url: String)
     -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
-    return requestPagination(url)
+    return requestPaginationDecodable(url)
   }
 
   public func fetchUserSelf() -> SignalProducer<User, ErrorEnvelope> {
-    return request(.userSelf)
+    return requestDecodable(.userSelf)
   }
 
   public func fetchUser(userId: Int) -> SignalProducer<User, ErrorEnvelope> {
-    return request(.user(userId: userId))
+    return requestDecodable(.user(userId: userId))
   }
 
   public func fetchUser(_ user: User) -> SignalProducer<User, ErrorEnvelope> {
@@ -370,7 +370,7 @@ public struct Service: ServiceType {
   }
 
   public func followFriend(userId id: Int) -> SignalProducer<User, ErrorEnvelope> {
-    return request(.followFriend(userId: id))
+    return requestDecodable(.followFriend(userId: id))
   }
 
   public func incrementVideoCompletion(forProject project: Project) ->
@@ -412,7 +412,7 @@ public struct Service: ServiceType {
   }
 
   public func markAsRead(messageThread: MessageThread) -> SignalProducer<MessageThread, ErrorEnvelope> {
-    return request(.markAsRead(messageThread))
+    return requestDecodable(.markAsRead(messageThread))
   }
 
   public func postComment(_ body: String, toProject project: Project) ->
@@ -433,12 +433,12 @@ public struct Service: ServiceType {
   }
 
   public func resetPassword(email: String) -> SignalProducer<User, ErrorEnvelope> {
-    return request(.resetPassword(email: email))
+    return requestDecodable(.resetPassword(email: email))
   }
 
   public func searchMessages(query: String, project: Project?)
     -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope> {
-    return request(.searchMessages(query: query, project: project))
+    return requestDecodable(.searchMessages(query: query, project: project))
   }
 
   public func sendMessage(body: String, toSubject subject: MessageSubject)
@@ -514,7 +514,7 @@ public struct Service: ServiceType {
   }
 
   public func updateUserSelf(_ user: User) -> SignalProducer<User, ErrorEnvelope> {
-    return request(.updateUserSelf(user))
+    return requestDecodable(.updateUserSelf(user))
   }
 
   public func unwatchProject(input: WatchProjectInput) ->

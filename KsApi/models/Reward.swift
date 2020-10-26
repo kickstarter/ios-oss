@@ -80,6 +80,51 @@ public func < (lhs: Reward, rhs: Reward) -> Bool {
   return minimumAndIdComparator.isOrdered(lhs, rhs)
 }
 
+extension Reward: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case backersCount = "backers_count"
+    case convertedMinimum = "converted_minimum"
+    case description = "description"
+    case reward = "reward"
+    case endsAt = "ends_at"
+    case estimatedDeliveryOn = "estimated_delivery_on"
+    case hasAddOns = "has_addons"
+    case id = "id"
+    case limit = "limit"
+    case limitPerBacker = "limit_per_backer"
+    case minimum = "minimum"
+    case remaining = "remaining"
+    case rewardsItems = "rewards_items"
+    case shippingRules = "shipping_rules"
+    case startsAt = "starts_at"
+    case title = "title"
+  }
+  
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.backersCount = try values.decodeIfPresent(Int.self, forKey: .backersCount)
+    self.convertedMinimum = try values.decode(Double.self, forKey: .convertedMinimum)
+    if let description = try? values.decode(String.self, forKey: .description)  {
+        self.description = description
+    }else {
+      self.description = try values.decode(String.self, forKey: .reward)
+    }
+    self.endsAt = try values.decodeIfPresent(TimeInterval.self, forKey: .endsAt)
+    self.estimatedDeliveryOn = try values.decodeIfPresent(TimeInterval.self, forKey: .estimatedDeliveryOn)
+    self.hasAddOns = try values.decodeIfPresent(Bool.self, forKey: .hasAddOns) ?? false
+    self.id = try values.decode(Int.self, forKey: .id)
+    self.limit = try values.decodeIfPresent(Int.self, forKey: .limit)
+    self.limitPerBacker = try values.decodeIfPresent(Int.self, forKey: .limitPerBacker)
+    self.minimum = try values.decode(Double.self, forKey: .minimum)
+    self.remaining = try values.decodeIfPresent(Int.self, forKey: .remaining)
+    self.rewardsItems = try values.decodeIfPresent([RewardsItem].self, forKey: .rewardsItems) ?? []
+    self.shipping = try Shipping(from: decoder)
+    self.shippingRules = try values.decodeIfPresent([ShippingRule].self, forKey: .shippingRules) ?? []
+    self.startsAt = try values.decodeIfPresent(TimeInterval.self, forKey: .startsAt)
+    self.title = try values.decodeIfPresent(String.self, forKey: .startsAt)
+  }
+}
+
 extension Reward: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Reward> {
     let tmp1 = curry(Reward.init)
@@ -104,7 +149,7 @@ extension Reward: Decodable {
   }
 }
 
-extension Reward.Shipping {
+extension Reward.Shipping{
   private enum CodingKeys: String, CodingKey {
     case enabled = "shipping_enabled"
     case location = "shipping_single_location"

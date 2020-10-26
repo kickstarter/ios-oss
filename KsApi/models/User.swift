@@ -143,11 +143,11 @@ extension User: Swift.Decodable {
     case unseenActivityCount = "unseen_activity_count"
   }
 }
-
+/*
 extension User: Decodable {
   public static func decode(_ json: JSON) -> Decoded<User> {
     let tmp1 = pure(curry(User.init))
-      <*> json <| "avatar"
+      <*> ((json <| "avatar" >>- tryDecodable) as Decoded<Avatar>)
       <*> json <|? "errored_backings_count"
       <*> json <|? "facebook_connected"
       <*> json <| "id"
@@ -168,7 +168,7 @@ extension User: Decodable {
       <*> json <|? "unseen_activity_count"
   }
 }
-
+*/
 extension User: EncodableType {
   public func encode() -> [String: Any] {
     var result: [String: Any] = [:]
@@ -198,15 +198,6 @@ extension User.Avatar: Swift.Decodable {
   }
 }
 
-extension User.Avatar: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<User.Avatar> {
-    return curry(User.Avatar.init)
-      <^> json <|? "large"
-      <*> json <| "medium"
-      <*> json <| "small"
-  }
-}
-
 extension User.Avatar: EncodableType {
   public func encode() -> [String: Any] {
     var ret: [String: Any] = [
@@ -232,22 +223,6 @@ extension User.NewsletterSubscriptions: Swift.Decodable {
     case alumni = "alumni_newsletter"
     case music = "music_newsletter"
 
-  }
-}
-
-extension User.NewsletterSubscriptions: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<User.NewsletterSubscriptions> {
-    return curry(User.NewsletterSubscriptions.init)
-      <^> json <|? "arts_culture_newsletter"
-      <*> json <|? "games_newsletter"
-      <*> json <|? "happening_newsletter"
-      <*> json <|? "invent_newsletter"
-      <*> json <|? "promo_newsletter"
-      <*> json <|? "weekly_newsletter"
-      <*> json <|? "film_newsletter"
-      <*> json <|? "publishing_newsletter"
-      <*> json <|? "alumni_newsletter"
-      <*> json <|? "music_newsletter"
   }
 }
 
@@ -381,18 +356,6 @@ extension User.Stats: Swift.Decodable {
     case starredProjectsCount = "starred_projects_count"
     case unansweredSurveysCount = "unanswered_surveys_count"
     case unreadMessagesCount = "unread_messages_count"
-  }
-}
-
-extension User.Stats: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<User.Stats> {
-    return curry(User.Stats.init)
-      <^> json <|? "backed_projects_count"
-      <*> json <|? "created_projects_count"
-      <*> json <|? "member_projects_count"
-      <*> json <|? "starred_projects_count"
-      <*> json <|? "unanswered_surveys_count"
-      <*> json <|? "unread_messages_count"
   }
 }
 

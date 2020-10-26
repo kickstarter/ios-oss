@@ -114,7 +114,7 @@ extension DiscoveryParams: Decodable {
       <*> json <|? "term"
       <*> ((json <|? "recommended" >>- stringToBool) as Decoded<Bool?>)
       <*> ((json <|? "seed" >>- stringToInt) as Decoded<Int?>)
-      <*> json <|? "similar_to"
+      <*> ((json <|? "similar_to" >>- tryDecodable) as Decoded<Project?>) 
     return tmp3
       <*> ((json <|? "social" >>- stringIntToBool) as Decoded<Bool?>)
       <*> json <|? "sort"

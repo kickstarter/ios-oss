@@ -7,6 +7,21 @@ public struct ShippingRule {
   public let location: Location
 }
 
+extension ShippingRule: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case cost = "cost"
+    case id = "id"
+    case location = "location"
+  }
+  
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.cost = try Double(values.decode(String.self, forKey: .cost)) ?? 0
+    self.id = try values.decodeIfPresent(Int.self, forKey: .id)
+    self.location = try values.decode(Location.self, forKey: .location)
+  }
+}
+
 extension ShippingRule: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ShippingRule> {
     return curry(ShippingRule.init)
