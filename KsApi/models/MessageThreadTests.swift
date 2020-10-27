@@ -4,7 +4,7 @@ import XCTest
 
 internal final class MessageThreadTests: XCTestCase {
   func testDecoding() {
-    let result = MessageThread.decodeJSONDictionary([
+    let result:MessageThread! = MessageThread.decodeJSONDictionary([
       "closed": false,
       "id": 1,
       "last_message": [
@@ -93,7 +93,6 @@ internal final class MessageThreadTests: XCTestCase {
       ]
     ])
 
-    XCTAssertNil(result.error)
-    XCTAssertNotNil(result.value)
+    XCTAssertNotNil(result)
   }
 }

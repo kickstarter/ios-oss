@@ -240,24 +240,41 @@ extension Project: Swift.Decodable {
     case availableCardTypes = "available_card_types"
     case blurb = "blurb"
     case category = "category"
-    case country
     case creator = "creator"
-    case memberData
-    case dates
     case id = "id"
     case location = "location"
     case name = "name"
-    case personalization
     case photo = "photo"
     case prelaunchActivated = "prelaunch_activated"
-    case rewardData
     case slug = "slug"
-    case staffPick = "staffPick"
+    case staffPick = "staff_pick"
     case state = "state"
-    case stats
     case urls = "urls"
     case video = "video"
-    //TODO finish mapping flat str
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.availableCardTypes = try values.decodeIfPresent([String].self, forKey: .availableCardTypes)
+    self.blurb = try values.decode(String.self, forKey: .blurb)
+    self.category = try values.decode(Category.self, forKey: .category)
+    self.country = try Project.Country(from: decoder)
+    self.creator = try values.decode(User.self, forKey: .creator)
+    self.memberData = try Project.MemberData(from: decoder)
+    self.dates = try Project.Dates(from: decoder)
+    self.id = try values.decode(Int.self, forKey: .id)
+    self.location = try values.decodeIfPresent(Location.self, forKey: .location) ?? Location.none
+    self.name = try values.decode(String.self, forKey: .name)
+    self.personalization = try Project.Personalization(from: decoder)
+    self.photo = try values.decode(Photo.self, forKey: .photo)
+    self.prelaunchActivated = try values.decodeIfPresent(Bool.self, forKey: .prelaunchActivated)
+    self.rewardData = try Project.RewardData(from: decoder)
+    self.slug = try values.decode(String.self, forKey: .slug)
+    self.staffPick = try values.decode(Bool.self, forKey: .staffPick)
+    self.state = try values.decode(State.self, forKey: .state)
+    self.stats = try Project.Stats(from: decoder)
+    self.urls = try values.decode(UrlsEnvelope.self, forKey: .urls)
+    self.video = try values.decodeIfPresent(Video.self, forKey: .video)
   }
 }
 /*
@@ -341,7 +358,8 @@ extension Project.Stats: Swift.Decodable {
     self.currentCurrency = try values.decodeIfPresent(String.self, forKey: .currentCurrency)
     self.currentCurrencyRate = try values.decodeIfPresent(Float.self, forKey: .currentCurrencyRate)
     self.goal = try values.decode(Int.self, forKey: .goal)
-    self.pledged = try values.decode(Int.self, forKey: .pledged)
+    let value =  try values.decode(Double.self, forKey: .pledged)
+    self.pledged = Int(value)
     self.staticUsdRate = try values.decodeIfPresent(Float.self, forKey: .staticUsdRate) ?? 1.0
     self.updatesCount = try values.decodeIfPresent(Int.self, forKey: .updatesCount)
   }
@@ -372,6 +390,14 @@ extension Project.MemberData: Swift.Decodable {
     case permissions = "permissions"
     case unreadMessagesCount = "unread_messages_count"
     case unseenActivityCount = "unseen_activity_count"
+  }
+  
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.lastUpdatePublishedAt = try values.decodeIfPresent(TimeInterval.self, forKey: .lastUpdatePublishedAt)
+    self.permissions = removeUnknowns(try values.decodeIfPresent([Permission].self, forKey: .permissions) ?? [])
+    self.unreadMessagesCount = try values.decodeIfPresent(Int.self, forKey: .unreadMessagesCount)
+    self.unseenActivityCount = try values.decodeIfPresent(Int.self, forKey: .unseenActivityCount)
   }
 }
 

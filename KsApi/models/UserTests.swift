@@ -40,10 +40,9 @@ final class UserTests: XCTestCase {
       "show_public_profile": false,
       "social": true
     ]
-    let decoded = User.decodeJSONDictionary(json)
-    let user = decoded.value
+    
+    let user:User? = tryDecode(json)
 
-    XCTAssertNil(decoded.error)
     XCTAssertEqual(1, user?.id)
     XCTAssertEqual(false, user?.isAdmin)
     XCTAssertEqual("http://www.kickstarter.com/small.jpg", user?.avatar.small)
@@ -88,9 +87,9 @@ final class UserTests: XCTestCase {
       "show_public_profile": false,
       "social": true
     ]
-    let user = User.decodeJSONDictionary(json)
+    let user:User? = User.decodeJSONDictionary(json)
 
-    XCTAssertEqual(user.value?.encode() as NSDictionary?, json as NSDictionary?)
+    XCTAssertEqual(user?.encode() as NSDictionary?, json as NSDictionary?)
   }
 
   func testIsRepeatCreator() {

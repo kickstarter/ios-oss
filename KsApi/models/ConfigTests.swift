@@ -48,15 +48,6 @@ final class ConfigTests: XCTestCase {
     }
   }
 
-  func testDecoding() {
-    // Confirm json decoded successfully
-    let decodedConfig = Config.decodeJSONDictionary(self.json)
-    XCTAssertNil(decodedConfig.error)
-
-    let config = decodedConfig.value!
-    self.assertValues(of: config)
-  }
-
   private func assertValues(of config: Config) {
     XCTAssertEqual(["2001_space_odyssey": "control", "dr_strangelove": "experiment"], config.abExperiments)
     XCTAssertEqual(123_456_789, config.appId)
