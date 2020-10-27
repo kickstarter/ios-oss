@@ -3,7 +3,7 @@ import XCTest
 
 final class CommentTests: XCTestCase {
   func testJSONParsing_WithCompleteData() {
-    let author:Author! = Author.decodeJSONDictionary([
+    let author: Author! = Author.decodeJSONDictionary([
       "id": 382_491_714,
       "name": "Nino Teixeira",
       "avatar": [
@@ -26,7 +26,7 @@ final class CommentTests: XCTestCase {
   }
 
   func testJSONParsing_WithIncompleteData() {
-    let author:Comment! = Comment.decodeJSONDictionary([
+    let author: Comment! = Comment.decodeJSONDictionary([
       "id": 1,
       "name": "Blob",
       "avatar": [

@@ -51,7 +51,7 @@ public struct Project {
     public var hls: String?
   }
 
-public enum State: String, Decodable, CaseIterable, Swift.Decodable {
+  public enum State: String, Decodable, CaseIterable, Swift.Decodable {
     case canceled
     case failed
     case live
@@ -238,19 +238,19 @@ extension Project: CustomDebugStringConvertible {
 extension Project: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
     case availableCardTypes = "available_card_types"
-    case blurb = "blurb"
-    case category = "category"
-    case creator = "creator"
-    case id = "id"
-    case location = "location"
-    case name = "name"
-    case photo = "photo"
+    case blurb
+    case category
+    case creator
+    case id
+    case location
+    case name
+    case photo
     case prelaunchActivated = "prelaunch_activated"
-    case slug = "slug"
+    case slug
     case staffPick = "staff_pick"
-    case state = "state"
-    case urls = "urls"
-    case video = "video"
+    case state
+    case urls
+    case video
   }
 
   public init(from decoder: Decoder) throws {
@@ -277,46 +277,47 @@ extension Project: Swift.Decodable {
     self.video = try values.decodeIfPresent(Video.self, forKey: .video)
   }
 }
+
 /*
-extension Project: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project> {
-    let tmp1 = curry(Project.init)
-      <^> json <||? "available_card_types"
-      <*> json <| "blurb"
-      <*> json <| "category"
-      <*> Project.Country.decode(json)
-      <*> json <| "creator"
-    let tmp2 = tmp1
-      <*> Project.MemberData.decode(json)
-      <*> Project.Dates.decode(json)
-      <*> json <| "id"
-      <*> (json <| "location" <|> .success(Location.none))
-    let tmp3 = tmp2
-      <*> json <| "name"
-      <*> Project.Personalization.decode(json)
-      <*> json <| "photo"
-      <*> json <|? "prelaunch_activated"
-      <*> Project.RewardData.decode(json)
-      <*> json <| "slug"
-    return tmp3
-      <*> json <| "staff_pick"
-      <*> json <| "state"
-      <*> Project.Stats.decode(json)
-      <*> json <| "urls"
-      <*> json <|? "video"
-  }
-}
-*/
+ extension Project: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<Project> {
+   let tmp1 = curry(Project.init)
+     <^> json <||? "available_card_types"
+     <*> json <| "blurb"
+     <*> json <| "category"
+     <*> Project.Country.decode(json)
+     <*> json <| "creator"
+   let tmp2 = tmp1
+     <*> Project.MemberData.decode(json)
+     <*> Project.Dates.decode(json)
+     <*> json <| "id"
+     <*> (json <| "location" <|> .success(Location.none))
+   let tmp3 = tmp2
+     <*> json <| "name"
+     <*> Project.Personalization.decode(json)
+     <*> json <| "photo"
+     <*> json <|? "prelaunch_activated"
+     <*> Project.RewardData.decode(json)
+     <*> json <| "slug"
+   return tmp3
+     <*> json <| "staff_pick"
+     <*> json <| "state"
+     <*> Project.Stats.decode(json)
+     <*> json <| "urls"
+     <*> json <|? "video"
+ }
+ }
+ */
 extension Project.UrlsEnvelope: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
-    case web = "web"
+    case web
   }
 }
 
 extension Project.UrlsEnvelope.WebEnvelope: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
-    case project = "project"
-    case updates = "updates"
+    case project
+    case updates
   }
 }
 
@@ -340,11 +341,11 @@ extension Project.Stats: Swift.Decodable {
     case backersCount = "backers_count"
     case commentsCount = "comments_count"
     case convertedPledgedAmount = "converted_pledged_amount"
-    case currency = "currency"
+    case currency
     case currentCurrency = "current_currency"
     case currentCurrencyRate = "fx_rate"
-    case goal = "goal"
-    case pledged = "pledged"
+    case goal
+    case pledged
     case staticUsdRate = "static_usd_rate"
     case updatesCount = "updates_count"
   }
@@ -358,13 +359,12 @@ extension Project.Stats: Swift.Decodable {
     self.currentCurrency = try values.decodeIfPresent(String.self, forKey: .currentCurrency)
     self.currentCurrencyRate = try values.decodeIfPresent(Float.self, forKey: .currentCurrencyRate)
     self.goal = try values.decode(Int.self, forKey: .goal)
-    let value =  try values.decode(Double.self, forKey: .pledged)
+    let value = try values.decode(Double.self, forKey: .pledged)
     self.pledged = Int(value)
     self.staticUsdRate = try values.decodeIfPresent(Float.self, forKey: .staticUsdRate) ?? 1.0
     self.updatesCount = try values.decodeIfPresent(Int.self, forKey: .updatesCount)
   }
 }
-
 
 extension Project.Stats: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.Stats> {
@@ -386,15 +386,16 @@ extension Project.Stats: Decodable {
 extension Project.MemberData: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
     case lastUpdatePublishedAt = "last_update_published_at"
-    case permissions = "permissions"
+    case permissions
     case unreadMessagesCount = "unread_messages_count"
     case unseenActivityCount = "unseen_activity_count"
   }
-  
+
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     self.lastUpdatePublishedAt = try values.decodeIfPresent(TimeInterval.self, forKey: .lastUpdatePublishedAt)
-    self.permissions = removeUnknowns(try values.decodeIfPresent([Permission].self, forKey: .permissions) ?? [])
+    self
+      .permissions = removeUnknowns(try values.decodeIfPresent([Permission].self, forKey: .permissions) ?? [])
     self.unreadMessagesCount = try values.decodeIfPresent(Int.self, forKey: .unreadMessagesCount)
     self.unseenActivityCount = try values.decodeIfPresent(Int.self, forKey: .unseenActivityCount)
   }
@@ -412,7 +413,7 @@ extension Project.MemberData: Decodable {
 
 extension Project.Dates: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
-    case deadline = "deadline"
+    case deadline
     case featuredAt = "featured_at"
     case finalCollectionDate = "final_collection_date"
     case launchedAt = "launched_at"
@@ -433,28 +434,28 @@ extension Project.Dates: Decodable {
 
 extension Project.Personalization: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
-    case backing = "backing"
-    case friends = "friends"
+    case backing
+    case friends
     case isBacking = "is_backing"
     case isStarred = "is_starred"
   }
 }
 
 /*
-extension Project.Personalization: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.Personalization> {
-    return curry(Project.Personalization.init)
-      <^> json <|? "backing"
-      <*> json <||? "friends"
-      <*> json <|? "is_backing"
-      <*> json <|? "is_starred"
-  }
-}
-*/
+ extension Project.Personalization: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<Project.Personalization> {
+   return curry(Project.Personalization.init)
+     <^> json <|? "backing"
+     <*> json <||? "friends"
+     <*> json <|? "is_backing"
+     <*> json <|? "is_starred"
+ }
+ }
+ */
 extension Project.RewardData: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
     case addOns = "add_ons"
-    case rewards = "rewards"
+    case rewards
   }
 
   public init(from decoder: Decoder) throws {
@@ -463,19 +464,20 @@ extension Project.RewardData: Swift.Decodable {
     self.rewards = try values.decodeIfPresent([Reward].self, forKey: .addOns) ?? []
   }
 }
+
 /*
-extension Project.RewardData: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.RewardData> {
-    return curry(Project.RewardData.init)
-      <^> json <||? "add_ons"
-      <*> (json <|| "rewards" <|> .success([]))
-  }
-}
-*/
+ extension Project.RewardData: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<Project.RewardData> {
+   return curry(Project.RewardData.init)
+     <^> json <||? "add_ons"
+     <*> (json <|| "rewards" <|> .success([]))
+ }
+ }
+ */
 extension Project.Category: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
-    case id = "id"
-    case name = "name"
+    case id
+    case name
     case parentId = "parent_id"
     case parentName = "parent_name"
   }
@@ -493,20 +495,21 @@ extension Project.Category: Decodable {
 
 extension Project.Photo: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
-    case full = "full"
-    case med = "med"
+    case full
+    case med
     case size1024x768 = "1024x768"
     case size1024x576 = "1024x576"
-    case small = "small"
+    case small
   }
-
 
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     self.full = try values.decode(String.self, forKey: .full)
     self.med = try values.decode(String.self, forKey: .med)
-    //TODO - fix type
-    self.size1024x768 = try values.decodeIfPresent(String.self, forKey: .size1024x768) ?? (try values.decodeIfPresent(String.self, forKey: .size1024x576))
+    // TODO: - fix type
+    self.size1024x768 = try values
+      .decodeIfPresent(String.self, forKey: .size1024x768) ??
+      (try values.decodeIfPresent(String.self, forKey: .size1024x576))
     self.small = try values.decode(String.self, forKey: .small)
   }
 }
@@ -527,7 +530,8 @@ extension Project.Photo: Decodable {
 
 extension Project.MemberData.Permission: Swift.Decodable {
   public init(from decoder: Decoder) throws {
-    self = try Project.MemberData.Permission(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
+    self = try Project.MemberData
+      .Permission(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
   }
 }
 

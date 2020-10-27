@@ -51,7 +51,7 @@ final class ProjectTests: XCTestCase {
   }
 
   func testJSONParsing_WithCompleteData() {
-    let project:Project = try! Project.decodeJSONDictionary([
+    let project: Project = try! Project.decodeJSONDictionary([
       "id": 1,
       "name": "Project",
       "blurb": "The project blurb",
@@ -116,7 +116,7 @@ final class ProjectTests: XCTestCase {
   }
 
   func testJSONParsing_WithMemberData() {
-    let memberData:Project.MemberData = try! Project.MemberData.decodeJSONDictionary([
+    let memberData: Project.MemberData = try! Project.MemberData.decodeJSONDictionary([
       "last_update_published_at": 123_456_789,
       "permissions": [
         "edit_project",
@@ -142,7 +142,7 @@ final class ProjectTests: XCTestCase {
   }
 
   func testJSONParsing_WithPesonalizationData() {
-    let project:Project = try! Project.decodeJSONDictionary([
+    let project: Project = try! Project.decodeJSONDictionary([
       "id": 1,
       "name": "Project",
       "blurb": "The project blurb",

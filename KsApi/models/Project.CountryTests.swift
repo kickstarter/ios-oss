@@ -14,7 +14,7 @@ final class ProjectCountryTests: XCTestCase {
   }
 
   func testJsonDecoding_StandardJSON() {
-    let decodedCountry:Project.Country! = Project.Country.decodeJSONDictionary([
+    let decodedCountry: Project.Country! = Project.Country.decodeJSONDictionary([
       "country": "US",
       "currency": "USD",
       "currency_symbol": "$",
@@ -28,7 +28,7 @@ final class ProjectCountryTests: XCTestCase {
   }
 
   func testJsonDecoding_ConfigJSON() {
-    let decodedCountry:Project.Country! = Project.Country.decodeJSONDictionary([
+    let decodedCountry: Project.Country! = Project.Country.decodeJSONDictionary([
       "name": "US",
       "currency_code": "USD",
       "currency_symbol": "$",

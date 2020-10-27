@@ -17,19 +17,20 @@ public struct ExportDataEnvelope {
 extension ExportDataEnvelope: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
     case expiresAt = "expires_at"
-    case state = "state"
+    case state
     case dataUrl = "data_url"
   }
 }
-/*
-extension ExportDataEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<ExportDataEnvelope> {
-    return curry(ExportDataEnvelope.init)
-      <^> json <|? "expires_at"
-      <*> json <| "state"
-      <*> json <|? "data_url"
-  }
-}
 
-extension ExportDataEnvelope.State: Decodable {}
-*/
+/*
+ extension ExportDataEnvelope: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<ExportDataEnvelope> {
+   return curry(ExportDataEnvelope.init)
+     <^> json <|? "expires_at"
+     <*> json <| "state"
+     <*> json <|? "data_url"
+ }
+ }
+
+ extension ExportDataEnvelope.State: Decodable {}
+ */

@@ -47,27 +47,27 @@ public func == (lhs: Backing, rhs: Backing) -> Bool {
   return lhs.id == rhs.id
 }
 
-extension Backing: Swift.Decodable{
+extension Backing: Swift.Decodable {
   private enum CodingKeys: String, CodingKey {
     case addOns = "add_ons"
-    case amount = "amount"
-    case backer = "backer"
+    case amount
+    case backer
     case backerId = "backer_id"
     case backerCompleted = "backer_completed_at"
     case bonusAmount = "bonus_amount"
-    case cancelable = "cancelable"
-    case id = "id"
+    case cancelable
+    case id
     case locationId = "location_id"
     case locationName = "location_name"
     case paymentSource = "payment_source"
     case pledgedAt = "pledged_at"
     case projectCountry = "project_country"
     case projectId = "project_id"
-    case reward = "reward"
+    case reward
     case rewardId = "reward_id"
-    case sequence = "sequence"
+    case sequence
     case shippingAmount = "shipping_amount"
-    case status = "status"
+    case status
   }
 
   public init(from decoder: Decoder) throws {
@@ -93,34 +93,35 @@ extension Backing: Swift.Decodable{
     self.status = try values.decode(Status.self, forKey: .status)
   }
 }
+
 /*
-extension Backing: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Backing> {
-    let tmp1 = curry(Backing.init)
-      <^> json <||? "add_ons"
-      <*> json <| "amount"
-      <*> ((json <|? "backer" >>- tryDecodable) as Decoded<User?>)
-      <*> json <| "backer_id"
-      <*> json <|? "backer_completed_at"
-      <*> (json <| "bonus_amount" <|> .success(0.0))
-      <*> json <| "cancelable"
-    let tmp2 = tmp1
-      <*> json <| "id"
-      <*> json <|? "location_id"
-      <*> json <|? "location_name"
-      <*> (json <|? "payment_source" >>- tryDecodePaymentSource)
-      <*> json <| "pledged_at"
-      <*> json <| "project_country"
-    return tmp2
-      <*> json <| "project_id"
-      <*> json <|? "reward"
-      <*> json <|? "reward_id"
-      <*> json <| "sequence"
-      <*> json <|? "shipping_amount"
-      <*> json <| "status"
-  }
-}
-*/
+ extension Backing: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<Backing> {
+   let tmp1 = curry(Backing.init)
+     <^> json <||? "add_ons"
+     <*> json <| "amount"
+     <*> ((json <|? "backer" >>- tryDecodable) as Decoded<User?>)
+     <*> json <| "backer_id"
+     <*> json <|? "backer_completed_at"
+     <*> (json <| "bonus_amount" <|> .success(0.0))
+     <*> json <| "cancelable"
+   let tmp2 = tmp1
+     <*> json <| "id"
+     <*> json <|? "location_id"
+     <*> json <|? "location_name"
+     <*> (json <|? "payment_source" >>- tryDecodePaymentSource)
+     <*> json <| "pledged_at"
+     <*> json <| "project_country"
+   return tmp2
+     <*> json <| "project_id"
+     <*> json <|? "reward"
+     <*> json <|? "reward_id"
+     <*> json <| "sequence"
+     <*> json <|? "shipping_amount"
+     <*> json <| "status"
+ }
+ }
+ */
 #warning("Function tryDecodePaymentSource(_:) should be deleted once the data is being returned normally.")
 /*
  Since staging is not returning all the values for Payment Source, the Backing deserialization is failing
@@ -150,14 +151,14 @@ extension Backing: EncodableType {
   }
 }
 
-extension Backing.PaymentSource: Swift.Decodable{
+extension Backing.PaymentSource: Swift.Decodable {
   private enum CodingKeys: String, CodingKey {
     case expirationDate = "expiration_date"
-    case id = "id"
+    case id
     case lastFour = "last_four"
     case paymentType = "payment_type"
-    case state = "state"
-    case type = "type"
+    case state
+    case type
   }
 }
 

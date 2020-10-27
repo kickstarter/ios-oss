@@ -10,7 +10,7 @@ final class NewsletterSubscriptionsTests: XCTestCase {
       "weekly_newsletter": false
     ]
 
-    let newsletter:User.NewsletterSubscriptions! = User.NewsletterSubscriptions.decodeJSONDictionary(json)
+    let newsletter: User.NewsletterSubscriptions! = User.NewsletterSubscriptions.decodeJSONDictionary(json)
 
     let newsletterDescription = newsletter!.encode().description
 
@@ -32,8 +32,8 @@ final class NewsletterSubscriptionsTests: XCTestCase {
       "happening_newsletter": true,
       "weekly_newsletter": true
     ]
-    
-    let newsletter:User.NewsletterSubscriptions! = User.NewsletterSubscriptions.decodeJSONDictionary(json)
+
+    let newsletter: User.NewsletterSubscriptions! = User.NewsletterSubscriptions.decodeJSONDictionary(json)
 
     let newsletterDescription = newsletter.encode().description
 
@@ -49,7 +49,7 @@ final class NewsletterSubscriptionsTests: XCTestCase {
   }
 
   func testJsonDecoding() {
-    let newsletters:User.NewsletterSubscriptions! = User.NewsletterSubscriptions.decodeJSONDictionary([
+    let newsletters: User.NewsletterSubscriptions! = User.NewsletterSubscriptions.decodeJSONDictionary([
       "games_newsletter": true,
       "happening_newsletter": false,
       "promo_newsletter": true,

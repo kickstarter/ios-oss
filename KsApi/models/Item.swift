@@ -10,20 +10,21 @@ public struct Item {
 
 extension Item: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
-    case description = "description"
-    case id = "id"
-    case name = "name"
+    case description
+    case id
+    case name
     case projectId = "project_id"
   }
 }
+
 /*
-extension Item: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Item> {
-    return curry(Item.init)
-      <^> json <|? "description"
-      <*> json <| "id"
-      <*> json <| "name"
-      <*> json <| "project_id"
-  }
-}
-*/
+ extension Item: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<Item> {
+   return curry(Item.init)
+     <^> json <|? "description"
+     <*> json <| "id"
+     <*> json <| "name"
+     <*> json <| "project_id"
+ }
+ }
+ */

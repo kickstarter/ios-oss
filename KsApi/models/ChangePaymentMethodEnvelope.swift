@@ -20,7 +20,7 @@ public struct ChangePaymentMethodEnvelope {
  */
 extension ChangePaymentMethodEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ChangePaymentMethodEnvelope> {
-    //TODO - fix mapping
+    // TODO: - fix mapping
     return curry(ChangePaymentMethodEnvelope.init)
       <^> json <|? ["data", "new_checkout_url"]
       <*> ((json <| "status" >>- stringToIntOrZero) <|> (json <| "status"))

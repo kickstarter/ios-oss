@@ -9,19 +9,19 @@ public struct MessageThreadEnvelope {
 
 extension MessageThreadEnvelope: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
-    case participants = "participants"
-    case messages = "messages"
+    case participants
+    case messages
     case messageThread = "message_thread"
   }
 }
 
 /*
-extension MessageThreadEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<MessageThreadEnvelope> {
-    return curry(MessageThreadEnvelope.init)
-      <^> json <|| "participants"
-      <*> json <|| "messages"
-      <*> json <| "message_thread"
-  }
-}
+ extension MessageThreadEnvelope: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<MessageThreadEnvelope> {
+   return curry(MessageThreadEnvelope.init)
+     <^> json <|| "participants"
+     <*> json <|| "messages"
+     <*> json <| "message_thread"
+ }
+ }
  */

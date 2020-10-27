@@ -4,7 +4,7 @@ import XCTest
 
 final class BackingTests: XCTestCase {
   func testJSONDecoding_WithCompleteData() {
-    let backing:Backing? = Backing.decodeJSONDictionary([
+    let backing: Backing? = Backing.decodeJSONDictionary([
       "amount": 1.0,
       "backer_id": 1,
       "cancelable": true,
@@ -46,7 +46,7 @@ final class BackingTests: XCTestCase {
   }
 
   func testJSONDecoding_IncompletePaymentSource() {
-    let backing:Backing = try! Backing.decodeJSONDictionary([
+    let backing: Backing = try! Backing.decodeJSONDictionary([
       "amount": 1.0,
       "backer_id": 1,
       "cancelable": true,

@@ -3,7 +3,7 @@ import XCTest
 
 final class ProjectVideoTests: XCTestCase {
   func testJsonParsing_WithFullData() {
-    let video:Project.Video = try! Project.Video.decodeJSONDictionary([
+    let video: Project.Video = try! Project.Video.decodeJSONDictionary([
       "id": 1,
       "high": "kickstarter.com/video.mp4"
     ])

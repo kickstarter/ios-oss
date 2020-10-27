@@ -14,16 +14,15 @@ public extension Decodable {
 }
 
 public extension Swift.Decodable {
-  
   static func decodeJSONDictionary(_ json: [String: Any]) throws -> Self {
     let data = try JSONSerialization.data(withJSONObject: json, options: [])
     let value = try JSONDecoder().decode(Self.self, from: data)
     return value
   }
-  
+
   static func decodeJSONDictionary(_ json: [String: Any]) -> Self? {
     if let data = try? JSONSerialization.data(withJSONObject: json, options: []),
-       let value = try? JSONDecoder().decode(Self.self, from: data){
+      let value = try? JSONDecoder().decode(Self.self, from: data) {
       return value
     }
     return nil

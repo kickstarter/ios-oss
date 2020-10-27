@@ -3,7 +3,7 @@ import XCTest
 
 final class ProjectPhotoTests: XCTestCase {
   func testJSONParsing_WithPartialData() {
-    let photo:Project.Photo? = Project.Photo.decodeJSONDictionary([
+    let photo: Project.Photo? = Project.Photo.decodeJSONDictionary([
       "full": "http://www.kickstarter.com/full.jpg",
       "med": "http://www.kickstarter.com/med.jpg"
     ])
@@ -12,7 +12,7 @@ final class ProjectPhotoTests: XCTestCase {
   }
 
   func testJSONParsing_WithMissing1024() {
-    let photo:Project.Photo = try! Project.Photo.decodeJSONDictionary([
+    let photo: Project.Photo = try! Project.Photo.decodeJSONDictionary([
       "full": "http://www.kickstarter.com/full.jpg",
       "med": "http://www.kickstarter.com/med.jpg",
       "small": "http://www.kickstarter.com/small.jpg"
@@ -26,7 +26,7 @@ final class ProjectPhotoTests: XCTestCase {
   }
 
   func testJSONParsing_WithFullData() {
-    let photo:Project.Photo = try! Project.Photo.decodeJSONDictionary([
+    let photo: Project.Photo = try! Project.Photo.decodeJSONDictionary([
       "full": "http://www.kickstarter.com/full.jpg",
       "med": "http://www.kickstarter.com/med.jpg",
       "small": "http://www.kickstarter.com/small.jpg",

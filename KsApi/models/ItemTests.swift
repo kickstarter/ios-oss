@@ -4,7 +4,7 @@ import XCTest
 
 final class ItemTests: XCTestCase {
   func testDecoding() {
-    let decoded:Item = try! Item.decodeJSONDictionary([
+    let decoded: Item = try! Item.decodeJSONDictionary([
       "description": "Hello",
       "id": 1,
       "name": "The thing",

@@ -23,27 +23,28 @@ extension Comment: Swift.Decodable {
     self.author = try values.decode(Author.self, forKey: .author)
     self.body = try values.decode(String.self, forKey: .body)
     self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
-    if let value = try values.decodeIfPresent(TimeInterval.self, forKey: .deletedAt), value > 0{
+    if let value = try values.decodeIfPresent(TimeInterval.self, forKey: .deletedAt), value > 0 {
       self.deletedAt = value
-    }else{
+    } else {
       self.deletedAt = nil
     }
     self.id = try values.decode(Int.self, forKey: .id)
   }
 }
+
 /*
-extension Comment: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Comment> {
-    let tmp = curry(Comment.init)
-      <^> json <| "author"
-      <*> json <| "body"
-      <*> json <| "created_at"
-    return tmp
-      <*> (json <|? "deleted_at" >>- decodePositiveTimeInterval)
-      <*> json <| "id"
-  }
-}
-*/
+ extension Comment: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<Comment> {
+   let tmp = curry(Comment.init)
+     <^> json <| "author"
+     <*> json <| "body"
+     <*> json <| "created_at"
+   return tmp
+     <*> (json <|? "deleted_at" >>- decodePositiveTimeInterval)
+     <*> json <| "id"
+ }
+ }
+ */
 extension Comment: Equatable {}
 
 public func == (lhs: Comment, rhs: Comment) -> Bool {

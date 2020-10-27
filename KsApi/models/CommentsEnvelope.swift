@@ -31,15 +31,16 @@ extension CommentsEnvelope.UrlsEnvelope {
     }
   }
 }
+
 /*
-extension CommentsEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<CommentsEnvelope> {
-    return curry(CommentsEnvelope.init)
-      <^> json <|| "comments"
-      <*> json <| "urls"
-  }
-}
-*/
+ extension CommentsEnvelope: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<CommentsEnvelope> {
+   return curry(CommentsEnvelope.init)
+     <^> json <|| "comments"
+     <*> json <| "urls"
+ }
+ }
+ */
 extension CommentsEnvelope.UrlsEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<CommentsEnvelope.UrlsEnvelope> {
     return curry(CommentsEnvelope.UrlsEnvelope.init)

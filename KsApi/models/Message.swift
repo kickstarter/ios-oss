@@ -12,23 +12,23 @@ public struct Message {
 
 extension Message: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
-    case body = "body"
+    case body
     case createdAt = "created_at"
-    case id = "id"
-    case recipient = "recipient"
-    case sender = "sender"
+    case id
+    case recipient
+    case sender
   }
 }
 
 /*
-extension Message: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Message> {
-    return curry(Message.init)
-      <^> json <| "body"
-      <*> json <| "created_at"
-      <*> json <| "id"
-      <*> ((json <| "recipient" >>- tryDecodable) as Decoded<User>)
-      <*> ((json <| "sender" >>- tryDecodable) as Decoded<User>)
-  }
-}
-*/
+ extension Message: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<Message> {
+   return curry(Message.init)
+     <^> json <| "body"
+     <*> json <| "created_at"
+     <*> json <| "id"
+     <*> ((json <| "recipient" >>- tryDecodable) as Decoded<User>)
+     <*> ((json <| "sender" >>- tryDecodable) as Decoded<User>)
+ }
+ }
+ */

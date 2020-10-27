@@ -4,7 +4,7 @@ import XCTest
 
 final class UpdateDraftTests: XCTestCase {
   func testJSONParsing_WithCompleteData() {
-    let decoded:UpdateDraft = try! UpdateDraft.decodeJSONDictionary([
+    let decoded: UpdateDraft = try! UpdateDraft.decodeJSONDictionary([
       "body": "world",
       "id": 1,
       "public": true,

@@ -116,7 +116,7 @@ extension User: Swift.Decodable {
     self.isAdmin = try values.decodeIfPresent(Bool.self, forKey: .isAdmin)
     self.isFriend = try values.decodeIfPresent(Bool.self, forKey: .isFriend)
     self.location = try? values.decodeIfPresent(Location.self, forKey: .location)
-    self.name  = try values.decode(String.self, forKey: .name)
+    self.name = try values.decode(String.self, forKey: .name)
     self.needsFreshFacebookToken = try values.decodeIfPresent(Bool.self, forKey: .needsFreshFacebookToken)
     self.newsletters = try User.NewsletterSubscriptions(from: decoder)
     self.notifications = try User.Notifications(from: decoder)
@@ -128,47 +128,48 @@ extension User: Swift.Decodable {
   }
 
   enum CodingKeys: String, CodingKey {
-    case avatar = "avatar"
+    case avatar
     case erroredBackingsCount = "errored_backings_count"
     case facebookConnected = "facebook_connected"
-    case id = "id"
+    case id
     case isAdmin = "is_admin"
     case isFriend = "is_friend"
-    case location = "location"
-    case name = "name"
+    case location
+    case name
     case needsFreshFacebookToken = "needs_fresh_facebook_token"
     case optedOutOfRecommendations = "opted_out_of_recommendations"
     case showPublicProfile = "show_public_profile"
-    case social = "social"
+    case social
     case unseenActivityCount = "unseen_activity_count"
   }
 }
+
 /*
-extension User: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<User> {
-    let tmp1 = pure(curry(User.init))
-      <*> ((json <| "avatar" >>- tryDecodable) as Decoded<Avatar>)
-      <*> json <|? "errored_backings_count"
-      <*> json <|? "facebook_connected"
-      <*> json <| "id"
-    let tmp2 = tmp1
-      <*> json <|? "is_admin"
-      <*> json <|? "is_friend"
-      <*> (json <|? "location" <|> .success(nil))
-    let tmp3 = tmp2
-      <*> json <| "name"
-      <*> json <|? "needs_fresh_facebook_token"
-      <*> User.NewsletterSubscriptions.decode(json)
-      <*> User.Notifications.decode(json)
-      <*> json <|? "opted_out_of_recommendations"
-    return tmp3
-      <*> json <|? "show_public_profile"
-      <*> json <|? "social"
-      <*> User.Stats.decode(json)
-      <*> json <|? "unseen_activity_count"
-  }
-}
-*/
+ extension User: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<User> {
+   let tmp1 = pure(curry(User.init))
+     <*> ((json <| "avatar" >>- tryDecodable) as Decoded<Avatar>)
+     <*> json <|? "errored_backings_count"
+     <*> json <|? "facebook_connected"
+     <*> json <| "id"
+   let tmp2 = tmp1
+     <*> json <|? "is_admin"
+     <*> json <|? "is_friend"
+     <*> (json <|? "location" <|> .success(nil))
+   let tmp3 = tmp2
+     <*> json <| "name"
+     <*> json <|? "needs_fresh_facebook_token"
+     <*> User.NewsletterSubscriptions.decode(json)
+     <*> User.Notifications.decode(json)
+     <*> json <|? "opted_out_of_recommendations"
+   return tmp3
+     <*> json <|? "show_public_profile"
+     <*> json <|? "social"
+     <*> User.Stats.decode(json)
+     <*> json <|? "unseen_activity_count"
+ }
+ }
+ */
 extension User: EncodableType {
   public func encode() -> [String: Any] {
     var result: [String: Any] = [:]
@@ -192,9 +193,9 @@ extension User: EncodableType {
 
 extension User.Avatar: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
-    case large = "large"
-    case medium = "medium"
-    case small = "small"
+    case large
+    case medium
+    case small
   }
 }
 
@@ -210,7 +211,6 @@ extension User.Avatar: EncodableType {
 }
 
 extension User.NewsletterSubscriptions: Swift.Decodable {
-
   enum CodingKeys: String, CodingKey {
     case arts = "arts_culture_newsletter"
     case games = "games_newsletter"
@@ -222,7 +222,6 @@ extension User.NewsletterSubscriptions: Swift.Decodable {
     case publishing = "publishing_newsletter"
     case alumni = "alumni_newsletter"
     case music = "music_newsletter"
-
   }
 }
 
@@ -257,25 +256,24 @@ public func == (lhs: User.NewsletterSubscriptions, rhs: User.NewsletterSubscript
 }
 
 extension User.Notifications: Swift.Decodable {
-
   enum CodingKeys: String, CodingKey {
-  case backings = "notify_of_backings"
-  case commentReplies = "notify_of_comment_replies"
-  case comments = "notify_of_comments"
-  case creatorDigest = "notify_of_creator_digest"
-  case creatorTips = "notify_of_creator_edu"
-  case follower = "notify_of_follower"
-  case friendActivity = "notify_of_friend_activity"
-  case messages = "notify_of_messages"
-  case mobileBackings = "notify_mobile_of_backings"
-  case mobileComments = "notify_mobile_of_comments"
-  case mobileFriendActivity = "notify_mobile_of_friend_activity"
-  case mobileMessages = "notify_mobile_of_messages"
-  case mobileFollower = "notify_mobile_of_follower"
-  case mobilePostLikes = "notify_mobile_of_post_likes"
-  case mobileUpdates = "notify_mobile_of_updates"
-  case postLikes = "notify_of_post_likes"
-  case updates = "notify_of_updates"
+    case backings = "notify_of_backings"
+    case commentReplies = "notify_of_comment_replies"
+    case comments = "notify_of_comments"
+    case creatorDigest = "notify_of_creator_digest"
+    case creatorTips = "notify_of_creator_edu"
+    case follower = "notify_of_follower"
+    case friendActivity = "notify_of_friend_activity"
+    case messages = "notify_of_messages"
+    case mobileBackings = "notify_mobile_of_backings"
+    case mobileComments = "notify_mobile_of_comments"
+    case mobileFriendActivity = "notify_mobile_of_friend_activity"
+    case mobileMessages = "notify_mobile_of_messages"
+    case mobileFollower = "notify_mobile_of_follower"
+    case mobilePostLikes = "notify_mobile_of_post_likes"
+    case mobileUpdates = "notify_mobile_of_updates"
+    case postLikes = "notify_of_post_likes"
+    case updates = "notify_of_updates"
   }
 }
 

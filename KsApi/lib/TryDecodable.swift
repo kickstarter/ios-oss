@@ -32,10 +32,10 @@ public func tryDecodable<T: Swift.Decodable>(_ json: JSON?) -> Decoded<T?> {
   else { return .success(nil) }
 
   // Now that we have a Data type we can try to decode it as T
-  
-    let value = try? JSONDecoder().decode(T.self, from: data)
-    // If this succeeds we wrap it up in Argo.Decoded.
-    return .success(value)
+
+  let value = try? JSONDecoder().decode(T.self, from: data)
+  // If this succeeds we wrap it up in Argo.Decoded.
+  return .success(value)
 }
 
 public func tryDecode<T: Swift.Decodable>(_ primitive: Any) -> T? {
@@ -44,5 +44,5 @@ public func tryDecode<T: Swift.Decodable>(_ primitive: Any) -> T? {
     let value = try? JSONDecoder().decode(T.self, from: data)
   else { return nil }
 
- return value
+  return value
 }

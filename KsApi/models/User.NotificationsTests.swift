@@ -18,7 +18,7 @@ final class NotificationsTests: XCTestCase {
       "notify_mobile_of_updates": false
     ]
 
-    let notification:User.Notifications = try! User.Notifications.decodeJSONDictionary(json)
+    let notification: User.Notifications = try! User.Notifications.decodeJSONDictionary(json)
 
     XCTAssertNotNil(notification)
     XCTAssertEqual(notification.encode() as NSDictionary?, json as NSDictionary?)
@@ -53,7 +53,7 @@ final class NotificationsTests: XCTestCase {
       "notify_mobile_of_updates": true
     ]
 
-    let notification:User.Notifications = try! User.Notifications.decodeJSONDictionary(json)
+    let notification: User.Notifications = try! User.Notifications.decodeJSONDictionary(json)
 
     XCTAssertNotNil(notification)
     XCTAssertEqual(notification.encode() as NSDictionary?, json as NSDictionary?)
@@ -73,7 +73,7 @@ final class NotificationsTests: XCTestCase {
   }
 
   func testJsonDecoding() {
-    let json:User.Notifications = try! User.Notifications.decodeJSONDictionary([
+    let json: User.Notifications = try! User.Notifications.decodeJSONDictionary([
       "notify_of_backings": true,
       "notify_of_comments": false,
       "notify_of_follower": true,

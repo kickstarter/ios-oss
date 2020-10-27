@@ -9,7 +9,7 @@ final class LocationTests: XCTestCase {
   }
 
   func testJSONParsing_WithPartialData() {
-    let location:Location? = Location.decodeJSONDictionary([
+    let location: Location? = Location.decodeJSONDictionary([
       "id": 1
     ])
 

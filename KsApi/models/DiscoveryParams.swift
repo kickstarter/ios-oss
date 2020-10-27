@@ -101,7 +101,7 @@ extension DiscoveryParams: CustomStringConvertible, CustomDebugStringConvertible
 extension DiscoveryParams: Decodable {
   public static func decode(_ json: JSON) -> Decoded<DiscoveryParams> {
     let tmp1 = curry(DiscoveryParams.init)
-            //TODO convert
+      // TODO: convert
       <^> ((json <|? "backed" >>- stringIntToBool) as Decoded<Bool?>)
       <*> ((json <|? "category" >>- decodeToGraphCategory) as Decoded<Category>)
       <*> ((json <|? "collaborated" >>- stringToBool) as Decoded<Bool?>)
@@ -115,7 +115,7 @@ extension DiscoveryParams: Decodable {
       <*> json <|? "term"
       <*> ((json <|? "recommended" >>- stringToBool) as Decoded<Bool?>)
       <*> ((json <|? "seed" >>- stringToInt) as Decoded<Int?>)
-      <*> ((json <|? "similar_to" >>- tryDecodable) as Decoded<Project?>) 
+      <*> ((json <|? "similar_to" >>- tryDecodable) as Decoded<Project?>)
     return tmp3
       <*> ((json <|? "social" >>- stringIntToBool) as Decoded<Bool?>)
       <*> json <|? "sort"

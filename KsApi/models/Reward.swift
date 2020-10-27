@@ -84,29 +84,29 @@ extension Reward: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
     case backersCount = "backers_count"
     case convertedMinimum = "converted_minimum"
-    case description = "description"
-    case reward = "reward"
+    case description
+    case reward
     case endsAt = "ends_at"
     case estimatedDeliveryOn = "estimated_delivery_on"
     case hasAddOns = "has_addons"
-    case id = "id"
-    case limit = "limit"
+    case id
+    case limit
     case limitPerBacker = "limit_per_backer"
-    case minimum = "minimum"
-    case remaining = "remaining"
+    case minimum
+    case remaining
     case rewardsItems = "rewards_items"
     case shippingRules = "shipping_rules"
     case startsAt = "starts_at"
-    case title = "title"
+    case title
   }
-  
+
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     self.backersCount = try values.decodeIfPresent(Int.self, forKey: .backersCount)
     self.convertedMinimum = try values.decode(Double.self, forKey: .convertedMinimum)
-    if let description = try? values.decode(String.self, forKey: .description)  {
-        self.description = description
-    }else {
+    if let description = try? values.decode(String.self, forKey: .description) {
+      self.description = description
+    } else {
       self.description = try values.decode(String.self, forKey: .reward)
     }
     self.endsAt = try values.decodeIfPresent(TimeInterval.self, forKey: .endsAt)
@@ -124,32 +124,33 @@ extension Reward: Swift.Decodable {
     self.title = try values.decodeIfPresent(String.self, forKey: .startsAt)
   }
 }
+
 /*
-extension Reward: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Reward> {
-    let tmp1 = curry(Reward.init)
-      <^> json <|? "backers_count"
-      <*> json <| "converted_minimum"
-      <*> (json <| "description" <|> json <| "reward")
-      <*> json <|? "ends_at"
-      <*> json <|? "estimated_delivery_on"
-    let tmp2 = tmp1
-      <*> ((json <| "has_addons") <|> .success(false))
-      <*> json <| "id"
-      <*> json <|? "limit"
-      <*> json <|? "limit_per_backer"
-      <*> json <| "minimum"
-      <*> json <|? "remaining"
-    return tmp2
-      <*> ((json <|| "rewards_items") <|> .success([]))
-      <*> tryDecodable(json)
-      <*> json <||? "shipping_rules"
-      <*> json <|? "starts_at"
-      <*> json <|? "title"
-  }
-}
-*/
-extension Reward.Shipping{
+ extension Reward: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<Reward> {
+   let tmp1 = curry(Reward.init)
+     <^> json <|? "backers_count"
+     <*> json <| "converted_minimum"
+     <*> (json <| "description" <|> json <| "reward")
+     <*> json <|? "ends_at"
+     <*> json <|? "estimated_delivery_on"
+   let tmp2 = tmp1
+     <*> ((json <| "has_addons") <|> .success(false))
+     <*> json <| "id"
+     <*> json <|? "limit"
+     <*> json <|? "limit_per_backer"
+     <*> json <| "minimum"
+     <*> json <|? "remaining"
+   return tmp2
+     <*> ((json <|| "rewards_items") <|> .success([]))
+     <*> tryDecodable(json)
+     <*> json <||? "shipping_rules"
+     <*> json <|? "starts_at"
+     <*> json <|? "title"
+ }
+ }
+ */
+extension Reward.Shipping {
   private enum CodingKeys: String, CodingKey {
     case enabled = "shipping_enabled"
     case location = "shipping_single_location"

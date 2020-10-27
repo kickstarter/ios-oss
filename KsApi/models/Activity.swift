@@ -51,10 +51,10 @@ public func == (lhs: Activity, rhs: Activity) -> Bool {
 
 extension Activity: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
-    case category = "category"
-    case comment = "comment"
+    case category
+    case comment
     case createdAt = "created_at"
-    case id = "id"
+    case id
     case project
     case update
     case user
@@ -74,24 +74,24 @@ extension Activity: Swift.Decodable {
 }
 
 /*
-extension Activity: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Activity> {
-    let tmp = curry(Activity.init)
-      <^> json <| "category"
-      <*> json <|? "comment"
-      <*> json <| "created_at"
-      <*> json <| "id"
-    return tmp
-      <*> Activity.MemberData.decode(json)
-      <*> ((json <|? "project" >>- tryDecodable) as Decoded<Project?>) 
-      <*> json <|? "update"
-      <*> ((json <|? "user" >>- tryDecodable) as Decoded<User?>)
-  }
-}
-*/
+ extension Activity: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<Activity> {
+   let tmp = curry(Activity.init)
+     <^> json <| "category"
+     <*> json <|? "comment"
+     <*> json <| "created_at"
+     <*> json <| "id"
+   return tmp
+     <*> Activity.MemberData.decode(json)
+     <*> ((json <|? "project" >>- tryDecodable) as Decoded<Project?>)
+     <*> json <|? "update"
+     <*> ((json <|? "user" >>- tryDecodable) as Decoded<User?>)
+ }
+ }
+ */
 extension Activity.Category: Swift.Decodable {
   public init(from decoder: Decoder) throws {
-    //TODO check
+    // TODO: check
     self = try Activity.Category(rawValue: decoder.singleValueContainer().decode(String.self)) ?? .unknown
   }
 }
@@ -109,8 +109,8 @@ extension Activity.Category: Decodable {
 
 extension Activity.MemberData: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
-    case amount = "amount"
-    case backing = "backing"
+    case amount
+    case backing
     case oldAmount = "old_amount"
     case oldRewardId = "old_reward_id"
     case newAmount = "new_amount"
@@ -118,18 +118,19 @@ extension Activity.MemberData: Swift.Decodable {
     case rewardId = "reward_id"
   }
 }
+
 /*
-extension Activity.MemberData: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Activity.MemberData> {
-    let tmp = curry(Activity.MemberData.init)
-      <^> json <|? "amount"
-      <*> json <|? "backing"
-      <*> json <|? "old_amount"
-      <*> json <|? "old_reward_id"
-    return tmp
-      <*> json <|? "new_amount"
-      <*> json <|? "new_reward_id"
-      <*> json <|? "reward_id"
-  }
-}
-*/
+ extension Activity.MemberData: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<Activity.MemberData> {
+   let tmp = curry(Activity.MemberData.init)
+     <^> json <|? "amount"
+     <*> json <|? "backing"
+     <*> json <|? "old_amount"
+     <*> json <|? "old_reward_id"
+   return tmp
+     <*> json <|? "new_amount"
+     <*> json <|? "new_reward_id"
+     <*> json <|? "reward_id"
+ }
+ }
+ */

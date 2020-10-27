@@ -27,7 +27,7 @@ final class RewardTests: XCTestCase {
   }
 
   func testJsonParsing_WithMinimalData_AndDescription() {
-    let reward:Reward! = Reward.decodeJSONDictionary([
+    let reward: Reward! = Reward.decodeJSONDictionary([
       "id": 1,
       "minimum": 10,
       "converted_minimum": 12,
@@ -44,7 +44,7 @@ final class RewardTests: XCTestCase {
   }
 
   func testJsonParsing_WithMinimalData_AndReward() {
-    let reward:Reward! = Reward.decodeJSONDictionary([
+    let reward: Reward! = Reward.decodeJSONDictionary([
       "id": 1,
       "minimum": 10,
       "converted_minimum": 12,
@@ -59,7 +59,7 @@ final class RewardTests: XCTestCase {
   }
 
   func testJsonParsing_WithFullData() {
-    let reward:Reward! = Reward.decodeJSONDictionary([
+    let reward: Reward! = Reward.decodeJSONDictionary([
       "id": 1,
       "description": "Some reward",
       "minimum": 10,
@@ -76,7 +76,7 @@ final class RewardTests: XCTestCase {
   }
 
   func testJsonDecoding_WithShipping() {
-    let reward:Reward! = Reward.decodeJSONDictionary([
+    let reward: Reward! = Reward.decodeJSONDictionary([
       "id": 1,
       "description": "Some reward",
       "minimum": 10,
@@ -99,7 +99,7 @@ final class RewardTests: XCTestCase {
   }
 
   func testJsonDecoding_WithShippingType_Anywhere() {
-    let reward:Reward! = Reward.decodeJSONDictionary([
+    let reward: Reward! = Reward.decodeJSONDictionary([
       "id": 1,
       "description": "Some reward",
       "minimum": 10,
@@ -120,7 +120,7 @@ final class RewardTests: XCTestCase {
   }
 
   func testJsonDecoding_WithShippingType_SingleLocation() {
-    let reward:Reward! = Reward.decodeJSONDictionary([
+    let reward: Reward! = Reward.decodeJSONDictionary([
       "id": 1,
       "description": "Some reward",
       "minimum": 10,
@@ -146,7 +146,7 @@ final class RewardTests: XCTestCase {
   }
 
   func testJsonDecoding_WithShippingType_MultipleLocations() {
-    let reward:Reward! = Reward.decodeJSONDictionary([
+    let reward: Reward! = Reward.decodeJSONDictionary([
       "id": 1,
       "description": "Some reward",
       "minimum": 10,
@@ -167,7 +167,7 @@ final class RewardTests: XCTestCase {
   }
 
   func testJsonDecoding_WithShippingType_NoShipping() {
-    let reward:Reward! = Reward.decodeJSONDictionary([
+    let reward: Reward! = Reward.decodeJSONDictionary([
       "id": 1,
       "description": "Some reward",
       "minimum": 10,

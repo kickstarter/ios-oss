@@ -9,7 +9,7 @@ public struct UpdatePledgeEnvelope {
 extension UpdatePledgeEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<UpdatePledgeEnvelope> {
     return curry(UpdatePledgeEnvelope.init)
-      //TODO - fix
+      // TODO: - fix
       <^> json <|? ["data", "new_checkout_url"]
       <*> ((json <| "status" >>- stringToIntOrZero) <|> (json <| "status"))
   }

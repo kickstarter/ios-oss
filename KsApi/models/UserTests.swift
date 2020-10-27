@@ -40,8 +40,8 @@ final class UserTests: XCTestCase {
       "show_public_profile": false,
       "social": true
     ]
-    
-    let user:User? = tryDecode(json)
+
+    let user: User? = tryDecode(json)
 
     XCTAssertEqual(1, user?.id)
     XCTAssertEqual(false, user?.isAdmin)
@@ -87,7 +87,7 @@ final class UserTests: XCTestCase {
       "show_public_profile": false,
       "social": true
     ]
-    let user:User? = User.decodeJSONDictionary(json)
+    let user: User? = User.decodeJSONDictionary(json)
 
     XCTAssertEqual(user?.encode() as NSDictionary?, json as NSDictionary?)
   }

@@ -8,7 +8,7 @@ internal final class ActivityTests: XCTestCase {
   }
 
   func testJSONDecoding_WithBadData() {
-    let activity:Activity! = Activity.decodeJSONDictionary([
+    let activity: Activity! = Activity.decodeJSONDictionary([
       "category": "update"
     ])
 
@@ -16,7 +16,7 @@ internal final class ActivityTests: XCTestCase {
   }
 
   func testJSONDecoding_WithGoodData() {
-    let activity:Activity! = Activity.decodeJSONDictionary([
+    let activity: Activity! = Activity.decodeJSONDictionary([
       "category": "update",
       "created_at": 123_123_123,
       "id": 1
@@ -27,7 +27,7 @@ internal final class ActivityTests: XCTestCase {
   }
 
   func testJSONParsing_WithMemberData() {
-    let memberData:Activity.MemberData! = Activity.MemberData.decodeJSONDictionary([
+    let memberData: Activity.MemberData! = Activity.MemberData.decodeJSONDictionary([
       "amount": 25.0,
       "backing": [
         "amount": 1.0,
@@ -59,7 +59,7 @@ internal final class ActivityTests: XCTestCase {
   }
 
   func testJSONDecoding_WithNestedGoodData() {
-    let activity:Activity! = Activity.decodeJSONDictionary([
+    let activity: Activity! = Activity.decodeJSONDictionary([
       "category": "update",
       "created_at": 123_123_123,
       "id": 1,
@@ -80,7 +80,7 @@ internal final class ActivityTests: XCTestCase {
   }
 
   func testJSONDecoding_WithIncorrectCategory() {
-    let activity:Activity! = Activity.decodeJSONDictionary([
+    let activity: Activity! = Activity.decodeJSONDictionary([
       "category": "incorrect_category",
       "created_at": 123_123_123,
       "id": 1

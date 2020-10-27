@@ -34,16 +34,16 @@ public func == (lhs: Update, rhs: Update) -> Bool {
 
 extension Update: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
-    case body = "body"
+    case body
     case commentsCount = "comments_count"
     case hasLiked = "has_liked"
-    case id = "id"
+    case id
     case isPublic = "public"
     case likesCount = "likes_count"
     case projectId = "project_id"
     case publishedAt = "published_at"
-    case sequence = "sequence"
-    case title = "title"
+    case sequence
+    case title
     case urls
     case user
     case visible
@@ -66,30 +66,31 @@ extension Update: Swift.Decodable {
     self.visible = try values.decodeIfPresent(Bool.self, forKey: .visible)
   }
 }
+
 /*
-extension Update: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Update> {
-    let tmp1 = curry(Update.init)
-      <^> json <|? "body"
-      <*> json <|? "comments_count"
-      <*> json <|? "has_liked"
-    let tmp2 = tmp1
-      <*> json <| "id"
-      <*> json <| "public"
-      <*> json <|? "likes_count"
-    let tmp3 = tmp2
-      <*> json <| "project_id"
-      <*> json <|? "published_at"
-      <*> json <| "sequence"
-      <*> (json <| "title" <|> .success(""))
-    
-    return tmp3
-      <*> ((json <| "urls" >>- tryDecodable) as Decoded<Update.UrlsEnvelope>)
-      <*> ((json <|? "user" >>- tryDecodable) as Decoded<User?>)
-      <*> json <|? "visible"
-  }
-}
-*/
+ extension Update: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<Update> {
+   let tmp1 = curry(Update.init)
+     <^> json <|? "body"
+     <*> json <|? "comments_count"
+     <*> json <|? "has_liked"
+   let tmp2 = tmp1
+     <*> json <| "id"
+     <*> json <| "public"
+     <*> json <|? "likes_count"
+   let tmp3 = tmp2
+     <*> json <| "project_id"
+     <*> json <|? "published_at"
+     <*> json <| "sequence"
+     <*> (json <| "title" <|> .success(""))
+
+   return tmp3
+     <*> ((json <| "urls" >>- tryDecodable) as Decoded<Update.UrlsEnvelope>)
+     <*> ((json <|? "user" >>- tryDecodable) as Decoded<User?>)
+     <*> json <|? "visible"
+ }
+ }
+ */
 extension Update.UrlsEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Update.UrlsEnvelope> {
     return curry(Update.UrlsEnvelope.init)

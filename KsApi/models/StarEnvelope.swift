@@ -9,11 +9,11 @@ public struct StarEnvelope {
 extension StarEnvelope: Swift.Decodable {}
 
 /*
-extension StarEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<StarEnvelope> {
-    return curry(StarEnvelope.init)
-      <^> ((json <| "user" >>- tryDecodable) as Decoded<User>)
-      <*> json <| "project"
-  }
-}
-*/
+ extension StarEnvelope: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<StarEnvelope> {
+   return curry(StarEnvelope.init)
+     <^> ((json <| "user" >>- tryDecodable) as Decoded<User>)
+     <*> json <| "project"
+ }
+ }
+ */

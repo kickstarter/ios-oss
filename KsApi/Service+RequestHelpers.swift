@@ -92,9 +92,9 @@ extension Service {
     )
     .flatMap(self.decodeModel)
   }
-  
+
   func requestDecodable<M: Swift.Decodable>(_ route: Route)
-  -> SignalProducer<M, ErrorEnvelope>{
+    -> SignalProducer<M, ErrorEnvelope> {
     let properties = route.requestProperties
 
     guard let URL = URL(string: properties.path, relativeTo: self.serverConfig.apiBaseUrl as URL) else {
@@ -109,9 +109,9 @@ extension Service {
     )
     .flatMap(self.decodeModel)
   }
-  
+
   func requestPaginationDecodable<M: Swift.Decodable>(_ paginationUrl: String)
-    -> SignalProducer<M, ErrorEnvelope>{
+    -> SignalProducer<M, ErrorEnvelope> {
     guard let paginationUrl = URL(string: paginationUrl) else {
       return .init(error: .invalidPaginationUrl)
     }

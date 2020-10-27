@@ -11,7 +11,6 @@ public struct DiscoveryEnvelope: Swift.Decodable {
 
     public struct ApiEnvelope {
       public let moreProjects: String
-      
     }
   }
 
@@ -25,34 +24,35 @@ extension DiscoveryEnvelope.UrlsEnvelope.ApiEnvelope: Swift.Decodable {
     case moreProjects = "more_projects"
   }
 }
+
 /*
-extension DiscoveryEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<DiscoveryEnvelope> {
-    return curry(DiscoveryEnvelope.init)
-      <^> json <|| "projects"
-      <*> json <| "urls"
-      <*> json <| "stats"
-  }
-}
+ extension DiscoveryEnvelope: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<DiscoveryEnvelope> {
+   return curry(DiscoveryEnvelope.init)
+     <^> json <|| "projects"
+     <*> json <| "urls"
+     <*> json <| "stats"
+ }
+ }
 
-extension DiscoveryEnvelope.UrlsEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<DiscoveryEnvelope.UrlsEnvelope> {
-    return curry(DiscoveryEnvelope.UrlsEnvelope.init)
-      <^> json <| "api"
-  }
-}
+ extension DiscoveryEnvelope.UrlsEnvelope: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<DiscoveryEnvelope.UrlsEnvelope> {
+   return curry(DiscoveryEnvelope.UrlsEnvelope.init)
+     <^> json <| "api"
+ }
+ }
 
-extension DiscoveryEnvelope.UrlsEnvelope.ApiEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<DiscoveryEnvelope.UrlsEnvelope.ApiEnvelope> {
-    return curry(DiscoveryEnvelope.UrlsEnvelope.ApiEnvelope.init)
-      <^> json <| "more_projects"
-  }
-}
+ extension DiscoveryEnvelope.UrlsEnvelope.ApiEnvelope: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<DiscoveryEnvelope.UrlsEnvelope.ApiEnvelope> {
+   return curry(DiscoveryEnvelope.UrlsEnvelope.ApiEnvelope.init)
+     <^> json <| "more_projects"
+ }
+ }
 
-extension DiscoveryEnvelope.StatsEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<DiscoveryEnvelope.StatsEnvelope> {
-    return curry(DiscoveryEnvelope.StatsEnvelope.init)
-      <^> json <| "count"
-  }
-}
-*/
+ extension DiscoveryEnvelope.StatsEnvelope: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<DiscoveryEnvelope.StatsEnvelope> {
+   return curry(DiscoveryEnvelope.StatsEnvelope.init)
+     <^> json <| "count"
+ }
+ }
+ */

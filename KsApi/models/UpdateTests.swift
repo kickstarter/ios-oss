@@ -10,7 +10,7 @@ internal final class UpdateTests: XCTestCase {
   }
 
   func testJSONDecoding_WithBadData() {
-    let update:Update! = Update.decodeJSONDictionary([
+    let update: Update! = Update.decodeJSONDictionary([
       "body": "world"
     ])
 
@@ -18,7 +18,7 @@ internal final class UpdateTests: XCTestCase {
   }
 
   func testJSONDecoding_WithGoodData() {
-    let update:Update! = Update.decodeJSONDictionary([
+    let update: Update! = Update.decodeJSONDictionary([
       "body": "world",
       "id": 1,
       "public": true,
@@ -37,7 +37,7 @@ internal final class UpdateTests: XCTestCase {
   }
 
   func testJSONDecoding_WithNestedGoodData() {
-    let update:Update! = Update.decodeJSONDictionary([
+    let update: Update! = Update.decodeJSONDictionary([
       "body": "world",
       "id": 1,
       "public": true,
@@ -71,7 +71,7 @@ internal final class UpdateTests: XCTestCase {
   }
 
   func testJSONDecoding_WithBadUrls_WebData_WrongType() {
-    let update:Update! = Update.decodeJSONDictionary([
+    let update: Update! = Update.decodeJSONDictionary([
       "body": "world",
       "id": 1,
       "public": true,
@@ -90,7 +90,7 @@ internal final class UpdateTests: XCTestCase {
   }
 
   func testJSONDecoding_WithBadUrls_WebData_WrongKey() {
-    let update:Update! = Update.decodeJSONDictionary([
+    let update: Update! = Update.decodeJSONDictionary([
       "body": "world",
       "id": 1,
       "public": true,

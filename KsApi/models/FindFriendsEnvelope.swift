@@ -22,16 +22,17 @@ extension FindFriendsEnvelope: Swift.Decodable {
     case users
   }
 }
+
 /*
-extension FindFriendsEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<FindFriendsEnvelope> {
-    return curry(FindFriendsEnvelope.init)
-      <^> json <| "contacts_imported"
-      <*> json <| "urls"
-      <*> (json <|| "users" <|> .success([]))
-  }
-}
-*/
+ extension FindFriendsEnvelope: Decodable {
+ public static func decode(_ json: JSON) -> Decoded<FindFriendsEnvelope> {
+   return curry(FindFriendsEnvelope.init)
+     <^> json <| "contacts_imported"
+     <*> json <| "urls"
+     <*> (json <|| "users" <|> .success([]))
+ }
+ }
+ */
 extension FindFriendsEnvelope.UrlsEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<FindFriendsEnvelope.UrlsEnvelope> {
     return curry(FindFriendsEnvelope.UrlsEnvelope.init)
@@ -39,9 +40,7 @@ extension FindFriendsEnvelope.UrlsEnvelope: Decodable {
   }
 }
 
-extension FindFriendsEnvelope.UrlsEnvelope: Swift.Decodable {
-}
-
+extension FindFriendsEnvelope.UrlsEnvelope: Swift.Decodable {}
 
 extension FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope> {
@@ -55,4 +54,3 @@ extension FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope: Swift.Decodable {
     case moreUsers = "more_users"
   }
 }
-
