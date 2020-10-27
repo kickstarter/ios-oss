@@ -263,7 +263,7 @@ extension Project: Swift.Decodable {
     self.memberData = try Project.MemberData(from: decoder)
     self.dates = try Project.Dates(from: decoder)
     self.id = try values.decode(Int.self, forKey: .id)
-    self.location = try values.decodeIfPresent(Location.self, forKey: .location) ?? Location.none
+    self.location = (try? values.decodeIfPresent(Location.self, forKey: .location)) ?? Location.none
     self.name = try values.decode(String.self, forKey: .name)
     self.personalization = try Project.Personalization(from: decoder)
     self.photo = try values.decode(Photo.self, forKey: .photo)

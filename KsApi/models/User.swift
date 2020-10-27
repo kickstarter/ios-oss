@@ -115,7 +115,7 @@ extension User: Swift.Decodable {
     self.id = try values.decode(Int.self, forKey: .id)
     self.isAdmin = try values.decodeIfPresent(Bool.self, forKey: .isAdmin)
     self.isFriend = try values.decodeIfPresent(Bool.self, forKey: .isFriend)
-    self.location = try values.decodeIfPresent(Location.self, forKey: .location)
+    self.location = try? values.decodeIfPresent(Location.self, forKey: .location)
     self.name  = try values.decode(String.self, forKey: .name)
     self.needsFreshFacebookToken = try values.decodeIfPresent(Bool.self, forKey: .needsFreshFacebookToken)
     self.newsletters = try User.NewsletterSubscriptions(from: decoder)
@@ -271,6 +271,7 @@ extension User.Notifications: Swift.Decodable {
   case mobileComments = "notify_mobile_of_comments"
   case mobileFriendActivity = "notify_mobile_of_friend_activity"
   case mobileMessages = "notify_mobile_of_messages"
+  case mobileFollower = "notify_mobile_of_follower"
   case mobilePostLikes = "notify_mobile_of_post_likes"
   case mobileUpdates = "notify_mobile_of_updates"
   case postLikes = "notify_of_post_likes"

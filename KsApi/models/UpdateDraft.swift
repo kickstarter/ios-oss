@@ -62,8 +62,8 @@ public func == (lhs: UpdateDraft.Attachment, rhs: UpdateDraft.Attachment) -> Boo
 
 extension UpdateDraft: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
-    case images = "answered_at"
-    case video = "id"
+    case images = "images"
+    case video = "video"
   }
 
   public init(from decoder: Decoder) throws {

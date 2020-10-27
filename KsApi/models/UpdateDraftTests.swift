@@ -4,7 +4,7 @@ import XCTest
 
 final class UpdateDraftTests: XCTestCase {
   func testJSONParsing_WithCompleteData() {
-    let decoded:UpdateDraft! = UpdateDraft.decodeJSONDictionary([
+    let decoded:UpdateDraft = try! UpdateDraft.decodeJSONDictionary([
       "body": "world",
       "id": 1,
       "public": true,
@@ -23,9 +23,9 @@ final class UpdateDraftTests: XCTestCase {
 
     XCTAssertNotNil(decoded)
     let draft = decoded
-    XCTAssertEqual(1, draft?.update.id)
-    XCTAssertEqual(3, draft?.images.first?.id)
-    XCTAssertEqual(4, draft?.video?.id)
+    XCTAssertEqual(1, draft.update.id)
+    XCTAssertEqual(3, draft.images.first?.id)
+    XCTAssertEqual(4, draft.video?.id)
   }
 
   func testAttachmentThumbUrl() {

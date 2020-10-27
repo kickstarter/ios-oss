@@ -13,10 +13,10 @@ public struct MessageThread {
 
 extension MessageThread: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
-    case backing = "body"
-    case closed = "created_at"
+    case backing = "backing"
+    case closed = "closed"
     case id = "id"
-    case lastMessage = "recipient"
+    case lastMessage = "last_message"
     case participant = "participant"
     case project = "project"
     case unreadMessagesCount = "unread_messages_count"

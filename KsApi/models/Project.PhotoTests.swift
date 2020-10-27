@@ -18,7 +18,7 @@ final class ProjectPhotoTests: XCTestCase {
       "small": "http://www.kickstarter.com/small.jpg"
     ])
 
-    XCTAssertNil(photo)
+    XCTAssertNotNil(photo)
     XCTAssertEqual(photo.full, "http://www.kickstarter.com/full.jpg")
     XCTAssertEqual(photo.med, "http://www.kickstarter.com/med.jpg")
     XCTAssertEqual(photo.small, "http://www.kickstarter.com/small.jpg")
