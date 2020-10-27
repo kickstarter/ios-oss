@@ -58,6 +58,7 @@ public func == (lhs: Param, rhs: Param) -> Bool {
 extension Param: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Param> {
     switch json {
+    //TODO - fix it
     case let .string(slug):
       return .success(.slug(slug))
     case let .number(number):

@@ -21,7 +21,7 @@ extension ShippingRule: Swift.Decodable {
     self.location = try values.decode(Location.self, forKey: .location)
   }
 }
-
+/*
 extension ShippingRule: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ShippingRule> {
     return curry(ShippingRule.init)
@@ -30,7 +30,7 @@ extension ShippingRule: Decodable {
       <*> json <| "location"
   }
 }
-
+*/
 extension ShippingRule: Equatable {}
 public func == (lhs: ShippingRule, rhs: ShippingRule) -> Bool {
   // TODO: change to compare id once that api is deployed

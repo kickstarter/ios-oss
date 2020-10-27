@@ -21,6 +21,18 @@ public func == (lhs: SurveyResponse, rhs: SurveyResponse) -> Bool {
   return lhs.id == rhs.id
 }
 
+extension SurveyResponse: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case answeredAt = "answered_at"
+    case id = "id"
+    case project = "project"
+    case urls = "urls"
+  }
+}
+
+extension SurveyResponse.UrlsEnvelope: Swift.Decodable {}
+extension SurveyResponse.UrlsEnvelope.WebEnvelope: Swift.Decodable {}
+/*
 extension SurveyResponse: Decodable {
   public static func decode(_ json: JSON) -> Decoded<SurveyResponse> {
     return curry(SurveyResponse.init)
@@ -30,7 +42,7 @@ extension SurveyResponse: Decodable {
       <*> json <| "urls"
   }
 }
-
+*/
 extension SurveyResponse.UrlsEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<SurveyResponse.UrlsEnvelope> {
     return curry(SurveyResponse.UrlsEnvelope.init)

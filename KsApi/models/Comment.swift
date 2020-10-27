@@ -23,7 +23,11 @@ extension Comment: Swift.Decodable {
     self.author = try values.decode(Author.self, forKey: .author)
     self.body = try values.decode(String.self, forKey: .body)
     self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
-    self.deletedAt = try values.decode(TimeInterval?.self, forKey: .deletedAt)
+    if let value = try values.decodeIfPresent(TimeInterval.self, forKey: .deletedAt), value > 0{
+      self.deletedAt = value
+    }else{
+      self.deletedAt = nil
+    }
     self.id = try values.decode(Int.self, forKey: .id)
   }
 }

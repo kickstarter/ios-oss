@@ -14,6 +14,10 @@ public struct ProjectNotification {
   }
 }
 
+extension ProjectNotification: Swift.Decodable {}
+
+extension ProjectNotification.Project: Swift.Decodable {}
+/*
 extension ProjectNotification: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectNotification> {
     return curry(ProjectNotification.init)
@@ -31,7 +35,7 @@ extension ProjectNotification.Project: Decodable {
       <*> json <| "name"
   }
 }
-
+*/
 extension ProjectNotification: Equatable {}
 public func == (lhs: ProjectNotification, rhs: ProjectNotification) -> Bool {
   return lhs.id == rhs.id
@@ -41,3 +45,4 @@ extension ProjectNotification.Project: Equatable {}
 public func == (lhs: ProjectNotification.Project, rhs: ProjectNotification.Project) -> Bool {
   return lhs.id == rhs.id
 }
+

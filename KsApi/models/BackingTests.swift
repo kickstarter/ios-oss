@@ -46,7 +46,7 @@ final class BackingTests: XCTestCase {
   }
 
   func testJSONDecoding_IncompletePaymentSource() {
-    let backing:Backing? = Backing.decodeJSONDictionary([
+    let backing:Backing = try! Backing.decodeJSONDictionary([
       "amount": 1.0,
       "backer_id": 1,
       "cancelable": true,
@@ -61,18 +61,18 @@ final class BackingTests: XCTestCase {
       "status": "pledged"
     ])
 
-    XCTAssertEqual(1.0, backing?.amount)
-    XCTAssertEqual(1, backing?.backerId)
-    XCTAssertEqual(1, backing?.id)
+    XCTAssertEqual(1.0, backing.amount)
+    XCTAssertEqual(1, backing.backerId)
+    XCTAssertEqual(1, backing.id)
 
-    XCTAssertNil(backing?.paymentSource)
+    XCTAssertNil(backing.paymentSource)
 
-    XCTAssertEqual(1, backing?.locationId)
-    XCTAssertEqual("United States", backing?.locationName)
-    XCTAssertEqual(1_000, backing?.pledgedAt)
-    XCTAssertEqual("US", backing?.projectCountry)
-    XCTAssertEqual(1, backing?.projectId)
-    XCTAssertEqual(1, backing?.sequence)
-    XCTAssertEqual(Backing.Status.pledged, backing?.status)
+    XCTAssertEqual(1, backing.locationId)
+    XCTAssertEqual("United States", backing.locationName)
+    XCTAssertEqual(1_000, backing.pledgedAt)
+    XCTAssertEqual("US", backing.projectCountry)
+    XCTAssertEqual(1, backing.projectId)
+    XCTAssertEqual(1, backing.sequence)
+    XCTAssertEqual(Backing.Status.pledged, backing.status)
   }
 }

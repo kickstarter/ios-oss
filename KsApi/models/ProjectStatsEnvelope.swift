@@ -67,6 +67,7 @@ public struct ProjectStatsEnvelope {
 extension ProjectStatsEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope> {
     return curry(ProjectStatsEnvelope.init)
+      //TODO - refactor
       <^> json <| "cumulative"
       <*> decodedJSON(json, forKey: "funding_distribution").flatMap(decodeSuccessfulFundingStats)
       <*> json <| "referral_aggregates"

@@ -20,6 +20,7 @@ extension Message: Swift.Decodable {
   }
 }
 
+/*
 extension Message: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Message> {
     return curry(Message.init)
@@ -30,3 +31,4 @@ extension Message: Decodable {
       <*> ((json <| "sender" >>- tryDecodable) as Decoded<User>)
   }
 }
+*/

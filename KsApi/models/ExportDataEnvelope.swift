@@ -6,7 +6,7 @@ public struct ExportDataEnvelope {
   public let state: State
   public let dataUrl: String?
 
-  public enum State: String {
+  public enum State: String, Swift.Decodable {
     case queued
     case processing
     case completed
@@ -14,6 +14,14 @@ public struct ExportDataEnvelope {
   }
 }
 
+extension ExportDataEnvelope: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case expiresAt = "expires_at"
+    case state = "state"
+    case dataUrl = "data_url"
+  }
+}
+/*
 extension ExportDataEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ExportDataEnvelope> {
     return curry(ExportDataEnvelope.init)
@@ -24,3 +32,4 @@ extension ExportDataEnvelope: Decodable {
 }
 
 extension ExportDataEnvelope.State: Decodable {}
+*/

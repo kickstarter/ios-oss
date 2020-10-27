@@ -463,7 +463,7 @@ extension Project.RewardData: Swift.Decodable {
     self.rewards = try values.decodeIfPresent([Reward].self, forKey: .addOns) ?? []
   }
 }
-
+/*
 extension Project.RewardData: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Project.RewardData> {
     return curry(Project.RewardData.init)
@@ -471,7 +471,7 @@ extension Project.RewardData: Decodable {
       <*> (json <|| "rewards" <|> .success([]))
   }
 }
-
+*/
 extension Project.Category: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
     case id = "id"

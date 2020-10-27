@@ -124,7 +124,7 @@ extension Reward: Swift.Decodable {
     self.title = try values.decodeIfPresent(String.self, forKey: .startsAt)
   }
 }
-
+/*
 extension Reward: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Reward> {
     let tmp1 = curry(Reward.init)
@@ -148,7 +148,7 @@ extension Reward: Decodable {
       <*> json <|? "title"
   }
 }
-
+*/
 extension Reward.Shipping{
   private enum CodingKeys: String, CodingKey {
     case enabled = "shipping_enabled"

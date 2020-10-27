@@ -4,7 +4,7 @@ import XCTest
 
 final class UpdateDraftTests: XCTestCase {
   func testJSONParsing_WithCompleteData() {
-    let decoded = UpdateDraft.decodeJSONDictionary([
+    let decoded:UpdateDraft! = UpdateDraft.decodeJSONDictionary([
       "body": "world",
       "id": 1,
       "public": true,
@@ -21,8 +21,8 @@ final class UpdateDraftTests: XCTestCase {
       "video": ["id": 4, "frame": "frame.jpg", "status": "successful"]
     ])
 
-    XCTAssertNil(decoded.error)
-    let draft = decoded.value
+    XCTAssertNotNil(decoded)
+    let draft = decoded
     XCTAssertEqual(1, draft?.update.id)
     XCTAssertEqual(3, draft?.images.first?.id)
     XCTAssertEqual(4, draft?.video?.id)

@@ -66,7 +66,7 @@ extension Update: Swift.Decodable {
     self.visible = try values.decodeIfPresent(Bool.self, forKey: .visible)
   }
 }
-
+/*
 extension Update: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Update> {
     let tmp1 = curry(Update.init)
@@ -89,7 +89,7 @@ extension Update: Decodable {
       <*> json <|? "visible"
   }
 }
-
+*/
 extension Update.UrlsEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Update.UrlsEnvelope> {
     return curry(Update.UrlsEnvelope.init)

@@ -10,6 +10,20 @@ public struct FriendStatsEnvelope {
   }
 }
 
+extension FriendStatsEnvelope: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case stats = "stats"
+  }
+}
+
+extension FriendStatsEnvelope.Stats: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case friendProjectsCount = "friend_projects_count"
+    case remoteFriendsCount = "remote_friends_count"
+  }
+}
+
+/*
 extension FriendStatsEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<FriendStatsEnvelope> {
     return curry(FriendStatsEnvelope.init)
@@ -24,3 +38,4 @@ extension FriendStatsEnvelope.Stats: Decodable {
       <*> json <| "remote_friends_count"
   }
 }
+*/

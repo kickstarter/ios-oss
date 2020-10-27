@@ -118,7 +118,7 @@ extension Activity.MemberData: Swift.Decodable {
     case rewardId = "reward_id"
   }
 }
-
+/*
 extension Activity.MemberData: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Activity.MemberData> {
     let tmp = curry(Activity.MemberData.init)
@@ -132,3 +132,4 @@ extension Activity.MemberData: Decodable {
       <*> json <|? "reward_id"
   }
 }
+*/

@@ -140,6 +140,7 @@ extension ErrorEnvelope: Error {}
 extension ErrorEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ErrorEnvelope> {
     // Typically API errors come back in this form...
+    //TODO refactor
     let standardErrorEnvelope = curry(ErrorEnvelope.init)
       <^> json <|| "error_messages"
       <*> json <|? "ksr_code"

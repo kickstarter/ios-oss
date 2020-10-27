@@ -82,7 +82,7 @@ extension Backing: Swift.Decodable{
     self.id = try values.decode(Int.self, forKey: .id)
     self.locationId = try values.decodeIfPresent(Int.self, forKey: .locationId)
     self.locationName = try values.decodeIfPresent(String.self, forKey: .locationName)
-    self.paymentSource = try values.decodeIfPresent(PaymentSource.self, forKey: .paymentSource)
+    self.paymentSource = try? values.decodeIfPresent(PaymentSource.self, forKey: .paymentSource)
     self.pledgedAt = try values.decode(TimeInterval.self, forKey: .pledgedAt)
     self.projectCountry = try values.decode(String.self, forKey: .projectCountry)
     self.projectId = try values.decode(Int.self, forKey: .projectId)
@@ -93,7 +93,7 @@ extension Backing: Swift.Decodable{
     self.status = try values.decode(Status.self, forKey: .status)
   }
 }
-
+/*
 extension Backing: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Backing> {
     let tmp1 = curry(Backing.init)
@@ -120,7 +120,7 @@ extension Backing: Decodable {
       <*> json <| "status"
   }
 }
-
+*/
 #warning("Function tryDecodePaymentSource(_:) should be deleted once the data is being returned normally.")
 /*
  Since staging is not returning all the values for Payment Source, the Backing deserialization is failing
