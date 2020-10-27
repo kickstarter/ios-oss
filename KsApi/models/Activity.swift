@@ -49,6 +49,31 @@ public func == (lhs: Activity, rhs: Activity) -> Bool {
   return lhs.id == rhs.id
 }
 
+extension Activity: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case category = "category"
+    case comment = "comment"
+    case createdAt = "created_at"
+    case id = "id"
+    case project
+    case update
+    case user
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.category = try values.decode(Activity.Category.self, forKey: .category)
+    self.comment = try values.decodeIfPresent(Comment.self, forKey: .comment)
+    self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
+    self.id = try values.decode(Int.self, forKey: .id)
+    self.memberData = try Activity.MemberData(from: decoder)
+    self.project = try values.decodeIfPresent(Project.self, forKey: .project)
+    self.update = try values.decodeIfPresent(Update.self, forKey: .update)
+    self.user = try values.decodeIfPresent(User.self, forKey: .user)
+  }
+}
+
+/*
 extension Activity: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Activity> {
     let tmp = curry(Activity.init)
@@ -63,6 +88,13 @@ extension Activity: Decodable {
       <*> ((json <|? "user" >>- tryDecodable) as Decoded<User?>)
   }
 }
+*/
+extension Activity.Category: Swift.Decodable {
+  public init(from decoder: Decoder) throws {
+    //TODO check
+    self = try Activity.Category(rawValue: decoder.singleValueContainer().decode(String.self)) ?? .unknown
+  }
+}
 
 extension Activity.Category: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Activity.Category> {
@@ -72,6 +104,18 @@ extension Activity.Category: Decodable {
     default:
       return .failure(.typeMismatch(expected: "String", actual: json.description))
     }
+  }
+}
+
+extension Activity.MemberData: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case amount = "amount"
+    case backing = "backing"
+    case oldAmount = "old_amount"
+    case oldRewardId = "old_reward_id"
+    case newAmount = "new_amount"
+    case newRewardId = "new_reward_id"
+    case rewardId = "reward_id"
   }
 }
 

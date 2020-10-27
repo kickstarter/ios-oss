@@ -160,12 +160,12 @@ public struct Service: ServiceType {
       .success,
       .update
     ]
-    return request(.activities(categories: categories, count: count))
+    return requestDecodable(.activities(categories: categories, count: count))
   }
 
   public func fetchActivities(paginationUrl: String)
     -> SignalProducer<ActivityEnvelope, ErrorEnvelope> {
-    return requestPagination(paginationUrl)
+    return requestPaginationDecodable(paginationUrl)
   }
 
   public func fetchBacking(forProject project: Project, forUser user: User)
@@ -174,15 +174,15 @@ public struct Service: ServiceType {
   }
 
   public func fetchComments(paginationUrl url: String) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-    return requestPagination(url)
+    return requestPaginationDecodable(url)
   }
 
   public func fetchComments(project: Project) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-    return request(.projectComments(project))
+    return requestDecodable(.projectComments(project))
   }
 
   public func fetchComments(update: Update) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-    return request(.updateComments(update))
+    return requestDecodable(.updateComments(update))
   }
 
   public func fetchConfig() -> SignalProducer<Config, ErrorEnvelope> {
@@ -285,12 +285,12 @@ public struct Service: ServiceType {
 
   public func fetchProjectActivities(forProject project: Project) ->
     SignalProducer<ProjectActivityEnvelope, ErrorEnvelope> {
-    return request(.projectActivities(project))
+    return requestDecodable(.projectActivities(project))
   }
 
   public func fetchProjectActivities(paginationUrl: String)
     -> SignalProducer<ProjectActivityEnvelope, ErrorEnvelope> {
-    return requestPagination(paginationUrl)
+    return requestPaginationDecodable(paginationUrl)
   }
 
   public func fetchProjectNotifications() -> SignalProducer<[ProjectNotification], ErrorEnvelope> {
@@ -403,12 +403,12 @@ public struct Service: ServiceType {
 
   public func login(email: String, password: String, code: String?) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-    return request(.login(email: email, password: password, code: code))
+    return requestDecodable(.login(email: email, password: password, code: code))
   }
 
   public func login(facebookAccessToken: String, code: String?) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-    return request(.facebookLogin(facebookAccessToken: facebookAccessToken, code: code))
+    return requestDecodable(.facebookLogin(facebookAccessToken: facebookAccessToken, code: code))
   }
 
   public func markAsRead(messageThread: MessageThread) -> SignalProducer<MessageThread, ErrorEnvelope> {
@@ -417,11 +417,11 @@ public struct Service: ServiceType {
 
   public func postComment(_ body: String, toProject project: Project) ->
     SignalProducer<Comment, ErrorEnvelope> {
-    return request(.postProjectComment(project, body: body))
+    return requestDecodable(.postProjectComment(project, body: body))
   }
 
   public func postComment(_ body: String, toUpdate update: Update) -> SignalProducer<Comment, ErrorEnvelope> {
-    return request(.postUpdateComment(update, body: body))
+    return requestDecodable(.postUpdateComment(update, body: body))
   }
 
   public func publish(draft: UpdateDraft) -> SignalProducer<Update, ErrorEnvelope> {
@@ -463,7 +463,7 @@ public struct Service: ServiceType {
     passwordConfirmation: String,
     sendNewsletters: Bool
   ) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-    return request(.signup(
+    return requestDecodable(.signup(
       name: name,
       email: email,
       password: password,
@@ -474,7 +474,7 @@ public struct Service: ServiceType {
 
   public func signup(facebookAccessToken token: String, sendNewsletters: Bool) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-    return request(.facebookSignup(facebookAccessToken: token, sendNewsletters: sendNewsletters))
+    return requestDecodable(.facebookSignup(facebookAccessToken: token, sendNewsletters: sendNewsletters))
   }
 
   public func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {

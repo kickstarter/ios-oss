@@ -27,7 +27,7 @@ extension Comment: Swift.Decodable {
     self.id = try values.decode(Int.self, forKey: .id)
   }
 }
-
+/*
 extension Comment: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Comment> {
     let tmp = curry(Comment.init)
@@ -39,7 +39,7 @@ extension Comment: Decodable {
       <*> json <| "id"
   }
 }
-
+*/
 extension Comment: Equatable {}
 
 public func == (lhs: Comment, rhs: Comment) -> Bool {

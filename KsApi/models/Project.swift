@@ -363,7 +363,6 @@ extension Project.Stats: Swift.Decodable {
     self.staticUsdRate = try values.decodeIfPresent(Float.self, forKey: .staticUsdRate) ?? 1.0
     self.updatesCount = try values.decodeIfPresent(Int.self, forKey: .updatesCount)
   }
-
 }
 
 
@@ -527,11 +526,9 @@ extension Project.Photo: Decodable {
 }
 
 extension Project.MemberData.Permission: Swift.Decodable {
-  
   public init(from decoder: Decoder) throws {
     self = try Project.MemberData.Permission(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
   }
-  
 }
 
 extension Project.MemberData.Permission: Decodable {

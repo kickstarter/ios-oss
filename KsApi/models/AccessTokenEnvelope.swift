@@ -10,7 +10,7 @@ public struct AccessTokenEnvelope {
     self.user = user
   }
 }
-
+/*
 extension AccessTokenEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<AccessTokenEnvelope> {
     return curry(AccessTokenEnvelope.init)
@@ -18,7 +18,7 @@ extension AccessTokenEnvelope: Decodable {
       <*> ((json <| "user" >>- tryDecodable) as Decoded<User>)
   }
 }
-
+*/
 extension AccessTokenEnvelope: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
     case accessToken = "access_token"

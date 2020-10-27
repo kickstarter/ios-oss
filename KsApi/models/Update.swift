@@ -32,6 +32,41 @@ public func == (lhs: Update, rhs: Update) -> Bool {
   return lhs.id == rhs.id
 }
 
+extension Update: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case body = "body"
+    case commentsCount = "comments_count"
+    case hasLiked = "has_liked"
+    case id = "id"
+    case isPublic = "public"
+    case likesCount = "likes_count"
+    case projectId = "project_id"
+    case publishedAt = "published_at"
+    case sequence = "sequence"
+    case title = "title"
+    case urls
+    case user
+    case visible
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.body = try values.decodeIfPresent(String.self, forKey: .body)
+    self.commentsCount = try values.decodeIfPresent(Int.self, forKey: .commentsCount)
+    self.hasLiked = try values.decodeIfPresent(Bool.self, forKey: .hasLiked)
+    self.id = try values.decode(Int.self, forKey: .id)
+    self.isPublic = try values.decode(Bool.self, forKey: .isPublic)
+    self.likesCount = try values.decodeIfPresent(Int.self, forKey: .likesCount)
+    self.projectId = try values.decode(Int.self, forKey: .projectId)
+    self.publishedAt = try values.decodeIfPresent(TimeInterval.self, forKey: .publishedAt)
+    self.sequence = try values.decode(Int.self, forKey: .sequence)
+    self.title = try values.decodeIfPresent(String.self, forKey: .title) ?? ""
+    self.urls = try values.decode(Update.UrlsEnvelope.self, forKey: .urls)
+    self.user = try values.decodeIfPresent(User.self, forKey: .user)
+    self.visible = try values.decodeIfPresent(Bool.self, forKey: .visible)
+  }
+}
+
 extension Update: Decodable {
   public static func decode(_ json: JSON) -> Decoded<Update> {
     let tmp1 = curry(Update.init)
