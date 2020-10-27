@@ -108,7 +108,7 @@ public struct Service: ServiceType {
 
   public func changePaymentMethod(project: Project)
     -> SignalProducer<ChangePaymentMethodEnvelope, ErrorEnvelope> {
-    return request(.changePaymentMethod(project: project))
+    return requestDecodable(.changePaymentMethod(project: project))
   }
 
   public func clearUserUnseenActivity(input: EmptyInput)
@@ -497,7 +497,7 @@ public struct Service: ServiceType {
     shippingLocation: Location?,
     tappedReward: Bool
   ) -> SignalProducer<UpdatePledgeEnvelope, ErrorEnvelope> {
-    return request(
+    return requestDecodable(
       .updatePledge(
         project: project,
         amount: amount,

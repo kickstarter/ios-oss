@@ -506,7 +506,6 @@ extension Project.Photo: Swift.Decodable {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     self.full = try values.decode(String.self, forKey: .full)
     self.med = try values.decode(String.self, forKey: .med)
-    // TODO: - fix type
     self.size1024x768 = try values
       .decodeIfPresent(String.self, forKey: .size1024x768) ??
       (try values.decodeIfPresent(String.self, forKey: .size1024x576))

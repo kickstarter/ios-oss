@@ -97,7 +97,36 @@ extension DiscoveryParams: CustomStringConvertible, CustomDebugStringConvertible
     return self.queryParams.debugDescription
   }
 }
+/*
+extension DiscoveryParams: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case backed = "backed"
+    case category = "category"
+    case collaborated = "collaborated"
+    case created = "created"
+    case hasVideo = "has_video"
+    case includePOTD = "include_potd"
+    case page = "page"
+    case perPage = "per_page"
+    case query = "term"
+    case recommended = "recommended"
+    case seed = "seed"
+    case similarTo = "similar_to"
+    case social = "social"
+    case sort = "sort"
+    case staffPicks = "staff_picks"
+    case starred = "starred"
+    case state = "state"
+    case tagId = "tag_id"
+  }
 
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.backed = stringIntToBool(try values.decodeIfPresent(String.self, forKey: .backed))
+    //self.category = stringIntToBool(try values.decodeIfPresent(String.self, forKey: .category))
+  }
+}
+*/
 extension DiscoveryParams: Decodable {
   public static func decode(_ json: JSON) -> Decoded<DiscoveryParams> {
     let tmp1 = curry(DiscoveryParams.init)
@@ -126,6 +155,19 @@ extension DiscoveryParams: Decodable {
   }
 }
 
+private func stringToBool(_ string: String?) -> Bool? {
+  guard let string = string else { return nil }
+  switch string {
+          // taken from server's `value_to_boolean` function
+  case "true", "1", "t", "T", "TRUE", "on", "ON":
+    return true
+  case "false", "0", "f", "F", "FALSE", "off", "OFF":
+    return false
+  default:
+    return nil
+  }
+}
+
 private func stringToBool(_ string: String?) -> Decoded<Bool?> {
   guard let string = string else { return .success(nil) }
   switch string {
@@ -142,6 +184,13 @@ private func stringToBool(_ string: String?) -> Decoded<Bool?> {
 private func stringToInt(_ string: String?) -> Decoded<Int?> {
   guard let string = string else { return .success(nil) }
   return Int(string).map(Decoded<Int?>.success) ?? .failure(.custom("Could not parse string into int."))
+}
+
+private func stringIntToBool(_ string: String?) -> Bool? {
+  guard let string = string else { return nil }
+  return  Int(string)
+          .filter { $0 <= 1 && $0 >= -1 }
+          .flatMap { ($0 == 0) ? nil : ($0 == 1) }
 }
 
 private func stringIntToBool(_ string: String?) -> Decoded<Bool?> {
