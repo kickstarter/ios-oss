@@ -60,6 +60,6 @@ final class ConfigTests: XCTestCase {
     XCTAssertTrue(config.abExperimentsArray.contains("2001_space_odyssey[control]") &&
       config.abExperimentsArray.contains("dr_strangelove[experiment]"))
     // Confirm that encoding and decoding again results in the same config.
-    XCTAssertEqual(config, Config.decodeJSONDictionary(config.encode()).value)
+    XCTAssertEqual(config, try! Config.decodeJSONDictionary(config.encode()))
   }
 }

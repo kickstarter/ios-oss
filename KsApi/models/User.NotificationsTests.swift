@@ -92,7 +92,7 @@ final class NotificationsTests: XCTestCase {
 
     XCTAssertEqual(
       notifications,
-      User.Notifications.decodeJSONDictionary(notifications.encode()).value
+      try! User.Notifications.decodeJSONDictionary(notifications.encode())
     )
   }
 }
