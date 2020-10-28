@@ -307,7 +307,7 @@ public struct Service: ServiceType {
 
   public func fetchProjectStats(projectId: Int) ->
     SignalProducer<ProjectStatsEnvelope, ErrorEnvelope> {
-    return request(.projectStats(projectId: projectId))
+    return requestDecodable(.projectStats(projectId: projectId))
   }
 
   public func fetchRewardAddOnsSelectionViewRewards(query: NonEmptySet<Query>)

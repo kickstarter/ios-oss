@@ -3,7 +3,7 @@ import Foundation
 import KsApi
 import Runes
 
-// TODO: - refactor
+// TODO: do we need to move to Swift.Decodable?
 public enum Navigation {
   case checkout(Int, Navigation.Checkout)
   case creatorMessages(Param, messageThreadId: Int)

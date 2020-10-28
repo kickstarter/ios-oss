@@ -98,40 +98,10 @@ extension DiscoveryParams: CustomStringConvertible, CustomDebugStringConvertible
   }
 }
 
-/*
- extension DiscoveryParams: Swift.Decodable {
- enum CodingKeys: String, CodingKey {
-   case backed = "backed"
-   case category = "category"
-   case collaborated = "collaborated"
-   case created = "created"
-   case hasVideo = "has_video"
-   case includePOTD = "include_potd"
-   case page = "page"
-   case perPage = "per_page"
-   case query = "term"
-   case recommended = "recommended"
-   case seed = "seed"
-   case similarTo = "similar_to"
-   case social = "social"
-   case sort = "sort"
-   case staffPicks = "staff_picks"
-   case starred = "starred"
-   case state = "state"
-   case tagId = "tag_id"
- }
-
- public init(from decoder: Decoder) throws {
-   let values = try decoder.container(keyedBy: CodingKeys.self)
-   self.backed = stringIntToBool(try values.decodeIfPresent(String.self, forKey: .backed))
-   //self.category = stringIntToBool(try values.decodeIfPresent(String.self, forKey: .category))
- }
- }
- */
 extension DiscoveryParams: Decodable {
   public static func decode(_ json: JSON) -> Decoded<DiscoveryParams> {
     let tmp1 = curry(DiscoveryParams.init)
-      // TODO: convert
+      // TODO: do we need to move to Swift.Decodable?
       <^> ((json <|? "backed" >>- stringIntToBool) as Decoded<Bool?>)
       <*> ((json <|? "category" >>- decodeToGraphCategory) as Decoded<Category>)
       <*> ((json <|? "collaborated" >>- stringToBool) as Decoded<Bool?>)
