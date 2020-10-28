@@ -4,7 +4,7 @@ import XCTest
 
 class ErrorEnvelopeTests: XCTestCase {
   func testJsonDecodingWithFullData() {
-    let env = ErrorEnvelope.decodeJSONDictionary([
+    let env: ErrorEnvelope = try! ErrorEnvelope.decodeJSONDictionary([
       "error_messages": ["hello"],
       "ksr_code": "access_token_invalid",
       "http_code": 401,
@@ -17,7 +17,7 @@ class ErrorEnvelopeTests: XCTestCase {
   }
 
   func testJsonDecodingWithBadKsrCode() {
-    let env = ErrorEnvelope.decodeJSONDictionary([
+    let env: ErrorEnvelope = try! ErrorEnvelope.decodeJSONDictionary([
       "error_messages": ["hello"],
       "ksr_code": "doesnt_exist",
       "http_code": 401,
@@ -26,12 +26,12 @@ class ErrorEnvelopeTests: XCTestCase {
         "message": "hello"
       ]
     ])
-    XCTAssertNil(env.error)
-    XCTAssertEqual(ErrorEnvelope.KsrCode.UnknownCode, env.value?.ksrCode)
+    XCTAssertNotNil(env)
+    XCTAssertEqual(ErrorEnvelope.KsrCode.UnknownCode, env.ksrCode)
   }
 
   func testJsonDecodingWithNonStandardError() {
-    let env = ErrorEnvelope.decodeJSONDictionary([
+    let env: ErrorEnvelope = try! ErrorEnvelope.decodeJSONDictionary([
       "status": 406,
       "data": [
         "errors": [
@@ -41,9 +41,26 @@ class ErrorEnvelopeTests: XCTestCase {
         ]
       ]
     ])
-    XCTAssertNil(env.error)
-    XCTAssertEqual(ErrorEnvelope.KsrCode.UnknownCode, env.value?.ksrCode)
-    XCTAssertEqual(["Bad amount"], env.value!.errorMessages)
-    XCTAssertEqual(406, env.value?.httpCode)
+    XCTAssertNotNil(env)
+    XCTAssertEqual(ErrorEnvelope.KsrCode.UnknownCode, env.ksrCode)
+    XCTAssertEqual(["Bad amount"], env.errorMessages)
+    XCTAssertEqual(406, env.httpCode)
+  }
+
+  func testJsonDecodingWithNonStandardErrorBackerReward() {
+    let env: ErrorEnvelope = try! ErrorEnvelope.decodeJSONDictionary([
+      "status": 406,
+      "data": [
+        "errors": [
+          "backer_reward": [
+            "Bad amount"
+          ]
+        ]
+      ]
+    ])
+    XCTAssertNotNil(env)
+    XCTAssertEqual(ErrorEnvelope.KsrCode.UnknownCode, env.ksrCode)
+    XCTAssertEqual(["Bad amount"], env.errorMessages)
+    XCTAssertEqual(406, env.httpCode)
   }
 }

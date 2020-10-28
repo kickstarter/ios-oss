@@ -91,7 +91,6 @@ extension Activity: Swift.Decodable {
  */
 extension Activity.Category: Swift.Decodable {
   public init(from decoder: Decoder) throws {
-    // TODO: check
     self = try Activity.Category(rawValue: decoder.singleValueContainer().decode(String.self)) ?? .unknown
   }
 }
