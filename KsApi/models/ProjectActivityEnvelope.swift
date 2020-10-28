@@ -14,15 +14,6 @@ public struct ProjectActivityEnvelope: Swift.Decodable {
   }
 }
 
-/*
- extension ProjectActivityEnvelope: Decodable {
- public static func decode(_ json: JSON) -> Decoded<ProjectActivityEnvelope> {
-   return curry(ProjectActivityEnvelope.init)
-     <^> json <|| "activities"
-     <*> json <| "urls"
- }
- }
- */
 extension ProjectActivityEnvelope.UrlsEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<ProjectActivityEnvelope.UrlsEnvelope> {
     return curry(ProjectActivityEnvelope.UrlsEnvelope.init)

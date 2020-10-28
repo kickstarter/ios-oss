@@ -5,10 +5,10 @@ public struct ActivityEnvelope {
   public let activities: [Activity]
   public let urls: UrlsEnvelope
 
-  public struct UrlsEnvelope: Swift.Decodable {
+  public struct UrlsEnvelope {
     public let api: ApiEnvelope
 
-    public struct ApiEnvelope: Swift.Decodable {
+    public struct ApiEnvelope {
       public let moreActivities: String
     }
   }
@@ -21,25 +21,15 @@ extension ActivityEnvelope: Swift.Decodable {
   }
 }
 
-/*
- extension ActivityEnvelope: Decodable {
- public static func decode(_ json: JSON) -> Decoded<ActivityEnvelope> {
-   return curry(ActivityEnvelope.init)
-     <^> json <|| "activities"
-     <*> json <| "urls"
- }
- }
- */
-extension ActivityEnvelope.UrlsEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<ActivityEnvelope.UrlsEnvelope> {
-    return curry(ActivityEnvelope.UrlsEnvelope.init)
-      <^> json <| "api"
-  }
-}
+extension ActivityEnvelope.UrlsEnvelope: Swift.Decodable {}
 
-extension ActivityEnvelope.UrlsEnvelope.ApiEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<ActivityEnvelope.UrlsEnvelope.ApiEnvelope> {
-    return curry(ActivityEnvelope.UrlsEnvelope.ApiEnvelope.init)
-      <^> (json <| "more_activities" <|> .success(""))
+extension ActivityEnvelope.UrlsEnvelope.ApiEnvelope: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case moreActivities = "more_activities"
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.moreActivities = try values.decodeIfPresent(String.self, forKey: .moreActivities) ?? ""
   }
 }

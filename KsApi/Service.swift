@@ -186,7 +186,7 @@ public struct Service: ServiceType {
   }
 
   public func fetchConfig() -> SignalProducer<Config, ErrorEnvelope> {
-    return request(.config)
+    return requestDecodable(.config)
   }
 
   public func fetchDiscovery(paginationUrl: String)

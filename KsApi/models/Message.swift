@@ -19,16 +19,3 @@ extension Message: Swift.Decodable {
     case sender
   }
 }
-
-/*
- extension Message: Decodable {
- public static func decode(_ json: JSON) -> Decoded<Message> {
-   return curry(Message.init)
-     <^> json <| "body"
-     <*> json <| "created_at"
-     <*> json <| "id"
-     <*> ((json <| "recipient" >>- tryDecodable) as Decoded<User>)
-     <*> ((json <| "sender" >>- tryDecodable) as Decoded<User>)
- }
- }
- */

@@ -278,36 +278,6 @@ extension Project: Swift.Decodable {
   }
 }
 
-/*
- extension Project: Decodable {
- public static func decode(_ json: JSON) -> Decoded<Project> {
-   let tmp1 = curry(Project.init)
-     <^> json <||? "available_card_types"
-     <*> json <| "blurb"
-     <*> json <| "category"
-     <*> Project.Country.decode(json)
-     <*> json <| "creator"
-   let tmp2 = tmp1
-     <*> Project.MemberData.decode(json)
-     <*> Project.Dates.decode(json)
-     <*> json <| "id"
-     <*> (json <| "location" <|> .success(Location.none))
-   let tmp3 = tmp2
-     <*> json <| "name"
-     <*> Project.Personalization.decode(json)
-     <*> json <| "photo"
-     <*> json <|? "prelaunch_activated"
-     <*> Project.RewardData.decode(json)
-     <*> json <| "slug"
-   return tmp3
-     <*> json <| "staff_pick"
-     <*> json <| "state"
-     <*> Project.Stats.decode(json)
-     <*> json <| "urls"
-     <*> json <|? "video"
- }
- }
- */
 extension Project.UrlsEnvelope: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
     case web
@@ -318,21 +288,6 @@ extension Project.UrlsEnvelope.WebEnvelope: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
     case project
     case updates
-  }
-}
-
-extension Project.UrlsEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.UrlsEnvelope> {
-    return curry(Project.UrlsEnvelope.init)
-      <^> json <| "web"
-  }
-}
-
-extension Project.UrlsEnvelope.WebEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.UrlsEnvelope.WebEnvelope> {
-    return curry(Project.UrlsEnvelope.WebEnvelope.init)
-      <^> json <| "project"
-      <*> json <|? "updates"
   }
 }
 
@@ -366,23 +321,6 @@ extension Project.Stats: Swift.Decodable {
   }
 }
 
-extension Project.Stats: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.Stats> {
-    let tmp1 = curry(Project.Stats.init)
-      <^> json <| "backers_count"
-      <*> json <|? "comments_count"
-      <*> json <|? "converted_pledged_amount"
-      <*> json <| "currency"
-      <*> json <|? "current_currency"
-      <*> json <|? "fx_rate"
-    return tmp1
-      <*> json <| "goal"
-      <*> json <| "pledged"
-      <*> (json <| "static_usd_rate" <|> .success(1.0))
-      <*> json <|? "updates_count"
-  }
-}
-
 extension Project.MemberData: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
     case lastUpdatePublishedAt = "last_update_published_at"
@@ -401,16 +339,6 @@ extension Project.MemberData: Swift.Decodable {
   }
 }
 
-extension Project.MemberData: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.MemberData> {
-    return curry(Project.MemberData.init)
-      <^> json <|? "last_update_published_at"
-      <*> (removeUnknowns <^> (json <|| "permissions") <|> .success([]))
-      <*> json <|? "unread_messages_count"
-      <*> json <|? "unseen_activity_count"
-  }
-}
-
 extension Project.Dates: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
     case deadline
@@ -418,17 +346,6 @@ extension Project.Dates: Swift.Decodable {
     case finalCollectionDate = "final_collection_date"
     case launchedAt = "launched_at"
     case stateChangedAt = "state_changed_at"
-  }
-}
-
-extension Project.Dates: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.Dates> {
-    return curry(Project.Dates.init)
-      <^> json <| "deadline"
-      <*> json <|? "featured_at"
-      <*> json <|? "final_collection_date"
-      <*> json <| "launched_at"
-      <*> json <| "state_changed_at"
   }
 }
 
@@ -441,17 +358,6 @@ extension Project.Personalization: Swift.Decodable {
   }
 }
 
-/*
- extension Project.Personalization: Decodable {
- public static func decode(_ json: JSON) -> Decoded<Project.Personalization> {
-   return curry(Project.Personalization.init)
-     <^> json <|? "backing"
-     <*> json <||? "friends"
-     <*> json <|? "is_backing"
-     <*> json <|? "is_starred"
- }
- }
- */
 extension Project.RewardData: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
     case addOns = "add_ons"
@@ -465,31 +371,12 @@ extension Project.RewardData: Swift.Decodable {
   }
 }
 
-/*
- extension Project.RewardData: Decodable {
- public static func decode(_ json: JSON) -> Decoded<Project.RewardData> {
-   return curry(Project.RewardData.init)
-     <^> json <||? "add_ons"
-     <*> (json <|| "rewards" <|> .success([]))
- }
- }
- */
 extension Project.Category: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
     case id
     case name
     case parentId = "parent_id"
     case parentName = "parent_name"
-  }
-}
-
-extension Project.Category: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.Category> {
-    return curry(Project.Category.init)
-      <^> json <| "id"
-      <*> json <| "name"
-      <*> json <|? "parent_id"
-      <*> json <|? "parent_name"
   }
 }
 
@@ -513,33 +400,10 @@ extension Project.Photo: Swift.Decodable {
   }
 }
 
-extension Project.Photo: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.Photo> {
-    let url1024: Decoded<String?> = ((json <| "1024x768") <|> (json <| "1024x576"))
-      .map(Optional<String>.init)
-      <|> .success(nil)
-
-    return curry(Project.Photo.init)
-      <^> json <| "full"
-      <*> json <| "med"
-      <*> url1024
-      <*> json <| "small"
-  }
-}
-
 extension Project.MemberData.Permission: Swift.Decodable {
   public init(from decoder: Decoder) throws {
     self = try Project.MemberData
       .Permission(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
-  }
-}
-
-extension Project.MemberData.Permission: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.MemberData.Permission> {
-    if case let .string(permission) = json {
-      return self.init(rawValue: permission).map(pure) ?? .success(.unknown)
-    }
-    return .success(.unknown)
   }
 }
 

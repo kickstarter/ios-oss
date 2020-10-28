@@ -3,7 +3,7 @@ import Foundation
 import KsApi
 import Runes
 
-// TODO - refactor
+// TODO: - refactor
 public enum Navigation {
   case checkout(Int, Navigation.Checkout)
   case creatorMessages(Param, messageThreadId: Int)

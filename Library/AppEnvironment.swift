@@ -263,7 +263,7 @@ public struct AppEnvironment: AppEnvironmentType {
 
     var service = self.current.apiService
     var currentUser: User?
-    let config: Config? = data["config"].flatMap(decode)
+    let config: Config? = Config.decodeJSONDictionary(data["config"] as Any)
 
     if let oauthToken = data["apiService.oauthToken.token"] as? String {
       // If there is an oauth token stored in the defaults, then we can authenticate our api service

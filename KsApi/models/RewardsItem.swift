@@ -16,15 +16,3 @@ extension RewardsItem: Swift.Decodable {
     case rewardId = "reward_id"
   }
 }
-
-/*
- extension RewardsItem: Decodable {
- public static func decode(_ json: JSON) -> Decoded<RewardsItem> {
-   return curry(RewardsItem.init)
-     <^> json <| "id"
-     <*> json <| "item"
-     <*> json <| "quantity"
-     <*> json <| "reward_id"
- }
- }
- */

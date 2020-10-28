@@ -14,14 +14,3 @@ extension MessageThreadEnvelope: Swift.Decodable {
     case messageThread = "message_thread"
   }
 }
-
-/*
- extension MessageThreadEnvelope: Decodable {
- public static func decode(_ json: JSON) -> Decoded<MessageThreadEnvelope> {
-   return curry(MessageThreadEnvelope.init)
-     <^> json <|| "participants"
-     <*> json <|| "messages"
-     <*> json <| "message_thread"
- }
- }
- */

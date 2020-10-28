@@ -35,30 +35,3 @@ extension Author.Url: Swift.Decodable {
       .decode(String.self, forKey: .user)
   }
 }
-
-extension Author: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Author> {
-    return curry(Author.init)
-      <^> json <| "avatar"
-      <*> json <| "id"
-      <*> json <| "name"
-      <*> json <| "urls"
-  }
-}
-
-extension Author.Avatar: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Author.Avatar> {
-    return curry(Author.Avatar.init)
-      <^> json <|? "medium"
-      <*> json <| "small"
-      <*> json <| "thumb"
-  }
-}
-
-extension Author.Url: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Author.Url> {
-    return curry(Author.Url.init)
-      <^> json <| ["api", "user"]
-      <*> json <| ["web", "user"]
-  }
-}

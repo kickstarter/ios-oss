@@ -125,31 +125,6 @@ extension Reward: Swift.Decodable {
   }
 }
 
-/*
- extension Reward: Decodable {
- public static func decode(_ json: JSON) -> Decoded<Reward> {
-   let tmp1 = curry(Reward.init)
-     <^> json <|? "backers_count"
-     <*> json <| "converted_minimum"
-     <*> (json <| "description" <|> json <| "reward")
-     <*> json <|? "ends_at"
-     <*> json <|? "estimated_delivery_on"
-   let tmp2 = tmp1
-     <*> ((json <| "has_addons") <|> .success(false))
-     <*> json <| "id"
-     <*> json <|? "limit"
-     <*> json <|? "limit_per_backer"
-     <*> json <| "minimum"
-     <*> json <|? "remaining"
-   return tmp2
-     <*> ((json <|| "rewards_items") <|> .success([]))
-     <*> tryDecodable(json)
-     <*> json <||? "shipping_rules"
-     <*> json <|? "starts_at"
-     <*> json <|? "title"
- }
- }
- */
 extension Reward.Shipping {
   private enum CodingKeys: String, CodingKey {
     case enabled = "shipping_enabled"

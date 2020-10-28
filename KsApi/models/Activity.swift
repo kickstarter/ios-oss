@@ -73,36 +73,9 @@ extension Activity: Swift.Decodable {
   }
 }
 
-/*
- extension Activity: Decodable {
- public static func decode(_ json: JSON) -> Decoded<Activity> {
-   let tmp = curry(Activity.init)
-     <^> json <| "category"
-     <*> json <|? "comment"
-     <*> json <| "created_at"
-     <*> json <| "id"
-   return tmp
-     <*> Activity.MemberData.decode(json)
-     <*> ((json <|? "project" >>- tryDecodable) as Decoded<Project?>)
-     <*> json <|? "update"
-     <*> ((json <|? "user" >>- tryDecodable) as Decoded<User?>)
- }
- }
- */
 extension Activity.Category: Swift.Decodable {
   public init(from decoder: Decoder) throws {
     self = try Activity.Category(rawValue: decoder.singleValueContainer().decode(String.self)) ?? .unknown
-  }
-}
-
-extension Activity.Category: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Activity.Category> {
-    switch json {
-    case let .string(category):
-      return .success(Activity.Category(rawValue: category) ?? .unknown)
-    default:
-      return .failure(.typeMismatch(expected: "String", actual: json.description))
-    }
   }
 }
 
@@ -117,19 +90,3 @@ extension Activity.MemberData: Swift.Decodable {
     case rewardId = "reward_id"
   }
 }
-
-/*
- extension Activity.MemberData: Decodable {
- public static func decode(_ json: JSON) -> Decoded<Activity.MemberData> {
-   let tmp = curry(Activity.MemberData.init)
-     <^> json <|? "amount"
-     <*> json <|? "backing"
-     <*> json <|? "old_amount"
-     <*> json <|? "old_reward_id"
-   return tmp
-     <*> json <|? "new_amount"
-     <*> json <|? "new_reward_id"
-     <*> json <|? "reward_id"
- }
- }
- */

@@ -1,22 +1,6 @@
 import Curry
 import Runes
 
-extension Config: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Config> {
-    let tmp = curry(Config.init)
-      <^> decodeDictionary(json <| "ab_experiments")
-      <*> json <| "app_id"
-      <*> json <|| "apple_pay_countries"
-      <*> json <| "country_code"
-      <*> decodeDictionary(json <| "features")
-    return tmp
-      <*> json <| "itunes_link"
-      <*> json <|| "launched_countries"
-      <*> json <| "locale"
-      <*> json <| ["stripe", "publishable_key"]
-  }
-}
-
 extension Config: EncodableType {
   public func encode() -> [String: Any] {
     var result: [String: Any] = [:]

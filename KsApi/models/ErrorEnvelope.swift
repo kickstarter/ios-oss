@@ -181,36 +181,6 @@ extension ErrorEnvelope: Swift.Decodable {
   }
 }
 
-/*
- extension ErrorEnvelope: Decodable {
- public static func decode(_ json: JSON) -> Decoded<ErrorEnvelope> {
-   // Typically API errors come back in this form...
-   let standardErrorEnvelope = curry(ErrorEnvelope.init)
-     <^> json <|| "error_messages"
-     <*> json <|? "ksr_code"
-     <*> json <| "http_code"
-     <*> json <|? "exception"
-     <*> json <|? "facebook_user"
-     <*> .success(nil)
-
-   // ...but sometimes we make requests to the www server and JSON errors come back in a different envelope
-   let nonStandardErrorEnvelope = {
-     curry(ErrorEnvelope.init)
-       <^> concatSuccesses([
-         json <|| ["data", "errors", "amount"],
-         json <|| ["data", "errors", "backer_reward"]
-       ])
-       <*> .success(ErrorEnvelope.KsrCode.UnknownCode)
-       <*> json <| "status"
-       <*> .success(nil)
-       <*> .success(nil)
-       <*> .success(nil)
-   }
-
-   return standardErrorEnvelope <|> nonStandardErrorEnvelope()
- }
- }
- */
 extension ErrorEnvelope.AltErrorMessage: Swift.Decodable {}
 
 extension ErrorEnvelope.AltErrorMessage.AltErrorDetails: Swift.Decodable {
@@ -231,14 +201,6 @@ extension ErrorEnvelope.AltErrorMessage.AltErrorDetails: Swift.Decodable {
 
 extension ErrorEnvelope.Exception: Swift.Decodable {}
 
-extension ErrorEnvelope.Exception: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<ErrorEnvelope.Exception> {
-    return curry(ErrorEnvelope.Exception.init)
-      <^> json <||? "backtrace"
-      <*> json <|? "message"
-  }
-}
-
 extension ErrorEnvelope.KsrCode: Swift.Decodable {
   public init(from decoder: Decoder) throws {
     self = try ErrorEnvelope
@@ -247,27 +209,7 @@ extension ErrorEnvelope.KsrCode: Swift.Decodable {
   }
 }
 
-extension ErrorEnvelope.KsrCode: Decodable {
-  public static func decode(_ j: JSON) -> Decoded<ErrorEnvelope.KsrCode> {
-    switch j {
-    case let .string(s):
-      return pure(ErrorEnvelope.KsrCode(rawValue: s) ?? ErrorEnvelope.KsrCode.UnknownCode)
-    default:
-      return .typeMismatch(expected: "ErrorEnvelope.KsrCode", actual: j)
-    }
-  }
-}
-
 extension ErrorEnvelope.FacebookUser: Swift.Decodable {}
-
-extension ErrorEnvelope.FacebookUser: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<ErrorEnvelope.FacebookUser> {
-    return curry(ErrorEnvelope.FacebookUser.init)
-      <^> json <| "id"
-      <*> json <| "name"
-      <*> json <| "email"
-  }
-}
 
 // Concats an array of decoded arrays into a decoded array. Ignores all failed decoded values, and so
 // always returns a successfully decoded value.

@@ -23,16 +23,6 @@ extension FindFriendsEnvelope: Swift.Decodable {
   }
 }
 
-/*
- extension FindFriendsEnvelope: Decodable {
- public static func decode(_ json: JSON) -> Decoded<FindFriendsEnvelope> {
-   return curry(FindFriendsEnvelope.init)
-     <^> json <| "contacts_imported"
-     <*> json <| "urls"
-     <*> (json <|| "users" <|> .success([]))
- }
- }
- */
 extension FindFriendsEnvelope.UrlsEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<FindFriendsEnvelope.UrlsEnvelope> {
     return curry(FindFriendsEnvelope.UrlsEnvelope.init)

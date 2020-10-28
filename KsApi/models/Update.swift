@@ -67,44 +67,6 @@ extension Update: Swift.Decodable {
   }
 }
 
-/*
- extension Update: Decodable {
- public static func decode(_ json: JSON) -> Decoded<Update> {
-   let tmp1 = curry(Update.init)
-     <^> json <|? "body"
-     <*> json <|? "comments_count"
-     <*> json <|? "has_liked"
-   let tmp2 = tmp1
-     <*> json <| "id"
-     <*> json <| "public"
-     <*> json <|? "likes_count"
-   let tmp3 = tmp2
-     <*> json <| "project_id"
-     <*> json <|? "published_at"
-     <*> json <| "sequence"
-     <*> (json <| "title" <|> .success(""))
-
-   return tmp3
-     <*> ((json <| "urls" >>- tryDecodable) as Decoded<Update.UrlsEnvelope>)
-     <*> ((json <|? "user" >>- tryDecodable) as Decoded<User?>)
-     <*> json <|? "visible"
- }
- }
- */
-extension Update.UrlsEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Update.UrlsEnvelope> {
-    return curry(Update.UrlsEnvelope.init)
-      <^> json <| "web"
-  }
-}
-
-extension Update.UrlsEnvelope.WebEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Update.UrlsEnvelope.WebEnvelope> {
-    return curry(Update.UrlsEnvelope.WebEnvelope.init)
-      <^> json <| "update"
-  }
-}
-
 extension Update.UrlsEnvelope.WebEnvelope: Swift.Codable {}
 
 extension Update.UrlsEnvelope: Swift.Codable {}

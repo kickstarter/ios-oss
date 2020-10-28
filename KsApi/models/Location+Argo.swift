@@ -1,17 +1,6 @@
 import Curry
 import Runes
 
-extension Location: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Location> {
-    return curry(Location.init)
-      <^> json <| "country"
-      <*> json <| "displayable_name"
-      <*> json <| "id"
-      <*> json <| "localized_name"
-      <*> json <| "name"
-  }
-}
-
 extension Location: EncodableType {
   public func encode() -> [String: Any] {
     var result: [String: Any] = [:]

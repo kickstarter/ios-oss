@@ -198,23 +198,11 @@ private func sortRefTagSuffix(_ sort: DiscoveryParams.Sort) -> String {
 
 extension RefTag: Swift.Decodable {
   public init(from decoder: Decoder) throws {
-      let code = try decoder.singleValueContainer().decode(String.self)
-      self.init(code: code)
+    let code = try decoder.singleValueContainer().decode(String.self)
+    self.init(code: code)
   }
 }
 
-/*
-extension RefTag: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<RefTag> {
-    switch json {
-    case let .string(code):
-      return .success(RefTag(code: code))
-    default:
-      return .failure(.custom("RefTag code must be a string."))
-    }
-  }
-}
-*/
 extension RefTag {
   public static func fromParams(_ params: DiscoveryParams) -> RefTag {
     if let tagId = params.tagId {

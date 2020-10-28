@@ -144,32 +144,6 @@ extension User: Swift.Decodable {
   }
 }
 
-/*
- extension User: Decodable {
- public static func decode(_ json: JSON) -> Decoded<User> {
-   let tmp1 = pure(curry(User.init))
-     <*> ((json <| "avatar" >>- tryDecodable) as Decoded<Avatar>)
-     <*> json <|? "errored_backings_count"
-     <*> json <|? "facebook_connected"
-     <*> json <| "id"
-   let tmp2 = tmp1
-     <*> json <|? "is_admin"
-     <*> json <|? "is_friend"
-     <*> (json <|? "location" <|> .success(nil))
-   let tmp3 = tmp2
-     <*> json <| "name"
-     <*> json <|? "needs_fresh_facebook_token"
-     <*> User.NewsletterSubscriptions.decode(json)
-     <*> User.Notifications.decode(json)
-     <*> json <|? "opted_out_of_recommendations"
-   return tmp3
-     <*> json <|? "show_public_profile"
-     <*> json <|? "social"
-     <*> User.Stats.decode(json)
-     <*> json <|? "unseen_activity_count"
- }
- }
- */
 extension User: EncodableType {
   public func encode() -> [String: Any] {
     var result: [String: Any] = [:]
@@ -274,31 +248,6 @@ extension User.Notifications: Swift.Decodable {
     case mobileUpdates = "notify_mobile_of_updates"
     case postLikes = "notify_of_post_likes"
     case updates = "notify_of_updates"
-  }
-}
-
-extension User.Notifications: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<User.Notifications> {
-    let tmp1 = curry(User.Notifications.init)
-      <^> json <|? "notify_of_backings"
-      <*> json <|? "notify_of_comment_replies"
-      <*> json <|? "notify_of_comments"
-      <*> json <|? "notify_of_creator_digest"
-      <*> json <|? "notify_of_creator_edu"
-      <*> json <|? "notify_of_follower"
-      <*> json <|? "notify_of_friend_activity"
-      <*> json <|? "notify_of_messages"
-    let tmp2 = tmp1
-      <*> json <|? "notify_mobile_of_backings"
-      <*> json <|? "notify_mobile_of_comments"
-      <*> json <|? "notify_mobile_of_follower"
-      <*> json <|? "notify_mobile_of_friend_activity"
-      <*> json <|? "notify_mobile_of_messages"
-    return tmp2
-      <*> json <|? "notify_mobile_of_post_likes"
-      <*> json <|? "notify_mobile_of_updates"
-      <*> json <|? "notify_of_post_likes"
-      <*> json <|? "notify_of_updates"
   }
 }
 

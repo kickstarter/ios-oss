@@ -16,5 +16,3 @@ public enum PaymentType: String, Swift.Decodable {
     }
   }
 }
-
-extension PaymentType: Decodable {}

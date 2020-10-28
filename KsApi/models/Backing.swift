@@ -94,55 +94,6 @@ extension Backing: Swift.Decodable {
   }
 }
 
-/*
- extension Backing: Decodable {
- public static func decode(_ json: JSON) -> Decoded<Backing> {
-   let tmp1 = curry(Backing.init)
-     <^> json <||? "add_ons"
-     <*> json <| "amount"
-     <*> ((json <|? "backer" >>- tryDecodable) as Decoded<User?>)
-     <*> json <| "backer_id"
-     <*> json <|? "backer_completed_at"
-     <*> (json <| "bonus_amount" <|> .success(0.0))
-     <*> json <| "cancelable"
-   let tmp2 = tmp1
-     <*> json <| "id"
-     <*> json <|? "location_id"
-     <*> json <|? "location_name"
-     <*> (json <|? "payment_source" >>- tryDecodePaymentSource)
-     <*> json <| "pledged_at"
-     <*> json <| "project_country"
-   return tmp2
-     <*> json <| "project_id"
-     <*> json <|? "reward"
-     <*> json <|? "reward_id"
-     <*> json <| "sequence"
-     <*> json <|? "shipping_amount"
-     <*> json <| "status"
- }
- }
- */
-#warning("Function tryDecodePaymentSource(_:) should be deleted once the data is being returned normally.")
-/*
- Since staging is not returning all the values for Payment Source, the Backing deserialization is failing
- on that environment. This is a workaround to allow us to test on Staging and should be deleted once the
- data is being returned normally.
- */
-private func tryDecodePaymentSource(_ json: JSON?) -> Decoded<Backing.PaymentSource?> {
-  guard let json = json else {
-    return .success(nil)
-  }
-
-  let value = Backing.PaymentSource.decode(json)
-
-  switch value {
-  case let .success(value):
-    return .success(value)
-  case .failure:
-    return .success(nil)
-  }
-}
-
 extension Backing: EncodableType {
   public func encode() -> [String: Any] {
     var result: [String: Any] = [:]
@@ -161,20 +112,6 @@ extension Backing.PaymentSource: Swift.Decodable {
     case type
   }
 }
-
-extension Backing.PaymentSource: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Backing.PaymentSource?> {
-    return curry(Backing.PaymentSource.init)
-      <^> json <|? "expiration_date"
-      <*> json <|? "id"
-      <*> json <|? "last_four"
-      <*> json <| "payment_type"
-      <*> json <| "state"
-      <*> json <|? "type"
-  }
-}
-
-extension Backing.Status: Decodable {}
 
 extension Backing.PaymentSource: Equatable {}
 public func == (lhs: Backing.PaymentSource, rhs: Backing.PaymentSource) -> Bool {

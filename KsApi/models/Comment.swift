@@ -32,19 +32,6 @@ extension Comment: Swift.Decodable {
   }
 }
 
-/*
- extension Comment: Decodable {
- public static func decode(_ json: JSON) -> Decoded<Comment> {
-   let tmp = curry(Comment.init)
-     <^> json <| "author"
-     <*> json <| "body"
-     <*> json <| "created_at"
-   return tmp
-     <*> (json <|? "deleted_at" >>- decodePositiveTimeInterval)
-     <*> json <| "id"
- }
- }
- */
 extension Comment: Equatable {}
 
 public func == (lhs: Comment, rhs: Comment) -> Bool {

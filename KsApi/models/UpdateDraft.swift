@@ -77,34 +77,3 @@ extension UpdateDraft: Swift.Decodable {
 extension UpdateDraft.Image: Swift.Decodable {}
 extension UpdateDraft.Video: Swift.Decodable {}
 extension UpdateDraft.Video.Status: Swift.Decodable {}
-
-/*
- extension UpdateDraft: Decodable {
- public static func decode(_ json: JSON) -> Decoded<UpdateDraft> {
-   return curry(UpdateDraft.init)
-     <^> Update.decode(json)
-     <*> json <|| "images"
-     <*> json <|? "video"
- }
- }
-
- extension UpdateDraft.Image: Decodable {
- public static func decode(_ json: JSON) -> Decoded<UpdateDraft.Image> {
-   return curry(UpdateDraft.Image.init)
-     <^> json <| "id"
-     <*> json <| "thumb"
-     <*> json <| "full"
- }
- }
-
- extension UpdateDraft.Video: Decodable {
- public static func decode(_ json: JSON) -> Decoded<UpdateDraft.Video> {
-   return curry(UpdateDraft.Video.init)
-     <^> json <| "id"
-     <*> json <| "status"
-     <*> json <| "frame"
- }
- }
-
- extension UpdateDraft.Video.Status: Decodable {}
- */

@@ -21,16 +21,3 @@ extension ExportDataEnvelope: Swift.Decodable {
     case dataUrl = "data_url"
   }
 }
-
-/*
- extension ExportDataEnvelope: Decodable {
- public static func decode(_ json: JSON) -> Decoded<ExportDataEnvelope> {
-   return curry(ExportDataEnvelope.init)
-     <^> json <|? "expires_at"
-     <*> json <| "state"
-     <*> json <|? "data_url"
- }
- }
-
- extension ExportDataEnvelope.State: Decodable {}
- */
