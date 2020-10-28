@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Foundation
 import Prelude
