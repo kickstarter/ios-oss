@@ -207,10 +207,4 @@ public final class RefTagTests: XCTestCase {
     XCTAssertEqual("starred_home", RefTag.fromParams(discoStarred).stringTag)
     XCTAssertEqual("ios_project_collection_tag_557", RefTag.fromParams(discoCollection).stringTag)
   }
-
-  func testRefParsing() {
-    let res = RefTag.decode(JSON.init("update"))
-    let res2: RefTag? = RefTag.decodeJSONDictionary("update")
-    XCTAssertNotNil(res)
-  }
 }
