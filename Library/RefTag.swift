@@ -203,6 +203,17 @@ extension RefTag: Swift.Decodable {
   }
 }
 
+extension RefTag: Decodable {
+  public static func decode(_ json: JSON) -> Decoded<RefTag> {
+    switch json {
+    case let .string(code):
+      return .success(RefTag(code: code))
+    default:
+      return .failure(.custom("RefTag code must be a string."))
+    }
+  }
+}
+
 extension RefTag {
   public static func fromParams(_ params: DiscoveryParams) -> RefTag {
     if let tagId = params.tagId {

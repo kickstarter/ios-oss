@@ -72,7 +72,7 @@ extension PushEnvelope: Decodable {
 extension PushEnvelope.Activity: Decodable {
   public static func decode(_ json: JSON) -> Decoded<PushEnvelope.Activity> {
     let tmp = curry(PushEnvelope.Activity.init)
-      <^> ((json <| "category" >>- tryDecodable) as Decoded<Activity.Category>)
+      <^> json <| "category" // TODO: fix Activity.Category mapping
       <*> json <|? "comment_id"
       <*> json <| "id"
       <*> json <|? "project_id"

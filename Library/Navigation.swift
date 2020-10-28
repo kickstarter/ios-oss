@@ -394,7 +394,7 @@ private func project(_ params: RouteParams) -> Decoded<Navigation> {
   let projectPreview = curry(Navigation.projectPreview)
     <^> params <| "project_param"
     <*> .success(.root)
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
     <*> params <| "token"
 
   // If we're certain this is not a project preview link, try to decode it as a normal project link.
@@ -402,7 +402,7 @@ private func project(_ params: RouteParams) -> Decoded<Navigation> {
     return curry(Navigation.project)
       <^> params <| "project_param"
       <*> .success(.root)
-      <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+      <*> params <|? "ref"
   }
 
   // Fail here as we don't currently support project preview links.
@@ -420,21 +420,21 @@ private func thanks(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> checkout
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func projectComments(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.comments)
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func creatorBio(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.creatorBio)
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func dashboard(_ params: RouteParams) -> Decoded<Navigation> {
@@ -448,63 +448,63 @@ private func faqs(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.faqs)
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func friends(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.friends)
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func messageCreator(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.messageCreator)
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func pledgeBigPrint(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.bigPrint))
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func pledgeChangeMethod(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.changeMethod))
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func pledgeDestroy(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.destroy))
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func pledgeEdit(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.edit))
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func pledgeNew(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.new))
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func pledgeRoot(_ params: RouteParams) -> Decoded<Navigation> {
   let parseRoot = curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.root))
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 
   guard
     let value = parseRoot.value,
@@ -516,21 +516,21 @@ private func pledgeRoot(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(.pledge(.manage))
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func posts(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(Navigation.Project.updates)
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func projectSurvey(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> (Navigation.Project.survey <^> (params <| "survey_param" >>- stringToInt))
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func update(_ params: RouteParams) -> Decoded<Navigation> {
@@ -539,7 +539,7 @@ private func update(_ params: RouteParams) -> Decoded<Navigation> {
     <*> (curry(Navigation.Project.update)
       <^> (params <| "update_param" >>- stringToInt)
       <*> .success(.root))
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func updateComments(_ params: RouteParams) -> Decoded<Navigation> {
@@ -548,14 +548,14 @@ private func updateComments(_ params: RouteParams) -> Decoded<Navigation> {
     <*> (curry(Navigation.Project.update)
       <^> (params <| "update_param" >>- stringToInt)
       <*> .success(.comments))
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func updates(_ params: RouteParams) -> Decoded<Navigation> {
   return curry(Navigation.project)
     <^> params <| "project_param"
     <*> .success(Navigation.Project.updates)
-    <*> ((params <|? "ref" >>- tryDecodable) as Decoded<RefTag?>)
+    <*> params <|? "ref"
 }
 
 private func userSurvey(_ params: RouteParams) -> Decoded<Navigation> {

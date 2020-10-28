@@ -211,14 +211,6 @@ extension ErrorEnvelope.KsrCode: Swift.Decodable {
 
 extension ErrorEnvelope.FacebookUser: Swift.Decodable {}
 
-// Concats an array of decoded arrays into a decoded array. Ignores all failed decoded values, and so
-// always returns a successfully decoded value.
-private func concatSuccesses<A>(_ decodeds: [Decoded<[A]>]) -> Decoded<[A]> {
-  return decodeds.reduce(Decoded.success([])) { accum, decoded in
-    .success((accum.value ?? []) + (decoded.value ?? []))
-  }
-}
-
 // MARK: - GraphError
 
 // FIXME: We should try to included error messages and/or httpCode
