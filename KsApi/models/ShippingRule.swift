@@ -22,16 +22,6 @@ extension ShippingRule: Swift.Decodable {
   }
 }
 
-/*
- extension ShippingRule: Decodable {
- public static func decode(_ json: JSON) -> Decoded<ShippingRule> {
-   return curry(ShippingRule.init)
-     <^> (json <| "cost" >>- stringToDouble)
-     <*> json <|? "id"
-     <*> json <| "location"
- }
- }
- */
 extension ShippingRule: Equatable {}
 public func == (lhs: ShippingRule, rhs: ShippingRule) -> Bool {
   // TODO: change to compare id once that api is deployed
