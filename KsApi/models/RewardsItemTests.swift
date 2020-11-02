@@ -4,7 +4,7 @@ import XCTest
 
 final class RewardsItemTests: XCTestCase {
   func testDecoding() {
-    let decoded = RewardsItem.decodeJSONDictionary([
+    let decoded: RewardsItem = try! RewardsItem.decodeJSONDictionary([
       "id": 1,
       "item": [
         "description": "Hello",
@@ -16,15 +16,13 @@ final class RewardsItemTests: XCTestCase {
       "reward_id": 3
     ])
 
-    XCTAssertNil(decoded.error)
+    XCTAssertEqual(1, decoded.id)
+    XCTAssertEqual(2, decoded.quantity)
+    XCTAssertEqual(3, decoded.rewardId)
 
-    XCTAssertEqual(1, decoded.value?.id)
-    XCTAssertEqual(2, decoded.value?.quantity)
-    XCTAssertEqual(3, decoded.value?.rewardId)
-
-    XCTAssertEqual("Hello", decoded.value?.item.description)
-    XCTAssertEqual(1, decoded.value?.item.id)
-    XCTAssertEqual("The thing", decoded.value?.item.name)
-    XCTAssertEqual(1, decoded.value?.item.projectId)
+    XCTAssertEqual("Hello", decoded.item.description)
+    XCTAssertEqual(1, decoded.item.id)
+    XCTAssertEqual("The thing", decoded.item.name)
+    XCTAssertEqual(1, decoded.item.projectId)
   }
 }

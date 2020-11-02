@@ -11,12 +11,6 @@ public struct BackingsEnvelope {
   public let projectsAndBackings: [ProjectAndBackingEnvelope]
 }
 
-extension BackingsEnvelope: Decodable {
-  public static func decode(_: JSON) -> Decoded<BackingsEnvelope> {
-    fatalError("Conformance is to satisfy the compiler, do not create this model using ")
-  }
-}
-
 // MARK: - GraphQL Adapters
 
 extension BackingsEnvelope {

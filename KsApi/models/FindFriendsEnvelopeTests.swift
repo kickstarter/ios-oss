@@ -54,13 +54,13 @@ final class FindFriendsEnvelopeTests: XCTestCase {
       ]
     ]
 
-    let friends = FindFriendsEnvelope.decodeJSONDictionary(json)
-    let users = friends.value?.users ?? []
+    let friends: FindFriendsEnvelope = try! FindFriendsEnvelope.decodeJSONDictionary(json)
+    let users = friends.users
 
-    XCTAssertEqual(true, friends.value?.contactsImported)
+    XCTAssertEqual(true, friends.contactsImported)
     XCTAssertEqual(
       "http://api.dev/v1/users/self/friends/find?count=10",
-      friends.value?.urls.api.moreUsers
+      friends.urls.api.moreUsers
     )
     XCTAssertEqual(false, users[0].isFriend)
     XCTAssertEqual(true, users[1].isFriend)
@@ -77,9 +77,9 @@ final class FindFriendsEnvelopeTests: XCTestCase {
       ]
     ]
 
-    let friends = FindFriendsEnvelope.decodeJSONDictionary(json)
+    let friends: FindFriendsEnvelope? = FindFriendsEnvelope.decodeJSONDictionary(json)
 
-    XCTAssertNil(friends.value?.urls.api.moreUsers)
-    XCTAssertEqual([], friends.value?.users ?? [])
+    XCTAssertNil(friends?.urls.api.moreUsers)
+    XCTAssertEqual([], friends?.users ?? [])
   }
 }

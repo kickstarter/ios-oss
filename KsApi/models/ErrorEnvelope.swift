@@ -8,6 +8,7 @@ public struct ErrorEnvelope {
   public let exception: Exception?
   public let facebookUser: FacebookUser?
   public let graphError: GraphError?
+  private let data: AltErrorMessage?
 
   public init(
     errorMessages: [String],
@@ -23,6 +24,7 @@ public struct ErrorEnvelope {
     self.exception = exception
     self.facebookUser = facebookUser
     self.graphError = graphError
+    self.data = nil
   }
 
   public enum KsrCode: String {
@@ -45,6 +47,14 @@ public struct ErrorEnvelope {
     case ErrorEnvelopeJSONParsingFailed = "error_json_parsing_failed"
     case DecodingJSONFailed = "decoding_json_failed"
     case InvalidPaginationUrl = "invalid_pagination_url"
+  }
+
+  public struct AltErrorMessage {
+    public let errors: AltErrorDetails
+
+    public struct AltErrorDetails {
+      public let details: [String]
+    }
   }
 
   public struct Exception {
@@ -137,70 +147,69 @@ public struct ErrorEnvelope {
 
 extension ErrorEnvelope: Error {}
 
-extension ErrorEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<ErrorEnvelope> {
-    // Typically API errors come back in this form...
-    let standardErrorEnvelope = curry(ErrorEnvelope.init)
-      <^> json <|| "error_messages"
-      <*> json <|? "ksr_code"
-      <*> json <| "http_code"
-      <*> json <|? "exception"
-      <*> json <|? "facebook_user"
-      <*> .success(nil)
-
-    // ...but sometimes we make requests to the www server and JSON errors come back in a different envelope
-    let nonStandardErrorEnvelope = {
-      curry(ErrorEnvelope.init)
-        <^> concatSuccesses([
-          json <|| ["data", "errors", "amount"],
-          json <|| ["data", "errors", "backer_reward"]
-        ])
-        <*> .success(ErrorEnvelope.KsrCode.UnknownCode)
-        <*> json <| "status"
-        <*> .success(nil)
-        <*> .success(nil)
-        <*> .success(nil)
-    }
-
-    return standardErrorEnvelope <|> nonStandardErrorEnvelope()
+extension ErrorEnvelope: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case errorMessages = "error_messages"
+    case ksrCode = "ksr_code"
+    case httpCode = "http_code"
+    case status
+    case data
+    case exception
+    case facebookUser = "facebook_user"
   }
-}
 
-extension ErrorEnvelope.Exception: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<ErrorEnvelope.Exception> {
-    return curry(ErrorEnvelope.Exception.init)
-      <^> json <||? "backtrace"
-      <*> json <|? "message"
-  }
-}
-
-extension ErrorEnvelope.KsrCode: Decodable {
-  public static func decode(_ j: JSON) -> Decoded<ErrorEnvelope.KsrCode> {
-    switch j {
-    case let .string(s):
-      return pure(ErrorEnvelope.KsrCode(rawValue: s) ?? ErrorEnvelope.KsrCode.UnknownCode)
-    default:
-      return .typeMismatch(expected: "ErrorEnvelope.KsrCode", actual: j)
+  public init(from decoder: Decoder) throws {
+    // sometimes we make requests to the www server and JSON errors come back in a different envelope
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    if values.contains(.httpCode) {
+      self.errorMessages = try values.decode([String].self, forKey: .errorMessages)
+      self.ksrCode = try values.decodeIfPresent(KsrCode.self, forKey: .ksrCode)
+      self.httpCode = try values.decode(Int.self, forKey: .httpCode)
+      self.exception = try values.decode(Exception.self, forKey: .exception)
+      self.facebookUser = try values.decodeIfPresent(FacebookUser.self, forKey: .facebookUser)
+      self.graphError = nil
+      self.data = nil
+    } else {
+      self.data = try values.decodeIfPresent(ErrorEnvelope.AltErrorMessage.self, forKey: .data)
+      self.errorMessages = self.data?.errors.details ?? []
+      self.ksrCode = ErrorEnvelope.KsrCode.UnknownCode
+      self.httpCode = try values.decode(Int.self, forKey: .status)
+      self.exception = nil
+      self.facebookUser = nil
+      self.graphError = nil
     }
   }
 }
 
-extension ErrorEnvelope.FacebookUser: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<ErrorEnvelope.FacebookUser> {
-    return curry(ErrorEnvelope.FacebookUser.init)
-      <^> json <| "id"
-      <*> json <| "name"
-      <*> json <| "email"
+extension ErrorEnvelope.AltErrorMessage: Swift.Decodable {}
+
+extension ErrorEnvelope.AltErrorMessage.AltErrorDetails: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case amount
+    case backerReward = "backer_reward"
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    if let value = try values.decodeIfPresent([String].self, forKey: .amount) {
+      self.details = value
+    } else {
+      self.details = try values.decode([String].self, forKey: .backerReward)
+    }
   }
 }
 
-// Concats an array of decoded arrays into a decoded array. Ignores all failed decoded values, and so
-// always returns a successfully decoded value.
-private func concatSuccesses<A>(_ decodeds: [Decoded<[A]>]) -> Decoded<[A]> {
-  return decodeds.reduce(Decoded.success([])) { accum, decoded in
-    .success((accum.value ?? []) + (decoded.value ?? []))
+extension ErrorEnvelope.Exception: Swift.Decodable {}
+
+extension ErrorEnvelope.KsrCode: Swift.Decodable {
+  public init(from decoder: Decoder) throws {
+    self = try ErrorEnvelope
+      .KsrCode(rawValue: decoder.singleValueContainer().decode(String.self)) ?? ErrorEnvelope.KsrCode
+      .UnknownCode
   }
 }
+
+extension ErrorEnvelope.FacebookUser: Swift.Decodable {}
 
 // MARK: - GraphError
 

@@ -1,4 +1,3 @@
-import Argo
 import FBSDKCoreKit
 import Foundation
 import KsApi
@@ -264,7 +263,8 @@ public struct AppEnvironment: AppEnvironmentType {
 
     var service = self.current.apiService
     var currentUser: User?
-    let config: Config? = data["config"].flatMap(decode)
+    let configDict: [String: Any]? = data["config"] as? [String: Any]
+    let config: Config? = configDict.flatMap(Config.decodeJSONDictionary)
 
     if let oauthToken = data["apiService.oauthToken.token"] as? String {
       // If there is an oauth token stored in the defaults, then we can authenticate our api service
@@ -343,7 +343,7 @@ public struct AppEnvironment: AppEnvironmentType {
 
     // Try restore the current user
     if service.oauthToken != nil {
-      currentUser = data["currentUser"].flatMap(decode)
+      currentUser = data["currentUser"].flatMap(tryDecode)
     }
 
     return Environment(

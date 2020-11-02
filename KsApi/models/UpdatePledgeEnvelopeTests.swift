@@ -3,25 +3,25 @@ import XCTest
 
 final class UpdatePledgeEnvelopeTests: XCTestCase {
   func testDecodingWithStringStatus() {
-    let decoded = UpdatePledgeEnvelope.decodeJSONDictionary(["status": "200"])
-    XCTAssertNil(decoded.error)
-    XCTAssertEqual(200, decoded.value?.status)
+    let decoded: UpdatePledgeEnvelope = try! UpdatePledgeEnvelope.decodeJSONDictionary(["status": "200"])
+    XCTAssertNotNil(decoded)
+    XCTAssertEqual(200, decoded.status)
   }
 
   func testDecodingWithIntStatus() {
-    let decoded = UpdatePledgeEnvelope.decodeJSONDictionary(["status": 200])
-    XCTAssertNil(decoded.error)
-    XCTAssertEqual(200, decoded.value?.status)
+    let decoded: UpdatePledgeEnvelope = try! UpdatePledgeEnvelope.decodeJSONDictionary(["status": 200])
+    XCTAssertNotNil(decoded)
+    XCTAssertEqual(200, decoded.status)
   }
 
   func testDecodingWithMissingStatus() {
-    let decoded = UpdatePledgeEnvelope.decodeJSONDictionary([:])
-    XCTAssertNotNil(decoded.error)
+    let decoded: UpdatePledgeEnvelope? = UpdatePledgeEnvelope.decodeJSONDictionary([:])
+    XCTAssertNil(decoded)
   }
 
   func testDecodingWithBadStatusData() {
-    let decoded = UpdatePledgeEnvelope.decodeJSONDictionary(["status": "bad data"])
-    XCTAssertNil(decoded.error)
-    XCTAssertEqual(0, decoded.value?.status)
+    let decoded: UpdatePledgeEnvelope = try! UpdatePledgeEnvelope.decodeJSONDictionary(["status": "bad data"])
+    XCTAssertNotNil(decoded)
+    XCTAssertEqual(0, decoded.status)
   }
 }

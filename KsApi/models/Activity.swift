@@ -49,18 +49,33 @@ public func == (lhs: Activity, rhs: Activity) -> Bool {
   return lhs.id == rhs.id
 }
 
-extension Activity: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Activity> {
-    let tmp = curry(Activity.init)
-      <^> json <| "category"
-      <*> json <|? "comment"
-      <*> json <| "created_at"
-      <*> json <| "id"
-    return tmp
-      <*> Activity.MemberData.decode(json)
-      <*> json <|? "project"
-      <*> json <|? "update"
-      <*> json <|? "user"
+extension Activity: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case category
+    case comment
+    case createdAt = "created_at"
+    case id
+    case project
+    case update
+    case user
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.category = try values.decode(Activity.Category.self, forKey: .category)
+    self.comment = try values.decodeIfPresent(Comment.self, forKey: .comment)
+    self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
+    self.id = try values.decode(Int.self, forKey: .id)
+    self.memberData = try Activity.MemberData(from: decoder)
+    self.project = try values.decodeIfPresent(Project.self, forKey: .project)
+    self.update = try values.decodeIfPresent(Update.self, forKey: .update)
+    self.user = try values.decodeIfPresent(User.self, forKey: .user)
+  }
+}
+
+extension Activity.Category: Swift.Decodable {
+  public init(from decoder: Decoder) throws {
+    self = try Activity.Category(rawValue: decoder.singleValueContainer().decode(String.self)) ?? .unknown
   }
 }
 
@@ -75,16 +90,14 @@ extension Activity.Category: Decodable {
   }
 }
 
-extension Activity.MemberData: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Activity.MemberData> {
-    let tmp = curry(Activity.MemberData.init)
-      <^> json <|? "amount"
-      <*> json <|? "backing"
-      <*> json <|? "old_amount"
-      <*> json <|? "old_reward_id"
-    return tmp
-      <*> json <|? "new_amount"
-      <*> json <|? "new_reward_id"
-      <*> json <|? "reward_id"
+extension Activity.MemberData: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case amount
+    case backing
+    case oldAmount = "old_amount"
+    case oldRewardId = "old_reward_id"
+    case newAmount = "new_amount"
+    case newRewardId = "new_reward_id"
+    case rewardId = "reward_id"
   }
 }

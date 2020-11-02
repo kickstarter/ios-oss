@@ -11,17 +11,15 @@ public struct MessageThread {
   public let unreadMessagesCount: Int
 }
 
-extension MessageThread: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<MessageThread> {
-    let tmp = curry(MessageThread.init)
-      <^> json <|? "backing"
-      <*> json <| "closed"
-      <*> json <| "id"
-      <*> json <| "last_message"
-    return tmp
-      <*> json <| "participant"
-      <*> json <| "project"
-      <*> json <| "unread_messages_count"
+extension MessageThread: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case backing
+    case closed
+    case id
+    case lastMessage = "last_message"
+    case participant
+    case project
+    case unreadMessagesCount = "unread_messages_count"
   }
 }
 

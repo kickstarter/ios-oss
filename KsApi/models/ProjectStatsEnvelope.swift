@@ -39,7 +39,7 @@ public struct ProjectStatsEnvelope {
     public let referrerName: String
     public let referrerType: ReferrerType
 
-    public enum ReferrerType {
+    public enum ReferrerType: String {
       case custom
       case external
       case `internal`
@@ -64,26 +64,47 @@ public struct ProjectStatsEnvelope {
   }
 }
 
-extension ProjectStatsEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope> {
-    return curry(ProjectStatsEnvelope.init)
-      <^> json <| "cumulative"
-      <*> decodedJSON(json, forKey: "funding_distribution").flatMap(decodeSuccessfulFundingStats)
-      <*> json <| "referral_aggregates"
-      <*> json <|| "referral_distribution"
-      <*> json <|| "reward_distribution"
-      <*> json <|? "video_stats"
+extension ProjectStatsEnvelope: Swift.Decodable {
+  private enum CodingKeys: String, CodingKey {
+    case cumulativeStats = "cumulative"
+    case fundingDistribution = "funding_distribution"
+    case referralAggregateStats = "referral_aggregates"
+    case referralDistribution = "referral_distribution"
+    case rewardDistribution = "reward_distribution"
+    case videoStats = "video_stats"
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.cumulativeStats = try values.decode(CumulativeStats.self, forKey: .cumulativeStats)
+    self.fundingDistribution = try values.decode(
+      [OptionalObject<FundingDateStats>].self,
+      forKey: .fundingDistribution
+    ).compactMap { $0.value }
+    self.referralAggregateStats = try values
+      .decode(ReferralAggregateStats.self, forKey: .referralAggregateStats)
+    self.referralDistribution = try values.decode([ReferrerStats].self, forKey: .referralDistribution)
+    self.rewardDistribution = try values.decode([RewardStats].self, forKey: .rewardDistribution)
+    self.videoStats = try values.decodeIfPresent(VideoStats.self, forKey: .videoStats)
   }
 }
 
-extension ProjectStatsEnvelope.CumulativeStats: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.CumulativeStats> {
-    return curry(ProjectStatsEnvelope.CumulativeStats.init)
-      <^> json <| "average_pledge"
-      <*> json <| "backers_count"
-      <*> (json <| "goal" >>- stringToIntOrZero)
-      <*> json <| "percent_raised"
-      <*> (json <| "pledged" >>- stringToIntOrZero)
+extension ProjectStatsEnvelope.CumulativeStats: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case averagePledge = "average_pledge"
+    case backersCount = "backers_count"
+    case goal
+    case percentRaised = "percent_raised"
+    case pledged
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.averagePledge = try Int(values.decode(Double.self, forKey: .averagePledge))
+    self.backersCount = try values.decode(Int.self, forKey: .backersCount)
+    self.goal = try stringToIntOrZero(values.decode(String.self, forKey: .goal))
+    self.percentRaised = try values.decode(Double.self, forKey: .percentRaised)
+    self.pledged = try stringToIntOrZero(values.decode(String.self, forKey: .pledged))
   }
 }
 
@@ -93,14 +114,30 @@ public func == (lhs: ProjectStatsEnvelope.CumulativeStats, rhs: ProjectStatsEnve
   return lhs.averagePledge == rhs.averagePledge
 }
 
-extension ProjectStatsEnvelope.FundingDateStats: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.FundingDateStats> {
-    return curry(ProjectStatsEnvelope.FundingDateStats.init)
-      <^> (json <| "backers_count" <|> .success(0))
-      <*> ((json <| "cumulative_pledged" >>- stringToIntOrZero) <|> (json <| "cumulative_pledged"))
-      <*> json <| "cumulative_backers_count"
-      <*> json <| "date"
-      <*> ((json <| "pledged" >>- stringToIntOrZero) <|> .success(0))
+extension ProjectStatsEnvelope.FundingDateStats: Swift.Decodable {
+  private enum CodingKeys: String, CodingKey {
+    case backersCount = "backers_count"
+    case cumulativePledged = "cumulative_pledged"
+    case cumulativeBackersCount = "cumulative_backers_count"
+    case date
+    case pledged
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.backersCount = try values.decodeIfPresent(Int.self, forKey: .backersCount) ?? 0
+    if let value = try? values.decode(String.self, forKey: .cumulativePledged) {
+      self.cumulativePledged = stringToIntOrZero(value)
+    } else {
+      self.cumulativePledged = try values.decode(Int.self, forKey: .cumulativePledged)
+    }
+    self.cumulativeBackersCount = try values.decode(Int.self, forKey: .cumulativeBackersCount)
+    self.date = try values.decode(TimeInterval.self, forKey: .date)
+    if let value = try? values.decode(String.self, forKey: .pledged) {
+      self.pledged = stringToIntOrZero(value)
+    } else {
+      self.pledged = 0
+    }
   }
 }
 
@@ -110,12 +147,18 @@ public func == (lhs: ProjectStatsEnvelope.FundingDateStats, rhs: ProjectStatsEnv
   return lhs.date == rhs.date
 }
 
-extension ProjectStatsEnvelope.ReferralAggregateStats: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.ReferralAggregateStats> {
-    return curry(ProjectStatsEnvelope.ReferralAggregateStats.init)
-      <^> json <| "custom"
-      <*> (json <| "external" >>- stringToDouble)
-      <*> json <| "internal"
+extension ProjectStatsEnvelope.ReferralAggregateStats: Swift.Decodable {
+  private enum CodingKeys: String, CodingKey {
+    case custom
+    case external
+    case kickstarter = "internal"
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.custom = try values.decode(Double.self, forKey: .custom)
+    self.external = try stringToDouble(values.decode(String.self, forKey: .external))
+    self.kickstarter = try values.decode(Double.self, forKey: .kickstarter)
   }
 }
 
@@ -129,16 +172,24 @@ public func == (
     lhs.kickstarter == rhs.kickstarter
 }
 
-extension ProjectStatsEnvelope.ReferrerStats: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.ReferrerStats> {
-    let tmp = curry(ProjectStatsEnvelope.ReferrerStats.init)
-      <^> json <| "backers_count"
-      <*> json <| "code"
-      <*> (json <| "percentage_of_dollars" >>- stringToDouble)
-    return tmp
-      <*> (json <| "pledged" >>- stringToDouble)
-      <*> json <| "referrer_name"
-      <*> json <| "referrer_type"
+extension ProjectStatsEnvelope.ReferrerStats: Swift.Decodable {
+  private enum CodingKeys: String, CodingKey {
+    case backersCount = "backers_count"
+    case code
+    case percentageOfDollars = "percentage_of_dollars"
+    case pledged
+    case referrerName = "referrer_name"
+    case referrerType = "referrer_type"
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.backersCount = try values.decode(Int.self, forKey: .backersCount)
+    self.code = try values.decode(String.self, forKey: .code)
+    self.percentageOfDollars = try stringToDouble(values.decode(String.self, forKey: .percentageOfDollars))
+    self.pledged = try stringToDouble(values.decode(String.self, forKey: .pledged))
+    self.referrerName = try values.decode(String.self, forKey: .referrerName)
+    self.referrerType = try values.decode(ReferrerType.self, forKey: .referrerType)
   }
 }
 
@@ -147,31 +198,45 @@ public func == (lhs: ProjectStatsEnvelope.ReferrerStats, rhs: ProjectStatsEnvelo
   return lhs.code == rhs.code
 }
 
-extension ProjectStatsEnvelope.ReferrerStats.ReferrerType: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.ReferrerStats.ReferrerType> {
-    if case let .string(referrerType) = json {
-      switch referrerType.lowercased() {
+extension ProjectStatsEnvelope.ReferrerStats.ReferrerType: Swift.Decodable {
+  public init(from decoder: Decoder) throws {
+    do {
+      let value = try decoder.singleValueContainer().decode(String.self).lowercased()
+      switch value {
       case "custom":
-        return .success(.custom)
+        self = .custom
       case "external":
-        return .success(.external)
+        self = .external
       case "kickstarter":
-        return .success(.internal)
+        self = .internal
       default:
-        return .success(.unknown)
+        self = .unknown
       }
+    } catch {
+      self = .unknown
     }
-    return .success(.unknown)
   }
 }
 
-extension ProjectStatsEnvelope.RewardStats: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.RewardStats> {
-    return curry(ProjectStatsEnvelope.RewardStats.init)
-      <^> json <| "backers_count"
-      <*> json <| "reward_id"
-      <*> ((json <|? "minimum" >>- stringToDouble) <|> (json <|? "minimum"))
-      <*> (json <| "pledged" >>- stringToIntOrZero)
+extension ProjectStatsEnvelope.RewardStats: Swift.Decodable {
+  private enum CodingKeys: String, CodingKey {
+    case backersCount = "backers_count"
+    case rewardId = "reward_id"
+    case minimum
+    case pledged
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.backersCount = try values.decode(Int.self, forKey: .backersCount)
+    self.rewardId = try values.decode(Int.self, forKey: .rewardId)
+
+    do {
+      self.minimum = try values.decodeIfPresent(String.self, forKey: .minimum).flatMap(stringToDouble)
+    } catch {
+      self.minimum = try values.decodeIfPresent(Double.self, forKey: .minimum)
+    }
+    self.pledged = try stringToIntOrZero(values.decode(String.self, forKey: .pledged))
   }
 }
 
@@ -181,13 +246,12 @@ public func == (lhs: ProjectStatsEnvelope.RewardStats, rhs: ProjectStatsEnvelope
   return lhs.rewardId == rhs.rewardId
 }
 
-extension ProjectStatsEnvelope.VideoStats: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<ProjectStatsEnvelope.VideoStats> {
-    return curry(ProjectStatsEnvelope.VideoStats.init)
-      <^> json <| "external_completions"
-      <*> json <| "external_starts"
-      <*> json <| "internal_completions"
-      <*> json <| "internal_starts"
+extension ProjectStatsEnvelope.VideoStats: Swift.Decodable {
+  private enum CodingKeys: String, CodingKey {
+    case externalCompletions = "external_completions"
+    case externalStarts = "external_starts"
+    case internalCompletions = "internal_completions"
+    case internalStarts = "internal_starts"
   }
 }
 
@@ -200,40 +264,26 @@ public func == (lhs: ProjectStatsEnvelope.VideoStats, rhs: ProjectStatsEnvelope.
     lhs.internalStarts == rhs.internalStarts
 }
 
-private func decodeSuccessfulFundingStats(_ json: JSON) -> Decoded<[ProjectStatsEnvelope.FundingDateStats]> {
-  switch json {
-  case let .array(arrayJSON):
-    let decodeds = arrayJSON
-      .map(ProjectStatsEnvelope.FundingDateStats.decode)
-    let successes = catDecoded(decodeds).map(Decoded.success)
-    return sequence(successes)
-  default:
-    return .failure(.custom("Failed decoded values emitted."))
+private func stringToIntOrZero(_ string: String) -> Int {
+  return
+    Double(string).flatMap(Int.init)
+      ?? Int(string)
+      ?? 0
+}
+
+private func stringToDouble(_ string: String) -> Double {
+  return Double(string) ?? 0
+}
+
+private struct OptionalObject<Base: Swift.Decodable>: Swift.Decodable {
+  public let value: Base?
+
+  public init(from decoder: Decoder) throws {
+    do {
+      let container = try decoder.singleValueContainer()
+      self.value = try container.decode(Base.self)
+    } catch {
+      self.value = nil
+    }
   }
-}
-
-private func stringToIntOrZero(_ string: String) -> Decoded<Int> {
-  return
-    Double(string).flatMap(Int.init).map(Decoded.success)
-      ?? Int(string).map(Decoded.success)
-      ?? .success(0)
-}
-
-private func stringToInt(_ string: String?) -> Decoded<Int?> {
-  guard let string = string else { return .success(nil) }
-
-  return
-    Double(string).flatMap(Int.init).map(Decoded.success)
-      ?? Int(string).map(Decoded<Int?>.success)
-      ?? .failure(.custom("Could not parse string into int."))
-}
-
-private func stringToDouble(_ string: String?) -> Decoded<Double?> {
-  guard let string = string else { return .success(nil) }
-
-  return Double(string).map(Decoded<Double?>.success) ?? .success(0)
-}
-
-private func stringToDouble(_ string: String) -> Decoded<Double> {
-  return Double(string).map(Decoded.success) ?? .success(0)
 }

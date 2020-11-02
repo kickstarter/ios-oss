@@ -1,6 +1,7 @@
 import Curry
 import Runes
 
+// TODO: do we need to move to Swift.Decodable?
 public struct PushEnvelope {
   public let activity: Activity?
   public let aps: ApsEnvelope
@@ -54,7 +55,6 @@ extension PushEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<PushEnvelope> {
     let update: Decoded<Update> = json <| "update" <|> json <| "post"
     let optionalUpdate: Decoded<Update?> = update.map(Optional.some) <|> .success(nil)
-
     let tmp = curry(PushEnvelope.init)
       <^> json <|? "activity"
       <*> json <| "aps"

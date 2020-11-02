@@ -101,6 +101,7 @@ extension DiscoveryParams: CustomStringConvertible, CustomDebugStringConvertible
 extension DiscoveryParams: Decodable {
   public static func decode(_ json: JSON) -> Decoded<DiscoveryParams> {
     let tmp1 = curry(DiscoveryParams.init)
+      // TODO: do we need to move to Swift.Decodable?
       <^> ((json <|? "backed" >>- stringIntToBool) as Decoded<Bool?>)
       <*> ((json <|? "category" >>- decodeToGraphCategory) as Decoded<Category>)
       <*> ((json <|? "collaborated" >>- stringToBool) as Decoded<Bool?>)
@@ -114,7 +115,7 @@ extension DiscoveryParams: Decodable {
       <*> json <|? "term"
       <*> ((json <|? "recommended" >>- stringToBool) as Decoded<Bool?>)
       <*> ((json <|? "seed" >>- stringToInt) as Decoded<Int?>)
-      <*> json <|? "similar_to"
+      <*> ((json <|? "similar_to" >>- tryDecodable) as Decoded<Project?>)
     return tmp3
       <*> ((json <|? "social" >>- stringIntToBool) as Decoded<Bool?>)
       <*> json <|? "sort"
@@ -122,6 +123,19 @@ extension DiscoveryParams: Decodable {
       <*> ((json <|? "starred" >>- stringIntToBool) as Decoded<Bool?>)
       <*> json <|? "state"
       <*> json <|? "tag_id"
+  }
+}
+
+private func stringToBool(_ string: String?) -> Bool? {
+  guard let string = string else { return nil }
+  switch string {
+  // taken from server's `value_to_boolean` function
+  case "true", "1", "t", "T", "TRUE", "on", "ON":
+    return true
+  case "false", "0", "f", "F", "FALSE", "off", "OFF":
+    return false
+  default:
+    return nil
   }
 }
 
@@ -141,6 +155,13 @@ private func stringToBool(_ string: String?) -> Decoded<Bool?> {
 private func stringToInt(_ string: String?) -> Decoded<Int?> {
   guard let string = string else { return .success(nil) }
   return Int(string).map(Decoded<Int?>.success) ?? .failure(.custom("Could not parse string into int."))
+}
+
+private func stringIntToBool(_ string: String?) -> Bool? {
+  guard let string = string else { return nil }
+  return Int(string)
+    .filter { $0 <= 1 && $0 >= -1 }
+    .flatMap { ($0 == 0) ? nil : ($0 == 1) }
 }
 
 private func stringIntToBool(_ string: String?) -> Decoded<Bool?> {

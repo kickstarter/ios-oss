@@ -1,4 +1,3 @@
-import Argo
 @testable import KsApi
 import XCTest
 
@@ -81,23 +80,23 @@ final class ProjectStatsEnvelopeTests: XCTestCase {
       ]
     ]
 
-    let stats = ProjectStatsEnvelope.decodeJSONDictionary(json)
+    let stats: ProjectStatsEnvelope = try! ProjectStatsEnvelope.decodeJSONDictionary(json)
     XCTAssertNotNil(stats)
 
-    XCTAssertEqual(40, stats.value?.cumulativeStats.pledged)
-    XCTAssertEqual(17, stats.value?.cumulativeStats.averagePledge)
-    XCTAssertEqual(20, stats.value?.cumulativeStats.backersCount)
+    XCTAssertEqual(40, stats.cumulativeStats.pledged)
+    XCTAssertEqual(17, stats.cumulativeStats.averagePledge)
+    XCTAssertEqual(20, stats.cumulativeStats.backersCount)
 
-    XCTAssertEqual(5, stats.value?.videoStats?.externalCompletions)
-    XCTAssertEqual(14, stats.value?.videoStats?.internalStarts)
+    XCTAssertEqual(5, stats.videoStats?.externalCompletions)
+    XCTAssertEqual(14, stats.videoStats?.internalStarts)
 
-    XCTAssertEqual(1.0, stats.value?.referralAggregateStats.custom)
-    XCTAssertEqual(15.0, stats.value?.referralAggregateStats.external)
-    XCTAssertEqual(14.0, stats.value?.referralAggregateStats.kickstarter)
+    XCTAssertEqual(1.0, stats.referralAggregateStats.custom)
+    XCTAssertEqual(15.0, stats.referralAggregateStats.external)
+    XCTAssertEqual(14.0, stats.referralAggregateStats.kickstarter)
 
-    let fundingDistribution = stats.value?.fundingDistribution ?? []
-    let rewardDistribution = stats.value?.rewardDistribution ?? []
-    let referralDistribution = stats.value?.referralDistribution ?? []
+    let fundingDistribution = stats.fundingDistribution
+    let rewardDistribution = stats.rewardDistribution
+    let referralDistribution = stats.referralDistribution
 
     XCTAssertEqual(7, fundingDistribution[0].cumulativeBackersCount)
     XCTAssertEqual(14, fundingDistribution[1].cumulativeBackersCount)
@@ -137,12 +136,12 @@ final class ProjectStatsEnvelopeTests: XCTestCase {
       "video_stats": []
     ]
 
-    let stats = ProjectStatsEnvelope.decodeJSONDictionary(json)
+    let stats: ProjectStatsEnvelope? = ProjectStatsEnvelope.decodeJSONDictionary(json)
 
-    XCTAssertNil(stats.value?.cumulativeStats)
-    XCTAssertNil(stats.value?.fundingDistribution)
-    XCTAssertNil(stats.value?.referralDistribution)
-    XCTAssertNil(stats.value?.rewardDistribution)
-    XCTAssertNil(stats.value?.videoStats)
+    XCTAssertNil(stats?.cumulativeStats)
+    XCTAssertNil(stats?.fundingDistribution)
+    XCTAssertNil(stats?.referralDistribution)
+    XCTAssertNil(stats?.rewardDistribution)
+    XCTAssertNil(stats?.videoStats)
   }
 }

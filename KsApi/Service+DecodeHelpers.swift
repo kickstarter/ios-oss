@@ -71,7 +71,7 @@ extension Service {
 
           return .init(value: decodedObject)
         } catch {
-          print("🔴 [KsApi] Failure - Decoding error: \(error)")
+          print("🔴 [KsApi] Failure - Decoding error: \(error), \(T.self)")
           return .init(error: .couldNotDecodeJSON(error))
         }
       }

@@ -15,12 +15,11 @@ public struct FindFriendsEnvelope {
   }
 }
 
-extension FindFriendsEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<FindFriendsEnvelope> {
-    return curry(FindFriendsEnvelope.init)
-      <^> json <| "contacts_imported"
-      <*> json <| "urls"
-      <*> (json <|| "users" <|> .success([]))
+extension FindFriendsEnvelope: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case contactsImported = "contacts_imported"
+    case urls
+    case users
   }
 }
 
@@ -31,9 +30,17 @@ extension FindFriendsEnvelope.UrlsEnvelope: Decodable {
   }
 }
 
+extension FindFriendsEnvelope.UrlsEnvelope: Swift.Decodable {}
+
 extension FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope: Decodable {
   public static func decode(_ json: JSON) -> Decoded<FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope> {
     return curry(FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope.init)
       <^> json <|? "more_users"
+  }
+}
+
+extension FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case moreUsers = "more_users"
   }
 }
