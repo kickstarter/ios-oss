@@ -212,7 +212,6 @@ public func == (lhs: Navigation.User, rhs: Navigation.User) -> Bool {
 }
 
 extension Navigation {
-  
   public static func match(_ url: URL) -> Navigation? {
     return allRoutes.reduce(nil) { accum, templateAndRoute in
       let (template, route) = templateAndRoute
@@ -230,7 +229,6 @@ extension Navigation {
   public static func match(_ request: URLRequest) -> Navigation? {
     return request.url.flatMap(self.match)
   }
-  
 }
 
 private let allRoutes: [String: (RouteParamsDecoded) -> Navigation?] = [
@@ -316,25 +314,21 @@ extension Navigation.Project {
 // MARK: - Router
 
 // Argo calls their nebulous data blob `JSON`, but we will interpret it as route params.
-//public typealias RouteParams = JSON
+// public typealias RouteParams = JSON
 
 public typealias RouteParamsDecoded = [String: String]
-
 
 private func emailClick(_: RouteParamsDecoded) -> Navigation {
   return Navigation.emailClick
 }
 
-
 private func activity(_: RouteParamsDecoded) -> Navigation {
   return .tab(.activity)
 }
 
-
 private func authorize(_: RouteParamsDecoded) -> Navigation {
   return .tab(.login)
 }
-
 
 private func messages(_ params: RouteParamsDecoded) -> Navigation? {
   guard let messageId = params.messageThreadId() else {
@@ -350,15 +344,12 @@ private func messagesDecoded(_ params: RouteParamsDecoded) -> Navigation? {
   return Navigation.messages(messageThreadId: messageId)
 }
 
-
 private func paymentsNew(_ params: RouteParamsDecoded) -> Navigation? {
   if let checkoutParam = params.checkoutParam() {
     return Navigation.checkout(checkoutParam, .payments(.new))
   }
   return nil
 }
-
-
 
 private func paymentsApplePay(_ params: RouteParamsDecoded) -> Navigation? {
   if let checkoutParam = params.checkoutParam(),
@@ -368,16 +359,12 @@ private func paymentsApplePay(_ params: RouteParamsDecoded) -> Navigation? {
   return nil
 }
 
-
-
 private func paymentsRoot(_ params: RouteParamsDecoded) -> Navigation? {
   if let checkoutParam = params.checkoutParam() {
     return Navigation.checkout(checkoutParam, .payments(.root))
   }
   return nil
 }
-
-
 
 private func paymentsUseStoredCard(_ params: RouteParamsDecoded) -> Navigation? {
   if let checkoutParam = params.checkoutParam() {
@@ -394,11 +381,9 @@ private func discovery(_ params: RouteParamsDecoded) -> Navigation {
   return .tab(.discovery(params))
 }
 
-
 private func me(_: RouteParamsDecoded) -> Navigation {
   return .tab(.me)
 }
-
 
 private func search(_: RouteParamsDecoded) -> Navigation {
   return .tab(.search)
@@ -409,7 +394,7 @@ private func signup(_: RouteParamsDecoded) -> Navigation {
 }
 
 private func project(_ params: RouteParamsDecoded) -> Navigation? {
-  if (params.token() != nil) {
+  if params.token() != nil {
     return nil
   } else if let projectParam = params.projectParam() {
     let refTag = params.refTag()
@@ -436,7 +421,7 @@ private func projectComments(_ params: RouteParamsDecoded) -> Navigation? {
     let refTag = params.refTag()
     return Navigation.project(projectParam, .comments, refTag: refTag)
   }
-  
+
   return nil
 }
 
@@ -445,16 +430,16 @@ private func creatorBio(_ params: RouteParamsDecoded) -> Navigation? {
     let refTag = params.refTag()
     return Navigation.project(projectParam, .creatorBio, refTag: refTag)
   }
-  
+
   return nil
 }
 
 private func dashboard(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam() {
-    let  dashboard = Navigation.Tab.dashboard(project: projectParam)
+    let dashboard = Navigation.Tab.dashboard(project: projectParam)
     return .tab(dashboard)
   }
-  
+
   return nil
 }
 
@@ -463,7 +448,7 @@ private func faqs(_ params: RouteParamsDecoded) -> Navigation? {
     let refTag = params.refTag()
     return Navigation.project(projectParam, .faqs, refTag: refTag)
   }
-  
+
   return nil
 }
 
@@ -472,7 +457,7 @@ private func friends(_ params: RouteParamsDecoded) -> Navigation? {
     let refTag = params.refTag()
     return Navigation.project(projectParam, .friends, refTag: refTag)
   }
-  
+
   return nil
 }
 
@@ -481,7 +466,7 @@ private func messageCreator(_ params: RouteParamsDecoded) -> Navigation? {
     let refTag = params.refTag()
     return Navigation.project(projectParam, .messageCreator, refTag: refTag)
   }
-  
+
   return nil
 }
 
@@ -490,7 +475,7 @@ private func pledgeBigPrint(_ params: RouteParamsDecoded) -> Navigation? {
     let refTag = params.refTag()
     return Navigation.project(projectParam, .pledge(.bigPrint), refTag: refTag)
   }
-  
+
   return nil
 }
 
@@ -499,7 +484,7 @@ private func pledgeChangeMethod(_ params: RouteParamsDecoded) -> Navigation? {
     let refTag = params.refTag()
     return Navigation.project(projectParam, .pledge(.changeMethod), refTag: refTag)
   }
-  
+
   return nil
 }
 
@@ -508,7 +493,7 @@ private func pledgeDestroy(_ params: RouteParamsDecoded) -> Navigation? {
     let refTag = params.refTag()
     return Navigation.project(projectParam, .pledge(.destroy), refTag: refTag)
   }
-  
+
   return nil
 }
 
@@ -517,7 +502,7 @@ private func pledgeEdit(_ params: RouteParamsDecoded) -> Navigation? {
     let refTag = params.refTag()
     return Navigation.project(projectParam, .pledge(.edit), refTag: refTag)
   }
-  
+
   return nil
 }
 
@@ -526,12 +511,12 @@ private func pledgeNew(_ params: RouteParamsDecoded) -> Navigation? {
     let refTag = params.refTag()
     return Navigation.project(projectParam, .pledge(.new), refTag: refTag)
   }
-  
+
   return nil
 }
 
 private func pledgeRoot(_ params: RouteParamsDecoded) -> Navigation? {
-  if let projectParam = params.projectParam(){
+  if let projectParam = params.projectParam() {
     let refTag = params.refTag()
     let parseRoot = Navigation.project(projectParam, .pledge(.root), refTag: refTag)
     guard refTag == .emailBackerFailedTransaction else {
@@ -539,7 +524,7 @@ private func pledgeRoot(_ params: RouteParamsDecoded) -> Navigation? {
     }
     return Navigation.project(projectParam, .pledge(.manage), refTag: refTag)
   }
-  
+
   return nil
 }
 
@@ -548,40 +533,40 @@ private func posts(_ params: RouteParamsDecoded) -> Navigation? {
     let refTag = params.refTag()
     return Navigation.project(projectParam, Navigation.Project.updates, refTag: refTag)
   }
-  
+
   return nil
 }
 
 private func projectSurvey(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
-     let surveyParam = params.surveyParam(){
+    let surveyParam = params.surveyParam() {
     let refTag = params.refTag()
     let survey = Navigation.Project.survey(surveyParam)
     return Navigation.project(projectParam, survey, refTag: refTag)
   }
-  
+
   return nil
 }
 
 private func update(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
-     let updateParam = params.updateParam(){
+    let updateParam = params.updateParam() {
     let refTag = params.refTag()
     let update = Navigation.Project.update(updateParam, .root)
     return Navigation.project(projectParam, update, refTag: refTag)
   }
-  
+
   return nil
 }
 
 private func updateComments(_ params: RouteParamsDecoded) -> Navigation? {
   if let projectParam = params.projectParam(),
-     let updateParam = params.updateParam(){
+    let updateParam = params.updateParam() {
     let refTag = params.refTag()
     let update = Navigation.Project.update(updateParam, .comments)
     return Navigation.project(projectParam, update, refTag: refTag)
   }
-  
+
   return nil
 }
 
@@ -590,7 +575,7 @@ private func updates(_ params: RouteParamsDecoded) -> Navigation? {
     let refTag = params.refTag()
     return Navigation.project(projectParam, Navigation.Project.updates, refTag: refTag)
   }
-  
+
   return nil
 }
 
@@ -599,7 +584,7 @@ private func userSurvey(_ params: RouteParamsDecoded) -> Navigation? {
     let surveyResponseId = params.surveyResponseId() {
     return Navigation.user(userParam, Navigation.User.survey(surveyResponseId))
   }
-  
+
   return nil
 }
 
@@ -717,17 +702,17 @@ extension RouteParamsDecoded {
     let key = CodingKeys.projectParam.rawValue
     return self[key].flatMap { .slug($0) }
   }
-  
+
   public func userParam() -> Param? {
     let key = CodingKeys.userParam.rawValue
     return self[key].flatMap { .slug($0) }
   }
-  
+
   public func surveyParam() -> Int? {
     let key = CodingKeys.surveyParam.rawValue
     return self[key].flatMap { Int($0) }
   }
-  
+
   public func updateParam() -> Int? {
     let key = CodingKeys.updateParam.rawValue
     return self[key].flatMap { Int($0) }
@@ -752,7 +737,7 @@ extension RouteParamsDecoded {
     let key = CodingKeys.racing.rawValue
     return self[key].flatMap { Int($0) }.map { $0 == 1 }
   }
-  
+
   public func surveyResponseId() -> Int? {
     let key = CodingKeys.surveyResponseId.rawValue
     return self[key].flatMap { Int($0) }
