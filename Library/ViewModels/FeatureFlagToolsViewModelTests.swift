@@ -93,14 +93,18 @@ final class FeatureFlagToolsViewModelTests: TestCase {
     }
   }
 
-  func testFeatureEnabledFromDictionaries_UnkownFeatures() {
+  func testFeatureEnabledFromDictionaries_UnknownFeatures() {
     let featureEnabled = featureEnabledFromDictionaries([["some_unknown_feature": false]])
 
     XCTAssertTrue(featureEnabled.isEmpty, "Unknown features do not produce Feature enums")
   }
 
   func testFeatureEnabledFromDictionaries_KnownFeatures() {
-    let featureEnabled = featureEnabledFromDictionaries([["ios_qualtrics": false]])
+    let featureEnabled = featureEnabledFromDictionaries([[
+      "ios_qualtrics": false,
+      "ios_email_verification_flow": false,
+      "ios_email_verification_skip": false
+    ]])
 
     XCTAssertFalse(featureEnabled.isEmpty, "Known features produce Feature enums")
   }
