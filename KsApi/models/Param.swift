@@ -55,20 +55,6 @@ public func == (lhs: Param, rhs: Param) -> Bool {
   }
 }
 
-extension Param: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Param> {
-    switch json {
-    // TODO: - TODO: do we need to move to Swift.Decodable?
-    case let .string(slug):
-      return .success(.slug(slug))
-    case let .number(number):
-      return .success(.id(number.intValue))
-    default:
-      return .failure(.custom("Param must be a number or string."))
-    }
-  }
-}
-
 private let allowableRFC3986: CharacterSet = {
   var set = CharacterSet.alphanumerics
   set.insert(charactersIn: "-._~/?")

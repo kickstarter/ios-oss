@@ -368,7 +368,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
         guard
           let rawCategoryParam = rawParams["category_id"],
-          let categoryParam = Param.decode(.string(rawCategoryParam)).value
+          let categoryParam = .some(Param.slug(rawCategoryParam))
         else { return .init(value: params) }
         // We will replace `fetchGraph(query: rootCategoriesQuery)` by a call to get a category by ID
         return AppEnvironment.current.apiService.fetchGraphCategories(query: rootCategoriesQuery)

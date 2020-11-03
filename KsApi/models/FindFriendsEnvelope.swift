@@ -23,21 +23,7 @@ extension FindFriendsEnvelope: Swift.Decodable {
   }
 }
 
-extension FindFriendsEnvelope.UrlsEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<FindFriendsEnvelope.UrlsEnvelope> {
-    return curry(FindFriendsEnvelope.UrlsEnvelope.init)
-      <^> json <| "api"
-  }
-}
-
 extension FindFriendsEnvelope.UrlsEnvelope: Swift.Decodable {}
-
-extension FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope> {
-    return curry(FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope.init)
-      <^> json <|? "more_users"
-  }
-}
 
 extension FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
