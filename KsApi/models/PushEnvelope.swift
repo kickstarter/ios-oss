@@ -53,7 +53,7 @@ extension PushEnvelope: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
     case activity
     case aps
-    case erroredPledge
+    case erroredPledge = "errored_pledge"
     case forCreator = "for_creator"
     case message
     case project
