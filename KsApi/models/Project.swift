@@ -51,7 +51,7 @@ public struct Project {
     public var hls: String?
   }
 
-  public enum State: String, Decodable, CaseIterable, Swift.Decodable {
+  public enum State: String, CaseIterable, Swift.Decodable {
     case canceled
     case failed
     case live

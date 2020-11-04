@@ -16,14 +16,3 @@ extension Config: EncodableType {
     return result
   }
 }
-
-// Useful for getting around swift optimization bug: https://github.com/thoughtbot/Argo/issues/363
-// Turns out using `>>-` or `flatMap` on a `Decoded` fails to compile with optimizations on, so this
-// function does it manually.
-private func decodeDictionary<T: Decodable>(_ j: Decoded<JSON>)
-  -> Decoded<[String: T]> where T.DecodedType == T {
-  switch j {
-  case let .success(json): return [String: T].decode(json)
-  case let .failure(e): return .failure(e)
-  }
-}
