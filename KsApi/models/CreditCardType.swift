@@ -29,5 +29,3 @@ public enum CreditCardType: String, Swift.Decodable, CaseIterable {
     self = CreditCardType(rawValue: decodedValue) ?? .generic
   }
 }
-
-extension CreditCardType: Decodable {}

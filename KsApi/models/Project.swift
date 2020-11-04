@@ -411,11 +411,6 @@ private func removeUnknowns(_ xs: [Project.MemberData.Permission]) -> [Project.M
   return xs.filter { $0 != .unknown }
 }
 
-private func toInt(string: String) -> Decoded<Int> {
-  return Int(string).map(Decoded.success)
-    ?? Decoded.failure(DecodeError.custom("Couldn't decoded \"\(string)\" into Int."))
-}
-
 extension Project: GraphIDBridging {
   public static var modelName: String {
     return "Project"

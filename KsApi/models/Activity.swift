@@ -79,17 +79,6 @@ extension Activity.Category: Swift.Decodable {
   }
 }
 
-extension Activity.Category: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Activity.Category> {
-    switch json {
-    case let .string(category):
-      return .success(Activity.Category(rawValue: category) ?? .unknown)
-    default:
-      return .failure(.typeMismatch(expected: "String", actual: json.description))
-    }
-  }
-}
-
 extension Activity.MemberData: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
     case amount

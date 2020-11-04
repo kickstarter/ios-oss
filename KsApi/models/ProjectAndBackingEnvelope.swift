@@ -6,12 +6,6 @@ public struct ProjectAndBackingEnvelope: Equatable {
   public var backing: Backing
 }
 
-extension ProjectAndBackingEnvelope: Decodable {
-  public static func decode(_: JSON) -> Decoded<ProjectAndBackingEnvelope> {
-    fatalError("Conformance is to satisfy the compiler, do not create this model using Argo")
-  }
-}
-
 // MARK: - GraphQL Adapters
 
 extension ProjectAndBackingEnvelope {

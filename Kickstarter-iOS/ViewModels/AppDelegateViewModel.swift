@@ -299,8 +299,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     // Deep links
 
     let deepLinkFromNotification = self.remoteNotificationProperty.signal.skipNil()
-      .map(decode)
-      .map { $0.value }
+      .map(PushEnvelope.decodeJSONDictionary)
       .skipNil()
       .map(navigation(fromPushEnvelope:))
 
@@ -364,12 +363,12 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .switchMap { rawParams -> SignalProducer<DiscoveryParams?, Never> in
         guard
           let rawParams = rawParams,
-          let params = DiscoveryParams.decode(.init(rawParams)).value
+          let params = DiscoveryParams.decodeJSONDictionary(rawParams)
         else { return .init(value: nil) }
 
         guard
           let rawCategoryParam = rawParams["category_id"],
-          let categoryParam = Param.decode(.string(rawCategoryParam)).value
+          let categoryParam = .some(Param.slug(rawCategoryParam))
         else { return .init(value: params) }
         // We will replace `fetchGraph(query: rootCategoriesQuery)` by a call to get a category by ID
         return AppEnvironment.current.apiService.fetchGraphCategories(query: rootCategoriesQuery)

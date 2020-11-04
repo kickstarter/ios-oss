@@ -22,13 +22,13 @@ public struct DiscoveryParams {
   public var state: State?
   public var tagId: TagID?
 
-  public enum State: String, Decodable {
+  public enum State: String, Swift.Decodable {
     case all
     case live
     case successful
   }
 
-  public enum Sort: String, Decodable {
+  public enum Sort: String, Swift.Decodable {
     case endingSoon = "end_date"
     case magic
     case newest
@@ -36,7 +36,7 @@ public struct DiscoveryParams {
     case distance
   }
 
-  public enum TagID: String, Decodable {
+  public enum TagID: String, Swift.Decodable {
     case lightsOn = "557"
   }
 
@@ -98,31 +98,48 @@ extension DiscoveryParams: CustomStringConvertible, CustomDebugStringConvertible
   }
 }
 
-extension DiscoveryParams: Decodable {
-  public static func decode(_ json: JSON) -> Decoded<DiscoveryParams> {
-    let tmp1 = curry(DiscoveryParams.init)
-      // TODO: do we need to move to Swift.Decodable?
-      <^> ((json <|? "backed" >>- stringIntToBool) as Decoded<Bool?>)
-      <*> ((json <|? "category" >>- decodeToGraphCategory) as Decoded<Category>)
-      <*> ((json <|? "collaborated" >>- stringToBool) as Decoded<Bool?>)
-      <*> ((json <|? "created" >>- stringToBool) as Decoded<Bool?>)
-    let tmp2 = tmp1
-      <*> ((json <|? "has_video" >>- stringToBool) as Decoded<Bool?>)
-      <*> ((json <|? "include_potd" >>- stringToBool) as Decoded<Bool?>)
-      <*> ((json <|? "page" >>- stringToInt) as Decoded<Int?>)
-      <*> ((json <|? "per_page" >>- stringToInt) as Decoded<Int?>)
-    let tmp3 = tmp2
-      <*> json <|? "term"
-      <*> ((json <|? "recommended" >>- stringToBool) as Decoded<Bool?>)
-      <*> ((json <|? "seed" >>- stringToInt) as Decoded<Int?>)
-      <*> ((json <|? "similar_to" >>- tryDecodable) as Decoded<Project?>)
-    return tmp3
-      <*> ((json <|? "social" >>- stringIntToBool) as Decoded<Bool?>)
-      <*> json <|? "sort"
-      <*> ((json <|? "staff_picks" >>- stringToBool) as Decoded<Bool?>)
-      <*> ((json <|? "starred" >>- stringIntToBool) as Decoded<Bool?>)
-      <*> json <|? "state"
-      <*> json <|? "tag_id"
+extension DiscoveryParams: Swift.Decodable {
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.backed = try stringIntToBool(values.decodeIfPresent(String.self, forKey: .backed))
+    self.category = try values.decodeIfPresent(Category.self, forKey: .category)
+    self.collaborated = try stringToBool(values.decodeIfPresent(String.self, forKey: .collaborated))
+    self.created = try stringToBool(values.decodeIfPresent(String.self, forKey: .created))
+    self.hasVideo = try stringToBool(values.decodeIfPresent(String.self, forKey: .hasVideo))
+    self.includePOTD = try stringToBool(values.decodeIfPresent(String.self, forKey: .includePOTD))
+    self.page = try values.decodeIfPresent(String.self, forKey: .page).flatMap { Int($0) }
+    self.perPage = try values.decodeIfPresent(String.self, forKey: .perPage).flatMap { Int($0) }
+    self.query = try values.decodeIfPresent(String.self, forKey: .query)
+    self.recommended = try stringToBool(values.decodeIfPresent(String.self, forKey: .recommended))
+    self.seed = try values.decodeIfPresent(String.self, forKey: .seed).flatMap { Int($0) }
+    self.similarTo = try values.decodeIfPresent(Project.self, forKey: .similarTo)
+    self.social = try stringIntToBool(values.decodeIfPresent(String.self, forKey: .social))
+    self.sort = try values.decodeIfPresent(Sort.self, forKey: .sort)
+    self.staffPicks = try stringToBool(values.decodeIfPresent(String.self, forKey: .staffPicks))
+    self.starred = try stringIntToBool(values.decodeIfPresent(String.self, forKey: .starred))
+    self.state = try values.decodeIfPresent(State.self, forKey: .state)
+    self.tagId = try values.decodeIfPresent(TagID.self, forKey: .tagId)
+  }
+
+  enum CodingKeys: String, CodingKey {
+    case backed
+    case category
+    case collaborated
+    case created
+    case hasVideo = "has_video"
+    case includePOTD = "include_potd"
+    case page
+    case perPage = "per_page"
+    case query = "term"
+    case recommended
+    case seed
+    case similarTo = "similar_to"
+    case social
+    case sort
+    case staffPicks = "staff_picks"
+    case starred
+    case state
+    case tagId = "tag_id"
   }
 }
 
@@ -139,63 +156,9 @@ private func stringToBool(_ string: String?) -> Bool? {
   }
 }
 
-private func stringToBool(_ string: String?) -> Decoded<Bool?> {
-  guard let string = string else { return .success(nil) }
-  switch string {
-  // taken from server's `value_to_boolean` function
-  case "true", "1", "t", "T", "TRUE", "on", "ON":
-    return .success(true)
-  case "false", "0", "f", "F", "FALSE", "off", "OFF":
-    return .success(false)
-  default:
-    return .failure(.custom("Could not parse string into bool."))
-  }
-}
-
-private func stringToInt(_ string: String?) -> Decoded<Int?> {
-  guard let string = string else { return .success(nil) }
-  return Int(string).map(Decoded<Int?>.success) ?? .failure(.custom("Could not parse string into int."))
-}
-
 private func stringIntToBool(_ string: String?) -> Bool? {
   guard let string = string else { return nil }
   return Int(string)
     .filter { $0 <= 1 && $0 >= -1 }
     .flatMap { ($0 == 0) ? nil : ($0 == 1) }
-}
-
-private func stringIntToBool(_ string: String?) -> Decoded<Bool?> {
-  guard let string = string else { return .success(nil) }
-  return Int(string)
-    .filter { $0 <= 1 && $0 >= -1 }
-    .map { .success($0 == 0 ? nil : $0 == 1) }
-    .coalesceWith(.failure(.custom("Could not parse string into bool.")))
-}
-
-private func decodeToGraphCategory(_ json: JSON?) -> Decoded<Category> {
-  guard let jsonObj = json else {
-    return .success(Category(id: "-1", name: "Unknown Category"))
-  }
-  switch jsonObj {
-  case let .object(dic):
-    let category = Category(
-      id: categoryInfo(dic)?.0 ?? "",
-      name: categoryInfo(dic)?.1 ?? ""
-    )
-    return .success(category)
-  default:
-    return .failure(DecodeError.custom("JSON should be object type"))
-  }
-}
-
-private func categoryInfo(_ json: [String: JSON]) -> (String, String)? {
-  guard let name = json["name"], let id = json["id"] else {
-    return nil
-  }
-  switch (id, name) {
-  case let (.number(id), .string(name)):
-    return ("\(id)", name)
-  default:
-    return nil
-  }
 }
