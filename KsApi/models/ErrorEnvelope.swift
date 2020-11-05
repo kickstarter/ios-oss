@@ -147,7 +147,7 @@ extension ErrorEnvelope: Swift.Decodable {
       self.errorMessages = try values.decode([String].self, forKey: .errorMessages)
       self.ksrCode = try values.decodeIfPresent(KsrCode.self, forKey: .ksrCode)
       self.httpCode = try values.decode(Int.self, forKey: .httpCode)
-      self.exception = try values.decode(Exception.self, forKey: .exception)
+      self.exception = try values.decodeIfPresent(Exception.self, forKey: .exception)
       self.facebookUser = try values.decodeIfPresent(FacebookUser.self, forKey: .facebookUser)
       self.graphError = nil
       self.data = nil
