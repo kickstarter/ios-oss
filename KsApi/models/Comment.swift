@@ -25,6 +25,7 @@ extension Comment: Swift.Decodable {
     self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
     // Decode a time interval so that non-positive values are coalesced to `nil`. We do this because the API
     // sends back `0` when the comment hasn't been deleted, and we'd rather handle that value as `nil`.
+
     if let value = try values.decodeIfPresent(TimeInterval.self, forKey: .deletedAt), value > 0 {
       self.deletedAt = value
     } else {

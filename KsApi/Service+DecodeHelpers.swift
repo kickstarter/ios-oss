@@ -4,44 +4,6 @@ import ReactiveExtensions
 import ReactiveSwift
 
 extension Service {
-  /*
-   func decodeModel<M: Decodable>(_ json: Any) ->
-     SignalProducer<M, ErrorEnvelope> where M == M.DecodedType {
-     return SignalProducer(value: json)
-       .map { json in decode(json) as Decoded<M> }
-       .flatMap(.concat) { (decoded: Decoded<M>) -> SignalProducer<M, ErrorEnvelope> in
-         switch decoded {
-         case let .success(value):
-           return .init(value: value)
-         case let .failure(error):
-           print("🔴 [KsApi] Failure - Argo decoding model \(M.self) error: \(error)")
-           return .init(error: .couldNotDecodeJSON(error))
-         }
-       }
-   }
-
-   func decodeModels<M: Decodable>(_ json: Any)
-     -> SignalProducer<[M], ErrorEnvelope> where M == M.DecodedType {
-     return SignalProducer(value: json)
-       .map { json in decode(json) as Decoded<[M]> }
-       .flatMap(.concat) { (decoded: Decoded<[M]>) -> SignalProducer<[M], ErrorEnvelope> in
-         switch decoded {
-         case let .success(value):
-           return .init(value: value)
-         case let .failure(error):
-           print("🔴 [KsApi] Failure - Argo decoding model error: \(error)")
-           return .init(error: .couldNotDecodeJSON(error))
-         }
-       }
-   }
-
-   func decodeModel<M: Decodable>(_ json: Any) ->
-     SignalProducer<M?, ErrorEnvelope> where M == M.DecodedType {
-     return SignalProducer(value: json)
-       .map { json in decode(json) as M? }
-   }
-   */
-
   // MARK: - Swift.Codable
 
   func decodeGraphModel<T: Swift.Decodable>(_ jsonData: Data) -> SignalProducer<T, GraphError> {

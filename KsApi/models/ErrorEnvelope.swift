@@ -173,11 +173,8 @@ extension ErrorEnvelope.AltErrorMessage.AltErrorDetails: Swift.Decodable {
 
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
-    if let value = try values.decodeIfPresent([String].self, forKey: .amount) {
-      self.details = value
-    } else {
-      self.details = try values.decode([String].self, forKey: .backerReward)
-    }
+    self.details = try values.decodeIfPresent([String].self, forKey: .amount) ?? values
+      .decode([String].self, forKey: .backerReward)
   }
 }
 
