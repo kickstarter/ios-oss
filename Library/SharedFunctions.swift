@@ -364,3 +364,27 @@ public func rewardsCarouselCanNavigateToReward(_ reward: Reward, in project: Pro
   ]
   .allSatisfy(isTrue)
 }
+
+/**
+ Determines if a start date from a given reward/add on predates the current date.
+
+ - parameter reward:           The reward being evaluated
+
+ - returns: A Bool representing whether the reward has a start date prior to the current date/time.
+ */
+public func isStartDateBeforeToday(for reward: Reward) -> Bool {
+  return (reward.startsAt == nil || (reward.startsAt ?? 0) <= AppEnvironment.current.dateType.init()
+    .timeIntervalSince1970)
+}
+
+/**
+ Determines if an end date from a given reward/add on is after the current date.
+
+ - parameter reward:           The reward being evaluated
+
+ - returns: A Bool representing whether the reward has an end date after to the current date/time.
+ */
+public func isEndDateAfterToday(for reward: Reward) -> Bool {
+  return (reward.endsAt == nil || (reward.endsAt ?? 0) >= AppEnvironment.current.dateType.init()
+    .timeIntervalSince1970)
+}

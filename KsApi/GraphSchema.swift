@@ -234,6 +234,12 @@ public enum Query {
   }
 
   public enum Reward {
+    public enum ShippingRulesExpandedConnection {
+      public enum Argument {
+        case locationId(String)
+      }
+    }
+
     case amount(NonEmptySet<Money>)
     case backersCount
     case convertedAmount(NonEmptySet<Money>)
@@ -250,6 +256,10 @@ public enum Query {
     case remainingQuantity
     case shippingPreference
     case shippingRules(NonEmptySet<ShippingRule>)
+    case shippingRulesExpanded(
+      Set<QueryArg<ShippingRulesExpandedConnection.Argument>>,
+      NonEmptySet<Connection<ShippingRule>>
+    )
     case startsAt
 
     public enum Item: String {
@@ -671,6 +681,7 @@ extension Query.Reward: QueryType {
     case .remainingQuantity: return "remainingQuantity"
     case .shippingPreference: return "shippingPreference"
     case let .shippingRules(fields): return "shippingRules { \(join(fields)) }"
+    case let .shippingRulesExpanded(args, fields): return "shippingRulesExpanded" + connection(args, fields)
     case .startsAt: return "startsAt"
     }
   }
@@ -679,6 +690,14 @@ extension Query.Reward: QueryType {
 extension Query.Reward.Item: QueryType {
   public var description: String {
     return self.rawValue
+  }
+}
+
+extension Query.Reward.ShippingRulesExpandedConnection.Argument: CustomStringConvertible {
+  public var description: String {
+    switch self {
+    case let .locationId(id): return "forLocation: \"\(id)\""
+    }
   }
 }
 

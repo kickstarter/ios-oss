@@ -85,7 +85,6 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
     let optimizelyReadyOrContinue = Signal.merge(
       self.optimizelyClientConfiguredProperty.signal,
       self.viewDidLoadProperty.signal.map { _ in AppEnvironment.current.optimizelyClient }
-        .skipNil()
         .ignoreValues(),
       self.optimizelyClientConfigurationFailedProperty.signal
     ).take(first: 1)

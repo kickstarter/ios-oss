@@ -17,6 +17,7 @@ public struct Reward {
   public let rewardsItems: [RewardsItem]
   public let shipping: Shipping // only v1
   public let shippingRules: [ShippingRule]? // only GraphQL
+  public let shippingRulesExpanded: [ShippingRule]? // only GraphQL
   public let startsAt: TimeInterval?
   public let title: String?
 
@@ -28,11 +29,13 @@ public struct Reward {
   /**
    Returns the closest matching `ShippingRule` for this `Reward` to `otherShippingRule`.
    If no match is found `otherShippingRule` is returned, this is to be backward-compatible
-   with v1 Rewards that do not include the `shippingRules` array.
+   with v1 Rewards that do not include the `shippingRulesExpanded` array.
    */
   public func shippingRule(matching otherShippingRule: ShippingRule?) -> ShippingRule? {
-    return self.shippingRules?
-      .first { shippingRule in shippingRule.location.id == otherShippingRule?.location.id }
+    return self.shippingRulesExpanded?
+      .first { shippingRule in
+        shippingRule.location.id == otherShippingRule?.location.id
+      }
       ?? otherShippingRule
   }
 
@@ -96,6 +99,7 @@ extension Reward: Swift.Decodable {
     case remaining
     case rewardsItems = "rewards_items"
     case shippingRules = "shipping_rules"
+    case shippingRulesExpanded = "shipping_rules_expanded"
     case startsAt = "starts_at"
     case title
   }
@@ -120,6 +124,10 @@ extension Reward: Swift.Decodable {
     self.rewardsItems = try values.decodeIfPresent([RewardsItem].self, forKey: .rewardsItems) ?? []
     self.shipping = try Shipping(from: decoder)
     self.shippingRules = try values.decodeIfPresent([ShippingRule].self, forKey: .shippingRules) ?? []
+    self.shippingRulesExpanded = try values.decodeIfPresent(
+      [ShippingRule].self,
+      forKey: .shippingRulesExpanded
+    ) ?? []
     self.startsAt = try values.decodeIfPresent(TimeInterval.self, forKey: .startsAt)
     self.title = try values.decodeIfPresent(String.self, forKey: .startsAt)
   }

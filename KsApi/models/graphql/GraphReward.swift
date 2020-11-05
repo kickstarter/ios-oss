@@ -18,6 +18,7 @@ struct GraphReward: Swift.Decodable {
   var remainingQuantity: Int?
   var shippingPreference: ShippingPreference?
   var shippingRules: [ShippingRule]?
+  var shippingRulesExpanded: ShippingRuleExpanded?
   var startsAt: TimeInterval?
 
   struct Items: Swift.Decodable {
@@ -49,6 +50,10 @@ struct GraphReward: Swift.Decodable {
       var id: String
       var name: String
     }
+  }
+
+  struct ShippingRuleExpanded: Swift.Decodable {
+    let nodes: [ShippingRule]
   }
 }
 
