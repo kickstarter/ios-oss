@@ -358,7 +358,10 @@
 		80D73AF61D50F1A60099231F /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E26A121D500C6A007B3022 /* Navigation.swift */; };
 		80E8EAC81D3EC65A007BDA4B /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E8EAC71D3EC65A007BDA4B /* Image.swift */; };
 		80EAEF051D243C4E008C2353 /* Backing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80EAEF031D243C4E008C2353 /* Backing.storyboard */; };
-		84618A602554589F00DFA959 /* InterstitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84618A5B2554589A00DFA959 /* InterstitialViewController.swift */; };
+		842470F62554633A00708898 /* InterstitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84618A5B2554589A00DFA959 /* InterstitialViewController.swift */; };
+		842470FE2554675500708898 /* InterstitialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842470FD2554675500708898 /* InterstitialViewModel.swift */; };
+		84247102255467E200708898 /* InterstitialViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842470F12554630B00708898 /* InterstitialViewControllerTests.swift */; };
+		8424710A2554686F00708898 /* InterstitialViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842471092554686F00708898 /* InterstitialViewModelTests.swift */; };
 		84F3C492251C87B400AEF24D /* UpdateActivityItemProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F3C491251C87A400AEF24D /* UpdateActivityItemProviderTests.swift */; };
 		8A00CCFF24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A00CCFE24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift */; };
 		8A05CB0E23DB82D3002B01EE /* CookieRefTagFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */; };
@@ -1895,6 +1898,9 @@
 		80E26A121D500C6A007B3022 /* Navigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		80E8EAC71D3EC65A007BDA4B /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		80EAEF031D243C4E008C2353 /* Backing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Backing.storyboard; sourceTree = "<group>"; };
+		842470F12554630B00708898 /* InterstitialViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialViewControllerTests.swift; sourceTree = "<group>"; };
+		842470FD2554675500708898 /* InterstitialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialViewModel.swift; sourceTree = "<group>"; };
+		842471092554686F00708898 /* InterstitialViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialViewModelTests.swift; sourceTree = "<group>"; };
 		84618A5B2554589A00DFA959 /* InterstitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialViewController.swift; sourceTree = "<group>"; };
 		84F3C491251C87A400AEF24D /* UpdateActivityItemProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateActivityItemProviderTests.swift; sourceTree = "<group>"; };
 		8A00CCFE24BD439E00E12D49 /* RewardAddOnCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnCardViewModelTests.swift; sourceTree = "<group>"; };
@@ -3568,6 +3574,7 @@
 				59673CBC1D50ED380035AFD9 /* VideoViewController.swift */,
 				9D89B7E21D6B8B310021F6FF /* WebModalViewController.swift */,
 				84618A5B2554589A00DFA959 /* InterstitialViewController.swift */,
+				842470F12554630B00708898 /* InterstitialViewControllerTests.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -4286,6 +4293,8 @@
 				D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */,
 				9D89B7E41D6B8DB90021F6FF /* WebModalViewModel.swift */,
 				A7ED1F8A1E831C5C00BFFA01 /* WebModalViewModelTests.swift */,
+				842470FD2554675500708898 /* InterstitialViewModel.swift */,
+				842471092554686F00708898 /* InterstitialViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -5548,6 +5557,7 @@
 				A7ED1FF11E831C5C00BFFA01 /* MessageThreadCellViewModelTests.swift in Sources */,
 				8A49395F24B53D1900C3C3CE /* RewardAddOnSelectionViewModelTests.swift in Sources */,
 				D72370922118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift in Sources */,
+				8424710A2554686F00708898 /* InterstitialViewModelTests.swift in Sources */,
 				A7ED1FAE1E831C5C00BFFA01 /* FindFriendsViewModelTests.swift in Sources */,
 				A7ED1FE11E831C5C00BFFA01 /* DiscoveryPostcardViewModelTests.swift in Sources */,
 				77C9122F23C508CF00F3D2C9 /* ApplePayCapabilitiesTests.swift in Sources */,
@@ -5756,6 +5766,7 @@
 				A71003E01CDD06E600B4F4D7 /* MessageThreadCell.swift in Sources */,
 				D0A787B52204D40E006AE4F4 /* SelectCurrencyViewController.swift in Sources */,
 				9D7536CD1D78D78600A7623B /* SurveyResponseViewController.swift in Sources */,
+				842470FE2554675500708898 /* InterstitialViewModel.swift in Sources */,
 				59392BEC1D7094B0001C99A4 /* ProjectUpdatesViewController.swift in Sources */,
 				8A1A93D024C601CA0012FB43 /* PledgeShippingSummaryView.swift in Sources */,
 				8AE09C3A244537BE00036043 /* PledgeDisclaimerView.swift in Sources */,
@@ -5783,7 +5794,6 @@
 				8072F44F1D46BAA400999EF1 /* UpdatePreviewViewModel.swift in Sources */,
 				A7C795B31C873AC90081977F /* ActivitiesViewController.swift in Sources */,
 				A731BF8D1D1EE44E00A734AC /* UpdateViewController.swift in Sources */,
-				84618A602554589F00DFA959 /* InterstitialViewController.swift in Sources */,
 				7727494923FC8C2A0065E9F2 /* CategorySelectionDataSource.swift in Sources */,
 				A75798911D6A201F0063CEEC /* DebugPushNotificationsViewController.swift in Sources */,
 				A7CC14401D00E74F00035C52 /* FindFriendsHeaderCell.swift in Sources */,
@@ -5976,6 +5986,7 @@
 				D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */,
 				3751E42C2335E7D400047E9A /* TraitCollection.swift in Sources */,
 				3708DD45220A76FE00F8E569 /* CreatePasswordTableControllerTests.swift in Sources */,
+				84247102255467E200708898 /* InterstitialViewControllerTests.swift in Sources */,
 				D72370942119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift in Sources */,
 				A7ED20651E83256700BFFA01 /* UpdatePreviewViewModelTests.swift in Sources */,
 				77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */,
@@ -5996,6 +6007,7 @@
 				015102AE1F1947CB0006C0FC /* MessageThreadsDataSourceTests.swift in Sources */,
 				774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */,
 				D033E2C322A05B7400464E43 /* MockApplication.swift in Sources */,
+				842470F62554633A00708898 /* InterstitialViewController.swift in Sources */,
 				A7ED20541E8323E900BFFA01 /* ProjectPamphletContentViewControllerTests.swift in Sources */,
 				1611EF6A23B2773A0051CDCC /* MockUUID.swift in Sources */,
 				D643E7C82346426E00C02C15 /* ManagePledgeViewControllerTests.swift in Sources */,

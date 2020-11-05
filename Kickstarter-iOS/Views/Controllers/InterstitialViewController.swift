@@ -1,9 +1,8 @@
-//
-//  InterstitialViewController.swift
-//  Kickstarter-iOS
-//
-//  Created by admin on 05.11.2020.
-//  Copyright © 2020 Kickstarter. All rights reserved.
-//
+import Library
+import Prelude
+import Prelude_UIKit
+import UIKit
 
-import Foundation
+internal final class InterstitialViewController: UIViewController{
+  
+}
