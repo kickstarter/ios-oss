@@ -641,7 +641,7 @@
         <!--Interstitial View Controller-->
         <scene sceneID="s9I-fm-nt2">
             <objects>
-                <viewController storyboardIdentifier="SignupViewController" id="wFl-HU-fkH" customClass="InterstitialViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="InterstitialViewController" id="wFl-HU-fkH" customClass="InterstitialViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="P1R-64-gGs"/>
                         <viewControllerLayoutGuide type="bottom" id="PM3-ym-Lh3"/>
