@@ -8,6 +8,7 @@ public struct User {
   public var facebookConnected: Bool?
   public var id: Int
   public var isAdmin: Bool?
+  public var isEmailVerified: Bool?
   public var isFriend: Bool?
   public var location: Location?
   public var name: String
@@ -116,6 +117,7 @@ extension User: Argo.Decodable {
       <*> json <| "id"
     let tmp2 = tmp1
       <*> json <|? "is_admin"
+      <*> json <|? "is_email_verified"
       <*> json <|? "is_friend"
       <*> (json <|? "location" <|> .success(nil))
     let tmp3 = tmp2
@@ -139,6 +141,7 @@ extension User: EncodableType {
     result["facebook_connected"] = self.facebookConnected ?? false
     result["id"] = self.id
     result["is_admin"] = self.isAdmin ?? false
+    result["is_email_verified"] = self.isEmailVerified ?? false
     result["is_friend"] = self.isFriend ?? false
     result["location"] = self.location?.encode()
     result["name"] = self.name

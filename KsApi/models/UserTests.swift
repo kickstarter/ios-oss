@@ -35,6 +35,7 @@ final class UserTests: XCTestCase {
         "name": "Brooklyn"
       ],
       "is_admin": false,
+      "is_email_verified": false,
       "is_friend": false,
       "opted_out_of_recommendations": true,
       "show_public_profile": false,
@@ -54,6 +55,7 @@ final class UserTests: XCTestCase {
     XCTAssertEqual(false, user?.newsletters.games)
     XCTAssertEqual(false, user?.notifications.commentReplies)
     XCTAssertEqual(false, user?.facebookConnected)
+    XCTAssertEqual(false, user?.isEmailVerified)
     XCTAssertEqual(false, user?.isFriend)
     XCTAssertNotNil(user?.location)
     XCTAssertEqual(json as NSDictionary?, user?.encode() as NSDictionary?)
@@ -83,6 +85,7 @@ final class UserTests: XCTestCase {
         "name": "Brooklyn"
       ],
       "is_admin": false,
+      "is_email_verified": false,
       "is_friend": false,
       "opted_out_of_recommendations": true,
       "show_public_profile": false,
