@@ -6,6 +6,7 @@ extension User {
     facebookConnected: nil,
     id: 1,
     isAdmin: false,
+    isEmailVerified: false,
     isFriend: nil,
     location: nil,
     name: "Blob",
