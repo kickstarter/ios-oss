@@ -129,7 +129,7 @@ extension Reward: Swift.Decodable {
       forKey: .shippingRulesExpanded
     ) ?? []
     self.startsAt = try values.decodeIfPresent(TimeInterval.self, forKey: .startsAt)
-    self.title = try values.decodeIfPresent(String.self, forKey: .startsAt)
+    self.title = try values.decodeIfPresent(String.self, forKey: .title)
   }
 }
 
