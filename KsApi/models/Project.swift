@@ -367,7 +367,7 @@ extension Project.RewardData: Swift.Decodable {
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     self.addOns = try values.decodeIfPresent([Reward].self, forKey: .addOns)
-    self.rewards = try values.decodeIfPresent([Reward].self, forKey: .addOns) ?? []
+    self.rewards = try values.decodeIfPresent([Reward].self, forKey: .rewards) ?? []
   }
 }
 
