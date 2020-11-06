@@ -63,7 +63,7 @@ public struct ErrorEnvelope {
   }
 
   public struct FacebookUser {
-    public let id: Int64
+    public let id: String
     public let name: String
     public let email: String
   }
