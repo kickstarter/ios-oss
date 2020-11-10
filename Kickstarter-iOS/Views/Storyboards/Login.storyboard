@@ -776,6 +776,13 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="600"/>
+                    <connections>
+                        <outlet property="checkInboxLable" destination="Oir-5r-WoD" id="nQT-rr-Xrj"/>
+                        <outlet property="laterButton" destination="7Ub-ol-E6g" id="sdb-0E-fBS"/>
+                        <outlet property="mailIcon" destination="9KF-FS-YQO" id="ywA-M7-FpR"/>
+                        <outlet property="resendEmailButton" destination="ZQX-Tz-fnJ" id="k3t-vZ-ADb"/>
+                        <outlet property="verifyEmailLable" destination="6Qz-H5-3Yg" id="UWu-jK-ty8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bq2-iM-6d7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
