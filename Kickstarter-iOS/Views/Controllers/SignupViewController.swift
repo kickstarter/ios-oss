@@ -197,7 +197,8 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   }
 
   @IBAction internal func signupButtonPressed() {
-    self.viewModel.inputs.signupButtonPressed()
+    let vc = InterstitialViewController.instantiate()
+    self.navigationController?.pushViewController(vc, animated: true)
   }
 
   @objc fileprivate func disclaimerButtonPressed() {
