@@ -1,4 +1,4 @@
-import Argo
+import Foundation
 
 /// Represents a way to paramterize a model by either an `id` integer or `slug` string.
 public enum Param {
@@ -52,19 +52,6 @@ public func == (lhs: Param, rhs: Param) -> Bool {
     return String(lhs) == rhs
   case let (.slug(lhs), .id(rhs)):
     return lhs == String(rhs)
-  }
-}
-
-extension Param: Argo.Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Param> {
-    switch json {
-    case let .string(slug):
-      return .success(.slug(slug))
-    case let .number(number):
-      return .success(.id(number.intValue))
-    default:
-      return .failure(.custom("Param must be a number or string."))
-    }
   }
 }
 

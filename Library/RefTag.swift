@@ -1,6 +1,4 @@
-import Argo
 import KsApi
-import Runes
 
 public enum RefTag {
   case activity
@@ -194,17 +192,6 @@ private func sortRefTagSuffix(_ sort: DiscoveryParams.Sort) -> String {
     return "_popular"
   case .distance:
     return "_distance"
-  }
-}
-
-extension RefTag: Argo.Decodable {
-  public static func decode(_ json: JSON) -> Decoded<RefTag> {
-    switch json {
-    case let .string(code):
-      return .success(RefTag(code: code))
-    default:
-      return .failure(.custom("RefTag code must be a string."))
-    }
   }
 }
 

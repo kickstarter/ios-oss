@@ -2,11 +2,11 @@ import Prelude
 
 // MARK: - Graph Response
 
-public struct GraphResponse<T: Decodable>: Decodable {
+public struct GraphResponse<T: Swift.Decodable>: Swift.Decodable {
   let data: T
 }
 
-public struct GraphResponseErrorEnvelope: Decodable {
+public struct GraphResponseErrorEnvelope: Swift.Decodable {
   let errors: [GraphResponseError]?
 }
 
@@ -100,7 +100,7 @@ public enum Nodes<Q: QueryType> {
   case nodes(NonEmptySet<Q>)
 }
 
-public struct GraphResponseError: Decodable {
+public struct GraphResponseError: Swift.Decodable {
   public let message: String
 }
 

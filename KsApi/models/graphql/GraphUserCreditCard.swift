@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Runes
 
@@ -29,8 +28,4 @@ public struct GraphUserCreditCard: Swift.Decodable {
   public struct CreditCardConnection: Swift.Decodable {
     public let nodes: [CreditCard]
   }
-}
-
-private func intToString(_ input: Int) -> Decoded<String> {
-  return .success(Data("User-\(input)".utf8).base64EncodedString())
 }

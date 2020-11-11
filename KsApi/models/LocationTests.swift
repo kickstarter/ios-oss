@@ -9,11 +9,11 @@ final class LocationTests: XCTestCase {
   }
 
   func testJSONParsing_WithPartialData() {
-    let location = Location.decodeJSONDictionary([
+    let location: Location? = Location.decodeJSONDictionary([
       "id": 1
     ])
 
-    XCTAssertNotNil(location.error)
+    XCTAssertNil(location)
   }
 
   func testJSONParsing_WithFullData_SwiftDecodable() {
@@ -34,22 +34,6 @@ final class LocationTests: XCTestCase {
     XCTAssertEqual(location?.name, "Brooklyn")
   }
 
-  func testJSONParsing_WithFullData() {
-    let location = Location.decodeJSONDictionary([
-      "country": "US",
-      "id": 1,
-      "displayable_name": "Brooklyn, NY",
-      "localized_name": "Brooklyn, NY",
-      "name": "Brooklyn"
-    ])
-
-    XCTAssertNil(location.error)
-    XCTAssertEqual(location.value?.id, 1)
-    XCTAssertEqual(location.value?.displayableName, "Brooklyn, NY")
-    XCTAssertEqual(location.value?.localizedName, "Brooklyn, NY")
-    XCTAssertEqual(location.value?.name, "Brooklyn")
-  }
-
   func testEncodeDecode() {
     let location: [String: Any] = [
       "country": "US",
@@ -59,9 +43,9 @@ final class LocationTests: XCTestCase {
       "name": "New Amsterdam"
     ]
 
-    let decodedLocation = Location.decodeJSONDictionary(location).value
+    let decodedLocation: Location? = Location.decodeJSONDictionary(location)
 
-    XCTAssertEqual(decodedLocation, Location.decodeJSONDictionary(decodedLocation?.encode() ?? [:]).value)
+    XCTAssertEqual(decodedLocation, Location.decodeJSONDictionary(decodedLocation?.encode() ?? [:]))
     XCTAssertEqual(decodedLocation?.encode() as NSDictionary?, location as NSDictionary?)
   }
 }

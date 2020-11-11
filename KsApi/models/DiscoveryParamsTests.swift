@@ -1,4 +1,3 @@
-import Argo
 @testable import KsApi
 import Prelude
 import XCTest
@@ -78,43 +77,43 @@ class DiscoveryParamsTests: XCTestCase {
   }
 
   func testDecode() {
-    XCTAssertNil(DiscoveryParams.decode(JSON([:])).value?.backed, "absent values aren't set")
-    XCTAssertNil(DiscoveryParams.decode(JSON(["backed": "nope"])).value, "invalid values error")
+    XCTAssertNil(DiscoveryParams.decodeJSONDictionary([:])?.backed, "absent values aren't set")
+    XCTAssertNil(DiscoveryParams.decodeJSONDictionary(["backed": "nope"])?.backed, "invalid values error")
 
     // server logic
-    XCTAssertEqual(true, DiscoveryParams.decode(JSON(["has_video": "true"])).value?.hasVideo)
-    XCTAssertEqual(true, DiscoveryParams.decode(JSON(["has_video": "1"])).value?.hasVideo)
-    XCTAssertEqual(true, DiscoveryParams.decode(JSON(["has_video": "t"])).value?.hasVideo)
-    XCTAssertEqual(true, DiscoveryParams.decode(JSON(["has_video": "T"])).value?.hasVideo)
-    XCTAssertEqual(true, DiscoveryParams.decode(JSON(["has_video": "TRUE"])).value?.hasVideo)
-    XCTAssertEqual(true, DiscoveryParams.decode(JSON(["has_video": "on"])).value?.hasVideo)
-    XCTAssertEqual(true, DiscoveryParams.decode(JSON(["has_video": "ON"])).value?.hasVideo)
-    XCTAssertEqual(false, DiscoveryParams.decode(JSON(["has_video": "false"])).value?.hasVideo)
-    XCTAssertEqual(false, DiscoveryParams.decode(JSON(["has_video": "0"])).value?.hasVideo)
-    XCTAssertEqual(false, DiscoveryParams.decode(JSON(["has_video": "f"])).value?.hasVideo)
-    XCTAssertEqual(false, DiscoveryParams.decode(JSON(["has_video": "F"])).value?.hasVideo)
-    XCTAssertEqual(false, DiscoveryParams.decode(JSON(["has_video": "FALSE"])).value?.hasVideo)
-    XCTAssertEqual(false, DiscoveryParams.decode(JSON(["has_video": "off"])).value?.hasVideo)
-    XCTAssertEqual(false, DiscoveryParams.decode(JSON(["has_video": "OFF"])).value?.hasVideo)
+    XCTAssertEqual(true, DiscoveryParams.decodeJSONDictionary(["has_video": "true"])?.hasVideo)
+    XCTAssertEqual(true, DiscoveryParams.decodeJSONDictionary(["has_video": "1"])?.hasVideo)
+    XCTAssertEqual(true, DiscoveryParams.decodeJSONDictionary(["has_video": "t"])?.hasVideo)
+    XCTAssertEqual(true, DiscoveryParams.decodeJSONDictionary(["has_video": "T"])?.hasVideo)
+    XCTAssertEqual(true, DiscoveryParams.decodeJSONDictionary(["has_video": "TRUE"])?.hasVideo)
+    XCTAssertEqual(true, DiscoveryParams.decodeJSONDictionary(["has_video": "on"])?.hasVideo)
+    XCTAssertEqual(true, DiscoveryParams.decodeJSONDictionary(["has_video": "ON"])?.hasVideo)
+    XCTAssertEqual(false, DiscoveryParams.decodeJSONDictionary(["has_video": "false"])?.hasVideo)
+    XCTAssertEqual(false, DiscoveryParams.decodeJSONDictionary(["has_video": "0"])?.hasVideo)
+    XCTAssertEqual(false, DiscoveryParams.decodeJSONDictionary(["has_video": "f"])?.hasVideo)
+    XCTAssertEqual(false, DiscoveryParams.decodeJSONDictionary(["has_video": "F"])?.hasVideo)
+    XCTAssertEqual(false, DiscoveryParams.decodeJSONDictionary(["has_video": "FALSE"])?.hasVideo)
+    XCTAssertEqual(false, DiscoveryParams.decodeJSONDictionary(["has_video": "off"])?.hasVideo)
+    XCTAssertEqual(false, DiscoveryParams.decodeJSONDictionary(["has_video": "OFF"])?.hasVideo)
 
-    XCTAssertEqual(true, DiscoveryParams.decode(JSON(["include_potd": "true"])).value?.includePOTD)
-    XCTAssertEqual(true, DiscoveryParams.decode(JSON(["recommended": "true"])).value?.recommended)
-    XCTAssertEqual(true, DiscoveryParams.decode(JSON(["staff_picks": "true"])).value?.staffPicks)
+    XCTAssertEqual(true, DiscoveryParams.decodeJSONDictionary(["include_potd": "true"])?.includePOTD)
+    XCTAssertEqual(true, DiscoveryParams.decodeJSONDictionary(["recommended": "true"])?.recommended)
+    XCTAssertEqual(true, DiscoveryParams.decodeJSONDictionary(["staff_picks": "true"])?.staffPicks)
 
-    XCTAssertEqual(40, DiscoveryParams.decode(JSON(["page": "40"])).value?.page)
-    XCTAssertEqual(41, DiscoveryParams.decode(JSON(["per_page": "41"])).value?.perPage)
-    XCTAssertEqual(42, DiscoveryParams.decode(JSON(["seed": "42"])).value?.seed)
+    XCTAssertEqual(40, DiscoveryParams.decodeJSONDictionary(["page": "40"])?.page)
+    XCTAssertEqual(41, DiscoveryParams.decodeJSONDictionary(["per_page": "41"])?.perPage)
+    XCTAssertEqual(42, DiscoveryParams.decodeJSONDictionary(["seed": "42"])?.seed)
 
-    XCTAssertNil(DiscoveryParams.decode(JSON(["backed": "42"])).value)
-    XCTAssertNil(DiscoveryParams.decode(JSON(["backed": "0"])).value?.backed)
-    XCTAssertEqual(true, DiscoveryParams.decode(JSON(["backed": "1"])).value?.backed)
-    XCTAssertEqual(false, DiscoveryParams.decode(JSON(["backed": "-1"])).value?.backed)
+    XCTAssertNil(DiscoveryParams.decodeJSONDictionary(["backed": "42"])?.backed)
+    XCTAssertNil(DiscoveryParams.decodeJSONDictionary(["backed": "0"])?.backed)
+    XCTAssertEqual(true, DiscoveryParams.decodeJSONDictionary(["backed": "1"])?.backed)
+    XCTAssertEqual(false, DiscoveryParams.decodeJSONDictionary(["backed": "-1"])?.backed)
 
-    XCTAssertEqual(false, DiscoveryParams.decode(JSON(["social": "-1"])).value?.social)
-    XCTAssertEqual(false, DiscoveryParams.decode(JSON(["starred": "-1"])).value?.starred)
+    XCTAssertEqual(false, DiscoveryParams.decodeJSONDictionary(["social": "-1"])?.social)
+    XCTAssertEqual(false, DiscoveryParams.decodeJSONDictionary(["starred": "-1"])?.starred)
 
-    XCTAssertEqual("bugs", DiscoveryParams.decode(JSON(["term": "bugs"])).value?.query)
-    XCTAssertEqual(.magic, DiscoveryParams.decode(JSON(["sort": "magic"])).value?.sort)
-    XCTAssertEqual(.live, DiscoveryParams.decode(JSON(["state": "live"])).value?.state)
+    XCTAssertEqual("bugs", DiscoveryParams.decodeJSONDictionary(["term": "bugs"])?.query)
+    XCTAssertEqual(.magic, DiscoveryParams.decodeJSONDictionary(["sort": "magic"])?.sort)
+    XCTAssertEqual(.live, DiscoveryParams.decodeJSONDictionary(["state": "live"])?.state)
   }
 }

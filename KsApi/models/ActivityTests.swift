@@ -1,4 +1,3 @@
-import Argo
 @testable import KsApi
 import XCTest
 
@@ -8,26 +7,26 @@ internal final class ActivityTests: XCTestCase {
   }
 
   func testJSONDecoding_WithBadData() {
-    let activity = Activity.decodeJSONDictionary([
+    let activity: Activity! = Activity.decodeJSONDictionary([
       "category": "update"
     ])
 
-    XCTAssertNotNil(activity.error)
+    XCTAssertNil(activity)
   }
 
   func testJSONDecoding_WithGoodData() {
-    let activity = Activity.decodeJSONDictionary([
+    let activity: Activity! = Activity.decodeJSONDictionary([
       "category": "update",
       "created_at": 123_123_123,
       "id": 1
     ])
 
-    XCTAssertNil(activity.error)
-    XCTAssertEqual(activity.value?.id, 1)
+    XCTAssertNotNil(activity)
+    XCTAssertEqual(activity.id, 1)
   }
 
   func testJSONParsing_WithMemberData() {
-    let memberData = Activity.MemberData.decodeJSONDictionary([
+    let memberData: Activity.MemberData! = Activity.MemberData.decodeJSONDictionary([
       "amount": 25.0,
       "backing": [
         "amount": 1.0,
@@ -48,18 +47,18 @@ internal final class ActivityTests: XCTestCase {
       "reward_id": 2
     ])
 
-    XCTAssertNil(memberData.error)
-    XCTAssertEqual(25, memberData.value?.amount)
-    XCTAssertEqual(1, memberData.value?.backing?.id)
-    XCTAssertEqual(15, memberData.value?.oldAmount)
-    XCTAssertEqual(1, memberData.value?.oldRewardId)
-    XCTAssertEqual(25, memberData.value?.newAmount)
-    XCTAssertEqual(2, memberData.value?.newRewardId)
-    XCTAssertEqual(2, memberData.value?.rewardId)
+    XCTAssertNotNil(memberData)
+    XCTAssertEqual(25, memberData.amount)
+    XCTAssertEqual(1, memberData.backing?.id)
+    XCTAssertEqual(15, memberData.oldAmount)
+    XCTAssertEqual(1, memberData.oldRewardId)
+    XCTAssertEqual(25, memberData.newAmount)
+    XCTAssertEqual(2, memberData.newRewardId)
+    XCTAssertEqual(2, memberData.rewardId)
   }
 
   func testJSONDecoding_WithNestedGoodData() {
-    let activity = Activity.decodeJSONDictionary([
+    let activity: Activity! = Activity.decodeJSONDictionary([
       "category": "update",
       "created_at": 123_123_123,
       "id": 1,
@@ -74,19 +73,19 @@ internal final class ActivityTests: XCTestCase {
       ]
     ])
 
-    XCTAssertNil(activity.error)
-    XCTAssertEqual(activity.value?.id, 1)
-    XCTAssertEqual(activity.value?.user?.id, 2)
+    XCTAssertNotNil(activity)
+    XCTAssertEqual(activity.id, 1)
+    XCTAssertEqual(activity.user?.id, 2)
   }
 
   func testJSONDecoding_WithIncorrectCategory() {
-    let activity = Activity.decodeJSONDictionary([
+    let activity: Activity! = Activity.decodeJSONDictionary([
       "category": "incorrect_category",
       "created_at": 123_123_123,
       "id": 1
     ])
 
-    XCTAssertNil(activity.error)
-    XCTAssertEqual(.some(.unknown), activity.value?.category)
+    XCTAssertNotNil(activity)
+    XCTAssertEqual(.unknown, activity.category)
   }
 }

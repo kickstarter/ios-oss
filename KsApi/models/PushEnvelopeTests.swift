@@ -4,7 +4,7 @@ import XCTest
 
 final class PushEnvelopeTests: XCTestCase {
   func testDecode_Update_WithUpdateKey() {
-    let decodedEnvelope = PushEnvelope.decodeJSONDictionary([
+    let decodedEnvelope: PushEnvelope = try! PushEnvelope.decodeJSONDictionary([
       "aps": [
         "alert": "Hi"
       ],
@@ -13,16 +13,14 @@ final class PushEnvelopeTests: XCTestCase {
         "project_id": 2
       ]
     ])
-    let envelope = decodedEnvelope.value
 
-    XCTAssertNil(decodedEnvelope.error)
-    XCTAssertNotNil(envelope?.update)
-    XCTAssertEqual(1, envelope?.update?.id)
-    XCTAssertEqual(2, envelope?.update?.projectId)
+    XCTAssertNotNil(decodedEnvelope.update)
+    XCTAssertEqual(1, decodedEnvelope.update?.id)
+    XCTAssertEqual(2, decodedEnvelope.update?.projectId)
   }
 
   func testDecode_Update_WithPostKey() {
-    let decodedEnvelope = PushEnvelope.decodeJSONDictionary([
+    let decodedEnvelope: PushEnvelope = try! PushEnvelope.decodeJSONDictionary([
       "aps": [
         "alert": "Hi"
       ],
@@ -31,11 +29,9 @@ final class PushEnvelopeTests: XCTestCase {
         "project_id": 2
       ]
     ])
-    let envelope = decodedEnvelope.value
 
-    XCTAssertNil(decodedEnvelope.error)
-    XCTAssertNotNil(envelope?.update)
-    XCTAssertEqual(1, envelope?.update?.id)
-    XCTAssertEqual(2, envelope?.update?.projectId)
+    XCTAssertNotNil(decodedEnvelope.update)
+    XCTAssertEqual(1, decodedEnvelope.update?.id)
+    XCTAssertEqual(2, decodedEnvelope.update?.projectId)
   }
 }

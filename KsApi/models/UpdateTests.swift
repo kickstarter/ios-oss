@@ -1,4 +1,3 @@
-import Argo
 @testable import KsApi
 import Prelude
 import XCTest
@@ -10,15 +9,15 @@ internal final class UpdateTests: XCTestCase {
   }
 
   func testJSONDecoding_WithBadData() {
-    let update = Update.decodeJSONDictionary([
+    let update: Update! = Update.decodeJSONDictionary([
       "body": "world"
     ])
 
-    XCTAssertNotNil(update.error)
+    XCTAssertNil(update)
   }
 
   func testJSONDecoding_WithGoodData() {
-    let update = Update.decodeJSONDictionary([
+    let update: Update! = Update.decodeJSONDictionary([
       "body": "world",
       "id": 1,
       "public": true,
@@ -33,12 +32,11 @@ internal final class UpdateTests: XCTestCase {
       ]
     ])
 
-    XCTAssertNil(update.error)
-    XCTAssertEqual(1, update.value?.id)
+    XCTAssertEqual(1, update.id)
   }
 
   func testJSONDecoding_WithNestedGoodData() {
-    let update = Update.decodeJSONDictionary([
+    let update: Update! = Update.decodeJSONDictionary([
       "body": "world",
       "id": 1,
       "public": true,
@@ -62,12 +60,48 @@ internal final class UpdateTests: XCTestCase {
       ]
     ])
 
-    XCTAssertNil(update.error)
-    XCTAssertEqual(1, update.value?.id)
-    XCTAssertEqual(2, update.value?.user?.id)
+    XCTAssertNotNil(update)
+    XCTAssertEqual(1, update.id)
+    XCTAssertEqual(2, update.user?.id)
     XCTAssertEqual(
       "https://www.kickstarter.com/projects/udoo/udoo-x86/posts/1571540",
-      update.value?.urls.web.update
+      update.urls.web.update
     )
+  }
+
+  func testJSONDecoding_WithBadUrls_WebData_WrongType() {
+    let update: Update! = Update.decodeJSONDictionary([
+      "body": "world",
+      "id": 1,
+      "public": true,
+      "project_id": 2,
+      "sequence": 3,
+      "title": "hello",
+      "visible": true,
+      "urls": [
+        "web": [
+          "update": 0xBAAAAAAD
+        ]
+      ]
+    ])
+
+    XCTAssertNil(update)
+  }
+
+  func testJSONDecoding_WithBadUrls_WebData_WrongKey() {
+    let update: Update! = Update.decodeJSONDictionary([
+      "body": "world",
+      "id": 1,
+      "public": true,
+      "project_id": 2,
+      "sequence": 3,
+      "title": "hello",
+      "visible": true,
+      "urls": [
+        "wrong_key": "data"
+      ]
+    ])
+
+    XCTAssertNil(update)
   }
 }

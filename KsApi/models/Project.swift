@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Prelude
 import ReactiveSwift
@@ -52,7 +51,7 @@ public struct Project {
     public var hls: String?
   }
 
-  public enum State: String, Argo.Decodable, CaseIterable {
+  public enum State: String, CaseIterable, Swift.Decodable {
     case canceled
     case failed
     case live
@@ -236,146 +235,180 @@ extension Project: CustomDebugStringConvertible {
   }
 }
 
-extension Project: Argo.Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project> {
-    let tmp1 = curry(Project.init)
-      <^> json <||? "available_card_types"
-      <*> json <| "blurb"
-      <*> json <| "category"
-      <*> Project.Country.decode(json)
-      <*> json <| "creator"
-    let tmp2 = tmp1
-      <*> Project.MemberData.decode(json)
-      <*> Project.Dates.decode(json)
-      <*> json <| "id"
-      <*> (json <| "location" <|> .success(Location.none))
-    let tmp3 = tmp2
-      <*> json <| "name"
-      <*> Project.Personalization.decode(json)
-      <*> json <| "photo"
-      <*> json <|? "prelaunch_activated"
-      <*> Project.RewardData.decode(json)
-      <*> json <| "slug"
-    return tmp3
-      <*> json <| "staff_pick"
-      <*> json <| "state"
-      <*> Project.Stats.decode(json)
-      <*> json <| "urls"
-      <*> json <|? "video"
+extension Project: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case availableCardTypes = "available_card_types"
+    case blurb
+    case category
+    case creator
+    case id
+    case location
+    case name
+    case photo
+    case prelaunchActivated = "prelaunch_activated"
+    case slug
+    case staffPick = "staff_pick"
+    case state
+    case urls
+    case video
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.availableCardTypes = try values.decodeIfPresent([String].self, forKey: .availableCardTypes)
+    self.blurb = try values.decode(String.self, forKey: .blurb)
+    self.category = try values.decode(Category.self, forKey: .category)
+    self.country = try Project.Country(from: decoder)
+    self.creator = try values.decode(User.self, forKey: .creator)
+    self.memberData = try Project.MemberData(from: decoder)
+    self.dates = try Project.Dates(from: decoder)
+    self.id = try values.decode(Int.self, forKey: .id)
+    self.location = (try? values.decodeIfPresent(Location.self, forKey: .location)) ?? Location.none
+    self.name = try values.decode(String.self, forKey: .name)
+    self.personalization = try Project.Personalization(from: decoder)
+    self.photo = try values.decode(Photo.self, forKey: .photo)
+    self.prelaunchActivated = try values.decodeIfPresent(Bool.self, forKey: .prelaunchActivated)
+    self.rewardData = try Project.RewardData(from: decoder)
+    self.slug = try values.decode(String.self, forKey: .slug)
+    self.staffPick = try values.decode(Bool.self, forKey: .staffPick)
+    self.state = try values.decode(State.self, forKey: .state)
+    self.stats = try Project.Stats(from: decoder)
+    self.urls = try values.decode(UrlsEnvelope.self, forKey: .urls)
+    self.video = try values.decodeIfPresent(Video.self, forKey: .video)
   }
 }
 
-extension Project.UrlsEnvelope: Argo.Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.UrlsEnvelope> {
-    return curry(Project.UrlsEnvelope.init)
-      <^> json <| "web"
+extension Project.UrlsEnvelope: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case web
   }
 }
 
-extension Project.UrlsEnvelope.WebEnvelope: Argo.Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.UrlsEnvelope.WebEnvelope> {
-    return curry(Project.UrlsEnvelope.WebEnvelope.init)
-      <^> json <| "project"
-      <*> json <|? "updates"
+extension Project.UrlsEnvelope.WebEnvelope: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case project
+    case updates
   }
 }
 
-extension Project.Stats: Argo.Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.Stats> {
-    let tmp1 = curry(Project.Stats.init)
-      <^> json <| "backers_count"
-      <*> json <|? "comments_count"
-      <*> json <|? "converted_pledged_amount"
-      <*> json <| "currency"
-      <*> json <|? "current_currency"
-      <*> json <|? "fx_rate"
-    return tmp1
-      <*> json <| "goal"
-      <*> json <| "pledged"
-      <*> (json <| "static_usd_rate" <|> .success(1.0))
-      <*> json <|? "updates_count"
+extension Project.Stats: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case backersCount = "backers_count"
+    case commentsCount = "comments_count"
+    case convertedPledgedAmount = "converted_pledged_amount"
+    case currency
+    case currentCurrency = "current_currency"
+    case currentCurrencyRate = "fx_rate"
+    case goal
+    case pledged
+    case staticUsdRate = "static_usd_rate"
+    case updatesCount = "updates_count"
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.backersCount = try values.decode(Int.self, forKey: .backersCount)
+    self.commentsCount = try values.decodeIfPresent(Int.self, forKey: .commentsCount)
+    self.convertedPledgedAmount = try values.decodeIfPresent(Int.self, forKey: .convertedPledgedAmount)
+    self.currency = try values.decode(String.self, forKey: .currency)
+    self.currentCurrency = try values.decodeIfPresent(String.self, forKey: .currentCurrency)
+    self.currentCurrencyRate = try values.decodeIfPresent(Float.self, forKey: .currentCurrencyRate)
+    self.goal = try values.decode(Int.self, forKey: .goal)
+    let value = try values.decode(Double.self, forKey: .pledged)
+    self.pledged = Int(value)
+    self.staticUsdRate = try values.decodeIfPresent(Float.self, forKey: .staticUsdRate) ?? 1.0
+    self.updatesCount = try values.decodeIfPresent(Int.self, forKey: .updatesCount)
   }
 }
 
-extension Project.MemberData: Argo.Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.MemberData> {
-    return curry(Project.MemberData.init)
-      <^> json <|? "last_update_published_at"
-      <*> (removeUnknowns <^> (json <|| "permissions") <|> .success([]))
-      <*> json <|? "unread_messages_count"
-      <*> json <|? "unseen_activity_count"
+extension Project.MemberData: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case lastUpdatePublishedAt = "last_update_published_at"
+    case permissions
+    case unreadMessagesCount = "unread_messages_count"
+    case unseenActivityCount = "unseen_activity_count"
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.lastUpdatePublishedAt = try values.decodeIfPresent(TimeInterval.self, forKey: .lastUpdatePublishedAt)
+    self
+      .permissions = removeUnknowns(try values.decodeIfPresent([Permission].self, forKey: .permissions) ?? [])
+    self.unreadMessagesCount = try values.decodeIfPresent(Int.self, forKey: .unreadMessagesCount)
+    self.unseenActivityCount = try values.decodeIfPresent(Int.self, forKey: .unseenActivityCount)
   }
 }
 
-extension Project.Dates: Argo.Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.Dates> {
-    return curry(Project.Dates.init)
-      <^> json <| "deadline"
-      <*> json <|? "featured_at"
-      <*> json <|? "final_collection_date"
-      <*> json <| "launched_at"
-      <*> json <| "state_changed_at"
+extension Project.Dates: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case deadline
+    case featuredAt = "featured_at"
+    case finalCollectionDate = "final_collection_date"
+    case launchedAt = "launched_at"
+    case stateChangedAt = "state_changed_at"
   }
 }
 
-extension Project.Personalization: Argo.Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.Personalization> {
-    return curry(Project.Personalization.init)
-      <^> json <|? "backing"
-      <*> json <||? "friends"
-      <*> json <|? "is_backing"
-      <*> json <|? "is_starred"
+extension Project.Personalization: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case backing
+    case friends
+    case isBacking = "is_backing"
+    case isStarred = "is_starred"
   }
 }
 
-extension Project.RewardData: Argo.Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.RewardData> {
-    return curry(Project.RewardData.init)
-      <^> json <||? "add_ons"
-      <*> (json <|| "rewards" <|> .success([]))
+extension Project.RewardData: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case addOns = "add_ons"
+    case rewards
+  }
+
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.addOns = try values.decodeIfPresent([Reward].self, forKey: .addOns)
+    self.rewards = try values.decodeIfPresent([Reward].self, forKey: .rewards) ?? []
   }
 }
 
-extension Project.Category: Argo.Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.Category> {
-    return curry(Project.Category.init)
-      <^> json <| "id"
-      <*> json <| "name"
-      <*> json <|? "parent_id"
-      <*> json <|? "parent_name"
+extension Project.Category: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case id
+    case name
+    case parentId = "parent_id"
+    case parentName = "parent_name"
   }
 }
 
-extension Project.Photo: Argo.Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.Photo> {
-    let url1024: Decoded<String?> = ((json <| "1024x768") <|> (json <| "1024x576"))
-      .map(Optional<String>.init)
-      <|> .success(nil)
+extension Project.Photo: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case full
+    case med
+    case size1024x768 = "1024x768"
+    case size1024x576 = "1024x576"
+    case small
+  }
 
-    return curry(Project.Photo.init)
-      <^> json <| "full"
-      <*> json <| "med"
-      <*> url1024
-      <*> json <| "small"
+  public init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.full = try values.decode(String.self, forKey: .full)
+    self.med = try values.decode(String.self, forKey: .med)
+    self.size1024x768 = try values
+      .decodeIfPresent(String.self, forKey: .size1024x768) ??
+      (try values.decodeIfPresent(String.self, forKey: .size1024x576))
+    self.small = try values.decode(String.self, forKey: .small)
   }
 }
 
-extension Project.MemberData.Permission: Argo.Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Project.MemberData.Permission> {
-    if case let .string(permission) = json {
-      return self.init(rawValue: permission).map(pure) ?? .success(.unknown)
-    }
-    return .success(.unknown)
+extension Project.MemberData.Permission: Swift.Decodable {
+  public init(from decoder: Decoder) throws {
+    self = try Project.MemberData
+      .Permission(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
   }
 }
 
 private func removeUnknowns(_ xs: [Project.MemberData.Permission]) -> [Project.MemberData.Permission] {
   return xs.filter { $0 != .unknown }
-}
-
-private func toInt(string: String) -> Decoded<Int> {
-  return Int(string).map(Decoded.success)
-    ?? Decoded.failure(DecodeError.custom("Couldn't decoded \"\(string)\" into Int."))
 }
 
 extension Project: GraphIDBridging {
@@ -397,3 +430,5 @@ extension Project {
     return SignalProducer(value: project)
   }
 }
+
+extension Project.Video: Swift.Decodable {}

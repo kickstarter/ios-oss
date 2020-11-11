@@ -4,7 +4,7 @@ public struct ClearUserUnseenActivityEnvelope {
   public var activityIndicatorCount: Int
 }
 
-extension ClearUserUnseenActivityEnvelope: Decodable {
+extension ClearUserUnseenActivityEnvelope: Swift.Decodable {
   enum CodingKeys: String, CodingKey {
     case clearUserUnseenActivity
     case activityIndicatorCount

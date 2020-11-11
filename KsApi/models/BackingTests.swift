@@ -4,7 +4,7 @@ import XCTest
 
 final class BackingTests: XCTestCase {
   func testJSONDecoding_WithCompleteData() {
-    let backing = Backing.decodeJSONDictionary([
+    let backing: Backing? = Backing.decodeJSONDictionary([
       "amount": 1.0,
       "backer_id": 1,
       "cancelable": true,
@@ -26,28 +26,27 @@ final class BackingTests: XCTestCase {
       "status": "pledged"
     ])
 
-    XCTAssertNil(backing.error)
-    XCTAssertEqual(1.0, backing.value?.amount)
-    XCTAssertEqual(1, backing.value?.backerId)
-    XCTAssertEqual(true, backing.value?.cancelable)
-    XCTAssertEqual(1, backing.value?.id)
-    XCTAssertEqual("2019-09-23", backing.value?.paymentSource?.expirationDate)
-    XCTAssertEqual("20", backing.value?.paymentSource?.id)
-    XCTAssertEqual("1234", backing.value?.paymentSource?.lastFour)
-    XCTAssertEqual("CREDIT_CARD", backing.value?.paymentSource?.paymentType.rawValue)
-    XCTAssertEqual("ACTIVE", backing.value?.paymentSource?.state)
-    XCTAssertEqual(CreditCardType.visa, backing.value?.paymentSource?.type)
-    XCTAssertEqual(1, backing.value?.locationId)
-    XCTAssertEqual("United States", backing.value?.locationName)
-    XCTAssertEqual(1_000, backing.value?.pledgedAt)
-    XCTAssertEqual("US", backing.value?.projectCountry)
-    XCTAssertEqual(1, backing.value?.projectId)
-    XCTAssertEqual(1, backing.value?.sequence)
-    XCTAssertEqual(Backing.Status.pledged, backing.value?.status)
+    XCTAssertEqual(1.0, backing?.amount)
+    XCTAssertEqual(1, backing?.backerId)
+    XCTAssertEqual(true, backing?.cancelable)
+    XCTAssertEqual(1, backing?.id)
+    XCTAssertEqual("2019-09-23", backing?.paymentSource?.expirationDate)
+    XCTAssertEqual("20", backing?.paymentSource?.id)
+    XCTAssertEqual("1234", backing?.paymentSource?.lastFour)
+    XCTAssertEqual("CREDIT_CARD", backing?.paymentSource?.paymentType.rawValue)
+    XCTAssertEqual("ACTIVE", backing?.paymentSource?.state)
+    XCTAssertEqual(CreditCardType.visa, backing?.paymentSource?.type)
+    XCTAssertEqual(1, backing?.locationId)
+    XCTAssertEqual("United States", backing?.locationName)
+    XCTAssertEqual(1_000, backing?.pledgedAt)
+    XCTAssertEqual("US", backing?.projectCountry)
+    XCTAssertEqual(1, backing?.projectId)
+    XCTAssertEqual(1, backing?.sequence)
+    XCTAssertEqual(Backing.Status.pledged, backing?.status)
   }
 
   func testJSONDecoding_IncompletePaymentSource() {
-    let backing = Backing.decodeJSONDictionary([
+    let backing: Backing = try! Backing.decodeJSONDictionary([
       "amount": 1.0,
       "backer_id": 1,
       "cancelable": true,
@@ -62,19 +61,18 @@ final class BackingTests: XCTestCase {
       "status": "pledged"
     ])
 
-    XCTAssertNil(backing.error)
-    XCTAssertEqual(1.0, backing.value?.amount)
-    XCTAssertEqual(1, backing.value?.backerId)
-    XCTAssertEqual(1, backing.value?.id)
+    XCTAssertEqual(1.0, backing.amount)
+    XCTAssertEqual(1, backing.backerId)
+    XCTAssertEqual(1, backing.id)
 
-    XCTAssertNil(backing.value?.paymentSource)
+    XCTAssertNil(backing.paymentSource)
 
-    XCTAssertEqual(1, backing.value?.locationId)
-    XCTAssertEqual("United States", backing.value?.locationName)
-    XCTAssertEqual(1_000, backing.value?.pledgedAt)
-    XCTAssertEqual("US", backing.value?.projectCountry)
-    XCTAssertEqual(1, backing.value?.projectId)
-    XCTAssertEqual(1, backing.value?.sequence)
-    XCTAssertEqual(Backing.Status.pledged, backing.value?.status)
+    XCTAssertEqual(1, backing.locationId)
+    XCTAssertEqual("United States", backing.locationName)
+    XCTAssertEqual(1_000, backing.pledgedAt)
+    XCTAssertEqual("US", backing.projectCountry)
+    XCTAssertEqual(1, backing.projectId)
+    XCTAssertEqual(1, backing.sequence)
+    XCTAssertEqual(Backing.Status.pledged, backing.status)
   }
 }

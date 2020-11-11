@@ -1,5 +1,15 @@
 @testable import KsApi
+import ReactiveExtensions
+import ReactiveSwift
 import XCTest
+
+struct MySwiftModel: Swift.Decodable, Equatable {
+  public let array: [String]
+  public let bool: Bool
+  public let dict: [String: String]
+  public let id: Int
+  public let name: String
+}
 
 final class ServiceTests: XCTestCase {
   func testDefaults() {
@@ -41,5 +51,124 @@ final class ServiceTests: XCTestCase {
     let loggedOut = loggedIn.logout()
 
     XCTAssertTrue(loggedOut == Service())
+  }
+
+  func testSwiftDecodeModel_ValidModel() {
+    let jsonData: String = """
+    {
+        "array": ["string1", "string2"],
+        "bool": true,
+        "dict": {"key1": "value1", "key2": "value2"},
+        "id": 5,
+        "name": "Swift Name"
+    }
+    """
+
+    let expectedResult = try! JSONDecoder().decode(MySwiftModel.self, from: jsonData.data(using: .utf8)!)
+
+    let model: SignalProducer<MySwiftModel, ErrorEnvelope> = Service()
+      .decodeModel(jsonData.data(using: .utf8)!)
+    let result = try! model.single()?.get()
+    XCTAssertEqual(result, expectedResult)
+  }
+
+  func testSwiftDecodeModel_WrongKeyModel() {
+    let jsonData: String = """
+    {
+        "array": ["string1", "string2"],
+        "bool": true,
+        "dict": {"key1": "value1", "key2": "value2"},
+        "id": 5,
+        "wrong_key": "Swift Name"
+    }
+    """
+
+    let model: SignalProducer<MySwiftModel, ErrorEnvelope> = Service()
+      .decodeModel(jsonData.data(using: .utf8)!)
+    XCTAssertThrowsError(try model.single()?.get(), "wrong key should throw an error")
+  }
+
+  func testSwiftDecodeModel_WrongTypeModel() {
+    let jsonData: String = """
+    {
+        "array": ["string1", "string2"],
+        "bool": "wrong_type",
+        "dict": {"key1": "value1", "key2": "value2"},
+        "id": 5,
+        "name": "Swift Name"
+    }
+    """
+
+    let model: SignalProducer<MySwiftModel, ErrorEnvelope> = Service()
+      .decodeModel(jsonData.data(using: .utf8)!)
+    XCTAssertThrowsError(try model.single()?.get(), "wrong key should throw an error")
+  }
+
+  func testSwiftDecodeModel_Optional_WrongTypeModel() {
+    let jsonData: String = """
+    {
+        "array": ["string1", "string2"],
+        "bool": "wrong_type",
+        "dict": {"key1": "value1", "key2": "value2"},
+        "id": 5,
+        "name": "Swift Name"
+    }
+    """
+    let data = jsonData.data(using: .utf8)!
+    let model: SignalProducer<MySwiftModel?, ErrorEnvelope> = Service().decodeModel(data: data)
+    let result = try! model.single()?.get()
+    XCTAssertNil(result)
+  }
+
+  func test_Array_SwiftDecodeModel_ValidModel() {
+    let jsonData: String = """
+    [
+       {
+          "array":[
+             "string1",
+             "string2"
+          ],
+          "bool":true,
+          "dict":{
+             "key1":"value1",
+             "key2":"value2"
+          },
+          "id":5,
+          "name":"Swift Name"
+       },
+       {
+          "array":[
+             "string1",
+             "string2"
+          ],
+          "bool":true,
+          "dict":{
+             "key1":"value1",
+             "key2":"value2"
+          },
+          "id":6,
+          "name":"Swift Name"
+       }
+    ]
+    """
+
+    let expectedResult = try! JSONDecoder().decode([MySwiftModel].self, from: jsonData.data(using: .utf8)!)
+
+    let model: SignalProducer<[MySwiftModel], ErrorEnvelope> = Service()
+      .decodeModels(jsonData.data(using: .utf8)!)
+    let result = try! model.single()?.get()
+    XCTAssertEqual(result, expectedResult)
+  }
+
+  func test_Array_SwiftDecodeModel_EmptyArray() {
+    let jsonData: String = """
+    [
+    ]
+    """
+
+    let model: SignalProducer<[MySwiftModel], ErrorEnvelope> = Service()
+      .decodeModels(jsonData.data(using: .utf8)!)
+    let result = try! model.single()?.get()
+    XCTAssertEqual(result?.count, 0)
   }
 }

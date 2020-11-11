@@ -1,4 +1,3 @@
-import Argo
 import Foundation
 import ReactiveSwift
 
@@ -10,12 +9,6 @@ import ReactiveSwift
 
 public struct BackingsEnvelope {
   public let projectsAndBackings: [ProjectAndBackingEnvelope]
-}
-
-extension BackingsEnvelope: Argo.Decodable {
-  public static func decode(_: JSON) -> Decoded<BackingsEnvelope> {
-    fatalError("Conformance is to satisfy the compiler, do not create this model using Argo.")
-  }
 }
 
 // MARK: - GraphQL Adapters

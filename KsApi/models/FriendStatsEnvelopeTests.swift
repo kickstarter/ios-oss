@@ -1,4 +1,3 @@
-import Argo
 @testable import KsApi
 import XCTest
 
@@ -11,9 +10,9 @@ final class FriendStatsEnvelopeTests: XCTestCase {
       ]
     ]
 
-    let stats = FriendStatsEnvelope.decodeJSONDictionary(json)
+    let stats: FriendStatsEnvelope! = FriendStatsEnvelope.decodeJSONDictionary(json)
 
-    XCTAssertEqual(202, stats.value?.stats.remoteFriendsCount)
-    XCTAssertEqual(1_132, stats.value?.stats.friendProjectsCount)
+    XCTAssertEqual(202, stats.stats.remoteFriendsCount)
+    XCTAssertEqual(1_132, stats.stats.friendProjectsCount)
   }
 }

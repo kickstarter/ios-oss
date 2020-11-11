@@ -30,7 +30,7 @@ extension DiscoveryEnvelope.UrlsEnvelope.ApiEnvelope {
   public enum lens {
     public static let moreProjects = Lens<DiscoveryEnvelope.UrlsEnvelope.ApiEnvelope, String>(
       view: { $0.moreProjects },
-      set: { part, _ in DiscoveryEnvelope.UrlsEnvelope.ApiEnvelope(more_projects: part) }
+      set: { part, _ in DiscoveryEnvelope.UrlsEnvelope.ApiEnvelope(moreProjects: part) }
     )
   }
 }

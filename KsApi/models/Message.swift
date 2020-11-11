@@ -1,4 +1,3 @@
-import Argo
 import Curry
 import Foundation
 import Runes
@@ -11,13 +10,12 @@ public struct Message {
   public let sender: User
 }
 
-extension Message: Argo.Decodable {
-  public static func decode(_ json: JSON) -> Decoded<Message> {
-    return curry(Message.init)
-      <^> json <| "body"
-      <*> json <| "created_at"
-      <*> json <| "id"
-      <*> json <| "recipient"
-      <*> json <| "sender"
+extension Message: Swift.Decodable {
+  enum CodingKeys: String, CodingKey {
+    case body
+    case createdAt = "created_at"
+    case id
+    case recipient
+    case sender
   }
 }

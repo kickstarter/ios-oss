@@ -1,14 +1,17 @@
-import Argo
+import Foundation
 
-public extension Argo.Decodable {
-  /**
-   Decode a JSON dictionary into a `Decoded` type.
+public extension Swift.Decodable {
+  static func decodeJSONDictionary(_ json: Any) throws -> Self {
+    let data = try JSONSerialization.data(withJSONObject: json, options: [])
+    let value = try JSONDecoder().decode(Self.self, from: data)
+    return value
+  }
 
-   - parameter json: A dictionary with string keys.
-
-   - returns: A decoded value.
-   */
-  static func decodeJSONDictionary(_ json: [String: Any]) -> Decoded<DecodedType> {
-    return Self.decode(JSON(json))
+  static func decodeJSONDictionary(_ json: Any) -> Self? {
+    if let data = try? JSONSerialization.data(withJSONObject: json, options: []),
+      let value = try? JSONDecoder().decode(Self.self, from: data) {
+      return value
+    }
+    return nil
   }
 }
