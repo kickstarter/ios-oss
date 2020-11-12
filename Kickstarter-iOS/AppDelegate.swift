@@ -445,9 +445,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
   public func userNotificationCenter(
     _: UNUserNotificationCenter,
-    didReceive _: UNNotificationResponse,
+    didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
+    guard let rootTabBarController = self.rootTabBarController else {
+      completion()
+      return
+    }
+    self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
+    rootTabBarController.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
     completion()
   }
 }
