@@ -50,7 +50,7 @@ public struct Project {
     public var hls: String?
   }
 
-  public enum State: String, CaseIterable, Swift.Decodable {
+  public enum State: String, CaseIterable, Decodable {
     case canceled
     case failed
     case live
@@ -234,7 +234,7 @@ extension Project: CustomDebugStringConvertible {
   }
 }
 
-extension Project: Swift.Decodable {
+extension Project: Decodable {
   enum CodingKeys: String, CodingKey {
     case availableCardTypes = "available_card_types"
     case blurb
@@ -277,20 +277,20 @@ extension Project: Swift.Decodable {
   }
 }
 
-extension Project.UrlsEnvelope: Swift.Decodable {
+extension Project.UrlsEnvelope: Decodable {
   enum CodingKeys: String, CodingKey {
     case web
   }
 }
 
-extension Project.UrlsEnvelope.WebEnvelope: Swift.Decodable {
+extension Project.UrlsEnvelope.WebEnvelope: Decodable {
   enum CodingKeys: String, CodingKey {
     case project
     case updates
   }
 }
 
-extension Project.Stats: Swift.Decodable {
+extension Project.Stats: Decodable {
   enum CodingKeys: String, CodingKey {
     case backersCount = "backers_count"
     case commentsCount = "comments_count"
@@ -320,7 +320,7 @@ extension Project.Stats: Swift.Decodable {
   }
 }
 
-extension Project.MemberData: Swift.Decodable {
+extension Project.MemberData: Decodable {
   enum CodingKeys: String, CodingKey {
     case lastUpdatePublishedAt = "last_update_published_at"
     case permissions
@@ -338,7 +338,7 @@ extension Project.MemberData: Swift.Decodable {
   }
 }
 
-extension Project.Dates: Swift.Decodable {
+extension Project.Dates: Decodable {
   enum CodingKeys: String, CodingKey {
     case deadline
     case featuredAt = "featured_at"
@@ -348,7 +348,7 @@ extension Project.Dates: Swift.Decodable {
   }
 }
 
-extension Project.Personalization: Swift.Decodable {
+extension Project.Personalization: Decodable {
   enum CodingKeys: String, CodingKey {
     case backing
     case friends
@@ -357,7 +357,7 @@ extension Project.Personalization: Swift.Decodable {
   }
 }
 
-extension Project.RewardData: Swift.Decodable {
+extension Project.RewardData: Decodable {
   enum CodingKeys: String, CodingKey {
     case addOns = "add_ons"
     case rewards
@@ -370,7 +370,7 @@ extension Project.RewardData: Swift.Decodable {
   }
 }
 
-extension Project.Category: Swift.Decodable {
+extension Project.Category: Decodable {
   enum CodingKeys: String, CodingKey {
     case id
     case name
@@ -379,7 +379,7 @@ extension Project.Category: Swift.Decodable {
   }
 }
 
-extension Project.Photo: Swift.Decodable {
+extension Project.Photo: Decodable {
   enum CodingKeys: String, CodingKey {
     case full
     case med
@@ -399,7 +399,7 @@ extension Project.Photo: Swift.Decodable {
   }
 }
 
-extension Project.MemberData.Permission: Swift.Decodable {
+extension Project.MemberData.Permission: Decodable {
   public init(from decoder: Decoder) throws {
     self = try Project.MemberData
       .Permission(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
@@ -430,4 +430,4 @@ extension Project {
   }
 }
 
-extension Project.Video: Swift.Decodable {}
+extension Project.Video: Decodable {}

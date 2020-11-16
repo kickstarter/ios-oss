@@ -20,7 +20,7 @@ public func == (lhs: SurveyResponse, rhs: SurveyResponse) -> Bool {
   return lhs.id == rhs.id
 }
 
-extension SurveyResponse: Swift.Decodable {
+extension SurveyResponse: Decodable {
   enum CodingKeys: String, CodingKey {
     case answeredAt = "answered_at"
     case id
@@ -29,5 +29,5 @@ extension SurveyResponse: Swift.Decodable {
   }
 }
 
-extension SurveyResponse.UrlsEnvelope: Swift.Decodable {}
-extension SurveyResponse.UrlsEnvelope.WebEnvelope: Swift.Decodable {}
+extension SurveyResponse.UrlsEnvelope: Decodable {}
+extension SurveyResponse.UrlsEnvelope.WebEnvelope: Decodable {}

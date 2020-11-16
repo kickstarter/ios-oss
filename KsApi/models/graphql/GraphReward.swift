@@ -1,7 +1,7 @@
 import Foundation
 import Prelude
 
-struct GraphReward: Swift.Decodable {
+struct GraphReward: Decodable {
   var amount: Money
   var backersCount: Int
   var convertedAmount: Money
@@ -21,29 +21,29 @@ struct GraphReward: Swift.Decodable {
   var shippingRulesExpanded: ShippingRuleExpanded?
   var startsAt: TimeInterval?
 
-  struct Items: Swift.Decodable {
+  struct Items: Decodable {
     let nodes: [Item]
 
-    struct Item: Swift.Decodable {
+    struct Item: Decodable {
       var id: String
       var name: String
     }
   }
 
   // TODO: Extract to global scope as `GraphShippingPreference` when needed.
-  enum ShippingPreference: String, Swift.Decodable {
+  enum ShippingPreference: String, Decodable {
     case noShipping = "none"
     case restricted
     case unrestricted
   }
 
   // TODO: Extract to global scope as `GraphShippingRule` when needed.
-  struct ShippingRule: Swift.Decodable {
+  struct ShippingRule: Decodable {
     var cost: Money
     var id: String
     var location: GraphLocation
 
-    struct Location: Swift.Decodable {
+    struct Location: Decodable {
       var country: String
       var countryName: String
       var displayableName: String
@@ -52,7 +52,7 @@ struct GraphReward: Swift.Decodable {
     }
   }
 
-  struct ShippingRuleExpanded: Swift.Decodable {
+  struct ShippingRuleExpanded: Decodable {
     let nodes: [ShippingRule]
   }
 }

@@ -59,7 +59,7 @@ public func == (lhs: UpdateDraft.Attachment, rhs: UpdateDraft.Attachment) -> Boo
   return lhs.id == rhs.id
 }
 
-extension UpdateDraft: Swift.Decodable {
+extension UpdateDraft: Decodable {
   enum CodingKeys: String, CodingKey {
     case images
     case video
@@ -73,6 +73,6 @@ extension UpdateDraft: Swift.Decodable {
   }
 }
 
-extension UpdateDraft.Image: Swift.Decodable {}
-extension UpdateDraft.Video: Swift.Decodable {}
-extension UpdateDraft.Video.Status: Swift.Decodable {}
+extension UpdateDraft.Image: Decodable {}
+extension UpdateDraft.Video: Decodable {}
+extension UpdateDraft.Video.Status: Decodable {}

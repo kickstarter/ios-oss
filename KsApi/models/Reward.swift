@@ -38,14 +38,14 @@ public struct Reward {
       ?? otherShippingRule
   }
 
-  public struct Shipping: Swift.Decodable {
+  public struct Shipping: Decodable {
     public let enabled: Bool
     public let location: Location? /// via v1 if `ShippingType` is `singleLocation`
     public let preference: Preference?
     public let summary: String?
     public let type: ShippingType?
 
-    public struct Location: Equatable, Swift.Decodable {
+    public struct Location: Equatable, Decodable {
       private enum CodingKeys: String, CodingKey {
         case id
         case localizedName = "localized_name"
@@ -55,13 +55,13 @@ public struct Reward {
       public let localizedName: String
     }
 
-    public enum Preference: String, Swift.Decodable {
+    public enum Preference: String, Decodable {
       case none
       case restricted
       case unrestricted
     }
 
-    public enum ShippingType: String, Swift.Decodable {
+    public enum ShippingType: String, Decodable {
       case anywhere
       case multipleLocations = "multiple_locations"
       case noShipping = "no_shipping"
@@ -82,7 +82,7 @@ public func < (lhs: Reward, rhs: Reward) -> Bool {
   return minimumAndIdComparator.isOrdered(lhs, rhs)
 }
 
-extension Reward: Swift.Decodable {
+extension Reward: Decodable {
   enum CodingKeys: String, CodingKey {
     case backersCount = "backers_count"
     case convertedMinimum = "converted_minimum"

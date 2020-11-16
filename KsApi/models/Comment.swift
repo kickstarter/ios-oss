@@ -8,7 +8,7 @@ public struct Comment {
   public let id: Int
 }
 
-extension Comment: Swift.Decodable {
+extension Comment: Decodable {
   enum CodingKeys: String, CodingKey {
     case author
     case body

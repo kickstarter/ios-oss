@@ -1,13 +1,13 @@
 
 
-public struct CommentsEnvelope: Swift.Decodable {
+public struct CommentsEnvelope: Decodable {
   public let comments: [Comment]
   public let urls: UrlsEnvelope
 
-  public struct UrlsEnvelope: Swift.Decodable {
+  public struct UrlsEnvelope: Decodable {
     public let api: ApiEnvelope
 
-    public struct ApiEnvelope: Swift.Decodable {
+    public struct ApiEnvelope: Decodable {
       public let moreComments: String
     }
   }

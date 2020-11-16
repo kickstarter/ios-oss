@@ -2,11 +2,11 @@ import Prelude
 
 // MARK: - Graph Response
 
-public struct GraphResponse<T: Swift.Decodable>: Swift.Decodable {
+public struct GraphResponse<T: Decodable>: Decodable {
   let data: T
 }
 
-public struct GraphResponseErrorEnvelope: Swift.Decodable {
+public struct GraphResponseErrorEnvelope: Decodable {
   let errors: [GraphResponseError]?
 }
 
@@ -53,7 +53,7 @@ public func decompose(id: String) -> Int? {
     }
 }
 
-public struct RelayId: Swift.Decodable {
+public struct RelayId: Decodable {
   let id: String
 }
 
@@ -100,7 +100,7 @@ public enum Nodes<Q: QueryType> {
   case nodes(NonEmptySet<Q>)
 }
 
-public struct GraphResponseError: Swift.Decodable {
+public struct GraphResponseError: Decodable {
   public let message: String
 }
 

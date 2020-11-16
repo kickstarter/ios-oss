@@ -9,7 +9,7 @@ public struct Message {
   public let sender: User
 }
 
-extension Message: Swift.Decodable {
+extension Message: Decodable {
   enum CodingKeys: String, CodingKey {
     case body
     case createdAt = "created_at"

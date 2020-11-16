@@ -1,12 +1,12 @@
 import Foundation
 
-public struct GraphMutationWatchProjectResponseEnvelope: Swift.Decodable {
+public struct GraphMutationWatchProjectResponseEnvelope: Decodable {
   public var watchProject: WatchProject
 
-  public struct WatchProject: Swift.Decodable {
+  public struct WatchProject: Decodable {
     public var project: Project
 
-    public struct Project: Swift.Decodable {
+    public struct Project: Decodable {
       public var id: String
       public var isWatched: Bool
     }

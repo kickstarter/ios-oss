@@ -52,7 +52,7 @@ extension Project {
   }
 }
 
-extension Project.Country: Swift.Decodable {
+extension Project.Country: Decodable {
   enum CodingKeys: String, CodingKey {
     case countryCode = "country",
       currency,

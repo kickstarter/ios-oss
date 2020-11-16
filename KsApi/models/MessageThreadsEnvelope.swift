@@ -1,6 +1,6 @@
 
 
-public struct MessageThreadsEnvelope: Swift.Decodable {
+public struct MessageThreadsEnvelope: Decodable {
   public let messageThreads: [MessageThread]
   public let urls: UrlsEnvelope
 
@@ -9,10 +9,10 @@ public struct MessageThreadsEnvelope: Swift.Decodable {
     case urls
   }
 
-  public struct UrlsEnvelope: Swift.Decodable {
+  public struct UrlsEnvelope: Decodable {
     public let api: ApiEnvelope
 
-    public struct ApiEnvelope: Swift.Decodable {
+    public struct ApiEnvelope: Decodable {
       public let moreMessageThreads: String
 
       enum CodingKeys: String, CodingKey {

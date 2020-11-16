@@ -1,13 +1,13 @@
 
 import Foundation
 
-public struct Author: Swift.Decodable {
+public struct Author: Decodable {
   public var avatar: Avatar
   public var id: Int
   public var name: String
   public var urls: Url
 
-  public struct Avatar: Swift.Decodable {
+  public struct Avatar: Decodable {
     public var medium: String?
     public var small: String
     public var thumb: String
@@ -19,7 +19,7 @@ public struct Author: Swift.Decodable {
   }
 }
 
-extension Author.Url: Swift.Decodable {
+extension Author.Url: Decodable {
   enum CodingKeys: String, CodingKey {
     case api
     case user

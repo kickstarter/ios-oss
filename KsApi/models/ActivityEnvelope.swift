@@ -13,16 +13,16 @@ public struct ActivityEnvelope {
   }
 }
 
-extension ActivityEnvelope: Swift.Decodable {
+extension ActivityEnvelope: Decodable {
   enum CodingKeys: String, CodingKey {
     case activities
     case urls
   }
 }
 
-extension ActivityEnvelope.UrlsEnvelope: Swift.Decodable {}
+extension ActivityEnvelope.UrlsEnvelope: Decodable {}
 
-extension ActivityEnvelope.UrlsEnvelope.ApiEnvelope: Swift.Decodable {
+extension ActivityEnvelope.UrlsEnvelope.ApiEnvelope: Decodable {
   enum CodingKeys: String, CodingKey {
     case moreActivities = "more_activities"
   }

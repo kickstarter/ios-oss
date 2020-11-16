@@ -128,7 +128,7 @@ public struct ErrorEnvelope {
 
 extension ErrorEnvelope: Error {}
 
-extension ErrorEnvelope: Swift.Decodable {
+extension ErrorEnvelope: Decodable {
   enum CodingKeys: String, CodingKey {
     case errorMessages = "error_messages"
     case ksrCode = "ksr_code"
@@ -162,9 +162,9 @@ extension ErrorEnvelope: Swift.Decodable {
   }
 }
 
-extension ErrorEnvelope.AltErrorMessage: Swift.Decodable {}
+extension ErrorEnvelope.AltErrorMessage: Decodable {}
 
-extension ErrorEnvelope.AltErrorMessage.AltErrorDetails: Swift.Decodable {
+extension ErrorEnvelope.AltErrorMessage.AltErrorDetails: Decodable {
   enum CodingKeys: String, CodingKey {
     case amount
     case backerReward = "backer_reward"
@@ -177,9 +177,9 @@ extension ErrorEnvelope.AltErrorMessage.AltErrorDetails: Swift.Decodable {
   }
 }
 
-extension ErrorEnvelope.Exception: Swift.Decodable {}
+extension ErrorEnvelope.Exception: Decodable {}
 
-extension ErrorEnvelope.KsrCode: Swift.Decodable {
+extension ErrorEnvelope.KsrCode: Decodable {
   public init(from decoder: Decoder) throws {
     self = try ErrorEnvelope
       .KsrCode(rawValue: decoder.singleValueContainer().decode(String.self)) ?? ErrorEnvelope.KsrCode
@@ -187,7 +187,7 @@ extension ErrorEnvelope.KsrCode: Swift.Decodable {
   }
 }
 
-extension ErrorEnvelope.FacebookUser: Swift.Decodable {}
+extension ErrorEnvelope.FacebookUser: Decodable {}
 
 // MARK: - GraphError
 

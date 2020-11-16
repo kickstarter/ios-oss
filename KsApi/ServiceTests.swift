@@ -3,7 +3,7 @@ import ReactiveExtensions
 import ReactiveSwift
 import XCTest
 
-struct MySwiftModel: Swift.Decodable, Equatable {
+struct MySwiftModel: Decodable, Equatable {
   public let array: [String]
   public let bool: Bool
   public let dict: [String: String]

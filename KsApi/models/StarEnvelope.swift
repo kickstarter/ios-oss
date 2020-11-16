@@ -5,4 +5,4 @@ public struct StarEnvelope {
   public let project: Project
 }
 
-extension StarEnvelope: Swift.Decodable {}
+extension StarEnvelope: Decodable {}

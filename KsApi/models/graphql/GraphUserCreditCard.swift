@@ -1,10 +1,10 @@
 
 
 // TODO: Remove public access
-public struct GraphUserCreditCard: Swift.Decodable {
+public struct GraphUserCreditCard: Decodable {
   public var storedCards: CreditCardConnection
 
-  public struct CreditCard: Swift.Decodable, Equatable {
+  public struct CreditCard: Decodable, Equatable {
     public var expirationDate: String
     public var id: String
     public var lastFour: String
@@ -24,7 +24,7 @@ public struct GraphUserCreditCard: Swift.Decodable {
     }
   }
 
-  public struct CreditCardConnection: Swift.Decodable {
+  public struct CreditCardConnection: Decodable {
     public let nodes: [CreditCard]
   }
 }

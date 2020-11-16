@@ -1,6 +1,6 @@
 import Foundation
 
-public enum ProjectState: String, CaseIterable, Swift.Decodable, Equatable {
+public enum ProjectState: String, CaseIterable, Decodable, Equatable {
   case canceled = "CANCELED"
   case failed = "FAILED"
   case live = "LIVE"

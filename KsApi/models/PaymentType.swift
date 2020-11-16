@@ -1,6 +1,6 @@
 import Foundation
 
-public enum PaymentType: String, Swift.Decodable {
+public enum PaymentType: String, Decodable {
   case applePay = "APPLE_PAY"
   case creditCard = "CREDIT_CARD"
   case googlePay = "ANDROID_PAY"

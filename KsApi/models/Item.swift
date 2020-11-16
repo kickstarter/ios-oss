@@ -7,7 +7,7 @@ public struct Item {
   public let projectId: Int
 }
 
-extension Item: Swift.Decodable {
+extension Item: Decodable {
   enum CodingKeys: String, CodingKey {
     case description
     case id

@@ -6,7 +6,7 @@ import ReactiveSwift
 extension Service {
   private static let session = URLSession(configuration: .default)
 
-  func fetch<A: Swift.Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> {
+  func fetch<A: Decodable>(query: NonEmptySet<Query>) -> SignalProducer<A, GraphError> {
     let queryString: String = Query.build(query)
 
     let request = self.preparedRequest(
@@ -19,7 +19,7 @@ extension Service {
       .flatMap(self.decodeGraphModel)
   }
 
-  func applyMutation<A: Swift.Decodable, B: GraphMutation>(mutation: B) -> SignalProducer<A, GraphError> {
+  func applyMutation<A: Decodable, B: GraphMutation>(mutation: B) -> SignalProducer<A, GraphError> {
     do {
       let request = try self.preparedGraphRequest(
         forURL: self.serverConfig.graphQLEndpointUrl,
@@ -36,7 +36,7 @@ extension Service {
     }
   }
 
-  func requestDecodable<M: Swift.Decodable>(_ route: Route)
+  func requestDecodable<M: Decodable>(_ route: Route)
     -> SignalProducer<M, ErrorEnvelope> {
     let properties = route.requestProperties
 
@@ -53,7 +53,7 @@ extension Service {
     .flatMap(self.decodeModel)
   }
 
-  func requestPaginationDecodable<M: Swift.Decodable>(_ paginationUrl: String)
+  func requestPaginationDecodable<M: Decodable>(_ paginationUrl: String)
     -> SignalProducer<M, ErrorEnvelope> {
     guard let paginationUrl = URL(string: paginationUrl) else {
       return .init(error: .invalidPaginationUrl)

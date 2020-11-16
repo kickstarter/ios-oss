@@ -6,7 +6,7 @@ public struct MessageThreadEnvelope {
   public let messageThread: MessageThread
 }
 
-extension MessageThreadEnvelope: Swift.Decodable {
+extension MessageThreadEnvelope: Decodable {
   enum CodingKeys: String, CodingKey {
     case participants
     case messages

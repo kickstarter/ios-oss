@@ -5,7 +5,7 @@ public struct ChangePaymentMethodEnvelope {
   public let status: Int
 }
 
-extension ChangePaymentMethodEnvelope: Swift.Decodable {
+extension ChangePaymentMethodEnvelope: Decodable {
   private enum CodingKeys: String, CodingKey {
     case data
     case status

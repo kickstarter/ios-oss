@@ -1,7 +1,7 @@
 import Foundation
 import Prelude
 
-struct GraphProject: Swift.Decodable {
+struct GraphProject: Decodable {
   var actions: Actions
   var addOns: AddOns?
   var backersCount: Int
@@ -29,20 +29,20 @@ struct GraphProject: Swift.Decodable {
   var url: String
   var usdExchangeRate: Double?
 
-  struct Actions: Swift.Decodable {
+  struct Actions: Decodable {
     var displayConvertAmount: Bool
   }
 
-  struct AddOns: Swift.Decodable {
+  struct AddOns: Decodable {
     var nodes: [GraphReward]
   }
 
-  struct Image: Swift.Decodable {
+  struct Image: Decodable {
     var id: String
     var url: String
   }
 
-  struct Rewards: Swift.Decodable {
+  struct Rewards: Decodable {
     var nodes: [GraphReward]
   }
 }

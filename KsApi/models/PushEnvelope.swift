@@ -49,7 +49,7 @@ public struct PushEnvelope {
   }
 }
 
-extension PushEnvelope: Swift.Decodable {
+extension PushEnvelope: Decodable {
   enum CodingKeys: String, CodingKey {
     case activity
     case aps
@@ -79,7 +79,7 @@ extension PushEnvelope: Swift.Decodable {
   }
 }
 
-extension PushEnvelope.Activity: Swift.Decodable {
+extension PushEnvelope.Activity: Decodable {
   enum CodingKeys: String, CodingKey {
     case category
     case commentId = "comment_id"
@@ -91,40 +91,40 @@ extension PushEnvelope.Activity: Swift.Decodable {
   }
 }
 
-extension PushEnvelope.ApsEnvelope: Swift.Decodable {
+extension PushEnvelope.ApsEnvelope: Decodable {
   enum CodingKeys: String, CodingKey {
     case alert
   }
 }
 
-extension PushEnvelope.ErroredPledge: Swift.Decodable {
+extension PushEnvelope.ErroredPledge: Decodable {
   enum CodingKeys: String, CodingKey {
     case projectId = "project_id"
   }
 }
 
-extension PushEnvelope.Message: Swift.Decodable {
+extension PushEnvelope.Message: Decodable {
   enum CodingKeys: String, CodingKey {
     case messageThreadId = "message_thread_id"
     case projectId = "project_id"
   }
 }
 
-extension PushEnvelope.Project: Swift.Decodable {
+extension PushEnvelope.Project: Decodable {
   enum CodingKeys: String, CodingKey {
     case id
     case photo
   }
 }
 
-extension PushEnvelope.Survey: Swift.Decodable {
+extension PushEnvelope.Survey: Decodable {
   enum CodingKeys: String, CodingKey {
     case id
     case projectId = "project_id"
   }
 }
 
-extension PushEnvelope.Update: Swift.Decodable {
+extension PushEnvelope.Update: Decodable {
   enum CodingKeys: String, CodingKey {
     case id
     case projectId = "project_id"

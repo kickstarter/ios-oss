@@ -6,7 +6,7 @@ public struct ShippingRule {
   public let location: Location
 }
 
-extension ShippingRule: Swift.Decodable {
+extension ShippingRule: Decodable {
   enum CodingKeys: String, CodingKey {
     case cost
     case id

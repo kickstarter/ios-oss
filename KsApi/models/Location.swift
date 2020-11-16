@@ -8,7 +8,7 @@ public struct Location {
   public static let none = Location(country: "", displayableName: "", id: -42, localizedName: "", name: "")
 }
 
-extension Location: Swift.Decodable {
+extension Location: Decodable {
   enum CodingKeys: String, CodingKey {
     case country
     case displayableName = "displayable_name"

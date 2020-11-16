@@ -1,7 +1,7 @@
 import Foundation
 import Prelude
 
-struct GraphLocation: Swift.Decodable {
+struct GraphLocation: Decodable {
   var country: String
   var countryName: String?
   var displayableName: String

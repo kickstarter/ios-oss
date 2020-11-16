@@ -36,7 +36,7 @@ public struct Config {
   }
 }
 
-extension Config: Swift.Decodable {
+extension Config: Decodable {
   enum CodingKeys: String, CodingKey {
     case abExperiments = "ab_experiments"
     case appId = "app_id"

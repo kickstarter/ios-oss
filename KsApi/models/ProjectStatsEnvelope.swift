@@ -63,7 +63,7 @@ public struct ProjectStatsEnvelope {
   }
 }
 
-extension ProjectStatsEnvelope: Swift.Decodable {
+extension ProjectStatsEnvelope: Decodable {
   private enum CodingKeys: String, CodingKey {
     case cumulativeStats = "cumulative"
     case fundingDistribution = "funding_distribution"
@@ -88,7 +88,7 @@ extension ProjectStatsEnvelope: Swift.Decodable {
   }
 }
 
-extension ProjectStatsEnvelope.CumulativeStats: Swift.Decodable {
+extension ProjectStatsEnvelope.CumulativeStats: Decodable {
   enum CodingKeys: String, CodingKey {
     case averagePledge = "average_pledge"
     case backersCount = "backers_count"
@@ -113,7 +113,7 @@ public func == (lhs: ProjectStatsEnvelope.CumulativeStats, rhs: ProjectStatsEnve
   return lhs.averagePledge == rhs.averagePledge
 }
 
-extension ProjectStatsEnvelope.FundingDateStats: Swift.Decodable {
+extension ProjectStatsEnvelope.FundingDateStats: Decodable {
   private enum CodingKeys: String, CodingKey {
     case backersCount = "backers_count"
     case cumulativePledged = "cumulative_pledged"
@@ -146,7 +146,7 @@ public func == (lhs: ProjectStatsEnvelope.FundingDateStats, rhs: ProjectStatsEnv
   return lhs.date == rhs.date
 }
 
-extension ProjectStatsEnvelope.ReferralAggregateStats: Swift.Decodable {
+extension ProjectStatsEnvelope.ReferralAggregateStats: Decodable {
   private enum CodingKeys: String, CodingKey {
     case custom
     case external
@@ -171,7 +171,7 @@ public func == (
     lhs.kickstarter == rhs.kickstarter
 }
 
-extension ProjectStatsEnvelope.ReferrerStats: Swift.Decodable {
+extension ProjectStatsEnvelope.ReferrerStats: Decodable {
   private enum CodingKeys: String, CodingKey {
     case backersCount = "backers_count"
     case code
@@ -197,7 +197,7 @@ public func == (lhs: ProjectStatsEnvelope.ReferrerStats, rhs: ProjectStatsEnvelo
   return lhs.code == rhs.code
 }
 
-extension ProjectStatsEnvelope.ReferrerStats.ReferrerType: Swift.Decodable {
+extension ProjectStatsEnvelope.ReferrerStats.ReferrerType: Decodable {
   public init(from decoder: Decoder) throws {
     do {
       let value = try decoder.singleValueContainer().decode(String.self).lowercased()
@@ -217,7 +217,7 @@ extension ProjectStatsEnvelope.ReferrerStats.ReferrerType: Swift.Decodable {
   }
 }
 
-extension ProjectStatsEnvelope.RewardStats: Swift.Decodable {
+extension ProjectStatsEnvelope.RewardStats: Decodable {
   private enum CodingKeys: String, CodingKey {
     case backersCount = "backers_count"
     case rewardId = "reward_id"
@@ -245,7 +245,7 @@ public func == (lhs: ProjectStatsEnvelope.RewardStats, rhs: ProjectStatsEnvelope
   return lhs.rewardId == rhs.rewardId
 }
 
-extension ProjectStatsEnvelope.VideoStats: Swift.Decodable {
+extension ProjectStatsEnvelope.VideoStats: Decodable {
   private enum CodingKeys: String, CodingKey {
     case externalCompletions = "external_completions"
     case externalStarts = "external_starts"
@@ -274,7 +274,7 @@ private func stringToDouble(_ string: String) -> Double {
   return Double(string) ?? 0
 }
 
-private struct OptionalObject<Base: Swift.Decodable>: Swift.Decodable {
+private struct OptionalObject<Base: Decodable>: Decodable {
   public let value: Base?
 
   public init(from decoder: Decoder) throws {

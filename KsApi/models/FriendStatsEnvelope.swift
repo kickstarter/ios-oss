@@ -9,13 +9,13 @@ public struct FriendStatsEnvelope {
   }
 }
 
-extension FriendStatsEnvelope: Swift.Decodable {
+extension FriendStatsEnvelope: Decodable {
   enum CodingKeys: String, CodingKey {
     case stats
   }
 }
 
-extension FriendStatsEnvelope.Stats: Swift.Decodable {
+extension FriendStatsEnvelope.Stats: Decodable {
   enum CodingKeys: String, CodingKey {
     case friendProjectsCount = "friend_projects_count"
     case remoteFriendsCount = "remote_friends_count"
