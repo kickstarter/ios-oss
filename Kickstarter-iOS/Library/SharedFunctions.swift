@@ -47,3 +47,15 @@ public func logoutAndDismiss(
 
   viewController.dismiss(animated: true, completion: nil)
 }
+
+// MARK: - Email Verification workflow
+
+public func startEmailVerificationViewController(
+  viewController: UIViewController
+) {
+  /**
+   FIXME: `UIViewController` needs to be replaced with the EmailVerification UI when development is complete.
+   */
+  viewController.navigationController?.pushViewController(UIViewController.instantiate(), animated: true)
+  viewController.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+}
