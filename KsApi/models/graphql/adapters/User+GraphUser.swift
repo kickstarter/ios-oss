@@ -17,6 +17,7 @@ extension User {
       facebookConnected: nil,
       id: id,
       isAdmin: nil,
+      isEmailVerified: nil,
       isFriend: nil,
       location: nil,
       name: graphUser.name,
