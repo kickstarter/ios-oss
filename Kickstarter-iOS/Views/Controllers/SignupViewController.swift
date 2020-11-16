@@ -121,6 +121,13 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.viewModel.outputs.logIntoEnvironment
       .observeValues { [weak self] in
         AppEnvironment.login($0)
+        if featureEmailVerificationFlowIsEnabled() {
+          guard let isEmailVerified = AppEnvironment.current.currentUser?.isEmailVerified,
+            isEmailVerified else {
+            self?.startEmailVerificationViewController()
+            return
+          }
+        }
         self?.viewModel.inputs.environmentLoggedIn()
       }
 
@@ -226,6 +233,14 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   fileprivate func goToHelpType(_ helpType: HelpType) {
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
     self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  fileprivate func startEmailVerificationViewController() {
+    /**
+     FIXME: `UIViewController` needs to be replaced with the EmailVerification UI when development is complete.
+     */
+    self.navigationController?.pushViewController(UIViewController.instantiate(), animated: true)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   fileprivate func showHelpSheet(helpTypes: [HelpType]) {

@@ -132,8 +132,16 @@ internal final class LoginViewController: UIViewController {
       }
 
     self.viewModel.outputs.logIntoEnvironment
+      .observeForControllerAction()
       .observeValues { [weak self] env in
         AppEnvironment.login(env)
+        if featureEmailVerificationFlowIsEnabled() {
+          guard let isEmailVerified = AppEnvironment.current.currentUser?.isEmailVerified,
+            isEmailVerified else {
+            self?.startEmailVerificationViewController()
+            return
+          }
+        }
         self?.viewModel.inputs.environmentLoggedIn()
       }
 
@@ -164,6 +172,14 @@ internal final class LoginViewController: UIViewController {
   fileprivate func startResetPasswordViewController() {
     let vc = ResetPasswordViewController.configuredWith(email: self.emailTextField.text)
     self.navigationController?.pushViewController(vc, animated: true)
+  }
+
+  fileprivate func startEmailVerificationViewController() {
+    /**
+     FIXME: `UIViewController` needs to be replaced with the EmailVerification UI when development is complete.
+     */
+    self.navigationController?.pushViewController(UIViewController.instantiate(), animated: true)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
   }
 
   fileprivate func updateShowHidePassword(_ shouldShow: Bool) {
