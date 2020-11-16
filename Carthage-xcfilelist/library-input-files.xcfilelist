@@ -1,6 +1,5 @@
 # Carthage input files
 
-$(SRCROOT)/Carthage/Build/iOS/Argo.framework
 $(SRCROOT)/Carthage/Build/iOS/Curry.framework
 $(SRCROOT)/Carthage/Build/iOS/FBSDKCoreKit.framework
 $(SRCROOT)/Carthage/Build/iOS/FBSDKLoginKit.framework

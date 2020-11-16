@@ -900,7 +900,6 @@
 		D00698E2225CF57200EB58BD /* Prelude.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698E3225CF58D00EB58BD /* ReactiveExtensions_TestHelpers.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698E4225CF59B00EB58BD /* ReactiveSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D00698E7225CF60200EB58BD /* Argo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698E9225CF61F00EB58BD /* ReactiveExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698EA225CF62B00EB58BD /* Curry.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00698EB225CF63C00EB58BD /* Runes.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -912,7 +911,6 @@
 		D00A375022582A1300F46F47 /* ReactiveExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A375122582A1B00F46F47 /* ReactiveSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A375322582A2C00F46F47 /* Runes.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D00A375922582CCE00F46F47 /* Argo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D00A3765225BCE2600F46F47 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; };
 		D00A3766225BCE8400F46F47 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; };
 		D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69BACEF21C856F2006EAA00 /* UIAlertControllerTests.swift */; };
@@ -1106,7 +1104,6 @@
 		D08CD1FF21913166009F89F0 /* WatchProjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD1FE21913166009F89F0 /* WatchProjectViewModel.swift */; };
 		D08CD201219216BA009F89F0 /* WatchProjectViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD200219216BA009F89F0 /* WatchProjectViewModelTests.swift */; };
 		D08CD20321922025009F89F0 /* GraphMutationWatchProjectResponseEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08CD20221922025009F89F0 /* GraphMutationWatchProjectResponseEnvelopeTemplates.swift */; };
-		D0936290225D4FA600E1411A /* Argo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0936291225D4FCB00E1411A /* Prelude.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0936292225D4FE000E1411A /* ReactiveExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0936293225D4FEB00E1411A /* ReactiveExtensions_TestHelpers.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D822257FAE000532AC1 /* ReactiveExtensions_TestHelpers.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1120,7 +1117,6 @@
 		D093B49C21A86FD800910962 /* PushRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D093B49B21A86FD800910962 /* PushRegistration.swift */; };
 		D0971E14221E070800DFEF9B /* SelectCurrencyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0971DDB221E05B600DFEF9B /* SelectCurrencyDataSource.swift */; };
 		D0971E16221E083100DFEF9B /* SelectCurrencyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0971E15221E083100DFEF9B /* SelectCurrencyCell.swift */; };
-		D09D4ECE2289D63500C33B77 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; };
 		D09D4ECF2289D63500C33B77 /* Curry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; };
 		D09D4ED02289D63500C33B77 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; };
 		D09D4ED62289D6D100C33B77 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
@@ -1133,7 +1129,6 @@
 		D0B065C72280A27500142B7A /* FBSnapshotTestCase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */; };
 		D0B065C92280A2A700142B7A /* FBSnapshotTestCase.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7C2257FADE00532AC1 /* FBSnapshotTestCase.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B065CA2280A2DC00142B7A /* ReactiveSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D0B065CC2280A31100142B7A /* Argo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B065CD2280A32800142B7A /* Curry.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B065CE2280A66B00142B7A /* Prelude_UIKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D812257FAE000532AC1 /* Prelude_UIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0B065CF2280A66B00142B7A /* Prelude.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1152,7 +1147,6 @@
 		D0BE6F1E228634C700D05A10 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; };
 		D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
 		D0BE6F20228634C700D05A10 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; };
-		D0BE6F262286395500D05A10 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; };
 		D0BE6F272286395900D05A10 /* Curry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; };
 		D0BE6F282286397400D05A10 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
 		D0BE6F2A2286398400D05A10 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; };
@@ -1188,13 +1182,11 @@
 		D0D10C221EEB4550005EBAD0 /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01588241EEB2ED7006E7684 /* UserTests.swift */; };
 		D0D19BCA22BD886F0043A4E5 /* PledgeSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D19BC922BD886F0043A4E5 /* PledgeSummaryViewModelTests.swift */; };
 		D0D58D862257FAE000532AC1 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; };
-		D0D58D872257FAE000532AC1 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; };
 		D0D58D882257FAE000532AC1 /* ReactiveExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7B2257FADE00532AC1 /* ReactiveExtensions.framework */; };
 		D0D58D8C2257FAE000532AC1 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7F2257FADF00532AC1 /* ReactiveSwift.framework */; };
 		D0D58D8E2257FAE000532AC1 /* Prelude_UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D812257FAE000532AC1 /* Prelude_UIKit.framework */; };
 		D0D58D902257FAE000532AC1 /* Curry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D832257FAE000532AC1 /* Curry.framework */; };
 		D0D58D912257FAE000532AC1 /* Runes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D842257FAE000532AC1 /* Runes.framework */; };
-		D0D58DC12257FB8C00532AC1 /* Argo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D7A2257FADE00532AC1 /* Argo.framework */; };
 		D0D58DC32257FCA900532AC1 /* Prelude_UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D812257FAE000532AC1 /* Prelude_UIKit.framework */; };
 		D0D58DC52257FD0200532AC1 /* Prelude_UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D812257FAE000532AC1 /* Prelude_UIKit.framework */; };
 		D0D58DC62257FD0200532AC1 /* Prelude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D58D792257FADE00532AC1 /* Prelude.framework */; };
@@ -1491,7 +1483,6 @@
 				D0936293225D4FEB00E1411A /* ReactiveExtensions_TestHelpers.framework in CopyFiles */,
 				D0936292225D4FE000E1411A /* ReactiveExtensions.framework in CopyFiles */,
 				D0936291225D4FCB00E1411A /* Prelude.framework in CopyFiles */,
-				D0936290225D4FA600E1411A /* Argo.framework in CopyFiles */,
 				D00698DD225C320500EB58BD /* FBSnapshotTestCase.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1508,7 +1499,6 @@
 				D00698EB225CF63C00EB58BD /* Runes.framework in CopyFiles */,
 				D00698EA225CF62B00EB58BD /* Curry.framework in CopyFiles */,
 				D00698E9225CF61F00EB58BD /* ReactiveExtensions.framework in CopyFiles */,
-				D00698E7225CF60200EB58BD /* Argo.framework in CopyFiles */,
 				D00698E4225CF59B00EB58BD /* ReactiveSwift.framework in CopyFiles */,
 				D00698E3225CF58D00EB58BD /* ReactiveExtensions_TestHelpers.framework in CopyFiles */,
 				D00698E1225CF57200EB58BD /* Prelude_UIKit.framework in CopyFiles */,
@@ -1523,7 +1513,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D00A375922582CCE00F46F47 /* Argo.framework in CopyFiles */,
 				D00A375322582A2C00F46F47 /* Runes.framework in CopyFiles */,
 				D00A375122582A1B00F46F47 /* ReactiveSwift.framework in CopyFiles */,
 				D00A375022582A1300F46F47 /* ReactiveExtensions.framework in CopyFiles */,
@@ -1544,7 +1533,6 @@
 				D0B065CE2280A66B00142B7A /* Prelude_UIKit.framework in CopyFiles */,
 				D0B065CF2280A66B00142B7A /* Prelude.framework in CopyFiles */,
 				D0B065CD2280A32800142B7A /* Curry.framework in CopyFiles */,
-				D0B065CC2280A31100142B7A /* Argo.framework in CopyFiles */,
 				D0B065CA2280A2DC00142B7A /* ReactiveSwift.framework in CopyFiles */,
 				D0B065C92280A2A700142B7A /* FBSnapshotTestCase.framework in CopyFiles */,
 			);
@@ -2870,7 +2858,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0BE6F262286395500D05A10 /* Argo.framework in Frameworks */,
 				D0BE6F272286395900D05A10 /* Curry.framework in Frameworks */,
 				D0B7124822AEEDF900317BAF /* FBSDKCoreKit.framework in Frameworks */,
 				D08C68A922AF105A001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
@@ -2897,7 +2884,6 @@
 			files = (
 				D00A373F2258270600F46F47 /* Alamofire.framework in Frameworks */,
 				D00A3720225815FA00F46F47 /* AlamofireImage.framework in Frameworks */,
-				D09D4ECE2289D63500C33B77 /* Argo.framework in Frameworks */,
 				D09D4ECF2289D63500C33B77 /* Curry.framework in Frameworks */,
 				D0B7124922AEEDF900317BAF /* FBSDKCoreKit.framework in Frameworks */,
 				D08C68AA22AF105B001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
@@ -2921,7 +2907,6 @@
 				8AA5B06B235E25820022F5F0 /* AppCenterAnalytics.framework in Frameworks */,
 				8AA5B06A235E25820022F5F0 /* AppCenterCrashes.framework in Frameworks */,
 				8AA5B069235E25820022F5F0 /* AppCenterDistribute.framework in Frameworks */,
-				D0D58D872257FAE000532AC1 /* Argo.framework in Frameworks */,
 				D0D58D902257FAE000532AC1 /* Curry.framework in Frameworks */,
 				D0B7124622AEEDBC00317BAF /* FBSDKCoreKit.framework in Frameworks */,
 				D08C68A822AF104B001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
@@ -2957,7 +2942,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0D58DC12257FB8C00532AC1 /* Argo.framework in Frameworks */,
 				D0BE6F182286333A00D05A10 /* Curry.framework in Frameworks */,
 				D0BE6F1E228634C700D05A10 /* Prelude.framework in Frameworks */,
 				D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */,
