@@ -1,5 +1,4 @@
-import Curry
-import Runes
+
 
 public struct RewardsItem {
   public let id: Int
@@ -8,7 +7,7 @@ public struct RewardsItem {
   public let rewardId: Int
 }
 
-extension RewardsItem: Swift.Decodable {
+extension RewardsItem: Decodable {
   enum CodingKeys: String, CodingKey {
     case id
     case item

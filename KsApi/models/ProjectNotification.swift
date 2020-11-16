@@ -1,6 +1,5 @@
-import Curry
+
 import Foundation
-import Runes
 
 public struct ProjectNotification {
   public let email: Bool
@@ -14,9 +13,9 @@ public struct ProjectNotification {
   }
 }
 
-extension ProjectNotification: Swift.Decodable {}
+extension ProjectNotification: Decodable {}
 
-extension ProjectNotification.Project: Swift.Decodable {}
+extension ProjectNotification.Project: Decodable {}
 
 extension ProjectNotification: Equatable {}
 public func == (lhs: ProjectNotification, rhs: ProjectNotification) -> Bool {

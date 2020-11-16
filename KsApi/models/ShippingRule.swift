@@ -1,5 +1,4 @@
-import Curry
-import Runes
+
 
 public struct ShippingRule {
   public let cost: Double
@@ -7,7 +6,7 @@ public struct ShippingRule {
   public let location: Location
 }
 
-extension ShippingRule: Swift.Decodable {
+extension ShippingRule: Decodable {
   enum CodingKeys: String, CodingKey {
     case cost
     case id

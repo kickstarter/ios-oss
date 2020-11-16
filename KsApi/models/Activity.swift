@@ -1,6 +1,5 @@
-import Curry
+
 import Foundation
-import Runes
 
 public struct Activity {
   public let category: Activity.Category
@@ -49,7 +48,7 @@ public func == (lhs: Activity, rhs: Activity) -> Bool {
   return lhs.id == rhs.id
 }
 
-extension Activity: Swift.Decodable {
+extension Activity: Decodable {
   enum CodingKeys: String, CodingKey {
     case category
     case comment
@@ -73,13 +72,13 @@ extension Activity: Swift.Decodable {
   }
 }
 
-extension Activity.Category: Swift.Decodable {
+extension Activity.Category: Decodable {
   public init(from decoder: Decoder) throws {
     self = try Activity.Category(rawValue: decoder.singleValueContainer().decode(String.self)) ?? .unknown
   }
 }
 
-extension Activity.MemberData: Swift.Decodable {
+extension Activity.MemberData: Decodable {
   enum CodingKeys: String, CodingKey {
     case amount
     case backing

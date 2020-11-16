@@ -1,5 +1,4 @@
-import Curry
-import Runes
+import Foundation
 
 public struct Backing {
   public let addOns: [Reward]?
@@ -31,7 +30,7 @@ public struct Backing {
     public var type: CreditCardType?
   }
 
-  public enum Status: String, CaseIterable, Swift.Decodable {
+  public enum Status: String, CaseIterable, Decodable {
     case canceled
     case collected
     case dropped
@@ -47,7 +46,7 @@ public func == (lhs: Backing, rhs: Backing) -> Bool {
   return lhs.id == rhs.id
 }
 
-extension Backing: Swift.Decodable {
+extension Backing: Decodable {
   private enum CodingKeys: String, CodingKey {
     case addOns = "add_ons"
     case amount
@@ -102,7 +101,7 @@ extension Backing: EncodableType {
   }
 }
 
-extension Backing.PaymentSource: Swift.Decodable {
+extension Backing.PaymentSource: Decodable {
   private enum CodingKeys: String, CodingKey {
     case expirationDate = "expiration_date"
     case id

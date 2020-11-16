@@ -1,11 +1,10 @@
-import Curry
-import Runes
 
-public struct ProjectsEnvelope: Swift.Decodable {
+
+public struct ProjectsEnvelope: Decodable {
   public let projects: [Project]
   public let urls: UrlsEnvelope
 
-  public struct UrlsEnvelope: Swift.Decodable {
+  public struct UrlsEnvelope: Decodable {
     public let api: ApiEnvelope
 
     public struct ApiEnvelope {
@@ -14,7 +13,7 @@ public struct ProjectsEnvelope: Swift.Decodable {
   }
 }
 
-extension ProjectsEnvelope.UrlsEnvelope.ApiEnvelope: Swift.Decodable {
+extension ProjectsEnvelope.UrlsEnvelope.ApiEnvelope: Decodable {
   enum CodingKeys: String, CodingKey {
     case moreProjects = "more_projects"
   }

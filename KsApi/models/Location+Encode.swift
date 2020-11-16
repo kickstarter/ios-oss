@@ -1,6 +1,3 @@
-import Curry
-import Runes
-
 extension Location: EncodableType {
   public func encode() -> [String: Any] {
     var result: [String: Any] = [:]

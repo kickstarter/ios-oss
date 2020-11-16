@@ -1,5 +1,4 @@
-import Curry
-import Runes
+
 
 public struct User {
   public var avatar: Avatar
@@ -107,7 +106,7 @@ extension User: CustomDebugStringConvertible {
   }
 }
 
-extension User: Swift.Decodable {
+extension User: Decodable {
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     self.avatar = try values.decode(Avatar.self, forKey: .avatar)
@@ -169,7 +168,7 @@ extension User: EncodableType {
   }
 }
 
-extension User.Avatar: Swift.Decodable {
+extension User.Avatar: Decodable {
   enum CodingKeys: String, CodingKey {
     case large
     case medium
@@ -188,7 +187,7 @@ extension User.Avatar: EncodableType {
   }
 }
 
-extension User.NewsletterSubscriptions: Swift.Decodable {
+extension User.NewsletterSubscriptions: Decodable {
   enum CodingKeys: String, CodingKey {
     case arts = "arts_culture_newsletter"
     case games = "games_newsletter"
@@ -233,7 +232,7 @@ public func == (lhs: User.NewsletterSubscriptions, rhs: User.NewsletterSubscript
     lhs.alumni == rhs.alumni
 }
 
-extension User.Notifications: Swift.Decodable {
+extension User.Notifications: Decodable {
   enum CodingKeys: String, CodingKey {
     case backings = "notify_of_backings"
     case commentReplies = "notify_of_comment_replies"
@@ -300,7 +299,7 @@ public func == (lhs: User.Notifications, rhs: User.Notifications) -> Bool {
     lhs.updates == rhs.updates
 }
 
-extension User.Stats: Swift.Decodable {
+extension User.Stats: Decodable {
   enum CodingKeys: String, CodingKey {
     case backedProjectsCount = "backed_projects_count"
     case createdProjectsCount = "created_projects_count"

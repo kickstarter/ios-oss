@@ -1,12 +1,11 @@
-import Curry
-import Runes
+
 
 public struct UpdatePledgeEnvelope {
   public let newCheckoutUrl: String?
   public let status: Int
 }
 
-extension UpdatePledgeEnvelope: Swift.Decodable {
+extension UpdatePledgeEnvelope: Decodable {
   private enum CodingKeys: String, CodingKey {
     case data
     case status

@@ -1,6 +1,5 @@
-import Curry
+
 import Foundation
-import Runes
 
 public struct Update {
   public let body: String?
@@ -32,7 +31,7 @@ public func == (lhs: Update, rhs: Update) -> Bool {
   return lhs.id == rhs.id
 }
 
-extension Update: Swift.Decodable {
+extension Update: Decodable {
   enum CodingKeys: String, CodingKey {
     case body
     case commentsCount = "comments_count"

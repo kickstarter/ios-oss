@@ -1,5 +1,4 @@
-import Curry
-import Runes
+
 
 public struct MessageThread {
   public let backing: Backing?
@@ -11,7 +10,7 @@ public struct MessageThread {
   public let unreadMessagesCount: Int
 }
 
-extension MessageThread: Swift.Decodable {
+extension MessageThread: Decodable {
   enum CodingKeys: String, CodingKey {
     case backing
     case closed

@@ -1,7 +1,7 @@
 import Foundation
 import ReactiveSwift
 
-struct ManagePledgeViewBackingEnvelope: Swift.Decodable {
+struct ManagePledgeViewBackingEnvelope: Decodable {
   var project: GraphProject
   var backing: GraphBacking
 }

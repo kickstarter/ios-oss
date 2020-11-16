@@ -1,6 +1,6 @@
 import Foundation
 
-public extension Swift.Decodable {
+public extension Decodable {
   static func decodeJSONDictionary(_ json: Any) throws -> Self {
     let data = try JSONSerialization.data(withJSONObject: json, options: [])
     let value = try JSONDecoder().decode(Self.self, from: data)

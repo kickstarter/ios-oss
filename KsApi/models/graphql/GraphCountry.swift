@@ -1,6 +1,6 @@
 import Foundation
 
-struct GraphCountry: Swift.Decodable {
+struct GraphCountry: Decodable {
   var code: String
   var name: String
 }

@@ -1,7 +1,7 @@
 import Foundation
 import Prelude
 
-struct GraphBacking: Swift.Decodable {
+struct GraphBacking: Decodable {
   public var addOns: AddOns?
   public var amount: Money
   public var backer: GraphUser?
@@ -20,17 +20,17 @@ struct GraphBacking: Swift.Decodable {
   public var shippingAmount: Money?
   public var status: BackingState
 
-  public struct AddOns: Swift.Decodable {
+  public struct AddOns: Decodable {
     public var nodes: [GraphReward]
   }
 
-  public struct BankAccount: Swift.Decodable {
+  public struct BankAccount: Decodable {
     public var bankName: String
     public var id: String
     public var lastFour: String
   }
 
-  public struct CreditCard: Swift.Decodable {
+  public struct CreditCard: Decodable {
     public var expirationDate: String
     public var id: String
     public var lastFour: String

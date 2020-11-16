@@ -1,7 +1,6 @@
-import Curry
+
 import Foundation
 import KsApi
-import Runes
 
 public enum Navigation {
   case checkout(Int, Navigation.Checkout)
@@ -312,9 +311,6 @@ extension Navigation.Project {
 }
 
 // MARK: - Router
-
-// Argo calls their nebulous data blob `JSON`, but we will interpret it as route params.
-// public typealias RouteParams = JSON
 
 public typealias RouteParamsDecoded = [String: String]
 

@@ -1,6 +1,6 @@
-import Curry
+
 @testable import KsApi
-import Runes
+
 import XCTest
 
 final class ConfigTests: XCTestCase {

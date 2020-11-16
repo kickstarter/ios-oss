@@ -6,7 +6,7 @@ import ReactiveSwift
 extension Service {
   // MARK: - Swift.Codable
 
-  func decodeGraphModel<T: Swift.Decodable>(_ jsonData: Data) -> SignalProducer<T, GraphError> {
+  func decodeGraphModel<T: Decodable>(_ jsonData: Data) -> SignalProducer<T, GraphError> {
     return SignalProducer(value: jsonData)
       .flatMap { data -> SignalProducer<T, GraphError> in
         do {
@@ -25,7 +25,7 @@ extension Service {
       }
   }
 
-  func decodeModel<T: Swift.Decodable>(_ jsonData: Data) -> SignalProducer<T, ErrorEnvelope> {
+  func decodeModel<T: Decodable>(_ jsonData: Data) -> SignalProducer<T, ErrorEnvelope> {
     return SignalProducer(value: jsonData)
       .flatMap { data -> SignalProducer<T, ErrorEnvelope> in
         do {
@@ -41,7 +41,7 @@ extension Service {
       }
   }
 
-  func decodeModels<T: Swift.Decodable>(_ jsonData: Data) -> SignalProducer<[T], ErrorEnvelope> {
+  func decodeModels<T: Decodable>(_ jsonData: Data) -> SignalProducer<[T], ErrorEnvelope> {
     return SignalProducer(value: jsonData)
       .flatMap { data -> SignalProducer<[T], ErrorEnvelope> in
         do {
@@ -57,7 +57,7 @@ extension Service {
       }
   }
 
-  func decodeModel<T: Swift.Decodable>(data json: Data) ->
+  func decodeModel<T: Decodable>(data json: Data) ->
     SignalProducer<T?, ErrorEnvelope> {
     return SignalProducer(value: json)
       .map { json in try? JSONDecoder().decode(T.self, from: json) }

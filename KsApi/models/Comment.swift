@@ -1,5 +1,4 @@
-import Curry
-import Runes
+import Foundation
 
 public struct Comment {
   public let author: Author
@@ -9,7 +8,7 @@ public struct Comment {
   public let id: Int
 }
 
-extension Comment: Swift.Decodable {
+extension Comment: Decodable {
   enum CodingKeys: String, CodingKey {
     case author
     case body
@@ -23,15 +22,12 @@ extension Comment: Swift.Decodable {
     self.author = try values.decode(Author.self, forKey: .author)
     self.body = try values.decode(String.self, forKey: .body)
     self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
+    self.id = try values.decode(Int.self, forKey: .id)
+
     // Decode a time interval so that non-positive values are coalesced to `nil`. We do this because the API
     // sends back `0` when the comment hasn't been deleted, and we'd rather handle that value as `nil`.
-
-    if let value = try values.decodeIfPresent(TimeInterval.self, forKey: .deletedAt), value > 0 {
-      self.deletedAt = value
-    } else {
-      self.deletedAt = nil
-    }
-    self.id = try values.decode(Int.self, forKey: .id)
+    let value = try values.decodeIfPresent(TimeInterval.self, forKey: .deletedAt) ?? 0
+    self.deletedAt = value > 0 ? value : nil
   }
 }
 

@@ -1,5 +1,4 @@
-import Curry
-import Runes
+
 
 public struct FindFriendsEnvelope {
   public let contactsImported: Bool
@@ -15,7 +14,7 @@ public struct FindFriendsEnvelope {
   }
 }
 
-extension FindFriendsEnvelope: Swift.Decodable {
+extension FindFriendsEnvelope: Decodable {
   enum CodingKeys: String, CodingKey {
     case contactsImported = "contacts_imported"
     case urls
@@ -23,9 +22,9 @@ extension FindFriendsEnvelope: Swift.Decodable {
   }
 }
 
-extension FindFriendsEnvelope.UrlsEnvelope: Swift.Decodable {}
+extension FindFriendsEnvelope.UrlsEnvelope: Decodable {}
 
-extension FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope: Swift.Decodable {
+extension FindFriendsEnvelope.UrlsEnvelope.ApiEnvelope: Decodable {
   enum CodingKeys: String, CodingKey {
     case moreUsers = "more_users"
   }

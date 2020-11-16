@@ -10,7 +10,7 @@ protocol GraphMutation: CustomStringConvertible {
   var input: Input { get }
 }
 
-public struct GraphMutationEmptyResponseEnvelope: Swift.Decodable {}
+public struct GraphMutationEmptyResponseEnvelope: Decodable {}
 
 extension GraphMutationInput where Self: Encodable {
   public func toInputDictionary() -> [String: Any] {

@@ -4,7 +4,7 @@ public struct DeletePaymentMethodEnvelope {
   public let storedCards: [GraphUserCreditCard.CreditCard]
 }
 
-extension DeletePaymentMethodEnvelope: Swift.Decodable {
+extension DeletePaymentMethodEnvelope: Decodable {
   enum CodingKeys: String, CodingKey {
     case nodes
     case paymentSourceDelete

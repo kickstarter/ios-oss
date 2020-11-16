@@ -1,6 +1,5 @@
-import Curry
+
 import Foundation
-import Runes
 
 public struct Message {
   public let body: String
@@ -10,7 +9,7 @@ public struct Message {
   public let sender: User
 }
 
-extension Message: Swift.Decodable {
+extension Message: Decodable {
   enum CodingKeys: String, CodingKey {
     case body
     case createdAt = "created_at"

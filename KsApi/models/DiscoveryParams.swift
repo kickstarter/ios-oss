@@ -1,6 +1,5 @@
-import Curry
+
 import Prelude
-import Runes
 
 public struct DiscoveryParams {
   public var backed: Bool?
@@ -22,13 +21,13 @@ public struct DiscoveryParams {
   public var state: State?
   public var tagId: TagID?
 
-  public enum State: String, Swift.Decodable {
+  public enum State: String, Decodable {
     case all
     case live
     case successful
   }
 
-  public enum Sort: String, Swift.Decodable {
+  public enum Sort: String, Decodable {
     case endingSoon = "end_date"
     case magic
     case newest
@@ -36,7 +35,7 @@ public struct DiscoveryParams {
     case distance
   }
 
-  public enum TagID: String, Swift.Decodable {
+  public enum TagID: String, Decodable {
     case lightsOn = "557"
   }
 
@@ -98,7 +97,7 @@ extension DiscoveryParams: CustomStringConvertible, CustomDebugStringConvertible
   }
 }
 
-extension DiscoveryParams: Swift.Decodable {
+extension DiscoveryParams: Decodable {
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     self.backed = try stringIntToBool(values.decodeIfPresent(String.self, forKey: .backed))

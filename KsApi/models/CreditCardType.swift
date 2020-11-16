@@ -1,6 +1,6 @@
 import Foundation
 
-public enum CreditCardType: String, Swift.Decodable, CaseIterable {
+public enum CreditCardType: String, Decodable, CaseIterable {
   case amex = "AMEX"
   case diners = "DINERS"
   case discover = "DISCOVER"

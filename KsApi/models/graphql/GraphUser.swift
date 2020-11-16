@@ -2,7 +2,7 @@ import Foundation
 import Prelude
 
 // TODO: Remove public access
-public struct GraphUser: Swift.Decodable, Equatable {
+public struct GraphUser: Decodable, Equatable {
   public var chosenCurrency: String?
   public var email: String?
   public var hasPassword: Bool?

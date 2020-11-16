@@ -1,12 +1,12 @@
 import Foundation
 import Prelude
 
-public struct Money: Swift.Decodable, Equatable {
+public struct Money: Decodable, Equatable {
   public var amount: Double
   public var currency: CurrencyCode?
   public var symbol: String?
 
-  public enum CurrencyCode: String, CaseIterable, Swift.Decodable, Equatable {
+  public enum CurrencyCode: String, CaseIterable, Decodable, Equatable {
     case aud = "AUD"
     case cad = "CAD"
     case chf = "CHF"

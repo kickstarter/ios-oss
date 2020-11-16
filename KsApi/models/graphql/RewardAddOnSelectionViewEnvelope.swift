@@ -1,5 +1,5 @@
 import Foundation
 
-struct RewardAddOnSelectionViewEnvelope: Swift.Decodable {
+struct RewardAddOnSelectionViewEnvelope: Decodable {
   var project: GraphProject
 }
