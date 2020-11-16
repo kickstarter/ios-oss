@@ -36,7 +36,7 @@ extension Service {
     }
   }
 
-  func requestDecodable<M: Decodable>(_ route: Route)
+  func request<M: Decodable>(_ route: Route)
     -> SignalProducer<M, ErrorEnvelope> {
     let properties = route.requestProperties
 

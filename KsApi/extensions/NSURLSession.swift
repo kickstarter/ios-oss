@@ -92,7 +92,7 @@ internal extension URLSession {
               print("🔴 [KsApi] Failure \(self.sanitized(request)) \n Error - \(envelope)")
               return SignalProducer(error: envelope)
             } catch {
-              print("🔴 [KsApi] Failure \(self.sanitized(request)) \n Argo decoding error - \(error)")
+              print("🔴 [KsApi] Failure \(self.sanitized(request)) \n Decoding error - \(error)")
               return SignalProducer(error: .couldNotDecodeJSON(error))
             }
 

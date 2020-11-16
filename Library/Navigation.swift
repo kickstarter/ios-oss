@@ -312,9 +312,6 @@ extension Navigation.Project {
 
 // MARK: - Router
 
-// Argo calls their nebulous data blob `JSON`, but we will interpret it as route params.
-// public typealias RouteParams = JSON
-
 public typealias RouteParamsDecoded = [String: String]
 
 private func emailClick(_: RouteParamsDecoded) -> Navigation {

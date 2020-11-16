@@ -63,12 +63,12 @@ public struct Service: ServiceType {
   }
 
   public func facebookConnect(facebookAccessToken token: String) -> SignalProducer<User, ErrorEnvelope> {
-    return requestDecodable(.facebookConnect(facebookAccessToken: token))
+    return request(.facebookConnect(facebookAccessToken: token))
   }
 
   public func addImage(file fileURL: URL, toDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Image, ErrorEnvelope> {
-    return requestDecodable(Route.addImage(fileUrl: fileURL, toDraft: draft))
+    return request(Route.addImage(fileUrl: fileURL, toDraft: draft))
   }
 
   public func addNewCreditCard(input: CreatePaymentSourceInput)
@@ -78,7 +78,7 @@ public struct Service: ServiceType {
 
   public func addVideo(file fileURL: URL, toDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Video, ErrorEnvelope> {
-    return requestDecodable(Route.addVideo(fileUrl: fileURL, toDraft: draft))
+    return request(Route.addVideo(fileUrl: fileURL, toDraft: draft))
   }
 
   public func cancelBacking(input: CancelBackingInput)
@@ -108,7 +108,7 @@ public struct Service: ServiceType {
 
   public func changePaymentMethod(project: Project)
     -> SignalProducer<ChangePaymentMethodEnvelope, ErrorEnvelope> {
-    return requestDecodable(.changePaymentMethod(project: project))
+    return request(.changePaymentMethod(project: project))
   }
 
   public func clearUserUnseenActivity(input: EmptyInput)
@@ -128,21 +128,21 @@ public struct Service: ServiceType {
 
   public func delete(image: UpdateDraft.Image, fromDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Image, ErrorEnvelope> {
-    return requestDecodable(.deleteImage(image, fromDraft: draft))
+    return request(.deleteImage(image, fromDraft: draft))
   }
 
   public func delete(video: UpdateDraft.Video, fromDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Video, ErrorEnvelope> {
-    return requestDecodable(.deleteVideo(video, fromDraft: draft))
+    return request(.deleteVideo(video, fromDraft: draft))
   }
 
   public func exportData() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
-    return requestDecodable(.exportData)
+    return request(.exportData)
   }
 
   public func exportDataState()
     -> SignalProducer<ExportDataEnvelope, ErrorEnvelope> {
-    return requestDecodable(.exportDataState)
+    return request(.exportDataState)
   }
 
   public func previewUrl(forDraft draft: UpdateDraft) -> URL? {
@@ -160,7 +160,7 @@ public struct Service: ServiceType {
       .success,
       .update
     ]
-    return requestDecodable(.activities(categories: categories, count: count))
+    return request(.activities(categories: categories, count: count))
   }
 
   public func fetchActivities(paginationUrl: String)
@@ -170,7 +170,7 @@ public struct Service: ServiceType {
 
   public func fetchBacking(forProject project: Project, forUser user: User)
     -> SignalProducer<Backing, ErrorEnvelope> {
-    return requestDecodable(.backing(projectId: project.id, backerId: user.id))
+    return request(.backing(projectId: project.id, backerId: user.id))
   }
 
   public func fetchComments(paginationUrl url: String) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
@@ -178,15 +178,15 @@ public struct Service: ServiceType {
   }
 
   public func fetchComments(project: Project) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-    return requestDecodable(.projectComments(project))
+    return request(.projectComments(project))
   }
 
   public func fetchComments(update: Update) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-    return requestDecodable(.updateComments(update))
+    return request(.updateComments(update))
   }
 
   public func fetchConfig() -> SignalProducer<Config, ErrorEnvelope> {
-    return requestDecodable(.config)
+    return request(.config)
   }
 
   public func fetchDiscovery(paginationUrl: String)
@@ -196,11 +196,11 @@ public struct Service: ServiceType {
 
   public func fetchDiscovery(params: DiscoveryParams)
     -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
-    return requestDecodable(.discover(params))
+    return request(.discover(params))
   }
 
   public func fetchFriends() -> SignalProducer<FindFriendsEnvelope, ErrorEnvelope> {
-    return requestDecodable(.friends)
+    return request(.friends)
   }
 
   public func fetchFriends(paginationUrl: String)
@@ -209,7 +209,7 @@ public struct Service: ServiceType {
   }
 
   public func fetchFriendStats() -> SignalProducer<FriendStatsEnvelope, ErrorEnvelope> {
-    return requestDecodable(.friendStats)
+    return request(.friendStats)
   }
 
   public func fetchGraphCategories(query: NonEmptySet<Query>)
@@ -253,17 +253,17 @@ public struct Service: ServiceType {
 
   public func fetchMessageThread(messageThreadId: Int)
     -> SignalProducer<MessageThreadEnvelope, ErrorEnvelope> {
-    return requestDecodable(.messagesForThread(messageThreadId: messageThreadId))
+    return request(.messagesForThread(messageThreadId: messageThreadId))
   }
 
   public func fetchMessageThread(backing: Backing)
     -> SignalProducer<MessageThreadEnvelope?, ErrorEnvelope> {
-    return requestDecodable(.messagesForBacking(backing))
+    return request(.messagesForBacking(backing))
   }
 
   public func fetchMessageThreads(mailbox: Mailbox, project: Project?)
     -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope> {
-    return requestDecodable(.messageThreads(mailbox: mailbox, project: project))
+    return request(.messageThreads(mailbox: mailbox, project: project))
   }
 
   public func fetchMessageThreads(paginationUrl: String)
@@ -272,20 +272,20 @@ public struct Service: ServiceType {
   }
 
   public func fetchProject(param: Param) -> SignalProducer<Project, ErrorEnvelope> {
-    return requestDecodable(.project(param))
+    return request(.project(param))
   }
 
   public func fetchProject(_ params: DiscoveryParams) -> SignalProducer<DiscoveryEnvelope, ErrorEnvelope> {
-    return requestDecodable(.discover(params |> DiscoveryParams.lens.perPage .~ 1))
+    return request(.discover(params |> DiscoveryParams.lens.perPage .~ 1))
   }
 
   public func fetchProject(project: Project) -> SignalProducer<Project, ErrorEnvelope> {
-    return requestDecodable(.project(.id(project.id)))
+    return request(.project(.id(project.id)))
   }
 
   public func fetchProjectActivities(forProject project: Project) ->
     SignalProducer<ProjectActivityEnvelope, ErrorEnvelope> {
-    return requestDecodable(.projectActivities(project))
+    return request(.projectActivities(project))
   }
 
   public func fetchProjectActivities(paginationUrl: String)
@@ -294,11 +294,11 @@ public struct Service: ServiceType {
   }
 
   public func fetchProjectNotifications() -> SignalProducer<[ProjectNotification], ErrorEnvelope> {
-    return requestDecodable(.projectNotifications)
+    return request(.projectNotifications)
   }
 
   public func fetchProjects(member: Bool) -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
-    return requestDecodable(.projects(member: member))
+    return request(.projects(member: member))
   }
 
   public func fetchProjects(paginationUrl url: String) -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
@@ -307,7 +307,7 @@ public struct Service: ServiceType {
 
   public func fetchProjectStats(projectId: Int) ->
     SignalProducer<ProjectStatsEnvelope, ErrorEnvelope> {
-    return requestDecodable(.projectStats(projectId: projectId))
+    return request(.projectStats(projectId: projectId))
   }
 
   public func fetchRewardAddOnsSelectionViewRewards(query: NonEmptySet<Query>)
@@ -319,15 +319,15 @@ public struct Service: ServiceType {
 
   public func fetchRewardShippingRules(projectId: Int, rewardId: Int)
     -> SignalProducer<ShippingRulesEnvelope, ErrorEnvelope> {
-    return requestDecodable(.shippingRules(projectId: projectId, rewardId: rewardId))
+    return request(.shippingRules(projectId: projectId, rewardId: rewardId))
   }
 
   public func fetchSurveyResponse(surveyResponseId id: Int) -> SignalProducer<SurveyResponse, ErrorEnvelope> {
-    return requestDecodable(.surveyResponse(surveyResponseId: id))
+    return request(.surveyResponse(surveyResponseId: id))
   }
 
   public func fetchUserProjectsBacked() -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
-    return requestDecodable(.userProjectsBacked)
+    return request(.userProjectsBacked)
   }
 
   public func fetchUserProjectsBacked(paginationUrl url: String)
@@ -336,11 +336,11 @@ public struct Service: ServiceType {
   }
 
   public func fetchUserSelf() -> SignalProducer<User, ErrorEnvelope> {
-    return requestDecodable(.userSelf)
+    return request(.userSelf)
   }
 
   public func fetchUser(userId: Int) -> SignalProducer<User, ErrorEnvelope> {
-    return requestDecodable(.user(userId: userId))
+    return request(.user(userId: userId))
   }
 
   public func fetchUser(_ user: User) -> SignalProducer<User, ErrorEnvelope> {
@@ -349,33 +349,33 @@ public struct Service: ServiceType {
 
   public func fetchUpdate(updateId: Int, projectParam: Param)
     -> SignalProducer<Update, ErrorEnvelope> {
-    return requestDecodable(.update(updateId: updateId, projectParam: projectParam))
+    return request(.update(updateId: updateId, projectParam: projectParam))
   }
 
   public func fetchUpdateDraft(forProject project: Project) -> SignalProducer<UpdateDraft, ErrorEnvelope> {
-    return requestDecodable(.fetchUpdateDraft(forProject: project))
+    return request(.fetchUpdateDraft(forProject: project))
   }
 
   public func fetchUnansweredSurveyResponses() -> SignalProducer<[SurveyResponse], ErrorEnvelope> {
-    return requestDecodable(.unansweredSurveyResponses)
+    return request(.unansweredSurveyResponses)
   }
 
   public func backingUpdate(forProject project: Project, forUser user: User, received: Bool) ->
     SignalProducer<Backing, ErrorEnvelope> {
-    return requestDecodable(.backingUpdate(projectId: project.id, backerId: user.id, received: received))
+    return request(.backingUpdate(projectId: project.id, backerId: user.id, received: received))
   }
 
   public func followAllFriends() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
-    return requestDecodable(.followAllFriends)
+    return request(.followAllFriends)
   }
 
   public func followFriend(userId id: Int) -> SignalProducer<User, ErrorEnvelope> {
-    return requestDecodable(.followFriend(userId: id))
+    return request(.followFriend(userId: id))
   }
 
   public func incrementVideoCompletion(forProject project: Project) ->
     SignalProducer<VoidEnvelope, ErrorEnvelope> {
-    let producer = requestDecodable(.incrementVideoCompletion(project: project))
+    let producer = request(.incrementVideoCompletion(project: project))
       as SignalProducer<VoidEnvelope, ErrorEnvelope>
 
     return producer
@@ -389,7 +389,7 @@ public struct Service: ServiceType {
 
   public func incrementVideoStart(forProject project: Project) ->
     SignalProducer<VoidEnvelope, ErrorEnvelope> {
-    let producer = requestDecodable(.incrementVideoStart(project: project))
+    let producer = request(.incrementVideoStart(project: project))
       as SignalProducer<VoidEnvelope, ErrorEnvelope>
 
     return producer
@@ -403,47 +403,47 @@ public struct Service: ServiceType {
 
   public func login(email: String, password: String, code: String?) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-    return requestDecodable(.login(email: email, password: password, code: code))
+    return request(.login(email: email, password: password, code: code))
   }
 
   public func login(facebookAccessToken: String, code: String?) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-    return requestDecodable(.facebookLogin(facebookAccessToken: facebookAccessToken, code: code))
+    return request(.facebookLogin(facebookAccessToken: facebookAccessToken, code: code))
   }
 
   public func markAsRead(messageThread: MessageThread) -> SignalProducer<MessageThread, ErrorEnvelope> {
-    return requestDecodable(.markAsRead(messageThread))
+    return request(.markAsRead(messageThread))
   }
 
   public func postComment(_ body: String, toProject project: Project) ->
     SignalProducer<Comment, ErrorEnvelope> {
-    return requestDecodable(.postProjectComment(project, body: body))
+    return request(.postProjectComment(project, body: body))
   }
 
   public func postComment(_ body: String, toUpdate update: Update) -> SignalProducer<Comment, ErrorEnvelope> {
-    return requestDecodable(.postUpdateComment(update, body: body))
+    return request(.postUpdateComment(update, body: body))
   }
 
   public func publish(draft: UpdateDraft) -> SignalProducer<Update, ErrorEnvelope> {
-    return requestDecodable(.publishUpdateDraft(draft))
+    return request(.publishUpdateDraft(draft))
   }
 
   public func register(pushToken: String) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
-    return requestDecodable(.registerPushToken(pushToken))
+    return request(.registerPushToken(pushToken))
   }
 
   public func resetPassword(email: String) -> SignalProducer<User, ErrorEnvelope> {
-    return requestDecodable(.resetPassword(email: email))
+    return request(.resetPassword(email: email))
   }
 
   public func searchMessages(query: String, project: Project?)
     -> SignalProducer<MessageThreadsEnvelope, ErrorEnvelope> {
-    return requestDecodable(.searchMessages(query: query, project: project))
+    return request(.searchMessages(query: query, project: project))
   }
 
   public func sendMessage(body: String, toSubject subject: MessageSubject)
     -> SignalProducer<Message, ErrorEnvelope> {
-    return requestDecodable(.sendMessage(body: body, messageSubject: subject))
+    return request(.sendMessage(body: body, messageSubject: subject))
   }
 
   public func sendVerificationEmail(input: EmptyInput) ->
@@ -463,7 +463,7 @@ public struct Service: ServiceType {
     passwordConfirmation: String,
     sendNewsletters: Bool
   ) -> SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-    return requestDecodable(.signup(
+    return request(.signup(
       name: name,
       email: email,
       password: password,
@@ -474,11 +474,11 @@ public struct Service: ServiceType {
 
   public func signup(facebookAccessToken token: String, sendNewsletters: Bool) ->
     SignalProducer<AccessTokenEnvelope, ErrorEnvelope> {
-    return requestDecodable(.facebookSignup(facebookAccessToken: token, sendNewsletters: sendNewsletters))
+    return request(.facebookSignup(facebookAccessToken: token, sendNewsletters: sendNewsletters))
   }
 
   public func unfollowFriend(userId id: Int) -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
-    return requestDecodable(.unfollowFriend(userId: id))
+    return request(.unfollowFriend(userId: id))
   }
 
   public func updateBacking(input: UpdateBackingInput) -> SignalProducer<UpdateBackingEnvelope, GraphError> {
@@ -487,7 +487,7 @@ public struct Service: ServiceType {
 
   public func update(draft: UpdateDraft, title: String, body: String, isPublic: Bool)
     -> SignalProducer<UpdateDraft, ErrorEnvelope> {
-    return requestDecodable(.updateUpdateDraft(draft, title: title, body: body, isPublic: isPublic))
+    return request(.updateUpdateDraft(draft, title: title, body: body, isPublic: isPublic))
   }
 
   public func updatePledge(
@@ -497,7 +497,7 @@ public struct Service: ServiceType {
     shippingLocation: Location?,
     tappedReward: Bool
   ) -> SignalProducer<UpdatePledgeEnvelope, ErrorEnvelope> {
-    return requestDecodable(
+    return request(
       .updatePledge(
         project: project,
         amount: amount,
@@ -510,11 +510,11 @@ public struct Service: ServiceType {
 
   public func updateProjectNotification(_ notification: ProjectNotification)
     -> SignalProducer<ProjectNotification, ErrorEnvelope> {
-    return requestDecodable(.updateProjectNotification(notification: notification))
+    return request(.updateProjectNotification(notification: notification))
   }
 
   public func updateUserSelf(_ user: User) -> SignalProducer<User, ErrorEnvelope> {
-    return requestDecodable(.updateUserSelf(user))
+    return request(.updateUserSelf(user))
   }
 
   public func unwatchProject(input: WatchProjectInput) ->

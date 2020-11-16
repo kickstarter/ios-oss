@@ -112,7 +112,7 @@ public struct ErrorEnvelope {
   /**
    A error that the pagination URL is invalid.
 
-   - parameter decodeError: The Argo decoding error.
+   - parameter decodeError: The Decoding error.
 
    - returns: An error envelope that describes why decoding failed.
    */
