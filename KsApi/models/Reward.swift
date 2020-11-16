@@ -1,6 +1,5 @@
-import Curry
+
 import Prelude
-import Runes
 
 public struct Reward {
   public let backersCount: Int?

@@ -1,5 +1,4 @@
-import Curry
-import Runes
+
 
 public struct ChangePaymentMethodEnvelope {
   public let newCheckoutUrl: String?

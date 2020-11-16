@@ -1,5 +1,4 @@
-import Curry
-import Runes
+import Foundation
 
 public struct ProjectStatsEnvelope {
   public let cumulativeStats: CumulativeStats

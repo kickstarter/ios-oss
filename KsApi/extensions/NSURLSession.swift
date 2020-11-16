@@ -1,8 +1,7 @@
-import Curry
+
 import Foundation
 import Prelude
 import ReactiveSwift
-import Runes
 
 private func parseJSONData(_ data: Data) -> Any? {
   return (try? JSONSerialization.jsonObject(with: data, options: []))

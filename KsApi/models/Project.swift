@@ -1,7 +1,6 @@
-import Curry
+
 import Prelude
 import ReactiveSwift
-import Runes
 
 public struct Project {
   public var availableCardTypes: [String]?

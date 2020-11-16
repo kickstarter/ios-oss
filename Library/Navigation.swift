@@ -1,7 +1,6 @@
-import Curry
+
 import Foundation
 import KsApi
-import Runes
 
 public enum Navigation {
   case checkout(Int, Navigation.Checkout)

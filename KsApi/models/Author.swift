@@ -1,6 +1,5 @@
-import Curry
+
 import Foundation
-import Runes
 
 public struct Author: Swift.Decodable {
   public var avatar: Avatar

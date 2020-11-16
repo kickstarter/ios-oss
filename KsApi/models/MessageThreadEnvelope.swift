@@ -1,5 +1,4 @@
-import Curry
-import Runes
+
 
 public struct MessageThreadEnvelope {
   public let participants: [User]

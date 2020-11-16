@@ -1,6 +1,5 @@
-import Curry
+
 import Foundation
-import Runes
 
 public struct Activity {
   public let category: Activity.Category

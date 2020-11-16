@@ -1,6 +1,5 @@
-import Curry
+
 import Prelude
-import Runes
 
 public struct DiscoveryParams {
   public var backed: Bool?

@@ -1,5 +1,4 @@
-import Curry
-import Runes
+
 
 public struct ShippingRule {
   public let cost: Double

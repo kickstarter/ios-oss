@@ -3,7 +3,6 @@ import Foundation
 import KsApi
 import Prelude
 import ReactiveSwift
-import Runes
 
 /**
  A global stack that captures the current state of global objects that the app wants access to.

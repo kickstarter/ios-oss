@@ -1,5 +1,4 @@
-import Curry
-import Runes
+
 
 public struct RewardsItem {
   public let id: Int

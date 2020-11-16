@@ -1,4 +1,4 @@
-import Curry
+
 
 public struct PushEnvelope {
   public let activity: Activity?

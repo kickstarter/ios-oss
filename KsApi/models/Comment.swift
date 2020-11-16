@@ -1,5 +1,4 @@
-import Curry
-import Runes
+import Foundation
 
 public struct Comment {
   public let author: Author

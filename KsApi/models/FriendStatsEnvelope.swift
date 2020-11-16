@@ -1,5 +1,4 @@
-import Curry
-import Runes
+
 
 public struct FriendStatsEnvelope {
   public let stats: Stats

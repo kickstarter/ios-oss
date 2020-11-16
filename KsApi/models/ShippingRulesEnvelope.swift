@@ -1,5 +1,4 @@
-import Curry
-import Runes
+
 
 public struct ShippingRulesEnvelope: Swift.Decodable {
   enum CodingKeys: String, CodingKey {

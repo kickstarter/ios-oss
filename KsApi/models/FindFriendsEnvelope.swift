@@ -1,5 +1,4 @@
-import Curry
-import Runes
+
 
 public struct FindFriendsEnvelope {
   public let contactsImported: Bool

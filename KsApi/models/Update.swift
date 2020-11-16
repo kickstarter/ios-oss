@@ -1,6 +1,5 @@
-import Curry
+
 import Foundation
-import Runes
 
 public struct Update {
   public let body: String?
