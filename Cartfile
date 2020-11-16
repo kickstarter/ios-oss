@@ -13,6 +13,7 @@ github "ReactiveCocoa/ReactiveSwift" == 6.1.0
 github "stripe/stripe-ios" == 18.0.0
 github "uber/ios-snapshot-test-case" == 6.2.0
 github "thoughtbot/Curry" "b6bf27ec9d711f607a8c7da9ca69ee9eaa201a22"
+github "thoughtbot/Runes" "v4.2.2"
 
 ### Binaries
 
