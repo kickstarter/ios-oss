@@ -7,6 +7,7 @@ public struct User {
   public var facebookConnected: Bool?
   public var id: Int
   public var isAdmin: Bool?
+  public var isEmailVerified: Bool?
   public var isFriend: Bool?
   public var location: Location?
   public var name: String
@@ -114,6 +115,7 @@ extension User: Swift.Decodable {
     self.facebookConnected = try values.decodeIfPresent(Bool.self, forKey: .facebookConnected)
     self.id = try values.decode(Int.self, forKey: .id)
     self.isAdmin = try values.decodeIfPresent(Bool.self, forKey: .isAdmin)
+    self.isEmailVerified = try values.decodeIfPresent(Bool.self, forKey: .isEmailVerified)
     self.isFriend = try values.decodeIfPresent(Bool.self, forKey: .isFriend)
     self.location = try? values.decodeIfPresent(Location.self, forKey: .location)
     self.name = try values.decode(String.self, forKey: .name)
@@ -133,6 +135,7 @@ extension User: Swift.Decodable {
     case facebookConnected = "facebook_connected"
     case id
     case isAdmin = "is_admin"
+    case isEmailVerified = "is_email_verified"
     case isFriend = "is_friend"
     case location
     case name
@@ -151,6 +154,7 @@ extension User: EncodableType {
     result["facebook_connected"] = self.facebookConnected ?? false
     result["id"] = self.id
     result["is_admin"] = self.isAdmin ?? false
+    result["is_email_verified"] = self.isEmailVerified ?? false
     result["is_friend"] = self.isFriend ?? false
     result["location"] = self.location?.encode()
     result["name"] = self.name
