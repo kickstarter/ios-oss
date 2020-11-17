@@ -50,7 +50,7 @@ public func logoutAndDismiss(
 
 // MARK: - Email Verification workflow
 
-public func startEmailVerificationViewController(
+public func pushEmailVerificationViewController(
   viewController: UIViewController
 ) {
   /**
