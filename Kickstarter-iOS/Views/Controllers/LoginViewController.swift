@@ -133,18 +133,11 @@ internal final class LoginViewController: UIViewController {
 
     self.viewModel.outputs.logIntoEnvironment
       .observeForControllerAction()
-      .observeValues { [weak self] env in
+      .observeValues { [weak self] env, isEmailVerified in
         guard let self = self else { return }
         AppEnvironment.login(env)
-
-        if featureEmailVerificationFlowIsEnabled() {
-          guard let isEmailVerified = AppEnvironment.current.currentUser?.isEmailVerified,
-            isEmailVerified else {
-            startEmailVerificationViewController(viewController: self)
-            return
-          }
-        }
-        self.viewModel.inputs.environmentLoggedIn()
+        isEmailVerified ? self.viewModel.inputs
+          .environmentLoggedIn() : pushEmailVerificationViewController(viewController: self)
       }
 
     self.viewModel.outputs.showResetPassword

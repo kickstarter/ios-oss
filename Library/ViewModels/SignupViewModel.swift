@@ -42,8 +42,8 @@ public protocol SignupViewModelOutputs {
   /// Emits true when the signup button should be enabled, false otherwise.
   var isSignupButtonEnabled: Signal<Bool, Never> { get }
 
-  /// Emits an access token envelope that can be used to update the environment.
-  var logIntoEnvironment: Signal<AccessTokenEnvelope, Never> { get }
+  /// Emits a tuple with an access token envelope and Bool value representing email verification status that can be used to update the environment.
+  var logIntoEnvironment: Signal<(AccessTokenEnvelope, Bool), Never> { get }
 
   /// Sets whether the password text field is the first responder.
   var passwordTextFieldBecomeFirstResponder: Signal<(), Never> { get }
@@ -127,7 +127,18 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
 
     self.showError = signupError
 
-    self.logIntoEnvironment = signupEvent.values()
+    self.logIntoEnvironment = signupEvent
+      .values()
+      .map { accessTokenEnvelope in
+        if featureEmailVerificationFlowIsEnabled() {
+          guard let isEmailVerified = AppEnvironment.current.currentUser?.isEmailVerified,
+            isEmailVerified else {
+            /// Email is not verified
+            return (accessTokenEnvelope, false)
+          }
+        }
+        return (accessTokenEnvelope, true)
+      }
 
     self.postNotification = self.environmentLoggedInProperty.signal
       .mapConst(Notification(name: .ksr_sessionStarted))
@@ -196,7 +207,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
 
   public let emailTextFieldBecomeFirstResponder: Signal<(), Never>
   public let isSignupButtonEnabled: Signal<Bool, Never>
-  public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
+  public let logIntoEnvironment: Signal<(AccessTokenEnvelope, Bool), Never>
   public let nameTextFieldBecomeFirstResponder: Signal<(), Never>
   public let passwordTextFieldBecomeFirstResponder: Signal<(), Never>
   public let postNotification: Signal<Notification, Never>
