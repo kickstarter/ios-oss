@@ -48,8 +48,8 @@ public protocol LoginViewModelOutputs {
   /// Bool value whether form is valid
   var isFormValid: Signal<Bool, Never> { get }
 
-  /// Emits an access token envelope that can be used to update the environment.
-  var logIntoEnvironment: Signal<AccessTokenEnvelope, Never> { get }
+  /// Emits a tuple with an access token envelope and Bool value representing email verification status that can be used to update the environment.
+  var logIntoEnvironment: Signal<(AccessTokenEnvelope, Bool), Never> { get }
 
   /// Emits when the password textfield should become the first responder
   var passwordTextFieldBecomeFirstResponder: Signal<(), Never> { get }
@@ -99,7 +99,18 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
           .materialize()
       }
 
-    self.logIntoEnvironment = loginEvent.values()
+    self.logIntoEnvironment = loginEvent
+      .values()
+      .map { accessTokenEnvelope in
+        if featureEmailVerificationFlowIsEnabled() {
+          guard let isEmailVerified = AppEnvironment.current.currentUser?.isEmailVerified,
+            isEmailVerified else {
+            /// Email is not verified
+            return (accessTokenEnvelope, false)
+          }
+        }
+        return (accessTokenEnvelope, true)
+      }
 
     let tfaError = loginEvent.errors()
       .filter { $0.ksrCode == .TfaRequired }
@@ -201,7 +212,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   public let dismissKeyboard: Signal<(), Never>
   public let emailTextFieldBecomeFirstResponder: Signal<(), Never>
   public let isFormValid: Signal<Bool, Never>
-  public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
+  public let logIntoEnvironment: Signal<(AccessTokenEnvelope, Bool), Never>
   public let passwordTextFieldBecomeFirstResponder: Signal<(), Never>
   public let postNotification: Signal<(Notification, Notification), Never>
   public let showError: Signal<String, Never>
