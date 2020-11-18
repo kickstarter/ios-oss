@@ -6,13 +6,14 @@ import UIKit
 final class EmailVerificationViewController: UIViewController {
   // MARK: - Properties
 
-  private lazy var messageLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var contentVStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var contentHStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var imageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var footerLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var footerStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var messageLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var resendButton: UIButton = { UIButton(type: .custom) }()
+  private lazy var rootScrollView: UIScrollView = { UIScrollView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var skipButton: UIButton = { UIButton(type: .custom) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
@@ -25,6 +26,7 @@ final class EmailVerificationViewController: UIViewController {
     super.viewDidLoad()
 
     self.configureSubviews()
+    self.setupConstraints()
   }
 
   // MARK: - Styles
@@ -43,6 +45,9 @@ final class EmailVerificationViewController: UIViewController {
 
     _ = self.contentVStackView
       |> contentVStackViewStyle
+
+    _ = self.footerStackView
+      |> footerStackViewStyle(self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory)
 
     _ = self.imageView
       |> UIImageView.lens.image .~ Library.image(named: "email-icon-light")
@@ -63,10 +68,16 @@ final class EmailVerificationViewController: UIViewController {
       |> resendButtonStyle
   }
 
+  // MARK: - Views
+
   private func configureSubviews() {
-    _ = (self.rootStackView, self.view)
+    _ = (self.rootScrollView, self.view)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
+
+    _ = (self.rootStackView, self.rootScrollView)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     _ = ([self.contentHStackView, self.footerStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -81,6 +92,15 @@ final class EmailVerificationViewController: UIViewController {
       |> ksr_addArrangedSubviewsToStackView()
 
     self.contentVStackView.setCustomSpacing(Styles.grid(5), after: self.imageView)
+  }
+
+  // MARK: - Constraints
+
+  private func setupConstraints() {
+    NSLayoutConstraint.activate([
+      self.rootStackView.widthAnchor.constraint(equalTo: self.rootScrollView.widthAnchor),
+      self.rootStackView.heightAnchor.constraint(greaterThanOrEqualTo: self.rootScrollView.heightAnchor)
+    ])
   }
 
   // MARK: - View model
@@ -144,6 +164,13 @@ private let footerLabelStyle: LabelStyle = { (label: UILabel) in
     |> \.numberOfLines .~ 0
 }
 
+private func footerStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
+  return { (stackView: UIStackView) in
+    stackView
+      |> \.axis .~ (isAccessibilityCategory ? .vertical : .horizontal)
+  }
+}
+
 private let messageLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.textAlignment .~ .center
@@ -160,7 +187,7 @@ private let messageLabelStyle: LabelStyle = { (label: UILabel) in
 
 private let rootStackViewStyle: StackViewStyle = { (stackView: UIStackView) in
   stackView
-    |> \.layoutMargins .~ .init(top: 0, left: Styles.grid(5), bottom: Styles.grid(2), right: Styles.grid(5))
+    |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(5))
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.axis .~ .vertical
     |> \.alignment .~ .center
