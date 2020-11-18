@@ -8,7 +8,7 @@ internal final class SignupViewModelTests: TestCase {
   fileprivate let vm: SignupViewModelType = SignupViewModel()
   fileprivate let emailTextFieldBecomeFirstResponder = TestObserver<(), Never>()
   fileprivate let isSignupButtonEnabled = TestObserver<Bool, Never>()
-  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
+  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope?, Never>()
   fileprivate let nameTextFieldBecomeFirstResponder = TestObserver<(), Never>()
   fileprivate let passwordTextFieldBecomeFirstResponder = TestObserver<(), Never>()
   fileprivate let postNotification = TestObserver<Notification.Name, Never>()

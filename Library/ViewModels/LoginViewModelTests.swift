@@ -13,7 +13,7 @@ final class LoginViewModelTests: TestCase {
   fileprivate let isFormValid = TestObserver<Bool, Never>()
   fileprivate let dismissKeyboard = TestObserver<(), Never>()
   fileprivate let postNotificationName = TestObserver<(Notification.Name, Notification.Name), Never>()
-  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
+  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope?, Never>()
   fileprivate let showError = TestObserver<String, Never>()
   fileprivate let tfaChallenge = TestObserver<String, Never>()
   fileprivate let tfaChallengePasswordText = TestObserver<String, Never>()
