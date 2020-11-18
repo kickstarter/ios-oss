@@ -474,6 +474,7 @@
 		8A8831C524DA2B9D002BCA5E /* Backing+GraphBackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8831C424DA2B9D002BCA5E /* Backing+GraphBackingTests.swift */; };
 		8A8C6134243F99AB0092B682 /* ContentSizeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8C6133243F99AB0092B682 /* ContentSizeTableView.swift */; };
 		8A8C6136243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8C6135243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift */; };
+		8AA37E8F256595C2006C45E8 /* EmailVerificationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA37E8E256595C2006C45E8 /* EmailVerificationViewControllerTests.swift */; };
 		8AA3DB30250AB4AB009AC8EA /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156B4181D10B419000C4252 /* UIAlertController.swift */; };
 		8AA3DB31250AB4E5009AC8EA /* UIStackView+BackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6508F342049C45D002DCC01 /* UIStackView+BackgroundColor.swift */; };
 		8AA3DB32250AC42F009AC8EA /* Library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A755113C1C8642B3005355CF /* Library.framework */; };
@@ -1973,6 +1974,7 @@
 		8A8831C424DA2B9D002BCA5E /* Backing+GraphBackingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Backing+GraphBackingTests.swift"; sourceTree = "<group>"; };
 		8A8C6133243F99AB0092B682 /* ContentSizeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizeTableView.swift; sourceTree = "<group>"; };
 		8A8C6135243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsDataSourceTests.swift; sourceTree = "<group>"; };
+		8AA37E8E256595C2006C45E8 /* EmailVerificationViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationViewControllerTests.swift; sourceTree = "<group>"; };
 		8AA407BF24DA43D8008C5FB0 /* GraphCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCategory.swift; sourceTree = "<group>"; };
 		8AA407C124DB0C8D008C5FB0 /* GraphCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCountry.swift; sourceTree = "<group>"; };
 		8AA407C524DB36E8008C5FB0 /* Project.Country+GraphCountry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Project.Country+GraphCountry.swift"; sourceTree = "<group>"; };
@@ -3415,6 +3417,7 @@
 				8AA5248E2384CA7900FD52CF /* EditorialProjectsViewController.swift */,
 				8AA524942384CADE00FD52CF /* EditorialProjectsViewControllerTests.swift */,
 				8A7E71F8256460C200119B49 /* EmailVerificationViewController.swift */,
+				8AA37E8E256595C2006C45E8 /* EmailVerificationViewControllerTests.swift */,
 				013744AC1D95AC1400E50C78 /* EmptyStatesViewController.swift */,
 				A7ED20281E8323E900BFFA01 /* EmptyStatesViewControllerTests.swift */,
 				0146E3211CC0296900082C5B /* FacebookConfirmationViewController.swift */,
@@ -5938,6 +5941,7 @@
 				77FA6CD220F53E5E00809E31 /* SettingsDataSourceTests.swift in Sources */,
 				A7ED204D1E8323E900BFFA01 /* FindFriendsViewControllerTests.swift in Sources */,
 				015102AE1F1947CB0006C0FC /* MessageThreadsDataSourceTests.swift in Sources */,
+				8AA37E8F256595C2006C45E8 /* EmailVerificationViewControllerTests.swift in Sources */,
 				774A76F520D98EEF0012A71F /* BetaToolsViewControllerTests.swift in Sources */,
 				D033E2C322A05B7400464E43 /* MockApplication.swift in Sources */,
 				A7ED20541E8323E900BFFA01 /* ProjectPamphletContentViewControllerTests.swift in Sources */,
