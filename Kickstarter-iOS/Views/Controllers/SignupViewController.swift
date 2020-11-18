@@ -120,16 +120,23 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
 
     self.viewModel.outputs.logIntoEnvironment
       .observeForControllerAction()
-      .observeValues { [weak self] env, isEmailVerified in
-        guard let self = self else { return }
+      .observeValues { [weak self] env in
+        guard let env = env else { return }
         AppEnvironment.login(env)
-        isEmailVerified ? self.viewModel.inputs
-          .environmentLoggedIn() : pushEmailVerificationViewController(viewController: self)
+        self?.viewModel.inputs.environmentLoggedIn()
       }
 
     self.viewModel.outputs.postNotification
       .observeForUI()
       .observeValues(NotificationCenter.default.post)
+
+    self.viewModel.outputs.showEmailVerification
+      .observeForControllerAction()
+      .observeValues { [weak self] env in
+        guard let self = self else { return }
+        AppEnvironment.login(env)
+        pushEmailVerificationViewController(viewController: self)
+      }
 
     self.viewModel.outputs.showError
       .observeForControllerAction()
