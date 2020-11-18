@@ -53,9 +53,7 @@ public func logoutAndDismiss(
 public func pushEmailVerificationViewController(
   viewController: UIViewController
 ) {
-  /**
-   FIXME: `UIViewController` needs to be replaced with the EmailVerification UI when development is complete.
-   */
-  viewController.navigationController?.pushViewController(UIViewController.instantiate(), animated: true)
+  viewController.navigationController?
+    .pushViewController(EmailVerificationViewController.instantiate(), animated: true)
   viewController.navigationController?.setNavigationBarHidden(true, animated: true)
 }
