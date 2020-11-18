@@ -1,5 +1,6 @@
 @testable import KsApi
 @testable import Library
+import Prelude
 import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
@@ -14,6 +15,7 @@ internal final class SignupViewModelTests: TestCase {
   fileprivate let postNotification = TestObserver<Notification.Name, Never>()
   fileprivate let setWeeklyNewsletterState = TestObserver<Bool, Never>()
   fileprivate let showError = TestObserver<String, Never>()
+  fileprivate let showEmailVerification = TestObserver<AccessTokenEnvelope, Never>()
 
   override func setUp() {
     super.setUp()
@@ -28,6 +30,7 @@ internal final class SignupViewModelTests: TestCase {
     self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotification.observer)
     self.vm.outputs.setWeeklyNewsletterState.observe(self.setWeeklyNewsletterState.observer)
     self.vm.outputs.showError.observe(self.showError.observer)
+    self.vm.outputs.showEmailVerification.observe(self.showEmailVerification.observer)
   }
 
   // Tests a standard flow for signing up.
@@ -81,6 +84,56 @@ internal final class SignupViewModelTests: TestCase {
       [.ksr_sessionStarted],
       "Notification posted after scheduler advances."
     )
+  }
+
+  func testSignupFlow_IsEmailVerifiedTrue_EmailVerificationFeatureFlagEnabled() {
+    let config = .template
+      |> Config.lens.features .~ ["ios_email_verification_flow": true]
+    let user = .template
+      |> User.lens.isEmailVerified .~ true
+    let signupResponse = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
+
+    withEnvironment(apiService: MockService(signupResponse: signupResponse), config: config) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
+      self.vm.inputs.nameChanged("Native Squad")
+      self.vm.inputs.passwordChanged("0773rw473rm3l0n")
+      self.vm.inputs.signupButtonPressed()
+
+      self.showError.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+      
+      self.logIntoEnvironment.assertValueCount(1, "Logged into environment.")
+      self.showEmailVerification.assertValueCount(0, "Should not show email verificaton.")
+      self.vm.inputs.passwordTextFieldReturn()
+      self.showError.assertValueCount(0, "Should not show error.")
+    }
+  }
+
+  func testSignupFlow_IsEmailVerifiedFalse_EmailVerificationFeatureFlagEnabled() {
+    let config = .template
+      |> Config.lens.features .~ ["ios_email_verification_flow": true]
+    let user = .template
+      |> User.lens.isEmailVerified .~ false
+    let signupResponse = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
+
+    withEnvironment(apiService: MockService(signupResponse: signupResponse), config: config) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
+      self.vm.inputs.nameChanged("Native Squad")
+      self.vm.inputs.passwordChanged("0773rw473rm3l0n")
+      self.vm.inputs.signupButtonPressed()
+      
+      self.showError.assertDidNotEmitValue()
+      
+      self.scheduler.advance()
+      
+      self.logIntoEnvironment.assertValueCount(1, "Logged into environment.")
+      self.showEmailVerification.assertValueCount(1, "Showed email verification.")
+      self.vm.inputs.passwordTextFieldReturn()
+      self.showError.assertValueCount(0, "Should not show error.")
+    }
   }
 
   func testBecomeFirstResponder() {
