@@ -140,7 +140,7 @@ internal final class LoginViewController: UIViewController {
 
     self.viewModel.outputs.showEmailVerification
       .observeForControllerAction()
-      .observeValues { [weak self] env, isEmailVerified in
+      .observeValues { [weak self] env in
         guard let self = self else { return }
         AppEnvironment.login(env)
         pushEmailVerificationViewController(viewController: self)
