@@ -95,6 +95,7 @@ private func rootStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewSt
 
   return { (stackView: UIStackView) in
     stackView
+      |> \.insetsLayoutMarginsFromSafeArea .~ false
       |> \.alignment .~ alignment
       |> \.axis .~ axis
       |> \.distribution .~ distribution
