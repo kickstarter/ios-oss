@@ -57,5 +57,5 @@ public func pushEmailVerificationViewController(
    FIXME: `UIViewController` needs to be replaced with the EmailVerification UI when development is complete.
    */
   viewController.navigationController?.pushViewController(UIViewController.instantiate(), animated: true)
-  viewController.navigationItem.backBarButtonItem = UIBarButtonItem.back(nil, selector: nil)
+  viewController.navigationController?.setNavigationBarHidden(true, animated: true)
 }
