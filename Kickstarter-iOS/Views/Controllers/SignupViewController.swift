@@ -119,7 +119,6 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.signupButton.rac.enabled = self.viewModel.outputs.isSignupButtonEnabled
 
     self.viewModel.outputs.logIntoEnvironment
-      .observeForControllerAction()
       .observeValues { [weak self] env in
         guard let env = env else { return }
         AppEnvironment.login(env)

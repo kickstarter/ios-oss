@@ -103,7 +103,7 @@ internal final class SignupViewModelTests: TestCase {
       self.showError.assertDidNotEmitValue()
 
       self.scheduler.advance()
-      
+
       self.logIntoEnvironment.assertValueCount(1, "Logged into environment.")
       self.showEmailVerification.assertValueCount(0, "Should not show email verificaton.")
       self.vm.inputs.passwordTextFieldReturn()
@@ -124,11 +124,11 @@ internal final class SignupViewModelTests: TestCase {
       self.vm.inputs.nameChanged("Native Squad")
       self.vm.inputs.passwordChanged("0773rw473rm3l0n")
       self.vm.inputs.signupButtonPressed()
-      
+
       self.showError.assertDidNotEmitValue()
-      
+
       self.scheduler.advance()
-      
+
       self.logIntoEnvironment.assertValueCount(1, "Logged into environment.")
       self.showEmailVerification.assertValueCount(1, "Showed email verification.")
       self.vm.inputs.passwordTextFieldReturn()

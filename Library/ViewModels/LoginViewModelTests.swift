@@ -94,7 +94,7 @@ final class LoginViewModelTests: TestCase {
       self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
       self.vm.inputs.passwordChanged("helloooooo")
       self.vm.inputs.loginButtonPressed()
-      
+
       self.showError.assertDidNotEmitValue()
       self.logIntoEnvironment.assertValueCount(1, "Logged into environment.")
       self.showEmailVerification.assertValueCount(0, "Did not show email verification.")
@@ -116,7 +116,7 @@ final class LoginViewModelTests: TestCase {
       self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
       self.vm.inputs.passwordChanged("helloooooo")
       self.vm.inputs.loginButtonPressed()
-      
+
       self.showError.assertDidNotEmitValue()
       self.logIntoEnvironment.assertValueCount(1, "Logged into environment.")
       self.showEmailVerification.assertValueCount(1, "Showed email verification.")
