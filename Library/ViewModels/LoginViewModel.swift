@@ -13,6 +13,9 @@ public protocol LoginViewModelInputs {
   /// Call when the environment has been logged into.
   func environmentLoggedIn()
 
+  /// Call when the skip button on the  email verification view controller is tapped.
+  func emailVerificationViewControllerDidComplete()
+
   /// Call when login button is pressed.
   func loginButtonPressed()
 
@@ -120,16 +123,19 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
       .takeWhen(tfaError)
       .map { (email: $0, password: $1) }
 
-    self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(
-        (
-          Notification(name: .ksr_sessionStarted),
-          Notification(
-            name: .ksr_showNotificationsDialog,
-            userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login]
-          )
+    self.postNotification = Signal.merge(
+      self.environmentLoggedInProperty.signal,
+      self.emailVerificationViewControllerDidCompleteProperty.signal
+    )
+    .mapConst(
+      (
+        Notification(name: .ksr_sessionStarted),
+        Notification(
+          name: .ksr_showNotificationsDialog,
+          userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login]
         )
       )
+    )
 
     self.dismissKeyboard = self.passwordTextFieldDoneEditingProperty.signal
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldDoneEditingProperty.signal
@@ -187,6 +193,11 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   fileprivate let environmentLoggedInProperty = MutableProperty(())
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
+  }
+
+  fileprivate let emailVerificationViewControllerDidCompleteProperty = MutableProperty(())
+  public func emailVerificationViewControllerDidComplete() {
+    self.emailVerificationViewControllerDidCompleteProperty.value = ()
   }
 
   fileprivate let resetPasswordPressedProperty = MutableProperty(())

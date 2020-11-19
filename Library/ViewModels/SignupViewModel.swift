@@ -10,6 +10,9 @@ public protocol SignupViewModelInputs {
   /// Call when the user returns from email text field.
   func emailTextFieldReturn()
 
+  /// Call when the skip button on the  email verification view controller is tapped.
+  func emailVerificationViewControllerDidComplete()
+
   /// Call when the environment has been logged into
   func environmentLoggedIn()
 
@@ -42,8 +45,11 @@ public protocol SignupViewModelOutputs {
   /// Emits true when the signup button should be enabled, false otherwise.
   var isSignupButtonEnabled: Signal<Bool, Never> { get }
 
-  /// Emits an optional access token envelope that can be used to update the environment.
-  var logIntoEnvironment: Signal<AccessTokenEnvelope?, Never> { get }
+  /// Emits an access token envelope that can be used to update the environment.
+  var logIntoEnvironment: Signal<AccessTokenEnvelope, Never> { get }
+
+  /// Emits an access token envelope when the email verification screen should be displayed.
+  var logIntoEnvironmentAndShowEmailVerification: Signal<AccessTokenEnvelope, Never> { get }
 
   /// Sets whether the password text field is the first responder.
   var passwordTextFieldBecomeFirstResponder: Signal<(), Never> { get }
@@ -56,9 +62,6 @@ public protocol SignupViewModelOutputs {
 
   /// Emits the value for the weekly newsletter.
   var setWeeklyNewsletterState: Signal<Bool, Never> { get }
-
-  /// Emits an access token envelope when the email verification screen should be displayed.
-  var showEmailVerification: Signal<AccessTokenEnvelope, Never> { get }
 
   /// Emits when a signup error has occurred and a message should be displayed.
   var showError: Signal<String, Never> { get }
@@ -123,18 +126,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
         .materialize()
       }
 
-    let signupEventValues = signupEvent
-      .values()
-      .map { accessTokenEnvelope -> (AccessTokenEnvelope, Bool) in
-        if featureEmailVerificationFlowIsEnabled() {
-          guard let isEmailVerified = accessTokenEnvelope.user.isEmailVerified,
-            isEmailVerified else {
-            /// Email is not verified
-            return (accessTokenEnvelope, false)
-          }
-        }
-        return (accessTokenEnvelope, true)
-      }
+    let signupEventValues = signupEvent.values()
 
     let signupError = signupEvent.errors()
       .map {
@@ -143,19 +135,19 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
 
     self.showError = signupError
 
+    /// If user's email is verified, log into environment.
     self.logIntoEnvironment = signupEventValues
-      .map { accessTokenEnvelope, isEmailVerified in
-        isEmailVerified ? accessTokenEnvelope : nil
-      }
+      .filter(isAccessTokenEnvelopeEmailVerified)
 
-    /// If isEmailVerified from `signupEventValues` is false return the `accessTokenEnvelope`
-    /// so the user can be logged in before presenting the verification screen.
-    self.showEmailVerification = signupEventValues
-      .filter { !$0.1 }
-      .map { $0.0 }
+    /// If user's email is not verified, show email verification prompt.
+    self.logIntoEnvironmentAndShowEmailVerification = signupEventValues
+      .filter(isAccessTokenEnvelopeEmailVerified >>> isFalse)
 
-    self.postNotification = self.environmentLoggedInProperty.signal
-      .mapConst(Notification(name: .ksr_sessionStarted))
+    self.postNotification = Signal.merge(
+      self.environmentLoggedInProperty.signal,
+      self.emailVerificationViewControllerDidCompleteProperty.signal
+    )
+    .mapConst(Notification(name: .ksr_sessionStarted))
 
     self.weeklyNewsletterChangedProperty.signal
       .skipNil()
@@ -182,6 +174,11 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
   fileprivate let environmentLoggedInProperty = MutableProperty(())
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
+  }
+
+  fileprivate let emailVerificationViewControllerDidCompleteProperty = MutableProperty(())
+  public func emailVerificationViewControllerDidComplete() {
+    self.emailVerificationViewControllerDidCompleteProperty.value = ()
   }
 
   fileprivate let nameChangedProperty = MutableProperty("")
@@ -221,12 +218,12 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
 
   public let emailTextFieldBecomeFirstResponder: Signal<(), Never>
   public let isSignupButtonEnabled: Signal<Bool, Never>
-  public let logIntoEnvironment: Signal<AccessTokenEnvelope?, Never>
+  public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
+  public let logIntoEnvironmentAndShowEmailVerification: Signal<AccessTokenEnvelope, Never>
   public let nameTextFieldBecomeFirstResponder: Signal<(), Never>
   public let passwordTextFieldBecomeFirstResponder: Signal<(), Never>
   public let postNotification: Signal<Notification, Never>
   public let setWeeklyNewsletterState: Signal<Bool, Never>
-  public let showEmailVerification: Signal<AccessTokenEnvelope, Never>
 
   public let showError: Signal<String, Never>
 

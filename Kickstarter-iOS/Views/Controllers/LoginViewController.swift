@@ -229,8 +229,7 @@ internal final class LoginViewController: UIViewController {
 // MARK: - EmailVerificationViewControllerDelegate
 
 extension LoginViewController: EmailVerificationViewControllerDelegate {
-  func emailVerificationViewControllerDidComplete(_ viewController: EmailVerificationViewController) {
-    // create another input called emailVerificationViewControllerDidComplete() which does exactly the same as environmentLoggedIn()
-    self.viewModel.inputs.environmentLoggedIn()
+  func emailVerificationViewControllerDidComplete(_: EmailVerificationViewController) {
+    self.viewModel.inputs.emailVerificationViewControllerDidComplete()
   }
 }
