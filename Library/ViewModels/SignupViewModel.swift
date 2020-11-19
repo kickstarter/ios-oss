@@ -42,8 +42,8 @@ public protocol SignupViewModelOutputs {
   /// Emits true when the signup button should be enabled, false otherwise.
   var isSignupButtonEnabled: Signal<Bool, Never> { get }
 
-  /// Emits an access token envelope that can be used to update the environment.
-  var logIntoEnvironment: Signal<AccessTokenEnvelope, Never> { get }
+  /// Emits an optional access token envelope that can be used to update the environment.
+  var logIntoEnvironment: Signal<AccessTokenEnvelope?, Never> { get }
 
   /// Sets whether the password text field is the first responder.
   var passwordTextFieldBecomeFirstResponder: Signal<(), Never> { get }
@@ -56,6 +56,9 @@ public protocol SignupViewModelOutputs {
 
   /// Emits the value for the weekly newsletter.
   var setWeeklyNewsletterState: Signal<Bool, Never> { get }
+
+  /// Emits an access token envelope when the email verification screen should be displayed.
+  var showEmailVerification: Signal<AccessTokenEnvelope, Never> { get }
 
   /// Emits when a signup error has occurred and a message should be displayed.
   var showError: Signal<String, Never> { get }
@@ -120,6 +123,19 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
         .materialize()
       }
 
+    let signupEventValues = signupEvent
+      .values()
+      .map { accessTokenEnvelope -> (AccessTokenEnvelope, Bool) in
+        if featureEmailVerificationFlowIsEnabled() {
+          guard let isEmailVerified = accessTokenEnvelope.user.isEmailVerified,
+            isEmailVerified else {
+            /// Email is not verified
+            return (accessTokenEnvelope, false)
+          }
+        }
+        return (accessTokenEnvelope, true)
+      }
+
     let signupError = signupEvent.errors()
       .map {
         $0.errorMessages.first ?? Strings.signup_error_something_wrong()
@@ -127,7 +143,16 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
 
     self.showError = signupError
 
-    self.logIntoEnvironment = signupEvent.values()
+    self.logIntoEnvironment = signupEventValues
+      .map { accessTokenEnvelope, isEmailVerified in
+        isEmailVerified ? accessTokenEnvelope : nil
+      }
+
+    /// If isEmailVerified from `signupEventValues` is false return the `accessTokenEnvelope`
+    /// so the user can be logged in before presenting the verification screen.
+    self.showEmailVerification = signupEventValues
+      .filter { !$0.1 }
+      .map { $0.0 }
 
     self.postNotification = self.environmentLoggedInProperty.signal
       .mapConst(Notification(name: .ksr_sessionStarted))
@@ -196,11 +221,13 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
 
   public let emailTextFieldBecomeFirstResponder: Signal<(), Never>
   public let isSignupButtonEnabled: Signal<Bool, Never>
-  public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
+  public let logIntoEnvironment: Signal<AccessTokenEnvelope?, Never>
   public let nameTextFieldBecomeFirstResponder: Signal<(), Never>
   public let passwordTextFieldBecomeFirstResponder: Signal<(), Never>
   public let postNotification: Signal<Notification, Never>
   public let setWeeklyNewsletterState: Signal<Bool, Never>
+  public let showEmailVerification: Signal<AccessTokenEnvelope, Never>
+
   public let showError: Signal<String, Never>
 
   public var inputs: SignupViewModelInputs { return self }

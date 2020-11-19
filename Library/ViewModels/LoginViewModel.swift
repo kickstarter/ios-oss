@@ -48,8 +48,8 @@ public protocol LoginViewModelOutputs {
   /// Bool value whether form is valid
   var isFormValid: Signal<Bool, Never> { get }
 
-  /// Emits an access token envelope that can be used to update the environment.
-  var logIntoEnvironment: Signal<AccessTokenEnvelope, Never> { get }
+  /// Emits an optional access token envelope that can be used to update the environment.
+  var logIntoEnvironment: Signal<AccessTokenEnvelope?, Never> { get }
 
   /// Emits when the password textfield should become the first responder
   var passwordTextFieldBecomeFirstResponder: Signal<(), Never> { get }
@@ -63,7 +63,10 @@ public protocol LoginViewModelOutputs {
   /// Emits when the reset password screen should be shown
   var showResetPassword: Signal<(), Never> { get }
 
-  // Emits when the show/hide password button is toggled
+  /// Emits an access token envelope when the email verification screen should be displayed.
+  var showEmailVerification: Signal<AccessTokenEnvelope, Never> { get }
+
+  /// Emits when the show/hide password button is toggled
   var showHidePasswordButtonToggled: Signal<Bool, Never> { get }
 
   /// Emits when TFA is required for login.
@@ -99,7 +102,29 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
           .materialize()
       }
 
-    self.logIntoEnvironment = loginEvent.values()
+    let loginEventValues = loginEvent
+      .values()
+      .map { accessTokenEnvelope -> (AccessTokenEnvelope, Bool) in
+        if featureEmailVerificationFlowIsEnabled() {
+          guard let isEmailVerified = accessTokenEnvelope.user.isEmailVerified,
+            isEmailVerified else {
+            /// Email is not verified
+            return (accessTokenEnvelope, false)
+          }
+        }
+        return (accessTokenEnvelope, true)
+      }
+
+    self.logIntoEnvironment = loginEventValues
+      .map { accessTokenEnvelope, isEmailVerified in
+        isEmailVerified ? accessTokenEnvelope : nil
+      }
+
+    /// If isEmailVerified from `loginEventValues` is false return the `accessTokenEnvelope`
+    /// so the user can be logged in before presenting the verification screen.
+    self.showEmailVerification = loginEventValues
+      .filter { !$0.1 }
+      .map { $0.0 }
 
     let tfaError = loginEvent.errors()
       .filter { $0.ksrCode == .TfaRequired }
@@ -201,10 +226,11 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   public let dismissKeyboard: Signal<(), Never>
   public let emailTextFieldBecomeFirstResponder: Signal<(), Never>
   public let isFormValid: Signal<Bool, Never>
-  public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
+  public let logIntoEnvironment: Signal<AccessTokenEnvelope?, Never>
   public let passwordTextFieldBecomeFirstResponder: Signal<(), Never>
   public let postNotification: Signal<(Notification, Notification), Never>
   public let showError: Signal<String, Never>
+  public let showEmailVerification: Signal<AccessTokenEnvelope, Never>
   public let showResetPassword: Signal<(), Never>
   public let showHidePasswordButtonToggled: Signal<Bool, Never>
   public let tfaChallenge: Signal<(email: String, password: String), Never>

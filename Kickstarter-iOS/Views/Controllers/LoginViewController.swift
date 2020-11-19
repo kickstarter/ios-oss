@@ -133,8 +133,17 @@ internal final class LoginViewController: UIViewController {
 
     self.viewModel.outputs.logIntoEnvironment
       .observeValues { [weak self] env in
+        guard let env = env else { return }
         AppEnvironment.login(env)
         self?.viewModel.inputs.environmentLoggedIn()
+      }
+
+    self.viewModel.outputs.showEmailVerification
+      .observeForControllerAction()
+      .observeValues { [weak self] env in
+        guard let self = self else { return }
+        AppEnvironment.login(env)
+        pushEmailVerificationViewController(viewController: self)
       }
 
     self.viewModel.outputs.showResetPassword
