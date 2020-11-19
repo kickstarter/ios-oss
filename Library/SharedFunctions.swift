@@ -388,3 +388,15 @@ public func isEndDateAfterToday(for reward: Reward) -> Bool {
   return (reward.endsAt == nil || (reward.endsAt ?? 0) >= AppEnvironment.current.dateType.init()
     .timeIntervalSince1970)
 }
+
+/**
+ Determines if a given `AccessTokenEnvelope`'s `User`'s email is verified.
+
+ - parameter env: The access token envelope.
+
+ - returns: A Bool representing whether the email is verified.
+ */
+public func isAccessTokenEnvelopeEmailVerified(_ env: AccessTokenEnvelope) -> Bool {
+  return false
+  return env.user.isEmailVerified ?? false
+}

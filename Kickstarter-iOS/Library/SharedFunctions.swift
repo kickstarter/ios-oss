@@ -47,13 +47,3 @@ public func logoutAndDismiss(
 
   viewController.dismiss(animated: true, completion: nil)
 }
-
-// MARK: - Email Verification workflow
-
-public func pushEmailVerificationViewController(
-  viewController: UIViewController
-) {
-  viewController.navigationController?
-    .pushViewController(EmailVerificationViewController.instantiate(), animated: true)
-  viewController.navigationController?.setNavigationBarHidden(true, animated: true)
-}

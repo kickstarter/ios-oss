@@ -133,17 +133,16 @@ internal final class LoginViewController: UIViewController {
 
     self.viewModel.outputs.logIntoEnvironment
       .observeValues { [weak self] env in
-        guard let env = env else { return }
         AppEnvironment.login(env)
         self?.viewModel.inputs.environmentLoggedIn()
       }
 
-    self.viewModel.outputs.showEmailVerification
+    self.viewModel.outputs.logIntoEnvironmentAndShowEmailVerification
       .observeForControllerAction()
       .observeValues { [weak self] env in
         guard let self = self else { return }
         AppEnvironment.login(env)
-        pushEmailVerificationViewController(viewController: self)
+        EmailVerificationViewController.push(on: self)
       }
 
     self.viewModel.outputs.showResetPassword
@@ -224,5 +223,14 @@ internal final class LoginViewController: UIViewController {
 
   @objc func showHidePasswordButtonTapped() {
     self.viewModel.inputs.showHidePasswordButtonTapped()
+  }
+}
+
+// MARK: - EmailVerificationViewControllerDelegate
+
+extension LoginViewController: EmailVerificationViewControllerDelegate {
+  func emailVerificationViewControllerDidComplete(_ viewController: EmailVerificationViewController) {
+    // create another input called emailVerificationViewControllerDidComplete() which does exactly the same as environmentLoggedIn()
+    self.viewModel.inputs.environmentLoggedIn()
   }
 }
