@@ -224,7 +224,6 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
   public let passwordTextFieldBecomeFirstResponder: Signal<(), Never>
   public let postNotification: Signal<Notification, Never>
   public let setWeeklyNewsletterState: Signal<Bool, Never>
-
   public let showError: Signal<String, Never>
 
   public var inputs: SignupViewModelInputs { return self }
