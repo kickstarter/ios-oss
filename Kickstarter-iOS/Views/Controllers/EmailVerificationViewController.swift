@@ -27,6 +27,8 @@ final class EmailVerificationViewController: UIViewController {
 
     self.configureSubviews()
     self.setupConstraints()
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   // MARK: - Styles
@@ -107,6 +109,22 @@ final class EmailVerificationViewController: UIViewController {
 
   internal override func bindViewModel() {
     super.bindViewModel()
+
+    self.footerStackView.rac.hidden = self.viewModel.outputs.footerStackViewIsHidden
+
+    self.viewModel.outputs.notifyDelegateDidComplete
+      .observeForUI()
+      .observeValues { [weak self] in
+        guard let _ = self else { return }
+
+        // notify delegate
+      }
+  }
+
+  // MARK: - Actions
+
+  @objc func skipButtonTapped() {
+    self.viewModel.inputs.skipButtonTapped()
   }
 }
 
