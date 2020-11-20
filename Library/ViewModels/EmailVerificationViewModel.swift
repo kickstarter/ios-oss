@@ -48,10 +48,10 @@ public final class EmailVerificationViewModel: EmailVerificationViewModelType,
       resendEmailVerificationEvent.filter { $0.isTerminating }.mapConst(true)
     )
 
-    self.showErrorBannerWithMessage = didSendVerificationEmail
-      .mapConst(Strings.Verification_email_sent())
+    self.showErrorBannerWithMessage = didFailToSendVerificationEmail
 
-    self.showSuccessBannerWithMessage = didFailToSendVerificationEmail
+    self.showSuccessBannerWithMessage = didSendVerificationEmail
+      .mapConst(Strings.Verification_email_sent())
   }
 
   private let resendButtonTappedProperty = MutableProperty(())
