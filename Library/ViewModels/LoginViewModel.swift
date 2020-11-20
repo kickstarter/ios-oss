@@ -109,11 +109,11 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
 
     /// If user's email is verified, log into environment.
     self.logIntoEnvironment = loginEventValues
-      .filter(isAccessTokenEnvelopeEmailVerified)
+      .filter(showEmailVerificationForAccessTokenEnvelope >>> isFalse)
 
     /// If user's email is not verified, show email verification prompt.
     self.logIntoEnvironmentAndShowEmailVerification = loginEventValues
-      .filter(isAccessTokenEnvelopeEmailVerified >>> isFalse)
+      .filter(showEmailVerificationForAccessTokenEnvelope >>> isTrue)
 
     let tfaError = loginEvent.errors()
       .filter { $0.ksrCode == .TfaRequired }

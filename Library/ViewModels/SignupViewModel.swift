@@ -137,11 +137,11 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
 
     /// If user's email is verified, log into environment.
     self.logIntoEnvironment = signupEventValues
-      .filter(isAccessTokenEnvelopeEmailVerified)
+      .filter(showEmailVerificationForAccessTokenEnvelope >>> isFalse)
 
     /// If user's email is not verified, show email verification prompt.
     self.logIntoEnvironmentAndShowEmailVerification = signupEventValues
-      .filter(isAccessTokenEnvelopeEmailVerified >>> isFalse)
+      .filter(showEmailVerificationForAccessTokenEnvelope >>> isTrue)
 
     self.postNotification = Signal.merge(
       self.environmentLoggedInProperty.signal,

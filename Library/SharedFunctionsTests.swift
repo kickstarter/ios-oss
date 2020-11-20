@@ -355,7 +355,7 @@ final class SharedFunctionsTests: TestCase {
     let env = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
 
     withEnvironment(apiService: MockService(loginResponse: env), config: config) {
-      XCTAssertTrue(isAccessTokenEnvelopeEmailVerified(env))
+      XCTAssertFalse(showEmailVerificationForAccessTokenEnvelope(env))
     }
   }
 
@@ -367,7 +367,7 @@ final class SharedFunctionsTests: TestCase {
     let env = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
 
     withEnvironment(apiService: MockService(loginResponse: env), config: config) {
-      XCTAssertTrue(isAccessTokenEnvelopeEmailVerified(env))
+      XCTAssertFalse(showEmailVerificationForAccessTokenEnvelope(env))
     }
   }
 
@@ -379,7 +379,7 @@ final class SharedFunctionsTests: TestCase {
     let env = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
 
     withEnvironment(apiService: MockService(loginResponse: env), config: config) {
-      XCTAssertFalse(isAccessTokenEnvelopeEmailVerified(env))
+      XCTAssertTrue(showEmailVerificationForAccessTokenEnvelope(env))
     }
   }
 
@@ -391,7 +391,7 @@ final class SharedFunctionsTests: TestCase {
     let env = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
 
     withEnvironment(apiService: MockService(loginResponse: env), config: config) {
-      XCTAssertTrue(isAccessTokenEnvelopeEmailVerified(env))
+      XCTAssertFalse(showEmailVerificationForAccessTokenEnvelope(env))
     }
   }
 }
