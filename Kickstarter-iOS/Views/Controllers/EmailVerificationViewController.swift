@@ -28,7 +28,7 @@ final class EmailVerificationViewController: UIViewController {
     self.configureSubviews()
     self.setupConstraints()
 
-    self.skipButton.addTarget(self, action: #selector(skipButtonTapped), for: .touchUpInside)
+    self.skipButton.addTarget(self, action: #selector(self.skipButtonTapped), for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
   }
