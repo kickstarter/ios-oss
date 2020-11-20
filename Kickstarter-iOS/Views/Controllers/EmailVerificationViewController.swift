@@ -122,9 +122,8 @@ final class EmailVerificationViewController: UIViewController {
     self.viewModel.outputs.notifyDelegateDidComplete
       .observeForUI()
       .observeValues { [weak self] in
-        guard let _ = self else { return }
-
-        // notify delegate
+        guard let self = self else { return }
+        self?.delegate?.emailVerificationViewControllerDidComplete(self)
       }
   }
 

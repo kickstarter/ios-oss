@@ -390,11 +390,12 @@ public func isEndDateAfterToday(for reward: Reward) -> Bool {
 }
 
 /**
- Determines if a given `AccessTokenEnvelope`'s `User`'s email is verified.
+ Returns `true` if a given `AccessTokenEnvelope`'s `User`'s email is unverified and
+ the email verification view controller should be shown.
 
  - parameter env: The access token envelope.
 
- - returns: A Bool representing whether the email is verified.
+ - returns: A Bool representing whether the email verification view controller should be shown.
  */
 public func showEmailVerificationForAccessTokenEnvelope(_ env: AccessTokenEnvelope) -> Bool {
   guard featureEmailVerificationFlowIsEnabled() else { return false }
