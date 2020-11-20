@@ -119,9 +119,17 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.signupButton.rac.enabled = self.viewModel.outputs.isSignupButtonEnabled
 
     self.viewModel.outputs.logIntoEnvironment
-      .observeValues { [weak self] in
-        AppEnvironment.login($0)
+      .observeValues { [weak self] env in
+        AppEnvironment.login(env)
         self?.viewModel.inputs.environmentLoggedIn()
+      }
+
+    self.viewModel.outputs.logIntoEnvironmentAndShowEmailVerification
+      .observeForControllerAction()
+      .observeValues { [weak self] env in
+        guard let self = self else { return }
+        AppEnvironment.login(env)
+        EmailVerificationViewController.push(on: self)
       }
 
     self.viewModel.outputs.postNotification
@@ -251,5 +259,13 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     helpSheet.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
 
     self.present(helpSheet, animated: true, completion: nil)
+  }
+}
+
+// MARK: - EmailVerificationViewControllerDelegate
+
+extension SignupViewController: EmailVerificationViewControllerDelegate {
+  func emailVerificationViewControllerDidComplete(_: EmailVerificationViewController) {
+    self.viewModel.inputs.emailVerificationViewControllerDidComplete()
   }
 }

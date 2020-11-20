@@ -3,6 +3,10 @@ import Library
 import Prelude
 import UIKit
 
+protocol EmailVerificationViewControllerDelegate: AnyObject {
+  func emailVerificationViewControllerDidComplete(_ viewController: EmailVerificationViewController)
+}
+
 final class EmailVerificationViewController: UIViewController {
   // MARK: - Properties
 
@@ -18,6 +22,7 @@ final class EmailVerificationViewController: UIViewController {
   private lazy var skipButton: UIButton = { UIButton(type: .custom) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
+  private weak var delegate: EmailVerificationViewControllerDelegate?
   private let viewModel: EmailVerificationViewModelType = EmailVerificationViewModel()
 
   // MARK: - Lifecycle
@@ -206,4 +211,15 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) in
       )
     }
     |> \.numberOfLines .~ 0
+}
+
+// MARK: - Presentation
+
+extension EmailVerificationViewController {
+  static func push(on otherVC: UIViewController & EmailVerificationViewControllerDelegate) {
+    let vc = EmailVerificationViewController.instantiate()
+    vc.delegate = otherVC
+    otherVC.navigationController?.pushViewController(vc, animated: true)
+    otherVC.navigationController?.setNavigationBarHidden(true, animated: true)
+  }
 }
