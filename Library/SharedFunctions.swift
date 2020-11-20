@@ -397,5 +397,5 @@ public func isEndDateAfterToday(for reward: Reward) -> Bool {
  - returns: A Bool representing whether the email is verified.
  */
 public func isAccessTokenEnvelopeEmailVerified(_ env: AccessTokenEnvelope) -> Bool {
-  return env.user.isEmailVerified ?? false
+  return featureEmailVerificationFlowIsEnabled() ? (env.user.isEmailVerified ?? false) : true
 }

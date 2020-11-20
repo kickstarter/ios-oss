@@ -74,11 +74,12 @@ internal final class SignupViewModelTests: TestCase {
 
     self.scheduler.advance()
 
-    self.logIntoEnvironmentAndShowEmailVerification
+    self.logIntoEnvironment
       .assertValueCount(
         1,
-        "Login and show email verification since User Lens is not applied with isEmailVerified set to true."
+        "Log into environment without showing email verification because feature flag is false (not set)."
       )
+    self.logIntoEnvironmentAndShowEmailVerification.assertValueCount(0, "Did not show email verification.")
     self.postNotification.assertDidNotEmitValue("Does not emit until environment logged in.")
 
     self.vm.inputs.environmentLoggedIn()
@@ -93,7 +94,33 @@ internal final class SignupViewModelTests: TestCase {
 
   func testSignupFlow_IsEmailVerifiedTrue_EmailVerificationFeatureFlagEnabled() {
     let config = .template
-      |> Config.lens.features .~ ["ios_email_verification_flow": true]
+      |> Config.lens.features .~ [Feature.emailVerificationFlow.rawValue: true]
+    let user = .template
+      |> User.lens.isEmailVerified .~ true
+    let signupResponse = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
+
+    withEnvironment(apiService: MockService(signupResponse: signupResponse), config: config) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
+      self.vm.inputs.nameChanged("Native Squad")
+      self.vm.inputs.passwordChanged("0773rw473rm3l0n")
+      self.vm.inputs.signupButtonPressed()
+
+      self.showError.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.logIntoEnvironment.assertValueCount(1, "Logged into environment.")
+      self.logIntoEnvironmentAndShowEmailVerification
+        .assertValueCount(0, "Should not show email verificaton.")
+      self.vm.inputs.passwordTextFieldReturn()
+      self.showError.assertValueCount(0, "Should not show error.")
+    }
+  }
+
+  func testSignupFlow_IsEmailVerifiedTrue_EmailVerificationFeatureFlagDisabled() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.emailVerificationFlow.rawValue: false]
     let user = .template
       |> User.lens.isEmailVerified .~ true
     let signupResponse = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
@@ -119,7 +146,7 @@ internal final class SignupViewModelTests: TestCase {
 
   func testSignupFlow_IsEmailVerifiedFalse_EmailVerificationFeatureFlagEnabled() {
     let config = .template
-      |> Config.lens.features .~ ["ios_email_verification_flow": true]
+      |> Config.lens.features .~ [Feature.emailVerificationFlow.rawValue: true]
     let user = .template
       |> User.lens.isEmailVerified .~ false
     let signupResponse = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
@@ -138,6 +165,32 @@ internal final class SignupViewModelTests: TestCase {
       self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       self.logIntoEnvironmentAndShowEmailVerification
         .assertValueCount(1, "Logged into environment and showed email verification.")
+      self.vm.inputs.passwordTextFieldReturn()
+      self.showError.assertValueCount(0, "Should not show error.")
+    }
+  }
+
+  func testSignupFlow_IsEmailVerifiedFalse_EmailVerificationFeatureFlagDisabled() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.emailVerificationFlow.rawValue: false]
+    let user = .template
+      |> User.lens.isEmailVerified .~ false
+    let signupResponse = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
+
+    withEnvironment(apiService: MockService(signupResponse: signupResponse), config: config) {
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
+      self.vm.inputs.nameChanged("Native Squad")
+      self.vm.inputs.passwordChanged("0773rw473rm3l0n")
+      self.vm.inputs.signupButtonPressed()
+
+      self.showError.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.logIntoEnvironment.assertValueCount(1, "Logged into environment..")
+      self.logIntoEnvironmentAndShowEmailVerification
+        .assertValueCount(0, "Did not show email verification.")
       self.vm.inputs.passwordTextFieldReturn()
       self.showError.assertValueCount(0, "Should not show error.")
     }

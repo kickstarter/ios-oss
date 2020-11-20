@@ -347,19 +347,51 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertTrue(isEndDateAfterToday(for: reward))
   }
 
-  func testIsAccessTokenEnvelopeEmailVerified_IsEmailVerified_True() {
+  func testIsAccessTokenEnvelopeEmailVerified_IsEmailVerified_True_FeatureFlag_True() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.emailVerificationFlow.rawValue: true]
     let user = .template
       |> User.lens.isEmailVerified .~ true
     let env = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
 
-    XCTAssertTrue(isAccessTokenEnvelopeEmailVerified(env))
+    withEnvironment(apiService: MockService(loginResponse: env), config: config) {
+      XCTAssertTrue(isAccessTokenEnvelopeEmailVerified(env))
+    }
   }
 
-  func testIsAccessTokenEnvelopeEmailVerified_IsEmailVerified_False() {
+  func testIsAccessTokenEnvelopeEmailVerified_IsEmailVerified_True_FeatureFlag_False() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.emailVerificationFlow.rawValue: false]
+    let user = .template
+      |> User.lens.isEmailVerified .~ true
+    let env = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
+
+    withEnvironment(apiService: MockService(loginResponse: env), config: config) {
+      XCTAssertTrue(isAccessTokenEnvelopeEmailVerified(env))
+    }
+  }
+
+  func testIsAccessTokenEnvelopeEmailVerified_IsEmailVerified_False_FeatureFlag_True() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.emailVerificationFlow.rawValue: true]
     let user = .template
       |> User.lens.isEmailVerified .~ false
     let env = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
 
-    XCTAssertFalse(isAccessTokenEnvelopeEmailVerified(env))
+    withEnvironment(apiService: MockService(loginResponse: env), config: config) {
+      XCTAssertFalse(isAccessTokenEnvelopeEmailVerified(env))
+    }
+  }
+
+  func testIsAccessTokenEnvelopeEmailVerified_IsEmailVerified_False_FeatureFlag_False() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.emailVerificationFlow.rawValue: false]
+    let user = .template
+      |> User.lens.isEmailVerified .~ false
+    let env = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
+
+    withEnvironment(apiService: MockService(loginResponse: env), config: config) {
+      XCTAssertTrue(isAccessTokenEnvelopeEmailVerified(env))
+    }
   }
 }
