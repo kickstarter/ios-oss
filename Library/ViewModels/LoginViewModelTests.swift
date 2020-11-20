@@ -67,7 +67,10 @@ final class LoginViewModelTests: TestCase {
 
     self.dismissKeyboard.assertValueCount(1, "Keyboard is dismissed")
     self.logIntoEnvironmentAndShowEmailVerification
-      .assertValueCount(1, "Log into environment and show email verification since User Lens is not applied with isEmailVerified set to true.")
+      .assertValueCount(
+        1,
+        "Log into environment and show email verification since User Lens is not applied with isEmailVerified set to true."
+      )
 
     self.vm.inputs.environmentLoggedIn()
     XCTAssertEqual(
@@ -121,7 +124,8 @@ final class LoginViewModelTests: TestCase {
 
       self.showError.assertDidNotEmitValue()
       self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      self.logIntoEnvironmentAndShowEmailVerification.assertValueCount(1, "Logged into environment and showed email verification.")
+      self.logIntoEnvironmentAndShowEmailVerification
+        .assertValueCount(1, "Logged into environment and showed email verification.")
       self.tfaChallenge.assertValueCount(0, "Should not show TFA challenge.")
       self.showError.assertValueCount(0, "Should not show login error.")
     }

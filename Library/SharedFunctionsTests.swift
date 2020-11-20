@@ -346,20 +346,20 @@ final class SharedFunctionsTests: TestCase {
 
     XCTAssertTrue(isEndDateAfterToday(for: reward))
   }
-  
+
   func testIsAccessTokenEnvelopeEmailVerified_IsEmailVerified_True() {
     let user = .template
       |> User.lens.isEmailVerified .~ true
     let env = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
-    
+
     XCTAssertTrue(isAccessTokenEnvelopeEmailVerified(env))
   }
-  
+
   func testIsAccessTokenEnvelopeEmailVerified_IsEmailVerified_False() {
     let user = .template
       |> User.lens.isEmailVerified .~ false
     let env = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
-    
+
     XCTAssertFalse(isAccessTokenEnvelopeEmailVerified(env))
   }
 }

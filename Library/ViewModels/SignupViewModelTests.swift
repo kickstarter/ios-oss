@@ -74,7 +74,11 @@ internal final class SignupViewModelTests: TestCase {
 
     self.scheduler.advance()
 
-    self.logIntoEnvironmentAndShowEmailVerification.assertValueCount(1, "Login and show email verification since User Lens is not applied with isEmailVerified set to true.")
+    self.logIntoEnvironmentAndShowEmailVerification
+      .assertValueCount(
+        1,
+        "Login and show email verification since User Lens is not applied with isEmailVerified set to true."
+      )
     self.postNotification.assertDidNotEmitValue("Does not emit until environment logged in.")
 
     self.vm.inputs.environmentLoggedIn()
@@ -132,7 +136,8 @@ internal final class SignupViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      self.logIntoEnvironmentAndShowEmailVerification.assertValueCount(1, "Logged into environment and showed email verification.")
+      self.logIntoEnvironmentAndShowEmailVerification
+        .assertValueCount(1, "Logged into environment and showed email verification.")
       self.vm.inputs.passwordTextFieldReturn()
       self.showError.assertValueCount(0, "Should not show error.")
     }
