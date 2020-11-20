@@ -3,6 +3,10 @@ import Library
 import Prelude
 import UIKit
 
+protocol EmailVerificationViewControllerDelegate: AnyObject {
+  func emailVerificationViewControllerDidComplete(_ viewController: EmailVerificationViewController)
+}
+
 final class EmailVerificationViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
 
@@ -24,6 +28,7 @@ final class EmailVerificationViewController: UIViewController, MessageBannerView
   private lazy var skipButton: UIButton = { UIButton(type: .custom) }()
   private lazy var titleLabel: UILabel = { UILabel(frame: .zero) }()
 
+  private weak var delegate: EmailVerificationViewControllerDelegate?
   private let viewModel: EmailVerificationViewModelType = EmailVerificationViewModel()
   internal var messageBannerViewController: MessageBannerViewController?
 
@@ -134,9 +139,8 @@ final class EmailVerificationViewController: UIViewController, MessageBannerView
     self.viewModel.outputs.notifyDelegateDidComplete
       .observeForUI()
       .observeValues { [weak self] in
-        guard let _ = self else { return }
-
-        // notify delegate
+        guard let self = self else { return }
+        self?.delegate?.emailVerificationViewControllerDidComplete(self)
       }
 
     self.viewModel.outputs.showSuccessBannerWithMessage
@@ -259,4 +263,15 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) in
       )
     }
     |> \.numberOfLines .~ 0
+}
+
+// MARK: - Presentation
+
+extension EmailVerificationViewController {
+  static func push(on otherVC: UIViewController & EmailVerificationViewControllerDelegate) {
+    let vc = EmailVerificationViewController.instantiate()
+    vc.delegate = otherVC
+    otherVC.navigationController?.pushViewController(vc, animated: true)
+    otherVC.navigationController?.setNavigationBarHidden(true, animated: true)
+  }
 }
