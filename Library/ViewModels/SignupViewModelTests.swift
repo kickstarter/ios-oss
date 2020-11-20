@@ -9,13 +9,13 @@ internal final class SignupViewModelTests: TestCase {
   fileprivate let vm: SignupViewModelType = SignupViewModel()
   fileprivate let emailTextFieldBecomeFirstResponder = TestObserver<(), Never>()
   fileprivate let isSignupButtonEnabled = TestObserver<Bool, Never>()
-  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope?, Never>()
+  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
+  fileprivate let logIntoEnvironmentAndShowEmailVerification = TestObserver<AccessTokenEnvelope, Never>()
   fileprivate let nameTextFieldBecomeFirstResponder = TestObserver<(), Never>()
   fileprivate let passwordTextFieldBecomeFirstResponder = TestObserver<(), Never>()
   fileprivate let postNotification = TestObserver<Notification.Name, Never>()
   fileprivate let setWeeklyNewsletterState = TestObserver<Bool, Never>()
   fileprivate let showError = TestObserver<String, Never>()
-  fileprivate let showEmailVerification = TestObserver<AccessTokenEnvelope, Never>()
 
   override func setUp() {
     super.setUp()
@@ -24,13 +24,14 @@ internal final class SignupViewModelTests: TestCase {
       .observe(self.emailTextFieldBecomeFirstResponder.observer)
     self.vm.outputs.isSignupButtonEnabled.observe(self.isSignupButtonEnabled.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
+    self.vm.outputs.logIntoEnvironmentAndShowEmailVerification
+      .observe(self.logIntoEnvironmentAndShowEmailVerification.observer)
     self.vm.outputs.nameTextFieldBecomeFirstResponder.observe(self.nameTextFieldBecomeFirstResponder.observer)
     self.vm.outputs.passwordTextFieldBecomeFirstResponder
       .observe(self.passwordTextFieldBecomeFirstResponder.observer)
     self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotification.observer)
     self.vm.outputs.setWeeklyNewsletterState.observe(self.setWeeklyNewsletterState.observer)
     self.vm.outputs.showError.observe(self.showError.observer)
-    self.vm.outputs.showEmailVerification.observe(self.showEmailVerification.observer)
   }
 
   // Tests a standard flow for signing up.
@@ -73,7 +74,7 @@ internal final class SignupViewModelTests: TestCase {
 
     self.scheduler.advance()
 
-    self.logIntoEnvironment.assertValueCount(1, "Login after scheduler advances.")
+    self.logIntoEnvironmentAndShowEmailVerification.assertValueCount(1, "Login and show email verification since User Lens is not applied with isEmailVerified set to true.")
     self.postNotification.assertDidNotEmitValue("Does not emit until environment logged in.")
 
     self.vm.inputs.environmentLoggedIn()
@@ -105,7 +106,8 @@ internal final class SignupViewModelTests: TestCase {
       self.scheduler.advance()
 
       self.logIntoEnvironment.assertValueCount(1, "Logged into environment.")
-      self.showEmailVerification.assertValueCount(0, "Should not show email verificaton.")
+      self.logIntoEnvironmentAndShowEmailVerification
+        .assertValueCount(0, "Should not show email verificaton.")
       self.vm.inputs.passwordTextFieldReturn()
       self.showError.assertValueCount(0, "Should not show error.")
     }
@@ -129,8 +131,8 @@ internal final class SignupViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.logIntoEnvironment.assertValueCount(1, "Logged into environment.")
-      self.showEmailVerification.assertValueCount(1, "Showed email verification.")
+      self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
+      self.logIntoEnvironmentAndShowEmailVerification.assertValueCount(1, "Logged into environment and showed email verification.")
       self.vm.inputs.passwordTextFieldReturn()
       self.showError.assertValueCount(0, "Should not show error.")
     }

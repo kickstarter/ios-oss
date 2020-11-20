@@ -13,8 +13,8 @@ final class LoginViewModelTests: TestCase {
   fileprivate let isFormValid = TestObserver<Bool, Never>()
   fileprivate let dismissKeyboard = TestObserver<(), Never>()
   fileprivate let postNotificationName = TestObserver<(Notification.Name, Notification.Name), Never>()
-  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope?, Never>()
-  fileprivate let showEmailVerification = TestObserver<AccessTokenEnvelope, Never>()
+  fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
+  fileprivate let logIntoEnvironmentAndShowEmailVerification = TestObserver<AccessTokenEnvelope, Never>()
   fileprivate let showError = TestObserver<String, Never>()
   fileprivate let tfaChallenge = TestObserver<String, Never>()
   fileprivate let tfaChallengePasswordText = TestObserver<String, Never>()
@@ -32,7 +32,8 @@ final class LoginViewModelTests: TestCase {
     self.vm.outputs.postNotification.map { ($0.0.name, $0.1.name) }
       .observe(self.postNotificationName.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
-    self.vm.outputs.showEmailVerification.observe(self.showEmailVerification.observer)
+    self.vm.outputs.logIntoEnvironmentAndShowEmailVerification
+      .observe(self.logIntoEnvironmentAndShowEmailVerification.observer)
     self.vm.outputs.showError.observe(self.showError.observer)
     self.vm.outputs.tfaChallenge.map { $0.email }.observe(self.tfaChallenge.observer)
     self.vm.outputs.tfaChallenge.map { $0.password }.observe(self.tfaChallengePasswordText.observer)
@@ -65,7 +66,8 @@ final class LoginViewModelTests: TestCase {
     XCTAssertEqual(["Log In Submit Button Clicked"], self.trackingClient.events)
 
     self.dismissKeyboard.assertValueCount(1, "Keyboard is dismissed")
-    self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
+    self.logIntoEnvironmentAndShowEmailVerification
+      .assertValueCount(1, "Log into environment and show email verification since User Lens is not applied with isEmailVerified set to true.")
 
     self.vm.inputs.environmentLoggedIn()
     XCTAssertEqual(
@@ -97,7 +99,7 @@ final class LoginViewModelTests: TestCase {
 
       self.showError.assertDidNotEmitValue()
       self.logIntoEnvironment.assertValueCount(1, "Logged into environment.")
-      self.showEmailVerification.assertValueCount(0, "Did not show email verification.")
+      self.logIntoEnvironmentAndShowEmailVerification.assertValueCount(0, "Did not show email verification.")
       self.tfaChallenge.assertValueCount(0, "TFA challenge did not happen.")
       self.showError.assertValueCount(0, "Login error did not happen.")
     }
@@ -118,8 +120,8 @@ final class LoginViewModelTests: TestCase {
       self.vm.inputs.loginButtonPressed()
 
       self.showError.assertDidNotEmitValue()
-      self.logIntoEnvironment.assertValueCount(1, "Logged into environment.")
-      self.showEmailVerification.assertValueCount(1, "Showed email verification.")
+      self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
+      self.logIntoEnvironmentAndShowEmailVerification.assertValueCount(1, "Logged into environment and showed email verification.")
       self.tfaChallenge.assertValueCount(0, "Should not show TFA challenge.")
       self.showError.assertValueCount(0, "Should not show login error.")
     }
