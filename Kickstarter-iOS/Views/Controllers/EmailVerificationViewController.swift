@@ -123,7 +123,7 @@ final class EmailVerificationViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] in
         guard let self = self else { return }
-        self?.delegate?.emailVerificationViewControllerDidComplete(self)
+        self.delegate?.emailVerificationViewControllerDidComplete(self)
       }
   }
 
