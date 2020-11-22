@@ -140,7 +140,7 @@ final class EmailVerificationViewController: UIViewController, MessageBannerView
       .observeForUI()
       .observeValues { [weak self] in
         guard let self = self else { return }
-        self?.delegate?.emailVerificationViewControllerDidComplete(self)
+        self.delegate?.emailVerificationViewControllerDidComplete(self)
       }
 
     self.viewModel.outputs.showSuccessBannerWithMessage
