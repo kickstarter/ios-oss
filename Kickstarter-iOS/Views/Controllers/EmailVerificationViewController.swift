@@ -7,8 +7,14 @@ protocol EmailVerificationViewControllerDelegate: AnyObject {
   func emailVerificationViewControllerDidComplete(_ viewController: EmailVerificationViewController)
 }
 
-final class EmailVerificationViewController: UIViewController {
+final class EmailVerificationViewController: UIViewController, MessageBannerViewControllerPresenting {
   // MARK: - Properties
+
+  private lazy var activityIndicatorView: UIActivityIndicatorView = {
+    let view = UIActivityIndicatorView(frame: .zero)
+    view.startAnimating()
+    return view
+  }()
 
   private lazy var contentVStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var contentHStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -24,15 +30,19 @@ final class EmailVerificationViewController: UIViewController {
 
   private weak var delegate: EmailVerificationViewControllerDelegate?
   private let viewModel: EmailVerificationViewModelType = EmailVerificationViewModel()
+  internal var messageBannerViewController: MessageBannerViewController?
 
   // MARK: - Lifecycle
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
+
     self.configureSubviews()
     self.setupConstraints()
 
+    self.resendButton.addTarget(self, action: #selector(self.resendButtonTapped), for: .touchUpInside)
     self.skipButton.addTarget(self, action: #selector(self.skipButtonTapped), for: .touchUpInside)
 
     self.viewModel.inputs.viewDidLoad()
@@ -88,7 +98,7 @@ final class EmailVerificationViewController: UIViewController {
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToEdgesInParent()
 
-    _ = ([self.contentHStackView, self.footerStackView], self.rootStackView)
+    _ = ([self.contentHStackView, self.activityIndicatorView, self.footerStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.contentVStackView], self.contentHStackView)
@@ -117,6 +127,13 @@ final class EmailVerificationViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
+    self.viewModel.outputs.activityIndicatorIsHidden
+      .observeForUI()
+      .observeValues { [weak self] hidden in
+        // set alpha instead of isHidden to avoid stackview bouncing when this is shown.
+        self?.activityIndicatorView.alpha = hidden ? 0 : 1
+      }
+
     self.skipButton.rac.hidden = self.viewModel.outputs.skipButtonHidden
 
     self.viewModel.outputs.notifyDelegateDidComplete
@@ -125,9 +142,25 @@ final class EmailVerificationViewController: UIViewController {
         guard let self = self else { return }
         self.delegate?.emailVerificationViewControllerDidComplete(self)
       }
+
+    self.viewModel.outputs.showSuccessBannerWithMessage
+      .observeForUI()
+      .observeValues { [weak self] message in
+        self?.messageBannerViewController?.showBanner(with: .success, message: message)
+      }
+
+    self.viewModel.outputs.showErrorBannerWithMessage
+      .observeForUI()
+      .observeValues { [weak self] error in
+        self?.messageBannerViewController?.showBanner(with: .error, message: error)
+      }
   }
 
   // MARK: - Actions
+
+  @objc func resendButtonTapped() {
+    self.viewModel.inputs.resendButtonTapped()
+  }
 
   @objc func skipButtonTapped() {
     self.viewModel.inputs.skipButtonTapped()
