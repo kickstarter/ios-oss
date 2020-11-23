@@ -1,6 +1,8 @@
 import Foundation
 @testable import Kickstarter_Framework
+@testable import KsApi
 import Library
+import Prelude
 
 internal final class EmailVerificationViewControllerTests: TestCase {
   override func setUp() {
@@ -9,9 +11,12 @@ internal final class EmailVerificationViewControllerTests: TestCase {
   }
 
   func testView() {
+    let config = .template
+      |> Config.lens.features .~ [Feature.emailVerificationSkip.rawValue: true]
+
     let devices = [Device.phone4_7inch, Device.phone5_8inch, Device.pad]
     combos(Language.allLanguages, devices).forEach { language, device in
-      withEnvironment(language: language) {
+      withEnvironment(config: config, language: language) {
         let controller = EmailVerificationViewController.instantiate()
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
 

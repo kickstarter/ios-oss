@@ -347,7 +347,7 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertTrue(isEndDateAfterToday(for: reward))
   }
 
-  func testIsAccessTokenEnvelopeEmailVerified_IsEmailVerified_True_FeatureFlag_True() {
+  func testShowEmailVerification_IsEmailVerified_True_FeatureFlag_True() {
     let config = .template
       |> Config.lens.features .~ [Feature.emailVerificationFlow.rawValue: true]
     let user = .template
@@ -359,7 +359,7 @@ final class SharedFunctionsTests: TestCase {
     }
   }
 
-  func testIsAccessTokenEnvelopeEmailVerified_IsEmailVerified_True_FeatureFlag_False() {
+  func testShowEmailVerification_IsEmailVerified_True_FeatureFlag_False() {
     let config = .template
       |> Config.lens.features .~ [Feature.emailVerificationFlow.rawValue: false]
     let user = .template
@@ -371,7 +371,7 @@ final class SharedFunctionsTests: TestCase {
     }
   }
 
-  func testIsAccessTokenEnvelopeEmailVerified_IsEmailVerified_False_FeatureFlag_True() {
+  func testShowEmailVerification_IsEmailVerified_False_FeatureFlag_True() {
     let config = .template
       |> Config.lens.features .~ [Feature.emailVerificationFlow.rawValue: true]
     let user = .template
@@ -383,7 +383,7 @@ final class SharedFunctionsTests: TestCase {
     }
   }
 
-  func testIsAccessTokenEnvelopeEmailVerified_IsEmailVerified_False_FeatureFlag_False() {
+  func testShowEmailVerification_IsEmailVerified_False_FeatureFlag_False() {
     let config = .template
       |> Config.lens.features .~ [Feature.emailVerificationFlow.rawValue: false]
     let user = .template
