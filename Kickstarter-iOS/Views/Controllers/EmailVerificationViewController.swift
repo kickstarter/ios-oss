@@ -134,7 +134,7 @@ final class EmailVerificationViewController: UIViewController, MessageBannerView
         self?.activityIndicatorView.alpha = hidden ? 0 : 1
       }
 
-    self.footerStackView.rac.hidden = self.viewModel.outputs.footerStackViewIsHidden
+    self.skipButton.rac.hidden = self.viewModel.outputs.skipButtonHidden
 
     self.viewModel.outputs.notifyDelegateDidComplete
       .observeForUI()

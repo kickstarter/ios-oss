@@ -11,10 +11,10 @@ public protocol EmailVerificationViewModelInputs {
 
 public protocol EmailVerificationViewModelOutputs {
   var activityIndicatorIsHidden: Signal<Bool, Never> { get }
-  var footerStackViewIsHidden: Signal<Bool, Never> { get }
   var notifyDelegateDidComplete: Signal<(), Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
   var showSuccessBannerWithMessage: Signal<String, Never> { get }
+  var skipButtonHidden: Signal<Bool, Never> { get }
 }
 
 public protocol EmailVerificationViewModelType {
@@ -27,7 +27,7 @@ public final class EmailVerificationViewModel: EmailVerificationViewModelType,
   EmailVerificationViewModelOutputs {
   public init() {
     self.notifyDelegateDidComplete = self.skipButtonTappedProperty.signal
-    self.footerStackViewIsHidden = self.viewDidLoadProperty.signal
+    self.skipButtonHidden = self.viewDidLoadProperty.signal
       .map(featureEmailVerificationSkipIsEnabled)
       .negate()
 
@@ -71,9 +71,9 @@ public final class EmailVerificationViewModel: EmailVerificationViewModelType,
 
   public let activityIndicatorIsHidden: Signal<Bool, Never>
   public let notifyDelegateDidComplete: Signal<(), Never>
-  public let footerStackViewIsHidden: Signal<Bool, Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
   public let showSuccessBannerWithMessage: Signal<String, Never>
+  public let skipButtonHidden: Signal<Bool, Never>
 
   public var inputs: EmailVerificationViewModelInputs { return self }
   public var outputs: EmailVerificationViewModelOutputs { return self }
