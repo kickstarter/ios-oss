@@ -117,7 +117,7 @@ final class EmailVerificationViewController: UIViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.footerStackView.rac.hidden = self.viewModel.outputs.footerStackViewIsHidden
+    self.skipButton.rac.hidden = self.viewModel.outputs.skipButtonHidden
 
     self.viewModel.outputs.notifyDelegateDidComplete
       .observeForUI()

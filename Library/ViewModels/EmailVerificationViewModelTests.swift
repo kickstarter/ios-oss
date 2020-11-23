@@ -9,39 +9,39 @@ import XCTest
 final class EmailVerificationViewModelTests: TestCase {
   private let vm: EmailVerificationViewModelType = EmailVerificationViewModel()
 
-  private let footerStackViewIsHidden = TestObserver<Bool, Never>()
   private let notifyDelegateDidComplete = TestObserver<(), Never>()
+  private let skipButtonHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.footerStackViewIsHidden.observe(self.footerStackViewIsHidden.observer)
     self.vm.outputs.notifyDelegateDidComplete.observe(self.notifyDelegateDidComplete.observer)
+    self.vm.outputs.skipButtonHidden.observe(self.skipButtonHidden.observer)
   }
 
-  func testFooterStackViewHidden_FeatureEnabled() {
+  func testSkipButtonHidden_FeatureEnabled() {
     let config = .template
       |> Config.lens.features .~ [Feature.emailVerificationSkip.rawValue: true]
 
     withEnvironment(config: config) {
-      self.footerStackViewIsHidden.assertDidNotEmitValue()
+      self.skipButtonHidden.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
 
-      self.footerStackViewIsHidden.assertValues([false])
+      self.skipButtonHidden.assertValues([false])
     }
   }
 
-  func testFooterStackViewHidden_FeatureDisabled() {
+  func testSkipButtonHidden_FeatureDisabled() {
     let config = .template
       |> Config.lens.features .~ [Feature.emailVerificationSkip.rawValue: false]
 
     withEnvironment(config: config) {
-      self.footerStackViewIsHidden.assertDidNotEmitValue()
+      self.skipButtonHidden.assertDidNotEmitValue()
 
       self.vm.inputs.viewDidLoad()
 
-      self.footerStackViewIsHidden.assertValues([true])
+      self.skipButtonHidden.assertValues([true])
     }
   }
 
