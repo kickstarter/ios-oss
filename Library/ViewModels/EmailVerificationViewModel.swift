@@ -52,6 +52,16 @@ public final class EmailVerificationViewModel: EmailVerificationViewModelType,
 
     self.showSuccessBannerWithMessage = didSendVerificationEmail
       .mapConst(Strings.Verification_email_sent())
+
+    // MARK: - Tracking
+
+    self.viewDidLoadProperty.signal.observeValues { _ in
+      AppEnvironment.current.koala.trackEmailVerificationScreenViewed()
+    }
+
+    self.skipButtonTappedProperty.signal.observeValues { _ in
+      AppEnvironment.current.koala.trackSkipEmailVerificationButtonClicked()
+    }
   }
 
   private let resendButtonTappedProperty = MutableProperty(())

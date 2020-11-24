@@ -1227,6 +1227,29 @@ final class KoalaTests: TestCase {
 
     koala.track2FAViewed()
     XCTAssertEqual("two_factor_auth_verify_screen", client.properties.last?["context_location"] as? String)
+
+    koala.trackEmailVerificationScreenViewed()
+    XCTAssertEqual("email_verification", client.properties.last?["context_location"] as? String)
+  }
+
+  // MARK: - Email Verification
+
+  func testTrackEmailVerificationScreenViewed() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackEmailVerificationScreenViewed()
+
+    XCTAssertEqual(["Verification Screen Viewed"], client.events, "Event is tracked by koala client")
+  }
+
+  func testTrackSkipEmailVerificationButtonClicked() {
+    let client = MockTrackingClient()
+    let koala = Koala(client: client)
+
+    koala.trackSkipEmailVerificationButtonClicked()
+
+    XCTAssertEqual(["Skip Verification Button Clicked"], client.events, "Event is tracked by koala client")
   }
 
   /*
