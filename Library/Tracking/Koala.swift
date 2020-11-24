@@ -56,9 +56,11 @@ public final class Koala {
     case selectRewardButtonClicked = "Select Reward Button Clicked"
     case signupButtonClicked = "Signup Button Clicked"
     case signupSubmitButtonClicked = "Signup Submit Button Clicked"
+    case skipVerificationButtonClicked = "Skip Verification Button Clicked"
     case tabBarClicked = "Tab Bar Clicked"
     case thanksPageViewed = "Thanks Page Viewed"
     case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
+    case verificationScreenViewed = "Verification Screen Viewed"
     case watchProjectButtonClicked = "Watch Project Button Clicked"
 
     static func allApprovedEvents() -> [String] {
@@ -73,6 +75,7 @@ public final class Koala {
     case campaign = "campaign_screen" // ProjectDescriptionViewController
     case discovery = "explore_screen" // DiscoveryViewController
     case editorialProjects = "editorial_collection_screen" // EditorialProjectsViewController
+    case emailVerification = "email_verification" // EmailVerificationViewController
     case forgotPassword = "forgot_password_screen" // ResetPasswordViewController
     case landingPage = "landing_page" // LandingViewController
     case login = "login_screen" // LoginViewController
@@ -2060,6 +2063,22 @@ public final class Koala {
     self.track(
       event: "Started Project Video",
       properties: projectProperties(from: project, loggedInUser: self.loggedInUser)
+    )
+  }
+
+  // MARK: - Email Verification
+
+  public func trackEmailVerificationScreenViewed() {
+    self.track(
+      event: DataLakeApprovedEvent.verificationScreenViewed.rawValue,
+      location: .emailVerification
+    )
+  }
+
+  public func trackSkipEmailVerificationButtonClicked() {
+    self.track(
+      event: DataLakeApprovedEvent.skipVerificationButtonClicked.rawValue,
+      location: .emailVerification
     )
   }
 

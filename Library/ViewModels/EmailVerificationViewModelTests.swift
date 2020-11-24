@@ -59,6 +59,31 @@ final class EmailVerificationViewModelTests: TestCase {
     self.notifyDelegateDidComplete.assertValueCount(1)
   }
 
+  func testTrackVerificationScreenViewed() {
+    XCTAssertEqual(self.trackingClient.events, [])
+
+    self.vm.inputs.viewDidLoad()
+
+    XCTAssertEqual(self.trackingClient.events, ["Verification Screen Viewed"])
+
+    XCTAssertTrue(self.trackingClient.containsKeyPrefix("context_"))
+    XCTAssertTrue(self.trackingClient.containsKeyPrefix("session_"))
+  }
+
+  func testTrackSkipEmailVerificationButtonClicked() {
+    XCTAssertEqual(self.trackingClient.events, [])
+
+    AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
+
+    self.vm.inputs.skipButtonTapped()
+
+    XCTAssertEqual(self.trackingClient.events, ["Skip Verification Button Clicked"])
+
+    XCTAssertTrue(self.trackingClient.containsKeyPrefix("context_"))
+    XCTAssertTrue(self.trackingClient.containsKeyPrefix("session_"))
+    XCTAssertTrue(self.trackingClient.containsKeyPrefix("user_"))
+  }
+
   func testResend_Success() {
     let mockService = MockService(sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope())
 
