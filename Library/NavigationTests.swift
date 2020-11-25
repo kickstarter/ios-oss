@@ -198,7 +198,10 @@ public final class NavigationTests: XCTestCase {
       "/users/self/surveys/3"
     )
 
-    KSRAssertMatch(.profile(.verifyEmail), "/profile/verify_email")
+    KSRAssertMatch(
+      .profile(.verifyEmail),
+      "/profile/verify_email"
+    )
   }
 
   func testRecognizesEmailClickUrls() {

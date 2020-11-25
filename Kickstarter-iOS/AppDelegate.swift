@@ -234,7 +234,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.rootTabBarController?.present(navController, animated: true)
       }
 
-    self.viewModel.outputs.verifyEmailWithURL
+    self.viewModel.outputs.verifyEmailWithURLRequest
       .observeForUI()
       .observeValues { [weak self] in self?.verifyEmail($0) }
 
@@ -263,14 +263,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     UNUserNotificationCenter.current().delegate = self
-
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      self.viewModel.inputs.applicationOpenUrl(
-        application: .shared,
-        url: URL(string: "https://staging.kickstarter.com/profile/verify_email")!,
-        options: [:]
-      )
-    }
 
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
@@ -419,7 +411,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     task.resume()
   }
 
-  // Possibly combine with above
   private func verifyEmail(_ request: URLRequest) {
     let session = URLSession(configuration: .default, delegate: nil, delegateQueue: nil)
     let task = session.dataTask(with: request) { data, response, error in

@@ -66,6 +66,7 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the Optimizely client has been updated in the AppEnvironment
   func didUpdateOptimizelyClient(_ client: OptimizelyClientType)
 
+  /// Call when the email verification request needs to be made.
   func didVerifyEmailWithResponse(data: Data?, response: URLResponse?, error: Error?)
 
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
@@ -105,6 +106,12 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
+
+  /// Emits when the response from the email verification request returns successfully.
+  var emailVerificationSucceeded: Signal<String, Never> { get }
+
+  /// Emits when the response from the email verification request fails.
+  var emailVerificationFailed: Signal<String, Never> { get }
 
   /// Emits when the view needs to figure out the redirect URL for the emitted URL.
   var findRedirectUrl: Signal<URL, Never> { get }
@@ -178,7 +185,8 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits a config value that should be updated in the environment.
   var updateConfigInEnvironment: Signal<Config, Never> { get }
 
-  var verifyEmailWithURL: Signal<URLRequest, Never> { get }
+  /// Emits an URLRequest after email verification deeplinking occurs
+  var verifyEmailWithURLRequest: Signal<URLRequest, Never> { get }
 }
 
 public protocol AppDelegateViewModelType {
@@ -355,7 +363,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .filter { _ in shouldGoToLandingPage() == false && shouldSeeCategoryPersonalization() == false }
       .take(until: self.goToLandingPage)
 
-    self.verifyEmailWithURL = deepLinkUrl
+    self.verifyEmailWithURLRequest = deepLinkUrl
       .filter { Navigation.match($0) == .profile(.verifyEmail) }
       .map { URLRequest.init(url: $0) }
       .map { AppEnvironment.current.apiService.preparedRequest(forRequest: $0) }
@@ -364,15 +372,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
       .map { data, response, error in (data, response as? HTTPURLResponse, error) }
 
-    // will be outputs on VM
-    let verificationSucceeded = verificationResponse
+    self.emailVerificationSucceeded = verificationResponse // Not using this anywhere in AppDelegate yet
       .filter { _, response, _ in response?.statusCode == 200 }
+      .map { _ in "Success" } // Need to add success copy from Figma on backend and update this
 
-    let verificationFailedWithMessage = verificationResponse
+    self.emailVerificationFailed = verificationResponse // Not using this anywhere in AppDelegate yet
       .filter { _, response, _ in response?.statusCode != 200 }
       .map { data, _, _ in data }
       .map(emailVerificationErrorMessage)
-    //
 
     self.findRedirectUrl = deepLinkUrl
       .filter { Navigation.match($0) == .emailClick }
@@ -844,6 +851,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let configureFirebase: Signal<(), Never>
   public let configureOptimizely: Signal<(String, OptimizelyLogLevelType, TimeInterval), Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
+  public let emailVerificationSucceeded: Signal<String, Never>
+  public let emailVerificationFailed: Signal<String, Never>
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
   public let goToActivity: Signal<(), Never>
@@ -868,7 +877,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let unregisterForRemoteNotifications: Signal<(), Never>
   public let updateCurrentUserInEnvironment: Signal<User, Never>
   public let updateConfigInEnvironment: Signal<Config, Never>
-  public let verifyEmailWithURL: Signal<URLRequest, Never>
+  public let verifyEmailWithURLRequest: Signal<URLRequest, Never>
 }
 
 private func deviceToken(fromData data: Data) -> String {

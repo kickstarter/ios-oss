@@ -82,6 +82,9 @@ public protocol RootViewModelInputs {
   /// Call when selected tab bar index changes.
   func didSelect(index: RootViewControllerIndex)
 
+  /// Call after email verification request to display message banner.
+  func displayMessageBanner(message: String, success: Bool)
+
   /// Call before selected tab bar index changes.
   func shouldSelect(index: RootViewControllerIndex?)
 
@@ -361,6 +364,11 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
   fileprivate let didSelectIndexProperty = MutableProperty(0)
   public func didSelect(index: Int) {
     self.didSelectIndexProperty.value = index
+  }
+
+  fileprivate let displayMessageBannerProperty = MutableProperty<(String, Bool)?>(nil)
+  public func displayMessageBanner(message: String, success: Bool) {
+    self.displayMessageBannerProperty.value = (message, success)
   }
 
   fileprivate let shouldSelectIndexProperty = MutableProperty<Int?>(nil)

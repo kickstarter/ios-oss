@@ -184,7 +184,7 @@ public final class RootTabBarViewController: UITabBarController {
   }
 
   public func displayMessageBanner(message: String, success: Bool) {
-    // call input on RootViewModel
+    self.viewModel.inputs.displayMessageBanner(message: message, success: success)
     // output sets us to discover tab, tells discovery view controller to show banner
   }
 
