@@ -234,6 +234,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.rootTabBarController?.present(navController, animated: true)
       }
 
+    self.viewModel.outputs.verifyEmailWithURL
+      .observeForUI()
+      .observeValues { [weak self] in self?.verifyEmail($0) }
+
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()
@@ -259,6 +263,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     UNUserNotificationCenter.current().delegate = self
+
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.viewModel.inputs.applicationOpenUrl(
+        application: .shared,
+        url: URL(string: "https://staging.kickstarter.com/profile/verify_email")!,
+        options: [:]
+      )
+    }
 
     return self.viewModel.outputs.applicationDidFinishLaunchingReturnValue
   }
@@ -404,6 +416,15 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   private func findRedirectUrl(_ url: URL) {
     let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     let task = session.dataTask(with: url)
+    task.resume()
+  }
+
+  // Possibly combine with above
+  private func verifyEmail(_ request: URLRequest) {
+    let session = URLSession(configuration: .default, delegate: nil, delegateQueue: nil)
+    let task = session.dataTask(with: request) { data, response, error in
+      self.viewModel.inputs.didVerifyEmailWithResponse(data: data, response: response, error: error)
+    }
     task.resume()
   }
 }

@@ -66,6 +66,8 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the Optimizely client has been updated in the AppEnvironment
   func didUpdateOptimizelyClient(_ client: OptimizelyClientType)
 
+  func didVerifyEmailWithResponse(data: Data?, response: URLResponse?, error: Error?)
+
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
 
@@ -175,6 +177,8 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits a config value that should be updated in the environment.
   var updateConfigInEnvironment: Signal<Config, Never> { get }
+
+  var verifyEmailWithURL: Signal<URLRequest, Never> { get }
 }
 
 public protocol AppDelegateViewModelType {
@@ -350,6 +354,25 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let deepLink = deeplinkActivated
       .filter { _ in shouldGoToLandingPage() == false && shouldSeeCategoryPersonalization() == false }
       .take(until: self.goToLandingPage)
+
+    self.verifyEmailWithURL = deepLinkUrl
+      .filter { Navigation.match($0) == .profile(.verifyEmail) }
+      .map { URLRequest.init(url: $0) }
+      .map { AppEnvironment.current.apiService.preparedRequest(forRequest: $0) }
+
+    let verificationResponse = self.didVerifyEmailWithResponseProperty.signal
+      .skipNil()
+      .map { data, response, error in (data, response as? HTTPURLResponse, error) }
+
+    // will be outputs on VM
+    let verificationSucceeded = verificationResponse
+      .filter { _, response, _ in response?.statusCode == 200 }
+
+    let verificationFailedWithMessage = verificationResponse
+      .filter { _, response, _ in response?.statusCode != 200 }
+      .map { data, _, _ in data }
+      .map(emailVerificationErrorMessage)
+    //
 
     self.findRedirectUrl = deepLinkUrl
       .filter { Navigation.match($0) == .emailClick }
@@ -793,6 +816,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.userSessionStartedProperty.value = ()
   }
 
+  private let didVerifyEmailWithResponseProperty = MutableProperty<(Data?, URLResponse?, Error?)?>(nil)
+  public func didVerifyEmailWithResponse(data: Data?, response: URLResponse?, error: Error?) {
+    self.didVerifyEmailWithResponseProperty.value = (data, response, error)
+  }
+
   fileprivate let applicationDidFinishLaunchingReturnValueProperty = MutableProperty(true)
   public var applicationDidFinishLaunchingReturnValue: Bool {
     return self.applicationDidFinishLaunchingReturnValueProperty.value
@@ -840,6 +868,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let unregisterForRemoteNotifications: Signal<(), Never>
   public let updateCurrentUserInEnvironment: Signal<User, Never>
   public let updateConfigInEnvironment: Signal<Config, Never>
+  public let verifyEmailWithURL: Signal<URLRequest, Never>
 }
 
 private func deviceToken(fromData data: Data) -> String {
@@ -1125,4 +1154,14 @@ private func shouldGoToLandingPage() -> Bool {
   case .control, nil:
     return false
   }
+}
+
+private func emailVerificationErrorMessage(_ data: Data?) -> String {
+  guard
+    let data = data,
+    let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: [String: Any]],
+    let message = dict["error"]?["message"] as? String
+  else { return Strings.Something_went_wrong_please_try_again() }
+
+  return message
 }
