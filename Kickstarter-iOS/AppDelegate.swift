@@ -238,6 +238,20 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { [weak self] in self?.verifyEmail($0) }
 
+    self.viewModel.outputs.emailVerificationCompleted
+      .observeForUI()
+      .observeValues { [weak self] message, success in
+        // FIXME: We may want to revisit this shortcut to find the VC to present on.
+        guard
+          let firstVC = self?.rootTabBarController?.viewControllers?.first as? UINavigationController,
+          let topVC = firstVC.topViewController,
+          let vc = topVC as? MessageBannerViewControllerPresenting
+        else { return }
+
+        // FIXME: Consider emitting the success/error type from the output.
+        vc.messageBannerViewController?.showBanner(with: success ? .success : .error, message: message)
+      }
+
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()

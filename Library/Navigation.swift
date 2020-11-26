@@ -258,7 +258,12 @@ private func discovery(_ params: RouteParamsDecoded) -> Navigation {
   return .tab(.discovery(params))
 }
 
-private func me(_: RouteParamsDecoded) -> Navigation {
+private func me(_ params: RouteParamsDecoded) -> Navigation {
+  // Avoid ambiguity with :user_param
+  if case let .slug(slug) = params.userParam(), slug == "verify_email" {
+    return verifyEmail(params)
+  }
+
   return .tab(.me)
 }
 

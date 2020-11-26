@@ -48,7 +48,7 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the app has crashed
   func crashManagerDidFinishSendingCrashReport()
 
-  /// Call after having invoked AppEnvironemt.updateCurrentUser with a fresh user.
+  /// Call after having invoked AppEnvironment.updateCurrentUser with a fresh user.
   func currentUserUpdatedInEnvironment()
 
   /// Call when the user taps "OK" from the contextual alert.
@@ -107,11 +107,8 @@ public protocol AppDelegateViewModelOutputs {
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
 
-  /// Emits when the response from the email verification request returns successfully.
-  var emailVerificationSucceeded: Signal<String, Never> { get }
-
-  /// Emits when the response from the email verification request fails.
-  var emailVerificationFailed: Signal<String, Never> { get }
+  /// Emits the response from email verification with a message and success/failure.
+  var emailVerificationCompleted: Signal<(String, Bool), Never> { get }
 
   /// Emits when the view needs to figure out the redirect URL for the emitted URL.
   var findRedirectUrl: Signal<URL, Never> { get }
@@ -368,18 +365,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .map { URLRequest.init(url: $0) }
       .map { AppEnvironment.current.apiService.preparedRequest(forRequest: $0) }
 
-    let verificationResponse = self.didVerifyEmailWithResponseProperty.signal
+    self.emailVerificationCompleted = self.didVerifyEmailWithResponseProperty.signal
       .skipNil()
-      .map { data, response, error in (data, response as? HTTPURLResponse, error) }
-
-    self.emailVerificationSucceeded = verificationResponse // Not using this anywhere in AppDelegate yet
-      .filter { _, response, _ in response?.statusCode == 200 }
-      .map { _ in "Success" } // Need to add success copy from Figma on backend and update this
-
-    self.emailVerificationFailed = verificationResponse // Not using this anywhere in AppDelegate yet
-      .filter { _, response, _ in response?.statusCode != 200 }
-      .map { data, _, _ in data }
-      .map(emailVerificationErrorMessage)
+      .map { data, response, _ in (data, response as? HTTPURLResponse) }
+      .map(emailVerificationCompletionData)
+      .skipNil()
 
     self.findRedirectUrl = deepLinkUrl
       .filter { Navigation.match($0) == .emailClick }
@@ -851,8 +841,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let configureFirebase: Signal<(), Never>
   public let configureOptimizely: Signal<(String, OptimizelyLogLevelType, TimeInterval), Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
-  public let emailVerificationSucceeded: Signal<String, Never>
-  public let emailVerificationFailed: Signal<String, Never>
+  public let emailVerificationCompleted: Signal<(String, Bool), Never>
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
   public let goToActivity: Signal<(), Never>
@@ -1165,12 +1154,26 @@ private func shouldGoToLandingPage() -> Bool {
   }
 }
 
-private func emailVerificationErrorMessage(_ data: Data?) -> String {
-  guard
-    let data = data,
-    let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: [String: Any]],
-    let message = dict["error"]?["message"] as? String
-  else { return Strings.Something_went_wrong_please_try_again() }
+private func emailVerificationCompletionData(_ data: Data?,
+                                             urlResponse: HTTPURLResponse?) -> (String, Bool)? {
+  guard let statusCode = urlResponse?.statusCode else { return nil }
 
-  return message
+  switch statusCode {
+  case 200..<300:
+    let response = localizedString(
+      key: "Thanks_youve_successfully_verified_your_email_address",
+      defaultValue: "Thanks—you’ve successfully verified your email address."
+    )
+    return (response, true)
+  case 300..<Int.max:
+    guard
+      let data = data,
+      let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: [String: Any]],
+      let message = dict["error"]?["message"] as? String
+    else { return (Strings.Something_went_wrong_please_try_again(), false) }
+
+    return (message, false)
+  case _:
+    return nil
+  }
 }

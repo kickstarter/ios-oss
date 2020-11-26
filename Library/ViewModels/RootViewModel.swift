@@ -82,9 +82,6 @@ public protocol RootViewModelInputs {
   /// Call when selected tab bar index changes.
   func didSelect(index: RootViewControllerIndex)
 
-  /// Call after email verification request to display message banner.
-  func displayMessageBanner(message: String, success: Bool)
-
   /// Call before selected tab bar index changes.
   func shouldSelect(index: RootViewControllerIndex?)
 

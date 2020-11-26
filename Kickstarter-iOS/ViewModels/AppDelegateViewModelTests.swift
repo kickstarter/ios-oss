@@ -18,6 +18,8 @@ final class AppDelegateViewModelTests: TestCase {
   private let configureOptimizelyDispatchInterval = TestObserver<TimeInterval, Never>()
   private let configureFirebase = TestObserver<(), Never>()
   private let didAcceptReceivingRemoteNotifications = TestObserver<(), Never>()
+  private let emailVerificationCompletedMessage = TestObserver<String, Never>()
+  private let emailVerificationCompletedSuccess = TestObserver<Bool, Never>()
   private let findRedirectUrl = TestObserver<URL, Never>()
   private let forceLogout = TestObserver<(), Never>()
   private let goToActivity = TestObserver<(), Never>()
@@ -39,6 +41,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let unregisterForRemoteNotifications = TestObserver<(), Never>()
   private let updateCurrentUserInEnvironment = TestObserver<User, Never>()
   private let updateConfigInEnvironment = TestObserver<Config, Never>()
+  private let verifyEmailWithURLRequest = TestObserver<URLRequest, Never>()
 
   override func setUp() {
     super.setUp()
@@ -51,6 +54,10 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.configureOptimizely.map(first).observe(self.configureOptimizelySDKKey.observer)
     self.vm.outputs.configureOptimizely.map(second).observe(self.configureOptimizelyLogLevel.observer)
     self.vm.outputs.configureOptimizely.map(third).observe(self.configureOptimizelyDispatchInterval.observer)
+    self.vm.outputs.emailVerificationCompleted.map(first)
+      .observe(self.emailVerificationCompletedMessage.observer)
+    self.vm.outputs.emailVerificationCompleted.map(second)
+      .observe(self.emailVerificationCompletedSuccess.observer)
     self.vm.outputs.findRedirectUrl.observe(self.findRedirectUrl.observer)
     self.vm.outputs.forceLogout.observe(self.forceLogout.observer)
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
@@ -74,6 +81,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.unregisterForRemoteNotifications.observe(self.unregisterForRemoteNotifications.observer)
     self.vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
     self.vm.outputs.updateConfigInEnvironment.observe(self.updateConfigInEnvironment.observer)
+    self.vm.outputs.verifyEmailWithURLRequest.observe(self.verifyEmailWithURLRequest.observer)
   }
 
   func testResetApplicationIconBadgeNumber_registeredForPushNotifications_WillEnterForeground() {
@@ -2514,6 +2522,99 @@ final class AppDelegateViewModelTests: TestCase {
       self.presentViewController.assertDidNotEmitValue()
       self.goToLandingPage.assertValueCount(1)
     }
+  }
+
+  func testVerifyEmailWithURLRequest() {
+    self.verifyEmailWithURLRequest.assertDidNotEmitValue()
+    self.emailVerificationCompletedMessage.assertDidNotEmitValue()
+    self.emailVerificationCompletedSuccess.assertDidNotEmitValue()
+
+    guard let url = URL(string: "https://www.kickstarter.com/profile/verify_email?param=12345") else {
+      XCTFail("Should have a url")
+      return
+    }
+
+    _ = self.vm.inputs.applicationOpenUrl(
+      application: UIApplication.shared,
+      url: url,
+      options: [:]
+    )
+
+    self.verifyEmailWithURLRequest.assertValueCount(1)
+    self.emailVerificationCompletedMessage.assertDidNotEmitValue()
+    self.emailVerificationCompletedSuccess.assertDidNotEmitValue()
+
+    guard let request = self.verifyEmailWithURLRequest.values.last else {
+      XCTFail("Should have a request")
+      return
+    }
+
+    let expectedRequest = AppEnvironment.current.apiService.preparedRequest(
+      forRequest: URLRequest(url: url)
+    )
+
+    XCTAssertTrue(AppEnvironment.current.apiService.isPrepared(request: request))
+    XCTAssertEqual(request.url?.absoluteString, expectedRequest.url?.absoluteString)
+  }
+
+  func testVerifyEmail_Success() {
+    self.emailVerificationCompletedMessage.assertDidNotEmitValue()
+    self.emailVerificationCompletedSuccess.assertDidNotEmitValue()
+
+    guard let url = URL(string: "https://www.kickstarter.com/profile/verify_email?param=12345") else {
+      XCTFail("Should have a url")
+      return
+    }
+
+    let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)
+
+    self.vm.inputs.didVerifyEmailWithResponse(data: nil, response: response, error: nil)
+
+    self.emailVerificationCompletedSuccess.assertValues([true])
+    self.emailVerificationCompletedMessage.assertValues(
+      ["Thanks—you’ve successfully verified your email address."]
+    )
+  }
+
+  func testVerifyEmail_Failure() {
+    self.emailVerificationCompletedMessage.assertDidNotEmitValue()
+    self.emailVerificationCompletedSuccess.assertDidNotEmitValue()
+
+    guard let url = URL(string: "https://www.kickstarter.com/profile/verify_email?param=12345") else {
+      XCTFail("Should have a url")
+      return
+    }
+
+    let response = HTTPURLResponse(url: url, statusCode: 401, httpVersion: nil, headerFields: nil)
+
+    let dict: [String: [String: Any]] = ["error": ["message": "Error Message"]]
+    let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+
+    self.vm.inputs.didVerifyEmailWithResponse(data: data, response: response, error: nil)
+
+    self.emailVerificationCompletedSuccess.assertValues([false])
+    self.emailVerificationCompletedMessage.assertValues(
+      ["Error Message"]
+    )
+  }
+
+  func testVerifyEmail_Failure_UnknownError() {
+    self.emailVerificationCompletedMessage.assertDidNotEmitValue()
+    self.emailVerificationCompletedSuccess.assertDidNotEmitValue()
+
+    guard let url = URL(string: "https://www.kickstarter.com/profile/verify_email?param=12345") else {
+      XCTFail("Should have a url")
+      return
+    }
+
+    let response = HTTPURLResponse(url: url, statusCode: 500, httpVersion: nil, headerFields: nil)
+
+    self.vm.inputs.didVerifyEmailWithResponse(data: nil, response: response, error: nil)
+
+    self.emailVerificationCompletedSuccess.assertValues([false])
+    self.emailVerificationCompletedMessage.assertValues(
+      ["Something went wrong, please try again."]
+    )
   }
 }
 

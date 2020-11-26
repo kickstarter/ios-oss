@@ -183,11 +183,6 @@ public final class RootTabBarViewController: UITabBarController {
     self.viewModel.inputs.switchToSearch()
   }
 
-  public func displayMessageBanner(message: String, success: Bool) {
-    self.viewModel.inputs.displayMessageBanner(message: message, success: success)
-    // output sets us to discover tab, tells discovery view controller to show banner
-  }
-
   private func viewControllerAndParam<T, P>(with index: RootViewControllerIndex, param: P) -> (T, P)? {
     guard
       let vcs = self.viewControllers,
