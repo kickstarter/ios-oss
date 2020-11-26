@@ -363,11 +363,6 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
     self.didSelectIndexProperty.value = index
   }
 
-  fileprivate let displayMessageBannerProperty = MutableProperty<(String, Bool)?>(nil)
-  public func displayMessageBanner(message: String, success: Bool) {
-    self.displayMessageBannerProperty.value = (message, success)
-  }
-
   fileprivate let shouldSelectIndexProperty = MutableProperty<Int?>(nil)
   public func shouldSelect(index: Int?) {
     self.shouldSelectIndexProperty.value = index
