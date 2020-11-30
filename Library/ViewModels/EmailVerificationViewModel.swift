@@ -13,7 +13,7 @@ public protocol EmailVerificationViewModelOutputs {
   var activityIndicatorIsHidden: Signal<Bool, Never> { get }
   var notifyDelegateDidComplete: Signal<(), Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
-  var showSuccessBannerWithMessageAndShouldShow: Signal<(String, Bool), Never> { get }
+  var showSuccessBannerWithMessageAndShowBanner: Signal<(String, Bool), Never> { get }
   var skipButtonHidden: Signal<Bool, Never> { get }
 }
 
@@ -55,7 +55,7 @@ public final class EmailVerificationViewModel: EmailVerificationViewModelType,
 
     self.showErrorBannerWithMessage = didFailToSendVerificationEmail
 
-    self.showSuccessBannerWithMessageAndShouldShow = didSendVerificationEmail
+    self.showSuccessBannerWithMessageAndShowBanner = didSendVerificationEmail
       .map { (Strings.Verification_email_sent(), $1) }
 
     // MARK: - Tracking
@@ -87,7 +87,7 @@ public final class EmailVerificationViewModel: EmailVerificationViewModelType,
   public let activityIndicatorIsHidden: Signal<Bool, Never>
   public let notifyDelegateDidComplete: Signal<(), Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
-  public let showSuccessBannerWithMessageAndShouldShow: Signal<(String, Bool), Never>
+  public let showSuccessBannerWithMessageAndShowBanner: Signal<(String, Bool), Never>
   public let skipButtonHidden: Signal<Bool, Never>
 
   public var inputs: EmailVerificationViewModelInputs { return self }

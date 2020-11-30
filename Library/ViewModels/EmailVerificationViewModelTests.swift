@@ -13,7 +13,7 @@ final class EmailVerificationViewModelTests: TestCase {
   private let notifyDelegateDidComplete = TestObserver<(), Never>()
   private let showErrorBannerWithMessage = TestObserver<String, Never>()
   private let showSuccessBannerWithMessage = TestObserver<String, Never>()
-  private let showSuccessBannerShouldShow = TestObserver<Bool, Never>()
+  private let showSuccessBannerShowBanner = TestObserver<Bool, Never>()
   private let skipButtonHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
@@ -22,12 +22,12 @@ final class EmailVerificationViewModelTests: TestCase {
     self.vm.outputs.activityIndicatorIsHidden.observe(self.activityIndicatorIsHidden.observer)
     self.vm.outputs.notifyDelegateDidComplete.observe(self.notifyDelegateDidComplete.observer)
     self.vm.outputs.showErrorBannerWithMessage.observe(self.showErrorBannerWithMessage.observer)
-    self.vm.outputs.showSuccessBannerWithMessageAndShouldShow
+    self.vm.outputs.showSuccessBannerWithMessageAndShowBanner
       .map(first)
       .observe(self.showSuccessBannerWithMessage.observer)
-    self.vm.outputs.showSuccessBannerWithMessageAndShouldShow
+    self.vm.outputs.showSuccessBannerWithMessageAndShowBanner
       .map(second)
-      .observe(self.showSuccessBannerShouldShow.observer)
+      .observe(self.showSuccessBannerShowBanner.observer)
     self.vm.outputs.skipButtonHidden.observe(self.skipButtonHidden.observer)
   }
 
@@ -94,7 +94,7 @@ final class EmailVerificationViewModelTests: TestCase {
     let mockService = MockService(sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope())
 
     self.showSuccessBannerWithMessage.assertDidNotEmitValue()
-    self.showSuccessBannerShouldShow.assertDidNotEmitValue()
+    self.showSuccessBannerShowBanner.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
     self.activityIndicatorIsHidden.assertDidNotEmitValue()
 
@@ -102,7 +102,7 @@ final class EmailVerificationViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.showSuccessBannerWithMessage.assertDidNotEmitValue()
-      self.showSuccessBannerShouldShow.assertDidNotEmitValue()
+      self.showSuccessBannerShowBanner.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.activityIndicatorIsHidden.assertValues([true])
 
@@ -111,7 +111,7 @@ final class EmailVerificationViewModelTests: TestCase {
       self.showSuccessBannerWithMessage.assertValues([
         "We\'ve just sent you a verification email. Click the link in it and your address will be verified."
       ])
-      self.showSuccessBannerShouldShow.assertValues([false])
+      self.showSuccessBannerShowBanner.assertValues([false])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.activityIndicatorIsHidden.assertValues([true])
 
@@ -120,7 +120,7 @@ final class EmailVerificationViewModelTests: TestCase {
       self.showSuccessBannerWithMessage.assertValues([
         "We\'ve just sent you a verification email. Click the link in it and your address will be verified."
       ])
-      self.showSuccessBannerShouldShow.assertValues([false])
+      self.showSuccessBannerShowBanner.assertValues([false])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.activityIndicatorIsHidden.assertValues([true, false])
 
@@ -130,7 +130,7 @@ final class EmailVerificationViewModelTests: TestCase {
         "We\'ve just sent you a verification email. Click the link in it and your address will be verified.",
         "We\'ve just sent you a verification email. Click the link in it and your address will be verified."
       ])
-      self.showSuccessBannerShouldShow.assertValues([false, true])
+      self.showSuccessBannerShowBanner.assertValues([false, true])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.activityIndicatorIsHidden.assertValues([true, false, true])
     }
@@ -141,28 +141,28 @@ final class EmailVerificationViewModelTests: TestCase {
 
     self.showSuccessBannerWithMessage.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
-    self.showSuccessBannerShouldShow.assertDidNotEmitValue()
+    self.showSuccessBannerShowBanner.assertDidNotEmitValue()
     self.activityIndicatorIsHidden.assertDidNotEmitValue()
 
     withEnvironment(apiService: MockService(sendEmailVerificationError: error)) {
       self.vm.inputs.viewDidLoad()
 
       self.showSuccessBannerWithMessage.assertDidNotEmitValue()
-      self.showSuccessBannerShouldShow.assertDidNotEmitValue()
+      self.showSuccessBannerShowBanner.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.activityIndicatorIsHidden.assertValues([true])
 
       self.vm.inputs.resendButtonTapped()
 
       self.showSuccessBannerWithMessage.assertDidNotEmitValue()
-      self.showSuccessBannerShouldShow.assertDidNotEmitValue()
+      self.showSuccessBannerShowBanner.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.activityIndicatorIsHidden.assertValues([true, false])
 
       self.scheduler.advance()
 
       self.showSuccessBannerWithMessage.assertDidNotEmitValue()
-      self.showSuccessBannerShouldShow.assertDidNotEmitValue()
+      self.showSuccessBannerShowBanner.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues([
         GraphError.invalidInput.localizedDescription,
         GraphError.invalidInput.localizedDescription
