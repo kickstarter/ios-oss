@@ -143,9 +143,10 @@ final class EmailVerificationViewController: UIViewController, MessageBannerView
         self.delegate?.emailVerificationViewControllerDidComplete(self)
       }
 
-    self.viewModel.outputs.showSuccessBannerWithMessage
+    self.viewModel.outputs.showSuccessBannerWithMessageAndShouldShow
       .observeForUI()
-      .observeValues { [weak self] message in
+      .observeValues { [weak self] message, shouldShow in
+        guard shouldShow else { return }
         self?.messageBannerViewController?.showBanner(with: .success, message: message)
       }
 

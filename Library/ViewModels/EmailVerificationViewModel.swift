@@ -13,7 +13,7 @@ public protocol EmailVerificationViewModelOutputs {
   var activityIndicatorIsHidden: Signal<Bool, Never> { get }
   var notifyDelegateDidComplete: Signal<(), Never> { get }
   var showErrorBannerWithMessage: Signal<String, Never> { get }
-  var showSuccessBannerWithMessage: Signal<String, Never> { get }
+  var showSuccessBannerWithMessageAndShouldShow: Signal<(String, Bool), Never> { get }
   var skipButtonHidden: Signal<Bool, Never> { get }
 }
 
@@ -31,14 +31,18 @@ public final class EmailVerificationViewModel: EmailVerificationViewModelType,
       .map(featureEmailVerificationSkipIsEnabled)
       .negate()
 
-    let resendEmailVerificationEvent = self.resendButtonTappedProperty.signal
-      .switchMap { _ in
-        AppEnvironment.current.apiService.sendVerificationEmail(input: EmptyInput())
-          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-          .materialize()
-      }
+    let resendEmailVerificationEvent = Signal.merge(
+      self.resendButtonTappedProperty.signal.mapConst(true),
+      self.viewDidLoadProperty.signal.mapConst(false)
+    )
+    .switchMap { showBanner in
+      AppEnvironment.current.apiService.sendVerificationEmail(input: EmptyInput())
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .map { ($0, showBanner) }
+        .materialize()
+    }
 
-    let didSendVerificationEmail = resendEmailVerificationEvent.values().ignoreValues()
+    let didSendVerificationEmail = resendEmailVerificationEvent.values()
     let didFailToSendVerificationEmail = resendEmailVerificationEvent.errors()
       .map { $0.localizedDescription }
 
@@ -47,11 +51,12 @@ public final class EmailVerificationViewModel: EmailVerificationViewModelType,
       self.resendButtonTappedProperty.signal.mapConst(false),
       resendEmailVerificationEvent.filter { $0.isTerminating }.mapConst(true)
     )
+    .skipRepeats()
 
     self.showErrorBannerWithMessage = didFailToSendVerificationEmail
 
-    self.showSuccessBannerWithMessage = didSendVerificationEmail
-      .mapConst(Strings.Verification_email_sent())
+    self.showSuccessBannerWithMessageAndShouldShow = didSendVerificationEmail
+      .map { (Strings.Verification_email_sent(), $1) }
 
     // MARK: - Tracking
 
@@ -82,7 +87,7 @@ public final class EmailVerificationViewModel: EmailVerificationViewModelType,
   public let activityIndicatorIsHidden: Signal<Bool, Never>
   public let notifyDelegateDidComplete: Signal<(), Never>
   public let showErrorBannerWithMessage: Signal<String, Never>
-  public let showSuccessBannerWithMessage: Signal<String, Never>
+  public let showSuccessBannerWithMessageAndShouldShow: Signal<(String, Bool), Never>
   public let skipButtonHidden: Signal<Bool, Never>
 
   public var inputs: EmailVerificationViewModelInputs { return self }
