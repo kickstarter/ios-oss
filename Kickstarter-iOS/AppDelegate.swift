@@ -248,7 +248,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
           let vc = topVC as? MessageBannerViewControllerPresenting
         else { return }
 
-        // FIXME: Consider emitting the success/error type from the output.
         vc.messageBannerViewController?.showBanner(with: success ? .success : .error, message: message)
       }
 

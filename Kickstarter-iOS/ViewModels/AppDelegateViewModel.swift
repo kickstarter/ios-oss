@@ -1156,20 +1156,26 @@ private func shouldGoToLandingPage() -> Bool {
 
 private func emailVerificationCompletionData(_ data: Data?,
                                              urlResponse: HTTPURLResponse?) -> (String, Bool)? {
-  guard let statusCode = urlResponse?.statusCode else { return nil }
+  guard let statusCode = urlResponse?.statusCode,
+    let data = data,
+    let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: [String: Any]]
+  else { return nil }
 
   switch statusCode {
   case 200..<300:
-    let response = localizedString(
-      key: "Thanks_youve_successfully_verified_your_email_address",
-      defaultValue: "Thanks—you’ve successfully verified your email address."
-    )
-    return (response, true)
+    guard let message = dict["data"]?["message"] as? String
+    else {
+      // FIXME: Replace with string from server when translation is complete.
+      let response = localizedString(
+        key: "Thanks_youve_successfully_verified_your_email_address",
+        defaultValue: "Thanks—you’ve successfully verified your email address."
+      )
+      return (response, true)
+    }
+
+    return (message, true)
   case 300..<Int.max:
-    guard
-      let data = data,
-      let dict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: [String: Any]],
-      let message = dict["error"]?["message"] as? String
+    guard let message = dict["error"]?["message"] as? String
     else { return (Strings.Something_went_wrong_please_try_again(), false) }
 
     return (message, false)
