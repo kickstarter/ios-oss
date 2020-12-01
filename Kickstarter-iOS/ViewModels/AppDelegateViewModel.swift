@@ -1163,14 +1163,8 @@ private func emailVerificationCompletionData(_ data: Data?,
 
   switch statusCode {
   case 200..<300:
-    guard let message = dict?["data"]?["message"] as? String else {
-      // FIXME: Replace with string from server when translation is complete.
-      let response = localizedString(
-        key: "Thanks_youve_successfully_verified_your_email_address",
-        defaultValue: "Thanks—you’ve successfully verified your email address."
-      )
-      return (response, true)
-    }
+    guard let message = dict?["data"]?["message"] as? String
+    else { return (Strings.Thanks_youve_successfully_verified_your_email_address(), true) }
 
     return (message, true)
   case 300..<Int.max:
