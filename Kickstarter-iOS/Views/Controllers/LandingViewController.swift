@@ -185,7 +185,7 @@ private let getStartedButtonStyle: ButtonStyle = { button in
 private let logoImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.image .~ image(named: "kickstarter-logo")?.withRenderingMode(.alwaysTemplate)
-    |> \.tintColor .~ UIColor.ksr_green_500
+    |> \.tintColor .~ UIColor.ksr_create_700
     |> \.accessibilityLabel %~ { _ in Strings.general_accessibility_kickstarter() }
 }
 

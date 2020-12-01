@@ -45,7 +45,7 @@ public final class DashboardReferrerRowStackViewViewModel: DashboardReferrerRowS
     self.textColor = countryReferrer.map { _, referrer in
       switch referrer.referrerType {
       case .internal:
-        return .ksr_green_700
+        return .ksr_create_700
       case .external:
         return .ksr_orange_400
       default:

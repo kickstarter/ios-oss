@@ -83,7 +83,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
 
     _ = self.youView
       |> authorBadgeViewStyle
-      |> UIView.lens.backgroundColor .~ .ksr_green_500
+      |> UIView.lens.backgroundColor .~ .ksr_create_700
   }
 
   internal override func bindViewModel() {

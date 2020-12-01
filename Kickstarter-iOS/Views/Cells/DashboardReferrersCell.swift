@@ -113,7 +113,7 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
       |> dashboardReferrersPledgePercentLabelStyle
 
     _ = self.internalPercentIndicatorLabel
-      |> UILabel.lens.textColor .~ .ksr_green_700
+      |> UILabel.lens.textColor .~ .ksr_create_700
 
     _ = self.internalPledgedAmountSubtitleLabel
       |> dashboardStatSubtitleLabelStyle

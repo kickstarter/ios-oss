@@ -201,7 +201,7 @@ private func amountStringForReward(
   shippingRule: ShippingRule?
 ) -> NSAttributedString {
   let font: UIFont = UIFont.ksr_subhead().weighted(.medium)
-  let foregroundColor: UIColor = UIColor.ksr_green_500
+  let foregroundColor: UIColor = UIColor.ksr_create_700
 
   let min = minPledgeAmount(forProject: project, reward: reward)
   let amountString = Format.currency(

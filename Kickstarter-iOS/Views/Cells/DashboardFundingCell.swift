@@ -55,7 +55,7 @@ internal final class DashboardFundingCell: UITableViewCell, ValueCell {
     _ = self.pledgedSubtitleLabel |> dashboardStatSubtitleLabelStyle
     _ = self.pledgedTitleLabel
       |> dashboardStatTitleLabelStyle
-      |> UILabel.lens.textColor .~ .ksr_text_green_700
+      |> UILabel.lens.textColor .~ .ksr_create_700
 
     _ = self.rootStackView
       |> UIStackView.lens.isLayoutMarginsRelativeArrangement .~ true

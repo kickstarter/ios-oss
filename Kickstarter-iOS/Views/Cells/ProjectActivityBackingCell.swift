@@ -170,7 +170,7 @@ internal final class ProjectActivityBackingCell: UITableViewCell, ValueCell {
       |> projectActivityHeaderStackViewStyle
 
     _ = self.pledgeAmountLabel
-      |> UILabel.lens.textColor .~ .ksr_text_green_700
+      |> UILabel.lens.textColor .~ .ksr_create_700
       |> UILabel.lens.font .~ .ksr_callout(size: 24)
 
     _ = self.pledgeAmountLabelsStackView

@@ -642,7 +642,7 @@ private let projectStatusContainerViewStyle: ViewStyle = { view in
 private let goalMetIconImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.image .~ Library.image(named: "icon--star")
-    |> \.tintColor .~ .ksr_green_500
+    |> \.tintColor .~ .ksr_create_700
     |> \.contentMode .~ .center
 }
 
@@ -706,7 +706,7 @@ private let percentFundedLabelStyle: LabelStyle = { label in
   label
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
-    |> \.textColor .~ .ksr_green_500
+    |> \.textColor .~ .ksr_create_700
     |> \.backgroundColor .~ .white
 }
 
@@ -756,7 +756,7 @@ private let saveButtonStyle: ButtonStyle = { button in
 private let youreABackerViewStyle: ViewStyle = { view in
   view
     |> roundedStyle(cornerRadius: Styles.grid(1))
-    |> \.backgroundColor .~ UIColor.ksr_cobalt_500
+    |> \.backgroundColor .~ UIColor.ksr_trust_500
     |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.gridHalf(3))
 }
 

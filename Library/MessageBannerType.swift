@@ -8,11 +8,11 @@ public enum MessageBannerType {
   var backgroundColor: UIColor {
     switch self {
     case .success:
-      return .ksr_cobalt_500
+      return .ksr_trust_500
     case .error:
-      return .ksr_apricot_500
+      return .ksr_alert
     case .info:
-      return .ksr_cobalt_500
+      return .ksr_trust_500
     }
   }
 

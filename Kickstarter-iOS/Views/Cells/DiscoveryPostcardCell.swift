@@ -146,11 +146,11 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     _ = self.fundingTitleLabel
       |> postcardStatsTitleStyle
-      |> UILabel.lens.textColor .~ .ksr_green_700
+      |> UILabel.lens.textColor .~ .ksr_create_700
 
     _ = self.fundingSubtitleLabel
       |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_funded() }
-      |> UILabel.lens.textColor .~ .ksr_green_700
+      |> UILabel.lens.textColor .~ .ksr_create_700
 
     _ = self.cardView
       |> cardStyle()
@@ -159,7 +159,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
 
     _ = self.fundingProgressBarView
-      |> UIView.lens.backgroundColor .~ .ksr_green_700
+      |> UIView.lens.backgroundColor .~ .ksr_create_700
 
     _ = self.metadataIconImageView
       |> UIImageView.lens.tintColor .~ .ksr_dark_grey_500

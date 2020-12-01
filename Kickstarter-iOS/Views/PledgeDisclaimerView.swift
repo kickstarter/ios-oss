@@ -135,7 +135,7 @@ private let textViewStyle: TextViewStyle = { (textView: UITextView) -> UITextVie
 private func iconImageViewStyle(_ isAccessibilityCategory: Bool) -> (ImageViewStyle) {
   return { (imageView: UIImageView) in
     imageView
-      |> \.tintColor .~ .ksr_green_500
+      |> \.tintColor .~ .ksr_create_700
       |> \.contentMode .~ (isAccessibilityCategory ? .top : .center)
   }
 }
