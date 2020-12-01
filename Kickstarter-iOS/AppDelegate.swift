@@ -234,10 +234,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.rootTabBarController?.present(navController, animated: true)
       }
 
-    self.viewModel.outputs.verifyEmailWithURLRequest
-      .observeForUI()
-      .observeValues { [weak self] in self?.verifyEmail($0) }
-
     self.viewModel.outputs.emailVerificationCompleted
       .observeForUI()
       .observeValues { [weak self] message, success in
@@ -415,14 +411,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   private func findRedirectUrl(_ url: URL) {
     let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     let task = session.dataTask(with: url)
-    task.resume()
-  }
-
-  private func verifyEmail(_ request: URLRequest) {
-    let session = URLSession(configuration: .default, delegate: nil, delegateQueue: nil)
-    let task = session.dataTask(with: request) { data, response, error in
-      self.viewModel.inputs.didVerifyEmailWithResponse(data: data, response: response, error: error)
-    }
     task.resume()
   }
 }

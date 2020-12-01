@@ -70,6 +70,7 @@ internal enum Route {
   case userProjectsBacked
   case userSelf
   case user(userId: Int)
+  case verifyEmail(accessToken: String)
 
   enum UploadParam: String {
     case image
@@ -333,6 +334,9 @@ internal enum Route {
 
       case let .user(userId):
         return (.GET, "/v1/users/\(userId)", [:], nil)
+
+      case let .verifyEmail(accessToken):
+        return (.POST, "/v1/users/verify_email", ["access_token": accessToken], nil)
       }
     }
 }

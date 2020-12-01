@@ -66,9 +66,6 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the Optimizely client has been updated in the AppEnvironment
   func didUpdateOptimizelyClient(_ client: OptimizelyClientType)
 
-  /// Call when the email verification request needs to be made.
-  func didVerifyEmailWithResponse(data: Data?, response: URLResponse?, error: Error?)
-
   /// Call when the redirect URL has been found, see `findRedirectUrl` for more information.
   func foundRedirectUrl(_ url: URL)
 
@@ -181,9 +178,6 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits a config value that should be updated in the environment.
   var updateConfigInEnvironment: Signal<Config, Never> { get }
-
-  /// Emits an URLRequest after email verification deeplinking occurs
-  var verifyEmailWithURLRequest: Signal<URLRequest, Never> { get }
 }
 
 public protocol AppDelegateViewModelType {
@@ -360,14 +354,17 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .filter { _ in shouldGoToLandingPage() == false && shouldSeeCategoryPersonalization() == false }
       .take(until: self.goToLandingPage)
 
-    self.verifyEmailWithURLRequest = deepLinkUrl
+    let emailVerificationEvent = deepLinkUrl
       .filter { Navigation.match($0) == .profile(.verifyEmail) }
-      .map { URLRequest.init(url: $0) }
-      .map { AppEnvironment.current.apiService.preparedRequest(forRequest: $0) }
-
-    self.emailVerificationCompleted = self.didVerifyEmailWithResponseProperty.signal
+      .map(accessTokenFromUrl)
       .skipNil()
-      .map { data, response, _ in (data, response as? HTTPURLResponse) }
+      .switchMap { accessToken in
+        AppEnvironment.current.apiService.verifyEmail(withToken: accessToken)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    self.emailVerificationCompleted = emailVerificationEvent
       .map(emailVerificationCompletionData)
       .skipNil()
 
@@ -813,11 +810,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.userSessionStartedProperty.value = ()
   }
 
-  private let didVerifyEmailWithResponseProperty = MutableProperty<(Data?, URLResponse?, Error?)?>(nil)
-  public func didVerifyEmailWithResponse(data: Data?, response: URLResponse?, error: Error?) {
-    self.didVerifyEmailWithResponseProperty.value = (data, response, error)
-  }
-
   fileprivate let applicationDidFinishLaunchingReturnValueProperty = MutableProperty(true)
   public var applicationDidFinishLaunchingReturnValue: Bool {
     return self.applicationDidFinishLaunchingReturnValueProperty.value
@@ -866,7 +858,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let unregisterForRemoteNotifications: Signal<(), Never>
   public let updateCurrentUserInEnvironment: Signal<User, Never>
   public let updateConfigInEnvironment: Signal<Config, Never>
-  public let verifyEmailWithURLRequest: Signal<URLRequest, Never>
 }
 
 private func deviceToken(fromData data: Data) -> String {
@@ -1154,25 +1145,24 @@ private func shouldGoToLandingPage() -> Bool {
   }
 }
 
-private func emailVerificationCompletionData(_ data: Data?,
-                                             urlResponse: HTTPURLResponse?) -> (String, Bool)? {
-  guard let statusCode = urlResponse?.statusCode else { return nil }
+private func accessTokenFromUrl(_ url: URL?) -> String? {
+  return url.flatMap { url in
+    URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems
+  }?
+    .first { item in item.name == "at" }?
+    .value
+}
 
-  let dict = data
-    .flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) as? [String: [String: Any]] }
+private func emailVerificationCompletionData(
+  event: Signal<EmailVerificationResponseEnvelope, ErrorEnvelope>.Event
+) -> (String, Bool)? {
+  guard !event.isCompleted else { return nil }
 
-  switch statusCode {
-  case 200..<300:
-    guard let message = dict?["data"]?["message"] as? String
-    else { return (Strings.Thanks_youve_successfully_verified_your_email_address(), true) }
-
-    return (message, true)
-  case 300..<Int.max:
-    guard let message = dict?["error"]?["message"] as? String
-    else { return (Strings.Something_went_wrong_please_try_again(), false) }
+  guard isNil(event.error), let message = event.value?.message else {
+    let message = event.error?.errorMessages.first ?? Strings.Something_went_wrong_please_try_again()
 
     return (message, false)
-  case _:
-    return nil
   }
+
+  return (message, true)
 }

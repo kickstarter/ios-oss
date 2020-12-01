@@ -522,6 +522,11 @@ public struct Service: ServiceType {
     return applyMutation(mutation: UnwatchProjectMutation(input: input))
   }
 
+  public func verifyEmail(withToken token: String)
+    -> SignalProducer<EmailVerificationResponseEnvelope, ErrorEnvelope> {
+    request(.verifyEmail(accessToken: token))
+  }
+
   public func watchProject(input: WatchProjectInput) ->
     SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
     return applyMutation(mutation: WatchProjectMutation(input: input))
