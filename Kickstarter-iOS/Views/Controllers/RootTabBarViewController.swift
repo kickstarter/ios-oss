@@ -16,8 +16,9 @@ extension TabBarControllerScrollable where Self: UIViewController {
   }
 }
 
-public final class RootTabBarViewController: UITabBarController {
+public final class RootTabBarViewController: UITabBarController, MessageBannerViewControllerPresenting {
   private var applicationWillEnterForegroundObserver: Any?
+  public var messageBannerViewController: MessageBannerViewController?
   private var sessionEndedObserver: Any?
   private var sessionStartedObserver: Any?
   private var userUpdatedObserver: Any?
@@ -81,6 +82,8 @@ public final class RootTabBarViewController: UITabBarController {
           self?.viewModel.inputs.userLocalePreferencesChanged()
         }
       )
+
+    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.viewModel.inputs.viewDidLoad()
   }

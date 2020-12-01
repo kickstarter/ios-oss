@@ -241,14 +241,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.emailVerificationCompleted
       .observeForUI()
       .observeValues { [weak self] message, success in
-        // FIXME: We may want to revisit this shortcut to find the VC to present on.
-        guard
-          let firstVC = self?.rootTabBarController?.viewControllers?.first as? UINavigationController,
-          let topVC = firstVC.topViewController,
-          let vc = topVC as? MessageBannerViewControllerPresenting
-        else { return }
-
-        vc.messageBannerViewController?.showBanner(with: success ? .success : .error, message: message)
+        self?.rootTabBarController?
+          .messageBannerViewController?.showBanner(with: success ? .success : .error, message: message)
       }
 
     NotificationCenter.default

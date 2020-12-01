@@ -3,13 +3,11 @@ import Library
 import Prelude
 import UIKit
 
-internal final class DiscoveryViewController: UIViewController, MessageBannerViewControllerPresenting {
+internal final class DiscoveryViewController: UIViewController {
   fileprivate let viewModel: DiscoveryViewModelType = DiscoveryViewModel()
   fileprivate var dataSource: DiscoveryPagesDataSource?
 
   private var recommendationsChangedObserver: Any?
-
-  internal var messageBannerViewController: MessageBannerViewController?
   private weak var navigationHeaderViewController: DiscoveryNavigationHeaderViewController!
   private var optimizelyConfiguredObserver: Any?
   private var optimizelyConfigurationFailedObserver: Any?
@@ -63,8 +61,6 @@ internal final class DiscoveryViewController: UIViewController, MessageBannerVie
       ) { [weak self] _ in
         self?.viewModel.inputs.optimizelyClientConfigurationFailed()
       }
-
-    self.messageBannerViewController = self.configureMessageBannerViewController(on: self)
 
     self.viewModel.inputs.viewDidLoad()
   }
