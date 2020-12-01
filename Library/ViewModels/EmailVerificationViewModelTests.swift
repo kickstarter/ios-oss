@@ -13,6 +13,7 @@ final class EmailVerificationViewModelTests: TestCase {
   private let notifyDelegateDidComplete = TestObserver<(), Never>()
   private let showErrorBannerWithMessage = TestObserver<String, Never>()
   private let showSuccessBannerWithMessage = TestObserver<String, Never>()
+  private let showSuccessBannerShowBanner = TestObserver<Bool, Never>()
   private let skipButtonHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
@@ -21,7 +22,12 @@ final class EmailVerificationViewModelTests: TestCase {
     self.vm.outputs.activityIndicatorIsHidden.observe(self.activityIndicatorIsHidden.observer)
     self.vm.outputs.notifyDelegateDidComplete.observe(self.notifyDelegateDidComplete.observer)
     self.vm.outputs.showErrorBannerWithMessage.observe(self.showErrorBannerWithMessage.observer)
-    self.vm.outputs.showSuccessBannerWithMessage.observe(self.showSuccessBannerWithMessage.observer)
+    self.vm.outputs.showSuccessBannerWithMessageAndShowBanner
+      .map(first)
+      .observe(self.showSuccessBannerWithMessage.observer)
+    self.vm.outputs.showSuccessBannerWithMessageAndShowBanner
+      .map(second)
+      .observe(self.showSuccessBannerShowBanner.observer)
     self.vm.outputs.skipButtonHidden.observe(self.skipButtonHidden.observer)
   }
 
@@ -88,6 +94,7 @@ final class EmailVerificationViewModelTests: TestCase {
     let mockService = MockService(sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope())
 
     self.showSuccessBannerWithMessage.assertDidNotEmitValue()
+    self.showSuccessBannerShowBanner.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
     self.activityIndicatorIsHidden.assertDidNotEmitValue()
 
@@ -95,20 +102,35 @@ final class EmailVerificationViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.showSuccessBannerWithMessage.assertDidNotEmitValue()
+      self.showSuccessBannerShowBanner.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.activityIndicatorIsHidden.assertValues([true])
-
-      self.vm.inputs.resendButtonTapped()
-
-      self.showSuccessBannerWithMessage.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertDidNotEmitValue()
-      self.activityIndicatorIsHidden.assertValues([true, false])
 
       self.scheduler.advance()
 
       self.showSuccessBannerWithMessage.assertValues([
         "We\'ve just sent you a verification email. Click the link in it and your address will be verified."
       ])
+      self.showSuccessBannerShowBanner.assertValues([false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.activityIndicatorIsHidden.assertValues([true])
+
+      self.vm.inputs.resendButtonTapped()
+
+      self.showSuccessBannerWithMessage.assertValues([
+        "We\'ve just sent you a verification email. Click the link in it and your address will be verified."
+      ])
+      self.showSuccessBannerShowBanner.assertValues([false])
+      self.showErrorBannerWithMessage.assertDidNotEmitValue()
+      self.activityIndicatorIsHidden.assertValues([true, false])
+
+      self.scheduler.advance()
+
+      self.showSuccessBannerWithMessage.assertValues([
+        "We\'ve just sent you a verification email. Click the link in it and your address will be verified.",
+        "We\'ve just sent you a verification email. Click the link in it and your address will be verified."
+      ])
+      self.showSuccessBannerShowBanner.assertValues([false, true])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.activityIndicatorIsHidden.assertValues([true, false, true])
     }
@@ -119,25 +141,32 @@ final class EmailVerificationViewModelTests: TestCase {
 
     self.showSuccessBannerWithMessage.assertDidNotEmitValue()
     self.showErrorBannerWithMessage.assertDidNotEmitValue()
+    self.showSuccessBannerShowBanner.assertDidNotEmitValue()
     self.activityIndicatorIsHidden.assertDidNotEmitValue()
 
     withEnvironment(apiService: MockService(sendEmailVerificationError: error)) {
       self.vm.inputs.viewDidLoad()
 
       self.showSuccessBannerWithMessage.assertDidNotEmitValue()
+      self.showSuccessBannerShowBanner.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.activityIndicatorIsHidden.assertValues([true])
 
       self.vm.inputs.resendButtonTapped()
 
       self.showSuccessBannerWithMessage.assertDidNotEmitValue()
+      self.showSuccessBannerShowBanner.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
       self.activityIndicatorIsHidden.assertValues([true, false])
 
       self.scheduler.advance()
 
       self.showSuccessBannerWithMessage.assertDidNotEmitValue()
-      self.showErrorBannerWithMessage.assertValue(GraphError.invalidInput.localizedDescription)
+      self.showSuccessBannerShowBanner.assertDidNotEmitValue()
+      self.showErrorBannerWithMessage.assertValues([
+        GraphError.invalidInput.localizedDescription,
+        GraphError.invalidInput.localizedDescription
+      ])
       self.activityIndicatorIsHidden.assertValues([true, false, true])
     }
   }
