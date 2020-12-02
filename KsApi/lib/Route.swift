@@ -336,7 +336,7 @@ internal enum Route {
         return (.GET, "/v1/users/\(userId)", [:], nil)
 
       case let .verifyEmail(accessToken):
-        return (.POST, "/v1/users/verify_email", ["access_token": accessToken], nil)
+        return (.POST, "/v1/users/verify_email", ["email_access_token": accessToken], nil)
       }
     }
 }
