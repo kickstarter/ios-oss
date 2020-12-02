@@ -237,6 +237,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.emailVerificationCompleted
       .observeForUI()
       .observeValues { [weak self] message, success in
+        self?.rootTabBarController?.dismiss(animated: false, completion: nil)
         self?.rootTabBarController?
           .messageBannerViewController?.showBanner(with: success ? .success : .error, message: message)
       }
