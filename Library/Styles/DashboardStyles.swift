@@ -146,8 +146,8 @@ public let dashboardVideoCompletionPercentageLabelStyle =
     <> UILabel.lens.font .~ UIFont.ksr_caption1()
 
 public let dashboardVideoExternalPlaysProgressViewStyle =
-  UIView.lens.backgroundColor .~ .ksr_orange_400
-    <> UIView.lens.layer.borderColor .~ UIColor.ksr_orange_600.cgColor
+  UIView.lens.backgroundColor .~ .ksr_celebrate_500
+    <> UIView.lens.layer.borderColor .~ UIColor.ksr_celebrate_700.cgColor
     <> UIView.lens.layer.borderWidth .~ 1
 
 public let dashboardVideoGraphPercentageLabelStyle =

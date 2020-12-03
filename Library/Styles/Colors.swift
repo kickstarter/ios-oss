@@ -116,16 +116,6 @@ extension UIColor {
     return .hex(0x626369)
   }
 
-  /// 0xF7AA1A
-  public static var ksr_orange_400: UIColor {
-    return .hex(0xF7AA1A)
-  }
-
-  /// 0xE58111
-  public static var ksr_orange_600: UIColor {
-    return .hex(0xE58111)
-  }
-
   /// 0x282828
   public static var ksr_soft_black: UIColor {
     return .hex(0x282828)
@@ -169,11 +159,6 @@ extension UIColor {
   /// 0x0A007D
   public static var ksr_trust_700: UIColor {
     return .hex(0x0A007D)
-  }
-
-  /// 0x3A328E
-  public static var ksr_violet_500: UIColor {
-    return .hex(0x3A328E)
   }
 
   /// 0xF9D66D

@@ -29,19 +29,15 @@ public enum MessageBannerType {
 
   var iconImageTintColor: UIColor? {
     switch self {
-    case .error:
-      return .black
-    default:
-      return nil
+    case .success, .info, .error:
+      return .white
     }
   }
 
   var textColor: UIColor {
     switch self {
-    case .success, .info:
+    case .success, .info, .error:
       return .white
-    case .error:
-      return .ksr_soft_black
     }
   }
 
