@@ -42,6 +42,9 @@ internal final class SettingsPrivacyRecommendationCell: UITableViewCell, ValueCe
     _ = self.separatorView
       ||> settingsSeparatorStyle
 
+    _ = self.recommendationsSwitch
+      |> settingsSwitchStyle
+
     _ = self.recommendationsLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Recommendations() }

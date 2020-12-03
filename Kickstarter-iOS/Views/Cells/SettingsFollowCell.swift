@@ -51,6 +51,9 @@ internal final class SettingsFollowCell: UITableViewCell, ValueCell {
     _ = self.separatorView
       ||> settingsSeparatorStyle
 
+    _ = self.followingSwitch
+      |> settingsSwitchStyle
+
     _ = self.followingLabel
       |> settingsTitleLabelStyle
       |> UILabel.lens.text %~ { _ in Strings.Following() }
