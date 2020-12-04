@@ -48,7 +48,7 @@ internal final class SettingsPrivacyDeleteAccountCell: UITableViewCell, ValueCel
       ||> settingsSeparatorStyle
 
     _ = self.deleteAccountLabel
-      |> UILabel.lens.textColor .~ .ksr_red_400
+      |> UILabel.lens.textColor .~ .ksr_alert
       |> UILabel.lens.font .~ .ksr_body()
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.text %~ { _ in Strings.Delete_my_Kickstarter_Account() }

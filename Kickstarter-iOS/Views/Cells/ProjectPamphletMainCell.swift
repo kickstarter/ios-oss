@@ -255,7 +255,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     _ = self.youreABackerContainerView
       |> roundedStyle(cornerRadius: 2)
-      |> UIView.lens.backgroundColor .~ .ksr_green_500
+      |> UIView.lens.backgroundColor .~ .ksr_create_700
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.gridHalf(3))
 
     _ = self.youreABackerLabel

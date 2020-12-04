@@ -19,7 +19,7 @@ public let updateBodyTextViewStyle = UITextView.lens.backgroundColor .~ .clear
   <> UITextView.lens.textColor .~ .ksr_text_navy_600
   <> UITextView.lens.textContainerInset .~ .init(top: 34, left: 12, bottom: 12, right: 12)
   <> UITextView.lens.textContainer.lineFragmentPadding .~ 0
-  <> UITextView.lens.tintColor .~ .ksr_green_700
+  <> UITextView.lens.tintColor .~ .ksr_create_700
 
 public let updateBodyPlaceholderTextViewStyle = updateBodyTextViewStyle
   <> UITextView.lens.text %~ { _ in Strings.Share_an_update_about_your_project() }

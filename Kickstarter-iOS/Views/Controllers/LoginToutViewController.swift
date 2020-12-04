@@ -525,7 +525,7 @@ private let baseLabelStyle: LabelStyle = { label in
 private let logoImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.image .~ image(named: "kickstarter-logo")?.withRenderingMode(.alwaysTemplate)
-    |> \.tintColor .~ .ksr_green_500
+    |> \.tintColor .~ .ksr_create_500
     |> \.contentMode .~ .scaleAspectFit
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.accessibilityLabel %~ { _ in Strings.general_accessibility_kickstarter() }

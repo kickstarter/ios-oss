@@ -85,7 +85,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
       )
       |> UIButton.lens.image(for: .selected) .~ Library.image(
         named: "email-icon",
-        tintColor: .ksr_green_700,
+        tintColor: .ksr_create_700,
         inBundle: Bundle.framework
       )
 
@@ -103,7 +103,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
       )
       |> UIButton.lens.image(for: .selected) .~ Library.image(
         named: "mobile-icon",
-        tintColor: .ksr_green_700,
+        tintColor: .ksr_create_700,
         inBundle: Bundle.framework
       )
   }

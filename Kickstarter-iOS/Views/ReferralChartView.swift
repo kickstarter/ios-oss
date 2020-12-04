@@ -33,7 +33,7 @@ public final class ReferralChartView: UIView {
     let internalAndExternalPercentageAngle
       = CGFloat(-.pi / 2.0) + internalAndExternalPercentage * CGFloat(2.0 * .pi)
 
-    UIColor.ksr_green_700.set()
+    UIColor.ksr_create_700.set()
     context.move(to: CGPoint(x: self.bounds.width / 2, y: self.bounds.height / 2))
     context.addLine(to: CGPoint(x: self.bounds.width / 2, y: 0))
     context.addArc(
@@ -46,7 +46,7 @@ public final class ReferralChartView: UIView {
     context.closePath()
     context.fillPath()
 
-    UIColor.ksr_orange_400.set()
+    UIColor.ksr_celebrate_500.set()
     context.move(to: CGPoint(x: self.bounds.width / 2, y: self.bounds.height / 2))
     context.addLine(
       to: CGPoint(
@@ -64,7 +64,7 @@ public final class ReferralChartView: UIView {
     context.closePath()
     context.fillPath()
 
-    UIColor.ksr_violet_500.set()
+    UIColor.ksr_trust_500.set()
     context.move(to: CGPoint(x: self.bounds.width / 2, y: self.bounds.height / 2))
     context.addLine(
       to: CGPoint(

@@ -32,11 +32,6 @@ a backer viewing a project in French
 , or a creator looking at their dashboard in German and on an iPad
 [here](https://github.com/kickstarter/ios-oss/blob/64f79ce6a03a8fad9b7024a43c17b4ae5f264d31/Screenshots/_64/Kickstarter_Framework_iOSTests.DashboardViewControllerTests/testView_lang_de_device_pad%402x.png).
 
-* We use Swift Playgrounds for [iterative development and styling](https://youtu.be/A0VaIKK2ijM?t=26m47s).
-Most major screens in the app get a corresponding playground where we can see a
-wide variety of devices, languages and data in real time. Browse our collection of
-playgrounds [here](https://github.com/kickstarter/ios-oss/tree/master/Kickstarter-iOS.playground/Pages).
-
 * [We use view models](https://www.youtube.com/watch?v=EpTlqx6NjYo) as
 a lightweight way to isolate side effects and embrace a functional core. We
 write [these](https://github.com/kickstarter/ios-oss/tree/master/Library/ViewModels)

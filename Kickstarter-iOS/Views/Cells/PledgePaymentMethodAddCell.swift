@@ -66,8 +66,8 @@ private let addButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.titleLabel.font .~ UIFont.boldSystemFont(ofSize: 15)
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "icon-add-round-green")
     |> UIButton.lens.isUserInteractionEnabled .~ false
-    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_500
-    |> UIButton.lens.tintColor .~ .ksr_green_500
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_create_700
+    |> UIButton.lens.tintColor .~ .ksr_create_700
     |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(3))
 }
 

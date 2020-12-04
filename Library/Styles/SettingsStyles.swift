@@ -73,7 +73,7 @@ public let settingsNotificationIconButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
     <> UIButton.lens.tintColor .~ .ksr_text_dark_grey_400
 
-public let settingsSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_green_700
+public let settingsSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_create_700
   <> UISwitch.lens.tintColor .~ .ksr_grey_600
 
 public let notificationButtonStyle = UIButton.lens.layer.cornerRadius .~ 9

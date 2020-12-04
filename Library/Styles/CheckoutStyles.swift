@@ -106,7 +106,7 @@ public let checkoutStackViewStyle: StackViewStyle = { (stackView: UIStackView) i
 
 public let checkoutSwitchControlStyle: SwitchControlStyle = { switchControl in
   switchControl
-    |> \.onTintColor .~ UIColor.ksr_green_500
+    |> \.onTintColor .~ UIColor.ksr_create_700
     |> \.tintColor .~ UIColor.ksr_grey_500
 }
 
@@ -151,7 +151,7 @@ public let tappableLinksViewStyle: TextViewStyle = { (textView: UITextView) -> U
     |> \.textContainerInset .~ UIEdgeInsets.zero
     |> \.textContainer.lineFragmentPadding .~ 0
     |> \.linkTextAttributes .~ [
-      .foregroundColor: UIColor.ksr_green_500
+      .foregroundColor: UIColor.ksr_create_700
     ]
 
   return textView

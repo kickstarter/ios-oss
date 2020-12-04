@@ -28,19 +28,19 @@ public let baseButtonStyle: ButtonStyle = { button in
 
 public let apricotButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_black
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_apricot_500
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_alert
   <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_black
   <> UIButton.lens.titleColor(for: .disabled) .~ .ksr_dark_grey_400
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_apricot_500.mixDarker(0.12)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_apricot_500.mixLighter(0.36)
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_alert.mixDarker(0.12)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_alert.mixLighter(0.36)
 
 // MARK: - Red
 
 public let redButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ UIColor.white
-  <> UIButton.lens.backgroundColor(for: .normal) .~ UIColor.ksr_red_400
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_red_400.mixDarker(0.12)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_red_400.mixLighter(0.36)
+  <> UIButton.lens.backgroundColor(for: .normal) .~ UIColor.ksr_alert
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_alert.mixDarker(0.12)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_alert.mixLighter(0.36)
 
 // MARK: - Black
 
@@ -57,19 +57,19 @@ public let blackButtonStyle = baseButtonStyle
 
 public let blueButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .white
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_blue_500
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_trust_500
   <> UIButton.lens.titleColor(for: .highlighted) .~ .white
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_blue_500.mixDarker(0.36)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_blue_500.mixLighter(0.36)
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_trust_500.mixDarker(0.36)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_trust_500.mixLighter(0.36)
 
 // MARK: - Green
 
 public let greenButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .white
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_green_500
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_create_700
   <> UIButton.lens.titleColor(for: .highlighted) .~ .white
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_green_500.mixDarker(0.36)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_green_500.mixLighter(0.36)
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_create_700.mixDarker(0.36)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_create_700.mixLighter(0.36)
 
 // MARK: - Grey
 

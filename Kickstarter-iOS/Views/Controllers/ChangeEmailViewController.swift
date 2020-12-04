@@ -244,7 +244,7 @@ extension ChangeEmailViewController: UITextFieldDelegate {
 
 private let warningMessageLabelStyle: LabelStyle = { (label: UILabel) in
   label
-    |> \.textColor .~ UIColor.ksr_red_400
+    |> \.textColor .~ UIColor.ksr_alert
     |> \.text %~ { _ in Strings.We_ve_been_unable_to_send_email() }
 }
 
@@ -292,5 +292,5 @@ private let passwordTextFieldStyle: TextFieldStyle = { (textField: UITextField) 
 private let resendVerificationEmailButtonStyle: ButtonStyle = { (button: UIButton) in
   button
     |> UIButton.lens.titleLabel.font .~ .ksr_body()
-    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_green_700
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_create_700
 }
