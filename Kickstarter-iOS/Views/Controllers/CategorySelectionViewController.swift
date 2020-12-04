@@ -353,7 +353,7 @@ private let collectionViewStyle: ViewStyle = { view in
 
 private let warningLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ UIColor.ksr_red_400
+    |> \.textColor .~ UIColor.ksr_alert
     |> \.font .~ UIFont.ksr_footnote()
     |> \.textAlignment .~ .center
     |> \.lineBreakMode .~ .byWordWrapping

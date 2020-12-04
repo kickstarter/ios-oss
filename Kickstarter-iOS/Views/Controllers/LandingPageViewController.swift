@@ -252,7 +252,7 @@ private let labelsStackViewStyle: StackViewStyle = { stackView in
 private let logoImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.image .~ image(named: "kickstarter-logo")?.withRenderingMode(.alwaysTemplate)
-    |> \.tintColor .~ .ksr_green_500
+    |> \.tintColor .~ .ksr_create_700
     |> \.contentMode .~ .scaleAspectFit
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.accessibilityLabel %~ { _ in Strings.general_accessibility_kickstarter() }
@@ -261,7 +261,7 @@ private let logoImageViewStyle: ImageViewStyle = { imageView in
 private let pageControlStyle: PageControlStyle = { pageControl in
   pageControl
     |> \.currentPage .~ 0
-    |> \.currentPageIndicatorTintColor .~ .ksr_green_500
+    |> \.currentPageIndicatorTintColor .~ .ksr_create_700
     |> \.pageIndicatorTintColor .~ .white
 }
 

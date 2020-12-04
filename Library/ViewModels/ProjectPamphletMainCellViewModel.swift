@@ -146,7 +146,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     self.projectStateLabelTextColor = project
       .filter { $0.state != .live }
-      .map { $0.state == .successful ? UIColor.ksr_green_700 : UIColor.ksr_text_dark_grey_400 }
+      .map { $0.state == .successful ? UIColor.ksr_create_700 : UIColor.ksr_text_dark_grey_400 }
 
     self.fundingProgressBarViewBackgroundColor = project
       .map(progressColor(forProject:))
@@ -158,7 +158,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     self.pledgedTitleLabelTextColor = project
       .map { $0.state == .successful || $0.state == .live ?
-        UIColor.ksr_green_700 : UIColor.ksr_text_dark_grey_500
+        UIColor.ksr_create_700 : UIColor.ksr_text_dark_grey_500
       }
 
     self.projectImageUrl = project.map { URL(string: $0.photo.full) }
@@ -447,6 +447,6 @@ private func progressColor(forProject project: Project) -> UIColor {
   case .canceled, .failed, .suspended:
     return .ksr_dark_grey_400
   default:
-    return .ksr_green_700
+    return .ksr_create_700
   }
 }

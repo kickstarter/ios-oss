@@ -99,7 +99,7 @@ private let descriptionLabelStyle: LabelStyle = { label in
 
 private let quantityLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_blue_500
+    |> \.textColor .~ .ksr_trust_500
     |> \.font .~ .ksr_title2()
 }
 

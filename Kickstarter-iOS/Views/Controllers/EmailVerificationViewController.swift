@@ -174,7 +174,7 @@ private let skipButtonStyle: ButtonStyle = { (button: UIButton) in
   button
     |> UIButton.lens.titleLabel.textAlignment .~ .center
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead().bolded
-    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_500
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_create_700
     |> UIButton.lens.title(for: .normal) %~ { _ in
       localizedString(
         key: "Ill_do_this_later",
@@ -186,7 +186,7 @@ private let skipButtonStyle: ButtonStyle = { (button: UIButton) in
 private let resendButtonStyle: ButtonStyle = { (button: UIButton) in
   button
     |> UIButton.lens.titleLabel.font .~ .ksr_footnote()
-    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_500
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_create_700
     |> UIButton.lens.title(for: .normal) %~ { _ in
       localizedString(
         key: "Resend_email",

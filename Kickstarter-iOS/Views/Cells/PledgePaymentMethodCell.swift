@@ -218,5 +218,5 @@ private let unavailableCardTypeLabelStyle: LabelStyle = { label in
   label
     |> \.numberOfLines .~ 0
     |> \.font .~ UIFont.ksr_caption1()
-    |> \.textColor .~ UIColor.ksr_red_400
+    |> \.textColor .~ UIColor.ksr_alert
 }

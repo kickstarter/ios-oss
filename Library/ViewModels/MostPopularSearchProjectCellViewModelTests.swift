@@ -35,7 +35,7 @@ internal final class MostPopularSearchProjectCellViewModelTests: TestCase {
     self.metadataText.assertValues(["15 days"])
     self.percentFundedText.assertValues(["50%"])
     self.progress.assertValues([0.5])
-    self.progressBarColor.assertValues([UIColor.ksr_green_500])
+    self.progressBarColor.assertValues([UIColor.ksr_create_700])
     self.projectImageUrl.assertValues(["http://wwww.cosmicsurgery.com/theproject.jpg"])
     self.projectName.assertValues(["Cosmic Surgery"])
   }
@@ -51,7 +51,7 @@ internal final class MostPopularSearchProjectCellViewModelTests: TestCase {
     self.metadataText.assertValues(["Successful"])
     self.percentFundedText.assertValues(["225%"])
     self.progress.assertValues([2.25])
-    self.progressBarColor.assertValues([UIColor.ksr_green_500])
+    self.progressBarColor.assertValues([UIColor.ksr_create_700])
     self.projectImageUrl.assertValues(["http://wwww.cosmicsurgery.com/theproject.jpg"])
     self.projectName.assertValues(["Cosmic Surgery"])
   }

@@ -124,7 +124,7 @@ public let formFieldStyle: TextFieldStyle = { (textField: UITextField) in
     |> \.borderStyle .~ UITextField.BorderStyle.none
     |> \.font .~ UIFont.ksr_body()
     |> \.textColor .~ UIColor.ksr_soft_black
-    |> \.tintColor .~ UIColor.ksr_green_700
+    |> \.tintColor .~ UIColor.ksr_create_700
 }
 
 public let ignoresInvertColorsImageViewStyle: ImageViewStyle = { (imageView: UIImageView) in
@@ -157,7 +157,7 @@ public func roundedStyle<V: UIViewProtocol>(cornerRadius r: CGFloat = Styles.cor
 
 public let baseSwitchControlStyle: SwitchControlStyle = { switchControl in
   switchControl
-    |> \.onTintColor .~ .ksr_green_700
+    |> \.onTintColor .~ .ksr_create_700
     |> \.tintColor .~ .ksr_grey_600
 }
 
@@ -175,7 +175,7 @@ private let baseNavigationBarStyle =
   ]
   <> UINavigationBar.lens.isTranslucent .~ false
   <> UINavigationBar.lens.barTintColor .~ .white
-  <> UINavigationBar.lens.tintColor .~ .ksr_green_700
+  <> UINavigationBar.lens.tintColor .~ .ksr_create_700
 
 public let keyboardToolbarStyle: ToolbarStyle = { toolbar -> UIToolbar in
   toolbar

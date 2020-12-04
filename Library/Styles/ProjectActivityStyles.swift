@@ -8,7 +8,7 @@ public let projectActivityBulletSeparatorViewStyle = roundedStyle(cornerRadius: 
 public let projectActivityDividerViewStyle = UIView.lens.backgroundColor .~ .ksr_navy_300
 
 public let projectActivityFooterButton =
-  UIButton.lens.titleColor(for: .normal) .~ .ksr_text_green_700
+  UIButton.lens.titleColor(for: .normal) .~ .ksr_create_700
     <> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote(size: 12).bolded
     <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_grey_100
 

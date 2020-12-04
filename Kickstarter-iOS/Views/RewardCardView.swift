@@ -281,13 +281,13 @@ private let includedItemsStackViewStyle: StackViewStyle = { stackView in
 
 private let minimumPriceLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_green_500
+    |> \.textColor .~ .ksr_create_700
     |> \.font .~ UIFont.ksr_title3().bolded
 }
 
 private let minimumPriceConversionLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_green_500
+    |> \.textColor .~ .ksr_create_700
     |> \.font .~ UIFont.ksr_caption1().bolded
 }
 

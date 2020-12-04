@@ -64,7 +64,7 @@ internal final class AddNewCardViewController: UIViewController,
       target: self,
       action: #selector(self.cancelButtonTapped)
     )
-    cancelButton.tintColor = .ksr_green_700
+    cancelButton.tintColor = .ksr_create_700
     self.navigationItem.leftBarButtonItem = cancelButton
 
     self.saveButtonView = LoadingBarButtonItemView.instantiate()
@@ -116,7 +116,7 @@ internal final class AddNewCardViewController: UIViewController,
 
     _ = self.creditCardValidationErrorLabel
       |> settingsDescriptionLabelStyle
-      |> \.textColor .~ .ksr_red_400
+      |> \.textColor .~ .ksr_alert
 
     _ = self.scrollView
       |> \.alwaysBounceVertical .~ true
@@ -398,7 +398,7 @@ private let creditCardTextFieldStyle: PaymentCardTextFieldStyle = { (textField: 
     |> \.borderColor .~ nil
     |> \.font .~ .ksr_body()
     |> \.textColor .~ .ksr_text_dark_grey_500
-    |> \.textErrorColor .~ .ksr_red_400
-    |> \.cursorColor .~ .ksr_green_700
+    |> \.textErrorColor .~ .ksr_alert
+    |> \.cursorColor .~ .ksr_create_700
     |> \.placeholderColor .~ .ksr_text_dark_grey_400
 }

@@ -84,7 +84,7 @@ public let loginControllerStyle = UIViewController.lens.title %~ { _ in Strings.
 public let loginWithEmailButtonStyle = greyButtonStyle
   <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in_email() }
 
-public let newsletterSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_green_700
+public let newsletterSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_create_700
 
 public let passwordFieldStyle = formFieldStyle
   <> UITextField.lens.placeholder %~ { _ in Strings.login_placeholder_password() }
