@@ -5,6 +5,8 @@ import UIKit
 internal final class HelpWebViewController: WebViewController {
   fileprivate let viewModel: HelpWebViewModelType = HelpWebViewModel()
 
+  @IBOutlet private var logoImageView: UIImageView!
+
   internal static func configuredWith(helpType: HelpType) -> HelpWebViewController {
     let vc = Storyboard.Help.instantiate(HelpWebViewController.self)
     vc.viewModel.inputs.configureWith(helpType: helpType)
@@ -24,6 +26,13 @@ internal final class HelpWebViewController: WebViewController {
     }
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func bindStyles() {
+    super.bindStyles()
+
+    _ = self.logoImageView
+      |> \.tintColor .~ .ksr_create_500
   }
 
   internal override func bindViewModel() {
