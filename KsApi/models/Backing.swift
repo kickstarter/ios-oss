@@ -75,8 +75,7 @@ extension Backing: Decodable {
     self.amount = try values.decode(Double.self, forKey: .amount)
     self.backer = try values.decodeIfPresent(User.self, forKey: .backer)
     self.backerId = try values.decode(Int.self, forKey: .backerId)
-    self.backerCompleted = try values
-      .decodeIfPresent(Int.self, forKey: .backerCompleted) != nil ? true : false
+    self.backerCompleted = try values.decodeIfPresent(Int.self, forKey: .backerCompleted) != nil
     self.bonusAmount = try values.decodeIfPresent(Double.self, forKey: .bonusAmount) ?? 0.0
     self.cancelable = try values.decode(Bool.self, forKey: .cancelable)
     self.id = try values.decode(Int.self, forKey: .id)
