@@ -109,6 +109,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
     self.title = self.viewDidLoadProperty.signal
       .mapConst(Strings.Survey())
 
+    // Required for `WKWebView` bug prior to iOS 14
     self.extractFormDataWithJavaScript = surveyResponse
       .takeWhen(surveyPostRequest.filter { $0.httpBody == nil })
       .map { surveyResponse in
@@ -123,6 +124,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
 
     self.webViewLoadRequest = Signal.merge(
       initialRequest,
+      surveyPostRequest.filter { $0.httpBody != nil }, // iOS 14 and up uses this path
       newRequest
     )
     .map { request in AppEnvironment.current.apiService.preparedRequest(forRequest: request) }
@@ -141,6 +143,7 @@ public final class SurveyResponseViewModel: SurveyResponseViewModelType {
     return self.policyDecisionProperty.value
   }
 
+  // Required for `WKWebView` bug prior to iOS 14
   private let didEvaluateJavaScriptWithResultProperty = MutableProperty<Any?>(nil)
   public func didEvaluateJavaScriptWithResult(_ result: Any?) {
     self.didEvaluateJavaScriptWithResultProperty.value = result
