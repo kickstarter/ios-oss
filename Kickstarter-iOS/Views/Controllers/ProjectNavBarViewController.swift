@@ -164,7 +164,7 @@ public final class ProjectNavBarViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] opaque, animate in
         UIView.animate(withDuration: animate ? 0.2 : 0) {
-          self?.navContainerView.backgroundColor = opaque ? .white : .clear
+          self?.navContainerView.backgroundColor = opaque ? .ksr_white : .clear
         }
       }
 

@@ -32,5 +32,5 @@ public func projectAttributedNameAndBlurb(_ project: Project) -> NSAttributedStr
 }
 
 public func projectCellBackgroundColor() -> UIColor {
-  return .white
+  return .ksr_white
 }

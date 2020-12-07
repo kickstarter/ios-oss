@@ -248,7 +248,7 @@ internal final class SharedFunctionsTests: TestCase {
       ]
 
     withEnvironment(optimizelyClient: optimizelyClient) {
-      XCTAssertEqual(discoveryPageBackgroundColor(), .white)
+      XCTAssertEqual(discoveryPageBackgroundColor(), .ksr_white)
     }
   }
 

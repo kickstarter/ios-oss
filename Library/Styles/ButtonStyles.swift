@@ -45,8 +45,8 @@ public let redButtonStyle = baseButtonStyle
 // MARK: - Black
 
 public let blackButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .white
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .white
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_white
   <> UIButton.lens.titleColor(for: .disabled) .~ .ksr_grey_600
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_soft_black
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_soft_black.mixDarker(0.66)
@@ -56,18 +56,18 @@ public let blackButtonStyle = baseButtonStyle
 // MARK: - Blue
 
 public let blueButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .white
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_trust_500
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .white
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_white
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_trust_500.mixDarker(0.36)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_trust_500.mixLighter(0.36)
 
 // MARK: - Green
 
 public let greenButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .white
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_create_700
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .white
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_white
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_create_700.mixDarker(0.36)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_create_700.mixLighter(0.36)
 
@@ -84,9 +84,9 @@ public let greyButtonStyle = baseButtonStyle
 // MARK: - Facebook
 
 public let facebookButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .white
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_facebookBlue
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .white
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_white
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_facebookBlue.mixDarker(0.36)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_facebookBlue.mixLighter(0.36)
   <> UIButton.lens.tintColor .~ .ksr_white

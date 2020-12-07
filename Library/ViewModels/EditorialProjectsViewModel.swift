@@ -53,8 +53,8 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
       .skipRepeats()
 
     self.closeButtonImageTintColor = Signal.merge(
-      self.viewDidLoadProperty.signal.mapConst(.white),
-      needsLightTreatment.map { $0 ? .white : .ksr_soft_black }
+      self.viewDidLoadProperty.signal.mapConst(.ksr_white),
+      needsLightTreatment.map { $0 ? .ksr_white : .ksr_soft_black }
     )
     .skipRepeats()
 

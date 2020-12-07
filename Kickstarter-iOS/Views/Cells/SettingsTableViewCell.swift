@@ -35,7 +35,7 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
     super.setHighlighted(highlighted, animated: animated)
 
     let backgroundColor: UIColor = .ksr_grey_500
-    let highlightedColor = highlighted ? backgroundColor.withAlphaComponent(0.1) : .white
+    let highlightedColor = highlighted ? backgroundColor.withAlphaComponent(0.1) : .ksr_white
 
     _ = self
       |> UITableViewCell.lens.backgroundColor .~ highlightedColor

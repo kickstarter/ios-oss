@@ -76,31 +76,31 @@ final class EditorialProjectsViewModelTests: TestCase {
     self.vm.inputs.configure(with: .lightsOn)
     self.vm.inputs.viewDidLoad()
 
-    self.closeButtonImageTintColor.assertValues([.white])
+    self.closeButtonImageTintColor.assertValues([.ksr_white])
 
     self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: -1))
 
-    self.closeButtonImageTintColor.assertValues([.white])
+    self.closeButtonImageTintColor.assertValues([.ksr_white])
 
     self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: 0))
 
-    self.closeButtonImageTintColor.assertValues([.white, .ksr_soft_black])
+    self.closeButtonImageTintColor.assertValues([.ksr_white, .ksr_soft_black])
 
     self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: 1))
 
-    self.closeButtonImageTintColor.assertValues([.white, .ksr_soft_black])
+    self.closeButtonImageTintColor.assertValues([.ksr_white, .ksr_soft_black])
 
     self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: 100))
 
-    self.closeButtonImageTintColor.assertValues([.white, .ksr_soft_black])
+    self.closeButtonImageTintColor.assertValues([.ksr_white, .ksr_soft_black])
 
     self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: -5))
 
-    self.closeButtonImageTintColor.assertValues([.white, .ksr_soft_black, .white])
+    self.closeButtonImageTintColor.assertValues([.ksr_white, .ksr_soft_black, .ksr_white])
 
     self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: -100))
 
-    self.closeButtonImageTintColor.assertValues([.white, .ksr_soft_black, .white])
+    self.closeButtonImageTintColor.assertValues([.ksr_white, .ksr_soft_black, .ksr_white])
   }
 
   func testPreferredStatusBarStyle() {
