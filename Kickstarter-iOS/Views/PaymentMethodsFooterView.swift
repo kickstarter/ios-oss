@@ -27,7 +27,7 @@ public final class PaymentMethodsFooterView: UIView, NibLoading {
       ?|> \.tintColor .~ .ksr_create_700
 
     _ = self
-      |> \.backgroundColor .~ .ksr_grey_200
+      |> \.backgroundColor .~ .ksr_support_100
 
     _ = self.separatorView
       |> separatorStyle

@@ -92,7 +92,7 @@ private let cardViewStyle: ViewStyle = { view in
 
 private let descriptionLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.font .~ UIFont.ksr_footnote()
     |> \.numberOfLines .~ 0
 }
@@ -114,7 +114,7 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
 
 private let titleLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.font .~ UIFont.ksr_callout().bolded
     |> \.numberOfLines .~ 0
 }

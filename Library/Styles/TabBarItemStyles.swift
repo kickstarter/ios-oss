@@ -2,7 +2,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-public let tabBarDeselectedColor = UIColor.ksr_dark_grey_400
+public let tabBarDeselectedColor = UIColor.ksr_support_400
 public let tabBarSelectedColor = UIColor.ksr_create_700
 public let tabBarTintColor = UIColor.ksr_white
 public let tabBarAvatarSize = CGSize(width: 25, height: 25)

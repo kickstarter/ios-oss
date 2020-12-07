@@ -208,7 +208,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       |> UIImageView.lens.image .~ image(named: "icon--debug")
 
     _ = self.primaryLabel
-      |> UILabel.lens.backgroundColor .~ .ksr_grey_600
+      |> UILabel.lens.backgroundColor .~ .ksr_support_100
       |> UILabel.lens.isAccessibilityElement .~ false
       |> UILabel.lens.textColor .~ discoveryPrimaryColor()
       |> UILabel.lens.font %~~ { _, label in

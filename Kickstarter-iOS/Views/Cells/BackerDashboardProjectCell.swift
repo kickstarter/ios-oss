@@ -89,7 +89,7 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
       |> UILabel.lens.backgroundColor .~ .ksr_white
 
     _ = self.progressStaticView
-      |> UIView.lens.backgroundColor .~ .ksr_soft_black
+      |> UIView.lens.backgroundColor .~ .ksr_support_700
       |> UIView.lens.alpha .~ 0.15
 
     _ = self.projectImageView

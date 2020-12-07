@@ -54,7 +54,7 @@ internal final class DashboardViewController: UITableViewController {
     _ = self.loadingIndicatorView
       |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
       |> UIActivityIndicatorView.lens.style .~ .white
-      |> UIActivityIndicatorView.lens.color .~ .ksr_soft_black
+      |> UIActivityIndicatorView.lens.color .~ .ksr_support_700
   }
 
   override func viewWillDisappear(_ animated: Bool) {

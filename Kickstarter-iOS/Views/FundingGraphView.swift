@@ -93,13 +93,13 @@ public final class FundingGraphView: UIView {
     }
 
     // Stroke the darker graph line before filling with lighter color.
-    UIColor.ksr_text_dark_grey_400.setStroke()
+    UIColor.ksr_support_400.setStroke()
     line.stroke()
 
     line.addLine(to: CGPoint(x: lastPoint.x, y: self.bounds.height))
     line.close()
 
-    UIColor.ksr_navy_400.setFill()
+    UIColor.ksr_support_300.setFill()
     line.fill(with: .color, alpha: 0.4)
 
     let projectHasFunded = self.stats.last?.cumulativePledged ?? 0 >= goal

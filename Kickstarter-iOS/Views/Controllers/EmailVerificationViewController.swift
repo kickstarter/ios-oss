@@ -212,7 +212,7 @@ private let footerLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.textAlignment .~ .center
     |> \.font .~ .ksr_footnote()
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.text %~ { _ in
       localizedString(
         key: "Cant_find_it",
@@ -233,7 +233,7 @@ private let messageLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.textAlignment .~ .center
     |> \.font .~ .ksr_callout()
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.text %~ { _ in
       localizedString(
         key: "Check_your_inbox_to_complete_this_simple_step",
@@ -256,7 +256,7 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.textAlignment .~ .center
     |> \.font .~ UIFont.ksr_title3().bolded
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.text %~ { _ in
       localizedString(
         key: "Verify_your_email_address",

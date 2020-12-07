@@ -3,14 +3,14 @@ import Prelude_UIKit
 import UIKit
 
 public let projectActivityBulletSeparatorViewStyle = roundedStyle(cornerRadius: 2.0)
-  <> UIView.lens.backgroundColor .~ .ksr_text_dark_grey_400
+  <> UIView.lens.backgroundColor .~ .ksr_support_400
 
-public let projectActivityDividerViewStyle = UIView.lens.backgroundColor .~ .ksr_navy_300
+public let projectActivityDividerViewStyle = UIView.lens.backgroundColor .~ .ksr_support_300
 
 public let projectActivityFooterButton =
   UIButton.lens.titleColor(for: .normal) .~ .ksr_create_700
     <> UIButton.lens.titleLabel.font .~ UIFont.ksr_footnote(size: 12).bolded
-    <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_grey_100
+    <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_support_100
 
 public let projectActivityFooterStackViewStyle =
   UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
@@ -32,5 +32,5 @@ public let projectActivityStateChangeLabelStyle = UILabel.lens.numberOfLines .~ 
   <> UILabel.lens.textAlignment .~ .center
 
 // Use `.ksr_title3(size: 14)` for font.
-public let projectActivityTitleLabelStyle = UILabel.lens.textColor .~ .ksr_soft_black
+public let projectActivityTitleLabelStyle = UILabel.lens.textColor .~ .ksr_support_700
   <> UILabel.lens.numberOfLines .~ 2

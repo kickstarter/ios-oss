@@ -110,7 +110,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       |> Project.lens.dates.featuredAt .~ featuredAt
 
     let backedColor: UIColor = .ksr_create_700
-    let featuredColor: UIColor = .ksr_soft_black
+    let featuredColor: UIColor = .ksr_support_700
 
     let backedImage = image(named: "metadata-backing")
     let featuredImage = image(named: "metadata-featured")
@@ -290,7 +290,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     let suspended = .template |> Project.lens.state .~ .suspended
 
     let greenColor = UIColor.ksr_create_700
-    let navyColor = UIColor.ksr_soft_black
+    let navyColor = UIColor.ksr_support_700
 
     self.vm.inputs.configure(with: (live, nil, nil))
     self.projectStateStackViewHidden.assertValues([true])

@@ -158,7 +158,7 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
 private let baseTextViewStyle: TextViewStyle = { textView in
   _ = textView
     |> \.font .~ .ksr_headline(size: 15)
-    |> \.textColor .~ .ksr_text_dark_grey_500
+    |> \.textColor .~ .ksr_support_400
     |> \.isScrollEnabled .~ false
 
   _ = textView
@@ -173,7 +173,7 @@ private let baseTextViewStyle: TextViewStyle = { textView in
 
 private let baseTitleLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.font .~ .ksr_subhead()
     |> \.textAlignment .~ .left
 }

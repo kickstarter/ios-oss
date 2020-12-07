@@ -33,6 +33,6 @@ internal final class ProjectActivityDateCell: UITableViewCell, ValueCell {
 
     _ = self.dateLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_support_400
   }
 }

@@ -240,7 +240,7 @@ final class PledgeCTAContainerView: UIView {
 
 private let activityIndicatorStyle: ActivityIndicatorStyle = { activityIndicator in
   activityIndicator
-    |> \.color .~ UIColor.ksr_dark_grey_500
+    |> \.color .~ UIColor.ksr_support_400
     |> \.hidesWhenStopped .~ true
 }
 
@@ -260,7 +260,7 @@ private func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackV
 private let subtitleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_caption1().bolded
-    |> \.textColor .~ UIColor.ksr_dark_grey_500
+    |> \.textColor .~ UIColor.ksr_support_400
     |> \.numberOfLines .~ 0
 }
 

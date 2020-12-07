@@ -62,15 +62,15 @@ public final class ActivityFriendBackingViewModel: ActivityFriendBackingViewMode
         return title.simpleHtmlAttributedString(
           base: [
             NSAttributedString.Key.font: UIFont.ksr_subhead(size: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_500
+            NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400
           ],
           bold: [
             NSAttributedString.Key.font: UIFont.ksr_subhead(size: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
+            NSAttributedString.Key.foregroundColor: UIColor.ksr_support_700
           ],
           italic: [
             NSAttributedString.Key.font: UIFont.ksr_subhead(size: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
+            NSAttributedString.Key.foregroundColor: UIColor.ksr_support_700
           ]
         )
           ?? .init()
@@ -113,7 +113,7 @@ public final class ActivityFriendBackingViewModel: ActivityFriendBackingViewMode
 private func progressBarColor(forActivityCategory category: Activity.Category) -> UIColor {
   switch category {
   case .cancellation, .failure, .suspension:
-    return .ksr_dark_grey_400
+    return .ksr_support_400
   case .launch, .success:
     return .ksr_create_700
   default:

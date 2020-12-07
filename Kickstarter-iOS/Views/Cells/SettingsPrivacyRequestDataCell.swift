@@ -62,10 +62,10 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
       ||> settingsSeparatorStyle
 
     _ = self.requestDataButton
-      |> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_text_dark_grey_500
+      |> UIButton.lens.backgroundColor(for: .highlighted) .~ .ksr_support_400
 
     _ = self.chevron
-      |> UIImageView.lens.tintColor .~ .ksr_dark_grey_400
+      |> UIImageView.lens.tintColor .~ .ksr_support_400
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
 
     _ = self.preparingDataLabel
@@ -74,7 +74,7 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
       |> UILabel.lens.text %~ { _ in Strings.Preparing_your_personal_data() }
 
     _ = self.checkBackLaterLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+      |> UILabel.lens.textColor .~ .ksr_support_400
       |> UILabel.lens.font .~ .ksr_body(size: 13)
       |> UILabel.lens.text %~ { _ in Strings.Check_back_later_for_an_update_on_your_export() }
 
@@ -86,7 +86,7 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
       |> UILabel.lens.numberOfLines .~ 1
 
     _ = self.requestedDataStatusAndDateLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+      |> UILabel.lens.textColor .~ .ksr_support_400
       |> UILabel.lens.font .~ .ksr_body(size: 13)
   }
 

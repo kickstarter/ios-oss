@@ -194,7 +194,7 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
       self.referrersStackView.addArrangedSubview(referrers[$0])
 
       if $0 < refsCount - 1 {
-        let divider = UIView() |> UIView.lens.backgroundColor .~ .ksr_navy_300
+        let divider = UIView() |> UIView.lens.backgroundColor .~ .ksr_support_300
 
         divider.heightAnchor.constraint(equalToConstant: 1.0).isActive = true
 

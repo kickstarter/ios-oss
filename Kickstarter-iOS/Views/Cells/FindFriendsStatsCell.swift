@@ -46,21 +46,21 @@ internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     _ = self.friendsLabel
-      |> UILabel.lens.textColor .~ .ksr_navy_600
+      |> UILabel.lens.textColor .~ .ksr_support_400
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.text %~ { _ in Strings.social_following_stats_friends() }
 
     _ = self.friendsCountLabel
-      |> UILabel.lens.textColor .~ .ksr_soft_black
+      |> UILabel.lens.textColor .~ .ksr_support_700
       |> UILabel.lens.font .~ .ksr_title2()
 
     _ = self.backedProjectsLabel
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_support_400
       |> UILabel.lens.font .~ .ksr_subhead()
       |> UILabel.lens.text %~ { _ in Strings.social_following_stats_backed_projects() }
 
     _ = self.self.backedProjectsCountLabel
-      |> UILabel.lens.textColor .~ .ksr_soft_black
+      |> UILabel.lens.textColor .~ .ksr_support_700
       |> UILabel.lens.font .~ .ksr_title2()
 
     _ = self.followAllButton
@@ -68,7 +68,7 @@ internal final class FindFriendsStatsCell: UITableViewCell, ValueCell {
       |> UIButton.lens.targets .~ [(self, action: #selector(self.followAllButtonTapped), .touchUpInside)]
 
     _ = self.bulletSeparatorView
-      |> UIView.lens.backgroundColor .~ .ksr_grey_500
+      |> UIView.lens.backgroundColor .~ .ksr_support_300
       |> UIView.lens.alpha .~ 0.7
 
     _ = self

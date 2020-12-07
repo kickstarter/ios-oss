@@ -266,7 +266,7 @@ internal final class AddNewCardViewController: UIViewController,
 
     _ = [topSeparator, bottomSeparator]
       ||> \.translatesAutoresizingMaskIntoConstraints .~ false
-      ||> \.backgroundColor .~ .ksr_grey_400
+      ||> \.backgroundColor .~ .ksr_support_300
 
     self.rememberThisCardToggleViewControllerContainer.addSubview(topSeparator)
     self.rememberThisCardToggleViewControllerContainer.addSubview(bottomSeparator)
@@ -384,10 +384,10 @@ private let cardholderNameTextFieldStyle: TextFieldStyle = { (textField: UITextF
     |> \.autocapitalizationType .~ .words
     |> \.returnKeyType .~ .next
     |> \.textAlignment .~ .right
-    |> \.textColor .~ .ksr_text_dark_grey_500
+    |> \.textColor .~ .ksr_support_400
     |> \.attributedPlaceholder .~ NSAttributedString(
       string: Strings.Name(),
-      attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400]
+      attributes: [NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400]
     )
 }
 
@@ -397,8 +397,8 @@ private let creditCardTextFieldStyle: PaymentCardTextFieldStyle = { (textField: 
   textField
     |> \.borderColor .~ nil
     |> \.font .~ .ksr_body()
-    |> \.textColor .~ .ksr_text_dark_grey_500
+    |> \.textColor .~ .ksr_support_400
     |> \.textErrorColor .~ .ksr_alert
     |> \.cursorColor .~ .ksr_create_700
-    |> \.placeholderColor .~ .ksr_text_dark_grey_400
+    |> \.placeholderColor .~ .ksr_support_400
 }

@@ -251,7 +251,7 @@ public func discoveryPageBackgroundColor() -> UIColor {
 
   switch variant {
   case .variant1:
-    return UIColor.ksr_grey_200
+    return UIColor.ksr_support_100
   case .variant2, .control:
     return UIColor.ksr_white
   }

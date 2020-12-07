@@ -15,7 +15,7 @@ final class PledgePaymentMethodCell: UITableViewCell, ValueCell {
   private lazy var leftColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var rightColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var selectionView: UIView = { UIView(frame: .zero) |> \.backgroundColor .~ .ksr_grey_200 }()
+  private lazy var selectionView: UIView = { UIView(frame: .zero) |> \.backgroundColor .~ .ksr_support_100 }()
   private lazy var unavailableCardTypeLabel: UILabel = { UILabel(frame: .zero) }()
 
   private let viewModel: PledgePaymentMethodCellViewModelType = PledgePaymentMethodCellViewModel()
@@ -190,7 +190,7 @@ private let expirationDateLabelStyle: LabelStyle = { label in
   label
     |> checkoutTitleLabelStyle
     |> \.font .~ UIFont.ksr_caption2()
-    |> \.textColor .~ .ksr_dark_grey_500
+    |> \.textColor .~ .ksr_support_400
 }
 
 private let labelsStackViewStyle: StackViewStyle = { stackView in

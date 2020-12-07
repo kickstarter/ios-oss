@@ -72,7 +72,7 @@ final class ProcessingView: UIView {
 
 private let processingViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ UIColor.ksr_soft_black.withAlphaComponent(0.8)
+    |> \.backgroundColor .~ UIColor.ksr_support_700.withAlphaComponent(0.8)
     |> \.isAccessibilityElement .~ true
     |> \.accessibilityLabel %~ { _ in Strings.project_checkout_finalizing_title() }
 }

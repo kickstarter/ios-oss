@@ -53,5 +53,5 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) in
 private let textFieldStyle: TextFieldStyle = { (textField: UITextField) in
   textField
     |> \.textAlignment .~ NSTextAlignment.right
-    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
+    |> \.textColor .~ UIColor.ksr_support_400
 }

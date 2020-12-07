@@ -33,7 +33,7 @@ private enum PostcardMetadataType {
         labelText: Strings.discovery_baseball_card_metadata_featured_project(
           category_name: rootCategory
         ),
-        iconAndTextColor: .ksr_soft_black
+        iconAndTextColor: .ksr_support_700
       )
     }
   }
@@ -208,7 +208,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
       }
 
     self.projectStateTitleLabelColor = configuredProject
-      .map { $0.state == .successful ? .ksr_create_700 : .ksr_soft_black }
+      .map { $0.state == .successful ? .ksr_create_700 : .ksr_support_700 }
       .skipRepeats()
 
     self.projectStateTitleLabelText = configuredProject

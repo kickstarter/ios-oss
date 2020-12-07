@@ -240,7 +240,7 @@ extension CancelPledgeViewController: UITextFieldDelegate {
 private let cancellationDisclaimerLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ .ksr_caption1()
-    |> \.textColor .~ UIColor.ksr_text_navy_600
+    |> \.textColor .~ UIColor.ksr_support_400
     |> \.textAlignment .~ NSTextAlignment.center
     |> \.numberOfLines .~ 0
 }

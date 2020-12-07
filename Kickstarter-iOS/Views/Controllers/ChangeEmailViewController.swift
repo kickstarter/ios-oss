@@ -64,7 +64,7 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
       }
 
     _ = self.messageLabelView
-      |> \.backgroundColor .~ .ksr_grey_200
+      |> \.backgroundColor .~ .ksr_support_100
 
     _ = self.unverifiedEmailLabel
       |> settingsDescriptionLabelStyle
@@ -252,13 +252,13 @@ private let currentEmailTitleStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.isAccessibilityElement .~ false
     |> \.text %~ { _ in Strings.Current_email() }
-    |> \.textColor .~ UIColor.ksr_text_dark_grey_400
+    |> \.textColor .~ UIColor.ksr_support_400
 }
 
 private let currentEmailValueStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.isAccessibilityElement .~ false
-    |> \.textColor .~ UIColor.ksr_text_dark_grey_400
+    |> \.textColor .~ UIColor.ksr_support_400
 }
 
 private let newEmailLabelStyle: LabelStyle = { (label: UILabel) in

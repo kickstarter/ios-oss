@@ -31,6 +31,6 @@ public func baseTableViewCellStyle<TVC: UITableViewCellProtocol>() -> ((TVC) -> 
 
 public let baseTableViewCellTitleLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.font .~ .ksr_body()
 }

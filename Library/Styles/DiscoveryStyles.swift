@@ -4,11 +4,11 @@ import Prelude_UIKit
 import UIKit
 
 public func discoveryPrimaryColor() -> UIColor {
-  return .ksr_soft_black
+  return .ksr_support_700
 }
 
 public func discoverySecondaryColor() -> UIColor {
-  return .ksr_text_dark_grey_500
+  return .ksr_support_400
 }
 
 public let discoveryBorderLineStyle = UIView.lens.alpha .~ 0.15
@@ -105,14 +105,14 @@ public func discoverySortPagerButtonStyle<B: UIButtonProtocol>(
 
 public let postcardCategoryLabelStyle =
   UILabel.lens.font .~ .ksr_body(size: 13.0)
-    <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+    <> UILabel.lens.textColor .~ .ksr_support_400
     <> UILabel.lens.textAlignment .~ .left
     <> UILabel.lens.lineBreakMode .~ .byClipping
     <> UILabel.lens.backgroundColor .~ .ksr_white
 
 public let postcardMetadataLabelStyle =
   UILabel.lens.font .~ .ksr_headline(size: 12.0)
-    <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+    <> UILabel.lens.textColor .~ .ksr_support_400
 
 public let postcardMetadataStackViewStyle =
   UIStackView.lens.alignment .~ .center

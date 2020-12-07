@@ -54,15 +54,15 @@ internal final class CommentCell: UITableViewCell, ValueCell {
       |> authorBadgeLabelStyle
       |> UILabel.lens.textColor .~ .ksr_white
       |> UILabel.lens.text %~ { _ in Strings.update_comments_creator() }
-      |> UILabel.lens.backgroundColor .~ .ksr_soft_black
+      |> UILabel.lens.backgroundColor .~ .ksr_support_700
 
     _ = self.creatorView
       |> authorBadgeViewStyle
-      |> UIView.lens.backgroundColor .~ .ksr_soft_black
+      |> UIView.lens.backgroundColor .~ .ksr_support_700
 
     _ = self.nameLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 16.0)
-      |> UILabel.lens.textColor .~ .ksr_soft_black
+      |> UILabel.lens.textColor .~ .ksr_support_700
       |> UILabel.lens.backgroundColor .~ cellBackgroundColor
 
     _ = self.rootStackView
@@ -73,7 +73,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
 
     _ = self.timestampLabel
       |> UILabel.lens.font .~ .ksr_body(size: 12.0)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+      |> UILabel.lens.textColor .~ .ksr_support_400
       |> UILabel.lens.backgroundColor .~ cellBackgroundColor
 
     _ = self.youLabel

@@ -533,7 +533,7 @@ private let logoImageViewStyle: ImageViewStyle = { imageView in
 
 private let separatorViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ .ksr_grey_500
+    |> \.backgroundColor .~ .ksr_support_300
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
 }
 

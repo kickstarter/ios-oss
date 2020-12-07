@@ -345,7 +345,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
       .appending(string2)
       .attributed(
         with: UIFont.ksr_footnote(),
-        foregroundColor: .ksr_text_dark_grey_500,
+        foregroundColor: .ksr_support_400,
         attributes: [.paragraphStyle: paragraphStyle],
         bolding: [string1]
       )

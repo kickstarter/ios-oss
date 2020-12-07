@@ -34,7 +34,7 @@ final class SettingsTableViewCell: UITableViewCell, ValueCell, NibLoading {
   override func setHighlighted(_ highlighted: Bool, animated: Bool) {
     super.setHighlighted(highlighted, animated: animated)
 
-    let backgroundColor: UIColor = .ksr_grey_500
+    let backgroundColor: UIColor = .ksr_support_300
     let highlightedColor = highlighted ? backgroundColor.withAlphaComponent(0.1) : .ksr_white
 
     _ = self

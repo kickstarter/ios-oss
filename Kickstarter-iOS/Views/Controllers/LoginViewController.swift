@@ -175,7 +175,7 @@ internal final class LoginViewController: UIViewController {
   }
 
   fileprivate func updateShowHidePassword(_ shouldShow: Bool) {
-    let tintColor: UIColor = shouldShow ? .ksr_create_700 : .ksr_grey_400
+    let tintColor: UIColor = shouldShow ? .ksr_create_700 : .ksr_support_300
     let accessibilityValue = shouldShow ? Strings.Hide_password() : Strings.Show_password()
 
     _ = self.showHidePasswordButton

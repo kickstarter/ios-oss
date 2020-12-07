@@ -235,7 +235,7 @@ private let ctaButtonStyle: ButtonStyle = { button in
 private let descriptionLabelStyle: LabelStyle = { label in
   label
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
+    |> \.textColor .~ UIColor.ksr_support_400
     |> \.font .~ UIFont.ksr_callout()
     |> \.textAlignment .~ .center
     |> \.text %~ { _ in

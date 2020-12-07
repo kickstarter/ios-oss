@@ -139,7 +139,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       self.backersTitleLabel, self.backersSubtitleLabel, self.deadlineTitleLabel,
       self.deadlineSubtitleLabel
     ]
-      ||> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      ||> UILabel.lens.textColor .~ .ksr_support_400
 
     _ = self.backersSubtitleLabel
       |> UILabel.lens.text %~ { _ in Strings.discovery_baseball_card_stats_backers() }
@@ -156,13 +156,13 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> cardStyle()
 
     _ = self.fundingProgressContainerView
-      |> UIView.lens.backgroundColor .~ .ksr_navy_400
+      |> UIView.lens.backgroundColor .~ .ksr_support_300
 
     _ = self.fundingProgressBarView
       |> UIView.lens.backgroundColor .~ .ksr_create_700
 
     _ = self.metadataIconImageView
-      |> UIImageView.lens.tintColor .~ .ksr_dark_grey_500
+      |> UIImageView.lens.tintColor .~ .ksr_support_400
 
     _ = self.metadataLabel
       |> postcardMetadataLabelStyle
@@ -188,7 +188,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
       |> UILabel.lens.backgroundColor .~ .ksr_white
 
     _ = self.projectStateSubtitleLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_support_400
       |> UILabel.lens.font .~ .ksr_body(size: 13)
       |> UILabel.lens.numberOfLines .~ 1
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
@@ -213,7 +213,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     _ = self.socialLabel
       |> UILabel.lens.numberOfLines .~ 2
-      |> UILabel.lens.textColor .~ .ksr_text_navy_600
+      |> UILabel.lens.textColor .~ .ksr_support_400
       |> UILabel.lens.font .~ .ksr_headline(size: 13.0)
 
     _ = self.socialStackView
@@ -384,7 +384,7 @@ private let locationStackViewStyle: StackViewStyle = { stackView in
 private let locationLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ .ksr_footnote()
-    |> \.textColor .~ .ksr_text_dark_grey_500
+    |> \.textColor .~ .ksr_support_400
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.numberOfLines .~ 1
 }
@@ -392,6 +392,6 @@ private let locationLabelStyle: LabelStyle = { label in
 private let locationImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> UIImageView.lens.image .~ Library.image(named: "location-icon")
-    |> \.tintColor .~ .ksr_dark_grey_400
+    |> \.tintColor .~ .ksr_support_400
     |> \.contentMode .~ .scaleAspectFit
 }

@@ -610,7 +610,7 @@ private let avatarImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
     |> \.layer.borderColor .~ UIColor.ksr_white.cgColor
-    |> \.backgroundColor .~ UIColor.ksr_grey_400
+    |> \.backgroundColor .~ UIColor.ksr_support_300
     |> \.layer.borderWidth .~ 2
     |> \.clipsToBounds .~ true
     |> ignoresInvertColorsImageViewStyle
@@ -625,7 +625,7 @@ private let collectionViewStyle: ViewStyle = { view in
 private let contentViewStyle: ViewStyle = { view in
   view
     |> \.preservesSuperviewLayoutMargins .~ false
-    |> \.backgroundColor .~ .ksr_grey_200
+    |> \.backgroundColor .~ .ksr_support_100
 }
 
 private let cardContainerViewStyle: ViewStyle = { view in
@@ -649,7 +649,7 @@ private let goalMetIconImageViewStyle: ImageViewStyle = { imageView in
 private let projectImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.clipsToBounds .~ true
-    |> \.backgroundColor .~ .ksr_grey_400
+    |> \.backgroundColor .~ .ksr_support_300
     |> \.contentMode .~ .scaleAspectFill
     |> ignoresInvertColorsImageViewStyle
 }
@@ -659,7 +659,7 @@ private let projectNameLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 2
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.font .~ UIFont.ksr_headline().bolded
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.backgroundColor .~ .ksr_white
 }
 
@@ -668,7 +668,7 @@ private let projectBlurbLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 2
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.font .~ UIFont.ksr_subhead()
-    |> \.textColor .~ .ksr_text_dark_grey_500
+    |> \.textColor .~ .ksr_support_400
     |> \.backgroundColor .~ .ksr_white
 }
 
@@ -676,7 +676,7 @@ private let projectStatusLabelStyle: LabelStyle = { label in
   label
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.backgroundColor .~ .clear
 }
 
@@ -684,13 +684,13 @@ private let facepileDescriptionLabelStyle: LabelStyle = { label in
   label
     |> \.numberOfLines .~ 2
     |> \.lineBreakMode .~ .byTruncatingTail
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.font .~ UIFont.ksr_footnote().bolded
 }
 
 private let projectStatusIconImageStyle: ImageViewStyle = { imageView in
   imageView
-    |> \.tintColor .~ .ksr_text_dark_grey_500
+    |> \.tintColor .~ .ksr_support_400
     |> \.contentMode .~ .center
 }
 
@@ -713,7 +713,7 @@ private let percentFundedLabelStyle: LabelStyle = { label in
 private let backersCountIconImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.image .~ Library.image(named: "icon--humans")
-    |> \.tintColor .~ .ksr_dark_grey_500
+    |> \.tintColor .~ .ksr_support_400
     |> \.contentMode .~ .center
 }
 
@@ -721,7 +721,7 @@ private let backersCountLabelStyle: LabelStyle = { label in
   label
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.backgroundColor .~ .ksr_white
 }
 

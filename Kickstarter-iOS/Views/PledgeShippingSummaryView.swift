@@ -65,7 +65,7 @@ final class PledgeShippingSummaryView: UIView {
 
     _ = self.locationLabel
       |> \.font .~ .ksr_subhead()
-      |> \.textColor .~ .ksr_soft_black
+      |> \.textColor .~ .ksr_support_700
   }
 
   // MARK: - View model

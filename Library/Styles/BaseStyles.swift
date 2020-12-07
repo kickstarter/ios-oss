@@ -43,7 +43,7 @@ public func baseActivityIndicatorStyle(indicator: UIActivityIndicatorView) -> UI
   return indicator
     |> UIActivityIndicatorView.lens.hidesWhenStopped .~ true
     |> UIActivityIndicatorView.lens.style .~ .white
-    |> UIActivityIndicatorView.lens.color .~ UIColor.ksr_soft_black
+    |> UIActivityIndicatorView.lens.color .~ UIColor.ksr_support_700
 }
 
 /**
@@ -53,7 +53,7 @@ public func baseActivityIndicatorStyle(indicator: UIActivityIndicatorView) -> UI
  */
 public func cardStyle<V: UIViewProtocol>(cornerRadius radius: CGFloat = 0) -> ((V) -> V) {
   return roundedStyle(cornerRadius: radius)
-    <> V.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
+    <> V.lens.layer.borderColor .~ UIColor.ksr_support_300.cgColor
     <> V.lens.layer.borderWidth .~ 1.0
     <> V.lens.backgroundColor .~ .ksr_white
 }
@@ -61,7 +61,7 @@ public func cardStyle<V: UIViewProtocol>(cornerRadius radius: CGFloat = 0) -> ((
 public func darkCardStyle<V: UIViewProtocol>
 (cornerRadius radius: CGFloat = Styles.cornerRadius) -> ((V) -> V) {
   return cardStyle(cornerRadius: radius)
-    <> V.lens.layer.borderColor .~ UIColor.ksr_text_dark_grey_500.cgColor
+    <> V.lens.layer.borderColor .~ UIColor.ksr_support_400.cgColor
 }
 
 public func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackViewStyle) {
@@ -80,7 +80,7 @@ public func adaptableStackViewStyle(_ isAccessibilityCategory: Bool) -> (StackVi
 }
 
 public let containerViewBackgroundStyle =
-  UIView.lens.backgroundColor .~ .ksr_grey_100
+  UIView.lens.backgroundColor .~ .ksr_support_100
 
 public func dropShadowStyle<V: UIViewProtocol>(
   radius: CGFloat = 2.0,
@@ -123,7 +123,7 @@ public let formFieldStyle: TextFieldStyle = { (textField: UITextField) in
     |> \.backgroundColor .~ UIColor.clear
     |> \.borderStyle .~ UITextField.BorderStyle.none
     |> \.font .~ UIFont.ksr_body()
-    |> \.textColor .~ UIColor.ksr_soft_black
+    |> \.textColor .~ UIColor.ksr_support_700
     |> \.tintColor .~ UIColor.ksr_create_700
 }
 
@@ -134,13 +134,13 @@ public let ignoresInvertColorsImageViewStyle: ImageViewStyle = { (imageView: UII
 
 public let separatorStyle: ViewStyle = { (view: UIView) in
   view
-    |> \.backgroundColor .~ UIColor.ksr_grey_400
+    |> \.backgroundColor .~ UIColor.ksr_support_300
     |> \.accessibilityElementsHidden .~ true
 }
 
 public let separatorStyleDark: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ UIColor.ksr_grey_500
+    |> \.backgroundColor .~ UIColor.ksr_support_300
     |> \.accessibilityElementsHidden .~ true
 }
 
@@ -158,7 +158,7 @@ public func roundedStyle<V: UIViewProtocol>(cornerRadius r: CGFloat = Styles.cor
 public let baseSwitchControlStyle: SwitchControlStyle = { switchControl in
   switchControl
     |> \.onTintColor .~ .ksr_create_700
-    |> \.tintColor .~ .ksr_grey_600
+    |> \.tintColor .~ .ksr_support_100
 }
 
 // MARK: - Private Helpers

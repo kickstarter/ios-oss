@@ -74,7 +74,7 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
       |> cardStyle()
 
     _ = self.fundingProgressContainerView
-      |> UIView.lens.backgroundColor .~ .ksr_navy_400
+      |> UIView.lens.backgroundColor .~ .ksr_support_300
 
     _ = self.metadataBackgroundView
       |> UIView.lens.layer.borderColor .~ UIColor.ksr_white.cgColor
@@ -87,7 +87,7 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
 
     _ = self.projectNameLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 18)
-      |> UILabel.lens.textColor .~ .ksr_soft_black
+      |> UILabel.lens.textColor .~ .ksr_support_700
 
     _ = self.projectImageView
       |> ignoresInvertColorsImageViewStyle

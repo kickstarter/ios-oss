@@ -84,23 +84,23 @@ final class EditorialProjectsViewModelTests: TestCase {
 
     self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: 0))
 
-    self.closeButtonImageTintColor.assertValues([.ksr_white, .ksr_soft_black])
+    self.closeButtonImageTintColor.assertValues([.ksr_white, .ksr_support_700])
 
     self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: 1))
 
-    self.closeButtonImageTintColor.assertValues([.ksr_white, .ksr_soft_black])
+    self.closeButtonImageTintColor.assertValues([.ksr_white, .ksr_support_700])
 
     self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: 100))
 
-    self.closeButtonImageTintColor.assertValues([.ksr_white, .ksr_soft_black])
+    self.closeButtonImageTintColor.assertValues([.ksr_white, .ksr_support_700])
 
     self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: -5))
 
-    self.closeButtonImageTintColor.assertValues([.ksr_white, .ksr_soft_black, .ksr_white])
+    self.closeButtonImageTintColor.assertValues([.ksr_white, .ksr_support_700, .ksr_white])
 
     self.vm.inputs.discoveryPageViewControllerContentOffsetChanged(to: .init(x: 0, y: -100))
 
-    self.closeButtonImageTintColor.assertValues([.ksr_white, .ksr_soft_black, .ksr_white])
+    self.closeButtonImageTintColor.assertValues([.ksr_white, .ksr_support_700, .ksr_white])
   }
 
   func testPreferredStatusBarStyle() {
