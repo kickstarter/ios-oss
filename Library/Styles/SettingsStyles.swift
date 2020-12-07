@@ -134,7 +134,7 @@ public func settingsHeaderContentViewStyle(_ view: UIView) -> UIView {
 
 public func settingsLabelStyle(_ label: UILabel) -> UILabel {
   return label
-    |> \.backgroundColor .~ .white
+    |> \.backgroundColor .~ .ksr_white
     |> \.font %~ { _ in .ksr_body() }
 }
 
@@ -159,7 +159,7 @@ public func settingsGroupedTableViewStyle(_ tableView: UITableView) -> UITableVi
 
 public func settingsTextFieldStyle(_ textField: UITextField) -> UITextField {
   return textField
-    |> \.backgroundColor .~ .white
+    |> \.backgroundColor .~ .ksr_white
     |> \.font %~ { _ in .ksr_body() }
     |> \.textAlignment %~~ { _, stackView in
       stackView.traitCollection.preferredContentSizeCategory.isAccessibilityCategory ? .left : .right

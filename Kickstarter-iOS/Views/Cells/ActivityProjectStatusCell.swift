@@ -77,13 +77,13 @@ internal final class ActivityProjectStatusCell: UITableViewCell, ValueCell {
       |> UIView.lens.backgroundColor .~ .ksr_navy_400
 
     _ = self.metadataBackgroundView
-      |> UIView.lens.layer.borderColor .~ UIColor.white.cgColor
+      |> UIView.lens.layer.borderColor .~ UIColor.ksr_white.cgColor
       |> UIView.lens.layer.borderWidth .~ 1.0
       |> UIView.lens.layoutMargins .~ .init(all: Styles.grid(1))
 
     _ = self.metadataLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
-      |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.textColor .~ .ksr_white
 
     _ = self.projectNameLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 18)

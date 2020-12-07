@@ -111,7 +111,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     let subtitleLabelStyling = UILabel.lens.font .~ .ksr_caption1(size: 13)
       <> UILabel.lens.numberOfLines .~ 1
-      <> UILabel.lens.backgroundColor .~ .white
+      <> UILabel.lens.backgroundColor .~ .ksr_white
 
     _ = [self.backersSubtitleLabel, self.deadlineSubtitleLabel]
       ||> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
@@ -122,7 +122,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = [self.backersTitleLabel, self.deadlineTitleLabel, self.pledgedTitleLabel]
       ||> UILabel.lens.font .~ .ksr_headline(size: 13)
       ||> UILabel.lens.numberOfLines .~ 1
-      ||> UILabel.lens.backgroundColor .~ .white
+      ||> UILabel.lens.backgroundColor .~ .ksr_white
 
     _ = self.categoryStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
@@ -131,12 +131,12 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
       |> UIImageView.lens.tintColor .~ .ksr_dark_grey_500
       |> UIImageView.lens.image .~ UIImage(named: "category-icon")
-      |> UIImageView.lens.backgroundColor .~ .white
+      |> UIImageView.lens.backgroundColor .~ .ksr_white
 
     _ = self.categoryNameLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.font .~ .ksr_body(size: 12)
-      |> UILabel.lens.backgroundColor .~ .white
+      |> UILabel.lens.backgroundColor .~ .ksr_white
 
     let leftRightInsetValue: CGFloat = self.traitCollection.isRegularRegular
       ? Styles.grid(16)
@@ -189,7 +189,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
     _ = self.creatorLabel
       |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
-      |> UILabel.lens.backgroundColor .~ .white
+      |> UILabel.lens.backgroundColor .~ .ksr_white
 
     _ = self.creatorStackView
       |> UIStackView.lens.alignment .~ .center
@@ -202,12 +202,12 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIImageView.lens.contentMode .~ .scaleAspectFit
       |> UIImageView.lens.tintColor .~ .ksr_dark_grey_500
       |> UIImageView.lens.image .~ UIImage(named: "location-icon")
-      |> UIImageView.lens.backgroundColor .~ .white
+      |> UIImageView.lens.backgroundColor .~ .ksr_white
 
     _ = self.locationNameLabel
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.font .~ .ksr_body(size: 12)
-      |> UILabel.lens.backgroundColor .~ .white
+      |> UILabel.lens.backgroundColor .~ .ksr_white
 
     _ = self.locationStackView
       |> UIStackView.lens.spacing .~ Styles.grid(1)
@@ -220,7 +220,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       }
       |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
       |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.backgroundColor .~ .white
+      |> UILabel.lens.backgroundColor .~ .ksr_white
 
     _ = self.projectNameAndCreatorStackView
       |> UIStackView.lens.spacing .~ (verticalSpacing / 2)
@@ -235,7 +235,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       }
       |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.backgroundColor .~ .white
+      |> UILabel.lens.backgroundColor .~ .ksr_white
 
     _ = self.progressBarAndStatsStackView
       |> UIStackView.lens.layoutMargins .~ UIEdgeInsets(leftRight: leftRightInsetValue)
@@ -248,7 +248,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
 
     _ = self.statsStackView
       |> UIStackView.lens.isAccessibilityElement .~ true
-      |> UIStackView.lens.backgroundColor .~ .white
+      |> UIStackView.lens.backgroundColor .~ .ksr_white
 
     _ = self.youreABackerContainerViewLeadingConstraint
       |> \.constant .~ leftRightInsetValue
@@ -259,7 +259,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       |> UIView.lens.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.gridHalf(3))
 
     _ = self.youreABackerLabel
-      |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.textColor .~ .ksr_white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
       |> UILabel.lens.text %~ { _ in Strings.Youre_a_backer() }
 

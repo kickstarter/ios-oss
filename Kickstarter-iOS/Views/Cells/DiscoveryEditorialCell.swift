@@ -108,14 +108,14 @@ final class DiscoveryEditorialCell: UITableViewCell, ValueCell {
     _ = self.editorialTitleLabel
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 0
-      |> \.textColor .~ .white
+      |> \.textColor .~ .ksr_white
       |> \.textAlignment .~ .left
       |> \.font .~ UIFont.ksr_title3().bolded
 
     _ = self.editorialSubtitleLabel
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 0
-      |> \.textColor .~ .white
+      |> \.textColor .~ .ksr_white
       |> \.textAlignment .~ .left
       |> \.font .~ UIFont.ksr_callout().bolded
   }

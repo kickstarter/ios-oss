@@ -54,7 +54,7 @@ final class EmailVerificationViewController: UIViewController, MessageBannerView
     super.bindStyles()
 
     _ = self.view
-      |> \.backgroundColor .~ .white
+      |> \.backgroundColor .~ .ksr_white
 
     _ = self.rootStackView
       |> rootStackViewStyle

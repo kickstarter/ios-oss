@@ -57,7 +57,7 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
       |> baseTableViewCellStyle()
 
     _ = self.containerView
-      |> UIView.lens.backgroundColor .~ .white
+      |> UIView.lens.backgroundColor .~ .ksr_white
       |> dashboardCardStyle
 
     _ = self.rewardsTitle

@@ -106,7 +106,7 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
 private let titleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_title3().bolded
-    |> \.textColor .~ .white
+    |> \.textColor .~ .ksr_white
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.numberOfLines .~ 3
 }
@@ -114,7 +114,7 @@ private let titleLabelStyle: LabelStyle = { label in
 private let subtitleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_subhead()
-    |> \.textColor .~ .white
+    |> \.textColor .~ .ksr_white
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.numberOfLines .~ 2
 }
@@ -122,7 +122,7 @@ private let subtitleLabelStyle: LabelStyle = { label in
 private let stepLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_footnote()
-    |> \.textColor .~ .white
+    |> \.textColor .~ .ksr_white
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.numberOfLines .~ 1
 }

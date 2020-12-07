@@ -262,7 +262,7 @@ private let pageControlStyle: PageControlStyle = { pageControl in
   pageControl
     |> \.currentPage .~ 0
     |> \.currentPageIndicatorTintColor .~ .ksr_create_700
-    |> \.pageIndicatorTintColor .~ .white
+    |> \.pageIndicatorTintColor .~ .ksr_white
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in

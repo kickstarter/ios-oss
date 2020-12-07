@@ -248,7 +248,7 @@ private let cancellationDisclaimerLabelStyle: LabelStyle = { label in
 private let cancellationReasonTextFieldStyle: TextFieldStyle = { textField in
   textField
     |> formFieldStyle
-    |> \.backgroundColor .~ UIColor.white
+    |> \.backgroundColor .~ UIColor.ksr_white
     |> \.borderStyle .~ UITextField.BorderStyle.roundedRect
 }
 

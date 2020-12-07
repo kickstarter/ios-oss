@@ -107,7 +107,7 @@ private let manageThisAccountLabelStyle: LabelStyle = { label in
 
 private let stackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> ksr_setBackgroundColor(UIColor.white)
+    |> ksr_setBackgroundColor(UIColor.ksr_white)
     |> verticalStackViewStyle
     |> \.alignment .~ .leading
     |> \.spacing .~ Styles.grid(1)

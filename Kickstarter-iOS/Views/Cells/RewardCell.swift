@@ -122,7 +122,7 @@ final class RewardCell: UICollectionViewCell, ValueCell {
     _ = self.backerLabel
       |> \.text %~ { _ in Strings.Your_selection() }
       |> \.font .~ UIFont.ksr_footnote().weighted(.medium)
-      |> \.textColor .~ .white
+      |> \.textColor .~ .ksr_white
 
     _ = self.scrollView
       |> scrollViewStyle

@@ -225,7 +225,7 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
 private let totalLabelStyle: LabelStyle = { label in
   label
     |> checkoutLabelStyle
-    |> \.textColor .~ UIColor.black
+    |> \.textColor .~ UIColor.ksr_black
     |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.text %~ { _ in Strings.Total() }

@@ -7,7 +7,7 @@ import UIKit
 public func baseTableControllerStyle<TVC: UITableViewControllerProtocol>
 (estimatedRowHeight: CGFloat = 44.0) -> ((TVC) -> TVC) {
   let style = baseControllerStyle()
-    <> TVC.lens.view.backgroundColor .~ .white
+    <> TVC.lens.view.backgroundColor .~ .ksr_white
     <> TVC.lens.tableView.rowHeight .~ UITableView.automaticDimension
     <> TVC.lens.tableView.estimatedRowHeight .~ estimatedRowHeight
 
@@ -22,7 +22,7 @@ public func baseTableViewCellStyle<TVC: UITableViewCellProtocol>() -> ((TVC) -> 
       }
       return .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
     }
-    <> TVC.lens.backgroundColor .~ .white
+    <> TVC.lens.backgroundColor .~ .ksr_white
     <> (TVC.lens.contentView .. UIView.lens.preservesSuperviewLayoutMargins) .~ false
     <> TVC.lens.layoutMargins .~ .init(all: 0.0)
     <> TVC.lens.preservesSuperviewLayoutMargins .~ false

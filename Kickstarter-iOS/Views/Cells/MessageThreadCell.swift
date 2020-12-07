@@ -31,7 +31,7 @@ internal final class MessageThreadCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-      |> MessageThreadCell.lens.backgroundColor .~ .white
+      |> MessageThreadCell.lens.backgroundColor .~ .ksr_white
       |> MessageThreadCell.lens.contentView.layoutMargins %~~ { _, cell in
         cell.traitCollection.isRegularRegular
           ? .init(topBottom: Styles.grid(6), leftRight: Styles.grid(16))

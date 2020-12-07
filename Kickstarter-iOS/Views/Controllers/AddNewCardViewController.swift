@@ -141,7 +141,7 @@ internal final class AddNewCardViewController: UIViewController,
       self.rememberThisCardToggleViewController.view
     ]
     .compact()
-    ||> \.backgroundColor .~ UIColor.white
+    ||> \.backgroundColor .~ UIColor.ksr_white
   }
 
   override func bindViewModel() {

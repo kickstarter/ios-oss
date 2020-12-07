@@ -20,7 +20,7 @@ internal final class MostPopularCell: UITableViewCell, ValueCell {
       }
 
     _ = self.mostPopularLabel
-      |> UILabel.lens.backgroundColor .~ .white
+      |> UILabel.lens.backgroundColor .~ .ksr_white
       |> UILabel.lens.font .~ .ksr_title1(size: 22)
       |> UILabel.lens.textColor .~ .ksr_soft_black
       |> UILabel.lens.text %~ { _ in

@@ -87,7 +87,7 @@ final class LandingPageStatsView: UIView {
 private let cardViewStyle: ViewStyle = { view in
   view
     |> roundedStyle(cornerRadius: Styles.grid(1))
-    |> \.backgroundColor .~ .white
+    |> \.backgroundColor .~ .ksr_white
 }
 
 private let descriptionLabelStyle: LabelStyle = { label in

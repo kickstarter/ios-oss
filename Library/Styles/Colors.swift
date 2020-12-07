@@ -6,6 +6,11 @@ extension UIColor {
     return .hex(0xA12027)
   }
 
+  /// 0x000000
+  public static var ksr_black: UIColor {
+    return .hex(0x000000)
+  }
+
   /// 0xFFF2EC
   public static var ksr_celebrate_100: UIColor {
     return .hex(0xFFF2EC)
@@ -164,5 +169,10 @@ extension UIColor {
   /// 0xF9D66D
   public static var ksr_warn: UIColor {
     return .hex(0xF9D66D)
+  }
+
+  /// 0xFFFFFF
+  public static var ksr_white: UIColor {
+    return .hex(0xFFFFFF)
   }
 }

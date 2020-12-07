@@ -37,7 +37,7 @@ public let apricotButtonStyle = baseButtonStyle
 // MARK: - Red
 
 public let redButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ UIColor.white
+  <> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_white
   <> UIButton.lens.backgroundColor(for: .normal) .~ UIColor.ksr_alert
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_alert.mixDarker(0.12)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_alert.mixLighter(0.36)
@@ -89,7 +89,7 @@ public let facebookButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .highlighted) .~ .white
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_facebookBlue.mixDarker(0.36)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_facebookBlue.mixLighter(0.36)
-  <> UIButton.lens.tintColor .~ .white
+  <> UIButton.lens.tintColor .~ .ksr_white
   <> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 18.0)
   <> UIButton.lens.contentEdgeInsets %~~ { _, button in
     button.traitCollection.verticalSizeClass == .compact
@@ -139,7 +139,7 @@ public let readMoreButtonStyle = baseButtonStyle
   <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
   <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_dark_grey_500
   <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
-  <> UIButton.lens.backgroundColor .~ .white
+  <> UIButton.lens.backgroundColor .~ .ksr_white
   <> UIButton.lens.contentEdgeInsets .~ .zero
 
 // experimental campaign button

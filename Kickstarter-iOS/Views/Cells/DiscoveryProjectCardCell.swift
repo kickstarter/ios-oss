@@ -499,8 +499,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
   private func addShadowLayers() {
     let projectStatusShadowLayer = CAShapeLayer()
-      |> \.fillColor .~ UIColor.white.withAlphaComponent(0.95).cgColor
-      |> \.shadowColor .~ UIColor.black.cgColor
+      |> \.fillColor .~ UIColor.ksr_white.withAlphaComponent(0.95).cgColor
+      |> \.shadowColor .~ UIColor.ksr_black.cgColor
       |> \.shadowOpacity .~ 0.15
       |> \.shadowRadius .~ 4
       |> \.shadowOffset .~ CGSize(width: 0, height: 1)
@@ -510,8 +510,8 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
     self.projectStatusContainerView.layer.insertSublayer(projectStatusShadowLayer, at: 0)
 
     let saveButtonShadowLayer = CAShapeLayer()
-      |> \.fillColor .~ UIColor.white.withAlphaComponent(0.95).cgColor
-      |> \.shadowColor .~ UIColor.black.cgColor
+      |> \.fillColor .~ UIColor.ksr_white.withAlphaComponent(0.95).cgColor
+      |> \.shadowColor .~ UIColor.ksr_black.cgColor
       |> \.shadowOpacity .~ 0.15
       |> \.shadowRadius .~ 4
       |> \.shadowOffset .~ CGSize(width: 0, height: 1)
@@ -609,7 +609,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 private let avatarImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
-    |> \.layer.borderColor .~ UIColor.white.cgColor
+    |> \.layer.borderColor .~ UIColor.ksr_white.cgColor
     |> \.backgroundColor .~ UIColor.ksr_grey_400
     |> \.layer.borderWidth .~ 2
     |> \.clipsToBounds .~ true
@@ -619,7 +619,7 @@ private let avatarImageViewStyle: ImageViewStyle = { imageView in
 
 private let collectionViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ .white
+    |> \.backgroundColor .~ .ksr_white
 }
 
 private let contentViewStyle: ViewStyle = { view in
@@ -631,7 +631,7 @@ private let contentViewStyle: ViewStyle = { view in
 private let cardContainerViewStyle: ViewStyle = { view in
   view
     |> roundedStyle(cornerRadius: Styles.grid(2))
-    |> \.backgroundColor .~ .white
+    |> \.backgroundColor .~ .ksr_white
 }
 
 private let projectStatusContainerViewStyle: ViewStyle = { view in
@@ -660,7 +660,7 @@ private let projectNameLabelStyle: LabelStyle = { label in
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.font .~ UIFont.ksr_headline().bolded
     |> \.textColor .~ .ksr_soft_black
-    |> \.backgroundColor .~ .white
+    |> \.backgroundColor .~ .ksr_white
 }
 
 private let projectBlurbLabelStyle: LabelStyle = { label in
@@ -669,7 +669,7 @@ private let projectBlurbLabelStyle: LabelStyle = { label in
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.font .~ UIFont.ksr_subhead()
     |> \.textColor .~ .ksr_text_dark_grey_500
-    |> \.backgroundColor .~ .white
+    |> \.backgroundColor .~ .ksr_white
 }
 
 private let projectStatusLabelStyle: LabelStyle = { label in
@@ -707,7 +707,7 @@ private let percentFundedLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.textColor .~ .ksr_create_700
-    |> \.backgroundColor .~ .white
+    |> \.backgroundColor .~ .ksr_white
 }
 
 private let backersCountIconImageViewStyle: ImageViewStyle = { imageView in
@@ -722,7 +722,7 @@ private let backersCountLabelStyle: LabelStyle = { label in
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.textColor .~ .ksr_soft_black
-    |> \.backgroundColor .~ .white
+    |> \.backgroundColor .~ .ksr_white
 }
 
 private let projectInfoStackViewStyle: StackViewStyle = { stackView in
@@ -763,7 +763,7 @@ private let youreABackerViewStyle: ViewStyle = { view in
 private let youreABackerLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_footnote().bolded
-    |> \.textColor .~ UIColor.white
+    |> \.textColor .~ UIColor.ksr_white
     |> \.numberOfLines .~ 1
     |> \.lineBreakMode .~ .byTruncatingTail
     |> \.text %~ { _ in Strings.Youre_a_backer_no_punctuation() }

@@ -132,7 +132,7 @@ public let checkoutTitleLabelStyle: LabelStyle = { (label: UILabel) in
 
 public let checkoutWhiteBackgroundStyle: ViewStyle = { (view: UIView) in
   view
-    |> \.backgroundColor .~ UIColor.white
+    |> \.backgroundColor .~ UIColor.ksr_white
 }
 
 public let checkoutLayerCardRoundedStyle: LayerStyle = { layer in
@@ -217,7 +217,7 @@ public let cardSelectButtonStyle: ButtonStyle = { button in
 
 public let pledgeCardViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ .white
+    |> \.backgroundColor .~ .ksr_white
     |> roundedStyle(cornerRadius: Styles.grid(1))
     |> \.layoutMargins .~ UIEdgeInsets(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
 }

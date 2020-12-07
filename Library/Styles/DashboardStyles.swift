@@ -151,7 +151,7 @@ public let dashboardVideoExternalPlaysProgressViewStyle =
     <> UIView.lens.layer.borderWidth .~ 1
 
 public let dashboardVideoGraphPercentageLabelStyle =
-  UILabel.lens.textColor .~ .white
+  UILabel.lens.textColor .~ .ksr_white
     <> UILabel.lens.font .~ UIFont.ksr_caption1().bolded
 
 public let dashboardVideoInternalPlaysProgressViewStyle =

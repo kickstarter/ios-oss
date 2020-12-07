@@ -35,7 +35,7 @@ public typealias ToolbarStyle = (UIToolbar) -> UIToolbar
 public typealias ViewStyle = (UIView) -> UIView
 
 public func baseControllerStyle<VC: UIViewControllerProtocol>() -> ((VC) -> VC) {
-  return VC.lens.view.backgroundColor .~ .white
+  return VC.lens.view.backgroundColor .~ .ksr_white
     <> (VC.lens.navigationController .. navBarLens) %~ { $0.map(baseNavigationBarStyle) }
 }
 
@@ -55,7 +55,7 @@ public func cardStyle<V: UIViewProtocol>(cornerRadius radius: CGFloat = 0) -> ((
   return roundedStyle(cornerRadius: radius)
     <> V.lens.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
     <> V.lens.layer.borderWidth .~ 1.0
-    <> V.lens.backgroundColor .~ .white
+    <> V.lens.backgroundColor .~ .ksr_white
 }
 
 public func darkCardStyle<V: UIViewProtocol>
@@ -87,7 +87,7 @@ public func dropShadowStyle<V: UIViewProtocol>(
   offset: CGSize = .init(width: 0, height: 1)
 ) -> ((V) -> V) {
   return
-    V.lens.layer.shadowColor .~ UIColor.black.cgColor
+    V.lens.layer.shadowColor .~ UIColor.ksr_black.cgColor
       <> V.lens.layer.shadowOpacity .~ 0.17
       <> V.lens.layer.shadowRadius .~ radius
       <> V.lens.layer.masksToBounds .~ false
@@ -171,16 +171,16 @@ private let navBarLens: Lens<UINavigationController?, UINavigationBar?> = Lens(
 
 private let baseNavigationBarStyle =
   UINavigationBar.lens.titleTextAttributes .~ [
-    NSAttributedString.Key.foregroundColor: UIColor.black
+    NSAttributedString.Key.foregroundColor: UIColor.ksr_black
   ]
   <> UINavigationBar.lens.isTranslucent .~ false
-  <> UINavigationBar.lens.barTintColor .~ .white
+  <> UINavigationBar.lens.barTintColor .~ .ksr_white
   <> UINavigationBar.lens.tintColor .~ .ksr_create_700
 
 public let keyboardToolbarStyle: ToolbarStyle = { toolbar -> UIToolbar in
   toolbar
     |> roundedStyle(cornerRadius: 8)
-    |> \.layer.backgroundColor .~ UIColor.white.cgColor
+    |> \.layer.backgroundColor .~ UIColor.ksr_white.cgColor
     |> \.layer.maskedCorners .~ [.layerMaxXMinYCorner, .layerMinXMinYCorner]
 }
 

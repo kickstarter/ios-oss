@@ -179,7 +179,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       |> UIView.lens.tintColor .~ discoveryPrimaryColor()
 
     _ = self.bgView
-      |> UIView.lens.backgroundColor .~ .white
+      |> UIView.lens.backgroundColor .~ .ksr_white
 
     _ = self.dividerLabel
       |> discoveryNavDividerLabelStyle
@@ -187,7 +187,7 @@ internal final class DiscoveryNavigationHeaderViewController: UIViewController {
       |> UILabel.lens.textColor .~ discoveryPrimaryColor()
 
     _ = self.exploreLabel
-      |> UILabel.lens.backgroundColor .~ .white
+      |> UILabel.lens.backgroundColor .~ .ksr_white
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? .ksr_body(size: 18)

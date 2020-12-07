@@ -23,7 +23,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    let cellBackgroundColor = UIColor.white
+    let cellBackgroundColor = UIColor.ksr_white
 
     _ = self
       |> baseTableViewCellStyle()
@@ -52,7 +52,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
 
     _ = self.creatorLabel
       |> authorBadgeLabelStyle
-      |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.textColor .~ .ksr_white
       |> UILabel.lens.text %~ { _ in Strings.update_comments_creator() }
       |> UILabel.lens.backgroundColor .~ .ksr_soft_black
 
@@ -78,7 +78,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
 
     _ = self.youLabel
       |> authorBadgeLabelStyle
-      |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.textColor .~ .ksr_white
       |> UILabel.lens.text %~ { _ in Strings.update_comments_you() }
 
     _ = self.youView

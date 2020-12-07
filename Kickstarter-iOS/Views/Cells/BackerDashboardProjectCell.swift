@@ -69,24 +69,24 @@ internal final class BackerDashboardProjectCell: UITableViewCell, ValueCell {
       )
 
     _ = self.metadataBackgroundView
-      |> UIView.lens.layer.borderColor .~ UIColor.white.cgColor
+      |> UIView.lens.layer.borderColor .~ UIColor.ksr_white.cgColor
       |> UIView.lens.layer.borderWidth .~ 1.0
 
     _ = self.metadataStackView
       |> UIStackView.lens.layoutMargins .~ .init(topBottom: Styles.grid(30), leftRight: Styles.grid(20))
 
     _ = self.metadataLabel
-      |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.textColor .~ .ksr_white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
 
     _ = self.metadataIconImageView
-      |> UIImageView.lens.tintColor .~ .white
+      |> UIImageView.lens.tintColor .~ .ksr_white
 
     _ = self.percentFundedLabel
-      |> UILabel.lens.backgroundColor .~ .white
+      |> UILabel.lens.backgroundColor .~ .ksr_white
 
     _ = self.projectNameLabel
-      |> UILabel.lens.backgroundColor .~ .white
+      |> UILabel.lens.backgroundColor .~ .ksr_white
 
     _ = self.progressStaticView
       |> UIView.lens.backgroundColor .~ .ksr_soft_black

@@ -23,7 +23,7 @@ public final class FundingGraphView: UIView {
     self.addSubview(self.goalLabel)
     _ = self.goalLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
-      |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.textColor .~ .ksr_white
       |> UILabel.lens.backgroundColor .~ .ksr_create_700
       |> UILabel.lens.textAlignment .~ .center
   }

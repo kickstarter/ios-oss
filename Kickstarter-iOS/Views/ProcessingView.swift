@@ -86,7 +86,7 @@ private let processingLabelStyle: LabelStyle = { label in
   label
     |> \.isAccessibilityElement .~ false
     |> \.font .~ UIFont.ksr_callout()
-    |> \.textColor .~ UIColor.white
+    |> \.textColor .~ UIColor.ksr_white
     |> \.textAlignment .~ .center
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
