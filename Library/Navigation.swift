@@ -2,22 +2,23 @@
 import Foundation
 import KsApi
 
-public enum Navigation {
+public enum Navigation: Equatable {
   case checkout(Int, Navigation.Checkout)
   case creatorMessages(Param, messageThreadId: Int)
   case projectActivity(Param)
   case emailClick
   case messages(messageThreadId: Int)
+  case profile(Profile)
   case signup
   case tab(Tab)
   case project(Param, Navigation.Project, refTag: RefTag?)
   case projectPreview(Param, Navigation.Project, refTag: RefTag?, token: String)
   case user(Param, Navigation.User)
 
-  public enum Checkout {
+  public enum Checkout: Equatable {
     case payments(Navigation.Checkout.Payment)
 
-    public enum Payment {
+    public enum Payment: Equatable {
       case applePay(payload: String)
       case new
       case root
@@ -25,7 +26,7 @@ public enum Navigation {
     }
   }
 
-  public enum Tab {
+  public enum Tab: Equatable {
     case discovery([String: String]?)
     case search
     case activity
@@ -34,7 +35,11 @@ public enum Navigation {
     case me
   }
 
-  public enum Project {
+  public enum Profile: Equatable {
+    case verifyEmail
+  }
+
+  public enum Project: Equatable {
     case checkout(Int, Navigation.Project.Checkout)
     case root
     case comments
@@ -47,11 +52,11 @@ public enum Navigation {
     case update(Int, Navigation.Project.Update)
     case survey(Int)
 
-    public enum Checkout {
+    public enum Checkout: Equatable {
       case thanks(racing: Bool?)
     }
 
-    public enum Pledge {
+    public enum Pledge: Equatable {
       case bigPrint
       case changeMethod
       case destroy
@@ -61,110 +66,14 @@ public enum Navigation {
       case root
     }
 
-    public enum Update {
+    public enum Update: Equatable {
       case root
       case comments
     }
   }
 
-  public enum User {
+  public enum User: Equatable {
     case survey(Int)
-  }
-}
-
-extension Navigation: Equatable {}
-public func == (lhs: Navigation, rhs: Navigation) -> Bool {
-  switch (lhs, rhs) {
-  case let (.checkout(lhsId, lhsCheckout), .checkout(rhsId, rhsCheckout)):
-    return lhsId == rhsId && lhsCheckout == rhsCheckout
-  case (.emailClick, .emailClick):
-    return true
-  case let (.messages(lhs), .messages(rhs)):
-    return lhs == rhs
-  case (.signup, .signup):
-    return true
-  case let (.tab(lhs), .tab(rhs)):
-    return lhs == rhs
-  case let (.project(lhsParam, lhsProject, lhsRefTag), .project(rhsParam, rhsProject, rhsRefTag)):
-    return lhsParam == rhsParam && lhsProject == rhsProject && lhsRefTag == rhsRefTag
-  case let (
-    .projectPreview(lhsParam, lhsProject, lhsRefTag, lhsToken),
-    .projectPreview(rhsParam, rhsProject, rhsRefTag, rhsToken)
-  ):
-    return lhsParam == rhsParam && lhsProject == rhsProject && lhsRefTag == rhsRefTag && lhsToken == rhsToken
-  case let (.user(lhsParam, lhsUser), .user(rhsParam, rhsUser)):
-    return lhsParam == rhsParam && lhsUser == rhsUser
-  default:
-    return false
-  }
-}
-
-extension Navigation.Checkout: Equatable {}
-public func == (lhs: Navigation.Checkout, rhs: Navigation.Checkout) -> Bool {
-  switch (lhs, rhs) {
-  case let (.payments(lhsPayment), .payments(rhsPayment)):
-    return lhsPayment == rhsPayment
-  }
-}
-
-extension Navigation.Checkout.Payment: Equatable {}
-public func == (lhs: Navigation.Checkout.Payment, rhs: Navigation.Checkout.Payment) -> Bool {
-  switch (lhs, rhs) {
-  case (.new, .new), (.root, .root), (.useStoredCard, .useStoredCard):
-    return true
-  case let (.applePay(lhs), .applePay(rhs)):
-    return lhs == rhs
-  default:
-    return false
-  }
-}
-
-extension Navigation.Project: Equatable {}
-public func == (lhs: Navigation.Project, rhs: Navigation.Project) -> Bool {
-  switch (lhs, rhs) {
-  case let (.checkout(lhsId, lhsCheckout), .checkout(rhsId, rhsCheckout)):
-    return lhsId == rhsId && lhsCheckout == rhsCheckout
-  case (.root, .root):
-    return true
-  case (.comments, .comments):
-    return true
-  case (.creatorBio, .creatorBio):
-    return true
-  case (.faqs, .faqs):
-    return true
-  case (.friends, .friends):
-    return true
-  case (.messageCreator, .messageCreator):
-    return true
-  case let (.pledge(lhsPledge), .pledge(rhsPledge)):
-    return lhsPledge == rhsPledge
-  case (.updates, .updates):
-    return true
-  case let (.update(lhsId, lhsUpdate), .update(rhsId, rhsUpdate)):
-    return lhsId == rhsId && lhsUpdate == rhsUpdate
-  case let (.survey(lhsId), .survey(rhsId)):
-    return lhsId == rhsId
-  default:
-    return false
-  }
-}
-
-extension Navigation.Project.Checkout: Equatable {}
-public func == (lhs: Navigation.Project.Checkout, rhs: Navigation.Project.Checkout) -> Bool {
-  switch (lhs, rhs) {
-  case let (.thanks(lhsRacing), .thanks(rhsRacing)):
-    return lhsRacing == rhsRacing
-  }
-}
-
-extension Navigation.Project.Pledge: Equatable {}
-public func == (lhs: Navigation.Project.Pledge, rhs: Navigation.Project.Pledge) -> Bool {
-  switch (lhs, rhs) {
-  case (.bigPrint, .bigPrint), (.changeMethod, .changeMethod), (.destroy, .destroy), (.edit, .edit),
-       (.manage, .manage), (.new, .new), (.root, .root):
-    return true
-  default:
-    return false
   }
 }
 
@@ -177,36 +86,6 @@ public func == (lhs: Navigation.Project.Update, rhs: Navigation.Project.Update) 
     return true
   default:
     return false
-  }
-}
-
-extension Navigation.Tab: Equatable {}
-public func == (lhs: Navigation.Tab, rhs: Navigation.Tab) -> Bool {
-  switch (lhs, rhs) {
-  case (.search, .search):
-    return true
-  case (.activity, .activity):
-    return true
-  case let (.dashboard(lhsParam), .dashboard(rhsParam)):
-    return lhsParam == rhsParam
-  case let (.discovery(lhsParams?), .discovery(rhsParams?)):
-    return lhsParams == rhsParams
-  case (.discovery(nil), .discovery(nil)):
-    return true
-  case (.login, .login):
-    return true
-  case (.me, .me):
-    return true
-  default:
-    return false
-  }
-}
-
-extension Navigation.User: Equatable {}
-public func == (lhs: Navigation.User, rhs: Navigation.User) -> Bool {
-  switch (lhs, rhs) {
-  case let (.survey(lhsId), .survey(rhsId)):
-    return lhsId == rhsId
   }
 }
 
@@ -244,6 +123,7 @@ private let allRoutes: [String: (RouteParamsDecoded) -> Navigation?] = [
   "/discover/categories/:parent_category_id/:category_id": discovery,
   "/messages/:message_thread_id": messages,
   "/profile/:user_param": me,
+  "/profile/verify_email": verifyEmail,
   "/search": search,
   "/signup": signup,
   "/projects/:creator_param/:project_param": project,
@@ -278,6 +158,7 @@ private let deepLinkRoutes: [String: (RouteParamsDecoded) -> Navigation?] = allR
     "/discover/categories/:category_id",
     "/discover/categories/:parent_category_id/:category_id",
     "/messages/:message_thread_id",
+    "/profile/verify_email",
     "/projects/:creator_param/:project_param",
     "/projects/:creator_param/:project_param/comments",
     "/projects/:creator_param/:project_param/dashboard",
@@ -377,8 +258,17 @@ private func discovery(_ params: RouteParamsDecoded) -> Navigation {
   return .tab(.discovery(params))
 }
 
-private func me(_: RouteParamsDecoded) -> Navigation {
+private func me(_ params: RouteParamsDecoded) -> Navigation {
+  // Avoid ambiguity with :user_param
+  if case let .slug(slug) = params.userParam(), slug == "verify_email" {
+    return verifyEmail(params)
+  }
+
   return .tab(.me)
+}
+
+private func verifyEmail(_: RouteParamsDecoded) -> Navigation {
+  return .profile(.verifyEmail)
 }
 
 private func search(_: RouteParamsDecoded) -> Navigation {

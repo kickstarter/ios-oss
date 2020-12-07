@@ -171,6 +171,8 @@
       GraphError
     >?
 
+    fileprivate let verifyEmailResult: Result<EmailVerificationResponseEnvelope, ErrorEnvelope>?
+
     fileprivate let watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>?
 
     internal init(
@@ -299,6 +301,7 @@
       updateProjectNotificationError: ErrorEnvelope? = nil,
       updateUserSelfError: ErrorEnvelope? = nil,
       unwatchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil,
+      verifyEmailResult: Result<EmailVerificationResponseEnvelope, ErrorEnvelope>? = nil,
       watchProjectMutationResult: Result<GraphMutationWatchProjectResponseEnvelope, GraphError>? = nil
     ) {
       self.appId = appId
@@ -505,6 +508,8 @@
       self.updateUserSelfError = updateUserSelfError
 
       self.unwatchProjectMutationResult = unwatchProjectMutationResult
+
+      self.verifyEmailResult = verifyEmailResult
 
       self.watchProjectMutationResult = watchProjectMutationResult
     }
@@ -1353,6 +1358,11 @@
     internal func unwatchProject(input _: WatchProjectInput)
       -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
       return producer(for: self.unwatchProjectMutationResult)
+    }
+
+    internal func verifyEmail(withToken _: String)
+      -> SignalProducer<EmailVerificationResponseEnvelope, ErrorEnvelope> {
+      return producer(for: self.verifyEmailResult)
     }
 
     internal func watchProject(input _: WatchProjectInput)

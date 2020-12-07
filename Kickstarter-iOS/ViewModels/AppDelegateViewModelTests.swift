@@ -18,6 +18,8 @@ final class AppDelegateViewModelTests: TestCase {
   private let configureOptimizelyDispatchInterval = TestObserver<TimeInterval, Never>()
   private let configureFirebase = TestObserver<(), Never>()
   private let didAcceptReceivingRemoteNotifications = TestObserver<(), Never>()
+  private let emailVerificationCompletedMessage = TestObserver<String, Never>()
+  private let emailVerificationCompletedSuccess = TestObserver<Bool, Never>()
   private let findRedirectUrl = TestObserver<URL, Never>()
   private let forceLogout = TestObserver<(), Never>()
   private let goToActivity = TestObserver<(), Never>()
@@ -51,6 +53,10 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.configureOptimizely.map(first).observe(self.configureOptimizelySDKKey.observer)
     self.vm.outputs.configureOptimizely.map(second).observe(self.configureOptimizelyLogLevel.observer)
     self.vm.outputs.configureOptimizely.map(third).observe(self.configureOptimizelyDispatchInterval.observer)
+    self.vm.outputs.emailVerificationCompleted.map(first)
+      .observe(self.emailVerificationCompletedMessage.observer)
+    self.vm.outputs.emailVerificationCompleted.map(second)
+      .observe(self.emailVerificationCompletedSuccess.observer)
     self.vm.outputs.findRedirectUrl.observe(self.findRedirectUrl.observer)
     self.vm.outputs.forceLogout.observe(self.forceLogout.observer)
     self.vm.outputs.goToActivity.observe(self.goToActivity.observer)
@@ -2513,6 +2519,105 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.presentViewController.assertDidNotEmitValue()
       self.goToLandingPage.assertValueCount(1)
+    }
+  }
+
+  func testVerifyEmail_Success() {
+    self.emailVerificationCompletedMessage.assertDidNotEmitValue()
+    self.emailVerificationCompletedSuccess.assertDidNotEmitValue()
+
+    guard let url = URL(string: "https://www.kickstarter.com/profile/verify_email?at=12345") else {
+      XCTFail("Should have a url")
+      return
+    }
+
+    let env = EmailVerificationResponseEnvelope(
+      message: "Thanks—you’ve successfully verified your email address."
+    )
+
+    let mockService = MockService(verifyEmailResult: .success(env))
+
+    withEnvironment(apiService: mockService) {
+      _ = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: url,
+        options: [:]
+      )
+
+      self.scheduler.advance()
+
+      self.emailVerificationCompletedSuccess.assertValues([true])
+      self.emailVerificationCompletedMessage.assertValues(
+        ["Thanks—you’ve successfully verified your email address."]
+      )
+    }
+  }
+
+  func testVerifyEmail_Failure() {
+    self.emailVerificationCompletedMessage.assertDidNotEmitValue()
+    self.emailVerificationCompletedSuccess.assertDidNotEmitValue()
+
+    guard let url = URL(string: "https://www.kickstarter.com/profile/verify_email?at=12345") else {
+      XCTFail("Should have a url")
+      return
+    }
+
+    let errorEnvelope = ErrorEnvelope(
+      errorMessages: ["Error Message"],
+      ksrCode: .UnknownCode,
+      httpCode: 403,
+      exception: nil
+    )
+
+    let mockService = MockService(verifyEmailResult: .failure(errorEnvelope))
+
+    withEnvironment(apiService: mockService) {
+      _ = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: url,
+        options: [:]
+      )
+
+      self.scheduler.advance()
+
+      self.emailVerificationCompletedSuccess.assertValues([false])
+      self.emailVerificationCompletedMessage.assertValues(
+        ["Error Message"]
+      )
+    }
+  }
+
+  func testVerifyEmail_Failure_UnknownError() {
+    self.emailVerificationCompletedMessage.assertDidNotEmitValue()
+    self.emailVerificationCompletedSuccess.assertDidNotEmitValue()
+
+    guard let url = URL(string: "https://www.kickstarter.com/profile/verify_email?at=12345") else {
+      XCTFail("Should have a url")
+      return
+    }
+
+    let errorEnvelope = ErrorEnvelope(
+      errorMessages: [],
+      ksrCode: .UnknownCode,
+      httpCode: 500,
+      exception: nil
+    )
+
+    let mockService = MockService(verifyEmailResult: .failure(errorEnvelope))
+
+    withEnvironment(apiService: mockService) {
+      _ = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: url,
+        options: [:]
+      )
+
+      self.scheduler.advance()
+
+      self.emailVerificationCompletedSuccess.assertValues([false])
+      self.emailVerificationCompletedMessage.assertValues(
+        ["Something went wrong, please try again."]
+      )
     }
   }
 }

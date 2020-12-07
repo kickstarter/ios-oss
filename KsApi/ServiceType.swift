@@ -336,6 +336,10 @@ public protocol ServiceType {
   func unwatchProject(input: WatchProjectInput) ->
     SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError>
 
+  /// Verifies an email address with a given access token.
+  func verifyEmail(withToken token: String)
+    -> SignalProducer<EmailVerificationResponseEnvelope, ErrorEnvelope>
+
   func watchProject(input: WatchProjectInput) ->
     SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError>
 }

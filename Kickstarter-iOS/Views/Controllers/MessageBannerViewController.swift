@@ -2,14 +2,14 @@ import Foundation
 import Library
 import Prelude
 
-protocol MessageBannerViewControllerPresenting {
+public protocol MessageBannerViewControllerPresenting {
   var messageBannerViewController: MessageBannerViewController? { get set }
 
   func configureMessageBannerViewController(on parentViewController: UIViewController)
     -> MessageBannerViewController?
 }
 
-final class MessageBannerViewController: UIViewController, NibLoading {
+public final class MessageBannerViewController: UIViewController, NibLoading {
   @IBOutlet fileprivate var backgroundView: UIView!
   @IBOutlet fileprivate var iconImageView: UIImageView!
   @IBOutlet fileprivate var messageLabel: UILabel!
@@ -22,7 +22,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
     static let showDuration: TimeInterval = 0.3
   }
 
-  override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
 
     _ = self.backgroundView
@@ -32,7 +32,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       |> \.isAccessibilityElement .~ false
   }
 
-  override func bindStyles() {
+  public override func bindStyles() {
     super.bindStyles()
 
     _ = self.view
@@ -46,7 +46,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       |> UILabel.lens.font .~ .ksr_subhead()
   }
 
-  override func bindViewModel() {
+  public override func bindViewModel() {
     super.bindViewModel()
 
     self.iconImageView.rac.hidden = self.viewModel.outputs.iconIsHidden
@@ -87,7 +87,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
       }
   }
 
-  func showBanner(with type: MessageBannerType, message: String) {
+  public func showBanner(with type: MessageBannerType, message: String) {
     self.viewModel.inputs.update(with: (type, message))
     self.viewModel.inputs.bannerViewWillShow(true)
   }
@@ -180,7 +180,7 @@ final class MessageBannerViewController: UIViewController, NibLoading {
 }
 
 extension MessageBannerViewControllerPresenting where Self: UIViewController {
-  func configureMessageBannerViewController(on parentViewController: UIViewController)
+  public func configureMessageBannerViewController(on parentViewController: UIViewController)
     -> MessageBannerViewController? {
     let nibName = Nib.MessageBannerViewController.rawValue
     let messageBannerViewController = MessageBannerViewController(

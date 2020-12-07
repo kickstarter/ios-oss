@@ -73,6 +73,7 @@
 "Cancel_pledge" = "Beitrag zurückziehen";
 "Cancel_your_pledge" = "Deinen Beitrag zurückziehen";
 "Cancellation_reason" = "Grund der Annullierung";
+"Cant_find_it" = "E-Mail unauffindbar?";
 "Card_ending_in_last_four" = "Kartennummer endet auf %{last_four}";
 "Card_number" = "Kartennummer";
 "Cardholder_name" = "Name des Karteninhabers";
@@ -84,6 +85,7 @@
 "Chat" = "Chat";
 "Check_back_later_for_an_update_on_your_export" = "Der Fortschritt des Exports wird in Kürze verfügbar sein- schau später noch einmal vorbei.";
 "Check_out_these_handpicked_projects" = "Sieh dir dieses speziell für dich ausgesuchten Projekte an.";
+"Check_your_inbox_to_complete_this_simple_step" = "Sieh bitte in deinem Posteingang nach und schließe diesen einfachen Schritt ab.";
 "Check_your_payment_details" = "Überprüfe die Daten deiner Zahlungsweise";
 "Choose_another_reward" = "Andere Belohnung auswählen";
 "Chooses_location_for_shipping" = "Legt %{location} als Versandort fest.";
@@ -280,6 +282,7 @@
 "If_your_profile_is_public" = "Wenn dein Profil nicht privat ist, sind außerdem die Projekte, die du unterstützt hast, dein Standort, deine Biografie und deine Websites für Andere sichtbar.";
 "If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_on_project_deadline" = "Wenn dein Projekt das Finanzierungsziel erreicht, wird der Finanzierungsbeitrag des Unterstützers am %{project_deadline} abgebucht.";
 "If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_total_on_project_deadline" = "Wenn dein Projekt das Finanzierungsziel erreicht, wird die Karte des Unterstützers am %{project_deadline} mit %{total} belastet.";
+"Ill_do_this_later" = "Ich kümmere mich später darum";
 "Increase_pledge" = "Finanzierungsbeitrag erhöhen";
 "Individual_Emails" = "Individuelle E-Mails";
 "Info" = "Info";
@@ -463,6 +466,7 @@
 "Reply_to_user_name" = "%{user_name} antworten …";
 "Request_my_data" = "Meine Daten anfordern";
 "Request_my_personal_data" = "Meine persönlichen Daten anfordern";
+"Resend_email" = "Erneut senden";
 "Resend_verification_email" = "Verifizierungs-E-Mail erneut senden";
 "Retry" = "Erneut versuchen";
 "Retry_or_select_another_method" = "Versuche es erneut oder wähle eine andere Karte.";
@@ -572,6 +576,7 @@
 "Thank_you_for_supporting_this_project" = "Vielen Dank für deine Unterstützung dieses Projekts.";
 "Thanks_for_being_part_of_all_the_joy" = "Vielen Dank, dass du die Freuden, harte Arbeit und Hoffnungen mit uns geteilt hast - wir freuen uns schon darauf, was wir in Zukunft erreichen können.";
 "Thanks_for_bringing_this_project_one_step_closer_to_becoming_a_reality" = "Dank deiner Unterstützung ist dieses Projekt seiner Verwirklichung einen Schritt näher.";
+"Thanks_youve_successfully_verified_your_email_address" = "Vielen Dank. Deine E-Mail-Adresse wurde erfolgreich verifiziert.";
 "The_backer_canceled_their_pledge_for_this_project" = "Der Unterstützer hat den Finanzierungsbeitrag zurückgezogen.";
 "The_creator_canceled_this_project_so_your_payment_method_was_never_charged" = "Der Projektgründer hat das Projekt abgebrochen. Daher wurde deine Zahlungsmethode nicht belastet.";
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "Diese E-Mail-Adresse ist bereits einem anderen Kickstarter-Nutzer zugeordnet.";
@@ -625,6 +630,7 @@
 "Use_the_hashtag_hashtag_backeditbecause_to_share_what_projects_youre_supporting_and_why_theyre_important_to_you" = "Teile unter dem Hashtag #backeditbecause die Projekte, die du unterstützt hast und warum sie für dich wichtig sind.";
 "Use_this_to_keep_track_of_which_rewards_youve_received" = "Hier kannst du nachverfolgen, welche Belohnungen du bereits erhalten hast.";
 "Verification_email_sent" = "Wir haben dir gerade eine Bestätigungs-E-Mail geschickt. Bitte klicke auf den Link in der E-Mail, um deine Adresse zu bestätigen.";
+"Verify_your_email_address" = "Verifizierung deiner E-Mail";
 "Video_disabled_until_the_internet_connection_improves" = "Video bis zur Wiederherstellung der Internetverbindung deaktiviert";
 "View" = "Anzeigen";
 "View_dashboard" = "Dashboard ansehen";
