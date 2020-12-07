@@ -20,7 +20,7 @@ public final class ProjectPamphletViewController: UIViewController, MessageBanne
   internal weak var delegate: ProjectPamphletViewControllerDelegate?
   fileprivate let viewModel: ProjectPamphletViewModelType = ProjectPamphletViewModel()
 
-  internal var messageBannerViewController: MessageBannerViewController?
+  public var messageBannerViewController: MessageBannerViewController?
   fileprivate var navBarController: ProjectNavBarViewController!
   fileprivate var contentController: ProjectPamphletContentViewController!
 

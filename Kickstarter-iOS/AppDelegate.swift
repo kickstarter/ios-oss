@@ -234,6 +234,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.rootTabBarController?.present(navController, animated: true)
       }
 
+    self.viewModel.outputs.emailVerificationCompleted
+      .observeForUI()
+      .observeValues { [weak self] message, success in
+        self?.rootTabBarController?.dismiss(animated: false, completion: nil)
+        self?.rootTabBarController?
+          .messageBannerViewController?.showBanner(with: success ? .success : .error, message: message)
+      }
+
     NotificationCenter.default
       .addObserver(forName: Notification.Name.ksr_sessionStarted, object: nil, queue: nil) { [weak self] _ in
         self?.viewModel.inputs.userSessionStarted()

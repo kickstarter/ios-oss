@@ -1225,6 +1225,23 @@ contributeurs"
     )
   }
   /**
+   "Can't find it?"
+
+   - **en**: "Can't find it?"
+   - **de**: "E-Mail unauffindbar?"
+   - **es**: "¿No encuentras el correo?"
+   - **fr**: "Introuvable ?"
+   - **ja**: "メールが見つからない？"
+  */
+  public static func Cant_find_it() -> String {
+    return localizedString(
+      key: "Cant_find_it",
+      defaultValue: "Can't find it?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Card ending in %{last_four}"
 
    - **en**: "Card ending in %{last_four}"
@@ -1407,6 +1424,23 @@ contributeurs"
     return localizedString(
       key: "Check_out_these_handpicked_projects",
       defaultValue: "Check out these handpicked projects just for you.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Check your inbox to complete this simple step."
+
+   - **en**: "Check your inbox to complete this simple step."
+   - **de**: "Sieh bitte in deinem Posteingang nach und schließe diesen einfachen Schritt ab."
+   - **es**: "Revisa tu bandeja de entrada para completar este simple paso."
+   - **fr**: "Pour terminer cette démarche simple, ouvrez votre boîte de réception."
+   - **ja**: "メールの受信箱をチェックしてこの簡単手続きを完了してください。"
+  */
+  public static func Check_your_inbox_to_complete_this_simple_step() -> String {
+    return localizedString(
+      key: "Check_your_inbox_to_complete_this_simple_step",
+      defaultValue: "Check your inbox to complete this simple step.",
       count: nil,
       substitutions: [:]
     )
@@ -4496,6 +4530,23 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
+   "I'll do this later"
+
+   - **en**: "I'll do this later"
+   - **de**: "Ich kümmere mich später darum"
+   - **es**: "Lo haré más tarde"
+   - **fr**: "Plus tard"
+   - **ja**: "後でする"
+  */
+  public static func Ill_do_this_later() -> String {
+    return localizedString(
+      key: "Ill_do_this_later",
+      defaultValue: "I'll do this later",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Increase pledge"
 
    - **en**: "Increase pledge"
@@ -7547,6 +7598,23 @@ daring ideas."
     )
   }
   /**
+   "Resend email"
+
+   - **en**: "Resend email"
+   - **de**: "Erneut senden"
+   - **es**: "Reenviar correo"
+   - **fr**: "Renvoyer"
+   - **ja**: "メールを再送"
+  */
+  public static func Resend_email() -> String {
+    return localizedString(
+      key: "Resend_email",
+      defaultValue: "Resend email",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Re-send verification email"
 
    - **en**: "Re-send verification email"
@@ -9130,6 +9198,23 @@ catch your eye?"
     )
   }
   /**
+   "Thanks—you’ve successfully verified your email address."
+
+   - **en**: "Thanks—you’ve successfully verified your email address."
+   - **de**: "Vielen Dank. Deine E-Mail-Adresse wurde erfolgreich verifiziert."
+   - **es**: "Gracias, verificaste correctamente tu dirección de correo electrónico."
+   - **fr**: "Merci, votre adresse électronique a bien été vérifiée."
+   - **ja**: "ありがとうございます。メールアドレスの認証が完了しました。"
+  */
+  public static func Thanks_youve_successfully_verified_your_email_address() -> String {
+    return localizedString(
+      key: "Thanks_youve_successfully_verified_your_email_address",
+      defaultValue: "Thanks—you’ve successfully verified your email address.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "The backer canceled their pledge for this project."
 
    - **en**: "The backer canceled their pledge for this project."
@@ -10026,6 +10111,23 @@ catch your eye?"
     return localizedString(
       key: "Verification_email_sent",
       defaultValue: "We've just sent you a verification email. Click the link in it and your address will be verified.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Verify your email address"
+
+   - **en**: "Verify your email address"
+   - **de**: "Verifizierung deiner E-Mail"
+   - **es**: "Verifica tu dirección de correo electrónico"
+   - **fr**: "Confirmation de votre adresse e-mail"
+   - **ja**: "メールアドレスを認証してください"
+  */
+  public static func Verify_your_email_address() -> String {
+    return localizedString(
+      key: "Verify_your_email_address",
+      defaultValue: "Verify your email address",
       count: nil,
       substitutions: [:]
     )

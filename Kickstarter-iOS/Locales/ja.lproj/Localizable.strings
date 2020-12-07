@@ -73,6 +73,7 @@
 "Cancel_pledge" = "プレッジを取り消す";
 "Cancel_your_pledge" = "プレッジを取り消す";
 "Cancellation_reason" = "キャンセルの理由";
+"Cant_find_it" = "メールが見つからない？";
 "Card_ending_in_last_four" = "下4桁が %{last_four} のカード";
 "Card_number" = "カード番号";
 "Cardholder_name" = "カード名義";
@@ -84,6 +85,7 @@
 "Chat" = "チャット";
 "Check_back_later_for_an_update_on_your_export" = "しばらくしてからエクスポートの進捗状況を確認してください。";
 "Check_out_these_handpicked_projects" = "あなたにピッタリの Kickstarter イチオシのプロジェクトをご覧ください。";
+"Check_your_inbox_to_complete_this_simple_step" = "メールの受信箱をチェックしてこの簡単手続きを完了してください。";
 "Check_your_payment_details" = "お支払い情報をご確認ください";
 "Choose_another_reward" = "他のリワードを選択";
 "Chooses_location_for_shipping" = "配送先%{location} を選択";
@@ -280,6 +282,7 @@
 "If_your_profile_is_public" = "プロフィールがプライベート (非公開) 設定でない場合は、過去にあなたがバックしたプロジェクトや、あなたの地域情報、あなたの自己紹介欄とウェブサイトも表示されます。";
 "If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、バッカーは %{project_deadline} に請求されます。";
 "If_your_project_reaches_its_funding_goal_the_backer_will_be_charged_total_on_project_deadline" = "プロジェクトがファンディングゴールに到達すると、%{project_deadline} にバッカーへ %{total} が請求されます。";
+"Ill_do_this_later" = "後でする";
 "Increase_pledge" = "プレッジ額を上げる";
 "Individual_Emails" = "個人メール";
 "Info" = "インフォメーション";
@@ -463,6 +466,7 @@
 "Reply_to_user_name" = "%{user_nameに返信";
 "Request_my_data" = "自分のデータをリクエストする";
 "Request_my_personal_data" = "自分の個人データをリクエストする";
+"Resend_email" = "メールを再送";
 "Resend_verification_email" = "認証メールをもう一度送信";
 "Retry" = "もう一度試す";
 "Retry_or_select_another_method" = "再試行するか別のお支払い方法を選択してください。";
@@ -572,6 +576,7 @@
 "Thank_you_for_supporting_this_project" = "サポートいただきありがとうございます。";
 "Thanks_for_being_part_of_all_the_joy" = "これらプロジェクトに注がれた努力、希望、喜びにご貢献いただきありがとうございます。ぜひ今後もさらなるプロジェクトを共に成功へと導きましょう。";
 "Thanks_for_bringing_this_project_one_step_closer_to_becoming_a_reality" = "ありがとうございます！プロジェクトの実現に一歩近づきました。";
+"Thanks_youve_successfully_verified_your_email_address" = "ありがとうございます。メールアドレスの認証が完了しました。";
 "The_backer_canceled_their_pledge_for_this_project" = "バッカーがこのプロジェクトのプレッジをキャンセルしました。";
 "The_creator_canceled_this_project_so_your_payment_method_was_never_charged" = "クリエイターがこのプロジェクトをキャンセルしたため、お支払い方法への請求は行われませんでした。";
 "The_email_associated_with_this_Facebook_account_is_already_registered" = "このFacebookのメールアドレスは他のKickstarterユーザーが使用中";
@@ -625,6 +630,7 @@
 "Use_the_hashtag_hashtag_backeditbecause_to_share_what_projects_youre_supporting_and_why_theyre_important_to_you" = "ハッシュタグ #backeditbecause を使って、あなたがサポートするプロジェクトをシェアし、そのプロジェクトがなぜあなたにとって重要なのか、その理由を伝えましょう。 ";
 "Use_this_to_keep_track_of_which_rewards_youve_received" = "受け取ったリワードを確認するにはこちらをご利用ください。";
 "Verification_email_sent" = "認証メールを送信しました。メール内のリンクをクリックすればメールアドレスが認証済みとなります。";
+"Verify_your_email_address" = "メールアドレスを認証してください";
 "Video_disabled_until_the_internet_connection_improves" = "インターネット通信状態が向上するまでビデオはご利用いいただけません。";
 "View" = "みる";
 "View_dashboard" = "ダッシュボードを表示";

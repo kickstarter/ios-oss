@@ -7,6 +7,7 @@ final class BackingTests: XCTestCase {
     let backing: Backing? = Backing.decodeJSONDictionary([
       "amount": 1.0,
       "backer_id": 1,
+      "backer_completed_at": 1,
       "cancelable": true,
       "id": 1,
       "location_id": 1,
@@ -28,6 +29,7 @@ final class BackingTests: XCTestCase {
 
     XCTAssertEqual(1.0, backing?.amount)
     XCTAssertEqual(1, backing?.backerId)
+    XCTAssertEqual(true, backing?.backerCompleted)
     XCTAssertEqual(true, backing?.cancelable)
     XCTAssertEqual(1, backing?.id)
     XCTAssertEqual("2019-09-23", backing?.paymentSource?.expirationDate)
@@ -49,6 +51,7 @@ final class BackingTests: XCTestCase {
     let backing: Backing = try! Backing.decodeJSONDictionary([
       "amount": 1.0,
       "backer_id": 1,
+      "backer_completed_at": nil,
       "cancelable": true,
       "id": 1,
       "location_id": 1,
@@ -63,6 +66,7 @@ final class BackingTests: XCTestCase {
 
     XCTAssertEqual(1.0, backing.amount)
     XCTAssertEqual(1, backing.backerId)
+    XCTAssertEqual(false, backing.backerCompleted)
     XCTAssertEqual(1, backing.id)
 
     XCTAssertNil(backing.paymentSource)

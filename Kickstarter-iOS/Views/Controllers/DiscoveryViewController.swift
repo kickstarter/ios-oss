@@ -8,7 +8,6 @@ internal final class DiscoveryViewController: UIViewController {
   fileprivate var dataSource: DiscoveryPagesDataSource?
 
   private var recommendationsChangedObserver: Any?
-
   private weak var navigationHeaderViewController: DiscoveryNavigationHeaderViewController!
   private var optimizelyConfiguredObserver: Any?
   private var optimizelyConfigurationFailedObserver: Any?
