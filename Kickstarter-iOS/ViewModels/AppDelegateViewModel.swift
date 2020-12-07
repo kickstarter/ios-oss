@@ -48,7 +48,7 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the app has crashed
   func crashManagerDidFinishSendingCrashReport()
 
-  /// Call after having invoked AppEnvironemt.updateCurrentUser with a fresh user.
+  /// Call after having invoked AppEnvironment.updateCurrentUser with a fresh user.
   func currentUserUpdatedInEnvironment()
 
   /// Call when the user taps "OK" from the contextual alert.
@@ -103,6 +103,9 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
+
+  /// Emits the response from email verification with a message and success/failure.
+  var emailVerificationCompleted: Signal<(String, Bool), Never> { get }
 
   /// Emits when the view needs to figure out the redirect URL for the emitted URL.
   var findRedirectUrl: Signal<URL, Never> { get }
@@ -350,6 +353,20 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let deepLink = deeplinkActivated
       .filter { _ in shouldGoToLandingPage() == false && shouldSeeCategoryPersonalization() == false }
       .take(until: self.goToLandingPage)
+
+    let emailVerificationEvent = deepLinkUrl
+      .filter { Navigation.match($0) == .profile(.verifyEmail) }
+      .map(accessTokenFromUrl)
+      .skipNil()
+      .switchMap { accessToken in
+        AppEnvironment.current.apiService.verifyEmail(withToken: accessToken)
+          .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+          .materialize()
+      }
+
+    self.emailVerificationCompleted = emailVerificationEvent
+      .map(emailVerificationCompletionData)
+      .skipNil()
 
     self.findRedirectUrl = deepLinkUrl
       .filter { Navigation.match($0) == .emailClick }
@@ -816,6 +833,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let configureFirebase: Signal<(), Never>
   public let configureOptimizely: Signal<(String, OptimizelyLogLevelType, TimeInterval), Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
+  public let emailVerificationCompleted: Signal<(String, Bool), Never>
   public let findRedirectUrl: Signal<URL, Never>
   public let forceLogout: Signal<(), Never>
   public let goToActivity: Signal<(), Never>
@@ -1125,4 +1143,26 @@ private func shouldGoToLandingPage() -> Bool {
   case .control, nil:
     return false
   }
+}
+
+private func accessTokenFromUrl(_ url: URL?) -> String? {
+  return url.flatMap { url in
+    URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems
+  }?
+    .first { item in item.name == "at" }?
+    .value
+}
+
+private func emailVerificationCompletionData(
+  event: Signal<EmailVerificationResponseEnvelope, ErrorEnvelope>.Event
+) -> (String, Bool)? {
+  guard !event.isCompleted else { return nil }
+
+  guard isNil(event.error), let message = event.value?.message else {
+    let message = event.error?.errorMessages.first ?? Strings.Something_went_wrong_please_try_again()
+
+    return (message, false)
+  }
+
+  return (message, true)
 }

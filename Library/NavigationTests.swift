@@ -197,6 +197,11 @@ public final class NavigationTests: XCTestCase {
       .user(.slug("self"), .survey(3)),
       "/users/self/surveys/3"
     )
+
+    KSRAssertMatch(
+      .profile(.verifyEmail),
+      "/profile/verify_email"
+    )
   }
 
   func testRecognizesEmailClickUrls() {

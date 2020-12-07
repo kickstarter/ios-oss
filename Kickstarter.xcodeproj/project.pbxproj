@@ -503,6 +503,8 @@
 		8AA8A38424EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA8A38324EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift */; };
 		8AAA9BD822F49EC200F12976 /* UIColor+Mixing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */; };
 		8AB3BDA6246DC8BE00D69624 /* DiscoveryEditorialViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C25FBE2385FDA5006E2010 /* DiscoveryEditorialViewModelTests.swift */; };
+		8AB64FE52576C6BA0075E2E7 /* EmailVerificationResponseEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB64FE42576C6BA0075E2E7 /* EmailVerificationResponseEnvelope.swift */; };
+		8AB64FED2576C8240075E2E7 /* EmailVerificationResponseEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB64FEC2576C8240075E2E7 /* EmailVerificationResponseEnvelopeTests.swift */; };
 		8AB87DF3243FF22B006D7451 /* PledgePaymentMethodAddCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB87DF2243FF22B006D7451 /* PledgePaymentMethodAddCell.swift */; };
 		8AC79F782567460B0055C26F /* EmailVerificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7E71FD256460DD00119B49 /* EmailVerificationViewModel.swift */; };
 		8AC79F8025674A7F0055C26F /* EmailVerificationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC79F7F25674A7F0055C26F /* EmailVerificationViewModelTests.swift */; };
@@ -1995,6 +1997,8 @@
 		8AA5B067235E25820022F5F0 /* AppCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterAnalytics.framework; path = Carthage/Build/iOS/AppCenterAnalytics.framework; sourceTree = "<group>"; };
 		8AA8A38324EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAndBackingEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Mixing.swift"; sourceTree = "<group>"; };
+		8AB64FE42576C6BA0075E2E7 /* EmailVerificationResponseEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationResponseEnvelope.swift; sourceTree = "<group>"; };
+		8AB64FEC2576C8240075E2E7 /* EmailVerificationResponseEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationResponseEnvelopeTests.swift; sourceTree = "<group>"; };
 		8AB87DF2243FF22B006D7451 /* PledgePaymentMethodAddCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodAddCell.swift; sourceTree = "<group>"; };
 		8AC79F7F25674A7F0055C26F /* EmailVerificationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationViewModelTests.swift; sourceTree = "<group>"; };
 		8ACB32A724ABC2DB00A03968 /* RewardAddOnSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewController.swift; sourceTree = "<group>"; };
@@ -4341,6 +4345,8 @@
 				D015878C1EEB2ED6006E7684 /* DiscoveryEnvelope.swift */,
 				D015878D1EEB2ED6006E7684 /* DiscoveryParams.swift */,
 				D015878E1EEB2ED6006E7684 /* DiscoveryParamsTests.swift */,
+				8AB64FE42576C6BA0075E2E7 /* EmailVerificationResponseEnvelope.swift */,
+				8AB64FEC2576C8240075E2E7 /* EmailVerificationResponseEnvelopeTests.swift */,
 				D015878F1EEB2ED6006E7684 /* ErrorEnvelope.swift */,
 				D01587901EEB2ED6006E7684 /* ErrorEnvelopeTests.swift */,
 				D7417CD520BF12F4004DABA6 /* ExportDataEnvelope.swift */,
@@ -6077,6 +6083,7 @@
 				D0158A1D1EEB30A2006E7684 /* ProjectStatsEnvelope.CumulativeStatsTemplates.swift in Sources */,
 				D79CF3BF21AC9CB200ECB73A /* PaymentType.swift in Sources */,
 				D01589831EEB2ED7006E7684 /* UpdateDraft.swift in Sources */,
+				8AB64FE52576C6BA0075E2E7 /* EmailVerificationResponseEnvelope.swift in Sources */,
 				D0158A1F1EEB30A2006E7684 /* ProjectStatsEnvelope.ReferrerStatsTemplates.swift in Sources */,
 				D01588F11EEB2ED7006E7684 /* MessageThreadEnvelope.swift in Sources */,
 				D6ED1B3B216D525B007F7547 /* ChangeEmailInput.swift in Sources */,
@@ -6272,6 +6279,7 @@
 			files = (
 				D0D10C0A1EEB4550005EBAD0 /* DiscoveryParamsTests.swift in Sources */,
 				8A49396324B54C3000C3C3CE /* RewardAddOnSelectionViewEnvelopeTests.swift in Sources */,
+				8AB64FED2576C8240075E2E7 /* EmailVerificationResponseEnvelopeTests.swift in Sources */,
 				77776BCA234BA88F00A42388 /* CancelBackingInputTests.swift in Sources */,
 				7798B56821750368008BC50D /* UserQueriesTests.swift in Sources */,
 				D0D10C201EEB4550005EBAD0 /* User.NewsletterSubscriptionsTests.swift in Sources */,

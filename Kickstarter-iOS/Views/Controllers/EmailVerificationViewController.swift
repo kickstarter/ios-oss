@@ -176,10 +176,7 @@ private let skipButtonStyle: ButtonStyle = { (button: UIButton) in
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead().bolded
     |> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_500
     |> UIButton.lens.title(for: .normal) %~ { _ in
-      localizedString(
-        key: "Ill_do_this_later",
-        defaultValue: "I'll do this later"
-      )
+      Strings.Ill_do_this_later()
     }
 }
 
@@ -188,10 +185,7 @@ private let resendButtonStyle: ButtonStyle = { (button: UIButton) in
     |> UIButton.lens.titleLabel.font .~ .ksr_footnote()
     |> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_500
     |> UIButton.lens.title(for: .normal) %~ { _ in
-      localizedString(
-        key: "Resend_email",
-        defaultValue: "Resend email"
-      )
+      Strings.Resend_email()
     }
 }
 
@@ -214,10 +208,7 @@ private let footerLabelStyle: LabelStyle = { (label: UILabel) in
     |> \.font .~ .ksr_footnote()
     |> \.textColor .~ .ksr_soft_black
     |> \.text %~ { _ in
-      localizedString(
-        key: "Cant_find_it",
-        defaultValue: "Can't find it?"
-      )
+      Strings.Cant_find_it()
     }
     |> \.numberOfLines .~ 0
 }
@@ -235,10 +226,7 @@ private let messageLabelStyle: LabelStyle = { (label: UILabel) in
     |> \.font .~ .ksr_callout()
     |> \.textColor .~ .ksr_soft_black
     |> \.text %~ { _ in
-      localizedString(
-        key: "Check_your_inbox_to_complete_this_simple_step",
-        defaultValue: "Check your inbox to complete this simple step."
-      )
+      Strings.Check_your_inbox_to_complete_this_simple_step()
     }
     |> \.numberOfLines .~ 0
 }
@@ -258,10 +246,7 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) in
     |> \.font .~ UIFont.ksr_title3().bolded
     |> \.textColor .~ .ksr_soft_black
     |> \.text %~ { _ in
-      localizedString(
-        key: "Verify_your_email_address",
-        defaultValue: "Verify your email address"
-      )
+      Strings.Verify_your_email_address()
     }
     |> \.numberOfLines .~ 0
 }
