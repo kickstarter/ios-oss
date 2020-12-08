@@ -279,7 +279,6 @@
                                                                     </subviews>
                                                                 </stackView>
                                                             </subviews>
-                                                            <color key="backgroundColor" red="0.98431372549019602" green="0.98431372549019602" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="trailing" secondItem="oJi-cI-WSg" secondAttribute="trailing" constant="10" id="14l-f3-bLf"/>
                                                                 <constraint firstAttribute="height" constant="57.5" id="4LL-kl-1NW"/>

@@ -65,7 +65,7 @@ public final class ProjectPamphletSubpageCellViewModel: ProjectPamphletSubpageCe
 
     self.countLabelTextColor = Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_support_700)
     self.countLabelBorderColor = Signal.merge(commentsSubpage, updatesSubpage).mapConst(.clear)
-    self.countLabelBackgroundColor = Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_support_300)
+    self.countLabelBackgroundColor = Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_support_100)
   }
 
   private let subpageProperty = MutableProperty<ProjectPamphletSubpage?>(nil)

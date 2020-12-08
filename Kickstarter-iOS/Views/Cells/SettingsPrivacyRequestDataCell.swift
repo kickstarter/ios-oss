@@ -58,6 +58,9 @@ internal final class SettingsPrivacyRequestDataCell: UITableViewCell, ValueCell 
           : .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
       }
 
+    _ = self.contentView
+      |> \.backgroundColor .~ .ksr_support_100
+
     _ = self.separatorViews
       ||> settingsSeparatorStyle
 

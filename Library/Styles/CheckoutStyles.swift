@@ -85,7 +85,7 @@ public enum Layout {
 
 public let checkoutBackgroundStyle: ViewStyle = { (view: UIView) in
   view
-    |> \.backgroundColor .~ UIColor.ksr_support_300
+    |> \.backgroundColor .~ UIColor.ksr_support_100
 }
 
 public let checkoutLabelStyle: LabelStyle = { label in
