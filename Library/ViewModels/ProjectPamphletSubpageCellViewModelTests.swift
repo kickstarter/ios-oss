@@ -37,7 +37,7 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
     self.countLabelTextColor.assertValue(.ksr_support_700)
     self.countLabelText.assertValues(["12"])
     self.countLabelBorderColor.assertValue(.clear)
-    self.countLabelBackgroundColor.assertValue(.ksr_support_300)
+    self.countLabelBackgroundColor.assertValue(.ksr_support_100)
     self.labelText.assertValues(["Comments"])
     self.labelTextColor.assertValue(.ksr_support_700)
 
@@ -51,7 +51,7 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
     self.countLabelTextColor.assertValue(.ksr_support_700)
     self.countLabelText.assertValues(["12"])
     self.countLabelBorderColor.assertValue(.clear)
-    self.countLabelBackgroundColor.assertValue(.ksr_support_300)
+    self.countLabelBackgroundColor.assertValue(.ksr_support_100)
     self.labelText.assertValues(["Updates"])
     self.labelTextColor.assertValue(.ksr_support_700)
     self.topSeparatorViewHidden.assertValue(true)
