@@ -36,7 +36,7 @@ final class SettingsAccountHeaderView: UIView {
     super.bindStyles()
 
     _ = self
-      |> \.backgroundColor .~ .ksr_grey_200
+      |> \.backgroundColor .~ .ksr_support_100
       |> settingsHeaderContentViewStyle
 
     _ = self.rootStackView
@@ -96,7 +96,7 @@ private let emailLabelStyle: LabelStyle = { label in
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
     |> \.font .~ .ksr_subhead()
-    |> \.textColor .~ .ksr_text_dark_grey_500
+    |> \.textColor .~ .ksr_support_400
 }
 
 private let manageThisAccountLabelStyle: LabelStyle = { label in
@@ -107,7 +107,7 @@ private let manageThisAccountLabelStyle: LabelStyle = { label in
 
 private let stackViewStyle: StackViewStyle = { stackView in
   stackView
-    |> ksr_setBackgroundColor(UIColor.white)
+    |> ksr_setBackgroundColor(UIColor.ksr_white)
     |> verticalStackViewStyle
     |> \.alignment .~ .leading
     |> \.spacing .~ Styles.grid(1)

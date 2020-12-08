@@ -54,13 +54,13 @@ internal final class ActivitySurveyResponseCell: UITableViewCell, ValueCell {
 
     _ = self.creatorNameLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 13)
-      |> UILabel.lens.textColor .~ .ksr_soft_black
+      |> UILabel.lens.textColor .~ .ksr_support_700
 
     _ = self.respondNowButton
       |> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 12)
       |> UIButton.lens.backgroundColor(for: .normal) .~ .clear
       |> UIButton.lens.titleColor(for: .normal) .~ .ksr_create_700
-      |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_dark_grey_500
+      |> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_support_400
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.discovery_survey_button_respond_now() }
       |> UIButton.lens.tintColor .~ .ksr_create_700
       |> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: Styles.grid(4))

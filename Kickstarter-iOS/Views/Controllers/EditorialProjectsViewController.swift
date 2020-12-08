@@ -97,7 +97,7 @@ public final class EditorialProjectsViewController: UIViewController {
     super.bindStyles()
 
     _ = self.view
-      |> \.backgroundColor .~ UIColor.white
+      |> \.backgroundColor .~ UIColor.ksr_white
 
     _ = self.discoveryPageViewController.view
       |> \.backgroundColor .~ .clear
@@ -300,6 +300,6 @@ private let editorialLabelStyle: LabelStyle = { label in
   label
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ .white
+    |> \.textColor .~ .ksr_white
     |> \.textAlignment .~ .center
 }

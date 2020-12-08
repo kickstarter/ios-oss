@@ -110,7 +110,7 @@ final class ErroredBackingView: UIView {
     super.bindStyles()
 
     _ = self
-      |> \.backgroundColor .~ .ksr_grey_300
+      |> \.backgroundColor .~ .ksr_support_300
 
     _ = self.fixIconImageView
       |> \.clipsToBounds .~ true

@@ -57,7 +57,7 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
       |> baseTableViewCellStyle()
 
     _ = self.containerView
-      |> UIView.lens.backgroundColor .~ .white
+      |> UIView.lens.backgroundColor .~ .ksr_white
       |> dashboardCardStyle
 
     _ = self.rewardsTitle
@@ -116,7 +116,7 @@ internal final class DashboardRewardsCell: UITableViewCell, ValueCell {
       self.mainStackView.addArrangedSubview(stats[$0])
 
       if $0 < statsCount - 1 {
-        let divider = UIView() |> UIView.lens.backgroundColor .~ .ksr_navy_300
+        let divider = UIView() |> UIView.lens.backgroundColor .~ .ksr_support_300
 
         divider.heightAnchor.constraint(equalToConstant: 1.0).isActive = true
 

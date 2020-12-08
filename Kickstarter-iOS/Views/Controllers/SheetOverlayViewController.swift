@@ -45,7 +45,7 @@ final class SheetOverlayViewController: UIViewController {
     self.childViewController.didMove(toParent: self)
 
     _ = self.view
-      |> \.backgroundColor .~ UIColor.ksr_soft_black.withAlphaComponent(0.8)
+      |> \.backgroundColor .~ UIColor.ksr_support_700.withAlphaComponent(0.8)
   }
 
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

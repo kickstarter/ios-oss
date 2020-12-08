@@ -316,7 +316,7 @@ extension CategorySelectionViewController: CategoryPillCellDelegate {
 
 private let skipButtonStyle: BarButtonStyle = { button in
   button
-    |> \.tintColor .~ .white
+    |> \.tintColor .~ .ksr_white
 }
 
 private let headerViewStyle: ViewStyle = { view in
@@ -332,9 +332,9 @@ private let buttonStackViewStyle: StackViewStyle = { stackView in
 
 private let buttonViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ .white
+    |> \.backgroundColor .~ .ksr_white
     |> \.layoutMargins .~ .init(all: Styles.grid(2))
-    |> \.layer.shadowColor .~ UIColor.black.cgColor
+    |> \.layer.shadowColor .~ UIColor.ksr_black.cgColor
     |> \.layer.shadowOpacity .~ 0.12
     |> \.layer.shadowOffset .~ CGSize(width: 0, height: -1.0)
     |> \.layer.shadowRadius .~ CGFloat(1.0)
@@ -348,7 +348,7 @@ private let continueButtonStyle: ButtonStyle = { button in
 
 private let collectionViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ .white
+    |> \.backgroundColor .~ .ksr_white
 }
 
 private let warningLabelStyle: LabelStyle = { label in

@@ -48,6 +48,7 @@ final class ChangePasswordViewController: UIViewController, MessageBannerViewCon
 
     _ = self.scrollView
       |> \.alwaysBounceVertical .~ true
+      |> \.backgroundColor .~ .ksr_support_100
 
     _ = self.stackView
       |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))

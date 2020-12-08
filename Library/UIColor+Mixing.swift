@@ -2,11 +2,11 @@ import UIKit
 
 extension UIColor {
   public func mixLighter(_ amount: CGFloat) -> UIColor {
-    return self.mix(with: .white, amount: amount)
+    return self.mix(with: .ksr_white, amount: amount)
   }
 
   public func mixDarker(_ amount: CGFloat) -> UIColor {
-    return self.mix(with: .black, amount: amount)
+    return self.mix(with: .ksr_black, amount: amount)
   }
 
   private func mix(with color: UIColor, amount: CGFloat) -> UIColor {

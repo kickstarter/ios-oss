@@ -30,14 +30,14 @@ public enum MessageBannerType {
   var iconImageTintColor: UIColor? {
     switch self {
     case .success, .info, .error:
-      return .white
+      return .ksr_white
     }
   }
 
   var textColor: UIColor {
     switch self {
     case .success, .info, .error:
-      return .white
+      return .ksr_white
     }
   }
 

@@ -46,7 +46,7 @@ internal final class DashboardVideoCell: UITableViewCell, ValueCell {
       |> dashboardStatTitleLabelStyle
 
     _ = self.graphStatsContainerView
-      |> UIView.lens.backgroundColor .~ .ksr_grey_200
+      |> UIView.lens.backgroundColor .~ .ksr_support_100
 
     _ = self.graphBackgroundView
       |> containerViewBackgroundStyle
@@ -73,7 +73,7 @@ internal final class DashboardVideoCell: UITableViewCell, ValueCell {
       |> dashboardCardStyle
 
     _ = self.totalPlaysContainerView
-      |> UIView.lens.backgroundColor .~ .ksr_grey_200
+      |> UIView.lens.backgroundColor .~ .ksr_support_100
 
     _ = self.totalPlaysCountLabel
       |> dashboardStatTitleLabelStyle

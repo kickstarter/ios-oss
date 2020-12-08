@@ -198,7 +198,7 @@ private func rewardTitle(project: Project, reward: Reward) -> NSAttributedString
   let title = reward.title.coalesceWith("")
   let titleAttributed = title.attributed(
     with: UIFont.ksr_title2(),
-    foregroundColor: UIColor.ksr_soft_black,
+    foregroundColor: UIColor.ksr_support_700,
     attributes: attributes,
     bolding: [title]
   )
@@ -259,7 +259,7 @@ private func timeLeftString(project: Project, reward: Reward) -> RewardCardPillD
     return RewardCardPillData(
       backgroundColor: UIColor.ksr_celebrate_100,
       text: Strings.Time_left_left(time_left: time + " " + unit),
-      textColor: UIColor.ksr_dark_grey_500
+      textColor: UIColor.ksr_support_400
     )
   }
 
@@ -288,7 +288,7 @@ private func backerCountOrRemainingString(project: Project, reward: Reward) -> R
       remaining_count: "\(remaining)",
       limit_count: "\(limit)"
     ),
-    textColor: UIColor.ksr_dark_grey_500
+    textColor: UIColor.ksr_support_400
   )
 }
 

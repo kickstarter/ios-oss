@@ -57,15 +57,15 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
       }
 
     _ = self.metadataBackgroundView
-      |> UIView.lens.layer.borderColor .~ UIColor.white.cgColor
+      |> UIView.lens.layer.borderColor .~ UIColor.ksr_white.cgColor
       |> UIView.lens.layer.borderWidth .~ 1.0
 
     _ = self.metadataLabel
-      |> UILabel.lens.textColor .~ .white
+      |> UILabel.lens.textColor .~ .ksr_white
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
 
     _ = self.metadataIconImageView
-      |> UIImageView.lens.tintColor .~ .white
+      |> UIImageView.lens.tintColor .~ .ksr_white
 
     _ = self.percentFundedLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
@@ -82,7 +82,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
           ? UIFont.ksr_title2()
           : UIFont.ksr_title1(size: 18)
       }
-      |> UILabel.lens.textColor .~ UIColor.ksr_soft_black
+      |> UILabel.lens.textColor .~ UIColor.ksr_support_700
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.lineBreakMode .~ .byTruncatingTail
 
@@ -90,7 +90,7 @@ internal final class MostPopularSearchProjectCell: UITableViewCell, ValueCell {
       |> separatorStyle
 
     _ = self.progressStaticView
-      |> UIView.lens.backgroundColor .~ .black
+      |> UIView.lens.backgroundColor .~ .ksr_black
       |> UIView.lens.alpha .~ 0.15
   }
 

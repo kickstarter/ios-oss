@@ -32,7 +32,7 @@ internal final class ProjectActivityLaunchCell: UITableViewCell, ValueCell {
 
         _ = titleLabel
           |> projectActivityStateChangeLabelStyle
-          |> UILabel.lens.textColor .~ .ksr_soft_black
+          |> UILabel.lens.textColor .~ .ksr_support_700
       }
   }
 
@@ -51,6 +51,6 @@ internal final class ProjectActivityLaunchCell: UITableViewCell, ValueCell {
     _ = self.cardView
       |> cardStyle()
       |> dropShadowStyleMedium()
-      |> UIView.lens.layer.borderColor .~ UIColor.ksr_soft_black.cgColor
+      |> UIView.lens.layer.borderColor .~ UIColor.ksr_support_700.cgColor
   }
 }

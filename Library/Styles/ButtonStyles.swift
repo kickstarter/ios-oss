@@ -27,17 +27,17 @@ public let baseButtonStyle: ButtonStyle = { button in
 // MARK: - Apricot
 
 public let apricotButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_black
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_support_700
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_alert
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_black
-  <> UIButton.lens.titleColor(for: .disabled) .~ .ksr_dark_grey_400
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_support_700
+  <> UIButton.lens.titleColor(for: .disabled) .~ .ksr_support_400
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_alert.mixDarker(0.12)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_alert.mixLighter(0.36)
 
 // MARK: - Red
 
 public let redButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ UIColor.white
+  <> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_white
   <> UIButton.lens.backgroundColor(for: .normal) .~ UIColor.ksr_alert
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_alert.mixDarker(0.12)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_alert.mixLighter(0.36)
@@ -45,51 +45,51 @@ public let redButtonStyle = baseButtonStyle
 // MARK: - Black
 
 public let blackButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .white
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .white
-  <> UIButton.lens.titleColor(for: .disabled) .~ .ksr_grey_600
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_soft_black
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_soft_black.mixDarker(0.66)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_soft_black.mixLighter(0.36)
-  <> UIButton.lens.backgroundColor(for: .selected) .~ UIColor.ksr_soft_black.mixLighter(0.46)
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_white
+  <> UIButton.lens.titleColor(for: .disabled) .~ .ksr_support_100
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_support_700
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_support_700.mixDarker(0.66)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_support_700.mixLighter(0.36)
+  <> UIButton.lens.backgroundColor(for: .selected) .~ UIColor.ksr_support_700.mixLighter(0.46)
 
 // MARK: - Blue
 
 public let blueButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .white
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_trust_500
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .white
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_white
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_trust_500.mixDarker(0.36)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_trust_500.mixLighter(0.36)
 
 // MARK: - Green
 
 public let greenButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .white
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_create_700
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .white
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_white
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_create_700.mixDarker(0.36)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_create_700.mixLighter(0.36)
 
 // MARK: - Grey
 
 public let greyButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_black
-  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_grey_500
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_black
-  <> UIButton.lens.titleColor(for: .disabled) .~ .ksr_dark_grey_400
-  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_grey_500.mixDarker(0.36)
-  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_grey_500.mixLighter(0.12)
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_support_700
+  <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_support_300
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_support_700
+  <> UIButton.lens.titleColor(for: .disabled) .~ .ksr_support_400
+  <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_support_300.mixDarker(0.36)
+  <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_support_300.mixLighter(0.12)
 
 // MARK: - Facebook
 
 public let facebookButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .white
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_white
   <> UIButton.lens.backgroundColor(for: .normal) .~ .ksr_facebookBlue
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .white
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_white
   <> UIButton.lens.backgroundColor(for: .highlighted) .~ UIColor.ksr_facebookBlue.mixDarker(0.36)
   <> UIButton.lens.backgroundColor(for: .disabled) .~ UIColor.ksr_facebookBlue.mixLighter(0.36)
-  <> UIButton.lens.tintColor .~ .white
+  <> UIButton.lens.tintColor .~ .ksr_white
   <> UIButton.lens.imageEdgeInsets .~ .init(top: 0, left: 0, bottom: 0, right: 18.0)
   <> UIButton.lens.contentEdgeInsets %~~ { _, button in
     button.traitCollection.verticalSizeClass == .compact
@@ -120,7 +120,7 @@ public let multiLineButtonStyle =
 
 public let saveButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
-    <> UIButton.lens.tintColor .~ .ksr_soft_black
+    <> UIButton.lens.tintColor .~ .ksr_support_700
     <> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart-outline")
     <> UIButton.lens.image(for: .selected) .~ image(named: "icon--heart")
     <> UIButton.lens.accessibilityLabel %~ { _ in Strings.Save_this_project() }
@@ -130,16 +130,16 @@ public let saveButtonStyle =
 public let shareButtonStyle =
   UIButton.lens.title(for: .normal) .~ nil
     <> UIButton.lens.image(for: .normal) .~ image(named: "icon--share")
-    <> UIButton.lens.tintColor .~ .ksr_soft_black
+    <> UIButton.lens.tintColor .~ .ksr_support_700
     <> UIButton.lens.accessibilityLabel %~ { _ in Strings.dashboard_accessibility_label_share_project() }
 
 // MARK: - Read More Campaign Button
 
 public let readMoreButtonStyle = baseButtonStyle
-  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_soft_black
-  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_text_dark_grey_500
+  <> UIButton.lens.titleColor(for: .normal) .~ .ksr_support_700
+  <> UIButton.lens.titleColor(for: .highlighted) .~ .ksr_support_400
   <> UIButton.lens.titleLabel.font .~ .ksr_headline(size: 15)
-  <> UIButton.lens.backgroundColor .~ .white
+  <> UIButton.lens.backgroundColor .~ .ksr_white
   <> UIButton.lens.contentEdgeInsets .~ .zero
 
 // experimental campaign button

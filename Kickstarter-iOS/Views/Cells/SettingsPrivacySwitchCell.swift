@@ -48,7 +48,7 @@ final class SettingsPrivacySwitchCell: UITableViewCell, ValueCell, NibLoading {
     super.bindViewModel()
 
     _ = self
-      |> UIView.lens.backgroundColor .~ .ksr_grey_100
+      |> UIView.lens.backgroundColor .~ .ksr_support_100
 
     _ = self.titleLabel
       |> settingsTitleLabelStyle

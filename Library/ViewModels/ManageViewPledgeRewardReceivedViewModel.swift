@@ -123,7 +123,7 @@ private func estimatedDeliveryAttributedText(with date: TimeInterval) -> NSAttri
   let attributedText = NSMutableAttributedString(attributedString: string
     .attributed(
       with: font,
-      foregroundColor: .ksr_text_dark_grey_500,
+      foregroundColor: .ksr_support_400,
       attributes: [:],
       bolding: [string.replacingOccurrences(of: dateString, with: "")]
     ))
@@ -131,7 +131,7 @@ private func estimatedDeliveryAttributedText(with date: TimeInterval) -> NSAttri
   attributedText.setAttributes(
     [
       .font: font,
-      .foregroundColor: UIColor.ksr_text_black
+      .foregroundColor: UIColor.ksr_support_700
     ],
     range: (string as NSString).range(of: dateString)
   )

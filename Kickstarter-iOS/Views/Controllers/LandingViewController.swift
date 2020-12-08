@@ -192,7 +192,7 @@ private let logoImageViewStyle: ImageViewStyle = { imageView in
 private let titleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_title3().bolded
-    |> \.textColor .~ UIColor.ksr_soft_black
+    |> \.textColor .~ UIColor.ksr_support_700
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
     |> \.textAlignment .~ .center
@@ -202,7 +202,7 @@ private let titleLabelStyle: LabelStyle = { label in
 private let subtitleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_subhead()
-    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
+    |> \.textColor .~ UIColor.ksr_support_400
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
     |> \.textAlignment .~ .center

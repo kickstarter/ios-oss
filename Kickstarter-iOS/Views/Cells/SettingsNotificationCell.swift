@@ -52,7 +52,7 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
 
     _ = self.arrowImageView
       |> UIImageView.lens.isHidden .~ cellValue.cellType.shouldHideArrowView
-      |> UIImageView.lens.tintColor .~ .ksr_dark_grey_400
+      |> UIImageView.lens.tintColor .~ .ksr_support_400
 
     _ = self.projectCountLabel
       |> UILabel.lens.isHidden .~ cellValue.cellType.projectCountLabelHidden
@@ -69,18 +69,18 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
       |> settingsTitleLabelStyle
 
     _ = self.projectCountLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+      |> UILabel.lens.textColor .~ .ksr_support_400
       |> UILabel.lens.font .~ .ksr_body()
 
     _ = self.emailNotificationsButton |> notificationButtonStyle
       |> UIButton.lens.image(for: .normal) .~ Library.image(
         named: "email-icon",
-        tintColor: .ksr_dark_grey_400,
+        tintColor: .ksr_support_400,
         inBundle: Bundle.framework
       )
       |> UIButton.lens.image(for: .highlighted) .~ Library.image(
         named: "email-icon",
-        tintColor: .ksr_grey_500,
+        tintColor: .ksr_support_300,
         inBundle: Bundle.framework
       )
       |> UIButton.lens.image(for: .selected) .~ Library.image(
@@ -93,12 +93,12 @@ final class SettingsNotificationCell: UITableViewCell, NibLoading, ValueCell {
       |> notificationButtonStyle
       |> UIButton.lens.image(for: .normal) .~ Library.image(
         named: "mobile-icon",
-        tintColor: .ksr_dark_grey_400,
+        tintColor: .ksr_support_400,
         inBundle: Bundle.framework
       )
       |> UIButton.lens.image(for: .highlighted) .~ Library.image(
         named: "mobile-icon",
-        tintColor: .ksr_grey_500,
+        tintColor: .ksr_support_300,
         inBundle: Bundle.framework
       )
       |> UIButton.lens.image(for: .selected) .~ Library.image(

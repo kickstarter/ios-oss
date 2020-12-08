@@ -76,7 +76,7 @@ private func attributedLaunchDateString(with project: Project)
   let regularFontAttribute = [
     NSAttributedString.Key.paragraphStyle: paragraphStyle,
     NSAttributedString.Key.font: UIFont.ksr_subhead(),
-    NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
+    NSAttributedString.Key.foregroundColor: UIColor.ksr_support_700
   ]
   let boldFontAttribute = [NSAttributedString.Key.font: UIFont.ksr_subhead().bolded]
 

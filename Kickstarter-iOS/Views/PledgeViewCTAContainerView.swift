@@ -254,8 +254,8 @@ private let disclaimerStackViewStyle: StackViewStyle = { stackView in
 private let layerStyle: LayerStyle = { layer in
   layer
     |> checkoutLayerCardRoundedStyle
-    |> \.backgroundColor .~ UIColor.white.cgColor
-    |> \.shadowColor .~ UIColor.black.cgColor
+    |> \.backgroundColor .~ UIColor.ksr_white.cgColor
+    |> \.shadowColor .~ UIColor.ksr_black.cgColor
     |> \.shadowOpacity .~ 0.12
     |> \.shadowOffset .~ CGSize(width: 0, height: -1.0)
     |> \.shadowRadius .~ CGFloat(1.0)

@@ -188,7 +188,7 @@ internal final class BackerDashboardViewController: UIViewController {
       |> UIBarButtonItem.lens.accessibilityLabel %~ { _ in Strings.profile_settings_navbar_title() }
 
     _ = self.dividerView
-      |> UIView.lens.backgroundColor .~ .ksr_grey_500
+      |> UIView.lens.backgroundColor .~ .ksr_support_300
 
     _ = self.headerStackView
       |> UIView.lens.layoutMargins %~~ { _, view in
@@ -198,7 +198,7 @@ internal final class BackerDashboardViewController: UIViewController {
       }
 
     _ = self.backerNameLabel
-      |> UILabel.lens.textColor .~ .ksr_soft_black
+      |> UILabel.lens.textColor .~ .ksr_support_700
       |> UILabel.lens.font .~ .ksr_headline(size: 18)
   }
 
@@ -219,14 +219,14 @@ internal final class BackerDashboardViewController: UIViewController {
       NSAttributedString.Key.font: self.traitCollection.isRegularRegular
         ? UIFont.ksr_headline(size: 16.0)
         : UIFont.ksr_headline(size: 13.0),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_500
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400
     ])
 
     let selectedTitleString = NSAttributedString(string: string, attributes: [
       NSAttributedString.Key.font: self.traitCollection.isRegularRegular
         ? UIFont.ksr_headline(size: 16.0)
         : UIFont.ksr_headline(size: 13.0),
-      NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
+      NSAttributedString.Key.foregroundColor: UIColor.ksr_support_700
     ])
 
     _ = button

@@ -55,7 +55,7 @@ internal final class TwoFactorViewController: UIViewController {
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.two_factor_buttons_submit() }
 
     _ = self.titleLabel
-      |> UILabel.lens.textColor .~ .ksr_soft_black
+      |> UILabel.lens.textColor .~ .ksr_support_700
       |> UILabel.lens.font .~ .ksr_body()
       |> UILabel.lens.text %~ { _ in Strings.two_factor_message() }
   }

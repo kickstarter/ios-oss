@@ -202,7 +202,7 @@ private let backerInfoStackViewStyle: StackViewStyle = { stackView in
 private let backerNumberLabelStyle: LabelStyle = { label in
   label
     |> checkoutLabelStyle
-    |> \.textColor .~ UIColor.ksr_soft_black
+    |> \.textColor .~ UIColor.ksr_support_700
     |> \.font .~ UIFont.ksr_footnote()
     |> \.adjustsFontForContentSizeCategory .~ true
 }
@@ -211,7 +211,7 @@ private let backingDateLabelStyle: LabelStyle = { label in
   label
     |> checkoutLabelStyle
     |> \.font .~ UIFont.ksr_footnote()
-    |> \.textColor .~ UIColor.ksr_dark_grey_500
+    |> \.textColor .~ UIColor.ksr_support_400
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.numberOfLines .~ 0
 }
@@ -225,7 +225,7 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
 private let totalLabelStyle: LabelStyle = { label in
   label
     |> checkoutLabelStyle
-    |> \.textColor .~ UIColor.black
+    |> \.textColor .~ UIColor.ksr_black
     |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.text %~ { _ in Strings.Total() }

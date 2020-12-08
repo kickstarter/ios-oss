@@ -59,7 +59,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
 
     let statLabel =
       UILabel.lens.font .~ .ksr_caption1(size: 12)
-        <> UILabel.lens.textColor .~ .ksr_text_navy_600
+        <> UILabel.lens.textColor .~ .ksr_support_400
 
     _ = self
       |> baseTableViewCellStyle()
@@ -75,7 +75,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
 
     _ = self.bodyLabel
       |> UILabel.lens.numberOfLines .~ 4
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+      |> UILabel.lens.textColor .~ .ksr_support_400
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? UIFont.ksr_body()
@@ -83,7 +83,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
       }
 
     _ = self.commentsCountImageView
-      |> UIImageView.lens.tintColor .~ .ksr_dark_grey_500
+      |> UIImageView.lens.tintColor .~ .ksr_support_400
 
     _ = self.commentsCountLabel
       |> statLabel
@@ -106,7 +106,7 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.spacing .~ Styles.grid(3)
 
     _ = self.likesCountImageView
-      |> UIImageView.lens.tintColor .~ .ksr_dark_grey_500
+      |> UIImageView.lens.tintColor .~ .ksr_support_400
 
     _ = self.likesCountLabel
       |> statLabel
@@ -117,6 +117,6 @@ internal final class ProjectActivityUpdateCell: UITableViewCell, ValueCell {
     _ = self.updateTitleLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 22)
       |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.textColor .~ .ksr_soft_black
+      |> UILabel.lens.textColor .~ .ksr_support_700
   }
 }

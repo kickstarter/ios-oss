@@ -55,7 +55,7 @@ private func statusLabelText(with data: PledgeStatusLabelViewData) -> NSAttribut
   paragraphStyle.alignment = .center
 
   let font = UIFont.ksr_subhead()
-  let foregroundColor = UIColor.ksr_text_black
+  let foregroundColor = UIColor.ksr_support_700
 
   let attributes = [
     NSAttributedString.Key.paragraphStyle: paragraphStyle,
@@ -130,7 +130,7 @@ private func attributedConfirmationString(with data: PledgeStatusLabelViewData) 
   let isCreator = data.currentUserIsCreatorOfProject
 
   let font = UIFont.ksr_subhead()
-  let foregroundColor = UIColor.ksr_text_black
+  let foregroundColor = UIColor.ksr_support_700
 
   let paragraphStyle = NSMutableParagraphStyle()
   paragraphStyle.alignment = .center

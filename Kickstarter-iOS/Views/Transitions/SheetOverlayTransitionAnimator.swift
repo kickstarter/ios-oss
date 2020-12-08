@@ -5,7 +5,7 @@ import UIKit
 final class SheetOverlayTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
   private let darkOverlayView: UIView = {
     UIView(frame: .zero)
-      |> \.backgroundColor .~ UIColor.ksr_soft_black.withAlphaComponent(0.8)
+      |> \.backgroundColor .~ UIColor.ksr_support_700.withAlphaComponent(0.8)
   }()
 
   func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {

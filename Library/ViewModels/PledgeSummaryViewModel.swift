@@ -112,7 +112,7 @@ public class PledgeSummaryViewModel: PledgeSummaryViewModelType,
 
 private func attributedCurrency(with project: Project, total: Double) -> NSAttributedString? {
   let defaultAttributes = checkoutCurrencyDefaultAttributes()
-    .withAllValuesFrom([.foregroundColor: UIColor.ksr_text_black])
+    .withAllValuesFrom([.foregroundColor: UIColor.ksr_support_700])
   return Format.attributedCurrency(
     total,
     country: project.country,
@@ -127,7 +127,7 @@ private func attributedConfirmationString(with project: Project, pledgeTotal: Do
   let pledgeTotal = Format.currency(pledgeTotal, country: project.country)
 
   let font = UIFont.ksr_caption1()
-  let foregroundColor = UIColor.ksr_text_dark_grey_500
+  let foregroundColor = UIColor.ksr_support_400
 
   guard project.stats.needsConversion else {
     return Strings.If_the_project_reaches_its_funding_goal_you_will_be_charged_on_project_deadline(

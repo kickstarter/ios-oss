@@ -107,7 +107,7 @@ internal final class ProjectNavigatorTransitionAnimator: UIPercentDrivenInteract
       },
       completion: { _ in
         self.darkOverlayView.backgroundColor = transitionContext.transitionWasCancelled
-          ? .black
+          ? .ksr_black
           : self.darkOverlayView.backgroundColor
         transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
       }

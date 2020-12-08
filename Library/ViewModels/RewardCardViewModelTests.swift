@@ -543,7 +543,7 @@ final class RewardCardViewModelTests: TestCase {
       [RewardCardPillData(
         backgroundColor: UIColor.ksr_celebrate_100,
         text: "25 left of 100",
-        textColor: UIColor.ksr_dark_grey_500
+        textColor: UIColor.ksr_support_400
       )]
     ])
   }
@@ -564,7 +564,7 @@ final class RewardCardViewModelTests: TestCase {
       [RewardCardPillData(
         backgroundColor: UIColor.ksr_celebrate_100,
         text: "25 left of 100",
-        textColor: UIColor.ksr_dark_grey_500
+        textColor: UIColor.ksr_support_400
       )]
     ])
   }
@@ -606,7 +606,7 @@ final class RewardCardViewModelTests: TestCase {
       [RewardCardPillData(
         backgroundColor: UIColor.ksr_celebrate_100,
         text: "24 hrs left",
-        textColor: UIColor.ksr_dark_grey_500
+        textColor: UIColor.ksr_support_400
       )]
     ])
   }
@@ -630,7 +630,7 @@ final class RewardCardViewModelTests: TestCase {
       [RewardCardPillData(
         backgroundColor: UIColor.ksr_celebrate_100,
         text: "4 days left",
-        textColor: UIColor.ksr_dark_grey_500
+        textColor: UIColor.ksr_support_400
       )]
     ])
   }
@@ -655,12 +655,12 @@ final class RewardCardViewModelTests: TestCase {
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "4 days left",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "75 left of 100",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         )
       ]
     ])
@@ -691,12 +691,12 @@ final class RewardCardViewModelTests: TestCase {
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "4 days left",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "75 left of 100",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
           backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
@@ -733,12 +733,12 @@ final class RewardCardViewModelTests: TestCase {
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "4 days left",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "75 left of 100",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
           backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
@@ -774,12 +774,12 @@ final class RewardCardViewModelTests: TestCase {
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "4 days left",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "75 left of 100",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
           backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
@@ -818,12 +818,12 @@ final class RewardCardViewModelTests: TestCase {
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "4 days left",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "25 left of 100",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
           backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
@@ -970,7 +970,7 @@ final class RewardCardViewModelTests: TestCase {
       .assertValues([[RewardCardPillData(
         backgroundColor: UIColor.ksr_celebrate_100,
         text: "50 left of 100",
-        textColor: UIColor.ksr_dark_grey_500
+        textColor: UIColor.ksr_support_400
       )]])
   }
 

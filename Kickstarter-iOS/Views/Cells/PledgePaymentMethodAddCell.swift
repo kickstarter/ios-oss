@@ -73,5 +73,5 @@ private let addButtonStyle: ButtonStyle = { button in
 
 private let selectionViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ .ksr_grey_200
+    |> \.backgroundColor .~ .ksr_support_100
 }

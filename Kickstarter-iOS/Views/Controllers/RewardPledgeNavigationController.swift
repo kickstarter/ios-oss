@@ -9,7 +9,7 @@ final class RewardPledgeNavigationController: UINavigationController {
     super.viewDidLoad()
 
     _ = self.navigationBar
-      ?|> \.barTintColor .~ .ksr_grey_300
+      ?|> \.barTintColor .~ .ksr_support_300
       ?|> \.isTranslucent .~ false
       ?|> \.shadowImage .~ UIImage()
   }

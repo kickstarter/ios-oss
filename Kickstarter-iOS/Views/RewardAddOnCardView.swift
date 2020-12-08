@@ -107,7 +107,7 @@ public final class RewardAddOnCardView: UIView {
       |> baseRewardLabelStyle
       |> \.font .~ UIFont.ksr_callout().weighted(.semibold)
       |> \.text %~ { _ in Strings.project_view_pledge_includes() }
-      |> \.textColor .~ UIColor.ksr_text_dark_grey_500
+      |> \.textColor .~ UIColor.ksr_support_400
 
     _ = self.includedItemsLabel
       |> baseRewardLabelStyle
@@ -131,7 +131,7 @@ public final class RewardAddOnCardView: UIView {
 
     _ = self.quantityLabelContainer
       |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
-      |> \.layer.borderColor .~ UIColor.ksr_grey_400.cgColor
+      |> \.layer.borderColor .~ UIColor.ksr_support_300.cgColor
       |> \.layer.borderWidth .~ 1
       |> checkoutRoundedCornersStyle
 
@@ -249,7 +249,7 @@ public final class RewardAddOnCardView: UIView {
         font: UIFont.ksr_footnote().bolded,
         margins: UIEdgeInsets(topBottom: Styles.gridHalf(2), leftRight: Styles.gridHalf(3)),
         text: text,
-        textColor: .ksr_dark_grey_500,
+        textColor: .ksr_support_400,
         imageName: nil
       )
     }
@@ -309,7 +309,7 @@ private let amountLabelStyle: LabelStyle = { label in
 
 private let convertedAmountLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_dark_grey_500
+    |> \.textColor .~ .ksr_support_400
     |> \.font .~ UIFont.ksr_footnote().weighted(.medium)
 }
 
@@ -321,7 +321,7 @@ private let titleAmountStackViewStyle: StackViewStyle = { stackView in
 
 private let rewardTitleLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.font .~ UIFont.ksr_title3().bolded
 }
 
@@ -333,6 +333,6 @@ private let sectionStackViewStyle: StackViewStyle = { stackView in
 
 private let descriptionLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.font .~ UIFont.ksr_body()
 }

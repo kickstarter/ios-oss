@@ -104,8 +104,8 @@ internal func traitControllers(
 
   child.view.frame = parent.view.frame
 
-  parent.view.backgroundColor = .white
-  child.view.backgroundColor = .white
+  parent.view.backgroundColor = .ksr_white
+  child.view.backgroundColor = .ksr_white
 
   let allTraits = UITraitCollection.init(traitsFrom: [traits, additionalTraits])
   parent.setOverrideTraitCollection(allTraits, forChild: child)
