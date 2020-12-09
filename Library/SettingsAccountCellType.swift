@@ -42,7 +42,7 @@ public enum SettingsAccountCellType: SettingsCellTypeProtocol, Equatable {
   }
 
   public var textColor: UIColor {
-    return .ksr_soft_black
+    return .ksr_support_700
   }
 
   public var title: String {

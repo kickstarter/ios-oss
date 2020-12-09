@@ -122,7 +122,7 @@ final class ActivityErroredBackingsCell: UITableViewCell, ValueCell {
 
 private let backgroundContainerViewStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ .ksr_grey_300
+    |> \.backgroundColor .~ .ksr_support_300
     |> \.clipsToBounds .~ true
     |> \.layer.cornerRadius .~ Styles.grid(2)
 }

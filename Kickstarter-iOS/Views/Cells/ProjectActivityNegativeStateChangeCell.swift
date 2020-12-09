@@ -33,7 +33,7 @@ internal final class ProjectActivityNegativeStateChangeCell: UITableViewCell, Va
 
         _ = titleLabel
           |> projectActivityStateChangeLabelStyle
-          |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+          |> UILabel.lens.textColor .~ .ksr_support_400
       }
   }
 
@@ -52,6 +52,6 @@ internal final class ProjectActivityNegativeStateChangeCell: UITableViewCell, Va
     _ = self.cardView
       |> cardStyle()
       |> dropShadowStyleMedium()
-      |> UIView.lens.layer.borderColor .~ UIColor.ksr_dark_grey_400.cgColor
+      |> UIView.lens.layer.borderColor .~ UIColor.ksr_support_400.cgColor
   }
 }

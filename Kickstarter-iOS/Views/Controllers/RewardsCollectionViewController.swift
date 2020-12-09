@@ -24,7 +24,7 @@ final class RewardsCollectionViewController: UICollectionViewController {
   }()
 
   private lazy var navigationBarShadowImage: UIImage? = {
-    UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_dark_grey_400)
+    UIImage(in: CGRect(x: 0, y: 0, width: 1, height: 0.5), with: .ksr_support_400)
   }()
 
   public weak var pledgeViewDelegate: PledgeViewControllerDelegate?

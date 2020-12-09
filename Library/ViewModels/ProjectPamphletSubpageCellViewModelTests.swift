@@ -34,12 +34,12 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
   func testCommentsSubpage() {
     self.vm.inputs.configureWith(subpage: .comments(12, .middle))
 
-    self.countLabelTextColor.assertValue(.ksr_soft_black)
+    self.countLabelTextColor.assertValue(.ksr_support_700)
     self.countLabelText.assertValues(["12"])
     self.countLabelBorderColor.assertValue(.clear)
-    self.countLabelBackgroundColor.assertValue(.ksr_navy_300)
+    self.countLabelBackgroundColor.assertValue(.ksr_support_100)
     self.labelText.assertValues(["Comments"])
-    self.labelTextColor.assertValue(.ksr_soft_black)
+    self.labelTextColor.assertValue(.ksr_support_700)
 
     self.topSeparatorViewHidden.assertValue(true)
     self.separatorViewHidden.assertValue(false)
@@ -48,12 +48,12 @@ internal final class ProjectPamphletSubpageCellViewModelTests: TestCase {
   func testUpdatesSubpage() {
     self.vm.inputs.configureWith(subpage: .updates(12, .last))
 
-    self.countLabelTextColor.assertValue(.ksr_soft_black)
+    self.countLabelTextColor.assertValue(.ksr_support_700)
     self.countLabelText.assertValues(["12"])
     self.countLabelBorderColor.assertValue(.clear)
-    self.countLabelBackgroundColor.assertValue(.ksr_navy_300)
+    self.countLabelBackgroundColor.assertValue(.ksr_support_100)
     self.labelText.assertValues(["Updates"])
-    self.labelTextColor.assertValue(.ksr_soft_black)
+    self.labelTextColor.assertValue(.ksr_support_700)
     self.topSeparatorViewHidden.assertValue(true)
     self.separatorViewHidden.assertValue(true)
   }

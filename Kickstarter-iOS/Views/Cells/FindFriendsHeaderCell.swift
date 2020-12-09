@@ -50,16 +50,16 @@ internal final class FindFriendsHeaderCell: UITableViewCell, ValueCell {
 
     _ = self.titleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_soft_black
+      |> UILabel.lens.textColor .~ .ksr_support_700
       |> UILabel.lens.text %~ { _ in Strings.Discover_more_projects() }
 
     _ = self.subtitleLabel
       |> UILabel.lens.font .~ .ksr_subhead(size: 12)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_support_400
       |> UILabel.lens.text %~ { _ in Strings.Follow_your_Facebook_friends_and_get_notified() }
 
     _ = self.closeButton
-      |> UIButton.lens.tintColor .~ .ksr_soft_black
+      |> UIButton.lens.tintColor .~ .ksr_support_700
       |> UIButton.lens.targets .~ [(self, action: #selector(self.closeButtonTapped), .touchUpInside)]
       |> UIButton.lens.contentEdgeInsets .~ .init(
         top: Styles.grid(1), left: Styles.grid(3),

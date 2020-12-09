@@ -9,7 +9,7 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
 
   func configureWith(value project: Project) {
     self.pledgeTitleLabel.textColor = discoveryPrimaryColor()
-    self.separatorView.backgroundColor = .ksr_grey_200
+    self.separatorView.backgroundColor = .ksr_support_100
     let date = Format.date(
       secondsInUTC: project.dates.deadline,
       template: "MMM d, yyyy, h:mm a"
@@ -27,7 +27,7 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
           amount: amount,
           date: date
         )
-      self.pledgeTitleLabel.textColor = .ksr_text_dark_grey_500
+      self.pledgeTitleLabel.textColor = .ksr_support_400
     default:
       self.pledgeTitleLabel.font = .ksr_headline(size: 16)
       self.pledgeTitleLabel.text = Strings.You_backed_this_project()
@@ -51,6 +51,6 @@ internal final class PledgeTitleCell: UITableViewCell, ValueCell {
 
     _ = self.pledgeTitleLabel
       |> UILabel.lens.numberOfLines .~ 0
-      |> UILabel.lens.backgroundColor .~ .white
+      |> UILabel.lens.backgroundColor .~ .ksr_white
   }
 }

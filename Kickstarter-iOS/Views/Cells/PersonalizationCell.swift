@@ -185,7 +185,7 @@ private let baseLabelStyle: LabelStyle = { label in
   label
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ .white
+    |> \.textColor .~ .ksr_white
     |> \.textAlignment .~ .center
 }
 
@@ -215,7 +215,7 @@ private let subtitleLabelStyle: LabelStyle = { label in
 
 private let dismissButtonStyle: ButtonStyle = { button in
   button
-    |> \.tintColor .~ UIColor.white
+    |> \.tintColor .~ UIColor.ksr_white
     |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
     |> UIButton.lens.accessibilityLabel %~ { _ in Strings.Dismiss() }
 }

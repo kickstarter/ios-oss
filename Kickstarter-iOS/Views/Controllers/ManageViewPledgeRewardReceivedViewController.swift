@@ -60,7 +60,7 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
     super.bindStyles()
 
     _ = self.view
-      |> \.layer.borderColor .~ UIColor.ksr_grey_500.cgColor
+      |> \.layer.borderColor .~ UIColor.ksr_support_300.cgColor
 
     _ = self.rootStackView
       |> \.isLayoutMarginsRelativeArrangement .~ true
@@ -71,7 +71,7 @@ final class ManageViewPledgeRewardReceivedViewController: UIViewController {
     _ = self.toggleViewController.titleLabel
       |> checkoutTitleLabelStyle
       |> \.font .~ UIFont.ksr_subhead()
-      |> \.textColor .~ .ksr_text_black
+      |> \.textColor .~ .ksr_support_700
       |> \.text %~ { _ in Strings.Reward_received() }
 
     _ = self.toggleViewController.toggle

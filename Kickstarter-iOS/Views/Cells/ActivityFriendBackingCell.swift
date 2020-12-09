@@ -77,14 +77,14 @@ internal final class ActivityFriendBackingCell: UITableViewCell, ValueCell {
       |> ignoresInvertColorsImageViewStyle
 
     _ = self.fundingProgressContainerView
-      |> UIView.lens.backgroundColor .~ .ksr_navy_400
+      |> UIView.lens.backgroundColor .~ .ksr_support_300
 
     _ = self.projectImageView
       |> UIImageView.lens.clipsToBounds .~ true
 
     _ = self.projectNameLabel
       |> UILabel.lens.font .~ .ksr_title1(size: 18)
-      |> UILabel.lens.textColor .~ .ksr_soft_black
+      |> UILabel.lens.textColor .~ .ksr_support_700
 
     _ = self.projectImageView
       |> ignoresInvertColorsImageViewStyle

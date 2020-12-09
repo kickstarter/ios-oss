@@ -49,7 +49,7 @@ internal final class ActivityFriendFollowCell: UITableViewCell, ValueCell {
       |> ignoresInvertColorsImageViewStyle
 
     _ = self.friendLabel
-      |> UILabel.lens.textColor .~ .ksr_soft_black
+      |> UILabel.lens.textColor .~ .ksr_support_700
 
     _ = self.followButton
       |> blackButtonStyle

@@ -292,7 +292,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()
 
-    self.fundingProgressBarViewBackgroundColor.assertValues([UIColor.ksr_dark_grey_400])
+    self.fundingProgressBarViewBackgroundColor.assertValues([UIColor.ksr_support_400])
   }
 
   func testFundingProgressBarViewBackgroundColor_SuccessfulProject() {
@@ -302,7 +302,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()
 
-    self.fundingProgressBarViewBackgroundColor.assertValues([UIColor.ksr_green_700])
+    self.fundingProgressBarViewBackgroundColor.assertValues([UIColor.ksr_create_700])
   }
 
   func testPledgedTitleLabelTextColor_SucessfulProject() {
@@ -312,7 +312,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()
 
-    self.pledgedTitleLabelTextColor.assertValues([UIColor.ksr_green_700])
+    self.pledgedTitleLabelTextColor.assertValues([UIColor.ksr_create_700])
   }
 
   func testPledgedTitleLabelTextColor_UnsuccessfulProject() {
@@ -322,7 +322,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()
 
-    self.pledgedTitleLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_500])
+    self.pledgedTitleLabelTextColor.assertValues([UIColor.ksr_support_400])
   }
 
   // MARK: - Pledged Label
@@ -417,7 +417,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()
 
-    self.projectStateLabelTextColor.assertValues([UIColor.ksr_green_700])
+    self.projectStateLabelTextColor.assertValues([UIColor.ksr_create_700])
   }
 
   func testProjectStateLabelTextColor_UnsuccessfulProject() {
@@ -426,7 +426,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()
 
-    self.projectStateLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_400])
+    self.projectStateLabelTextColor.assertValues([UIColor.ksr_support_400])
   }
 
   func testProjectUnsuccessfulLabelTextColor_SuccessfulProjects() {
@@ -435,7 +435,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()
 
-    self.projectUnsuccessfulLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_500])
+    self.projectUnsuccessfulLabelTextColor.assertValues([UIColor.ksr_support_400])
   }
 
   func testProjectUnsuccessfulLabelTextColor_UnsuccessfulProjects() {
@@ -444,7 +444,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.awakeFromNib()
 
-    self.projectUnsuccessfulLabelTextColor.assertValues([UIColor.ksr_text_dark_grey_500])
+    self.projectUnsuccessfulLabelTextColor.assertValues([UIColor.ksr_support_400])
   }
 
   func testStateLabelHidden_LiveProject() {

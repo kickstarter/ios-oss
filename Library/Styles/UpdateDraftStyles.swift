@@ -12,18 +12,18 @@ public let updateTitleTextFieldStyle = formFieldStyle
   <> UITextField.lens.font %~ { _ in .ksr_title1(size: 22) }
   <> UITextField.lens.placeholder %~ { _ in Strings.dashboard_post_update_compose_placeholder_title() }
   <> UITextField.lens.returnKeyType .~ .next
-  <> UITextField.lens.textColor .~ .ksr_text_dark_grey_500
+  <> UITextField.lens.textColor .~ .ksr_support_400
 
 public let updateBodyTextViewStyle = UITextView.lens.backgroundColor .~ .clear
   <> UITextView.lens.font %~ { _ in .ksr_callout() }
-  <> UITextView.lens.textColor .~ .ksr_text_navy_600
+  <> UITextView.lens.textColor .~ .ksr_support_400
   <> UITextView.lens.textContainerInset .~ .init(top: 34, left: 12, bottom: 12, right: 12)
   <> UITextView.lens.textContainer.lineFragmentPadding .~ 0
-  <> UITextView.lens.tintColor .~ .ksr_green_700
+  <> UITextView.lens.tintColor .~ .ksr_create_700
 
 public let updateBodyPlaceholderTextViewStyle = updateBodyTextViewStyle
   <> UITextView.lens.text %~ { _ in Strings.Share_an_update_about_your_project() }
-  <> UITextView.lens.textColor .~ .ksr_text_dark_grey_400
+  <> UITextView.lens.textColor .~ .ksr_support_400
   <> UITextView.lens.isUserInteractionEnabled .~ false
 
 public let updateBackersOnlyButtonStyle =
@@ -33,30 +33,30 @@ public let updateBackersOnlyButtonStyle =
       image(named: "update-draft-visibility-backers-only-icon")
     }
 
-    <> UIButton.lens.tintColor .~ .ksr_navy_600
+    <> UIButton.lens.tintColor .~ .ksr_support_400
     <> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_post_update_compose_public_label() }
     <> UIButton.lens.title(for: .selected) %~ { _ in
       Strings.dashboard_post_update_compose_private_label()
     }
 
-    <> UIButton.lens.titleColor(for: .normal) .~ .ksr_text_navy_600
+    <> UIButton.lens.titleColor(for: .normal) .~ .ksr_support_400
     <> UIButton.lens.titleEdgeInsets .~ .init(top: 0, left: 7, bottom: 0, right: 0)
     <> UIButton.lens.titleLabel.font %~ { _ in .ksr_caption1() }
 
 public let updateAddAttachmentButtonStyle =
-  UIButton.lens.backgroundColor .~ .ksr_navy_200
+  UIButton.lens.backgroundColor .~ .ksr_support_100
     <> UIButton.lens.contentCompressionResistancePriority(for: .vertical) .~ .required
     <> UIButton.lens.contentEdgeInsets .~ .init(top: 11, left: 9, bottom: 12, right: 9)
     <> UIButton.lens.contentHuggingPriority(for: .vertical) .~ .required
     <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "update-draft-add-attachment-icon") }
-    <> UIButton.lens.layer.borderColor .~ UIColor.ksr_navy_300.cgColor
+    <> UIButton.lens.layer.borderColor .~ UIColor.ksr_support_300.cgColor
     <> UIButton.lens.layer.borderWidth .~ 1
     <> UIButton.lens.layer.cornerRadius .~ 8
-    <> UIButton.lens.tintColor .~ .ksr_navy_600
+    <> UIButton.lens.tintColor .~ .ksr_support_400
     <> UIButton.lens.title(for: .normal) .~ nil
 
 public let updateAddAttachmentExpandedButtonStyle =
-  UIButton.lens.tintColor .~ .ksr_text_dark_grey_400
+  UIButton.lens.tintColor .~ .ksr_support_400
     <> UIButton.lens.title(for: .normal) %~ { _ in
       Strings.dashboard_post_update_compose_attachment_buttons_add_attachment()
     }

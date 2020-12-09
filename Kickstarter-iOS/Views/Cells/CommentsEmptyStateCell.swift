@@ -49,7 +49,7 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-      |> CommentsEmptyStateCell.lens.backgroundColor .~ .white
+      |> CommentsEmptyStateCell.lens.backgroundColor .~ .ksr_white
       |> CommentsEmptyStateCell.lens.contentView.layoutMargins .~
       .init(topBottom: Styles.grid(9), leftRight: Styles.grid(3))
 
@@ -77,12 +77,12 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
 
     _ = self.subtitleLabel
       |> UILabel.lens.font .~ .ksr_body(size: 16.0)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+      |> UILabel.lens.textColor .~ .ksr_support_400
       |> UILabel.lens.textAlignment .~ .center
 
     _ = self.titleLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 18.0)
-      |> UILabel.lens.textColor .~ .ksr_soft_black
+      |> UILabel.lens.textColor .~ .ksr_support_700
       |> UILabel.lens.text %~ { _ in Strings.No_comments_yet() }
   }
 

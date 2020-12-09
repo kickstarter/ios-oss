@@ -54,7 +54,7 @@ final class EmailVerificationViewController: UIViewController, MessageBannerView
     super.bindStyles()
 
     _ = self.view
-      |> \.backgroundColor .~ .white
+      |> \.backgroundColor .~ .ksr_white
 
     _ = self.rootStackView
       |> rootStackViewStyle
@@ -174,7 +174,7 @@ private let skipButtonStyle: ButtonStyle = { (button: UIButton) in
   button
     |> UIButton.lens.titleLabel.textAlignment .~ .center
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead().bolded
-    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_500
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_create_700
     |> UIButton.lens.title(for: .normal) %~ { _ in
       Strings.Ill_do_this_later()
     }
@@ -183,7 +183,7 @@ private let skipButtonStyle: ButtonStyle = { (button: UIButton) in
 private let resendButtonStyle: ButtonStyle = { (button: UIButton) in
   button
     |> UIButton.lens.titleLabel.font .~ .ksr_footnote()
-    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_green_500
+    |> UIButton.lens.titleColor(for: .normal) .~ .ksr_create_700
     |> UIButton.lens.title(for: .normal) %~ { _ in
       Strings.Resend_email()
     }
@@ -206,7 +206,7 @@ private let footerLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.textAlignment .~ .center
     |> \.font .~ .ksr_footnote()
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.text %~ { _ in
       Strings.Cant_find_it()
     }
@@ -224,7 +224,7 @@ private let messageLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.textAlignment .~ .center
     |> \.font .~ .ksr_callout()
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.text %~ { _ in
       Strings.Check_your_inbox_to_complete_this_simple_step()
     }
@@ -244,7 +244,7 @@ private let titleLabelStyle: LabelStyle = { (label: UILabel) in
   label
     |> \.textAlignment .~ .center
     |> \.font .~ UIFont.ksr_title3().bolded
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.text %~ { _ in
       Strings.Verify_your_email_address()
     }

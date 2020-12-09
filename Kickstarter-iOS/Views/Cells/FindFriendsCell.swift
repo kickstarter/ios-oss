@@ -38,7 +38,7 @@ final class FindFriendsCell: UITableViewCell, ValueCell, NibLoading {
   }
 
   private func updateStyles(isDisabled: Bool) {
-    let titleLabelColor: UIColor = isDisabled ? .ksr_text_dark_grey_400 : .ksr_soft_black
+    let titleLabelColor: UIColor = isDisabled ? .ksr_support_400 : .ksr_support_700
     let accessibilityTraits = isDisabled ? UIAccessibilityTraits.notEnabled : UIAccessibilityTraits.button
     let accessibilityHint = isDisabled ? Strings.Following_Disabled_Info() : nil
 

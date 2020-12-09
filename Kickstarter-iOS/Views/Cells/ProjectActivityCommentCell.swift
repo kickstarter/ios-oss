@@ -87,11 +87,11 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
         titleLabel.attributedText = title.simpleHtmlAttributedString(
           base: [
             NSAttributedString.Key.font: UIFont.ksr_title3(size: 14),
-            NSAttributedString.Key.foregroundColor: UIColor.ksr_text_dark_grey_400
+            NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400
           ],
           bold: [
             NSAttributedString.Key.font: UIFont.ksr_title3(size: 14),
-            NSAttributedString.Key.foregroundColor: UIColor.ksr_soft_black
+            NSAttributedString.Key.foregroundColor: UIColor.ksr_support_700
           ],
           italic: nil
         )
@@ -119,7 +119,7 @@ internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.dashboard_activity_pledge_info() }
 
     _ = self.bodyLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_support_400
       |> UILabel.lens.font %~~ { _, label in
         label.traitCollection.isRegularRegular
           ? UIFont.ksr_body()

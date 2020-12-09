@@ -167,7 +167,7 @@ private let expirationDateLabelStyle: LabelStyle = { label in
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.font .~ UIFont.ksr_caption1().bolded
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
+    |> \.textColor .~ UIColor.ksr_support_400
 }
 
 private let lastFourDigitsLabelStyle: LabelStyle = { label in
@@ -175,7 +175,7 @@ private let lastFourDigitsLabelStyle: LabelStyle = { label in
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ UIColor.ksr_soft_black
+    |> \.textColor .~ UIColor.ksr_support_700
 }
 
 private let paymentMethodAdaptableStackViewStyle: StackViewStyle = { stackView in

@@ -521,9 +521,9 @@ final class RewardCardViewModelTests: TestCase {
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
       [RewardCardPillData(
-        backgroundColor: UIColor.ksr_green_500.withAlphaComponent(0.06),
+        backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
         text: "Add-ons",
-        textColor: UIColor.ksr_green_500
+        textColor: UIColor.ksr_create_700
       )]
     ])
   }
@@ -543,7 +543,7 @@ final class RewardCardViewModelTests: TestCase {
       [RewardCardPillData(
         backgroundColor: UIColor.ksr_celebrate_100,
         text: "25 left of 100",
-        textColor: UIColor.ksr_dark_grey_500
+        textColor: UIColor.ksr_support_400
       )]
     ])
   }
@@ -564,7 +564,7 @@ final class RewardCardViewModelTests: TestCase {
       [RewardCardPillData(
         backgroundColor: UIColor.ksr_celebrate_100,
         text: "25 left of 100",
-        textColor: UIColor.ksr_dark_grey_500
+        textColor: UIColor.ksr_support_400
       )]
     ])
   }
@@ -582,9 +582,9 @@ final class RewardCardViewModelTests: TestCase {
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills.assertValues([
       [RewardCardPillData(
-        backgroundColor: UIColor.ksr_green_500.withAlphaComponent(0.06),
+        backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
         text: "25 backers",
-        textColor: UIColor.ksr_green_500
+        textColor: UIColor.ksr_create_700
       )]
     ])
   }
@@ -606,7 +606,7 @@ final class RewardCardViewModelTests: TestCase {
       [RewardCardPillData(
         backgroundColor: UIColor.ksr_celebrate_100,
         text: "24 hrs left",
-        textColor: UIColor.ksr_dark_grey_500
+        textColor: UIColor.ksr_support_400
       )]
     ])
   }
@@ -630,7 +630,7 @@ final class RewardCardViewModelTests: TestCase {
       [RewardCardPillData(
         backgroundColor: UIColor.ksr_celebrate_100,
         text: "4 days left",
-        textColor: UIColor.ksr_dark_grey_500
+        textColor: UIColor.ksr_support_400
       )]
     ])
   }
@@ -655,12 +655,12 @@ final class RewardCardViewModelTests: TestCase {
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "4 days left",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "75 left of 100",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         )
       ]
     ])
@@ -691,17 +691,17 @@ final class RewardCardViewModelTests: TestCase {
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "4 days left",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "75 left of 100",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
-          backgroundColor: UIColor.ksr_green_500.withAlphaComponent(0.06),
+          backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
           text: "Ships worldwide",
-          textColor: UIColor.ksr_green_500
+          textColor: UIColor.ksr_create_700
         )
       ]
     ])
@@ -733,17 +733,17 @@ final class RewardCardViewModelTests: TestCase {
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "4 days left",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "75 left of 100",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
-          backgroundColor: UIColor.ksr_green_500.withAlphaComponent(0.06),
+          backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
           text: "United States only",
-          textColor: UIColor.ksr_green_500
+          textColor: UIColor.ksr_create_700
         )
       ]
     ])
@@ -774,17 +774,17 @@ final class RewardCardViewModelTests: TestCase {
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "4 days left",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "75 left of 100",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
-          backgroundColor: UIColor.ksr_green_500.withAlphaComponent(0.06),
+          backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
           text: "Limited shipping",
-          textColor: UIColor.ksr_green_500
+          textColor: UIColor.ksr_create_700
         )
       ]
     ])
@@ -818,17 +818,17 @@ final class RewardCardViewModelTests: TestCase {
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "4 days left",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
           backgroundColor: UIColor.ksr_celebrate_100,
           text: "25 left of 100",
-          textColor: UIColor.ksr_dark_grey_500
+          textColor: UIColor.ksr_support_400
         ),
         RewardCardPillData(
-          backgroundColor: UIColor.ksr_green_500.withAlphaComponent(0.06),
+          backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
           text: "Ships worldwide",
-          textColor: UIColor.ksr_green_500
+          textColor: UIColor.ksr_create_700
         )
       ]
     ])
@@ -860,14 +860,14 @@ final class RewardCardViewModelTests: TestCase {
     self.reloadPills.assertValues([
       [
         RewardCardPillData(
-          backgroundColor: UIColor.ksr_green_500.withAlphaComponent(0.06),
+          backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
           text: "50 backers",
-          textColor: UIColor.ksr_green_500
+          textColor: UIColor.ksr_create_700
         ),
         RewardCardPillData(
-          backgroundColor: UIColor.ksr_green_500.withAlphaComponent(0.06),
+          backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
           text: "Ships worldwide",
-          textColor: UIColor.ksr_green_500
+          textColor: UIColor.ksr_create_700
         )
       ]
     ])
@@ -970,7 +970,7 @@ final class RewardCardViewModelTests: TestCase {
       .assertValues([[RewardCardPillData(
         backgroundColor: UIColor.ksr_celebrate_100,
         text: "50 left of 100",
-        textColor: UIColor.ksr_dark_grey_500
+        textColor: UIColor.ksr_support_400
       )]])
   }
 
@@ -991,9 +991,9 @@ final class RewardCardViewModelTests: TestCase {
     self.pillCollectionViewHidden.assertValues([false])
     self.reloadPills
       .assertValues([[RewardCardPillData(
-        backgroundColor: UIColor.ksr_green_500.withAlphaComponent(0.06),
+        backgroundColor: UIColor.ksr_create_700.withAlphaComponent(0.06),
         text: "50 backers",
-        textColor: UIColor.ksr_green_500
+        textColor: UIColor.ksr_create_700
       )]])
   }
 

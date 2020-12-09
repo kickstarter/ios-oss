@@ -185,14 +185,14 @@ private let getStartedButtonStyle: ButtonStyle = { button in
 private let logoImageViewStyle: ImageViewStyle = { imageView in
   imageView
     |> \.image .~ image(named: "kickstarter-logo")?.withRenderingMode(.alwaysTemplate)
-    |> \.tintColor .~ UIColor.ksr_green_500
+    |> \.tintColor .~ UIColor.ksr_create_500
     |> \.accessibilityLabel %~ { _ in Strings.general_accessibility_kickstarter() }
 }
 
 private let titleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_title3().bolded
-    |> \.textColor .~ UIColor.ksr_soft_black
+    |> \.textColor .~ UIColor.ksr_support_700
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
     |> \.textAlignment .~ .center
@@ -202,7 +202,7 @@ private let titleLabelStyle: LabelStyle = { label in
 private let subtitleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_subhead()
-    |> \.textColor .~ UIColor.ksr_text_dark_grey_500
+    |> \.textColor .~ UIColor.ksr_support_400
     |> \.lineBreakMode .~ .byWordWrapping
     |> \.numberOfLines .~ 0
     |> \.textAlignment .~ .center

@@ -186,7 +186,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
     self.doneButtonIsEnabled = isValueValid
 
     let textColor = isValueValid
-      .map { $0 ? UIColor.ksr_green_500 : UIColor.ksr_red_400 }
+      .map { $0 ? UIColor.ksr_create_700 : UIColor.ksr_alert }
 
     self.labelTextColor = textColor
 

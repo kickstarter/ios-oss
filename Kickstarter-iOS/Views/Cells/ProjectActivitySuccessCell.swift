@@ -45,7 +45,7 @@ internal final class ProjectActivitySuccessCell: UITableViewCell, ValueCell {
 
         _ = titleLabel
           |> projectActivityStateChangeLabelStyle
-          |> UILabel.lens.textColor .~ .white
+          |> UILabel.lens.textColor .~ .ksr_white
       }
   }
 
@@ -69,7 +69,7 @@ internal final class ProjectActivitySuccessCell: UITableViewCell, ValueCell {
 
     _ = self.dropShadowView
       |> roundedStyle()
-      |> UIView.lens.backgroundColor .~ .white
+      |> UIView.lens.backgroundColor .~ .ksr_white
       |> dropShadowStyleMedium()
   }
 }

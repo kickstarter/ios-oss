@@ -33,4 +33,4 @@
 --disable void
 
 # Excluded files
---exclude bin,Carthage,Frameworks,Library/Strings.swift,Library/Styles/Colors.swift,vendor
+--exclude bin,Carthage,Frameworks,Library/Strings.swift,vendor

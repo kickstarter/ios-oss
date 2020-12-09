@@ -108,14 +108,14 @@ internal final class BackerDashboardEmptyStateCell: UITableViewCell, ValueCell {
           : .init(topBottom: Styles.grid(10), leftRight: Styles.grid(3))
       }
     _ = self.messageLabel
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_400
+      |> UILabel.lens.textColor .~ .ksr_support_400
       |> UILabel.lens.font .~ UIFont.ksr_body(size: 15.0)
 
     _ = self.titleLabel
-      |> UILabel.lens.textColor .~ .ksr_soft_black
+      |> UILabel.lens.textColor .~ .ksr_support_700
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 21.0)
 
     _ = self.iconImageView
-      |> UIImageView.lens.tintColor .~ .ksr_soft_black
+      |> UIImageView.lens.tintColor .~ .ksr_support_700
   }
 }

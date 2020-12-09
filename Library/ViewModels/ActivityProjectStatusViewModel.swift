@@ -85,24 +85,24 @@ public final class ActivityProjectStatusViewModel: ActivityProjectStatusViewMode
 private func progressBarColor(forActivityCategory category: Activity.Category) -> UIColor {
   switch category {
   case .cancellation, .failure, .suspension:
-    return .ksr_soft_black
+    return .ksr_support_700
   case .launch, .success:
-    return .ksr_green_700
+    return .ksr_create_700
   default:
-    return .ksr_green_700
+    return .ksr_create_700
   }
 }
 
 private func metadataColor(forActivityCategory category: Activity.Category) -> UIColor {
   switch category {
   case .cancellation, .failure, .suspension:
-    return .ksr_soft_black
+    return .ksr_support_700
   case .launch:
-    return .ksr_green_500
+    return .ksr_create_700
   case .success:
-    return .ksr_green_500
+    return .ksr_create_700
   default:
-    return .ksr_green_500
+    return .ksr_create_700
   }
 }
 
@@ -135,6 +135,6 @@ private func percentFundedString(forActivity activity: Activity) -> NSAttributed
 
   return NSAttributedString(string: percentage, attributes: [
     NSAttributedString.Key.font: UIFont.ksr_caption1(size: 10),
-    NSAttributedString.Key.foregroundColor: UIColor.ksr_green_700
+    NSAttributedString.Key.foregroundColor: UIColor.ksr_create_700
   ])
 }

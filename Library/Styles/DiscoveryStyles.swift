@@ -4,11 +4,11 @@ import Prelude_UIKit
 import UIKit
 
 public func discoveryPrimaryColor() -> UIColor {
-  return .ksr_soft_black
+  return .ksr_support_700
 }
 
 public func discoverySecondaryColor() -> UIColor {
-  return .ksr_text_dark_grey_500
+  return .ksr_support_400
 }
 
 public let discoveryBorderLineStyle = UIView.lens.alpha .~ 0.15
@@ -27,7 +27,7 @@ public let discoveryNavTitleStackViewStyle =
 public let discoverySaveButtonStyle = saveButtonStyle
   <> UIButton.lens.image(for: .normal) .~ image(named: "icon--heart-outline-circle")
   <> UIButton.lens.image(for: .selected) .~ image(named: "icon--heart-circle")
-  <> UIButton.lens.tintColor .~ .white
+  <> UIButton.lens.tintColor .~ .ksr_white
 
 public func discoveryFilterLabelFontStyle<L: UILabelProtocol>(isSelected: Bool) -> ((L) -> L) {
   return L.lens.font %~~ { _, label in
@@ -86,7 +86,7 @@ public func discoverySortPagerButtonStyle<B: UIButtonProtocol>(
     NSAttributedString.Key.font: isRegularRegular
       ? UIFont.ksr_subhead(size: 16.0).bolded
       : UIFont.ksr_subhead(size: 15.0),
-    NSAttributedString.Key.foregroundColor: UIColor.black
+    NSAttributedString.Key.foregroundColor: UIColor.ksr_black
   ])
 
   return
@@ -105,14 +105,14 @@ public func discoverySortPagerButtonStyle<B: UIButtonProtocol>(
 
 public let postcardCategoryLabelStyle =
   UILabel.lens.font .~ .ksr_body(size: 13.0)
-    <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+    <> UILabel.lens.textColor .~ .ksr_support_400
     <> UILabel.lens.textAlignment .~ .left
     <> UILabel.lens.lineBreakMode .~ .byClipping
-    <> UILabel.lens.backgroundColor .~ .white
+    <> UILabel.lens.backgroundColor .~ .ksr_white
 
 public let postcardMetadataLabelStyle =
   UILabel.lens.font .~ .ksr_headline(size: 12.0)
-    <> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+    <> UILabel.lens.textColor .~ .ksr_support_400
 
 public let postcardMetadataStackViewStyle =
   UIStackView.lens.alignment .~ .center
@@ -133,7 +133,7 @@ public let postcardStatsSubtitleStyle =
       : .ksr_body(size: 13)
   }
 
-  <> UILabel.lens.backgroundColor .~ .white
+  <> UILabel.lens.backgroundColor .~ .ksr_white
 
 public let postcardStatsTitleStyle =
   UILabel.lens.font %~~ { _, label in
@@ -142,7 +142,7 @@ public let postcardStatsTitleStyle =
       : .ksr_headline(size: 13)
   }
 
-  <> UILabel.lens.backgroundColor .~ .white
+  <> UILabel.lens.backgroundColor .~ .ksr_white
 
 private func sortButtonEdgeInsets(isLeftMost: Bool, isRightMost: Bool) -> UIEdgeInsets {
   let edge = Styles.grid(2)

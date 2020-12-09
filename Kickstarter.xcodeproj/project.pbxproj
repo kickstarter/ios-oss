@@ -2204,7 +2204,6 @@
 		A7C725981C85D36D005A016B /* UILabel+SimpleHTML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+SimpleHTML.swift"; sourceTree = "<group>"; };
 		A7C725991C85D36D005A016B /* UIPress-Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIPress-Extensions.swift"; sourceTree = "<group>"; };
 		A7C7959E1C873A870081977F /* Kickstarter_Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Kickstarter_Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A7C795C71C873B800081977F /* Kickstarter-iOS.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = "Kickstarter-iOS.playground"; sourceTree = "<group>"; };
 		A7C93F7F1D440D9200C2DF9B /* ProjectPamphletMainCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletMainCellViewModel.swift; sourceTree = "<group>"; };
 		A7C93FB51D44142900C2DF9B /* ProjectDescriptionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectDescriptionViewModel.swift; sourceTree = "<group>"; };
 		A7C93FB81D4415E700C2DF9B /* ProjectPamphletContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletContentViewController.swift; sourceTree = "<group>"; };
@@ -3767,7 +3766,6 @@
 		A7E06C701C5A6EB300EBDCC2 = {
 			isa = PBXGroup;
 			children = (
-				A7C795C71C873B800081977F /* Kickstarter-iOS.playground */,
 				802800561C88F62500141235 /* Configs */,
 				A7E06DBC1C5C027800EBDCC2 /* Frameworks */,
 				A7D1F9461C850B7C000D41D5 /* Kickstarter-iOS */,
@@ -7373,7 +7371,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPCENTER_SCHEME_NAME = ALPHA;
-				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-beta";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-alpha";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Alpha.entitlements";
 				DEFINES_MODULE = YES;

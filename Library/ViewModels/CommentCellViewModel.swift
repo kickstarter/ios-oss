@@ -38,7 +38,7 @@ public final class CommentCellViewModel: CommentCellViewModelType, CommentCellVi
     let isNotDeleted = comment.map { $0.deletedAt == nil }
 
     self.bodyColor = isNotDeleted.skipRepeats()
-      .map { $0 ? .ksr_soft_black : .ksr_text_dark_grey_400 }
+      .map { $0 ? .ksr_support_700 : .ksr_support_400 }
 
     self.bodyFont = isNotDeleted.skipRepeats()
       .map { $0 ? UIFont.ksr_body(size: 16.0) : UIFont.ksr_body(size: 16.0).italicized }

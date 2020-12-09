@@ -115,14 +115,14 @@ final class RewardCell: UICollectionViewCell, ValueCell {
       |> checkoutBackgroundStyle
 
     _ = self.backerLabelContainer
-      |> \.backgroundColor .~ .ksr_cobalt_500
+      |> \.backgroundColor .~ .ksr_trust_500
       |> roundedStyle(cornerRadius: Styles.grid(1))
       |> \.layoutMargins .~ .init(topBottom: Styles.grid(1), leftRight: Styles.grid(2))
 
     _ = self.backerLabel
       |> \.text %~ { _ in Strings.Your_selection() }
       |> \.font .~ UIFont.ksr_footnote().weighted(.medium)
-      |> \.textColor .~ .white
+      |> \.textColor .~ .ksr_white
 
     _ = self.scrollView
       |> scrollViewStyle

@@ -83,12 +83,12 @@ public final class ProjectNavBarViewController: UIViewController {
       |> UIView.lens.layer.shadowOpacity .~ 0
       |> UIView.lens.layer.shadowRadius .~ 2.0
       |> UIView.lens.layer.shadowOffset .~ CGSize(width: 0, height: 2)
-      |> UIView.lens.layer.shadowColor .~ UIColor.ksr_grey_500.cgColor
+      |> UIView.lens.layer.shadowColor .~ UIColor.ksr_support_300.cgColor
 
     _ = self.closeButton
       |> UIButton.lens.title(for: .normal) .~ nil
       |> UIButton.lens.image(for: .normal) .~ image(named: "icon--cross")
-      |> UIButton.lens.tintColor .~ .ksr_soft_black
+      |> UIButton.lens.tintColor .~ .ksr_support_700
       |> UIButton.lens.accessibilityLabel %~ { _ in Strings.accessibility_projects_buttons_close() }
       |> UIButton.lens.accessibilityHint %~ { _ in Strings.Closes_project() }
 
@@ -97,7 +97,7 @@ public final class ProjectNavBarViewController: UIViewController {
 
     _ = self.projectNameLabel
       |> UILabel.lens.font .~ .ksr_body(size: 14)
-      |> UILabel.lens.textColor .~ .ksr_text_dark_grey_500
+      |> UILabel.lens.textColor .~ .ksr_support_400
       |> UILabel.lens.textAlignment .~ .center
       |> UILabel.lens.numberOfLines .~ 2
       |> UILabel.lens.minimumScaleFactor .~ 0.8
@@ -164,7 +164,7 @@ public final class ProjectNavBarViewController: UIViewController {
       .observeForUI()
       .observeValues { [weak self] opaque, animate in
         UIView.animate(withDuration: animate ? 0.2 : 0) {
-          self?.navContainerView.backgroundColor = opaque ? .white : .clear
+          self?.navContainerView.backgroundColor = opaque ? .ksr_white : .clear
         }
       }
 

@@ -71,14 +71,14 @@ internal final class MessageDialogViewController: UIViewController {
       |> UIBarButtonItem.lens.title %~ { _ in Strings.general_navigation_buttons_cancel() }
 
     _ = self.nameLabel
-      |> UILabel.lens.textColor .~ .ksr_soft_black
+      |> UILabel.lens.textColor .~ .ksr_support_700
       |> UILabel.lens.font .~ UIFont.ksr_headline(size: 13.0)
 
     _ = self.postButton
       |> UIBarButtonItem.lens.title %~ { _ in Strings.social_buttons_send() }
 
     _ = self.titleLabel
-      |> UILabel.lens.textColor .~ .ksr_navy_600
+      |> UILabel.lens.textColor .~ .ksr_support_400
       |> UILabel.lens.font .~ UIFont.ksr_subhead(size: 14.0)
   }
 

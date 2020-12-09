@@ -115,9 +115,9 @@ public enum SettingsCellType: SettingsCellTypeProtocol {
   public var textColor: UIColor {
     switch self {
     case .logout:
-      return .ksr_red_400
+      return .ksr_alert
     default:
-      return .ksr_soft_black
+      return .ksr_support_700
     }
   }
 }

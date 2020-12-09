@@ -87,19 +87,19 @@ final class LandingPageStatsView: UIView {
 private let cardViewStyle: ViewStyle = { view in
   view
     |> roundedStyle(cornerRadius: Styles.grid(1))
-    |> \.backgroundColor .~ .white
+    |> \.backgroundColor .~ .ksr_white
 }
 
 private let descriptionLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.font .~ UIFont.ksr_footnote()
     |> \.numberOfLines .~ 0
 }
 
 private let quantityLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_blue_500
+    |> \.textColor .~ .ksr_trust_500
     |> \.font .~ .ksr_title2()
 }
 
@@ -114,7 +114,7 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
 
 private let titleLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.font .~ UIFont.ksr_callout().bolded
     |> \.numberOfLines .~ 0
 }

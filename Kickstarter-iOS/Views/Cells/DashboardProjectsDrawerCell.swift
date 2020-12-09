@@ -40,6 +40,6 @@ internal final class DashboardProjectsDrawerCell: UITableViewCell, ValueCell {
     _ = self.projectNumLabel |> dashboardDrawerProjectNumberTextLabelStyle
     _ = self.projectNameLabel |> dashboardDrawerProjectNameTextLabelStyle
 
-    _ = self.checkmarkImageView |> UIImageView.lens.tintColor .~ .ksr_navy_600
+    _ = self.checkmarkImageView |> UIImageView.lens.tintColor .~ .ksr_support_400
   }
 }

@@ -120,7 +120,7 @@ final class PledgeAmountViewController: UIViewController {
 
     _ = self.plusSignLabel
       |> \.text .~ "+"
-      |> \.textColor .~ UIColor.ksr_dark_grey_400
+      |> \.textColor .~ UIColor.ksr_support_400
 
     _ = self.subtitleLabel
       |> subtitleLabelStyle
@@ -232,7 +232,7 @@ private let subtitleLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_footnote()
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ UIColor.ksr_text_navy_600
+    |> \.textColor .~ UIColor.ksr_support_400
     |> \.text .~ Strings.A_little_extra_to_help()
 }
 
@@ -240,6 +240,6 @@ private let maxPledgeAmountErrorLabelStyle: LabelStyle = { label in
   label
     |> \.font .~ UIFont.ksr_caption1()
     |> \.numberOfLines .~ 0
-    |> \.textColor .~ UIColor.ksr_red_400
+    |> \.textColor .~ UIColor.ksr_alert
     |> \.textAlignment .~ .right
 }

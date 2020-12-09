@@ -82,7 +82,7 @@ public final class RewardCardView: UIView {
 
     _ = self.includedItemsTitleLabel
       |> \.text %~ { _ in Strings.project_view_pledge_includes() }
-      |> \.textColor .~ UIColor.ksr_text_dark_grey_500
+      |> \.textColor .~ UIColor.ksr_support_400
 
     _ = self.includedItemsStackView.subviews
       .dropFirst()
@@ -281,13 +281,13 @@ private let includedItemsStackViewStyle: StackViewStyle = { stackView in
 
 private let minimumPriceLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_green_500
+    |> \.textColor .~ .ksr_create_700
     |> \.font .~ UIFont.ksr_title3().bolded
 }
 
 private let minimumPriceConversionLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_green_500
+    |> \.textColor .~ .ksr_create_700
     |> \.font .~ UIFont.ksr_caption1().bolded
 }
 
@@ -298,7 +298,7 @@ private let priceStackViewStyle: StackViewStyle = { stackView in
 
 private let rewardTitleLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.font .~ UIFont.ksr_title2().bolded
 }
 
@@ -315,7 +315,7 @@ private let sectionTitleLabelStyle: LabelStyle = { label in
 
 private let sectionBodyLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ .ksr_soft_black
+    |> \.textColor .~ .ksr_support_700
     |> \.font .~ UIFont.ksr_body()
 }
 

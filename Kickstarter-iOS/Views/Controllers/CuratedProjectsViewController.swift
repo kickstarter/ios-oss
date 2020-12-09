@@ -187,7 +187,7 @@ extension CuratedProjectsViewController: ProjectNavigatorDelegate {
 
 private let doneButtonStyle: BarButtonStyle = { button in
   button
-    |> \.tintColor .~ .white
+    |> \.tintColor .~ .ksr_white
 }
 
 private let headerViewStyle: ViewStyle = { view in
@@ -197,7 +197,7 @@ private let headerViewStyle: ViewStyle = { view in
 
 private let tableViewStyle: TableViewStyle = { view in
   view
-    |> \.backgroundColor .~ .white
+    |> \.backgroundColor .~ .ksr_white
     |> \.separatorStyle .~ .none
     |> \.rowHeight .~ UITableView.automaticDimension
     |> \.estimatedRowHeight .~ 550

@@ -103,6 +103,6 @@ private let buttonStyle: ButtonStyle = { button in
     |> greyButtonStyle
     |> roundedStyle(cornerRadius: Styles.minTouchSize.height / 2)
     |> UIButton.lens.titleLabel.lineBreakMode .~ .byTruncatingTail
-    |> UIButton.lens.titleColor(for: .selected) .~ UIColor.white
-    |> UIButton.lens.backgroundColor(for: .selected) .~ UIColor.ksr_green_500
+    |> UIButton.lens.titleColor(for: .selected) .~ UIColor.ksr_white
+    |> UIButton.lens.backgroundColor(for: .selected) .~ UIColor.ksr_create_700
 }

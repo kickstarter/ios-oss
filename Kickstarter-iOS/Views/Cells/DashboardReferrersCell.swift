@@ -87,7 +87,7 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
       |> dashboardReferrersPledgePercentLabelStyle
 
     _ = self.customPercentIndicatorLabel
-      |> UILabel.lens.textColor .~ .ksr_violet_500
+      |> UILabel.lens.textColor .~ .ksr_trust_500
 
     _ = self.customPledgedAmountTitleLabel
       |> dashboardStatTitleLabelStyle
@@ -100,7 +100,7 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
       |> dashboardReferrersPledgePercentLabelStyle
 
     _ = self.externalPercentIndicatorLabel
-      |> UILabel.lens.textColor .~ .ksr_orange_400
+      |> UILabel.lens.textColor .~ .ksr_celebrate_500
 
     _ = self.externalPledgedAmountSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
@@ -113,7 +113,7 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
       |> dashboardReferrersPledgePercentLabelStyle
 
     _ = self.internalPercentIndicatorLabel
-      |> UILabel.lens.textColor .~ .ksr_green_700
+      |> UILabel.lens.textColor .~ .ksr_create_700
 
     _ = self.internalPledgedAmountSubtitleLabel
       |> dashboardStatSubtitleLabelStyle
@@ -194,7 +194,7 @@ internal final class DashboardReferrersCell: UITableViewCell, ValueCell {
       self.referrersStackView.addArrangedSubview(referrers[$0])
 
       if $0 < refsCount - 1 {
-        let divider = UIView() |> UIView.lens.backgroundColor .~ .ksr_navy_300
+        let divider = UIView() |> UIView.lens.backgroundColor .~ .ksr_support_300
 
         divider.heightAnchor.constraint(equalToConstant: 1.0).isActive = true
 

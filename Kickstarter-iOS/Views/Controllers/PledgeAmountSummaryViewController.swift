@@ -125,7 +125,7 @@ private let amountLabelStyle: LabelStyle = { label in
 
 private let titleLabelStyle: LabelStyle = { label in
   label
-    |> \.textColor .~ UIColor.ksr_dark_grey_500
+    |> \.textColor .~ UIColor.ksr_support_400
     |> \.font .~ UIFont.ksr_subhead().bolded
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.numberOfLines .~ 0

@@ -50,8 +50,8 @@ public final class ProjectPamphletSubpageCellViewModel: ProjectPamphletSubpageCe
     )
 
     self.labelTextColor = Signal.merge(
-      commentsSubpage.mapConst(.ksr_soft_black),
-      updatesSubpage.mapConst(.ksr_soft_black)
+      commentsSubpage.mapConst(.ksr_support_700),
+      updatesSubpage.mapConst(.ksr_support_700)
     )
 
     self.topSeparatorViewHidden = self.subpageProperty.signal.skipNil()
@@ -63,9 +63,9 @@ public final class ProjectPamphletSubpageCellViewModel: ProjectPamphletSubpageCe
     self.countLabelText = Signal.merge(commentsSubpage, updatesSubpage)
       .map { Format.wholeNumber($0.count ?? 0) }
 
-    self.countLabelTextColor = Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_soft_black)
+    self.countLabelTextColor = Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_support_700)
     self.countLabelBorderColor = Signal.merge(commentsSubpage, updatesSubpage).mapConst(.clear)
-    self.countLabelBackgroundColor = Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_navy_300)
+    self.countLabelBackgroundColor = Signal.merge(commentsSubpage, updatesSubpage).mapConst(.ksr_support_100)
   }
 
   private let subpageProperty = MutableProperty<ProjectPamphletSubpage?>(nil)

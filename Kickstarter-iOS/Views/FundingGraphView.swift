@@ -23,8 +23,8 @@ public final class FundingGraphView: UIView {
     self.addSubview(self.goalLabel)
     _ = self.goalLabel
       |> UILabel.lens.font .~ .ksr_headline(size: 12)
-      |> UILabel.lens.textColor .~ .white
-      |> UILabel.lens.backgroundColor .~ .ksr_green_500
+      |> UILabel.lens.textColor .~ .ksr_white
+      |> UILabel.lens.backgroundColor .~ .ksr_create_700
       |> UILabel.lens.textAlignment .~ .center
   }
 
@@ -93,13 +93,13 @@ public final class FundingGraphView: UIView {
     }
 
     // Stroke the darker graph line before filling with lighter color.
-    UIColor.ksr_text_dark_grey_400.setStroke()
+    UIColor.ksr_support_400.setStroke()
     line.stroke()
 
     line.addLine(to: CGPoint(x: lastPoint.x, y: self.bounds.height))
     line.close()
 
-    UIColor.ksr_navy_400.setFill()
+    UIColor.ksr_support_300.setFill()
     line.fill(with: .color, alpha: 0.4)
 
     let projectHasFunded = self.stats.last?.cumulativePledged ?? 0 >= goal
@@ -185,17 +185,17 @@ public final class FundingGraphView: UIView {
       }
 
       // Stroke the darker graph line before filling with lighter color.
-      UIColor.ksr_green_500.setStroke()
+      UIColor.ksr_create_700.setStroke()
       fundedProgressLine.stroke()
 
       fundedProgressLine.addLine(to: CGPoint(x: lastFundedPoint.x, y: self.bounds.height))
       fundedProgressLine.addLine(to: CGPoint(x: fundedPoint.x, y: self.bounds.height))
       fundedProgressLine.close()
 
-      UIColor.ksr_green_400.setFill()
+      UIColor.ksr_create_500.setFill()
       fundedProgressLine.fill(with: .color, alpha: 0.4)
 
-      UIColor.ksr_green_500.set()
+      UIColor.ksr_create_700.set()
       fundedDotOutline.stroke()
       fundedDotFill.fill()
 
@@ -212,7 +212,7 @@ public final class FundingGraphView: UIView {
       goalPath.move(to: goalLine.start)
       goalPath.addLine(to: goalLine.end)
 
-      UIColor.ksr_green_500.setStroke()
+      UIColor.ksr_create_700.setStroke()
       goalPath.stroke()
 
       self.goalLabel.text = Strings.dashboard_graphs_funding_goal()
