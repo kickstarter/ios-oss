@@ -43,6 +43,9 @@ internal final class SettingsNewslettersTopCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self.contentView
+      |> \.backgroundColor .~ .ksr_support_100
+
     _ = self.descriptionLabel
       |> settingsDescriptionLabelStyle
 

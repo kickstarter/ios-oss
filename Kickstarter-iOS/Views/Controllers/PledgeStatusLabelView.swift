@@ -66,7 +66,7 @@ final class PledgeStatusLabelView: UIView {
 
 private let containerViewStyle: ViewStyle = { (view: UIView) in
   view
-    |> \.backgroundColor .~ .ksr_support_300
+    |> \.backgroundColor .~ .ksr_support_200
     |> \.layoutMargins .~ .init(all: Styles.grid(2))
     |> roundedStyle()
 }
@@ -76,5 +76,5 @@ private let labelStyle: LabelStyle = { (label: UILabel) in
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.isAccessibilityElement .~ true
     |> \.numberOfLines .~ 0
-    |> \.backgroundColor .~ .ksr_support_300
+    |> \.backgroundColor .~ .ksr_support_200
 }

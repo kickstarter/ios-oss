@@ -66,6 +66,11 @@ extension UIColor {
     return .hex(0xF3F3F3)
   }
 
+  /// 0xE6E6E6
+  public static var ksr_support_200: UIColor {
+    return .hex(0xE6E6E6)
+  }
+
   /// 0xD1D1D1
   public static var ksr_support_300: UIColor {
     return .hex(0xD1D1D1)
