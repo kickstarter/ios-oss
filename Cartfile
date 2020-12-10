@@ -1,7 +1,7 @@
 ### Internal
 
 github "kickstarter/Kickstarter-Prelude" "9118beee2b37fa5fc5a4f56502c1fa99030b9f9e"
-github "kickstarter/Kickstarter-ReactiveExtensions" "48a3f507995a6bdae964ddf9f2347af6bf74a19f"
+github "kickstarter/Kickstarter-ReactiveExtensions" "807153fe7e2cdb9ebcdc46862458e9e2c6b70d94"
 
 ### 3rd Party
 
@@ -9,7 +9,7 @@ github "Alamofire/AlamofireImage" == 4.1.0
 github "optimizely/swift-sdk" == 3.1.0
 github "facebook/facebook-objc-sdk" == 6.2.0
 github "microsoft/appcenter-sdk-apple" == 2.5.0
-github "ReactiveCocoa/ReactiveSwift" == 6.1.0
+github "ReactiveCocoa/ReactiveSwift" == 6.5.0
 github "stripe/stripe-ios" == 18.0.0
 github "uber/ios-snapshot-test-case" == 6.2.0
 

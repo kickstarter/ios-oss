@@ -57,7 +57,7 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     let cardholderName = self.cardholderNameChangedProperty.signal.skipNil()
     let creditCardDetails = self.creditCardChangedProperty.signal
       .skipNil()
-      .filterMap { cardDetails -> (String, UInt, UInt, String)? in
+      .compactMap { cardDetails -> (String, UInt, UInt, String)? in
         guard let expMonth = cardDetails.expMonth, let expYear = cardDetails.expYear,
           let cvc = cardDetails.cvc else {
           return nil

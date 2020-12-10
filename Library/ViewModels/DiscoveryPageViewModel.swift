@@ -351,7 +351,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .takePairWhen(self.selectedFilterProperty.signal.skipNil().skipRepeats())
 
     let editorialHeaderShouldShow = filtersUpdated
-      .filterMap { sort, filterParams -> Bool? in
+      .compactMap { sort, filterParams -> Bool? in
         if sort != .magic {
           return nil
         }
@@ -398,9 +398,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .skipNil()
 
     self.dismissPersonalizationCell = self.personalizationCellDismissTappedProperty.signal
-      .on { _ in
-        AppEnvironment.current.userDefaults.hasDismissedPersonalizationCard = true
-      }
+      .on(value: { _ in AppEnvironment.current.userDefaults.hasDismissedPersonalizationCard = true })
 
     self.goToEditorialProjectList = self.discoveryEditorialCellTappedWithValueProperty.signal
       .skipNil()

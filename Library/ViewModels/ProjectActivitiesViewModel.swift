@@ -132,7 +132,7 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
 
     let projectActivityBackingCellGoToBacking = self.projectActivityBackingCellGoToBackingProperty.signal
       .skipNil()
-      .filterMap(backingParams(project:backing:))
+      .compactMap(backingParams(project:backing:))
 
     let projectActivityBackingCellGoToSendMessage =
       self.projectActivityBackingCellGoToSendMessageProperty.signal.skipNil()
@@ -149,7 +149,7 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
             .materialize()
         }
         .values()
-        .filterMap(backingParams(project:backing:))
+        .compactMap(backingParams(project:backing:))
 
     let projectActivityCommentCellGoToSendReply =
       self.projectActivityCommentCellGoToSendReplyProperty.signal.skipNil()

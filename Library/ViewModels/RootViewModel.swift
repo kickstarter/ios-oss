@@ -333,7 +333,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
 
     self.tabBarItemsData
       .takePairWhen(self.didSelectIndexProperty.signal)
-      .filterMap { data, index in
+      .compactMap { data, index in
         guard index < data.items.count else { return nil }
 
         return tabBarItemLabel(for: data.items[index])

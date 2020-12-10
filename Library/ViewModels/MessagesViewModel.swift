@@ -163,7 +163,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
 
     self.goToBacking = Signal.combineLatest(messageThreadEnvelope, currentUser)
       .takeWhen(self.backingInfoPressedProperty.signal)
-      .filterMap { env, _ -> ManagePledgeViewParamConfigData? in
+      .compactMap { env, _ -> ManagePledgeViewParamConfigData? in
         guard let backing = env.messageThread.backing else {
           return nil
         }

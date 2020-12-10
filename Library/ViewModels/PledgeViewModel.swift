@@ -345,7 +345,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsViewController
       .filter { !$3.paymentMethodsViewHidden }
-      .filterMap { project, reward, refTag, context -> PledgePaymentMethodsValue? in
+      .compactMap { project, reward, refTag, context -> PledgePaymentMethodsValue? in
         guard let user = AppEnvironment.current.currentUser else { return nil }
 
         return (user, project, reward, context, refTag)
