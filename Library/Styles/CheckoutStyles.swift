@@ -90,7 +90,7 @@ public let checkoutBackgroundStyle: ViewStyle = { (view: UIView) in
 
 public let checkoutLabelStyle: LabelStyle = { label in
   label
-    |> \.backgroundColor .~ UIColor.ksr_support_300
+    |> \.backgroundColor .~ UIColor.ksr_support_100
 }
 
 public let checkoutRoundedCornersStyle: ViewStyle = { (view: UIView) in
