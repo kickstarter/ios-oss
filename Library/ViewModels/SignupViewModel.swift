@@ -48,9 +48,6 @@ public protocol SignupViewModelOutputs {
   /// Emits an access token envelope that can be used to update the environment.
   var logIntoEnvironment: Signal<AccessTokenEnvelope, Never> { get }
 
-  /// Emits an access token envelope when the email verification screen should be displayed.
-  var logIntoEnvironmentAndShowEmailVerification: Signal<AccessTokenEnvelope, Never> { get }
-
   /// Sets whether the password text field is the first responder.
   var passwordTextFieldBecomeFirstResponder: Signal<(), Never> { get }
 
@@ -126,8 +123,6 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
         .materialize()
       }
 
-    let signupEventValues = signupEvent.values()
-
     let signupError = signupEvent.errors()
       .map {
         $0.errorMessages.first ?? Strings.signup_error_something_wrong()
@@ -135,13 +130,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
 
     self.showError = signupError
 
-    /// If user's email is verified, log into environment.
-    self.logIntoEnvironment = signupEventValues
-      .filter(showEmailVerificationForAccessTokenEnvelope >>> isFalse)
-
-    /// If user's email is not verified, show email verification prompt.
-    self.logIntoEnvironmentAndShowEmailVerification = signupEventValues
-      .filter(showEmailVerificationForAccessTokenEnvelope >>> isTrue)
+    self.logIntoEnvironment = signupEvent.values()
 
     self.postNotification = Signal.merge(
       self.environmentLoggedInProperty.signal,
@@ -219,7 +208,6 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
   public let emailTextFieldBecomeFirstResponder: Signal<(), Never>
   public let isSignupButtonEnabled: Signal<Bool, Never>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
-  public let logIntoEnvironmentAndShowEmailVerification: Signal<AccessTokenEnvelope, Never>
   public let nameTextFieldBecomeFirstResponder: Signal<(), Never>
   public let passwordTextFieldBecomeFirstResponder: Signal<(), Never>
   public let postNotification: Signal<Notification, Never>
