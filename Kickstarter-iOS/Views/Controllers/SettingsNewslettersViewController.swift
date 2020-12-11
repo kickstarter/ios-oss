@@ -29,7 +29,11 @@ internal final class SettingsNewslettersViewController: UIViewController {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self.view
+      |> \.backgroundColor .~ .ksr_support_100
+
     _ = self.tableView
+      |> \.backgroundColor .~ .ksr_support_100
       |> UITableView.lens.separatorStyle .~ .none
       |> UITableView.lens.estimatedRowHeight .~ 127
       |> UITableView.lens.allowsSelection .~ false
