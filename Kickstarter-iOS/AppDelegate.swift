@@ -182,16 +182,16 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.viewModel.outputs.configureAppCenterWithData
       .observeForUI()
       .observeValues { data in
-        let customProperties = MSCustomProperties()
-        customProperties.setString(data.userName, forKey: "userName")
+        let customProperties = CustomProperties()
+        customProperties.set(data.userName, forKey: "userName")
 
-        MSAppCenter.setUserId(data.userId)
-        MSAppCenter.setCustomProperties(customProperties)
+        AppCenter.userId = data.userId
+        AppCenter.setCustomProperties(customProperties)
 
-        MSAppCenter.start(
-          data.appSecret,
-          withServices: [
-            MSDistribute.self
+        AppCenter.start(
+          withAppSecret: data.appSecret,
+          services: [
+            Distribute.self
           ]
         )
       }
@@ -416,10 +416,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 }
 
-// MARK: - MSCrashesDelegate
+// MARK: - CrashesDelegate
 
-extension AppDelegate: MSCrashesDelegate {
-  func crashes(_: MSCrashes!, didSucceedSending _: MSErrorReport!) {
+extension AppDelegate: CrashesDelegate {
+  func crashes(_: Crashes, didSucceedSending _: ErrorReport) {
     self.viewModel.inputs.crashManagerDidFinishSendingCrashReport()
   }
 }
