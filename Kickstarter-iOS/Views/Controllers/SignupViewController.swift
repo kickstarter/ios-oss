@@ -253,11 +253,3 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.present(helpSheet, animated: true, completion: nil)
   }
 }
-
-// MARK: - EmailVerificationViewControllerDelegate
-
-extension SignupViewController: EmailVerificationViewControllerDelegate {
-  func emailVerificationViewControllerDidComplete(_: EmailVerificationViewController) {
-    self.viewModel.inputs.emailVerificationViewControllerDidComplete()
-  }
-}

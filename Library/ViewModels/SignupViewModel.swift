@@ -10,9 +10,6 @@ public protocol SignupViewModelInputs {
   /// Call when the user returns from email text field.
   func emailTextFieldReturn()
 
-  /// Call when the skip button on the  email verification view controller is tapped.
-  func emailVerificationViewControllerDidComplete()
-
   /// Call when the environment has been logged into
   func environmentLoggedIn()
 
@@ -132,11 +129,8 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
 
     self.logIntoEnvironment = signupEvent.values()
 
-    self.postNotification = Signal.merge(
-      self.environmentLoggedInProperty.signal,
-      self.emailVerificationViewControllerDidCompleteProperty.signal
-    )
-    .mapConst(Notification(name: .ksr_sessionStarted))
+    self.postNotification = self.environmentLoggedInProperty.signal
+      .mapConst(Notification(name: .ksr_sessionStarted))
 
     self.weeklyNewsletterChangedProperty.signal
       .skipNil()
@@ -163,11 +157,6 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
   fileprivate let environmentLoggedInProperty = MutableProperty(())
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
-  }
-
-  fileprivate let emailVerificationViewControllerDidCompleteProperty = MutableProperty(())
-  public func emailVerificationViewControllerDidComplete() {
-    self.emailVerificationViewControllerDidCompleteProperty.value = ()
   }
 
   fileprivate let nameChangedProperty = MutableProperty("")

@@ -217,11 +217,3 @@ internal final class LoginViewController: UIViewController {
     self.viewModel.inputs.showHidePasswordButtonTapped()
   }
 }
-
-// MARK: - EmailVerificationViewControllerDelegate
-
-extension LoginViewController: EmailVerificationViewControllerDelegate {
-  func emailVerificationViewControllerDidComplete(_: EmailVerificationViewController) {
-    self.viewModel.inputs.emailVerificationViewControllerDidComplete()
-  }
-}
