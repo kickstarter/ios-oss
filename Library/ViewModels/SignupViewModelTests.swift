@@ -10,7 +10,6 @@ internal final class SignupViewModelTests: TestCase {
   fileprivate let emailTextFieldBecomeFirstResponder = TestObserver<(), Never>()
   fileprivate let isSignupButtonEnabled = TestObserver<Bool, Never>()
   fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
-  fileprivate let logIntoEnvironmentAndShowEmailVerification = TestObserver<AccessTokenEnvelope, Never>()
   fileprivate let nameTextFieldBecomeFirstResponder = TestObserver<(), Never>()
   fileprivate let passwordTextFieldBecomeFirstResponder = TestObserver<(), Never>()
   fileprivate let postNotification = TestObserver<Notification.Name, Never>()
@@ -24,8 +23,6 @@ internal final class SignupViewModelTests: TestCase {
       .observe(self.emailTextFieldBecomeFirstResponder.observer)
     self.vm.outputs.isSignupButtonEnabled.observe(self.isSignupButtonEnabled.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
-    self.vm.outputs.logIntoEnvironmentAndShowEmailVerification
-      .observe(self.logIntoEnvironmentAndShowEmailVerification.observer)
     self.vm.outputs.nameTextFieldBecomeFirstResponder.observe(self.nameTextFieldBecomeFirstResponder.observer)
     self.vm.outputs.passwordTextFieldBecomeFirstResponder
       .observe(self.passwordTextFieldBecomeFirstResponder.observer)
@@ -79,7 +76,6 @@ internal final class SignupViewModelTests: TestCase {
         1,
         "Log into environment without showing email verification because feature flag is false (not set)."
       )
-    self.logIntoEnvironmentAndShowEmailVerification.assertValueCount(0, "Did not show email verification.")
     self.postNotification.assertDidNotEmitValue("Does not emit until environment logged in.")
 
     self.vm.inputs.environmentLoggedIn()
@@ -90,110 +86,6 @@ internal final class SignupViewModelTests: TestCase {
       [.ksr_sessionStarted],
       "Notification posted after scheduler advances."
     )
-  }
-
-  func testSignupFlow_IsEmailVerifiedTrue_EmailVerificationFeatureFlagEnabled() {
-    let config = .template
-      |> Config.lens.features .~ [Feature.emailVerificationFlow.rawValue: true]
-    let user = .template
-      |> User.lens.isEmailVerified .~ true
-    let signupResponse = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
-
-    withEnvironment(apiService: MockService(signupResponse: signupResponse), config: config) {
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
-      self.vm.inputs.nameChanged("Native Squad")
-      self.vm.inputs.passwordChanged("0773rw473rm3l0n")
-      self.vm.inputs.signupButtonPressed()
-
-      self.showError.assertDidNotEmitValue()
-
-      self.scheduler.advance()
-
-      self.logIntoEnvironment.assertValueCount(1, "Logged into environment.")
-      self.logIntoEnvironmentAndShowEmailVerification
-        .assertValueCount(0, "Should not show email verificaton.")
-      self.vm.inputs.passwordTextFieldReturn()
-      self.showError.assertValueCount(0, "Should not show error.")
-    }
-  }
-
-  func testSignupFlow_IsEmailVerifiedTrue_EmailVerificationFeatureFlagDisabled() {
-    let config = .template
-      |> Config.lens.features .~ [Feature.emailVerificationFlow.rawValue: false]
-    let user = .template
-      |> User.lens.isEmailVerified .~ true
-    let signupResponse = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
-
-    withEnvironment(apiService: MockService(signupResponse: signupResponse), config: config) {
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
-      self.vm.inputs.nameChanged("Native Squad")
-      self.vm.inputs.passwordChanged("0773rw473rm3l0n")
-      self.vm.inputs.signupButtonPressed()
-
-      self.showError.assertDidNotEmitValue()
-
-      self.scheduler.advance()
-
-      self.logIntoEnvironment.assertValueCount(1, "Logged into environment.")
-      self.logIntoEnvironmentAndShowEmailVerification
-        .assertValueCount(0, "Should not show email verificaton.")
-      self.vm.inputs.passwordTextFieldReturn()
-      self.showError.assertValueCount(0, "Should not show error.")
-    }
-  }
-
-  func testSignupFlow_IsEmailVerifiedFalse_EmailVerificationFeatureFlagEnabled() {
-    let config = .template
-      |> Config.lens.features .~ [Feature.emailVerificationFlow.rawValue: true]
-    let user = .template
-      |> User.lens.isEmailVerified .~ false
-    let signupResponse = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
-
-    withEnvironment(apiService: MockService(signupResponse: signupResponse), config: config) {
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
-      self.vm.inputs.nameChanged("Native Squad")
-      self.vm.inputs.passwordChanged("0773rw473rm3l0n")
-      self.vm.inputs.signupButtonPressed()
-
-      self.showError.assertDidNotEmitValue()
-
-      self.scheduler.advance()
-
-      self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
-      self.logIntoEnvironmentAndShowEmailVerification
-        .assertValueCount(1, "Logged into environment and showed email verification.")
-      self.vm.inputs.passwordTextFieldReturn()
-      self.showError.assertValueCount(0, "Should not show error.")
-    }
-  }
-
-  func testSignupFlow_IsEmailVerifiedFalse_EmailVerificationFeatureFlagDisabled() {
-    let config = .template
-      |> Config.lens.features .~ [Feature.emailVerificationFlow.rawValue: false]
-    let user = .template
-      |> User.lens.isEmailVerified .~ false
-    let signupResponse = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
-
-    withEnvironment(apiService: MockService(signupResponse: signupResponse), config: config) {
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.emailChanged("nativesquad@kickstarter.com")
-      self.vm.inputs.nameChanged("Native Squad")
-      self.vm.inputs.passwordChanged("0773rw473rm3l0n")
-      self.vm.inputs.signupButtonPressed()
-
-      self.showError.assertDidNotEmitValue()
-
-      self.scheduler.advance()
-
-      self.logIntoEnvironment.assertValueCount(1, "Logged into environment..")
-      self.logIntoEnvironmentAndShowEmailVerification
-        .assertValueCount(0, "Did not show email verification.")
-      self.vm.inputs.passwordTextFieldReturn()
-      self.showError.assertValueCount(0, "Should not show error.")
-    }
   }
 
   func testBecomeFirstResponder() {
