@@ -8,6 +8,10 @@ public struct ProjectActivityEnvelope: Decodable {
     public let api: ApiEnvelope
 
     public struct ApiEnvelope: Decodable {
+      private enum CodingKeys: String, CodingKey {
+        case moreActivities = "more_activities"
+      }
+
       public let moreActivities: String
     }
   }
