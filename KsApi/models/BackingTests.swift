@@ -5,6 +5,15 @@ import XCTest
 final class BackingTests: XCTestCase {
   func testJSONDecoding_WithCompleteData() {
     let backing: Backing? = Backing.decodeJSONDictionary([
+      "add_ons": [
+        [
+          "id": 1,
+          "description": "Some reward",
+          "minimum": 10,
+          "converted_minimum": 12,
+          "backers_count": 10
+        ]
+      ],
       "amount": 1.0,
       "backer_id": 1,
       "backer_completed_at": 1,
@@ -24,9 +33,17 @@ final class BackingTests: XCTestCase {
       "project_country": "US",
       "project_id": 1,
       "sequence": 1,
-      "status": "pledged"
+      "status": "pledged",
+      "reward": [
+        "id": 1,
+        "description": "Some reward",
+        "minimum": 10,
+        "converted_minimum": 12,
+        "backers_count": 10
+      ]
     ])
 
+    XCTAssertNotNil(backing?.addOns)
     XCTAssertEqual(1.0, backing?.amount)
     XCTAssertEqual(1, backing?.backerId)
     XCTAssertEqual(true, backing?.backerCompleted)
