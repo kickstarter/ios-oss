@@ -60,7 +60,7 @@ public class ManagePledgeSummaryViewModel: ManagePledgeSummaryViewModelType,
     self.configurePledgeAmountSummaryViewWithData = data.map(pledgeAmountSummaryViewData)
 
     let userAndIsBackingProject = data.map(\.backerId)
-      .filterMap { backerId -> (User, Bool)? in
+      .compactMap { backerId -> (User, Bool)? in
         guard let user = AppEnvironment.current.currentUser else {
           return nil
         }

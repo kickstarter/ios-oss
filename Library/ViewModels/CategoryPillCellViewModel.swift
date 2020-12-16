@@ -28,7 +28,7 @@ public final class CategoryPillCellViewModel: CategoryPillCellViewModelType,
     self.notifyDelegatePillCellTapped = self.configureWithValueProperty.signal
       .skipNil()
       .takeWhen(self.pillCellTappedProperty.signal)
-      .filterMap { value in
+      .compactMap { value in
         guard let index = value.indexPath else {
           return nil
         }

@@ -167,7 +167,7 @@ public final class ManagePledgeViewModel:
     }
 
     let projectAndReward = Signal.combineLatest(project, backing)
-      .filterMap { project, backing -> (Project, Reward)? in
+      .compactMap { project, backing -> (Project, Reward)? in
         guard let reward = backing.reward else { return (project, .noReward) }
 
         return (project, reward)
@@ -180,7 +180,7 @@ public final class ManagePledgeViewModel:
 
     self.configurePledgeSummaryView = Signal.combineLatest(projectAndReward, backing)
       .map(unpack)
-      .filterMap(managePledgeSummaryViewData)
+      .compactMap(managePledgeSummaryViewData)
 
     let projectOrBackingFailedToLoad = Signal.merge(
       fetchProjectEvent.map { $0.error as Error? },

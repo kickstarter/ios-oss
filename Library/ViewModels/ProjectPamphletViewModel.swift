@@ -104,7 +104,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     let projectAndBacking = project
       .filter { $0.personalization.isBacking ?? false }
-      .filterMap { project -> (Project, Backing)? in
+      .compactMap { project -> (Project, Backing)? in
         guard let backing = project.personalization.backing else {
           return nil
         }

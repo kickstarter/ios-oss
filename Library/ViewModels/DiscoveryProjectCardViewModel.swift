@@ -89,7 +89,7 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
 
       return friends.isEmpty
     }
-    self.facepileViewData = project.filterMap(\.personalization.friends).filterMap(facepileData(for:))
+    self.facepileViewData = project.compactMap(\.personalization.friends).compactMap(facepileData(for:))
 
     self.tagsCollectionViewHidden = self.configureWithValueProperty.signal.skipNil()
       .map { ($0.project, $0.category) }
@@ -100,7 +100,7 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
       .map(projectTags(project:category:))
       .filter { !$0.isEmpty }
 
-    self.projectStatusIconImageName = project.filterMap { project in
+    self.projectStatusIconImageName = project.compactMap { project in
       switch project.state {
       case .canceled, .failed: return "icon--prohibit"
       case .successful: return "icon--check"
@@ -109,7 +109,7 @@ public final class DiscoveryProjectCardViewModel: DiscoveryProjectCardViewModelT
       }
     }
 
-    self.projectStatusLabelData = project.filterMap { project in
+    self.projectStatusLabelData = project.compactMap { project in
       switch project.state {
       case .canceled: return ("", Strings.profile_projects_status_canceled())
       case .failed: return ("", Strings.profile_projects_status_unsuccessful())
