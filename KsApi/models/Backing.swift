@@ -71,7 +71,7 @@ extension Backing: Decodable {
 
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
-    self.addOns = try values.decodeIfPresent([Reward].self, forKey: .reward)
+    self.addOns = try values.decodeIfPresent([Reward].self, forKey: .addOns)
     self.amount = try values.decode(Double.self, forKey: .amount)
     self.backer = try values.decodeIfPresent(User.self, forKey: .backer)
     self.backerId = try values.decode(Int.self, forKey: .backerId)

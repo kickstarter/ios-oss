@@ -13,9 +13,6 @@ public protocol LoginViewModelInputs {
   /// Call when the environment has been logged into.
   func environmentLoggedIn()
 
-  /// Call when the skip button on the  email verification view controller is tapped.
-  func emailVerificationViewControllerDidComplete()
-
   /// Call when login button is pressed.
   func loginButtonPressed()
 
@@ -53,9 +50,6 @@ public protocol LoginViewModelOutputs {
 
   /// Emits an access token envelope that can be used to update the environment.
   var logIntoEnvironment: Signal<AccessTokenEnvelope, Never> { get }
-
-  /// Emits an access token envelope when the email verification screen should be displayed.
-  var logIntoEnvironmentAndShowEmailVerification: Signal<AccessTokenEnvelope, Never> { get }
 
   /// Emits when the password textfield should become the first responder
   var passwordTextFieldBecomeFirstResponder: Signal<(), Never> { get }
@@ -105,15 +99,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
           .materialize()
       }
 
-    let loginEventValues = loginEvent.values()
-
-    /// If user's email is verified, log into environment.
-    self.logIntoEnvironment = loginEventValues
-      .filter(showEmailVerificationForAccessTokenEnvelope >>> isFalse)
-
-    /// If user's email is not verified, show email verification prompt.
-    self.logIntoEnvironmentAndShowEmailVerification = loginEventValues
-      .filter(showEmailVerificationForAccessTokenEnvelope >>> isTrue)
+    self.logIntoEnvironment = loginEvent.values()
 
     let tfaError = loginEvent.errors()
       .filter { $0.ksrCode == .TfaRequired }
@@ -123,19 +109,16 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
       .takeWhen(tfaError)
       .map { (email: $0, password: $1) }
 
-    self.postNotification = Signal.merge(
-      self.environmentLoggedInProperty.signal,
-      self.emailVerificationViewControllerDidCompleteProperty.signal
-    )
-    .mapConst(
-      (
-        Notification(name: .ksr_sessionStarted),
-        Notification(
-          name: .ksr_showNotificationsDialog,
-          userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login]
+    self.postNotification = self.environmentLoggedInProperty.signal
+      .mapConst(
+        (
+          Notification(name: .ksr_sessionStarted),
+          Notification(
+            name: .ksr_showNotificationsDialog,
+            userInfo: [UserInfoKeys.context: PushNotificationDialog.Context.login]
+          )
         )
       )
-    )
 
     self.dismissKeyboard = self.passwordTextFieldDoneEditingProperty.signal
     self.passwordTextFieldBecomeFirstResponder = self.emailTextFieldDoneEditingProperty.signal
@@ -195,11 +178,6 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
     self.environmentLoggedInProperty.value = ()
   }
 
-  fileprivate let emailVerificationViewControllerDidCompleteProperty = MutableProperty(())
-  public func emailVerificationViewControllerDidComplete() {
-    self.emailVerificationViewControllerDidCompleteProperty.value = ()
-  }
-
   fileprivate let resetPasswordPressedProperty = MutableProperty(())
   public func resetPasswordButtonPressed() {
     self.resetPasswordPressedProperty.value = ()
@@ -224,7 +202,6 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
   public let emailTextFieldBecomeFirstResponder: Signal<(), Never>
   public let isFormValid: Signal<Bool, Never>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
-  public let logIntoEnvironmentAndShowEmailVerification: Signal<AccessTokenEnvelope, Never>
   public let passwordTextFieldBecomeFirstResponder: Signal<(), Never>
   public let postNotification: Signal<(Notification, Notification), Never>
   public let showError: Signal<String, Never>
