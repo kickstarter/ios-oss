@@ -300,7 +300,6 @@
 		77BC00F02326F0CC00808E75 /* PKPaymentRequestHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BC00EF2326F0CC00808E75 /* PKPaymentRequestHelpersTests.swift */; };
 		77BC00F623301BD400808E75 /* RewardCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BC00F523301BD300808E75 /* RewardCellViewModel.swift */; };
 		77BC00F82330236600808E75 /* RewardCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BC00F72330236600808E75 /* RewardCellViewModelTests.swift */; };
-		77BF99B722652C9500513CE3 /* MultiLineButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77BF99B622652C9500513CE3 /* MultiLineButton.swift */; };
 		77C0818E245CBA1B004ABE88 /* SignInWithAppleInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C0818D245CBA1B004ABE88 /* SignInWithAppleInputTests.swift */; };
 		77C26957240D711A009AD91E /* CategoryCollectionViewSectionHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C26956240D711A009AD91E /* CategoryCollectionViewSectionHeaderViewModel.swift */; };
 		77C5E21A214182A2002E1670 /* SettingsPrivacySwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77C5E219214182A2002E1670 /* SettingsPrivacySwitchCell.xib */; };
@@ -1805,7 +1804,6 @@
 		77BC00EF2326F0CC00808E75 /* PKPaymentRequestHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKPaymentRequestHelpersTests.swift; sourceTree = "<group>"; };
 		77BC00F523301BD300808E75 /* RewardCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellViewModel.swift; sourceTree = "<group>"; };
 		77BC00F72330236600808E75 /* RewardCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCellViewModelTests.swift; sourceTree = "<group>"; };
-		77BF99B622652C9500513CE3 /* MultiLineButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiLineButton.swift; sourceTree = "<group>"; };
 		77C0818D245CBA1B004ABE88 /* SignInWithAppleInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWithAppleInputTests.swift; sourceTree = "<group>"; };
 		77C25FBE2385FDA5006E2010 /* DiscoveryEditorialViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryEditorialViewModelTests.swift; sourceTree = "<group>"; };
 		77C26956240D711A009AD91E /* CategoryCollectionViewSectionHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewSectionHeaderViewModel.swift; sourceTree = "<group>"; };
@@ -3252,7 +3250,6 @@
 				D6050F51240463AC00E029D2 /* LandingPageStatsView.swift */,
 				77FD8B45216D6245000A95AC /* LoadingBarButtonItemView.swift */,
 				370C8B63234FCC6F00DE75DD /* LoadingButton.swift */,
-				77BF99B622652C9500513CE3 /* MultiLineButton.swift */,
 				D63BBD382180BE5D007E01F0 /* PaymentMethodsFooterView.swift */,
 				8ADF4D7524BCCFD60018AD4B /* PillsView.swift */,
 				D741577A2284849000C0B907 /* PledgeCTAContainerView.swift */,
@@ -5669,7 +5666,6 @@
 				01515F8C1E1D6E0C00FDECB6 /* MessageThreadEmptyStateCell.swift in Sources */,
 				9D525F101D4158BA003CAE04 /* ProjectActivityDateCell.swift in Sources */,
 				5981BE431D7F59DE002E49F1 /* CommentsEmptyStateCell.swift in Sources */,
-				77BF99B722652C9500513CE3 /* MultiLineButton.swift in Sources */,
 				A747A7DF1D454E8500AF199A /* ProjectPamphletContentViewController.swift in Sources */,
 				77636FC1243CFE25007F67B9 /* ProcessingView.swift in Sources */,
 				0157067D1E65F0420087DD68 /* BackerDashboardProjectsViewController.swift in Sources */,
