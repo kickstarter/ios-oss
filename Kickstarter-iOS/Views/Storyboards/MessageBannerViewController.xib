@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -45,6 +43,7 @@
                             </subviews>
                         </stackView>
                     </subviews>
+                    <viewLayoutGuide key="safeArea" id="nEU-Ww-Bk0"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <gestureRecognizers/>
                     <constraints>
@@ -55,19 +54,18 @@
                         <constraint firstItem="0Hc-2l-Ifi" firstAttribute="top" secondItem="Ejg-36-pne" secondAttribute="top" constant="12" id="r6W-Mr-tGo"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="78" id="rGG-zi-1uL"/>
                     </constraints>
-                    <viewLayoutGuide key="safeArea" id="nEU-Ww-Bk0"/>
                 </view>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="LHc-EY-xQU"/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="Ejg-36-pne" firstAttribute="bottom" secondItem="mXd-1v-NEw" secondAttribute="bottom" constant="-6" id="6C5-bf-ii8"/>
-                <constraint firstItem="Ejg-36-pne" firstAttribute="trailing" secondItem="mXd-1v-NEw" secondAttribute="trailing" constant="-6" id="Mn7-to-gAE"/>
+                <constraint firstItem="Ejg-36-pne" firstAttribute="trailing" secondItem="LHc-EY-xQU" secondAttribute="trailing" constant="-6" id="Mn7-to-gAE"/>
                 <constraint firstItem="Ejg-36-pne" firstAttribute="top" secondItem="mXd-1v-NEw" secondAttribute="top" constant="6" id="oqK-2T-zK9"/>
-                <constraint firstItem="Ejg-36-pne" firstAttribute="leading" secondItem="mXd-1v-NEw" secondAttribute="leading" constant="6" id="qvc-G2-g1V"/>
+                <constraint firstItem="Ejg-36-pne" firstAttribute="leading" secondItem="LHc-EY-xQU" secondAttribute="leading" constant="6" id="qvc-G2-g1V"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="LHc-EY-xQU"/>
             <connections>
                 <outletCollection property="gestureRecognizers" destination="SrO-tc-rR8" appends="YES" id="RMg-yr-dNZ"/>
                 <outletCollection property="gestureRecognizers" destination="W3s-gZ-kOg" appends="YES" id="kjP-JG-2sh"/>
