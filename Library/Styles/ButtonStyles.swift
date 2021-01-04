@@ -109,13 +109,6 @@ public let fbFollowButtonStyle = facebookButtonStyle
   <> UIButton.lens.titleEdgeInsets .~ .init(top: 0, left: 10.0, bottom: 0, right: -10.0)
   <> UIButton.lens.image(for: .normal) %~ { _ in image(named: "fb-logo-white") }
 
-// MARK: - Multiline
-
-public let multiLineButtonStyle =
-  UIButton.lens.titleLabel.lineBreakMode .~ NSLineBreakMode.byWordWrapping
-    <> UIButton.lens.titleLabel.numberOfLines .~ 0
-    <> UIButton.lens.titleLabel.textAlignment .~ NSTextAlignment.center
-
 // MARK: - Save
 
 public let saveButtonStyle =
