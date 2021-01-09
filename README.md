@@ -13,9 +13,13 @@ and read more about our journey to open source [here](https://kickstarter.engine
 ## Getting Started
 
 1. Install Xcode.
-1. Clone this repository.
-1. Run `make bootstrap` to install tools and dependencies.
-1. Run `make test-all` to build and run tests on all platforms.  
+2. Install Homebrew
+3. Install Bundler
+4. Clone this repository.
+5. Run `brew bundle`
+6. Run `bundle isntall`
+7. Run `make bootstrap` to install tools and dependencies.
+8. Run `make test-all` to build and run tests on all platforms.  
 
 &#42; To provide a mock version that serves up hard-coded data immediately, set `KsApi.Secrets.isOSS` = `true`.
 
