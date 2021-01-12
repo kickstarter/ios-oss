@@ -405,6 +405,8 @@
 		8A32FE0624D233F000F79C72 /* EmptyStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A32FE0524D233F000F79C72 /* EmptyStateViewModel.swift */; };
 		8A3BF51923F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3BF51823F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift */; };
 		8A3BF51E23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */; };
+		8A417DE725AE2F8600A2C406 /* Segment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A417DE625AE2F8600A2C406 /* Segment.framework */; };
+		8A417DF025AE37D200A2C406 /* Segment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A417DEF25AE37D200A2C406 /* Segment.swift */; };
 		8A41CC692458A0360095B15E /* GraphBackingEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41CC672458A0360095B15E /* GraphBackingEnvelope.swift */; };
 		8A41CC6A2458A0360095B15E /* GraphBacking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41CC682458A0360095B15E /* GraphBacking.swift */; };
 		8A41CC6C2458A0480095B15E /* GraphBackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41CC6B2458A0480095B15E /* GraphBackingTests.swift */; };
@@ -1908,6 +1910,8 @@
 		8A32FE0524D233F000F79C72 /* EmptyStateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateViewModel.swift; sourceTree = "<group>"; };
 		8A3BF51823F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTelephonyNetworkInfoType.swift; sourceTree = "<group>"; };
 		8A3BF51D23F5DB52002AD818 /* MockCoreTelephonyNetworkInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCoreTelephonyNetworkInfo.swift; sourceTree = "<group>"; };
+		8A417DE625AE2F8600A2C406 /* Segment.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Segment.framework; path = Carthage/Build/iOS/Segment.framework; sourceTree = "<group>"; };
+		8A417DEF25AE37D200A2C406 /* Segment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Segment.swift; sourceTree = "<group>"; };
 		8A41CC672458A0360095B15E /* GraphBackingEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBackingEnvelope.swift; sourceTree = "<group>"; };
 		8A41CC682458A0360095B15E /* GraphBacking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBacking.swift; sourceTree = "<group>"; };
 		8A41CC6B2458A0480095B15E /* GraphBackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphBackingTests.swift; sourceTree = "<group>"; };
@@ -2886,6 +2890,7 @@
 				8AA5B068235E25820022F5F0 /* AppCenter.framework in Frameworks */,
 				8AA5B06B235E25820022F5F0 /* AppCenterAnalytics.framework in Frameworks */,
 				8AA5B06A235E25820022F5F0 /* AppCenterCrashes.framework in Frameworks */,
+				8A417DE725AE2F8600A2C406 /* Segment.framework in Frameworks */,
 				8AA5B069235E25820022F5F0 /* AppCenterDistribute.framework in Frameworks */,
 				D0B7124622AEEDBC00317BAF /* FBSDKCoreKit.framework in Frameworks */,
 				D08C68A822AF104B001ED5E8 /* FBSDKLoginKit.framework in Frameworks */,
@@ -3081,6 +3086,7 @@
 				8A213CE8239EAEA400BBB4C7 /* Koala.swift */,
 				8A213CE7239EAEA400BBB4C7 /* KoalaTests.swift */,
 				8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */,
+				8A417DEF25AE37D200A2C406 /* Segment.swift */,
 				8A213CEA239EAEA400BBB4C7 /* TrackingClient.swift */,
 				8A213CE5239EAEA400BBB4C7 /* TrackingClientConfiguration.swift */,
 				8A213CE6239EAEA400BBB4C7 /* TrackingClientConfigurationTests.swift */,
@@ -3796,6 +3802,7 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8A417DE625AE2F8600A2C406 /* Segment.framework */,
 				8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */,
 				D00A373E2258270600F46F47 /* Alamofire.framework */,
 				D00A371F225815FA00F46F47 /* AlamofireImage.framework */,
@@ -5249,6 +5256,7 @@
 				01FD71EC1D3808E500070BAC /* BarButtonItemStyles.swift in Sources */,
 				D04AAC24218BB70D00CF713E /* DiscoveryProjectCategoryViewModel.swift in Sources */,
 				A7F441E91D005A9400FE6FC5 /* TwoFactorViewModel.swift in Sources */,
+				8A417DF025AE37D200A2C406 /* Segment.swift in Sources */,
 				D6534D3C22E7898B00E9D279 /* PledgePaymentMethodsViewModel.swift in Sources */,
 				9DEE3B561D1D819D0020C2BE /* ProjectActivityBackingCellViewModel.swift in Sources */,
 				A78537F81CB5803B00385B73 /* NSHTTPCookieStorageType.swift in Sources */,

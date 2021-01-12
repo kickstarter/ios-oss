@@ -1109,22 +1109,28 @@ final class KoalaTests: TestCase {
   func testDataLakeApprovedEvents() {
     let koalaClient = MockTrackingClient()
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient, client: koalaClient)
+    let segmentClient = MockTrackingClient()
+    let koala = Koala(dataLakeClient: dataLakeClient, client: koalaClient, segmentClient: segmentClient)
 
-    koala.trackAppOpen() // non-white-listed event
+    koala.trackAppOpen() // non-approved event
 
     XCTAssertEqual(["App Open", "Opened App"], koalaClient.events, "Event is tracked by koala client")
     XCTAssertEqual([], dataLakeClient.events, "Event is not tracked by data lake client")
+    XCTAssertEqual([], segmentClient.events, "Event is not tracked by segment client")
 
-    koala.trackProjectViewed(Project.template) // white-listed event
+    koala.trackProjectViewed(Project.template) // approved event
 
     XCTAssertEqual(
       ["App Open", "Opened App", "Project Page Viewed"], koalaClient.events,
-      "White-listed event is tracked by koala client"
+      "Approved event is tracked by koala client"
     )
     XCTAssertEqual(
       ["Project Page Viewed"], dataLakeClient.events,
-      "White-listed event is tracked by data lake client"
+      "Approved event is tracked by data lake client"
+    )
+    XCTAssertEqual(
+      ["Project Page Viewed"], segmentClient.events,
+      "Approved event is tracked by segment client"
     )
   }
 

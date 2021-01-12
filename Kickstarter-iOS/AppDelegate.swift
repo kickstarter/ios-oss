@@ -19,6 +19,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
+import Segment
 import UIKit
 import UserNotifications
 

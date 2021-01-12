@@ -1,6 +1,7 @@
 import KsApi
 import PassKit
 import Prelude
+import Segment
 import UIKit
 
 private let deprecatedProps = [Koala.DeprecatedKey: true]
@@ -19,6 +20,7 @@ public final class Koala {
   private var preferredContentSizeCategory: UIContentSizeCategory?
   private var preferredContentSizeCategoryObserver: Any?
   private let screen: UIScreenType
+  private let segmentClient: TrackingClientType
 
   private enum DataLakeApprovedEvent: String, CaseIterable {
     case activityFeedViewed = "Activity Feed Viewed"
@@ -372,6 +374,7 @@ public final class Koala {
     device: UIDeviceType = UIDevice.current,
     loggedInUser: User? = nil,
     screen: UIScreenType = UIScreen.main,
+    segmentClient: TrackingClientType = Analytics.configuredClient(),
     distinctId: String = (UIDevice.current.identifierForVendor ?? UUID()).uuidString
   ) {
     self.bundle = bundle
@@ -381,6 +384,7 @@ public final class Koala {
     self.device = device
     self.loggedInUser = loggedInUser
     self.screen = screen
+    self.segmentClient = segmentClient
     self.distinctId = distinctId
 
     self.updateAndObservePreferredContentSizeCategory()
@@ -2150,6 +2154,12 @@ public final class Koala {
 
     if DataLakeApprovedEvent.allApprovedEvents().contains(event) {
       self.dataLakeClient.track(
+        event: event,
+        properties: props
+      )
+
+      // Currently events approved for the Data Lake are good for Segment.
+      self.segmentClient.track(
         event: event,
         properties: props
       )
