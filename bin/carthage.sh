@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-brew upgrade carthage
-
 # Ref for below Xcode 12 workaround: https://github.com/Carthage/Carthage/issues/3019
 # Remove workaround once Carthage team have fixed this.
 
@@ -22,16 +20,14 @@ echo 'EXCLUDED_ARCHS = $(inherited) $(EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_
 
 export XCODE_XCCONFIG_FILE="$xcconfig"
 
-# Cache Cartfile
-if [ ! -z ${FORCE_CARTHAGE:-} ] || ! cmp -s Cartfile.resolved Carthage/Cartfile.resolved; then
-  # If not running on CircleCI, update dependencies
-  if [ -z "${CIRCLECI:-}" ]; then
-    echo "Updating dependencies"
-    carthage update --platform iOS
-  # Else if running on CircleCI, build resolved dependencies
-  else
+# If not running on CircleCI, pass args through
+if [ -z "${CIRCLECI:-}" ]; then
+  carthage "$@"
+else
+  # Else if running on CircleCI and no cache found, ensure latest carthage and build resolved dependencies
+  if [ ! cmp -s Cartfile.resolved Carthage/Cartfile.resolved; then
+    brew upgrade carthage
     echo "Resolving dependencies"
     carthage bootstrap --platform iOS
   fi
-  cp Cartfile.resolved Carthage
 fi
