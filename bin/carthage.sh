@@ -24,7 +24,7 @@ export XCODE_XCCONFIG_FILE="$xcconfig"
 if [ -z "${CIRCLECI:-}" ]; then
   carthage "$@"
 # Else if running on CircleCI and no cache found, ensure latest carthage and build resolved dependencies
-elif [ ! cmp -s Cartfile.resolved Carthage/Cartfile.resolved; ]; then
+elif ! cmp -s Cartfile.resolved Carthage/Cartfile.resolved; then
   brew upgrade carthage
   echo "Resolving dependencies"
   carthage bootstrap --platform iOS
