@@ -20,6 +20,7 @@ internal class TestCase: FBSnapshotTestCase {
   internal let optimizelyClient = MockOptimizelyClient()
   internal let reachability = MutableProperty(Reachability.wifi)
   internal let scheduler = TestScheduler(startDate: MockDate().date)
+  internal let segmentTrackingClient = MockTrackingClient()
   internal let trackingClient = MockTrackingClient()
   internal let ubiquitousStore = MockKeyValueStore()
   internal let userDefaults = MockKeyValueStore()
@@ -61,7 +62,8 @@ internal class TestCase: FBSnapshotTestCase {
       koala: Koala(
         dataLakeClient: self.dataLakeTrackingClient,
         client: self.trackingClient,
-        loggedInUser: nil
+        loggedInUser: nil,
+        segmentClient: self.segmentTrackingClient
       ),
       language: .en,
       launchedCountries: .init(),
