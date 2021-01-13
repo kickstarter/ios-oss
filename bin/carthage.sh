@@ -25,7 +25,7 @@ if [ -z "${CIRCLECI:-}" ]; then
   carthage "$@"
 else
   # Else if running on CircleCI and no cache found, ensure latest carthage and build resolved dependencies
-  if [ ! cmp -s Cartfile.resolved Carthage/Cartfile.resolved; then
+  if [ ! cmp -s Cartfile.resolved Carthage/Cartfile.resolved; ] then
     brew upgrade carthage
     echo "Resolving dependencies"
     carthage bootstrap --platform iOS
