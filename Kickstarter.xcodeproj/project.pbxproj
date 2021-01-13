@@ -372,6 +372,7 @@
 		8A0B1E2C24DA1327009E90C0 /* GraphLocationTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0B1E2B24DA1327009E90C0 /* GraphLocationTemplates.swift */; };
 		8A0C3D1125AE6F4900310034 /* Segment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A417DE625AE2F8600A2C406 /* Segment.framework */; };
 		8A0C3D1525AE6F8C00310034 /* Segment.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A417DE625AE2F8600A2C406 /* Segment.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8A0C3D3A25AE8B1400310034 /* Segment.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A417DE625AE2F8600A2C406 /* Segment.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A13D15F249559CB007E2C0B /* PledgeExpandableRewardsHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13D15E249559CB007E2C0B /* PledgeExpandableRewardsHeaderViewController.swift */; };
 		8A13D16124955A2E007E2C0B /* PledgeExpandableRewardsHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13D16024955A2E007E2C0B /* PledgeExpandableRewardsHeaderViewModel.swift */; };
 		8A13D163249566B8007E2C0B /* PledgeExpandableHeaderRewardHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13D162249566B8007E2C0B /* PledgeExpandableHeaderRewardHeaderCell.swift */; };
@@ -1486,6 +1487,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				8A0C3D3A25AE8B1400310034 /* Segment.framework in CopyFiles */,
 				1611EF6423ABDB3D0051CDCC /* Optimizely.framework in CopyFiles */,
 				D08C68AE22AF12E0001ED5E8 /* FBSDKCoreKit.framework in CopyFiles */,
 				D08C68AF22AF12E0001ED5E8 /* FBSDKLoginKit.framework in CopyFiles */,
