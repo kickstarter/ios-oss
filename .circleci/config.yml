@@ -155,7 +155,27 @@ jobs:
   # Kickstarter tests
   kickstarter-tests:
     <<: *base_job
-    <<: *test_job
+    steps:
+      - when:
+          condition: true
+          <<: *test_job
+      - run:
+          name: Install Screenshotbot SDK
+          command: curl https://screenshotbot.io/recorder.sh | sh
+          when: always
+      - run:
+          name: Upload Screenshots to Screenshotbot
+          command: >
+            cd ~/kickstarter && ~/screenshotbot/recorder --channel ios-oss \
+              --api-key "${SCREENSHOTBOT_API_KEY}" \
+              --api-secret "${SCREENSHOTBOT_API_SECRET}" \
+              --directory Screenshots/_64/ \
+              --ios-multi-dir \
+              --verbose \
+              --production \
+              --repo-url ${CIRCLE_REPOSITORY_URL} \
+              --ios-diff-dir Screenshots/FailureDiffs/
+          when: always
     environment:
       - *default_environment
       - SCHEME=Kickstarter-Framework-iOS
