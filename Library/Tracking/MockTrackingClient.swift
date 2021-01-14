@@ -2,6 +2,8 @@ import Library
 
 internal final class MockTrackingClient: TrackingClientType {
   internal var tracks: [(event: String, properties: [String: Any])] = []
+  internal var userId: String?
+  internal var traits: [String: Any]?
 
   func track(event: String, properties: [String: Any]) {
     self.tracks.append((event: event, properties: properties))
@@ -27,5 +29,12 @@ internal final class MockTrackingClient: TrackingClientType {
     for key in self.properties.map(\.keys).flatMap({ $0 }) where key.hasPrefix(prefix) { return true }
 
     return false
+  }
+}
+
+extension MockTrackingClient: IdentifyingTrackingClient {
+  func identify(_ userId: String?, traits: [String: Any]?) {
+    self.userId = userId
+    self.traits = traits
   }
 }

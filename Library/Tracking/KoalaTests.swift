@@ -1134,6 +1134,28 @@ final class KoalaTests: TestCase {
     )
   }
 
+  func testIdentifyingTrackingClient() {
+    let user = User.template
+      |> User.lens.stats.backedProjectsCount .~ 2
+      |> User.lens.stats.createdProjectsCount .~ 3
+
+    let identifyingClient = MockTrackingClient()
+
+    withEnvironment(currentUser: user, koala: Koala(loggedInUser: user, segmentClient: identifyingClient)) {
+      XCTAssertEqual(identifyingClient.userId, "\(user.id)")
+      XCTAssertEqual(identifyingClient.traits?["name"] as? String, user.name)
+      XCTAssertEqual(identifyingClient.traits?["is_creator"] as? Bool, user.isCreator)
+      XCTAssertEqual(
+        identifyingClient.traits?["backed_projects_count"] as? Int,
+        user.stats.backedProjectsCount
+      )
+      XCTAssertEqual(
+        identifyingClient.traits?["created_projects_count"] as? Int,
+        user.stats.createdProjectsCount
+      )
+    }
+  }
+
   func testContextProperties() {
     let client = MockTrackingClient()
     let koala = Koala(client: client)
