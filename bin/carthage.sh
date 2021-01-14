@@ -20,8 +20,8 @@ echo 'EXCLUDED_ARCHS = $(inherited) $(EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_
 
 export XCODE_XCCONFIG_FILE="$xcconfig"
 
-# If not running on CircleCI, pass args through
-if [ -z "${CIRCLECI:-}" ]; then
+# If not running on Bitrise :D, pass args through
+if [ -z "${BITRISE_PROJECT_PATH:-}" ]; then
   carthage "$@"
 # Else if running on CircleCI and no cache found, ensure latest carthage and build resolved dependencies
 elif ! cmp -s Cartfile.resolved Carthage/Cartfile.resolved; then
