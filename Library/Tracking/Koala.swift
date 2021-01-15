@@ -15,7 +15,11 @@ public final class Koala {
   internal private(set) var config: Config?
   private let device: UIDeviceType
   private let distinctId: String
-  internal private(set) var loggedInUser: User?
+  internal private(set) var loggedInUser: User? {
+    didSet {
+      self.identify(self.loggedInUser)
+    }
+  }
   public var logEventCallback: ((String, [String: Any]) -> Void)?
   private var preferredContentSizeCategory: UIContentSizeCategory?
   private var preferredContentSizeCategoryObserver: Any?
