@@ -20,6 +20,7 @@ public final class Koala {
       self.identify(self.loggedInUser)
     }
   }
+
   public var logEventCallback: ((String, [String: Any]) -> Void)?
   private var preferredContentSizeCategory: UIContentSizeCategory?
   private var preferredContentSizeCategoryObserver: Any?

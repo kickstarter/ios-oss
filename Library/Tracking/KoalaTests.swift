@@ -1139,21 +1139,39 @@ final class KoalaTests: TestCase {
       |> User.lens.stats.backedProjectsCount .~ 2
       |> User.lens.stats.createdProjectsCount .~ 3
 
-    let identifyingClient = MockTrackingClient()
+    AppEnvironment.updateCurrentUser(user)
 
-    withEnvironment(currentUser: user, koala: Koala(loggedInUser: user, segmentClient: identifyingClient)) {
-      XCTAssertEqual(identifyingClient.userId, "\(user.id)")
-      XCTAssertEqual(identifyingClient.traits?["name"] as? String, user.name)
-      XCTAssertEqual(identifyingClient.traits?["is_creator"] as? Bool, user.isCreator)
-      XCTAssertEqual(
-        identifyingClient.traits?["backed_projects_count"] as? Int,
-        user.stats.backedProjectsCount
-      )
-      XCTAssertEqual(
-        identifyingClient.traits?["created_projects_count"] as? Int,
-        user.stats.createdProjectsCount
-      )
-    }
+    XCTAssertEqual(self.segmentTrackingClient.userId, "\(user.id)")
+    XCTAssertEqual(self.segmentTrackingClient.traits?["name"] as? String, user.name)
+    XCTAssertEqual(self.segmentTrackingClient.traits?["is_creator"] as? Bool, user.isCreator)
+    XCTAssertEqual(
+      self.segmentTrackingClient.traits?["backed_projects_count"] as? Int,
+      user.stats.backedProjectsCount
+    )
+    XCTAssertEqual(
+      self.segmentTrackingClient.traits?["created_projects_count"] as? Int,
+      user.stats.createdProjectsCount
+    )
+
+    let user2 = user
+      |> User.lens.id .~ 9_999
+      |> User.lens.name .~ "Another User"
+      |> User.lens.stats.backedProjectsCount .~ 4
+      |> User.lens.stats.createdProjectsCount .~ 0
+
+    AppEnvironment.updateCurrentUser(user2)
+
+    XCTAssertEqual(self.segmentTrackingClient.userId, "\(user2.id)")
+    XCTAssertEqual(self.segmentTrackingClient.traits?["name"] as? String, user2.name)
+    XCTAssertEqual(self.segmentTrackingClient.traits?["is_creator"] as? Bool, user2.isCreator)
+    XCTAssertEqual(
+      self.segmentTrackingClient.traits?["backed_projects_count"] as? Int,
+      user2.stats.backedProjectsCount
+    )
+    XCTAssertEqual(
+      self.segmentTrackingClient.traits?["created_projects_count"] as? Int,
+      user2.stats.createdProjectsCount
+    )
   }
 
   func testContextProperties() {
