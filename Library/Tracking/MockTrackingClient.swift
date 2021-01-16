@@ -33,7 +33,7 @@ internal final class MockTrackingClient: TrackingClientType {
 }
 
 extension MockTrackingClient: IdentifyingTrackingClient {
-  func identify(_ userId: String?, traits: [String: Any]?) {
+  func identify(userId: String?, traits: [String: Any]?) {
     self.userId = userId
     self.traits = traits
   }

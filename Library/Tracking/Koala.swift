@@ -392,21 +392,17 @@ public final class Koala {
     self.segmentClient = segmentClient
     self.distinctId = distinctId
 
-    self.identify(self.loggedInUser)
-
     self.updateAndObservePreferredContentSizeCategory()
   }
 
   /// Configure Tracking Client's supporting user identity
   private func identify(_ user: User?) {
-    guard AppEnvironment.current.environmentVariables.isTrackingEnabled else { return }
-
     guard let user = user else {
-      return self.segmentClient.identify(nil, traits: nil)
+      return self.segmentClient.identify(userId: nil, traits: nil)
     }
 
     self.segmentClient.identify(
-      "\(user.id)",
+      userId: "\(user.id)",
       traits: [
         "name": user.name,
         "is_creator": user.isCreator,
