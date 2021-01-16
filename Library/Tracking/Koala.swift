@@ -399,7 +399,11 @@ public final class Koala {
 
   /// Configure Tracking Client's supporting user identity
   private func identify(_ user: User?) {
-    guard let user = user else { return }
+    guard AppEnvironment.current.environmentVariables.isTrackingEnabled else { return }
+
+    guard let user = user else {
+      return self.segmentClient.identify(nil, traits: nil)
+    }
 
     self.segmentClient.identify(
       "\(user.id)",

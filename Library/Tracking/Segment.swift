@@ -17,6 +17,8 @@ extension Analytics: IdentifyingTrackingClient {}
 extension Analytics: TrackingClientType {
   /// Call the similarly named function on Segment's `Analytics` type.
   public func track(event: String, properties: [String: Any]) {
+    guard AppEnvironment.current.environmentVariables.isTrackingEnabled else { return }
+
     self.track(event, properties: properties)
   }
 }
