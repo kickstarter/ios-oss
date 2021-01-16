@@ -37,4 +37,9 @@ extension MockTrackingClient: IdentifyingTrackingClient {
     self.userId = userId
     self.traits = traits
   }
+
+  func resetIdentity() {
+    self.userId = nil
+    self.traits = nil
+  }
 }

@@ -1172,6 +1172,11 @@ final class KoalaTests: TestCase {
       self.segmentTrackingClient.traits?["created_projects_count"] as? Int,
       user2.stats.createdProjectsCount
     )
+
+    AppEnvironment.logout()
+
+    XCTAssertNil(self.segmentTrackingClient.userId)
+    XCTAssertNil(self.segmentTrackingClient.traits)
   }
 
   func testContextProperties() {

@@ -398,7 +398,7 @@ public final class Koala {
   /// Configure Tracking Client's supporting user identity
   private func identify(_ user: User?) {
     guard let user = user else {
-      return self.segmentClient.identify(userId: nil, traits: nil)
+      return self.segmentClient.resetIdentity()
     }
 
     self.segmentClient.identify(

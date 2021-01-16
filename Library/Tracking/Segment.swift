@@ -13,17 +13,28 @@ public extension Analytics {
   }
 }
 
+/**
+ The `TrackingClientType` and `IdentifyingTrackingClient` protocols allow us to create mocks
+ to test these code paths. The protocol exposes functions that are named similarly but differently
+ so that we can perform the check to see that tracking is enabled before calling any of the functions on
+ the library itself so as to not unintentionally contribute to tracking data during debugging.
+ */
+
 extension Analytics: IdentifyingTrackingClient {
-  /// Call the similarly named function on Segment's `Analytics` type.
   public func identify(userId: String?, traits: [String: Any]?) {
     guard AppEnvironment.current.environmentVariables.isTrackingEnabled else { return }
 
     self.identify(userId, traits: traits)
   }
+
+  public func resetIdentity() {
+    guard AppEnvironment.current.environmentVariables.isTrackingEnabled else { return }
+
+    self.reset()
+  }
 }
 
 extension Analytics: TrackingClientType {
-  /// Call the similarly named function on Segment's `Analytics` type.
   public func track(event: String, properties: [String: Any]) {
     guard AppEnvironment.current.environmentVariables.isTrackingEnabled else { return }
 
