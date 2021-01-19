@@ -3,9 +3,7 @@ import AppCenterAnalytics
 import AppCenterCrashes
 import AppCenterDistribute
 import FBSDKCoreKit
-import FirebaseAnalytics
-import FirebaseCore
-import FirebaseCrashlytics
+import Firebase
 import Foundation
 #if DEBUG
   @testable import KsApi
