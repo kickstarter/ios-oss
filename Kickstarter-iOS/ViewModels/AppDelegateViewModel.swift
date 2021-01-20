@@ -45,9 +45,6 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the application receives a request to perform a shortcut action.
   func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem)
 
-  /// Call when the app has crashed
-  func crashManagerDidFinishSendingCrashReport()
-
   /// Call after having invoked AppEnvironment.updateCurrentUser with a fresh user.
   func currentUserUpdatedInEnvironment()
 
@@ -657,9 +654,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.applicationDidReceiveMemoryWarningProperty.signal
       .observeValues { AppEnvironment.current.koala.trackMemoryWarning() }
 
-    self.crashManagerDidFinishSendingCrashReportProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackCrashedApp() }
-
     Signal.combineLatest(
       performShortcutItem.enumerated(),
       self.setApplicationShortcutItems
@@ -773,11 +767,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   private let foundRedirectUrlProperty = MutableProperty<URL?>(nil)
   public func foundRedirectUrl(_ url: URL) {
     self.foundRedirectUrlProperty.value = url
-  }
-
-  fileprivate let crashManagerDidFinishSendingCrashReportProperty = MutableProperty(())
-  public func crashManagerDidFinishSendingCrashReport() {
-    self.crashManagerDidFinishSendingCrashReportProperty.value = ()
   }
 
   fileprivate typealias ApplicationOpenUrl = (

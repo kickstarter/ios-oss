@@ -505,8 +505,6 @@
 		8AA5B063235E254C0022F5F0 /* AppCenterDistributeResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */; };
 		8AA5B068235E25820022F5F0 /* AppCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA5B064235E25820022F5F0 /* AppCenter.framework */; };
 		8AA5B069235E25820022F5F0 /* AppCenterDistribute.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA5B065235E25820022F5F0 /* AppCenterDistribute.framework */; };
-		8AA5B06A235E25820022F5F0 /* AppCenterCrashes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA5B066235E25820022F5F0 /* AppCenterCrashes.framework */; };
-		8AA5B06B235E25820022F5F0 /* AppCenterAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AA5B067235E25820022F5F0 /* AppCenterAnalytics.framework */; };
 		8AA8A38424EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA8A38324EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift */; };
 		8AAA9BD822F49EC200F12976 /* UIColor+Mixing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */; };
 		8AB3BDA6246DC8BE00D69624 /* DiscoveryEditorialViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C25FBE2385FDA5006E2010 /* DiscoveryEditorialViewModelTests.swift */; };
@@ -2007,8 +2005,6 @@
 		8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = AppCenterDistributeResources.bundle; path = Carthage/Build/iOS/AppCenterDistribute.framework/AppCenterDistributeResources.bundle; sourceTree = "<group>"; };
 		8AA5B064235E25820022F5F0 /* AppCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenter.framework; path = Carthage/Build/iOS/AppCenter.framework; sourceTree = "<group>"; };
 		8AA5B065235E25820022F5F0 /* AppCenterDistribute.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterDistribute.framework; path = Carthage/Build/iOS/AppCenterDistribute.framework; sourceTree = "<group>"; };
-		8AA5B066235E25820022F5F0 /* AppCenterCrashes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterCrashes.framework; path = Carthage/Build/iOS/AppCenterCrashes.framework; sourceTree = "<group>"; };
-		8AA5B067235E25820022F5F0 /* AppCenterAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterAnalytics.framework; path = Carthage/Build/iOS/AppCenterAnalytics.framework; sourceTree = "<group>"; };
 		8AA8A38324EC6DA400085282 /* ProjectAndBackingEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAndBackingEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		8AAA9BD722F49EC200F12976 /* UIColor+Mixing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Mixing.swift"; sourceTree = "<group>"; };
 		8AB64FE42576C6BA0075E2E7 /* EmailVerificationResponseEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationResponseEnvelope.swift; sourceTree = "<group>"; };
@@ -2898,8 +2894,6 @@
 			files = (
 				8A65E79B25016A22006F81CC /* FirebaseInstallations.framework in Frameworks */,
 				8AA5B068235E25820022F5F0 /* AppCenter.framework in Frameworks */,
-				8AA5B06B235E25820022F5F0 /* AppCenterAnalytics.framework in Frameworks */,
-				8AA5B06A235E25820022F5F0 /* AppCenterCrashes.framework in Frameworks */,
 				4748C12125B0FCE30098E89E /* FirebaseRemoteConfig.framework in Frameworks */,
 				8AA5B069235E25820022F5F0 /* AppCenterDistribute.framework in Frameworks */,
 				D0B7124622AEEDBC00317BAF /* FBSDKCoreKit.framework in Frameworks */,
@@ -3821,8 +3815,6 @@
 				D00A373E2258270600F46F47 /* Alamofire.framework */,
 				D00A371F225815FA00F46F47 /* AlamofireImage.framework */,
 				8AA5B064235E25820022F5F0 /* AppCenter.framework */,
-				8AA5B067235E25820022F5F0 /* AppCenterAnalytics.framework */,
-				8AA5B066235E25820022F5F0 /* AppCenterCrashes.framework */,
 				8AA5B065235E25820022F5F0 /* AppCenterDistribute.framework */,
 				D0B7124522AEEDBC00317BAF /* FBSDKCoreKit.framework */,
 				D08C68A722AF104B001ED5E8 /* FBSDKLoginKit.framework */,
@@ -6525,7 +6517,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.beta;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickBeta;
@@ -6810,7 +6801,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.debug;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickDebug;
@@ -6836,7 +6826,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.kickstarter.kickstarter";
@@ -7016,7 +7005,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MARKETING_VERSION = 4.10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D RELEASE";
 				PRODUCT_NAME = Kickstarter;
@@ -7392,7 +7380,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MARKETING_VERSION = 4.10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_SWIFT_FLAGS = "-D APPCENTER";
 				PRODUCT_NAME = Kickstarter;
@@ -7423,7 +7410,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kickstarter.kickstarter.kickalpha;
 				PRODUCT_MODULE_NAME = Kickstarter_iOS;
 				PRODUCT_NAME = KickAlpha;

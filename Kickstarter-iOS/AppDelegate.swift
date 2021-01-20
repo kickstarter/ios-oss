@@ -1,6 +1,4 @@
 import AppCenter
-import AppCenterAnalytics
-import AppCenterCrashes
 import AppCenterDistribute
 import FBSDKCoreKit
 import Firebase
@@ -411,14 +409,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     let task = session.dataTask(with: url)
     task.resume()
-  }
-}
-
-// MARK: - CrashesDelegate
-
-extension AppDelegate: CrashesDelegate {
-  func crashes(_: Crashes, didSucceedSending _: ErrorReport) {
-    self.viewModel.inputs.crashManagerDidFinishSendingCrashReport()
   }
 }
 

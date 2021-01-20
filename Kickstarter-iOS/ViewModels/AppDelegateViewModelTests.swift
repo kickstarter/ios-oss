@@ -447,9 +447,6 @@ final class AppDelegateViewModelTests: TestCase {
       launchOptions: [:]
     )
     XCTAssertEqual(["App Open", "Opened App"], trackingClient.events)
-
-    self.vm.inputs.crashManagerDidFinishSendingCrashReport()
-    XCTAssertEqual(["App Open", "Opened App", "Crashed App"], trackingClient.events)
   }
 
   func testCurrentUserUpdating_NothingHappensWhenLoggedOut() {
