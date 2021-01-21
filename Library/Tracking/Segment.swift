@@ -3,7 +3,11 @@ import Segment
 
 public extension Analytics {
   static func configuredClient() -> Analytics {
-    let configuration = AnalyticsConfiguration(writeKey: Secrets.Segment.writeKey)
+    let writeKey = AppEnvironment.current.mainBundle.isRelease
+      ? Secrets.Segment.productionWriteKey
+      : Secrets.Segment.stagingWriteKey
+
+    let configuration = AnalyticsConfiguration(writeKey: writeKey)
     configuration
       .trackApplicationLifecycleEvents = true // We should deprecate our own tracking for these events.
     Analytics.setup(with: configuration)
