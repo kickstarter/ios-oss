@@ -555,13 +555,13 @@ final class ActivitiesViewModelTests: TestCase {
       let env = ProjectAndBackingEnvelope.template
         |> \.project .~ .template
 
-      XCTAssertEqual(self.trackingClient.events, ["Activity Feed Viewed"])
+      XCTAssertEqual(self.segmentTrackingClient.screenTitles, ["Activity Feed Viewed"])
 
       self.vm.inputs.erroredBackingViewDidTapManage(with: env)
 
       XCTAssertEqual(
-        self.trackingClient.events,
-        ["Activity Feed Viewed", "Manage Pledge Button Clicked"]
+        self.segmentTrackingClient.events,
+        ["Manage Pledge Button Clicked"]
       )
     }
   }
@@ -627,13 +627,13 @@ final class ActivitiesViewModelTests: TestCase {
     ]
 
     withEnvironment(apiService: MockService(fetchActivitiesResponse: page)) {
-      XCTAssertEqual([], self.trackingClient.events)
+      XCTAssertEqual([], self.segmentTrackingClient.screenTitles)
 
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear(animated: false)
       self.scheduler.advance()
 
-      XCTAssertEqual([], self.trackingClient.events, "Tracking waits for results")
+      XCTAssertEqual([], self.segmentTrackingClient.screenTitles, "Tracking waits for results")
 
       AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
       self.vm.inputs.userSessionStarted()
@@ -641,16 +641,19 @@ final class ActivitiesViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Activity Feed Viewed"],
-        self.trackingClient.events, "Impression is tracked"
+        self.segmentTrackingClient.screenTitles, "Impression is tracked"
       )
-      XCTAssertEqual([3], self.trackingClient.properties(forKey: "activities_count", as: Int.self))
+      XCTAssertEqual(
+        [3],
+        self.segmentTrackingClient.screenProperties(forKey: "activities_count", as: Int.self)
+      )
 
       self.vm.inputs.viewWillAppear(animated: false)
       self.scheduler.advance()
 
       XCTAssertEqual(
         ["Activity Feed Viewed"],
-        self.trackingClient.events, "Impression is not tracked when the view doesn't animate"
+        self.segmentTrackingClient.screenTitles, "Impression is not tracked when the view doesn't animate"
       )
 
       self.vm.inputs.refresh()
@@ -658,14 +661,15 @@ final class ActivitiesViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Activity Feed Viewed", "Activity Feed Viewed"],
-        self.trackingClient.events, "Impression tracked when view refreshes"
+        self.segmentTrackingClient.screenTitles, "Impression tracked when view refreshes"
       )
 
       self.vm.inputs.viewWillAppear(animated: true)
       self.scheduler.advance()
 
       XCTAssertEqual(
-        ["Activity Feed Viewed", "Activity Feed Viewed", "Activity Feed Viewed"], self.trackingClient.events,
+        ["Activity Feed Viewed", "Activity Feed Viewed", "Activity Feed Viewed"],
+        self.segmentTrackingClient.screenTitles,
         "Impression tracked when view re-appears with animation"
       )
 
@@ -676,7 +680,7 @@ final class ActivitiesViewModelTests: TestCase {
 
         XCTAssertEqual(
           ["Activity Feed Viewed", "Activity Feed Viewed", "Activity Feed Viewed"],
-          self.trackingClient.events,
+          self.segmentTrackingClient.screenTitles,
           "Impression is not tracked on pagination"
         )
       }

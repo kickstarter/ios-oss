@@ -25,10 +25,10 @@ public final class Koala {
   private var preferredContentSizeCategory: UIContentSizeCategory?
   private var preferredContentSizeCategoryObserver: Any?
   private let screen: UIScreenType
-  private let segmentClient: TrackingClientType & IdentifyingTrackingClient
+  private let segmentClient: TrackingClientType & IdentifyingTrackingClient & ScreenTrackingClient
 
   private enum DataLakeApprovedEvent: String, CaseIterable {
-    case activityFeedViewed = "Activity Feed Viewed"
+    case activityFeedViewed = "Activity Feed Viewed" // TODO: This is now a "screen" event so we may want to rename it to just "Activity Feed" or "Activities", it might also not belong here with the non-screen events.
     case addNewCardButtonClicked = "Add New Card Button Clicked"
     case addOnsContinueButtonClicked = "Add-Ons Continue Button Clicked"
     case addOnsPageViewed = "Add-Ons Page Viewed"
@@ -379,7 +379,8 @@ public final class Koala {
     device: UIDeviceType = UIDevice.current,
     loggedInUser: User? = nil,
     screen: UIScreenType = UIScreen.main,
-    segmentClient: TrackingClientType & IdentifyingTrackingClient = Analytics.configuredClient(),
+    segmentClient: TrackingClientType & IdentifyingTrackingClient & ScreenTrackingClient = Analytics
+      .configuredClient(),
     distinctId: String = (UIDevice.current.identifierForVendor ?? UUID()).uuidString
   ) {
     self.bundle = bundle
@@ -440,8 +441,8 @@ public final class Koala {
 
   /// Call when the activities screen is shown.
   public func trackActivities(count: Int) {
-    self.track(
-      event: DataLakeApprovedEvent.activityFeedViewed.rawValue,
+    self.screen(
+      title: DataLakeApprovedEvent.activityFeedViewed.rawValue,
       location: .activities,
       properties: ["activities_count": count]
     )
@@ -2186,6 +2187,27 @@ public final class Koala {
         properties: props
       )
     }
+  }
+
+  // Private tracking method that merges in default properties and tracks screen events.
+  private func screen(
+    title: String,
+    location: Koala.LocationContext? = nil,
+    properties: [String: Any] = [:],
+    refTag: String? = nil,
+    referrerCredit: String? = nil
+  ) {
+    let props = self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
+      .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
+      .withAllValuesFrom(contextProperties(location: location))
+      .withAllValuesFrom(properties)
+
+    self.logEventCallback?(title, props)
+
+    self.segmentClient.screen(
+      title: title,
+      properties: props
+    )
   }
 
   // MARK: - Session Properties

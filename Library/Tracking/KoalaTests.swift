@@ -1190,10 +1190,14 @@ final class KoalaTests: TestCase {
 
   func testContextLocationProperties() {
     let client = MockTrackingClient()
-    let koala = Koala(client: client)
+    let segmentClient = MockTrackingClient()
+    let koala = Koala(client: client, segmentClient: segmentClient)
 
     koala.trackActivities(count: 1)
-    XCTAssertEqual("activity_feed_screen", client.properties.last?["context_location"] as? String)
+    XCTAssertEqual(
+      "activity_feed_screen",
+      segmentClient.screenProperties.last?["context_location"] as? String
+    )
 
     koala.trackAddNewCardButtonClicked(
       context: .newPledge,

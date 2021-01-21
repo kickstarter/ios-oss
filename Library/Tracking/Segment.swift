@@ -6,7 +6,6 @@ public extension Analytics {
     let configuration = AnalyticsConfiguration(writeKey: Secrets.Segment.writeKey)
     configuration
       .trackApplicationLifecycleEvents = true // We should deprecate our own tracking for these events.
-    configuration.recordScreenViews = true // Test that this does not interfere with our own swizzling.
     Analytics.setup(with: configuration)
 
     return Analytics.shared()
@@ -14,10 +13,10 @@ public extension Analytics {
 }
 
 /**
- The `TrackingClientType` and `IdentifyingTrackingClient` protocols allow us to create mocks
- to test these code paths. The protocol exposes functions that are named similarly but differently
- so that we can perform the check to see that tracking is enabled before calling any of the functions on
- the library itself so as to not unintentionally contribute to tracking data during debugging.
+ The `TrackingClientType`, `ScreenTrackingClient` and `IdentifyingTrackingClient` protocols
+ allow us to create mocks to test these code paths. The protocol exposes functions that are named similarly
+ but differently so that we can perform the check to see that tracking is enabled before calling any of the
+ functions on the library itself so as to not unintentionally contribute to tracking data during debugging.
  */
 
 extension Analytics: IdentifyingTrackingClient {
@@ -31,6 +30,14 @@ extension Analytics: IdentifyingTrackingClient {
     guard AppEnvironment.current.environmentVariables.isTrackingEnabled else { return }
 
     self.reset()
+  }
+}
+
+extension Analytics: ScreenTrackingClient {
+  public func screen(title: String, properties: [String: Any]?) {
+    guard AppEnvironment.current.environmentVariables.isTrackingEnabled else { return }
+
+    self.screen(title, properties: properties)
   }
 }
 
