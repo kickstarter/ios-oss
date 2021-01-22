@@ -43,10 +43,6 @@ public protocol ServiceType {
   func addImage(file fileURL: URL, toDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Image, ErrorEnvelope>
 
-  /// Uploads and attaches a video to the draft of a project update.
-  func addVideo(file fileURL: URL, toDraft draft: UpdateDraft)
-    -> SignalProducer<UpdateDraft.Video, ErrorEnvelope>
-
   /// Cancels a backing
   func cancelBacking(input: CancelBackingInput)
     -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
@@ -73,9 +69,6 @@ public protocol ServiceType {
   func addNewCreditCard(input: CreatePaymentSourceInput) ->
     SignalProducer<CreatePaymentSourceEnvelope, GraphError>
 
-  func changePaymentMethod(project: Project)
-    -> SignalProducer<ChangePaymentMethodEnvelope, ErrorEnvelope>
-
   /// Deletes a payment method
   func deletePaymentMethod(input: PaymentSourceDeleteInput) ->
     SignalProducer<DeletePaymentMethodEnvelope, GraphError>
@@ -83,10 +76,6 @@ public protocol ServiceType {
   /// Removes an image from a project update draft.
   func delete(image: UpdateDraft.Image, fromDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Image, ErrorEnvelope>
-
-  /// Removes a video from a project update draft.
-  func delete(video: UpdateDraft.Video, fromDraft draft: UpdateDraft)
-    -> SignalProducer<UpdateDraft.Video, ErrorEnvelope>
 
   func exportData() -> SignalProducer<VoidEnvelope, ErrorEnvelope>
 
@@ -221,9 +210,6 @@ public protocol ServiceType {
   /// Fetches a project update draft.
   func fetchUpdateDraft(forProject project: Project) -> SignalProducer<UpdateDraft, ErrorEnvelope>
 
-  /// Fetches the current user's backed projects.
-  func fetchUserProjectsBacked() -> SignalProducer<ProjectsEnvelope, ErrorEnvelope>
-
   /// Fetches more user backed projects.
   func fetchUserProjectsBacked(paginationUrl url: String) -> SignalProducer<ProjectsEnvelope, ErrorEnvelope>
 
@@ -312,15 +298,6 @@ public protocol ServiceType {
 
   /// Updates a backing
   func updateBacking(input: UpdateBackingInput) -> SignalProducer<UpdateBackingEnvelope, GraphError>
-
-  /// Performs the first step of checkout by creating a pledge on the server.
-  func updatePledge(
-    project: Project,
-    amount: Double,
-    reward: Reward?,
-    shippingLocation: Location?,
-    tappedReward: Bool
-  ) -> SignalProducer<UpdatePledgeEnvelope, ErrorEnvelope>
 
   /// Update the project notification setting.
   func updateProjectNotification(_ notification: ProjectNotification)
