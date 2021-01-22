@@ -3,7 +3,9 @@ import Segment
 
 public extension Analytics {
   static func configuredClient() -> Analytics {
-    let writeKey = AppEnvironment.current.mainBundle.isRelease
+    // Due to this being constructed at the same time as the environment we're not able to refer to the
+    // mainBundle on the environment here. We probable should if we want to test this.
+    let writeKey = Bundle.main.isRelease
       ? Secrets.Segment.productionWriteKey
       : Secrets.Segment.stagingWriteKey
 
