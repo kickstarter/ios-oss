@@ -6,19 +6,10 @@ import Prelude
 internal enum Route {
   case activities(categories: [Activity.Category], count: Int?)
   case addImage(fileUrl: URL, toDraft: UpdateDraft)
-  case addVideo(fileUrl: URL, toDraft: UpdateDraft)
   case backing(projectId: Int, backerId: Int)
   case backingUpdate(projectId: Int, backerId: Int, received: Bool)
-  case categories
-  case category(Param)
-  case changePaymentMethod(project: Project)
   case config
-  case createPledge(
-    project: Project, amount: Double, reward: Reward?, shippingLocation: Location?,
-    tappedReward: Bool
-  )
   case deleteImage(UpdateDraft.Image, fromDraft: UpdateDraft)
-  case deleteVideo(UpdateDraft.Video, fromDraft: UpdateDraft)
   case discover(DiscoveryParams)
   case exportData
   case exportDataState
@@ -60,14 +51,9 @@ internal enum Route {
   case unfollowFriend(userId: Int)
   case update(updateId: Int, projectParam: Param)
   case updateComments(Update)
-  case updatePledge(
-    project: Project, amount: Double, reward: Reward?, shippingLocation: Location?,
-    tappedReward: Bool
-  )
   case updateProjectNotification(notification: ProjectNotification)
   case updateUpdateDraft(UpdateDraft, title: String, body: String, isPublic: Bool)
   case updateUserSelf(User)
-  case userProjectsBacked
   case userSelf
   case user(userId: Int)
   case verifyEmail(accessToken: String)
@@ -88,9 +74,6 @@ internal enum Route {
       case let .addImage(file, draft):
         return (.POST, "/v1/projects/\(draft.update.projectId)/updates/draft/images", [:], (.image, file))
 
-      case let .addVideo(file, draft):
-        return (.POST, "/v1/projects/\(draft.update.projectId)/updates/draft/video", [:], (.video, file))
-
       case let .backing(projectId, backerId):
         return (.GET, "/v1/projects/\(projectId)/backers/\(backerId)", [:], nil)
 
@@ -100,36 +83,8 @@ internal enum Route {
           ["backer_completed_at": received ? "1" : "0"], nil
         )
 
-      case .categories:
-        return (.GET, "/v1/categories", [:], nil)
-
-      case let .category(param):
-        return (.GET, "/v1/categories/\(param.escapedUrlComponent)", [:], nil)
-
-      case let .changePaymentMethod(project):
-        let changeMethodUrl = URL(string: project.urls.web.project)?
-          .appendingPathComponent("pledge")
-          .appendingPathComponent("change_method")
-
-        return (.PUT, changeMethodUrl?.absoluteString ?? "", ["format": "json"], nil)
-
       case .config:
         return (.GET, "/v1/app/ios/config", ["no_cache": "\(Date().timeIntervalSince1970)"], nil)
-
-      case let .createPledge(project, amount, reward, shippingLocation, tappedReward):
-        let pledgeUrl = URL(string: project.urls.web.project)?
-          .appendingPathComponent("pledge")
-
-        var params: [String: Any] = [:]
-        params["clicked_reward"] = tappedReward ? "true" : nil
-        params["format"] = "json"
-        params["backing"] = [
-          "amount": String(amount),
-          "backer_reward_id": reward.map { String($0.id) } ?? "",
-          "location_id": shippingLocation.map { String($0.id) }
-        ].compact()
-
-        return (.POST, pledgeUrl?.absoluteString ?? "", params, nil)
 
       case .exportData:
         return (.POST, "/v1/users//self/queue_export_data", [:], nil)
@@ -139,9 +94,6 @@ internal enum Route {
 
       case let .deleteImage(i, draft):
         return (.DELETE, "/v1/projects/\(draft.update.projectId)/updates/draft/images/\(i.id)", [:], nil)
-
-      case let .deleteVideo(v, draft):
-        return (.DELETE, "/v1/projects/\(draft.update.projectId)/updates/draft/video/\(v.id)", [:], nil)
 
       case let .discover(params):
         return (.GET, "/v1/discover", params.queryParams, nil)
@@ -298,21 +250,6 @@ internal enum Route {
       case let .updateComments(u):
         return (.GET, "/v1/projects/\(u.projectId)/updates/\(u.id)/comments", [:], nil)
 
-      case let .updatePledge(project, amount, reward, shippingLocation, tappedReward):
-        let pledgeUrl = URL(string: project.urls.web.project)?
-          .appendingPathComponent("pledge")
-
-        var params: [String: Any] = [:]
-        params["clicked_reward"] = tappedReward ? "true" : nil
-        params["format"] = "json"
-        params["backing"] = [
-          "amount": String(amount),
-          "backer_reward_id": reward.map { String($0.id) } ?? "",
-          "location_id": shippingLocation.map { String($0.id) }
-        ].compact()
-
-        return (.PUT, pledgeUrl?.absoluteString ?? "", params, nil)
-
       case let .updateUpdateDraft(d, title, body, isPublic):
         let params: [String: Any] = ["title": title, "body": body, "public": isPublic]
         return (.PUT, "/v1/projects/\(d.update.projectId)/updates/draft", params, nil)
@@ -325,9 +262,6 @@ internal enum Route {
         let params = user.encode()
 
         return (.PUT, "/v1/users/self", params, nil)
-
-      case .userProjectsBacked:
-        return (.GET, "/v1/users/self/projects/backed", [:], nil)
 
       case .userSelf:
         return (.GET, "/v1/users/self", [:], nil)
