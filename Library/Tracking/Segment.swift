@@ -6,8 +6,8 @@ public extension Analytics {
     // Due to this being constructed at the same time as the environment we're not able to refer to the
     // mainBundle on the environment here. We probable should if we want to test this.
     let writeKey = Bundle.main.isRelease
-      ? Secrets.Segment.productionWriteKey
-      : Secrets.Segment.stagingWriteKey
+      ? Secrets.Segment.production
+      : Secrets.Segment.staging
 
     let configuration = AnalyticsConfiguration(writeKey: writeKey)
     configuration
