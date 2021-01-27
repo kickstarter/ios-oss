@@ -58,9 +58,6 @@ public final class ActivityFriendFollowCellViewModel: ActivityFriendFollowCellVi
     self.hideFollowButton = Signal.merge(friend, followFriendSuccess)
       .map { $0.isFriend ?? false }
       .skipRepeats()
-
-    self.followButtonTappedProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackFriendFollow(source: FriendsSource.activity) }
   }
 
   fileprivate let activityProperty = MutableProperty<Activity?>(nil)

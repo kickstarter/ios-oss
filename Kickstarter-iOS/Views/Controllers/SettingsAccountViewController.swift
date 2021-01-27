@@ -41,12 +41,6 @@ final class SettingsAccountViewController: UIViewController, MessageBannerViewCo
     self.viewModel.inputs.viewWillAppear()
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-
-    self.viewModel.inputs.viewDidAppear()
-  }
-
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 

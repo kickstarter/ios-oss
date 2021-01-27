@@ -187,37 +187,6 @@ public final class CommentDialogViewModel: CommentDialogViewModelType, CommentDi
       .map { data in data.recipient?.name }
       .skipNil()
       .map { "@\($0): " }
-
-    configurationData
-      .takeWhen(self.viewWillAppearProperty.signal)
-      .observeValues { data in
-        AppEnvironment.current.koala.trackOpenedCommentEditor(
-          project: data.project, update: data.update, context: data.context
-        )
-      }
-
-    configurationData
-      .takeWhen(self.cancelButtonPressedProperty.signal)
-      .observeValues { data in
-        AppEnvironment.current.koala.trackCanceledCommentEditor(
-          project: data.project, update: data.update, context: data.context
-        )
-      }
-
-    configurationData
-      .takePairWhen(self.notifyPresenterCommentWasPostedSuccesfully)
-      .observeValues { data, comment in
-        if let update = data.update {
-          AppEnvironment.current.koala.trackCommentCreate(
-            comment: comment, update: update, project: data.project
-          )
-        } else {
-          AppEnvironment.current.koala.trackCommentCreate(comment: comment, project: data.project)
-        }
-        AppEnvironment.current.koala.trackPostedComment(
-          project: data.project, update: data.update, context: data.context
-        )
-      }
   }
 }
 

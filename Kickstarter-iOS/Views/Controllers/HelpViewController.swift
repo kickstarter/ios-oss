@@ -16,7 +16,6 @@ final class HelpViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.helpViewModel.inputs.configureWith(helpContext: .settings)
     self.helpViewModel.inputs.canSendEmail(MFMailComposeViewController.canSendMail())
 
     self.tableView.dataSource = self.dataSource

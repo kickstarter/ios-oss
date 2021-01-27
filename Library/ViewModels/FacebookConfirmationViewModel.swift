@@ -143,12 +143,5 @@ public final class FacebookConfirmationViewModel: FacebookConfirmationViewModelT
       }
 
     self.showLogin = self.loginButtonPressedProperty.signal
-
-    self.sendNewslettersToggledProperty.signal
-      .observeValues {
-        AppEnvironment.current.koala.trackChangeNewsletter(
-          newsletterType: .weekly, sendNewsletter: $0, project: nil, context: .facebookSignup
-        )
-      }
   }
 }

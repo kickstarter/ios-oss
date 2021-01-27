@@ -10,7 +10,6 @@ import ReactiveSwift
 
 public protocol SettingsViewModelInputs {
   func currentUserUpdated()
-  func logoutCanceled()
   func logoutConfirmed()
   func settingsCellTapped(cellType: SettingsCellType)
   func viewDidLoad()
@@ -82,20 +81,6 @@ public final class SettingsViewModel: SettingsViewModelInputs,
       .skipNil()
       .map(viewControllerFactory)
       .skipNil()
-
-    self.viewDidLoadProperty.signal.observeValues { _ in AppEnvironment.current.koala.trackSettingsView() }
-
-    self.logoutCanceledProperty.signal
-      .observeValues { _ in AppEnvironment.current.koala.trackCancelLogoutModal() }
-
-    self.logoutConfirmedProperty.signal
-      .observeValues { _ in AppEnvironment.current.koala.trackConfirmLogoutModal() }
-
-    self.goToAppStoreRating
-      .observeValues { _ in AppEnvironment.current.koala.trackAppStoreRatingOpen() }
-
-    self.showConfirmLogoutPrompt
-      .observeValues { _ in AppEnvironment.current.koala.trackLogoutModal() }
   }
 
   private var currentUserUpdatedProperty = MutableProperty(())
@@ -106,11 +91,6 @@ public final class SettingsViewModel: SettingsViewModelInputs,
   private var selectedCellTypeProperty = MutableProperty<SettingsCellType?>(nil)
   public func settingsCellTapped(cellType: SettingsCellType) {
     self.selectedCellTypeProperty.value = cellType
-  }
-
-  fileprivate let logoutCanceledProperty = MutableProperty(())
-  public func logoutCanceled() {
-    self.logoutCanceledProperty.value = ()
   }
 
   fileprivate let logoutConfirmedProperty = MutableProperty(())

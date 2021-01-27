@@ -182,12 +182,6 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
           .demoteErrors()
       }
       .ignoreValues()
-
-    Signal.combineLatest(self.project, self.viewDidLoadProperty.signal)
-      .take(first: 1)
-      .observeValues { project, _ in
-        AppEnvironment.current.koala.trackMessageThreadView(project: project)
-      }
   }
 
   private let backingInfoPressedProperty = MutableProperty(())

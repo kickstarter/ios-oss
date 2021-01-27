@@ -293,10 +293,9 @@ internal final class UpdateDraftViewController: UIViewController {
     alert.addAction(
       UIAlertAction(
         title: Strings.dashboard_post_update_compose_attachment_alerts_image_buttons_cancel(),
-        style: .cancel
-      ) { [weak self] _ in
-        self?.viewModel.inputs.removeAttachmentConfirmationCanceled()
-      }
+        style: .cancel,
+        handler: nil
+      )
     )
     self.present(alert, animated: true, completion: nil)
   }

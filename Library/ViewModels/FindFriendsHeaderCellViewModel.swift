@@ -32,10 +32,6 @@ public final class FindFriendsHeaderCellViewModel: FindFriendsHeaderCellViewMode
   public init() {
     self.notifyDelegateGoToFriends = self.findFriendsButtonTappedProperty.signal
     self.notifyDelegateToDismissHeader = self.closeButtonTappedProperty.signal
-
-    self.configureWithProperty.signal
-      .takeWhen(self.closeButtonTappedProperty.signal)
-      .observeValues { AppEnvironment.current.koala.trackCloseFindFriends(source: $0) }
   }
 
   public var inputs: FindFriendsHeaderCellViewModelInputs { return self }

@@ -290,46 +290,6 @@ public final class DashboardViewModel: DashboardViewModelInputs, DashboardViewMo
 
     self.focusScreenReaderOnTitleView = self.viewWillAppearAnimatedProperty.signal.ignoreValues()
       .filter { AppEnvironment.current.isVoiceOverRunning() }
-
-    let projectForTrackingViews = Signal.merge(
-      projects.map { $0.first }.skipNil().take(first: 1),
-      self.project
-        .takeWhen(self.viewWillAppearAnimatedProperty.signal.filter(isFalse))
-    )
-
-    projectForTrackingViews
-      .observeValues { AppEnvironment.current.koala.trackDashboardView(project: $0) }
-
-    self.project
-      .takeWhen(self.presentProjectsDrawer)
-      .observeValues { AppEnvironment.current.koala.trackDashboardShowProjectSwitcher(onProject: $0) }
-
-    let drawerHasClosedAndShouldTrack = Signal.merge(
-      self.showHideProjectsDrawerProperty.signal.map { (drawerState: true, shouldTrack: true) },
-      self.switchToProjectProperty.signal.map { _ in (drawerState: true, shouldTrack: false) }
-    )
-    .scan(nil) { (data, toggledStateAndShouldTrack) -> (DrawerState, Bool)? in
-      let (drawerState, shouldTrack) = toggledStateAndShouldTrack
-      return drawerState
-        ? (data?.0.toggled ?? DrawerState.closed, shouldTrack)
-        : (DrawerState.closed, shouldTrack)
-    }
-    .skipNil()
-    .filter { drawerState, _ in drawerState == .open }
-    .map { _, shouldTrack in shouldTrack }
-
-    self.project
-      .takePairWhen(drawerHasClosedAndShouldTrack)
-      .filter { _, shouldTrack in shouldTrack }
-      .observeValues { project, _ in
-        AppEnvironment.current.koala.trackDashboardClosedProjectSwitcher(onProject: project)
-      }
-
-    projects
-      .takePairWhen(selectProjectPropertyOrFirst.signal)
-      .map { projects, param in find(projectForParam: param, in: projects) }
-      .skipNil()
-      .observeValues { AppEnvironment.current.koala.trackDashboardSwitchProject($0) }
   }
 
   fileprivate let showHideProjectsDrawerProperty = MutableProperty(())

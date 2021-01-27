@@ -103,7 +103,7 @@ public final class CommentsViewModel: CommentsViewModelType, CommentsViewModelIn
       projectOrUpdate.takeWhen(self.commentPostedProperty.signal)
     )
 
-    let (comments, isLoading, pageCount) = paginate(
+    let (comments, isLoading, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
@@ -146,32 +146,6 @@ public final class CommentsViewModel: CommentsViewModelType, CommentsViewModelIn
 
     self.openLoginTout = self.loginButtonPressedProperty.signal
     self.closeLoginTout = self.userSessionStartedProperty.signal
-
-    Signal.combineLatest(project, update)
-      .takeWhen(self.viewDidLoadProperty.signal)
-      .take(first: 1)
-      .observeValues { project, update in
-        AppEnvironment.current.koala.trackCommentsView(
-          project: project, update: update, context: update == nil ? .project : .update
-        )
-      }
-
-    Signal.combineLatest(project, update)
-      .takeWhen(pageCount.skip(first: 1).filter { $0 == 1 })
-      .observeValues { project, update in
-        AppEnvironment.current.koala.trackLoadNewerComments(
-          project: project, update: update, context: update == nil ? .project : .update
-        )
-      }
-
-    Signal.combineLatest(project, update)
-      .takePairWhen(pageCount.skip(first: 1).filter { $0 > 1 })
-      .map(unpack)
-      .observeValues { project, update, pageCount in
-        AppEnvironment.current.koala.trackLoadOlderComments(
-          project: project, update: update, page: pageCount, context: update == nil ? .project : .update
-        )
-      }
   }
 
   fileprivate let commentButtonPressedProperty = MutableProperty(())

@@ -144,9 +144,7 @@ final class SettingsViewController: UIViewController {
       UIAlertAction(
         title: cancel,
         style: .cancel,
-        handler: { [weak self] _ in
-          self?.viewModel.inputs.logoutCanceled()
-        }
+        handler: nil
       )
     )
 

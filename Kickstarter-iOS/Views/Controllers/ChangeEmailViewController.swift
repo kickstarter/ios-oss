@@ -45,12 +45,6 @@ internal final class ChangeEmailViewController: UIViewController, MessageBannerV
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-
-    self.viewModel.inputs.viewDidAppear()
-  }
-
   override func bindStyles() {
     super.bindStyles()
 

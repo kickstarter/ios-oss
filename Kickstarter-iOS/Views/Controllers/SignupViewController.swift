@@ -242,9 +242,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     helpSheet.addAction(UIAlertAction(
       title: Strings.login_tout_help_sheet_cancel(),
       style: .cancel,
-      handler: { [weak helpVM = self.helpViewModel] _ in
-        helpVM?.inputs.cancelHelpSheetButtonTapped()
-      }
+      handler: nil
     ))
 
     // iPad provision

@@ -18,7 +18,6 @@ public typealias SettingsAccountData = (
 public protocol SettingsAccountViewModelInputs {
   func didSelectRow(cellType: SettingsAccountCellType)
   func viewWillAppear()
-  func viewDidAppear()
   func viewDidLoad()
 }
 
@@ -99,9 +98,6 @@ public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
       .map { ($1, $0) }
       .map(viewControllerFactory)
       .skipNil()
-
-    self.viewDidAppearProperty.signal
-      .observeValues { _ in AppEnvironment.current.koala.trackAccountView() }
   }
 
   private let selectedCellTypeProperty = MutableProperty<SettingsAccountCellType?>(nil)
@@ -112,11 +108,6 @@ public final class SettingsAccountViewModel: SettingsAccountViewModelInputs,
   fileprivate let viewWillAppearProperty = MutableProperty(())
   public func viewWillAppear() {
     self.viewWillAppearProperty.value = ()
-  }
-
-  fileprivate let viewDidAppearProperty = MutableProperty(())
-  public func viewDidAppear() {
-    self.viewDidAppearProperty.value = ()
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())

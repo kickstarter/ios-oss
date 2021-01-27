@@ -90,11 +90,6 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     )
     .map(first)
 
-    let viewIsVisible = Signal.merge(
-      self.viewDidAppearProperty.signal.mapConst(true),
-      self.viewWillDisappearProperty.signal.mapConst(false)
-    )
-
     let duration = self.durationProperty.signal.skipNil().skipRepeats()
     let rateCurrentTime = self.rateCurrentTimeProperty.signal.skipNil().skipRepeats(==)
 
@@ -114,13 +109,6 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
 
     let videoCompleted = Signal.merge(videoCompletedOnScrub, self.crossedCompletionThresholdProperty.signal)
       .take(first: 1)
-
-    let videoPaused = Signal.combineLatest(rateCurrentTime, duration)
-      .skip(first: 1)
-      .filter { rateCurrentTime, duration in rateCurrentTime.0 == pauseRate && rateCurrentTime.1 != duration }
-
-    let videoResumed = rateCurrentTime
-      .filter { rate, currentTime in currentTime > CMTime.zero && rate == playRate }
 
     let videoStarted = rateCurrentTime
       .filter { rate, currentTime in currentTime == CMTime.zero && rate == playRate }
@@ -184,24 +172,6 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
         .takeWhen(self.viewDidAppearProperty.signal)
         .mapConst(1.0)
     )
-
-    project
-      .takeWhen(videoCompleted)
-      .observeValues { AppEnvironment.current.koala.trackVideoCompleted(forProject: $0) }
-
-    Signal.combineLatest(project, viewIsVisible)
-      .takeWhen(videoPaused)
-      .filter { _, isVisible in isVisible }
-      .map(first)
-      .observeValues { AppEnvironment.current.koala.trackVideoPaused(forProject: $0) }
-
-    project
-      .takeWhen(videoResumed)
-      .observeValues { AppEnvironment.current.koala.trackVideoResume(forProject: $0) }
-
-    project
-      .takeWhen(videoStarted)
-      .observeValues { AppEnvironment.current.koala.trackVideoStart(forProject: $0) }
   }
 
   fileprivate let crossedCompletionThresholdProperty = MutableProperty(())

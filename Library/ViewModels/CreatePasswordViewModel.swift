@@ -123,13 +123,6 @@ public class CreatePasswordViewModel: CreatePasswordViewModelType,
     ).map { $0.1 }
 
     self.validationLabelIsHidden = validationLabelTextIsNil
-
-    // Tracking
-    self.viewDidAppearProperty.signal
-      .observeValues { _ in AppEnvironment.current.koala.trackCreatePassword(event: .viewed) }
-
-    createPasswordEvent.values()
-      .observeValues { _ in AppEnvironment.current.koala.trackCreatePassword(event: .passwordCreated) }
   }
 
   private var newPasswordChangedProperty = MutableProperty<String?>(nil)

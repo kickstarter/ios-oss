@@ -142,12 +142,6 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
     self.goToSafariBrowser = Signal.merge(externalNavigationAction, goToPrelaunchPage)
       .map { action in action.request.url }
       .skipNil()
-
-    project
-      .takeWhen(self.goToSafariBrowser)
-      .observeValues {
-        AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectUpdate)
-      }
   }
 
   fileprivate let configurationDataProperty = MutableProperty<UpdateData?>(nil)

@@ -834,29 +834,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.projectTitle = project.map(\.name)
 
     self.title = context.map { $0.title }
-    let contextAndProjectAndPledgeAmount = Signal.combineLatest(context, project, pledgeTotal)
 
     // Tracking
-
-    contextAndProjectAndPledgeAmount
-      .filter { $0.0 == .changePaymentMethod }
-      .takeWhen(updateButtonTapped)
-      .observeValues {
-        AppEnvironment.current.koala.trackUpdatePaymentMethodButton(
-          project: $1,
-          pledgeAmount: $2
-        )
-      }
-
-    contextAndProjectAndPledgeAmount
-      .filter { $0.0 != .changePaymentMethod }
-      .takeWhen(updateButtonTapped)
-      .observeValues {
-        AppEnvironment.current.koala.trackUpdatePledgeButtonClicked(
-          project: $1,
-          pledgeAmount: $2
-        )
-      }
 
     initialDataUnpacked
       .observeValues { project, reward, refTag, context in

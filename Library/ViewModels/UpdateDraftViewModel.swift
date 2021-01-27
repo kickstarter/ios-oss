@@ -37,9 +37,6 @@ public protocol UpdateDraftViewModelInputs {
   /// Call when attachment removal confirmed.
   func remove(attachment: UpdateDraft.Attachment)
 
-  /// Call when the creator cancels out of the remove attachment flow.
-  func removeAttachmentConfirmationCanceled()
-
   /// Call when the draft title changes.
   func titleTextChanged(to title: String)
 
@@ -169,10 +166,6 @@ public final class UpdateDraftViewModel: UpdateDraftViewModelType, UpdateDraftVi
 
     let currentTitle: Signal<String, Never> = Signal.merge(self.title, self.titleTextChangedProperty.signal)
     let currentBody: Signal<String, Never> = Signal.merge(self.body, self.bodyTextChangedProperty.signal)
-
-    let titleChanged: Signal<Bool, Never> = hasChanged(self.title, currentTitle)
-    let bodyChanged: Signal<Bool, Never> = hasChanged(self.body, currentBody)
-    let isBackersOnlyChanged: Signal<Bool, Never> = hasChanged(wasBackersOnly, self.isBackersOnly)
 
     // MARK: - Attachments
 
@@ -343,93 +336,6 @@ public final class UpdateDraftViewModel: UpdateDraftViewModelType, UpdateDraftVi
       .map(second)
 
     self.resignFirstResponder = self.viewWillDisappearProperty.signal
-
-    // MARK: - Koala
-
-    project
-      .observeValues { AppEnvironment.current.koala.trackViewedUpdateDraft(forProject: $0) }
-
-    project
-      .takeWhen(self.notifyPresenterViewControllerWantsDismissal)
-      .observeValues { AppEnvironment.current.koala.trackClosedUpdateDraft(forProject: $0) }
-
-    project
-      .takeWhen(self.goToPreview)
-      .observeValues { AppEnvironment.current.koala.trackPreviewedUpdate(forProject: $0) }
-
-    let titleSynced = titleChanged
-      .takeWhen(currentDraft)
-      .filter(isTrue)
-
-    project
-      .takeWhen(titleSynced)
-      .observeValues { AppEnvironment.current.koala.trackEditedUpdateDraftTitle(forProject: $0) }
-
-    let bodySynced = bodyChanged
-      .takeWhen(currentDraft)
-      .filter(isTrue)
-
-    project
-      .takeWhen(bodySynced)
-      .observeValues { AppEnvironment.current.koala.trackEditedUpdateDraftBody(forProject: $0) }
-
-    let isBackersOnlySynced = isBackersOnlyChanged
-      .takeWhen(currentDraft)
-      .filter(isTrue)
-
-    Signal.combineLatest(project, self.isBackersOnly)
-      .takeWhen(isBackersOnlySynced)
-      .observeValues {
-        AppEnvironment.current.koala.trackChangedUpdateDraftVisibility(forProject: $0, isPublic: !$1)
-      }
-
-    project
-      .takeWhen(self.addAttachmentSheetButtonTappedProperty.signal)
-      .observeValues {
-        AppEnvironment.current.koala.trackStartedAddUpdateDraftAttachment(forProject: $0)
-      }
-
-    Signal.combineLatest(project, self.imagePickedProperty.signal.skipNil().map(second))
-      .takeWhen(self.attachmentAdded)
-      .observeValues {
-        AppEnvironment.current.koala.trackCompletedAddUpdateDraftAttachment(forProject: $0, attachedFrom: $1)
-      }
-
-    project
-      .takeWhen(self.imagePickerCanceledProperty.signal)
-      .observeValues {
-        AppEnvironment.current.koala.trackCanceledAddUpdateDraftAttachment(forProject: $0)
-      }
-
-    project
-      .takeWhen(self.showAddAttachmentFailure)
-      .observeValues {
-        AppEnvironment.current.koala.trackFailedAddUpdateDraftAttachment(forProject: $0)
-      }
-
-    project
-      .takeWhen(self.attachmentTappedProperty.signal)
-      .observeValues {
-        AppEnvironment.current.koala.trackStartedRemoveUpdateDraftAttachment(forProject: $0)
-      }
-
-    project
-      .takeWhen(self.attachmentRemoved)
-      .observeValues {
-        AppEnvironment.current.koala.trackCompletedRemoveUpdateDraftAttachment(forProject: $0)
-      }
-
-    project
-      .takeWhen(self.removeAttachmentConfirmationCanceledProperty.signal)
-      .observeValues {
-        AppEnvironment.current.koala.trackCanceledRemoveUpdateDraftAttachment(forProject: $0)
-      }
-
-    project
-      .takeWhen(self.showRemoveAttachmentFailure)
-      .observeValues {
-        AppEnvironment.current.koala.trackFailedRemoveUpdateDraftAttachment(forProject: $0)
-      }
   }
 
   // INPUTS
@@ -486,11 +392,6 @@ public final class UpdateDraftViewModel: UpdateDraftViewModelType, UpdateDraftVi
   fileprivate let removeAttachmentProperty = MutableProperty<UpdateDraft.Attachment?>(nil)
   public func remove(attachment: UpdateDraft.Attachment) {
     self.removeAttachmentProperty.value = attachment
-  }
-
-  fileprivate let removeAttachmentConfirmationCanceledProperty = MutableProperty(())
-  public func removeAttachmentConfirmationCanceled() {
-    self.removeAttachmentConfirmationCanceledProperty.value = ()
   }
 
   fileprivate let titleTextChangedProperty = MutableProperty("")

@@ -110,11 +110,6 @@ public final class DashboardRewardsCellViewModel: DashboardRewardsCellViewModelT
       .skipRepeats(==)
 
     self.notifyDelegateAddedRewardRows = self.seeAllTiersButtonTappedProperty.signal
-
-    statsProject
-      .map { $1 }
-      .takeWhen(self.seeAllTiersButtonTappedProperty.signal)
-      .observeValues { AppEnvironment.current.koala.trackDashboardSeeAllRewards(project: $0) }
   }
 
   public var inputs: DashboardRewardsCellViewModelInputs { return self }

@@ -10,7 +10,6 @@ public protocol ChangeEmailViewModelInputs {
   func saveButtonIsEnabled(_ enabled: Bool)
   func textFieldShouldReturn(with returnKeyType: UIReturnKeyType)
   func viewDidLoad()
-  func viewDidAppear()
 }
 
 public protocol ChangeEmailViewModelOutputs {
@@ -85,9 +84,6 @@ public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailVi
           .materialize()
       }
 
-    resendEmailVerificationEvent.values()
-      .observeValues { _ in AppEnvironment.current.koala.trackResentVerificationEmail() }
-
     self.didSendVerificationEmail = resendEmailVerificationEvent.values().ignoreValues()
 
     self.didFailToSendVerificationEmail = resendEmailVerificationEvent.errors()
@@ -137,9 +133,6 @@ public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailVi
       .filter { $0 == .next }
       .ignoreValues()
 
-    changeEmailEvent.values()
-      .observeValues { _ in AppEnvironment.current.koala.trackChangeEmail() }
-
     self.didChangeEmail = changeEmailEvent.values().ignoreValues()
 
     self.resetFields = changeEmailEvent.values()
@@ -160,9 +153,6 @@ public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailVi
     )
 
     self.textFieldsAreEnabled = self.activityIndicatorShouldShow.map { $0 }.negate()
-
-    self.viewDidAppearProperty.signal
-      .observeValues { _ in AppEnvironment.current.koala.trackChangeEmailView() }
   }
 
   private let newEmailProperty = MutableProperty<String?>(nil)
@@ -193,11 +183,6 @@ public final class ChangeEmailViewModel: ChangeEmailViewModelType, ChangeEmailVi
   private let saveButtonTappedProperty = MutableProperty(())
   public func saveButtonTapped() {
     self.saveButtonTappedProperty.value = ()
-  }
-
-  private let viewDidAppearProperty = MutableProperty(())
-  public func viewDidAppear() {
-    self.viewDidAppearProperty.value = ()
   }
 
   private let textFieldShouldReturnProperty = MutableProperty<UIReturnKeyType?>(nil)

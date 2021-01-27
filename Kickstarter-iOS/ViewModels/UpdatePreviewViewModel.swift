@@ -17,9 +17,6 @@ internal protocol UpdatePreviewViewModelInputs {
   /// Call when the publish confirmation is tapped.
   func publishConfirmationButtonTapped()
 
-  /// Call when the publish cancel is tapped.
-  func publishCancelButtonTapped()
-
   /// Call when the view loads.
   func viewDidLoad()
 }
@@ -101,31 +98,6 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
     self.showPublishFailure = publishEvent
       .errors()
       .ignoreValues()
-
-    // Koala
-
-    project
-      .takeWhen(self.publishButtonTappedProperty.signal)
-      .observeValues {
-        AppEnvironment.current.koala.trackTriggeredPublishConfirmationModal(forProject: $0)
-      }
-
-    project
-      .takeWhen(self.publishConfirmationButtonTappedProperty.signal)
-      .observeValues {
-        AppEnvironment.current.koala.trackConfirmedPublishUpdate(forProject: $0)
-      }
-
-    project
-      .takeWhen(self.publishCancelButtonTappedProperty.signal)
-      .observeValues {
-        AppEnvironment.current.koala.trackCanceledPublishUpdate(forProject: $0)
-      }
-
-    self.goToUpdate
-      .observeValues {
-        AppEnvironment.current.koala.trackPublishedUpdate(forProject: $0, isPublic: $1.isPublic)
-      }
   }
 
   fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
@@ -139,11 +111,6 @@ internal final class UpdatePreviewViewModel: UpdatePreviewViewModelInputs,
   fileprivate let publishButtonTappedProperty = MutableProperty(())
   internal func publishButtonTapped() {
     self.publishButtonTappedProperty.value = ()
-  }
-
-  fileprivate let publishCancelButtonTappedProperty = MutableProperty(())
-  internal func publishCancelButtonTapped() {
-    self.publishCancelButtonTappedProperty.value = ()
   }
 
   fileprivate let publishConfirmationButtonTappedProperty = MutableProperty(())

@@ -365,18 +365,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
   // MARK: - Functions
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController, shareContextView: UIView?) {
-    controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
-
-      self?.shareViewModel.inputs.shareActivityCompletion(
-        with: .init(
-          activityType: activityType,
-          completed: completed,
-          returnedItems: returnedItems,
-          activityError: error
-        )
-      )
-    }
-
     if UIDevice.current.userInterfaceIdiom == .pad {
       controller.modalPresentationStyle = .popover
       let popover = controller.popoverPresentationController

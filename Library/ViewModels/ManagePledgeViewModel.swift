@@ -321,16 +321,7 @@ public final class ManagePledgeViewModel:
       networkErrorMessage
     )
 
-    let managePledgeMenuType: Signal<Koala.ManagePledgeMenuCTAType, Never> = self.menuOptionSelectedSignal
-      .map(managePledgeMenuCTAType(for:))
-
     // Tracking
-    project
-      .takePairWhen(managePledgeMenuType)
-      .observeValues {
-        AppEnvironment.current.koala.trackManagePledgeOptionClicked(project: $0, managePledgeMenuCTA: $1)
-      }
-
     project
       .takePairWhen(self.fixButtonTappedSignal)
       .observeValues {
