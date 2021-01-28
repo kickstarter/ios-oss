@@ -227,8 +227,8 @@ final class UpdateViewModelTests: TestCase {
       self.webViewLoadRequest.assertValueCount(1, "Initial update load request")
       self.goToSafariBrowser.assertValues([])
 
-      XCTAssertEqual([], self.trackingClient.events)
-      XCTAssertEqual(nil, self.trackingClient.properties.last?["context"] as? String)
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(nil, self.dataLakeTrackingClient.properties.last?["context"] as? String)
 
       let request2 = URLRequest(url: prelaunchProjectURL)
 

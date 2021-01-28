@@ -407,51 +407,6 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testKoala_AppLifecycle() {
-    XCTAssertEqual([], trackingClient.events)
-
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
-    XCTAssertEqual(["App Open", "Opened App"], trackingClient.events)
-
-    self.vm.inputs.applicationDidEnterBackground()
-    XCTAssertEqual(["App Open", "Opened App"], trackingClient.events)
-
-    self.vm.inputs.applicationWillEnterForeground()
-    XCTAssertEqual(
-      ["App Open", "Opened App", "App Open", "Opened App"],
-      trackingClient.events
-    )
-  }
-
-  func testKoala_MemoryWarning() {
-    XCTAssertEqual([], trackingClient.events)
-
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
-    XCTAssertEqual(["App Open", "Opened App"], trackingClient.events)
-
-    self.vm.inputs.applicationDidReceiveMemoryWarning()
-    XCTAssertEqual(["App Open", "Opened App", "App Memory Warning"], trackingClient.events)
-  }
-
-  func testKoala_AppCrash() {
-    XCTAssertEqual([], trackingClient.events)
-
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
-    XCTAssertEqual(["App Open", "Opened App"], trackingClient.events)
-
-    self.vm.inputs.crashManagerDidFinishSendingCrashReport()
-    XCTAssertEqual(["App Open", "Opened App", "Crashed App"], trackingClient.events)
-  }
-
   func testCurrentUserUpdating_NothingHappensWhenLoggedOut() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
@@ -538,35 +493,6 @@ final class AppDelegateViewModelTests: TestCase {
       updateCurrentUserInEnvironment.assertDidNotEmitValue()
       self.forceLogout.assertValueCount(1)
     }
-  }
-
-  func testOpenAppBanner() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
-
-    XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
-
-    let result = self.vm.inputs.applicationOpenUrl(
-      application: UIApplication.shared,
-      url: URL(string: "http://www.google.com/?app_banner=1&hello=world")!,
-      options: [:]
-    )
-    XCTAssertTrue(result)
-
-    XCTAssertEqual(
-      ["App Open", "Opened App", "Smart App Banner Opened", "Opened App Banner"],
-      self.trackingClient.events
-    )
-    XCTAssertEqual(
-      [true, nil, true, nil],
-      self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
-    )
-    XCTAssertEqual(
-      [nil, nil, "world", "world"],
-      self.trackingClient.properties(forKey: "hello", as: String.self)
-    )
   }
 
   func testConfig() {
@@ -948,7 +874,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(),
       currentUser: .template,
-      koala: Koala(client: client),
+      koala: Koala(dataLakeClient: client),
       pushRegistrationType: MockPushRegistration.self
     ) {
       XCTAssertEqual([], client.events)
@@ -966,10 +892,6 @@ final class AppDelegateViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(5))
 
       self.pushTokenSuccessfullyRegistered.assertValueCount(1)
-
-      XCTAssertEqual(
-        ["App Open", "Opened App", "Confirmed Push Opt-In"], client.events
-      )
     }
   }
 
@@ -982,7 +904,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(),
       currentUser: .template,
-      koala: Koala(client: client),
+      koala: Koala(dataLakeClient: client),
       pushRegistrationType: MockPushRegistration.self
     ) {
       XCTAssertEqual([], client.events)
@@ -999,11 +921,6 @@ final class AppDelegateViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(5))
 
       self.pushTokenSuccessfullyRegistered.assertValueCount(1)
-
-      XCTAssertEqual(
-        ["App Open", "Opened App"], client.events,
-        "Re-registers for pushes but does not track as an opt-in"
-      )
     }
   }
 
@@ -1014,7 +931,8 @@ final class AppDelegateViewModelTests: TestCase {
     MockPushRegistration.registerProducer = .init(value: true)
 
     withEnvironment(
-      currentUser: .template, koala: Koala(client: client), pushRegistrationType: MockPushRegistration.self
+      currentUser: .template, koala: Koala(dataLakeClient: client),
+      pushRegistrationType: MockPushRegistration.self
     ) {
       XCTAssertEqual([], client.events)
 
@@ -1022,28 +940,6 @@ final class AppDelegateViewModelTests: TestCase {
       self.vm.inputs.userSessionStarted()
 
       self.vm.inputs.didAcceptReceivingRemoteNotifications()
-
-      XCTAssertEqual(["App Open", "Opened App", "Confirmed Push Opt-In"], client.events)
-    }
-  }
-
-  func testTrackingPushAuthorizationOptOut() {
-    let client = MockTrackingClient()
-
-    MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
-    MockPushRegistration.registerProducer = .init(value: false)
-
-    withEnvironment(
-      currentUser: .template, koala: Koala(client: client), pushRegistrationType: MockPushRegistration.self
-    ) {
-      XCTAssertEqual([], client.events)
-
-      self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: [:])
-      self.vm.inputs.userSessionStarted()
-
-      self.vm.inputs.didAcceptReceivingRemoteNotifications()
-
-      XCTAssertEqual(["App Open", "Opened App", "Dismissed Push Opt-In"], client.events)
     }
   }
 
@@ -1071,14 +967,6 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.didReceive(remoteNotification: friendBackingPushData)
 
     self.presentViewController.assertValueCount(1)
-    XCTAssertEqual(
-      ["App Open", "Opened App", "Notification Opened", "Opened Notification"],
-      self.trackingClient.events
-    )
-    XCTAssertEqual(
-      [true, nil, true, nil],
-      self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
-    )
   }
 
   func testOpenNotification_NewBacking_ForCreator() {
@@ -1279,21 +1167,12 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToActivity.assertValueCount(0)
     XCTAssertFalse(self.vm.outputs.continueUserActivityReturnValue.value)
-    XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
 
     let result = self.vm.inputs.applicationContinueUserActivity(userActivity)
     XCTAssertTrue(result)
 
     self.goToActivity.assertValueCount(1)
     XCTAssertTrue(self.vm.outputs.continueUserActivityReturnValue.value)
-    XCTAssertEqual(
-      ["App Open", "Opened App", "Continue User Activity", "Opened Deep Link"],
-      self.trackingClient.events
-    )
-    XCTAssertEqual(
-      [true, nil, true, nil],
-      self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
-    )
   }
 
   func testContinueUserActivity_InvalidActivity() {
@@ -1304,7 +1183,6 @@ final class AppDelegateViewModelTests: TestCase {
     XCTAssertFalse(result)
 
     XCTAssertFalse(self.vm.outputs.continueUserActivityReturnValue.value)
-    XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
   }
 
   func testContinueUserActivity_WhenOnboardingFlowIsActive() {
@@ -1548,63 +1426,6 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testPerformShortcutItem_KoalaTracking() {
-    // Launch app and wait for shortcuts to be set
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [:]
-    )
-    self.scheduler.advance(by: .seconds(5))
-
-    // Perform a shortcut item
-    self.vm.inputs.applicationPerformActionForShortcutItem(
-      ShortcutItem.projectsWeLove.applicationShortcutItem
-    )
-
-    XCTAssertEqual(["App Open", "Opened App", "Performed Shortcut"], self.trackingClient.events)
-    XCTAssertEqual(
-      [nil, nil, "projects_we_love"],
-      self.trackingClient.properties(forKey: "type", as: String.self)
-    )
-    XCTAssertEqual(
-      [nil, nil, "projects_we_love,search"],
-      self.trackingClient.properties(forKey: "context", as: String.self)
-    )
-
-    withEnvironment(currentUser: .template) {
-      // Login with a user and wait for shortcuts to be set
-      self.vm.inputs.userSessionStarted()
-      self.scheduler.advance(by: .seconds(5))
-
-      XCTAssertEqual(
-        ["App Open", "Opened App", "Performed Shortcut"],
-        self.trackingClient.events,
-        "Nothing new is tracked."
-      )
-
-      // Perform shortcut item
-      self.vm.inputs.applicationPerformActionForShortcutItem(
-        ShortcutItem.recommendedForYou.applicationShortcutItem
-      )
-
-      XCTAssertEqual(
-        ["App Open", "Opened App", "Performed Shortcut", "Performed Shortcut"],
-        self.trackingClient.events
-      )
-      XCTAssertEqual(
-        [nil, nil, "projects_we_love", "recommended_for_you"],
-        self.trackingClient.properties(forKey: "type", as: String.self)
-      )
-      XCTAssertEqual(
-        [
-          nil, nil, "projects_we_love,search",
-          "recommended_for_you,projects_we_love,search"
-        ],
-        self.trackingClient.properties(forKey: "context", as: String.self)
-      )
-    }
-  }
-
   func testLaunchShortcutItem_KoalaTracking() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,
@@ -1613,19 +1434,7 @@ final class AppDelegateViewModelTests: TestCase {
       ]
     )
 
-    XCTAssertEqual(["App Open", "Opened App"], self.trackingClient.events)
-
     self.scheduler.advance(by: .seconds(5))
-
-    XCTAssertEqual(["App Open", "Opened App", "Performed Shortcut"], self.trackingClient.events)
-    XCTAssertEqual(
-      [nil, nil, "projects_we_love"],
-      self.trackingClient.properties(forKey: "type", as: String.self)
-    )
-    XCTAssertEqual(
-      [nil, nil, "projects_we_love,search"],
-      self.trackingClient.properties(forKey: "context", as: String.self)
-    )
   }
 
   func testVisitorCookies_ApplicationDidFinishLaunching() {
