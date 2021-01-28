@@ -116,7 +116,11 @@ final class KoalaTests: TestCase {
 
   func testSessionProperties_DeviceFormatAndClientPlatform_ForIPhoneIdiom() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient, device: MockDevice(userInterfaceIdiom: .phone), loggedInUser: nil)
+    let koala = Koala(
+      dataLakeClient: dataLakeClient,
+      device: MockDevice(userInterfaceIdiom: .phone),
+      loggedInUser: nil
+    )
     koala.trackTabBarClicked(.activity)
 
     XCTAssertEqual("phone", dataLakeClient.properties.last?["session_device_format"] as? String)
@@ -125,7 +129,11 @@ final class KoalaTests: TestCase {
 
   func testSessionProperties_DeviceFormatAndClientPlatform_ForIPadIdiom() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient, device: MockDevice(userInterfaceIdiom: .pad), loggedInUser: nil)
+    let koala = Koala(
+      dataLakeClient: dataLakeClient,
+      device: MockDevice(userInterfaceIdiom: .pad),
+      loggedInUser: nil
+    )
     koala.trackTabBarClicked(.activity)
 
     XCTAssertEqual("tablet", dataLakeClient.properties.last?["session_device_format"] as? String)
@@ -134,7 +142,11 @@ final class KoalaTests: TestCase {
 
   func testSessionProperties_DeviceFormatAndClientPlatform_ForTvIdiom() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient, device: MockDevice(userInterfaceIdiom: .tv), loggedInUser: nil)
+    let koala = Koala(
+      dataLakeClient: dataLakeClient,
+      device: MockDevice(userInterfaceIdiom: .tv),
+      loggedInUser: nil
+    )
     koala.trackTabBarClicked(.activity)
 
     XCTAssertEqual("tv", dataLakeClient.properties.last?["session_device_format"] as? String)
@@ -624,43 +636,6 @@ final class KoalaTests: TestCase {
     XCTAssertEqual(["Manage Pledge Button Clicked"], dataLakeClient.events)
   }
 
-  func testTrackPledgeCTAButtonClicked_ViewBackingState() {
-    let dataLakeClient = MockTrackingClient()
-    let project = Project.template
-    let loggedInUser = User.template |> \.id .~ 42
-
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
-
-    koala.trackPledgeCTAButtonClicked(stateType: .viewBacking, project: project)
-
-    XCTAssertEqual(["View Your Pledge Button Clicked"], dataLakeClient.events)
-  }
-
-  func testTrackPledgeCTAButtonClicked_ViewRewardState() {
-    let dataLakeClient = MockTrackingClient()
-    let project = Project.template
-    let loggedInUser = User.template |> \.id .~ 42
-
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
-
-    koala.trackPledgeCTAButtonClicked(stateType: .viewRewards, project: project)
-
-    XCTAssertEqual(["View Rewards Button Clicked"], dataLakeClient.events)
-  }
-
-  func testTrackPledgeCTAButtonClicked_ViewYourRewardsState() {
-    let dataLakeClient = MockTrackingClient()
-    let user = User.template |> \.id .~ 42
-    let project = Project.template
-      |> Project.lens.creator .~ user
-
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: user)
-
-    koala.trackPledgeCTAButtonClicked(stateType: .viewYourRewards, project: project)
-
-    XCTAssertEqual(["View Your Rewards Button Clicked"], dataLakeClient.events)
-  }
-
   func testTrackSelectRewardButtonClicked() {
     let dataLakeClient = MockTrackingClient()
     let reward = Reward.template
@@ -892,7 +867,7 @@ final class KoalaTests: TestCase {
     let koala = Koala(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
 
     koala.trackProjectViewed(Project.template) // approved event
-    
+
     XCTAssertEqual(
       ["Project Page Viewed"], dataLakeClient.events,
       "Approved event is tracked by data lake client"
@@ -951,7 +926,7 @@ final class KoalaTests: TestCase {
   func testContextProperties() {
     let dataLakeClient = MockTrackingClient()
     let koala = Koala(dataLakeClient: dataLakeClient)
-    
+
     koala.trackTabBarClicked(.activity)
 
     XCTAssertEqual("activity", dataLakeClient.properties.last?["context_tab_bar_label"] as? String)
@@ -975,7 +950,10 @@ final class KoalaTests: TestCase {
       refTag: nil,
       reward: .template
     )
-    XCTAssertEqual("pledge_add_new_card_screen", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual(
+      "pledge_add_new_card_screen",
+      dataLakeClient.properties.last?["context_location"] as? String
+    )
 
     koala.trackAddNewCardButtonClicked(
       context: .newPledge,
@@ -984,7 +962,10 @@ final class KoalaTests: TestCase {
       refTag: nil,
       reward: .template
     )
-    XCTAssertEqual("settings_add_new_card_screen", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual(
+      "settings_add_new_card_screen",
+      dataLakeClient.properties.last?["context_location"] as? String
+    )
 
     koala.trackCheckoutPaymentPageViewed(
       project: .template,
@@ -996,7 +977,10 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("pledge_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
     koala.trackCollectionViewed(params: .defaults)
-    XCTAssertEqual("editorial_collection_screen", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual(
+      "editorial_collection_screen",
+      dataLakeClient.properties.last?["context_location"] as? String
+    )
 
     koala.trackDiscovery(params: .defaults)
     XCTAssertEqual("explore_screen", dataLakeClient.properties.last?["context_location"] as? String)
@@ -1050,34 +1034,13 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("thanks_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
     koala.track2FAViewed()
-    XCTAssertEqual("two_factor_auth_verify_screen", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual(
+      "two_factor_auth_verify_screen",
+      dataLakeClient.properties.last?["context_location"] as? String
+    )
 
     koala.trackEmailVerificationScreenViewed()
     XCTAssertEqual("email_verification", dataLakeClient.properties.last?["context_location"] as? String)
-  }
-
-  // MARK: - Email Verification
-
-  func testTrackEmailVerificationScreenViewed() {
-    let dataLakeClient = MockTrackingClient()
-    let segmentClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient, segmentClient: MockTrackingClient())
-
-    koala.trackEmailVerificationScreenViewed()
-
-    XCTAssertEqual(["Verification Screen Viewed"], dataLakeClient.events, "Approved event is tracked by data lake client")
-    XCTAssertEqual(["Verification Screen Viewed"], segmentClient.events, "Approved event is tracked by segment client")
-  }
-
-  func testTrackSkipEmailVerificationButtonClicked() {
-    let dataLakeClient = MockTrackingClient()
-    let segmentClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient, segmentClient: MockTrackingClient())
-
-    koala.trackSkipEmailVerificationButtonClicked()
-
-    XCTAssertEqual(["Skip Verification Button Clicked"], dataLakeClient.events, "Approved event is tracked by data lake client")
-    XCTAssertEqual(["Skip Verification Button Clicked"], segmentClient.events, "Approved event is tracked by segment client")
   }
 
   /*

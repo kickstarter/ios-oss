@@ -45,13 +45,6 @@ internal final class CommentsViewModelTests: TestCase {
       self.hasComments.assertValues([false], "Empty set of comments emitted.")
       self.emptyStateVisible.assertValues([true], "Empty state emitted.")
       self.commentBarButtonVisible.assertValues([false], "Comment button is not visible.")
-
-      XCTAssertEqual(["Project Comment View", "Viewed Comments"], self.trackingClient.events)
-      XCTAssertEqual("project", self.trackingClient.properties.last!["context"] as? String)
-      XCTAssertEqual(
-        [true, nil],
-        self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
-      )
     }
   }
 
@@ -139,12 +132,6 @@ internal final class CommentsViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.commentsAreLoading.assertValues([true])
-      XCTAssertEqual(["Project Comment View", "Viewed Comments"], self.trackingClient.events)
-      XCTAssertEqual("project", self.trackingClient.properties.last!["context"] as? String)
-      XCTAssertEqual(
-        [true, nil],
-        self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
-      )
 
       self.scheduler.advance()
 
@@ -162,32 +149,11 @@ internal final class CommentsViewModelTests: TestCase {
 
         self.hasComments.assertValues([true, true], "Another set of comments are emitted.")
         self.commentsAreLoading.assertValues([true, false, true, false])
-        XCTAssertEqual(
-          ["Project Comment View", "Viewed Comments", "Project Comment Load Older", "Loaded Older Comments"],
-          self.trackingClient.events
-        )
-        XCTAssertEqual(
-          [true, nil, true, nil],
-          self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
-        )
-        XCTAssertEqual("project", self.trackingClient.properties.last!["context"] as? String)
 
         self.vm.inputs.refresh()
         self.scheduler.advance()
 
         self.hasComments.assertValues([true, true, true], "Another set of comments are emitted.")
-        XCTAssertEqual(
-          [
-            "Project Comment View", "Viewed Comments", "Project Comment Load Older", "Loaded Older Comments",
-            "Project Comment Load New", "Loaded Newer Comments"
-          ],
-          self.trackingClient.events
-        )
-        XCTAssertEqual("project", self.trackingClient.properties.last!["context"] as? String)
-        XCTAssertEqual(
-          [true, nil, true, nil, true, nil],
-          self.trackingClient.properties(forKey: Koala.DeprecatedKey, as: Bool.self)
-        )
       }
     }
   }
@@ -200,8 +166,6 @@ internal final class CommentsViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.commentsAreLoading.assertValues([true])
-      XCTAssertEqual(["Update Comment View", "Viewed Comments"], self.trackingClient.events)
-      XCTAssertEqual("update", self.trackingClient.properties.last!["context"] as? String)
 
       self.scheduler.advance()
 
@@ -218,24 +182,11 @@ internal final class CommentsViewModelTests: TestCase {
 
         self.hasComments.assertValues([true, true], "Another set of comments are emitted.")
         self.commentsAreLoading.assertValues([true, false, true, false])
-        XCTAssertEqual(
-          ["Update Comment View", "Viewed Comments", "Update Comment Load Older", "Loaded Older Comments"],
-          self.trackingClient.events
-        )
-        XCTAssertEqual("update", self.trackingClient.properties.last!["context"] as? String)
 
         self.vm.inputs.refresh()
         self.scheduler.advance()
 
         self.hasComments.assertValues([true, true, true], "Another set of comments are emitted.")
-        XCTAssertEqual(
-          [
-            "Update Comment View", "Viewed Comments", "Update Comment Load Older", "Loaded Older Comments",
-            "Update Comment Load New", "Loaded Newer Comments"
-          ],
-          self.trackingClient.events
-        )
-        XCTAssertEqual("update", self.trackingClient.properties.last!["context"] as? String)
       }
     }
   }
@@ -248,8 +199,6 @@ internal final class CommentsViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.commentsAreLoading.assertValues([true])
-      XCTAssertEqual(["Update Comment View", "Viewed Comments"], self.trackingClient.events)
-      XCTAssertEqual("update", self.trackingClient.properties.last!["context"] as? String)
 
       self.scheduler.advance()
 
@@ -266,24 +215,11 @@ internal final class CommentsViewModelTests: TestCase {
 
         self.hasComments.assertValues([true, true], "Another set of comments are emitted.")
         self.commentsAreLoading.assertValues([true, false, true, false])
-        XCTAssertEqual(
-          ["Update Comment View", "Viewed Comments", "Update Comment Load Older", "Loaded Older Comments"],
-          self.trackingClient.events
-        )
-        XCTAssertEqual("update", self.trackingClient.properties.last!["context"] as? String)
 
         self.vm.inputs.refresh()
         self.scheduler.advance()
 
         self.hasComments.assertValues([true, true, true], "Another set of comments are emitted.")
-        XCTAssertEqual(
-          [
-            "Update Comment View", "Viewed Comments", "Update Comment Load Older", "Loaded Older Comments",
-            "Update Comment Load New", "Loaded Newer Comments"
-          ],
-          self.trackingClient.events
-        )
-        XCTAssertEqual("update", self.trackingClient.properties.last!["context"] as? String)
       }
     }
   }

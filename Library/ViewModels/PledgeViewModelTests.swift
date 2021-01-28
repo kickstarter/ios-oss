@@ -1653,7 +1653,7 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Checkout Payment Page Viewed"],
-        self.trackingClient.events
+        self.dataLakeTrackingClient.events
       )
     }
   }
@@ -1746,7 +1746,7 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Checkout Payment Page Viewed"],
-        self.trackingClient.events
+        self.dataLakeTrackingClient.events
       )
     }
   }
@@ -1925,7 +1925,7 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Checkout Payment Page Viewed"],
-        self.trackingClient.events
+        self.dataLakeTrackingClient.events
       )
     }
   }
@@ -1969,9 +1969,9 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Checkout Payment Page Viewed"],
-        self.trackingClient.events
+        self.dataLakeTrackingClient.events
       )
-      XCTAssertEqual([nil], self.trackingClient.properties(forKey: "pledge_context"))
+      XCTAssertEqual([nil], self.dataLakeTrackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -2026,9 +2026,9 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Checkout Payment Page Viewed"],
-        self.trackingClient.events
+        self.dataLakeTrackingClient.events
       )
-      XCTAssertEqual([nil], self.trackingClient.properties(forKey: "pledge_context"))
+      XCTAssertEqual([nil], self.dataLakeTrackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -2141,7 +2141,7 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
-        self.trackingClient.events
+        self.dataLakeTrackingClient.events
       )
     }
   }
@@ -2238,7 +2238,7 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
-        self.trackingClient.events
+        self.dataLakeTrackingClient.events
       )
     }
   }
@@ -2365,9 +2365,9 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
-        self.trackingClient.events
+        self.dataLakeTrackingClient.events
       )
-      XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "pledge_context"))
+      XCTAssertEqual([nil, nil], self.dataLakeTrackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -4471,7 +4471,7 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
-        self.trackingClient.events
+        self.dataLakeTrackingClient.events
       )
     }
   }
@@ -4564,9 +4564,9 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
-        self.trackingClient.events
+        self.dataLakeTrackingClient.events
       )
-      XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "pledge_context"))
+      XCTAssertEqual([nil, nil], self.dataLakeTrackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -4650,9 +4650,9 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
-        self.trackingClient.events
+        self.dataLakeTrackingClient.events
       )
-      XCTAssertEqual([nil, nil], self.trackingClient.properties(forKey: "pledge_context"))
+      XCTAssertEqual([nil, nil], self.dataLakeTrackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -5223,11 +5223,11 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+    XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
 
-    XCTAssertEqual(self.trackingClient.properties(forKey: "context_pledge_flow"), ["new_pledge"])
+    XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_pledge_flow"), ["new_pledge"])
 
-    let properties = self.trackingClient.properties.last
+    let properties = self.dataLakeTrackingClient.properties.last
 
     XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
     XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")
@@ -5250,15 +5250,14 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
-    XCTAssertEqual(self.trackingClient.properties(forKey: "context_pledge_flow"), ["manage_reward"])
+    XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_pledge_flow"), ["manage_reward"])
 
     self.vm.inputs.submitButtonTapped()
 
     XCTAssertEqual([
-      "Checkout Payment Page Viewed",
-      "Update Payment Method Button Clicked"
-    ], self.trackingClient.events)
+      "Checkout Payment Page Viewed"
+    ], self.dataLakeTrackingClient.events)
   }
 
   func testTrackingEvents_ContextIsUpdate() {
@@ -5277,14 +5276,14 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
-    XCTAssertEqual(self.trackingClient.properties(forKey: "context_pledge_flow"), ["manage_reward"])
+    XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_pledge_flow"), ["manage_reward"])
 
     self.vm.inputs.submitButtonTapped()
 
     XCTAssertEqual(
-      ["Checkout Payment Page Viewed", "Update Pledge Button Clicked"],
-      self.trackingClient.events
+      ["Checkout Payment Page Viewed"],
+      self.dataLakeTrackingClient.events
     )
   }
 
@@ -5304,14 +5303,14 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
-    XCTAssertEqual(self.trackingClient.properties(forKey: "context_pledge_flow"), ["change_reward"])
+    XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_pledge_flow"), ["change_reward"])
 
     self.vm.inputs.submitButtonTapped()
 
     XCTAssertEqual(
-      ["Checkout Payment Page Viewed", "Update Pledge Button Clicked"],
-      self.trackingClient.events
+      ["Checkout Payment Page Viewed"],
+      self.dataLakeTrackingClient.events
     )
   }
 
@@ -5323,8 +5322,8 @@ final class PledgeViewModelTests: TestCase {
 
     let reward = Reward.template
 
-    let trackingClient = MockTrackingClient()
-    let koala = Koala(client: trackingClient, config: .template, loggedInUser: nil)
+    let dataLakeClient = MockTrackingClient()
+    let koala = Koala(dataLakeClient: dataLakeClient, config: .template, loggedInUser: nil)
 
     withEnvironment(currentUser: nil, koala: koala) {
       let data = PledgeViewData(
@@ -5338,26 +5337,20 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
 
-      XCTAssertEqual([], self.trackingClient.events)
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
       self.vm.inputs.viewDidLoad()
 
-      XCTAssertEqual(["Checkout Payment Page Viewed"], trackingClient.events)
+      XCTAssertEqual(["Checkout Payment Page Viewed"], dataLakeClient.events)
 
-      XCTAssertEqual(trackingClient.properties(forKey: "context_pledge_flow"), ["new_pledge"])
-      XCTAssertEqual(trackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
-      XCTAssertEqual(
-        trackingClient.properties(forKey: "session_referrer_credit"),
-        ["discovery"]
-      )
+      XCTAssertEqual(dataLakeClient.properties(forKey: "context_pledge_flow"), ["new_pledge"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "session_ref_tag"), ["discovery"])
 
-      XCTAssertEqual(trackingClient.properties(forKey: "session_user_logged_in", as: Bool.self), [false])
-      XCTAssertEqual(trackingClient.properties(forKey: "user_country"), ["US"])
-      XCTAssertEqual(trackingClient.properties(forKey: "user_uid", as: Int.self), [nil])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "session_user_logged_in", as: Bool.self), [false])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "user_country"), ["US"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "user_uid", as: Int.self), [nil])
 
-      XCTAssertEqual(trackingClient.properties(forKey: "project_subcategory"), ["Illustration"])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_category"), ["Art"])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_country"), ["US"])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_subcategory"), ["Illustration"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_category"), ["Art"])
     }
   }
 
@@ -5379,10 +5372,10 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: data)
 
-    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+    XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
 
     XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
@@ -5435,10 +5428,10 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
 
-      XCTAssertEqual([], self.trackingClient.events)
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
       self.vm.inputs.viewDidLoad()
 
-      XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+      XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
@@ -5470,8 +5463,8 @@ final class PledgeViewModelTests: TestCase {
       |> \.stats.createdProjectsCount .~ 25
       |> \.facebookConnected .~ true
 
-    let trackingClient = MockTrackingClient()
-    let koala = Koala(client: trackingClient, config: .template, loggedInUser: user)
+    let dataLakeTrackingClient = MockTrackingClient()
+    let koala = Koala(dataLakeClient: dataLakeTrackingClient, config: .template, loggedInUser: user)
 
     withEnvironment(currentUser: user, koala: koala) {
       let project = Project.template
@@ -5494,25 +5487,31 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
 
-      XCTAssertEqual([], self.trackingClient.events)
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
       self.vm.inputs.viewDidLoad()
 
-      XCTAssertEqual(["Checkout Payment Page Viewed"], trackingClient.events)
+      XCTAssertEqual(["Checkout Payment Page Viewed"], dataLakeTrackingClient.events)
 
-      XCTAssertEqual(trackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
+      XCTAssertEqual(dataLakeTrackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
       XCTAssertEqual(
-        trackingClient.properties(forKey: "session_referrer_credit"),
+        dataLakeTrackingClient.properties(forKey: "session_referrer_credit"),
         ["discovery"]
       )
 
-      XCTAssertEqual(trackingClient.properties(forKey: "session_user_logged_in", as: Bool.self), [true])
-      XCTAssertEqual(trackingClient.properties(forKey: "user_country"), ["US"])
-      XCTAssertEqual(trackingClient.properties(forKey: "user_uid", as: Int.self), [1])
+      XCTAssertEqual(
+        dataLakeTrackingClient.properties(forKey: "session_user_logged_in", as: Bool.self),
+        [true]
+      )
+      XCTAssertEqual(dataLakeTrackingClient.properties(forKey: "user_country"), ["US"])
+      XCTAssertEqual(dataLakeTrackingClient.properties(forKey: "user_uid", as: Int.self), [1])
 
-      XCTAssertEqual(trackingClient.properties(forKey: "project_subcategory"), ["Illustration"])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_category"), ["Art"])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_country"), ["US"])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_user_has_watched", as: Bool.self), [true])
+      XCTAssertEqual(dataLakeTrackingClient.properties(forKey: "project_subcategory"), ["Illustration"])
+      XCTAssertEqual(dataLakeTrackingClient.properties(forKey: "project_category"), ["Art"])
+      XCTAssertEqual(dataLakeTrackingClient.properties(forKey: "project_country"), ["US"])
+      XCTAssertEqual(
+        dataLakeTrackingClient.properties(forKey: "project_user_has_watched", as: Bool.self),
+        [true]
+      )
     }
   }
 
@@ -5550,7 +5549,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
 
-      XCTAssertEqual([], self.trackingClient.events)
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
       self.vm.inputs.viewDidLoad()
 
       XCTAssertEqual(
@@ -5594,7 +5593,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
 
-      XCTAssertEqual([], self.trackingClient.events)
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
       self.vm.inputs.viewDidLoad()
 
       XCTAssertNil(self.optimizelyClient.trackedAttributes?["user_distinct_id"] as? String)
@@ -5618,7 +5617,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+    XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (
       amount: 40.0,
@@ -5633,10 +5632,10 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual(
       ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
-      self.trackingClient.events
+      self.dataLakeTrackingClient.events
     )
 
-    let props = self.trackingClient.properties.last
+    let props = self.dataLakeTrackingClient.properties.last
 
     // Checkout properties
     XCTAssertEqual("55.00", props?["checkout_amount"] as? String)
@@ -5692,13 +5691,13 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.creditCardSelected(with: "12345")
 
-      XCTAssertEqual(["Checkout Payment Page Viewed"], self.trackingClient.events)
+      XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
 
       self.vm.inputs.submitButtonTapped()
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "Update Pledge Button Clicked"],
-        self.trackingClient.events
+        ["Checkout Payment Page Viewed"],
+        self.dataLakeTrackingClient.events
       )
     }
   }

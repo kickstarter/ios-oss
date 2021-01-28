@@ -34,16 +34,6 @@ internal final class MessageThreadsViewModelTests: TestCase {
     self.loadingFooterIsHidden.assertValues([false], "Loading footer is visible at beginning.")
     self.refreshControlEndRefreshing.assertValueCount(0, "Doesn't emit at beginning.")
     self.hasMessageThreads.assertValues([], "No threads emit.")
-    XCTAssertEqual(
-      ["Viewed Message Inbox", "Message Threads View", "Message Inbox View"],
-      self.trackingClient.events,
-      "View event and its deprecated version are tracked."
-    )
-    XCTAssertEqual(
-      [nil, true, true],
-      self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? },
-      "Deprecated property is tracked in deprecated event."
-    )
 
     // Wait enough time to get API response
     self.scheduler.advance()
@@ -130,17 +120,6 @@ internal final class MessageThreadsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.scheduler.advance()
 
-    XCTAssertEqual(
-      ["Viewed Message Inbox", "Message Threads View", "Message Inbox View"],
-      self.trackingClient.events,
-      "View event and its deprecated version are tracked."
-    )
-    XCTAssertEqual(
-      [nil, true, true],
-      self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? },
-      "Deprecated property is tracked in deprecated event."
-    )
-
     self.loadingFooterIsHidden.assertValues(
       [false, true],
       "Loading footer is shown/hidden while loading threads."
@@ -160,19 +139,6 @@ internal final class MessageThreadsViewModelTests: TestCase {
     self.refreshControlEndRefreshing.assertValueCount(1, "Refresh control ends refreshing.")
     self.hasMessageThreads.assertValues([true, false], "Threads clear immediately.")
     self.emptyStateIsVisible.assertValues([false])
-    XCTAssertEqual(
-      [
-        "Viewed Message Inbox", "Message Threads View", "Message Inbox View",
-        "Viewed Sent Messages", "Message Threads View", "Message Inbox View"
-      ],
-      self.trackingClient.events,
-      "View event and its deprecated version are tracked."
-    )
-    XCTAssertEqual(
-      [nil, true, true, nil, true, true],
-      self.trackingClient.properties.map { $0[Koala.DeprecatedKey] as! Bool? },
-      "Deprecated property is tracked in deprecated event."
-    )
 
     self.scheduler.advance()
 

@@ -149,6 +149,6 @@ final class ResetPasswordViewModelTests: TestCase {
   func testTracking() {
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Forgot Password Viewed"], self.trackingClient.events)
+    XCTAssertEqual(["Forgot Password Viewed"], self.dataLakeTrackingClient.events)
   }
 }

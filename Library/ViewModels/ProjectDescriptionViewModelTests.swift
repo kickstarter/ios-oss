@@ -128,8 +128,6 @@ final class ProjectDescriptionViewModelTests: TestCase {
       WKNavigationActionPolicy.cancel.rawValue,
       self.vm.outputs.decidedPolicyForNavigationAction.rawValue
     )
-    XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
-    XCTAssertEqual(["project_description"], self.trackingClient.properties(forKey: "context"))
 
     self.scheduler.advance()
     self.vm.inputs.webViewDidFinishNavigation()

@@ -80,8 +80,8 @@ final class ThanksViewModelTests: TestCase {
 
       goToDiscovery.assertValues([.illustration])
       XCTAssertEqual(
-        ["Triggered App Store Rating Dialog", "Thanks Page Viewed", "Checkout Finished Discover More"],
-        self.trackingClient.events
+        ["Thanks Page Viewed"],
+        self.dataLakeTrackingClient.events
       )
     }
   }
@@ -108,7 +108,10 @@ final class ThanksViewModelTests: TestCase {
 
       showRatingAlert.assertValueCount(1, "Rating Alert emits when view did load")
       showGamesNewsletterAlert.assertValueCount(0, "Games alert does not emit")
-      XCTAssertEqual(["Triggered App Store Rating Dialog", "Thanks Page Viewed"], self.trackingClient.events)
+      XCTAssertEqual(
+        ["Thanks Page Viewed"],
+        self.dataLakeTrackingClient.events
+      )
     }
   }
 
@@ -173,8 +176,8 @@ final class ThanksViewModelTests: TestCase {
       updateUserInEnvironment.assertValueCount(1)
       showGamesNewsletterOptInAlert.assertValueCount(0, "Opt-in alert does not emit")
       XCTAssertEqual(
-        ["Thanks Page Viewed", "Subscribed To Newsletter", "Newsletter Subscribe"],
-        self.trackingClient.events
+        ["Thanks Page Viewed"],
+        self.dataLakeTrackingClient.events
       )
 
       vm.inputs.userUpdated()
@@ -217,8 +220,8 @@ final class ThanksViewModelTests: TestCase {
 
       showGamesNewsletterOptInAlert.assertValues(["Kickstarter Loves Games"], "Opt-in alert emits with title")
       XCTAssertEqual(
-        ["Thanks Page Viewed", "Subscribed To Newsletter", "Newsletter Subscribe"],
-        self.trackingClient.events
+        ["Thanks Page Viewed"],
+        self.dataLakeTrackingClient.events
       )
     }
   }
@@ -252,11 +255,10 @@ final class ThanksViewModelTests: TestCase {
       goToRefTag.assertValues([.thanks])
       XCTAssertEqual(
         [
-          "Triggered App Store Rating Dialog",
           "Thanks Page Viewed",
           "Project Card Clicked"
         ],
-        self.trackingClient.events
+        self.dataLakeTrackingClient.events
       )
       XCTAssertEqual("Project Card Clicked", mockOptimizelyClient.trackedEventKey)
     }
@@ -348,9 +350,12 @@ final class ThanksViewModelTests: TestCase {
     self.vm.inputs.configure(with: (Project.template, Reward.template, checkoutData))
     self.vm.inputs.viewDidLoad()
 
-    let props = self.trackingClient.properties.last
+    let props = self.dataLakeTrackingClient.properties.last
 
-    XCTAssertEqual(["Triggered App Store Rating Dialog", "Thanks Page Viewed"], self.trackingClient.events)
+    XCTAssertEqual(
+      ["Thanks Page Viewed"],
+      self.dataLakeTrackingClient.events
+    )
 
     // Checkout properties
     XCTAssertEqual(2, props?["checkout_add_ons_count_total"] as? Int)

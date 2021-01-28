@@ -56,8 +56,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.reloadData.assertDidEmitValue()
 
-      self.vm.inputs.viewWillAppear()
-
       self.scheduler.advance()
 
       self.errorLoadingPaymentMethods.assertValue(error.message)
@@ -122,7 +120,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
       self.editButtonIsEnabled.assertValues([false])
       self.editButtonTitle.assertValues(["Edit"])
 
-      self.vm.inputs.viewWillAppear()
       self.scheduler.advance()
 
       self.editButtonIsEnabled.assertValues([false, true])
@@ -149,7 +146,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
       self.editButtonIsEnabled.assertValues([false])
 
-      self.vm.inputs.viewWillAppear()
       self.scheduler.advance()
 
       self.editButtonIsEnabled.assertValues([false])
@@ -242,8 +238,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
 
     self.vm.inputs.addNewCardSucceeded(with: Strings.Got_it_your_changes_have_been_saved())
 
-    self.vm.inputs.viewWillAppear()
-
     self.presentBanner.assertValues([Strings.Got_it_your_changes_have_been_saved()])
   }
 
@@ -258,7 +252,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     let apiService = MockService(deletePaymentMethodResult: .success(result))
     withEnvironment(apiService: apiService) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear()
 
       self.scheduler.advance()
 
@@ -293,7 +286,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     let apiService = MockService(deletePaymentMethodResult: .failure(.invalidInput))
     withEnvironment(apiService: apiService) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear()
 
       self.scheduler.advance()
 
@@ -332,7 +324,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
     let apiService1 = MockService(deletePaymentMethodResult: .success(result1))
     withEnvironment(apiService: apiService1) {
       self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear()
 
       self.scheduler.advance()
 
@@ -391,48 +382,6 @@ internal final class PaymentMethodsViewModelTests: TestCase {
         ],
         "Cards are refreshed normally"
       )
-    }
-  }
-
-  func testTrackPaymentMethodsView() {
-    XCTAssertEqual([], self.trackingClient.events)
-    self.vm.inputs.viewWillAppear()
-    XCTAssertEqual(["Viewed Payment Methods"], self.trackingClient.events)
-  }
-
-  func testTrackDeletePaymentMethods() {
-    guard let card = GraphUserCreditCard.template.storedCards.nodes.first else {
-      XCTFail("Card should exist")
-      return
-    }
-
-    let result = DeletePaymentMethodEnvelope(storedCards: GraphUserCreditCard.template.storedCards.nodes)
-
-    let apiService = MockService(deletePaymentMethodResult: .success(result))
-    withEnvironment(apiService: apiService) {
-      self.vm.inputs.viewDidLoad()
-
-      self.vm.inputs.didDelete(card, visibleCellCount: 1)
-      self.scheduler.advance()
-
-      XCTAssertEqual(["Deleted Payment Method"], self.trackingClient.events)
-    }
-  }
-
-  func testTrackDeletePaymentMethodError() {
-    guard let card = GraphUserCreditCard.template.storedCards.nodes.first else {
-      XCTFail("Card should exist")
-      return
-    }
-
-    let apiService = MockService(deletePaymentMethodResult: .failure(.invalidInput))
-    withEnvironment(apiService: apiService) {
-      self.vm.inputs.viewDidLoad()
-
-      self.vm.inputs.didDelete(card, visibleCellCount: 1)
-      self.scheduler.advance()
-
-      XCTAssertEqual(["Errored Delete Payment Method"], self.trackingClient.events)
     }
   }
 }

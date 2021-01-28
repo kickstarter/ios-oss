@@ -288,9 +288,9 @@ internal final class WatchProjectViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Watch Project Button Clicked"],
-        trackingClient.events
+        dataLakeTrackingClient.events
       )
-      XCTAssertEqual(["project_screen"], self.trackingClient.properties(forKey: "context_location"))
+      XCTAssertEqual(["project_screen"], self.dataLakeTrackingClient.properties(forKey: "context_location"))
 
       self.saveButtonSelected.assertValues([false, true], "Save button selects immediately.")
       self.saveButtonAccessibilityValue.assertValues(["Unsaved", "Saved"])
@@ -309,11 +309,11 @@ internal final class WatchProjectViewModelTests: TestCase {
 
         XCTAssertEqual(
           ["Watch Project Button Clicked", "Watch Project Button Clicked"],
-          trackingClient.events
+          dataLakeTrackingClient.events
         )
         XCTAssertEqual(
           ["project_screen", "project_screen"],
-          self.trackingClient.properties(forKey: "context_location")
+          self.dataLakeTrackingClient.properties(forKey: "context_location")
         )
 
         self.saveButtonSelected.assertValues(
@@ -350,9 +350,9 @@ internal final class WatchProjectViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Watch Project Button Clicked"],
-        trackingClient.events
+        dataLakeTrackingClient.events
       )
-      XCTAssertEqual(["project_screen"], self.trackingClient.properties(forKey: "context_location"))
+      XCTAssertEqual(["project_screen"], self.dataLakeTrackingClient.properties(forKey: "context_location"))
 
       self.scheduler.advance(by: .milliseconds(500))
 
@@ -390,9 +390,9 @@ internal final class WatchProjectViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Watch Project Button Clicked"],
-        trackingClient.events
+        dataLakeTrackingClient.events
       )
-      XCTAssertEqual(["explore_screen"], self.trackingClient.properties(forKey: "context_location"))
+      XCTAssertEqual(["explore_screen"], self.dataLakeTrackingClient.properties(forKey: "context_location"))
     }
   }
 }

@@ -60,7 +60,7 @@ final class LoginViewModelTests: TestCase {
 
     self.vm.inputs.passwordTextFieldDoneEditing()
 
-    XCTAssertEqual(["Log In Submit Button Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["Log In Submit Button Clicked"], self.dataLakeTrackingClient.events)
 
     self.dismissKeyboard.assertValueCount(1, "Keyboard is dismissed")
     self.logIntoEnvironment

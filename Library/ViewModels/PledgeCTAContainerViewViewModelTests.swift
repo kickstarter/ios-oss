@@ -265,24 +265,6 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.vm.inputs.pledgeCTAButtonTapped()
     self.notifyDelegateCTATapped.assertValueCount(1)
-
-    XCTAssertEqual(["View Rewards Button Clicked"], self.trackingClient.events)
-
-    XCTAssertEqual(
-      self.trackingClient.properties(forKey: "optimizely_api_key"),
-      [nil],
-      "Event does not include Optimizely properties"
-    )
-    XCTAssertEqual(
-      self.trackingClient.properties(forKey: "optimizely_environment"),
-      [nil],
-      "Event does not include Optimizely properties"
-    )
-    XCTAssertEqual(
-      self.trackingClient.properties(forKey: "optimizely_experiments"),
-      [nil],
-      "Event does not include Optimizely properties"
-    )
   }
 
   func testTrackingEvents_Pledge() {
@@ -294,9 +276,9 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.notifyDelegateCTATapped.assertValueCount(1)
 
-    XCTAssertEqual(["Project Page Pledge Button Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["Project Page Pledge Button Clicked"], self.dataLakeTrackingClient.events)
 
-    let properties = self.trackingClient.properties.last
+    let properties = self.dataLakeTrackingClient.properties.last
 
     XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
     XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")

@@ -895,29 +895,6 @@ internal final class ManagePledgeViewModelTests: TestCase {
     }
   }
 
-  func testTrackingEvents() {
-    let project = Project.template
-
-    let mockService = MockService(
-      fetchManagePledgeViewBackingResult: .success(.template),
-      fetchProjectResponse: project
-    )
-
-    withEnvironment(apiService: mockService) {
-      self.vm.inputs.configureWith((Param.slug("project-slug"), Param.id(1)))
-      self.vm.inputs.viewDidLoad()
-
-      self.scheduler.advance()
-
-      XCTAssertEqual([], self.trackingClient.events)
-
-      self.vm.inputs.menuButtonTapped()
-      self.vm.inputs.menuOptionSelected(with: .updatePledge)
-
-      XCTAssertEqual(["Manage Pledge Option Clicked"], self.trackingClient.events)
-    }
-  }
-
   func testFixPaymentTrackingEvents() {
     let project = Project.template
 
@@ -932,11 +909,11 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      XCTAssertEqual([], self.trackingClient.events)
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
 
       self.vm.inputs.fixButtonTapped()
 
-      XCTAssertEqual(["Fix Pledge Button Clicked"], self.trackingClient.events)
+      XCTAssertEqual(["Fix Pledge Button Clicked"], self.dataLakeTrackingClient.events)
     }
   }
 

@@ -141,7 +141,6 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
     self.rewardsRowTotalPledged.assertValues([5_000, 5_000])
     self.hideSeeAllTiersButton.assertValues([false, true])
     self.notifyDelegateAddedRewardRows.assertValueCount(1, "Additional rewards were added.")
-    XCTAssertEqual(["Showed All Rewards"], self.trackingClient.events)
   }
 
   func testSorting() {

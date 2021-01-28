@@ -99,7 +99,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.projectsLoadedDiscoveryParams.assertDidNotEmitValue()
     self.hasAddedProjects.assertDidNotEmitValue("No projects load at first.")
     self.hasRemovedProjects.assertDidNotEmitValue("No projects load at first.")
-    XCTAssertEqual([], self.trackingClient.events, "No events tracked at first.")
+    XCTAssertEqual([], self.dataLakeTrackingClient.events, "No events tracked at first.")
 
     self.vm.inputs.selectedFilter(.defaults)
 
@@ -118,11 +118,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.projectsAreLoading.assertValues([true, false], "Loading indicator toggles on/off.")
     XCTAssertEqual(
       ["Explore Page Viewed"],
-      self.trackingClient.events,
+      self.dataLakeTrackingClient.events,
       "Impression is tracked."
     )
 
-    let props = self.trackingClient.properties.last
+    let props = self.dataLakeTrackingClient.properties.last
 
     XCTAssertNotNil(props?["optimizely_api_key"], "Event includes Optimizely properties")
     XCTAssertNotNil(props?["optimizely_environment"], "Event includes Optimizely properties")
@@ -136,7 +136,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.hasRemovedProjects.assertValues([false], "No projects are removed.")
     XCTAssertEqual(
       ["Explore Page Viewed"],
-      self.trackingClient.events,
+      self.dataLakeTrackingClient.events,
       "No new events are tracked."
     )
 
@@ -152,7 +152,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     )
     XCTAssertEqual(
       ["Explore Page Viewed"],
-      self.trackingClient.events,
+      self.dataLakeTrackingClient.events,
       "No new events are tracked"
     )
 
@@ -165,7 +165,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.hasRemovedProjects.assertValues([false, false], "No projects are removed.")
     XCTAssertEqual(
       ["Explore Page Viewed"],
-      self.trackingClient.events,
+      self.dataLakeTrackingClient.events,
       "No new events are tracked."
     )
 
@@ -194,12 +194,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     )
     XCTAssertEqual(
       ["Explore Page Viewed", "Explore Page Viewed"],
-      self.trackingClient.events,
+      self.dataLakeTrackingClient.events,
       "Another event is tracked when the filters are updated."
     )
     XCTAssertEqual(
       [nil, 1],
-      self.trackingClient.properties(forKey: "discover_subcategory_id", as: Int.self),
+      self.dataLakeTrackingClient.properties(forKey: "discover_subcategory_id", as: Int.self),
       "The updated category is tracked."
     )
 
@@ -226,7 +226,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     )
     XCTAssertEqual(
       ["Explore Page Viewed", "Explore Page Viewed"],
-      self.trackingClient.events,
+      self.dataLakeTrackingClient.events,
       "No new events are tracked."
     )
   }
@@ -419,7 +419,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Go to the project with discovery ref tag."
       )
 
-      XCTAssertEqual(["Explore Page Viewed", "Project Card Clicked"], self.trackingClient.events)
+      XCTAssertEqual(["Explore Page Viewed", "Project Card Clicked"], self.dataLakeTrackingClient.events)
       XCTAssertEqual("Project Card Clicked", mockOptimizelyClient.trackedEventKey)
 
       self.vm.inputs.selectedFilter(.defaults
@@ -438,7 +438,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Project Card Clicked",
         "Explore Page Viewed",
         "Project Card Clicked"
-      ], self.trackingClient.events)
+      ], self.dataLakeTrackingClient.events)
 
       self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.staffPicks .~ true)
       self.vm.inputs.tapped(project: project)
@@ -450,7 +450,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Project Card Clicked",
         "Explore Page Viewed",
         "Project Card Clicked"
-      ], self.trackingClient.events)
+      ], self.dataLakeTrackingClient.events)
 
       self.goToPlaylist.assertValueCount(3, "New playlist for project emits.")
       self.goToPlaylistProject.assertValues([project, project, project])
@@ -471,7 +471,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Project Card Clicked",
         "Explore Page Viewed",
         "Project Card Clicked"
-      ], self.trackingClient.events)
+      ], self.dataLakeTrackingClient.events)
 
       self.goToPlaylist.assertValueCount(4, "New playlist for project emits.")
       self.goToPlaylistProject.assertValues([project, project, project, project])
@@ -505,7 +505,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Project Card Clicked",
         "Explore Page Viewed",
         "Project Card Clicked"
-      ], self.trackingClient.events)
+      ], self.dataLakeTrackingClient.events)
 
       self.goToPlaylistProject.assertValues([project, project, project, project, project])
       self.goToPlaylistRefTag.assertValues(
@@ -1175,13 +1175,13 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.discoveryEditorialCellTapped(with: .lightsOn)
 
-      XCTAssertEqual(["Explore Page Viewed", "Editorial Card Clicked"], self.trackingClient.events)
+      XCTAssertEqual(["Explore Page Viewed", "Editorial Card Clicked"], self.dataLakeTrackingClient.events)
       XCTAssertEqual(
         [nil, "ios_project_collection_tag_557"],
-        self.trackingClient.properties(forKey: "session_ref_tag", as: String.self)
+        self.dataLakeTrackingClient.properties(forKey: "session_ref_tag", as: String.self)
       )
 
-      let props = self.trackingClient.properties.last
+      let props = self.dataLakeTrackingClient.properties.last
 
       XCTAssertEqual(true, props?["discover_everything"] as? Bool)
       XCTAssertEqual("discovery_home", props?["discover_ref_tag"] as? String)
@@ -1472,20 +1472,20 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.selectedFilter(defaultFilter)
 
       self.goToCuratedProjects.assertDidNotEmitValue()
-      XCTAssertEqual(["Explore Page Viewed"], self.trackingClient.events)
+      XCTAssertEqual(["Explore Page Viewed"], self.dataLakeTrackingClient.events)
 
       self.vm.inputs.personalizationCellTapped()
 
-      XCTAssertEqual(["Explore Page Viewed", "Editorial Card Clicked"], self.trackingClient.events)
+      XCTAssertEqual(["Explore Page Viewed", "Editorial Card Clicked"], self.dataLakeTrackingClient.events)
       XCTAssertEqual("Editorial Card Clicked", mockOpClient.trackedEventKey)
 
       XCTAssertEqual(
         [nil, "ios_experiment_onboarding_1"],
-        self.trackingClient.properties(forKey: "session_ref_tag")
+        self.dataLakeTrackingClient.properties(forKey: "session_ref_tag")
       )
       self.goToCuratedProjects.assertValues([[.art, .illustration]])
 
-      let properties = self.trackingClient.properties.last
+      let properties = self.dataLakeTrackingClient.properties.last
 
       XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
       XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")

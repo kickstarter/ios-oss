@@ -52,13 +52,4 @@ internal final class EmptyStatesViewModelTests: TestCase {
     self.notifyDelegateToGoToFriends.assertValueCount(1)
     self.notifyDelegateToGoToDiscovery.assertValueCount(0)
   }
-
-  func testTracking() {
-    self.vm.inputs.configureWith(emptyState: .activity)
-    self.vm.inputs.viewWillAppear()
-    self.vm.inputs.mainButtonTapped()
-
-    XCTAssertEqual(["Tapped Empty State Button"], self.trackingClient.events)
-    XCTAssertEqual(["activity"], self.trackingClient.properties(forKey: "type", as: String.self))
-  }
 }

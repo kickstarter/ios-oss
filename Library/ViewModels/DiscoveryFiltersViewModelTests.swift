@@ -102,21 +102,21 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
     XCTAssertEqual(
       [],
-      self.trackingClient.events
+      self.dataLakeTrackingClient.events
     )
     self.vm.inputs.tapped(expandableRow: filmExpandableRow)
 
     XCTAssertEqual(
       [],
-      self.trackingClient.events
+      self.dataLakeTrackingClient.events
     )
 
     self.vm.inputs.tapped(selectableRow: documentarySelectableRow)
 
-    XCTAssertEqual(["Filter Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["Filter Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(
       [Category.documentary.intID],
-      self.trackingClient.properties(forKey: "discover_subcategory_id", as: Int.self)
+      self.dataLakeTrackingClient.properties(forKey: "discover_subcategory_id", as: Int.self)
     )
   }
 

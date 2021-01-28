@@ -176,16 +176,16 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     XCTAssertEqual(
       ["Project Page Viewed"],
-      self.trackingClient.events, "A project page event is tracked."
+      self.dataLakeTrackingClient.events, "A project page event is tracked."
     )
     XCTAssertEqual(
       [RefTag.category.stringTag],
-      self.trackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+      self.dataLakeTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
       "The ref tag is tracked in the koala event."
     )
     XCTAssertEqual(
       [RefTag.category.stringTag],
-      self.trackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
+      self.dataLakeTrackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
       "The referral credit is tracked in the koala event."
     )
     XCTAssertEqual(
@@ -215,14 +215,14 @@ final class ProjectPamphletViewModelTests: TestCase {
       [
         "Project Page Viewed", "Project Page Viewed"
       ],
-      self.trackingClient.events, "A project page koala event is tracked."
+      self.dataLakeTrackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
       [
         RefTag.category.stringTag,
         RefTag.recommended.stringTag
       ],
-      self.trackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+      self.dataLakeTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
       "The new ref tag is tracked in koala event."
     )
     XCTAssertEqual(
@@ -230,7 +230,7 @@ final class ProjectPamphletViewModelTests: TestCase {
         RefTag.category.stringTag,
         RefTag.category.stringTag
       ],
-      self.trackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
+      self.dataLakeTrackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
       "The referrer credit did not change, and is still category."
     )
     XCTAssertEqual(
@@ -249,20 +249,20 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       XCTAssertEqual(
         [],
-        self.trackingClient.events,
+        self.dataLakeTrackingClient.events,
         "Project Page Viewed doesnt track if the request fails"
       )
     }
   }
 
   func testProjectPageViewed_OnViewDidAppear() {
-    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
 
     self.configureInitialState(.init(left: .template))
 
     self.scheduler.advance()
 
-    XCTAssertEqual(["Project Page Viewed"], self.trackingClient.events)
+    XCTAssertEqual(["Project Page Viewed"], self.dataLakeTrackingClient.events)
   }
 
   func testMockCookieStorageSet_SeparateSchedulers() {
@@ -349,16 +349,16 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     XCTAssertEqual(
       ["Project Page Viewed"],
-      self.trackingClient.events, "A project page koala event is tracked."
+      self.dataLakeTrackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
       [RefTag.category.stringTag],
-      self.trackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+      self.dataLakeTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
       "The ref tag is tracked in the koala event."
     )
     XCTAssertEqual(
       [RefTag.category.stringTag],
-      self.trackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
+      self.dataLakeTrackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
       "The referral credit is tracked in the koala event."
     )
     XCTAssertEqual(
@@ -388,21 +388,21 @@ final class ProjectPamphletViewModelTests: TestCase {
       [
         "Project Page Viewed", "Project Page Viewed"
       ],
-      self.trackingClient.events, "A project page koala event is tracked."
+      self.dataLakeTrackingClient.events, "A project page koala event is tracked."
     )
     XCTAssertEqual(
       [
         RefTag.category.stringTag,
         RefTag.recommended.stringTag
       ],
-      self.trackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+      self.dataLakeTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
       "The new ref tag is tracked in koala event."
     )
     XCTAssertEqual(
       [
         RefTag.category.stringTag, RefTag.category.stringTag
       ],
-      self.trackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
+      self.dataLakeTrackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
       "The referrer credit did not change, and is still category."
     )
     XCTAssertEqual(
@@ -421,7 +421,7 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.scheduler.advance()
 
-    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
   }
 
   func testGoToRewards() {
@@ -821,8 +821,8 @@ final class ProjectPamphletViewModelTests: TestCase {
   }
 
   func testTrackingProjectPageViewed_LoggedIn() {
-    let trackingClient = MockTrackingClient()
-    let koala = Koala(client: trackingClient, config: .template, loggedInUser: User.template)
+    let dataLakeClient = MockTrackingClient()
+    let koala = Koala(dataLakeClient: dataLakeClient, config: .template, loggedInUser: User.template)
 
     withEnvironment(currentUser: User.template, koala: koala) {
       self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
@@ -831,24 +831,24 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      XCTAssertEqual(trackingClient.events, ["Project Page Viewed"])
+      XCTAssertEqual(dataLakeClient.events, ["Project Page Viewed"])
 
-      XCTAssertEqual(trackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "session_ref_tag"), ["discovery"])
       XCTAssertEqual(
-        trackingClient.properties(forKey: "session_referrer_credit"),
+        dataLakeClient.properties(forKey: "session_referrer_credit"),
         ["discovery"]
       )
 
-      XCTAssertEqual(trackingClient.properties(forKey: "session_user_logged_in", as: Bool.self), [true])
-      XCTAssertEqual(trackingClient.properties(forKey: "user_country"), ["US"])
-      XCTAssertEqual(trackingClient.properties(forKey: "user_uid", as: Int.self), [1])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "session_user_logged_in", as: Bool.self), [true])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "user_country"), ["US"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "user_uid", as: Int.self), [1])
 
-      XCTAssertEqual(trackingClient.properties(forKey: "project_subcategory"), ["Art"])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_category"), [nil])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_country"), ["US"])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_subcategory"), ["Art"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_country"), ["US"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
 
-      let properties = trackingClient.properties.last
+      let properties = dataLakeClient.properties.last
 
       XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
       XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")
@@ -860,8 +860,8 @@ final class ProjectPamphletViewModelTests: TestCase {
     let config = Config.template
       |> \.countryCode .~ "GB"
 
-    let trackingClient = MockTrackingClient()
-    let koala = Koala(client: trackingClient, config: config, loggedInUser: nil)
+    let dataLakeClient = MockTrackingClient()
+    let koala = Koala(dataLakeClient: dataLakeClient, config: config, loggedInUser: nil)
 
     withEnvironment(currentUser: nil, koala: koala) {
       self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
@@ -870,24 +870,24 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      XCTAssertEqual(trackingClient.events, ["Project Page Viewed"])
+      XCTAssertEqual(dataLakeClient.events, ["Project Page Viewed"])
 
-      XCTAssertEqual(trackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "session_ref_tag"), ["discovery"])
       XCTAssertEqual(
-        trackingClient.properties(forKey: "session_referrer_credit"),
+        dataLakeClient.properties(forKey: "session_referrer_credit"),
         ["discovery"]
       )
 
-      XCTAssertEqual(trackingClient.properties(forKey: "session_user_logged_in", as: Bool.self), [false])
-      XCTAssertEqual(trackingClient.properties(forKey: "user_country"), ["GB"])
-      XCTAssertEqual(trackingClient.properties(forKey: "user_uid", as: Int.self), [nil])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "session_user_logged_in", as: Bool.self), [false])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "user_country"), ["GB"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "user_uid", as: Int.self), [nil])
 
-      XCTAssertEqual(trackingClient.properties(forKey: "project_subcategory"), ["Art"])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_category"), [nil])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_country"), ["US"])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_subcategory"), ["Art"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_country"), ["US"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
 
-      let properties = trackingClient.properties.last
+      let properties = dataLakeClient.properties.last
 
       XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
       XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")

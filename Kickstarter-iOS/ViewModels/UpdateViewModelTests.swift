@@ -187,9 +187,6 @@ final class UpdateViewModelTests: TestCase {
     self.goToProject.assertValueCount(0)
     self.webViewLoadRequest.assertValueCount(1)
     self.goToSafariBrowser.assertValues([outsideUrl])
-
-    XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
-    XCTAssertEqual("project_update", self.trackingClient.properties.last?["context"] as? String)
   }
 
   func testGoToSafariBrowser_PrelaunchProject() {
@@ -253,9 +250,6 @@ final class UpdateViewModelTests: TestCase {
       self.goToComments.assertDidNotEmitValue()
       self.webViewLoadRequest.assertValueCount(1, "Initial update load request")
       self.goToSafariBrowser.assertValues([prelaunchProjectURL])
-
-      XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
-      XCTAssertEqual("project_update", self.trackingClient.properties.last?["context"] as? String)
     }
   }
 }

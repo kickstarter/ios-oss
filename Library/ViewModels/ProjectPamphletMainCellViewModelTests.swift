@@ -521,24 +521,28 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(value: (project, .discovery))
       self.vm.inputs.awakeFromNib()
 
-      XCTAssertEqual(self.trackingClient.events, [])
+      XCTAssertEqual(self.dataLakeTrackingClient.events, [])
 
       self.vm.inputs.readMoreButtonTapped()
 
-      XCTAssertEqual(self.trackingClient.events, ["Campaign Details Button Clicked"], "Event is tracked")
+      XCTAssertEqual(
+        self.dataLakeTrackingClient.events,
+        ["Campaign Details Button Clicked"],
+        "Event is tracked"
+      )
 
       XCTAssertEqual(
-        self.trackingClient.properties(forKey: "optimizely_api_key"),
+        self.dataLakeTrackingClient.properties(forKey: "optimizely_api_key"),
         [nil],
         "Event does not include Optimizely properties"
       )
       XCTAssertEqual(
-        self.trackingClient.properties(forKey: "optimizely_environment"),
+        self.dataLakeTrackingClient.properties(forKey: "optimizely_environment"),
         [nil],
         "Event does not include Optimizely properties"
       )
       XCTAssertEqual(
-        self.trackingClient.properties(forKey: "optimizely_experiments"),
+        self.dataLakeTrackingClient.properties(forKey: "optimizely_experiments"),
         [nil],
         "Event does not include Optimizely properties"
       )
@@ -631,24 +635,27 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(value: (project, .discovery))
       self.vm.inputs.awakeFromNib()
 
-      XCTAssertEqual(self.trackingClient.events, [])
+      XCTAssertEqual(self.dataLakeTrackingClient.events, [])
 
       self.vm.inputs.readMoreButtonTapped()
 
       self.notifyDelegateToGoToCampaignWithProject.assertValues([project])
 
-      XCTAssertEqual(self.trackingClient.events, ["Campaign Details Button Clicked"])
+      XCTAssertEqual(self.dataLakeTrackingClient.events, ["Campaign Details Button Clicked"])
 
-      XCTAssertEqual(self.trackingClient.properties(forKey: "context_location"), ["project_screen"])
-      XCTAssertEqual(self.trackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
-      XCTAssertEqual(self.trackingClient.properties(forKey: "session_referrer_credit"), ["discovery"])
+      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_location"), ["project_screen"])
+      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
+      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "session_referrer_credit"), ["discovery"])
 
-      XCTAssertEqual(self.trackingClient.properties(forKey: "project_subcategory"), ["Art"])
-      XCTAssertEqual(self.trackingClient.properties(forKey: "project_category"), [nil])
-      XCTAssertEqual(self.trackingClient.properties(forKey: "project_country"), ["US"])
-      XCTAssertEqual(self.trackingClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "project_subcategory"), ["Art"])
+      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "project_country"), ["US"])
+      XCTAssertEqual(
+        self.dataLakeTrackingClient.properties(forKey: "project_user_has_watched", as: Bool.self),
+        [nil]
+      )
 
-      let properties = self.trackingClient.properties.last
+      let properties = self.dataLakeTrackingClient.properties.last
 
       XCTAssertNotNil(
         properties?["optimizely_api_key"],

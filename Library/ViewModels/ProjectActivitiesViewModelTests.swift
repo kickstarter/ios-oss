@@ -48,10 +48,6 @@ final class ProjectActivitiesViewModelTests: TestCase {
       self.activitiesPresent.assertValues([true], "Show activities after scheduler advances")
       self.groupedDates.assertValues([true], "Group dates by default")
       self.project.assertValues([project], "Emits project")
-      XCTAssertEqual(
-        ["Viewed Project Activity", "Creator Activity View"],
-        self.trackingClient.events, "View event and its deprecated version are tracked"
-      )
     }
 
     withEnvironment(apiService: MockService(
@@ -64,13 +60,6 @@ final class ProjectActivitiesViewModelTests: TestCase {
       self.activitiesPresent.assertValues([true, true], "Activities refreshed")
       self.groupedDates.assertValues([true, true], "Group dates by default")
       self.project.assertValues([project, project], "Emits project")
-      XCTAssertEqual(
-        [
-          "Viewed Project Activity", "Creator Activity View", "Loaded Newer Project Activity",
-          "Creator Activity View Load Newer"
-        ],
-        self.trackingClient.events, "Load newer event and its deprecated version are tracked"
-      )
     }
 
     withEnvironment(apiService: MockService(
@@ -83,14 +72,6 @@ final class ProjectActivitiesViewModelTests: TestCase {
       self.activitiesPresent.assertValues([true, true, true], "Activities paginate")
       self.groupedDates.assertValues([true, true, true], "Group dates by default")
       self.project.assertValues([project, project, project], "Emits project")
-      XCTAssertEqual(
-        [
-          "Viewed Project Activity", "Creator Activity View", "Loaded Newer Project Activity",
-          "Creator Activity View Load Newer", "Loaded Older Project Activity",
-          "Creator Activity View Load Older"
-        ],
-        self.trackingClient.events, "Load older event and its deprecated version are tracked"
-      )
     }
 
     self.showEmptyState.assertValues(

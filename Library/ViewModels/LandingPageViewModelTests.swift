@@ -33,9 +33,9 @@ internal final class LandingPageViewModelTests: TestCase {
     self.viewModel.inputs.ctaButtonTapped()
 
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Get Started Button Clicked")
-    XCTAssertEqual(self.trackingClient.events, ["Onboarding Get Started Button Clicked"])
+    XCTAssertEqual(self.dataLakeTrackingClient.events, ["Onboarding Get Started Button Clicked"])
     XCTAssertEqual(
-      self.trackingClient.properties(forKey: "context_location"),
+      self.dataLakeTrackingClient.properties(forKey: "context_location"),
       ["landing_page"]
     )
   }
