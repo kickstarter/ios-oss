@@ -861,7 +861,7 @@ final class KoalaTests: TestCase {
     XCTAssertEqual("search", dataLakeClient.properties.last?["context_tab_bar_label"] as? String)
   }
 
-  func testDataLakeApprovedEvents() {
+  func testTrackProjectViewedEvent() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let koala = Koala(dataLakeClient: dataLakeClient, segmentClient: segmentClient)

@@ -22,55 +22,6 @@ public final class Koala {
   private let screen: UIScreenType
   private let segmentClient: TrackingClientType & IdentifyingTrackingClient & ScreenTrackingClient
 
-  private enum DataLakeApprovedEvent: String, CaseIterable {
-    case activityFeedViewed =
-      "Activity Feed Viewed" // TODO: This is now a "screen" event so we may want to rename it to just "Activity Feed" or "Activities", it might also not belong here with the non-screen events.
-    case addNewCardButtonClicked = "Add New Card Button Clicked"
-    case addOnsContinueButtonClicked = "Add-Ons Continue Button Clicked"
-    case addOnsPageViewed = "Add-Ons Page Viewed"
-    case campaignDetailsButtonClicked = "Campaign Details Button Clicked"
-    case campaignDetailsPledgeButtonClicked = "Campaign Details Pledge Button Clicked"
-    case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
-    case collectionViewed = "Collection Viewed"
-    case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
-    case editorialCardClicked = "Editorial Card Clicked"
-    case explorePageViewed = "Explore Page Viewed"
-    case exploreSortClicked = "Explore Sort Clicked"
-    case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
-    case filterClicked = "Filter Clicked"
-    case fixPledgeButtonClicked = "Fix Pledge Button Clicked"
-    case forgotPasswordViewed = "Forgot Password Viewed"
-    case loginButtonClicked = "Log In Button Clicked"
-    case loginOrSignupButtonClicked = "Log In or Signup Button Clicked"
-    case loginOrSignupPageViewed = "Log In or Signup Page Viewed"
-    case loginSubmitButtonClicked = "Log In Submit Button Clicked"
-    case managePledgeButtonClicked = "Manage Pledge Button Clicked"
-    case onboardingCarouselSwiped = "Onboarding Carousel Swiped"
-    case onboardingContinueButtonClicked = "Onboarding Continue Button Clicked"
-    case onboardingGetStartedButtonClicked = "Onboarding Get Started Button Clicked"
-    case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
-    case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked"
-    case projectCardClicked = "Project Card Clicked"
-    case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
-    case projectPageViewed = "Project Page Viewed"
-    case projectSwiped = "Project Swiped"
-    case searchPageViewed = "Search Page Viewed"
-    case searchResultsLoaded = "Search Results Loaded"
-    case selectRewardButtonClicked = "Select Reward Button Clicked"
-    case signupButtonClicked = "Signup Button Clicked"
-    case signupSubmitButtonClicked = "Signup Submit Button Clicked"
-    case skipVerificationButtonClicked = "Skip Verification Button Clicked"
-    case tabBarClicked = "Tab Bar Clicked"
-    case thanksPageViewed = "Thanks Page Viewed"
-    case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
-    case verificationScreenViewed = "Verification Screen Viewed"
-    case watchProjectButtonClicked = "Watch Project Button Clicked"
-
-    static func allApprovedEvents() -> [String] {
-      return DataLakeApprovedEvent.allCases.map { $0.rawValue }
-    }
-  }
-
   /// Determines the screen from which the event is sent.
   public enum LocationContext: String {
     case activities = "activity_feed_screen" // ActivitiesViewController
@@ -436,7 +387,7 @@ public final class Koala {
   /// Call when the activities screen is shown.
   public func trackActivities(count: Int) {
     self.screen(
-      title: DataLakeApprovedEvent.activityFeedViewed.rawValue,
+      title: "Activity Feed Viewed",
       location: .activities,
       properties: ["activities_count": count]
     )
@@ -448,7 +399,7 @@ public final class Koala {
     let properties = contextProperties(pledgeFlowContext: nil, tabBarLabel: tabBarItemLabel)
 
     self.track(
-      event: DataLakeApprovedEvent.tabBarClicked.rawValue,
+      event: "Tab Bar Clicked",
       properties: properties
     )
   }
@@ -457,7 +408,7 @@ public final class Koala {
 
   public func trackOnboardingCarouselSwiped(optimizelyProperties: [String: Any] = [:]) {
     self.track(
-      event: DataLakeApprovedEvent.onboardingCarouselSwiped.rawValue,
+      event: "Onboarding Carousel Swiped",
       location: .landingPage,
       properties: optimizelyProperties
     )
@@ -465,7 +416,7 @@ public final class Koala {
 
   public func trackOnboardingGetStartedButtonClicked(optimizelyProperties: [String: Any] = [:]) {
     self.track(
-      event: DataLakeApprovedEvent.onboardingGetStartedButtonClicked.rawValue,
+      event: "Onboarding Get Started Button Clicked",
       location: .landingPage,
       properties: optimizelyProperties
     )
@@ -473,7 +424,7 @@ public final class Koala {
 
   public func trackOnboardingSkipButtonClicked(optimizelyProperties: [String: Any] = [:]) {
     self.track(
-      event: DataLakeApprovedEvent.onboardingSkipButtonClicked.rawValue,
+      event: "Onboarding Skip Button Clicked",
       location: .onboarding,
       properties: optimizelyProperties
     )
@@ -481,7 +432,7 @@ public final class Koala {
 
   public func trackOnboardingContinueButtonClicked(optimizelyProperties: [String: Any] = [:]) {
     self.track(
-      event: DataLakeApprovedEvent.onboardingContinueButtonClicked.rawValue,
+      event: "Onboarding Continue Button Clicked",
       location: .onboarding,
       properties: optimizelyProperties
     )
@@ -501,7 +452,7 @@ public final class Koala {
       .withAllValuesFrom(optimizelyProperties)
 
     self.track(
-      event: DataLakeApprovedEvent.explorePageViewed.rawValue,
+      event: "Explore Page Viewed",
       location: .discovery,
       properties: props
     )
@@ -514,7 +465,7 @@ public final class Koala {
    */
   public func trackDiscoveryModalSelectedFilter(params: DiscoveryParams) {
     self.track(
-      event: DataLakeApprovedEvent.filterClicked.rawValue,
+      event: "Filter Clicked",
       location: .discovery,
       properties: discoveryProperties(from: params)
     )
@@ -532,7 +483,7 @@ public final class Koala {
       ])
 
     self.track(
-      event: DataLakeApprovedEvent.exploreSortClicked.rawValue,
+      event: "Explore Sort Clicked",
       location: .discovery,
       properties: props
     )
@@ -548,7 +499,7 @@ public final class Koala {
       .withAllValuesFrom(optimizelyProperties)
 
     self.track(
-      event: DataLakeApprovedEvent.editorialCardClicked.rawValue,
+      event: "Editorial Card Clicked",
       location: .discovery,
       properties: props,
       refTag: refTag.stringTag
@@ -562,7 +513,7 @@ public final class Koala {
    */
   public func trackCollectionViewed(params: DiscoveryParams) {
     self.track(
-      event: DataLakeApprovedEvent.collectionViewed.rawValue,
+      event: "Collection Viewed",
       location: .editorialProjects,
       properties: discoveryProperties(from: params)
     )
@@ -584,7 +535,7 @@ public final class Koala {
       .withAllValuesFrom(optimizelyProperties)
 
     self.track(
-      event: DataLakeApprovedEvent.projectCardClicked.rawValue,
+      event: "Project Card Clicked",
       location: location,
       properties: props
     )
@@ -603,7 +554,7 @@ public final class Koala {
       .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
-      event: DataLakeApprovedEvent.addOnsContinueButtonClicked.rawValue,
+      event: "Add-Ons Continue Button Clicked",
       location: .addOnsSelection,
       properties: props,
       refTag: refTag?.stringTag
@@ -621,7 +572,7 @@ public final class Koala {
       .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
-      event: DataLakeApprovedEvent.addOnsPageViewed.rawValue,
+      event: "Add-Ons Page Viewed",
       location: .addOnsSelection,
       properties: props,
       refTag: refTag?.stringTag
@@ -638,7 +589,7 @@ public final class Koala {
     switch stateType {
     case .fix:
       self.track(
-        event: DataLakeApprovedEvent.managePledgeButtonClicked.rawValue,
+        event: "Manage Pledge Button Clicked",
         location: .projectPage,
         properties: props.withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
       )
@@ -647,13 +598,13 @@ public final class Koala {
         .withAllValuesFrom(optimizelyProperties)
 
       self.track(
-        event: DataLakeApprovedEvent.projectPagePledgeButtonClicked.rawValue,
+        event: "Project Page Pledge Button Clicked",
         location: .projectPage,
         properties: allProps
       )
     case .manage:
       self.track(
-        event: DataLakeApprovedEvent.managePledgeButtonClicked.rawValue,
+        event: "Manage Pledge Button Clicked",
         location: .projectPage,
         properties: props.withAllValuesFrom(contextProperties(pledgeFlowContext: .manageReward))
       )
@@ -667,7 +618,7 @@ public final class Koala {
       .withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
 
     self.track(
-      event: DataLakeApprovedEvent.fixPledgeButtonClicked.rawValue,
+      event: "Fix Pledge Button Clicked",
       location: .managePledgeScreen,
       properties: props
     )
@@ -693,7 +644,7 @@ public final class Koala {
       .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
-      event: DataLakeApprovedEvent.selectRewardButtonClicked.rawValue,
+      event: "Select Reward Button Clicked",
       location: .rewards,
       properties: props,
       refTag: refTag?.stringTag
@@ -725,7 +676,7 @@ public final class Koala {
       .withAllValuesFrom(optimizelyProperties)
 
     self.track(
-      event: DataLakeApprovedEvent.checkoutPaymentPageViewed.rawValue,
+      event: "Checkout Payment Page Viewed",
       location: .pledgeScreen,
       properties: props,
       refTag: refTag?.stringTag,
@@ -756,7 +707,7 @@ public final class Koala {
       .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
 
     self.track(
-      event: DataLakeApprovedEvent.pledgeSubmitButtonClicked.rawValue,
+      event: "Pledge Submit Button Clicked",
       location: .pledgeScreen,
       properties: props,
       refTag: refTag?.stringTag
@@ -774,7 +725,7 @@ public final class Koala {
       .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
-      event: DataLakeApprovedEvent.pledgeSubmitButtonClicked.rawValue,
+      event: "Pledge Submit Button Clicked",
       location: .pledgeScreen,
       properties: props,
       refTag: refTag?.stringTag
@@ -801,7 +752,7 @@ public final class Koala {
       .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
-      event: DataLakeApprovedEvent.addNewCardButtonClicked.rawValue,
+      event: "Add New Card Button Clicked",
       location: location,
       properties: props,
       refTag: refTag?.stringTag
@@ -831,7 +782,7 @@ public final class Koala {
     }
 
     self.track(
-      event: DataLakeApprovedEvent.thanksPageViewed.rawValue,
+      event: "Thanks Page Viewed",
       location: .thanks,
       properties: props
     )
@@ -845,7 +796,7 @@ public final class Koala {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
     self.track(
-      event: DataLakeApprovedEvent.managePledgeButtonClicked.rawValue,
+      event: "Manage Pledge Button Clicked",
       location: .activities,
       properties: props
     )
@@ -869,7 +820,7 @@ public final class Koala {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
     self.track(
-      event: DataLakeApprovedEvent.loginOrSignupButtonClicked.rawValue,
+      event: "Log In or Signup Button Clicked",
       location: .discovery,
       properties: props
     )
@@ -890,7 +841,7 @@ public final class Koala {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
     self.track(
-      event: DataLakeApprovedEvent.loginOrSignupPageViewed.rawValue,
+      event: "Log In or Signup Page Viewed",
       location: .loginTout,
       properties: props
     )
@@ -912,7 +863,7 @@ public final class Koala {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
     self.track(
-      event: DataLakeApprovedEvent.loginButtonClicked.rawValue,
+      event: "Log In Button Clicked",
       location: .loginTout,
       properties: props
     )
@@ -934,7 +885,7 @@ public final class Koala {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
     self.track(
-      event: DataLakeApprovedEvent.fbLoginOrSignupButtonClicked.rawValue,
+      event: "Facebook Log In or Signup Button Clicked",
       location: .loginTout,
       properties: props
     )
@@ -956,7 +907,7 @@ public final class Koala {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
     self.track(
-      event: DataLakeApprovedEvent.continueWithAppleButtonClicked.rawValue,
+      event: "Continue With Apple Button Clicked",
       location: .loginTout,
       properties: props
     )
@@ -978,26 +929,26 @@ public final class Koala {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
     self.track(
-      event: DataLakeApprovedEvent.signupButtonClicked.rawValue,
+      event: "Signup Button Clicked",
       location: .loginTout,
       properties: props
     )
   }
 
   public func trackSignupSubmitButtonClicked() {
-    self.track(event: DataLakeApprovedEvent.signupSubmitButtonClicked.rawValue, location: .signup)
+    self.track(event: "Signup Submit Button Clicked", location: .signup)
   }
 
   public func trackLoginSubmitButtonClicked() {
-    self.track(event: DataLakeApprovedEvent.loginSubmitButtonClicked.rawValue, location: .login)
+    self.track(event: "Log In Submit Button Clicked", location: .login)
   }
 
   public func trackForgotPasswordViewed() {
-    self.track(event: DataLakeApprovedEvent.forgotPasswordViewed.rawValue, location: .forgotPassword)
+    self.track(event: "Forgot Password Viewed", location: .forgotPassword)
   }
 
   public func track2FAViewed() {
-    self.track(event: DataLakeApprovedEvent.twoFactorConfirmationViewed.rawValue, location: .twoFactorAuth)
+    self.track(event: "Two-Factor Confirmation Viewed", location: .twoFactorAuth)
   }
 
   private func loginEventProperties(for intent: LoginIntent, project: Project?, reward: Reward?)
@@ -1019,7 +970,7 @@ public final class Koala {
 
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
-    self.track(event: DataLakeApprovedEvent.searchPageViewed.rawValue, location: .search)
+    self.track(event: "Search Page Viewed", location: .search)
   }
 
   // Call when projects have been obtained from a search.
@@ -1037,7 +988,7 @@ public final class Koala {
       ])
 
     self.track(
-      event: DataLakeApprovedEvent.searchResultsLoaded.rawValue,
+      event: "Search Results Loaded",
       location: .search,
       properties: props
     )
@@ -1062,7 +1013,7 @@ public final class Koala {
       .withAllValuesFrom(optimizelyProperties)
 
     self.track(
-      event: DataLakeApprovedEvent.projectPageViewed.rawValue,
+      event: "Project Page Viewed",
       location: .projectPage,
       properties: props,
       refTag: refTag?.stringTag,
@@ -1079,7 +1030,7 @@ public final class Koala {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
     self.track(
-      event: DataLakeApprovedEvent.projectSwiped.rawValue,
+      event: "Project Swiped",
       location: .projectPage,
       properties: props, refTag: refTag?.stringTag
     )
@@ -1104,7 +1055,7 @@ public final class Koala {
     }
 
     self.track(
-      event: DataLakeApprovedEvent.watchProjectButtonClicked.rawValue,
+      event: "Watch Project Button Clicked",
       location: location,
       properties: props
     )
@@ -1121,7 +1072,7 @@ public final class Koala {
       .withAllValuesFrom(optimizelyProperties)
 
     self.track(
-      event: DataLakeApprovedEvent.campaignDetailsButtonClicked.rawValue,
+      event: "Campaign Details Button Clicked",
       location: location,
       properties: props,
       refTag: refTag?.stringTag,
@@ -1138,7 +1089,7 @@ public final class Koala {
       .withAllValuesFrom(optimizelyProperties)
 
     self.track(
-      event: DataLakeApprovedEvent.campaignDetailsPledgeButtonClicked.rawValue,
+      event: "Campaign Details Pledge Button Clicked",
       location: location,
       properties: props,
       refTag: refTag?.stringTag,
@@ -1150,14 +1101,14 @@ public final class Koala {
 
   public func trackEmailVerificationScreenViewed() {
     self.track(
-      event: DataLakeApprovedEvent.verificationScreenViewed.rawValue,
+      event: "Verification Screen Viewed",
       location: .emailVerification
     )
   }
 
   public func trackSkipEmailVerificationButtonClicked() {
     self.track(
-      event: DataLakeApprovedEvent.skipVerificationButtonClicked.rawValue,
+      event: "Skip Verification Button Clicked",
       location: .emailVerification
     )
   }
@@ -1179,18 +1130,16 @@ public final class Koala {
 
     self.logEventCallback?(event, props)
 
-    if DataLakeApprovedEvent.allApprovedEvents().contains(event) {
-      self.dataLakeClient.track(
-        event: event,
-        properties: props
-      )
+    self.dataLakeClient.track(
+      event: event,
+      properties: props
+    )
 
-      // Currently events approved for the Data Lake are good for Segment.
-      self.segmentClient.track(
-        event: event,
-        properties: props
-      )
-    }
+    // Currently events approved for the Data Lake are good for Segment.
+    self.segmentClient.track(
+      event: event,
+      properties: props
+    )
   }
 
   // Private tracking method that merges in default properties and tracks screen events.
