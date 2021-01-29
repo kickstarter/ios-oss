@@ -1040,24 +1040,6 @@
       return SignalProducer(value: .init(shippingRules: self.fetchShippingRulesResult?.value ?? [.template]))
     }
 
-    internal func fetchUserProjectsBacked() -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
-      if let error = fetchUserProjectsBackedError {
-        return SignalProducer(error: error)
-      } else if let projects = fetchUserProjectsBackedResponse {
-        return SignalProducer(
-          value: ProjectsEnvelope(
-            projects: projects,
-            urls: ProjectsEnvelope.UrlsEnvelope(
-              api: ProjectsEnvelope.UrlsEnvelope.ApiEnvelope(
-                moreProjects: ""
-              )
-            )
-          )
-        )
-      }
-      return .empty
-    }
-
     internal func fetchUserProjectsBacked(paginationUrl _: String)
       -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
       if let error = fetchUserProjectsBackedError {
@@ -1341,20 +1323,6 @@
       return producer(for: self.updateBackingResult)
     }
 
-    internal func updatePledge(
-      project _: Project,
-      amount _: Double,
-      reward _: Reward?,
-      shippingLocation _: Location?,
-      tappedReward _: Bool
-    ) -> SignalProducer<UpdatePledgeEnvelope, ErrorEnvelope> {
-      if let error = self.updatePledgeResult?.error {
-        return SignalProducer(error: error)
-      }
-
-      return SignalProducer(value: self.updatePledgeResult?.value ?? .template)
-    }
-
     internal func unwatchProject(input _: WatchProjectInput)
       -> SignalProducer<GraphMutationWatchProjectResponseEnvelope, GraphError> {
       return producer(for: self.unwatchProjectMutationResult)
@@ -1388,29 +1356,10 @@
       return SignalProducer(value: self.removeAttachmentResponse ?? .template)
     }
 
-    internal func addVideo(file _: URL, toDraft _: UpdateDraft)
-      -> SignalProducer<UpdateDraft.Video, ErrorEnvelope> {
-      return .empty
-    }
-
-    internal func changePaymentMethod(project _: Project)
-      -> SignalProducer<ChangePaymentMethodEnvelope, ErrorEnvelope> {
-      if let error = self.changePaymentMethodResult?.error {
-        return SignalProducer(error: error)
-      }
-
-      return SignalProducer(value: self.changePaymentMethodResult?.value ?? .template)
-    }
-
     internal func deletePaymentMethod(input _: PaymentSourceDeleteInput) -> SignalProducer<
       DeletePaymentMethodEnvelope, GraphError
     > {
       return producer(for: self.deletePaymentMethodResult)
-    }
-
-    internal func delete(video _: UpdateDraft.Video, fromDraft _: UpdateDraft)
-      -> SignalProducer<UpdateDraft.Video, ErrorEnvelope> {
-      return .empty
     }
 
     internal func publish(draft _: UpdateDraft) -> SignalProducer<Update, ErrorEnvelope> {

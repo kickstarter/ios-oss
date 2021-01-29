@@ -16,5 +16,7 @@ github "segmentio/analytics-ios" == 4.1.2
 
 ### Binaries
 
-binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAnalyticsBinary.json" == 7.3.0
-binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseCrashlyticsBinary.json" == 7.3.0
+binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAnalyticsBinary.json" == 7.4.0
+binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseCrashlyticsBinary.json" == 7.4.0
+binary "https://dl.google.com/dl/firebase/ios/carthage/FirebasePerformanceBinary.json" == 7.4.0
+binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseProtobufBinary.json" == 7.4.0

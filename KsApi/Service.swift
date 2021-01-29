@@ -76,11 +76,6 @@ public struct Service: ServiceType {
     return applyMutation(mutation: CreatePaymentSourceMutation(input: input))
   }
 
-  public func addVideo(file fileURL: URL, toDraft draft: UpdateDraft)
-    -> SignalProducer<UpdateDraft.Video, ErrorEnvelope> {
-    return request(Route.addVideo(fileUrl: fileURL, toDraft: draft))
-  }
-
   public func cancelBacking(input: CancelBackingInput)
     -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
     return applyMutation(mutation: CancelBackingMutation(input: input))
@@ -106,11 +101,6 @@ public struct Service: ServiceType {
     return applyMutation(mutation: UpdateUserAccountMutation(input: input))
   }
 
-  public func changePaymentMethod(project: Project)
-    -> SignalProducer<ChangePaymentMethodEnvelope, ErrorEnvelope> {
-    return request(.changePaymentMethod(project: project))
-  }
-
   public func clearUserUnseenActivity(input: EmptyInput)
     -> SignalProducer<ClearUserUnseenActivityEnvelope, GraphError> {
     return applyMutation(mutation: ClearUserUnseenActivityMutation(input: input))
@@ -129,11 +119,6 @@ public struct Service: ServiceType {
   public func delete(image: UpdateDraft.Image, fromDraft draft: UpdateDraft)
     -> SignalProducer<UpdateDraft.Image, ErrorEnvelope> {
     return request(.deleteImage(image, fromDraft: draft))
-  }
-
-  public func delete(video: UpdateDraft.Video, fromDraft draft: UpdateDraft)
-    -> SignalProducer<UpdateDraft.Video, ErrorEnvelope> {
-    return request(.deleteVideo(video, fromDraft: draft))
   }
 
   public func exportData() -> SignalProducer<VoidEnvelope, ErrorEnvelope> {
@@ -326,10 +311,6 @@ public struct Service: ServiceType {
     return request(.surveyResponse(surveyResponseId: id))
   }
 
-  public func fetchUserProjectsBacked() -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
-    return request(.userProjectsBacked)
-  }
-
   public func fetchUserProjectsBacked(paginationUrl url: String)
     -> SignalProducer<ProjectsEnvelope, ErrorEnvelope> {
     return requestPaginationDecodable(url)
@@ -488,24 +469,6 @@ public struct Service: ServiceType {
   public func update(draft: UpdateDraft, title: String, body: String, isPublic: Bool)
     -> SignalProducer<UpdateDraft, ErrorEnvelope> {
     return request(.updateUpdateDraft(draft, title: title, body: body, isPublic: isPublic))
-  }
-
-  public func updatePledge(
-    project: Project,
-    amount: Double,
-    reward: Reward?,
-    shippingLocation: Location?,
-    tappedReward: Bool
-  ) -> SignalProducer<UpdatePledgeEnvelope, ErrorEnvelope> {
-    return request(
-      .updatePledge(
-        project: project,
-        amount: amount,
-        reward: reward,
-        shippingLocation: shippingLocation,
-        tappedReward: tappedReward
-      )
-    )
   }
 
   public func updateProjectNotification(_ notification: ProjectNotification)
