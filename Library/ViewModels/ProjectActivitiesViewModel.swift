@@ -7,7 +7,7 @@ public enum ProjectActivitiesGoTo {
   case backing(ManagePledgeViewParamConfigData)
   case comments(Project?, Update?)
   case project(Project)
-  case sendMessage(Backing, Koala.MessageDialogContext)
+  case sendMessage(Backing, KSRAnalytics.MessageDialogContext)
   case sendReply(Project, Update?, Comment)
   case update(Project, Update)
 }
@@ -136,7 +136,7 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
     let projectActivityBackingCellGoToSendMessage =
       self.projectActivityBackingCellGoToSendMessageProperty.signal.skipNil()
         .map { _, backing in
-          ProjectActivitiesGoTo.sendMessage(backing, Koala.MessageDialogContext.creatorActivity)
+          ProjectActivitiesGoTo.sendMessage(backing, KSRAnalytics.MessageDialogContext.creatorActivity)
         }
 
     let projectActivityCommentCellGoToBacking =

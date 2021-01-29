@@ -16,7 +16,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
   private let goToCancelPledge = TestObserver<CancelPledgeViewData, Never>()
   private let goToChangePaymentMethod = TestObserver<PledgeViewData, Never>()
   private let goToContactCreatorSubject = TestObserver<MessageSubject, Never>()
-  private let goToContactCreatorContext = TestObserver<Koala.MessageDialogContext, Never>()
+  private let goToContactCreatorContext = TestObserver<KSRAnalytics.MessageDialogContext, Never>()
   private let goToFixPaymentMethod = TestObserver<PledgeViewData, Never>()
   private let goToRewards = TestObserver<Project, Never>()
   private let goToUpdatePledge = TestObserver<PledgeViewData, Never>()

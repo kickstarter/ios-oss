@@ -133,7 +133,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
       .mapConst(Notification(name: .ksr_sessionStarted))
 
     attemptSignup
-      .observeValues { AppEnvironment.current.koala.trackSignupSubmitButtonClicked() }
+      .observeValues { AppEnvironment.current.ksrAnalytics.trackSignupSubmitButtonClicked() }
   }
 
   fileprivate let emailChangedProperty = MutableProperty("")

@@ -4,7 +4,7 @@ import Prelude
 import Segment
 import UIKit
 
-public final class Koala {
+public final class KSRAnalytics {
   private let bundle: NSBundleType
   private let dataLakeClient: TrackingClientType
   internal private(set) var config: Config?
@@ -665,7 +665,7 @@ public final class Koala {
   public func trackCheckoutPaymentPageViewed(
     project: Project,
     reward: Reward,
-    context: Koala.PledgeContext,
+    context: KSRAnalytics.PledgeContext,
     refTag: RefTag?,
     cookieRefTag: RefTag?,
     optimizelyProperties: [String: Any] = [:]
@@ -717,7 +717,7 @@ public final class Koala {
   public func trackPledgeSubmitButtonClicked(
     project: Project,
     reward: Reward,
-    context: Koala.PledgeContext,
+    context: KSRAnalytics.PledgeContext,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
@@ -741,8 +741,8 @@ public final class Koala {
    */
 
   public func trackAddNewCardButtonClicked(
-    context: Koala.PledgeContext,
-    location: Koala.LocationContext? = nil,
+    context: KSRAnalytics.PledgeContext,
+    location: KSRAnalytics.LocationContext? = nil,
     project: Project,
     refTag: RefTag?,
     reward: Reward
@@ -1118,7 +1118,7 @@ public final class Koala {
   // Private tracking method that merges in default properties.
   private func track(
     event: String,
-    location: Koala.LocationContext? = nil,
+    location: KSRAnalytics.LocationContext? = nil,
     properties: [String: Any] = [:],
     refTag: String? = nil,
     referrerCredit: String? = nil
@@ -1145,7 +1145,7 @@ public final class Koala {
   // Private tracking method that merges in default properties and tracks screen events.
   private func screen(
     title: String,
-    location: Koala.LocationContext? = nil,
+    location: KSRAnalytics.LocationContext? = nil,
     properties: [String: Any] = [:],
     refTag: String? = nil,
     referrerCredit: String? = nil
@@ -1187,7 +1187,7 @@ public final class Koala {
 
     props["device_format"] = self.device.deviceFormat
     props["device_manufacturer"] = "Apple"
-    props["device_model"] = Koala.deviceModel
+    props["device_model"] = KSRAnalytics.deviceModel
     props["device_orientation"] = self.deviceOrientation
     props["device_distinct_id"] = self.distinctId
 
@@ -1351,7 +1351,7 @@ private func pledgeProperties(from reward: Reward, prefix: String = "pledge_back
 
 // MARK: - Checkout Properties
 
-private func checkoutProperties(from data: Koala.CheckoutPropertiesData, prefix: String = "checkout_")
+private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, prefix: String = "checkout_")
   -> [String: Any] {
   var result: [String: Any] = [:]
 
@@ -1419,9 +1419,9 @@ private func properties(category: KsApi.Category, prefix: String = "category_") 
 // MARK: - Context Properties
 
 private func contextProperties(
-  pledgeFlowContext: Koala.PledgeContext? = nil,
-  tabBarLabel: Koala.TabBarItemLabel? = nil,
-  location: Koala.LocationContext? = nil,
+  pledgeFlowContext: KSRAnalytics.PledgeContext? = nil,
+  tabBarLabel: KSRAnalytics.TabBarItemLabel? = nil,
+  location: KSRAnalytics.LocationContext? = nil,
   prefix: String = "context_"
 ) -> [String: Any] {
   var result: [String: Any] = [:]
@@ -1499,14 +1499,14 @@ private func userProperties(for user: User?, config: Config?, _ prefix: String =
   return props.prefixedKeys(prefix)
 }
 
-extension Koala {
+extension KSRAnalytics {
   public enum lens {
-    public static let loggedInUser = Lens<Koala, User?>(
+    public static let loggedInUser = Lens<KSRAnalytics, User?>(
       view: { $0.loggedInUser },
       set: { $1.loggedInUser = $0; return $1 }
     )
 
-    public static let config = Lens<Koala, Config?>(
+    public static let config = Lens<KSRAnalytics, Config?>(
       view: { $0.config },
       set: { $1.config = $0; return $1 }
     )

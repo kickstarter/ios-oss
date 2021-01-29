@@ -25,7 +25,8 @@ public final class ProjectNavBarViewController: UIViewController {
   internal func configureWith(project: Project, refTag: RefTag?) {
     self.viewModel.inputs.configureWith(project: project, refTag: refTag)
     self.shareViewModel.inputs.configureWith(shareContext: .project(project), shareContextView: nil)
-    self.watchProjectViewModel.inputs.configure(with: (project, Koala.LocationContext.projectPage, nil))
+    self.watchProjectViewModel.inputs
+      .configure(with: (project, KSRAnalytics.LocationContext.projectPage, nil))
   }
 
   internal func setDidScrollToTop(_ didScrollToTop: Bool) {

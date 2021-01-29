@@ -259,7 +259,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       .take(first: 1)
       .observeForUI()
       .observeValues { project, baseReward, context, refTag in
-        AppEnvironment.current.koala.trackAddOnsPageViewed(
+        AppEnvironment.current.ksrAnalytics.trackAddOnsPageViewed(
           project: project,
           reward: baseReward,
           context: TrackingHelpers.pledgeContext(for: context),
@@ -271,7 +271,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       .takeWhen(self.continueButtonTappedProperty.signal)
       .observeForUI()
       .observeValues { project, baseReward, context, refTag in
-        AppEnvironment.current.koala.trackAddOnsContinueButtonClicked(
+        AppEnvironment.current.ksrAnalytics.trackAddOnsContinueButtonClicked(
           project: project,
           reward: baseReward,
           context: TrackingHelpers.pledgeContext(for: context),

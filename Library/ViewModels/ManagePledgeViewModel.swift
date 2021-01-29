@@ -35,7 +35,7 @@ public protocol ManagePledgeViewModelOutputs {
   var endRefreshing: Signal<Void, Never> { get }
   var goToCancelPledge: Signal<CancelPledgeViewData, Never> { get }
   var goToChangePaymentMethod: Signal<PledgeViewData, Never> { get }
-  var goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never> { get }
+  var goToContactCreator: Signal<(MessageSubject, KSRAnalytics.MessageDialogContext), Never> { get }
   var goToFixPaymentMethod: Signal<PledgeViewData, Never> { get }
   var goToRewards: Signal<Project, Never> { get }
   var goToUpdatePledge: Signal<PledgeViewData, Never> { get }
@@ -325,7 +325,7 @@ public final class ManagePledgeViewModel:
     project
       .takePairWhen(self.fixButtonTappedSignal)
       .observeValues {
-        AppEnvironment.current.koala.trackFixPledgeButtonClicked(project: $0.0)
+        AppEnvironment.current.ksrAnalytics.trackFixPledgeButtonClicked(project: $0.0)
       }
   }
 
@@ -380,7 +380,7 @@ public final class ManagePledgeViewModel:
   public let endRefreshing: Signal<Void, Never>
   public let goToCancelPledge: Signal<CancelPledgeViewData, Never>
   public let goToChangePaymentMethod: Signal<PledgeViewData, Never>
-  public let goToContactCreator: Signal<(MessageSubject, Koala.MessageDialogContext), Never>
+  public let goToContactCreator: Signal<(MessageSubject, KSRAnalytics.MessageDialogContext), Never>
   public let goToFixPaymentMethod: Signal<PledgeViewData, Never>
   public let goToRewards: Signal<Project, Never>
   public let goToUpdatePledge: Signal<PledgeViewData, Never>
@@ -452,7 +452,7 @@ private func navigationBarTitle(
 }
 
 private func managePledgeMenuCTAType(for managePledgeAlertAction: ManagePledgeAlertAction)
-  -> Koala.ManagePledgeMenuCTAType {
+  -> KSRAnalytics.ManagePledgeMenuCTAType {
   switch managePledgeAlertAction {
   case .cancelPledge: return .cancelPledge
   case .changePaymentMethod: return .changePaymentMethod

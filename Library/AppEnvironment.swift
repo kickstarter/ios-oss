@@ -26,7 +26,7 @@ public struct AppEnvironment: AppEnvironmentType {
     self.replaceCurrentEnvironment(
       apiService: self.current.apiService.login(OauthToken(token: envelope.accessToken)),
       currentUser: envelope.user,
-      koala: self.current.koala |> Koala.lens.loggedInUser .~ envelope.user
+      ksrAnalytics: self.current.ksrAnalytics |> KSRAnalytics.lens.loggedInUser .~ envelope.user
     )
   }
 
@@ -39,7 +39,7 @@ public struct AppEnvironment: AppEnvironmentType {
   public static func updateCurrentUser(_ user: User) {
     self.replaceCurrentEnvironment(
       currentUser: user,
-      koala: self.current.koala |> Koala.lens.loggedInUser .~ user
+      ksrAnalytics: self.current.ksrAnalytics |> KSRAnalytics.lens.loggedInUser .~ user
     )
   }
 
@@ -69,7 +69,7 @@ public struct AppEnvironment: AppEnvironmentType {
     self.replaceCurrentEnvironment(
       config: debugConfigOrConfig,
       countryCode: debugConfigOrConfig.countryCode,
-      koala: AppEnvironment.current.koala |> Koala.lens.config .~ debugConfigOrConfig
+      ksrAnalytics: AppEnvironment.current.ksrAnalytics |> KSRAnalytics.lens.config .~ debugConfigOrConfig
     )
   }
 
@@ -86,7 +86,7 @@ public struct AppEnvironment: AppEnvironmentType {
       apiService: AppEnvironment.current.apiService.logout(),
       cache: type(of: AppEnvironment.current.cache).init(),
       currentUser: nil,
-      koala: self.current.koala |> Koala.lens.loggedInUser .~ nil
+      ksrAnalytics: self.current.ksrAnalytics |> KSRAnalytics.lens.loggedInUser .~ nil
     )
   }
 
@@ -141,7 +141,7 @@ public struct AppEnvironment: AppEnvironmentType {
     debugData: DebugData? = AppEnvironment.current.debugData,
     device: UIDeviceType = AppEnvironment.current.device,
     isVoiceOverRunning: @escaping (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
-    koala: Koala = AppEnvironment.current.koala,
+    ksrAnalytics: KSRAnalytics = AppEnvironment.current.ksrAnalytics,
     language: Language = AppEnvironment.current.language,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     locale: Locale = AppEnvironment.current.locale,
@@ -172,7 +172,7 @@ public struct AppEnvironment: AppEnvironmentType {
         debugData: debugData,
         device: device,
         isVoiceOverRunning: isVoiceOverRunning,
-        koala: koala,
+        ksrAnalytics: ksrAnalytics,
         language: language,
         launchedCountries: launchedCountries,
         locale: locale,
@@ -207,7 +207,7 @@ public struct AppEnvironment: AppEnvironmentType {
     debugData: DebugData? = AppEnvironment.current.debugData,
     device: UIDeviceType = AppEnvironment.current.device,
     isVoiceOverRunning: @escaping (() -> Bool) = AppEnvironment.current.isVoiceOverRunning,
-    koala: Koala = AppEnvironment.current.koala,
+    ksrAnalytics: KSRAnalytics = AppEnvironment.current.ksrAnalytics,
     language: Language = AppEnvironment.current.language,
     launchedCountries: LaunchedCountries = AppEnvironment.current.launchedCountries,
     locale: Locale = AppEnvironment.current.locale,
@@ -238,7 +238,7 @@ public struct AppEnvironment: AppEnvironmentType {
         debugData: debugData,
         device: device,
         isVoiceOverRunning: isVoiceOverRunning,
-        koala: koala,
+        ksrAnalytics: ksrAnalytics,
         language: language,
         launchedCountries: launchedCountries,
         locale: locale,
@@ -349,7 +349,7 @@ public struct AppEnvironment: AppEnvironmentType {
       apiService: service,
       config: config,
       currentUser: currentUser,
-      koala: self.current.koala |> Koala.lens.loggedInUser .~ currentUser
+      ksrAnalytics: self.current.ksrAnalytics |> KSRAnalytics.lens.loggedInUser .~ currentUser
     )
   }
 

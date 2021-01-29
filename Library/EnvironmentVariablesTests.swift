@@ -2,7 +2,7 @@
 import XCTest
 
 final class EnvironmentVariablesTests: XCTestCase {
-  func testKoalaTrackingVariable() {
+  func testTrackingVariable() {
     var processInfo = MockProcessInfo()
     XCTAssertFalse(EnvironmentVariables().isTrackingEnabled)
 

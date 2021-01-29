@@ -327,7 +327,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   func testThanksPageViewed_Properties() {
-    let checkoutData = Koala.CheckoutPropertiesData(
+    let checkoutData = KSRAnalytics.CheckoutPropertiesData(
       addOnsCountTotal: 2,
       addOnsCountUnique: 1,
       addOnsMinimumUsd: "8.00",

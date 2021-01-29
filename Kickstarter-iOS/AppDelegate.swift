@@ -202,7 +202,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         .observeForUI()
         .observeValues {
           FirebaseApp.configure()
-          AppEnvironment.current.koala.logEventCallback = { event, _ in
+          AppEnvironment.current.ksrAnalytics.logEventCallback = { event, _ in
             Crashlytics.crashlytics().log(format: "%@", arguments: getVaList([event]))
           }
         }

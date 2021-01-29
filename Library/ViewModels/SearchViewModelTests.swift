@@ -236,7 +236,7 @@ internal final class SearchViewModelTests: TestCase {
     XCTAssertEqual(
       ["Search Page Viewed", "Search Results Loaded"],
       self.dataLakeTrackingClient.events,
-      "A koala event is tracked for the search results."
+      "An event is tracked for the search results."
     )
     XCTAssertEqual(
       "skull graphic tee",
@@ -249,7 +249,7 @@ internal final class SearchViewModelTests: TestCase {
     XCTAssertEqual(
       ["Search Page Viewed", "Search Results Loaded"],
       self.dataLakeTrackingClient.events,
-      "A koala event is tracked for the search results."
+      "An event is tracked for the search results."
     )
     XCTAssertEqual(
       [nil, "skull graphic tee"],
@@ -334,7 +334,7 @@ internal final class SearchViewModelTests: TestCase {
       XCTAssertEqual(
         ["Search Page Viewed", "Search Results Loaded"],
         self.dataLakeTrackingClient.events,
-        "A koala event is tracked for the search results."
+        "An event is tracked for the search results."
       )
       XCTAssertEqual(
         [nil, "skull graphic tee"],

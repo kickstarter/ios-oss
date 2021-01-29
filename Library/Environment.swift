@@ -69,7 +69,7 @@ public struct Environment {
   public let isVoiceOverRunning: () -> Bool
 
   /// A type that exposes endpoints for tracking various Kickstarter events.
-  public let koala: Koala
+  public let ksrAnalytics: KSRAnalytics
 
   /// The user’s current language, which determines which localized strings bundle to load.
   public let language: Language
@@ -122,7 +122,7 @@ public struct Environment {
     device: UIDeviceType = UIDevice.current,
     environmentVariables: EnvironmentVariables = EnvironmentVariables(),
     isVoiceOverRunning: @escaping () -> Bool = { UIAccessibility.isVoiceOverRunning },
-    koala: Koala = Koala(),
+    ksrAnalytics: KSRAnalytics = KSRAnalytics(),
     language: Language = Language(languageStrings: Locale.preferredLanguages) ?? Language.en,
     launchedCountries: LaunchedCountries = .init(),
     locale: Locale = .current,
@@ -152,7 +152,7 @@ public struct Environment {
     self.device = device
     self.environmentVariables = environmentVariables
     self.isVoiceOverRunning = isVoiceOverRunning
-    self.koala = koala
+    self.ksrAnalytics = ksrAnalytics
     self.language = language
     self.launchedCountries = launchedCountries
     self.locale = locale

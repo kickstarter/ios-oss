@@ -156,7 +156,9 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     self.animateInView = self.viewDidAppearProperty.signal
 
     self.notifyDelegateOfSelectedRow
-      .observeValues { AppEnvironment.current.koala.trackDiscoveryModalSelectedFilter(params: $0.params) }
+      .observeValues {
+        AppEnvironment.current.ksrAnalytics.trackDiscoveryModalSelectedFilter(params: $0.params)
+      }
   }
 
   fileprivate let initialSelectedRowProperty = MutableProperty<SelectableRow?>(nil)

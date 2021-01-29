@@ -13,7 +13,7 @@ internal final class UpdateViewController: WebViewController {
 
   @IBOutlet fileprivate var shareButton: UIBarButtonItem!
 
-  internal static func configuredWith(project: Project, update: Update, context _: Koala.UpdateContext)
+  internal static func configuredWith(project: Project, update: Update, context _: KSRAnalytics.UpdateContext)
     -> UpdateViewController {
     let vc = Storyboard.Update.instantiate(UpdateViewController.self)
     vc.viewModel.inputs.configureWith(project: project, update: update)

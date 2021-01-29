@@ -134,7 +134,7 @@ public final class ProjectNavigatorViewModel: ProjectNavigatorViewModelType,
     configData
       .takePairWhen(swipedToProjectAtIndexFromIndex)
       .observeValues { configData, pii in
-        AppEnvironment.current.koala.trackSwipedProject(pii.project, refTag: configData.refTag)
+        AppEnvironment.current.ksrAnalytics.trackSwipedProject(pii.project, refTag: configData.refTag)
       }
   }
 

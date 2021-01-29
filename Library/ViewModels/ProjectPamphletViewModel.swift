@@ -189,7 +189,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .observeValues { project, refTag, cookieRefTag in
         let optimizelyProps = optimizelyProperties() ?? [:]
 
-        AppEnvironment.current.koala.trackProjectViewed(
+        AppEnvironment.current.ksrAnalytics.trackProjectViewed(
           project,
           refTag: refTag,
           cookieRefTag: cookieRefTag,

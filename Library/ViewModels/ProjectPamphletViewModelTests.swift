@@ -163,7 +163,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.setNavigationBarAnimated.assertValues([false, true, false])
   }
 
-  // Tests that ref tags and referral credit cookies are tracked in koala and saved like we expect.
+  // Tests that ref tags and referral credit cookies are tracked and saved like we expect.
   func testTracksRefTag() {
     let project = Project.template
 
@@ -181,12 +181,12 @@ final class ProjectPamphletViewModelTests: TestCase {
     XCTAssertEqual(
       [RefTag.category.stringTag],
       self.dataLakeTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
-      "The ref tag is tracked in the koala event."
+      "The ref tag is tracked in the event."
     )
     XCTAssertEqual(
       [RefTag.category.stringTag],
       self.dataLakeTrackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
-      "The referral credit is tracked in the koala event."
+      "The referral credit is tracked in the event."
     )
     XCTAssertEqual(
       1, self.cookieStorage.cookies?.count,
@@ -215,7 +215,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       [
         "Project Page Viewed", "Project Page Viewed"
       ],
-      self.dataLakeTrackingClient.events, "A project page koala event is tracked."
+      self.dataLakeTrackingClient.events, "A project page event is tracked."
     )
     XCTAssertEqual(
       [
@@ -223,7 +223,7 @@ final class ProjectPamphletViewModelTests: TestCase {
         RefTag.recommended.stringTag
       ],
       self.dataLakeTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
-      "The new ref tag is tracked in koala event."
+      "The new ref tag is tracked in an event."
     )
     XCTAssertEqual(
       [
@@ -349,17 +349,17 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     XCTAssertEqual(
       ["Project Page Viewed"],
-      self.dataLakeTrackingClient.events, "A project page koala event is tracked."
+      self.dataLakeTrackingClient.events, "A project page event is tracked."
     )
     XCTAssertEqual(
       [RefTag.category.stringTag],
       self.dataLakeTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
-      "The ref tag is tracked in the koala event."
+      "The ref tag is tracked in the event."
     )
     XCTAssertEqual(
       [RefTag.category.stringTag],
       self.dataLakeTrackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
-      "The referral credit is tracked in the koala event."
+      "The referral credit is tracked in the event."
     )
     XCTAssertEqual(
       1, self.cookieStorage.cookies?.count,
@@ -388,7 +388,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       [
         "Project Page Viewed", "Project Page Viewed"
       ],
-      self.dataLakeTrackingClient.events, "A project page koala event is tracked."
+      self.dataLakeTrackingClient.events, "A project page event is tracked."
     )
     XCTAssertEqual(
       [
@@ -396,7 +396,7 @@ final class ProjectPamphletViewModelTests: TestCase {
         RefTag.recommended.stringTag
       ],
       self.dataLakeTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
-      "The new ref tag is tracked in koala event."
+      "The new ref tag is tracked in an event."
     )
     XCTAssertEqual(
       [
@@ -822,9 +822,13 @@ final class ProjectPamphletViewModelTests: TestCase {
 
   func testTrackingProjectPageViewed_LoggedIn() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient, config: .template, loggedInUser: User.template)
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      config: .template,
+      loggedInUser: User.template
+    )
 
-    withEnvironment(currentUser: User.template, koala: koala) {
+    withEnvironment(currentUser: User.template, ksrAnalytics: ksrAnalytics) {
       self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
@@ -861,9 +865,9 @@ final class ProjectPamphletViewModelTests: TestCase {
       |> \.countryCode .~ "GB"
 
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient, config: config, loggedInUser: nil)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, config: config, loggedInUser: nil)
 
-    withEnvironment(currentUser: nil, koala: koala) {
+    withEnvironment(currentUser: nil, ksrAnalytics: ksrAnalytics) {
       self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)

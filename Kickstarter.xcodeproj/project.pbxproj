@@ -390,9 +390,9 @@
 		8A1F155824DC657E00E0C000 /* Project.RewardDataLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F155724DC657E00E0C000 /* Project.RewardDataLenses.swift */; };
 		8A213CEB239EAEA400BBB4C7 /* TrackingClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */; };
 		8A213CEC239EAEA400BBB4C7 /* TrackingClientConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE5239EAEA400BBB4C7 /* TrackingClientConfiguration.swift */; };
-		8A213CEF239EAEA400BBB4C7 /* Koala.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE8239EAEA400BBB4C7 /* Koala.swift */; };
+		8A213CEF239EAEA400BBB4C7 /* KSRAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE8239EAEA400BBB4C7 /* KSRAnalytics.swift */; };
 		8A213CF1239EAEA400BBB4C7 /* TrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CEA239EAEA400BBB4C7 /* TrackingClient.swift */; };
-		8A213CF3239EAEB700BBB4C7 /* KoalaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE7239EAEA400BBB4C7 /* KoalaTests.swift */; };
+		8A213CF3239EAEB700BBB4C7 /* KSRAnalyticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE7239EAEA400BBB4C7 /* KSRAnalyticsTests.swift */; };
 		8A213CF5239EAF5600BBB4C7 /* TrackingClientConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE6239EAEA400BBB4C7 /* TrackingClientConfigurationTests.swift */; };
 		8A213CF7239EB22900BBB4C7 /* MockTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */; };
 		8A23203125B0ECF700B940C3 /* IdentifyingTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A23203025B0ECF700B940C3 /* IdentifyingTrackingClient.swift */; };
@@ -1900,8 +1900,8 @@
 		8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientType.swift; sourceTree = "<group>"; };
 		8A213CE5239EAEA400BBB4C7 /* TrackingClientConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientConfiguration.swift; sourceTree = "<group>"; };
 		8A213CE6239EAEA400BBB4C7 /* TrackingClientConfigurationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientConfigurationTests.swift; sourceTree = "<group>"; };
-		8A213CE7239EAEA400BBB4C7 /* KoalaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoalaTests.swift; sourceTree = "<group>"; };
-		8A213CE8239EAEA400BBB4C7 /* Koala.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Koala.swift; sourceTree = "<group>"; };
+		8A213CE7239EAEA400BBB4C7 /* KSRAnalyticsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSRAnalyticsTests.swift; sourceTree = "<group>"; };
+		8A213CE8239EAEA400BBB4C7 /* KSRAnalytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSRAnalytics.swift; sourceTree = "<group>"; };
 		8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockTrackingClient.swift; sourceTree = "<group>"; };
 		8A213CEA239EAEA400BBB4C7 /* TrackingClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClient.swift; sourceTree = "<group>"; };
 		8A23203025B0ECF700B940C3 /* IdentifyingTrackingClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifyingTrackingClient.swift; sourceTree = "<group>"; };
@@ -3094,8 +3094,8 @@
 			isa = PBXGroup;
 			children = (
 				8A23203025B0ECF700B940C3 /* IdentifyingTrackingClient.swift */,
-				8A213CE8239EAEA400BBB4C7 /* Koala.swift */,
-				8A213CE7239EAEA400BBB4C7 /* KoalaTests.swift */,
+				8A213CE8239EAEA400BBB4C7 /* KSRAnalytics.swift */,
+				8A213CE7239EAEA400BBB4C7 /* KSRAnalyticsTests.swift */,
 				8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */,
 				8A5DB68F25B913C000AFA68D /* ScreenTrackingClient.swift */,
 				8A417DEF25AE37D200A2C406 /* Segment.swift */,
@@ -5243,7 +5243,7 @@
 				A7F441C31D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift in Sources */,
 				D0200A5621935F2900F5CC27 /* MessageBannerType.swift in Sources */,
 				8AA524912384CAAC00FD52CF /* EditorialProjectsViewModel.swift in Sources */,
-				8A213CEF239EAEA400BBB4C7 /* Koala.swift in Sources */,
+				8A213CEF239EAEA400BBB4C7 /* KSRAnalytics.swift in Sources */,
 				D70347901DBAABC30099C668 /* DiscoveryExpandableRowCellViewModel.swift in Sources */,
 				0199545F1D2D818E00BC1390 /* DashboardProjectsDrawerViewModel.swift in Sources */,
 				D79970B423EB79A600584911 /* ThanksCategoryCellViewModel.swift in Sources */,
@@ -5591,7 +5591,7 @@
 				A7ED1FDD1E831C5C00BFFA01 /* ShareViewModelTests.swift in Sources */,
 				37DEC2202257CA0A0051EF9B /* PledgeViewModelTests.swift in Sources */,
 				A7ED20001E831C5C00BFFA01 /* SearchViewModelTests.swift in Sources */,
-				8A213CF3239EAEB700BBB4C7 /* KoalaTests.swift in Sources */,
+				8A213CF3239EAEB700BBB4C7 /* KSRAnalyticsTests.swift in Sources */,
 				77C9122B23C5079200F3D2C9 /* MockApplePayCapable.swift in Sources */,
 				D08CD201219216BA009F89F0 /* WatchProjectViewModelTests.swift in Sources */,
 				A7ED1F291E830FDC00BFFA01 /* EnvironmentTests.swift in Sources */,

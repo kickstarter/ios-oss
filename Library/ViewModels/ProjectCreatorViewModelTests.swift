@@ -10,7 +10,7 @@ final class ProjectCreatorViewModelTests: TestCase {
 
   fileprivate let goBackToProject = TestObserver<(), Never>()
   fileprivate let goToLoginTout = TestObserver<LoginIntent, Never>()
-  fileprivate let goToMessageDialogContext = TestObserver<Koala.MessageDialogContext, Never>()
+  fileprivate let goToMessageDialogContext = TestObserver<KSRAnalytics.MessageDialogContext, Never>()
   fileprivate let goToMessageDialogSubject = TestObserver<MessageSubject, Never>()
   fileprivate let goToSafariBrowser = TestObserver<URL, Never>()
   fileprivate let loadWebViewRequest = TestObserver<URLRequest, Never>()

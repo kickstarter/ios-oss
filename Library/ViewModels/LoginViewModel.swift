@@ -137,7 +137,7 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
     )
 
     tryLogin
-      .observeValues { AppEnvironment.current.koala.trackLoginSubmitButtonClicked() }
+      .observeValues { AppEnvironment.current.ksrAnalytics.trackLoginSubmitButtonClicked() }
   }
 
   public var inputs: LoginViewModelInputs { return self }

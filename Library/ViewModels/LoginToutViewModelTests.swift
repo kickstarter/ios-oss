@@ -83,7 +83,7 @@ final class LoginToutViewModelTests: TestCase {
     )
   }
 
-  func testKoala_whenLoginIntentBeforeViewAppears() {
+  func testKSRAnalytics_whenLoginIntentBeforeViewAppears() {
     self.vm.inputs.configureWith(.activity, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 

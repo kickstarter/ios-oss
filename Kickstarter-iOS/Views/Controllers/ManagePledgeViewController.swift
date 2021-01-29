@@ -538,7 +538,7 @@ final class ManagePledgeViewController: UIViewController, MessageBannerViewContr
 
   private func goToContactCreator(
     messageSubject: MessageSubject,
-    context: Koala.MessageDialogContext
+    context: KSRAnalytics.MessageDialogContext
   ) {
     let vc = MessageDialogViewController.configuredWith(messageSubject: messageSubject, context: context)
     let nav = UINavigationController(rootViewController: vc)

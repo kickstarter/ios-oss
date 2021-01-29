@@ -58,7 +58,7 @@ internal class TestCase: FBSnapshotTestCase {
       debounceInterval: .seconds(0),
       device: MockDevice(),
       isVoiceOverRunning: { false },
-      koala: Koala(
+      ksrAnalytics: KSRAnalytics(
         dataLakeClient: self.dataLakeTrackingClient,
         loggedInUser: nil,
         segmentClient: self.segmentTrackingClient

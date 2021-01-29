@@ -343,7 +343,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
 
         guard let project = activity?.project else { return }
 
-        AppEnvironment.current.koala.trackActivitiesManagePledgeButtonClicked(project: project)
+        AppEnvironment.current.ksrAnalytics.trackActivitiesManagePledgeButtonClicked(project: project)
       }
 
     Signal.zip(pageCount, paginatedActivities)
@@ -352,7 +352,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       } // Track first page only
       .map(second)
       .map { $0.count }
-      .observeValues { AppEnvironment.current.koala.trackActivities(count: $0) }
+      .observeValues { AppEnvironment.current.ksrAnalytics.trackActivities(count: $0) }
   }
 
   fileprivate let currentUserUpdatedProperty = MutableProperty(())

@@ -248,7 +248,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
         let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
         let optyProperties = includeOptimizelyProperties ? optimizelyProperties() : nil
 
-        AppEnvironment.current.koala.trackCampaignDetailsButtonClicked(
+        AppEnvironment.current.ksrAnalytics.trackCampaignDetailsButtonClicked(
           project: project,
           location: .projectPage,
           refTag: refTag,

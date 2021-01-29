@@ -4,7 +4,7 @@ import Prelude
 import ReactiveExtensions_TestHelpers
 import XCTest
 
-final class KoalaTests: TestCase {
+final class KSRAnalyticsTests: TestCase {
   // MARK: - Session Properties Tests
 
   func testSessionProperties() {
@@ -24,7 +24,7 @@ final class KoalaTests: TestCase {
       ]
     let device = MockDevice(userInterfaceIdiom: .phone)
     let screen = MockScreen()
-    let koala = Koala(
+    let ksrAnalytics = KSRAnalytics(
       bundle: bundle,
       dataLakeClient: dataLakeClient,
       config: config,
@@ -34,7 +34,7 @@ final class KoalaTests: TestCase {
       distinctId: "abc-123"
     )
 
-    koala.trackTabBarClicked(.activity)
+    ksrAnalytics.trackTabBarClicked(.activity)
 
     let properties = dataLakeClient.properties.last
 
@@ -72,9 +72,9 @@ final class KoalaTests: TestCase {
   func testSessionProperties_Language() {
     withEnvironment(language: Language.es) {
       let dataLakeClient = MockTrackingClient()
-      let koala = Koala(dataLakeClient: dataLakeClient)
+      let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
-      koala.trackTabBarClicked(.activity)
+      ksrAnalytics.trackTabBarClicked(.activity)
 
       let properties = dataLakeClient.properties.last
 
@@ -84,10 +84,10 @@ final class KoalaTests: TestCase {
 
   func testSessionProperties_VoiceOver() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
     withEnvironment(isVoiceOverRunning: { true }) {
-      koala.trackTabBarClicked(.activity)
+      ksrAnalytics.trackTabBarClicked(.activity)
 
       let properties = dataLakeClient.properties.last
 
@@ -95,7 +95,7 @@ final class KoalaTests: TestCase {
     }
 
     withEnvironment(isVoiceOverRunning: { false }) {
-      koala.trackTabBarClicked(.activity)
+      ksrAnalytics.trackTabBarClicked(.activity)
 
       let properties = dataLakeClient.properties.last
 
@@ -105,9 +105,9 @@ final class KoalaTests: TestCase {
 
   func testSessionProperties_LoggedIn() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: User.template)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, loggedInUser: User.template)
 
-    koala.trackTabBarClicked(.activity)
+    ksrAnalytics.trackTabBarClicked(.activity)
 
     let properties = dataLakeClient.properties.last
 
@@ -116,12 +116,12 @@ final class KoalaTests: TestCase {
 
   func testSessionProperties_DeviceFormatAndClientPlatform_ForIPhoneIdiom() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(
+    let ksrAnalytics = KSRAnalytics(
       dataLakeClient: dataLakeClient,
       device: MockDevice(userInterfaceIdiom: .phone),
       loggedInUser: nil
     )
-    koala.trackTabBarClicked(.activity)
+    ksrAnalytics.trackTabBarClicked(.activity)
 
     XCTAssertEqual("phone", dataLakeClient.properties.last?["session_device_format"] as? String)
     XCTAssertEqual("ios", dataLakeClient.properties.last?["session_client_platform"] as? String)
@@ -129,12 +129,12 @@ final class KoalaTests: TestCase {
 
   func testSessionProperties_DeviceFormatAndClientPlatform_ForIPadIdiom() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(
+    let ksrAnalytics = KSRAnalytics(
       dataLakeClient: dataLakeClient,
       device: MockDevice(userInterfaceIdiom: .pad),
       loggedInUser: nil
     )
-    koala.trackTabBarClicked(.activity)
+    ksrAnalytics.trackTabBarClicked(.activity)
 
     XCTAssertEqual("tablet", dataLakeClient.properties.last?["session_device_format"] as? String)
     XCTAssertEqual("ios", dataLakeClient.properties.last?["session_client_platform"] as? String)
@@ -142,12 +142,12 @@ final class KoalaTests: TestCase {
 
   func testSessionProperties_DeviceFormatAndClientPlatform_ForTvIdiom() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(
+    let ksrAnalytics = KSRAnalytics(
       dataLakeClient: dataLakeClient,
       device: MockDevice(userInterfaceIdiom: .tv),
       loggedInUser: nil
     )
-    koala.trackTabBarClicked(.activity)
+    ksrAnalytics.trackTabBarClicked(.activity)
 
     XCTAssertEqual("tv", dataLakeClient.properties.last?["session_device_format"] as? String)
     XCTAssertEqual("tvos", dataLakeClient.properties.last?["session_client_platform"] as? String)
@@ -156,9 +156,9 @@ final class KoalaTests: TestCase {
   func testSessionProperties_DeviceOrientation() {
     let dataLakeClient = MockTrackingClient()
     let device = MockDevice(orientation: .faceDown)
-    let koala = Koala(dataLakeClient: dataLakeClient, device: device)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, device: device)
 
-    koala.trackTabBarClicked(.activity)
+    ksrAnalytics.trackTabBarClicked(.activity)
 
     let props = dataLakeClient.properties.last
 
@@ -169,7 +169,7 @@ final class KoalaTests: TestCase {
 
   func testProjectProperties() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: nil)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, loggedInUser: nil)
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [Reward.template]
       |> \.category .~ (.illustration
@@ -180,7 +180,7 @@ final class KoalaTests: TestCase {
       |> Project.lens.stats.commentsCount .~ 10
       |> Project.lens.prelaunchActivated .~ true
 
-    koala.trackProjectViewed(project, refTag: .discovery, cookieRefTag: .recommended)
+    ksrAnalytics.trackProjectViewed(project, refTag: .discovery, cookieRefTag: .recommended)
 
     XCTAssertEqual(1, dataLakeClient.properties.count)
 
@@ -230,9 +230,9 @@ final class KoalaTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       <> Project.lens.personalization.isStarred .~ false
     let loggedInUser = User.template |> \.id .~ 42
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
 
-    koala.trackProjectViewed(project, refTag: nil, cookieRefTag: nil)
+    ksrAnalytics.trackProjectViewed(project, refTag: nil, cookieRefTag: nil)
 
     XCTAssertEqual(1, dataLakeClient.properties.count)
 
@@ -251,9 +251,9 @@ final class KoalaTests: TestCase {
       |> Project.lens.personalization.isBacking .~ true
       |> Project.lens.personalization.isStarred .~ false
     let loggedInUser = User.template |> \.id .~ 42
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
 
-    koala.trackProjectViewed(project, refTag: nil, cookieRefTag: nil)
+    ksrAnalytics.trackProjectViewed(project, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(1, dataLakeClient.properties.count)
 
     let properties = dataLakeClient.properties.last
@@ -271,9 +271,9 @@ final class KoalaTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       |> Project.lens.personalization.isStarred .~ true
     let loggedInUser = User.template |> \.id .~ 42
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
 
-    koala.trackProjectViewed(project, refTag: nil, cookieRefTag: nil)
+    ksrAnalytics.trackProjectViewed(project, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(1, dataLakeClient.properties.count)
 
     let properties = dataLakeClient.properties.last
@@ -291,9 +291,9 @@ final class KoalaTests: TestCase {
       |> Project.lens.personalization.isBacking .~ false
       <> Project.lens.personalization.isStarred .~ false
     let loggedInUser = project.creator
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
 
-    koala.trackProjectViewed(project, refTag: nil, cookieRefTag: nil)
+    ksrAnalytics.trackProjectViewed(project, refTag: nil, cookieRefTag: nil)
     XCTAssertEqual(1, dataLakeClient.properties.count)
 
     let properties = dataLakeClient.properties.last
@@ -326,9 +326,9 @@ final class KoalaTests: TestCase {
       <> DiscoveryParams.lens.page .~ 2
 
     let loggedInUser = User.template |> \.id .~ 42
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
 
-    koala.trackDiscovery(params: params)
+    ksrAnalytics.trackDiscovery(params: params)
 
     let properties = dataLakeClient.properties.last
 
@@ -357,9 +357,9 @@ final class KoalaTests: TestCase {
       <> DiscoveryParams.lens.sort .~ .popular
 
     let loggedInUser = User.template |> \.id .~ 42
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
 
-    koala.trackDiscovery(params: params)
+    ksrAnalytics.trackDiscovery(params: params)
 
     let properties = dataLakeClient.properties.last
 
@@ -380,9 +380,9 @@ final class KoalaTests: TestCase {
       |> DiscoveryParams.lens.sort .~ .magic
 
     let loggedInUser = User.template |> \.id .~ 42
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
 
-    koala.trackDiscovery(params: params)
+    ksrAnalytics.trackDiscovery(params: params)
 
     let properties = dataLakeClient.properties.last
 
@@ -401,12 +401,13 @@ final class KoalaTests: TestCase {
 
   func testPledgeProperties() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
     let project = Project.cosmicSurgery
     let reward = Reward.template
 
-    koala.trackRewardClicked(project: project, reward: reward, context: .newPledge, refTag: .recommended)
+    ksrAnalytics
+      .trackRewardClicked(project: project, reward: reward, context: .newPledge, refTag: .recommended)
 
     let props = dataLakeClient.properties.last
 
@@ -424,13 +425,13 @@ final class KoalaTests: TestCase {
 
   func testPledgeProperties_NoReward() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
     let project = Project.cosmicSurgery
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5.0
 
-    koala.trackRewardClicked(project: project, reward: reward, context: .changeReward, refTag: nil)
+    ksrAnalytics.trackRewardClicked(project: project, reward: reward, context: .changeReward, refTag: nil)
 
     let props = dataLakeClient.properties.last
 
@@ -447,14 +448,14 @@ final class KoalaTests: TestCase {
 
   func testPledgeProperties_ShippingPreference() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
     let project = Project.cosmicSurgery
     let reward = Reward.template
       |> Reward.lens.shipping .~ (Reward.Shipping.template
         |> Reward.Shipping.lens.preference .~ Reward.Shipping.Preference.restricted)
 
-    koala.trackRewardClicked(project: project, reward: reward, context: .manageReward, refTag: nil)
+    ksrAnalytics.trackRewardClicked(project: project, reward: reward, context: .manageReward, refTag: nil)
 
     let props = dataLakeClient.properties.last
 
@@ -466,9 +467,9 @@ final class KoalaTests: TestCase {
 
   func testTrackCampaignDetailsButtonClicked() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
-    koala.trackCampaignDetailsButtonClicked(
+    ksrAnalytics.trackCampaignDetailsButtonClicked(
       project: .template,
       location: .projectPage,
       refTag: .discovery,
@@ -485,9 +486,9 @@ final class KoalaTests: TestCase {
 
   func testTrackCampignDetailsPledgeButtonClicked() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
-    koala.trackCampaignDetailsPledgeButtonClicked(
+    ksrAnalytics.trackCampaignDetailsPledgeButtonClicked(
       project: .template,
       location: .campaign,
       refTag: .discovery,
@@ -504,9 +505,9 @@ final class KoalaTests: TestCase {
 
   func testTrackCheckoutPaymentMethodViewed() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
-    koala.trackCheckoutPaymentPageViewed(
+    ksrAnalytics.trackCheckoutPaymentPageViewed(
       project: .template,
       reward: .template,
       context: .newPledge,
@@ -531,19 +532,19 @@ final class KoalaTests: TestCase {
     let config = Config.template
     let device = MockDevice(userInterfaceIdiom: .phone)
     let screen = MockScreen()
-    let koala = Koala(
+    let ksrAnalytics = KSRAnalytics(
       bundle: bundle, dataLakeClient: dataLakeClient, config: config, device: device, loggedInUser: nil,
       screen: screen
     )
 
     var callBackEvents = [String]()
     var callBackProperties: [String: Any]?
-    koala.logEventCallback = { event, properties in
+    ksrAnalytics.logEventCallback = { event, properties in
       callBackEvents.append(event)
       callBackProperties = properties
     }
 
-    koala.trackTabBarClicked(.activity)
+    ksrAnalytics.trackTabBarClicked(.activity)
 
     XCTAssertEqual(["Tab Bar Clicked"], dataLakeClient.events)
     XCTAssertEqual(["Tab Bar Clicked"], callBackEvents)
@@ -553,9 +554,9 @@ final class KoalaTests: TestCase {
 
   func testProjectCardClicked() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
-    koala.trackProjectCardClicked(
+    ksrAnalytics.trackProjectCardClicked(
       project: Project.template,
       params: DiscoveryParams.recommendedDefaults,
       location: .discovery
@@ -570,9 +571,9 @@ final class KoalaTests: TestCase {
 
   func testWatchProjectButtonClicked_DiscoveryLocationContext() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
-    koala.trackWatchProjectButtonClicked(
+    ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
       location: .discovery,
       params: DiscoveryParams.recommendedDefaults
@@ -587,9 +588,9 @@ final class KoalaTests: TestCase {
 
   func testWatchProjectButtonClicked_ProjectPageLocationContext() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
-    koala.trackWatchProjectButtonClicked(
+    ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
       location: .projectPage
     )
@@ -605,9 +606,9 @@ final class KoalaTests: TestCase {
     let project = Project.template
     let loggedInUser = User.template |> \.id .~ 42
 
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
 
-    koala.trackPledgeCTAButtonClicked(stateType: .fix, project: project)
+    ksrAnalytics.trackPledgeCTAButtonClicked(stateType: .fix, project: project)
 
     XCTAssertEqual(["Manage Pledge Button Clicked"], dataLakeClient.events)
   }
@@ -617,9 +618,9 @@ final class KoalaTests: TestCase {
     let project = Project.template
     let loggedInUser = User.template |> \.id .~ 42
 
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
 
-    koala.trackPledgeCTAButtonClicked(stateType: .pledge, project: project)
+    ksrAnalytics.trackPledgeCTAButtonClicked(stateType: .pledge, project: project)
 
     XCTAssertEqual(["Project Page Pledge Button Clicked"], dataLakeClient.events)
   }
@@ -629,9 +630,9 @@ final class KoalaTests: TestCase {
     let project = Project.template
     let loggedInUser = User.template |> \.id .~ 42
 
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
 
-    koala.trackPledgeCTAButtonClicked(stateType: .manage, project: project)
+    ksrAnalytics.trackPledgeCTAButtonClicked(stateType: .manage, project: project)
 
     XCTAssertEqual(["Manage Pledge Button Clicked"], dataLakeClient.events)
   }
@@ -642,9 +643,9 @@ final class KoalaTests: TestCase {
     let project = Project.template
     let loggedInUser = User.template |> \.id .~ 42
 
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, loggedInUser: loggedInUser)
 
-    koala.trackRewardClicked(
+    ksrAnalytics.trackRewardClicked(
       project: project,
       reward: reward,
       context: .newPledge,
@@ -664,9 +665,9 @@ final class KoalaTests: TestCase {
 
   func testTrackPledgeSubmitButtonClicked() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
-    koala.trackPledgeSubmitButtonClicked(
+    ksrAnalytics.trackPledgeSubmitButtonClicked(
       project: .template,
       reward: .template,
       checkoutData: .template,
@@ -684,9 +685,9 @@ final class KoalaTests: TestCase {
 
   func testTrackAddNewCardButtonClicked() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
-    koala.trackAddNewCardButtonClicked(
+    ksrAnalytics.trackAddNewCardButtonClicked(
       context: .newPledge,
       project: .template,
       refTag: .activity,
@@ -708,9 +709,9 @@ final class KoalaTests: TestCase {
 
   func testOnboardingGetStartedButtonClicked() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
-    koala.trackOnboardingGetStartedButtonClicked()
+    ksrAnalytics.trackOnboardingGetStartedButtonClicked()
 
     XCTAssertEqual(["Onboarding Get Started Button Clicked"], dataLakeClient.events)
 
@@ -719,9 +720,9 @@ final class KoalaTests: TestCase {
 
   func testOnboardingCarouselSwipedButtonClicked() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
-    koala.trackOnboardingCarouselSwiped()
+    ksrAnalytics.trackOnboardingCarouselSwiped()
 
     XCTAssertEqual(["Onboarding Carousel Swiped"], dataLakeClient.events)
 
@@ -730,9 +731,9 @@ final class KoalaTests: TestCase {
 
   func testOnboardingSkipButtonClicked() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
-    koala.trackOnboardingSkipButtonClicked()
+    ksrAnalytics.trackOnboardingSkipButtonClicked()
 
     XCTAssertEqual(["Onboarding Skip Button Clicked"], dataLakeClient.events)
 
@@ -741,9 +742,9 @@ final class KoalaTests: TestCase {
 
   func testOnboardingContinueButtonClicked() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
-    koala.trackOnboardingContinueButtonClicked()
+    ksrAnalytics.trackOnboardingContinueButtonClicked()
 
     XCTAssertEqual(["Onboarding Continue Button Clicked"], dataLakeClient.events)
 
@@ -754,18 +755,18 @@ final class KoalaTests: TestCase {
 
   func testTrackSearchViewed() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
-    koala.trackProjectSearchView()
+    ksrAnalytics.trackProjectSearchView()
 
     XCTAssertEqual(["Search Page Viewed"], dataLakeClient.events)
   }
 
   func testTrackSearchResults() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
-    koala.trackSearchResults(
+    ksrAnalytics.trackSearchResults(
       query: "query",
       params: DiscoveryParams.defaults,
       refTag: .search,
@@ -783,9 +784,9 @@ final class KoalaTests: TestCase {
   func testUserProperties_loggedOut() {
     let dataLakeClient = MockTrackingClient()
     let config = Config.template |> Config.lens.countryCode .~ "US"
-    let koala = Koala(dataLakeClient: dataLakeClient, config: config, loggedInUser: nil)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, config: config, loggedInUser: nil)
 
-    koala.trackTabBarClicked(.activity)
+    ksrAnalytics.trackTabBarClicked(.activity)
 
     let props = dataLakeClient.properties.last
 
@@ -805,9 +806,9 @@ final class KoalaTests: TestCase {
       |> User.lens.id .~ 10
       |> User.lens.isAdmin .~ false
 
-    let koala = Koala(dataLakeClient: dataLakeClient, loggedInUser: user)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, loggedInUser: user)
 
-    koala.trackTabBarClicked(.activity)
+    ksrAnalytics.trackTabBarClicked(.activity)
 
     let props = dataLakeClient.properties.last
 
@@ -818,30 +819,30 @@ final class KoalaTests: TestCase {
   func testTabBarClicked() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
 
-    let tabBarActivity = Koala.TabBarItemLabel.activity
-    let tabBarDashboard = Koala.TabBarItemLabel.dashboard
-    let tabBarHome = Koala.TabBarItemLabel.discovery
-    let tabBarProfile = Koala.TabBarItemLabel.profile
-    let tabBarSearch = Koala.TabBarItemLabel.search
+    let tabBarActivity = KSRAnalytics.TabBarItemLabel.activity
+    let tabBarDashboard = KSRAnalytics.TabBarItemLabel.dashboard
+    let tabBarHome = KSRAnalytics.TabBarItemLabel.discovery
+    let tabBarProfile = KSRAnalytics.TabBarItemLabel.profile
+    let tabBarSearch = KSRAnalytics.TabBarItemLabel.search
 
-    koala.trackTabBarClicked(tabBarActivity)
+    ksrAnalytics.trackTabBarClicked(tabBarActivity)
 
     XCTAssertEqual(["Tab Bar Clicked"], dataLakeClient.events)
     XCTAssertEqual("activity", dataLakeClient.properties.last?["context_tab_bar_label"] as? String)
 
-    koala.trackTabBarClicked(tabBarDashboard)
+    ksrAnalytics.trackTabBarClicked(tabBarDashboard)
 
     XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked"], dataLakeClient.events)
     XCTAssertEqual("dashboard", dataLakeClient.properties.last?["context_tab_bar_label"] as? String)
 
-    koala.trackTabBarClicked(tabBarHome)
+    ksrAnalytics.trackTabBarClicked(tabBarHome)
 
     XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"], dataLakeClient.events)
     XCTAssertEqual("discovery", dataLakeClient.properties.last?["context_tab_bar_label"] as? String)
 
-    koala.trackTabBarClicked(tabBarProfile)
+    ksrAnalytics.trackTabBarClicked(tabBarProfile)
 
     XCTAssertEqual(
       ["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"],
@@ -849,7 +850,7 @@ final class KoalaTests: TestCase {
     )
     XCTAssertEqual("profile", dataLakeClient.properties.last?["context_tab_bar_label"] as? String)
 
-    koala.trackTabBarClicked(tabBarSearch)
+    ksrAnalytics.trackTabBarClicked(tabBarSearch)
 
     XCTAssertEqual([
       "Tab Bar Clicked",
@@ -864,9 +865,9 @@ final class KoalaTests: TestCase {
   func testTrackProjectViewedEvent() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
 
-    koala.trackProjectViewed(Project.template) // approved event
+    ksrAnalytics.trackProjectViewed(Project.template) // approved event
 
     XCTAssertEqual(
       ["Project Page Viewed"], dataLakeClient.events,
@@ -925,9 +926,9 @@ final class KoalaTests: TestCase {
 
   func testContextProperties() {
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient)
 
-    koala.trackTabBarClicked(.activity)
+    ksrAnalytics.trackTabBarClicked(.activity)
 
     XCTAssertEqual("activity", dataLakeClient.properties.last?["context_tab_bar_label"] as? String)
   }
@@ -935,15 +936,15 @@ final class KoalaTests: TestCase {
   func testContextLocationProperties() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
 
-    koala.trackActivities(count: 1)
+    ksrAnalytics.trackActivities(count: 1)
     XCTAssertEqual(
       "activity_feed_screen",
       segmentClient.screenProperties.last?["context_location"] as? String
     )
 
-    koala.trackAddNewCardButtonClicked(
+    ksrAnalytics.trackAddNewCardButtonClicked(
       context: .newPledge,
       location: .pledgeAddNewCard,
       project: .template,
@@ -955,7 +956,7 @@ final class KoalaTests: TestCase {
       dataLakeClient.properties.last?["context_location"] as? String
     )
 
-    koala.trackAddNewCardButtonClicked(
+    ksrAnalytics.trackAddNewCardButtonClicked(
       context: .newPledge,
       location: .settingsAddNewCard,
       project: .template,
@@ -967,7 +968,7 @@ final class KoalaTests: TestCase {
       dataLakeClient.properties.last?["context_location"] as? String
     )
 
-    koala.trackCheckoutPaymentPageViewed(
+    ksrAnalytics.trackCheckoutPaymentPageViewed(
       project: .template,
       reward: .template,
       context: .newPledge,
@@ -976,70 +977,70 @@ final class KoalaTests: TestCase {
     )
     XCTAssertEqual("pledge_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackCollectionViewed(params: .defaults)
+    ksrAnalytics.trackCollectionViewed(params: .defaults)
     XCTAssertEqual(
       "editorial_collection_screen",
       dataLakeClient.properties.last?["context_location"] as? String
     )
 
-    koala.trackDiscovery(params: .defaults)
+    ksrAnalytics.trackDiscovery(params: .defaults)
     XCTAssertEqual("explore_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackDiscoveryModalSelectedFilter(params: .defaults)
+    ksrAnalytics.trackDiscoveryModalSelectedFilter(params: .defaults)
     XCTAssertEqual("explore_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackEditorialHeaderTapped(params: .defaults, refTag: .discovery)
+    ksrAnalytics.trackEditorialHeaderTapped(params: .defaults, refTag: .discovery)
     XCTAssertEqual("explore_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackFacebookLoginOrSignupButtonClicked(intent: .generic)
+    ksrAnalytics.trackFacebookLoginOrSignupButtonClicked(intent: .generic)
     XCTAssertEqual("login_or_signup_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackForgotPasswordViewed()
+    ksrAnalytics.trackForgotPasswordViewed()
     XCTAssertEqual("forgot_password_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackLoginButtonClicked(intent: .generic)
+    ksrAnalytics.trackLoginButtonClicked(intent: .generic)
     XCTAssertEqual("login_or_signup_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackLoginOrSignupButtonClicked(intent: .generic)
+    ksrAnalytics.trackLoginOrSignupButtonClicked(intent: .generic)
     XCTAssertEqual("explore_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackLoginOrSignupPageViewed(intent: .generic)
+    ksrAnalytics.trackLoginOrSignupPageViewed(intent: .generic)
     XCTAssertEqual("login_or_signup_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackLoginSubmitButtonClicked()
+    ksrAnalytics.trackLoginSubmitButtonClicked()
     XCTAssertEqual("login_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackPledgeCTAButtonClicked(stateType: .pledge, project: .template)
+    ksrAnalytics.trackPledgeCTAButtonClicked(stateType: .pledge, project: .template)
     XCTAssertEqual("project_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackProjectSearchView()
+    ksrAnalytics.trackProjectSearchView()
     XCTAssertEqual("search_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackProjectViewed(.template)
+    ksrAnalytics.trackProjectViewed(.template)
     XCTAssertEqual("project_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackRewardClicked(project: .template, reward: .template, context: .newPledge, refTag: nil)
+    ksrAnalytics.trackRewardClicked(project: .template, reward: .template, context: .newPledge, refTag: nil)
     XCTAssertEqual("rewards_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackSearchResults(query: "", params: .defaults, refTag: .search, hasResults: false)
+    ksrAnalytics.trackSearchResults(query: "", params: .defaults, refTag: .search, hasResults: false)
     XCTAssertEqual("search_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackSwipedProject(.template, refTag: nil)
+    ksrAnalytics.trackSwipedProject(.template, refTag: nil)
     XCTAssertEqual("project_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackSignupSubmitButtonClicked()
+    ksrAnalytics.trackSignupSubmitButtonClicked()
     XCTAssertEqual("sign_up", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.trackThanksPageViewed(project: .template, reward: .template, checkoutData: nil)
+    ksrAnalytics.trackThanksPageViewed(project: .template, reward: .template, checkoutData: nil)
     XCTAssertEqual("thanks_screen", dataLakeClient.properties.last?["context_location"] as? String)
 
-    koala.track2FAViewed()
+    ksrAnalytics.track2FAViewed()
     XCTAssertEqual(
       "two_factor_auth_verify_screen",
       dataLakeClient.properties.last?["context_location"] as? String
     )
 
-    koala.trackEmailVerificationScreenViewed()
+    ksrAnalytics.trackEmailVerificationScreenViewed()
     XCTAssertEqual("email_verification", dataLakeClient.properties.last?["context_location"] as? String)
   }
 
@@ -1115,7 +1116,7 @@ final class KoalaTests: TestCase {
   }
 
   /*
-   Helper for testing checkoutProperties from a template Koala.CheckoutPropertiesData
+   Helper for testing checkoutProperties from a template ksrAnalytics.CheckoutPropertiesData
    */
   private func assertCheckoutProperties(_ props: [String: Any]?) {
     XCTAssertEqual(2, props?["checkout_add_ons_count_total"] as? Int)
@@ -1137,8 +1138,8 @@ final class KoalaTests: TestCase {
   }
 }
 
-extension Koala.CheckoutPropertiesData {
-  static let template = Koala.CheckoutPropertiesData(
+extension KSRAnalytics.CheckoutPropertiesData {
+  static let template = KSRAnalytics.CheckoutPropertiesData(
     addOnsCountTotal: 2,
     addOnsCountUnique: 1,
     addOnsMinimumUsd: "8.00",

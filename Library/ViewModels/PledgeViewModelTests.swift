@@ -56,7 +56,7 @@ final class PledgeViewModelTests: TestCase {
   private let goToApplePayPaymentAuthorizationShippingTotal = TestObserver<Double, Never>()
   private let goToApplePayPaymentAuthorizationMerchantId = TestObserver<String, Never>()
 
-  private let goToThanksCheckoutData = TestObserver<Koala.CheckoutPropertiesData?, Never>()
+  private let goToThanksCheckoutData = TestObserver<KSRAnalytics.CheckoutPropertiesData?, Never>()
   private let goToThanksProject = TestObserver<Project, Never>()
   private let goToThanksReward = TestObserver<Reward, Never>()
 
@@ -1624,7 +1624,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      let checkoutData = Koala.CheckoutPropertiesData(
+      let checkoutData = KSRAnalytics.CheckoutPropertiesData(
         addOnsCountTotal: 0,
         addOnsCountUnique: 0,
         addOnsMinimumUsd: "0.00",
@@ -1717,7 +1717,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      let checkoutData = Koala.CheckoutPropertiesData(
+      let checkoutData = KSRAnalytics.CheckoutPropertiesData(
         addOnsCountTotal: 0,
         addOnsCountUnique: 0,
         addOnsMinimumUsd: "0.00",
@@ -1898,7 +1898,7 @@ final class PledgeViewModelTests: TestCase {
 
       self.scheduler.run()
 
-      let checkoutData = Koala.CheckoutPropertiesData(
+      let checkoutData = KSRAnalytics.CheckoutPropertiesData(
         addOnsCountTotal: 0,
         addOnsCountUnique: 0,
         addOnsMinimumUsd: "0.00",
@@ -2115,7 +2115,7 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false, true])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      let checkoutData = Koala.CheckoutPropertiesData(
+      let checkoutData = KSRAnalytics.CheckoutPropertiesData(
         addOnsCountTotal: 3,
         addOnsCountUnique: 2,
         addOnsMinimumUsd: "18.00",
@@ -2212,7 +2212,7 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false, true])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      let checkoutData = Koala.CheckoutPropertiesData(
+      let checkoutData = KSRAnalytics.CheckoutPropertiesData(
         addOnsCountTotal: 0,
         addOnsCountUnique: 0,
         addOnsMinimumUsd: "0.00",
@@ -4445,7 +4445,7 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false, true])
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
-      let checkoutData = Koala.CheckoutPropertiesData(
+      let checkoutData = KSRAnalytics.CheckoutPropertiesData(
         addOnsCountTotal: 0,
         addOnsCountUnique: 0,
         addOnsMinimumUsd: "0.00",
@@ -5323,9 +5323,9 @@ final class PledgeViewModelTests: TestCase {
     let reward = Reward.template
 
     let dataLakeClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeClient, config: .template, loggedInUser: nil)
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, config: .template, loggedInUser: nil)
 
-    withEnvironment(currentUser: nil, koala: koala) {
+    withEnvironment(currentUser: nil, ksrAnalytics: ksrAnalytics) {
       let data = PledgeViewData(
         project: project,
         rewards: [reward],
@@ -5464,9 +5464,13 @@ final class PledgeViewModelTests: TestCase {
       |> \.facebookConnected .~ true
 
     let dataLakeTrackingClient = MockTrackingClient()
-    let koala = Koala(dataLakeClient: dataLakeTrackingClient, config: .template, loggedInUser: user)
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeTrackingClient,
+      config: .template,
+      loggedInUser: user
+    )
 
-    withEnvironment(currentUser: user, koala: koala) {
+    withEnvironment(currentUser: user, ksrAnalytics: ksrAnalytics) {
       let project = Project.template
         |> \.category.name .~ Project.Category.illustration.name
         |> \.category.parentId .~ Project.Category.art.id

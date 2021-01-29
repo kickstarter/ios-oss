@@ -114,7 +114,7 @@ internal final class MessagesViewController: UITableViewController {
 
   fileprivate func presentMessageDialog(
     messageThread: MessageThread,
-    context: Koala.MessageDialogContext
+    context: KSRAnalytics.MessageDialogContext
   ) {
     let dialog = MessageDialogViewController
       .configuredWith(messageSubject: .messageThread(messageThread), context: context)

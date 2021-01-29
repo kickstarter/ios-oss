@@ -61,11 +61,11 @@ public final class EmailVerificationViewModel: EmailVerificationViewModelType,
     // MARK: - Tracking
 
     self.viewDidLoadProperty.signal.observeValues { _ in
-      AppEnvironment.current.koala.trackEmailVerificationScreenViewed()
+      AppEnvironment.current.ksrAnalytics.trackEmailVerificationScreenViewed()
     }
 
     self.skipButtonTappedProperty.signal.observeValues { _ in
-      AppEnvironment.current.koala.trackSkipEmailVerificationButtonClicked()
+      AppEnvironment.current.ksrAnalytics.trackSkipEmailVerificationButtonClicked()
     }
   }
 

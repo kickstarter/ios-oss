@@ -93,7 +93,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.animateInView.assertValueCount(1)
   }
 
-  func testKoalaEventsTrack() {
+  func testKSRAnalyticsEventsTrack() {
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewDidAppear()

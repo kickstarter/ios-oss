@@ -283,7 +283,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     trackingData
       .takeWhen(self.viewWillAppearProperty.signal.take(first: 1))
       .observeValues { intent, project, reward in
-        AppEnvironment.current.koala.trackLoginOrSignupPageViewed(
+        AppEnvironment.current.ksrAnalytics.trackLoginOrSignupPageViewed(
           intent: intent,
           project: project,
           reward: reward
@@ -293,7 +293,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     trackingData
       .takeWhen(self.loginButtonPressedProperty.signal)
       .observeValues { intent, project, reward in
-        AppEnvironment.current.koala.trackLoginButtonClicked(
+        AppEnvironment.current.ksrAnalytics.trackLoginButtonClicked(
           intent: intent,
           project: project,
           reward: reward
@@ -303,7 +303,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     trackingData
       .takeWhen(self.signupButtonPressedProperty.signal)
       .observeValues { intent, project, reward in
-        AppEnvironment.current.koala.trackSignupButtonClicked(
+        AppEnvironment.current.ksrAnalytics.trackSignupButtonClicked(
           intent: intent,
           project: project,
           reward: reward
@@ -313,7 +313,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     trackingData
       .takeWhen(self.facebookLoginButtonPressedProperty.signal)
       .observeValues { intent, project, reward in
-        AppEnvironment.current.koala.trackFacebookLoginOrSignupButtonClicked(
+        AppEnvironment.current.ksrAnalytics.trackFacebookLoginOrSignupButtonClicked(
           intent: intent,
           project: project,
           reward: reward
@@ -323,7 +323,7 @@ public final class LoginToutViewModel: LoginToutViewModelType, LoginToutViewMode
     trackingData
       .takeWhen(self.appleLoginButtonPressedProperty.signal)
       .observeValues { intent, project, reward in
-        AppEnvironment.current.koala.trackContinueWithAppleButtonClicked(
+        AppEnvironment.current.ksrAnalytics.trackContinueWithAppleButtonClicked(
           intent: intent,
           project: project,
           reward: reward

@@ -4,7 +4,7 @@ import ReactiveSwift
 
 public typealias WatchProjectValue = (
   project: Project,
-  context: Koala.LocationContext,
+  context: KSRAnalytics.LocationContext,
   discoveryParams: DiscoveryParams?
 )
 
@@ -180,7 +180,7 @@ public final class WatchProjectViewModel: WatchProjectViewModelType,
     self.configureWithValueProperty.signal.skipNil()
       .takeWhen(self.saveButtonTappedProperty.signal)
       .observeValues { project, context, discoveryParams in
-        AppEnvironment.current.koala.trackWatchProjectButtonClicked(
+        AppEnvironment.current.ksrAnalytics.trackWatchProjectButtonClicked(
           project: project,
           location: context,
           params: discoveryParams

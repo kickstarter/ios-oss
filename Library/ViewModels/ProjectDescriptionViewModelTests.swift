@@ -10,7 +10,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
   private let vm: ProjectDescriptionViewModelType = ProjectDescriptionViewModel()
 
   private let goBackToProject = TestObserver<(), Never>()
-  private let goToMessageDialog = TestObserver<(MessageSubject, Koala.MessageDialogContext), Never>()
+  private let goToMessageDialog = TestObserver<(MessageSubject, KSRAnalytics.MessageDialogContext), Never>()
   private let goToSafariBrowser = TestObserver<URL, Never>()
   private let isLoading = TestObserver<Bool, Never>()
   private let loadWebViewRequest = TestObserver<URLRequest, Never>()

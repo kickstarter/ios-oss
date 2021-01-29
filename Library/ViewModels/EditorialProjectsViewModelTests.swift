@@ -169,7 +169,7 @@ final class EditorialProjectsViewModelTests: TestCase {
 
   func testTrackCollectionViewed() {
     let dataLakeClient = MockTrackingClient()
-    withEnvironment(koala: Koala(dataLakeClient: dataLakeClient)) {
+    withEnvironment(ksrAnalytics: KSRAnalytics(dataLakeClient: dataLakeClient)) {
       XCTAssertEqual([], dataLakeClient.events)
 
       self.vm.inputs.configure(with: .lightsOn)

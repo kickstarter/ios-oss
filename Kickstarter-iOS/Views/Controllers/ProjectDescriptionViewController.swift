@@ -122,7 +122,7 @@ internal final class ProjectDescriptionViewController: WebViewController {
 
   // MARK: - Navigation
 
-  fileprivate func goToMessageDialog(subject: MessageSubject, context: Koala.MessageDialogContext) {
+  fileprivate func goToMessageDialog(subject: MessageSubject, context: KSRAnalytics.MessageDialogContext) {
     let vc = MessageDialogViewController.configuredWith(messageSubject: subject, context: context)
     vc.delegate = self
     self.present(

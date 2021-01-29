@@ -10,7 +10,7 @@ public protocol MessageDialogViewModelInputs {
   func cancelButtonPressed()
 
   /// Call with the backing/message-thread/project that was given to the view.
-  func configureWith(messageSubject: MessageSubject, context: Koala.MessageDialogContext)
+  func configureWith(messageSubject: MessageSubject, context: KSRAnalytics.MessageDialogContext)
 
   /// Call when the post button is pressed.
   func postButtonPressed()
@@ -123,10 +123,10 @@ public final class MessageDialogViewModel: MessageDialogViewModelType, MessageDi
   }
 
   fileprivate let messageSubjectProperty = MutableProperty<MessageSubject?>(nil)
-  fileprivate let contextProperty = MutableProperty<Koala.MessageDialogContext?>(nil)
+  fileprivate let contextProperty = MutableProperty<KSRAnalytics.MessageDialogContext?>(nil)
   public func configureWith(
     messageSubject: MessageSubject,
-    context _: Koala.MessageDialogContext
+    context _: KSRAnalytics.MessageDialogContext
   ) {
     self.messageSubjectProperty.value = messageSubject
   }

@@ -874,7 +874,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(),
       currentUser: .template,
-      koala: Koala(dataLakeClient: client),
+      ksrAnalytics: KSRAnalytics(dataLakeClient: client),
       pushRegistrationType: MockPushRegistration.self
     ) {
       XCTAssertEqual([], client.events)
@@ -904,7 +904,7 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(),
       currentUser: .template,
-      koala: Koala(dataLakeClient: client),
+      ksrAnalytics: KSRAnalytics(dataLakeClient: client),
       pushRegistrationType: MockPushRegistration.self
     ) {
       XCTAssertEqual([], client.events)
@@ -931,7 +931,7 @@ final class AppDelegateViewModelTests: TestCase {
     MockPushRegistration.registerProducer = .init(value: true)
 
     withEnvironment(
-      currentUser: .template, koala: Koala(dataLakeClient: client),
+      currentUser: .template, ksrAnalytics: KSRAnalytics(dataLakeClient: client),
       pushRegistrationType: MockPushRegistration.self
     ) {
       XCTAssertEqual([], client.events)
@@ -1424,17 +1424,6 @@ final class AppDelegateViewModelTests: TestCase {
       self.goToSearch.assertValueCount(0)
       XCTAssertFalse(self.vm.outputs.applicationDidFinishLaunchingReturnValue)
     }
-  }
-
-  func testLaunchShortcutItem_KoalaTracking() {
-    self.vm.inputs.applicationDidFinishLaunching(
-      application: UIApplication.shared,
-      launchOptions: [
-        UIApplication.LaunchOptionsKey.shortcutItem: ShortcutItem.projectsWeLove.applicationShortcutItem
-      ]
-    )
-
-    self.scheduler.advance(by: .seconds(5))
   }
 
   func testVisitorCookies_ApplicationDidFinishLaunching() {

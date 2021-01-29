@@ -613,7 +613,7 @@ final class ActivitiesViewModelTests: TestCase {
     }
   }
 
-  func testKoalaFlow() {
+  func testTrackingClientFlow() {
     let page = [
       .template,
       .template |> Activity.lens.category .~ .backing,

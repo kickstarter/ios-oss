@@ -419,7 +419,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .observeValues { params in
         let optimizelyProps = optimizelyProperties() ?? [:]
 
-        AppEnvironment.current.koala.trackDiscovery(
+        AppEnvironment.current.ksrAnalytics.trackDiscovery(
           params: params,
           optimizelyProperties: optimizelyProps
         )
@@ -447,7 +447,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .observeValues { params, refTag in
         let optimizelyProps = refTag == .onboarding ? optimizelyProperties() : nil
 
-        AppEnvironment.current.koala.trackEditorialHeaderTapped(
+        AppEnvironment.current.ksrAnalytics.trackEditorialHeaderTapped(
           params: params,
           refTag: refTag,
           optimizelyProperties: optimizelyProps ?? [:]
@@ -459,7 +459,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .observeValues { params, project in
         let optyProperties = optimizelyProperties() ?? [:]
 
-        AppEnvironment.current.koala.trackProjectCardClicked(
+        AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
           project: project,
           params: params,
           location: .discovery,
@@ -470,7 +470,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       }
 
     self.goToLoginSignup
-      .observeValues { AppEnvironment.current.koala.trackLoginOrSignupButtonClicked(intent: $0) }
+      .observeValues { AppEnvironment.current.ksrAnalytics.trackLoginOrSignupButtonClicked(intent: $0) }
   }
 
   fileprivate let configUpdatedProperty = MutableProperty<Config?>(nil)
