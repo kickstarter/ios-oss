@@ -2,7 +2,6 @@ binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAnalyticsBinary.j
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseCrashlyticsBinary.json" "7.4.0"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebasePerformanceBinary.json" "7.4.0"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseProtobufBinary.json" "7.4.0"
-
 github "Alamofire/Alamofire" "5.4.1"
 github "Alamofire/AlamofireImage" "4.1.0"
 github "ReactiveCocoa/ReactiveSwift" "6.5.0"

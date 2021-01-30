@@ -406,7 +406,7 @@ final class AppDelegateViewModelTests: TestCase {
       self.configureAppCenterWithData.assertValues([])
     }
   }
-  
+
   func testCurrentUserUpdating_NothingHappensWhenLoggedOut() {
     self.vm.inputs.applicationDidFinishLaunching(
       application: UIApplication.shared,

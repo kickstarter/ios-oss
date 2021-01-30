@@ -627,7 +627,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.applicationDidFinishLaunchingReturnValueProperty <~ self.applicationLaunchOptionsProperty.signal
       .skipNil()
       .map { _, options in options?[UIApplication.LaunchOptionsKey.shortcutItem] == nil }
-    
+
     self.applicationIconBadgeNumber = Signal.merge(
       self.applicationWillEnterForegroundProperty.signal,
       self.applicationLaunchOptionsProperty.signal.ignoreValues()
