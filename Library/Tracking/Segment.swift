@@ -22,7 +22,7 @@ public extension Analytics {
 }
 
 /**
- The `TrackingClientType`, `ScreenTrackingClient` and `IdentifyingTrackingClient` protocols
+ The `TrackingClientType` and `IdentifyingTrackingClient` protocols
  allow us to create mocks to test these code paths. The protocol exposes functions that are named similarly
  but differently so that we can perform the check to see that tracking is enabled before calling any of the
  functions on the library itself so as to not unintentionally contribute to tracking data during debugging.
