@@ -921,6 +921,8 @@ final class AppDelegateViewModelTests: TestCase {
       self.scheduler.advance(by: .seconds(5))
 
       self.pushTokenSuccessfullyRegistered.assertValueCount(1)
+
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
     }
   }
 

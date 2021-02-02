@@ -2,6 +2,9 @@ import KsApi
 import Segment
 
 public extension Analytics {
+  /**
+   Returns an `Analytics` instance, with Segment, using an `AnalyticsConfiguration`.
+   */
   static func configuredClient() -> Analytics {
     // Due to this being constructed at the same time as the environment we're not able to refer to the
     // mainBundle on the environment here. We probable should if we want to test this.
@@ -11,7 +14,7 @@ public extension Analytics {
 
     let configuration = AnalyticsConfiguration(writeKey: writeKey)
     configuration
-      .trackApplicationLifecycleEvents = true // We should deprecate our own tracking for these events.
+      .trackApplicationLifecycleEvents = true
     Analytics.setup(with: configuration)
 
     return Analytics.shared()

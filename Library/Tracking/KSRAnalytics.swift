@@ -22,6 +22,50 @@ public final class KSRAnalytics {
   private let screen: UIScreenType
   private let segmentClient: TrackingClientType & IdentifyingTrackingClient
 
+  private enum ApprovedEvent: String, CaseIterable {
+    case activityFeedViewed = "Activity Feed Viewed"
+    case addNewCardButtonClicked = "Add New Card Button Clicked"
+    case addOnsContinueButtonClicked = "Add-Ons Continue Button Clicked"
+    case addOnsPageViewed = "Add-Ons Page Viewed"
+    case campaignDetailsButtonClicked = "Campaign Details Button Clicked"
+    case campaignDetailsPledgeButtonClicked = "Campaign Details Pledge Button Clicked"
+    case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
+    case collectionViewed = "Collection Viewed"
+    case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
+    case editorialCardClicked = "Editorial Card Clicked"
+    case explorePageViewed = "Explore Page Viewed"
+    case exploreSortClicked = "Explore Sort Clicked"
+    case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
+    case filterClicked = "Filter Clicked"
+    case fixPledgeButtonClicked = "Fix Pledge Button Clicked"
+    case forgotPasswordViewed = "Forgot Password Viewed"
+    case loginButtonClicked = "Log In Button Clicked"
+    case loginOrSignupButtonClicked = "Log In or Signup Button Clicked"
+    case loginOrSignupPageViewed = "Log In or Signup Page Viewed"
+    case loginSubmitButtonClicked = "Log In Submit Button Clicked"
+    case managePledgeButtonClicked = "Manage Pledge Button Clicked"
+    case onboardingCarouselSwiped = "Onboarding Carousel Swiped"
+    case onboardingContinueButtonClicked = "Onboarding Continue Button Clicked"
+    case onboardingGetStartedButtonClicked = "Onboarding Get Started Button Clicked"
+    case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
+    case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked"
+    case projectCardClicked = "Project Card Clicked"
+    case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
+    case projectPageViewed = "Project Page Viewed"
+    case projectSwiped = "Project Swiped"
+    case searchPageViewed = "Search Page Viewed"
+    case searchResultsLoaded = "Search Results Loaded"
+    case selectRewardButtonClicked = "Select Reward Button Clicked"
+    case signupButtonClicked = "Signup Button Clicked"
+    case signupSubmitButtonClicked = "Signup Submit Button Clicked"
+    case skipVerificationButtonClicked = "Skip Verification Button Clicked"
+    case tabBarClicked = "Tab Bar Clicked"
+    case thanksPageViewed = "Thanks Page Viewed"
+    case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
+    case verificationScreenViewed = "Verification Screen Viewed"
+    case watchProjectButtonClicked = "Watch Project Button Clicked"
+  }
+
   /// Determines the screen from which the event is sent.
   public enum LocationContext: String {
     case activities = "activity_feed_screen" // ActivitiesViewController
@@ -387,7 +431,7 @@ public final class KSRAnalytics {
   /// Call when the activities screen is shown.
   public func trackActivities(count: Int) {
     self.track(
-      event: "Activity Feed Viewed",
+      event: ApprovedEvent.activityFeedViewed.rawValue,
       location: .activities,
       properties: ["activities_count": count]
     )
@@ -399,7 +443,7 @@ public final class KSRAnalytics {
     let properties = contextProperties(pledgeFlowContext: nil, tabBarLabel: tabBarItemLabel)
 
     self.track(
-      event: "Tab Bar Clicked",
+      event: ApprovedEvent.tabBarClicked.rawValue,
       properties: properties
     )
   }
@@ -408,7 +452,7 @@ public final class KSRAnalytics {
 
   public func trackOnboardingCarouselSwiped(optimizelyProperties: [String: Any] = [:]) {
     self.track(
-      event: "Onboarding Carousel Swiped",
+      event: ApprovedEvent.onboardingCarouselSwiped.rawValue,
       location: .landingPage,
       properties: optimizelyProperties
     )
@@ -416,7 +460,7 @@ public final class KSRAnalytics {
 
   public func trackOnboardingGetStartedButtonClicked(optimizelyProperties: [String: Any] = [:]) {
     self.track(
-      event: "Onboarding Get Started Button Clicked",
+      event: ApprovedEvent.onboardingGetStartedButtonClicked.rawValue,
       location: .landingPage,
       properties: optimizelyProperties
     )
@@ -424,7 +468,7 @@ public final class KSRAnalytics {
 
   public func trackOnboardingSkipButtonClicked(optimizelyProperties: [String: Any] = [:]) {
     self.track(
-      event: "Onboarding Skip Button Clicked",
+      event: ApprovedEvent.onboardingSkipButtonClicked.rawValue,
       location: .onboarding,
       properties: optimizelyProperties
     )
@@ -432,7 +476,7 @@ public final class KSRAnalytics {
 
   public func trackOnboardingContinueButtonClicked(optimizelyProperties: [String: Any] = [:]) {
     self.track(
-      event: "Onboarding Continue Button Clicked",
+      event: ApprovedEvent.onboardingContinueButtonClicked.rawValue,
       location: .onboarding,
       properties: optimizelyProperties
     )
@@ -452,7 +496,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(optimizelyProperties)
 
     self.track(
-      event: "Explore Page Viewed",
+      event: ApprovedEvent.explorePageViewed.rawValue,
       location: .discovery,
       properties: props
     )
@@ -465,7 +509,7 @@ public final class KSRAnalytics {
    */
   public func trackDiscoveryModalSelectedFilter(params: DiscoveryParams) {
     self.track(
-      event: "Filter Clicked",
+      event: ApprovedEvent.filterClicked.rawValue,
       location: .discovery,
       properties: discoveryProperties(from: params)
     )
@@ -483,7 +527,7 @@ public final class KSRAnalytics {
       ])
 
     self.track(
-      event: "Explore Sort Clicked",
+      event: ApprovedEvent.exploreSortClicked.rawValue,
       location: .discovery,
       properties: props
     )
@@ -499,7 +543,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(optimizelyProperties)
 
     self.track(
-      event: "Editorial Card Clicked",
+      event: ApprovedEvent.editorialCardClicked.rawValue,
       location: .discovery,
       properties: props,
       refTag: refTag.stringTag
@@ -513,7 +557,7 @@ public final class KSRAnalytics {
    */
   public func trackCollectionViewed(params: DiscoveryParams) {
     self.track(
-      event: "Collection Viewed",
+      event: ApprovedEvent.collectionViewed.rawValue,
       location: .editorialProjects,
       properties: discoveryProperties(from: params)
     )
@@ -535,7 +579,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(optimizelyProperties)
 
     self.track(
-      event: "Project Card Clicked",
+      event: ApprovedEvent.projectCardClicked.rawValue,
       location: location,
       properties: props
     )
@@ -554,7 +598,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
-      event: "Add-Ons Continue Button Clicked",
+      event: ApprovedEvent.addOnsContinueButtonClicked.rawValue,
       location: .addOnsSelection,
       properties: props,
       refTag: refTag?.stringTag
@@ -572,7 +616,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
-      event: "Add-Ons Page Viewed",
+      event: ApprovedEvent.addOnsPageViewed.rawValue,
       location: .addOnsSelection,
       properties: props,
       refTag: refTag?.stringTag
@@ -589,7 +633,7 @@ public final class KSRAnalytics {
     switch stateType {
     case .fix:
       self.track(
-        event: "Manage Pledge Button Clicked",
+        event: ApprovedEvent.managePledgeButtonClicked.rawValue,
         location: .projectPage,
         properties: props.withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
       )
@@ -598,13 +642,13 @@ public final class KSRAnalytics {
         .withAllValuesFrom(optimizelyProperties)
 
       self.track(
-        event: "Project Page Pledge Button Clicked",
+        event: ApprovedEvent.projectPagePledgeButtonClicked.rawValue,
         location: .projectPage,
         properties: allProps
       )
     case .manage:
       self.track(
-        event: "Manage Pledge Button Clicked",
+        event: ApprovedEvent.managePledgeButtonClicked.rawValue,
         location: .projectPage,
         properties: props.withAllValuesFrom(contextProperties(pledgeFlowContext: .manageReward))
       )
@@ -618,7 +662,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
 
     self.track(
-      event: "Fix Pledge Button Clicked",
+      event: ApprovedEvent.fixPledgeButtonClicked.rawValue,
       location: .managePledgeScreen,
       properties: props
     )
@@ -644,7 +688,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
-      event: "Select Reward Button Clicked",
+      event: ApprovedEvent.selectRewardButtonClicked.rawValue,
       location: .rewards,
       properties: props,
       refTag: refTag?.stringTag
@@ -676,7 +720,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(optimizelyProperties)
 
     self.track(
-      event: "Checkout Payment Page Viewed",
+      event: ApprovedEvent.checkoutPaymentPageViewed.rawValue,
       location: .pledgeScreen,
       properties: props,
       refTag: refTag?.stringTag,
@@ -707,7 +751,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
 
     self.track(
-      event: "Pledge Submit Button Clicked",
+      event: ApprovedEvent.pledgeSubmitButtonClicked.rawValue,
       location: .pledgeScreen,
       properties: props,
       refTag: refTag?.stringTag
@@ -725,7 +769,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
-      event: "Pledge Submit Button Clicked",
+      event: ApprovedEvent.pledgeSubmitButtonClicked.rawValue,
       location: .pledgeScreen,
       properties: props,
       refTag: refTag?.stringTag
@@ -752,7 +796,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
 
     self.track(
-      event: "Add New Card Button Clicked",
+      event: ApprovedEvent.addNewCardButtonClicked.rawValue,
       location: location,
       properties: props,
       refTag: refTag?.stringTag
@@ -782,7 +826,7 @@ public final class KSRAnalytics {
     }
 
     self.track(
-      event: "Thanks Page Viewed",
+      event: ApprovedEvent.thanksPageViewed.rawValue,
       location: .thanks,
       properties: props
     )
@@ -796,7 +840,7 @@ public final class KSRAnalytics {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
     self.track(
-      event: "Manage Pledge Button Clicked",
+      event: ApprovedEvent.managePledgeButtonClicked.rawValue,
       location: .activities,
       properties: props
     )
@@ -820,7 +864,7 @@ public final class KSRAnalytics {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
     self.track(
-      event: "Log In or Signup Button Clicked",
+      event: ApprovedEvent.loginOrSignupButtonClicked.rawValue,
       location: .discovery,
       properties: props
     )
@@ -841,7 +885,7 @@ public final class KSRAnalytics {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
     self.track(
-      event: "Log In or Signup Page Viewed",
+      event: ApprovedEvent.loginOrSignupPageViewed.rawValue,
       location: .loginTout,
       properties: props
     )
@@ -863,7 +907,7 @@ public final class KSRAnalytics {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
     self.track(
-      event: "Log In Button Clicked",
+      event: ApprovedEvent.loginButtonClicked.rawValue,
       location: .loginTout,
       properties: props
     )
@@ -885,7 +929,7 @@ public final class KSRAnalytics {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
     self.track(
-      event: "Facebook Log In or Signup Button Clicked",
+      event: ApprovedEvent.fbLoginOrSignupButtonClicked.rawValue,
       location: .loginTout,
       properties: props
     )
@@ -907,7 +951,7 @@ public final class KSRAnalytics {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
     self.track(
-      event: "Continue With Apple Button Clicked",
+      event: ApprovedEvent.continueWithAppleButtonClicked.rawValue,
       location: .loginTout,
       properties: props
     )
@@ -929,26 +973,26 @@ public final class KSRAnalytics {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
 
     self.track(
-      event: "Signup Button Clicked",
+      event: ApprovedEvent.signupButtonClicked.rawValue,
       location: .loginTout,
       properties: props
     )
   }
 
   public func trackSignupSubmitButtonClicked() {
-    self.track(event: "Signup Submit Button Clicked", location: .signup)
+    self.track(event: ApprovedEvent.signupSubmitButtonClicked.rawValue, location: .signup)
   }
 
   public func trackLoginSubmitButtonClicked() {
-    self.track(event: "Log In Submit Button Clicked", location: .login)
+    self.track(event: ApprovedEvent.loginSubmitButtonClicked.rawValue, location: .login)
   }
 
   public func trackForgotPasswordViewed() {
-    self.track(event: "Forgot Password Viewed", location: .forgotPassword)
+    self.track(event: ApprovedEvent.forgotPasswordViewed.rawValue, location: .forgotPassword)
   }
 
   public func track2FAViewed() {
-    self.track(event: "Two-Factor Confirmation Viewed", location: .twoFactorAuth)
+    self.track(event: ApprovedEvent.twoFactorConfirmationViewed.rawValue, location: .twoFactorAuth)
   }
 
   private func loginEventProperties(for intent: LoginIntent, project: Project?, reward: Reward?)
@@ -970,7 +1014,7 @@ public final class KSRAnalytics {
 
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
-    self.track(event: "Search Page Viewed", location: .search)
+    self.track(event: ApprovedEvent.searchPageViewed.rawValue, location: .search)
   }
 
   // Call when projects have been obtained from a search.
@@ -988,7 +1032,7 @@ public final class KSRAnalytics {
       ])
 
     self.track(
-      event: "Search Results Loaded",
+      event: ApprovedEvent.searchResultsLoaded.rawValue,
       location: .search,
       properties: props
     )
@@ -1013,7 +1057,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(optimizelyProperties)
 
     self.track(
-      event: "Project Page Viewed",
+      event: ApprovedEvent.projectPageViewed.rawValue,
       location: .projectPage,
       properties: props,
       refTag: refTag?.stringTag,
@@ -1030,7 +1074,7 @@ public final class KSRAnalytics {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
     self.track(
-      event: "Project Swiped",
+      event: ApprovedEvent.projectSwiped.rawValue,
       location: .projectPage,
       properties: props, refTag: refTag?.stringTag
     )
@@ -1055,7 +1099,7 @@ public final class KSRAnalytics {
     }
 
     self.track(
-      event: "Watch Project Button Clicked",
+      event: ApprovedEvent.watchProjectButtonClicked.rawValue,
       location: location,
       properties: props
     )
@@ -1072,7 +1116,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(optimizelyProperties)
 
     self.track(
-      event: "Campaign Details Button Clicked",
+      event: ApprovedEvent.campaignDetailsButtonClicked.rawValue,
       location: location,
       properties: props,
       refTag: refTag?.stringTag,
@@ -1089,7 +1133,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(optimizelyProperties)
 
     self.track(
-      event: "Campaign Details Pledge Button Clicked",
+      event: ApprovedEvent.campaignDetailsPledgeButtonClicked.rawValue,
       location: location,
       properties: props,
       refTag: refTag?.stringTag,
@@ -1101,14 +1145,14 @@ public final class KSRAnalytics {
 
   public func trackEmailVerificationScreenViewed() {
     self.track(
-      event: "Verification Screen Viewed",
+      event: ApprovedEvent.verificationScreenViewed.rawValue,
       location: .emailVerification
     )
   }
 
   public func trackSkipEmailVerificationButtonClicked() {
     self.track(
-      event: "Skip Verification Button Clicked",
+      event: ApprovedEvent.skipVerificationButtonClicked.rawValue,
       location: .emailVerification
     )
   }

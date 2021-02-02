@@ -187,6 +187,8 @@ final class UpdateViewModelTests: TestCase {
     self.goToProject.assertValueCount(0)
     self.webViewLoadRequest.assertValueCount(1)
     self.goToSafariBrowser.assertValues([outsideUrl])
+
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
   }
 
   func testGoToSafariBrowser_PrelaunchProject() {
