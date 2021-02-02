@@ -44,25 +44,3 @@ extension MockTrackingClient: IdentifyingTrackingClient {
     self.traits = nil
   }
 }
-
-extension MockTrackingClient: ScreenTrackingClient {
-  func screen(title: String, properties: [String: Any]?) {
-    self.screens.append((title: title, properties: properties ?? [:]))
-  }
-
-  internal var screenTitles: [String] {
-    return self.screens.map { $0.title }
-  }
-
-  internal var screenProperties: [[String: Any]] {
-    return self.screens.map { $0.properties }
-  }
-
-  internal func screenProperties(forKey key: String) -> [String?] {
-    return self.screenProperties(forKey: key, as: String.self)
-  }
-
-  internal func screenProperties<A>(forKey key: String, as _: A.Type) -> [A?] {
-    return self.screens.map { $0.properties[key] as? A }
-  }
-}

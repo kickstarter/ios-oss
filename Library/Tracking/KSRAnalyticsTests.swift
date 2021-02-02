@@ -941,7 +941,7 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackActivities(count: 1)
     XCTAssertEqual(
       "activity_feed_screen",
-      segmentClient.screenProperties.last?["context_location"] as? String
+      dataLakeClient.properties.last?["context_location"] as? String
     )
 
     ksrAnalytics.trackAddNewCardButtonClicked(

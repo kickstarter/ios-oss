@@ -20,7 +20,7 @@ public final class KSRAnalytics {
   private var preferredContentSizeCategory: UIContentSizeCategory?
   private var preferredContentSizeCategoryObserver: Any?
   private let screen: UIScreenType
-  private let segmentClient: TrackingClientType & IdentifyingTrackingClient & ScreenTrackingClient
+  private let segmentClient: TrackingClientType & IdentifyingTrackingClient
 
   /// Determines the screen from which the event is sent.
   public enum LocationContext: String {
@@ -325,7 +325,7 @@ public final class KSRAnalytics {
     device: UIDeviceType = UIDevice.current,
     loggedInUser: User? = nil,
     screen: UIScreenType = UIScreen.main,
-    segmentClient: TrackingClientType & IdentifyingTrackingClient & ScreenTrackingClient = Analytics
+    segmentClient: TrackingClientType & IdentifyingTrackingClient = Analytics
       .configuredClient(),
     distinctId: String = (UIDevice.current.identifierForVendor ?? UUID()).uuidString
   ) {
@@ -386,8 +386,8 @@ public final class KSRAnalytics {
 
   /// Call when the activities screen is shown.
   public func trackActivities(count: Int) {
-    self.screen(
-      title: "Activity Feed Viewed",
+    self.track(
+      event: "Activity Feed Viewed",
       location: .activities,
       properties: ["activities_count": count]
     )
@@ -1138,27 +1138,6 @@ public final class KSRAnalytics {
     // Currently events approved for the Data Lake are good for Segment.
     self.segmentClient.track(
       event: event,
-      properties: props
-    )
-  }
-
-  // Private tracking method that merges in default properties and tracks screen events.
-  private func screen(
-    title: String,
-    location: KSRAnalytics.LocationContext? = nil,
-    properties: [String: Any] = [:],
-    refTag: String? = nil,
-    referrerCredit: String? = nil
-  ) {
-    let props = self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
-      .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
-      .withAllValuesFrom(contextProperties(location: location))
-      .withAllValuesFrom(properties)
-
-    self.logEventCallback?(title, props)
-
-    self.segmentClient.screen(
-      title: title,
       properties: props
     )
   }

@@ -455,7 +455,6 @@
 		8A4E954924525EC100A578CF /* BackingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954824525EC100A578CF /* BackingState.swift */; };
 		8A4E954B245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954A245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift */; };
 		8A5CB28424C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5CB28324C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift */; };
-		8A5DB69025B913C000AFA68D /* ScreenTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5DB68F25B913C000AFA68D /* ScreenTrackingClient.swift */; };
 		8A64F16624BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A64F16524BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift */; };
 		8A65E79B25016A22006F81CC /* FirebaseInstallations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A65E79A25016A22006F81CC /* FirebaseInstallations.framework */; };
 		8A65E79E2501AE89006F81CC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */; };
@@ -1969,7 +1968,6 @@
 		8A4E954824525EC100A578CF /* BackingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackingState.swift; sourceTree = "<group>"; };
 		8A4E954A245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewBackingEnvelopeTemplate.swift; sourceTree = "<group>"; };
 		8A5CB28324C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionContinueCTAViewModelTests.swift; sourceTree = "<group>"; };
-		8A5DB68F25B913C000AFA68D /* ScreenTrackingClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenTrackingClient.swift; sourceTree = "<group>"; };
 		8A64F16524BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewControllerTests.swift; sourceTree = "<group>"; };
 		8A65E79A25016A22006F81CC /* FirebaseInstallations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstallations.framework; path = Carthage/Build/iOS/FirebaseInstallations.framework; sourceTree = "<group>"; };
 		8A65E79D2501AE89006F81CC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "Configs/GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -3112,7 +3110,6 @@
 				8A213CE8239EAEA400BBB4C7 /* KSRAnalytics.swift */,
 				8A213CE7239EAEA400BBB4C7 /* KSRAnalyticsTests.swift */,
 				8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */,
-				8A5DB68F25B913C000AFA68D /* ScreenTrackingClient.swift */,
 				8A417DEF25AE37D200A2C406 /* Segment.swift */,
 				8A213CEA239EAEA400BBB4C7 /* TrackingClient.swift */,
 				8A213CE5239EAEA400BBB4C7 /* TrackingClientConfiguration.swift */,
@@ -5202,7 +5199,6 @@
 				3767EDB122CFFF2B0088E8E4 /* ShippingRulesViewModel.swift in Sources */,
 				D79F0F772107D60800D3B32C /* SettingsRequestDataCellViewModel.swift in Sources */,
 				8A05CB0E23DB82D3002B01EE /* CookieRefTagFunctions.swift in Sources */,
-				8A5DB69025B913C000AFA68D /* ScreenTrackingClient.swift in Sources */,
 				A73EF6D21DCC173C008FDBE5 /* ProjectNavigatorViewModel.swift in Sources */,
 				A75511621C8642C3005355CF /* LaunchedCountries.swift in Sources */,
 				A76126B71C90C94000EDCCB9 /* UICollectionView-Extensions.swift in Sources */,

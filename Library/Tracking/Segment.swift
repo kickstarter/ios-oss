@@ -39,14 +39,6 @@ extension Analytics: IdentifyingTrackingClient {
   }
 }
 
-extension Analytics: ScreenTrackingClient {
-  public func screen(title: String, properties: [String: Any]?) {
-    guard AppEnvironment.current.environmentVariables.isTrackingEnabled else { return }
-
-    self.screen(title, properties: properties)
-  }
-}
-
 extension Analytics: TrackingClientType {
   public func track(event: String, properties: [String: Any]) {
     guard AppEnvironment.current.environmentVariables.isTrackingEnabled else { return }
