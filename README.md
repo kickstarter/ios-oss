@@ -63,7 +63,6 @@ A collection of operators we like to add to ReactiveCocoa.
 ### 3rd party
 
 * [AlamofireImage](https://github.com/Alamofire/AlamofireImage)
-* [Argo](https://github.com/thoughtbot/Argo)
 * [FBSnapshotTestCase](https://github.com/facebook/ios-snapshot-test-case)
 * [ReactiveSwift](https://github.com/ReactiveCocoa/ReactiveSwift)
 
