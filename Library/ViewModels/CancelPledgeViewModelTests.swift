@@ -305,6 +305,36 @@ final class CancelPledgeViewModelTests: TestCase {
     }
   }
 
+  func testTrackingEvents() {
+    let envelope = GraphMutationEmptyResponseEnvelope()
+    let mockService = MockService(cancelBackingResult: .success(envelope))
+
+    withEnvironment(apiService: mockService) {
+      let project = Project.template
+
+      let data = CancelPledgeViewData(
+        project: project,
+        projectCountry: project.country,
+        projectName: project.name,
+        omitUSCurrencyCode: project.stats.omitUSCurrencyCode,
+        backingId: String(project.personalization.backing?.id ?? 0),
+        pledgeAmount: project.personalization.backing?.amount ?? 0
+      )
+
+      self.vm.inputs.configure(with: data)
+
+      self.vm.inputs.viewDidLoad()
+
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
+      XCTAssertEqual([], self.segmentTrackingClient.events)
+
+      self.vm.inputs.cancelPledgeButtonTapped()
+
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
+      XCTAssertEqual([], self.segmentTrackingClient.events)
+    }
+  }
+
   func testIsLoading() {
     self.isLoading.assertDidNotEmitValue()
 

@@ -522,11 +522,17 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       self.vm.inputs.awakeFromNib()
 
       XCTAssertEqual(self.dataLakeTrackingClient.events, [])
+      XCTAssertEqual(self.segmentTrackingClient.events, [])
 
       self.vm.inputs.readMoreButtonTapped()
 
       XCTAssertEqual(
         self.dataLakeTrackingClient.events,
+        ["Campaign Details Button Clicked"],
+        "Event is tracked"
+      )
+      XCTAssertEqual(
+        self.segmentTrackingClient.events,
         ["Campaign Details Button Clicked"],
         "Event is tracked"
       )
@@ -543,6 +549,21 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       )
       XCTAssertEqual(
         self.dataLakeTrackingClient.properties(forKey: "optimizely_experiments"),
+        [nil],
+        "Event does not include Optimizely properties"
+      )
+      XCTAssertEqual(
+        self.segmentTrackingClient.properties(forKey: "optimizely_api_key"),
+        [nil],
+        "Event does not include Optimizely properties"
+      )
+      XCTAssertEqual(
+        self.segmentTrackingClient.properties(forKey: "optimizely_environment"),
+        [nil],
+        "Event does not include Optimizely properties"
+      )
+      XCTAssertEqual(
+        self.segmentTrackingClient.properties(forKey: "optimizely_experiments"),
         [nil],
         "Event does not include Optimizely properties"
       )
@@ -636,16 +657,21 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       self.vm.inputs.awakeFromNib()
 
       XCTAssertEqual(self.dataLakeTrackingClient.events, [])
+      XCTAssertEqual(self.segmentTrackingClient.events, [])
 
       self.vm.inputs.readMoreButtonTapped()
 
       self.notifyDelegateToGoToCampaignWithProject.assertValues([project])
 
       XCTAssertEqual(self.dataLakeTrackingClient.events, ["Campaign Details Button Clicked"])
+      XCTAssertEqual(self.segmentTrackingClient.events, ["Campaign Details Button Clicked"])
 
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_location"), ["project_screen"])
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "session_referrer_credit"), ["discovery"])
+      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_location"), ["project_screen"])
+      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
+      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "session_referrer_credit"), ["discovery"])
 
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "project_subcategory"), ["Art"])
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "project_category"), [nil])
@@ -654,19 +680,39 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
         self.dataLakeTrackingClient.properties(forKey: "project_user_has_watched", as: Bool.self),
         [nil]
       )
+      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "project_subcategory"), ["Art"])
+      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "project_country"), ["US"])
+      XCTAssertEqual(
+        self.segmentTrackingClient.properties(forKey: "project_user_has_watched", as: Bool.self),
+        [nil]
+      )
 
-      let properties = self.dataLakeTrackingClient.properties.last
+      let dataLakeTrackingClientProperties = self.dataLakeTrackingClient.properties.last
+      let segmentClientProperties = self.segmentTrackingClient.properties.last
 
       XCTAssertNotNil(
-        properties?["optimizely_api_key"],
+        dataLakeTrackingClientProperties?["optimizely_api_key"],
         "Event includes Optimizely properties"
       )
       XCTAssertNotNil(
-        properties?["optimizely_environment"],
+        dataLakeTrackingClientProperties?["optimizely_environment"],
         "Event includes Optimizely properties"
       )
       XCTAssertNotNil(
-        properties?["optimizely_experiments"],
+        dataLakeTrackingClientProperties?["optimizely_experiments"],
+        "Event includes Optimizely properties"
+      )
+      XCTAssertNotNil(
+        segmentClientProperties?["optimizely_api_key"],
+        "Event includes Optimizely properties"
+      )
+      XCTAssertNotNil(
+        segmentClientProperties?["optimizely_environment"],
+        "Event includes Optimizely properties"
+      )
+      XCTAssertNotNil(
+        segmentClientProperties?["optimizely_experiments"],
         "Event includes Optimizely properties"
       )
     }

@@ -340,4 +340,30 @@ final class CreatePasswordViewModelTests: TestCase {
       )
     }
   }
+
+  func testCreatePassword_eventTracking() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+
+    withEnvironment(
+      apiService: MockService(),
+      ksrAnalytics: KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+    ) {
+      XCTAssertEqual([], dataLakeClient.events)
+      XCTAssertEqual([], segmentClient.events)
+
+      self.vm.inputs.viewDidAppear()
+
+      self.vm.inputs.newPasswordTextFieldChanged(text: "password")
+      self.vm.inputs.newPasswordConfirmationTextFieldChanged(text: "password")
+
+      self.saveButtonIsEnabled.assertValues([true])
+
+      self.vm.inputs.saveButtonTapped()
+
+      self.scheduler.advance()
+
+      self.createPasswordSuccess.assertValueCount(1)
+    }
+  }
 }

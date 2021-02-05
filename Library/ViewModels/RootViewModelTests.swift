@@ -484,6 +484,8 @@ final class RootViewModelTests: TestCase {
     self.selectedIndex.assertValues([0, 1], "Selects index immediately.")
     XCTAssertEqual(["Tab Bar Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["activity"], self.dataLakeTrackingClient.properties(forKey: "context_tab_bar_label"))
+    XCTAssertEqual(["Tab Bar Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["activity"], self.segmentTrackingClient.properties(forKey: "context_tab_bar_label"))
 
     self.vm.inputs.didSelect(index: 0)
 
@@ -493,6 +495,11 @@ final class RootViewModelTests: TestCase {
       ["activity", "discovery"],
       self.dataLakeTrackingClient.properties(forKey: "context_tab_bar_label")
     )
+    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(
+      ["activity", "discovery"],
+      self.segmentTrackingClient.properties(forKey: "context_tab_bar_label")
+    )
 
     self.vm.inputs.didSelect(index: 10)
 
@@ -501,6 +508,11 @@ final class RootViewModelTests: TestCase {
     XCTAssertEqual(
       ["activity", "discovery"],
       self.dataLakeTrackingClient.properties(forKey: "context_tab_bar_label")
+    )
+    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(
+      ["activity", "discovery"],
+      self.segmentTrackingClient.properties(forKey: "context_tab_bar_label")
     )
   }
 

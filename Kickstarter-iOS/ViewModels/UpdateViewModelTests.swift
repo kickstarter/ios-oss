@@ -189,6 +189,7 @@ final class UpdateViewModelTests: TestCase {
     self.goToSafariBrowser.assertValues([outsideUrl])
 
     XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
   }
 
   func testGoToSafariBrowser_PrelaunchProject() {
@@ -231,6 +232,8 @@ final class UpdateViewModelTests: TestCase {
 
       XCTAssertEqual([], self.dataLakeTrackingClient.events)
       XCTAssertEqual(nil, self.dataLakeTrackingClient.properties.last?["context"] as? String)
+      XCTAssertEqual([], self.segmentTrackingClient.events)
+      XCTAssertEqual(nil, self.segmentTrackingClient.properties.last?["context"] as? String)
 
       let request2 = URLRequest(url: prelaunchProjectURL)
 
@@ -252,6 +255,11 @@ final class UpdateViewModelTests: TestCase {
       self.goToComments.assertDidNotEmitValue()
       self.webViewLoadRequest.assertValueCount(1, "Initial update load request")
       self.goToSafariBrowser.assertValues([prelaunchProjectURL])
+
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(nil, self.dataLakeTrackingClient.properties.last?["context"] as? String)
+      XCTAssertEqual([], self.segmentTrackingClient.events)
+      XCTAssertEqual(nil, self.segmentTrackingClient.properties.last?["context"] as? String)
     }
   }
 }

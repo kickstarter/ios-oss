@@ -169,13 +169,18 @@ final class EditorialProjectsViewModelTests: TestCase {
 
   func testTrackCollectionViewed() {
     let dataLakeClient = MockTrackingClient()
-    withEnvironment(ksrAnalytics: KSRAnalytics(dataLakeClient: dataLakeClient)) {
+    let segmentClient = MockTrackingClient()
+    withEnvironment(ksrAnalytics: KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      segmentClient: segmentClient
+    )) {
       XCTAssertEqual([], dataLakeClient.events)
 
       self.vm.inputs.configure(with: .lightsOn)
       self.vm.inputs.viewDidLoad()
 
       XCTAssertEqual(["Collection Viewed"], dataLakeClient.events)
+      XCTAssertEqual(["Collection Viewed"], segmentClient.events)
     }
   }
 }

@@ -280,5 +280,6 @@ final class TwoFactorViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear()
 
     XCTAssertEqual(["Two-Factor Confirmation Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Two-Factor Confirmation Viewed"], self.segmentTrackingClient.events)
   }
 }

@@ -129,6 +129,7 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
     )
     self.showMoreReferrersButtonHidden.assertValues([false], "Button shown when there are more referrers.")
     XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.showMoreReferrersTapped()
     self.referrersRowReferrers.assertValues(
@@ -140,6 +141,9 @@ internal final class DashboardReferrersCellViewModelTests: TestCase {
     )
     self.notifyDelegateAddedReferrerRows.assertValueCount(1, "Notified delegate that rows were added.")
     self.showMoreReferrersButtonHidden.assertValues([false, true], "Button hidden when clicked.")
+
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
   }
 
   func testSortByColumn() {

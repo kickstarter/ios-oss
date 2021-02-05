@@ -65,11 +65,13 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
 
     self.hideFollowButton.assertValueCount(0)
     XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.configureWith(activity: activity)
 
     self.hideFollowButton.assertValues([true], "Hide Follow Button")
     XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
   }
 
   func testFriendFollowing_NonFriend() {
@@ -83,6 +85,7 @@ final class ActivityFriendFollowCellViewModelTests: TestCase {
 
     self.hideFollowButton.assertValueCount(0)
     XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.configureWith(activity: activity)
 

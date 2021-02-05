@@ -119,6 +119,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
     self.cellAccessibilityValue.assertValues(["Followed"])
 
     XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.unfollowButtonTapped()
 
@@ -217,6 +218,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
       "Accessibility label assigned to the Button"
     )
     XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.followButtonTapped()
 
@@ -300,6 +302,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
       enableFollowButton.assertValues([true], "Enable Follow Button")
       enableUnfollowButton.assertValues([false], "Disable Unfollow Button")
       XCTAssertEqual([], self.dataLakeTrackingClient.events)
+      XCTAssertEqual([], self.segmentTrackingClient.events)
 
       vm.inputs.followButtonTapped()
 
@@ -346,6 +349,7 @@ final class FindFriendsFriendFollowCellViewModelTests: TestCase {
       enableFollowButton.assertValues([false], "Disable Follow Button")
       enableUnfollowButton.assertValues([true], "Enable Unfollow Button")
       XCTAssertEqual([], self.dataLakeTrackingClient.events)
+      XCTAssertEqual([], self.segmentTrackingClient.events)
 
       vm.inputs.unfollowButtonTapped()
 

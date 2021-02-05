@@ -910,10 +910,12 @@ internal final class ManagePledgeViewModelTests: TestCase {
       self.scheduler.advance()
 
       XCTAssertEqual([], self.dataLakeTrackingClient.events)
+      XCTAssertEqual([], self.segmentTrackingClient.events)
 
       self.vm.inputs.fixButtonTapped()
 
       XCTAssertEqual(["Fix Pledge Button Clicked"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Fix Pledge Button Clicked"], self.segmentTrackingClient.events)
     }
   }
 

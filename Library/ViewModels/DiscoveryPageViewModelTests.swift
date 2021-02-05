@@ -100,6 +100,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.hasAddedProjects.assertDidNotEmitValue("No projects load at first.")
     self.hasRemovedProjects.assertDidNotEmitValue("No projects load at first.")
     XCTAssertEqual([], self.dataLakeTrackingClient.events, "No events tracked at first.")
+    XCTAssertEqual([], self.segmentTrackingClient.events, "No events tracked at first.")
 
     self.vm.inputs.selectedFilter(.defaults)
 
@@ -121,12 +122,31 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.dataLakeTrackingClient.events,
       "Impression is tracked."
     )
+    XCTAssertEqual(
+      ["Explore Page Viewed"],
+      self.segmentTrackingClient.events,
+      "Impression is tracked."
+    )
 
-    let props = self.dataLakeTrackingClient.properties.last
+    let dataLakeTrackingClientProps = self.dataLakeTrackingClient.properties.last
+    let segmentClientProps = self.segmentTrackingClient.properties.last
 
-    XCTAssertNotNil(props?["optimizely_api_key"], "Event includes Optimizely properties")
-    XCTAssertNotNil(props?["optimizely_environment"], "Event includes Optimizely properties")
-    XCTAssertNotNil(props?["optimizely_experiments"], "Event includes Optimizely properties")
+    XCTAssertNotNil(
+      dataLakeTrackingClientProps?["optimizely_api_key"],
+      "Event includes Optimizely properties"
+    )
+    XCTAssertNotNil(
+      dataLakeTrackingClientProps?["optimizely_environment"],
+      "Event includes Optimizely properties"
+    )
+    XCTAssertNotNil(
+      dataLakeTrackingClientProps?["optimizely_experiments"],
+      "Event includes Optimizely properties"
+    )
+
+    XCTAssertNotNil(segmentClientProps?["optimizely_api_key"], "Event includes Optimizely properties")
+    XCTAssertNotNil(segmentClientProps?["optimizely_environment"], "Event includes Optimizely properties")
+    XCTAssertNotNil(segmentClientProps?["optimizely_experiments"], "Event includes Optimizely properties")
 
     // Scroll down a bit and advance scheduler
     self.vm.inputs.willDisplayRow(2, outOf: 10)
@@ -137,6 +157,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     XCTAssertEqual(
       ["Explore Page Viewed"],
       self.dataLakeTrackingClient.events,
+      "No new events are tracked."
+    )
+    XCTAssertEqual(
+      ["Explore Page Viewed"],
+      self.segmentTrackingClient.events,
       "No new events are tracked."
     )
 
@@ -155,6 +180,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.dataLakeTrackingClient.events,
       "No new events are tracked"
     )
+    XCTAssertEqual(
+      ["Explore Page Viewed"],
+      self.segmentTrackingClient.events,
+      "No new events are tracked"
+    )
 
     // Make scroll area increase in size, advanced scheduler
     self.vm.inputs.willDisplayRow(9, outOf: 20)
@@ -166,6 +196,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     XCTAssertEqual(
       ["Explore Page Viewed"],
       self.dataLakeTrackingClient.events,
+      "No new events are tracked."
+    )
+    XCTAssertEqual(
+      ["Explore Page Viewed"],
+      self.segmentTrackingClient.events,
       "No new events are tracked."
     )
 
@@ -202,6 +237,16 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.dataLakeTrackingClient.properties(forKey: "discover_subcategory_id", as: Int.self),
       "The updated category is tracked."
     )
+    XCTAssertEqual(
+      ["Explore Page Viewed", "Explore Page Viewed"],
+      self.segmentTrackingClient.events,
+      "Another event is tracked when the filters are updated."
+    )
+    XCTAssertEqual(
+      [nil, 1],
+      self.segmentTrackingClient.properties(forKey: "discover_subcategory_id", as: Int.self),
+      "The updated category is tracked."
+    )
 
     // Scroll to the end of the list and advance the scheduler.
     self.vm.inputs.willDisplayRow(18, outOf: 20)
@@ -227,6 +272,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     XCTAssertEqual(
       ["Explore Page Viewed", "Explore Page Viewed"],
       self.dataLakeTrackingClient.events,
+      "No new events are tracked."
+    )
+    XCTAssertEqual(
+      ["Explore Page Viewed", "Explore Page Viewed"],
+      self.segmentTrackingClient.events,
       "No new events are tracked."
     )
   }
@@ -420,6 +470,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       )
 
       XCTAssertEqual(["Explore Page Viewed", "Project Card Clicked"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Explore Page Viewed", "Project Card Clicked"], self.segmentTrackingClient.events)
       XCTAssertEqual("Project Card Clicked", mockOptimizelyClient.trackedEventKey)
 
       self.vm.inputs.selectedFilter(.defaults
@@ -439,6 +490,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Explore Page Viewed",
         "Project Card Clicked"
       ], self.dataLakeTrackingClient.events)
+      XCTAssertEqual([
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked"
+      ], self.segmentTrackingClient.events)
 
       self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.staffPicks .~ true)
       self.vm.inputs.tapped(project: project)
@@ -451,6 +508,14 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Explore Page Viewed",
         "Project Card Clicked"
       ], self.dataLakeTrackingClient.events)
+      XCTAssertEqual([
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked"
+      ], self.segmentTrackingClient.events)
 
       self.goToPlaylist.assertValueCount(3, "New playlist for project emits.")
       self.goToPlaylistProject.assertValues([project, project, project])
@@ -472,6 +537,16 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Explore Page Viewed",
         "Project Card Clicked"
       ], self.dataLakeTrackingClient.events)
+      XCTAssertEqual([
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked"
+      ], self.segmentTrackingClient.events)
 
       self.goToPlaylist.assertValueCount(4, "New playlist for project emits.")
       self.goToPlaylistProject.assertValues([project, project, project, project])
@@ -506,6 +581,18 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Explore Page Viewed",
         "Project Card Clicked"
       ], self.dataLakeTrackingClient.events)
+      XCTAssertEqual([
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked",
+        "Explore Page Viewed",
+        "Project Card Clicked"
+      ], self.segmentTrackingClient.events)
 
       self.goToPlaylistProject.assertValues([project, project, project, project, project])
       self.goToPlaylistRefTag.assertValues(
@@ -1180,26 +1267,68 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         [nil, "ios_project_collection_tag_557"],
         self.dataLakeTrackingClient.properties(forKey: "session_ref_tag", as: String.self)
       )
+      XCTAssertEqual(["Explore Page Viewed", "Editorial Card Clicked"], self.segmentTrackingClient.events)
+      XCTAssertEqual(
+        [nil, "ios_project_collection_tag_557"],
+        self.segmentTrackingClient.properties(forKey: "session_ref_tag", as: String.self)
+      )
 
-      let props = self.dataLakeTrackingClient.properties.last
+      let dataLakeTrackingClientProps = self.dataLakeTrackingClient.properties.last
+      let segmentTrackingClientProps = self.segmentTrackingClient.properties.last
 
-      XCTAssertEqual(true, props?["discover_everything"] as? Bool)
-      XCTAssertEqual("discovery_home", props?["discover_ref_tag"] as? String)
-      XCTAssertEqual("magic", props?["discover_sort"] as? String)
+      XCTAssertEqual(true, dataLakeTrackingClientProps?["discover_everything"] as? Bool)
+      XCTAssertEqual("discovery_home", dataLakeTrackingClientProps?["discover_ref_tag"] as? String)
+      XCTAssertEqual("magic", dataLakeTrackingClientProps?["discover_sort"] as? String)
 
-      XCTAssertNil(props?["discover_recommended"] as? Bool)
-      XCTAssertNil(props?["discover_pwl"] as? Bool)
-      XCTAssertNil(props?["discover_social"] as? Bool)
-      XCTAssertNil(props?["discover_watched"] as? Bool)
-      XCTAssertNil(props?["discover_subcategory_id"] as? Int)
-      XCTAssertNil(props?["discover_subcategory_name"] as? String)
-      XCTAssertNil(props?["discover_category_id"] as? Int)
-      XCTAssertNil(props?["discover_category_name"] as? String)
-      XCTAssertNil(props?["discover_search_term"] as? String)
+      XCTAssertEqual(true, segmentTrackingClientProps?["discover_everything"] as? Bool)
+      XCTAssertEqual("discovery_home", segmentTrackingClientProps?["discover_ref_tag"] as? String)
+      XCTAssertEqual("magic", segmentTrackingClientProps?["discover_sort"] as? String)
 
-      XCTAssertNil(props?["optimizely_api_key"], "Event does not include Optimizely properties")
-      XCTAssertNil(props?["optimizely_environment"], "Event does not include Optimizely properties")
-      XCTAssertNil(props?["optimizely_experiments"], "Event does not include Optimizely properties")
+      XCTAssertNil(dataLakeTrackingClientProps?["discover_recommended"] as? Bool)
+      XCTAssertNil(dataLakeTrackingClientProps?["discover_pwl"] as? Bool)
+      XCTAssertNil(dataLakeTrackingClientProps?["discover_social"] as? Bool)
+      XCTAssertNil(dataLakeTrackingClientProps?["discover_watched"] as? Bool)
+      XCTAssertNil(dataLakeTrackingClientProps?["discover_subcategory_id"] as? Int)
+      XCTAssertNil(dataLakeTrackingClientProps?["discover_subcategory_name"] as? String)
+      XCTAssertNil(dataLakeTrackingClientProps?["discover_category_id"] as? Int)
+      XCTAssertNil(dataLakeTrackingClientProps?["discover_category_name"] as? String)
+      XCTAssertNil(dataLakeTrackingClientProps?["discover_search_term"] as? String)
+
+      XCTAssertNil(segmentTrackingClientProps?["discover_recommended"] as? Bool)
+      XCTAssertNil(segmentTrackingClientProps?["discover_pwl"] as? Bool)
+      XCTAssertNil(segmentTrackingClientProps?["discover_social"] as? Bool)
+      XCTAssertNil(segmentTrackingClientProps?["discover_watched"] as? Bool)
+      XCTAssertNil(segmentTrackingClientProps?["discover_subcategory_id"] as? Int)
+      XCTAssertNil(segmentTrackingClientProps?["discover_subcategory_name"] as? String)
+      XCTAssertNil(segmentTrackingClientProps?["discover_category_id"] as? Int)
+      XCTAssertNil(segmentTrackingClientProps?["discover_category_name"] as? String)
+      XCTAssertNil(segmentTrackingClientProps?["discover_search_term"] as? String)
+
+      XCTAssertNil(
+        dataLakeTrackingClientProps?["optimizely_api_key"],
+        "Event does not include Optimizely properties"
+      )
+      XCTAssertNil(
+        dataLakeTrackingClientProps?["optimizely_environment"],
+        "Event does not include Optimizely properties"
+      )
+      XCTAssertNil(
+        dataLakeTrackingClientProps?["optimizely_experiments"],
+        "Event does not include Optimizely properties"
+      )
+
+      XCTAssertNil(
+        segmentTrackingClientProps?["optimizely_api_key"],
+        "Event does not include Optimizely properties"
+      )
+      XCTAssertNil(
+        segmentTrackingClientProps?["optimizely_environment"],
+        "Event does not include Optimizely properties"
+      )
+      XCTAssertNil(
+        segmentTrackingClientProps?["optimizely_experiments"],
+        "Event does not include Optimizely properties"
+      )
     }
   }
 
@@ -1473,23 +1602,52 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.goToCuratedProjects.assertDidNotEmitValue()
       XCTAssertEqual(["Explore Page Viewed"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Explore Page Viewed"], self.segmentTrackingClient.events)
 
       self.vm.inputs.personalizationCellTapped()
 
       XCTAssertEqual(["Explore Page Viewed", "Editorial Card Clicked"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Explore Page Viewed", "Editorial Card Clicked"], self.segmentTrackingClient.events)
       XCTAssertEqual("Editorial Card Clicked", mockOpClient.trackedEventKey)
 
       XCTAssertEqual(
         [nil, "ios_experiment_onboarding_1"],
         self.dataLakeTrackingClient.properties(forKey: "session_ref_tag")
       )
+      XCTAssertEqual(
+        [nil, "ios_experiment_onboarding_1"],
+        self.segmentTrackingClient.properties(forKey: "session_ref_tag")
+      )
       self.goToCuratedProjects.assertValues([[.art, .illustration]])
 
-      let properties = self.dataLakeTrackingClient.properties.last
+      let dataLakeTrackingClientProperties = self.dataLakeTrackingClient.properties.last
+      let segmentTrackingClientProperties = self.segmentTrackingClient.properties.last
 
-      XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
-      XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")
-      XCTAssertNotNil(properties?["optimizely_experiments"], "Event includes Optimizely properties")
+      XCTAssertNotNil(
+        dataLakeTrackingClientProperties?["optimizely_api_key"],
+        "Event includes Optimizely properties"
+      )
+      XCTAssertNotNil(
+        dataLakeTrackingClientProperties?["optimizely_environment"],
+        "Event includes Optimizely properties"
+      )
+      XCTAssertNotNil(
+        dataLakeTrackingClientProperties?["optimizely_experiments"],
+        "Event includes Optimizely properties"
+      )
+
+      XCTAssertNotNil(
+        segmentTrackingClientProperties?["optimizely_api_key"],
+        "Event includes Optimizely properties"
+      )
+      XCTAssertNotNil(
+        segmentTrackingClientProperties?["optimizely_environment"],
+        "Event includes Optimizely properties"
+      )
+      XCTAssertNotNil(
+        segmentTrackingClientProperties?["optimizely_experiments"],
+        "Event includes Optimizely properties"
+      )
     }
   }
 

@@ -45,6 +45,9 @@ internal final class CommentsViewModelTests: TestCase {
       self.hasComments.assertValues([false], "Empty set of comments emitted.")
       self.emptyStateVisible.assertValues([true], "Empty state emitted.")
       self.commentBarButtonVisible.assertValues([false], "Comment button is not visible.")
+
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
+      XCTAssertEqual([], self.segmentTrackingClient.events)
     }
   }
 
@@ -133,6 +136,9 @@ internal final class CommentsViewModelTests: TestCase {
 
       self.commentsAreLoading.assertValues([true])
 
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
+      XCTAssertEqual([], self.segmentTrackingClient.events)
+
       self.scheduler.advance()
 
       self.hasComments.assertValues([true], "A set of comments is emitted.")
@@ -178,6 +184,9 @@ internal final class CommentsViewModelTests: TestCase {
         self.hasComments.assertValues([true], "No new comments are emitted.")
         self.commentsAreLoading.assertValues([true, false, true])
 
+        XCTAssertEqual([], self.dataLakeTrackingClient.events)
+        XCTAssertEqual([], self.segmentTrackingClient.events)
+
         self.scheduler.advance()
 
         self.hasComments.assertValues([true, true], "Another set of comments are emitted.")
@@ -220,6 +229,9 @@ internal final class CommentsViewModelTests: TestCase {
         self.scheduler.advance()
 
         self.hasComments.assertValues([true, true, true], "Another set of comments are emitted.")
+
+        XCTAssertEqual([], self.dataLakeTrackingClient.events)
+        XCTAssertEqual([], self.segmentTrackingClient.events)
       }
     }
   }

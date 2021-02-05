@@ -120,6 +120,7 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.viewDidDisappear(animated: true)
     self.pauseVideo.assertDidNotEmitValue("Video not paused by view navigation.")
     XCTAssertEqual([], self.dataLakeTrackingClient.events, "No tracking events occur.")
+    XCTAssertEqual([], self.segmentTrackingClient.events, "No tracking events occur.")
 
     // Go back to the project and start playing the video.
     self.vm.inputs.viewDidAppear()
@@ -214,6 +215,7 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.viewDidAppear()
 
     XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.playButtonTapped()
     self.vm.inputs.durationChanged(toNew: self.duration)

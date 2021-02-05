@@ -54,12 +54,15 @@ final class LoginToutViewModelTests: TestCase {
   func testLoginIntentTracking_Default() {
     self.vm.inputs.configureWith(.loginTab, project: nil, reward: nil)
 
-    XCTAssertEqual([], dataLakeTrackingClient.events, "Login tout did not track")
+    XCTAssertEqual([], self.dataLakeTrackingClient.events, "Login tout did not track")
+    XCTAssertEqual([], self.segmentTrackingClient.events, "Login tout did not track")
 
     self.vm.inputs.viewWillAppear()
 
-    XCTAssertEqual(["Log In or Signup Page Viewed"], dataLakeTrackingClient.events)
-    XCTAssertEqual("login_tab", dataLakeTrackingClient.properties.last?["login_intent"] as? String)
+    XCTAssertEqual(["Log In or Signup Page Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual("login_tab", self.dataLakeTrackingClient.properties.last?["login_intent"] as? String)
+    XCTAssertEqual(["Log In or Signup Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual("login_tab", self.segmentTrackingClient.properties.last?["login_intent"] as? String)
   }
 
   func testLoginIntent_Pledge() {
@@ -81,23 +84,43 @@ final class LoginToutViewModelTests: TestCase {
       [10], self.dataLakeTrackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self),
       "Tracking properties contain pledge properties"
     )
+
+    XCTAssertEqual(["Log In or Signup Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["pledge"], self.segmentTrackingClient.properties(forKey: "login_intent"))
+    XCTAssertEqual(
+      [2], self.segmentTrackingClient.properties(forKey: "project_pid", as: Int.self),
+      "Tracking properties contain project properties"
+    )
+    XCTAssertEqual(
+      [10], self.segmentTrackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self),
+      "Tracking properties contain pledge properties"
+    )
   }
 
   func testKSRAnalytics_whenLoginIntentBeforeViewAppears() {
     self.vm.inputs.configureWith(.activity, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
 
-    XCTAssertEqual(["Log In or Signup Page Viewed"], dataLakeTrackingClient.events)
-    XCTAssertEqual("activity", dataLakeTrackingClient.properties.last!["login_intent"] as? String)
+    XCTAssertEqual(["Log In or Signup Page Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual("activity", self.dataLakeTrackingClient.properties.last!["login_intent"] as? String)
+
+    XCTAssertEqual(["Log In or Signup Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual("activity", self.segmentTrackingClient.properties.last!["login_intent"] as? String)
 
     self.vm.inputs.viewWillAppear()
 
     XCTAssertEqual(
       ["Log In or Signup Page Viewed"],
-      dataLakeTrackingClient.events,
+      self.dataLakeTrackingClient.events,
       "Only tracks the first time the view appears"
     )
-    XCTAssertEqual("activity", dataLakeTrackingClient.properties.last!["login_intent"] as? String)
+    XCTAssertEqual("activity", self.dataLakeTrackingClient.properties.last!["login_intent"] as? String)
+    XCTAssertEqual(
+      ["Log In or Signup Page Viewed"],
+      self.segmentTrackingClient.events,
+      "Only tracks the first time the view appears"
+    )
+    XCTAssertEqual("activity", self.segmentTrackingClient.properties.last!["login_intent"] as? String)
   }
 
   func testStartLogin() {
@@ -114,6 +137,14 @@ final class LoginToutViewModelTests: TestCase {
     XCTAssertEqual(["activity", "activity"], self.dataLakeTrackingClient.properties(forKey: "login_intent"))
     XCTAssertEqual([nil, nil], self.dataLakeTrackingClient.properties(forKey: "project_pid"))
     XCTAssertEqual([nil, nil], self.dataLakeTrackingClient.properties(forKey: "pledge_backer_reward_id"))
+
+    XCTAssertEqual(
+      ["Log In or Signup Page Viewed", "Log In Button Clicked"],
+      self.segmentTrackingClient.events
+    )
+    XCTAssertEqual(["activity", "activity"], self.segmentTrackingClient.properties(forKey: "login_intent"))
+    XCTAssertEqual([nil, nil], self.segmentTrackingClient.properties(forKey: "project_pid"))
+    XCTAssertEqual([nil, nil], self.segmentTrackingClient.properties(forKey: "pledge_backer_reward_id"))
   }
 
   func testStartLogin_PledgeIntent() {
@@ -133,6 +164,16 @@ final class LoginToutViewModelTests: TestCase {
       [1, 1],
       self.dataLakeTrackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self)
     )
+    XCTAssertEqual(
+      ["Log In or Signup Page Viewed", "Log In Button Clicked"],
+      self.segmentTrackingClient.events
+    )
+    XCTAssertEqual(["pledge", "pledge"], self.segmentTrackingClient.properties(forKey: "login_intent"))
+    XCTAssertEqual([1, 1], self.segmentTrackingClient.properties(forKey: "project_pid", as: Int.self))
+    XCTAssertEqual(
+      [1, 1],
+      self.segmentTrackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self)
+    )
   }
 
   func testStartSignup() {
@@ -149,6 +190,14 @@ final class LoginToutViewModelTests: TestCase {
     XCTAssertEqual(["activity", "activity"], self.dataLakeTrackingClient.properties(forKey: "login_intent"))
     XCTAssertEqual([nil, nil], self.dataLakeTrackingClient.properties(forKey: "project_pid"))
     XCTAssertEqual([nil, nil], self.dataLakeTrackingClient.properties(forKey: "pledge_backer_reward_id"))
+
+    XCTAssertEqual(
+      ["Log In or Signup Page Viewed", "Signup Button Clicked"],
+      self.segmentTrackingClient.events
+    )
+    XCTAssertEqual(["activity", "activity"], self.segmentTrackingClient.properties(forKey: "login_intent"))
+    XCTAssertEqual([nil, nil], self.segmentTrackingClient.properties(forKey: "project_pid"))
+    XCTAssertEqual([nil, nil], self.segmentTrackingClient.properties(forKey: "pledge_backer_reward_id"))
   }
 
   func testStartSignup_PledgeIntent() {
@@ -167,6 +216,17 @@ final class LoginToutViewModelTests: TestCase {
     XCTAssertEqual(
       [1, 1],
       self.dataLakeTrackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self)
+    )
+
+    XCTAssertEqual(
+      ["Log In or Signup Page Viewed", "Signup Button Clicked"],
+      self.segmentTrackingClient.events
+    )
+    XCTAssertEqual(["pledge", "pledge"], self.segmentTrackingClient.properties(forKey: "login_intent"))
+    XCTAssertEqual([1, 1], self.segmentTrackingClient.properties(forKey: "project_pid", as: Int.self))
+    XCTAssertEqual(
+      [1, 1],
+      self.segmentTrackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self)
     )
   }
 
@@ -237,7 +297,14 @@ final class LoginToutViewModelTests: TestCase {
         "Log In or Signup Page Viewed",
         "Facebook Log In or Signup Button Clicked"
       ],
-      dataLakeTrackingClient.events
+      self.dataLakeTrackingClient.events
+    )
+    XCTAssertEqual(
+      [
+        "Log In or Signup Page Viewed",
+        "Facebook Log In or Signup Button Clicked"
+      ],
+      self.segmentTrackingClient.events
     )
 
     self.vm.inputs.environmentLoggedIn()
@@ -291,7 +358,14 @@ final class LoginToutViewModelTests: TestCase {
         "Log In or Signup Page Viewed",
         "Facebook Log In or Signup Button Clicked"
       ],
-      dataLakeTrackingClient.events
+      self.dataLakeTrackingClient.events
+    )
+    XCTAssertEqual(
+      [
+        "Log In or Signup Page Viewed",
+        "Facebook Log In or Signup Button Clicked"
+      ],
+      self.segmentTrackingClient.events
     )
   }
 
@@ -326,7 +400,14 @@ final class LoginToutViewModelTests: TestCase {
         "Log In or Signup Page Viewed",
         "Facebook Log In or Signup Button Clicked"
       ],
-      dataLakeTrackingClient.events
+      self.dataLakeTrackingClient.events
+    )
+    XCTAssertEqual(
+      [
+        "Log In or Signup Page Viewed",
+        "Facebook Log In or Signup Button Clicked"
+      ],
+      self.segmentTrackingClient.events
     )
   }
 
@@ -377,7 +458,14 @@ final class LoginToutViewModelTests: TestCase {
           "Log In or Signup Page Viewed",
           "Facebook Log In or Signup Button Clicked"
         ],
-        dataLakeTrackingClient.events
+        self.dataLakeTrackingClient.events
+      )
+      XCTAssertEqual(
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked"
+        ],
+        self.segmentTrackingClient.events
       )
     }
   }
@@ -430,7 +518,14 @@ final class LoginToutViewModelTests: TestCase {
           "Log In or Signup Page Viewed",
           "Facebook Log In or Signup Button Clicked"
         ],
-        dataLakeTrackingClient.events
+        self.dataLakeTrackingClient.events
+      )
+      XCTAssertEqual(
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked"
+        ],
+        self.segmentTrackingClient.events
       )
     }
   }
@@ -483,7 +578,14 @@ final class LoginToutViewModelTests: TestCase {
           "Log In or Signup Page Viewed",
           "Facebook Log In or Signup Button Clicked"
         ],
-        dataLakeTrackingClient.events
+        self.dataLakeTrackingClient.events
+      )
+      XCTAssertEqual(
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked"
+        ],
+        self.segmentTrackingClient.events
       )
     }
   }
@@ -538,7 +640,14 @@ final class LoginToutViewModelTests: TestCase {
           "Log In or Signup Page Viewed",
           "Facebook Log In or Signup Button Clicked"
         ],
-        dataLakeTrackingClient.events
+        self.dataLakeTrackingClient.events
+      )
+      XCTAssertEqual(
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked"
+        ],
+        self.segmentTrackingClient.events
       )
     }
   }
@@ -593,7 +702,14 @@ final class LoginToutViewModelTests: TestCase {
           "Log In or Signup Page Viewed",
           "Facebook Log In or Signup Button Clicked"
         ],
-        dataLakeTrackingClient.events
+        self.dataLakeTrackingClient.events
+      )
+      XCTAssertEqual(
+        [
+          "Log In or Signup Page Viewed",
+          "Facebook Log In or Signup Button Clicked"
+        ],
+        self.segmentTrackingClient.events
       )
 
       self.vm.inputs.viewWillAppear()
@@ -765,7 +881,14 @@ final class LoginToutViewModelTests: TestCase {
         "Log In or Signup Page Viewed",
         "Continue With Apple Button Clicked"
       ],
-      dataLakeTrackingClient.events
+      self.dataLakeTrackingClient.events
+    )
+    XCTAssertEqual(
+      [
+        "Log In or Signup Page Viewed",
+        "Continue With Apple Button Clicked"
+      ],
+      self.segmentTrackingClient.events
     )
     self.attemptAppleLogin.assertValueCount(1)
   }

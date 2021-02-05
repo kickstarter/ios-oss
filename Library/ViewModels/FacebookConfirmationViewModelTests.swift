@@ -41,7 +41,11 @@ final class FacebookConfirmationViewModelTests: TestCase {
 
     self.sendNewsletters.assertValues([false], "Newsletter toggle emits false")
     XCTAssertEqual(
-      [], dataLakeTrackingClient.events,
+      [], self.dataLakeTrackingClient.events,
+      "Newsletter toggle is not tracked on intital state"
+    )
+    XCTAssertEqual(
+      [], self.segmentTrackingClient.events,
       "Newsletter toggle is not tracked on intital state"
     )
   }
@@ -64,7 +68,11 @@ final class FacebookConfirmationViewModelTests: TestCase {
 
       sendNewsletters.assertValues([false], "Newsletter toggle emits false")
       XCTAssertEqual(
-        [], dataLakeTrackingClient.events,
+        [], self.dataLakeTrackingClient.events,
+        "Newsletter toggle is not tracked on intital state"
+      )
+      XCTAssertEqual(
+        [], self.segmentTrackingClient.events,
         "Newsletter toggle is not tracked on intital state"
       )
     }

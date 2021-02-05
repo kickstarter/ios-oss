@@ -277,11 +277,35 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     self.notifyDelegateCTATapped.assertValueCount(1)
 
     XCTAssertEqual(["Project Page Pledge Button Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Project Page Pledge Button Clicked"], self.segmentTrackingClient.events)
 
-    let properties = self.dataLakeTrackingClient.properties.last
+    let dataLakeTrackingClientProperties = self.dataLakeTrackingClient.properties.last
+    let segmentTrackingClientProperties = self.segmentTrackingClient.properties.last
 
-    XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
-    XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")
-    XCTAssertNotNil(properties?["optimizely_experiments"], "Event includes Optimizely properties")
+    XCTAssertNotNil(
+      dataLakeTrackingClientProperties?["optimizely_api_key"],
+      "Event includes Optimizely properties"
+    )
+    XCTAssertNotNil(
+      dataLakeTrackingClientProperties?["optimizely_environment"],
+      "Event includes Optimizely properties"
+    )
+    XCTAssertNotNil(
+      dataLakeTrackingClientProperties?["optimizely_experiments"],
+      "Event includes Optimizely properties"
+    )
+
+    XCTAssertNotNil(
+      segmentTrackingClientProperties?["optimizely_api_key"],
+      "Event includes Optimizely properties"
+    )
+    XCTAssertNotNil(
+      segmentTrackingClientProperties?["optimizely_environment"],
+      "Event includes Optimizely properties"
+    )
+    XCTAssertNotNil(
+      segmentTrackingClientProperties?["optimizely_experiments"],
+      "Event includes Optimizely properties"
+    )
   }
 }

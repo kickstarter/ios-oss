@@ -150,5 +150,6 @@ final class ResetPasswordViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     XCTAssertEqual(["Forgot Password Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Forgot Password Viewed"], self.segmentTrackingClient.events)
   }
 }
