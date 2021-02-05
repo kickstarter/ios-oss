@@ -10,7 +10,7 @@ final class ProjectCreatorViewModelTests: TestCase {
 
   fileprivate let goBackToProject = TestObserver<(), Never>()
   fileprivate let goToLoginTout = TestObserver<LoginIntent, Never>()
-  fileprivate let goToMessageDialogContext = TestObserver<Koala.MessageDialogContext, Never>()
+  fileprivate let goToMessageDialogContext = TestObserver<KSRAnalytics.MessageDialogContext, Never>()
   fileprivate let goToMessageDialogSubject = TestObserver<MessageSubject, Never>()
   fileprivate let goToSafariBrowser = TestObserver<URL, Never>()
   fileprivate let loadWebViewRequest = TestObserver<URLRequest, Never>()
@@ -199,8 +199,6 @@ final class ProjectCreatorViewModelTests: TestCase {
     XCTAssertEqual(.cancel, policy)
 
     self.goToSafariBrowser.assertValues([URL(string: "http://www.google.com")!])
-    XCTAssertEqual(["Opened External Link"], self.trackingClient.events)
-    XCTAssertEqual(["project_creator"], self.trackingClient.properties(forKey: "context"))
   }
 
   func testLoadWebViewRequest() {

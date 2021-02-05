@@ -89,7 +89,7 @@ final class DiscoveryProjectCardCell: UITableViewCell, ValueCell {
 
     self.watchProjectViewModel.inputs.configure(with: (
       value.project,
-      Koala.LocationContext.discovery,
+      KSRAnalytics.LocationContext.discovery,
       value.params
     ))
 

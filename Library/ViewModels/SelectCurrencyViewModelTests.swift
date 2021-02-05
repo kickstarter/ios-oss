@@ -160,27 +160,6 @@ internal final class SelectCurrencyViewModelTests: TestCase {
     }
   }
 
-  func testTrackSelectedChosenCurrency() {
-    self.vm.inputs.configure(with: .USD)
-    self.vm.inputs.viewDidLoad()
-
-    let usdSelectedOrdering = currencies(orderedBySelected: .USD)
-
-    XCTAssertEqual([], self.trackingClient.events)
-
-    withEnvironment(apiService: MockService(changeCurrencyResponse: .init())) {
-      self.vm.inputs.didSelectCurrency(atIndex: usdSelectedOrdering.firstIndex(of: .CHF) ?? -1)
-      self.vm.inputs.saveButtonTapped()
-
-      self.scheduler.advance()
-
-      XCTAssertEqual(["Selected Chosen Currency"], self.trackingClient.events)
-      XCTAssertEqual(
-        ["Fr Swiss Franc (CHF)"], self.trackingClient.properties(forKey: "currency", as: String.self)
-      )
-    }
-  }
-
   func testCurrenciesOrderedBySelected() {
     XCTAssertEqual(
       currencies(orderedBySelected: .USD),

@@ -117,9 +117,7 @@ internal final class FindFriendsViewController: UITableViewController {
         yesHandler: { _ in
           self.viewModel.inputs.confirmFollowAllFriends()
         },
-        noHandler: { _ in
-          self.viewModel.inputs.declineFollowAllFriends()
-        }
+        noHandler: { _ in }
       ),
       animated: true,
       completion: nil

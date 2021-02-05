@@ -186,7 +186,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .takeWhen(self.goToAddCardScreen)
       .observeValues { project, reward, context, refTag in
         let pledgeContext = TrackingHelpers.pledgeContext(for: context)
-        AppEnvironment.current.koala.trackAddNewCardButtonClicked(
+        AppEnvironment.current.ksrAnalytics.trackAddNewCardButtonClicked(
           context: pledgeContext,
           location: .pledgeAddNewCard,
           project: project,

@@ -101,9 +101,6 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
       .map { projects, project in (project, projects, RefTag.profileBacked) }
 
     self.scrollToProjectItem = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
-
-    self.viewWillAppearProperty.signal.filter(isFalse)
-      .observeValues { _ in AppEnvironment.current.koala.trackProfileView() }
   }
 
   fileprivate let projectTappedProperty = MutableProperty<Project?>(nil)

@@ -44,8 +44,12 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       self.projects.assertValueCount(0)
       self.emptyStateIsVisible.assertValueCount(0)
       self.isRefreshing.assertValues([true])
-      XCTAssertEqual(["Viewed Profile Tab"], self.trackingClient.events)
-      XCTAssertEqual(["backed"], self.trackingClient.properties(forKey: "type", as: String.self))
+
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
+      XCTAssertEqual([], self.dataLakeTrackingClient.properties(forKey: "type", as: String.self))
+
+      XCTAssertEqual([], self.segmentTrackingClient.events)
+      XCTAssertEqual([], self.segmentTrackingClient.properties(forKey: "type", as: String.self))
 
       self.scheduler.advance()
 
@@ -104,8 +108,6 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       self.projects.assertValueCount(0)
       self.emptyStateIsVisible.assertValueCount(0)
       self.isRefreshing.assertValues([true])
-      XCTAssertEqual(["Viewed Profile Tab"], self.trackingClient.events)
-      XCTAssertEqual(["saved"], self.trackingClient.properties(forKey: "type", as: String.self))
 
       self.scheduler.advance()
 
@@ -113,6 +115,12 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       self.emptyStateIsVisible.assertValues([true], "Empty state is shown for user with no projects.")
       self.emptyStateProjectsType.assertValues([.saved])
       self.isRefreshing.assertValues([true, false])
+
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
+      XCTAssertEqual([], self.dataLakeTrackingClient.properties(forKey: "type", as: String.self))
+
+      XCTAssertEqual([], self.segmentTrackingClient.events)
+      XCTAssertEqual([], self.segmentTrackingClient.properties(forKey: "type", as: String.self))
 
       self.vm.inputs.viewWillAppear(true)
 

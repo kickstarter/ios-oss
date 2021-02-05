@@ -23,7 +23,7 @@ internal final class MessageDialogViewController: UIViewController {
 
   internal static func configuredWith(
     messageSubject: MessageSubject,
-    context: Koala.MessageDialogContext
+    context: KSRAnalytics.MessageDialogContext
   ) -> MessageDialogViewController {
     let vc = Storyboard.Messages.instantiate(MessageDialogViewController.self)
     vc.viewModel.inputs.configureWith(messageSubject: messageSubject, context: context)

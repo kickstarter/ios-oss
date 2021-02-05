@@ -354,8 +354,10 @@ final class CategorySelectionViewModelTests: TestCase {
       XCTAssertTrue(mockKVStore.hasCompletedCategoryPersonalizationFlow)
 
       XCTAssertEqual("Continue Button Clicked", self.optimizelyClient.trackedEventKey)
-      XCTAssertEqual(["Onboarding Continue Button Clicked"], self.trackingClient.events)
-      XCTAssertEqual(self.trackingClient.properties(forKey: "context_location"), ["onboarding"])
+      XCTAssertEqual(["Onboarding Continue Button Clicked"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Onboarding Continue Button Clicked"], self.segmentTrackingClient.events)
+      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_location"), ["onboarding"])
+      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_location"), ["onboarding"])
       assertBaseUserAttributesLoggedOut()
     }
   }
@@ -436,8 +438,10 @@ final class CategorySelectionViewModelTests: TestCase {
       self.dismiss.assertValueCount(1)
 
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Skip Button Clicked")
-      XCTAssertEqual(self.trackingClient.events, ["Onboarding Skip Button Clicked"])
-      XCTAssertEqual(self.trackingClient.properties(forKey: "context_location"), ["onboarding"])
+      XCTAssertEqual(self.dataLakeTrackingClient.events, ["Onboarding Skip Button Clicked"])
+      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_location"), ["onboarding"])
+      XCTAssertEqual(self.segmentTrackingClient.events, ["Onboarding Skip Button Clicked"])
+      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_location"), ["onboarding"])
       assertBaseUserAttributesLoggedOut()
     }
   }

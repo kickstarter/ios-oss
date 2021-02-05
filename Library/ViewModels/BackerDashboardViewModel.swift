@@ -174,9 +174,6 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       .map { headerTopConstant, scrollViewYOffset in
         min(headerTopConstant, -scrollViewYOffset)
       }
-
-    self.viewWillAppearProperty.signal.filter(isFalse)
-      .observeValues { _ in AppEnvironment.current.koala.trackProfileView() }
   }
 
   private let backedProjectsButtonTappedProperty = MutableProperty(())

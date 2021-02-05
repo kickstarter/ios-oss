@@ -93,15 +93,12 @@ internal final class SettingsNewsletterCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(value: user1)
 
     self.switchIsOn.assertValues([false, true])
-    XCTAssertEqual(["Subscribed To Newsletter"], self.trackingClient.events)
 
     self.vm.inputs.newslettersSwitchTapped(on: false)
     let user2 = User.template |> UserAttribute.newsletter(newsletter).keyPath .~ false
 
     self.vm.inputs.configureWith(value: user2)
     self.switchIsOn.assertValues([false, true, false])
-
-    XCTAssertEqual(["Subscribed To Newsletter", "Unsubscribed From Newsletter"], self.trackingClient.events)
   }
 
   func testOptInPromptNotShown() {

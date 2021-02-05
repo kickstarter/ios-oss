@@ -57,10 +57,6 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.showConfirmLogout.assertValueCount(1, "Shows confirm logout alert.")
 
-    self.vm.inputs.logoutCanceled()
-
-    self.logout.assertValueCount(0, "Logout cancelled")
-
     self.vm.settingsCellTapped(cellType: .logout)
 
     self.showConfirmLogout.assertValueCount(2, "Show confirm logout alert")

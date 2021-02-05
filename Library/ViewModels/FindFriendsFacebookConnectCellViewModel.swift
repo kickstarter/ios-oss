@@ -150,18 +150,6 @@ public final class FindFriendsFacebookConnectCellViewModel: FindFriendsFacebookC
     self.facebookConnectButtonTitle = connectionType.signal
       .skipNil()
       .map { $0.buttonText }
-
-    source
-      .takeWhen(self.showErrorAlert)
-      .observeValues { AppEnvironment.current.koala.trackFacebookConnectError(source: $0) }
-
-    source
-      .takeWhen(self.facebookConnectButtonTappedProperty.signal)
-      .observeValues { AppEnvironment.current.koala.trackFacebookConnect(source: $0) }
-
-    source
-      .takeWhen(self.closeButtonTappedProperty.signal)
-      .observeValues { AppEnvironment.current.koala.trackCloseFacebookConnect(source: $0) }
   }
 
   public var inputs: FindFriendsFacebookConnectCellViewModelInputs { return self }

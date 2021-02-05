@@ -68,30 +68,6 @@ internal final class DiscoveryViewModelTests: TestCase {
     }
   }
 
-  func trackViewAppearedEvent() {
-    self.vm.inputs.viewDidLoad()
-
-    XCTAssertEqual([], self.trackingClient.events)
-
-    self.vm.inputs.viewWillAppear(animated: false)
-
-    XCTAssertEqual(["Viewed Discovery"], self.trackingClient.events)
-    XCTAssertEqual(["magic"], self.trackingClient.properties(forKey: "discover_sort"))
-    XCTAssertEqual([true], self.trackingClient.properties(forKey: "discover_staff_picks", as: Bool.self))
-
-    self.vm.inputs.filter(withParams: self.categoryParams)
-
-    XCTAssertEqual(["Viewed Discovery", "Viewed Discovery"], self.trackingClient.events)
-    XCTAssertEqual(["magic", "magic"], self.trackingClient.properties(forKey: "discover_sort"))
-    XCTAssertEqual([1], self.trackingClient.properties(forKey: "category_id", as: Int.self))
-
-    self.vm.inputs.viewWillAppear(animated: true)
-
-    XCTAssertEqual(["Viewed Discovery", "Viewed Discovery"], self.trackingClient.events, "Does not emit")
-    XCTAssertEqual(["magic", "magic"], self.trackingClient.properties(forKey: "discover_sort"))
-    XCTAssertEqual([1], self.trackingClient.properties(forKey: "category_id", as: Int.self))
-  }
-
   func testLoadFilterIntoDataSource() {
     withEnvironment {
       self.loadFilterIntoDataSource.assertValueCount(0)
@@ -373,28 +349,40 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(animated: true)
 
-    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
 
     self.vm.inputs.willTransition(toPage: 1)
 
-    XCTAssertEqual([], self.trackingClient.events, "No events tracked when starting a swipe transition.")
+    XCTAssertEqual(
+      [],
+      self.dataLakeTrackingClient.events,
+      "No events tracked when starting a swipe transition."
+    )
 
     self.vm.inputs.pageTransition(completed: false)
 
-    XCTAssertEqual([], self.trackingClient.events, "No events tracked when the transition did not complete.")
+    XCTAssertEqual(
+      [],
+      self.dataLakeTrackingClient.events,
+      "No events tracked when the transition did not complete."
+    )
 
     self.vm.inputs.willTransition(toPage: 1)
 
-    XCTAssertEqual([], self.trackingClient.events, "Still no events tracked when starting transition.")
+    XCTAssertEqual(
+      [],
+      self.dataLakeTrackingClient.events,
+      "Still no events tracked when starting transition."
+    )
 
     self.vm.inputs.pageTransition(completed: true)
 
     XCTAssertEqual(
-      ["Explore Sort Clicked"], self.trackingClient.events,
+      ["Explore Sort Clicked"], self.dataLakeTrackingClient.events,
       "Swipe event tracked once the transition completes."
     )
     XCTAssertEqual(
-      ["popularity"], self.trackingClient.properties(forKey: "discover_sort"),
+      ["popularity"], self.dataLakeTrackingClient.properties(forKey: "discover_sort"),
       "Correct sort is tracked."
     )
 
@@ -402,12 +390,12 @@ internal final class DiscoveryViewModelTests: TestCase {
 
     XCTAssertEqual(
       ["Explore Sort Clicked", "Explore Sort Clicked"],
-      self.trackingClient.events,
+      self.dataLakeTrackingClient.events,
       "Event is tracked when a sort is chosen from the pager."
     )
     XCTAssertEqual(
       ["popularity", "newest"],
-      self.trackingClient.properties(forKey: "discover_sort"),
+      self.dataLakeTrackingClient.properties(forKey: "discover_sort"),
       "Correct sort is tracked."
     )
 
@@ -415,12 +403,12 @@ internal final class DiscoveryViewModelTests: TestCase {
 
     XCTAssertEqual(
       ["Explore Sort Clicked", "Explore Sort Clicked"],
-      self.trackingClient.events,
+      self.dataLakeTrackingClient.events,
       "Selecting the same sort again does not track another event."
     )
     XCTAssertEqual(
       ["popularity", "newest"],
-      self.trackingClient.properties(forKey: "discover_sort")
+      self.dataLakeTrackingClient.properties(forKey: "discover_sort")
     )
   }
 

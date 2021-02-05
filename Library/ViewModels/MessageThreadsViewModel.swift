@@ -69,12 +69,6 @@ public final class MessageThreadsViewModel: MessageThreadsViewModelType, Message
       self.viewDidLoadProperty.signal.mapConst(.inbox)
     )
 
-    let configData = Signal.combineLatest(
-      self.configDataProperty.signal.skipNil(),
-      mailbox
-    )
-    .map(first)
-
     let requestFirstPageWith = Signal.merge(
       mailbox,
       mailbox.takeWhen(self.refreshProperty.signal)
@@ -124,16 +118,6 @@ public final class MessageThreadsViewModel: MessageThreadsViewModelType, Message
     self.showMailboxChooserActionSheet = self.mailboxButtonPressedProperty.signal
 
     self.goToSearch = self.searchButtonPressedProperty.signal
-
-    configData
-      .takePairWhen(mailbox)
-      .observeValues { configData, mailbox in
-        AppEnvironment.current.koala.trackMessageThreadsView(
-          mailbox: mailbox,
-          project: configData.project,
-          refTag: configData.refTag ?? .unrecognized("")
-        )
-      }
   }
 
   fileprivate let mailboxButtonPressedProperty = MutableProperty(())

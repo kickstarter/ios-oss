@@ -119,7 +119,8 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.viewWillDisappear()
     self.vm.inputs.viewDidDisappear(animated: true)
     self.pauseVideo.assertDidNotEmitValue("Video not paused by view navigation.")
-    XCTAssertEqual([], self.trackingClient.events, "No tracking events occur.")
+    XCTAssertEqual([], self.dataLakeTrackingClient.events, "No tracking events occur.")
+    XCTAssertEqual([], self.segmentTrackingClient.events, "No tracking events occur.")
 
     // Go back to the project and start playing the video.
     self.vm.inputs.viewDidAppear()
@@ -131,19 +132,11 @@ internal final class VideoViewModelTests: TestCase {
     // Player pauses the video.
     self.vm.inputs.rateChanged(toNew: self.pauseRate, atTime: self.halfwayTime)
     self.pauseVideo.assertDidNotEmitValue("Video not paused by view navigation.")
-    XCTAssertEqual([
-      "Project Video Start", "Started Project Video", "Project Video Pause",
-      "Paused Project Video"
-    ], self.trackingClient.events)
 
     // Leave the project magazine.
     self.vm.inputs.viewWillDisappear()
     self.vm.inputs.viewDidDisappear(animated: true)
     self.pauseVideo.assertValueCount(1, "Video pauses when view disappears.")
-    XCTAssertEqual(
-      ["Project Video Start", "Started Project Video", "Project Video Pause", "Paused Project Video"],
-      self.trackingClient.events, "Pause event not tracked again."
-    )
   }
 
   func testProjectImageAndOverlayVisibility() {
@@ -221,43 +214,21 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewDidAppear()
 
-    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.playButtonTapped()
     self.vm.inputs.durationChanged(toNew: self.duration)
 
     self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.startTime)
-    XCTAssertEqual(["Project Video Start", "Started Project Video"], self.trackingClient.events)
 
     self.vm.inputs.rateChanged(toNew: self.pauseRate, atTime: self.halfwayTime)
-    XCTAssertEqual([
-      "Project Video Start", "Started Project Video",
-      "Project Video Pause", "Paused Project Video"
-    ], self.trackingClient.events)
 
     self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.halfwayTime)
-    XCTAssertEqual([
-      "Project Video Start", "Started Project Video",
-      "Project Video Pause", "Paused Project Video",
-      "Project Video Resume", "Resumed Project Video"
-    ], self.trackingClient.events)
 
     self.vm.inputs.crossedCompletionThreshold()
-    XCTAssertEqual([
-      "Project Video Start", "Started Project Video",
-      "Project Video Pause", "Paused Project Video",
-      "Project Video Resume", "Resumed Project Video",
-      "Project Video Complete", "Completed Project Video"
-    ], self.trackingClient.events)
 
     self.vm.inputs.crossedCompletionThreshold()
-    XCTAssertEqual(
-      [
-        "Project Video Start", "Started Project Video", "Project Video Pause", "Paused Project Video",
-        "Project Video Resume", "Resumed Project Video", "Project Video Complete", "Completed Project Video"
-      ],
-      self.trackingClient.events, "Video completion not tracked again."
-    )
 
     self.vm.inputs.rateChanged(toNew: self.pauseRate, atTime: self.duration)
     self.seekToBeginning.assertValueCount(1)
@@ -267,14 +238,6 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.startTime)
 
     self.pauseVideo.assertDidNotEmitValue("Video not paused by view navigation.")
-
-    XCTAssertEqual(
-      [
-        "Project Video Start", "Started Project Video", "Project Video Pause", "Paused Project Video",
-        "Project Video Resume", "Resumed Project Video", "Project Video Complete", "Completed Project Video"
-      ],
-      self.trackingClient.events, "Video start not tracked again."
-    )
   }
 
   func testTrackVideoCompletionViaScrubbing() {
@@ -286,17 +249,10 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.durationChanged(toNew: self.duration)
 
     self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.startTime)
-    XCTAssertEqual(["Project Video Start", "Started Project Video"], self.trackingClient.events)
 
     // Scrub video through to completion.
     self.vm.inputs.rateChanged(toNew: self.pauseRate, atTime: self.halfwayTime)
     self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.completedThreshold)
-    XCTAssertEqual([
-      "Project Video Start", "Started Project Video",
-      "Project Video Pause", "Paused Project Video",
-      "Project Video Complete", "Completed Project Video",
-      "Project Video Resume", "Resumed Project Video"
-    ], self.trackingClient.events)
   }
 
   func testViewTransition() {

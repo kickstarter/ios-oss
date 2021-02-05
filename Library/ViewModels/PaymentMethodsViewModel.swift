@@ -11,7 +11,6 @@ public protocol PaymentMethodsViewModelInputs {
   func editButtonTapped()
   func paymentMethodsFooterViewDidTapAddNewCardButton()
   func viewDidLoad()
-  func viewWillAppear()
 }
 
 public protocol PaymentMethodsViewModelOutputs {
@@ -120,18 +119,6 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
 
     self.editButtonTitle = self.tableViewIsEditing
       .map { $0 ? Strings.Done() : Strings.discovery_favorite_categories_buttons_edit() }
-
-    // Koala:
-    self.viewWillAppearProperty.signal
-      .observeValues { _ in AppEnvironment.current.koala.trackViewedPaymentMethods() }
-
-    deletePaymentMethodEvents.values()
-      .ignoreValues()
-      .observeValues { _ in AppEnvironment.current.koala.trackDeletedPaymentMethod() }
-
-    deletePaymentMethodEventsErrors
-      .ignoreValues()
-      .observeValues { _ in AppEnvironment.current.koala.trackDeletePaymentMethodError() }
   }
 
   // Stores the table view's editing state as it is affected by multiple signals
@@ -154,11 +141,6 @@ public final class PaymentMethodsViewModel: PaymentMethodsViewModelType,
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
-  }
-
-  fileprivate let viewWillAppearProperty = MutableProperty(())
-  public func viewWillAppear() {
-    self.viewWillAppearProperty.value = ()
   }
 
   fileprivate let didTapAddCardButtonProperty = MutableProperty(())

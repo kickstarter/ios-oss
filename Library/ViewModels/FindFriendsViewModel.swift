@@ -10,9 +10,6 @@ public protocol FindFriendsViewModelInputs {
   /// Call when press OK on Follow All Friends confirmation alert
   func confirmFollowAllFriends()
 
-  /// Call when press Cancel on Follow All Friends confirmation alert
-  func declineFollowAllFriends()
-
   /// Call when "Discover projects" button is tapped
   func discoverButtonTapped()
 
@@ -98,7 +95,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
       .filter(isTrue)
       .ignoreValues()
 
-    let (friends, isLoading, pageCount) = paginate(
+    let (friends, isLoading, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: requestNextPageWhen,
       clearOnNewRequest: true,
@@ -153,22 +150,6 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
       }.map { _, friends, source in
         (friends, source)
       }
-
-    source
-      .takeWhen(self.viewDidLoadProperty.signal)
-      .observeValues { AppEnvironment.current.koala.trackFindFriendsView(source: $0) }
-
-    source
-      .takeWhen(self.declineFollowAllFriendsProperty.signal)
-      .observeValues { AppEnvironment.current.koala.trackDeclineFriendFollowAll(source: $0) }
-
-    source
-      .takeWhen(followAll)
-      .observeValues { AppEnvironment.current.koala.trackFriendFollowAll(source: $0) }
-
-    source
-      .takePairWhen(pageCount.skip(first: 1).filter { $0 > 1 })
-      .observeValues { AppEnvironment.current.koala.loadedMoreFriends(source: $0, pageCount: $1) }
   }
 
   fileprivate let configureWithProperty = MutableProperty<FriendsSource>(FriendsSource.findFriends)
@@ -179,11 +160,6 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
   fileprivate let confirmFollowAllFriendsProperty = MutableProperty(())
   public func confirmFollowAllFriends() {
     self.confirmFollowAllFriendsProperty.value = ()
-  }
-
-  fileprivate let declineFollowAllFriendsProperty = MutableProperty(())
-  public func declineFollowAllFriends() {
-    self.declineFollowAllFriendsProperty.value = ()
   }
 
   public func findFriendsFacebookConnectCellDidDismissHeader() {}

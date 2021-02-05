@@ -75,8 +75,6 @@ internal final class ProfileViewModelTests: TestCase {
       self.hasBackedProjects.assertValues([true])
       self.showEmptyState.assertValues([false])
 
-      XCTAssertEqual(["Profile View My", "Viewed Profile"], trackingClient.events)
-
       self.vm.inputs.viewWillAppear(false)
       self.scheduler.advance()
 
@@ -84,22 +82,12 @@ internal final class ProfileViewModelTests: TestCase {
       self.hasBackedProjects.assertValues([true])
       self.showEmptyState.assertValues([false])
 
-      XCTAssertEqual(
-        ["Profile View My", "Viewed Profile", "Profile View My", "Viewed Profile"],
-        trackingClient.events
-      )
-
       self.vm.inputs.viewWillAppear(true)
       self.scheduler.advance()
 
       self.user.assertValues([user, user, user, user, user, user], "Current user emmitted.")
       self.hasBackedProjects.assertValues([true])
       self.showEmptyState.assertValues([false])
-
-      XCTAssertEqual(
-        ["Profile View My", "Viewed Profile", "Profile View My", "Viewed Profile"],
-        trackingClient.events, "Viewed Profile tracking does not emit."
-      )
 
       // Come back after backing a project.
       withEnvironment(
@@ -112,11 +100,6 @@ internal final class ProfileViewModelTests: TestCase {
         self.user.assertValues([user, user, user, user, user, user, user, user], "Current user emmitted.")
         self.hasBackedProjects.assertValues([true, true])
         self.showEmptyState.assertValues([false, false])
-
-        XCTAssertEqual([
-          "Profile View My", "Viewed Profile", "Profile View My", "Viewed Profile",
-          "Profile View My", "Viewed Profile"
-        ], trackingClient.events)
       }
     }
   }
@@ -129,7 +112,6 @@ internal final class ProfileViewModelTests: TestCase {
 
       self.hasBackedProjects.assertValueCount(0)
       self.showEmptyState.assertValueCount(0)
-      XCTAssertEqual(["Profile View My", "Viewed Profile"], trackingClient.events)
 
       self.scheduler.advance()
 
@@ -142,7 +124,6 @@ internal final class ProfileViewModelTests: TestCase {
 
       self.hasBackedProjects.assertValues([false], "Backed projects does not emit.")
       self.showEmptyState.assertValues([true], "Empty state does not emit.")
-      XCTAssertEqual(["Profile View My", "Viewed Profile"], trackingClient.events)
     }
   }
 

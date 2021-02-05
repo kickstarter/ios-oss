@@ -207,20 +207,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
     self.goToMessages.assertValueCount(1)
   }
 
-  func testTracking() {
-    self.vm.inputs.viewDidLoad()
-    self.vm.inputs.viewWillAppear(false)
-
-    XCTAssertEqual(["Profile View My", "Viewed Profile"], self.trackingClient.events)
-
-    self.vm.inputs.viewWillAppear(true)
-
-    XCTAssertEqual(
-      ["Profile View My", "Viewed Profile"], self.trackingClient.events,
-      "Tracking does not emit"
-    )
-  }
-
   func testHeaderPanning() {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewWillAppear(false)

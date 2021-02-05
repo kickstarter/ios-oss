@@ -10,7 +10,7 @@ public protocol MessageDialogViewModelInputs {
   func cancelButtonPressed()
 
   /// Call with the backing/message-thread/project that was given to the view.
-  func configureWith(messageSubject: MessageSubject, context: Koala.MessageDialogContext)
+  func configureWith(messageSubject: MessageSubject, context: KSRAnalytics.MessageDialogContext)
 
   /// Call when the post button is pressed.
   func postButtonPressed()
@@ -52,19 +52,6 @@ public final class MessageDialogViewModel: MessageDialogViewModelType, MessageDi
   public init() {
     let messageSubject = self.messageSubjectProperty.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
-
-    let projectFromBacking = messageSubject
-      .map { $0.backing }
-      .skipNil()
-      .flatMap {
-        AppEnvironment.current.apiService.fetchProject(param: .id($0.projectId)).demoteErrors()
-      }
-
-    let project = Signal.merge(
-      projectFromBacking,
-      messageSubject.map { $0.messageThread?.project }.skipNil(),
-      messageSubject.map { $0.project }.skipNil()
-    )
 
     let body = self.bodyTextChangedProperty.signal.skipNil()
 
@@ -123,13 +110,6 @@ public final class MessageDialogViewModel: MessageDialogViewModelType, MessageDi
       self.viewDidLoadProperty.signal.mapConst(true),
       self.notifyPresenterDialogWantsDismissal.mapConst(false)
     )
-
-    Signal.combineLatest(project, self.contextProperty.signal.skipNil())
-      .observeValues { AppEnvironment.current.koala.trackViewedMessageEditor(project: $0, context: $1) }
-
-    Signal.combineLatest(project, self.contextProperty.signal.skipNil())
-      .takeWhen(self.notifyPresenterCommentWasPostedSuccesfully)
-      .observeValues { AppEnvironment.current.koala.trackMessageSent(project: $0, context: $1) }
   }
 
   fileprivate let bodyTextChangedProperty = MutableProperty<String?>(nil)
@@ -143,13 +123,12 @@ public final class MessageDialogViewModel: MessageDialogViewModelType, MessageDi
   }
 
   fileprivate let messageSubjectProperty = MutableProperty<MessageSubject?>(nil)
-  fileprivate let contextProperty = MutableProperty<Koala.MessageDialogContext?>(nil)
+  fileprivate let contextProperty = MutableProperty<KSRAnalytics.MessageDialogContext?>(nil)
   public func configureWith(
     messageSubject: MessageSubject,
-    context: Koala.MessageDialogContext
+    context _: KSRAnalytics.MessageDialogContext
   ) {
     self.messageSubjectProperty.value = messageSubject
-    self.contextProperty.value = context
   }
 
   fileprivate let postButtonPressedProperty = MutableProperty(())

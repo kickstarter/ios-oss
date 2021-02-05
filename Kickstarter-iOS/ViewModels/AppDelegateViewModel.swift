@@ -628,59 +628,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .skipNil()
       .map { _, options in options?[UIApplication.LaunchOptionsKey.shortcutItem] == nil }
 
-    // Koala
-
-    Signal.combineLatest(
-      pushTokenRegistrationStartedValues,
-      pushNotificationsPreviouslyAuthorized
-    )
-    .filter { _, previouslyAuthorized in !previouslyAuthorized }
-    .map { isGranted, _ in isGranted }
-    .take(first: 1)
-    .observeValues { isGranted in
-      if isGranted {
-        AppEnvironment.current.koala.trackPushPermissionOptIn()
-      } else {
-        AppEnvironment.current.koala.trackPushPermissionOptOut()
-      }
-    }
-
-    Signal.merge(
-      self.applicationLaunchOptionsProperty.signal.ignoreValues(),
-      self.applicationWillEnterForegroundProperty.signal
-    )
-    .observeValues { AppEnvironment.current.koala.trackAppOpen() }
-
-    self.applicationDidReceiveMemoryWarningProperty.signal
-      .observeValues { AppEnvironment.current.koala.trackMemoryWarning() }
-
-    Signal.combineLatest(
-      performShortcutItem.enumerated(),
-      self.setApplicationShortcutItems
-    )
-    .skipRepeats { lhs, rhs in lhs.0.idx == rhs.0.idx }
-    .map { idxAndShortcutItem, availableShortcutItems in
-      (idxAndShortcutItem.value, availableShortcutItems)
-    }
-    .observeValues {
-      AppEnvironment.current.koala.trackPerformedShortcutItem($0, availableShortcutItems: $1)
-    }
-
-    openUrl
-      .map { URLComponents(url: $0.url, resolvingAgainstBaseURL: false) }
-      .skipNil()
-      .map(dictionary(fromUrlComponents:))
-      .filter { $0["app_banner"] == "1" }
-      .observeValues { AppEnvironment.current.koala.trackOpenedAppBanner($0) }
-
-    continueUserActivityWithNavigation
-      .filter(second >>> isNotNil)
-      .map(first)
-      .observeValues { AppEnvironment.current.koala.trackUserActivity($0) }
-
-    deepLinkFromNotification
-      .observeValues { _ in AppEnvironment.current.koala.trackNotificationOpened() }
-
     self.applicationIconBadgeNumber = Signal.merge(
       self.applicationWillEnterForegroundProperty.signal,
       self.applicationLaunchOptionsProperty.signal.ignoreValues()

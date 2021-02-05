@@ -329,7 +329,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
     .map(first)
     .map(tabData(forUser:))
 
-    // MARK: - Koala
+    // MARK: - KSRAnalytics
 
     self.tabBarItemsData
       .takePairWhen(self.didSelectIndexProperty.signal)
@@ -338,7 +338,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
 
         return tabBarItemLabel(for: data.items[index])
       }.observeValues { tabBarItemLabel in
-        AppEnvironment.current.koala.trackTabBarClicked(tabBarItemLabel)
+        AppEnvironment.current.ksrAnalytics.trackTabBarClicked(tabBarItemLabel)
       }
   }
 
@@ -486,7 +486,7 @@ private func activitiesBadgeValue(with value: Int?) -> String? {
     : "\(clampedBadgeValue)"
 }
 
-private func tabBarItemLabel(for tabBarItem: TabBarItem) -> Koala.TabBarItemLabel {
+private func tabBarItemLabel(for tabBarItem: TabBarItem) -> KSRAnalytics.TabBarItemLabel {
   switch tabBarItem {
   case .activity:
     return .activity

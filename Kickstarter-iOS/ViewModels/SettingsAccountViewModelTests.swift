@@ -44,7 +44,6 @@ internal final class SettingsAccountViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
 
       self.scheduler.advance()
 
@@ -77,7 +76,6 @@ internal final class SettingsAccountViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
 
       self.scheduler.advance()
 
@@ -100,7 +98,6 @@ internal final class SettingsAccountViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
 
       self.scheduler.advance()
 
@@ -129,7 +126,6 @@ internal final class SettingsAccountViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
 
       self.scheduler.advance()
 
@@ -160,7 +156,6 @@ internal final class SettingsAccountViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
 
       self.scheduler.advance()
 
@@ -186,7 +181,6 @@ internal final class SettingsAccountViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
 
       self.scheduler.advance()
 
@@ -210,7 +204,6 @@ internal final class SettingsAccountViewModelTests: TestCase {
     withEnvironment(apiService: mockService) {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
 
       self.scheduler.advance()
 
@@ -221,22 +214,6 @@ internal final class SettingsAccountViewModelTests: TestCase {
       self.reloadDataShouldHideWarningIcon.assertValues([true])
 
       self.fetchAccountFieldsError.assertDidNotEmitValue()
-    }
-  }
-
-  func testTrackViewedAccount() {
-    let koalaClient = MockTrackingClient()
-
-    withEnvironment(koala: Koala(client: koalaClient)) {
-      XCTAssertEqual([], koalaClient.events)
-
-      self.vm.inputs.viewDidAppear()
-
-      XCTAssertEqual(["Viewed Account"], koalaClient.events)
-
-      self.vm.inputs.viewDidAppear()
-
-      XCTAssertEqual(["Viewed Account", "Viewed Account"], koalaClient.events)
     }
   }
 }

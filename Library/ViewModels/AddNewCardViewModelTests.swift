@@ -284,39 +284,6 @@ internal final class AddNewCardViewModelTests: TestCase {
     self.zipcode.assertValues(["12345"])
   }
 
-  func testTrackViewedAddNewCard() {
-    self.vm.inputs.viewWillAppear()
-
-    XCTAssertEqual(["Viewed Add New Card"], self.trackingClient.events)
-  }
-
-  func testTrackSavedPaymentMethod() {
-    withEnvironment(
-      apiService: MockService(addNewCreditCardResult: .success(.paymentSourceSuccessTemplate))
-    ) {
-      self.vm.inputs.configure(with: .settings, project: nil)
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.paymentInfo(isValid: true)
-      self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
-
-      self.scheduler.advance()
-
-      XCTAssertEqual(["Saved Payment Method"], self.trackingClient.events)
-    }
-  }
-
-  func testTrackFailedPaymentMethodCreation() {
-    withEnvironment(apiService: MockService(addNewCreditCardResult: .failure(.emptyResponse(nil)))) {
-      self.vm.inputs.configure(with: .settings, project: nil)
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.stripeCreated("stripe_deadbeef", stripeID: "stripe_deadbeefID")
-
-      self.scheduler.advance()
-
-      XCTAssertEqual(["Failed Payment Method Creation"], self.trackingClient.events)
-    }
-  }
-
   func testUnsupportedCardMessage_HiddenOnViewDidLoad_withPledgeIntent() {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configure(with: .pledge, project: Project.template)

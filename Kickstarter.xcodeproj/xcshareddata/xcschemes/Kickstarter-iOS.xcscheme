@@ -127,7 +127,7 @@
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
-            key = "KOALA_TRACKING"
+            key = "TRACKING_ENABLED"
             value = "true"
             isEnabled = "NO">
          </EnvironmentVariable>

@@ -67,7 +67,8 @@ internal final class SignupViewModelTests: TestCase {
     self.vm.inputs.signupButtonPressed()
     self.logIntoEnvironment.assertDidNotEmitValue("Does not immediately emit after signup button is pressed.")
 
-    XCTAssertEqual(["Signup Submit Button Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["Signup Submit Button Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Signup Submit Button Clicked"], self.segmentTrackingClient.events)
 
     self.scheduler.advance()
 
@@ -148,32 +149,5 @@ internal final class SignupViewModelTests: TestCase {
       scheduler.advance()
       self.showError.assertValues([error, error], "Signup error.")
     }
-  }
-
-  func testWeeklyNewsletterChanged() {
-    self.vm.inputs.viewDidLoad()
-
-    self.vm.inputs.weeklyNewsletterChanged(true)
-    XCTAssertEqual(
-      ["Subscribed To Newsletter", "Signup Newsletter Toggle"],
-      self.trackingClient.events
-    )
-    XCTAssertEqual(
-      [true],
-      self.trackingClient.properties.compactMap { $0["send_newsletters"] as? Bool }
-    )
-
-    self.vm.inputs.weeklyNewsletterChanged(false)
-    XCTAssertEqual(
-      [
-        "Subscribed To Newsletter", "Signup Newsletter Toggle",
-        "Unsubscribed From Newsletter", "Signup Newsletter Toggle"
-      ],
-      self.trackingClient.events
-    )
-    XCTAssertEqual(
-      [true, false],
-      self.trackingClient.properties.compactMap { $0["send_newsletters"] as? Bool }
-    )
   }
 }

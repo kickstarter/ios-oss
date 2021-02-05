@@ -25,7 +25,6 @@ public protocol AddNewCardViewModelInputs {
   func stripeCreated(_ token: String?, stripeID: String?)
   func stripeError(_ error: Error?)
   func viewDidLoad()
-  func viewWillAppear()
   func zipcodeChanged(zipcode: String?)
   func zipcodeTextFieldDidEndEditing()
 }
@@ -200,22 +199,6 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
     )
 
     self.rememberThisCardToggleViewControllerContainerIsHidden = intent.map { $0 == .settings }
-
-    // Koala
-    self.viewWillAppearProperty.signal
-      .observeValues {
-        AppEnvironment.current.koala.trackViewedAddNewCard()
-      }
-
-    self.newCardAddedWithMessage
-      .observeValues { _ in
-        AppEnvironment.current.koala.trackSavedPaymentMethod()
-      }
-
-    self.addNewCardFailure
-      .observeValues { _ in
-        AppEnvironment.current.koala.trackFailedPaymentMethodCreation()
-      }
   }
 
   private let cardholderNameChangedProperty = MutableProperty<String?>(nil)
@@ -268,11 +251,6 @@ public final class AddNewCardViewModel: AddNewCardViewModelType, AddNewCardViewM
   private let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
-  }
-
-  private let viewWillAppearProperty = MutableProperty(())
-  public func viewWillAppear() {
-    self.viewWillAppearProperty.value = ()
   }
 
   private let zipcodeProperty = MutableProperty<String?>(nil)

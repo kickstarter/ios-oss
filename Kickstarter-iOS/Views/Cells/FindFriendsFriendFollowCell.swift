@@ -16,7 +16,7 @@ internal final class FindFriendsFriendFollowCell: UITableViewCell, ValueCell {
   fileprivate let viewModel: FindFriendsFriendFollowCellViewModelType = FindFriendsFriendFollowCellViewModel()
 
   func configureWith(value: (friend: User, source: FriendsSource)) {
-    self.viewModel.inputs.configureWith(friend: value.friend, source: value.source)
+    self.viewModel.inputs.configureWith(friend: value.friend)
   }
 
   override func bindViewModel() {

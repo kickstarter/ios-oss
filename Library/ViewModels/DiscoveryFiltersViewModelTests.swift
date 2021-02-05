@@ -93,7 +93,7 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
     self.animateInView.assertValueCount(1)
   }
 
-  func testKoalaEventsTrack() {
+  func testKSRAnalyticsEventsTrack() {
     self.vm.inputs.configureWith(selectedRow: allProjectsRow)
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewDidAppear()
@@ -102,21 +102,34 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
     XCTAssertEqual(
       [],
-      self.trackingClient.events
+      self.dataLakeTrackingClient.events
+    )
+    XCTAssertEqual(
+      [],
+      self.segmentTrackingClient.events
     )
     self.vm.inputs.tapped(expandableRow: filmExpandableRow)
 
     XCTAssertEqual(
       [],
-      self.trackingClient.events
+      self.dataLakeTrackingClient.events
+    )
+    XCTAssertEqual(
+      [],
+      self.segmentTrackingClient.events
     )
 
     self.vm.inputs.tapped(selectableRow: documentarySelectableRow)
 
-    XCTAssertEqual(["Filter Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["Filter Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(
       [Category.documentary.intID],
-      self.trackingClient.properties(forKey: "discover_subcategory_id", as: Int.self)
+      self.dataLakeTrackingClient.properties(forKey: "discover_subcategory_id", as: Int.self)
+    )
+    XCTAssertEqual(["Filter Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(
+      [Category.documentary.intID],
+      self.segmentTrackingClient.properties(forKey: "discover_subcategory_id", as: Int.self)
     )
   }
 

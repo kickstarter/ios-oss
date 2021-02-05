@@ -78,10 +78,6 @@ public final class ProjectNotificationCellViewModel: ProjectNotificationCellView
     )
     .map { $0.email && $0.mobile }
     .skipRepeats()
-
-    notification
-      .takeWhen(self.notificationTappedProperty.signal)
-      .observeValues { AppEnvironment.current.koala.trackChangeProjectNotification($0.project) }
   }
 
   fileprivate let notificationProperty = MutableProperty<ProjectNotification?>(nil)

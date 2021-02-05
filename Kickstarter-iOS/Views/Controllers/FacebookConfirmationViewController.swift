@@ -158,10 +158,9 @@ internal final class FacebookConfirmationViewController: UIViewController,
     helpSheet.addAction(
       UIAlertAction(
         title: Strings.login_tout_help_sheet_cancel(),
-        style: .cancel
-      ) { [weak helpVM = self.helpViewModel] _ in
-        helpVM?.inputs.cancelHelpSheetButtonTapped()
-      }
+        style: .cancel,
+        handler: nil
+      )
     )
 
     // iPad provision

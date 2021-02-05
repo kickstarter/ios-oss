@@ -161,12 +161,6 @@ public final class ProjectUpdatesViewModel: ProjectUpdatesViewModelType, Project
 
     self.webViewLoadRequest = Signal.merge(initialUpdatesIndexLoadRequest, anotherIndexRequest)
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
-
-    project
-      .takeWhen(self.goToSafariBrowser)
-      .observeValues {
-        AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectUpdates)
-      }
   }
 
   fileprivate let canSendEmailProperty = MutableProperty<Bool?>(nil)

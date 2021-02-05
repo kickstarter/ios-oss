@@ -1,7 +1,7 @@
 import Foundation
 
 public enum VariableName: String {
-  case koalaTracking = "KOALA_TRACKING"
+  case trackingEnabled = "TRACKING_ENABLED"
 }
 
 public struct EnvironmentVariables {
@@ -13,10 +13,11 @@ public struct EnvironmentVariables {
 }
 
 extension EnvironmentVariables {
-  public var isKoalaTrackingEnabled: Bool {
+  public var isTrackingEnabled: Bool {
     #if DEBUG
-      guard
-        let value = self.processInfo.environment[VariableName.koalaTracking.rawValue] else { return false }
+      guard let value = self.processInfo.environment[VariableName.trackingEnabled.rawValue] else {
+        return false
+      }
 
       return NSString(string: value).boolValue
     #else

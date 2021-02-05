@@ -157,12 +157,14 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
 
     currentParams
       .takePairWhen(self.sortPagerSelectedSortProperty.signal.skipNil().skipRepeats(==))
-      .observeValues { AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $1, params: $0) }
+      .observeValues {
+        AppEnvironment.current.ksrAnalytics.trackDiscoverySelectedSort(nextSort: $1, params: $0)
+      }
 
     currentParams
       .takePairWhen(swipeToSort)
       .observeValues {
-        AppEnvironment.current.koala.trackDiscoverySelectedSort(nextSort: $1, params: $0)
+        AppEnvironment.current.ksrAnalytics.trackDiscoverySelectedSort(nextSort: $1, params: $0)
       }
   }
 

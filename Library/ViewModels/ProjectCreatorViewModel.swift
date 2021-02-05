@@ -23,7 +23,7 @@ public protocol ProjectCreatorViewModelOutputs {
   var goToLoginTout: Signal<LoginIntent, Never> { get }
 
   /// Emits when we should navigate to the message dialog.
-  var goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), Never> { get }
+  var goToMessageDialog: Signal<(MessageSubject, KSRAnalytics.MessageDialogContext), Never> { get }
 
   /// Emits when we should open a safari browser with the URL.
   var goToSafariBrowser: Signal<URL, Never> { get }
@@ -82,12 +82,6 @@ public final class ProjectCreatorViewModel: ProjectCreatorViewModelType, Project
       }
       .map { $1.request.url }
       .skipNil()
-
-    project
-      .takeWhen(self.goToSafariBrowser)
-      .observeValues {
-        AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectCreator)
-      }
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
@@ -109,7 +103,7 @@ public final class ProjectCreatorViewModel: ProjectCreatorViewModelType, Project
 
   public let goBackToProject: Signal<(), Never>
   public let goToLoginTout: Signal<LoginIntent, Never>
-  public let goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), Never>
+  public let goToMessageDialog: Signal<(MessageSubject, KSRAnalytics.MessageDialogContext), Never>
   public let goToSafariBrowser: Signal<URL, Never>
   public let loadWebViewRequest: Signal<URLRequest, Never>
 

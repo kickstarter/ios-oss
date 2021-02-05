@@ -77,9 +77,6 @@ public class ChangePasswordViewModel: ChangePasswordViewModelType,
           .materialize()
       }
 
-    passwordUpdateEvent.values()
-      .observeValues { _ in AppEnvironment.current.koala.trackChangePassword() }
-
     self.changePasswordSuccess = passwordUpdateEvent.values().ignoreValues()
     self.changePasswordFailure = passwordUpdateEvent.errors().map { $0.localizedDescription }
 
@@ -129,9 +126,6 @@ public class ChangePasswordViewModel: ChangePasswordViewModelType,
       .filter { _ in AppEnvironment.current.isVoiceOverRunning() }
       .filter(isFalse)
       .ignoreValues()
-
-    self.viewDidAppearProperty.signal
-      .observeValues { _ in AppEnvironment.current.koala.trackChangePasswordView() }
   }
 
   private var currentPasswordDoneEditingProperty = MutableProperty(())

@@ -91,11 +91,6 @@ internal final class AddNewCardViewController: UIViewController,
     self.viewModel.inputs.viewDidLoad()
   }
 
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    self.viewModel.inputs.viewWillAppear()
-  }
-
   override func bindStyles() {
     super.bindStyles()
 

@@ -65,7 +65,7 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
       .map(\.y)
 
     configureWithParams
-      .observeValues { AppEnvironment.current.koala.trackCollectionViewed(params: $0) }
+      .observeValues { AppEnvironment.current.ksrAnalytics.trackCollectionViewed(params: $0) }
   }
 
   private let closeButtonTappedProperty = MutableProperty(())

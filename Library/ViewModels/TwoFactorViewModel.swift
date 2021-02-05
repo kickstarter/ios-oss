@@ -136,7 +136,7 @@ public final class TwoFactorViewModel: TwoFactorViewModelType, TwoFactorViewMode
       ))
 
     self.viewDidLoadProperty.signal
-      .observeValues { AppEnvironment.current.koala.track2FAViewed() }
+      .observeValues { AppEnvironment.current.ksrAnalytics.track2FAViewed() }
   }
 
   fileprivate let codeProperty = MutableProperty<String?>(nil)

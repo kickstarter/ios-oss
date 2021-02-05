@@ -182,7 +182,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     // Tracking
     Signal.combineLatest(project, selectedRewardFromId, pledgeContext, refTag)
       .observeValues { project, reward, context, refTag in
-        AppEnvironment.current.koala.trackRewardClicked(
+        AppEnvironment.current.ksrAnalytics.trackRewardClicked(
           project: project,
           reward: reward,
           context: context,
@@ -294,11 +294,12 @@ private func backedReward(_ project: Project, rewards: [Reward]) -> IndexPath? {
     .flatMap { IndexPath(row: $0, section: 0) }
 }
 
-private func trackingPledgeContext(for rewardsContext: RewardsCollectionViewContext) -> Koala.PledgeContext {
+private func trackingPledgeContext(for rewardsContext: RewardsCollectionViewContext) -> KSRAnalytics
+  .PledgeContext {
   switch rewardsContext {
   case .createPledge:
-    return Koala.PledgeContext.newPledge
+    return KSRAnalytics.PledgeContext.newPledge
   case .managePledge:
-    return Koala.PledgeContext.changeReward
+    return KSRAnalytics.PledgeContext.changeReward
   }
 }

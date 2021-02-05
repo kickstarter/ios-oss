@@ -132,16 +132,8 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     self.postNotification = self.environmentLoggedInProperty.signal
       .mapConst(Notification(name: .ksr_sessionStarted))
 
-    self.weeklyNewsletterChangedProperty.signal
-      .skipNil()
-      .observeValues {
-        AppEnvironment.current.koala.trackChangeNewsletter(
-          newsletterType: .weekly, sendNewsletter: $0, project: nil, context: .signup
-        )
-      }
-
     attemptSignup
-      .observeValues { AppEnvironment.current.koala.trackSignupSubmitButtonClicked() }
+      .observeValues { AppEnvironment.current.ksrAnalytics.trackSignupSubmitButtonClicked() }
   }
 
   fileprivate let emailChangedProperty = MutableProperty("")

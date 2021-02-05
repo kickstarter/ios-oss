@@ -91,7 +91,7 @@ internal final class ProjectCreatorViewController: WebViewController {
     self.present(nav, animated: true, completion: nil)
   }
 
-  fileprivate func goToMessageDialog(subject: MessageSubject, context: Koala.MessageDialogContext) {
+  fileprivate func goToMessageDialog(subject: MessageSubject, context: KSRAnalytics.MessageDialogContext) {
     let vc = MessageDialogViewController.configuredWith(messageSubject: subject, context: context)
     vc.delegate = self
     let nav = UINavigationController(rootViewController: vc)

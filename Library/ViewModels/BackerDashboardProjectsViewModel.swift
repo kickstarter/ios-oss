@@ -140,12 +140,6 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
       }
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
-
-    projectsType
-      .takeWhen(self.viewWillAppearProperty.signal.filter(isFalse))
-      .observeValues { pType in
-        AppEnvironment.current.koala.trackViewedProfileTab(projectsType: pType)
-      }
   }
 
   private let configureWithProjectsTypeAndSortProperty =

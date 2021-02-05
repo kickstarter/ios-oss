@@ -40,7 +40,7 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
       .observeValues {
         let optimizelyProps = optimizelyProperties() ?? [:]
 
-        AppEnvironment.current.koala
+        AppEnvironment.current.ksrAnalytics
           .trackOnboardingGetStartedButtonClicked(optimizelyProperties: optimizelyProps)
 
         AppEnvironment.current.optimizelyClient?.track(eventName: "Get Started Button Clicked")

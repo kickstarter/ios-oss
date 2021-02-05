@@ -23,9 +23,6 @@ public enum HelpContext {
 }
 
 public protocol HelpViewModelInputs {
-  /// Call when Cancel button is tapped on the help sheet.
-  func cancelHelpSheetButtonTapped()
-
   /// Call to set whether Mail can be composed.
   func canSendEmail(_ canSend: Bool)
 
@@ -63,7 +60,6 @@ public protocol HelpViewModelType {
 
 public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpViewModelOutputs {
   public init() {
-    let context = self.helpContextProperty.signal.skipNil()
     let canSendEmail = self.canSendEmailProperty.signal.skipNil()
     let helpTypeTapped = self.helpTypeButtonTappedProperty.signal.skipNil()
 
@@ -82,34 +78,6 @@ public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpVi
 
     self.showHelpSheet = self.showHelpSheetButtonTappedProperty.signal
       .mapConst([HelpType.howItWorks, .contact, .terms, .privacy, .cookie])
-
-    context
-      .takeWhen(self.showHelpSheetButtonTappedProperty.signal)
-      .observeValues { AppEnvironment.current.koala.trackShowedHelpMenu(context: $0) }
-
-    context
-      .takeWhen(self.cancelHelpSheetButtonTappedProperty.signal)
-      .observeValues { AppEnvironment.current.koala.trackCanceledHelpMenu(context: $0) }
-
-    context
-      .takePairWhen(helpTypeTapped)
-      .observeValues { AppEnvironment.current.koala.trackSelectedHelpOption(context: $0, type: $1) }
-
-    context
-      .takePairWhen(self.showMailCompose)
-      .observeValues { context, _ in AppEnvironment.current.koala.trackOpenedContactEmail(context: context) }
-
-    context
-      .takePairWhen(self.mailComposeCompletionProperty.signal.skipNil())
-      .filter { $1 == .sent }
-      .observeValues { context, _ in AppEnvironment.current.koala.trackSentContactEmail(context: context) }
-
-    context
-      .takePairWhen(self.mailComposeCompletionProperty.signal.skipNil())
-      .filter { $1 == .cancelled }
-      .observeValues { context, _ in
-        AppEnvironment.current.koala.trackCanceledContactEmail(context: context)
-      }
   }
 
   public var inputs: HelpViewModelInputs { return self }
@@ -123,11 +91,6 @@ public final class HelpViewModel: HelpViewModelType, HelpViewModelInputs, HelpVi
   fileprivate let canSendEmailProperty = MutableProperty<Bool?>(nil)
   public func canSendEmail(_ canSend: Bool) {
     self.canSendEmailProperty.value = canSend
-  }
-
-  fileprivate let cancelHelpSheetButtonTappedProperty = MutableProperty(())
-  public func cancelHelpSheetButtonTapped() {
-    self.cancelHelpSheetButtonTappedProperty.value = ()
   }
 
   fileprivate let helpContextProperty = MutableProperty<HelpContext?>(nil)

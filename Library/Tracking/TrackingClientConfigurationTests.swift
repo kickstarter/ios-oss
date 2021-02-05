@@ -4,62 +4,6 @@ import Foundation
 import XCTest
 
 final class TrackingClientConfigurationTests: TestCase {
-  // MARK: - Koala
-
-  func testKoalaMethod() {
-    XCTAssertEqual(TrackingClientConfiguration.koala.httpMethod, .POST)
-  }
-
-  func testKoalaIdentifier() {
-    XCTAssertEqual(TrackingClientConfiguration.koala.identifier, .koala)
-  }
-
-  func testKoalaRecordDictionary() {
-    let config = TrackingClientConfiguration.koala
-
-    let recordDictionary = config.recordDictionary("event-name", ["key": "value"])
-    let propertiesDictionary = (recordDictionary["properties"] as? [String: Any])
-
-    XCTAssertEqual(recordDictionary["event"] as? String, "event-name")
-    XCTAssertEqual(propertiesDictionary?["key"] as? String, "value")
-  }
-
-  func testKoalaEnvelope() {
-    let config = TrackingClientConfiguration.koala
-
-    let record: [String: Any] = [
-      "event": "event-name",
-      "properties": ["key": "value"]
-    ]
-
-    let recordDictionary = config.envelope(record) as? [String: Any]
-    let propertiesDictionary = (recordDictionary?["properties"] as? [String: Any])
-
-    XCTAssertEqual(recordDictionary?["event"] as? String, "event-name")
-    XCTAssertEqual(propertiesDictionary?["key"] as? String, "value")
-  }
-
-  func testKoalaRequest() {
-    let config = TrackingClientConfiguration.koala
-
-    let data = Data("some-data".utf8)
-    let request = config.request(config, .staging, data)
-
-    XCTAssertEqual(request?.httpBody, nil)
-    XCTAssertEqual(request?.httpMethod, "POST")
-    XCTAssertEqual(request?.url?.absoluteString, "\(Secrets.KoalaEndpoint.staging)?data=c29tZS1kYXRh")
-  }
-
-  func testKoalaURL() {
-    let config = TrackingClientConfiguration.koala
-
-    let stagingUrl = config.url(.staging)
-    let productionUrl = config.url(.production)
-
-    XCTAssertEqual(stagingUrl?.absoluteString, Secrets.KoalaEndpoint.staging)
-    XCTAssertEqual(productionUrl?.absoluteString, Secrets.KoalaEndpoint.production)
-  }
-
   // MARK: - DataLake
 
   func testDataLakeMethod() {

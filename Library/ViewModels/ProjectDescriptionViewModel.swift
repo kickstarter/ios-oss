@@ -31,7 +31,7 @@ public protocol ProjectDescriptionViewModelOutputs {
   var goBackToProject: Signal<(), Never> { get }
 
   /// Emits when we should navigate to the message dialog.
-  var goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), Never> { get }
+  var goToMessageDialog: Signal<(MessageSubject, KSRAnalytics.MessageDialogContext), Never> { get }
 
   /// Emits when we should open a safari browser with the URL.
   var goToSafariBrowser: Signal<URL, Never> { get }
@@ -87,9 +87,9 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
       .map { action in allowed(navigationAction: action) ? .allow : .cancel }
 
     let possiblyGoToMessageDialog = Signal.combineLatest(project, navigation)
-      .map { (project, navigation) -> (MessageSubject, Koala.MessageDialogContext)? in
+      .map { (project, navigation) -> (MessageSubject, KSRAnalytics.MessageDialogContext)? in
         guard navigation.map(isMessageCreator(navigation:)) == true else { return nil }
-        return (MessageSubject.project(project), Koala.MessageDialogContext.projectPage)
+        return (MessageSubject.project(project), KSRAnalytics.MessageDialogContext.projectPage)
       }
 
     self.goToMessageDialog = possiblyGoToMessageDialog.skipNil()
@@ -118,12 +118,6 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
     .filter { navigationAction, _, _ in navigationAction.navigationType == .linkActivated }
     .map { navigationAction, _, _ in navigationAction.request.url }
     .skipNil()
-
-    project
-      .takeWhen(self.goToSafariBrowser)
-      .observeValues {
-        AppEnvironment.current.koala.trackOpenedExternalLink(project: $0, context: .projectDescription)
-      }
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
@@ -162,7 +156,7 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
   }
 
   public let goBackToProject: Signal<(), Never>
-  public let goToMessageDialog: Signal<(MessageSubject, Koala.MessageDialogContext), Never>
+  public let goToMessageDialog: Signal<(MessageSubject, KSRAnalytics.MessageDialogContext), Never>
   public let goToSafariBrowser: Signal<URL, Never>
   public let isLoading: Signal<Bool, Never>
   public let loadWebViewRequest: Signal<URLRequest, Never>

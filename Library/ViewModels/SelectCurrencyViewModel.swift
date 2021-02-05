@@ -96,9 +96,6 @@ public final class SelectCurrencyViewModel: SelectCurrencyViewModelType, SelectC
 
     let updatedCurrency = updateCurrencyEvent.values()
 
-    updatedCurrency
-      .observeValues { AppEnvironment.current.koala.trackChangedCurrency($0) }
-
     let initialAndSelected = Signal.combineLatest(
       initialChosenCurrency,
       didSelectCurrency

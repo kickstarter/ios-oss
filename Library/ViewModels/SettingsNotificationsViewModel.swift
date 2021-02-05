@@ -106,10 +106,6 @@ public final class SettingsNotificationsViewModel: SettingsNotificationsViewMode
 
     self.goToManageProjectNotifications = manageProjectNotificationsSelected.signal
       .ignoreValues()
-
-    self.viewDidLoadProperty.signal.observeValues { _ in
-      AppEnvironment.current.koala.trackSettingsView()
-    }
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())

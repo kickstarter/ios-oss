@@ -6,7 +6,7 @@ public struct CommentDialogData {
   public let project: Project
   public let update: Update?
   public let recipient: Author?
-  public let context: Koala.CommentDialogContext
+  public let context: KSRAnalytics.CommentDialogContext
 }
 
 public protocol CommentDialogViewModelInputs {
@@ -21,7 +21,7 @@ public protocol CommentDialogViewModelInputs {
     project: Project,
     update: Update?,
     recipient: Author?,
-    context: Koala.CommentDialogContext
+    context: KSRAnalytics.CommentDialogContext
   )
 
   /// Call when the comment body text changes.
@@ -84,7 +84,7 @@ public final class CommentDialogViewModel: CommentDialogViewModelType, CommentDi
   fileprivate let configurationDataProperty = MutableProperty<CommentDialogData?>(nil)
   public func configureWith(
     project: Project, update: Update?, recipient: Author?,
-    context: Koala.CommentDialogContext
+    context: KSRAnalytics.CommentDialogContext
   ) {
     self.configurationDataProperty.value = CommentDialogData(
       project: project, update: update,
@@ -187,37 +187,6 @@ public final class CommentDialogViewModel: CommentDialogViewModelType, CommentDi
       .map { data in data.recipient?.name }
       .skipNil()
       .map { "@\($0): " }
-
-    configurationData
-      .takeWhen(self.viewWillAppearProperty.signal)
-      .observeValues { data in
-        AppEnvironment.current.koala.trackOpenedCommentEditor(
-          project: data.project, update: data.update, context: data.context
-        )
-      }
-
-    configurationData
-      .takeWhen(self.cancelButtonPressedProperty.signal)
-      .observeValues { data in
-        AppEnvironment.current.koala.trackCanceledCommentEditor(
-          project: data.project, update: data.update, context: data.context
-        )
-      }
-
-    configurationData
-      .takePairWhen(self.notifyPresenterCommentWasPostedSuccesfully)
-      .observeValues { data, comment in
-        if let update = data.update {
-          AppEnvironment.current.koala.trackCommentCreate(
-            comment: comment, update: update, project: data.project
-          )
-        } else {
-          AppEnvironment.current.koala.trackCommentCreate(comment: comment, project: data.project)
-        }
-        AppEnvironment.current.koala.trackPostedComment(
-          project: data.project, update: data.update, context: data.context
-        )
-      }
   }
 }
 

@@ -34,9 +34,6 @@ public protocol ShareViewModelInputs {
 
   /// Call when the general share button is pressed.
   func shareButtonTapped()
-
-  /// Call from the UIActivityViewController's completion handler.
-  func shareActivityCompletion(with data: ShareActivityCompletionData)
 }
 
 public protocol ShareViewModelOutputs {
@@ -52,7 +49,6 @@ public protocol ShareViewModelType {
 public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, ShareViewModelOutputs {
   public init() {
     let shareContextAndView = self.shareContextProperty.signal.skipNil()
-    let shareContext = self.shareContextProperty.signal.skipNil().map(first)
 
     self.showShareSheet = shareContextAndView
       .takeWhen(self.shareButtonTappedProperty.signal)
@@ -61,63 +57,6 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
         return (controller, view)
       }
       .skipNil()
-
-    let shareCompletion = self.shareActivityCompletionProperty.signal.skipNil()
-
-    let shareActivityCompletion = shareContext
-      .takePairWhen(shareCompletion)
-
-    let canceledShare = shareActivityCompletion
-      .filter { _, completion in !completion.completed }
-
-    shareContext
-      .takeWhen(self.shareButtonTappedProperty.signal)
-      .observeValues { AppEnvironment.current.koala.trackShowedShareSheet(shareContext: $0) }
-
-    canceledShare
-      .filter { _, completion in completion.activityType == nil }
-      .map(first)
-      .observeValues { AppEnvironment.current.koala.trackCanceledShareSheet(shareContext: $0) }
-
-    shareActivityCompletion
-      .filter { _, completion in completion.activityType != nil }
-      .observeValues { arg in
-
-        let (shareContext, completion) = arg
-        AppEnvironment.current.koala.trackShowedShare(
-          shareContext: shareContext, shareActivityType: completion.activityType
-        )
-      }
-
-    shareActivityCompletion
-      .filter { _, completion in
-        completion.completed && completion.activityType.map(firstPartyShareTypes.contains) == .some(true)
-      }
-      .flatMap {
-        SignalProducer(value: $0)
-          .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
-      }
-      .observeValues { arg in
-
-        let (shareContext, completion) = arg
-        AppEnvironment.current.koala.trackShared(
-          shareContext: shareContext, shareActivityType: completion.activityType
-        )
-      }
-
-    canceledShare
-      .filter { _, completion in completion.activityType.map(firstPartyShareTypes.contains) == .some(true) }
-      .flatMap {
-        SignalProducer(value: $0)
-          .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
-      }
-      .observeValues { arg in
-
-        let (shareContext, completion) = arg
-        AppEnvironment.current.koala.trackCanceledShare(
-          shareContext: shareContext, shareActivityType: completion.activityType
-        )
-      }
   }
 
   fileprivate let shareContextProperty = MutableProperty<(ShareContext, UIView?)?>(nil)
@@ -128,11 +67,6 @@ public final class ShareViewModel: ShareViewModelType, ShareViewModelInputs, Sha
   fileprivate let shareButtonTappedProperty = MutableProperty(())
   public func shareButtonTapped() {
     self.shareButtonTappedProperty.value = ()
-  }
-
-  fileprivate let shareActivityCompletionProperty = MutableProperty<ShareActivityCompletionData?>(nil)
-  public func shareActivityCompletion(with data: ShareActivityCompletionData) {
-    self.shareActivityCompletionProperty.value = data
   }
 
   public let showShareSheet: Signal<(UIActivityViewController, UIView?), Never>

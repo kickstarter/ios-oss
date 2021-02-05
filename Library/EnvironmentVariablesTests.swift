@@ -2,18 +2,18 @@
 import XCTest
 
 final class EnvironmentVariablesTests: XCTestCase {
-  func testKoalaTrackingVariable() {
+  func testTrackingVariable() {
     var processInfo = MockProcessInfo()
-    XCTAssertFalse(EnvironmentVariables().isKoalaTrackingEnabled)
+    XCTAssertFalse(EnvironmentVariables().isTrackingEnabled)
 
-    processInfo = MockProcessInfo(environment: [VariableName.koalaTracking.rawValue: "giberish"])
-    XCTAssertFalse(EnvironmentVariables(processInfo: processInfo).isKoalaTrackingEnabled)
+    processInfo = MockProcessInfo(environment: [VariableName.trackingEnabled.rawValue: "giberish"])
+    XCTAssertFalse(EnvironmentVariables(processInfo: processInfo).isTrackingEnabled)
 
-    processInfo = MockProcessInfo(environment: [VariableName.koalaTracking.rawValue: "false"])
-    XCTAssertFalse(EnvironmentVariables(processInfo: processInfo).isKoalaTrackingEnabled)
+    processInfo = MockProcessInfo(environment: [VariableName.trackingEnabled.rawValue: "false"])
+    XCTAssertFalse(EnvironmentVariables(processInfo: processInfo).isTrackingEnabled)
 
-    processInfo = MockProcessInfo(environment: [VariableName.koalaTracking.rawValue: "true"])
-    XCTAssertTrue(EnvironmentVariables(processInfo: processInfo).isKoalaTrackingEnabled)
+    processInfo = MockProcessInfo(environment: [VariableName.trackingEnabled.rawValue: "true"])
+    XCTAssertTrue(EnvironmentVariables(processInfo: processInfo).isTrackingEnabled)
   }
 }
 

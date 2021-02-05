@@ -15,6 +15,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
+import Segment
 import UIKit
 import UserNotifications
 
@@ -197,7 +198,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         .observeForUI()
         .observeValues {
           FirebaseApp.configure()
-          AppEnvironment.current.koala.logEventCallback = { event, _ in
+          AppEnvironment.current.ksrAnalytics.logEventCallback = { event, _ in
             Crashlytics.crashlytics().log(format: "%@", arguments: getVaList([event]))
           }
         }

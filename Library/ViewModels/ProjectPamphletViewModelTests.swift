@@ -163,7 +163,7 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.setNavigationBarAnimated.assertValues([false, true, false])
   }
 
-  // Tests that ref tags and referral credit cookies are tracked in koala and saved like we expect.
+  // Tests that ref tags and referral credit cookies are tracked and saved like we expect.
   func testTracksRefTag() {
     let project = Project.template
 
@@ -176,17 +176,31 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     XCTAssertEqual(
       ["Project Page Viewed"],
-      self.trackingClient.events, "A project page event is tracked."
+      self.dataLakeTrackingClient.events, "A project page event is tracked."
+    )
+    XCTAssertEqual(
+      ["Project Page Viewed"],
+      self.segmentTrackingClient.events, "A project page event is tracked."
     )
     XCTAssertEqual(
       [RefTag.category.stringTag],
-      self.trackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
-      "The ref tag is tracked in the koala event."
+      self.dataLakeTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+      "The ref tag is tracked in the event."
     )
     XCTAssertEqual(
       [RefTag.category.stringTag],
-      self.trackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
-      "The referral credit is tracked in the koala event."
+      self.segmentTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+      "The ref tag is tracked in the event."
+    )
+    XCTAssertEqual(
+      [RefTag.category.stringTag],
+      self.dataLakeTrackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
+      "The referral credit is tracked in the event."
+    )
+    XCTAssertEqual(
+      [RefTag.category.stringTag],
+      self.segmentTrackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
+      "The referral credit is tracked in the event."
     )
     XCTAssertEqual(
       1, self.cookieStorage.cookies?.count,
@@ -215,22 +229,44 @@ final class ProjectPamphletViewModelTests: TestCase {
       [
         "Project Page Viewed", "Project Page Viewed"
       ],
-      self.trackingClient.events, "A project page koala event is tracked."
+      self.dataLakeTrackingClient.events, "A project page event is tracked."
+    )
+    XCTAssertEqual(
+      [
+        "Project Page Viewed", "Project Page Viewed"
+      ],
+      self.segmentTrackingClient.events, "A project page event is tracked."
     )
     XCTAssertEqual(
       [
         RefTag.category.stringTag,
         RefTag.recommended.stringTag
       ],
-      self.trackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
-      "The new ref tag is tracked in koala event."
+      self.dataLakeTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+      "The new ref tag is tracked in an event."
+    )
+    XCTAssertEqual(
+      [
+        RefTag.category.stringTag,
+        RefTag.recommended.stringTag
+      ],
+      self.segmentTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+      "The new ref tag is tracked in an event."
     )
     XCTAssertEqual(
       [
         RefTag.category.stringTag,
         RefTag.category.stringTag
       ],
-      self.trackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
+      self.dataLakeTrackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
+      "The referrer credit did not change, and is still category."
+    )
+    XCTAssertEqual(
+      [
+        RefTag.category.stringTag,
+        RefTag.category.stringTag
+      ],
+      self.segmentTrackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
       "The referrer credit did not change, and is still category."
     )
     XCTAssertEqual(
@@ -249,20 +285,27 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       XCTAssertEqual(
         [],
-        self.trackingClient.events,
+        self.dataLakeTrackingClient.events,
+        "Project Page Viewed doesnt track if the request fails"
+      )
+      XCTAssertEqual(
+        [],
+        self.segmentTrackingClient.events,
         "Project Page Viewed doesnt track if the request fails"
       )
     }
   }
 
   func testProjectPageViewed_OnViewDidAppear() {
-    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.configureInitialState(.init(left: .template))
 
     self.scheduler.advance()
 
-    XCTAssertEqual(["Project Page Viewed"], self.trackingClient.events)
+    XCTAssertEqual(["Project Page Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Project Page Viewed"], self.segmentTrackingClient.events)
   }
 
   func testMockCookieStorageSet_SeparateSchedulers() {
@@ -349,17 +392,31 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     XCTAssertEqual(
       ["Project Page Viewed"],
-      self.trackingClient.events, "A project page koala event is tracked."
+      self.dataLakeTrackingClient.events, "A project page event is tracked."
+    )
+    XCTAssertEqual(
+      ["Project Page Viewed"],
+      self.segmentTrackingClient.events, "A project page event is tracked."
     )
     XCTAssertEqual(
       [RefTag.category.stringTag],
-      self.trackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
-      "The ref tag is tracked in the koala event."
+      self.dataLakeTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+      "The ref tag is tracked in the event."
     )
     XCTAssertEqual(
       [RefTag.category.stringTag],
-      self.trackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
-      "The referral credit is tracked in the koala event."
+      self.segmentTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+      "The ref tag is tracked in the event."
+    )
+    XCTAssertEqual(
+      [RefTag.category.stringTag],
+      self.dataLakeTrackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
+      "The referral credit is tracked in the event."
+    )
+    XCTAssertEqual(
+      [RefTag.category.stringTag],
+      self.segmentTrackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
+      "The referral credit is tracked in the event."
     )
     XCTAssertEqual(
       1, self.cookieStorage.cookies?.count,
@@ -388,21 +445,42 @@ final class ProjectPamphletViewModelTests: TestCase {
       [
         "Project Page Viewed", "Project Page Viewed"
       ],
-      self.trackingClient.events, "A project page koala event is tracked."
+      self.dataLakeTrackingClient.events, "A project page event is tracked."
+    )
+    XCTAssertEqual(
+      [
+        "Project Page Viewed", "Project Page Viewed"
+      ],
+      self.segmentTrackingClient.events, "A project page event is tracked."
     )
     XCTAssertEqual(
       [
         RefTag.category.stringTag,
         RefTag.recommended.stringTag
       ],
-      self.trackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
-      "The new ref tag is tracked in koala event."
+      self.dataLakeTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+      "The new ref tag is tracked in an event."
+    )
+    XCTAssertEqual(
+      [
+        RefTag.category.stringTag,
+        RefTag.recommended.stringTag
+      ],
+      self.segmentTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
+      "The new ref tag is tracked in an event."
     )
     XCTAssertEqual(
       [
         RefTag.category.stringTag, RefTag.category.stringTag
       ],
-      self.trackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
+      self.dataLakeTrackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
+      "The referrer credit did not change, and is still category."
+    )
+    XCTAssertEqual(
+      [
+        RefTag.category.stringTag, RefTag.category.stringTag
+      ],
+      self.segmentTrackingClient.properties.compactMap { $0["session_referrer_credit"] as? String },
       "The referrer credit did not change, and is still category."
     )
     XCTAssertEqual(
@@ -421,7 +499,8 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.scheduler.advance()
 
-    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
   }
 
   func testGoToRewards() {
@@ -821,38 +900,76 @@ final class ProjectPamphletViewModelTests: TestCase {
   }
 
   func testTrackingProjectPageViewed_LoggedIn() {
-    let trackingClient = MockTrackingClient()
-    let koala = Koala(client: trackingClient, config: .template, loggedInUser: User.template)
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      config: .template,
+      loggedInUser: User.template,
+      segmentClient: segmentClient
+    )
 
-    withEnvironment(currentUser: User.template, koala: koala) {
+    withEnvironment(currentUser: User.template, ksrAnalytics: ksrAnalytics) {
       self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
       self.scheduler.advance()
 
-      XCTAssertEqual(trackingClient.events, ["Project Page Viewed"])
+      XCTAssertEqual(dataLakeClient.events, ["Project Page Viewed"])
+      XCTAssertEqual(segmentClient.events, ["Project Page Viewed"])
 
-      XCTAssertEqual(trackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "session_ref_tag"), ["discovery"])
       XCTAssertEqual(
-        trackingClient.properties(forKey: "session_referrer_credit"),
+        dataLakeClient.properties(forKey: "session_referrer_credit"),
+        ["discovery"]
+      )
+      XCTAssertEqual(segmentClient.properties(forKey: "session_ref_tag"), ["discovery"])
+      XCTAssertEqual(
+        segmentClient.properties(forKey: "session_referrer_credit"),
         ["discovery"]
       )
 
-      XCTAssertEqual(trackingClient.properties(forKey: "session_user_logged_in", as: Bool.self), [true])
-      XCTAssertEqual(trackingClient.properties(forKey: "user_country"), ["US"])
-      XCTAssertEqual(trackingClient.properties(forKey: "user_uid", as: Int.self), [1])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "session_user_logged_in", as: Bool.self), [true])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "user_country"), ["US"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "user_uid", as: Int.self), [1])
 
-      XCTAssertEqual(trackingClient.properties(forKey: "project_subcategory"), ["Art"])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_category"), [nil])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_country"), ["US"])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+      XCTAssertEqual(segmentClient.properties(forKey: "session_user_logged_in", as: Bool.self), [true])
+      XCTAssertEqual(segmentClient.properties(forKey: "user_country"), ["US"])
+      XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: Int.self), [1])
 
-      let properties = trackingClient.properties.last
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_subcategory"), ["Art"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_country"), ["US"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
 
-      XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
-      XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")
-      XCTAssertNotNil(properties?["optimizely_experiments"], "Event includes Optimizely properties")
+      XCTAssertEqual(segmentClient.properties(forKey: "project_subcategory"), ["Art"])
+      XCTAssertEqual(segmentClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(segmentClient.properties(forKey: "project_country"), ["US"])
+      XCTAssertEqual(segmentClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+
+      let dataLakeClientProperties = dataLakeClient.properties.last
+      let segmentClientProperties = segmentClient.properties.last
+
+      XCTAssertNotNil(dataLakeClientProperties?["optimizely_api_key"], "Event includes Optimizely properties")
+      XCTAssertNotNil(
+        dataLakeClientProperties?["optimizely_environment"],
+        "Event includes Optimizely properties"
+      )
+      XCTAssertNotNil(
+        dataLakeClientProperties?["optimizely_experiments"],
+        "Event includes Optimizely properties"
+      )
+
+      XCTAssertNotNil(segmentClientProperties?["optimizely_api_key"], "Event includes Optimizely properties")
+      XCTAssertNotNil(
+        segmentClientProperties?["optimizely_environment"],
+        "Event includes Optimizely properties"
+      )
+      XCTAssertNotNil(
+        segmentClientProperties?["optimizely_experiments"],
+        "Event includes Optimizely properties"
+      )
     }
   }
 
@@ -860,38 +977,73 @@ final class ProjectPamphletViewModelTests: TestCase {
     let config = Config.template
       |> \.countryCode .~ "GB"
 
-    let trackingClient = MockTrackingClient()
-    let koala = Koala(client: trackingClient, config: config, loggedInUser: nil)
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      config: config,
+      loggedInUser: nil,
+      segmentClient: segmentClient
+    )
 
-    withEnvironment(currentUser: nil, koala: koala) {
+    withEnvironment(currentUser: nil, ksrAnalytics: ksrAnalytics) {
       self.vm.inputs.configureWith(projectOrParam: .left(.template), refTag: .discovery)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear(animated: false)
 
       self.scheduler.advance()
 
-      XCTAssertEqual(trackingClient.events, ["Project Page Viewed"])
+      XCTAssertEqual(dataLakeClient.events, ["Project Page Viewed"])
+      XCTAssertEqual(segmentClient.events, ["Project Page Viewed"])
 
-      XCTAssertEqual(trackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "session_ref_tag"), ["discovery"])
       XCTAssertEqual(
-        trackingClient.properties(forKey: "session_referrer_credit"),
+        dataLakeClient.properties(forKey: "session_referrer_credit"),
+        ["discovery"]
+      )
+      XCTAssertEqual(segmentClient.properties(forKey: "session_ref_tag"), ["discovery"])
+      XCTAssertEqual(
+        segmentClient.properties(forKey: "session_referrer_credit"),
         ["discovery"]
       )
 
-      XCTAssertEqual(trackingClient.properties(forKey: "session_user_logged_in", as: Bool.self), [false])
-      XCTAssertEqual(trackingClient.properties(forKey: "user_country"), ["GB"])
-      XCTAssertEqual(trackingClient.properties(forKey: "user_uid", as: Int.self), [nil])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "session_user_logged_in", as: Bool.self), [false])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "user_country"), ["GB"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "user_uid", as: Int.self), [nil])
+      XCTAssertEqual(segmentClient.properties(forKey: "session_user_logged_in", as: Bool.self), [false])
+      XCTAssertEqual(segmentClient.properties(forKey: "user_country"), ["GB"])
+      XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: Int.self), [nil])
 
-      XCTAssertEqual(trackingClient.properties(forKey: "project_subcategory"), ["Art"])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_category"), [nil])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_country"), ["US"])
-      XCTAssertEqual(trackingClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_subcategory"), ["Art"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_country"), ["US"])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
+      XCTAssertEqual(segmentClient.properties(forKey: "project_subcategory"), ["Art"])
+      XCTAssertEqual(segmentClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(segmentClient.properties(forKey: "project_country"), ["US"])
+      XCTAssertEqual(segmentClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
 
-      let properties = trackingClient.properties.last
+      let dataLakeClientProperties = dataLakeClient.properties.last
+      let segmentClientProperties = segmentClient.properties.last
 
-      XCTAssertNotNil(properties?["optimizely_api_key"], "Event includes Optimizely properties")
-      XCTAssertNotNil(properties?["optimizely_environment"], "Event includes Optimizely properties")
-      XCTAssertNotNil(properties?["optimizely_experiments"], "Event includes Optimizely properties")
+      XCTAssertNotNil(dataLakeClientProperties?["optimizely_api_key"], "Event includes Optimizely properties")
+      XCTAssertNotNil(
+        dataLakeClientProperties?["optimizely_environment"],
+        "Event includes Optimizely properties"
+      )
+      XCTAssertNotNil(
+        dataLakeClientProperties?["optimizely_experiments"],
+        "Event includes Optimizely properties"
+      )
+      XCTAssertNotNil(segmentClientProperties?["optimizely_api_key"], "Event includes Optimizely properties")
+      XCTAssertNotNil(
+        segmentClientProperties?["optimizely_environment"],
+        "Event includes Optimizely properties"
+      )
+      XCTAssertNotNil(
+        segmentClientProperties?["optimizely_experiments"],
+        "Event includes Optimizely properties"
+      )
     }
   }
 

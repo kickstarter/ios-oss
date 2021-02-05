@@ -98,21 +98,6 @@ public final class MessagesSearchViewModel: MessagesSearchViewModelType, Message
     ).skipRepeats()
 
     self.goToMessageThread = self.tappedMessageThreadProperty.signal.skipNil()
-
-    project
-      .takeWhen(self.viewDidLoadProperty.signal)
-      .observeValues { AppEnvironment.current.koala.trackViewedMessageSearch(project: $0) }
-
-    Signal.combineLatest(query, project.take(first: 1), self.messageThreads.map { !$0.isEmpty })
-      .takeWhen(self.isSearching.filter(isFalse))
-      .filter { query, _, _ in !query.isEmpty }
-      .observeValues {
-        AppEnvironment.current.koala.trackViewedMessageSearchResults(term: $0, project: $1, hasResults: $2)
-      }
-
-    project
-      .takeWhen(self.clearSearchTextProperty.signal)
-      .observeValues { AppEnvironment.current.koala.trackClearedMessageSearchTerm(project: $0) }
   }
 
   fileprivate let clearSearchTextProperty = MutableProperty(())

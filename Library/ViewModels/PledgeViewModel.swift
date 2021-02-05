@@ -834,29 +834,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     self.projectTitle = project.map(\.name)
 
     self.title = context.map { $0.title }
-    let contextAndProjectAndPledgeAmount = Signal.combineLatest(context, project, pledgeTotal)
 
     // Tracking
-
-    contextAndProjectAndPledgeAmount
-      .filter { $0.0 == .changePaymentMethod }
-      .takeWhen(updateButtonTapped)
-      .observeValues {
-        AppEnvironment.current.koala.trackUpdatePaymentMethodButton(
-          project: $1,
-          pledgeAmount: $2
-        )
-      }
-
-    contextAndProjectAndPledgeAmount
-      .filter { $0.0 != .changePaymentMethod }
-      .takeWhen(updateButtonTapped)
-      .observeValues {
-        AppEnvironment.current.koala.trackUpdatePledgeButtonClicked(
-          project: $1,
-          pledgeAmount: $2
-        )
-      }
 
     initialDataUnpacked
       .observeValues { project, reward, refTag, context in
@@ -864,7 +843,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         let optimizelyProps = optimizelyProperties() ?? [:]
 
         AppEnvironment.current.optimizelyClient?.track(eventName: "Pledge Screen Viewed")
-        AppEnvironment.current.koala.trackCheckoutPaymentPageViewed(
+        AppEnvironment.current.ksrAnalytics.trackCheckoutPaymentPageViewed(
           project: project,
           reward: reward,
           context: TrackingHelpers.pledgeContext(for: context),
@@ -888,7 +867,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         return (data.project, baseReward, data.refTag, checkoutData)
       }
       .observeValues { project, reward, refTag, checkoutData in
-        AppEnvironment.current.koala.trackPledgeSubmitButtonClicked(
+        AppEnvironment.current.ksrAnalytics.trackPledgeSubmitButtonClicked(
           project: project,
           reward: reward,
           checkoutData: checkoutData,
@@ -1168,7 +1147,7 @@ private func checkoutPropertiesData(
   allRewardsShippingTotal: Double?,
   checkoutId: Int? = nil,
   isApplePay: Bool
-) -> Koala.CheckoutPropertiesData {
+) -> KSRAnalytics.CheckoutPropertiesData {
   let pledgeTotal = createBackingData.pledgeTotal
 
   let staticUsdRate = Double(createBackingData.project.stats.staticUsdRate)
@@ -1217,7 +1196,7 @@ private func checkoutPropertiesData(
     .applePayCapabilities
     .applePayCapable(for: createBackingData.project)
 
-  return Koala.CheckoutPropertiesData(
+  return KSRAnalytics.CheckoutPropertiesData(
     addOnsCountTotal: addOnsCountTotal,
     addOnsCountUnique: addOnsCountUnique,
     addOnsMinimumUsd: addOnsMinimumUsd,

@@ -22,15 +22,18 @@ final class LandingViewModelTests: TestCase {
 
     XCTAssertNil(self.optimizelyClient.trackedEventKey)
     XCTAssertNil(self.optimizelyClient.trackedAttributes)
-    XCTAssertEqual(self.trackingClient.events, [])
+    XCTAssertEqual(self.dataLakeTrackingClient.events, [])
+    XCTAssertEqual(self.segmentTrackingClient.events, [])
 
     self.vm.inputs.getStartedButtonTapped()
 
     self.goToCategorySelection.assertValueCount(1)
 
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Get Started Button Clicked")
-    XCTAssertEqual(self.trackingClient.events, ["Onboarding Get Started Button Clicked"])
-    XCTAssertEqual(self.trackingClient.properties(forKey: "context_location"), ["landing_page"])
+    XCTAssertEqual(self.dataLakeTrackingClient.events, ["Onboarding Get Started Button Clicked"])
+    XCTAssertEqual(self.segmentTrackingClient.events, ["Onboarding Get Started Button Clicked"])
+    XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_location"), ["landing_page"])
+    XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_location"), ["landing_page"])
     assertBaseUserAttributesLoggedOut()
   }
 

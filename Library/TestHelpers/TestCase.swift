@@ -20,7 +20,7 @@ internal class TestCase: FBSnapshotTestCase {
   internal let optimizelyClient = MockOptimizelyClient()
   internal let reachability = MutableProperty(Reachability.wifi)
   internal let scheduler = TestScheduler(startDate: MockDate().date)
-  internal let trackingClient = MockTrackingClient()
+  internal let segmentTrackingClient = MockTrackingClient()
   internal let ubiquitousStore = MockKeyValueStore()
   internal let userDefaults = MockKeyValueStore()
 
@@ -58,10 +58,10 @@ internal class TestCase: FBSnapshotTestCase {
       debounceInterval: .seconds(0),
       device: MockDevice(),
       isVoiceOverRunning: { false },
-      koala: Koala(
+      ksrAnalytics: KSRAnalytics(
         dataLakeClient: self.dataLakeTrackingClient,
-        client: self.trackingClient,
-        loggedInUser: nil
+        loggedInUser: nil,
+        segmentClient: self.segmentTrackingClient
       ),
       language: .en,
       launchedCountries: .init(),

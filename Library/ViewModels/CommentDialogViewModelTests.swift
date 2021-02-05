@@ -85,12 +85,20 @@ internal final class CommentDialogViewModelTests: TestCase {
       .assertValueCount(1, "Dialog is dismissed after posting of comment.")
 
     XCTAssertEqual(
-      ["Opened Comment Editor", "Project Comment Create", "Posted Comment"],
-      self.trackingClient.events, "Koala event is tracked."
+      [],
+      self.dataLakeTrackingClient.events, "Koala event is tracked."
     )
     XCTAssertEqual(
-      ["project", nil, "project"],
-      self.trackingClient.properties(forKey: "type", as: String.self)
+      [],
+      self.dataLakeTrackingClient.properties(forKey: "type", as: String.self)
+    )
+    XCTAssertEqual(
+      [],
+      self.segmentTrackingClient.events, "Koala event is tracked."
+    )
+    XCTAssertEqual(
+      [],
+      self.segmentTrackingClient.properties(forKey: "type", as: String.self)
     )
   }
 
@@ -132,12 +140,20 @@ internal final class CommentDialogViewModelTests: TestCase {
       .assertValueCount(1, "Dialog is dismissed after posting of comment.")
 
     XCTAssertEqual(
-      ["Opened Comment Editor", "Update Comment Create", "Posted Comment"],
-      self.trackingClient.events, "Koala event is tracked."
+      [],
+      self.dataLakeTrackingClient.events, "Koala event is tracked."
     )
     XCTAssertEqual(
-      ["update", nil, "update"],
-      self.trackingClient.properties(forKey: "type", as: String.self)
+      [],
+      self.dataLakeTrackingClient.properties(forKey: "type", as: String.self)
+    )
+    XCTAssertEqual(
+      [],
+      self.segmentTrackingClient.events, "Koala event is tracked."
+    )
+    XCTAssertEqual(
+      [],
+      self.segmentTrackingClient.properties(forKey: "type", as: String.self)
     )
   }
 
@@ -166,8 +182,6 @@ internal final class CommentDialogViewModelTests: TestCase {
         .assertValueCount(0, "Comment does not post successfuly.")
       self.notifyPresenterDialogWantsDismissal
         .assertValueCount(0, "Comment dialog does not dismiss automatically.")
-
-      XCTAssertEqual(["Opened Comment Editor"], trackingClient.events, "Koala event is not tracked.")
     }
   }
 
@@ -188,7 +202,8 @@ internal final class CommentDialogViewModelTests: TestCase {
 
       self.presentError.assertValueCount(1, "Error message is emitted.")
 
-      XCTAssertEqual(["Opened Comment Editor"], trackingClient.events, "Koala event is not tracked.")
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
+      XCTAssertEqual([], self.segmentTrackingClient.events)
     }
   }
 
@@ -199,10 +214,8 @@ internal final class CommentDialogViewModelTests: TestCase {
     self.vm.inputs.cancelButtonPressed()
     self.notifyPresenterDialogWantsDismissal.assertValueCount(1)
 
-    XCTAssertEqual(
-      ["Opened Comment Editor", "Canceled Comment Editor"],
-      self.trackingClient.events
-    )
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
   }
 
   func testShowKeyboard() {

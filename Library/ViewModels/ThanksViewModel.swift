@@ -6,7 +6,7 @@ import ReactiveSwift
 public typealias ThanksPageData = (
   project: Project,
   reward: Reward,
-  checkoutData: Koala.CheckoutPropertiesData?
+  checkoutData: KSRAnalytics.CheckoutPropertiesData?
 )
 
 public protocol ThanksViewModelInputs {
@@ -166,35 +166,12 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     self.showGamesNewsletterAlert
       .observeValues { AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt = true }
 
-    project
-      .takeWhen(self.goToDiscovery)
-      .observeValues { project in
-        AppEnvironment.current.koala.trackCheckoutFinishJumpToDiscovery(project: project)
-      }
-
-    project
-      .takeWhen(self.gamesNewsletterSignupButtonTappedProperty.signal)
-      .observeValues { project in
-        AppEnvironment.current.koala.trackChangeNewsletter(
-          newsletterType: .games,
-          sendNewsletter: true,
-          project: project,
-          context: .thanks
-        )
-      }
-
-    project
-      .takeWhen(self.showRatingAlert)
-      .observeValues { project in
-        AppEnvironment.current.koala.trackTriggeredAppStoreRatingDialog(project: project)
-      }
-
     self.projectTappedProperty.signal.skipNil().map { project in
       (project, recommendedParams)
     }.observeValues { project, params in
       let optyProperties = optimizelyProperties() ?? [:]
 
-      AppEnvironment.current.koala.trackProjectCardClicked(
+      AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
         project: project,
         params: params,
         location: .thanks,
@@ -209,7 +186,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
       self.viewDidLoadProperty.signal.ignoreValues()
     )
     .map(first)
-    .observeValues { AppEnvironment.current.koala.trackThanksPageViewed(
+    .observeValues { AppEnvironment.current.ksrAnalytics.trackThanksPageViewed(
       project: $0.project,
       reward: $0.reward,
       checkoutData: $0.checkoutData

@@ -25,7 +25,8 @@ public final class ProjectNavBarViewController: UIViewController {
   internal func configureWith(project: Project, refTag: RefTag?) {
     self.viewModel.inputs.configureWith(project: project, refTag: refTag)
     self.shareViewModel.inputs.configureWith(shareContext: .project(project), shareContextView: nil)
-    self.watchProjectViewModel.inputs.configure(with: (project, Koala.LocationContext.projectPage, nil))
+    self.watchProjectViewModel.inputs
+      .configure(with: (project, KSRAnalytics.LocationContext.projectPage, nil))
   }
 
   internal func setDidScrollToTop(_ didScrollToTop: Bool) {
@@ -216,18 +217,6 @@ public final class ProjectNavBarViewController: UIViewController {
   }
 
   fileprivate func showShareSheet(_ controller: UIActivityViewController) {
-    controller.completionWithItemsHandler = { [weak self] activityType, completed, returnedItems, error in
-
-      self?.shareViewModel.inputs.shareActivityCompletion(
-        with: .init(
-          activityType: activityType,
-          completed: completed,
-          returnedItems: returnedItems,
-          activityError: error
-        )
-      )
-    }
-
     if UIDevice.current.userInterfaceIdiom == .pad {
       controller.modalPresentationStyle = .popover
       let popover = controller.popoverPresentationController

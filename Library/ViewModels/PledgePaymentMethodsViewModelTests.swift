@@ -474,7 +474,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
 
-    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     let addNewCardIndexPath = IndexPath(
       row: 0,
@@ -483,10 +484,13 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
     self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
 
-    XCTAssertEqual(["Add New Card Button Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["Add New Card Button Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Add New Card Button Clicked"], self.segmentTrackingClient.events)
 
-    XCTAssertEqual(["new_pledge"], self.trackingClient.properties(forKey: "context_pledge_flow"))
-    XCTAssertEqual(["discovery"], self.trackingClient.properties(forKey: "session_ref_tag"))
+    XCTAssertEqual(["new_pledge"], self.dataLakeTrackingClient.properties(forKey: "context_pledge_flow"))
+    XCTAssertEqual(["discovery"], self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"))
+    XCTAssertEqual(["new_pledge"], self.segmentTrackingClient.properties(forKey: "context_pledge_flow"))
+    XCTAssertEqual(["discovery"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
   }
 
   func testTrackingEvents_UpdateContext() {
@@ -495,7 +499,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configure(with: (User.template, project, Reward.template, .update, .discovery))
 
-    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     let addNewCardIndexPath = IndexPath(
       row: 0,
@@ -504,9 +509,12 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
     self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
 
-    XCTAssertEqual(["Add New Card Button Clicked"], self.trackingClient.events)
+    XCTAssertEqual(["Add New Card Button Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Add New Card Button Clicked"], self.segmentTrackingClient.events)
 
-    XCTAssertEqual(["manage_reward"], self.trackingClient.properties(forKey: "context_pledge_flow"))
-    XCTAssertEqual(["discovery"], self.trackingClient.properties(forKey: "session_ref_tag"))
+    XCTAssertEqual(["manage_reward"], self.dataLakeTrackingClient.properties(forKey: "context_pledge_flow"))
+    XCTAssertEqual(["discovery"], self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"))
+    XCTAssertEqual(["manage_reward"], self.segmentTrackingClient.properties(forKey: "context_pledge_flow"))
+    XCTAssertEqual(["discovery"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
   }
 }

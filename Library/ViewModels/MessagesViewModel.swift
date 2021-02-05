@@ -42,7 +42,7 @@ public protocol MessagesViewModelOutputs {
   var messages: Signal<[Message], Never> { get }
 
   /// Emits when we should show the message dialog.
-  var presentMessageDialog: Signal<(MessageThread, Koala.MessageDialogContext), Never> { get }
+  var presentMessageDialog: Signal<(MessageThread, KSRAnalytics.MessageDialogContext), Never> { get }
 
   /// Emits the project we are viewing the messages for.
   var project: Signal<Project, Never> { get }
@@ -182,12 +182,6 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
           .demoteErrors()
       }
       .ignoreValues()
-
-    Signal.combineLatest(self.project, self.viewDidLoadProperty.signal)
-      .take(first: 1)
-      .observeValues { project, _ in
-        AppEnvironment.current.koala.trackMessageThreadView(project: project)
-      }
   }
 
   private let backingInfoPressedProperty = MutableProperty(())
@@ -225,7 +219,7 @@ public final class MessagesViewModel: MessagesViewModelType, MessagesViewModelIn
   public let goToBacking: Signal<ManagePledgeViewParamConfigData, Never>
   public let goToProject: Signal<(Project, RefTag), Never>
   public let messages: Signal<[Message], Never>
-  public let presentMessageDialog: Signal<(MessageThread, Koala.MessageDialogContext), Never>
+  public let presentMessageDialog: Signal<(MessageThread, KSRAnalytics.MessageDialogContext), Never>
   public let project: Signal<Project, Never>
   public let replyButtonIsEnabled: Signal<Bool, Never>
   public let successfullyMarkedAsRead: Signal<(), Never>

@@ -380,13 +380,15 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.notifyDelegateTransitionedToProjectIndex.assertValueCount(
       0, "Does not emit without completion of swipe."
     )
-    XCTAssertEqual([], self.trackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.willTransition(toProject: playlist[1], at: 1)
     self.vm.inputs.pageTransition(completed: true, from: 0)
 
     self.notifyDelegateTransitionedToProjectIndex.assertValues([1])
-    XCTAssertEqual(["Project Swiped"], self.trackingClient.events)
+    XCTAssertEqual(["Project Swiped"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Project Swiped"], self.segmentTrackingClient.events)
 
     self.vm.inputs.willTransition(toProject: playlist[1], at: 2)
     self.vm.inputs.pageTransition(completed: true, from: 1)
@@ -394,7 +396,11 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.notifyDelegateTransitionedToProjectIndex.assertValues([1, 2])
     XCTAssertEqual(
       ["Project Swiped", "Project Swiped"],
-      self.trackingClient.events
+      self.dataLakeTrackingClient.events
+    )
+    XCTAssertEqual(
+      ["Project Swiped", "Project Swiped"],
+      self.segmentTrackingClient.events
     )
 
     self.vm.inputs.willTransition(toProject: playlist[1], at: 1)
@@ -403,6 +409,9 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.notifyDelegateTransitionedToProjectIndex.assertValues([1, 2, 1])
     XCTAssertEqual([
       "Project Swiped", "Project Swiped", "Project Swiped"
-    ], self.trackingClient.events)
+    ], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([
+      "Project Swiped", "Project Swiped", "Project Swiped"
+    ], self.segmentTrackingClient.events)
   }
 }

@@ -80,10 +80,9 @@ internal final class UpdatePreviewViewController: WebViewController {
     alert.addAction(
       UIAlertAction(
         title: Strings.dashboard_post_update_preview_confirmation_alert_cancel_button(),
-        style: .cancel
-      ) { _ in
-        self.viewModel.inputs.publishCancelButtonTapped()
-      }
+        style: .cancel,
+        handler: nil
+      )
     )
     self.present(alert, animated: true, completion: nil)
   }

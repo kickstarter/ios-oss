@@ -48,7 +48,7 @@ public final class TrackingClient: TrackingClientType {
   }
 
   public func track(event: String, properties: [String: Any]) {
-    if AppEnvironment.current.environmentVariables.isKoalaTrackingEnabled {
+    if AppEnvironment.current.environmentVariables.isTrackingEnabled {
       print("\(self.config.identifier.emoji) [\(self.config.identifier) Track]: \(event), properties: \(properties)")
 
       self.queue.async {

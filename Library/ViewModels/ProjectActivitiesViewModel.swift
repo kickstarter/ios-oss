@@ -7,7 +7,7 @@ public enum ProjectActivitiesGoTo {
   case backing(ManagePledgeViewParamConfigData)
   case comments(Project?, Update?)
   case project(Project)
-  case sendMessage(Backing, Koala.MessageDialogContext)
+  case sendMessage(Backing, KSRAnalytics.MessageDialogContext)
   case sendReply(Project, Update?, Comment)
   case update(Project, Update)
 }
@@ -85,8 +85,7 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
       )
 
     let activities: Signal<[Activity], Never>
-    let pageCount: Signal<Int, Never>
-    (activities, self.isRefreshing, pageCount) = paginate(
+    (activities, self.isRefreshing, _) = paginate(
       requestFirstPageWith: requestFirstPage,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
@@ -137,7 +136,7 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
     let projectActivityBackingCellGoToSendMessage =
       self.projectActivityBackingCellGoToSendMessageProperty.signal.skipNil()
         .map { _, backing in
-          ProjectActivitiesGoTo.sendMessage(backing, Koala.MessageDialogContext.creatorActivity)
+          ProjectActivitiesGoTo.sendMessage(backing, KSRAnalytics.MessageDialogContext.creatorActivity)
         }
 
     let projectActivityCommentCellGoToBacking =
@@ -162,21 +161,6 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
       projectActivityCommentCellGoToBacking,
       projectActivityCommentCellGoToSendReply
     )
-
-    project
-      .takeWhen(self.viewDidLoadProperty.signal)
-      .take(first: 1)
-      .observeValues { AppEnvironment.current.koala.trackViewedProjectActivity(project: $0) }
-
-    project
-      .takeWhen(pageCount.skip(first: 1).filter { $0 == 1 })
-      .observeValues { AppEnvironment.current.koala.trackLoadedNewerProjectActivity(project: $0) }
-
-    project
-      .takePairWhen(pageCount.skip(first: 1).filter { $0 > 1 })
-      .observeValues { project, pageCount in
-        AppEnvironment.current.koala.trackLoadedOlderProjectActivity(project: project, page: pageCount)
-      }
   }
 
   private let activityAndProjectCellTappedProperty = MutableProperty<(Activity, Project)?>(nil)

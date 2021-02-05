@@ -185,10 +185,10 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
-    // koala
+    // KSRAnalytics
 
     viewWillAppearNotAnimated
-      .observeValues { AppEnvironment.current.koala.trackProjectSearchView() }
+      .observeValues { AppEnvironment.current.ksrAnalytics.trackProjectSearchView() }
 
     let hasResults = Signal.combineLatest(paginatedProjects, isLoading)
       .filter(second >>> isFalse)
@@ -204,7 +204,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .map(unpack)
       .filter { query, _, _ in !query.isEmpty }
       .observeValues { query, params, hasResults in
-        AppEnvironment.current.koala.trackSearchResults(
+        AppEnvironment.current.ksrAnalytics.trackSearchResults(
           query: query,
           params: params,
           refTag: .search,
