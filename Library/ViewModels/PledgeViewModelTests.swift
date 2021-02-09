@@ -1829,7 +1829,7 @@ final class PledgeViewModelTests: TestCase {
         optimizelyClient.trackedAttributes?["session_app_release_version"] as? String, "1.2.3.4.5.6.7.8.9.0"
       )
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
+      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_device_type"] as? String, "phone")
     }
   }
 
@@ -2337,7 +2337,7 @@ final class PledgeViewModelTests: TestCase {
         optimizelyClient.trackedAttributes?["session_app_release_version"] as? String, "1.2.3.4.5.6.7.8.9.0"
       )
       XCTAssertEqual(optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
+      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_device_type"] as? String, "phone")
     }
   }
 
@@ -5292,7 +5292,7 @@ final class PledgeViewModelTests: TestCase {
       "Event includes Optimizely properties"
     )
     XCTAssertNotNil(
-      dataLakeTrackingClientProperties?["optimizely_experiments"],
+      dataLakeTrackingClientProperties?["session_variants_optimizely"],
       "Event includes Optimizely properties"
     )
 
@@ -5302,7 +5302,7 @@ final class PledgeViewModelTests: TestCase {
       "Event includes Optimizely properties"
     )
     XCTAssertNotNil(
-      segmentClientProperties?["optimizely_experiments"],
+      segmentClientProperties?["session_variants_optimizely"],
       "Event includes Optimizely properties"
     )
   }
@@ -5508,7 +5508,7 @@ final class PledgeViewModelTests: TestCase {
       "1.2.3.4.5.6.7.8.9.0"
     )
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_type"] as? String, "phone")
   }
 
   func testTrackingEvents_OptimizelyClient_PledgeScreenViewed_LoggedIn() {
@@ -5564,7 +5564,7 @@ final class PledgeViewModelTests: TestCase {
         "1.2.3.4.5.6.7.8.9.0"
       )
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_type"] as? String, "phone")
     }
   }
 
@@ -5788,7 +5788,8 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual("55.00", dataLakeTrackingClientProps?["checkout_amount"] as? String)
     XCTAssertEqual("CREDIT_CARD", dataLakeTrackingClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual(1, dataLakeTrackingClientProps?["checkout_reward_id"] as? Int)
-    XCTAssertEqual(5_500, dataLakeTrackingClientProps?["checkout_revenue_in_usd_cents"] as? Int)
+    XCTAssertEqual(5_500, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Int)
+    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(
       true,
@@ -5803,7 +5804,8 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual("55.00", segmentClientProps?["checkout_amount"] as? String)
     XCTAssertEqual("CREDIT_CARD", segmentClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual(1, segmentClientProps?["checkout_reward_id"] as? Int)
-    XCTAssertEqual(5_500, segmentClientProps?["checkout_revenue_in_usd_cents"] as? Int)
+    XCTAssertEqual(5_500, segmentClientProps?["checkout_amount_total_usd"] as? Int)
+    XCTAssertEqual(true, segmentClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
     XCTAssertEqual(5.0, segmentClientProps?["checkout_shipping_amount"] as? Double)
@@ -5816,19 +5818,10 @@ final class PledgeViewModelTests: TestCase {
     // Pledge properties
     XCTAssertEqual(true, dataLakeTrackingClientProps?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(1, dataLakeTrackingClientProps?["pledge_backer_reward_id"] as? Int)
-    XCTAssertEqual(true, dataLakeTrackingClientProps?["pledge_backer_reward_is_limited_quantity"] as? Bool)
-    XCTAssertEqual(false, dataLakeTrackingClientProps?["pledge_backer_reward_is_limited_time"] as? Bool)
     XCTAssertEqual(10.00, dataLakeTrackingClientProps?["pledge_backer_reward_minimum"] as? Double)
-    XCTAssertEqual(true, segmentClientProps?["pledge_backer_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(1, segmentClientProps?["pledge_backer_reward_id"] as? Int)
-    XCTAssertEqual(true, segmentClientProps?["pledge_backer_reward_is_limited_quantity"] as? Bool)
-    XCTAssertEqual(false, segmentClientProps?["pledge_backer_reward_is_limited_time"] as? Bool)
     XCTAssertEqual(10.00, segmentClientProps?["pledge_backer_reward_minimum"] as? Double)
-    XCTAssertEqual(true, segmentClientProps?["pledge_backer_reward_shipping_enabled"] as? Bool)
-
-    XCTAssertNil(dataLakeTrackingClientProps?["pledge_backer_reward_shipping_preference"] as? String)
-    XCTAssertNil(segmentClientProps?["pledge_backer_reward_shipping_preference"] as? String)
 
     // Project properties
     XCTAssertEqual(1, dataLakeTrackingClientProps?["project_pid"] as? Int)

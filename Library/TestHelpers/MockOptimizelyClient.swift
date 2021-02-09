@@ -86,7 +86,7 @@ extension TestCase {
       "1.2.3.4.5.6.7.8.9.0"
     )
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_type"] as? String, "phone")
 
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")

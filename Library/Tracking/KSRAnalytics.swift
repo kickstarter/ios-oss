@@ -746,7 +746,7 @@ public final class KSRAnalytics {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(checkoutProperties(from: checkoutData))
+      .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
       // the context is always "newPledge" for this event
       .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
 
@@ -822,7 +822,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
 
     if let checkoutData = checkoutData {
-      props = props.withAllValuesFrom(checkoutProperties(from: checkoutData))
+      props = props.withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
     }
 
     self.track(
@@ -1204,28 +1204,28 @@ public final class KSRAnalytics {
     props["apple_pay_device"] = AppEnvironment.current.applePayCapabilities.applePayDevice()
     props["cellular_connection"] = AppEnvironment.current.coreTelephonyNetworkInfo
       .serviceCurrentRadioAccessTechnology
-    props["client_type"] = "native"
+    props["client"] = "native"
     props["current_variants"] = self.config?.abExperimentsArray.sorted()
     props["display_language"] = AppEnvironment.current.language.rawValue
 
-    props["device_format"] = self.device.deviceFormat
+    props["device_type"] = self.device.deviceType
     props["device_manufacturer"] = "Apple"
     props["device_model"] = KSRAnalytics.deviceModel
     props["device_orientation"] = self.deviceOrientation
     props["device_distinct_id"] = self.distinctId
 
+    props["app_build_number"] = self.bundle.infoDictionary?["CFBundleVersion"]
+    props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
     props["enabled_features"] = enabledFeatureFlags
     props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
     props["mp_lib"] = "kickstarter_ios"
     props["os"] = self.device.systemName
     props["os_version"] = self.device.systemVersion
-    props["app_build_number"] = self.bundle.infoDictionary?["CFBundleVersion"]
-    props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
+    props["platform"] = self.clientPlatform
     props["screen_width"] = UInt(self.screen.bounds.width)
     props["user_agent"] = Service.userAgent
     props["user_logged_in"] = self.loggedInUser != nil
     props["wifi_connection"] = Reachability.current == .wifi
-    props["client_platform"] = self.clientPlatform
 
     props["ref_tag"] = refTag
     props["referrer_credit"] = referrerCredit
@@ -1301,7 +1301,7 @@ private func projectProperties(
   props["state"] = project.state.rawValue
   props["static_usd_rate"] = project.stats.staticUsdRate
   props["current_pledge_amount"] = project.stats.pledged
-  props["current_pledge_amount_usd"] = project.stats.pledgedUsd
+  props["current_amount_pledged_usd"] = project.stats.pledgedUsd
   props["goal_usd"] = project.stats.goalUsd
   props["has_video"] = project.video != nil
   props["prelaunch_activated"] = project.prelaunchActivated
@@ -1363,22 +1363,20 @@ private func pledgeProperties(from reward: Reward, prefix: String = "pledge_back
 
   result["has_items"] = !reward.rewardsItems.isEmpty
   result["id"] = reward.id
-  result["is_limited_quantity"] = reward.limit != nil
-  result["is_limited_time"] = reward.endsAt != nil
   result["minimum"] = reward.minimum
-  result["shipping_enabled"] = reward.shipping.enabled
-  result["shipping_preference"] = reward.shipping.preference?.trackingString
 
   return result.prefixedKeys(prefix)
 }
 
 // MARK: - Checkout Properties
 
-private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, prefix: String = "checkout_")
+private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, and reward: Reward,
+                                prefix: String = "checkout_")
   -> [String: Any] {
   var result: [String: Any] = [:]
 
   result["amount"] = data.amount
+  result["amount_total_usd"] = data.revenueInUsdCents
   result["add_ons_count_total"] = data.addOnsCountTotal
   result["add_ons_count_unique"] = data.addOnsCountUnique
   result["add_ons_minimum_usd"] = data.addOnsMinimumUsd
@@ -1386,16 +1384,16 @@ private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, 
   result["bonus_amount_usd"] = data.bonusAmountInUsd
   result["id"] = data.checkoutId
   result["payment_type"] = data.paymentType
-  result["reward_id"] = data.rewardId
-  result["reward_title"] = data.rewardTitle
-  result["reward_minimum_usd"] = data.rewardMinimumUsd
-  result["shipping_amount"] = data.shippingAmount
-  result["revenue_in_usd_cents"] = data.revenueInUsdCents
   result["reward_estimated_delivery_on"] = data.estimatedDelivery
+  result["reward_id"] = data.rewardId
+  result["reward_is_limited_quantity"] = reward.isLimitedQuantity
+  result["reward_is_limited_time"] = reward.isLimitedTime
+  result["reward_minimum_usd"] = data.rewardMinimumUsd
   result["reward_shipping_enabled"] = data.shippingEnabled
+  result["reward_shipping_preference"] = reward.shipping.preference?.trackingString
+  result["reward_title"] = data.rewardTitle
   result["shipping_amount"] = data.shippingAmount
   result["shipping_amount_usd"] = data.shippingAmountUsd
-  result["reward_estimated_delivery_on"] = data.estimatedDelivery
   result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
 
   return result.prefixedKeys(prefix)
