@@ -25,6 +25,16 @@ public struct Reward {
     return self.id == Reward.noReward.id
   }
 
+  /// Returns `true` if the `Reward` has a value for the `limit` property.
+  public var isLimitedQuantity: Bool {
+    return self.limit != nil
+  }
+
+  /// Returns `true` if the `Reward` has a value for the `endsAt` property.
+  public var isLimitedTime: Bool {
+    return self.endsAt != nil
+  }
+
   /**
    Returns the closest matching `ShippingRule` for this `Reward` to `otherShippingRule`.
    If no match is found `otherShippingRule` is returned, this is to be backward-compatible

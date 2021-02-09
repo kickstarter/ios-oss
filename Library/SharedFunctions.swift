@@ -258,8 +258,8 @@ public func discoveryPageBackgroundColor() -> UIColor {
 }
 
 public func rewardIsAvailable(project: Project, reward: Reward) -> Bool {
-  let isLimited = reward.limit != nil
-  let isTimebased = reward.endsAt != nil
+  let isLimited = reward.isLimitedQuantity
+  let isTimebased = reward.isLimitedTime
 
   guard isLimited || isTimebased else { return true }
 
