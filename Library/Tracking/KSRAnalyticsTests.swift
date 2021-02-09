@@ -284,6 +284,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("Art", dataLakeClientProperties?["project_category"] as? String)
     XCTAssertEqual(321, dataLakeClientProperties?["project_category_id"] as? Int)
     XCTAssertEqual(project.location.name, dataLakeClientProperties?["project_location"] as? String)
+    XCTAssertEqual(project.stats.commentsCount, dataLakeClientProperties?["project_comments_count"] as? Int)
     XCTAssertEqual(project.creator.id, dataLakeClientProperties?["project_creator_uid"] as? Int)
     XCTAssertEqual(24 * 15, dataLakeClientProperties?["project_hours_remaining"] as? Int)
     XCTAssertEqual(30, dataLakeClientProperties?["project_duration"] as? Int)
@@ -324,6 +325,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("Art", segmentClientProperties?["project_category"] as? String)
     XCTAssertEqual(321, segmentClientProperties?["project_category_id"] as? Int)
     XCTAssertEqual(project.location.name, segmentClientProperties?["project_location"] as? String)
+    XCTAssertEqual(project.stats.commentsCount, dataLakeClientProperties?["project_comments_count"] as? Int)
     XCTAssertEqual(project.creator.id, segmentClientProperties?["project_creator_uid"] as? Int)
     XCTAssertEqual(24 * 15, segmentClientProperties?["project_hours_remaining"] as? Int)
     XCTAssertEqual(30, segmentClientProperties?["project_duration"] as? Int)
@@ -828,7 +830,7 @@ final class KSRAnalyticsTests: TestCase {
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
 
     ksrAnalytics.trackProjectCardClicked(
-      project: Project.template,
+      project: .template,
       params: DiscoveryParams.recommendedDefaults,
       location: .discovery
     )
@@ -1012,6 +1014,35 @@ final class KSRAnalyticsTests: TestCase {
     self.assertProjectProperties(segmentClientProps)
     self.assertPledgeProperties(segmentClientProps)
     self.assertCheckoutProperties(segmentClientProps)
+  }
+
+  func testTrackPledgeSubmitButtonClicked_Context() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+    let reward = Reward.template
+      |> Reward.lens.endsAt .~ 5.0
+      |> Reward.lens.shipping.preference .~ .restricted
+
+    ksrAnalytics.trackPledgeSubmitButtonClicked(
+      project: .template,
+      reward: reward,
+      context: .manageReward,
+      refTag: nil
+    )
+
+    let dataLakeClientProps = dataLakeClient.properties.last
+    let segmentClientProps = segmentClient.properties.last
+
+    XCTAssertEqual(["Pledge Submit Button Clicked"], dataLakeClient.events)
+
+    self.assertProjectProperties(dataLakeClientProps)
+    self.assertPledgeProperties(dataLakeClientProps)
+
+    XCTAssertEqual(["Pledge Submit Button Clicked"], segmentClient.events)
+
+    self.assertProjectProperties(segmentClientProps)
+    self.assertPledgeProperties(segmentClientProps)
   }
 
   func testTrackAddNewCardButtonClicked() {
