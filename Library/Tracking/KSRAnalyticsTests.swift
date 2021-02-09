@@ -63,10 +63,10 @@ final class KSRAnalyticsTests: TestCase {
       segmentClientProperties?["session_enabled_features"] as? [String]
     )
 
-    XCTAssertEqual("native", dataLakeClientProperties?["session_client_type"] as? String)
+    XCTAssertEqual("native", dataLakeClientProperties?["session_client"] as? String)
     XCTAssertEqual("1234567890", dataLakeClientProperties?["session_app_build_number"] as? String)
     XCTAssertEqual("1.2.3.4.5.6.7.8.9.0", dataLakeClientProperties?["session_app_release_version"] as? String)
-    XCTAssertEqual("phone", dataLakeClientProperties?["session_device_format"] as? String)
+    XCTAssertEqual("phone", dataLakeClientProperties?["session_device_type"] as? String)
     XCTAssertEqual("Apple", dataLakeClientProperties?["session_device_manufacturer"] as? String)
     XCTAssertEqual("Portrait", dataLakeClientProperties?["session_device_orientation"] as? String)
     XCTAssertEqual("abc-123", dataLakeClientProperties?["session_device_distinct_id"] as? String)
@@ -80,15 +80,15 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(UInt(screen.bounds.width), dataLakeClientProperties?["session_screen_width"] as? UInt)
     XCTAssertEqual("kickstarter_ios", dataLakeClientProperties?["session_mp_lib"] as? String)
     XCTAssertEqual(false, dataLakeClientProperties?["session_user_logged_in"] as? Bool)
-    XCTAssertEqual("ios", dataLakeClientProperties?["session_client_platform"] as? String)
+    XCTAssertEqual("ios", dataLakeClientProperties?["session_platform"] as? String)
     XCTAssertEqual("en", dataLakeClientProperties?["session_display_language"] as? String)
 
     XCTAssertEqual(23, dataLakeClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
 
-    XCTAssertEqual("native", segmentClientProperties?["session_client_type"] as? String)
+    XCTAssertEqual("native", segmentClientProperties?["session_client"] as? String)
     XCTAssertEqual("1234567890", segmentClientProperties?["session_app_build_number"] as? String)
     XCTAssertEqual("1.2.3.4.5.6.7.8.9.0", segmentClientProperties?["session_app_release_version"] as? String)
-    XCTAssertEqual("phone", segmentClientProperties?["session_device_format"] as? String)
+    XCTAssertEqual("phone", segmentClientProperties?["session_device_type"] as? String)
     XCTAssertEqual("Apple", segmentClientProperties?["session_device_manufacturer"] as? String)
     XCTAssertEqual("Portrait", segmentClientProperties?["session_device_orientation"] as? String)
     XCTAssertEqual("abc-123", segmentClientProperties?["session_device_distinct_id"] as? String)
@@ -102,7 +102,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(UInt(screen.bounds.width), segmentClientProperties?["session_screen_width"] as? UInt)
     XCTAssertEqual("kickstarter_ios", segmentClientProperties?["session_mp_lib"] as? String)
     XCTAssertEqual(false, segmentClientProperties?["session_user_logged_in"] as? Bool)
-    XCTAssertEqual("ios", segmentClientProperties?["session_client_platform"] as? String)
+    XCTAssertEqual("ios", segmentClientProperties?["session_platform"] as? String)
     XCTAssertEqual("en", segmentClientProperties?["session_display_language"] as? String)
 
     XCTAssertEqual(23, segmentClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
@@ -179,11 +179,11 @@ final class KSRAnalyticsTests: TestCase {
     )
     ksrAnalytics.trackTabBarClicked(.activity)
 
-    XCTAssertEqual("phone", dataLakeClient.properties.last?["session_device_format"] as? String)
-    XCTAssertEqual("ios", dataLakeClient.properties.last?["session_client_platform"] as? String)
+    XCTAssertEqual("phone", dataLakeClient.properties.last?["session_device_type"] as? String)
+    XCTAssertEqual("ios", dataLakeClient.properties.last?["session_platform"] as? String)
 
-    XCTAssertEqual("phone", segmentClient.properties.last?["session_device_format"] as? String)
-    XCTAssertEqual("ios", segmentClient.properties.last?["session_client_platform"] as? String)
+    XCTAssertEqual("phone", segmentClient.properties.last?["session_device_type"] as? String)
+    XCTAssertEqual("ios", segmentClient.properties.last?["session_platform"] as? String)
   }
 
   func testSessionProperties_DeviceFormatAndClientPlatform_ForIPadIdiom() {
@@ -197,11 +197,11 @@ final class KSRAnalyticsTests: TestCase {
     )
     ksrAnalytics.trackTabBarClicked(.activity)
 
-    XCTAssertEqual("tablet", dataLakeClient.properties.last?["session_device_format"] as? String)
-    XCTAssertEqual("ios", dataLakeClient.properties.last?["session_client_platform"] as? String)
+    XCTAssertEqual("tablet", dataLakeClient.properties.last?["session_device_type"] as? String)
+    XCTAssertEqual("ios", dataLakeClient.properties.last?["session_platform"] as? String)
 
-    XCTAssertEqual("tablet", segmentClient.properties.last?["session_device_format"] as? String)
-    XCTAssertEqual("ios", segmentClient.properties.last?["session_client_platform"] as? String)
+    XCTAssertEqual("tablet", segmentClient.properties.last?["session_device_type"] as? String)
+    XCTAssertEqual("ios", segmentClient.properties.last?["session_platform"] as? String)
   }
 
   func testSessionProperties_DeviceFormatAndClientPlatform_ForTvIdiom() {
@@ -215,11 +215,11 @@ final class KSRAnalyticsTests: TestCase {
     )
     ksrAnalytics.trackTabBarClicked(.activity)
 
-    XCTAssertEqual("tv", dataLakeClient.properties.last?["session_device_format"] as? String)
-    XCTAssertEqual("tvos", dataLakeClient.properties.last?["session_client_platform"] as? String)
+    XCTAssertEqual("tv", dataLakeClient.properties.last?["session_device_type"] as? String)
+    XCTAssertEqual("tvos", dataLakeClient.properties.last?["session_platform"] as? String)
 
-    XCTAssertEqual("tv", segmentClient.properties.last?["session_device_format"] as? String)
-    XCTAssertEqual("tvos", segmentClient.properties.last?["session_client_platform"] as? String)
+    XCTAssertEqual("tv", segmentClient.properties.last?["session_device_type"] as? String)
+    XCTAssertEqual("tvos", segmentClient.properties.last?["session_platform"] as? String)
   }
 
   func testSessionProperties_DeviceOrientation() {
@@ -292,7 +292,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(2, dataLakeClientProperties?["project_static_usd_rate"] as? Float)
     XCTAssertEqual("live", dataLakeClientProperties?["project_state"] as? String)
     XCTAssertEqual(project.stats.pledged, dataLakeClientProperties?["project_current_pledge_amount"] as? Int)
-    XCTAssertEqual(2_000, dataLakeClientProperties?["project_current_pledge_amount_usd"] as? Int)
+    XCTAssertEqual(2_000, dataLakeClientProperties?["project_current_amount_pledged_usd"] as? Int)
     XCTAssertEqual(4_000, dataLakeClientProperties?["project_goal_usd"] as? Int)
     XCTAssertEqual(true, dataLakeClientProperties?["project_has_video"] as? Bool)
     XCTAssertEqual(10, dataLakeClientProperties?["project_comments_count"] as? Int)
@@ -332,7 +332,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(2, segmentClientProperties?["project_static_usd_rate"] as? Float)
     XCTAssertEqual("live", segmentClientProperties?["project_state"] as? String)
     XCTAssertEqual(project.stats.pledged, segmentClientProperties?["project_current_pledge_amount"] as? Int)
-    XCTAssertEqual(2_000, segmentClientProperties?["project_current_pledge_amount_usd"] as? Int)
+    XCTAssertEqual(2_000, segmentClientProperties?["project_current_amount_pledged_usd"] as? Int)
     XCTAssertEqual(4_000, segmentClientProperties?["project_goal_usd"] as? Int)
     XCTAssertEqual(true, segmentClientProperties?["project_has_video"] as? Bool)
     XCTAssertEqual(10, segmentClientProperties?["project_comments_count"] as? Int)
@@ -643,22 +643,14 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertEqual(true, dataLakeClientProps?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(1, dataLakeClientProps?["pledge_backer_reward_id"] as? Int)
-    XCTAssertEqual(true, dataLakeClientProps?["pledge_backer_reward_is_limited_quantity"] as? Bool)
-    XCTAssertEqual(false, dataLakeClientProps?["pledge_backer_reward_is_limited_time"] as? Bool)
     XCTAssertEqual(10.00, dataLakeClientProps?["pledge_backer_reward_minimum"] as? Double)
-    XCTAssertEqual(false, dataLakeClientProps?["pledge_backer_reward_shipping_enabled"] as? Bool)
-    XCTAssertNil(dataLakeClientProps?["pledge_backer_reward_shipping_preference"] as? String)
 
     XCTAssertEqual("recommended", dataLakeClientProps?["session_ref_tag"] as? String)
     XCTAssertEqual("new_pledge", dataLakeClientProps?["context_pledge_flow"] as? String)
 
     XCTAssertEqual(true, segmentClientProps?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(1, segmentClientProps?["pledge_backer_reward_id"] as? Int)
-    XCTAssertEqual(true, segmentClientProps?["pledge_backer_reward_is_limited_quantity"] as? Bool)
-    XCTAssertEqual(false, segmentClientProps?["pledge_backer_reward_is_limited_time"] as? Bool)
     XCTAssertEqual(10.00, segmentClientProps?["pledge_backer_reward_minimum"] as? Double)
-    XCTAssertEqual(false, segmentClientProps?["pledge_backer_reward_shipping_enabled"] as? Bool)
-    XCTAssertNil(segmentClientProps?["pledge_backer_reward_shipping_preference"] as? String)
 
     XCTAssertEqual("recommended", segmentClientProps?["session_ref_tag"] as? String)
     XCTAssertEqual("new_pledge", segmentClientProps?["context_pledge_flow"] as? String)
@@ -680,21 +672,13 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertEqual(false, dataLakeClientProps?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(0, dataLakeClientProps?["pledge_backer_reward_id"] as? Int)
-    XCTAssertEqual(false, dataLakeClientProps?["pledge_backer_reward_is_limited_quantity"] as? Bool)
-    XCTAssertEqual(false, dataLakeClientProps?["pledge_backer_reward_is_limited_time"] as? Bool)
     XCTAssertEqual(5.00, dataLakeClientProps?["pledge_backer_reward_minimum"] as? Double)
-    XCTAssertEqual(false, dataLakeClientProps?["pledge_backer_reward_shipping_enabled"] as? Bool)
-    XCTAssertNil(dataLakeClientProps?["pledge_backer_reward_shipping_preference"] as? String)
 
     XCTAssertEqual("change_reward", dataLakeClientProps?["context_pledge_flow"] as? String)
 
     XCTAssertEqual(false, segmentClientProps?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(0, segmentClientProps?["pledge_backer_reward_id"] as? Int)
-    XCTAssertEqual(false, segmentClientProps?["pledge_backer_reward_is_limited_quantity"] as? Bool)
-    XCTAssertEqual(false, segmentClientProps?["pledge_backer_reward_is_limited_time"] as? Bool)
     XCTAssertEqual(5.00, segmentClientProps?["pledge_backer_reward_minimum"] as? Double)
-    XCTAssertEqual(false, segmentClientProps?["pledge_backer_reward_shipping_enabled"] as? Bool)
-    XCTAssertNil(segmentClientProps?["pledge_backer_reward_shipping_preference"] as? String)
 
     XCTAssertEqual("change_reward", segmentClientProps?["context_pledge_flow"] as? String)
   }
@@ -714,10 +698,7 @@ final class KSRAnalyticsTests: TestCase {
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
 
-    XCTAssertEqual("restricted", dataLakeClientProps?["pledge_backer_reward_shipping_preference"] as? String)
     XCTAssertEqual("manage_reward", dataLakeClientProps?["context_pledge_flow"] as? String)
-
-    XCTAssertEqual("restricted", segmentClientProps?["pledge_backer_reward_shipping_preference"] as? String)
     XCTAssertEqual("manage_reward", segmentClientProps?["context_pledge_flow"] as? String)
   }
 
@@ -1006,10 +987,13 @@ final class KSRAnalyticsTests: TestCase {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+    let reward = Reward.template
+      |> Reward.lens.endsAt .~ 5.0
+      |> Reward.lens.shipping.preference .~ .restricted
 
     ksrAnalytics.trackPledgeSubmitButtonClicked(
       project: .template,
-      reward: .template,
+      reward: reward,
       checkoutData: .template,
       refTag: nil
     )
@@ -1556,7 +1540,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(1, props?["project_static_usd_rate"] as? Float)
     XCTAssertEqual("live", props?["project_state"] as? String)
     XCTAssertEqual(1_000, props?["project_current_pledge_amount"] as? Int)
-    XCTAssertEqual(1_000, props?["project_current_pledge_amount_usd"] as? Int)
+    XCTAssertEqual(1_000, props?["project_current_amount_pledged_usd"] as? Int)
     XCTAssertEqual(2_000, props?["project_goal_usd"] as? Int)
     XCTAssertEqual(true, props?["project_has_video"] as? Bool)
     XCTAssertEqual(10, props?["project_comments_count"] as? Int)
@@ -1577,12 +1561,7 @@ final class KSRAnalyticsTests: TestCase {
   private func assertPledgeProperties(_ props: [String: Any]?) {
     XCTAssertEqual(true, props?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(1, props?["pledge_backer_reward_id"] as? Int)
-    XCTAssertEqual(true, props?["pledge_backer_reward_is_limited_quantity"] as? Bool)
-    XCTAssertEqual(false, props?["pledge_backer_reward_is_limited_time"] as? Bool)
     XCTAssertEqual(10.00, props?["pledge_backer_reward_minimum"] as? Double)
-    XCTAssertEqual(false, props?["pledge_backer_reward_shipping_enabled"] as? Bool)
-
-    XCTAssertNil(props?["pledge_backer_reward_shipping_preference"] as? String)
   }
 
   /*
@@ -1599,8 +1578,11 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("SUPER reward", props?["checkout_reward_title"] as? String)
     XCTAssertEqual("5.00", props?["checkout_reward_minimum_usd"] as? String)
     XCTAssertEqual(2, props?["checkout_reward_id"] as? Int)
-    XCTAssertEqual(2_000, props?["checkout_revenue_in_usd_cents"] as? Int)
+    XCTAssertEqual(2_000, props?["checkout_amount_total_usd"] as? Int)
+    XCTAssertEqual(true, props?["checkout_reward_is_limited_quantity"] as? Bool)
+    XCTAssertEqual(true, props?["checkout_reward_is_limited_time"] as? Bool)
     XCTAssertEqual(true, props?["checkout_reward_shipping_enabled"] as? Bool)
+    XCTAssertEqual("restricted", props?["checkout_reward_shipping_preference"] as? String)
     XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
     XCTAssertEqual(10.00, props?["checkout_shipping_amount"] as? Double)
     XCTAssertEqual("10.00", props?["checkout_shipping_amount_usd"] as? String)

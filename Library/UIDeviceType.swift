@@ -40,7 +40,7 @@ internal struct MockDevice: UIDeviceType {
 }
 
 extension UIDeviceType {
-  var deviceFormat: String {
+  var deviceType: String {
     switch self.userInterfaceIdiom {
     case .phone: return "phone"
     case .pad: return "tablet"

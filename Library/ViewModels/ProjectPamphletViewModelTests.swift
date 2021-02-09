@@ -957,7 +957,7 @@ final class ProjectPamphletViewModelTests: TestCase {
         "Event includes Optimizely properties"
       )
       XCTAssertNotNil(
-        dataLakeClientProperties?["optimizely_experiments"],
+        dataLakeClientProperties?["session_variants_optimizely"],
         "Event includes Optimizely properties"
       )
 
@@ -967,7 +967,7 @@ final class ProjectPamphletViewModelTests: TestCase {
         "Event includes Optimizely properties"
       )
       XCTAssertNotNil(
-        segmentClientProperties?["optimizely_experiments"],
+        segmentClientProperties?["session_variants_optimizely"],
         "Event includes Optimizely properties"
       )
     }
@@ -1032,7 +1032,7 @@ final class ProjectPamphletViewModelTests: TestCase {
         "Event includes Optimizely properties"
       )
       XCTAssertNotNil(
-        dataLakeClientProperties?["optimizely_experiments"],
+        dataLakeClientProperties?["session_variants_optimizely"],
         "Event includes Optimizely properties"
       )
       XCTAssertNotNil(segmentClientProperties?["optimizely_api_key"], "Event includes Optimizely properties")
@@ -1041,7 +1041,7 @@ final class ProjectPamphletViewModelTests: TestCase {
         "Event includes Optimizely properties"
       )
       XCTAssertNotNil(
-        segmentClientProperties?["optimizely_experiments"],
+        segmentClientProperties?["session_variants_optimizely"],
         "Event includes Optimizely properties"
       )
     }
@@ -1077,7 +1077,7 @@ final class ProjectPamphletViewModelTests: TestCase {
         "1.2.3.4.5.6.7.8.9.0"
       )
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_type"] as? String, "phone")
     }
   }
 
@@ -1107,7 +1107,7 @@ final class ProjectPamphletViewModelTests: TestCase {
         "1.2.3.4.5.6.7.8.9.0"
       )
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_type"] as? String, "phone")
     }
   }
 
@@ -1147,7 +1147,7 @@ final class ProjectPamphletViewModelTests: TestCase {
       "1.2.3.4.5.6.7.8.9.0"
     )
     XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
+    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_type"] as? String, "phone")
   }
 
   func testOptimizelyTrackingPledgeCTAButtonTapped_LoggedOut_Backed() {
@@ -1224,7 +1224,7 @@ final class ProjectPamphletViewModelTests: TestCase {
         "1.2.3.4.5.6.7.8.9.0"
       )
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_format"] as? String, "phone")
+      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_type"] as? String, "phone")
     }
   }
 

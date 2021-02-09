@@ -396,7 +396,8 @@ final class ThanksViewModelTests: TestCase {
     XCTAssertEqual("SUPER reward", dataLakeTrackingClientProps?["checkout_reward_title"] as? String)
     XCTAssertEqual("5.00", dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? String)
     XCTAssertEqual(2, dataLakeTrackingClientProps?["checkout_reward_id"] as? Int)
-    XCTAssertEqual(2_000, dataLakeTrackingClientProps?["checkout_revenue_in_usd_cents"] as? Int)
+    XCTAssertEqual(2_000, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Int)
+    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(
       true,
@@ -419,7 +420,8 @@ final class ThanksViewModelTests: TestCase {
     XCTAssertEqual("SUPER reward", segmentClientProps?["checkout_reward_title"] as? String)
     XCTAssertEqual("5.00", segmentClientProps?["checkout_reward_minimum_usd"] as? String)
     XCTAssertEqual(2, segmentClientProps?["checkout_reward_id"] as? Int)
-    XCTAssertEqual(2_000, segmentClientProps?["checkout_revenue_in_usd_cents"] as? Int)
+    XCTAssertEqual(2_000, segmentClientProps?["checkout_amount_total_usd"] as? Int)
+    XCTAssertEqual(true, segmentClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
     XCTAssertEqual(10.00, segmentClientProps?["checkout_shipping_amount"] as? Double)
@@ -429,21 +431,11 @@ final class ThanksViewModelTests: TestCase {
     // Pledge properties
     XCTAssertEqual(true, dataLakeTrackingClientProps?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(1, dataLakeTrackingClientProps?["pledge_backer_reward_id"] as? Int)
-    XCTAssertEqual(true, dataLakeTrackingClientProps?["pledge_backer_reward_is_limited_quantity"] as? Bool)
-    XCTAssertEqual(false, dataLakeTrackingClientProps?["pledge_backer_reward_is_limited_time"] as? Bool)
     XCTAssertEqual(10.00, dataLakeTrackingClientProps?["pledge_backer_reward_minimum"] as? Double)
-    XCTAssertEqual(false, dataLakeTrackingClientProps?["pledge_backer_reward_shipping_enabled"] as? Bool)
 
     XCTAssertEqual(true, segmentClientProps?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(1, segmentClientProps?["pledge_backer_reward_id"] as? Int)
-    XCTAssertEqual(true, segmentClientProps?["pledge_backer_reward_is_limited_quantity"] as? Bool)
-    XCTAssertEqual(false, segmentClientProps?["pledge_backer_reward_is_limited_time"] as? Bool)
     XCTAssertEqual(10.00, segmentClientProps?["pledge_backer_reward_minimum"] as? Double)
-    XCTAssertEqual(false, segmentClientProps?["pledge_backer_reward_shipping_enabled"] as? Bool)
-
-    XCTAssertNil(dataLakeTrackingClientProps?["pledge_backer_reward_shipping_preference"] as? String)
-
-    XCTAssertNil(segmentClientProps?["pledge_backer_reward_shipping_preference"] as? String)
 
     // Project properties
     XCTAssertEqual(1, dataLakeTrackingClientProps?["project_pid"] as? Int)

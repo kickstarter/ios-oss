@@ -130,7 +130,7 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
   return [
     "optimizely_api_key": sdkKey,
     "optimizely_environment": environmentType.description,
-    "optimizely_experiments": allExperiments
+    "session_variants_optimizely": allExperiments
   ]
 }
 
@@ -151,7 +151,7 @@ public func optimizelyUserAttributes(
     "session_user_is_logged_in": user != nil,
     "session_app_release_version": AppEnvironment.current.mainBundle.shortVersionString,
     "session_apple_pay_device": AppEnvironment.current.applePayCapabilities.applePayDevice(),
-    "session_device_format": AppEnvironment.current.device.deviceFormat
+    "session_device_type": AppEnvironment.current.device.deviceType
   ]
   .compact()
   .withAllValuesFrom(sessionRefTagProperties(with: project, refTag: refTag))

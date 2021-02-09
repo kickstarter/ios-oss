@@ -140,13 +140,16 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       "Event includes Optimizely properties"
     )
     XCTAssertNotNil(
-      dataLakeTrackingClientProps?["optimizely_experiments"],
+      dataLakeTrackingClientProps?["session_variants_optimizely"],
       "Event includes Optimizely properties"
     )
 
     XCTAssertNotNil(segmentClientProps?["optimizely_api_key"], "Event includes Optimizely properties")
     XCTAssertNotNil(segmentClientProps?["optimizely_environment"], "Event includes Optimizely properties")
-    XCTAssertNotNil(segmentClientProps?["optimizely_experiments"], "Event includes Optimizely properties")
+    XCTAssertNotNil(
+      segmentClientProps?["session_variants_optimizely"],
+      "Event includes Optimizely properties"
+    )
 
     // Scroll down a bit and advance scheduler
     self.vm.inputs.willDisplayRow(2, outOf: 10)
@@ -1632,7 +1635,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Event includes Optimizely properties"
       )
       XCTAssertNotNil(
-        dataLakeTrackingClientProperties?["optimizely_experiments"],
+        dataLakeTrackingClientProperties?["session_variants_optimizely"],
         "Event includes Optimizely properties"
       )
 
@@ -1645,7 +1648,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Event includes Optimizely properties"
       )
       XCTAssertNotNil(
-        segmentTrackingClientProperties?["optimizely_experiments"],
+        segmentTrackingClientProperties?["session_variants_optimizely"],
         "Event includes Optimizely properties"
       )
     }

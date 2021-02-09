@@ -129,7 +129,7 @@ final class OptimizelyClientTypeTests: TestCase {
 
     withEnvironment(apiService: mockService, optimizelyClient: mockOptimizelyClient) {
       let properties = optimizelyProperties()
-      let optimizelyExperiments = properties?["optimizely_experiments"] as? [[String: String]]
+      let optimizelyExperiments = properties?["session_variants_optimizely"] as? [[String: String]]
 
       XCTAssertEqual("Staging", properties?["optimizely_environment"] as? String)
       XCTAssertEqual(Secrets.OptimizelySDKKey.staging, properties?["optimizely_api_key"] as? String)
@@ -162,7 +162,7 @@ final class OptimizelyClientTypeTests: TestCase {
     XCTAssertEqual("MockSystemVersion", userAttributes?["session_os_version"] as? String)
     XCTAssertEqual("1.2.3.4.5.6.7.8.9.0", userAttributes?["session_app_release_version"] as? String)
     XCTAssertEqual(true, userAttributes?["session_apple_pay_device"] as? Bool)
-    XCTAssertEqual("phone", userAttributes?["session_device_format"] as? String)
+    XCTAssertEqual("phone", userAttributes?["session_device_type"] as? String)
     XCTAssertEqual(true, userAttributes?["session_user_is_logged_in"] as? Bool)
 
     XCTAssertNil(userAttributes?["user_facebook_account"] as? Bool)
