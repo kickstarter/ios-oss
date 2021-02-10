@@ -1152,10 +1152,8 @@ private func checkoutPropertiesData(
 
   let staticUsdRate = Double(createBackingData.project.stats.staticUsdRate)
 
-  let pledgeTotalUsdCents = pledgeTotal
-    .multiplyingCurrency(staticUsdRate)
-    .multiplyingCurrency(100.0)
-    .rounded()
+  // Two decimal places to represent cent values
+  let pledgeTotalUsd = rounded(pledgeTotal.multiplyingCurrency(staticUsdRate), places: 2)
 
   let bonusAmountUsd = additionalPledgeAmount
     .multiplyingCurrency(staticUsdRate)
@@ -1180,7 +1178,6 @@ private func checkoutPropertiesData(
 
   let amount = Format.decimalCurrency(for: pledgeTotal)
   let bonusAmount = Format.decimalCurrency(for: additionalPledgeAmount)
-  let revenueInUsdCents = Int(pledgeTotalUsdCents)
   let bonusAmountInUsd = Format.decimalCurrency(for: bonusAmountUsd)
   let rewardId = baseReward.id
   let estimatedDelivery = baseReward.estimatedDeliveryOn
@@ -1206,7 +1203,7 @@ private func checkoutPropertiesData(
     checkoutId: checkoutId,
     estimatedDelivery: estimatedDelivery,
     paymentType: paymentType,
-    revenueInUsdCents: revenueInUsdCents,
+    revenueInUsd: pledgeTotalUsd,
     rewardId: rewardId,
     rewardMinimumUsd: rewardMinimumUsd,
     rewardTitle: rewardTitle,
@@ -1217,26 +1214,9 @@ private func checkoutPropertiesData(
   )
 }
 
-private func optimizelyCheckoutEventTags(
-  createBackingData: CreateBackingData,
-  isApplePay: Bool
-) -> [String: Any] {
-  let pledgeTotal = createBackingData.pledgeTotal
-
-  let pledgeTotalUsdCents = pledgeTotal
-    .multiplyingCurrency(Double(createBackingData.project.stats.staticUsdRate))
-    .multiplyingCurrency(100.0)
-    .rounded()
-
-  let paymentType = isApplePay
-    ? PaymentType.applePay.rawValue
-    : PaymentType.creditCard.rawValue
-
-  return [
-    "checkout_amount": pledgeTotal,
-    "checkout_payment_type": paymentType,
-    "revenue": Int(pledgeTotalUsdCents),
-    "currency": createBackingData.project.stats.currency,
-    "category": createBackingData.project.category.name
-  ]
+/* A helper that assists in rounding the dollar converted amount to a given number of decimal places
+ */
+private func rounded(_ value: Double, places: Int) -> Double {
+  let divisor = pow(10.0, Double(places))
+  return (value * divisor).rounded() / divisor
 }

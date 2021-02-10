@@ -352,7 +352,7 @@ public final class KSRAnalytics {
     let checkoutId: Int?
     let estimatedDelivery: TimeInterval?
     let paymentType: String?
-    let revenueInUsdCents: Int
+    let revenueInUsd: Double
     let rewardId: Int
     let rewardMinimumUsd: String
     let rewardTitle: String?
@@ -1376,7 +1376,7 @@ private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, 
   var result: [String: Any] = [:]
 
   result["amount"] = data.amount
-  result["amount_total_usd"] = data.revenueInUsdCents
+  result["amount_total_usd"] = data.revenueInUsd
   result["add_ons_count_total"] = data.addOnsCountTotal
   result["add_ons_count_unique"] = data.addOnsCountUnique
   result["add_ons_minimum_usd"] = data.addOnsMinimumUsd

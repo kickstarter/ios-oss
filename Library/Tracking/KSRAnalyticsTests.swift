@@ -1609,7 +1609,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("SUPER reward", props?["checkout_reward_title"] as? String)
     XCTAssertEqual("5.00", props?["checkout_reward_minimum_usd"] as? String)
     XCTAssertEqual(2, props?["checkout_reward_id"] as? Int)
-    XCTAssertEqual(2_000, props?["checkout_amount_total_usd"] as? Int)
+    XCTAssertEqual(20.00, props?["checkout_amount_total_usd"] as? Double)
     XCTAssertEqual(true, props?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, props?["checkout_reward_is_limited_time"] as? Bool)
     XCTAssertEqual(true, props?["checkout_reward_shipping_enabled"] as? Bool)
@@ -1632,7 +1632,7 @@ extension KSRAnalytics.CheckoutPropertiesData {
     checkoutId: 1,
     estimatedDelivery: 12_345_678,
     paymentType: "CREDIT_CARD",
-    revenueInUsdCents: 2_000,
+    revenueInUsd: 20.00,
     rewardId: 2,
     rewardMinimumUsd: "5.00",
     rewardTitle: "SUPER reward",
