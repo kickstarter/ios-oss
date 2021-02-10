@@ -135,20 +135,16 @@ final class OptimizelyClientTypeTests: TestCase {
       XCTAssertEqual(Secrets.OptimizelySDKKey.staging, properties?["optimizely_api_key"] as? String)
       XCTAssertEqual([
         [
-          "optimizely_experiment_slug": "fake_experiment_1",
-          "optimizely_variant_id": "control"
+          "fake_experiment_1": "control"
         ],
         [
-          "optimizely_experiment_slug": "fake_experiment_2",
-          "optimizely_variant_id": "variant-1"
+          "fake_experiment_2": "variant-1"
         ],
         [
-          "optimizely_experiment_slug": "fake_experiment_3",
-          "optimizely_variant_id": "variant-2"
+          "fake_experiment_3": "variant-2"
         ],
         [
-          "optimizely_experiment_slug": "fake_experiment_4",
-          "optimizely_variant_id": "unknown" // Not found in experiments
+          "fake_experiment_4": "control" // Not found in experiments
         ]
       ], optimizelyExperiments)
 

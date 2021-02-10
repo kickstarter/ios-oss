@@ -2431,17 +2431,6 @@ final class AppDelegateViewModelTests: TestCase {
   }
 }
 
-private func qualtricsProps() -> [String: String] {
-  return [
-    "bundle_id": AppEnvironment.current.mainBundle.bundleIdentifier,
-    "language": AppEnvironment.current.language.rawValue,
-    "logged_in": "true",
-    "distinct_id": AppEnvironment.current.device.identifierForVendor?.uuidString,
-    "user_uid": AppEnvironment.current.currentUser.flatMap { $0.id }.map(String.init)
-  ]
-  .compact()
-}
-
 private let backingForCreatorPushData: [String: Any] = [
   "aps": [
     "alert": "HEYYYY"

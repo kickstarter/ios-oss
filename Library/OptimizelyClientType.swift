@@ -100,8 +100,6 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
   }
 
   let environmentType = env.environmentType
-  let userId = deviceIdentifier(uuid: UUID())
-  let attributes = optimizelyUserAttributes()
 
   var sdkKey: String
 
@@ -115,16 +113,8 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
   }
 
   let allExperiments = optimizelyClient.allExperiments().map { experimentKey -> [String: String] in
-    let variation = try? optimizelyClient.getVariationKey(
-      experimentKey: experimentKey,
-      userId: userId,
-      attributes: attributes
-    )
-
-    return [
-      "optimizely_experiment_slug": experimentKey,
-      "optimizely_variant_id": variation ?? "unknown"
-    ]
+    let variation = optimizelyClient.getVariation(for: experimentKey)
+    return [experimentKey: variation.rawValue]
   }
 
   return [
