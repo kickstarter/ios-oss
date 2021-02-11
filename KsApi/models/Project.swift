@@ -89,13 +89,13 @@ public struct Project {
     }
 
     /// Pledged amount converted to USD.
-    public var pledgedUsd: Int {
-      return Int(floor(Float(self.pledged) * self.staticUsdRate))
+    public var pledgedUsd: Float {
+      return floor(Float(self.pledged) * self.staticUsdRate)
     }
 
     /// Goal amount converted to USD.
-    public var goalUsd: Int {
-      return Int(floor(Float(self.goal) * self.staticUsdRate))
+    public var goalUsd: Float {
+      return floor(Float(self.goal) * self.staticUsdRate)
     }
 
     /// Goal amount converted to current currency.

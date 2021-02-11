@@ -67,28 +67,28 @@ public final class KSRAnalytics {
   }
 
   /// Determines the screen from which the event is sent.
-  public enum LocationContext: String {
-    case activities = "activity_feed_screen" // ActivitiesViewController
-    case addOnsSelection = "add_ons_selection" // RewardAddOnSelectionViewController
-    case campaign = "campaign_screen" // ProjectDescriptionViewController
-    case discovery = "explore_screen" // DiscoveryViewController
-    case editorialProjects = "editorial_collection_screen" // EditorialProjectsViewController
+  public enum PageContext: String {
+    case activities = "activity_feed" // ActivitiesViewController
+    case addOnsSelection = "add_ons" // RewardAddOnSelectionViewController
+    case campaign // ProjectDescriptionViewController
+    case discovery = "discover" // DiscoveryViewController
+    case editorialProjects = "editorial_collection" // EditorialProjectsViewController
     case emailVerification = "email_verification" // EmailVerificationViewController
-    case forgotPassword = "forgot_password_screen" // ResetPasswordViewController
+    case forgotPassword = "forgot_password" // ResetPasswordViewController
     case landingPage = "landing_page" // LandingViewController
-    case login = "login_screen" // LoginViewController
-    case loginTout = "login_or_signup_screen" // LoginToutViewController
-    case managePledgeScreen = "manage_pledge_screen" // ManagePledgeViewController
+    case login = "log_in" // LoginViewController
+    case loginTout = "log_in_sign_up" // LoginToutViewController
+    case managePledgeScreen = "manage_pledge" // ManagePledgeViewController
     case onboarding // CategorySelectionViewController, CuratedProjectsViewController
-    case pledgeAddNewCard = "pledge_add_new_card_screen" // AddNewCardViewController
-    case pledgeScreen = "pledge_screen" // PledgeViewController
-    case projectPage = "project_screen" // ProjectPamphletViewController
-    case rewards = "rewards_screen" // RewardsViewController
-    case search = "search_screen" // SearchViewController
-    case settingsAddNewCard = "settings_add_new_card_screen" // AddNewCardViewController
+    case pledgeAddNewCard = "pledge_add_new_card" // AddNewCardViewController
+    case pledgeScreen = "pledge" // PledgeViewController
+    case projectPage = "project" // ProjectPamphletViewController
+    case rewards // RewardsViewController
+    case search // SearchViewController
+    case settingsAddNewCard = "settings_add_new_card" // AddNewCardViewController
     case signup = "sign_up" // SignupViewController
-    case thanks = "thanks_screen" // ThanksViewController
-    case twoFactorAuth = "two_factor_auth_verify_screen" // TwoFactorViewController
+    case thanks // ThanksViewController
+    case twoFactorAuth = "two_factor_auth" // TwoFactorViewController
   }
 
   /// Determines the authentication type for login or signup events.
@@ -352,7 +352,7 @@ public final class KSRAnalytics {
     let checkoutId: Int?
     let estimatedDelivery: TimeInterval?
     let paymentType: String?
-    let revenueInUsdCents: Int
+    let revenueInUsd: Double
     let rewardId: Int
     let rewardMinimumUsd: String
     let rewardTitle: String?
@@ -572,7 +572,7 @@ public final class KSRAnalytics {
 
   public func trackProjectCardClicked(project: Project,
                                       params: DiscoveryParams,
-                                      location: LocationContext,
+                                      location: PageContext,
                                       optimizelyProperties: [String: Any] = [:]) {
     let props = discoveryProperties(from: params)
       .withAllValuesFrom(projectProperties(from: project, loggedInUser: self.loggedInUser))
@@ -786,7 +786,7 @@ public final class KSRAnalytics {
 
   public func trackAddNewCardButtonClicked(
     context: KSRAnalytics.PledgeContext,
-    location: KSRAnalytics.LocationContext? = nil,
+    location: KSRAnalytics.PageContext? = nil,
     project: Project,
     refTag: RefTag?,
     reward: Reward
@@ -1089,7 +1089,7 @@ public final class KSRAnalytics {
 
   public func trackWatchProjectButtonClicked(
     project: Project,
-    location: LocationContext,
+    location: PageContext,
     params: DiscoveryParams? = nil
   ) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
@@ -1107,7 +1107,7 @@ public final class KSRAnalytics {
 
   public func trackCampaignDetailsButtonClicked(
     project: Project,
-    location: LocationContext,
+    location: PageContext,
     refTag: RefTag?,
     cookieRefTag: RefTag? = nil,
     optimizelyProperties: [String: Any] = [:]
@@ -1125,7 +1125,7 @@ public final class KSRAnalytics {
   }
 
   public func trackCampaignDetailsPledgeButtonClicked(project: Project,
-                                                      location: LocationContext,
+                                                      location: PageContext,
                                                       refTag: RefTag?,
                                                       cookieRefTag: RefTag? = nil,
                                                       optimizelyProperties: [String: Any] = [:]) {
@@ -1162,14 +1162,14 @@ public final class KSRAnalytics {
   // Private tracking method that merges in default properties.
   private func track(
     event: String,
-    location: KSRAnalytics.LocationContext? = nil,
+    location: KSRAnalytics.PageContext? = nil,
     properties: [String: Any] = [:],
     refTag: String? = nil,
     referrerCredit: String? = nil
   ) {
     let props = self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
       .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
-      .withAllValuesFrom(contextProperties(location: location))
+      .withAllValuesFrom(contextProperties(page: location))
       .withAllValuesFrom(properties)
 
     self.logEventCallback?(event, props)
@@ -1376,7 +1376,7 @@ private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, 
   var result: [String: Any] = [:]
 
   result["amount"] = data.amount
-  result["amount_total_usd"] = data.revenueInUsdCents
+  result["amount_total_usd"] = data.revenueInUsd
   result["add_ons_count_total"] = data.addOnsCountTotal
   result["add_ons_count_unique"] = data.addOnsCountUnique
   result["add_ons_minimum_usd"] = data.addOnsMinimumUsd
@@ -1442,12 +1442,12 @@ private func properties(category: KsApi.Category, prefix: String = "category_") 
 private func contextProperties(
   pledgeFlowContext: KSRAnalytics.PledgeContext? = nil,
   tabBarLabel: KSRAnalytics.TabBarItemLabel? = nil,
-  location: KSRAnalytics.LocationContext? = nil,
+  page: KSRAnalytics.PageContext? = nil,
   prefix: String = "context_"
 ) -> [String: Any] {
   var result: [String: Any] = [:]
 
-  result["location"] = location?.rawValue
+  result["page"] = page?.rawValue
   result["pledge_flow"] = pledgeFlowContext?.trackingString
   result["timestamp"] = AppEnvironment.current.dateType.init().timeIntervalSince1970
   result["tab_bar_label"] = tabBarLabel?.trackingString

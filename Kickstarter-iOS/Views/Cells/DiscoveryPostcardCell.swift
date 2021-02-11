@@ -346,7 +346,7 @@ internal final class DiscoveryPostcardCell: UITableViewCell, ValueCell {
 
     self.watchProjectViewModel.inputs.configure(with: (
       value.project,
-      KSRAnalytics.LocationContext.discovery,
+      KSRAnalytics.PageContext.discovery,
       value.params
     ))
   }

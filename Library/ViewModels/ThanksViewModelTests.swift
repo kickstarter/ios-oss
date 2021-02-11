@@ -360,7 +360,7 @@ final class ThanksViewModelTests: TestCase {
       checkoutId: 1,
       estimatedDelivery: 12_345_678,
       paymentType: "CREDIT_CARD",
-      revenueInUsdCents: 2_000,
+      revenueInUsd: 20.00,
       rewardId: 2,
       rewardMinimumUsd: "5.00",
       rewardTitle: "SUPER reward",
@@ -396,7 +396,7 @@ final class ThanksViewModelTests: TestCase {
     XCTAssertEqual("SUPER reward", dataLakeTrackingClientProps?["checkout_reward_title"] as? String)
     XCTAssertEqual("5.00", dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? String)
     XCTAssertEqual(2, dataLakeTrackingClientProps?["checkout_reward_id"] as? Int)
-    XCTAssertEqual(2_000, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Int)
+    XCTAssertEqual(20.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Double)
     XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(
@@ -420,7 +420,7 @@ final class ThanksViewModelTests: TestCase {
     XCTAssertEqual("SUPER reward", segmentClientProps?["checkout_reward_title"] as? String)
     XCTAssertEqual("5.00", segmentClientProps?["checkout_reward_minimum_usd"] as? String)
     XCTAssertEqual(2, segmentClientProps?["checkout_reward_id"] as? Int)
-    XCTAssertEqual(2_000, segmentClientProps?["checkout_amount_total_usd"] as? Int)
+    XCTAssertEqual(20.00, segmentClientProps?["checkout_amount_total_usd"] as? Double)
     XCTAssertEqual(true, segmentClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)

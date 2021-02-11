@@ -4,7 +4,7 @@ import ReactiveSwift
 
 public typealias WatchProjectValue = (
   project: Project,
-  context: KSRAnalytics.LocationContext,
+  context: KSRAnalytics.PageContext,
   discoveryParams: DiscoveryParams?
 )
 
