@@ -719,14 +719,14 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     XCTAssertEqual(["Campaign Details Button Clicked"], dataLakeClient.events)
-    XCTAssertEqual(["project_screen"], dataLakeClient.properties(forKey: "context_location"))
+    XCTAssertEqual(["project"], dataLakeClient.properties(forKey: "context_page"))
     XCTAssertEqual(["discovery"], dataLakeClient.properties(forKey: "session_ref_tag"))
     XCTAssertEqual(["discovery"], dataLakeClient.properties(forKey: "session_referrer_credit"))
 
     self.assertProjectProperties(dataLakeClient.properties.last)
 
     XCTAssertEqual(["Campaign Details Button Clicked"], segmentClient.events)
-    XCTAssertEqual(["project_screen"], segmentClient.properties(forKey: "context_location"))
+    XCTAssertEqual(["project"], segmentClient.properties(forKey: "context_page"))
     XCTAssertEqual(["discovery"], segmentClient.properties(forKey: "session_ref_tag"))
     XCTAssertEqual(["discovery"], segmentClient.properties(forKey: "session_referrer_credit"))
 
@@ -746,14 +746,14 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     XCTAssertEqual(["Campaign Details Pledge Button Clicked"], dataLakeClient.events)
-    XCTAssertEqual(["campaign_screen"], dataLakeClient.properties(forKey: "context_location"))
+    XCTAssertEqual(["campaign"], dataLakeClient.properties(forKey: "context_page"))
     XCTAssertEqual(["discovery"], dataLakeClient.properties(forKey: "session_ref_tag"))
     XCTAssertEqual(["discovery"], dataLakeClient.properties(forKey: "session_referrer_credit"))
 
     self.assertProjectProperties(dataLakeClient.properties.last)
 
     XCTAssertEqual(["Campaign Details Pledge Button Clicked"], segmentClient.events)
-    XCTAssertEqual(["campaign_screen"], segmentClient.properties(forKey: "context_location"))
+    XCTAssertEqual(["campaign"], segmentClient.properties(forKey: "context_page"))
     XCTAssertEqual(["discovery"], segmentClient.properties(forKey: "session_ref_tag"))
     XCTAssertEqual(["discovery"], segmentClient.properties(forKey: "session_referrer_credit"))
 
@@ -836,13 +836,13 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     XCTAssertEqual(["Project Card Clicked"], dataLakeClient.events)
-    XCTAssertEqual("explore_screen", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
 
     self.assertProjectProperties(dataLakeClient.properties.last)
     self.assertDiscoveryProperties(dataLakeClient.properties.last)
 
     XCTAssertEqual(["Project Card Clicked"], segmentClient.events)
-    XCTAssertEqual("explore_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
 
     self.assertProjectProperties(segmentClient.properties.last)
     self.assertDiscoveryProperties(segmentClient.properties.last)
@@ -860,13 +860,13 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     XCTAssertEqual(["Watch Project Button Clicked"], dataLakeClient.events)
-    XCTAssertEqual("explore_screen", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
 
     self.assertProjectProperties(dataLakeClient.properties.last)
     self.assertDiscoveryProperties(dataLakeClient.properties.last)
 
     XCTAssertEqual(["Watch Project Button Clicked"], segmentClient.events)
-    XCTAssertEqual("explore_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
 
     self.assertProjectProperties(segmentClient.properties.last)
     self.assertDiscoveryProperties(segmentClient.properties.last)
@@ -883,12 +883,12 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     XCTAssertEqual(["Watch Project Button Clicked"], dataLakeClient.events)
-    XCTAssertEqual("project_screen", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
 
     self.assertProjectProperties(dataLakeClient.properties.last)
 
     XCTAssertEqual(["Watch Project Button Clicked"], segmentClient.events)
-    XCTAssertEqual("project_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
 
     self.assertProjectProperties(segmentClient.properties.last)
   }
@@ -1088,11 +1088,11 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertEqual(["Onboarding Get Started Button Clicked"], dataLakeClient.events)
 
-    XCTAssertEqual(["landing_page"], dataLakeClient.properties(forKey: "context_location"))
+    XCTAssertEqual(["landing_page"], dataLakeClient.properties(forKey: "context_page"))
 
     XCTAssertEqual(["Onboarding Get Started Button Clicked"], segmentClient.events)
 
-    XCTAssertEqual(["landing_page"], segmentClient.properties(forKey: "context_location"))
+    XCTAssertEqual(["landing_page"], segmentClient.properties(forKey: "context_page"))
   }
 
   func testOnboardingCarouselSwipedButtonClicked() {
@@ -1104,11 +1104,11 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertEqual(["Onboarding Carousel Swiped"], dataLakeClient.events)
 
-    XCTAssertEqual(["landing_page"], dataLakeClient.properties(forKey: "context_location"))
+    XCTAssertEqual(["landing_page"], dataLakeClient.properties(forKey: "context_page"))
 
     XCTAssertEqual(["Onboarding Carousel Swiped"], segmentClient.events)
 
-    XCTAssertEqual(["landing_page"], segmentClient.properties(forKey: "context_location"))
+    XCTAssertEqual(["landing_page"], segmentClient.properties(forKey: "context_page"))
   }
 
   func testOnboardingSkipButtonClicked() {
@@ -1120,11 +1120,11 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertEqual(["Onboarding Skip Button Clicked"], dataLakeClient.events)
 
-    XCTAssertEqual(["onboarding"], dataLakeClient.properties(forKey: "context_location"))
+    XCTAssertEqual(["onboarding"], dataLakeClient.properties(forKey: "context_page"))
 
     XCTAssertEqual(["Onboarding Skip Button Clicked"], segmentClient.events)
 
-    XCTAssertEqual(["onboarding"], segmentClient.properties(forKey: "context_location"))
+    XCTAssertEqual(["onboarding"], segmentClient.properties(forKey: "context_page"))
   }
 
   func testOnboardingContinueButtonClicked() {
@@ -1136,11 +1136,11 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertEqual(["Onboarding Continue Button Clicked"], dataLakeClient.events)
 
-    XCTAssertEqual(["onboarding"], dataLakeClient.properties(forKey: "context_location"))
+    XCTAssertEqual(["onboarding"], dataLakeClient.properties(forKey: "context_page"))
 
     XCTAssertEqual(["Onboarding Continue Button Clicked"], segmentClient.events)
 
-    XCTAssertEqual(["onboarding"], segmentClient.properties(forKey: "context_location"))
+    XCTAssertEqual(["onboarding"], segmentClient.properties(forKey: "context_page"))
   }
 
   // MARK: - Search Tracking
@@ -1386,12 +1386,12 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackActivities(count: 1)
     XCTAssertEqual(
-      "activity_feed_screen",
-      dataLakeClient.properties.last?["context_location"] as? String
+      "activity_feed",
+      dataLakeClient.properties.last?["context_page"] as? String
     )
     XCTAssertEqual(
-      "activity_feed_screen",
-      segmentClient.properties.last?["context_location"] as? String
+      "activity_feed",
+      segmentClient.properties.last?["context_page"] as? String
     )
 
     ksrAnalytics.trackAddNewCardButtonClicked(
@@ -1402,12 +1402,12 @@ final class KSRAnalyticsTests: TestCase {
       reward: .template
     )
     XCTAssertEqual(
-      "pledge_add_new_card_screen",
-      dataLakeClient.properties.last?["context_location"] as? String
+      "pledge_add_new_card",
+      dataLakeClient.properties.last?["context_page"] as? String
     )
     XCTAssertEqual(
-      "pledge_add_new_card_screen",
-      segmentClient.properties.last?["context_location"] as? String
+      "pledge_add_new_card",
+      segmentClient.properties.last?["context_page"] as? String
     )
 
     ksrAnalytics.trackAddNewCardButtonClicked(
@@ -1418,12 +1418,12 @@ final class KSRAnalyticsTests: TestCase {
       reward: .template
     )
     XCTAssertEqual(
-      "settings_add_new_card_screen",
-      dataLakeClient.properties.last?["context_location"] as? String
+      "settings_add_new_card",
+      dataLakeClient.properties.last?["context_page"] as? String
     )
     XCTAssertEqual(
-      "settings_add_new_card_screen",
-      segmentClient.properties.last?["context_location"] as? String
+      "settings_add_new_card",
+      segmentClient.properties.last?["context_page"] as? String
     )
 
     ksrAnalytics.trackCheckoutPaymentPageViewed(
@@ -1433,100 +1433,100 @@ final class KSRAnalyticsTests: TestCase {
       refTag: nil,
       cookieRefTag: nil
     )
-    XCTAssertEqual("pledge_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("pledge_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("pledge", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("pledge", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackCollectionViewed(params: .defaults)
     XCTAssertEqual(
-      "editorial_collection_screen",
-      dataLakeClient.properties.last?["context_location"] as? String
+      "editorial_collection",
+      dataLakeClient.properties.last?["context_page"] as? String
     )
     XCTAssertEqual(
-      "editorial_collection_screen",
-      segmentClient.properties.last?["context_location"] as? String
+      "editorial_collection",
+      segmentClient.properties.last?["context_page"] as? String
     )
 
     ksrAnalytics.trackDiscovery(params: .defaults)
-    XCTAssertEqual("explore_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("explore_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackDiscoveryModalSelectedFilter(params: .defaults)
-    XCTAssertEqual("explore_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("explore_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackEditorialHeaderTapped(params: .defaults, refTag: .discovery)
-    XCTAssertEqual("explore_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("explore_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackFacebookLoginOrSignupButtonClicked(intent: .generic)
-    XCTAssertEqual("login_or_signup_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("login_or_signup_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("log_in_sign_up", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("log_in_sign_up", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackForgotPasswordViewed()
-    XCTAssertEqual("forgot_password_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("forgot_password_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("forgot_password", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("forgot_password", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackLoginButtonClicked(intent: .generic)
-    XCTAssertEqual("login_or_signup_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("login_or_signup_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("log_in_sign_up", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("log_in_sign_up", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackLoginOrSignupButtonClicked(intent: .generic)
-    XCTAssertEqual("explore_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("explore_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackLoginOrSignupPageViewed(intent: .generic)
-    XCTAssertEqual("login_or_signup_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("login_or_signup_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("log_in_sign_up", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("log_in_sign_up", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackLoginSubmitButtonClicked()
-    XCTAssertEqual("login_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("login_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("log_in", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("log_in", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackPledgeCTAButtonClicked(stateType: .pledge, project: .template)
-    XCTAssertEqual("project_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("project_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackProjectSearchView()
-    XCTAssertEqual("search_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("search_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("search", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("search", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackProjectViewed(.template)
-    XCTAssertEqual("project_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("project_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackRewardClicked(project: .template, reward: .template, context: .newPledge, refTag: nil)
-    XCTAssertEqual("rewards_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("rewards_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("rewards", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("rewards", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackSearchResults(query: "", params: .defaults, refTag: .search, hasResults: false)
-    XCTAssertEqual("search_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("search_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("search", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("search", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackSwipedProject(.template, refTag: nil)
-    XCTAssertEqual("project_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("project_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackSignupSubmitButtonClicked()
-    XCTAssertEqual("sign_up", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("sign_up", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("sign_up", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("sign_up", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackThanksPageViewed(project: .template, reward: .template, checkoutData: nil)
-    XCTAssertEqual("thanks_screen", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("thanks_screen", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("thanks", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("thanks", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.track2FAViewed()
     XCTAssertEqual(
-      "two_factor_auth_verify_screen",
-      dataLakeClient.properties.last?["context_location"] as? String
+      "two_factor_auth",
+      dataLakeClient.properties.last?["context_page"] as? String
     )
     XCTAssertEqual(
-      "two_factor_auth_verify_screen",
-      segmentClient.properties.last?["context_location"] as? String
+      "two_factor_auth",
+      segmentClient.properties.last?["context_page"] as? String
     )
 
     ksrAnalytics.trackEmailVerificationScreenViewed()
-    XCTAssertEqual("email_verification", dataLakeClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("email_verification", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("email_verification", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("email_verification", segmentClient.properties.last?["context_page"] as? String)
   }
 
   /*
