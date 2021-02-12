@@ -50,11 +50,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       )
     )
 
-    if let pxManager = PXManager.sharedInstance() {
-      pxManager.delegate = self
-      pxManager.start(with: Secrets.perimeterxAppId)
-    }
-
     #if DEBUG
       if KsApi.Secrets.isOSS {
         AppEnvironment.replaceCurrentEnvironment(apiService: MockService())
@@ -82,8 +77,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         self?.viewModel.inputs.didUpdateConfig(config)
       }
-
-    // Perimeter X
 
     self.viewModel.outputs.perimeterXInitialHeaders
       .observeForUI()
@@ -282,6 +275,13 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       application: application,
       launchOptions: launchOptions
     )
+
+    // Perimeter X
+
+    if let pxManager = PXManager.sharedInstance() {
+      pxManager.delegate = self
+      pxManager.start(with: Secrets.perimeterxAppId)
+    }
 
     UNUserNotificationCenter.current().delegate = self
 

@@ -32,6 +32,8 @@ final class AppDelegateViewModelTests: TestCase {
   private let goToProfile = TestObserver<(), Never>()
   private let goToMobileSafari = TestObserver<URL, Never>()
   private let goToSearch = TestObserver<(), Never>()
+  private let perimeterXManagerReady = TestObserver<[String: String]?, Never>()
+  private let perimeterXRefreshedHeaders = TestObserver<[String: String]?, Never>()
   private let postNotificationName = TestObserver<Notification.Name, Never>()
   private let presentViewController = TestObserver<Int, Never>()
   private let pushRegistrationStarted = TestObserver<(), Never>()
@@ -70,6 +72,10 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToMobileSafari.observe(self.goToMobileSafari.observer)
     self.vm.outputs.goToProjectActivities.observe(self.goToProjectActivities.observer)
     self.vm.outputs.goToSearch.observe(self.goToSearch.observer)
+    self.vm.outputs.perimeterXInitialHeaders.map { $0 as? [String: String] }
+      .observe(self.perimeterXManagerReady.observer)
+    self.vm.outputs.perimeterXRefreshedHeaders.map { $0 as? [String: String] }
+      .observe(self.perimeterXRefreshedHeaders.observer)
     self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
     self.vm.outputs.presentViewController.map { ($0 as! UINavigationController).viewControllers.count }
       .observe(self.presentViewController.observer)
@@ -538,6 +544,32 @@ final class AppDelegateViewModelTests: TestCase {
         .ksr_configUpdated,
         .ksr_configUpdated
       ])
+    }
+  }
+
+  // MARK: - Perimeter X
+
+  func testPerimeterXManagerReady() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService) {
+      self.perimeterXManagerReady.assertDidNotEmitValue()
+
+      self.vm.inputs.perimeterXManagerReady(with: ["foo": "bar"])
+
+      self.perimeterXManagerReady.assertValue(["foo": "bar"])
+    }
+  }
+
+  func testPerimeterXNewHeaders() {
+    let mockService = MockService(serverConfig: ServerConfig.staging)
+
+    withEnvironment(apiService: mockService) {
+      self.perimeterXRefreshedHeaders.assertDidNotEmitValue()
+
+      self.vm.inputs.perimeterXNewHeaders(with: ["foo": "bar"])
+
+      self.perimeterXRefreshedHeaders.assertValue(["foo": "bar"])
     }
   }
 
