@@ -1,4 +1,5 @@
 import Foundation
+import PerimeterX
 import Prelude
 import ReactiveSwift
 
@@ -473,6 +474,9 @@ extension ServiceType {
   }
 
   fileprivate var defaultHeaders: [String: String] {
+    // PerimeterX authorization header
+    let pxHeaders = (PXManager.sharedInstance()?.httpHeaders() as! [String: String])
+
     var headers: [String: String] = [:]
     headers["Accept-Language"] = self.language
     headers["Authorization"] = self.authorizationHeader
@@ -482,7 +486,7 @@ extension ServiceType {
     headers["X-KICKSTARTER-CLIENT"] = self.serverConfig.apiClientAuth.clientId
     headers["Kickstarter-iOS-App-UUID"] = self.deviceIdentifier
 
-    return headers
+    return headers.withAllValuesFrom(pxHeaders)
   }
 
   func graphMutationRequestBody(mutation: String, input: [String: Any]) -> [String: Any] {

@@ -11,6 +11,7 @@ import Foundation
 import Kickstarter_Framework
 import Library
 import Optimizely
+import PerimeterX
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
@@ -49,6 +50,11 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       )
     )
 
+    if let pxManager = PXManager.sharedInstance() {
+      pxManager.delegate = self
+      pxManager.start(with: Secrets.perimeterxAppId)
+    }
+
     #if DEBUG
       if KsApi.Secrets.isOSS {
         AppEnvironment.replaceCurrentEnvironment(apiService: MockService())
@@ -75,6 +81,20 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         AppEnvironment.updateConfig(config)
 
         self?.viewModel.inputs.didUpdateConfig(config)
+      }
+
+    // Perimeter X
+
+    self.viewModel.outputs.perimeterXInitialHeaders
+      .observeForUI()
+      .observeValues { pxHeaders in
+        print("❌ Perimeter X headers ready: \(String(describing: pxHeaders))")
+      }
+
+    self.viewModel.outputs.perimeterXRefreshedHeaders
+      .observeForUI()
+      .observeValues { pxHeaders in
+        print("❌ Perimeter X headers were refreshed: \(String(describing: pxHeaders))")
       }
 
     self.viewModel.outputs.postNotification
@@ -452,5 +472,17 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
     rootTabBarController.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
     completion()
+  }
+}
+
+// MARK: - PXManagerDelegate
+
+extension AppDelegate: PXManagerDelegate {
+  func managerReady(_ httpHeaders: [AnyHashable: Any]!) {
+    self.viewModel.inputs.perimeterXManagerReady(with: httpHeaders)
+  }
+
+  func newHeaders(_ httpHeaders: [AnyHashable: Any]!) {
+    self.viewModel.inputs.perimeterXNewHeaders(with: httpHeaders)
   }
 }
