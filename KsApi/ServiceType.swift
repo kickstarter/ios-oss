@@ -488,7 +488,7 @@ extension ServiceType {
 
   // PerimeterX authorization header
   fileprivate var pxHeaders: [String: String] {
-    return (PXManager.sharedInstance()?.httpHeaders() as! [String: String])
+    return PXManager.configuredClient().headers()
   }
 
   func graphMutationRequestBody(mutation: String, input: [String: Any]) -> [String: Any] {

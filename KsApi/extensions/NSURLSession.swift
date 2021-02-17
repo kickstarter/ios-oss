@@ -25,7 +25,7 @@ internal extension URLSession {
       .flatMap(.concat) { data, response -> SignalProducer<Data, GraphError> in
         guard let response = response as? HTTPURLResponse else { fatalError() }
 
-        self.handlePX(blockResponse: response, and: data)
+        PXManager.configuredClient().handlePX(blockResponse: response, and: data)
 
         guard self.isValidResponse(response: response) else {
           print("🔴 [KsApi] HTTP Failure \(self.sanitized(request))")
@@ -63,25 +63,6 @@ internal extension URLSession {
     return .init(error: GraphError.decodeError(error))
   }
 
-  private func handlePX(blockResponse: HTTPURLResponse, and data: Data) {
-    if blockResponse.statusCode == 403 {
-      let jsonData = parseJSONData(data) as? [String: Any]
-      let blockResponse = PXManager.sharedInstance()?.checkError(jsonData)
-
-      if blockResponse?.type == PXBlockType.Block || blockResponse?.type == PXBlockType.Captcha {
-        DispatchQueue.main.async {
-          guard let window = UIApplication.shared.keyWindow else {
-            return
-          }
-
-          PXManager.sharedInstance()?.handle(blockResponse, with: window.rootViewController, captchaSuccess: {
-            print("*** success!")
-          })
-        }
-      }
-    }
-  }
-
   private func isValidResponse(response: HTTPURLResponse) -> Bool {
     guard (200..<300).contains(response.statusCode),
       let headers = response.allHeaderFields as? [String: String],
@@ -106,7 +87,7 @@ internal extension URLSession {
       .flatMap(.concat) { data, response -> SignalProducer<Data, ErrorEnvelope> in
         guard let response = response as? HTTPURLResponse else { fatalError() }
 
-        self.handlePX(blockResponse: response, and: data)
+        PXManager.configuredClient().handlePX(blockResponse: response, and: data)
 
         guard self.isValidResponse(response: response) else {
           if let json = parseJSONData(data) as? [String: Any] {
