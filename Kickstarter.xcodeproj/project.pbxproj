@@ -164,6 +164,7 @@
 		4748C18325B7A0EC0098E89E /* GoogleDataTransport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C18225B7A0EC0098E89E /* GoogleDataTransport.framework */; };
 		4748C18825B7A18F0098E89E /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C18725B7A18F0098E89E /* FIRAnalyticsConnector.framework */; };
 		4748C19125B7A2F80098E89E /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C19025B7A2F80098E89E /* FirebaseCore.framework */; };
+		476A2A5125DDA08E00EB6A56 /* PXManager+PerimeterXClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2A5025DDA08E00EB6A56 /* PXManager+PerimeterXClientType.swift */; };
 		477731BA25C4E7CF00AF3273 /* FirebaseRemoteConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 477731B925C4E7CF00AF3273 /* FirebaseRemoteConfig.framework */; };
 		59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */; };
 		59019FBA1D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */; };
@@ -1687,6 +1688,7 @@
 		4748C18225B7A0EC0098E89E /* GoogleDataTransport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleDataTransport.framework; path = Carthage/Build/iOS/GoogleDataTransport.framework; sourceTree = "<group>"; };
 		4748C18725B7A18F0098E89E /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FIRAnalyticsConnector.framework; path = Carthage/Build/iOS/FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
 		4748C19025B7A2F80098E89E /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCore.framework; path = Carthage/Build/iOS/FirebaseCore.framework; sourceTree = "<group>"; };
+		476A2A5025DDA08E00EB6A56 /* PXManager+PerimeterXClientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PXManager+PerimeterXClientType.swift"; sourceTree = "<group>"; };
 		477731B925C4E7CF00AF3273 /* FirebaseRemoteConfig.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseRemoteConfig.framework; path = Carthage/Build/iOS/FirebaseRemoteConfig.framework; sourceTree = "<group>"; };
 		59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrerRowStackViewViewModel.swift; sourceTree = "<group>"; };
 		59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrerRowStackView.swift; sourceTree = "<group>"; };
@@ -3744,6 +3746,7 @@
 				A7ED1F421E831BA200BFFA01 /* TestHelpers */,
 				8A213CE3239EAEA400BBB4C7 /* Tracking */,
 				A7F4418D1D005A9400FE6FC5 /* ViewModels */,
+				476A2A5025DDA08E00EB6A56 /* PXManager+PerimeterXClientType.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -5131,6 +5134,7 @@
 				8A23203125B0ECF700B940C3 /* IdentifyingTrackingClient.swift in Sources */,
 				A7F441CD1D005A9400FE6FC5 /* MessagesViewModel.swift in Sources */,
 				8053D3111D3848A3007B85DB /* Reachability.swift in Sources */,
+				476A2A5125DDA08E00EB6A56 /* PXManager+PerimeterXClientType.swift in Sources */,
 				77C9122723C4F99400F3D2C9 /* Double+Currency.swift in Sources */,
 				809F8B661D08B4FF005BADD9 /* UpdateDraftViewModel.swift in Sources */,
 				8A13D165249566FB007E2C0B /* PledgeExpandableHeaderRewardCellViewModel.swift in Sources */,
