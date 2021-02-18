@@ -20,6 +20,7 @@ public struct Service: ServiceType {
   public let currency: String
   public let buildVersion: String
   public let deviceIdentifier: String
+  public let perimeterXClient: PerimeterXClientType?
 
   public init(
     appId: String = Bundle.main.bundleIdentifier ?? "com.kickstarter.kickstarter",
@@ -28,7 +29,8 @@ public struct Service: ServiceType {
     language: String = "en",
     currency: String = "USD",
     buildVersion: String = Bundle.main._buildVersion,
-    deviceIdentifier: String = UIDevice.current.identifierForVendor.coalesceWith(UUID()).uuidString
+    deviceIdentifier: String = UIDevice.current.identifierForVendor.coalesceWith(UUID()).uuidString,
+    perimeterXClient: PerimeterXClientType? = nil
   ) {
     self.appId = appId
     self.serverConfig = serverConfig
@@ -37,6 +39,7 @@ public struct Service: ServiceType {
     self.currency = currency
     self.buildVersion = buildVersion
     self.deviceIdentifier = deviceIdentifier
+    self.perimeterXClient = perimeterXClient
 
     // Global override required for injecting custom User-Agent header in ajax requests
     UserDefaults.standard.register(defaults: ["UserAgent": Service.userAgent])
@@ -48,7 +51,8 @@ public struct Service: ServiceType {
       serverConfig: self.serverConfig,
       oauthToken: oauthToken,
       language: self.language,
-      buildVersion: self.buildVersion
+      buildVersion: self.buildVersion,
+      perimeterXClient: self.perimeterXClient
     )
   }
 

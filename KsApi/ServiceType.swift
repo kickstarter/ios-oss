@@ -1,5 +1,4 @@
 import Foundation
-import PerimeterX
 import Prelude
 import ReactiveSwift
 
@@ -20,6 +19,7 @@ public protocol ServiceType {
   var currency: String { get }
   var buildVersion: String { get }
   var deviceIdentifier: String { get }
+  var perimeterXClient: PerimeterXClientType? { get }
 
   init(
     appId: String,
@@ -28,7 +28,8 @@ public protocol ServiceType {
     language: String,
     currency: String,
     buildVersion: String,
-    deviceIdentifier: String
+    deviceIdentifier: String,
+    perimeterXClient: PerimeterXClientType?
   )
 
   /// Returns a new service with the oauth token replaced.
@@ -488,7 +489,7 @@ extension ServiceType {
 
   // PerimeterX authorization header
   fileprivate var pxHeaders: [String: String] {
-    return PXManager.configuredClient().headers()
+    return self.perimeterXClient?.headers() ?? [:]
   }
 
   func graphMutationRequestBody(mutation: String, input: [String: Any]) -> [String: Any] {

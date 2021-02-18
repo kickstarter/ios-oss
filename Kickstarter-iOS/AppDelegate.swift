@@ -276,12 +276,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       launchOptions: launchOptions
     )
 
-    // Perimeter X
-
-    if let pxManager = PXManager.sharedInstance() {
-      pxManager.delegate = self
-      pxManager.start(with: Secrets.perimeterxAppId)
-    }
+    PerimeterXClient.startPerimeterX(with: self)
 
     UNUserNotificationCenter.current().delegate = self
 

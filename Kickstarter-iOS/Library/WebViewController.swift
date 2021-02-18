@@ -1,6 +1,5 @@
 import KsApi
 import Library
-import PerimeterX
 import Prelude
 import Prelude_UIKit
 import UIKit
@@ -53,18 +52,9 @@ internal class WebViewController: UIViewController {
     decidePolicyFor _: WKNavigationResponse,
     decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
   ) {
-    let cookie = HTTPCookie(properties: [
-      .domain: "www.perimeterx.com", // Change according to the domain the webview will use
-      .path: "/",
-      .name: "_pxmvid",
-      .value: PXManager.sharedInstance()?.getVid() ?? "",
-      .secure: "FALSE",
-      .expires: NSDate(timeIntervalSinceNow: 3_600)
-    ])
-
-    if let newCookie = cookie {
+    if let newCookie = PerimeterXClient.cookie {
       self.webKitCookieStore?.setCookie(newCookie, completionHandler: {
-        print("PerimeterX mobile VID cookie set.")
+        print("Perimeter X mobile VID cookie set.")
         })
     }
     decisionHandler(.allow)

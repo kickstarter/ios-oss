@@ -1,5 +1,4 @@
 import Foundation
-import PerimeterX
 import Prelude
 import ReactiveSwift
 
@@ -11,7 +10,7 @@ private let scheduler = QueueScheduler(qos: .background, name: "com.kickstarter.
 
 internal extension URLSession {
   // Wrap an URLSession producer with Graph error envelope logic.
-  func rac_graphDataResponse(_ request: URLRequest)
+  func rac_graphDataResponse(_ request: URLRequest, and error: PerimeterXErrorHandler? = nil)
     -> SignalProducer<Data, GraphError> {
     let producer = self.reactive.data(with: request)
 
@@ -25,7 +24,7 @@ internal extension URLSession {
       .flatMap(.concat) { data, response -> SignalProducer<Data, GraphError> in
         guard let response = response as? HTTPURLResponse else { fatalError() }
 
-        PXManager.configuredClient().handlePX(blockResponse: response, and: data)
+        error?.handleError(blockResponse: response, and: data)
 
         guard self.isValidResponse(response: response) else {
           print("🔴 [KsApi] HTTP Failure \(self.sanitized(request))")
@@ -74,7 +73,8 @@ internal extension URLSession {
   }
 
   // Wrap an URLSession producer with error envelope logic.
-  func rac_dataResponse(_ request: URLRequest, uploading file: (url: URL, name: String)? = nil)
+  func rac_dataResponse(_ request: URLRequest, uploading file: (url: URL, name: String)? = nil,
+                        and error: PerimeterXErrorHandler? = nil)
     -> SignalProducer<Data, ErrorEnvelope> {
     let producer = file.map { self.rac_dataWithRequest(request, uploading: $0, named: $1) }
       ?? self.reactive.data(with: request)
@@ -87,7 +87,7 @@ internal extension URLSession {
       .flatMap(.concat) { data, response -> SignalProducer<Data, ErrorEnvelope> in
         guard let response = response as? HTTPURLResponse else { fatalError() }
 
-        PXManager.configuredClient().handlePX(blockResponse: response, and: data)
+        error?.handleError(blockResponse: response, and: data)
 
         guard self.isValidResponse(response: response) else {
           if let json = parseJSONData(data) as? [String: Any] {
