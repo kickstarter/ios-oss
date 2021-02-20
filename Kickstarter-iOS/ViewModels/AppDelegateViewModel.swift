@@ -104,6 +104,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits when the application should configure Optimizely
   var configureOptimizely: Signal<(String, OptimizelyLogLevelType, TimeInterval), Never> { get }
 
+  /// Emits when the application should configure Perimeter X
+  var configurePerimeterX: Signal<(), Never> { get }
+
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
 
@@ -620,6 +623,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .map { _ in AppEnvironment.current }
       .map(optimizelyData(for:))
 
+    self.configurePerimeterX = self.applicationLaunchOptionsProperty.signal.ignoreValues()
+
     self.configureAppCenterWithData = Signal.merge(
       self.applicationLaunchOptionsProperty.signal.ignoreValues(),
       self.userSessionStartedProperty.signal,
@@ -795,6 +800,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFirebase: Signal<(), Never>
   public let configureOptimizely: Signal<(String, OptimizelyLogLevelType, TimeInterval), Never>
+  public let configurePerimeterX: Signal<(), Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let emailVerificationCompleted: Signal<(String, Bool), Never>
   public let findRedirectUrl: Signal<URL, Never>
