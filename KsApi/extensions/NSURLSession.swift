@@ -10,7 +10,7 @@ private let scheduler = QueueScheduler(qos: .background, name: "com.kickstarter.
 
 internal extension URLSession {
   // Wrap an URLSession producer with Graph error envelope logic.
-  func rac_graphDataResponse(_ request: URLRequest, and error: PerimeterXErrorHandler? = nil)
+  func rac_graphDataResponse(_ request: URLRequest, and error: ErrorHandler? = nil)
     -> SignalProducer<Data, GraphError> {
     let producer = self.reactive.data(with: request)
 
@@ -74,7 +74,7 @@ internal extension URLSession {
 
   // Wrap an URLSession producer with error envelope logic.
   func rac_dataResponse(_ request: URLRequest, uploading file: (url: URL, name: String)? = nil,
-                        and error: PerimeterXErrorHandler? = nil)
+                        and error: ErrorHandler? = nil)
     -> SignalProducer<Data, ErrorEnvelope> {
     let producer = file.map { self.rac_dataWithRequest(request, uploading: $0, named: $1) }
       ?? self.reactive.data(with: request)

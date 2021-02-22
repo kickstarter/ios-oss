@@ -164,6 +164,7 @@
 		4748C18325B7A0EC0098E89E /* GoogleDataTransport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C18225B7A0EC0098E89E /* GoogleDataTransport.framework */; };
 		4748C18825B7A18F0098E89E /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C18725B7A18F0098E89E /* FIRAnalyticsConnector.framework */; };
 		4748C19125B7A2F80098E89E /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C19025B7A2F80098E89E /* FirebaseCore.framework */; };
+		47567A5D25E40E500073AD6E /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47567A5C25E40E500073AD6E /* ErrorHandler.swift */; };
 		476A2A6425DEED2600EB6A56 /* PerimeterXClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2A6325DEED2600EB6A56 /* PerimeterXClientType.swift */; };
 		476A2A6B25DEF12900EB6A56 /* PerimeterXClient+PerimeterXClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2A5025DDA08E00EB6A56 /* PerimeterXClient+PerimeterXClientType.swift */; };
 		476A2A9C25DF2ECA00EB6A56 /* MockPerimeterXClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2A7825DF278900EB6A56 /* MockPerimeterXClient.swift */; };
@@ -1691,6 +1692,7 @@
 		4748C18225B7A0EC0098E89E /* GoogleDataTransport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleDataTransport.framework; path = Carthage/Build/iOS/GoogleDataTransport.framework; sourceTree = "<group>"; };
 		4748C18725B7A18F0098E89E /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FIRAnalyticsConnector.framework; path = Carthage/Build/iOS/FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
 		4748C19025B7A2F80098E89E /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCore.framework; path = Carthage/Build/iOS/FirebaseCore.framework; sourceTree = "<group>"; };
+		47567A5C25E40E500073AD6E /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		476A2A5025DDA08E00EB6A56 /* PerimeterXClient+PerimeterXClientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PerimeterXClient+PerimeterXClientType.swift"; sourceTree = "<group>"; };
 		476A2A6325DEED2600EB6A56 /* PerimeterXClientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerimeterXClientType.swift; sourceTree = "<group>"; };
 		476A2A7825DF278900EB6A56 /* MockPerimeterXClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPerimeterXClient.swift; sourceTree = "<group>"; };
@@ -4311,6 +4313,7 @@
 				D01587771EEB2ED6006E7684 /* models */,
 				775DFADB2162A56D00620CED /* mutations */,
 				7798B5292174F3BC008BC50D /* queries */,
+				47567A5C25E40E500073AD6E /* ErrorHandler.swift */,
 			);
 			path = KsApi;
 			sourceTree = "<group>";
@@ -6211,6 +6214,7 @@
 				D0158A311EEB30A2006E7684 /* User.NotificationsTemplates.swift in Sources */,
 				D6ED1B3E216D61E0007F7547 /* UpdateUserAccountMutation.swift in Sources */,
 				D01588C91EEB2ED7006E7684 /* RewardLenses.swift in Sources */,
+				47567A5D25E40E500073AD6E /* ErrorHandler.swift in Sources */,
 				77CD894921791B05003066DA /* ProjectStatsTemplate.swift in Sources */,
 				D01588B11EEB2ED7006E7684 /* ProjectLenses.swift in Sources */,
 				D777442F217A3382008D679F /* ChangeCurrencyInput.swift in Sources */,

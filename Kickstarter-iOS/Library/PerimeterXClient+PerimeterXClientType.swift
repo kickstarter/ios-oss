@@ -2,6 +2,9 @@ import KsApi
 import PerimeterX
 
 public class PerimeterXClient: PerimeterXClientType {
+  /**
+   Custom `HTTPCookie` adding Perimeter X protection to native webviews.
+   */
   public static var cookie = HTTPCookie(properties: [
     .domain: "www.perimeterx.com", // Change according to the domain the webview will use
     .path: "/",
@@ -11,6 +14,11 @@ public class PerimeterXClient: PerimeterXClientType {
     .expires: NSDate(timeIntervalSinceNow: 3_600)
   ])
 
+  /**
+   Sets the delegate for the sharedInstance of the `PXManager` and starts it with the obfuscated Perimeter X App ID.
+
+   - parameter pxManagerDelegate: An object conforming to the `PXManagerDelegate` class.
+   */
   public static func startPerimeterX(with pxManagerDelegate: PXManagerDelegate) {
     PXManager.sharedInstance().delegate = pxManagerDelegate
     PXManager.sharedInstance()?.start(with: Secrets.perimeterxAppId)
@@ -38,6 +46,6 @@ public class PerimeterXClient: PerimeterXClientType {
   }
 
   public func headers() -> [String: String] {
-    return (PXManager.sharedInstance().httpHeaders() as! [String: String])
+    return (PXManager.sharedInstance().httpHeaders() as? [String: String]) ?? [:]
   }
 }

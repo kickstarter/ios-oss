@@ -9,7 +9,8 @@ internal class WebViewController: UIViewController {
   internal let webView = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
   internal var bottomAnchorConstraint: NSLayoutConstraint?
 
-  var webKitCookieStore: WKHTTPCookieStore?
+  // Enables us to pass the http cookie from Perimeter X for additional protection
+  private var webKitCookieStore: WKHTTPCookieStore?
 
   override func loadView() {
     super.loadView()
@@ -55,7 +56,7 @@ internal class WebViewController: UIViewController {
     if let newCookie = PerimeterXClient.cookie {
       self.webKitCookieStore?.setCookie(newCookie, completionHandler: {
         print("Perimeter X mobile VID cookie set.")
-        })
+      })
     }
     decisionHandler(.allow)
   }
