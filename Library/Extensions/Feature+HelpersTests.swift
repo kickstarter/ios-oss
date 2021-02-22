@@ -5,6 +5,7 @@ import Prelude
 import XCTest
 
 final class FeatureHelpersTests: TestCase {
+  
   // MARK: - Email Verification Flow
 
   func testFeatureEmailVerificationFlow_isTrue() {
