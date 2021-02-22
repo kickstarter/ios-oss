@@ -102,7 +102,8 @@ final class FeatureFlagToolsViewModelTests: TestCase {
   func testFeatureEnabledFromDictionaries_KnownFeatures() {
     let featureEnabled = featureEnabledFromDictionaries([[
       "ios_email_verification_flow": false,
-      "ios_email_verification_skip": false
+      "ios_email_verification_skip": false,
+      "ios_segment": false
     ]])
 
     XCTAssertFalse(featureEnabled.isEmpty, "Known features produce Feature enums")

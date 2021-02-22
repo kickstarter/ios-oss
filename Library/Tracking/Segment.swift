@@ -30,13 +30,15 @@ public extension Analytics {
 
 extension Analytics: IdentifyingTrackingClient {
   public func identify(userId: String?, traits: [String: Any]?) {
-    guard AppEnvironment.current.environmentVariables.isTrackingEnabled else { return }
+    guard AppEnvironment.current.environmentVariables.isTrackingEnabled,
+      featureSegmentIsEnabled() else { return }
 
     self.identify(userId, traits: traits)
   }
 
   public func resetIdentity() {
-    guard AppEnvironment.current.environmentVariables.isTrackingEnabled else { return }
+    guard AppEnvironment.current.environmentVariables.isTrackingEnabled,
+      featureSegmentIsEnabled() else { return }
 
     self.reset()
   }
@@ -44,7 +46,8 @@ extension Analytics: IdentifyingTrackingClient {
 
 extension Analytics: TrackingClientType {
   public func track(event: String, properties: [String: Any]) {
-    guard AppEnvironment.current.environmentVariables.isTrackingEnabled else { return }
+    guard AppEnvironment.current.environmentVariables.isTrackingEnabled,
+      featureSegmentIsEnabled() else { return }
 
     self.track(event, properties: properties)
   }
