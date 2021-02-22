@@ -1,10 +1,6 @@
 import Foundation
 import KsApi
 
-public func featureQualtricsIsEnabled() -> Bool {
-  return Feature.qualtrics.isEnabled()
-}
-
 public func featureEmailVerificationFlowIsEnabled() -> Bool {
   return Feature.emailVerificationFlow.isEnabled()
 }
