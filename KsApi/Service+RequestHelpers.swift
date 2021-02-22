@@ -15,7 +15,7 @@ extension Service {
     )
 
     print("⚪️ [KsApi] Starting query:\n \(queryString)")
-    return Service.session.rac_graphDataResponse(request)
+    return Service.session.rac_graphDataResponse(request, and: self.perimeterXClient)
       .flatMap(self.decodeGraphModel)
   }
 
@@ -29,7 +29,7 @@ extension Service {
       print("⚪️ [KsApi] Starting mutation:\n \(mutation.description)")
       print("⚪️ [KsApi] Input:\n \(mutation.input.toInputDictionary())")
 
-      return Service.session.rac_graphDataResponse(request)
+      return Service.session.rac_graphDataResponse(request, and: self.perimeterXClient)
         .flatMap(self.decodeGraphModel)
     } catch {
       return SignalProducer(error: .invalidInput)
@@ -48,7 +48,8 @@ extension Service {
 
     return Service.session.rac_dataResponse(
       preparedRequest(forURL: URL, method: properties.method, query: properties.query),
-      uploading: properties.file.map { ($1, $0.rawValue) }
+      uploading: properties.file.map { ($1, $0.rawValue) },
+      and: self.perimeterXClient
     )
     .flatMap(self.decodeModel)
   }
@@ -59,7 +60,8 @@ extension Service {
       return .init(error: .invalidPaginationUrl)
     }
 
-    return Service.session.rac_dataResponse(preparedRequest(forURL: paginationUrl))
+    return Service.session
+      .rac_dataResponse(preparedRequest(forURL: paginationUrl), and: self.perimeterXClient)
       .flatMap(self.decodeModel)
   }
 }

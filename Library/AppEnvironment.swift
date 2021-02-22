@@ -287,7 +287,8 @@ public struct AppEnvironment: AppEnvironmentType {
         ),
         oauthToken: service.oauthToken,
         language: self.current.language.rawValue,
-        currency: self.current.locale.currencyCode ?? "USD"
+        currency: self.current.locale.currencyCode ?? "USD",
+        perimeterXClient: service.perimeterXClient
       )
     }
 
@@ -306,7 +307,8 @@ public struct AppEnvironment: AppEnvironmentType {
         ),
         oauthToken: service.oauthToken,
         language: self.current.language.rawValue,
-        currency: self.current.locale.currencyCode ?? "USD"
+        currency: self.current.locale.currencyCode ?? "USD",
+        perimeterXClient: service.perimeterXClient
       )
     }
 
@@ -323,7 +325,8 @@ public struct AppEnvironment: AppEnvironmentType {
         ),
         oauthToken: service.oauthToken,
         language: self.current.language.rawValue,
-        currency: self.current.locale.currencyCode ?? "USD"
+        currency: self.current.locale.currencyCode ?? "USD",
+        perimeterXClient: service.perimeterXClient
       )
     }
 
@@ -336,7 +339,8 @@ public struct AppEnvironment: AppEnvironmentType {
         serverConfig: serverConfig,
         oauthToken: service.oauthToken,
         language: self.current.language.rawValue,
-        currency: self.current.locale.currencyCode ?? "USD"
+        currency: self.current.locale.currencyCode ?? "USD",
+        perimeterXClient: service.perimeterXClient
       )
     }
 
