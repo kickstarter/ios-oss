@@ -3,7 +3,7 @@ import Prelude_UIKit
 import UIKit
 
 public let createNewAccountButtonStyle = greenButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.facebook_confirmation_button() }
+  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.Sign_up() }
 
 public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ksr_support_400
   <> UIButton.lens.titleColor(for: .highlighted) %~ { _ in
