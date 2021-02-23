@@ -110,6 +110,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     let addOns = projectEvent.values().map(\.rewardData.addOns).skipNil()
 
+    // A digital add on returns an empty node for shippingRulesExpanded so we want the first non-digital one to ensure we get a value.
     let shippingRuleExpanded = projectEvent.values().map(firstNonDigitalAddOn).skipNil()
       .map(\.shippingRulesExpanded?.first)
 
@@ -436,12 +437,10 @@ private func addOnReward(
 }
 
 /**
- Retrieves the first non-digital add on from a `Project`
+ Retrieves the first non-digital add on from a `Project` for selecting a shippingRuleExpanded.
  */
 private func firstNonDigitalAddOn(_ project: Project) -> Reward? {
-  return project.rewardData.addOns?.first { addOn in
-    isAddOnDigital(addOn) ? false : true
-  }
+  return project.rewardData.addOns?.first { !isAddOnDigital($0) }
 }
 
 private func isAddOnDigital(_ addOn: Reward) -> Bool {
