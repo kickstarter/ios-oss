@@ -258,26 +258,24 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     // MARK: - Tracking
 
-    Signal.zip(project, baseReward, context, refTag)
+    Signal.zip(project, baseReward, refTag)
       .take(first: 1)
       .observeForUI()
-      .observeValues { project, baseReward, context, refTag in
+      .observeValues { project, baseReward, refTag in
         AppEnvironment.current.ksrAnalytics.trackAddOnsPageViewed(
           project: project,
           reward: baseReward,
-          context: TrackingHelpers.pledgeContext(for: context),
           refTag: refTag
         )
       }
 
-    Signal.zip(project, baseReward, context, refTag)
+    Signal.zip(project, baseReward, refTag)
       .takeWhen(self.continueButtonTappedProperty.signal)
       .observeForUI()
-      .observeValues { project, baseReward, context, refTag in
+      .observeValues { project, baseReward, refTag in
         AppEnvironment.current.ksrAnalytics.trackAddOnsContinueButtonClicked(
           project: project,
           reward: baseReward,
-          context: TrackingHelpers.pledgeContext(for: context),
           refTag: refTag
         )
       }

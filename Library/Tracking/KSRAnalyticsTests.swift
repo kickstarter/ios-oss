@@ -295,6 +295,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(project.stats.pledged, dataLakeClientProperties?["project_current_pledge_amount"] as? Int)
     XCTAssertEqual(2_000, dataLakeClientProperties?["project_current_amount_pledged_usd"] as? Float)
     XCTAssertEqual(4_000, dataLakeClientProperties?["project_goal_usd"] as? Float)
+    XCTAssertEqual(false, dataLakeClientProperties?["project_has_add_ons"] as? Bool)
     XCTAssertEqual(true, dataLakeClientProperties?["project_has_video"] as? Bool)
     XCTAssertEqual(10, dataLakeClientProperties?["project_comments_count"] as? Int)
     XCTAssertEqual(true, dataLakeClientProperties?["project_prelaunch_activated"] as? Bool)
@@ -305,7 +306,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertNil(dataLakeClientProperties?["project_user_is_backer"])
     XCTAssertNil(dataLakeClientProperties?["project_user_has_starred"])
 
-    XCTAssertEqual(28, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(29, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual("discovery", dataLakeClientProperties?["session_ref_tag"] as? String)
     XCTAssertEqual("recommended", dataLakeClientProperties?["session_referrer_credit"] as? String)
@@ -336,6 +337,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(project.stats.pledged, segmentClientProperties?["project_current_pledge_amount"] as? Int)
     XCTAssertEqual(2_000, segmentClientProperties?["project_current_amount_pledged_usd"] as? Float)
     XCTAssertEqual(4_000, segmentClientProperties?["project_goal_usd"] as? Float)
+    XCTAssertEqual(false, segmentClientProperties?["project_has_add_ons"] as? Bool)
     XCTAssertEqual(true, segmentClientProperties?["project_has_video"] as? Bool)
     XCTAssertEqual(10, segmentClientProperties?["project_comments_count"] as? Int)
     XCTAssertEqual(true, segmentClientProperties?["project_prelaunch_activated"] as? Bool)
@@ -346,7 +348,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertNil(segmentClientProperties?["project_user_is_backer"])
     XCTAssertNil(segmentClientProperties?["project_user_has_starred"])
 
-    XCTAssertEqual(28, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(29, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual("discovery", segmentClientProperties?["session_ref_tag"] as? String)
     XCTAssertEqual("recommended", segmentClientProperties?["session_referrer_credit"] as? String)
@@ -377,13 +379,13 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(false, dataLakeClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, dataLakeClientProperties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(27, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(28, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual(false, segmentClientProperties?["project_user_is_project_creator"] as? Bool)
     XCTAssertEqual(false, segmentClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, segmentClientProperties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(27, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(28, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInBacker() {
@@ -410,13 +412,13 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(true, dataLakeClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, dataLakeClientProperties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(27, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(28, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual(false, segmentClientProperties?["project_user_is_project_creator"] as? Bool)
     XCTAssertEqual(true, segmentClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, segmentClientProperties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(27, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(28, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInStarrer() {
@@ -443,13 +445,13 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(false, dataLakeClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(true, dataLakeClientProperties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(27, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(28, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual(false, segmentClientProperties?["project_user_is_project_creator"] as? Bool)
     XCTAssertEqual(false, segmentClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(true, segmentClientProperties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(27, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(28, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInCreator() {
@@ -476,13 +478,13 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(false, dataLakeClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, dataLakeClientProperties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(27, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(28, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual(true, segmentClientProperties?["project_user_is_project_creator"] as? Bool)
     XCTAssertEqual(false, segmentClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, segmentClientProperties?["project_user_has_watched"] as? Bool)
 
-    XCTAssertEqual(27, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(28, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   // MARK: - Discovery Properties Tests
@@ -638,7 +640,7 @@ final class KSRAnalyticsTests: TestCase {
     let reward = Reward.template
 
     ksrAnalytics
-      .trackRewardClicked(project: project, reward: reward, context: .newPledge, refTag: .recommended)
+      .trackRewardClicked(project: project, reward: reward, refTag: .recommended)
 
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
@@ -648,14 +650,12 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(10.00, dataLakeClientProps?["pledge_backer_reward_minimum"] as? Double)
 
     XCTAssertEqual("recommended", dataLakeClientProps?["session_ref_tag"] as? String)
-    XCTAssertEqual("new_pledge", dataLakeClientProps?["context_pledge_flow"] as? String)
 
     XCTAssertEqual(true, segmentClientProps?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(1, segmentClientProps?["pledge_backer_reward_id"] as? Int)
     XCTAssertEqual(10.00, segmentClientProps?["pledge_backer_reward_minimum"] as? Double)
 
     XCTAssertEqual("recommended", segmentClientProps?["session_ref_tag"] as? String)
-    XCTAssertEqual("new_pledge", segmentClientProps?["context_pledge_flow"] as? String)
   }
 
   func testPledgeProperties_NoReward() {
@@ -667,7 +667,7 @@ final class KSRAnalyticsTests: TestCase {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5.0
 
-    ksrAnalytics.trackRewardClicked(project: project, reward: reward, context: .changeReward, refTag: nil)
+    ksrAnalytics.trackRewardClicked(project: project, reward: reward, refTag: nil)
 
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
@@ -676,32 +676,9 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(0, dataLakeClientProps?["pledge_backer_reward_id"] as? Int)
     XCTAssertEqual(5.00, dataLakeClientProps?["pledge_backer_reward_minimum"] as? Double)
 
-    XCTAssertEqual("change_reward", dataLakeClientProps?["context_pledge_flow"] as? String)
-
     XCTAssertEqual(false, segmentClientProps?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(0, segmentClientProps?["pledge_backer_reward_id"] as? Int)
     XCTAssertEqual(5.00, segmentClientProps?["pledge_backer_reward_minimum"] as? Double)
-
-    XCTAssertEqual("change_reward", segmentClientProps?["context_pledge_flow"] as? String)
-  }
-
-  func testPledgeProperties_ShippingPreference() {
-    let dataLakeClient = MockTrackingClient()
-    let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
-
-    let project = Project.cosmicSurgery
-    let reward = Reward.template
-      |> Reward.lens.shipping .~ (Reward.Shipping.template
-        |> Reward.Shipping.lens.preference .~ Reward.Shipping.Preference.restricted)
-
-    ksrAnalytics.trackRewardClicked(project: project, reward: reward, context: .manageReward, refTag: nil)
-
-    let dataLakeClientProps = dataLakeClient.properties.last
-    let segmentClientProps = segmentClient.properties.last
-
-    XCTAssertEqual("manage_reward", dataLakeClientProps?["context_pledge_flow"] as? String)
-    XCTAssertEqual("manage_reward", segmentClientProps?["context_pledge_flow"] as? String)
   }
 
   // MARK: - Project Page Tracking
@@ -768,7 +745,6 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackCheckoutPaymentPageViewed(
       project: .template,
       reward: .template,
-      context: .newPledge,
       refTag: RefTag.activity,
       cookieRefTag: RefTag.activity
     )
@@ -786,9 +762,7 @@ final class KSRAnalyticsTests: TestCase {
     self.assertPledgeProperties(segmentClientProps)
 
     XCTAssertEqual("activity", dataLakeClientProps?["session_ref_tag"] as? String)
-    XCTAssertEqual("new_pledge", dataLakeClientProps?["context_pledge_flow"] as? String)
     XCTAssertEqual("activity", segmentClientProps?["session_ref_tag"] as? String)
-    XCTAssertEqual("new_pledge", segmentClientProps?["context_pledge_flow"] as? String)
   }
 
   func testLogEventsCallback() {
@@ -963,7 +937,6 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackRewardClicked(
       project: project,
       reward: reward,
-      context: .newPledge,
       refTag: .category
     )
 
@@ -979,9 +952,7 @@ final class KSRAnalyticsTests: TestCase {
     self.assertPledgeProperties(segmentClientProperties)
     self.assertProjectProperties(segmentClientProperties)
 
-    XCTAssertEqual("new_pledge", dataLakeClientProperties?["context_pledge_flow"] as? String)
     XCTAssertEqual("category", dataLakeClientProperties?["session_ref_tag"] as? String)
-    XCTAssertEqual("new_pledge", segmentClientProperties?["context_pledge_flow"] as? String)
     XCTAssertEqual("category", segmentClientProperties?["session_ref_tag"] as? String)
   }
 
@@ -1027,7 +998,6 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackPledgeSubmitButtonClicked(
       project: .template,
       reward: reward,
-      context: .manageReward,
       refTag: nil
     )
 
@@ -1051,7 +1021,6 @@ final class KSRAnalyticsTests: TestCase {
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
 
     ksrAnalytics.trackAddNewCardButtonClicked(
-      context: .newPledge,
       project: .template,
       refTag: .activity,
       reward: .template
@@ -1065,7 +1034,6 @@ final class KSRAnalyticsTests: TestCase {
     self.assertProjectProperties(dataLakeClientProps)
     self.assertPledgeProperties(dataLakeClientProps)
 
-    XCTAssertEqual("new_pledge", dataLakeClientProps?["context_pledge_flow"] as? String)
     XCTAssertEqual("activity", dataLakeClientProps?["session_ref_tag"] as? String)
 
     XCTAssertEqual(["Add New Card Button Clicked"], segmentClient.events)
@@ -1073,7 +1041,6 @@ final class KSRAnalyticsTests: TestCase {
     self.assertProjectProperties(segmentClientProps)
     self.assertPledgeProperties(segmentClientProps)
 
-    XCTAssertEqual("new_pledge", segmentClientProps?["context_pledge_flow"] as? String)
     XCTAssertEqual("activity", segmentClientProps?["session_ref_tag"] as? String)
   }
 
@@ -1395,7 +1362,6 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackAddNewCardButtonClicked(
-      context: .newPledge,
       location: .pledgeAddNewCard,
       project: .template,
       refTag: nil,
@@ -1411,7 +1377,6 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackAddNewCardButtonClicked(
-      context: .newPledge,
       location: .settingsAddNewCard,
       project: .template,
       refTag: nil,
@@ -1429,7 +1394,6 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackCheckoutPaymentPageViewed(
       project: .template,
       reward: .template,
-      context: .newPledge,
       refTag: nil,
       cookieRefTag: nil
     )
@@ -1494,7 +1458,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
 
-    ksrAnalytics.trackRewardClicked(project: .template, reward: .template, context: .newPledge, refTag: nil)
+    ksrAnalytics.trackRewardClicked(project: .template, reward: .template, refTag: nil)
     XCTAssertEqual("rewards", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("rewards", segmentClient.properties.last?["context_page"] as? String)
 
