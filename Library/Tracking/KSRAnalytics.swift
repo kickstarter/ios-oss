@@ -206,6 +206,51 @@ public final class KSRAnalytics {
     }
   }
 
+  /**
+   Indicates which button or link the user has clicked or tapped; describes CTA Clicked events.
+   */
+  public enum CTAContext {
+    case addOnsContinue
+    case pledgeInitiate
+    case pledgeSubmit
+    case rewardContinue
+    case discover
+    case discoverFilter
+    case discoverSort
+    case search
+    case watchProject
+    case campaignDetails
+    case creatorDetails
+    case logInInitiate
+    case logInOrSignUp
+    case logInSubmit
+    case signUpInitiate
+    case signUpSubmit
+    case forgotPassword
+
+    var trackingString: String {
+      switch self {
+      case .addOnsContinue: return "add_ons_continue"
+      case .pledgeInitiate: return "pledge_initiate"
+      case .pledgeSubmit: return "pledge_submit"
+      case .rewardContinue: return "reward_continue"
+      case .discover: return "discover"
+      case .discoverFilter: return "discover_filter"
+      case .discoverSort: return "discover_sort"
+      case .search: return "search"
+      case .watchProject: return "watch_project"
+      case .campaignDetails: return "campaign_details"
+      case .creatorDetails: return "creator_details"
+      case .logInInitiate: return "log_in_initiate"
+      case .logInOrSignUp: return "log_in_or_sign_up"
+      case .logInSubmit: return "log_in_submit"
+      case .signUpInitiate: return "sign_up_initiate"
+      case .signUpSubmit: return "sign_up_submit"
+      case .forgotPassword: return "forgot_password"
+      }
+    }
+  }
+
   /// Determines which gesture was used.
   public enum GestureType: String {
     case swipe
@@ -296,6 +341,97 @@ public final class KSRAnalytics {
       case .paymentsPage: return "Payments Page"
       case .projectPage: return "Project Page"
       case .rewardSelection: return "Reward Selection"
+      }
+    }
+  }
+
+  /**
+   A tab or section within a grouping of content.
+
+   - comments: Section of Project overview screen
+   - campaign: Details when user clicks "Read more"
+   - faq: Tab on campaign details screen
+   - overview: Project overview landing screen
+   - risks: Tab on campaign details screen
+   - updates: Section of project overview screen.
+   */
+  public enum SectionContext {
+    case comments
+    case campaign
+    case faq
+    case overview
+    case risks
+    case updates
+
+    var trackingString: String {
+      switch self {
+      case .comments: return "comments"
+      case .campaign: return "campaign"
+      case .faq: return "faq"
+      case .overview: return "overview"
+      case .risks: return "risks"
+      case .updates: return "updates"
+      }
+    }
+  }
+
+  /**
+   Contextual details about an event that was fired that aren't captured in other context properties
+   */
+  public enum TypeContext {
+    case amountGoal
+    case amountPledged
+    case apple
+    case applePay
+    case backed
+    case categoryName
+    case creditCard
+    case facebook
+    case fixErroredPledge
+    case location
+    case managePledge
+    case newPledge
+    case percentRaised
+    case projectState
+    case pwl
+    case recommended
+    case searchTerm
+    case social
+    case subcategoryName
+    case subscriptionFalse
+    case subscriptionTrue
+    case tag
+    case unwatch
+    case watch
+    case watched
+
+    var trackingString: String {
+      switch self {
+      case .amountGoal: return "amount_goal"
+      case .amountPledged: return "amount_pledged"
+      case .apple: return "true"
+      case .applePay: return "apple_pay"
+      case .backed: return "backed"
+      case .categoryName: return "category_name"
+      case .creditCard: return "credit_card"
+      case .facebook: return "facebook"
+      case .fixErroredPledge: return "fix_errored_pledge"
+      case .location: return "location"
+      case .managePledge: return "manage_pledge"
+      case .newPledge: return "new_pledge"
+      case .percentRaised: return "percent_raised"
+      case .projectState: return "project_state"
+      case .pwl: return "pwl"
+      case .recommended: return "recommended"
+      case .searchTerm: return "search_term"
+      case .social: return "social"
+      case .subcategoryName: return "subcategory_name"
+      case .subscriptionFalse: return "subscription_false"
+      case .subscriptionTrue: return "subscription_true"
+      case .tag: return "tag"
+      case .unwatch: return "unwatch"
+      case .watch: return "watch"
+      case .watched: return "watched"
       }
     }
   }
@@ -1291,6 +1427,7 @@ private func projectProperties(
   props["creator_uid"] = project.creator.id
   props["deadline"] = project.dates.deadline
   props["goal"] = project.stats.goal
+  props["has_add_ons"] = project.hasAddOns
   props["launched_at"] = project.dates.launchedAt
   props["location"] = project.location.name
   props["name"] = project.name
@@ -1440,17 +1577,23 @@ private func properties(category: KsApi.Category, prefix: String = "category_") 
 // MARK: - Context Properties
 
 private func contextProperties(
+  ctaContext: KSRAnalytics.CTAContext? = nil,
   pledgeFlowContext: KSRAnalytics.PledgeContext? = nil,
   tabBarLabel: KSRAnalytics.TabBarItemLabel? = nil,
   page: KSRAnalytics.PageContext? = nil,
+  sectionContext: KSRAnalytics.SectionContext? = nil,
+  typeContext: KSRAnalytics.TypeContext? = nil,
   prefix: String = "context_"
 ) -> [String: Any] {
   var result: [String: Any] = [:]
 
+  result["cta"] = ctaContext?.trackingString
   result["page"] = page?.rawValue
   result["pledge_flow"] = pledgeFlowContext?.trackingString
+  result["section"] = sectionContext?.trackingString
   result["timestamp"] = AppEnvironment.current.dateType.init().timeIntervalSince1970
   result["tab_bar_label"] = tabBarLabel?.trackingString
+  result["type"] = typeContext?.trackingString
 
   return result.prefixedKeys(prefix)
 }
@@ -1514,8 +1657,13 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
 private func userProperties(for user: User?, config: Config?, _ prefix: String = "user_") -> [String: Any] {
   var props: [String: Any] = [:]
 
+  props["backed_projects_count"] = user?.stats.backedProjectsCount
   props["country"] = user?.location?.country ?? config?.countryCode
+  props["created_projects_count"] = user?.stats.createdProjectsCount
+  props["is_admin"] = user?.isAdmin
+  props["launched_projects_count"] = user?.stats.memberProjectsCount
   props["uid"] = user?.id
+  props["watched_projects_count"] = user?.stats.starredProjectsCount
 
   return props.prefixedKeys(prefix)
 }
