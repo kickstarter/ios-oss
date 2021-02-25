@@ -60,7 +60,7 @@ public final class KSRAnalytics {
     case signupSubmitButtonClicked = "Signup Submit Button Clicked"
     case skipVerificationButtonClicked = "Skip Verification Button Clicked"
     case tabBarClicked = "Tab Bar Clicked"
-    case thanksPageViewed = "Thanks Page Viewed"
+    case thanksPageViewed = "Page Viewed"
     case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
     case verificationScreenViewed = "Verification Screen Viewed"
     case watchProjectButtonClicked = "Watch Project Button Clicked"
