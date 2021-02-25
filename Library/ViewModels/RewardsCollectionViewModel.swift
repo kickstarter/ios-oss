@@ -55,8 +55,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     let rewards = project
       .map { $0.rewards }
 
-    let context = configData.map(third)
-
     self.title = configData
       .map { project, _, context in (context, project) }
       .combineLatest(with: self.viewDidLoadProperty.signal.ignoreValues())
@@ -176,16 +174,12 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       hideDividerLine.takeWhen(self.viewWillAppearProperty.signal)
     )
 
-    let pledgeContext = context
-      .map(trackingPledgeContext(for:))
-
     // Tracking
-    Signal.combineLatest(project, selectedRewardFromId, pledgeContext, refTag)
-      .observeValues { project, reward, context, refTag in
+    Signal.combineLatest(project, selectedRewardFromId, refTag)
+      .observeValues { project, reward, refTag in
         AppEnvironment.current.ksrAnalytics.trackRewardClicked(
           project: project,
           reward: reward,
-          context: context,
           refTag: refTag
         )
       }
@@ -292,14 +286,4 @@ private func backedReward(_ project: Project, rewards: [Reward]) -> IndexPath? {
   return rewards
     .firstIndex(where: { $0.id == backedReward.id })
     .flatMap { IndexPath(row: $0, section: 0) }
-}
-
-private func trackingPledgeContext(for rewardsContext: RewardsCollectionViewContext) -> KSRAnalytics
-  .PledgeContext {
-  switch rewardsContext {
-  case .createPledge:
-    return KSRAnalytics.PledgeContext.newPledge
-  case .managePledge:
-    return KSRAnalytics.PledgeContext.changeReward
-  }
 }

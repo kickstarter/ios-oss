@@ -206,6 +206,51 @@ public final class KSRAnalytics {
     }
   }
 
+  /**
+   Indicates which button or link the user has clicked or tapped; describes CTA Clicked events.
+   */
+  public enum CTAContext {
+    case addOnsContinue
+    case campaignDetails
+    case creatorDetails
+    case discover
+    case discoverFilter
+    case discoverSort
+    case forgotPassword
+    case logInInitiate
+    case logInOrSignUp
+    case logInSubmit
+    case pledgeInitiate
+    case pledgeSubmit
+    case rewardContinue
+    case search
+    case signUpInitiate
+    case signUpSubmit
+    case watchProject
+
+    var trackingString: String {
+      switch self {
+      case .addOnsContinue: return "add_ons_continue"
+      case .campaignDetails: return "campaign_details"
+      case .creatorDetails: return "creator_details"
+      case .discover: return "discover"
+      case .discoverFilter: return "discover_filter"
+      case .discoverSort: return "discover_sort"
+      case .forgotPassword: return "forgot_password"
+      case .pledgeInitiate: return "pledge_initiate"
+      case .pledgeSubmit: return "pledge_submit"
+      case .logInInitiate: return "log_in_initiate"
+      case .logInOrSignUp: return "log_in_or_sign_up"
+      case .logInSubmit: return "log_in_submit"
+      case .rewardContinue: return "reward_continue"
+      case .search: return "search"
+      case .signUpInitiate: return "sign_up_initiate"
+      case .signUpSubmit: return "sign_up_submit"
+      case .watchProject: return "watch_project"
+      }
+    }
+  }
+
   /// Determines which gesture was used.
   public enum GestureType: String {
     case swipe
@@ -243,29 +288,6 @@ public final class KSRAnalytics {
     }
   }
 
-  /**
-   Describes a flow of pledging.
-
-   - changeReward: changing your current reward to a different reward
-   - manageReward: changing the details of the current reward you are backing (e.g. amount, shipping)
-   - newPledge:    pledging to the project without an existing backing
-   */
-  public enum PledgeContext {
-    case fixErroredPledge
-    case changeReward
-    case manageReward
-    case newPledge
-
-    var trackingString: String {
-      switch self {
-      case .fixErroredPledge: return "fix_errored_pledge"
-      case .changeReward: return "change_reward"
-      case .manageReward: return "manage_reward"
-      case .newPledge: return "new_pledge"
-      }
-    }
-  }
-
   public enum ManagePledgeMenuCTAType {
     case cancelPledge
     case changePaymentMethod
@@ -296,6 +318,97 @@ public final class KSRAnalytics {
       case .paymentsPage: return "Payments Page"
       case .projectPage: return "Project Page"
       case .rewardSelection: return "Reward Selection"
+      }
+    }
+  }
+
+  /**
+   A tab or section within a grouping of content.
+
+   - comments: Section of Project overview screen
+   - campaign: Details when user clicks "Read more"
+   - faq: Tab on campaign details screen
+   - overview: Project overview landing screen
+   - risks: Tab on campaign details screen
+   - updates: Section of project overview screen.
+   */
+  public enum SectionContext {
+    case campaign
+    case comments
+    case faq
+    case overview
+    case risks
+    case updates
+
+    var trackingString: String {
+      switch self {
+      case .campaign: return "campaign"
+      case .comments: return "comments"
+      case .faq: return "faq"
+      case .overview: return "overview"
+      case .risks: return "risks"
+      case .updates: return "updates"
+      }
+    }
+  }
+
+  /**
+   Contextual details about an event that was fired that aren't captured in other context properties
+   */
+  public enum TypeContext {
+    case amountGoal
+    case amountPledged
+    case apple
+    case applePay
+    case backed
+    case categoryName
+    case creditCard
+    case facebook
+    case fixErroredPledge
+    case location
+    case managePledge
+    case newPledge
+    case percentRaised
+    case projectState
+    case pwl
+    case recommended
+    case searchTerm
+    case social
+    case subcategoryName
+    case subscriptionFalse
+    case subscriptionTrue
+    case tag
+    case unwatch
+    case watch
+    case watched
+
+    var trackingString: String {
+      switch self {
+      case .amountGoal: return "amount_goal"
+      case .amountPledged: return "amount_pledged"
+      case .apple: return "apple"
+      case .applePay: return "apple_pay"
+      case .backed: return "backed"
+      case .categoryName: return "category_name"
+      case .creditCard: return "credit_card"
+      case .facebook: return "facebook"
+      case .fixErroredPledge: return "fix_errored_pledge"
+      case .location: return "location"
+      case .managePledge: return "manage_pledge"
+      case .newPledge: return "new_pledge"
+      case .percentRaised: return "percent_raised"
+      case .projectState: return "project_state"
+      case .pwl: return "pwl"
+      case .recommended: return "recommended"
+      case .searchTerm: return "search_term"
+      case .social: return "social"
+      case .subcategoryName: return "subcategory_name"
+      case .subscriptionFalse: return "subscription_false"
+      case .subscriptionTrue: return "subscription_true"
+      case .tag: return "tag"
+      case .unwatch: return "unwatch"
+      case .watch: return "watch"
+      case .watched: return "watched"
       }
     }
   }
@@ -440,7 +553,7 @@ public final class KSRAnalytics {
   // MARK: - Application Lifecycle
 
   public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
-    let properties = contextProperties(pledgeFlowContext: nil, tabBarLabel: tabBarItemLabel)
+    let properties = contextProperties(tabBarLabel: tabBarItemLabel)
 
     self.track(
       event: ApprovedEvent.tabBarClicked.rawValue,
@@ -590,12 +703,11 @@ public final class KSRAnalytics {
   public func trackAddOnsContinueButtonClicked(
     project: Project,
     reward: Reward,
-    context: PledgeContext,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
+      .withAllValuesFrom(contextProperties())
 
     self.track(
       event: ApprovedEvent.addOnsContinueButtonClicked.rawValue,
@@ -608,12 +720,11 @@ public final class KSRAnalytics {
   public func trackAddOnsPageViewed(
     project: Project,
     reward: Reward,
-    context: PledgeContext,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
+      .withAllValuesFrom(contextProperties())
 
     self.track(
       event: ApprovedEvent.addOnsPageViewed.rawValue,
@@ -635,7 +746,7 @@ public final class KSRAnalytics {
       self.track(
         event: ApprovedEvent.managePledgeButtonClicked.rawValue,
         location: .projectPage,
-        properties: props.withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
+        properties: props.withAllValuesFrom(contextProperties()) // .fixErroredPledge
       )
     case .pledge:
       let allProps = props
@@ -650,7 +761,7 @@ public final class KSRAnalytics {
       self.track(
         event: ApprovedEvent.managePledgeButtonClicked.rawValue,
         location: .projectPage,
-        properties: props.withAllValuesFrom(contextProperties(pledgeFlowContext: .manageReward))
+        properties: props.withAllValuesFrom(contextProperties()) // .manageReward
       )
     default:
       return
@@ -659,7 +770,7 @@ public final class KSRAnalytics {
 
   public func trackFixPledgeButtonClicked(project: Project) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
+      .withAllValuesFrom(contextProperties())
 
     self.track(
       event: ApprovedEvent.fixPledgeButtonClicked.rawValue,
@@ -680,12 +791,11 @@ public final class KSRAnalytics {
   public func trackRewardClicked(
     project: Project,
     reward: Reward,
-    context: PledgeContext,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
+      .withAllValuesFrom(contextProperties())
 
     self.track(
       event: ApprovedEvent.selectRewardButtonClicked.rawValue,
@@ -709,14 +819,13 @@ public final class KSRAnalytics {
   public func trackCheckoutPaymentPageViewed(
     project: Project,
     reward: Reward,
-    context: KSRAnalytics.PledgeContext,
     refTag: RefTag?,
     cookieRefTag: RefTag?,
     optimizelyProperties: [String: Any] = [:]
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
+      .withAllValuesFrom(contextProperties())
       .withAllValuesFrom(optimizelyProperties)
 
     self.track(
@@ -748,7 +857,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
       // the context is always "newPledge" for this event
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
+      .withAllValuesFrom(contextProperties())
 
     self.track(
       event: ApprovedEvent.pledgeSubmitButtonClicked.rawValue,
@@ -761,12 +870,11 @@ public final class KSRAnalytics {
   public func trackPledgeSubmitButtonClicked(
     project: Project,
     reward: Reward,
-    context: KSRAnalytics.PledgeContext,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
+      .withAllValuesFrom(contextProperties())
 
     self.track(
       event: ApprovedEvent.pledgeSubmitButtonClicked.rawValue,
@@ -785,7 +893,6 @@ public final class KSRAnalytics {
    */
 
   public func trackAddNewCardButtonClicked(
-    context: KSRAnalytics.PledgeContext,
     location: KSRAnalytics.PageContext? = nil,
     project: Project,
     refTag: RefTag?,
@@ -793,7 +900,7 @@ public final class KSRAnalytics {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
+      .withAllValuesFrom(contextProperties())
 
     self.track(
       event: ApprovedEvent.addNewCardButtonClicked.rawValue,
@@ -819,7 +926,7 @@ public final class KSRAnalytics {
     var props = projectProperties(from: project)
       .withAllValuesFrom(pledgeProperties(from: reward))
       // the context is always "newPledge" for this event
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
+      .withAllValuesFrom(contextProperties())
 
     if let checkoutData = checkoutData {
       props = props.withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
@@ -838,7 +945,8 @@ public final class KSRAnalytics {
    */
   public func trackActivitiesManagePledgeButtonClicked(project: Project) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
+      // the context is always "fixErroredPledge" for this event
+      .withAllValuesFrom(contextProperties())
     self.track(
       event: ApprovedEvent.managePledgeButtonClicked.rawValue,
       location: .activities,
@@ -1291,6 +1399,7 @@ private func projectProperties(
   props["creator_uid"] = project.creator.id
   props["deadline"] = project.dates.deadline
   props["goal"] = project.stats.goal
+  props["has_add_ons"] = project.hasAddOns
   props["launched_at"] = project.dates.launchedAt
   props["location"] = project.location.name
   props["name"] = project.name
@@ -1440,17 +1549,21 @@ private func properties(category: KsApi.Category, prefix: String = "category_") 
 // MARK: - Context Properties
 
 private func contextProperties(
-  pledgeFlowContext: KSRAnalytics.PledgeContext? = nil,
+  ctaContext: KSRAnalytics.CTAContext? = nil,
   tabBarLabel: KSRAnalytics.TabBarItemLabel? = nil,
   page: KSRAnalytics.PageContext? = nil,
+  sectionContext: KSRAnalytics.SectionContext? = nil,
+  typeContext: KSRAnalytics.TypeContext? = nil,
   prefix: String = "context_"
 ) -> [String: Any] {
   var result: [String: Any] = [:]
 
+  result["cta"] = ctaContext?.trackingString
   result["page"] = page?.rawValue
-  result["pledge_flow"] = pledgeFlowContext?.trackingString
+  result["section"] = sectionContext?.trackingString
   result["timestamp"] = AppEnvironment.current.dateType.init().timeIntervalSince1970
   result["tab_bar_label"] = tabBarLabel?.trackingString
+  result["type"] = typeContext?.trackingString
 
   return result.prefixedKeys(prefix)
 }
@@ -1514,8 +1627,13 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
 private func userProperties(for user: User?, config: Config?, _ prefix: String = "user_") -> [String: Any] {
   var props: [String: Any] = [:]
 
+  props["backed_projects_count"] = user?.stats.backedProjectsCount
   props["country"] = user?.location?.country ?? config?.countryCode
+  props["created_projects_count"] = user?.stats.createdProjectsCount
+  props["is_admin"] = user?.isAdmin
+  props["launched_projects_count"] = user?.stats.memberProjectsCount
   props["uid"] = user?.id
+  props["watched_projects_count"] = user?.stats.starredProjectsCount
 
   return props.prefixedKeys(prefix)
 }
