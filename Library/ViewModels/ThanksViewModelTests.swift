@@ -50,7 +50,7 @@ final class ThanksViewModelTests: TestCase {
   }
 
   func testDismissToRootViewController() {
-    self.vm.inputs.configure(with: (Project.template, Reward.template, nil))
+    self.vm.inputs.configure(with: (Project.template, Reward.template, nil, .newPledge))
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.closeButtonTapped()
@@ -69,7 +69,7 @@ final class ThanksViewModelTests: TestCase {
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
-      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.configure(with: (project, Reward.template, nil, .newPledge))
       self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
@@ -92,7 +92,7 @@ final class ThanksViewModelTests: TestCase {
 
   func testDisplayBackedProjectText() {
     let project = Project.template |> \.category .~ .games
-    self.vm.inputs.configure(with: (project, Reward.template, nil))
+    self.vm.inputs.configure(with: (project, Reward.template, nil, .newPledge))
     self.vm.inputs.viewDidLoad()
 
     self.backedProjectText.assertValues(
@@ -107,7 +107,7 @@ final class ThanksViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       showRatingAlert.assertValueCount(0, "Rating Alert does not emit")
 
-      self.vm.inputs.configure(with: (Project.template, Reward.template, nil))
+      self.vm.inputs.configure(with: (Project.template, Reward.template, nil, .newPledge))
       self.vm.inputs.viewDidLoad()
 
       showRatingAlert.assertValueCount(1, "Rating Alert emits when view did load")
@@ -131,7 +131,7 @@ final class ThanksViewModelTests: TestCase {
       )
 
       let project = Project.template |> Project.lens.category .~ .games
-      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.configure(with: (project, Reward.template, nil, .newPledge))
       self.vm.inputs.viewDidLoad()
 
       showRatingAlert.assertValueCount(0, "Rating alert does not show on games project")
@@ -147,7 +147,7 @@ final class ThanksViewModelTests: TestCase {
       let secondShowGamesNewsletterAlert = TestObserver<(), Never>()
       secondVM.outputs.showGamesNewsletterAlert.observe(secondShowGamesNewsletterAlert.observer)
 
-      secondVM.inputs.configure(with: (project, Reward.template, nil))
+      secondVM.inputs.configure(with: (project, Reward.template, nil, .newPledge))
       secondVM.inputs.viewDidLoad()
 
       secondShowRatingAlert.assertValueCount(1, "Rating alert shows on games project")
@@ -161,7 +161,7 @@ final class ThanksViewModelTests: TestCase {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.configure(with: (project, Reward.template, nil, .newPledge))
       self.vm.inputs.viewDidLoad()
 
       showGamesNewsletterAlert.assertValueCount(0, "Games alert does not show on games project")
@@ -172,7 +172,7 @@ final class ThanksViewModelTests: TestCase {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.configure(with: (project, Reward.template, nil, .newPledge))
       self.vm.inputs.viewDidLoad()
 
       showGamesNewsletterAlert.assertValueCount(1)
@@ -223,7 +223,7 @@ final class ThanksViewModelTests: TestCase {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(countryCode: "DE", currentUser: User.template) {
-      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.configure(with: (project, Reward.template, nil, .newPledge))
       self.vm.inputs.viewDidLoad()
 
       showGamesNewsletterAlert.assertValueCount(1)
@@ -257,7 +257,7 @@ final class ThanksViewModelTests: TestCase {
       apiService: MockService(fetchDiscoveryResponse: response),
       optimizelyClient: mockOptimizelyClient
     ) {
-      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.configure(with: (project, Reward.template, nil, .newPledge))
       self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
@@ -301,7 +301,7 @@ final class ThanksViewModelTests: TestCase {
     let project = Project.template |> Project.lens.id .~ 12
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
-      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.configure(with: (project, Reward.template, nil, .newPledge))
       self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
@@ -316,7 +316,7 @@ final class ThanksViewModelTests: TestCase {
     let project = Project.template |> Project.lens.category .~ .games
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
-      self.vm.inputs.configure(with: (project, Reward.template, nil))
+      self.vm.inputs.configure(with: (project, Reward.template, nil, .newPledge))
       self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
@@ -339,7 +339,7 @@ final class ThanksViewModelTests: TestCase {
       apiService: MockService(fetchDiscoveryResponse: response),
       optimizelyClient: mockOptimizelyClient
     ) {
-      self.vm.inputs.configure(with: (Project.template, Reward.template, nil))
+      self.vm.inputs.configure(with: (Project.template, Reward.template, nil, .newPledge))
       self.vm.inputs.viewDidLoad()
 
       scheduler.advance()
@@ -370,7 +370,7 @@ final class ThanksViewModelTests: TestCase {
       userHasStoredApplePayCard: true
     )
 
-    self.vm.inputs.configure(with: (Project.template, Reward.template, checkoutData))
+    self.vm.inputs.configure(with: (Project.template, Reward.template, checkoutData, .newPledge))
     self.vm.inputs.viewDidLoad()
 
     let dataLakeTrackingClientProps = self.dataLakeTrackingClient.properties.last

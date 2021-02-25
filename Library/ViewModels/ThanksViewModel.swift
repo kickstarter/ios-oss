@@ -6,7 +6,8 @@ import ReactiveSwift
 public typealias ThanksPageData = (
   project: Project,
   reward: Reward,
-  checkoutData: KSRAnalytics.CheckoutPropertiesData?
+  checkoutData: KSRAnalytics.CheckoutPropertiesData?,
+  context: KSRAnalytics.TypeContext.PledgeContext
 )
 
 public protocol ThanksViewModelInputs {
@@ -76,7 +77,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public init() {
     let project = self.configureWithDataProperty.signal
       .skipNil()
-      .map(first)
+      .map(\.project)
 
     self.backedProjectText = project.map {
       let string = Strings.You_have_successfully_backed_project_html(
@@ -189,7 +190,8 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     .observeValues { AppEnvironment.current.ksrAnalytics.trackThanksPageViewed(
       project: $0.project,
       reward: $0.reward,
-      checkoutData: $0.checkoutData
+      checkoutData: $0.checkoutData,
+      typeContext: .pledge($0.context)
     ) }
   }
 

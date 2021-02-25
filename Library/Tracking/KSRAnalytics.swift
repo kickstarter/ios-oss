@@ -364,10 +364,8 @@ public final class KSRAnalytics {
     case categoryName
     case creditCard
     case facebook
-    case fixErroredPledge
+    case pledge(PledgeContext)
     case location
-    case managePledge
-    case newPledge
     case percentRaised
     case projectState
     case pwl
@@ -381,6 +379,22 @@ public final class KSRAnalytics {
     case unwatch
     case watch
     case watched
+    
+    public enum PledgeContext {
+      case newPledge
+      case changeReward
+      case manageReward
+      case fixErroredPledge
+      
+      var trackingString: String {
+        switch self {
+        case .fixErroredPledge: return "fix_errored_pledge"
+        case .changeReward: return "change_reward"
+        case .manageReward: return "manage_reward"
+        case .newPledge: return "new_pledge"
+        }
+      }
+    }
 
     var trackingString: String {
       switch self {
@@ -392,10 +406,7 @@ public final class KSRAnalytics {
       case .categoryName: return "category_name"
       case .creditCard: return "credit_card"
       case .facebook: return "facebook"
-      case .fixErroredPledge: return "fix_errored_pledge"
       case .location: return "location"
-      case .managePledge: return "manage_pledge"
-      case .newPledge: return "new_pledge"
       case .percentRaised: return "percent_raised"
       case .projectState: return "project_state"
       case .pwl: return "pwl"
@@ -409,6 +420,7 @@ public final class KSRAnalytics {
       case .unwatch: return "unwatch"
       case .watch: return "watch"
       case .watched: return "watched"
+      case .pledge(let pledgeContext): return pledgeContext.trackingString
       }
     }
   }
@@ -921,12 +933,13 @@ public final class KSRAnalytics {
   public func trackThanksPageViewed(
     project: Project,
     reward: Reward,
-    checkoutData: CheckoutPropertiesData?
+    checkoutData: CheckoutPropertiesData?,
+    typeContext: TypeContext
   ) {
     var props = projectProperties(from: project)
       .withAllValuesFrom(pledgeProperties(from: reward))
       // the context is always "newPledge" for this event
-      .withAllValuesFrom(contextProperties())
+      .withAllValuesFrom(contextProperties(page: .thanks, typeContext: typeContext))
 
     if let checkoutData = checkoutData {
       props = props.withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
