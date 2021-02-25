@@ -5277,9 +5277,6 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.segmentTrackingClient.events)
 
-    XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_pledge_flow"), ["new_pledge"])
-    XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_pledge_flow"), ["new_pledge"])
-
     let dataLakeTrackingClientProperties = self.dataLakeTrackingClient.properties.last
     let segmentClientProperties = self.segmentTrackingClient.properties.last
 
@@ -5326,9 +5323,6 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.segmentTrackingClient.events)
 
-    XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_pledge_flow"), ["manage_reward"])
-    XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_pledge_flow"), ["manage_reward"])
-
     self.vm.inputs.submitButtonTapped()
 
     XCTAssertEqual([
@@ -5357,9 +5351,6 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.segmentTrackingClient.events)
-
-    XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_pledge_flow"), ["manage_reward"])
-    XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_pledge_flow"), ["manage_reward"])
 
     self.vm.inputs.submitButtonTapped()
 
@@ -5391,9 +5382,6 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Checkout Payment Page Viewed"], self.segmentTrackingClient.events)
-
-    XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_pledge_flow"), ["change_reward"])
-    XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_pledge_flow"), ["change_reward"])
 
     self.vm.inputs.submitButtonTapped()
 
@@ -5443,9 +5431,7 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual(["Checkout Payment Page Viewed"], dataLakeClient.events)
       XCTAssertEqual(["Checkout Payment Page Viewed"], segmentClient.events)
 
-      XCTAssertEqual(dataLakeClient.properties(forKey: "context_pledge_flow"), ["new_pledge"])
       XCTAssertEqual(dataLakeClient.properties(forKey: "session_ref_tag"), ["discovery"])
-      XCTAssertEqual(segmentClient.properties(forKey: "context_pledge_flow"), ["new_pledge"])
       XCTAssertEqual(segmentClient.properties(forKey: "session_ref_tag"), ["discovery"])
 
       XCTAssertEqual(dataLakeClient.properties(forKey: "session_user_logged_in", as: Bool.self), [false])

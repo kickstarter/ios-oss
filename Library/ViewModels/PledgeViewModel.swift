@@ -838,7 +838,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     // Tracking
 
     initialDataUnpacked
-      .observeValues { project, reward, refTag, context in
+      .observeValues { project, reward, refTag, _ in
         let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
         let optimizelyProps = optimizelyProperties() ?? [:]
 
@@ -846,7 +846,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         AppEnvironment.current.ksrAnalytics.trackCheckoutPaymentPageViewed(
           project: project,
           reward: reward,
-          context: TrackingHelpers.pledgeContext(for: context),
           refTag: refTag,
           cookieRefTag: cookieRefTag,
           optimizelyProperties: optimizelyProps
