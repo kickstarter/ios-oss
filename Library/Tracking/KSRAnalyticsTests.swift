@@ -1493,6 +1493,63 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("email_verification", segmentClient.properties.last?["context_page"] as? String)
   }
 
+  func testCTAContextTrackingStrings() {
+    XCTAssertEqual(KSRAnalytics.CTAContext.addOnsContinue.trackingString, "add_ons_continue")
+    XCTAssertEqual(KSRAnalytics.CTAContext.pledgeInitiate.trackingString, "pledge_initiate")
+    XCTAssertEqual(KSRAnalytics.CTAContext.pledgeSubmit.trackingString, "pledge_submit")
+    XCTAssertEqual(KSRAnalytics.CTAContext.rewardContinue.trackingString, "reward_continue")
+    XCTAssertEqual(KSRAnalytics.CTAContext.discover.trackingString, "discover")
+    XCTAssertEqual(KSRAnalytics.CTAContext.discoverFilter.trackingString, "discover_filter")
+    XCTAssertEqual(KSRAnalytics.CTAContext.discoverSort.trackingString, "discover_sort")
+    XCTAssertEqual(KSRAnalytics.CTAContext.search.trackingString, "search")
+    XCTAssertEqual(KSRAnalytics.CTAContext.watchProject.trackingString, "watch_project")
+    XCTAssertEqual(KSRAnalytics.CTAContext.campaignDetails.trackingString, "campaign_details")
+    XCTAssertEqual(KSRAnalytics.CTAContext.creatorDetails.trackingString, "creator_details")
+    XCTAssertEqual(KSRAnalytics.CTAContext.logInInitiate.trackingString, "log_in_initiate")
+    XCTAssertEqual(KSRAnalytics.CTAContext.logInOrSignUp.trackingString, "log_in_or_sign_up")
+    XCTAssertEqual(KSRAnalytics.CTAContext.logInSubmit.trackingString, "log_in_submit")
+    XCTAssertEqual(KSRAnalytics.CTAContext.signUpInitiate.trackingString, "sign_up_initiate")
+    XCTAssertEqual(KSRAnalytics.CTAContext.signUpSubmit.trackingString, "sign_up_submit")
+    XCTAssertEqual(KSRAnalytics.CTAContext.forgotPassword.trackingString, "forgot_password")
+  }
+
+  func testSectionContextTrackingStrings() {
+    XCTAssertEqual(KSRAnalytics.SectionContext.campaign.trackingString, "campaign")
+    XCTAssertEqual(KSRAnalytics.SectionContext.comments.trackingString, "comments")
+    XCTAssertEqual(KSRAnalytics.SectionContext.faq.trackingString, "faq")
+    XCTAssertEqual(KSRAnalytics.SectionContext.overview.trackingString, "overview")
+    XCTAssertEqual(KSRAnalytics.SectionContext.risks.trackingString, "risks")
+    XCTAssertEqual(KSRAnalytics.SectionContext.updates.trackingString, "updates")
+  }
+
+  func testTypeContextTrackingStrings() {
+    XCTAssertEqual(KSRAnalytics.TypeContext.amountGoal.trackingString, "amount_goal")
+    XCTAssertEqual(KSRAnalytics.TypeContext.amountPledged.trackingString, "amount_pledged")
+    XCTAssertEqual(KSRAnalytics.TypeContext.apple.trackingString, "apple")
+    XCTAssertEqual(KSRAnalytics.TypeContext.applePay.trackingString, "apple_pay")
+    XCTAssertEqual(KSRAnalytics.TypeContext.backed.trackingString, "backed")
+    XCTAssertEqual(KSRAnalytics.TypeContext.categoryName.trackingString, "category_name")
+    XCTAssertEqual(KSRAnalytics.TypeContext.creditCard.trackingString, "credit_card")
+    XCTAssertEqual(KSRAnalytics.TypeContext.facebook.trackingString, "facebook")
+    XCTAssertEqual(KSRAnalytics.TypeContext.fixErroredPledge.trackingString, "fix_errored_pledge")
+    XCTAssertEqual(KSRAnalytics.TypeContext.location.trackingString, "location")
+    XCTAssertEqual(KSRAnalytics.TypeContext.managePledge.trackingString, "manage_pledge")
+    XCTAssertEqual(KSRAnalytics.TypeContext.newPledge.trackingString, "new_pledge")
+    XCTAssertEqual(KSRAnalytics.TypeContext.percentRaised.trackingString, "percent_raised")
+    XCTAssertEqual(KSRAnalytics.TypeContext.projectState.trackingString, "project_state")
+    XCTAssertEqual(KSRAnalytics.TypeContext.pwl.trackingString, "pwl")
+    XCTAssertEqual(KSRAnalytics.TypeContext.recommended.trackingString, "recommended")
+    XCTAssertEqual(KSRAnalytics.TypeContext.searchTerm.trackingString, "search_term")
+    XCTAssertEqual(KSRAnalytics.TypeContext.social.trackingString, "social")
+    XCTAssertEqual(KSRAnalytics.TypeContext.subcategoryName.trackingString, "subcategory_name")
+    XCTAssertEqual(KSRAnalytics.TypeContext.subscriptionFalse.trackingString, "subscription_false")
+    XCTAssertEqual(KSRAnalytics.TypeContext.subscriptionTrue.trackingString, "subscription_true")
+    XCTAssertEqual(KSRAnalytics.TypeContext.tag.trackingString, "tag")
+    XCTAssertEqual(KSRAnalytics.TypeContext.unwatch.trackingString, "unwatch")
+    XCTAssertEqual(KSRAnalytics.TypeContext.watch.trackingString, "watch")
+    XCTAssertEqual(KSRAnalytics.TypeContext.watched.trackingString, "watched")
+  }
+
   /*
    Helper for testing discoverProperties from a template DiscoveryParams.recommendedDefaults
    */

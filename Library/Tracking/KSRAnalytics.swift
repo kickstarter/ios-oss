@@ -211,42 +211,42 @@ public final class KSRAnalytics {
    */
   public enum CTAContext {
     case addOnsContinue
-    case pledgeInitiate
-    case pledgeSubmit
-    case rewardContinue
+    case campaignDetails
+    case creatorDetails
     case discover
     case discoverFilter
     case discoverSort
-    case search
-    case watchProject
-    case campaignDetails
-    case creatorDetails
+    case forgotPassword
     case logInInitiate
     case logInOrSignUp
     case logInSubmit
+    case pledgeInitiate
+    case pledgeSubmit
+    case rewardContinue
+    case search
     case signUpInitiate
     case signUpSubmit
-    case forgotPassword
+    case watchProject
 
     var trackingString: String {
       switch self {
       case .addOnsContinue: return "add_ons_continue"
-      case .pledgeInitiate: return "pledge_initiate"
-      case .pledgeSubmit: return "pledge_submit"
-      case .rewardContinue: return "reward_continue"
+      case .campaignDetails: return "campaign_details"
+      case .creatorDetails: return "creator_details"
       case .discover: return "discover"
       case .discoverFilter: return "discover_filter"
       case .discoverSort: return "discover_sort"
-      case .search: return "search"
-      case .watchProject: return "watch_project"
-      case .campaignDetails: return "campaign_details"
-      case .creatorDetails: return "creator_details"
+      case .forgotPassword: return "forgot_password"
+      case .pledgeInitiate: return "pledge_initiate"
+      case .pledgeSubmit: return "pledge_submit"
       case .logInInitiate: return "log_in_initiate"
       case .logInOrSignUp: return "log_in_or_sign_up"
       case .logInSubmit: return "log_in_submit"
+      case .rewardContinue: return "reward_continue"
+      case .search: return "search"
       case .signUpInitiate: return "sign_up_initiate"
       case .signUpSubmit: return "sign_up_submit"
-      case .forgotPassword: return "forgot_password"
+      case .watchProject: return "watch_project"
       }
     }
   }
@@ -333,8 +333,8 @@ public final class KSRAnalytics {
    - updates: Section of project overview screen.
    */
   public enum SectionContext {
-    case comments
     case campaign
+    case comments
     case faq
     case overview
     case risks
@@ -342,8 +342,8 @@ public final class KSRAnalytics {
 
     var trackingString: String {
       switch self {
-      case .comments: return "comments"
       case .campaign: return "campaign"
+      case .comments: return "comments"
       case .faq: return "faq"
       case .overview: return "overview"
       case .risks: return "risks"
@@ -386,7 +386,7 @@ public final class KSRAnalytics {
       switch self {
       case .amountGoal: return "amount_goal"
       case .amountPledged: return "amount_pledged"
-      case .apple: return "true"
+      case .apple: return "apple"
       case .applePay: return "apple_pay"
       case .backed: return "backed"
       case .categoryName: return "category_name"
