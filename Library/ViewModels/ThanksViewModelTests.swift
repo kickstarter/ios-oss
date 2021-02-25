@@ -80,11 +80,11 @@ final class ThanksViewModelTests: TestCase {
 
       goToDiscovery.assertValues([.illustration])
       XCTAssertEqual(
-        ["Thanks Page Viewed"],
+        ["Page Viewed"],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
-        ["Thanks Page Viewed"],
+        ["Page Viewed"],
         self.segmentTrackingClient.events
       )
     }
@@ -113,11 +113,11 @@ final class ThanksViewModelTests: TestCase {
       showRatingAlert.assertValueCount(1, "Rating Alert emits when view did load")
       showGamesNewsletterAlert.assertValueCount(0, "Games alert does not emit")
       XCTAssertEqual(
-        ["Thanks Page Viewed"],
+        ["Page Viewed"],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
-        ["Thanks Page Viewed"],
+        ["Page Viewed"],
         self.segmentTrackingClient.events
       )
     }
@@ -184,11 +184,11 @@ final class ThanksViewModelTests: TestCase {
       updateUserInEnvironment.assertValueCount(1)
       showGamesNewsletterOptInAlert.assertValueCount(0, "Opt-in alert does not emit")
       XCTAssertEqual(
-        ["Thanks Page Viewed"],
+        ["Page Viewed"],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
-        ["Thanks Page Viewed"],
+        ["Page Viewed"],
         self.segmentTrackingClient.events
       )
 
@@ -232,11 +232,11 @@ final class ThanksViewModelTests: TestCase {
 
       showGamesNewsletterOptInAlert.assertValues(["Kickstarter Loves Games"], "Opt-in alert emits with title")
       XCTAssertEqual(
-        ["Thanks Page Viewed"],
+        ["Page Viewed"],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
-        ["Thanks Page Viewed"],
+        ["Page Viewed"],
         self.segmentTrackingClient.events
       )
     }
@@ -271,14 +271,14 @@ final class ThanksViewModelTests: TestCase {
       goToRefTag.assertValues([.thanks])
       XCTAssertEqual(
         [
-          "Thanks Page Viewed",
+          "Page Viewed",
           "Project Card Clicked"
         ],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
         [
-          "Thanks Page Viewed",
+          "Page Viewed",
           "Project Card Clicked"
         ],
         self.segmentTrackingClient.events
@@ -377,11 +377,11 @@ final class ThanksViewModelTests: TestCase {
     let segmentClientProps = self.segmentTrackingClient.properties.last
 
     XCTAssertEqual(
-      ["Thanks Page Viewed"],
+      ["Page Viewed"],
       self.dataLakeTrackingClient.events
     )
     XCTAssertEqual(
-      ["Thanks Page Viewed"],
+      ["Page Viewed"],
       self.segmentTrackingClient.events
     )
 
