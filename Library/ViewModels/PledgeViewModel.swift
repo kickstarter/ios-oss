@@ -740,7 +740,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         isApplePay: isApplePay
       )
 
-      return (data.project, baseReward, checkoutPropsData, .newPledge)
+      return (data.project, baseReward, checkoutPropsData)
     }
     .skipNil()
 

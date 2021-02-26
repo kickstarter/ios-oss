@@ -382,15 +382,15 @@ public final class KSRAnalytics {
     
     public enum PledgeContext {
       case newPledge
-      case changeReward
-      case manageReward
+      case managePledge
       case fixErroredPledge
+      case changeReward
       
       var trackingString: String {
         switch self {
         case .fixErroredPledge: return "fix_errored_pledge"
         case .changeReward: return "change_reward"
-        case .manageReward: return "manage_reward"
+        case .managePledge: return "manage_pledge"
         case .newPledge: return "new_pledge"
         }
       }
@@ -933,13 +933,12 @@ public final class KSRAnalytics {
   public func trackThanksPageViewed(
     project: Project,
     reward: Reward,
-    checkoutData: CheckoutPropertiesData?,
-    typeContext: TypeContext
+    checkoutData: CheckoutPropertiesData?
   ) {
     var props = projectProperties(from: project)
       .withAllValuesFrom(pledgeProperties(from: reward))
       // the context is always "newPledge" for this event
-      .withAllValuesFrom(contextProperties(page: .thanks, typeContext: typeContext))
+      .withAllValuesFrom(contextProperties(page: .thanks, typeContext: TypeContext.pledge(.newPledge)))
 
     if let checkoutData = checkoutData {
       props = props.withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))

@@ -6,8 +6,7 @@ import ReactiveSwift
 public typealias ThanksPageData = (
   project: Project,
   reward: Reward,
-  checkoutData: KSRAnalytics.CheckoutPropertiesData?,
-  context: KSRAnalytics.TypeContext.PledgeContext
+  checkoutData: KSRAnalytics.CheckoutPropertiesData?
 )
 
 public protocol ThanksViewModelInputs {
@@ -190,8 +189,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     .observeValues { AppEnvironment.current.ksrAnalytics.trackThanksPageViewed(
       project: $0.project,
       reward: $0.reward,
-      checkoutData: $0.checkoutData,
-      typeContext: .pledge($0.context)
+      checkoutData: $0.checkoutData
     ) }
   }
 

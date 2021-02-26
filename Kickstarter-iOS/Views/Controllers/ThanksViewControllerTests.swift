@@ -32,7 +32,7 @@ class ThanksViewControllerTests: TestCase {
         let project = Project.cosmicSurgery
           |> Project.lens.id .~ 3
 
-        let controller = ThanksViewController.configured(with: (project, Reward.template, nil, .newPledge))
+        let controller = ThanksViewController.configured(with: (project, Reward.template, nil))
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_000
@@ -63,7 +63,7 @@ class ThanksViewControllerTests: TestCase {
         let project = Project.cosmicSurgery
           |> Project.lens.id .~ 3
 
-        let controller = ThanksViewController.configured(with: (project, Reward.template, nil, .newPledge))
+        let controller = ThanksViewController.configured(with: (project, Reward.template, nil))
 
         let (parent, _) = traitControllers(device: device, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_000

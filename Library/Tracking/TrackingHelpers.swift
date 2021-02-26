@@ -14,7 +14,7 @@ final class TrackingHelpers {
      case .pledge:
       return .newPledge
      case .update, .changePaymentMethod:
-      return .manageReward
+      return .managePledge
      case .updateReward:
       return .changeReward
      case .fixPaymentMethod:
