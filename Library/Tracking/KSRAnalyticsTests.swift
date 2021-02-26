@@ -1334,26 +1334,31 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertNil(self.segmentTrackingClient.userId)
     XCTAssertNil(self.segmentTrackingClient.traits)
   }
-  
+
   // MARK: CTAs Tracking
-  
+
   func testTrack_AddOnsContinue_CTA() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
-    
+
     let project = Project.cosmicSurgery
     let reward = Reward.template |> Reward.lens.hasAddOns .~ true
-    
-    ksrAnalytics.trackAddOnsContinueButtonClicked(project: project, reward: reward, checkoutData: .template, refTag: nil)
-    
+
+    ksrAnalytics
+      .trackAddOnsContinueButtonClicked(
+        project: project,
+        reward: reward,
+        checkoutData: .template,
+        refTag: nil
+      )
+
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
-    
+
     XCTAssertEqual("add_ons_continue", dataLakeClientProps?["context_cta"] as? String)
     XCTAssertEqual("add_ons_continue", segmentClientProps?["context_cta"] as? String)
   }
-
 
   func testContextProperties() {
     let dataLakeClient = MockTrackingClient()

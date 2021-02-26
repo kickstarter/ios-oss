@@ -268,9 +268,9 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
           refTag: refTag
         )
       }
-    
+
     let calculatedShippingTotal = Signal.combineLatest(
-      shippingRuleSelectedProperty.signal.skipNil(),
+      self.shippingRuleSelectedProperty.signal.skipNil(),
       selectedRewards,
       selectedQuantities
     )
@@ -286,18 +286,17 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
         return total.addingCurrency(totalShippingForReward)
       }
     }
-    
-    
+
     let defaultShippingTotal = Signal.zip(project, baseReward).map { project, baseReward -> Double in
       guard baseReward.shipping.enabled, let backing = project.personalization.backing else {
         return 0.0
       }
-      
+
       return backing.shippingAmount.flatMap(Double.init) ?? 0.0
     }
-    
+
     let allRewardsShippingTotal = Signal.merge(defaultShippingTotal, calculatedShippingTotal)
-    
+
     let allRewardsTotal = Signal.combineLatest(
       selectedRewards,
       selectedQuantities
@@ -311,7 +310,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
           return total.addingCurrency(totalForReward)
         }
     }
-    
+
     let calculatedPledgeTotal = Signal.combineLatest(
       allRewardsShippingTotal,
       allRewardsTotal
@@ -324,11 +323,20 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       return r
     }
 
-    Signal.zip(project, baseReward, selectedQuantities, selectedRewards, calculatedPledgeTotal, allRewardsShippingTotal, refTag)
+    Signal
+      .zip(
+        project,
+        baseReward,
+        selectedQuantities,
+        selectedRewards,
+        calculatedPledgeTotal,
+        allRewardsShippingTotal,
+        refTag
+      )
       .takeWhen(self.continueButtonTappedProperty.signal)
       .observeForUI()
       .observeValues { project, baseReward, selectedQuantities, selectedRewards, pledgeTotal, allRewardsShippingTotal, refTag in
-        
+
         let checkoutData = checkoutPropertiesData(
           from: project,
           rewards: selectedRewards,
@@ -337,7 +345,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
           pledgeTotal: pledgeTotal,
           allRewardsShippingTotal: allRewardsShippingTotal
         )
-        
+
         AppEnvironment.current.ksrAnalytics.trackAddOnsContinueButtonClicked(
           project: project,
           reward: baseReward,
@@ -532,18 +540,18 @@ private func checkoutPropertiesData(
 ) -> KSRAnalytics.CheckoutPropertiesData {
   let additionalPledgeAmount: Double = 0.0
   let staticUsdRate = Double(project.stats.staticUsdRate)
-  
+
   let pledgeTotalUsd = rounded(pledgeTotal.multiplyingCurrency(staticUsdRate), places: 2)
 
   let userHasEligibleStoredApplePayCard = AppEnvironment.current
     .applePayCapabilities
     .applePayCapable(for: project)
-  
+
   let bonusAmountUsd = additionalPledgeAmount
     .multiplyingCurrency(staticUsdRate)
   let bonusAmount = Format.decimalCurrency(for: additionalPledgeAmount)
   let bonusAmountInUsd = Format.decimalCurrency(for: bonusAmountUsd)
-  
+
   let addOnRewards = rewards.filter { reward in reward.id != baseReward.id }
     .map { reward -> [Reward] in
       guard let selectedRewardQuantity = selectedQuantities[reward.id] else { return [] }
@@ -560,17 +568,17 @@ private func checkoutPropertiesData(
 
   let rewardId = baseReward.id
   let estimatedDelivery = baseReward.estimatedDeliveryOn
-  
+
   let shippingAmount: Double? = baseReward.shipping.enabled ? allRewardsShippingTotal : nil
-  
+
   let amount = Format.decimalCurrency(for: pledgeTotal)
-  
+
   let shippingEnabled = baseReward.shipping.enabled
   let shippingAmountUsd = (shippingAmount?.multiplyingCurrency(staticUsdRate))
     .flatMap(Format.decimalCurrency)
   let rewardTitle = baseReward.title
   let rewardMinimumUsd = Format.decimalCurrency(for: baseReward.minimum.multiplyingCurrency(staticUsdRate))
-  
+
   return KSRAnalytics.CheckoutPropertiesData(
     addOnsCountTotal: addOnsCountTotal,
     addOnsCountUnique: addOnsCountUnique,
