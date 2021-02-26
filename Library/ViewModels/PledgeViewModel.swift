@@ -1215,7 +1215,7 @@ private func checkoutPropertiesData(
 
 /* A helper that assists in rounding the dollar converted amount to a given number of decimal places
  */
-private func rounded(_ value: Double, places: Int) -> Double {
+internal func rounded(_ value: Double, places: Int) -> Double {
   let divisor = pow(10.0, Double(places))
   return (value * divisor).rounded() / divisor
 }

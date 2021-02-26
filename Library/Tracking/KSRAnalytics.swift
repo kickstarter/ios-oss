@@ -703,11 +703,13 @@ public final class KSRAnalytics {
   public func trackAddOnsContinueButtonClicked(
     project: Project,
     reward: Reward,
+    checkoutData: CheckoutPropertiesData,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties())
+      .withAllValuesFrom(contextProperties(ctaContext: .addOnsContinue))
+      .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
 
     self.track(
       event: ApprovedEvent.addOnsContinueButtonClicked.rawValue,
