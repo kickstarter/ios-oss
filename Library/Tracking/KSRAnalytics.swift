@@ -379,13 +379,13 @@ public final class KSRAnalytics {
     case unwatch
     case watch
     case watched
-    
+
     public enum PledgeContext {
       case newPledge
       case managePledge
       case fixErroredPledge
       case changeReward
-      
+
       var trackingString: String {
         switch self {
         case .fixErroredPledge: return "fix_errored_pledge"
@@ -420,7 +420,7 @@ public final class KSRAnalytics {
       case .unwatch: return "unwatch"
       case .watch: return "watch"
       case .watched: return "watched"
-      case .pledge(let pledgeContext): return pledgeContext.trackingString
+      case let .pledge(pledgeContext): return pledgeContext.trackingString
       }
     }
   }
