@@ -5,10 +5,8 @@ final class TrackingHelpers {
     switch viewContext {
     case .pledge:
       return .newPledge
-    case .update, .changePaymentMethod:
+    case .update, .updateReward, .changePaymentMethod:
       return .managePledge
-    case .updateReward:
-      return .changeReward
     case .fixPaymentMethod:
       return .fixErroredPledge
     }

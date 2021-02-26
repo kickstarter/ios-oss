@@ -48,6 +48,7 @@ public final class KSRAnalytics {
     case onboardingContinueButtonClicked = "Onboarding Continue Button Clicked"
     case onboardingGetStartedButtonClicked = "Onboarding Get Started Button Clicked"
     case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
+    case pageViewed = "Page Viewed"
     case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked"
     case projectCardClicked = "Project Card Clicked"
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
@@ -60,7 +61,6 @@ public final class KSRAnalytics {
     case signupSubmitButtonClicked = "Signup Submit Button Clicked"
     case skipVerificationButtonClicked = "Skip Verification Button Clicked"
     case tabBarClicked = "Tab Bar Clicked"
-    case thanksPageViewed = "Page Viewed"
     case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
     case verificationScreenViewed = "Verification Screen Viewed"
     case watchProjectButtonClicked = "Watch Project Button Clicked"
@@ -364,9 +364,9 @@ public final class KSRAnalytics {
     case categoryName
     case creditCard
     case facebook
-    case pledge(PledgeContext)
     case location
     case percentRaised
+    case pledge(PledgeContext)
     case projectState
     case pwl
     case recommended
@@ -381,17 +381,15 @@ public final class KSRAnalytics {
     case watched
 
     public enum PledgeContext {
+      case fixErroredPledge
       case newPledge
       case managePledge
-      case fixErroredPledge
-      case changeReward
 
       var trackingString: String {
         switch self {
         case .fixErroredPledge: return "fix_errored_pledge"
-        case .changeReward: return "change_reward"
-        case .managePledge: return "manage_pledge"
         case .newPledge: return "new_pledge"
+        case .managePledge: return "manage_pledge"
         }
       }
     }
@@ -945,7 +943,7 @@ public final class KSRAnalytics {
     }
 
     self.track(
-      event: ApprovedEvent.thanksPageViewed.rawValue,
+      event: ApprovedEvent.pageViewed.rawValue,
       location: .thanks,
       properties: props
     )

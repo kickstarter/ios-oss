@@ -1477,6 +1477,7 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackThanksPageViewed(project: .template, reward: .template, checkoutData: nil)
     XCTAssertEqual("thanks", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("thanks", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("new_pledge", segmentClient.properties.last?["context_type"] as? String)
 
     ksrAnalytics.track2FAViewed()
     XCTAssertEqual(
@@ -1534,7 +1535,6 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(KSRAnalytics.TypeContext.pledge(.fixErroredPledge).trackingString, "fix_errored_pledge")
     XCTAssertEqual(KSRAnalytics.TypeContext.pledge(.managePledge).trackingString, "manage_pledge")
     XCTAssertEqual(KSRAnalytics.TypeContext.pledge(.newPledge).trackingString, "new_pledge")
-    XCTAssertEqual(KSRAnalytics.TypeContext.pledge(.changeReward).trackingString, "change_reward")
     XCTAssertEqual(KSRAnalytics.TypeContext.location.trackingString, "location")
     XCTAssertEqual(KSRAnalytics.TypeContext.percentRaised.trackingString, "percent_raised")
     XCTAssertEqual(KSRAnalytics.TypeContext.projectState.trackingString, "project_state")

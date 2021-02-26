@@ -87,6 +87,10 @@ final class ThanksViewModelTests: TestCase {
         ["Page Viewed"],
         self.segmentTrackingClient.events
       )
+      XCTAssertEqual(
+        ["new_pledge"],
+        self.segmentTrackingClient.properties(forKey: "context_type")
+      )
     }
   }
 
