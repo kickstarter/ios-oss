@@ -69,10 +69,6 @@ public final class KSRAnalytics {
     case pageViewed = "Page Viewed"
   }
 
-  public enum PageView: String {
-    case pageViewed = "Page Viewed"
-  }
-
   /// Determines the screen from which the event is sent.
   public enum PageContext: String {
     case activities = "activity_feed" // ActivitiesViewController
