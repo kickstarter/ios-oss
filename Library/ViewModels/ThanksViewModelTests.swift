@@ -89,6 +89,10 @@ final class ThanksViewModelTests: TestCase {
       )
       XCTAssertEqual(
         ["new_pledge"],
+        self.dataLakeTrackingClient.properties(forKey: "context_type")
+      )
+      XCTAssertEqual(
+        ["new_pledge"],
         self.segmentTrackingClient.properties(forKey: "context_type")
       )
     }

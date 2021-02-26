@@ -48,7 +48,6 @@ public final class KSRAnalytics {
     case onboardingContinueButtonClicked = "Onboarding Continue Button Clicked"
     case onboardingGetStartedButtonClicked = "Onboarding Get Started Button Clicked"
     case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
-    case pageViewed = "Page Viewed"
     case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked"
     case projectCardClicked = "Project Card Clicked"
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
@@ -64,6 +63,14 @@ public final class KSRAnalytics {
     case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
     case verificationScreenViewed = "Verification Screen Viewed"
     case watchProjectButtonClicked = "Watch Project Button Clicked"
+  }
+
+  private enum NewApprovedEvent: String, CaseIterable {
+    case pageViewed = "Page Viewed"
+  }
+
+  public enum PageView: String {
+    case pageViewed = "Page Viewed"
   }
 
   /// Determines the screen from which the event is sent.
@@ -406,6 +413,7 @@ public final class KSRAnalytics {
       case .facebook: return "facebook"
       case .location: return "location"
       case .percentRaised: return "percent_raised"
+      case let .pledge(pledgeContext): return pledgeContext.trackingString
       case .projectState: return "project_state"
       case .pwl: return "pwl"
       case .recommended: return "recommended"
@@ -418,7 +426,6 @@ public final class KSRAnalytics {
       case .unwatch: return "unwatch"
       case .watch: return "watch"
       case .watched: return "watched"
-      case let .pledge(pledgeContext): return pledgeContext.trackingString
       }
     }
   }
@@ -943,7 +950,7 @@ public final class KSRAnalytics {
     }
 
     self.track(
-      event: ApprovedEvent.pageViewed.rawValue,
+      event: NewApprovedEvent.pageViewed.rawValue,
       location: .thanks,
       properties: props
     )

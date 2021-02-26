@@ -1477,6 +1477,7 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackThanksPageViewed(project: .template, reward: .template, checkoutData: nil)
     XCTAssertEqual("thanks", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("thanks", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("new_pledge", dataLakeClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("new_pledge", segmentClient.properties.last?["context_type"] as? String)
 
     ksrAnalytics.track2FAViewed()
