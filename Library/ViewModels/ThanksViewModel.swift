@@ -76,7 +76,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   public init() {
     let project = self.configureWithDataProperty.signal
       .skipNil()
-      .map(\.project)
+      .map(first)
 
     self.backedProjectText = project.map {
       let string = Strings.You_have_successfully_backed_project_html(

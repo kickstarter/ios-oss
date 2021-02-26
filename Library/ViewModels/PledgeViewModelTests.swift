@@ -151,9 +151,9 @@ final class PledgeViewModelTests: TestCase {
     self.vm.outputs.goToApplePayPaymentAuthorization.map { $0.merchantIdentifier }
       .observe(self.goToApplePayPaymentAuthorizationMerchantId.observer)
 
-    self.vm.outputs.goToThanks.map(\.project).observe(self.goToThanksProject.observer)
-    self.vm.outputs.goToThanks.map(\.reward).observe(self.goToThanksReward.observer)
-    self.vm.outputs.goToThanks.map(\.checkoutData).observe(self.goToThanksCheckoutData.observer)
+    self.vm.outputs.goToThanks.map(first).observe(self.goToThanksProject.observer)
+    self.vm.outputs.goToThanks.map(second).observe(self.goToThanksReward.observer)
+    self.vm.outputs.goToThanks.map(third).observe(self.goToThanksCheckoutData.observer)
 
     self.vm.outputs.notifyDelegateUpdatePledgeDidSucceedWithMessage
       .observe(self.notifyDelegateUpdatePledgeDidSucceedWithMessage.observer)
