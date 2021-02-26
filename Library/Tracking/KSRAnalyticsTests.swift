@@ -1477,6 +1477,8 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackThanksPageViewed(project: .template, reward: .template, checkoutData: nil)
     XCTAssertEqual("thanks", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("thanks", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("new_pledge", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("new_pledge", segmentClient.properties.last?["context_type"] as? String)
 
     ksrAnalytics.track2FAViewed()
     XCTAssertEqual(
@@ -1531,10 +1533,10 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(KSRAnalytics.TypeContext.categoryName.trackingString, "category_name")
     XCTAssertEqual(KSRAnalytics.TypeContext.creditCard.trackingString, "credit_card")
     XCTAssertEqual(KSRAnalytics.TypeContext.facebook.trackingString, "facebook")
-    XCTAssertEqual(KSRAnalytics.TypeContext.fixErroredPledge.trackingString, "fix_errored_pledge")
+    XCTAssertEqual(KSRAnalytics.TypeContext.pledge(.fixErroredPledge).trackingString, "fix_errored_pledge")
+    XCTAssertEqual(KSRAnalytics.TypeContext.pledge(.managePledge).trackingString, "manage_pledge")
+    XCTAssertEqual(KSRAnalytics.TypeContext.pledge(.newPledge).trackingString, "new_pledge")
     XCTAssertEqual(KSRAnalytics.TypeContext.location.trackingString, "location")
-    XCTAssertEqual(KSRAnalytics.TypeContext.managePledge.trackingString, "manage_pledge")
-    XCTAssertEqual(KSRAnalytics.TypeContext.newPledge.trackingString, "new_pledge")
     XCTAssertEqual(KSRAnalytics.TypeContext.percentRaised.trackingString, "percent_raised")
     XCTAssertEqual(KSRAnalytics.TypeContext.projectState.trackingString, "project_state")
     XCTAssertEqual(KSRAnalytics.TypeContext.pwl.trackingString, "pwl")

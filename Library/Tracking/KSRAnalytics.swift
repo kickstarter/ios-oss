@@ -60,10 +60,13 @@ public final class KSRAnalytics {
     case signupSubmitButtonClicked = "Signup Submit Button Clicked"
     case skipVerificationButtonClicked = "Skip Verification Button Clicked"
     case tabBarClicked = "Tab Bar Clicked"
-    case thanksPageViewed = "Thanks Page Viewed"
     case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
     case verificationScreenViewed = "Verification Screen Viewed"
     case watchProjectButtonClicked = "Watch Project Button Clicked"
+  }
+
+  private enum NewApprovedEvent: String, CaseIterable {
+    case pageViewed = "Page Viewed"
   }
 
   /// Determines the screen from which the event is sent.
@@ -364,11 +367,9 @@ public final class KSRAnalytics {
     case categoryName
     case creditCard
     case facebook
-    case fixErroredPledge
     case location
-    case managePledge
-    case newPledge
     case percentRaised
+    case pledge(PledgeContext)
     case projectState
     case pwl
     case recommended
@@ -382,6 +383,20 @@ public final class KSRAnalytics {
     case watch
     case watched
 
+    public enum PledgeContext {
+      case fixErroredPledge
+      case newPledge
+      case managePledge
+
+      var trackingString: String {
+        switch self {
+        case .fixErroredPledge: return "fix_errored_pledge"
+        case .newPledge: return "new_pledge"
+        case .managePledge: return "manage_pledge"
+        }
+      }
+    }
+
     var trackingString: String {
       switch self {
       case .amountGoal: return "amount_goal"
@@ -392,11 +407,9 @@ public final class KSRAnalytics {
       case .categoryName: return "category_name"
       case .creditCard: return "credit_card"
       case .facebook: return "facebook"
-      case .fixErroredPledge: return "fix_errored_pledge"
       case .location: return "location"
-      case .managePledge: return "manage_pledge"
-      case .newPledge: return "new_pledge"
       case .percentRaised: return "percent_raised"
+      case let .pledge(pledgeContext): return pledgeContext.trackingString
       case .projectState: return "project_state"
       case .pwl: return "pwl"
       case .recommended: return "recommended"
@@ -926,14 +939,14 @@ public final class KSRAnalytics {
     var props = projectProperties(from: project)
       .withAllValuesFrom(pledgeProperties(from: reward))
       // the context is always "newPledge" for this event
-      .withAllValuesFrom(contextProperties())
+      .withAllValuesFrom(contextProperties(page: .thanks, typeContext: TypeContext.pledge(.newPledge)))
 
     if let checkoutData = checkoutData {
       props = props.withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
     }
 
     self.track(
-      event: ApprovedEvent.thanksPageViewed.rawValue,
+      event: NewApprovedEvent.pageViewed.rawValue,
       location: .thanks,
       properties: props
     )
