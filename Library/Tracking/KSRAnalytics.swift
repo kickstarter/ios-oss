@@ -26,7 +26,6 @@ public final class KSRAnalytics {
     case activityFeedViewed = "Activity Feed Viewed"
     case addNewCardButtonClicked = "Add New Card Button Clicked"
     case addOnsContinueButtonClicked = "Add-Ons Continue Button Clicked"
-    case addOnsPageViewed = "Add-Ons Page Viewed"
     case campaignDetailsButtonClicked = "Campaign Details Button Clicked"
     case campaignDetailsPledgeButtonClicked = "Campaign Details Pledge Button Clicked"
     case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
@@ -66,6 +65,7 @@ public final class KSRAnalytics {
   }
 
   private enum NewApprovedEvent: String, CaseIterable {
+    case ctaClicked = "CTA Clicked"
     case pageViewed = "Page Viewed"
   }
 
@@ -742,7 +742,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties())
 
     self.track(
-      event: ApprovedEvent.addOnsPageViewed.rawValue,
+      event: NewApprovedEvent.ctaClicked.rawValue,
       location: .addOnsSelection,
       properties: props,
       refTag: refTag?.stringTag

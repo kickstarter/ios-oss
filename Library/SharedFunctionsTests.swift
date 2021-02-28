@@ -346,4 +346,14 @@ final class SharedFunctionsTests: TestCase {
 
     XCTAssertTrue(isEndDateAfterToday(for: reward))
   }
+  
+  func testRoundedToDecimalPlaces() {
+    let amount = 30.5657676754
+    
+    let roundedTo2dp = rounded(amount, places: 2)
+    let roundedTo4dp = rounded(amount, places: 4)
+    
+    XCTAssertEqual(30.57, roundedTo2dp)
+    XCTAssertEqual(30.5658, roundedTo4dp)
+  }
 }

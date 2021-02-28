@@ -388,3 +388,11 @@ public func isEndDateAfterToday(for reward: Reward) -> Bool {
   return (reward.endsAt == nil || (reward.endsAt ?? 0) >= AppEnvironment.current.dateType.init()
     .timeIntervalSince1970)
 }
+
+/*
+ A helper that assists in rounding an amount to a given number of decimal places
+ */
+internal func rounded(_ value: Double, places: Int) -> Double {
+  let divisor = pow(10.0, Double(places))
+  return (value * divisor).rounded() / divisor
+}
