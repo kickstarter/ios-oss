@@ -50,7 +50,6 @@ public final class KSRAnalytics {
     case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
     case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked"
     case projectCardClicked = "Project Card Clicked"
-    case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
     case projectPageViewed = "Project Page Viewed"
     case projectSwiped = "Project Swiped"
     case searchPageViewed = "Search Page Viewed"
@@ -66,6 +65,7 @@ public final class KSRAnalytics {
   }
 
   private enum NewApprovedEvent: String, CaseIterable {
+    case ctaClicked = "CTA Clicked"
     case pageViewed = "Page Viewed"
   }
 
@@ -764,9 +764,10 @@ public final class KSRAnalytics {
     case .pledge:
       let allProps = props
         .withAllValuesFrom(optimizelyProperties)
+        .withAllValuesFrom(contextProperties(ctaContext: .pledgeInitiate))
 
       self.track(
-        event: ApprovedEvent.projectPagePledgeButtonClicked.rawValue,
+        event: NewApprovedEvent.ctaClicked.rawValue,
         location: .projectPage,
         properties: allProps
       )
