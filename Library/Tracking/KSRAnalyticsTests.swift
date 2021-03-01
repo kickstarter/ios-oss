@@ -995,45 +995,33 @@ final class KSRAnalyticsTests: TestCase {
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
 
-    XCTAssertEqual(["Pledge Submit Button Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
 
     self.assertProjectProperties(dataLakeClientProps)
-    self.assertPledgeProperties(dataLakeClientProps)
     self.assertCheckoutProperties(dataLakeClientProps)
 
-    XCTAssertEqual(["Pledge Submit Button Clicked"], segmentClient.events)
-
-    self.assertProjectProperties(segmentClientProps)
-    self.assertPledgeProperties(segmentClientProps)
-    self.assertCheckoutProperties(segmentClientProps)
-  }
-
-  func testTrackPledgeSubmitButtonClicked_Context() {
-    let dataLakeClient = MockTrackingClient()
-    let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
-    let reward = Reward.template
-      |> Reward.lens.endsAt .~ 5.0
-      |> Reward.lens.shipping.preference .~ .restricted
-
-    ksrAnalytics.trackPledgeSubmitButtonClicked(
-      project: .template,
-      reward: reward,
-      refTag: nil
+    XCTAssertEqual(
+      KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
+      dataLakeClientProps?["context_cta"] as? String
+    )
+    XCTAssertEqual(
+      KSRAnalytics.TypeContext.creditCard.trackingString,
+      dataLakeClientProps?["context_type"] as? String
     )
 
-    let dataLakeClientProps = dataLakeClient.properties.last
-    let segmentClientProps = segmentClient.properties.last
-
-    XCTAssertEqual(["Pledge Submit Button Clicked"], dataLakeClient.events)
-
-    self.assertProjectProperties(dataLakeClientProps)
-    self.assertPledgeProperties(dataLakeClientProps)
-
-    XCTAssertEqual(["Pledge Submit Button Clicked"], segmentClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
 
     self.assertProjectProperties(segmentClientProps)
-    self.assertPledgeProperties(segmentClientProps)
+    self.assertCheckoutProperties(segmentClientProps)
+
+    XCTAssertEqual(
+      KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
+      segmentClientProps?["context_cta"] as? String
+    )
+    XCTAssertEqual(
+      KSRAnalytics.TypeContext.creditCard.trackingString,
+      segmentClientProps?["context_type"] as? String
+    )
   }
 
   func testTrackAddNewCardButtonClicked() {
