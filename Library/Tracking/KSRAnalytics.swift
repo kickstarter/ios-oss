@@ -65,7 +65,6 @@ public final class KSRAnalytics {
   private enum NewApprovedEvent: String, CaseIterable {
     case ctaClicked = "CTA Clicked"
     case pageViewed = "Page Viewed"
-    case ctaClicked = "CTA Clicked"
   }
 
   /// Determines the screen from which the event is sent.
