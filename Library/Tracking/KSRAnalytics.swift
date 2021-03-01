@@ -48,7 +48,6 @@ public final class KSRAnalytics {
     case onboardingContinueButtonClicked = "Onboarding Continue Button Clicked"
     case onboardingGetStartedButtonClicked = "Onboarding Get Started Button Clicked"
     case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
-    case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked"
     case projectCardClicked = "Project Card Clicked"
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
     case projectPageViewed = "Project Page Viewed"
@@ -67,6 +66,7 @@ public final class KSRAnalytics {
 
   private enum NewApprovedEvent: String, CaseIterable {
     case pageViewed = "Page Viewed"
+    case ctaClicked = "CTA Clicked"
   }
 
   /// Determines the screen from which the event is sent.
@@ -867,30 +867,12 @@ public final class KSRAnalytics {
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
       // the context is always "newPledge" for this event
-      .withAllValuesFrom(contextProperties())
+      .withAllValuesFrom(contextProperties(ctaContext: .pledgeSubmit, typeContext: .creditCard))
 
     self.track(
-      event: ApprovedEvent.pledgeSubmitButtonClicked.rawValue,
-      location: .pledgeScreen,
-      properties: props,
-      refTag: refTag?.stringTag
-    )
-  }
-
-  public func trackPledgeSubmitButtonClicked(
-    project: Project,
-    reward: Reward,
-    refTag: RefTag?
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties())
-
-    self.track(
-      event: ApprovedEvent.pledgeSubmitButtonClicked.rawValue,
+      event: NewApprovedEvent.ctaClicked.rawValue,
       location: .pledgeScreen,
       properties: props,
       refTag: refTag?.stringTag
