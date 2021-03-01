@@ -1983,13 +1983,11 @@ final class PledgeViewModelTests: TestCase {
         ["Checkout Payment Page Viewed"],
         self.dataLakeTrackingClient.events
       )
-      XCTAssertEqual([nil], self.dataLakeTrackingClient.properties(forKey: "pledge_context"))
 
       XCTAssertEqual(
         ["Checkout Payment Page Viewed"],
         self.segmentTrackingClient.events
       )
-      XCTAssertEqual([nil], self.segmentTrackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -2046,13 +2044,11 @@ final class PledgeViewModelTests: TestCase {
         ["Checkout Payment Page Viewed"],
         self.dataLakeTrackingClient.events
       )
-      XCTAssertEqual([nil], self.dataLakeTrackingClient.properties(forKey: "pledge_context"))
 
       XCTAssertEqual(
         ["Checkout Payment Page Viewed"],
         self.segmentTrackingClient.events
       )
-      XCTAssertEqual([nil], self.segmentTrackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -2164,11 +2160,11 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksCheckoutData.assertValues([checkoutData])
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
+        ["Checkout Payment Page Viewed", "CTA Clicked"],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
+        ["Checkout Payment Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
     }
@@ -2265,11 +2261,11 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksCheckoutData.assertValues([checkoutData])
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
+        ["Checkout Payment Page Viewed", "CTA Clicked"],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
+        ["Checkout Payment Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
     }
@@ -2396,15 +2392,13 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
+        ["Checkout Payment Page Viewed", "CTA Clicked"],
         self.dataLakeTrackingClient.events
       )
-      XCTAssertEqual([nil, nil], self.dataLakeTrackingClient.properties(forKey: "pledge_context"))
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
+        ["Checkout Payment Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
-      XCTAssertEqual([nil, nil], self.segmentTrackingClient.properties(forKey: "pledge_context"))
     }
   }
 
@@ -4507,12 +4501,28 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksCheckoutData.assertValues([checkoutData])
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
+        ["Checkout Payment Page Viewed", "CTA Clicked"],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
+        KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
+        self.dataLakeTrackingClient.properties.last?["context_cta"] as? String
+      )
+      XCTAssertEqual(
+        KSRAnalytics.TypeContext.creditCard.trackingString,
+        self.dataLakeTrackingClient.properties.last?["context_type"] as? String
+      )
+      XCTAssertEqual(
+        ["Checkout Payment Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
+      )
+      XCTAssertEqual(
+        KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
+        self.segmentTrackingClient.properties.last?["context_cta"] as? String
+      )
+      XCTAssertEqual(
+        KSRAnalytics.TypeContext.creditCard.trackingString,
+        self.segmentTrackingClient.properties.last?["context_type"] as? String
       )
     }
   }
@@ -4604,15 +4614,30 @@ final class PledgeViewModelTests: TestCase {
       )
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
+        ["Checkout Payment Page Viewed", "CTA Clicked"],
         self.dataLakeTrackingClient.events
       )
-      XCTAssertEqual([nil, nil], self.dataLakeTrackingClient.properties(forKey: "pledge_context"))
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
+        KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
+        self.dataLakeTrackingClient.properties.last?["context_cta"] as? String
+      )
+      XCTAssertEqual(
+        KSRAnalytics.TypeContext.creditCard.trackingString,
+        self.dataLakeTrackingClient.properties.last?["context_type"] as? String
+      )
+
+      XCTAssertEqual(
+        ["Checkout Payment Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
-      XCTAssertEqual([nil, nil], self.segmentTrackingClient.properties(forKey: "pledge_context"))
+      XCTAssertEqual(
+        KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
+        self.segmentTrackingClient.properties.last?["context_cta"] as? String
+      )
+      XCTAssertEqual(
+        KSRAnalytics.TypeContext.creditCard.trackingString,
+        self.segmentTrackingClient.properties.last?["context_type"] as? String
+      )
     }
   }
 
@@ -4695,15 +4720,30 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
+        ["Checkout Payment Page Viewed", "CTA Clicked"],
         self.dataLakeTrackingClient.events
       )
-      XCTAssertEqual([nil, nil], self.dataLakeTrackingClient.properties(forKey: "pledge_context"))
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
+        KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
+        self.dataLakeTrackingClient.properties.last?["context_cta"] as? String
+      )
+      XCTAssertEqual(
+        KSRAnalytics.TypeContext.creditCard.trackingString,
+        self.dataLakeTrackingClient.properties.last?["context_type"] as? String
+      )
+
+      XCTAssertEqual(
+        ["Checkout Payment Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
-      XCTAssertEqual([nil, nil], self.segmentTrackingClient.properties(forKey: "pledge_context"))
+      XCTAssertEqual(
+        KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
+        self.segmentTrackingClient.properties.last?["context_cta"] as? String
+      )
+      XCTAssertEqual(
+        KSRAnalytics.TypeContext.creditCard.trackingString,
+        self.segmentTrackingClient.properties.last?["context_type"] as? String
+      )
     }
   }
 
@@ -5759,11 +5799,11 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.submitButtonTapped()
 
     XCTAssertEqual(
-      ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
+      ["Checkout Payment Page Viewed", "CTA Clicked"],
       self.dataLakeTrackingClient.events
     )
     XCTAssertEqual(
-      ["Checkout Payment Page Viewed", "Pledge Submit Button Clicked"],
+      ["Checkout Payment Page Viewed", "CTA Clicked"],
       self.segmentTrackingClient.events
     )
 
@@ -5801,20 +5841,30 @@ final class PledgeViewModelTests: TestCase {
     )
     XCTAssertEqual("My Reward", segmentClientProps?["checkout_reward_title"] as? String)
 
-    // Pledge properties
-    XCTAssertEqual(true, dataLakeTrackingClientProps?["pledge_backer_reward_has_items"] as? Bool)
-    XCTAssertEqual(1, dataLakeTrackingClientProps?["pledge_backer_reward_id"] as? Int)
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["pledge_backer_reward_minimum"] as? Double)
-    XCTAssertEqual(true, segmentClientProps?["pledge_backer_reward_has_items"] as? Bool)
-    XCTAssertEqual(1, segmentClientProps?["pledge_backer_reward_id"] as? Int)
-    XCTAssertEqual(10.00, segmentClientProps?["pledge_backer_reward_minimum"] as? Double)
-
     // Project properties
     XCTAssertEqual(1, dataLakeTrackingClientProps?["project_pid"] as? Int)
     XCTAssertEqual(1, segmentClientProps?["project_pid"] as? Int)
 
     XCTAssertEqual("discovery", dataLakeTrackingClientProps?["session_ref_tag"] as? String)
     XCTAssertEqual("discovery", segmentClientProps?["session_ref_tag"] as? String)
+
+    // Context properties
+    XCTAssertEqual(
+      KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
+      dataLakeTrackingClientProps?["context_cta"] as? String
+    )
+    XCTAssertEqual(
+      KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
+      segmentClientProps?["context_cta"] as? String
+    )
+    XCTAssertEqual(
+      KSRAnalytics.TypeContext.creditCard.trackingString,
+      dataLakeTrackingClientProps?["context_type"] as? String
+    )
+    XCTAssertEqual(
+      KSRAnalytics.TypeContext.creditCard.trackingString,
+      segmentClientProps?["context_type"] as? String
+    )
   }
 
   func testTrackingEvents_UpdatePledgeButtonSubmit_ContextIsFixPayment() {
