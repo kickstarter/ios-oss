@@ -276,8 +276,8 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.notifyDelegateCTATapped.assertValueCount(1)
 
-    XCTAssertEqual(["Project Page Pledge Button Clicked"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Project Page Pledge Button Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
 
     let dataLakeTrackingClientProperties = self.dataLakeTrackingClient.properties.last
     let segmentTrackingClientProperties = self.segmentTrackingClient.properties.last
