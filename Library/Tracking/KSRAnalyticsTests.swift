@@ -898,28 +898,12 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackPledgeCTAButtonClicked(stateType: .pledge, project: project)
-
-    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
-    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
-  }
-
-  func testTrackPledgeCTAButtonClicked_Context() {
-    let dataLakeClient = MockTrackingClient()
-    let segmentClient = MockTrackingClient()
-    let project = Project.template
-    let loggedInUser = User.template |> \.id .~ 42
-
-    let ksrAnalytics = KSRAnalytics(
-      dataLakeClient: dataLakeClient,
-      loggedInUser: loggedInUser,
-      segmentClient: segmentClient
-    )
-
-    ksrAnalytics.trackPledgeCTAButtonClicked(stateType: .pledge, project: project)
-
+    
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
 
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
     XCTAssertEqual("pledge_initiate", dataLakeClientProps?["context_cta"] as? String)
     XCTAssertEqual("pledge_initiate", segmentClientProps?["context_cta"] as? String)
   }

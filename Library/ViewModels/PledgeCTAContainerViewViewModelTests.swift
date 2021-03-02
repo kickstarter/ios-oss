@@ -294,6 +294,10 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
       dataLakeTrackingClientProperties?["session_variants_optimizely"],
       "Event includes Optimizely properties"
     )
+    XCTAssertNotNil(
+      dataLakeTrackingClientProperties?["context_cta"],
+      "Event includes CTA Context Properties"
+    )
 
     XCTAssertNotNil(
       segmentTrackingClientProperties?["optimizely_api_key"],
@@ -306,6 +310,10 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
     XCTAssertNotNil(
       segmentTrackingClientProperties?["session_variants_optimizely"],
       "Event includes Optimizely properties"
+    )
+    XCTAssertNotNil(
+      segmentTrackingClientProperties?["context_cta"],
+      "Event includes CTA Context Properties"
     )
   }
 }
