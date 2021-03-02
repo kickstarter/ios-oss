@@ -1107,8 +1107,8 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Add-Ons Page Viewed"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Add-Ons Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.scheduler.advance()
     self.vm.inputs.shippingRuleSelected(shippingRule)
@@ -1117,7 +1117,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.vm.inputs.continueButtonTapped()
 
     XCTAssertEqual(
-      ["Add-Ons Page Viewed", "Add-Ons Continue Button Clicked"],
+      ["Page Viewed", "Add-Ons Continue Button Clicked"],
       self.dataLakeTrackingClient.events
     )
     XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("context_"))
@@ -1125,7 +1125,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("project_"))
     XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("user_"))
     XCTAssertEqual(
-      ["Add-Ons Page Viewed", "Add-Ons Continue Button Clicked"],
+      ["Page Viewed", "Add-Ons Continue Button Clicked"],
       self.segmentTrackingClient.events
     )
     XCTAssertTrue(self.segmentTrackingClient.containsKeyPrefix("context_"))
@@ -1199,8 +1199,8 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Add-Ons Page Viewed"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Add-Ons Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.scheduler.advance()
     self.vm.inputs.shippingRuleSelected(shippingRule)
@@ -1215,7 +1215,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.vm.inputs.continueButtonTapped()
 
     XCTAssertEqual(
-      ["Add-Ons Page Viewed", "Add-Ons Continue Button Clicked"],
+      ["Page Viewed", "Add-Ons Continue Button Clicked"],
       self.dataLakeTrackingClient.events
     )
     XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("context_"))
@@ -1223,7 +1223,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("project_"))
     XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("user_"))
     XCTAssertEqual(
-      ["Add-Ons Page Viewed", "Add-Ons Continue Button Clicked"],
+      ["Page Viewed", "Add-Ons Continue Button Clicked"],
       self.segmentTrackingClient.events
     )
     XCTAssertTrue(self.segmentTrackingClient.containsKeyPrefix("context_"))

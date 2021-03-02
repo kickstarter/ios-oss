@@ -1479,6 +1479,12 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("thanks", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("new_pledge", dataLakeClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("new_pledge", segmentClient.properties.last?["context_type"] as? String)
+    
+    ksrAnalytics.trackAddOnsPageViewed(project: .template, reward: .template, refTag: nil, checkoutData: .template)
+    XCTAssertEqual("add_ons", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("add_ons", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual(nil, dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(nil, segmentClient.properties.last?["context_type"] as? String)
 
     ksrAnalytics.track2FAViewed()
     XCTAssertEqual(

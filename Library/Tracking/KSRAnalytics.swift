@@ -26,7 +26,6 @@ public final class KSRAnalytics {
     case activityFeedViewed = "Activity Feed Viewed"
     case addNewCardButtonClicked = "Add New Card Button Clicked"
     case addOnsContinueButtonClicked = "Add-Ons Continue Button Clicked"
-    case addOnsPageViewed = "Add-Ons Page Viewed"
     case campaignDetailsButtonClicked = "Campaign Details Button Clicked"
     case campaignDetailsPledgeButtonClicked = "Campaign Details Pledge Button Clicked"
     case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
@@ -733,14 +732,16 @@ public final class KSRAnalytics {
   public func trackAddOnsPageViewed(
     project: Project,
     reward: Reward,
-    refTag: RefTag?
+    refTag: RefTag?,
+    checkoutData: CheckoutPropertiesData
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties())
+      .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
+      .withAllValuesFrom(contextProperties(page: .addOnsSelection))
 
     self.track(
-      event: ApprovedEvent.addOnsPageViewed.rawValue,
+      event: NewApprovedEvent.pageViewed.rawValue,
       location: .addOnsSelection,
       properties: props,
       refTag: refTag?.stringTag
