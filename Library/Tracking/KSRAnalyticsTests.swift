@@ -898,7 +898,7 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackPledgeCTAButtonClicked(stateType: .pledge, project: project)
-    
+
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
 
