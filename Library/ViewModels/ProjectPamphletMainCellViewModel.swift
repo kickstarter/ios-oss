@@ -244,16 +244,13 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .takeWhen(self.readMoreButtonTappedProperty.signal)
       .observeValues { projectAndRefTag in
         let (project, refTag) = projectAndRefTag
-        let includeOptimizelyProperties = project.state == .live && userIsBackingProject(project) == false
         let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
-        let optyProperties = includeOptimizelyProperties ? optimizelyProperties() : nil
 
-        AppEnvironment.current.ksrAnalytics.trackCampaignDetailsButtonClicked(
-          project: project,
-          location: .projectPage,
+        AppEnvironment.current.ksrAnalytics.trackProjectViewed(
+          project,
           refTag: refTag,
-          cookieRefTag: cookieRefTag,
-          optimizelyProperties: optyProperties ?? [:]
+          sectionContext: .campaign,
+          cookieRefTag: cookieRefTag
         )
 
         AppEnvironment.current.optimizelyClient?.track(eventName: "Campaign Details Button Clicked")
