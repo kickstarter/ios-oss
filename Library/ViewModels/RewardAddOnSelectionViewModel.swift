@@ -266,7 +266,11 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
           project: project,
           reward: baseReward,
           refTag: refTag,
-          checkoutData: checkoutPropertiesData(project: project, baseReward: baseReward, rewards: selectedRewards)
+          checkoutData: checkoutPropertiesData(
+            project: project,
+            baseReward: baseReward,
+            rewards: selectedRewards
+          )
         )
       }
 
@@ -457,8 +461,8 @@ private func isValid(
     || backing.locationId != selectedShippingRule?.location.id
 }
 
-
-private func checkoutPropertiesData(project: Project, baseReward: Reward, rewards: [Reward]) -> KSRAnalytics.CheckoutPropertiesData {
+private func checkoutPropertiesData(project: Project, baseReward: Reward, rewards: [Reward]) -> KSRAnalytics
+  .CheckoutPropertiesData {
   let staticUsdRate = Double(project.stats.staticUsdRate)
   let estimatedDelivery = baseReward.estimatedDeliveryOn
   let rewardMinimumUsd = Format.decimalCurrency(for: baseReward.minimum.multiplyingCurrency(staticUsdRate))
