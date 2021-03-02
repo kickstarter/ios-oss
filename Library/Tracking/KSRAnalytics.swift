@@ -27,7 +27,6 @@ public final class KSRAnalytics {
     case addNewCardButtonClicked = "Add New Card Button Clicked"
     case addOnsContinueButtonClicked = "Add-Ons Continue Button Clicked"
     case addOnsPageViewed = "Add-Ons Page Viewed"
-    case campaignDetailsButtonClicked = "Campaign Details Button Clicked"
     case campaignDetailsPledgeButtonClicked = "Campaign Details Pledge Button Clicked"
     case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
     case collectionViewed = "Collection Viewed"
@@ -50,7 +49,6 @@ public final class KSRAnalytics {
     case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
     case projectCardClicked = "Project Card Clicked"
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
-    case projectPageViewed = "Project Page Viewed"
     case projectSwiped = "Project Swiped"
     case searchPageViewed = "Search Page Viewed"
     case searchResultsLoaded = "Search Results Loaded"
@@ -1153,14 +1151,14 @@ public final class KSRAnalytics {
   public func trackProjectViewed(
     _ project: Project,
     refTag: RefTag? = nil,
-    cookieRefTag: RefTag? = nil,
-    optimizelyProperties: [String: Any] = [:]
+    sectionContext: KSRAnalytics.SectionContext,
+    cookieRefTag: RefTag? = nil
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(optimizelyProperties)
+      .withAllValuesFrom(contextProperties(sectionContext: sectionContext))
 
     self.track(
-      event: ApprovedEvent.projectPageViewed.rawValue,
+      event: NewApprovedEvent.pageViewed.rawValue,
       location: .projectPage,
       properties: props,
       refTag: refTag?.stringTag,
@@ -1205,25 +1203,6 @@ public final class KSRAnalytics {
       event: ApprovedEvent.watchProjectButtonClicked.rawValue,
       location: location,
       properties: props
-    )
-  }
-
-  public func trackCampaignDetailsButtonClicked(
-    project: Project,
-    location: PageContext,
-    refTag: RefTag?,
-    cookieRefTag: RefTag? = nil,
-    optimizelyProperties: [String: Any] = [:]
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(optimizelyProperties)
-
-    self.track(
-      event: ApprovedEvent.campaignDetailsButtonClicked.rawValue,
-      location: location,
-      properties: props,
-      refTag: refTag?.stringTag,
-      referrerCredit: cookieRefTag?.stringTag
     )
   }
 
