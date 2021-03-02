@@ -328,26 +328,20 @@ public final class KSRAnalytics {
 
    - comments: Section of Project overview screen
    - campaign: Details when user clicks "Read more"
-   - faq: Tab on campaign details screen
    - overview: Project overview landing screen
-   - risks: Tab on campaign details screen
    - updates: Section of project overview screen.
    */
   public enum SectionContext {
     case campaign
     case comments
-    case faq
     case overview
-    case risks
     case updates
 
     var trackingString: String {
       switch self {
       case .campaign: return "campaign"
       case .comments: return "comments"
-      case .faq: return "faq"
       case .overview: return "overview"
-      case .risks: return "risks"
       case .updates: return "updates"
       }
     }
