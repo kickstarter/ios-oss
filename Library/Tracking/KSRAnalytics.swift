@@ -1138,8 +1138,9 @@ public final class KSRAnalytics {
   /**
    Call when a project page is viewed.
 
-   - parameter project:      The project being viewed.
-   - parameter refTag:       The ref tag used when opening the project.
+   - parameter project: The project being viewed.
+   - parameter refTag: The ref tag used when opening the project.
+   - parameter sectionContext: The context referring to the section of the screen being interacted with.
    - parameter cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
    */
   public func trackProjectViewed(
