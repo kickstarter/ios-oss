@@ -528,12 +528,12 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       XCTAssertEqual(
         self.dataLakeTrackingClient.events,
-        ["Campaign Details Button Clicked"],
+        ["Page Viewed"],
         "Event is tracked"
       )
       XCTAssertEqual(
         self.segmentTrackingClient.events,
-        ["Campaign Details Button Clicked"],
+        ["Page Viewed"],
         "Event is tracked"
       )
 
@@ -643,7 +643,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     }
   }
 
-  func testTrackingCampaignDetailsButtonTapped_LiveProject_LoggedIn_NonBacked() {
+  func testTrackingProjectViewed_LiveProject_LoggedIn_NonBacked() {
     let user = User.template
       |> \.location .~ Location.template
       |> \.stats.backedProjectsCount .~ 50
@@ -663,13 +663,15 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       self.notifyDelegateToGoToCampaignWithProject.assertValues([project])
 
-      XCTAssertEqual(self.dataLakeTrackingClient.events, ["Campaign Details Button Clicked"])
-      XCTAssertEqual(self.segmentTrackingClient.events, ["Campaign Details Button Clicked"])
+      XCTAssertEqual(self.dataLakeTrackingClient.events, ["Page Viewed"])
+      XCTAssertEqual(self.segmentTrackingClient.events, ["Page Viewed"])
 
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_page"), ["project"])
+      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_section"), ["campaign"])
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "session_referrer_credit"), ["discovery"])
       XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_page"), ["project"])
+      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_section"), ["campaign"])
       XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
       XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "session_referrer_credit"), ["discovery"])
 
@@ -686,34 +688,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       XCTAssertEqual(
         self.segmentTrackingClient.properties(forKey: "project_user_has_watched", as: Bool.self),
         [nil]
-      )
-
-      let dataLakeTrackingClientProperties = self.dataLakeTrackingClient.properties.last
-      let segmentClientProperties = self.segmentTrackingClient.properties.last
-
-      XCTAssertNotNil(
-        dataLakeTrackingClientProperties?["optimizely_api_key"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        dataLakeTrackingClientProperties?["optimizely_environment"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        dataLakeTrackingClientProperties?["session_variants_optimizely"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        segmentClientProperties?["optimizely_api_key"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        segmentClientProperties?["optimizely_environment"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        segmentClientProperties?["session_variants_optimizely"],
-        "Event includes Optimizely properties"
       )
     }
   }
