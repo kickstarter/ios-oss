@@ -1107,8 +1107,8 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Add-Ons Page Viewed"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Add-Ons Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
 
     self.scheduler.advance()
     self.vm.inputs.shippingRuleSelected(shippingRule)
