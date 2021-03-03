@@ -175,11 +175,11 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page Viewed"],
+      ["Page Viewed"],
       self.dataLakeTrackingClient.events, "A project page event is tracked."
     )
     XCTAssertEqual(
-      ["Project Page Viewed"],
+      ["Page Viewed"],
       self.segmentTrackingClient.events, "A project page event is tracked."
     )
     XCTAssertEqual(
@@ -227,13 +227,13 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     XCTAssertEqual(
       [
-        "Project Page Viewed", "Project Page Viewed"
+        "Page Viewed", "Page Viewed"
       ],
       self.dataLakeTrackingClient.events, "A project page event is tracked."
     )
     XCTAssertEqual(
       [
-        "Project Page Viewed", "Project Page Viewed"
+        "Page Viewed", "Page Viewed"
       ],
       self.segmentTrackingClient.events, "A project page event is tracked."
     )
@@ -304,8 +304,8 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.scheduler.advance()
 
-    XCTAssertEqual(["Project Page Viewed"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Project Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
   }
 
   func testMockCookieStorageSet_SeparateSchedulers() {
@@ -391,11 +391,11 @@ final class ProjectPamphletViewModelTests: TestCase {
     self.scheduler.advance()
 
     XCTAssertEqual(
-      ["Project Page Viewed"],
+      ["Page Viewed"],
       self.dataLakeTrackingClient.events, "A project page event is tracked."
     )
     XCTAssertEqual(
-      ["Project Page Viewed"],
+      ["Page Viewed"],
       self.segmentTrackingClient.events, "A project page event is tracked."
     )
     XCTAssertEqual(
@@ -443,13 +443,13 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     XCTAssertEqual(
       [
-        "Project Page Viewed", "Project Page Viewed"
+        "Page Viewed", "Page Viewed"
       ],
       self.dataLakeTrackingClient.events, "A project page event is tracked."
     )
     XCTAssertEqual(
       [
-        "Project Page Viewed", "Project Page Viewed"
+        "Page Viewed", "Page Viewed"
       ],
       self.segmentTrackingClient.events, "A project page event is tracked."
     )
@@ -916,8 +916,8 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      XCTAssertEqual(dataLakeClient.events, ["Project Page Viewed"])
-      XCTAssertEqual(segmentClient.events, ["Project Page Viewed"])
+      XCTAssertEqual(dataLakeClient.events, ["Page Viewed"])
+      XCTAssertEqual(segmentClient.events, ["Page Viewed"])
 
       XCTAssertEqual(dataLakeClient.properties(forKey: "session_ref_tag"), ["discovery"])
       XCTAssertEqual(
@@ -947,29 +947,6 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(segmentClient.properties(forKey: "project_category"), [nil])
       XCTAssertEqual(segmentClient.properties(forKey: "project_country"), ["US"])
       XCTAssertEqual(segmentClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
-
-      let dataLakeClientProperties = dataLakeClient.properties.last
-      let segmentClientProperties = segmentClient.properties.last
-
-      XCTAssertNotNil(dataLakeClientProperties?["optimizely_api_key"], "Event includes Optimizely properties")
-      XCTAssertNotNil(
-        dataLakeClientProperties?["optimizely_environment"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        dataLakeClientProperties?["session_variants_optimizely"],
-        "Event includes Optimizely properties"
-      )
-
-      XCTAssertNotNil(segmentClientProperties?["optimizely_api_key"], "Event includes Optimizely properties")
-      XCTAssertNotNil(
-        segmentClientProperties?["optimizely_environment"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        segmentClientProperties?["session_variants_optimizely"],
-        "Event includes Optimizely properties"
-      )
     }
   }
 
@@ -993,8 +970,8 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      XCTAssertEqual(dataLakeClient.events, ["Project Page Viewed"])
-      XCTAssertEqual(segmentClient.events, ["Project Page Viewed"])
+      XCTAssertEqual(dataLakeClient.events, ["Page Viewed"])
+      XCTAssertEqual(segmentClient.events, ["Page Viewed"])
 
       XCTAssertEqual(dataLakeClient.properties(forKey: "session_ref_tag"), ["discovery"])
       XCTAssertEqual(
@@ -1022,28 +999,6 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(segmentClient.properties(forKey: "project_category"), [nil])
       XCTAssertEqual(segmentClient.properties(forKey: "project_country"), ["US"])
       XCTAssertEqual(segmentClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
-
-      let dataLakeClientProperties = dataLakeClient.properties.last
-      let segmentClientProperties = segmentClient.properties.last
-
-      XCTAssertNotNil(dataLakeClientProperties?["optimizely_api_key"], "Event includes Optimizely properties")
-      XCTAssertNotNil(
-        dataLakeClientProperties?["optimizely_environment"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        dataLakeClientProperties?["session_variants_optimizely"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(segmentClientProperties?["optimizely_api_key"], "Event includes Optimizely properties")
-      XCTAssertNotNil(
-        segmentClientProperties?["optimizely_environment"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        segmentClientProperties?["session_variants_optimizely"],
-        "Event includes Optimizely properties"
-      )
     }
   }
 

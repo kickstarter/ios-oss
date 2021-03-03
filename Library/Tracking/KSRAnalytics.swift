@@ -27,7 +27,6 @@ public final class KSRAnalytics {
     case addNewCardButtonClicked = "Add New Card Button Clicked"
     case addOnsContinueButtonClicked = "Add-Ons Continue Button Clicked"
     case addOnsPageViewed = "Add-Ons Page Viewed"
-    case campaignDetailsButtonClicked = "Campaign Details Button Clicked"
     case campaignDetailsPledgeButtonClicked = "Campaign Details Pledge Button Clicked"
     case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
     case collectionViewed = "Collection Viewed"
@@ -49,7 +48,7 @@ public final class KSRAnalytics {
     case onboardingGetStartedButtonClicked = "Onboarding Get Started Button Clicked"
     case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
     case projectCardClicked = "Project Card Clicked"
-    case projectPageViewed = "Project Page Viewed"
+    case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
     case projectSwiped = "Project Swiped"
     case searchPageViewed = "Search Page Viewed"
     case searchResultsLoaded = "Search Results Loaded"
@@ -329,26 +328,20 @@ public final class KSRAnalytics {
 
    - comments: Section of Project overview screen
    - campaign: Details when user clicks "Read more"
-   - faq: Tab on campaign details screen
    - overview: Project overview landing screen
-   - risks: Tab on campaign details screen
    - updates: Section of project overview screen.
    */
   public enum SectionContext {
     case campaign
     case comments
-    case faq
     case overview
-    case risks
     case updates
 
     var trackingString: String {
       switch self {
       case .campaign: return "campaign"
       case .comments: return "comments"
-      case .faq: return "faq"
       case .overview: return "overview"
-      case .risks: return "risks"
       case .updates: return "updates"
       }
     }
@@ -1146,21 +1139,22 @@ public final class KSRAnalytics {
   /**
    Call when a project page is viewed.
 
-   - parameter project:      The project being viewed.
-   - parameter refTag:       The ref tag used when opening the project.
+   - parameter project: The project being viewed.
+   - parameter refTag: The ref tag used when opening the project.
+   - parameter sectionContext: The context referring to the section of the screen being interacted with.
    - parameter cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
    */
   public func trackProjectViewed(
     _ project: Project,
     refTag: RefTag? = nil,
-    cookieRefTag: RefTag? = nil,
-    optimizelyProperties: [String: Any] = [:]
+    sectionContext: KSRAnalytics.SectionContext,
+    cookieRefTag: RefTag? = nil
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(optimizelyProperties)
+      .withAllValuesFrom(contextProperties(sectionContext: sectionContext))
 
     self.track(
-      event: ApprovedEvent.projectPageViewed.rawValue,
+      event: NewApprovedEvent.pageViewed.rawValue,
       location: .projectPage,
       properties: props,
       refTag: refTag?.stringTag,
@@ -1205,25 +1199,6 @@ public final class KSRAnalytics {
       event: ApprovedEvent.watchProjectButtonClicked.rawValue,
       location: location,
       properties: props
-    )
-  }
-
-  public func trackCampaignDetailsButtonClicked(
-    project: Project,
-    location: PageContext,
-    refTag: RefTag?,
-    cookieRefTag: RefTag? = nil,
-    optimizelyProperties: [String: Any] = [:]
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(optimizelyProperties)
-
-    self.track(
-      event: ApprovedEvent.campaignDetailsButtonClicked.rawValue,
-      location: location,
-      properties: props,
-      refTag: refTag?.stringTag,
-      referrerCredit: cookieRefTag?.stringTag
     )
   }
 
