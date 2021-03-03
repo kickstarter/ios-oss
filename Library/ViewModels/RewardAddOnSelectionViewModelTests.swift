@@ -1110,7 +1110,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.scheduler.advance()
     self.vm.inputs.shippingRuleSelected(shippingRule)
     self.scheduler.advance()
-    
+
     XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
@@ -1202,7 +1202,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.scheduler.advance()
     self.vm.inputs.shippingRuleSelected(shippingRule)
     self.scheduler.advance()
-    
+
     XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 

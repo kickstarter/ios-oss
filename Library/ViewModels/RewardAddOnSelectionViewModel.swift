@@ -255,14 +255,14 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     )
     .map(PledgeViewData.init)
     .takeWhen(self.continueButtonTappedProperty.signal)
-    
+
     let defaultShippingTotal = Signal.zip(project, baseReward)
       .map { project, baseReward -> Double in
         guard baseReward.shipping.enabled, let backing = project.personalization.backing else { return 0.0 }
 
         return backing.shippingAmount.flatMap(Double.init) ?? 0.0
       }
-    
+
     let calculatedShippingTotal = Signal.combineLatest(
       shippingRule.skipNil(),
       allRewards,
@@ -280,12 +280,12 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
         return total.addingCurrency(totalShippingForReward)
       }
     }
-    
+
     let allRewardsShippingTotal = Signal.merge(
       defaultShippingTotal,
       calculatedShippingTotal
     )
-    
+
     // MARK: - Tracking
 
     Signal.zip(project, baseReward, selectedRewards, refTag, configData, allRewardsShippingTotal)
