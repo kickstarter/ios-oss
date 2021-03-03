@@ -732,8 +732,8 @@ public final class KSRAnalytics {
   public func trackAddOnsPageViewed(
     project: Project,
     reward: Reward,
-    refTag: RefTag?,
-    checkoutData: CheckoutPropertiesData
+    checkoutData: CheckoutPropertiesData,
+    refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
