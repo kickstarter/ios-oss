@@ -856,9 +856,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         )
       }
 
-    Signal.combineLatest(createBackingData, baseReward, additionalPledgeAmount, allRewardsShippingTotal)
+    Signal.combineLatest(createBackingData, baseReward, additionalPledgeAmount, allRewardsShippingTotal, checkoutIdProperty.signal)
       .takeWhen(createButtonTapped)
-      .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
+      .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal, checkoutId in
 
         let checkoutData = checkoutProperties(
           from: data.project,
@@ -868,7 +868,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           additionalPledgeAmount: additionalPledgeAmount,
           pledgeTotal: data.pledgeTotal,
           shippingTotal: allRewardsShippingTotal,
-          checkoutId: nil,
+          checkoutId: checkoutId,
           isApplePay: false
         )
 
