@@ -856,7 +856,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         )
       }
 
-    Signal.combineLatest(createBackingData, baseReward, additionalPledgeAmount, allRewardsShippingTotal, checkoutIdProperty.signal)
+    Signal
+      .combineLatest(
+        createBackingData,
+        baseReward,
+        additionalPledgeAmount,
+        allRewardsShippingTotal,
+        checkoutIdProperty.signal
+      )
       .takeWhen(createButtonTapped)
       .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal, checkoutId in
 

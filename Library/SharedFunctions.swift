@@ -401,7 +401,7 @@ public func checkoutProperties(
   from project: Project,
   baseReward: Reward,
   rewards: [Reward],
-  selectedQuantities: SelectedRewardQuantities,
+  selectedQuantities: SelectedRewardQuantities?,
   additionalPledgeAmount: Double,
   pledgeTotal: Double,
   shippingTotal: Double,
@@ -419,7 +419,7 @@ public func checkoutProperties(
   let addOnRewards = rewards
     .filter { reward in reward.id != baseReward.id }
     .map { reward -> [Reward] in
-      guard let selectedRewardQuantity = selectedQuantities[reward.id] else { return [] }
+      guard let selectedRewardQuantity = selectedQuantities?[reward.id] else { return [] }
       return Array(0..<selectedRewardQuantity).map { _ in reward }
     }
     .flatMap { $0 }
