@@ -861,11 +861,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         createBackingData,
         baseReward,
         additionalPledgeAmount,
-        allRewardsShippingTotal,
-        checkoutIdProperty.signal
+        allRewardsShippingTotal
       )
       .takeWhen(createButtonTapped)
-      .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal, checkoutId in
+      .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
 
         let checkoutData = checkoutProperties(
           from: data.project,
@@ -875,7 +874,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           additionalPledgeAmount: additionalPledgeAmount,
           pledgeTotal: data.pledgeTotal,
           shippingTotal: allRewardsShippingTotal,
-          checkoutId: checkoutId,
+          checkoutId: nil,
           isApplePay: false
         )
 
