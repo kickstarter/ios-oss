@@ -710,33 +710,6 @@ final class KSRAnalyticsTests: TestCase {
     self.assertProjectProperties(segmentClient.properties.last)
   }
 
-  func testTrackCampignDetailsPledgeButtonClicked() {
-    let dataLakeClient = MockTrackingClient()
-    let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
-
-    ksrAnalytics.trackCampaignDetailsPledgeButtonClicked(
-      project: .template,
-      location: .campaign,
-      refTag: .discovery,
-      cookieRefTag: .discovery
-    )
-
-    XCTAssertEqual(["Campaign Details Pledge Button Clicked"], dataLakeClient.events)
-    XCTAssertEqual(["campaign"], dataLakeClient.properties(forKey: "context_page"))
-    XCTAssertEqual(["discovery"], dataLakeClient.properties(forKey: "session_ref_tag"))
-    XCTAssertEqual(["discovery"], dataLakeClient.properties(forKey: "session_referrer_credit"))
-
-    self.assertProjectProperties(dataLakeClient.properties.last)
-
-    XCTAssertEqual(["Campaign Details Pledge Button Clicked"], segmentClient.events)
-    XCTAssertEqual(["campaign"], segmentClient.properties(forKey: "context_page"))
-    XCTAssertEqual(["discovery"], segmentClient.properties(forKey: "session_ref_tag"))
-    XCTAssertEqual(["discovery"], segmentClient.properties(forKey: "session_referrer_credit"))
-
-    self.assertProjectProperties(segmentClient.properties.last)
-  }
-
   func testTrackCheckoutPaymentMethodViewed() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
