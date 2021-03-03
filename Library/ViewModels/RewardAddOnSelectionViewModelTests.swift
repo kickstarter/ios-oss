@@ -1107,12 +1107,12 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
-    XCTAssertEqual([], self.segmentTrackingClient.events)
-
     self.scheduler.advance()
     self.vm.inputs.shippingRuleSelected(shippingRule)
     self.scheduler.advance()
+    
+    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
     self.vm.inputs.continueButtonTapped()
 
@@ -1199,12 +1199,12 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
-    XCTAssertEqual([], self.segmentTrackingClient.events)
-
     self.scheduler.advance()
     self.vm.inputs.shippingRuleSelected(shippingRule)
     self.scheduler.advance()
+    
+    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
     self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 3, rewardId: 2)
     self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 2, rewardId: 1)

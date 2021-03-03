@@ -255,22 +255,57 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     )
     .map(PledgeViewData.init)
     .takeWhen(self.continueButtonTappedProperty.signal)
+    
+    let defaultShippingTotal = Signal.zip(project, baseReward)
+      .map { project, baseReward -> Double in
+        guard baseReward.shipping.enabled, let backing = project.personalization.backing else { return 0.0 }
 
+        return backing.shippingAmount.flatMap(Double.init) ?? 0.0
+      }
+    
+    let calculatedShippingTotal = Signal.combineLatest(
+      shippingRule.skipNil(),
+      allRewards,
+      selectedQuantities
+    )
+    .map { shippingRule, rewards, selectedQuantities -> Double in
+      rewards.reduce(0.0) { total, reward in
+        guard reward.shipping.enabled else { return total }
+
+        let shippingCostForReward = reward.shippingRule(matching: shippingRule)?.cost ?? 0
+
+        let totalShippingForReward = shippingCostForReward
+          .multiplyingCurrency(Double(selectedQuantities[reward.id] ?? 0))
+
+        return total.addingCurrency(totalShippingForReward)
+      }
+    }
+    
+    let allRewardsShippingTotal = Signal.merge(
+      defaultShippingTotal,
+      calculatedShippingTotal
+    )
+    
     // MARK: - Tracking
 
-    Signal.zip(project, baseReward, selectedRewards, refTag)
+    Signal.zip(project, baseReward, selectedRewards, refTag, configData, allRewardsShippingTotal)
       .take(first: 1)
       .observeForUI()
-      .observeValues { project, baseReward, selectedRewards, refTag in
+      .observeValues { project, baseReward, selectedRewards, refTag, configData, rewardsShippingTotal in
         AppEnvironment.current.ksrAnalytics.trackAddOnsPageViewed(
           project: project,
           reward: baseReward,
-          refTag: refTag,
-          checkoutData: checkoutPropertiesData(
-            project: project,
+          checkoutData: checkoutProperties(
+            from: project,
             baseReward: baseReward,
-            rewards: selectedRewards
-          )
+            rewards: selectedRewards,
+            selectedQuantities: configData.selectedQuantities,
+            additionalPledgeAmount: 0,
+            pledgeTotal: 0,
+            shippingTotal: rewardsShippingTotal,
+            isApplePay: nil
+          ),
+          refTag: refTag
         )
       }
 
@@ -459,37 +494,4 @@ private func isValid(
 
   return latestSelectedQuantities != selectedRewardQuantities(in: backing)
     || backing.locationId != selectedShippingRule?.location.id
-}
-
-private func checkoutPropertiesData(project: Project, baseReward: Reward, rewards: [Reward]) -> KSRAnalytics
-  .CheckoutPropertiesData {
-  let staticUsdRate = Double(project.stats.staticUsdRate)
-  let estimatedDelivery = baseReward.estimatedDeliveryOn
-  let rewardMinimumUsd = Format.decimalCurrency(for: baseReward.minimum.multiplyingCurrency(staticUsdRate))
-  let rewardTitle = baseReward.title
-  let shippingEnabled = baseReward.shipping.enabled
-  let addOnsMinimumUsd = Format.decimalCurrency(
-    for: rewards
-      .reduce(0.0) { accum, addOn in accum.addingCurrency(addOn.minimum) }
-      .multiplyingCurrency(staticUsdRate)
-  )
-  return KSRAnalytics.CheckoutPropertiesData(
-    addOnsCountTotal: nil,
-    addOnsCountUnique: nil,
-    addOnsMinimumUsd: addOnsMinimumUsd,
-    amount: "",
-    bonusAmount: "",
-    bonusAmountInUsd: "",
-    checkoutId: nil,
-    estimatedDelivery: estimatedDelivery,
-    paymentType: nil,
-    revenueInUsd: 0.0,
-    rewardId: baseReward.id,
-    rewardMinimumUsd: rewardMinimumUsd,
-    rewardTitle: rewardTitle,
-    shippingEnabled: shippingEnabled,
-    shippingAmount: nil,
-    shippingAmountUsd: nil,
-    userHasStoredApplePayCard: false
-  )
 }

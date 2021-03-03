@@ -187,13 +187,11 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     freshProjectRefTagAndCookieRefTag
       .observeValues { project, refTag, cookieRefTag in
-        let optimizelyProps = optimizelyProperties() ?? [:]
-
         AppEnvironment.current.ksrAnalytics.trackProjectViewed(
           project,
           refTag: refTag,
-          cookieRefTag: cookieRefTag,
-          optimizelyProperties: optimizelyProps
+          sectionContext: .overview,
+          cookieRefTag: cookieRefTag
         )
         AppEnvironment.current.optimizelyClient?.track(eventName: "Project Page Viewed")
       }
