@@ -762,6 +762,7 @@ public final class KSRAnalytics {
       )
     case .pledge:
       let allProps = props
+        .withAllValuesFrom(optimizelyProperties() ?? [:])
         .withAllValuesFrom(contextProperties(ctaContext: .pledgeInitiate))
 
       self.track(
