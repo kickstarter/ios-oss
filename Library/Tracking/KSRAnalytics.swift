@@ -63,8 +63,8 @@ public final class KSRAnalytics {
   }
 
   private enum NewApprovedEvent: String, CaseIterable {
-    case pageViewed = "Page Viewed"
     case ctaClicked = "CTA Clicked"
+    case pageViewed = "Page Viewed"
   }
 
   /// Determines the screen from which the event is sent.
@@ -742,7 +742,7 @@ public final class KSRAnalytics {
   public func trackPledgeCTAButtonClicked(
     stateType: PledgeStateCTAType,
     project: Project,
-    optimizelyProperties: [String: Any] = [:]
+    optimizelyProperties _: [String: Any] = [:]
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
@@ -755,10 +755,11 @@ public final class KSRAnalytics {
       )
     case .pledge:
       let allProps = props
-        .withAllValuesFrom(optimizelyProperties)
+        .withAllValuesFrom(optimizelyProperties() ?? [:])
+        .withAllValuesFrom(contextProperties(ctaContext: .pledgeInitiate))
 
       self.track(
-        event: ApprovedEvent.projectPagePledgeButtonClicked.rawValue,
+        event: NewApprovedEvent.ctaClicked.rawValue,
         location: .projectPage,
         properties: allProps
       )
