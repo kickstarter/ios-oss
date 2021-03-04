@@ -735,7 +735,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       let checkoutPropsData = checkoutProperties(
         from: data.project,
         baseReward: baseReward,
-        rewards: data.rewards,
+        addOnRewards: data.rewards,
         selectedQuantities: data.selectedQuantities,
         additionalPledgeAmount: additionalPledgeAmount,
         pledgeTotal: data.pledgeTotal,
@@ -869,7 +869,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         let checkoutData = checkoutProperties(
           from: data.project,
           baseReward: baseReward,
-          rewards: data.rewards,
+          addOnRewards: data.rewards,
           selectedQuantities: data.selectedQuantities,
           additionalPledgeAmount: additionalPledgeAmount,
           pledgeTotal: data.pledgeTotal,

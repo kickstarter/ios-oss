@@ -371,7 +371,7 @@ final class SharedFunctionsTests: TestCase {
     let checkoutPropertiesData = checkoutProperties(
       from: project,
       baseReward: baseReward,
-      rewards: [reward],
+      addOnRewards: [reward],
       selectedQuantities: selectedQuantities,
       additionalPledgeAmount: 10.0,
       pledgeTotal: 100.0,

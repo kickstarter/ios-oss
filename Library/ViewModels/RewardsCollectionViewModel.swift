@@ -177,9 +177,28 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     // Tracking
     Signal.combineLatest(project, selectedRewardFromId, refTag)
       .observeValues { project, reward, refTag in
+
+        // The `Backing` is nil for a new pledge.
+        let backing = project.personalization.backing
+        let shippingTotal = reward.shipping.enabled ? backing?.shippingAmount.flatMap(Double.init) : 0.0
+
+        // Regardless of whether this is the beginning of a new pledge or we are editing our reward,
+        // we only have the base reward selected at this point
+        let checkoutPropertiesData = checkoutProperties(
+          from: project,
+          baseReward: reward,
+          addOnRewards: backing?.addOns ?? [],
+          selectedQuantities: [reward.id: 1],
+          additionalPledgeAmount: backing?.bonusAmount ?? 0,
+          pledgeTotal: backing?.amount ?? reward.minimum, // The total is the value of the reward
+          shippingTotal: shippingTotal ?? 0,
+          isApplePay: nil
+        )
+
         AppEnvironment.current.ksrAnalytics.trackRewardClicked(
           project: project,
           reward: reward,
+          checkoutPropertiesData: checkoutPropertiesData,
           refTag: refTag
         )
       }
