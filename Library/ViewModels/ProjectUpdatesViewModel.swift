@@ -161,6 +161,16 @@ public final class ProjectUpdatesViewModel: ProjectUpdatesViewModelType, Project
 
     self.webViewLoadRequest = Signal.merge(initialUpdatesIndexLoadRequest, anotherIndexRequest)
       .map { AppEnvironment.current.apiService.preparedRequest(forURL: $0) }
+
+    // Tracking
+
+    project
+      .observeValues { project in
+        AppEnvironment.current.ksrAnalytics.trackProjectViewed(
+          project,
+          sectionContext: .updates
+        )
+      }
   }
 
   fileprivate let canSendEmailProperty = MutableProperty<Bool?>(nil)

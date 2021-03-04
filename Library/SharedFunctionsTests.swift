@@ -356,4 +356,52 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(30.57, roundedTo2dp)
     XCTAssertEqual(30.5658, roundedTo4dp)
   }
+
+  func testCheckoutProperties() {
+    let reward = Reward.template
+      |> Reward.lens.shipping.enabled .~ true
+
+    let rewards = [reward, Reward.template]
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ rewards
+
+    let selectedQuantities = [reward.id: 1]
+    let baseReward = project.rewards.first!
+
+    let checkoutPropertiesData = checkoutProperties(
+      from: project,
+      baseReward: baseReward,
+      rewards: [reward],
+      selectedQuantities: selectedQuantities,
+      additionalPledgeAmount: 10.0,
+      pledgeTotal: 100.0,
+      shippingTotal: 10.0,
+      checkoutId: nil,
+      isApplePay: false
+    )
+
+    XCTAssertEqual(0, checkoutPropertiesData.addOnsCountTotal)
+    XCTAssertEqual(0, checkoutPropertiesData.addOnsCountUnique)
+    XCTAssertEqual("0.00", checkoutPropertiesData.addOnsMinimumUsd)
+    XCTAssertEqual("100.00", checkoutPropertiesData.amount)
+    XCTAssertEqual("10.00", checkoutPropertiesData.bonusAmount)
+    XCTAssertEqual("10.00", checkoutPropertiesData.bonusAmountInUsd)
+    XCTAssertEqual(nil, checkoutPropertiesData.checkoutId)
+    XCTAssertEqual(
+      1_506_897_315.0,
+      checkoutPropertiesData.estimatedDelivery
+    )
+    XCTAssertEqual("CREDIT_CARD", checkoutPropertiesData.paymentType)
+    XCTAssertEqual(100.0, checkoutPropertiesData.revenueInUsd)
+    XCTAssertEqual(1, checkoutPropertiesData.rewardId)
+    XCTAssertEqual("10.00", checkoutPropertiesData.rewardMinimumUsd)
+    XCTAssertEqual("My Reward", checkoutPropertiesData.rewardTitle)
+    XCTAssertEqual(true, checkoutPropertiesData.shippingEnabled)
+    XCTAssertEqual(10.0, checkoutPropertiesData.shippingAmount)
+    XCTAssertEqual("10.00", checkoutPropertiesData.shippingAmountUsd)
+    XCTAssertEqual(
+      true,
+      checkoutPropertiesData.userHasStoredApplePayCard
+    )
+  }
 }
