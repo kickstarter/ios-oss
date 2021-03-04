@@ -190,7 +190,7 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
           addOnRewards: backing?.addOns ?? [],
           selectedQuantities: [reward.id: 1],
           additionalPledgeAmount: backing?.bonusAmount ?? 0,
-          pledgeTotal: backing?.amount ?? 0,
+          pledgeTotal: backing?.amount ?? reward.minimum, // The total is the value of the reward
           shippingTotal: shippingTotal ?? 0,
           isApplePay: nil
         )
