@@ -696,7 +696,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.scrollToBackedRewardIndexPath.assertValue(indexPath)
   }
 
-  func testRewardSelectedTracking_PledgeContext() {
+  func testTrackingRewardClicked_Properties() {
     let rewards = [
       .template
         |> Reward.lens.id .~ 1,
@@ -721,5 +721,99 @@ final class RewardsCollectionViewModelTests: TestCase {
 
     XCTAssertEqual(["activity"], self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"))
     XCTAssertEqual(["activity"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
+  }
+
+  func testTrackingRewardClicked_ProjectBackingNil() {
+    let rewardTwo = Reward.template
+      |> Reward.lens.id .~ 2
+
+    let rewards = [
+      .template
+        |> Reward.lens.id .~ 1,
+      rewardTwo,
+      .template
+        |> Reward.lens.id .~ 3,
+      .template
+        |> Reward.lens.id .~ 4
+    ]
+
+    let project = Project.template
+      |> \.rewardData.rewards .~ rewards
+
+    self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.rewardSelected(with: 2)
+
+    XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
+
+    XCTAssertEqual(["rewards"], self.dataLakeTrackingClient.properties(forKey: "context_page"))
+    XCTAssertEqual(["reward_continue"], self.dataLakeTrackingClient.properties(forKey: "context_cta"))
+    XCTAssertEqual(["rewards"], self.segmentTrackingClient.properties(forKey: "context_page"))
+    XCTAssertEqual(["reward_continue"], self.segmentTrackingClient.properties(forKey: "context_cta"))
+
+    XCTAssertEqual(["10.00"], self.dataLakeTrackingClient.properties(forKey: "checkout_amount"))
+    XCTAssertEqual(["0.00"], self.dataLakeTrackingClient.properties(forKey: "checkout_bonus_amount"))
+    XCTAssertEqual(
+      [0],
+      self.dataLakeTrackingClient.properties(forKey: "checkout_add_ons_count_total", as: Int.self)
+    )
+    XCTAssertEqual(["10.00"], self.segmentTrackingClient.properties(forKey: "checkout_amount"))
+    XCTAssertEqual(["0.00"], self.segmentTrackingClient.properties(forKey: "checkout_bonus_amount"))
+    XCTAssertEqual(
+      [0],
+      self.segmentTrackingClient.properties(forKey: "checkout_add_ons_count_total", as: Int.self)
+    )
+  }
+
+  func testTrackingRewardClicked_ProjectBackingNotNil() {
+    let rewardTwo = Reward.template
+      |> Reward.lens.id .~ 2
+    let backing = Backing.template
+      |> Backing.lens.amount .~ 20.00
+      |> Backing.lens.bonusAmount .~ 100.00
+
+    let rewards = [
+      .template
+        |> Reward.lens.id .~ 1,
+      rewardTwo,
+      .template
+        |> Reward.lens.id .~ 3,
+      .template
+        |> Reward.lens.id .~ 4
+    ]
+
+    let project = Project.template
+      |> \.rewardData.rewards .~ rewards
+      |> \.personalization.backing .~ backing
+
+    self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.rewardSelected(with: 2)
+
+    XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
+
+    XCTAssertEqual(["rewards"], self.dataLakeTrackingClient.properties(forKey: "context_page"))
+    XCTAssertEqual(["reward_continue"], self.dataLakeTrackingClient.properties(forKey: "context_cta"))
+    XCTAssertEqual(["rewards"], self.segmentTrackingClient.properties(forKey: "context_page"))
+    XCTAssertEqual(["reward_continue"], self.segmentTrackingClient.properties(forKey: "context_cta"))
+
+    XCTAssertEqual(["20.00"], self.dataLakeTrackingClient.properties(forKey: "checkout_amount"))
+    XCTAssertEqual(["100.00"], self.dataLakeTrackingClient.properties(forKey: "checkout_bonus_amount"))
+    XCTAssertEqual(["20.00"], self.segmentTrackingClient.properties(forKey: "checkout_amount"))
+    XCTAssertEqual(["100.00"], self.segmentTrackingClient.properties(forKey: "checkout_bonus_amount"))
+
+    // Even though there is an addOn on the Backing, we don't calculate that as a total in the Rewards carousel
+    XCTAssertEqual(
+      [0],
+      self.dataLakeTrackingClient.properties(forKey: "checkout_add_ons_count_total", as: Int.self)
+    )
+    XCTAssertEqual(
+      [0],
+      self.segmentTrackingClient.properties(forKey: "checkout_add_ons_count_total", as: Int.self)
+    )
   }
 }
