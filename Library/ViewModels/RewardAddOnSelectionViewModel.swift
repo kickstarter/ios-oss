@@ -260,7 +260,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       .map(getDefaultShipping)
 
     // MARK: - Tracking
-    
+
     Signal.zip(project, baseReward, selectedRewards, refTag, configData, defaultShippingTotal)
       .take(first: 1)
       .observeForUI()
@@ -271,10 +271,10 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
           checkoutData: checkoutProperties(
             from: project,
             baseReward: baseReward,
-            rewards: selectedRewards,
+            addOnRewards: selectedRewards,
             selectedQuantities: configData.selectedQuantities,
             additionalPledgeAmount: 0,
-            pledgeTotal:  baseReward.minimum,
+            pledgeTotal: baseReward.minimum,
             shippingTotal: defaultShippingTotal,
             isApplePay: nil
           ),

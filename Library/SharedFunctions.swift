@@ -397,7 +397,6 @@ public func rounded(_ value: Double, places: Int) -> Double {
   return (value * divisor).rounded() / divisor
 }
 
-
 /*
  * An helper func that calculates default shipping
  */
@@ -406,11 +405,27 @@ public func getDefaultShipping(project: Project, baseReward: Reward) -> Double {
   return backing.shippingAmount.flatMap(Double.init) ?? 0.0
 }
 
+/**
+ Creates `CheckoutPropertiesData` to send with our event properties.
+
+ - parameter from: The `Project` associated with the checkout.
+ - parameter baseReward: The reward being evaluated
+ - parameter addOnRewards: An array of `Reward` objects representing the available add-ons.
+ - parameter selectedQuantities: A dictionary of reward id to quantitiy.
+ - parameter additionalPledgeAmount: The bonus amount included in the pledge.
+ - parameter pledgeTotal: The total amount of the pledge.
+ - parameter shippingTotal: The shipping cost for the pledge.
+ - parameter checkoutId: The unique ID associated with the checkout.
+ - parameter isApplePay: A `Bool` indicating if the pledge was done with Apple pay.
+
+ - returns: A `CheckoutPropertiesData` object required for checkoutProperties.
+ */
+
 public func checkoutProperties(
   from project: Project,
   baseReward: Reward,
-  rewards: [Reward],
-  selectedQuantities: SelectedRewardQuantities?,
+  addOnRewards: [Reward],
+  selectedQuantities: SelectedRewardQuantities,
   additionalPledgeAmount: Double,
   pledgeTotal: Double,
   shippingTotal: Double,
@@ -425,10 +440,10 @@ public func checkoutProperties(
   let bonusAmountUsd = additionalPledgeAmount
     .multiplyingCurrency(staticUsdRate)
 
-  let addOnRewards = rewards
+  let addOnRewards = addOnRewards
     .filter { reward in reward.id != baseReward.id }
     .map { reward -> [Reward] in
-      guard let selectedRewardQuantity = selectedQuantities?[reward.id] else { return [] }
+      guard let selectedRewardQuantity = selectedQuantities[reward.id] else { return [] }
       return Array(0..<selectedRewardQuantity).map { _ in reward }
     }
     .flatMap { $0 }

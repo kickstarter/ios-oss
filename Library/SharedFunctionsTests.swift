@@ -371,7 +371,7 @@ final class SharedFunctionsTests: TestCase {
     let checkoutPropertiesData = checkoutProperties(
       from: project,
       baseReward: baseReward,
-      rewards: [reward],
+      addOnRewards: [reward],
       selectedQuantities: selectedQuantities,
       additionalPledgeAmount: 10.0,
       pledgeTotal: 100.0,
@@ -404,16 +404,15 @@ final class SharedFunctionsTests: TestCase {
       checkoutPropertiesData.userHasStoredApplePayCard
     )
   }
-  
+
   func testCalculateDefaultShippingWhereShippingIsEnabled() {
-    
     let reward = Reward.template
       |> Reward.lens.limit .~ 5
       |> Reward.lens.remaining .~ 0
       |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
       |> Reward.lens.hasAddOns .~ true
       |> Reward.lens.shipping.enabled .~ true
-    
+
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ [reward]
@@ -422,21 +421,20 @@ final class SharedFunctionsTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
       )
-    
+
     let shippingTotal = getDefaultShipping(project: project, baseReward: reward)
-    
+
     XCTAssertEqual(2.0, shippingTotal)
   }
-  
+
   func testCalculateDefaultShippingWhereShippingIsDisabled() {
-    
     let reward = Reward.template
       |> Reward.lens.limit .~ 5
       |> Reward.lens.remaining .~ 0
       |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
       |> Reward.lens.hasAddOns .~ true
       |> Reward.lens.shipping.enabled .~ false
-    
+
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ [reward]
@@ -445,9 +443,9 @@ final class SharedFunctionsTests: TestCase {
           |> Backing.lens.reward .~ reward
           |> Backing.lens.rewardId .~ reward.id
       )
-    
+
     let shippingTotal = getDefaultShipping(project: project, baseReward: reward)
-    
+
     XCTAssertEqual(0.0, shippingTotal)
   }
 }
