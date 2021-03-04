@@ -1113,6 +1113,8 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual("add_ons", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("add_ons", self.segmentTrackingClient.properties.last?["context_page"] as? String)
 
     self.vm.inputs.continueButtonTapped()
 
@@ -1205,6 +1207,8 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual("add_ons", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("add_ons", self.segmentTrackingClient.properties.last?["context_page"] as? String)
 
     self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 3, rewardId: 2)
     self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 2, rewardId: 1)
