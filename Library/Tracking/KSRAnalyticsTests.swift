@@ -640,8 +640,7 @@ final class KSRAnalyticsTests: TestCase {
     let project = Project.cosmicSurgery
     let reward = Reward.template
 
-    ksrAnalytics
-      .trackRewardClicked(project: project, reward: reward, refTag: .recommended)
+    ksrAnalytics.trackAddOnsContinueButtonClicked(project: project, reward: reward, refTag: .recommended)
 
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
@@ -668,7 +667,7 @@ final class KSRAnalyticsTests: TestCase {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5.0
 
-    ksrAnalytics.trackRewardClicked(project: project, reward: reward, refTag: nil)
+    ksrAnalytics.trackAddOnsContinueButtonClicked(project: project, reward: reward, refTag: nil)
 
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
@@ -899,10 +898,12 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(["Manage Pledge Button Clicked"], segmentClient.events)
   }
 
-  func testTrackSelectRewardButtonClicked() {
+  func testTrackRewardButtonClicked() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let reward = Reward.template
+      |> Reward.lens.shipping.preference .~ .restricted
+      |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
     let project = Project.template
     let loggedInUser = User.template |> \.id .~ 42
 
@@ -915,23 +916,30 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackRewardClicked(
       project: project,
       reward: reward,
+      checkoutPropertiesData: .template,
       refTag: .category
     )
 
     let dataLakeClientProperties = dataLakeClient.properties.last
     let segmentClientProperties = segmentClient.properties.last
 
-    XCTAssertEqual(["Select Reward Button Clicked"], dataLakeClient.events)
-    XCTAssertEqual(["Select Reward Button Clicked"], segmentClient.events)
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
 
-    self.assertPledgeProperties(dataLakeClientProperties)
+    self.assertCheckoutProperties(dataLakeClientProperties)
     self.assertProjectProperties(dataLakeClientProperties)
 
-    self.assertPledgeProperties(segmentClientProperties)
+    self.assertCheckoutProperties(segmentClientProperties)
     self.assertProjectProperties(segmentClientProperties)
 
     XCTAssertEqual("category", dataLakeClientProperties?["session_ref_tag"] as? String)
     XCTAssertEqual("category", segmentClientProperties?["session_ref_tag"] as? String)
+
+    XCTAssertEqual("reward_continue", dataLakeClientProperties?["context_cta"] as? String)
+    XCTAssertEqual("reward_continue", segmentClientProperties?["context_cta"] as? String)
+
+    XCTAssertEqual("rewards", dataLakeClientProperties?["context_page"] as? String)
+    XCTAssertEqual("rewards", segmentClientProperties?["context_page"] as? String)
   }
 
   func testTrackPledgeSubmitButtonClicked() {
@@ -1449,7 +1457,13 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("updates", dataLakeClient.properties.last?["context_section"] as? String)
     XCTAssertEqual("updates", segmentClient.properties.last?["context_section"] as? String)
 
-    ksrAnalytics.trackRewardClicked(project: .template, reward: .template, refTag: nil)
+    ksrAnalytics
+      .trackRewardClicked(
+        project: .template,
+        reward: .template,
+        checkoutPropertiesData: .template,
+        refTag: nil
+      )
     XCTAssertEqual("rewards", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("rewards", segmentClient.properties.last?["context_page"] as? String)
 

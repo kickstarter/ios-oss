@@ -716,18 +716,10 @@ final class RewardsCollectionViewModelTests: TestCase {
 
     self.vm.inputs.rewardSelected(with: 2)
 
-    XCTAssertEqual(["Select Reward Button Clicked"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Select Reward Button Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
 
-    XCTAssertEqual(
-      [2],
-      self.dataLakeTrackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self)
-    )
     XCTAssertEqual(["activity"], self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"))
-    XCTAssertEqual(
-      [2],
-      self.segmentTrackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self)
-    )
     XCTAssertEqual(["activity"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
   }
 }
