@@ -728,7 +728,6 @@ public final class KSRAnalytics {
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
       .withAllValuesFrom(contextProperties(page: .addOnsSelection))
 

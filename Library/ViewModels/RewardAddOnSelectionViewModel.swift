@@ -259,28 +259,45 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     let defaultShippingTotal = Signal.zip(project, baseReward)
       .map(getDefaultShipping)
 
+    let backing = project.map { $0.personalization.backing }.skipNil()
+
+    // Initial pledge amount is zero if not backed.
+    let initialAdditionalPledgeAmount = Signal.merge(
+      configData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
+      backing.map(\.bonusAmount)
+    )
+    .take(first: 1)
+
     // MARK: - Tracking
 
-    Signal.zip(project, baseReward, selectedRewards, refTag, configData, defaultShippingTotal)
-      .take(first: 1)
-      .observeForUI()
-      .observeValues { project, baseReward, selectedRewards, refTag, configData, defaultShippingTotal in
-        AppEnvironment.current.ksrAnalytics.trackAddOnsPageViewed(
-          project: project,
-          reward: baseReward,
-          checkoutData: checkoutProperties(
-            from: project,
-            baseReward: baseReward,
-            addOnRewards: selectedRewards,
-            selectedQuantities: configData.selectedQuantities,
-            additionalPledgeAmount: 0,
-            pledgeTotal: baseReward.minimum,
-            shippingTotal: defaultShippingTotal,
-            isApplePay: nil
-          ),
-          refTag: refTag
-        )
-      }
+    Signal.zip(
+      project,
+      baseReward,
+      selectedRewards,
+      refTag,
+      configData,
+      initialAdditionalPledgeAmount,
+      defaultShippingTotal
+    )
+    .take(first: 1)
+    .observeForUI()
+    .observeValues { project, baseReward, selectedRewards, refTag, configData, initialAdditionalPledgeAmount, defaultShippingTotal in
+      AppEnvironment.current.ksrAnalytics.trackAddOnsPageViewed(
+        project: project,
+        reward: baseReward,
+        checkoutData: checkoutProperties(
+          from: project,
+          baseReward: baseReward,
+          addOnRewards: selectedRewards,
+          selectedQuantities: configData.selectedQuantities,
+          additionalPledgeAmount: initialAdditionalPledgeAmount,
+          pledgeTotal: baseReward.minimum,
+          shippingTotal: defaultShippingTotal,
+          isApplePay: nil
+        ),
+        refTag: refTag
+      )
+    }
 
     Signal.zip(project, baseReward, refTag)
       .takeWhen(self.continueButtonTappedProperty.signal)
