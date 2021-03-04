@@ -257,41 +257,14 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     .takeWhen(self.continueButtonTappedProperty.signal)
 
     let defaultShippingTotal = Signal.zip(project, baseReward)
-      .map { project, baseReward -> Double in
-        guard baseReward.shipping.enabled, let backing = project.personalization.backing else { return 0.0 }
-
-        return backing.shippingAmount.flatMap(Double.init) ?? 0.0
-      }
-
-    let calculatedShippingTotal = Signal.combineLatest(
-      shippingRule.skipNil(),
-      allRewards,
-      selectedQuantities
-    )
-    .map { shippingRule, rewards, selectedQuantities -> Double in
-      rewards.reduce(0.0) { total, reward in
-        guard reward.shipping.enabled else { return total }
-
-        let shippingCostForReward = reward.shippingRule(matching: shippingRule)?.cost ?? 0
-
-        let totalShippingForReward = shippingCostForReward
-          .multiplyingCurrency(Double(selectedQuantities[reward.id] ?? 0))
-
-        return total.addingCurrency(totalShippingForReward)
-      }
-    }
-
-    let allRewardsShippingTotal = Signal.merge(
-      defaultShippingTotal,
-      calculatedShippingTotal
-    )
+      .map(getDefaultShipping)
 
     // MARK: - Tracking
-
-    Signal.zip(project, baseReward, selectedRewards, refTag, configData, allRewardsShippingTotal)
+    
+    Signal.zip(project, baseReward, selectedRewards, refTag, configData, defaultShippingTotal)
       .take(first: 1)
       .observeForUI()
-      .observeValues { project, baseReward, selectedRewards, refTag, configData, rewardsShippingTotal in
+      .observeValues { project, baseReward, selectedRewards, refTag, configData, defaultShippingTotal in
         AppEnvironment.current.ksrAnalytics.trackAddOnsPageViewed(
           project: project,
           reward: baseReward,
@@ -301,8 +274,8 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
             rewards: selectedRewards,
             selectedQuantities: configData.selectedQuantities,
             additionalPledgeAmount: 0,
-            pledgeTotal: 0,
-            shippingTotal: rewardsShippingTotal,
+            pledgeTotal:  baseReward.minimum,
+            shippingTotal: defaultShippingTotal,
             isApplePay: nil
           ),
           refTag: refTag

@@ -397,6 +397,15 @@ public func rounded(_ value: Double, places: Int) -> Double {
   return (value * divisor).rounded() / divisor
 }
 
+
+/*
+ * An helper func that calculates default shipping
+ */
+public func getDefaultShipping(project: Project, baseReward: Reward) -> Double {
+  guard baseReward.shipping.enabled, let backing = project.personalization.backing else { return 0.0 }
+  return backing.shippingAmount.flatMap(Double.init) ?? 0.0
+}
+
 public func checkoutProperties(
   from project: Project,
   baseReward: Reward,

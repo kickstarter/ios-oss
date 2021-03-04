@@ -185,11 +185,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
 
     let defaultShippingTotal = Signal.zip(project, baseReward)
-      .map { project, baseReward -> Double in
-        guard baseReward.shipping.enabled, let backing = project.personalization.backing else { return 0.0 }
-
-        return backing.shippingAmount.flatMap(Double.init) ?? 0.0
-      }
+      .map(getDefaultShipping)
 
     let allRewardsShippingTotal = Signal.merge(
       defaultShippingTotal,
