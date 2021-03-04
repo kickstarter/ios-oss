@@ -640,7 +640,13 @@ final class KSRAnalyticsTests: TestCase {
     let project = Project.cosmicSurgery
     let reward = Reward.template
 
-    ksrAnalytics.trackAddOnsContinueButtonClicked(project: project, reward: reward, refTag: .recommended)
+    ksrAnalytics
+      .trackAddOnsContinueButtonClicked(
+        project: project,
+        reward: reward,
+        checkoutData: .template,
+        refTag: .recommended
+      )
 
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
@@ -667,7 +673,13 @@ final class KSRAnalyticsTests: TestCase {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5.0
 
-    ksrAnalytics.trackAddOnsContinueButtonClicked(project: project, reward: reward, refTag: nil)
+    ksrAnalytics
+      .trackAddOnsContinueButtonClicked(
+        project: project,
+        reward: reward,
+        checkoutData: .template,
+        refTag: nil
+      )
 
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last

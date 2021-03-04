@@ -340,7 +340,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
         let checkoutData = checkoutProperties(
           from: project,
           baseReward: baseReward,
-          rewards: selectedRewards,
+          addOnRewards: selectedRewards,
           selectedQuantities: selectedQuantities,
           additionalPledgeAmount: 0.0,
           pledgeTotal: pledgeTotal,
