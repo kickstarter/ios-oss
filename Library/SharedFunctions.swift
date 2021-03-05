@@ -460,6 +460,14 @@ func calculatePledgeTotal(
   return r
 }
 
+/**
+ An helper func that calculates  pledge total for all rewards
+
+ - parameter addOnRewards: The `Project` associated with a group of Rewards.
+ - parameter selectedQuantities: The shipping cost for the pledge.
+
+ - returns: A `Double` of all rewards add-ons total.
+ */
 func calculateAllRewardsTotal(addOnRewards: [Reward],
                               selectedQuantities: SelectedRewardQuantities) -> Double {
   addOnRewards.filter { !$0.isNoReward }

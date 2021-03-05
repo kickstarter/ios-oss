@@ -443,4 +443,77 @@ final class SharedFunctionsTests: TestCase {
 
     XCTAssertEqual(0.0, shippingTotal)
   }
+
+  func testGetCalculated_ShippingEnabled_Total() {
+    let reward = Reward.template
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
+      |> Reward.lens.id .~ 99
+    let addOn1 = Reward.template
+      |> Reward.lens.id .~ 5
+    let addOn2 = Reward.template
+      |> Reward.lens.id .~ 10
+
+    let shippingRule = ShippingRule.template
+
+    let quantities: SelectedRewardQuantities = [
+      reward.id: 1,
+      addOn1.id: 2,
+      addOn2.id: 1
+    ]
+
+    let shippingTotal = calculateShippingTotal(
+      shippingRule: shippingRule,
+      addOnRewards: [reward],
+      quantities: quantities
+    )
+
+    XCTAssertEqual(5.0, shippingTotal)
+  }
+
+  func testGetCalculated_ShippingDisabled_Total() {
+    let reward = Reward.template
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ false)
+      |> Reward.lens.id .~ 99
+
+    let shippingRule = ShippingRule.template
+
+    let shippingTotal = calculateShippingTotal(
+      shippingRule: shippingRule,
+      addOnRewards: [reward],
+      quantities: [:]
+    )
+
+    XCTAssertEqual(0.0, shippingTotal)
+  }
+
+  func testCalculated_Pledge_Total() {
+    let pledgeTotal = calculatePledgeTotal(
+      pledgeAmount: 20.0, shippingCost: 5.0, addOnRewardsTotal: 50
+    )
+
+    XCTAssertEqual(75.0, pledgeTotal)
+  }
+
+  func testGetCalculated_AllRewards_Total() {
+    let reward = Reward.template
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
+      |> Reward.lens.id .~ 99
+    let addOn1 = Reward.template
+      |> Reward.lens.id .~ 5
+    let addOn2 = Reward.template
+      |> Reward.lens.id .~ 10
+
+    let quantities: SelectedRewardQuantities = [
+      reward.id: 1,
+      addOn1.id: 2,
+      addOn2.id: 1
+    ]
+
+    let rewardsTotal = calculateAllRewardsTotal(
+      addOnRewards: [reward],
+      selectedQuantities: quantities
+    )
+
+    XCTAssertEqual(10.0, rewardsTotal)
+  }
 }
