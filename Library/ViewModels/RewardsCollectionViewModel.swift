@@ -175,12 +175,38 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     )
 
     // Tracking
+    Signal.combineLatest(
+      project,
+      refTag,
+      self.viewDidLoadProperty.signal.ignoreValues()
+    )
+    .observeValues { project, refTag, _ in
+      // This event is fired before a base reward is selected
+      let reward = Reward.noReward
+      let (backing, shippingTotal) = backingAndShippingTotal(for: project, and: reward)
+      let checkoutPropertiesData = checkoutProperties(
+        from: project,
+        baseReward: reward,
+        addOnRewards: backing?.addOns ?? [],
+        selectedQuantities: [:],
+        additionalPledgeAmount: backing?.bonusAmount ?? 0,
+        pledgeTotal: backing?.amount ?? reward.minimum,
+        shippingTotal: shippingTotal ?? 0,
+        isApplePay: nil
+      )
+
+      AppEnvironment.current.ksrAnalytics.trackRewardsViewed(
+        project: project,
+        checkoutPropertiesData: checkoutPropertiesData,
+        refTag: refTag
+      )
+    }
+
     Signal.combineLatest(project, selectedRewardFromId, refTag)
       .observeValues { project, reward, refTag in
 
         // The `Backing` is nil for a new pledge.
-        let backing = project.personalization.backing
-        let shippingTotal = reward.shipping.enabled ? backing?.shippingAmount.flatMap(Double.init) : 0.0
+        let (backing, shippingTotal) = backingAndShippingTotal(for: project, and: reward)
 
         // Regardless of whether this is the beginning of a new pledge or we are editing our reward,
         // we only have the base reward selected at this point
@@ -305,4 +331,11 @@ private func backedReward(_ project: Project, rewards: [Reward]) -> IndexPath? {
   return rewards
     .firstIndex(where: { $0.id == backedReward.id })
     .flatMap { IndexPath(row: $0, section: 0) }
+}
+
+private func backingAndShippingTotal(for project: Project, and reward: Reward) -> (Backing?, Double?) {
+  let backing = project.personalization.backing
+  let shippingTotal = reward.shipping.enabled ? backing?.shippingAmount.flatMap(Double.init) : 0.0
+
+  return (backing, shippingTotal)
 }
