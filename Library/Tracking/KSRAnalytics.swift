@@ -1471,18 +1471,15 @@ private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, 
   result["payment_type"] = data.paymentType
   result["reward_estimated_delivery_on"] = data.estimatedDelivery
   result["reward_id"] = data.rewardId
+  result["reward_is_limited_quantity"] = reward?.isLimitedQuantity
+  result["reward_is_limited_time"] = reward?.isLimitedTime
   result["reward_minimum_usd"] = data.rewardMinimumUsd
   result["reward_shipping_enabled"] = data.shippingEnabled
+  result["reward_shipping_preference"] = reward?.shipping.preference?.trackingString
   result["reward_title"] = data.rewardTitle
   result["shipping_amount"] = data.shippingAmount
   result["shipping_amount_usd"] = data.shippingAmountUsd
   result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
-
-  if let reward = reward {
-    result["reward_is_limited_quantity"] = reward.isLimitedQuantity
-    result["reward_is_limited_time"] = reward.isLimitedTime
-    result["reward_shipping_preference"] = reward.shipping.preference?.trackingString
-  }
 
   return result.prefixedKeys(prefix)
 }
