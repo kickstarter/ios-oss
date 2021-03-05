@@ -156,36 +156,17 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       rewards,
       selectedQuantities
     )
-    .map { rewards, selectedQuantities -> Double in
-      rewards.filter { !$0.isNoReward }
-        .reduce(0.0) { total, reward -> Double in
-          let totalForReward = reward.minimum
-            .multiplyingCurrency(Double(selectedQuantities[reward.id] ?? 0))
-
-          return total.addingCurrency(totalForReward)
-        }
-    }
+    .map(calculateAllRewardsTotal)
 
     let calculatedShippingTotal = Signal.combineLatest(
       selectedShippingRule.skipNil(),
       rewards,
       selectedQuantities
     )
-    .map { shippingRule, rewards, selectedQuantities -> Double in
-      rewards.reduce(0.0) { total, reward in
-        guard reward.shipping.enabled else { return total }
-
-        let shippingCostForReward = reward.shippingRule(matching: shippingRule)?.cost ?? 0
-
-        let totalShippingForReward = shippingCostForReward
-          .multiplyingCurrency(Double(selectedQuantities[reward.id] ?? 0))
-
-        return total.addingCurrency(totalShippingForReward)
-      }
-    }
+    .map(calculateShippingTotal)
 
     let defaultShippingTotal = Signal.zip(project, baseReward)
-      .map(getDefaultShipping)
+      .map(getBaseRewardShippingTotal)
 
     let allRewardsShippingTotal = Signal.merge(
       defaultShippingTotal,
@@ -295,13 +276,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       allRewardsShippingTotal,
       allRewardsTotal
     )
-    .map { pledgeAmount, shippingCost, rewardBaseAmount -> Double in
-      let r = [pledgeAmount, shippingCost, rewardBaseAmount].reduce(0) { accum, amount in
-        accum.addingCurrency(amount)
-      }
-
-      return r
-    }
+    .map(calculatePledgeTotal)
 
     let pledgeTotal = Signal.merge(
       backing.map(\.amount),

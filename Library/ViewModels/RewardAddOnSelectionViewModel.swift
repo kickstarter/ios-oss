@@ -256,17 +256,45 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     .map(PledgeViewData.init)
     .takeWhen(self.continueButtonTappedProperty.signal)
 
-    let defaultShippingTotal = Signal.zip(project, baseReward)
-      .map(getDefaultShipping)
+    let calculatedShippingTotal = Signal.combineLatest(
+      shippingRule.skipNil(),
+      allRewards,
+      selectedQuantities
+    )
+    .map(calculateShippingTotal)
 
-    let backing = project.map { $0.personalization.backing }.skipNil()
+    let shippingTotal = Signal.zip(project, baseReward)
+      .map(getBaseRewardShippingTotal)
 
-    // Initial pledge amount is zero if not backed.
-    let initialAdditionalPledgeAmount = Signal.merge(
+    let allRewardsShippingTotal = Signal.merge(
+      shippingTotal,
+      calculatedShippingTotal
+    )
+
+    // Addtional pledge amount is zero if not backed.
+    let additionalPledgeAmount = Signal.merge(
       configData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
-      backing.map(\.bonusAmount)
+      project.map { $0.personalization.backing }.skipNil().map(\.bonusAmount)
     )
     .take(first: 1)
+
+    let allRewardsTotal = Signal.combineLatest(
+      selectedRewards,
+      selectedQuantities
+    )
+    .map(calculateAllRewardsTotal)
+
+    let calculatedPledgeTotal = Signal.combineLatest(
+      additionalPledgeAmount,
+      allRewardsShippingTotal,
+      allRewardsTotal
+    )
+    .map(calculatePledgeTotal)
+
+    let pledgeTotal = Signal.merge(
+      project.map { $0.personalization.backing }.skipNil().map(\.amount),
+      calculatedPledgeTotal
+    )
 
     // MARK: - Tracking
 
@@ -276,25 +304,28 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       selectedRewards,
       refTag,
       configData,
-      initialAdditionalPledgeAmount,
-      defaultShippingTotal
+      additionalPledgeAmount,
+      allRewardsShippingTotal,
+      pledgeTotal
     )
     .take(first: 1)
     .observeForUI()
-    .observeValues { project, baseReward, selectedRewards, refTag, configData, initialAdditionalPledgeAmount, defaultShippingTotal in
+    .observeValues { project, baseReward, selectedRewards, refTag, configData, additionalPledgeAmount, shippingTotal, pledgeTotal in
+      let checkoutPropertiesData = checkoutProperties(
+        from: project,
+        baseReward: baseReward,
+        addOnRewards: selectedRewards,
+        selectedQuantities: configData.selectedQuantities,
+        additionalPledgeAmount: additionalPledgeAmount,
+        pledgeTotal: pledgeTotal,
+        shippingTotal: shippingTotal,
+        isApplePay: nil
+      )
+
       AppEnvironment.current.ksrAnalytics.trackAddOnsPageViewed(
         project: project,
         reward: baseReward,
-        checkoutData: checkoutProperties(
-          from: project,
-          baseReward: baseReward,
-          addOnRewards: selectedRewards,
-          selectedQuantities: configData.selectedQuantities,
-          additionalPledgeAmount: initialAdditionalPledgeAmount,
-          pledgeTotal: baseReward.minimum,
-          shippingTotal: defaultShippingTotal,
-          isApplePay: nil
-        ),
+        checkoutData: checkoutPropertiesData,
         refTag: refTag
       )
     }

@@ -405,7 +405,7 @@ final class SharedFunctionsTests: TestCase {
     )
   }
 
-  func testCalculateDefaultShippingWhereShippingIsEnabled() {
+  func testGetShipping_ShippingEnabled() {
     let reward = Reward.template
       |> Reward.lens.limit .~ 5
       |> Reward.lens.remaining .~ 0
@@ -422,12 +422,12 @@ final class SharedFunctionsTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
       )
 
-    let shippingTotal = getDefaultShipping(project: project, baseReward: reward)
+    let shippingTotal = getBaseRewardShippingTotal(project: project, baseReward: reward)
 
     XCTAssertEqual(2.0, shippingTotal)
   }
 
-  func testCalculateDefaultShippingWhereShippingIsDisabled() {
+  func testGetShipping_ShippingDisabled() {
     let reward = Reward.template
       |> Reward.lens.limit .~ 5
       |> Reward.lens.remaining .~ 0
@@ -438,13 +438,8 @@ final class SharedFunctionsTests: TestCase {
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ [reward]
-      |> Project.lens.personalization.backing .~ (
-        .template
-          |> Backing.lens.reward .~ reward
-          |> Backing.lens.rewardId .~ reward.id
-      )
 
-    let shippingTotal = getDefaultShipping(project: project, baseReward: reward)
+    let shippingTotal = getBaseRewardShippingTotal(project: project, baseReward: reward)
 
     XCTAssertEqual(0.0, shippingTotal)
   }

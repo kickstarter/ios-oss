@@ -430,6 +430,7 @@
 		8A41CC702458A0610095B15E /* GraphBackingTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41CC6E2458A0610095B15E /* GraphBackingTemplates.swift */; };
 		8A4503F4234BEDBD008309EC /* PledgeViewContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4503F3234BEDBD008309EC /* PledgeViewContext.swift */; };
 		8A4503F6234BEDD4008309EC /* PledgeViewContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4503F5234BEDD4008309EC /* PledgeViewContextTests.swift */; };
+		944DBDBE25F1674300EF6E0F /* RewardAddOnSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A45168C24B3D02700D8CAEF /* RewardAddOnSelectionViewModel.swift */; };
 		8A45168F24B3E2A800D8CAEF /* RewardAddOnSelectionViewQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A45168E24B3E2A800D8CAEF /* RewardAddOnSelectionViewQueries.swift */; };
 		8A45169124B3E2CE00D8CAEF /* RewardAddOnSelectionViewQueriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A45169024B3E2CE00D8CAEF /* RewardAddOnSelectionViewQueriesTests.swift */; };
 		8A45169324B3E50600D8CAEF /* RewardAddOnSelectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A45169224B3E50600D8CAEF /* RewardAddOnSelectionDataSource.swift */; };
@@ -555,7 +556,6 @@
 		8AF91CDD22EF5AF8005F9C90 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF91CDC22EF5AF7005F9C90 /* Feature.swift */; };
 		8AFB8C97233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB8C96233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift */; };
 		8AFB8C99233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */; };
-		944DBDBE25F1674300EF6E0F /* RewardAddOnSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A45168C24B3D02700D8CAEF /* RewardAddOnSelectionViewModel.swift */; };
 		94BE15C225E857C4007CD9A4 /* TrackingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BE15C125E857C4007CD9A4 /* TrackingHelpers.swift */; };
 		94BE15CE25E970A3007CD9A4 /* TrackingHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BE15C925E96F06007CD9A4 /* TrackingHelpersTests.swift */; };
 		9D10B91B1D35407C008B8045 /* String+Truncate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D10B91A1D35407C008B8045 /* String+Truncate.swift */; };
@@ -5293,8 +5293,8 @@
 				A75CFB081CCE7FCF004CD5FA /* StaticTableViewCell.swift in Sources */,
 				A7F441D71D005A9400FE6FC5 /* ProfileViewModel.swift in Sources */,
 				8A3BF51923F5C347002AD818 /* CoreTelephonyNetworkInfoType.swift in Sources */,
-				944DBDBE25F1674300EF6E0F /* RewardAddOnSelectionViewModel.swift in Sources */,
 				597073521D05FE6B00B00444 /* ProjectNotificationsViewModel.swift in Sources */,
+				944DBDBE25F1674300EF6E0F /* RewardAddOnSelectionViewModel.swift in Sources */,
 				77F6E73721222E97005A5C55 /* SettingsCellType.swift in Sources */,
 				59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */,
 				D703FC6B20F7E3F8004A272D /* SettingsPrivacyViewModel.swift in Sources */,
