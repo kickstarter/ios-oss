@@ -810,6 +810,30 @@ public final class KSRAnalytics {
     )
   }
 
+  /* Call when the rewards carousel is viewed
+
+   parameters:
+   - project: the project being pledged to
+   - checkoutPropertiesData: the `CheckoutPropertiesData` associated with the given project and reward
+   - refTag: the optional RefTag associated with the pledge
+   */
+
+  public func trackRewardsViewed(
+    project: Project,
+    checkoutPropertiesData: KSRAnalytics.CheckoutPropertiesData,
+    refTag: RefTag?
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(checkoutProperties(from: checkoutPropertiesData))
+
+    self.track(
+      event: NewApprovedEvent.pageViewed.rawValue,
+      location: .rewards,
+      properties: props,
+      refTag: refTag?.stringTag
+    )
+  }
+
   /* Call when the pledge screen is shown
 
    parameters:
@@ -1431,7 +1455,7 @@ private func pledgeProperties(from reward: Reward, prefix: String = "pledge_back
 
 // MARK: - Checkout Properties
 
-private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, and reward: Reward,
+private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, and reward: Reward? = nil,
                                 prefix: String = "checkout_")
   -> [String: Any] {
   var result: [String: Any] = [:]
@@ -1447,15 +1471,18 @@ private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, 
   result["payment_type"] = data.paymentType
   result["reward_estimated_delivery_on"] = data.estimatedDelivery
   result["reward_id"] = data.rewardId
-  result["reward_is_limited_quantity"] = reward.isLimitedQuantity
-  result["reward_is_limited_time"] = reward.isLimitedTime
   result["reward_minimum_usd"] = data.rewardMinimumUsd
   result["reward_shipping_enabled"] = data.shippingEnabled
-  result["reward_shipping_preference"] = reward.shipping.preference?.trackingString
   result["reward_title"] = data.rewardTitle
   result["shipping_amount"] = data.shippingAmount
   result["shipping_amount_usd"] = data.shippingAmountUsd
   result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
+
+  if let reward = reward {
+    result["reward_is_limited_quantity"] = reward.isLimitedQuantity
+    result["reward_is_limited_time"] = reward.isLimitedTime
+    result["reward_shipping_preference"] = reward.shipping.preference?.trackingString
+  }
 
   return result.prefixedKeys(prefix)
 }
