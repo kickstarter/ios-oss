@@ -298,6 +298,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     // MARK: - Tracking
 
+    // shippingRule needs to be set for the event is fired
     Signal.zip(
       project,
       baseReward,
