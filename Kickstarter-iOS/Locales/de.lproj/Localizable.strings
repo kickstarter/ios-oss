@@ -109,12 +109,6 @@
 "Continue_to_payment" = "Weiter zur Zahlung";
 "Continue_to_update_pledge" = "Weiter zu Beitrag aktualisieren";
 "Continue_with_Facebook" = "Weiter mit Facebook";
-"Continue_with_quantity_add_ons.few" = "Weiter mit %{quantity} Add-ons";
-"Continue_with_quantity_add_ons.many" = "Weiter mit %{quantity} Add-ons";
-"Continue_with_quantity_add_ons.one" = "Weiter mit %{quantity} Add-on";
-"Continue_with_quantity_add_ons.other" = "Weiter mit %{quantity} Add-ons";
-"Continue_with_quantity_add_ons.two" = "Weiter mit %{quantity} Add-ons";
-"Continue_with_quantity_add_ons.zero" = "Weiter mit %{quantity} Add-ons";
 "Continue_with_quantity_count_add_ons.few" = "Weiter mit %{quantity_count} Add-ons";
 "Continue_with_quantity_count_add_ons.many" = "Weiter mit %{quantity_count} Add-ons";
 "Continue_with_quantity_count_add_ons.one" = "Weiter mit %{quantity_count} Add-on";
@@ -122,7 +116,6 @@
 "Continue_with_quantity_count_add_ons.two" = "Weiter mit %{quantity_count} Add-ons";
 "Continue_with_quantity_count_add_ons.zero" = "Weiter mit %{quantity_count} Add-ons";
 "Continue_with_this_reward" = "Weiter mit dieser Belohnung?";
-"Continue_with_this_reward_It_doesnt_offer_these_add_ons" = "Weiter mit dieser Belohnung? Die folgenden Add-Ons werden dafür nicht angeboten:";
 "Couldnt_add_attachment" = "Anhang konnte nicht hinzugefügt werden";
 "Couldnt_open_live_stream_Try_again_later" = "Live-Stream konnte nicht geöffnet werden. Bitte versuche es später noch einmal.";
 "Couldnt_remove_attachment" = "Anhang konnte nicht entfernt werden";
@@ -150,7 +143,7 @@
 "Currency_MXN" = "$ Mexikanischer Peso (MXN)";
 "Currency_NOK" = "kr Norwegische Krone (NOK)";
 "Currency_NZD" = "$ Neuseeland-Dollar (NZD)";
-"Currency_PLN" = "zł Polish Złoty (PLN)";
+"Currency_PLN" = "zł Polnishcer Złoty (PLN)";
 "Currency_SEK" = "kr Schwedische Krone (SEK)";
 "Currency_SGD" = "$ Singapur-Dollar (SGD)";
 "Currency_USD" = "$ US-Dollar (USD)";
@@ -378,6 +371,7 @@
 "Notifications" = "Benachrichtigungen";
 "Once_you_back_a_project_well_share" = "Wenn du ein Projekt unterstützt, werden wir dir hier maßgeschneiderte Empfehlungen machen.";
 "Only_amount_of_time_left_to_watch_this" = "Nur noch %{amount_of_time} live!";
+"Open_inbox" = "Posteingang öffnen";
 "Opens_comments" = "Öffnet Kommentare.";
 "Opens_creator_profile" = "Öffnet das Profil des Projektgründers.";
 "Opens_email_composer" = "Öffnet E-Mail-Vorlage.";
@@ -407,7 +401,7 @@
 "Please_log_in_or_sign_up_to_message_this_creator" = "Um dem Projektgründer eine Nachricht zu senden, musst du dich bitte anmelden oder registrieren.";
 "Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat" = "Bitte melde dich an oder registriere dich, um an diesem Live-Stream teilzunehmen.";
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Bitte melde dich an oder registriere dich, um diesen Live-Stream zu abonnieren.";
-"Pledge" = "Beitrag:";
+"Pledge" = "Beitrag leisten";
 "Pledge_activity" = "Finanzierungsbeiträge";
 "Pledge_amount" = "Beitragshöhe";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Du kannst jeden beliebigen Betrag eingeben, um das Projekt zu unterstützen.";
@@ -709,6 +703,7 @@
 "Youre_a_backer" = "Du unterstützt das Projekt!";
 "Youre_a_backer_no_punctuation" = "Du bist ein Unterstützer";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte bestätige diesen Vorgang.";
+"Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email" = "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte ändere oder bestätige die Adresse, die du mit deinem Kickstarter-Konto verbinden möchtest.";
 "Youre_all_set" = "Alles klar";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Du bist via Facebook (%{email}) verbunden. Erstelle ein Passwort für dieses Konto, um deine Anmeldedaten für Kickstarter zu ändern.";
 "Youre_offline" = "Du bist Offline. Sobald du wieder Online bist, navigiere in der App, um sie zu aktualisieren.";

@@ -927,22 +927,23 @@ public enum Strings {
   }
   /**
    "%{backers_count}
-backers"
+backer"
 
    - **en**: "%{backers_count}
-backers"
+backer"
    - **de**: "%{backers_count}
 Unterstützer"
    - **es**: "%{backers_count}
-patrocinadores"
+patrocinador"
    - **fr**: "%{backers_count}
-contributeurs"
-   - **ja**: "%{backers_count} バッカー"
+contributeur"
+   - **ja**: "%{backers_count}
+バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
       key: "Backers_count_separator_backers",
-      defaultValue: "%{backers_count}\nbackers",
+      defaultValue: "%{backers_count}\nbacker",
       count: backers_count,
       substitutions: ["backers_count": Format.wholeNumber(backers_count)]
     )
@@ -1656,7 +1657,7 @@ contributeurs"
    - **de**: "Bestätigen"
    - **es**: "Confirmar"
    - **fr**: "Confirmer"
-   - **ja**: "確認"
+   - **ja**: "確定する"
   */
   public static func Confirm() -> String {
     return localizedString(
@@ -1781,7 +1782,7 @@ Haz clic para volver a intentarlo."
    - **de**: "Weiter"
    - **es**: "Continuar"
    - **fr**: "Continuer"
-   - **ja**: "続行する"
+   - **ja**: "次へ"
   */
   public static func Continue() -> String {
     return localizedString(
@@ -1815,7 +1816,7 @@ Haz clic para volver a intentarlo."
    - **de**: "Weiter zu Beitrag aktualisieren"
    - **es**: "Continuar a Actualizar contribución"
    - **fr**: "Continuer la modification de mon engagement"
-   - **ja**: "プレッジをアップデート"
+   - **ja**: "プレッジの更新へ"
   */
   public static func Continue_to_update_pledge() -> String {
     return localizedString(
@@ -1843,18 +1844,18 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
-   "Continue with %{quantity_count} add-ons"
+   "Continue with %{quantity_count} add-on"
 
-   - **en**: "Continue with %{quantity_count} add-ons"
-   - **de**: "Weiter mit %{quantity_count} Add-ons"
-   - **es**: "Continuar con %{quantity_count} complementos"
-   - **fr**: "Continuer avec %{quantity_count} compléments"
+   - **en**: "Continue with %{quantity_count} add-on"
+   - **de**: "Weiter mit %{quantity_count} Add-on"
+   - **es**: "Continuar con %{quantity_count} complemento"
+   - **fr**: "Continuer avec %{quantity_count} complément"
    - **ja**: "%{quantity_count} 個のアドオンで続行する"
   */
   public static func Continue_with_quantity_count_add_ons(quantity_count: Int) -> String {
     return localizedString(
       key: "Continue_with_quantity_count_add_ons",
-      defaultValue: "Continue with %{quantity_count} add-ons",
+      defaultValue: "Continue with %{quantity_count} add-on",
       count: quantity_count,
       substitutions: ["quantity_count": Format.wholeNumber(quantity_count)]
     )
@@ -2356,10 +2357,10 @@ Haz clic para volver a intentarlo."
    "zł Polish Złoty (PLN)"
 
    - **en**: "zł Polish Złoty (PLN)"
-   - **de**: "zł Polish Złoty (PLN)"
-   - **es**: "zł Polish Złoty (PLN)"
+   - **de**: "zł Polnishcer Złoty (PLN)"
+   - **es**: "Złoty polaco - zł (PLN)"
    - **fr**: "Złoty polonais – zł (PLN)"
-   - **ja**: "zł Polish Złoty (PLN)"
+   - **ja**: "zł ポーランド通貨ズウォティ(PLN)"
   */
   public static func Currency_PLN() -> String {
     return localizedString(
@@ -3390,18 +3391,18 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
-   "%{filter_name}: %{project_count} live projects"
+   "%{filter_name}: %{project_count} live project"
 
-   - **en**: "%{filter_name}: %{project_count} live projects"
-   - **de**: "%{filter_name}: %{project_count} Live-Projekte"
-   - **es**: "%{filter_name}: %{project_count} proyectos activos"
-   - **fr**: "%{filter_name} : %{project_count} projets en cours"
+   - **en**: "%{filter_name}: %{project_count} live project"
+   - **de**: "%{filter_name}: %{project_count} Live-Projekt"
+   - **es**: "%{filter_name}: %{project_count} proyecto activo"
+   - **fr**: "%{filter_name} : %{project_count} projet en cours"
    - **ja**: "%{filter_name}：%{project_count} の進行中プロジェクト"
   */
   public static func Filter_name_project_count_live_projects(filter_name: String, project_count: Int) -> String {
     return localizedString(
       key: "Filter_name_project_count_live_projects",
-      defaultValue: "%{filter_name}: %{project_count} live projects",
+      defaultValue: "%{filter_name}: %{project_count} live project",
       count: project_count,
       substitutions: ["filter_name": filter_name, "project_count": Format.wholeNumber(project_count)]
     )
@@ -4995,8 +4996,8 @@ with friends."
 
    - **en**: "%{left_count} left"
    - **de**: "%{left_count} übrig"
-   - **es**: "%{left_count} restantes"
-   - **fr**: "%{left_count} restantes"
+   - **es**: "%{left_count} restante"
+   - **fr**: "%{left_count} restante"
    - **ja**: "残り%{left_count}"
   */
   public static func Left_count_left(left_count: Int) -> String {
@@ -6099,6 +6100,23 @@ n'ont rien soutenu."
     )
   }
   /**
+   "Open inbox"
+
+   - **en**: "Open inbox"
+   - **de**: "Posteingang öffnen"
+   - **es**: "Abrir la bandeja de entrada"
+   - **fr**: "Ouvrir ma boîte de réception"
+   - **ja**: "受信箱を開く"
+  */
+  public static func Open_inbox() -> String {
+    return localizedString(
+      key: "Open_inbox",
+      defaultValue: "Open inbox",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Opens comments."
 
    - **en**: "Opens comments."
@@ -6595,9 +6613,9 @@ n'ont rien soutenu."
    "Pledge"
 
    - **en**: "Pledge"
-   - **de**: "Beitrag:"
+   - **de**: "Beitrag leisten"
    - **es**: "Contribución:"
-   - **fr**: "Engagement :"
+   - **fr**: "Je m'engage"
    - **ja**: "プレッジする"
   */
   public static func Pledge() -> String {
@@ -7785,18 +7803,18 @@ daring ideas."
     )
   }
   /**
-   "%{rewards_count} rewards"
+   "%{rewards_count} reward"
 
-   - **en**: "%{rewards_count} rewards"
-   - **de**: "%{rewards_count} Belohnungen"
-   - **es**: "%{rewards_count} recompensas"
-   - **fr**: "%{rewards_count} récompenses"
+   - **en**: "%{rewards_count} reward"
+   - **de**: "%{rewards_count} Belohnung"
+   - **es**: "%{rewards_count} recompensa"
+   - **fr**: "%{rewards_count} récompense"
    - **ja**: "%{rewards_count} 種類のリワード"
   */
   public static func Rewards_count_rewards(rewards_count: Int) -> String {
     return localizedString(
       key: "Rewards_count_rewards",
-      defaultValue: "%{rewards_count} rewards",
+      defaultValue: "%{rewards_count} reward",
       count: rewards_count,
       substitutions: ["rewards_count": Format.wholeNumber(rewards_count)]
     )
@@ -7819,18 +7837,18 @@ daring ideas."
     )
   }
   /**
-   "%{rewards_count} rewards:"
+   "%{rewards_count} reward:"
 
-   - **en**: "%{rewards_count} rewards:"
-   - **de**: "%{rewards_count} Belohnungen:"
-   - **es**: "%{rewards_count} recompensas:"
-   - **fr**: "%{rewards_count} récompenses :"
+   - **en**: "%{rewards_count} reward:"
+   - **de**: "%{rewards_count} Belohnung:"
+   - **es**: "%{rewards_count} recompensa:"
+   - **fr**: "%{rewards_count} récompense :"
    - **ja**: "%{rewards_count} 種類のリワード"
   */
   public static func Rewards_count_rewards_colon(rewards_count: Int) -> String {
     return localizedString(
       key: "Rewards_count_rewards_colon",
-      defaultValue: "%{rewards_count} rewards:",
+      defaultValue: "%{rewards_count} reward:",
       count: rewards_count,
       substitutions: ["rewards_count": Format.wholeNumber(rewards_count)]
     )
@@ -8669,18 +8687,18 @@ daring ideas."
     )
   }
   /**
-   "%{friend_name} and %{remaining_count} others"
+   "%{friend_name} and %{remaining_count} other"
 
-   - **en**: "%{friend_name} and %{remaining_count} others"
-   - **de**: "%{friend_name} und %{remaining_count} weitere"
-   - **es**: "%{friend_name} y %{remaining_count} otros"
-   - **fr**: "%{friend_name} et %{remaining_count} autre(s)"
+   - **en**: "%{friend_name} and %{remaining_count} other"
+   - **de**: "%{friend_name} und %{remaining_count} weitere Person"
+   - **es**: "%{friend_name} y %{remaining_count} persona más"
+   - **fr**: "%{friend_name} et %{remaining_count} autre"
    - **ja**: "%{friend_name} さんと他%{remaining_count} 人"
   */
   public static func Social_friend_is_backer(friend_name: String, remaining_count: Int) -> String {
     return localizedString(
       key: "Social_friend_is_backer",
-      defaultValue: "%{friend_name} and %{remaining_count} others",
+      defaultValue: "%{friend_name} and %{remaining_count} other",
       count: remaining_count,
       substitutions: ["friend_name": friend_name, "remaining_count": Format.wholeNumber(remaining_count)]
     )
@@ -10054,7 +10072,7 @@ catch your eye?"
    - **de**: "Beitrag aktualisieren"
    - **es**: "Actualizar contribución"
    - **fr**: "Modifier mon engagement"
-   - **ja**: "プレッジをアップデートする"
+   - **ja**: "プレッジを更新する"
   */
   public static func Update_pledge() -> String {
     return localizedString(
@@ -11460,6 +11478,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "Youre_about_to_create_a_new_Kickstarter_account",
       defaultValue: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "You’re about to create a new Kickstarter account with the email address you use for Facebook. Please edit or confirm that it’s the address you want for your Kickstarter account."
+
+   - **en**: "You’re about to create a new Kickstarter account with the email address you use for Facebook. Please edit or confirm that it’s the address you want for your Kickstarter account."
+   - **de**: "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte ändere oder bestätige die Adresse, die du mit deinem Kickstarter-Konto verbinden möchtest."
+   - **es**: "Estás a punto de crear una nueva cuenta de Kickstarter con el correo electrónico asociado a tu cuenta de Facebook. Por favor, confirma que quieres usar este correo o cámbialo."
+   - **fr**: "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail associée à votre compte Facebook. Veuillez confirmer qu'il s'agit bien de l'adresse que vous souhaitez utiliser, ou la modifier si besoin."
+   - **ja**: "Facebook に登録されているメールアドレスで新しい Kickstarter アカウントを作成しようとしています。編集するか、これが Kickstarter アカウントに登録したいメールアドレスであることを確定してください。"
+  */
+  public static func Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email() -> String {
+    return localizedString(
+      key: "Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email",
+      defaultValue: "You’re about to create a new Kickstarter account with the email address you use for Facebook. Please edit or confirm that it’s the address you want for your Kickstarter account.",
       count: nil,
       substitutions: [:]
     )
@@ -13505,18 +13540,18 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
-   "%{comments_count} comments"
+   "%{comments_count} comment"
 
-   - **en**: "%{comments_count} comments"
-   - **de**: "%{comments_count} Kommentare"
-   - **es**: "%{comments_count} commentarios"
-   - **fr**: "%{comments_count} commentaires"
+   - **en**: "%{comments_count} comment"
+   - **de**: "%{comments_count} Kommentar"
+   - **es**: "%{comments_count} commentario"
+   - **fr**: "%{comments_count} commentaire"
    - **ja**: "%{comments_count} のコメント"
   */
   public static func comments_count_comments(comments_count: Int) -> String {
     return localizedString(
       key: "comments_count_comments",
-      defaultValue: "%{comments_count} comments",
+      defaultValue: "%{comments_count} comment",
       count: comments_count,
       substitutions: ["comments_count": Format.wholeNumber(comments_count)]
     )
@@ -17183,7 +17218,7 @@ Veuillez réessayer ultérieurement."
    - **de**: "Gesamt %{backers_count} Unterstützer, %{percent_funded} finanziert, noch %{time_left}"
    - **es**: "De momento tiene %{backers_count} patrocinadores, financiado al %{percent_funded}, tiempo restante: %{time_left}"
    - **fr**: "%{backers_count} contributeurs, projet financé à %{percent_funded}, plus que %{time_left}"
-   - **ja**: "バッカー%{backers_count} 人。%{percent_funded} 達成、%{time_left} で締切"
+   - **ja**: "バッカー%{backers_count} 人、%{percent_funded} 達成、%{time_left} で締切"
   */
   public static func discovery_baseball_card_stats_accessibility_non_live_stat_value(backers_count: Int, percent_funded: String, time_left: String) -> String {
     return localizedString(
@@ -19099,18 +19134,18 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
-   "%{likes_count} likes"
+   "%{likes_count} like"
 
-   - **en**: "%{likes_count} likes"
-   - **de**: "%{likes_count} Personen gefällt das"
-   - **es**: "A %{likes_count} personas les gusta"
-   - **fr**: "%{likes_count} mentions J'aime"
+   - **en**: "%{likes_count} like"
+   - **de**: "%{likes_count} Person gefällt das"
+   - **es**: "A %{likes_count} persona le gusta"
+   - **fr**: "%{likes_count} mention J'aime"
    - **ja**: "いいね！%{likes_count}件"
   */
   public static func likes_count_likes(likes_count: Int) -> String {
     return localizedString(
       key: "likes_count_likes",
-      defaultValue: "%{likes_count} likes",
+      defaultValue: "%{likes_count} like",
       count: likes_count,
       substitutions: ["likes_count": Format.wholeNumber(likes_count)]
     )
@@ -20560,7 +20595,7 @@ iOSの場合、設定からFacebookのアクセスを許可してください。
 
    - **en**: "BACKED %{project_count} PROJECTS"
    - **de**: "HAT %{project_count} PROJEKTE UNTERSTÜTZT"
-   - **es**: "%{project_count} PROYECTOS PATROCINADOS"
+   - **es**: "%{project_count} PROYECTOS APOYADOS"
    - **fr**: "%{project_count} PROJETS SOUTENUS"
    - **ja**: "%{project_count} プロジェクトへバック済"
   */
@@ -21977,7 +22012,7 @@ Merci pour votre soutien !"
    - **de**: "Bestätigen"
    - **es**: "Confirmar"
    - **fr**: "Confirmer"
-   - **ja**: "確認"
+   - **ja**: "確定する"
   */
   public static func project_checkout_android_pay_confirm() -> String {
     return localizedString(
@@ -23626,18 +23661,18 @@ Merci pour votre soutien !"
     )
   }
   /**
-   "%{project_count} projects"
+   "%{project_count} project"
 
-   - **en**: "%{project_count} projects"
-   - **de**: "%{project_count} Projekte"
-   - **es**: "%{project_count} proyectos"
-   - **fr**: "%{project_count} projets"
+   - **en**: "%{project_count} project"
+   - **de**: "%{project_count} Projekt"
+   - **es**: "%{project_count} proyecto"
+   - **fr**: "%{project_count} projet"
    - **ja**: "%{project_count} 件のプロジェクト"
   */
   public static func project_count_projects(project_count: Int) -> String {
     return localizedString(
       key: "project_count_projects",
-      defaultValue: "%{project_count} projects",
+      defaultValue: "%{project_count} project",
       count: project_count,
       substitutions: ["project_count": Format.wholeNumber(project_count)]
     )
@@ -23671,7 +23706,7 @@ unterstützt"
 patrocinados"
    - **fr**: "%{projects_count}
 projets soutenus"
-   - **ja**: "%{projects_count} \n件バック済み"
+   - **ja**: "%{projects_count}\n件バック済み"
   */
   public static func projects_count_newline_backed(projects_count: Int) -> String {
     return localizedString(
@@ -24623,7 +24658,7 @@ projets enregistrés"
    - **de**: "%{created_count} erstellt"
    - **es**: "%{created_count} creados"
    - **fr**: "%{created_count} projets créés"
-   - **ja**: "%{created_count} プロジェクト"
+   - **ja**: "%{created_count}プロジェクト"
   */
   public static func social_following_friend_projects_count_created(created_count: Int) -> String {
     return localizedString(
@@ -25478,18 +25513,18 @@ projets enregistrés"
     )
   }
   /**
-   "%{updates_count} updates"
+   "%{updates_count} update"
 
-   - **en**: "%{updates_count} updates"
-   - **de**: "%{updates_count} Updates"
-   - **es**: "%{updates_count} actualizaciones"
-   - **fr**: "%{updates_count} actus"
+   - **en**: "%{updates_count} update"
+   - **de**: "%{updates_count} Update"
+   - **es**: "%{updates_count} actualización"
+   - **fr**: "%{updates_count} actu"
    - **ja**: "%{updates_count} 件のアップデート"
   */
   public static func updates_count_updates(updates_count: Int) -> String {
     return localizedString(
       key: "updates_count_updates",
-      defaultValue: "%{updates_count} updates",
+      defaultValue: "%{updates_count} update",
       count: updates_count,
       substitutions: ["updates_count": Format.wholeNumber(updates_count)]
     )
