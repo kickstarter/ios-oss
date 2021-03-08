@@ -954,6 +954,40 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("rewards", segmentClientProperties?["context_page"] as? String)
   }
 
+  func testTrackRewardsViewed() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let project = Project.template
+    let loggedInUser = User.template |> \.id .~ 42
+
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      loggedInUser: loggedInUser,
+      segmentClient: segmentClient
+    )
+
+    ksrAnalytics.trackRewardsViewed(
+      project: project,
+      checkoutPropertiesData: .template,
+      refTag: .category
+    )
+
+    let dataLakeClientProperties = dataLakeClient.properties.last
+    let segmentClientProperties = segmentClient.properties.last
+
+    XCTAssertEqual(["Page Viewed"], dataLakeClient.events)
+    XCTAssertEqual(["Page Viewed"], segmentClient.events)
+
+    self.assertProjectProperties(dataLakeClientProperties)
+    self.assertProjectProperties(segmentClientProperties)
+
+    XCTAssertEqual("category", dataLakeClientProperties?["session_ref_tag"] as? String)
+    XCTAssertEqual("category", segmentClientProperties?["session_ref_tag"] as? String)
+
+    XCTAssertEqual("rewards", dataLakeClientProperties?["context_page"] as? String)
+    XCTAssertEqual("rewards", segmentClientProperties?["context_page"] as? String)
+  }
+
   func testTrackPledgeSubmitButtonClicked() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
@@ -1510,6 +1544,15 @@ final class KSRAnalyticsTests: TestCase {
       .trackRewardClicked(
         project: .template,
         reward: .template,
+        checkoutPropertiesData: .template,
+        refTag: nil
+      )
+    XCTAssertEqual("rewards", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("rewards", segmentClient.properties.last?["context_page"] as? String)
+
+    ksrAnalytics
+      .trackRewardsViewed(
+        project: .template,
         checkoutPropertiesData: .template,
         refTag: nil
       )
