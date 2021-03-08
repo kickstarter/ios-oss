@@ -9,7 +9,7 @@ import UIKit
 
 internal final class FacebookConfirmationViewController: UIViewController,
   MFMailComposeViewControllerDelegate {
-  @IBOutlet weak var disclaimerButton: UIButton!
+  @IBOutlet var disclaimerButton: UIButton!
   @IBOutlet private var confirmationLabel: UILabel!
   @IBOutlet private var createAccountButton: UIButton!
   @IBOutlet private var emailLabel: UILabel!
@@ -46,8 +46,9 @@ internal final class FacebookConfirmationViewController: UIViewController,
       self, action: #selector(self.newsletterSwitchChanged),
       for: .valueChanged
     )
-    
-    self.disclaimerButton.addTarget(self, action: #selector(self.disclaimerButtonPressed), for: .touchUpInside)
+
+    self.disclaimerButton
+      .addTarget(self, action: #selector(self.disclaimerButtonPressed), for: .touchUpInside)
 
     let tapGestureRecognizer = UITapGestureRecognizer(
       target: self, action: #selector(self.newsletterLabelTapped)
@@ -62,20 +63,20 @@ internal final class FacebookConfirmationViewController: UIViewController,
 
     _ = self
       |> baseControllerStyle()
-    
+
     _ = self.disclaimerButton
       |> disclaimerButtonStyle
 
     _ = self.confirmationLabel |> fbConfirmationMessageLabelStyle
     _ = self.createAccountButton |> createNewAccountButtonStyle
     _ = self.emailLabel |> fbConfirmEmailLabelStyle
-    
+
     _ = self.loginButton
       |> greyButtonStyle
       |> UIButton.lens.title(for: .normal) %~ { _ in
-      Strings.login_buttons_log_in()
-    }
-    
+        Strings.login_buttons_log_in()
+      }
+
     _ = self.loginLabel |> fbWrongAccountLabelStyle
     _ = self.navigationItem.title = Strings.signup_navbar_title()
     _ = self.newsletterLabel
@@ -196,7 +197,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
   @objc fileprivate func newsletterLabelTapped() {
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
-  
+
   @objc fileprivate func disclaimerButtonPressed() {
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
