@@ -402,11 +402,16 @@ public func rounded(_ value: Double, places: Int) -> Double {
 
  - parameter project: The `Project` associated with a group of Rewards.
  - parameter baseReward: The reward being evaluated
+ - parameter shippingRule: `ShippingRule` information about shipping details of selected rewards.
 
  - returns: A `Double` of the shipping value. If the `Project` `Backing` object is nil,
             and `baseReward` shipping is not enabled, the value is `0.0`
  */
-public func getBaseRewardShippingTotal(project: Project, baseReward: Reward) -> Double {
+public func getBaseRewardShippingTotal(project: Project, baseReward: Reward,
+                                       shippingRule: ShippingRule?) -> Double {
+  if baseReward.shipping.enabled, project.personalization.backing == nil {
+    return baseReward.shippingRule(matching: shippingRule)?.cost ?? 0.0
+  }
   guard baseReward.shipping.enabled, let backing = project.personalization.backing else { return 0.0 }
   return backing.shippingAmount.flatMap(Double.init) ?? 0.0
 }
@@ -414,9 +419,9 @@ public func getBaseRewardShippingTotal(project: Project, baseReward: Reward) -> 
 /**
  An helper func that calculates  shipping total for base reward
 
- - parameter shippingRule: The `Project` associated with a group of Rewards.
+ -  parameter shippingRule: `ShippingRule` information about shipping details of selected rewards.
  - parameter addOnRewards: An array of `Reward` objects representing the available add-ons.
- - parameter quantities: The reward being evaluated.
+ - parameter quantities: A dictionary that aggregates the quantity of selected add-ons.
 
  - returns: A `Double` of the shipping value.
  */
@@ -442,7 +447,7 @@ func calculateShippingTotal(
 /**
  An helper func that calculates  pledge total for all rewards
 
- - parameter pledgeAmount: The `Project` associated with a group of Rewards.
+ - parameter pledgeAmount: The amount pledged for a project.
  - parameter shippingCost: The shipping cost for the pledge.
  - parameter addOnRewardsTotal: The total amount of all addOn rewards.
 

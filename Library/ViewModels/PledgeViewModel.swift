@@ -165,7 +165,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
     .map(calculateShippingTotal)
 
-    let defaultShippingTotal = Signal.zip(project, baseReward)
+    let defaultShippingTotal = Signal.zip(project, baseReward, selectedShippingRule)
       .map(getBaseRewardShippingTotal)
 
     let allRewardsShippingTotal = Signal.merge(

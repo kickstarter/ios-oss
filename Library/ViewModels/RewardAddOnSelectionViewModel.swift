@@ -256,19 +256,19 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     .map(PledgeViewData.init)
     .takeWhen(self.continueButtonTappedProperty.signal)
 
-    let calculatedShippingTotal = Signal.combineLatest(
+    let shippingTotal = Signal.combineLatest(
       shippingRule.skipNil(),
       allRewards,
       selectedQuantities
     )
     .map(calculateShippingTotal)
 
-    let shippingTotal = Signal.zip(project, baseReward)
+    let baseRewardShippingTotal = Signal.zip(project, baseReward, shippingRule)
       .map(getBaseRewardShippingTotal)
 
     let allRewardsShippingTotal = Signal.merge(
-      shippingTotal,
-      calculatedShippingTotal
+      baseRewardShippingTotal,
+      shippingTotal
     )
 
     // Addtional pledge amount is zero if not backed.
@@ -284,7 +284,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     )
     .map(calculateAllRewardsTotal)
 
-    let calculatedPledgeTotal = Signal.combineLatest(
+    let combinedPledgeTotal = Signal.combineLatest(
       additionalPledgeAmount,
       allRewardsShippingTotal,
       allRewardsTotal
@@ -293,7 +293,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     let pledgeTotal = Signal.merge(
       project.map { $0.personalization.backing }.skipNil().map(\.amount),
-      calculatedPledgeTotal
+      combinedPledgeTotal
     )
 
     // MARK: - Tracking

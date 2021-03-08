@@ -407,9 +407,6 @@ final class SharedFunctionsTests: TestCase {
 
   func testGetShipping_ShippingEnabled() {
     let reward = Reward.template
-      |> Reward.lens.limit .~ 5
-      |> Reward.lens.remaining .~ 0
-      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
       |> Reward.lens.hasAddOns .~ true
       |> Reward.lens.shipping.enabled .~ true
 
@@ -422,9 +419,35 @@ final class SharedFunctionsTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
       )
 
-    let shippingTotal = getBaseRewardShippingTotal(project: project, baseReward: reward)
+    let shippingRule = ShippingRule.template
+
+    let shippingTotal = getBaseRewardShippingTotal(
+      project: project,
+      baseReward: reward,
+      shippingRule: shippingRule
+    )
 
     XCTAssertEqual(2.0, shippingTotal)
+  }
+
+  func testGetShipping_ShippingEnabled_NotBacking() {
+    let reward = Reward.template
+      |> Reward.lens.hasAddOns .~ true
+      |> Reward.lens.shipping.enabled .~ true
+
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [reward]
+      |> Project.lens.rewardData.addOns .~ [reward]
+
+    let shippingRule = ShippingRule.template
+
+    let shippingTotal = getBaseRewardShippingTotal(
+      project: project,
+      baseReward: reward,
+      shippingRule: shippingRule
+    )
+
+    XCTAssertEqual(5.0, shippingTotal)
   }
 
   func testGetShipping_ShippingDisabled() {
@@ -439,7 +462,13 @@ final class SharedFunctionsTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ [reward]
 
-    let shippingTotal = getBaseRewardShippingTotal(project: project, baseReward: reward)
+    let shippingRule = ShippingRule.template
+
+    let shippingTotal = getBaseRewardShippingTotal(
+      project: project,
+      baseReward: reward,
+      shippingRule: shippingRule
+    )
 
     XCTAssertEqual(0.0, shippingTotal)
   }
