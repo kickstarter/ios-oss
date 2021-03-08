@@ -62,7 +62,7 @@ public let fbLoginButtonStyle = facebookButtonStyle
 
 public let fbConfirmationMessageLabelStyle = UILabel.lens.textColor .~ .ksr_support_700
   <> UILabel.lens.font .~ .ksr_body()
-  <> UILabel.lens.text %~ { _ in Strings.Youre_about_to_create_a_new_Kickstarter_account() }
+  <> UILabel.lens.text %~ { _ in Strings.Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email() }
 
 public let fbConfirmEmailLabelStyle = UILabel.lens.textColor .~ .ksr_support_700
   <> UILabel.lens.font .~ .ksr_headline()
