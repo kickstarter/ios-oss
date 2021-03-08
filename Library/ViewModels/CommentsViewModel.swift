@@ -146,6 +146,16 @@ public final class CommentsViewModel: CommentsViewModelType, CommentsViewModelIn
 
     self.openLoginTout = self.loginButtonPressedProperty.signal
     self.closeLoginTout = self.userSessionStartedProperty.signal
+
+    // Tracking
+
+    project
+      .observeValues { project in
+        AppEnvironment.current.ksrAnalytics.trackProjectViewed(
+          project,
+          sectionContext: .comments
+        )
+      }
   }
 
   fileprivate let commentButtonPressedProperty = MutableProperty(())

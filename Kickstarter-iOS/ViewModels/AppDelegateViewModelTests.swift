@@ -17,6 +17,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let configureOptimizelyLogLevel = TestObserver<OptimizelyLogLevelType, Never>()
   private let configureOptimizelyDispatchInterval = TestObserver<TimeInterval, Never>()
   private let configureFirebase = TestObserver<(), Never>()
+  private let configurePerimeterX = TestObserver<(), Never>()
   private let didAcceptReceivingRemoteNotifications = TestObserver<(), Never>()
   private let emailVerificationCompletedMessage = TestObserver<String, Never>()
   private let emailVerificationCompletedSuccess = TestObserver<Bool, Never>()
@@ -55,6 +56,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.configureOptimizely.map(first).observe(self.configureOptimizelySDKKey.observer)
     self.vm.outputs.configureOptimizely.map(second).observe(self.configureOptimizelyLogLevel.observer)
     self.vm.outputs.configureOptimizely.map(third).observe(self.configureOptimizelyDispatchInterval.observer)
+    self.vm.outputs.configurePerimeterX.observe(self.configurePerimeterX.observer)
     self.vm.outputs.emailVerificationCompleted.map(first)
       .observe(self.emailVerificationCompletedMessage.observer)
     self.vm.outputs.emailVerificationCompleted.map(second)
@@ -140,6 +142,12 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
 
     self.configureFirebase.assertValueCount(1)
+  }
+
+  func testConfigurePerimeterX() {
+    self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: nil)
+
+    self.configurePerimeterX.assertValueCount(1)
   }
 
   // MARK: - Optimizely

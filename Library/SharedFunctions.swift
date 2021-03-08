@@ -388,3 +388,109 @@ public func isEndDateAfterToday(for reward: Reward) -> Bool {
   return (reward.endsAt == nil || (reward.endsAt ?? 0) >= AppEnvironment.current.dateType.init()
     .timeIntervalSince1970)
 }
+
+/*
+ A helper that assists in rounding an amount to a given number of decimal places
+ */
+public func rounded(_ value: Double, places: Int) -> Double {
+  let divisor = pow(10.0, Double(places))
+  return (value * divisor).rounded() / divisor
+}
+
+/**
+ Creates `CheckoutPropertiesData` to send with our event properties.
+
+ - parameter from: The `Project` associated with the checkout.
+ - parameter baseReward: The reward being evaluated
+ - parameter addOnRewards: An array of `Reward` objects representing the available add-ons.
+ - parameter selectedQuantities: A dictionary of reward id to quantitiy.
+ - parameter additionalPledgeAmount: The bonus amount included in the pledge.
+ - parameter pledgeTotal: The total amount of the pledge.
+ - parameter shippingTotal: The shipping cost for the pledge.
+ - parameter checkoutId: The unique ID associated with the checkout.
+ - parameter isApplePay: A `Bool` indicating if the pledge was done with Apple pay.
+
+ - returns: A `CheckoutPropertiesData` object required for checkoutProperties.
+ */
+public func checkoutProperties(
+  from project: Project,
+  baseReward: Reward,
+  addOnRewards: [Reward],
+  selectedQuantities: SelectedRewardQuantities,
+  additionalPledgeAmount: Double,
+  pledgeTotal: Double,
+  shippingTotal: Double,
+  checkoutId: Int? = nil,
+  isApplePay: Bool?
+) -> KSRAnalytics.CheckoutPropertiesData {
+  let staticUsdRate = Double(project.stats.staticUsdRate)
+
+  // Two decimal places to represent cent values
+  let pledgeTotalUsd = rounded(pledgeTotal.multiplyingCurrency(staticUsdRate), places: 2)
+
+  let bonusAmountUsd = additionalPledgeAmount
+    .multiplyingCurrency(staticUsdRate)
+
+  let addOnRewards = addOnRewards
+    .filter { reward in reward.id != baseReward.id }
+    .map { reward -> [Reward] in
+      guard let selectedRewardQuantity = selectedQuantities[reward.id] else { return [] }
+      return Array(0..<selectedRewardQuantity).map { _ in reward }
+    }
+    .flatMap { $0 }
+
+  let addOnsCountTotal = addOnRewards.map(\.id).count
+  let addOnsCountUnique = Set(addOnRewards.map(\.id)).count
+  let addOnsMinimumUsd = Format.decimalCurrency(
+    for: addOnRewards
+      .reduce(0.0) { accum, addOn in accum.addingCurrency(addOn.minimum) }
+      .multiplyingCurrency(staticUsdRate)
+  )
+
+  let shippingAmount: Double? = baseReward.shipping.enabled ? shippingTotal : nil
+
+  let amount = Format.decimalCurrency(for: pledgeTotal)
+
+  let bonusAmount = Format.decimalCurrency(for: additionalPledgeAmount)
+  let bonusAmountInUsd = Format.decimalCurrency(for: bonusAmountUsd)
+
+  let rewardId = baseReward.id
+  let estimatedDelivery = baseReward.estimatedDeliveryOn
+
+  var paymentType: String?
+  if let isApplePay = isApplePay {
+    paymentType = isApplePay
+      ? PaymentType.applePay.rawValue
+      : PaymentType.creditCard.rawValue
+  }
+
+  let shippingEnabled = baseReward.shipping.enabled
+  let shippingAmountUsd = (shippingAmount?.multiplyingCurrency(staticUsdRate))
+    .flatMap(Format.decimalCurrency)
+  let rewardTitle = baseReward.title
+  let rewardMinimumUsd = Format.decimalCurrency(for: baseReward.minimum.multiplyingCurrency(staticUsdRate))
+
+  let userHasEligibleStoredApplePayCard = AppEnvironment.current
+    .applePayCapabilities
+    .applePayCapable(for: project)
+
+  return KSRAnalytics.CheckoutPropertiesData(
+    addOnsCountTotal: addOnsCountTotal,
+    addOnsCountUnique: addOnsCountUnique,
+    addOnsMinimumUsd: addOnsMinimumUsd,
+    amount: amount,
+    bonusAmount: bonusAmount,
+    bonusAmountInUsd: bonusAmountInUsd,
+    checkoutId: checkoutId,
+    estimatedDelivery: estimatedDelivery,
+    paymentType: paymentType,
+    revenueInUsd: pledgeTotalUsd,
+    rewardId: rewardId,
+    rewardMinimumUsd: rewardMinimumUsd,
+    rewardTitle: rewardTitle,
+    shippingEnabled: shippingEnabled,
+    shippingAmount: shippingAmount,
+    shippingAmountUsd: shippingAmountUsd,
+    userHasStoredApplePayCard: userHasEligibleStoredApplePayCard
+  )
+}

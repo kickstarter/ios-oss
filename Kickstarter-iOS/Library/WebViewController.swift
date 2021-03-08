@@ -9,6 +9,9 @@ internal class WebViewController: UIViewController {
   internal let webView = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
   internal var bottomAnchorConstraint: NSLayoutConstraint?
 
+  // Enables us to pass the http cookie from Perimeter X for additional protection
+  private var webKitCookieStore: WKHTTPCookieStore?
+
   override func loadView() {
     super.loadView()
 
@@ -16,6 +19,8 @@ internal class WebViewController: UIViewController {
     self.webView.configuration.allowsInlineMediaPlayback = true
     self.webView.configuration.applicationNameForUserAgent = "Kickstarter-iOS"
     self.webView.customUserAgent = Service.userAgent
+
+    self.webKitCookieStore = WKWebsiteDataStore.default().httpCookieStore
 
     self.view.addSubview(self.webView)
 
@@ -41,6 +46,19 @@ internal class WebViewController: UIViewController {
     self.webView.uiDelegate = nil
     self.webView.navigationDelegate = nil
     self.webView.scrollView.delegate = nil
+  }
+
+  func webView(
+    _: WKWebView,
+    decidePolicyFor _: WKNavigationResponse,
+    decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
+  ) {
+    if let newCookie = PerimeterXClient.cookie {
+      self.webKitCookieStore?.setCookie(newCookie, completionHandler: {
+        print("Perimeter X mobile VID cookie set.")
+      })
+    }
+    decisionHandler(.allow)
   }
 }
 

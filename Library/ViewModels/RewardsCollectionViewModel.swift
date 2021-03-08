@@ -55,8 +55,6 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
     let rewards = project
       .map { $0.rewards }
 
-    let context = configData.map(third)
-
     self.title = configData
       .map { project, _, context in (context, project) }
       .combineLatest(with: self.viewDidLoadProperty.signal.ignoreValues())
@@ -176,16 +174,57 @@ public final class RewardsCollectionViewModel: RewardsCollectionViewModelType,
       hideDividerLine.takeWhen(self.viewWillAppearProperty.signal)
     )
 
-    let pledgeContext = context
-      .map(trackingPledgeContext(for:))
-
     // Tracking
-    Signal.combineLatest(project, selectedRewardFromId, pledgeContext, refTag)
-      .observeValues { project, reward, context, refTag in
+    Signal.combineLatest(
+      project,
+      refTag,
+      self.viewDidLoadProperty.signal.ignoreValues()
+    )
+    .observeValues { project, refTag, _ in
+      // This event is fired before a base reward is selected
+      let reward = Reward.noReward
+      let (backing, shippingTotal) = backingAndShippingTotal(for: project, and: reward)
+      let checkoutPropertiesData = checkoutProperties(
+        from: project,
+        baseReward: reward,
+        addOnRewards: backing?.addOns ?? [],
+        selectedQuantities: [:],
+        additionalPledgeAmount: backing?.bonusAmount ?? 0,
+        pledgeTotal: backing?.amount ?? reward.minimum,
+        shippingTotal: shippingTotal ?? 0,
+        isApplePay: nil
+      )
+
+      AppEnvironment.current.ksrAnalytics.trackRewardsViewed(
+        project: project,
+        checkoutPropertiesData: checkoutPropertiesData,
+        refTag: refTag
+      )
+    }
+
+    Signal.combineLatest(project, selectedRewardFromId, refTag)
+      .observeValues { project, reward, refTag in
+
+        // The `Backing` is nil for a new pledge.
+        let (backing, shippingTotal) = backingAndShippingTotal(for: project, and: reward)
+
+        // Regardless of whether this is the beginning of a new pledge or we are editing our reward,
+        // we only have the base reward selected at this point
+        let checkoutPropertiesData = checkoutProperties(
+          from: project,
+          baseReward: reward,
+          addOnRewards: backing?.addOns ?? [],
+          selectedQuantities: [reward.id: 1],
+          additionalPledgeAmount: backing?.bonusAmount ?? 0,
+          pledgeTotal: backing?.amount ?? reward.minimum, // The total is the value of the reward
+          shippingTotal: shippingTotal ?? 0,
+          isApplePay: nil
+        )
+
         AppEnvironment.current.ksrAnalytics.trackRewardClicked(
           project: project,
           reward: reward,
-          context: context,
+          checkoutPropertiesData: checkoutPropertiesData,
           refTag: refTag
         )
       }
@@ -294,12 +333,9 @@ private func backedReward(_ project: Project, rewards: [Reward]) -> IndexPath? {
     .flatMap { IndexPath(row: $0, section: 0) }
 }
 
-private func trackingPledgeContext(for rewardsContext: RewardsCollectionViewContext) -> KSRAnalytics
-  .PledgeContext {
-  switch rewardsContext {
-  case .createPledge:
-    return KSRAnalytics.PledgeContext.newPledge
-  case .managePledge:
-    return KSRAnalytics.PledgeContext.changeReward
-  }
+private func backingAndShippingTotal(for project: Project, and reward: Reward) -> (Backing?, Double?) {
+  let backing = project.personalization.backing
+  let shippingTotal = reward.shipping.enabled ? backing?.shippingAmount.flatMap(Double.init) : 0.0
+
+  return (backing, shippingTotal)
 }

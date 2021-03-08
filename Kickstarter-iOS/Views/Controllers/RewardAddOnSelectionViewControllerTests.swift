@@ -72,6 +72,7 @@ final class RewardAddOnSelectionViewControllerTests: TestCase {
     let shippingAddOn = Reward.template
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .unrestricted
+      |> Reward.lens.shippingRulesExpanded .~ shippingRules
 
     let project = Project.template
       |> Project.lens.rewardData.rewards .~ [reward]

@@ -731,11 +731,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     }
     .map { data, isApplePay, checkoutId, baseReward, additionalPledgeAmount, allRewardsShippingTotal
       -> ThanksPageData? in
-      let checkoutPropsData = checkoutPropertiesData(
-        from: data,
+
+      let checkoutPropsData = checkoutProperties(
+        from: data.project,
         baseReward: baseReward,
+        addOnRewards: data.rewards,
+        selectedQuantities: data.selectedQuantities,
         additionalPledgeAmount: additionalPledgeAmount,
-        allRewardsShippingTotal: allRewardsShippingTotal,
+        pledgeTotal: data.pledgeTotal,
+        shippingTotal: allRewardsShippingTotal,
         checkoutId: checkoutId,
         isApplePay: isApplePay
       )
@@ -838,7 +842,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     // Tracking
 
     initialDataUnpacked
-      .observeValues { project, reward, refTag, context in
+      .observeValues { project, reward, refTag, _ in
         let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
         let optimizelyProps = optimizelyProperties() ?? [:]
 
@@ -846,21 +850,31 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         AppEnvironment.current.ksrAnalytics.trackCheckoutPaymentPageViewed(
           project: project,
           reward: reward,
-          context: TrackingHelpers.pledgeContext(for: context),
           refTag: refTag,
           cookieRefTag: cookieRefTag,
           optimizelyProperties: optimizelyProps
         )
       }
 
-    Signal.combineLatest(createBackingData, baseReward, additionalPledgeAmount, allRewardsShippingTotal)
+    Signal
+      .combineLatest(
+        createBackingData,
+        baseReward,
+        additionalPledgeAmount,
+        allRewardsShippingTotal
+      )
       .takeWhen(createButtonTapped)
       .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
-        let checkoutData = checkoutPropertiesData(
-          from: data,
+
+        let checkoutData = checkoutProperties(
+          from: data.project,
           baseReward: baseReward,
+          addOnRewards: data.rewards,
+          selectedQuantities: data.selectedQuantities,
           additionalPledgeAmount: additionalPledgeAmount,
-          allRewardsShippingTotal: allRewardsShippingTotal,
+          pledgeTotal: data.pledgeTotal,
+          shippingTotal: allRewardsShippingTotal,
+          checkoutId: nil,
           isApplePay: false
         )
 
@@ -1138,85 +1152,4 @@ private func pledgeAmountSummaryViewData(
     shippingAmount: backing.shippingAmount.flatMap(Double.init),
     shippingAmountHidden: !shippingViewsHidden
   )
-}
-
-private func checkoutPropertiesData(
-  from createBackingData: CreateBackingData,
-  baseReward: Reward,
-  additionalPledgeAmount: Double,
-  allRewardsShippingTotal: Double?,
-  checkoutId: Int? = nil,
-  isApplePay: Bool
-) -> KSRAnalytics.CheckoutPropertiesData {
-  let pledgeTotal = createBackingData.pledgeTotal
-
-  let staticUsdRate = Double(createBackingData.project.stats.staticUsdRate)
-
-  // Two decimal places to represent cent values
-  let pledgeTotalUsd = rounded(pledgeTotal.multiplyingCurrency(staticUsdRate), places: 2)
-
-  let bonusAmountUsd = additionalPledgeAmount
-    .multiplyingCurrency(staticUsdRate)
-
-  let addOnRewards = createBackingData.rewards
-    .filter { reward in reward.id != baseReward.id }
-    .map { reward -> [Reward] in
-      guard let selectedRewardQuantity = createBackingData.selectedQuantities[reward.id] else { return [] }
-      return Array(0..<selectedRewardQuantity).map { _ in reward }
-    }
-    .flatMap { $0 }
-
-  let addOnsCountTotal = addOnRewards.map(\.id).count
-  let addOnsCountUnique = Set(addOnRewards.map(\.id)).count
-  let addOnsMinimumUsd = Format.decimalCurrency(
-    for: addOnRewards
-      .reduce(0.0) { accum, addOn in accum.addingCurrency(addOn.minimum) }
-      .multiplyingCurrency(staticUsdRate)
-  )
-
-  let shippingAmount: Double? = baseReward.shipping.enabled ? allRewardsShippingTotal : nil
-
-  let amount = Format.decimalCurrency(for: pledgeTotal)
-  let bonusAmount = Format.decimalCurrency(for: additionalPledgeAmount)
-  let bonusAmountInUsd = Format.decimalCurrency(for: bonusAmountUsd)
-  let rewardId = baseReward.id
-  let estimatedDelivery = baseReward.estimatedDeliveryOn
-  let paymentType = isApplePay
-    ? PaymentType.applePay.rawValue
-    : PaymentType.creditCard.rawValue
-  let shippingEnabled = baseReward.shipping.enabled
-  let shippingAmountUsd = (shippingAmount?.multiplyingCurrency(staticUsdRate))
-    .flatMap(Format.decimalCurrency)
-  let rewardTitle = baseReward.title
-  let rewardMinimumUsd = Format.decimalCurrency(for: baseReward.minimum.multiplyingCurrency(staticUsdRate))
-  let userHasEligibleStoredApplePayCard = AppEnvironment.current
-    .applePayCapabilities
-    .applePayCapable(for: createBackingData.project)
-
-  return KSRAnalytics.CheckoutPropertiesData(
-    addOnsCountTotal: addOnsCountTotal,
-    addOnsCountUnique: addOnsCountUnique,
-    addOnsMinimumUsd: addOnsMinimumUsd,
-    amount: amount,
-    bonusAmount: bonusAmount,
-    bonusAmountInUsd: bonusAmountInUsd,
-    checkoutId: checkoutId,
-    estimatedDelivery: estimatedDelivery,
-    paymentType: paymentType,
-    revenueInUsd: pledgeTotalUsd,
-    rewardId: rewardId,
-    rewardMinimumUsd: rewardMinimumUsd,
-    rewardTitle: rewardTitle,
-    shippingEnabled: shippingEnabled,
-    shippingAmount: shippingAmount,
-    shippingAmountUsd: shippingAmountUsd,
-    userHasStoredApplePayCard: userHasEligibleStoredApplePayCard
-  )
-}
-
-/* A helper that assists in rounding the dollar converted amount to a given number of decimal places
- */
-private func rounded(_ value: Double, places: Int) -> Double {
-  let divisor = pow(10.0, Double(places))
-  return (value * divisor).rounded() / divisor
 }

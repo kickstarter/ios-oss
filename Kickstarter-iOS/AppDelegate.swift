@@ -189,6 +189,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.configureOptimizely(with: key, logLevel: logLevel, dispatchInterval: dispatchInterval)
       }
 
+    self.viewModel.outputs.configurePerimeterX
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.configurePerimeterX()
+      }
+
     self.viewModel.outputs.configureAppCenterWithData
       .observeForUI()
       .observeValues { data in
@@ -275,13 +281,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       application: application,
       launchOptions: launchOptions
     )
-
-    // Perimeter X
-
-    if let pxManager = PXManager.sharedInstance() {
-      pxManager.delegate = self
-      pxManager.start(with: Secrets.perimeterxAppId)
-    }
 
     UNUserNotificationCenter.current().delegate = self
 
@@ -383,6 +382,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       Crashlytics.crashlytics().record(error: optimizelyError)
       self.viewModel.inputs.optimizelyClientConfigurationFailed()
     }
+  }
+
+  private func configurePerimeterX() {
+    PerimeterXClient.startPerimeterX(with: self)
   }
 
   fileprivate func presentContextualPermissionAlert(_ notification: Notification) {

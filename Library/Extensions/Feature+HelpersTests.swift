@@ -5,32 +5,6 @@ import Prelude
 import XCTest
 
 final class FeatureHelpersTests: TestCase {
-  // MARK: - Qualtrics
-
-  func testFeatureQualtrics_isTrue() {
-    let config = Config.template
-      |> \.features .~ [Feature.qualtrics.rawValue: true]
-
-    withEnvironment(config: config) {
-      XCTAssertTrue(featureQualtricsIsEnabled())
-    }
-  }
-
-  func testFeatureQualtrics_isFalse() {
-    let config = Config.template
-      |> \.features .~ [Feature.qualtrics.rawValue: false]
-
-    withEnvironment(config: config) {
-      XCTAssertFalse(featureQualtricsIsEnabled())
-    }
-  }
-
-  func testFeatureQualtrics_isFalse_whenNil() {
-    withEnvironment(config: .template) {
-      XCTAssertFalse(featureQualtricsIsEnabled())
-    }
-  }
-
   // MARK: - Email Verification Flow
 
   func testFeatureEmailVerificationFlow_isTrue() {
@@ -80,6 +54,32 @@ final class FeatureHelpersTests: TestCase {
   func testFeatureEmailVerificationSkip_isFalse_whenNil() {
     withEnvironment(config: .template) {
       XCTAssertFalse(featureEmailVerificationSkipIsEnabled())
+    }
+  }
+
+  // MARK: - Segment
+
+  func testFeatureSegment_isTrue() {
+    let config = Config.template
+      |> \.features .~ [Feature.segment.rawValue: true]
+
+    withEnvironment(config: config) {
+      XCTAssertTrue(featureSegmentIsEnabled())
+    }
+  }
+
+  func testFeatureSegment_isFalse() {
+    let config = Config.template
+      |> \.features .~ [Feature.segment.rawValue: false]
+
+    withEnvironment(config: config) {
+      XCTAssertFalse(featureSegmentIsEnabled())
+    }
+  }
+
+  func testFeatureSegment_isFalse_whenNil() {
+    withEnvironment(config: .template) {
+      XCTAssertFalse(featureSegmentIsEnabled())
     }
   }
 }

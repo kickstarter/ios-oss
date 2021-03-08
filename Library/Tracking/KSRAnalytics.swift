@@ -27,8 +27,6 @@ public final class KSRAnalytics {
     case addNewCardButtonClicked = "Add New Card Button Clicked"
     case addOnsContinueButtonClicked = "Add-Ons Continue Button Clicked"
     case addOnsPageViewed = "Add-Ons Page Viewed"
-    case campaignDetailsButtonClicked = "Campaign Details Button Clicked"
-    case campaignDetailsPledgeButtonClicked = "Campaign Details Pledge Button Clicked"
     case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
     case collectionViewed = "Collection Viewed"
     case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
@@ -48,22 +46,23 @@ public final class KSRAnalytics {
     case onboardingContinueButtonClicked = "Onboarding Continue Button Clicked"
     case onboardingGetStartedButtonClicked = "Onboarding Get Started Button Clicked"
     case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
-    case pledgeSubmitButtonClicked = "Pledge Submit Button Clicked"
     case projectCardClicked = "Project Card Clicked"
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
-    case projectPageViewed = "Project Page Viewed"
     case projectSwiped = "Project Swiped"
     case searchPageViewed = "Search Page Viewed"
     case searchResultsLoaded = "Search Results Loaded"
-    case selectRewardButtonClicked = "Select Reward Button Clicked"
     case signupButtonClicked = "Signup Button Clicked"
     case signupSubmitButtonClicked = "Signup Submit Button Clicked"
     case skipVerificationButtonClicked = "Skip Verification Button Clicked"
     case tabBarClicked = "Tab Bar Clicked"
-    case thanksPageViewed = "Thanks Page Viewed"
     case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
     case verificationScreenViewed = "Verification Screen Viewed"
     case watchProjectButtonClicked = "Watch Project Button Clicked"
+  }
+
+  private enum NewApprovedEvent: String, CaseIterable {
+    case ctaClicked = "CTA Clicked"
+    case pageViewed = "Page Viewed"
   }
 
   /// Determines the screen from which the event is sent.
@@ -206,6 +205,51 @@ public final class KSRAnalytics {
     }
   }
 
+  /**
+   Indicates which button or link the user has clicked or tapped; describes CTA Clicked events.
+   */
+  public enum CTAContext {
+    case addOnsContinue
+    case campaignDetails
+    case creatorDetails
+    case discover
+    case discoverFilter
+    case discoverSort
+    case forgotPassword
+    case logInInitiate
+    case logInOrSignUp
+    case logInSubmit
+    case pledgeInitiate
+    case pledgeSubmit
+    case rewardContinue
+    case search
+    case signUpInitiate
+    case signUpSubmit
+    case watchProject
+
+    var trackingString: String {
+      switch self {
+      case .addOnsContinue: return "add_ons_continue"
+      case .campaignDetails: return "campaign_details"
+      case .creatorDetails: return "creator_details"
+      case .discover: return "discover"
+      case .discoverFilter: return "discover_filter"
+      case .discoverSort: return "discover_sort"
+      case .forgotPassword: return "forgot_password"
+      case .pledgeInitiate: return "pledge_initiate"
+      case .pledgeSubmit: return "pledge_submit"
+      case .logInInitiate: return "log_in_initiate"
+      case .logInOrSignUp: return "log_in_or_sign_up"
+      case .logInSubmit: return "log_in_submit"
+      case .rewardContinue: return "reward_continue"
+      case .search: return "search"
+      case .signUpInitiate: return "sign_up_initiate"
+      case .signUpSubmit: return "sign_up_submit"
+      case .watchProject: return "watch_project"
+      }
+    }
+  }
+
   /// Determines which gesture was used.
   public enum GestureType: String {
     case swipe
@@ -243,29 +287,6 @@ public final class KSRAnalytics {
     }
   }
 
-  /**
-   Describes a flow of pledging.
-
-   - changeReward: changing your current reward to a different reward
-   - manageReward: changing the details of the current reward you are backing (e.g. amount, shipping)
-   - newPledge:    pledging to the project without an existing backing
-   */
-  public enum PledgeContext {
-    case fixErroredPledge
-    case changeReward
-    case manageReward
-    case newPledge
-
-    var trackingString: String {
-      switch self {
-      case .fixErroredPledge: return "fix_errored_pledge"
-      case .changeReward: return "change_reward"
-      case .manageReward: return "manage_reward"
-      case .newPledge: return "new_pledge"
-      }
-    }
-  }
-
   public enum ManagePledgeMenuCTAType {
     case cancelPledge
     case changePaymentMethod
@@ -296,6 +317,101 @@ public final class KSRAnalytics {
       case .paymentsPage: return "Payments Page"
       case .projectPage: return "Project Page"
       case .rewardSelection: return "Reward Selection"
+      }
+    }
+  }
+
+  /**
+   A tab or section within a grouping of content.
+
+   - comments: Section of Project overview screen
+   - campaign: Details when user clicks "Read more"
+   - overview: Project overview landing screen
+   - updates: Section of project overview screen.
+   */
+  public enum SectionContext {
+    case campaign
+    case comments
+    case overview
+    case updates
+
+    var trackingString: String {
+      switch self {
+      case .campaign: return "campaign"
+      case .comments: return "comments"
+      case .overview: return "overview"
+      case .updates: return "updates"
+      }
+    }
+  }
+
+  /**
+   Contextual details about an event that was fired that aren't captured in other context properties
+   */
+  public enum TypeContext {
+    case amountGoal
+    case amountPledged
+    case apple
+    case applePay
+    case backed
+    case categoryName
+    case creditCard
+    case facebook
+    case location
+    case percentRaised
+    case pledge(PledgeContext)
+    case projectState
+    case pwl
+    case recommended
+    case searchTerm
+    case social
+    case subcategoryName
+    case subscriptionFalse
+    case subscriptionTrue
+    case tag
+    case unwatch
+    case watch
+    case watched
+
+    public enum PledgeContext {
+      case fixErroredPledge
+      case newPledge
+      case managePledge
+
+      var trackingString: String {
+        switch self {
+        case .fixErroredPledge: return "fix_errored_pledge"
+        case .newPledge: return "new_pledge"
+        case .managePledge: return "manage_pledge"
+        }
+      }
+    }
+
+    var trackingString: String {
+      switch self {
+      case .amountGoal: return "amount_goal"
+      case .amountPledged: return "amount_pledged"
+      case .apple: return "apple"
+      case .applePay: return "apple_pay"
+      case .backed: return "backed"
+      case .categoryName: return "category_name"
+      case .creditCard: return "credit_card"
+      case .facebook: return "facebook"
+      case .location: return "location"
+      case .percentRaised: return "percent_raised"
+      case let .pledge(pledgeContext): return pledgeContext.trackingString
+      case .projectState: return "project_state"
+      case .pwl: return "pwl"
+      case .recommended: return "recommended"
+      case .searchTerm: return "search_term"
+      case .social: return "social"
+      case .subcategoryName: return "subcategory_name"
+      case .subscriptionFalse: return "subscription_false"
+      case .subscriptionTrue: return "subscription_true"
+      case .tag: return "tag"
+      case .unwatch: return "unwatch"
+      case .watch: return "watch"
+      case .watched: return "watched"
       }
     }
   }
@@ -440,7 +556,7 @@ public final class KSRAnalytics {
   // MARK: - Application Lifecycle
 
   public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
-    let properties = contextProperties(pledgeFlowContext: nil, tabBarLabel: tabBarItemLabel)
+    let properties = contextProperties(tabBarLabel: tabBarItemLabel)
 
     self.track(
       event: ApprovedEvent.tabBarClicked.rawValue,
@@ -590,12 +706,11 @@ public final class KSRAnalytics {
   public func trackAddOnsContinueButtonClicked(
     project: Project,
     reward: Reward,
-    context: PledgeContext,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
+      .withAllValuesFrom(contextProperties())
 
     self.track(
       event: ApprovedEvent.addOnsContinueButtonClicked.rawValue,
@@ -608,12 +723,11 @@ public final class KSRAnalytics {
   public func trackAddOnsPageViewed(
     project: Project,
     reward: Reward,
-    context: PledgeContext,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
+      .withAllValuesFrom(contextProperties())
 
     self.track(
       event: ApprovedEvent.addOnsPageViewed.rawValue,
@@ -626,7 +740,7 @@ public final class KSRAnalytics {
   public func trackPledgeCTAButtonClicked(
     stateType: PledgeStateCTAType,
     project: Project,
-    optimizelyProperties: [String: Any] = [:]
+    optimizelyProperties _: [String: Any] = [:]
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
 
@@ -635,14 +749,15 @@ public final class KSRAnalytics {
       self.track(
         event: ApprovedEvent.managePledgeButtonClicked.rawValue,
         location: .projectPage,
-        properties: props.withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
+        properties: props.withAllValuesFrom(contextProperties()) // .fixErroredPledge
       )
     case .pledge:
       let allProps = props
-        .withAllValuesFrom(optimizelyProperties)
+        .withAllValuesFrom(optimizelyProperties() ?? [:])
+        .withAllValuesFrom(contextProperties(ctaContext: .pledgeInitiate))
 
       self.track(
-        event: ApprovedEvent.projectPagePledgeButtonClicked.rawValue,
+        event: NewApprovedEvent.ctaClicked.rawValue,
         location: .projectPage,
         properties: allProps
       )
@@ -650,7 +765,7 @@ public final class KSRAnalytics {
       self.track(
         event: ApprovedEvent.managePledgeButtonClicked.rawValue,
         location: .projectPage,
-        properties: props.withAllValuesFrom(contextProperties(pledgeFlowContext: .manageReward))
+        properties: props.withAllValuesFrom(contextProperties()) // .manageReward
       )
     default:
       return
@@ -659,7 +774,7 @@ public final class KSRAnalytics {
 
   public func trackFixPledgeButtonClicked(project: Project) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
+      .withAllValuesFrom(contextProperties())
 
     self.track(
       event: ApprovedEvent.fixPledgeButtonClicked.rawValue,
@@ -673,22 +788,46 @@ public final class KSRAnalytics {
    parameters:
    - project: the project being pledged to
    - reward: the selected reward
-   - context: the PledgeContext from which the event was triggered
+   - checkoutPropertiesData: the `CheckoutPropertiesData` associated with the given project and reward
    - refTag: the optional RefTag associated with the pledge
    */
 
   public func trackRewardClicked(
     project: Project,
     reward: Reward,
-    context: PledgeContext,
+    checkoutPropertiesData: KSRAnalytics.CheckoutPropertiesData,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
+      .withAllValuesFrom(contextProperties(ctaContext: .rewardContinue))
+      .withAllValuesFrom(checkoutProperties(from: checkoutPropertiesData, and: reward))
 
     self.track(
-      event: ApprovedEvent.selectRewardButtonClicked.rawValue,
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      location: .rewards,
+      properties: props,
+      refTag: refTag?.stringTag
+    )
+  }
+
+  /* Call when the rewards carousel is viewed
+
+   parameters:
+   - project: the project being pledged to
+   - checkoutPropertiesData: the `CheckoutPropertiesData` associated with the given project and reward
+   - refTag: the optional RefTag associated with the pledge
+   */
+
+  public func trackRewardsViewed(
+    project: Project,
+    checkoutPropertiesData: KSRAnalytics.CheckoutPropertiesData,
+    refTag: RefTag?
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(checkoutProperties(from: checkoutPropertiesData))
+
+    self.track(
+      event: NewApprovedEvent.pageViewed.rawValue,
       location: .rewards,
       properties: props,
       refTag: refTag?.stringTag
@@ -709,14 +848,13 @@ public final class KSRAnalytics {
   public func trackCheckoutPaymentPageViewed(
     project: Project,
     reward: Reward,
-    context: KSRAnalytics.PledgeContext,
     refTag: RefTag?,
     cookieRefTag: RefTag?,
     optimizelyProperties: [String: Any] = [:]
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
+      .withAllValuesFrom(contextProperties())
       .withAllValuesFrom(optimizelyProperties)
 
     self.track(
@@ -745,31 +883,12 @@ public final class KSRAnalytics {
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
       // the context is always "newPledge" for this event
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
+      .withAllValuesFrom(contextProperties(ctaContext: .pledgeSubmit, typeContext: .creditCard))
 
     self.track(
-      event: ApprovedEvent.pledgeSubmitButtonClicked.rawValue,
-      location: .pledgeScreen,
-      properties: props,
-      refTag: refTag?.stringTag
-    )
-  }
-
-  public func trackPledgeSubmitButtonClicked(
-    project: Project,
-    reward: Reward,
-    context: KSRAnalytics.PledgeContext,
-    refTag: RefTag?
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
-
-    self.track(
-      event: ApprovedEvent.pledgeSubmitButtonClicked.rawValue,
+      event: NewApprovedEvent.ctaClicked.rawValue,
       location: .pledgeScreen,
       properties: props,
       refTag: refTag?.stringTag
@@ -785,7 +904,6 @@ public final class KSRAnalytics {
    */
 
   public func trackAddNewCardButtonClicked(
-    context: KSRAnalytics.PledgeContext,
     location: KSRAnalytics.PageContext? = nil,
     project: Project,
     refTag: RefTag?,
@@ -793,7 +911,7 @@ public final class KSRAnalytics {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: context))
+      .withAllValuesFrom(contextProperties())
 
     self.track(
       event: ApprovedEvent.addNewCardButtonClicked.rawValue,
@@ -819,14 +937,14 @@ public final class KSRAnalytics {
     var props = projectProperties(from: project)
       .withAllValuesFrom(pledgeProperties(from: reward))
       // the context is always "newPledge" for this event
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: .newPledge))
+      .withAllValuesFrom(contextProperties(page: .thanks, typeContext: TypeContext.pledge(.newPledge)))
 
     if let checkoutData = checkoutData {
       props = props.withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
     }
 
     self.track(
-      event: ApprovedEvent.thanksPageViewed.rawValue,
+      event: NewApprovedEvent.pageViewed.rawValue,
       location: .thanks,
       properties: props
     )
@@ -838,7 +956,8 @@ public final class KSRAnalytics {
    */
   public func trackActivitiesManagePledgeButtonClicked(project: Project) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(pledgeFlowContext: .fixErroredPledge))
+      // the context is always "fixErroredPledge" for this event
+      .withAllValuesFrom(contextProperties())
     self.track(
       event: ApprovedEvent.managePledgeButtonClicked.rawValue,
       location: .activities,
@@ -1043,21 +1162,22 @@ public final class KSRAnalytics {
   /**
    Call when a project page is viewed.
 
-   - parameter project:      The project being viewed.
-   - parameter refTag:       The ref tag used when opening the project.
+   - parameter project: The project being viewed.
+   - parameter refTag: The ref tag used when opening the project.
+   - parameter sectionContext: The context referring to the section of the screen being interacted with.
    - parameter cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
    */
   public func trackProjectViewed(
     _ project: Project,
     refTag: RefTag? = nil,
-    cookieRefTag: RefTag? = nil,
-    optimizelyProperties: [String: Any] = [:]
+    sectionContext: KSRAnalytics.SectionContext,
+    cookieRefTag: RefTag? = nil
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(optimizelyProperties)
+      .withAllValuesFrom(contextProperties(sectionContext: sectionContext))
 
     self.track(
-      event: ApprovedEvent.projectPageViewed.rawValue,
+      event: NewApprovedEvent.pageViewed.rawValue,
       location: .projectPage,
       properties: props,
       refTag: refTag?.stringTag,
@@ -1102,42 +1222,6 @@ public final class KSRAnalytics {
       event: ApprovedEvent.watchProjectButtonClicked.rawValue,
       location: location,
       properties: props
-    )
-  }
-
-  public func trackCampaignDetailsButtonClicked(
-    project: Project,
-    location: PageContext,
-    refTag: RefTag?,
-    cookieRefTag: RefTag? = nil,
-    optimizelyProperties: [String: Any] = [:]
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(optimizelyProperties)
-
-    self.track(
-      event: ApprovedEvent.campaignDetailsButtonClicked.rawValue,
-      location: location,
-      properties: props,
-      refTag: refTag?.stringTag,
-      referrerCredit: cookieRefTag?.stringTag
-    )
-  }
-
-  public func trackCampaignDetailsPledgeButtonClicked(project: Project,
-                                                      location: PageContext,
-                                                      refTag: RefTag?,
-                                                      cookieRefTag: RefTag? = nil,
-                                                      optimizelyProperties: [String: Any] = [:]) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(optimizelyProperties)
-
-    self.track(
-      event: ApprovedEvent.campaignDetailsPledgeButtonClicked.rawValue,
-      location: location,
-      properties: props,
-      refTag: refTag?.stringTag,
-      referrerCredit: cookieRefTag?.stringTag
     )
   }
 
@@ -1291,6 +1375,7 @@ private func projectProperties(
   props["creator_uid"] = project.creator.id
   props["deadline"] = project.dates.deadline
   props["goal"] = project.stats.goal
+  props["has_add_ons"] = project.hasAddOns
   props["launched_at"] = project.dates.launchedAt
   props["location"] = project.location.name
   props["name"] = project.name
@@ -1370,7 +1455,7 @@ private func pledgeProperties(from reward: Reward, prefix: String = "pledge_back
 
 // MARK: - Checkout Properties
 
-private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, and reward: Reward,
+private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, and reward: Reward? = nil,
                                 prefix: String = "checkout_")
   -> [String: Any] {
   var result: [String: Any] = [:]
@@ -1386,11 +1471,11 @@ private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, 
   result["payment_type"] = data.paymentType
   result["reward_estimated_delivery_on"] = data.estimatedDelivery
   result["reward_id"] = data.rewardId
-  result["reward_is_limited_quantity"] = reward.isLimitedQuantity
-  result["reward_is_limited_time"] = reward.isLimitedTime
+  result["reward_is_limited_quantity"] = reward?.isLimitedQuantity
+  result["reward_is_limited_time"] = reward?.isLimitedTime
   result["reward_minimum_usd"] = data.rewardMinimumUsd
   result["reward_shipping_enabled"] = data.shippingEnabled
-  result["reward_shipping_preference"] = reward.shipping.preference?.trackingString
+  result["reward_shipping_preference"] = reward?.shipping.preference?.trackingString
   result["reward_title"] = data.rewardTitle
   result["shipping_amount"] = data.shippingAmount
   result["shipping_amount_usd"] = data.shippingAmountUsd
@@ -1440,17 +1525,21 @@ private func properties(category: KsApi.Category, prefix: String = "category_") 
 // MARK: - Context Properties
 
 private func contextProperties(
-  pledgeFlowContext: KSRAnalytics.PledgeContext? = nil,
+  ctaContext: KSRAnalytics.CTAContext? = nil,
   tabBarLabel: KSRAnalytics.TabBarItemLabel? = nil,
   page: KSRAnalytics.PageContext? = nil,
+  sectionContext: KSRAnalytics.SectionContext? = nil,
+  typeContext: KSRAnalytics.TypeContext? = nil,
   prefix: String = "context_"
 ) -> [String: Any] {
   var result: [String: Any] = [:]
 
+  result["cta"] = ctaContext?.trackingString
   result["page"] = page?.rawValue
-  result["pledge_flow"] = pledgeFlowContext?.trackingString
+  result["section"] = sectionContext?.trackingString
   result["timestamp"] = AppEnvironment.current.dateType.init().timeIntervalSince1970
   result["tab_bar_label"] = tabBarLabel?.trackingString
+  result["type"] = typeContext?.trackingString
 
   return result.prefixedKeys(prefix)
 }
@@ -1514,8 +1603,13 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
 private func userProperties(for user: User?, config: Config?, _ prefix: String = "user_") -> [String: Any] {
   var props: [String: Any] = [:]
 
+  props["backed_projects_count"] = user?.stats.backedProjectsCount
   props["country"] = user?.location?.country ?? config?.countryCode
+  props["created_projects_count"] = user?.stats.createdProjectsCount
+  props["is_admin"] = user?.isAdmin
+  props["launched_projects_count"] = user?.stats.memberProjectsCount
   props["uid"] = user?.id
+  props["watched_projects_count"] = user?.stats.starredProjectsCount
 
   return props.prefixedKeys(prefix)
 }
