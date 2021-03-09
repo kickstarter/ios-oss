@@ -475,7 +475,7 @@ func calculatePledgeTotal(
  An helper func that calculates  pledge total for all rewards
 
  - parameter addOnRewards: The `Project` associated with a group of Rewards.
- - parameter selectedQuantities: The shipping cost for the pledge.
+ - parameter selectedQuantities: A dictionary that aggregates the quantity of selected add-ons.
 
  - returns: A `Double` of all rewards add-ons total.
  */

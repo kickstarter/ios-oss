@@ -452,9 +452,6 @@ final class SharedFunctionsTests: TestCase {
 
   func testGetShipping_ShippingDisabled() {
     let reward = Reward.template
-      |> Reward.lens.limit .~ 5
-      |> Reward.lens.remaining .~ 0
-      |> Reward.lens.endsAt .~ (MockDate().timeIntervalSince1970 + 60)
       |> Reward.lens.hasAddOns .~ true
       |> Reward.lens.shipping.enabled .~ false
 
@@ -479,8 +476,10 @@ final class SharedFunctionsTests: TestCase {
       |> Reward.lens.id .~ 99
     let addOn1 = Reward.template
       |> Reward.lens.id .~ 5
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
     let addOn2 = Reward.template
       |> Reward.lens.id .~ 10
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
 
     let shippingRule = ShippingRule.template
 
@@ -492,23 +491,27 @@ final class SharedFunctionsTests: TestCase {
 
     let shippingTotal = calculateShippingTotal(
       shippingRule: shippingRule,
-      addOnRewards: [reward],
+      addOnRewards: [addOn1, addOn2],
       quantities: quantities
     )
 
-    XCTAssertEqual(5.0, shippingTotal)
+    XCTAssertEqual(15.0, shippingTotal)
   }
 
   func testGetCalculated_ShippingDisabled_Total() {
     let reward = Reward.template
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ false)
       |> Reward.lens.id .~ 99
+    let addOn1 = Reward.template
+      |> Reward.lens.id .~ 5
+    let addOn2 = Reward.template
+      |> Reward.lens.id .~ 10
 
     let shippingRule = ShippingRule.template
 
     let shippingTotal = calculateShippingTotal(
       shippingRule: shippingRule,
-      addOnRewards: [reward],
+      addOnRewards: [addOn1, addOn2],
       quantities: [:]
     )
 
@@ -539,10 +542,10 @@ final class SharedFunctionsTests: TestCase {
     ]
 
     let rewardsTotal = calculateAllRewardsTotal(
-      addOnRewards: [reward],
+      addOnRewards: [addOn1, addOn2],
       selectedQuantities: quantities
     )
 
-    XCTAssertEqual(10.0, rewardsTotal)
+    XCTAssertEqual(30.0, rewardsTotal)
   }
 }
