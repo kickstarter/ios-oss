@@ -640,13 +640,7 @@ final class KSRAnalyticsTests: TestCase {
     let project = Project.cosmicSurgery
     let reward = Reward.template
 
-    ksrAnalytics
-      .trackAddOnsContinueButtonClicked(
-        project: project,
-        reward: reward,
-        checkoutData: .template,
-        refTag: .recommended
-      )
+    ksrAnalytics.trackAddOnsPageViewed(project: project, reward: reward, refTag: .recommended)
 
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
@@ -673,13 +667,7 @@ final class KSRAnalyticsTests: TestCase {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5.0
 
-    ksrAnalytics
-      .trackAddOnsContinueButtonClicked(
-        project: project,
-        reward: reward,
-        checkoutData: .template,
-        refTag: nil
-      )
+    ksrAnalytics.trackAddOnsPageViewed(project: project, reward: reward, refTag: nil)
 
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
@@ -1377,7 +1365,7 @@ final class KSRAnalyticsTests: TestCase {
         checkoutData: .template,
         refTag: nil
       )
-    
+
     XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
 
@@ -1386,13 +1374,13 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertEqual("add_ons_continue", dataLakeClientProps?["context_cta"] as? String)
     XCTAssertEqual("add_ons_continue", segmentClientProps?["context_cta"] as? String)
-    
+
     XCTAssertEqual("add_ons", dataLakeClientProps?["context_page"] as? String)
     XCTAssertEqual("add_ons", segmentClientProps?["context_page"] as? String)
-    
+
     self.assertProjectProperties(dataLakeClientProps)
     self.assertProjectProperties(segmentClientProps)
-    
+
     self.assertCheckoutProperties(dataLakeClientProps)
     self.assertCheckoutProperties(segmentClientProps)
   }
