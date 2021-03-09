@@ -371,7 +371,6 @@
 "Notifications" = "Notifications";
 "Once_you_back_a_project_well_share" = "Once you back a project, we’ll share personalized recommendations in this space.";
 "Only_amount_of_time_left_to_watch_this" = "Only %{amount_of_time} left to watch this.";
-"Open_inbox" = "Open inbox";
 "Opens_comments" = "Opens comments.";
 "Opens_creator_profile" = "Opens creator profile.";
 "Opens_email_composer" = "Opens email composer.";
@@ -703,7 +702,6 @@
 "Youre_a_backer" = "You’re a backer!";
 "Youre_a_backer_no_punctuation" = "You're a backer";
 "Youre_about_to_create_a_new_Kickstarter_account" = "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.";
-"Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email" = "You’re about to create a new Kickstarter account with the email address you use for Facebook. Please edit or confirm that it’s the address you want for your Kickstarter account.";
 "Youre_all_set" = "You’re all set";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "You're connected via Facebook (%{email}). Create a password for this account to edit your Kickstarter credentials.";
 "Youre_offline" = "You’re offline. Once your device reconnects, navigate around the app to refresh.";

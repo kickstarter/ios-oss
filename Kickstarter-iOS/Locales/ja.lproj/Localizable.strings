@@ -98,17 +98,23 @@
 "Collections" = "コレクション";
 "Comment_reply_digest" = "コメント返信のダイジェスト";
 "Complete_payment" = "支払いを完了";
-"Confirm" = "確定する";
+"Confirm" = "確認";
 "Confirm_password" = "新しいパスワードの確認";
 "Connect_with_Facebook_to_follow_friends_and_get_notified" = "Facebookとリンクさせ、友達がプロジェクトを作成したりバックしたりした際に通知を受け取る";
 "Contact_backer" = "バッカーに連絡する";
 "Contact_creator" = "クリエイターに連絡";
 "Content_isnt_loading_right_now" = "現在、コンテンツを読み込めません。";
 "Content_isnt_loading_right_now_Please_tap_to_retry" = "コンテンツが読み込めません。\nタップして再試行してください。";
-"Continue" = "次へ";
+"Continue" = "続行する";
 "Continue_to_payment" = "支払いを続ける";
-"Continue_to_update_pledge" = "プレッジの更新へ";
+"Continue_to_update_pledge" = "プレッジをアップデート";
 "Continue_with_Facebook" = "Facebook で続行する";
+"Continue_with_quantity_add_ons.few" = "%{quantity} 個のアドオンで続行する";
+"Continue_with_quantity_add_ons.many" = "%{quantity} 個のアドオンで続行する";
+"Continue_with_quantity_add_ons.one" = "%{quantity} 個のアドオンで続行する";
+"Continue_with_quantity_add_ons.other" = "%{quantity} 個のアドオンで続行する";
+"Continue_with_quantity_add_ons.two" = "%{quantity} 個のアドオンで続行する";
+"Continue_with_quantity_add_ons.zero" = "%{quantity} 個のアドオンで続行する";
 "Continue_with_quantity_count_add_ons.few" = "%{quantity_count} 個のアドオンで続行する";
 "Continue_with_quantity_count_add_ons.many" = "%{quantity_count} 個のアドオンで続行する";
 "Continue_with_quantity_count_add_ons.one" = "%{quantity_count} 個のアドオンで続行する";
@@ -116,6 +122,7 @@
 "Continue_with_quantity_count_add_ons.two" = "%{quantity_count} 個のアドオンで続行する";
 "Continue_with_quantity_count_add_ons.zero" = "%{quantity_count} 個のアドオンで続行する";
 "Continue_with_this_reward" = "このリワードで続けますか？";
+"Continue_with_this_reward_It_doesnt_offer_these_add_ons" = "このリワードで続行しますか？このリワードでは以下のアドオン (追加リワード) は提供されません：";
 "Couldnt_add_attachment" = "添付ファイルを追加できませんでした";
 "Couldnt_open_live_stream_Try_again_later" = "ライブ配信を開けませんでした。後ほどお試しください。";
 "Couldnt_remove_attachment" = "添付ファイルを削除できませんでした";
@@ -143,7 +150,7 @@
 "Currency_MXN" = "$ メキシコペソ (MXN)";
 "Currency_NOK" = "kr ノルウェークローネ (NOK)";
 "Currency_NZD" = "$ ニュージーランドドル (NZD)";
-"Currency_PLN" = "zł ポーランド通貨ズウォティ(PLN)";
+"Currency_PLN" = "zł Polish Złoty (PLN)";
 "Currency_SEK" = "kr スウェーデンクローナ (SEK)";
 "Currency_SGD" = "$ シンガポールドル (SGD)";
 "Currency_USD" = "$ 米ドル (USD)";
@@ -371,7 +378,6 @@
 "Notifications" = "通知";
 "Once_you_back_a_project_well_share" = "プロジェクトをバックするとこのスペースにあなたへのオススメを表示します";
 "Only_amount_of_time_left_to_watch_this" = "あと%{amount_of_time} のみ視聴可能";
-"Open_inbox" = "受信箱を開く";
 "Opens_comments" = "コメントをみる";
 "Opens_creator_profile" = "クリエイタープロフィールをみる";
 "Opens_email_composer" = "メールの送受信者をみる";
@@ -620,7 +626,7 @@
 "Upcoming_live_stream" = "ライブ配信が開始します";
 "Upcoming_live_streams" = "ライブ配信が開始します";
 "Upcoming_with_creator_name" = "<br/><b>%{creator_name}</b>が近日配信";
-"Update_pledge" = "プレッジを更新する";
+"Update_pledge" = "プレッジをアップデートする";
 "Use_the_hashtag_hashtag_backeditbecause_to_share_what_projects_youre_supporting_and_why_theyre_important_to_you" = "ハッシュタグ #backeditbecause を使って、あなたがサポートするプロジェクトをシェアし、そのプロジェクトがなぜあなたにとって重要なのか、その理由を伝えましょう。 ";
 "Use_this_to_keep_track_of_which_rewards_youve_received" = "受け取ったリワードを確認するにはこちらをご利用ください。";
 "Verification_email_sent" = "認証メールを送信しました。メール内のリンクをクリックすればメールアドレスが認証済みとなります。";
@@ -703,7 +709,6 @@
 "Youre_a_backer" = "バッカーになりました！";
 "Youre_a_backer_no_punctuation" = "バック中";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Facebookのメールアドレスで新しいアカウントを作成しようとしています。再度確認してください。";
-"Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email" = "Facebook に登録されているメールアドレスで新しい Kickstarter アカウントを作成しようとしています。編集するか、これが Kickstarter アカウントに登録したいメールアドレスであることを確定してください。";
 "Youre_all_set" = "完了です";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Facebook (%{email}) を通して接続されています。Kickstarter の認識情報を編集するには、このアカウント用にパスワードを作成してください。";
 "Youre_offline" = "現在オフライン中です。デバイスが再接続し次第、アプリをリフレッシュしてください。";
@@ -1479,7 +1484,7 @@
 "project.backer_title" = "バッカーになりました！";
 "project.checkout.android_pay.backer_101" = "<b>質問がありますか？</b><u>backer 101</u>をお読みください。";
 "project.checkout.android_pay.change" = "変更";
-"project.checkout.android_pay.confirm" = "確定する";
+"project.checkout.android_pay.confirm" = "確認";
 "project.checkout.android_pay.error.message" = "申し訳ございませんが、Android Payでの処理ができませんでした。もう一度お試しください。";
 "project.checkout.android_pay.error.title" = "Androidpayエラー";
 "project.checkout.android_pay.payment_method" = "支払方法";

@@ -109,6 +109,12 @@
 "Continue_to_payment" = "Continuar a pago";
 "Continue_to_update_pledge" = "Continuar a Actualizar contribución";
 "Continue_with_Facebook" = "Continuar con Facebook";
+"Continue_with_quantity_add_ons.few" = "Continuar con %{quantity} complementos";
+"Continue_with_quantity_add_ons.many" = "Continuar con %{quantity} complementos";
+"Continue_with_quantity_add_ons.one" = "Continuar con %{quantity} complemento";
+"Continue_with_quantity_add_ons.other" = "Continuar con %{quantity} complementos";
+"Continue_with_quantity_add_ons.two" = "Continuar con %{quantity} complementos";
+"Continue_with_quantity_add_ons.zero" = "Continuar con %{quantity} complementos";
 "Continue_with_quantity_count_add_ons.few" = "Continuar con %{quantity_count} complementos";
 "Continue_with_quantity_count_add_ons.many" = "Continuar con %{quantity_count} complementos";
 "Continue_with_quantity_count_add_ons.one" = "Continuar con %{quantity_count} complemento";
@@ -116,6 +122,7 @@
 "Continue_with_quantity_count_add_ons.two" = "Continuar con %{quantity_count} complementos";
 "Continue_with_quantity_count_add_ons.zero" = "Continuar con %{quantity_count} complementos";
 "Continue_with_this_reward" = "¿Continuar con esta recompensa?";
+"Continue_with_this_reward_It_doesnt_offer_these_add_ons" = "¿Continuar con esta recompensa? No ofrece estos complementos:";
 "Couldnt_add_attachment" = "No se pudo añadir el anexo";
 "Couldnt_open_live_stream_Try_again_later" = "No se pudo abrir este live stream, por favor inténtalo de nuevo más tarde.";
 "Couldnt_remove_attachment" = "No se pudo remover el anexo";
@@ -143,7 +150,7 @@
 "Currency_MXN" = "$ Peso mexicano (MXN)";
 "Currency_NOK" = "kr Corona noruega (NOK)";
 "Currency_NZD" = "$ Dólar de Nueva Zelanda (NZD)";
-"Currency_PLN" = "Złoty polaco - zł (PLN)";
+"Currency_PLN" = "zł Polish Złoty (PLN)";
 "Currency_SEK" = "kr Corona sueca (SEK)";
 "Currency_SGD" = "$ Dólar de Singapur (SGD)";
 "Currency_USD" = "$ Dólar estadounidense (USD)";
@@ -371,7 +378,6 @@
 "Notifications" = "Notificaciones";
 "Once_you_back_a_project_well_share" = "Tu patrocinio de un proyecto nos ayuda a hacerte recomendaciones personalizadas.";
 "Only_amount_of_time_left_to_watch_this" = "Queda poco tiempo para verlo (%{amount_of_time}).";
-"Open_inbox" = "Abrir la bandeja de entrada";
 "Opens_comments" = "Abre comentarios.";
 "Opens_creator_profile" = "Abre el perfil del creador.";
 "Opens_email_composer" = "Abre plantilla de correo.";
@@ -703,7 +709,6 @@
 "Youre_a_backer" = "¡Eres un patrocinador!";
 "Youre_a_backer_no_punctuation" = "Eres patrocinador";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Estás a punto de crear una nueva cuenta de Kickstarter usando el correo electrónico associado a tu cuenta de Facebook. Por favor confírmalo antes de proceder.";
-"Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email" = "Estás a punto de crear una nueva cuenta de Kickstarter con el correo electrónico asociado a tu cuenta de Facebook. Por favor, confirma que quieres usar este correo o cámbialo.";
 "Youre_all_set" = "Ya está todo listo";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Estás conectado a través de Facebook (%{email}). Crea una contraseña para esta cuenta para editar tus credenciales de Kickstarter.";
 "Youre_offline" = "Estás desconectado. Cuando tu dispositivo se vuelva a conectar, ve a la aplicación para actualizarla.";
