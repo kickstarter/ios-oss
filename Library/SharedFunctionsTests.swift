@@ -419,12 +419,10 @@ final class SharedFunctionsTests: TestCase {
           |> Backing.lens.rewardId .~ reward.id
       )
 
-    let shippingRule = ShippingRule.template
-
     let shippingTotal = getBaseRewardShippingTotal(
       project: project,
       baseReward: reward,
-      shippingRule: shippingRule
+      shippingRule: ShippingRule.template
     )
 
     XCTAssertEqual(2.0, shippingTotal)
@@ -439,12 +437,10 @@ final class SharedFunctionsTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ [reward]
 
-    let shippingRule = ShippingRule.template
-
     let shippingTotal = getBaseRewardShippingTotal(
       project: project,
       baseReward: reward,
-      shippingRule: shippingRule
+      shippingRule: ShippingRule.template
     )
 
     XCTAssertEqual(5.0, shippingTotal)
@@ -459,12 +455,10 @@ final class SharedFunctionsTests: TestCase {
       |> Project.lens.rewardData.rewards .~ [reward]
       |> Project.lens.rewardData.addOns .~ [reward]
 
-    let shippingRule = ShippingRule.template
-
     let shippingTotal = getBaseRewardShippingTotal(
       project: project,
       baseReward: reward,
-      shippingRule: shippingRule
+      shippingRule: ShippingRule.template
     )
 
     XCTAssertEqual(0.0, shippingTotal)
@@ -481,8 +475,6 @@ final class SharedFunctionsTests: TestCase {
       |> Reward.lens.id .~ 10
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
 
-    let shippingRule = ShippingRule.template
-
     let quantities: SelectedRewardQuantities = [
       reward.id: 1,
       addOn1.id: 2,
@@ -490,7 +482,7 @@ final class SharedFunctionsTests: TestCase {
     ]
 
     let shippingTotal = calculateShippingTotal(
-      shippingRule: shippingRule,
+      shippingRule: ShippingRule.template,
       addOnRewards: [addOn1, addOn2],
       quantities: quantities
     )
@@ -507,8 +499,6 @@ final class SharedFunctionsTests: TestCase {
     let addOn2 = Reward.template
       |> Reward.lens.id .~ 10
 
-    let shippingRule = ShippingRule.template
-
     let quantities: SelectedRewardQuantities = [
       reward.id: 1,
       addOn1.id: 2,
@@ -516,7 +506,7 @@ final class SharedFunctionsTests: TestCase {
     ]
 
     let shippingTotal = calculateShippingTotal(
-      shippingRule: shippingRule,
+      shippingRule: ShippingRule.template,
       addOnRewards: [reward, addOn1, addOn2],
       quantities: quantities
     )
@@ -545,8 +535,6 @@ final class SharedFunctionsTests: TestCase {
           |> Backing.lens.bonusAmount .~ 700.0
       )
 
-    let shippingRule = ShippingRule.template
-
     let quantities: SelectedRewardQuantities = [
       reward.id: 1,
       addOn1.id: 2,
@@ -558,7 +546,7 @@ final class SharedFunctionsTests: TestCase {
     let pledgeAmount = project.personalization.backing?.bonusAmount ?? 0.0
 
     let shippingTotal = calculateShippingTotal(
-      shippingRule: shippingRule,
+      shippingRule: ShippingRule.template,
       addOnRewards: addOnRewards,
       quantities: quantities
     )
@@ -588,8 +576,6 @@ final class SharedFunctionsTests: TestCase {
       |> Reward.lens.id .~ 10
       |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
 
-    let shippingRule = ShippingRule.template
-
     let quantities: SelectedRewardQuantities = [
       reward.id: 1,
       addOn1.id: 2,
@@ -599,7 +585,7 @@ final class SharedFunctionsTests: TestCase {
     let addOnRewards = [addOn1, addOn2]
 
     let shippingTotal = calculateShippingTotal(
-      shippingRule: shippingRule,
+      shippingRule: ShippingRule.template,
       addOnRewards: addOnRewards,
       quantities: quantities
     )
@@ -610,12 +596,12 @@ final class SharedFunctionsTests: TestCase {
     )
 
     let pledgeTotal = calculatePledgeTotal(
-      pledgeAmount: 0.0,
+      pledgeAmount: 10,
       shippingCost: shippingTotal,
       addOnRewardsTotal: allRewardsTotal
     )
 
-    XCTAssertEqual(45.0, pledgeTotal)
+    XCTAssertEqual(55.0, pledgeTotal)
   }
 
   func testGetCalculated_AllRewards_Total() {
