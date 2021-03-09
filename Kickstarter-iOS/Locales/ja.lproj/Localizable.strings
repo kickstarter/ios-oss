@@ -709,6 +709,7 @@
 "Youre_a_backer" = "バッカーになりました！";
 "Youre_a_backer_no_punctuation" = "バック中";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Facebookのメールアドレスで新しいアカウントを作成しようとしています。再度確認してください。";
+"Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email" = "Facebook に登録されているメールアドレスで新しい Kickstarter アカウントを作成しようとしています。編集するか、これが Kickstarter アカウントに登録したいメールアドレスであることを確定してください。";
 "Youre_all_set" = "完了です";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Facebook (%{email}) を通して接続されています。Kickstarter の認識情報を編集するには、このアカウント用にパスワードを作成してください。";
 "Youre_offline" = "現在オフライン中です。デバイスが再接続し次第、アプリをリフレッシュしてください。";

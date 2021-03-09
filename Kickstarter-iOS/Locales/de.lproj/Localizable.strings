@@ -709,6 +709,7 @@
 "Youre_a_backer" = "Du unterstützt das Projekt!";
 "Youre_a_backer_no_punctuation" = "Du bist ein Unterstützer";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte bestätige diesen Vorgang.";
+"Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email" = "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte ändere oder bestätige die Adresse, die du mit deinem Kickstarter-Konto verbinden möchtest.";
 "Youre_all_set" = "Alles klar";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Du bist via Facebook (%{email}) verbunden. Erstelle ein Passwort für dieses Konto, um deine Anmeldedaten für Kickstarter zu ändern.";
 "Youre_offline" = "Du bist Offline. Sobald du wieder Online bist, navigiere in der App, um sie zu aktualisieren.";

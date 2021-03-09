@@ -709,6 +709,7 @@
 "Youre_a_backer" = "Vous êtes contributeur !";
 "Youre_a_backer_no_punctuation" = "Vous êtes contributeur";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail que vous utilisez sur Facebook. Veuillez confirmer avant de continuer.";
+"Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email" = "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail associée à votre compte Facebook. Veuillez confirmer qu'il s'agit bien de l'adresse que vous souhaitez utiliser, ou la modifier si besoin.";
 "Youre_all_set" = "C'est tout bon";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Vous êtes connecté par Facebook (%{email}). Si vous souhaitez modifier vos identifiants Kickstarter, veuillez définir le mot de passe de ce compte.";
 "Youre_offline" = "Vous êtes hors ligne. Dès que votre appareil se sera reconnecté, naviguez dans l'application pour la rafraîchir.";

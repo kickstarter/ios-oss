@@ -11465,6 +11465,23 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "You’re about to create a new Kickstarter account with the email address you use for Facebook. Please edit or confirm that it’s the address you want for your Kickstarter account."
+
+   - **en**: "You’re about to create a new Kickstarter account with the email address you use for Facebook. Please edit or confirm that it’s the address you want for your Kickstarter account."
+   - **de**: "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte ändere oder bestätige die Adresse, die du mit deinem Kickstarter-Konto verbinden möchtest."
+   - **es**: "Estás a punto de crear una nueva cuenta de Kickstarter con el correo electrónico asociado a tu cuenta de Facebook. Por favor, confirma que quieres usar este correo o cámbialo."
+   - **fr**: "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail associée à votre compte Facebook. Veuillez confirmer qu'il s'agit bien de l'adresse que vous souhaitez utiliser, ou la modifier si besoin."
+   - **ja**: "Facebook に登録されているメールアドレスで新しい Kickstarter アカウントを作成しようとしています。編集するか、これが Kickstarter アカウントに登録したいメールアドレスであることを確定してください。"
+  */
+  public static func Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email() -> String {
+    return localizedString(
+      key: "Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email",
+      defaultValue: "You’re about to create a new Kickstarter account with the email address you use for Facebook. Please edit or confirm that it’s the address you want for your Kickstarter account.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "You’re all set"
 
    - **en**: "You’re all set"
