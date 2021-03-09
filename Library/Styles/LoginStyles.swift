@@ -83,7 +83,8 @@ public let forgotPasswordButtonStyle =
 public let loginControllerStyle = UIViewController.lens.title %~ { _ in Strings.login_navbar_title() }
 
 public let loginWithEmailButtonStyle = greyButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in_email() }
+  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in()
+  }
 
 public let newsletterSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_create_700
 
