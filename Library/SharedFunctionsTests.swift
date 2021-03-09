@@ -509,21 +509,113 @@ final class SharedFunctionsTests: TestCase {
 
     let shippingRule = ShippingRule.template
 
+    let quantities: SelectedRewardQuantities = [
+      reward.id: 1,
+      addOn1.id: 2,
+      addOn2.id: 1
+    ]
+
     let shippingTotal = calculateShippingTotal(
       shippingRule: shippingRule,
-      addOnRewards: [addOn1, addOn2],
-      quantities: [:]
+      addOnRewards: [reward, addOn1, addOn2],
+      quantities: quantities
     )
 
     XCTAssertEqual(0.0, shippingTotal)
   }
 
-  func testCalculated_Pledge_Total() {
-    let pledgeTotal = calculatePledgeTotal(
-      pledgeAmount: 20.0, shippingCost: 5.0, addOnRewardsTotal: 50
+  func testCalculated_Pledge_Total_Backing() {
+    let reward = Reward.template
+      |> Reward.lens.hasAddOns .~ true
+      |> Reward.lens.shipping.enabled .~ true
+    let addOn1 = Reward.template
+      |> Reward.lens.id .~ 5
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
+    let addOn2 = Reward.template
+      |> Reward.lens.id .~ 10
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
+
+    let project = Project.template
+      |> Project.lens.personalization.backing .~ (
+        .template
+          |> Backing.lens.reward .~ reward
+          |> Backing.lens.rewardId .~ reward.id
+          |> Backing.lens.shippingAmount .~ 10
+          |> Backing.lens.amount .~ 700.0
+          |> Backing.lens.bonusAmount .~ 700.0
+      )
+
+    let shippingRule = ShippingRule.template
+
+    let quantities: SelectedRewardQuantities = [
+      reward.id: 1,
+      addOn1.id: 2,
+      addOn2.id: 1
+    ]
+
+    let addOnRewards = [addOn1, addOn2]
+
+    let pledgeAmount = project.personalization.backing?.bonusAmount ?? 0.0
+
+    let shippingTotal = calculateShippingTotal(
+      shippingRule: shippingRule,
+      addOnRewards: addOnRewards,
+      quantities: quantities
     )
 
-    XCTAssertEqual(75.0, pledgeTotal)
+    let allRewardsTotal = calculateAllRewardsTotal(
+      addOnRewards: addOnRewards,
+      selectedQuantities: quantities
+    )
+
+    let pledgeTotal = calculatePledgeTotal(
+      pledgeAmount: pledgeAmount,
+      shippingCost: shippingTotal,
+      addOnRewardsTotal: allRewardsTotal
+    )
+
+    XCTAssertEqual(745.0, pledgeTotal)
+  }
+
+  func testCalculated_Pledge_Total_NotBacking() {
+    let reward = Reward.template
+      |> Reward.lens.hasAddOns .~ true
+      |> Reward.lens.shipping.enabled .~ true
+    let addOn1 = Reward.template
+      |> Reward.lens.id .~ 5
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
+    let addOn2 = Reward.template
+      |> Reward.lens.id .~ 10
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
+
+    let shippingRule = ShippingRule.template
+
+    let quantities: SelectedRewardQuantities = [
+      reward.id: 1,
+      addOn1.id: 2,
+      addOn2.id: 1
+    ]
+
+    let addOnRewards = [addOn1, addOn2]
+
+    let shippingTotal = calculateShippingTotal(
+      shippingRule: shippingRule,
+      addOnRewards: addOnRewards,
+      quantities: quantities
+    )
+
+    let allRewardsTotal = calculateAllRewardsTotal(
+      addOnRewards: addOnRewards,
+      selectedQuantities: quantities
+    )
+
+    let pledgeTotal = calculatePledgeTotal(
+      pledgeAmount: 0.0,
+      shippingCost: shippingTotal,
+      addOnRewardsTotal: allRewardsTotal
+    )
+
+    XCTAssertEqual(45.0, pledgeTotal)
   }
 
   func testGetCalculated_AllRewards_Total() {

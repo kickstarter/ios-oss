@@ -276,7 +276,6 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       configData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
       project.map { $0.personalization.backing }.skipNil().map(\.bonusAmount)
     )
-    .take(first: 1)
 
     let allRewardsTotal = Signal.combineLatest(
       selectedRewards,
