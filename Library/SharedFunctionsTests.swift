@@ -405,7 +405,7 @@ final class SharedFunctionsTests: TestCase {
     )
   }
 
-  func testGetShipping_ShippingEnabled() {
+  func testGetShipping_ShippingEnabled_Backing() {
     let reward = Reward.template
       |> Reward.lens.hasAddOns .~ true
       |> Reward.lens.shipping.enabled .~ true
