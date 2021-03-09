@@ -407,13 +407,19 @@ public func rounded(_ value: Double, places: Int) -> Double {
  - returns: A `Double` of the shipping value. If the `Project` `Backing` object is nil,
             and `baseReward` shipping is not enabled, the value is `0.0`
  */
-public func getBaseRewardShippingTotal(project: Project, baseReward: Reward,
-                                       shippingRule: ShippingRule?) -> Double {
-  if baseReward.shipping.enabled, project.personalization.backing == nil {
-    return baseReward.shippingRule(matching: shippingRule)?.cost ?? 0.0
-  }
-  guard baseReward.shipping.enabled, let backing = project.personalization.backing else { return 0.0 }
-  return backing.shippingAmount.flatMap(Double.init) ?? 0.0
+public func getBaseRewardShippingTotal(
+  project: Project,
+  baseReward: Reward,
+  shippingRule: ShippingRule?
+) -> Double {
+  // If digital, there is no shipping
+  guard baseReward.shipping.enabled else { return 0.0 }
+  let backing = project.personalization.backing
+
+  // If there is no `Backing` (new pledge), return the rewards shipping rule
+  return backing.isNil ?
+    baseReward.shippingRule(matching: shippingRule)?.cost ?? 0.0 :
+    backing?.shippingAmount.flatMap(Double.init) ?? 0.0
 }
 
 /**
