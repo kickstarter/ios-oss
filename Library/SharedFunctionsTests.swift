@@ -507,7 +507,7 @@ final class SharedFunctionsTests: TestCase {
 
     let shippingTotal = calculateShippingTotal(
       shippingRule: ShippingRule.template,
-      addOnRewards: [reward, addOn1, addOn2],
+      addOnRewards: [addOn1, addOn2],
       quantities: quantities
     )
 
