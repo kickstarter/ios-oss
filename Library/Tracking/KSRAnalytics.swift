@@ -27,7 +27,6 @@ public final class KSRAnalytics {
     case addNewCardButtonClicked = "Add New Card Button Clicked"
     case addOnsContinueButtonClicked = "Add-Ons Continue Button Clicked"
     case addOnsPageViewed = "Add-Ons Page Viewed"
-    case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
     case collectionViewed = "Collection Viewed"
     case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
     case editorialCardClicked = "Editorial Card Clicked"
@@ -70,6 +69,7 @@ public final class KSRAnalytics {
     case activities = "activity_feed" // ActivitiesViewController
     case addOnsSelection = "add_ons" // RewardAddOnSelectionViewController
     case campaign // ProjectDescriptionViewController
+    case checkout // // PledgeViewController
     case discovery = "discover" // DiscoveryViewController
     case editorialProjects = "editorial_collection" // EditorialProjectsViewController
     case emailVerification = "email_verification" // EmailVerificationViewController
@@ -849,18 +849,20 @@ public final class KSRAnalytics {
   public func trackCheckoutPaymentPageViewed(
     project: Project,
     reward: Reward,
+    checkoutData: CheckoutPropertiesData?,
     refTag: RefTag?,
-    cookieRefTag: RefTag?,
-    optimizelyProperties: [String: Any] = [:]
+    cookieRefTag: RefTag?
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties())
-      .withAllValuesFrom(optimizelyProperties)
+    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(page: .checkout))
+
+    if let checkoutData = checkoutData {
+      props = props.withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
+    }
 
     self.track(
-      event: ApprovedEvent.checkoutPaymentPageViewed.rawValue,
-      location: .pledgeScreen,
+      event: NewApprovedEvent.pageViewed.rawValue,
+      location: .checkout,
       properties: props,
       refTag: refTag?.stringTag,
       referrerCredit: cookieRefTag?.stringTag
