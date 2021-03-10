@@ -256,18 +256,79 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
     .map(PledgeViewData.init)
     .takeWhen(self.continueButtonTappedProperty.signal)
 
+    let shippingTotal = Signal.combineLatest(
+      shippingRule.skipNil(),
+      allRewards,
+      selectedQuantities
+    )
+    .map(calculateShippingTotal)
+
+    let baseRewardShippingTotal = Signal.zip(project, baseReward, shippingRule)
+      .map(getBaseRewardShippingTotal)
+
+    let allRewardsShippingTotal = Signal.merge(
+      baseRewardShippingTotal,
+      shippingTotal
+    )
+
+    // Addtional pledge amount is zero if not backed.
+    let additionalPledgeAmount = Signal.merge(
+      configData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
+      project.map { $0.personalization.backing }.skipNil().map(\.bonusAmount)
+    )
+
+    let allRewardsTotal = Signal.combineLatest(
+      selectedRewards,
+      selectedQuantities
+    )
+    .map(calculateAllRewardsTotal)
+
+    let combinedPledgeTotal = Signal.combineLatest(
+      additionalPledgeAmount,
+      allRewardsShippingTotal,
+      allRewardsTotal
+    )
+    .map(calculatePledgeTotal)
+
+    let pledgeTotal = Signal.merge(
+      project.map { $0.personalization.backing }.skipNil().map(\.amount),
+      combinedPledgeTotal
+    )
+
     // MARK: - Tracking
 
-    Signal.zip(project, baseReward, refTag)
-      .take(first: 1)
-      .observeForUI()
-      .observeValues { project, baseReward, refTag in
-        AppEnvironment.current.ksrAnalytics.trackAddOnsPageViewed(
-          project: project,
-          reward: baseReward,
-          refTag: refTag
-        )
-      }
+    // shippingRule needs to be set for the event is fired
+    Signal.zip(
+      project,
+      baseReward,
+      selectedRewards,
+      refTag,
+      configData,
+      additionalPledgeAmount,
+      allRewardsShippingTotal,
+      pledgeTotal
+    )
+    .take(first: 1)
+    .observeForUI()
+    .observeValues { project, baseReward, selectedRewards, refTag, configData, additionalPledgeAmount, shippingTotal, pledgeTotal in
+      let checkoutPropertiesData = checkoutProperties(
+        from: project,
+        baseReward: baseReward,
+        addOnRewards: selectedRewards,
+        selectedQuantities: configData.selectedQuantities,
+        additionalPledgeAmount: additionalPledgeAmount,
+        pledgeTotal: pledgeTotal,
+        shippingTotal: shippingTotal,
+        isApplePay: nil
+      )
+
+      AppEnvironment.current.ksrAnalytics.trackAddOnsPageViewed(
+        project: project,
+        reward: baseReward,
+        checkoutData: checkoutPropertiesData,
+        refTag: refTag
+      )
+    }
 
     let calculatedShippingTotal = Signal.combineLatest(
       self.shippingRuleSelectedProperty.signal.skipNil(),

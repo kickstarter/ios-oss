@@ -723,14 +723,15 @@ public final class KSRAnalytics {
   public func trackAddOnsPageViewed(
     project: Project,
     reward: Reward,
+    checkoutData: CheckoutPropertiesData,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties())
+      .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
+      .withAllValuesFrom(contextProperties(page: .addOnsSelection))
 
     self.track(
-      event: ApprovedEvent.addOnsPageViewed.rawValue,
+      event: NewApprovedEvent.pageViewed.rawValue,
       location: .addOnsSelection,
       properties: props,
       refTag: refTag?.stringTag
