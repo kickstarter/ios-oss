@@ -728,7 +728,6 @@ public final class KSRAnalytics {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
-      .withAllValuesFrom(contextProperties(page: .addOnsSelection))
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
@@ -840,7 +839,7 @@ public final class KSRAnalytics {
    parameters:
    - project: the project being pledged to
    - reward: the chosen reward
-   - context: the PledgeContext from which the event was triggered
+   - checkoutData: the `CheckoutPropertiesData` associated with the given project and reward
    - refTag: the associated RefTag for the pledge
    - cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
 
@@ -849,16 +848,12 @@ public final class KSRAnalytics {
   public func trackCheckoutPaymentPageViewed(
     project: Project,
     reward: Reward,
-    checkoutData: CheckoutPropertiesData?,
+    checkoutData: CheckoutPropertiesData,
     refTag: RefTag?,
     cookieRefTag: RefTag?
   ) {
-    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(page: .checkout))
-
-    if let checkoutData = checkoutData {
-      props = props.withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
-    }
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,

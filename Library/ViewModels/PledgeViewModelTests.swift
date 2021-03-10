@@ -5316,6 +5316,15 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual("checkout", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("checkout", self.segmentTrackingClient.properties.last?["context_page"] as? String)
+
+    XCTAssertEqual("10.00", self.dataLakeTrackingClient.properties.last?["checkout_amount"] as? String)
+    XCTAssertEqual("0.00", self.dataLakeTrackingClient.properties.last?["checkout_bonus_amount"] as? String)
+    XCTAssertEqual(0, self.dataLakeTrackingClient.properties.last?["checkout_add_ons_count_total"] as? Int)
+    XCTAssertEqual("10.00", self.segmentTrackingClient.properties.last?["checkout_amount"] as? String)
+    XCTAssertEqual("0.00", self.segmentTrackingClient.properties.last?["checkout_bonus_amount"] as? String)
+    XCTAssertEqual(0, self.segmentTrackingClient.properties.last?["checkout_add_ons_count_total"] as? Int)
   }
 
   func testTrackingEvents_ChangePaymentMethod() {

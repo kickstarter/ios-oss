@@ -120,7 +120,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     let refTag = initialData.map(\.refTag)
     let context = initialData.map(\.context)
 
-    let initialDataUnpacked = Signal.zip(project, baseReward, rewards, selectedQuantities, refTag, context)
+    let initialDataUnpacked = Signal.zip(project, baseReward, refTag, context)
 
     let backing = project.map { $0.personalization.backing }.skipNil()
 
@@ -315,8 +315,8 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     )
 
     self.configurePaymentMethodsViewControllerWithValue = configurePaymentMethodsViewController
-      .filter { !$5.paymentMethodsViewHidden }
-      .compactMap { project, reward, _, _, refTag, context -> PledgePaymentMethodsValue? in
+      .filter { !$3.paymentMethodsViewHidden }
+      .compactMap { project, reward, refTag, context -> PledgePaymentMethodsValue? in
         guard let user = AppEnvironment.current.currentUser else { return nil }
 
         return (user, project, reward, context, refTag)
@@ -810,36 +810,31 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.title = context.map { $0.title }
 
-    /**
-      CheckoutPropertiesData needs
-        `initialAdditionalPledgeAmount`,
-        `pledgeTotal`, and
-        `baseRewardShippingTotal`,
-     hence why they are zipped with `initialDataUnpacked`. All the needed value to `trackCheckoutPaymentPageViewed` can be observed at once.
-     */
-    let combinedInitialDataUnpacked = Signal
-      .zip(initialDataUnpacked, initialAdditionalPledgeAmount, pledgeTotal, baseRewardShippingTotal)
+    let trackCheckoutPageViewData = Signal
+      .zip(
+        project,
+        baseReward,
+        rewards,
+        selectedQuantities,
+        refTag,
+        initialAdditionalPledgeAmount,
+        pledgeTotal,
+        baseRewardShippingTotal
+      )
 
     // Tracking
 
-    /**
-     initailDataUnpacked.0 = Project
-     initailDataUnpacked.1 = BaseReward
-     initailDataUnpacked.2 = AddOnRewards
-     initailDataUnpacked.3 = SelectedQuantities
-     initailDataUnpacked.4 = RefTag
-     */
-    combinedInitialDataUnpacked
-      .observeValues { initailDataUnpacked, additionalPledgeAmount, pledgeTotal, shippingTotal in
-        let cookieRefTag = cookieRefTagFor(project: initailDataUnpacked.0) ?? initailDataUnpacked.4
+    trackCheckoutPageViewData
+      .observeValues { project, baseReward, rewards, selectedQuantities, refTag, additionalPledgeAmount, pledgeTotal, shippingTotal in
+        let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
 
         AppEnvironment.current.optimizelyClient?.track(eventName: "Pledge Screen Viewed")
 
         let checkoutData = checkoutProperties(
-          from: initailDataUnpacked.0,
-          baseReward: initailDataUnpacked.1,
-          addOnRewards: initailDataUnpacked.2,
-          selectedQuantities: initailDataUnpacked.3,
+          from: project,
+          baseReward: baseReward,
+          addOnRewards: rewards,
+          selectedQuantities: selectedQuantities,
           additionalPledgeAmount: additionalPledgeAmount,
           pledgeTotal: pledgeTotal,
           shippingTotal: shippingTotal,
@@ -848,10 +843,10 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         )
 
         AppEnvironment.current.ksrAnalytics.trackCheckoutPaymentPageViewed(
-          project: initailDataUnpacked.0,
-          reward: initailDataUnpacked.1,
+          project: project,
+          reward: baseReward,
           checkoutData: checkoutData,
-          refTag: initailDataUnpacked.4,
+          refTag: refTag,
           cookieRefTag: cookieRefTag
         )
       }
