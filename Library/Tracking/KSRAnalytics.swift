@@ -1494,11 +1494,11 @@ private func discoveryProperties(
   var result: [String: Any] = [:]
 
   // NB: All filters should be added here since `result["everything"]` is derived from this.
+  result["category_name"] = params.category?.name
   result["recommended"] = params.recommended
   result["social"] = params.social
   result["pwl"] = params.staffPicks
   result["watched"] = params.starred
-  result["tag"] = params.tagId?.rawValue
   let categoryProps = params.category.map { properties(category: $0, prefix: "subcategory_") }
   let parentCategoryProps = params.category?.parent.map { properties(category: $0) }
 
