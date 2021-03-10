@@ -271,7 +271,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       shippingTotal
     )
 
-    // Addtional pledge amount is zero if not backed.
+    // Additional pledge amount is zero if not backed.
     let additionalPledgeAmount = Signal.merge(
       configData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
       project.map { $0.personalization.backing }.skipNil().map(\.bonusAmount)
@@ -328,48 +328,6 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
         checkoutData: checkoutPropertiesData,
         refTag: refTag
       )
-    }
-
-    let calculatedShippingTotal = Signal.combineLatest(
-      self.shippingRuleSelectedProperty.signal.skipNil(),
-      selectedRewards,
-      selectedQuantities
-    )
-    .map { shippingRule, rewards, selectedQuantities -> Double in
-      rewards.reduce(0.0) { total, reward in
-        guard reward.shipping.enabled else { return total }
-
-        let shippingCostForReward = reward.shippingRule(matching: shippingRule)?.cost ?? 0
-
-        let totalShippingForReward = shippingCostForReward
-          .multiplyingCurrency(Double(selectedQuantities[reward.id] ?? 0))
-
-        return total.addingCurrency(totalShippingForReward)
-      }
-    }
-
-    let defaultShippingTotal = Signal.zip(project, baseReward).map { project, baseReward -> Double in
-      guard baseReward.shipping.enabled, let backing = project.personalization.backing else {
-        return 0.0
-      }
-
-      return backing.shippingAmount.flatMap(Double.init) ?? 0.0
-    }
-
-    let allRewardsShippingTotal = Signal.merge(defaultShippingTotal, calculatedShippingTotal)
-
-    let allRewardsTotal = Signal.combineLatest(
-      selectedRewards,
-      selectedQuantities
-    )
-    .map { rewards, selectedQuantities -> Double in
-      rewards.filter { !$0.isNoReward }
-        .reduce(0.0) { total, reward -> Double in
-          let totalForReward = reward.minimum
-            .multiplyingCurrency(Double(selectedQuantities[reward.id] ?? 0))
-
-          return total.addingCurrency(totalForReward)
-        }
     }
 
     let calculatedPledgeTotal = Signal.combineLatest(
