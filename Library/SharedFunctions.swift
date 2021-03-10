@@ -398,6 +398,99 @@ public func rounded(_ value: Double, places: Int) -> Double {
 }
 
 /**
+ An helper func that calculates  shipping total for base reward
+
+ - parameter project: The `Project` associated with a group of Rewards.
+ - parameter baseReward: The reward being evaluated
+ - parameter shippingRule: `ShippingRule` information about shipping details of selected rewards.
+
+ - returns: A `Double` of the shipping value. If the `Project` `Backing` object is nil,
+            and `baseReward` shipping is not enabled, the value is `0.0`
+ */
+public func getBaseRewardShippingTotal(
+  project: Project,
+  baseReward: Reward,
+  shippingRule: ShippingRule?
+) -> Double {
+  // If digital, there is no shipping
+  guard baseReward.shipping.enabled else { return 0.0 }
+  let backing = project.personalization.backing
+
+  // If there is no `Backing` (new pledge), return the rewards shipping rule
+  return backing.isNil ?
+    baseReward.shippingRule(matching: shippingRule)?.cost ?? 0.0 :
+    backing?.shippingAmount.flatMap(Double.init) ?? 0.0
+}
+
+/**
+ An helper func that calculates  shipping total for base reward
+
+ -  parameter shippingRule: `ShippingRule` information about shipping details of selected rewards.
+ - parameter addOnRewards: An array of `Reward` objects representing the available add-ons.
+ - parameter quantities: A dictionary that aggregates the quantity of selected add-ons.
+
+ - returns: A `Double` of the shipping value.
+ */
+func calculateShippingTotal(
+  shippingRule: ShippingRule,
+  addOnRewards: [Reward],
+  quantities: SelectedRewardQuantities
+) -> Double {
+  let calculatedShippingTotal = addOnRewards.reduce(0.0) { total, reward in
+    guard reward.shipping.enabled else { return total }
+
+    let shippingCostForReward = reward.shippingRule(matching: shippingRule)?.cost ?? 0
+
+    let totalShippingForReward = shippingCostForReward
+      .multiplyingCurrency(Double(quantities[reward.id] ?? 0))
+
+    return total.addingCurrency(totalShippingForReward)
+  }
+
+  return calculatedShippingTotal
+}
+
+/**
+ An helper func that calculates  pledge total for all rewards
+
+ - parameter pledgeAmount: The amount pledged for a project.
+ - parameter shippingCost: The shipping cost for the pledge.
+ - parameter addOnRewardsTotal: The total amount of all addOn rewards.
+
+ - returns: A `Double` of the pledge value.
+ */
+func calculatePledgeTotal(
+  pledgeAmount: Double,
+  shippingCost: Double,
+  addOnRewardsTotal: Double
+) -> Double {
+  let r = [pledgeAmount, shippingCost, addOnRewardsTotal].reduce(0) { accum, amount in
+    accum.addingCurrency(amount)
+  }
+
+  return r
+}
+
+/**
+ An helper func that calculates  pledge total for all rewards
+
+ - parameter addOnRewards: The `Project` associated with a group of Rewards.
+ - parameter selectedQuantities: A dictionary that aggregates the quantity of selected add-ons.
+
+ - returns: A `Double` of all rewards add-ons total.
+ */
+func calculateAllRewardsTotal(addOnRewards: [Reward],
+                              selectedQuantities: SelectedRewardQuantities) -> Double {
+  addOnRewards.filter { !$0.isNoReward }
+    .reduce(0.0) { total, reward -> Double in
+      let totalForReward = reward.minimum
+        .multiplyingCurrency(Double(selectedQuantities[reward.id] ?? 0))
+
+      return total.addingCurrency(totalForReward)
+    }
+}
+
+/**
  Creates `CheckoutPropertiesData` to send with our event properties.
 
  - parameter from: The `Project` associated with the checkout.
@@ -412,6 +505,7 @@ public func rounded(_ value: Double, places: Int) -> Double {
 
  - returns: A `CheckoutPropertiesData` object required for checkoutProperties.
  */
+
 public func checkoutProperties(
   from project: Project,
   baseReward: Reward,
