@@ -809,17 +809,51 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
       location: .discovery,
-      params: DiscoveryParams.recommendedDefaults
+      params: DiscoveryParams.recommendedDefaults,
+      typeContext: .watch
     )
 
-    XCTAssertEqual(["Watch Project Button Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
     XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("watch_project", dataLakeClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("watch", dataLakeClient.properties.last?["context_type"] as? String)
 
     self.assertProjectProperties(dataLakeClient.properties.last)
     self.assertDiscoveryProperties(dataLakeClient.properties.last)
 
-    XCTAssertEqual(["Watch Project Button Clicked"], segmentClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("watch_project", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("watch", segmentClient.properties.last?["context_type"] as? String)
+
+    self.assertProjectProperties(segmentClient.properties.last)
+    self.assertDiscoveryProperties(segmentClient.properties.last)
+  }
+
+  func testUnWatchProjectButtonClicked_DiscoveryLocationContext() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+
+    ksrAnalytics.trackWatchProjectButtonClicked(
+      project: .template,
+      location: .discovery,
+      params: DiscoveryParams.recommendedDefaults,
+      typeContext: .unwatch
+    )
+
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("watch_project", dataLakeClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("unwatch", dataLakeClient.properties.last?["context_type"] as? String)
+
+    self.assertProjectProperties(dataLakeClient.properties.last)
+    self.assertDiscoveryProperties(dataLakeClient.properties.last)
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("watch_project", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("unwatch", segmentClient.properties.last?["context_type"] as? String)
 
     self.assertProjectProperties(segmentClient.properties.last)
     self.assertDiscoveryProperties(segmentClient.properties.last)
@@ -832,16 +866,47 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
-      location: .projectPage
+      location: .projectPage,
+      typeContext: .watch
     )
 
-    XCTAssertEqual(["Watch Project Button Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
     XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("watch_project", dataLakeClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("watch", dataLakeClient.properties.last?["context_type"] as? String)
 
     self.assertProjectProperties(dataLakeClient.properties.last)
 
-    XCTAssertEqual(["Watch Project Button Clicked"], segmentClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("watch_project", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("watch", segmentClient.properties.last?["context_type"] as? String)
+
+    self.assertProjectProperties(segmentClient.properties.last)
+  }
+
+  func testUnWatchProjectButtonClicked_ProjectPageLocationContext() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+
+    ksrAnalytics.trackWatchProjectButtonClicked(
+      project: .template,
+      location: .projectPage,
+      typeContext: .unwatch
+    )
+
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("watch_project", dataLakeClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("unwatch", dataLakeClient.properties.last?["context_type"] as? String)
+
+    self.assertProjectProperties(dataLakeClient.properties.last)
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("watch_project", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("unwatch", segmentClient.properties.last?["context_type"] as? String)
 
     self.assertProjectProperties(segmentClient.properties.last)
   }
@@ -1653,7 +1718,6 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(KSRAnalytics.TypeContext.tag.trackingString, "tag")
     XCTAssertEqual(KSRAnalytics.TypeContext.unwatch.trackingString, "unwatch")
     XCTAssertEqual(KSRAnalytics.TypeContext.watch.trackingString, "watch")
-    XCTAssertEqual(KSRAnalytics.TypeContext.watched.trackingString, "watched")
   }
 
   /*

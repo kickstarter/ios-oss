@@ -55,7 +55,6 @@ public final class KSRAnalytics {
     case tabBarClicked = "Tab Bar Clicked"
     case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
     case verificationScreenViewed = "Verification Screen Viewed"
-    case watchProjectButtonClicked = "Watch Project Button Clicked"
   }
 
   private enum NewApprovedEvent: String, CaseIterable {
@@ -370,7 +369,6 @@ public final class KSRAnalytics {
     case tag
     case unwatch
     case watch
-    case watched
 
     public enum PledgeContext {
       case fixErroredPledge
@@ -410,7 +408,6 @@ public final class KSRAnalytics {
       case .tag: return "tag"
       case .unwatch: return "unwatch"
       case .watch: return "watch"
-      case .watched: return "watched"
       }
     }
   }
@@ -1202,21 +1199,27 @@ public final class KSRAnalytics {
    - parameter project: The project being watched
    - parameter location: The location context of where the project is being watched from
    - parameter params: The optional Discover params if the project is being watched from Discover
+   - parameter typeContext: The context of the watch/saved project
    */
 
   public func trackWatchProjectButtonClicked(
     project: Project,
     location: PageContext,
-    params: DiscoveryParams? = nil
+    params: DiscoveryParams? = nil,
+    typeContext: TypeContext
   ) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(
+        ctaContext: .watchProject,
+        typeContext: typeContext
+      ))
 
     if let discoveryParams = params {
       props = props.withAllValuesFrom(discoveryProperties(from: discoveryParams))
     }
 
     self.track(
-      event: ApprovedEvent.watchProjectButtonClicked.rawValue,
+      event: NewApprovedEvent.ctaClicked.rawValue,
       location: location,
       properties: props
     )
