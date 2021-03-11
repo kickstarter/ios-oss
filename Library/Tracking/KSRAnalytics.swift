@@ -714,7 +714,6 @@ public final class KSRAnalytics {
 
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
-      location: .addOnsSelection,
       properties: props,
       refTag: refTag?.stringTag
     )

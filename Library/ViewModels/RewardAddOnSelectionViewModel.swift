@@ -330,45 +330,31 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       )
     }
 
-    let calculatedPledgeTotal = Signal.combineLatest(
-      allRewardsShippingTotal,
-      allRewardsTotal
-    )
-    .map { shippingCost, rewardBaseAmount -> Double in
-      let r = [shippingCost, rewardBaseAmount].reduce(0) { accum, amount in
-        accum.addingCurrency(amount)
-      }
-
-      return r
-    }
-
     Signal
       .zip(
-        project,
+        goToPledge,
         baseReward,
-        selectedQuantities,
-        selectedRewards,
-        calculatedPledgeTotal,
+        pledgeTotal,
         allRewardsShippingTotal,
+        additionalPledgeAmount,
         refTag
       )
       .takeWhen(self.continueButtonTappedProperty.signal)
-      .observeForUI()
-      .observeValues { project, baseReward, selectedQuantities, selectedRewards, pledgeTotal, allRewardsShippingTotal, refTag in
+      .observeValues { pledgeData, baseReward, pledgeTotal, shippingTotal, additionalPledgeAmount, refTag in
 
         let checkoutData = checkoutProperties(
-          from: project,
+          from: pledgeData.project,
           baseReward: baseReward,
-          addOnRewards: selectedRewards,
-          selectedQuantities: selectedQuantities,
-          additionalPledgeAmount: 0.0,
+          addOnRewards: pledgeData.rewards,
+          selectedQuantities: pledgeData.selectedQuantities,
+          additionalPledgeAmount: additionalPledgeAmount,
           pledgeTotal: pledgeTotal,
-          shippingTotal: allRewardsShippingTotal,
+          shippingTotal: shippingTotal,
           isApplePay: nil
         )
 
         AppEnvironment.current.ksrAnalytics.trackAddOnsContinueButtonClicked(
-          project: project,
+          project: pledgeData.project,
           reward: baseReward,
           checkoutData: checkoutData,
           refTag: refTag
