@@ -5301,6 +5301,8 @@ final class PledgeViewModelTests: TestCase {
   func testTrackingEvents_CheckoutPaymentPageViewed() {
     let project = Project.template
     let reward = Reward.template
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
+      |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
 
     let data = PledgeViewData(
       project: project,
@@ -5314,38 +5316,48 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    let checkoutData = KSRAnalytics.CheckoutPropertiesData(
-      addOnsCountTotal: 0,
-      addOnsCountUnique: 0,
-      addOnsMinimumUsd: "0.00",
-      amount: "15.00",
-      bonusAmount: "10.00",
-      bonusAmountInUsd: "10.00",
-      checkoutId: 1,
-      estimatedDelivery: 1_506_897_315.0,
-      paymentType: "APPLE_PAY",
-      revenueInUsd: 15.00,
-      rewardId: 1,
-      rewardMinimumUsd: "5.00",
-      rewardTitle: "My Reward",
-      shippingEnabled: false,
-      shippingAmount: nil,
-      shippingAmountUsd: nil,
-      userHasStoredApplePayCard: true
-    )
-
     XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
-    XCTAssertEqual("checkout", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("checkout", self.segmentTrackingClient.properties.last?["context_page"] as? String)
 
-    XCTAssertEqual("10.00", self.dataLakeTrackingClient.properties.last?["checkout_amount"] as? String)
-    XCTAssertEqual("0.00", self.dataLakeTrackingClient.properties.last?["checkout_bonus_amount"] as? String)
-    XCTAssertEqual(0, self.dataLakeTrackingClient.properties.last?["checkout_add_ons_count_total"] as? Int)
-    XCTAssertEqual("10.00", self.segmentTrackingClient.properties.last?["checkout_amount"] as? String)
-    XCTAssertEqual("0.00", self.segmentTrackingClient.properties.last?["checkout_bonus_amount"] as? String)
-    XCTAssertEqual(0, self.segmentTrackingClient.properties.last?["checkout_add_ons_count_total"] as? Int)
+    let dataLakeTrackingClientProps = self.dataLakeTrackingClient.properties.last
+    let segmentTrackingClientProps = self.segmentTrackingClient.properties.last
 
+    // Context properties
+
+    XCTAssertEqual("checkout", dataLakeTrackingClientProps?["context_page"] as? String)
+    XCTAssertEqual("checkout", segmentTrackingClientProps?["context_page"] as? String)
+
+    // Checkout properties
+
+    XCTAssertEqual("10.00", dataLakeTrackingClientProps?["checkout_amount"] as? String)
+    XCTAssertEqual("CREDIT_CARD", dataLakeTrackingClientProps?["checkout_payment_type"] as? String)
+    XCTAssertEqual("My Reward", dataLakeTrackingClientProps?["checkout_reward_title"] as? String)
+    XCTAssertEqual("10.00", dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? String)
+    XCTAssertEqual(1, dataLakeTrackingClientProps?["checkout_reward_id"] as? Int)
+    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Double)
+    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
+    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_time"] as? Bool)
+    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_shipping_enabled"] as? Bool)
+    XCTAssertEqual(
+      true,
+      dataLakeTrackingClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool
+    )
+
+    XCTAssertEqual("10.00", segmentTrackingClientProps?["checkout_amount"] as? String)
+    XCTAssertEqual("CREDIT_CARD", segmentTrackingClientProps?["checkout_payment_type"] as? String)
+    XCTAssertEqual("My Reward", segmentTrackingClientProps?["checkout_reward_title"] as? String)
+    XCTAssertEqual("10.00", segmentTrackingClientProps?["checkout_reward_minimum_usd"] as? String)
+    XCTAssertEqual(1, segmentTrackingClientProps?["checkout_reward_id"] as? Int)
+    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_amount_total_usd"] as? Double)
+    XCTAssertEqual(true, segmentTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
+    XCTAssertEqual(true, segmentTrackingClientProps?["checkout_reward_is_limited_time"] as? Bool)
+    XCTAssertEqual(true, segmentTrackingClientProps?["checkout_reward_shipping_enabled"] as? Bool)
+    XCTAssertEqual(
+      true,
+      segmentTrackingClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool
+    )
+
+    // Base User Attributes properties
     assertBaseUserAttributesLoggedOut()
   }
 
