@@ -861,7 +861,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         additionalPledgeAmount,
         allRewardsShippingTotal
       )
-      .logEvents(identifier: "*****AAA***")
       .takeWhen(createButtonTapped)
       .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
 

@@ -5314,6 +5314,26 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
+    let checkoutData = KSRAnalytics.CheckoutPropertiesData(
+      addOnsCountTotal: 0,
+      addOnsCountUnique: 0,
+      addOnsMinimumUsd: "0.00",
+      amount: "15.00",
+      bonusAmount: "10.00",
+      bonusAmountInUsd: "10.00",
+      checkoutId: 1,
+      estimatedDelivery: 1_506_897_315.0,
+      paymentType: "APPLE_PAY",
+      revenueInUsd: 15.00,
+      rewardId: 1,
+      rewardMinimumUsd: "5.00",
+      rewardTitle: "My Reward",
+      shippingEnabled: false,
+      shippingAmount: nil,
+      shippingAmountUsd: nil,
+      userHasStoredApplePayCard: true
+    )
+
     XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
     XCTAssertEqual("checkout", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
@@ -5325,6 +5345,8 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual("10.00", self.segmentTrackingClient.properties.last?["checkout_amount"] as? String)
     XCTAssertEqual("0.00", self.segmentTrackingClient.properties.last?["checkout_bonus_amount"] as? String)
     XCTAssertEqual(0, self.segmentTrackingClient.properties.last?["checkout_add_ons_count_total"] as? Int)
+
+    assertBaseUserAttributesLoggedOut()
   }
 
   func testTrackingEvents_ChangePaymentMethod() {
