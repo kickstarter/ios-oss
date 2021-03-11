@@ -810,20 +810,47 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     self.title = context.map { $0.title }
 
+    let trackCheckoutPageViewData = Signal
+      .zip(
+        project,
+        baseReward,
+        rewards,
+        selectedQuantities,
+        refTag,
+        initialAdditionalPledgeAmount,
+        pledgeTotal,
+        baseRewardShippingTotal,
+        context
+      )
+
     // Tracking
 
-    initialDataUnpacked
-      .observeValues { project, reward, refTag, _ in
+    trackCheckoutPageViewData
+      .observeValues { project, baseReward, rewards, selectedQuantities, refTag, additionalPledgeAmount, pledgeTotal, shippingTotal, context in
+        guard context == .pledge else { return }
+
         let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
-        let optimizelyProps = optimizelyProperties() ?? [:]
 
         AppEnvironment.current.optimizelyClient?.track(eventName: "Pledge Screen Viewed")
+
+        let checkoutData = checkoutProperties(
+          from: project,
+          baseReward: baseReward,
+          addOnRewards: rewards,
+          selectedQuantities: selectedQuantities,
+          additionalPledgeAmount: additionalPledgeAmount,
+          pledgeTotal: pledgeTotal,
+          shippingTotal: shippingTotal,
+          checkoutId: nil,
+          isApplePay: false
+        )
+
         AppEnvironment.current.ksrAnalytics.trackCheckoutPaymentPageViewed(
           project: project,
-          reward: reward,
+          reward: baseReward,
+          checkoutData: checkoutData,
           refTag: refTag,
-          cookieRefTag: cookieRefTag,
-          optimizelyProperties: optimizelyProps
+          cookieRefTag: cookieRefTag
         )
       }
 

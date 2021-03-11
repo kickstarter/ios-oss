@@ -26,7 +26,6 @@ public final class KSRAnalytics {
     case activityFeedViewed = "Activity Feed Viewed"
     case addNewCardButtonClicked = "Add New Card Button Clicked"
     case addOnsPageViewed = "Add-Ons Page Viewed"
-    case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
     case collectionViewed = "Collection Viewed"
     case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
     case editorialCardClicked = "Editorial Card Clicked"
@@ -69,6 +68,7 @@ public final class KSRAnalytics {
     case activities = "activity_feed" // ActivitiesViewController
     case addOnsSelection = "add_ons" // RewardAddOnSelectionViewController
     case campaign // ProjectDescriptionViewController
+    case checkout // // PledgeViewController
     case discovery = "discover" // DiscoveryViewController
     case editorialProjects = "editorial_collection" // EditorialProjectsViewController
     case emailVerification = "email_verification" // EmailVerificationViewController
@@ -727,7 +727,6 @@ public final class KSRAnalytics {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
-      .withAllValuesFrom(contextProperties(page: .addOnsSelection))
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
@@ -839,7 +838,7 @@ public final class KSRAnalytics {
    parameters:
    - project: the project being pledged to
    - reward: the chosen reward
-   - context: the PledgeContext from which the event was triggered
+   - checkoutData: the `CheckoutPropertiesData` associated with the given project and reward
    - refTag: the associated RefTag for the pledge
    - cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
 
@@ -848,18 +847,16 @@ public final class KSRAnalytics {
   public func trackCheckoutPaymentPageViewed(
     project: Project,
     reward: Reward,
+    checkoutData: CheckoutPropertiesData,
     refTag: RefTag?,
-    cookieRefTag: RefTag?,
-    optimizelyProperties: [String: Any] = [:]
+    cookieRefTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties())
-      .withAllValuesFrom(optimizelyProperties)
+      .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
 
     self.track(
-      event: ApprovedEvent.checkoutPaymentPageViewed.rawValue,
-      location: .pledgeScreen,
+      event: NewApprovedEvent.pageViewed.rawValue,
+      location: .checkout,
       properties: props,
       refTag: refTag?.stringTag,
       referrerCredit: cookieRefTag?.stringTag
