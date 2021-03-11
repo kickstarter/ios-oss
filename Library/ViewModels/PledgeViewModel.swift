@@ -820,13 +820,15 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         initialAdditionalPledgeAmount,
         pledgeTotal,
         baseRewardShippingTotal,
-        context.filter { $0 == .pledge }
+        context
       )
 
     // Tracking
 
     trackCheckoutPageViewData
-      .observeValues { project, baseReward, rewards, selectedQuantities, refTag, additionalPledgeAmount, pledgeTotal, shippingTotal, _ in
+      .observeValues { project, baseReward, rewards, selectedQuantities, refTag, additionalPledgeAmount, pledgeTotal, shippingTotal, context in
+        guard context == .pledge else { return }
+
         let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
 
         AppEnvironment.current.optimizelyClient?.track(eventName: "Pledge Screen Viewed")
@@ -859,6 +861,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         additionalPledgeAmount,
         allRewardsShippingTotal
       )
+      .logEvents(identifier: "*****AAA***")
       .takeWhen(createButtonTapped)
       .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
 

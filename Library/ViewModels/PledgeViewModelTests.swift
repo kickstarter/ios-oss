@@ -5343,17 +5343,13 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.submitButtonTapped()
 
-    XCTAssertEqual([
-      "Page Viewed"
-    ], self.dataLakeTrackingClient.events)
-    XCTAssertEqual([
-      "Page Viewed"
-    ], self.segmentTrackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
   }
 
   func testTrackingEvents_ContextIsUpdate() {
@@ -5372,17 +5368,17 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.submitButtonTapped()
 
     XCTAssertEqual(
-      ["Page Viewed"],
+      [],
       self.dataLakeTrackingClient.events
     )
     XCTAssertEqual(
-      ["Page Viewed"],
+      [],
       self.segmentTrackingClient.events
     )
   }
@@ -5403,17 +5399,17 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.submitButtonTapped()
 
     XCTAssertEqual(
-      ["Page Viewed"],
+      [],
       self.dataLakeTrackingClient.events
     )
     XCTAssertEqual(
-      ["Page Viewed"],
+      [],
       self.segmentTrackingClient.events
     )
   }
@@ -5877,17 +5873,17 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.creditCardSelected(with: "12345")
 
-      XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
-      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
+      XCTAssertEqual([], self.segmentTrackingClient.events)
 
       self.vm.inputs.submitButtonTapped()
 
       XCTAssertEqual(
-        ["Page Viewed"],
+        [],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
-        ["Page Viewed"],
+        [],
         self.segmentTrackingClient.events
       )
     }
