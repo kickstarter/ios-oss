@@ -414,6 +414,19 @@ public final class KSRAnalytics {
   }
 
   /**
+   An optional context that provides an addtional context  about the location of the event.
+   */
+  public enum LocationContext {
+    case globalNav
+
+    var trackingString: String {
+      switch self {
+      case .globalNav: return "global_nav"
+      }
+    }
+  }
+
+  /**
    Determines the place from which the update was presented.
 
    - activity:        The activity feed.
@@ -553,12 +566,16 @@ public final class KSRAnalytics {
   // MARK: - Application Lifecycle
 
   public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
-    let properties = contextProperties(tabBarLabel: tabBarItemLabel)
-
-    self.track(
-      event: ApprovedEvent.tabBarClicked.rawValue,
-      properties: properties
-    )
+    switch tabBarItemLabel {
+    case .search:
+      self.trackProjectSearchButtonClicked()
+    default:
+      let properties = contextProperties(tabBarLabel: tabBarItemLabel)
+      self.track(
+        event: ApprovedEvent.tabBarClicked.rawValue,
+        properties: properties
+      )
+    }
   }
 
   // MARK: - Onboarding Events
@@ -1126,6 +1143,20 @@ public final class KSRAnalytics {
 
   // MARK: - Search Events
 
+  /// Called when the search tab bar is clicked.
+  public func trackProjectSearchButtonClicked() {
+    let props = contextProperties(
+      ctaContext: .search,
+      locationContext: .globalNav
+    )
+
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      location: .search,
+      properties: props
+    )
+  }
+
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
     self.track(event: ApprovedEvent.searchPageViewed.rawValue, location: .search)
@@ -1531,6 +1562,7 @@ private func contextProperties(
   page: KSRAnalytics.PageContext? = nil,
   sectionContext: KSRAnalytics.SectionContext? = nil,
   typeContext: KSRAnalytics.TypeContext? = nil,
+  locationContext: KSRAnalytics.LocationContext? = nil,
   prefix: String = "context_"
 ) -> [String: Any] {
   var result: [String: Any] = [:]
@@ -1541,6 +1573,7 @@ private func contextProperties(
   result["timestamp"] = AppEnvironment.current.dateType.init().timeIntervalSince1970
   result["tab_bar_label"] = tabBarLabel?.trackingString
   result["type"] = typeContext?.trackingString
+  result["location"] = locationContext?.trackingString
 
   return result.prefixedKeys(prefix)
 }
