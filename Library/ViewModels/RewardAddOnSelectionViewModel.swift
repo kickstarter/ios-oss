@@ -329,37 +329,38 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
         refTag: refTag
       )
     }
-
-    Signal
-      .zip(
-        goToPledge,
-        baseReward,
-        pledgeTotal,
-        allRewardsShippingTotal,
-        additionalPledgeAmount,
-        refTag
+    
+    // Send updated checkout data with add-ons continue event
+    Signal.combineLatest(
+      project,
+      baseReward,
+      selectedRewards,
+      selectedQuantities,
+      additionalPledgeAmount,
+      pledgeTotal,
+      allRewardsShippingTotal,
+      refTag
+    ).takeWhen(self.continueButtonTappedProperty.signal)
+    .observeValues { project, baseReward, selectedRewards, selectedQuantities, additionalPledgeAmount, pledgeTotal, shippingTotal, refTag in
+      
+      let checkoutData = checkoutProperties(
+        from: project,
+        baseReward: baseReward,
+        addOnRewards: selectedRewards,
+        selectedQuantities: selectedQuantities,
+        additionalPledgeAmount: additionalPledgeAmount,
+        pledgeTotal: pledgeTotal,
+        shippingTotal: shippingTotal,
+        isApplePay: nil
       )
-      .takeWhen(self.continueButtonTappedProperty.signal)
-      .observeValues { pledgeData, baseReward, pledgeTotal, shippingTotal, additionalPledgeAmount, refTag in
-
-        let checkoutData = checkoutProperties(
-          from: pledgeData.project,
-          baseReward: baseReward,
-          addOnRewards: pledgeData.rewards,
-          selectedQuantities: pledgeData.selectedQuantities,
-          additionalPledgeAmount: additionalPledgeAmount,
-          pledgeTotal: pledgeTotal,
-          shippingTotal: shippingTotal,
-          isApplePay: nil
-        )
-
-        AppEnvironment.current.ksrAnalytics.trackAddOnsContinueButtonClicked(
-          project: pledgeData.project,
-          reward: baseReward,
-          checkoutData: checkoutData,
-          refTag: refTag
-        )
-      }
+      
+      AppEnvironment.current.ksrAnalytics.trackAddOnsContinueButtonClicked(
+        project: project,
+        reward: baseReward,
+        checkoutData: checkoutData,
+        refTag: refTag
+      )
+    }
   }
 
   private let (beginRefreshSignal, beginRefreshObserver) = Signal<Void, Never>.pipe()
