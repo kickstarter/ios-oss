@@ -885,7 +885,7 @@ final class KSRAnalyticsTests: TestCase {
     self.assertProjectProperties(segmentClient.properties.last)
   }
 
-  func testUnWatchProjectButtonClicked_ContextProperties() {
+  func testUnWatchProjectButtonClicked_ProjectPageLocationContext() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
@@ -1684,7 +1684,6 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(KSRAnalytics.TypeContext.tag.trackingString, "tag")
     XCTAssertEqual(KSRAnalytics.TypeContext.unwatch.trackingString, "unwatch")
     XCTAssertEqual(KSRAnalytics.TypeContext.watch.trackingString, "watch")
-    XCTAssertEqual(KSRAnalytics.TypeContext.watched.trackingString, "watched")
   }
 
   /*

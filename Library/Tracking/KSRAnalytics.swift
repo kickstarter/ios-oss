@@ -370,7 +370,6 @@ public final class KSRAnalytics {
     case tag
     case unwatch
     case watch
-    case watched
 
     public enum PledgeContext {
       case fixErroredPledge
@@ -410,7 +409,6 @@ public final class KSRAnalytics {
       case .tag: return "tag"
       case .unwatch: return "unwatch"
       case .watch: return "watch"
-      case .watched: return "watched"
       }
     }
   }
@@ -1202,7 +1200,7 @@ public final class KSRAnalytics {
    - parameter project: The project being watched
    - parameter location: The location context of where the project is being watched from
    - parameter params: The optional Discover params if the project is being watched from Discover
-   - parameter watchContext: The context of the watch/saved project
+   - parameter typeContext: The context of the watch/saved project
    */
 
   public func trackWatchProjectButtonClicked(
