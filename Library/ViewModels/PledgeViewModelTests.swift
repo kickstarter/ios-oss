@@ -1652,11 +1652,11 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed"],
+        ["Page Viewed"],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed"],
+        ["Page Viewed"],
         self.segmentTrackingClient.events
       )
     }
@@ -1749,11 +1749,11 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed"],
+        ["Page Viewed"],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed"],
+        ["Page Viewed"],
         self.segmentTrackingClient.events
       )
     }
@@ -1932,11 +1932,11 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed"],
+        ["Page Viewed"],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed"],
+        ["Page Viewed"],
         self.segmentTrackingClient.events
       )
     }
@@ -1980,12 +1980,12 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed"],
+        ["Page Viewed"],
         self.dataLakeTrackingClient.events
       )
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed"],
+        ["Page Viewed"],
         self.segmentTrackingClient.events
       )
     }
@@ -2041,12 +2041,12 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed"],
+        ["Page Viewed"],
         self.dataLakeTrackingClient.events
       )
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed"],
+        ["Page Viewed"],
         self.segmentTrackingClient.events
       )
     }
@@ -2160,11 +2160,11 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksCheckoutData.assertValues([checkoutData])
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "CTA Clicked"],
+        ["Page Viewed", "CTA Clicked"],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "CTA Clicked"],
+        ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
     }
@@ -2261,11 +2261,11 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksCheckoutData.assertValues([checkoutData])
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "CTA Clicked"],
+        ["Page Viewed", "CTA Clicked"],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "CTA Clicked"],
+        ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
     }
@@ -2392,11 +2392,11 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "CTA Clicked"],
+        ["Page Viewed", "CTA Clicked"],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "CTA Clicked"],
+        ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
     }
@@ -4501,7 +4501,7 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksCheckoutData.assertValues([checkoutData])
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "CTA Clicked"],
+        ["Page Viewed", "CTA Clicked"],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
@@ -4513,7 +4513,7 @@ final class PledgeViewModelTests: TestCase {
         self.dataLakeTrackingClient.properties.last?["context_type"] as? String
       )
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "CTA Clicked"],
+        ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
       XCTAssertEqual(
@@ -4614,7 +4614,7 @@ final class PledgeViewModelTests: TestCase {
       )
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "CTA Clicked"],
+        ["Page Viewed", "CTA Clicked"],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
@@ -4627,7 +4627,7 @@ final class PledgeViewModelTests: TestCase {
       )
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "CTA Clicked"],
+        ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
       XCTAssertEqual(
@@ -4720,7 +4720,7 @@ final class PledgeViewModelTests: TestCase {
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "CTA Clicked"],
+        ["Page Viewed", "CTA Clicked"],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
@@ -4733,7 +4733,7 @@ final class PledgeViewModelTests: TestCase {
       )
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed", "CTA Clicked"],
+        ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
       XCTAssertEqual(
@@ -5301,6 +5301,8 @@ final class PledgeViewModelTests: TestCase {
   func testTrackingEvents_CheckoutPaymentPageViewed() {
     let project = Project.template
     let reward = Reward.template
+      |> Reward.lens.shipping .~ (.template |> Reward.Shipping.lens.enabled .~ true)
+      |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
 
     let data = PledgeViewData(
       project: project,
@@ -5314,34 +5316,49 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
-    let dataLakeTrackingClientProperties = self.dataLakeTrackingClient.properties.last
-    let segmentClientProperties = self.segmentTrackingClient.properties.last
+    let dataLakeTrackingClientProps = self.dataLakeTrackingClient.properties.last
+    let segmentTrackingClientProps = self.segmentTrackingClient.properties.last
 
-    XCTAssertNotNil(
-      dataLakeTrackingClientProperties?["optimizely_api_key"],
-      "Event includes Optimizely properties"
-    )
-    XCTAssertNotNil(
-      dataLakeTrackingClientProperties?["optimizely_environment"],
-      "Event includes Optimizely properties"
-    )
-    XCTAssertNotNil(
-      dataLakeTrackingClientProperties?["session_variants_optimizely"],
-      "Event includes Optimizely properties"
+    // Context properties
+
+    XCTAssertEqual("checkout", dataLakeTrackingClientProps?["context_page"] as? String)
+    XCTAssertEqual("checkout", segmentTrackingClientProps?["context_page"] as? String)
+
+    // Checkout properties
+
+    XCTAssertEqual("10.00", dataLakeTrackingClientProps?["checkout_amount"] as? String)
+    XCTAssertEqual("CREDIT_CARD", dataLakeTrackingClientProps?["checkout_payment_type"] as? String)
+    XCTAssertEqual("My Reward", dataLakeTrackingClientProps?["checkout_reward_title"] as? String)
+    XCTAssertEqual("10.00", dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? String)
+    XCTAssertEqual(1, dataLakeTrackingClientProps?["checkout_reward_id"] as? Int)
+    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Double)
+    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
+    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_time"] as? Bool)
+    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_shipping_enabled"] as? Bool)
+    XCTAssertEqual(
+      true,
+      dataLakeTrackingClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool
     )
 
-    XCTAssertNotNil(segmentClientProperties?["optimizely_api_key"], "Event includes Optimizely properties")
-    XCTAssertNotNil(
-      segmentClientProperties?["optimizely_environment"],
-      "Event includes Optimizely properties"
+    XCTAssertEqual("10.00", segmentTrackingClientProps?["checkout_amount"] as? String)
+    XCTAssertEqual("CREDIT_CARD", segmentTrackingClientProps?["checkout_payment_type"] as? String)
+    XCTAssertEqual("My Reward", segmentTrackingClientProps?["checkout_reward_title"] as? String)
+    XCTAssertEqual("10.00", segmentTrackingClientProps?["checkout_reward_minimum_usd"] as? String)
+    XCTAssertEqual(1, segmentTrackingClientProps?["checkout_reward_id"] as? Int)
+    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_amount_total_usd"] as? Double)
+    XCTAssertEqual(true, segmentTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
+    XCTAssertEqual(true, segmentTrackingClientProps?["checkout_reward_is_limited_time"] as? Bool)
+    XCTAssertEqual(true, segmentTrackingClientProps?["checkout_reward_shipping_enabled"] as? Bool)
+    XCTAssertEqual(
+      true,
+      segmentTrackingClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool
     )
-    XCTAssertNotNil(
-      segmentClientProperties?["session_variants_optimizely"],
-      "Event includes Optimizely properties"
-    )
+
+    // Base User Attributes properties
+    assertBaseUserAttributesLoggedOut()
   }
 
   func testTrackingEvents_ChangePaymentMethod() {
@@ -5360,17 +5377,13 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.submitButtonTapped()
 
-    XCTAssertEqual([
-      "Checkout Payment Page Viewed"
-    ], self.dataLakeTrackingClient.events)
-    XCTAssertEqual([
-      "Checkout Payment Page Viewed"
-    ], self.segmentTrackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
   }
 
   func testTrackingEvents_ContextIsUpdate() {
@@ -5389,17 +5402,17 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.submitButtonTapped()
 
     XCTAssertEqual(
-      ["Checkout Payment Page Viewed"],
+      [],
       self.dataLakeTrackingClient.events
     )
     XCTAssertEqual(
-      ["Checkout Payment Page Viewed"],
+      [],
       self.segmentTrackingClient.events
     )
   }
@@ -5420,17 +5433,17 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.submitButtonTapped()
 
     XCTAssertEqual(
-      ["Checkout Payment Page Viewed"],
+      [],
       self.dataLakeTrackingClient.events
     )
     XCTAssertEqual(
-      ["Checkout Payment Page Viewed"],
+      [],
       self.segmentTrackingClient.events
     )
   }
@@ -5468,8 +5481,8 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual([], self.segmentTrackingClient.events)
       self.vm.inputs.viewDidLoad()
 
-      XCTAssertEqual(["Checkout Payment Page Viewed"], dataLakeClient.events)
-      XCTAssertEqual(["Checkout Payment Page Viewed"], segmentClient.events)
+      XCTAssertEqual(["Page Viewed"], dataLakeClient.events)
+      XCTAssertEqual(["Page Viewed"], segmentClient.events)
 
       XCTAssertEqual(dataLakeClient.properties(forKey: "session_ref_tag"), ["discovery"])
       XCTAssertEqual(segmentClient.properties(forKey: "session_ref_tag"), ["discovery"])
@@ -5510,8 +5523,8 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual([], self.segmentTrackingClient.events)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
     XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
@@ -5568,8 +5581,8 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual([], self.segmentTrackingClient.events)
       self.vm.inputs.viewDidLoad()
 
-      XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
-      XCTAssertEqual(["Checkout Payment Page Viewed"], self.segmentTrackingClient.events)
+      XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
@@ -5635,8 +5648,8 @@ final class PledgeViewModelTests: TestCase {
       XCTAssertEqual([], self.segmentTrackingClient.events)
       self.vm.inputs.viewDidLoad()
 
-      XCTAssertEqual(["Checkout Payment Page Viewed"], dataLakeTrackingClient.events)
-      XCTAssertEqual(["Checkout Payment Page Viewed"], segmentClient.events)
+      XCTAssertEqual(["Page Viewed"], dataLakeTrackingClient.events)
+      XCTAssertEqual(["Page Viewed"], segmentClient.events)
 
       XCTAssertEqual(dataLakeTrackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
       XCTAssertEqual(
@@ -5784,8 +5797,8 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Checkout Payment Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (
       amount: 40.0,
@@ -5799,11 +5812,11 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.submitButtonTapped()
 
     XCTAssertEqual(
-      ["Checkout Payment Page Viewed", "CTA Clicked"],
+      ["Page Viewed", "CTA Clicked"],
       self.dataLakeTrackingClient.events
     )
     XCTAssertEqual(
-      ["Checkout Payment Page Viewed", "CTA Clicked"],
+      ["Page Viewed", "CTA Clicked"],
       self.segmentTrackingClient.events
     )
 
@@ -5894,17 +5907,17 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.creditCardSelected(with: "12345")
 
-      XCTAssertEqual(["Checkout Payment Page Viewed"], self.dataLakeTrackingClient.events)
-      XCTAssertEqual(["Checkout Payment Page Viewed"], self.segmentTrackingClient.events)
+      XCTAssertEqual([], self.dataLakeTrackingClient.events)
+      XCTAssertEqual([], self.segmentTrackingClient.events)
 
       self.vm.inputs.submitButtonTapped()
 
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed"],
+        [],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
-        ["Checkout Payment Page Viewed"],
+        [],
         self.segmentTrackingClient.events
       )
     }
