@@ -9,7 +9,7 @@ import UIKit
 
 internal final class FacebookConfirmationViewController: UIViewController,
   MFMailComposeViewControllerDelegate {
-  @IBOutlet var disclaimerButton: UIButton!
+  @IBOutlet var disclaimerLabel: UILabel!
   @IBOutlet private var confirmationLabel: UILabel!
   @IBOutlet private var createAccountButton: UIButton!
   @IBOutlet private var emailLabel: UILabel!
@@ -47,9 +47,6 @@ internal final class FacebookConfirmationViewController: UIViewController,
       for: .valueChanged
     )
 
-    self.disclaimerButton
-      .addTarget(self, action: #selector(self.disclaimerButtonPressed), for: .touchUpInside)
-
     let tapGestureRecognizer = UITapGestureRecognizer(
       target: self, action: #selector(self.newsletterLabelTapped)
     )
@@ -64,8 +61,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
     _ = self
       |> baseControllerStyle()
 
-    _ = self.disclaimerButton
-      |> disclaimerButtonStyle
+    _ = self.disclaimerLabel |> disclaimerLabelStyle
 
     _ = self.confirmationLabel |> fbConfirmationMessageLabelStyle
     _ = self.createAccountButton |> createNewAccountButtonStyle
@@ -189,10 +185,6 @@ internal final class FacebookConfirmationViewController: UIViewController,
   }
 
   @objc fileprivate func newsletterLabelTapped() {
-    self.helpViewModel.inputs.showHelpSheetButtonTapped()
-  }
-
-  @objc fileprivate func disclaimerButtonPressed() {
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
 

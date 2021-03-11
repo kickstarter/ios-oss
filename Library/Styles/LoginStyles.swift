@@ -162,6 +162,18 @@ public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
     Strings.Receive_a_weekly_mix_of_handpicked_projects_plus_occasional_Kickstarter_news()
   }
 
+public let disclaimerLabelStyle = UILabel.lens.font %~~ { _, label in
+  label.traitCollection.isRegularRegular ? .ksr_footnote(size: 14.0) : .ksr_footnote(size: 11.0)
+}
+
+  <> UILabel.lens.textColor .~ .ksr_support_400
+  <> UILabel.lens.lineBreakMode .~ .byWordWrapping
+  <> UILabel.lens.numberOfLines .~ 0
+  <> UILabel.lens.textAlignment .~ .center
+  <> UILabel.lens.text %~ { _ in
+    Strings.By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy()
+  }
+
 public let tfaCodeFieldStyle = formFieldStyle
   <> UITextField.lens.textAlignment .~ .center
   <> UITextField.lens.font .~ .ksr_title1()

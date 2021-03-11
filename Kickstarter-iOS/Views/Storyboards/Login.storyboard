@@ -577,13 +577,20 @@
                                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="wEW-ea-J83">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="E7I-ML-LSQ">
                                                         <rect key="frame" x="0.0" y="200" width="368" height="150"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y43-0W-FkN">
+                                                                <rect key="frame" x="0.0" y="0.0" width="368" height="20.5"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="NGI-UU-mqk"/>
+                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="kd0-qd-gZH"/>
                                                         </constraints>
-                                                        <state key="normal" title="Button"/>
-                                                    </button>
+                                                    </stackView>
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="g4y-Ze-ncG" userLabel="Login">
@@ -633,7 +640,7 @@
                     <connections>
                         <outlet property="confirmationLabel" destination="Ay8-Ym-I01" id="k6e-Ud-cjo"/>
                         <outlet property="createAccountButton" destination="VHR-ZD-hIa" id="m2x-fE-f3n"/>
-                        <outlet property="disclaimerButton" destination="wEW-ea-J83" id="DrB-dU-g81"/>
+                        <outlet property="disclaimerLabel" destination="Y43-0W-FkN" id="3pd-vs-eN2"/>
                         <outlet property="emailLabel" destination="EiY-Q0-wRr" id="M2A-lI-Wd7"/>
                         <outlet property="loginButton" destination="oMq-Lz-Vqr" id="gGQ-f1-Q19"/>
                         <outlet property="loginLabel" destination="7LL-th-UNn" id="cXm-4k-CXd"/>
