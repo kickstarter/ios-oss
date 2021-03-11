@@ -184,7 +184,7 @@ public final class WatchProjectViewModel: WatchProjectViewModelType,
           project: project,
           location: context,
           params: discoveryParams,
-          watchContext: self.saveButtonTappedProperty.value ? .unwatch : .watch
+          typeContext: self.saveButtonTappedProperty.value ? .unwatch : .watch
         )
       }
   }

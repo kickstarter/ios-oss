@@ -810,7 +810,7 @@ final class KSRAnalyticsTests: TestCase {
       project: .template,
       location: .discovery,
       params: DiscoveryParams.recommendedDefaults,
-      watchContext: .watch
+      typeContext: .watch
     )
 
     XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
@@ -839,7 +839,7 @@ final class KSRAnalyticsTests: TestCase {
       project: .template,
       location: .discovery,
       params: DiscoveryParams.recommendedDefaults,
-      watchContext: .unwatch
+      typeContext: .unwatch
     )
 
     XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
@@ -867,7 +867,7 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
       location: .projectPage,
-      watchContext: .watch
+      typeContext: .watch
     )
 
     XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
@@ -885,7 +885,7 @@ final class KSRAnalyticsTests: TestCase {
     self.assertProjectProperties(segmentClient.properties.last)
   }
 
-  func testUnWatchProjectButtonClicked_ProjectPageLocationContext() {
+  func testUnWatchProjectButtonClicked_ContextProperties() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
@@ -893,7 +893,7 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
       location: .projectPage,
-      watchContext: .unwatch
+      typeContext: .unwatch
     )
 
     XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
@@ -1682,9 +1682,9 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(KSRAnalytics.TypeContext.subscriptionFalse.trackingString, "subscription_false")
     XCTAssertEqual(KSRAnalytics.TypeContext.subscriptionTrue.trackingString, "subscription_true")
     XCTAssertEqual(KSRAnalytics.TypeContext.tag.trackingString, "tag")
-    XCTAssertEqual(KSRAnalytics.TypeContext.watchContext(.unwatch).trackingString, "unwatch")
-    XCTAssertEqual(KSRAnalytics.TypeContext.watchContext(.watch).trackingString, "watch")
-    XCTAssertEqual(KSRAnalytics.TypeContext.watchContext(.watched).trackingString, "watched")
+    XCTAssertEqual(KSRAnalytics.TypeContext.unwatch.trackingString, "unwatch")
+    XCTAssertEqual(KSRAnalytics.TypeContext.watch.trackingString, "watch")
+    XCTAssertEqual(KSRAnalytics.TypeContext.watched.trackingString, "watched")
   }
 
   /*

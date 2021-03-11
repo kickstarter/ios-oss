@@ -368,7 +368,9 @@ public final class KSRAnalytics {
     case subscriptionFalse
     case subscriptionTrue
     case tag
-    case watchContext(WatchContext)
+    case unwatch
+    case watch
+    case watched
 
     public enum PledgeContext {
       case fixErroredPledge
@@ -380,20 +382,6 @@ public final class KSRAnalytics {
         case .fixErroredPledge: return "fix_errored_pledge"
         case .newPledge: return "new_pledge"
         case .managePledge: return "manage_pledge"
-        }
-      }
-    }
-
-    public enum WatchContext {
-      case unwatch
-      case watch
-      case watched
-
-      var trackingString: String {
-        switch self {
-        case .unwatch: return "unwatch"
-        case .watch: return "watch"
-        case .watched: return "watched"
         }
       }
     }
@@ -420,7 +408,9 @@ public final class KSRAnalytics {
       case .subscriptionFalse: return "subscription_false"
       case .subscriptionTrue: return "subscription_true"
       case .tag: return "tag"
-      case let .watchContext(watchContext): return watchContext.trackingString
+      case .unwatch: return "unwatch"
+      case .watch: return "watch"
+      case .watched: return "watched"
       }
     }
   }
@@ -1219,12 +1209,12 @@ public final class KSRAnalytics {
     project: Project,
     location: PageContext,
     params: DiscoveryParams? = nil,
-    watchContext: TypeContext.WatchContext
+    typeContext: TypeContext
   ) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(
         ctaContext: .watchProject,
-        typeContext: .watchContext(watchContext)
+        typeContext: typeContext
       ))
 
     if let discoveryParams = params {
