@@ -10,7 +10,7 @@ public func featureEmailVerificationSkipIsEnabled() -> Bool {
 }
 
 public func featureSegmentIsEnabled() -> Bool {
-  return true // Feature.segment.isEnabled()
+  return Feature.segment.isEnabled()
 }
 
 extension Feature {
