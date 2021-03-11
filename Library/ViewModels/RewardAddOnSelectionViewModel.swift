@@ -329,7 +329,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
         refTag: refTag
       )
     }
-    
+
     // Send updated checkout data with add-ons continue event
     Signal.combineLatest(
       project,
@@ -341,26 +341,26 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       allRewardsShippingTotal,
       refTag
     ).takeWhen(self.continueButtonTappedProperty.signal)
-    .observeValues { project, baseReward, selectedRewards, selectedQuantities, additionalPledgeAmount, pledgeTotal, shippingTotal, refTag in
-      
-      let checkoutData = checkoutProperties(
-        from: project,
-        baseReward: baseReward,
-        addOnRewards: selectedRewards,
-        selectedQuantities: selectedQuantities,
-        additionalPledgeAmount: additionalPledgeAmount,
-        pledgeTotal: pledgeTotal,
-        shippingTotal: shippingTotal,
-        isApplePay: nil
-      )
-      
-      AppEnvironment.current.ksrAnalytics.trackAddOnsContinueButtonClicked(
-        project: project,
-        reward: baseReward,
-        checkoutData: checkoutData,
-        refTag: refTag
-      )
-    }
+      .observeValues { project, baseReward, selectedRewards, selectedQuantities, additionalPledgeAmount, pledgeTotal, shippingTotal, refTag in
+
+        let checkoutData = checkoutProperties(
+          from: project,
+          baseReward: baseReward,
+          addOnRewards: selectedRewards,
+          selectedQuantities: selectedQuantities,
+          additionalPledgeAmount: additionalPledgeAmount,
+          pledgeTotal: pledgeTotal,
+          shippingTotal: shippingTotal,
+          isApplePay: nil
+        )
+
+        AppEnvironment.current.ksrAnalytics.trackAddOnsContinueButtonClicked(
+          project: project,
+          reward: baseReward,
+          checkoutData: checkoutData,
+          refTag: refTag
+        )
+      }
   }
 
   private let (beginRefreshSignal, beginRefreshObserver) = Signal<Void, Never>.pipe()
