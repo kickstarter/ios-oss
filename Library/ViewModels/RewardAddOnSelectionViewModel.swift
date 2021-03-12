@@ -258,7 +258,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     let shippingTotal = Signal.combineLatest(
       shippingRule.skipNil(),
-      allRewards,
+      selectedRewards,
       selectedQuantities
     )
     .map(calculateShippingTotal)
@@ -271,7 +271,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       shippingTotal
     )
 
-    // Addtional pledge amount is zero if not backed.
+    // Additional pledge amount is zero if not backed.
     let additionalPledgeAmount = Signal.merge(
       configData.filter { $0.project.personalization.backing == nil }.mapConst(0.0),
       project.map { $0.personalization.backing }.skipNil().map(\.bonusAmount)
@@ -330,13 +330,34 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       )
     }
 
-    Signal.zip(project, baseReward, refTag)
-      .takeWhen(self.continueButtonTappedProperty.signal)
-      .observeForUI()
-      .observeValues { project, baseReward, refTag in
+    // Send updated checkout data with add-ons continue event
+    Signal.combineLatest(
+      project,
+      baseReward,
+      selectedRewards,
+      selectedQuantities,
+      additionalPledgeAmount,
+      pledgeTotal,
+      allRewardsShippingTotal,
+      refTag
+    ).takeWhen(self.continueButtonTappedProperty.signal)
+      .observeValues { project, baseReward, selectedRewards, selectedQuantities, additionalPledgeAmount, pledgeTotal, shippingTotal, refTag in
+
+        let checkoutData = checkoutProperties(
+          from: project,
+          baseReward: baseReward,
+          addOnRewards: selectedRewards,
+          selectedQuantities: selectedQuantities,
+          additionalPledgeAmount: additionalPledgeAmount,
+          pledgeTotal: pledgeTotal,
+          shippingTotal: shippingTotal,
+          isApplePay: nil
+        )
+
         AppEnvironment.current.ksrAnalytics.trackAddOnsContinueButtonClicked(
           project: project,
           reward: baseReward,
+          checkoutData: checkoutData,
           refTag: refTag
         )
       }
