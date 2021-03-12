@@ -186,9 +186,15 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
     // KSRAnalytics
-
-    viewWillAppearNotAnimated
-      .observeValues { AppEnvironment.current.ksrAnalytics.trackProjectSearchView() }
+    
+    Signal.combineLatest(
+      viewWillAppearNotAnimated,
+      requestFirstPageWith,
+      projects
+    )
+      .observeValues { _, requestParams, projects in
+        AppEnvironment.current.ksrAnalytics.trackProjectSearchView(params: requestParams, results: projects.count)
+      }
 
     let hasResults = Signal.combineLatest(paginatedProjects, isLoading)
       .filter(second >>> isFalse)

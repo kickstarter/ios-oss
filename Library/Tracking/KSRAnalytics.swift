@@ -48,7 +48,6 @@ public final class KSRAnalytics {
     case projectCardClicked = "Project Card Clicked"
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
     case projectSwiped = "Project Swiped"
-    case searchPageViewed = "Search Page Viewed"
     case searchResultsLoaded = "Search Results Loaded"
     case signupButtonClicked = "Signup Button Clicked"
     case signupSubmitButtonClicked = "Signup Submit Button Clicked"
@@ -1127,8 +1126,23 @@ public final class KSRAnalytics {
   // MARK: - Search Events
 
   /// Call once when the search view is initially shown.
-  public func trackProjectSearchView() {
-    self.track(event: ApprovedEvent.searchPageViewed.rawValue, location: .search)
+  public func trackProjectSearchView(params: DiscoveryParams, results: Int) {
+    
+    var props = discoveryProperties(from: params)
+    
+    if let query = params.query {
+      props = props.withAllValuesFrom(["discover_search_term": query])
+    }
+    
+    if results > 0 {
+      props = props.withAllValuesFrom(["discover_search_results_count": results])
+    }
+    
+    self.track(
+      event: NewApprovedEvent.pageViewed.rawValue,
+      location: .search,
+      properties: props
+    )
   }
 
   // Call when projects have been obtained from a search.
