@@ -568,15 +568,14 @@ public final class KSRAnalytics {
   public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
     switch tabBarItemLabel {
     case .search:
-      let props = contextProperties(
+      let properties = contextProperties(
         ctaContext: .search,
         locationContext: .globalNav
       )
-
       self.track(
         event: NewApprovedEvent.ctaClicked.rawValue,
         page: .search,
-        properties: props
+        properties: properties
       )
     default:
       let properties = contextProperties(tabBarLabel: tabBarItemLabel)
