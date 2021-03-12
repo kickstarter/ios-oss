@@ -1339,18 +1339,20 @@ final class KSRAnalyticsTests: TestCase {
       "Tab Bar Clicked",
       "Tab Bar Clicked",
       "Tab Bar Clicked",
-      "Tab Bar Clicked"
+      "CTA Clicked"
     ], dataLakeClient.events)
-    XCTAssertEqual("search", dataLakeClient.properties.last?["context_tab_bar_label"] as? String)
+    XCTAssertEqual("search", dataLakeClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
 
     XCTAssertEqual([
       "Tab Bar Clicked",
       "Tab Bar Clicked",
       "Tab Bar Clicked",
       "Tab Bar Clicked",
-      "Tab Bar Clicked"
+      "CTA Clicked"
     ], segmentClient.events)
-    XCTAssertEqual("search", segmentClient.properties.last?["context_tab_bar_label"] as? String)
+    XCTAssertEqual("search", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
   }
 
   func testTrackProjectViewedEvent() {
@@ -1581,6 +1583,14 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
 
+    ksrAnalytics.trackTabBarClicked(.search)
+    XCTAssertEqual("search", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("search", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("search", dataLakeClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("search", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("global_nav", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
+
     ksrAnalytics.trackProjectSearchView()
     XCTAssertEqual("search", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("search", segmentClient.properties.last?["context_page"] as? String)
@@ -1718,6 +1728,10 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(KSRAnalytics.TypeContext.tag.trackingString, "tag")
     XCTAssertEqual(KSRAnalytics.TypeContext.unwatch.trackingString, "unwatch")
     XCTAssertEqual(KSRAnalytics.TypeContext.watch.trackingString, "watch")
+  }
+
+  func testLocationContextTrackingStrings() {
+    XCTAssertEqual(KSRAnalytics.LocationContext.globalNav.trackingString, "global_nav")
   }
 
   /*
