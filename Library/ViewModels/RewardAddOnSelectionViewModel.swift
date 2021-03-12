@@ -258,7 +258,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     let shippingTotal = Signal.combineLatest(
       shippingRule.skipNil(),
-      allRewards,
+      selectedRewards,
       selectedQuantities
     )
     .map(calculateShippingTotal)
