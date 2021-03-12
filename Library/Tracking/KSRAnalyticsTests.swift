@@ -640,7 +640,7 @@ final class KSRAnalyticsTests: TestCase {
     let project = Project.cosmicSurgery
     let reward = Reward.template
 
-    ksrAnalytics.trackAddOnsContinueButtonClicked(project: project, reward: reward, refTag: .recommended)
+    ksrAnalytics.trackAddNewCardButtonClicked(project: project, refTag: .recommended, reward: reward)
 
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
@@ -667,7 +667,7 @@ final class KSRAnalyticsTests: TestCase {
     let reward = Reward.noReward
       |> Reward.lens.minimum .~ 5.0
 
-    ksrAnalytics.trackAddOnsContinueButtonClicked(project: project, reward: reward, refTag: nil)
+    ksrAnalytics.trackAddNewCardButtonClicked(project: project, refTag: .recommended, reward: reward)
 
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
@@ -1420,6 +1420,40 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertNil(self.segmentTrackingClient.userId)
     XCTAssertNil(self.segmentTrackingClient.traits)
+  }
+
+  func testTrackAddOnsContinueButtonClicked() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.shipping.preference .~ .restricted
+      |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
+
+    ksrAnalytics
+      .trackAddOnsContinueButtonClicked(
+        project: project,
+        reward: reward,
+        checkoutData: .template,
+        refTag: nil
+      )
+
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+
+    let dataLakeClientProps = dataLakeClient.properties.last
+    let segmentClientProps = segmentClient.properties.last
+
+    XCTAssertEqual("add_ons_continue", dataLakeClientProps?["context_cta"] as? String)
+    XCTAssertEqual("add_ons_continue", segmentClientProps?["context_cta"] as? String)
+
+    self.assertProjectProperties(dataLakeClientProps)
+    self.assertProjectProperties(segmentClientProps)
+
+    self.assertCheckoutProperties(dataLakeClientProps)
+    self.assertCheckoutProperties(segmentClientProps)
   }
 
   func testContextProperties() {

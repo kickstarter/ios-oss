@@ -25,7 +25,6 @@ public final class KSRAnalytics {
   private enum ApprovedEvent: String, CaseIterable {
     case activityFeedViewed = "Activity Feed Viewed"
     case addNewCardButtonClicked = "Add New Card Button Clicked"
-    case addOnsContinueButtonClicked = "Add-Ons Continue Button Clicked"
     case addOnsPageViewed = "Add-Ons Page Viewed"
     case collectionViewed = "Collection Viewed"
     case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
@@ -728,15 +727,14 @@ public final class KSRAnalytics {
   public func trackAddOnsContinueButtonClicked(
     project: Project,
     reward: Reward,
+    checkoutData: CheckoutPropertiesData,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties())
-
+      .withAllValuesFrom(contextProperties(ctaContext: .addOnsContinue))
+      .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
     self.track(
-      event: ApprovedEvent.addOnsContinueButtonClicked.rawValue,
-      page: .addOnsSelection,
+      event: NewApprovedEvent.ctaClicked.rawValue,
       properties: props,
       refTag: refTag?.stringTag
     )
