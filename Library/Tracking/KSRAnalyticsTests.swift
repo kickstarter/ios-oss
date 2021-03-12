@@ -1549,7 +1549,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
 
-    ksrAnalytics.trackProjectSearchButtonClicked()
+    ksrAnalytics.trackTabBarClicked(.search)
     XCTAssertEqual("search", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("search", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("search", dataLakeClient.properties.last?["context_cta"] as? String)
