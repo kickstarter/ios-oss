@@ -25,9 +25,7 @@ public final class KSRAnalytics {
   private enum ApprovedEvent: String, CaseIterable {
     case activityFeedViewed = "Activity Feed Viewed"
     case addNewCardButtonClicked = "Add New Card Button Clicked"
-    case addOnsContinueButtonClicked = "Add-Ons Continue Button Clicked"
     case addOnsPageViewed = "Add-Ons Page Viewed"
-    case checkoutPaymentPageViewed = "Checkout Payment Page Viewed"
     case collectionViewed = "Collection Viewed"
     case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
     case editorialCardClicked = "Editorial Card Clicked"
@@ -57,7 +55,6 @@ public final class KSRAnalytics {
     case tabBarClicked = "Tab Bar Clicked"
     case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
     case verificationScreenViewed = "Verification Screen Viewed"
-    case watchProjectButtonClicked = "Watch Project Button Clicked"
   }
 
   private enum NewApprovedEvent: String, CaseIterable {
@@ -70,6 +67,7 @@ public final class KSRAnalytics {
     case activities = "activity_feed" // ActivitiesViewController
     case addOnsSelection = "add_ons" // RewardAddOnSelectionViewController
     case campaign // ProjectDescriptionViewController
+    case checkout // // PledgeViewController
     case discovery = "discover" // DiscoveryViewController
     case editorialProjects = "editorial_collection" // EditorialProjectsViewController
     case emailVerification = "email_verification" // EmailVerificationViewController
@@ -371,7 +369,6 @@ public final class KSRAnalytics {
     case tag
     case unwatch
     case watch
-    case watched
 
     public enum PledgeContext {
       case fixErroredPledge
@@ -411,7 +408,6 @@ public final class KSRAnalytics {
       case .tag: return "tag"
       case .unwatch: return "unwatch"
       case .watch: return "watch"
-      case .watched: return "watched"
       }
     }
   }
@@ -706,15 +702,15 @@ public final class KSRAnalytics {
   public func trackAddOnsContinueButtonClicked(
     project: Project,
     reward: Reward,
+    checkoutData: CheckoutPropertiesData,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties())
+      .withAllValuesFrom(contextProperties(ctaContext: .addOnsContinue))
+      .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
 
     self.track(
-      event: ApprovedEvent.addOnsContinueButtonClicked.rawValue,
-      location: .addOnsSelection,
+      event: NewApprovedEvent.ctaClicked.rawValue,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -728,7 +724,6 @@ public final class KSRAnalytics {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
-      .withAllValuesFrom(contextProperties(page: .addOnsSelection))
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
@@ -840,7 +835,7 @@ public final class KSRAnalytics {
    parameters:
    - project: the project being pledged to
    - reward: the chosen reward
-   - context: the PledgeContext from which the event was triggered
+   - checkoutData: the `CheckoutPropertiesData` associated with the given project and reward
    - refTag: the associated RefTag for the pledge
    - cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
 
@@ -849,18 +844,16 @@ public final class KSRAnalytics {
   public func trackCheckoutPaymentPageViewed(
     project: Project,
     reward: Reward,
+    checkoutData: CheckoutPropertiesData,
     refTag: RefTag?,
-    cookieRefTag: RefTag?,
-    optimizelyProperties: [String: Any] = [:]
+    cookieRefTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties())
-      .withAllValuesFrom(optimizelyProperties)
+      .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
 
     self.track(
-      event: ApprovedEvent.checkoutPaymentPageViewed.rawValue,
-      location: .pledgeScreen,
+      event: NewApprovedEvent.pageViewed.rawValue,
+      location: .checkout,
       properties: props,
       refTag: refTag?.stringTag,
       referrerCredit: cookieRefTag?.stringTag
@@ -1206,21 +1199,27 @@ public final class KSRAnalytics {
    - parameter project: The project being watched
    - parameter location: The location context of where the project is being watched from
    - parameter params: The optional Discover params if the project is being watched from Discover
+   - parameter typeContext: The context of the watch/saved project
    */
 
   public func trackWatchProjectButtonClicked(
     project: Project,
     location: PageContext,
-    params: DiscoveryParams? = nil
+    params: DiscoveryParams? = nil,
+    typeContext: TypeContext
   ) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(
+        ctaContext: .watchProject,
+        typeContext: typeContext
+      ))
 
     if let discoveryParams = params {
       props = props.withAllValuesFrom(discoveryProperties(from: discoveryParams))
     }
 
     self.track(
-      event: ApprovedEvent.watchProjectButtonClicked.rawValue,
+      event: NewApprovedEvent.ctaClicked.rawValue,
       location: location,
       properties: props
     )
