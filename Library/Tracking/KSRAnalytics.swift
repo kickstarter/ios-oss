@@ -30,7 +30,6 @@ public final class KSRAnalytics {
     case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
     case editorialCardClicked = "Editorial Card Clicked"
     case explorePageViewed = "Explore Page Viewed"
-    case exploreSortClicked = "Explore Sort Clicked"
     case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
     case filterClicked = "Filter Clicked"
     case fixPledgeButtonClicked = "Fix Pledge Button Clicked"
@@ -354,6 +353,7 @@ public final class KSRAnalytics {
     case backed
     case categoryName
     case creditCard
+    case discovery(DiscoveryContext)
     case facebook
     case location
     case percentRaised
@@ -369,6 +369,22 @@ public final class KSRAnalytics {
     case tag
     case unwatch
     case watch
+
+    public enum DiscoveryContext {
+      case endingSoon
+      case magic
+      case newest
+      case popular
+
+      var trackingString: String {
+        switch self {
+        case .endingSoon: return "ending_soon"
+        case .magic: return "magic"
+        case .newest: return "newest"
+        case .popular: return "popular"
+        }
+      }
+    }
 
     public enum PledgeContext {
       case fixErroredPledge
@@ -393,6 +409,7 @@ public final class KSRAnalytics {
       case .backed: return "backed"
       case .categoryName: return "category_name"
       case .creditCard: return "credit_card"
+      case let .discovery(discoveryContext): return discoveryContext.trackingString
       case .facebook: return "facebook"
       case .location: return "location"
       case .percentRaised: return "percent_raised"
@@ -416,10 +433,14 @@ public final class KSRAnalytics {
    A context providing additional details about the location the event occurs.
    */
   public enum LocationContext {
+    case discoverAdvanced
+    case discoverOverlay
     case globalNav
 
     var trackingString: String {
       switch self {
+      case .discoverAdvanced: return "discover_advanced"
+      case .discoverOverlay: return "discover_overlay"
       case .globalNav: return "global_nav"
       }
     }
@@ -662,9 +683,16 @@ public final class KSRAnalytics {
       .withAllValuesFrom([
         "discover_sort": sort.rawValue
       ])
+      .withAllValuesFrom(
+        contextProperties(
+          ctaContext: .discoverSort,
+          typeContext: .discovery(TrackingHelpers.discoveryContext(for: sort)),
+          locationContext: .discoverAdvanced
+        )
+      )
 
     self.track(
-      event: ApprovedEvent.exploreSortClicked.rawValue,
+      event: NewApprovedEvent.ctaClicked.rawValue,
       page: .discovery,
       properties: props
     )

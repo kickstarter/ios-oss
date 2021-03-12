@@ -9,4 +9,11 @@ final class TrackingHelpersTests: TestCase {
     XCTAssertEqual(TrackingHelpers.pledgeContext(for: .changePaymentMethod).trackingString, "manage_pledge")
     XCTAssertEqual(TrackingHelpers.pledgeContext(for: .fixPaymentMethod).trackingString, "fix_errored_pledge")
   }
+
+  func testDiscoveryContext() {
+    XCTAssertEqual(TrackingHelpers.discoveryContext(for: .endingSoon).trackingString, "ending_soon")
+    XCTAssertEqual(TrackingHelpers.discoveryContext(for: .magic).trackingString, "magic")
+    XCTAssertEqual(TrackingHelpers.discoveryContext(for: .newest).trackingString, "newest")
+    XCTAssertEqual(TrackingHelpers.discoveryContext(for: .popular).trackingString, "popular")
+  }
 }

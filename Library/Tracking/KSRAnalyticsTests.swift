@@ -1711,6 +1711,10 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(KSRAnalytics.TypeContext.backed.trackingString, "backed")
     XCTAssertEqual(KSRAnalytics.TypeContext.categoryName.trackingString, "category_name")
     XCTAssertEqual(KSRAnalytics.TypeContext.creditCard.trackingString, "credit_card")
+    XCTAssertEqual(KSRAnalytics.TypeContext.discovery(.endingSoon).trackingString, "ending_soon")
+    XCTAssertEqual(KSRAnalytics.TypeContext.discovery(.magic).trackingString, "magic")
+    XCTAssertEqual(KSRAnalytics.TypeContext.discovery(.newest).trackingString, "newest")
+    XCTAssertEqual(KSRAnalytics.TypeContext.discovery(.popular).trackingString, "popular")
     XCTAssertEqual(KSRAnalytics.TypeContext.facebook.trackingString, "facebook")
     XCTAssertEqual(KSRAnalytics.TypeContext.pledge(.fixErroredPledge).trackingString, "fix_errored_pledge")
     XCTAssertEqual(KSRAnalytics.TypeContext.pledge(.managePledge).trackingString, "manage_pledge")
@@ -1732,6 +1736,8 @@ final class KSRAnalyticsTests: TestCase {
 
   func testLocationContextTrackingStrings() {
     XCTAssertEqual(KSRAnalytics.LocationContext.globalNav.trackingString, "global_nav")
+    XCTAssertEqual(KSRAnalytics.LocationContext.discoverAdvanced.trackingString, "discover_advanced")
+    XCTAssertEqual(KSRAnalytics.LocationContext.discoverOverlay.trackingString, "discover_overlay")
   }
 
   /*
