@@ -413,6 +413,19 @@ public final class KSRAnalytics {
   }
 
   /**
+   A context providing additional details about the location the event occurs.
+   */
+  public enum LocationContext {
+    case globalNav
+
+    var trackingString: String {
+      switch self {
+      case .globalNav: return "global_nav"
+      }
+    }
+  }
+
+  /**
    Determines the place from which the update was presented.
 
    - activity:        The activity feed.
@@ -544,7 +557,7 @@ public final class KSRAnalytics {
   public func trackActivities(count: Int) {
     self.track(
       event: ApprovedEvent.activityFeedViewed.rawValue,
-      location: .activities,
+      page: .activities,
       properties: ["activities_count": count]
     )
   }
@@ -552,12 +565,24 @@ public final class KSRAnalytics {
   // MARK: - Application Lifecycle
 
   public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
-    let properties = contextProperties(tabBarLabel: tabBarItemLabel)
-
-    self.track(
-      event: ApprovedEvent.tabBarClicked.rawValue,
-      properties: properties
-    )
+    switch tabBarItemLabel {
+    case .search:
+      let properties = contextProperties(
+        ctaContext: .search,
+        locationContext: .globalNav
+      )
+      self.track(
+        event: NewApprovedEvent.ctaClicked.rawValue,
+        page: .search,
+        properties: properties
+      )
+    default:
+      let properties = contextProperties(tabBarLabel: tabBarItemLabel)
+      self.track(
+        event: ApprovedEvent.tabBarClicked.rawValue,
+        properties: properties
+      )
+    }
   }
 
   // MARK: - Onboarding Events
@@ -565,7 +590,7 @@ public final class KSRAnalytics {
   public func trackOnboardingCarouselSwiped(optimizelyProperties: [String: Any] = [:]) {
     self.track(
       event: ApprovedEvent.onboardingCarouselSwiped.rawValue,
-      location: .landingPage,
+      page: .landingPage,
       properties: optimizelyProperties
     )
   }
@@ -573,7 +598,7 @@ public final class KSRAnalytics {
   public func trackOnboardingGetStartedButtonClicked(optimizelyProperties: [String: Any] = [:]) {
     self.track(
       event: ApprovedEvent.onboardingGetStartedButtonClicked.rawValue,
-      location: .landingPage,
+      page: .landingPage,
       properties: optimizelyProperties
     )
   }
@@ -581,7 +606,7 @@ public final class KSRAnalytics {
   public func trackOnboardingSkipButtonClicked(optimizelyProperties: [String: Any] = [:]) {
     self.track(
       event: ApprovedEvent.onboardingSkipButtonClicked.rawValue,
-      location: .onboarding,
+      page: .onboarding,
       properties: optimizelyProperties
     )
   }
@@ -589,7 +614,7 @@ public final class KSRAnalytics {
   public func trackOnboardingContinueButtonClicked(optimizelyProperties: [String: Any] = [:]) {
     self.track(
       event: ApprovedEvent.onboardingContinueButtonClicked.rawValue,
-      location: .onboarding,
+      page: .onboarding,
       properties: optimizelyProperties
     )
   }
@@ -609,7 +634,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: ApprovedEvent.explorePageViewed.rawValue,
-      location: .discovery,
+      page: .discovery,
       properties: props
     )
   }
@@ -622,7 +647,7 @@ public final class KSRAnalytics {
   public func trackDiscoveryModalSelectedFilter(params: DiscoveryParams) {
     self.track(
       event: ApprovedEvent.filterClicked.rawValue,
-      location: .discovery,
+      page: .discovery,
       properties: discoveryProperties(from: params)
     )
   }
@@ -640,7 +665,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: ApprovedEvent.exploreSortClicked.rawValue,
-      location: .discovery,
+      page: .discovery,
       properties: props
     )
   }
@@ -656,7 +681,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: ApprovedEvent.editorialCardClicked.rawValue,
-      location: .discovery,
+      page: .discovery,
       properties: props,
       refTag: refTag.stringTag
     )
@@ -670,7 +695,7 @@ public final class KSRAnalytics {
   public func trackCollectionViewed(params: DiscoveryParams) {
     self.track(
       event: ApprovedEvent.collectionViewed.rawValue,
-      location: .editorialProjects,
+      page: .editorialProjects,
       properties: discoveryProperties(from: params)
     )
   }
@@ -692,7 +717,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: ApprovedEvent.projectCardClicked.rawValue,
-      location: location,
+      page: location,
       properties: props
     )
   }
@@ -708,7 +733,6 @@ public final class KSRAnalytics {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(ctaContext: .addOnsContinue))
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
-
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
       properties: props,
@@ -727,7 +751,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      location: .addOnsSelection,
+      page: .addOnsSelection,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -744,7 +768,7 @@ public final class KSRAnalytics {
     case .fix:
       self.track(
         event: ApprovedEvent.managePledgeButtonClicked.rawValue,
-        location: .projectPage,
+        page: .projectPage,
         properties: props.withAllValuesFrom(contextProperties()) // .fixErroredPledge
       )
     case .pledge:
@@ -754,13 +778,13 @@ public final class KSRAnalytics {
 
       self.track(
         event: NewApprovedEvent.ctaClicked.rawValue,
-        location: .projectPage,
+        page: .projectPage,
         properties: allProps
       )
     case .manage:
       self.track(
         event: ApprovedEvent.managePledgeButtonClicked.rawValue,
-        location: .projectPage,
+        page: .projectPage,
         properties: props.withAllValuesFrom(contextProperties()) // .manageReward
       )
     default:
@@ -774,7 +798,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: ApprovedEvent.fixPledgeButtonClicked.rawValue,
-      location: .managePledgeScreen,
+      page: .managePledgeScreen,
       properties: props
     )
   }
@@ -800,7 +824,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
-      location: .rewards,
+      page: .rewards,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -824,7 +848,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      location: .rewards,
+      page: .rewards,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -853,7 +877,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      location: .checkout,
+      page: .checkout,
       properties: props,
       refTag: refTag?.stringTag,
       referrerCredit: cookieRefTag?.stringTag
@@ -883,7 +907,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
-      location: .pledgeScreen,
+      page: .pledgeScreen,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -909,7 +933,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: ApprovedEvent.addNewCardButtonClicked.rawValue,
-      location: location,
+      page: location,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -931,7 +955,7 @@ public final class KSRAnalytics {
     var props = projectProperties(from: project)
       .withAllValuesFrom(pledgeProperties(from: reward))
       // the context is always "newPledge" for this event
-      .withAllValuesFrom(contextProperties(page: .thanks, typeContext: TypeContext.pledge(.newPledge)))
+      .withAllValuesFrom(contextProperties(typeContext: TypeContext.pledge(.newPledge)))
 
     if let checkoutData = checkoutData {
       props = props.withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
@@ -939,7 +963,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      location: .thanks,
+      page: .thanks,
       properties: props
     )
   }
@@ -954,7 +978,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties())
     self.track(
       event: ApprovedEvent.managePledgeButtonClicked.rawValue,
-      location: .activities,
+      page: .activities,
       properties: props
     )
   }
@@ -978,7 +1002,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: ApprovedEvent.loginOrSignupButtonClicked.rawValue,
-      location: .discovery,
+      page: .discovery,
       properties: props
     )
   }
@@ -999,7 +1023,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: ApprovedEvent.loginOrSignupPageViewed.rawValue,
-      location: .loginTout,
+      page: .loginTout,
       properties: props
     )
   }
@@ -1021,7 +1045,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: ApprovedEvent.loginButtonClicked.rawValue,
-      location: .loginTout,
+      page: .loginTout,
       properties: props
     )
   }
@@ -1043,7 +1067,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: ApprovedEvent.fbLoginOrSignupButtonClicked.rawValue,
-      location: .loginTout,
+      page: .loginTout,
       properties: props
     )
   }
@@ -1065,7 +1089,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: ApprovedEvent.continueWithAppleButtonClicked.rawValue,
-      location: .loginTout,
+      page: .loginTout,
       properties: props
     )
   }
@@ -1087,25 +1111,25 @@ public final class KSRAnalytics {
 
     self.track(
       event: ApprovedEvent.signupButtonClicked.rawValue,
-      location: .loginTout,
+      page: .loginTout,
       properties: props
     )
   }
 
   public func trackSignupSubmitButtonClicked() {
-    self.track(event: ApprovedEvent.signupSubmitButtonClicked.rawValue, location: .signup)
+    self.track(event: ApprovedEvent.signupSubmitButtonClicked.rawValue, page: .signup)
   }
 
   public func trackLoginSubmitButtonClicked() {
-    self.track(event: ApprovedEvent.loginSubmitButtonClicked.rawValue, location: .login)
+    self.track(event: ApprovedEvent.loginSubmitButtonClicked.rawValue, page: .login)
   }
 
   public func trackForgotPasswordViewed() {
-    self.track(event: ApprovedEvent.forgotPasswordViewed.rawValue, location: .forgotPassword)
+    self.track(event: ApprovedEvent.forgotPasswordViewed.rawValue, page: .forgotPassword)
   }
 
   public func track2FAViewed() {
-    self.track(event: ApprovedEvent.twoFactorConfirmationViewed.rawValue, location: .twoFactorAuth)
+    self.track(event: ApprovedEvent.twoFactorConfirmationViewed.rawValue, page: .twoFactorAuth)
   }
 
   private func loginEventProperties(for intent: LoginIntent, project: Project?, reward: Reward?)
@@ -1127,7 +1151,7 @@ public final class KSRAnalytics {
 
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView() {
-    self.track(event: ApprovedEvent.searchPageViewed.rawValue, location: .search)
+    self.track(event: ApprovedEvent.searchPageViewed.rawValue, page: .search)
   }
 
   // Call when projects have been obtained from a search.
@@ -1146,7 +1170,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: ApprovedEvent.searchResultsLoaded.rawValue,
-      location: .search,
+      page: .search,
       properties: props
     )
   }
@@ -1172,7 +1196,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      location: .projectPage,
+      page: .projectPage,
       properties: props,
       refTag: refTag?.stringTag,
       referrerCredit: cookieRefTag?.stringTag
@@ -1189,7 +1213,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: ApprovedEvent.projectSwiped.rawValue,
-      location: .projectPage,
+      page: .projectPage,
       properties: props, refTag: refTag?.stringTag
     )
   }
@@ -1220,7 +1244,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
-      location: location,
+      page: location,
       properties: props
     )
   }
@@ -1230,14 +1254,14 @@ public final class KSRAnalytics {
   public func trackEmailVerificationScreenViewed() {
     self.track(
       event: ApprovedEvent.verificationScreenViewed.rawValue,
-      location: .emailVerification
+      page: .emailVerification
     )
   }
 
   public func trackSkipEmailVerificationButtonClicked() {
     self.track(
       event: ApprovedEvent.skipVerificationButtonClicked.rawValue,
-      location: .emailVerification
+      page: .emailVerification
     )
   }
 
@@ -1246,14 +1270,14 @@ public final class KSRAnalytics {
   // Private tracking method that merges in default properties.
   private func track(
     event: String,
-    location: KSRAnalytics.PageContext? = nil,
+    page: KSRAnalytics.PageContext? = nil,
     properties: [String: Any] = [:],
     refTag: String? = nil,
     referrerCredit: String? = nil
   ) {
     let props = self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
       .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
-      .withAllValuesFrom(contextProperties(page: location))
+      .withAllValuesFrom(contextProperties(page: page))
       .withAllValuesFrom(properties)
 
     self.logEventCallback?(event, props)
@@ -1530,11 +1554,13 @@ private func contextProperties(
   page: KSRAnalytics.PageContext? = nil,
   sectionContext: KSRAnalytics.SectionContext? = nil,
   typeContext: KSRAnalytics.TypeContext? = nil,
+  locationContext: KSRAnalytics.LocationContext? = nil,
   prefix: String = "context_"
 ) -> [String: Any] {
   var result: [String: Any] = [:]
 
   result["cta"] = ctaContext?.trackingString
+  result["location"] = locationContext?.trackingString
   result["page"] = page?.rawValue
   result["section"] = sectionContext?.trackingString
   result["timestamp"] = AppEnvironment.current.dateType.init().timeIntervalSince1970
