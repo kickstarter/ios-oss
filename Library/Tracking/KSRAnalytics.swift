@@ -1163,7 +1163,7 @@ public final class KSRAnalytics {
     
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      location: .search,
+      page: .search,
       properties: props
     )
   }
