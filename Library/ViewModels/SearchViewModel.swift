@@ -188,7 +188,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     // KSRAnalytics
 
-    // Create signal producers that would emit initial values
+    // Create SignalProducers to emit initial values
     // for projects and discovery params
     let projectsProducer = SignalProducer(self.projects).prefix(value: [])
     let discoveryParamsProducer = SignalProducer(requestFirstPageWith).prefix(value: initialDiscoveryParams)

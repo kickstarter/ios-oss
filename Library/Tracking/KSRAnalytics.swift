@@ -1148,7 +1148,7 @@ public final class KSRAnalytics {
 
   // MARK: - Search Events
 
-  /// Call once when the search view is initially shown.
+  /// Call whenever the search view is shown.
   public func trackProjectSearchView(params: DiscoveryParams, results: Int) {
     var props = discoveryProperties(from: params)
 
