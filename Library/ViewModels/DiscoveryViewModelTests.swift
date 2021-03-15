@@ -506,22 +506,4 @@ internal final class DiscoveryViewModelTests: TestCase {
 
     self.updateSortPagerStyle.assertValues([1, 30], "Emits root category id.")
   }
-
-  /*
-   Helper to test all event properties for Discovery Explore Sorts
-   */
-  private func assertTrack_Discovery_EventProperties(
-    props: [String: Any]?,
-    prevSort: DiscoveryParams.Sort,
-    discoveryContext: KSRAnalytics.TypeContext.DiscoveryContext
-  ) {
-    XCTAssertEqual("discover_sort", props?["context_cta"] as? String)
-    XCTAssertEqual(discoveryContext.trackingString, props?["context_type"] as? String)
-    XCTAssertEqual("discover", props?["context_page"] as? String)
-    XCTAssertEqual("discover_advanced", props?["context_location"] as? String)
-    XCTAssertEqual(prevSort.trackString, props?["discover_sort"] as? String)
-    XCTAssertEqual(false, props?["discover_everything"] as? Bool)
-    XCTAssertEqual(true, props?["discover_recommended"] as? Bool)
-    XCTAssertEqual("recs_home", props?["discover_ref_tag"] as? String)
-  }
 }
