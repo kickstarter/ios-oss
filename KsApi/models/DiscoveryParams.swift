@@ -33,7 +33,7 @@ public struct DiscoveryParams {
     case newest
     case popular = "popularity"
 
-    public var trackString: String {
+    public var trackingString: String {
       switch self {
       case .endingSoon: return "ending_soon"
       case .magic: return "magic"

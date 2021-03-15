@@ -118,9 +118,9 @@ class DiscoveryParamsTests: XCTestCase {
   }
 
   func testDiscoveryParamsSortTrackingString() {
-    XCTAssertEqual(DiscoveryParams.Sort.endingSoon.trackString, "ending_soona")
-    XCTAssertEqual(DiscoveryParams.Sort.magic.trackString, "magic")
-    XCTAssertEqual(DiscoveryParams.Sort.newest.trackString, "newest")
-    XCTAssertEqual(DiscoveryParams.Sort.popular.trackString, "popular")
+    XCTAssertEqual(DiscoveryParams.Sort.endingSoon.trackingString, "ending_soon")
+    XCTAssertEqual(DiscoveryParams.Sort.magic.trackingString, "magic")
+    XCTAssertEqual(DiscoveryParams.Sort.newest.trackingString, "newest")
+    XCTAssertEqual(DiscoveryParams.Sort.popular.trackingString, "popular")
   }
 }

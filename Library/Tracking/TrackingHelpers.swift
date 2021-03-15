@@ -13,7 +13,8 @@ final class TrackingHelpers {
     }
   }
 
-  static func discoveryContext(for sort: DiscoveryParams.Sort) -> KSRAnalytics.TypeContext.DiscoveryContext {
+  static func discoveryContext(for sort: DiscoveryParams.Sort) -> KSRAnalytics.TypeContext
+    .DiscoverySortContext {
     switch sort {
     case .endingSoon: return .endingSoon
     case .magic: return .magic

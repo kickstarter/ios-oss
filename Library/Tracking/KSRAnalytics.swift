@@ -353,7 +353,7 @@ public final class KSRAnalytics {
     case backed
     case categoryName
     case creditCard
-    case discovery(DiscoveryContext)
+    case discovery(DiscoverySortContext)
     case facebook
     case location
     case percentRaised
@@ -370,7 +370,7 @@ public final class KSRAnalytics {
     case unwatch
     case watch
 
-    public enum DiscoveryContext {
+    public enum DiscoverySortContext {
       case endingSoon
       case magic
       case newest
@@ -685,7 +685,7 @@ public final class KSRAnalytics {
   ) {
     let props = discoveryProperties(from: params)
       .withAllValuesFrom([
-        "discover_sort": sort.trackString
+        "discover_sort": sort.trackingString
       ])
       .withAllValuesFrom(
         contextProperties(
