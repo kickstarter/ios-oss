@@ -1150,17 +1150,16 @@ public final class KSRAnalytics {
 
   /// Call once when the search view is initially shown.
   public func trackProjectSearchView(params: DiscoveryParams, results: Int) {
-    
     var props = discoveryProperties(from: params)
-    
+
     if let query = params.query {
       props = props.withAllValuesFrom(["discover_search_term": query])
     }
-    
+
     if results > 0 {
       props = props.withAllValuesFrom(["discover_search_results_count": results])
     }
-    
+
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
       page: .search,

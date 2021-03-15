@@ -90,10 +90,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         self.clearSearchTextProperty.signal.mapConst("")
       )
 
+    let initialDiscoveryParams = .defaults |> DiscoveryParams.lens.sort .~ .popular
     let popularEvent = viewWillAppearNotAnimated
       .switchMap {
         AppEnvironment.current.apiService
-          .fetchDiscovery(params: .defaults |> DiscoveryParams.lens.sort .~ .popular)
+          .fetchDiscovery(params: initialDiscoveryParams)
           .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
           .map { $0.projects }
           .materialize()
@@ -186,14 +187,17 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
     // KSRAnalytics
-    
-    Signal.combineLatest(
-      viewWillAppearNotAnimated,
-      requestFirstPageWith,
-      projects
-    )
-      .observeValues { _, requestParams, projects in
-        AppEnvironment.current.ksrAnalytics.trackProjectSearchView(params: requestParams, results: projects.count)
+
+    // Create signal producers that would emit initial values
+    // for projects and discovery params
+    let projectsProducer = SignalProducer(self.projects).prefix(value: [])
+    let discoveryParamsProducer = SignalProducer(requestFirstPageWith).prefix(value: initialDiscoveryParams)
+
+    discoveryParamsProducer.combineLatest(with: projectsProducer)
+      .takeWhen(viewWillAppearNotAnimated)
+      .observeValues { discoveryParams, projects in
+        AppEnvironment.current.ksrAnalytics
+          .trackProjectSearchView(params: discoveryParams, results: projects.count)
       }
 
     let hasResults = Signal.combineLatest(paginatedProjects, isLoading)

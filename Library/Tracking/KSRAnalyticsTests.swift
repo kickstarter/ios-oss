@@ -1198,20 +1198,23 @@ final class KSRAnalyticsTests: TestCase {
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
 
     ksrAnalytics.trackProjectSearchView(
-      params: .defaults |> DiscoveryParams.lens.query .~ "mavericks"
+      params: .defaults |> DiscoveryParams.lens.query .~ "mavericks", results: 2
     )
-    
+
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
 
     XCTAssertEqual(["Page Viewed"], dataLakeClient.events)
     XCTAssertEqual(["Page Viewed"], segmentClient.events)
-    
+
     XCTAssertEqual("search", dataLakeClientProps?["context_page"] as? String)
     XCTAssertEqual("search", segmentClientProps?["context_page"] as? String)
-    
+
     XCTAssertEqual("mavericks", dataLakeClientProps?["discover_search_term"] as? String)
     XCTAssertEqual("mavericks", segmentClientProps?["discover_search_term"] as? String)
+
+    XCTAssertEqual(2, dataLakeClientProps?["discover_search_results_count"] as? Int)
+    XCTAssertEqual(2, segmentClientProps?["discover_search_results_count"] as? Int)
   }
 
   func testTrackSearchResults() {
@@ -1602,7 +1605,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("global_nav", dataLakeClient.properties.last?["context_location"] as? String)
     XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
 
-    ksrAnalytics.trackProjectSearchView(params: .defaults)
+    ksrAnalytics.trackProjectSearchView(params: .defaults, results: 0)
     XCTAssertEqual("search", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("search", segmentClient.properties.last?["context_page"] as? String)
 
