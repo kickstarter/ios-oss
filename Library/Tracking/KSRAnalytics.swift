@@ -562,6 +562,15 @@ public final class KSRAnalytics {
     )
   }
 
+  /// Call when the user is logged out, on the `Activity` tab and taps the `Explore Projects`button.
+  public func trackExploreButtonClicked() {
+    let properties = contextProperties(ctaContext: .discover, locationContext: .globalNav)
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      properties: properties
+    )
+  }
+
   // MARK: - Application Lifecycle
 
   public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
