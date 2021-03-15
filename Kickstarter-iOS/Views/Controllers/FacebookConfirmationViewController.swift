@@ -9,7 +9,7 @@ import UIKit
 
 internal final class FacebookConfirmationViewController: UIViewController,
   MFMailComposeViewControllerDelegate {
-  @IBOutlet var disclaimerLabel: UILabel!
+  @IBOutlet private var disclaimerLabel: UILabel!
   @IBOutlet private var confirmationLabel: UILabel!
   @IBOutlet private var createAccountButton: UIButton!
   @IBOutlet private var emailLabel: UILabel!
