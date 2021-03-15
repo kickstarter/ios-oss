@@ -116,4 +116,11 @@ class DiscoveryParamsTests: XCTestCase {
     XCTAssertEqual(.magic, DiscoveryParams.decodeJSONDictionary(["sort": "magic"])?.sort)
     XCTAssertEqual(.live, DiscoveryParams.decodeJSONDictionary(["state": "live"])?.state)
   }
+
+  func testDiscoveryParamsSortTrackingString() {
+    XCTAssertEqual(DiscoveryParams.Sort.endingSoon.trackString, "ending_soona")
+    XCTAssertEqual(DiscoveryParams.Sort.magic.trackString, "magic")
+    XCTAssertEqual(DiscoveryParams.Sort.newest.trackString, "newest")
+    XCTAssertEqual(DiscoveryParams.Sort.popular.trackString, "popular")
+  }
 }
