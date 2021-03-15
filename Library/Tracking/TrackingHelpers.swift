@@ -19,7 +19,6 @@ final class TrackingHelpers {
     case .magic: return .magic
     case .newest: return .newest
     case .popular: return .popular
-    case .distance: fatalError()
     }
   }
 }

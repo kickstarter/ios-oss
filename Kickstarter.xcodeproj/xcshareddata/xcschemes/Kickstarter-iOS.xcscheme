@@ -129,7 +129,7 @@
          <EnvironmentVariable
             key = "TRACKING_ENABLED"
             value = "true"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "OS_ACTIVITY_MODE"

@@ -1355,6 +1355,104 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
   }
 
+  func test_Track_DiscoverySortProperties() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+
+    // Coming from a random Discovery param sort to magic sort
+
+    let prevSortedBeforeMagic = self.randomDiscoveryParamsSort(omit: .magic)
+    ksrAnalytics.trackDiscoverySelectedSort(
+      prevSort: prevSortedBeforeMagic,
+      nextSort: .magic,
+      params: .recommendedDefaults
+    )
+
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+
+    self.assertTrack_Discovery_EventProperties(
+      props: dataLakeClient.properties.last,
+      prevSort: prevSortedBeforeMagic,
+      discoveryContext: .magic
+    )
+    self.assertTrack_Discovery_EventProperties(
+      props: segmentClient.properties.last,
+      prevSort: prevSortedBeforeMagic,
+      discoveryContext: .magic
+    )
+
+    // Coming from a random Discovery param sort to popular sort
+
+    let prevSortedBeforePopular = self.randomDiscoveryParamsSort(omit: .popular)
+    ksrAnalytics.trackDiscoverySelectedSort(
+      prevSort: prevSortedBeforePopular,
+      nextSort: .popular,
+      params: .recommendedDefaults
+    )
+
+    XCTAssertEqual(["CTA Clicked", "CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked", "CTA Clicked"], segmentClient.events)
+
+    self.assertTrack_Discovery_EventProperties(
+      props: dataLakeClient.properties.last,
+      prevSort: prevSortedBeforePopular,
+      discoveryContext: .popular
+    )
+    self.assertTrack_Discovery_EventProperties(
+      props: segmentClient.properties.last,
+      prevSort: prevSortedBeforePopular,
+      discoveryContext: .popular
+    )
+
+    // Coming from a random Discovery param sort to newest sort
+
+    let prevSortedBeforeNewest = self.randomDiscoveryParamsSort(omit: .newest)
+    ksrAnalytics.trackDiscoverySelectedSort(
+      prevSort: prevSortedBeforeNewest,
+      nextSort: .newest,
+      params: .recommendedDefaults
+    )
+
+    XCTAssertEqual(["CTA Clicked", "CTA Clicked", "CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked", "CTA Clicked", "CTA Clicked"], segmentClient.events)
+
+    self.assertTrack_Discovery_EventProperties(
+      props: dataLakeClient.properties.last,
+      prevSort: prevSortedBeforeNewest,
+      discoveryContext: .newest
+    )
+    self.assertTrack_Discovery_EventProperties(
+      props: segmentClient.properties.last,
+      prevSort: prevSortedBeforeNewest,
+      discoveryContext: .newest
+    )
+
+    // Coming from a random Discovery param sort to endingSoon sort
+
+    let prevSortedBeforeEndingSoon = self.randomDiscoveryParamsSort(omit: .endingSoon)
+    ksrAnalytics.trackDiscoverySelectedSort(
+      prevSort: prevSortedBeforeEndingSoon,
+      nextSort: .endingSoon,
+      params: .recommendedDefaults
+    )
+
+    XCTAssertEqual(["CTA Clicked", "CTA Clicked", "CTA Clicked", "CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked", "CTA Clicked", "CTA Clicked", "CTA Clicked"], segmentClient.events)
+
+    self.assertTrack_Discovery_EventProperties(
+      props: dataLakeClient.properties.last,
+      prevSort: prevSortedBeforeEndingSoon,
+      discoveryContext: .endingSoon
+    )
+    self.assertTrack_Discovery_EventProperties(
+      props: segmentClient.properties.last,
+      prevSort: prevSortedBeforeEndingSoon,
+      discoveryContext: .endingSoon
+    )
+  }
+
   func testTrackProjectViewedEvent() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
@@ -1829,6 +1927,42 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(10.00, props?["checkout_shipping_amount"] as? Double)
     XCTAssertEqual("10.00", props?["checkout_shipping_amount_usd"] as? String)
     XCTAssertEqual(12_345_678, props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
+  }
+
+  /*
+   Helper to test all event properties for Discovery Explore Sorts
+   */
+  private func assertTrack_Discovery_EventProperties(
+    props: [String: Any]?,
+    prevSort: DiscoveryParams.Sort,
+    discoveryContext: KSRAnalytics.TypeContext.DiscoveryContext
+  ) {
+    XCTAssertEqual("discover_sort", props?["context_cta"] as? String)
+    XCTAssertEqual(discoveryContext.trackingString, props?["context_type"] as? String)
+    XCTAssertEqual("discover", props?["context_page"] as? String)
+    XCTAssertEqual("discover_advanced", props?["context_location"] as? String)
+    XCTAssertEqual(prevSort.trackString, props?["discover_sort"] as? String)
+    XCTAssertEqual(false, props?["discover_everything"] as? Bool)
+    XCTAssertEqual(true, props?["discover_recommended"] as? Bool)
+    XCTAssertEqual("recs_home", props?["discover_ref_tag"] as? String)
+  }
+
+  /*
+   Helper to choose a random DiscoveryParams.Sort
+   */
+  private func randomDiscoveryParamsSort(omit sort: DiscoveryParams.Sort) -> DiscoveryParams.Sort {
+    let all: [DiscoveryParams.Sort] = [.endingSoon, .magic, .newest, .popular].filter { $0 != sort }
+    let randomIndex = Int(arc4random()) % all.count
+    return all[randomIndex]
+  }
+
+  private func testRandomDiscoveryParamsSort() {
+    let discoveryParamsSorts: [DiscoveryParams.Sort] = [.endingSoon, .magic, .newest, .popular]
+    for sort in discoveryParamsSorts {
+      for _ in 0...100 {
+        XCTAssertNotEqual(sort, self.randomDiscoveryParamsSort(omit: sort))
+      }
+    }
   }
 }
 

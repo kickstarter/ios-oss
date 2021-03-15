@@ -122,6 +122,11 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
     self.configureNavigationHeader = dataSourceConfiguredAndCurrentParams
     self.loadFilterIntoDataSource = dataSourceConfiguredAndCurrentParams
 
+    let prevSortedPage = Signal.merge(
+      self.previouslySortPagerSelectedSortProperty.signal,
+      self.previouslyTransitionedToPageProperty.signal.map { sorts[$0] }
+    ).take(first: 1)
+
     let swipeToSort = self.willTransitionToPageProperty.signal
       .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))
       .map { sorts[$0] }
@@ -155,17 +160,35 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
 
     self.sortsAreEnabled = self.setSortsEnabledProperty.signal.skipNil()
 
-    currentParams
-      .takePairWhen(self.sortPagerSelectedSortProperty.signal.skipNil().skipRepeats(==))
-      .observeValues {
-        AppEnvironment.current.ksrAnalytics.trackDiscoverySelectedSort(nextSort: $1, params: $0)
-      }
+    Signal.combineLatest(
+      currentParams,
+      self.sortPagerSelectedSortProperty.signal.skipNil().skipRepeats(==),
+      prevSortedPage
+    ).observeValues { currentParams, currentSortedPage, prevSortedPage in
+      AppEnvironment
+        .current
+        .ksrAnalytics
+        .trackDiscoverySelectedSort(
+          prevSort: prevSortedPage,
+          nextSort: currentSortedPage,
+          params: currentParams
+        )
+    }
 
-    currentParams
-      .takePairWhen(swipeToSort)
-      .observeValues {
-        AppEnvironment.current.ksrAnalytics.trackDiscoverySelectedSort(nextSort: $1, params: $0)
-      }
+    Signal.combineLatest(
+      currentParams,
+      swipeToSort,
+      prevSortedPage
+    ).observeValues { currentParams, currentSortedPage, prevSortedPage in
+      AppEnvironment
+        .current
+        .ksrAnalytics
+        .trackDiscoverySelectedSort(
+          prevSort: prevSortedPage,
+          nextSort: currentSortedPage,
+          params: currentParams
+        )
+    }
   }
 
   fileprivate let didChangeRecommendationsSettingProperty = MutableProperty(())
@@ -194,7 +217,11 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
   }
 
   fileprivate let sortPagerSelectedSortProperty = MutableProperty<DiscoveryParams.Sort?>(nil)
+
+  // Stores last page before new page transition, default page is .magic, because it's the first page on Application Opened
+  fileprivate let previouslySortPagerSelectedSortProperty = MutableProperty<DiscoveryParams.Sort>(.magic)
   public func sortPagerSelected(sort: DiscoveryParams.Sort) {
+    self.previouslySortPagerSelectedSortProperty.value = self.sortPagerSelectedSortProperty.value ?? .magic
     self.sortPagerSelectedSortProperty.value = sort
   }
 
@@ -204,7 +231,10 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
   }
 
   fileprivate let willTransitionToPageProperty = MutableProperty<Int>(0)
+  fileprivate let previouslyTransitionedToPageProperty =
+    MutableProperty<Int>(1) // Store last page before new page transition
   public func willTransition(toPage nextPage: Int) {
+    self.previouslyTransitionedToPageProperty.value = self.willTransitionToPageProperty.value
     self.willTransitionToPageProperty.value = nextPage
   }
 
