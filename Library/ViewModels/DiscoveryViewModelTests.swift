@@ -458,32 +458,32 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.vm.inputs.sortPagerSelected(sort: .newest)
 
     XCTAssertEqual(
-      ["CTA Clicked", "CTA Clicked", "CTA Clicked"],
+      ["CTA Clicked", "CTA Clicked"],
       self.dataLakeTrackingClient.events,
       "Selecting the same sort again does not track another event."
     )
     XCTAssertEqual(
-      ["CTA Clicked", "CTA Clicked", "CTA Clicked"],
+      ["CTA Clicked", "CTA Clicked"],
       self.segmentTrackingClient.events,
       "Selecting the same sort again does not track another event."
     )
 
     XCTAssertEqual(
-      ["magic", "popular", "newest"],
+      ["magic", "popular"],
       self.dataLakeTrackingClient.properties(forKey: "discover_sort")
     )
     XCTAssertEqual(
-      ["magic", "popular", "newest"],
+      ["magic", "popular"],
       self.segmentTrackingClient.properties(forKey: "discover_sort")
     )
 
     XCTAssertEqual(
-      ["popular", "newest", "popular"],
+      ["popular", "newest"],
       self.dataLakeTrackingClient.properties(forKey: "context_type"),
       "Correct sort is tracked."
     )
     XCTAssertEqual(
-      ["popular", "newest", "popular"],
+      ["popular", "newest"],
       self.segmentTrackingClient.properties(forKey: "context_type"),
       "Correct sort is tracked."
     )

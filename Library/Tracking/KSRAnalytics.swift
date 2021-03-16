@@ -690,13 +690,22 @@ public final class KSRAnalytics {
 
    - parameter sort: The new sort that was selected.
    - parameter prevSort: The last sort selected before the new sort.
-   - parameter params: addtional parameters associated with the current selected sort.
+   - parameter params: additional parameters associated with the current selected sort.
    */
   public func trackDiscoverySelectedSort(
     sort: DiscoveryParams.Sort,
     prevSort: DiscoveryParams.Sort,
     params: DiscoveryParams
   ) {
+    // convert DiscoveryParams.Sort to TypeContext.DiscoverySortContext
+    let typeContext: TypeContext.DiscoverySortContext = sort == .endingSoon
+      ? .endingSoon
+      : sort == .magic
+      ? .magic
+      : sort == .newest
+      ? .newest
+      : .popular
+
     let props = discoveryProperties(from: params)
       .withAllValuesFrom([
         "discover_sort": prevSort.trackingString
@@ -704,7 +713,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(
         contextProperties(
           ctaContext: .discoverSort,
-          typeContext: .discovery(TrackingHelpers.discoveryContext(for: sort)),
+          typeContext: .discovery(typeContext),
           locationContext: .discoverAdvanced
         )
       )

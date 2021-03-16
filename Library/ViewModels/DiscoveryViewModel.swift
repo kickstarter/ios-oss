@@ -131,7 +131,7 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
       self.sortPagerSelectedSortProperty.signal.skipNil()
     )
     .combinePrevious(.magic)
-    .map { $0.0 }
+    .map(first)
 
     self.selectSortPage = Signal
       .merge(
@@ -162,26 +162,14 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
 
     self.sortsAreEnabled = self.setSortsEnabledProperty.signal.skipNil()
 
-    Signal.combineLatest(
-      currentParams,
+    let currentSortedPage = Signal.merge(
       self.sortPagerSelectedSortProperty.signal.skipNil().skipRepeats(==),
-      prevSortedPage
+      swipeToSort
     )
-    .filter { $0.1.rawValue != $0.2.rawValue }
-    .observeValues { currentParams, currentSortedPage, prevSortedPage in
-      AppEnvironment
-        .current
-        .ksrAnalytics
-        .trackDiscoverySelectedSort(
-          sort: currentSortedPage,
-          prevSort: prevSortedPage,
-          params: currentParams
-        )
-    }
 
     Signal.combineLatest(
       currentParams,
-      swipeToSort,
+      currentSortedPage,
       prevSortedPage
     )
     .filter { $0.1.rawValue != $0.2.rawValue }
