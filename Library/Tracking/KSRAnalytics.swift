@@ -28,7 +28,6 @@ public final class KSRAnalytics {
     case addOnsPageViewed = "Add-Ons Page Viewed"
     case collectionViewed = "Collection Viewed"
     case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
-    case editorialCardClicked = "Editorial Card Clicked"
     case explorePageViewed = "Explore Page Viewed"
     case exploreSortClicked = "Explore Sort Clicked"
     case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
@@ -60,6 +59,7 @@ public final class KSRAnalytics {
   private enum NewApprovedEvent: String, CaseIterable {
     case ctaClicked = "CTA Clicked"
     case pageViewed = "Page Viewed"
+    case cardClicked = "Card Clicked"
   }
 
   /// Determines the screen from which the event is sent.
@@ -358,6 +358,7 @@ public final class KSRAnalytics {
     case location
     case percentRaised
     case pledge(PledgeContext)
+    case project
     case projectState
     case pwl
     case recommended
@@ -397,6 +398,7 @@ public final class KSRAnalytics {
       case .location: return "location"
       case .percentRaised: return "percent_raised"
       case let .pledge(pledgeContext): return pledgeContext.trackingString
+      case .project: return "project"
       case .projectState: return "project_state"
       case .pwl: return "pwl"
       case .recommended: return "recommended"
@@ -416,10 +418,12 @@ public final class KSRAnalytics {
    A context providing additional details about the location the event occurs.
    */
   public enum LocationContext {
+    case discoverAdvanced
     case globalNav
 
     var trackingString: String {
       switch self {
+      case .discoverAdvanced: return "discover_advanced"
       case .globalNav: return "global_nav"
       }
     }
@@ -683,14 +687,16 @@ public final class KSRAnalytics {
    Call when the user taps the editorial header at the top of Discovery
    */
   public func trackEditorialHeaderTapped(params: DiscoveryParams,
-                                         refTag: RefTag,
-                                         optimizelyProperties: [String: Any] = [:]) {
-    let props = discoveryProperties(from: params)
-      .withAllValuesFrom(optimizelyProperties)
+                                         refTag: RefTag) {
+    let props = contextProperties(
+      page: .discovery,
+      typeContext: .project,
+      locationContext: .discoverAdvanced
+    )
+    .withAllValuesFrom(discoveryProperties(from: params))
 
     self.track(
-      event: ApprovedEvent.editorialCardClicked.rawValue,
-      page: .discovery,
+      event: NewApprovedEvent.cardClicked.rawValue,
       properties: props,
       refTag: refTag.stringTag
     )

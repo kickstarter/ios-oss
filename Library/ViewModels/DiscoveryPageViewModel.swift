@@ -445,12 +445,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     requestFirstPageWith
       .takePairWhen(editorialOrPersonaliztionCardTappedAndRefTag)
       .observeValues { params, refTag in
-        let optimizelyProps = refTag == .onboarding ? optimizelyProperties() : nil
-
         AppEnvironment.current.ksrAnalytics.trackEditorialHeaderTapped(
-          params: params,
-          refTag: refTag,
-          optimizelyProperties: optimizelyProps ?? [:]
+          params: params, refTag: refTag
         )
       }
 
