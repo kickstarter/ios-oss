@@ -52,4 +52,19 @@ internal final class EmptyStatesViewModelTests: TestCase {
     self.notifyDelegateToGoToFriends.assertValueCount(1)
     self.notifyDelegateToGoToDiscovery.assertValueCount(0)
   }
+
+  func testMainButtonTapped_TrackingEvents() {
+    self.vm.inputs.configureWith(emptyState: .activity)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.mainButtonTapped()
+
+    XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
+
+    XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_location"), ["global_nav"])
+    XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_location"), ["global_nav"])
+
+    XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_cta"), ["discover"])
+    XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_cta"), ["discover"])
+  }
 }
