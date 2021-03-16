@@ -453,13 +453,10 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     paramsChanged
       .takePairWhen(self.tappedProject.signal.skipNil())
       .observeValues { params, project in
-        let optyProperties = optimizelyProperties() ?? [:]
-
         AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
           project: project,
           params: params,
-          location: .discovery,
-          optimizelyProperties: optyProperties
+          location: .discovery
         )
 
         AppEnvironment.current.optimizelyClient?.track(eventName: "Project Card Clicked")

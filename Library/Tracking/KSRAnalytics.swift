@@ -43,7 +43,6 @@ public final class KSRAnalytics {
     case onboardingContinueButtonClicked = "Onboarding Continue Button Clicked"
     case onboardingGetStartedButtonClicked = "Onboarding Get Started Button Clicked"
     case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
-    case projectCardClicked = "Project Card Clicked"
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
     case projectSwiped = "Project Swiped"
     case searchPageViewed = "Search Page Viewed"
@@ -717,22 +716,36 @@ public final class KSRAnalytics {
 
   /**
    Call when a project card is clicked from a list of projects
-   - parameter project: the Project corresponding to the card that was clicked
-   - parameter params: the DiscoveryParams associated with the list of projects
-   - parameter location: the location context of the event
+   - parameter page: The `PageContext` representing the specific area the UI is interacted in
+   - parameter checkoutData: The `CheckoutPropertiesData` associated with this specific checkout instance
+   - parameter project: The `Project` corresponding to the card that was clicked
+   - parameter location: The optional `LocationContext` representing additional details of the UI interaction
+   - parameter params: The optional `DiscoveryParams  ` associated with the list of projects
+   - parameter reward: The optional `Reward  ` for the selected `Project`
+   - parameter section: The optional `SectionContext  ` representing the grouping of content
    */
 
-  public func trackProjectCardClicked(project: Project,
-                                      params: DiscoveryParams,
-                                      location: PageContext,
-                                      optimizelyProperties: [String: Any] = [:]) {
-    let props = discoveryProperties(from: params)
-      .withAllValuesFrom(projectProperties(from: project, loggedInUser: self.loggedInUser))
-      .withAllValuesFrom(optimizelyProperties)
-
+  public func trackProjectCardClicked(page: PageContext,
+                                      project: Project,
+                                      checkoutData: CheckoutPropertiesData? = nil,
+                                      location: LocationContext? = nil,
+                                      params: DiscoveryParams? = nil,
+                                      reward: Reward? = nil,
+                                      section: SectionContext? = nil) {
+    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(sectionContext: section, typeContext: .project, locationContext: location))
+    
+    if let checkoutProps = checkoutData {
+      props = props.withAllValuesFrom(checkoutProperties(from: checkoutProps, and: reward))
+    }
+    
+    if let discoveryParams = params {
+      props = props.withAllValuesFrom(discoveryProperties(from: discoveryParams))
+    }
+    
     self.track(
-      event: ApprovedEvent.projectCardClicked.rawValue,
-      page: location,
+      event: NewApprovedEvent.cardClicked.rawValue,
+      page: page,
       properties: props
     )
   }

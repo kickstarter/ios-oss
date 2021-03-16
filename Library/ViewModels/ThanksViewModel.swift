@@ -169,13 +169,10 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     self.projectTappedProperty.signal.skipNil().map { project in
       (project, recommendedParams)
     }.observeValues { project, params in
-      let optyProperties = optimizelyProperties() ?? [:]
-
       AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
         project: project,
         params: params,
-        location: .thanks,
-        optimizelyProperties: optyProperties
+        location: .thanks
       )
 
       AppEnvironment.current.optimizelyClient?.track(eventName: "Project Card Clicked")
