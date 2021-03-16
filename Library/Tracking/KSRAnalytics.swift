@@ -676,21 +676,26 @@ public final class KSRAnalytics {
   /**
    Call when the user swipes between sorts or selects a sort.
 
+   if a user is on Discover Advanced and has results sorted by magic, but then clicks the button to sort by popularity,
+   that would be discover_sort = magic, context_cta = discover_sort, context_type = popular, context_location = discover_advanced, context_page = discover.
+
    - parameter sort: The new sort that was selected.
+   - parameter prevSort: The last sort selected before the new sort.
+   - parameter params: addtional parameters associated with the current selected sort.
    */
   public func trackDiscoverySelectedSort(
-    prevSort sort: DiscoveryParams.Sort,
-    nextSort: DiscoveryParams.Sort,
+    sort: DiscoveryParams.Sort,
+    prevSort: DiscoveryParams.Sort,
     params: DiscoveryParams
   ) {
     let props = discoveryProperties(from: params)
       .withAllValuesFrom([
-        "discover_sort": sort.trackingString
+        "discover_sort": prevSort.trackingString
       ])
       .withAllValuesFrom(
         contextProperties(
           ctaContext: .discoverSort,
-          typeContext: .discovery(TrackingHelpers.discoveryContext(for: nextSort)),
+          typeContext: .discovery(TrackingHelpers.discoveryContext(for: sort)),
           locationContext: .discoverAdvanced
         )
       )

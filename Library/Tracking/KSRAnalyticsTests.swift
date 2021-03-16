@@ -1361,8 +1361,8 @@ final class KSRAnalyticsTests: TestCase {
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
 
     ksrAnalytics.trackDiscoverySelectedSort(
+      sort: .magic,
       prevSort: .popular,
-      nextSort: .magic,
       params: .recommendedDefaults
     )
 
@@ -1381,8 +1381,8 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackDiscoverySelectedSort(
+      sort: .popular,
       prevSort: .endingSoon,
-      nextSort: .popular,
       params: .recommendedDefaults
     )
 
@@ -1401,8 +1401,8 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackDiscoverySelectedSort(
+      sort: .newest,
       prevSort: .magic,
-      nextSort: .newest,
       params: .recommendedDefaults
     )
 
@@ -1421,8 +1421,8 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackDiscoverySelectedSort(
+      sort: .endingSoon,
       prevSort: .newest,
-      nextSort: .endingSoon,
       params: .recommendedDefaults
     )
 
