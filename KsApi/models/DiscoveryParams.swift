@@ -32,6 +32,15 @@ public struct DiscoveryParams {
     case magic
     case newest
     case popular = "popularity"
+
+    public var trackingString: String {
+      switch self {
+      case .endingSoon: return "ending_soon"
+      case .magic: return "magic"
+      case .newest: return "newest"
+      case .popular: return "popular"
+      }
+    }
   }
 
   public enum TagID: String, Decodable {
