@@ -77,7 +77,7 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     let project = self.configureWithDataProperty.signal
       .skipNil()
       .map(first)
-    
+
     let rewardAndCheckoutData = self.configureWithDataProperty.signal
       .skipNil()
       .map { ($0.reward, $0.checkoutData) }

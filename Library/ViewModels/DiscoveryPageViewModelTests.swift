@@ -472,8 +472,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Go to the project with discovery ref tag."
       )
 
-      XCTAssertEqual(["Explore Page Viewed", "Project Card Clicked"], self.dataLakeTrackingClient.events)
-      XCTAssertEqual(["Explore Page Viewed", "Project Card Clicked"], self.segmentTrackingClient.events)
+      XCTAssertEqual(["Explore Page Viewed", "Card Clicked"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Explore Page Viewed", "Card Clicked"], self.segmentTrackingClient.events)
       XCTAssertEqual("Project Card Clicked", mockOptimizelyClient.trackedEventKey)
 
       self.vm.inputs.selectedFilter(.defaults
@@ -489,15 +489,15 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       XCTAssertEqual([
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked"
+        "Card Clicked"
       ], self.dataLakeTrackingClient.events)
       XCTAssertEqual([
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked"
+        "Card Clicked"
       ], self.segmentTrackingClient.events)
 
       self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.staffPicks .~ true)
@@ -505,19 +505,19 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       XCTAssertEqual([
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked"
+        "Card Clicked"
       ], self.dataLakeTrackingClient.events)
       XCTAssertEqual([
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked"
+        "Card Clicked"
       ], self.segmentTrackingClient.events)
 
       self.goToPlaylist.assertValueCount(3, "New playlist for project emits.")
@@ -532,23 +532,23 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       XCTAssertEqual([
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked"
+        "Card Clicked"
       ], self.dataLakeTrackingClient.events)
       XCTAssertEqual([
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked"
+        "Card Clicked"
       ], self.segmentTrackingClient.events)
 
       self.goToPlaylist.assertValueCount(4, "New playlist for project emits.")
@@ -574,27 +574,27 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       XCTAssertEqual([
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked"
+        "Card Clicked"
       ], self.dataLakeTrackingClient.events)
       XCTAssertEqual([
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Explore Page Viewed",
-        "Project Card Clicked"
+        "Card Clicked"
       ], self.segmentTrackingClient.events)
 
       self.goToPlaylistProject.assertValues([project, project, project, project, project])
@@ -1265,12 +1265,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.discoveryEditorialCellTapped(with: .lightsOn)
 
-      XCTAssertEqual(["Explore Page Viewed", "Editorial Card Clicked"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Explore Page Viewed", "Card Clicked"], self.dataLakeTrackingClient.events)
       XCTAssertEqual(
         [nil, "ios_project_collection_tag_557"],
         self.dataLakeTrackingClient.properties(forKey: "session_ref_tag", as: String.self)
       )
-      XCTAssertEqual(["Explore Page Viewed", "Editorial Card Clicked"], self.segmentTrackingClient.events)
+      XCTAssertEqual(["Explore Page Viewed", "Card Clicked"], self.segmentTrackingClient.events)
       XCTAssertEqual(
         [nil, "ios_project_collection_tag_557"],
         self.segmentTrackingClient.properties(forKey: "session_ref_tag", as: String.self)
@@ -1609,8 +1609,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.personalizationCellTapped()
 
-      XCTAssertEqual(["Explore Page Viewed", "Editorial Card Clicked"], self.dataLakeTrackingClient.events)
-      XCTAssertEqual(["Explore Page Viewed", "Editorial Card Clicked"], self.segmentTrackingClient.events)
+      XCTAssertEqual(["Explore Page Viewed", "Card Clicked"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Explore Page Viewed", "Card Clicked"], self.segmentTrackingClient.events)
       XCTAssertEqual("Editorial Card Clicked", mockOpClient.trackedEventKey)
 
       XCTAssertEqual(
@@ -1626,31 +1626,13 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       let dataLakeTrackingClientProperties = self.dataLakeTrackingClient.properties.last
       let segmentTrackingClientProperties = self.segmentTrackingClient.properties.last
 
-      XCTAssertNotNil(
-        dataLakeTrackingClientProperties?["optimizely_api_key"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        dataLakeTrackingClientProperties?["optimizely_environment"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        dataLakeTrackingClientProperties?["session_variants_optimizely"],
-        "Event includes Optimizely properties"
-      )
+      XCTAssertEqual("project", dataLakeTrackingClientProperties?["context_type"] as? String)
+      XCTAssertEqual("discover", dataLakeTrackingClientProperties?["context_page"] as? String)
+      XCTAssertEqual("discover_advanced", dataLakeTrackingClientProperties?["context_location"] as? String)
 
-      XCTAssertNotNil(
-        segmentTrackingClientProperties?["optimizely_api_key"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        segmentTrackingClientProperties?["optimizely_environment"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        segmentTrackingClientProperties?["session_variants_optimizely"],
-        "Event includes Optimizely properties"
-      )
+      XCTAssertEqual("project", segmentTrackingClientProperties?["context_type"] as? String)
+      XCTAssertEqual("discover", segmentTrackingClientProperties?["context_page"] as? String)
+      XCTAssertEqual("discover_advanced", segmentTrackingClientProperties?["context_location"] as? String)
     }
   }
 

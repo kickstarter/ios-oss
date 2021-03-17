@@ -423,12 +423,14 @@ public final class KSRAnalytics {
    A context providing additional details about the location the event occurs.
    */
   public enum LocationContext {
+    case accountMenu
     case discoverAdvanced
     case globalNav
     case recommendations
 
     var trackingString: String {
       switch self {
+      case .accountMenu: return "account_menu"
       case .discoverAdvanced: return "discover_advanced"
       case .globalNav: return "global_nav"
       case .recommendations: return "recommendations"
