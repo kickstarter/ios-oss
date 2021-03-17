@@ -187,15 +187,25 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
     // Tracking
-    
-    let projectsProducer = SignalProducer(self.projects).prefix(value: [])
-    let discoveryParamsProducer = SignalProducer(requestFirstPageWith).prefix(value: initialDiscoveryParams)
 
-    discoveryParamsProducer.combineLatest(with: projectsProducer)
+    let projectsProperty = Property(
+      initial: [],
+      then: self.projects
+    )
+
+    let discoveryParamsProperty = Property(
+      initial: initialDiscoveryParams,
+      then: requestFirstPageWith
+    )
+
+    Property.combineLatest(
+      projectsProperty,
+      discoveryParamsProperty
+    ).producer
       .takeWhen(viewWillAppearNotAnimated)
-      .observeValues { discoveryParams, projects in
+      .observeValues { projects, params in
         AppEnvironment.current.ksrAnalytics
-          .trackProjectSearchView(params: discoveryParams, results: projects.count)
+          .trackProjectSearchView(params: params, results: projects.count)
       }
 
     let hasResults = Signal.combineLatest(paginatedProjects, isLoading)
