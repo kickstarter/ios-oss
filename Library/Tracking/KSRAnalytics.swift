@@ -691,7 +691,7 @@ public final class KSRAnalytics {
    - parameter sort: The new sort that was selected.
    - parameter prevSort: The last sort selected before the new sort.
    - parameter params: additional parameters associated with the current selected sort.
-   - parameter typeContext: the context of the selected sort
+   - parameter discoverySortContext: the context of the selected sort
    */
   public func trackDiscoverySelectedSort(
     sort _: DiscoveryParams.Sort,
