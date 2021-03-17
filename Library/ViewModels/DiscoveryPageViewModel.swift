@@ -417,12 +417,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     requestFirstPageWith
       .observeValues { params in
-        let optimizelyProps = optimizelyProperties() ?? [:]
-
-        AppEnvironment.current.ksrAnalytics.trackDiscovery(
-          params: params,
-          optimizelyProperties: optimizelyProps
-        )
+        AppEnvironment.current.ksrAnalytics.trackDiscovery(params: params)
       }
 
     let personalizationCellTappedAndRefTag = self.personalizationCellTappedProperty.signal

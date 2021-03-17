@@ -29,7 +29,6 @@ public final class KSRAnalytics {
     case collectionViewed = "Collection Viewed"
     case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
     case editorialCardClicked = "Editorial Card Clicked"
-    case explorePageViewed = "Explore Page Viewed"
     case exploreSortClicked = "Explore Sort Clicked"
     case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
     case filterClicked = "Filter Clicked"
@@ -627,13 +626,11 @@ public final class KSRAnalytics {
    - parameter params: The params used for the discovery search.
    */
 
-  public func trackDiscovery(params: DiscoveryParams,
-                             optimizelyProperties: [String: Any] = [:]) {
+  public func trackDiscovery(params: DiscoveryParams) {
     let props = discoveryProperties(from: params)
-      .withAllValuesFrom(optimizelyProperties)
 
     self.track(
-      event: ApprovedEvent.explorePageViewed.rawValue,
+      event: NewApprovedEvent.pageViewed.rawValue,
       page: .discovery,
       properties: props
     )
