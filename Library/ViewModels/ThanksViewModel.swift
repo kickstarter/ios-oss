@@ -77,6 +77,10 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     let project = self.configureWithDataProperty.signal
       .skipNil()
       .map(first)
+    
+    let rewardAndCheckoutData = self.configureWithDataProperty.signal
+      .skipNil()
+      .map { ($0.reward, $0.checkoutData) }
 
     self.backedProjectText = project.map {
       let string = Strings.You_have_successfully_backed_project_html(
@@ -166,17 +170,24 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     self.showGamesNewsletterAlert
       .observeValues { AppEnvironment.current.userDefaults.hasSeenGamesNewsletterPrompt = true }
 
-    self.projectTappedProperty.signal.skipNil().map { project in
-      (project, recommendedParams)
-    }.observeValues { project, params in
-      AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
-        project: project,
-        params: params,
-        location: .thanks
-      )
+    self.projectTappedProperty.signal.skipNil()
+      .map { project in (project, recommendedParams) }
+      .combineLatest(with: rewardAndCheckoutData)
+      .observeValues { projectAndParams, rewardAndCheckoutData in
+        let (project, params) = projectAndParams
+        let (reward, checkoutData) = rewardAndCheckoutData
 
-      AppEnvironment.current.optimizelyClient?.track(eventName: "Project Card Clicked")
-    }
+        AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
+          page: .thanks,
+          project: project,
+          checkoutData: checkoutData,
+          location: .recommendations,
+          params: params,
+          reward: reward
+        )
+
+        AppEnvironment.current.optimizelyClient?.track(eventName: "Project Card Clicked")
+      }
 
     Signal.combineLatest(
       self.configureWithDataProperty.signal.skipNil(),

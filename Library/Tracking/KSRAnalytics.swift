@@ -79,6 +79,7 @@ public final class KSRAnalytics {
     case pledgeAddNewCard = "pledge_add_new_card" // AddNewCardViewController
     case pledgeScreen = "pledge" // PledgeViewController
     case projectPage = "project" // ProjectPamphletViewController
+    case profile // BackerDashboardProjectsViewController
     case rewards // RewardsViewController
     case search // SearchViewController
     case settingsAddNewCard = "settings_add_new_card" // AddNewCardViewController
@@ -320,24 +321,29 @@ public final class KSRAnalytics {
 
   /**
    A tab or section within a grouping of content.
-
+   - backed: Section of BackerDashboardProjectViewController for backed Projects
    - comments: Section of Project overview screen
    - campaign: Details when user clicks "Read more"
    - overview: Project overview landing screen
    - updates: Section of project overview screen.
+   - watched:Section of BackerDashboardProjectViewController for saved Projects
    */
   public enum SectionContext {
+    case backed
     case campaign
     case comments
     case overview
     case updates
+    case watched
 
     var trackingString: String {
       switch self {
+      case .backed: return "backed"
       case .campaign: return "campaign"
       case .comments: return "comments"
       case .overview: return "overview"
       case .updates: return "updates"
+      case .watched: return "watched"
       }
     }
   }
@@ -419,11 +425,13 @@ public final class KSRAnalytics {
   public enum LocationContext {
     case discoverAdvanced
     case globalNav
+    case recommendations
 
     var trackingString: String {
       switch self {
       case .discoverAdvanced: return "discover_advanced"
       case .globalNav: return "global_nav"
+      case .recommendations: return "recommendations"
       }
     }
   }
@@ -733,16 +741,20 @@ public final class KSRAnalytics {
                                       reward: Reward? = nil,
                                       section: SectionContext? = nil) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(sectionContext: section, typeContext: .project, locationContext: location))
-    
+      .withAllValuesFrom(contextProperties(
+        sectionContext: section,
+        typeContext: .project,
+        locationContext: location
+      ))
+
     if let checkoutProps = checkoutData {
       props = props.withAllValuesFrom(checkoutProperties(from: checkoutProps, and: reward))
     }
-    
+
     if let discoveryParams = params {
       props = props.withAllValuesFrom(discoveryProperties(from: discoveryParams))
     }
-    
+
     self.track(
       event: NewApprovedEvent.cardClicked.rawValue,
       page: page,

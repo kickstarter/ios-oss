@@ -454,9 +454,10 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       .takePairWhen(self.tappedProject.signal.skipNil())
       .observeValues { params, project in
         AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
+          page: .discovery,
           project: project,
-          params: params,
-          location: .discovery
+          location: .discoverAdvanced,
+          params: params
         )
 
         AppEnvironment.current.optimizelyClient?.track(eventName: "Project Card Clicked")

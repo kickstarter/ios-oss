@@ -346,6 +346,8 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
         AppEnvironment.current.ksrAnalytics.trackActivitiesManagePledgeButtonClicked(project: project)
       }
 
+    // Tracking
+
     Signal.zip(pageCount, paginatedActivities)
       .filter { pageCount, _ in
         pageCount == 1
@@ -353,6 +355,13 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       .map(second)
       .map { $0.count }
       .observeValues { AppEnvironment.current.ksrAnalytics.trackActivities(count: $0) }
+
+    self.goToProject.signal.map(first).observeValues { project in
+      AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
+        page: .activities,
+        project: project
+      )
+    }
   }
 
   fileprivate let currentUserUpdatedProperty = MutableProperty(())
