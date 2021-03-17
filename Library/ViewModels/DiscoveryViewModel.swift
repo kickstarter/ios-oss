@@ -181,13 +181,13 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
           sort: currentSortedPage,
           prevSort: prevSortedPage,
           params: currentParams,
-          discoverySortContext: self.getDiscoveryParamTypeContext(from: currentSortedPage)
+          discoverySortContext: self.getDiscoverySortTypeContext(from: currentSortedPage)
         )
     }
   }
 
   /// convert DiscoveryParams.Sort to TypeContext.DiscoverySortContext
-  fileprivate func getDiscoveryParamTypeContext(
+  fileprivate func getDiscoverySortTypeContext(
     from sort: DiscoveryParams.Sort
   ) -> KSRAnalytics.TypeContext.DiscoverySortContext {
     switch sort {
