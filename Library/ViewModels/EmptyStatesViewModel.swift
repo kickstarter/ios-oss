@@ -79,6 +79,12 @@ public final class EmptyStatesViewModel: EmptyStatesViewModelType, EmptyStatesVi
 
     self.bottomLayoutConstraintConstant = emptyState
       .map { Styles.grid(5) + ($0 == .activity ? 50.0 : 0) }
+
+    // Tracking
+
+    self.mainButtonTappedProperty.signal.observeValues { _ in
+      AppEnvironment.current.ksrAnalytics.trackExploreButtonClicked()
+    }
   }
 
   fileprivate let emptyStateProperty = MutableProperty<EmptyState?>(nil)

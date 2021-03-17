@@ -1190,6 +1190,25 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(["onboarding"], segmentClient.properties(forKey: "context_page"))
   }
 
+  // MARK: - Activities Tracking
+
+  func testTrackExploreButtonClicked() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+
+    ksrAnalytics.trackExploreButtonClicked()
+
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+
+    XCTAssertEqual(dataLakeClient.properties(forKey: "context_location"), ["global_nav"])
+    XCTAssertEqual(segmentClient.properties(forKey: "context_location"), ["global_nav"])
+
+    XCTAssertEqual(dataLakeClient.properties(forKey: "context_cta"), ["discover"])
+    XCTAssertEqual(segmentClient.properties(forKey: "context_cta"), ["discover"])
+  }
+
   // MARK: - Search Tracking
 
   func testTrackSearchViewed() {
@@ -1554,6 +1573,10 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackEditorialHeaderTapped(params: .defaults, refTag: .discovery)
     XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+
+    ksrAnalytics.trackExploreButtonClicked()
+    XCTAssertEqual(nil, dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual(nil, segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackFacebookLoginOrSignupButtonClicked(intent: .generic)
     XCTAssertEqual("log_in_sign_up", dataLakeClient.properties.last?["context_page"] as? String)
