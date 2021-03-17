@@ -180,8 +180,21 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
         .trackDiscoverySelectedSort(
           sort: currentSortedPage,
           prevSort: prevSortedPage,
-          params: currentParams
+          params: currentParams,
+          discoverySortContext: self.getDiscoveryParamTypeContext(from: currentSortedPage)
         )
+    }
+  }
+
+  /// convert DiscoveryParams.Sort to TypeContext.DiscoverySortContext
+  fileprivate func getDiscoveryParamTypeContext(
+    from sort: DiscoveryParams.Sort
+  ) -> KSRAnalytics.TypeContext.DiscoverySortContext {
+    switch sort {
+    case .endingSoon: return .endingSoon
+    case .magic: return .magic
+    case .newest: return .newest
+    case .popular: return .popular
     }
   }
 

@@ -1382,7 +1382,8 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackDiscoverySelectedSort(
       sort: .magic,
       prevSort: .popular,
-      params: .recommendedDefaults
+      params: .recommendedDefaults,
+      discoverySortContext: .magic
     )
 
     XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
@@ -1402,7 +1403,8 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackDiscoverySelectedSort(
       sort: .popular,
       prevSort: .endingSoon,
-      params: .recommendedDefaults
+      params: .recommendedDefaults,
+      discoverySortContext: .popular
     )
 
     XCTAssertEqual(["CTA Clicked", "CTA Clicked"], dataLakeClient.events)
@@ -1422,7 +1424,8 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackDiscoverySelectedSort(
       sort: .newest,
       prevSort: .magic,
-      params: .recommendedDefaults
+      params: .recommendedDefaults,
+      discoverySortContext: .newest
     )
 
     XCTAssertEqual(["CTA Clicked", "CTA Clicked", "CTA Clicked"], dataLakeClient.events)
@@ -1442,7 +1445,8 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackDiscoverySelectedSort(
       sort: .endingSoon,
       prevSort: .newest,
-      params: .recommendedDefaults
+      params: .recommendedDefaults,
+      discoverySortContext: .endingSoon
     )
 
     XCTAssertEqual(["CTA Clicked", "CTA Clicked", "CTA Clicked", "CTA Clicked"], dataLakeClient.events)
