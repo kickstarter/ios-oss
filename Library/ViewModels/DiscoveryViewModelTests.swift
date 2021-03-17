@@ -350,12 +350,18 @@ internal final class DiscoveryViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear(animated: true)
 
     XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.willTransition(toPage: 1)
 
     XCTAssertEqual(
       [],
       self.dataLakeTrackingClient.events,
+      "No events tracked when starting a swipe transition."
+    )
+    XCTAssertEqual(
+      [],
+      self.segmentTrackingClient.events,
       "No events tracked when starting a swipe transition."
     )
 
@@ -366,6 +372,11 @@ internal final class DiscoveryViewModelTests: TestCase {
       self.dataLakeTrackingClient.events,
       "No events tracked when the transition did not complete."
     )
+    XCTAssertEqual(
+      [],
+      self.segmentTrackingClient.events,
+      "No events tracked when the transition did not complete."
+    )
 
     self.vm.inputs.willTransition(toPage: 1)
 
@@ -374,41 +385,107 @@ internal final class DiscoveryViewModelTests: TestCase {
       self.dataLakeTrackingClient.events,
       "Still no events tracked when starting transition."
     )
+    XCTAssertEqual(
+      [],
+      self.segmentTrackingClient.events,
+      "Still no events tracked when starting transition."
+    )
 
     self.vm.inputs.pageTransition(completed: true)
 
     XCTAssertEqual(
-      ["Explore Sort Clicked"], self.dataLakeTrackingClient.events,
+      ["CTA Clicked"], self.dataLakeTrackingClient.events,
       "Swipe event tracked once the transition completes."
     )
     XCTAssertEqual(
-      ["popularity"], self.dataLakeTrackingClient.properties(forKey: "discover_sort"),
+      ["CTA Clicked"], self.segmentTrackingClient.events,
+      "Swipe event tracked once the transition completes."
+    )
+
+    XCTAssertEqual(
+      ["popular"], self.dataLakeTrackingClient.properties(forKey: "context_type"),
+      "Correct sort is tracked."
+    )
+    XCTAssertEqual(
+      ["popular"], self.segmentTrackingClient.properties(forKey: "context_type"),
+      "Correct sort is tracked."
+    )
+
+    XCTAssertEqual(
+      ["magic"], self.dataLakeTrackingClient.properties(forKey: "discover_sort"),
+      "Correct sort is tracked."
+    )
+    XCTAssertEqual(
+      ["magic"], self.segmentTrackingClient.properties(forKey: "discover_sort"),
       "Correct sort is tracked."
     )
 
     self.vm.inputs.sortPagerSelected(sort: .newest)
 
     XCTAssertEqual(
-      ["Explore Sort Clicked", "Explore Sort Clicked"],
+      ["CTA Clicked", "CTA Clicked"],
       self.dataLakeTrackingClient.events,
       "Event is tracked when a sort is chosen from the pager."
     )
     XCTAssertEqual(
-      ["popularity", "newest"],
+      ["CTA Clicked", "CTA Clicked"],
+      self.segmentTrackingClient.events,
+      "Event is tracked when a sort is chosen from the pager."
+    )
+
+    XCTAssertEqual(
+      ["magic", "popular"],
       self.dataLakeTrackingClient.properties(forKey: "discover_sort"),
+      "Correct sort is tracked."
+    )
+    XCTAssertEqual(
+      ["magic", "popular"],
+      self.segmentTrackingClient.properties(forKey: "discover_sort"),
+      "Correct sort is tracked."
+    )
+
+    XCTAssertEqual(
+      ["popular", "newest"],
+      self.dataLakeTrackingClient.properties(forKey: "context_type"),
+      "Correct sort is tracked."
+    )
+    XCTAssertEqual(
+      ["popular", "newest"],
+      self.segmentTrackingClient.properties(forKey: "context_type"),
       "Correct sort is tracked."
     )
 
     self.vm.inputs.sortPagerSelected(sort: .newest)
 
     XCTAssertEqual(
-      ["Explore Sort Clicked", "Explore Sort Clicked"],
+      ["CTA Clicked", "CTA Clicked"],
       self.dataLakeTrackingClient.events,
       "Selecting the same sort again does not track another event."
     )
     XCTAssertEqual(
-      ["popularity", "newest"],
+      ["CTA Clicked", "CTA Clicked"],
+      self.segmentTrackingClient.events,
+      "Selecting the same sort again does not track another event."
+    )
+
+    XCTAssertEqual(
+      ["magic", "popular"],
       self.dataLakeTrackingClient.properties(forKey: "discover_sort")
+    )
+    XCTAssertEqual(
+      ["magic", "popular"],
+      self.segmentTrackingClient.properties(forKey: "discover_sort")
+    )
+
+    XCTAssertEqual(
+      ["popular", "newest"],
+      self.dataLakeTrackingClient.properties(forKey: "context_type"),
+      "Correct sort is tracked."
+    )
+    XCTAssertEqual(
+      ["popular", "newest"],
+      self.segmentTrackingClient.properties(forKey: "context_type"),
+      "Correct sort is tracked."
     )
   }
 

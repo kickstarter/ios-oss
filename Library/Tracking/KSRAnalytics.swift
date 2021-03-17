@@ -30,7 +30,6 @@ public final class KSRAnalytics {
     case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
     case editorialCardClicked = "Editorial Card Clicked"
     case explorePageViewed = "Explore Page Viewed"
-    case exploreSortClicked = "Explore Sort Clicked"
     case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
     case filterClicked = "Filter Clicked"
     case fixPledgeButtonClicked = "Fix Pledge Button Clicked"
@@ -353,6 +352,7 @@ public final class KSRAnalytics {
     case backed
     case categoryName
     case creditCard
+    case discovery(DiscoverySortContext)
     case facebook
     case location
     case percentRaised
@@ -368,6 +368,22 @@ public final class KSRAnalytics {
     case tag
     case unwatch
     case watch
+
+    public enum DiscoverySortContext {
+      case endingSoon
+      case magic
+      case newest
+      case popular
+
+      var trackingString: String {
+        switch self {
+        case .endingSoon: return "ending_soon"
+        case .magic: return "magic"
+        case .newest: return "newest"
+        case .popular: return "popular"
+        }
+      }
+    }
 
     public enum PledgeContext {
       case fixErroredPledge
@@ -392,6 +408,7 @@ public final class KSRAnalytics {
       case .backed: return "backed"
       case .categoryName: return "category_name"
       case .creditCard: return "credit_card"
+      case let .discovery(discoveryContext): return discoveryContext.trackingString
       case .facebook: return "facebook"
       case .location: return "location"
       case .percentRaised: return "percent_raised"
@@ -415,10 +432,14 @@ public final class KSRAnalytics {
    A context providing additional details about the location the event occurs.
    */
   public enum LocationContext {
+    case discoverAdvanced
+    case discoverOverlay
     case globalNav
 
     var trackingString: String {
       switch self {
+      case .discoverAdvanced: return "discover_advanced"
+      case .discoverOverlay: return "discover_overlay"
       case .globalNav: return "global_nav"
       }
     }
@@ -561,6 +582,15 @@ public final class KSRAnalytics {
     )
   }
 
+  /// Call when the user is logged out, on the `Activity` tab and taps the `Explore Projects`button.
+  public func trackExploreButtonClicked() {
+    let properties = contextProperties(ctaContext: .discover, locationContext: .globalNav)
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      properties: properties
+    )
+  }
+
   // MARK: - Application Lifecycle
 
   public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
@@ -654,16 +684,32 @@ public final class KSRAnalytics {
   /**
    Call when the user swipes between sorts or selects a sort.
 
-   - parameter sort: The new sort that was selected.
+   if a user is on Discover Advanced and has results sorted by magic, but then clicks the button to sort by popularity,
+   that would be discover_sort = magic, context_cta = discover_sort, context_type = popular, context_location = discover_advanced, context_page = discover.
+
+   - parameter prevSort: The last sort selected before the new sort.
+   - parameter params: additional parameters associated with the current selected sort.
+   - parameter discoverySortContext: the context of the selected sort
    */
-  public func trackDiscoverySelectedSort(nextSort sort: DiscoveryParams.Sort, params: DiscoveryParams) {
+  public func trackDiscoverySelectedSort(
+    prevSort: DiscoveryParams.Sort,
+    params: DiscoveryParams,
+    discoverySortContext: TypeContext.DiscoverySortContext
+  ) {
     let props = discoveryProperties(from: params)
       .withAllValuesFrom([
-        "discover_sort": sort.rawValue
+        "discover_sort": prevSort.trackingString
       ])
+      .withAllValuesFrom(
+        contextProperties(
+          ctaContext: .discoverSort,
+          typeContext: .discovery(discoverySortContext),
+          locationContext: .discoverAdvanced
+        )
+      )
 
     self.track(
-      event: ApprovedEvent.exploreSortClicked.rawValue,
+      event: NewApprovedEvent.ctaClicked.rawValue,
       page: .discovery,
       properties: props
     )
