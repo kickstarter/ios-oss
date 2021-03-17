@@ -29,7 +29,6 @@ public final class KSRAnalytics {
     case collectionViewed = "Collection Viewed"
     case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
     case editorialCardClicked = "Editorial Card Clicked"
-    case exploreSortClicked = "Explore Sort Clicked"
     case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
     case filterClicked = "Filter Clicked"
     case fixPledgeButtonClicked = "Fix Pledge Button Clicked"
