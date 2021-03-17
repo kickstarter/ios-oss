@@ -36,8 +36,11 @@ public final class FeatureFlagToolsViewModel: FeatureFlagToolsViewModelType, Fea
     .skipNil()
 
     let sortedFeatures = features
-      .map { features in Array(features).sorted(by: { $0.0 < $1.0 }) }
-
+      .map { features in Array(features)
+        .filter { Feature(rawValue: $0.0) != nil }
+        .sorted(by: { $0.0 < $1.0 })
+      }
+    
     self.reloadWithData = sortedFeatures.map { featureTuples in
       featureTuples.map { key, value in [key: value] }
     }
