@@ -49,6 +49,9 @@ public final class FeatureFlagToolsViewModel: FeatureFlagToolsViewModelType, Fea
       .takePairWhen(self.setFeatureEnabledAtIndexProperty.signal.skipNil())
       .map(unpack)
       .map { features, index, enabled -> Features? in
+        guard features.count > index else {
+          return nil
+        }
         let featureEnabledPair = features[index]
 
         guard featureEnabledPair.value != enabled else {
