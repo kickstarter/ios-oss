@@ -759,12 +759,12 @@ internal final class SearchViewModelTests: TestCase {
     XCTAssertNil(dataLakeClientProps?["discover_search_term"] as? String)
     XCTAssertNil(segmentClientProps?["discover_search_term"] as? String)
 
-    XCTAssertNil(dataLakeClientProps?["discover_search_results_count"] as? Int)
-    XCTAssertNil(segmentClientProps?["discover_search_results_count"] as? Int)
+    XCTAssertEqual(0, dataLakeClientProps?["discover_search_results_count"] as? Int)
+    XCTAssertEqual(0, segmentClientProps?["discover_search_results_count"] as? Int)
   }
 
   func testSearchPageViewed_ReturningAfterSearching() {
-    let searchProjects = (1...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
+    let searchProjects = (1...10).map { idx in .template |> Project.lens.id .~ idx }
     let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ searchProjects
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: searchResponse)) {

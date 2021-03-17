@@ -1198,7 +1198,8 @@ final class KSRAnalyticsTests: TestCase {
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
 
     ksrAnalytics.trackProjectSearchView(
-      params: .defaults |> DiscoveryParams.lens.query .~ "mavericks", results: 2
+      params: .defaults |> DiscoveryParams.lens.query .~ "mavericks",
+      results: 2
     )
 
     let dataLakeClientProps = dataLakeClient.properties.last

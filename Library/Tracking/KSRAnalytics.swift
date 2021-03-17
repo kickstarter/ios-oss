@@ -1150,15 +1150,7 @@ public final class KSRAnalytics {
 
   /// Call whenever the search view is shown.
   public func trackProjectSearchView(params: DiscoveryParams, results: Int) {
-    var props = discoveryProperties(from: params)
-
-    if let query = params.query {
-      props = props.withAllValuesFrom(["discover_search_term": query])
-    }
-
-    if results > 0 {
-      props = props.withAllValuesFrom(["discover_search_results_count": results])
-    }
+    let props = discoveryProperties(from: params, results: results)
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
@@ -1525,6 +1517,7 @@ private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, 
 
 private func discoveryProperties(
   from params: DiscoveryParams,
+  results: Int? = nil,
   prefix: String = "discover_"
 ) -> [String: Any] {
   var result: [String: Any] = [:]
@@ -1546,6 +1539,7 @@ private func discoveryProperties(
   result["sort"] = params.sort?.rawValue
   result["ref_tag"] = RefTag.fromParams(params).stringTag
   result["search_term"] = params.query
+  result["search_results_count"] = results
 
   return result.prefixedKeys(prefix)
 }

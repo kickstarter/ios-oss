@@ -186,10 +186,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
-    // KSRAnalytics
-
-    // Create SignalProducers to emit initial values
-    // for projects and discovery params
+    // Tracking
+    
     let projectsProducer = SignalProducer(self.projects).prefix(value: [])
     let discoveryParamsProducer = SignalProducer(requestFirstPageWith).prefix(value: initialDiscoveryParams)
 
