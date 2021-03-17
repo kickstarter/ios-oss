@@ -688,13 +688,11 @@ public final class KSRAnalytics {
    if a user is on Discover Advanced and has results sorted by magic, but then clicks the button to sort by popularity,
    that would be discover_sort = magic, context_cta = discover_sort, context_type = popular, context_location = discover_advanced, context_page = discover.
 
-   - parameter sort: The new sort that was selected.
    - parameter prevSort: The last sort selected before the new sort.
    - parameter params: additional parameters associated with the current selected sort.
    - parameter discoverySortContext: the context of the selected sort
    */
   public func trackDiscoverySelectedSort(
-    sort _: DiscoveryParams.Sort,
     prevSort: DiscoveryParams.Sort,
     params: DiscoveryParams,
     discoverySortContext: TypeContext.DiscoverySortContext

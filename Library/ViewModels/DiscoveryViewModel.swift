@@ -178,7 +178,6 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
         .current
         .ksrAnalytics
         .trackDiscoverySelectedSort(
-          sort: currentSortedPage,
           prevSort: prevSortedPage,
           params: currentParams,
           discoverySortContext: self.getDiscoverySortTypeContext(from: currentSortedPage)
