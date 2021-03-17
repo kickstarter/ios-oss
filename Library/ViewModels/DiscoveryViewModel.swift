@@ -186,7 +186,7 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
   }
 
   /// convert DiscoveryParams.Sort to TypeContext.DiscoverySortContext
-  fileprivate func getDiscoverySortTypeContext(
+  private func getDiscoverySortTypeContext(
     from sort: DiscoveryParams.Sort
   ) -> KSRAnalytics.TypeContext.DiscoverySortContext {
     switch sort {
