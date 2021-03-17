@@ -110,10 +110,6 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     let addOns = projectEvent.values().map(\.rewardData.addOns).skipNil()
 
-    // A digital add on returns an empty node for shippingRulesExpanded so we want the first non-digital one to ensure we get a value.
-    let shippingRuleExpanded = projectEvent.values().map(firstNonDigitalAddOn).skipNil()
-      .map(\.shippingRulesExpanded?.first)
-
     let requestErrored = projectEvent.map(\.error).map(isNotNil)
 
     // Quantities updated as the user selects them, merged with an empty initial value.
@@ -163,7 +159,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
       project,
       baseReward,
       context,
-      shippingRuleExpanded
+      shippingRule
     )
 
     let reloadRewardsIntoDataSource = rewardAddOnCardsViewData
@@ -219,7 +215,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
         }
     }
 
-    let selectionChanged = Signal.combineLatest(project, latestSelectedQuantities, shippingRuleExpanded)
+    let selectionChanged = Signal.combineLatest(project, latestSelectedQuantities, shippingRule)
       .map(isValid)
 
     self.configureContinueCTAViewWithData = Signal.merge(
@@ -242,7 +238,7 @@ public final class RewardAddOnSelectionViewModel: RewardAddOnSelectionViewModelT
 
     let selectedLocationId = Signal.merge(
       initialLocationId,
-      shippingRuleExpanded.map { $0?.location.id }
+      shippingRule.map { $0?.location.id }
     )
 
     self.goToPledge = Signal.combineLatest(
@@ -495,7 +491,8 @@ private func filteredAddOns(
      For restricted or unrestricted shipping base rewards, unrestricted shipping
      or digital-only add-ons are available.
      */
-    return isAddOnDigital(addOn) || addOnReward(addOn, shipsTo: shippingRule?.location.id)
+    return addOn.shipping.preference
+      .isAny(of: Reward.Shipping.Preference.none) || addOnReward(addOn, shipsTo: shippingRule?.location.id)
   }
 }
 
@@ -514,17 +511,6 @@ private func addOnReward(
   )
 
   return addOnShippingLocationIds.contains(selectedLocationId)
-}
-
-/**
- Retrieves the first non-digital add on from a `Project` for selecting a shippingRuleExpanded.
- */
-private func firstNonDigitalAddOn(_ project: Project) -> Reward? {
-  return project.rewardData.addOns?.first { !isAddOnDigital($0) }
-}
-
-private func isAddOnDigital(_ addOn: Reward) -> Bool {
-  return addOn.shipping.preference.isAny(of: Reward.Shipping.Preference.none)
 }
 
 private func isValid(

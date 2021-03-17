@@ -675,14 +675,12 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.loadAddOnRewardsIntoDataSourceAndReloadTableView.assertDidNotEmitValue()
 
     let shippingRule = ShippingRule.template
-      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 55)
+      |> ShippingRule.lens.location .~ (.template |> Location.lens.id .~ 99)
 
     let reward = Reward.template
       |> Reward.lens.shipping.enabled .~ true
       |> Reward.lens.shipping.preference .~ .restricted
-      |> Reward.lens.id .~ 99
 
-    // The first addOns shippingRulesExpanded value determines what is visible
     let shippingAddOn1 = Reward.template
       |> Reward.lens.id .~ 2
       |> Reward.lens.shipping.enabled .~ true
@@ -723,12 +721,12 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     let expectedAddOns = [shippingAddOn1, shippingAddOn2]
 
     let expected = expectedAddOns
-      .map { reward in
+      .map { addOn in
         RewardAddOnCardViewData(
           project: project,
-          reward: reward,
+          reward: addOn,
           context: .pledge,
-          shippingRule: reward.shippingRulesExpanded?.first,
+          shippingRule: shippingRule,
           selectedQuantities: [:]
         )
       }
