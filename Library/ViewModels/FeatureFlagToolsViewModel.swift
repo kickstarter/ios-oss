@@ -23,7 +23,8 @@ public protocol FeatureFlagToolsViewModelType {
 }
 
 public final class FeatureFlagToolsViewModel: FeatureFlagToolsViewModelType, FeatureFlagToolsViewModelInputs,
-  FeatureFlagToolsViewModelOutputs {
+  FeatureFlagToolsViewModelOutputs
+{
   public init() {
     let didUpdateConfigAndUI = self.didUpdateConfigProperty.signal
       .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
@@ -40,7 +41,7 @@ public final class FeatureFlagToolsViewModel: FeatureFlagToolsViewModelType, Fea
         .filter { Feature(rawValue: $0.0) != nil }
         .sorted(by: { $0.0 < $1.0 })
       }
-    
+
     self.reloadWithData = sortedFeatures.map { featureTuples in
       featureTuples.map { key, value in [key: value] }
     }

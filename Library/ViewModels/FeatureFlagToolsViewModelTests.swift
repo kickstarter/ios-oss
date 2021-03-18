@@ -25,13 +25,13 @@ final class FeatureFlagToolsViewModelTests: TestCase {
     let featuresArray = Feature.allCases.map { $0.rawValue }
     let sortedClientFeatures = featuresArray.sorted().map { [$0: true] }
     let configFeatures = featuresArray.reduce(into: [String: Bool]()) { $0[$1] = true }
-    
+
     let mockConfig = Config.template
       |> \.features .~ configFeatures
-    
+
     withEnvironment(config: mockConfig) {
       self.vm.inputs.viewDidLoad()
-      
+
       self.reloadWithDataFeatures.assertValue(sortedClientFeatures)
     }
   }
@@ -39,7 +39,7 @@ final class FeatureFlagToolsViewModelTests: TestCase {
   func testFeatureFlagTools_LoadsWithFeatureFlags() {
     let featureName = Feature.allCases.first?.rawValue ?? ""
     let mockConfig = Config.template
-      |> \.features .~ [featureName : true]
+      |> \.features .~ [featureName: true]
 
     withEnvironment(config: mockConfig) {
       self.vm.inputs.viewDidLoad()
@@ -80,8 +80,9 @@ final class FeatureFlagToolsViewModelTests: TestCase {
   }
 
   func testUpdateFeatureFlagEnabledValue() {
-    let originalFeatures = Feature.allCases.map { $0.rawValue }.reduce(into: [String: Bool]()) { $0[$1] = true }
-    let expectedFeatures =  Feature.allCases.map { $0.rawValue }.reduce(into: [String: Bool]()) {
+    let originalFeatures = Feature.allCases.map { $0.rawValue }
+      .reduce(into: [String: Bool]()) { $0[$1] = true }
+    let expectedFeatures = Feature.allCases.map { $0.rawValue }.reduce(into: [String: Bool]()) {
       if $1 == Feature.allCases.first?.rawValue ?? "" {
         return $0[$1] = false
       }
@@ -128,7 +129,8 @@ final class FeatureFlagToolsViewModelTests: TestCase {
   }
 
   func testPostNotification() {
-    let originalFeatures = Feature.allCases.map { $0.rawValue }.reduce(into: [String: Bool]()) { $0[$1] = true }
+    let originalFeatures = Feature.allCases.map { $0.rawValue }
+      .reduce(into: [String: Bool]()) { $0[$1] = true }
 
     let mockConfig = Config.template
       |> \.features .~ originalFeatures
