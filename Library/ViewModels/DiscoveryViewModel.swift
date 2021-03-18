@@ -126,6 +126,13 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
       .takeWhen(self.pageTransitionCompletedProperty.signal.filter(isTrue))
       .map { sorts[$0] }
 
+    let prevSortedPage = Signal.merge(
+      swipeToSort,
+      self.sortPagerSelectedSortProperty.signal.skipNil()
+    )
+    .combinePrevious(.magic)
+    .map(first)
+
     self.selectSortPage = Signal
       .merge(
         swipeToSort,
@@ -155,17 +162,39 @@ public final class DiscoveryViewModel: DiscoveryViewModelType, DiscoveryViewMode
 
     self.sortsAreEnabled = self.setSortsEnabledProperty.signal.skipNil()
 
-    currentParams
-      .takePairWhen(self.sortPagerSelectedSortProperty.signal.skipNil().skipRepeats(==))
-      .observeValues {
-        AppEnvironment.current.ksrAnalytics.trackDiscoverySelectedSort(nextSort: $1, params: $0)
-      }
+    let currentSortedPage = Signal.merge(
+      self.sortPagerSelectedSortProperty.signal.skipNil().skipRepeats(==),
+      swipeToSort
+    )
 
-    currentParams
-      .takePairWhen(swipeToSort)
-      .observeValues {
-        AppEnvironment.current.ksrAnalytics.trackDiscoverySelectedSort(nextSort: $1, params: $0)
-      }
+    Signal.combineLatest(
+      currentParams,
+      currentSortedPage,
+      prevSortedPage
+    )
+    .filter { $0.1.rawValue != $0.2.rawValue }
+    .observeValues { currentParams, currentSortedPage, prevSortedPage in
+      AppEnvironment
+        .current
+        .ksrAnalytics
+        .trackDiscoverySelectedSort(
+          prevSort: prevSortedPage,
+          params: currentParams,
+          discoverySortContext: self.getDiscoverySortTypeContext(from: currentSortedPage)
+        )
+    }
+  }
+
+  /// convert DiscoveryParams.Sort to TypeContext.DiscoverySortContext
+  private func getDiscoverySortTypeContext(
+    from sort: DiscoveryParams.Sort
+  ) -> KSRAnalytics.TypeContext.DiscoverySortContext {
+    switch sort {
+    case .endingSoon: return .endingSoon
+    case .magic: return .magic
+    case .newest: return .newest
+    case .popular: return .popular
+    }
   }
 
   fileprivate let didChangeRecommendationsSettingProperty = MutableProperty(())
