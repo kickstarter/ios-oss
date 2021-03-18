@@ -121,12 +121,12 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
     self.vm.inputs.tapped(selectableRow: documentarySelectableRow)
 
-    XCTAssertEqual(["Filter Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(
       [Category.documentary.intID],
       self.dataLakeTrackingClient.properties(forKey: "discover_subcategory_id", as: Int.self)
     )
-    XCTAssertEqual(["Filter Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
     XCTAssertEqual(
       [Category.documentary.intID],
       self.segmentTrackingClient.properties(forKey: "discover_subcategory_id", as: Int.self)

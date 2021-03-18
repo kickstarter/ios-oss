@@ -31,7 +31,6 @@ public final class KSRAnalytics {
     case editorialCardClicked = "Editorial Card Clicked"
     case explorePageViewed = "Explore Page Viewed"
     case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
-    case filterClicked = "Filter Clicked"
     case fixPledgeButtonClicked = "Fix Pledge Button Clicked"
     case forgotPasswordViewed = "Forgot Password Viewed"
     case loginButtonClicked = "Log In Button Clicked"
@@ -673,12 +672,15 @@ public final class KSRAnalytics {
    Call when a filter is selected from the Explore modal.
 
    - parameter params: The params selected from the modal.
+   - parameter locationContext: The params selected from the modal.
    */
-  public func trackDiscoveryModalSelectedFilter(params: DiscoveryParams) {
+  public func trackDiscoveryModalSelectedFilter(params: DiscoveryParams, locationContext: LocationContext) {
+    let props = discoveryProperties(from: params)
+      .withAllValuesFrom(contextProperties(ctaContext: .discoverFilter, locationContext: locationContext))
     self.track(
-      event: ApprovedEvent.filterClicked.rawValue,
+      event: NewApprovedEvent.ctaClicked.rawValue,
       page: .discovery,
-      properties: discoveryProperties(from: params)
+      properties: props
     )
   }
 
