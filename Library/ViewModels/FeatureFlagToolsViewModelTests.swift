@@ -127,6 +127,25 @@ final class FeatureFlagToolsViewModelTests: TestCase {
       ])
     }
   }
+  
+  func testUpdateConfig_UnknownFeatures() {
+    let mockConfig = Config.template
+      |> \.features .~ ["some_unknown_feature": false]
+
+    withEnvironment(config: mockConfig) {
+      self.vm.inputs.viewDidLoad()
+
+      self.reloadWithDataFeatures.assertValues([[]])
+
+      self.vm.inputs.setFeatureAtIndexEnabled(index: 0, isEnabled: true)
+
+      self.updateConfigWithFeatures.assertValues([], "Doesn't update when the enabled value is the same.")
+
+      self.vm.inputs.setFeatureAtIndexEnabled(index: 0, isEnabled: false)
+
+      self.updateConfigWithFeatures.assertValues([])
+    }
+  }
 
   func testPostNotification() {
     let originalFeatures = Feature.allCases.map { $0.rawValue }
