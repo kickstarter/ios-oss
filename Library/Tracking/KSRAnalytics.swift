@@ -441,6 +441,7 @@ public final class KSRAnalytics {
    */
   public enum LocationContext {
     case accountMenu
+    case discoverAdvanced
     case discoverOverlay
     case globalNav
     case recommendations
