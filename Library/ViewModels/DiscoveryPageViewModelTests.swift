@@ -459,8 +459,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Go to the project with discovery ref tag."
       )
 
-      XCTAssertEqual(["Page Viewed", "Project Card Clicked"], self.dataLakeTrackingClient.events)
-      XCTAssertEqual(["Page Viewed", "Project Card Clicked"], self.segmentTrackingClient.events)
+      XCTAssertEqual(["Page Viewed", "Card Clicked"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Page Viewed", "Card Clicked"], self.segmentTrackingClient.events)
       XCTAssertEqual("Project Card Clicked", mockOptimizelyClient.trackedEventKey)
 
       self.vm.inputs.selectedFilter(.defaults
@@ -476,15 +476,15 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       XCTAssertEqual([
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked"
+        "Card Clicked"
       ], self.dataLakeTrackingClient.events)
       XCTAssertEqual([
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked"
+        "Card Clicked"
       ], self.segmentTrackingClient.events)
 
       self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.staffPicks .~ true)
@@ -492,19 +492,19 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       XCTAssertEqual([
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked"
+        "Card Clicked"
       ], self.dataLakeTrackingClient.events)
       XCTAssertEqual([
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked"
+        "Card Clicked"
       ], self.segmentTrackingClient.events)
 
       self.goToPlaylist.assertValueCount(3, "New playlist for project emits.")
@@ -519,24 +519,24 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       XCTAssertEqual([
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked"
+        "Card Clicked"
       ], self.dataLakeTrackingClient.events)
 
       XCTAssertEqual([
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked"
+        "Card Clicked"
       ], self.segmentTrackingClient.events)
 
       self.goToPlaylist.assertValueCount(4, "New playlist for project emits.")
@@ -562,27 +562,27 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       XCTAssertEqual([
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked"
+        "Card Clicked"
       ], self.dataLakeTrackingClient.events)
       XCTAssertEqual([
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked",
+        "Card Clicked",
         "Page Viewed",
-        "Project Card Clicked"
+        "Card Clicked"
       ], self.segmentTrackingClient.events)
 
       self.goToPlaylistProject.assertValues([project, project, project, project, project])
@@ -1253,12 +1253,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.discoveryEditorialCellTapped(with: .lightsOn)
 
-      XCTAssertEqual(["Page Viewed", "Editorial Card Clicked"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Page Viewed", "Card Clicked"], self.dataLakeTrackingClient.events)
       XCTAssertEqual(
         [nil, "ios_project_collection_tag_557"],
         self.dataLakeTrackingClient.properties(forKey: "session_ref_tag", as: String.self)
       )
-      XCTAssertEqual(["Page Viewed", "Editorial Card Clicked"], self.segmentTrackingClient.events)
+      XCTAssertEqual(["Page Viewed", "Card Clicked"], self.segmentTrackingClient.events)
       XCTAssertEqual(
         [nil, "ios_project_collection_tag_557"],
         self.segmentTrackingClient.properties(forKey: "session_ref_tag", as: String.self)
@@ -1597,8 +1597,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.personalizationCellTapped()
 
-      XCTAssertEqual(["Page Viewed", "Editorial Card Clicked"], self.dataLakeTrackingClient.events)
-      XCTAssertEqual(["Page Viewed", "Editorial Card Clicked"], self.segmentTrackingClient.events)
+      XCTAssertEqual(["Page Viewed", "Card Clicked"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Page Viewed", "Card Clicked"], self.segmentTrackingClient.events)
       XCTAssertEqual("Editorial Card Clicked", mockOpClient.trackedEventKey)
 
       XCTAssertEqual(
