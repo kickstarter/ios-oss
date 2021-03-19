@@ -154,7 +154,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     )
 
     self.animateInView = self.viewDidAppearProperty.signal
-    
+
     self.notifyDelegateOfSelectedRow
       .observeValues {
         AppEnvironment.current.ksrAnalytics.trackDiscoveryModalSelectedFilter(
@@ -164,7 +164,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
         )
       }
   }
-  
+
   private func getDiscoveryFilterContextFrom(
     _ discoveryParams: DiscoveryParams
   ) -> KSRAnalytics.TypeContext.DiscoveryFilterContext {
@@ -179,7 +179,7 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     } else if discoveryParams.recommended == true {
       return .recommended
     } else {
-      return.allProjects
+      return .allProjects
     }
   }
 

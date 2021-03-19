@@ -375,7 +375,7 @@ public final class KSRAnalytics {
     case tag
     case unwatch
     case watch
-    
+
     public enum DiscoveryFilterContext {
       case allProjects
       case pwl
@@ -383,7 +383,7 @@ public final class KSRAnalytics {
       case social
       case subCategoryName(String)
       case watched
-      
+
       var trackingString: String {
         switch self {
         case .allProjects: return "all projects"

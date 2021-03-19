@@ -20,4 +20,3 @@ extension Feature {
     return features[self.rawValue] == .some(true)
   }
 }
-  

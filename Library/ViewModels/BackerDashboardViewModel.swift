@@ -174,8 +174,8 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       .map { headerTopConstant, scrollViewYOffset in
         min(headerTopConstant, -scrollViewYOffset)
       }
-    
-    currentSelectedTabProperty
+
+    self.currentSelectedTabProperty
       .signal
       .filter { $0 == .saved }
       .observeValues { _ in
@@ -185,7 +185,7 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
           discoveryFilterContext: .watched,
           locationContext: .accountMenu
         )
-    }
+      }
   }
 
   private let backedProjectsButtonTappedProperty = MutableProperty(())
