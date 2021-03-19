@@ -159,14 +159,13 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       .observeValues {
         AppEnvironment.current.ksrAnalytics.trackDiscoveryModalSelectedFilter(
           params: $0.params,
-          discoveryFilterContext: self.getDiscoveryFilterContextFrom($0.params),
+          discoveryFilterContext: self.getDiscoveryFilterContext(from: $0.params),
           locationContext: .discoverOverlay
         )
       }
   }
 
-  private func getDiscoveryFilterContextFrom(
-    _ discoveryParams: DiscoveryParams
+  private func getDiscoveryFilterContext(from discoveryParams: DiscoveryParams
   ) -> KSRAnalytics.TypeContext.DiscoveryFilterContext {
     if discoveryParams.staffPicks == true {
       return .pwl
