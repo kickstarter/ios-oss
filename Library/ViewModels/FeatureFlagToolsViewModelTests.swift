@@ -21,58 +21,32 @@ final class FeatureFlagToolsViewModelTests: TestCase {
     self.vm.outputs.reloadWithData.observe(self.reloadWithDataFeatures.observer)
   }
 
-  func testDataIsSortedAlphabetically_When_Sorted() {
+  func testDataIsSortedAlphabetically() {
+    let featuresArray = Feature.allCases.map { $0.rawValue }
+    let sortedClientFeatures = featuresArray.sorted().map { [$0: true] }
+    let configFeatures = featuresArray.reduce(into: [String: Bool]()) { $0[$1] = true }
+
     let mockConfig = Config.template
-      |> \.features .~ [
-        "a": false,
-        "b": true,
-        "c": true
-      ]
+      |> \.features .~ configFeatures
 
     withEnvironment(config: mockConfig) {
       self.vm.inputs.viewDidLoad()
 
-      self.reloadWithDataFeatures.assertValues([
-        [
-          ["a": false],
-          ["b": true],
-          ["c": true]
-        ]
-      ])
-    }
-  }
-
-  func testDataIsSortedAlphabetically_When_Unsorted() {
-    let mockConfig = Config.template
-      |> \.features .~ [
-        "c": true,
-        "a": false,
-        "b": true
-      ]
-
-    withEnvironment(config: mockConfig) {
-      self.vm.inputs.viewDidLoad()
-
-      self.reloadWithDataFeatures.assertValues([
-        [
-          ["a": false],
-          ["b": true],
-          ["c": true]
-        ]
-      ])
+      self.reloadWithDataFeatures.assertValue(sortedClientFeatures)
     }
   }
 
   func testFeatureFlagTools_LoadsWithFeatureFlags() {
+    let featureName = Feature.allCases.first?.rawValue ?? ""
     let mockConfig = Config.template
-      |> \.features .~ ["a": true]
+      |> \.features .~ [featureName: true]
 
     withEnvironment(config: mockConfig) {
       self.vm.inputs.viewDidLoad()
 
       self.reloadWithDataFeatures.assertValues([
         [
-          ["a": true]
+          [featureName: true]
         ]
       ])
     }
@@ -85,11 +59,7 @@ final class FeatureFlagToolsViewModelTests: TestCase {
     withEnvironment(config: mockConfig) {
       self.vm.inputs.viewDidLoad()
 
-      self.reloadWithDataFeatures.assertValues([
-        [
-          ["some_unknown_feature": false]
-        ]
-      ], "Does emit unknown features")
+      self.reloadWithDataFeatures.assertValues([[]], "Does NOT emit unknown features")
     }
   }
 
@@ -110,15 +80,14 @@ final class FeatureFlagToolsViewModelTests: TestCase {
   }
 
   func testUpdateFeatureFlagEnabledValue() {
-    let originalFeatures = [
-      "a": true,
-      "b": true
-    ]
-
-    let expectedFeatures = [
-      "a": true,
-      "b": false
-    ]
+    let originalFeatures = Feature.allCases.map { $0.rawValue }
+      .reduce(into: [String: Bool]()) { $0[$1] = true }
+    let expectedFeatures = Feature.allCases.map { $0.rawValue }.reduce(into: [String: Bool]()) {
+      if $1 == Feature.allCases.first?.rawValue ?? "" {
+        return $0[$1] = false
+      }
+      return $0[$1] = true
+    }
 
     let mockConfig = Config.template
       |> \.features .~ originalFeatures
@@ -127,17 +96,14 @@ final class FeatureFlagToolsViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.reloadWithDataFeatures.assertValues([
-        [
-          ["a": true],
-          ["b": true]
-        ]
+        Feature.allCases.map { $0.rawValue }.map { [$0: true] }
       ])
 
       self.vm.inputs.setFeatureAtIndexEnabled(index: 0, isEnabled: true)
 
       self.updateConfigWithFeatures.assertValues([], "Doesn't update when the enabled value is the same.")
 
-      self.vm.inputs.setFeatureAtIndexEnabled(index: 1, isEnabled: false)
+      self.vm.inputs.setFeatureAtIndexEnabled(index: 0, isEnabled: false)
 
       self.updateConfigWithFeatures.assertValues([expectedFeatures])
     }
@@ -151,24 +117,42 @@ final class FeatureFlagToolsViewModelTests: TestCase {
       self.scheduler.run()
 
       self.reloadWithDataFeatures.assertValues([
-        [
-          ["a": true],
-          ["b": true]
-        ],
-        [
-          ["a": true],
-          ["b": false]
-        ]
+        Feature.allCases.map { $0.rawValue }.map { [$0: true] },
+        Feature.allCases.map { $0.rawValue }.map {
+          if $0 == Feature.allCases.first?.rawValue ?? "" {
+            return [$0: false]
+          }
+          return [$0: true]
+        }
       ])
     }
   }
 
-  func testPostNotification() {
+  func testUpdateConfig_UnknownFeatures() {
     let mockConfig = Config.template
-      |> \.features .~ [
-        "a": true,
-        "b": true
-      ]
+      |> \.features .~ ["some_unknown_feature": false]
+
+    withEnvironment(config: mockConfig) {
+      self.vm.inputs.viewDidLoad()
+
+      self.reloadWithDataFeatures.assertValues([[]])
+
+      self.vm.inputs.setFeatureAtIndexEnabled(index: 0, isEnabled: true)
+
+      self.updateConfigWithFeatures.assertValues([], "Doesn't update when the enabled value is the same.")
+
+      self.vm.inputs.setFeatureAtIndexEnabled(index: 0, isEnabled: false)
+
+      self.updateConfigWithFeatures.assertValues([])
+    }
+  }
+
+  func testPostNotification() {
+    let originalFeatures = Feature.allCases.map { $0.rawValue }
+      .reduce(into: [String: Bool]()) { $0[$1] = true }
+
+    let mockConfig = Config.template
+      |> \.features .~ originalFeatures
 
     withEnvironment(config: mockConfig) {
       self.vm.inputs.viewDidLoad()
@@ -180,14 +164,6 @@ final class FeatureFlagToolsViewModelTests: TestCase {
       self.vm.inputs.didUpdateConfig()
 
       self.postNotificationName.assertValues([.ksr_configUpdated])
-
-      self.vm.inputs.setFeatureAtIndexEnabled(index: 1, isEnabled: false)
-
-      self.updateConfigWithFeatures.assertValueCount(2)
-
-      self.vm.inputs.didUpdateConfig()
-
-      self.postNotificationName.assertValues([.ksr_configUpdated, .ksr_configUpdated])
     }
   }
 }

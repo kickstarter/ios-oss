@@ -1,6 +1,6 @@
 import Foundation
 
-public enum Feature: String {
+public enum Feature: String, CaseIterable {
   case emailVerificationFlow = "ios_email_verification_flow"
   case emailVerificationSkip = "ios_email_verification_skip"
   case segment = "ios_segment"

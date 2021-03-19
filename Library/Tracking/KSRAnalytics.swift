@@ -28,7 +28,6 @@ public final class KSRAnalytics {
     case addOnsPageViewed = "Add-Ons Page Viewed"
     case collectionViewed = "Collection Viewed"
     case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
-    case editorialCardClicked = "Editorial Card Clicked"
     case explorePageViewed = "Explore Page Viewed"
     case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
     case fixPledgeButtonClicked = "Fix Pledge Button Clicked"
@@ -42,7 +41,6 @@ public final class KSRAnalytics {
     case onboardingContinueButtonClicked = "Onboarding Continue Button Clicked"
     case onboardingGetStartedButtonClicked = "Onboarding Get Started Button Clicked"
     case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
-    case projectCardClicked = "Project Card Clicked"
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
     case projectSwiped = "Project Swiped"
     case searchPageViewed = "Search Page Viewed"
@@ -58,6 +56,7 @@ public final class KSRAnalytics {
   private enum NewApprovedEvent: String, CaseIterable {
     case ctaClicked = "CTA Clicked"
     case pageViewed = "Page Viewed"
+    case cardClicked = "Card Clicked"
   }
 
   /// Determines the screen from which the event is sent.
@@ -78,6 +77,7 @@ public final class KSRAnalytics {
     case pledgeAddNewCard = "pledge_add_new_card" // AddNewCardViewController
     case pledgeScreen = "pledge" // PledgeViewController
     case projectPage = "project" // ProjectPamphletViewController
+    case profile // BackerDashboardProjectsViewController
     case rewards // RewardsViewController
     case search // SearchViewController
     case settingsAddNewCard = "settings_add_new_card" // AddNewCardViewController
@@ -319,24 +319,29 @@ public final class KSRAnalytics {
 
   /**
    A tab or section within a grouping of content.
-
+   - backed: Section of BackerDashboardProjectViewController for backed Projects
    - comments: Section of Project overview screen
    - campaign: Details when user clicks "Read more"
    - overview: Project overview landing screen
    - updates: Section of project overview screen.
+   - watched:Section of BackerDashboardProjectViewController for saved Projects
    */
   public enum SectionContext {
+    case backed
     case campaign
     case comments
     case overview
     case updates
+    case watched
 
     var trackingString: String {
       switch self {
+      case .backed: return "backed"
       case .campaign: return "campaign"
       case .comments: return "comments"
       case .overview: return "overview"
       case .updates: return "updates"
+      case .watched: return "watched"
       }
     }
   }
@@ -358,6 +363,7 @@ public final class KSRAnalytics {
     case location
     case percentRaised
     case pledge(PledgeContext)
+    case project
     case projectState
     case pwl
     case recommended
@@ -435,6 +441,7 @@ public final class KSRAnalytics {
       case .location: return "location"
       case .percentRaised: return "percent_raised"
       case let .pledge(pledgeContext): return pledgeContext.trackingString
+      case .project: return "project"
       case .projectState: return "project_state"
       case .pwl: return "pwl"
       case .recommended: return "recommended"
@@ -458,6 +465,7 @@ public final class KSRAnalytics {
     case discoverAdvanced
     case discoverOverlay
     case globalNav
+    case recommendations
 
     var trackingString: String {
       switch self {
@@ -465,6 +473,7 @@ public final class KSRAnalytics {
       case .discoverAdvanced: return "discover_advanced"
       case .discoverOverlay: return "discover_overlay"
       case .globalNav: return "global_nav"
+      case .recommendations: return "recommendations"
       }
     }
   }
@@ -757,14 +766,16 @@ public final class KSRAnalytics {
    Call when the user taps the editorial header at the top of Discovery
    */
   public func trackEditorialHeaderTapped(params: DiscoveryParams,
-                                         refTag: RefTag,
-                                         optimizelyProperties: [String: Any] = [:]) {
-    let props = discoveryProperties(from: params)
-      .withAllValuesFrom(optimizelyProperties)
+                                         refTag: RefTag) {
+    let props = contextProperties(
+      page: .discovery,
+      typeContext: .project,
+      locationContext: .discoverAdvanced
+    )
+    .withAllValuesFrom(discoveryProperties(from: params))
 
     self.track(
-      event: ApprovedEvent.editorialCardClicked.rawValue,
-      page: .discovery,
+      event: NewApprovedEvent.cardClicked.rawValue,
       properties: props,
       refTag: refTag.stringTag
     )
@@ -785,22 +796,40 @@ public final class KSRAnalytics {
 
   /**
    Call when a project card is clicked from a list of projects
-   - parameter project: the Project corresponding to the card that was clicked
-   - parameter params: the DiscoveryParams associated with the list of projects
-   - parameter location: the location context of the event
+   - parameter page: The `PageContext` representing the specific area the UI is interacted in
+   - parameter checkoutData: The `CheckoutPropertiesData` associated with this specific checkout instance
+   - parameter project: The `Project` corresponding to the card that was clicked
+   - parameter location: The optional `LocationContext` representing additional details of the UI interaction
+   - parameter params: The optional `DiscoveryParams  ` associated with the list of projects
+   - parameter reward: The optional `Reward  ` for the selected `Project`
+   - parameter section: The optional `SectionContext  ` representing the grouping of content
    */
 
-  public func trackProjectCardClicked(project: Project,
-                                      params: DiscoveryParams,
-                                      location: PageContext,
-                                      optimizelyProperties: [String: Any] = [:]) {
-    let props = discoveryProperties(from: params)
-      .withAllValuesFrom(projectProperties(from: project, loggedInUser: self.loggedInUser))
-      .withAllValuesFrom(optimizelyProperties)
+  public func trackProjectCardClicked(page: PageContext,
+                                      project: Project,
+                                      checkoutData: CheckoutPropertiesData? = nil,
+                                      location: LocationContext? = nil,
+                                      params: DiscoveryParams? = nil,
+                                      reward: Reward? = nil,
+                                      section: SectionContext? = nil) {
+    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(
+        sectionContext: section,
+        typeContext: .project,
+        locationContext: location
+      ))
+
+    if let checkoutProps = checkoutData {
+      props = props.withAllValuesFrom(checkoutProperties(from: checkoutProps, and: reward))
+    }
+
+    if let discoveryParams = params {
+      props = props.withAllValuesFrom(discoveryProperties(from: discoveryParams))
+    }
 
     self.track(
-      event: ApprovedEvent.projectCardClicked.rawValue,
-      page: location,
+      event: NewApprovedEvent.cardClicked.rawValue,
+      page: page,
       properties: props
     )
   }
