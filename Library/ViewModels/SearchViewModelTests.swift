@@ -116,6 +116,42 @@ internal final class SearchViewModelTests: TestCase {
     }
   }
 
+  func testProjectCardClicked() {
+    let projects = (0...10).map { idx in .template |> Project.lens.id .~ (idx + 42) }
+    let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
+    let searchProjects = (20...30).map { idx in .template |> Project.lens.id .~ (idx + 42) }
+    let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ searchProjects
+
+    withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
+      self.vm.inputs.viewWillAppear(animated: true)
+      self.scheduler.advance()
+
+      withEnvironment(apiService: MockService(fetchDiscoveryResponse: searchResponse)) {
+        self.vm.inputs.searchFieldDidBeginEditing()
+        self.vm.inputs.searchTextChanged("robots")
+        self.scheduler.advance()
+        self.vm.inputs.tapped(project: searchProjects[0])
+
+        XCTAssertEqual(
+          self.dataLakeTrackingClient.events.last,
+          "Card Clicked"
+        )
+        XCTAssertEqual(
+          self.segmentTrackingClient.events.last,
+          "Card Clicked"
+        )
+
+        let dataLakeProperties = self.dataLakeTrackingClient.properties.last
+        let segmentProperties = self.segmentTrackingClient.properties.last
+
+        XCTAssertEqual("search", dataLakeProperties?["context_page"] as? String)
+        XCTAssertEqual("project", dataLakeProperties?["context_type"] as? String)
+        XCTAssertEqual("search", segmentProperties?["context_page"] as? String)
+        XCTAssertEqual("project", segmentProperties?["context_type"] as? String)
+      }
+    }
+  }
+
   func testCancelSearchField() {
     self.vm.inputs.viewWillAppear(animated: true)
 

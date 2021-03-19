@@ -140,6 +140,22 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
       }
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
+
+    // Tracking
+
+    Signal.combineLatest(self.projectTappedProperty.signal, projectsType)
+      .observeValues { project, profilesProjectType in
+        guard let project = project else { return }
+        let sectionContext: KSRAnalytics.SectionContext = profilesProjectType == .backed ?
+          .backed : .watched
+
+        AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
+          page: .profile,
+          project: project,
+          location: .accountMenu,
+          section: sectionContext
+        )
+      }
   }
 
   private let configureWithProjectsTypeAndSortProperty =

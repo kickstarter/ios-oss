@@ -777,25 +777,170 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("Apple", callBackProperties?["session_device_manufacturer"] as? String)
   }
 
-  func testProjectCardClicked() {
+  func testProjectCardClicked_Page_Discover() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
 
     ksrAnalytics.trackProjectCardClicked(
+      page: .discovery,
       project: .template,
-      params: DiscoveryParams.recommendedDefaults,
-      location: .discovery
+      location: .discoverAdvanced,
+      params: DiscoveryParams.recommendedDefaults
     )
 
-    XCTAssertEqual(["Project Card Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["Card Clicked"], dataLakeClient.events)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover_advanced", dataLakeClient.properties.last?["context_location"] as? String)
 
     self.assertProjectProperties(dataLakeClient.properties.last)
     self.assertDiscoveryProperties(dataLakeClient.properties.last)
 
-    XCTAssertEqual(["Project Card Clicked"], segmentClient.events)
+    XCTAssertEqual(["Card Clicked"], segmentClient.events)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover_advanced", segmentClient.properties.last?["context_location"] as? String)
+
+    self.assertProjectProperties(segmentClient.properties.last)
+    self.assertDiscoveryProperties(segmentClient.properties.last)
+  }
+
+  func testProjectCardClicked_Page_Activities() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+
+    ksrAnalytics.trackProjectCardClicked(
+      page: .activities,
+      project: .template
+    )
+
+    XCTAssertEqual(["Card Clicked"], dataLakeClient.events)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("activity_feed", dataLakeClient.properties.last?["context_page"] as? String)
+
+    self.assertProjectProperties(dataLakeClient.properties.last)
+
+    XCTAssertEqual(["Card Clicked"], segmentClient.events)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("activity_feed", segmentClient.properties.last?["context_page"] as? String)
+
+    self.assertProjectProperties(segmentClient.properties.last)
+  }
+
+  func testProjectCardClicked_Page_Profile_Section_Backed() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+
+    ksrAnalytics.trackProjectCardClicked(
+      page: .profile,
+      project: .template,
+      location: .accountMenu,
+      section: .backed
+    )
+
+    XCTAssertEqual(["Card Clicked"], dataLakeClient.events)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("profile", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("account_menu", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("backed", dataLakeClient.properties.last?["context_section"] as? String)
+
+    self.assertProjectProperties(dataLakeClient.properties.last)
+
+    XCTAssertEqual(["Card Clicked"], segmentClient.events)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("profile", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("account_menu", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("backed", segmentClient.properties.last?["context_section"] as? String)
+
+    self.assertProjectProperties(segmentClient.properties.last)
+  }
+
+  func testProjectCardClicked_Page_Profile_Section_Watched() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+
+    ksrAnalytics.trackProjectCardClicked(
+      page: .profile,
+      project: .template,
+      location: .accountMenu,
+      section: .watched
+    )
+
+    XCTAssertEqual(["Card Clicked"], dataLakeClient.events)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("profile", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("account_menu", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("watched", dataLakeClient.properties.last?["context_section"] as? String)
+
+    self.assertProjectProperties(dataLakeClient.properties.last)
+
+    XCTAssertEqual(["Card Clicked"], segmentClient.events)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("profile", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("account_menu", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("watched", segmentClient.properties.last?["context_section"] as? String)
+
+    self.assertProjectProperties(segmentClient.properties.last)
+  }
+
+  func testProjectCardClicked_Page_Thanks() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+    let reward = Reward.template
+      |> Reward.lens.shipping.preference .~ .restricted
+      |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
+
+    ksrAnalytics.trackProjectCardClicked(
+      page: .thanks,
+      project: .template,
+      checkoutData: .template,
+      location: .recommendations,
+      reward: reward
+    )
+
+    XCTAssertEqual(["Card Clicked"], dataLakeClient.events)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("thanks", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("recommendations", dataLakeClient.properties.last?["context_location"] as? String)
+
+    self.assertProjectProperties(dataLakeClient.properties.last)
+    self.assertCheckoutProperties(dataLakeClient.properties.last)
+
+    XCTAssertEqual(["Card Clicked"], segmentClient.events)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("thanks", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("recommendations", segmentClient.properties.last?["context_location"] as? String)
+
+    self.assertProjectProperties(segmentClient.properties.last)
+    self.assertCheckoutProperties(segmentClient.properties.last)
+  }
+
+  func testProjectCardClicked_Page_Search() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+
+    ksrAnalytics.trackProjectCardClicked(
+      page: .search,
+      project: .template,
+      params: DiscoveryParams.recommendedDefaults
+    )
+
+    XCTAssertEqual(["Card Clicked"], dataLakeClient.events)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("search", dataLakeClient.properties.last?["context_page"] as? String)
+
+    self.assertProjectProperties(dataLakeClient.properties.last)
+    self.assertDiscoveryProperties(dataLakeClient.properties.last)
+
+    XCTAssertEqual(["Card Clicked"], segmentClient.events)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("search", segmentClient.properties.last?["context_page"] as? String)
 
     self.assertProjectProperties(segmentClient.properties.last)
     self.assertDiscoveryProperties(segmentClient.properties.last)
@@ -1859,9 +2004,11 @@ final class KSRAnalyticsTests: TestCase {
   }
 
   func testLocationContextTrackingStrings() {
-    XCTAssertEqual(KSRAnalytics.LocationContext.globalNav.trackingString, "global_nav")
+    XCTAssertEqual(KSRAnalytics.LocationContext.accountMenu.trackingString, "account_menu")
     XCTAssertEqual(KSRAnalytics.LocationContext.discoverAdvanced.trackingString, "discover_advanced")
     XCTAssertEqual(KSRAnalytics.LocationContext.discoverOverlay.trackingString, "discover_overlay")
+    XCTAssertEqual(KSRAnalytics.LocationContext.globalNav.trackingString, "global_nav")
+    XCTAssertEqual(KSRAnalytics.LocationContext.recommendations.trackingString, "recommendations")
   }
 
   /*
