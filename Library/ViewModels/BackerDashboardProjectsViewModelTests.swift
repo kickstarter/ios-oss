@@ -160,7 +160,11 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       )
       XCTAssertEqual(
         ["backed"],
-        self.segmentTrackingClient.properties(forKey: "context_section", as: String.self)
+        self.dataLakeTrackingClient.properties(forKey: "context_section", as: String.self)
+      )
+      XCTAssertEqual(
+        ["account_menu"],
+        self.dataLakeTrackingClient.properties(forKey: "context_location", as: String.self)
       )
       XCTAssertEqual(
         ["profile"],
@@ -173,6 +177,10 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       XCTAssertEqual(
         ["backed"],
         self.segmentTrackingClient.properties(forKey: "context_section", as: String.self)
+      )
+      XCTAssertEqual(
+        ["account_menu"],
+        self.segmentTrackingClient.properties(forKey: "context_location", as: String.self)
       )
     }
   }

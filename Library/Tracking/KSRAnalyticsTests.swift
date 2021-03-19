@@ -1989,9 +1989,11 @@ final class KSRAnalyticsTests: TestCase {
   }
 
   func testLocationContextTrackingStrings() {
-    XCTAssertEqual(KSRAnalytics.LocationContext.globalNav.trackingString, "global_nav")
+    XCTAssertEqual(KSRAnalytics.LocationContext.accountMenu.trackingString, "account_menu")
     XCTAssertEqual(KSRAnalytics.LocationContext.discoverAdvanced.trackingString, "discover_advanced")
     XCTAssertEqual(KSRAnalytics.LocationContext.discoverOverlay.trackingString, "discover_overlay")
+    XCTAssertEqual(KSRAnalytics.LocationContext.globalNav.trackingString, "global_nav")
+    XCTAssertEqual(KSRAnalytics.LocationContext.recommendations.trackingString, "recommendations")
   }
 
   /*
