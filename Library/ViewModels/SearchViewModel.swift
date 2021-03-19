@@ -199,6 +199,16 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .filter { _, page in page == 1 }
       .map(first)
 
+    self.goToProject = Signal.combineLatest(self.projects, query)
+      .takePairWhen(self.tappedProjectProperty.signal.skipNil())
+      .map { projectsAndQuery, tappedProject in
+        let (projects, query) = projectsAndQuery
+
+        return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
+      }
+
+    // Tracking
+
     Signal.combineLatest(query, requestFirstPageWith)
       .takePairWhen(firstPageResults)
       .map(unpack)
@@ -212,12 +222,15 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         )
       }
 
-    self.goToProject = Signal.combineLatest(self.projects, query)
-      .takePairWhen(self.tappedProjectProperty.signal.skipNil())
-      .map { projectsAndQuery, tappedProject in
-        let (projects, query) = projectsAndQuery
+    Signal.combineLatest(self.tappedProjectProperty.signal, requestFirstPageWith)
+      .observeValues { project, params in
+        guard let project = project else { return }
 
-        return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
+        AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
+          page: .search,
+          project: project,
+          params: params
+        )
       }
   }
 

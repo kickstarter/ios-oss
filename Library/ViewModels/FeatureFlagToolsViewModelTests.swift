@@ -127,7 +127,7 @@ final class FeatureFlagToolsViewModelTests: TestCase {
       ])
     }
   }
-  
+
   func testUpdateConfig_UnknownFeatures() {
     let mockConfig = Config.template
       |> \.features .~ ["some_unknown_feature": false]

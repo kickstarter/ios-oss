@@ -1614,31 +1614,13 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       let dataLakeTrackingClientProperties = self.dataLakeTrackingClient.properties.last
       let segmentTrackingClientProperties = self.segmentTrackingClient.properties.last
 
-      XCTAssertNotNil(
-        dataLakeTrackingClientProperties?["optimizely_api_key"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        dataLakeTrackingClientProperties?["optimizely_environment"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        dataLakeTrackingClientProperties?["session_variants_optimizely"],
-        "Event includes Optimizely properties"
-      )
+      XCTAssertEqual("project", dataLakeTrackingClientProperties?["context_type"] as? String)
+      XCTAssertEqual("discover", dataLakeTrackingClientProperties?["context_page"] as? String)
+      XCTAssertEqual("discover_advanced", dataLakeTrackingClientProperties?["context_location"] as? String)
 
-      XCTAssertNotNil(
-        segmentTrackingClientProperties?["optimizely_api_key"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        segmentTrackingClientProperties?["optimizely_environment"],
-        "Event includes Optimizely properties"
-      )
-      XCTAssertNotNil(
-        segmentTrackingClientProperties?["session_variants_optimizely"],
-        "Event includes Optimizely properties"
-      )
+      XCTAssertEqual("project", segmentTrackingClientProperties?["context_type"] as? String)
+      XCTAssertEqual("discover", segmentTrackingClientProperties?["context_page"] as? String)
+      XCTAssertEqual("discover_advanced", segmentTrackingClientProperties?["context_location"] as? String)
     }
   }
 

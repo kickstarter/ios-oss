@@ -440,25 +440,19 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     requestFirstPageWith
       .takePairWhen(editorialOrPersonaliztionCardTappedAndRefTag)
       .observeValues { params, refTag in
-        let optimizelyProps = refTag == .onboarding ? optimizelyProperties() : nil
-
         AppEnvironment.current.ksrAnalytics.trackEditorialHeaderTapped(
-          params: params,
-          refTag: refTag,
-          optimizelyProperties: optimizelyProps ?? [:]
+          params: params, refTag: refTag
         )
       }
 
     paramsChanged
       .takePairWhen(self.tappedProject.signal.skipNil())
       .observeValues { params, project in
-        let optyProperties = optimizelyProperties() ?? [:]
-
         AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
+          page: .discovery,
           project: project,
-          params: params,
-          location: .discovery,
-          optimizelyProperties: optyProperties
+          location: .discoverAdvanced,
+          params: params
         )
 
         AppEnvironment.current.optimizelyClient?.track(eventName: "Project Card Clicked")
