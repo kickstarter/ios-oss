@@ -708,7 +708,7 @@ public final class KSRAnalytics {
    - parameter discoveryFilterContext: The context of the selected filter.
    - parameter locationContext: Represents additional details of the UI interaction
    */
-  public func trackDiscoveryModalSelectredFilter(
+  public func trackDiscoveryModalSelectedFilter(
     params: DiscoveryParams,
     discoveryFilterContext: TypeContext.DiscoveryFilterContext,
     locationContext: LocationContext
