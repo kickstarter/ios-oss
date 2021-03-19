@@ -155,8 +155,6 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 
     self.animateInView = self.viewDidAppearProperty.signal
     
-    let selectedCategory = Signal.merge(tappedExpandableRowProperty.signal, tappedSelectableRowProperty.signal)
-
     self.notifyDelegateOfSelectedRow
       .observeValues {
         AppEnvironment.current.ksrAnalytics.trackDiscoveryModalSelectedFilter(params: $0.params, locationContext: .discoverOverlay)

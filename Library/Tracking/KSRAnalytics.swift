@@ -353,6 +353,7 @@ public final class KSRAnalytics {
     case categoryName
     case creditCard
     case discovery(DiscoverySortContext)
+    case discoveryFilter(DiscoveryFilterContext)
     case facebook
     case location
     case percentRaised
@@ -368,6 +369,42 @@ public final class KSRAnalytics {
     case tag
     case unwatch
     case watch
+    
+    public enum DiscoveryFilterContext {
+      case allProjects
+      case pwl
+      case recommended
+      case social
+      case subCategoryName(String)
+      case watched
+      
+      var trackingString: String {
+        switch self {
+        case .allProjects: return "all projects"
+        case .pwl: return "pwl"
+        case .recommended: return "recommended"
+        case .social: return "social"
+        case let .subCategoryName(name): return name
+        case .watched: return "watched"
+        }
+      }
+      
+      static func contextFrom(discoveryParams: DiscoveryParams) -> Self {
+        if discoveryParams.staffPicks == true {
+          return .pwl
+        } else if discoveryParams.starred == true {
+          return .watched
+        } else if discoveryParams.social == true {
+          return .social
+        } else if let category = discoveryParams.category {
+          return .subCategoryName(category.name)
+        } else if discoveryParams.recommended == true {
+          return .recommended
+        } else {
+          return.allProjects
+        }
+      }
+    }
 
     public enum DiscoverySortContext {
       case endingSoon
@@ -409,6 +446,7 @@ public final class KSRAnalytics {
       case .categoryName: return "category_name"
       case .creditCard: return "credit_card"
       case let .discovery(discoveryContext): return discoveryContext.trackingString
+      case let .discoveryFilter(discoveryFilterContext): return discoveryFilterContext.trackingString
       case .facebook: return "facebook"
       case .location: return "location"
       case .percentRaised: return "percent_raised"
@@ -432,12 +470,14 @@ public final class KSRAnalytics {
    A context providing additional details about the location the event occurs.
    */
   public enum LocationContext {
+    case accountMenu
     case discoverAdvanced
     case discoverOverlay
     case globalNav
 
     var trackingString: String {
       switch self {
+      case .accountMenu: return "account_menu"
       case .discoverAdvanced: return "discover_advanced"
       case .discoverOverlay: return "discover_overlay"
       case .globalNav: return "global_nav"
@@ -672,11 +712,18 @@ public final class KSRAnalytics {
    Call when a filter is selected from the Explore modal.
 
    - parameter params: The params selected from the modal.
+   - parameter filterName: The name of the item Discoveryl is filtered by.
    - parameter locationContext: The params selected from the modal.
    */
   public func trackDiscoveryModalSelectedFilter(params: DiscoveryParams, locationContext: LocationContext) {
     let props = discoveryProperties(from: params)
-      .withAllValuesFrom(contextProperties(ctaContext: .discoverFilter, locationContext: locationContext))
+      .withAllValuesFrom(
+        contextProperties(
+          ctaContext: .discoverFilter,
+          typeContext: TypeContext.discoveryFilter(.contextFrom(discoveryParams: params)),
+          locationContext: locationContext
+        )
+      )
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
       page: .discovery,
