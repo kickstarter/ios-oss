@@ -180,7 +180,11 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       .filter { $0 == .saved }
       .observeValues { _ in
         let params = DiscoveryParams.defaults |> DiscoveryParams.lens.starred .~ true
-        AppEnvironment.current.ksrAnalytics.trackDiscoveryModalSelectedFilter(params: params, locationContext: .accountMenu)
+        AppEnvironment.current.ksrAnalytics.trackDiscoveryModalSelectedFilter(
+          params: params,
+          discoveryFilterContext: .watched,
+          locationContext: .accountMenu
+        )
     }
   }
 

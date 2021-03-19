@@ -388,22 +388,6 @@ public final class KSRAnalytics {
         case .watched: return "watched"
         }
       }
-      
-      static func contextFrom(discoveryParams: DiscoveryParams) -> Self {
-        if discoveryParams.staffPicks == true {
-          return .pwl
-        } else if discoveryParams.starred == true {
-          return .watched
-        } else if discoveryParams.social == true {
-          return .social
-        } else if let category = discoveryParams.category {
-          return .subCategoryName(category.name)
-        } else if discoveryParams.recommended == true {
-          return .recommended
-        } else {
-          return.allProjects
-        }
-      }
     }
 
     public enum DiscoverySortContext {
@@ -712,15 +696,19 @@ public final class KSRAnalytics {
    Call when a filter is selected from the Explore modal.
 
    - parameter params: The params selected from the modal.
-   - parameter filterName: The name of the item Discoveryl is filtered by.
+   - parameter discoveryFilterContext: The context of the selected filter.
    - parameter locationContext: The params selected from the modal.
    */
-  public func trackDiscoveryModalSelectedFilter(params: DiscoveryParams, locationContext: LocationContext) {
+  public func trackDiscoveryModalSelectedFilter(
+    params: DiscoveryParams,
+    discoveryFilterContext: TypeContext.DiscoveryFilterContext,
+    locationContext: LocationContext
+  ) {
     let props = discoveryProperties(from: params)
       .withAllValuesFrom(
         contextProperties(
           ctaContext: .discoverFilter,
-          typeContext: TypeContext.discoveryFilter(.contextFrom(discoveryParams: params)),
+          typeContext: TypeContext.discoveryFilter(discoveryFilterContext),
           locationContext: locationContext
         )
       )

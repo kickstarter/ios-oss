@@ -157,8 +157,30 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
     
     self.notifyDelegateOfSelectedRow
       .observeValues {
-        AppEnvironment.current.ksrAnalytics.trackDiscoveryModalSelectedFilter(params: $0.params, locationContext: .discoverOverlay)
+        AppEnvironment.current.ksrAnalytics.trackDiscoveryModalSelectedFilter(
+          params: $0.params,
+          discoveryFilterContext: self.getDiscoveryFilterContextFrom($0.params),
+          locationContext: .discoverOverlay
+        )
       }
+  }
+  
+  private func getDiscoveryFilterContextFrom(
+    _ discoveryParams: DiscoveryParams
+  ) -> KSRAnalytics.TypeContext.DiscoveryFilterContext {
+    if discoveryParams.staffPicks == true {
+      return .pwl
+    } else if discoveryParams.starred == true {
+      return .watched
+    } else if discoveryParams.social == true {
+      return .social
+    } else if let category = discoveryParams.category {
+      return .subCategoryName(category.name)
+    } else if discoveryParams.recommended == true {
+      return .recommended
+    } else {
+      return.allProjects
+    }
   }
 
   fileprivate let initialSelectedRowProperty = MutableProperty<SelectableRow?>(nil)

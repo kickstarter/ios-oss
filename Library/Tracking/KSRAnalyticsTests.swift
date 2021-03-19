@@ -1652,9 +1652,41 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
 
-    ksrAnalytics.trackDiscoveryModalSelectedFilter(params: .defaults, locationContext: .discoverOverlay)
+    ksrAnalytics.trackDiscoveryModalSelectedFilter(params: .defaults, discoveryFilterContext: .allProjects, locationContext: .discoverOverlay)
     XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("all projects", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("all projects", segmentClient.properties.last?["context_type"] as? String)
+    
+    ksrAnalytics.trackDiscoveryModalSelectedFilter(params: .defaults, discoveryFilterContext: .pwl, locationContext: .discoverOverlay)
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("pwl", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("pwl", segmentClient.properties.last?["context_type"] as? String)
+    
+    ksrAnalytics.trackDiscoveryModalSelectedFilter(params: .defaults, discoveryFilterContext: .recommended, locationContext: .discoverOverlay)
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("recommended", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("recommended", segmentClient.properties.last?["context_type"] as? String)
+    
+    ksrAnalytics.trackDiscoveryModalSelectedFilter(params: .defaults, discoveryFilterContext: .social, locationContext: .discoverOverlay)
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("social", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("social", segmentClient.properties.last?["context_type"] as? String)
+    
+    ksrAnalytics.trackDiscoveryModalSelectedFilter(params: .defaults, discoveryFilterContext: .subCategoryName("Documentary"), locationContext: .discoverOverlay)
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("Documentary", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("Documentary", segmentClient.properties.last?["context_type"] as? String)
+    
+    ksrAnalytics.trackDiscoveryModalSelectedFilter(params: .defaults, discoveryFilterContext: .watched, locationContext: .discoverOverlay)
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("watched", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("watched", segmentClient.properties.last?["context_type"] as? String)
 
     ksrAnalytics.trackEditorialHeaderTapped(params: .defaults, refTag: .discovery)
     XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
@@ -1854,29 +1886,6 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(KSRAnalytics.LocationContext.globalNav.trackingString, "global_nav")
     XCTAssertEqual(KSRAnalytics.LocationContext.discoverAdvanced.trackingString, "discover_advanced")
     XCTAssertEqual(KSRAnalytics.LocationContext.discoverOverlay.trackingString, "discover_overlay")
-  }
-  
-  func testDiscoveryFilterContextTrackingStringFromDiscoveryParams() {
-     let selectableRowTemplate = SelectableRow(
-      isSelected: false,
-      params: .defaults
-    )
-    
-     let allProjectsRow = selectableRowTemplate |> SelectableRow.lens.params.includePOTD .~ true
-    XCTAssertEqual("all projects", KSRAnalytics.TypeContext.DiscoveryFilterContext.contextFrom(discoveryParams: allProjectsRow.params).trackingString)
-    
-    let staffPicksRow = selectableRowTemplate |> SelectableRow.lens.params.staffPicks .~ true
-    XCTAssertEqual("pwl", KSRAnalytics.TypeContext.DiscoveryFilterContext.contextFrom(discoveryParams: staffPicksRow.params).trackingString)
-    
-     let starredRow = selectableRowTemplate |> SelectableRow.lens.params.starred .~ true
-    XCTAssertEqual("watched", KSRAnalytics.TypeContext.DiscoveryFilterContext.contextFrom(discoveryParams: starredRow.params).trackingString)
-    
-    
-     let socialRow = selectableRowTemplate |> SelectableRow.lens.params.social .~ true
-    XCTAssertEqual("social", KSRAnalytics.TypeContext.DiscoveryFilterContext.contextFrom(discoveryParams: socialRow.params).trackingString)
-    
-     let recommendedRow = selectableRowTemplate |> SelectableRow.lens.params.recommended .~ true
-    XCTAssertEqual("recommended", KSRAnalytics.TypeContext.DiscoveryFilterContext.contextFrom(discoveryParams: recommendedRow.params).trackingString)
   }
 
   /*
