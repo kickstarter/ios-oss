@@ -146,6 +146,42 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
 
       self.goToProject.assertValues([project], "Project emmitted.")
       self.goToProjectRefTag.assertValues([.profileBacked], "RefTag = profile_backed emitted.")
+
+      XCTAssertEqual(self.dataLakeTrackingClient.events, ["Card Clicked"])
+      XCTAssertEqual(self.segmentTrackingClient.events, ["Card Clicked"])
+
+      XCTAssertEqual(
+        ["profile"],
+        self.dataLakeTrackingClient.properties(forKey: "context_page", as: String.self)
+      )
+      XCTAssertEqual(
+        ["project"],
+        self.dataLakeTrackingClient.properties(forKey: "context_type", as: String.self)
+      )
+      XCTAssertEqual(
+        ["backed"],
+        self.dataLakeTrackingClient.properties(forKey: "context_section", as: String.self)
+      )
+      XCTAssertEqual(
+        ["account_menu"],
+        self.dataLakeTrackingClient.properties(forKey: "context_location", as: String.self)
+      )
+      XCTAssertEqual(
+        ["profile"],
+        self.segmentTrackingClient.properties(forKey: "context_page", as: String.self)
+      )
+      XCTAssertEqual(
+        ["project"],
+        self.segmentTrackingClient.properties(forKey: "context_type", as: String.self)
+      )
+      XCTAssertEqual(
+        ["backed"],
+        self.segmentTrackingClient.properties(forKey: "context_section", as: String.self)
+      )
+      XCTAssertEqual(
+        ["account_menu"],
+        self.segmentTrackingClient.properties(forKey: "context_location", as: String.self)
+      )
     }
   }
 

@@ -23,8 +23,7 @@ public protocol FeatureFlagToolsViewModelType {
 }
 
 public final class FeatureFlagToolsViewModel: FeatureFlagToolsViewModelType, FeatureFlagToolsViewModelInputs,
-  FeatureFlagToolsViewModelOutputs
-{
+  FeatureFlagToolsViewModelOutputs {
   public init() {
     let didUpdateConfigAndUI = self.didUpdateConfigProperty.signal
       .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
