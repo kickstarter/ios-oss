@@ -1195,7 +1195,10 @@ public final class KSRAnalytics {
   // MARK: - Search Events
 
   /// Call whenever the search view is shown.
-  public func trackProjectSearchView(params: DiscoveryParams, results: Int) {
+  public func trackProjectSearchView(
+    params: DiscoveryParams,
+    results: Int? = nil
+  ) {
     let props = discoveryProperties(from: params, results: results)
 
     self.track(

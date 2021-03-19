@@ -756,8 +756,8 @@ internal final class SearchViewModelTests: TestCase {
     XCTAssertEqual("search", dataLakeClientProps?["context_page"] as? String)
     XCTAssertEqual("search", segmentClientProps?["context_page"] as? String)
 
-    XCTAssertNil(dataLakeClientProps?["discover_search_term"] as? String)
-    XCTAssertNil(segmentClientProps?["discover_search_term"] as? String)
+    XCTAssertEqual("", dataLakeClientProps?["discover_search_term"] as? String)
+    XCTAssertEqual("", segmentClientProps?["discover_search_term"] as? String)
 
     XCTAssertEqual(0, dataLakeClientProps?["discover_search_results_count"] as? Int)
     XCTAssertEqual(0, segmentClientProps?["discover_search_results_count"] as? Int)

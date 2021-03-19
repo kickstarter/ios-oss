@@ -196,9 +196,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .takeWhen(viewWillAppearNotAnimated)
       .observeValues { query, results in
         let projects = query.isEmpty ? [] : results
-        let params = query.isEmpty ?
-          .defaults |> DiscoveryParams.lens.query .~ nil :
-          .defaults |> DiscoveryParams.lens.query .~ query
+        let params = .defaults |> DiscoveryParams.lens.query .~ query
         AppEnvironment.current.ksrAnalytics
           .trackProjectSearchView(params: params, results: projects.count)
       }
