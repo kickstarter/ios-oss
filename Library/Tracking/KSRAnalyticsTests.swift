@@ -770,7 +770,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("activity", segmentClientProps?["session_ref_tag"] as? String)
   }
 
-  func testTrackUpdatePledgeViewed() {
+  func testTrackUpdatePledgeScreenViewed() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
