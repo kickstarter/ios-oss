@@ -168,7 +168,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
         "account_menu",
         self.dataLakeTrackingClient.properties.last?["context_location"] as? String
       )
-      self.assertDiscoveryProperties(self.dataLakeTrackingClient.properties.last)
 
       XCTAssertEqual("discover", self.segmentTrackingClient.properties.last?["context_page"] as? String)
       XCTAssertEqual("watched", self.segmentTrackingClient.properties.last?["context_type"] as? String)
@@ -176,7 +175,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
         "account_menu",
         self.segmentTrackingClient.properties.last?["context_location"] as? String
       )
-      self.assertDiscoveryProperties(self.segmentTrackingClient.properties.last)
 
       self.vm.inputs.backedProjectsButtonTapped()
 
@@ -209,7 +207,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
         "account_menu",
         self.dataLakeTrackingClient.properties.last?["context_location"] as? String
       )
-      self.assertDiscoveryProperties(self.dataLakeTrackingClient.properties.last)
 
       XCTAssertEqual("discover", self.segmentTrackingClient.properties.last?["context_page"] as? String)
       XCTAssertEqual("watched", self.segmentTrackingClient.properties.last?["context_type"] as? String)
@@ -217,7 +214,6 @@ internal final class BackerDashboardViewModelTests: TestCase {
         "account_menu",
         self.segmentTrackingClient.properties.last?["context_location"] as? String
       )
-      self.assertDiscoveryProperties(self.segmentTrackingClient.properties.last)
     }
   }
 
@@ -250,15 +246,5 @@ internal final class BackerDashboardViewModelTests: TestCase {
     self.vm.inputs.beganPanGestureWith(headerTopConstant: -101.0, scrollViewYOffset: 500.0)
 
     XCTAssertEqual(-500, self.vm.outputs.initialTopConstant)
-  }
-
-  /*
-   Helper for testing discoverProperties Watched Filter
-   */
-
-  private func assertDiscoveryProperties(_ props: [String: Any]?) {
-    XCTAssertEqual(true, props?["discover_watched"] as? Bool)
-    XCTAssertEqual(false, props?["discover_everything"] as? Bool)
-    XCTAssertEqual("starred_home", props?["discover_ref_tag"] as? String)
   }
 }
