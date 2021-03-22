@@ -711,7 +711,7 @@ public final class KSRAnalytics {
   }
 
   /**
-   Call when a saved is selected from profile.
+   Call when saved is selected from profile.
 
    - parameter params: The params selected from the modal.
    */
