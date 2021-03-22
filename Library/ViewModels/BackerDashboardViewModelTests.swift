@@ -260,15 +260,5 @@ internal final class BackerDashboardViewModelTests: TestCase {
     XCTAssertEqual(true, props?["discover_watched"] as? Bool)
     XCTAssertEqual(false, props?["discover_everything"] as? Bool)
     XCTAssertEqual("starred_home", props?["discover_ref_tag"] as? String)
-
-    XCTAssertNil(props?["discover_pwl"] as? Bool)
-    XCTAssertNil(props?["discover_social"] as? Bool)
-    XCTAssertNil(props?["discover_recommended"] as? Bool)
-    XCTAssertNil(props?["discover_subcategory_id"] as? Int)
-    XCTAssertNil(props?["discover_subcategory_name"] as? String)
-    XCTAssertNil(props?["discover_category_id"] as? Int)
-    XCTAssertNil(props?["discover_category_name"] as? String)
-    XCTAssertNil(props?["discover_sort"] as? String)
-    XCTAssertNil(props?["discover_search_term"] as? String)
   }
 }
