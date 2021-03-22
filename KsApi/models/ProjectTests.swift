@@ -310,4 +310,11 @@ final class ProjectTests: XCTestCase {
 
     XCTAssertTrue(project.stats.goalMet)
   }
+
+  func testTags() {
+    let tags = ["Witchstarter", "Arts", "Games"]
+    let project = Project.template |> Project.lens.tags .~ tags
+    XCTAssertEqual(3, project.tags?.count)
+    XCTAssertEqual("Witchstarter, Arts, Games", project.tags?.joined(separator: ", "))
+  }
 }
