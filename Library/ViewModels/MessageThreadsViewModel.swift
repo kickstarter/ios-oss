@@ -74,7 +74,7 @@ public final class MessageThreadsViewModel: MessageThreadsViewModelType, Message
       mailbox.takeWhen(self.refreshProperty.signal)
     )
 
-    let (messageThreads, isLoading, _) = paginate(
+    let (messageThreads, isLoading, _, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: true,

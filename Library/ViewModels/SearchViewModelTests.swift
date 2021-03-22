@@ -818,8 +818,8 @@ internal final class SearchViewModelTests: TestCase {
       XCTAssertEqual("maverick", dataLakeClientProps?["discover_search_term"] as? String)
       XCTAssertEqual("maverick", segmentClientProps?["discover_search_term"] as? String)
 
-      XCTAssertEqual(10, dataLakeClientProps?["discover_search_results_count"] as? Int)
-      XCTAssertEqual(10, segmentClientProps?["discover_search_results_count"] as? Int)
+      XCTAssertEqual(200, dataLakeClientProps?["discover_search_results_count"] as? Int)
+      XCTAssertEqual(200, segmentClientProps?["discover_search_results_count"] as? Int)
     }
   }
 }
