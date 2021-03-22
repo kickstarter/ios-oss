@@ -127,25 +127,152 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
       self.dataLakeTrackingClient.properties(forKey: "discover_subcategory_id", as: Int.self)
     )
     XCTAssertEqual("discover", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("Documentary", self.dataLakeTrackingClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(
+      "subcategory_name",
+      self.dataLakeTrackingClient.properties.last?["context_type"] as? String
+    )
     XCTAssertEqual(
       "discover_overlay",
       self.dataLakeTrackingClient.properties.last?["context_location"] as? String
     )
-    self.assertDiscoveryPropertiesForDocumentary(self.dataLakeTrackingClient.properties.last)
+    XCTAssertEqual(
+      "category_home",
+      self.dataLakeTrackingClient.properties.last?["discover_ref_tag"] as? String
+    )
+    XCTAssertEqual(
+      "Documentary",
+      self.dataLakeTrackingClient.properties.last?["discover_subcategory_name"] as? String
+    )
+    XCTAssertEqual(
+      "Film & Video",
+      self.dataLakeTrackingClient.properties.last?["discover_category_name"] as? String
+    )
+    XCTAssertEqual(11, self.dataLakeTrackingClient.properties.last?["discover_category_id"] as? Int)
+    XCTAssertEqual(30, self.dataLakeTrackingClient.properties.last?["discover_subcategory_id"] as? Int)
 
     XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
     XCTAssertEqual(
       [Category.documentary.intID],
       self.segmentTrackingClient.properties(forKey: "discover_subcategory_id", as: Int.self)
     )
+    XCTAssertEqual("discover", segmentTrackingClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("subcategory_name", segmentTrackingClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("discover_overlay", segmentTrackingClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("category_home", segmentTrackingClient.properties.last?["discover_ref_tag"] as? String)
+    XCTAssertEqual(
+      "Documentary",
+      segmentTrackingClient.properties.last?["discover_subcategory_name"] as? String
+    )
+    XCTAssertEqual(
+      "Film & Video",
+      segmentTrackingClient.properties.last?["discover_category_name"] as? String
+    )
+    XCTAssertEqual(11, segmentTrackingClient.properties.last?["discover_category_id"] as? Int)
+    XCTAssertEqual(30, segmentTrackingClient.properties.last?["discover_subcategory_id"] as? Int)
+
+    self.vm.inputs.tapped(selectableRow: socialRow)
+
+    XCTAssertEqual(["CTA Clicked", "CTA Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual("discover", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("social", self.dataLakeTrackingClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(
+      "discover_overlay",
+      self.dataLakeTrackingClient.properties.last?["context_location"] as? String
+    )
+    XCTAssertEqual("social_home", self.dataLakeTrackingClient.properties.last?["discover_ref_tag"] as? String)
+
+    XCTAssertEqual(["CTA Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual("discover", segmentTrackingClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("social", segmentTrackingClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("discover_overlay", segmentTrackingClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("social_home", segmentTrackingClient.properties.last?["discover_ref_tag"] as? String)
+
+    self.vm.inputs.tapped(selectableRow: staffPicksRow)
+
+    XCTAssertEqual(
+      ["CTA Clicked", "CTA Clicked", "CTA Clicked"],
+      self.dataLakeTrackingClient.events
+    )
+    XCTAssertEqual("discover", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("pwl", self.dataLakeTrackingClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(
+      "discover_overlay",
+      self.dataLakeTrackingClient.properties.last?["context_location"] as? String
+    )
+    XCTAssertEqual(
+      "recommended_home",
+      self.dataLakeTrackingClient.properties.last?["discover_ref_tag"] as? String
+    )
+
+    XCTAssertEqual(
+      ["CTA Clicked", "CTA Clicked", "CTA Clicked"],
+      self.segmentTrackingClient.events
+    )
     XCTAssertEqual("discover", self.segmentTrackingClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("Documentary", self.segmentTrackingClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("pwl", self.segmentTrackingClient.properties.last?["context_type"] as? String)
     XCTAssertEqual(
       "discover_overlay",
       self.segmentTrackingClient.properties.last?["context_location"] as? String
     )
-    self.assertDiscoveryPropertiesForDocumentary(self.segmentTrackingClient.properties.last)
+    XCTAssertEqual(
+      "recommended_home",
+      self.segmentTrackingClient.properties.last?["discover_ref_tag"] as? String
+    )
+
+    self.vm.inputs.tapped(selectableRow: starredRow)
+
+    XCTAssertEqual(
+      ["CTA Clicked", "CTA Clicked", "CTA Clicked", "CTA Clicked"],
+      self.dataLakeTrackingClient.events
+    )
+    XCTAssertEqual("discover", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("watched", self.dataLakeTrackingClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(
+      "discover_overlay",
+      self.dataLakeTrackingClient.properties.last?["context_location"] as? String
+    )
+    XCTAssertEqual(
+      "starred_home",
+      self.dataLakeTrackingClient.properties.last?["discover_ref_tag"] as? String
+    )
+
+    XCTAssertEqual(
+      ["CTA Clicked", "CTA Clicked", "CTA Clicked", "CTA Clicked"],
+      self.segmentTrackingClient.events
+    )
+    XCTAssertEqual("discover", self.segmentTrackingClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("watched", self.segmentTrackingClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(
+      "discover_overlay",
+      self.segmentTrackingClient.properties.last?["context_location"] as? String
+    )
+    XCTAssertEqual("starred_home", self.segmentTrackingClient.properties.last?["discover_ref_tag"] as? String)
+
+    self.vm.inputs.tapped(selectableRow: recommendedRow)
+
+    XCTAssertEqual(
+      ["CTA Clicked", "CTA Clicked", "CTA Clicked", "CTA Clicked", "CTA Clicked"],
+      self.dataLakeTrackingClient.events
+    )
+    XCTAssertEqual("discover", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("recommended", self.dataLakeTrackingClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(
+      "discover_overlay",
+      self.dataLakeTrackingClient.properties.last?["context_location"] as? String
+    )
+    XCTAssertEqual("recs_home", self.dataLakeTrackingClient.properties.last?["discover_ref_tag"] as? String)
+
+    XCTAssertEqual(
+      ["CTA Clicked", "CTA Clicked", "CTA Clicked", "CTA Clicked", "CTA Clicked"],
+      self.segmentTrackingClient.events
+    )
+    XCTAssertEqual("discover", self.segmentTrackingClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("recommended", self.segmentTrackingClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(
+      "discover_overlay",
+      self.segmentTrackingClient.properties.last?["context_location"] as? String
+    )
+    XCTAssertEqual("recs_home", self.segmentTrackingClient.properties.last?["discover_ref_tag"] as? String)
   }
 
   func testTopFilters_Logged_Out() {
@@ -386,21 +513,29 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
 
     XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual("discover", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("all projects", self.dataLakeTrackingClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("all", self.dataLakeTrackingClient.properties.last?["context_type"] as? String)
     XCTAssertEqual(
       "discover_overlay",
       self.dataLakeTrackingClient.properties.last?["context_location"] as? String
     )
-    self.assertDiscoveryPropertiesForAllProject(self.dataLakeTrackingClient.properties.last)
+    XCTAssertEqual(true, self.dataLakeTrackingClient.properties.last?["discover_everything"] as? Bool)
+    XCTAssertEqual(
+      "discovery_home",
+      self.dataLakeTrackingClient.properties.last?["discover_ref_tag"] as? String
+    )
 
     XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
     XCTAssertEqual("discover", self.segmentTrackingClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("all projects", self.segmentTrackingClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("all", self.segmentTrackingClient.properties.last?["context_type"] as? String)
     XCTAssertEqual(
       "discover_overlay",
       self.segmentTrackingClient.properties.last?["context_location"] as? String
     )
-    self.assertDiscoveryPropertiesForAllProject(self.segmentTrackingClient.properties.last)
+    XCTAssertEqual(true, self.segmentTrackingClient.properties.last?["discover_everything"] as? Bool)
+    XCTAssertEqual(
+      "discovery_home",
+      self.segmentTrackingClient.properties.last?["discover_ref_tag"] as? String
+    )
   }
 
   func testFavoriteRows_Without_Favorites() {
@@ -465,45 +600,5 @@ internal final class DiscoveryFiltersViewModelTests: TestCase {
       [[artExpandableRow, filmExpandableRow]],
       "Server did not advance, categories loaded from cache."
     )
-  }
-
-  /*
-   Helper for testing discoverProperties All Project Filter
-   */
-
-  private func assertDiscoveryPropertiesForAllProject(_ props: [String: Any]?) {
-    XCTAssertEqual(true, props?["discover_everything"] as? Bool)
-    XCTAssertEqual("discovery_home", props?["discover_ref_tag"] as? String)
-
-    XCTAssertNil(props?["discover_pwl"] as? Bool)
-    XCTAssertNil(props?["discover_recommended"] as? Bool)
-    XCTAssertNil(props?["discover_social"] as? Bool)
-    XCTAssertNil(props?["discover_watched"] as? Bool)
-    XCTAssertNil(props?["discover_subcategory_id"] as? Int)
-    XCTAssertNil(props?["discover_subcategory_name"] as? String)
-    XCTAssertNil(props?["discover_category_id"] as? Int)
-    XCTAssertNil(props?["discover_category_name"] as? String)
-    XCTAssertNil(props?["discover_sort"] as? String)
-    XCTAssertNil(props?["discover_search_term"] as? String)
-  }
-
-  /*
-   Helper for testing discoverProperties for Documentary Filter
-   */
-
-  private func assertDiscoveryPropertiesForDocumentary(_ props: [String: Any]?) {
-    XCTAssertEqual(false, props?["discover_everything"] as? Bool)
-    XCTAssertEqual("category_home", props?["discover_ref_tag"] as? String)
-    XCTAssertEqual("Documentary", props?["discover_subcategory_name"] as? String)
-    XCTAssertEqual("Film & Video", props?["discover_category_name"] as? String)
-    XCTAssertEqual(11, props?["discover_category_id"] as? Int)
-    XCTAssertEqual(30, props?["discover_subcategory_id"] as? Int)
-
-    XCTAssertNil(props?["discover_pwl"] as? Bool)
-    XCTAssertNil(props?["discover_watched"] as? Bool)
-    XCTAssertNil(props?["discover_social"] as? Bool)
-    XCTAssertNil(props?["discover_recommended"] as? Bool)
-    XCTAssertNil(props?["discover_sort"] as? String)
-    XCTAssertNil(props?["discover_search_term"] as? String)
   }
 }

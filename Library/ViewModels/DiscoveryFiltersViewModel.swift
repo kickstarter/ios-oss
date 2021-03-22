@@ -159,27 +159,10 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
       .observeValues {
         AppEnvironment.current.ksrAnalytics.trackDiscoveryModalSelectedFilter(
           params: $0.params,
-          discoveryFilterContext: self.getDiscoveryFilterContext(from: $0.params),
+          typeContext: getTypeContext(from: $0.params),
           locationContext: .discoverOverlay
         )
       }
-  }
-
-  private func getDiscoveryFilterContext(from discoveryParams: DiscoveryParams
-  ) -> KSRAnalytics.TypeContext.DiscoveryFilterContext {
-    if discoveryParams.staffPicks == true {
-      return .pwl
-    } else if discoveryParams.starred == true {
-      return .watched
-    } else if discoveryParams.social == true {
-      return .social
-    } else if let category = discoveryParams.category {
-      return .subCategoryName(category.name)
-    } else if discoveryParams.recommended == true {
-      return .recommended
-    } else {
-      return .allProjects
-    }
   }
 
   fileprivate let initialSelectedRowProperty = MutableProperty<SelectableRow?>(nil)
@@ -356,6 +339,23 @@ private func cachedCategories() -> [KsApi.Category]? {
 
 private func cache(categories: [KsApi.Category]) {
   AppEnvironment.current.cache[KSCache.ksr_discoveryFiltersCategories] = categories
+}
+
+private func getTypeContext(from discoveryParams: DiscoveryParams
+) -> KSRAnalytics.TypeContext {
+  if discoveryParams.staffPicks == true {
+    return .pwl
+  } else if discoveryParams.starred == true {
+    return .watched
+  } else if discoveryParams.social == true {
+    return .social
+  } else if let category = discoveryParams.category {
+    return category.parent == nil ? .categoryName : .subcategoryName
+  } else if discoveryParams.recommended == true {
+    return .recommended
+  } else {
+    return .allProjects
+  }
 }
 
 public let rootCategoriesQuery = NonEmptySet(Query.rootCategories(categoryFields))
