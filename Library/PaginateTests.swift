@@ -11,7 +11,7 @@ final class PaginateTests: TestCase {
   let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { c in .init(value: c <= 2 ? [c] : []) }
   let valuesFromEnvelope: ([Int]) -> [Int] = id
   let cursorFromEnvelope: ([Int]) -> Int = { ($0.last ?? 0) + 1 }
-  let statsFromEnvelope: ([Int]) -> Int = { _ in return 10 }
+  let statsFromEnvelope: ([Int]) -> Int = { _ in 10 }
 
   func testEmitsEmptyState_ClearOnNewRequest() {
     let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
@@ -142,7 +142,7 @@ final class PaginateTests: TestCase {
     valuesTest.assertValues([[], []])
     loadingTest.assertValues([true, false, true, false])
   }
-  
+
   func testPaginateStats() {
     let (values, _, _, stats) = paginate(
       requestFirstPageWith: newRequest,
@@ -154,7 +154,7 @@ final class PaginateTests: TestCase {
       requestFromParams: requestFromParams,
       requestFromCursor: requestFromCursor
     )
-    
+
     let valuesTest = TestObserver<[Int], Never>()
     values.observe(valuesTest.observer)
     let statsTest = TestObserver<Int, Never>()

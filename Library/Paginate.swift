@@ -25,6 +25,7 @@ import ReactiveSwift
  - parameter skipRepeats:          A boolean that determines if results can be repeated.
  - parameter valuesFromEnvelope:   A function to get an array of values from the results envelope.
  - parameter cursorFromEnvelope:   A function to get the cursor for the next page from a results envelope.
+ - parameter statsFromEnvelope:    A function to get the stats from the results envelope.
  - parameter requestFromParams:    A function to get a request for values from a params value.
  - parameter requestFromCursor:    A function to get a request for values from a cursor value.
  - parameter concater:             An optional function that concats a page of values to the current array of

@@ -800,8 +800,7 @@ internal final class SearchViewModelTests: TestCase {
   }
 
   func testSearchPageViewed_ReturningAfterSearching() {
-    let searchProjects = (1...10).map { idx in .template |> Project.lens.id .~ idx }
-    let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ searchProjects
+    let searchResponse = DiscoveryEnvelope.template
 
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: searchResponse)) {
       self.vm.inputs.viewWillAppear(animated: true)

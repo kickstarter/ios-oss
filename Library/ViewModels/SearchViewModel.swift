@@ -188,6 +188,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     // Tracking
 
+    // Ensure an initial value is emitted for `stats` when view first appears
     let searchResults = Signal.merge(
       stats,
       viewWillAppearNotAnimated.mapConst(0).take(first: 1)
