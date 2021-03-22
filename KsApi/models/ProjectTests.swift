@@ -312,8 +312,9 @@ final class ProjectTests: XCTestCase {
   }
 
   func testTags() {
-    let project = Project.template
+    let tags = ["Witchstarter", "Arts", "Games"]
+    let project = Project.template |> Project.lens.tags .~ tags
     XCTAssertEqual(3, project.tags?.count)
-    XCTAssertEqual("Action & Adventure, Adaptation, Board Games", project.tags?.joined(separator: ", "))
+    XCTAssertEqual("Witchstarter, Arts, Games", project.tags?.joined(separator: ", "))
   }
 }
