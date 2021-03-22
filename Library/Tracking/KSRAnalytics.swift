@@ -1532,6 +1532,7 @@ private func projectProperties(
   props["has_video"] = project.video != nil
   props["prelaunch_activated"] = project.prelaunchActivated
   props["rewards_count"] = project.rewards.count
+  props["tags"] = project.tags?.joined(separator: ", ")
   props["updates_count"] = project.stats.updatesCount
 
   let now = dateType.init().date
