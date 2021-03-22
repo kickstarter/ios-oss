@@ -157,7 +157,11 @@ public final class DiscoveryFiltersViewModel: DiscoveryFiltersViewModelType,
 
     self.notifyDelegateOfSelectedRow
       .observeValues {
-        AppEnvironment.current.ksrAnalytics.trackDiscoveryModalSelectedFilter(params: $0.params)
+        AppEnvironment.current.ksrAnalytics.trackDiscoveryModalSelectedFilter(
+          params: $0.params,
+          typeContext: typeContext(from: $0.params),
+          locationContext: .discoverOverlay
+        )
       }
   }
 
@@ -335,6 +339,23 @@ private func cachedCategories() -> [KsApi.Category]? {
 
 private func cache(categories: [KsApi.Category]) {
   AppEnvironment.current.cache[KSCache.ksr_discoveryFiltersCategories] = categories
+}
+
+private func typeContext(from discoveryParams: DiscoveryParams
+) -> KSRAnalytics.TypeContext {
+  if discoveryParams.staffPicks == true {
+    return .pwl
+  } else if discoveryParams.starred == true {
+    return .watched
+  } else if discoveryParams.social == true {
+    return .social
+  } else if let category = discoveryParams.category {
+    return category.parent == nil ? .categoryName : .subcategoryName
+  } else if discoveryParams.recommended == true {
+    return .recommended
+  } else {
+    return .allProjects
+  }
 }
 
 public let rootCategoriesQuery = NonEmptySet(Query.rootCategories(categoryFields))

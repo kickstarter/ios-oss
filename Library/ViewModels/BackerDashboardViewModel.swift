@@ -174,6 +174,16 @@ public final class BackerDashboardViewModel: BackerDashboardViewModelType, Backe
       .map { headerTopConstant, scrollViewYOffset in
         min(headerTopConstant, -scrollViewYOffset)
       }
+
+    self.currentSelectedTabProperty
+      .signal
+      .filter { $0 == .saved }
+      .observeValues { _ in
+        let params = DiscoveryParams.defaults |> DiscoveryParams.lens.starred .~ true
+        AppEnvironment.current.ksrAnalytics.trackProfilePageFilterSelected(
+          params: params
+        )
+      }
   }
 
   private let backedProjectsButtonTappedProperty = MutableProperty(())

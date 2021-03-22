@@ -46,6 +46,7 @@ extension Project {
     staffPick: false,
     state: .live,
     stats: .template,
+    tags: ["Action & Adventure", "Adaptation", "Board Games"],
     urls: Project.UrlsEnvelope(
       web: Project.UrlsEnvelope.WebEnvelope(
         project: "https://www.kickstarter.com/projects/creator/a-fun-project",
