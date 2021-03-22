@@ -21,6 +21,7 @@ public struct Project {
   public var staffPick: Bool
   public var state: State
   public var stats: Stats
+  public var tags: [String]?
   public var urls: UrlsEnvelope
   public var video: Video?
 
@@ -248,6 +249,7 @@ extension Project: Decodable {
     case slug
     case staffPick = "staff_pick"
     case state
+    case tags
     case urls
     case video
   }
@@ -272,6 +274,7 @@ extension Project: Decodable {
     self.staffPick = try values.decode(Bool.self, forKey: .staffPick)
     self.state = try values.decode(State.self, forKey: .state)
     self.stats = try Project.Stats(from: decoder)
+    self.tags = try values.decodeIfPresent([String].self, forKey: .tags)
     self.urls = try values.decode(UrlsEnvelope.self, forKey: .urls)
     self.video = try values.decodeIfPresent(Video.self, forKey: .video)
   }

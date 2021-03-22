@@ -301,13 +301,17 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(10, dataLakeClientProperties?["project_comments_count"] as? Int)
     XCTAssertEqual(true, dataLakeClientProperties?["project_prelaunch_activated"] as? Bool)
     XCTAssertEqual(1, dataLakeClientProperties?["project_rewards_count"] as? Int)
+    XCTAssertEqual(
+      project.tags?.joined(separator: ", "),
+      dataLakeClientProperties?["project_tags"] as? String
+    )
     XCTAssertEqual(1, dataLakeClientProperties?["project_updates_count"] as? Int)
 
     XCTAssertEqual(false, dataLakeClientProperties?["project_user_is_project_creator"] as? Bool)
     XCTAssertNil(dataLakeClientProperties?["project_user_is_backer"])
     XCTAssertNil(dataLakeClientProperties?["project_user_has_starred"])
 
-    XCTAssertEqual(29, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(30, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual("discovery", dataLakeClientProperties?["session_ref_tag"] as? String)
     XCTAssertEqual("recommended", dataLakeClientProperties?["session_referrer_credit"] as? String)
@@ -343,13 +347,14 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(10, segmentClientProperties?["project_comments_count"] as? Int)
     XCTAssertEqual(true, segmentClientProperties?["project_prelaunch_activated"] as? Bool)
     XCTAssertEqual(1, segmentClientProperties?["project_rewards_count"] as? Int)
+    XCTAssertEqual(project.tags?.joined(separator: ", "), segmentClientProperties?["project_tags"] as? String)
     XCTAssertEqual(1, segmentClientProperties?["project_updates_count"] as? Int)
 
     XCTAssertEqual(false, segmentClientProperties?["project_user_is_project_creator"] as? Bool)
     XCTAssertNil(segmentClientProperties?["project_user_is_backer"])
     XCTAssertNil(segmentClientProperties?["project_user_has_starred"])
 
-    XCTAssertEqual(29, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(30, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual("discovery", segmentClientProperties?["session_ref_tag"] as? String)
     XCTAssertEqual("recommended", segmentClientProperties?["session_referrer_credit"] as? String)
@@ -379,14 +384,19 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(false, dataLakeClientProperties?["project_user_is_project_creator"] as? Bool)
     XCTAssertEqual(false, dataLakeClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, dataLakeClientProperties?["project_user_has_watched"] as? Bool)
+    XCTAssertEqual(
+      project.tags?.joined(separator: ", "),
+      dataLakeClientProperties?["project_tags"] as? String
+    )
 
-    XCTAssertEqual(28, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(29, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual(false, segmentClientProperties?["project_user_is_project_creator"] as? Bool)
     XCTAssertEqual(false, segmentClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, segmentClientProperties?["project_user_has_watched"] as? Bool)
+    XCTAssertEqual(project.tags?.joined(separator: ", "), segmentClientProperties?["project_tags"] as? String)
 
-    XCTAssertEqual(28, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(29, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInBacker() {
@@ -412,14 +422,19 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(false, dataLakeClientProperties?["project_user_is_project_creator"] as? Bool)
     XCTAssertEqual(true, dataLakeClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, dataLakeClientProperties?["project_user_has_watched"] as? Bool)
+    XCTAssertEqual(
+      project.tags?.joined(separator: ", "),
+      dataLakeClientProperties?["project_tags"] as? String
+    )
 
-    XCTAssertEqual(28, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(29, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual(false, segmentClientProperties?["project_user_is_project_creator"] as? Bool)
     XCTAssertEqual(true, segmentClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, segmentClientProperties?["project_user_has_watched"] as? Bool)
+    XCTAssertEqual(project.tags?.joined(separator: ", "), segmentClientProperties?["project_tags"] as? String)
 
-    XCTAssertEqual(28, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(29, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInStarrer() {
@@ -445,14 +460,19 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(false, dataLakeClientProperties?["project_user_is_project_creator"] as? Bool)
     XCTAssertEqual(false, dataLakeClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(true, dataLakeClientProperties?["project_user_has_watched"] as? Bool)
+    XCTAssertEqual(
+      project.tags?.joined(separator: ", "),
+      dataLakeClientProperties?["project_tags"] as? String
+    )
 
-    XCTAssertEqual(28, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(29, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual(false, segmentClientProperties?["project_user_is_project_creator"] as? Bool)
     XCTAssertEqual(false, segmentClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(true, segmentClientProperties?["project_user_has_watched"] as? Bool)
+    XCTAssertEqual(project.tags?.joined(separator: ", "), segmentClientProperties?["project_tags"] as? String)
 
-    XCTAssertEqual(28, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(29, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   func testProjectProperties_LoggedInCreator() {
@@ -478,14 +498,19 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(true, dataLakeClientProperties?["project_user_is_project_creator"] as? Bool)
     XCTAssertEqual(false, dataLakeClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, dataLakeClientProperties?["project_user_has_watched"] as? Bool)
+    XCTAssertEqual(
+      project.tags?.joined(separator: ", "),
+      dataLakeClientProperties?["project_tags"] as? String
+    )
 
-    XCTAssertEqual(28, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(29, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual(true, segmentClientProperties?["project_user_is_project_creator"] as? Bool)
     XCTAssertEqual(false, segmentClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertEqual(false, segmentClientProperties?["project_user_has_watched"] as? Bool)
+    XCTAssertEqual(project.tags?.joined(separator: ", "), segmentClientProperties?["project_tags"] as? String)
 
-    XCTAssertEqual(28, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(29, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
   }
 
   // MARK: - Discovery Properties Tests
@@ -1797,9 +1822,89 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
 
-    ksrAnalytics.trackDiscoveryModalSelectedFilter(params: .defaults)
+    let allProjectParams = DiscoveryParams.defaults |> DiscoveryParams.lens.includePOTD .~ true
+    ksrAnalytics
+      .trackDiscoveryModalSelectedFilter(
+        params: allProjectParams,
+        typeContext: .allProjects,
+        locationContext: .discoverOverlay
+      )
     XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("all", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("all", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(true, dataLakeClient.properties.last?["discover_everything"] as? Bool)
+    XCTAssertEqual(true, segmentClient.properties.last?["discover_everything"] as? Bool)
+
+    let pwlParams = DiscoveryParams.defaults |> DiscoveryParams.lens.staffPicks .~ true
+    ksrAnalytics
+      .trackDiscoveryModalSelectedFilter(
+        params: pwlParams,
+        typeContext: .pwl,
+        locationContext: .discoverOverlay
+      )
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("pwl", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("pwl", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(true, dataLakeClient.properties.last?["discover_pwl"] as? Bool)
+    XCTAssertEqual(true, segmentClient.properties.last?["discover_pwl"] as? Bool)
+
+    let recommendedParams = DiscoveryParams.defaults |> DiscoveryParams.lens.recommended .~ true
+    ksrAnalytics
+      .trackDiscoveryModalSelectedFilter(
+        params: recommendedParams,
+        typeContext: .recommended,
+        locationContext: .discoverOverlay
+      )
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("recommended", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("recommended", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(true, dataLakeClient.properties.last?["discover_recommended"] as? Bool)
+    XCTAssertEqual(true, segmentClient.properties.last?["discover_recommended"] as? Bool)
+
+    let socialParams = DiscoveryParams.defaults |> DiscoveryParams.lens.social .~ true
+    ksrAnalytics
+      .trackDiscoveryModalSelectedFilter(
+        params: socialParams,
+        typeContext: .social,
+        locationContext: .discoverOverlay
+      )
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("social", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("social", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(true, dataLakeClient.properties.last?["discover_social"] as? Bool)
+    XCTAssertEqual(true, segmentClient.properties.last?["discover_social"] as? Bool)
+
+    let artParams = DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ Category.art
+    ksrAnalytics
+      .trackDiscoveryModalSelectedFilter(
+        params: artParams,
+        typeContext: .categoryName,
+        locationContext: .discoverOverlay
+      )
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("category_name", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("category_name", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("Art", dataLakeClient.properties.last?["discover_category_name"] as? String)
+    XCTAssertEqual("Art", segmentClient.properties.last?["discover_category_name"] as? String)
+
+    let watchedParams = DiscoveryParams.defaults |> DiscoveryParams.lens.starred .~ true
+    ksrAnalytics
+      .trackDiscoveryModalSelectedFilter(
+        params: watchedParams,
+        typeContext: .watched,
+        locationContext: .discoverOverlay
+      )
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("watched", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("watched", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(true, dataLakeClient.properties.last?["discover_watched"] as? Bool)
+    XCTAssertEqual(true, segmentClient.properties.last?["discover_watched"] as? Bool)
 
     ksrAnalytics.trackEditorialHeaderTapped(params: .defaults, refTag: .discovery)
     XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
@@ -1844,6 +1949,14 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("search", segmentClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("global_nav", dataLakeClient.properties.last?["context_location"] as? String)
     XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
+
+    ksrAnalytics.trackProfilePageFilterSelected(params: watchedParams)
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("watched", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("watched", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("account_menu", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("account_menu", segmentClient.properties.last?["context_location"] as? String)
 
     ksrAnalytics.trackProjectSearchView()
     XCTAssertEqual("search", dataLakeClient.properties.last?["context_page"] as? String)
@@ -1969,6 +2082,10 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(KSRAnalytics.TypeContext.discovery(.magic).trackingString, "magic")
     XCTAssertEqual(KSRAnalytics.TypeContext.discovery(.newest).trackingString, "newest")
     XCTAssertEqual(KSRAnalytics.TypeContext.discovery(.popular).trackingString, "popular")
+    XCTAssertEqual(KSRAnalytics.TypeContext.allProjects.trackingString, "all")
+    XCTAssertEqual(KSRAnalytics.TypeContext.watched.trackingString, "watched")
+    XCTAssertEqual(KSRAnalytics.TypeContext.categoryName.trackingString, "category_name")
+    XCTAssertEqual(KSRAnalytics.TypeContext.subcategoryName.trackingString, "subcategory_name")
     XCTAssertEqual(KSRAnalytics.TypeContext.facebook.trackingString, "facebook")
     XCTAssertEqual(KSRAnalytics.TypeContext.pledge(.fixErroredPledge).trackingString, "fix_errored_pledge")
     XCTAssertEqual(KSRAnalytics.TypeContext.pledge(.managePledge).trackingString, "manage_pledge")
@@ -2043,6 +2160,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(true, props?["project_has_video"] as? Bool)
     XCTAssertEqual(10, props?["project_comments_count"] as? Int)
     XCTAssertEqual(0, props?["project_rewards_count"] as? Int)
+    XCTAssertEqual("Action & Adventure, Adaptation, Board Games", props?["project_tags"] as? String)
     XCTAssertEqual(1, props?["project_updates_count"] as? Int)
 
     XCTAssertEqual(false, props?["project_user_is_project_creator"] as? Bool)

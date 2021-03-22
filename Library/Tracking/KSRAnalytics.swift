@@ -29,7 +29,6 @@ public final class KSRAnalytics {
     case collectionViewed = "Collection Viewed"
     case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
     case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
-    case filterClicked = "Filter Clicked"
     case fixPledgeButtonClicked = "Fix Pledge Button Clicked"
     case forgotPasswordViewed = "Forgot Password Viewed"
     case loginButtonClicked = "Log In Button Clicked"
@@ -350,6 +349,7 @@ public final class KSRAnalytics {
    Contextual details about an event that was fired that aren't captured in other context properties
    */
   public enum TypeContext {
+    case allProjects
     case amountGoal
     case amountPledged
     case apple
@@ -374,6 +374,7 @@ public final class KSRAnalytics {
     case tag
     case unwatch
     case watch
+    case watched
 
     public enum DiscoverySortContext {
       case endingSoon
@@ -407,6 +408,7 @@ public final class KSRAnalytics {
 
     var trackingString: String {
       switch self {
+      case .allProjects: return "all"
       case .amountGoal: return "amount_goal"
       case .amountPledged: return "amount_pledged"
       case .apple: return "apple"
@@ -431,6 +433,7 @@ public final class KSRAnalytics {
       case .tag: return "tag"
       case .unwatch: return "unwatch"
       case .watch: return "watch"
+      case .watched: return "watched"
       }
     }
   }
@@ -681,12 +684,49 @@ public final class KSRAnalytics {
    Call when a filter is selected from the Explore modal.
 
    - parameter params: The params selected from the modal.
+   - parameter typeContext: The context of the selected filter.
+   - parameter locationContext: Represents additional details of the UI interaction
    */
-  public func trackDiscoveryModalSelectedFilter(params: DiscoveryParams) {
+  public func trackDiscoveryModalSelectedFilter(
+    params: DiscoveryParams,
+    typeContext: TypeContext,
+    locationContext: LocationContext
+  ) {
+    let props = discoveryProperties(from: params)
+      .withAllValuesFrom(
+        contextProperties(
+          ctaContext: .discoverFilter,
+          page: .discovery,
+          typeContext: typeContext,
+          locationContext: locationContext
+        )
+      )
     self.track(
-      event: ApprovedEvent.filterClicked.rawValue,
-      page: .discovery,
-      properties: discoveryProperties(from: params)
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  /**
+   Called when saved is selected from profile.
+
+   - parameter params: The params selected from the modal.
+   */
+  public func trackProfilePageFilterSelected(
+    params: DiscoveryParams
+  ) {
+    let props = discoveryProperties(from: params)
+      .withAllValuesFrom(
+        contextProperties(
+          ctaContext: .discoverFilter,
+          page: .discovery,
+          typeContext: .watched,
+          locationContext: .accountMenu
+        )
+      )
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      properties: props
     )
   }
 
@@ -1489,6 +1529,7 @@ private func projectProperties(
   props["has_video"] = project.video != nil
   props["prelaunch_activated"] = project.prelaunchActivated
   props["rewards_count"] = project.rewards.count
+  props["tags"] = project.tags?.joined(separator: ", ")
   props["updates_count"] = project.stats.updatesCount
 
   let now = dateType.init().date
