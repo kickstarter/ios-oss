@@ -827,7 +827,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
 
     trackCheckoutPageViewData
       .observeValues { project, baseReward, rewards, selectedQuantities, refTag, additionalPledgeAmount, pledgeTotal, shippingTotal, context in
-        
+
         guard context.isAny(of: .pledge, .update, .updateReward) else { return }
 
         let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
