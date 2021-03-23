@@ -21,7 +21,7 @@ public extension UIColor {
   }
 
   var hexString: String {
-    guard let components = self.cgColor.components else { return "000000" }
+    guard let components = self.cgColor.components, components.count >= 3 else { return "000000" }
     let r = components[0]
     let g = components[1]
     let b = components[2]
