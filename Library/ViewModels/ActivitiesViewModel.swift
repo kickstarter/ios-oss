@@ -142,7 +142,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       )
       .filter { AppEnvironment.current.currentUser != nil }
 
-    let (paginatedActivities, isLoading, pageCount) = paginate(
+    let (paginatedActivities, isLoading, pageCount, _) = paginate(
       requestFirstPageWith: requestFirstPage,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
