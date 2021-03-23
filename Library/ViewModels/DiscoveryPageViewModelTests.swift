@@ -1657,4 +1657,56 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.showPersonalization.assertValues([false, true])
     }
   }
+
+  func testDiscoverySort_Magic() {
+    self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.selectedFilter(.recommendedDefaults)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+
+    let dataLakeClientProps = self.dataLakeTrackingClient.properties.last
+    let segmentClientProps = self.segmentTrackingClient.properties.last
+
+    XCTAssertEqual("magic", dataLakeClientProps?["discover_sort"] as? String)
+    XCTAssertEqual("magic", segmentClientProps?["discover_sort"] as? String)
+  }
+
+  func testDiscoverySort_Popular() {
+    self.vm.inputs.configureWith(sort: .popular)
+    self.vm.inputs.selectedFilter(.recommendedDefaults)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+
+    let dataLakeClientProps = self.dataLakeTrackingClient.properties.last
+    let segmentClientProps = self.segmentTrackingClient.properties.last
+
+    XCTAssertEqual("popular", dataLakeClientProps?["discover_sort"] as? String)
+    XCTAssertEqual("popular", segmentClientProps?["discover_sort"] as? String)
+  }
+
+  func testDiscoverySort_Newest() {
+    self.vm.inputs.configureWith(sort: .newest)
+    self.vm.inputs.selectedFilter(.recommendedDefaults)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+
+    let dataLakeClientProps = self.dataLakeTrackingClient.properties.last
+    let segmentClientProps = self.segmentTrackingClient.properties.last
+
+    XCTAssertEqual("newest", dataLakeClientProps?["discover_sort"] as? String)
+    XCTAssertEqual("newest", segmentClientProps?["discover_sort"] as? String)
+  }
+
+  func testDiscoverySort_EndingSoon() {
+    self.vm.inputs.configureWith(sort: .endingSoon)
+    self.vm.inputs.selectedFilter(.recommendedDefaults)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+
+    let dataLakeClientProps = self.dataLakeTrackingClient.properties.last
+    let segmentClientProps = self.segmentTrackingClient.properties.last
+
+    XCTAssertEqual("ending_soon", dataLakeClientProps?["discover_sort"] as? String)
+    XCTAssertEqual("ending_soon", segmentClientProps?["discover_sort"] as? String)
+  }
 }

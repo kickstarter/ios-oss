@@ -415,8 +415,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     // MARK: - Tracking
 
-    requestFirstPageWith
-      .observeValues { params in
+    Signal.combineLatest(requestFirstPageWith, self.viewWillAppearProperty.signal)
+      .observeValues { params, _ in
         AppEnvironment.current.ksrAnalytics.trackDiscovery(params: params)
       }
 

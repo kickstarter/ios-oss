@@ -1645,7 +1645,7 @@ private func discoveryProperties(
     .withAllValuesFrom(parentCategoryProps ?? [:])
 
   result["everything"] = result.isEmpty
-  result["sort"] = params.sort?.rawValue
+  result["sort"] = params.sort?.trackingString
   result["ref_tag"] = RefTag.fromParams(params).stringTag
   result["search_term"] = params.query
 
