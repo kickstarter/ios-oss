@@ -196,7 +196,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     let paginatedProjects: Signal<[Project], Never>
     let isLoading: Signal<Bool, Never>
-    (paginatedProjects, isLoading, _) = paginate(
+    (paginatedProjects, isLoading, _, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
@@ -415,14 +415,9 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
     // MARK: - Tracking
 
-    requestFirstPageWith
-      .observeValues { params in
-        let optimizelyProps = optimizelyProperties() ?? [:]
-
-        AppEnvironment.current.ksrAnalytics.trackDiscovery(
-          params: params,
-          optimizelyProperties: optimizelyProps
-        )
+    Signal.combineLatest(requestFirstPageWith, self.viewWillAppearProperty.signal)
+      .observeValues { params, _ in
+        AppEnvironment.current.ksrAnalytics.trackDiscovery(params: params)
       }
 
     let personalizationCellTappedAndRefTag = self.personalizationCellTappedProperty.signal

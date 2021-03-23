@@ -113,7 +113,7 @@ public final class BackerDashboardProjectsViewModel: BackerDashboardProjectsView
     .ignoreValues()
 
     let isLoading: Signal<Bool, Never>
-    (self.projects, isLoading, _) = paginate(
+    (self.projects, isLoading, _, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,

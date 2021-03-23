@@ -85,7 +85,7 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
       )
 
     let activities: Signal<[Activity], Never>
-    (activities, self.isRefreshing, _) = paginate(
+    (activities, self.isRefreshing, _, _) = paginate(
       requestFirstPageWith: requestFirstPage,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,

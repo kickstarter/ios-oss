@@ -133,13 +133,14 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
           }
       }
 
-    let (paginatedProjects, isLoading, page) = paginate(
+    let (paginatedProjects, isLoading, page, stats) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
       skipRepeats: false,
       valuesFromEnvelope: { $0.projects },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
+      statsFromEnvelope: { $0.stats.count },
       requestFromParams: requestFromParamsWithDebounce,
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) }
     )
@@ -185,10 +186,22 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
-    // KSRAnalytics
+    // Tracking
 
-    viewWillAppearNotAnimated
-      .observeValues { AppEnvironment.current.ksrAnalytics.trackProjectSearchView() }
+    // Ensure an initial value is emitted for `stats` when view first appears
+    let searchResults = Signal.merge(
+      stats,
+      viewWillAppearNotAnimated.mapConst(0).take(first: 1)
+    )
+
+    Signal.combineLatest(query, searchResults)
+      .takeWhen(viewWillAppearNotAnimated)
+      .observeValues { query, searchResults in
+        let results = query.isEmpty ? 0 : searchResults
+        let params = .defaults |> DiscoveryParams.lens.query .~ query
+        AppEnvironment.current.ksrAnalytics
+          .trackProjectSearchView(params: params, results: results)
+      }
 
     let hasResults = Signal.combineLatest(paginatedProjects, isLoading)
       .filter(second >>> isFalse)

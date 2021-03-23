@@ -555,7 +555,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(false, dataLakeClientProperties?["discover_everything"] as? Bool)
     XCTAssertEqual(Category.filmAndVideo.intID, dataLakeClientProperties?["discover_category_id"] as? Int)
     XCTAssertEqual(Category.filmAndVideo.name, dataLakeClientProperties?["discover_category_name"] as? String)
-    XCTAssertEqual("popularity", dataLakeClientProperties?["discover_sort"] as? String)
+    XCTAssertEqual("popular", dataLakeClientProperties?["discover_sort"] as? String)
     XCTAssertEqual("ios_project_collection_tag_557", dataLakeClientProperties?["discover_ref_tag"] as? String)
     XCTAssertEqual("collage", dataLakeClientProperties?["discover_search_term"] as? String)
 
@@ -568,7 +568,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(false, segmentClientProperties?["discover_everything"] as? Bool)
     XCTAssertEqual(Category.filmAndVideo.intID, segmentClientProperties?["discover_category_id"] as? Int)
     XCTAssertEqual(Category.filmAndVideo.name, segmentClientProperties?["discover_category_name"] as? String)
-    XCTAssertEqual("popularity", segmentClientProperties?["discover_sort"] as? String)
+    XCTAssertEqual("popular", segmentClientProperties?["discover_sort"] as? String)
     XCTAssertEqual("ios_project_collection_tag_557", segmentClientProperties?["discover_ref_tag"] as? String)
     XCTAssertEqual("collage", segmentClientProperties?["discover_search_term"] as? String)
   }
@@ -603,7 +603,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(true, dataLakeClientProperties?["discover_pwl"] as? Bool)
     XCTAssertEqual(false, dataLakeClientProperties?["discover_watched"] as? Bool)
     XCTAssertEqual(false, dataLakeClientProperties?["discover_everything"] as? Bool)
-    XCTAssertEqual("popularity", dataLakeClientProperties?["discover_sort"] as? String)
+    XCTAssertEqual("popular", dataLakeClientProperties?["discover_sort"] as? String)
 
     XCTAssertNil(segmentClientProperties?["discover_category_id"])
     XCTAssertNil(segmentClientProperties?["discover_subcategory_id"])
@@ -612,7 +612,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(true, segmentClientProperties?["discover_pwl"] as? Bool)
     XCTAssertEqual(false, segmentClientProperties?["discover_watched"] as? Bool)
     XCTAssertEqual(false, segmentClientProperties?["discover_everything"] as? Bool)
-    XCTAssertEqual("popularity", segmentClientProperties?["discover_sort"] as? String)
+    XCTAssertEqual("popular", segmentClientProperties?["discover_sort"] as? String)
   }
 
   func testDiscoveryProperties_Everything() {
@@ -1423,10 +1423,25 @@ final class KSRAnalyticsTests: TestCase {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
 
-    ksrAnalytics.trackProjectSearchView()
+    ksrAnalytics.trackProjectSearchView(
+      params: .defaults |> DiscoveryParams.lens.query .~ "mavericks",
+      results: 2
+    )
 
-    XCTAssertEqual(["Search Page Viewed"], dataLakeClient.events)
-    XCTAssertEqual(["Search Page Viewed"], segmentClient.events)
+    let dataLakeClientProps = dataLakeClient.properties.last
+    let segmentClientProps = segmentClient.properties.last
+
+    XCTAssertEqual(["Page Viewed"], dataLakeClient.events)
+    XCTAssertEqual(["Page Viewed"], segmentClient.events)
+
+    XCTAssertEqual("search", dataLakeClientProps?["context_page"] as? String)
+    XCTAssertEqual("search", segmentClientProps?["context_page"] as? String)
+
+    XCTAssertEqual("mavericks", dataLakeClientProps?["discover_search_term"] as? String)
+    XCTAssertEqual("mavericks", segmentClientProps?["discover_search_term"] as? String)
+
+    XCTAssertEqual(2, dataLakeClientProps?["discover_search_results_count"] as? Int)
+    XCTAssertEqual(2, segmentClientProps?["discover_search_results_count"] as? Int)
   }
 
   func testTrackSearchResults() {
@@ -2011,7 +2026,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("account_menu", dataLakeClient.properties.last?["context_location"] as? String)
     XCTAssertEqual("account_menu", segmentClient.properties.last?["context_location"] as? String)
 
-    ksrAnalytics.trackProjectSearchView()
+    ksrAnalytics.trackProjectSearchView(params: .defaults)
     XCTAssertEqual("search", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("search", segmentClient.properties.last?["context_page"] as? String)
 
