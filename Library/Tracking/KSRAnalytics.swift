@@ -82,6 +82,7 @@ public final class KSRAnalytics {
     case signup = "sign_up" // SignupViewController
     case thanks // ThanksViewController
     case twoFactorAuth = "two_factor_auth" // TwoFactorViewController
+    case updatePledge = "update_pledge" // PledgeViewController
   }
 
   /// Determines the authentication type for login or signup events.
@@ -967,11 +968,12 @@ public final class KSRAnalytics {
     )
   }
 
-  /* Call when the pledge screen is shown
+  /* Call when the pledge screen is shown, and pageContext = pledge, update, or updateReward.
 
    parameters:
    - project: the project being pledged to
    - reward: the chosen reward
+   - pageContext: The screen that's been tracked.
    - checkoutData: the `CheckoutPropertiesData` associated with the given project and reward
    - refTag: the associated RefTag for the pledge
    - cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
@@ -981,6 +983,7 @@ public final class KSRAnalytics {
   public func trackCheckoutPaymentPageViewed(
     project: Project,
     reward: Reward,
+    pageContext: PageContext,
     checkoutData: CheckoutPropertiesData,
     refTag: RefTag?,
     cookieRefTag: RefTag?
@@ -990,7 +993,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      page: .checkout,
+      page: pageContext,
       properties: props,
       refTag: refTag?.stringTag,
       referrerCredit: cookieRefTag?.stringTag
