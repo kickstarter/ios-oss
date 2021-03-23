@@ -849,7 +849,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         AppEnvironment.current.ksrAnalytics.trackCheckoutPaymentPageViewed(
           project: project,
           reward: baseReward,
-          pageContext: context == .pledge ? .checkout : .updatePledgeScreen,
+          pageContext: context == .pledge ? .checkout : .updatePledge,
           checkoutData: checkoutData,
           refTag: refTag,
           cookieRefTag: cookieRefTag

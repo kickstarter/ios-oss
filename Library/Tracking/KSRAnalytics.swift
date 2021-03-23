@@ -84,7 +84,7 @@ public final class KSRAnalytics {
     case signup = "sign_up" // SignupViewController
     case thanks // ThanksViewController
     case twoFactorAuth = "two_factor_auth" // TwoFactorViewController
-    case updatePledgeScreen = "update_pledge" // PledgeViewController
+    case updatePledge = "update_pledge" // PledgeViewController
   }
 
   /// Determines the authentication type for login or signup events.

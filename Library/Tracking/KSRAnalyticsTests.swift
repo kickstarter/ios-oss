@@ -782,7 +782,7 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackCheckoutPaymentPageViewed(
       project: .template,
       reward: reward,
-      pageContext: .updatePledgeScreen,
+      pageContext: .updatePledge,
       checkoutData: KSRAnalytics.CheckoutPropertiesData.template,
       refTag: RefTag.activity,
       cookieRefTag: RefTag.activity
@@ -1832,7 +1832,7 @@ final class KSRAnalyticsTests: TestCase {
       project: .template,
       reward: reward,
       pageContext: .checkout,
-      checkoutData: KSRAnalytics.CheckoutPropertiesData.template,
+      checkoutData: .template,
       refTag: nil,
       cookieRefTag: nil
     )
@@ -1849,8 +1849,8 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackCheckoutPaymentPageViewed(
       project: .template,
       reward: reward,
-      pageContext: .updatePledgeScreen,
-      checkoutData: KSRAnalytics.CheckoutPropertiesData.template,
+      pageContext: .updatePledge,
+      checkoutData: .template,
       refTag: nil,
       cookieRefTag: nil
     )
