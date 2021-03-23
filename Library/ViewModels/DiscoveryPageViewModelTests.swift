@@ -117,13 +117,14 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.hasAddedProjects.assertValues([true], "Projects are added.")
     self.hasRemovedProjects.assertValues([false], "Projects are not removed.")
     self.projectsAreLoading.assertValues([true, false], "Loading indicator toggles on/off.")
+
     XCTAssertEqual(
-      ["Explore Page Viewed"],
+      ["Page Viewed"],
       self.dataLakeTrackingClient.events,
       "Impression is tracked."
     )
     XCTAssertEqual(
-      ["Explore Page Viewed"],
+      ["Page Viewed"],
       self.segmentTrackingClient.events,
       "Impression is tracked."
     )
@@ -131,25 +132,11 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     let dataLakeTrackingClientProps = self.dataLakeTrackingClient.properties.last
     let segmentClientProps = self.segmentTrackingClient.properties.last
 
-    XCTAssertNotNil(
-      dataLakeTrackingClientProps?["optimizely_api_key"],
-      "Event includes Optimizely properties"
-    )
-    XCTAssertNotNil(
-      dataLakeTrackingClientProps?["optimizely_environment"],
-      "Event includes Optimizely properties"
-    )
-    XCTAssertNotNil(
-      dataLakeTrackingClientProps?["session_variants_optimizely"],
-      "Event includes Optimizely properties"
-    )
+    XCTAssertEqual("discover", dataLakeTrackingClientProps?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClientProps?["context_page"] as? String)
 
-    XCTAssertNotNil(segmentClientProps?["optimizely_api_key"], "Event includes Optimizely properties")
-    XCTAssertNotNil(segmentClientProps?["optimizely_environment"], "Event includes Optimizely properties")
-    XCTAssertNotNil(
-      segmentClientProps?["session_variants_optimizely"],
-      "Event includes Optimizely properties"
-    )
+    XCTAssertEqual("magic", dataLakeTrackingClientProps?["discover_sort"] as? String)
+    XCTAssertEqual("magic", segmentClientProps?["discover_sort"] as? String)
 
     // Scroll down a bit and advance scheduler
     self.vm.inputs.willDisplayRow(2, outOf: 10)
@@ -158,12 +145,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.hasAddedProjects.assertValues([true], "No projects are added.")
     self.hasRemovedProjects.assertValues([false], "No projects are removed.")
     XCTAssertEqual(
-      ["Explore Page Viewed"],
+      ["Page Viewed"],
       self.dataLakeTrackingClient.events,
       "No new events are tracked."
     )
     XCTAssertEqual(
-      ["Explore Page Viewed"],
+      ["Page Viewed"],
       self.segmentTrackingClient.events,
       "No new events are tracked."
     )
@@ -179,12 +166,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       [true, false, true, false], "Loading indicator toggles on/off."
     )
     XCTAssertEqual(
-      ["Explore Page Viewed"],
+      ["Page Viewed"],
       self.dataLakeTrackingClient.events,
       "No new events are tracked"
     )
     XCTAssertEqual(
-      ["Explore Page Viewed"],
+      ["Page Viewed"],
       self.segmentTrackingClient.events,
       "No new events are tracked"
     )
@@ -197,12 +184,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     self.hasAddedProjects.assertValues([true, true], "No projects are added.")
     self.hasRemovedProjects.assertValues([false, false], "No projects are removed.")
     XCTAssertEqual(
-      ["Explore Page Viewed"],
+      ["Page Viewed"],
       self.dataLakeTrackingClient.events,
       "No new events are tracked."
     )
     XCTAssertEqual(
-      ["Explore Page Viewed"],
+      ["Page Viewed"],
       self.segmentTrackingClient.events,
       "No new events are tracked."
     )
@@ -231,7 +218,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       "Loading indicator toggles on/off."
     )
     XCTAssertEqual(
-      ["Explore Page Viewed", "Explore Page Viewed"],
+      ["Page Viewed", "Page Viewed"],
       self.dataLakeTrackingClient.events,
       "Another event is tracked when the filters are updated."
     )
@@ -241,7 +228,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       "The updated category is tracked."
     )
     XCTAssertEqual(
-      ["Explore Page Viewed", "Explore Page Viewed"],
+      ["Page Viewed", "Page Viewed"],
       self.segmentTrackingClient.events,
       "Another event is tracked when the filters are updated."
     )
@@ -273,12 +260,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       "Loading indicator toggles on/off."
     )
     XCTAssertEqual(
-      ["Explore Page Viewed", "Explore Page Viewed"],
+      ["Page Viewed", "Page Viewed"],
       self.dataLakeTrackingClient.events,
       "No new events are tracked."
     )
     XCTAssertEqual(
-      ["Explore Page Viewed", "Explore Page Viewed"],
+      ["Page Viewed", "Page Viewed"],
       self.segmentTrackingClient.events,
       "No new events are tracked."
     )
@@ -472,8 +459,8 @@ internal final class DiscoveryPageViewModelTests: TestCase {
         "Go to the project with discovery ref tag."
       )
 
-      XCTAssertEqual(["Explore Page Viewed", "Card Clicked"], self.dataLakeTrackingClient.events)
-      XCTAssertEqual(["Explore Page Viewed", "Card Clicked"], self.segmentTrackingClient.events)
+      XCTAssertEqual(["Page Viewed", "Card Clicked"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Page Viewed", "Card Clicked"], self.segmentTrackingClient.events)
       XCTAssertEqual("Project Card Clicked", mockOptimizelyClient.trackedEventKey)
 
       self.vm.inputs.selectedFilter(.defaults
@@ -488,15 +475,15 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       )
 
       XCTAssertEqual([
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked"
       ], self.dataLakeTrackingClient.events)
       XCTAssertEqual([
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked"
       ], self.segmentTrackingClient.events)
 
@@ -504,19 +491,19 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.tapped(project: project)
 
       XCTAssertEqual([
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked"
       ], self.dataLakeTrackingClient.events)
       XCTAssertEqual([
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked"
       ], self.segmentTrackingClient.events)
 
@@ -531,23 +518,24 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.tapped(project: project)
 
       XCTAssertEqual([
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked"
       ], self.dataLakeTrackingClient.events)
+
       XCTAssertEqual([
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked"
       ], self.segmentTrackingClient.events)
 
@@ -573,27 +561,27 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.tapped(project: project)
 
       XCTAssertEqual([
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked"
       ], self.dataLakeTrackingClient.events)
       XCTAssertEqual([
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked",
-        "Explore Page Viewed",
+        "Page Viewed",
         "Card Clicked"
       ], self.segmentTrackingClient.events)
 
@@ -1265,12 +1253,12 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.discoveryEditorialCellTapped(with: .lightsOn)
 
-      XCTAssertEqual(["Explore Page Viewed", "Card Clicked"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Page Viewed", "Card Clicked"], self.dataLakeTrackingClient.events)
       XCTAssertEqual(
         [nil, "ios_project_collection_tag_557"],
         self.dataLakeTrackingClient.properties(forKey: "session_ref_tag", as: String.self)
       )
-      XCTAssertEqual(["Explore Page Viewed", "Card Clicked"], self.segmentTrackingClient.events)
+      XCTAssertEqual(["Page Viewed", "Card Clicked"], self.segmentTrackingClient.events)
       XCTAssertEqual(
         [nil, "ios_project_collection_tag_557"],
         self.segmentTrackingClient.properties(forKey: "session_ref_tag", as: String.self)
@@ -1604,13 +1592,13 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.selectedFilter(defaultFilter)
 
       self.goToCuratedProjects.assertDidNotEmitValue()
-      XCTAssertEqual(["Explore Page Viewed"], self.dataLakeTrackingClient.events)
-      XCTAssertEqual(["Explore Page Viewed"], self.segmentTrackingClient.events)
+      XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
       self.vm.inputs.personalizationCellTapped()
 
-      XCTAssertEqual(["Explore Page Viewed", "Card Clicked"], self.dataLakeTrackingClient.events)
-      XCTAssertEqual(["Explore Page Viewed", "Card Clicked"], self.segmentTrackingClient.events)
+      XCTAssertEqual(["Page Viewed", "Card Clicked"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Page Viewed", "Card Clicked"], self.segmentTrackingClient.events)
       XCTAssertEqual("Editorial Card Clicked", mockOpClient.trackedEventKey)
 
       XCTAssertEqual(
@@ -1668,5 +1656,57 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.showPersonalization.assertValues([false, true])
     }
+  }
+
+  func testDiscoverySort_Magic() {
+    self.vm.inputs.configureWith(sort: .magic)
+    self.vm.inputs.selectedFilter(.recommendedDefaults)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+
+    let dataLakeClientProps = self.dataLakeTrackingClient.properties.last
+    let segmentClientProps = self.segmentTrackingClient.properties.last
+
+    XCTAssertEqual("magic", dataLakeClientProps?["discover_sort"] as? String)
+    XCTAssertEqual("magic", segmentClientProps?["discover_sort"] as? String)
+  }
+
+  func testDiscoverySort_Popular() {
+    self.vm.inputs.configureWith(sort: .popular)
+    self.vm.inputs.selectedFilter(.recommendedDefaults)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+
+    let dataLakeClientProps = self.dataLakeTrackingClient.properties.last
+    let segmentClientProps = self.segmentTrackingClient.properties.last
+
+    XCTAssertEqual("popular", dataLakeClientProps?["discover_sort"] as? String)
+    XCTAssertEqual("popular", segmentClientProps?["discover_sort"] as? String)
+  }
+
+  func testDiscoverySort_Newest() {
+    self.vm.inputs.configureWith(sort: .newest)
+    self.vm.inputs.selectedFilter(.recommendedDefaults)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+
+    let dataLakeClientProps = self.dataLakeTrackingClient.properties.last
+    let segmentClientProps = self.segmentTrackingClient.properties.last
+
+    XCTAssertEqual("newest", dataLakeClientProps?["discover_sort"] as? String)
+    XCTAssertEqual("newest", segmentClientProps?["discover_sort"] as? String)
+  }
+
+  func testDiscoverySort_EndingSoon() {
+    self.vm.inputs.configureWith(sort: .endingSoon)
+    self.vm.inputs.selectedFilter(.recommendedDefaults)
+    self.vm.inputs.viewWillAppear()
+    self.vm.inputs.viewDidAppear()
+
+    let dataLakeClientProps = self.dataLakeTrackingClient.properties.last
+    let segmentClientProps = self.segmentTrackingClient.properties.last
+
+    XCTAssertEqual("ending_soon", dataLakeClientProps?["discover_sort"] as? String)
+    XCTAssertEqual("ending_soon", segmentClientProps?["discover_sort"] as? String)
   }
 }

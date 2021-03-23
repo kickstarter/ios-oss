@@ -555,7 +555,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(false, dataLakeClientProperties?["discover_everything"] as? Bool)
     XCTAssertEqual(Category.filmAndVideo.intID, dataLakeClientProperties?["discover_category_id"] as? Int)
     XCTAssertEqual(Category.filmAndVideo.name, dataLakeClientProperties?["discover_category_name"] as? String)
-    XCTAssertEqual("popularity", dataLakeClientProperties?["discover_sort"] as? String)
+    XCTAssertEqual("popular", dataLakeClientProperties?["discover_sort"] as? String)
     XCTAssertEqual("ios_project_collection_tag_557", dataLakeClientProperties?["discover_ref_tag"] as? String)
     XCTAssertEqual("collage", dataLakeClientProperties?["discover_search_term"] as? String)
 
@@ -568,7 +568,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(false, segmentClientProperties?["discover_everything"] as? Bool)
     XCTAssertEqual(Category.filmAndVideo.intID, segmentClientProperties?["discover_category_id"] as? Int)
     XCTAssertEqual(Category.filmAndVideo.name, segmentClientProperties?["discover_category_name"] as? String)
-    XCTAssertEqual("popularity", segmentClientProperties?["discover_sort"] as? String)
+    XCTAssertEqual("popular", segmentClientProperties?["discover_sort"] as? String)
     XCTAssertEqual("ios_project_collection_tag_557", segmentClientProperties?["discover_ref_tag"] as? String)
     XCTAssertEqual("collage", segmentClientProperties?["discover_search_term"] as? String)
   }
@@ -603,7 +603,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(true, dataLakeClientProperties?["discover_pwl"] as? Bool)
     XCTAssertEqual(false, dataLakeClientProperties?["discover_watched"] as? Bool)
     XCTAssertEqual(false, dataLakeClientProperties?["discover_everything"] as? Bool)
-    XCTAssertEqual("popularity", dataLakeClientProperties?["discover_sort"] as? String)
+    XCTAssertEqual("popular", dataLakeClientProperties?["discover_sort"] as? String)
 
     XCTAssertNil(segmentClientProperties?["discover_category_id"])
     XCTAssertNil(segmentClientProperties?["discover_subcategory_id"])
@@ -612,7 +612,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(true, segmentClientProperties?["discover_pwl"] as? Bool)
     XCTAssertEqual(false, segmentClientProperties?["discover_watched"] as? Bool)
     XCTAssertEqual(false, segmentClientProperties?["discover_everything"] as? Bool)
-    XCTAssertEqual("popularity", segmentClientProperties?["discover_sort"] as? String)
+    XCTAssertEqual("popular", segmentClientProperties?["discover_sort"] as? String)
   }
 
   func testDiscoveryProperties_Everything() {
