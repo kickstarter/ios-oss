@@ -42,7 +42,6 @@ public final class KSRAnalytics {
     case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
     case projectSwiped = "Project Swiped"
-    case searchPageViewed = "Search Page Viewed"
     case searchResultsLoaded = "Search Results Loaded"
     case signupButtonClicked = "Signup Button Clicked"
     case signupSubmitButtonClicked = "Signup Submit Button Clicked"
@@ -1263,9 +1262,18 @@ public final class KSRAnalytics {
 
   // MARK: - Search Events
 
-  /// Call once when the search view is initially shown.
-  public func trackProjectSearchView() {
-    self.track(event: ApprovedEvent.searchPageViewed.rawValue, page: .search)
+  /// Call whenever the search view is shown.
+  public func trackProjectSearchView(
+    params: DiscoveryParams,
+    results: Int? = nil
+  ) {
+    let props = discoveryProperties(from: params, results: results)
+
+    self.track(
+      event: NewApprovedEvent.pageViewed.rawValue,
+      page: .search,
+      properties: props
+    )
   }
 
   // Call when projects have been obtained from a search.
@@ -1627,6 +1635,7 @@ private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, 
 
 private func discoveryProperties(
   from params: DiscoveryParams,
+  results: Int? = nil,
   prefix: String = "discover_"
 ) -> [String: Any] {
   var result: [String: Any] = [:]
@@ -1648,6 +1657,7 @@ private func discoveryProperties(
   result["sort"] = params.sort?.trackingString
   result["ref_tag"] = RefTag.fromParams(params).stringTag
   result["search_term"] = params.query
+  result["search_results_count"] = results
 
   return result.prefixedKeys(prefix)
 }

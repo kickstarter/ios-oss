@@ -11,12 +11,13 @@ final class PaginateTests: TestCase {
   let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { c in .init(value: c <= 2 ? [c] : []) }
   let valuesFromEnvelope: ([Int]) -> [Int] = id
   let cursorFromEnvelope: ([Int]) -> Int = { ($0.last ?? 0) + 1 }
+  let statsFromEnvelope: ([Int]) -> Int = { _ in 10 }
 
   func testEmitsEmptyState_ClearOnNewRequest() {
     let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
     let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
 
-    let (values, loading, _) = paginate(
+    let (values, loading, _, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: true,
@@ -48,7 +49,7 @@ final class PaginateTests: TestCase {
     let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
     let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
 
-    let (values, loading, _) = paginate(
+    let (values, loading, _, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: true,
@@ -81,7 +82,7 @@ final class PaginateTests: TestCase {
     let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
     let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
 
-    let (values, loading, _) = paginate(
+    let (values, loading, _, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: false,
@@ -113,7 +114,7 @@ final class PaginateTests: TestCase {
     let requestFromParams: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
     let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
 
-    let (values, loading, _) = paginate(
+    let (values, loading, _, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: false,
@@ -142,8 +143,65 @@ final class PaginateTests: TestCase {
     loadingTest.assertValues([true, false, true, false])
   }
 
+  func testPaginateStats() {
+    let (values, _, _, stats) = paginate(
+      requestFirstPageWith: newRequest,
+      requestNextPageWhen: nextPage,
+      clearOnNewRequest: true,
+      valuesFromEnvelope: valuesFromEnvelope,
+      cursorFromEnvelope: cursorFromEnvelope,
+      statsFromEnvelope: statsFromEnvelope,
+      requestFromParams: requestFromParams,
+      requestFromCursor: requestFromCursor
+    )
+
+    let valuesTest = TestObserver<[Int], Never>()
+    values.observe(valuesTest.observer)
+    let statsTest = TestObserver<Int, Never>()
+    stats.observe(statsTest.observer)
+
+    valuesTest.assertDidNotEmitValue("No values emit immediately.")
+    statsTest.assertDidNotEmitValue("No values emit immediately.")
+
+    // Start request for new set of values.
+    self.newRequestObserver.send(value: 1)
+
+    valuesTest.assertDidNotEmitValue("No values emit immediately.")
+    statsTest.assertDidNotEmitValue("No values emit immediately.")
+
+    // Wait enough time for request to finish.
+    self.scheduler.advance()
+
+    valuesTest.assertValues([[1]], "Values emit after waiting enough time for request to finish.")
+    statsTest.assertValues([10], "Values emit after waiting enough time for request to finish.")
+
+    // Request next page of values.
+    self.nextPageObserver.send(value: ())
+
+    valuesTest.assertValues([[1]], "No values emit immediately.")
+    statsTest.assertValues([10], "No values emit immediately.")
+
+    // Wait enough time for request to finish.
+    self.scheduler.advance()
+
+    valuesTest.assertValues([[1], [1, 2]], "New page of values emit after waiting enough time.")
+    statsTest.assertValues([10, 10], "Values emit after waiting enough time.")
+
+    // Request next page of results (this page is empty since the last request exhausted the results.)
+    self.nextPageObserver.send(value: ())
+
+    valuesTest.assertValues([[1], [1, 2]], "No values emit immediately.")
+    statsTest.assertValues([10, 10], "No values emit immediately.")
+
+    // Wait enough time for request to finish.
+    self.scheduler.advance()
+
+    valuesTest.assertValues([[1], [1, 2]], "No values emit since we exhausted all pages.")
+    statsTest.assertValues([10, 10, 10], "Values remain the same even after we exhausted all pages.")
+  }
+
   func testPaginateFlow() {
-    let (values, loading, _) = paginate(
+    let (values, loading, _, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: true,
@@ -236,7 +294,7 @@ final class PaginateTests: TestCase {
   }
 
   func testPaginateFlow_With_Repeats() {
-    let (values, loading, _) = paginate(
+    let (values, loading, _, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: true,
@@ -330,7 +388,7 @@ final class PaginateTests: TestCase {
   }
 
   func testPaginate_DoesntClearOnNewRequest() {
-    let (values, loading, _) = paginate(
+    let (values, loading, _, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: false,
@@ -381,7 +439,7 @@ final class PaginateTests: TestCase {
 
   func testPaginate_InterleavingOfNextPage() {
     withEnvironment(apiDelayInterval: TestCase.interval) {
-      let (values, loading, _) = paginate(
+      let (values, loading, _, _) = paginate(
         requestFirstPageWith: newRequest,
         requestNextPageWhen: nextPage,
         clearOnNewRequest: true,
@@ -423,7 +481,7 @@ final class PaginateTests: TestCase {
 
   func testPaginate_ClearsOnNewRequest_InterleavingOfNewRequestAndNextPage() {
     withEnvironment(apiDelayInterval: TestCase.interval) {
-      let (values, loading, _) = paginate(
+      let (values, loading, _, _) = paginate(
         requestFirstPageWith: newRequest,
         requestNextPageWhen: nextPage,
         clearOnNewRequest: true,
@@ -474,7 +532,7 @@ final class PaginateTests: TestCase {
 
   func testPaginate_DoesNotClearOnNewRequest_InterleavingOfNewRequestAndNextPage() {
     withEnvironment(apiDelayInterval: TestCase.interval) {
-      let (values, loading, _) = paginate(
+      let (values, loading, _, _) = paginate(
         requestFirstPageWith: newRequest,
         requestNextPageWhen: nextPage,
         clearOnNewRequest: false,
@@ -533,7 +591,7 @@ final class PaginateTests: TestCase {
     }
     let requestFromCursor: (Int) -> SignalProducer<[Int], Never> = { _ in .init(value: []) }
 
-    let (values, _, _) = paginate(
+    let (values, _, _, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: false,
@@ -576,7 +634,7 @@ final class PaginateTests: TestCase {
       return .init(value: c <= 2 ? [c] : [])
     }
 
-    let (values, loading, _) = paginate(
+    let (values, loading, _, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: true,
@@ -617,7 +675,7 @@ final class PaginateTests: TestCase {
   }
 
   func testPageCount_WhenNotClearingOnFirstRequest() {
-    let (_, _, pageCountLoaded) = paginate(
+    let (_, _, pageCountLoaded, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: false,
@@ -672,7 +730,7 @@ final class PaginateTests: TestCase {
   }
 
   func testPageCount_WhenClearingOnFirstRequest() {
-    let (_, _, pageCountLoaded) = paginate(
+    let (_, _, pageCountLoaded, _) = paginate(
       requestFirstPageWith: newRequest,
       requestNextPageWhen: nextPage,
       clearOnNewRequest: true,

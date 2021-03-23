@@ -103,7 +103,7 @@ public final class CommentsViewModel: CommentsViewModelType, CommentsViewModelIn
       projectOrUpdate.takeWhen(self.commentPostedProperty.signal)
     )
 
-    let (comments, isLoading, _) = paginate(
+    let (comments, isLoading, _, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
