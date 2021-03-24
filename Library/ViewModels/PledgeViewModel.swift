@@ -826,9 +826,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     // Tracking
 
     trackCheckoutPageViewData
-      .observeValues { project, baseReward, rewards, selectedQuantities, refTag, additionalPledgeAmount, pledgeTotal, shippingTotal, context in
-
-        guard context.isAny(of: .pledge, .update, .updateReward) else { return }
+      .observeValues { project, baseReward, rewards, selectedQuantities, refTag, additionalPledgeAmount, pledgeTotal, shippingTotal, pledgeViewContext in
 
         let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
 
@@ -849,7 +847,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         AppEnvironment.current.ksrAnalytics.trackCheckoutPaymentPageViewed(
           project: project,
           reward: baseReward,
-          pageContext: context == .pledge ? .checkout : .updatePledge,
+          pledgeViewContext: pledgeViewContext,
           checkoutData: checkoutData,
           refTag: refTag,
           cookieRefTag: cookieRefTag
