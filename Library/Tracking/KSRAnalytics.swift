@@ -917,6 +917,21 @@ public final class KSRAnalytics {
     )
   }
 
+  public func trackManagePledgePageViewed(
+    project: Project,
+    reward: Reward,
+    checkoutData: CheckoutPropertiesData
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
+
+    self.track(
+      event: NewApprovedEvent.pageViewed.rawValue,
+      page: .managePledgeScreen,
+      properties: props
+    )
+  }
+
   /* Call when a reward is selected
 
    parameters:
@@ -1370,23 +1385,6 @@ public final class KSRAnalytics {
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
       page: location,
-      properties: props
-    )
-  }
-
-  // MARK: - Manage Pledge Events
-
-  public func trackManagePledgePageViewed(
-    project: Project,
-    reward: Reward,
-    checkoutData: CheckoutPropertiesData
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
-
-    self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
-      page: .managePledgeScreen,
       properties: props
     )
   }
