@@ -52,9 +52,10 @@ public final class KSRAnalytics {
   }
 
   private enum NewApprovedEvent: String, CaseIterable {
+    case cardClicked = "Card Clicked"
     case ctaClicked = "CTA Clicked"
     case pageViewed = "Page Viewed"
-    case cardClicked = "Card Clicked"
+    case videoPlaybackStarted = "Video Playback Started"
   }
 
   /// Determines the screen from which the event is sent.
@@ -832,6 +833,29 @@ public final class KSRAnalytics {
     self.track(
       event: NewApprovedEvent.cardClicked.rawValue,
       page: page,
+      properties: props
+    )
+  }
+
+  /**
+   Call when a video starts playing on a project
+
+   - parameter project: The `Project` corresponding to the video that started playing.
+   - parameter videoLength: The length of video in seconds
+   - parameter videoPosition: The index position of the playhead, in seconds
+   */
+
+  public func trackProjectVideoPlaybackStarted(
+    project: Project,
+    videoLength: Double,
+    videoPosition: Double
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(videoProperties(videoLength: videoLength, videoPosition: videoPosition))
+
+    self.track(
+      event: NewApprovedEvent.videoPlaybackStarted.rawValue,
+      page: .projectPage,
       properties: props
     )
   }
@@ -1764,6 +1788,18 @@ private func userProperties(for user: User?, config: Config?, _ prefix: String =
   props["launched_projects_count"] = user?.stats.memberProjectsCount
   props["uid"] = user?.id
   props["watched_projects_count"] = user?.stats.starredProjectsCount
+
+  return props.prefixedKeys(prefix)
+}
+
+// MARK: - Video Properties
+
+private func videoProperties(videoLength: Double, videoPosition: Double,
+                             prefix: String = "video_") -> [String: Any] {
+  var props: [String: Any] = [:]
+
+  props["length"] = videoLength
+  props["position"] = videoPosition
 
   return props.prefixedKeys(prefix)
 }

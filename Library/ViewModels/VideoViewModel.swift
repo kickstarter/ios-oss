@@ -172,6 +172,22 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
         .takeWhen(self.viewDidAppearProperty.signal)
         .mapConst(1.0)
     )
+
+    let newPlayButtonTapped = self.playVideo
+
+    Signal.combineLatest(
+      project,
+      duration,
+      rateCurrentTime.map { $0.1 }
+    )
+    .takeWhen(newPlayButtonTapped)
+    .observeValues { project, duration, currentPlayTime in
+      AppEnvironment.current.ksrAnalytics.trackProjectVideoPlaybackStarted(
+        project: project,
+        videoLength: duration.seconds,
+        videoPosition: currentPlayTime.seconds
+      )
+    }
   }
 
   fileprivate let crossedCompletionThresholdProperty = MutableProperty(())
