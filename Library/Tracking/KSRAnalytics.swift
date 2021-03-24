@@ -1374,6 +1374,23 @@ public final class KSRAnalytics {
     )
   }
 
+  // MARK: - Manage Pledge Events
+
+  public func trackManagePledgePageViewed(
+    project: Project,
+    reward: Reward,
+    checkoutData: CheckoutPropertiesData
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
+
+    self.track(
+      event: NewApprovedEvent.pageViewed.rawValue,
+      page: .managePledgeScreen,
+      properties: props
+    )
+  }
+
   // MARK: - Email Verification
 
   public func trackEmailVerificationScreenViewed() {
