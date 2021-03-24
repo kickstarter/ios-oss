@@ -1389,6 +1389,21 @@ public final class KSRAnalytics {
     )
   }
 
+  /**
+   Call  when a user clicks the creator's name on a project.
+   - parameter project: The project being watched
+   */
+
+  public func trackGotoCreatorDetailsClicked(project: Project) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(ctaContext: .creatorDetails))
+
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
   // MARK: - Email Verification
 
   public func trackEmailVerificationScreenViewed() {

@@ -255,6 +255,10 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
         AppEnvironment.current.optimizelyClient?.track(eventName: "Campaign Details Button Clicked")
       }
+
+    self.notifyDelegateToGoToCreator.observeValues { project in
+      AppEnvironment.current.ksrAnalytics.trackGotoCreatorDetailsClicked(project: project)
+    }
   }
 
   private let awakeFromNibProperty = MutableProperty(())
