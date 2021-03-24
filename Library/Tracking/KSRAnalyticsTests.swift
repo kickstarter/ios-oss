@@ -1331,6 +1331,42 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("activity", segmentClientProps?["session_ref_tag"] as? String)
   }
 
+  func testTrackManagePledgePageViewed() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      segmentClient: segmentClient
+    )
+
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.shipping.preference .~ .restricted
+      |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
+
+    ksrAnalytics
+      .trackManagePledgePageViewed(
+        project: project,
+        reward: reward,
+        checkoutData: .template
+      )
+
+    XCTAssertEqual(["Page Viewed"], dataLakeClient.events)
+    XCTAssertEqual(["Page Viewed"], segmentClient.events)
+
+    let dataLakeClientProps = dataLakeClient.properties.last
+    let segmentClientProps = segmentClient.properties.last
+
+    XCTAssertEqual("manage_pledge", dataLakeClientProps?["context_page"] as? String)
+    XCTAssertEqual("manage_pledge", segmentClientProps?["context_page"] as? String)
+
+    self.assertProjectProperties(dataLakeClientProps)
+    self.assertProjectProperties(segmentClientProps)
+
+    self.assertCheckoutProperties(dataLakeClientProps)
+    self.assertCheckoutProperties(segmentClientProps)
+  }
+
   // MARK: - Onboarding Tracking
 
   func testOnboardingGetStartedButtonClicked() {
