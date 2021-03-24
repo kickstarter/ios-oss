@@ -254,6 +254,8 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
         )
 
         AppEnvironment.current.optimizelyClient?.track(eventName: "Campaign Details Button Clicked")
+
+        AppEnvironment.current.ksrAnalytics.trackCampaignDetailsButtonClicked(project: project)
       }
 
     self.notifyDelegateToGoToCreator.observeValues { project in

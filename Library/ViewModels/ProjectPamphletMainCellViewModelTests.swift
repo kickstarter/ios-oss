@@ -603,6 +603,9 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
+
+      XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
     }
   }
 
