@@ -1391,7 +1391,8 @@ public final class KSRAnalytics {
 
   /**
    Call  when a user clicks the creator's name on a project.
-   - parameter project: The project the creator details is clicked from.
+
+   - parameter project: The project the creator's name is clicked from.
    */
 
   public func trackGotoCreatorDetailsClicked(project: Project) {
