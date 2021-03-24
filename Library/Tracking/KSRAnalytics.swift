@@ -1396,7 +1396,7 @@ public final class KSRAnalytics {
 
   public func trackGotoCreatorDetailsClicked(project: Project) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(ctaContext: .creatorDetails))
+      .withAllValuesFrom(contextProperties(ctaContext: .creatorDetails, page: .projectPage))
 
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,

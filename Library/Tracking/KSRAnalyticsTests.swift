@@ -1133,6 +1133,9 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("creator_details", dataLakeClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("creator_details", segmentClient.properties.last?["context_cta"] as? String)
 
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
+
     self.assertProjectProperties(dataLakeClient.properties.last)
     self.assertProjectProperties(segmentClient.properties.last)
   }
@@ -2108,10 +2111,6 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("updates", dataLakeClient.properties.last?["context_section"] as? String)
     XCTAssertEqual("updates", segmentClient.properties.last?["context_section"] as? String)
-
-    ksrAnalytics.trackGotoCreatorDetailsClicked(project: .template)
-    XCTAssertEqual("creator_details", segmentClient.properties.last?["context_cta"] as? String)
-    XCTAssertEqual("creator_details", dataLakeClient.properties.last?["context_cta"] as? String)
 
     ksrAnalytics
       .trackRewardClicked(
