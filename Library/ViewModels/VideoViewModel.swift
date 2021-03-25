@@ -172,7 +172,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
         .takeWhen(self.viewDidAppearProperty.signal)
         .mapConst(1.0)
     )
-    
+
     // Tracking
 
     /// When the rate == 1, the video is playing
@@ -258,10 +258,9 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
   public var outputs: VideoViewModelOutputs { return self }
 }
 
-
 private func doubleToIntOrZero(_ double: Double) -> Int {
-  guard (double <= Double(Int.max).nextDown) && (double >= Double(Int.min).nextUp) else {
-      return 0
+  guard double <= Double(Int.max).nextDown, double >= Double(Int.min).nextUp else {
+    return 0
   }
   return Int(double)
 }
