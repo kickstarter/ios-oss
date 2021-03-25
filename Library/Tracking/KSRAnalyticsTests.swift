@@ -1456,26 +1456,26 @@ final class KSRAnalyticsTests: TestCase {
     self.assertCheckoutProperties(dataLakeClientProps)
     self.assertCheckoutProperties(segmentClientProps)
   }
-    
+
   func testTrackCampaignDetailsButtonClicked() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
-    
+
     let ksrAnalytics = KSRAnalytics(
       dataLakeClient: dataLakeClient,
       segmentClient: segmentClient
     )
-    
+
     let project = Project.template
-    
+
     ksrAnalytics.trackCampaignDetailsButtonClicked(project: project)
 
     XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
-    
+
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
-    
+
     XCTAssertEqual("campaign_details", dataLakeClientProps?["context_cta"] as? String)
     XCTAssertEqual("campaign_details", segmentClientProps?["context_cta"] as? String)
 

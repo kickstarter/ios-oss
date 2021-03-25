@@ -527,51 +527,20 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(value: (project, .discovery))
       self.vm.inputs.awakeFromNib()
 
-      XCTAssertEqual(self.dataLakeTrackingClient.events, [])
-      XCTAssertEqual(self.segmentTrackingClient.events, [])
+      XCTAssertEqual(self.dataLakeTrackingClient.events, ["Page Viewed"])
+      XCTAssertEqual(self.segmentTrackingClient.events, ["Page Viewed"])
 
       self.vm.inputs.readMoreButtonTapped()
 
       XCTAssertEqual(
         self.dataLakeTrackingClient.events,
-        ["Page Viewed"],
+        ["Page Viewed", "CTA Clicked"],
         "Event is tracked"
       )
       XCTAssertEqual(
         self.segmentTrackingClient.events,
-        ["Page Viewed"],
+        ["Page Viewed", "CTA Clicked"],
         "Event is tracked"
-      )
-
-      XCTAssertEqual(
-        self.dataLakeTrackingClient.properties(forKey: "optimizely_api_key"),
-        [nil],
-        "Event does not include Optimizely properties"
-      )
-      XCTAssertEqual(
-        self.dataLakeTrackingClient.properties(forKey: "optimizely_environment"),
-        [nil],
-        "Event does not include Optimizely properties"
-      )
-      XCTAssertEqual(
-        self.dataLakeTrackingClient.properties(forKey: "optimizely_experiments"),
-        [nil],
-        "Event does not include Optimizely properties"
-      )
-      XCTAssertEqual(
-        self.segmentTrackingClient.properties(forKey: "optimizely_api_key"),
-        [nil],
-        "Event does not include Optimizely properties"
-      )
-      XCTAssertEqual(
-        self.segmentTrackingClient.properties(forKey: "optimizely_environment"),
-        [nil],
-        "Event does not include Optimizely properties"
-      )
-      XCTAssertEqual(
-        self.segmentTrackingClient.properties(forKey: "optimizely_experiments"),
-        [nil],
-        "Event does not include Optimizely properties"
       )
     }
   }
@@ -603,9 +572,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
-
-      XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
-      XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
     }
   }
 
@@ -664,13 +630,6 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     withEnvironment(currentUser: user) {
       self.vm.inputs.configureWith(value: (project, .discovery))
       self.vm.inputs.awakeFromNib()
-
-      XCTAssertEqual(self.dataLakeTrackingClient.events, [])
-      XCTAssertEqual(self.segmentTrackingClient.events, [])
-
-      self.vm.inputs.readMoreButtonTapped()
-
-      self.notifyDelegateToGoToCampaignWithProject.assertValues([project])
 
       XCTAssertEqual(self.dataLakeTrackingClient.events, ["Page Viewed"])
       XCTAssertEqual(self.segmentTrackingClient.events, ["Page Viewed"])
