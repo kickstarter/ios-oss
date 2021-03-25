@@ -1089,13 +1089,13 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertEqual(["Video Playback Started"], segmentClient.events)
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual(100, segmentClient.properties.last?["video_length"] as? Double)
-    XCTAssertEqual(20, segmentClient.properties.last?["video_position"] as? Double)
+    XCTAssertEqual(100, segmentClient.properties.last?["video_length"] as? Int)
+    XCTAssertEqual(20, segmentClient.properties.last?["video_position"] as? Int)
 
     XCTAssertEqual(["Video Playback Started"], dataLakeClient.events)
     XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual(100, dataLakeClient.properties.last?["video_length"] as? Double)
-    XCTAssertEqual(20, dataLakeClient.properties.last?["video_position"] as? Double)
+    XCTAssertEqual(100, dataLakeClient.properties.last?["video_length"] as? Int)
+    XCTAssertEqual(20, dataLakeClient.properties.last?["video_position"] as? Int)
 
     self.assertProjectProperties(segmentClient.properties.last)
     self.assertProjectProperties(dataLakeClient.properties.last)

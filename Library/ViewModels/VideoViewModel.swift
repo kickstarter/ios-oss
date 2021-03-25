@@ -172,8 +172,10 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
         .takeWhen(self.viewDidAppearProperty.signal)
         .mapConst(1.0)
     )
+    
+    // Tracking
 
-    /// return the current play time only when rate == 1
+    /// When the rate == 1, the video is playing
     let currentPlayTime = rateCurrentTime
       .filter { $0.rate == 1 }
       .map { $0.currentTime }
@@ -186,8 +188,8 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     .observeValues { project, duration, currentPlayTime in
       AppEnvironment.current.ksrAnalytics.trackProjectVideoPlaybackStarted(
         project: project,
-        videoLength: duration.seconds,
-        videoPosition: currentPlayTime.seconds
+        videoLength: doubleToIntOrZero(duration.seconds),
+        videoPosition: doubleToIntOrZero(currentPlayTime.seconds)
       )
     }
   }
@@ -254,4 +256,12 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
 
   public var inputs: VideoViewModelInputs { return self }
   public var outputs: VideoViewModelOutputs { return self }
+}
+
+
+private func doubleToIntOrZero(_ double: Double) -> Int {
+  guard (double <= Double(Int.max).nextDown) && (double >= Double(Int.min).nextUp) else {
+      return 0
+  }
+  return Int(double)
 }

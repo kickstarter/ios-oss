@@ -848,8 +848,8 @@ public final class KSRAnalytics {
 
   public func trackProjectVideoPlaybackStarted(
     project: Project,
-    videoLength: Double,
-    videoPosition: Double
+    videoLength: Int,
+    videoPosition: Int
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(videoProperties(videoLength: videoLength, videoPosition: videoPosition))
@@ -1836,7 +1836,7 @@ private func userProperties(for user: User?, config: Config?, _ prefix: String =
 
 // MARK: - Video Properties
 
-private func videoProperties(videoLength: Double, videoPosition: Double,
+private func videoProperties(videoLength: Int, videoPosition: Int,
                              prefix: String = "video_") -> [String: Any] {
   var props: [String: Any] = [:]
 
