@@ -1943,43 +1943,6 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient.properties.last?["context_page"] as? String
     )
 
-    let reward = Reward.template
-      |> Reward.lens.shipping.preference .~ .restricted
-      |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
-
-    ksrAnalytics.trackCheckoutPaymentPageViewed(
-      project: .template,
-      reward: reward,
-      pledgeViewContext: .pledge,
-      checkoutData: .template,
-      refTag: nil,
-      cookieRefTag: nil
-    )
-
-    let dataLakeClientProps = dataLakeClient.properties.last
-    let segmentClientProps = segmentClient.properties.last
-
-    XCTAssertEqual("checkout", dataLakeClientProps?["context_page"] as? String)
-    XCTAssertEqual("checkout", segmentClientProps?["context_page"] as? String)
-
-    self.assertCheckoutProperties(dataLakeClientProps)
-    self.assertCheckoutProperties(segmentClientProps)
-
-    ksrAnalytics.trackCheckoutPaymentPageViewed(
-      project: .template,
-      reward: reward,
-      pledgeViewContext: .updateReward,
-      checkoutData: .template,
-      refTag: nil,
-      cookieRefTag: nil
-    )
-
-    XCTAssertEqual("update_pledge", dataLakeClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("update_pledge", dataLakeClient.properties.last?["context_page"] as? String)
-
-    self.assertCheckoutProperties(dataLakeClientProps)
-    self.assertCheckoutProperties(segmentClientProps)
-
     ksrAnalytics.trackCollectionViewed(params: .defaults)
     XCTAssertEqual(
       "editorial_collection",
