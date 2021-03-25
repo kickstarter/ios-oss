@@ -172,6 +172,26 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
         .takeWhen(self.viewDidAppearProperty.signal)
         .mapConst(1.0)
     )
+
+    // Tracking
+
+    /// When the rate == 1, the video is playing
+    let currentPlayTime = rateCurrentTime
+      .filter { $0.rate == 1 }
+      .map { $0.currentTime }
+
+    Signal.combineLatest(
+      project,
+      duration,
+      currentPlayTime
+    )
+    .observeValues { project, duration, currentPlayTime in
+      AppEnvironment.current.ksrAnalytics.trackProjectVideoPlaybackStarted(
+        project: project,
+        videoLength: lround(duration.seconds),
+        videoPosition: lround(currentPlayTime.seconds)
+      )
+    }
   }
 
   fileprivate let crossedCompletionThresholdProperty = MutableProperty(())
@@ -194,7 +214,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     self.projectProperty.value = project
   }
 
-  fileprivate let rateCurrentTimeProperty = MutableProperty<(Double, CMTime)?>(nil)
+  fileprivate let rateCurrentTimeProperty = MutableProperty<(rate: Double, currentTime: CMTime)?>(nil)
   public func rateChanged(toNew rate: Double, atTime currentTime: CMTime) {
     self.rateCurrentTimeProperty.value = (rate, currentTime)
   }

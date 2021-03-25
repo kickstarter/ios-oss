@@ -1076,6 +1076,31 @@ final class KSRAnalyticsTests: TestCase {
     self.assertDiscoveryProperties(segmentClient.properties.last)
   }
 
+  func testProjectVideoPlaybackStarted() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+
+    ksrAnalytics.trackProjectVideoPlaybackStarted(
+      project: .template,
+      videoLength: 100,
+      videoPosition: 20
+    )
+
+    XCTAssertEqual(["Video Playback Started"], segmentClient.events)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual(100, segmentClient.properties.last?["video_length"] as? Int)
+    XCTAssertEqual(20, segmentClient.properties.last?["video_position"] as? Int)
+
+    XCTAssertEqual(["Video Playback Started"], dataLakeClient.events)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual(100, dataLakeClient.properties.last?["video_length"] as? Int)
+    XCTAssertEqual(20, dataLakeClient.properties.last?["video_position"] as? Int)
+
+    self.assertProjectProperties(segmentClient.properties.last)
+    self.assertProjectProperties(dataLakeClient.properties.last)
+  }
+
   func testWatchProjectButtonClicked_DiscoveryLocationContext() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
