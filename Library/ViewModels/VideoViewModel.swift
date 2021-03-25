@@ -188,8 +188,8 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     .observeValues { project, duration, currentPlayTime in
       AppEnvironment.current.ksrAnalytics.trackProjectVideoPlaybackStarted(
         project: project,
-        videoLength: doubleToIntOrZero(duration.seconds),
-        videoPosition: doubleToIntOrZero(currentPlayTime.seconds)
+        videoLength: lround(duration.seconds),
+        videoPosition: lround(currentPlayTime.seconds)
       )
     }
   }
@@ -256,11 +256,4 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
 
   public var inputs: VideoViewModelInputs { return self }
   public var outputs: VideoViewModelOutputs { return self }
-}
-
-private func doubleToIntOrZero(_ double: Double) -> Int {
-  guard double <= Double(Int.max).nextDown, double >= Double(Int.min).nextUp else {
-    return 0
-  }
-  return Int(double)
 }
