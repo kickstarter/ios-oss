@@ -1186,6 +1186,28 @@ final class KSRAnalyticsTests: TestCase {
     self.assertProjectProperties(segmentClient.properties.last)
   }
 
+  func testTrackGotoCreatorDetailsClicked() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+
+    ksrAnalytics.trackGotoCreatorDetailsClicked(
+      project: .template
+    )
+
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+
+    XCTAssertEqual("creator_details", dataLakeClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("creator_details", segmentClient.properties.last?["context_cta"] as? String)
+
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
+
+    self.assertProjectProperties(dataLakeClient.properties.last)
+    self.assertProjectProperties(segmentClient.properties.last)
+  }
+
   func testTrackPledgeCTAButtonClicked_FixState() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
