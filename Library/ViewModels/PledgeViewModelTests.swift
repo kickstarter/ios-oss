@@ -5377,13 +5377,15 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
-    XCTAssertEqual([], self.segmentTrackingClient.events)
+    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_page"), ["change_payment"])
+    XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_page"), ["change_payment"])
 
     self.vm.inputs.submitButtonTapped()
 
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
-    XCTAssertEqual([], self.segmentTrackingClient.events)
+    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
   }
 
   func testTrackingEvents_ContextIsUpdate() {
@@ -5403,7 +5405,7 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     let dataLakeTrackingClientProps = self.dataLakeTrackingClient.properties.last
-    let segmentTrackingClientProps = self.dataLakeTrackingClient.properties.last
+    let segmentTrackingClientProps = self.segmentTrackingClient.properties.last
 
     XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
@@ -5465,12 +5467,12 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     let dataLakeTrackingClientProps = self.dataLakeTrackingClient.properties.last
-    let segmentTrackingClientProps = self.dataLakeTrackingClient.properties.last
+    let segmentTrackingClientProps = self.segmentTrackingClient.properties.last
 
     XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+    XCTAssertEqual("update_pledge", dataLakeTrackingClientProps?["context_page"] as? String)
     XCTAssertEqual("update_pledge", segmentTrackingClientProps?["context_page"] as? String)
-    XCTAssertEqual("update_pledge", segmentTrackingClient.properties.last?["context_page"] as? String)
 
     // Checkout properties
 
