@@ -63,6 +63,7 @@ public final class KSRAnalytics {
     case activities = "activity_feed" // ActivitiesViewController
     case addOnsSelection = "add_ons" // RewardAddOnSelectionViewController
     case campaign // ProjectDescriptionViewController
+    case changePayment = "change_payment" // PledgeViewController
     case checkout // // PledgeViewController
     case discovery = "discover" // DiscoveryViewController
     case editorialProjects = "editorial_collection" // EditorialProjectsViewController
@@ -941,6 +942,21 @@ public final class KSRAnalytics {
     )
   }
 
+  public func trackManagePledgePageViewed(
+    project: Project,
+    reward: Reward,
+    checkoutData: CheckoutPropertiesData
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
+
+    self.track(
+      event: NewApprovedEvent.pageViewed.rawValue,
+      page: .managePledgeScreen,
+      properties: props
+    )
+  }
+
   /* Call when a reward is selected
 
    parameters:
@@ -992,12 +1008,12 @@ public final class KSRAnalytics {
     )
   }
 
-  /* Call when the pledge screen is shown, and pageContext = pledge, update, or updateReward.
+  /* Call when the PledgeViewController is shown.
 
    parameters:
    - project: the project being pledged to
    - reward: the chosen reward
-   - pageContext: The screen that's been tracked.
+   - pledgeViewContext: The specific context applicable to the PledgeViewModel
    - checkoutData: the `CheckoutPropertiesData` associated with the given project and reward
    - refTag: the associated RefTag for the pledge
    - cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
@@ -1007,17 +1023,27 @@ public final class KSRAnalytics {
   public func trackCheckoutPaymentPageViewed(
     project: Project,
     reward: Reward,
-    pageContext: PageContext,
+    pledgeViewContext: PledgeViewContext,
     checkoutData: CheckoutPropertiesData,
     refTag: RefTag?,
     cookieRefTag: RefTag?
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
+
+    switch pledgeViewContext {
+    case .pledge:
+      props = props.withAllValuesFrom(contextProperties(page: .checkout))
+    case .changePaymentMethod:
+      props = props.withAllValuesFrom(contextProperties(page: .changePayment))
+    case .update, .updateReward:
+      props = props.withAllValuesFrom(contextProperties(page: .updatePledge))
+    default:
+      return
+    }
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      page: pageContext,
       properties: props,
       refTag: refTag?.stringTag,
       referrerCredit: cookieRefTag?.stringTag
@@ -1394,6 +1420,22 @@ public final class KSRAnalytics {
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
       page: location,
+      properties: props
+    )
+  }
+
+  /**
+   Call when a user clicks creator's name on a project.
+
+   - parameter project: The project the creator's name is clicked from.
+   */
+
+  public func trackGotoCreatorDetailsClicked(project: Project) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(ctaContext: .creatorDetails, page: .projectPage))
+
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
       properties: props
     )
   }

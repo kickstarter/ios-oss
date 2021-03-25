@@ -734,11 +734,10 @@ final class KSRAnalyticsTests: TestCase {
     self.assertProjectProperties(segmentClient.properties.last)
   }
 
-  func testTrackCheckoutPaymentMethodViewed() {
+  func testTrackCheckoutPaymentMethodViewed_PledgeViewContext_Pledge() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
-
     let reward = Reward.template
       |> Reward.lens.shipping.preference .~ .restricted
       |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
@@ -746,10 +745,10 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackCheckoutPaymentPageViewed(
       project: .template,
       reward: reward,
-      pageContext: .checkout,
-      checkoutData: KSRAnalytics.CheckoutPropertiesData.template,
-      refTag: RefTag.activity,
-      cookieRefTag: RefTag.activity
+      pledgeViewContext: .pledge,
+      checkoutData: .template,
+      refTag: .activity,
+      cookieRefTag: .activity
     )
 
     let dataLakeClientProps = dataLakeClient.properties.last
@@ -770,11 +769,10 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("activity", segmentClientProps?["session_ref_tag"] as? String)
   }
 
-  func testTrackUpdatePledgeScreenViewed() {
+  func testTrackUpdatePledgeScreenViewed_PledgeViewContext_Update() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
-
     let reward = Reward.template
       |> Reward.lens.shipping.preference .~ .restricted
       |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
@@ -782,10 +780,10 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackCheckoutPaymentPageViewed(
       project: .template,
       reward: reward,
-      pageContext: .updatePledge,
-      checkoutData: KSRAnalytics.CheckoutPropertiesData.template,
-      refTag: RefTag.activity,
-      cookieRefTag: RefTag.activity
+      pledgeViewContext: .update,
+      checkoutData: .template,
+      refTag: .activity,
+      cookieRefTag: .activity
     )
 
     let dataLakeClientProps = dataLakeClient.properties.last
@@ -795,6 +793,76 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(["Page Viewed"], segmentClient.events)
     XCTAssertEqual("update_pledge", dataLakeClientProps?["context_page"] as? String)
     XCTAssertEqual("update_pledge", segmentClientProps?["context_page"] as? String)
+
+    self.assertProjectProperties(dataLakeClientProps)
+    self.assertProjectProperties(segmentClientProps)
+
+    self.assertCheckoutProperties(dataLakeClientProps)
+    self.assertCheckoutProperties(segmentClientProps)
+
+    XCTAssertEqual("activity", dataLakeClientProps?["session_ref_tag"] as? String)
+    XCTAssertEqual("activity", segmentClientProps?["session_ref_tag"] as? String)
+  }
+
+  func testTrackUpdatePledgeScreenViewed_PledgeViewContext_UpdateReward() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+    let reward = Reward.template
+      |> Reward.lens.shipping.preference .~ .restricted
+      |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
+
+    ksrAnalytics.trackCheckoutPaymentPageViewed(
+      project: .template,
+      reward: reward,
+      pledgeViewContext: .updateReward,
+      checkoutData: .template,
+      refTag: .activity,
+      cookieRefTag: .activity
+    )
+
+    let dataLakeClientProps = dataLakeClient.properties.last
+    let segmentClientProps = segmentClient.properties.last
+
+    XCTAssertEqual(["Page Viewed"], dataLakeClient.events)
+    XCTAssertEqual(["Page Viewed"], segmentClient.events)
+    XCTAssertEqual("update_pledge", dataLakeClientProps?["context_page"] as? String)
+    XCTAssertEqual("update_pledge", segmentClientProps?["context_page"] as? String)
+
+    self.assertProjectProperties(dataLakeClientProps)
+    self.assertProjectProperties(segmentClientProps)
+
+    self.assertCheckoutProperties(dataLakeClientProps)
+    self.assertCheckoutProperties(segmentClientProps)
+
+    XCTAssertEqual("activity", dataLakeClientProps?["session_ref_tag"] as? String)
+    XCTAssertEqual("activity", segmentClientProps?["session_ref_tag"] as? String)
+  }
+
+  func testTrackUpdatePledgeScreenViewed_PledgeViewContext_ChangePayment() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+    let reward = Reward.template
+      |> Reward.lens.shipping.preference .~ .restricted
+      |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
+
+    ksrAnalytics.trackCheckoutPaymentPageViewed(
+      project: .template,
+      reward: reward,
+      pledgeViewContext: .changePaymentMethod,
+      checkoutData: .template,
+      refTag: .activity,
+      cookieRefTag: .activity
+    )
+
+    let dataLakeClientProps = dataLakeClient.properties.last
+    let segmentClientProps = segmentClient.properties.last
+
+    XCTAssertEqual(["Page Viewed"], dataLakeClient.events)
+    XCTAssertEqual(["Page Viewed"], segmentClient.events)
+    XCTAssertEqual("change_payment", dataLakeClientProps?["context_page"] as? String)
+    XCTAssertEqual("change_payment", segmentClientProps?["context_page"] as? String)
 
     self.assertProjectProperties(dataLakeClientProps)
     self.assertProjectProperties(segmentClientProps)
@@ -1143,6 +1211,28 @@ final class KSRAnalyticsTests: TestCase {
     self.assertProjectProperties(segmentClient.properties.last)
   }
 
+  func testTrackGotoCreatorDetailsClicked() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+
+    ksrAnalytics.trackGotoCreatorDetailsClicked(
+      project: .template
+    )
+
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+
+    XCTAssertEqual("creator_details", dataLakeClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("creator_details", segmentClient.properties.last?["context_cta"] as? String)
+
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
+
+    self.assertProjectProperties(dataLakeClient.properties.last)
+    self.assertProjectProperties(segmentClient.properties.last)
+  }
+
   func testTrackPledgeCTAButtonClicked_FixState() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
@@ -1354,6 +1444,42 @@ final class KSRAnalyticsTests: TestCase {
     self.assertPledgeProperties(segmentClientProps)
 
     XCTAssertEqual("activity", segmentClientProps?["session_ref_tag"] as? String)
+  }
+
+  func testTrackManagePledgePageViewed() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      segmentClient: segmentClient
+    )
+
+    let project = Project.template
+    let reward = Reward.template
+      |> Reward.lens.shipping.preference .~ .restricted
+      |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
+
+    ksrAnalytics
+      .trackManagePledgePageViewed(
+        project: project,
+        reward: reward,
+        checkoutData: .template
+      )
+
+    XCTAssertEqual(["Page Viewed"], dataLakeClient.events)
+    XCTAssertEqual(["Page Viewed"], segmentClient.events)
+
+    let dataLakeClientProps = dataLakeClient.properties.last
+    let segmentClientProps = segmentClient.properties.last
+
+    XCTAssertEqual("manage_pledge", dataLakeClientProps?["context_page"] as? String)
+    XCTAssertEqual("manage_pledge", segmentClientProps?["context_page"] as? String)
+
+    self.assertProjectProperties(dataLakeClientProps)
+    self.assertProjectProperties(segmentClientProps)
+
+    self.assertCheckoutProperties(dataLakeClientProps)
+    self.assertCheckoutProperties(segmentClientProps)
   }
 
   // MARK: - Onboarding Tracking
@@ -1863,43 +1989,6 @@ final class KSRAnalyticsTests: TestCase {
       "settings_add_new_card",
       segmentClient.properties.last?["context_page"] as? String
     )
-
-    let reward = Reward.template
-      |> Reward.lens.shipping.preference .~ .restricted
-      |> Reward.lens.endsAt .~ MockDate().addingTimeInterval(5).timeIntervalSince1970
-
-    ksrAnalytics.trackCheckoutPaymentPageViewed(
-      project: .template,
-      reward: reward,
-      pageContext: .checkout,
-      checkoutData: .template,
-      refTag: nil,
-      cookieRefTag: nil
-    )
-
-    let dataLakeClientProps = dataLakeClient.properties.last
-    let segmentClientProps = segmentClient.properties.last
-
-    XCTAssertEqual("checkout", dataLakeClientProps?["context_page"] as? String)
-    XCTAssertEqual("checkout", segmentClientProps?["context_page"] as? String)
-
-    self.assertCheckoutProperties(dataLakeClientProps)
-    self.assertCheckoutProperties(segmentClientProps)
-
-    ksrAnalytics.trackCheckoutPaymentPageViewed(
-      project: .template,
-      reward: reward,
-      pageContext: .updatePledge,
-      checkoutData: .template,
-      refTag: nil,
-      cookieRefTag: nil
-    )
-
-    XCTAssertEqual("update_pledge", dataLakeClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("update_pledge", dataLakeClient.properties.last?["context_page"] as? String)
-
-    self.assertCheckoutProperties(dataLakeClientProps)
-    self.assertCheckoutProperties(segmentClientProps)
 
     ksrAnalytics.trackCollectionViewed(params: .defaults)
     XCTAssertEqual(
