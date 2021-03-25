@@ -173,14 +173,16 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
         .mapConst(1.0)
     )
 
-    let newPlayButtonTapped = self.playVideo
+    /// return the current play time only when rate == 1
+    let currentPlayTime = rateCurrentTime
+      .filter { $0.rate == 1 }
+      .map { $0.currentTime }
 
     Signal.combineLatest(
       project,
       duration,
-      rateCurrentTime.map { $0.1 }
+      currentPlayTime
     )
-    .takeWhen(newPlayButtonTapped)
     .observeValues { project, duration, currentPlayTime in
       AppEnvironment.current.ksrAnalytics.trackProjectVideoPlaybackStarted(
         project: project,
@@ -210,7 +212,7 @@ public final class VideoViewModel: VideoViewModelInputs, VideoViewModelOutputs, 
     self.projectProperty.value = project
   }
 
-  fileprivate let rateCurrentTimeProperty = MutableProperty<(Double, CMTime)?>(nil)
+  fileprivate let rateCurrentTimeProperty = MutableProperty<(rate: Double, currentTime: CMTime)?>(nil)
   public func rateChanged(toNew rate: Double, atTime currentTime: CMTime) {
     self.rateCurrentTimeProperty.value = (rate, currentTime)
   }

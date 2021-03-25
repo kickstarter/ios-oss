@@ -226,10 +226,10 @@ internal final class VideoViewModelTests: TestCase {
 
     self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.halfwayTime)
 
-    XCTAssertEqual(
-      ["Video Playback Started", "Video Playback Started", "Video Playback Started"],
-      self.segmentTrackingClient.events
-    )
+    XCTAssertEqual([
+      "Video Playback Started",
+      "Video Playback Started"
+    ], self.segmentTrackingClient.events)
     XCTAssertEqual("project", self.segmentTrackingClient.properties.last?["context_page"] as? String)
     XCTAssertEqual(100, self.segmentTrackingClient.properties.last?["video_length"] as? Double)
     XCTAssertEqual(50.0, self.segmentTrackingClient.properties.last?["video_position"] as? Double)
@@ -252,9 +252,6 @@ internal final class VideoViewModelTests: TestCase {
     self.pauseVideo.assertDidNotEmitValue("Video not paused by view navigation.")
 
     XCTAssertEqual([
-      "Video Playback Started",
-      "Video Playback Started",
-      "Video Playback Started",
       "Video Playback Started",
       "Video Playback Started",
       "Video Playback Started"
