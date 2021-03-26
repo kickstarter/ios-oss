@@ -1416,6 +1416,16 @@ public final class KSRAnalytics {
     )
   }
 
+  public func trackCampaignDetailsButtonClicked(project: Project) {
+    let props = projectProperties(from: project)
+      .withAllValuesFrom(contextProperties(ctaContext: .campaignDetails))
+
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
   // MARK: - Email Verification
 
   public func trackEmailVerificationScreenViewed() {

@@ -507,8 +507,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     self.notifyDelegateToGoToCreator.assertValues([project])
 
-    XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
 
     XCTAssertEqual("creator_details", self.dataLakeTrackingClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("creator_details", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
