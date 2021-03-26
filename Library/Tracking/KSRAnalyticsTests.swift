@@ -1503,6 +1503,8 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertEqual("campaign_details", dataLakeClientProps?["context_cta"] as? String)
     XCTAssertEqual("campaign_details", segmentClientProps?["context_cta"] as? String)
+    XCTAssertEqual("project", dataLakeClientProps?["context_page"] as? String)
+    XCTAssertEqual("project", segmentClientProps?["context_page"] as? String)
 
     self.assertProjectProperties(dataLakeClientProps)
     self.assertProjectProperties(segmentClientProps)

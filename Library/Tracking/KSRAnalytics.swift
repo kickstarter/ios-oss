@@ -1440,9 +1440,11 @@ public final class KSRAnalytics {
     )
   }
 
+  /// Call when a users clicks Read more about the campaign button.
+  /// - Parameter project: The project the
   public func trackCampaignDetailsButtonClicked(project: Project) {
     let props = projectProperties(from: project)
-      .withAllValuesFrom(contextProperties(ctaContext: .campaignDetails))
+      .withAllValuesFrom(contextProperties(ctaContext: .campaignDetails, page: .projectPage))
 
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
