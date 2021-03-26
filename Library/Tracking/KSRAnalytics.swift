@@ -1504,6 +1504,7 @@ public final class KSRAnalytics {
     props["cellular_connection"] = AppEnvironment.current.coreTelephonyNetworkInfo
       .serviceCurrentRadioAccessTechnology
     props["client"] = "native"
+    props["country"] = self.config?.countryCode
     props["current_variants"] = self.config?.abExperimentsArray.sorted()
     props["display_language"] = AppEnvironment.current.language.rawValue
 
@@ -1608,6 +1609,7 @@ private func projectProperties(
   props["rewards_count"] = project.rewards.count
   props["tags"] = project.tags?.joined(separator: ", ")
   props["updates_count"] = project.stats.updatesCount
+  props["is_repeat_creator"] = project.creator.isRepeatCreator
 
   let now = dateType.init().date
   props["hours_remaining"] = project.dates.hoursRemaining(from: now, using: calendar)
@@ -1671,10 +1673,13 @@ private func pledgeProperties(from reward: Reward, prefix: String = "pledge_back
 
 // MARK: - Checkout Properties
 
-private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, and reward: Reward? = nil,
-                                prefix: String = "checkout_")
-  -> [String: Any] {
+private func checkoutProperties(
+  from data: KSRAnalytics.CheckoutPropertiesData,
+  and reward: Reward? = nil,
+  prefix: String = "checkout_"
+) -> [String: Any] {
   var result: [String: Any] = [:]
+  let rewardsItems = reward?.rewardsItems ?? []
 
   result["amount"] = data.amount
   result["amount_total_usd"] = data.revenueInUsd
@@ -1693,6 +1698,7 @@ private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, 
   result["reward_shipping_enabled"] = data.shippingEnabled
   result["reward_shipping_preference"] = reward?.shipping.preference?.trackingString
   result["reward_title"] = data.rewardTitle
+  result["reward_has_items"] = !rewardsItems.isEmpty
   result["shipping_amount"] = data.shippingAmount
   result["shipping_amount_usd"] = data.shippingAmountUsd
   result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
@@ -1830,6 +1836,7 @@ private func userProperties(for user: User?, config: Config?, _ prefix: String =
   props["launched_projects_count"] = user?.stats.memberProjectsCount
   props["uid"] = user?.id
   props["watched_projects_count"] = user?.stats.starredProjectsCount
+  props["facebook_connected"] = user?.facebookConnected
 
   return props.prefixedKeys(prefix)
 }
