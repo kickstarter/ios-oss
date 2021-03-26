@@ -226,6 +226,22 @@ internal final class VideoViewModelTests: TestCase {
 
     self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.halfwayTime)
 
+    XCTAssertEqual([
+      "Video Playback Started",
+      "Video Playback Started"
+    ], self.segmentTrackingClient.events)
+    XCTAssertEqual("project", self.segmentTrackingClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual(100, self.segmentTrackingClient.properties.last?["video_length"] as? Int)
+    XCTAssertEqual(50, self.segmentTrackingClient.properties.last?["video_position"] as? Int)
+
+    XCTAssertEqual([
+      "Video Playback Started",
+      "Video Playback Started"
+    ], self.dataLakeTrackingClient.events)
+    XCTAssertEqual("project", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual(100, self.dataLakeTrackingClient.properties.last?["video_length"] as? Int)
+    XCTAssertEqual(50, self.dataLakeTrackingClient.properties.last?["video_position"] as? Int)
+
     self.vm.inputs.crossedCompletionThreshold()
 
     self.vm.inputs.crossedCompletionThreshold()
@@ -238,6 +254,24 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.rateChanged(toNew: self.playRate, atTime: self.startTime)
 
     self.pauseVideo.assertDidNotEmitValue("Video not paused by view navigation.")
+
+    XCTAssertEqual([
+      "Video Playback Started",
+      "Video Playback Started",
+      "Video Playback Started"
+    ], self.segmentTrackingClient.events)
+    XCTAssertEqual("project", self.segmentTrackingClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual(100, self.segmentTrackingClient.properties.last?["video_length"] as? Int)
+    XCTAssertEqual(0, self.segmentTrackingClient.properties.last?["video_position"] as? Int)
+
+    XCTAssertEqual([
+      "Video Playback Started",
+      "Video Playback Started",
+      "Video Playback Started"
+    ], self.dataLakeTrackingClient.events)
+    XCTAssertEqual("project", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual(100, self.dataLakeTrackingClient.properties.last?["video_length"] as? Int)
+    XCTAssertEqual(0, self.dataLakeTrackingClient.properties.last?["video_position"] as? Int)
   }
 
   func testTrackVideoCompletionViaScrubbing() {
