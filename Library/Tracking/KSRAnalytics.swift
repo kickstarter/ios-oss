@@ -1013,7 +1013,6 @@ public final class KSRAnalytics {
    - pledgeViewContext: The specific context applicable to the PledgeViewModel
    - checkoutData: the `CheckoutPropertiesData` associated with the given project and reward
    - refTag: the associated RefTag for the pledge
-   - cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
 
    */
 
@@ -1022,8 +1021,7 @@ public final class KSRAnalytics {
     reward: Reward,
     pledgeViewContext: PledgeViewContext,
     checkoutData: CheckoutPropertiesData,
-    refTag: RefTag?,
-    cookieRefTag _: RefTag?
+    refTag: RefTag?
   ) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
@@ -1354,7 +1352,6 @@ public final class KSRAnalytics {
    - parameter project: The project being viewed.
    - parameter refTag: The ref tag used when opening the project.
    - parameter sectionContext: The context referring to the section of the screen being interacted with.
-   - parameter cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
    */
   public func trackProjectViewed(
     _ project: Project,
@@ -1563,6 +1560,7 @@ private func projectProperties(
 
   props["backers_count"] = project.stats.backersCount
   props["subcategory"] = project.category.name
+  props["country"] = project.country.countryCode
   props["comments_count"] = project.stats.commentsCount ?? 0
   props["currency"] = project.country.currencyCode
   props["creator_uid"] = project.creator.id

@@ -849,8 +849,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           reward: baseReward,
           pledgeViewContext: pledgeViewContext,
           checkoutData: checkoutData,
-          refTag: refTag,
-          cookieRefTag: cookieRefTag
+          refTag: refTag
         )
       }
 

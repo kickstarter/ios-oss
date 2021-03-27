@@ -709,8 +709,7 @@ final class KSRAnalyticsTests: TestCase {
       reward: reward,
       pledgeViewContext: .pledge,
       checkoutData: .template,
-      refTag: .activity,
-      cookieRefTag: .activity
+      refTag: .activity
     )
 
     let dataLakeClientProps = dataLakeClient.properties.last
@@ -744,8 +743,7 @@ final class KSRAnalyticsTests: TestCase {
       reward: reward,
       pledgeViewContext: .update,
       checkoutData: .template,
-      refTag: .activity,
-      cookieRefTag: .activity
+      refTag: .activity
     )
 
     let dataLakeClientProps = dataLakeClient.properties.last
@@ -779,8 +777,7 @@ final class KSRAnalyticsTests: TestCase {
       reward: reward,
       pledgeViewContext: .updateReward,
       checkoutData: .template,
-      refTag: .activity,
-      cookieRefTag: .activity
+      refTag: .activity
     )
 
     let dataLakeClientProps = dataLakeClient.properties.last
@@ -814,8 +811,7 @@ final class KSRAnalyticsTests: TestCase {
       reward: reward,
       pledgeViewContext: .changePaymentMethod,
       checkoutData: .template,
-      refTag: .activity,
-      cookieRefTag: .activity
+      refTag: .activity
     )
 
     let dataLakeClientProps = dataLakeClient.properties.last

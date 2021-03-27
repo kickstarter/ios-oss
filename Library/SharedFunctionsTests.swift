@@ -305,6 +305,32 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertTrue(rewardsCarouselCanNavigateToReward(reward, in: project))
   }
 
+  func testSelectedRewardQuanties_With_Addons() {
+    let reward = Reward.template
+      |> Reward.lens.id .~ 99
+    let addOn1 = Reward.template
+      |> Reward.lens.id .~ 5
+    let addOn2 = Reward.template
+      |> Reward.lens.id .~ 10
+
+    let backing = Backing.template
+      |> Backing.lens.addOns .~ [addOn1, addOn2]
+      |> Backing.lens.reward .~ reward
+
+    let selectedQuantities = selectedRewardQuantities(in: backing)
+
+    XCTAssertEqual(selectedQuantities, [10: 1, 99: 1, 5: 1])
+  }
+
+  func testSelectedRewardQuanties_No_Addons() {
+    let backing = Backing.template
+      |> Backing.lens.addOns .~ nil
+
+    let selectedQuantities = selectedRewardQuantities(in: backing)
+
+    XCTAssertEqual(selectedQuantities, [1: 1])
+  }
+
   func testIsStartDateBeforeToday_Reward_StartsAt_Nil() {
     let reward = Reward.template
       |> Reward.lens.startsAt .~ nil
