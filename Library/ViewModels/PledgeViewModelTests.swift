@@ -5700,6 +5700,7 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(dataLakeTrackingClient.properties(forKey: "project_subcategory"), ["Illustration"])
       XCTAssertEqual(dataLakeTrackingClient.properties(forKey: "project_category"), ["Art"])
+      XCTAssertEqual(dataLakeTrackingClient.properties(forKey: "project_country"), ["US"])
       XCTAssertEqual(
         dataLakeTrackingClient.properties(forKey: "project_user_has_watched", as: Bool.self),
         [true]
@@ -5712,6 +5713,7 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(segmentClient.properties(forKey: "project_subcategory"), ["Illustration"])
       XCTAssertEqual(segmentClient.properties(forKey: "project_category"), ["Art"])
+      XCTAssertEqual(segmentClient.properties(forKey: "project_country"), ["US"])
       XCTAssertEqual(
         segmentClient.properties(forKey: "project_user_has_watched", as: Bool.self),
         [true]

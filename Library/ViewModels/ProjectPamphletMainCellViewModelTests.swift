@@ -681,12 +681,14 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "project_subcategory"), ["Art"])
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "project_country"), ["US"])
       XCTAssertEqual(
         self.dataLakeTrackingClient.properties(forKey: "project_user_has_watched", as: Bool.self),
         [nil]
       )
       XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "project_subcategory"), ["Art"])
       XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "project_country"), ["US"])
       XCTAssertEqual(
         self.segmentTrackingClient.properties(forKey: "project_user_has_watched", as: Bool.self),
         [nil]

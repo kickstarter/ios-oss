@@ -879,10 +879,12 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       XCTAssertEqual(dataLakeClient.properties(forKey: "project_subcategory"), ["Art"])
       XCTAssertEqual(dataLakeClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_country"), ["US"])
       XCTAssertEqual(dataLakeClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
 
       XCTAssertEqual(segmentClient.properties(forKey: "project_subcategory"), ["Art"])
       XCTAssertEqual(segmentClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(segmentClient.properties(forKey: "project_country"), ["US"])
       XCTAssertEqual(segmentClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
     }
   }
@@ -920,9 +922,11 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       XCTAssertEqual(dataLakeClient.properties(forKey: "project_subcategory"), ["Art"])
       XCTAssertEqual(dataLakeClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(dataLakeClient.properties(forKey: "project_country"), ["US"])
       XCTAssertEqual(dataLakeClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
       XCTAssertEqual(segmentClient.properties(forKey: "project_subcategory"), ["Art"])
       XCTAssertEqual(segmentClient.properties(forKey: "project_category"), [nil])
+      XCTAssertEqual(segmentClient.properties(forKey: "project_country"), ["US"])
       XCTAssertEqual(segmentClient.properties(forKey: "project_user_has_watched", as: Bool.self), [nil])
     }
   }
