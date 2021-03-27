@@ -1599,10 +1599,8 @@ final class KSRAnalyticsTests: TestCase {
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
 
-    XCTAssertEqual("US", dataLakeClientProps?["user_country"] as? String)
     XCTAssertNil(dataLakeClientProps?["user_uid"])
 
-    XCTAssertEqual("US", segmentClientProps?["user_country"] as? String)
     XCTAssertNil(segmentClientProps?["user_uid"])
   }
 
@@ -1630,10 +1628,8 @@ final class KSRAnalyticsTests: TestCase {
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
 
-    XCTAssertEqual("US", dataLakeClientProps?["user_country"] as? String)
     XCTAssertEqual(10, dataLakeClientProps?["user_uid"] as? Int)
 
-    XCTAssertEqual("US", segmentClientProps?["user_country"] as? String)
     XCTAssertEqual(10, segmentClientProps?["user_uid"] as? Int)
   }
 

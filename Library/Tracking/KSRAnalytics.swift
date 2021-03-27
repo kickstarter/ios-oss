@@ -1791,11 +1791,10 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
 
 // MARK: - User Properties
 
-private func userProperties(for user: User?, config: Config?, _ prefix: String = "user_") -> [String: Any] {
+private func userProperties(for user: User?, config _: Config?, _ prefix: String = "user_") -> [String: Any] {
   var props: [String: Any] = [:]
 
   props["backed_projects_count"] = user?.stats.backedProjectsCount
-  props["country"] = user?.location?.country ?? config?.countryCode
   props["created_projects_count"] = user?.stats.createdProjectsCount
   props["is_admin"] = user?.isAdmin
   props["launched_projects_count"] = user?.stats.memberProjectsCount
