@@ -1023,7 +1023,7 @@ public final class KSRAnalytics {
     pledgeViewContext: PledgeViewContext,
     checkoutData: CheckoutPropertiesData,
     refTag: RefTag?,
-    cookieRefTag: RefTag?
+    cookieRefTag _: RefTag?
   ) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
@@ -1042,8 +1042,7 @@ public final class KSRAnalytics {
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
       properties: props,
-      refTag: refTag?.stringTag,
-      referrerCredit: cookieRefTag?.stringTag
+      refTag: refTag?.stringTag
     )
   }
 
@@ -1360,8 +1359,7 @@ public final class KSRAnalytics {
   public func trackProjectViewed(
     _ project: Project,
     refTag: RefTag? = nil,
-    sectionContext: KSRAnalytics.SectionContext,
-    cookieRefTag: RefTag? = nil
+    sectionContext: KSRAnalytics.SectionContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(sectionContext: sectionContext))
@@ -1370,8 +1368,7 @@ public final class KSRAnalytics {
       event: NewApprovedEvent.pageViewed.rawValue,
       page: .projectPage,
       properties: props,
-      refTag: refTag?.stringTag,
-      referrerCredit: cookieRefTag?.stringTag
+      refTag: refTag?.stringTag
     )
   }
 
@@ -1460,10 +1457,9 @@ public final class KSRAnalytics {
     event: String,
     page: KSRAnalytics.PageContext? = nil,
     properties: [String: Any] = [:],
-    refTag: String? = nil,
-    referrerCredit: String? = nil
+    refTag: String? = nil
   ) {
-    let props = self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
+    let props = self.sessionProperties(refTag: refTag)
       .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
       .withAllValuesFrom(contextProperties(page: page))
       .withAllValuesFrom(properties)
@@ -1486,7 +1482,6 @@ public final class KSRAnalytics {
 
   private func sessionProperties(
     refTag: String?,
-    referrerCredit _: String?,
     prefix: String = "session_"
   ) -> [String: Any] {
     var props: [String: Any] = [:]

@@ -240,7 +240,7 @@ final class KSRAnalyticsTests: TestCase {
       |> Project.lens.prelaunchActivated .~ true
 
     ksrAnalytics
-      .trackProjectViewed(project, refTag: .discovery, sectionContext: .overview, cookieRefTag: .recommended)
+      .trackProjectViewed(project, refTag: .discovery, sectionContext: .overview)
 
     XCTAssertEqual(1, dataLakeClient.properties.count)
     XCTAssertEqual(1, segmentClient.properties.count)
@@ -337,7 +337,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackProjectViewed(project, refTag: nil, sectionContext: .overview, cookieRefTag: nil)
+    ksrAnalytics.trackProjectViewed(project, refTag: nil, sectionContext: .overview)
 
     XCTAssertEqual(1, dataLakeClient.properties.count)
     XCTAssertEqual(1, segmentClient.properties.count)
@@ -376,7 +376,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackProjectViewed(project, refTag: nil, sectionContext: .overview, cookieRefTag: nil)
+    ksrAnalytics.trackProjectViewed(project, refTag: nil, sectionContext: .overview)
     XCTAssertEqual(1, dataLakeClient.properties.count)
     XCTAssertEqual(1, segmentClient.properties.count)
 
@@ -414,7 +414,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackProjectViewed(project, refTag: nil, sectionContext: .overview, cookieRefTag: nil)
+    ksrAnalytics.trackProjectViewed(project, refTag: nil, sectionContext: .overview)
     XCTAssertEqual(1, dataLakeClient.properties.count)
     XCTAssertEqual(1, segmentClient.properties.count)
 
@@ -452,7 +452,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackProjectViewed(project, refTag: nil, sectionContext: .overview, cookieRefTag: nil)
+    ksrAnalytics.trackProjectViewed(project, refTag: nil, sectionContext: .overview)
     XCTAssertEqual(1, dataLakeClient.properties.count)
     XCTAssertEqual(1, segmentClient.properties.count)
 
@@ -679,7 +679,7 @@ final class KSRAnalyticsTests: TestCase {
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
 
     ksrAnalytics
-      .trackProjectViewed(project, refTag: .discovery, sectionContext: .campaign, cookieRefTag: .discovery)
+      .trackProjectViewed(project, refTag: .discovery, sectionContext: .campaign)
 
     XCTAssertEqual(["Page Viewed"], dataLakeClient.events)
     XCTAssertEqual(["project"], dataLakeClient.properties(forKey: "context_page"))
