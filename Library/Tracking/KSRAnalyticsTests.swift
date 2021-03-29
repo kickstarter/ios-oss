@@ -230,7 +230,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
     let project = Project.template
-      |> Project.lens.rewardData.rewards .~ [Reward.template]
+      |> Project.lens.rewardData.rewards .~ [Reward.template, .noReward]
       |> \.category .~ (.illustration
         |> \.id .~ 123
         |> \.parentId .~ 321

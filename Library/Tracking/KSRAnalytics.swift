@@ -1592,7 +1592,7 @@ private func projectProperties(
   props["goal_usd"] = project.stats.goalUsd
   props["has_video"] = project.video != nil
   props["prelaunch_activated"] = project.prelaunchActivated
-  props["rewards_count"] = project.rewards.count
+  props["rewards_count"] = project.rewards.filter { $0 != .noReward }.count
   props["tags"] = project.tags?.joined(separator: ", ")
   props["updates_count"] = project.stats.updatesCount
 
