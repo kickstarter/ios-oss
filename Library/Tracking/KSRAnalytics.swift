@@ -1431,6 +1431,20 @@ public final class KSRAnalytics {
     )
   }
 
+  /**
+    Call when read more about the campaign button is tapped.
+   - parameter project: The project that the read more button is clicked from
+   */
+  public func trackCampaignDetailsButtonClicked(project: Project) {
+    let props = projectProperties(from: project)
+      .withAllValuesFrom(contextProperties(ctaContext: .campaignDetails, page: .projectPage))
+
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
   // MARK: - Email Verification
 
   public func trackEmailVerificationScreenViewed() {
