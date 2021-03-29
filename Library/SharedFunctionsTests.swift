@@ -389,7 +389,7 @@ final class SharedFunctionsTests: TestCase {
       1_506_897_315.0,
       checkoutPropertiesData.estimatedDelivery
     )
-    XCTAssertEqual("CREDIT_CARD", checkoutPropertiesData.paymentType)
+    XCTAssertEqual("credit_card", checkoutPropertiesData.paymentType)
     XCTAssertEqual(100.0, checkoutPropertiesData.revenueInUsd)
     XCTAssertEqual(1, checkoutPropertiesData.rewardId)
     XCTAssertEqual("10.00", checkoutPropertiesData.rewardMinimumUsd)
