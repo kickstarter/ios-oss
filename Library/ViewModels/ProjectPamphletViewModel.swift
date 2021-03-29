@@ -183,7 +183,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       (project: project, refTag: refTag)
     }
 
-    freshProjectRefTagAndCookieRefTag
+    freshProjectRefTag
       .observeValues { project, refTag in
         AppEnvironment.current.ksrAnalytics.trackProjectViewed(
           project,
