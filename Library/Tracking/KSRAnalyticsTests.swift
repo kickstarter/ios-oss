@@ -2406,8 +2406,9 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("recs_home", props?["discover_ref_tag"] as? String)
   }
 
-  /// Helper for testing logged in `User` properties from a template `User`
-  /// - Parameter props: Properties to be sent by tracking client for the `User` property group
+  /*
+   Helper to test logged in User properties from a template User
+  */
   func assertUserProperties(_ props: [String: Any]?) {
     XCTAssertEqual("US", props?["user_country"] as? String)
     XCTAssertEqual(10, props?["user_uid"] as? Int)
