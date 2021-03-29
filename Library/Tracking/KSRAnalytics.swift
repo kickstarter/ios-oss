@@ -1564,7 +1564,7 @@ private func projectProperties(
   props["comments_count"] = project.stats.commentsCount ?? 0
   props["currency"] = project.country.currencyCode
   props["creator_uid"] = project.creator.id
-  props["deadline"] = project.dates.deadline
+  props["deadline"] = ISO8601DateFormatter().string(from: Date(timeIntervalSince1970: project.dates.deadline))
   props["has_add_ons"] = project.hasAddOns
   props["launched_at"] = project.dates.launchedAt
   props["name"] = project.name
