@@ -1603,7 +1603,11 @@ private func projectProperties(
   var userProperties: [String: Any] = [:]
   userProperties["has_watched"] = project.personalization.isStarred
   userProperties["is_backer"] = project.personalization.isBacking
-  userProperties["is_project_creator"] = project.creator.id == loggedInUser?.id
+
+  // Only send this property if the user is logged in
+  if let loggedInUser = loggedInUser {
+    userProperties["is_project_creator"] = project.creator.id == loggedInUser.id
+  }
 
   let userProps = userProperties.prefixedKeys("user_")
 

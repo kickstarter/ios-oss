@@ -279,11 +279,11 @@ final class KSRAnalyticsTests: TestCase {
     )
     XCTAssertEqual(1, dataLakeClientProperties?["project_updates_count"] as? Int)
 
-    XCTAssertEqual(false, dataLakeClientProperties?["project_user_is_project_creator"] as? Bool)
+    XCTAssertNil(dataLakeClientProperties?["project_user_is_project_creator"])
     XCTAssertNil(dataLakeClientProperties?["project_user_is_backer"])
     XCTAssertNil(dataLakeClientProperties?["project_user_has_starred"])
 
-    XCTAssertEqual(26, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(25, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual("discovery", dataLakeClientProperties?["session_ref_tag"] as? String)
 
@@ -315,11 +315,11 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(project.tags?.joined(separator: ", "), segmentClientProperties?["project_tags"] as? String)
     XCTAssertEqual(1, segmentClientProperties?["project_updates_count"] as? Int)
 
-    XCTAssertEqual(false, segmentClientProperties?["project_user_is_project_creator"] as? Bool)
+    XCTAssertNil(segmentClientProperties?["project_user_is_project_creator"])
     XCTAssertNil(segmentClientProperties?["project_user_is_backer"])
     XCTAssertNil(segmentClientProperties?["project_user_has_starred"])
 
-    XCTAssertEqual(26, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(25, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertEqual("discovery", segmentClientProperties?["session_ref_tag"] as? String)
   }
@@ -1279,10 +1279,10 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
 
     self.assertCheckoutProperties(dataLakeClientProperties)
-    self.assertProjectProperties(dataLakeClientProperties)
+    self.assertProjectProperties(dataLakeClientProperties, loggedInUser: true)
 
     self.assertCheckoutProperties(segmentClientProperties)
-    self.assertProjectProperties(segmentClientProperties)
+    self.assertProjectProperties(segmentClientProperties, loggedInUser: true)
 
     XCTAssertEqual("category", dataLakeClientProperties?["session_ref_tag"] as? String)
     XCTAssertEqual("category", segmentClientProperties?["session_ref_tag"] as? String)
@@ -1318,8 +1318,8 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(["Page Viewed"], dataLakeClient.events)
     XCTAssertEqual(["Page Viewed"], segmentClient.events)
 
-    self.assertProjectProperties(dataLakeClientProperties)
-    self.assertProjectProperties(segmentClientProperties)
+    self.assertProjectProperties(dataLakeClientProperties, loggedInUser: true)
+    self.assertProjectProperties(segmentClientProperties, loggedInUser: true)
 
     XCTAssertEqual("category", dataLakeClientProperties?["session_ref_tag"] as? String)
     XCTAssertEqual("category", segmentClientProperties?["session_ref_tag"] as? String)
@@ -2300,7 +2300,7 @@ final class KSRAnalyticsTests: TestCase {
   /*
    Helper for testing projectProperties from a template Project
    */
-  private func assertProjectProperties(_ props: [String: Any]?) {
+  private func assertProjectProperties(_ props: [String: Any]?, loggedInUser: Bool = false) {
     XCTAssertEqual(10, props?["project_backers_count"] as? Int)
     XCTAssertEqual("USD", props?["project_currency"] as? String)
     XCTAssertEqual("1", props?["project_pid"] as? String)
@@ -2321,7 +2321,8 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("Action & Adventure, Adaptation, Board Games", props?["project_tags"] as? String)
     XCTAssertEqual(1, props?["project_updates_count"] as? Int)
 
-    XCTAssertEqual(false, props?["project_user_is_project_creator"] as? Bool)
+    loggedInUser ? XCTAssertEqual(false, props?["project_user_is_project_creator"] as? Bool) :
+      XCTAssertNil(props?["project_user_is_project_creator"] as? Bool)
     XCTAssertNil(props?["project_user_is_backer"])
     XCTAssertNil(props?["project_user_has_starred"])
     XCTAssertNil(props?["project_category"] as? String)
