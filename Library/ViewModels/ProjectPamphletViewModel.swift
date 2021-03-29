@@ -174,7 +174,7 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       }
       .take(first: 1)
 
-    let freshProjectRefTagAndCookieRefTag: Signal<(Project, RefTag?), Never> = Signal.zip(
+    let freshProjectRefTag: Signal<(Project, RefTag?), Never> = Signal.zip(
       freshProjectAndRefTag.skip(first: 1),
       self.viewDidAppearAnimated.signal.ignoreValues()
     )
