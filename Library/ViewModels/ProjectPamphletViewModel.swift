@@ -174,24 +174,21 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       }
       .take(first: 1)
 
-    let freshProjectRefTagAndCookieRefTag: Signal<(Project, RefTag?, RefTag?), Never> = Signal.zip(
+    let freshProjectRefTag: Signal<(Project, RefTag?), Never> = Signal.zip(
       freshProjectAndRefTag.skip(first: 1),
       self.viewDidAppearAnimated.signal.ignoreValues()
     )
     .map(unpack)
     .map { project, refTag, _ in
-      let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
-
-      return (project: project, refTag: refTag, cookieRefTag: cookieRefTag)
+      (project: project, refTag: refTag)
     }
 
-    freshProjectRefTagAndCookieRefTag
-      .observeValues { project, refTag, cookieRefTag in
+    freshProjectRefTag
+      .observeValues { project, refTag in
         AppEnvironment.current.ksrAnalytics.trackProjectViewed(
           project,
           refTag: refTag,
-          sectionContext: .overview,
-          cookieRefTag: cookieRefTag
+          sectionContext: .overview
         )
         AppEnvironment.current.optimizelyClient?.track(eventName: "Project Page Viewed")
       }

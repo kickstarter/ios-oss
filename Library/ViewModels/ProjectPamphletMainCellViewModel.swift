@@ -240,20 +240,22 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     // Tracking
 
-    data
-      .takeWhen(self.readMoreButtonTappedProperty.signal)
+    data.take(first: 1)
       .observeValues { projectAndRefTag in
         let (project, refTag) = projectAndRefTag
-        let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
 
         AppEnvironment.current.ksrAnalytics.trackProjectViewed(
           project,
           refTag: refTag,
-          sectionContext: .campaign,
-          cookieRefTag: cookieRefTag
+          sectionContext: .campaign
         )
+      }
 
+    self.notifyDelegateToGoToCampaignWithProject
+      .observeValues { project in
         AppEnvironment.current.optimizelyClient?.track(eventName: "Campaign Details Button Clicked")
+
+        AppEnvironment.current.ksrAnalytics.trackCampaignDetailsButtonClicked(project: project)
       }
 
     self.notifyDelegateToGoToCreator.observeValues { project in
