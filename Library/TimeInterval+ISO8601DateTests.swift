@@ -8,11 +8,11 @@ class TimeInterval_ISO8601DateTests: XCTestCase {
     let iSO8601DateTimeString = timeInterval.toISO8601DateTimeString()
     XCTAssertEqual(iSO8601DateTimeString, "2017-10-01T22:35:15Z")
   }
-  
+
   func testToISO8601DateTimeString_Future() {
-    let timeInterval = 1_680_048_000.0
+    let timeInterval = 1_680_078_655.0
 
     let iSO8601DateTimeString = timeInterval.toISO8601DateTimeString()
-    XCTAssertEqual(iSO8601DateTimeString, "2023-03-29T00:00:00Z")
+    XCTAssertEqual(iSO8601DateTimeString, "2023-03-29T08:30:55Z")
   }
 }
