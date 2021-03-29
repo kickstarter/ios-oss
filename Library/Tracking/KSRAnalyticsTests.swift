@@ -43,12 +43,12 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertEqual(
       ["native_checkout[experimental]", "other_experiment[control]"],
-      dataLakeClientProperties?["session_current_variants"] as? [String]
+      dataLakeClientProperties?["session_variants_optimizely"] as? [String]
     )
 
     XCTAssertEqual(
       ["native_checkout[experimental]", "other_experiment[control]"],
-      segmentClientProperties?["session_current_variants"] as? [String]
+      segmentClientProperties?["session_variants_optimizely"] as? [String]
     )
 
     XCTAssertEqual("native", dataLakeClientProperties?["session_client"] as? String)
@@ -62,7 +62,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("MockSystemName", dataLakeClientProperties?["session_os"] as? String)
     XCTAssertEqual("MockSystemVersion", dataLakeClientProperties?["session_os_version"] as? String)
     XCTAssertEqual(UInt(screen.bounds.width), dataLakeClientProperties?["session_screen_width"] as? UInt)
-    XCTAssertEqual(false, dataLakeClientProperties?["session_user_logged_in"] as? Bool)
+    XCTAssertEqual(false, dataLakeClientProperties?["session_user_is_logged_in"] as? Bool)
     XCTAssertEqual("ios", dataLakeClientProperties?["session_platform"] as? String)
     XCTAssertEqual("en", dataLakeClientProperties?["session_display_language"] as? String)
 
@@ -79,7 +79,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("MockSystemName", segmentClientProperties?["session_os"] as? String)
     XCTAssertEqual("MockSystemVersion", segmentClientProperties?["session_os_version"] as? String)
     XCTAssertEqual(UInt(screen.bounds.width), segmentClientProperties?["session_screen_width"] as? UInt)
-    XCTAssertEqual(false, segmentClientProperties?["session_user_logged_in"] as? Bool)
+    XCTAssertEqual(false, segmentClientProperties?["session_user_is_logged_in"] as? Bool)
     XCTAssertEqual("ios", segmentClientProperties?["session_platform"] as? String)
     XCTAssertEqual("en", segmentClientProperties?["session_display_language"] as? String)
 
@@ -142,8 +142,8 @@ final class KSRAnalyticsTests: TestCase {
     let dataLakeClientProperties = dataLakeClient.properties.last
     let segmentClientProperties = segmentClient.properties.last
 
-    XCTAssertEqual(true, dataLakeClientProperties?["session_user_logged_in"] as? Bool)
-    XCTAssertEqual(true, segmentClientProperties?["session_user_logged_in"] as? Bool)
+    XCTAssertEqual(true, dataLakeClientProperties?["session_user_is_logged_in"] as? Bool)
+    XCTAssertEqual(true, segmentClientProperties?["session_user_is_logged_in"] as? Bool)
   }
 
   func testSessionProperties_DeviceFormatAndClientPlatform_ForIPhoneIdiom() {

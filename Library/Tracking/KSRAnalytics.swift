@@ -1499,7 +1499,7 @@ public final class KSRAnalytics {
 
     props["apple_pay_capable"] = AppEnvironment.current.applePayCapabilities.applePayCapable()
     props["client"] = "native"
-    props["current_variants"] = self.config?.abExperimentsArray.sorted()
+    props["variants_optimizely"] = self.config?.abExperimentsArray.sorted()
     props["display_language"] = AppEnvironment.current.language.rawValue
 
     props["device_type"] = self.device.deviceType
@@ -1516,7 +1516,7 @@ public final class KSRAnalytics {
     props["platform"] = self.clientPlatform
     props["screen_width"] = UInt(self.screen.bounds.width)
     props["user_agent"] = Service.userAgent
-    props["user_logged_in"] = self.loggedInUser != nil
+    props["user_is_logged_in"] = self.loggedInUser != nil
 
     props["ref_tag"] = refTag
 
