@@ -408,7 +408,7 @@ final class ThanksViewModelTests: TestCase {
     )
     XCTAssertEqual("10.00", dataLakeTrackingClientProps?["checkout_shipping_amount_usd"] as? String)
     XCTAssertEqual(
-      12_345_678.toISO8601DateTimeString(),
+      "1970-05-23T21:21:18Z",
       dataLakeTrackingClientProps?["checkout_reward_estimated_delivery_on"] as? String
     )
 
@@ -426,7 +426,7 @@ final class ThanksViewModelTests: TestCase {
     XCTAssertEqual(true, segmentClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
     XCTAssertEqual("10.00", segmentClientProps?["checkout_shipping_amount_usd"] as? String)
     XCTAssertEqual(
-      12_345_678.toISO8601DateTimeString(),
+      "1970-05-23T21:21:18Z",
       segmentClientProps?["checkout_reward_estimated_delivery_on"] as? String
     )
 

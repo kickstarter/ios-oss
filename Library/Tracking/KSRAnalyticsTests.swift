@@ -263,11 +263,11 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(24 * 15, dataLakeClientProperties?["project_hours_remaining"] as? Int)
     XCTAssertEqual(30, dataLakeClientProperties?["project_duration"] as? Int)
     XCTAssertEqual(
-      1_476_657_315.toISO8601DateTimeString(),
+      "2016-10-16T22:35:15Z",
       dataLakeClientProperties?["project_deadline"] as? String
     )
     XCTAssertEqual(
-      1_474_065_315.toISO8601DateTimeString(),
+      "2016-09-16T22:35:15Z",
       dataLakeClientProperties?["project_launched_at"] as? String
     )
     XCTAssertEqual("live", dataLakeClientProperties?["project_state"] as? String)
@@ -308,11 +308,11 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(24 * 15, segmentClientProperties?["project_hours_remaining"] as? Int)
     XCTAssertEqual(30, segmentClientProperties?["project_duration"] as? Int)
     XCTAssertEqual(
-      1_476_657_315.toISO8601DateTimeString(),
+      "2016-10-16T22:35:15Z",
       segmentClientProperties?["project_deadline"] as? String
     )
     XCTAssertEqual(
-      1_474_065_315.toISO8601DateTimeString(),
+      "2016-09-16T22:35:15Z",
       segmentClientProperties?["project_launched_at"] as? String
     )
     XCTAssertEqual("live", segmentClientProperties?["project_state"] as? String)
@@ -2321,8 +2321,8 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(1, props?["project_creator_uid"] as? Int)
     XCTAssertEqual(24 * 15, props?["project_hours_remaining"] as? Int)
     XCTAssertEqual(30, props?["project_duration"] as? Int)
-    XCTAssertEqual(1_476_657_315.toISO8601DateTimeString(), props?["project_deadline"] as? String)
-    XCTAssertEqual(1_474_065_315.toISO8601DateTimeString(), props?["project_launched_at"] as? String)
+    XCTAssertEqual("2016-10-16T22:35:15Z", props?["project_deadline"] as? String)
+    XCTAssertEqual("2016-09-16T22:35:15Z", props?["project_launched_at"] as? String)
     XCTAssertEqual("live", props?["project_state"] as? String)
     XCTAssertEqual(1_000, props?["project_current_pledge_amount"] as? Int)
     XCTAssertEqual(1_000, props?["project_current_amount_pledged_usd"] as? Float)
@@ -2369,7 +2369,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
     XCTAssertEqual("10.00", props?["checkout_shipping_amount_usd"] as? String)
     XCTAssertEqual(
-      12_345_678.toISO8601DateTimeString(),
+      "1970-05-23T21:21:18Z",
       props?["checkout_reward_estimated_delivery_on"] as? String
     )
   }

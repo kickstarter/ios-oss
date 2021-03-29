@@ -5862,7 +5862,7 @@ final class PledgeViewModelTests: TestCase {
       dataLakeTrackingClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool
     )
     XCTAssertEqual(
-      1_506_897_315.0.toISO8601DateTimeString(),
+      "2017-10-01T22:35:15Z",
       dataLakeTrackingClientProps?["checkout_reward_estimated_delivery_on"] as? String
     )
     XCTAssertEqual("My Reward", dataLakeTrackingClientProps?["checkout_reward_title"] as? String)
@@ -5873,7 +5873,7 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual(true, segmentClientProps?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
     XCTAssertEqual(
-      1_506_897_315.0.toISO8601DateTimeString(),
+      "2017-10-01T22:35:15Z",
       segmentClientProps?["checkout_reward_estimated_delivery_on"] as? String
     )
     XCTAssertEqual("My Reward", segmentClientProps?["checkout_reward_title"] as? String)
