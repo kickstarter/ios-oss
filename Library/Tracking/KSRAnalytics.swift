@@ -1609,7 +1609,7 @@ private func projectProperties(
   props["rewards_count"] = project.rewards.count
   props["tags"] = project.tags?.joined(separator: ", ")
   props["updates_count"] = project.stats.updatesCount
-  props["is_repeat_creator"] = project.creator.isRepeatCreator
+  props["is_repeat_creator"] = project.creator.isRepeatCreator ?? false
 
   let now = dateType.init().date
   props["hours_remaining"] = project.dates.hoursRemaining(from: now, using: calendar)
@@ -1679,7 +1679,6 @@ private func checkoutProperties(
   prefix: String = "checkout_"
 ) -> [String: Any] {
   var result: [String: Any] = [:]
-  let rewardsItems = reward?.rewardsItems ?? []
 
   result["amount"] = data.amount
   result["amount_total_usd"] = data.revenueInUsd
@@ -1698,7 +1697,6 @@ private func checkoutProperties(
   result["reward_shipping_enabled"] = data.shippingEnabled
   result["reward_shipping_preference"] = reward?.shipping.preference?.trackingString
   result["reward_title"] = data.rewardTitle
-  result["reward_has_items"] = !rewardsItems.isEmpty
   result["shipping_amount"] = data.shippingAmount
   result["shipping_amount_usd"] = data.shippingAmountUsd
   result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard

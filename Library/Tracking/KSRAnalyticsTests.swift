@@ -1671,8 +1671,8 @@ final class KSRAnalyticsTests: TestCase {
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
 
-    assertUserProperties(dataLakeClientProps)
-    assertUserProperties(segmentClientProps)
+    self.assertUserProperties(dataLakeClientProps)
+    self.assertUserProperties(segmentClientProps)
   }
 
   func testTabBarClicked() {
@@ -2386,7 +2386,6 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(10.00, props?["checkout_shipping_amount"] as? Double)
     XCTAssertEqual("10.00", props?["checkout_shipping_amount_usd"] as? String)
     XCTAssertEqual(12_345_678, props?["checkout_reward_estimated_delivery_on"] as? TimeInterval)
-    XCTAssertEqual(true, props?["checkout_reward_has_items"] as? Bool)
   }
 
   /*
@@ -2406,7 +2405,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(true, props?["discover_recommended"] as? Bool)
     XCTAssertEqual("recs_home", props?["discover_ref_tag"] as? String)
   }
-  
+
   /// Helper for testing logged in `User` properties from a template `User`
   /// - Parameter props: Properties to be sent by tracking client for the `User` property group
   func assertUserProperties(_ props: [String: Any]?) {
