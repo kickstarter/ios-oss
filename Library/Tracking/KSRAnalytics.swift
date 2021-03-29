@@ -1578,9 +1578,9 @@ private func projectProperties(
   props["comments_count"] = project.stats.commentsCount ?? 0
   props["currency"] = project.country.currencyCode
   props["creator_uid"] = project.creator.id
-  props["deadline"] = ISO8601DateFormatter().string(from: Date(timeIntervalSince1970: project.dates.deadline))
+  props["deadline"] = project.dates.deadline.toISO8601DateTimeString()
   props["has_add_ons"] = project.hasAddOns
-  props["launched_at"] = project.dates.launchedAt
+  props["launched_at"] = project.dates.launchedAt.toISO8601DateTimeString()
   props["name"] = project.name
   props["pid"] = project.id
   props["category"] = project.category.parentName
@@ -1670,7 +1670,7 @@ private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, 
   result["bonus_amount_usd"] = data.bonusAmountInUsd
   result["id"] = data.checkoutId
   result["payment_type"] = data.paymentType
-  result["reward_estimated_delivery_on"] = data.estimatedDelivery
+  result["reward_estimated_delivery_on"] = data.estimatedDelivery?.toISO8601DateTimeString()
   result["reward_id"] = data.rewardId
   result["reward_is_limited_quantity"] = reward?.isLimitedQuantity
   result["reward_is_limited_time"] = reward?.isLimitedTime
