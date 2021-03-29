@@ -491,6 +491,12 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.readMoreButtonTapped()
 
     self.notifyDelegateToGoToCampaignWithProject.assertValues([project])
+
+    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
+
+    XCTAssertEqual("campaign_details", self.dataLakeTrackingClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("campaign_details", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
   }
 
   func testNotifyDelegateToGoToCreator() {
