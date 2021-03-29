@@ -1440,8 +1440,10 @@ public final class KSRAnalytics {
     )
   }
 
-  /// Call when a users clicks Read more about the campaign button.
-  /// - Parameter project: The project that the read more button is clicked from
+  /**
+   Call when read more about the campaign button is tapped.
+  - parameter project: The project that the read more button is clicked from
+  */
   public func trackCampaignDetailsButtonClicked(project: Project) {
     let props = projectProperties(from: project)
       .withAllValuesFrom(contextProperties(ctaContext: .campaignDetails, page: .projectPage))
