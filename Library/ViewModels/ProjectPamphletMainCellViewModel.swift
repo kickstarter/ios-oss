@@ -240,8 +240,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     // Tracking
 
-    data
-      .takeWhen(self.readMoreButtonTappedProperty.signal)
+    data.take(first: 1)
       .observeValues { projectAndRefTag in
         let (project, refTag) = projectAndRefTag
 
@@ -250,8 +249,13 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
           refTag: refTag,
           sectionContext: .campaign
         )
+      }
 
+    self.notifyDelegateToGoToCampaignWithProject
+      .observeValues { project in
         AppEnvironment.current.optimizelyClient?.track(eventName: "Campaign Details Button Clicked")
+
+        AppEnvironment.current.ksrAnalytics.trackCampaignDetailsButtonClicked(project: project)
       }
 
     self.notifyDelegateToGoToCreator.observeValues { project in
