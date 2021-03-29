@@ -828,8 +828,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     trackCheckoutPageViewData
       .observeValues { project, baseReward, rewards, selectedQuantities, refTag, additionalPledgeAmount, pledgeTotal, shippingTotal, pledgeViewContext in
 
-        let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
-
         AppEnvironment.current.optimizelyClient?.track(eventName: "Pledge Screen Viewed")
 
         let checkoutData = checkoutProperties(
