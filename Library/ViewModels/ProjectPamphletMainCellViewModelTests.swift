@@ -643,11 +643,9 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_page"), ["project"])
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_section"), ["campaign"])
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
-      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "session_referrer_credit"), ["discovery"])
       XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_page"), ["project"])
       XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_section"), ["campaign"])
       XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
-      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "session_referrer_credit"), ["discovery"])
 
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "project_subcategory"), ["Art"])
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "project_category"), [nil])

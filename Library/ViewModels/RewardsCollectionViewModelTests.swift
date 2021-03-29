@@ -780,11 +780,15 @@ final class RewardsCollectionViewModelTests: TestCase {
     XCTAssertEqual("rewards", self.segmentTrackingClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("reward_continue", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
 
-    XCTAssertEqual("10.00", self.dataLakeTrackingClient.properties.last?["checkout_amount"] as? String)
-    XCTAssertEqual("0.00", self.dataLakeTrackingClient.properties.last?["checkout_bonus_amount"] as? String)
+    XCTAssertEqual(
+      "0.00",
+      self.dataLakeTrackingClient.properties.last?["checkout_bonus_amount_usd"] as? String
+    )
     XCTAssertEqual(0, self.dataLakeTrackingClient.properties.last?["checkout_add_ons_count_total"] as? Int)
-    XCTAssertEqual("10.00", self.segmentTrackingClient.properties.last?["checkout_amount"] as? String)
-    XCTAssertEqual("0.00", self.segmentTrackingClient.properties.last?["checkout_bonus_amount"] as? String)
+    XCTAssertEqual(
+      "0.00",
+      self.segmentTrackingClient.properties.last?["checkout_bonus_amount_usd"] as? String
+    )
     XCTAssertEqual(0, self.segmentTrackingClient.properties.last?["checkout_add_ons_count_total"] as? Int)
   }
 
@@ -822,10 +826,14 @@ final class RewardsCollectionViewModelTests: TestCase {
     XCTAssertEqual("rewards", self.segmentTrackingClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("reward_continue", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
 
-    XCTAssertEqual("20.00", self.dataLakeTrackingClient.properties.last?["checkout_amount"] as? String)
-    XCTAssertEqual("20.00", self.segmentTrackingClient.properties.last?["checkout_amount"] as? String)
-    XCTAssertEqual("100.00", self.dataLakeTrackingClient.properties.last?["checkout_bonus_amount"] as? String)
-    XCTAssertEqual("100.00", self.segmentTrackingClient.properties.last?["checkout_bonus_amount"] as? String)
+    XCTAssertEqual(
+      "100.00",
+      self.dataLakeTrackingClient.properties.last?["checkout_bonus_amount_usd"] as? String
+    )
+    XCTAssertEqual(
+      "100.00",
+      self.segmentTrackingClient.properties.last?["checkout_bonus_amount_usd"] as? String
+    )
 
     // Even though there is an addOn on the Backing, we don't calculate that as a total in the Rewards carousel
     XCTAssertEqual(0, self.dataLakeTrackingClient.properties.last?["checkout_add_ons_count_total"] as? Int)
@@ -866,8 +874,5 @@ final class RewardsCollectionViewModelTests: TestCase {
 
     XCTAssertEqual([nil, "reward_continue"], self.dataLakeTrackingClient.properties(forKey: "context_cta"))
     XCTAssertEqual([nil, "reward_continue"], self.segmentTrackingClient.properties(forKey: "context_cta"))
-
-    XCTAssertEqual(["0.00", "10.00"], self.dataLakeTrackingClient.properties(forKey: "checkout_amount"))
-    XCTAssertEqual(["0.00", "10.00"], self.segmentTrackingClient.properties(forKey: "checkout_amount"))
   }
 }

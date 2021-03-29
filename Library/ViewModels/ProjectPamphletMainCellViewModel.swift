@@ -243,13 +243,11 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
     data.take(first: 1)
       .observeValues { projectAndRefTag in
         let (project, refTag) = projectAndRefTag
-        let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
 
         AppEnvironment.current.ksrAnalytics.trackProjectViewed(
           project,
           refTag: refTag,
-          sectionContext: .campaign,
-          cookieRefTag: cookieRefTag
+          sectionContext: .campaign
         )
       }
 
