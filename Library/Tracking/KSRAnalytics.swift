@@ -507,8 +507,6 @@ public final class KSRAnalytics {
     let addOnsCountTotal: Int?
     let addOnsCountUnique: Int?
     let addOnsMinimumUsd: String?
-    let amount: String
-    let bonusAmount: String
     let bonusAmountInUsd: String
     let checkoutId: Int?
     let estimatedDelivery: TimeInterval?
@@ -518,7 +516,6 @@ public final class KSRAnalytics {
     let rewardMinimumUsd: String
     let rewardTitle: String?
     let shippingEnabled: Bool
-    let shippingAmount: Double?
     let shippingAmountUsd: String?
     let userHasStoredApplePayCard: Bool
   }
@@ -1016,7 +1013,6 @@ public final class KSRAnalytics {
    - pledgeViewContext: The specific context applicable to the PledgeViewModel
    - checkoutData: the `CheckoutPropertiesData` associated with the given project and reward
    - refTag: the associated RefTag for the pledge
-   - cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
 
    */
 
@@ -1025,8 +1021,7 @@ public final class KSRAnalytics {
     reward: Reward,
     pledgeViewContext: PledgeViewContext,
     checkoutData: CheckoutPropertiesData,
-    refTag: RefTag?,
-    cookieRefTag: RefTag?
+    refTag: RefTag?
   ) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
@@ -1045,8 +1040,7 @@ public final class KSRAnalytics {
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
       properties: props,
-      refTag: refTag?.stringTag,
-      referrerCredit: cookieRefTag?.stringTag
+      refTag: refTag?.stringTag
     )
   }
 
@@ -1358,13 +1352,11 @@ public final class KSRAnalytics {
    - parameter project: The project being viewed.
    - parameter refTag: The ref tag used when opening the project.
    - parameter sectionContext: The context referring to the section of the screen being interacted with.
-   - parameter cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
    */
   public func trackProjectViewed(
     _ project: Project,
     refTag: RefTag? = nil,
-    sectionContext: KSRAnalytics.SectionContext,
-    cookieRefTag: RefTag? = nil
+    sectionContext: KSRAnalytics.SectionContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(sectionContext: sectionContext))
@@ -1373,8 +1365,7 @@ public final class KSRAnalytics {
       event: NewApprovedEvent.pageViewed.rawValue,
       page: .projectPage,
       properties: props,
-      refTag: refTag?.stringTag,
-      referrerCredit: cookieRefTag?.stringTag
+      refTag: refTag?.stringTag
     )
   }
 
@@ -1463,10 +1454,9 @@ public final class KSRAnalytics {
     event: String,
     page: KSRAnalytics.PageContext? = nil,
     properties: [String: Any] = [:],
-    refTag: String? = nil,
-    referrerCredit: String? = nil
+    refTag: String? = nil
   ) {
-    let props = self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
+    let props = self.sessionProperties(refTag: refTag)
       .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
       .withAllValuesFrom(contextProperties(page: page))
       .withAllValuesFrom(properties)
@@ -1489,20 +1479,11 @@ public final class KSRAnalytics {
 
   private func sessionProperties(
     refTag: String?,
-    referrerCredit: String?,
     prefix: String = "session_"
   ) -> [String: Any] {
     var props: [String: Any] = [:]
 
-    let enabledFeatureFlags = self.config?.features
-      .filter { key, value in key.starts(with: "ios_") && value }
-      .keys
-      .sorted()
-
     props["apple_pay_capable"] = AppEnvironment.current.applePayCapabilities.applePayCapable()
-    props["apple_pay_device"] = AppEnvironment.current.applePayCapabilities.applePayDevice()
-    props["cellular_connection"] = AppEnvironment.current.coreTelephonyNetworkInfo
-      .serviceCurrentRadioAccessTechnology
     props["client"] = "native"
     props["current_variants"] = self.config?.abExperimentsArray.sorted()
     props["display_language"] = AppEnvironment.current.language.rawValue
@@ -1515,19 +1496,15 @@ public final class KSRAnalytics {
 
     props["app_build_number"] = self.bundle.infoDictionary?["CFBundleVersion"]
     props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
-    props["enabled_features"] = enabledFeatureFlags
     props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
-    props["mp_lib"] = "kickstarter_ios"
     props["os"] = self.device.systemName
     props["os_version"] = self.device.systemVersion
     props["platform"] = self.clientPlatform
     props["screen_width"] = UInt(self.screen.bounds.width)
     props["user_agent"] = Service.userAgent
     props["user_logged_in"] = self.loggedInUser != nil
-    props["wifi_connection"] = Reachability.current == .wifi
 
     props["ref_tag"] = refTag
-    props["referrer_credit"] = referrerCredit
 
     return props.prefixedKeys(prefix)
   }
@@ -1583,23 +1560,19 @@ private func projectProperties(
 
   props["backers_count"] = project.stats.backersCount
   props["subcategory"] = project.category.name
-  props["subcategory_id"] = project.category.id
   props["country"] = project.country.countryCode
   props["comments_count"] = project.stats.commentsCount ?? 0
   props["currency"] = project.country.currencyCode
   props["creator_uid"] = project.creator.id
   props["deadline"] = project.dates.deadline
-  props["goal"] = project.stats.goal
   props["has_add_ons"] = project.hasAddOns
   props["launched_at"] = project.dates.launchedAt
-  props["location"] = project.location.name
   props["name"] = project.name
   props["pid"] = project.id
   props["category"] = project.category.parentName
   props["category_id"] = project.category.parentId
   props["percent_raised"] = project.stats.fundingProgress
   props["state"] = project.state.rawValue
-  props["static_usd_rate"] = project.stats.staticUsdRate
   props["current_pledge_amount"] = project.stats.pledged
   props["current_amount_pledged_usd"] = project.stats.pledgedUsd
   props["goal_usd"] = project.stats.goalUsd
@@ -1676,12 +1649,10 @@ private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, 
   -> [String: Any] {
   var result: [String: Any] = [:]
 
-  result["amount"] = data.amount
   result["amount_total_usd"] = data.revenueInUsd
   result["add_ons_count_total"] = data.addOnsCountTotal
   result["add_ons_count_unique"] = data.addOnsCountUnique
   result["add_ons_minimum_usd"] = data.addOnsMinimumUsd
-  result["bonus_amount"] = data.bonusAmount
   result["bonus_amount_usd"] = data.bonusAmountInUsd
   result["id"] = data.checkoutId
   result["payment_type"] = data.paymentType
@@ -1693,7 +1664,6 @@ private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, 
   result["reward_shipping_enabled"] = data.shippingEnabled
   result["reward_shipping_preference"] = reward?.shipping.preference?.trackingString
   result["reward_title"] = data.rewardTitle
-  result["shipping_amount"] = data.shippingAmount
   result["shipping_amount_usd"] = data.shippingAmountUsd
   result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
 
@@ -1757,7 +1727,6 @@ private func contextProperties(
   result["location"] = locationContext?.trackingString
   result["page"] = page?.rawValue
   result["section"] = sectionContext?.trackingString
-  result["timestamp"] = AppEnvironment.current.dateType.init().timeIntervalSince1970
   result["tab_bar_label"] = tabBarLabel?.trackingString
   result["type"] = typeContext?.trackingString
 
@@ -1820,11 +1789,10 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
 
 // MARK: - User Properties
 
-private func userProperties(for user: User?, config: Config?, _ prefix: String = "user_") -> [String: Any] {
+private func userProperties(for user: User?, config _: Config?, _ prefix: String = "user_") -> [String: Any] {
   var props: [String: Any] = [:]
 
   props["backed_projects_count"] = user?.stats.backedProjectsCount
-  props["country"] = user?.location?.country ?? config?.countryCode
   props["created_projects_count"] = user?.stats.createdProjectsCount
   props["is_admin"] = user?.isAdmin
   props["launched_projects_count"] = user?.stats.memberProjectsCount
