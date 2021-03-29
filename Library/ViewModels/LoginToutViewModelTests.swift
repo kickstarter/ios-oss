@@ -77,7 +77,7 @@ final class LoginToutViewModelTests: TestCase {
     XCTAssertEqual(["Log In or Signup Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["pledge"], self.dataLakeTrackingClient.properties(forKey: "login_intent"))
     XCTAssertEqual(
-      [2], self.dataLakeTrackingClient.properties(forKey: "project_pid", as: Int.self),
+      ["2"], self.dataLakeTrackingClient.properties(forKey: "project_pid", as: String.self),
       "Tracking properties contain project properties"
     )
     XCTAssertEqual(
@@ -88,7 +88,7 @@ final class LoginToutViewModelTests: TestCase {
     XCTAssertEqual(["Log In or Signup Page Viewed"], self.segmentTrackingClient.events)
     XCTAssertEqual(["pledge"], self.segmentTrackingClient.properties(forKey: "login_intent"))
     XCTAssertEqual(
-      [2], self.segmentTrackingClient.properties(forKey: "project_pid", as: Int.self),
+      ["2"], self.segmentTrackingClient.properties(forKey: "project_pid", as: String.self),
       "Tracking properties contain project properties"
     )
     XCTAssertEqual(
@@ -159,7 +159,7 @@ final class LoginToutViewModelTests: TestCase {
       self.dataLakeTrackingClient.events
     )
     XCTAssertEqual(["pledge", "pledge"], self.dataLakeTrackingClient.properties(forKey: "login_intent"))
-    XCTAssertEqual([1, 1], self.dataLakeTrackingClient.properties(forKey: "project_pid", as: Int.self))
+    XCTAssertEqual(["1", "1"], self.dataLakeTrackingClient.properties(forKey: "project_pid", as: String.self))
     XCTAssertEqual(
       [1, 1],
       self.dataLakeTrackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self)
@@ -169,7 +169,7 @@ final class LoginToutViewModelTests: TestCase {
       self.segmentTrackingClient.events
     )
     XCTAssertEqual(["pledge", "pledge"], self.segmentTrackingClient.properties(forKey: "login_intent"))
-    XCTAssertEqual([1, 1], self.segmentTrackingClient.properties(forKey: "project_pid", as: Int.self))
+    XCTAssertEqual(["1", "1"], self.segmentTrackingClient.properties(forKey: "project_pid", as: String.self))
     XCTAssertEqual(
       [1, 1],
       self.segmentTrackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self)
@@ -212,7 +212,7 @@ final class LoginToutViewModelTests: TestCase {
       self.dataLakeTrackingClient.events
     )
     XCTAssertEqual(["pledge", "pledge"], self.dataLakeTrackingClient.properties(forKey: "login_intent"))
-    XCTAssertEqual([1, 1], self.dataLakeTrackingClient.properties(forKey: "project_pid", as: Int.self))
+    XCTAssertEqual(["1", "1"], self.dataLakeTrackingClient.properties(forKey: "project_pid", as: String.self))
     XCTAssertEqual(
       [1, 1],
       self.dataLakeTrackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self)
@@ -223,7 +223,7 @@ final class LoginToutViewModelTests: TestCase {
       self.segmentTrackingClient.events
     )
     XCTAssertEqual(["pledge", "pledge"], self.segmentTrackingClient.properties(forKey: "login_intent"))
-    XCTAssertEqual([1, 1], self.segmentTrackingClient.properties(forKey: "project_pid", as: Int.self))
+    XCTAssertEqual(["1", "1"], self.segmentTrackingClient.properties(forKey: "project_pid", as: String.self))
     XCTAssertEqual(
       [1, 1],
       self.segmentTrackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self)

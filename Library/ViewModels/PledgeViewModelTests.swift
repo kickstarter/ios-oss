@@ -5879,8 +5879,8 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual("My Reward", segmentClientProps?["checkout_reward_title"] as? String)
 
     // Project properties
-    XCTAssertEqual(1, dataLakeTrackingClientProps?["project_pid"] as? Int)
-    XCTAssertEqual(1, segmentClientProps?["project_pid"] as? Int)
+    XCTAssertEqual("1", dataLakeTrackingClientProps?["project_pid"] as? String)
+    XCTAssertEqual("1", segmentClientProps?["project_pid"] as? String)
 
     XCTAssertEqual("discovery", dataLakeTrackingClientProps?["session_ref_tag"] as? String)
     XCTAssertEqual("discovery", segmentClientProps?["session_ref_tag"] as? String)

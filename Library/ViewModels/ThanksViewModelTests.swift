@@ -437,8 +437,8 @@ final class ThanksViewModelTests: TestCase {
     XCTAssertEqual(10.00, segmentClientProps?["pledge_backer_reward_minimum"] as? Double)
 
     // Project properties
-    XCTAssertEqual(1, dataLakeTrackingClientProps?["project_pid"] as? Int)
+    XCTAssertEqual("1", dataLakeTrackingClientProps?["project_pid"] as? String)
 
-    XCTAssertEqual(1, segmentClientProps?["project_pid"] as? Int)
+    XCTAssertEqual("1", segmentClientProps?["project_pid"] as? String)
   }
 }

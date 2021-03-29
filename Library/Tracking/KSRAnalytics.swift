@@ -1577,12 +1577,12 @@ private func projectProperties(
   props["country"] = project.country.countryCode
   props["comments_count"] = project.stats.commentsCount ?? 0
   props["currency"] = project.country.currencyCode
-  props["creator_uid"] = project.creator.id
+  props["creator_uid"] = String(project.creator.id)
   props["deadline"] = project.dates.deadline
   props["has_add_ons"] = project.hasAddOns
   props["launched_at"] = project.dates.launchedAt
   props["name"] = project.name
-  props["pid"] = project.id
+  props["pid"] = String(project.id)
   props["category"] = project.category.parentName
   props["category_id"] = project.category.parentId
   props["percent_raised"] = project.stats.fundingProgress

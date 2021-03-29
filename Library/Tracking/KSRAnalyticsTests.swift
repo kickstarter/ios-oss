@@ -251,7 +251,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("Page Viewed", dataLakeClient.events.last)
     XCTAssertEqual(project.stats.backersCount, dataLakeClientProperties?["project_backers_count"] as? Int)
     XCTAssertEqual(project.country.currencyCode, dataLakeClientProperties?["project_currency"] as? String)
-    XCTAssertEqual(project.id, dataLakeClientProperties?["project_pid"] as? Int)
+    XCTAssertEqual(String(project.id), dataLakeClientProperties?["project_pid"] as? String)
     XCTAssertEqual(
       project.stats.fundingProgress,
       dataLakeClientProperties?["project_percent_raised"] as? Float
@@ -259,7 +259,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(project.category.name, dataLakeClientProperties?["project_subcategory"] as? String)
     XCTAssertEqual("Art", dataLakeClientProperties?["project_category"] as? String)
     XCTAssertEqual(project.stats.commentsCount, dataLakeClientProperties?["project_comments_count"] as? Int)
-    XCTAssertEqual(project.creator.id, dataLakeClientProperties?["project_creator_uid"] as? Int)
+    XCTAssertEqual(String(project.creator.id), dataLakeClientProperties?["project_creator_uid"] as? String)
     XCTAssertEqual(24 * 15, dataLakeClientProperties?["project_hours_remaining"] as? Int)
     XCTAssertEqual(30, dataLakeClientProperties?["project_duration"] as? Int)
     XCTAssertEqual(1_476_657_315, dataLakeClientProperties?["project_deadline"] as? Double)
@@ -290,7 +290,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("Page Viewed", segmentClient.events.last)
     XCTAssertEqual(project.stats.backersCount, segmentClientProperties?["project_backers_count"] as? Int)
     XCTAssertEqual(project.country.currencyCode, segmentClientProperties?["project_currency"] as? String)
-    XCTAssertEqual(project.id, segmentClientProperties?["project_pid"] as? Int)
+    XCTAssertEqual(String(project.id), segmentClientProperties?["project_pid"] as? String)
     XCTAssertEqual(
       project.stats.fundingProgress,
       segmentClientProperties?["project_percent_raised"] as? Float
@@ -298,7 +298,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(project.category.name, segmentClientProperties?["project_subcategory"] as? String)
     XCTAssertEqual("Art", segmentClientProperties?["project_category"] as? String)
     XCTAssertEqual(project.stats.commentsCount, dataLakeClientProperties?["project_comments_count"] as? Int)
-    XCTAssertEqual(project.creator.id, segmentClientProperties?["project_creator_uid"] as? Int)
+    XCTAssertEqual(String(project.creator.id), segmentClientProperties?["project_creator_uid"] as? String)
     XCTAssertEqual(24 * 15, segmentClientProperties?["project_hours_remaining"] as? Int)
     XCTAssertEqual(30, segmentClientProperties?["project_duration"] as? Int)
     XCTAssertEqual(1_476_657_315, segmentClientProperties?["project_deadline"] as? Double)
@@ -2303,10 +2303,10 @@ final class KSRAnalyticsTests: TestCase {
   private func assertProjectProperties(_ props: [String: Any]?) {
     XCTAssertEqual(10, props?["project_backers_count"] as? Int)
     XCTAssertEqual("USD", props?["project_currency"] as? String)
-    XCTAssertEqual(1, props?["project_pid"] as? Int)
+    XCTAssertEqual("1", props?["project_pid"] as? String)
     XCTAssertEqual(0.50, props?["project_percent_raised"] as? Float)
     XCTAssertEqual("Art", props?["project_subcategory"] as? String)
-    XCTAssertEqual(1, props?["project_creator_uid"] as? Int)
+    XCTAssertEqual("1", props?["project_creator_uid"] as? String)
     XCTAssertEqual(24 * 15, props?["project_hours_remaining"] as? Int)
     XCTAssertEqual(30, props?["project_duration"] as? Int)
     XCTAssertEqual(1_476_657_315, props?["project_deadline"] as? Double)
