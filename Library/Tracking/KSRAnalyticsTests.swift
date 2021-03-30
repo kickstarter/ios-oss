@@ -1667,8 +1667,21 @@ final class KSRAnalyticsTests: TestCase {
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
 
-    self.assertUserProperties(dataLakeClientProps)
-    self.assertUserProperties(segmentClientProps)
+    XCTAssertEqual(10, dataLakeClientProps?["user_uid"] as? Int)
+    XCTAssertEqual(5, dataLakeClientProps?["user_backed_projects_count"] as? Int)
+    XCTAssertEqual(3, dataLakeClientProps?["user_created_projects_count"] as? Int)
+    XCTAssertEqual(false, dataLakeClientProps?["user_is_admin"] as? Bool)
+    XCTAssertEqual(6, dataLakeClientProps?["user_launched_projects_count"] as? Int)
+    XCTAssertEqual(2, dataLakeClientProps?["user_watched_projects_count"] as? Int)
+    XCTAssertEqual(true, dataLakeClientProps?["user_facebook_connected"] as? Bool)
+
+    XCTAssertEqual(10, segmentClientProps?["user_uid"] as? Int)
+    XCTAssertEqual(5, segmentClientProps?["user_backed_projects_count"] as? Int)
+    XCTAssertEqual(3, segmentClientProps?["user_created_projects_count"] as? Int)
+    XCTAssertEqual(false, segmentClientProps?["user_is_admin"] as? Bool)
+    XCTAssertEqual(6, segmentClientProps?["user_launched_projects_count"] as? Int)
+    XCTAssertEqual(2, segmentClientProps?["user_watched_projects_count"] as? Int)
+    XCTAssertEqual(true, segmentClientProps?["user_facebook_connected"] as? Bool)
   }
 
   func testTabBarClicked() {
@@ -2393,19 +2406,6 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(false, props?["discover_everything"] as? Bool)
     XCTAssertEqual(true, props?["discover_recommended"] as? Bool)
     XCTAssertEqual("recs_home", props?["discover_ref_tag"] as? String)
-  }
-
-  /*
-   Helper to test logged in User properties from a template User
-   */
-  func assertUserProperties(_ props: [String: Any]?) {
-    XCTAssertEqual(10, props?["user_uid"] as? Int)
-    XCTAssertEqual(5, props?["user_backed_projects_count"] as? Int)
-    XCTAssertEqual(3, props?["user_created_projects_count"] as? Int)
-    XCTAssertEqual(false, props?["user_is_admin"] as? Bool)
-    XCTAssertEqual(6, props?["user_launched_projects_count"] as? Int)
-    XCTAssertEqual(2, props?["user_watched_projects_count"] as? Int)
-    XCTAssertEqual(true, props?["user_facebook_connected"] as? Bool)
   }
 }
 
