@@ -52,7 +52,7 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     XCTAssertEqual("native", dataLakeClientProperties?["session_client"] as? String)
-    XCTAssertEqual("1234567890", dataLakeClientProperties?["session_app_build_number"] as? String)
+    XCTAssertEqual(1_234_567_890, dataLakeClientProperties?["session_app_build_number"] as? Int)
     XCTAssertEqual("1.2.3.4.5.6.7.8.9.0", dataLakeClientProperties?["session_app_release_version"] as? String)
     XCTAssertEqual("phone", dataLakeClientProperties?["session_device_type"] as? String)
     XCTAssertEqual("Apple", dataLakeClientProperties?["session_device_manufacturer"] as? String)
@@ -69,7 +69,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(18, dataLakeClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
 
     XCTAssertEqual("native", segmentClientProperties?["session_client"] as? String)
-    XCTAssertEqual("1234567890", segmentClientProperties?["session_app_build_number"] as? String)
+    XCTAssertEqual(1_234_567_890, segmentClientProperties?["session_app_build_number"] as? Int)
     XCTAssertEqual("1.2.3.4.5.6.7.8.9.0", segmentClientProperties?["session_app_release_version"] as? String)
     XCTAssertEqual("phone", segmentClientProperties?["session_device_type"] as? String)
     XCTAssertEqual("Apple", segmentClientProperties?["session_device_manufacturer"] as? String)

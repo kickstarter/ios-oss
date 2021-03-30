@@ -1508,7 +1508,10 @@ public final class KSRAnalytics {
     props["device_orientation"] = self.deviceOrientation
     props["device_distinct_id"] = self.distinctId
 
-    props["app_build_number"] = self.bundle.infoDictionary?["CFBundleVersion"]
+    if let appBuildNumber = self.bundle.infoDictionary?["CFBundleVersion"] as? String {
+      props["app_build_number"] = Int(appBuildNumber)
+    }
+
     props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
     props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
     props["os"] = self.device.systemName
