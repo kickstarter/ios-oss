@@ -1500,8 +1500,8 @@ public final class KSRAnalytics {
     props["apple_pay_capable"] = AppEnvironment.current.applePayCapabilities.applePayCapable()
     props["client"] = "native"
     props["variants_optimizely"] = self.config?.abExperimentsArray.sorted()
+    props["country"] = self.config?.countryCode
     props["display_language"] = AppEnvironment.current.language.rawValue
-
     props["device_type"] = self.device.deviceType
     props["device_manufacturer"] = "Apple"
     props["device_model"] = KSRAnalytics.deviceModel
@@ -1581,9 +1581,9 @@ private func projectProperties(
   props["comments_count"] = project.stats.commentsCount ?? 0
   props["currency"] = project.country.currencyCode
   props["creator_uid"] = String(project.creator.id)
-  props["deadline"] = project.dates.deadline
+  props["deadline"] = project.dates.deadline.toISO8601DateTimeString()
   props["has_add_ons"] = project.hasAddOns
-  props["launched_at"] = project.dates.launchedAt
+  props["launched_at"] = project.dates.launchedAt.toISO8601DateTimeString()
   props["name"] = project.name
   props["pid"] = String(project.id)
   props["category"] = project.category.parentName
@@ -1598,6 +1598,7 @@ private func projectProperties(
   props["rewards_count"] = project.rewards.filter { $0 != .noReward }.count
   props["tags"] = project.tags?.joined(separator: ", ")
   props["updates_count"] = project.stats.updatesCount
+  props["is_repeat_creator"] = project.creator.isRepeatCreator ?? false
 
   let now = dateType.init().date
   props["hours_remaining"] = project.dates.hoursRemaining(from: now, using: calendar)
@@ -1665,9 +1666,11 @@ private func pledgeProperties(from reward: Reward, prefix: String = "pledge_back
 
 // MARK: - Checkout Properties
 
-private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, and reward: Reward? = nil,
-                                prefix: String = "checkout_")
-  -> [String: Any] {
+private func checkoutProperties(
+  from data: KSRAnalytics.CheckoutPropertiesData,
+  and reward: Reward? = nil,
+  prefix: String = "checkout_"
+) -> [String: Any] {
   var result: [String: Any] = [:]
 
   result["amount_total_usd"] = data.revenueInUsd
@@ -1677,7 +1680,7 @@ private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, 
   result["bonus_amount_usd"] = data.bonusAmountInUsd
   result["id"] = data.checkoutId
   result["payment_type"] = data.paymentType
-  result["reward_estimated_delivery_on"] = data.estimatedDelivery
+  result["reward_estimated_delivery_on"] = data.estimatedDelivery?.toISO8601DateTimeString()
   result["reward_id"] = data.rewardId
   result["reward_is_limited_quantity"] = reward?.isLimitedQuantity
   result["reward_is_limited_time"] = reward?.isLimitedTime
@@ -1819,6 +1822,7 @@ private func userProperties(for user: User?, config _: Config?, _ prefix: String
   props["launched_projects_count"] = user?.stats.memberProjectsCount
   props["uid"] = user?.id
   props["watched_projects_count"] = user?.stats.starredProjectsCount
+  props["facebook_connected"] = user?.facebookConnected
 
   return props.prefixedKeys(prefix)
 }
