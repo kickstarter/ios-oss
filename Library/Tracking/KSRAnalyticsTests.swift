@@ -2354,6 +2354,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertNil(props?["project_user_has_starred"])
     XCTAssertNil(props?["project_category"] as? String)
     XCTAssertNil(props?["project_prelaunch_activated"] as? Bool)
+    XCTAssertEqual(false, props?["project_has_add_ons"] as? Bool)
   }
 
   /*
