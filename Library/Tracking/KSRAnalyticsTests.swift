@@ -63,7 +63,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("MockSystemVersion", dataLakeClientProperties?["session_os_version"] as? String)
     XCTAssertEqual(UInt(screen.bounds.width), dataLakeClientProperties?["session_screen_width"] as? UInt)
     XCTAssertEqual(false, dataLakeClientProperties?["session_user_is_logged_in"] as? Bool)
-    XCTAssertEqual("ios", dataLakeClientProperties?["session_platform"] as? String)
+    XCTAssertEqual("native_ios", dataLakeClientProperties?["session_platform"] as? String)
     XCTAssertEqual("en", dataLakeClientProperties?["session_display_language"] as? String)
 
     XCTAssertEqual(18, dataLakeClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
@@ -80,7 +80,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("MockSystemVersion", segmentClientProperties?["session_os_version"] as? String)
     XCTAssertEqual(UInt(screen.bounds.width), segmentClientProperties?["session_screen_width"] as? UInt)
     XCTAssertEqual(false, segmentClientProperties?["session_user_is_logged_in"] as? Bool)
-    XCTAssertEqual("ios", segmentClientProperties?["session_platform"] as? String)
+    XCTAssertEqual("native_ios", segmentClientProperties?["session_platform"] as? String)
     XCTAssertEqual("en", segmentClientProperties?["session_display_language"] as? String)
 
     XCTAssertEqual(18, segmentClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
@@ -158,10 +158,10 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackTabBarClicked(.activity)
 
     XCTAssertEqual("phone", dataLakeClient.properties.last?["session_device_type"] as? String)
-    XCTAssertEqual("ios", dataLakeClient.properties.last?["session_platform"] as? String)
+    XCTAssertEqual("native_ios", dataLakeClient.properties.last?["session_platform"] as? String)
 
     XCTAssertEqual("phone", segmentClient.properties.last?["session_device_type"] as? String)
-    XCTAssertEqual("ios", segmentClient.properties.last?["session_platform"] as? String)
+    XCTAssertEqual("native_ios", segmentClient.properties.last?["session_platform"] as? String)
   }
 
   func testSessionProperties_DeviceFormatAndClientPlatform_ForIPadIdiom() {
@@ -176,10 +176,10 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackTabBarClicked(.activity)
 
     XCTAssertEqual("tablet", dataLakeClient.properties.last?["session_device_type"] as? String)
-    XCTAssertEqual("ios", dataLakeClient.properties.last?["session_platform"] as? String)
+    XCTAssertEqual("native_ios", dataLakeClient.properties.last?["session_platform"] as? String)
 
     XCTAssertEqual("tablet", segmentClient.properties.last?["session_device_type"] as? String)
-    XCTAssertEqual("ios", segmentClient.properties.last?["session_platform"] as? String)
+    XCTAssertEqual("native_ios", segmentClient.properties.last?["session_platform"] as? String)
   }
 
   func testSessionProperties_DeviceFormatAndClientPlatform_ForTvIdiom() {

@@ -1557,7 +1557,7 @@ public final class KSRAnalytics {
 
   private var clientPlatform: String {
     switch self.device.userInterfaceIdiom {
-    case .phone, .pad: return "ios"
+    case .phone, .pad: return "native_ios"
     case .tv: return "tvos"
     default: return "unspecified"
     }
