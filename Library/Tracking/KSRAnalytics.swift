@@ -1537,19 +1537,19 @@ public final class KSRAnalytics {
   private var deviceOrientation: String {
     switch self.device.orientation {
     case .faceDown:
-      return "Face Down"
+      return "face_down"
     case .faceUp:
-      return "Face Up"
+      return "face_up"
     case .landscapeLeft:
-      return "Landscape Left"
+      return "landscape_left"
     case .landscapeRight:
-      return "Landscape Right"
+      return "landscape_right"
     case .portrait:
-      return "Portrait"
+      return "portrait"
     case .portraitUpsideDown:
-      return "Portrait Upside Down"
+      return "portrait_upside_down"
     case .unknown:
-      return "Unknown"
+      return "unknown"
     @unknown default:
       fatalError()
     }

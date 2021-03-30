@@ -56,7 +56,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("1.2.3.4.5.6.7.8.9.0", dataLakeClientProperties?["session_app_release_version"] as? String)
     XCTAssertEqual("phone", dataLakeClientProperties?["session_device_type"] as? String)
     XCTAssertEqual("Apple", dataLakeClientProperties?["session_device_manufacturer"] as? String)
-    XCTAssertEqual("Portrait", dataLakeClientProperties?["session_device_orientation"] as? String)
+    XCTAssertEqual("portrait", dataLakeClientProperties?["session_device_orientation"] as? String)
     XCTAssertEqual("abc-123", dataLakeClientProperties?["session_device_distinct_id"] as? String)
 
     XCTAssertEqual("MockSystemName", dataLakeClientProperties?["session_os"] as? String)
@@ -73,7 +73,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("1.2.3.4.5.6.7.8.9.0", segmentClientProperties?["session_app_release_version"] as? String)
     XCTAssertEqual("phone", segmentClientProperties?["session_device_type"] as? String)
     XCTAssertEqual("Apple", segmentClientProperties?["session_device_manufacturer"] as? String)
-    XCTAssertEqual("Portrait", segmentClientProperties?["session_device_orientation"] as? String)
+    XCTAssertEqual("portrait", segmentClientProperties?["session_device_orientation"] as? String)
     XCTAssertEqual("abc-123", segmentClientProperties?["session_device_distinct_id"] as? String)
 
     XCTAssertEqual("MockSystemName", segmentClientProperties?["session_os"] as? String)
@@ -215,8 +215,8 @@ final class KSRAnalyticsTests: TestCase {
     let dataLakeProps = dataLakeClient.properties.last
     let segmentProps = segmentClient.properties.last
 
-    XCTAssertEqual("Face Down", dataLakeProps?["session_device_orientation"] as? String)
-    XCTAssertEqual("Face Down", segmentProps?["session_device_orientation"] as? String)
+    XCTAssertEqual("face_down", dataLakeProps?["session_device_orientation"] as? String)
+    XCTAssertEqual("face_down", segmentProps?["session_device_orientation"] as? String)
   }
 
   // MARK: - Project Properties Tests
