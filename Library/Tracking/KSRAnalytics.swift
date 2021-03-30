@@ -1586,11 +1586,11 @@ private func projectProperties(
   props["pid"] = project.id
   props["category"] = project.category.parentName
   props["category_id"] = project.category.parentId
-  props["percent_raised"] = project.stats.fundingProgress
+  props["percent_raised"] = project.stats.percentFunded
   props["state"] = project.state.rawValue
   props["current_pledge_amount"] = project.stats.pledged
-  props["current_amount_pledged_usd"] = project.stats.pledgedUsd
-  props["goal_usd"] = project.stats.goalUsd
+  props["current_amount_pledged_usd"] = project.stats.convertedPledgedAmount
+  props["goal_usd"] = project.stats.goalCurrentCurrency
   props["has_video"] = project.video != nil
   props["prelaunch_activated"] = project.prelaunchActivated
   props["rewards_count"] = project.rewards.count

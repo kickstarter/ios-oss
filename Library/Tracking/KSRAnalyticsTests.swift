@@ -255,8 +255,8 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(project.country.currencyCode, dataLakeClientProperties?["project_currency"] as? String)
     XCTAssertEqual(project.id, dataLakeClientProperties?["project_pid"] as? Int)
     XCTAssertEqual(
-      project.stats.fundingProgress,
-      dataLakeClientProperties?["project_percent_raised"] as? Float
+      project.stats.percentFunded,
+      dataLakeClientProperties?["project_percent_raised"] as? Int
     )
     XCTAssertEqual(project.category.name, dataLakeClientProperties?["project_subcategory"] as? String)
     XCTAssertEqual("Art", dataLakeClientProperties?["project_category"] as? String)
@@ -274,8 +274,8 @@ final class KSRAnalyticsTests: TestCase {
     )
     XCTAssertEqual("live", dataLakeClientProperties?["project_state"] as? String)
     XCTAssertEqual(project.stats.pledged, dataLakeClientProperties?["project_current_pledge_amount"] as? Int)
-    XCTAssertEqual(2_000, dataLakeClientProperties?["project_current_amount_pledged_usd"] as? Float)
-    XCTAssertEqual(4_000, dataLakeClientProperties?["project_goal_usd"] as? Float)
+    XCTAssertEqual(2_000, dataLakeClientProperties?["project_current_amount_pledged_usd"] as? Int)
+    XCTAssertEqual(3_000, dataLakeClientProperties?["project_goal_usd"] as? Int)
     XCTAssertEqual(false, dataLakeClientProperties?["project_has_add_ons"] as? Bool)
     XCTAssertEqual(true, dataLakeClientProperties?["project_has_video"] as? Bool)
     XCTAssertEqual(10, dataLakeClientProperties?["project_comments_count"] as? Int)
@@ -300,8 +300,8 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(project.country.currencyCode, segmentClientProperties?["project_currency"] as? String)
     XCTAssertEqual(project.id, segmentClientProperties?["project_pid"] as? Int)
     XCTAssertEqual(
-      project.stats.fundingProgress,
-      segmentClientProperties?["project_percent_raised"] as? Float
+      project.stats.percentFunded,
+      segmentClientProperties?["project_percent_raised"] as? Int
     )
     XCTAssertEqual(project.category.name, segmentClientProperties?["project_subcategory"] as? String)
     XCTAssertEqual("Art", segmentClientProperties?["project_category"] as? String)
@@ -319,8 +319,8 @@ final class KSRAnalyticsTests: TestCase {
     )
     XCTAssertEqual("live", segmentClientProperties?["project_state"] as? String)
     XCTAssertEqual(project.stats.pledged, segmentClientProperties?["project_current_pledge_amount"] as? Int)
-    XCTAssertEqual(2_000, segmentClientProperties?["project_current_amount_pledged_usd"] as? Float)
-    XCTAssertEqual(4_000, segmentClientProperties?["project_goal_usd"] as? Float)
+    XCTAssertEqual(2_000, segmentClientProperties?["project_current_amount_pledged_usd"] as? Int)
+    XCTAssertEqual(3_000, segmentClientProperties?["project_goal_usd"] as? Int)
     XCTAssertEqual(false, segmentClientProperties?["project_has_add_ons"] as? Bool)
     XCTAssertEqual(true, segmentClientProperties?["project_has_video"] as? Bool)
     XCTAssertEqual(10, segmentClientProperties?["project_comments_count"] as? Int)
@@ -2331,7 +2331,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(10, props?["project_backers_count"] as? Int)
     XCTAssertEqual("USD", props?["project_currency"] as? String)
     XCTAssertEqual(1, props?["project_pid"] as? Int)
-    XCTAssertEqual(0.50, props?["project_percent_raised"] as? Float)
+    XCTAssertEqual(50, props?["project_percent_raised"] as? Int)
     XCTAssertEqual("Art", props?["project_subcategory"] as? String)
     XCTAssertEqual(1, props?["project_creator_uid"] as? Int)
     XCTAssertEqual(24 * 15, props?["project_hours_remaining"] as? Int)
@@ -2340,8 +2340,8 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("2016-09-16T22:35:15Z", props?["project_launched_at"] as? String)
     XCTAssertEqual("live", props?["project_state"] as? String)
     XCTAssertEqual(1_000, props?["project_current_pledge_amount"] as? Int)
-    XCTAssertEqual(1_000, props?["project_current_amount_pledged_usd"] as? Float)
-    XCTAssertEqual(2_000, props?["project_goal_usd"] as? Float)
+    XCTAssertEqual(2_000, props?["project_current_amount_pledged_usd"] as? Int)
+    XCTAssertEqual(3_000, props?["project_goal_usd"] as? Int)
     XCTAssertEqual(true, props?["project_has_video"] as? Bool)
     XCTAssertEqual(10, props?["project_comments_count"] as? Int)
     XCTAssertEqual(0, props?["project_rewards_count"] as? Int)
@@ -2354,6 +2354,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertNil(props?["project_user_has_starred"])
     XCTAssertNil(props?["project_category"] as? String)
     XCTAssertNil(props?["project_prelaunch_activated"] as? Bool)
+    XCTAssertEqual(false, props?["project_has_add_ons"] as? Bool)
   }
 
   /*
