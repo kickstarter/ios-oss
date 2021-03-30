@@ -1514,7 +1514,7 @@ public final class KSRAnalytics {
 
     props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
     props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
-    props["os"] = self.device.systemName
+    props["os"] = "ios"
     props["os_version"] = self.device.systemVersion
     props["platform"] = self.clientPlatform
     props["screen_width"] = UInt(self.screen.bounds.width)

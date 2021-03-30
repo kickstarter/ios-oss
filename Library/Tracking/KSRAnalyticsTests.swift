@@ -59,7 +59,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("portrait", dataLakeClientProperties?["session_device_orientation"] as? String)
     XCTAssertEqual("abc-123", dataLakeClientProperties?["session_device_distinct_id"] as? String)
 
-    XCTAssertEqual("MockSystemName", dataLakeClientProperties?["session_os"] as? String)
+    XCTAssertEqual("ios", dataLakeClientProperties?["session_os"] as? String)
     XCTAssertEqual("MockSystemVersion", dataLakeClientProperties?["session_os_version"] as? String)
     XCTAssertEqual(UInt(screen.bounds.width), dataLakeClientProperties?["session_screen_width"] as? UInt)
     XCTAssertEqual(false, dataLakeClientProperties?["session_user_is_logged_in"] as? Bool)
@@ -76,7 +76,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("portrait", segmentClientProperties?["session_device_orientation"] as? String)
     XCTAssertEqual("abc-123", segmentClientProperties?["session_device_distinct_id"] as? String)
 
-    XCTAssertEqual("MockSystemName", segmentClientProperties?["session_os"] as? String)
+    XCTAssertEqual("ios", segmentClientProperties?["session_os"] as? String)
     XCTAssertEqual("MockSystemVersion", segmentClientProperties?["session_os_version"] as? String)
     XCTAssertEqual(UInt(screen.bounds.width), segmentClientProperties?["session_screen_width"] as? UInt)
     XCTAssertEqual(false, segmentClientProperties?["session_user_is_logged_in"] as? Bool)
