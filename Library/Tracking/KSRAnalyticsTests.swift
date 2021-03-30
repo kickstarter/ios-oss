@@ -202,7 +202,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("tvos", segmentClient.properties.last?["session_platform"] as? String)
   }
 
-  func testSessionProperties_DeviceOrientation() {
+  func testSessionProperties_DeviceOrientation_FaceDown() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let device = MockDevice(orientation: .faceDown)
@@ -219,6 +219,120 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertEqual("face_down", dataLakeProps?["session_device_orientation"] as? String)
     XCTAssertEqual("face_down", segmentProps?["session_device_orientation"] as? String)
+  }
+
+  func testSessionProperties_DeviceOrientation_FaceUp() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let device = MockDevice(orientation: .faceUp)
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      device: device,
+      segmentClient: segmentClient
+    )
+
+    ksrAnalytics.trackTabBarClicked(.activity)
+
+    let dataLakeProps = dataLakeClient.properties.last
+    let segmentProps = segmentClient.properties.last
+
+    XCTAssertEqual("face_up", dataLakeProps?["session_device_orientation"] as? String)
+    XCTAssertEqual("face_up", segmentProps?["session_device_orientation"] as? String)
+  }
+
+  func testSessionProperties_DeviceOrientation_LandscapeLeft() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let device = MockDevice(orientation: .landscapeLeft)
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      device: device,
+      segmentClient: segmentClient
+    )
+
+    ksrAnalytics.trackTabBarClicked(.activity)
+
+    let dataLakeProps = dataLakeClient.properties.last
+    let segmentProps = segmentClient.properties.last
+
+    XCTAssertEqual("landscape_left", dataLakeProps?["session_device_orientation"] as? String)
+    XCTAssertEqual("landscape_left", segmentProps?["session_device_orientation"] as? String)
+  }
+
+  func testSessionProperties_DeviceOrientation_LandscapeRight() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let device = MockDevice(orientation: .landscapeRight)
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      device: device,
+      segmentClient: segmentClient
+    )
+
+    ksrAnalytics.trackTabBarClicked(.activity)
+
+    let dataLakeProps = dataLakeClient.properties.last
+    let segmentProps = segmentClient.properties.last
+
+    XCTAssertEqual("landscape_right", dataLakeProps?["session_device_orientation"] as? String)
+    XCTAssertEqual("landscape_right", segmentProps?["session_device_orientation"] as? String)
+  }
+
+  func testSessionProperties_DeviceOrientation_Portrait() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let device = MockDevice(orientation: .portrait)
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      device: device,
+      segmentClient: segmentClient
+    )
+
+    ksrAnalytics.trackTabBarClicked(.activity)
+
+    let dataLakeProps = dataLakeClient.properties.last
+    let segmentProps = segmentClient.properties.last
+
+    XCTAssertEqual("portrait", dataLakeProps?["session_device_orientation"] as? String)
+    XCTAssertEqual("portrait", segmentProps?["session_device_orientation"] as? String)
+  }
+
+  func testSessionProperties_DeviceOrientation_PortraitUpsideDown() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let device = MockDevice(orientation: .portraitUpsideDown)
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      device: device,
+      segmentClient: segmentClient
+    )
+
+    ksrAnalytics.trackTabBarClicked(.activity)
+
+    let dataLakeProps = dataLakeClient.properties.last
+    let segmentProps = segmentClient.properties.last
+
+    XCTAssertEqual("portrait_upside_down", dataLakeProps?["session_device_orientation"] as? String)
+    XCTAssertEqual("portrait_upside_down", segmentProps?["session_device_orientation"] as? String)
+  }
+
+  func testSessionProperties_DeviceOrientation_Unknown() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let device = MockDevice(orientation: .unknown)
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      device: device,
+      segmentClient: segmentClient
+    )
+
+    ksrAnalytics.trackTabBarClicked(.activity)
+
+    let dataLakeProps = dataLakeClient.properties.last
+    let segmentProps = segmentClient.properties.last
+
+    XCTAssertEqual("unknown", dataLakeProps?["session_device_orientation"] as? String)
+    XCTAssertEqual("unknown", segmentProps?["session_device_orientation"] as? String)
   }
 
   // MARK: - Project Properties Tests
@@ -2300,6 +2414,12 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(KSRAnalytics.LocationContext.discoverOverlay.trackingString, "discover_overlay")
     XCTAssertEqual(KSRAnalytics.LocationContext.globalNav.trackingString, "global_nav")
     XCTAssertEqual(KSRAnalytics.LocationContext.recommendations.trackingString, "recommendations")
+  }
+
+  func testPaymentTypeTrackingStrings() {
+    XCTAssertEqual(PaymentType.applePay.trackingString, "apple_pay")
+    XCTAssertEqual(PaymentType.googlePay.trackingString, nil)
+    XCTAssertEqual(PaymentType.creditCard.trackingString, "credit_card")
   }
 
   /*
