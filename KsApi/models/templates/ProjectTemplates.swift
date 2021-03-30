@@ -15,7 +15,7 @@ extension Project {
     blurb: "A fun project.",
     category: .template,
     country: .us,
-    creator: User.template |> \.stats.createdProjectsCount .~ 1,
+    creator: User.template |> \.stats.createdProjectsCount .~ 2,
     memberData: Project.MemberData(
       lastUpdatePublishedAt: nil,
       permissions: [],
