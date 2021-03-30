@@ -286,16 +286,11 @@ final class KSRAnalyticsTests: TestCase {
       dataLakeClientProperties?["project_tags"] as? String
     )
     XCTAssertEqual(1, dataLakeClientProperties?["project_updates_count"] as? Int)
+    XCTAssertEqual(26, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertNil(dataLakeClientProperties?["project_user_is_project_creator"])
     XCTAssertNil(dataLakeClientProperties?["project_user_is_backer"])
     XCTAssertNil(dataLakeClientProperties?["project_user_has_starred"])
-
-<<<<<<< HEAD
-    XCTAssertEqual(25, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
-=======
-    XCTAssertEqual(27, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
->>>>>>> 3c6cc3cffdc6388076f1cf84959c2f5994555dc7
 
     XCTAssertEqual("discovery", dataLakeClientProperties?["session_ref_tag"] as? String)
 
@@ -332,16 +327,11 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(1, segmentClientProperties?["project_rewards_count"] as? Int)
     XCTAssertEqual(project.tags?.joined(separator: ", "), segmentClientProperties?["project_tags"] as? String)
     XCTAssertEqual(1, segmentClientProperties?["project_updates_count"] as? Int)
+    XCTAssertEqual(26, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
     XCTAssertNil(segmentClientProperties?["project_user_is_project_creator"])
     XCTAssertNil(segmentClientProperties?["project_user_is_backer"])
     XCTAssertNil(segmentClientProperties?["project_user_has_starred"])
-
-<<<<<<< HEAD
-    XCTAssertEqual(25, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
-=======
-    XCTAssertEqual(27, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
->>>>>>> 3c6cc3cffdc6388076f1cf84959c2f5994555dc7
 
     XCTAssertEqual("discovery", segmentClientProperties?["session_ref_tag"] as? String)
   }
