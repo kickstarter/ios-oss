@@ -508,11 +508,11 @@ public final class KSRAnalytics {
     let addOnsCountUnique: Int?
     let addOnsMinimumUsd: Double
     let bonusAmountInUsd: Double?
-    let checkoutId: Int?
+    let checkoutId: String?
     let estimatedDelivery: TimeInterval?
     let paymentType: String?
     let revenueInUsd: Double
-    let rewardId: Int
+    let rewardId: String
     let rewardMinimumUsd: Double
     let rewardTitle: String?
     let shippingEnabled: Bool

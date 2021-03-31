@@ -363,11 +363,11 @@ final class ThanksViewModelTests: TestCase {
       addOnsCountUnique: 1,
       addOnsMinimumUsd: 8.00,
       bonusAmountInUsd: 10.00,
-      checkoutId: 1,
+      checkoutId: "1",
       estimatedDelivery: 12_345_678,
       paymentType: "CREDIT_CARD",
       revenueInUsd: 20.00,
-      rewardId: 2,
+      rewardId: "2",
       rewardMinimumUsd: 5.00,
       rewardTitle: "SUPER reward",
       shippingEnabled: true,
@@ -398,7 +398,7 @@ final class ThanksViewModelTests: TestCase {
     XCTAssertEqual("CREDIT_CARD", dataLakeTrackingClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("SUPER reward", dataLakeTrackingClientProps?["checkout_reward_title"] as? String)
     XCTAssertEqual(5.00, dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? Double)
-    XCTAssertEqual(2, dataLakeTrackingClientProps?["checkout_reward_id"] as? Int)
+    XCTAssertEqual("2", dataLakeTrackingClientProps?["checkout_reward_id"] as? String)
     XCTAssertEqual(20.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Double)
     XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_shipping_enabled"] as? Bool)
@@ -419,7 +419,7 @@ final class ThanksViewModelTests: TestCase {
     XCTAssertEqual("CREDIT_CARD", segmentClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("SUPER reward", segmentClientProps?["checkout_reward_title"] as? String)
     XCTAssertEqual(5.00, segmentClientProps?["checkout_reward_minimum_usd"] as? Double)
-    XCTAssertEqual(2, segmentClientProps?["checkout_reward_id"] as? Int)
+    XCTAssertEqual("2", segmentClientProps?["checkout_reward_id"] as? String)
     XCTAssertEqual(20.00, segmentClientProps?["checkout_amount_total_usd"] as? Double)
     XCTAssertEqual(true, segmentClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["checkout_reward_shipping_enabled"] as? Bool)

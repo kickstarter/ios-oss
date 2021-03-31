@@ -514,7 +514,7 @@ public func checkoutProperties(
   additionalPledgeAmount: Double,
   pledgeTotal: Double,
   shippingTotal: Double,
-  checkoutId: Int? = nil,
+  checkoutId: String? = nil,
   isApplePay: Bool?
 ) -> KSRAnalytics.CheckoutPropertiesData {
   let staticUsdRate = Double(project.stats.staticUsdRate)
@@ -540,7 +540,7 @@ public func checkoutProperties(
 
   let shippingAmount: Double? = baseReward.shipping.enabled ? shippingTotal : nil
 
-  let rewardId = baseReward.id
+  let rewardId = String(baseReward.id)
   let estimatedDelivery = baseReward.estimatedDeliveryOn
 
   var paymentType: String?
