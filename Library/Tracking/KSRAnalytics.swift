@@ -1499,25 +1499,27 @@ public final class KSRAnalytics {
 
     props["apple_pay_capable"] = AppEnvironment.current.applePayCapabilities.applePayCapable()
     props["client"] = "native"
+    props["variants_optimizely"] = self.config?.abExperimentsArray.sorted()
     props["country"] = self.config?.countryCode
-    props["current_variants"] = self.config?.abExperimentsArray.sorted()
     props["display_language"] = AppEnvironment.current.language.rawValue
-
     props["device_type"] = self.device.deviceType
     props["device_manufacturer"] = "Apple"
     props["device_model"] = KSRAnalytics.deviceModel
     props["device_orientation"] = self.deviceOrientation
     props["device_distinct_id"] = self.distinctId
 
-    props["app_build_number"] = self.bundle.infoDictionary?["CFBundleVersion"]
+    if let appBuildNumber = self.bundle.infoDictionary?["CFBundleVersion"] as? String {
+      props["app_build_number"] = Int(appBuildNumber)
+    }
+
     props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
     props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
-    props["os"] = self.device.systemName
+    props["os"] = "ios"
     props["os_version"] = self.device.systemVersion
     props["platform"] = self.clientPlatform
     props["screen_width"] = UInt(self.screen.bounds.width)
     props["user_agent"] = Service.userAgent
-    props["user_logged_in"] = self.loggedInUser != nil
+    props["user_is_logged_in"] = self.loggedInUser != nil
 
     props["ref_tag"] = refTag
 
@@ -1535,19 +1537,19 @@ public final class KSRAnalytics {
   private var deviceOrientation: String {
     switch self.device.orientation {
     case .faceDown:
-      return "Face Down"
+      return "face_down"
     case .faceUp:
-      return "Face Up"
+      return "face_up"
     case .landscapeLeft:
-      return "Landscape Left"
+      return "landscape_left"
     case .landscapeRight:
-      return "Landscape Right"
+      return "landscape_right"
     case .portrait:
-      return "Portrait"
+      return "portrait"
     case .portraitUpsideDown:
-      return "Portrait Upside Down"
+      return "portrait_upside_down"
     case .unknown:
-      return "Unknown"
+      return "unknown"
     @unknown default:
       fatalError()
     }
@@ -1555,7 +1557,7 @@ public final class KSRAnalytics {
 
   private var clientPlatform: String {
     switch self.device.userInterfaceIdiom {
-    case .phone, .pad: return "ios"
+    case .phone, .pad: return "native_ios"
     case .tv: return "tvos"
     default: return "unspecified"
     }
@@ -1578,12 +1580,12 @@ private func projectProperties(
   props["country"] = project.country.countryCode
   props["comments_count"] = project.stats.commentsCount ?? 0
   props["currency"] = project.country.currencyCode
-  props["creator_uid"] = project.creator.id
+  props["creator_uid"] = String(project.creator.id)
   props["deadline"] = project.dates.deadline.toISO8601DateTimeString()
   props["has_add_ons"] = project.hasAddOns
   props["launched_at"] = project.dates.launchedAt.toISO8601DateTimeString()
   props["name"] = project.name
-  props["pid"] = project.id
+  props["pid"] = String(project.id)
   props["category"] = project.category.parentName
   props["category_id"] = project.category.parentId
   props["percent_raised"] = project.stats.percentFunded
@@ -1593,7 +1595,7 @@ private func projectProperties(
   props["goal_usd"] = project.stats.goalCurrentCurrency
   props["has_video"] = project.video != nil
   props["prelaunch_activated"] = project.prelaunchActivated
-  props["rewards_count"] = project.rewards.count
+  props["rewards_count"] = project.rewards.filter { $0 != .noReward }.count
   props["tags"] = project.tags?.joined(separator: ", ")
   props["updates_count"] = project.stats.updatesCount
   props["is_repeat_creator"] = project.creator.isRepeatCreator ?? false
@@ -1605,7 +1607,11 @@ private func projectProperties(
   var userProperties: [String: Any] = [:]
   userProperties["has_watched"] = project.personalization.isStarred
   userProperties["is_backer"] = project.personalization.isBacking
-  userProperties["is_project_creator"] = project.creator.id == loggedInUser?.id
+
+  // Only send this property if the user is logged in
+  if let loggedInUser = loggedInUser {
+    userProperties["is_project_creator"] = project.creator.id == loggedInUser.id
+  }
 
   let userProps = userProperties.prefixedKeys("user_")
 

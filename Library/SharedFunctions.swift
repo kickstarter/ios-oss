@@ -551,8 +551,8 @@ public func checkoutProperties(
   var paymentType: String?
   if let isApplePay = isApplePay {
     paymentType = isApplePay
-      ? PaymentType.applePay.rawValue
-      : PaymentType.creditCard.rawValue
+      ? PaymentType.applePay.trackingString
+      : PaymentType.creditCard.trackingString
   }
 
   let shippingEnabled = baseReward.shipping.enabled
