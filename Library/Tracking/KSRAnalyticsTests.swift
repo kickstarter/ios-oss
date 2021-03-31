@@ -2491,11 +2491,11 @@ final class KSRAnalyticsTests: TestCase {
   private func assertCheckoutProperties(_ props: [String: Any]?) {
     XCTAssertEqual(2, props?["checkout_add_ons_count_total"] as? Int)
     XCTAssertEqual(1, props?["checkout_add_ons_count_unique"] as? Int)
-    XCTAssertEqual("8.00", props?["checkout_add_ons_minimum_usd"] as? String)
-    XCTAssertEqual("10.00", props?["checkout_bonus_amount_usd"] as? String)
+    XCTAssertEqual(8.00, props?["checkout_add_ons_minimum_usd"] as? Double)
+    XCTAssertEqual(10.00, props?["checkout_bonus_amount_usd"] as? Double)
     XCTAssertEqual("CREDIT_CARD", props?["checkout_payment_type"] as? String)
     XCTAssertEqual("SUPER reward", props?["checkout_reward_title"] as? String)
-    XCTAssertEqual("5.00", props?["checkout_reward_minimum_usd"] as? String)
+    XCTAssertEqual(5.00, props?["checkout_reward_minimum_usd"] as? Double)
     XCTAssertEqual(2, props?["checkout_reward_id"] as? Int)
     XCTAssertEqual(20.00, props?["checkout_amount_total_usd"] as? Double)
     XCTAssertEqual(true, props?["checkout_reward_is_limited_quantity"] as? Bool)
@@ -2503,7 +2503,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(true, props?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual("restricted", props?["checkout_reward_shipping_preference"] as? String)
     XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
-    XCTAssertEqual("10.00", props?["checkout_shipping_amount_usd"] as? String)
+    XCTAssertEqual(10.00, props?["checkout_shipping_amount_usd"] as? Double)
     XCTAssertEqual(
       "1970-05-23T21:21:18Z",
       props?["checkout_reward_estimated_delivery_on"] as? String
@@ -2533,17 +2533,17 @@ extension KSRAnalytics.CheckoutPropertiesData {
   static let template = KSRAnalytics.CheckoutPropertiesData(
     addOnsCountTotal: 2,
     addOnsCountUnique: 1,
-    addOnsMinimumUsd: "8.00",
-    bonusAmountInUsd: "10.00",
+    addOnsMinimumUsd: 8.00,
+    bonusAmountInUsd: 10.00,
     checkoutId: 1,
     estimatedDelivery: 12_345_678,
     paymentType: "CREDIT_CARD",
     revenueInUsd: 20.00,
     rewardId: 2,
-    rewardMinimumUsd: "5.00",
+    rewardMinimumUsd: 5.00,
     rewardTitle: "SUPER reward",
     shippingEnabled: true,
-    shippingAmountUsd: "10.00",
+    shippingAmountUsd: 10.00,
     userHasStoredApplePayCard: true
   )
 }

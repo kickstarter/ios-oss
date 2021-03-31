@@ -506,17 +506,17 @@ public final class KSRAnalytics {
   public struct CheckoutPropertiesData: Equatable {
     let addOnsCountTotal: Int?
     let addOnsCountUnique: Int?
-    let addOnsMinimumUsd: String?
-    let bonusAmountInUsd: String
+    let addOnsMinimumUsd: Double
+    let bonusAmountInUsd: Double?
     let checkoutId: Int?
     let estimatedDelivery: TimeInterval?
     let paymentType: String?
     let revenueInUsd: Double
     let rewardId: Int
-    let rewardMinimumUsd: String
+    let rewardMinimumUsd: Double
     let rewardTitle: String?
     let shippingEnabled: Bool
-    let shippingAmountUsd: String?
+    let shippingAmountUsd: Double?
     let userHasStoredApplePayCard: Bool
   }
 

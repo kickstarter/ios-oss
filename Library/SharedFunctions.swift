@@ -522,8 +522,7 @@ public func checkoutProperties(
   // Two decimal places to represent cent values
   let pledgeTotalUsd = rounded(pledgeTotal.multiplyingCurrency(staticUsdRate), places: 2)
 
-  let bonusAmountUsd = additionalPledgeAmount
-    .multiplyingCurrency(staticUsdRate)
+  let bonusAmountUsd = rounded(additionalPledgeAmount.multiplyingCurrency(staticUsdRate), places: 2)
 
   let addOnRewards = addOnRewards
     .filter { reward in reward.id != baseReward.id }
@@ -535,15 +534,11 @@ public func checkoutProperties(
 
   let addOnsCountTotal = addOnRewards.map(\.id).count
   let addOnsCountUnique = Set(addOnRewards.map(\.id)).count
-  let addOnsMinimumUsd = Format.decimalCurrency(
-    for: addOnRewards
-      .reduce(0.0) { accum, addOn in accum.addingCurrency(addOn.minimum) }
-      .multiplyingCurrency(staticUsdRate)
-  )
+  let addOnsMinimumUsd = addOnRewards
+    .reduce(0.0) { accum, addOn in accum.addingCurrency(addOn.minimum) }
+    .multiplyingCurrency(staticUsdRate)
 
   let shippingAmount: Double? = baseReward.shipping.enabled ? shippingTotal : nil
-
-  let bonusAmountInUsd = Format.decimalCurrency(for: bonusAmountUsd)
 
   let rewardId = baseReward.id
   let estimatedDelivery = baseReward.estimatedDeliveryOn
@@ -555,11 +550,10 @@ public func checkoutProperties(
       : PaymentType.creditCard.trackingString
   }
 
-  let shippingEnabled = baseReward.shipping.enabled
-  let shippingAmountUsd = (shippingAmount?.multiplyingCurrency(staticUsdRate))
-    .flatMap(Format.decimalCurrency)
   let rewardTitle = baseReward.title
-  let rewardMinimumUsd = Format.decimalCurrency(for: baseReward.minimum.multiplyingCurrency(staticUsdRate))
+  let rewardMinimumUsd = rounded(baseReward.minimum.multiplyingCurrency(staticUsdRate), places: 2)
+  let shippingEnabled = baseReward.shipping.enabled
+  let shippingAmountUsd = shippingAmount?.multiplyingCurrency(staticUsdRate)
 
   let userHasEligibleStoredApplePayCard = AppEnvironment.current
     .applePayCapabilities
@@ -569,7 +563,7 @@ public func checkoutProperties(
     addOnsCountTotal: addOnsCountTotal,
     addOnsCountUnique: addOnsCountUnique,
     addOnsMinimumUsd: addOnsMinimumUsd,
-    bonusAmountInUsd: bonusAmountInUsd,
+    bonusAmountInUsd: bonusAmountUsd,
     checkoutId: checkoutId,
     estimatedDelivery: estimatedDelivery,
     paymentType: paymentType,
