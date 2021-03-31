@@ -162,6 +162,19 @@ internal final class BackerDashboardViewModelTests: TestCase {
       self.pinSelectedIndicatorToTab.assertValues([.backed, .saved])
       self.pinSelectedIndicatorToTabAnimated.assertValues([false, true])
       XCTAssertEqual(.saved, self.vm.outputs.currentSelectedTab)
+      XCTAssertEqual("discover", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
+      XCTAssertEqual("watched", self.dataLakeTrackingClient.properties.last?["context_type"] as? String)
+      XCTAssertEqual(
+        "account_menu",
+        self.dataLakeTrackingClient.properties.last?["context_location"] as? String
+      )
+
+      XCTAssertEqual("discover", self.segmentTrackingClient.properties.last?["context_page"] as? String)
+      XCTAssertEqual("watched", self.segmentTrackingClient.properties.last?["context_type"] as? String)
+      XCTAssertEqual(
+        "account_menu",
+        self.segmentTrackingClient.properties.last?["context_location"] as? String
+      )
 
       self.vm.inputs.backedProjectsButtonTapped()
 
@@ -188,6 +201,19 @@ internal final class BackerDashboardViewModelTests: TestCase {
       self.pinSelectedIndicatorToTab.assertValues([.backed, .saved, .backed, .saved])
       self.pinSelectedIndicatorToTabAnimated.assertValues([false, true, true, true])
       XCTAssertEqual(.saved, self.vm.outputs.currentSelectedTab)
+      XCTAssertEqual("discover", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
+      XCTAssertEqual("watched", self.dataLakeTrackingClient.properties.last?["context_type"] as? String)
+      XCTAssertEqual(
+        "account_menu",
+        self.dataLakeTrackingClient.properties.last?["context_location"] as? String
+      )
+
+      XCTAssertEqual("discover", self.segmentTrackingClient.properties.last?["context_page"] as? String)
+      XCTAssertEqual("watched", self.segmentTrackingClient.properties.last?["context_type"] as? String)
+      XCTAssertEqual(
+        "account_menu",
+        self.segmentTrackingClient.properties.last?["context_location"] as? String
+      )
     }
   }
 

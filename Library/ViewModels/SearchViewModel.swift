@@ -133,13 +133,14 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
           }
       }
 
-    let (paginatedProjects, isLoading, page) = paginate(
+    let (paginatedProjects, isLoading, page, stats) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
       skipRepeats: false,
       valuesFromEnvelope: { $0.projects },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
+      statsFromEnvelope: { $0.stats.count },
       requestFromParams: requestFromParamsWithDebounce,
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) }
     )
@@ -185,10 +186,22 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
-    // KSRAnalytics
+    // Tracking
 
-    viewWillAppearNotAnimated
-      .observeValues { AppEnvironment.current.ksrAnalytics.trackProjectSearchView() }
+    // Ensure an initial value is emitted for `stats` when view first appears
+    let searchResults = Signal.merge(
+      stats,
+      viewWillAppearNotAnimated.mapConst(0).take(first: 1)
+    )
+
+    Signal.combineLatest(query, searchResults)
+      .takeWhen(viewWillAppearNotAnimated)
+      .observeValues { query, searchResults in
+        let results = query.isEmpty ? 0 : searchResults
+        let params = .defaults |> DiscoveryParams.lens.query .~ query
+        AppEnvironment.current.ksrAnalytics
+          .trackProjectSearchView(params: params, results: results)
+      }
 
     let hasResults = Signal.combineLatest(paginatedProjects, isLoading)
       .filter(second >>> isFalse)
@@ -198,6 +211,16 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
     let firstPageResults = Signal.zip(hasResults, page)
       .filter { _, page in page == 1 }
       .map(first)
+
+    self.goToProject = Signal.combineLatest(self.projects, query)
+      .takePairWhen(self.tappedProjectProperty.signal.skipNil())
+      .map { projectsAndQuery, tappedProject in
+        let (projects, query) = projectsAndQuery
+
+        return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
+      }
+
+    // Tracking
 
     Signal.combineLatest(query, requestFirstPageWith)
       .takePairWhen(firstPageResults)
@@ -212,12 +235,15 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         )
       }
 
-    self.goToProject = Signal.combineLatest(self.projects, query)
-      .takePairWhen(self.tappedProjectProperty.signal.skipNil())
-      .map { projectsAndQuery, tappedProject in
-        let (projects, query) = projectsAndQuery
+    Signal.combineLatest(self.tappedProjectProperty.signal, requestFirstPageWith)
+      .observeValues { project, params in
+        guard let project = project else { return }
 
-        return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
+        AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
+          page: .search,
+          project: project,
+          params: params
+        )
       }
   }
 

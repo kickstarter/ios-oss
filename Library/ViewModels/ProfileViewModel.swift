@@ -73,7 +73,7 @@ public final class ProfileViewModel: ProfileViewModelType, ProfileViewModelInput
     .ignoreValues()
 
     let isLoading: Signal<Bool, Never>
-    (self.backedProjects, isLoading, _) = paginate(
+    (self.backedProjects, isLoading, _, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: requestNextPageWhen,
       clearOnNewRequest: false,

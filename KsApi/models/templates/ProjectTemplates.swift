@@ -15,7 +15,7 @@ extension Project {
     blurb: "A fun project.",
     category: .template,
     country: .us,
-    creator: User.template |> \.stats.createdProjectsCount .~ 1,
+    creator: User.template |> \.stats.createdProjectsCount .~ 2,
     memberData: Project.MemberData(
       lastUpdatePublishedAt: nil,
       permissions: [],
@@ -46,6 +46,7 @@ extension Project {
     staffPick: false,
     state: .live,
     stats: .template,
+    tags: ["Action & Adventure", "Adaptation", "Board Games"],
     urls: Project.UrlsEnvelope(
       web: Project.UrlsEnvelope.WebEnvelope(
         project: "https://www.kickstarter.com/projects/creator/a-fun-project",

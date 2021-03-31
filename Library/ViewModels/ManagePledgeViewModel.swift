@@ -327,6 +327,29 @@ public final class ManagePledgeViewModel:
       .observeValues {
         AppEnvironment.current.ksrAnalytics.trackFixPledgeButtonClicked(project: $0.0)
       }
+
+    Signal.zip(self.loadProjectAndRewardsIntoDataSource, backing)
+      .map(unpack)
+      .observeValues { project, rewards, backing in
+        guard let reward = backing.reward else { return }
+
+        let checkoutData = checkoutProperties(
+          from: project,
+          baseReward: reward,
+          addOnRewards: rewards,
+          selectedQuantities: selectedRewardQuantities(in: backing),
+          additionalPledgeAmount: backing.bonusAmount,
+          pledgeTotal: backing.amount,
+          shippingTotal: Double(backing.shippingAmount ?? 0),
+          isApplePay: backing.paymentSource?.paymentType == .applePay
+        )
+
+        AppEnvironment.current.ksrAnalytics.trackManagePledgePageViewed(
+          project: project,
+          reward: reward,
+          checkoutData: checkoutData
+        )
+      }
   }
 
   private let (beginRefreshSignal, beginRefreshObserver) = Signal<Void, Never>.pipe()

@@ -491,6 +491,12 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.readMoreButtonTapped()
 
     self.notifyDelegateToGoToCampaignWithProject.assertValues([project])
+
+    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
+
+    XCTAssertEqual("campaign_details", self.dataLakeTrackingClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("campaign_details", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
   }
 
   func testNotifyDelegateToGoToCreator() {
@@ -506,6 +512,12 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.inputs.creatorButtonTapped()
 
     self.notifyDelegateToGoToCreator.assertValues([project])
+
+    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
+
+    XCTAssertEqual("creator_details", self.dataLakeTrackingClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("creator_details", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
   }
 
   func testTrackingCampaignDetailsButtonTapped_NonLiveProject_LoggedIn_Backed() {
@@ -521,51 +533,20 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(value: (project, .discovery))
       self.vm.inputs.awakeFromNib()
 
-      XCTAssertEqual(self.dataLakeTrackingClient.events, [])
-      XCTAssertEqual(self.segmentTrackingClient.events, [])
+      XCTAssertEqual(self.dataLakeTrackingClient.events, ["Page Viewed"])
+      XCTAssertEqual(self.segmentTrackingClient.events, ["Page Viewed"])
 
       self.vm.inputs.readMoreButtonTapped()
 
       XCTAssertEqual(
         self.dataLakeTrackingClient.events,
-        ["Page Viewed"],
+        ["Page Viewed", "CTA Clicked"],
         "Event is tracked"
       )
       XCTAssertEqual(
         self.segmentTrackingClient.events,
-        ["Page Viewed"],
+        ["Page Viewed", "CTA Clicked"],
         "Event is tracked"
-      )
-
-      XCTAssertEqual(
-        self.dataLakeTrackingClient.properties(forKey: "optimizely_api_key"),
-        [nil],
-        "Event does not include Optimizely properties"
-      )
-      XCTAssertEqual(
-        self.dataLakeTrackingClient.properties(forKey: "optimizely_environment"),
-        [nil],
-        "Event does not include Optimizely properties"
-      )
-      XCTAssertEqual(
-        self.dataLakeTrackingClient.properties(forKey: "optimizely_experiments"),
-        [nil],
-        "Event does not include Optimizely properties"
-      )
-      XCTAssertEqual(
-        self.segmentTrackingClient.properties(forKey: "optimizely_api_key"),
-        [nil],
-        "Event does not include Optimizely properties"
-      )
-      XCTAssertEqual(
-        self.segmentTrackingClient.properties(forKey: "optimizely_environment"),
-        [nil],
-        "Event does not include Optimizely properties"
-      )
-      XCTAssertEqual(
-        self.segmentTrackingClient.properties(forKey: "optimizely_experiments"),
-        [nil],
-        "Event does not include Optimizely properties"
       )
     }
   }
@@ -656,24 +637,15 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(value: (project, .discovery))
       self.vm.inputs.awakeFromNib()
 
-      XCTAssertEqual(self.dataLakeTrackingClient.events, [])
-      XCTAssertEqual(self.segmentTrackingClient.events, [])
-
-      self.vm.inputs.readMoreButtonTapped()
-
-      self.notifyDelegateToGoToCampaignWithProject.assertValues([project])
-
       XCTAssertEqual(self.dataLakeTrackingClient.events, ["Page Viewed"])
       XCTAssertEqual(self.segmentTrackingClient.events, ["Page Viewed"])
 
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_page"), ["project"])
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_section"), ["campaign"])
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
-      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "session_referrer_credit"), ["discovery"])
       XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_page"), ["project"])
       XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_section"), ["campaign"])
       XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
-      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "session_referrer_credit"), ["discovery"])
 
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "project_subcategory"), ["Art"])
       XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "project_category"), [nil])

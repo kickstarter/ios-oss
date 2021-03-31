@@ -15,4 +15,15 @@ public enum PaymentType: String, Decodable {
       return nil
     }
   }
+
+  public var trackingString: String? {
+    switch self {
+    case .applePay:
+      return "apple_pay"
+    case .googlePay:
+      return nil
+    case .creditCard:
+      return "credit_card"
+    }
+  }
 }

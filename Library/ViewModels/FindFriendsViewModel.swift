@@ -95,7 +95,7 @@ public final class FindFriendsViewModel: FindFriendsViewModelType, FindFriendsVi
       .filter(isTrue)
       .ignoreValues()
 
-    let (friends, isLoading, _) = paginate(
+    let (friends, isLoading, _, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: requestNextPageWhen,
       clearOnNewRequest: true,

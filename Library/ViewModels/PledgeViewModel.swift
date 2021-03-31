@@ -826,10 +826,7 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     // Tracking
 
     trackCheckoutPageViewData
-      .observeValues { project, baseReward, rewards, selectedQuantities, refTag, additionalPledgeAmount, pledgeTotal, shippingTotal, context in
-        guard context == .pledge else { return }
-
-        let cookieRefTag = cookieRefTagFor(project: project) ?? refTag
+      .observeValues { project, baseReward, rewards, selectedQuantities, refTag, additionalPledgeAmount, pledgeTotal, shippingTotal, pledgeViewContext in
 
         AppEnvironment.current.optimizelyClient?.track(eventName: "Pledge Screen Viewed")
 
@@ -848,9 +845,9 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         AppEnvironment.current.ksrAnalytics.trackCheckoutPaymentPageViewed(
           project: project,
           reward: baseReward,
+          pledgeViewContext: pledgeViewContext,
           checkoutData: checkoutData,
-          refTag: refTag,
-          cookieRefTag: cookieRefTag
+          refTag: refTag
         )
       }
 

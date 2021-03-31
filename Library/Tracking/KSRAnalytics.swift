@@ -28,11 +28,7 @@ public final class KSRAnalytics {
     case addOnsPageViewed = "Add-Ons Page Viewed"
     case collectionViewed = "Collection Viewed"
     case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
-    case editorialCardClicked = "Editorial Card Clicked"
-    case explorePageViewed = "Explore Page Viewed"
-    case exploreSortClicked = "Explore Sort Clicked"
     case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
-    case filterClicked = "Filter Clicked"
     case fixPledgeButtonClicked = "Fix Pledge Button Clicked"
     case forgotPasswordViewed = "Forgot Password Viewed"
     case loginButtonClicked = "Log In Button Clicked"
@@ -44,10 +40,8 @@ public final class KSRAnalytics {
     case onboardingContinueButtonClicked = "Onboarding Continue Button Clicked"
     case onboardingGetStartedButtonClicked = "Onboarding Get Started Button Clicked"
     case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
-    case projectCardClicked = "Project Card Clicked"
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
     case projectSwiped = "Project Swiped"
-    case searchPageViewed = "Search Page Viewed"
     case searchResultsLoaded = "Search Results Loaded"
     case signupButtonClicked = "Signup Button Clicked"
     case signupSubmitButtonClicked = "Signup Submit Button Clicked"
@@ -58,8 +52,10 @@ public final class KSRAnalytics {
   }
 
   private enum NewApprovedEvent: String, CaseIterable {
+    case cardClicked = "Card Clicked"
     case ctaClicked = "CTA Clicked"
     case pageViewed = "Page Viewed"
+    case videoPlaybackStarted = "Video Playback Started"
   }
 
   /// Determines the screen from which the event is sent.
@@ -67,6 +63,7 @@ public final class KSRAnalytics {
     case activities = "activity_feed" // ActivitiesViewController
     case addOnsSelection = "add_ons" // RewardAddOnSelectionViewController
     case campaign // ProjectDescriptionViewController
+    case changePayment = "change_payment" // PledgeViewController
     case checkout // // PledgeViewController
     case discovery = "discover" // DiscoveryViewController
     case editorialProjects = "editorial_collection" // EditorialProjectsViewController
@@ -80,12 +77,14 @@ public final class KSRAnalytics {
     case pledgeAddNewCard = "pledge_add_new_card" // AddNewCardViewController
     case pledgeScreen = "pledge" // PledgeViewController
     case projectPage = "project" // ProjectPamphletViewController
+    case profile // BackerDashboardProjectsViewController
     case rewards // RewardsViewController
     case search // SearchViewController
     case settingsAddNewCard = "settings_add_new_card" // AddNewCardViewController
     case signup = "sign_up" // SignupViewController
     case thanks // ThanksViewController
     case twoFactorAuth = "two_factor_auth" // TwoFactorViewController
+    case updatePledge = "update_pledge" // PledgeViewController
   }
 
   /// Determines the authentication type for login or signup events.
@@ -321,24 +320,29 @@ public final class KSRAnalytics {
 
   /**
    A tab or section within a grouping of content.
-
+   - backed: Section of BackerDashboardProjectViewController for backed Projects
    - comments: Section of Project overview screen
    - campaign: Details when user clicks "Read more"
    - overview: Project overview landing screen
    - updates: Section of project overview screen.
+   - watched:Section of BackerDashboardProjectViewController for saved Projects
    */
   public enum SectionContext {
+    case backed
     case campaign
     case comments
     case overview
     case updates
+    case watched
 
     var trackingString: String {
       switch self {
+      case .backed: return "backed"
       case .campaign: return "campaign"
       case .comments: return "comments"
       case .overview: return "overview"
       case .updates: return "updates"
+      case .watched: return "watched"
       }
     }
   }
@@ -347,6 +351,7 @@ public final class KSRAnalytics {
    Contextual details about an event that was fired that aren't captured in other context properties
    */
   public enum TypeContext {
+    case allProjects
     case amountGoal
     case amountPledged
     case apple
@@ -354,10 +359,12 @@ public final class KSRAnalytics {
     case backed
     case categoryName
     case creditCard
+    case discovery(DiscoverySortContext)
     case facebook
     case location
     case percentRaised
     case pledge(PledgeContext)
+    case project
     case projectState
     case pwl
     case recommended
@@ -369,6 +376,23 @@ public final class KSRAnalytics {
     case tag
     case unwatch
     case watch
+    case watched
+
+    public enum DiscoverySortContext {
+      case endingSoon
+      case magic
+      case newest
+      case popular
+
+      var trackingString: String {
+        switch self {
+        case .endingSoon: return "ending_soon"
+        case .magic: return "magic"
+        case .newest: return "newest"
+        case .popular: return "popular"
+        }
+      }
+    }
 
     public enum PledgeContext {
       case fixErroredPledge
@@ -386,6 +410,7 @@ public final class KSRAnalytics {
 
     var trackingString: String {
       switch self {
+      case .allProjects: return "all"
       case .amountGoal: return "amount_goal"
       case .amountPledged: return "amount_pledged"
       case .apple: return "apple"
@@ -393,10 +418,12 @@ public final class KSRAnalytics {
       case .backed: return "backed"
       case .categoryName: return "category_name"
       case .creditCard: return "credit_card"
+      case let .discovery(discoveryContext): return discoveryContext.trackingString
       case .facebook: return "facebook"
       case .location: return "location"
       case .percentRaised: return "percent_raised"
       case let .pledge(pledgeContext): return pledgeContext.trackingString
+      case .project: return "project"
       case .projectState: return "project_state"
       case .pwl: return "pwl"
       case .recommended: return "recommended"
@@ -408,6 +435,7 @@ public final class KSRAnalytics {
       case .tag: return "tag"
       case .unwatch: return "unwatch"
       case .watch: return "watch"
+      case .watched: return "watched"
       }
     }
   }
@@ -416,11 +444,19 @@ public final class KSRAnalytics {
    A context providing additional details about the location the event occurs.
    */
   public enum LocationContext {
+    case accountMenu
+    case discoverAdvanced
+    case discoverOverlay
     case globalNav
+    case recommendations
 
     var trackingString: String {
       switch self {
+      case .accountMenu: return "account_menu"
+      case .discoverAdvanced: return "discover_advanced"
+      case .discoverOverlay: return "discover_overlay"
       case .globalNav: return "global_nav"
+      case .recommendations: return "recommendations"
       }
     }
   }
@@ -471,8 +507,6 @@ public final class KSRAnalytics {
     let addOnsCountTotal: Int?
     let addOnsCountUnique: Int?
     let addOnsMinimumUsd: String?
-    let amount: String
-    let bonusAmount: String
     let bonusAmountInUsd: String
     let checkoutId: Int?
     let estimatedDelivery: TimeInterval?
@@ -482,7 +516,6 @@ public final class KSRAnalytics {
     let rewardMinimumUsd: String
     let rewardTitle: String?
     let shippingEnabled: Bool
-    let shippingAmount: Double?
     let shippingAmountUsd: String?
     let userHasStoredApplePayCard: Bool
   }
@@ -562,6 +595,15 @@ public final class KSRAnalytics {
     )
   }
 
+  /// Call when the user is logged out, on the `Activity` tab and taps the `Explore Projects`button.
+  public func trackExploreButtonClicked() {
+    let properties = contextProperties(ctaContext: .discover, locationContext: .globalNav)
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      properties: properties
+    )
+  }
+
   // MARK: - Application Lifecycle
 
   public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
@@ -627,13 +669,11 @@ public final class KSRAnalytics {
    - parameter params: The params used for the discovery search.
    */
 
-  public func trackDiscovery(params: DiscoveryParams,
-                             optimizelyProperties: [String: Any] = [:]) {
+  public func trackDiscovery(params: DiscoveryParams) {
     let props = discoveryProperties(from: params)
-      .withAllValuesFrom(optimizelyProperties)
 
     self.track(
-      event: ApprovedEvent.explorePageViewed.rawValue,
+      event: NewApprovedEvent.pageViewed.rawValue,
       page: .discovery,
       properties: props
     )
@@ -643,28 +683,81 @@ public final class KSRAnalytics {
    Call when a filter is selected from the Explore modal.
 
    - parameter params: The params selected from the modal.
+   - parameter typeContext: The context of the selected filter.
+   - parameter locationContext: Represents additional details of the UI interaction
    */
-  public func trackDiscoveryModalSelectedFilter(params: DiscoveryParams) {
+  public func trackDiscoveryModalSelectedFilter(
+    params: DiscoveryParams,
+    typeContext: TypeContext,
+    locationContext: LocationContext
+  ) {
+    let props = discoveryProperties(from: params)
+      .withAllValuesFrom(
+        contextProperties(
+          ctaContext: .discoverFilter,
+          page: .discovery,
+          typeContext: typeContext,
+          locationContext: locationContext
+        )
+      )
     self.track(
-      event: ApprovedEvent.filterClicked.rawValue,
-      page: .discovery,
-      properties: discoveryProperties(from: params)
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  /**
+   Called when saved is selected from profile.
+
+   - parameter params: The params selected from the modal.
+   */
+  public func trackProfilePageFilterSelected(
+    params: DiscoveryParams
+  ) {
+    let props = discoveryProperties(from: params)
+      .withAllValuesFrom(
+        contextProperties(
+          ctaContext: .discoverFilter,
+          page: .discovery,
+          typeContext: .watched,
+          locationContext: .accountMenu
+        )
+      )
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      properties: props
     )
   }
 
   /**
    Call when the user swipes between sorts or selects a sort.
 
-   - parameter sort: The new sort that was selected.
+   if a user is on Discover Advanced and has results sorted by magic, but then clicks the button to sort by popularity,
+   that would be discover_sort = magic, context_cta = discover_sort, context_type = popular, context_location = discover_advanced, context_page = discover.
+
+   - parameter prevSort: The last sort selected before the new sort.
+   - parameter params: additional parameters associated with the current selected sort.
+   - parameter discoverySortContext: the context of the selected sort
    */
-  public func trackDiscoverySelectedSort(nextSort sort: DiscoveryParams.Sort, params: DiscoveryParams) {
+  public func trackDiscoverySelectedSort(
+    prevSort: DiscoveryParams.Sort,
+    params: DiscoveryParams,
+    discoverySortContext: TypeContext.DiscoverySortContext
+  ) {
     let props = discoveryProperties(from: params)
       .withAllValuesFrom([
-        "discover_sort": sort.rawValue
+        "discover_sort": prevSort.trackingString
       ])
+      .withAllValuesFrom(
+        contextProperties(
+          ctaContext: .discoverSort,
+          typeContext: .discovery(discoverySortContext),
+          locationContext: .discoverAdvanced
+        )
+      )
 
     self.track(
-      event: ApprovedEvent.exploreSortClicked.rawValue,
+      event: NewApprovedEvent.ctaClicked.rawValue,
       page: .discovery,
       properties: props
     )
@@ -674,14 +767,16 @@ public final class KSRAnalytics {
    Call when the user taps the editorial header at the top of Discovery
    */
   public func trackEditorialHeaderTapped(params: DiscoveryParams,
-                                         refTag: RefTag,
-                                         optimizelyProperties: [String: Any] = [:]) {
-    let props = discoveryProperties(from: params)
-      .withAllValuesFrom(optimizelyProperties)
+                                         refTag: RefTag) {
+    let props = contextProperties(
+      page: .discovery,
+      typeContext: .project,
+      locationContext: .discoverAdvanced
+    )
+    .withAllValuesFrom(discoveryProperties(from: params))
 
     self.track(
-      event: ApprovedEvent.editorialCardClicked.rawValue,
-      page: .discovery,
+      event: NewApprovedEvent.cardClicked.rawValue,
       properties: props,
       refTag: refTag.stringTag
     )
@@ -702,22 +797,63 @@ public final class KSRAnalytics {
 
   /**
    Call when a project card is clicked from a list of projects
-   - parameter project: the Project corresponding to the card that was clicked
-   - parameter params: the DiscoveryParams associated with the list of projects
-   - parameter location: the location context of the event
+   - parameter page: The `PageContext` representing the specific area the UI is interacted in
+   - parameter checkoutData: The `CheckoutPropertiesData` associated with this specific checkout instance
+   - parameter project: The `Project` corresponding to the card that was clicked
+   - parameter location: The optional `LocationContext` representing additional details of the UI interaction
+   - parameter params: The optional `DiscoveryParams  ` associated with the list of projects
+   - parameter reward: The optional `Reward  ` for the selected `Project`
+   - parameter section: The optional `SectionContext  ` representing the grouping of content
    */
 
-  public func trackProjectCardClicked(project: Project,
-                                      params: DiscoveryParams,
-                                      location: PageContext,
-                                      optimizelyProperties: [String: Any] = [:]) {
-    let props = discoveryProperties(from: params)
-      .withAllValuesFrom(projectProperties(from: project, loggedInUser: self.loggedInUser))
-      .withAllValuesFrom(optimizelyProperties)
+  public func trackProjectCardClicked(page: PageContext,
+                                      project: Project,
+                                      checkoutData: CheckoutPropertiesData? = nil,
+                                      location: LocationContext? = nil,
+                                      params: DiscoveryParams? = nil,
+                                      reward: Reward? = nil,
+                                      section: SectionContext? = nil) {
+    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(
+        sectionContext: section,
+        typeContext: .project,
+        locationContext: location
+      ))
+
+    if let checkoutProps = checkoutData {
+      props = props.withAllValuesFrom(checkoutProperties(from: checkoutProps, and: reward))
+    }
+
+    if let discoveryParams = params {
+      props = props.withAllValuesFrom(discoveryProperties(from: discoveryParams))
+    }
 
     self.track(
-      event: ApprovedEvent.projectCardClicked.rawValue,
-      page: location,
+      event: NewApprovedEvent.cardClicked.rawValue,
+      page: page,
+      properties: props
+    )
+  }
+
+  /**
+   Call when a video starts playing on a project
+
+   - parameter project: The `Project` corresponding to the video that started playing.
+   - parameter videoLength: The length of video in seconds
+   - parameter videoPosition: The index position of the playhead, in seconds
+   */
+
+  public func trackProjectVideoPlaybackStarted(
+    project: Project,
+    videoLength: Int,
+    videoPosition: Int
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(videoProperties(videoLength: videoLength, videoPosition: videoPosition))
+
+    self.track(
+      event: NewApprovedEvent.videoPlaybackStarted.rawValue,
+      page: .projectPage,
       properties: props
     )
   }
@@ -803,6 +939,21 @@ public final class KSRAnalytics {
     )
   }
 
+  public func trackManagePledgePageViewed(
+    project: Project,
+    reward: Reward,
+    checkoutData: CheckoutPropertiesData
+  ) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
+
+    self.track(
+      event: NewApprovedEvent.pageViewed.rawValue,
+      page: .managePledgeScreen,
+      properties: props
+    )
+  }
+
   /* Call when a reward is selected
 
    parameters:
@@ -854,33 +1005,42 @@ public final class KSRAnalytics {
     )
   }
 
-  /* Call when the pledge screen is shown
+  /* Call when the PledgeViewController is shown.
 
    parameters:
    - project: the project being pledged to
    - reward: the chosen reward
+   - pledgeViewContext: The specific context applicable to the PledgeViewModel
    - checkoutData: the `CheckoutPropertiesData` associated with the given project and reward
    - refTag: the associated RefTag for the pledge
-   - cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
 
    */
 
   public func trackCheckoutPaymentPageViewed(
     project: Project,
     reward: Reward,
+    pledgeViewContext: PledgeViewContext,
     checkoutData: CheckoutPropertiesData,
-    refTag: RefTag?,
-    cookieRefTag: RefTag?
+    refTag: RefTag?
   ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
+
+    switch pledgeViewContext {
+    case .pledge:
+      props = props.withAllValuesFrom(contextProperties(page: .checkout))
+    case .changePaymentMethod:
+      props = props.withAllValuesFrom(contextProperties(page: .changePayment))
+    case .update, .updateReward:
+      props = props.withAllValuesFrom(contextProperties(page: .updatePledge))
+    default:
+      return
+    }
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      page: .checkout,
       properties: props,
-      refTag: refTag?.stringTag,
-      referrerCredit: cookieRefTag?.stringTag
+      refTag: refTag?.stringTag
     )
   }
 
@@ -1149,9 +1309,18 @@ public final class KSRAnalytics {
 
   // MARK: - Search Events
 
-  /// Call once when the search view is initially shown.
-  public func trackProjectSearchView() {
-    self.track(event: ApprovedEvent.searchPageViewed.rawValue, page: .search)
+  /// Call whenever the search view is shown.
+  public func trackProjectSearchView(
+    params: DiscoveryParams,
+    results: Int? = nil
+  ) {
+    let props = discoveryProperties(from: params, results: results)
+
+    self.track(
+      event: NewApprovedEvent.pageViewed.rawValue,
+      page: .search,
+      properties: props
+    )
   }
 
   // Call when projects have been obtained from a search.
@@ -1183,13 +1352,11 @@ public final class KSRAnalytics {
    - parameter project: The project being viewed.
    - parameter refTag: The ref tag used when opening the project.
    - parameter sectionContext: The context referring to the section of the screen being interacted with.
-   - parameter cookieRefTag: The ref tag pulled from cookie storage when this project was shown.
    */
   public func trackProjectViewed(
     _ project: Project,
     refTag: RefTag? = nil,
-    sectionContext: KSRAnalytics.SectionContext,
-    cookieRefTag: RefTag? = nil
+    sectionContext: KSRAnalytics.SectionContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(sectionContext: sectionContext))
@@ -1198,8 +1365,7 @@ public final class KSRAnalytics {
       event: NewApprovedEvent.pageViewed.rawValue,
       page: .projectPage,
       properties: props,
-      refTag: refTag?.stringTag,
-      referrerCredit: cookieRefTag?.stringTag
+      refTag: refTag?.stringTag
     )
   }
 
@@ -1249,6 +1415,36 @@ public final class KSRAnalytics {
     )
   }
 
+  /**
+   Call when a user clicks creator's name on a project.
+
+   - parameter project: The project the creator's name is clicked from.
+   */
+
+  public func trackGotoCreatorDetailsClicked(project: Project) {
+    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(ctaContext: .creatorDetails, page: .projectPage))
+
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  /**
+    Call when read more about the campaign button is tapped.
+   - parameter project: The project that the read more button is clicked from
+   */
+  public func trackCampaignDetailsButtonClicked(project: Project) {
+    let props = projectProperties(from: project)
+      .withAllValuesFrom(contextProperties(ctaContext: .campaignDetails, page: .projectPage))
+
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
   // MARK: - Email Verification
 
   public func trackEmailVerificationScreenViewed() {
@@ -1272,10 +1468,9 @@ public final class KSRAnalytics {
     event: String,
     page: KSRAnalytics.PageContext? = nil,
     properties: [String: Any] = [:],
-    refTag: String? = nil,
-    referrerCredit: String? = nil
+    refTag: String? = nil
   ) {
-    let props = self.sessionProperties(refTag: refTag, referrerCredit: referrerCredit)
+    let props = self.sessionProperties(refTag: refTag)
       .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
       .withAllValuesFrom(contextProperties(page: page))
       .withAllValuesFrom(properties)
@@ -1298,45 +1493,35 @@ public final class KSRAnalytics {
 
   private func sessionProperties(
     refTag: String?,
-    referrerCredit: String?,
     prefix: String = "session_"
   ) -> [String: Any] {
     var props: [String: Any] = [:]
 
-    let enabledFeatureFlags = self.config?.features
-      .filter { key, value in key.starts(with: "ios_") && value }
-      .keys
-      .sorted()
-
     props["apple_pay_capable"] = AppEnvironment.current.applePayCapabilities.applePayCapable()
-    props["apple_pay_device"] = AppEnvironment.current.applePayCapabilities.applePayDevice()
-    props["cellular_connection"] = AppEnvironment.current.coreTelephonyNetworkInfo
-      .serviceCurrentRadioAccessTechnology
     props["client"] = "native"
-    props["current_variants"] = self.config?.abExperimentsArray.sorted()
+    props["variants_optimizely"] = self.config?.abExperimentsArray.sorted()
+    props["country"] = self.config?.countryCode
     props["display_language"] = AppEnvironment.current.language.rawValue
-
     props["device_type"] = self.device.deviceType
     props["device_manufacturer"] = "Apple"
     props["device_model"] = KSRAnalytics.deviceModel
     props["device_orientation"] = self.deviceOrientation
     props["device_distinct_id"] = self.distinctId
 
-    props["app_build_number"] = self.bundle.infoDictionary?["CFBundleVersion"]
+    if let appBuildNumber = self.bundle.infoDictionary?["CFBundleVersion"] as? String {
+      props["app_build_number"] = Int(appBuildNumber)
+    }
+
     props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
-    props["enabled_features"] = enabledFeatureFlags
     props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
-    props["mp_lib"] = "kickstarter_ios"
-    props["os"] = self.device.systemName
+    props["os"] = "ios"
     props["os_version"] = self.device.systemVersion
     props["platform"] = self.clientPlatform
     props["screen_width"] = UInt(self.screen.bounds.width)
     props["user_agent"] = Service.userAgent
-    props["user_logged_in"] = self.loggedInUser != nil
-    props["wifi_connection"] = Reachability.current == .wifi
+    props["user_is_logged_in"] = self.loggedInUser != nil
 
     props["ref_tag"] = refTag
-    props["referrer_credit"] = referrerCredit
 
     return props.prefixedKeys(prefix)
   }
@@ -1352,19 +1537,19 @@ public final class KSRAnalytics {
   private var deviceOrientation: String {
     switch self.device.orientation {
     case .faceDown:
-      return "Face Down"
+      return "face_down"
     case .faceUp:
-      return "Face Up"
+      return "face_up"
     case .landscapeLeft:
-      return "Landscape Left"
+      return "landscape_left"
     case .landscapeRight:
-      return "Landscape Right"
+      return "landscape_right"
     case .portrait:
-      return "Portrait"
+      return "portrait"
     case .portraitUpsideDown:
-      return "Portrait Upside Down"
+      return "portrait_upside_down"
     case .unknown:
-      return "Unknown"
+      return "unknown"
     @unknown default:
       fatalError()
     }
@@ -1372,7 +1557,7 @@ public final class KSRAnalytics {
 
   private var clientPlatform: String {
     switch self.device.userInterfaceIdiom {
-    case .phone, .pad: return "ios"
+    case .phone, .pad: return "native_ios"
     case .tv: return "tvos"
     default: return "unspecified"
     }
@@ -1392,30 +1577,28 @@ private func projectProperties(
 
   props["backers_count"] = project.stats.backersCount
   props["subcategory"] = project.category.name
-  props["subcategory_id"] = project.category.id
   props["country"] = project.country.countryCode
   props["comments_count"] = project.stats.commentsCount ?? 0
   props["currency"] = project.country.currencyCode
-  props["creator_uid"] = project.creator.id
-  props["deadline"] = project.dates.deadline
-  props["goal"] = project.stats.goal
+  props["creator_uid"] = String(project.creator.id)
+  props["deadline"] = project.dates.deadline.toISO8601DateTimeString()
   props["has_add_ons"] = project.hasAddOns
-  props["launched_at"] = project.dates.launchedAt
-  props["location"] = project.location.name
+  props["launched_at"] = project.dates.launchedAt.toISO8601DateTimeString()
   props["name"] = project.name
-  props["pid"] = project.id
+  props["pid"] = String(project.id)
   props["category"] = project.category.parentName
   props["category_id"] = project.category.parentId
-  props["percent_raised"] = project.stats.fundingProgress
+  props["percent_raised"] = project.stats.percentFunded
   props["state"] = project.state.rawValue
-  props["static_usd_rate"] = project.stats.staticUsdRate
   props["current_pledge_amount"] = project.stats.pledged
-  props["current_amount_pledged_usd"] = project.stats.pledgedUsd
-  props["goal_usd"] = project.stats.goalUsd
+  props["current_amount_pledged_usd"] = project.stats.convertedPledgedAmount
+  props["goal_usd"] = project.stats.goalCurrentCurrency
   props["has_video"] = project.video != nil
   props["prelaunch_activated"] = project.prelaunchActivated
-  props["rewards_count"] = project.rewards.count
+  props["rewards_count"] = project.rewards.filter { $0 != .noReward }.count
+  props["tags"] = project.tags?.joined(separator: ", ")
   props["updates_count"] = project.stats.updatesCount
+  props["is_repeat_creator"] = project.creator.isRepeatCreator ?? false
 
   let now = dateType.init().date
   props["hours_remaining"] = project.dates.hoursRemaining(from: now, using: calendar)
@@ -1424,7 +1607,11 @@ private func projectProperties(
   var userProperties: [String: Any] = [:]
   userProperties["has_watched"] = project.personalization.isStarred
   userProperties["is_backer"] = project.personalization.isBacking
-  userProperties["is_project_creator"] = project.creator.id == loggedInUser?.id
+
+  // Only send this property if the user is logged in
+  if let loggedInUser = loggedInUser {
+    userProperties["is_project_creator"] = project.creator.id == loggedInUser.id
+  }
 
   let userProps = userProperties.prefixedKeys("user_")
 
@@ -1479,21 +1666,21 @@ private func pledgeProperties(from reward: Reward, prefix: String = "pledge_back
 
 // MARK: - Checkout Properties
 
-private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, and reward: Reward? = nil,
-                                prefix: String = "checkout_")
-  -> [String: Any] {
+private func checkoutProperties(
+  from data: KSRAnalytics.CheckoutPropertiesData,
+  and reward: Reward? = nil,
+  prefix: String = "checkout_"
+) -> [String: Any] {
   var result: [String: Any] = [:]
 
-  result["amount"] = data.amount
   result["amount_total_usd"] = data.revenueInUsd
   result["add_ons_count_total"] = data.addOnsCountTotal
   result["add_ons_count_unique"] = data.addOnsCountUnique
   result["add_ons_minimum_usd"] = data.addOnsMinimumUsd
-  result["bonus_amount"] = data.bonusAmount
   result["bonus_amount_usd"] = data.bonusAmountInUsd
   result["id"] = data.checkoutId
   result["payment_type"] = data.paymentType
-  result["reward_estimated_delivery_on"] = data.estimatedDelivery
+  result["reward_estimated_delivery_on"] = data.estimatedDelivery?.toISO8601DateTimeString()
   result["reward_id"] = data.rewardId
   result["reward_is_limited_quantity"] = reward?.isLimitedQuantity
   result["reward_is_limited_time"] = reward?.isLimitedTime
@@ -1501,7 +1688,6 @@ private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, 
   result["reward_shipping_enabled"] = data.shippingEnabled
   result["reward_shipping_preference"] = reward?.shipping.preference?.trackingString
   result["reward_title"] = data.rewardTitle
-  result["shipping_amount"] = data.shippingAmount
   result["shipping_amount_usd"] = data.shippingAmountUsd
   result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
 
@@ -1512,6 +1698,7 @@ private func checkoutProperties(from data: KSRAnalytics.CheckoutPropertiesData, 
 
 private func discoveryProperties(
   from params: DiscoveryParams,
+  results: Int? = nil,
   prefix: String = "discover_"
 ) -> [String: Any] {
   var result: [String: Any] = [:]
@@ -1530,9 +1717,10 @@ private func discoveryProperties(
     .withAllValuesFrom(parentCategoryProps ?? [:])
 
   result["everything"] = result.isEmpty
-  result["sort"] = params.sort?.rawValue
+  result["sort"] = params.sort?.trackingString
   result["ref_tag"] = RefTag.fromParams(params).stringTag
   result["search_term"] = params.query
+  result["search_results_count"] = results
 
   return result.prefixedKeys(prefix)
 }
@@ -1563,7 +1751,6 @@ private func contextProperties(
   result["location"] = locationContext?.trackingString
   result["page"] = page?.rawValue
   result["section"] = sectionContext?.trackingString
-  result["timestamp"] = AppEnvironment.current.dateType.init().timeIntervalSince1970
   result["tab_bar_label"] = tabBarLabel?.trackingString
   result["type"] = typeContext?.trackingString
 
@@ -1626,16 +1813,28 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
 
 // MARK: - User Properties
 
-private func userProperties(for user: User?, config: Config?, _ prefix: String = "user_") -> [String: Any] {
+private func userProperties(for user: User?, config _: Config?, _ prefix: String = "user_") -> [String: Any] {
   var props: [String: Any] = [:]
 
   props["backed_projects_count"] = user?.stats.backedProjectsCount
-  props["country"] = user?.location?.country ?? config?.countryCode
   props["created_projects_count"] = user?.stats.createdProjectsCount
   props["is_admin"] = user?.isAdmin
   props["launched_projects_count"] = user?.stats.memberProjectsCount
   props["uid"] = user?.id
   props["watched_projects_count"] = user?.stats.starredProjectsCount
+  props["facebook_connected"] = user?.facebookConnected
+
+  return props.prefixedKeys(prefix)
+}
+
+// MARK: - Video Properties
+
+private func videoProperties(videoLength: Int, videoPosition: Int,
+                             prefix: String = "video_") -> [String: Any] {
+  var props: [String: Any] = [:]
+
+  props["length"] = videoLength
+  props["position"] = videoPosition
 
   return props.prefixedKeys(prefix)
 }

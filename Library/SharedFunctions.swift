@@ -543,9 +543,6 @@ public func checkoutProperties(
 
   let shippingAmount: Double? = baseReward.shipping.enabled ? shippingTotal : nil
 
-  let amount = Format.decimalCurrency(for: pledgeTotal)
-
-  let bonusAmount = Format.decimalCurrency(for: additionalPledgeAmount)
   let bonusAmountInUsd = Format.decimalCurrency(for: bonusAmountUsd)
 
   let rewardId = baseReward.id
@@ -554,8 +551,8 @@ public func checkoutProperties(
   var paymentType: String?
   if let isApplePay = isApplePay {
     paymentType = isApplePay
-      ? PaymentType.applePay.rawValue
-      : PaymentType.creditCard.rawValue
+      ? PaymentType.applePay.trackingString
+      : PaymentType.creditCard.trackingString
   }
 
   let shippingEnabled = baseReward.shipping.enabled
@@ -572,8 +569,6 @@ public func checkoutProperties(
     addOnsCountTotal: addOnsCountTotal,
     addOnsCountUnique: addOnsCountUnique,
     addOnsMinimumUsd: addOnsMinimumUsd,
-    amount: amount,
-    bonusAmount: bonusAmount,
     bonusAmountInUsd: bonusAmountInUsd,
     checkoutId: checkoutId,
     estimatedDelivery: estimatedDelivery,
@@ -583,7 +578,6 @@ public func checkoutProperties(
     rewardMinimumUsd: rewardMinimumUsd,
     rewardTitle: rewardTitle,
     shippingEnabled: shippingEnabled,
-    shippingAmount: shippingAmount,
     shippingAmountUsd: shippingAmountUsd,
     userHasStoredApplePayCard: userHasEligibleStoredApplePayCard
   )

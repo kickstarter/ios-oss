@@ -383,21 +383,18 @@ final class SharedFunctionsTests: TestCase {
     XCTAssertEqual(0, checkoutPropertiesData.addOnsCountTotal)
     XCTAssertEqual(0, checkoutPropertiesData.addOnsCountUnique)
     XCTAssertEqual("0.00", checkoutPropertiesData.addOnsMinimumUsd)
-    XCTAssertEqual("100.00", checkoutPropertiesData.amount)
-    XCTAssertEqual("10.00", checkoutPropertiesData.bonusAmount)
     XCTAssertEqual("10.00", checkoutPropertiesData.bonusAmountInUsd)
     XCTAssertEqual(nil, checkoutPropertiesData.checkoutId)
     XCTAssertEqual(
       1_506_897_315.0,
       checkoutPropertiesData.estimatedDelivery
     )
-    XCTAssertEqual("CREDIT_CARD", checkoutPropertiesData.paymentType)
+    XCTAssertEqual("credit_card", checkoutPropertiesData.paymentType)
     XCTAssertEqual(100.0, checkoutPropertiesData.revenueInUsd)
     XCTAssertEqual(1, checkoutPropertiesData.rewardId)
     XCTAssertEqual("10.00", checkoutPropertiesData.rewardMinimumUsd)
     XCTAssertEqual("My Reward", checkoutPropertiesData.rewardTitle)
     XCTAssertEqual(true, checkoutPropertiesData.shippingEnabled)
-    XCTAssertEqual(10.0, checkoutPropertiesData.shippingAmount)
     XCTAssertEqual("10.00", checkoutPropertiesData.shippingAmountUsd)
     XCTAssertEqual(
       true,

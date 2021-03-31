@@ -7,7 +7,6 @@ public protocol UIDeviceType {
   var identifierForVendor: UUID? { get }
   var modelCode: String { get }
   var orientation: UIDeviceOrientation { get }
-  var systemName: String { get }
   var systemVersion: String { get }
   var userInterfaceIdiom: UIUserInterfaceIdiom { get }
 }
@@ -26,7 +25,6 @@ internal struct MockDevice: UIDeviceType {
   internal var identifierForVendor = UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
   internal var modelCode = "MockmodelCode"
   internal var orientation: UIDeviceOrientation
-  internal var systemName = "MockSystemName"
   internal var systemVersion: String = "MockSystemVersion"
   internal var userInterfaceIdiom: UIUserInterfaceIdiom
 
