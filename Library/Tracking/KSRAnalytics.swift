@@ -1499,7 +1499,6 @@ public final class KSRAnalytics {
 
     props["apple_pay_capable"] = AppEnvironment.current.applePayCapabilities.applePayCapable()
     props["client"] = "native"
-    props["variants_optimizely"] = self.config?.abExperimentsArray.sorted()
     props["country"] = self.config?.countryCode
     props["display_language"] = AppEnvironment.current.language.rawValue
     props["device_type"] = self.device.deviceType
@@ -1517,11 +1516,19 @@ public final class KSRAnalytics {
     props["os"] = "ios"
     props["os_version"] = self.device.systemVersion
     props["platform"] = self.clientPlatform
+    props["ref_tag"] = refTag
     props["screen_width"] = UInt(self.screen.bounds.width)
     props["user_agent"] = Service.userAgent
     props["user_is_logged_in"] = self.loggedInUser != nil
+    props["variants_internal"] = self.config?.abExperimentsArray.sorted()
 
-    props["ref_tag"] = refTag
+    if let env = AppEnvironment.current, let optimizelyClient = env.optimizelyClient {
+      let allExperiments = optimizelyClient.allExperiments().map { experimentKey -> [String: String] in
+        let variation = optimizelyClient.getVariation(for: experimentKey)
+        return [experimentKey: variation.rawValue]
+      }
+      props["variants_optimizely"] = allExperiments
+    }
 
     return props.prefixedKeys(prefix)
   }
