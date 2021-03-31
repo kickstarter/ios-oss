@@ -1112,7 +1112,7 @@ public final class KSRAnalytics {
     reward: Reward,
     checkoutData: CheckoutPropertiesData?
   ) {
-    var props = projectProperties(from: project)
+    var props = projectProperties(from: project, isBacker: true)
       .withAllValuesFrom(pledgeProperties(from: reward))
       // the context is always "newPledge" for this event
       .withAllValuesFrom(contextProperties(typeContext: TypeContext.pledge(.newPledge)))
@@ -1577,6 +1577,7 @@ private func projectProperties(
   from project: Project,
   loggedInUser: User? = nil,
   dateType: DateProtocol.Type = AppEnvironment.current.dateType,
+  isBacker: Bool = false,
   calendar: Calendar = AppEnvironment.current.calendar,
   prefix: String = "project_"
 ) -> [String: Any] {
@@ -1613,7 +1614,9 @@ private func projectProperties(
 
   var userProperties: [String: Any] = [:]
   userProperties["has_watched"] = project.personalization.isStarred
-  userProperties["is_backer"] = project.personalization.isBacking
+
+  // is_backer should be false in all situations except on a new pledge on the thanks page and when a user is viewing an existing pledge
+  userProperties["is_backer"] = (project.personalization.isBacking ?? false) || isBacker
 
   // Only send this property if the user is logged in
   if let loggedInUser = loggedInUser {
