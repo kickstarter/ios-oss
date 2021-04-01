@@ -55,37 +55,29 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(1_234_567_890, dataLakeClientProperties?["session_app_build_number"] as? Int)
     XCTAssertEqual("1.2.3.4.5.6.7.8.9.0", dataLakeClientProperties?["session_app_release_version"] as? String)
     XCTAssertEqual("phone", dataLakeClientProperties?["session_device_type"] as? String)
-    XCTAssertEqual("Apple", dataLakeClientProperties?["session_device_manufacturer"] as? String)
     XCTAssertEqual("portrait", dataLakeClientProperties?["session_device_orientation"] as? String)
-    XCTAssertEqual("abc-123", dataLakeClientProperties?["session_device_distinct_id"] as? String)
 
     XCTAssertEqual("ios", dataLakeClientProperties?["session_os"] as? String)
-    XCTAssertEqual("MockSystemVersion", dataLakeClientProperties?["session_os_version"] as? String)
-    XCTAssertEqual(UInt(screen.bounds.width), dataLakeClientProperties?["session_screen_width"] as? UInt)
     XCTAssertEqual(false, dataLakeClientProperties?["session_user_is_logged_in"] as? Bool)
     XCTAssertEqual("native_ios", dataLakeClientProperties?["session_platform"] as? String)
     XCTAssertEqual("en", dataLakeClientProperties?["session_display_language"] as? String)
     XCTAssertEqual("GB", dataLakeClientProperties?["session_country"] as? String)
 
-    XCTAssertEqual(19, dataLakeClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
+    XCTAssertEqual(13, dataLakeClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
 
     XCTAssertEqual("native", segmentClientProperties?["session_client"] as? String)
     XCTAssertEqual(1_234_567_890, segmentClientProperties?["session_app_build_number"] as? Int)
     XCTAssertEqual("1.2.3.4.5.6.7.8.9.0", segmentClientProperties?["session_app_release_version"] as? String)
     XCTAssertEqual("phone", segmentClientProperties?["session_device_type"] as? String)
-    XCTAssertEqual("Apple", segmentClientProperties?["session_device_manufacturer"] as? String)
     XCTAssertEqual("portrait", segmentClientProperties?["session_device_orientation"] as? String)
-    XCTAssertEqual("abc-123", segmentClientProperties?["session_device_distinct_id"] as? String)
 
     XCTAssertEqual("ios", segmentClientProperties?["session_os"] as? String)
-    XCTAssertEqual("MockSystemVersion", segmentClientProperties?["session_os_version"] as? String)
-    XCTAssertEqual(UInt(screen.bounds.width), segmentClientProperties?["session_screen_width"] as? UInt)
     XCTAssertEqual(false, segmentClientProperties?["session_user_is_logged_in"] as? Bool)
     XCTAssertEqual("native_ios", segmentClientProperties?["session_platform"] as? String)
     XCTAssertEqual("en", segmentClientProperties?["session_display_language"] as? String)
     XCTAssertEqual("GB", segmentClientProperties?["session_country"] as? String)
 
-    XCTAssertEqual(19, segmentClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
+    XCTAssertEqual(13, segmentClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
   }
 
   func testSessionProperties_Language() {
@@ -982,13 +974,9 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertEqual(["Tab Bar Clicked"], dataLakeClient.events)
     XCTAssertEqual(["Tab Bar Clicked"], callBackEvents)
-    XCTAssertEqual("Apple", dataLakeClient.properties.last?["session_device_manufacturer"] as? String)
-    XCTAssertEqual("Apple", callBackProperties?["session_device_manufacturer"] as? String)
 
     XCTAssertEqual(["Tab Bar Clicked"], segmentClient.events)
     XCTAssertEqual(["Tab Bar Clicked"], callBackEvents)
-    XCTAssertEqual("Apple", segmentClient.properties.last?["session_device_manufacturer"] as? String)
-    XCTAssertEqual("Apple", callBackProperties?["session_device_manufacturer"] as? String)
   }
 
   func testProjectCardClicked_Page_Discover() {

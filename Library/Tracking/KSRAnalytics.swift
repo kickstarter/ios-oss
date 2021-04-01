@@ -1503,10 +1503,7 @@ public final class KSRAnalytics {
     props["country"] = self.config?.countryCode
     props["display_language"] = AppEnvironment.current.language.rawValue
     props["device_type"] = self.device.deviceType
-    props["device_manufacturer"] = "Apple"
-    props["device_model"] = KSRAnalytics.deviceModel
     props["device_orientation"] = self.deviceOrientation
-    props["device_distinct_id"] = self.distinctId
 
     if let appBuildNumber = self.bundle.infoDictionary?["CFBundleVersion"] as? String {
       props["app_build_number"] = Int(appBuildNumber)
@@ -1515,10 +1512,7 @@ public final class KSRAnalytics {
     props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
     props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
     props["os"] = "ios"
-    props["os_version"] = self.device.systemVersion
     props["platform"] = self.clientPlatform
-    props["screen_width"] = UInt(self.screen.bounds.width)
-    props["user_agent"] = Service.userAgent
     props["user_is_logged_in"] = self.loggedInUser != nil
 
     props["ref_tag"] = refTag
