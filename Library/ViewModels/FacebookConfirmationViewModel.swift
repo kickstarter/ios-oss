@@ -17,6 +17,8 @@ public protocol FacebookConfirmationViewModelInputs {
   func loginButtonPressed()
   /// Call when the environment has been logged into
   func environmentLoggedIn()
+  /// Call when link tapped on disclaimer textView
+  func tapped(_ url: URL)
 }
 
 public protocol FacebookConfirmationViewModelOutputs {
@@ -32,6 +34,8 @@ public protocol FacebookConfirmationViewModelOutputs {
   var showLogin: Signal<(), Never> { get }
   /// Emits whether a request is loading or not
   var isLoading: Signal<Bool, Never> { get }
+  /// Emits when a help link from a disclaimer should be opened.
+  var notifyDelegateOpenHelpType: Signal<HelpType, Never> { get }
 }
 
 public protocol FacebookConfirmationViewModelErrors {
@@ -89,6 +93,11 @@ public final class FacebookConfirmationViewModel: FacebookConfirmationViewModelT
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
   }
+  
+  private let tappedUrlProperty = MutableProperty<(URL)?>(nil)
+  public func tapped(_ url: URL) {
+    self.tappedUrlProperty.value = url
+  }
 
   // MARK: - FacebookConfirmationViewModelOutputs
 
@@ -98,6 +107,7 @@ public final class FacebookConfirmationViewModel: FacebookConfirmationViewModelT
   public let postNotification: Signal<Notification, Never>
   public let showLogin: Signal<(), Never>
   public let isLoading: Signal<Bool, Never>
+  public let notifyDelegateOpenHelpType: Signal<HelpType, Never>
 
   // MARK: - FacebookConfirmationViewModelErrors
 
@@ -143,5 +153,17 @@ public final class FacebookConfirmationViewModel: FacebookConfirmationViewModelT
       }
 
     self.showLogin = self.loginButtonPressedProperty.signal
+    
+    self.notifyDelegateOpenHelpType = tappedUrlProperty.signal.skipNil().map { url -> HelpType? in
+      let helpType = HelpType.allCases.filter { helpType in
+        url.absoluteString == helpType.url(
+          withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
+        )?.absoluteString
+      }
+      .first
+
+      return helpType
+    }
+    .skipNil()
   }
 }

@@ -174,6 +174,29 @@ public let disclaimerLabelStyle = UILabel.lens.font %~~ { _, label in
     Strings.By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy()
   }
 
+public func disclaimerAttributedString(with string: String) -> NSAttributedString? {
+  guard let attributedString = try? NSMutableAttributedString(
+    data: Data(string.utf8),
+    options: [
+      .documentType: NSAttributedString.DocumentType.html,
+      .characterEncoding: String.Encoding.utf8.rawValue
+    ],
+    documentAttributes: nil
+  ) else { return nil }
+  
+  let attributes: String.Attributes = [
+    .font: UIFont.ksr_footnote(size: 11.0),
+    .foregroundColor: UIColor.ksr_support_400,
+    .underlineStyle: 0
+  ]
+  
+  let fullRange = (attributedString.string as NSString).range(of: attributedString.string)
+  
+  attributedString.addAttributes(attributes, range: fullRange)
+  
+  return attributedString
+}
+
 public let tfaCodeFieldStyle = formFieldStyle
   <> UITextField.lens.textAlignment .~ .center
   <> UITextField.lens.font .~ .ksr_title1()
