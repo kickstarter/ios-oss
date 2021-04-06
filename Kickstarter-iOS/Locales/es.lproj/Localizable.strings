@@ -66,8 +66,10 @@
 "Bonus_support" = "Apoyo extra";
 "Bookmarks" = "Marcadores";
 "Bring_creative_projects_to_life" = "Dale vida a proyectos creativos.";
+"By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy" = "Si creas una cuenta, aceptas los <a href=\"%{terms_of_use_link}\">Términos de uso</a> y la <a href=\"%{privacy_policy_link}\">Política de privacidad</a> de Kickstarter.";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Al contribuir, aceptas las <a href=\"%{terms_of_use_link}\">Condiciones de uso</a>, <a href=\"%{privacy_policy_link}\">Política de privacidad</a> y <a href=\"%{cookie_policy_link}\">Política de cookies</a> de Kickstarter.";
 "By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Al registrarte, aceptas nuestros Términos de uso, Política de privacidad y Política de cookies. Nuestras políticas explican cómo utilizamos tus datos para entregar, mejorar y promocionar nuestro servicio y nuestro sitio, y cómo puedes ejercer tus derechos para controlar dicho uso.";
+"By_signing_up_youll_use_your_Facebook_account_to_log_in_to_your_Kickstarter_account" = "Si te registras, deberás usar tu cuenta de Facebook para iniciar sesión en Kickstarter. Si prefieres mantener estas cuentas separadas, vuelve a abrir la aplicación y crea una cuenta mediante otra opción.";
 "CVC" = "CVC";
 "Cancel" = "Cancelar";
 "Cancel_pledge" = "Cancelar contribución";

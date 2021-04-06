@@ -66,8 +66,10 @@
 "Bonus_support" = "Coup de pouce";
 "Bookmarks" = "Signets";
 "Bring_creative_projects_to_life" = "Réalisez vos projets créatifs.";
+"By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy" = "Lorsque vous créez un compte, vous acceptez les <a href=\"%{terms_of_use_link}\">Conditions d'utilisation</a> et la <a href=\"%{privacy_policy_link}\">Politique de confidentialité</a> de Kickstarter.";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Lorsque vous vous engagez, vous acceptez les <a href=\"%{terms_of_use_link}\">Conditions d'utilisation</a> de Kickstarter, notre <a href=\"%{privacy_policy_link}\">Politique de confidentialité</a> et notre <a href=\"%{cookie_policy_link}\">Politique en matière de cookies</a>.";
 "By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "En vous inscrivant, vous acceptez nos conditions d'utilisation, notre politique de confidentialité et notre politique en matière de cookies. Ces deux dernières politiques décrivent comment nous utilisons vos données pour proposer, améliorer et faire la promotion de nos services et de notre site, ainsi que les droits dont vous disposez pour contrôler cette utilisation et comment les exercer.";
+"By_signing_up_youll_use_your_Facebook_account_to_log_in_to_your_Kickstarter_account" = "Avec cette inscription, vous utiliserez votre compte Facebook pour vous connecter à votre compte Kickstarter. Si vous préférez que ces deux comptes restent séparés, veuillez redémarrer cette application et sélectionner une autre option de création de compte.";
 "CVC" = "Cryptogramme";
 "Cancel" = "Annuler";
 "Cancel_pledge" = "Annuler mon engagement";
