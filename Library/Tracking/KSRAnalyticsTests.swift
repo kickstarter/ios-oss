@@ -1751,7 +1751,6 @@ final class KSRAnalyticsTests: TestCase {
       |> User.lens.facebookConnected .~ true
       |> User.lens.stats.starredProjectsCount .~ 2
       |> User.lens.stats.createdProjectsCount .~ 7
-      |> User.lens.stats.memberProjectsCount .~ 6
       |> User.lens.stats.draftProjectsCount .~ 8
       |> User.lens.id .~ 10
       |> User.lens.isAdmin .~ false

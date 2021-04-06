@@ -316,8 +316,8 @@ extension User.Stats: EncodableType {
   public func encode() -> [String: Any] {
     var result: [String: Any] = [:]
     result["backed_projects_count"] = self.backedProjectsCount
-    result["draft_projects_count"] = self.draftProjectsCount
     result["created_projects_count"] = self.createdProjectsCount
+    result["draft_projects_count"] = self.draftProjectsCount
     result["member_projects_count"] = self.memberProjectsCount
     result["starred_projects_count"] = self.starredProjectsCount
     result["unanswered_surveys_count"] = self.unansweredSurveysCount
