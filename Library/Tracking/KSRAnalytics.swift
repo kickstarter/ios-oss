@@ -505,17 +505,17 @@ public final class KSRAnalytics {
   public struct CheckoutPropertiesData: Equatable {
     let addOnsCountTotal: Int?
     let addOnsCountUnique: Int?
-    let addOnsMinimumUsd: String?
-    let bonusAmountInUsd: String
-    let checkoutId: Int?
+    let addOnsMinimumUsd: Double
+    let bonusAmountInUsd: Double?
+    let checkoutId: String?
     let estimatedDelivery: TimeInterval?
     let paymentType: String?
     let revenueInUsd: Double
-    let rewardId: Int
-    let rewardMinimumUsd: String
+    let rewardId: String
+    let rewardMinimumUsd: Double
     let rewardTitle: String?
     let shippingEnabled: Bool
-    let shippingAmountUsd: String?
+    let shippingAmountUsd: Double?
     let userHasStoredApplePayCard: Bool
   }
 
@@ -1109,7 +1109,7 @@ public final class KSRAnalytics {
     reward: Reward,
     checkoutData: CheckoutPropertiesData?
   ) {
-    var props = projectProperties(from: project)
+    var props = projectProperties(from: project, isBacker: true)
       .withAllValuesFrom(pledgeProperties(from: reward))
       // the context is always "newPledge" for this event
       .withAllValuesFrom(contextProperties(typeContext: TypeContext.pledge(.newPledge)))
@@ -1496,7 +1496,6 @@ public final class KSRAnalytics {
 
     props["apple_pay_capable"] = AppEnvironment.current.applePayCapabilities.applePayCapable()
     props["client"] = "native"
-    props["variants_optimizely"] = self.config?.abExperimentsArray.sorted()
     props["country"] = self.config?.countryCode
     props["display_language"] = AppEnvironment.current.language.rawValue
     props["device_type"] = self.device.deviceType
@@ -1511,8 +1510,16 @@ public final class KSRAnalytics {
     props["os"] = "ios"
     props["platform"] = self.clientPlatform
     props["user_is_logged_in"] = self.loggedInUser != nil
-
     props["ref_tag"] = refTag
+    props["variants_internal"] = self.config?.abExperimentsArray.sorted()
+
+    if let env = AppEnvironment.current, let optimizelyClient = env.optimizelyClient {
+      let allExperiments = optimizelyClient.allExperiments().map { experimentKey -> [String: String] in
+        let variation = optimizelyClient.getVariation(for: experimentKey)
+        return [experimentKey: variation.rawValue]
+      }
+      props["variants_optimizely"] = allExperiments
+    }
 
     return props.prefixedKeys(prefix)
   }
@@ -1553,6 +1560,7 @@ private func projectProperties(
   from project: Project,
   loggedInUser: User? = nil,
   dateType: DateProtocol.Type = AppEnvironment.current.dateType,
+  isBacker: Bool = false,
   calendar: Calendar = AppEnvironment.current.calendar,
   prefix: String = "project_"
 ) -> [String: Any] {
@@ -1589,7 +1597,9 @@ private func projectProperties(
 
   var userProperties: [String: Any] = [:]
   userProperties["has_watched"] = project.personalization.isStarred
-  userProperties["is_backer"] = project.personalization.isBacking
+
+  // is_backer should be false in all situations except on a new pledge on the thanks page and when a user is viewing an existing pledge
+  userProperties["is_backer"] = (project.personalization.isBacking ?? false) || isBacker
 
   // Only send this property if the user is logged in
   if let loggedInUser = loggedInUser {
