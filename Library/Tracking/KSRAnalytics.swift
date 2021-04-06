@@ -9,7 +9,6 @@ public final class KSRAnalytics {
   private let dataLakeClient: TrackingClientType
   internal private(set) var config: Config?
   private let device: UIDeviceType
-  private let distinctId: String
   internal private(set) var loggedInUser: User? {
     didSet {
       self.identify(self.loggedInUser)
@@ -528,8 +527,7 @@ public final class KSRAnalytics {
     loggedInUser: User? = nil,
     screen: UIScreenType = UIScreen.main,
     segmentClient: TrackingClientType & IdentifyingTrackingClient = Analytics
-      .configuredClient(),
-    distinctId: String = (UIDevice.current.identifierForVendor ?? UUID()).uuidString
+      .configuredClient()
   ) {
     self.bundle = bundle
     self.dataLakeClient = dataLakeClient
@@ -538,7 +536,6 @@ public final class KSRAnalytics {
     self.loggedInUser = loggedInUser
     self.screen = screen
     self.segmentClient = segmentClient
-    self.distinctId = distinctId
 
     self.updateAndObservePreferredContentSizeCategory()
   }
@@ -1503,10 +1500,7 @@ public final class KSRAnalytics {
     props["country"] = self.config?.countryCode
     props["display_language"] = AppEnvironment.current.language.rawValue
     props["device_type"] = self.device.deviceType
-    props["device_manufacturer"] = "Apple"
-    props["device_model"] = KSRAnalytics.deviceModel
     props["device_orientation"] = self.deviceOrientation
-    props["device_distinct_id"] = self.distinctId
 
     if let appBuildNumber = self.bundle.infoDictionary?["CFBundleVersion"] as? String {
       props["app_build_number"] = Int(appBuildNumber)
@@ -1515,24 +1509,13 @@ public final class KSRAnalytics {
     props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
     props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
     props["os"] = "ios"
-    props["os_version"] = self.device.systemVersion
     props["platform"] = self.clientPlatform
-    props["screen_width"] = UInt(self.screen.bounds.width)
-    props["user_agent"] = Service.userAgent
     props["user_is_logged_in"] = self.loggedInUser != nil
 
     props["ref_tag"] = refTag
 
     return props.prefixedKeys(prefix)
   }
-
-  private static let deviceModel: String? = {
-    var size: Int = 0
-    sysctlbyname("hw.machine", nil, &size, nil, 0)
-    var machine = [CChar](repeating: 0, count: Int(size))
-    sysctlbyname("hw.machine", &machine, &size, nil, 0)
-    return String(cString: machine)
-  }()
 
   private var deviceOrientation: String {
     switch self.device.orientation {
