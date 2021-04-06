@@ -88,6 +88,30 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(20, segmentClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
   }
 
+  func testSessionProperties_OptimizelyClient() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.allKnownExperiments .~ [
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      let dataLakeClient = MockTrackingClient()
+      let segmentClient = MockTrackingClient()
+      let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+
+      ksrAnalytics.trackTabBarClicked(.activity)
+
+      XCTAssertEqual(
+        [["native_project_cards": "control"]],
+        dataLakeClient.properties.last?["session_variants_optimizely"] as? [[String: String]]
+      )
+      XCTAssertEqual(
+        [["native_project_cards": "control"]],
+        segmentClient.properties.last?["session_variants_optimizely"] as? [[String: String]]
+      )
+    }
+  }
+
   func testSessionProperties_Language() {
     withEnvironment(language: Language.es) {
       let dataLakeClient = MockTrackingClient()
