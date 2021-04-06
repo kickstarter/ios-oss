@@ -32,8 +32,7 @@ final class KSRAnalyticsTests: TestCase {
       device: device,
       loggedInUser: nil,
       screen: screen,
-      segmentClient: segmentClient,
-      distinctId: "abc-123"
+      segmentClient: segmentClient
     )
 
     ksrAnalytics.trackTabBarClicked(.activity)

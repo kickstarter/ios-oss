@@ -9,7 +9,6 @@ public final class KSRAnalytics {
   private let dataLakeClient: TrackingClientType
   internal private(set) var config: Config?
   private let device: UIDeviceType
-  private let distinctId: String
   internal private(set) var loggedInUser: User? {
     didSet {
       self.identify(self.loggedInUser)
@@ -528,8 +527,7 @@ public final class KSRAnalytics {
     loggedInUser: User? = nil,
     screen: UIScreenType = UIScreen.main,
     segmentClient: TrackingClientType & IdentifyingTrackingClient = Analytics
-      .configuredClient(),
-    distinctId: String = (UIDevice.current.identifierForVendor ?? UUID()).uuidString
+      .configuredClient()
   ) {
     self.bundle = bundle
     self.dataLakeClient = dataLakeClient
@@ -538,7 +536,6 @@ public final class KSRAnalytics {
     self.loggedInUser = loggedInUser
     self.screen = screen
     self.segmentClient = segmentClient
-    self.distinctId = distinctId
 
     self.updateAndObservePreferredContentSizeCategory()
   }
@@ -1519,14 +1516,6 @@ public final class KSRAnalytics {
 
     return props.prefixedKeys(prefix)
   }
-
-  private static let deviceModel: String? = {
-    var size: Int = 0
-    sysctlbyname("hw.machine", nil, &size, nil, 0)
-    var machine = [CChar](repeating: 0, count: Int(size))
-    sysctlbyname("hw.machine", &machine, &size, nil, 0)
-    return String(cString: machine)
-  }()
 
   private var deviceOrientation: String {
     switch self.device.orientation {
