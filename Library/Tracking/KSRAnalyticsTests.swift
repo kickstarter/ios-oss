@@ -62,7 +62,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("en", dataLakeClientProperties?["session_display_language"] as? String)
     XCTAssertEqual("GB", dataLakeClientProperties?["session_country"] as? String)
 
-    XCTAssertEqual(13, dataLakeClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
+    XCTAssertEqual(14, dataLakeClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
 
     XCTAssertEqual("native", segmentClientProperties?["session_client"] as? String)
     XCTAssertEqual(1_234_567_890, segmentClientProperties?["session_app_build_number"] as? Int)
@@ -76,7 +76,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("en", segmentClientProperties?["session_display_language"] as? String)
     XCTAssertEqual("GB", segmentClientProperties?["session_country"] as? String)
 
-    XCTAssertEqual(13, segmentClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
+    XCTAssertEqual(14 segmentClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
   }
 
   func testSessionProperties_OptimizelyClient() {

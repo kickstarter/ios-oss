@@ -1510,6 +1510,7 @@ public final class KSRAnalytics {
     props["os"] = "ios"
     props["platform"] = self.clientPlatform
     props["user_is_logged_in"] = self.loggedInUser != nil
+    props["ref_tag"] = refTag
     props["variants_internal"] = self.config?.abExperimentsArray.sorted()
 
     if let env = AppEnvironment.current, let optimizelyClient = env.optimizelyClient {
