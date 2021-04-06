@@ -1800,9 +1800,10 @@ private func userProperties(for user: User?, config _: Config?, _ prefix: String
   var props: [String: Any] = [:]
 
   props["backed_projects_count"] = user?.stats.backedProjectsCount
-  props["created_projects_count"] = user?.stats.createdProjectsCount
+  props["created_projects_count"] = (user?.stats.createdProjectsCount ?? 0) +
+    (user?.stats.draftProjectsCount ?? 0)
   props["is_admin"] = user?.isAdmin
-  props["launched_projects_count"] = user?.stats.memberProjectsCount
+  props["launched_projects_count"] = user?.stats.createdProjectsCount
   props["uid"] = user?.id
   props["watched_projects_count"] = user?.stats.starredProjectsCount
   props["facebook_connected"] = user?.facebookConnected
