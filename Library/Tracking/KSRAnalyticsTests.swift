@@ -76,7 +76,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("en", segmentClientProperties?["session_display_language"] as? String)
     XCTAssertEqual("GB", segmentClientProperties?["session_country"] as? String)
 
-    XCTAssertEqual(14 segmentClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
+    XCTAssertEqual(14, segmentClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
   }
 
   func testSessionProperties_OptimizelyClient() {
