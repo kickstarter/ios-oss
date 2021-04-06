@@ -243,6 +243,6 @@ private func attributedDisclaimerText() -> NSAttributedString? {
   
   guard let termsOfUseLink = HelpType.terms.url(withBaseUrl: baseUrl)?.absoluteString, let privacyPolicyLink = HelpType.privacy.url(withBaseUrl: baseUrl)?.absoluteString else { return nil }
   
-  let string = Strings.By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy(terms_of_use_link: termsOfUseLink, privacy_policy_link: privacyPolicyLink, cookie_policy_link: "")
+  let string = Strings.By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy(terms_of_use_link: termsOfUseLink, privacy_policy_link: privacyPolicyLink)
   return disclaimerAttributedString(with: string)
 }
