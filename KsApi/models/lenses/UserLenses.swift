@@ -519,6 +519,10 @@ extension Lens where Whole == User, Part == User.Stats {
     return User.lens.stats .. User.Stats.lens.createdProjectsCount
   }
 
+  public var draftProjectsCount: Lens<User, Int?> {
+    return User.lens.stats .. User.Stats.lens.draftProjectsCount
+  }
+
   public var memberProjectsCount: Lens<User, Int?> {
     return User.lens.stats .. User.Stats.lens.memberProjectsCount
   }

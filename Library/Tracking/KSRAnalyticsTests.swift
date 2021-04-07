@@ -1774,8 +1774,8 @@ final class KSRAnalyticsTests: TestCase {
       |> User.lens.location .~ Location.usa
       |> User.lens.facebookConnected .~ true
       |> User.lens.stats.starredProjectsCount .~ 2
-      |> User.lens.stats.createdProjectsCount .~ 3
-      |> User.lens.stats.memberProjectsCount .~ 6
+      |> User.lens.stats.createdProjectsCount .~ 7
+      |> User.lens.stats.draftProjectsCount .~ 8
       |> User.lens.id .~ 10
       |> User.lens.isAdmin .~ false
 
@@ -1792,17 +1792,17 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertEqual(10, dataLakeClientProps?["user_uid"] as? Int)
     XCTAssertEqual(5, dataLakeClientProps?["user_backed_projects_count"] as? Int)
-    XCTAssertEqual(3, dataLakeClientProps?["user_created_projects_count"] as? Int)
+    XCTAssertEqual(15, dataLakeClientProps?["user_created_projects_count"] as? Int)
     XCTAssertEqual(false, dataLakeClientProps?["user_is_admin"] as? Bool)
-    XCTAssertEqual(6, dataLakeClientProps?["user_launched_projects_count"] as? Int)
+    XCTAssertEqual(7, dataLakeClientProps?["user_launched_projects_count"] as? Int)
     XCTAssertEqual(2, dataLakeClientProps?["user_watched_projects_count"] as? Int)
     XCTAssertEqual(true, dataLakeClientProps?["user_facebook_connected"] as? Bool)
 
     XCTAssertEqual(10, segmentClientProps?["user_uid"] as? Int)
     XCTAssertEqual(5, segmentClientProps?["user_backed_projects_count"] as? Int)
-    XCTAssertEqual(3, segmentClientProps?["user_created_projects_count"] as? Int)
+    XCTAssertEqual(15, segmentClientProps?["user_created_projects_count"] as? Int)
     XCTAssertEqual(false, segmentClientProps?["user_is_admin"] as? Bool)
-    XCTAssertEqual(6, segmentClientProps?["user_launched_projects_count"] as? Int)
+    XCTAssertEqual(7, segmentClientProps?["user_launched_projects_count"] as? Int)
     XCTAssertEqual(2, segmentClientProps?["user_watched_projects_count"] as? Int)
     XCTAssertEqual(true, segmentClientProps?["user_facebook_connected"] as? Bool)
   }
