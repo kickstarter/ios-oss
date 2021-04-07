@@ -76,6 +76,7 @@ public struct User {
   public struct Stats {
     public var backedProjectsCount: Int?
     public var createdProjectsCount: Int?
+    public var draftProjectsCount: Int?
     public var memberProjectsCount: Int?
     public var starredProjectsCount: Int?
     public var unansweredSurveysCount: Int?
@@ -303,6 +304,7 @@ extension User.Stats: Decodable {
   enum CodingKeys: String, CodingKey {
     case backedProjectsCount = "backed_projects_count"
     case createdProjectsCount = "created_projects_count"
+    case draftProjectsCount = "draft_projects_count"
     case memberProjectsCount = "member_projects_count"
     case starredProjectsCount = "starred_projects_count"
     case unansweredSurveysCount = "unanswered_surveys_count"
@@ -315,6 +317,7 @@ extension User.Stats: EncodableType {
     var result: [String: Any] = [:]
     result["backed_projects_count"] = self.backedProjectsCount
     result["created_projects_count"] = self.createdProjectsCount
+    result["draft_projects_count"] = self.draftProjectsCount
     result["member_projects_count"] = self.memberProjectsCount
     result["starred_projects_count"] = self.starredProjectsCount
     result["unanswered_surveys_count"] = self.unansweredSurveysCount
