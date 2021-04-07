@@ -197,6 +197,7 @@ final class ManagePledgeViewBackingEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.project.actions.displayConvertAmount, true)
       XCTAssertEqual(value.project.fxRate, 1.082342)
       XCTAssertEqual(value.project.deadlineAt, 158_750_211.0)
+      XCTAssertEqual(value.project.displayPrelaunch, false)
       XCTAssertEqual(value.project.launchedAt, 158_740_211)
       XCTAssertEqual(value.project.stateChangedAt, 1_587_502_131.0)
       XCTAssertEqual(value.project.description, "Project description")
