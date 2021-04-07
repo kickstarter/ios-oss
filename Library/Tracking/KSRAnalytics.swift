@@ -864,7 +864,7 @@ public final class KSRAnalytics {
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(ctaContext: .addOnsContinue))
+      .withAllValuesFrom(contextProperties(ctaContext: .addOnsContinue, page: .addOnsSelection))
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
