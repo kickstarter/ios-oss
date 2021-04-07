@@ -53,6 +53,7 @@ final class GraphBackingTests: XCTestCase {
                 "name": "Canada"
               ],
               "isProjectWeLove": true,
+              "displayPrelaunch": false,
               "prelaunchActivated": false,
               "deadlineAt": 158_750_211,
               "launchedAt": 158_740_211,
