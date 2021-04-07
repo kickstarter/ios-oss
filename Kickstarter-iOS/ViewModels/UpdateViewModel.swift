@@ -132,11 +132,11 @@ internal final class UpdateViewModel: UpdateViewModelType, UpdateViewModelInputs
       }
 
     self.goToComments = goToComments
-    self.goToProject = projectAndRefTag.filter { _, project, _ in project.prelaunchActivated != .some(true) }
+    self.goToProject = projectAndRefTag.filter { _, project, _ in project.displayPrelaunch != .some(true) }
       .map { _, project, refTag in (project, refTag) }
 
     let goToPrelaunchPage = projectAndRefTag
-      .filter { _, project, _ in project.prelaunchActivated == true }
+      .filter { _, project, _ in project.displayPrelaunch == true }
       .map(first)
 
     self.goToSafariBrowser = Signal.merge(externalNavigationAction, goToPrelaunchPage)
