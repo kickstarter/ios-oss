@@ -582,12 +582,13 @@
                                                         <rect key="frame" x="0.0" y="200" width="368" height="33"/>
                                                         <subviews>
                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="wHg-6t-kMl">
-                                                                <rect key="frame" x="0.0" y="0.0" width="368" height="33"/>
+                                                                <rect key="frame" x="30" y="0.0" width="308" height="33"/>
                                                                 <color key="textColor" systemColor="labelColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                             </textView>
                                                         </subviews>
+                                                        <edgeInsets key="layoutMargins" top="0.0" left="30" bottom="6" right="30"/>
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
