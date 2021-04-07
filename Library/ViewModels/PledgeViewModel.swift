@@ -860,38 +860,75 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         )
       }
 
-    Signal
-      .combineLatest(
-        createBackingData,
-        baseReward,
-        additionalPledgeAmount,
-        allRewardsShippingTotal
+    // Emmits value when Pledge Button is clicked.
+
+    Signal.combineLatest(
+      createBackingData,
+      baseReward,
+      additionalPledgeAmount,
+      allRewardsShippingTotal
+    )
+    .takeWhen(createButtonTapped)
+    .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
+
+      let checkoutData = checkoutProperties(
+        from: data.project,
+        baseReward: baseReward,
+        addOnRewards: data.rewards,
+        selectedQuantities: data.selectedQuantities,
+        additionalPledgeAmount: additionalPledgeAmount,
+        pledgeTotal: data.pledgeTotal,
+        shippingTotal: allRewardsShippingTotal,
+        checkoutId: nil,
+        isApplePay: false
       )
-      .takeWhen(createButtonTapped)
-      .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
 
-        let checkoutData = checkoutProperties(
-          from: data.project,
-          baseReward: baseReward,
-          addOnRewards: data.rewards,
-          selectedQuantities: data.selectedQuantities,
-          additionalPledgeAmount: additionalPledgeAmount,
-          pledgeTotal: data.pledgeTotal,
-          shippingTotal: allRewardsShippingTotal,
-          checkoutId: nil,
-          isApplePay: false
-        )
+      return (data.project, baseReward, data.refTag, checkoutData)
+    }
+    .observeValues { project, reward, refTag, checkoutData in
+      AppEnvironment.current.ksrAnalytics.trackPledgeSubmitButtonClicked(
+        project: project,
+        reward: reward,
+        typeContext: .creditCard,
+        checkoutData: checkoutData,
+        refTag: refTag
+      )
+    }
 
-        return (data.project, baseReward, data.refTag, checkoutData)
-      }
-      .observeValues { project, reward, refTag, checkoutData in
-        AppEnvironment.current.ksrAnalytics.trackPledgeSubmitButtonClicked(
-          project: project,
-          reward: reward,
-          checkoutData: checkoutData,
-          refTag: refTag
-        )
-      }
+    // Emmits value when Apple Pay Button is clicked.
+
+    Signal.combineLatest(
+      createBackingData,
+      baseReward,
+      additionalPledgeAmount,
+      allRewardsShippingTotal
+    )
+    .takeWhen(goToApplePayPaymentAuthorization)
+    .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
+
+      let checkoutData = checkoutProperties(
+        from: data.project,
+        baseReward: baseReward,
+        addOnRewards: data.rewards,
+        selectedQuantities: data.selectedQuantities,
+        additionalPledgeAmount: additionalPledgeAmount,
+        pledgeTotal: data.pledgeTotal,
+        shippingTotal: allRewardsShippingTotal,
+        checkoutId: nil,
+        isApplePay: true
+      )
+
+      return (data.project, baseReward, data.refTag, checkoutData)
+    }
+    .observeValues { project, reward, refTag, checkoutData in
+      AppEnvironment.current.ksrAnalytics.trackPledgeSubmitButtonClicked(
+        project: project,
+        reward: reward,
+        typeContext: .applePay,
+        checkoutData: checkoutData,
+        refTag: refTag
+      )
+    }
 
     createBackingDataAndIsApplePay.takeWhen(createBackingCompletionEvents)
       .observeValues { _, _ in

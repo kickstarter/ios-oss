@@ -1041,11 +1041,12 @@ public final class KSRAnalytics {
     )
   }
 
-  /* Call when the Pledge button is clicked
+  /* Call when the Pledge button or Apple Pay button is clicked
 
    parameters:
    - project: the project being pledged to
    - reward: the chosen reward
+   - typeContext: The context of the pledge submit button for a project.
    - checkoutData: all the checkout data associated with the pledge
    - refTag: the associated RefTag for the pledge
 
@@ -1054,13 +1055,14 @@ public final class KSRAnalytics {
   public func trackPledgeSubmitButtonClicked(
     project: Project,
     reward: Reward,
+    typeContext: TypeContext,
     checkoutData: CheckoutPropertiesData,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
       // the context is always "newPledge" for this event
-      .withAllValuesFrom(contextProperties(ctaContext: .pledgeSubmit, typeContext: .creditCard))
+      .withAllValuesFrom(contextProperties(ctaContext: .pledgeSubmit, typeContext: typeContext))
 
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,

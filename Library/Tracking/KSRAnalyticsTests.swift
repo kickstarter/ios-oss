@@ -1465,7 +1465,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("rewards", segmentClientProperties?["context_page"] as? String)
   }
 
-  func testTrackPledgeSubmitButtonClicked() {
+  func testTrackPledgeSubmitButtonClicked_Pledge() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
@@ -1476,6 +1476,7 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackPledgeSubmitButtonClicked(
       project: .template,
       reward: reward,
+      typeContext: .creditCard,
       checkoutData: .template,
       refTag: nil
     )
@@ -1512,6 +1513,62 @@ final class KSRAnalyticsTests: TestCase {
     )
     XCTAssertEqual(
       KSRAnalytics.TypeContext.creditCard.trackingString,
+      segmentClientProps?["context_type"] as? String
+    )
+    XCTAssertEqual(
+      "checkout",
+      segmentClientProps?["context_page"] as? String
+    )
+  }
+
+  func testTrackPledgeSubmitButtonClicked_ApplePay() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+    let reward = Reward.template
+      |> Reward.lens.endsAt .~ 5.0
+      |> Reward.lens.shipping.preference .~ .restricted
+
+    ksrAnalytics.trackPledgeSubmitButtonClicked(
+      project: .template,
+      reward: reward,
+      typeContext: .applePay,
+      checkoutData: .template,
+      refTag: nil
+    )
+
+    let dataLakeClientProps = dataLakeClient.properties.last
+    let segmentClientProps = segmentClient.properties.last
+
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+
+    self.assertProjectProperties(dataLakeClientProps)
+    self.assertCheckoutProperties(dataLakeClientProps)
+
+    XCTAssertEqual(
+      KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
+      dataLakeClientProps?["context_cta"] as? String
+    )
+    XCTAssertEqual(
+      KSRAnalytics.TypeContext.applePay.trackingString,
+      dataLakeClientProps?["context_type"] as? String
+    )
+    XCTAssertEqual(
+      "checkout",
+      dataLakeClientProps?["context_page"] as? String
+    )
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+
+    self.assertProjectProperties(segmentClientProps)
+    self.assertCheckoutProperties(segmentClientProps)
+
+    XCTAssertEqual(
+      KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
+      segmentClientProps?["context_cta"] as? String
+    )
+    XCTAssertEqual(
+      KSRAnalytics.TypeContext.applePay.trackingString,
       segmentClientProps?["context_type"] as? String
     )
     XCTAssertEqual(
