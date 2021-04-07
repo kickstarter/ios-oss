@@ -1064,7 +1064,7 @@ public final class KSRAnalytics {
 
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
-      page: .pledgeScreen,
+      page: .checkout,
       properties: props,
       refTag: refTag?.stringTag
     )

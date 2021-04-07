@@ -1496,6 +1496,10 @@ final class KSRAnalyticsTests: TestCase {
       KSRAnalytics.TypeContext.creditCard.trackingString,
       dataLakeClientProps?["context_type"] as? String
     )
+    XCTAssertEqual(
+      "checkout",
+      dataLakeClientProps?["context_page"] as? String
+    )
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
 
@@ -1509,6 +1513,10 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(
       KSRAnalytics.TypeContext.creditCard.trackingString,
       segmentClientProps?["context_type"] as? String
+    )
+    XCTAssertEqual(
+      "checkout",
+      segmentClientProps?["context_page"] as? String
     )
   }
 
