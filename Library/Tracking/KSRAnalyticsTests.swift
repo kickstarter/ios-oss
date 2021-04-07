@@ -42,12 +42,12 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertEqual(
       ["native_checkout[experimental]", "other_experiment[control]"],
-      dataLakeClientProperties?["session_variants_optimizely"] as? [String]
+      dataLakeClientProperties?["session_variants_internal"] as? [String]
     )
 
     XCTAssertEqual(
       ["native_checkout[experimental]", "other_experiment[control]"],
-      segmentClientProperties?["session_variants_optimizely"] as? [String]
+      segmentClientProperties?["session_variants_internal"] as? [String]
     )
 
     XCTAssertEqual("native", dataLakeClientProperties?["session_client"] as? String)
@@ -62,7 +62,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("en", dataLakeClientProperties?["session_display_language"] as? String)
     XCTAssertEqual("GB", dataLakeClientProperties?["session_country"] as? String)
 
-    XCTAssertEqual(13, dataLakeClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
+    XCTAssertEqual(14, dataLakeClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
 
     XCTAssertEqual("native", segmentClientProperties?["session_client"] as? String)
     XCTAssertEqual(1_234_567_890, segmentClientProperties?["session_app_build_number"] as? Int)
@@ -76,7 +76,31 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("en", segmentClientProperties?["session_display_language"] as? String)
     XCTAssertEqual("GB", segmentClientProperties?["session_country"] as? String)
 
-    XCTAssertEqual(13, segmentClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
+    XCTAssertEqual(14, segmentClientProperties?.keys.filter { $0.hasPrefix("session_") }.count)
+  }
+
+  func testSessionProperties_OptimizelyClient() {
+    let optimizelyClient = MockOptimizelyClient()
+      |> \.allKnownExperiments .~ [
+        OptimizelyExperiment.Key.nativeProjectCards.rawValue
+      ]
+
+    withEnvironment(optimizelyClient: optimizelyClient) {
+      let dataLakeClient = MockTrackingClient()
+      let segmentClient = MockTrackingClient()
+      let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+
+      ksrAnalytics.trackTabBarClicked(.activity)
+
+      XCTAssertEqual(
+        [["native_project_cards": "control"]],
+        dataLakeClient.properties.last?["session_variants_optimizely"] as? [[String: String]]
+      )
+      XCTAssertEqual(
+        [["native_project_cards": "control"]],
+        segmentClient.properties.last?["session_variants_optimizely"] as? [[String: String]]
+      )
+    }
   }
 
   func testSessionProperties_Language() {
@@ -391,10 +415,10 @@ final class KSRAnalyticsTests: TestCase {
       dataLakeClientProperties?["project_tags"] as? String
     )
     XCTAssertEqual(1, dataLakeClientProperties?["project_updates_count"] as? Int)
-    XCTAssertEqual(26, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(27, dataLakeClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
+    XCTAssertEqual(false, dataLakeClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertNil(dataLakeClientProperties?["project_user_is_project_creator"])
-    XCTAssertNil(dataLakeClientProperties?["project_user_is_backer"])
     XCTAssertNil(dataLakeClientProperties?["project_user_has_starred"])
 
     XCTAssertEqual("discovery", dataLakeClientProperties?["session_ref_tag"] as? String)
@@ -432,10 +456,10 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(1, segmentClientProperties?["project_rewards_count"] as? Int)
     XCTAssertEqual(project.tags?.joined(separator: ", "), segmentClientProperties?["project_tags"] as? String)
     XCTAssertEqual(1, segmentClientProperties?["project_updates_count"] as? Int)
-    XCTAssertEqual(26, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+    XCTAssertEqual(27, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
 
+    XCTAssertEqual(false, segmentClientProperties?["project_user_is_backer"] as? Bool)
     XCTAssertNil(segmentClientProperties?["project_user_is_project_creator"])
-    XCTAssertNil(segmentClientProperties?["project_user_is_backer"])
     XCTAssertNil(segmentClientProperties?["project_user_has_starred"])
 
     XCTAssertEqual("discovery", segmentClientProperties?["session_ref_tag"] as? String)
@@ -2432,7 +2456,11 @@ final class KSRAnalyticsTests: TestCase {
   /*
    Helper for testing projectProperties from a template Project
    */
-  private func assertProjectProperties(_ props: [String: Any]?, loggedInUser: Bool = false) {
+  private func assertProjectProperties(
+    _ props: [String: Any]?,
+    isBacker: Bool = false,
+    loggedInUser: Bool = false
+  ) {
     XCTAssertEqual(10, props?["project_backers_count"] as? Int)
     XCTAssertEqual("USD", props?["project_currency"] as? String)
     XCTAssertEqual("1", props?["project_pid"] as? String)
@@ -2454,9 +2482,12 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(1, props?["project_updates_count"] as? Int)
     XCTAssertEqual(true, props?["project_is_repeat_creator"] as? Bool)
 
+    isBacker ? XCTAssertEqual(true, props?["project_user_is_backer"] as? Bool) :
+      XCTAssertEqual(false, props?["project_user_is_backer"] as? Bool)
+
     loggedInUser ? XCTAssertEqual(false, props?["project_user_is_project_creator"] as? Bool) :
       XCTAssertNil(props?["project_user_is_project_creator"] as? Bool)
-    XCTAssertNil(props?["project_user_is_backer"])
+
     XCTAssertNil(props?["project_user_has_starred"])
     XCTAssertNil(props?["project_category"] as? String)
     XCTAssertNil(props?["project_prelaunch_activated"] as? Bool)
@@ -2478,19 +2509,19 @@ final class KSRAnalyticsTests: TestCase {
   private func assertCheckoutProperties(_ props: [String: Any]?) {
     XCTAssertEqual(2, props?["checkout_add_ons_count_total"] as? Int)
     XCTAssertEqual(1, props?["checkout_add_ons_count_unique"] as? Int)
-    XCTAssertEqual("8.00", props?["checkout_add_ons_minimum_usd"] as? String)
-    XCTAssertEqual("10.00", props?["checkout_bonus_amount_usd"] as? String)
+    XCTAssertEqual(8.00, props?["checkout_add_ons_minimum_usd"] as? Double)
+    XCTAssertEqual(10.00, props?["checkout_bonus_amount_usd"] as? Double)
     XCTAssertEqual("CREDIT_CARD", props?["checkout_payment_type"] as? String)
     XCTAssertEqual("SUPER reward", props?["checkout_reward_title"] as? String)
-    XCTAssertEqual("5.00", props?["checkout_reward_minimum_usd"] as? String)
-    XCTAssertEqual(2, props?["checkout_reward_id"] as? Int)
+    XCTAssertEqual(5.00, props?["checkout_reward_minimum_usd"] as? Double)
+    XCTAssertEqual("2", props?["checkout_reward_id"] as? String)
     XCTAssertEqual(20.00, props?["checkout_amount_total_usd"] as? Double)
     XCTAssertEqual(true, props?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, props?["checkout_reward_is_limited_time"] as? Bool)
     XCTAssertEqual(true, props?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual("restricted", props?["checkout_reward_shipping_preference"] as? String)
     XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
-    XCTAssertEqual("10.00", props?["checkout_shipping_amount_usd"] as? String)
+    XCTAssertEqual(10.00, props?["checkout_shipping_amount_usd"] as? Double)
     XCTAssertEqual(
       "1970-05-23T21:21:18Z",
       props?["checkout_reward_estimated_delivery_on"] as? String
@@ -2520,17 +2551,17 @@ extension KSRAnalytics.CheckoutPropertiesData {
   static let template = KSRAnalytics.CheckoutPropertiesData(
     addOnsCountTotal: 2,
     addOnsCountUnique: 1,
-    addOnsMinimumUsd: "8.00",
-    bonusAmountInUsd: "10.00",
-    checkoutId: 1,
+    addOnsMinimumUsd: 8.00,
+    bonusAmountInUsd: 10.00,
+    checkoutId: "1",
     estimatedDelivery: 12_345_678,
     paymentType: "CREDIT_CARD",
     revenueInUsd: 20.00,
-    rewardId: 2,
-    rewardMinimumUsd: "5.00",
+    rewardId: "2",
+    rewardMinimumUsd: 5.00,
     rewardTitle: "SUPER reward",
     shippingEnabled: true,
-    shippingAmountUsd: "10.00",
+    shippingAmountUsd: 10.00,
     userHasStoredApplePayCard: true
   )
 }

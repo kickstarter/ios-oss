@@ -95,9 +95,7 @@ extension OptimizelyClientType {
 // MARK: - Tracking Properties
 
 public func optimizelyProperties(environment: Environment? = AppEnvironment.current) -> [String: Any]? {
-  guard let env = environment, let optimizelyClient = env.optimizelyClient else {
-    return nil
-  }
+  guard let env = environment else { return nil }
 
   let environmentType = env.environmentType
 
@@ -112,15 +110,9 @@ public func optimizelyProperties(environment: Environment? = AppEnvironment.curr
     sdkKey = Secrets.OptimizelySDKKey.development
   }
 
-  let allExperiments = optimizelyClient.allExperiments().map { experimentKey -> [String: String] in
-    let variation = optimizelyClient.getVariation(for: experimentKey)
-    return [experimentKey: variation.rawValue]
-  }
-
   return [
     "optimizely_api_key": sdkKey,
-    "optimizely_environment": environmentType.description,
-    "session_variants_optimizely": allExperiments
+    "optimizely_environment": environmentType.description
   ]
 }
 

@@ -696,13 +696,22 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
       allRewardsShippingTotal
     )
     .map { dataAndIsApplePay, checkoutId, baseReward, additionalPledgeAmount, allRewardsShippingTotal
-      -> (CreateBackingData, Bool, Int?, Reward, Double, Double) in
+      -> (CreateBackingData, Bool, String?, Reward, Double, Double) in
       let (data, isApplePay) = dataAndIsApplePay
-      return (data, isApplePay, checkoutId, baseReward, additionalPledgeAmount, allRewardsShippingTotal)
+      guard let checkoutId = checkoutId else {
+        return (data, isApplePay, nil, baseReward, additionalPledgeAmount, allRewardsShippingTotal)
+      }
+      return (
+        data,
+        isApplePay,
+        String(checkoutId),
+        baseReward,
+        additionalPledgeAmount,
+        allRewardsShippingTotal
+      )
     }
     .map { data, isApplePay, checkoutId, baseReward, additionalPledgeAmount, allRewardsShippingTotal
       -> ThanksPageData? in
-
       let checkoutPropsData = checkoutProperties(
         from: data.project,
         baseReward: baseReward,
