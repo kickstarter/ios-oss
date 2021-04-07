@@ -369,6 +369,7 @@ final class KSRAnalyticsTests: TestCase {
       |> Project.lens.stats.staticUsdRate .~ 2.0
       |> Project.lens.stats.commentsCount .~ 10
       |> Project.lens.prelaunchActivated .~ true
+      |> Project.lens.displayPrelaunch .~ true
 
     ksrAnalytics
       .trackProjectViewed(project, refTag: .discovery, sectionContext: .overview)
