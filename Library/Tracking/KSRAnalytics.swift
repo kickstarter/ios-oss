@@ -1801,9 +1801,12 @@ private func userProperties(for user: User?, config _: Config?, _ prefix: String
 
   props["backed_projects_count"] = user?.stats.backedProjectsCount
   props["created_projects_count"] = (user?.stats.createdProjectsCount ?? 0) +
-    (user?.stats.draftProjectsCount ?? 0)
+    (user?.stats
+      .draftProjectsCount ??
+      0) // Stats.createdProjectsCount is the count of projects user has lauched only, while event property `created_projects_count` includes Stats.createdProject + Stats.draftProjectsCount
   props["is_admin"] = user?.isAdmin
-  props["launched_projects_count"] = user?.stats.createdProjectsCount
+  props["launched_projects_count"] = user?.stats
+    .createdProjectsCount // event property`launched_projects_count` = Stats.createdProjectsCount
   props["uid"] = user?.id
   props["watched_projects_count"] = user?.stats.starredProjectsCount
   props["facebook_connected"] = user?.facebookConnected

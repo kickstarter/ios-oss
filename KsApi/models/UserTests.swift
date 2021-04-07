@@ -21,6 +21,7 @@ final class UserTests: XCTestCase {
         "small": "http://www.kickstarter.com/small.jpg"
       ],
       "backed_projects_count": 2,
+      "draft_projects_count": 4,
       "weekly_newsletter": false,
       "promo_newsletter": false,
       "happening_newsletter": false,
@@ -48,6 +49,7 @@ final class UserTests: XCTestCase {
     XCTAssertEqual(false, user?.isAdmin)
     XCTAssertEqual("http://www.kickstarter.com/small.jpg", user?.avatar.small)
     XCTAssertEqual(2, user?.stats.backedProjectsCount)
+    XCTAssertEqual(4, user?.stats.draftProjectsCount)
     XCTAssertEqual(false, user?.newsletters.weekly)
     XCTAssertEqual(false, user?.newsletters.promo)
     XCTAssertEqual(false, user?.newsletters.happening)
