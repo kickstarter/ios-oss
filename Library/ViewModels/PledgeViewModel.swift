@@ -860,13 +860,14 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         )
       }
 
-    Signal
-      .combineLatest(
-        createBackingData,
-        baseReward,
-        additionalPledgeAmount,
-        allRewardsShippingTotal
-      )
+    let pledgeSubmitEventsSignal = Signal.combineLatest(
+      createBackingData,
+      baseReward,
+      additionalPledgeAmount,
+      allRewardsShippingTotal
+    )
+
+    pledgeSubmitEventsSignal
       .takeWhen(createButtonTapped)
       .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
 
@@ -888,6 +889,35 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
         AppEnvironment.current.ksrAnalytics.trackPledgeSubmitButtonClicked(
           project: project,
           reward: reward,
+          typeContext: .creditCard,
+          checkoutData: checkoutData,
+          refTag: refTag
+        )
+      }
+
+    pledgeSubmitEventsSignal
+      .takeWhen(goToApplePayPaymentAuthorization)
+      .map { data, baseReward, additionalPledgeAmount, allRewardsShippingTotal in
+
+        let checkoutData = checkoutProperties(
+          from: data.project,
+          baseReward: baseReward,
+          addOnRewards: data.rewards,
+          selectedQuantities: data.selectedQuantities,
+          additionalPledgeAmount: additionalPledgeAmount,
+          pledgeTotal: data.pledgeTotal,
+          shippingTotal: allRewardsShippingTotal,
+          checkoutId: nil,
+          isApplePay: true
+        )
+
+        return (data.project, baseReward, data.refTag, checkoutData)
+      }
+      .observeValues { project, reward, refTag, checkoutData in
+        AppEnvironment.current.ksrAnalytics.trackPledgeSubmitButtonClicked(
+          project: project,
+          reward: reward,
+          typeContext: .applePay,
           checkoutData: checkoutData,
           refTag: refTag
         )
