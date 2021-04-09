@@ -18,7 +18,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   private let deadlineSubtitleLabelText = TestObserver<String, Never>()
   private let deadlineTitleLabelText = TestObserver<String, Never>()
   private let fundingProgressBarViewBackgroundColor = TestObserver<UIColor, Never>()
-  private let notifyDelegateToGoToCampaignWithProject = TestObserver<Project, Never>()
+  private let notifyDelegateToGoToCampaignWithData = TestObserver<ProjectPamphletMainCellData, Never>()
   private let notifyDelegateToGoToCreator = TestObserver<Project, Never>()
   private let opacityForViews = TestObserver<CGFloat, Never>()
   private let pledgedSubtitleLabelText = TestObserver<String, Never>()
@@ -52,7 +52,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.fundingProgressBarViewBackgroundColor
       .observe(self.fundingProgressBarViewBackgroundColor.observer)
     self.vm.outputs.notifyDelegateToGoToCampaignWithData
-      .observe(self.notifyDelegateToGoToCampaignWithProject.observer)
+      .observe(self.notifyDelegateToGoToCampaignWithData.observer)
     self.vm.outputs.notifyDelegateToGoToCreator.observe(self.notifyDelegateToGoToCreator.observer)
     self.vm.outputs.opacityForViews.observe(self.opacityForViews.observer)
     self.vm.outputs.pledgedSubtitleLabelText.observe(self.pledgedSubtitleLabelText.observer)
@@ -481,19 +481,19 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     let project = Project.template
     let refTag = RefTag.discovery
 
-    self.notifyDelegateToGoToCampaignWithProject.assertValues([])
+    XCTAssertNil(self.notifyDelegateToGoToCampaignWithData.lastValue)
 
     self.vm.inputs.configureWith(value: (project, refTag))
     self.vm.inputs.awakeFromNib()
 
-    self.notifyDelegateToGoToCampaignWithProject.assertValues([])
+    XCTAssertNil(self.notifyDelegateToGoToCampaignWithData.lastValue)
 
     self.vm.inputs.readMoreButtonTapped()
 
-    self.notifyDelegateToGoToCampaignWithProject.assertValues([project])
+    assertProjectRefTagEqual(actual: self.notifyDelegateToGoToCampaignWithData.lastValue!, expected: (project, refTag))
 
-    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
 
     XCTAssertEqual("campaign_details", self.dataLakeTrackingClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("campaign_details", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
@@ -513,8 +513,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     self.notifyDelegateToGoToCreator.assertValues([project])
 
-    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
 
     XCTAssertEqual("creator_details", self.dataLakeTrackingClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("creator_details", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
@@ -533,19 +533,19 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(value: (project, .discovery))
       self.vm.inputs.awakeFromNib()
 
-      XCTAssertEqual(self.dataLakeTrackingClient.events, ["Page Viewed"])
-      XCTAssertEqual(self.segmentTrackingClient.events, ["Page Viewed"])
+      XCTAssertEqual(self.dataLakeTrackingClient.events, [])
+      XCTAssertEqual(self.segmentTrackingClient.events, [])
 
       self.vm.inputs.readMoreButtonTapped()
 
       XCTAssertEqual(
         self.dataLakeTrackingClient.events,
-        ["Page Viewed", "CTA Clicked"],
+        ["CTA Clicked"],
         "Event is tracked"
       )
       XCTAssertEqual(
         self.segmentTrackingClient.events,
-        ["Page Viewed", "CTA Clicked"],
+        ["CTA Clicked"],
         "Event is tracked"
       )
     }
@@ -600,7 +600,10 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       self.vm.inputs.readMoreButtonTapped()
 
-      self.notifyDelegateToGoToCampaignWithProject.assertValues([project])
+      assertProjectRefTagEqual(
+        actual: self.notifyDelegateToGoToCampaignWithData.lastValue!,
+        expected: (project, .discovery)
+      )
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Campaign Details Button Clicked")
@@ -623,44 +626,10 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_type"] as? String, "phone")
     }
   }
+}
 
-  func testTrackingProjectViewed_LiveProject_LoggedIn_NonBacked() {
-    let user = User.template
-      |> \.location .~ Location.template
-      |> \.stats.backedProjectsCount .~ 50
-
-    let project = Project.template
-      |> Project.lens.state .~ .live
-      |> Project.lens.personalization.backing .~ nil
-
-    withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(value: (project, .discovery))
-      self.vm.inputs.awakeFromNib()
-
-      XCTAssertEqual(self.dataLakeTrackingClient.events, ["Page Viewed"])
-      XCTAssertEqual(self.segmentTrackingClient.events, ["Page Viewed"])
-
-      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_page"), ["project"])
-      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_section"), ["campaign"])
-      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
-      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_page"), ["project"])
-      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_section"), ["campaign"])
-      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
-
-      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "project_subcategory"), ["Art"])
-      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "project_category"), [nil])
-      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "project_country"), ["US"])
-      XCTAssertEqual(
-        self.dataLakeTrackingClient.properties(forKey: "project_user_has_watched", as: Bool.self),
-        [nil]
-      )
-      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "project_subcategory"), ["Art"])
-      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "project_category"), [nil])
-      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "project_country"), ["US"])
-      XCTAssertEqual(
-        self.segmentTrackingClient.properties(forKey: "project_user_has_watched", as: Bool.self),
-        [nil]
-      )
-    }
+private func assertProjectRefTagEqual(actual: (_: Project, _: RefTag?), expected: (_: Project, _: RefTag?), _ message: String = "", file: StaticString = #file, line: UInt = #line) {
+  if actual != expected {
+    XCTFail("Expected \(expected) but was \(actual)", file: file, line: line)
   }
 }

@@ -32,8 +32,8 @@ final class ProjectDescriptionViewModelTests: TestCase {
     let project = .template
       |> Project.lens.id .~ 42
       |> Project.lens.urls.web.project .~ "https://www.kickstarter.com/projects/1/42"
-
-    self.vm.inputs.configureWith(value: project)
+    
+    self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.viewDidLoad()
 
     self.isLoading.assertValues([true])
@@ -71,8 +71,8 @@ final class ProjectDescriptionViewModelTests: TestCase {
     let project = .template
       |> Project.lens.id .~ 42
       |> Project.lens.urls.web.project .~ "https://www.kickstarter.com/projects/1/42"
-
-    self.vm.inputs.configureWith(value: project)
+    
+    self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.viewDidLoad()
 
     self.loadWebViewRequest.assertValueCount(1)
@@ -108,7 +108,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
       |> Project.lens.id .~ 42
       |> Project.lens.urls.web.project .~ "https://www.kickstarter.com/projects/1/42"
 
-    self.vm.inputs.configureWith(value: project)
+    self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.viewDidLoad()
 
     self.loadWebViewRequest.assertValueCount(1)
@@ -142,7 +142,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
   func testDescriptionRequest() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(value: project)
+    self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.viewDidLoad()
 
     self.loadWebViewRequest.assertValueCount(1)
@@ -176,7 +176,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
   func testIFrameRequest() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(value: project)
+    self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.viewDidLoad()
 
     self.loadWebViewRequest.assertValueCount(1)
@@ -211,7 +211,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
   func testError() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(value: project)
+    self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.viewDidLoad()
 
     let request = URLRequest(url: URL(string: project.urls.web.project)!)
