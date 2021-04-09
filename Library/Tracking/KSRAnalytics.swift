@@ -1470,7 +1470,7 @@ public final class KSRAnalytics {
     refTag: String? = nil
   ) {
     let props = self.sessionProperties(refTag: refTag)
-      .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
+      .withAllValuesFrom(userProperties(for: self.loggedInUser))
       .withAllValuesFrom(contextProperties(page: page))
       .withAllValuesFrom(properties)
 
@@ -1808,21 +1808,20 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
 
 // MARK: - User Properties
 
-private func userProperties(for user: User?, config _: Config?, _ prefix: String = "user_") -> [String: Any] {
+private func userProperties(for user: User?, _ prefix: String = "user_") -> [String: Any] {
+  guard let user = user else { return [:] }
   var props: [String: Any] = [:]
 
-  props["backed_projects_count"] = user?.stats.backedProjectsCount
+  props["backed_projects_count"] = user.stats.backedProjectsCount
   // the product/insights team definition of created_projects_count is the sum of createdProjectsCount and draftProjectsCount
-  props["created_projects_count"] = (user?.stats.createdProjectsCount ?? 0) +
-    (user?.stats
-      .draftProjectsCount ??
-      0)
-  props["is_admin"] = user?.isAdmin
-  props["launched_projects_count"] = user?.stats
+  props["created_projects_count"] = (user.stats.createdProjectsCount ?? 0) +
+    (user.stats.draftProjectsCount ?? 0)
+  props["is_admin"] = user.isAdmin
+  props["launched_projects_count"] = user.stats
     .createdProjectsCount // product and insights defines launched_projects_count as only the createdProjectsCount
-  props["uid"] = user?.id
-  props["watched_projects_count"] = user?.stats.starredProjectsCount
-  props["facebook_connected"] = user?.facebookConnected
+  props["uid"] = user.id
+  props["watched_projects_count"] = user.stats.starredProjectsCount
+  props["facebook_connected"] = user.facebookConnected
 
   return props.prefixedKeys(prefix)
 }
