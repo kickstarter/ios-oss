@@ -51,7 +51,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     self.vm.outputs.deadlineTitleLabelText.observe(self.deadlineTitleLabelText.observer)
     self.vm.outputs.fundingProgressBarViewBackgroundColor
       .observe(self.fundingProgressBarViewBackgroundColor.observer)
-    self.vm.outputs.notifyDelegateToGoToCampaignWithProject
+    self.vm.outputs.notifyDelegateToGoToCampaignWithData
       .observe(self.notifyDelegateToGoToCampaignWithProject.observer)
     self.vm.outputs.notifyDelegateToGoToCreator.observe(self.notifyDelegateToGoToCreator.observer)
     self.vm.outputs.opacityForViews.observe(self.opacityForViews.observer)

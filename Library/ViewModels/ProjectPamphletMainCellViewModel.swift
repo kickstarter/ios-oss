@@ -64,8 +64,8 @@ public protocol ProjectPamphletMainCellViewModelOutputs {
   /// Emits a string to use for the location name label.
   var locationNameLabelText: Signal<String, Never> { get }
 
-  /// Emits the project when we should go to the campaign view for the project.
-  var notifyDelegateToGoToCampaignWithProject: Signal<Project, Never> { get }
+  /// Emits the project and ref tag when we should go to the campaign view for the project.
+  var notifyDelegateToGoToCampaignWithData: Signal<ProjectPamphletMainCellData, Never> { get }
 
   /// Emits the project when we should go to the creator's view for the project.
   var notifyDelegateToGoToCreator: Signal<Project, Never> { get }
@@ -223,7 +223,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
       .map(Project.lens.stats.fundingProgress.view)
       .map(clamp(0, 1))
 
-    self.notifyDelegateToGoToCampaignWithProject = project
+    self.notifyDelegateToGoToCampaignWithData = data
       .takeWhen(self.readMoreButtonTappedProperty.signal)
 
     self.notifyDelegateToGoToCreator = project
@@ -240,19 +240,8 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
 
     // Tracking
 
-    data.take(first: 1)
-      .observeValues { projectAndRefTag in
-        let (project, refTag) = projectAndRefTag
-
-        AppEnvironment.current.ksrAnalytics.trackProjectViewed(
-          project,
-          refTag: refTag,
-          sectionContext: .campaign
-        )
-      }
-
-    self.notifyDelegateToGoToCampaignWithProject
-      .observeValues { project in
+    self.notifyDelegateToGoToCampaignWithData
+      .observeValues { project, _ in
         AppEnvironment.current.optimizelyClient?.track(eventName: "Campaign Details Button Clicked")
 
         AppEnvironment.current.ksrAnalytics.trackCampaignDetailsButtonClicked(project: project)
@@ -311,7 +300,7 @@ public final class ProjectPamphletMainCellViewModel: ProjectPamphletMainCellView
   public let deadlineTitleLabelText: Signal<String, Never>
   public let fundingProgressBarViewBackgroundColor: Signal<UIColor, Never>
   public let locationNameLabelText: Signal<String, Never>
-  public let notifyDelegateToGoToCampaignWithProject: Signal<Project, Never>
+  public let notifyDelegateToGoToCampaignWithData: Signal<ProjectPamphletMainCellData, Never>
   public let notifyDelegateToGoToCreator: Signal<Project, Never>
   public let opacityForViews: Signal<CGFloat, Never>
   public let pledgedSubtitleLabelText: Signal<String, Never>
