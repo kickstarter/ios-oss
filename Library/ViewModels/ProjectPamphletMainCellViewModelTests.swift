@@ -490,7 +490,10 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     self.vm.inputs.readMoreButtonTapped()
 
-    assertProjectRefTagEqual(actual: self.notifyDelegateToGoToCampaignWithData.lastValue!, expected: (project, refTag))
+    assertProjectRefTagEqual(
+      actual: self.notifyDelegateToGoToCampaignWithData.lastValue!,
+      expected: (project, refTag)
+    )
 
     XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
@@ -628,7 +631,13 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
   }
 }
 
-private func assertProjectRefTagEqual(actual: (_: Project, _: RefTag?), expected: (_: Project, _: RefTag?), _ message: String = "", file: StaticString = #file, line: UInt = #line) {
+private func assertProjectRefTagEqual(
+  actual: (_: Project, _: RefTag?),
+  expected: (_: Project, _: RefTag?),
+  _: String = "",
+  file: StaticString = #file,
+  line: UInt = #line
+) {
   if actual != expected {
     XCTFail("Expected \(expected) but was \(actual)", file: file, line: line)
   }

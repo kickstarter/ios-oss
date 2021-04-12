@@ -32,7 +32,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
     let project = .template
       |> Project.lens.id .~ 42
       |> Project.lens.urls.web.project .~ "https://www.kickstarter.com/projects/1/42"
-    
+
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.viewDidLoad()
 
@@ -71,7 +71,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
     let project = .template
       |> Project.lens.id .~ 42
       |> Project.lens.urls.web.project .~ "https://www.kickstarter.com/projects/1/42"
-    
+
     self.vm.inputs.configureWith(value: (project, nil))
     self.vm.inputs.viewDidLoad()
 
@@ -142,7 +142,7 @@ final class ProjectDescriptionViewModelTests: TestCase {
   func testDescriptionRequest() {
     let project = Project.template
 
-    self.vm.inputs.configureWith(value: (project, nil))
+    self.vm.inputs.configureWith(value: (project, .discovery))
     self.vm.inputs.viewDidLoad()
 
     self.loadWebViewRequest.assertValueCount(1)
@@ -171,6 +171,15 @@ final class ProjectDescriptionViewModelTests: TestCase {
     self.goBackToProject.assertValueCount(0)
     self.goToMessageDialog.assertValueCount(0)
     self.goToSafariBrowser.assertValueCount(0)
+
+    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+
+    XCTAssertEqual(["campaign"], self.dataLakeTrackingClient.properties(forKey: "context_section"))
+    XCTAssertEqual(["campaign"], self.segmentTrackingClient.properties(forKey: "context_section"))
+
+    XCTAssertEqual(["discovery"], self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"))
+    XCTAssertEqual(["discovery"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
   }
 
   func testIFrameRequest() {

@@ -65,7 +65,7 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
       .filter { $0.navigationType == .linkActivated }
     let navigation = navigationActionLink
       .map { Navigation.match($0.request) }
-    
+
     let project = data.map(first)
 
     let projectDescriptionRequest = project
@@ -120,9 +120,9 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
     .filter { navigationAction, _, _ in navigationAction.navigationType == .linkActivated }
     .map { navigationAction, _, _ in navigationAction.request.url }
     .skipNil()
-    
+
     // Tracking
-    
+
     data.takeWhen(self.webViewDidFinishNavigationProperty.signal)
       .observeValues { projectAndRefTag in
         let (project, refTag) = projectAndRefTag
