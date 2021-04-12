@@ -1829,6 +1829,9 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertNil(dataLakeClientProps?["user_uid"])
 
     XCTAssertNil(segmentClientProps?["user_uid"])
+
+    XCTAssertEqual(0, dataLakeClientProps?.keys.filter { $0.hasPrefix("user_") }.count)
+    XCTAssertEqual(0, segmentClientProps?.keys.filter { $0.hasPrefix("user_") }.count)
   }
 
   func testUserProperties_loggedIn() {
