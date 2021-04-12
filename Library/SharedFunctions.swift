@@ -390,10 +390,18 @@ public func isEndDateAfterToday(for reward: Reward) -> Bool {
 }
 
 /*
- A helper that assists in rounding an amount to a given number of decimal places
+ A helper that assists in rounding a Double to a given number of decimal places
  */
 public func rounded(_ value: Double, places: Int) -> Double {
   let divisor = pow(10.0, Double(places))
+  return (value * divisor).rounded() / divisor
+}
+
+/*
+ A helper that assists in rounding a Float to a given number of decimal places
+ */
+public func rounded(_ value: Float, places: Int) -> Float {
+  let divisor = pow(10.0, Float(places))
   return (value * divisor).rounded() / divisor
 }
 
