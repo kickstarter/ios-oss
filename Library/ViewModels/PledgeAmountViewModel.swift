@@ -94,7 +94,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .skipNil()
       .map(Double.init)
       .skipNil()
-      .map(rounded)
+      .map { rounded($0, places: 2) }
 
     let initialValue = Signal.combineLatest(
       project,
@@ -163,7 +163,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     self.notifyDelegateAmountUpdated = updatedValue
       .map { min, max, value in
-        (rounded(value), min, max, min <= value && value <= max)
+        (rounded(value, places: 2), min, max, min <= value && value <= max)
       }
 
     self.maxPledgeAmountErrorLabelIsHidden = updatedValue

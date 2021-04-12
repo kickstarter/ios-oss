@@ -1584,8 +1584,8 @@ private func projectProperties(
   props["percent_raised"] = project.stats.percentFunded
   props["state"] = project.state.rawValue
   props["current_pledge_amount"] = project.stats.pledged
-  props["current_amount_pledged_usd"] = rounded(project.stats.convertedPledgedAmount ?? 0)
-  props["goal_usd"] = rounded(Double(project.stats.goalCurrentCurrency ?? 0))
+  props["current_amount_pledged_usd"] = rounded(project.stats.convertedPledgedAmount ?? 0, places: 2)
+  props["goal_usd"] = rounded(Double(project.stats.goalCurrentCurrency ?? 0), places: 2)
   props["has_video"] = project.video != nil
   props["prelaunch_activated"] = project.prelaunchActivated
   props["rewards_count"] = project.rewards.filter { $0 != .noReward }.count
@@ -1671,8 +1671,8 @@ private func checkoutProperties(
   result["amount_total_usd"] = data.revenueInUsd
   result["add_ons_count_total"] = data.addOnsCountTotal
   result["add_ons_count_unique"] = data.addOnsCountUnique
-  result["add_ons_minimum_usd"] = rounded(data.addOnsMinimumUsd)
-  result["bonus_amount_usd"] = rounded(data.bonusAmountInUsd ?? 0)
+  result["add_ons_minimum_usd"] = rounded(data.addOnsMinimumUsd, places: 2)
+  result["bonus_amount_usd"] = rounded(data.bonusAmountInUsd ?? 0, places: 2)
   result["id"] = data.checkoutId
   result["payment_type"] = data.paymentType
   result["reward_estimated_delivery_on"] = data.estimatedDelivery?.toISO8601DateTimeString()
@@ -1683,7 +1683,7 @@ private func checkoutProperties(
   result["reward_shipping_enabled"] = data.shippingEnabled
   result["reward_shipping_preference"] = reward?.shipping.preference?.trackingString
   result["reward_title"] = data.rewardTitle
-  result["shipping_amount_usd"] = rounded(data.shippingAmountUsd ?? 0)
+  result["shipping_amount_usd"] = rounded(data.shippingAmountUsd ?? 0, places: 2)
   result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
 
   return result.prefixedKeys(prefix)

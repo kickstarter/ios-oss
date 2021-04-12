@@ -304,7 +304,7 @@ extension Lens where Whole == Project, Part == Project.Stats {
     return Project.lens.stats .. lens(\Project.Stats.commentsCount)
   }
 
-  public var convertedPledgedAmount: Lens<Project, Double?> {
+  public var convertedPledgedAmount: Lens<Project, Float?> {
     return Project.lens.stats .. lens(\Project.Stats.convertedPledgedAmount)
   }
 

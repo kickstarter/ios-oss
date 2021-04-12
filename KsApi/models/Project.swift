@@ -65,7 +65,7 @@ public struct Project {
   public struct Stats {
     public var backersCount: Int
     public var commentsCount: Int?
-    public var convertedPledgedAmount: Double?
+    public var convertedPledgedAmount: Float?
     /// The currency code of the project ex. USD
     public var currency: String
     /// The currency code of the User's preferred currency ex. SEK
@@ -311,7 +311,7 @@ extension Project.Stats: Decodable {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     self.backersCount = try values.decode(Int.self, forKey: .backersCount)
     self.commentsCount = try values.decodeIfPresent(Int.self, forKey: .commentsCount)
-    self.convertedPledgedAmount = try values.decodeIfPresent(Double.self, forKey: .convertedPledgedAmount)
+    self.convertedPledgedAmount = try values.decodeIfPresent(Float.self, forKey: .convertedPledgedAmount)
     self.currency = try values.decode(String.self, forKey: .currency)
     self.currentCurrency = try values.decodeIfPresent(String.self, forKey: .currentCurrency)
     self.currentCurrencyRate = try values.decodeIfPresent(Float.self, forKey: .currentCurrencyRate)

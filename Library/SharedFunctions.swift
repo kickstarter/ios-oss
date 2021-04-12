@@ -390,10 +390,18 @@ public func isEndDateAfterToday(for reward: Reward) -> Bool {
 }
 
 /*
- A helper that assists in rounding an amount to a given number of decimal places
+ A helper that assists in rounding a Double to a given number of decimal places
  */
 public func rounded(_ value: Double, places: Int) -> Double {
   let divisor = pow(10.0, Double(places))
+  return (value * divisor).rounded() / divisor
+}
+
+/*
+ A helper that assists in rounding a Float to a given number of decimal places
+ */
+public func rounded(_ value: Float, places: Int) -> Float {
+  let divisor = pow(10.0, Float(places))
   return (value * divisor).rounded() / divisor
 }
 
@@ -575,14 +583,4 @@ public func checkoutProperties(
     shippingAmountUsd: shippingAmountUsd,
     userHasStoredApplePayCard: userHasEligibleStoredApplePayCard
   )
-}
-
-// Limits the amount of decimal numbers to 2
-// Example:
-//  rounded(1.12) => 1.12
-//  rounded(1.123) => 1.12
-//  rounded(1.125) => 1.13
-//  rounded(1.123456789) => 1.12
-public func rounded(_ value: Double) -> Double {
-  return round(value * 100) / 100
 }
