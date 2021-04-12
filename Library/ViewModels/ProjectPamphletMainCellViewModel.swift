@@ -388,7 +388,7 @@ private func pledgeAmountAndGoalAndCountry(
     return (Int(project.stats.pledgedUsd), Int(project.stats.goalUsd), Project.Country.us)
   }
 
-  return (pledgedCurrentCurrency, goalCurrentCurrency, currentCountry)
+  return (Int(pledgedCurrentCurrency), Int(goalCurrentCurrency), currentCountry)
 }
 
 private func goalText(for project: Project, _ needsConversion: Bool) -> String {

@@ -1470,7 +1470,7 @@ public final class KSRAnalytics {
     refTag: String? = nil
   ) {
     let props = self.sessionProperties(refTag: refTag)
-      .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
+      .withAllValuesFrom(userProperties(for: self.loggedInUser))
       .withAllValuesFrom(contextProperties(page: page))
       .withAllValuesFrom(properties)
 
@@ -1584,8 +1584,8 @@ private func projectProperties(
   props["percent_raised"] = project.stats.percentFunded
   props["state"] = project.state.rawValue
   props["current_pledge_amount"] = project.stats.pledged
-  props["current_amount_pledged_usd"] = project.stats.convertedPledgedAmount
-  props["goal_usd"] = project.stats.goalCurrentCurrency
+  props["current_amount_pledged_usd"] = rounded(project.stats.convertedPledgedAmount ?? 0, places: 2)
+  props["goal_usd"] = rounded(Double(project.stats.goalCurrentCurrency ?? 0), places: 2)
   props["has_video"] = project.video != nil
   props["prelaunch_activated"] = project.prelaunchActivated
   props["rewards_count"] = project.rewards.filter { $0 != .noReward }.count
@@ -1671,8 +1671,8 @@ private func checkoutProperties(
   result["amount_total_usd"] = data.revenueInUsd
   result["add_ons_count_total"] = data.addOnsCountTotal
   result["add_ons_count_unique"] = data.addOnsCountUnique
-  result["add_ons_minimum_usd"] = data.addOnsMinimumUsd
-  result["bonus_amount_usd"] = data.bonusAmountInUsd
+  result["add_ons_minimum_usd"] = rounded(data.addOnsMinimumUsd, places: 2)
+  result["bonus_amount_usd"] = rounded(data.bonusAmountInUsd ?? 0, places: 2)
   result["id"] = data.checkoutId
   result["payment_type"] = data.paymentType
   result["reward_estimated_delivery_on"] = data.estimatedDelivery?.toISO8601DateTimeString()
@@ -1683,7 +1683,7 @@ private func checkoutProperties(
   result["reward_shipping_enabled"] = data.shippingEnabled
   result["reward_shipping_preference"] = reward?.shipping.preference?.trackingString
   result["reward_title"] = data.rewardTitle
-  result["shipping_amount_usd"] = data.shippingAmountUsd
+  result["shipping_amount_usd"] = rounded(data.shippingAmountUsd ?? 0, places: 2)
   result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
 
   return result.prefixedKeys(prefix)
@@ -1808,21 +1808,20 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
 
 // MARK: - User Properties
 
-private func userProperties(for user: User?, config _: Config?, _ prefix: String = "user_") -> [String: Any] {
+private func userProperties(for user: User?, _ prefix: String = "user_") -> [String: Any] {
+  guard let user = user else { return [:] }
   var props: [String: Any] = [:]
 
-  props["backed_projects_count"] = user?.stats.backedProjectsCount
+  props["backed_projects_count"] = user.stats.backedProjectsCount
   // the product/insights team definition of created_projects_count is the sum of createdProjectsCount and draftProjectsCount
-  props["created_projects_count"] = (user?.stats.createdProjectsCount ?? 0) +
-    (user?.stats
-      .draftProjectsCount ??
-      0)
-  props["is_admin"] = user?.isAdmin
-  props["launched_projects_count"] = user?.stats
+  props["created_projects_count"] = (user.stats.createdProjectsCount ?? 0) +
+    (user.stats.draftProjectsCount ?? 0)
+  props["is_admin"] = user.isAdmin
+  props["launched_projects_count"] = user.stats
     .createdProjectsCount // product and insights defines launched_projects_count as only the createdProjectsCount
-  props["uid"] = user?.id
-  props["watched_projects_count"] = user?.stats.starredProjectsCount
-  props["facebook_connected"] = user?.facebookConnected
+  props["uid"] = user.id
+  props["watched_projects_count"] = user.stats.starredProjectsCount
+  props["facebook_connected"] = user.facebookConnected
 
   return props.prefixedKeys(prefix)
 }

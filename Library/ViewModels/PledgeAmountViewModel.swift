@@ -94,7 +94,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
       .skipNil()
       .map(Double.init)
       .skipNil()
-      .map(rounded)
+      .map { rounded($0, places: 2) }
 
     let initialValue = Signal.combineLatest(
       project,
@@ -163,7 +163,7 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 
     self.notifyDelegateAmountUpdated = updatedValue
       .map { min, max, value in
-        (rounded(value), min, max, min <= value && value <= max)
+        (rounded(value, places: 2), min, max, min <= value && value <= max)
       }
 
     self.maxPledgeAmountErrorLabelIsHidden = updatedValue
@@ -258,16 +258,6 @@ public final class PledgeAmountViewModel: PledgeAmountViewModelType,
 }
 
 // MARK: - Functions
-
-// Limits the amount of decimal numbers to 2
-// Example:
-//  rounded(1.12) => 1.12
-//  rounded(1.123) => 1.12
-//  rounded(1.125) => 1.13
-//  rounded(1.123456789) => 1.12
-private func rounded(_ value: Double) -> Double {
-  return round(value * 100) / 100
-}
 
 private func initialPledgeAmount(
   from project: Project,
