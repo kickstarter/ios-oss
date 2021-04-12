@@ -215,10 +215,10 @@ final class ProjectTests: XCTestCase {
 
   func testGoalCurrentCurrency() {
     let project = .template
-      |> Project.lens.stats.currentCurrencyRate .~ 2.50
+      |> Project.lens.stats.currentCurrencyRate .~ 2.68
       |> Project.lens.stats.goal .~ 30_000
 
-    XCTAssertEqual(75_000, project.stats.goalCurrentCurrency)
+    XCTAssertEqual(80_400, project.stats.goalCurrentCurrency)
   }
 
   func testDuration() {
