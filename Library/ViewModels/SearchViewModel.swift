@@ -186,23 +186,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
-    // Tracking
-
-    // Ensure an initial value is emitted for `stats` when view first appears
-    let searchResults = Signal.merge(
-      stats,
-      viewWillAppearNotAnimated.mapConst(0).take(first: 1)
-    )
-
-    Signal.combineLatest(query, searchResults)
-      .takeWhen(viewWillAppearNotAnimated)
-      .observeValues { query, searchResults in
-        let results = query.isEmpty ? 0 : searchResults
-        let params = .defaults |> DiscoveryParams.lens.query .~ query
-        AppEnvironment.current.ksrAnalytics
-          .trackProjectSearchView(params: params, results: results)
-      }
-
     let hasResults = Signal.combineLatest(paginatedProjects, isLoading)
       .filter(second >>> isFalse)
       .map(first)
@@ -219,8 +202,29 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
         return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
       }
-
+    
     // Tracking
+
+    // Ensure an initial value is emitted for `stats` when view first appears
+    let searchResults = Signal.merge(
+      stats,
+      viewWillAppearNotAnimated.mapConst(0).take(first: 1)
+    )
+
+    Signal.combineLatest(query, searchResults)
+      .takeWhen(viewWillAppearNotAnimated)
+      .observeValues { query, searchResults in
+        let results = query.isEmpty ? 0 : searchResults
+        let params = .defaults |> DiscoveryParams.lens.query .~ query
+        AppEnvironment.current.ksrAnalytics
+          .trackProjectSearchView(params: params, results: results)
+      }
+    
+    requestFirstPageWith.takePairWhen(searchResults)
+      .observeValues { params, results in
+        AppEnvironment.current.ksrAnalytics
+          .trackProjectSearchView(params: params, results: results)
+      }
 
     Signal.combineLatest(query, requestFirstPageWith)
       .takePairWhen(firstPageResults)
