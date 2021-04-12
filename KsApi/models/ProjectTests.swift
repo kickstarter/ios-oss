@@ -213,6 +213,14 @@ final class ProjectTests: XCTestCase {
     XCTAssertEqual(2_000, project.stats.pledgedUsd)
   }
 
+  func testGoalCurrentCurrency() {
+    let project = .template
+      |> Project.lens.stats.currentCurrencyRate .~ 2.68
+      |> Project.lens.stats.goal .~ 30_000
+
+    XCTAssertEqual(80_400, project.stats.goalCurrentCurrency)
+  }
+
   func testDuration() {
     let launchedAt = DateComponents()
       |> \.day .~ 15
