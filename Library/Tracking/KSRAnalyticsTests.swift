@@ -1707,32 +1707,6 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(2, segmentClientProps?["discover_search_results_count"] as? Int)
   }
 
-  func testTrackSearchResults() {
-    let dataLakeClient = MockTrackingClient()
-    let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
-
-    ksrAnalytics.trackSearchResults(
-      query: "query",
-      params: DiscoveryParams.defaults,
-      refTag: .search,
-      hasResults: true
-    )
-
-    let dataLakeClientProps = dataLakeClient.properties.last
-    let segmentClientClientProps = segmentClient.properties.last
-
-    XCTAssertEqual(["Search Results Loaded"], dataLakeClient.events)
-    XCTAssertEqual("query", dataLakeClientProps?["search_term"] as? String)
-    XCTAssertEqual("search", dataLakeClientProps?["discover_ref_tag"] as? String)
-    XCTAssertEqual(true, dataLakeClientProps?["has_results"] as? Bool)
-
-    XCTAssertEqual(["Search Results Loaded"], segmentClient.events)
-    XCTAssertEqual("query", segmentClientClientProps?["search_term"] as? String)
-    XCTAssertEqual("search", segmentClientClientProps?["discover_ref_tag"] as? String)
-    XCTAssertEqual(true, segmentClientClientProps?["has_results"] as? Bool)
-  }
-
   func testUserProperties_loggedOut() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
@@ -2308,7 +2282,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("rewards", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("rewards", segmentClient.properties.last?["context_page"] as? String)
 
-    ksrAnalytics.trackSearchResults(query: "", params: .defaults, refTag: .search, hasResults: false)
+    ksrAnalytics.trackProjectSearchView(params: .defaults)
     XCTAssertEqual("search", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("search", segmentClient.properties.last?["context_page"] as? String)
 

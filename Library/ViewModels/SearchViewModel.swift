@@ -226,19 +226,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
           .trackProjectSearchView(params: params, results: results)
       }
 
-    Signal.combineLatest(query, requestFirstPageWith)
-      .takePairWhen(firstPageResults)
-      .map(unpack)
-      .filter { query, _, _ in !query.isEmpty }
-      .observeValues { query, params, hasResults in
-        AppEnvironment.current.ksrAnalytics.trackSearchResults(
-          query: query,
-          params: params,
-          refTag: .search,
-          hasResults: hasResults
-        )
-      }
-
     Signal.combineLatest(self.tappedProjectProperty.signal, requestFirstPageWith)
       .observeValues { project, params in
         guard let project = project else { return }
