@@ -29,6 +29,7 @@ final class RewardAddOnSelectionViewEnvelopeTests: XCTestCase {
           "name": "Canada"
         ],
         "isProjectWeLove": true,
+        "displayPrelaunch": false,
         "prelaunchActivated": false,
         "deadlineAt": 158_750_211,
         "launchedAt": 158_740_211,
@@ -133,6 +134,7 @@ final class RewardAddOnSelectionViewEnvelopeTests: XCTestCase {
       XCTAssertEqual(value.project.launchedAt, 158_740_211)
       XCTAssertEqual(value.project.stateChangedAt, 1_587_502_131.0)
       XCTAssertEqual(value.project.description, "Project description")
+      XCTAssertEqual(value.project.displayPrelaunch, false)
       XCTAssertEqual(value.project.finalCollectionDate, "2020-07-01")
       XCTAssertEqual(value.project.isProjectWeLove, true)
       XCTAssertEqual(value.project.prelaunchActivated, false)
