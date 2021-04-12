@@ -864,7 +864,7 @@ public final class KSRAnalytics {
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(ctaContext: .addOnsContinue))
+      .withAllValuesFrom(contextProperties(ctaContext: .addOnsContinue, page: .addOnsSelection))
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
@@ -1041,11 +1041,12 @@ public final class KSRAnalytics {
     )
   }
 
-  /* Call when the Pledge button is clicked
+  /* Call when the Pledge button or Apple Pay button is clicked
 
    parameters:
    - project: the project being pledged to
    - reward: the chosen reward
+   - typeContext: The context of the pledge submit button for a project.
    - checkoutData: all the checkout data associated with the pledge
    - refTag: the associated RefTag for the pledge
 
@@ -1054,17 +1055,18 @@ public final class KSRAnalytics {
   public func trackPledgeSubmitButtonClicked(
     project: Project,
     reward: Reward,
+    typeContext: TypeContext,
     checkoutData: CheckoutPropertiesData,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
       // the context is always "newPledge" for this event
-      .withAllValuesFrom(contextProperties(ctaContext: .pledgeSubmit, typeContext: .creditCard))
+      .withAllValuesFrom(contextProperties(ctaContext: .pledgeSubmit, typeContext: typeContext))
 
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
-      page: .pledgeScreen,
+      page: .checkout,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -1582,8 +1584,8 @@ private func projectProperties(
   props["percent_raised"] = project.stats.percentFunded
   props["state"] = project.state.rawValue
   props["current_pledge_amount"] = project.stats.pledged
-  props["current_amount_pledged_usd"] = project.stats.convertedPledgedAmount
-  props["goal_usd"] = project.stats.goalCurrentCurrency
+  props["current_amount_pledged_usd"] = rounded(project.stats.convertedPledgedAmount ?? 0, places: 2)
+  props["goal_usd"] = rounded(Double(project.stats.goalCurrentCurrency ?? 0), places: 2)
   props["has_video"] = project.video != nil
   props["prelaunch_activated"] = project.prelaunchActivated
   props["rewards_count"] = project.rewards.filter { $0 != .noReward }.count
@@ -1669,8 +1671,8 @@ private func checkoutProperties(
   result["amount_total_usd"] = data.revenueInUsd
   result["add_ons_count_total"] = data.addOnsCountTotal
   result["add_ons_count_unique"] = data.addOnsCountUnique
-  result["add_ons_minimum_usd"] = data.addOnsMinimumUsd
-  result["bonus_amount_usd"] = data.bonusAmountInUsd
+  result["add_ons_minimum_usd"] = rounded(data.addOnsMinimumUsd, places: 2)
+  result["bonus_amount_usd"] = rounded(data.bonusAmountInUsd ?? 0, places: 2)
   result["id"] = data.checkoutId
   result["payment_type"] = data.paymentType
   result["reward_estimated_delivery_on"] = data.estimatedDelivery?.toISO8601DateTimeString()
@@ -1681,7 +1683,7 @@ private func checkoutProperties(
   result["reward_shipping_enabled"] = data.shippingEnabled
   result["reward_shipping_preference"] = reward?.shipping.preference?.trackingString
   result["reward_title"] = data.rewardTitle
-  result["shipping_amount_usd"] = data.shippingAmountUsd
+  result["shipping_amount_usd"] = rounded(data.shippingAmountUsd ?? 0, places: 2)
   result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
 
   return result.prefixedKeys(prefix)

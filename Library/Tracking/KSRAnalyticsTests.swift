@@ -404,8 +404,8 @@ final class KSRAnalyticsTests: TestCase {
     )
     XCTAssertEqual("live", dataLakeClientProperties?["project_state"] as? String)
     XCTAssertEqual(project.stats.pledged, dataLakeClientProperties?["project_current_pledge_amount"] as? Int)
-    XCTAssertEqual(2_000, dataLakeClientProperties?["project_current_amount_pledged_usd"] as? Int)
-    XCTAssertEqual(3_000, dataLakeClientProperties?["project_goal_usd"] as? Int)
+    XCTAssertEqual(2_000, dataLakeClientProperties?["project_current_amount_pledged_usd"] as? Float)
+    XCTAssertEqual(3_000, dataLakeClientProperties?["project_goal_usd"] as? Double)
     XCTAssertEqual(false, dataLakeClientProperties?["project_has_add_ons"] as? Bool)
     XCTAssertEqual(true, dataLakeClientProperties?["project_has_video"] as? Bool)
     XCTAssertEqual(10, dataLakeClientProperties?["project_comments_count"] as? Int)
@@ -448,8 +448,8 @@ final class KSRAnalyticsTests: TestCase {
     )
     XCTAssertEqual("live", segmentClientProperties?["project_state"] as? String)
     XCTAssertEqual(project.stats.pledged, segmentClientProperties?["project_current_pledge_amount"] as? Int)
-    XCTAssertEqual(2_000, segmentClientProperties?["project_current_amount_pledged_usd"] as? Int)
-    XCTAssertEqual(3_000, segmentClientProperties?["project_goal_usd"] as? Int)
+    XCTAssertEqual(2_000, segmentClientProperties?["project_current_amount_pledged_usd"] as? Float)
+    XCTAssertEqual(3_000, segmentClientProperties?["project_goal_usd"] as? Double)
     XCTAssertEqual(false, segmentClientProperties?["project_has_add_ons"] as? Bool)
     XCTAssertEqual(true, segmentClientProperties?["project_has_video"] as? Bool)
     XCTAssertEqual(10, segmentClientProperties?["project_comments_count"] as? Int)
@@ -1466,7 +1466,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("rewards", segmentClientProperties?["context_page"] as? String)
   }
 
-  func testTrackPledgeSubmitButtonClicked() {
+  func testTrackPledgeSubmitButtonClicked_Pledge() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
@@ -1477,6 +1477,7 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackPledgeSubmitButtonClicked(
       project: .template,
       reward: reward,
+      typeContext: .creditCard,
       checkoutData: .template,
       refTag: nil
     )
@@ -1497,6 +1498,10 @@ final class KSRAnalyticsTests: TestCase {
       KSRAnalytics.TypeContext.creditCard.trackingString,
       dataLakeClientProps?["context_type"] as? String
     )
+    XCTAssertEqual(
+      "checkout",
+      dataLakeClientProps?["context_page"] as? String
+    )
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
 
@@ -1510,6 +1515,66 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(
       KSRAnalytics.TypeContext.creditCard.trackingString,
       segmentClientProps?["context_type"] as? String
+    )
+    XCTAssertEqual(
+      "checkout",
+      segmentClientProps?["context_page"] as? String
+    )
+  }
+
+  func testTrackPledgeSubmitButtonClicked_ApplePay() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+    let reward = Reward.template
+      |> Reward.lens.endsAt .~ 5.0
+      |> Reward.lens.shipping.preference .~ .restricted
+
+    ksrAnalytics.trackPledgeSubmitButtonClicked(
+      project: .template,
+      reward: reward,
+      typeContext: .applePay,
+      checkoutData: .template,
+      refTag: nil
+    )
+
+    let dataLakeClientProps = dataLakeClient.properties.last
+    let segmentClientProps = segmentClient.properties.last
+
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+
+    self.assertProjectProperties(dataLakeClientProps)
+    self.assertCheckoutProperties(dataLakeClientProps)
+
+    XCTAssertEqual(
+      KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
+      dataLakeClientProps?["context_cta"] as? String
+    )
+    XCTAssertEqual(
+      KSRAnalytics.TypeContext.applePay.trackingString,
+      dataLakeClientProps?["context_type"] as? String
+    )
+    XCTAssertEqual(
+      "checkout",
+      dataLakeClientProps?["context_page"] as? String
+    )
+
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+
+    self.assertProjectProperties(segmentClientProps)
+    self.assertCheckoutProperties(segmentClientProps)
+
+    XCTAssertEqual(
+      KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
+      segmentClientProps?["context_cta"] as? String
+    )
+    XCTAssertEqual(
+      KSRAnalytics.TypeContext.applePay.trackingString,
+      segmentClientProps?["context_type"] as? String
+    )
+    XCTAssertEqual(
+      "checkout",
+      segmentClientProps?["context_page"] as? String
     )
   }
 
@@ -2060,6 +2125,9 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("add_ons_continue", dataLakeClientProps?["context_cta"] as? String)
     XCTAssertEqual("add_ons_continue", segmentClientProps?["context_cta"] as? String)
 
+    XCTAssertEqual("add_ons", dataLakeClientProps?["context_page"] as? String)
+    XCTAssertEqual("add_ons", segmentClientProps?["context_page"] as? String)
+
     self.assertProjectProperties(dataLakeClientProps)
     self.assertProjectProperties(segmentClientProps)
 
@@ -2474,8 +2542,8 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("2016-09-16T22:35:15Z", props?["project_launched_at"] as? String)
     XCTAssertEqual("live", props?["project_state"] as? String)
     XCTAssertEqual(1_000, props?["project_current_pledge_amount"] as? Int)
-    XCTAssertEqual(2_000, props?["project_current_amount_pledged_usd"] as? Int)
-    XCTAssertEqual(3_000, props?["project_goal_usd"] as? Int)
+    XCTAssertEqual(2_000.00, props?["project_current_amount_pledged_usd"] as? Float)
+    XCTAssertEqual(3_000.00, props?["project_goal_usd"] as? Double)
     XCTAssertEqual(true, props?["project_has_video"] as? Bool)
     XCTAssertEqual(10, props?["project_comments_count"] as? Int)
     XCTAssertEqual(0, props?["project_rewards_count"] as? Int)
