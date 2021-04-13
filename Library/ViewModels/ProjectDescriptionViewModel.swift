@@ -5,7 +5,7 @@ import WebKit
 
 public protocol ProjectDescriptionViewModelInputs {
   /// Call with the project given to the view.
-  func configureWith(value: Project)
+  func configureWith(value: ProjectPamphletMainCellData)
 
   /// Call when the webview needs to decide a policy for a navigation action. Returns the decision policy.
   func decidePolicyFor(navigationAction: WKNavigationActionData)
@@ -54,8 +54,8 @@ public protocol ProjectDescriptionViewModelType {
 public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
   ProjectDescriptionViewModelInputs, ProjectDescriptionViewModelOutputs {
   public init() {
-    let project = Signal.combineLatest(
-      self.projectProperty.signal.skipNil(),
+    let data = Signal.combineLatest(
+      self.configureDataProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
     .map(first)
@@ -65,6 +65,8 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
       .filter { $0.navigationType == .linkActivated }
     let navigation = navigationActionLink
       .map { Navigation.match($0.request) }
+
+    let project = data.map(first)
 
     let projectDescriptionRequest = project
       .map {
@@ -118,11 +120,23 @@ public final class ProjectDescriptionViewModel: ProjectDescriptionViewModelType,
     .filter { navigationAction, _, _ in navigationAction.navigationType == .linkActivated }
     .map { navigationAction, _, _ in navigationAction.request.url }
     .skipNil()
+
+    // Tracking
+
+    data.takeWhen(self.webViewDidFinishNavigationProperty.signal)
+      .observeValues { projectAndRefTag in
+        let (project, refTag) = projectAndRefTag
+        AppEnvironment.current.ksrAnalytics.trackProjectViewed(
+          project,
+          refTag: refTag,
+          sectionContext: .campaign
+        )
+      }
   }
 
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(value: Project) {
-    self.projectProperty.value = value
+  fileprivate let configureDataProperty = MutableProperty<ProjectPamphletMainCellData?>(nil)
+  public func configureWith(value: ProjectPamphletMainCellData) {
+    self.configureDataProperty.value = value
   }
 
   fileprivate let policyForNavigationActionProperty = MutableProperty<WKNavigationActionData?>(nil)
