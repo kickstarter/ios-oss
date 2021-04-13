@@ -490,8 +490,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     self.vm.inputs.readMoreButtonTapped()
 
-    XCTAssertEqual(project, self.notifyDelegateToGoToCampaignWithData.lastValue!.project)
-    XCTAssertEqual(refTag, self.notifyDelegateToGoToCampaignWithData.lastValue!.refTag)
+    XCTAssertEqual(project, self.notifyDelegateToGoToCampaignWithData.lastValue?.project)
+    XCTAssertEqual(refTag, self.notifyDelegateToGoToCampaignWithData.lastValue?.refTag)
 
     XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
@@ -530,8 +530,10 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.state .~ .successful
       |> Project.lens.personalization.isBacking .~ true
 
+    let refTag = RefTag.discovery
+
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(value: (project, .discovery))
+      self.vm.inputs.configureWith(value: (project, refTag))
       self.vm.inputs.awakeFromNib()
 
       XCTAssertEqual(self.dataLakeTrackingClient.events, [])
@@ -561,8 +563,10 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.state .~ .successful
       |> Project.lens.personalization.isBacking .~ true
 
+    let refTag = RefTag.discovery
+
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(value: (project, .discovery))
+      self.vm.inputs.configureWith(value: (project, refTag))
       self.vm.inputs.awakeFromNib()
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
@@ -591,8 +595,10 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       |> Project.lens.state .~ .live
       |> Project.lens.personalization.backing .~ nil
 
+    let refTag = RefTag.discovery
+
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(value: (project, .discovery))
+      self.vm.inputs.configureWith(value: (project, refTag))
       self.vm.inputs.awakeFromNib()
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, nil)
@@ -601,8 +607,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       self.vm.inputs.readMoreButtonTapped()
 
-      XCTAssertEqual(project, self.notifyDelegateToGoToCampaignWithData.lastValue!.project)
-      XCTAssertEqual(.discovery, self.notifyDelegateToGoToCampaignWithData.lastValue!.refTag)
+      XCTAssertEqual(project, self.notifyDelegateToGoToCampaignWithData.lastValue?.project)
+      XCTAssertEqual(refTag, self.notifyDelegateToGoToCampaignWithData.lastValue?.refTag)
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Campaign Details Button Clicked")
