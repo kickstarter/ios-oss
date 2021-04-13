@@ -186,15 +186,6 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
-    let hasResults = Signal.combineLatest(paginatedProjects, isLoading)
-      .filter(second >>> isFalse)
-      .map(first)
-      .map { !$0.isEmpty }
-
-    let firstPageResults = Signal.zip(hasResults, page)
-      .filter { _, page in page == 1 }
-      .map(first)
-
     self.goToProject = Signal.combineLatest(self.projects, query)
       .takePairWhen(self.tappedProjectProperty.signal.skipNil())
       .map { projectsAndQuery, tappedProject in
@@ -202,7 +193,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
         return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
       }
-    
+
     // Tracking
 
     // Ensure an initial value is emitted for `stats` when view first appears
@@ -219,11 +210,26 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         AppEnvironment.current.ksrAnalytics
           .trackProjectSearchView(params: params, results: results)
       }
-    
-    requestFirstPageWith.takePairWhen(searchResults)
-      .observeValues { params, results in
+
+    let hasResults = Signal.combineLatest(paginatedProjects, isLoading)
+      .filter(second >>> isFalse)
+      .map(first)
+      .map { !$0.isEmpty }
+
+    let firstPageResults = Signal.zip(hasResults, page)
+      .filter { _, page in page == 1 }
+      .map(first)
+
+    let sendEventForSearchResults = Signal.merge(
+      searchResults.filter { $0 == 0 },
+      searchResults.takeWhen(firstPageResults)
+    )
+
+    requestFirstPageWith
+      .takePairWhen(sendEventForSearchResults)
+      .observeValues { params, stats in
         AppEnvironment.current.ksrAnalytics
-          .trackProjectSearchView(params: params, results: results)
+          .trackProjectSearchView(params: params, results: stats)
       }
 
     Signal.combineLatest(self.tappedProjectProperty.signal, requestFirstPageWith)
