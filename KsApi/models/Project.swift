@@ -10,6 +10,7 @@ public struct Project {
   public var creator: User
   public var memberData: MemberData
   public var dates: Dates
+  public var displayPrelaunch: Bool?
   public var id: Int
   public var location: Location
   public var name: String
@@ -65,7 +66,7 @@ public struct Project {
   public struct Stats {
     public var backersCount: Int
     public var commentsCount: Int?
-    public var convertedPledgedAmount: Int?
+    public var convertedPledgedAmount: Float?
     /// The currency code of the project ex. USD
     public var currency: String
     /// The currency code of the User's preferred currency ex. SEK
@@ -100,8 +101,8 @@ public struct Project {
     }
 
     /// Goal amount converted to current currency.
-    public var goalCurrentCurrency: Int? {
-      return self.currentCurrencyRate.map { Int(floor(Float(self.goal) * $0)) }
+    public var goalCurrentCurrency: Float? {
+      return self.currentCurrencyRate.map { floor(Float(self.goal) * $0) }
     }
 
     /// Country determined by current currency.
@@ -241,6 +242,7 @@ extension Project: Decodable {
     case blurb
     case category
     case creator
+    case displayPrelaunch = "display_prelaunch"
     case id
     case location
     case name
@@ -263,6 +265,7 @@ extension Project: Decodable {
     self.creator = try values.decode(User.self, forKey: .creator)
     self.memberData = try Project.MemberData(from: decoder)
     self.dates = try Project.Dates(from: decoder)
+    self.displayPrelaunch = try values.decodeIfPresent(Bool.self, forKey: .displayPrelaunch)
     self.id = try values.decode(Int.self, forKey: .id)
     self.location = (try? values.decodeIfPresent(Location.self, forKey: .location)) ?? Location.none
     self.name = try values.decode(String.self, forKey: .name)
@@ -311,7 +314,7 @@ extension Project.Stats: Decodable {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     self.backersCount = try values.decode(Int.self, forKey: .backersCount)
     self.commentsCount = try values.decodeIfPresent(Int.self, forKey: .commentsCount)
-    self.convertedPledgedAmount = try values.decodeIfPresent(Int.self, forKey: .convertedPledgedAmount)
+    self.convertedPledgedAmount = try values.decodeIfPresent(Float.self, forKey: .convertedPledgedAmount)
     self.currency = try values.decode(String.self, forKey: .currency)
     self.currentCurrency = try values.decodeIfPresent(String.self, forKey: .currentCurrency)
     self.currentCurrencyRate = try values.decodeIfPresent(Float.self, forKey: .currentCurrencyRate)

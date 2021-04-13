@@ -10,6 +10,7 @@ extension GraphProject {
     creator: .template,
     currency: "USD",
     deadlineAt: 12_342_342_343,
+    displayPrelaunch: false,
     description: "Project description",
     finalCollectionDate: "2020-04-08T15:15:05Z",
     fxRate: 1,

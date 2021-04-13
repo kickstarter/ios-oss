@@ -9,7 +9,6 @@ public final class KSRAnalytics {
   private let dataLakeClient: TrackingClientType
   internal private(set) var config: Config?
   private let device: UIDeviceType
-  private let distinctId: String
   internal private(set) var loggedInUser: User? {
     didSet {
       self.identify(self.loggedInUser)
@@ -505,17 +504,17 @@ public final class KSRAnalytics {
   public struct CheckoutPropertiesData: Equatable {
     let addOnsCountTotal: Int?
     let addOnsCountUnique: Int?
-    let addOnsMinimumUsd: String?
-    let bonusAmountInUsd: String
-    let checkoutId: Int?
+    let addOnsMinimumUsd: Double
+    let bonusAmountInUsd: Double?
+    let checkoutId: String?
     let estimatedDelivery: TimeInterval?
     let paymentType: String?
     let revenueInUsd: Double
-    let rewardId: Int
-    let rewardMinimumUsd: String
+    let rewardId: String
+    let rewardMinimumUsd: Double
     let rewardTitle: String?
     let shippingEnabled: Bool
-    let shippingAmountUsd: String?
+    let shippingAmountUsd: Double?
     let userHasStoredApplePayCard: Bool
   }
 
@@ -527,8 +526,7 @@ public final class KSRAnalytics {
     loggedInUser: User? = nil,
     screen: UIScreenType = UIScreen.main,
     segmentClient: TrackingClientType & IdentifyingTrackingClient = Analytics
-      .configuredClient(),
-    distinctId: String = (UIDevice.current.identifierForVendor ?? UUID()).uuidString
+      .configuredClient()
   ) {
     self.bundle = bundle
     self.dataLakeClient = dataLakeClient
@@ -537,7 +535,6 @@ public final class KSRAnalytics {
     self.loggedInUser = loggedInUser
     self.screen = screen
     self.segmentClient = segmentClient
-    self.distinctId = distinctId
 
     self.updateAndObservePreferredContentSizeCategory()
   }
@@ -866,7 +863,7 @@ public final class KSRAnalytics {
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(ctaContext: .addOnsContinue))
+      .withAllValuesFrom(contextProperties(ctaContext: .addOnsContinue, page: .addOnsSelection))
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
@@ -1043,11 +1040,12 @@ public final class KSRAnalytics {
     )
   }
 
-  /* Call when the Pledge button is clicked
+  /* Call when the Pledge button or Apple Pay button is clicked
 
    parameters:
    - project: the project being pledged to
    - reward: the chosen reward
+   - typeContext: The context of the pledge submit button for a project.
    - checkoutData: all the checkout data associated with the pledge
    - refTag: the associated RefTag for the pledge
 
@@ -1056,17 +1054,18 @@ public final class KSRAnalytics {
   public func trackPledgeSubmitButtonClicked(
     project: Project,
     reward: Reward,
+    typeContext: TypeContext,
     checkoutData: CheckoutPropertiesData,
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
       // the context is always "newPledge" for this event
-      .withAllValuesFrom(contextProperties(ctaContext: .pledgeSubmit, typeContext: .creditCard))
+      .withAllValuesFrom(contextProperties(ctaContext: .pledgeSubmit, typeContext: typeContext))
 
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
-      page: .pledgeScreen,
+      page: .checkout,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -1111,7 +1110,7 @@ public final class KSRAnalytics {
     reward: Reward,
     checkoutData: CheckoutPropertiesData?
   ) {
-    var props = projectProperties(from: project)
+    var props = projectProperties(from: project, isBacker: true)
       .withAllValuesFrom(pledgeProperties(from: reward))
       // the context is always "newPledge" for this event
       .withAllValuesFrom(contextProperties(typeContext: TypeContext.pledge(.newPledge)))
@@ -1449,7 +1448,7 @@ public final class KSRAnalytics {
     refTag: String? = nil
   ) {
     let props = self.sessionProperties(refTag: refTag)
-      .withAllValuesFrom(userProperties(for: self.loggedInUser, config: self.config))
+      .withAllValuesFrom(userProperties(for: self.loggedInUser))
       .withAllValuesFrom(contextProperties(page: page))
       .withAllValuesFrom(properties)
 
@@ -1477,14 +1476,10 @@ public final class KSRAnalytics {
 
     props["apple_pay_capable"] = AppEnvironment.current.applePayCapabilities.applePayCapable()
     props["client"] = "native"
-    props["variants_optimizely"] = self.config?.abExperimentsArray.sorted()
     props["country"] = self.config?.countryCode
     props["display_language"] = AppEnvironment.current.language.rawValue
     props["device_type"] = self.device.deviceType
-    props["device_manufacturer"] = "Apple"
-    props["device_model"] = KSRAnalytics.deviceModel
     props["device_orientation"] = self.deviceOrientation
-    props["device_distinct_id"] = self.distinctId
 
     if let appBuildNumber = self.bundle.infoDictionary?["CFBundleVersion"] as? String {
       props["app_build_number"] = Int(appBuildNumber)
@@ -1493,24 +1488,21 @@ public final class KSRAnalytics {
     props["app_release_version"] = self.bundle.infoDictionary?["CFBundleShortVersionString"]
     props["is_voiceover_running"] = AppEnvironment.current.isVoiceOverRunning()
     props["os"] = "ios"
-    props["os_version"] = self.device.systemVersion
     props["platform"] = self.clientPlatform
-    props["screen_width"] = UInt(self.screen.bounds.width)
-    props["user_agent"] = Service.userAgent
     props["user_is_logged_in"] = self.loggedInUser != nil
-
     props["ref_tag"] = refTag
+    props["variants_internal"] = self.config?.abExperimentsArray.sorted()
+
+    if let env = AppEnvironment.current, let optimizelyClient = env.optimizelyClient {
+      let allExperiments = optimizelyClient.allExperiments().map { experimentKey -> [String: String] in
+        let variation = optimizelyClient.getVariation(for: experimentKey)
+        return [experimentKey: variation.rawValue]
+      }
+      props["variants_optimizely"] = allExperiments
+    }
 
     return props.prefixedKeys(prefix)
   }
-
-  private static let deviceModel: String? = {
-    var size: Int = 0
-    sysctlbyname("hw.machine", nil, &size, nil, 0)
-    var machine = [CChar](repeating: 0, count: Int(size))
-    sysctlbyname("hw.machine", &machine, &size, nil, 0)
-    return String(cString: machine)
-  }()
 
   private var deviceOrientation: String {
     switch self.device.orientation {
@@ -1548,6 +1540,7 @@ private func projectProperties(
   from project: Project,
   loggedInUser: User? = nil,
   dateType: DateProtocol.Type = AppEnvironment.current.dateType,
+  isBacker: Bool = false,
   calendar: Calendar = AppEnvironment.current.calendar,
   prefix: String = "project_"
 ) -> [String: Any] {
@@ -1569,8 +1562,8 @@ private func projectProperties(
   props["percent_raised"] = project.stats.percentFunded
   props["state"] = project.state.rawValue
   props["current_pledge_amount"] = project.stats.pledged
-  props["current_amount_pledged_usd"] = project.stats.convertedPledgedAmount
-  props["goal_usd"] = project.stats.goalCurrentCurrency
+  props["current_amount_pledged_usd"] = rounded(project.stats.convertedPledgedAmount ?? 0, places: 2)
+  props["goal_usd"] = rounded(Double(project.stats.goalCurrentCurrency ?? 0), places: 2)
   props["has_video"] = project.video != nil
   props["prelaunch_activated"] = project.prelaunchActivated
   props["rewards_count"] = project.rewards.filter { $0 != .noReward }.count
@@ -1584,7 +1577,9 @@ private func projectProperties(
 
   var userProperties: [String: Any] = [:]
   userProperties["has_watched"] = project.personalization.isStarred
-  userProperties["is_backer"] = project.personalization.isBacking
+
+  // is_backer should be false in all situations except on a new pledge on the thanks page and when a user is viewing an existing pledge
+  userProperties["is_backer"] = (project.personalization.isBacking ?? false) || isBacker
 
   // Only send this property if the user is logged in
   if let loggedInUser = loggedInUser {
@@ -1654,8 +1649,8 @@ private func checkoutProperties(
   result["amount_total_usd"] = data.revenueInUsd
   result["add_ons_count_total"] = data.addOnsCountTotal
   result["add_ons_count_unique"] = data.addOnsCountUnique
-  result["add_ons_minimum_usd"] = data.addOnsMinimumUsd
-  result["bonus_amount_usd"] = data.bonusAmountInUsd
+  result["add_ons_minimum_usd"] = rounded(data.addOnsMinimumUsd, places: 2)
+  result["bonus_amount_usd"] = rounded(data.bonusAmountInUsd ?? 0, places: 2)
   result["id"] = data.checkoutId
   result["payment_type"] = data.paymentType
   result["reward_estimated_delivery_on"] = data.estimatedDelivery?.toISO8601DateTimeString()
@@ -1666,7 +1661,7 @@ private func checkoutProperties(
   result["reward_shipping_enabled"] = data.shippingEnabled
   result["reward_shipping_preference"] = reward?.shipping.preference?.trackingString
   result["reward_title"] = data.rewardTitle
-  result["shipping_amount_usd"] = data.shippingAmountUsd
+  result["shipping_amount_usd"] = rounded(data.shippingAmountUsd ?? 0, places: 2)
   result["user_has_eligible_stored_apple_pay_card"] = data.userHasStoredApplePayCard
 
   return result.prefixedKeys(prefix)
@@ -1791,16 +1786,20 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
 
 // MARK: - User Properties
 
-private func userProperties(for user: User?, config _: Config?, _ prefix: String = "user_") -> [String: Any] {
+private func userProperties(for user: User?, _ prefix: String = "user_") -> [String: Any] {
+  guard let user = user else { return [:] }
   var props: [String: Any] = [:]
 
-  props["backed_projects_count"] = user?.stats.backedProjectsCount
-  props["created_projects_count"] = user?.stats.createdProjectsCount
-  props["is_admin"] = user?.isAdmin
-  props["launched_projects_count"] = user?.stats.memberProjectsCount
-  props["uid"] = user?.id
-  props["watched_projects_count"] = user?.stats.starredProjectsCount
-  props["facebook_connected"] = user?.facebookConnected
+  props["backed_projects_count"] = user.stats.backedProjectsCount
+  // the product/insights team definition of created_projects_count is the sum of createdProjectsCount and draftProjectsCount
+  props["created_projects_count"] = (user.stats.createdProjectsCount ?? 0) +
+    (user.stats.draftProjectsCount ?? 0)
+  props["is_admin"] = user.isAdmin
+  props["launched_projects_count"] = user.stats
+    .createdProjectsCount // product and insights defines launched_projects_count as only the createdProjectsCount
+  props["uid"] = user.id
+  props["watched_projects_count"] = user.stats.starredProjectsCount
+  props["facebook_connected"] = user.facebookConnected
 
   return props.prefixedKeys(prefix)
 }

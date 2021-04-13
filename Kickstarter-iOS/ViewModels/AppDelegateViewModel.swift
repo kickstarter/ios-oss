@@ -432,10 +432,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       }
 
     let projectLink = projectLinkValues
-      .filter { project, _, _, _ in project.prelaunchActivated != true }
+      .filter { project, _, _, _ in project.displayPrelaunch != true }
 
     let projectPreviewLink = projectLinkValues
-      .filter { project, _, _, _ in project.prelaunchActivated == true }
+      .filter { project, _, _, _ in project.displayPrelaunch == true }
 
     let fixErroredPledgeLinkAndIsLoggedIn = projectLink
       .filter { _, subpage, _, _ in subpage == .pledge(.manage) }

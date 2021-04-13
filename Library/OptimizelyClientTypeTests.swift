@@ -129,26 +129,9 @@ final class OptimizelyClientTypeTests: TestCase {
 
     withEnvironment(apiService: mockService, optimizelyClient: mockOptimizelyClient) {
       let properties = optimizelyProperties()
-      let optimizelyExperiments = properties?["session_variants_optimizely"] as? [[String: String]]
 
       XCTAssertEqual("Staging", properties?["optimizely_environment"] as? String)
       XCTAssertEqual(Secrets.OptimizelySDKKey.staging, properties?["optimizely_api_key"] as? String)
-      XCTAssertEqual([
-        [
-          "fake_experiment_1": "control"
-        ],
-        [
-          "fake_experiment_2": "variant-1"
-        ],
-        [
-          "fake_experiment_3": "variant-2"
-        ],
-        [
-          "fake_experiment_4": "control" // Not found in experiments
-        ]
-      ], optimizelyExperiments)
-
-      XCTAssertEqual(4, optimizelyExperiments?.count)
     }
   }
 

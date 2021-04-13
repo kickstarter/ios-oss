@@ -10,6 +10,7 @@ struct GraphProject: Decodable {
   var creator: GraphUser
   var currency: String
   var deadlineAt: TimeInterval?
+  var displayPrelaunch: Bool?
   var description: String
   var finalCollectionDate: String?
   var fxRate: Double
