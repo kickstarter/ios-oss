@@ -490,10 +490,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     self.vm.inputs.readMoreButtonTapped()
 
-    assertProjectRefTagEqual(
-      actual: self.notifyDelegateToGoToCampaignWithData.lastValue!,
-      expected: (project, refTag)
-    )
+    XCTAssertEqual(project, self.notifyDelegateToGoToCampaignWithData.lastValue!.project)
+    XCTAssertEqual(refTag, self.notifyDelegateToGoToCampaignWithData.lastValue!.refTag)
 
     XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
@@ -603,10 +601,8 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
       self.vm.inputs.readMoreButtonTapped()
 
-      assertProjectRefTagEqual(
-        actual: self.notifyDelegateToGoToCampaignWithData.lastValue!,
-        expected: (project, .discovery)
-      )
+      XCTAssertEqual(project, self.notifyDelegateToGoToCampaignWithData.lastValue!.project)
+      XCTAssertEqual(.discovery, self.notifyDelegateToGoToCampaignWithData.lastValue!.refTag)
 
       XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Campaign Details Button Clicked")
@@ -628,17 +624,5 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
       XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_type"] as? String, "phone")
     }
-  }
-}
-
-private func assertProjectRefTagEqual(
-  actual: (_: Project, _: RefTag?),
-  expected: (_: Project, _: RefTag?),
-  _: String = "",
-  file: StaticString = #file,
-  line: UInt = #line
-) {
-  if actual != expected {
-    XCTFail("Expected \(expected) but was \(actual)", file: file, line: line)
   }
 }
