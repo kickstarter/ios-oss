@@ -655,9 +655,9 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testPresentViewController_ProjectPreviewLink_PrelaunchActivated_True() {
+  func testPresentViewController_ProjectPreviewLink_DisplayPrelaunch_True() {
     let project = Project.template
-      |> Project.lens.prelaunchActivated .~ true
+      |> Project.lens.displayPrelaunch .~ true
 
     let apiService = MockService(fetchProjectResponse: project)
     withEnvironment(apiService: apiService) {
@@ -683,9 +683,9 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testPresentViewController_ProjectPreviewLink_PrelaunchActivated_False() {
+  func testPresentViewController_ProjectPreviewLink_DisplayPrelaunch_False() {
     let project = Project.template
-      |> Project.lens.prelaunchActivated .~ false
+      |> Project.lens.displayPrelaunch .~ false
 
     let apiService = MockService(fetchProjectResponse: project)
     withEnvironment(apiService: apiService) {
@@ -711,9 +711,9 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testPresentViewController_ProjectPreviewLink_PrelaunchActivated_Nil() {
+  func testPresentViewController_ProjectPreviewLink_DisplayPrelaunch_Nil() {
     let project = Project.template
-      |> Project.lens.prelaunchActivated .~ nil
+      |> Project.lens.displayPrelaunch .~ nil
 
     let apiService = MockService(fetchProjectResponse: project)
     withEnvironment(apiService: apiService) {

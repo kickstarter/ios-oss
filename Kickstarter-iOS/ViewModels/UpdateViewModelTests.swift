@@ -195,7 +195,7 @@ final class UpdateViewModelTests: TestCase {
   func testGoToSafariBrowser_PrelaunchProject() {
     let prelaunchProject = Project.template
       |> Project.lens.id .~ 10
-      |> Project.lens.prelaunchActivated .~ true
+      |> Project.lens.displayPrelaunch .~ true
     let prelaunchProjectURL = URL(string: prelaunchProject.urls.web.project)
       .flatMap { $0.deletingLastPathComponent() }
       .map { $0.appendingPathComponent(String(prelaunchProject.id)) }!

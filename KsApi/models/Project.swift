@@ -10,6 +10,7 @@ public struct Project {
   public var creator: User
   public var memberData: MemberData
   public var dates: Dates
+  public var displayPrelaunch: Bool?
   public var id: Int
   public var location: Location
   public var name: String
@@ -241,6 +242,7 @@ extension Project: Decodable {
     case blurb
     case category
     case creator
+    case displayPrelaunch = "display_prelaunch"
     case id
     case location
     case name
@@ -263,6 +265,7 @@ extension Project: Decodable {
     self.creator = try values.decode(User.self, forKey: .creator)
     self.memberData = try Project.MemberData(from: decoder)
     self.dates = try Project.Dates(from: decoder)
+    self.displayPrelaunch = try values.decodeIfPresent(Bool.self, forKey: .displayPrelaunch)
     self.id = try values.decode(Int.self, forKey: .id)
     self.location = (try? values.decodeIfPresent(Location.self, forKey: .location)) ?? Location.none
     self.name = try values.decode(String.self, forKey: .name)
