@@ -72,12 +72,6 @@ public protocol AppDelegateViewModelInputs {
   /// Call when Optimizely configuration has failed
   func optimizelyClientConfigurationFailed()
 
-  /// Call when the Perimeter X manager is ready
-  func perimeterXManagerReady(with headers: [AnyHashable: Any]?)
-
-  /// Call when a refresh to Perimeter X headers has occurred
-  func perimeterXNewHeaders(with headers: [AnyHashable: Any]?)
-
   /// Call when the contextual PushNotification dialog should be presented.
   func showNotificationDialog(notification: Notification)
 
@@ -154,12 +148,6 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits when the root view controller should navigate to search.
   var goToSearch: Signal<(), Never> { get }
-
-  /// Emits when PerimeterXs first set of headers are available.
-  var perimeterXInitialHeaders: Signal<[AnyHashable: Any]?, Never> { get }
-
-  /// Emits when PerimeterXs headers have been refreshed
-  var perimeterXRefreshedHeaders: Signal<[AnyHashable: Any]?, Never> { get }
 
   /// Emits an Notification that should be immediately posted.
   var postNotification: Signal<Notification, Never> { get }
@@ -263,11 +251,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     // iCloud
 
     self.synchronizeUbiquitousStore = self.applicationLaunchOptionsProperty.signal.ignoreValues()
-
-    // PerimeterX
-
-    self.perimeterXInitialHeaders = self.perimeterXManagerReadyProperty.signal
-    self.perimeterXRefreshedHeaders = self.perimeterXNewHeadersProperty.signal
 
     // Push notifications
 
@@ -786,16 +769,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.optimizelyClientConfigurationFailedProperty.value = ()
   }
 
-  fileprivate let perimeterXManagerReadyProperty = MutableProperty<[AnyHashable: Any]?>(nil)
-  public func perimeterXManagerReady(with headers: [AnyHashable: Any]?) {
-    self.perimeterXManagerReadyProperty.value = headers
-  }
-
-  fileprivate let perimeterXNewHeadersProperty = MutableProperty<[AnyHashable: Any]?>(nil)
-  public func perimeterXNewHeaders(with headers: [AnyHashable: Any]?) {
-    self.perimeterXNewHeadersProperty.value = headers
-  }
-
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFirebase: Signal<(), Never>
@@ -817,8 +790,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let goToProjectActivities: Signal<Param, Never>
   public let goToMobileSafari: Signal<URL, Never>
   public let goToSearch: Signal<(), Never>
-  public let perimeterXInitialHeaders: Signal<[AnyHashable: Any]?, Never>
-  public let perimeterXRefreshedHeaders: Signal<[AnyHashable: Any]?, Never>
   public let postNotification: Signal<Notification, Never>
   public let presentViewController: Signal<UIViewController, Never>
   public let pushTokenRegistrationStarted: Signal<(), Never>

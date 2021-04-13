@@ -1,4 +1,5 @@
 import Foundation
+import KsApi
 
 internal enum MockPXBlockType: String {
   case captcha
@@ -13,12 +14,13 @@ internal class MockPerimeterXClient: PerimeterXClientType {
     return ["PX-AUTH-TEST": "foobar"]
   }
 
-  func handleError(blockResponse: HTTPURLResponse, and _: Data) {
+  func handleError(blockResponse: HTTPURLResponse, and _: Data) -> Bool {
     if blockResponse.statusCode == 403 {
       self.pxblockType = .captcha
       self.handleErrorCalled = true
-      return
+      return true
     }
     self.pxblockType = .valid
+    return false
   }
 }

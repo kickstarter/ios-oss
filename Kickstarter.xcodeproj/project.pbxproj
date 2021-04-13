@@ -166,9 +166,6 @@
 		4748C19125B7A2F80098E89E /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C19025B7A2F80098E89E /* FirebaseCore.framework */; };
 		47567A5D25E40E500073AD6E /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47567A5C25E40E500073AD6E /* ErrorHandler.swift */; };
 		476A2A6425DEED2600EB6A56 /* PerimeterXClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2A6325DEED2600EB6A56 /* PerimeterXClientType.swift */; };
-		476A2A6B25DEF12900EB6A56 /* PerimeterXClient+PerimeterXClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2A5025DDA08E00EB6A56 /* PerimeterXClient+PerimeterXClientType.swift */; };
-		476A2A9C25DF2ECA00EB6A56 /* MockPerimeterXClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2A7825DF278900EB6A56 /* MockPerimeterXClient.swift */; };
-		476A2AB425E02E2900EB6A56 /* PerimeterXClientTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2AAC25E02E0C00EB6A56 /* PerimeterXClientTypeTests.swift */; };
 		477731BA25C4E7CF00AF3273 /* FirebaseRemoteConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 477731B925C4E7CF00AF3273 /* FirebaseRemoteConfig.framework */; };
 		59019FB61D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */; };
 		59019FBA1D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */; };
@@ -400,6 +397,9 @@
 		8A1A93D224C602300012FB43 /* PledgeShippingSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1A93D124C602300012FB43 /* PledgeShippingSummaryViewModel.swift */; };
 		8A1F155624DB609D00E0C000 /* DateFormatter+ISOFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F155524DB609D00E0C000 /* DateFormatter+ISOFormatter.swift */; };
 		8A1F155824DC657E00E0C000 /* Project.RewardDataLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F155724DC657E00E0C000 /* Project.RewardDataLenses.swift */; };
+		8A1F65E6262660CB00A28E74 /* PerimeterXClient+PerimeterXClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F65E4262660CB00A28E74 /* PerimeterXClient+PerimeterXClientType.swift */; };
+		8A1F65EB262660DB00A28E74 /* MockPerimeterXClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F65EA262660DB00A28E74 /* MockPerimeterXClient.swift */; };
+		8A1F65F2262660EF00A28E74 /* PerimeterXClientTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F65E3262660CB00A28E74 /* PerimeterXClientTypeTests.swift */; };
 		8A213CEB239EAEA400BBB4C7 /* TrackingClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */; };
 		8A213CEC239EAEA400BBB4C7 /* TrackingClientConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE5239EAEA400BBB4C7 /* TrackingClientConfiguration.swift */; };
 		8A213CEF239EAEA400BBB4C7 /* KSRAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE8239EAEA400BBB4C7 /* KSRAnalytics.swift */; };
@@ -1696,10 +1696,7 @@
 		4748C18725B7A18F0098E89E /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FIRAnalyticsConnector.framework; path = Carthage/Build/iOS/FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
 		4748C19025B7A2F80098E89E /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCore.framework; path = Carthage/Build/iOS/FirebaseCore.framework; sourceTree = "<group>"; };
 		47567A5C25E40E500073AD6E /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
-		476A2A5025DDA08E00EB6A56 /* PerimeterXClient+PerimeterXClientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PerimeterXClient+PerimeterXClientType.swift"; sourceTree = "<group>"; };
 		476A2A6325DEED2600EB6A56 /* PerimeterXClientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerimeterXClientType.swift; sourceTree = "<group>"; };
-		476A2A7825DF278900EB6A56 /* MockPerimeterXClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPerimeterXClient.swift; sourceTree = "<group>"; };
-		476A2AAC25E02E0C00EB6A56 /* PerimeterXClientTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerimeterXClientTypeTests.swift; sourceTree = "<group>"; };
 		477731B925C4E7CF00AF3273 /* FirebaseRemoteConfig.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseRemoteConfig.framework; path = Carthage/Build/iOS/FirebaseRemoteConfig.framework; sourceTree = "<group>"; };
 		59019FB51D21A47700EAEC9D /* DashboardReferrerRowStackViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrerRowStackViewViewModel.swift; sourceTree = "<group>"; };
 		59019FB81D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardReferrerRowStackView.swift; sourceTree = "<group>"; };
@@ -1921,6 +1918,9 @@
 		8A1A93D124C602300012FB43 /* PledgeShippingSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryViewModel.swift; sourceTree = "<group>"; };
 		8A1F155524DB609D00E0C000 /* DateFormatter+ISOFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+ISOFormatter.swift"; sourceTree = "<group>"; };
 		8A1F155724DC657E00E0C000 /* Project.RewardDataLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.RewardDataLenses.swift; sourceTree = "<group>"; };
+		8A1F65E3262660CB00A28E74 /* PerimeterXClientTypeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerimeterXClientTypeTests.swift; sourceTree = "<group>"; };
+		8A1F65E4262660CB00A28E74 /* PerimeterXClient+PerimeterXClientType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PerimeterXClient+PerimeterXClientType.swift"; sourceTree = "<group>"; };
+		8A1F65EA262660DB00A28E74 /* MockPerimeterXClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockPerimeterXClient.swift; sourceTree = "<group>"; };
 		8A213CE4239EAEA400BBB4C7 /* TrackingClientType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientType.swift; sourceTree = "<group>"; };
 		8A213CE5239EAEA400BBB4C7 /* TrackingClientConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientConfiguration.swift; sourceTree = "<group>"; };
 		8A213CE6239EAEA400BBB4C7 /* TrackingClientConfigurationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingClientConfigurationTests.swift; sourceTree = "<group>"; };
@@ -2999,7 +2999,6 @@
 				379CFFF02242DAC400F6F0C2 /* Nib.swift */,
 				379CFFEB2242DAC200F6F0C2 /* NSBundle-Framework.swift */,
 				774D98D523A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift */,
-				476A2A5025DDA08E00EB6A56 /* PerimeterXClient+PerimeterXClientType.swift */,
 				1611EF6123ABD7C00051CDCC /* OptimizelyResultTypeTests.swift */,
 				770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */,
 				D76436D1224040B700DAFC9E /* SharedFunctions.swift */,
@@ -3586,7 +3585,6 @@
 			isa = PBXGroup;
 			children = (
 				8A142EBC23354BFD00FB43AB /* AddNewCardIntent.swift */,
-				476A2AAC25E02E0C00EB6A56 /* PerimeterXClientTypeTests.swift */,
 				A709697D1D143D1300DB39D3 /* AlertError.swift */,
 				A7C725781C85D36D005A016B /* AppEnvironment.swift */,
 				A7ED1F121E830FDC00BFFA01 /* AppEnvironmentTests.swift */,
@@ -3959,10 +3957,9 @@
 				D033E2C122A05B4800464E43 /* MockApplication.swift */,
 				A7ED1F451E831BA200BFFA01 /* MockBundle.swift */,
 				774D98DB23B1520D00FC81C2 /* MockOptimizelyClient.swift */,
-				476A2A7825DF278900EB6A56 /* MockPerimeterXClient.swift */,
+				1611EF6823B275700051CDCC /* MockUUID.swift */,
 				A7ED1F461E831BA200BFFA01 /* TestCase.swift */,
 				A7ED1F471E831BA200BFFA01 /* XCTestCase+AppEnvironment.swift */,
-				1611EF6823B275700051CDCC /* MockUUID.swift */,
 			);
 			path = TestHelpers;
 			sourceTree = "<group>";
@@ -4303,6 +4300,9 @@
 		D01587511EEB2DE4006E7684 /* KsApi */ = {
 			isa = PBXGroup;
 			children = (
+				8A1F65EA262660DB00A28E74 /* MockPerimeterXClient.swift */,
+				8A1F65E4262660CB00A28E74 /* PerimeterXClient+PerimeterXClientType.swift */,
+				8A1F65E3262660CB00A28E74 /* PerimeterXClientTypeTests.swift */,
 				D01587531EEB2DE4006E7684 /* Info.plist */,
 				D08CD1BF21910C97009F89F0 /* GraphIDBridging.swift */,
 				775DFA9C215E758400620CED /* GraphMutation.swift */,
@@ -5155,7 +5155,6 @@
 				8A23203125B0ECF700B940C3 /* IdentifyingTrackingClient.swift in Sources */,
 				A7F441CD1D005A9400FE6FC5 /* MessagesViewModel.swift in Sources */,
 				8053D3111D3848A3007B85DB /* Reachability.swift in Sources */,
-				476A2A6B25DEF12900EB6A56 /* PerimeterXClient+PerimeterXClientType.swift in Sources */,
 				77C9122723C4F99400F3D2C9 /* Double+Currency.swift in Sources */,
 				809F8B661D08B4FF005BADD9 /* UpdateDraftViewModel.swift in Sources */,
 				8A13D165249566FB007E2C0B /* PledgeExpandableHeaderRewardCellViewModel.swift in Sources */,
@@ -5490,7 +5489,6 @@
 				D6BD66BD23CCF7B6008694BB /* EquatableHelpersTests.swift in Sources */,
 				D04AACA6218BB72100CF713E /* ChangePasswordViewModelTests.swift in Sources */,
 				8A213CF5239EAF5600BBB4C7 /* TrackingClientConfigurationTests.swift in Sources */,
-				476A2AB425E02E2900EB6A56 /* PerimeterXClientTypeTests.swift in Sources */,
 				A7ED20041E831C5C00BFFA01 /* UpdateDraftViewModelTests.swift in Sources */,
 				A7ED1F4B1E831BA200BFFA01 /* TestCase.swift in Sources */,
 				A7ED1FBE1E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift in Sources */,
@@ -6241,6 +6239,7 @@
 				8AA407CE24DB5316008C5FB0 /* GraphCategoryTemplates.swift in Sources */,
 				D01588A91EEB2ED7006E7684 /* Project.PersonalizationLenses.swift in Sources */,
 				D015888B1EEB2ED7006E7684 /* CommentLenses.swift in Sources */,
+				8A1F65E6262660CB00A28E74 /* PerimeterXClient+PerimeterXClientType.swift in Sources */,
 				D0158A281EEB30A2006E7684 /* StarEnvelopeTemplates.swift in Sources */,
 				D0158A221EEB30A2006E7684 /* ProjectStatsEnvelopeTemplates.swift in Sources */,
 				D01588B71EEB2ED7006E7684 /* ProjectStatsEnvelope.CumulativeStatsLenses.swift in Sources */,
@@ -6259,7 +6258,6 @@
 				7798B5632174F494008BC50D /* UserEnvelope.swift in Sources */,
 				D01588491EEB2ED7006E7684 /* Backing.swift in Sources */,
 				D01588CB1EEB2ED7006E7684 /* ShippingRuleLenses.swift in Sources */,
-				476A2A9C25DF2ECA00EB6A56 /* MockPerimeterXClient.swift in Sources */,
 				D72370902118E1F5001EA4CA /* ExportDataEnvelopeLenses.swift in Sources */,
 				D01588411EEB2ED7006E7684 /* AccessTokenEnvelope.swift in Sources */,
 				D01588BD1EEB2ED7006E7684 /* ProjectStatsEnvelope.RewardDistributionLenses.swift in Sources */,
@@ -6351,6 +6349,7 @@
 				7798B56821750368008BC50D /* UserQueriesTests.swift in Sources */,
 				D0D10C201EEB4550005EBAD0 /* User.NewsletterSubscriptionsTests.swift in Sources */,
 				D0D10C051EEB4550005EBAD0 /* ChangePaymentMethodEnvelopeTests.swift in Sources */,
+				8A1F65F2262660EF00A28E74 /* PerimeterXClientTypeTests.swift in Sources */,
 				77272D382370AB8E003B7A9C /* BackingPaymentSourceTests.swift in Sources */,
 				D0E78C3822A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift in Sources */,
 				D0D10C1E1EEB4550005EBAD0 /* UpdateTests.swift in Sources */,
@@ -6401,6 +6400,7 @@
 				8A4E953D2451058F00A578CF /* ManagePledgeViewBackingEnvelopeTests.swift in Sources */,
 				D0D10C161EEB4550005EBAD0 /* ProjectTests.swift in Sources */,
 				777B88E522BD911F0027640F /* CategoryTests.swift in Sources */,
+				8A1F65EB262660DB00A28E74 /* MockPerimeterXClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

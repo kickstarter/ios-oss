@@ -6,6 +6,8 @@ public protocol ErrorHandler {
 
    - parameter blockResponse: An `HTTPURLResponse` object with response data from a request.
    - parameter data: Data` associated with the request
+
+   - returns: A boolean indicating whether or not the error was handled.
    */
-  func handleError(blockResponse: HTTPURLResponse, and data: Data)
+  func handleError(blockResponse: HTTPURLResponse, and data: Data) -> Bool
 }

@@ -2,6 +2,7 @@ import Foundation
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
+import PerimeterX
 
 public extension Bundle {
   var _buildVersion: String {
@@ -30,7 +31,7 @@ public struct Service: ServiceType {
     currency: String = "USD",
     buildVersion: String = Bundle.main._buildVersion,
     deviceIdentifier: String = UIDevice.current.identifierForVendor.coalesceWith(UUID()).uuidString,
-    perimeterXClient: PerimeterXClientType? = nil
+    perimeterXClient: PerimeterXClientType? = PerimeterXClient()
   ) {
     self.appId = appId
     self.serverConfig = serverConfig
@@ -43,6 +44,9 @@ public struct Service: ServiceType {
 
     // Global override required for injecting custom User-Agent header in ajax requests
     UserDefaults.standard.register(defaults: ["UserAgent": Service.userAgent])
+
+    // Initialize PerimeterX
+    PXManager.sharedInstance()?.start(with: Secrets.perimeterxAppId)
   }
 
   public func login(_ oauthToken: OauthTokenAuthType) -> Service {

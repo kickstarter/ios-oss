@@ -2,7 +2,7 @@
 import Prelude
 import XCTest
 
-final class PerimeterXClientTypeTests: TestCase {
+final class PerimeterXClientTypeTests: XCTestCase {
   func testHeaders() {
     let mockPXClient = MockPerimeterXClient()
 
@@ -28,9 +28,7 @@ final class PerimeterXClientTypeTests: TestCase {
       return
     }
 
-    mockPXClient.handleError(blockResponse: blockResponse, and: data!)
-
-    self.scheduler.advance()
+    XCTAssertTrue(mockPXClient.handleError(blockResponse: blockResponse, and: data!))
 
     XCTAssertEqual(mockPXClient.pxblockType, .captcha)
     XCTAssertTrue(mockPXClient.handleErrorCalled)
@@ -49,9 +47,7 @@ final class PerimeterXClientTypeTests: TestCase {
       return
     }
 
-    mockPXClient.handleError(blockResponse: blockResponse, and: data!)
-
-    self.scheduler.advance()
+    XCTAssertFalse(mockPXClient.handleError(blockResponse: blockResponse, and: data!))
 
     XCTAssertEqual(mockPXClient.pxblockType, .valid)
     XCTAssertFalse(mockPXClient.handleErrorCalled)

@@ -78,18 +78,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.viewModel.inputs.didUpdateConfig(config)
       }
 
-    self.viewModel.outputs.perimeterXInitialHeaders
-      .observeForUI()
-      .observeValues { pxHeaders in
-        print("❌ Perimeter X headers ready: \(String(describing: pxHeaders))")
-      }
-
-    self.viewModel.outputs.perimeterXRefreshedHeaders
-      .observeForUI()
-      .observeValues { pxHeaders in
-        print("❌ Perimeter X headers were refreshed: \(String(describing: pxHeaders))")
-      }
-
     self.viewModel.outputs.postNotification
       .observeForUI()
       .observeValues(NotificationCenter.default.post)
@@ -187,12 +175,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
       .observeForUI()
       .observeValues { [weak self] key, logLevel, dispatchInterval in
         self?.configureOptimizely(with: key, logLevel: logLevel, dispatchInterval: dispatchInterval)
-      }
-
-    self.viewModel.outputs.configurePerimeterX
-      .observeForUI()
-      .observeValues { [weak self] _ in
-        self?.configurePerimeterX()
       }
 
     self.viewModel.outputs.configureAppCenterWithData
@@ -384,10 +366,6 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
   }
 
-  private func configurePerimeterX() {
-    PerimeterXClient.startPerimeterX(with: self)
-  }
-
   fileprivate func presentContextualPermissionAlert(_ notification: Notification) {
     guard let context = notification.userInfo?.values.first as? PushNotificationDialog.Context else {
       return
@@ -475,17 +453,5 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
     rootTabBarController.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
     completion()
-  }
-}
-
-// MARK: - PXManagerDelegate
-
-extension AppDelegate: PXManagerDelegate {
-  func managerReady(_ httpHeaders: [AnyHashable: Any]!) {
-    self.viewModel.inputs.perimeterXManagerReady(with: httpHeaders)
-  }
-
-  func newHeaders(_ httpHeaders: [AnyHashable: Any]!) {
-    self.viewModel.inputs.perimeterXNewHeaders(with: httpHeaders)
   }
 }
