@@ -642,7 +642,7 @@ final class AppDelegateViewModelTests: TestCase {
       XCTAssertTrue(result)
 
       self.presentViewController.assertValues([1, 2, 2, 2, 3])
-      
+
       let faqUrl = projectUrl + "/faqs"
       result = self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
@@ -650,7 +650,7 @@ final class AppDelegateViewModelTests: TestCase {
         options: [:]
       )
       XCTAssertTrue(result)
-      
+
       self.presentViewController.assertValues([1, 2, 2, 2, 3, 2])
     }
   }
