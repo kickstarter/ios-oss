@@ -1749,11 +1749,11 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
 
-    XCTAssertEqual(dataLakeClient.properties(forKey: "context_location"), ["global_nav"])
-    XCTAssertEqual(segmentClient.properties(forKey: "context_location"), ["global_nav"])
-
     XCTAssertEqual(dataLakeClient.properties(forKey: "context_cta"), ["discover"])
     XCTAssertEqual(segmentClient.properties(forKey: "context_cta"), ["discover"])
+
+    XCTAssertEqual(dataLakeClient.properties(forKey: "context_page"), ["activity_feed"])
+    XCTAssertEqual(segmentClient.properties(forKey: "context_page"), ["activity_feed"])
   }
 
   // MARK: - Search Tracking
@@ -1879,22 +1879,24 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackTabBarClicked(tabBarHome)
 
-    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"], dataLakeClient.events)
-    XCTAssertEqual("discovery", dataLakeClient.properties.last?["context_tab_bar_label"] as? String)
+    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked", "CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked", "CTA Clicked"], segmentClient.events)
 
-    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"], segmentClient.events)
-    XCTAssertEqual("discovery", segmentClient.properties.last?["context_tab_bar_label"] as? String)
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("global_nav", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
 
     ksrAnalytics.trackTabBarClicked(tabBarProfile)
 
     XCTAssertEqual(
-      ["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"],
+      ["Tab Bar Clicked", "Tab Bar Clicked", "CTA Clicked", "Tab Bar Clicked"],
       dataLakeClient.events
     )
     XCTAssertEqual("profile", dataLakeClient.properties.last?["context_tab_bar_label"] as? String)
 
     XCTAssertEqual(
-      ["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"],
+      ["Tab Bar Clicked", "Tab Bar Clicked", "CTA Clicked", "Tab Bar Clicked"],
       segmentClient.events
     )
     XCTAssertEqual("profile", segmentClient.properties.last?["context_tab_bar_label"] as? String)
@@ -1904,7 +1906,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual([
       "Tab Bar Clicked",
       "Tab Bar Clicked",
-      "Tab Bar Clicked",
+      "CTA Clicked",
       "Tab Bar Clicked",
       "CTA Clicked"
     ], dataLakeClient.events)
@@ -1914,7 +1916,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual([
       "Tab Bar Clicked",
       "Tab Bar Clicked",
-      "Tab Bar Clicked",
+      "CTA Clicked",
       "Tab Bar Clicked",
       "CTA Clicked"
     ], segmentClient.events)
@@ -2271,8 +2273,8 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackExploreButtonClicked()
-    XCTAssertEqual(nil, dataLakeClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual(nil, segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("activity_feed", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("activity_feed", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackFacebookLoginOrSignupButtonClicked(intent: .generic)
     XCTAssertEqual("log_in_sign_up", dataLakeClient.properties.last?["context_page"] as? String)
