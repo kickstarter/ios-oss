@@ -7,7 +7,7 @@ internal protocol ProjectPamphletMainCellDelegate: VideoViewControllerDelegate {
   func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, addChildController child: UIViewController)
   func projectPamphletMainCell(
     _ cell: ProjectPamphletMainCell,
-    goToCampaignForProjectWith project: Project
+    goToCampaignForProjectWith data: ProjectPamphletMainCellData
   )
   func projectPamphletMainCell(_ cell: ProjectPamphletMainCell, goToCreatorForProject project: Project)
 }
@@ -307,7 +307,7 @@ internal final class ProjectPamphletMainCell: UITableViewCell, ValueCell {
       .skipNil()
       .observeValues { [weak self] in self?.creatorImageView.af.setImage(withURL: $0) }
 
-    self.viewModel.outputs.notifyDelegateToGoToCampaignWithProject
+    self.viewModel.outputs.notifyDelegateToGoToCampaignWithData
       .observeForControllerAction()
       .observeValues { [weak self] in
         guard let self = self else { return }
