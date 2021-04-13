@@ -490,28 +490,28 @@ final class RootViewModelTests: TestCase {
     self.vm.inputs.didSelect(index: 0)
 
     self.selectedIndex.assertValues([0, 1, 0], "Selects index immediately.")
-    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(
-      ["activity", "discovery"],
+      ["activity", nil],
       self.dataLakeTrackingClient.properties(forKey: "context_tab_bar_label")
     )
-    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
     XCTAssertEqual(
-      ["activity", "discovery"],
+      ["activity", nil],
       self.segmentTrackingClient.properties(forKey: "context_tab_bar_label")
     )
 
     self.vm.inputs.didSelect(index: 10)
 
     self.selectedIndex.assertValues([0, 1, 0, 3], "Selects index immediately.")
-    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(
-      ["activity", "discovery"],
+      ["activity", nil],
       self.dataLakeTrackingClient.properties(forKey: "context_tab_bar_label")
     )
-    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
     XCTAssertEqual(
-      ["activity", "discovery"],
+      ["activity", nil],
       self.segmentTrackingClient.properties(forKey: "context_tab_bar_label")
     )
   }
