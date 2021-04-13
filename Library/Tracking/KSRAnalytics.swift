@@ -594,7 +594,7 @@ public final class KSRAnalytics {
 
   /// Call when the user is logged out, on the `Activity` tab and taps the `Explore Projects`button.
   public func trackExploreButtonClicked() {
-    let properties = contextProperties(ctaContext: .discover, locationContext: .globalNav)
+    let properties = contextProperties(ctaContext: .discover, page: .activities)
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
       properties: properties
@@ -605,6 +605,15 @@ public final class KSRAnalytics {
 
   public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
     switch tabBarItemLabel {
+    case .discovery:
+      let properties = contextProperties(
+        ctaContext: .discover,
+        locationContext: .globalNav
+      )
+      self.track(
+        event: NewApprovedEvent.ctaClicked.rawValue,
+        properties: properties
+      )
     case .search:
       let properties = contextProperties(
         ctaContext: .search,
