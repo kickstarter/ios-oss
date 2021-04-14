@@ -638,11 +638,11 @@ public final class KSRAnalytics {
     }
     let properties = contextProperties(
       ctaContext: .search,
+      page: pageContext,
       locationContext: .globalNav
     )
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
-      page: pageContext,
       properties: properties
     )
   }

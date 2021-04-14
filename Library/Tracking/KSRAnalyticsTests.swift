@@ -2338,6 +2338,22 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("search", segmentClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("global_nav", dataLakeClient.properties.last?["context_location"] as? String)
     XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
+    
+    ksrAnalytics.trackSearchTabBarClicked(prevTabBarItemLabel: .activity)
+    XCTAssertEqual("activity_feed", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("activity_feed", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("search", dataLakeClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("search", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("global_nav", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
+    
+    ksrAnalytics.trackSearchTabBarClicked(prevTabBarItemLabel: .search)
+    XCTAssertEqual("search", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("search", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("search", dataLakeClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("search", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("global_nav", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
 
     ksrAnalytics.trackProfilePageFilterSelected(params: watchedParams)
     XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
