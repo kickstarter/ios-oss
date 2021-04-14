@@ -500,7 +500,7 @@ final class RootViewModelTests: TestCase {
       ["activity", nil],
       self.segmentTrackingClient.properties(forKey: "context_tab_bar_label")
     )
-    
+
     self.vm.inputs.didSelect(index: 2)
 
     self.selectedIndex.assertValues([0, 1, 0, 2], "Selects index immediately.")

@@ -623,7 +623,7 @@ public final class KSRAnalytics {
       )
     }
   }
-  
+
   public func trackSearchTabBarClicked(prevTabBarItemLabel: TabBarItemLabel) {
     let pageContext: PageContext
     switch prevTabBarItemLabel {
