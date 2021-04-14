@@ -1,6 +1,10 @@
 import Foundation
 import KsApi
 
+public func featureBrazeIsEnabled() -> Bool {
+  return Feature.braze.isEnabled()
+}
+
 public func featureEmailVerificationFlowIsEnabled() -> Bool {
   return Feature.emailVerificationFlow.isEnabled()
 }
