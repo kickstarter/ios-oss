@@ -24,7 +24,7 @@ internal extension URLSession {
       .flatMap(.concat) { data, response -> SignalProducer<Data, GraphError> in
         guard let response = response as? HTTPURLResponse else { fatalError() }
 
-        guard error?.handleError(blockResponse: response, and: data) != true else { return .empty }
+        guard error?.handleError(response: response, and: data) != true else { return .empty }
 
         guard self.isValidResponse(response: response) else {
           print("🔴 [KsApi] HTTP Failure \(self.sanitized(request))")
@@ -87,7 +87,7 @@ internal extension URLSession {
       .flatMap(.concat) { data, response -> SignalProducer<Data, ErrorEnvelope> in
         guard let response = response as? HTTPURLResponse else { fatalError() }
 
-        guard error?.handleError(blockResponse: response, and: data) != true else { return .empty }
+        guard error?.handleError(response: response, and: data) != true else { return .empty }
 
         guard self.isValidResponse(response: response) else {
           if let json = parseJSONData(data) as? [String: Any] {

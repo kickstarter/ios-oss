@@ -1,5 +1,6 @@
 import KsApi
 import Library
+import PerimeterX
 import Prelude
 import ReactiveSwift
 import UserNotifications
@@ -72,6 +73,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when Optimizely configuration has failed
   func optimizelyClientConfigurationFailed()
 
+  /// Call when Perimeter X Captcha is triggered
+  func perimeterXCaptchaTriggered(response: PerimeterXBlockResponseType)
+
   /// Call when the contextual PushNotification dialog should be presented.
   func showNotificationDialog(notification: Notification)
 
@@ -136,6 +140,9 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits a message thread when we should navigate to it.
   var goToMessageThread: Signal<MessageThread, Never> { get }
+
+  /// Emits when we should display the Perimeter X Captcha view.
+  var goToPerimeterXCaptcha: Signal<PerimeterXBlockResponseType, Never> { get }
 
   /// Emits when the root view controller should navigate to the user's profile.
   var goToProfile: Signal<(), Never> { get }
@@ -644,6 +651,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.optimizelyConfigurationReturnValue <~ self.optimizelyConfiguredWithResultProperty.signal
       .skipNil()
       .map { $0.hasError }
+
+    self.goToPerimeterXCaptcha = self.perimeterXCaptchaTriggeredProperty.signal.skipNil()
   }
 
   public var inputs: AppDelegateViewModelInputs { return self }
@@ -769,6 +778,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.optimizelyClientConfigurationFailedProperty.value = ()
   }
 
+  private let perimeterXCaptchaTriggeredProperty = MutableProperty<PerimeterXBlockResponseType?>(nil)
+  public func perimeterXCaptchaTriggered(response: PerimeterXBlockResponseType) {
+    self.perimeterXCaptchaTriggeredProperty.value = response
+  }
+
   public let applicationIconBadgeNumber: Signal<Int, Never>
   public let configureAppCenterWithData: Signal<AppCenterConfigData, Never>
   public let configureFirebase: Signal<(), Never>
@@ -786,6 +800,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let goToLandingPage: Signal<(), Never>
   public let goToLoginWithIntent: Signal<LoginIntent, Never>
   public let goToMessageThread: Signal<MessageThread, Never>
+  public let goToPerimeterXCaptcha: Signal<PerimeterXBlockResponseType, Never>
   public let goToProfile: Signal<(), Never>
   public let goToProjectActivities: Signal<Param, Never>
   public let goToMobileSafari: Signal<URL, Never>

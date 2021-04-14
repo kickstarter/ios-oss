@@ -53,7 +53,7 @@ internal class WebViewController: UIViewController {
     decidePolicyFor _: WKNavigationResponse,
     decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
   ) {
-    if let newCookie = PerimeterXClient.cookie {
+    if let newCookie = AppEnvironment.current.apiService.perimeterXClient.cookie {
       self.webKitCookieStore?.setCookie(newCookie, completionHandler: {
         print("Perimeter X mobile VID cookie set.")
       })

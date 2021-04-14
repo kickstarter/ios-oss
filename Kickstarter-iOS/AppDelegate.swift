@@ -257,12 +257,28 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.viewModel.inputs.userSessionEnded()
       }
 
+    NotificationCenter.default
+      .addObserver(
+        forName: Notification.Name.ksr_perimeterXCaptcha,
+        object: nil,
+        queue: nil
+      ) { [weak self] note in
+        guard let response = note.object as? PerimeterXBlockResponseType else { return }
+        self?.viewModel.inputs.perimeterXCaptchaTriggered(response: response)
+      }
+
     self.window?.tintColor = .ksr_create_700
 
     self.viewModel.inputs.applicationDidFinishLaunching(
       application: application,
       launchOptions: launchOptions
     )
+
+    self.viewModel.outputs.goToPerimeterXCaptcha
+      .observeForControllerAction()
+      .observeValues { response in
+        self.goToPerimeterXCaptcha(response)
+      }
 
     UNUserNotificationCenter.current().delegate = self
 
@@ -396,6 +412,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   private func goToMessageThread(_ messageThread: MessageThread) {
     self.rootTabBarController?.switchToMessageThread(messageThread)
+  }
+
+  private func goToPerimeterXCaptcha(_ response: PerimeterXBlockResponseType) {
+    guard let response = response as? PXBlockResponse else { return }
+
+    PXManager.sharedInstance().handle(response, with: self.window?.rootViewController) {
+      print("❎ Perimeter X CAPTCHA was successful.")
+    }
   }
 
   private func goToCreatorMessageThread(_ projectId: Param, _ messageThread: MessageThread) {

@@ -30,6 +30,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let goToLandingPage = TestObserver<(), Never>()
   private let goToProjectActivities = TestObserver<Param, Never>()
   private let goToLoginWithIntent = TestObserver<LoginIntent, Never>()
+  private let goToPerimeterXCaptcha = TestObserver<PerimeterXBlockResponseType, Never>()
   private let goToProfile = TestObserver<(), Never>()
   private let goToMobileSafari = TestObserver<URL, Never>()
   private let goToSearch = TestObserver<(), Never>()
@@ -70,6 +71,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
     self.vm.outputs.goToLandingPage.observe(self.goToLandingPage.observer)
     self.vm.outputs.goToLoginWithIntent.observe(self.goToLoginWithIntent.observer)
+    self.vm.outputs.goToPerimeterXCaptcha.observe(self.goToPerimeterXCaptcha.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
     self.vm.outputs.goToMobileSafari.observe(self.goToMobileSafari.observer)
     self.vm.outputs.goToProjectActivities.observe(self.goToProjectActivities.observer)
@@ -2448,6 +2450,15 @@ final class AppDelegateViewModelTests: TestCase {
         ["Something went wrong, please try again."]
       )
     }
+  }
+
+  func testGoToPerimeterXCaptcha() {
+    self.goToPerimeterXCaptcha.assertDidNotEmitValue()
+
+    self.vm.inputs.perimeterXCaptchaTriggered(response: MockPerimeterXBlockResponse(blockType: .Captcha))
+
+    self.goToPerimeterXCaptcha.assertValueCount(1)
+    XCTAssertEqual(self.goToPerimeterXCaptcha.values.last?.type, .Captcha)
   }
 }
 

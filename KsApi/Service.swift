@@ -1,8 +1,8 @@
 import Foundation
+import PerimeterX
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
-import PerimeterX
 
 public extension Bundle {
   var _buildVersion: String {
@@ -21,7 +21,7 @@ public struct Service: ServiceType {
   public let currency: String
   public let buildVersion: String
   public let deviceIdentifier: String
-  public let perimeterXClient: PerimeterXClientType?
+  public let perimeterXClient: PerimeterXClientType
 
   public init(
     appId: String = Bundle.main.bundleIdentifier ?? "com.kickstarter.kickstarter",
@@ -31,7 +31,7 @@ public struct Service: ServiceType {
     currency: String = "USD",
     buildVersion: String = Bundle.main._buildVersion,
     deviceIdentifier: String = UIDevice.current.identifierForVendor.coalesceWith(UUID()).uuidString,
-    perimeterXClient: PerimeterXClientType? = PerimeterXClient()
+    perimeterXClient: PerimeterXClientType = PerimeterXClient()
   ) {
     self.appId = appId
     self.serverConfig = serverConfig
@@ -46,7 +46,7 @@ public struct Service: ServiceType {
     UserDefaults.standard.register(defaults: ["UserAgent": Service.userAgent])
 
     // Initialize PerimeterX
-    PXManager.sharedInstance()?.start(with: Secrets.perimeterxAppId)
+    PXManager.sharedInstance().start(with: Secrets.PerimeterX.appId)
   }
 
   public func login(_ oauthToken: OauthTokenAuthType) -> Service {
@@ -55,8 +55,7 @@ public struct Service: ServiceType {
       serverConfig: self.serverConfig,
       oauthToken: oauthToken,
       language: self.language,
-      buildVersion: self.buildVersion,
-      perimeterXClient: self.perimeterXClient
+      buildVersion: self.buildVersion
     )
   }
 
