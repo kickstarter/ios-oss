@@ -27,6 +27,7 @@ public struct Project {
   public var video: Video?
 
   public struct Category {
+    public var analyticsName: String?
     public var id: Int
     public var name: String
     public var parentId: Int?
@@ -378,6 +379,7 @@ extension Project.RewardData: Decodable {
 
 extension Project.Category: Decodable {
   enum CodingKeys: String, CodingKey {
+    case analyticsName = "analytics_name"
     case id
     case name
     case parentId = "parent_id"

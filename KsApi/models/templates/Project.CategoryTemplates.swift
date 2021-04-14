@@ -2,10 +2,11 @@ import Prelude
 
 extension Project.Category {
   internal static let template = Project.Category(
+    analyticsName: "Ceramics",
     id: 1,
     name: "Art",
     parentId: nil,
-    parentName: nil
+    parentName: "Art"
   )
 
   internal static let art = template
@@ -21,18 +22,21 @@ extension Project.Category {
     <> \.name .~ "Games"
 
   internal static let illustration = template
+    |> \.analyticsName .~ "Illustration"
     |> \.id .~ 22
     |> \.name .~ "Illustration"
     |> \.parentId .~ Project.Category.art.id
     |> \.parentName .~ Project.Category.art.name
 
   internal static let documentary = template
+    |> \.analyticsName .~ "Documentary"
     |> \.id .~ 30
     |> \.name .~ "Documentary"
     |> \.parentId .~ Project.Category.filmAndVideo.id
     |> \.parentName .~ Project.Category.filmAndVideo.name
 
   internal static let tabletopGames = template
+    |> \.analyticsName .~ "Tabletop Games"
     |> \.id .~ 34
     |> \.name .~ "Tabletop Games"
     |> \.parentId .~ Project.Category.games.id

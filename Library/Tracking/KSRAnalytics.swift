@@ -1578,7 +1578,7 @@ private func projectProperties(
   var props: [String: Any] = [:]
 
   props["backers_count"] = project.stats.backersCount
-  props["subcategory"] = project.category.name
+  props["subcategory"] = project.category.analyticsName
   props["country"] = project.country.countryCode
   props["comments_count"] = project.stats.commentsCount ?? 0
   props["currency"] = project.country.currencyCode
