@@ -220,14 +220,16 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .filter { _, page in page == 1 }
       .map(first)
 
-    let sendEventForSearchResults = Signal.merge(
+    let searchResultsCount = Signal.merge(
       searchResults.filter { $0 == 0 },
       searchResults.takeWhen(firstPageResults)
     )
 
-    requestFirstPageWith
-      .takePairWhen(sendEventForSearchResults)
-      .observeValues { params, stats in
+    Signal.combineLatest(query, requestFirstPageWith)
+      .takePairWhen(searchResultsCount)
+      .map(unpack)
+      .filter { query, _, _ in !query.isEmpty }
+      .observeValues { _, params, stats in
         AppEnvironment.current.ksrAnalytics
           .trackProjectSearchView(params: params, results: stats)
       }

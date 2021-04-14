@@ -433,6 +433,14 @@ internal final class SearchViewModelTests: TestCase {
         ["", "skull graphic tee"],
         self.segmentTrackingClient.properties(forKey: "discover_search_term")
       )
+      XCTAssertEqual(
+        [0, 200],
+        self.dataLakeTrackingClient.properties(forKey: "discover_search_results_count", as: Int.self)
+      )
+      XCTAssertEqual(
+        [0, 200],
+        self.segmentTrackingClient.properties(forKey: "discover_search_results_count", as: Int.self)
+      )
 
       let searchResponse = .template |> DiscoveryEnvelope.lens.projects .~ []
 
@@ -508,8 +516,8 @@ internal final class SearchViewModelTests: TestCase {
       )
       projects.assertLastValue(popularProjects, "Brings back popular projects immediately.")
 
-      XCTAssertEqual(["Page Viewed", "Page Viewed"], self.dataLakeTrackingClient.events)
-      XCTAssertEqual(["Page Viewed", "Page Viewed"], self.segmentTrackingClient.events)
+      XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
+      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
     }
   }
 
