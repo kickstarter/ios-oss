@@ -614,23 +614,37 @@ public final class KSRAnalytics {
         event: NewApprovedEvent.ctaClicked.rawValue,
         properties: properties
       )
-    case .search:
-      let properties = contextProperties(
-        ctaContext: .search,
-        locationContext: .globalNav
-      )
-      self.track(
-        event: NewApprovedEvent.ctaClicked.rawValue,
-        page: .search,
-        properties: properties
-      )
     default:
+      guard tabBarItemLabel != .search else { return }
       let properties = contextProperties(tabBarLabel: tabBarItemLabel)
       self.track(
         event: ApprovedEvent.tabBarClicked.rawValue,
         properties: properties
       )
     }
+  }
+  
+  public func trackSearchTabBarClicked(prevTabBarItemLabel: TabBarItemLabel) {
+    let pageContext: PageContext
+    switch prevTabBarItemLabel {
+    case .activity:
+      pageContext = .activities
+    case .discovery:
+      pageContext = .discovery
+    case .profile:
+      pageContext = .profile
+    default:
+      pageContext = .search
+    }
+    let properties = contextProperties(
+      ctaContext: .search,
+      locationContext: .globalNav
+    )
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      page: pageContext,
+      properties: properties
+    )
   }
 
   // MARK: - Onboarding Events

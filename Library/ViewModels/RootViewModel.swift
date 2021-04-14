@@ -330,6 +330,30 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
     .map(tabData(forUser:))
 
     // MARK: - KSRAnalytics
+    
+    let prevSelectedIndex = didSelectIndexProperty
+      .signal
+    .combinePrevious(0)
+    .map(first)
+    
+    let prevSelectedTabBarItem = Signal
+      .combineLatest(prevSelectedIndex, tabBarItemsData)
+      .map { index, data in tabBarItemLabel(for: data.items[index])}
+    
+    let searchBarIemSelected = Signal
+      .combineLatest(didSelectIndexProperty.signal, tabBarItemsData)
+      .filter { index, data in index < data.items.count }
+      .map { index, data in
+        tabBarItemLabel(for: data.items[index])
+      }
+      .filter { $0 == .search }
+    
+    prevSelectedTabBarItem
+      .takeWhen(searchBarIemSelected)
+      .skipRepeats(==)
+      .observeValues { prevSelectedTabBarItem in
+        AppEnvironment.current.ksrAnalytics.trackSearchTabBarClicked(prevTabBarItemLabel: prevSelectedTabBarItem)
+      }
 
     self.tabBarItemsData
       .takePairWhen(self.didSelectIndexProperty.signal)
@@ -337,7 +361,9 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
         guard index < data.items.count else { return nil }
 
         return tabBarItemLabel(for: data.items[index])
-      }.observeValues { tabBarItemLabel in
+      }
+      .filter { $0 != .search }
+      .observeValues { tabBarItemLabel in
         AppEnvironment.current.ksrAnalytics.trackTabBarClicked(tabBarItemLabel)
       }
   }
