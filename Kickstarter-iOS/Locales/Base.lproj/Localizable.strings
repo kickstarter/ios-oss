@@ -69,7 +69,7 @@
 "By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy" = "By creating an account, you agree to Kickstarter’s <a href=\"%{terms_of_use_link}\">Terms of Use</a> and <a href=\"%{privacy_policy_link}\">Privacy Policy</a>.";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "By pledging you agree to Kickstarter's <a href=\"%{terms_of_use_link}\">Terms of Use</a>, <a href=\"%{privacy_policy_link}\">Privacy Policy</a> and <a href=\"%{cookie_policy_link}\">Cookie Policy</a>.";
 "By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "By signing up, you agree to our Terms of Use, Privacy Policy, and Cookie Policy. Our policies explain how we use your data to deliver, improve, and promote our service and our site, and how you can exercise your rights to control that use.";
-"By_signing_up_youll_use_your_Facebook_account_to_log_in_to_your_Kickstarter_account" = "By signing up, you’ll use your Facebook account to log in to your Kickstarter account. If you prefer to keep these accounts separate, restart this app and create an account using a different option.";
+"By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account" = "By signing up, you’ll log in to Kickstarter using your Facebook account. If you prefer not to use Facebook, restart this app and choose another option.";
 "CVC" = "CVC";
 "Cancel" = "Cancel";
 "Cancel_pledge" = "Cancel pledge";

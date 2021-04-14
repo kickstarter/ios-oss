@@ -1157,18 +1157,18 @@ contributeurs"
     )
   }
   /**
-   "By signing up, you’ll use your Facebook account to log in to your Kickstarter account. If you prefer to keep these accounts separate, restart this app and create an account using a different option."
+   "By signing up, you’ll log in to Kickstarter using your Facebook account. If you prefer not to use Facebook, restart this app and choose another option."
 
-   - **en**: "By signing up, you’ll use your Facebook account to log in to your Kickstarter account. If you prefer to keep these accounts separate, restart this app and create an account using a different option."
-   - **de**: "Mit deiner Registrierung wirst du über dein Facebook-Konto auf deinem Kickstarter-Konto angemeldet. Wenn du die beiden Konten lieber separat halten möchtest, starte die App bitte erneut und erstelle ein Konto mit einer der anderen Optionen."
-   - **es**: "Si te registras, deberás usar tu cuenta de Facebook para iniciar sesión en Kickstarter. Si prefieres mantener estas cuentas separadas, vuelve a abrir la aplicación y crea una cuenta mediante otra opción."
-   - **fr**: "Avec cette inscription, vous utiliserez votre compte Facebook pour vous connecter à votre compte Kickstarter. Si vous préférez que ces deux comptes restent séparés, veuillez redémarrer cette application et sélectionner une autre option de création de compte."
-   - **ja**: "登録することで、Facebook アカウントを使って Kickstarter アカウントにログインすることになります。これら2つのアカウントをリンクしたくない場合には、このアプリを再起動してから別のオプションでアカウントを作成してください。"
+   - **en**: "By signing up, you’ll log in to Kickstarter using your Facebook account. If you prefer not to use Facebook, restart this app and choose another option."
+   - **de**: "Mit deiner Registrierung wirst du auf Kickstarter mit deinem Facebook-Konto angemeldet. Wenn du Facebook dazu lieber nicht benutzen möchtest, starte die App bitte erneut und wähle eine andere Option."
+   - **es**: "Si te registras, deberás iniciar sesión en Kickstarter con tu cuenta de Facebook. Si prefieres no usar Facebook, vuelve a abrir la aplicación y elige otra opción."
+   - **fr**: "En vous inscrivant ici, vous vous connecterez à Kickstarter avec votre compte Facebook. Si vous préférez ne pas utiliser Facebook, veuillez redémarrer cette application et choisir une autre option."
+   - **ja**: "サインアップすることで、Kickstarter に Facebook アカウントを使ってログインすることになります。Facebook を使用したくない場合は、このアプリを再起動して別のオプションをお選びください。"
   */
-  public static func By_signing_up_youll_use_your_Facebook_account_to_log_in_to_your_Kickstarter_account() -> String {
+  public static func By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account() -> String {
     return localizedString(
-      key: "By_signing_up_youll_use_your_Facebook_account_to_log_in_to_your_Kickstarter_account",
-      defaultValue: "By signing up, you’ll use your Facebook account to log in to your Kickstarter account. If you prefer to keep these accounts separate, restart this app and create an account using a different option.",
+      key: "By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account",
+      defaultValue: "By signing up, you’ll log in to Kickstarter using your Facebook account. If you prefer not to use Facebook, restart this app and choose another option.",
       count: nil,
       substitutions: [:]
     )
@@ -11477,40 +11477,6 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "Youre_a_backer_no_punctuation",
       defaultValue: "You're a backer",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding."
-
-   - **en**: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding."
-   - **de**: "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte bestätige diesen Vorgang."
-   - **es**: "Estás a punto de crear una nueva cuenta de Kickstarter usando el correo electrónico associado a tu cuenta de Facebook. Por favor confírmalo antes de proceder."
-   - **fr**: "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail que vous utilisez sur Facebook. Veuillez confirmer avant de continuer."
-   - **ja**: "Facebookのメールアドレスで新しいアカウントを作成しようとしています。再度確認してください。"
-  */
-  public static func Youre_about_to_create_a_new_Kickstarter_account() -> String {
-    return localizedString(
-      key: "Youre_about_to_create_a_new_Kickstarter_account",
-      defaultValue: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "You’re about to create a new Kickstarter account with the email address you use for Facebook. Please edit or confirm that it’s the address you want for your Kickstarter account."
-
-   - **en**: "You’re about to create a new Kickstarter account with the email address you use for Facebook. Please edit or confirm that it’s the address you want for your Kickstarter account."
-   - **de**: "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte ändere oder bestätige die Adresse, die du mit deinem Kickstarter-Konto verbinden möchtest."
-   - **es**: "Estás a punto de crear una nueva cuenta de Kickstarter con el correo electrónico asociado a tu cuenta de Facebook. Por favor, confirma que quieres usar este correo o cámbialo."
-   - **fr**: "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail associée à votre compte Facebook. Veuillez confirmer qu'il s'agit bien de l'adresse que vous souhaitez utiliser, ou la modifier si besoin."
-   - **ja**: "Facebook に登録されているメールアドレスで新しい Kickstarter アカウントを作成しようとしています。編集するか、これが Kickstarter アカウントに登録したいメールアドレスであることを確定してください。"
-  */
-  public static func Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email() -> String {
-    return localizedString(
-      key: "Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email",
-      defaultValue: "You’re about to create a new Kickstarter account with the email address you use for Facebook. Please edit or confirm that it’s the address you want for your Kickstarter account.",
       count: nil,
       substitutions: [:]
     )
