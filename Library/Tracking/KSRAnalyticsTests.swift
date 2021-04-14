@@ -369,6 +369,7 @@ final class KSRAnalyticsTests: TestCase {
       |> Project.lens.stats.staticUsdRate .~ 2.0
       |> Project.lens.stats.commentsCount .~ 10
       |> Project.lens.prelaunchActivated .~ true
+      |> Project.lens.displayPrelaunch .~ true
 
     ksrAnalytics
       .trackProjectViewed(project, refTag: .discovery, sectionContext: .overview)
@@ -403,8 +404,8 @@ final class KSRAnalyticsTests: TestCase {
     )
     XCTAssertEqual("live", dataLakeClientProperties?["project_state"] as? String)
     XCTAssertEqual(project.stats.pledged, dataLakeClientProperties?["project_current_pledge_amount"] as? Int)
-    XCTAssertEqual(2_000, dataLakeClientProperties?["project_current_amount_pledged_usd"] as? Int)
-    XCTAssertEqual(3_000, dataLakeClientProperties?["project_goal_usd"] as? Int)
+    XCTAssertEqual(2_000, dataLakeClientProperties?["project_current_amount_pledged_usd"] as? Float)
+    XCTAssertEqual(3_000, dataLakeClientProperties?["project_goal_usd"] as? Double)
     XCTAssertEqual(false, dataLakeClientProperties?["project_has_add_ons"] as? Bool)
     XCTAssertEqual(true, dataLakeClientProperties?["project_has_video"] as? Bool)
     XCTAssertEqual(10, dataLakeClientProperties?["project_comments_count"] as? Int)
@@ -447,8 +448,8 @@ final class KSRAnalyticsTests: TestCase {
     )
     XCTAssertEqual("live", segmentClientProperties?["project_state"] as? String)
     XCTAssertEqual(project.stats.pledged, segmentClientProperties?["project_current_pledge_amount"] as? Int)
-    XCTAssertEqual(2_000, segmentClientProperties?["project_current_amount_pledged_usd"] as? Int)
-    XCTAssertEqual(3_000, segmentClientProperties?["project_goal_usd"] as? Int)
+    XCTAssertEqual(2_000, segmentClientProperties?["project_current_amount_pledged_usd"] as? Float)
+    XCTAssertEqual(3_000, segmentClientProperties?["project_goal_usd"] as? Double)
     XCTAssertEqual(false, segmentClientProperties?["project_has_add_ons"] as? Bool)
     XCTAssertEqual(true, segmentClientProperties?["project_has_video"] as? Bool)
     XCTAssertEqual(10, segmentClientProperties?["project_comments_count"] as? Int)
@@ -1748,11 +1749,11 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
 
-    XCTAssertEqual(dataLakeClient.properties(forKey: "context_location"), ["global_nav"])
-    XCTAssertEqual(segmentClient.properties(forKey: "context_location"), ["global_nav"])
-
     XCTAssertEqual(dataLakeClient.properties(forKey: "context_cta"), ["discover"])
     XCTAssertEqual(segmentClient.properties(forKey: "context_cta"), ["discover"])
+
+    XCTAssertEqual(dataLakeClient.properties(forKey: "context_page"), ["activity_feed"])
+    XCTAssertEqual(segmentClient.properties(forKey: "context_page"), ["activity_feed"])
   }
 
   // MARK: - Search Tracking
@@ -1828,6 +1829,9 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertNil(dataLakeClientProps?["user_uid"])
 
     XCTAssertNil(segmentClientProps?["user_uid"])
+
+    XCTAssertEqual(0, dataLakeClientProps?.keys.filter { $0.hasPrefix("user_") }.count)
+    XCTAssertEqual(0, segmentClientProps?.keys.filter { $0.hasPrefix("user_") }.count)
   }
 
   func testUserProperties_loggedIn() {
@@ -1901,22 +1905,24 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackTabBarClicked(tabBarHome)
 
-    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"], dataLakeClient.events)
-    XCTAssertEqual("discovery", dataLakeClient.properties.last?["context_tab_bar_label"] as? String)
+    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked", "CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked", "CTA Clicked"], segmentClient.events)
 
-    XCTAssertEqual(["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"], segmentClient.events)
-    XCTAssertEqual("discovery", segmentClient.properties.last?["context_tab_bar_label"] as? String)
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("global_nav", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
 
     ksrAnalytics.trackTabBarClicked(tabBarProfile)
 
     XCTAssertEqual(
-      ["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"],
+      ["Tab Bar Clicked", "Tab Bar Clicked", "CTA Clicked", "Tab Bar Clicked"],
       dataLakeClient.events
     )
     XCTAssertEqual("profile", dataLakeClient.properties.last?["context_tab_bar_label"] as? String)
 
     XCTAssertEqual(
-      ["Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked", "Tab Bar Clicked"],
+      ["Tab Bar Clicked", "Tab Bar Clicked", "CTA Clicked", "Tab Bar Clicked"],
       segmentClient.events
     )
     XCTAssertEqual("profile", segmentClient.properties.last?["context_tab_bar_label"] as? String)
@@ -1926,7 +1932,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual([
       "Tab Bar Clicked",
       "Tab Bar Clicked",
-      "Tab Bar Clicked",
+      "CTA Clicked",
       "Tab Bar Clicked",
       "CTA Clicked"
     ], dataLakeClient.events)
@@ -1936,7 +1942,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual([
       "Tab Bar Clicked",
       "Tab Bar Clicked",
-      "Tab Bar Clicked",
+      "CTA Clicked",
       "Tab Bar Clicked",
       "CTA Clicked"
     ], segmentClient.events)
@@ -2293,8 +2299,8 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackExploreButtonClicked()
-    XCTAssertEqual(nil, dataLakeClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual(nil, segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("activity_feed", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("activity_feed", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackFacebookLoginOrSignupButtonClicked(intent: .generic)
     XCTAssertEqual("log_in_sign_up", dataLakeClient.properties.last?["context_page"] as? String)
@@ -2541,8 +2547,8 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("2016-09-16T22:35:15Z", props?["project_launched_at"] as? String)
     XCTAssertEqual("live", props?["project_state"] as? String)
     XCTAssertEqual(1_000, props?["project_current_pledge_amount"] as? Int)
-    XCTAssertEqual(2_000, props?["project_current_amount_pledged_usd"] as? Int)
-    XCTAssertEqual(3_000, props?["project_goal_usd"] as? Int)
+    XCTAssertEqual(2_000.00, props?["project_current_amount_pledged_usd"] as? Float)
+    XCTAssertEqual(3_000.00, props?["project_goal_usd"] as? Double)
     XCTAssertEqual(true, props?["project_has_video"] as? Bool)
     XCTAssertEqual(10, props?["project_comments_count"] as? Int)
     XCTAssertEqual(0, props?["project_rewards_count"] as? Int)

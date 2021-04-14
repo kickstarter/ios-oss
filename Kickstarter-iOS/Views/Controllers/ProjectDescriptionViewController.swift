@@ -10,9 +10,9 @@ internal final class ProjectDescriptionViewController: WebViewController {
   private let loadingIndicator = UIActivityIndicatorView()
   private let viewModel: ProjectDescriptionViewModelType = ProjectDescriptionViewModel()
 
-  internal static func configuredWith(value: Project) -> ProjectDescriptionViewController {
+  internal static func configuredWith(data: ProjectPamphletMainCellData) -> ProjectDescriptionViewController {
     let vc = ProjectDescriptionViewController()
-    vc.viewModel.inputs.configureWith(value: value)
+    vc.viewModel.inputs.configureWith(value: data)
     return vc
   }
 

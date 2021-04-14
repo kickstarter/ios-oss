@@ -280,6 +280,14 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+
+    XCTAssertEqual(["project"], self.dataLakeTrackingClient.properties(forKey: "context_page"))
+    XCTAssertEqual(["overview"], self.dataLakeTrackingClient.properties(forKey: "context_section"))
+    XCTAssertEqual(["discovery"], self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"))
+
+    XCTAssertEqual(["project"], self.segmentTrackingClient.properties(forKey: "context_page"))
+    XCTAssertEqual(["overview"], self.segmentTrackingClient.properties(forKey: "context_section"))
+    XCTAssertEqual(["discovery"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
   }
 
   func testMockCookieStorageSet_SeparateSchedulers() {
