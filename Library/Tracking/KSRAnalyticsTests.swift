@@ -1885,6 +1885,7 @@ final class KSRAnalyticsTests: TestCase {
     let tabBarDashboard = KSRAnalytics.TabBarItemLabel.dashboard
     let tabBarHome = KSRAnalytics.TabBarItemLabel.discovery
     let tabBarProfile = KSRAnalytics.TabBarItemLabel.profile
+    let search = KSRAnalytics.TabBarItemLabel.search
 
     ksrAnalytics.trackTabBarClicked(tabBarActivity)
 
@@ -1926,29 +1927,40 @@ final class KSRAnalyticsTests: TestCase {
     )
     XCTAssertEqual("profile", segmentClient.properties.last?["context_tab_bar_label"] as? String)
 
-    ksrAnalytics.trackSearchTabBarClicked(prevTabBarItemLabel: .profile)
+    ksrAnalytics.trackTabBarClicked(search)
 
     XCTAssertEqual([
       "Tab Bar Clicked",
       "Tab Bar Clicked",
       "CTA Clicked",
+      "Tab Bar Clicked"
+    ], dataLakeClient.events)
+    XCTAssertNil(dataLakeClient.properties.last?["context_cta"] as? String)
+    XCTAssertNil(dataLakeClient.properties.last?["context_location"] as? String)
+
+    XCTAssertEqual([
       "Tab Bar Clicked",
+      "Tab Bar Clicked",
+      "CTA Clicked",
+      "Tab Bar Clicked"
+    ], segmentClient.events)
+    XCTAssertNil(segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertNil(segmentClient.properties.last?["context_location"] as? String)
+  }
+  
+  func testSearchTabBarClicked() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+    
+    ksrAnalytics.trackSearchTabBarClicked(prevTabBarItemLabel: .profile)
+
+    XCTAssertEqual([
       "CTA Clicked"
     ], dataLakeClient.events)
     XCTAssertEqual("search", dataLakeClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("global_nav", dataLakeClient.properties.last?["context_location"] as? String)
     XCTAssertEqual("profile", dataLakeClient.properties.last?["context_page"] as? String)
-
-    XCTAssertEqual([
-      "Tab Bar Clicked",
-      "Tab Bar Clicked",
-      "CTA Clicked",
-      "Tab Bar Clicked",
-      "CTA Clicked"
-    ], segmentClient.events)
-    XCTAssertEqual("search", segmentClient.properties.last?["context_cta"] as? String)
-    XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
-    XCTAssertEqual("profile", segmentClient.properties.last?["context_page"] as? String)
   }
 
   func testTrackDiscoverySortProperties() {

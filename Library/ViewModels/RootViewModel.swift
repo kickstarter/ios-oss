@@ -329,7 +329,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
     .map(first)
     .map(tabData(forUser:))
 
-    // MARK: - KSRAnalytics
+    // Tracks
 
     let prevSelectedIndex = self.didSelectIndexProperty
       .signal
@@ -340,7 +340,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       .combineLatest(prevSelectedIndex, self.tabBarItemsData)
       .map { index, data in tabBarItemLabel(for: data.items[index]) }
 
-    let searchBarIemSelected = Signal
+    let searchBarItemSelected = Signal
       .combineLatest(self.didSelectIndexProperty.signal, self.tabBarItemsData)
       .filter { index, data in index < data.items.count }
       .map { index, data in
@@ -349,11 +349,11 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       .filter { $0 == .search }
 
     prevSelectedTabBarItem
-      .takeWhen(searchBarIemSelected)
+      .takeWhen(searchBarItemSelected)
       .skipRepeats(==)
-      .observeValues { prevSelectedTabBarItem in
+      .observeValues { tabBarLabel in
         AppEnvironment.current.ksrAnalytics
-          .trackSearchTabBarClicked(prevTabBarItemLabel: prevSelectedTabBarItem)
+          .trackSearchTabBarClicked(prevTabBarItemLabel: tabBarLabel)
       }
 
     self.tabBarItemsData
@@ -363,7 +363,6 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
 
         return tabBarItemLabel(for: data.items[index])
       }
-      .filter { $0 != .search }
       .observeValues { tabBarItemLabel in
         AppEnvironment.current.ksrAnalytics.trackTabBarClicked(tabBarItemLabel)
       }

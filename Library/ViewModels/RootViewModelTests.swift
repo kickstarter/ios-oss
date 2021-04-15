@@ -513,6 +513,10 @@ final class RootViewModelTests: TestCase {
       [nil, nil, "discover"],
       self.dataLakeTrackingClient.properties(forKey: "context_page")
     )
+    XCTAssertEqual(
+      [nil, "discover", "search"],
+      self.dataLakeTrackingClient.properties(forKey: "context_cta")
+    )
     XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
     XCTAssertEqual(
       ["activity", nil, nil],
@@ -521,6 +525,10 @@ final class RootViewModelTests: TestCase {
     XCTAssertEqual(
       [nil, nil, "discover"],
       self.segmentTrackingClient.properties(forKey: "context_page")
+    )
+    XCTAssertEqual(
+      [nil, "discover", "search"],
+      self.segmentTrackingClient.properties(forKey: "context_cta")
     )
 
     self.vm.inputs.didSelect(index: 10)
@@ -598,6 +606,14 @@ final class RootViewModelTests: TestCase {
     self.filterDiscovery.assertValues([])
     self.vm.inputs.switchToDiscovery(params: params)
     self.filterDiscovery.assertValues([params])
+  }
+  
+  func testSwitchToSearch() {
+    self.vm.inputs.viewDidLoad()
+
+    self.vm.inputs.didSelect(index: 1)
+    
+    self.vm.inputs.didSelect(index: 2)
   }
 
   func testSwitchToDashboardParam() {
