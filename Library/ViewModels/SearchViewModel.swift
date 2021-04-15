@@ -186,15 +186,24 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
 
+    self.goToProject = Signal.combineLatest(self.projects, query)
+      .takePairWhen(self.tappedProjectProperty.signal.skipNil())
+      .map { projectsAndQuery, tappedProject in
+        let (projects, query) = projectsAndQuery
+
+        return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
+      }
+
     // Tracking
 
-    // Ensure an initial value is emitted for `stats` when view first appears
-    let searchResults = Signal.merge(
+    // This represents search results count whenever the search page is viewed.
+    // An initial value is emitted on first visit.
+    let viewWillAppearSearchResultsCount = Signal.merge(
       stats,
       viewWillAppearNotAnimated.mapConst(0).take(first: 1)
     )
 
-    Signal.combineLatest(query, searchResults)
+    Signal.combineLatest(query, viewWillAppearSearchResultsCount)
       .takeWhen(viewWillAppearNotAnimated)
       .observeValues { query, searchResults in
         let results = query.isEmpty ? 0 : searchResults
@@ -212,27 +221,20 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .filter { _, page in page == 1 }
       .map(first)
 
-    self.goToProject = Signal.combineLatest(self.projects, query)
-      .takePairWhen(self.tappedProjectProperty.signal.skipNil())
-      .map { projectsAndQuery, tappedProject in
-        let (projects, query) = projectsAndQuery
-
-        return (tappedProject, projects, refTag(query: query, projects: projects, project: tappedProject))
-      }
-
-    // Tracking
+    // This represents search results count only when a search is performed
+    // and there is a response from the API for the query.
+    let newQuerySearchResultsCount = Signal.merge(
+      viewWillAppearSearchResultsCount.filter { $0 == 0 },
+      viewWillAppearSearchResultsCount.takeWhen(firstPageResults)
+    )
 
     Signal.combineLatest(query, requestFirstPageWith)
-      .takePairWhen(firstPageResults)
+      .takePairWhen(newQuerySearchResultsCount)
       .map(unpack)
       .filter { query, _, _ in !query.isEmpty }
-      .observeValues { query, params, hasResults in
-        AppEnvironment.current.ksrAnalytics.trackSearchResults(
-          query: query,
-          params: params,
-          refTag: .search,
-          hasResults: hasResults
-        )
+      .observeValues { _, params, stats in
+        AppEnvironment.current.ksrAnalytics
+          .trackProjectSearchView(params: params, results: stats)
       }
 
     Signal.combineLatest(self.tappedProjectProperty.signal, requestFirstPageWith)
