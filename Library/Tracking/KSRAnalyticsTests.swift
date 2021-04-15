@@ -1947,12 +1947,12 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertNil(segmentClient.properties.last?["context_cta"] as? String)
     XCTAssertNil(segmentClient.properties.last?["context_location"] as? String)
   }
-  
+
   func testSearchTabBarClicked() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
-    
+
     ksrAnalytics.trackSearchTabBarClicked(prevTabBarItemLabel: .profile)
 
     XCTAssertEqual([

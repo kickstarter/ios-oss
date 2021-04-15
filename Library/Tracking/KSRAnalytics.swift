@@ -625,13 +625,13 @@ public final class KSRAnalytics {
       )
     }
   }
-  
+
   /**
     Calls when user taps on the Search TabBarItem
-   
+
    - parameter prevTabBarItemLabel: The tab the user was on before clicking search.
    */
-  
+
   public func trackSearchTabBarClicked(prevTabBarItemLabel: TabBarItemLabel) {
     let pageContext: PageContext
     switch prevTabBarItemLabel {

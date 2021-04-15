@@ -340,7 +340,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       .combineLatest(prevSelectedIndex, self.tabBarItemsData)
       .map { index, data in tabBarItemLabel(for: data.items[index]) }
 
-    let searchBarItemSelected = Signal
+    let searchTabBarSelected = Signal
       .combineLatest(self.didSelectIndexProperty.signal, self.tabBarItemsData)
       .filter { index, data in index < data.items.count }
       .map { index, data in
@@ -349,7 +349,7 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       .filter { $0 == .search }
 
     prevSelectedTabBarItem
-      .takeWhen(searchBarItemSelected)
+      .takeWhen(searchTabBarSelected)
       .skipRepeats(==)
       .observeValues { tabBarLabel in
         AppEnvironment.current.ksrAnalytics

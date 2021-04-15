@@ -607,12 +607,12 @@ final class RootViewModelTests: TestCase {
     self.vm.inputs.switchToDiscovery(params: params)
     self.filterDiscovery.assertValues([params])
   }
-  
+
   func testSwitchToSearch() {
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.didSelect(index: 1)
-    
+
     self.vm.inputs.didSelect(index: 2)
   }
 
