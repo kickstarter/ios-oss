@@ -196,13 +196,14 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
 
     // Tracking
 
-    // Ensure an initial value is emitted for `stats` when view first appears
-    let searchResults = Signal.merge(
+    // This represents search results count whenever the search page is viewed.
+    // An initial value is emitted on first visit.
+    let viewWillAppearSearchResultsCount = Signal.merge(
       stats,
       viewWillAppearNotAnimated.mapConst(0).take(first: 1)
     )
 
-    Signal.combineLatest(query, searchResults)
+    Signal.combineLatest(query, viewWillAppearSearchResultsCount)
       .takeWhen(viewWillAppearNotAnimated)
       .observeValues { query, searchResults in
         let results = query.isEmpty ? 0 : searchResults
@@ -220,13 +221,15 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .filter { _, page in page == 1 }
       .map(first)
 
-    let searchResultsCount = Signal.merge(
-      searchResults.filter { $0 == 0 },
-      searchResults.takeWhen(firstPageResults)
+    // This represents search results count only when a search is performed
+    // and there is a response from the API for the query.
+    let newQuerySearchResultsCount = Signal.merge(
+      viewWillAppearSearchResultsCount.filter { $0 == 0 },
+      viewWillAppearSearchResultsCount.takeWhen(firstPageResults)
     )
 
     Signal.combineLatest(query, requestFirstPageWith)
-      .takePairWhen(searchResultsCount)
+      .takePairWhen(newQuerySearchResultsCount)
       .map(unpack)
       .filter { query, _, _ in !query.isEmpty }
       .observeValues { _, params, stats in
