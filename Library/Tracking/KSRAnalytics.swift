@@ -603,7 +603,7 @@ public final class KSRAnalytics {
 
   // MARK: - Application Lifecycle
 
-  /// Calls when user taps on any of the TabBarItem
+  /// Called when the user taps on a TabBarItem
   public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
     switch tabBarItemLabel {
     case .discovery:
@@ -627,7 +627,7 @@ public final class KSRAnalytics {
   }
 
   /**
-    Calls when user taps on the Search TabBarItem
+   Called when the user specifically taps on the Search TabBarItem
 
    - parameter prevTabBarItemLabel: The tab the user was on before clicking search.
    */
