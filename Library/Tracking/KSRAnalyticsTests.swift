@@ -1961,6 +1961,13 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("search", dataLakeClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("global_nav", dataLakeClient.properties.last?["context_location"] as? String)
     XCTAssertEqual("profile", dataLakeClient.properties.last?["context_page"] as? String)
+
+    XCTAssertEqual([
+      "CTA Clicked"
+    ], segmentClient.events)
+    XCTAssertEqual("search", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("profile", segmentClient.properties.last?["context_page"] as? String)
   }
 
   func testTrackDiscoverySortProperties() {
