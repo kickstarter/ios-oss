@@ -51,7 +51,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
       target: self, action: #selector(self.newsletterLabelTapped)
     )
     self.newsletterLabel.addGestureRecognizer(tapGestureRecognizer)
-    
+
     self.disclaimerTextView.delegate = self
 
     self.viewModel.inputs.viewDidLoad()
@@ -139,7 +139,7 @@ internal final class FacebookConfirmationViewController: UIViewController,
       .observeValues { [weak self] helpType in
         self?.goToHelpType(helpType)
       }
-    
+
     self.viewModel.outputs.notifyDelegateOpenHelpType
       .observeForUI()
       .observeValues { [weak self] helpType in
@@ -208,16 +208,15 @@ internal final class FacebookConfirmationViewController: UIViewController,
 }
 
 extension FacebookConfirmationViewController: UITextViewDelegate {
-  
   func textView(
-    _ textView: UITextView,
-    shouldInteractWith textAttachment: NSTextAttachment,
-    in characterRange: NSRange,
-    interaction: UITextItemInteraction
+    _: UITextView,
+    shouldInteractWith _: NSTextAttachment,
+    in _: NSRange,
+    interaction _: UITextItemInteraction
   ) -> Bool {
     return false
   }
-  
+
   func textView(
     _: UITextView, shouldInteractWith url: URL,
     in _: NSRange,
@@ -234,16 +233,20 @@ private let disclaimerTextViewStyle: TextViewStyle = { (textView: UITextView) ->
     |> \.attributedText .~ attributedDisclaimerText(textView: textView)
     |> \.accessibilityTraits .~ [.staticText]
     |> \.textAlignment .~ .center
-  
+
   return textView
 }
 
 private func attributedDisclaimerText(textView: UITextView) -> NSAttributedString? {
   let baseUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl
-  
+
   guard let termsOfUseLink = HelpType.terms.url(withBaseUrl: baseUrl)?.absoluteString,
-        let privacyPolicyLink = HelpType.privacy.url(withBaseUrl: baseUrl)?.absoluteString else { return nil }
-  
-  let string = Strings.By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy(terms_of_use_link: termsOfUseLink, privacy_policy_link: privacyPolicyLink)
+    let privacyPolicyLink = HelpType.privacy.url(withBaseUrl: baseUrl)?.absoluteString else { return nil }
+
+  let string = Strings
+    .By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy(
+      terms_of_use_link: termsOfUseLink,
+      privacy_policy_link: privacyPolicyLink
+    )
   return disclaimerAttributedString(with: string, traitCollection: textView.traitCollection)
 }

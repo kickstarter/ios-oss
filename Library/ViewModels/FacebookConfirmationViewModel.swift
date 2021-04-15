@@ -93,7 +93,7 @@ public final class FacebookConfirmationViewModel: FacebookConfirmationViewModelT
   public func environmentLoggedIn() {
     self.environmentLoggedInProperty.value = ()
   }
-  
+
   private let tappedUrlProperty = MutableProperty<(URL)?>(nil)
   public func tapped(_ url: URL) {
     self.tappedUrlProperty.value = url
@@ -153,8 +153,8 @@ public final class FacebookConfirmationViewModel: FacebookConfirmationViewModelT
       }
 
     self.showLogin = self.loginButtonPressedProperty.signal
-    
-    self.notifyDelegateOpenHelpType = tappedUrlProperty.signal.skipNil().map { url -> HelpType? in
+
+    self.notifyDelegateOpenHelpType = self.tappedUrlProperty.signal.skipNil().map { url -> HelpType? in
       let helpType = HelpType.allCases.filter { helpType in
         url.absoluteString == helpType.url(
           withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl

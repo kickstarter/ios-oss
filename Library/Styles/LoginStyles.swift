@@ -63,7 +63,7 @@ public let fbLoginButtonStyle = facebookButtonStyle
 public let fbConfirmationMessageLabelStyle = UILabel.lens.textColor .~ .ksr_support_700
   <> UILabel.lens.font .~ .ksr_body()
   <> UILabel.lens
-  .text %~ { _ in Strings.By_signing_up_youll_use_your_Facebook_account_to_log_in_to_your_Kickstarter_account() }
+  .text %~ { _ in Strings.By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account() }
 
 public let fbConfirmEmailLabelStyle = UILabel.lens.textColor .~ .ksr_support_700
   <> UILabel.lens.font .~ .ksr_headline()
@@ -174,17 +174,17 @@ public func disclaimerAttributedString(
     ],
     documentAttributes: nil
   ) else { return nil }
-  
+
   let attributes: String.Attributes = [
     .font: traitCollection.isRegularRegular ? UIFont.ksr_footnote(size: 14.0) : .ksr_footnote(size: 11.0),
     .foregroundColor: UIColor.ksr_support_400,
     .underlineStyle: 0
   ]
-  
+
   let fullRange = (attributedString.string as NSString).range(of: attributedString.string)
-  
+
   attributedString.addAttributes(attributes, range: fullRange)
-  
+
   return attributedString
 }
 
