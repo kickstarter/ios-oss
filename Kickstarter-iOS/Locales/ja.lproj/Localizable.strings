@@ -66,8 +66,10 @@
 "Bonus_support" = "ボーナスサポート";
 "Bookmarks" = "ブックマーク";
 "Bring_creative_projects_to_life" = "クリエイティブなプロジェクトに生命を。";
+"By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy" = "アカウントを作成することで、Kickstarter の <a href=\"%{terms_of_use_link}\">利用規約</a> と<a href=\"%{privacy_policy_link}\">プライバシーポリシー</a>に同意したことになります。";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "プレッジをすることにより、Kickstarter の <a href=\"%{terms_of_use_link}\">利用規約</a>、<a href=\"%{privacy_policy_link}\">プライバシーポリシー</a>、<a href=\"%{cookie_policy_link}\">Cookie ポリシー</a>に同意したとみなされます。";
 "By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "サインアップすることで、Kickstarter の利用規約、プライバシーポリシー、Cookie ポリシーに同意するものとみなされます。当社のポリシーでは、Kickstarter のサービスとサイトを配信、改善、促進するために、同社がお客様のデータをどのように使用しているか、そしてそのようなデータ使用を管理するためのお客様の権利について説明しています。";
+"By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account" = "サインアップすることで、Kickstarter に Facebook アカウントを使ってログインすることになります。Facebook を使用したくない場合は、このアプリを再起動して別のオプションをお選びください。";
 "CVC" = "CVC";
 "Cancel" = "キャンセル";
 "Cancel_pledge" = "プレッジを取り消す";
@@ -709,6 +711,7 @@
 "Youre_a_backer" = "バッカーになりました！";
 "Youre_a_backer_no_punctuation" = "バック中";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Facebookのメールアドレスで新しいアカウントを作成しようとしています。再度確認してください。";
+"Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email" = "Facebook に登録されているメールアドレスで新しい Kickstarter アカウントを作成しようとしています。編集するか、これが Kickstarter アカウントに登録したいメールアドレスであることを確定してください。";
 "Youre_all_set" = "完了です";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Facebook (%{email}) を通して接続されています。Kickstarter の認識情報を編集するには、このアカウント用にパスワードを作成してください。";
 "Youre_offline" = "現在オフライン中です。デバイスが再接続し次第、アプリをリフレッシュしてください。";
