@@ -1,6 +1,7 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+import PerimeterX
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
@@ -30,7 +31,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let goToLandingPage = TestObserver<(), Never>()
   private let goToProjectActivities = TestObserver<Param, Never>()
   private let goToLoginWithIntent = TestObserver<LoginIntent, Never>()
-  private let goToPerimeterXCaptcha = TestObserver<PerimeterXBlockResponseType, Never>()
+  private let goToPerimeterXCaptcha = TestObserver<PXBlockResponse, Never>()
   private let goToProfile = TestObserver<(), Never>()
   private let goToMobileSafari = TestObserver<URL, Never>()
   private let goToSearch = TestObserver<(), Never>()
@@ -2455,10 +2456,9 @@ final class AppDelegateViewModelTests: TestCase {
   func testGoToPerimeterXCaptcha() {
     self.goToPerimeterXCaptcha.assertDidNotEmitValue()
 
-    self.vm.inputs.perimeterXCaptchaTriggered(response: MockPerimeterXBlockResponse(blockType: .Captcha))
+    self.vm.inputs.perimeterXCaptchaTriggered(response: PXBlockResponse())
 
     self.goToPerimeterXCaptcha.assertValueCount(1)
-    XCTAssertEqual(self.goToPerimeterXCaptcha.values.last?.type, .Captcha)
   }
 }
 
