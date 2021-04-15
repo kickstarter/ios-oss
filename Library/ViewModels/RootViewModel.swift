@@ -144,8 +144,6 @@ public protocol RootViewModelOutputs {
 
   /// Emits a User that can be used to replace the current user in the environment.
   var updateUserInEnvironment: Signal<User, Never> { get }
-
-  var prevSelectedIndex: Signal<Int, Never> { get }
 }
 
 public protocol RootViewModelType {
@@ -333,13 +331,13 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
 
     // Tracks
 
-    self.prevSelectedIndex = self.didSelectIndexProperty
+    let prevSelectedIndex = self.didSelectIndexProperty
       .signal
       .combinePrevious(0)
       .map(first)
 
     let prevSelectedTabBarItem = Signal
-      .combineLatest(self.prevSelectedIndex, self.tabBarItemsData)
+      .combineLatest(prevSelectedIndex, self.tabBarItemsData)
       .map { index, data in tabBarItemLabel(for: data.items[index]) }
 
     let searchTabBarSelected = Signal
@@ -459,7 +457,6 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
   public let switchDashboardProject: Signal<(Int, Param), Never>
   public let tabBarItemsData: Signal<TabBarItemsData, Never>
   public let updateUserInEnvironment: Signal<User, Never>
-  public let prevSelectedIndex: Signal<Int, Never>
 
   public var inputs: RootViewModelInputs { return self }
   public var outputs: RootViewModelOutputs { return self }
