@@ -18,6 +18,7 @@ final class RootViewModelTests: TestCase {
   let switchDashboardProject = TestObserver<Param, Never>()
   let tabBarItemsData = TestObserver<TabBarItemsData, Never>()
   let updateUserInEnvironment = TestObserver<User, Never>()
+  let prevSelectedIndex = TestObserver<Int, Never>()
 
   override func setUp() {
     super.setUp()
@@ -32,6 +33,7 @@ final class RootViewModelTests: TestCase {
     self.vm.outputs.setBadgeValueAtIndex.map { $0.1 }.observe(self.setBadgeValueAtIndexIndex.observer)
     self.vm.outputs.switchDashboardProject.map(second).observe(self.switchDashboardProject.observer)
     self.vm.outputs.updateUserInEnvironment.observe(self.updateUserInEnvironment.observer)
+    self.vm.outputs.prevSelectedIndex.observe(self.prevSelectedIndex.observer)
 
     let viewControllers = self.vm.outputs.setViewControllers
       .map { $0.map(RootTabBarViewController.viewController(from:)).compact() }
@@ -503,6 +505,9 @@ final class RootViewModelTests: TestCase {
 
     self.vm.inputs.didSelect(index: 2)
 
+    self.scheduler.advance()
+
+    XCTAssertEqual(self.prevSelectedIndex.values, [0, 1, 0])
     self.selectedIndex.assertValues([0, 1, 0, 2], "Selects index immediately.")
     XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked", "CTA Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(
