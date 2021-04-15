@@ -41,7 +41,6 @@ public final class KSRAnalytics {
     case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
     case projectSwiped = "Project Swiped"
-    case searchResultsLoaded = "Search Results Loaded"
     case signupButtonClicked = "Signup Button Clicked"
     case signupSubmitButtonClicked = "Signup Submit Button Clicked"
     case skipVerificationButtonClicked = "Skip Verification Button Clicked"
@@ -1348,27 +1347,6 @@ public final class KSRAnalytics {
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      page: .search,
-      properties: props
-    )
-  }
-
-  // Call when projects have been obtained from a search.
-  public func trackSearchResults(
-    query: String,
-    params: DiscoveryParams,
-    refTag: RefTag,
-    hasResults: Bool
-  ) {
-    let props = discoveryProperties(from: params)
-      .withAllValuesFrom([
-        "discover_ref_tag": refTag.stringTag,
-        "search_term": query,
-        "has_results": hasResults
-      ])
-
-    self.track(
-      event: ApprovedEvent.searchResultsLoaded.rawValue,
       page: .search,
       properties: props
     )
