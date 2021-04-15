@@ -608,12 +608,77 @@ final class RootViewModelTests: TestCase {
     self.filterDiscovery.assertValues([params])
   }
 
-  func testSwitchToSearch() {
+  func testPreviouslySelectedTabBarItem() {
     self.vm.inputs.viewDidLoad()
 
-    self.vm.inputs.didSelect(index: 1)
+    self.vm.inputs.didSelect(index: 3)
 
     self.vm.inputs.didSelect(index: 2)
+
+    self.vm.inputs.didSelect(index: 3)
+
+    XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked", "Tab Bar Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(
+      ["profile", nil, "profile"],
+      self.dataLakeTrackingClient.properties(forKey: "context_tab_bar_label")
+    )
+    XCTAssertEqual(
+      [nil, "profile", nil],
+      self.dataLakeTrackingClient.properties(forKey: "context_page")
+    )
+    XCTAssertEqual(
+      [nil, "search", nil],
+      self.dataLakeTrackingClient.properties(forKey: "context_cta")
+    )
+    XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked", "Tab Bar Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(
+      ["profile", nil, "profile"],
+      self.segmentTrackingClient.properties(forKey: "context_tab_bar_label")
+    )
+    XCTAssertEqual(
+      [nil, "profile", nil],
+      self.segmentTrackingClient.properties(forKey: "context_page")
+    )
+    XCTAssertEqual(
+      [nil, "search", nil],
+      self.segmentTrackingClient.properties(forKey: "context_cta")
+    )
+
+    self.vm.inputs.didSelect(index: 0)
+    self.vm.inputs.didSelect(index: 2)
+
+    XCTAssertEqual(
+      ["Tab Bar Clicked", "CTA Clicked", "Tab Bar Clicked", "CTA Clicked", "CTA Clicked"],
+      self.dataLakeTrackingClient.events
+    )
+    XCTAssertEqual(
+      ["profile", nil, "profile", nil, nil],
+      self.dataLakeTrackingClient.properties(forKey: "context_tab_bar_label")
+    )
+    XCTAssertEqual(
+      [nil, "profile", nil, nil, "discover"],
+      self.dataLakeTrackingClient.properties(forKey: "context_page")
+    )
+    XCTAssertEqual(
+      [nil, "search", nil, "discover", "search"],
+      self.dataLakeTrackingClient.properties(forKey: "context_cta")
+    )
+    XCTAssertEqual(
+      ["Tab Bar Clicked", "CTA Clicked", "Tab Bar Clicked", "CTA Clicked", "CTA Clicked"],
+      self.segmentTrackingClient.events
+    )
+    XCTAssertEqual(
+      ["profile", nil, "profile", nil, nil],
+      self.segmentTrackingClient.properties(forKey: "context_tab_bar_label")
+    )
+    XCTAssertEqual(
+      [nil, "profile", nil, nil, "discover"],
+      self.segmentTrackingClient.properties(forKey: "context_page")
+    )
+    XCTAssertEqual(
+      [nil, "search", nil, "discover", "search"],
+      self.segmentTrackingClient.properties(forKey: "context_cta")
+    )
   }
 
   func testSwitchToDashboardParam() {
