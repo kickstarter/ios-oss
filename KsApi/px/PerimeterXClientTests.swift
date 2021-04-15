@@ -50,18 +50,18 @@ final class PerimeterXClientTests: XCTestCase {
       return
     }
 
-    var notificationResponse: MockPerimeterXBlockResponse?
+    var notification: Notification?
 
     let token = NotificationCenter.default.addObserver(
       forName: Notification.Name.ksr_perimeterXCaptcha,
       object: nil,
       queue: nil
     ) { note in
-      notificationResponse = note.object as? MockPerimeterXBlockResponse
+      notification = note
     }
 
     XCTAssertTrue(client.handleError(response: response, and: data!))
-    XCTAssertNotNil(notificationResponse)
+    XCTAssertNotNil(notification)
 
     NotificationCenter.default.removeObserver(token)
   }
@@ -82,18 +82,18 @@ final class PerimeterXClientTests: XCTestCase {
       return
     }
 
-    var notificationResponse: MockPerimeterXBlockResponse?
+    var notification: Notification?
 
     let token = NotificationCenter.default.addObserver(
       forName: Notification.Name.ksr_perimeterXCaptcha,
       object: nil,
       queue: nil
     ) { note in
-      notificationResponse = note.object as? MockPerimeterXBlockResponse
+      notification = note
     }
 
     XCTAssertTrue(client.handleError(response: response, and: data!))
-    XCTAssertNotNil(notificationResponse)
+    XCTAssertNotNil(notification)
 
     NotificationCenter.default.removeObserver(token)
   }
