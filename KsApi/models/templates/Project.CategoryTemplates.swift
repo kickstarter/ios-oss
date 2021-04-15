@@ -4,7 +4,15 @@ extension Project.Category {
   internal static let template = Project.Category(
     analyticsName: "Ceramics",
     id: 1,
-    name: "Art",
+    name: "Ceramics",
+    parentId: nil,
+    parentName: "Art"
+  )
+
+  internal static let spanishTemplate = Project.Category(
+    analyticsName: "Ceramics",
+    id: 1,
+    name: "Cerámica",
     parentId: nil,
     parentName: "Art"
   )

@@ -435,7 +435,7 @@ final class KSRAnalyticsTests: TestCase {
       project.stats.percentFunded,
       segmentClientProperties?["project_percent_raised"] as? Int
     )
-    XCTAssertEqual(project.category.name, segmentClientProperties?["project_subcategory"] as? String)
+    XCTAssertEqual(project.category.analyticsName, segmentClientProperties?["project_subcategory"] as? String)
     XCTAssertEqual("Art", segmentClientProperties?["project_category"] as? String)
     XCTAssertEqual(project.stats.commentsCount, dataLakeClientProperties?["project_comments_count"] as? Int)
     XCTAssertEqual(String(project.creator.id), segmentClientProperties?["project_creator_uid"] as? String)
@@ -620,6 +620,38 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(project.tags?.joined(separator: ", "), segmentClientProperties?["project_tags"] as? String)
 
     XCTAssertEqual(27, segmentClientProperties?.keys.filter { $0.hasPrefix("project_") }.count)
+  }
+
+  func testProjectProperties_SpanishCategory() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      loggedInUser: nil,
+      segmentClient: segmentClient
+    )
+    let project = Project.template
+      |> Project.lens.rewardData.rewards .~ [Reward.template, .noReward]
+      |> \.category .~ .spanishTemplate
+      |> Project.lens.stats.staticUsdRate .~ 2.0
+      |> Project.lens.stats.commentsCount .~ 10
+      |> Project.lens.prelaunchActivated .~ true
+      |> Project.lens.displayPrelaunch .~ true
+
+    ksrAnalytics
+      .trackProjectViewed(project, refTag: .discovery, sectionContext: .overview)
+
+    let dataLakeClientProperties = dataLakeClient.properties.last
+    let segmentClientProperties = segmentClient.properties.last
+
+    XCTAssertEqual(
+      project.category.analyticsName,
+      dataLakeClientProperties?["project_subcategory"] as? String
+    )
+    XCTAssertEqual("Art", dataLakeClientProperties?["project_category"] as? String)
+
+    XCTAssertEqual(project.category.analyticsName, segmentClientProperties?["project_subcategory"] as? String)
+    XCTAssertEqual("Art", segmentClientProperties?["project_category"] as? String)
   }
 
   // MARK: - Discovery Properties Tests
