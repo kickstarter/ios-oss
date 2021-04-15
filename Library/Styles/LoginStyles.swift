@@ -3,7 +3,7 @@ import Prelude_UIKit
 import UIKit
 
 public let createNewAccountButtonStyle = greenButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.facebook_confirmation_button() }
+  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.Sign_up() }
 
 public let disclaimerButtonStyle = UIButton.lens.titleColor(for: .normal) .~ .ksr_support_400
   <> UIButton.lens.titleColor(for: .highlighted) %~ { _ in
@@ -62,7 +62,8 @@ public let fbLoginButtonStyle = facebookButtonStyle
 
 public let fbConfirmationMessageLabelStyle = UILabel.lens.textColor .~ .ksr_support_700
   <> UILabel.lens.font .~ .ksr_body()
-  <> UILabel.lens.text %~ { _ in Strings.Youre_about_to_create_a_new_Kickstarter_account() }
+  <> UILabel.lens
+  .text %~ { _ in Strings.By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account() }
 
 public let fbConfirmEmailLabelStyle = UILabel.lens.textColor .~ .ksr_support_700
   <> UILabel.lens.font .~ .ksr_headline()
@@ -82,7 +83,8 @@ public let forgotPasswordButtonStyle =
 public let loginControllerStyle = UIViewController.lens.title %~ { _ in Strings.login_navbar_title() }
 
 public let loginWithEmailButtonStyle = greyButtonStyle
-  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in_email() }
+  <> UIButton.lens.title(for: .normal) %~ { _ in Strings.login_buttons_log_in()
+  }
 
 public let newsletterSwitchStyle = UISwitch.lens.onTintColor .~ .ksr_create_700
 
@@ -159,6 +161,32 @@ public let newsletterLabelStyle = UILabel.lens.font .~ .ksr_footnote()
   <> UILabel.lens.text %~ { _ in
     Strings.Receive_a_weekly_mix_of_handpicked_projects_plus_occasional_Kickstarter_news()
   }
+
+public func disclaimerAttributedString(
+  with string: String,
+  traitCollection: UITraitCollection
+) -> NSAttributedString? {
+  guard let attributedString = try? NSMutableAttributedString(
+    data: Data(string.utf8),
+    options: [
+      .documentType: NSAttributedString.DocumentType.html,
+      .characterEncoding: String.Encoding.utf8.rawValue
+    ],
+    documentAttributes: nil
+  ) else { return nil }
+
+  let attributes: String.Attributes = [
+    .font: traitCollection.isRegularRegular ? UIFont.ksr_footnote(size: 14.0) : .ksr_footnote(size: 11.0),
+    .foregroundColor: UIColor.ksr_support_400,
+    .underlineStyle: 0
+  ]
+
+  let fullRange = (attributedString.string as NSString).range(of: attributedString.string)
+
+  attributedString.addAttributes(attributes, range: fullRange)
+
+  return attributedString
+}
 
 public let tfaCodeFieldStyle = formFieldStyle
   <> UITextField.lens.textAlignment .~ .center
