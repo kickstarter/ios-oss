@@ -168,6 +168,9 @@ public protocol AppDelegateViewModelOutputs {
   /// Emits the push token that has been successfully registered on the server.
   var pushTokenSuccessfullyRegistered: Signal<String, Never> { get }
 
+  /// Emits when we should register the device push token in Segment Analytics.
+  var registerPushTokenInSegment: Signal<Data, Never> { get }
+
   /// Emits an array of short cut items to put into the shared application.
   var setApplicationShortcutItems: Signal<[ShortcutItem], Never> { get }
 
@@ -297,6 +300,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           .demoteErrors()
           .map { _ in token }
       }
+
+    self.registerPushTokenInSegment = self.deviceTokenDataProperty.signal
 
     // Onboarding
 
@@ -809,6 +814,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let presentViewController: Signal<UIViewController, Never>
   public let pushTokenRegistrationStarted: Signal<(), Never>
   public let pushTokenSuccessfullyRegistered: Signal<String, Never>
+  public let registerPushTokenInSegment: Signal<Data, Never>
   public let setApplicationShortcutItems: Signal<[ShortcutItem], Never>
   public let showAlert: Signal<Notification, Never>
   public let synchronizeUbiquitousStore: Signal<(), Never>
