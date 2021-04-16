@@ -1026,7 +1026,7 @@ final class AppDelegateViewModelTests: TestCase {
 
   func testOpenNotification_ProjectUpdate() {
     self.vm.inputs.didReceive(remoteNotification: updatePushData)
-
+//
     self.presentViewController.assertValueCount(1)
   }
 
