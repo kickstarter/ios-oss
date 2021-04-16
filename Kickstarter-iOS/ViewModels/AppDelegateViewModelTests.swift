@@ -1,6 +1,7 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
+import PerimeterX
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
@@ -30,6 +31,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let goToLandingPage = TestObserver<(), Never>()
   private let goToProjectActivities = TestObserver<Param, Never>()
   private let goToLoginWithIntent = TestObserver<LoginIntent, Never>()
+  private let goToPerimeterXCaptcha = TestObserver<PXBlockResponse, Never>()
   private let goToProfile = TestObserver<(), Never>()
   private let goToMobileSafari = TestObserver<URL, Never>()
   private let goToSearch = TestObserver<(), Never>()
@@ -70,14 +72,11 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.goToDiscovery.observe(self.goToDiscovery.observer)
     self.vm.outputs.goToLandingPage.observe(self.goToLandingPage.observer)
     self.vm.outputs.goToLoginWithIntent.observe(self.goToLoginWithIntent.observer)
+    self.vm.outputs.goToPerimeterXCaptcha.observe(self.goToPerimeterXCaptcha.observer)
     self.vm.outputs.goToProfile.observe(self.goToProfile.observer)
     self.vm.outputs.goToMobileSafari.observe(self.goToMobileSafari.observer)
     self.vm.outputs.goToProjectActivities.observe(self.goToProjectActivities.observer)
     self.vm.outputs.goToSearch.observe(self.goToSearch.observer)
-    self.vm.outputs.perimeterXInitialHeaders.map { $0 as? [String: String] }
-      .observe(self.perimeterXManagerReady.observer)
-    self.vm.outputs.perimeterXRefreshedHeaders.map { $0 as? [String: String] }
-      .observe(self.perimeterXRefreshedHeaders.observer)
     self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotificationName.observer)
     self.vm.outputs.presentViewController.map { ($0 as! UINavigationController).viewControllers.count }
       .observe(self.presentViewController.observer)
@@ -552,32 +551,6 @@ final class AppDelegateViewModelTests: TestCase {
         .ksr_configUpdated,
         .ksr_configUpdated
       ])
-    }
-  }
-
-  // MARK: - Perimeter X
-
-  func testPerimeterXManagerReady() {
-    let mockService = MockService(serverConfig: ServerConfig.staging)
-
-    withEnvironment(apiService: mockService) {
-      self.perimeterXManagerReady.assertDidNotEmitValue()
-
-      self.vm.inputs.perimeterXManagerReady(with: ["foo": "bar"])
-
-      self.perimeterXManagerReady.assertValue(["foo": "bar"])
-    }
-  }
-
-  func testPerimeterXNewHeaders() {
-    let mockService = MockService(serverConfig: ServerConfig.staging)
-
-    withEnvironment(apiService: mockService) {
-      self.perimeterXRefreshedHeaders.assertDidNotEmitValue()
-
-      self.vm.inputs.perimeterXNewHeaders(with: ["foo": "bar"])
-
-      self.perimeterXRefreshedHeaders.assertValue(["foo": "bar"])
     }
   }
 
@@ -2478,6 +2451,14 @@ final class AppDelegateViewModelTests: TestCase {
         ["Something went wrong, please try again."]
       )
     }
+  }
+
+  func testGoToPerimeterXCaptcha() {
+    self.goToPerimeterXCaptcha.assertDidNotEmitValue()
+
+    self.vm.inputs.perimeterXCaptchaTriggered(response: PXBlockResponse())
+
+    self.goToPerimeterXCaptcha.assertValueCount(1)
   }
 }
 

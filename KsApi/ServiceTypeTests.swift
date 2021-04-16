@@ -22,7 +22,7 @@ final class ServiceTypeTests: XCTestCase {
     language: "ksr",
     buildVersion: "1234567890",
     deviceIdentifier: "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
-    perimeterXClient: MockPerimeterXClient()
+    perimeterXClient: PerimeterXClient.mock
   )
 
   private let anonAdHocService = Service(
@@ -40,7 +40,7 @@ final class ServiceTypeTests: XCTestCase {
       graphQLEndpointUrl: URL(string: "http://ksr.dev/graph")!
     ),
     deviceIdentifier: "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
-    perimeterXClient: MockPerimeterXClient()
+    perimeterXClient: PerimeterXClient.mock
   )
 
   private let anonService = Service(
@@ -55,7 +55,7 @@ final class ServiceTypeTests: XCTestCase {
       graphQLEndpointUrl: URL(string: "http://ksr.dev/graph")!
     ),
     deviceIdentifier: "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
-    perimeterXClient: MockPerimeterXClient()
+    perimeterXClient: PerimeterXClient.mock
   )
 
   func testEquals() {
@@ -255,7 +255,7 @@ final class ServiceTypeTests: XCTestCase {
         graphQLEndpointUrl: URL(string: "http://ksr.dev/graph")!
       ),
       deviceIdentifier: "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF",
-      perimeterXClient: MockPerimeterXClient()
+      perimeterXClient: PerimeterXClient.mock
     )
 
     let url = URL(string: "http://api.ksr.com/v1/test?key=value")!
