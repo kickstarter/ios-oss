@@ -230,7 +230,8 @@ private func categoryData(from rootCategories: [KsApi.Category]) -> ([String], [
     }
 
     // Copy the parent category, but ignore the subcategories to reduce object size
-    let parentCategory = KsApi.Category(id: category.id, name: category.name)
+    let parentCategory = KsApi
+      .Category(analyticsName: category.analyticsName, id: category.id, name: category.name)
     let allProjects = (Strings.All_category_name_Projects(category_name: category.name), parentCategory)
 
     return [allProjects] + subcategoryData

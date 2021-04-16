@@ -1,10 +1,11 @@
 import Foundation
 public struct ParentCategory: Swift.Codable {
+  public let analyticsName: String?
   public let id: String
   public let name: String
 
   public var categoryType: Category {
-    return Category(id: self.id, name: self.name)
+    return Category(analyticsName: self.analyticsName, id: self.id, name: self.name)
   }
 }
 
@@ -12,6 +13,7 @@ private let unrecognizedCategoryId: Int = -1
 
 public struct Category: Swift.Codable {
   public static let gamesId: Int = 12
+  public var analyticsName: String?
   public var id: String
   public var name: String
   internal let _parent: ParentCategory?
@@ -20,6 +22,7 @@ public struct Category: Swift.Codable {
   public var totalProjectCount: Int?
 
   public init(
+    analyticsName: String?,
     id: String,
     name: String,
     parentCategory: ParentCategory? = nil,
@@ -27,6 +30,7 @@ public struct Category: Swift.Codable {
     subcategories: SubcategoryConnection? = nil,
     totalProjectCount: Int? = nil
   ) {
+    self.analyticsName = analyticsName
     self.id = id
     self.name = name
     self.parentId = parentId
@@ -84,11 +88,12 @@ public struct Category: Swift.Codable {
 
 extension Category {
   private enum CodingKeys: String, CodingKey {
-    case id, name, parentId, _parent = "parentCategory", subcategories, totalProjectCount
+    case analyticsName, id, name, parentId, _parent = "parentCategory", subcategories, totalProjectCount
   }
 
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
+    self.analyticsName = try values.decodeIfPresent(String.self, forKey: .analyticsName)
     self.id = try values.decode(String.self, forKey: .id)
     self.name = try values.decode(String.self, forKey: .name)
     self.parentId = try? values.decode(String.self, forKey: .parentId)

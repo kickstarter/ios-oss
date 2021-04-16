@@ -666,6 +666,7 @@ final class KSRAnalyticsTests: TestCase {
       <> DiscoveryParams.lens.recommended .~ false
       <> DiscoveryParams.lens.category .~ (Category.documentary
         |> Category.lens.parent .~ .init(
+          analyticsName: Category.filmAndVideo.analyticsName,
           id: Category.filmAndVideo.id,
           name: Category.filmAndVideo.name
         )
@@ -2071,6 +2072,28 @@ final class KSRAnalyticsTests: TestCase {
     )
   }
 
+  func testTrackDiscoveryModalSelectedFilter_Category_Spanish() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+    let artParams = DiscoveryParams.defaults
+      |> DiscoveryParams.lens.category .~ Category.documentarySpanish
+    ksrAnalytics
+      .trackDiscoveryModalSelectedFilter(
+        params: artParams,
+        typeContext: .categoryName,
+        locationContext: .discoverOverlay
+      )
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("category_name", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("category_name", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("Film & Video", dataLakeClient.properties.last?["discover_category_name"] as? String)
+    XCTAssertEqual("Film & Video", segmentClient.properties.last?["discover_category_name"] as? String)
+    XCTAssertEqual("Documentary", dataLakeClient.properties.last?["discover_subcategory_name"] as? String)
+    XCTAssertEqual("Documentary", segmentClient.properties.last?["discover_subcategory_name"] as? String)
+  }
+
   func testTrackProjectViewedEvent() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
@@ -2301,7 +2324,8 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(true, dataLakeClient.properties.last?["discover_social"] as? Bool)
     XCTAssertEqual(true, segmentClient.properties.last?["discover_social"] as? Bool)
 
-    let artParams = DiscoveryParams.defaults |> DiscoveryParams.lens.category .~ Category.art
+    let artParams = DiscoveryParams.defaults
+      |> DiscoveryParams.lens.category .~ Category.illustration
     ksrAnalytics
       .trackDiscoveryModalSelectedFilter(
         params: artParams,
@@ -2314,6 +2338,8 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("category_name", segmentClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("Art", dataLakeClient.properties.last?["discover_category_name"] as? String)
     XCTAssertEqual("Art", segmentClient.properties.last?["discover_category_name"] as? String)
+    XCTAssertEqual("Illustration", dataLakeClient.properties.last?["discover_subcategory_name"] as? String)
+    XCTAssertEqual("Illustration", segmentClient.properties.last?["discover_subcategory_name"] as? String)
 
     let watchedParams = DiscoveryParams.defaults |> DiscoveryParams.lens.starred .~ true
     ksrAnalytics
