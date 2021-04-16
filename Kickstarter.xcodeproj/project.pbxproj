@@ -484,6 +484,9 @@
 		8A6C979024BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6C978F24BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift */; };
 		8A73EACF2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EACE2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift */; };
 		8A73EAD12339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A73EAD02339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift */; };
+		8A741BC1262A358700E864E6 /* Appboy_iOS_SDK.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8A741BC2262A358700E864E6 /* Segment_Appboy.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A04FE24262781240056F413 /* Segment_Appboy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8A741BC6262A35B000E864E6 /* SDWebImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A04FE25262781240056F413 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A7E71F9256460C200119B49 /* EmailVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7E71F8256460C200119B49 /* EmailVerificationViewController.swift */; };
 		8A8099EB22E213F100373E66 /* RewardCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099E922E213F100373E66 /* RewardCardView.swift */; };
 		8A8099EC22E213F100373E66 /* RewardCardContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099EA22E213F100373E66 /* RewardCardContainerView.swift */; };
@@ -1523,6 +1526,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				8A741BC6262A35B000E864E6 /* SDWebImage.framework in CopyFiles */,
+				8A741BC1262A358700E864E6 /* Appboy_iOS_SDK.framework in CopyFiles */,
+				8A741BC2262A358700E864E6 /* Segment_Appboy.framework in CopyFiles */,
 				8A0C3D3A25AE8B1400310034 /* Segment.framework in CopyFiles */,
 				1611EF6423ABDB3D0051CDCC /* Optimizely.framework in CopyFiles */,
 				D08C68AE22AF12E0001ED5E8 /* FBSDKCoreKit.framework in CopyFiles */,
@@ -3899,7 +3905,6 @@
 			isa = PBXGroup;
 			children = (
 				8ACF36FE262769420026E74D /* PerimeterX.framework */,
-				8A417DE625AE2F8600A2C406 /* Segment.framework */,
 				8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */,
 				D00A373E2258270600F46F47 /* Alamofire.framework */,
 				D00A371F225815FA00F46F47 /* AlamofireImage.framework */,
