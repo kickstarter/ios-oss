@@ -19,7 +19,7 @@ public protocol ServiceType {
   var currency: String { get }
   var buildVersion: String { get }
   var deviceIdentifier: String { get }
-  var perimeterXClient: PerimeterXClientType? { get }
+  var perimeterXClient: PerimeterXClientType { get }
 
   init(
     appId: String,
@@ -29,7 +29,7 @@ public protocol ServiceType {
     currency: String,
     buildVersion: String,
     deviceIdentifier: String,
-    perimeterXClient: PerimeterXClientType?
+    perimeterXClient: PerimeterXClientType
   )
 
   /// Returns a new service with the oauth token replaced.
@@ -489,7 +489,7 @@ extension ServiceType {
 
   // PerimeterX authorization header
   fileprivate var pxHeaders: [String: String] {
-    return self.perimeterXClient?.headers() ?? [:]
+    return self.perimeterXClient.headers()
   }
 
   func graphMutationRequestBody(mutation: String, input: [String: Any]) -> [String: Any] {

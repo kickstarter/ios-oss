@@ -104,7 +104,7 @@ public struct Environment {
   public let userDefaults: KeyValueStoreType
 
   public init(
-    apiService: ServiceType = Service(perimeterXClient: PerimeterXClient()),
+    apiService: ServiceType = Service(),
     apiDelayInterval: DispatchTimeInterval = .seconds(0),
     applePayCapabilities: ApplePayCapabilitiesType = ApplePayCapabilities(),
     application: UIApplicationType = UIApplication.shared,
