@@ -7,6 +7,7 @@ class GraphSchemaTests: XCTestCase {
   func testRootCategoriesQuery() {
     let query = Query.rootCategories(
       .id +| [
+        .analyticsName,
         .name,
         .parentCategory,
         .subcategories(
@@ -14,6 +15,7 @@ class GraphSchemaTests: XCTestCase {
           .totalCount +| [
             .nodes(
               .id +| [
+                .analyticsName,
                 .name,
                 .parentId,
                 .totalProjectCount
@@ -25,8 +27,8 @@ class GraphSchemaTests: XCTestCase {
       ]
     )
     XCTAssertEqual(
-      "rootCategories { id name parentCategory { id name } " +
-        "subcategories { nodes { id name parentId totalProjectCount } totalCount } " +
+      "rootCategories { analyticsName id name parentCategory { analyticsName id name } " +
+        "subcategories { nodes { analyticsName id name parentId totalProjectCount } totalCount } " +
         "totalProjectCount }", query.description
     )
   }

@@ -127,6 +127,7 @@ public enum Query {
       }
     }
 
+    case analyticsName
     case id
     case name
     case parentId
@@ -204,6 +205,7 @@ public enum Query {
 
     // TODO: This should be reconciled with the global-scope Category
     public indirect enum Category {
+      case analyticsName
       case id
       case name
       case parentCategory(NonEmptySet<Category>)
@@ -458,9 +460,10 @@ extension Connection: QueryType {
 extension Query.Category: QueryType {
   public var description: String {
     switch self {
+    case .analyticsName: return "analyticsName"
     case .id: return "id"
     case .name: return "name"
-    case .parentCategory: return "parentCategory { id name }"
+    case .parentCategory: return "parentCategory { analyticsName id name }"
     case .parentId: return "parentId"
     case let .projects(args, fields): return "projects" + connection(args, fields)
     case .slug: return "slug"
@@ -520,6 +523,7 @@ extension Query.Project: QueryType {
 extension Query.Project.Category: QueryType {
   public var description: String {
     switch self {
+    case .analyticsName: return "analyticsName"
     case .id: return "id"
     case .name: return "name"
     case let .parentCategory(fields): return "parentCategory { \(join(fields)) }"
