@@ -66,8 +66,10 @@
 "Bonus_support" = "Bonus-Unterstützung";
 "Bookmarks" = "Bookmarks";
 "Bring_creative_projects_to_life" = "Kreative Projekte werden Wirklichkeit!";
+"By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy" = "Mit Erstellung eines Kontos erklärst du dich mit Kickstarters <a href=\"%{terms_of_use_link}\">Nutzungsbedingungen</a> und <a href=\"%{privacy_policy_link}\">Datenschutzrichtlinien</a> einverstanden.";
 "By_pledging_you_agree_to_Kickstarters_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Bei Leistung eines Finanzierungsbeitrags erkennst du Kickstarters <a href=\"%{terms_of_use_link}\">Nutzungsbedingungen</a>, <a href=\"%{privacy_policy_link}\">Datenschutzrichtlinien</a> und <a href=\"%{cookie_policy_link}\">Cookie-Richtlinien</a> an.";
 "By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy" = "Bei Registrierung stimmst du unseren Nutzungsbedingungen, Datenschutzrichtlinien und Cookie-Richtlinien zu. Unsere Richtlinien erläutern, wie wir deine Daten zur Bereitstellung, Verbesserung und Promotion unserer Services und unserer Webseite nutzen.";
+"By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account" = "Mit deiner Registrierung wirst du auf Kickstarter mit deinem Facebook-Konto angemeldet. Wenn du Facebook dazu lieber nicht benutzen möchtest, starte die App bitte erneut und wähle eine andere Option.";
 "CVC" = "CVC";
 "Cancel" = "Abbrechen";
 "Cancel_pledge" = "Beitrag zurückziehen";
@@ -709,6 +711,7 @@
 "Youre_a_backer" = "Du unterstützt das Projekt!";
 "Youre_a_backer_no_punctuation" = "Du bist ein Unterstützer";
 "Youre_about_to_create_a_new_Kickstarter_account" = "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte bestätige diesen Vorgang.";
+"Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email" = "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte ändere oder bestätige die Adresse, die du mit deinem Kickstarter-Konto verbinden möchtest.";
 "Youre_all_set" = "Alles klar";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Du bist via Facebook (%{email}) verbunden. Erstelle ein Passwort für dieses Konto, um deine Anmeldedaten für Kickstarter zu ändern.";
 "Youre_offline" = "Du bist Offline. Sobald du wieder Online bist, navigiere in der App, um sie zu aktualisieren.";

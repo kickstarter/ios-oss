@@ -501,17 +501,47 @@ final class RootViewModelTests: TestCase {
       self.segmentTrackingClient.properties(forKey: "context_tab_bar_label")
     )
 
-    self.vm.inputs.didSelect(index: 10)
+    self.vm.inputs.didSelect(index: 2)
 
-    self.selectedIndex.assertValues([0, 1, 0, 3], "Selects index immediately.")
-    XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked"], self.dataLakeTrackingClient.events)
+    self.selectedIndex.assertValues([0, 1, 0, 2], "Selects index immediately.")
+    XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked", "CTA Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(
-      ["activity", nil],
+      ["activity", nil, nil],
       self.dataLakeTrackingClient.properties(forKey: "context_tab_bar_label")
     )
-    XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
     XCTAssertEqual(
-      ["activity", nil],
+      [nil, nil, "discover"],
+      self.dataLakeTrackingClient.properties(forKey: "context_page")
+    )
+    XCTAssertEqual(
+      [nil, "discover", "search"],
+      self.dataLakeTrackingClient.properties(forKey: "context_cta")
+    )
+    XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(
+      ["activity", nil, nil],
+      self.segmentTrackingClient.properties(forKey: "context_tab_bar_label")
+    )
+    XCTAssertEqual(
+      [nil, nil, "discover"],
+      self.segmentTrackingClient.properties(forKey: "context_page")
+    )
+    XCTAssertEqual(
+      [nil, "discover", "search"],
+      self.segmentTrackingClient.properties(forKey: "context_cta")
+    )
+
+    self.vm.inputs.didSelect(index: 10)
+
+    self.selectedIndex.assertValues([0, 1, 0, 2, 3], "Selects index immediately.")
+    XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked", "CTA Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(
+      ["activity", nil, nil],
+      self.dataLakeTrackingClient.properties(forKey: "context_tab_bar_label")
+    )
+    XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(
+      ["activity", nil, nil],
       self.segmentTrackingClient.properties(forKey: "context_tab_bar_label")
     )
   }

@@ -1106,6 +1106,23 @@ contributeurs"
     )
   }
   /**
+   "By creating an account, you agree to Kickstarter’s <a href="%{terms_of_use_link}">Terms of Use</a> and <a href="%{privacy_policy_link}">Privacy Policy</a>."
+
+   - **en**: "By creating an account, you agree to Kickstarter’s <a href="%{terms_of_use_link}">Terms of Use</a> and <a href="%{privacy_policy_link}">Privacy Policy</a>."
+   - **de**: "Mit Erstellung eines Kontos erklärst du dich mit Kickstarters <a href="%{terms_of_use_link}">Nutzungsbedingungen</a> und <a href="%{privacy_policy_link}">Datenschutzrichtlinien</a> einverstanden."
+   - **es**: "Si creas una cuenta, aceptas los <a href="%{terms_of_use_link}">Términos de uso</a> y la <a href="%{privacy_policy_link}">Política de privacidad</a> de Kickstarter."
+   - **fr**: "Lorsque vous créez un compte, vous acceptez les <a href="%{terms_of_use_link}">Conditions d'utilisation</a> et la <a href="%{privacy_policy_link}">Politique de confidentialité</a> de Kickstarter."
+   - **ja**: "アカウントを作成することで、Kickstarter の <a href="%{terms_of_use_link}">利用規約</a> と<a href="%{privacy_policy_link}">プライバシーポリシー</a>に同意したことになります。"
+  */
+  public static func By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy(terms_of_use_link: String, privacy_policy_link: String) -> String {
+    return localizedString(
+      key: "By_creating_an_account_you_agree_to_Kickstarters_Terms_of_Use_and_Privacy_Policy",
+      defaultValue: "By creating an account, you agree to Kickstarter’s <a href=\"%{terms_of_use_link}\">Terms of Use</a> and <a href=\"%{privacy_policy_link}\">Privacy Policy</a>.",
+      count: nil,
+      substitutions: ["terms_of_use_link": terms_of_use_link, "privacy_policy_link": privacy_policy_link]
+    )
+  }
+  /**
    "By pledging you agree to Kickstarter's <a href="%{terms_of_use_link}">Terms of Use</a>, <a href="%{privacy_policy_link}">Privacy Policy</a> and <a href="%{cookie_policy_link}">Cookie Policy</a>."
 
    - **en**: "By pledging you agree to Kickstarter's <a href="%{terms_of_use_link}">Terms of Use</a>, <a href="%{privacy_policy_link}">Privacy Policy</a> and <a href="%{cookie_policy_link}">Cookie Policy</a>."
@@ -1135,6 +1152,23 @@ contributeurs"
     return localizedString(
       key: "By_signing_up_you_agree_to_our_Terms_of_Use_Privacy_Policy_and_Cookie_Policy",
       defaultValue: "By signing up, you agree to our Terms of Use, Privacy Policy, and Cookie Policy. Our policies explain how we use your data to deliver, improve, and promote our service and our site, and how you can exercise your rights to control that use.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "By signing up, you’ll log in to Kickstarter using your Facebook account. If you prefer not to use Facebook, restart this app and choose another option."
+
+   - **en**: "By signing up, you’ll log in to Kickstarter using your Facebook account. If you prefer not to use Facebook, restart this app and choose another option."
+   - **de**: "Mit deiner Registrierung wirst du auf Kickstarter mit deinem Facebook-Konto angemeldet. Wenn du Facebook dazu lieber nicht benutzen möchtest, starte die App bitte erneut und wähle eine andere Option."
+   - **es**: "Si te registras, deberás iniciar sesión en Kickstarter con tu cuenta de Facebook. Si prefieres no usar Facebook, vuelve a abrir la aplicación y elige otra opción."
+   - **fr**: "En vous inscrivant ici, vous vous connecterez à Kickstarter avec votre compte Facebook. Si vous préférez ne pas utiliser Facebook, veuillez redémarrer cette application et choisir une autre option."
+   - **ja**: "サインアップすることで、Kickstarter に Facebook アカウントを使ってログインすることになります。Facebook を使用したくない場合は、このアプリを再起動して別のオプションをお選びください。"
+  */
+  public static func By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account() -> String {
+    return localizedString(
+      key: "By_signing_up_youll_log_in_to_Kickstarter_using_your_Facebook_account",
+      defaultValue: "By signing up, you’ll log in to Kickstarter using your Facebook account. If you prefer not to use Facebook, restart this app and choose another option.",
       count: nil,
       substitutions: [:]
     )
@@ -11443,23 +11477,6 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "Youre_a_backer_no_punctuation",
       defaultValue: "You're a backer",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
-   "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding."
-
-   - **en**: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding."
-   - **de**: "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte bestätige diesen Vorgang."
-   - **es**: "Estás a punto de crear una nueva cuenta de Kickstarter usando el correo electrónico associado a tu cuenta de Facebook. Por favor confírmalo antes de proceder."
-   - **fr**: "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail que vous utilisez sur Facebook. Veuillez confirmer avant de continuer."
-   - **ja**: "Facebookのメールアドレスで新しいアカウントを作成しようとしています。再度確認してください。"
-  */
-  public static func Youre_about_to_create_a_new_Kickstarter_account() -> String {
-    return localizedString(
-      key: "Youre_about_to_create_a_new_Kickstarter_account",
-      defaultValue: "You're about to create a new Kickstarter account with the email address you use for Facebook. Please confirm that it’s correct before proceeding.",
       count: nil,
       substitutions: [:]
     )
