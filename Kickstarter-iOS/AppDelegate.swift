@@ -161,6 +161,12 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         print("📲 [Push Registration] Push token successfully registered (\(token)) ✨")
       }
 
+    self.viewModel.outputs.registerPushTokenInSegment
+      .observeForUI()
+      .observeValues { token in
+        Analytics.shared().registeredForRemoteNotifications(withDeviceToken: token)
+      }
+
     self.viewModel.outputs.showAlert
       .observeForUI()
       .observeValues { [weak self] in
