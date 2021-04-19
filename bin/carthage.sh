@@ -28,6 +28,7 @@ elif ! cmp -s Cartfile.resolved Carthage/Cartfile.resolved; then
   # When the cache was last reset, we ran into a mirror issue that was fixed by adding
   # the following preix as an environment variable:
   #HOMEBREW_BOTTLE_DOMAIN=https://ghcr.io/v2/Homebrew/core
+  # Related: https://discuss.circleci.com/t/homebrew-stopped-to-download-openssl-1-1/39828
   HOMEBREW_BOTTLE_DOMAIN=https://ghcr.io/v2/Homebrew/core brew upgrade carthage
   echo "Resolving dependencies"
   carthage bootstrap --platform iOS
