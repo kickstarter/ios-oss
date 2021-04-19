@@ -148,7 +148,7 @@ internal final class SearchViewModelTests: TestCase {
         XCTAssertEqual("results", dataLakeProperties?["context_type"] as? String)
         XCTAssertEqual("project", dataLakeProperties?["context_cta"] as? String)
         XCTAssertEqual("search_results", dataLakeProperties?["context_location"] as? String)
-        
+
         XCTAssertEqual("search", segmentProperties?["context_page"] as? String)
         XCTAssertEqual("results", segmentProperties?["context_type"] as? String)
         XCTAssertEqual("project", segmentProperties?["context_cta"] as? String)
