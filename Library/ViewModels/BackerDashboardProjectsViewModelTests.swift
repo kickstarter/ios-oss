@@ -147,8 +147,8 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       self.goToProject.assertValues([project], "Project emmitted.")
       self.goToProjectRefTag.assertValues([.profileBacked], "RefTag = profile_backed emitted.")
 
-      XCTAssertEqual(self.dataLakeTrackingClient.events, ["Card Clicked"])
-      XCTAssertEqual(self.segmentTrackingClient.events, ["Card Clicked"])
+      XCTAssertEqual(self.dataLakeTrackingClient.events, ["CTA Clicked"])
+      XCTAssertEqual(self.segmentTrackingClient.events, ["CTA Clicked"])
 
       XCTAssertEqual(
         ["profile"],

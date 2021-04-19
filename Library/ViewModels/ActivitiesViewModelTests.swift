@@ -322,8 +322,8 @@ final class ActivitiesViewModelTests: TestCase {
     self.goToProject.assertValues([project])
     self.showRefTag.assertValues([refTag])
 
-    XCTAssertEqual(self.dataLakeTrackingClient.events, ["Card Clicked"])
-    XCTAssertEqual(self.segmentTrackingClient.events, ["Card Clicked"])
+    XCTAssertEqual(self.dataLakeTrackingClient.events, ["CTA Clicked"])
+    XCTAssertEqual(self.segmentTrackingClient.events, ["CTA Clicked"])
 
     XCTAssertEqual(
       ["activity_feed"],

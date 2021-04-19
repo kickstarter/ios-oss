@@ -280,14 +280,14 @@ final class ThanksViewModelTests: TestCase {
       XCTAssertEqual(
         [
           "Page Viewed",
-          "Card Clicked"
+          "CTA Clicked"
         ],
         self.dataLakeTrackingClient.events
       )
       XCTAssertEqual(
         [
           "Page Viewed",
-          "Card Clicked"
+          "CTA Clicked"
         ],
         self.segmentTrackingClient.events
       )

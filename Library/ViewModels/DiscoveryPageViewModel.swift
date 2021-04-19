@@ -451,6 +451,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
         AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
           page: .discovery,
           project: project,
+          typeContext: .project,
           location: .discoverAdvanced,
           params: params
         )

@@ -134,20 +134,25 @@ internal final class SearchViewModelTests: TestCase {
 
         XCTAssertEqual(
           self.dataLakeTrackingClient.events.last,
-          "Card Clicked"
+          "CTA Clicked"
         )
         XCTAssertEqual(
           self.segmentTrackingClient.events.last,
-          "Card Clicked"
+          "CTA Clicked"
         )
 
         let dataLakeProperties = self.dataLakeTrackingClient.properties.last
         let segmentProperties = self.segmentTrackingClient.properties.last
 
         XCTAssertEqual("search", dataLakeProperties?["context_page"] as? String)
-        XCTAssertEqual("project", dataLakeProperties?["context_type"] as? String)
+        XCTAssertEqual("results", dataLakeProperties?["context_type"] as? String)
+        XCTAssertEqual("project", dataLakeProperties?["context_cta"] as? String)
+        XCTAssertEqual("search_results", dataLakeProperties?["context_location"] as? String)
+
         XCTAssertEqual("search", segmentProperties?["context_page"] as? String)
-        XCTAssertEqual("project", segmentProperties?["context_type"] as? String)
+        XCTAssertEqual("results", segmentProperties?["context_type"] as? String)
+        XCTAssertEqual("project", segmentProperties?["context_cta"] as? String)
+        XCTAssertEqual("search_results", segmentProperties?["context_location"] as? String)
       }
     }
   }
