@@ -142,11 +142,12 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
       self.metadataIconTintColor.assertValues([backedColor])
 
       self.vm.inputs.configure(with: (featuredProject, nil, nil))
+      guard let parentName = featuredProject.category.parentName else { return }
       self.metadataLabelText.assertValues(
         [
           Strings.discovery_baseball_card_metadata_backer(),
           Strings.discovery_baseball_card_metadata_featured_project(
-            category_name: featuredProject.category.name
+            category_name: parentName
           )
         ], "Featured metadata emits."
       )

@@ -8,14 +8,17 @@ class CategoryTests: XCTestCase {
     {
       "rootCategories": [
         {
+          "analyticsName": "Art",
           "id": "Q2F0ZWdvcnktMQ==",
           "name": "Art",
           "subcategories": {
             "nodes": [
               {
+                "analyticsName": "Ceramics",
                 "id": "Q2F0ZWdvcnktMjg3",
                 "name": "Ceramics",
                 "parentCategory": {
+                  "analyticsName": "Art",
                   "id": "Q2F0ZWdvcnktMQ==",
                   "name": "Art"
                 }
@@ -37,6 +40,7 @@ class CategoryTests: XCTestCase {
       XCTAssertNotNil(decodedData.rootCategories)
 
       let category = decodedData.rootCategories[0]
+      XCTAssertEqual(category.analyticsName, "Art")
       XCTAssertEqual(category.id, "Q2F0ZWdvcnktMQ==")
       XCTAssertEqual(category.name, "Art")
       XCTAssertNil(category.parent)
@@ -53,8 +57,10 @@ class CategoryTests: XCTestCase {
       XCTAssertNotNil(subcategory)
       XCTAssertEqual(subcategory?.id, "Q2F0ZWdvcnktMjg3")
       XCTAssertEqual(subcategory?.name, "Ceramics")
+      XCTAssertEqual(subcategory?.analyticsName, "Ceramics")
       XCTAssertEqual(subcategory?._parent?.id, "Q2F0ZWdvcnktMQ==")
       XCTAssertEqual(subcategory?._parent?.name, "Art")
+      XCTAssertEqual(subcategory?._parent?.analyticsName, "Art")
     } else {
       XCTFail("Data should be decoded")
     }
@@ -67,10 +73,12 @@ class CategoryTests: XCTestCase {
 
       let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
 
+      XCTAssertEqual("Tabletop Games", json?["analyticsName"] as? String)
       XCTAssertEqual("Q2F0ZWdvcnktMzQ=", json?["id"] as? String)
       XCTAssertEqual("Tabletop Games", json?["name"] as? String)
       XCTAssertEqual("Q2F0ZWdvcnktMTI=", json?["parentId"] as? String)
       XCTAssertEqual([
+        "analyticsName": "Games",
         "id": "Q2F0ZWdvcnktMTI=",
         "name": "Games"
       ], json?["parentCategory"] as? [String: String])
@@ -88,6 +96,7 @@ class CategoryTests: XCTestCase {
 
       let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
 
+      XCTAssertEqual("Art", json?["analyticsName"] as? String)
       XCTAssertEqual("Q2F0ZWdvcnktMQ==", json?["id"] as? String)
       XCTAssertEqual("Art", json?["name"] as? String)
       XCTAssertNil(json?["totalProjectCount"])
@@ -101,6 +110,7 @@ class CategoryTests: XCTestCase {
       XCTAssertEqual("Illustration", nodes?.first?["name"] as? String)
       XCTAssertEqual("Q2F0ZWdvcnktMjI=", nodes?.first?["id"] as? String)
       XCTAssertEqual([
+        "analyticsName": "Art",
         "id": "Q2F0ZWdvcnktMQ==",
         "name": "Art"
       ], nodes?.first?["parentCategory"] as? [String: String])
@@ -118,6 +128,7 @@ class CategoryTests: XCTestCase {
 
   func testParentCategoryType() {
     let parent = ParentCategory(
+      analyticsName: Category.art.analyticsName,
       id: Category.art.id,
       name: Category.art.name
     )
