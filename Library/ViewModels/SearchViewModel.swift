@@ -241,8 +241,7 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       .observeValues { project, params in
         guard let project = project else { return }
 
-        AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
-          page: .search,
+        AppEnvironment.current.ksrAnalytics.trackSearchedProjectCardClicked(
           project: project,
           params: params
         )
