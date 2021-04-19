@@ -1134,5 +1134,5 @@ private func configRetainingDebugFeatureFlags(_ config: Config) -> Config {
   let storedFeatures = (AppEnvironment.current.config?.features ?? [:])
     .filter { key, _ in currentFeatureKeys.contains(key) }
 
-  return config |> Config.lens.features .~ (currentFeatures.withAllValuesFrom(storedFeatures))
+  return config |> Config.lens.features .~ currentFeatures.withAllValuesFrom(storedFeatures)
 }

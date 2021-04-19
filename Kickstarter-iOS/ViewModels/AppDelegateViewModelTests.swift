@@ -2461,7 +2461,11 @@ final class AppDelegateViewModelTests: TestCase {
     self.goToPerimeterXCaptcha.assertValueCount(1)
   }
 
-  func testFeatureFlagsRetainedInConfig() {
+  func testFeatureFlagsRetainedInConfig_NotRelease() {
+    let mockBundle = MockBundle(
+      bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue
+    )
+
     let config = Config.template
       |> Config.lens.features .~ [
         "my_enabled_feature": true,
@@ -2479,7 +2483,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.updateConfigInEnvironment.assertDidNotEmitValue()
 
-    withEnvironment(apiService: service, config: config) {
+    withEnvironment(apiService: service, config: config, mainBundle: mockBundle) {
       self.vm.inputs.applicationDidFinishLaunching(
         application: .shared,
         launchOptions: [:]
@@ -2491,6 +2495,44 @@ final class AppDelegateViewModelTests: TestCase {
 
       XCTAssertEqual(updatedFeatures?["my_enabled_feature"], true, "Retains stored value")
       XCTAssertEqual(updatedFeatures?["my_disabled_feature"], false, "Retains stored value")
+      XCTAssertEqual(updatedFeatures?["my_new_feature"], true, "Uses incoming value")
+    }
+  }
+
+  func testFeatureFlagsRetainedInConfig_Release() {
+    let mockBundle = MockBundle(
+      bundleIdentifier: KickstarterBundleIdentifier.release.rawValue
+    )
+
+    let config = Config.template
+      |> Config.lens.features .~ [
+        "my_enabled_feature": true,
+        "my_disabled_feature": false
+      ]
+
+    let incomingConfig = Config.template
+      |> Config.lens.features .~ [
+        "my_enabled_feature": false,
+        "my_disabled_feature": true,
+        "my_new_feature": true
+      ]
+
+    let service = MockService(fetchConfigResponse: incomingConfig)
+
+    self.updateConfigInEnvironment.assertDidNotEmitValue()
+
+    withEnvironment(apiService: service, config: config, mainBundle: mockBundle) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: .shared,
+        launchOptions: [:]
+      )
+
+      self.updateConfigInEnvironment.assertValueCount(1)
+
+      let updatedFeatures = self.updateConfigInEnvironment.lastValue?.features
+
+      XCTAssertEqual(updatedFeatures?["my_enabled_feature"], false, "Uses incoming value")
+      XCTAssertEqual(updatedFeatures?["my_disabled_feature"], true, "Uses incoming value")
       XCTAssertEqual(updatedFeatures?["my_new_feature"], true, "Uses incoming value")
     }
   }
