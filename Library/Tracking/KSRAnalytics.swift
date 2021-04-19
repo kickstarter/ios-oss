@@ -833,6 +833,7 @@ public final class KSRAnalytics {
    - parameter page: The `PageContext` representing the specific area the UI is interacted in
    - parameter checkoutData: The `CheckoutPropertiesData` associated with this specific checkout instance
    - parameter project: The `Project` corresponding to the card that was clicked
+   - parameter typeContext: The context of the  project clicked.
    - parameter location: The optional `LocationContext` representing additional details of the UI interaction
    - parameter params: The optional `DiscoveryParams  ` associated with the list of projects
    - parameter reward: The optional `Reward  ` for the selected `Project`
@@ -842,14 +843,16 @@ public final class KSRAnalytics {
   public func trackProjectCardClicked(page: PageContext,
                                       project: Project,
                                       checkoutData: CheckoutPropertiesData? = nil,
+                                      typeContext: TypeContext? = nil,
                                       location: LocationContext? = nil,
                                       params: DiscoveryParams? = nil,
                                       reward: Reward? = nil,
                                       section: SectionContext? = nil) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(
+        ctaContext: .project,
         sectionContext: section,
-        typeContext: .project,
+        typeContext: typeContext,
         locationContext: location
       ))
 
@@ -862,34 +865,8 @@ public final class KSRAnalytics {
     }
 
     self.track(
-      event: NewApprovedEvent.cardClicked.rawValue,
-      page: page,
-      properties: props
-    )
-  }
-
-  /**
-   Call when a project card is clicked from a list of searched results
-   - parameter project: The `Project` corresponding to the card that was clicked
-   - parameter params: The optional `DiscoveryParams  ` associated with the list of projects
-   */
-
-  public func trackSearchedProjectCardClicked(project: Project,
-                                              params: DiscoveryParams? = nil) {
-    var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(
-        ctaContext: .project,
-        page: .search,
-        typeContext: .results,
-        locationContext: .searchResults
-      ))
-
-    if let discoveryParams = params {
-      props = props.withAllValuesFrom(discoveryProperties(from: discoveryParams))
-    }
-
-    self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
+      page: page,
       properties: props
     )
   }

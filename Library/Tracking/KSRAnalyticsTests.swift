@@ -1047,11 +1047,13 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackProjectCardClicked(
       page: .discovery,
       project: .template,
+      typeContext: .project,
       location: .discoverAdvanced,
       params: DiscoveryParams.recommendedDefaults
     )
 
-    XCTAssertEqual(["Card Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("project", dataLakeClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("discover_advanced", dataLakeClient.properties.last?["context_location"] as? String)
@@ -1059,7 +1061,8 @@ final class KSRAnalyticsTests: TestCase {
     self.assertProjectProperties(dataLakeClient.properties.last)
     self.assertDiscoveryProperties(dataLakeClient.properties.last)
 
-    XCTAssertEqual(["Card Clicked"], segmentClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("project", segmentClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("discover_advanced", segmentClient.properties.last?["context_location"] as? String)
@@ -1075,16 +1078,19 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackProjectCardClicked(
       page: .activities,
-      project: .template
+      project: .template,
+      typeContext: .project
     )
 
-    XCTAssertEqual(["Card Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("project", dataLakeClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("activity_feed", dataLakeClient.properties.last?["context_page"] as? String)
 
     self.assertProjectProperties(dataLakeClient.properties.last)
 
-    XCTAssertEqual(["Card Clicked"], segmentClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("project", segmentClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("activity_feed", segmentClient.properties.last?["context_page"] as? String)
 
@@ -1099,11 +1105,13 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackProjectCardClicked(
       page: .profile,
       project: .template,
+      typeContext: .project,
       location: .accountMenu,
       section: .backed
     )
 
-    XCTAssertEqual(["Card Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("project", dataLakeClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("profile", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("account_menu", dataLakeClient.properties.last?["context_location"] as? String)
@@ -1111,7 +1119,8 @@ final class KSRAnalyticsTests: TestCase {
 
     self.assertProjectProperties(dataLakeClient.properties.last)
 
-    XCTAssertEqual(["Card Clicked"], segmentClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("project", segmentClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("profile", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("account_menu", segmentClient.properties.last?["context_location"] as? String)
@@ -1128,11 +1137,13 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackProjectCardClicked(
       page: .profile,
       project: .template,
+      typeContext: .project,
       location: .accountMenu,
       section: .watched
     )
 
-    XCTAssertEqual(["Card Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("project", dataLakeClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("profile", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("account_menu", dataLakeClient.properties.last?["context_location"] as? String)
@@ -1140,7 +1151,8 @@ final class KSRAnalyticsTests: TestCase {
 
     self.assertProjectProperties(dataLakeClient.properties.last)
 
-    XCTAssertEqual(["Card Clicked"], segmentClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("project", segmentClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("profile", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("account_menu", segmentClient.properties.last?["context_location"] as? String)
@@ -1161,11 +1173,13 @@ final class KSRAnalyticsTests: TestCase {
       page: .thanks,
       project: .template,
       checkoutData: .template,
+      typeContext: .project,
       location: .recommendations,
       reward: reward
     )
 
-    XCTAssertEqual(["Card Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual("project", dataLakeClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("project", dataLakeClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("thanks", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("recommendations", dataLakeClient.properties.last?["context_location"] as? String)
@@ -1173,7 +1187,8 @@ final class KSRAnalyticsTests: TestCase {
     self.assertProjectProperties(dataLakeClient.properties.last)
     self.assertCheckoutProperties(dataLakeClient.properties.last)
 
-    XCTAssertEqual(["Card Clicked"], segmentClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+    XCTAssertEqual("project", segmentClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("project", segmentClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("thanks", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("recommendations", segmentClient.properties.last?["context_location"] as? String)
@@ -1187,8 +1202,11 @@ final class KSRAnalyticsTests: TestCase {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
 
-    ksrAnalytics.trackSearchedProjectCardClicked(
+    ksrAnalytics.trackProjectCardClicked(
+      page: .search,
       project: .template,
+      typeContext: .results,
+      location: .searchResults,
       params: DiscoveryParams.recommendedDefaults
     )
 
