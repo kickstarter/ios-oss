@@ -833,7 +833,7 @@ public final class KSRAnalytics {
    - parameter page: The `PageContext` representing the specific area the UI is interacted in
    - parameter checkoutData: The `CheckoutPropertiesData` associated with this specific checkout instance
    - parameter project: The `Project` corresponding to the card that was clicked
-   - parameter typeContext: Additional information about an event that was not captured in other context properties for the Project tapped.
+   - parameter typeContext: Additional information about an event that was not captured in other context properties for the `Project` tapped.
    - parameter location: The optional `LocationContext` representing additional details of the UI interaction
    - parameter params: The optional `DiscoveryParams  ` associated with the list of projects
    - parameter reward: The optional `Reward  ` for the selected `Project`
