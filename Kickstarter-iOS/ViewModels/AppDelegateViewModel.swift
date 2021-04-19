@@ -234,6 +234,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
 
       return AppEnvironment.current.apiService.fetchConfig().demoteErrors()
     }
+    .map(configRetainingDebugFeatureFlags)
 
     let currentUserUpdatedNotification = self.currentUserUpdatedInEnvironmentProperty.signal
       .mapConst(Notification(name: .ksr_userUpdated, object: nil))
@@ -1128,4 +1129,16 @@ private func emailVerificationCompletionData(
   }
 
   return (message, true)
+}
+
+private func configRetainingDebugFeatureFlags(_ config: Config) -> Config {
+  guard AppEnvironment.current.mainBundle.isRelease == false else { return config }
+
+  let currentFeatures = config.features
+  let currentFeatureKeys = Set(currentFeatures.keys)
+
+  let storedFeatures = (AppEnvironment.current.config?.features ?? [:])
+    .filter { key, _ in currentFeatureKeys.contains(key) }
+
+  return config |> Config.lens.features .~ currentFeatures.withAllValuesFrom(storedFeatures)
 }
