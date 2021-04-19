@@ -57,8 +57,8 @@ public class PerimeterXClient: NSObject, PerimeterXClientType {
 }
 
 /// Works around a Swift bug - https://bugs.swift.org/browse/SR-3871
-struct PerimeterXBlockWrapper {
-  let originalBlockResponse: PXBlockResponse
+public struct PerimeterXBlockWrapper {
+  public let originalBlockResponse: PXBlockResponse
 
   static func wrapper(with response: PerimeterXBlockResponseType) -> PerimeterXBlockWrapper? {
     guard let response = response as? PXBlockResponse else { return nil }

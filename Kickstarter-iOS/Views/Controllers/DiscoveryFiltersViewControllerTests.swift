@@ -31,19 +31,29 @@ internal final class DiscoveryFiltersViewControllerTests: TestCase {
     |> Category.lens.id .~ "Q2F0ZWdvcnktMTk="
     <> Category.lens.name .~ "Ceramics"
     <> Category.lens.parentId .~ Category.art.id
-    <> Category.lens.parent .~ ParentCategory(id: Category.art.id, name: Category.art.name)
+    <> Category.lens
+    .parent .~
+    ParentCategory(analyticsName: Category.art.name, id: Category.art.id, name: Category.art.name)
 
   fileprivate static let action = .template
     |> Category.lens.id .~ "Q2F0ZWdvcnktMjc="
     <> Category.lens.name .~ "Action"
     <> Category.lens.parentId .~ Category.filmAndVideo.id
-    <> Category.lens.parent .~ ParentCategory(id: Category.filmAndVideo.id, name: Category.filmAndVideo.name)
+    <> Category.lens
+    .parent .~
+    ParentCategory(
+      analyticsName: Category.filmAndVideo.name,
+      id: Category.filmAndVideo.id,
+      name: Category.filmAndVideo.name
+    )
 
   fileprivate static let mobileGames = .template
     |> Category.lens.id .~ "Q2F0ZWdvcnktMzE="
     <> Category.lens.name .~ "Mobile Games"
     <> Category.lens.parentId .~ Category.games.id
-    <> Category.lens.parent .~ ParentCategory(id: Category.games.id, name: Category.games.name)
+    <> Category.lens
+    .parent .~
+    ParentCategory(analyticsName: Category.games.name, id: Category.games.id, name: Category.games.name)
 
   fileprivate let categories = [
     Category.art, ceramics, .illustration, comics, crafts, dance, design, fashion,

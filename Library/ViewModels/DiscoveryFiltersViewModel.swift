@@ -366,12 +366,14 @@ public func categoryBy(id: String) -> NonEmptySet<Query> {
 
 private var categoryFields: NonEmptySet<Query.Category> {
   return .id +| [
+    .analyticsName,
     .name,
     .subcategories(
       [],
       .totalCount +| [
         .nodes(
           .id +| [
+            .analyticsName,
             .name,
             .parentCategory,
             .parentId,

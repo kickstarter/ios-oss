@@ -1578,7 +1578,7 @@ private func projectProperties(
   var props: [String: Any] = [:]
 
   props["backers_count"] = project.stats.backersCount
-  props["subcategory"] = project.category.name
+  props["subcategory"] = project.category.analyticsName
   props["country"] = project.country.countryCode
   props["comments_count"] = project.stats.commentsCount ?? 0
   props["currency"] = project.country.currencyCode
@@ -1708,7 +1708,7 @@ private func discoveryProperties(
   var result: [String: Any] = [:]
 
   // NB: All filters should be added here since `result["everything"]` is derived from this.
-  result["category_name"] = params.category?.name
+  result["category_name"] = params.category?.parent?.analyticsName
   result["recommended"] = params.recommended
   result["social"] = params.social
   result["pwl"] = params.staffPicks
@@ -1733,7 +1733,7 @@ private func properties(category: KsApi.Category, prefix: String = "category_") 
   var result: [String: Any] = [:]
 
   result["id"] = category.intID
-  result["name"] = category.name
+  result["name"] = category.analyticsName
 
   return result.prefixedKeys(prefix)
 }
