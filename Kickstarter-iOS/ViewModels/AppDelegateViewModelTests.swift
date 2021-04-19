@@ -2460,6 +2460,40 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToPerimeterXCaptcha.assertValueCount(1)
   }
+
+  func testFeatureFlagsRetainedInConfig() {
+    let config = Config.template
+      |> Config.lens.features .~ [
+        "my_enabled_feature": true,
+        "my_disabled_feature": false
+      ]
+
+    let incomingConfig = Config.template
+      |> Config.lens.features .~ [
+        "my_enabled_feature": false,
+        "my_disabled_feature": true,
+        "my_new_feature": true
+      ]
+
+    let service = MockService(fetchConfigResponse: incomingConfig)
+
+    self.updateConfigInEnvironment.assertDidNotEmitValue()
+
+    withEnvironment(apiService: service, config: config) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: .shared,
+        launchOptions: [:]
+      )
+
+      self.updateConfigInEnvironment.assertValueCount(1)
+
+      let updatedFeatures = self.updateConfigInEnvironment.lastValue?.features
+
+      XCTAssertEqual(updatedFeatures?["my_enabled_feature"], true, "Retains stored value")
+      XCTAssertEqual(updatedFeatures?["my_disabled_feature"], false, "Retains stored value")
+      XCTAssertEqual(updatedFeatures?["my_new_feature"], true, "Uses incoming value")
+    }
+  }
 }
 
 private let backingForCreatorPushData: [String: Any] = [
