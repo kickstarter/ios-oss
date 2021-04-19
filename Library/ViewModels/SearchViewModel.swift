@@ -244,6 +244,8 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
         AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
           page: .search,
           project: project,
+          typeContext: .results,
+          location: .searchResults,
           params: params
         )
       }

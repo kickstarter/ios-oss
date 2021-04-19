@@ -71,6 +71,7 @@ final class FeatureFlagToolsViewModelTests: TestCase {
 
   func testFeatureEnabledFromDictionaries_KnownFeatures() {
     let featureEnabled = featureEnabledFromDictionaries([[
+      "ios_braze": false,
       "ios_email_verification_flow": false,
       "ios_email_verification_skip": false,
       "ios_segment": false

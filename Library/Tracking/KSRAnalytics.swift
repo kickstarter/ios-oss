@@ -216,6 +216,7 @@ public final class KSRAnalytics {
     case logInSubmit
     case pledgeInitiate
     case pledgeSubmit
+    case project
     case rewardContinue
     case search
     case signUpInitiate
@@ -233,6 +234,7 @@ public final class KSRAnalytics {
       case .forgotPassword: return "forgot_password"
       case .pledgeInitiate: return "pledge_initiate"
       case .pledgeSubmit: return "pledge_submit"
+      case .project: return "project"
       case .logInInitiate: return "log_in_initiate"
       case .logInOrSignUp: return "log_in_or_sign_up"
       case .logInSubmit: return "log_in_submit"
@@ -366,6 +368,7 @@ public final class KSRAnalytics {
     case projectState
     case pwl
     case recommended
+    case results
     case searchTerm
     case social
     case subcategoryName
@@ -425,6 +428,7 @@ public final class KSRAnalytics {
       case .projectState: return "project_state"
       case .pwl: return "pwl"
       case .recommended: return "recommended"
+      case .results: return "results"
       case .searchTerm: return "search_term"
       case .social: return "social"
       case .subcategoryName: return "subcategory_name"
@@ -447,6 +451,7 @@ public final class KSRAnalytics {
     case discoverOverlay
     case globalNav
     case recommendations
+    case searchResults
 
     var trackingString: String {
       switch self {
@@ -455,6 +460,7 @@ public final class KSRAnalytics {
       case .discoverOverlay: return "discover_overlay"
       case .globalNav: return "global_nav"
       case .recommendations: return "recommendations"
+      case .searchResults: return "search_results"
       }
     }
   }
@@ -827,6 +833,7 @@ public final class KSRAnalytics {
    - parameter page: The `PageContext` representing the specific area the UI is interacted in
    - parameter checkoutData: The `CheckoutPropertiesData` associated with this specific checkout instance
    - parameter project: The `Project` corresponding to the card that was clicked
+   - parameter typeContext: Additional information about an event that was not captured in other context properties for the `Project` tapped.
    - parameter location: The optional `LocationContext` representing additional details of the UI interaction
    - parameter params: The optional `DiscoveryParams  ` associated with the list of projects
    - parameter reward: The optional `Reward  ` for the selected `Project`
@@ -836,14 +843,16 @@ public final class KSRAnalytics {
   public func trackProjectCardClicked(page: PageContext,
                                       project: Project,
                                       checkoutData: CheckoutPropertiesData? = nil,
+                                      typeContext: TypeContext? = nil,
                                       location: LocationContext? = nil,
                                       params: DiscoveryParams? = nil,
                                       reward: Reward? = nil,
                                       section: SectionContext? = nil) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(
+        ctaContext: .project,
         sectionContext: section,
-        typeContext: .project,
+        typeContext: typeContext,
         locationContext: location
       ))
 
@@ -856,7 +865,7 @@ public final class KSRAnalytics {
     }
 
     self.track(
-      event: NewApprovedEvent.cardClicked.rawValue,
+      event: NewApprovedEvent.ctaClicked.rawValue,
       page: page,
       properties: props
     )
