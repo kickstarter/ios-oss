@@ -1,5 +1,7 @@
+import Appboy_iOS_SDK
 import KsApi
 import Segment
+import Segment_Appboy
 
 public extension Analytics {
   /**
@@ -7,7 +9,7 @@ public extension Analytics {
    */
   static func configuredClient() -> Analytics {
     // Due to this being constructed at the same time as the environment we're not able to refer to the
-    // mainBundle on the environment here. We probable should if we want to test this.
+    // mainBundle on the environment here. We probably should if we want to test this.
     let writeKey = Bundle.main.isRelease
       ? Secrets.Segment.production
       : Secrets.Segment.staging
@@ -15,6 +17,10 @@ public extension Analytics {
     let configuration = AnalyticsConfiguration(writeKey: writeKey)
     configuration
       .trackApplicationLifecycleEvents = true
+
+    // Braze is always configured but feature-flagged elsewhere.
+    configuration.use(SEGAppboyIntegrationFactory.instance())
+
     Analytics.setup(with: configuration)
 
     return Analytics.shared()
