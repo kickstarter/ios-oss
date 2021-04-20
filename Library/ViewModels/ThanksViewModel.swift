@@ -181,8 +181,8 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
           page: .thanks,
           project: project,
           checkoutData: checkoutData,
-          typeContext: .project,
-          location: .recommendations,
+          typeContext: .recommended,
+          location: .curated,
           params: params,
           reward: reward
         )
@@ -227,11 +227,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
   fileprivate let categoryCellTappedProperty = MutableProperty<KsApi.Category?>(nil)
   public func categoryCellTapped(_ category: KsApi.Category) {
     self.categoryCellTappedProperty.value = category
-  }
-
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func project(_ project: Project) {
-    self.projectProperty.value = project
   }
 
   fileprivate let projectTappedProperty = MutableProperty<Project?>(nil)
