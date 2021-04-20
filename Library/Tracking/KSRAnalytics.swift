@@ -447,6 +447,7 @@ public final class KSRAnalytics {
    */
   public enum LocationContext {
     case accountMenu
+    case curated
     case discoverAdvanced
     case discoverOverlay
     case globalNav
@@ -456,6 +457,7 @@ public final class KSRAnalytics {
     var trackingString: String {
       switch self {
       case .accountMenu: return "account_menu"
+      case .curated: return "curated"
       case .discoverAdvanced: return "discover_advanced"
       case .discoverOverlay: return "discover_overlay"
       case .globalNav: return "global_nav"

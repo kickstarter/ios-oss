@@ -181,8 +181,8 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
           page: .thanks,
           project: project,
           checkoutData: checkoutData,
-          typeContext: .project,
-          location: .recommendations,
+          typeContext: .recommended,
+          location: .curated,
           params: params,
           reward: reward
         )
