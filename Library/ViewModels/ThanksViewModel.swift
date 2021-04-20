@@ -229,11 +229,6 @@ public final class ThanksViewModel: ThanksViewModelType, ThanksViewModelInputs, 
     self.categoryCellTappedProperty.value = category
   }
 
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func project(_ project: Project) {
-    self.projectProperty.value = project
-  }
-
   fileprivate let projectTappedProperty = MutableProperty<Project?>(nil)
   public func projectTapped(_ project: Project) {
     self.projectTappedProperty.value = project
