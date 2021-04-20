@@ -1044,17 +1044,19 @@ final class KSRAnalyticsTests: TestCase {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
 
+    let typeContext = KSRAnalytics.TypeContext.init(params: DiscoveryParams.recommendedDefaults)
+
     ksrAnalytics.trackProjectCardClicked(
       page: .discovery,
       project: .template,
-      typeContext: .project,
+      typeContext: typeContext,
       location: .discoverAdvanced,
       params: DiscoveryParams.recommendedDefaults
     )
 
     XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
     XCTAssertEqual("project", dataLakeClient.properties.last?["context_cta"] as? String)
-    XCTAssertEqual("project", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("recommended", dataLakeClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("discover_advanced", dataLakeClient.properties.last?["context_location"] as? String)
 
@@ -1063,7 +1065,7 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
     XCTAssertEqual("project", segmentClient.properties.last?["context_cta"] as? String)
-    XCTAssertEqual("project", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("recommended", segmentClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("discover_advanced", segmentClient.properties.last?["context_location"] as? String)
 

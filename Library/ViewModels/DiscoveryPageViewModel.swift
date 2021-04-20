@@ -448,10 +448,13 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     paramsChanged
       .takePairWhen(self.tappedProject.signal.skipNil())
       .observeValues { params, project in
+
+        let typeContext = KSRAnalytics.TypeContext.init(params: params)
+
         AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
           page: .discovery,
           project: project,
-          typeContext: .project,
+          typeContext: typeContext,
           location: .discoverAdvanced,
           params: params
         )

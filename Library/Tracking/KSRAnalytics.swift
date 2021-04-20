@@ -379,6 +379,26 @@ public final class KSRAnalytics {
     case watch
     case watched
 
+    /**
+     Initialize `TypeContext` with `DiscoveryParams`
+     to determine type context for discovery collection filters.
+
+     - parameter params: a `DiscoveryParams` object
+     */
+    init?(params: DiscoveryParams) {
+      if let recommended = params.recommended, recommended {
+        self = .recommended
+      } else if let starred = params.starred, starred {
+        self = .watched
+      } else if let staffPicks = params.staffPicks, staffPicks {
+        self = .pwl
+      } else if let social = params.social, social {
+        self = .social
+      } else {
+        return nil
+      }
+    }
+
     public enum DiscoverySortContext {
       case endingSoon
       case magic
@@ -840,14 +860,16 @@ public final class KSRAnalytics {
    - parameter section: The optional `SectionContext  ` representing the grouping of content
    */
 
-  public func trackProjectCardClicked(page: PageContext,
-                                      project: Project,
-                                      checkoutData: CheckoutPropertiesData? = nil,
-                                      typeContext: TypeContext? = nil,
-                                      location: LocationContext? = nil,
-                                      params: DiscoveryParams? = nil,
-                                      reward: Reward? = nil,
-                                      section: SectionContext? = nil) {
+  public func trackProjectCardClicked(
+    page: PageContext,
+    project: Project,
+    checkoutData: CheckoutPropertiesData? = nil,
+    typeContext: TypeContext? = nil,
+    location: LocationContext? = nil,
+    params: DiscoveryParams? = nil,
+    reward: Reward? = nil,
+    section: SectionContext? = nil
+  ) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(
         ctaContext: .project,
