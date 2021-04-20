@@ -553,12 +553,12 @@ public final class KSRAnalytics {
   /// Configure Tracking Client's supporting user identity
   private func identify(_ user: User?) {
     guard let user = user else {
-      self.segmentClient?.resetIdentity()
+      self.segmentClient?.reset()
       return
     }
 
     self.segmentClient?.identify(
-      userId: "\(user.id)",
+      "\(user.id)",
       traits: [
         "name": user.name,
         "is_creator": user.isCreator,
@@ -1501,13 +1501,13 @@ public final class KSRAnalytics {
     self.logEventCallback?(event, props)
 
     self.dataLakeClient.track(
-      event: event,
+      event,
       properties: props
     )
 
     // Currently events approved for the Data Lake are good for Segment.
     self.segmentClient?.track(
-      event: event,
+      event,
       properties: props
     )
   }
