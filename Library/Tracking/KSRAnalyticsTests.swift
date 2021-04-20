@@ -1044,12 +1044,10 @@ final class KSRAnalyticsTests: TestCase {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
 
-    let typeContext = KSRAnalytics.TypeContext.init(params: DiscoveryParams.recommendedDefaults)
-
     ksrAnalytics.trackProjectCardClicked(
       page: .discovery,
       project: .template,
-      typeContext: typeContext,
+      typeContext: .init(params: DiscoveryParams.recommendedDefaults),
       location: .discoverAdvanced,
       params: DiscoveryParams.recommendedDefaults
     )

@@ -380,22 +380,19 @@ public final class KSRAnalytics {
     case watched
 
     /**
-     Initialize `TypeContext` with `DiscoveryParams`
-     to determine type context for discovery collection filters.
+     Initialize a `TypeContext` value with `DiscoveryParams` for use with discovery filters..
 
      - parameter params: a `DiscoveryParams` object
      */
-    init?(params: DiscoveryParams) {
+    init(params: DiscoveryParams) {
       if let recommended = params.recommended, recommended {
         self = .recommended
       } else if let starred = params.starred, starred {
         self = .watched
-      } else if let staffPicks = params.staffPicks, staffPicks {
-        self = .pwl
       } else if let social = params.social, social {
         self = .social
       } else {
-        return nil
+        self = .results
       }
     }
 
