@@ -263,6 +263,30 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.viewModel.inputs.userSessionEnded()
       }
 
+    self.viewModel.outputs.configureSegment
+      .observeValues { writeKey in
+        let client = Analytics.configuredClient(withWriteKey: writeKey)
+        AppEnvironment.current.ksrAnalytics.configureSegmentClient(client)
+      }
+
+    self.viewModel.outputs.segmentIsEnabled
+      .observeValues { enabled in
+        if enabled {
+          Analytics.shared().enable()
+        } else {
+          Analytics.shared().disable()
+        }
+      }
+
+    NotificationCenter.default
+      .addObserver(
+        forName: Notification.Name.ksr_configUpdated,
+        object: nil,
+        queue: nil
+      ) { [weak self] _ in
+        self?.viewModel.inputs.configUpdatedNotificationObserved()
+      }
+
     NotificationCenter.default
       .addObserver(
         forName: Notification.Name.ksr_perimeterXCaptcha,

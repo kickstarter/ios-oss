@@ -19,7 +19,13 @@ public final class KSRAnalytics {
   private var preferredContentSizeCategory: UIContentSizeCategory?
   private var preferredContentSizeCategoryObserver: Any?
   private let screen: UIScreenType
-  private let segmentClient: TrackingClientType & IdentifyingTrackingClient
+  private var segmentClient: (TrackingClientType & IdentifyingTrackingClient)?
+
+  /// Configures `KSRAnalytics` with a Segment tracking client. Call is idempotent and will only set once.
+  public func configureSegmentClient(_ segmentClient: TrackingClientType & IdentifyingTrackingClient) {
+    guard self.segmentClient == nil else { return }
+    self.segmentClient = segmentClient
+  }
 
   private enum ApprovedEvent: String, CaseIterable {
     case activityFeedViewed = "Activity Feed Viewed"
@@ -531,8 +537,7 @@ public final class KSRAnalytics {
     device: UIDeviceType = UIDevice.current,
     loggedInUser: User? = nil,
     screen: UIScreenType = UIScreen.main,
-    segmentClient: TrackingClientType & IdentifyingTrackingClient = Analytics
-      .configuredClient()
+    segmentClient: (TrackingClientType & IdentifyingTrackingClient)? = nil
   ) {
     self.bundle = bundle
     self.dataLakeClient = dataLakeClient
@@ -548,10 +553,11 @@ public final class KSRAnalytics {
   /// Configure Tracking Client's supporting user identity
   private func identify(_ user: User?) {
     guard let user = user else {
-      return self.segmentClient.resetIdentity()
+      self.segmentClient?.resetIdentity()
+      return
     }
 
-    self.segmentClient.identify(
+    self.segmentClient?.identify(
       userId: "\(user.id)",
       traits: [
         "name": user.name,
@@ -1500,7 +1506,7 @@ public final class KSRAnalytics {
     )
 
     // Currently events approved for the Data Lake are good for Segment.
-    self.segmentClient.track(
+    self.segmentClient?.track(
       event: event,
       properties: props
     )
