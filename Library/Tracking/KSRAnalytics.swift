@@ -385,6 +385,23 @@ public final class KSRAnalytics {
     case watch
     case watched
 
+    /**
+     Initialize a `TypeContext` value with `DiscoveryParams` for use with discovery filters..
+
+     - parameter params: a `DiscoveryParams` object
+     */
+    init(params: DiscoveryParams) {
+      if let recommended = params.recommended, recommended {
+        self = .recommended
+      } else if let starred = params.starred, starred {
+        self = .watched
+      } else if let social = params.social, social {
+        self = .social
+      } else {
+        self = .results
+      }
+    }
+
     public enum DiscoverySortContext {
       case endingSoon
       case magic
@@ -453,6 +470,7 @@ public final class KSRAnalytics {
    */
   public enum LocationContext {
     case accountMenu
+    case curated
     case discoverAdvanced
     case discoverOverlay
     case globalNav
@@ -462,6 +480,7 @@ public final class KSRAnalytics {
     var trackingString: String {
       switch self {
       case .accountMenu: return "account_menu"
+      case .curated: return "curated"
       case .discoverAdvanced: return "discover_advanced"
       case .discoverOverlay: return "discover_overlay"
       case .globalNav: return "global_nav"
@@ -846,14 +865,16 @@ public final class KSRAnalytics {
    - parameter section: The optional `SectionContext  ` representing the grouping of content
    */
 
-  public func trackProjectCardClicked(page: PageContext,
-                                      project: Project,
-                                      checkoutData: CheckoutPropertiesData? = nil,
-                                      typeContext: TypeContext? = nil,
-                                      location: LocationContext? = nil,
-                                      params: DiscoveryParams? = nil,
-                                      reward: Reward? = nil,
-                                      section: SectionContext? = nil) {
+  public func trackProjectCardClicked(
+    page: PageContext,
+    project: Project,
+    checkoutData: CheckoutPropertiesData? = nil,
+    typeContext: TypeContext? = nil,
+    location: LocationContext? = nil,
+    params: DiscoveryParams? = nil,
+    reward: Reward? = nil,
+    section: SectionContext? = nil
+  ) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(
         ctaContext: .project,
