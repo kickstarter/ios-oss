@@ -271,11 +271,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     self.viewModel.outputs.segmentIsEnabled
       .observeValues { enabled in
-        if enabled {
-          Analytics.shared().enable()
-        } else {
-          Analytics.shared().disable()
-        }
+        enabled ? Analytics.shared().enable() : Analytics.shared().disable()
       }
 
     NotificationCenter.default
