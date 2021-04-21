@@ -1623,8 +1623,8 @@ private func projectProperties(
   props["percent_raised"] = project.stats.percentFunded
   props["state"] = project.state.rawValue
   props["current_pledge_amount"] = project.stats.pledged
-  props["current_amount_pledged_usd"] = rounded(project.stats.convertedPledgedAmount ?? 0, places: 2)
-  props["goal_usd"] = rounded(Double(project.stats.goalCurrentCurrency ?? 0), places: 2)
+  props["current_amount_pledged_usd"] = rounded(project.stats.totalAmountPledgedUsdCurrency, places: 2)
+  props["goal_usd"] = rounded(project.stats.goalUsdCurrency, places: 2)
   props["has_video"] = project.video != nil
   props["prelaunch_activated"] = project.prelaunchActivated
   props["rewards_count"] = project.rewards.filter { $0 != .noReward }.count

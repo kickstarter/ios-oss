@@ -17,5 +17,37 @@ extension Project.Stats {
         updatesCount: $1.updatesCount
       ) }
     )
+
+    public static let goalUsdCurrency = Lens<Project.Stats, Float>(
+      view: { $0.goalUsdCurrency },
+      set: { .init(
+        backersCount: $1.backersCount,
+        commentsCount: $1.commentsCount,
+        convertedPledgedAmount: $1.convertedPledgedAmount,
+        currency: $1.currency,
+        currentCurrency: $1.currentCurrency,
+        currentCurrencyRate: $1.currentCurrencyRate,
+        goal: $1.goal,
+        pledged: Int($0 * Float($1.goal)),
+        staticUsdRate: $1.staticUsdRate,
+        updatesCount: $1.updatesCount
+      ) }
+    )
+
+    public static let totalAmountPledgedUsdCurrency = Lens<Project.Stats, Float>(
+      view: { $0.totalAmountPledgedUsdCurrency },
+      set: { .init(
+        backersCount: $1.backersCount,
+        commentsCount: $1.commentsCount,
+        convertedPledgedAmount: $1.convertedPledgedAmount,
+        currency: $1.currency,
+        currentCurrency: $1.currentCurrency,
+        currentCurrencyRate: $1.currentCurrencyRate,
+        goal: $1.goal,
+        pledged: Int($0 * Float($1.goal)),
+        staticUsdRate: $1.staticUsdRate,
+        updatesCount: $1.updatesCount
+      ) }
+    )
   }
 }

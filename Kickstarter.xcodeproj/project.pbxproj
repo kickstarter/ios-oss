@@ -581,6 +581,8 @@
 		8AFB8C99233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */; };
 		94BE15C225E857C4007CD9A4 /* TrackingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BE15C125E857C4007CD9A4 /* TrackingHelpers.swift */; };
 		94BE15CE25E970A3007CD9A4 /* TrackingHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BE15C925E96F06007CD9A4 /* TrackingHelpersTests.swift */; };
+		94D1EC4B26306F9600BF19B9 /* Optional+Numeric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D1EC2E262F8E1000BF19B9 /* Optional+Numeric.swift */; };
+		94D1EC5526306F9D00BF19B9 /* OptionalNumericTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D1EC39262F901700BF19B9 /* OptionalNumericTests.swift */; };
 		94F4A95A26125C8C000C21F9 /* TimeInterval+ISO8601Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F4A95926125C8C000C21F9 /* TimeInterval+ISO8601Date.swift */; };
 		94F4A96926125EE8000C21F9 /* TimeInterval+ISO8601DateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F4A96126125EA0000C21F9 /* TimeInterval+ISO8601DateTests.swift */; };
 		9D10B91B1D35407C008B8045 /* String+Truncate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D10B91A1D35407C008B8045 /* String+Truncate.swift */; };
@@ -2101,6 +2103,8 @@
 		8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatePaymentSourceInput+ConstructorTests.swift"; sourceTree = "<group>"; };
 		94BE15C125E857C4007CD9A4 /* TrackingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingHelpers.swift; sourceTree = "<group>"; };
 		94BE15C925E96F06007CD9A4 /* TrackingHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingHelpersTests.swift; sourceTree = "<group>"; };
+		94D1EC2E262F8E1000BF19B9 /* Optional+Numeric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Numeric.swift"; sourceTree = "<group>"; };
+		94D1EC39262F901700BF19B9 /* OptionalNumericTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalNumericTests.swift; sourceTree = "<group>"; };
 		94F4A95926125C8C000C21F9 /* TimeInterval+ISO8601Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+ISO8601Date.swift"; sourceTree = "<group>"; };
 		94F4A96126125EA0000C21F9 /* TimeInterval+ISO8601DateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+ISO8601DateTests.swift"; sourceTree = "<group>"; };
 		9D10B91A1D35407C008B8045 /* String+Truncate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Truncate.swift"; sourceTree = "<group>"; };
@@ -4394,6 +4398,8 @@
 				8AF34C772342D6A5000B211D /* Encodable+Dictionary.swift */,
 				8AF34C792342D864000B211D /* Encodable+DictionaryTests.swift */,
 				D015876A1EEB2ED6006E7684 /* NSURLSession.swift */,
+				94D1EC2E262F8E1000BF19B9 /* Optional+Numeric.swift */,
+				94D1EC39262F901700BF19B9 /* OptionalNumericTests.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -6326,6 +6332,7 @@
 				D01588BD1EEB2ED7006E7684 /* ProjectStatsEnvelope.RewardDistributionLenses.swift in Sources */,
 				D01588611EEB2ED7006E7684 /* Config.swift in Sources */,
 				D64DDCE123564D3700DE0EA9 /* PaymentSourceTemplates.swift in Sources */,
+				94D1EC4B26306F9600BF19B9 /* Optional+Numeric.swift in Sources */,
 				D002CAE5218CF951009783F2 /* GraphMutationWatchProjectResponseEnvelope.swift in Sources */,
 				D0158A1C1EEB30A2006E7684 /* ProjectNotificationTemplates.swift in Sources */,
 				D01588F91EEB2ED7006E7684 /* Project.Country.swift in Sources */,
@@ -6458,6 +6465,7 @@
 				D0D10C1F1EEB4550005EBAD0 /* User.AvatarTests.swift in Sources */,
 				77FA1AF32445FB810035D659 /* GraphUserTests.swift in Sources */,
 				D0D10C021EEB4550005EBAD0 /* ActivityTests.swift in Sources */,
+				94D1EC5526306F9D00BF19B9 /* OptionalNumericTests.swift in Sources */,
 				D01589A81EEB306D006E7684 /* EncodableTests.swift in Sources */,
 				D0D10C111EEB4550005EBAD0 /* MessageThreadTests.swift in Sources */,
 				8A49396724B68FA500C3C3CE /* Reward+GraphRewardTests.swift in Sources */,
