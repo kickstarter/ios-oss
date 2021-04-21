@@ -19,7 +19,13 @@ public final class KSRAnalytics {
   private var preferredContentSizeCategory: UIContentSizeCategory?
   private var preferredContentSizeCategoryObserver: Any?
   private let screen: UIScreenType
-  private let segmentClient: TrackingClientType & IdentifyingTrackingClient
+  private var segmentClient: (TrackingClientType & IdentifyingTrackingClient)?
+
+  /// Configures `KSRAnalytics` with a Segment tracking client. Call is idempotent and will only set once.
+  public func configureSegmentClient(_ segmentClient: TrackingClientType & IdentifyingTrackingClient) {
+    guard self.segmentClient == nil else { return }
+    self.segmentClient = segmentClient
+  }
 
   private enum ApprovedEvent: String, CaseIterable {
     case activityFeedViewed = "Activity Feed Viewed"
@@ -379,6 +385,23 @@ public final class KSRAnalytics {
     case watch
     case watched
 
+    /**
+     Initialize a `TypeContext` value with `DiscoveryParams` for use with discovery filters..
+
+     - parameter params: a `DiscoveryParams` object
+     */
+    init(params: DiscoveryParams) {
+      if let recommended = params.recommended, recommended {
+        self = .recommended
+      } else if let starred = params.starred, starred {
+        self = .watched
+      } else if let social = params.social, social {
+        self = .social
+      } else {
+        self = .results
+      }
+    }
+
     public enum DiscoverySortContext {
       case endingSoon
       case magic
@@ -447,6 +470,7 @@ public final class KSRAnalytics {
    */
   public enum LocationContext {
     case accountMenu
+    case curated
     case discoverAdvanced
     case discoverOverlay
     case globalNav
@@ -456,6 +480,7 @@ public final class KSRAnalytics {
     var trackingString: String {
       switch self {
       case .accountMenu: return "account_menu"
+      case .curated: return "curated"
       case .discoverAdvanced: return "discover_advanced"
       case .discoverOverlay: return "discover_overlay"
       case .globalNav: return "global_nav"
@@ -531,8 +556,7 @@ public final class KSRAnalytics {
     device: UIDeviceType = UIDevice.current,
     loggedInUser: User? = nil,
     screen: UIScreenType = UIScreen.main,
-    segmentClient: TrackingClientType & IdentifyingTrackingClient = Analytics
-      .configuredClient()
+    segmentClient: (TrackingClientType & IdentifyingTrackingClient)? = nil
   ) {
     self.bundle = bundle
     self.dataLakeClient = dataLakeClient
@@ -548,11 +572,12 @@ public final class KSRAnalytics {
   /// Configure Tracking Client's supporting user identity
   private func identify(_ user: User?) {
     guard let user = user else {
-      return self.segmentClient.resetIdentity()
+      self.segmentClient?.reset()
+      return
     }
 
-    self.segmentClient.identify(
-      userId: "\(user.id)",
+    self.segmentClient?.identify(
+      "\(user.id)",
       traits: [
         "name": user.name,
         "is_creator": user.isCreator,
@@ -840,14 +865,16 @@ public final class KSRAnalytics {
    - parameter section: The optional `SectionContext  ` representing the grouping of content
    */
 
-  public func trackProjectCardClicked(page: PageContext,
-                                      project: Project,
-                                      checkoutData: CheckoutPropertiesData? = nil,
-                                      typeContext: TypeContext? = nil,
-                                      location: LocationContext? = nil,
-                                      params: DiscoveryParams? = nil,
-                                      reward: Reward? = nil,
-                                      section: SectionContext? = nil) {
+  public func trackProjectCardClicked(
+    page: PageContext,
+    project: Project,
+    checkoutData: CheckoutPropertiesData? = nil,
+    typeContext: TypeContext? = nil,
+    location: LocationContext? = nil,
+    params: DiscoveryParams? = nil,
+    reward: Reward? = nil,
+    section: SectionContext? = nil
+  ) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(
         ctaContext: .project,
@@ -1495,13 +1522,13 @@ public final class KSRAnalytics {
     self.logEventCallback?(event, props)
 
     self.dataLakeClient.track(
-      event: event,
+      event,
       properties: props
     )
 
     // Currently events approved for the Data Lake are good for Segment.
-    self.segmentClient.track(
-      event: event,
+    self.segmentClient?.track(
+      event,
       properties: props
     )
   }
