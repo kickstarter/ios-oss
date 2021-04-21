@@ -98,8 +98,8 @@ public struct Project {
     }
 
     /// Total amount currently pledged to the project converted to USD irrespective of the user's selected currency
-    public var totalAmountPledgedUsdCurrency: Float {
-      return Float(self.pledged) * self.usdExchangeRate.orZero
+    public var totalAmountPledgedUsdCurrency: Float? {
+      return self.usdExchangeRate.map { Float(self.pledged) * $0 }
     }
 
     /// Goal amount converted to USD.

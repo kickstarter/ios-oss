@@ -14,7 +14,8 @@ extension Project.Stats {
         goal: $1.goal,
         pledged: Int($0 * Float($1.goal)),
         staticUsdRate: $1.staticUsdRate,
-        updatesCount: $1.updatesCount
+        updatesCount: $1.updatesCount,
+        usdExchangeRate: $1.usdExchangeRate
       ) }
     )
 
@@ -28,13 +29,14 @@ extension Project.Stats {
         currentCurrency: $1.currentCurrency,
         currentCurrencyRate: $1.currentCurrencyRate,
         goal: $1.goal,
-        pledged: Int($0 * Float($1.goal)),
+        pledged: $1.pledged,
         staticUsdRate: $1.staticUsdRate,
-        updatesCount: $1.updatesCount
+        updatesCount: $1.updatesCount,
+        usdExchangeRate: $1.usdExchangeRate
       ) }
     )
 
-    public static let totalAmountPledgedUsdCurrency = Lens<Project.Stats, Float>(
+    public static let totalAmountPledgedUsdCurrency = Lens<Project.Stats, Float?>(
       view: { $0.totalAmountPledgedUsdCurrency },
       set: { .init(
         backersCount: $1.backersCount,
@@ -44,9 +46,10 @@ extension Project.Stats {
         currentCurrency: $1.currentCurrency,
         currentCurrencyRate: $1.currentCurrencyRate,
         goal: $1.goal,
-        pledged: Int($0 * Float($1.goal)),
+        pledged: $1.pledged,
         staticUsdRate: $1.staticUsdRate,
-        updatesCount: $1.updatesCount
+        updatesCount: $1.updatesCount,
+        usdExchangeRate: $1.usdExchangeRate
       ) }
     )
   }
