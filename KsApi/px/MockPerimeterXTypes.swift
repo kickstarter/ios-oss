@@ -14,6 +14,8 @@ struct MockPerimeterXBlockResponse: PerimeterXBlockResponseType {
   var type: PXBlockType {
     return self.blockType
   }
+
+  func displayCaptcha(on _: UIViewController?) {}
 }
 
 final class MockPerimeterXManager: PerimeterXManagerType {

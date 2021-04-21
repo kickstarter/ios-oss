@@ -546,8 +546,6 @@
 		8ACF36E22627481C0026E74D /* ApiDateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F66022627300900A28E74 /* ApiDateProtocol.swift */; };
 		8ACF36EA2627486D0026E74D /* KsApiNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF36E92627486D0026E74D /* KsApiNotification.swift */; };
 		8ACF36F7262763960026E74D /* MockPerimeterXTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1F65EA262660DB00A28E74 /* MockPerimeterXTypes.swift */; };
-		8ACF36FF262769420026E74D /* PerimeterX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ACF36FE262769420026E74D /* PerimeterX.framework */; };
-		8ACF3703262769640026E74D /* PerimeterX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ACF36FE262769420026E74D /* PerimeterX.framework */; };
 		8ACF558923E8D467001654A2 /* TryDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF558823E8D467001654A2 /* TryDecodable.swift */; };
 		8ACF95AE248957B10064FC4C /* ManagePledgeDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF95AD248957B10064FC4C /* ManagePledgeDataSourceTests.swift */; };
 		8AD48633235939AF00A1463E /* StripeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD48632235939AF00A1463E /* StripeTypes.swift */; };
@@ -2069,7 +2067,6 @@
 		8ACB32A724ABC2DB00A03968 /* RewardAddOnSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewController.swift; sourceTree = "<group>"; };
 		8ACD29F6243E48260044BC17 /* PledgePaymentMethodsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodsDataSource.swift; sourceTree = "<group>"; };
 		8ACF36E92627486D0026E74D /* KsApiNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KsApiNotification.swift; sourceTree = "<group>"; };
-		8ACF36FE262769420026E74D /* PerimeterX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PerimeterX.framework; path = Carthage/Build/iOS/PerimeterX.framework; sourceTree = "<group>"; };
 		8ACF558823E8D467001654A2 /* TryDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryDecodable.swift; sourceTree = "<group>"; };
 		8ACF95AD248957B10064FC4C /* ManagePledgeDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeDataSourceTests.swift; sourceTree = "<group>"; };
 		8AD48632235939AF00A1463E /* StripeTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeTypes.swift; sourceTree = "<group>"; };
@@ -2977,7 +2974,6 @@
 				774D98DA23A9795100FC81C2 /* Optimizely.framework in Frameworks */,
 				4748C19125B7A2F80098E89E /* FirebaseCore.framework in Frameworks */,
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
-				8ACF36FF262769420026E74D /* PerimeterX.framework in Frameworks */,
 				D0D58D862257FAE000532AC1 /* Prelude.framework in Frameworks */,
 				D0D58D8E2257FAE000532AC1 /* Prelude_UIKit.framework in Frameworks */,
 				477731BA25C4E7CF00AF3273 /* FirebaseRemoteConfig.framework in Frameworks */,
@@ -3012,7 +3008,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0BE6F1E228634C700D05A10 /* Prelude.framework in Frameworks */,
-				8ACF3703262769640026E74D /* PerimeterX.framework in Frameworks */,
 				D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */,
 				D0BE6F20228634C700D05A10 /* ReactiveSwift.framework in Frameworks */,
 			);
@@ -3904,7 +3899,6 @@
 		A7E06DBC1C5C027800EBDCC2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8ACF36FE262769420026E74D /* PerimeterX.framework */,
 				8AA5B061235E253B0022F5F0 /* AppCenterDistributeResources.bundle */,
 				D00A373E2258270600F46F47 /* Alamofire.framework */,
 				D00A371F225815FA00F46F47 /* AlamofireImage.framework */,
