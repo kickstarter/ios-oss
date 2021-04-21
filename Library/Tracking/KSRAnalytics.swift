@@ -584,6 +584,7 @@ public final class KSRAnalytics {
         "backed_projects_count": user.stats.backedProjectsCount ?? 0,
         "created_projects_count": user.stats.createdProjectsCount ?? 0
       ]
+      .withAllValuesFrom(user.notifications.encode())
     )
   }
 
