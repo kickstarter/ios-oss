@@ -1,6 +1,5 @@
 import KsApi
 import Library
-import PerimeterX
 import Prelude
 import ReactiveSwift
 import UserNotifications
@@ -77,7 +76,7 @@ public protocol AppDelegateViewModelInputs {
   func optimizelyClientConfigurationFailed()
 
   /// Call when Perimeter X Captcha is triggered
-  func perimeterXCaptchaTriggered(response: PXBlockResponse)
+  func perimeterXCaptchaTriggered(response: PerimeterXBlockResponseType)
 
   /// Call when the contextual PushNotification dialog should be presented.
   func showNotificationDialog(notification: Notification)
@@ -148,7 +147,7 @@ public protocol AppDelegateViewModelOutputs {
   var goToMessageThread: Signal<MessageThread, Never> { get }
 
   /// Emits when we should display the Perimeter X Captcha view.
-  var goToPerimeterXCaptcha: Signal<PXBlockResponse, Never> { get }
+  var goToPerimeterXCaptcha: Signal<PerimeterXBlockResponseType, Never> { get }
 
   /// Emits when the root view controller should navigate to the user's profile.
   var goToProfile: Signal<(), Never> { get }
@@ -813,8 +812,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.optimizelyClientConfigurationFailedProperty.value = ()
   }
 
-  private let perimeterXCaptchaTriggeredProperty = MutableProperty<PXBlockResponse?>(nil)
-  public func perimeterXCaptchaTriggered(response: PXBlockResponse) {
+  private let perimeterXCaptchaTriggeredProperty = MutableProperty<PerimeterXBlockResponseType?>(nil)
+  public func perimeterXCaptchaTriggered(response: PerimeterXBlockResponseType) {
     self.perimeterXCaptchaTriggeredProperty.value = response
   }
 
@@ -836,7 +835,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let goToLandingPage: Signal<(), Never>
   public let goToLoginWithIntent: Signal<LoginIntent, Never>
   public let goToMessageThread: Signal<MessageThread, Never>
-  public let goToPerimeterXCaptcha: Signal<PXBlockResponse, Never>
+  public let goToPerimeterXCaptcha: Signal<PerimeterXBlockResponseType, Never>
   public let goToProfile: Signal<(), Never>
   public let goToProjectActivities: Signal<Param, Never>
   public let goToMobileSafari: Signal<URL, Never>
