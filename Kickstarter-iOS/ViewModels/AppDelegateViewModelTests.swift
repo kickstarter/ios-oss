@@ -2470,7 +2470,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testGoToPerimeterXCaptcha() {
+  func testGoToPerimeterXCaptcha_Captcha() {
     self.goToPerimeterXCaptcha.assertDidNotEmitValue()
 
     let response = MockPerimeterXBlockResponse(blockType: .Captcha)
@@ -2479,6 +2479,17 @@ final class AppDelegateViewModelTests: TestCase {
 
     self.goToPerimeterXCaptcha.assertValueCount(1)
     XCTAssertEqual(self.goToPerimeterXCaptcha.values.last?.type, .Captcha)
+  }
+
+  func testGoToPerimeterXCaptcha_Blocked() {
+    self.goToPerimeterXCaptcha.assertDidNotEmitValue()
+
+    let response = MockPerimeterXBlockResponse(blockType: .Block)
+
+    self.vm.inputs.perimeterXCaptchaTriggered(response: response)
+
+    self.goToPerimeterXCaptcha.assertValueCount(1)
+    XCTAssertEqual(self.goToPerimeterXCaptcha.values.last?.type, .Block)
   }
 
   func testFeatureFlagsRetainedInConfig_NotRelease() {
