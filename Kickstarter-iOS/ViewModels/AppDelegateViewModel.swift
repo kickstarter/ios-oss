@@ -1,6 +1,5 @@
 import KsApi
 import Library
-import PerimeterX
 import Prelude
 import ReactiveSwift
 import UserNotifications
@@ -49,6 +48,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call after having invoked AppEnvironment.updateCurrentUser with a fresh user.
   func currentUserUpdatedInEnvironment()
 
+  /// Call when the `ksr_configUpdated` notification is observed (config updated elsewhere, eg. debug tools).
+  func configUpdatedNotificationObserved()
+
   /// Call when the user taps "OK" from the contextual alert.
   func didAcceptReceivingRemoteNotifications()
 
@@ -74,7 +76,7 @@ public protocol AppDelegateViewModelInputs {
   func optimizelyClientConfigurationFailed()
 
   /// Call when Perimeter X Captcha is triggered
-  func perimeterXCaptchaTriggered(response: PXBlockResponse)
+  func perimeterXCaptchaTriggered(response: PerimeterXBlockResponseType)
 
   /// Call when the contextual PushNotification dialog should be presented.
   func showNotificationDialog(notification: Notification)
@@ -104,6 +106,9 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits when the application should configure Perimeter X
   var configurePerimeterX: Signal<(), Never> { get }
+
+  /// Emits when the application should configure Segment.
+  var configureSegment: Signal<String, Never> { get }
 
   /// Return this value in the delegate method.
   var continueUserActivityReturnValue: MutableProperty<Bool> { get }
@@ -142,7 +147,7 @@ public protocol AppDelegateViewModelOutputs {
   var goToMessageThread: Signal<MessageThread, Never> { get }
 
   /// Emits when we should display the Perimeter X Captcha view.
-  var goToPerimeterXCaptcha: Signal<PXBlockResponse, Never> { get }
+  var goToPerimeterXCaptcha: Signal<PerimeterXBlockResponseType, Never> { get }
 
   /// Emits when the root view controller should navigate to the user's profile.
   var goToProfile: Signal<(), Never> { get }
@@ -170,6 +175,9 @@ public protocol AppDelegateViewModelOutputs {
 
   /// Emits when we should register the device push token in Segment Analytics.
   var registerPushTokenInSegment: Signal<Data, Never> { get }
+
+  /// Emits when our config updates with the enabled state for Semgent Analytics.
+  var segmentIsEnabled: Signal<Bool, Never> { get }
 
   /// Emits an array of short cut items to put into the shared application.
   var setApplicationShortcutItems: Signal<[ShortcutItem], Never> { get }
@@ -659,6 +667,21 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .map { $0.hasError }
 
     self.goToPerimeterXCaptcha = self.perimeterXCaptchaTriggeredProperty.signal.skipNil()
+
+    self.configureSegment = self.applicationLaunchOptionsProperty.signal
+      .skipNil()
+      .map { _ in
+        AppEnvironment.current.mainBundle.isRelease
+          ? Secrets.Segment.production
+          : Secrets.Segment.staging
+      }
+
+    self.segmentIsEnabled = Signal.merge(
+      self.didUpdateConfigProperty.signal.skipNil().ignoreValues(),
+      self.configUpdatedNotificationObservedProperty.signal
+    )
+    .map { _ in featureSegmentIsEnabled() }
+    .skipRepeats()
   }
 
   public var inputs: AppDelegateViewModelInputs { return self }
@@ -704,6 +727,11 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   fileprivate let currentUserUpdatedInEnvironmentProperty = MutableProperty(())
   public func currentUserUpdatedInEnvironment() {
     self.currentUserUpdatedInEnvironmentProperty.value = ()
+  }
+
+  private let configUpdatedNotificationObservedProperty = MutableProperty(())
+  public func configUpdatedNotificationObserved() {
+    self.configUpdatedNotificationObservedProperty.value = ()
   }
 
   fileprivate let remoteNotificationProperty = MutableProperty<[AnyHashable: Any]?>(nil)
@@ -784,8 +812,8 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.optimizelyClientConfigurationFailedProperty.value = ()
   }
 
-  private let perimeterXCaptchaTriggeredProperty = MutableProperty<PXBlockResponse?>(nil)
-  public func perimeterXCaptchaTriggered(response: PXBlockResponse) {
+  private let perimeterXCaptchaTriggeredProperty = MutableProperty<PerimeterXBlockResponseType?>(nil)
+  public func perimeterXCaptchaTriggered(response: PerimeterXBlockResponseType) {
     self.perimeterXCaptchaTriggeredProperty.value = response
   }
 
@@ -794,6 +822,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let configureFirebase: Signal<(), Never>
   public let configureOptimizely: Signal<(String, OptimizelyLogLevelType, TimeInterval), Never>
   public let configurePerimeterX: Signal<(), Never>
+  public let configureSegment: Signal<String, Never>
   public let continueUserActivityReturnValue = MutableProperty(false)
   public let emailVerificationCompleted: Signal<(String, Bool), Never>
   public let findRedirectUrl: Signal<URL, Never>
@@ -806,7 +835,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let goToLandingPage: Signal<(), Never>
   public let goToLoginWithIntent: Signal<LoginIntent, Never>
   public let goToMessageThread: Signal<MessageThread, Never>
-  public let goToPerimeterXCaptcha: Signal<PXBlockResponse, Never>
+  public let goToPerimeterXCaptcha: Signal<PerimeterXBlockResponseType, Never>
   public let goToProfile: Signal<(), Never>
   public let goToProjectActivities: Signal<Param, Never>
   public let goToMobileSafari: Signal<URL, Never>
@@ -816,6 +845,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   public let pushTokenRegistrationStarted: Signal<(), Never>
   public let pushTokenSuccessfullyRegistered: Signal<String, Never>
   public let registerPushTokenInSegment: Signal<Data, Never>
+  public let segmentIsEnabled: Signal<Bool, Never>
   public let setApplicationShortcutItems: Signal<[ShortcutItem], Never>
   public let showAlert: Signal<Notification, Never>
   public let synchronizeUbiquitousStore: Signal<(), Never>

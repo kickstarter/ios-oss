@@ -29,6 +29,14 @@ extension PXManager: PerimeterXManagerType {
 
 public protocol PerimeterXBlockResponseType {
   var type: PXBlockType { get }
+
+  func displayCaptcha(on vc: UIViewController?)
 }
 
-extension PXBlockResponse: PerimeterXBlockResponseType {}
+extension PXBlockResponse: PerimeterXBlockResponseType {
+  public func displayCaptcha(on vc: UIViewController?) {
+    PXManager.sharedInstance()?.handle(self, with: vc) {
+      print("❎ Perimeter X CAPTCHA was successful.")
+    }
+  }
+}

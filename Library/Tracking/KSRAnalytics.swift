@@ -19,7 +19,13 @@ public final class KSRAnalytics {
   private var preferredContentSizeCategory: UIContentSizeCategory?
   private var preferredContentSizeCategoryObserver: Any?
   private let screen: UIScreenType
-  private let segmentClient: TrackingClientType & IdentifyingTrackingClient
+  private var segmentClient: (TrackingClientType & IdentifyingTrackingClient)?
+
+  /// Configures `KSRAnalytics` with a Segment tracking client. Call is idempotent and will only set once.
+  public func configureSegmentClient(_ segmentClient: TrackingClientType & IdentifyingTrackingClient) {
+    guard self.segmentClient == nil else { return }
+    self.segmentClient = segmentClient
+  }
 
   private enum ApprovedEvent: String, CaseIterable {
     case activityFeedViewed = "Activity Feed Viewed"
@@ -550,8 +556,7 @@ public final class KSRAnalytics {
     device: UIDeviceType = UIDevice.current,
     loggedInUser: User? = nil,
     screen: UIScreenType = UIScreen.main,
-    segmentClient: TrackingClientType & IdentifyingTrackingClient = Analytics
-      .configuredClient()
+    segmentClient: (TrackingClientType & IdentifyingTrackingClient)? = nil
   ) {
     self.bundle = bundle
     self.dataLakeClient = dataLakeClient
@@ -567,11 +572,12 @@ public final class KSRAnalytics {
   /// Configure Tracking Client's supporting user identity
   private func identify(_ user: User?) {
     guard let user = user else {
-      return self.segmentClient.resetIdentity()
+      self.segmentClient?.reset()
+      return
     }
 
-    self.segmentClient.identify(
-      userId: "\(user.id)",
+    self.segmentClient?.identify(
+      "\(user.id)",
       traits: [
         "name": user.name,
         "is_creator": user.isCreator,
@@ -1516,13 +1522,13 @@ public final class KSRAnalytics {
     self.logEventCallback?(event, props)
 
     self.dataLakeClient.track(
-      event: event,
+      event,
       properties: props
     )
 
     // Currently events approved for the Data Lake are good for Segment.
-    self.segmentClient.track(
-      event: event,
+    self.segmentClient?.track(
+      event,
       properties: props
     )
   }

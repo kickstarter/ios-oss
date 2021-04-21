@@ -11,7 +11,6 @@ import Foundation
 import Kickstarter_Framework
 import Library
 import Optimizely
-import PerimeterX
 import Prelude
 import ReactiveExtensions
 import ReactiveSwift
@@ -263,14 +262,34 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         self?.viewModel.inputs.userSessionEnded()
       }
 
+    self.viewModel.outputs.configureSegment
+      .observeValues { writeKey in
+        let client = Analytics.configuredClient(withWriteKey: writeKey)
+        AppEnvironment.current.ksrAnalytics.configureSegmentClient(client)
+      }
+
+    self.viewModel.outputs.segmentIsEnabled
+      .observeValues { enabled in
+        enabled ? Analytics.shared().enable() : Analytics.shared().disable()
+      }
+
+    NotificationCenter.default
+      .addObserver(
+        forName: Notification.Name.ksr_configUpdated,
+        object: nil,
+        queue: nil
+      ) { [weak self] _ in
+        self?.viewModel.inputs.configUpdatedNotificationObserved()
+      }
+
     NotificationCenter.default
       .addObserver(
         forName: Notification.Name.ksr_perimeterXCaptcha,
         object: nil,
         queue: nil
       ) { [weak self] note in
-        guard let response = note.object as? PerimeterXBlockWrapper else { return }
-        self?.viewModel.inputs.perimeterXCaptchaTriggered(response: response.originalBlockResponse)
+        guard let response = note.object as? PerimeterXBlockResponseType else { return }
+        self?.viewModel.inputs.perimeterXCaptchaTriggered(response: response)
       }
 
     self.window?.tintColor = .ksr_create_700
@@ -420,10 +439,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     self.rootTabBarController?.switchToMessageThread(messageThread)
   }
 
-  private func goToPerimeterXCaptcha(_ response: PXBlockResponse) {
-    PXManager.sharedInstance().handle(response, with: self.window?.rootViewController) {
-      print("❎ Perimeter X CAPTCHA was successful.")
-    }
+  private func goToPerimeterXCaptcha(_ response: PerimeterXBlockResponseType) {
+    response.displayCaptcha(on: self.window?.rootViewController)
   }
 
   private func goToCreatorMessageThread(_ projectId: Param, _ messageThread: MessageThread) {

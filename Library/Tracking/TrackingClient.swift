@@ -47,7 +47,9 @@ public final class TrackingClient: TrackingClientType {
     self.startTimer()
   }
 
-  public func track(event: String, properties: [String: Any]) {
+  public func track(_ event: String, properties: [String: Any]?) {
+    let properties = properties ?? [:]
+
     if AppEnvironment.current.environmentVariables.isTrackingEnabled {
       print("\(self.config.identifier.emoji) [\(self.config.identifier) Track]: \(event), properties: \(properties)")
 

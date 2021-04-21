@@ -44,26 +44,13 @@ public class PerimeterXClient: NSObject, PerimeterXClientType {
       [.Block, .Captcha].contains(response.type)
     else { return false }
 
-    let object = PerimeterXBlockWrapper.wrapper(with: response)
-
-    NotificationCenter.default.post(name: Notification.Name.ksr_perimeterXCaptcha, object: object)
+    NotificationCenter.default.post(name: Notification.Name.ksr_perimeterXCaptcha, object: response)
 
     return true
   }
 
   public func headers() -> [String: String] {
     return (self.manager.httpHeaders() as? [String: String]) ?? [:]
-  }
-}
-
-/// Works around a Swift bug - https://bugs.swift.org/browse/SR-3871
-public struct PerimeterXBlockWrapper {
-  public let originalBlockResponse: PXBlockResponse
-
-  static func wrapper(with response: PerimeterXBlockResponseType) -> PerimeterXBlockWrapper? {
-    guard let response = response as? PXBlockResponse else { return nil }
-
-    return PerimeterXBlockWrapper(originalBlockResponse: response)
   }
 }
 

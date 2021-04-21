@@ -1,7 +1,6 @@
 @testable import Kickstarter_Framework
 @testable import KsApi
 @testable import Library
-import PerimeterX
 import Prelude
 import ReactiveExtensions
 import ReactiveExtensions_TestHelpers
@@ -19,6 +18,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let configureOptimizelyDispatchInterval = TestObserver<TimeInterval, Never>()
   private let configureFirebase = TestObserver<(), Never>()
   private let configurePerimeterX = TestObserver<(), Never>()
+  private let configureSegment = TestObserver<String, Never>()
   private let didAcceptReceivingRemoteNotifications = TestObserver<(), Never>()
   private let emailVerificationCompletedMessage = TestObserver<String, Never>()
   private let emailVerificationCompletedSuccess = TestObserver<Bool, Never>()
@@ -31,7 +31,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let goToLandingPage = TestObserver<(), Never>()
   private let goToProjectActivities = TestObserver<Param, Never>()
   private let goToLoginWithIntent = TestObserver<LoginIntent, Never>()
-  private let goToPerimeterXCaptcha = TestObserver<PXBlockResponse, Never>()
+  private let goToPerimeterXCaptcha = TestObserver<PerimeterXBlockResponseType, Never>()
   private let goToProfile = TestObserver<(), Never>()
   private let goToMobileSafari = TestObserver<URL, Never>()
   private let goToSearch = TestObserver<(), Never>()
@@ -43,6 +43,7 @@ final class AppDelegateViewModelTests: TestCase {
   private let pushTokenSuccessfullyRegistered = TestObserver<String, Never>()
   private let registerPushTokenInSegment = TestObserver<Data, Never>()
   private let setApplicationShortcutItems = TestObserver<[ShortcutItem], Never>()
+  private let segmentIsEnabled = TestObserver<Bool, Never>()
   private let showAlert = TestObserver<Notification, Never>()
   private let unregisterForRemoteNotifications = TestObserver<(), Never>()
   private let updateCurrentUserInEnvironment = TestObserver<User, Never>()
@@ -60,6 +61,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.configureOptimizely.map(second).observe(self.configureOptimizelyLogLevel.observer)
     self.vm.outputs.configureOptimizely.map(third).observe(self.configureOptimizelyDispatchInterval.observer)
     self.vm.outputs.configurePerimeterX.observe(self.configurePerimeterX.observer)
+    self.vm.outputs.configureSegment.observe(self.configureSegment.observer)
     self.vm.outputs.emailVerificationCompleted.map(first)
       .observe(self.emailVerificationCompletedMessage.observer)
     self.vm.outputs.emailVerificationCompleted.map(second)
@@ -86,6 +88,7 @@ final class AppDelegateViewModelTests: TestCase {
     self.vm.outputs.registerPushTokenInSegment.observe(self.registerPushTokenInSegment.observer)
     self.vm.outputs.setApplicationShortcutItems.observe(self.setApplicationShortcutItems.observer)
     self.vm.outputs.showAlert.observe(self.showAlert.observer)
+    self.vm.outputs.segmentIsEnabled.observe(self.segmentIsEnabled.observer)
     self.vm.outputs.unregisterForRemoteNotifications.observe(self.unregisterForRemoteNotifications.observer)
     self.vm.outputs.updateCurrentUserInEnvironment.observe(self.updateCurrentUserInEnvironment.observer)
     self.vm.outputs.updateConfigInEnvironment.observe(self.updateConfigInEnvironment.observer)
@@ -2471,12 +2474,26 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testGoToPerimeterXCaptcha() {
+  func testGoToPerimeterXCaptcha_Captcha() {
     self.goToPerimeterXCaptcha.assertDidNotEmitValue()
 
-    self.vm.inputs.perimeterXCaptchaTriggered(response: PXBlockResponse())
+    let response = MockPerimeterXBlockResponse(blockType: .Captcha)
+
+    self.vm.inputs.perimeterXCaptchaTriggered(response: response)
 
     self.goToPerimeterXCaptcha.assertValueCount(1)
+    XCTAssertEqual(self.goToPerimeterXCaptcha.values.last?.type, .Captcha)
+  }
+
+  func testGoToPerimeterXCaptcha_Blocked() {
+    self.goToPerimeterXCaptcha.assertDidNotEmitValue()
+
+    let response = MockPerimeterXBlockResponse(blockType: .Block)
+
+    self.vm.inputs.perimeterXCaptchaTriggered(response: response)
+
+    self.goToPerimeterXCaptcha.assertValueCount(1)
+    XCTAssertEqual(self.goToPerimeterXCaptcha.values.last?.type, .Block)
   }
 
   func testFeatureFlagsRetainedInConfig_NotRelease() {
@@ -2552,6 +2569,66 @@ final class AppDelegateViewModelTests: TestCase {
       XCTAssertEqual(updatedFeatures?["my_enabled_feature"], false, "Uses incoming value")
       XCTAssertEqual(updatedFeatures?["my_disabled_feature"], true, "Uses incoming value")
       XCTAssertEqual(updatedFeatures?["my_new_feature"], true, "Uses incoming value")
+    }
+  }
+
+  func testConfigureSegment_Release() {
+    let mockBundle = MockBundle(
+      bundleIdentifier: KickstarterBundleIdentifier.release.rawValue
+    )
+
+    self.configureSegment.assertDidNotEmitValue()
+
+    withEnvironment(mainBundle: mockBundle) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: .shared,
+        launchOptions: [:]
+      )
+
+      self.configureSegment.assertValues([Secrets.Segment.production])
+    }
+  }
+
+  func testConfigureSegment_NotRelease() {
+    let mockBundle = MockBundle(
+      bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue
+    )
+
+    self.configureSegment.assertDidNotEmitValue()
+
+    withEnvironment(mainBundle: mockBundle) {
+      self.vm.inputs.applicationDidFinishLaunching(
+        application: .shared,
+        launchOptions: [:]
+      )
+
+      self.configureSegment.assertValues([Secrets.Segment.staging])
+    }
+  }
+
+  func testSegmentIsEnabled_IsEnabled_DidUpdateConfig() {
+    self.segmentIsEnabled.assertDidNotEmitValue()
+
+    let config = Config.template
+      |> Config.lens.features .~ [Feature.segment.rawValue: true]
+
+    withEnvironment(config: config) {
+      self.vm.inputs.didUpdateConfig(config)
+
+      self.segmentIsEnabled.assertValues([true])
+    }
+  }
+
+  func testSegmentIsEnabled_IsDisabled_ConfigUpdatedNotificationObserved() {
+    self.segmentIsEnabled.assertDidNotEmitValue()
+
+    let config = Config.template
+      |> Config.lens.features .~ [Feature.segment.rawValue: false]
+
+    withEnvironment(config: config) {
+      self.vm.inputs.configUpdatedNotificationObserved()
+
+      self.segmentIsEnabled.assertValues([false])
     }
   }
 }
