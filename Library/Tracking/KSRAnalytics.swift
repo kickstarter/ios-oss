@@ -1629,7 +1629,8 @@ private func projectProperties(
   props["percent_raised"] = project.stats.percentFunded
   props["state"] = project.state.rawValue
   props["current_pledge_amount"] = project.stats.pledged
-  props["current_amount_pledged_usd"] = rounded(project.stats.totalAmountPledgedUsdCurrency.orZero, places: 2)
+  let value = String(format: "%.2f", project.stats.totalAmountPledgedUsdCurrency.orZero)
+  props["current_amount_pledged_usd"] = Decimal(string: value)
   props["goal_usd"] = rounded(project.stats.goalUsdCurrency, places: 2)
   props["has_video"] = project.video != nil
   props["prelaunch_activated"] = project.prelaunchActivated

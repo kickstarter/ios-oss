@@ -31,8 +31,7 @@ extension Project.Stats {
         goal: $1.goal,
         pledged: $1.pledged,
         staticUsdRate: $1.staticUsdRate,
-        updatesCount: $1.updatesCount,
-        usdExchangeRate: $1.usdExchangeRate
+        updatesCount: $1.updatesCount
       ) }
     )
 
@@ -48,8 +47,7 @@ extension Project.Stats {
         goal: $1.goal,
         pledged: $1.pledged,
         staticUsdRate: $1.staticUsdRate,
-        updatesCount: $1.updatesCount,
-        usdExchangeRate: $1.usdExchangeRate
+        updatesCount: $1.updatesCount
       ) }
     )
   }
