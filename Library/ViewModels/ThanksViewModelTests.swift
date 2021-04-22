@@ -393,20 +393,20 @@ final class ThanksViewModelTests: TestCase {
     // Checkout properties
     XCTAssertEqual(2, dataLakeTrackingClientProps?["checkout_add_ons_count_total"] as? Int)
     XCTAssertEqual(1, dataLakeTrackingClientProps?["checkout_add_ons_count_unique"] as? Int)
-    XCTAssertEqual(8.00, dataLakeTrackingClientProps?["checkout_add_ons_minimum_usd"] as? Double)
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_bonus_amount_usd"] as? Double)
+    XCTAssertEqual(8.00, dataLakeTrackingClientProps?["checkout_add_ons_minimum_usd"] as? Decimal)
+    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_bonus_amount_usd"] as? Decimal)
     XCTAssertEqual("CREDIT_CARD", dataLakeTrackingClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("SUPER reward", dataLakeTrackingClientProps?["checkout_reward_title"] as? String)
-    XCTAssertEqual(5.00, dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? Double)
+    XCTAssertEqual(5.00, dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? Decimal)
     XCTAssertEqual("2", dataLakeTrackingClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(20.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Double)
+    XCTAssertEqual(20.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Decimal)
     XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(
       true,
       dataLakeTrackingClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool
     )
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_shipping_amount_usd"] as? Double)
+    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_shipping_amount_usd"] as? Decimal)
     XCTAssertEqual(
       "1970-05-23T21:21:18Z",
       dataLakeTrackingClientProps?["checkout_reward_estimated_delivery_on"] as? String
@@ -414,17 +414,17 @@ final class ThanksViewModelTests: TestCase {
 
     XCTAssertEqual(2, segmentClientProps?["checkout_add_ons_count_total"] as? Int)
     XCTAssertEqual(1, segmentClientProps?["checkout_add_ons_count_unique"] as? Int)
-    XCTAssertEqual(8.00, segmentClientProps?["checkout_add_ons_minimum_usd"] as? Double)
-    XCTAssertEqual(10.00, segmentClientProps?["checkout_bonus_amount_usd"] as? Double)
+    XCTAssertEqual(8.00, segmentClientProps?["checkout_add_ons_minimum_usd"] as? Decimal)
+    XCTAssertEqual(10.00, segmentClientProps?["checkout_bonus_amount_usd"] as? Decimal)
     XCTAssertEqual("CREDIT_CARD", segmentClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("SUPER reward", segmentClientProps?["checkout_reward_title"] as? String)
-    XCTAssertEqual(5.00, segmentClientProps?["checkout_reward_minimum_usd"] as? Double)
+    XCTAssertEqual(5.00, segmentClientProps?["checkout_reward_minimum_usd"] as? Decimal)
     XCTAssertEqual("2", segmentClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(20.00, segmentClientProps?["checkout_amount_total_usd"] as? Double)
+    XCTAssertEqual(20.00, segmentClientProps?["checkout_amount_total_usd"] as? Decimal)
     XCTAssertEqual(true, segmentClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
-    XCTAssertEqual(10.00, segmentClientProps?["checkout_shipping_amount_usd"] as? Double)
+    XCTAssertEqual(10.00, segmentClientProps?["checkout_shipping_amount_usd"] as? Decimal)
     XCTAssertEqual(
       "1970-05-23T21:21:18Z",
       segmentClientProps?["checkout_reward_estimated_delivery_on"] as? String
