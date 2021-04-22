@@ -2150,6 +2150,12 @@ final class KSRAnalyticsTests: TestCase {
       user.stats.createdProjectsCount
     )
 
+    let notifications1 = user.notifications.encode()
+
+    for (key, _) in notifications1 {
+      XCTAssertEqual(notifications1[key] as? Bool, self.segmentTrackingClient.traits?[key] as? Bool)
+    }
+
     let user2 = user
       |> User.lens.id .~ 9_999
       |> User.lens.name .~ "Another User"
@@ -2169,6 +2175,12 @@ final class KSRAnalyticsTests: TestCase {
       self.segmentTrackingClient.traits?["created_projects_count"] as? Int,
       user2.stats.createdProjectsCount
     )
+
+    let notifications2 = user.notifications.encode()
+
+    for (key, _) in notifications2 {
+      XCTAssertEqual(notifications2[key] as? Bool, self.segmentTrackingClient.traits?[key] as? Bool)
+    }
 
     AppEnvironment.logout()
 
