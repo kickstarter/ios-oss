@@ -11,7 +11,8 @@ public struct SettingsNotificationCellValue {
   }
 }
 
-public enum SettingsNotificationSectionType: Int {
+public enum SettingsNotificationSectionType: Int, CaseIterable {
+  case announcements
   case backedProjects
   case creator
   case social
@@ -22,6 +23,8 @@ public enum SettingsNotificationSectionType: Int {
 
   public var cellRowsForSection: [SettingsNotificationCellType] {
     switch self {
+    case .announcements:
+      return [.marketingUpdate]
     case .backedProjects:
       return [.projectUpdates, .projectNotifications]
     case .creator:
@@ -33,6 +36,8 @@ public enum SettingsNotificationSectionType: Int {
 
   public var sectionTitle: String {
     switch self {
+    case .announcements:
+      return localizedString(key: "Announcements", defaultValue: "Announcements")
     case .backedProjects:
       return Strings.Projects_youve_backed()
     case .creator:
@@ -41,15 +46,9 @@ public enum SettingsNotificationSectionType: Int {
       return Strings.profile_settings_social_title()
     }
   }
-
-  public static var allCases: [SettingsNotificationSectionType] = [
-    .backedProjects,
-    .creator,
-    .social
-  ]
 }
 
-public enum SettingsNotificationCellType {
+public enum SettingsNotificationCellType: CaseIterable {
   case projectUpdates
   case projectNotifications
   case pledgeActivity
@@ -57,24 +56,11 @@ public enum SettingsNotificationCellType {
   case newComments
   case newLikes
   case creatorTips
+  case marketingUpdate
   case messages
   case newFollowers
   case friendBacksProject
   case commentReplyDigest
-
-  public static var allCases: [SettingsNotificationCellType] = [
-    .projectUpdates,
-    .projectNotifications,
-    .pledgeActivity,
-    .emailFrequency,
-    .newComments,
-    .newLikes,
-    .creatorTips,
-    .messages,
-    .newFollowers,
-    .friendBacksProject,
-    .commentReplyDigest
-  ]
 
   public var accessibilityTraits: UIAccessibilityTraits {
     switch self {
@@ -96,7 +82,7 @@ public enum SettingsNotificationCellType {
 
   public var shouldShowEmailNotificationButton: Bool {
     switch self {
-    case .projectNotifications, .emailFrequency, .newLikes:
+    case .projectNotifications, .emailFrequency, .newLikes, .marketingUpdate:
       return false
     default:
       return true
@@ -142,6 +128,8 @@ public enum SettingsNotificationCellType {
       return Strings.profile_settings_creator_likes()
     case .creatorTips:
       return Strings.Creator_tips()
+    case .marketingUpdate:
+      return localizedString(key: "News_and_projects_for_you", defaultValue: "News and projects for you")
     case .messages:
       return Strings.dashboard_buttons_messages()
     case .newFollowers:

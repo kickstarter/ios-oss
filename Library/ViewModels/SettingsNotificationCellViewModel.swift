@@ -213,6 +213,9 @@ extension SettingsNotificationCellViewModel {
     case .creatorTips:
       return notificationType == .email
         ? UserAttribute.Notification.creatorTips : nil
+    case .marketingUpdate:
+      return notificationType == .email
+        ? nil : UserAttribute.Notification.mobileMarketingUpdate
     case .messages:
       return notificationType == .email
         ? UserAttribute.Notification.messages : UserAttribute.Notification.mobileMessages
