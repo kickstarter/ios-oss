@@ -39,7 +39,6 @@ public final class KSRAnalytics {
     case loginButtonClicked = "Log In Button Clicked"
     case loginOrSignupButtonClicked = "Log In or Signup Button Clicked"
     case loginOrSignupPageViewed = "Log In or Signup Page Viewed"
-    case loginSubmitButtonClicked = "Log In Submit Button Clicked"
     case managePledgeButtonClicked = "Manage Pledge Button Clicked"
     case onboardingCarouselSwiped = "Onboarding Carousel Swiped"
     case onboardingContinueButtonClicked = "Onboarding Continue Button Clicked"
@@ -1347,7 +1346,12 @@ public final class KSRAnalytics {
   }
 
   public func trackLoginSubmitButtonClicked() {
-    self.track(event: ApprovedEvent.loginSubmitButtonClicked.rawValue, page: .login)
+    let props = contextProperties(ctaContext: .logInSubmit)
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      page: .login,
+      properties: props
+    )
   }
 
   public func trackForgotPasswordViewed() {
