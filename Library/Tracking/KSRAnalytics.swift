@@ -536,13 +536,13 @@ public final class KSRAnalytics {
     let addOnsCountTotal: Int?
     let addOnsCountUnique: Int?
     let addOnsMinimumUsd: Double
-    let bonusAmountInUsd: Double?
+    let bonusAmountInUsd: Decimal?
     let checkoutId: String?
     let estimatedDelivery: TimeInterval?
     let paymentType: String?
-    let revenueInUsd: Double
+    let revenueInUsd: Decimal
     let rewardId: String
-    let rewardMinimumUsd: Double
+    let rewardMinimumUsd: Decimal
     let rewardTitle: String?
     let shippingEnabled: Bool
     let shippingAmountUsd: Double?
@@ -1717,7 +1717,7 @@ private func checkoutProperties(
   result["add_ons_count_total"] = data.addOnsCountTotal
   result["add_ons_count_unique"] = data.addOnsCountUnique
   result["add_ons_minimum_usd"] = rounded(data.addOnsMinimumUsd, places: 2)
-  result["bonus_amount_usd"] = rounded(data.bonusAmountInUsd ?? 0, places: 2)
+  result["bonus_amount_usd"] = data.bonusAmountInUsd
   result["id"] = data.checkoutId
   result["payment_type"] = data.paymentType
   result["reward_estimated_delivery_on"] = data.estimatedDelivery?.toISO8601DateTimeString()

@@ -782,12 +782,12 @@ final class RewardsCollectionViewModelTests: TestCase {
 
     XCTAssertEqual(
       0.00,
-      self.dataLakeTrackingClient.properties.last?["checkout_bonus_amount_usd"] as? Double
+      self.dataLakeTrackingClient.properties.last?["checkout_bonus_amount_usd"] as? Decimal
     )
     XCTAssertEqual(0, self.dataLakeTrackingClient.properties.last?["checkout_add_ons_count_total"] as? Int)
     XCTAssertEqual(
       0.00,
-      self.segmentTrackingClient.properties.last?["checkout_bonus_amount_usd"] as? Double
+      self.segmentTrackingClient.properties.last?["checkout_bonus_amount_usd"] as? Decimal
     )
     XCTAssertEqual(0, self.segmentTrackingClient.properties.last?["checkout_add_ons_count_total"] as? Int)
   }
@@ -828,11 +828,11 @@ final class RewardsCollectionViewModelTests: TestCase {
 
     XCTAssertEqual(
       100.00,
-      self.dataLakeTrackingClient.properties.last?["checkout_bonus_amount_usd"] as? Double
+      self.dataLakeTrackingClient.properties.last?["checkout_bonus_amount_usd"] as? Decimal
     )
     XCTAssertEqual(
       100.00,
-      self.segmentTrackingClient.properties.last?["checkout_bonus_amount_usd"] as? Double
+      self.segmentTrackingClient.properties.last?["checkout_bonus_amount_usd"] as? Decimal
     )
 
     // Even though there is an addOn on the Backing, we don't calculate that as a total in the Rewards carousel
