@@ -358,20 +358,12 @@ extension Lens where Whole == Project, Part == Project.Stats {
     return Project.lens.stats .. lens(\Project.Stats.goal)
   }
 
-  public var goalUsdCurrency: Lens<Project, Float> {
-    return Project.lens.stats .. Project.Stats.lens.goalUsdCurrency
-  }
-
   public var pledged: Lens<Project, Int> {
     return Project.lens.stats .. lens(\Project.Stats.pledged)
   }
 
   public var staticUsdRate: Lens<Project, Float> {
     return Project.lens.stats .. lens(\Project.Stats.staticUsdRate)
-  }
-
-  public var totalAmountPledgedUsdCurrency: Lens<Project, Float?> {
-    return Project.lens.stats .. Project.Stats.lens.totalAmountPledgedUsdCurrency
   }
 
   public var updatesCount: Lens<Project, Int?> {

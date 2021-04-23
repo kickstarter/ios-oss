@@ -307,6 +307,14 @@ final class ProjectTests: XCTestCase {
     XCTAssertEqual(46_800, project.stats.goalUsdCurrency)
   }
 
+  func testGoalUsd() {
+    let project = .template
+      |> Project.lens.stats.staticUsdRate .~ 13.56
+      |> Project.lens.stats.goal .~ 30_000
+
+    XCTAssertEqual(406_800.0, project.stats.goalUsd)
+  }
+
   func testDuration() {
     let launchedAt = DateComponents()
       |> \.day .~ 15

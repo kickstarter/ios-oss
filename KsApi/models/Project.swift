@@ -114,7 +114,7 @@ public struct Project {
 
     /// Goal amount, converted to USD, irrespective of the users selected currency
     public var goalUsdCurrency: Float {
-      return Float(self.goal) * self.usdExchangeRate.orZero
+      return Float(self.goal) * (self.usdExchangeRate ?? 0)
     }
 
     /// Country determined by current currency.
