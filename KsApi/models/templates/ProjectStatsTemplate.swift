@@ -12,6 +12,6 @@ extension Project.Stats {
     pledged: 1_000,
     staticUsdRate: 1.0,
     updatesCount: 1,
-    usdExchangeRate: 1.56
+    usdExchangeRate: 1.21374984
   )
 }
