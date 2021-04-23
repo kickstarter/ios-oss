@@ -79,6 +79,7 @@ public struct Project {
     public var pledged: Int
     public var staticUsdRate: Float
     public var updatesCount: Int?
+    public var usdExchangeRate: Float?
 
     /// Percent funded as measured from `0.0` to `1.0`. See `percentFunded` for a value from `0` to `100`.
     public var fundingProgress: Float {
@@ -96,6 +97,11 @@ public struct Project {
       return floor(Float(self.pledged) * self.staticUsdRate)
     }
 
+    /// Total amount currently pledged to the project, converted to USD, irrespective of the users selected currency
+    public var totalAmountPledgedUsdCurrency: Float? {
+      return self.usdExchangeRate.map { Float(self.pledged) * $0 }
+    }
+
     /// Goal amount converted to USD.
     public var goalUsd: Float {
       return floor(Float(self.goal) * self.staticUsdRate)
@@ -104,6 +110,11 @@ public struct Project {
     /// Goal amount converted to current currency.
     public var goalCurrentCurrency: Float? {
       return self.currentCurrencyRate.map { floor(Float(self.goal) * $0) }
+    }
+
+    /// Goal amount, converted to USD, irrespective of the users selected currency
+    public var goalUsdCurrency: Float {
+      return Float(self.goal) * (self.usdExchangeRate ?? 0)
     }
 
     /// Country determined by current currency.
@@ -309,6 +320,7 @@ extension Project.Stats: Decodable {
     case pledged
     case staticUsdRate = "static_usd_rate"
     case updatesCount = "updates_count"
+    case usdExchangeRate = "usd_exchange_rate"
   }
 
   public init(from decoder: Decoder) throws {
@@ -324,6 +336,7 @@ extension Project.Stats: Decodable {
     self.pledged = Int(value)
     self.staticUsdRate = try values.decodeIfPresent(Float.self, forKey: .staticUsdRate) ?? 1.0
     self.updatesCount = try values.decodeIfPresent(Int.self, forKey: .updatesCount)
+    self.usdExchangeRate = try values.decodeIfPresent(Float.self, forKey: .usdExchangeRate)
   }
 }
 

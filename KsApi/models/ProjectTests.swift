@@ -283,12 +283,36 @@ final class ProjectTests: XCTestCase {
     XCTAssertEqual(2_000, project.stats.pledgedUsd)
   }
 
+  func testTotalAmountPledgedUsdCurrency() {
+    let project = .template
+      |> Project.lens.stats.usdExchangeRate .~ 1.56
+      |> Project.lens.stats.pledged .~ 80_400
+
+    XCTAssertEqual(125_423.99, project.stats.totalAmountPledgedUsdCurrency)
+  }
+
   func testGoalCurrentCurrency() {
     let project = .template
       |> Project.lens.stats.currentCurrencyRate .~ 2.68
       |> Project.lens.stats.goal .~ 30_000
 
     XCTAssertEqual(80_400, project.stats.goalCurrentCurrency)
+  }
+
+  func testGoalUsdCurrency() {
+    let project = .template
+      |> Project.lens.stats.usdExchangeRate .~ 1.56
+      |> Project.lens.stats.goal .~ 30_000
+
+    XCTAssertEqual(46_800, project.stats.goalUsdCurrency)
+  }
+
+  func testGoalUsd() {
+    let project = .template
+      |> Project.lens.stats.staticUsdRate .~ 13.56
+      |> Project.lens.stats.goal .~ 30_000
+
+    XCTAssertEqual(406_800.0, project.stats.goalUsd)
   }
 
   func testDuration() {
