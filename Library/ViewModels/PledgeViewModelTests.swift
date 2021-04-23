@@ -5313,9 +5313,9 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual("credit_card", dataLakeTrackingClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("My Reward", dataLakeTrackingClientProps?["checkout_reward_title"] as? String)
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? Double)
+    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? Decimal)
     XCTAssertEqual("1", dataLakeTrackingClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Double)
+    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Decimal)
     XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_time"] as? Bool)
     XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_shipping_enabled"] as? Bool)
@@ -5326,9 +5326,9 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual("credit_card", segmentTrackingClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("My Reward", segmentTrackingClientProps?["checkout_reward_title"] as? String)
-    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_reward_minimum_usd"] as? Double)
+    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_reward_minimum_usd"] as? Decimal)
     XCTAssertEqual("1", segmentTrackingClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_amount_total_usd"] as? Double)
+    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_amount_total_usd"] as? Decimal)
     XCTAssertEqual(true, segmentTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, segmentTrackingClientProps?["checkout_reward_is_limited_time"] as? Bool)
     XCTAssertEqual(true, segmentTrackingClientProps?["checkout_reward_shipping_enabled"] as? Bool)
@@ -5396,9 +5396,9 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual("credit_card", dataLakeTrackingClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("My Reward", dataLakeTrackingClientProps?["checkout_reward_title"] as? String)
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? Double)
+    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? Decimal)
     XCTAssertEqual("1", dataLakeTrackingClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Double)
+    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Decimal)
     XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(
       true,
@@ -5407,9 +5407,9 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual("credit_card", segmentTrackingClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("My Reward", segmentTrackingClientProps?["checkout_reward_title"] as? String)
-    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_reward_minimum_usd"] as? Double)
+    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_reward_minimum_usd"] as? Decimal)
     XCTAssertEqual("1", segmentTrackingClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_amount_total_usd"] as? Double)
+    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_amount_total_usd"] as? Decimal)
     XCTAssertEqual(true, segmentTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(
       true,
@@ -5456,9 +5456,9 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual("credit_card", dataLakeTrackingClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("My Reward", dataLakeTrackingClientProps?["checkout_reward_title"] as? String)
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? Double)
+    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? Decimal)
     XCTAssertEqual("1", dataLakeTrackingClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Double)
+    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Decimal)
     XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(
       true,
@@ -5467,9 +5467,9 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual("credit_card", segmentTrackingClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("My Reward", segmentTrackingClientProps?["checkout_reward_title"] as? String)
-    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_reward_minimum_usd"] as? Double)
+    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_reward_minimum_usd"] as? Decimal)
     XCTAssertEqual("1", segmentTrackingClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_amount_total_usd"] as? Double)
+    XCTAssertEqual(10.00, segmentTrackingClientProps?["checkout_amount_total_usd"] as? Decimal)
     XCTAssertEqual(true, segmentTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(
       true,
@@ -5856,7 +5856,7 @@ final class PledgeViewModelTests: TestCase {
     // Checkout properties
     XCTAssertEqual("credit_card", dataLakeTrackingClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("1", dataLakeTrackingClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(55.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Double)
+    XCTAssertEqual(55.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Decimal)
     XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(
@@ -5870,7 +5870,7 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual("My Reward", dataLakeTrackingClientProps?["checkout_reward_title"] as? String)
     XCTAssertEqual("credit_card", segmentClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("1", segmentClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(55.00, segmentClientProps?["checkout_amount_total_usd"] as? Double)
+    XCTAssertEqual(55.00, segmentClientProps?["checkout_amount_total_usd"] as? Decimal)
     XCTAssertEqual(true, segmentClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual(true, segmentClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
