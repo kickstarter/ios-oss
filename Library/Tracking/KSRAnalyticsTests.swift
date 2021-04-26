@@ -352,6 +352,27 @@ final class KSRAnalyticsTests: TestCase {
 
   // MARK: - Login & Signup Tests
 
+  func testTrackLoginSubmitButtonClicked() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      loggedInUser: nil,
+      segmentClient: segmentClient
+    )
+
+    ksrAnalytics.trackLoginSubmitButtonClicked()
+
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+
+    XCTAssertEqual("log_in", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("log_in_submit", dataLakeClient.properties.last?["context_cta"] as? String)
+
+    XCTAssertEqual("log_in", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("log_in_submit", segmentClient.properties.last?["context_cta"] as? String)
+  }
+
   func testTrackSignupSubmitButtonClicked() {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
