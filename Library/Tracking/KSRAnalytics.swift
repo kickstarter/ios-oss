@@ -1345,6 +1345,11 @@ public final class KSRAnalytics {
     )
   }
 
+  public func trackSignupPageViewed() {
+    let props = contextProperties(page: .signup)
+    self.track(event: NewApprovedEvent.pageViewed.rawValue, properties: props)
+  }
+
   public func trackSignupSubmitButtonClicked() {
     let properties = contextProperties(page: .signup)
     self.track(
