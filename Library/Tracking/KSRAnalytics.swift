@@ -1745,7 +1745,7 @@ private func discoveryProperties(
   var result: [String: Any] = [:]
 
   // NB: All filters should be added here since `result["everything"]` is derived from this.
-  result["category_name"] = params.category?.parent?.analyticsName
+  result["category_name"] = params.category?.parent?.analyticsName ?? params.category?.name
   result["recommended"] = params.recommended
   result["social"] = params.social
   result["pwl"] = params.staffPicks
