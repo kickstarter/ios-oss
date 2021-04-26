@@ -392,17 +392,33 @@ public func isEndDateAfterToday(for reward: Reward) -> Bool {
 /*
  A helper that assists in rounding a Double to a given number of decimal places
  */
-public func rounded(_ value: Double, places: Int) -> Double {
-  let divisor = pow(10.0, Double(places))
-  return (value * divisor).rounded() / divisor
+public func rounded(_ value: Double, places: Int16) -> Decimal {
+  let roundingBehavior = NSDecimalNumberHandler(
+    roundingMode: .bankers,
+    scale: places,
+    raiseOnExactness: true,
+    raiseOnOverflow: true,
+    raiseOnUnderflow: true,
+    raiseOnDivideByZero: true
+  )
+
+  return NSDecimalNumber(value: value).rounding(accordingToBehavior: roundingBehavior) as Decimal
 }
 
 /*
  A helper that assists in rounding a Float to a given number of decimal places
  */
-public func rounded(_ value: Float, places: Int) -> Float {
-  let divisor = pow(10.0, Float(places))
-  return (value * divisor).rounded() / divisor
+public func rounded(_ value: Float, places: Int16) -> Decimal {
+  let roundingBehavior = NSDecimalNumberHandler(
+    roundingMode: .bankers,
+    scale: places,
+    raiseOnExactness: true,
+    raiseOnOverflow: true,
+    raiseOnUnderflow: true,
+    raiseOnDivideByZero: true
+  )
+
+  return NSDecimalNumber(value: value).rounding(accordingToBehavior: roundingBehavior) as Decimal
 }
 
 /**
