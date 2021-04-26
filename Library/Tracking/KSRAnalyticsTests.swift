@@ -396,6 +396,24 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("subscription_true", segmentClient.properties.last?["context_type"] as? String)
   }
 
+  func testTrackSignupPageViewed() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      loggedInUser: nil,
+      segmentClient: segmentClient
+    )
+
+    ksrAnalytics.trackSignupPageViewed()
+
+    XCTAssertEqual(["Page Viewed"], dataLakeClient.events)
+    XCTAssertEqual(["Page Viewed"], segmentClient.events)
+
+    XCTAssertEqual("sign_up", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("sign_up", segmentClient.properties.last?["context_page"] as? String)
+  }
+
   // MARK: - Project Properties Tests
 
   func testProjectProperties() {
@@ -2579,7 +2597,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
 
-    ksrAnalytics.trackSignupSubmitButtonClicked(isSubscribed: false)
+    ksrAnalytics.trackSignupPageViewed()
     XCTAssertEqual("sign_up", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("sign_up", segmentClient.properties.last?["context_page"] as? String)
 
