@@ -132,8 +132,10 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     self.postNotification = self.environmentLoggedInProperty.signal
       .mapConst(Notification(name: .ksr_sessionStarted))
 
-    attemptSignup
-      .observeValues { AppEnvironment.current.ksrAnalytics.trackSignupSubmitButtonClicked() }
+    newsletter.takeWhen(attemptSignup)
+      .observeValues { newsletter in
+        AppEnvironment.current.ksrAnalytics.trackSignupSubmitButtonClicked(subscription: newsletter)
+      }
   }
 
   fileprivate let emailChangedProperty = MutableProperty("")
