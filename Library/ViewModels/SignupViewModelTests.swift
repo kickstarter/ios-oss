@@ -70,8 +70,8 @@ internal final class SignupViewModelTests: TestCase {
     self.vm.inputs.signupButtonPressed()
     self.logIntoEnvironment.assertDidNotEmitValue("Does not immediately emit after signup button is pressed.")
 
-    XCTAssertEqual(["Page Viewed", "Signup Submit Button Clicked"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Page Viewed", "Signup Submit Button Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
 
     self.scheduler.advance()
 
