@@ -1346,10 +1346,9 @@ public final class KSRAnalytics {
 
   public func trackSignupSubmitButtonClicked(isSubscribed: Bool) {
     let typeContext: TypeContext = isSubscribed ? .subscriptionTrue : .subscriptionFalse
-    let props = contextProperties(ctaContext: .signUpSubmit, typeContext: typeContext)
+    let props = contextProperties(ctaContext: .signUpSubmit, page: .signup, typeContext: typeContext)
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
-      page: .signup,
       properties: props
     )
   }
@@ -1358,15 +1357,7 @@ public final class KSRAnalytics {
     let props = contextProperties(page: .signup)
     self.track(event: NewApprovedEvent.pageViewed.rawValue, properties: props)
   }
-  
-  public func trackSignupSubmitButtonClicked() {
-    let properties = contextProperties(page: .signup)
-    self.track(
-      event: ApprovedEvent.signupSubmitButtonClicked.rawValue,
-      properties: properties
-    )
-  }
-  
+
   public func trackLoginSubmitButtonClicked() {
     let props = contextProperties(ctaContext: .logInSubmit, page: .login)
     self.track(
