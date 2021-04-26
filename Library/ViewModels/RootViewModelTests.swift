@@ -510,7 +510,7 @@ final class RootViewModelTests: TestCase {
       self.dataLakeTrackingClient.properties(forKey: "context_tab_bar_label")
     )
     XCTAssertEqual(
-      [nil, nil, "discover"],
+      ["other", "other", "discover"],
       self.dataLakeTrackingClient.properties(forKey: "context_page")
     )
     XCTAssertEqual(
@@ -523,7 +523,7 @@ final class RootViewModelTests: TestCase {
       self.segmentTrackingClient.properties(forKey: "context_tab_bar_label")
     )
     XCTAssertEqual(
-      [nil, nil, "discover"],
+      ["other", "other", "discover"],
       self.segmentTrackingClient.properties(forKey: "context_page")
     )
     XCTAssertEqual(
