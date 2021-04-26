@@ -82,7 +82,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
       initialText
     )
 
-    let newsletter = Signal.merge(
+    let isSubscribed = Signal.merge(
       self.viewDidLoadProperty.signal.mapConst(false),
       self.weeklyNewsletterChangedProperty.signal.skipNil()
     )
@@ -99,14 +99,14 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
       .map { $0 && $1 && $2 }
       .skipRepeats()
 
-    self.setWeeklyNewsletterState = newsletter.take(first: 1)
+    self.setWeeklyNewsletterState = isSubscribed.take(first: 1)
 
     let attemptSignup = Signal.merge(
       self.passwordTextFieldReturnProperty.signal,
       self.signupButtonPressedProperty.signal
     )
 
-    let signupEvent = Signal.combineLatest(name, email, password, newsletter)
+    let signupEvent = Signal.combineLatest(name, email, password, isSubscribed)
       .takeWhen(attemptSignup)
       .switchMap { name, email, password, newsletter in
         AppEnvironment.current.apiService.signup(
@@ -132,9 +132,9 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     self.postNotification = self.environmentLoggedInProperty.signal
       .mapConst(Notification(name: .ksr_sessionStarted))
 
-    newsletter.takeWhen(attemptSignup)
-      .observeValues { newsletter in
-        AppEnvironment.current.ksrAnalytics.trackSignupSubmitButtonClicked(subscription: newsletter)
+    isSubscribed.takeWhen(attemptSignup)
+      .observeValues { isSubscribed in
+        AppEnvironment.current.ksrAnalytics.trackSignupSubmitButtonClicked(isSubscribed: isSubscribed)
       }
   }
 

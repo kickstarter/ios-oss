@@ -1340,8 +1340,8 @@ public final class KSRAnalytics {
     )
   }
 
-  public func trackSignupSubmitButtonClicked(subscription: Bool) {
-    let typeContext = subscription ? TypeContext.subscriptionTrue : .subscriptionFalse
+  public func trackSignupSubmitButtonClicked(isSubscribed: Bool) {
+    let typeContext: TypeContext = isSubscribed ? .subscriptionTrue : .subscriptionFalse
     let props = contextProperties(ctaContext: .signUpSubmit, typeContext: typeContext)
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,

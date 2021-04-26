@@ -382,7 +382,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackSignupSubmitButtonClicked(subscription: true)
+    ksrAnalytics.trackSignupSubmitButtonClicked(isSubscribed: true)
 
     XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
@@ -2579,7 +2579,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
 
-    ksrAnalytics.trackSignupSubmitButtonClicked(subscription: false)
+    ksrAnalytics.trackSignupSubmitButtonClicked(isSubscribed: false)
     XCTAssertEqual("sign_up", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("sign_up", segmentClient.properties.last?["context_page"] as? String)
 
