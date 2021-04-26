@@ -47,7 +47,6 @@ public final class KSRAnalytics {
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
     case projectSwiped = "Project Swiped"
     case signupButtonClicked = "Signup Button Clicked"
-    case signupSubmitButtonClicked = "Signup Submit Button Clicked"
     case skipVerificationButtonClicked = "Skip Verification Button Clicked"
     case tabBarClicked = "Tab Bar Clicked"
     case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
@@ -1341,13 +1340,19 @@ public final class KSRAnalytics {
     )
   }
 
+  public func trackSignupSubmitButtonClicked(isSubscribed: Bool) {
+    let typeContext: TypeContext = isSubscribed ? .subscriptionTrue : .subscriptionFalse
+    let props = contextProperties(ctaContext: .signUpSubmit, typeContext: typeContext)
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      page: .signup,
+      properties: props
+    )
+  }
+
   public func trackSignupPageViewed() {
     let props = contextProperties(page: .signup)
     self.track(event: NewApprovedEvent.pageViewed.rawValue, properties: props)
-  }
-
-  public func trackSignupSubmitButtonClicked() {
-    self.track(event: ApprovedEvent.signupSubmitButtonClicked.rawValue, page: .signup)
   }
 
   public func trackLoginSubmitButtonClicked() {
