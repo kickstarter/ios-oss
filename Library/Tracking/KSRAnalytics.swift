@@ -1750,7 +1750,7 @@ private func discoveryProperties(
 
   // NB: All filters should be added here since `result["everything"]` is derived from this.
 
-  // If a `Category` does not have a parent `Category`, use the base `Category` name.
+  // If a `Category`'s `parent` field is nil, use the `Category`'s name.
   result["category_name"] = params.category?.parent?.analyticsName ?? params.category?.analyticsName
   result["recommended"] = params.recommended
   result["social"] = params.social
