@@ -350,6 +350,29 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("unknown", segmentProps?["session_device_orientation"] as? String)
   }
 
+  // MARK: - Login & Signup Tests
+
+  func testTrackLoginSubmitButtonClicked() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      loggedInUser: nil,
+      segmentClient: segmentClient
+    )
+
+    ksrAnalytics.trackLoginSubmitButtonClicked()
+
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+
+    XCTAssertEqual("log_in", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("log_in_submit", dataLakeClient.properties.last?["context_cta"] as? String)
+
+    XCTAssertEqual("log_in", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("log_in_submit", segmentClient.properties.last?["context_cta"] as? String)
+  }
+
   // MARK: - Project Properties Tests
 
   func testProjectProperties() {
