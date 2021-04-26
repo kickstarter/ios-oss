@@ -976,12 +976,12 @@ public final class KSRAnalytics {
     case .fix:
       self.track(
         event: ApprovedEvent.managePledgeButtonClicked.rawValue,
-        properties: props.withAllValuesFrom(contextProperties()) // .fixErroredPledge
+        properties: props // .fixErroredPledge
       )
     case .pledge:
       let allProps = props
         .withAllValuesFrom(optimizelyProperties() ?? [:])
-        .withAllValuesFrom(contextProperties(ctaContext: .pledgeInitiate))
+        .withAllValuesFrom(contextProperties(ctaContext: .pledgeInitiate, page: .projectPage))
 
       self.track(
         event: NewApprovedEvent.ctaClicked.rawValue,
@@ -990,7 +990,7 @@ public final class KSRAnalytics {
     case .manage:
       self.track(
         event: ApprovedEvent.managePledgeButtonClicked.rawValue,
-        properties: props.withAllValuesFrom(contextProperties()) // .manageReward
+        properties: props // .manageReward
       )
     default:
       return
@@ -1810,7 +1810,7 @@ private func contextProperties(
 
   result["cta"] = ctaContext?.trackingString
   result["location"] = locationContext?.trackingString
-  result["page"] = page?.rawValue
+  result["page"] = page?.rawValue ?? "other"
   result["section"] = sectionContext?.trackingString
   result["tab_bar_label"] = tabBarLabel?.trackingString
   result["type"] = typeContext?.trackingString
