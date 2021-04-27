@@ -665,7 +665,7 @@ public final class KSRAnalytics {
    */
 
   public func trackSearchTabBarClicked(prevTabBarItemLabel: TabBarItemLabel) {
-    let pageContext: PageContext
+    let pageContext: PageContext?
     switch prevTabBarItemLabel {
     case .activity:
       pageContext = .activities
@@ -673,8 +673,10 @@ public final class KSRAnalytics {
       pageContext = .discovery
     case .profile:
       pageContext = .profile
-    default:
+    case .search:
       pageContext = .search
+    default:
+      pageContext = nil
     }
     let properties = contextProperties(
       ctaContext: .search,
