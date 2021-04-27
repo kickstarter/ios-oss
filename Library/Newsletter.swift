@@ -13,23 +13,23 @@ public enum Newsletter: CaseIterable {
   public var displayableName: String {
     switch self {
     case .arts:
-      return Strings.profile_settings_newsletter_arts_news()
+      return localizedString(key: "Kickstarter_Arts", defaultValue: "Kickstarter Arts")
     case .games:
-      return Strings.profile_settings_newsletter_games()
+      return localizedString(key: "Kickstarter_Games", defaultValue: "Kickstarter Games")
     case .happening:
       return Strings.profile_settings_newsletter_happening()
     case .invent:
-      return Strings.profile_settings_newsletter_invent()
+      return localizedString(key: "Kickstarter_Invent", defaultValue: "Kickstarter Invent")
     case .promo:
-      return Strings.profile_settings_newsletter_news_event()
+      return Strings.Announcements()
     case .weekly:
       return Strings.profile_settings_newsletter_weekly()
     case .films:
-      return Strings.profile_settings_newsletter_film()
+      return localizedString(key: "Kickstarter_on_Film", defaultValue: "Kickstarter on Film")
     case .publishing:
       return Strings.profile_settings_newsletter_publishing()
     case .alumni:
-      return Strings.profile_settings_newsletter_alumni()
+      return localizedString(key: "Working_on_it", defaultValue: "Working on it")
     case .music:
       return Strings.Kickstarter_Music()
     }
@@ -54,7 +54,10 @@ public enum Newsletter: CaseIterable {
     case .publishing:
       return Strings.Welcome_to_our_library_Peruse_the_stacks_with_us()
     case .alumni:
-      return Strings.profile_settings_newsletter_alumni_newsletter()
+      return localizedString(
+        key: "A_monthly_pep_talk_to_boost_your_creative_practice_for_creators_of_all_types",
+        defaultValue: "A monthly pep talk to boost your creative practice, for creators of all types."
+      )
     case .music:
       return Strings.Its_like_the_radio_but_nothing_sucks_and_also_its_a_newsletter()
     }

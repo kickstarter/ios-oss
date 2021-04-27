@@ -37,7 +37,7 @@ public enum SettingsNotificationSectionType: Int, CaseIterable {
   public var sectionTitle: String {
     switch self {
     case .announcements:
-      return localizedString(key: "Announcements", defaultValue: "Announcements")
+      return localizedString(key: "News_and_projects", defaultValue: "News and projects")
     case .backedProjects:
       return Strings.Projects_youve_backed()
     case .creator:
@@ -129,7 +129,7 @@ public enum SettingsNotificationCellType: CaseIterable {
     case .creatorTips:
       return Strings.Creator_tips()
     case .marketingUpdate:
-      return localizedString(key: "News_and_projects_for_you", defaultValue: "News and projects for you")
+      return localizedString(key: "Recommended_for_you", defaultValue: "Recommended for you")
     case .messages:
       return Strings.dashboard_buttons_messages()
     case .newFollowers:
