@@ -182,7 +182,7 @@ public final class WatchProjectViewModel: WatchProjectViewModelType,
       .observeValues { project, context, discoveryParams in
         AppEnvironment.current.ksrAnalytics.trackWatchProjectButtonClicked(
           project: project,
-          location: context,
+          page: context,
           params: discoveryParams,
           typeContext: self.saveButtonTappedProperty.value ? .unwatch : .watch
         )

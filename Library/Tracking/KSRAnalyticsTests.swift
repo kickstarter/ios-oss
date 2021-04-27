@@ -1325,7 +1325,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
-      location: .discovery,
+      page: .discovery,
       params: DiscoveryParams.recommendedDefaults,
       typeContext: .watch
     )
@@ -1354,7 +1354,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
-      location: .discovery,
+      page: .discovery,
       params: DiscoveryParams.recommendedDefaults,
       typeContext: .unwatch
     )
@@ -1383,7 +1383,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
-      location: .projectPage,
+      page: .projectPage,
       typeContext: .watch
     )
 
@@ -1409,7 +1409,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
-      location: .projectPage,
+      page: .projectPage,
       typeContext: .unwatch
     )
 
@@ -2430,7 +2430,7 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackAddNewCardButtonClicked(
-      location: .pledgeAddNewCard,
+      page: .pledgeAddNewCard,
       project: .template,
       refTag: nil,
       reward: .template
@@ -2445,7 +2445,7 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackAddNewCardButtonClicked(
-      location: .settingsAddNewCard,
+      page: .settingsAddNewCard,
       project: .template,
       refTag: nil,
       reward: .template
