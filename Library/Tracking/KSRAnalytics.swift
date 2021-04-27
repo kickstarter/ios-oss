@@ -980,7 +980,8 @@ public final class KSRAnalytics {
     case .pledge:
       let allProps = props
         .withAllValuesFrom(optimizelyProperties() ?? [:])
-        .withAllValuesFrom(contextProperties(ctaContext: .pledgeInitiate, page: .projectPage))
+        .withAllValuesFrom(contextProperties(ctaContext: .pledgeInitiate))
+        .withAllValuesFrom(props)
 
       self.track(
         event: NewApprovedEvent.ctaClicked.rawValue,
@@ -1153,14 +1154,14 @@ public final class KSRAnalytics {
    */
 
   public func trackAddNewCardButtonClicked(
-    location: KSRAnalytics.PageContext? = nil,
+    page: KSRAnalytics.PageContext? = nil,
     project: Project,
     refTag: RefTag?,
     reward: Reward
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(page: location))
+      .withAllValuesFrom(contextProperties(page: page))
 
     self.track(
       event: ApprovedEvent.addNewCardButtonClicked.rawValue,
@@ -1462,14 +1463,14 @@ public final class KSRAnalytics {
 
   public func trackWatchProjectButtonClicked(
     project: Project,
-    location: PageContext,
+    page: PageContext,
     params: DiscoveryParams? = nil,
     typeContext: TypeContext
   ) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(
         ctaContext: .watchProject,
-        page: location,
+        page: page,
         typeContext: typeContext
       ))
 
@@ -1815,7 +1816,9 @@ private func contextProperties(
 
   result["cta"] = ctaContext?.trackingString
   result["location"] = locationContext?.trackingString
-  result["page"] = page?.rawValue ?? "other"
+  result["page"] = page?
+    .rawValue ??
+    "other" // Product/Insight want some event with no `context_page` to be defaulted as `other` until a context_page is defined for them.
   result["section"] = sectionContext?.trackingString
   result["tab_bar_label"] = tabBarLabel?.trackingString
   result["type"] = typeContext?.trackingString
