@@ -27,6 +27,7 @@ final class UserTests: XCTestCase {
       "happening_newsletter": false,
       "games_newsletter": false,
       "notify_of_comment_replies": false,
+      "notify_mobile_of_marketing_update": true,
       "facebook_connected": false,
       "location": [
         "country": "US",
@@ -55,6 +56,7 @@ final class UserTests: XCTestCase {
     XCTAssertEqual(false, user?.newsletters.happening)
     XCTAssertEqual(false, user?.newsletters.games)
     XCTAssertEqual(false, user?.notifications.commentReplies)
+    XCTAssertEqual(true, user?.notifications.mobileMarketingUpdate)
     XCTAssertEqual(false, user?.facebookConnected)
     XCTAssertEqual(false, user?.isEmailVerified)
     XCTAssertEqual(false, user?.isFriend)
@@ -77,6 +79,7 @@ final class UserTests: XCTestCase {
       "promo_newsletter": false,
       "weekly_newsletter": false,
       "notify_of_comment_replies": false,
+      "notify_mobile_of_marketing_update": true,
       "facebook_connected": false,
       "location": [
         "country": "US",

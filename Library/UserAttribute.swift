@@ -33,6 +33,7 @@ public enum UserAttribute {
       case .mobileComments: return \.notifications.mobileComments
       case .mobileFollower: return \.notifications.mobileFollower
       case .mobileFriendActivity: return \.notifications.mobileFriendActivity
+      case .mobileMarketingUpdate: return \.notifications.mobileMarketingUpdate
       case .mobileMessages: return \.notifications.mobileMessages
       case .mobilePledgeActivity: return \.notifications.mobileBackings
       case .mobilePostLikes: return \.notifications.mobilePostLikes
@@ -61,6 +62,7 @@ public enum UserAttribute {
     case mobileComments
     case mobileFollower
     case mobileFriendActivity
+    case mobileMarketingUpdate
     case mobileMessages
     case mobilePledgeActivity
     case mobilePostLikes
@@ -77,6 +79,7 @@ public enum UserAttribute {
       case .creatorTips: return "Creator tips"
       case .follower, .mobileFollower: return "New followers"
       case .friendActivity, .mobileFriendActivity: return "Friend backs a project"
+      case .mobileMarketingUpdate: return "Marketing updates"
       case .messages, .mobileMessages: return "New messages"
       case .pledgeActivity, .mobilePledgeActivity: return "New pledges"
       case .postLikes, .mobilePostLikes: return "New likes"
