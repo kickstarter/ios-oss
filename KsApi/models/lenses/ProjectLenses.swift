@@ -370,6 +370,10 @@ extension Lens where Whole == Project, Part == Project.Stats {
     return Project.lens.stats .. lens(\Project.Stats.updatesCount)
   }
 
+  public var usdExchangeRate: Lens<Project, Float?> {
+    return Project.lens.stats .. lens(\Project.Stats.usdExchangeRate)
+  }
+
   public var fundingProgress: Lens<Project, Float> {
     return Project.lens.stats .. Project.Stats.lens.fundingProgress
   }

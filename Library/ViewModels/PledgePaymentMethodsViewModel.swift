@@ -186,7 +186,7 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
       .takeWhen(self.goToAddCardScreen)
       .observeValues { project, reward, refTag in
         AppEnvironment.current.ksrAnalytics.trackAddNewCardButtonClicked(
-          location: .pledgeAddNewCard,
+          page: .pledgeAddNewCard,
           project: project,
           refTag: refTag,
           reward: reward

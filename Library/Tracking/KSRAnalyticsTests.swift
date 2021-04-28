@@ -350,6 +350,70 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("unknown", segmentProps?["session_device_orientation"] as? String)
   }
 
+  // MARK: - Login & Signup Tests
+
+  func testTrackLoginSubmitButtonClicked() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      loggedInUser: nil,
+      segmentClient: segmentClient
+    )
+
+    ksrAnalytics.trackLoginSubmitButtonClicked()
+
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+
+    XCTAssertEqual("log_in", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("log_in_submit", dataLakeClient.properties.last?["context_cta"] as? String)
+
+    XCTAssertEqual("log_in", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("log_in_submit", segmentClient.properties.last?["context_cta"] as? String)
+  }
+
+  func testTrackSignupSubmitButtonClicked() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      loggedInUser: nil,
+      segmentClient: segmentClient
+    )
+
+    ksrAnalytics.trackSignupSubmitButtonClicked(isSubscribed: true)
+
+    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
+    XCTAssertEqual(["CTA Clicked"], segmentClient.events)
+
+    XCTAssertEqual("sign_up", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("sign_up_submit", dataLakeClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("subscription_true", dataLakeClient.properties.last?["context_type"] as? String)
+
+    XCTAssertEqual("sign_up", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("sign_up_submit", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("subscription_true", segmentClient.properties.last?["context_type"] as? String)
+  }
+
+  func testTrackSignupPageViewed() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(
+      dataLakeClient: dataLakeClient,
+      loggedInUser: nil,
+      segmentClient: segmentClient
+    )
+
+    ksrAnalytics.trackSignupPageViewed()
+
+    XCTAssertEqual(["Page Viewed"], dataLakeClient.events)
+    XCTAssertEqual(["Page Viewed"], segmentClient.events)
+
+    XCTAssertEqual("sign_up", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("sign_up", segmentClient.properties.last?["context_page"] as? String)
+  }
+
   // MARK: - Project Properties Tests
 
   func testProjectProperties() {
@@ -407,8 +471,8 @@ final class KSRAnalyticsTests: TestCase {
     )
     XCTAssertEqual("live", dataLakeClientProperties?["project_state"] as? String)
     XCTAssertEqual(project.stats.pledged, dataLakeClientProperties?["project_current_pledge_amount"] as? Int)
-    XCTAssertEqual(2_000, dataLakeClientProperties?["project_current_amount_pledged_usd"] as? Float)
-    XCTAssertEqual(3_000, dataLakeClientProperties?["project_goal_usd"] as? Double)
+    XCTAssertEqual(1_213.75, dataLakeClientProperties?["project_current_amount_pledged_usd"] as? Decimal)
+    XCTAssertEqual(2_427.5, dataLakeClientProperties?["project_goal_usd"] as? Decimal)
     XCTAssertEqual(false, dataLakeClientProperties?["project_has_add_ons"] as? Bool)
     XCTAssertEqual(true, dataLakeClientProperties?["project_has_video"] as? Bool)
     XCTAssertEqual(10, dataLakeClientProperties?["project_comments_count"] as? Int)
@@ -451,8 +515,8 @@ final class KSRAnalyticsTests: TestCase {
     )
     XCTAssertEqual("live", segmentClientProperties?["project_state"] as? String)
     XCTAssertEqual(project.stats.pledged, segmentClientProperties?["project_current_pledge_amount"] as? Int)
-    XCTAssertEqual(2_000, segmentClientProperties?["project_current_amount_pledged_usd"] as? Float)
-    XCTAssertEqual(3_000, segmentClientProperties?["project_goal_usd"] as? Double)
+    XCTAssertEqual(1_213.75, segmentClientProperties?["project_current_amount_pledged_usd"] as? Decimal)
+    XCTAssertEqual(2_427.5, segmentClientProperties?["project_goal_usd"] as? Decimal)
     XCTAssertEqual(false, segmentClientProperties?["project_has_add_ons"] as? Bool)
     XCTAssertEqual(true, segmentClientProperties?["project_has_video"] as? Bool)
     XCTAssertEqual(10, segmentClientProperties?["project_comments_count"] as? Int)
@@ -1261,7 +1325,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
-      location: .discovery,
+      page: .discovery,
       params: DiscoveryParams.recommendedDefaults,
       typeContext: .watch
     )
@@ -1290,7 +1354,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
-      location: .discovery,
+      page: .discovery,
       params: DiscoveryParams.recommendedDefaults,
       typeContext: .unwatch
     )
@@ -1319,7 +1383,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
-      location: .projectPage,
+      page: .projectPage,
       typeContext: .watch
     )
 
@@ -1345,7 +1409,7 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackWatchProjectButtonClicked(
       project: .template,
-      location: .projectPage,
+      page: .projectPage,
       typeContext: .unwatch
     )
 
@@ -1999,6 +2063,24 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("search", segmentClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
     XCTAssertEqual("profile", segmentClient.properties.last?["context_page"] as? String)
+
+    ksrAnalytics.trackSearchTabBarClicked(prevTabBarItemLabel: .dashboard)
+
+    XCTAssertEqual([
+      "CTA Clicked",
+      "CTA Clicked"
+    ], dataLakeClient.events)
+    XCTAssertEqual("search", dataLakeClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("global_nav", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("other", dataLakeClient.properties.last?["context_page"] as? String)
+
+    XCTAssertEqual([
+      "CTA Clicked",
+      "CTA Clicked"
+    ], segmentClient.events)
+    XCTAssertEqual("search", segmentClient.properties.last?["context_cta"] as? String)
+    XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("other", segmentClient.properties.last?["context_page"] as? String)
   }
 
   func testTrackDiscoverySortProperties() {
@@ -2085,6 +2167,120 @@ final class KSRAnalyticsTests: TestCase {
       prevSort: .newest,
       discoveryContext: .endingSoon
     )
+  }
+
+  func testTrackDiscoveryModalSelectedFilter() {
+    let dataLakeClient = MockTrackingClient()
+    let segmentClient = MockTrackingClient()
+    let ksrAnalytics = KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+
+    let allProjectParams = DiscoveryParams.defaults |> DiscoveryParams.lens.includePOTD .~ true
+    ksrAnalytics
+      .trackDiscoveryModalSelectedFilter(
+        params: allProjectParams,
+        typeContext: .allProjects,
+        locationContext: .discoverOverlay
+      )
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("all", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("all", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(true, dataLakeClient.properties.last?["discover_everything"] as? Bool)
+    XCTAssertEqual(true, segmentClient.properties.last?["discover_everything"] as? Bool)
+
+    let pwlParams = DiscoveryParams.defaults |> DiscoveryParams.lens.staffPicks .~ true
+    ksrAnalytics
+      .trackDiscoveryModalSelectedFilter(
+        params: pwlParams,
+        typeContext: .pwl,
+        locationContext: .discoverOverlay
+      )
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("pwl", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("pwl", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(true, dataLakeClient.properties.last?["discover_pwl"] as? Bool)
+    XCTAssertEqual(true, segmentClient.properties.last?["discover_pwl"] as? Bool)
+
+    let recommendedParams = DiscoveryParams.defaults |> DiscoveryParams.lens.recommended .~ true
+    ksrAnalytics
+      .trackDiscoveryModalSelectedFilter(
+        params: recommendedParams,
+        typeContext: .recommended,
+        locationContext: .discoverOverlay
+      )
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("recommended", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("recommended", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(true, dataLakeClient.properties.last?["discover_recommended"] as? Bool)
+    XCTAssertEqual(true, segmentClient.properties.last?["discover_recommended"] as? Bool)
+
+    let socialParams = DiscoveryParams.defaults |> DiscoveryParams.lens.social .~ true
+    ksrAnalytics
+      .trackDiscoveryModalSelectedFilter(
+        params: socialParams,
+        typeContext: .social,
+        locationContext: .discoverOverlay
+      )
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("social", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("social", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(true, dataLakeClient.properties.last?["discover_social"] as? Bool)
+    XCTAssertEqual(true, segmentClient.properties.last?["discover_social"] as? Bool)
+
+    let artParams = DiscoveryParams.defaults
+      |> DiscoveryParams.lens.category .~ Category.art
+    ksrAnalytics
+      .trackDiscoveryModalSelectedFilter(
+        params: artParams,
+        typeContext: .categoryName,
+        locationContext: .discoverOverlay
+      )
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover_overlay", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("discover_overlay", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("category_name", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("category_name", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("Art", dataLakeClient.properties.last?["discover_category_name"] as? String)
+    XCTAssertEqual("Art", segmentClient.properties.last?["discover_category_name"] as? String)
+    XCTAssertEqual("Art", dataLakeClient.properties.last?["discover_subcategory_name"] as? String)
+    XCTAssertEqual("Art", segmentClient.properties.last?["discover_subcategory_name"] as? String)
+
+    let illustrationParams = DiscoveryParams.defaults
+      |> DiscoveryParams.lens.category .~ Category.illustration
+    ksrAnalytics
+      .trackDiscoveryModalSelectedFilter(
+        params: illustrationParams,
+        typeContext: .subcategoryName,
+        locationContext: .discoverOverlay
+      )
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover_overlay", dataLakeClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("discover_overlay", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("subcategory_name", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("subcategory_name", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("Art", dataLakeClient.properties.last?["discover_category_name"] as? String)
+    XCTAssertEqual("Art", segmentClient.properties.last?["discover_category_name"] as? String)
+    XCTAssertEqual("Illustration", dataLakeClient.properties.last?["discover_subcategory_name"] as? String)
+    XCTAssertEqual("Illustration", segmentClient.properties.last?["discover_subcategory_name"] as? String)
+
+    let watchedParams = DiscoveryParams.defaults |> DiscoveryParams.lens.starred .~ true
+    ksrAnalytics
+      .trackDiscoveryModalSelectedFilter(
+        params: watchedParams,
+        typeContext: .watched,
+        locationContext: .discoverOverlay
+      )
+    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("watched", dataLakeClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual("watched", segmentClient.properties.last?["context_type"] as? String)
+    XCTAssertEqual(true, dataLakeClient.properties.last?["discover_watched"] as? Bool)
+    XCTAssertEqual(true, segmentClient.properties.last?["discover_watched"] as? Bool)
   }
 
   func testTrackDiscoveryModalSelectedFilter_Category_Spanish() {
@@ -2252,7 +2448,7 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackAddNewCardButtonClicked(
-      location: .pledgeAddNewCard,
+      page: .pledgeAddNewCard,
       project: .template,
       refTag: nil,
       reward: .template
@@ -2267,7 +2463,7 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     ksrAnalytics.trackAddNewCardButtonClicked(
-      location: .settingsAddNewCard,
+      page: .settingsAddNewCard,
       project: .template,
       refTag: nil,
       reward: .template
@@ -2294,93 +2490,6 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackDiscovery(params: .defaults)
     XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
-
-    let allProjectParams = DiscoveryParams.defaults |> DiscoveryParams.lens.includePOTD .~ true
-    ksrAnalytics
-      .trackDiscoveryModalSelectedFilter(
-        params: allProjectParams,
-        typeContext: .allProjects,
-        locationContext: .discoverOverlay
-      )
-    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("all", dataLakeClient.properties.last?["context_type"] as? String)
-    XCTAssertEqual("all", segmentClient.properties.last?["context_type"] as? String)
-    XCTAssertEqual(true, dataLakeClient.properties.last?["discover_everything"] as? Bool)
-    XCTAssertEqual(true, segmentClient.properties.last?["discover_everything"] as? Bool)
-
-    let pwlParams = DiscoveryParams.defaults |> DiscoveryParams.lens.staffPicks .~ true
-    ksrAnalytics
-      .trackDiscoveryModalSelectedFilter(
-        params: pwlParams,
-        typeContext: .pwl,
-        locationContext: .discoverOverlay
-      )
-    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("pwl", dataLakeClient.properties.last?["context_type"] as? String)
-    XCTAssertEqual("pwl", segmentClient.properties.last?["context_type"] as? String)
-    XCTAssertEqual(true, dataLakeClient.properties.last?["discover_pwl"] as? Bool)
-    XCTAssertEqual(true, segmentClient.properties.last?["discover_pwl"] as? Bool)
-
-    let recommendedParams = DiscoveryParams.defaults |> DiscoveryParams.lens.recommended .~ true
-    ksrAnalytics
-      .trackDiscoveryModalSelectedFilter(
-        params: recommendedParams,
-        typeContext: .recommended,
-        locationContext: .discoverOverlay
-      )
-    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("recommended", dataLakeClient.properties.last?["context_type"] as? String)
-    XCTAssertEqual("recommended", segmentClient.properties.last?["context_type"] as? String)
-    XCTAssertEqual(true, dataLakeClient.properties.last?["discover_recommended"] as? Bool)
-    XCTAssertEqual(true, segmentClient.properties.last?["discover_recommended"] as? Bool)
-
-    let socialParams = DiscoveryParams.defaults |> DiscoveryParams.lens.social .~ true
-    ksrAnalytics
-      .trackDiscoveryModalSelectedFilter(
-        params: socialParams,
-        typeContext: .social,
-        locationContext: .discoverOverlay
-      )
-    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("social", dataLakeClient.properties.last?["context_type"] as? String)
-    XCTAssertEqual("social", segmentClient.properties.last?["context_type"] as? String)
-    XCTAssertEqual(true, dataLakeClient.properties.last?["discover_social"] as? Bool)
-    XCTAssertEqual(true, segmentClient.properties.last?["discover_social"] as? Bool)
-
-    let artParams = DiscoveryParams.defaults
-      |> DiscoveryParams.lens.category .~ Category.illustration
-    ksrAnalytics
-      .trackDiscoveryModalSelectedFilter(
-        params: artParams,
-        typeContext: .categoryName,
-        locationContext: .discoverOverlay
-      )
-    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("category_name", dataLakeClient.properties.last?["context_type"] as? String)
-    XCTAssertEqual("category_name", segmentClient.properties.last?["context_type"] as? String)
-    XCTAssertEqual("Art", dataLakeClient.properties.last?["discover_category_name"] as? String)
-    XCTAssertEqual("Art", segmentClient.properties.last?["discover_category_name"] as? String)
-    XCTAssertEqual("Illustration", dataLakeClient.properties.last?["discover_subcategory_name"] as? String)
-    XCTAssertEqual("Illustration", segmentClient.properties.last?["discover_subcategory_name"] as? String)
-
-    let watchedParams = DiscoveryParams.defaults |> DiscoveryParams.lens.starred .~ true
-    ksrAnalytics
-      .trackDiscoveryModalSelectedFilter(
-        params: watchedParams,
-        typeContext: .watched,
-        locationContext: .discoverOverlay
-      )
-    XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("watched", dataLakeClient.properties.last?["context_type"] as? String)
-    XCTAssertEqual("watched", segmentClient.properties.last?["context_type"] as? String)
-    XCTAssertEqual(true, dataLakeClient.properties.last?["discover_watched"] as? Bool)
-    XCTAssertEqual(true, segmentClient.properties.last?["discover_watched"] as? Bool)
 
     ksrAnalytics.trackEditorialHeaderTapped(params: .defaults, refTag: .discovery)
     XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
@@ -2442,6 +2551,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("global_nav", dataLakeClient.properties.last?["context_location"] as? String)
     XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
 
+    let watchedParams = DiscoveryParams.defaults |> DiscoveryParams.lens.starred .~ true
     ksrAnalytics.trackProfilePageFilterSelected(params: watchedParams)
     XCTAssertEqual("discover", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
@@ -2505,7 +2615,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
 
-    ksrAnalytics.trackSignupSubmitButtonClicked()
+    ksrAnalytics.trackSignupPageViewed()
     XCTAssertEqual("sign_up", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("sign_up", segmentClient.properties.last?["context_page"] as? String)
 
@@ -2656,8 +2766,8 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("2016-09-16T22:35:15Z", props?["project_launched_at"] as? String)
     XCTAssertEqual("live", props?["project_state"] as? String)
     XCTAssertEqual(1_000, props?["project_current_pledge_amount"] as? Int)
-    XCTAssertEqual(2_000.00, props?["project_current_amount_pledged_usd"] as? Float)
-    XCTAssertEqual(3_000.00, props?["project_goal_usd"] as? Double)
+    XCTAssertEqual(1_213.75, props?["project_current_amount_pledged_usd"] as? Decimal)
+    XCTAssertEqual(2_427.5, props?["project_goal_usd"] as? Decimal)
     XCTAssertEqual(true, props?["project_has_video"] as? Bool)
     XCTAssertEqual(10, props?["project_comments_count"] as? Int)
     XCTAssertEqual(0, props?["project_rewards_count"] as? Int)
@@ -2691,19 +2801,19 @@ final class KSRAnalyticsTests: TestCase {
   private func assertCheckoutProperties(_ props: [String: Any]?) {
     XCTAssertEqual(2, props?["checkout_add_ons_count_total"] as? Int)
     XCTAssertEqual(1, props?["checkout_add_ons_count_unique"] as? Int)
-    XCTAssertEqual(8.00, props?["checkout_add_ons_minimum_usd"] as? Double)
-    XCTAssertEqual(10.00, props?["checkout_bonus_amount_usd"] as? Double)
+    XCTAssertEqual(8.00, props?["checkout_add_ons_minimum_usd"] as? Decimal)
+    XCTAssertEqual(10.00, props?["checkout_bonus_amount_usd"] as? Decimal)
     XCTAssertEqual("CREDIT_CARD", props?["checkout_payment_type"] as? String)
     XCTAssertEqual("SUPER reward", props?["checkout_reward_title"] as? String)
-    XCTAssertEqual(5.00, props?["checkout_reward_minimum_usd"] as? Double)
+    XCTAssertEqual(5.00, props?["checkout_reward_minimum_usd"] as? Decimal)
     XCTAssertEqual("2", props?["checkout_reward_id"] as? String)
-    XCTAssertEqual(20.00, props?["checkout_amount_total_usd"] as? Double)
+    XCTAssertEqual(20.00, props?["checkout_amount_total_usd"] as? Decimal)
     XCTAssertEqual(true, props?["checkout_reward_is_limited_quantity"] as? Bool)
     XCTAssertEqual(true, props?["checkout_reward_is_limited_time"] as? Bool)
     XCTAssertEqual(true, props?["checkout_reward_shipping_enabled"] as? Bool)
     XCTAssertEqual("restricted", props?["checkout_reward_shipping_preference"] as? String)
     XCTAssertEqual(true, props?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool)
-    XCTAssertEqual(10.00, props?["checkout_shipping_amount_usd"] as? Double)
+    XCTAssertEqual(10.00, props?["checkout_shipping_amount_usd"] as? Decimal)
     XCTAssertEqual(
       "1970-05-23T21:21:18Z",
       props?["checkout_reward_estimated_delivery_on"] as? String

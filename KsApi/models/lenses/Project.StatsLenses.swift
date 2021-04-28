@@ -14,7 +14,8 @@ extension Project.Stats {
         goal: $1.goal,
         pledged: Int($0 * Float($1.goal)),
         staticUsdRate: $1.staticUsdRate,
-        updatesCount: $1.updatesCount
+        updatesCount: $1.updatesCount,
+        usdExchangeRate: $1.usdExchangeRate
       ) }
     )
   }

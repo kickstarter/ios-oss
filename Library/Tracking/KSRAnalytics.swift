@@ -39,7 +39,6 @@ public final class KSRAnalytics {
     case loginButtonClicked = "Log In Button Clicked"
     case loginOrSignupButtonClicked = "Log In or Signup Button Clicked"
     case loginOrSignupPageViewed = "Log In or Signup Page Viewed"
-    case loginSubmitButtonClicked = "Log In Submit Button Clicked"
     case managePledgeButtonClicked = "Manage Pledge Button Clicked"
     case onboardingCarouselSwiped = "Onboarding Carousel Swiped"
     case onboardingContinueButtonClicked = "Onboarding Continue Button Clicked"
@@ -48,7 +47,6 @@ public final class KSRAnalytics {
     case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
     case projectSwiped = "Project Swiped"
     case signupButtonClicked = "Signup Button Clicked"
-    case signupSubmitButtonClicked = "Signup Submit Button Clicked"
     case skipVerificationButtonClicked = "Skip Verification Button Clicked"
     case tabBarClicked = "Tab Bar Clicked"
     case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
@@ -536,13 +534,13 @@ public final class KSRAnalytics {
     let addOnsCountTotal: Int?
     let addOnsCountUnique: Int?
     let addOnsMinimumUsd: Double
-    let bonusAmountInUsd: Double?
+    let bonusAmountInUsd: Decimal?
     let checkoutId: String?
     let estimatedDelivery: TimeInterval?
     let paymentType: String?
-    let revenueInUsd: Double
+    let revenueInUsd: Decimal
     let rewardId: String
-    let rewardMinimumUsd: Double
+    let rewardMinimumUsd: Decimal
     let rewardTitle: String?
     let shippingEnabled: Bool
     let shippingAmountUsd: Double?
@@ -616,10 +614,13 @@ public final class KSRAnalytics {
 
   /// Call when the activities screen is shown.
   public func trackActivities(count: Int) {
+    let properties = contextProperties(page: .activities)
+      .withAllValuesFrom(
+        ["activities_count": count]
+      )
     self.track(
       event: ApprovedEvent.activityFeedViewed.rawValue,
-      page: .activities,
-      properties: ["activities_count": count]
+      properties: properties
     )
   }
 
@@ -664,7 +665,7 @@ public final class KSRAnalytics {
    */
 
   public func trackSearchTabBarClicked(prevTabBarItemLabel: TabBarItemLabel) {
-    let pageContext: PageContext
+    let pageContext: PageContext?
     switch prevTabBarItemLabel {
     case .activity:
       pageContext = .activities
@@ -672,8 +673,10 @@ public final class KSRAnalytics {
       pageContext = .discovery
     case .profile:
       pageContext = .profile
-    default:
+    case .search:
       pageContext = .search
+    default:
+      pageContext = nil
     }
     let properties = contextProperties(
       ctaContext: .search,
@@ -689,34 +692,38 @@ public final class KSRAnalytics {
   // MARK: - Onboarding Events
 
   public func trackOnboardingCarouselSwiped(optimizelyProperties: [String: Any] = [:]) {
+    let properties = contextProperties(page: .landingPage)
+      .withAllValuesFrom(optimizelyProperties)
     self.track(
       event: ApprovedEvent.onboardingCarouselSwiped.rawValue,
-      page: .landingPage,
-      properties: optimizelyProperties
+      properties: properties
     )
   }
 
   public func trackOnboardingGetStartedButtonClicked(optimizelyProperties: [String: Any] = [:]) {
+    let properties = contextProperties(page: .landingPage)
+      .withAllValuesFrom(optimizelyProperties)
     self.track(
       event: ApprovedEvent.onboardingGetStartedButtonClicked.rawValue,
-      page: .landingPage,
-      properties: optimizelyProperties
+      properties: properties
     )
   }
 
   public func trackOnboardingSkipButtonClicked(optimizelyProperties: [String: Any] = [:]) {
+    let properties = contextProperties(page: .onboarding)
+      .withAllValuesFrom(optimizelyProperties)
     self.track(
       event: ApprovedEvent.onboardingSkipButtonClicked.rawValue,
-      page: .onboarding,
-      properties: optimizelyProperties
+      properties: properties
     )
   }
 
   public func trackOnboardingContinueButtonClicked(optimizelyProperties: [String: Any] = [:]) {
+    let properties = contextProperties(page: .onboarding)
+      .withAllValuesFrom(optimizelyProperties)
     self.track(
       event: ApprovedEvent.onboardingContinueButtonClicked.rawValue,
-      page: .onboarding,
-      properties: optimizelyProperties
+      properties: properties
     )
   }
 
@@ -729,12 +736,12 @@ public final class KSRAnalytics {
    */
 
   public func trackDiscovery(params: DiscoveryParams) {
-    let props = discoveryProperties(from: params)
+    let properties = contextProperties(page: .discovery)
+      .withAllValuesFrom(discoveryProperties(from: params))
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      page: .discovery,
-      properties: props
+      properties: properties
     )
   }
 
@@ -810,6 +817,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(
         contextProperties(
           ctaContext: .discoverSort,
+          page: .discovery,
           typeContext: .discovery(discoverySortContext),
           locationContext: .discoverAdvanced
         )
@@ -817,7 +825,6 @@ public final class KSRAnalytics {
 
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
-      page: .discovery,
       properties: props
     )
   }
@@ -847,10 +854,11 @@ public final class KSRAnalytics {
    - parameter params: The DiscoveryParams associated with the collection
    */
   public func trackCollectionViewed(params: DiscoveryParams) {
+    let properties = contextProperties(page: .editorialProjects)
+      .withAllValuesFrom(discoveryProperties(from: params))
     self.track(
       event: ApprovedEvent.collectionViewed.rawValue,
-      page: .editorialProjects,
-      properties: discoveryProperties(from: params)
+      properties: properties
     )
   }
 
@@ -879,6 +887,7 @@ public final class KSRAnalytics {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(
         ctaContext: .project,
+        page: page,
         sectionContext: section,
         typeContext: typeContext,
         locationContext: location
@@ -894,7 +903,6 @@ public final class KSRAnalytics {
 
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
-      page: page,
       properties: props
     )
   }
@@ -914,10 +922,10 @@ public final class KSRAnalytics {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(videoProperties(videoLength: videoLength, videoPosition: videoPosition))
+      .withAllValuesFrom(contextProperties(page: .projectPage))
 
     self.track(
       event: NewApprovedEvent.videoPlaybackStarted.rawValue,
-      page: .projectPage,
       properties: props
     )
   }
@@ -948,10 +956,10 @@ public final class KSRAnalytics {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
+      .withAllValuesFrom(contextProperties(page: .addOnsSelection))
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      page: .addOnsSelection,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -963,29 +971,28 @@ public final class KSRAnalytics {
     optimizelyProperties _: [String: Any] = [:]
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(page: .projectPage))
 
     switch stateType {
     case .fix:
       self.track(
         event: ApprovedEvent.managePledgeButtonClicked.rawValue,
-        page: .projectPage,
-        properties: props.withAllValuesFrom(contextProperties()) // .fixErroredPledge
+        properties: props // .fixErroredPledge
       )
     case .pledge:
       let allProps = props
         .withAllValuesFrom(optimizelyProperties() ?? [:])
         .withAllValuesFrom(contextProperties(ctaContext: .pledgeInitiate))
+        .withAllValuesFrom(props)
 
       self.track(
         event: NewApprovedEvent.ctaClicked.rawValue,
-        page: .projectPage,
         properties: allProps
       )
     case .manage:
       self.track(
         event: ApprovedEvent.managePledgeButtonClicked.rawValue,
-        page: .projectPage,
-        properties: props.withAllValuesFrom(contextProperties()) // .manageReward
+        properties: props // .manageReward
       )
     default:
       return
@@ -994,11 +1001,10 @@ public final class KSRAnalytics {
 
   public func trackFixPledgeButtonClicked(project: Project) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties())
+      .withAllValuesFrom(contextProperties(page: .managePledgeScreen))
 
     self.track(
       event: ApprovedEvent.fixPledgeButtonClicked.rawValue,
-      page: .managePledgeScreen,
       properties: props
     )
   }
@@ -1010,10 +1016,10 @@ public final class KSRAnalytics {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
+      .withAllValuesFrom(contextProperties(page: .managePledgeScreen))
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      page: .managePledgeScreen,
       properties: props
     )
   }
@@ -1034,12 +1040,11 @@ public final class KSRAnalytics {
     refTag: RefTag?
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(ctaContext: .rewardContinue))
+      .withAllValuesFrom(contextProperties(ctaContext: .rewardContinue, page: .rewards))
       .withAllValuesFrom(checkoutProperties(from: checkoutPropertiesData, and: reward))
 
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
-      page: .rewards,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -1060,10 +1065,10 @@ public final class KSRAnalytics {
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(checkoutProperties(from: checkoutPropertiesData))
+      .withAllValuesFrom(contextProperties(page: .rewards))
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      page: .rewards,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -1129,11 +1134,14 @@ public final class KSRAnalytics {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
       // the context is always "newPledge" for this event
-      .withAllValuesFrom(contextProperties(ctaContext: .pledgeSubmit, typeContext: typeContext))
+      .withAllValuesFrom(contextProperties(
+        ctaContext: .pledgeSubmit,
+        page: .checkout,
+        typeContext: typeContext
+      ))
 
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
-      page: .checkout,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -1148,18 +1156,17 @@ public final class KSRAnalytics {
    */
 
   public func trackAddNewCardButtonClicked(
-    location: KSRAnalytics.PageContext? = nil,
+    page: KSRAnalytics.PageContext? = nil,
     project: Project,
     refTag: RefTag?,
     reward: Reward
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties())
+      .withAllValuesFrom(contextProperties(page: page))
 
     self.track(
       event: ApprovedEvent.addNewCardButtonClicked.rawValue,
-      page: location,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -1181,7 +1188,7 @@ public final class KSRAnalytics {
     var props = projectProperties(from: project, isBacker: true)
       .withAllValuesFrom(pledgeProperties(from: reward))
       // the context is always "newPledge" for this event
-      .withAllValuesFrom(contextProperties(typeContext: TypeContext.pledge(.newPledge)))
+      .withAllValuesFrom(contextProperties(page: .thanks, typeContext: TypeContext.pledge(.newPledge)))
 
     if let checkoutData = checkoutData {
       props = props.withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
@@ -1189,7 +1196,6 @@ public final class KSRAnalytics {
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      page: .thanks,
       properties: props
     )
   }
@@ -1201,10 +1207,9 @@ public final class KSRAnalytics {
   public func trackActivitiesManagePledgeButtonClicked(project: Project) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       // the context is always "fixErroredPledge" for this event
-      .withAllValuesFrom(contextProperties())
+      .withAllValuesFrom(contextProperties(page: .activities))
     self.track(
       event: ApprovedEvent.managePledgeButtonClicked.rawValue,
-      page: .activities,
       properties: props
     )
   }
@@ -1225,10 +1230,10 @@ public final class KSRAnalytics {
     reward: Reward? = nil
   ) {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
+      .withAllValuesFrom(contextProperties(page: .discovery))
 
     self.track(
       event: ApprovedEvent.loginOrSignupButtonClicked.rawValue,
-      page: .discovery,
       properties: props
     )
   }
@@ -1246,10 +1251,10 @@ public final class KSRAnalytics {
     reward: Reward? = nil
   ) {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
+      .withAllValuesFrom(contextProperties(page: .loginTout))
 
     self.track(
       event: ApprovedEvent.loginOrSignupPageViewed.rawValue,
-      page: .loginTout,
       properties: props
     )
   }
@@ -1268,10 +1273,10 @@ public final class KSRAnalytics {
     reward: Reward? = nil
   ) {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
+      .withAllValuesFrom(contextProperties(page: .loginTout))
 
     self.track(
       event: ApprovedEvent.loginButtonClicked.rawValue,
-      page: .loginTout,
       properties: props
     )
   }
@@ -1290,10 +1295,10 @@ public final class KSRAnalytics {
     reward: Reward? = nil
   ) {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
+      .withAllValuesFrom(contextProperties(page: .loginTout))
 
     self.track(
       event: ApprovedEvent.fbLoginOrSignupButtonClicked.rawValue,
-      page: .loginTout,
       properties: props
     )
   }
@@ -1312,10 +1317,10 @@ public final class KSRAnalytics {
     reward: Reward? = nil
   ) {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
+      .withAllValuesFrom(contextProperties(page: .loginTout))
 
     self.track(
       event: ApprovedEvent.continueWithAppleButtonClicked.rawValue,
-      page: .loginTout,
       properties: props
     )
   }
@@ -1334,28 +1339,50 @@ public final class KSRAnalytics {
     reward: Reward? = nil
   ) {
     let props = self.loginEventProperties(for: intent, project: project, reward: reward)
+      .withAllValuesFrom(contextProperties(page: .loginTout))
 
     self.track(
       event: ApprovedEvent.signupButtonClicked.rawValue,
-      page: .loginTout,
       properties: props
     )
   }
 
-  public func trackSignupSubmitButtonClicked() {
-    self.track(event: ApprovedEvent.signupSubmitButtonClicked.rawValue, page: .signup)
+  public func trackSignupSubmitButtonClicked(isSubscribed: Bool) {
+    let typeContext: TypeContext = isSubscribed ? .subscriptionTrue : .subscriptionFalse
+    let props = contextProperties(ctaContext: .signUpSubmit, page: .signup, typeContext: typeContext)
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      properties: props
+    )
+  }
+
+  public func trackSignupPageViewed() {
+    let props = contextProperties(page: .signup)
+    self.track(event: NewApprovedEvent.pageViewed.rawValue, properties: props)
   }
 
   public func trackLoginSubmitButtonClicked() {
-    self.track(event: ApprovedEvent.loginSubmitButtonClicked.rawValue, page: .login)
+    let props = contextProperties(ctaContext: .logInSubmit, page: .login)
+    self.track(
+      event: NewApprovedEvent.ctaClicked.rawValue,
+      properties: props
+    )
   }
 
   public func trackForgotPasswordViewed() {
-    self.track(event: ApprovedEvent.forgotPasswordViewed.rawValue, page: .forgotPassword)
+    let properties = contextProperties(page: .forgotPassword)
+    self.track(
+      event: ApprovedEvent.forgotPasswordViewed.rawValue,
+      properties: properties
+    )
   }
 
   public func track2FAViewed() {
-    self.track(event: ApprovedEvent.twoFactorConfirmationViewed.rawValue, page: .twoFactorAuth)
+    let properties = contextProperties(page: .twoFactorAuth)
+    self.track(
+      event: ApprovedEvent.twoFactorConfirmationViewed.rawValue,
+      properties: properties
+    )
   }
 
   private func loginEventProperties(for intent: LoginIntent, project: Project?, reward: Reward?)
@@ -1381,10 +1408,10 @@ public final class KSRAnalytics {
     results: Int? = nil
   ) {
     let props = discoveryProperties(from: params, results: results)
+      .withAllValuesFrom(contextProperties(page: .search))
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      page: .search,
       properties: props
     )
   }
@@ -1404,11 +1431,10 @@ public final class KSRAnalytics {
     sectionContext: KSRAnalytics.SectionContext
   ) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(sectionContext: sectionContext))
+      .withAllValuesFrom(contextProperties(page: .projectPage, sectionContext: sectionContext))
 
     self.track(
       event: NewApprovedEvent.pageViewed.rawValue,
-      page: .projectPage,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -1421,10 +1447,10 @@ public final class KSRAnalytics {
    */
   public func trackSwipedProject(_ project: Project, refTag: RefTag?) {
     let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
+      .withAllValuesFrom(contextProperties(page: .projectPage))
 
     self.track(
       event: ApprovedEvent.projectSwiped.rawValue,
-      page: .projectPage,
       properties: props, refTag: refTag?.stringTag
     )
   }
@@ -1439,13 +1465,14 @@ public final class KSRAnalytics {
 
   public func trackWatchProjectButtonClicked(
     project: Project,
-    location: PageContext,
+    page: PageContext,
     params: DiscoveryParams? = nil,
     typeContext: TypeContext
   ) {
     var props = projectProperties(from: project, loggedInUser: self.loggedInUser)
       .withAllValuesFrom(contextProperties(
         ctaContext: .watchProject,
+        page: page,
         typeContext: typeContext
       ))
 
@@ -1455,7 +1482,6 @@ public final class KSRAnalytics {
 
     self.track(
       event: NewApprovedEvent.ctaClicked.rawValue,
-      page: location,
       properties: props
     )
   }
@@ -1493,16 +1519,18 @@ public final class KSRAnalytics {
   // MARK: - Email Verification
 
   public func trackEmailVerificationScreenViewed() {
+    let properties = contextProperties(page: .emailVerification)
     self.track(
       event: ApprovedEvent.verificationScreenViewed.rawValue,
-      page: .emailVerification
+      properties: properties
     )
   }
 
   public func trackSkipEmailVerificationButtonClicked() {
+    let properties = contextProperties(page: .emailVerification)
     self.track(
       event: ApprovedEvent.skipVerificationButtonClicked.rawValue,
-      page: .emailVerification
+      properties: properties
     )
   }
 
@@ -1511,13 +1539,11 @@ public final class KSRAnalytics {
   // Private tracking method that merges in default properties.
   private func track(
     event: String,
-    page: KSRAnalytics.PageContext? = nil,
     properties: [String: Any] = [:],
     refTag: String? = nil
   ) {
     let props = self.sessionProperties(refTag: refTag)
       .withAllValuesFrom(userProperties(for: self.loggedInUser))
-      .withAllValuesFrom(contextProperties(page: page))
       .withAllValuesFrom(properties)
 
     self.logEventCallback?(event, props)
@@ -1630,8 +1656,8 @@ private func projectProperties(
   props["percent_raised"] = project.stats.percentFunded
   props["state"] = project.state.rawValue
   props["current_pledge_amount"] = project.stats.pledged
-  props["current_amount_pledged_usd"] = rounded(project.stats.convertedPledgedAmount ?? 0, places: 2)
-  props["goal_usd"] = rounded(Double(project.stats.goalCurrentCurrency ?? 0), places: 2)
+  props["current_amount_pledged_usd"] = rounded(project.stats.totalAmountPledgedUsdCurrency ?? 0, places: 2)
+  props["goal_usd"] = rounded(project.stats.goalUsdCurrency, places: 2)
   props["has_video"] = project.video != nil
   props["prelaunch_activated"] = project.prelaunchActivated
   props["rewards_count"] = project.rewards.filter { $0 != .noReward }.count
@@ -1718,7 +1744,7 @@ private func checkoutProperties(
   result["add_ons_count_total"] = data.addOnsCountTotal
   result["add_ons_count_unique"] = data.addOnsCountUnique
   result["add_ons_minimum_usd"] = rounded(data.addOnsMinimumUsd, places: 2)
-  result["bonus_amount_usd"] = rounded(data.bonusAmountInUsd ?? 0, places: 2)
+  result["bonus_amount_usd"] = data.bonusAmountInUsd
   result["id"] = data.checkoutId
   result["payment_type"] = data.paymentType
   result["reward_estimated_delivery_on"] = data.estimatedDelivery?.toISO8601DateTimeString()
@@ -1745,7 +1771,9 @@ private func discoveryProperties(
   var result: [String: Any] = [:]
 
   // NB: All filters should be added here since `result["everything"]` is derived from this.
-  result["category_name"] = params.category?.parent?.analyticsName
+
+  // If a `Category`'s `parent` field is nil, use the `Category`'s name.
+  result["category_name"] = params.category?.parent?.analyticsName ?? params.category?.analyticsName
   result["recommended"] = params.recommended
   result["social"] = params.social
   result["pwl"] = params.staffPicks
@@ -1790,7 +1818,9 @@ private func contextProperties(
 
   result["cta"] = ctaContext?.trackingString
   result["location"] = locationContext?.trackingString
-  result["page"] = page?.rawValue
+  result["page"] = page?
+    .rawValue ??
+    "other" // Product/Insight want some event with no `context_page` to be defaulted as `other` until a context_page is defined for them.
   result["section"] = sectionContext?.trackingString
   result["tab_bar_label"] = tabBarLabel?.trackingString
   result["type"] = typeContext?.trackingString

@@ -11,6 +11,7 @@ extension Project.Stats {
     goal: 2_000,
     pledged: 1_000,
     staticUsdRate: 1.0,
-    updatesCount: 1
+    updatesCount: 1,
+    usdExchangeRate: 1.21374984
   )
 }
