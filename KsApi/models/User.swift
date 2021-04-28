@@ -66,6 +66,7 @@ public struct User {
     public var mobileComments: Bool?
     public var mobileFollower: Bool?
     public var mobileFriendActivity: Bool?
+    public var mobileMarketingUpdate: Bool?
     public var mobileMessages: Bool?
     public var mobilePostLikes: Bool?
     public var mobileUpdates: Bool?
@@ -246,6 +247,7 @@ extension User.Notifications: Decodable {
     case mobileBackings = "notify_mobile_of_backings"
     case mobileComments = "notify_mobile_of_comments"
     case mobileFriendActivity = "notify_mobile_of_friend_activity"
+    case mobileMarketingUpdate = "notify_mobile_of_marketing_update"
     case mobileMessages = "notify_mobile_of_messages"
     case mobileFollower = "notify_mobile_of_follower"
     case mobilePostLikes = "notify_mobile_of_post_likes"
@@ -269,6 +271,7 @@ extension User.Notifications: EncodableType {
     result["notify_mobile_of_comments"] = self.mobileComments
     result["notify_mobile_of_follower"] = self.mobileFollower
     result["notify_mobile_of_friend_activity"] = self.mobileFriendActivity
+    result["notify_mobile_of_marketing_update"] = self.mobileMarketingUpdate
     result["notify_mobile_of_messages"] = self.mobileMessages
     result["notify_mobile_of_post_likes"] = self.mobilePostLikes
     result["notify_mobile_of_updates"] = self.mobileUpdates
@@ -280,25 +283,6 @@ extension User.Notifications: EncodableType {
 }
 
 extension User.Notifications: Equatable {}
-public func == (lhs: User.Notifications, rhs: User.Notifications) -> Bool {
-  return lhs.backings == rhs.backings &&
-    lhs.commentReplies == rhs.commentReplies &&
-    lhs.comments == rhs.comments &&
-    lhs.creatorDigest == rhs.creatorDigest &&
-    lhs.creatorTips == rhs.creatorTips &&
-    lhs.follower == rhs.follower &&
-    lhs.friendActivity == rhs.friendActivity &&
-    lhs.messages == rhs.messages &&
-    lhs.mobileBackings == rhs.mobileBackings &&
-    lhs.mobileComments == rhs.mobileComments &&
-    lhs.mobileFollower == rhs.mobileFollower &&
-    lhs.mobileFriendActivity == rhs.mobileFriendActivity &&
-    lhs.mobileMessages == rhs.mobileMessages &&
-    lhs.mobilePostLikes == rhs.mobilePostLikes &&
-    lhs.mobileUpdates == rhs.mobileUpdates &&
-    lhs.postLikes == rhs.postLikes &&
-    lhs.updates == rhs.updates
-}
 
 extension User.Stats: Decodable {
   enum CodingKeys: String, CodingKey {

@@ -13,9 +13,10 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
 
     self.dataSource.load(user: user)
 
-    XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
-    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
+    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 2))
   }
 
   func testLoadUser_isCreator_pledgeActivityDisabled() {
@@ -23,10 +24,11 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
 
     self.dataSource.load(user: user)
 
-    XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
-    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(4, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
+    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
     XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 2))
+    XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 3))
   }
 
   func testLoadUser_isCreator_pledgeActivityEnabled() {
@@ -37,10 +39,11 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
 
     self.dataSource.load(user: user)
 
-    XCTAssertEqual(3, self.dataSource.numberOfSections(in: self.tableView))
-    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
-    XCTAssertEqual(5, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
-    XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 2))
+    XCTAssertEqual(4, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(1, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 0))
+    XCTAssertEqual(2, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 1))
+    XCTAssertEqual(5, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 2))
+    XCTAssertEqual(4, self.dataSource.tableView(self.tableView, numberOfRowsInSection: 3))
   }
 
   func testCellTypeForIndexPath() {
@@ -49,20 +52,40 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
     self.dataSource.load(user: user)
 
     let indexPath0 = IndexPath(item: 0, section: 0)
-    let indexPath1 = IndexPath(item: 1, section: 0)
-    let indexPath2 = IndexPath(item: 0, section: 1)
+    let indexPath1 = IndexPath(item: 0, section: 1)
+    let indexPath2 = IndexPath(item: 1, section: 1)
+    let indexPath3 = IndexPath(item: 0, section: 2)
+    let indexPath4 = IndexPath(item: 1, section: 2)
+    let indexPath5 = IndexPath(item: 2, section: 2)
+    let indexPath6 = IndexPath(item: 3, section: 2)
 
     XCTAssertEqual(
-      SettingsNotificationCellType.projectUpdates,
+      SettingsNotificationCellType.marketingUpdate,
       self.dataSource.cellTypeForIndexPath(indexPath: indexPath0)
     )
     XCTAssertEqual(
-      SettingsNotificationCellType.projectNotifications,
+      SettingsNotificationCellType.projectUpdates,
       self.dataSource.cellTypeForIndexPath(indexPath: indexPath1)
     )
     XCTAssertEqual(
-      SettingsNotificationCellType.messages,
+      SettingsNotificationCellType.projectNotifications,
       self.dataSource.cellTypeForIndexPath(indexPath: indexPath2)
+    )
+    XCTAssertEqual(
+      SettingsNotificationCellType.messages,
+      self.dataSource.cellTypeForIndexPath(indexPath: indexPath3)
+    )
+    XCTAssertEqual(
+      SettingsNotificationCellType.newFollowers,
+      self.dataSource.cellTypeForIndexPath(indexPath: indexPath4)
+    )
+    XCTAssertEqual(
+      SettingsNotificationCellType.friendBacksProject,
+      self.dataSource.cellTypeForIndexPath(indexPath: indexPath5)
+    )
+    XCTAssertEqual(
+      SettingsNotificationCellType.commentReplyDigest,
+      self.dataSource.cellTypeForIndexPath(indexPath: indexPath6)
     )
   }
 
@@ -73,9 +96,11 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
 
     let section0 = self.dataSource.sectionType(section: 0, user: user)
     let section1 = self.dataSource.sectionType(section: 1, user: user)
+    let section2 = self.dataSource.sectionType(section: 2, user: user)
 
-    XCTAssertEqual(SettingsNotificationSectionType.backedProjects, section0)
-    XCTAssertEqual(SettingsNotificationSectionType.social, section1)
+    XCTAssertEqual(SettingsNotificationSectionType.announcements, section0)
+    XCTAssertEqual(SettingsNotificationSectionType.backedProjects, section1)
+    XCTAssertEqual(SettingsNotificationSectionType.social, section2)
   }
 
   func testSectionTypeForSection_isCreator() {
@@ -86,10 +111,12 @@ final class SettingsNotificationsDataSourceTests: XCTestCase {
     let section0 = self.dataSource.sectionType(section: 0, user: user)
     let section1 = self.dataSource.sectionType(section: 1, user: user)
     let section2 = self.dataSource.sectionType(section: 2, user: user)
+    let section3 = self.dataSource.sectionType(section: 3, user: user)
 
-    XCTAssertEqual(SettingsNotificationSectionType.backedProjects, section0)
-    XCTAssertEqual(SettingsNotificationSectionType.creator, section1)
-    XCTAssertEqual(SettingsNotificationSectionType.social, section2)
+    XCTAssertEqual(SettingsNotificationSectionType.announcements, section0)
+    XCTAssertEqual(SettingsNotificationSectionType.backedProjects, section1)
+    XCTAssertEqual(SettingsNotificationSectionType.creator, section2)
+    XCTAssertEqual(SettingsNotificationSectionType.social, section3)
   }
 
   func testSectionTypeForSection_OutOfBounds() {
