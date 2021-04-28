@@ -41,6 +41,9 @@ final class LoginViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.viewDidLoad()
 
+    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
+
     self.emailTextFieldBecomeFirstResponder
       .assertValueCount(1, "Email field is first responder when view loads.")
 
@@ -60,8 +63,8 @@ final class LoginViewModelTests: TestCase {
 
     self.vm.inputs.passwordTextFieldDoneEditing()
 
-    XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
+    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.dataLakeTrackingClient.events)
+    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
 
     self.dismissKeyboard.assertValueCount(1, "Keyboard is dismissed")
     self.logIntoEnvironment

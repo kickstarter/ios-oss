@@ -1361,6 +1361,14 @@ public final class KSRAnalytics {
     self.track(event: NewApprovedEvent.pageViewed.rawValue, properties: props)
   }
 
+  /**
+   Call when the Login page is viewed
+   */
+  public func trackLoginPageViewed() {
+    let props = contextProperties(page: .login)
+    self.track(event: NewApprovedEvent.pageViewed.rawValue, properties: props)
+  }
+
   public func trackLoginSubmitButtonClicked() {
     let props = contextProperties(ctaContext: .logInSubmit, page: .login)
     self.track(

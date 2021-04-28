@@ -136,6 +136,11 @@ public final class LoginViewModel: LoginViewModelType, LoginViewModelInputs, Log
       self.shouldShowPasswordProperty.signal.takeWhen(self.traitCollectionDidChangeProperty.signal)
     )
 
+    // Tracking
+
+    self.viewDidLoadProperty.signal
+      .observeValues { AppEnvironment.current.ksrAnalytics.trackLoginPageViewed() }
+
     tryLogin
       .observeValues { AppEnvironment.current.ksrAnalytics.trackLoginSubmitButtonClicked() }
   }
