@@ -29,7 +29,7 @@ public protocol RewardCardViewModelOutputs {
   var conversionLabelHidden: Signal<Bool, Never> { get }
   var conversionLabelText: Signal<String, Never> { get }
   var descriptionLabelText: Signal<String, Never> { get }
-  var estimatedDeliveryDateLabelHidden: Signal<Bool, Never> { get }
+  var estimatedDeliveryStackViewHidden: Signal<Bool, Never> { get }
   var estimatedDeliveryDateLabelText: Signal<String, Never> { get }
   var includedItemsStackViewHidden: Signal<Bool, Never> { get }
   var items: Signal<[String], Never> { get }
@@ -110,7 +110,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
       rewardsCarouselCanNavigateToReward(reward, in: project)
     }
 
-    self.estimatedDeliveryDateLabelHidden = context.combineLatest(with: reward)
+    self.estimatedDeliveryStackViewHidden = context.combineLatest(with: reward)
       .map { context, reward in
         context == .manage || reward.estimatedDeliveryOn == nil
       }
@@ -131,7 +131,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
   public let conversionLabelHidden: Signal<Bool, Never>
   public let conversionLabelText: Signal<String, Never>
   public let descriptionLabelText: Signal<String, Never>
-  public let estimatedDeliveryDateLabelHidden: Signal<Bool, Never>
+  public let estimatedDeliveryStackViewHidden: Signal<Bool, Never>
   public let estimatedDeliveryDateLabelText: Signal<String, Never>
   public let items: Signal<[String], Never>
   public let includedItemsStackViewHidden: Signal<Bool, Never>

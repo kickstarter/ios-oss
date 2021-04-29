@@ -140,7 +140,7 @@ public final class RewardCardView: UIView {
     self.minimumPriceConversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden
     self.minimumPriceConversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
-    self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryDateLabelHidden
+    self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryStackViewHidden
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
     self.includedItemsStackView.rac.hidden = self.viewModel.outputs.includedItemsStackViewHidden
     self.minimumPriceLabel.rac.text = self.viewModel.outputs.rewardMinimumLabelText
