@@ -2347,22 +2347,11 @@ final class KSRAnalyticsTests: TestCase {
 
   func testIdentifyingTrackingClient() {
     let user = User.template
-      |> User.lens.stats.backedProjectsCount .~ 2
-      |> User.lens.stats.createdProjectsCount .~ 3
 
     AppEnvironment.updateCurrentUser(user)
 
     XCTAssertEqual(self.segmentTrackingClient.userId, "\(user.id)")
     XCTAssertEqual(self.segmentTrackingClient.traits?["name"] as? String, user.name)
-    XCTAssertEqual(self.segmentTrackingClient.traits?["is_creator"] as? Bool, user.isCreator)
-    XCTAssertEqual(
-      self.segmentTrackingClient.traits?["backed_projects_count"] as? Int,
-      user.stats.backedProjectsCount
-    )
-    XCTAssertEqual(
-      self.segmentTrackingClient.traits?["created_projects_count"] as? Int,
-      user.stats.createdProjectsCount
-    )
 
     let notifications1 = user.notifications.encode()
 
@@ -2370,36 +2359,50 @@ final class KSRAnalyticsTests: TestCase {
       XCTAssertEqual(notifications1[key] as? Bool, self.segmentTrackingClient.traits?[key] as? Bool)
     }
 
-    let user2 = user
-      |> User.lens.id .~ 9_999
-      |> User.lens.name .~ "Another User"
-      |> User.lens.stats.backedProjectsCount .~ 4
-      |> User.lens.stats.createdProjectsCount .~ 0
-
-    AppEnvironment.updateCurrentUser(user2)
-
-    XCTAssertEqual(self.segmentTrackingClient.userId, "\(user2.id)")
-    XCTAssertEqual(self.segmentTrackingClient.traits?["name"] as? String, user2.name)
-    XCTAssertEqual(self.segmentTrackingClient.traits?["is_creator"] as? Bool, user2.isCreator)
-    XCTAssertEqual(
-      self.segmentTrackingClient.traits?["backed_projects_count"] as? Int,
-      user2.stats.backedProjectsCount
-    )
-    XCTAssertEqual(
-      self.segmentTrackingClient.traits?["created_projects_count"] as? Int,
-      user2.stats.createdProjectsCount
-    )
-
-    let notifications2 = user.notifications.encode()
-
-    for (key, _) in notifications2 {
-      XCTAssertEqual(notifications2[key] as? Bool, self.segmentTrackingClient.traits?[key] as? Bool)
-    }
-
     AppEnvironment.logout()
 
     XCTAssertNil(self.segmentTrackingClient.userId)
     XCTAssertNil(self.segmentTrackingClient.traits)
+  }
+
+  func testIdentifyingTrackingClient_DoesNotRepeat() {
+    let mockKeyValueStore = MockKeyValueStore()
+
+    let user = User.template
+
+    let data = KSRAnalyticsIdentityData(user)
+
+    mockKeyValueStore.analyticsIdentityData = data
+
+    withEnvironment(userDefaults: mockKeyValueStore) {
+      AppEnvironment.updateCurrentUser(user)
+
+      XCTAssertNil(self.segmentTrackingClient.userId)
+      XCTAssertNil(self.segmentTrackingClient.traits)
+    }
+  }
+
+  func testIdentifyingTrackingClient_OnlySendsDeltas() {
+    let mockKeyValueStore = MockKeyValueStore()
+
+    let user = User.template
+      |> User.lens.notifications.mobileUpdates .~ true
+      |> User.lens.notifications.messages .~ true
+
+    let data = KSRAnalyticsIdentityData(user)
+
+    mockKeyValueStore.analyticsIdentityData = data
+
+    withEnvironment(userDefaults: mockKeyValueStore) {
+      let updatedUser = User.template
+        |> User.lens.notifications.mobileUpdates .~ true
+        |> User.lens.notifications.messages .~ false
+
+      AppEnvironment.updateCurrentUser(updatedUser)
+
+      XCTAssertEqual(self.segmentTrackingClient.userId, "\(1)")
+      XCTAssertEqual(self.segmentTrackingClient.traits?["notify_of_messages"] as? Bool, false)
+    }
   }
 
   func testTrackAddOnsContinueButtonClicked() {
