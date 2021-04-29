@@ -114,7 +114,7 @@ public final class RewardCardViewModel: RewardCardViewModelType, RewardCardViewM
       .map { context, reward in
         context == .manage || reward.estimatedDeliveryOn == nil
       }
-    self.estimatedDeliveryDateLabelText = reward.map(estimatedDeliveryText(with:)).skipNil()
+    self.estimatedDeliveryDateLabelText = reward.map(estimatedDeliveryDateText(with:)).skipNil()
   }
 
   private let configDataProperty = MutableProperty<RewardCardViewData?>(nil)
@@ -324,14 +324,12 @@ private func shippingSummaryString(project: Project, reward: Reward) -> RewardCa
   return nil
 }
 
-private func estimatedDeliveryText(with reward: Reward) -> String? {
+private func estimatedDeliveryDateText(with reward: Reward) -> String? {
   return reward.estimatedDeliveryOn.map {
-    Strings.backing_info_estimated_delivery_date(
-      delivery_date: Format.date(
-        secondsInUTC: $0,
-        template: DateFormatter.monthYear,
-        timeZone: UTCTimeZone
-      )
+    Format.date(
+      secondsInUTC: $0,
+      template: DateFormatter.monthYear,
+      timeZone: UTCTimeZone
     )
   }
 }

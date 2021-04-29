@@ -1011,7 +1011,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: (project, reward, .pledge))
 
-    self.estimatedDeliveryDateLabelText.assertValues(["Estimated delivery October 2017"])
+    self.estimatedDeliveryDateLabelText.assertValues(["October 2017"])
     self.estimatedDeliveryDateLabelHidden.assertValues([false])
   }
 
@@ -1029,7 +1029,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: (project, reward, .manage))
 
-    self.estimatedDeliveryDateLabelText.assertValues(["Estimated delivery October 2017"])
+    self.estimatedDeliveryDateLabelText.assertValues(["October 2017"])
     self.estimatedDeliveryDateLabelHidden.assertValues([true])
   }
 
