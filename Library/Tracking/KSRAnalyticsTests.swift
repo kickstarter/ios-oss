@@ -2633,6 +2633,10 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
 
+    ksrAnalytics.trackLoginPageViewed()
+    XCTAssertEqual("log_in", dataLakeClient.properties.last?["context_page"] as? String)
+    XCTAssertEqual("log_in", segmentClient.properties.last?["context_page"] as? String)
+
     ksrAnalytics.trackSignupPageViewed()
     XCTAssertEqual("sign_up", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("sign_up", segmentClient.properties.last?["context_page"] as? String)
