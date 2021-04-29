@@ -2,6 +2,7 @@ import Foundation
 
 public enum AppKeys: String {
   // swiftformat:disable wrap
+  case analyticsIdentityData = "com.kickstarter.KeyValueStoreType.analyticsIdentityData"
   case closedFacebookConnectInActivity = "com.kickstarter.KeyValueStoreType.closedFacebookConnectInActivity"
   case closedFindFriendsInActivity = "com.kickstarter.KeyValueStoreType.closedFindFriendsInActivity"
   case deniedNotificationContexts = "com.kickstarter.KeyValueStoreType.deniedNotificationContexts"
@@ -33,6 +34,7 @@ public protocol KeyValueStoreType: AnyObject {
   func synchronize() -> Bool
 
   func removeObject(forKey defaultName: String)
+  var analyticsIdentityData: KSRAnalyticsIdentityData? { get set }
   var deniedNotificationContexts: [String] { get set }
   var favoriteCategoryIds: [Int] { get set }
   var hasClosedFacebookConnectInActivity: Bool { get set }
@@ -50,6 +52,17 @@ public protocol KeyValueStoreType: AnyObject {
 }
 
 extension KeyValueStoreType {
+  public var analyticsIdentityData: KSRAnalyticsIdentityData? {
+    get {
+      guard let data = self.data(forKey: AppKeys.analyticsIdentityData.rawValue) else { return nil }
+      return try? JSONDecoder().decode(KSRAnalyticsIdentityData.self, from: data)
+    }
+    set {
+      let data = try? JSONEncoder().encode(newValue)
+      self.set(data, forKey: AppKeys.analyticsIdentityData.rawValue)
+    }
+  }
+
   public var favoriteCategoryIds: [Int] {
     get {
       return self.object(forKey: AppKeys.favoriteCategoryIds.rawValue) as? [Int] ?? []

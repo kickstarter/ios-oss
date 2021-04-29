@@ -574,16 +574,18 @@ public final class KSRAnalytics {
       return
     }
 
+    let previousIdentityData = AppEnvironment.current.userDefaults.analyticsIdentityData
+
+    let newData = KSRAnalyticsIdentityData(user)
+
+    guard newData != previousIdentityData else { return }
+
     self.segmentClient?.identify(
-      "\(user.id)",
-      traits: [
-        "name": user.name,
-        "is_creator": user.isCreator,
-        "backed_projects_count": user.stats.backedProjectsCount ?? 0,
-        "created_projects_count": user.stats.createdProjectsCount ?? 0
-      ]
-      .withAllValuesFrom(user.notifications.encode())
+      "\(newData.userId)",
+      traits: newData.uniqueTraits(comparedTo: previousIdentityData)
     )
+
+    AppEnvironment.current.userDefaults.analyticsIdentityData = newData
   }
 
   private func updateAndObservePreferredContentSizeCategory() {

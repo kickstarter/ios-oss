@@ -460,6 +460,8 @@
 		8A49396924B690E000C3C3CE /* RewardAddOnSelectionViewEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A49396824B690E000C3C3CE /* RewardAddOnSelectionViewEnvelopeTemplate.swift */; };
 		8A49396B24B7735100C3C3CE /* RewardAddOnCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A49396A24B7735100C3C3CE /* RewardAddOnCardView.swift */; };
 		8A49396F24B77B3500C3C3CE /* RewardAddOnCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A49396E24B77B3500C3C3CE /* RewardAddOnCardViewModel.swift */; };
+		8A4B8E90263A02EA00D92E4E /* KSRAnalyticsIdentityData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4B8E812639F8C700D92E4E /* KSRAnalyticsIdentityData.swift */; };
+		8A4B8E98263A153D00D92E4E /* KSRAnalyticsIdentityDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4B8E97263A153D00D92E4E /* KSRAnalyticsIdentityDataTests.swift */; };
 		8A4DDAB32373427000ADE31D /* PledgeStatusLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */; };
 		8A4DDAB52373429300ADE31D /* PledgeStatusLabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB42373429300ADE31D /* PledgeStatusLabelViewModel.swift */; };
 		8A4DDAB72373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DDAB62373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift */; };
@@ -1997,6 +1999,8 @@
 		8A49396824B690E000C3C3CE /* RewardAddOnSelectionViewEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewEnvelopeTemplate.swift; sourceTree = "<group>"; };
 		8A49396A24B7735100C3C3CE /* RewardAddOnCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnCardView.swift; sourceTree = "<group>"; };
 		8A49396E24B77B3500C3C3CE /* RewardAddOnCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnCardViewModel.swift; sourceTree = "<group>"; };
+		8A4B8E812639F8C700D92E4E /* KSRAnalyticsIdentityData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRAnalyticsIdentityData.swift; sourceTree = "<group>"; };
+		8A4B8E97263A153D00D92E4E /* KSRAnalyticsIdentityDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KSRAnalyticsIdentityDataTests.swift; sourceTree = "<group>"; };
 		8A4DDAB22373427000ADE31D /* PledgeStatusLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelView.swift; sourceTree = "<group>"; };
 		8A4DDAB42373429300ADE31D /* PledgeStatusLabelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelViewModel.swift; sourceTree = "<group>"; };
 		8A4DDAB62373A05000ADE31D /* PledgeStatusLabelViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeStatusLabelViewModelTests.swift; sourceTree = "<group>"; };
@@ -3178,6 +3182,8 @@
 			children = (
 				8A23203025B0ECF700B940C3 /* IdentifyingTrackingClient.swift */,
 				8A213CE8239EAEA400BBB4C7 /* KSRAnalytics.swift */,
+				8A4B8E812639F8C700D92E4E /* KSRAnalyticsIdentityData.swift */,
+				8A4B8E97263A153D00D92E4E /* KSRAnalyticsIdentityDataTests.swift */,
 				8A213CE7239EAEA400BBB4C7 /* KSRAnalyticsTests.swift */,
 				8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */,
 				8A417DEF25AE37D200A2C406 /* Segment.swift */,
@@ -5421,6 +5427,7 @@
 				D6089E8F209106CD0032CC99 /* PushNotificationDialog.swift in Sources */,
 				A7CC13D51D00E6CF00035C52 /* FindFriendsFriendFollowCellViewModel.swift in Sources */,
 				598D96C51D42A3E3003F3F66 /* ActivitySampleFollowCellViewModel.swift in Sources */,
+				8A4B8E90263A02EA00D92E4E /* KSRAnalyticsIdentityData.swift in Sources */,
 				598D96BA1D426FD8003F3F66 /* ActivitySampleBackingCellViewModel.swift in Sources */,
 				59E877381DC9419700BCD1F7 /* Newsletter.swift in Sources */,
 				8A142EBD23354BFD00FB43AB /* AddNewCardIntent.swift in Sources */,
@@ -5686,6 +5693,7 @@
 				D04AACAC218BB72100CF713E /* SettingsNotificationCellViewModelTests.swift in Sources */,
 				D04AACAA218BB72100CF713E /* MessageBannerViewModelTests.swift in Sources */,
 				A7ED1FBC1E831C5C00BFFA01 /* FindFriendsFriendFollowCellViewModelTests.swift in Sources */,
+				8A4B8E98263A153D00D92E4E /* KSRAnalyticsIdentityDataTests.swift in Sources */,
 				A7ED1FDD1E831C5C00BFFA01 /* ShareViewModelTests.swift in Sources */,
 				37DEC2202257CA0A0051EF9B /* PledgeViewModelTests.swift in Sources */,
 				A7ED20001E831C5C00BFFA01 /* SearchViewModelTests.swift in Sources */,
@@ -6899,7 +6907,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "app-icon-debug";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Kickstarter-iOS/Debug.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_IDENTITY = "Apple Development: Native Team (4BLNH33RY7)";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
