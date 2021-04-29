@@ -21,6 +21,8 @@ public final class RewardCardView: UIView {
 
   private let descriptionLabel = UILabel(frame: .zero)
   private let descriptionStackView = UIStackView(frame: .zero)
+  private let estimatedDeliveryStackView = UIStackView(frame: .zero)
+  private let estimatedDeliveryTitleLabel = UILabel(frame: .zero)
   private let estimatedDeliveryDateLabel = UILabel(frame: .zero)
   private let includedItemsStackView = UIStackView(frame: .zero)
   private let includedItemsTitleLabel = UILabel(frame: .zero)
@@ -60,7 +62,8 @@ public final class RewardCardView: UIView {
       self.baseStackView,
       self.priceStackView,
       self.descriptionStackView,
-      self.includedItemsStackView
+      self.includedItemsStackView,
+      self.estimatedDeliveryStackView
     ]
       ||> { stackView in
         stackView
@@ -94,9 +97,26 @@ public final class RewardCardView: UIView {
       |> baseRewardLabelStyle
       |> sectionBodyLabelStyle
 
+    _ = self.estimatedDeliveryStackView
+      |> includedItemsStackViewStyle
+
+    _ = self.estimatedDeliveryTitleLabel
+      |> baseRewardLabelStyle
+      |> sectionTitleLabelStyle
+
+    _ = self.estimatedDeliveryTitleLabel
+      |> \.text %~ { _ in Strings.Estimated_delivery() }
+      |> \.textColor .~ UIColor.ksr_support_400
+
     _ = self.estimatedDeliveryDateLabel
       |> baseRewardLabelStyle
       |> sectionBodyLabelStyle
+
+    _ = self.estimatedDeliveryStackView.subviews
+      .dropFirst()
+      .compactMap { $0 as? UILabel }
+      ||> baseRewardLabelStyle
+      ||> sectionBodyLabelStyle
 
     _ = self.rewardTitleLabel
       |> baseRewardLabelStyle
@@ -120,7 +140,7 @@ public final class RewardCardView: UIView {
     self.minimumPriceConversionLabel.rac.hidden = self.viewModel.outputs.conversionLabelHidden
     self.minimumPriceConversionLabel.rac.text = self.viewModel.outputs.conversionLabelText
     self.descriptionLabel.rac.text = self.viewModel.outputs.descriptionLabelText
-    self.estimatedDeliveryDateLabel.rac.hidden = self.viewModel.outputs.estimatedDeliveryDateLabelHidden
+    self.estimatedDeliveryStackView.rac.hidden = self.viewModel.outputs.estimatedDeliveryStackViewHidden
     self.estimatedDeliveryDateLabel.rac.text = self.viewModel.outputs.estimatedDeliveryDateLabelText
     self.includedItemsStackView.rac.hidden = self.viewModel.outputs.includedItemsStackViewHidden
     self.minimumPriceLabel.rac.text = self.viewModel.outputs.rewardMinimumLabelText
@@ -166,7 +186,7 @@ public final class RewardCardView: UIView {
       self.rewardTitleLabel,
       self.descriptionStackView,
       self.includedItemsStackView,
-      self.estimatedDeliveryDateLabel,
+      self.estimatedDeliveryStackView,
       self.pillsView
     ]
 
@@ -177,6 +197,9 @@ public final class RewardCardView: UIView {
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.includedItemsTitleLabel], self.includedItemsStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.estimatedDeliveryTitleLabel, self.estimatedDeliveryDateLabel], self.estimatedDeliveryStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.descriptionLabel], self.descriptionStackView)
