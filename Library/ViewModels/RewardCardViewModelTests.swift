@@ -32,7 +32,7 @@ final class RewardCardViewModelTests: TestCase {
     self.vm.outputs.conversionLabelHidden.observe(self.conversionLabelHidden.observer)
     self.vm.outputs.conversionLabelText.observe(self.conversionLabelText.observer)
     self.vm.outputs.descriptionLabelText.observe(self.descriptionLabelText.observer)
-    self.vm.outputs.estimatedDeliveryDateLabelHidden.observe(self.estimatedDeliveryDateLabelHidden.observer)
+    self.vm.outputs.estimatedDeliveryStackViewHidden.observe(self.estimatedDeliveryDateLabelHidden.observer)
     self.vm.outputs.estimatedDeliveryDateLabelText.observe(self.estimatedDeliveryDateLabelText.observer)
     self.vm.outputs.includedItemsStackViewHidden.observe(self.includedItemsStackViewHidden.observer)
     self.vm.outputs.items.observe(self.items.observer)
@@ -1011,7 +1011,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: (project, reward, .pledge))
 
-    self.estimatedDeliveryDateLabelText.assertValues(["Estimated delivery October 2017"])
+    self.estimatedDeliveryDateLabelText.assertValues(["October 2017"])
     self.estimatedDeliveryDateLabelHidden.assertValues([false])
   }
 
@@ -1029,7 +1029,7 @@ final class RewardCardViewModelTests: TestCase {
 
     self.vm.inputs.configure(with: (project, reward, .manage))
 
-    self.estimatedDeliveryDateLabelText.assertValues(["Estimated delivery October 2017"])
+    self.estimatedDeliveryDateLabelText.assertValues(["October 2017"])
     self.estimatedDeliveryDateLabelHidden.assertValues([true])
   }
 
