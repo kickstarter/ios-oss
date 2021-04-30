@@ -67,6 +67,22 @@ final class KSRAnalyticsIdentityDataTests: XCTestCase {
     XCTAssertNotEqual(KSRAnalyticsIdentityData(user3), KSRAnalyticsIdentityData(user4))
   }
 
+  func testAllTraits() {
+    let user = User.template
+
+    let data = KSRAnalyticsIdentityData(user)
+
+    let traits = data.allTraits
+
+    XCTAssertEqual(traits["name"] as? String, user.name)
+
+    let notifications = user.notifications.encode()
+
+    for (key, _) in notifications {
+      XCTAssertEqual(notifications[key] as? Bool, traits[key] as? Bool)
+    }
+  }
+
   func testEncodingDecoding() {
     let data1 = KSRAnalyticsIdentityData(.template)
 

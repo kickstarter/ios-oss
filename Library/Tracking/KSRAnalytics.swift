@@ -582,7 +582,7 @@ public final class KSRAnalytics {
 
     self.segmentClient?.identify(
       "\(newData.userId)",
-      traits: newData.uniqueTraits(comparedTo: previousIdentityData)
+      traits: newData.allTraits
     )
 
     AppEnvironment.current.userDefaults.analyticsIdentityData = newData

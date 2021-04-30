@@ -2353,10 +2353,10 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(self.segmentTrackingClient.userId, "\(user.id)")
     XCTAssertEqual(self.segmentTrackingClient.traits?["name"] as? String, user.name)
 
-    let notifications1 = user.notifications.encode()
+    let notifications = user.notifications.encode()
 
-    for (key, _) in notifications1 {
-      XCTAssertEqual(notifications1[key] as? Bool, self.segmentTrackingClient.traits?[key] as? Bool)
+    for (key, _) in notifications {
+      XCTAssertEqual(notifications[key] as? Bool, self.segmentTrackingClient.traits?[key] as? Bool)
     }
 
     AppEnvironment.logout()
@@ -2382,7 +2382,7 @@ final class KSRAnalyticsTests: TestCase {
     }
   }
 
-  func testIdentifyingTrackingClient_OnlySendsDeltas() {
+  func testIdentifyingTrackingClient_RepeatAllIfAnyChanges() {
     let mockKeyValueStore = MockKeyValueStore()
 
     let user = User.template
@@ -2401,7 +2401,13 @@ final class KSRAnalyticsTests: TestCase {
       AppEnvironment.updateCurrentUser(updatedUser)
 
       XCTAssertEqual(self.segmentTrackingClient.userId, "\(1)")
-      XCTAssertEqual(self.segmentTrackingClient.traits?["notify_of_messages"] as? Bool, false)
+      XCTAssertEqual(self.segmentTrackingClient.traits?["name"] as? String, user.name)
+
+      let notifications = updatedUser.notifications.encode()
+
+      for (key, _) in notifications {
+        XCTAssertEqual(notifications[key] as? Bool, self.segmentTrackingClient.traits?[key] as? Bool)
+      }
     }
   }
 
