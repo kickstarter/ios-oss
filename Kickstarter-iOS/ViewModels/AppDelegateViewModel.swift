@@ -1,3 +1,4 @@
+import Appboy_iOS_SDK
 import KsApi
 import Library
 import Prelude
@@ -44,6 +45,9 @@ public protocol AppDelegateViewModelInputs {
 
   /// Call when the application receives a request to perform a shortcut action.
   func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem)
+
+  /// Call when the Braze SDK will display an in-app message, return a display choice.
+  func brazeWillDisplayInAppMessage(_ message: BrazeInAppMessageType) -> ABKInAppMessageDisplayChoice
 
   /// Call after having invoked AppEnvironment.updateCurrentUser with a fresh user.
   func currentUserUpdatedInEnvironment()
@@ -682,6 +686,10 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     )
     .map { _ in featureSegmentIsEnabled() }
     .skipRepeats()
+
+    self.brazeWillDisplayInAppMessageReturnProperty <~ self.brazeWillDisplayInAppMessageProperty.signal
+      .skipNil()
+      .map { _ in featureBrazeIsEnabled() ? .displayInAppMessageNow : .discardInAppMessage }
   }
 
   public var inputs: AppDelegateViewModelInputs { return self }
@@ -717,6 +725,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   fileprivate let applicationDidReceiveMemoryWarningProperty = MutableProperty(())
   public func applicationDidReceiveMemoryWarning() {
     self.applicationDidReceiveMemoryWarningProperty.value = ()
+  }
+
+  private let brazeWillDisplayInAppMessageProperty = MutableProperty<BrazeInAppMessageType?>(nil)
+  private let brazeWillDisplayInAppMessageReturnProperty
+    = MutableProperty<ABKInAppMessageDisplayChoice>(.discardInAppMessage)
+  public func brazeWillDisplayInAppMessage(_ message: BrazeInAppMessageType) -> ABKInAppMessageDisplayChoice {
+    self.brazeWillDisplayInAppMessageProperty.value = message
+    return self.brazeWillDisplayInAppMessageReturnProperty.value
   }
 
   fileprivate let performActionForShortcutItemProperty = MutableProperty<UIApplicationShortcutItem?>(nil)

@@ -489,6 +489,8 @@
 		8A741BC1262A358700E864E6 /* Appboy_iOS_SDK.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A741BC2262A358700E864E6 /* Segment_Appboy.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A04FE24262781240056F413 /* Segment_Appboy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A741BC6262A35B000E864E6 /* SDWebImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A04FE25262781240056F413 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8A788F0D263B6E5800A89DAE /* BrazeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A788F0C263B6E5800A89DAE /* BrazeTypes.swift */; };
+		8A788F15263B770100A89DAE /* BrazeMockTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A788F14263B770100A89DAE /* BrazeMockTypes.swift */; };
 		8A7E71F9256460C200119B49 /* EmailVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7E71F8256460C200119B49 /* EmailVerificationViewController.swift */; };
 		8A8099EB22E213F100373E66 /* RewardCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099E922E213F100373E66 /* RewardCardView.swift */; };
 		8A8099EC22E213F100373E66 /* RewardCardContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8099EA22E213F100373E66 /* RewardCardContainerView.swift */; };
@@ -2025,6 +2027,8 @@
 		8A6C978F24BFCDED00C4FA71 /* RewardAddOnSelectionContinueCTAViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionContinueCTAViewModel.swift; sourceTree = "<group>"; };
 		8A73EACE2339528000FF9051 /* PledgePaymentMethodCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodCellViewModel.swift; sourceTree = "<group>"; };
 		8A73EAD02339732900FF9051 /* PledgePaymentMethodCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgePaymentMethodCellViewModelTests.swift; sourceTree = "<group>"; };
+		8A788F0C263B6E5800A89DAE /* BrazeTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeTypes.swift; sourceTree = "<group>"; };
+		8A788F14263B770100A89DAE /* BrazeMockTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazeMockTypes.swift; sourceTree = "<group>"; };
 		8A7E71F8256460C200119B49 /* EmailVerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationViewController.swift; sourceTree = "<group>"; };
 		8A7E71FD256460DD00119B49 /* EmailVerificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationViewModel.swift; sourceTree = "<group>"; };
 		8A8099E922E213F100373E66 /* RewardCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardCardView.swift; sourceTree = "<group>"; };
@@ -3040,6 +3044,8 @@
 		0127FC511C98BFD000E335C6 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				8A788F14263B770100A89DAE /* BrazeMockTypes.swift */,
+				8A788F0C263B6E5800A89DAE /* BrazeTypes.swift */,
 				8A8C6133243F99AB0092B682 /* ContentSizeTableView.swift */,
 				8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */,
 				379CFFEF2242DAC300F6F0C2 /* MFMailComposeViewController.swift */,
@@ -5786,6 +5792,7 @@
 				A70F1F321D8A3E85007DA8E9 /* ProjectPamphletViewController.swift in Sources */,
 				77FA6C7120F3DD6C00809E31 /* SettingsDataSource.swift in Sources */,
 				014D63011E721D500033D2BD /* BackerDashboardProjectCell.swift in Sources */,
+				8A788F0D263B6E5800A89DAE /* BrazeTypes.swift in Sources */,
 				379CFFFD2242DAEB00F6F0C2 /* NSBundle-Framework.swift in Sources */,
 				598D96B41D41790C003F3F66 /* ActivitySampleBackingCell.swift in Sources */,
 				A7CC143C1D00E74F00035C52 /* FindFriendsFacebookConnectCell.swift in Sources */,
@@ -6047,6 +6054,7 @@
 				77EFBAE92268E3D200DA5C3C /* RewardsCollectionViewDataSourceTests.swift in Sources */,
 				A7ED201D1E8322EC00BFFA01 /* TestCase.swift in Sources */,
 				A7ED20111E83229E00BFFA01 /* ActivitiesDataSourceTests.swift in Sources */,
+				8A788F15263B770100A89DAE /* BrazeMockTypes.swift in Sources */,
 				A7ED20441E8323E900BFFA01 /* ResetPasswordViewControllerTests.swift in Sources */,
 				A7ED20491E8323E900BFFA01 /* DiscoveryPageViewControllerTests.swift in Sources */,
 				A7ED20151E83229E00BFFA01 /* DiscoveryFiltersDataSourceTests.swift in Sources */,

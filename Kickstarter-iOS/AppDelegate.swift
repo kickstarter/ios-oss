@@ -1,3 +1,4 @@
+import Appboy_iOS_SDK
 import AppCenter
 import AppCenterDistribute
 import FBSDKCoreKit
@@ -16,6 +17,7 @@ import ReactiveExtensions
 import ReactiveSwift
 import SafariServices
 import Segment
+import Segment_Appboy
 import UIKit
 import UserNotifications
 
@@ -35,6 +37,9 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     // FBSDK initialization
     ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     Settings.shouldLimitEventAndDataUsage = true
+
+    // Braze initialization
+    SEGAppboyIntegrationFactory.instance()?.saveLaunchOptions(launchOptions)
 
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
@@ -359,6 +364,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     print("🔴 Failed to register for remote notifications: \(error.localizedDescription)")
   }
 
+  func application(
+    _: UIApplication,
+    didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+    fetchCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void
+  ) {
+    SEGAppboyIntegrationFactory.instance()?.saveRemoteNotification(userInfo)
+  }
+
   internal func applicationDidReceiveMemoryWarning(_: UIApplication) {
     self.viewModel.inputs.applicationDidReceiveMemoryWarning()
   }
@@ -486,8 +499,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     completionHandler(.alert)
   }
 
-  public func userNotificationCenter(
-    _: UNUserNotificationCenter,
+  func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
     didReceive response: UNNotificationResponse,
     withCompletionHandler completion: @escaping () -> Void
   ) {
@@ -495,8 +508,24 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
       completion()
       return
     }
+
+    // Braze
+    if Appboy.sharedInstance() == nil {
+      SEGAppboyIntegrationFactory.instance()?.appboyHelper.save(center, notificationResponse: response)
+    }
+    SEGAppboyIntegrationFactory.instance()?.appboyHelper
+      .userNotificationCenter(center, receivedNotificationResponse: response)
+
     self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
     rootTabBarController.didReceiveBadgeValue(response.notification.request.content.badge as? Int)
     completion()
+  }
+}
+
+// MARK: - ABKInAppMessageControllerDelegate
+
+extension AppDelegate: ABKInAppMessageControllerDelegate {
+  func before(inAppMessageDisplayed inAppMessage: ABKInAppMessage) -> ABKInAppMessageDisplayChoice {
+    return self.viewModel.inputs.brazeWillDisplayInAppMessage(inAppMessage)
   }
 }
