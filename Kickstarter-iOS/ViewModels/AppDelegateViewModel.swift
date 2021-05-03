@@ -281,7 +281,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       pushNotificationsPreviouslyAuthorized.filter(isTrue).ignoreValues()
     )
     .flatMap {
-      AppEnvironment.current.pushRegistrationType.register(for: [.alert, .badge])
+      AppEnvironment.current.pushRegistrationType.register(for: [.alert, .sound, .badge])
         .materialize()
     }
 
