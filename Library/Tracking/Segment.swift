@@ -16,6 +16,8 @@ public extension Analytics {
     // Data sent to Braze is feature-flagged by the enabling/disabling Segment.
     configuration.use(SEGAppboyIntegrationFactory.instance())
 
+    configuration.sourceMiddleware = [BrazeDebounceMiddleware()]
+
     Analytics.setup(with: configuration)
 
     // Disabled when initialized and enabled by our feature-flag configuration.
