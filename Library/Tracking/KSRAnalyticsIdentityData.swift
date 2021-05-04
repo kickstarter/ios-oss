@@ -41,6 +41,10 @@ public struct KSRAnalyticsIdentityData: Equatable {
     return newTraits
   }
 
+  var allTraits: [String: Any] {
+    return self.traits.mapValues { $0.value }
+  }
+
   fileprivate var traits: [String: KSRAnalyticsIdentityTraitValue] {
     let notifications = self.notifications.encode()
       .mapValues { ($0 as? Bool).flatMap(KSRAnalyticsIdentityTraitValue.bool) }
