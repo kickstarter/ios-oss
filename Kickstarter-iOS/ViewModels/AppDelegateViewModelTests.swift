@@ -2631,6 +2631,28 @@ final class AppDelegateViewModelTests: TestCase {
       self.segmentIsEnabled.assertValues([false])
     }
   }
+
+  func testBrazeInAppMessagingIsEnabled_FlagIsEnabled() {
+    let config = Config.template
+      |> Config.lens.features .~ [Feature.braze.rawValue: true]
+
+    let message = MockBrazeMessage()
+
+    withEnvironment(config: config) {
+      XCTAssertTrue(self.vm.inputs.brazeWillDisplayInAppMessage(message) == .displayInAppMessageNow)
+    }
+  }
+
+  func testBrazeInAppMessagingIsEnabled_FlagIsDisabled() {
+    let config = Config.template
+      |> Config.lens.features .~ [Feature.braze.rawValue: false]
+
+    let message = MockBrazeMessage()
+
+    withEnvironment(config: config) {
+      XCTAssertTrue(self.vm.inputs.brazeWillDisplayInAppMessage(message) == .discardInAppMessage)
+    }
+  }
 }
 
 private let backingForCreatorPushData: [String: Any] = [
