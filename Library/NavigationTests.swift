@@ -202,6 +202,16 @@ public final class NavigationTests: XCTestCase {
       .profile(.verifyEmail),
       "/profile/verify_email"
     )
+
+    KSRAssertMatch(
+      .settings(.notifications("notify_mobile_of_marketing_update", true)),
+      "/settings/notify_mobile_of_marketing_update/true"
+    )
+
+    KSRAssertMatch(
+      .settings(.notifications("notify_mobile_of_messages", false)),
+      "/settings/notify_mobile_of_messages/false"
+    )
   }
 
   func testRecognizesEmailClickUrls() {
