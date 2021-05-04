@@ -510,11 +510,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
 
     // Braze
-    if Appboy.sharedInstance() == nil {
-      SEGAppboyIntegrationFactory.instance()?.appboyHelper.save(center, notificationResponse: response)
+    let factory = SEGAppboyIntegrationFactory.instance()
+    userNotificationCenterDidReceiveResponse(appBoy: Appboy.sharedInstance()) {
+      factory?.appboyHelper.userNotificationCenter(center, receivedNotificationResponse: response)
+    } isNil: {
+      factory?.appboyHelper.save(center, notificationResponse: response)
     }
-    SEGAppboyIntegrationFactory.instance()?.appboyHelper
-      .userNotificationCenter(center, receivedNotificationResponse: response)
 
     self.viewModel.inputs.didReceive(remoteNotification: response.notification.request.content.userInfo)
     rootTabBarController.didReceiveBadgeValue(response.notification.request.content.badge as? Int)

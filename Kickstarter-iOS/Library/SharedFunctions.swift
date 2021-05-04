@@ -1,3 +1,4 @@
+import Appboy_iOS_SDK
 import Library
 import UIKit
 
@@ -46,4 +47,14 @@ public func logoutAndDismiss(
   NotificationCenter.default.post(.init(name: .ksr_sessionEnded))
 
   viewController.dismiss(animated: true, completion: nil)
+}
+
+// MARK: - Braze
+
+public func userNotificationCenterDidReceiveResponse(
+  appBoy: AppboyType?,
+  isNotNil: () -> (),
+  isNil: () -> ()
+) {
+  appBoy == nil ? isNil() : isNotNil()
 }
