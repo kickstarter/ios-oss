@@ -6,7 +6,6 @@ import UIKit
 
 public final class KSRAnalytics {
   private let bundle: NSBundleType
-  private let dataLakeClient: TrackingClientType
   internal private(set) var config: Config?
   private let device: UIDeviceType
   internal private(set) var loggedInUser: User? {
@@ -549,7 +548,6 @@ public final class KSRAnalytics {
 
   public init(
     bundle: NSBundleType = Bundle.main,
-    dataLakeClient: TrackingClientType = TrackingClient(.dataLake),
     config: Config? = nil,
     device: UIDeviceType = UIDevice.current,
     loggedInUser: User? = nil,
@@ -557,7 +555,6 @@ public final class KSRAnalytics {
     segmentClient: (TrackingClientType & IdentifyingTrackingClient)? = nil
   ) {
     self.bundle = bundle
-    self.dataLakeClient = dataLakeClient
     self.config = config
     self.device = device
     self.loggedInUser = loggedInUser
@@ -1557,11 +1554,6 @@ public final class KSRAnalytics {
       .withAllValuesFrom(properties)
 
     self.logEventCallback?(event, props)
-
-    self.dataLakeClient.track(
-      event,
-      properties: props
-    )
 
     // Currently events approved for the Data Lake are good for Segment.
     self.segmentClient?.track(
