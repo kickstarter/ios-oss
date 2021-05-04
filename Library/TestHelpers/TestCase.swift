@@ -14,7 +14,6 @@ internal class TestCase: FBSnapshotTestCase {
   internal let config = Config.config
   internal let cookieStorage = MockCookieStorage()
   internal let coreTelephonyNetworkInfo = MockCoreTelephonyNetworkInfo()
-  internal let dataLakeTrackingClient = MockTrackingClient()
   internal let dateType = MockDate.self
   internal let mainBundle = MockBundle()
   internal let optimizelyClient = MockOptimizelyClient()
@@ -59,7 +58,6 @@ internal class TestCase: FBSnapshotTestCase {
       device: MockDevice(),
       isVoiceOverRunning: { false },
       ksrAnalytics: KSRAnalytics(
-        dataLakeClient: self.dataLakeTrackingClient,
         loggedInUser: nil,
         segmentClient: self.segmentTrackingClient
       ),
