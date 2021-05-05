@@ -913,7 +913,7 @@ internal final class ManagePledgeViewModelTests: TestCase {
 
       self.vm.inputs.fixButtonTapped()
 
-      XCTAssertEqual(["Page Viewed", "Fix Pledge Button Clicked"], self.segmentTrackingClient.events)
+      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
     }
   }
 

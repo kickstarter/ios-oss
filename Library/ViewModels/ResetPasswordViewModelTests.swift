@@ -145,10 +145,4 @@ final class ResetPasswordViewModelTests: TestCase {
       self.showError.assertValues(["Something went wrong."], "Error alert is shown on bad request")
     }
   }
-
-  func testTracking() {
-    self.vm.inputs.viewDidLoad()
-
-    XCTAssertEqual(["Forgot Password Viewed"], self.segmentTrackingClient.events)
-  }
 }

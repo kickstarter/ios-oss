@@ -83,23 +83,6 @@ final class LoginToutViewModelTests: TestCase {
     )
   }
 
-  func testKSRAnalytics_whenLoginIntentBeforeViewAppears() {
-    self.vm.inputs.configureWith(.activity, project: nil, reward: nil)
-    self.vm.inputs.viewWillAppear()
-
-    XCTAssertEqual(["Log In or Signup Page Viewed"], self.segmentTrackingClient.events)
-    XCTAssertEqual("activity", self.segmentTrackingClient.properties.last!["login_intent"] as? String)
-
-    self.vm.inputs.viewWillAppear()
-
-    XCTAssertEqual(
-      ["Log In or Signup Page Viewed"],
-      self.segmentTrackingClient.events,
-      "Only tracks the first time the view appears"
-    )
-    XCTAssertEqual("activity", self.segmentTrackingClient.properties.last!["login_intent"] as? String)
-  }
-
   func testStartLogin() {
     self.vm.inputs.configureWith(.activity, project: nil, reward: nil)
     self.vm.inputs.viewWillAppear()
