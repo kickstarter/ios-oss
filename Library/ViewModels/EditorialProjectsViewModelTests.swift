@@ -166,16 +166,4 @@ final class EditorialProjectsViewModelTests: TestCase {
 
     self.applyViewTransformsWithYOffset.assertValues([100, 250, 350, 0])
   }
-
-  func testTrackCollectionViewed() {
-    let segmentClient = MockTrackingClient()
-    withEnvironment(ksrAnalytics: KSRAnalytics(
-      segmentClient: segmentClient
-    )) {
-      self.vm.inputs.configure(with: .lightsOn)
-      self.vm.inputs.viewDidLoad()
-
-      XCTAssertEqual(["Collection Viewed"], segmentClient.events)
-    }
-  }
 }

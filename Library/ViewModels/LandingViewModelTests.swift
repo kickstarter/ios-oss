@@ -29,8 +29,6 @@ final class LandingViewModelTests: TestCase {
     self.goToCategorySelection.assertValueCount(1)
 
     XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Get Started Button Clicked")
-    XCTAssertEqual(self.segmentTrackingClient.events, ["Onboarding Get Started Button Clicked"])
-    XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_page"), ["landing_page"])
     assertBaseUserAttributesLoggedOut()
   }
 
