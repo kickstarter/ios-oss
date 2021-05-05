@@ -79,7 +79,7 @@ final class ThanksViewModelTests: TestCase {
       vm.inputs.categoryCellTapped(.illustration)
 
       goToDiscovery.assertValues([.illustration])
-      TAssertEqual(
+      XCTAssertEqual(
         ["Page Viewed"],
         self.segmentTrackingClient.events
       )
@@ -112,7 +112,7 @@ final class ThanksViewModelTests: TestCase {
 
       showRatingAlert.assertValueCount(1, "Rating Alert emits when view did load")
       showGamesNewsletterAlert.assertValueCount(0, "Games alert does not emit")
-      
+
       XCTAssertEqual(
         ["Page Viewed"],
         self.segmentTrackingClient.events
@@ -180,7 +180,7 @@ final class ThanksViewModelTests: TestCase {
 
       updateUserInEnvironment.assertValueCount(1)
       showGamesNewsletterOptInAlert.assertValueCount(0, "Opt-in alert does not emit")
-      
+
       XCTAssertEqual(
         ["Page Viewed"],
         self.segmentTrackingClient.events
@@ -225,7 +225,7 @@ final class ThanksViewModelTests: TestCase {
       vm.inputs.gamesNewsletterSignupButtonTapped()
 
       showGamesNewsletterOptInAlert.assertValues(["Kickstarter Loves Games"], "Opt-in alert emits with title")
-      
+
       XCTAssertEqual(
         ["Page Viewed"],
         self.segmentTrackingClient.events
@@ -260,7 +260,7 @@ final class ThanksViewModelTests: TestCase {
       goToProject.assertValues([project])
       goToProjects.assertValueCount(1)
       goToRefTag.assertValues([.thanks])
-      
+
       XCTAssertEqual(
         [
           "Page Viewed",

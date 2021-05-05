@@ -738,7 +738,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.rewardSelected(with: 2)
-    
+
     XCTAssertEqual("CTA Clicked", self.segmentTrackingClient.events.last)
     XCTAssertEqual("activity", self.segmentTrackingClient.properties.last?["session_ref_tag"] as? String)
   }

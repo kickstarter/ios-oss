@@ -488,7 +488,7 @@ final class RootViewModelTests: TestCase {
     self.vm.inputs.didSelect(index: 0)
 
     self.selectedIndex.assertValues([0, 1, 0], "Selects index immediately.")
-  
+
     XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
     XCTAssertEqual(
       ["activity", nil],
@@ -498,7 +498,7 @@ final class RootViewModelTests: TestCase {
     self.vm.inputs.didSelect(index: 2)
 
     self.selectedIndex.assertValues([0, 1, 0, 2], "Selects index immediately.")
-    
+
     XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
     XCTAssertEqual(
       ["activity", nil, nil],
@@ -516,7 +516,7 @@ final class RootViewModelTests: TestCase {
     self.vm.inputs.didSelect(index: 10)
 
     self.selectedIndex.assertValues([0, 1, 0, 2, 3], "Selects index immediately.")
-  
+
     XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
     XCTAssertEqual(
       ["activity", nil, nil],

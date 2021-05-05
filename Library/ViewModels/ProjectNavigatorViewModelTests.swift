@@ -351,7 +351,6 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
   }
 
   func testSetInitialPagerViewController() {
-
     self.setInitialPagerViewController.assertValueCount(0)
 
     self.vm.inputs.viewDidLoad()
@@ -371,7 +370,7 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.notifyDelegateTransitionedToProjectIndex.assertValueCount(
       0, "Does not emit without completion of swipe."
     )
-    
+
     XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.willTransition(toProject: playlist[1], at: 1)
@@ -384,7 +383,7 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.vm.inputs.pageTransition(completed: true, from: 1)
 
     self.notifyDelegateTransitionedToProjectIndex.assertValues([1, 2])
-    
+
     XCTAssertEqual(
       ["Project Swiped", "Project Swiped"],
       self.segmentTrackingClient.events

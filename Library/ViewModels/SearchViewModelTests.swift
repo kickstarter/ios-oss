@@ -265,7 +265,7 @@ internal final class SearchViewModelTests: TestCase {
       [true, false],
       "Popular title visibility still not emit after time has passed."
     )
-    
+
     XCTAssertEqual(
       ["Page Viewed", "Page Viewed"],
       self.segmentTrackingClient.events,
@@ -300,7 +300,7 @@ internal final class SearchViewModelTests: TestCase {
       [true, false, true],
       "Clearing search brings back popular title."
     )
-    
+
     XCTAssertEqual(
       ["Page Viewed", "Page Viewed"],
       self.segmentTrackingClient.events,
@@ -317,7 +317,7 @@ internal final class SearchViewModelTests: TestCase {
       [true, false, true],
       "Leaving view and coming back doesn't change popular title"
     )
-    
+
     XCTAssertEqual(
       ["Page Viewed", "Page Viewed", "Page Viewed"],
       self.segmentTrackingClient.events
@@ -346,7 +346,7 @@ internal final class SearchViewModelTests: TestCase {
 
       self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
       self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
-     
+
       XCTAssertEqual(
         ["Page Viewed"], self.segmentTrackingClient.events,
         "The search view event tracked upon view appearing."
@@ -367,7 +367,7 @@ internal final class SearchViewModelTests: TestCase {
         [true, false],
         "Popular title visibility still not emit after time has passed."
       )
-      
+
       XCTAssertEqual(
         ["Page Viewed", "Page Viewed"],
         self.segmentTrackingClient.events,
@@ -377,7 +377,7 @@ internal final class SearchViewModelTests: TestCase {
         ["", "skull graphic tee"],
         self.segmentTrackingClient.properties(forKey: "discover_search_term")
       )
-      
+
       XCTAssertEqual(
         [0, 200],
         self.segmentTrackingClient.properties(forKey: "discover_search_results_count", as: Int.self)
@@ -515,7 +515,7 @@ internal final class SearchViewModelTests: TestCase {
       self.scheduler.advance(by: debounceDelay + apiDelay)
 
       self.hasProjects.assertValues([true, false, true], "Search projects load after waiting enough time.")
-      
+
       XCTAssertEqual(
         ["Page Viewed", "Page Viewed"],
         self.segmentTrackingClient.events
@@ -525,7 +525,7 @@ internal final class SearchViewModelTests: TestCase {
       self.scheduler.run()
 
       self.hasProjects.assertValues([true, false, true], "Nothing new is emitted.")
-      
+
       XCTAssertEqual(
         ["Page Viewed", "Page Viewed"],
         self.segmentTrackingClient.events,
@@ -578,7 +578,7 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchTextChanged("d")
       self.scheduler.advance(by: apiDelay + debounceDelay)
 
-     XCTAssertEqual(
+      XCTAssertEqual(
         ["Page Viewed", "Page Viewed"],
         self.segmentTrackingClient.events
       )
