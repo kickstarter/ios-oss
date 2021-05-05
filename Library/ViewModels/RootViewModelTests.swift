@@ -482,46 +482,27 @@ final class RootViewModelTests: TestCase {
     self.vm.inputs.didSelect(index: 1)
 
     self.selectedIndex.assertValues([0, 1], "Selects index immediately.")
-    XCTAssertEqual(["Tab Bar Clicked"], self.segmentTrackingClient.events)
-    XCTAssertEqual(["activity"], self.segmentTrackingClient.properties(forKey: "context_tab_bar_label"))
 
     self.vm.inputs.didSelect(index: 0)
 
     self.selectedIndex.assertValues([0, 1, 0], "Selects index immediately.")
 
-    XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
-    XCTAssertEqual(
-      ["activity", nil],
-      self.segmentTrackingClient.properties(forKey: "context_tab_bar_label")
-    )
-
     self.vm.inputs.didSelect(index: 2)
 
     self.selectedIndex.assertValues([0, 1, 0, 2], "Selects index immediately.")
-
-    XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
+    
     XCTAssertEqual(
-      ["activity", nil, nil],
-      self.segmentTrackingClient.properties(forKey: "context_tab_bar_label")
-    )
-    XCTAssertEqual(
-      ["other", "other", "discover"],
+      ["other", "discover"],
       self.segmentTrackingClient.properties(forKey: "context_page")
     )
     XCTAssertEqual(
-      [nil, "discover", "search"],
+      ["discover", "search"],
       self.segmentTrackingClient.properties(forKey: "context_cta")
     )
 
     self.vm.inputs.didSelect(index: 10)
 
     self.selectedIndex.assertValues([0, 1, 0, 2, 3], "Selects index immediately.")
-
-    XCTAssertEqual(["Tab Bar Clicked", "CTA Clicked", "CTA Clicked"], self.segmentTrackingClient.events)
-    XCTAssertEqual(
-      ["activity", nil, nil],
-      self.segmentTrackingClient.properties(forKey: "context_tab_bar_label")
-    )
   }
 
   func testScrollToTop() {
