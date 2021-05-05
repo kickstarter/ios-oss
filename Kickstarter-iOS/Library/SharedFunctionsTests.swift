@@ -58,6 +58,34 @@ internal final class SharedFunctionsTests: TestCase {
     XCTAssertTrue(mockViewController.dismissAnimatedWasCalled)
   }
 
+  func testUserNotificationCenterDidReceiveResponse_AppboyIsNil() {
+    var calledIsNotNilPath = false
+    var calledIsNilPath = false
+
+    userNotificationCenterDidReceiveResponse(appBoy: nil) {
+      calledIsNotNilPath = true
+    } isNil: {
+      calledIsNilPath = true
+    }
+
+    XCTAssertFalse(calledIsNotNilPath)
+    XCTAssertTrue(calledIsNilPath)
+  }
+
+  func testUserNotificationCenterDidReceiveResponse_AppboyIsNotNil() {
+    var calledIsNotNilPath = false
+    var calledIsNilPath = false
+
+    userNotificationCenterDidReceiveResponse(appBoy: MockAppboy()) {
+      calledIsNotNilPath = true
+    } isNil: {
+      calledIsNilPath = true
+    }
+
+    XCTAssertTrue(calledIsNotNilPath)
+    XCTAssertFalse(calledIsNilPath)
+  }
+
   func testSanitizedPledgeParameters_WithShipping() {
     let reward = Reward.template
     let selectedShippingRule = ShippingRule.template
