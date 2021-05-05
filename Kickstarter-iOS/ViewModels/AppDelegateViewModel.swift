@@ -46,6 +46,9 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the application receives a request to perform a shortcut action.
   func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem)
 
+  /// Call when a Braze in-app message's button is tapped with its URL and extras.
+  func brazeDidHandleURL(_ url: URL?, extras: [AnyHashable: Any]?) -> Bool
+
   /// Call when the Braze SDK will display an in-app message, return a display choice.
   func brazeWillDisplayInAppMessage(_ message: BrazeInAppMessageType) -> ABKInAppMessageDisplayChoice
 
@@ -224,9 +227,20 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           : SignalProducer(value: .value(nil))
       }
 
-    self.updateCurrentUserInEnvironment = currentUserEvent
-      .values()
+    let brazeDidHandleURL = self.brazeDidHandleURLProperty
+      .signal
+      .map(willHandleBrazeUrlAndNavigation)
+
+    self.brazeDidHandleURLReturnProperty <~ brazeDidHandleURL.map(first)
+
+    let updatedUserNotificationSettings = brazeDidHandleURL.map(second)
       .skipNil()
+      .flatMap(updateUserNotificationSetting)
+
+    self.updateCurrentUserInEnvironment = Signal.merge(
+      currentUserEvent.values().skipNil(),
+      updatedUserNotificationSettings
+    )
 
     self.forceLogout = currentUserEvent
       .errors()
@@ -727,6 +741,14 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     self.applicationDidReceiveMemoryWarningProperty.value = ()
   }
 
+  private let brazeDidHandleURLProperty = MutableProperty<(URL?, [AnyHashable: Any]?)?>(nil)
+  private let brazeDidHandleURLReturnProperty
+    = MutableProperty<Bool>(false)
+  public func brazeDidHandleURL(_ url: URL?, extras: [AnyHashable: Any]?) -> Bool {
+    self.brazeDidHandleURLProperty.value = (url, extras)
+    return self.brazeDidHandleURLReturnProperty.value
+  }
+
   private let brazeWillDisplayInAppMessageProperty = MutableProperty<BrazeInAppMessageType?>(nil)
   private let brazeWillDisplayInAppMessageReturnProperty
     = MutableProperty<ABKInAppMessageDisplayChoice>(.discardInAppMessage)
@@ -1187,4 +1209,39 @@ private func configRetainingDebugFeatureFlags(_ config: Config) -> Config {
     .filter { key, _ in currentFeatureKeys.contains(key) }
 
   return config |> Config.lens.features .~ currentFeatures.withAllValuesFrom(storedFeatures)
+}
+
+private func willHandleBrazeUrlAndNavigation(urlAndExtras: (URL?, [AnyHashable: Any]?)?)
+  -> (Bool, Navigation?) {
+  guard
+    let (maybeUrl, _) = urlAndExtras,
+    let url = maybeUrl
+  else { return (false, nil) }
+
+  guard let navigation = Navigation.match(url) else {
+    return (false, nil)
+  }
+
+  return (true, navigation)
+}
+
+private func updateUserNotificationSetting(navigation: Navigation) -> SignalProducer<User, Never> {
+  guard
+    case let .settings(.notifications(notification, enabled)) = navigation,
+    let currentUser = AppEnvironment.current.currentUser
+  else { return .empty }
+
+  let currentNotifications = AppEnvironment.current.currentUser?.notifications.encode()
+  let updatedNotifications = currentNotifications?.withAllValuesFrom([notification: enabled])
+
+  guard
+    let data = try? JSONSerialization.data(withJSONObject: updatedNotifications as Any, options: []),
+    let userNotifications = try? JSONDecoder().decode(User.Notifications.self, from: data)
+  else { return .empty }
+
+  let updatedUser = currentUser |> User.lens.notifications .~ userNotifications
+
+  return AppEnvironment.current.apiService.updateUserSelf(updatedUser)
+    .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    .demoteErrors()
 }
