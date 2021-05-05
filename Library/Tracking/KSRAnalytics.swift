@@ -1220,7 +1220,6 @@ public final class KSRAnalytics {
 
     self.logEventCallback?(event, props)
 
-    // Currently events approved for the Data Lake are good for Segment.
     self.segmentClient?.track(
       event,
       properties: props
