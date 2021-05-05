@@ -459,9 +459,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
         AppEnvironment.current.optimizelyClient?.track(eventName: "Project Card Clicked")
       }
-
-    self.goToLoginSignup
-      .observeValues { AppEnvironment.current.ksrAnalytics.trackLoginOrSignupButtonClicked(intent: $0) }
   }
 
   fileprivate let configUpdatedProperty = MutableProperty<Config?>(nil)

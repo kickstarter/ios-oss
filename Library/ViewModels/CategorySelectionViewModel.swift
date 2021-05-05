@@ -109,16 +109,10 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
     // Tracking
 
     self.skipButtonTappedProperty.signal.observeValues { _ in
-      let optimizelyProps = optimizelyProperties() ?? [:]
-      AppEnvironment.current.ksrAnalytics
-        .trackOnboardingSkipButtonClicked(optimizelyProperties: optimizelyProps)
       trackOptimizelyClientButtonClicked(buttonTitle: "Skip")
     }
 
     self.continueButtonTappedProperty.signal.observeValues { _ in
-      let optimizelyProps = optimizelyProperties() ?? [:]
-      AppEnvironment.current.ksrAnalytics
-        .trackOnboardingContinueButtonClicked(optimizelyProperties: optimizelyProps)
       trackOptimizelyClientButtonClicked(buttonTitle: "Continue")
     }
   }
