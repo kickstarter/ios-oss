@@ -493,10 +493,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
     XCTAssertEqual(project, self.notifyDelegateToGoToCampaignWithData.lastValue?.project)
     XCTAssertEqual(refTag, self.notifyDelegateToGoToCampaignWithData.lastValue?.refTag)
 
-    XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
-
-    XCTAssertEqual("campaign_details", self.dataLakeTrackingClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("campaign_details", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
   }
 
@@ -514,10 +511,7 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
 
     self.notifyDelegateToGoToCreator.assertValues([project])
 
-    XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
-
-    XCTAssertEqual("creator_details", self.dataLakeTrackingClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("creator_details", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
   }
 
@@ -536,16 +530,10 @@ final class ProjectPamphletMainCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(value: (project, refTag))
       self.vm.inputs.awakeFromNib()
 
-      XCTAssertEqual(self.dataLakeTrackingClient.events, [])
       XCTAssertEqual(self.segmentTrackingClient.events, [])
 
       self.vm.inputs.readMoreButtonTapped()
 
-      XCTAssertEqual(
-        self.dataLakeTrackingClient.events,
-        ["CTA Clicked"],
-        "Event is tracked"
-      )
       XCTAssertEqual(
         self.segmentTrackingClient.events,
         ["CTA Clicked"],

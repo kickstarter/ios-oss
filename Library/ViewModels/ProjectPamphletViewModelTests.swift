@@ -176,17 +176,9 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     XCTAssertEqual(
       ["Page Viewed"],
-      self.dataLakeTrackingClient.events, "A project page event is tracked."
-    )
-    XCTAssertEqual(
-      ["Page Viewed"],
       self.segmentTrackingClient.events, "A project page event is tracked."
     )
-    XCTAssertEqual(
-      [RefTag.category.stringTag],
-      self.dataLakeTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
-      "The ref tag is tracked in the event."
-    )
+    
     XCTAssertEqual(
       [RefTag.category.stringTag],
       self.segmentTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
@@ -219,22 +211,9 @@ final class ProjectPamphletViewModelTests: TestCase {
       [
         "Page Viewed", "Page Viewed"
       ],
-      self.dataLakeTrackingClient.events, "A project page event is tracked."
-    )
-    XCTAssertEqual(
-      [
-        "Page Viewed", "Page Viewed"
-      ],
       self.segmentTrackingClient.events, "A project page event is tracked."
     )
-    XCTAssertEqual(
-      [
-        RefTag.category.stringTag,
-        RefTag.recommended.stringTag
-      ],
-      self.dataLakeTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
-      "The new ref tag is tracked in an event."
-    )
+    
     XCTAssertEqual(
       [
         RefTag.category.stringTag,
@@ -259,11 +238,6 @@ final class ProjectPamphletViewModelTests: TestCase {
 
       XCTAssertEqual(
         [],
-        self.dataLakeTrackingClient.events,
-        "Project Page Viewed doesnt track if the request fails"
-      )
-      XCTAssertEqual(
-        [],
         self.segmentTrackingClient.events,
         "Project Page Viewed doesnt track if the request fails"
       )
@@ -271,19 +245,13 @@ final class ProjectPamphletViewModelTests: TestCase {
   }
 
   func testProjectPageViewed_OnViewDidAppear() {
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
     XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.configureInitialState(.init(left: .template))
 
     self.scheduler.advance()
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
-
-    XCTAssertEqual(["project"], self.dataLakeTrackingClient.properties(forKey: "context_page"))
-    XCTAssertEqual(["overview"], self.dataLakeTrackingClient.properties(forKey: "context_section"))
-    XCTAssertEqual(["discovery"], self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"))
 
     XCTAssertEqual(["project"], self.segmentTrackingClient.properties(forKey: "context_page"))
     XCTAssertEqual(["overview"], self.segmentTrackingClient.properties(forKey: "context_section"))
@@ -374,17 +342,9 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     XCTAssertEqual(
       ["Page Viewed"],
-      self.dataLakeTrackingClient.events, "A project page event is tracked."
-    )
-    XCTAssertEqual(
-      ["Page Viewed"],
       self.segmentTrackingClient.events, "A project page event is tracked."
     )
-    XCTAssertEqual(
-      [RefTag.category.stringTag],
-      self.dataLakeTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
-      "The ref tag is tracked in the event."
-    )
+  
     XCTAssertEqual(
       [RefTag.category.stringTag],
       self.segmentTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
@@ -417,22 +377,9 @@ final class ProjectPamphletViewModelTests: TestCase {
       [
         "Page Viewed", "Page Viewed"
       ],
-      self.dataLakeTrackingClient.events, "A project page event is tracked."
-    )
-    XCTAssertEqual(
-      [
-        "Page Viewed", "Page Viewed"
-      ],
       self.segmentTrackingClient.events, "A project page event is tracked."
     )
-    XCTAssertEqual(
-      [
-        RefTag.category.stringTag,
-        RefTag.recommended.stringTag
-      ],
-      self.dataLakeTrackingClient.properties.compactMap { $0["session_ref_tag"] as? String },
-      "The new ref tag is tracked in an event."
-    )
+    
     XCTAssertEqual(
       [
         RefTag.category.stringTag,
@@ -457,7 +404,6 @@ final class ProjectPamphletViewModelTests: TestCase {
 
     self.scheduler.advance()
 
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
     XCTAssertEqual([], self.segmentTrackingClient.events)
   }
 
@@ -861,7 +807,6 @@ final class ProjectPamphletViewModelTests: TestCase {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
-      dataLakeClient: dataLakeClient,
       config: .template,
       loggedInUser: User.template,
       segmentClient: segmentClient
@@ -904,7 +849,6 @@ final class ProjectPamphletViewModelTests: TestCase {
     let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
-      dataLakeClient: dataLakeClient,
       config: config,
       loggedInUser: nil,
       segmentClient: segmentClient

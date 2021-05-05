@@ -93,7 +93,6 @@ final class UpdatePreviewViewModelTests: TestCase {
       self.goToUpdateProject.assertValues([project])
       self.showPublishFailure.assertValueCount(0)
 
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
       XCTAssertEqual([], self.segmentTrackingClient.events)
     }
   }
@@ -125,7 +124,6 @@ final class UpdatePreviewViewModelTests: TestCase {
       self.goToUpdate.assertValues([])
       self.goToUpdateProject.assertValues([])
 
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
       XCTAssertEqual([], self.segmentTrackingClient.events)
     }
   }
@@ -152,7 +150,6 @@ final class UpdatePreviewViewModelTests: TestCase {
       self.goToUpdate.assertValues([])
       self.showPublishFailure.assertValueCount(1)
 
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
       XCTAssertEqual([], self.segmentTrackingClient.events)
     }
   }

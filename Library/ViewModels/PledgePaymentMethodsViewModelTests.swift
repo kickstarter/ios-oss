@@ -474,7 +474,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configure(with: (User.template, project, Reward.template, .pledge, .discovery))
 
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
     XCTAssertEqual([], self.segmentTrackingClient.events)
 
     let addNewCardIndexPath = IndexPath(
@@ -484,10 +483,8 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
     self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
 
-    XCTAssertEqual(["Add New Card Button Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Add New Card Button Clicked"], self.segmentTrackingClient.events)
 
-    XCTAssertEqual(["discovery"], self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"))
     XCTAssertEqual(["discovery"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
   }
 
@@ -497,7 +494,6 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.configure(with: (User.template, project, Reward.template, .update, .discovery))
 
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
     XCTAssertEqual([], self.segmentTrackingClient.events)
 
     let addNewCardIndexPath = IndexPath(
@@ -507,10 +503,7 @@ final class PledgePaymentMethodsViewModelTests: TestCase {
 
     self.vm.inputs.didSelectRowAtIndexPath(addNewCardIndexPath)
 
-    XCTAssertEqual(["Add New Card Button Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Add New Card Button Clicked"], self.segmentTrackingClient.events)
-
-    XCTAssertEqual(["discovery"], self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"))
     XCTAssertEqual(["discovery"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
   }
 }

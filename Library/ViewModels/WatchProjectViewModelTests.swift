@@ -288,14 +288,6 @@ internal final class WatchProjectViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["CTA Clicked"],
-        self.dataLakeTrackingClient.events
-      )
-      XCTAssertEqual(["project"], self.dataLakeTrackingClient.properties(forKey: "context_page"))
-      XCTAssertEqual(["watch_project"], self.dataLakeTrackingClient.properties(forKey: "context_cta"))
-      XCTAssertEqual(["watch"], self.dataLakeTrackingClient.properties(forKey: "context_type"))
-
-      XCTAssertEqual(
-        ["CTA Clicked"],
         self.segmentTrackingClient.events
       )
       XCTAssertEqual(["project"], self.segmentTrackingClient.properties(forKey: "context_page"))
@@ -316,23 +308,6 @@ internal final class WatchProjectViewModelTests: TestCase {
 
       withEnvironment(apiService: MockService(unwatchProjectMutationResult: .success(.unwatchTemplate))) {
         self.vm.inputs.saveButtonTapped(selected: true)
-
-        XCTAssertEqual(
-          ["CTA Clicked", "CTA Clicked"],
-          self.dataLakeTrackingClient.events
-        )
-        XCTAssertEqual(
-          ["project", "project"],
-          self.dataLakeTrackingClient.properties(forKey: "context_page")
-        )
-        XCTAssertEqual(
-          ["watch_project", "watch_project"],
-          self.dataLakeTrackingClient.properties(forKey: "context_cta")
-        )
-        XCTAssertEqual(
-          ["watch", "unwatch"],
-          self.dataLakeTrackingClient.properties(forKey: "context_type")
-        )
 
         XCTAssertEqual(
           ["CTA Clicked", "CTA Clicked"],
@@ -385,14 +360,6 @@ internal final class WatchProjectViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["CTA Clicked"],
-        self.dataLakeTrackingClient.events
-      )
-      XCTAssertEqual(["project"], self.dataLakeTrackingClient.properties(forKey: "context_page"))
-      XCTAssertEqual(["watch_project"], self.dataLakeTrackingClient.properties(forKey: "context_cta"))
-      XCTAssertEqual(["watch"], self.dataLakeTrackingClient.properties(forKey: "context_type"))
-
-      XCTAssertEqual(
-        ["CTA Clicked"],
         self.segmentTrackingClient.events
       )
       XCTAssertEqual(["project"], self.segmentTrackingClient.properties(forKey: "context_page"))
@@ -432,14 +399,6 @@ internal final class WatchProjectViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.vm.inputs.saveButtonTapped(selected: false)
-
-      XCTAssertEqual(
-        ["CTA Clicked"],
-        self.dataLakeTrackingClient.events
-      )
-      XCTAssertEqual(["discover"], self.dataLakeTrackingClient.properties(forKey: "context_page"))
-      XCTAssertEqual(["watch_project"], self.dataLakeTrackingClient.properties(forKey: "context_cta"))
-      XCTAssertEqual(["watch"], self.dataLakeTrackingClient.properties(forKey: "context_type"))
 
       XCTAssertEqual(
         ["CTA Clicked"],

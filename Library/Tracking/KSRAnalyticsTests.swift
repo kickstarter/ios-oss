@@ -162,7 +162,6 @@ final class KSRAnalyticsTests: TestCase {
   }
 
   func testSessionProperties_DeviceOrientation_FaceDown() {
-    let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let device = MockDevice(orientation: .faceDown)
     let ksrAnalytics = KSRAnalytics(
@@ -602,43 +601,6 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("magic", segmentClientProperties?["discover_sort"] as? String)
   }
 
-  // MARK: - Pledge Properties Tests
-
-  func testPledgeProperties() {
-    let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
-
-    let project = Project.cosmicSurgery
-    let reward = Reward.template
-
-    ksrAnalytics.trackAddNewCardButtonClicked(project: project, refTag: .recommended, reward: reward)
-
-    let segmentClientProps = segmentClient.properties.last
-
-    XCTAssertEqual(true, segmentClientProps?["pledge_backer_reward_has_items"] as? Bool)
-    XCTAssertEqual(1, segmentClientProps?["pledge_backer_reward_id"] as? Int)
-    XCTAssertEqual(10.00, segmentClientProps?["pledge_backer_reward_minimum"] as? Double)
-
-    XCTAssertEqual("recommended", segmentClientProps?["session_ref_tag"] as? String)
-  }
-
-  func testPledgeProperties_NoReward() {
-    let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
-
-    let project = Project.cosmicSurgery
-    let reward = Reward.noReward
-      |> Reward.lens.minimum .~ 5.0
-
-    ksrAnalytics.trackAddNewCardButtonClicked(project: project, refTag: .recommended, reward: reward)
-
-    let segmentClientProps = segmentClient.properties.last
-
-    XCTAssertEqual(false, segmentClientProps?["pledge_backer_reward_has_items"] as? Bool)
-    XCTAssertEqual(0, segmentClientProps?["pledge_backer_reward_id"] as? Int)
-    XCTAssertEqual(5.00, segmentClientProps?["pledge_backer_reward_minimum"] as? Double)
-  }
-
   // MARK: - Project Page Tracking
 
   func testTrackProjectViewed_SectionContext_Campaign() {
@@ -997,7 +959,6 @@ final class KSRAnalyticsTests: TestCase {
   }
 
   func testUnWatchProjectButtonClicked_ProjectPageLocationContext() {
-    let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
 
@@ -1006,13 +967,6 @@ final class KSRAnalyticsTests: TestCase {
       page: .projectPage,
       typeContext: .unwatch
     )
-
-    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
-    XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("watch_project", dataLakeClient.properties.last?["context_cta"] as? String)
-    XCTAssertEqual("unwatch", dataLakeClient.properties.last?["context_type"] as? String)
-
-    self.assertProjectProperties(dataLakeClient.properties.last)
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
@@ -1023,7 +977,6 @@ final class KSRAnalyticsTests: TestCase {
   }
 
   func testTrackGotoCreatorDetailsClicked() {
-    let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
 
@@ -1031,16 +984,9 @@ final class KSRAnalyticsTests: TestCase {
       project: .template
     )
 
-    XCTAssertEqual(["CTA Clicked"], dataLakeClient.events)
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
-
-    XCTAssertEqual("creator_details", dataLakeClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("creator_details", segmentClient.properties.last?["context_cta"] as? String)
-
-    XCTAssertEqual("project", dataLakeClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
-
-    self.assertProjectProperties(dataLakeClient.properties.last)
     self.assertProjectProperties(segmentClient.properties.last)
   }
 
@@ -1221,26 +1167,6 @@ final class KSRAnalyticsTests: TestCase {
     )
   }
 
-  func testTrackAddNewCardButtonClicked() {
-    let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
-
-    ksrAnalytics.trackAddNewCardButtonClicked(
-      project: .template,
-      refTag: .activity,
-      reward: .template
-    )
-
-    let segmentClientProps = segmentClient.properties.last
-
-    XCTAssertEqual(["Add New Card Button Clicked"], segmentClient.events)
-
-    self.assertProjectProperties(segmentClientProps)
-    self.assertPledgeProperties(segmentClientProps)
-
-    XCTAssertEqual("activity", segmentClientProps?["session_ref_tag"] as? String)
-  }
-
   func testTrackManagePledgePageViewed() {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
@@ -1285,49 +1211,6 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual("project", segmentClientProps?["context_page"] as? String)
 
     self.assertProjectProperties(segmentClientProps)
-  }
-
-  // MARK: - Onboarding Tracking
-
-  func testOnboardingGetStartedButtonClicked() {
-    let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
-
-    ksrAnalytics.trackOnboardingGetStartedButtonClicked()
-
-    XCTAssertEqual(["Onboarding Get Started Button Clicked"], segmentClient.events)
-
-    XCTAssertEqual(["landing_page"], segmentClient.properties(forKey: "context_page"))
-  }
-
-  func testOnboardingCarouselSwipedButtonClicked() {
-    let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
-
-    ksrAnalytics.trackOnboardingCarouselSwiped()
-
-    XCTAssertEqual(["Onboarding Carousel Swiped"], segmentClient.events)
-    XCTAssertEqual(["landing_page"], segmentClient.properties(forKey: "context_page"))
-  }
-
-  func testOnboardingSkipButtonClicked() {
-    let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
-
-    ksrAnalytics.trackOnboardingSkipButtonClicked()
-
-    XCTAssertEqual(["Onboarding Skip Button Clicked"], segmentClient.events)
-    XCTAssertEqual(["onboarding"], segmentClient.properties(forKey: "context_page"))
-  }
-
-  func testOnboardingContinueButtonClicked() {
-    let segmentClient = MockTrackingClient()
-    let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
-
-    ksrAnalytics.trackOnboardingContinueButtonClicked()
-
-    XCTAssertEqual(["Onboarding Continue Button Clicked"], segmentClient.events)
-    XCTAssertEqual(["onboarding"], segmentClient.properties(forKey: "context_page"))
   }
 
   // MARK: - Activities Tracking
@@ -1771,40 +1654,6 @@ final class KSRAnalyticsTests: TestCase {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
 
-    ksrAnalytics.trackActivities(count: 1)
-    XCTAssertEqual(
-      "activity_feed",
-      segmentClient.properties.last?["context_page"] as? String
-    )
-
-    ksrAnalytics.trackAddNewCardButtonClicked(
-      page: .pledgeAddNewCard,
-      project: .template,
-      refTag: nil,
-      reward: .template
-    )
-    XCTAssertEqual(
-      "pledge_add_new_card",
-      segmentClient.properties.last?["context_page"] as? String
-    )
-
-    ksrAnalytics.trackAddNewCardButtonClicked(
-      page: .settingsAddNewCard,
-      project: .template,
-      refTag: nil,
-      reward: .template
-    )
-    XCTAssertEqual(
-      "settings_add_new_card",
-      segmentClient.properties.last?["context_page"] as? String
-    )
-
-    ksrAnalytics.trackCollectionViewed(params: .defaults)
-    XCTAssertEqual(
-      "editorial_collection",
-      segmentClient.properties.last?["context_page"] as? String
-    )
-
     ksrAnalytics.trackDiscovery(params: .defaults)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
 
@@ -1813,21 +1662,6 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackExploreButtonClicked()
     XCTAssertEqual("activity_feed", segmentClient.properties.last?["context_page"] as? String)
-
-    ksrAnalytics.trackFacebookLoginOrSignupButtonClicked(intent: .generic)
-    XCTAssertEqual("log_in_sign_up", segmentClient.properties.last?["context_page"] as? String)
-
-    ksrAnalytics.trackForgotPasswordViewed()
-    XCTAssertEqual("forgot_password", segmentClient.properties.last?["context_page"] as? String)
-
-    ksrAnalytics.trackLoginButtonClicked(intent: .generic)
-    XCTAssertEqual("log_in_sign_up", segmentClient.properties.last?["context_page"] as? String)
-
-    ksrAnalytics.trackLoginOrSignupButtonClicked(intent: .generic)
-    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
-
-    ksrAnalytics.trackLoginOrSignupPageViewed(intent: .generic)
-    XCTAssertEqual("log_in_sign_up", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackLoginSubmitButtonClicked()
     XCTAssertEqual("log_in", segmentClient.properties.last?["context_page"] as? String)
@@ -1895,9 +1729,6 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackProjectSearchView(params: .defaults)
     XCTAssertEqual("search", segmentClient.properties.last?["context_page"] as? String)
 
-    ksrAnalytics.trackSwipedProject(.template, refTag: nil)
-    XCTAssertEqual("project", segmentClient.properties.last?["context_page"] as? String)
-
     ksrAnalytics.trackLoginPageViewed()
     XCTAssertEqual("log_in", segmentClient.properties.last?["context_page"] as? String)
 
@@ -1911,15 +1742,6 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics
       .trackAddOnsPageViewed(project: .template, reward: .template, checkoutData: .template, refTag: nil)
     XCTAssertEqual("add_ons", segmentClient.properties.last?["context_page"] as? String)
-
-    ksrAnalytics.track2FAViewed()
-    XCTAssertEqual(
-      "two_factor_auth",
-      segmentClient.properties.last?["context_page"] as? String
-    )
-
-    ksrAnalytics.trackEmailVerificationScreenViewed()
-    XCTAssertEqual("email_verification", segmentClient.properties.last?["context_page"] as? String)
   }
 
   func testCTAContextTrackingStrings() {

@@ -1109,21 +1109,11 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.vm.inputs.shippingRuleSelected(shippingRule)
     self.scheduler.advance()
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
-    XCTAssertEqual("add_ons", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("add_ons", self.segmentTrackingClient.properties.last?["context_page"] as? String)
 
     self.vm.inputs.continueButtonTapped()
 
-    XCTAssertEqual(
-      ["Page Viewed", "CTA Clicked"],
-      self.dataLakeTrackingClient.events
-    )
-    XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("context_"))
-    XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("session_"))
-    XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("project_"))
-    XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("user_"))
     XCTAssertEqual(
       ["Page Viewed", "CTA Clicked"],
       self.segmentTrackingClient.events
@@ -1203,9 +1193,7 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
     self.vm.inputs.shippingRuleSelected(shippingRule)
     self.scheduler.advance()
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
-    XCTAssertEqual("add_ons", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("add_ons", self.segmentTrackingClient.properties.last?["context_page"] as? String)
 
     self.vm.inputs.rewardAddOnCardViewDidSelectQuantity(quantity: 3, rewardId: 2)
@@ -1216,14 +1204,6 @@ final class RewardAddOnSelectionViewModelTests: TestCase {
 
     self.vm.inputs.continueButtonTapped()
 
-    XCTAssertEqual(
-      ["Page Viewed", "CTA Clicked"],
-      self.dataLakeTrackingClient.events
-    )
-    XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("context_"))
-    XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("session_"))
-    XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("project_"))
-    XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("user_"))
     XCTAssertEqual(
       ["Page Viewed", "CTA Clicked"],
       self.segmentTrackingClient.events

@@ -33,7 +33,6 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
   }
 
   func testTransitionLifecycle_ScrollDown_BackUp() {
-    self.vm.inputs.configureWith(project: .template, refTag: .category)
     self.vm.inputs.viewDidLoad()
 
     self.cancelInteractiveTransition.assertValueCount(0)
@@ -83,7 +82,6 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
   }
 
   func testTransitionLifecycle_ScrollDown_BackUp_Overscroll() {
-    self.vm.inputs.configureWith(project: .template, refTag: .category)
     self.vm.inputs.viewDidLoad()
 
     self.cancelInteractiveTransition.assertValueCount(0)
@@ -159,7 +157,6 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
   }
 
   func testTransitionLifecycle_Overscroll_Cancel() {
-    self.vm.inputs.configureWith(project: .template, refTag: .category)
     self.vm.inputs.viewDidLoad()
 
     self.cancelInteractiveTransition.assertValueCount(0)
@@ -209,7 +206,6 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
   }
 
   func testTransitionLifecycle_Overscroll_ScrollBack() {
-    self.vm.inputs.configureWith(project: .template, refTag: .category)
     self.vm.inputs.viewDidLoad()
 
     self.cancelInteractiveTransition.assertValueCount(0)
@@ -277,7 +273,6 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
   //   - Scroll back up to precisely contentOffset=0 to cancel dismissal
   //   - Transition phase is in weird state where it cannot dismiss.
   func testTransitionLifecycle_Bug() {
-    self.vm.inputs.configureWith(project: .template, refTag: .category)
     self.vm.inputs.viewDidLoad()
 
     self.cancelInteractiveTransition.assertValueCount(0)
@@ -341,9 +336,7 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
 
   func testSetNeedsStatusBarAppearanceUpdate() {
     let playlist = (0...4).map { idx in .template |> Project.lens.id .~ (idx + 42) }
-    let project = playlist.first!
 
-    self.vm.inputs.configureWith(project: project, refTag: .category)
     self.vm.inputs.viewDidLoad()
 
     self.setNeedsStatusBarAppearanceUpdate.assertValueCount(0)
@@ -358,7 +351,6 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
   }
 
   func testSetInitialPagerViewController() {
-    self.vm.inputs.configureWith(project: .template, refTag: .category)
 
     self.setInitialPagerViewController.assertValueCount(0)
 
@@ -371,7 +363,6 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     let playlist = (0...4).map { idx in .template |> Project.lens.id .~ (idx + 42) }
     let project = playlist.first!
 
-    self.vm.inputs.configureWith(project: project, refTag: .category)
     self.vm.inputs.viewDidLoad()
 
     self.vm.inputs.willTransition(toProject: playlist[1], at: 1)
@@ -380,24 +371,20 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.notifyDelegateTransitionedToProjectIndex.assertValueCount(
       0, "Does not emit without completion of swipe."
     )
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+    
     XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.willTransition(toProject: playlist[1], at: 1)
     self.vm.inputs.pageTransition(completed: true, from: 0)
 
     self.notifyDelegateTransitionedToProjectIndex.assertValues([1])
-    XCTAssertEqual(["Project Swiped"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Project Swiped"], self.segmentTrackingClient.events)
 
     self.vm.inputs.willTransition(toProject: playlist[1], at: 2)
     self.vm.inputs.pageTransition(completed: true, from: 1)
 
     self.notifyDelegateTransitionedToProjectIndex.assertValues([1, 2])
-    XCTAssertEqual(
-      ["Project Swiped", "Project Swiped"],
-      self.dataLakeTrackingClient.events
-    )
+    
     XCTAssertEqual(
       ["Project Swiped", "Project Swiped"],
       self.segmentTrackingClient.events
@@ -407,9 +394,6 @@ internal final class ProjectNavigatorViewModelTests: TestCase {
     self.vm.inputs.pageTransition(completed: true, from: 2)
 
     self.notifyDelegateTransitionedToProjectIndex.assertValues([1, 2, 1])
-    XCTAssertEqual([
-      "Project Swiped", "Project Swiped", "Project Swiped"
-    ], self.dataLakeTrackingClient.events)
     XCTAssertEqual([
       "Project Swiped", "Project Swiped", "Project Swiped"
     ], self.segmentTrackingClient.events)
