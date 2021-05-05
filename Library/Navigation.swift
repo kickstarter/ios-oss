@@ -13,6 +13,7 @@ public enum Navigation: Equatable {
   case tab(Tab)
   case project(Param, Navigation.Project, refTag: RefTag?)
   case projectPreview(Param, Navigation.Project, refTag: RefTag?, token: String)
+  case settings(Navigation.Settings)
   case user(Param, Navigation.User)
 
   public enum Checkout: Equatable {
@@ -70,6 +71,10 @@ public enum Navigation: Equatable {
       case root
       case comments
     }
+  }
+
+  public enum Settings: Equatable {
+    case notifications(String, Bool)
   }
 
   public enum User: Equatable {
@@ -146,6 +151,7 @@ private let allRoutes: [String: (RouteParamsDecoded) -> Navigation?] = [
   "/projects/:creator_param/:project_param/updates": updates,
   "/projects/:creator_param/:project_param/posts/:update_param/comments": updateComments,
   "/projects/:creator_param/:project_param/surveys/:survey_param": projectSurvey,
+  "/settings/:notification_param/:enabled_param": settingsNotifications,
   "/users/:user_param/surveys/:survey_response_id": userSurvey
 ]
 
@@ -167,6 +173,7 @@ private let deepLinkRoutes: [String: (RouteParamsDecoded) -> Navigation?] = allR
     "/projects/:creator_param/:project_param/posts/:update_param/comments",
     "/projects/:creator_param/:project_param/surveys/:survey_param",
     "/projects/:creator_param/:project_param/pledge",
+    "/settings/:notification_param/:enabled_param",
     "/users/:user_param/surveys/:survey_response_id"
   ]
 )
@@ -474,6 +481,15 @@ private func userSurvey(_ params: RouteParamsDecoded) -> Navigation? {
   return nil
 }
 
+private func settingsNotifications(_ params: RouteParamsDecoded) -> Navigation? {
+  guard
+    let notificationsParam = params.notificationParam(),
+    let enabled = params.enabledParam()
+  else { return nil }
+
+  return Navigation.settings(.notifications(notificationsParam, enabled))
+}
+
 // MARK: - Helpers
 
 private func parsedParams(url: URL, fromTemplate template: String) -> RouteParamsDecoded? {
@@ -562,7 +578,9 @@ extension Dictionary {
 extension RouteParamsDecoded {
   fileprivate enum CodingKeys: String, CodingKey {
     case messageThreadId = "message_thread_id"
+    case notificationParam = "notification_param"
     case checkoutParam = "checkout_param"
+    case enabledParam = "enabled_param"
     case payload
     case projectParam = "project_param"
     case ref
@@ -572,6 +590,11 @@ extension RouteParamsDecoded {
     case surveyParam = "survey_param"
     case userParam = "user_param"
     case surveyResponseId = "survey_response_id"
+  }
+
+  public func enabledParam() -> Bool? {
+    let key = CodingKeys.enabledParam.rawValue
+    return self[key].flatMap(Bool.init)
   }
 
   public func refTag() -> RefTag? {
@@ -607,6 +630,11 @@ extension RouteParamsDecoded {
   public func messageThreadId() -> Int? {
     let key = CodingKeys.messageThreadId.rawValue
     return self[key].flatMap { Int($0) }
+  }
+
+  public func notificationParam() -> String? {
+    let key = CodingKeys.notificationParam.rawValue
+    return self[key]
   }
 
   public func checkoutParam() -> Int? {
