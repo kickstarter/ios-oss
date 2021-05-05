@@ -45,9 +45,6 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       self.emptyStateIsVisible.assertValueCount(0)
       self.isRefreshing.assertValues([true])
 
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
-      XCTAssertEqual([], self.dataLakeTrackingClient.properties(forKey: "type", as: String.self))
-
       XCTAssertEqual([], self.segmentTrackingClient.events)
       XCTAssertEqual([], self.segmentTrackingClient.properties(forKey: "type", as: String.self))
 
@@ -116,9 +113,6 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       self.emptyStateProjectsType.assertValues([.saved])
       self.isRefreshing.assertValues([true, false])
 
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
-      XCTAssertEqual([], self.dataLakeTrackingClient.properties(forKey: "type", as: String.self))
-
       XCTAssertEqual([], self.segmentTrackingClient.events)
       XCTAssertEqual([], self.segmentTrackingClient.properties(forKey: "type", as: String.self))
 
@@ -147,25 +141,8 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
       self.goToProject.assertValues([project], "Project emmitted.")
       self.goToProjectRefTag.assertValues([.profileBacked], "RefTag = profile_backed emitted.")
 
-      XCTAssertEqual(self.dataLakeTrackingClient.events, ["CTA Clicked"])
       XCTAssertEqual(self.segmentTrackingClient.events, ["CTA Clicked"])
 
-      XCTAssertEqual(
-        ["profile"],
-        self.dataLakeTrackingClient.properties(forKey: "context_page", as: String.self)
-      )
-      XCTAssertEqual(
-        ["project"],
-        self.dataLakeTrackingClient.properties(forKey: "context_type", as: String.self)
-      )
-      XCTAssertEqual(
-        ["backed"],
-        self.dataLakeTrackingClient.properties(forKey: "context_section", as: String.self)
-      )
-      XCTAssertEqual(
-        ["account_menu"],
-        self.dataLakeTrackingClient.properties(forKey: "context_location", as: String.self)
-      )
       XCTAssertEqual(
         ["profile"],
         self.segmentTrackingClient.properties(forKey: "context_page", as: String.self)

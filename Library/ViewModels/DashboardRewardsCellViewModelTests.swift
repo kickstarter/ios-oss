@@ -142,7 +142,6 @@ internal final class DashboardRewardsCellViewModelTests: TestCase {
     self.hideSeeAllTiersButton.assertValues([false, true])
     self.notifyDelegateAddedRewardRows.assertValueCount(1, "Additional rewards were added.")
 
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
     XCTAssertEqual([], self.segmentTrackingClient.events)
   }
 

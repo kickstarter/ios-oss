@@ -325,12 +325,10 @@ final class CancelPledgeViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
       XCTAssertEqual([], self.segmentTrackingClient.events)
 
       self.vm.inputs.cancelPledgeButtonTapped()
 
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
       XCTAssertEqual([], self.segmentTrackingClient.events)
     }
   }
