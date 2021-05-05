@@ -51,17 +51,6 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.outputs.startTwoFactorChallenge.observe(self.startTwoFactorChallenge.observer)
   }
 
-  func testLoginIntentTracking_Default() {
-    self.vm.inputs.configureWith(.loginTab, project: nil, reward: nil)
-
-    XCTAssertEqual([], self.segmentTrackingClient.events, "Login tout did not track")
-
-    self.vm.inputs.viewWillAppear()
-
-    XCTAssertEqual(["Log In or Signup Page Viewed"], self.segmentTrackingClient.events)
-    XCTAssertEqual("login_tab", self.segmentTrackingClient.properties.last?["login_intent"] as? String)
-  }
-
   func testLoginIntent_Pledge() {
     let reward = Reward.template
       |> Reward.lens.id .~ 10
@@ -71,15 +60,9 @@ final class LoginToutViewModelTests: TestCase {
     self.vm.inputs.configureWith(.backProject, project: project, reward: reward)
     self.vm.inputs.viewWillAppear()
 
-    XCTAssertEqual(["Log In or Signup Page Viewed"], self.segmentTrackingClient.events)
-    XCTAssertEqual(["pledge"], self.segmentTrackingClient.properties(forKey: "login_intent"))
-    XCTAssertEqual(
-      ["2"], self.segmentTrackingClient.properties(forKey: "project_pid", as: String.self),
-      "Tracking properties contain project properties"
-    )
-    XCTAssertEqual(
-      [10], self.segmentTrackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self),
-      "Tracking properties contain pledge properties"
+    self.logInContextText.assertValues(
+      ["Please log in or sign up to back this project."],
+      "Emits login Context Text"
     )
   }
 
@@ -90,13 +73,10 @@ final class LoginToutViewModelTests: TestCase {
 
     self.startLogin.assertValueCount(1, "Start login emitted")
 
-    XCTAssertEqual(
-      ["Log In or Signup Page Viewed", "Log In Button Clicked"],
-      self.segmentTrackingClient.events
+    self.logInContextText.assertValues(
+      ["Pledge to projects and view all your saved and backed projects in one place."],
+      "Emits login Context Text"
     )
-    XCTAssertEqual(["activity", "activity"], self.segmentTrackingClient.properties(forKey: "login_intent"))
-    XCTAssertEqual([nil, nil], self.segmentTrackingClient.properties(forKey: "project_pid"))
-    XCTAssertEqual([nil, nil], self.segmentTrackingClient.properties(forKey: "pledge_backer_reward_id"))
   }
 
   func testStartLogin_PledgeIntent() {
@@ -106,15 +86,9 @@ final class LoginToutViewModelTests: TestCase {
 
     self.startLogin.assertValueCount(1)
 
-    XCTAssertEqual(
-      ["Log In or Signup Page Viewed", "Log In Button Clicked"],
-      self.segmentTrackingClient.events
-    )
-    XCTAssertEqual(["pledge", "pledge"], self.segmentTrackingClient.properties(forKey: "login_intent"))
-    XCTAssertEqual(["1", "1"], self.segmentTrackingClient.properties(forKey: "project_pid", as: String.self))
-    XCTAssertEqual(
-      [1, 1],
-      self.segmentTrackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self)
+    self.logInContextText.assertValues(
+      ["Please log in or sign up to back this project."],
+      "Emits login with pledge intent Context Text"
     )
   }
 
@@ -125,13 +99,10 @@ final class LoginToutViewModelTests: TestCase {
 
     self.startSignup.assertValueCount(1, "Start sign up emitted")
 
-    XCTAssertEqual(
-      ["Log In or Signup Page Viewed", "Signup Button Clicked"],
-      self.segmentTrackingClient.events
+    self.logInContextText.assertValues(
+      ["Pledge to projects and view all your saved and backed projects in one place."],
+      "Emits Signup Context Text"
     )
-    XCTAssertEqual(["activity", "activity"], self.segmentTrackingClient.properties(forKey: "login_intent"))
-    XCTAssertEqual([nil, nil], self.segmentTrackingClient.properties(forKey: "project_pid"))
-    XCTAssertEqual([nil, nil], self.segmentTrackingClient.properties(forKey: "pledge_backer_reward_id"))
   }
 
   func testStartSignup_PledgeIntent() {
@@ -141,15 +112,9 @@ final class LoginToutViewModelTests: TestCase {
 
     self.startSignup.assertValueCount(1)
 
-    XCTAssertEqual(
-      ["Log In or Signup Page Viewed", "Signup Button Clicked"],
-      self.segmentTrackingClient.events
-    )
-    XCTAssertEqual(["pledge", "pledge"], self.segmentTrackingClient.properties(forKey: "login_intent"))
-    XCTAssertEqual(["1", "1"], self.segmentTrackingClient.properties(forKey: "project_pid", as: String.self))
-    XCTAssertEqual(
-      [1, 1],
-      self.segmentTrackingClient.properties(forKey: "pledge_backer_reward_id", as: Int.self)
+    self.logInContextText.assertValues(
+      ["Please log in or sign up to back this project."],
+      "Emits Signup with pledge login Context Text"
     )
   }
 
@@ -215,13 +180,6 @@ final class LoginToutViewModelTests: TestCase {
 
     self.isLoading.assertValues([true, false])
     self.logIntoEnvironment.assertValueCount(1, "Log into environment.")
-    XCTAssertEqual(
-      [
-        "Log In or Signup Page Viewed",
-        "Facebook Log In or Signup Button Clicked"
-      ],
-      self.segmentTrackingClient.events
-    )
 
     self.vm.inputs.environmentLoggedIn()
 
@@ -269,13 +227,6 @@ final class LoginToutViewModelTests: TestCase {
       [AlertError.facebookLoginAttemptFail(error: error)],
       "Show Facebook Attempt Login error"
     )
-    XCTAssertEqual(
-      [
-        "Log In or Signup Page Viewed",
-        "Facebook Log In or Signup Button Clicked"
-      ],
-      self.segmentTrackingClient.events
-    )
   }
 
   func testLoginFacebookFlow_AttemptFail_WithDefaultMessage() {
@@ -303,13 +254,6 @@ final class LoginToutViewModelTests: TestCase {
     self.showFacebookErrorAlert.assertValues(
       [AlertError.facebookLoginAttemptFail(error: error)],
       "Show Facebook Attempt Login error"
-    )
-    XCTAssertEqual(
-      [
-        "Log In or Signup Page Viewed",
-        "Facebook Log In or Signup Button Clicked"
-      ],
-      self.segmentTrackingClient.events
     )
   }
 
@@ -355,13 +299,6 @@ final class LoginToutViewModelTests: TestCase {
 
       self.isLoading.assertValues([true, false])
       showFacebookErrorAlert.assertValues([AlertError.facebookTokenFail], "Show Facebook token fail error")
-      XCTAssertEqual(
-        [
-          "Log In or Signup Page Viewed",
-          "Facebook Log In or Signup Button Clicked"
-        ],
-        self.segmentTrackingClient.events
-      )
     }
   }
 
@@ -408,13 +345,6 @@ final class LoginToutViewModelTests: TestCase {
         [AlertError.genericFacebookError(envelope: error)],
         "Show Facebook account taken error"
       )
-      XCTAssertEqual(
-        [
-          "Log In or Signup Page Viewed",
-          "Facebook Log In or Signup Button Clicked"
-        ],
-        self.segmentTrackingClient.events
-      )
     }
   }
 
@@ -460,13 +390,6 @@ final class LoginToutViewModelTests: TestCase {
       showFacebookErrorAlert.assertValues(
         [AlertError.genericFacebookError(envelope: error)],
         "Show Facebook account taken error"
-      )
-      XCTAssertEqual(
-        [
-          "Log In or Signup Page Viewed",
-          "Facebook Log In or Signup Button Clicked"
-        ],
-        self.segmentTrackingClient.events
       )
     }
   }
@@ -516,13 +439,6 @@ final class LoginToutViewModelTests: TestCase {
       self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       self.showFacebookErrorAlert.assertValueCount(0, "Facebook login fail does not emit")
       self.startFacebookConfirmation.assertValueCount(0, "Facebook confirmation did not emit")
-      XCTAssertEqual(
-        [
-          "Log In or Signup Page Viewed",
-          "Facebook Log In or Signup Button Clicked"
-        ],
-        self.segmentTrackingClient.events
-      )
     }
   }
 
@@ -571,13 +487,6 @@ final class LoginToutViewModelTests: TestCase {
       )
       self.logIntoEnvironment.assertValueCount(0, "Did not log into environment.")
       self.showFacebookErrorAlert.assertValueCount(0, "Facebook login fail does not emit")
-      XCTAssertEqual(
-        [
-          "Log In or Signup Page Viewed",
-          "Facebook Log In or Signup Button Clicked"
-        ],
-        self.segmentTrackingClient.events
-      )
 
       self.vm.inputs.viewWillAppear()
 
@@ -734,13 +643,6 @@ final class LoginToutViewModelTests: TestCase {
 
     self.vm.inputs.appleLoginButtonPressed()
 
-    XCTAssertEqual(
-      [
-        "Log In or Signup Page Viewed",
-        "Continue With Apple Button Clicked"
-      ],
-      self.segmentTrackingClient.events
-    )
     self.attemptAppleLogin.assertValueCount(1)
   }
 
