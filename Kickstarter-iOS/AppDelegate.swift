@@ -530,3 +530,15 @@ extension AppDelegate: ABKInAppMessageControllerDelegate {
     return self.viewModel.inputs.brazeWillDisplayInAppMessage(inAppMessage)
   }
 }
+
+// MARK: - ABKURLDelegate
+
+extension AppDelegate: ABKURLDelegate {
+  func handleAppboyURL(
+    _ url: URL?,
+    from _: ABKChannel,
+    withExtras extras: [AnyHashable: Any]?
+  ) -> Bool {
+    return self.viewModel.inputs.brazeDidHandleURL(url, extras: extras)
+  }
+}
