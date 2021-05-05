@@ -355,9 +355,6 @@ final class CategorySelectionViewModelTests: TestCase {
 
       XCTAssertEqual("Continue Button Clicked", self.optimizelyClient.trackedEventKey)
 
-      XCTAssertEqual(["Onboarding Continue Button Clicked"], self.segmentTrackingClient.events)
-
-      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_page"), ["onboarding"])
       assertBaseUserAttributesLoggedOut()
     }
   }
@@ -438,8 +435,6 @@ final class CategorySelectionViewModelTests: TestCase {
       self.dismiss.assertValueCount(1)
 
       XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Skip Button Clicked")
-      XCTAssertEqual(self.segmentTrackingClient.events, ["Onboarding Skip Button Clicked"])
-      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_page"), ["onboarding"])
       assertBaseUserAttributesLoggedOut()
     }
   }
