@@ -1972,7 +1972,7 @@ final class KSRAnalyticsTests: TestCase {
     let dataLakeClientProps = dataLakeClient.properties.last
     let segmentClientProps = segmentClient.properties.last
 
-    XCTAssertEqual(10, dataLakeClientProps?["user_uid"] as? Int)
+    XCTAssertEqual("10", dataLakeClientProps?["user_uid"] as? String)
     XCTAssertEqual(5, dataLakeClientProps?["user_backed_projects_count"] as? Int)
     XCTAssertEqual(15, dataLakeClientProps?["user_created_projects_count"] as? Int)
     XCTAssertEqual(false, dataLakeClientProps?["user_is_admin"] as? Bool)
@@ -1980,7 +1980,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(2, dataLakeClientProps?["user_watched_projects_count"] as? Int)
     XCTAssertEqual(true, dataLakeClientProps?["user_facebook_connected"] as? Bool)
 
-    XCTAssertEqual(10, segmentClientProps?["user_uid"] as? Int)
+    XCTAssertEqual("10", segmentClientProps?["user_uid"] as? String)
     XCTAssertEqual(5, segmentClientProps?["user_backed_projects_count"] as? Int)
     XCTAssertEqual(15, segmentClientProps?["user_created_projects_count"] as? Int)
     XCTAssertEqual(false, segmentClientProps?["user_is_admin"] as? Bool)
