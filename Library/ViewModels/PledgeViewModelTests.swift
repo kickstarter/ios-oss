@@ -5552,7 +5552,7 @@ final class PledgeViewModelTests: TestCase {
         segmentClient.properties(forKey: "session_user_is_logged_in", as: Bool.self),
         [true]
       )
-      XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: Int.self), [1])
+      XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: String.self), ["1"])
 
       XCTAssertEqual(segmentClient.properties(forKey: "project_subcategory"), ["Illustration"])
       XCTAssertEqual(segmentClient.properties(forKey: "project_category"), ["Art"])

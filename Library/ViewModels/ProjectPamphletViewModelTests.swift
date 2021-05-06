@@ -821,7 +821,8 @@ final class ProjectPamphletViewModelTests: TestCase {
       XCTAssertEqual(segmentClient.events, ["Page Viewed"])
 
       XCTAssertEqual(segmentClient.properties(forKey: "session_user_is_logged_in", as: Bool.self), [true])
-      XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: Int.self), [1])
+      XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: String.self), ["1"])
+      XCTAssertEqual(segmentClient.properties(forKey: "session_ref_tag"), ["discovery"])
       XCTAssertEqual(segmentClient.properties(forKey: "project_subcategory"), ["Ceramics"])
       XCTAssertEqual(segmentClient.properties(forKey: "project_category"), ["Art"])
       XCTAssertEqual(segmentClient.properties(forKey: "project_country"), ["US"])

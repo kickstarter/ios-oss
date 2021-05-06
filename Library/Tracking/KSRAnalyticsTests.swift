@@ -1285,7 +1285,7 @@ final class KSRAnalyticsTests: TestCase {
 
     let segmentClientProps = segmentClient.properties.last
 
-    XCTAssertEqual(10, segmentClientProps?["user_uid"] as? Int)
+    XCTAssertEqual("10", segmentClientProps?["user_uid"] as? String)
     XCTAssertEqual(5, segmentClientProps?["user_backed_projects_count"] as? Int)
     XCTAssertEqual(15, segmentClientProps?["user_created_projects_count"] as? Int)
     XCTAssertEqual(false, segmentClientProps?["user_is_admin"] as? Bool)
