@@ -1,4 +1,5 @@
 "A_little_extra_to_help" = "Ein kleines Extra, um dieses Projekt zu veröffentlichen.";
+"A_monthly_pep_talk_to_boost_your_creative_practice_for_creators_of_all_types" = "Ein monatlicher Pep-Talk zur Förderung deiner kreativen Arbeit. Für Projektgründer jeder Art.";
 "A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency" = "Nach erfolgreicher Finanzierung des Projekts wird dein Finanzierungsbeitrag in der Währung des Erstellungslandes abgebucht. Bis dahin können nur ungefähre Beträge angezeigt werden.";
 "A_weekly_mix_of_handpicked_projects" = "Ein wöchentlicher Mix handverlesener Projekte plus gelegentliche Nachrichten von Kickstarter";
 "A_weekly_roundup_of_the_best_and_brightest" = "Eine wöchentliche Zusammenfassung der besten und cleversten Projekte auf Kickstarter, handverlesen von unserem Team.";
@@ -61,6 +62,7 @@
 "Backers_have_signed_up_to_help_kickstarter_creators_bring_their_ideas_to_life" = "Unterstützer haben Projektgründern auf Kickstarter dabei geholfen, kreative Ideen zu verwirklichen.";
 "Become_a_backer_to_leave_a_comment" = "Werde Unterstützer, um einen Kommentar zu hinterlassen.";
 "Big_Kickstarter_news_and_events_near_you" = "Ein paar Mal pro Jahr: Kickstarter-Neuigkeiten und Events in deiner Nähe.";
+"Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Das Neueste von Kickstarter plus gelegentlich für dich ausgewählte Projekte und Events.";
 "Biography" = "Biografie";
 "Bonus" = "Bonus";
 "Bonus_support" = "Bonus-Unterstützung";
@@ -91,6 +93,7 @@
 "Check_your_payment_details" = "Überprüfe die Daten deiner Zahlungsweise";
 "Choose_another_reward" = "Andere Belohnung auswählen";
 "Chooses_location_for_shipping" = "Legt %{location} als Versandort fest.";
+"Chosen_just_for_you" = "Speziell für dich ausgewählt";
 "Close_live_stream" = "Live-Stream schließen";
 "Close_project" = "Projekt schließen";
 "Closes_filters" = "Filter schließen.";
@@ -111,12 +114,6 @@
 "Continue_to_payment" = "Weiter zur Zahlung";
 "Continue_to_update_pledge" = "Weiter zu Beitrag aktualisieren";
 "Continue_with_Facebook" = "Weiter mit Facebook";
-"Continue_with_quantity_add_ons.few" = "Weiter mit %{quantity} Add-ons";
-"Continue_with_quantity_add_ons.many" = "Weiter mit %{quantity} Add-ons";
-"Continue_with_quantity_add_ons.one" = "Weiter mit %{quantity} Add-on";
-"Continue_with_quantity_add_ons.other" = "Weiter mit %{quantity} Add-ons";
-"Continue_with_quantity_add_ons.two" = "Weiter mit %{quantity} Add-ons";
-"Continue_with_quantity_add_ons.zero" = "Weiter mit %{quantity} Add-ons";
 "Continue_with_quantity_count_add_ons.few" = "Weiter mit %{quantity_count} Add-ons";
 "Continue_with_quantity_count_add_ons.many" = "Weiter mit %{quantity_count} Add-ons";
 "Continue_with_quantity_count_add_ons.one" = "Weiter mit %{quantity_count} Add-on";
@@ -124,7 +121,6 @@
 "Continue_with_quantity_count_add_ons.two" = "Weiter mit %{quantity_count} Add-ons";
 "Continue_with_quantity_count_add_ons.zero" = "Weiter mit %{quantity_count} Add-ons";
 "Continue_with_this_reward" = "Weiter mit dieser Belohnung?";
-"Continue_with_this_reward_It_doesnt_offer_these_add_ons" = "Weiter mit dieser Belohnung? Die folgenden Add-Ons werden dafür nicht angeboten:";
 "Couldnt_add_attachment" = "Anhang konnte nicht hinzugefügt werden";
 "Couldnt_open_live_stream_Try_again_later" = "Live-Stream konnte nicht geöffnet werden. Bitte versuche es später noch einmal.";
 "Couldnt_remove_attachment" = "Anhang konnte nicht entfernt werden";
@@ -152,7 +148,7 @@
 "Currency_MXN" = "$ Mexikanischer Peso (MXN)";
 "Currency_NOK" = "kr Norwegische Krone (NOK)";
 "Currency_NZD" = "$ Neuseeland-Dollar (NZD)";
-"Currency_PLN" = "zł Polish Złoty (PLN)";
+"Currency_PLN" = "zł Polnishcer Złoty (PLN)";
 "Currency_SEK" = "kr Schwedische Krone (SEK)";
 "Currency_SGD" = "$ Singapur-Dollar (SGD)";
 "Currency_USD" = "$ US-Dollar (USD)";
@@ -304,11 +300,15 @@
 "Keep_in_touch_after_your_campaign" = "Bleibe auch nach deiner Kampagne in Verbindung und plane dein nächstes Projekt.";
 "Keep_reading" = "Mehr lesen";
 "Keep_up_with_future_live_streams" = "Zeitnahe Info zu zukünftigen Live-Streams";
+"Kickstarter_Arts" = "Kunst bei Kickstarter";
+"Kickstarter_Games" = "Kickstarter Games";
+"Kickstarter_Invent" = "Kickstarter Invent";
 "Kickstarter_Music" = "Kickstarter Music";
 "Kickstarter_if_funded" = "Kickstarter (bei Finanzierung)";
 "Kickstarter_is_not_a_store" = "Kickstarter ist kein Geschäft.";
 "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life" = "Kickstarter ist kein Geschäft, sondern eine Plattform, um kreative Projekte zu verwirklichen.";
 "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "Kickstarter ist kein Geschäft, sondern eine Plattform, um kreative Projekte zu verwirklichen. <br/><a href=\"%{trust_link}\">Hier findest du mehr Info zur Rechenschftspflicht</a>";
+"Kickstarter_on_Film" = "Kickstarter on Film";
 "Know_when_creators_and_backers_message_you" = "Aktiviere Benachrichtigungen, damit du über eingehende Nachrichten von Projektgründern und Unterstützern Bescheid weißt.";
 "Learn_more_about_accountability" = "Weitere Informationen zur Rechenschaftspflicht";
 "Left_count_left.few" = "%{left_count} übrig";
@@ -356,6 +356,7 @@
 "New_payment_method" = "Neue Zahlungsmethode";
 "New_pledge_activity" = "Neue Finanzierungsbeiträge";
 "New_work_and_big_ideas_from_established_and" = "Neue Arbeiten und großartige Ideen von etablierten und neuen Künstlern.";
+"News_and_projects" = "Neuheiten und Projekte";
 "News_events" = "Ein paar Mal pro Jahr: Neuigkeiten und Events in deiner Nähe.";
 "Newsletters" = "Newsletter";
 "No_Results" = "Keine Ergebnisse";
@@ -380,6 +381,7 @@
 "Notifications" = "Benachrichtigungen";
 "Once_you_back_a_project_well_share" = "Wenn du ein Projekt unterstützt, werden wir dir hier maßgeschneiderte Empfehlungen machen.";
 "Only_amount_of_time_left_to_watch_this" = "Nur noch %{amount_of_time} live!";
+"Open_inbox" = "Posteingang öffnen";
 "Opens_comments" = "Öffnet Kommentare.";
 "Opens_creator_profile" = "Öffnet das Profil des Projektgründers.";
 "Opens_email_composer" = "Öffnet E-Mail-Vorlage.";
@@ -409,7 +411,7 @@
 "Please_log_in_or_sign_up_to_message_this_creator" = "Um dem Projektgründer eine Nachricht zu senden, musst du dich bitte anmelden oder registrieren.";
 "Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat" = "Bitte melde dich an oder registriere dich, um an diesem Live-Stream teilzunehmen.";
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Bitte melde dich an oder registriere dich, um diesen Live-Stream zu abonnieren.";
-"Pledge" = "Beitrag:";
+"Pledge" = "Beitrag leisten";
 "Pledge_activity" = "Finanzierungsbeiträge";
 "Pledge_amount" = "Beitragshöhe";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Du kannst jeden beliebigen Betrag eingeben, um das Projekt zu unterstützen.";
@@ -455,6 +457,7 @@
 "Recommendations_More_Info" = "Mehr Info zu Empfehlungen";
 "Recommended" = "Empfehlungen";
 "Recommended_For_You" = "Empfehlungen für dich";
+"Recommended_for_you" = "Empfehlungen für dich";
 "Recorded_Live" = "Live aufgenommen";
 "Recorded_live_with_creator_name" = "Live aufgenommen von <b>%{creator_name}</b>";
 "Remember_that_delivery_dates_are_not_guaranteed" = "Denke daran, dass es keine Garantie für das Lieferdatum gibt.";
@@ -670,6 +673,7 @@
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Wenn die Funktion Folgen gewählt wurde, kannst du die Aktivitäten von anderen einsehen und diese sehen deine Aktivitäten. Wenn die Funktion abgewählt wurde, werden diese Daten endgültig gelöscht.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Wenn du ein Projekt speicherst, senden wir dir 48 Stunden vor Ablauf eine Erinnerungs-E-Mail";
 "Which_categories_interest_you" = "Welche Kategorien interessieren dich?";
+"Working_on_it" = "Working on it";
 "Write_a_bio" = "Schreibe eine kurze Biografie, ein oder zwei Sätze genügen.";
 "Yes_cancel_it" = "Ja, abbrechen";
 "Yes_cancel_my_pledge" = "Ja, ich möchte meinen Beitrag zurückziehen";
@@ -710,8 +714,6 @@
 "Your_shipping_location" = "Dein Versand-Standort";
 "Youre_a_backer" = "Du unterstützt das Projekt!";
 "Youre_a_backer_no_punctuation" = "Du bist ein Unterstützer";
-"Youre_about_to_create_a_new_Kickstarter_account" = "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte bestätige diesen Vorgang.";
-"Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email" = "Du wirst hiermit ein neues Kickstarter-Konto mit deiner Facebook-E-Mail-Adresse anlegen. Bitte ändere oder bestätige die Adresse, die du mit deinem Kickstarter-Konto verbinden möchtest.";
 "Youre_all_set" = "Alles klar";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Du bist via Facebook (%{email}) verbunden. Erstelle ein Passwort für dieses Konto, um deine Anmeldedaten für Kickstarter zu ändern.";
 "Youre_offline" = "Du bist Offline. Sobald du wieder Online bist, navigiere in der App, um sie zu aktualisieren.";
