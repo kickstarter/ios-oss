@@ -1905,7 +1905,7 @@ private func userProperties(for user: User?, _ prefix: String = "user_") -> [Str
   props["is_admin"] = user.isAdmin
   props["launched_projects_count"] = user.stats
     .createdProjectsCount // product and insights defines launched_projects_count as only the createdProjectsCount
-  props["uid"] = user.id
+  props["uid"] = "\(user.id)"
   props["watched_projects_count"] = user.stats.starredProjectsCount
   props["facebook_connected"] = user.facebookConnected
 

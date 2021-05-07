@@ -65,6 +65,14 @@ final class KSRAnalyticsIdentityDataTests: XCTestCase {
       |> User.lens.notifications.messages .~ true
 
     XCTAssertNotEqual(KSRAnalyticsIdentityData(user3), KSRAnalyticsIdentityData(user4))
+
+    let user5 = User.template
+      |> User.lens.id .~ 1
+
+    let user6 = User.template
+      |> User.lens.id .~ 2
+
+    XCTAssertNotEqual(KSRAnalyticsIdentityData(user5), KSRAnalyticsIdentityData(user6))
   }
 
   func testAllTraits() {
