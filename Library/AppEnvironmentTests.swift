@@ -54,7 +54,7 @@ final class AppEnvironmentTests: XCTestCase {
   }
 
   func testUserSession() {
-    AppEnvironment.pushEnvironment()
+    AppEnvironment.pushEnvironment(userDefaults: MockKeyValueStore())
 
     XCTAssertNil(AppEnvironment.current.apiService.oauthToken)
     XCTAssertNil(AppEnvironment.current.currentUser)
