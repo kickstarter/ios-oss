@@ -990,21 +990,6 @@ final class KSRAnalyticsTests: TestCase {
     self.assertProjectProperties(segmentClient.properties.last)
   }
 
-  func testTrackPledgeCTAButtonClicked_FixState() {
-    let segmentClient = MockTrackingClient()
-    let project = Project.template
-    let loggedInUser = User.template |> \.id .~ 42
-
-    let ksrAnalytics = KSRAnalytics(
-      loggedInUser: loggedInUser,
-      segmentClient: segmentClient
-    )
-
-    ksrAnalytics.trackPledgeCTAButtonClicked(stateType: .fix, project: project)
-
-    XCTAssertEqual([], segmentClient.events)
-  }
-
   func testTrackPledgeCTAButtonClicked_PledgeState() {
     let segmentClient = MockTrackingClient()
     let project = Project.template
@@ -1021,21 +1006,6 @@ final class KSRAnalyticsTests: TestCase {
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
     XCTAssertEqual("pledge_initiate", segmentClientProps?["context_cta"] as? String)
-  }
-
-  func testTrackPledgeCTAButtonClicked_ManageState() {
-    let segmentClient = MockTrackingClient()
-    let project = Project.template
-    let loggedInUser = User.template |> \.id .~ 42
-
-    let ksrAnalytics = KSRAnalytics(
-      loggedInUser: loggedInUser,
-      segmentClient: segmentClient
-    )
-
-    ksrAnalytics.trackPledgeCTAButtonClicked(stateType: .manage, project: project)
-
-    XCTAssertEqual([], segmentClient.events)
   }
 
   func testTrackRewardButtonClicked() {

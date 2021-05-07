@@ -534,8 +534,6 @@ public final class KSRAnalytics {
     self.loggedInUser = loggedInUser
     self.screen = screen
     self.segmentClient = segmentClient
-
-    self.updateAndObservePreferredContentSizeCategory()
   }
 
   /// Configure Tracking Client's supporting user identity
@@ -557,26 +555,6 @@ public final class KSRAnalytics {
     )
 
     AppEnvironment.current.userDefaults.analyticsIdentityData = newData
-  }
-
-  private func updateAndObservePreferredContentSizeCategory() {
-    let update = { [weak self] in
-      self?.preferredContentSizeCategory = UIApplication.shared.preferredContentSizeCategory
-    }
-
-    self.preferredContentSizeCategoryObserver = NotificationCenter.default.addObserver(
-      forName: UIContentSizeCategory.didChangeNotification,
-      object: nil,
-      queue: OperationQueue.main
-    ) { _ in update() }
-
-    if Thread.isMainThread {
-      update()
-    } else {
-      DispatchQueue.main.async {
-        update()
-      }
-    }
   }
 
   deinit {
@@ -609,7 +587,7 @@ public final class KSRAnalytics {
         properties: properties
       )
     default:
-      break
+      return
     }
   }
 
