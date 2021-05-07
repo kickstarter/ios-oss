@@ -58,6 +58,7 @@ final class AppEnvironmentTests: XCTestCase {
 
     XCTAssertNil(AppEnvironment.current.apiService.oauthToken)
     XCTAssertNil(AppEnvironment.current.currentUser)
+    XCTAssertNil(AppEnvironment.current.userDefaults.analyticsIdentityData)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
     AppEnvironment.current.userDefaults.analyticsIdentityData = KSRAnalyticsIdentityData(.template)
