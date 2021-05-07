@@ -25,6 +25,8 @@ public struct KSRAnalyticsIdentityData: Equatable {
   }
 
   public static func == (lhs: KSRAnalyticsIdentityData, rhs: KSRAnalyticsIdentityData) -> Bool {
+    guard lhs.userId == rhs.userId else { return false }
+
     let uniqueTraits = lhs.uniqueTraits(comparedTo: rhs)
 
     return uniqueTraits.isEmpty
