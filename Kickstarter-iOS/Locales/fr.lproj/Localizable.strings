@@ -1,4 +1,5 @@
 "A_little_extra_to_help" = "Du soutien supplémentaire pour faire vivre ce projet.";
+"A_monthly_pep_talk_to_boost_your_creative_practice_for_creators_of_all_types" = "Tous les mois, quelques mots d'encouragement pour les créateurs de tous les horizons.";
 "A_successfully_funded_project_will_collect_your_pledge_in_its_native_currency" = "Si ce projet est intégralement financé, votre engagement sera débité dans la devise du projet. Les montants affichés ici sont approximatifs.";
 "A_weekly_mix_of_handpicked_projects" = "Une sélection de projets hebdomadaire, et de temps en temps des actualités de Kickstarter";
 "A_weekly_roundup_of_the_best_and_brightest" = "Un tour d'horizon hebdomadaire des meilleurs projets Kickstarter, triés sur le volet par nos soins.";
@@ -61,6 +62,7 @@
 "Backers_have_signed_up_to_help_kickstarter_creators_bring_their_ideas_to_life" = "Le nombre de contributeurs qui se sont inscrits sur Kickstarter pour faire vivre des idées créatives.";
 "Become_a_backer_to_leave_a_comment" = "Soutenez ce projet pour laisser un commentaire.";
 "Big_Kickstarter_news_and_events_near_you" = "Les grandes nouvelles et les événements près de chez vous, quelques fois par an.";
+"Big_Kickstarter_news_plus_occasional_projects_and_events_chosen_just_for_you" = "Les grandes actualités Kickstarter et quelques projets et événements de temps et temps, rien que pour vous.";
 "Biography" = "Biographie";
 "Bonus" = "Bonus";
 "Bonus_support" = "Coup de pouce";
@@ -91,6 +93,7 @@
 "Check_your_payment_details" = "Vérifiez vos coordonnées bancaires";
 "Choose_another_reward" = "Choisir une autre récompense";
 "Chooses_location_for_shipping" = "Sélectionne %{location} pour la livraison.";
+"Chosen_just_for_you" = "Rien que pour vous";
 "Close_live_stream" = "Fermer la diffusion en direct";
 "Close_project" = "Fermer le projet";
 "Closes_filters" = "Ferme les filtres.";
@@ -111,12 +114,6 @@
 "Continue_to_payment" = "Continuer vers le paiement";
 "Continue_to_update_pledge" = "Continuer la modification de mon engagement";
 "Continue_with_Facebook" = "Continuer avec Facebook";
-"Continue_with_quantity_add_ons.few" = "Continuer avec %{quantity} compléments";
-"Continue_with_quantity_add_ons.many" = "Continuer avec %{quantity} compléments";
-"Continue_with_quantity_add_ons.one" = "Continuer avec %{quantity} complément";
-"Continue_with_quantity_add_ons.other" = "Continuer avec %{quantity} compléments";
-"Continue_with_quantity_add_ons.two" = "Continuer avec %{quantity} compléments";
-"Continue_with_quantity_add_ons.zero" = "Continuer avec %{quantity} compléments";
 "Continue_with_quantity_count_add_ons.few" = "Continuer avec %{quantity_count} compléments";
 "Continue_with_quantity_count_add_ons.many" = "Continuer avec %{quantity_count} compléments";
 "Continue_with_quantity_count_add_ons.one" = "Continuer avec %{quantity_count} complément";
@@ -124,7 +121,6 @@
 "Continue_with_quantity_count_add_ons.two" = "Continuer avec %{quantity_count} compléments";
 "Continue_with_quantity_count_add_ons.zero" = "Continuer avec %{quantity_count} compléments";
 "Continue_with_this_reward" = "Continuer avec cette récompense ?";
-"Continue_with_this_reward_It_doesnt_offer_these_add_ons" = "Continuer avec cette récompense ? Les compléments suivants ne sont pas proposés :";
 "Couldnt_add_attachment" = "Impossible d'ajouter la pièce jointe";
 "Couldnt_open_live_stream_Try_again_later" = "Impossible d'ouvrir la diffusion en direct. Veuillez réessayer plus tard.";
 "Couldnt_remove_attachment" = "Impossible de supprimer la pièce jointe";
@@ -304,11 +300,15 @@
 "Keep_in_touch_after_your_campaign" = "Une façon de garder le contact après votre campagne et de prévoir votre prochain projet.";
 "Keep_reading" = "Plus";
 "Keep_up_with_future_live_streams" = "Soyez informé des prochaines diffusions en direct";
+"Kickstarter_Arts" = "L'art chez Kickstarter";
+"Kickstarter_Games" = "Kickstarter Games";
+"Kickstarter_Invent" = "Kickstarter Invent";
 "Kickstarter_Music" = "Kickstarter Music";
 "Kickstarter_if_funded" = "Kickstarter (si le projet est financé)";
 "Kickstarter_is_not_a_store" = "Kickstarter n'est pas un magasin.";
 "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life" = "Kickstarter n'est pas un magasin, mais un moyen de faire vivre des projets créatifs.";
 "Kickstarter_is_not_a_store_Its_a_way_to_bring_creative_projects_to_life_Learn_more_about_accountability" = "Kickstarter n'est pas un magasin, mais un moyen de faire vivre des projets créatifs. </br><a href=\"%{trust_link}\">En savoir plus sur la notion de responsabilité</a>";
+"Kickstarter_on_Film" = "Kickstarter on Film";
 "Know_when_creators_and_backers_message_you" = "Activez vos notifications pour savoir quand un créateur ou un contributeur vous envoie un message.";
 "Learn_more_about_accountability" = "En savoir plus sur la responsabilité";
 "Left_count_left.few" = "%{left_count} restantes";
@@ -356,6 +356,7 @@
 "New_payment_method" = "Nouveau moyen de paiement";
 "New_pledge_activity" = "Nouveaux engagements";
 "New_work_and_big_ideas_from_established_and" = "Grandes idées et nouveaux travaux signés par des artistes établis et émergents.";
+"News_and_projects" = "Actualités et projets";
 "News_events" = "Les grandes nouvelles et événements près de chez vous, quelques fois par an.";
 "Newsletters" = "Lettres d'information";
 "No_Results" = "Pas de résultats";
@@ -380,6 +381,7 @@
 "Notifications" = "Notifications";
 "Once_you_back_a_project_well_share" = "Une fois que vous aurez soutenu un projet, des recommandations personnalisées s'afficheront ici.";
 "Only_amount_of_time_left_to_watch_this" = "Plus que %{amount_of_time} pour regarder cette diffusion.";
+"Open_inbox" = "Ouvrir ma boîte de réception";
 "Opens_comments" = "Ouvre les commentaires.";
 "Opens_creator_profile" = "Ouvre le profil du créateur.";
 "Opens_email_composer" = "Ouvre l'éditeur d'e-mail.";
@@ -409,7 +411,7 @@
 "Please_log_in_or_sign_up_to_message_this_creator" = "Veuillez vous connecter ou vous inscrire pour écrire à ce créateur.";
 "Please_log_in_or_sign_up_to_participate_in_this_live_stream_chat" = "Veuillez vous connecter ou vous inscrire pour participer au chat de cette diffusion en direct.";
 "Please_log_in_or_sign_up_to_subscribe_to_this_live_stream" = "Veuillez vous connecter ou vous inscrire pour vous abonner à cette diffusion en direct.";
-"Pledge" = "Engagement :";
+"Pledge" = "Je m'engage";
 "Pledge_activity" = "Mes engagements";
 "Pledge_amount" = "Montant engagé";
 "Pledge_any_amount_to_help_bring_this_project_to_life" = "Choisissez le montant de votre engagement à soutenir ce projet.";
@@ -455,6 +457,7 @@
 "Recommendations_More_Info" = "Plus d'infos sur les recommandations";
 "Recommended" = "Rien que pour vous";
 "Recommended_For_You" = "Rien que pour vous";
+"Recommended_for_you" = "Rien que pour vous";
 "Recorded_Live" = "Enregistré en direct";
 "Recorded_live_with_creator_name" = "Enregistré en direct avec <b>%{creator_name}</b>";
 "Remember_that_delivery_dates_are_not_guaranteed" = "N'oubliez pas que les dates de livraison ne sont pas garanties.";
@@ -670,7 +673,9 @@
 "When_following_is_on_you_can_follow_the_acticity_of_others" = "Lorsque les fonctionnalités de suivi sont activées, vous pouvez vous abonner aux activités des autres, qui pourront à leur tour s'abonner aux vôtres. Pour supprimer définitivement ces données, il vous suffit de désactiver les fonctionnalités de suivi.";
 "When_you_save_a_project_we_ll_send_you_a_reminder" = "Pour chaque projet que vous enregistrez, nous vous enverrons un rappel 48 heures avant la fin de sa campagne.";
 "Which_categories_interest_you" = "Quelles sont les catégories qui vous intéressent ?";
+"Working_on_it" = "Working on it";
 "Write_a_bio" = "Une petite biographie d'une phrase ou deux.";
+"Yes" = "Oui";
 "Yes_cancel_it" = "Oui, annuler";
 "Yes_cancel_my_pledge" = "Oui, annuler mon engagement";
 "Yes_change_currency" = "Oui, changer de devise";
@@ -710,8 +715,6 @@
 "Your_shipping_location" = "Votre destination de livraison";
 "Youre_a_backer" = "Vous êtes contributeur !";
 "Youre_a_backer_no_punctuation" = "Vous êtes contributeur";
-"Youre_about_to_create_a_new_Kickstarter_account" = "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail que vous utilisez sur Facebook. Veuillez confirmer avant de continuer.";
-"Youre_about_to_create_a_new_Kickstarter_account_Please_edit_or_confirm_email" = "Vous êtes sur le point de créer un nouveau compte Kickstarter avec l'adresse e-mail associée à votre compte Facebook. Veuillez confirmer qu'il s'agit bien de l'adresse que vous souhaitez utiliser, ou la modifier si besoin.";
 "Youre_all_set" = "C'est tout bon";
 "Youre_connected_via_Facebook_email_Create_a_password_for_this_account" = "Vous êtes connecté par Facebook (%{email}). Si vous souhaitez modifier vos identifiants Kickstarter, veuillez définir le mot de passe de ce compte.";
 "Youre_offline" = "Vous êtes hors ligne. Dès que votre appareil se sera reconnecté, naviguez dans l'application pour la rafraîchir.";

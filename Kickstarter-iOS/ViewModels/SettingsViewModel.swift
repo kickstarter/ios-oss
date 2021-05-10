@@ -62,7 +62,7 @@ public final class SettingsViewModel: SettingsViewModelInputs,
         (
           message: Strings.profile_settings_logout_alert_message(),
           cancel: Strings.profile_settings_logout_alert_cancel_button(),
-          confirm: Strings.profile_settings_logout_alert_confirm_button()
+          confirm: Strings.Yes()
         )
       }
 

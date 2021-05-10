@@ -54,25 +54,30 @@ final class AppEnvironmentTests: XCTestCase {
   }
 
   func testUserSession() {
-    AppEnvironment.pushEnvironment()
+    AppEnvironment.pushEnvironment(userDefaults: MockKeyValueStore())
 
     XCTAssertNil(AppEnvironment.current.apiService.oauthToken)
     XCTAssertNil(AppEnvironment.current.currentUser)
+    XCTAssertNil(AppEnvironment.current.userDefaults.analyticsIdentityData)
 
     AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: User.template))
+    AppEnvironment.current.userDefaults.analyticsIdentityData = KSRAnalyticsIdentityData(.template)
 
     XCTAssertEqual("deadbeef", AppEnvironment.current.apiService.oauthToken?.token)
     XCTAssertEqual(User.template, AppEnvironment.current.currentUser)
+    XCTAssertNotNil(AppEnvironment.current.userDefaults.analyticsIdentityData)
 
     AppEnvironment.updateCurrentUser(User.template)
 
     XCTAssertEqual("deadbeef", AppEnvironment.current.apiService.oauthToken?.token)
     XCTAssertEqual(User.template, AppEnvironment.current.currentUser)
+    XCTAssertNotNil(AppEnvironment.current.userDefaults.analyticsIdentityData)
 
     AppEnvironment.logout()
 
     XCTAssertNil(AppEnvironment.current.apiService.oauthToken)
     XCTAssertNil(AppEnvironment.current.currentUser)
+    XCTAssertNil(AppEnvironment.current.userDefaults.analyticsIdentityData)
 
     AppEnvironment.popEnvironment()
   }
