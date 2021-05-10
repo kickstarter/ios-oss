@@ -24,7 +24,7 @@ public final class KSRAnalytics {
     self.segmentClient = segmentClient
   }
 
-  private enum NewApprovedEvent: String, CaseIterable {
+  private enum SegmentEvent: String, CaseIterable {
     case cardClicked = "Card Clicked"
     case ctaClicked = "CTA Clicked"
     case pageViewed = "Page Viewed"
@@ -561,7 +561,7 @@ public final class KSRAnalytics {
   public func trackExploreButtonClicked() {
     let properties = contextProperties(ctaContext: .discover, page: .activities)
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: properties
     )
   }
@@ -577,7 +577,7 @@ public final class KSRAnalytics {
         locationContext: .globalNav
       )
       self.track(
-        event: NewApprovedEvent.ctaClicked.rawValue,
+        event: SegmentEvent.ctaClicked.rawValue,
         properties: properties
       )
     default:
@@ -611,7 +611,7 @@ public final class KSRAnalytics {
       locationContext: .globalNav
     )
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: properties
     )
   }
@@ -629,7 +629,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(discoveryProperties(from: params))
 
     self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
+      event: SegmentEvent.pageViewed.rawValue,
       properties: properties
     )
   }
@@ -656,7 +656,7 @@ public final class KSRAnalytics {
         )
       )
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
   }
@@ -679,7 +679,7 @@ public final class KSRAnalytics {
         )
       )
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
   }
@@ -713,7 +713,7 @@ public final class KSRAnalytics {
       )
 
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
   }
@@ -731,7 +731,7 @@ public final class KSRAnalytics {
     .withAllValuesFrom(discoveryProperties(from: params))
 
     self.track(
-      event: NewApprovedEvent.cardClicked.rawValue,
+      event: SegmentEvent.cardClicked.rawValue,
       properties: props,
       refTag: refTag.stringTag
     )
@@ -777,7 +777,7 @@ public final class KSRAnalytics {
     }
 
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
   }
@@ -800,7 +800,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(page: .projectPage))
 
     self.track(
-      event: NewApprovedEvent.videoPlaybackStarted.rawValue,
+      event: SegmentEvent.videoPlaybackStarted.rawValue,
       properties: props
     )
   }
@@ -817,7 +817,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(ctaContext: .addOnsContinue, page: .addOnsSelection))
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -834,7 +834,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(page: .addOnsSelection))
 
     self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
+      event: SegmentEvent.pageViewed.rawValue,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -856,7 +856,7 @@ public final class KSRAnalytics {
         .withAllValuesFrom(props)
 
       self.track(
-        event: NewApprovedEvent.ctaClicked.rawValue,
+        event: SegmentEvent.ctaClicked.rawValue,
         properties: allProps
       )
     default:
@@ -874,7 +874,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(page: .managePledgeScreen))
 
     self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
+      event: SegmentEvent.pageViewed.rawValue,
       properties: props
     )
   }
@@ -899,7 +899,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(checkoutProperties(from: checkoutPropertiesData, and: reward))
 
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -923,7 +923,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(page: .rewards))
 
     self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
+      event: SegmentEvent.pageViewed.rawValue,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -962,7 +962,7 @@ public final class KSRAnalytics {
     }
 
     self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
+      event: SegmentEvent.pageViewed.rawValue,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -996,7 +996,7 @@ public final class KSRAnalytics {
       ))
 
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -1025,7 +1025,7 @@ public final class KSRAnalytics {
     }
 
     self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
+      event: SegmentEvent.pageViewed.rawValue,
       properties: props
     )
   }
@@ -1036,14 +1036,14 @@ public final class KSRAnalytics {
     let typeContext: TypeContext = isSubscribed ? .subscriptionTrue : .subscriptionFalse
     let props = contextProperties(ctaContext: .signUpSubmit, page: .signup, typeContext: typeContext)
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
   }
 
   public func trackSignupPageViewed() {
     let props = contextProperties(page: .signup)
-    self.track(event: NewApprovedEvent.pageViewed.rawValue, properties: props)
+    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
   }
 
   /**
@@ -1051,13 +1051,13 @@ public final class KSRAnalytics {
    */
   public func trackLoginPageViewed() {
     let props = contextProperties(page: .login)
-    self.track(event: NewApprovedEvent.pageViewed.rawValue, properties: props)
+    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
   }
 
   public func trackLoginSubmitButtonClicked() {
     let props = contextProperties(ctaContext: .logInSubmit, page: .login)
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
   }
@@ -1088,7 +1088,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(page: .search))
 
     self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
+      event: SegmentEvent.pageViewed.rawValue,
       properties: props
     )
   }
@@ -1111,7 +1111,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(page: .projectPage, sectionContext: sectionContext))
 
     self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
+      event: SegmentEvent.pageViewed.rawValue,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -1143,7 +1143,7 @@ public final class KSRAnalytics {
     }
 
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
   }
@@ -1159,7 +1159,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(ctaContext: .creatorDetails, page: .projectPage))
 
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
   }
@@ -1173,7 +1173,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(ctaContext: .campaignDetails, page: .projectPage))
 
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
   }
