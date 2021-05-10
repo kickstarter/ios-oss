@@ -7,10 +7,12 @@ import XCTest
 
 internal final class SettingsViewModelTests: TestCase {
   let vm = SettingsViewModel(SettingsViewController.viewController(for:))
-  private let expectedLogoutPromptText = (messsage: "Are you sure you want to log out?",
-                                          cancel: "Cancel",
-                                          confirm: "Yes")
-  
+  private let expectedLogoutPromptText = (
+    messsage: "Are you sure you want to log out?",
+    cancel: "Cancel",
+    confirm: "Yes"
+  )
+
   private let findFriendsDisabled = TestObserver<Bool, Never>()
   private let goToAppStoreRating = TestObserver<String, Never>()
   private let logout = TestObserver<DiscoveryParams, Never>()
@@ -67,15 +69,15 @@ internal final class SettingsViewModelTests: TestCase {
 
     self.logout.assertValueCount(1, "Log out triggered")
   }
-  
+
   func testLogoutPromptText() {
     XCTAssertNil(self.showConfirmLogout.lastValue)
-    
+
     self.vm.settingsCellTapped(cellType: .logout)
-    
-    XCTAssertEqual(self.showConfirmLogout.lastValue!.message, expectedLogoutPromptText.messsage)
-    XCTAssertEqual(self.showConfirmLogout.lastValue!.confirm, expectedLogoutPromptText.confirm)
-    XCTAssertEqual(self.showConfirmLogout.lastValue!.cancel, expectedLogoutPromptText.cancel)
+
+    XCTAssertEqual(self.showConfirmLogout.lastValue!.message, self.expectedLogoutPromptText.messsage)
+    XCTAssertEqual(self.showConfirmLogout.lastValue!.confirm, self.expectedLogoutPromptText.confirm)
+    XCTAssertEqual(self.showConfirmLogout.lastValue!.cancel, self.expectedLogoutPromptText.cancel)
   }
 
   func testNotificationsCellTapped() {
