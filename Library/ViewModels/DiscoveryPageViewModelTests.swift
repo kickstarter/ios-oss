@@ -404,11 +404,9 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       |> DiscoveryEnvelope.lens.projects .~ (
         (0...2).map { id in .template |> Project.lens.id .~ (100 + id) }
       )
-    let mockOptimizelyClient = MockOptimizelyClient()
 
     withEnvironment(
-      apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope),
-      optimizelyClient: mockOptimizelyClient
+      apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope)
     ) {
       self.vm.inputs.configureWith(sort: .magic)
       self.vm.inputs.viewWillAppear()
@@ -426,7 +424,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       )
 
       XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
-      XCTAssertEqual("Project Card Clicked", mockOptimizelyClient.trackedEventKey)
 
       self.vm.inputs.selectedFilter(.defaults
         |> DiscoveryParams.lens.category .~ Category.art)
@@ -1465,12 +1462,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       |> \.hasCompletedCategoryPersonalizationFlow .~ true
       |> \.hasDismissedPersonalizationCard .~ false
 
-    let mockOpClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.onboardingCategoryPersonalizationFlow.rawValue:
-          OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
     let categories = [KsApi.Category.art, KsApi.Category.illustration]
     mockKeyValueStore.onboardingCategories = try? JSONEncoder().encode(categories)
 
@@ -1478,7 +1469,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
     withEnvironment(
       currentUser: User.template,
-      optimizelyClient: mockOpClient,
       userDefaults: mockKeyValueStore
     ) {
       self.vm.inputs.configureWith(sort: .magic)
@@ -1493,7 +1483,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       self.vm.inputs.personalizationCellTapped()
 
       XCTAssertEqual(["Page Viewed", "Card Clicked"], self.segmentTrackingClient.events)
-      XCTAssertEqual("Editorial Card Clicked", mockOpClient.trackedEventKey)
 
       XCTAssertEqual(
         [nil, "ios_experiment_onboarding_1"],

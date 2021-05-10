@@ -99,8 +99,6 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
 
     let project = freshProjectAndRefTag
       .map(first)
-    let refTag = freshProjectAndRefTag
-      .map(second)
 
     let projectAndBacking = project
       .filter { $0.personalization.isBacking ?? false }
@@ -190,7 +188,6 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
           refTag: refTag,
           sectionContext: .overview
         )
-        AppEnvironment.current.optimizelyClient?.track(eventName: "Project Page Viewed")
       }
 
     Signal.combineLatest(cookieRefTag.skipNil(), freshProjectAndRefTag.map(first))
@@ -198,15 +195,6 @@ public final class ProjectPamphletViewModel: ProjectPamphletViewModelType, Proje
       .map(cookieFrom(refTag:project:))
       .skipNil()
       .observeValues { AppEnvironment.current.cookieStorage.setCookie($0) }
-
-    let shouldTrackCTATappedEvent = ctaButtonTappedWithType
-      .filter { $0 == .pledge }
-
-    Signal.combineLatest(project, refTag)
-      .takeWhen(shouldTrackCTATappedEvent)
-      .observeValues { _, _ in
-        AppEnvironment.current.optimizelyClient?.track(eventName: "Project Page Pledge Button Clicked")
-      }
   }
 
   private let configDataProperty = MutableProperty<(Either<Project, Param>, RefTag?)?>(nil)

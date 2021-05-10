@@ -15,8 +15,6 @@ public final class KSRAnalytics {
   }
 
   public var logEventCallback: ((String, [String: Any]) -> Void)?
-  private var preferredContentSizeCategory: UIContentSizeCategory?
-  private var preferredContentSizeCategoryObserver: Any?
   private let screen: UIScreenType
   private var segmentClient: (TrackingClientType & IdentifyingTrackingClient)?
 
@@ -555,10 +553,6 @@ public final class KSRAnalytics {
     )
 
     AppEnvironment.current.userDefaults.analyticsIdentityData = newData
-  }
-
-  deinit {
-    self.preferredContentSizeCategoryObserver.doIfSome(NotificationCenter.default.removeObserver)
   }
 
   // MARK: - Activity

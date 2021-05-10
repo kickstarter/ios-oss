@@ -105,16 +105,6 @@ public final class CategorySelectionViewModel: CategorySelectionViewModelType,
     .skipRepeats()
 
     self.dismiss = self.skipButtonTappedProperty.signal
-
-    // Tracking
-
-    self.skipButtonTappedProperty.signal.observeValues { _ in
-      trackOptimizelyClientButtonClicked(buttonTitle: "Skip")
-    }
-
-    self.continueButtonTappedProperty.signal.observeValues { _ in
-      trackOptimizelyClientButtonClicked(buttonTitle: "Continue")
-    }
   }
 
   private let categorySelectedWithValueProperty = MutableProperty<(IndexPath, KsApi.Category)?>(nil)
@@ -250,9 +240,4 @@ private func cache(_ categories: [KsApi.Category]) {
   let data = try? JSONEncoder().encode(categories)
 
   AppEnvironment.current.userDefaults.onboardingCategories = data
-}
-
-private func trackOptimizelyClientButtonClicked(buttonTitle: String) {
-  let eventName = "\(buttonTitle) Button Clicked"
-  AppEnvironment.current.optimizelyClient?.track(eventName: eventName)
 }

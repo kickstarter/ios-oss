@@ -423,11 +423,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     let personalizationCellTappedAndRefTag = self.personalizationCellTappedProperty.signal
       .mapConst(RefTag.onboarding)
 
-    self.personalizationCellTappedProperty.signal
-      .observeValues { _ in
-        AppEnvironment.current.optimizelyClient?.track(eventName: "Editorial Card Clicked")
-      }
-
     let editorialCellTappedAndRefTag = self.discoveryEditorialCellTappedWithValueProperty.signal
       .skipNil()
       .map { RefTag.projectCollection($0) }
@@ -456,8 +451,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
           location: .discoverAdvanced,
           params: params
         )
-
-        AppEnvironment.current.optimizelyClient?.track(eventName: "Project Card Clicked")
       }
   }
 

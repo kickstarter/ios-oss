@@ -33,13 +33,6 @@ public final class LandingPageViewModel: LandingPageViewModelType, LandingPageVi
       .observeValues { _ in
         AppEnvironment.current.userDefaults.hasSeenLandingPage = true
       }
-
-    // Tracking
-
-    self.ctaButtonTappedSignal
-      .observeValues {
-        AppEnvironment.current.optimizelyClient?.track(eventName: "Get Started Button Clicked")
-      }
   }
 
   private let (ctaButtonTappedSignal, ctaButtonTappedObserver) = Signal<(), Never>.pipe()
