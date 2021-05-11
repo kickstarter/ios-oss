@@ -69,7 +69,7 @@ internal final class DeprecatedCommentsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        FBSnapshotVerifyView(parent.view, identifier: "DeprecatedComments - lang_\(language)")
       }
     }
 
