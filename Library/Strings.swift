@@ -11007,6 +11007,23 @@ Veuillez réessayer ultérieurement."
     )
   }
   /**
+   "Yes"
+
+   - **en**: "Yes"
+   - **de**: "Ja"
+   - **es**: "Sí"
+   - **fr**: "Oui"
+   - **ja**: "はい"
+  */
+  public static func Yes() -> String {
+    return localizedString(
+      key: "Yes",
+      defaultValue: "Yes",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Yes, cancel it"
 
    - **en**: "Yes, cancel it"
