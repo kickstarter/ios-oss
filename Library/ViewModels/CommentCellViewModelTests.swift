@@ -31,7 +31,7 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testOutputs() {
-    let comment = Comment.template
+    let comment = DeprecatedComment.template
     let project = .template |> Project.lens.creator.id .~ 222
     let viewer = User.template |> \.id .~ 12_345
 
@@ -48,7 +48,7 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testOutputs_ViewerIs_LoggedOut() {
-    let comment = Comment.template
+    let comment = DeprecatedComment.template
     let project = .template |> Project.lens.creator.id .~ 222
 
     self.vm.inputs.comment(comment, project: project, viewer: nil)
@@ -64,7 +64,7 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testPersonalizedLabels_ViewerIs_NotCreator_NotAuthor() {
-    let comment = Comment.template
+    let comment = DeprecatedComment.template
     let project = .template |> Project.lens.creator.id .~ 222
     let viewer = User.template |> \.id .~ 12_345
 
@@ -75,9 +75,9 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testPersonalizedLabels_ViewerIs_NotCreator_Author() {
-    let author = Author.template |> \.id .~ 12_345
+    let author = DeprecatedAuthor.template |> \.id .~ 12_345
     let viewer = User.template |> \.id .~ author.id
-    let comment = Comment(
+    let comment = DeprecatedComment(
       author: author,
       body: "HELLO",
       createdAt: 123_456_789.0,
@@ -94,10 +94,10 @@ final class CommentCellViewModelTest: TestCase {
 
   func testPersonalizedLabels_ViewerIs_Creator_Author() {
     let project = Project.template
-    let author = Author.template
+    let author = DeprecatedAuthor.template
       |> \.id .~ project.creator.id
 
-    let comment = Comment(
+    let comment = DeprecatedComment(
       author: author,
       body: "HELLO",
       createdAt: 123_456_789.0,
@@ -115,8 +115,8 @@ final class CommentCellViewModelTest: TestCase {
 
   func testPersonalizedLabels_ViewerIs_Creator_NonAuthor() {
     let project = .template |> Project.lens.creator.id .~ 11_111
-    let comment = Comment(
-      author: Author.template |> \.id .~ 12_345,
+    let comment = DeprecatedComment(
+      author: DeprecatedAuthor.template |> \.id .~ 12_345,
       body: "HELLO",
       createdAt: 123_456_789.0,
       deletedAt: nil,
@@ -131,7 +131,7 @@ final class CommentCellViewModelTest: TestCase {
   }
 
   func testDeletedComment() {
-    let comment = .template |> Comment.lens.deletedAt .~ 123_456_789.0
+    let comment = .template |> DeprecatedComment.lens.deletedAt .~ 123_456_789.0
     let project = .template |> Project.lens.creator.id .~ 11_111
     let viewer = User.template |> \.id .~ 12_345
 

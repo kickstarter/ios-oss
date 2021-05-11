@@ -8,7 +8,7 @@ public enum ProjectActivitiesGoTo {
   case comments(Project?, Update?)
   case project(Project)
   case sendMessage(Backing, KSRAnalytics.MessageDialogContext)
-  case sendReply(Project, Update?, Comment)
+  case sendReply(Project, Update?, DeprecatedComment)
   case update(Project, Update)
 }
 
@@ -29,7 +29,7 @@ public protocol ProjectActivitiesViewModelInputs {
   func projectActivityCommentCellGoToBacking(project: Project, user: User)
 
   /// Call when the comment cell's reply button is pressed.
-  func projectActivityCommentCellGoToSendReply(project: Project, update: Update?, comment: Comment)
+  func projectActivityCommentCellGoToSendReply(project: Project, update: Update?, comment: DeprecatedComment)
 
   /// Call when pull-to-refresh is invoked.
   func refresh()
@@ -187,11 +187,11 @@ public final class ProjectActivitiesViewModel: ProjectActivitiesViewModelType,
   }
 
   private let projectActivityCommentCellGoToSendReplyProperty
-    = MutableProperty<(Project, Update?, Comment)?>(nil)
+    = MutableProperty<(Project, Update?, DeprecatedComment)?>(nil)
   public func projectActivityCommentCellGoToSendReply(
     project: Project,
     update: Update?,
-    comment: Comment
+    comment: DeprecatedComment
   ) {
     self.projectActivityCommentCellGoToSendReplyProperty.value = (project, update, comment)
   }

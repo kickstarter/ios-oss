@@ -1,14 +1,14 @@
 import Foundation
 
-public struct Comment {
-  public let author: Author
+public struct DeprecatedComment {
+  public let author: DeprecatedAuthor
   public let body: String
   public let createdAt: TimeInterval
   public let deletedAt: TimeInterval?
   public let id: Int
 }
 
-extension Comment: Decodable {
+extension DeprecatedComment: Decodable {
   enum CodingKeys: String, CodingKey {
     case author
     case body
@@ -19,7 +19,7 @@ extension Comment: Decodable {
 
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
-    self.author = try values.decode(Author.self, forKey: .author)
+    self.author = try values.decode(DeprecatedAuthor.self, forKey: .author)
     self.body = try values.decode(String.self, forKey: .body)
     self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
     self.id = try values.decode(Int.self, forKey: .id)
@@ -31,8 +31,8 @@ extension Comment: Decodable {
   }
 }
 
-extension Comment: Equatable {}
+extension DeprecatedComment: Equatable {}
 
-public func == (lhs: Comment, rhs: Comment) -> Bool {
+public func == (lhs: DeprecatedComment, rhs: DeprecatedComment) -> Bool {
   return lhs.id == rhs.id
 }

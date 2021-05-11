@@ -3,12 +3,12 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-public protocol CommentsViewModelInputs {
+public protocol DeprecatedCommentsViewModelInputs {
   /// Call when the comment button is pressed.
   func commentButtonPressed()
 
   /// Call when the comment dialog has posted a comment.
-  func commentPosted(_ comment: Comment)
+  func commentPosted(_ comment: DeprecatedComment)
 
   /// Call when the login button is pressed in the empty state.
   func loginButtonPressed()
@@ -30,9 +30,9 @@ public protocol CommentsViewModelInputs {
   func willDisplayRow(_ row: Int, outOf totalRows: Int)
 }
 
-public protocol CommentsViewModelOutputs {
+public protocol DeprecatedCommentsViewModelOutputs {
   /// Emits a list of comments that should be displayed.
-  var dataSource: Signal<([Comment], Project, Update?, User?, Bool), Never> { get }
+  var dataSource: Signal<([DeprecatedComment], Project, Update?, User?, Bool), Never> { get }
 
   /// Emits a boolean that determines if the comment bar button is visible.
   var commentBarButtonVisible: Signal<Bool, Never> { get }
@@ -50,13 +50,14 @@ public protocol CommentsViewModelOutputs {
   var commentsAreLoading: Signal<Bool, Never> { get }
 }
 
-public protocol CommentsViewModelType {
-  var inputs: CommentsViewModelInputs { get }
-  var outputs: CommentsViewModelOutputs { get }
+public protocol DeprecatedCommentsViewModelType {
+  var inputs: DeprecatedCommentsViewModelInputs { get }
+  var outputs: DeprecatedCommentsViewModelOutputs { get }
 }
 
-public final class CommentsViewModel: CommentsViewModelType, CommentsViewModelInputs,
-  CommentsViewModelOutputs {
+public final class DeprecatedCommentsViewModel: DeprecatedCommentsViewModelType,
+  DeprecatedCommentsViewModelInputs,
+  DeprecatedCommentsViewModelOutputs {
   public init() {
     let projectOrUpdate = Signal.combineLatest(
       self.projectAndUpdateProperty.signal.skipNil(),
@@ -163,8 +164,8 @@ public final class CommentsViewModel: CommentsViewModelType, CommentsViewModelIn
     self.commentButtonPressedProperty.value = ()
   }
 
-  fileprivate let commentPostedProperty = MutableProperty<Comment?>(nil)
-  public func commentPosted(_ comment: Comment) {
+  fileprivate let commentPostedProperty = MutableProperty<DeprecatedComment?>(nil)
+  public func commentPosted(_ comment: DeprecatedComment) {
     self.commentPostedProperty.value = comment
   }
 
@@ -201,12 +202,12 @@ public final class CommentsViewModel: CommentsViewModelType, CommentsViewModelIn
   public let closeLoginTout: Signal<(), Never>
   public let commentBarButtonVisible: Signal<Bool, Never>
   public let commentsAreLoading: Signal<Bool, Never>
-  public let dataSource: Signal<([Comment], Project, Update?, User?, Bool), Never>
+  public let dataSource: Signal<([DeprecatedComment], Project, Update?, User?, Bool), Never>
   public let openLoginTout: Signal<(), Never>
   public let presentPostCommentDialog: Signal<(Project, Update?), Never>
 
-  public var inputs: CommentsViewModelInputs { return self }
-  public var outputs: CommentsViewModelOutputs { return self }
+  public var inputs: DeprecatedCommentsViewModelInputs { return self }
+  public var outputs: DeprecatedCommentsViewModelOutputs { return self }
 }
 
 private func canComment(onProject project: Project) -> Bool {

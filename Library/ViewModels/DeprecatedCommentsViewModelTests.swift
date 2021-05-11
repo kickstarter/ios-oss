@@ -6,8 +6,8 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-internal final class CommentsViewModelTests: TestCase {
-  internal let vm: CommentsViewModelType = CommentsViewModel()
+internal final class DeprecatedCommentsViewModelTests: TestCase {
+  internal let vm: DeprecatedCommentsViewModelType = DeprecatedCommentsViewModel()
 
   internal let emptyStateVisible = TestObserver<Bool, Never>()
   internal let hasComments = TestObserver<Bool, Never>()
@@ -116,7 +116,7 @@ internal final class CommentsViewModelTests: TestCase {
   }
 
   func testRefreshing() {
-    let comment = Comment.template
+    let comment = DeprecatedComment.template
 
     withEnvironment(apiService: MockService(fetchCommentsResponse: [comment])) {
       self.vm.inputs.configureWith(project: Project.template, update: nil)
@@ -138,7 +138,7 @@ internal final class CommentsViewModelTests: TestCase {
   }
 
   func testPaginationAndRefresh_Project() {
-    withEnvironment(apiService: MockService(fetchCommentsResponse: [Comment.template])) {
+    withEnvironment(apiService: MockService(fetchCommentsResponse: [DeprecatedComment.template])) {
       self.vm.inputs.configureWith(project: Project.template, update: nil)
       self.vm.inputs.viewDidLoad()
 
@@ -160,7 +160,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.hasComments.assertValues([true], "A set of comments is emitted.")
       self.commentsAreLoading.assertValues([true, false])
 
-      let otherComment = Comment.template |> Comment.lens.id .~ 2
+      let otherComment = DeprecatedComment.template |> DeprecatedComment.lens.id .~ 2
       withEnvironment(apiService: MockService(fetchCommentsResponse: [otherComment])) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
 
@@ -298,8 +298,8 @@ internal final class CommentsViewModelTests: TestCase {
       self.presentPostCommentDialog
         .assertValueCount(1, "Comment dialog presents after pressing comment button.")
 
-      withEnvironment(apiService: MockService(fetchCommentsResponse: [Comment.template])) {
-        self.vm.inputs.commentPosted(Comment.template)
+      withEnvironment(apiService: MockService(fetchCommentsResponse: [DeprecatedComment.template])) {
+        self.vm.inputs.commentPosted(DeprecatedComment.template)
         self.scheduler.advance()
 
         self.hasComments.assertValues([false, false, true], "Newly posted comment emits after posting.")

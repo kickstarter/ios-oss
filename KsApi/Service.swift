@@ -404,11 +404,12 @@ public struct Service: ServiceType {
   }
 
   public func postComment(_ body: String, toProject project: Project) ->
-    SignalProducer<Comment, ErrorEnvelope> {
+    SignalProducer<DeprecatedComment, ErrorEnvelope> {
     return request(.postProjectComment(project, body: body))
   }
 
-  public func postComment(_ body: String, toUpdate update: Update) -> SignalProducer<Comment, ErrorEnvelope> {
+  public func postComment(_ body: String,
+                          toUpdate update: Update) -> SignalProducer<DeprecatedComment, ErrorEnvelope> {
     return request(.postUpdateComment(update, body: body))
   }
 

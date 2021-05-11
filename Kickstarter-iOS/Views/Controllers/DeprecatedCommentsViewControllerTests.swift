@@ -4,7 +4,7 @@ import Library
 import Prelude
 import XCTest
 
-internal final class CommentsViewControllerTests: TestCase {
+internal final class DeprecatedCommentsViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
     UIView.setAnimationsEnabled(false)
@@ -21,7 +21,7 @@ internal final class CommentsViewControllerTests: TestCase {
       |> \.avatar.medium .~ ""
       |> \.avatar.small .~ ""
 
-    let author = Author.template
+    let author = DeprecatedAuthor.template
       |> \.id .~ backer.id
       |> \.name .~ backer.name
 
@@ -33,23 +33,23 @@ internal final class CommentsViewControllerTests: TestCase {
       |> Project.lens.creator .~ creator
 
     let defaultComment = .template
-      |> Comment.lens.createdAt .~ 1_473_461_640
+      |> DeprecatedComment.lens.createdAt .~ 1_473_461_640
 
     let backerComment = .template
-      |> Comment.lens.author .~ author
-      |> Comment.lens.body .~ "I have never seen such a beautiful project."
-      |> Comment.lens.createdAt .~ 1_473_461_640
+      |> DeprecatedComment.lens.author .~ author
+      |> DeprecatedComment.lens.body .~ "I have never seen such a beautiful project."
+      |> DeprecatedComment.lens.createdAt .~ 1_473_461_640
 
     let creatorComment = .template
-      |> Comment.lens.author .~ (author |> \.id .~ creator.id)
-      |> Comment.lens.body .~ "Thank you kindly for your feedback!"
-      |> Comment.lens.createdAt .~ 1_473_461_640
+      |> DeprecatedComment.lens.author .~ (author |> \.id .~ creator.id)
+      |> DeprecatedComment.lens.body .~ "Thank you kindly for your feedback!"
+      |> DeprecatedComment.lens.createdAt .~ 1_473_461_640
 
     let deletedComment = .template
-      |> Comment.lens.author .~ (.template |> \.name .~ "Naughty Blob")
-      |> Comment.lens.body .~ "This comment has been deleted by Kickstarter."
-      |> Comment.lens.createdAt .~ 1_473_461_640
-      |> Comment.lens.deletedAt .~ 1_473_461_640
+      |> DeprecatedComment.lens.author .~ (.template |> \.name .~ "Naughty Blob")
+      |> DeprecatedComment.lens.body .~ "This comment has been deleted by Kickstarter."
+      |> DeprecatedComment.lens.createdAt .~ 1_473_461_640
+      |> DeprecatedComment.lens.deletedAt .~ 1_473_461_640
 
     let comments = [defaultComment, backerComment, creatorComment, deletedComment]
 
@@ -63,7 +63,7 @@ internal final class CommentsViewControllerTests: TestCase {
 
     Language.allLanguages.forEach { language in
       withEnvironment(language: language) {
-        let controller = CommentsViewController.configuredWith(project: project)
+        let controller = DeprecatedCommentsViewController.configuredWith(project: project)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 600
 

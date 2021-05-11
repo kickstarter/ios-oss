@@ -3,7 +3,7 @@ import Foundation
 
 public struct Activity {
   public let category: Activity.Category
-  public let comment: Comment?
+  public let comment: DeprecatedComment?
   public let createdAt: TimeInterval
   public let id: Int
   public let memberData: MemberData
@@ -62,7 +62,7 @@ extension Activity: Decodable {
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     self.category = try values.decode(Activity.Category.self, forKey: .category)
-    self.comment = try values.decodeIfPresent(Comment.self, forKey: .comment)
+    self.comment = try values.decodeIfPresent(DeprecatedComment.self, forKey: .comment)
     self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
     self.id = try values.decode(Int.self, forKey: .id)
     self.memberData = try Activity.MemberData(from: decoder)

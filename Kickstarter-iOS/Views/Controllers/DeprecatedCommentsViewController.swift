@@ -5,9 +5,9 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-internal final class CommentsViewController: UITableViewController {
-  fileprivate let viewModel: CommentsViewModelType = CommentsViewModel()
-  fileprivate let dataSource = CommentsDataSource()
+internal final class DeprecatedCommentsViewController: UITableViewController {
+  fileprivate let viewModel: DeprecatedCommentsViewModelType = DeprecatedCommentsViewModel()
+  fileprivate let dataSource = DeprecatedCommentsDataSource()
   private var sessionStartedObserver: Any?
 
   // This button needs to store a strong reference so as to not get wiped when setting hidden state.
@@ -15,8 +15,8 @@ internal final class CommentsViewController: UITableViewController {
   fileprivate weak var loginToutViewController: UIViewController?
 
   internal static func configuredWith(project: Project? = nil, update: Update? = nil)
-    -> CommentsViewController {
-    let vc = Storyboard.Comments.instantiate(CommentsViewController.self)
+    -> DeprecatedCommentsViewController {
+    let vc = Storyboard.DeprecatedComments.instantiate(DeprecatedCommentsViewController.self)
     vc.viewModel.inputs.configureWith(project: project, update: update)
     return vc
   }
@@ -150,17 +150,17 @@ internal final class CommentsViewController: UITableViewController {
   }
 }
 
-extension CommentsViewController: CommentDialogDelegate {
+extension DeprecatedCommentsViewController: CommentDialogDelegate {
   internal func commentDialogWantsDismissal(_ dialog: CommentDialogViewController) {
     dialog.dismiss(animated: true, completion: nil)
   }
 
-  internal func commentDialog(_: CommentDialogViewController, postedComment comment: Comment) {
+  internal func commentDialog(_: CommentDialogViewController, postedComment comment: DeprecatedComment) {
     self.viewModel.inputs.commentPosted(comment)
   }
 }
 
-extension CommentsViewController: CommentsEmptyStateCellDelegate {
+extension DeprecatedCommentsViewController: CommentsEmptyStateCellDelegate {
   internal func commentEmptyStateCellGoBackToProject() {
     _ = self.navigationController?.popToRootViewController(animated: true)
   }

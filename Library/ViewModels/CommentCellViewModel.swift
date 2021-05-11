@@ -4,7 +4,7 @@ import ReactiveSwift
 import UIKit
 
 public protocol CommentCellViewModelInputs {
-  func comment(_ comment: Comment, project: Project, viewer: User?)
+  func comment(_ comment: DeprecatedComment, project: Project, viewer: User?)
 }
 
 public protocol CommentCellViewModelOutputs {
@@ -58,8 +58,8 @@ public final class CommentCellViewModel: CommentCellViewModelType, CommentCellVi
       }
   }
 
-  fileprivate let commentProjectViewer = MutableProperty<(Comment, Project, User?)?>(nil)
-  public func comment(_ comment: Comment, project: Project, viewer: User?) {
+  fileprivate let commentProjectViewer = MutableProperty<(DeprecatedComment, Project, User?)?>(nil)
+  public func comment(_ comment: DeprecatedComment, project: Project, viewer: User?) {
     self.commentProjectViewer.value = (comment, project, viewer)
   }
 
