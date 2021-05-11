@@ -1,7 +1,7 @@
 public enum Newsletter: CaseIterable {
+  case promo
   case weekly
   case happening
-  case promo
   case games
   case invent
   case arts
