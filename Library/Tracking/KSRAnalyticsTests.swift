@@ -739,15 +739,32 @@ final class KSRAnalyticsTests: TestCase {
     )
 
     var callBackEvents = [String]()
-    ksrAnalytics.logEventCallback = { event, _ in
+    var callBackProperties: [String: Any]?
+    ksrAnalytics.logEventCallback = { event, properties in
       callBackEvents.append(event)
+      callBackProperties = properties
     }
 
     ksrAnalytics.trackTabBarClicked(.discovery)
 
-    XCTAssertEqual(["CTA Clicked"], callBackEvents)
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
     XCTAssertEqual(["CTA Clicked"], callBackEvents)
+
+    XCTAssertEqual("native", callBackProperties?["session_client"] as? String)
+    XCTAssertEqual(1_234_567_890, callBackProperties?["session_app_build_number"] as? Int)
+    XCTAssertEqual("1.2.3.4.5.6.7.8.9.0", callBackProperties?["session_app_release_version"] as? String)
+    XCTAssertEqual("phone", callBackProperties?["session_device_type"] as? String)
+    XCTAssertEqual("portrait", callBackProperties?["session_device_orientation"] as? String)
+    XCTAssertEqual("ios", callBackProperties?["session_os"] as? String)
+    XCTAssertEqual(false, callBackProperties?["session_user_is_logged_in"] as? Bool)
+    XCTAssertEqual("native_ios", callBackProperties?["session_platform"] as? String)
+    XCTAssertEqual("en", callBackProperties?["session_display_language"] as? String)
+    XCTAssertEqual("US", callBackProperties?["session_country"] as? String)
+    XCTAssertEqual(true, callBackProperties?["session_apple_pay_capable"] as? Bool)
+    XCTAssertEqual(false, callBackProperties?["session_is_voiceover_running"] as? Bool)
+    XCTAssertEqual("global_nav", callBackProperties?["context_location"] as? String)
+    XCTAssertEqual("other", callBackProperties?["context_page"] as? String)
+    XCTAssertEqual("discover", callBackProperties?["context_cta"] as? String)
   }
 
   func testProjectCardClicked_Page_Discover() {
