@@ -8,10 +8,7 @@ public protocol RootCommentsViewModelInputs {
   func viewDidLoad()
 }
 
-public protocol RootCommentsViewModelOutputs {
-  /// Delete this when beginning implementation
-  var viewDidLoadTestOutput: Signal<Bool, Never> { get }
-}
+public protocol RootCommentsViewModelOutputs {}
 
 public protocol RootCommentsViewModelType {
   var inputs: RootCommentsViewModelInputs { get }
@@ -20,17 +17,12 @@ public protocol RootCommentsViewModelType {
 
 public final class RootCommentsViewModel: RootCommentsViewModelType, RootCommentsViewModelInputs,
   RootCommentsViewModelOutputs {
-  public init() {
-    /// Skeleton implementation for now. Remove when ready to continue development.
-    self.viewDidLoadTestOutput = self.viewDidLoadProperty.signal.mapConst(true)
-  }
+  public init() {}
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-
-  public let viewDidLoadTestOutput: Signal<Bool, Never>
 
   public var inputs: RootCommentsViewModelInputs { return self }
   public var outputs: RootCommentsViewModelOutputs { return self }

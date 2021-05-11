@@ -6,7 +6,11 @@ import ReactiveSwift
 import UIKit
 
 internal final class RootCommentsViewController: UITableViewController {
+  // MARK: - Properties
+
   fileprivate let viewModel: RootCommentsViewModelType = RootCommentsViewModel()
+
+  // MARK: - Lifecycle
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
@@ -14,9 +18,13 @@ internal final class RootCommentsViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  // MARK: - Styles
+
   internal override func bindStyles() {
     super.bindStyles()
   }
+
+  // MARK: - View Model
 
   internal override func bindViewModel() {}
 }
