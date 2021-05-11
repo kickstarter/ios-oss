@@ -6,8 +6,8 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-internal final class RootCommentsViewModelTests: TestCase {
-  internal let vm: RootCommentsViewModelType = RootCommentsViewModel()
+internal final class CommentsViewModelTests: TestCase {
+  internal let vm: CommentsViewModelType = CommentsViewModel()
 
   override func setUp() {
     super.setUp()

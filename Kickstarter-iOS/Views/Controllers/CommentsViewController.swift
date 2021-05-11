@@ -5,10 +5,10 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-internal final class RootCommentsViewController: UITableViewController {
+internal final class CommentsViewController: UITableViewController {
   // MARK: - Properties
 
-  fileprivate let viewModel: RootCommentsViewModelType = RootCommentsViewModel()
+  fileprivate let viewModel: CommentsViewModelType = CommentsViewModel()
 
   // MARK: - Lifecycle
 
