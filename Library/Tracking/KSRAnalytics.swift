@@ -1709,7 +1709,7 @@ private func properties(update: Update, prefix: String = "update_") -> [String: 
   return properties.prefixedKeys(prefix)
 }
 
-private func properties(comment: Comment, prefix: String = "comment_") -> [String: Any] {
+private func properties(comment: DeprecatedComment, prefix: String = "comment_") -> [String: Any] {
   var properties: [String: Any] = [:]
 
   properties["body_length"] = comment.body.count

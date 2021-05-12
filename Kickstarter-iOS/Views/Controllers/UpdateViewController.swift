@@ -85,7 +85,7 @@ internal final class UpdateViewController: WebViewController {
   }
 
   fileprivate func goToComments(forUpdate update: Update) {
-    let vc = CommentsViewController.configuredWith(update: update)
+    let vc = DeprecatedCommentsViewController.configuredWith(update: update)
 
     if self.traitCollection.userInterfaceIdiom == .pad {
       let nav = UINavigationController(rootViewController: vc)

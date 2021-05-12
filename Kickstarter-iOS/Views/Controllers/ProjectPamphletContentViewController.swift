@@ -133,7 +133,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   }
 
   fileprivate func goToComments(project: Project) {
-    let vc = CommentsViewController.configuredWith(project: project, update: nil)
+    let vc = DeprecatedCommentsViewController.configuredWith(project: project, update: nil)
 
     if self.traitCollection.userInterfaceIdiom == .pad {
       let nav = UINavigationController(rootViewController: vc)

@@ -13,7 +13,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
   fileprivate let cellAccessibilityValue = TestObserver<String, Never>()
   fileprivate let defaultUser = User.template |> \.id .~ 9
   fileprivate let notifyDelegateGoToBacking = TestObserver<(Project, User), Never>()
-  fileprivate let notifyDelegateGoToSendReply = TestObserver<(Project, Update?, Comment), Never>()
+  fileprivate let notifyDelegateGoToSendReply = TestObserver<(Project, Update?, DeprecatedComment), Never>()
   fileprivate let pledgeFooterIsHidden = TestObserver<Bool, Never>()
   fileprivate let title = TestObserver<String, Never>()
 
@@ -50,7 +50,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let body1 = "Thanks for the update!"
     let commentPostActivity = .template
       |> Activity.lens.category .~ .commentPost
-      |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ body1)
+      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ body1)
       |> Activity.lens.project .~ project
 
     self.vm.inputs.configureWith(activity: commentPostActivity, project: project)
@@ -59,7 +59,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let body2 = "Aw, the limited bundle is all gone!"
     let commentProjectActivity = .template
       |> Activity.lens.category .~ .commentProject
-      |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ body2)
+      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ body2)
       |> Activity.lens.project .~ project
 
     self.vm.inputs.configureWith(activity: commentProjectActivity, project: project)
@@ -70,7 +70,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .commentProject
-      |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ "Will this ship to Europe?")
+      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ "Will this ship to Europe?")
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ (.template |> \.name .~ "Christopher")
 
@@ -85,7 +85,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let body = "Thanks for the update!"
     let activity = .template
       |> Activity.lens.category .~ .commentPost
-      |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ body)
+      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ body)
       |> Activity.lens.project .~ project
 
     self.vm.inputs.configureWith(activity: activity, project: project)
@@ -142,7 +142,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .commentProject
-      |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ "Love this project!")
+      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ "Love this project!")
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ (.template |> \.name .~ "Christopher")
 
@@ -155,7 +155,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .commentProject
-      |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ "Love this project!")
+      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ "Love this project!")
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ self.defaultUser
 
@@ -168,7 +168,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .commentPost
-      |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ "Good update!")
+      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ "Good update!")
       |> Activity.lens.project .~ project
       |> Activity.lens.update .~ (.template |> Update.lens.sequence .~ 5)
       |> Activity.lens.user .~ (.template |> \.name .~ "Christopher")
@@ -186,7 +186,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let project = Project.template
     let activity = .template
       |> Activity.lens.category .~ .commentPost
-      |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ "Good update!")
+      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ "Good update!")
       |> Activity.lens.project .~ project
       |> Activity.lens.update .~ (.template |> Update.lens.sequence .~ 5)
       |> Activity.lens.user .~ self.defaultUser
@@ -204,7 +204,7 @@ internal final class ProjectActivityCommentCellViewModelTests: TestCase {
     let project = .template |> Project.lens.creator .~ creator
     let activity = .template
       |> Activity.lens.category .~ .commentPost
-      |> Activity.lens.comment .~ (.template |> Comment.lens.body .~ "Good update!")
+      |> Activity.lens.comment .~ (.template |> DeprecatedComment.lens.body .~ "Good update!")
       |> Activity.lens.project .~ project
       |> Activity.lens.user .~ creator
 

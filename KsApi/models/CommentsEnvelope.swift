@@ -1,7 +1,7 @@
 
 
 public struct CommentsEnvelope: Decodable {
-  public let comments: [Comment]
+  public let comments: [DeprecatedComment]
   public let urls: UrlsEnvelope
 
   public struct UrlsEnvelope: Decodable {

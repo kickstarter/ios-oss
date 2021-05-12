@@ -3,15 +3,15 @@
 @testable import Library
 import XCTest
 
-final class CommentsDataSourceTests: XCTestCase {
-  typealias Section = CommentsDataSource.Section
+final class DeprecatedCommentsDataSourceTests: XCTestCase {
+  typealias Section = DeprecatedCommentsDataSource.Section
 
-  let dataSource = CommentsDataSource()
+  let dataSource = DeprecatedCommentsDataSource()
   let tableView = UITableView()
 
   func testLoadingComments() {
     self.dataSource.load(
-      comments: [Comment.template],
+      comments: [DeprecatedComment.template],
       project: Project.template,
       update: Update.template,
       loggedInUser: User.template,
