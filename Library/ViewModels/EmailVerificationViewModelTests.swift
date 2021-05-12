@@ -65,40 +65,6 @@ final class EmailVerificationViewModelTests: TestCase {
     self.notifyDelegateDidComplete.assertValueCount(1)
   }
 
-  func testTrackVerificationScreenViewed() {
-    XCTAssertEqual(self.dataLakeTrackingClient.events, [])
-    XCTAssertEqual(self.segmentTrackingClient.events, [])
-
-    self.vm.inputs.viewDidLoad()
-
-    XCTAssertEqual(self.dataLakeTrackingClient.events, ["Verification Screen Viewed"])
-    XCTAssertEqual(self.segmentTrackingClient.events, ["Verification Screen Viewed"])
-
-    XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("context_"))
-    XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("session_"))
-    XCTAssertTrue(self.segmentTrackingClient.containsKeyPrefix("context_"))
-    XCTAssertTrue(self.segmentTrackingClient.containsKeyPrefix("session_"))
-  }
-
-  func testTrackSkipEmailVerificationButtonClicked() {
-    XCTAssertEqual(self.dataLakeTrackingClient.events, [])
-    XCTAssertEqual(self.segmentTrackingClient.events, [])
-
-    AppEnvironment.login(.init(accessToken: "deadbeef", user: .template))
-
-    self.vm.inputs.skipButtonTapped()
-
-    XCTAssertEqual(self.dataLakeTrackingClient.events, ["Skip Verification Button Clicked"])
-    XCTAssertEqual(self.segmentTrackingClient.events, ["Skip Verification Button Clicked"])
-
-    XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("context_"))
-    XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("session_"))
-    XCTAssertTrue(self.dataLakeTrackingClient.containsKeyPrefix("user_"))
-    XCTAssertTrue(self.segmentTrackingClient.containsKeyPrefix("context_"))
-    XCTAssertTrue(self.segmentTrackingClient.containsKeyPrefix("session_"))
-    XCTAssertTrue(self.segmentTrackingClient.containsKeyPrefix("user_"))
-  }
-
   func testResend_Success() {
     let mockService = MockService(sendEmailVerificationResponse: GraphMutationEmptyResponseEnvelope())
 

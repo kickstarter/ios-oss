@@ -96,7 +96,6 @@ internal final class MessageDialogViewModelTests: TestCase {
   }
 
   func testPostingMessageToThread() {
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
     XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.configureWith(messageSubject: .messageThread(.template), context: .messages)

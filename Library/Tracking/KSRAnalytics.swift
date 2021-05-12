@@ -6,7 +6,6 @@ import UIKit
 
 public final class KSRAnalytics {
   private let bundle: NSBundleType
-  private let dataLakeClient: TrackingClientType
   internal private(set) var config: Config?
   private let device: UIDeviceType
   internal private(set) var loggedInUser: User? {
@@ -16,8 +15,6 @@ public final class KSRAnalytics {
   }
 
   public var logEventCallback: ((String, [String: Any]) -> Void)?
-  private var preferredContentSizeCategory: UIContentSizeCategory?
-  private var preferredContentSizeCategoryObserver: Any?
   private let screen: UIScreenType
   private var segmentClient: (TrackingClientType & IdentifyingTrackingClient)?
 
@@ -27,33 +24,7 @@ public final class KSRAnalytics {
     self.segmentClient = segmentClient
   }
 
-  private enum ApprovedEvent: String, CaseIterable {
-    case activityFeedViewed = "Activity Feed Viewed"
-    case addNewCardButtonClicked = "Add New Card Button Clicked"
-    case addOnsPageViewed = "Add-Ons Page Viewed"
-    case collectionViewed = "Collection Viewed"
-    case continueWithAppleButtonClicked = "Continue With Apple Button Clicked"
-    case fbLoginOrSignupButtonClicked = "Facebook Log In or Signup Button Clicked"
-    case fixPledgeButtonClicked = "Fix Pledge Button Clicked"
-    case forgotPasswordViewed = "Forgot Password Viewed"
-    case loginButtonClicked = "Log In Button Clicked"
-    case loginOrSignupButtonClicked = "Log In or Signup Button Clicked"
-    case loginOrSignupPageViewed = "Log In or Signup Page Viewed"
-    case managePledgeButtonClicked = "Manage Pledge Button Clicked"
-    case onboardingCarouselSwiped = "Onboarding Carousel Swiped"
-    case onboardingContinueButtonClicked = "Onboarding Continue Button Clicked"
-    case onboardingGetStartedButtonClicked = "Onboarding Get Started Button Clicked"
-    case onboardingSkipButtonClicked = "Onboarding Skip Button Clicked"
-    case projectPagePledgeButtonClicked = "Project Page Pledge Button Clicked"
-    case projectSwiped = "Project Swiped"
-    case signupButtonClicked = "Signup Button Clicked"
-    case skipVerificationButtonClicked = "Skip Verification Button Clicked"
-    case tabBarClicked = "Tab Bar Clicked"
-    case twoFactorConfirmationViewed = "Two-Factor Confirmation Viewed"
-    case verificationScreenViewed = "Verification Screen Viewed"
-  }
-
-  private enum NewApprovedEvent: String, CaseIterable {
+  private enum SegmentEvent: String, CaseIterable {
     case cardClicked = "Card Clicked"
     case ctaClicked = "CTA Clicked"
     case pageViewed = "Page Viewed"
@@ -549,7 +520,6 @@ public final class KSRAnalytics {
 
   public init(
     bundle: NSBundleType = Bundle.main,
-    dataLakeClient: TrackingClientType = TrackingClient(.dataLake),
     config: Config? = nil,
     device: UIDeviceType = UIDevice.current,
     loggedInUser: User? = nil,
@@ -557,14 +527,11 @@ public final class KSRAnalytics {
     segmentClient: (TrackingClientType & IdentifyingTrackingClient)? = nil
   ) {
     self.bundle = bundle
-    self.dataLakeClient = dataLakeClient
     self.config = config
     self.device = device
     self.loggedInUser = loggedInUser
     self.screen = screen
     self.segmentClient = segmentClient
-
-    self.updateAndObservePreferredContentSizeCategory()
   }
 
   /// Configure Tracking Client's supporting user identity
@@ -588,49 +555,13 @@ public final class KSRAnalytics {
     AppEnvironment.current.userDefaults.analyticsIdentityData = newData
   }
 
-  private func updateAndObservePreferredContentSizeCategory() {
-    let update = { [weak self] in
-      self?.preferredContentSizeCategory = UIApplication.shared.preferredContentSizeCategory
-    }
-
-    self.preferredContentSizeCategoryObserver = NotificationCenter.default.addObserver(
-      forName: UIContentSizeCategory.didChangeNotification,
-      object: nil,
-      queue: OperationQueue.main
-    ) { _ in update() }
-
-    if Thread.isMainThread {
-      update()
-    } else {
-      DispatchQueue.main.async {
-        update()
-      }
-    }
-  }
-
-  deinit {
-    self.preferredContentSizeCategoryObserver.doIfSome(NotificationCenter.default.removeObserver)
-  }
-
   // MARK: - Activity
-
-  /// Call when the activities screen is shown.
-  public func trackActivities(count: Int) {
-    let properties = contextProperties(page: .activities)
-      .withAllValuesFrom(
-        ["activities_count": count]
-      )
-    self.track(
-      event: ApprovedEvent.activityFeedViewed.rawValue,
-      properties: properties
-    )
-  }
 
   /// Call when the user is logged out, on the `Activity` tab and taps the `Explore Projects`button.
   public func trackExploreButtonClicked() {
     let properties = contextProperties(ctaContext: .discover, page: .activities)
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: properties
     )
   }
@@ -646,17 +577,11 @@ public final class KSRAnalytics {
         locationContext: .globalNav
       )
       self.track(
-        event: NewApprovedEvent.ctaClicked.rawValue,
+        event: SegmentEvent.ctaClicked.rawValue,
         properties: properties
       )
-    case .search:
-      break
     default:
-      let properties = contextProperties(tabBarLabel: tabBarItemLabel)
-      self.track(
-        event: ApprovedEvent.tabBarClicked.rawValue,
-        properties: properties
-      )
+      return
     }
   }
 
@@ -686,45 +611,7 @@ public final class KSRAnalytics {
       locationContext: .globalNav
     )
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
-      properties: properties
-    )
-  }
-
-  // MARK: - Onboarding Events
-
-  public func trackOnboardingCarouselSwiped(optimizelyProperties: [String: Any] = [:]) {
-    let properties = contextProperties(page: .landingPage)
-      .withAllValuesFrom(optimizelyProperties)
-    self.track(
-      event: ApprovedEvent.onboardingCarouselSwiped.rawValue,
-      properties: properties
-    )
-  }
-
-  public func trackOnboardingGetStartedButtonClicked(optimizelyProperties: [String: Any] = [:]) {
-    let properties = contextProperties(page: .landingPage)
-      .withAllValuesFrom(optimizelyProperties)
-    self.track(
-      event: ApprovedEvent.onboardingGetStartedButtonClicked.rawValue,
-      properties: properties
-    )
-  }
-
-  public func trackOnboardingSkipButtonClicked(optimizelyProperties: [String: Any] = [:]) {
-    let properties = contextProperties(page: .onboarding)
-      .withAllValuesFrom(optimizelyProperties)
-    self.track(
-      event: ApprovedEvent.onboardingSkipButtonClicked.rawValue,
-      properties: properties
-    )
-  }
-
-  public func trackOnboardingContinueButtonClicked(optimizelyProperties: [String: Any] = [:]) {
-    let properties = contextProperties(page: .onboarding)
-      .withAllValuesFrom(optimizelyProperties)
-    self.track(
-      event: ApprovedEvent.onboardingContinueButtonClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: properties
     )
   }
@@ -742,7 +629,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(discoveryProperties(from: params))
 
     self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
+      event: SegmentEvent.pageViewed.rawValue,
       properties: properties
     )
   }
@@ -769,7 +656,7 @@ public final class KSRAnalytics {
         )
       )
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
   }
@@ -792,7 +679,7 @@ public final class KSRAnalytics {
         )
       )
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
   }
@@ -826,7 +713,7 @@ public final class KSRAnalytics {
       )
 
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
   }
@@ -844,23 +731,9 @@ public final class KSRAnalytics {
     .withAllValuesFrom(discoveryProperties(from: params))
 
     self.track(
-      event: NewApprovedEvent.cardClicked.rawValue,
+      event: SegmentEvent.cardClicked.rawValue,
       properties: props,
       refTag: refTag.stringTag
-    )
-  }
-
-  /**
-   Call when a collection is viewed
-
-   - parameter params: The DiscoveryParams associated with the collection
-   */
-  public func trackCollectionViewed(params: DiscoveryParams) {
-    let properties = contextProperties(page: .editorialProjects)
-      .withAllValuesFrom(discoveryProperties(from: params))
-    self.track(
-      event: ApprovedEvent.collectionViewed.rawValue,
-      properties: properties
     )
   }
 
@@ -904,7 +777,7 @@ public final class KSRAnalytics {
     }
 
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
   }
@@ -927,7 +800,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(page: .projectPage))
 
     self.track(
-      event: NewApprovedEvent.videoPlaybackStarted.rawValue,
+      event: SegmentEvent.videoPlaybackStarted.rawValue,
       properties: props
     )
   }
@@ -944,7 +817,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(ctaContext: .addOnsContinue, page: .addOnsSelection))
       .withAllValuesFrom(checkoutProperties(from: checkoutData, and: reward))
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -961,7 +834,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(page: .addOnsSelection))
 
     self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
+      event: SegmentEvent.pageViewed.rawValue,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -976,11 +849,6 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(page: .projectPage))
 
     switch stateType {
-    case .fix:
-      self.track(
-        event: ApprovedEvent.managePledgeButtonClicked.rawValue,
-        properties: props // .fixErroredPledge
-      )
     case .pledge:
       let allProps = props
         .withAllValuesFrom(optimizelyProperties() ?? [:])
@@ -988,27 +856,12 @@ public final class KSRAnalytics {
         .withAllValuesFrom(props)
 
       self.track(
-        event: NewApprovedEvent.ctaClicked.rawValue,
+        event: SegmentEvent.ctaClicked.rawValue,
         properties: allProps
-      )
-    case .manage:
-      self.track(
-        event: ApprovedEvent.managePledgeButtonClicked.rawValue,
-        properties: props // .manageReward
       )
     default:
       return
     }
-  }
-
-  public func trackFixPledgeButtonClicked(project: Project) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(page: .managePledgeScreen))
-
-    self.track(
-      event: ApprovedEvent.fixPledgeButtonClicked.rawValue,
-      properties: props
-    )
   }
 
   public func trackManagePledgePageViewed(
@@ -1021,7 +874,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(page: .managePledgeScreen))
 
     self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
+      event: SegmentEvent.pageViewed.rawValue,
       properties: props
     )
   }
@@ -1046,7 +899,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(checkoutProperties(from: checkoutPropertiesData, and: reward))
 
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -1070,7 +923,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(page: .rewards))
 
     self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
+      event: SegmentEvent.pageViewed.rawValue,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -1109,7 +962,7 @@ public final class KSRAnalytics {
     }
 
     self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
+      event: SegmentEvent.pageViewed.rawValue,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -1143,32 +996,7 @@ public final class KSRAnalytics {
       ))
 
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
-      properties: props,
-      refTag: refTag?.stringTag
-    )
-  }
-
-  /* Call when the Add New Card button is clicked from the pledge screen
-
-   parameters:
-   - project: the project that is being pledged to
-   - reward: the reward that was chosen for the pledge
-   - context: the PledgeContext from which the event was triggered
-   */
-
-  public func trackAddNewCardButtonClicked(
-    page: KSRAnalytics.PageContext? = nil,
-    project: Project,
-    refTag: RefTag?,
-    reward: Reward
-  ) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(pledgeProperties(from: reward))
-      .withAllValuesFrom(contextProperties(page: page))
-
-    self.track(
-      event: ApprovedEvent.addNewCardButtonClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props,
       refTag: refTag?.stringTag
     )
@@ -1197,170 +1025,25 @@ public final class KSRAnalytics {
     }
 
     self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
-      properties: props
-    )
-  }
-
-  /** Call when the Manage button is tapped on the activity feed to fix an errored pledge.
-
-   - parameter project: the project that was pledged to.
-   */
-  public func trackActivitiesManagePledgeButtonClicked(project: Project) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      // the context is always "fixErroredPledge" for this event
-      .withAllValuesFrom(contextProperties(page: .activities))
-    self.track(
-      event: ApprovedEvent.managePledgeButtonClicked.rawValue,
+      event: SegmentEvent.pageViewed.rawValue,
       properties: props
     )
   }
 
   // MARK: - Login/Signup Events
 
-  /* Call when the Login or Signup button entry-point is tapped
-
-   parameters:
-   - intent: the LoginIntent associated with the login/signup attempt
-   - project: if the login attempt is made from the checkout flow, the associated project
-   - reward: if the login attempt is made from the checkout flow, the associated selected reward
-   */
-
-  public func trackLoginOrSignupButtonClicked(
-    intent: LoginIntent,
-    project: Project? = nil,
-    reward: Reward? = nil
-  ) {
-    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
-      .withAllValuesFrom(contextProperties(page: .discovery))
-
-    self.track(
-      event: ApprovedEvent.loginOrSignupButtonClicked.rawValue,
-      properties: props
-    )
-  }
-
-  /* Call when the Login/Signup page is viewed
-
-   parameters:
-   - intent: the LoginIntent associated with the login/signup attempt
-   - project: if the login attempt is made from the checkout flow, the associated project
-   - reward: if the login attempt is made from the checkout flow, the associated selected reward
-   */
-  public func trackLoginOrSignupPageViewed(
-    intent: LoginIntent,
-    project: Project? = nil,
-    reward: Reward? = nil
-  ) {
-    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
-      .withAllValuesFrom(contextProperties(page: .loginTout))
-
-    self.track(
-      event: ApprovedEvent.loginOrSignupPageViewed.rawValue,
-      properties: props
-    )
-  }
-
-  /* Call when the Log In button is tapped on the Login/Signup Page
-
-   parameters:
-   - intent: the LoginIntent associated with the login/signup attempt
-   - project: if the login attempt is made from the checkout flow, the associated project
-   - reward: if the login attempt is made from the checkout flow, the associated selected reward
-   */
-
-  public func trackLoginButtonClicked(
-    intent: LoginIntent,
-    project: Project? = nil,
-    reward: Reward? = nil
-  ) {
-    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
-      .withAllValuesFrom(contextProperties(page: .loginTout))
-
-    self.track(
-      event: ApprovedEvent.loginButtonClicked.rawValue,
-      properties: props
-    )
-  }
-
-  /* Call when the "Log in with Facebook" button is tapped on the Login/Signup Page
-
-   parameters:
-   - intent: the LoginIntent associated with the login/signup attempt
-   - project: if the login attempt is made from the checkout flow, the associated project
-   - reward: if the login attempt is made from the checkout flow, the associated selected reward
-   */
-
-  public func trackFacebookLoginOrSignupButtonClicked(
-    intent: LoginIntent,
-    project: Project? = nil,
-    reward: Reward? = nil
-  ) {
-    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
-      .withAllValuesFrom(contextProperties(page: .loginTout))
-
-    self.track(
-      event: ApprovedEvent.fbLoginOrSignupButtonClicked.rawValue,
-      properties: props
-    )
-  }
-
-  /* Call when the "Continue with Apple" button is tapped on the Login/Signup Page
-
-   parameters:
-   - intent: the LoginIntent associated with the login/signup attempt
-   - project: if the login attempt is made from the checkout flow, the associated project
-   - reward: if the login attempt is made from the checkout flow, the associated selected reward
-   */
-
-  public func trackContinueWithAppleButtonClicked(
-    intent: LoginIntent,
-    project: Project? = nil,
-    reward: Reward? = nil
-  ) {
-    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
-      .withAllValuesFrom(contextProperties(page: .loginTout))
-
-    self.track(
-      event: ApprovedEvent.continueWithAppleButtonClicked.rawValue,
-      properties: props
-    )
-  }
-
-  /* Call when the "Sign up" button is tapped on the Login/Signup Page
-
-   parameters:
-   - intent: the LoginIntent associated with the login/signup attempt
-   - project: if the login attempt is made from the checkout flow, the associated project
-   - reward: if the login attempt is made from the checkout flow, the associated selected reward
-   */
-
-  public func trackSignupButtonClicked(
-    intent: LoginIntent,
-    project: Project? = nil,
-    reward: Reward? = nil
-  ) {
-    let props = self.loginEventProperties(for: intent, project: project, reward: reward)
-      .withAllValuesFrom(contextProperties(page: .loginTout))
-
-    self.track(
-      event: ApprovedEvent.signupButtonClicked.rawValue,
-      properties: props
-    )
-  }
-
   public func trackSignupSubmitButtonClicked(isSubscribed: Bool) {
     let typeContext: TypeContext = isSubscribed ? .subscriptionTrue : .subscriptionFalse
     let props = contextProperties(ctaContext: .signUpSubmit, page: .signup, typeContext: typeContext)
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
   }
 
   public func trackSignupPageViewed() {
     let props = contextProperties(page: .signup)
-    self.track(event: NewApprovedEvent.pageViewed.rawValue, properties: props)
+    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
   }
 
   /**
@@ -1368,30 +1051,14 @@ public final class KSRAnalytics {
    */
   public func trackLoginPageViewed() {
     let props = contextProperties(page: .login)
-    self.track(event: NewApprovedEvent.pageViewed.rawValue, properties: props)
+    self.track(event: SegmentEvent.pageViewed.rawValue, properties: props)
   }
 
   public func trackLoginSubmitButtonClicked() {
     let props = contextProperties(ctaContext: .logInSubmit, page: .login)
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
-    )
-  }
-
-  public func trackForgotPasswordViewed() {
-    let properties = contextProperties(page: .forgotPassword)
-    self.track(
-      event: ApprovedEvent.forgotPasswordViewed.rawValue,
-      properties: properties
-    )
-  }
-
-  public func track2FAViewed() {
-    let properties = contextProperties(page: .twoFactorAuth)
-    self.track(
-      event: ApprovedEvent.twoFactorConfirmationViewed.rawValue,
-      properties: properties
     )
   }
 
@@ -1421,7 +1088,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(page: .search))
 
     self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
+      event: SegmentEvent.pageViewed.rawValue,
       properties: props
     )
   }
@@ -1444,24 +1111,9 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(page: .projectPage, sectionContext: sectionContext))
 
     self.track(
-      event: NewApprovedEvent.pageViewed.rawValue,
+      event: SegmentEvent.pageViewed.rawValue,
       properties: props,
       refTag: refTag?.stringTag
-    )
-  }
-
-  /**
-   Call when a project page is swiped to the next project.
-   - parameter project:      The next project being viewed.
-   - parameter refTag:       The ref tag used when swiping to the project.
-   */
-  public func trackSwipedProject(_ project: Project, refTag: RefTag?) {
-    let props = projectProperties(from: project, loggedInUser: self.loggedInUser)
-      .withAllValuesFrom(contextProperties(page: .projectPage))
-
-    self.track(
-      event: ApprovedEvent.projectSwiped.rawValue,
-      properties: props, refTag: refTag?.stringTag
     )
   }
 
@@ -1491,7 +1143,7 @@ public final class KSRAnalytics {
     }
 
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
   }
@@ -1507,7 +1159,7 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(ctaContext: .creatorDetails, page: .projectPage))
 
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
     )
   }
@@ -1521,26 +1173,8 @@ public final class KSRAnalytics {
       .withAllValuesFrom(contextProperties(ctaContext: .campaignDetails, page: .projectPage))
 
     self.track(
-      event: NewApprovedEvent.ctaClicked.rawValue,
+      event: SegmentEvent.ctaClicked.rawValue,
       properties: props
-    )
-  }
-
-  // MARK: - Email Verification
-
-  public func trackEmailVerificationScreenViewed() {
-    let properties = contextProperties(page: .emailVerification)
-    self.track(
-      event: ApprovedEvent.verificationScreenViewed.rawValue,
-      properties: properties
-    )
-  }
-
-  public func trackSkipEmailVerificationButtonClicked() {
-    let properties = contextProperties(page: .emailVerification)
-    self.track(
-      event: ApprovedEvent.skipVerificationButtonClicked.rawValue,
-      properties: properties
     )
   }
 
@@ -1558,12 +1192,6 @@ public final class KSRAnalytics {
 
     self.logEventCallback?(event, props)
 
-    self.dataLakeClient.track(
-      event,
-      properties: props
-    )
-
-    // Currently events approved for the Data Lake are good for Segment.
     self.segmentClient?.track(
       event,
       properties: props

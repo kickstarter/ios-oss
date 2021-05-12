@@ -119,7 +119,6 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.viewWillDisappear()
     self.vm.inputs.viewDidDisappear(animated: true)
     self.pauseVideo.assertDidNotEmitValue("Video not paused by view navigation.")
-    XCTAssertEqual([], self.dataLakeTrackingClient.events, "No tracking events occur.")
     XCTAssertEqual([], self.segmentTrackingClient.events, "No tracking events occur.")
 
     // Go back to the project and start playing the video.
@@ -214,7 +213,6 @@ internal final class VideoViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
     self.vm.inputs.viewDidAppear()
 
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
     XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.playButtonTapped()
@@ -233,14 +231,6 @@ internal final class VideoViewModelTests: TestCase {
     XCTAssertEqual("project", self.segmentTrackingClient.properties.last?["context_page"] as? String)
     XCTAssertEqual(100, self.segmentTrackingClient.properties.last?["video_length"] as? Int)
     XCTAssertEqual(50, self.segmentTrackingClient.properties.last?["video_position"] as? Int)
-
-    XCTAssertEqual([
-      "Video Playback Started",
-      "Video Playback Started"
-    ], self.dataLakeTrackingClient.events)
-    XCTAssertEqual("project", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual(100, self.dataLakeTrackingClient.properties.last?["video_length"] as? Int)
-    XCTAssertEqual(50, self.dataLakeTrackingClient.properties.last?["video_position"] as? Int)
 
     self.vm.inputs.crossedCompletionThreshold()
 
@@ -263,15 +253,6 @@ internal final class VideoViewModelTests: TestCase {
     XCTAssertEqual("project", self.segmentTrackingClient.properties.last?["context_page"] as? String)
     XCTAssertEqual(100, self.segmentTrackingClient.properties.last?["video_length"] as? Int)
     XCTAssertEqual(0, self.segmentTrackingClient.properties.last?["video_position"] as? Int)
-
-    XCTAssertEqual([
-      "Video Playback Started",
-      "Video Playback Started",
-      "Video Playback Started"
-    ], self.dataLakeTrackingClient.events)
-    XCTAssertEqual("project", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual(100, self.dataLakeTrackingClient.properties.last?["video_length"] as? Int)
-    XCTAssertEqual(0, self.dataLakeTrackingClient.properties.last?["video_position"] as? Int)
   }
 
   func testTrackVideoCompletionViaScrubbing() {

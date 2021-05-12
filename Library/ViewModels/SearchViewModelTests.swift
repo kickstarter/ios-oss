@@ -133,21 +133,11 @@ internal final class SearchViewModelTests: TestCase {
         self.vm.inputs.tapped(project: searchProjects[0])
 
         XCTAssertEqual(
-          self.dataLakeTrackingClient.events.last,
-          "CTA Clicked"
-        )
-        XCTAssertEqual(
           self.segmentTrackingClient.events.last,
           "CTA Clicked"
         )
 
-        let dataLakeProperties = self.dataLakeTrackingClient.properties.last
         let segmentProperties = self.segmentTrackingClient.properties.last
-
-        XCTAssertEqual("search", dataLakeProperties?["context_page"] as? String)
-        XCTAssertEqual("results", dataLakeProperties?["context_type"] as? String)
-        XCTAssertEqual("project", dataLakeProperties?["context_cta"] as? String)
-        XCTAssertEqual("search_results", dataLakeProperties?["context_location"] as? String)
 
         XCTAssertEqual("search", segmentProperties?["context_page"] as? String)
         XCTAssertEqual("results", segmentProperties?["context_type"] as? String)
@@ -160,18 +150,12 @@ internal final class SearchViewModelTests: TestCase {
   func testCancelSearchField() {
     self.vm.inputs.viewWillAppear(animated: true)
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events, "Impression tracked")
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events, "Impression tracked")
 
     self.vm.inputs.searchFieldDidBeginEditing()
     self.vm.inputs.searchTextChanged("a")
     self.vm.inputs.cancelButtonPressed()
 
-    XCTAssertEqual(
-      ["Page Viewed"],
-      self.dataLakeTrackingClient.events,
-      "Search input and cancel not tracked"
-    )
     XCTAssertEqual(
       ["Page Viewed"],
       self.segmentTrackingClient.events,
@@ -204,11 +188,6 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.inputs.searchTextChanged("b")
     self.vm.inputs.clearSearchText()
 
-    XCTAssertEqual(
-      ["Page Viewed"],
-      self.dataLakeTrackingClient.events,
-      "Clear search text not tracked"
-    )
     XCTAssertEqual(
       ["Page Viewed"],
       self.segmentTrackingClient.events,
@@ -255,7 +234,6 @@ internal final class SearchViewModelTests: TestCase {
   func testFlow() {
     self.hasProjects.assertDidNotEmitValue("No projects before view is visible.")
     self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
-    XCTAssertEqual([], self.dataLakeTrackingClient.events, "No events tracked before view is visible.")
     XCTAssertEqual([], self.segmentTrackingClient.events, "No events tracked before view is visible.")
 
     self.vm.inputs.viewWillAppear(animated: true)
@@ -266,10 +244,7 @@ internal final class SearchViewModelTests: TestCase {
 
     self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
     self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
-    XCTAssertEqual(
-      ["Page Viewed"], self.dataLakeTrackingClient.events,
-      "The search view event tracked upon view appearing."
-    )
+
     XCTAssertEqual(
       ["Page Viewed"], self.segmentTrackingClient.events,
       "The search view event tracked upon view appearing."
@@ -290,15 +265,7 @@ internal final class SearchViewModelTests: TestCase {
       [true, false],
       "Popular title visibility still not emit after time has passed."
     )
-    XCTAssertEqual(
-      ["Page Viewed", "Page Viewed"],
-      self.dataLakeTrackingClient.events,
-      "An event is tracked for the search results."
-    )
-    XCTAssertEqual(
-      "skull graphic tee",
-      self.dataLakeTrackingClient.properties.last?["discover_search_term"] as? String
-    )
+
     XCTAssertEqual(
       ["Page Viewed", "Page Viewed"],
       self.segmentTrackingClient.events,
@@ -312,15 +279,6 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.inputs.willDisplayRow(7, outOf: 10)
     self.scheduler.advance()
 
-    XCTAssertEqual(
-      ["Page Viewed", "Page Viewed"],
-      self.dataLakeTrackingClient.events,
-      "An event is tracked for the search results."
-    )
-    XCTAssertEqual(
-      ["", "skull graphic tee"],
-      self.dataLakeTrackingClient.properties(forKey: "discover_search_term")
-    )
     XCTAssertEqual(
       ["Page Viewed", "Page Viewed"],
       self.segmentTrackingClient.events,
@@ -342,11 +300,7 @@ internal final class SearchViewModelTests: TestCase {
       [true, false, true],
       "Clearing search brings back popular title."
     )
-    XCTAssertEqual(
-      ["Page Viewed", "Page Viewed"],
-      self.dataLakeTrackingClient.events,
-      "Doesn't track empty queries"
-    )
+
     XCTAssertEqual(
       ["Page Viewed", "Page Viewed"],
       self.segmentTrackingClient.events,
@@ -363,10 +317,7 @@ internal final class SearchViewModelTests: TestCase {
       [true, false, true],
       "Leaving view and coming back doesn't change popular title"
     )
-    XCTAssertEqual(
-      ["Page Viewed", "Page Viewed", "Page Viewed"],
-      self.dataLakeTrackingClient.events
-    )
+
     XCTAssertEqual(
       ["Page Viewed", "Page Viewed", "Page Viewed"],
       self.segmentTrackingClient.events
@@ -385,7 +336,6 @@ internal final class SearchViewModelTests: TestCase {
     withEnvironment(apiService: MockService(fetchDiscoveryResponse: response)) {
       self.hasProjects.assertDidNotEmitValue("No projects before view is visible.")
       self.isPopularTitleVisible.assertDidNotEmitValue("Popular title is not visible before view is visible.")
-      XCTAssertEqual([], self.dataLakeTrackingClient.events, "No events tracked before view is visible.")
       XCTAssertEqual([], self.segmentTrackingClient.events, "No events tracked before view is visible.")
 
       self.vm.inputs.viewWillAppear(animated: true)
@@ -396,10 +346,7 @@ internal final class SearchViewModelTests: TestCase {
 
       self.hasProjects.assertValues([true], "Projects emitted immediately upon view appearing.")
       self.isPopularTitleVisible.assertValues([true], "Popular title visible upon view appearing.")
-      XCTAssertEqual(
-        ["Page Viewed"], self.dataLakeTrackingClient.events,
-        "The search view event tracked upon view appearing."
-      )
+
       XCTAssertEqual(
         ["Page Viewed"], self.segmentTrackingClient.events,
         "The search view event tracked upon view appearing."
@@ -420,15 +367,7 @@ internal final class SearchViewModelTests: TestCase {
         [true, false],
         "Popular title visibility still not emit after time has passed."
       )
-      XCTAssertEqual(
-        ["Page Viewed", "Page Viewed"],
-        self.dataLakeTrackingClient.events,
-        "An event is tracked for the search results."
-      )
-      XCTAssertEqual(
-        ["", "skull graphic tee"],
-        self.dataLakeTrackingClient.properties(forKey: "discover_search_term")
-      )
+
       XCTAssertEqual(
         ["Page Viewed", "Page Viewed"],
         self.segmentTrackingClient.events,
@@ -438,10 +377,7 @@ internal final class SearchViewModelTests: TestCase {
         ["", "skull graphic tee"],
         self.segmentTrackingClient.properties(forKey: "discover_search_term")
       )
-      XCTAssertEqual(
-        [0, 200],
-        self.dataLakeTrackingClient.properties(forKey: "discover_search_results_count", as: Int.self)
-      )
+
       XCTAssertEqual(
         [0, 200],
         self.segmentTrackingClient.properties(forKey: "discover_search_results_count", as: Int.self)
@@ -521,7 +457,6 @@ internal final class SearchViewModelTests: TestCase {
       )
       projects.assertLastValue(popularProjects, "Brings back popular projects immediately.")
 
-      XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
       XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
     }
   }
@@ -580,10 +515,7 @@ internal final class SearchViewModelTests: TestCase {
       self.scheduler.advance(by: debounceDelay + apiDelay)
 
       self.hasProjects.assertValues([true, false, true], "Search projects load after waiting enough time.")
-      XCTAssertEqual(
-        ["Page Viewed", "Page Viewed"],
-        self.dataLakeTrackingClient.events
-      )
+
       XCTAssertEqual(
         ["Page Viewed", "Page Viewed"],
         self.segmentTrackingClient.events
@@ -593,11 +525,7 @@ internal final class SearchViewModelTests: TestCase {
       self.scheduler.run()
 
       self.hasProjects.assertValues([true, false, true], "Nothing new is emitted.")
-      XCTAssertEqual(
-        ["Page Viewed", "Page Viewed"],
-        self.dataLakeTrackingClient.events,
-        "Nothing new is tracked."
-      )
+
       XCTAssertEqual(
         ["Page Viewed", "Page Viewed"],
         self.segmentTrackingClient.events,
@@ -619,7 +547,7 @@ internal final class SearchViewModelTests: TestCase {
     self.vm.inputs.cancelButtonPressed()
 
     self.searchFieldText.assertValues([""])
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
+
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
   }
 
@@ -644,19 +572,12 @@ internal final class SearchViewModelTests: TestCase {
 
       self.vm.inputs.searchFieldDidBeginEditing()
 
-      XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
-      XCTAssertEqual([""], self.dataLakeTrackingClient.properties(forKey: "discover_search_term"))
       XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
       XCTAssertEqual([""], self.segmentTrackingClient.properties(forKey: "discover_search_term"))
 
       self.vm.inputs.searchTextChanged("d")
       self.scheduler.advance(by: apiDelay + debounceDelay)
 
-      XCTAssertEqual(
-        ["Page Viewed", "Page Viewed"],
-        self.dataLakeTrackingClient.events
-      )
-      XCTAssertEqual(["", "d"], self.dataLakeTrackingClient.properties(forKey: "discover_search_term"))
       XCTAssertEqual(
         ["Page Viewed", "Page Viewed"],
         self.segmentTrackingClient.events
@@ -668,11 +589,6 @@ internal final class SearchViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Page Viewed", "Page Viewed", "Page Viewed"],
-        self.dataLakeTrackingClient.events
-      )
-      XCTAssertEqual(["", "d", "do"], self.dataLakeTrackingClient.properties(forKey: "discover_search_term"))
-      XCTAssertEqual(
-        ["Page Viewed", "Page Viewed", "Page Viewed"],
         self.segmentTrackingClient.events
       )
       XCTAssertEqual(["", "d", "do"], self.segmentTrackingClient.properties(forKey: "discover_search_term"))
@@ -680,14 +596,6 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchTextChanged("dog")
       self.scheduler.advance(by: apiDelay + debounceDelay)
 
-      XCTAssertEqual(
-        ["Page Viewed", "Page Viewed", "Page Viewed", "Page Viewed"],
-        self.dataLakeTrackingClient.events
-      )
-      XCTAssertEqual(
-        ["", "d", "do", "dog"],
-        self.dataLakeTrackingClient.properties(forKey: "discover_search_term")
-      )
       XCTAssertEqual(
         ["Page Viewed", "Page Viewed", "Page Viewed", "Page Viewed"],
         self.segmentTrackingClient.events
@@ -700,20 +608,6 @@ internal final class SearchViewModelTests: TestCase {
       self.vm.inputs.searchTextChanged("dogs")
       self.scheduler.advance(by: apiDelay + debounceDelay)
 
-      XCTAssertEqual(
-        [
-          "Page Viewed",
-          "Page Viewed",
-          "Page Viewed",
-          "Page Viewed",
-          "Page Viewed"
-        ],
-        self.dataLakeTrackingClient.events
-      )
-      XCTAssertEqual(
-        ["", "d", "do", "dog", "dogs"],
-        self.dataLakeTrackingClient.properties(forKey: "discover_search_term")
-      )
       XCTAssertEqual(
         [
           "Page Viewed",
@@ -802,19 +696,12 @@ internal final class SearchViewModelTests: TestCase {
   func testSearchPageViewed_BeforeSearching() {
     self.vm.inputs.viewWillAppear(animated: true)
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
-    let dataLakeClientProps = self.dataLakeTrackingClient.properties.last
     let segmentClientProps = self.segmentTrackingClient.properties.last
 
-    XCTAssertEqual("search", dataLakeClientProps?["context_page"] as? String)
     XCTAssertEqual("search", segmentClientProps?["context_page"] as? String)
-
-    XCTAssertEqual("", dataLakeClientProps?["discover_search_term"] as? String)
     XCTAssertEqual("", segmentClientProps?["discover_search_term"] as? String)
-
-    XCTAssertEqual(0, dataLakeClientProps?["discover_search_results_count"] as? Int)
     XCTAssertEqual(0, segmentClientProps?["discover_search_results_count"] as? Int)
   }
 
@@ -830,13 +717,9 @@ internal final class SearchViewModelTests: TestCase {
 
       self.vm.inputs.viewWillAppear(animated: true)
 
-      let dataLakeClientProps = self.dataLakeTrackingClient.properties.last
       let segmentClientProps = self.segmentTrackingClient.properties.last
 
-      XCTAssertEqual("maverick", dataLakeClientProps?["discover_search_term"] as? String)
       XCTAssertEqual("maverick", segmentClientProps?["discover_search_term"] as? String)
-
-      XCTAssertEqual(200, dataLakeClientProps?["discover_search_results_count"] as? Int)
       XCTAssertEqual(200, segmentClientProps?["discover_search_results_count"] as? Int)
     }
   }

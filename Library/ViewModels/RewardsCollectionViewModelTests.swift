@@ -714,11 +714,7 @@ final class RewardsCollectionViewModelTests: TestCase {
     self.vm.inputs.configure(with: project, refTag: .activity, context: .createPledge)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
-
-    XCTAssertEqual(["activity"], self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"))
-    XCTAssertEqual(["rewards"], self.dataLakeTrackingClient.properties(forKey: "context_page"))
     XCTAssertEqual(["activity"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
     XCTAssertEqual(["rewards"], self.segmentTrackingClient.properties(forKey: "context_page"))
   }
@@ -743,10 +739,7 @@ final class RewardsCollectionViewModelTests: TestCase {
 
     self.vm.inputs.rewardSelected(with: 2)
 
-    XCTAssertEqual("CTA Clicked", self.dataLakeTrackingClient.events.last)
     XCTAssertEqual("CTA Clicked", self.segmentTrackingClient.events.last)
-
-    XCTAssertEqual("activity", self.dataLakeTrackingClient.properties.last?["session_ref_tag"] as? String)
     XCTAssertEqual("activity", self.segmentTrackingClient.properties.last?["session_ref_tag"] as? String)
   }
 
@@ -772,19 +765,11 @@ final class RewardsCollectionViewModelTests: TestCase {
 
     self.vm.inputs.rewardSelected(with: 2)
 
-    XCTAssertEqual("CTA Clicked", self.dataLakeTrackingClient.events.last)
     XCTAssertEqual("CTA Clicked", self.segmentTrackingClient.events.last)
 
-    XCTAssertEqual("rewards", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("reward_continue", self.dataLakeTrackingClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("rewards", self.segmentTrackingClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("reward_continue", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
 
-    XCTAssertEqual(
-      0.00,
-      self.dataLakeTrackingClient.properties.last?["checkout_bonus_amount_usd"] as? Decimal
-    )
-    XCTAssertEqual(0, self.dataLakeTrackingClient.properties.last?["checkout_add_ons_count_total"] as? Int)
     XCTAssertEqual(
       0.00,
       self.segmentTrackingClient.properties.last?["checkout_bonus_amount_usd"] as? Decimal
@@ -818,25 +803,17 @@ final class RewardsCollectionViewModelTests: TestCase {
 
     self.vm.inputs.rewardSelected(with: 2)
 
-    XCTAssertEqual("CTA Clicked", self.dataLakeTrackingClient.events.last)
     XCTAssertEqual("CTA Clicked", self.segmentTrackingClient.events.last)
 
-    XCTAssertEqual("rewards", self.dataLakeTrackingClient.properties.last?["context_page"] as? String)
-    XCTAssertEqual("reward_continue", self.dataLakeTrackingClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("rewards", self.segmentTrackingClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("reward_continue", self.segmentTrackingClient.properties.last?["context_cta"] as? String)
 
-    XCTAssertEqual(
-      100.00,
-      self.dataLakeTrackingClient.properties.last?["checkout_bonus_amount_usd"] as? Decimal
-    )
     XCTAssertEqual(
       100.00,
       self.segmentTrackingClient.properties.last?["checkout_bonus_amount_usd"] as? Decimal
     )
 
     // Even though there is an addOn on the Backing, we don't calculate that as a total in the Rewards carousel
-    XCTAssertEqual(0, self.dataLakeTrackingClient.properties.last?["checkout_add_ons_count_total"] as? Int)
     XCTAssertEqual(0, self.segmentTrackingClient.properties.last?["checkout_add_ons_count_total"] as? Int)
   }
 
@@ -860,19 +837,12 @@ final class RewardsCollectionViewModelTests: TestCase {
 
     self.vm.inputs.rewardSelected(with: 2)
 
-    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
 
-    XCTAssertEqual(
-      ["activity", "activity"],
-      self.dataLakeTrackingClient.properties(forKey: "session_ref_tag")
-    )
     XCTAssertEqual(["activity", "activity"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
 
-    XCTAssertEqual(["rewards", "rewards"], self.dataLakeTrackingClient.properties(forKey: "context_page"))
     XCTAssertEqual(["rewards", "rewards"], self.segmentTrackingClient.properties(forKey: "context_page"))
 
-    XCTAssertEqual([nil, "reward_continue"], self.dataLakeTrackingClient.properties(forKey: "context_cta"))
     XCTAssertEqual([nil, "reward_continue"], self.segmentTrackingClient.properties(forKey: "context_cta"))
   }
 }

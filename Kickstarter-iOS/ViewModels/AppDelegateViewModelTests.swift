@@ -894,7 +894,6 @@ final class AppDelegateViewModelTests: TestCase {
   }
 
   func testRegisterPushNotifications_Prompted() {
-    let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
 
     MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
@@ -903,10 +902,9 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(),
       currentUser: .template,
-      ksrAnalytics: KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient),
+      ksrAnalytics: KSRAnalytics(segmentClient: segmentClient),
       pushRegistrationType: MockPushRegistration.self
     ) {
-      XCTAssertEqual([], dataLakeClient.events)
       self.pushRegistrationStarted.assertValueCount(0)
       self.pushTokenSuccessfullyRegistered.assertValueCount(0)
 
@@ -922,13 +920,11 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.pushTokenSuccessfullyRegistered.assertValueCount(1)
 
-      XCTAssertEqual([], dataLakeClient.events)
       XCTAssertEqual([], segmentClient.events)
     }
   }
 
   func testRegisterPushNotifications_PreviouslyAccepted() {
-    let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
 
     MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: true)
@@ -937,10 +933,9 @@ final class AppDelegateViewModelTests: TestCase {
     withEnvironment(
       apiService: MockService(),
       currentUser: .template,
-      ksrAnalytics: KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient),
+      ksrAnalytics: KSRAnalytics(segmentClient: segmentClient),
       pushRegistrationType: MockPushRegistration.self
     ) {
-      XCTAssertEqual([], dataLakeClient.events)
       self.pushRegistrationStarted.assertValueCount(0)
       self.pushTokenSuccessfullyRegistered.assertValueCount(0)
 
@@ -955,13 +950,11 @@ final class AppDelegateViewModelTests: TestCase {
 
       self.pushTokenSuccessfullyRegistered.assertValueCount(1)
 
-      XCTAssertEqual([], dataLakeClient.events)
       XCTAssertEqual([], segmentClient.events)
     }
   }
 
   func testTrackingPushAuthorizationOptIn() {
-    let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
 
     MockPushRegistration.hasAuthorizedNotificationsProducer = .init(value: false)
@@ -969,10 +962,9 @@ final class AppDelegateViewModelTests: TestCase {
 
     withEnvironment(
       currentUser: .template,
-      ksrAnalytics: KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient),
+      ksrAnalytics: KSRAnalytics(segmentClient: segmentClient),
       pushRegistrationType: MockPushRegistration.self
     ) {
-      XCTAssertEqual([], dataLakeClient.events)
       XCTAssertEqual([], segmentClient.events)
 
       self.vm.inputs.applicationDidFinishLaunching(application: UIApplication.shared, launchOptions: [:])

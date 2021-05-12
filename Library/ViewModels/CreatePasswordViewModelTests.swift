@@ -342,14 +342,12 @@ final class CreatePasswordViewModelTests: TestCase {
   }
 
   func testCreatePassword_eventTracking() {
-    let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
 
     withEnvironment(
       apiService: MockService(),
-      ksrAnalytics: KSRAnalytics(dataLakeClient: dataLakeClient, segmentClient: segmentClient)
+      ksrAnalytics: KSRAnalytics(segmentClient: segmentClient)
     ) {
-      XCTAssertEqual([], dataLakeClient.events)
       XCTAssertEqual([], segmentClient.events)
 
       self.vm.inputs.viewDidAppear()

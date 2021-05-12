@@ -39,7 +39,6 @@ internal final class SignupViewModelTests: TestCase {
 
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
     self.setWeeklyNewsletterState.assertValues([false], "Unselected when view loads.")
@@ -70,7 +69,6 @@ internal final class SignupViewModelTests: TestCase {
     self.vm.inputs.signupButtonPressed()
     self.logIntoEnvironment.assertDidNotEmitValue("Does not immediately emit after signup button is pressed.")
 
-    XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed", "CTA Clicked"], self.segmentTrackingClient.events)
 
     self.scheduler.advance()

@@ -58,13 +58,10 @@ internal final class EmptyStatesViewModelTests: TestCase {
     self.vm.inputs.viewWillAppear()
     self.vm.inputs.mainButtonTapped()
 
-    XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
 
-    XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_page"), ["activity_feed"])
     XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_page"), ["activity_feed"])
 
-    XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_cta"), ["discover"])
     XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_cta"), ["discover"])
   }
 }

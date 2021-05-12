@@ -57,16 +57,6 @@ public final class EmailVerificationViewModel: EmailVerificationViewModelType,
 
     self.showSuccessBannerWithMessageAndShowBanner = didSendVerificationEmail
       .map { (Strings.Verification_email_sent(), $1) }
-
-    // MARK: - Tracking
-
-    self.viewDidLoadProperty.signal.observeValues { _ in
-      AppEnvironment.current.ksrAnalytics.trackEmailVerificationScreenViewed()
-    }
-
-    self.skipButtonTappedProperty.signal.observeValues { _ in
-      AppEnvironment.current.ksrAnalytics.trackSkipEmailVerificationButtonClicked()
-    }
   }
 
   private let resendButtonTappedProperty = MutableProperty(())
