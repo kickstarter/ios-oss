@@ -335,9 +335,6 @@ final class CategorySelectionViewModelTests: TestCase {
       self.vm.inputs.categorySelected(with: (illustrationIndexPath, .illustration))
       self.vm.inputs.categorySelected(with: (gamesIndexPath, .games))
 
-      XCTAssertNil(self.optimizelyClient.trackedEventKey)
-      XCTAssertNil(self.optimizelyClient.trackedAttributes)
-
       XCTAssertNil(mockKVStore.onboardingCategories)
       XCTAssertFalse(mockKVStore.hasCompletedCategoryPersonalizationFlow)
 
@@ -352,13 +349,6 @@ final class CategorySelectionViewModelTests: TestCase {
 
       XCTAssertEqual(encodedCategories, mockKVStore.onboardingCategories)
       XCTAssertTrue(mockKVStore.hasCompletedCategoryPersonalizationFlow)
-
-      XCTAssertEqual("Continue Button Clicked", self.optimizelyClient.trackedEventKey)
-      XCTAssertEqual(["Onboarding Continue Button Clicked"], self.dataLakeTrackingClient.events)
-      XCTAssertEqual(["Onboarding Continue Button Clicked"], self.segmentTrackingClient.events)
-      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_page"), ["onboarding"])
-      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_page"), ["onboarding"])
-      assertBaseUserAttributesLoggedOut()
     }
   }
 
@@ -430,19 +420,9 @@ final class CategorySelectionViewModelTests: TestCase {
 
       self.dismiss.assertDidNotEmitValue()
 
-      XCTAssertNil(self.optimizelyClient.trackedEventKey)
-      XCTAssertNil(self.optimizelyClient.trackedAttributes)
-
       self.vm.inputs.skipButtonTapped()
 
       self.dismiss.assertValueCount(1)
-
-      XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Skip Button Clicked")
-      XCTAssertEqual(self.dataLakeTrackingClient.events, ["Onboarding Skip Button Clicked"])
-      XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_page"), ["onboarding"])
-      XCTAssertEqual(self.segmentTrackingClient.events, ["Onboarding Skip Button Clicked"])
-      XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_page"), ["onboarding"])
-      assertBaseUserAttributesLoggedOut()
     }
   }
 }

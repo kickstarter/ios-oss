@@ -3,9 +3,6 @@ import Prelude
 import ReactiveSwift
 
 public protocol ProjectNavigatorViewModelInputs {
-  /// Call with the config data given to the view.
-  func configureWith(project: Project, refTag: RefTag)
-
   /// Call when the UIPageViewController finishes transitioning with previous index value.
   func pageTransition(completed: Bool, from index: Int?)
 
@@ -58,12 +55,6 @@ public protocol ProjectNavigatorViewModelType {
 public final class ProjectNavigatorViewModel: ProjectNavigatorViewModelType,
   ProjectNavigatorViewModelInputs, ProjectNavigatorViewModelOutputs {
   public init() {
-    let configData = Signal.combineLatest(
-      self.configDataProperty.signal.skipNil(),
-      self.viewDidLoadProperty.signal
-    )
-    .map(first)
-
     let pageTransitionCompletedFromIndex = self.pageTransitionCompletedFromIndexProperty.signal.skipNil()
       .filter { completed, _ in completed }
 
@@ -130,17 +121,6 @@ public final class ProjectNavigatorViewModel: ProjectNavigatorViewModelType,
     self.notifyDelegateTransitionedToProjectIndex = swipedToProjectAtIndexFromIndex
       .map { $0.currentIndex }
       .skipNil()
-
-    configData
-      .takePairWhen(swipedToProjectAtIndexFromIndex)
-      .observeValues { configData, pii in
-        AppEnvironment.current.ksrAnalytics.trackSwipedProject(pii.project, refTag: configData.refTag)
-      }
-  }
-
-  fileprivate let configDataProperty = MutableProperty<ConfigData?>(nil)
-  public func configureWith(project: Project, refTag: RefTag) {
-    self.configDataProperty.value = ConfigData(project: project, refTag: refTag)
   }
 
   fileprivate let pageTransitionCompletedFromIndexProperty = MutableProperty<(Bool, Int?)?>(nil)
@@ -184,11 +164,6 @@ public final class ProjectNavigatorViewModel: ProjectNavigatorViewModelType,
 
   public var inputs: ProjectNavigatorViewModelInputs { return self }
   public var outputs: ProjectNavigatorViewModelOutputs { return self }
-}
-
-private struct ConfigData {
-  fileprivate let project: Project
-  fileprivate let refTag: RefTag
 }
 
 private struct PanningData {

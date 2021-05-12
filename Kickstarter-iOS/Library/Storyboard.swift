@@ -4,7 +4,7 @@ public enum Storyboard: String {
   case Activity
   case Backing
   case BackerDashboard
-  case Comments
+  case DeprecatedComments
   case Dashboard
   case DashboardProjectsDrawer
   case DebugPushNotifications

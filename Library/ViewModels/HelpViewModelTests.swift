@@ -28,7 +28,7 @@ internal final class HelpViewModelTests: TestCase {
     self.vm.inputs.canSendEmail(true)
 
     self.showWebHelp.assertValueCount(0)
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+
     XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.helpTypeButtonTapped(.cookie)
@@ -65,7 +65,7 @@ internal final class HelpViewModelTests: TestCase {
 
     self.showMailCompose.assertValueCount(0)
     self.showNoEmailError.assertValueCount(0)
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
+
     XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.helpTypeButtonTapped(.contact)

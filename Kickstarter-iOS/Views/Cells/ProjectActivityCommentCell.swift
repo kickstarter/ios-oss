@@ -6,7 +6,7 @@ import UIKit
 
 internal protocol ProjectActivityCommentCellDelegate: AnyObject {
   func projectActivityCommentCellGoToBacking(project: Project, user: User)
-  func projectActivityCommentCellGoToSendReply(project: Project, update: Update?, comment: Comment)
+  func projectActivityCommentCellGoToSendReply(project: Project, update: Update?, comment: DeprecatedComment)
 }
 
 internal final class ProjectActivityCommentCell: UITableViewCell, ValueCell {

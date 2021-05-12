@@ -188,7 +188,6 @@ final class UpdateViewModelTests: TestCase {
     self.webViewLoadRequest.assertValueCount(1)
     self.goToSafariBrowser.assertValues([outsideUrl])
 
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
     XCTAssertEqual([], self.segmentTrackingClient.events)
   }
 
@@ -230,8 +229,6 @@ final class UpdateViewModelTests: TestCase {
       self.webViewLoadRequest.assertValueCount(1, "Initial update load request")
       self.goToSafariBrowser.assertValues([])
 
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
-      XCTAssertEqual(nil, self.dataLakeTrackingClient.properties.last?["context"] as? String)
       XCTAssertEqual([], self.segmentTrackingClient.events)
       XCTAssertEqual(nil, self.segmentTrackingClient.properties.last?["context"] as? String)
 
@@ -256,8 +253,6 @@ final class UpdateViewModelTests: TestCase {
       self.webViewLoadRequest.assertValueCount(1, "Initial update load request")
       self.goToSafariBrowser.assertValues([prelaunchProjectURL])
 
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
-      XCTAssertEqual(nil, self.dataLakeTrackingClient.properties.last?["context"] as? String)
       XCTAssertEqual([], self.segmentTrackingClient.events)
       XCTAssertEqual(nil, self.segmentTrackingClient.properties.last?["context"] as? String)
     }

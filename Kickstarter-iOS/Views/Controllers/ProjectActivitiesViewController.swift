@@ -100,7 +100,7 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   }
 
   internal func goToComments(project: Project?, update: Update?) {
-    let vc = CommentsViewController.configuredWith(project: project, update: update)
+    let vc = DeprecatedCommentsViewController.configuredWith(project: project, update: update)
     if self.traitCollection.userInterfaceIdiom == .pad {
       let nav = UINavigationController(rootViewController: vc)
       nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
@@ -132,7 +132,7 @@ internal final class ProjectActivitiesViewController: UITableViewController {
     )
   }
 
-  internal func goToSendReply(project: Project, update: Update?, comment: Comment) {
+  internal func goToSendReply(project: Project, update: Update?, comment: DeprecatedComment) {
     let dialog = CommentDialogViewController
       .configuredWith(project: project, update: update, recipient: comment.author, context: .projectActivity)
     dialog.modalPresentationStyle = .formSheet
@@ -173,7 +173,8 @@ extension ProjectActivitiesViewController: ProjectActivityCommentCellDelegate {
     self.viewModel.inputs.projectActivityCommentCellGoToBacking(project: project, user: user)
   }
 
-  func projectActivityCommentCellGoToSendReply(project: Project, update: Update?, comment: Comment) {
+  func projectActivityCommentCellGoToSendReply(project: Project, update: Update?,
+                                               comment: DeprecatedComment) {
     self.viewModel.inputs.projectActivityCommentCellGoToSendReply(
       project: project,
       update: update,
@@ -187,5 +188,5 @@ extension ProjectActivitiesViewController: CommentDialogDelegate {
     dialog.dismiss(animated: true, completion: nil)
   }
 
-  internal func commentDialog(_: CommentDialogViewController, postedComment _: Comment) {}
+  internal func commentDialog(_: CommentDialogViewController, postedComment _: DeprecatedComment) {}
 }

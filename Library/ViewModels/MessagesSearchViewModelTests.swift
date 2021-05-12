@@ -41,7 +41,6 @@ internal final class MessagesSearchViewModelTests: TestCase {
   func testSearch_NoProject() {
     self.vm.inputs.configureWith(project: nil)
 
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
     XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.viewDidLoad()
@@ -90,7 +89,6 @@ internal final class MessagesSearchViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
 
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
     XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.viewDidLoad()
@@ -140,7 +138,6 @@ internal final class MessagesSearchViewModelTests: TestCase {
   func testClearSearchTerm_NoProject() {
     self.vm.inputs.configureWith(project: nil)
 
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
     XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.viewDidLoad()
@@ -167,7 +164,6 @@ internal final class MessagesSearchViewModelTests: TestCase {
 
     self.vm.inputs.configureWith(project: project)
 
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
     XCTAssertEqual([], self.segmentTrackingClient.events)
 
     self.vm.inputs.viewDidLoad()

@@ -5,7 +5,7 @@ import ReactiveSwift
 public struct CommentDialogData {
   public let project: Project
   public let update: Update?
-  public let recipient: Author?
+  public let recipient: DeprecatedAuthor?
   public let context: KSRAnalytics.CommentDialogContext
 }
 
@@ -20,7 +20,7 @@ public protocol CommentDialogViewModelInputs {
   func configureWith(
     project: Project,
     update: Update?,
-    recipient: Author?,
+    recipient: DeprecatedAuthor?,
     context: KSRAnalytics.CommentDialogContext
   )
 
@@ -46,7 +46,7 @@ public protocol CommentDialogViewModelOutputs {
 
   /// Emits the newly posted comment when the present of this dialog should be notified that posting
   /// was successful.
-  var notifyPresenterCommentWasPostedSuccesfully: Signal<Comment, Never> { get }
+  var notifyPresenterCommentWasPostedSuccesfully: Signal<DeprecatedComment, Never> { get }
 
   /// Emits when the dialog should notify its presenter that it wants to be dismissed.
   var notifyPresenterDialogWantsDismissal: Signal<(), Never> { get }
@@ -83,7 +83,7 @@ public final class CommentDialogViewModel: CommentDialogViewModelType, CommentDi
 
   fileprivate let configurationDataProperty = MutableProperty<CommentDialogData?>(nil)
   public func configureWith(
-    project: Project, update: Update?, recipient: Author?,
+    project: Project, update: Update?, recipient: DeprecatedAuthor?,
     context: KSRAnalytics.CommentDialogContext
   ) {
     self.configurationDataProperty.value = CommentDialogData(
@@ -110,7 +110,7 @@ public final class CommentDialogViewModel: CommentDialogViewModelType, CommentDi
   public let bodyTextViewText: Signal<String, Never>
   public let postButtonEnabled: Signal<Bool, Never>
   public let loadingViewIsHidden: Signal<Bool, Never>
-  public let notifyPresenterCommentWasPostedSuccesfully: Signal<Comment, Never>
+  public let notifyPresenterCommentWasPostedSuccesfully: Signal<DeprecatedComment, Never>
   public let notifyPresenterDialogWantsDismissal: Signal<(), Never>
   public let subtitle: Signal<String, Never>
   public let showKeyboard: Signal<Bool, Never>
@@ -191,7 +191,7 @@ public final class CommentDialogViewModel: CommentDialogViewModelType, CommentDi
 }
 
 private func postComment(_ body: String, toUpdateOrComment updateOrComment: Either<Update, Project>)
-  -> SignalProducer<Comment, ErrorEnvelope> {
+  -> SignalProducer<DeprecatedComment, ErrorEnvelope> {
   switch updateOrComment {
   case let .left(update):
     return AppEnvironment.current.apiService.postComment(body, toUpdate: update)

@@ -46,9 +46,6 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the application receives a request to perform a shortcut action.
   func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem)
 
-  /// Call when a Braze in-app message's button is tapped with its URL and extras.
-  func brazeDidHandleURL(_ url: URL?, extras: [AnyHashable: Any]?) -> Bool
-
   /// Call when the Braze SDK will display an in-app message, return a display choice.
   func brazeWillDisplayInAppMessage(_ message: BrazeInAppMessageType) -> ABKInAppMessageDisplayChoice
 
@@ -227,21 +224,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
           : SignalProducer(value: .value(nil))
       }
 
-    let brazeDidHandleURL = self.brazeDidHandleURLProperty
-      .signal
-      .map(willHandleBrazeUrlAndNavigation)
-
-    self.brazeDidHandleURLReturnProperty <~ brazeDidHandleURL.map(first)
-
-    let updatedUserNotificationSettings = brazeDidHandleURL.map(second)
-      .skipNil()
-      .flatMap(updateUserNotificationSetting)
-
-    self.updateCurrentUserInEnvironment = Signal.merge(
-      currentUserEvent.values().skipNil(),
-      updatedUserNotificationSettings
-    )
-
     self.forceLogout = currentUserEvent
       .errors()
       .filter { $0.ksrCode == .AccessTokenInvalid }
@@ -392,6 +374,17 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let deepLink = deeplinkActivated
       .filter { _ in shouldGoToLandingPage() == false && shouldSeeCategoryPersonalization() == false }
       .take(until: self.goToLandingPage)
+
+    let updatedUserNotificationSettings = deepLink.filter { nav in
+      guard case .settings(.notifications(_, _)) = nav else { return false }
+      return true
+    }
+    .flatMap(updateUserNotificationSetting)
+
+    self.updateCurrentUserInEnvironment = Signal.merge(
+      currentUserEvent.values().skipNil(),
+      updatedUserNotificationSettings
+    )
 
     let emailVerificationEvent = deepLinkUrl
       .filter { Navigation.match($0) == .profile(.verifyEmail) }
@@ -555,7 +548,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let projectCommentsLink = projectLink
       .filter { _, subpage, _, _ in subpage == .comments }
       .map { project, _, vcs, _ in
-        vcs + [CommentsViewController.configuredWith(project: project, update: nil)]
+        vcs + [DeprecatedCommentsViewController.configuredWith(project: project, update: nil)]
       }
 
     let surveyResponseLink = deepLink
@@ -618,7 +611,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .observeForUI()
       .map { _, update, subpage, vcs -> [UIViewController]? in
         guard case .comments = subpage else { return nil }
-        return vcs + [CommentsViewController.configuredWith(update: update)]
+        return vcs + [DeprecatedCommentsViewController.configuredWith(update: update)]
       }
       .skipNil()
 
@@ -739,14 +732,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   fileprivate let applicationDidReceiveMemoryWarningProperty = MutableProperty(())
   public func applicationDidReceiveMemoryWarning() {
     self.applicationDidReceiveMemoryWarningProperty.value = ()
-  }
-
-  private let brazeDidHandleURLProperty = MutableProperty<(URL?, [AnyHashable: Any]?)?>(nil)
-  private let brazeDidHandleURLReturnProperty
-    = MutableProperty<Bool>(false)
-  public func brazeDidHandleURL(_ url: URL?, extras: [AnyHashable: Any]?) -> Bool {
-    self.brazeDidHandleURLProperty.value = (url, extras)
-    return self.brazeDidHandleURLReturnProperty.value
   }
 
   private let brazeWillDisplayInAppMessageProperty = MutableProperty<BrazeInAppMessageType?>(nil)
@@ -1209,20 +1194,6 @@ private func configRetainingDebugFeatureFlags(_ config: Config) -> Config {
     .filter { key, _ in currentFeatureKeys.contains(key) }
 
   return config |> Config.lens.features .~ currentFeatures.withAllValuesFrom(storedFeatures)
-}
-
-private func willHandleBrazeUrlAndNavigation(urlAndExtras: (URL?, [AnyHashable: Any]?)?)
-  -> (Bool, Navigation?) {
-  guard
-    let (maybeUrl, _) = urlAndExtras,
-    let url = maybeUrl
-  else { return (false, nil) }
-
-  guard let navigation = Navigation.match(url) else {
-    return (false, nil)
-  }
-
-  return (true, navigation)
 }
 
 private func updateUserNotificationSetting(navigation: Navigation) -> SignalProducer<User, Never> {

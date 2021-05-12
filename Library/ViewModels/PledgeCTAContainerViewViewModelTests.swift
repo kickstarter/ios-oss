@@ -276,25 +276,9 @@ internal final class PledgeCTAContainerViewViewModelTests: TestCase {
 
     self.notifyDelegateCTATapped.assertValueCount(1)
 
-    XCTAssertEqual(["CTA Clicked"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["CTA Clicked"], self.segmentTrackingClient.events)
 
-    let dataLakeTrackingClientProperties = self.dataLakeTrackingClient.properties.last
     let segmentTrackingClientProperties = self.segmentTrackingClient.properties.last
-
-    XCTAssertNotNil(
-      dataLakeTrackingClientProperties?["optimizely_api_key"],
-      "Event includes Optimizely properties"
-    )
-    XCTAssertNotNil(
-      dataLakeTrackingClientProperties?["optimizely_environment"],
-      "Event includes Optimizely properties"
-    )
-    XCTAssertNotNil(
-      dataLakeTrackingClientProperties?["session_variants_optimizely"],
-      "Event includes Optimizely properties"
-    )
-    XCTAssertEqual("pledge_initiate", dataLakeTrackingClientProperties?["context_cta"] as? String)
 
     XCTAssertNotNil(
       segmentTrackingClientProperties?["optimizely_api_key"],

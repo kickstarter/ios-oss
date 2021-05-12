@@ -172,13 +172,10 @@ final class ProjectDescriptionViewModelTests: TestCase {
     self.goToMessageDialog.assertValueCount(0)
     self.goToSafariBrowser.assertValueCount(0)
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
-    XCTAssertEqual(["campaign"], self.dataLakeTrackingClient.properties(forKey: "context_section"))
     XCTAssertEqual(["campaign"], self.segmentTrackingClient.properties(forKey: "context_section"))
 
-    XCTAssertEqual(["discovery"], self.dataLakeTrackingClient.properties(forKey: "session_ref_tag"))
     XCTAssertEqual(["discovery"], self.segmentTrackingClient.properties(forKey: "session_ref_tag"))
   }
 

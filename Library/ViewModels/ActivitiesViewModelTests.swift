@@ -322,17 +322,8 @@ final class ActivitiesViewModelTests: TestCase {
     self.goToProject.assertValues([project])
     self.showRefTag.assertValues([refTag])
 
-    XCTAssertEqual(self.dataLakeTrackingClient.events, ["CTA Clicked"])
     XCTAssertEqual(self.segmentTrackingClient.events, ["CTA Clicked"])
 
-    XCTAssertEqual(
-      ["activity_feed"],
-      self.dataLakeTrackingClient.properties(forKey: "context_page", as: String.self)
-    )
-    XCTAssertEqual(
-      ["project"],
-      self.dataLakeTrackingClient.properties(forKey: "context_type", as: String.self)
-    )
     XCTAssertEqual(
       ["activity_feed"],
       self.segmentTrackingClient.properties(forKey: "context_page", as: String.self)
@@ -562,30 +553,6 @@ final class ActivitiesViewModelTests: TestCase {
     self.goToManagePledgeBackingParam.assertValues([.id(env.backing.id)])
   }
 
-  func testTracking_GoToManagePledge() {
-    withEnvironment(
-      apiService: MockService(fetchActivitiesResponse: [.template]),
-      currentUser: .template
-    ) {
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-      self.vm.inputs.userSessionStarted()
-      self.scheduler.advance()
-
-      let env = ProjectAndBackingEnvelope.template
-        |> \.project .~ .template
-
-      XCTAssertEqual(self.segmentTrackingClient.events, ["Activity Feed Viewed"])
-
-      self.vm.inputs.erroredBackingViewDidTapManage(with: env)
-
-      XCTAssertEqual(
-        self.segmentTrackingClient.events,
-        ["Activity Feed Viewed", "Manage Pledge Button Clicked"]
-      )
-    }
-  }
-
   func testUpdateUserInEnvironmentOnManagePledgeViewDidFinish() {
     let user = User.template
 
@@ -630,80 +597,6 @@ final class ActivitiesViewModelTests: TestCase {
       self.vm.inputs.viewWillAppear(animated: false)
 
       self.unansweredSurveyResponse.assertValues([[surveyResponse]])
-    }
-  }
-
-  func testTrackingClientFlow() {
-    let page = [
-      .template,
-      .template |> Activity.lens.category .~ .backing,
-      .template |> Activity.lens.category .~ .success
-    ]
-
-    let page2 = [
-      .template |> Activity.lens.id .~ 40,
-      .template |> Activity.lens.id .~ 41 |> Activity.lens.category .~ .backing,
-      .template |> Activity.lens.id .~ 42 |> Activity.lens.category .~ .success
-    ]
-
-    withEnvironment(apiService: MockService(fetchActivitiesResponse: page)) {
-      XCTAssertEqual([], self.segmentTrackingClient.events)
-
-      self.vm.inputs.viewDidLoad()
-      self.vm.inputs.viewWillAppear(animated: false)
-      self.scheduler.advance()
-
-      XCTAssertEqual([], self.segmentTrackingClient.events, "Tracking waits for results")
-
-      AppEnvironment.login(AccessTokenEnvelope(accessToken: "deadbeef", user: .template))
-      self.vm.inputs.userSessionStarted()
-      self.scheduler.advance()
-
-      XCTAssertEqual(
-        ["Activity Feed Viewed"],
-        self.segmentTrackingClient.events, "Impression is tracked"
-      )
-      XCTAssertEqual(
-        [3],
-        self.segmentTrackingClient.properties(forKey: "activities_count", as: Int.self)
-      )
-
-      self.vm.inputs.viewWillAppear(animated: false)
-      self.scheduler.advance()
-
-      XCTAssertEqual(
-        ["Activity Feed Viewed"],
-        self.segmentTrackingClient.events, "Impression is not tracked when the view doesn't animate"
-      )
-
-      self.vm.inputs.refresh()
-      self.scheduler.advance()
-
-      XCTAssertEqual(
-        ["Activity Feed Viewed", "Activity Feed Viewed"],
-        self.segmentTrackingClient.events, "Impression tracked when view refreshes"
-      )
-
-      self.vm.inputs.viewWillAppear(animated: true)
-      self.scheduler.advance()
-
-      XCTAssertEqual(
-        ["Activity Feed Viewed", "Activity Feed Viewed", "Activity Feed Viewed"],
-        self.segmentTrackingClient.events,
-        "Impression tracked when view re-appears with animation"
-      )
-
-      withEnvironment(apiService: MockService(fetchActivitiesResponse: page2)) {
-        // Scroll down a bit and advance scheduler
-        self.vm.inputs.willDisplayRow(3, outOf: 5)
-        self.scheduler.advance()
-
-        XCTAssertEqual(
-          ["Activity Feed Viewed", "Activity Feed Viewed", "Activity Feed Viewed"],
-          self.segmentTrackingClient.events,
-          "Impression is not tracked on pagination"
-        )
-      }
     }
   }
 

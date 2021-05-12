@@ -12,7 +12,7 @@ internal final class CommentDialogViewModelTests: TestCase {
   internal var postButtonEnabled = TestObserver<Bool, Never>()
   internal var loadingViewIsHidden = TestObserver<Bool, Never>()
   internal var presentError = TestObserver<String, Never>()
-  internal let notifyPresenterCommentWasPostedSuccesfully = TestObserver<Comment, Never>()
+  internal let notifyPresenterCommentWasPostedSuccesfully = TestObserver<DeprecatedComment, Never>()
   internal let notifyPresenterDialogWantsDismissal = TestObserver<(), Never>()
   internal let showKeyboard = TestObserver<Bool, Never>()
 
@@ -38,7 +38,7 @@ internal final class CommentDialogViewModelTests: TestCase {
   }
 
   func testBodyTextViewText_WithRecipient() {
-    let author = Author.template
+    let author = DeprecatedAuthor.template
     self.vm.inputs.configureWith(
       project: .template,
       update: nil,
@@ -86,14 +86,6 @@ internal final class CommentDialogViewModelTests: TestCase {
 
     XCTAssertEqual(
       [],
-      self.dataLakeTrackingClient.events, "Koala event is tracked."
-    )
-    XCTAssertEqual(
-      [],
-      self.dataLakeTrackingClient.properties(forKey: "type", as: String.self)
-    )
-    XCTAssertEqual(
-      [],
       self.segmentTrackingClient.events, "Koala event is tracked."
     )
     XCTAssertEqual(
@@ -139,14 +131,6 @@ internal final class CommentDialogViewModelTests: TestCase {
     self.notifyPresenterDialogWantsDismissal
       .assertValueCount(1, "Dialog is dismissed after posting of comment.")
 
-    XCTAssertEqual(
-      [],
-      self.dataLakeTrackingClient.events, "Koala event is tracked."
-    )
-    XCTAssertEqual(
-      [],
-      self.dataLakeTrackingClient.properties(forKey: "type", as: String.self)
-    )
     XCTAssertEqual(
       [],
       self.segmentTrackingClient.events, "Koala event is tracked."
@@ -202,7 +186,6 @@ internal final class CommentDialogViewModelTests: TestCase {
 
       self.presentError.assertValueCount(1, "Error message is emitted.")
 
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
       XCTAssertEqual([], self.segmentTrackingClient.events)
     }
   }
@@ -214,7 +197,6 @@ internal final class CommentDialogViewModelTests: TestCase {
     self.vm.inputs.cancelButtonPressed()
     self.notifyPresenterDialogWantsDismissal.assertValueCount(1)
 
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
     XCTAssertEqual([], self.segmentTrackingClient.events)
   }
 

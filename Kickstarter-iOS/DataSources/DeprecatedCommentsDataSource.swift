@@ -2,14 +2,14 @@ import KsApi
 import Library
 import UIKit
 
-internal final class CommentsDataSource: ValueCellDataSource {
+internal final class DeprecatedCommentsDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case emptyState
     case comments
   }
 
   internal func load(
-    comments: [Comment],
+    comments: [DeprecatedComment],
     project: Project,
     update: Update?,
     loggedInUser: User?,
@@ -24,7 +24,7 @@ internal final class CommentsDataSource: ValueCellDataSource {
     } else {
       self.set(
         values: comments.map { ($0, project, loggedInUser) },
-        cellClass: CommentCell.self,
+        cellClass: DeprecatedCommentCell.self,
         inSection: Section.comments.rawValue
       )
     }
@@ -32,7 +32,7 @@ internal final class CommentsDataSource: ValueCellDataSource {
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as CommentCell, value as (Comment, Project, User?)):
+    case let (cell as DeprecatedCommentCell, value as (DeprecatedComment, Project, User?)):
       cell.configureWith(value: value)
     case let (cell as CommentsEmptyStateCell, value as (Project, Update?)):
       cell.configureWith(value: value)

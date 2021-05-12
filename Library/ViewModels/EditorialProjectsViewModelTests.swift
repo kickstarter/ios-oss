@@ -166,21 +166,4 @@ final class EditorialProjectsViewModelTests: TestCase {
 
     self.applyViewTransformsWithYOffset.assertValues([100, 250, 350, 0])
   }
-
-  func testTrackCollectionViewed() {
-    let dataLakeClient = MockTrackingClient()
-    let segmentClient = MockTrackingClient()
-    withEnvironment(ksrAnalytics: KSRAnalytics(
-      dataLakeClient: dataLakeClient,
-      segmentClient: segmentClient
-    )) {
-      XCTAssertEqual([], dataLakeClient.events)
-
-      self.vm.inputs.configure(with: .lightsOn)
-      self.vm.inputs.viewDidLoad()
-
-      XCTAssertEqual(["Collection Viewed"], dataLakeClient.events)
-      XCTAssertEqual(["Collection Viewed"], segmentClient.events)
-    }
-  }
 }
