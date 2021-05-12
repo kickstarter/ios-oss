@@ -46,15 +46,11 @@ internal final class DeprecatedCommentsViewModelTests: TestCase {
       self.emptyStateVisible.assertValues([true], "Empty state emitted.")
       self.commentBarButtonVisible.assertValues([false], "Comment button is not visible.")
 
-      XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
       XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
-      let dataLakeClientProperties = self.dataLakeTrackingClient.properties.last
       let segmentClientProperties = self.segmentTrackingClient.properties.last
 
-      XCTAssertEqual("project", dataLakeClientProperties?["context_page"] as? String)
       XCTAssertEqual("project", segmentClientProperties?["context_page"] as? String)
-      XCTAssertEqual("comments", dataLakeClientProperties?["context_section"] as? String)
       XCTAssertEqual("comments", segmentClientProperties?["context_section"] as? String)
     }
   }
@@ -144,15 +140,11 @@ internal final class DeprecatedCommentsViewModelTests: TestCase {
 
       self.commentsAreLoading.assertValues([true])
 
-      XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
       XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
-      let dataLakeClientProperties = self.dataLakeTrackingClient.properties.last
       let segmentClientProperties = self.segmentTrackingClient.properties.last
 
-      XCTAssertEqual("project", dataLakeClientProperties?["context_page"] as? String)
       XCTAssertEqual("project", segmentClientProperties?["context_page"] as? String)
-      XCTAssertEqual("comments", dataLakeClientProperties?["context_section"] as? String)
       XCTAssertEqual("comments", segmentClientProperties?["context_section"] as? String)
 
       self.scheduler.advance()
@@ -200,15 +192,11 @@ internal final class DeprecatedCommentsViewModelTests: TestCase {
         self.hasComments.assertValues([true], "No new comments are emitted.")
         self.commentsAreLoading.assertValues([true, false, true])
 
-        XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
         XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
-        let dataLakeClientProperties = self.dataLakeTrackingClient.properties.last
         let segmentClientProperties = self.segmentTrackingClient.properties.last
 
-        XCTAssertEqual("project", dataLakeClientProperties?["context_page"] as? String)
         XCTAssertEqual("project", segmentClientProperties?["context_page"] as? String)
-        XCTAssertEqual("comments", dataLakeClientProperties?["context_section"] as? String)
         XCTAssertEqual("comments", segmentClientProperties?["context_section"] as? String)
 
         self.scheduler.advance()
@@ -254,15 +242,11 @@ internal final class DeprecatedCommentsViewModelTests: TestCase {
 
         self.hasComments.assertValues([true, true, true], "Another set of comments are emitted.")
 
-        XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
         XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
-        let dataLakeClientProperties = self.dataLakeTrackingClient.properties.last
         let segmentClientProperties = self.segmentTrackingClient.properties.last
 
-        XCTAssertEqual("project", dataLakeClientProperties?["context_page"] as? String)
         XCTAssertEqual("project", segmentClientProperties?["context_page"] as? String)
-        XCTAssertEqual("comments", dataLakeClientProperties?["context_section"] as? String)
         XCTAssertEqual("comments", segmentClientProperties?["context_section"] as? String)
       }
     }

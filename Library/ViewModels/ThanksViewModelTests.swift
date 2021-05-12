@@ -81,15 +81,7 @@ final class ThanksViewModelTests: TestCase {
       goToDiscovery.assertValues([.illustration])
       XCTAssertEqual(
         ["Page Viewed"],
-        self.dataLakeTrackingClient.events
-      )
-      XCTAssertEqual(
-        ["Page Viewed"],
         self.segmentTrackingClient.events
-      )
-      XCTAssertEqual(
-        ["new_pledge"],
-        self.dataLakeTrackingClient.properties(forKey: "context_type")
       )
       XCTAssertEqual(
         ["new_pledge"],
@@ -120,10 +112,7 @@ final class ThanksViewModelTests: TestCase {
 
       showRatingAlert.assertValueCount(1, "Rating Alert emits when view did load")
       showGamesNewsletterAlert.assertValueCount(0, "Games alert does not emit")
-      XCTAssertEqual(
-        ["Page Viewed"],
-        self.dataLakeTrackingClient.events
-      )
+
       XCTAssertEqual(
         ["Page Viewed"],
         self.segmentTrackingClient.events
@@ -191,10 +180,7 @@ final class ThanksViewModelTests: TestCase {
 
       updateUserInEnvironment.assertValueCount(1)
       showGamesNewsletterOptInAlert.assertValueCount(0, "Opt-in alert does not emit")
-      XCTAssertEqual(
-        ["Page Viewed"],
-        self.dataLakeTrackingClient.events
-      )
+
       XCTAssertEqual(
         ["Page Viewed"],
         self.segmentTrackingClient.events
@@ -239,10 +225,7 @@ final class ThanksViewModelTests: TestCase {
       vm.inputs.gamesNewsletterSignupButtonTapped()
 
       showGamesNewsletterOptInAlert.assertValues(["Kickstarter Loves Games"], "Opt-in alert emits with title")
-      XCTAssertEqual(
-        ["Page Viewed"],
-        self.dataLakeTrackingClient.events
-      )
+
       XCTAssertEqual(
         ["Page Viewed"],
         self.segmentTrackingClient.events
@@ -259,11 +242,9 @@ final class ThanksViewModelTests: TestCase {
 
     let project = Project.template
     let response = .template |> DiscoveryEnvelope.lens.projects .~ projects
-    let mockOptimizelyClient = MockOptimizelyClient()
 
     withEnvironment(
-      apiService: MockService(fetchDiscoveryResponse: response),
-      optimizelyClient: mockOptimizelyClient
+      apiService: MockService(fetchDiscoveryResponse: response)
     ) {
       self.vm.inputs.configure(with: (project, Reward.template, nil))
       self.vm.inputs.viewDidLoad()
@@ -277,13 +258,7 @@ final class ThanksViewModelTests: TestCase {
       goToProject.assertValues([project])
       goToProjects.assertValueCount(1)
       goToRefTag.assertValues([.thanks])
-      XCTAssertEqual(
-        [
-          "Page Viewed",
-          "CTA Clicked"
-        ],
-        self.dataLakeTrackingClient.events
-      )
+
       XCTAssertEqual(
         [
           "Page Viewed",
@@ -291,7 +266,6 @@ final class ThanksViewModelTests: TestCase {
         ],
         self.segmentTrackingClient.events
       )
-      XCTAssertEqual("Project Card Clicked", mockOptimizelyClient.trackedEventKey)
     }
   }
 
@@ -378,39 +352,14 @@ final class ThanksViewModelTests: TestCase {
     self.vm.inputs.configure(with: (Project.template, Reward.template, checkoutData))
     self.vm.inputs.viewDidLoad()
 
-    let dataLakeTrackingClientProps = self.dataLakeTrackingClient.properties.last
     let segmentClientProps = self.segmentTrackingClient.properties.last
 
-    XCTAssertEqual(
-      ["Page Viewed"],
-      self.dataLakeTrackingClient.events
-    )
     XCTAssertEqual(
       ["Page Viewed"],
       self.segmentTrackingClient.events
     )
 
     // Checkout properties
-    XCTAssertEqual(2, dataLakeTrackingClientProps?["checkout_add_ons_count_total"] as? Int)
-    XCTAssertEqual(1, dataLakeTrackingClientProps?["checkout_add_ons_count_unique"] as? Int)
-    XCTAssertEqual(8.00, dataLakeTrackingClientProps?["checkout_add_ons_minimum_usd"] as? Decimal)
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_bonus_amount_usd"] as? Decimal)
-    XCTAssertEqual("CREDIT_CARD", dataLakeTrackingClientProps?["checkout_payment_type"] as? String)
-    XCTAssertEqual("SUPER reward", dataLakeTrackingClientProps?["checkout_reward_title"] as? String)
-    XCTAssertEqual(5.00, dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? Decimal)
-    XCTAssertEqual("2", dataLakeTrackingClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(20.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Decimal)
-    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
-    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_shipping_enabled"] as? Bool)
-    XCTAssertEqual(
-      true,
-      dataLakeTrackingClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool
-    )
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_shipping_amount_usd"] as? Decimal)
-    XCTAssertEqual(
-      "1970-05-23T21:21:18Z",
-      dataLakeTrackingClientProps?["checkout_reward_estimated_delivery_on"] as? String
-    )
 
     XCTAssertEqual(2, segmentClientProps?["checkout_add_ons_count_total"] as? Int)
     XCTAssertEqual(1, segmentClientProps?["checkout_add_ons_count_unique"] as? Int)
@@ -431,16 +380,12 @@ final class ThanksViewModelTests: TestCase {
     )
 
     // Pledge properties
-    XCTAssertEqual(true, dataLakeTrackingClientProps?["pledge_backer_reward_has_items"] as? Bool)
-    XCTAssertEqual(1, dataLakeTrackingClientProps?["pledge_backer_reward_id"] as? Int)
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["pledge_backer_reward_minimum"] as? Double)
 
     XCTAssertEqual(true, segmentClientProps?["pledge_backer_reward_has_items"] as? Bool)
     XCTAssertEqual(1, segmentClientProps?["pledge_backer_reward_id"] as? Int)
     XCTAssertEqual(10.00, segmentClientProps?["pledge_backer_reward_minimum"] as? Double)
 
     // Project properties
-    XCTAssertEqual("1", dataLakeTrackingClientProps?["project_pid"] as? String)
 
     XCTAssertEqual("1", segmentClientProps?["project_pid"] as? String)
   }

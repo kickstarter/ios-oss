@@ -837,8 +837,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
     trackCheckoutPageViewData
       .observeValues { project, baseReward, rewards, selectedQuantities, refTag, additionalPledgeAmount, pledgeTotal, shippingTotal, pledgeViewContext in
 
-        AppEnvironment.current.optimizelyClient?.track(eventName: "Pledge Screen Viewed")
-
         let checkoutData = checkoutProperties(
           from: project,
           baseReward: baseReward,
@@ -921,11 +919,6 @@ public class PledgeViewModel: PledgeViewModelType, PledgeViewModelInputs, Pledge
           checkoutData: checkoutData,
           refTag: refTag
         )
-      }
-
-    createBackingDataAndIsApplePay.takeWhen(createBackingCompletionEvents)
-      .observeValues { _, _ in
-        AppEnvironment.current.optimizelyClient?.track(eventName: "App Completed Checkout")
       }
   }
 

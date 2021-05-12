@@ -63,8 +63,6 @@ internal final class ProjectNavigatorViewController: UIPageViewController {
     )
     self.navigatorDelegate = navigatorDelegate
 
-    self.viewModel.inputs.configureWith(project: initialProject, refTag: refTag)
-
     super.init(
       transitionStyle: .scroll,
       navigationOrientation: .horizontal,

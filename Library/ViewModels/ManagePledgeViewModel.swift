@@ -322,11 +322,6 @@ public final class ManagePledgeViewModel:
     )
 
     // Tracking
-    project
-      .takePairWhen(self.fixButtonTappedSignal)
-      .observeValues {
-        AppEnvironment.current.ksrAnalytics.trackFixPledgeButtonClicked(project: $0.0)
-      }
 
     Signal.zip(self.loadProjectAndRewardsIntoDataSource, backing)
       .map(unpack)

@@ -75,7 +75,6 @@ internal final class DashboardViewModelTests: TestCase {
 
       self.project.assertValueCount(0)
       self.updateTitleViewData.assertValueCount(0)
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
 
       self.scheduler.advance()
 

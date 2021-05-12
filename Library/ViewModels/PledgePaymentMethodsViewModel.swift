@@ -55,7 +55,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
     .map(second)
 
     let project = configureWithValue.map { $0.project }
-    let projectRewardContextRefTag = configureWithValue.map { ($0.project, $0.reward, $0.refTag) }
     let availableCardTypes = project.map { $0.availableCardTypes }.skipNil()
 
     let storedCardsEvent = configureWithValue
@@ -178,19 +177,6 @@ public final class PledgePaymentMethodsViewModel: PledgePaymentMethodsViewModelT
         else { return nil }
 
         return indexPath
-      }
-
-    // Tracking
-
-    projectRewardContextRefTag
-      .takeWhen(self.goToAddCardScreen)
-      .observeValues { project, reward, refTag in
-        AppEnvironment.current.ksrAnalytics.trackAddNewCardButtonClicked(
-          page: .pledgeAddNewCard,
-          project: project,
-          refTag: refTag,
-          reward: reward
-        )
       }
   }
 

@@ -1650,10 +1650,6 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Page Viewed"],
-        self.dataLakeTrackingClient.events
-      )
-      XCTAssertEqual(
-        ["Page Viewed"],
         self.segmentTrackingClient.events
       )
     }
@@ -1744,86 +1740,8 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Page Viewed"],
-        self.dataLakeTrackingClient.events
-      )
-      XCTAssertEqual(
-        ["Page Viewed"],
         self.segmentTrackingClient.events
       )
-    }
-  }
-
-  func testApplePay_OptimizelyExperimentTracking() {
-    let createBacking = CreateBackingEnvelope.CreateBacking(
-      checkout: Checkout(
-        id: "Q2hlY2tvdXQtMQ==",
-        state: .successful,
-        backing: .init(clientSecret: nil, requiresAction: false)
-      )
-    )
-    let mockService = MockService(
-      createBackingResult:
-      Result.success(CreateBackingEnvelope(createBacking: createBacking))
-    )
-
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    withEnvironment(apiService: mockService, currentUser: .template, optimizelyClient: optimizelyClient) {
-      let project = Project.template
-      let reward = Reward.noReward
-        |> Reward.lens.minimum .~ 5
-
-      XCTAssertNil(optimizelyClient.trackedAttributes)
-
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: .projectPage,
-        context: .pledge
-      )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      XCTAssertEqual(optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
-
-      self.vm.inputs.applePayButtonTapped()
-
-      self.vm.inputs.paymentAuthorizationDidAuthorizePayment(
-        paymentData: (displayName: "Visa 123", network: "Visa", transactionIdentifier: "12345")
-      )
-
-      XCTAssertEqual(
-        PKPaymentAuthorizationStatus.success,
-        self.vm.inputs.stripeTokenCreated(token: "stripe_token", error: nil)
-      )
-
-      self.vm.inputs.paymentAuthorizationViewControllerDidFinish()
-
-      self.scheduler.run()
-
-      XCTAssertEqual(optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
-      XCTAssertEqual(optimizelyClient.trackedEventKey, "App Completed Checkout")
-
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["user_backed_projects_count"] as? Int, nil)
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["user_launched_projects_count"] as? Int, nil)
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
-      XCTAssertEqual(
-        optimizelyClient.trackedAttributes?["session_os_version"] as? String, "MockSystemVersion"
-      )
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_user_is_logged_in"] as? Bool, true)
-      XCTAssertEqual(
-        optimizelyClient.trackedAttributes?["session_app_release_version"] as? String, "1.2.3.4.5.6.7.8.9.0"
-      )
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_device_type"] as? String, "phone")
     }
   }
 
@@ -1924,10 +1842,6 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Page Viewed"],
-        self.dataLakeTrackingClient.events
-      )
-      XCTAssertEqual(
-        ["Page Viewed"],
         self.segmentTrackingClient.events
       )
     }
@@ -1969,11 +1883,6 @@ final class PledgeViewModelTests: TestCase {
 
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-
-      XCTAssertEqual(
-        ["Page Viewed"],
-        self.dataLakeTrackingClient.events
-      )
 
       XCTAssertEqual(
         ["Page Viewed"],
@@ -2030,11 +1939,6 @@ final class PledgeViewModelTests: TestCase {
 
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
       self.goToThanksProject.assertDidNotEmitValue()
-
-      XCTAssertEqual(
-        ["Page Viewed"],
-        self.dataLakeTrackingClient.events
-      )
 
       XCTAssertEqual(
         ["Page Viewed"],
@@ -2149,10 +2053,6 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Page Viewed", "CTA Clicked"],
-        self.dataLakeTrackingClient.events
-      )
-      XCTAssertEqual(
-        ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
     }
@@ -2247,78 +2147,8 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Page Viewed", "CTA Clicked"],
-        self.dataLakeTrackingClient.events
-      )
-      XCTAssertEqual(
-        ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
-    }
-  }
-
-  func testCreateBacking_Success_OptimizelyExperimentTracking() {
-    let createBacking = CreateBackingEnvelope.CreateBacking(
-      checkout: Checkout(
-        id: "Q2hlY2tvdXQtMQ==",
-        state: .verifying,
-        backing: .init(clientSecret: nil, requiresAction: false)
-      )
-    )
-    let mockService = MockService(
-      createBackingResult:
-      Result.success(CreateBackingEnvelope(createBacking: createBacking))
-    )
-
-    let optimizelyClient = MockOptimizelyClient()
-      |> \.experiments .~ [
-        OptimizelyExperiment.Key.nativeProjectCards.rawValue: OptimizelyExperiment.Variant.variant1.rawValue
-      ]
-
-    withEnvironment(apiService: mockService, currentUser: .template, optimizelyClient: optimizelyClient) {
-      XCTAssertNil(optimizelyClient.trackedAttributes)
-
-      let project = Project.template
-      let reward = Reward.template
-
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: .activity,
-        context: .pledge
-      )
-
-      self.vm.inputs.configure(with: data)
-      self.vm.inputs.viewDidLoad()
-
-      XCTAssertEqual(optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
-
-      self.vm.inputs.pledgeAmountViewControllerDidUpdate(
-        with: (amount: 25.0, min: 10.0, max: 10_000.0, isValid: true)
-      )
-
-      self.vm.inputs.submitButtonTapped()
-
-      self.scheduler.run()
-
-      XCTAssertEqual(optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
-      XCTAssertEqual(optimizelyClient.trackedEventKey, "App Completed Checkout")
-
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["user_backed_projects_count"] as? Int, nil)
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["user_launched_projects_count"] as? Int, nil)
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
-      XCTAssertEqual(
-        optimizelyClient.trackedAttributes?["session_os_version"] as? String, "MockSystemVersion"
-      )
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_user_is_logged_in"] as? Bool, true)
-      XCTAssertEqual(
-        optimizelyClient.trackedAttributes?["session_app_release_version"] as? String, "1.2.3.4.5.6.7.8.9.0"
-      )
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
-      XCTAssertEqual(optimizelyClient.trackedAttributes?["session_device_type"] as? String, "phone")
     }
   }
 
@@ -2376,10 +2206,6 @@ final class PledgeViewModelTests: TestCase {
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertValues(["Something went wrong."])
 
-      XCTAssertEqual(
-        ["Page Viewed", "CTA Clicked"],
-        self.dataLakeTrackingClient.events
-      )
       XCTAssertEqual(
         ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
@@ -4484,18 +4310,6 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Page Viewed", "CTA Clicked"],
-        self.dataLakeTrackingClient.events
-      )
-      XCTAssertEqual(
-        KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
-        self.dataLakeTrackingClient.properties.last?["context_cta"] as? String
-      )
-      XCTAssertEqual(
-        KSRAnalytics.TypeContext.creditCard.trackingString,
-        self.dataLakeTrackingClient.properties.last?["context_type"] as? String
-      )
-      XCTAssertEqual(
-        ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
       XCTAssertEqual(
@@ -4597,19 +4411,6 @@ final class PledgeViewModelTests: TestCase {
 
       XCTAssertEqual(
         ["Page Viewed", "CTA Clicked"],
-        self.dataLakeTrackingClient.events
-      )
-      XCTAssertEqual(
-        KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
-        self.dataLakeTrackingClient.properties.last?["context_cta"] as? String
-      )
-      XCTAssertEqual(
-        KSRAnalytics.TypeContext.creditCard.trackingString,
-        self.dataLakeTrackingClient.properties.last?["context_type"] as? String
-      )
-
-      XCTAssertEqual(
-        ["Page Viewed", "CTA Clicked"],
         self.segmentTrackingClient.events
       )
       XCTAssertEqual(
@@ -4700,19 +4501,6 @@ final class PledgeViewModelTests: TestCase {
       self.configurePledgeViewCTAContainerViewIsEnabled.assertValues([false, true, false, true])
       self.goToThanksProject.assertDidNotEmitValue()
       self.showErrorBannerWithMessage.assertDidNotEmitValue()
-
-      XCTAssertEqual(
-        ["Page Viewed", "CTA Clicked"],
-        self.dataLakeTrackingClient.events
-      )
-      XCTAssertEqual(
-        KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
-        self.dataLakeTrackingClient.properties.last?["context_cta"] as? String
-      )
-      XCTAssertEqual(
-        KSRAnalytics.TypeContext.creditCard.trackingString,
-        self.dataLakeTrackingClient.properties.last?["context_type"] as? String
-      )
 
       XCTAssertEqual(
         ["Page Viewed", "CTA Clicked"],
@@ -5298,31 +5086,15 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
-    let dataLakeTrackingClientProps = self.dataLakeTrackingClient.properties.last
     let segmentTrackingClientProps = self.segmentTrackingClient.properties.last
 
     // Context properties
 
-    XCTAssertEqual("checkout", dataLakeTrackingClientProps?["context_page"] as? String)
     XCTAssertEqual("checkout", segmentTrackingClientProps?["context_page"] as? String)
 
     // Checkout properties
-
-    XCTAssertEqual("credit_card", dataLakeTrackingClientProps?["checkout_payment_type"] as? String)
-    XCTAssertEqual("My Reward", dataLakeTrackingClientProps?["checkout_reward_title"] as? String)
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? Decimal)
-    XCTAssertEqual("1", dataLakeTrackingClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Decimal)
-    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
-    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_time"] as? Bool)
-    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_shipping_enabled"] as? Bool)
-    XCTAssertEqual(
-      true,
-      dataLakeTrackingClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool
-    )
 
     XCTAssertEqual("credit_card", segmentTrackingClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("My Reward", segmentTrackingClientProps?["checkout_reward_title"] as? String)
@@ -5336,9 +5108,6 @@ final class PledgeViewModelTests: TestCase {
       true,
       segmentTrackingClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool
     )
-
-    // Base User Attributes properties
-    assertBaseUserAttributesLoggedOut()
   }
 
   func testTrackingEvents_ChangePaymentMethod() {
@@ -5357,14 +5126,11 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
-    XCTAssertEqual(self.dataLakeTrackingClient.properties(forKey: "context_page"), ["change_payment"])
     XCTAssertEqual(self.segmentTrackingClient.properties(forKey: "context_page"), ["change_payment"])
 
     self.vm.inputs.submitButtonTapped()
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
   }
 
@@ -5384,26 +5150,13 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    let dataLakeTrackingClientProps = self.dataLakeTrackingClient.properties.last
     let segmentTrackingClientProps = self.segmentTrackingClient.properties.last
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
     XCTAssertEqual("update_pledge", segmentTrackingClientProps?["context_page"] as? String)
     XCTAssertEqual("update_pledge", segmentTrackingClient.properties.last?["context_page"] as? String)
 
     // Checkout properties
-
-    XCTAssertEqual("credit_card", dataLakeTrackingClientProps?["checkout_payment_type"] as? String)
-    XCTAssertEqual("My Reward", dataLakeTrackingClientProps?["checkout_reward_title"] as? String)
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? Decimal)
-    XCTAssertEqual("1", dataLakeTrackingClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Decimal)
-    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
-    XCTAssertEqual(
-      true,
-      dataLakeTrackingClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool
-    )
 
     XCTAssertEqual("credit_card", segmentTrackingClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("My Reward", segmentTrackingClientProps?["checkout_reward_title"] as? String)
@@ -5418,10 +5171,6 @@ final class PledgeViewModelTests: TestCase {
 
     self.vm.inputs.submitButtonTapped()
 
-    XCTAssertEqual(
-      ["Page Viewed"],
-      self.dataLakeTrackingClient.events
-    )
     XCTAssertEqual(
       ["Page Viewed"],
       self.segmentTrackingClient.events
@@ -5444,26 +5193,12 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    let dataLakeTrackingClientProps = self.dataLakeTrackingClient.properties.last
     let segmentTrackingClientProps = self.segmentTrackingClient.properties.last
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
-    XCTAssertEqual("update_pledge", dataLakeTrackingClientProps?["context_page"] as? String)
     XCTAssertEqual("update_pledge", segmentTrackingClientProps?["context_page"] as? String)
 
     // Checkout properties
-
-    XCTAssertEqual("credit_card", dataLakeTrackingClientProps?["checkout_payment_type"] as? String)
-    XCTAssertEqual("My Reward", dataLakeTrackingClientProps?["checkout_reward_title"] as? String)
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_reward_minimum_usd"] as? Decimal)
-    XCTAssertEqual("1", dataLakeTrackingClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(10.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Decimal)
-    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
-    XCTAssertEqual(
-      true,
-      dataLakeTrackingClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool
-    )
 
     XCTAssertEqual("credit_card", segmentTrackingClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("My Reward", segmentTrackingClientProps?["checkout_reward_title"] as? String)
@@ -5480,10 +5215,6 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual(
       ["Page Viewed"],
-      self.dataLakeTrackingClient.events
-    )
-    XCTAssertEqual(
-      ["Page Viewed"],
       self.segmentTrackingClient.events
     )
   }
@@ -5497,10 +5228,8 @@ final class PledgeViewModelTests: TestCase {
 
     let reward = Reward.template
 
-    let dataLakeClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
-      dataLakeClient: dataLakeClient,
       config: .template,
       loggedInUser: nil,
       segmentClient: segmentClient
@@ -5518,130 +5247,18 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
 
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
       XCTAssertEqual([], self.segmentTrackingClient.events)
       self.vm.inputs.viewDidLoad()
 
-      XCTAssertEqual(["Page Viewed"], dataLakeClient.events)
       XCTAssertEqual(["Page Viewed"], segmentClient.events)
 
-      XCTAssertEqual(dataLakeClient.properties(forKey: "session_ref_tag"), ["discovery"])
       XCTAssertEqual(segmentClient.properties(forKey: "session_ref_tag"), ["discovery"])
 
-      XCTAssertEqual(dataLakeClient.properties(forKey: "session_user_is_logged_in", as: Bool.self), [false])
-      XCTAssertEqual(dataLakeClient.properties(forKey: "user_uid", as: Int.self), [nil])
       XCTAssertEqual(segmentClient.properties(forKey: "session_user_is_logged_in", as: Bool.self), [false])
       XCTAssertEqual(segmentClient.properties(forKey: "user_uid", as: Int.self), [nil])
 
-      XCTAssertEqual(dataLakeClient.properties(forKey: "project_subcategory"), ["Illustration"])
-      XCTAssertEqual(dataLakeClient.properties(forKey: "project_category"), ["Art"])
       XCTAssertEqual(segmentClient.properties(forKey: "project_subcategory"), ["Illustration"])
       XCTAssertEqual(segmentClient.properties(forKey: "project_category"), ["Art"])
-    }
-  }
-
-  func testTrackingEvents_OptimizelyClient_PledgeScreenViewed_LoggedOut() {
-    let project = Project.template
-      |> \.category.parentId .~ Project.Category.art.id
-      |> \.category.parentName .~ Project.Category.art.name
-
-    let reward = Reward.template
-
-    let data = PledgeViewData(
-      project: project,
-      rewards: [reward],
-      selectedQuantities: [reward.id: 1],
-      selectedLocationId: nil,
-      refTag: .discovery,
-      context: .pledge
-    )
-
-    self.vm.inputs.configure(with: data)
-
-    XCTAssertEqual([], self.dataLakeTrackingClient.events)
-    XCTAssertEqual([], self.segmentTrackingClient.events)
-    self.vm.inputs.viewDidLoad()
-
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
-    XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
-
-    XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
-    XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
-
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_backed_projects_count"] as? Int, nil)
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_launched_projects_count"] as? Int, nil)
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, nil)
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
-
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_ref_tag"] as? String, nil)
-    XCTAssertEqual(
-      self.optimizelyClient.trackedAttributes?["session_os_version"] as? String,
-      "MockSystemVersion"
-    )
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_user_is_logged_in"] as? Bool, false)
-    XCTAssertEqual(
-      self.optimizelyClient.trackedAttributes?["session_app_release_version"] as? String,
-      "1.2.3.4.5.6.7.8.9.0"
-    )
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
-    XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_type"] as? String, "phone")
-  }
-
-  func testTrackingEvents_OptimizelyClient_PledgeScreenViewed_LoggedIn() {
-    let user = User.template
-      |> \.location .~ Location.template
-      |> \.stats.backedProjectsCount .~ 50
-      |> \.stats.createdProjectsCount .~ 25
-      |> \.facebookConnected .~ true
-
-    withEnvironment(currentUser: user) {
-      let project = Project.template
-        |> \.category.parentId .~ Project.Category.art.id
-        |> \.category.parentName .~ Project.Category.art.name
-        |> Project.lens.stats.currentCurrency .~ "USD"
-        |> \.personalization.isStarred .~ true
-
-      let reward = Reward.template
-
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: .discovery,
-        context: .pledge
-      )
-
-      self.vm.inputs.configure(with: data)
-
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
-      XCTAssertEqual([], self.segmentTrackingClient.events)
-      self.vm.inputs.viewDidLoad()
-
-      XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
-      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
-
-      XCTAssertEqual(self.optimizelyClient.trackedUserId, "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF")
-      XCTAssertEqual(self.optimizelyClient.trackedEventKey, "Pledge Screen Viewed")
-
-      XCTAssertNil(self.optimizelyClient.trackedAttributes?["user_distinct_id"] as? String)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_backed_projects_count"] as? Int, 50)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_launched_projects_count"] as? Int, 25)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_country"] as? String, "us")
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_facebook_account"] as? Bool, true)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["user_display_language"] as? String, "en")
-      XCTAssertEqual(
-        self.optimizelyClient.trackedAttributes?["session_os_version"] as? String,
-        "MockSystemVersion"
-      )
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_user_is_logged_in"] as? Bool, true)
-      XCTAssertEqual(
-        self.optimizelyClient.trackedAttributes?["session_app_release_version"] as? String,
-        "1.2.3.4.5.6.7.8.9.0"
-      )
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_apple_pay_device"] as? Bool, true)
-      XCTAssertEqual(self.optimizelyClient.trackedAttributes?["session_device_type"] as? String, "phone")
     }
   }
 
@@ -5652,10 +5269,8 @@ final class PledgeViewModelTests: TestCase {
       |> \.stats.createdProjectsCount .~ 25
       |> \.facebookConnected .~ true
 
-    let dataLakeTrackingClient = MockTrackingClient()
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(
-      dataLakeClient: dataLakeTrackingClient,
       config: .template,
       loggedInUser: user,
       segmentClient: segmentClient
@@ -5683,30 +5298,12 @@ final class PledgeViewModelTests: TestCase {
 
       self.vm.inputs.configure(with: data)
 
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
       XCTAssertEqual([], self.segmentTrackingClient.events)
       self.vm.inputs.viewDidLoad()
 
-      XCTAssertEqual(["Page Viewed"], dataLakeTrackingClient.events)
       XCTAssertEqual(["Page Viewed"], segmentClient.events)
 
-      XCTAssertEqual(dataLakeTrackingClient.properties(forKey: "session_ref_tag"), ["discovery"])
-
       XCTAssertEqual(segmentClient.properties(forKey: "session_ref_tag"), ["discovery"])
-
-      XCTAssertEqual(
-        dataLakeTrackingClient.properties(forKey: "session_user_is_logged_in", as: Bool.self),
-        [true]
-      )
-      XCTAssertEqual(dataLakeTrackingClient.properties(forKey: "user_uid", as: String.self), ["1"])
-
-      XCTAssertEqual(dataLakeTrackingClient.properties(forKey: "project_subcategory"), ["Illustration"])
-      XCTAssertEqual(dataLakeTrackingClient.properties(forKey: "project_category"), ["Art"])
-      XCTAssertEqual(dataLakeTrackingClient.properties(forKey: "project_country"), ["US"])
-      XCTAssertEqual(
-        dataLakeTrackingClient.properties(forKey: "project_user_has_watched", as: Bool.self),
-        [true]
-      )
       XCTAssertEqual(
         segmentClient.properties(forKey: "session_user_is_logged_in", as: Bool.self),
         [true]
@@ -5720,93 +5317,6 @@ final class PledgeViewModelTests: TestCase {
         segmentClient.properties(forKey: "project_user_has_watched", as: Bool.self),
         [true]
       )
-    }
-  }
-
-  func testTrackingEvents_PledgeScreenViewed_DistinctID_LoggedIn_Beta_Staging() {
-    let user = User.template
-      |> \.location .~ Location.template
-      |> \.stats.backedProjectsCount .~ 50
-      |> \.stats.createdProjectsCount .~ 25
-      |> \.facebookConnected .~ true
-
-    let mockBundle = MockBundle(
-      bundleIdentifier: KickstarterBundleIdentifier.beta.rawValue,
-      lang: Language.en.rawValue
-    )
-
-    let mockService = MockService(serverConfig: ServerConfig.staging)
-
-    withEnvironment(apiService: mockService, currentUser: user, mainBundle: mockBundle) {
-      let project = Project.template
-        |> \.category.parentId .~ Project.Category.art.id
-        |> \.category.parentName .~ Project.Category.art.name
-        |> Project.lens.stats.currentCurrency .~ "USD"
-        |> \.personalization.isStarred .~ true
-
-      let reward = Reward.template
-
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: .discovery,
-        context: .pledge
-      )
-
-      self.vm.inputs.configure(with: data)
-
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
-      XCTAssertEqual([], self.segmentTrackingClient.events)
-      self.vm.inputs.viewDidLoad()
-
-      XCTAssertEqual(
-        self.optimizelyClient.trackedAttributes?["user_distinct_id"] as? String,
-        "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFBEEF"
-      )
-    }
-  }
-
-  func testTrackingEvents_PledgeScreenViewed_DistinctID_LoggedIn_Release_Production() {
-    let user = User.template
-      |> \.location .~ Location.template
-      |> \.stats.backedProjectsCount .~ 50
-      |> \.stats.createdProjectsCount .~ 25
-      |> \.facebookConnected .~ true
-
-    let mockBundle = MockBundle(
-      bundleIdentifier: KickstarterBundleIdentifier.release.rawValue,
-      lang: Language.en.rawValue
-    )
-
-    let mockService = MockService(serverConfig: ServerConfig.production)
-
-    withEnvironment(apiService: mockService, currentUser: user, mainBundle: mockBundle) {
-      let project = Project.template
-        |> \.category.parentId .~ Project.Category.art.id
-        |> \.category.parentName .~ Project.Category.art.name
-        |> Project.lens.stats.currentCurrency .~ "USD"
-        |> \.personalization.isStarred .~ true
-
-      let reward = Reward.template
-
-      let data = PledgeViewData(
-        project: project,
-        rewards: [reward],
-        selectedQuantities: [reward.id: 1],
-        selectedLocationId: nil,
-        refTag: .discovery,
-        context: .pledge
-      )
-
-      self.vm.inputs.configure(with: data)
-
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
-      XCTAssertEqual([], self.segmentTrackingClient.events)
-      self.vm.inputs.viewDidLoad()
-
-      XCTAssertNil(self.optimizelyClient.trackedAttributes?["user_distinct_id"] as? String)
     }
   }
 
@@ -5827,7 +5337,6 @@ final class PledgeViewModelTests: TestCase {
     self.vm.inputs.configure(with: data)
     self.vm.inputs.viewDidLoad()
 
-    XCTAssertEqual(["Page Viewed"], self.dataLakeTrackingClient.events)
     XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
     self.vm.inputs.pledgeAmountViewControllerDidUpdate(with: (
@@ -5843,31 +5352,13 @@ final class PledgeViewModelTests: TestCase {
 
     XCTAssertEqual(
       ["Page Viewed", "CTA Clicked"],
-      self.dataLakeTrackingClient.events
-    )
-    XCTAssertEqual(
-      ["Page Viewed", "CTA Clicked"],
       self.segmentTrackingClient.events
     )
 
-    let dataLakeTrackingClientProps = self.dataLakeTrackingClient.properties.last
-    let segmentClientProps = self.dataLakeTrackingClient.properties.last
+    let segmentClientProps = self.segmentTrackingClient.properties.last
 
     // Checkout properties
-    XCTAssertEqual("credit_card", dataLakeTrackingClientProps?["checkout_payment_type"] as? String)
-    XCTAssertEqual("1", dataLakeTrackingClientProps?["checkout_reward_id"] as? String)
-    XCTAssertEqual(55.00, dataLakeTrackingClientProps?["checkout_amount_total_usd"] as? Decimal)
-    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_is_limited_quantity"] as? Bool)
-    XCTAssertEqual(true, dataLakeTrackingClientProps?["checkout_reward_shipping_enabled"] as? Bool)
-    XCTAssertEqual(
-      true,
-      dataLakeTrackingClientProps?["checkout_user_has_eligible_stored_apple_pay_card"] as? Bool
-    )
-    XCTAssertEqual(
-      "2017-10-01T22:35:15Z",
-      dataLakeTrackingClientProps?["checkout_reward_estimated_delivery_on"] as? String
-    )
-    XCTAssertEqual("My Reward", dataLakeTrackingClientProps?["checkout_reward_title"] as? String)
+
     XCTAssertEqual("credit_card", segmentClientProps?["checkout_payment_type"] as? String)
     XCTAssertEqual("1", segmentClientProps?["checkout_reward_id"] as? String)
     XCTAssertEqual(55.00, segmentClientProps?["checkout_amount_total_usd"] as? Decimal)
@@ -5881,25 +5372,17 @@ final class PledgeViewModelTests: TestCase {
     XCTAssertEqual("My Reward", segmentClientProps?["checkout_reward_title"] as? String)
 
     // Project properties
-    XCTAssertEqual("1", dataLakeTrackingClientProps?["project_pid"] as? String)
     XCTAssertEqual("1", segmentClientProps?["project_pid"] as? String)
 
-    XCTAssertEqual("discovery", dataLakeTrackingClientProps?["session_ref_tag"] as? String)
     XCTAssertEqual("discovery", segmentClientProps?["session_ref_tag"] as? String)
 
     // Context properties
-    XCTAssertEqual(
-      KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
-      dataLakeTrackingClientProps?["context_cta"] as? String
-    )
+
     XCTAssertEqual(
       KSRAnalytics.CTAContext.pledgeSubmit.trackingString,
       segmentClientProps?["context_cta"] as? String
     )
-    XCTAssertEqual(
-      KSRAnalytics.TypeContext.creditCard.trackingString,
-      dataLakeTrackingClientProps?["context_type"] as? String
-    )
+
     XCTAssertEqual(
       KSRAnalytics.TypeContext.creditCard.trackingString,
       segmentClientProps?["context_type"] as? String
@@ -5933,15 +5416,10 @@ final class PledgeViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.creditCardSelected(with: "12345")
 
-      XCTAssertEqual([], self.dataLakeTrackingClient.events)
       XCTAssertEqual([], self.segmentTrackingClient.events)
 
       self.vm.inputs.submitButtonTapped()
 
-      XCTAssertEqual(
-        [],
-        self.dataLakeTrackingClient.events
-      )
       XCTAssertEqual(
         [],
         self.segmentTrackingClient.events

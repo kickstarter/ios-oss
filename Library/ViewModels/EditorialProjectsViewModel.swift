@@ -63,9 +63,6 @@ public class EditorialProjectsViewModel: EditorialProjectsViewModelType,
     self.applyViewTransformsWithYOffset = self.discoveryPageViewControllerContentOffsetChangedProperty.signal
       .skipNil()
       .map(\.y)
-
-    configureWithParams
-      .observeValues { AppEnvironment.current.ksrAnalytics.trackCollectionViewed(params: $0) }
   }
 
   private let closeButtonTappedProperty = MutableProperty(())

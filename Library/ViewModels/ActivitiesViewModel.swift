@@ -142,7 +142,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       )
       .filter { AppEnvironment.current.currentUser != nil }
 
-    let (paginatedActivities, isLoading, pageCount, _) = paginate(
+    let (paginatedActivities, isLoading, _, _) = paginate(
       requestFirstPageWith: requestFirstPage,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
@@ -337,24 +337,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
       }
       .skipNil()
 
-    self.activities.takePairWhen(goToManagePledgeWithBacking)
-      .observeValues { activities, env in
-        let activity = activities.first { $0.project?.id == env.project.id }
-
-        guard let project = activity?.project else { return }
-
-        AppEnvironment.current.ksrAnalytics.trackActivitiesManagePledgeButtonClicked(project: project)
-      }
-
     // Tracking
-
-    Signal.zip(pageCount, paginatedActivities)
-      .filter { pageCount, _ in
-        pageCount == 1
-      } // Track first page only
-      .map(second)
-      .map { $0.count }
-      .observeValues { AppEnvironment.current.ksrAnalytics.trackActivities(count: $0) }
 
     self.goToProject.signal.map(first).observeValues { project in
       AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
