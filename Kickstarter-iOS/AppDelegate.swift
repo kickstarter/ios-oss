@@ -40,10 +40,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // Braze initialization
     SEGAppboyIntegrationFactory.instance()?.saveLaunchOptions(launchOptions)
-    SEGAppboyIntegrationFactory.instance()?.appboyOptions = [
-      ABKInAppMessageControllerDelegateKey: self,
-      ABKURLDelegateKey: self
-    ]
+    SEGAppboyIntegrationFactory.instance()?.appboyOptions = [ABKInAppMessageControllerDelegateKey: self]
 
     UIView.doBadSwizzleStuff()
     UIViewController.doBadSwizzleStuff()
@@ -532,17 +529,5 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 extension AppDelegate: ABKInAppMessageControllerDelegate {
   func before(inAppMessageDisplayed inAppMessage: ABKInAppMessage) -> ABKInAppMessageDisplayChoice {
     return self.viewModel.inputs.brazeWillDisplayInAppMessage(inAppMessage)
-  }
-}
-
-// MARK: - ABKURLDelegate
-
-extension AppDelegate: ABKURLDelegate {
-  func handleAppboyURL(
-    _ url: URL?,
-    from _: ABKChannel,
-    withExtras extras: [AnyHashable: Any]?
-  ) -> Bool {
-    return self.viewModel.inputs.brazeDidHandleURL(url, extras: extras)
   }
 }
