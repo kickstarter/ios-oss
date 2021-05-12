@@ -110,6 +110,11 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     }
   }
 
+  fileprivate func commentThreadingFeatureIsEnabled() -> Bool {
+    return AppEnvironment.current.optimizelyClient?
+      .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentThreading.rawValue) ?? false
+  }
+
   private func goToDashboard(param: Param) {
     self.view.window?.rootViewController
       .flatMap { $0 as? RootTabBarViewController }
@@ -133,8 +138,9 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   }
 
   fileprivate func goToComments(project: Project) {
-    let vc = DeprecatedCommentsViewController.configuredWith(project: project, update: nil)
-
+    let vc = self
+      .commentThreadingFeatureIsEnabled() ? CommentsViewController() : DeprecatedCommentsViewController
+      .configuredWith(project: project, update: nil)
     if self.traitCollection.userInterfaceIdiom == .pad {
       let nav = UINavigationController(rootViewController: vc)
       nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
