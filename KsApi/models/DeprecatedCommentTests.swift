@@ -1,7 +1,7 @@
 @testable import KsApi
 import XCTest
 
-final class CommentTests: XCTestCase {
+final class DeprecatedCommentTests: XCTestCase {
   func testJSONParsing_WithCompleteData() {
     let comment: DeprecatedComment! = DeprecatedComment.decodeJSONDictionary([
       "author": [

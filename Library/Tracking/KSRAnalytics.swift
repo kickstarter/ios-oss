@@ -145,7 +145,7 @@ public final class KSRAnalytics {
    - project: A project comment.
    - update: An update comment.
    */
-  public enum CommentDialogType {
+  public enum DeprecatedCommentDialogType {
     case project
     case update
 
@@ -163,7 +163,7 @@ public final class KSRAnalytics {
    - project: The comments for a project.
    - update: The comments for an update.
    */
-  public enum CommentsContext {
+  public enum DeprecatedCommentsContext {
     case project
     case update
 
