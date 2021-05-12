@@ -7,7 +7,7 @@ import UIKit
 
 internal protocol CommentDialogDelegate: AnyObject {
   func commentDialogWantsDismissal(_ dialog: CommentDialogViewController)
-  func commentDialog(_ dialog: CommentDialogViewController, postedComment: Comment)
+  func commentDialog(_ dialog: CommentDialogViewController, postedComment: DeprecatedComment)
 }
 
 internal final class CommentDialogViewController: UIViewController {
@@ -33,10 +33,10 @@ internal final class CommentDialogViewController: UIViewController {
   }
 
   internal static func configuredWith(
-    project: Project, update: Update?, recipient: Author?,
+    project: Project, update: Update?, recipient: DeprecatedAuthor?,
     context: KSRAnalytics.CommentDialogContext
   ) -> CommentDialogViewController {
-    let vc = Storyboard.Comments.instantiate(CommentDialogViewController.self)
+    let vc = Storyboard.DeprecatedComments.instantiate(CommentDialogViewController.self)
     vc.viewModel.inputs.configureWith(
       project: project, update: update, recipient: recipient,
       context: context
@@ -108,7 +108,7 @@ internal final class CommentDialogViewController: UIViewController {
     self.delegate?.commentDialogWantsDismissal(self)
   }
 
-  fileprivate func commentPostedSuccessfully(_ comment: Comment) {
+  fileprivate func commentPostedSuccessfully(_ comment: DeprecatedComment) {
     self.delegate?.commentDialog(self, postedComment: comment)
   }
 

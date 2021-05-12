@@ -252,10 +252,12 @@ public protocol ServiceType {
   func markAsRead(messageThread: MessageThread) -> SignalProducer<MessageThread, ErrorEnvelope>
 
   /// Posts a comment to a project.
-  func postComment(_ body: String, toProject project: Project) -> SignalProducer<Comment, ErrorEnvelope>
+  func postComment(_ body: String, toProject project: Project)
+    -> SignalProducer<DeprecatedComment, ErrorEnvelope>
 
   /// Posts a comment to an update.
-  func postComment(_ body: String, toUpdate update: Update) -> SignalProducer<Comment, ErrorEnvelope>
+  func postComment(_ body: String, toUpdate update: Update)
+    -> SignalProducer<DeprecatedComment, ErrorEnvelope>
 
   /// Returns a project update preview URL.
   func previewUrl(forDraft draft: UpdateDraft) -> URL?

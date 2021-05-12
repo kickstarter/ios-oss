@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="q9l-Wg-1lg">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="q9l-Wg-1lg">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Comments View Controller-->
+        <!--Deprecated Comments View Controller-->
         <scene sceneID="xum-1V-8eC">
             <objects>
-                <tableViewController storyboardIdentifier="CommentsViewController" id="q9l-Wg-1lg" customClass="CommentsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="DeprecatedCommentsViewController" id="q9l-Wg-1lg" customClass="DeprecatedCommentsViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="198" sectionHeaderHeight="28" sectionFooterHeight="28" id="7dk-Uz-2T0">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="1600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.89916485548019409" green="0.89916485548019409" blue="0.89916485548019409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentCell" rowHeight="240" id="3fL-QS-ucE" customClass="CommentCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DeprecatedCommentCell" rowHeight="240" id="3fL-QS-ucE" customClass="DeprecatedCommentCell" customModule="Kickstarter_Framework" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="450" height="240"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3fL-QS-ucE" id="21H-fa-Qxn">
@@ -184,7 +182,7 @@
                                             <rect key="frame" x="20" y="11" width="410" height="176"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No comments yet." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AZn-wj-Gtg">
-                                                    <rect key="frame" x="135" y="0.0" width="140" height="20.5"/>
+                                                    <rect key="frame" x="135.5" y="0.0" width="139" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -195,15 +193,15 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oCo-Np-Afj">
+                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oCo-Np-Afj">
                                                     <rect key="frame" x="190" y="53.5" width="30" height="30"/>
                                                     <state key="normal" title=" "/>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k4g-FJ-66o">
+                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k4g-FJ-66o">
                                                     <rect key="frame" x="190" y="99.5" width="30" height="30"/>
                                                     <state key="normal" title=" "/>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IVI-02-UbI">
+                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IVI-02-UbI">
                                                     <rect key="frame" x="190" y="146" width="30" height="30"/>
                                                     <state key="normal" title=" "/>
                                                 </button>
@@ -267,7 +265,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="THN-0l-MXl">
-                                <rect key="frame" x="20" y="64" width="460" height="436"/>
+                                <rect key="frame" x="20" y="44" width="460" height="456"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -290,6 +288,7 @@
                                 </constraints>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="cKD-5l-UQc"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="THN-0l-MXl" firstAttribute="top" secondItem="ZJX-6Q-Yge" secondAttribute="topMargin" id="4Fv-Zc-h8e"/>
@@ -301,7 +300,6 @@
                             <constraint firstItem="Kbl-M0-HD9" firstAttribute="bottom" secondItem="THN-0l-MXl" secondAttribute="bottom" id="wBK-7Z-IC6"/>
                             <constraint firstItem="Kbl-M0-HD9" firstAttribute="top" secondItem="ZJX-6Q-Yge" secondAttribute="top" id="xc7-cD-cUP"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="cKD-5l-UQc"/>
                     </view>
                     <navigationItem key="navigationItem" id="tTe-07-upt">
                         <nil key="title"/>
