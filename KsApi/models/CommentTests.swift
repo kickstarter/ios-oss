@@ -3,7 +3,7 @@ import XCTest
 
 final class CommentTests: XCTestCase {
   func testJSONParsing_WithCompleteData() {
-    let comment: Comment! = Comment.decodeJSONDictionary([
+    let comment: DeprecatedComment! = DeprecatedComment.decodeJSONDictionary([
       "author": [
         "id": 1,
         "name": "Blob",
@@ -32,7 +32,7 @@ final class CommentTests: XCTestCase {
   }
 
   func testJSONParsing_ZeroDeletedAt() {
-    let comment: Comment! = Comment.decodeJSONDictionary([
+    let comment: DeprecatedComment! = DeprecatedComment.decodeJSONDictionary([
       "author": [
         "id": 1,
         "name": "Blob",

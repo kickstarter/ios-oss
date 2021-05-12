@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-internal final class CommentCell: UITableViewCell, ValueCell {
+internal final class DeprecatedCommentCell: UITableViewCell, ValueCell {
   fileprivate let viewModel = CommentCellViewModel()
 
   @IBOutlet fileprivate var authorAndTimestampStackView: UIStackView!
@@ -117,7 +117,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
     self.youView.rac.hidden = self.viewModel.outputs.youHidden
   }
 
-  internal func configureWith(value: (Comment, Project, User?)) {
+  internal func configureWith(value: (DeprecatedComment, Project, User?)) {
     self.viewModel.inputs.comment(value.0, project: value.1, viewer: value.2)
   }
 }
