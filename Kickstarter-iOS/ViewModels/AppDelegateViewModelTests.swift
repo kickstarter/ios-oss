@@ -2646,50 +2646,7 @@ final class AppDelegateViewModelTests: TestCase {
     }
   }
 
-  func testBrazeDidHandleURL_AppDidNotHandleNilUrl() {
-    XCTAssertFalse(self.vm.inputs.brazeDidHandleURL(nil, extras: nil))
-  }
-
-  func testBrazeDidHandleURL_AppDidNotHandleInvalidUrl() {
-    XCTAssertFalse(self.vm.inputs.brazeDidHandleURL(URL(string: "https://www.google.com"), extras: [:]))
-  }
-
-  func testBrazeDidHandleURL_AppDidHandleValidUrl() {
-    let url =
-      "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/settings/notify_mobile_of_marketing_update/true"
-
-    XCTAssertTrue(self.vm.inputs.brazeDidHandleURL(URL(string: url), extras: [:]))
-  }
-
-  func testBrazeDidHandleURL_UserDidNotUpdateWithInvalidUrl() {
-    self.updateCurrentUserInEnvironment.assertDidNotEmitValue()
-
-    withEnvironment(apiService: MockService()) {
-      let user = User.template
-
-      let env = AccessTokenEnvelope(accessToken: "deadbeef", user: user)
-      AppEnvironment.login(env)
-
-      self.vm.inputs.applicationDidFinishLaunching(
-        application: UIApplication.shared,
-        launchOptions: [:]
-      )
-
-      self.scheduler.advance(by: .seconds(5))
-
-      self.updateCurrentUserInEnvironment.assertValues([env.user])
-
-      XCTAssertFalse(self.vm.inputs.brazeDidHandleURL(URL(string: "https://www.google.com"), extras: [:]))
-
-      self.updateCurrentUserInEnvironment.assertValues([env.user])
-
-      self.scheduler.advance()
-
-      self.updateCurrentUserInEnvironment.assertValues([env.user])
-    }
-  }
-
-  func testBrazeDidHandleURL_UserDidUpdateWithValidUrl() {
+  func testDeepLink_UserDidUpdateNotificationSettings() {
     self.updateCurrentUserInEnvironment.assertDidNotEmitValue()
 
     withEnvironment(apiService: MockService()) {
@@ -2714,7 +2671,12 @@ final class AppDelegateViewModelTests: TestCase {
       let url =
         "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/settings/notify_mobile_of_messages/true"
 
-      XCTAssertTrue(self.vm.inputs.brazeDidHandleURL(URL(string: url), extras: [:]))
+      let result = self.vm.inputs.applicationOpenUrl(
+        application: UIApplication.shared,
+        url: URL(string: url)!,
+        options: [:]
+      )
+      XCTAssertTrue(result)
 
       self.updateCurrentUserInEnvironment.assertValues([user])
 
