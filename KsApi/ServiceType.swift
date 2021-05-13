@@ -99,6 +99,9 @@ public protocol ServiceType {
   /// Fetch comments for a project.
   func fetchComments(project: Project) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
 
+  /// Fetch comments for a project with a query.
+  func fetchComments(query: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
+
   /// Fetch comments for an update.
   func fetchComments(update: Update) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
 
