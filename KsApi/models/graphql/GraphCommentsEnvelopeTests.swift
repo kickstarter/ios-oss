@@ -67,7 +67,18 @@ final class GraphCommentsEnvelopeTests: XCTestCase {
 
     do {
       let envelope = try JSONDecoder().decode(GraphCommentsEnvelope.self, from: data)
-      XCTAssertNotNil(envelope)
+      XCTAssertEqual(envelope.comments[0].id, "Q29tbWVudC0zMDQ5MDQ2NA==")
+      XCTAssertEqual(envelope.comments[0].body, "I have not received a survey yet either.")
+      XCTAssertEqual(envelope.comments[0].author.id, "VXNlci0xOTE1MDY0NDY3")
+      XCTAssertEqual(envelope.comments[0].author.isCreator, true)
+      XCTAssertEqual(envelope.comments[0].author.name, "Billy Bob")
+      XCTAssertEqual(envelope.comments[0].replyCount, 1)
+
+      XCTAssertEqual(envelope.comments.count, 3)
+
+      XCTAssertEqual(envelope.hasNextPage, true)
+      XCTAssertEqual(envelope.cursor, "WzMwNDU4ODkxXQ==")
+      XCTAssertEqual(envelope.totalCount, 61)
     } catch {
       XCTFail()
       print(error)

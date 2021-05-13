@@ -5,7 +5,7 @@ public struct Comment: Decodable, Equatable {
   public var body: String
   public var id: String
   public var uid: Int
-  public var replyCount: Int?
+  public var replyCount: Int
 
   public struct Author: Decodable, Equatable {
     public var id: String
