@@ -139,6 +139,24 @@ public enum Query {
     case url
   }
 
+  public enum Comment {
+    case authorBadges
+    case author(NonEmptySet<Author>)
+    case id
+    case body
+    case replies(NonEmptySet<CommentReplyCount>)
+
+    public enum Author: String {
+      case id
+      case name
+      case isCreator
+    }
+
+    public enum CommentReplyCount: String {
+      case totalCount
+    }
+  }
+
   public enum Conversation {
     case id
   }
@@ -176,6 +194,7 @@ public enum Query {
     case backersCount
     case backing(NonEmptySet<Backing>)
     case category(NonEmptySet<Category>)
+    case comments(Set<QueryArg<Never>>, NonEmptySet<Connection<Comment>>)
     case country(NonEmptySet<Country>)
     case creator(NonEmptySet<User>)
     case currency
@@ -482,6 +501,32 @@ extension Query.Category.ProjectsConnection.Argument: CustomStringConvertible {
   }
 }
 
+// MARK: - Comment
+
+extension Query.Comment: QueryType {
+  public var description: String {
+    switch self {
+    case .id: return "id"
+    case .authorBadges: return "authorBadges"
+    case let .author(fields): return "author { \(join(fields)) }"
+    case .body: return "body"
+    case let .replies(fields): return "replies { \(join(fields)) }"
+    }
+  }
+}
+
+extension Query.Comment.Author: QueryType {
+  public var description: String {
+    return self.rawValue
+  }
+}
+
+extension Query.Comment.CommentReplyCount: QueryType {
+  public var description: String {
+    return self.rawValue
+  }
+}
+
 // MARK: - Project
 
 extension Query.Project: QueryType {
@@ -492,6 +537,7 @@ extension Query.Project: QueryType {
     case let .backing(fields): return "backing { \(join(fields)) }"
     case .backersCount: return "backersCount"
     case let .category(fields): return "category { \(join(fields)) }"
+    case let .comments(args, fields): return "comments\(connection(args, fields))"
     case let .country(fields): return "country { \(join(fields)) }"
     case let .creator(fields): return "creator { \(join(fields)) }"
     case .currency: return "currency"
@@ -801,4 +847,10 @@ extension Query.Notifications {
   public func hash(into hasher: inout Hasher) {
     hasher.combine(self.description)
   }
+}
+
+// MARK: - Schema Constants
+
+public extension Query {
+  static let defaultPaginationCount: Int = 25
 }
