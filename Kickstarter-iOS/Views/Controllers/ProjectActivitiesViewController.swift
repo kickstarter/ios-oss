@@ -133,7 +133,7 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   }
 
   internal func goToSendReply(project: Project, update: Update?, comment: DeprecatedComment) {
-    let dialog = CommentDialogViewController
+    let dialog = DeprecatedCommentDialogViewController
       .configuredWith(project: project, update: update, recipient: comment.author, context: .projectActivity)
     dialog.modalPresentationStyle = .formSheet
     dialog.delegate = self
@@ -183,10 +183,10 @@ extension ProjectActivitiesViewController: ProjectActivityCommentCellDelegate {
   }
 }
 
-extension ProjectActivitiesViewController: CommentDialogDelegate {
-  internal func commentDialogWantsDismissal(_ dialog: CommentDialogViewController) {
+extension ProjectActivitiesViewController: DeprecatedCommentDialogDelegate {
+  internal func commentDialogWantsDismissal(_ dialog: DeprecatedCommentDialogViewController) {
     dialog.dismiss(animated: true, completion: nil)
   }
 
-  internal func commentDialog(_: CommentDialogViewController, postedComment _: DeprecatedComment) {}
+  internal func commentDialog(_: DeprecatedCommentDialogViewController, postedComment _: DeprecatedComment) {}
 }

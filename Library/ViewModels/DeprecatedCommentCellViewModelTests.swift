@@ -5,8 +5,8 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-final class CommentCellViewModelTest: TestCase {
-  let vm: CommentCellViewModelType = CommentCellViewModel()
+final class DeprecatedCommentCellViewModelTest: TestCase {
+  let vm: DeprecatedCommentCellViewModelType = DeprecatedCommentCellViewModel()
 
   let avatarUrl = TestObserver<URL?, Never>()
   let body = TestObserver<String, Never>()

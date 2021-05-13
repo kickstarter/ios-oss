@@ -2,7 +2,7 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-public protocol CommentsEmptyStateCellViewModelInputs {
+public protocol DeprecatedCommentsEmptyStateCellViewModelInputs {
   /// Call when back this project button is tapped.
   func backProjectTapped()
 
@@ -16,7 +16,7 @@ public protocol CommentsEmptyStateCellViewModelInputs {
   func loginTapped()
 }
 
-public protocol CommentsEmptyStateCellViewModelOutputs {
+public protocol DeprecatedCommentsEmptyStateCellViewModelOutputs {
   /// Emits a boolean to determine whether or not backProjectButton is hidden.
   var backProjectButtonHidden: Signal<Bool, Never> { get }
 
@@ -42,13 +42,13 @@ public protocol CommentsEmptyStateCellViewModelOutputs {
   var subtitleText: Signal<String, Never> { get }
 }
 
-public protocol CommentsEmptyStateCellViewModelType {
-  var inputs: CommentsEmptyStateCellViewModelInputs { get }
-  var outputs: CommentsEmptyStateCellViewModelOutputs { get }
+public protocol DeprecatedCommentsEmptyStateCellViewModelType {
+  var inputs: DeprecatedCommentsEmptyStateCellViewModelInputs { get }
+  var outputs: DeprecatedCommentsEmptyStateCellViewModelOutputs { get }
 }
 
-public final class CommentsEmptyStateCellViewModel: CommentsEmptyStateCellViewModelType,
-  CommentsEmptyStateCellViewModelInputs, CommentsEmptyStateCellViewModelOutputs {
+public final class DeprecatedCommentsEmptyStateCellViewModel: DeprecatedCommentsEmptyStateCellViewModelType,
+  DeprecatedCommentsEmptyStateCellViewModelInputs, DeprecatedCommentsEmptyStateCellViewModelOutputs {
   public init() {
     let project = self.projectAndUpdateProperty.signal.skipNil().map(first)
 
@@ -111,8 +111,8 @@ public final class CommentsEmptyStateCellViewModel: CommentsEmptyStateCellViewMo
   public let subtitleIsHidden: Signal<Bool, Never>
   public let subtitleText: Signal<String, Never>
 
-  public var inputs: CommentsEmptyStateCellViewModelInputs { return self }
-  public var outputs: CommentsEmptyStateCellViewModelOutputs { return self }
+  public var inputs: DeprecatedCommentsEmptyStateCellViewModelInputs { return self }
+  public var outputs: DeprecatedCommentsEmptyStateCellViewModelOutputs { return self }
 }
 
 private struct ProjectEmptyCommentsData {
