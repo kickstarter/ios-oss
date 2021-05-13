@@ -50,6 +50,8 @@
     fileprivate let fetchCommentsResponse: [DeprecatedComment]?
     fileprivate let fetchCommentsError: ErrorEnvelope?
 
+    fileprivate let fetchCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>?
+
     fileprivate let fetchConfigResponse: Config?
 
     fileprivate let fetchDiscoveryResponse: DiscoveryEnvelope?
@@ -113,7 +115,7 @@
 
     fileprivate let fetchUnansweredSurveyResponsesResponse: [SurveyResponse]
 
-    fileprivate let fetchUpdateCommentsResponse: Result<CommentsEnvelope, ErrorEnvelope>?
+    fileprivate let fetchUpdateCommentsResponse: Result<DeprecatedCommentsEnvelope, ErrorEnvelope>?
 
     fileprivate let fetchUpdateResponse: Update
 
@@ -230,6 +232,7 @@
       fetchGraphCategoriesError: GraphError? = nil,
       fetchCommentsResponse: [DeprecatedComment]? = nil,
       fetchCommentsError: ErrorEnvelope? = nil,
+      fetchCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>? = nil,
       fetchConfigResponse: Config? = nil,
       fetchDiscoveryResponse: DiscoveryEnvelope? = nil,
       fetchDiscoveryError: ErrorEnvelope? = nil,
@@ -280,7 +283,7 @@
       fetchSurveyResponseResponse: SurveyResponse? = nil,
       fetchSurveyResponseError: ErrorEnvelope? = nil,
       fetchUnansweredSurveyResponsesResponse: [SurveyResponse] = [],
-      fetchUpdateCommentsResponse: Result<CommentsEnvelope, ErrorEnvelope>? = nil,
+      fetchUpdateCommentsResponse: Result<DeprecatedCommentsEnvelope, ErrorEnvelope>? = nil,
       fetchUpdateResponse: Update = .template,
       fetchUserSelfError: ErrorEnvelope? = nil,
       postCommentResponse: DeprecatedComment? = nil,
@@ -376,6 +379,8 @@
       ]
 
       self.fetchCommentsError = fetchCommentsError
+
+      self.fetchCommentsEnvelopeResult = fetchCommentsEnvelopeResult
 
       self.fetchConfigResponse = fetchConfigResponse ?? .template
 
@@ -592,15 +597,16 @@
       return producer(for: self.clearUserUnseenActivityResult)
     }
 
-    internal func fetchComments(project _: Project) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+    internal func fetchComments(project _: Project)
+      -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
       if let error = fetchCommentsError {
         return SignalProducer(error: error)
       } else if let comments = fetchCommentsResponse {
         return SignalProducer(
-          value: CommentsEnvelope(
+          value: DeprecatedCommentsEnvelope(
             comments: comments,
-            urls: CommentsEnvelope.UrlsEnvelope(
-              api: CommentsEnvelope.UrlsEnvelope.ApiEnvelope(
+            urls: DeprecatedCommentsEnvelope.UrlsEnvelope(
+              api: DeprecatedCommentsEnvelope.UrlsEnvelope.ApiEnvelope(
                 moreComments: ""
               )
             )
@@ -610,15 +616,16 @@
       return .empty
     }
 
-    internal func fetchComments(paginationUrl _: String) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+    internal func fetchComments(paginationUrl _: String)
+      -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
       if let error = fetchCommentsError {
         return SignalProducer(error: error)
       } else if let comments = fetchCommentsResponse {
         return SignalProducer(
-          value: CommentsEnvelope(
+          value: DeprecatedCommentsEnvelope(
             comments: comments,
-            urls: CommentsEnvelope.UrlsEnvelope(
-              api: CommentsEnvelope.UrlsEnvelope.ApiEnvelope(
+            urls: DeprecatedCommentsEnvelope.UrlsEnvelope(
+              api: DeprecatedCommentsEnvelope.UrlsEnvelope.ApiEnvelope(
                 moreComments: ""
               )
             )
@@ -628,13 +635,18 @@
       return .empty
     }
 
-    internal func fetchComments(update _: Update) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+    internal func fetchComments(update _: Update)
+      -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
       if let error = fetchUpdateCommentsResponse?.error {
         return SignalProducer(error: error)
       } else if let comments = fetchUpdateCommentsResponse {
         return SignalProducer(value: comments.value ?? .template)
       }
       return .empty
+    }
+
+    func fetchComments(query _: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+      return producer(for: self.fetchCommentsEnvelopeResult)
     }
 
     internal func fetchConfig() -> SignalProducer<Config, ErrorEnvelope> {

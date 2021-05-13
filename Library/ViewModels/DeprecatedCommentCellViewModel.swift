@@ -3,11 +3,11 @@ import KsApi
 import ReactiveSwift
 import UIKit
 
-public protocol CommentCellViewModelInputs {
+public protocol DeprecatedCommentCellViewModelInputs {
   func comment(_ comment: DeprecatedComment, project: Project, viewer: User?)
 }
 
-public protocol CommentCellViewModelOutputs {
+public protocol DeprecatedCommentCellViewModelOutputs {
   var avatarUrl: Signal<URL?, Never> { get }
   var body: Signal<String, Never> { get }
   var bodyColor: Signal<UIColor, Never> { get }
@@ -18,13 +18,14 @@ public protocol CommentCellViewModelOutputs {
   var youHidden: Signal<Bool, Never> { get }
 }
 
-public protocol CommentCellViewModelType {
-  var inputs: CommentCellViewModelInputs { get }
-  var outputs: CommentCellViewModelOutputs { get }
+public protocol DeprecatedCommentCellViewModelType {
+  var inputs: DeprecatedCommentCellViewModelInputs { get }
+  var outputs: DeprecatedCommentCellViewModelOutputs { get }
 }
 
-public final class CommentCellViewModel: CommentCellViewModelType, CommentCellViewModelInputs,
-  CommentCellViewModelOutputs {
+public final class DeprecatedCommentCellViewModel: DeprecatedCommentCellViewModelType,
+  DeprecatedCommentCellViewModelInputs,
+  DeprecatedCommentCellViewModelOutputs {
   public init() {
     let comment = self.commentProjectViewer.signal.skipNil()
       .map { comment, _, _ in comment }
@@ -72,6 +73,6 @@ public final class CommentCellViewModel: CommentCellViewModelType, CommentCellVi
   public let timestamp: Signal<String, Never>
   public let youHidden: Signal<Bool, Never>
 
-  public var inputs: CommentCellViewModelInputs { return self }
-  public var outputs: CommentCellViewModelOutputs { return self }
+  public var inputs: DeprecatedCommentCellViewModelInputs { return self }
+  public var outputs: DeprecatedCommentCellViewModelOutputs { return self }
 }

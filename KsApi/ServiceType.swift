@@ -94,13 +94,16 @@ public protocol ServiceType {
     -> SignalProducer<Backing, ErrorEnvelope>
 
   /// Fetch comments from a pagination url.
-  func fetchComments(paginationUrl url: String) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
+  func fetchComments(paginationUrl url: String) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
 
   /// Fetch comments for a project.
-  func fetchComments(project: Project) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
+  func fetchComments(project: Project) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
+
+  /// Fetch comments for a project with a query.
+  func fetchComments(query: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
 
   /// Fetch comments for an update.
-  func fetchComments(update: Update) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
+  func fetchComments(update: Update) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
 
   /// Fetch the config.
   func fetchConfig() -> SignalProducer<Config, ErrorEnvelope>

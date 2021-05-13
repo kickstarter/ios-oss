@@ -190,9 +190,9 @@
 		597073B21D07281800B00444 /* ProjectNotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597073B01D07281800B00444 /* ProjectNotificationCell.swift */; };
 		597073B41D07294500B00444 /* ProjectNotificationCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597073B31D07294500B00444 /* ProjectNotificationCellViewModel.swift */; };
 		597582E31D5D12AE008765DE /* SettingsStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597582E21D5D12AE008765DE /* SettingsStyles.swift */; };
-		5981BE101D7F4656002E49F1 /* CommentStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BE0F1D7F4656002E49F1 /* CommentStyles.swift */; };
-		5981BE431D7F59DE002E49F1 /* CommentsEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BE421D7F59DE002E49F1 /* CommentsEmptyStateCell.swift */; };
-		5981BE451D7F61C0002E49F1 /* CommentsEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BE441D7F61C0002E49F1 /* CommentsEmptyStateCellViewModel.swift */; };
+		5981BE101D7F4656002E49F1 /* DeprecatedCommentStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BE0F1D7F4656002E49F1 /* DeprecatedCommentStyles.swift */; };
+		5981BE431D7F59DE002E49F1 /* DeprecatedCommentsEmptyStateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BE421D7F59DE002E49F1 /* DeprecatedCommentsEmptyStateCell.swift */; };
+		5981BE451D7F61C0002E49F1 /* DeprecatedCommentsEmptyStateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5981BE441D7F61C0002E49F1 /* DeprecatedCommentsEmptyStateCellViewModel.swift */; };
 		598D96B41D41790C003F3F66 /* ActivitySampleBackingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598D96821D417905003F3F66 /* ActivitySampleBackingCell.swift */; };
 		598D96B61D426D80003F3F66 /* ActivitySampleFollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598D96B51D426D80003F3F66 /* ActivitySampleFollowCell.swift */; };
 		598D96B81D426F70003F3F66 /* ActivitySampleProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */; };
@@ -475,6 +475,10 @@
 		8A4E954724525DE400A578CF /* ProjectState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954624525DE400A578CF /* ProjectState.swift */; };
 		8A4E954924525EC100A578CF /* BackingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954824525EC100A578CF /* BackingState.swift */; };
 		8A4E954B245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E954A245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift */; };
+		8A555864264C4AA500C2C30D /* GraphCommentsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A555863264C4AA500C2C30D /* GraphCommentsEnvelope.swift */; };
+		8A555869264C4AE400C2C30D /* GraphComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A555868264C4AE400C2C30D /* GraphComment.swift */; };
+		8A555874264C4C8300C2C30D /* CommentsQueries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A555873264C4C8300C2C30D /* CommentsQueries.swift */; };
+		8A55587C264C567F00C2C30D /* CommentsQueriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A55587B264C567F00C2C30D /* CommentsQueriesTests.swift */; };
 		8A5CB28424C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5CB28324C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift */; };
 		8A64F16624BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A64F16524BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift */; };
 		8A65E79B25016A22006F81CC /* FirebaseInstallations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A65E79A25016A22006F81CC /* FirebaseInstallations.framework */; };
@@ -559,6 +563,16 @@
 		8AD7952F239EBDF600998C79 /* MockTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */; };
 		8AD79530239EBDF600998C79 /* MockTrackingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A213CE9239EAEA400BBB4C7 /* MockTrackingClient.swift */; };
 		8AD9CF1424C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD9CF1324C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift */; };
+		8ADCCC87264C6E4A0079D308 /* GraphCommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCC86264C6E4A0079D308 /* GraphCommentTests.swift */; };
+		8ADCCC8F264C72B20079D308 /* GraphCommentsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCC8E264C72B20079D308 /* GraphCommentsEnvelopeTests.swift */; };
+		8ADCCCA6264C97940079D308 /* CommentsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCA5264C97940079D308 /* CommentsEnvelope.swift */; };
+		8ADCCCAE264C98A50079D308 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCAD264C98A50079D308 /* Comment.swift */; };
+		8ADCCCB6264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCB5264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift */; };
+		8ADCCCBB264C9F4C0079D308 /* Comment+GraphComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCBA264C9F4C0079D308 /* Comment+GraphComment.swift */; };
+		8ADCCCC0264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCBF264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift */; };
+		8ADCCCCB264CA13F0079D308 /* Comment+GraphCommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCCA264CA13F0079D308 /* Comment+GraphCommentTests.swift */; };
+		8ADCCCD0264CA18E0079D308 /* GraphCommentTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCCF264CA18E0079D308 /* GraphCommentTemplates.swift */; };
+		8ADCCCD8264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCCD7264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift */; };
 		8ADF4D7624BCCFD60018AD4B /* PillsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADF4D7524BCCFD60018AD4B /* PillsView.swift */; };
 		8AE09C3A244537BE00036043 /* PledgeDisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */; };
 		8AE09C3C2446330100036043 /* PledgeDisclaimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C3B2446330100036043 /* PledgeDisclaimerViewModel.swift */; };
@@ -748,7 +762,7 @@
 		A79F53001D8F50CF00C051B8 /* ProjectPamphletSubpageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79F52FF1D8F50CE00C051B8 /* ProjectPamphletSubpageCell.swift */; };
 		A7A051E61CD12D9A005AF5E2 /* DeprecatedCommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A051E41CD12D9A005AF5E2 /* DeprecatedCommentsDataSource.swift */; };
 		A7A052141CD12DD7005AF5E2 /* DeprecatedCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A052121CD12DD7005AF5E2 /* DeprecatedCommentCell.swift */; };
-		A7A0534E1CD19C68005AF5E2 /* CommentDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A0534C1CD19C68005AF5E2 /* CommentDialogViewController.swift */; };
+		A7A0534E1CD19C68005AF5E2 /* DeprecatedCommentDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A0534C1CD19C68005AF5E2 /* DeprecatedCommentDialogViewController.swift */; };
 		A7A6261A1E85B936004C931A /* BackerDashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A626171E85B936004C931A /* BackerDashboardViewModelTests.swift */; };
 		A7A6261B1E85B936004C931A /* BackerDashboardProjectsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A626181E85B936004C931A /* BackerDashboardProjectsViewModelTests.swift */; };
 		A7A627171E85BA5F004C931A /* BackerDashboardProjectCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A627161E85BA5F004C931A /* BackerDashboardProjectCellViewModelTests.swift */; };
@@ -803,7 +817,7 @@
 		A7ED1F4C1E831BA200BFFA01 /* XCTestCase+AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F471E831BA200BFFA01 /* XCTestCase+AppEnvironment.swift */; };
 		A7ED1FA91E831C5C00BFFA01 /* ActivityProjectStatusViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F4D1E831C5C00BFFA01 /* ActivityProjectStatusViewModelTests.swift */; };
 		A7ED1FAA1E831C5C00BFFA01 /* DiscoveryPageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F4E1E831C5C00BFFA01 /* DiscoveryPageViewModelTests.swift */; };
-		A7ED1FAB1E831C5C00BFFA01 /* CommentDialogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F4F1E831C5C00BFFA01 /* CommentDialogViewModelTests.swift */; };
+		A7ED1FAB1E831C5C00BFFA01 /* DeprecatedCommentDialogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F4F1E831C5C00BFFA01 /* DeprecatedCommentDialogViewModelTests.swift */; };
 		A7ED1FAC1E831C5C00BFFA01 /* ActivitySampleFollowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F501E831C5C00BFFA01 /* ActivitySampleFollowCellViewModelTests.swift */; };
 		A7ED1FAE1E831C5C00BFFA01 /* FindFriendsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F521E831C5C00BFFA01 /* FindFriendsViewModelTests.swift */; };
 		A7ED1FB01E831C5C00BFFA01 /* ProjectPamphletViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F541E831C5C00BFFA01 /* ProjectPamphletViewModelTests.swift */; };
@@ -818,10 +832,10 @@
 		A7ED1FBC1E831C5C00BFFA01 /* FindFriendsFriendFollowCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F601E831C5C00BFFA01 /* FindFriendsFriendFollowCellViewModelTests.swift */; };
 		A7ED1FBE1E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F621E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift */; };
 		A7ED1FBF1E831C5C00BFFA01 /* SortPagerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F631E831C5C00BFFA01 /* SortPagerViewModelTests.swift */; };
-		A7ED1FC21E831C5C00BFFA01 /* CommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F661E831C5C00BFFA01 /* CommentCellViewModelTests.swift */; };
+		A7ED1FC21E831C5C00BFFA01 /* DeprecatedCommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F661E831C5C00BFFA01 /* DeprecatedCommentCellViewModelTests.swift */; };
 		A7ED1FC31E831C5C00BFFA01 /* ProfileViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F671E831C5C00BFFA01 /* ProfileViewModelTests.swift */; };
 		A7ED1FC41E831C5C00BFFA01 /* ProjectActivitySuccessCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F681E831C5C00BFFA01 /* ProjectActivitySuccessCellViewModelTests.swift */; };
-		A7ED1FC51E831C5C00BFFA01 /* CommentsEmptyStateCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F691E831C5C00BFFA01 /* CommentsEmptyStateCellViewModelTests.swift */; };
+		A7ED1FC51E831C5C00BFFA01 /* DeprecatedCommentsEmptyStateCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F691E831C5C00BFFA01 /* DeprecatedCommentsEmptyStateCellViewModelTests.swift */; };
 		A7ED1FC61E831C5C00BFFA01 /* SurveyResponseViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F6A1E831C5C00BFFA01 /* SurveyResponseViewModelTests.swift */; };
 		A7ED1FC71E831C5C00BFFA01 /* DashboardFundingCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F6B1E831C5C00BFFA01 /* DashboardFundingCellViewModelTests.swift */; };
 		A7ED1FC81E831C5C00BFFA01 /* MessageThreadsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7ED1F6C1E831C5C00BFFA01 /* MessageThreadsViewModelTests.swift */; };
@@ -923,8 +937,8 @@
 		A7F441B31D005A9400FE6FC5 /* ActivityProjectStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441911D005A9400FE6FC5 /* ActivityProjectStatusViewModel.swift */; };
 		A7F441B51D005A9400FE6FC5 /* ActivityUpdateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441921D005A9400FE6FC5 /* ActivityUpdateViewModel.swift */; };
 		A7F441B71D005A9400FE6FC5 /* BackingCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441931D005A9400FE6FC5 /* BackingCellViewModel.swift */; };
-		A7F441B91D005A9400FE6FC5 /* CommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441941D005A9400FE6FC5 /* CommentCellViewModel.swift */; };
-		A7F441BB1D005A9400FE6FC5 /* CommentDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441951D005A9400FE6FC5 /* CommentDialogViewModel.swift */; };
+		A7F441B91D005A9400FE6FC5 /* DeprecatedCommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441941D005A9400FE6FC5 /* DeprecatedCommentCellViewModel.swift */; };
+		A7F441BB1D005A9400FE6FC5 /* DeprecatedCommentDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441951D005A9400FE6FC5 /* DeprecatedCommentDialogViewModel.swift */; };
 		A7F441BD1D005A9400FE6FC5 /* DeprecatedCommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441961D005A9400FE6FC5 /* DeprecatedCommentsViewModel.swift */; };
 		A7F441C11D005A9400FE6FC5 /* DiscoveryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441981D005A9400FE6FC5 /* DiscoveryViewModel.swift */; };
 		A7F441C31D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F441991D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift */; };
@@ -978,7 +992,7 @@
 		D01588491EEB2ED7006E7684 /* Backing.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877C1EEB2ED6006E7684 /* Backing.swift */; };
 		D01588531EEB2ED7006E7684 /* ChangePaymentMethodEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587811EEB2ED6006E7684 /* ChangePaymentMethodEnvelope.swift */; };
 		D015885B1EEB2ED7006E7684 /* DeprecatedComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587851EEB2ED6006E7684 /* DeprecatedComment.swift */; };
-		D015885D1EEB2ED7006E7684 /* CommentsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587861EEB2ED6006E7684 /* CommentsEnvelope.swift */; };
+		D015885D1EEB2ED7006E7684 /* DeprecatedCommentsEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587861EEB2ED6006E7684 /* DeprecatedCommentsEnvelope.swift */; };
 		D01588611EEB2ED7006E7684 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587881EEB2ED6006E7684 /* Config.swift */; };
 		D01588691EEB2ED7006E7684 /* DiscoveryEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015878C1EEB2ED6006E7684 /* DiscoveryEnvelope.swift */; };
 		D015886B1EEB2ED7006E7684 /* DiscoveryParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015878D1EEB2ED6006E7684 /* DiscoveryParams.swift */; };
@@ -989,7 +1003,7 @@
 		D015887F1EEB2ED7006E7684 /* Activity.MemberDataLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587981EEB2ED6006E7684 /* Activity.MemberDataLenses.swift */; };
 		D01588811EEB2ED7006E7684 /* ActivityLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587991EEB2ED6006E7684 /* ActivityLenses.swift */; };
 		D01588831EEB2ED7006E7684 /* BackingLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015879A1EEB2ED6006E7684 /* BackingLenses.swift */; };
-		D015888B1EEB2ED7006E7684 /* CommentLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015879E1EEB2ED6006E7684 /* CommentLenses.swift */; };
+		D015888B1EEB2ED7006E7684 /* DeprecatedCommentLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015879E1EEB2ED6006E7684 /* DeprecatedCommentLenses.swift */; };
 		D015888D1EEB2ED7006E7684 /* ConfigLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015879F1EEB2ED6006E7684 /* ConfigLenses.swift */; };
 		D01588911EEB2ED7006E7684 /* DiscoveryEnvelopeLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587A11EEB2ED6006E7684 /* DiscoveryEnvelopeLenses.swift */; };
 		D01588931EEB2ED7006E7684 /* DiscoveryParamsLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587A21EEB2ED6006E7684 /* DiscoveryParamsLenses.swift */; };
@@ -1063,8 +1077,8 @@
 		D0158A091EEB30A2006E7684 /* ActivityTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587EF1EEB2ED7006E7684 /* ActivityTemplates.swift */; };
 		D0158A0A1EEB30A2006E7684 /* BackingTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587F01EEB2ED7006E7684 /* BackingTemplates.swift */; };
 		D0158A0D1EEB30A2006E7684 /* ChangePaymentMethodEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587F31EEB2ED7006E7684 /* ChangePaymentMethodEnvelopeTemplates.swift */; };
-		D0158A0F1EEB30A2006E7684 /* CommentsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587F51EEB2ED7006E7684 /* CommentsEnvelopeTemplates.swift */; };
-		D0158A101EEB30A2006E7684 /* CommentTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587F61EEB2ED7006E7684 /* CommentTemplates.swift */; };
+		D0158A0F1EEB30A2006E7684 /* DeprecatedCommentsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587F51EEB2ED7006E7684 /* DeprecatedCommentsEnvelopeTemplates.swift */; };
+		D0158A101EEB30A2006E7684 /* DeprecatedCommentTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587F61EEB2ED7006E7684 /* DeprecatedCommentTemplates.swift */; };
 		D0158A111EEB30A2006E7684 /* ConfigTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587F71EEB2ED7006E7684 /* ConfigTemplates.swift */; };
 		D0158A131EEB30A2006E7684 /* DiscoveryEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587F91EEB2ED7006E7684 /* DiscoveryEnvelopeTemplates.swift */; };
 		D0158A141EEB30A2006E7684 /* FindFriendsEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587FA1EEB2ED7006E7684 /* FindFriendsEnvelopeTemplates.swift */; };
@@ -1191,7 +1205,7 @@
 		D0D10C021EEB4550005EBAD0 /* ActivityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877B1EEB2ED6006E7684 /* ActivityTests.swift */; };
 		D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015877D1EEB2ED6006E7684 /* BackingTests.swift */; };
 		D0D10C051EEB4550005EBAD0 /* ChangePaymentMethodEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587821EEB2ED6006E7684 /* ChangePaymentMethodEnvelopeTests.swift */; };
-		D0D10C071EEB4550005EBAD0 /* CommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587871EEB2ED6006E7684 /* CommentTests.swift */; };
+		D0D10C071EEB4550005EBAD0 /* DeprecatedCommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587871EEB2ED6006E7684 /* DeprecatedCommentTests.swift */; };
 		D0D10C081EEB4550005EBAD0 /* ConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587891EEB2ED6006E7684 /* ConfigTests.swift */; };
 		D0D10C0A1EEB4550005EBAD0 /* DiscoveryParamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D015878E1EEB2ED6006E7684 /* DiscoveryParamsTests.swift */; };
 		D0D10C0B1EEB4550005EBAD0 /* ErrorEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01587901EEB2ED6006E7684 /* ErrorEnvelopeTests.swift */; };
@@ -1753,9 +1767,9 @@
 		597073B01D07281800B00444 /* ProjectNotificationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNotificationCell.swift; sourceTree = "<group>"; };
 		597073B31D07294500B00444 /* ProjectNotificationCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNotificationCellViewModel.swift; sourceTree = "<group>"; };
 		597582E21D5D12AE008765DE /* SettingsStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsStyles.swift; sourceTree = "<group>"; };
-		5981BE0F1D7F4656002E49F1 /* CommentStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentStyles.swift; sourceTree = "<group>"; };
-		5981BE421D7F59DE002E49F1 /* CommentsEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsEmptyStateCell.swift; sourceTree = "<group>"; };
-		5981BE441D7F61C0002E49F1 /* CommentsEmptyStateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsEmptyStateCellViewModel.swift; sourceTree = "<group>"; };
+		5981BE0F1D7F4656002E49F1 /* DeprecatedCommentStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentStyles.swift; sourceTree = "<group>"; };
+		5981BE421D7F59DE002E49F1 /* DeprecatedCommentsEmptyStateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentsEmptyStateCell.swift; sourceTree = "<group>"; };
+		5981BE441D7F61C0002E49F1 /* DeprecatedCommentsEmptyStateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentsEmptyStateCellViewModel.swift; sourceTree = "<group>"; };
 		598D96821D417905003F3F66 /* ActivitySampleBackingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySampleBackingCell.swift; sourceTree = "<group>"; };
 		598D96B51D426D80003F3F66 /* ActivitySampleFollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySampleFollowCell.swift; sourceTree = "<group>"; };
 		598D96B71D426F70003F3F66 /* ActivitySampleProjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySampleProjectCell.swift; sourceTree = "<group>"; };
@@ -2018,6 +2032,10 @@
 		8A4E954624525DE400A578CF /* ProjectState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectState.swift; sourceTree = "<group>"; };
 		8A4E954824525EC100A578CF /* BackingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackingState.swift; sourceTree = "<group>"; };
 		8A4E954A245268F100A578CF /* ManagePledgeViewBackingEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagePledgeViewBackingEnvelopeTemplate.swift; sourceTree = "<group>"; };
+		8A555863264C4AA500C2C30D /* GraphCommentsEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentsEnvelope.swift; sourceTree = "<group>"; };
+		8A555868264C4AE400C2C30D /* GraphComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphComment.swift; sourceTree = "<group>"; };
+		8A555873264C4C8300C2C30D /* CommentsQueries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsQueries.swift; sourceTree = "<group>"; };
+		8A55587B264C567F00C2C30D /* CommentsQueriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsQueriesTests.swift; sourceTree = "<group>"; };
 		8A5CB28324C11819003113D4 /* RewardAddOnSelectionContinueCTAViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionContinueCTAViewModelTests.swift; sourceTree = "<group>"; };
 		8A64F16524BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAddOnSelectionViewControllerTests.swift; sourceTree = "<group>"; };
 		8A65E79A25016A22006F81CC /* FirebaseInstallations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstallations.framework; path = Carthage/Build/iOS/FirebaseInstallations.framework; sourceTree = "<group>"; };
@@ -2084,6 +2102,16 @@
 		8AD48632235939AF00A1463E /* StripeTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StripeTypes.swift; sourceTree = "<group>"; };
 		8AD486342359F34700A1463E /* STPPaymentHandler+StripePaymentHandlerActionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "STPPaymentHandler+StripePaymentHandlerActionStatus.swift"; sourceTree = "<group>"; };
 		8AD9CF1324C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingSummaryViewModelTests.swift; sourceTree = "<group>"; };
+		8ADCCC86264C6E4A0079D308 /* GraphCommentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentTests.swift; sourceTree = "<group>"; };
+		8ADCCC8E264C72B20079D308 /* GraphCommentsEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentsEnvelopeTests.swift; sourceTree = "<group>"; };
+		8ADCCCA5264C97940079D308 /* CommentsEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsEnvelope.swift; sourceTree = "<group>"; };
+		8ADCCCAD264C98A50079D308 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		8ADCCCB5264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentsEnvelope+GraphCommentsEnvelope.swift"; sourceTree = "<group>"; };
+		8ADCCCBA264C9F4C0079D308 /* Comment+GraphComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+GraphComment.swift"; sourceTree = "<group>"; };
+		8ADCCCBF264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentsEnvelope+GraphCommentsEnvelopeTests.swift"; sourceTree = "<group>"; };
+		8ADCCCCA264CA13F0079D308 /* Comment+GraphCommentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+GraphCommentTests.swift"; sourceTree = "<group>"; };
+		8ADCCCCF264CA18E0079D308 /* GraphCommentTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentTemplates.swift; sourceTree = "<group>"; };
+		8ADCCCD7264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentsEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		8ADF4D7524BCCFD60018AD4B /* PillsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillsView.swift; sourceTree = "<group>"; };
 		8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerView.swift; sourceTree = "<group>"; };
 		8AE09C3B2446330100036043 /* PledgeDisclaimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerViewModel.swift; sourceTree = "<group>"; };
@@ -2258,7 +2286,7 @@
 		A79F52FF1D8F50CE00C051B8 /* ProjectPamphletSubpageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletSubpageCell.swift; sourceTree = "<group>"; };
 		A7A051E41CD12D9A005AF5E2 /* DeprecatedCommentsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentsDataSource.swift; sourceTree = "<group>"; };
 		A7A052121CD12DD7005AF5E2 /* DeprecatedCommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentCell.swift; sourceTree = "<group>"; };
-		A7A0534C1CD19C68005AF5E2 /* CommentDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewController.swift; sourceTree = "<group>"; };
+		A7A0534C1CD19C68005AF5E2 /* DeprecatedCommentDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentDialogViewController.swift; sourceTree = "<group>"; };
 		A7A5F8241D11ECF60036139A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A7A5F8251D11ECF60036139A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A7A5F8261D11ECF60036139A /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2337,7 +2365,7 @@
 		A7ED1F471E831BA200BFFA01 /* XCTestCase+AppEnvironment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+AppEnvironment.swift"; sourceTree = "<group>"; };
 		A7ED1F4D1E831C5C00BFFA01 /* ActivityProjectStatusViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityProjectStatusViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F4E1E831C5C00BFFA01 /* DiscoveryPageViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryPageViewModelTests.swift; sourceTree = "<group>"; };
-		A7ED1F4F1E831C5C00BFFA01 /* CommentDialogViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewModelTests.swift; sourceTree = "<group>"; };
+		A7ED1F4F1E831C5C00BFFA01 /* DeprecatedCommentDialogViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentDialogViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F501E831C5C00BFFA01 /* ActivitySampleFollowCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitySampleFollowCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F521E831C5C00BFFA01 /* FindFriendsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F541E831C5C00BFFA01 /* ProjectPamphletViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectPamphletViewModelTests.swift; sourceTree = "<group>"; };
@@ -2352,10 +2380,10 @@
 		A7ED1F601E831C5C00BFFA01 /* FindFriendsFriendFollowCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsFriendFollowCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F621E831C5C00BFFA01 /* ProjectNotificationCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNotificationCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F631E831C5C00BFFA01 /* SortPagerViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortPagerViewModelTests.swift; sourceTree = "<group>"; };
-		A7ED1F661E831C5C00BFFA01 /* CommentCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCellViewModelTests.swift; sourceTree = "<group>"; };
+		A7ED1F661E831C5C00BFFA01 /* DeprecatedCommentCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F671E831C5C00BFFA01 /* ProfileViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F681E831C5C00BFFA01 /* ProjectActivitySuccessCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActivitySuccessCellViewModelTests.swift; sourceTree = "<group>"; };
-		A7ED1F691E831C5C00BFFA01 /* CommentsEmptyStateCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsEmptyStateCellViewModelTests.swift; sourceTree = "<group>"; };
+		A7ED1F691E831C5C00BFFA01 /* DeprecatedCommentsEmptyStateCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentsEmptyStateCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F6A1E831C5C00BFFA01 /* SurveyResponseViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyResponseViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F6B1E831C5C00BFFA01 /* DashboardFundingCellViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardFundingCellViewModelTests.swift; sourceTree = "<group>"; };
 		A7ED1F6C1E831C5C00BFFA01 /* MessageThreadsViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageThreadsViewModelTests.swift; sourceTree = "<group>"; };
@@ -2455,8 +2483,8 @@
 		A7F441911D005A9400FE6FC5 /* ActivityProjectStatusViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityProjectStatusViewModel.swift; sourceTree = "<group>"; };
 		A7F441921D005A9400FE6FC5 /* ActivityUpdateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityUpdateViewModel.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		A7F441931D005A9400FE6FC5 /* BackingCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingCellViewModel.swift; sourceTree = "<group>"; };
-		A7F441941D005A9400FE6FC5 /* CommentCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCellViewModel.swift; sourceTree = "<group>"; };
-		A7F441951D005A9400FE6FC5 /* CommentDialogViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDialogViewModel.swift; sourceTree = "<group>"; };
+		A7F441941D005A9400FE6FC5 /* DeprecatedCommentCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentCellViewModel.swift; sourceTree = "<group>"; };
+		A7F441951D005A9400FE6FC5 /* DeprecatedCommentDialogViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentDialogViewModel.swift; sourceTree = "<group>"; };
 		A7F441961D005A9400FE6FC5 /* DeprecatedCommentsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentsViewModel.swift; sourceTree = "<group>"; };
 		A7F441981D005A9400FE6FC5 /* DiscoveryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryViewModel.swift; sourceTree = "<group>"; };
 		A7F441991D005A9400FE6FC5 /* FacebookConfirmationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConfirmationViewModel.swift; sourceTree = "<group>"; };
@@ -2505,8 +2533,8 @@
 		D01587811EEB2ED6006E7684 /* ChangePaymentMethodEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePaymentMethodEnvelope.swift; sourceTree = "<group>"; };
 		D01587821EEB2ED6006E7684 /* ChangePaymentMethodEnvelopeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePaymentMethodEnvelopeTests.swift; sourceTree = "<group>"; };
 		D01587851EEB2ED6006E7684 /* DeprecatedComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedComment.swift; sourceTree = "<group>"; };
-		D01587861EEB2ED6006E7684 /* CommentsEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsEnvelope.swift; sourceTree = "<group>"; };
-		D01587871EEB2ED6006E7684 /* CommentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentTests.swift; sourceTree = "<group>"; };
+		D01587861EEB2ED6006E7684 /* DeprecatedCommentsEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentsEnvelope.swift; sourceTree = "<group>"; };
+		D01587871EEB2ED6006E7684 /* DeprecatedCommentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentTests.swift; sourceTree = "<group>"; };
 		D01587881EEB2ED6006E7684 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		D01587891EEB2ED6006E7684 /* ConfigTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigTests.swift; sourceTree = "<group>"; };
 		D015878C1EEB2ED6006E7684 /* DiscoveryEnvelope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryEnvelope.swift; sourceTree = "<group>"; };
@@ -2523,7 +2551,7 @@
 		D01587981EEB2ED6006E7684 /* Activity.MemberDataLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Activity.MemberDataLenses.swift; sourceTree = "<group>"; };
 		D01587991EEB2ED6006E7684 /* ActivityLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityLenses.swift; sourceTree = "<group>"; };
 		D015879A1EEB2ED6006E7684 /* BackingLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingLenses.swift; sourceTree = "<group>"; };
-		D015879E1EEB2ED6006E7684 /* CommentLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentLenses.swift; sourceTree = "<group>"; };
+		D015879E1EEB2ED6006E7684 /* DeprecatedCommentLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentLenses.swift; sourceTree = "<group>"; };
 		D015879F1EEB2ED6006E7684 /* ConfigLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigLenses.swift; sourceTree = "<group>"; };
 		D01587A11EEB2ED6006E7684 /* DiscoveryEnvelopeLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryEnvelopeLenses.swift; sourceTree = "<group>"; };
 		D01587A21EEB2ED6006E7684 /* DiscoveryParamsLenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryParamsLenses.swift; sourceTree = "<group>"; };
@@ -2599,8 +2627,8 @@
 		D01587EF1EEB2ED7006E7684 /* ActivityTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityTemplates.swift; sourceTree = "<group>"; };
 		D01587F01EEB2ED7006E7684 /* BackingTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackingTemplates.swift; sourceTree = "<group>"; };
 		D01587F31EEB2ED7006E7684 /* ChangePaymentMethodEnvelopeTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePaymentMethodEnvelopeTemplates.swift; sourceTree = "<group>"; };
-		D01587F51EEB2ED7006E7684 /* CommentsEnvelopeTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsEnvelopeTemplates.swift; sourceTree = "<group>"; };
-		D01587F61EEB2ED7006E7684 /* CommentTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentTemplates.swift; sourceTree = "<group>"; };
+		D01587F51EEB2ED7006E7684 /* DeprecatedCommentsEnvelopeTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentsEnvelopeTemplates.swift; sourceTree = "<group>"; };
+		D01587F61EEB2ED7006E7684 /* DeprecatedCommentTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedCommentTemplates.swift; sourceTree = "<group>"; };
 		D01587F71EEB2ED7006E7684 /* ConfigTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigTemplates.swift; sourceTree = "<group>"; };
 		D01587F91EEB2ED7006E7684 /* DiscoveryEnvelopeTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		D01587FA1EEB2ED7006E7684 /* FindFriendsEnvelopeTemplates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsEnvelopeTemplates.swift; sourceTree = "<group>"; };
@@ -3115,6 +3143,8 @@
 		7798B5292174F3BC008BC50D /* queries */ = {
 			isa = PBXGroup;
 			children = (
+				8A555873264C4C8300C2C30D /* CommentsQueries.swift */,
+				8A55587B264C567F00C2C30D /* CommentsQueriesTests.swift */,
 				8A30C6B02491683C00EE12E4 /* ManagePledgeViewQueries.swift */,
 				8A30C6B22491689300EE12E4 /* ManagePledgeViewQueriesTests.swift */,
 				D6DC652E21768502008CF69C /* Queryable.swift */,
@@ -3155,6 +3185,8 @@
 				8A41CC6E2458A0610095B15E /* GraphBackingTemplates.swift */,
 				D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */,
 				8AA407CD24DB5316008C5FB0 /* GraphCategoryTemplates.swift */,
+				8ADCCCD7264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift */,
+				8ADCCCCF264CA18E0079D308 /* GraphCommentTemplates.swift */,
 				D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */,
 				8A0B1E2B24DA1327009E90C0 /* GraphLocationTemplates.swift */,
 				D08CD20221922025009F89F0 /* GraphMutationWatchProjectResponseEnvelopeTemplates.swift */,
@@ -3220,6 +3252,10 @@
 				8A41CC672458A0360095B15E /* GraphBackingEnvelope.swift */,
 				8A41CC6B2458A0480095B15E /* GraphBackingTests.swift */,
 				8AA407BF24DA43D8008C5FB0 /* GraphCategory.swift */,
+				8A555868264C4AE400C2C30D /* GraphComment.swift */,
+				8A555863264C4AA500C2C30D /* GraphCommentsEnvelope.swift */,
+				8ADCCC8E264C72B20079D308 /* GraphCommentsEnvelopeTests.swift */,
+				8ADCCC86264C6E4A0079D308 /* GraphCommentTests.swift */,
 				8AA407C124DB0C8D008C5FB0 /* GraphCountry.swift */,
 				8A0B1E2624DA0DC3009E90C0 /* GraphLocation.swift */,
 				D002CAE4218CF951009783F2 /* GraphMutationWatchProjectResponseEnvelope.swift */,
@@ -3243,6 +3279,10 @@
 			children = (
 				8A8831C224DA2B27002BCA5E /* Backing+GraphBacking.swift */,
 				8A8831C424DA2B9D002BCA5E /* Backing+GraphBackingTests.swift */,
+				8ADCCCBA264C9F4C0079D308 /* Comment+GraphComment.swift */,
+				8ADCCCCA264CA13F0079D308 /* Comment+GraphCommentTests.swift */,
+				8ADCCCB5264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift */,
+				8ADCCCBF264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift */,
 				8AA407CB24DB49CE008C5FB0 /* Location+GraphLocation.swift */,
 				8AA407C924DB453C008C5FB0 /* Project.Category+GraphCategory.swift */,
 				8AA407C524DB36E8008C5FB0 /* Project.Country+GraphCountry.swift */,
@@ -3265,7 +3305,7 @@
 				A73379101D0E33A600C91445 /* ButtonStyles.swift */,
 				37280250226F878300E0ACBB /* CheckoutStyles.swift */,
 				A73379441D0E36A600C91445 /* Colors.swift */,
-				5981BE0F1D7F4656002E49F1 /* CommentStyles.swift */,
+				5981BE0F1D7F4656002E49F1 /* DeprecatedCommentStyles.swift */,
 				59B0E07D1D147F340081D2DC /* DashboardStyles.swift */,
 				A757EB2A1D1AD89E00A5C978 /* DiscoveryStyles.swift */,
 				A73379471D0E36CA00C91445 /* Fonts.swift */,
@@ -3424,7 +3464,7 @@
 				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
 				776B1A0C2418227100B03098 /* CategoryPillCell.swift */,
 				A7A052121CD12DD7005AF5E2 /* DeprecatedCommentCell.swift */,
-				5981BE421D7F59DE002E49F1 /* CommentsEmptyStateCell.swift */,
+				5981BE421D7F59DE002E49F1 /* DeprecatedCommentsEmptyStateCell.swift */,
 				D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */,
 				59B0E0021D1203970081D2DC /* DashboardActionCell.swift */,
 				59B0DFFC1D11B2E50081D2DC /* DashboardContextCell.swift */,
@@ -3521,7 +3561,7 @@
 				D6B6871721923BA6005F5DA7 /* ChangeEmailViewControllerTests.swift */,
 				7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */,
 				77941D2D216FCB0100398B89 /* ChangePasswordViewControllerTests.swift */,
-				A7A0534C1CD19C68005AF5E2 /* CommentDialogViewController.swift */,
+				A7A0534C1CD19C68005AF5E2 /* DeprecatedCommentDialogViewController.swift */,
 				A7180BA81CCED598001711CA /* DeprecatedCommentsViewController.swift */,
 				A7ED20341E8323E900BFFA01 /* DeprecatedCommentsViewControllerTests.swift */,
 				47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */,
@@ -4107,12 +4147,12 @@
 				D6ED1B36216D0C64007F7547 /* ChangeEmailViewModelTests.swift */,
 				D04AAC0A218BB70800CF713E /* ChangePasswordViewModel.swift */,
 				D04AAC13218BB70A00CF713E /* ChangePasswordViewModelTests.swift */,
-				A7F441941D005A9400FE6FC5 /* CommentCellViewModel.swift */,
-				A7ED1F661E831C5C00BFFA01 /* CommentCellViewModelTests.swift */,
-				A7F441951D005A9400FE6FC5 /* CommentDialogViewModel.swift */,
-				A7ED1F4F1E831C5C00BFFA01 /* CommentDialogViewModelTests.swift */,
-				5981BE441D7F61C0002E49F1 /* CommentsEmptyStateCellViewModel.swift */,
-				A7ED1F691E831C5C00BFFA01 /* CommentsEmptyStateCellViewModelTests.swift */,
+				A7F441941D005A9400FE6FC5 /* DeprecatedCommentCellViewModel.swift */,
+				A7ED1F661E831C5C00BFFA01 /* DeprecatedCommentCellViewModelTests.swift */,
+				A7F441951D005A9400FE6FC5 /* DeprecatedCommentDialogViewModel.swift */,
+				A7ED1F4F1E831C5C00BFFA01 /* DeprecatedCommentDialogViewModelTests.swift */,
+				5981BE441D7F61C0002E49F1 /* DeprecatedCommentsEmptyStateCellViewModel.swift */,
+				A7ED1F691E831C5C00BFFA01 /* DeprecatedCommentsEmptyStateCellViewModelTests.swift */,
 				A7F441961D005A9400FE6FC5 /* DeprecatedCommentsViewModel.swift */,
 				A7ED1F5F1E831C5C00BFFA01 /* DeprecatedCommentsViewModelTests.swift */,
 				47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */,
@@ -4454,7 +4494,6 @@
 				D01587791EEB2ED6006E7684 /* Activity.swift */,
 				D015877A1EEB2ED6006E7684 /* ActivityEnvelope.swift */,
 				D015877B1EEB2ED6006E7684 /* ActivityTests.swift */,
-				D6B9F90922035840003282A5 /* DeprecatedAuthor.swift */,
 				D6B9F94422035E34003282A5 /* AuthorTests.swift */,
 				D015877C1EEB2ED6006E7684 /* Backing.swift */,
 				77272D362370AB5C003B7A9C /* BackingPaymentSourceTests.swift */,
@@ -4469,9 +4508,8 @@
 				D755ECAA232005A70096F189 /* Checkout.swift */,
 				D0E78C3522A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift */,
 				D0E78C3722A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift */,
-				D01587851EEB2ED6006E7684 /* DeprecatedComment.swift */,
-				D01587861EEB2ED6006E7684 /* CommentsEnvelope.swift */,
-				D01587871EEB2ED6006E7684 /* CommentTests.swift */,
+				8ADCCCAD264C98A50079D308 /* Comment.swift */,
+				8ADCCCA5264C97940079D308 /* CommentsEnvelope.swift */,
 				D01587881EEB2ED6006E7684 /* Config.swift */,
 				D67B6C9C221F458700B63A6B /* Config+Encode.swift */,
 				D01587891EEB2ED6006E7684 /* ConfigTests.swift */,
@@ -4481,6 +4519,10 @@
 				8A4E95382450FBB500A578CF /* CreditCardType.swift */,
 				D62B1476221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift */,
 				D62B14AF2212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift */,
+				D6B9F90922035840003282A5 /* DeprecatedAuthor.swift */,
+				D01587851EEB2ED6006E7684 /* DeprecatedComment.swift */,
+				D01587861EEB2ED6006E7684 /* DeprecatedCommentsEnvelope.swift */,
+				D01587871EEB2ED6006E7684 /* DeprecatedCommentTests.swift */,
 				D015878C1EEB2ED6006E7684 /* DiscoveryEnvelope.swift */,
 				D015878D1EEB2ED6006E7684 /* DiscoveryParams.swift */,
 				D015878E1EEB2ED6006E7684 /* DiscoveryParamsTests.swift */,
@@ -4566,7 +4608,7 @@
 				D01587981EEB2ED6006E7684 /* Activity.MemberDataLenses.swift */,
 				D01587991EEB2ED6006E7684 /* ActivityLenses.swift */,
 				D015879A1EEB2ED6006E7684 /* BackingLenses.swift */,
-				D015879E1EEB2ED6006E7684 /* CommentLenses.swift */,
+				D015879E1EEB2ED6006E7684 /* DeprecatedCommentLenses.swift */,
 				D015879F1EEB2ED6006E7684 /* ConfigLenses.swift */,
 				378CA24522C4449F004E3C86 /* CountryLenses.swift */,
 				D01587A11EEB2ED6006E7684 /* DiscoveryEnvelopeLenses.swift */,
@@ -4626,8 +4668,8 @@
 				D01587F01EEB2ED7006E7684 /* BackingTemplates.swift */,
 				D6C9A2551F75921500981E64 /* CategoryTemplates.swift */,
 				D01587F31EEB2ED7006E7684 /* ChangePaymentMethodEnvelopeTemplates.swift */,
-				D01587F51EEB2ED7006E7684 /* CommentsEnvelopeTemplates.swift */,
-				D01587F61EEB2ED7006E7684 /* CommentTemplates.swift */,
+				D01587F51EEB2ED7006E7684 /* DeprecatedCommentsEnvelopeTemplates.swift */,
+				D01587F61EEB2ED7006E7684 /* DeprecatedCommentTemplates.swift */,
 				D01587F71EEB2ED7006E7684 /* ConfigTemplates.swift */,
 				D794408F2208970E00D0A747 /* CreatePaymentSourceTemplate.swift */,
 				D01587F91EEB2ED7006E7684 /* DiscoveryEnvelopeTemplates.swift */,
@@ -5224,12 +5266,12 @@
 				1611EF6723B2752A0051CDCC /* UUIDType.swift in Sources */,
 				773452FD2384B6BF00E6B6A3 /* DiscoveryEditorialViewModel.swift in Sources */,
 				014D629B1E6E31790033D2BD /* BackerDashboardProjectsViewModel.swift in Sources */,
-				5981BE451D7F61C0002E49F1 /* CommentsEmptyStateCellViewModel.swift in Sources */,
+				5981BE451D7F61C0002E49F1 /* DeprecatedCommentsEmptyStateCellViewModel.swift in Sources */,
 				D6050F54240463F100E029D2 /* LandingPageStatsViewModel.swift in Sources */,
 				D78E038E229305E90043E92F /* PledgeStateCTAType.swift in Sources */,
 				A73379451D0E36A600C91445 /* Colors.swift in Sources */,
 				01C7CDB11D13462500D9E0D1 /* DashboardRewardRowStackViewViewModel.swift in Sources */,
-				5981BE101D7F4656002E49F1 /* CommentStyles.swift in Sources */,
+				5981BE101D7F4656002E49F1 /* DeprecatedCommentStyles.swift in Sources */,
 				A7B1EBB11D901DE800BEE8B3 /* ProjectPamphletViewModel.swift in Sources */,
 				D04AAC32218BB70D00CF713E /* MessageBannerViewModel.swift in Sources */,
 				A73378FE1D0AE36400C91445 /* LoginStyles.swift in Sources */,
@@ -5354,7 +5396,7 @@
 				D79F0F7321067FB500D3B32C /* SettingsRecommendationsCellViewModel.swift in Sources */,
 				D04AAC29218BB70D00CF713E /* BetaToolsViewModel.swift in Sources */,
 				D093B49C21A86FD800910962 /* PushRegistration.swift in Sources */,
-				A7F441BB1D005A9400FE6FC5 /* CommentDialogViewModel.swift in Sources */,
+				A7F441BB1D005A9400FE6FC5 /* DeprecatedCommentDialogViewModel.swift in Sources */,
 				A7F441B31D005A9400FE6FC5 /* ActivityProjectStatusViewModel.swift in Sources */,
 				370BE71622541C8100B44DB2 /* UIViewController+URL.swift in Sources */,
 				59D1E6581D1866F800896A4C /* DashboardVideoCellViewModel.swift in Sources */,
@@ -5439,7 +5481,7 @@
 				5955E6811D21805200B4153D /* DashboardReferrersCellViewModel.swift in Sources */,
 				D66850A1236CA44C00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModel.swift in Sources */,
 				A75C81201D210C4700B5AD03 /* UpdateActivityItemProvider.swift in Sources */,
-				A7F441B91D005A9400FE6FC5 /* CommentCellViewModel.swift in Sources */,
+				A7F441B91D005A9400FE6FC5 /* DeprecatedCommentCellViewModel.swift in Sources */,
 				9D7536CF1D78D88D00A7623B /* SurveyResponseViewModel.swift in Sources */,
 				A710573B1DC2B2DF00A69552 /* SharedFunctions.swift in Sources */,
 				A7DC83961C9DBBE700BB2B44 /* RefTag.swift in Sources */,
@@ -5537,7 +5579,7 @@
 				A7ED20021E831C5C00BFFA01 /* ThanksViewModelTests.swift in Sources */,
 				3757D107228E521600241AE6 /* UIFontTests.swift in Sources */,
 				A7ED1F351E830FDC00BFFA01 /* String+SimpleHTMLTests.swift in Sources */,
-				A7ED1FAB1E831C5C00BFFA01 /* CommentDialogViewModelTests.swift in Sources */,
+				A7ED1FAB1E831C5C00BFFA01 /* DeprecatedCommentDialogViewModelTests.swift in Sources */,
 				A7ED1FB31E831C5C00BFFA01 /* ActivitySampleBackingCellViewModelTests.swift in Sources */,
 				A7ED1FD71E831C5C00BFFA01 /* SearchEmptyStateCellViewModelTests.swift in Sources */,
 				A7ED1F491E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift in Sources */,
@@ -5635,7 +5677,7 @@
 				D66850A323707CCC00EE9AC2 /* ProjectPamphletCreatorHeaderCellViewModelTests.swift in Sources */,
 				37D99C5B22247F58008EF839 /* NSBundleType+Tests.swift in Sources */,
 				374CB95122C17D6700B84219 /* CharacterSetTests.swift in Sources */,
-				A7ED1FC51E831C5C00BFFA01 /* CommentsEmptyStateCellViewModelTests.swift in Sources */,
+				A7ED1FC51E831C5C00BFFA01 /* DeprecatedCommentsEmptyStateCellViewModelTests.swift in Sources */,
 				A7ED1F391E830FDC00BFFA01 /* UILabel+IBClearTests.swift in Sources */,
 				8A297912234EBAF90039396D /* PledgeAmountSummaryViewModelTests.swift in Sources */,
 				3706408422A8A68600889CBD /* PledgeAmountViewModelTests.swift in Sources */,
@@ -5697,7 +5739,7 @@
 				8A4503F6234BEDD4008309EC /* PledgeViewContextTests.swift in Sources */,
 				A78355B91E85BD2D0021DA5A /* ActivityFriendFollowCellViewModelTests.swift in Sources */,
 				A7ED1FF01E831C5C00BFFA01 /* MessagesViewModelTests.swift in Sources */,
-				A7ED1FC21E831C5C00BFFA01 /* CommentCellViewModelTests.swift in Sources */,
+				A7ED1FC21E831C5C00BFFA01 /* DeprecatedCommentCellViewModelTests.swift in Sources */,
 				77BC00F82330236600808E75 /* RewardCellViewModelTests.swift in Sources */,
 				A7ED1FC91E831C5C00BFFA01 /* ActivitiesViewModelTests.swift in Sources */,
 				A7ED1FD21E831C5C00BFFA01 /* LoginToutViewModelTests.swift in Sources */,
@@ -5816,7 +5858,7 @@
 				8A2A2E2E238B3CBE002C62E0 /* UIView+ShimmerLoading.swift in Sources */,
 				01515F8C1E1D6E0C00FDECB6 /* MessageThreadEmptyStateCell.swift in Sources */,
 				9D525F101D4158BA003CAE04 /* ProjectActivityDateCell.swift in Sources */,
-				5981BE431D7F59DE002E49F1 /* CommentsEmptyStateCell.swift in Sources */,
+				5981BE431D7F59DE002E49F1 /* DeprecatedCommentsEmptyStateCell.swift in Sources */,
 				A747A7DF1D454E8500AF199A /* ProjectPamphletContentViewController.swift in Sources */,
 				77636FC1243CFE25007F67B9 /* ProcessingView.swift in Sources */,
 				0157067D1E65F0420087DD68 /* BackerDashboardProjectsViewController.swift in Sources */,
@@ -5850,7 +5892,7 @@
 				D796868021013C1F00E54C61 /* SettingsPrivacyStaticCell.swift in Sources */,
 				8AA3DB33250AE40C009AC8EA /* SettingsViewModel.swift in Sources */,
 				771E630B23425977005967E8 /* CancelPledgeViewController.swift in Sources */,
-				A7A0534E1CD19C68005AF5E2 /* CommentDialogViewController.swift in Sources */,
+				A7A0534E1CD19C68005AF5E2 /* DeprecatedCommentDialogViewController.swift in Sources */,
 				A75AB2231C8A85D1002FC3E6 /* ActivityUpdateCell.swift in Sources */,
 				777C60A6241FECD800820C59 /* PersonalizationCell.swift in Sources */,
 				370C8B64234FCC6F00DE75DD /* LoadingButton.swift in Sources */,
@@ -6182,7 +6224,7 @@
 				8A32AE9623EA1DC0005CEA57 /* Project.CategoryTemplates.swift in Sources */,
 				D0158A111EEB30A2006E7684 /* ConfigTemplates.swift in Sources */,
 				8AA407C024DA43D8008C5FB0 /* GraphCategory.swift in Sources */,
-				D015885D1EEB2ED7006E7684 /* CommentsEnvelope.swift in Sources */,
+				D015885D1EEB2ED7006E7684 /* DeprecatedCommentsEnvelope.swift in Sources */,
 				D79CF32C219CDEE100ECB73A /* CreatePaymentsSourceMutation.swift in Sources */,
 				8A67DDB824DDB21100B4AB10 /* BackingsEnvelope.swift in Sources */,
 				8AF34C8423440327000B211D /* ApplePayParams.swift in Sources */,
@@ -6203,10 +6245,12 @@
 				D67B6C9D221F458700B63A6B /* Config+Encode.swift in Sources */,
 				D01588391EEB2ED7006E7684 /* Method.swift in Sources */,
 				3706408A22A8B2B700889CBD /* ShippingTemplates.swift in Sources */,
+				8ADCCCB6264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift in Sources */,
 				D01588D91EEB2ED7006E7684 /* User.AvatarLenses.swift in Sources */,
 				D015882F1EEB2ED7006E7684 /* ClientAuth.swift in Sources */,
 				D01588371EEB2ED7006E7684 /* EncodableType.swift in Sources */,
 				D0158A301EEB30A2006E7684 /* User.NewsletterSubscriptionsTemplates.swift in Sources */,
+				8A555864264C4AA500C2C30D /* GraphCommentsEnvelope.swift in Sources */,
 				D01588DB1EEB2ED7006E7684 /* User.NewsletterSubscriptionsLenses.swift in Sources */,
 				D01588691EEB2ED7006E7684 /* DiscoveryEnvelope.swift in Sources */,
 				D0158A251EEB30A2006E7684 /* RewardTemplates.swift in Sources */,
@@ -6241,7 +6285,7 @@
 				D015886F1EEB2ED7006E7684 /* ErrorEnvelope.swift in Sources */,
 				D01588E11EEB2ED7006E7684 /* UserLenses.swift in Sources */,
 				D01588B91EEB2ED7006E7684 /* ProjectStatsEnvelope.FundingDateStatsLenses.swift in Sources */,
-				D0158A101EEB30A2006E7684 /* CommentTemplates.swift in Sources */,
+				D0158A101EEB30A2006E7684 /* DeprecatedCommentTemplates.swift in Sources */,
 				D01588B31EEB2ED7006E7684 /* ProjectNotification.ProjectLenses.swift in Sources */,
 				D01588811EEB2ED7006E7684 /* ActivityLenses.swift in Sources */,
 				D01588971EEB2ED7006E7684 /* FriendStatsEnvelope.StatsLenses.swift in Sources */,
@@ -6274,11 +6318,13 @@
 				D01588C51EEB2ED7006E7684 /* Reward.ShippingLenses.swift in Sources */,
 				7703B42223217D4F00169EF3 /* EnvironmentType.swift in Sources */,
 				8A0B1E2A24DA12E4009E90C0 /* GraphRewardTemplates.swift in Sources */,
+				8A555869264C4AE400C2C30D /* GraphComment.swift in Sources */,
 				8ACF36D1262745520026E74D /* MockService.swift in Sources */,
 				D68F0B18243F6730009FC948 /* SignInWithAppleEnvelopeTemplates.swift in Sources */,
 				D01588D51EEB2ED7006E7684 /* UpdateDraftLenses.swift in Sources */,
 				8ACF558923E8D467001654A2 /* TryDecodable.swift in Sources */,
 				D01589211EEB2ED7006E7684 /* StarEnvelope.swift in Sources */,
+				8ADCCCBB264C9F4C0079D308 /* Comment+GraphComment.swift in Sources */,
 				D01588EF1EEB2ED7006E7684 /* MessageThread.swift in Sources */,
 				8AA407C824DB4399008C5FB0 /* User+GraphUser.swift in Sources */,
 				8A4E95392450FBB500A578CF /* CreditCardType.swift in Sources */,
@@ -6308,6 +6354,7 @@
 				D01588EB1EEB2ED7006E7684 /* MessageSubject.swift in Sources */,
 				D770DDE8217D729300B5319A /* GraphUserTemplates.swift in Sources */,
 				D01589171EEB2ED7006E7684 /* RewardsItem.swift in Sources */,
+				8A555874264C4C8300C2C30D /* CommentsQueries.swift in Sources */,
 				77950F0A231EB8C300308331 /* CreateApplePayBackingMutation.swift in Sources */,
 				D0158A1B1EEB30A2006E7684 /* Project.VideoTemplates.swift in Sources */,
 				D0158A311EEB30A2006E7684 /* User.NotificationsTemplates.swift in Sources */,
@@ -6327,7 +6374,8 @@
 				D01588D31EEB2ED7006E7684 /* SurveyResponseLenses.swift in Sources */,
 				8AA407CE24DB5316008C5FB0 /* GraphCategoryTemplates.swift in Sources */,
 				D01588A91EEB2ED7006E7684 /* Project.PersonalizationLenses.swift in Sources */,
-				D015888B1EEB2ED7006E7684 /* CommentLenses.swift in Sources */,
+				D015888B1EEB2ED7006E7684 /* DeprecatedCommentLenses.swift in Sources */,
+				D015888B1EEB2ED7006E7684 /* DeprecatedCommentLenses.swift in Sources */,
 				8A1F65E6262660CB00A28E74 /* PerimeterXClient.swift in Sources */,
 				D0158A281EEB30A2006E7684 /* StarEnvelopeTemplates.swift in Sources */,
 				D0158A221EEB30A2006E7684 /* ProjectStatsEnvelopeTemplates.swift in Sources */,
@@ -6335,6 +6383,7 @@
 				D01589271EEB2ED7006E7684 /* SurveyResponse.swift in Sources */,
 				D75DACA8221DC4340027F478 /* CreatePasswordInput.swift in Sources */,
 				D0158A0D1EEB30A2006E7684 /* ChangePaymentMethodEnvelopeTemplates.swift in Sources */,
+				8ADCCCD0264CA18E0079D308 /* GraphCommentTemplates.swift in Sources */,
 				D0158A201EEB30A2006E7684 /* ProjectStatsEnvelope.RewardDistributionTemplates.swift in Sources */,
 				D01588C11EEB2ED7006E7684 /* ProjectStatsEnvelopeLenses.swift in Sources */,
 				8A49396124B54C0C00C3C3CE /* RewardAddOnSelectionViewEnvelope.swift in Sources */,
@@ -6371,6 +6420,7 @@
 				D0851010219500F200BC418B /* PaymentSourceDeleteMutation.swift in Sources */,
 				D01589091EEB2ED7006E7684 /* ProjectsEnvelope.swift in Sources */,
 				D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */,
+				8ADCCCD8264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift in Sources */,
 				D015883B1EEB2ED7006E7684 /* MimeType.swift in Sources */,
 				D01589931EEB2ED7006E7684 /* User.swift in Sources */,
 				8A49396924B690E000C3C3CE /* RewardAddOnSelectionViewEnvelopeTemplate.swift in Sources */,
@@ -6381,12 +6431,13 @@
 				77E44B7421823A56006446B8 /* ChangePasswordInput.swift in Sources */,
 				D08C71DC22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift in Sources */,
 				8AF34C742342CBC2000B211D /* UpdateBackingInput.swift in Sources */,
+				8ADCCCAE264C98A50079D308 /* Comment.swift in Sources */,
 				D0158A2E1EEB30A2006E7684 /* User.AvatarTemplates.swift in Sources */,
 				D01588771EEB2ED7006E7684 /* FriendStatsEnvelope.swift in Sources */,
 				D015891D1EEB2ED7006E7684 /* ShippingRule.swift in Sources */,
 				D67B6CD6221F468100B63A6B /* Location+Encode.swift in Sources */,
 				D01588331EEB2ED7006E7684 /* Decodable.swift in Sources */,
-				D0158A0F1EEB30A2006E7684 /* CommentsEnvelopeTemplates.swift in Sources */,
+				D0158A0F1EEB30A2006E7684 /* DeprecatedCommentsEnvelopeTemplates.swift in Sources */,
 				D6DC652F21768502008CF69C /* Queryable.swift in Sources */,
 				8ACF36E22627481C0026E74D /* ApiDateProtocol.swift in Sources */,
 				D0158A2C1EEB30A2006E7684 /* UpdatePledgeEnvelopeTemplates.swift in Sources */,
@@ -6403,6 +6454,7 @@
 				8ACF36EA2627486D0026E74D /* KsApiNotification.swift in Sources */,
 				D6ED386A1F796C26006CAAE9 /* GraphCategoriesEnvelopeLenses.swift in Sources */,
 				8A45168F24B3E2A800D8CAEF /* RewardAddOnSelectionViewQueries.swift in Sources */,
+				8ADCCCA6264C97940079D308 /* CommentsEnvelope.swift in Sources */,
 				D755ECA92319AF4D0096F189 /* CreateBackingEnvelope.swift in Sources */,
 				D0158A131EEB30A2006E7684 /* DiscoveryEnvelopeTemplates.swift in Sources */,
 				D01588431EEB2ED7006E7684 /* Activity.swift in Sources */,
@@ -6453,6 +6505,8 @@
 				D01589A21EEB2ED7006E7684 /* ServiceTypeTests.swift in Sources */,
 				D0D10C0F1EEB4550005EBAD0 /* LocationTests.swift in Sources */,
 				D0D10C121EEB4550005EBAD0 /* Project.CountryTests.swift in Sources */,
+				8ADCCCC0264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift in Sources */,
+				8ADCCC8F264C72B20079D308 /* GraphCommentsEnvelopeTests.swift in Sources */,
 				D0D10C0B1EEB4550005EBAD0 /* ErrorEnvelopeTests.swift in Sources */,
 				D0D10C031EEB4550005EBAD0 /* BackingTests.swift in Sources */,
 				8A67DDB424DCA41400B4AB10 /* User+GraphUserTests.swift in Sources */,
@@ -6466,7 +6520,7 @@
 				8A30C6B32491689300EE12E4 /* ManagePledgeViewQueriesTests.swift in Sources */,
 				8AF34C7F2343C3EF000B211D /* UpdateBackingEnvelopeTests.swift in Sources */,
 				D0D10C131EEB4550005EBAD0 /* Project.PhotoTests.swift in Sources */,
-				D0D10C071EEB4550005EBAD0 /* CommentTests.swift in Sources */,
+				D0D10C071EEB4550005EBAD0 /* DeprecatedCommentTests.swift in Sources */,
 				8AF34C762342D1D2000B211D /* UpdateBackingInputTests.swift in Sources */,
 				D0D10C191EEB4550005EBAD0 /* RewardTests.swift in Sources */,
 				D0D10C101EEB4550005EBAD0 /* MessageTests.swift in Sources */,
@@ -6474,10 +6528,13 @@
 				D0D10C151EEB4550005EBAD0 /* ProjectStatsEnvelopeTests.swift in Sources */,
 				8A2C015F2589391D00EE11E7 /* ProjectActivityEnvelopeTests.swift in Sources */,
 				D0D10C221EEB4550005EBAD0 /* UserTests.swift in Sources */,
+				8ADCCCCB264CA13F0079D308 /* Comment+GraphCommentTests.swift in Sources */,
 				8A45169124B3E2CE00D8CAEF /* RewardAddOnSelectionViewQueriesTests.swift in Sources */,
 				D0D10C171EEB4550005EBAD0 /* PushEnvelopeTests.swift in Sources */,
 				D0D10C1D1EEB4550005EBAD0 /* UpdatePledgeEnvelopeTests.swift in Sources */,
 				D0D10C0E1EEB4550005EBAD0 /* ItemTests.swift in Sources */,
+				8A55587C264C567F00C2C30D /* CommentsQueriesTests.swift in Sources */,
+				8ADCCC87264C6E4A0079D308 /* GraphCommentTests.swift in Sources */,
 				D755ECAE23216C290096F189 /* CreateBackingInputTests.swift in Sources */,
 				D755ECB123217D5B0096F189 /* CreateBackingEnvelopeTests.swift in Sources */,
 				D0D10C1B1EEB4550005EBAD0 /* SurveyResponseTests.swift in Sources */,

@@ -6,8 +6,9 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-internal final class CommentsEmptyStateCellViewModelTest: TestCase {
-  fileprivate let vm: CommentsEmptyStateCellViewModelType = CommentsEmptyStateCellViewModel()
+internal final class DeprecatedCommentsEmptyStateCellViewModelTest: TestCase {
+  fileprivate let vm: DeprecatedCommentsEmptyStateCellViewModelType =
+    DeprecatedCommentsEmptyStateCellViewModel()
 
   fileprivate let backProjectButtonHidden = TestObserver<Bool, Never>()
   fileprivate let goBackToProject = TestObserver<(), Never>()

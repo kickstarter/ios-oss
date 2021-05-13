@@ -1,32 +1,16 @@
-
+import Foundation
+import ReactiveSwift
 
 public struct CommentsEnvelope: Decodable {
-  public let comments: [DeprecatedComment]
-  public let urls: UrlsEnvelope
-
-  public struct UrlsEnvelope: Decodable {
-    public let api: ApiEnvelope
-
-    public struct ApiEnvelope: Decodable {
-      public let moreComments: String
-    }
-  }
+  public var comments: [Comment]
+  public var cursor: String?
+  public var hasNextPage: Bool
+  public var totalCount: Int
 }
 
-extension CommentsEnvelope.UrlsEnvelope {
-  enum CodingKeys: String, CodingKey {
-    case api
-    case moreComments = "more_comments"
-  }
-
-  public init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    do {
-      let moreComments = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .api)
-        .decode(String.self, forKey: .moreComments)
-      self.api = CommentsEnvelope.UrlsEnvelope.ApiEnvelope(moreComments: moreComments)
-    } catch {
-      self.api = CommentsEnvelope.UrlsEnvelope.ApiEnvelope(moreComments: "")
-    }
+extension CommentsEnvelope {
+  static func envelopeProducer(from envelope: GraphCommentsEnvelope)
+    -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+    return SignalProducer(value: CommentsEnvelope.commentsEnvelope(from: envelope))
   }
 }

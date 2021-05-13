@@ -171,7 +171,7 @@
                                     <outlet property="youView" destination="3ET-R2-24I" id="ExL-bE-Za6"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentsEmptyStateCell" id="AgR-zW-Trc" customClass="CommentsEmptyStateCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentsEmptyStateCell" id="AgR-zW-Trc" customClass="DeprecatedCommentsEmptyStateCell" customModule="Kickstarter_Framework" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="268" width="450" height="198"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AgR-zW-Trc" id="GhZ-I8-Uys">
@@ -256,10 +256,10 @@
             </objects>
             <point key="canvasLocation" x="40" y="849"/>
         </scene>
-        <!--Comment Dialog View Controller-->
+        <!--Deprecated Comment Dialog View Controller-->
         <scene sceneID="BCA-NB-R56">
             <objects>
-                <viewController storyboardIdentifier="CommentDialogViewController" id="99a-92-DMl" customClass="CommentDialogViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DeprecatedCommentDialogViewController" id="99a-92-DMl" customClass="DeprecatedCommentDialogViewController" customModule="Kickstarter_Framework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ZJX-6Q-Yge">
                         <rect key="frame" x="0.0" y="0.0" width="500" height="500"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

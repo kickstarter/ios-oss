@@ -4,7 +4,7 @@ import Prelude
 import UIKit
 
 internal final class DeprecatedCommentCell: UITableViewCell, ValueCell {
-  fileprivate let viewModel = CommentCellViewModel()
+  fileprivate let viewModel = DeprecatedCommentCellViewModel()
 
   @IBOutlet fileprivate var authorAndTimestampStackView: UIStackView!
   @IBOutlet fileprivate var authorStackView: UIStackView!

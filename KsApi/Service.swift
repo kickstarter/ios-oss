@@ -165,15 +165,22 @@ public struct Service: ServiceType {
     return request(.backing(projectId: project.id, backerId: user.id))
   }
 
-  public func fetchComments(paginationUrl url: String) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+  public func fetchComments(paginationUrl url: String)
+    -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
     return requestPaginationDecodable(url)
   }
 
-  public func fetchComments(project: Project) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+  public func fetchComments(project: Project) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
     return request(.projectComments(project))
   }
 
-  public func fetchComments(update: Update) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+  public func fetchComments(query: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+    return fetch(query: query)
+      .mapError(ErrorEnvelope.envelope(from:))
+      .flatMap(CommentsEnvelope.envelopeProducer(from:))
+  }
+
+  public func fetchComments(update: Update) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
     return request(.updateComments(update))
   }
 

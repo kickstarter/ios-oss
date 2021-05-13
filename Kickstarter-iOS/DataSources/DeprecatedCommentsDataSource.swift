@@ -18,7 +18,7 @@ internal final class DeprecatedCommentsDataSource: ValueCellDataSource {
     if comments.isEmpty {
       self.set(
         values: shouldShowEmptyState ? [(project, update)] : [],
-        cellClass: CommentsEmptyStateCell.self,
+        cellClass: DeprecatedCommentsEmptyStateCell.self,
         inSection: Section.emptyState.rawValue
       )
     } else {
@@ -34,7 +34,7 @@ internal final class DeprecatedCommentsDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as DeprecatedCommentCell, value as (DeprecatedComment, Project, User?)):
       cell.configureWith(value: value)
-    case let (cell as CommentsEmptyStateCell, value as (Project, Update?)):
+    case let (cell as DeprecatedCommentsEmptyStateCell, value as (Project, Update?)):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized (cell, viewModel) combo.")
