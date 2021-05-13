@@ -22,7 +22,8 @@ public final class CommentsViewModel: CommentsViewModelType,
     // FIXME: Configure this VM with a project in order to feed the slug in here to fetch comments
     // Call this again with a cursor to paginate.
     self.viewDidLoadProperty.signal.switchMap { _ in
-      return AppEnvironment.current.apiService.fetchComments(query: comments(withProjectSlug: "bring-back-weekly-world-news"))
+      AppEnvironment.current.apiService
+        .fetchComments(query: comments(withProjectSlug: "bring-back-weekly-world-news"))
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .materialize()
     }
