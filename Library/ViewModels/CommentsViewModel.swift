@@ -21,10 +21,12 @@ public final class CommentsViewModel: CommentsViewModelType,
   public init() {
     // FIXME: Configure this VM with a project in order to feed the slug in here to fetch comments
     // Call this again with a cursor to paginate.
-    _ = self.viewDidLoadProperty.signal.map {
-      AppEnvironment.current.apiService.fetchComments(query: comments(withProjectSlug: ""))
+    self.viewDidLoadProperty.signal.switchMap { _ in
+      return AppEnvironment.current.apiService.fetchComments(query: comments(withProjectSlug: "bring-back-weekly-world-news"))
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
     }
+    .observeValues { print($0) }
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
