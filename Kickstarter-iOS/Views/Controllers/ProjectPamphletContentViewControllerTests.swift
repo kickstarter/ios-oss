@@ -31,6 +31,46 @@ internal final class ProjectPamphletContentViewControllerTests: TestCase {
     super.tearDown()
   }
 
+  func testCommentsViewController_Optimizely_FeatureFlag_True() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.commentThreading.rawValue: true]
+
+    let project = self.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
+
+    let mockService = MockService(fetchProjectResponse: project)
+
+    withEnvironment(
+      apiService: mockService, optimizelyClient: mockOptimizelyClient
+    ) {
+      let vc = ProjectPamphletContentViewController()
+      vc.configureWith(value: (project, nil))
+
+      XCTAssert(vc.commentsViewController(for: project).isKind(of: CommentsViewController.self))
+    }
+  }
+
+  func testCommentsViewController_Optimizely_FeatureFlag_False() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.commentThreading.rawValue: false]
+
+    let project = self.cosmicSurgery
+      |> Project.lens.state .~ .live
+      |> Project.lens.stats.pledged .~ (self.cosmicSurgery.stats.goal * 3 / 4)
+
+    let mockService = MockService(fetchProjectResponse: project)
+
+    withEnvironment(
+      apiService: mockService, optimizelyClient: mockOptimizelyClient
+    ) {
+      let vc = ProjectPamphletContentViewController()
+      vc.configureWith(value: (project, nil))
+
+      XCTAssert(vc.commentsViewController(for: project).isKind(of: DeprecatedCommentsViewController.self))
+    }
+  }
+
   func testNonBacker_LiveProject() {
     let project = self.cosmicSurgery
       |> Project.lens.state .~ .live
