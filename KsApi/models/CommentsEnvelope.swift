@@ -1,6 +1,8 @@
 import Foundation
 import ReactiveSwift
 
+// TODO: Add project slug to envelope here.
+
 public struct CommentsEnvelope: Decodable {
   public var comments: [Comment]
   public var cursor: String?
