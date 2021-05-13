@@ -106,7 +106,7 @@ internal final class DeprecatedCommentsViewController: UITableViewController {
   }
 
   override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    if let emptyCell = cell as? CommentsEmptyStateCell {
+    if let emptyCell = cell as? DeprecatedCommentsEmptyStateCell {
       emptyCell.delegate = self
     }
 
@@ -117,7 +117,7 @@ internal final class DeprecatedCommentsViewController: UITableViewController {
   }
 
   internal func presentCommentDialog(project: Project, update: Update?) {
-    let dialog = CommentDialogViewController
+    let dialog = DeprecatedCommentDialogViewController
       .configuredWith(
         project: project, update: update, recipient: nil,
         context: update == nil ? .projectComments : .updateComments
@@ -150,17 +150,20 @@ internal final class DeprecatedCommentsViewController: UITableViewController {
   }
 }
 
-extension DeprecatedCommentsViewController: CommentDialogDelegate {
-  internal func commentDialogWantsDismissal(_ dialog: CommentDialogViewController) {
+extension DeprecatedCommentsViewController: DeprecatedCommentDialogDelegate {
+  internal func commentDialogWantsDismissal(_ dialog: DeprecatedCommentDialogViewController) {
     dialog.dismiss(animated: true, completion: nil)
   }
 
-  internal func commentDialog(_: CommentDialogViewController, postedComment comment: DeprecatedComment) {
+  internal func commentDialog(
+    _: DeprecatedCommentDialogViewController,
+    postedComment comment: DeprecatedComment
+  ) {
     self.viewModel.inputs.commentPosted(comment)
   }
 }
 
-extension DeprecatedCommentsViewController: CommentsEmptyStateCellDelegate {
+extension DeprecatedCommentsViewController: DeprecatedCommentsEmptyStateCellDelegate {
   internal func commentEmptyStateCellGoBackToProject() {
     _ = self.navigationController?.popToRootViewController(animated: true)
   }

@@ -1,6 +1,6 @@
 
 
-public struct CommentsEnvelope: Decodable {
+public struct DeprecatedCommentsEnvelope: Decodable {
   public let comments: [DeprecatedComment]
   public let urls: UrlsEnvelope
 
@@ -13,7 +13,7 @@ public struct CommentsEnvelope: Decodable {
   }
 }
 
-extension CommentsEnvelope.UrlsEnvelope {
+extension DeprecatedCommentsEnvelope.UrlsEnvelope {
   enum CodingKeys: String, CodingKey {
     case api
     case moreComments = "more_comments"
@@ -24,9 +24,9 @@ extension CommentsEnvelope.UrlsEnvelope {
     do {
       let moreComments = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .api)
         .decode(String.self, forKey: .moreComments)
-      self.api = CommentsEnvelope.UrlsEnvelope.ApiEnvelope(moreComments: moreComments)
+      self.api = DeprecatedCommentsEnvelope.UrlsEnvelope.ApiEnvelope(moreComments: moreComments)
     } catch {
-      self.api = CommentsEnvelope.UrlsEnvelope.ApiEnvelope(moreComments: "")
+      self.api = DeprecatedCommentsEnvelope.UrlsEnvelope.ApiEnvelope(moreComments: "")
     }
   }
 }

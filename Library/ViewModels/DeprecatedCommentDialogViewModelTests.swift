@@ -5,8 +5,8 @@ import ReactiveExtensions_TestHelpers
 import ReactiveSwift
 import XCTest
 
-internal final class CommentDialogViewModelTests: TestCase {
-  internal let vm: CommentDialogViewModelType = CommentDialogViewModel()
+internal final class DeprecatedCommentDialogViewModelTests: TestCase {
+  internal let vm: DeprecatedCommentDialogViewModelType = DeprecatedCommentDialogViewModel()
 
   internal let bodyTextViewText = TestObserver<String, Never>()
   internal var postButtonEnabled = TestObserver<Bool, Never>()

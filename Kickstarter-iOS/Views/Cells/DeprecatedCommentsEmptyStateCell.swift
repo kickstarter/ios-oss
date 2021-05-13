@@ -4,7 +4,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-internal protocol CommentsEmptyStateCellDelegate: AnyObject {
+internal protocol DeprecatedCommentsEmptyStateCellDelegate: AnyObject {
   /// Call when we should navigate back to the project.
   func commentEmptyStateCellGoBackToProject()
 
@@ -15,9 +15,10 @@ internal protocol CommentsEmptyStateCellDelegate: AnyObject {
   func commentEmptyStateCellGoToLoginTout()
 }
 
-internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
-  internal weak var delegate: CommentsEmptyStateCellDelegate?
-  fileprivate let viewModel: CommentsEmptyStateCellViewModelType = CommentsEmptyStateCellViewModel()
+internal final class DeprecatedCommentsEmptyStateCell: UITableViewCell, ValueCell {
+  internal weak var delegate: DeprecatedCommentsEmptyStateCellDelegate?
+  fileprivate let viewModel: DeprecatedCommentsEmptyStateCellViewModelType =
+    DeprecatedCommentsEmptyStateCellViewModel()
 
   @IBOutlet fileprivate var backProjectButton: UIButton!
   @IBOutlet fileprivate var leaveACommentButton: UIButton!
@@ -49,8 +50,8 @@ internal final class CommentsEmptyStateCell: UITableViewCell, ValueCell {
 
     _ = self
       |> baseTableViewCellStyle()
-      |> CommentsEmptyStateCell.lens.backgroundColor .~ .ksr_white
-      |> CommentsEmptyStateCell.lens.contentView.layoutMargins .~
+      |> DeprecatedCommentsEmptyStateCell.lens.backgroundColor .~ .ksr_white
+      |> DeprecatedCommentsEmptyStateCell.lens.contentView.layoutMargins .~
       .init(topBottom: Styles.grid(9), leftRight: Styles.grid(3))
 
     _ = self.leaveACommentButton
