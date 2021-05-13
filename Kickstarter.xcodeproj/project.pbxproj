@@ -164,6 +164,8 @@
 		4748C18325B7A0EC0098E89E /* GoogleDataTransport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C18225B7A0EC0098E89E /* GoogleDataTransport.framework */; };
 		4748C18825B7A18F0098E89E /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C18725B7A18F0098E89E /* FIRAnalyticsConnector.framework */; };
 		4748C19125B7A2F80098E89E /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C19025B7A2F80098E89E /* FirebaseCore.framework */; };
+		4753C76F264DAFD300BB10B6 /* PostCommentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */; };
+		4753C774264DC17900BB10B6 /* PostCommentMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C773264DC17900BB10B6 /* PostCommentMutation.swift */; };
 		47567A5D25E40E500073AD6E /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47567A5C25E40E500073AD6E /* ErrorHandler.swift */; };
 		476A2A6425DEED2600EB6A56 /* PerimeterXTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */; };
 		477290FA264AE91800B83E10 /* CommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477290F9264AE91800B83E10 /* CommentsViewModel.swift */; };
@@ -1741,6 +1743,8 @@
 		4748C18225B7A0EC0098E89E /* GoogleDataTransport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleDataTransport.framework; path = Carthage/Build/iOS/GoogleDataTransport.framework; sourceTree = "<group>"; };
 		4748C18725B7A18F0098E89E /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FIRAnalyticsConnector.framework; path = Carthage/Build/iOS/FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
 		4748C19025B7A2F80098E89E /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCore.framework; path = Carthage/Build/iOS/FirebaseCore.framework; sourceTree = "<group>"; };
+		4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentInput.swift; sourceTree = "<group>"; };
+		4753C773264DC17900BB10B6 /* PostCommentMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentMutation.swift; sourceTree = "<group>"; };
 		47567A5C25E40E500073AD6E /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerimeterXTypes.swift; sourceTree = "<group>"; };
 		477290F9264AE91800B83E10 /* CommentsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewModel.swift; sourceTree = "<group>"; };
@@ -3112,6 +3116,7 @@
 			isa = PBXGroup;
 			children = (
 				77776BC5234BA6B700A42388 /* CancelBackingMutation.swift */,
+				4753C773264DC17900BB10B6 /* PostCommentMutation.swift */,
 				D08C71DB22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift */,
 				77950F09231EB8C300308331 /* CreateApplePayBackingMutation.swift */,
 				D755ECA62315E95C0096F189 /* CreateBackingMutation.swift */,
@@ -4747,6 +4752,7 @@
 				D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */,
 				D6F5C6102437E12300C1A79D /* SignInWithAppleInput.swift */,
 				77C0818D245CBA1B004ABE88 /* SignInWithAppleInputTests.swift */,
+				4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */,
 			);
 			path = inputs;
 			sourceTree = "<group>";
@@ -6337,6 +6343,7 @@
 				D015885B1EEB2ED7006E7684 /* DeprecatedComment.swift in Sources */,
 				D01588C71EEB2ED7006E7684 /* RewardItemLenses.swift in Sources */,
 				D01588E91EEB2ED7006E7684 /* Message.swift in Sources */,
+				4753C774264DC17900BB10B6 /* PostCommentMutation.swift in Sources */,
 				D015887F1EEB2ED7006E7684 /* Activity.MemberDataLenses.swift in Sources */,
 				D015889F1EEB2ED7006E7684 /* MessageLenses.swift in Sources */,
 				D08CD1C021910C97009F89F0 /* GraphIDBridging.swift in Sources */,
@@ -6357,6 +6364,7 @@
 				8A555874264C4C8300C2C30D /* CommentsQueries.swift in Sources */,
 				77950F0A231EB8C300308331 /* CreateApplePayBackingMutation.swift in Sources */,
 				D0158A1B1EEB30A2006E7684 /* Project.VideoTemplates.swift in Sources */,
+				4753C76F264DAFD300BB10B6 /* PostCommentInput.swift in Sources */,
 				D0158A311EEB30A2006E7684 /* User.NotificationsTemplates.swift in Sources */,
 				D6ED1B3E216D61E0007F7547 /* UpdateUserAccountMutation.swift in Sources */,
 				D01588C91EEB2ED7006E7684 /* RewardLenses.swift in Sources */,

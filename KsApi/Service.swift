@@ -410,14 +410,20 @@ public struct Service: ServiceType {
     return request(.markAsRead(messageThread))
   }
 
-  public func postComment(_ body: String, toProject project: Project) ->
+  public func deprecatedPostComment(_ body: String, toProject project: Project) ->
     SignalProducer<DeprecatedComment, ErrorEnvelope> {
     return request(.postProjectComment(project, body: body))
   }
 
-  public func postComment(_ body: String,
-                          toUpdate update: Update) -> SignalProducer<DeprecatedComment, ErrorEnvelope> {
+  public func deprecatedPostComment(_ body: String,
+                                    toUpdate update: Update)
+    -> SignalProducer<DeprecatedComment, ErrorEnvelope> {
     return request(.postUpdateComment(update, body: body))
+  }
+
+  public func postComment(input: PostCommentInput)
+    -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+    return applyMutation(mutation: PostCommentMutation(input: input))
   }
 
   public func publish(draft: UpdateDraft) -> SignalProducer<Update, ErrorEnvelope> {

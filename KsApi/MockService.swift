@@ -134,8 +134,11 @@
 
     fileprivate let incrementVideoStartError: ErrorEnvelope?
 
-    fileprivate let postCommentResponse: DeprecatedComment?
-    fileprivate let postCommentError: ErrorEnvelope?
+    fileprivate let deprecatedPostCommentResponse: DeprecatedComment?
+    fileprivate let deprecatedPostCommentError: ErrorEnvelope?
+
+    fileprivate let postCommentResponse: GraphMutationEmptyResponseEnvelope?
+    fileprivate let postCommentError: GraphError?
 
     fileprivate let fetchProjectActivitiesResponse: [Activity]?
     fileprivate let fetchProjectActivitiesError: ErrorEnvelope?
@@ -286,8 +289,10 @@
       fetchUpdateCommentsResponse: Result<DeprecatedCommentsEnvelope, ErrorEnvelope>? = nil,
       fetchUpdateResponse: Update = .template,
       fetchUserSelfError: ErrorEnvelope? = nil,
-      postCommentResponse: DeprecatedComment? = nil,
-      postCommentError: ErrorEnvelope? = nil,
+      deprecatedPostCommentResponse: DeprecatedComment? = nil,
+      deprecatedPostCommentError: ErrorEnvelope? = nil,
+      postCommentResponse: GraphMutationEmptyResponseEnvelope? = nil,
+      postCommentError: GraphError? = nil,
       loginResponse: AccessTokenEnvelope? = nil,
       loginError: ErrorEnvelope? = nil,
       resendCodeResponse: ErrorEnvelope? = nil,
@@ -477,7 +482,11 @@
 
       self.perimeterXClient = perimeterXClient
 
-      self.postCommentResponse = postCommentResponse ?? .template
+      self.deprecatedPostCommentResponse = deprecatedPostCommentResponse ?? .template
+
+      self.deprecatedPostCommentError = deprecatedPostCommentError
+
+      self.postCommentResponse = postCommentResponse
 
       self.postCommentError = postCommentError
 
@@ -1175,17 +1184,28 @@
       return SignalProducer(value: messageThread)
     }
 
-    internal func postComment(_: String, toProject _: Project) ->
+    internal func deprecatedPostComment(_: String, toProject _: Project) ->
       SignalProducer<DeprecatedComment, ErrorEnvelope> {
-      if let error = self.postCommentError {
+      if let error = self.deprecatedPostCommentError {
         return SignalProducer(error: error)
-      } else if let comment = self.postCommentResponse {
+      } else if let comment = self.deprecatedPostCommentResponse {
         return SignalProducer(value: comment)
       }
       return .empty
     }
 
-    func postComment(_: String, toUpdate _: Update) -> SignalProducer<DeprecatedComment, ErrorEnvelope> {
+    func deprecatedPostComment(_: String,
+                               toUpdate _: Update) -> SignalProducer<DeprecatedComment, ErrorEnvelope> {
+      if let error = self.deprecatedPostCommentError {
+        return SignalProducer(error: error)
+      } else if let comment = self.deprecatedPostCommentResponse {
+        return SignalProducer(value: comment)
+      }
+      return .empty
+    }
+
+    func postComment(input _: PostCommentInput)
+      -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
       if let error = self.postCommentError {
         return SignalProducer(error: error)
       } else if let comment = self.postCommentResponse {
@@ -1461,6 +1481,8 @@
             fetchUpdateCommentsResponse: $1.fetchUpdateCommentsResponse,
             fetchUpdateResponse: $1.fetchUpdateResponse,
             fetchUserSelfError: $1.fetchUserSelfError,
+            deprecatedPostCommentResponse: $1.deprecatedPostCommentResponse,
+            deprecatedPostCommentError: $1.deprecatedPostCommentError,
             postCommentResponse: $1.postCommentResponse,
             postCommentError: $1.postCommentError,
             loginResponse: $1.loginResponse,
