@@ -4,7 +4,7 @@ import Prelude
 public func comments(
   withProjectSlug slug: String,
   first: Int = Query.defaultPaginationCount,
-  after cursor: String?
+  after cursor: String? = nil
 ) -> NonEmptySet<Query> {
   let args = Set([cursor.flatMap(QueryArg<Never>.after), .first(first)].compact())
 

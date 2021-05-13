@@ -50,6 +50,8 @@
     fileprivate let fetchCommentsResponse: [DeprecatedComment]?
     fileprivate let fetchCommentsError: ErrorEnvelope?
 
+    fileprivate let fetchCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>?
+
     fileprivate let fetchConfigResponse: Config?
 
     fileprivate let fetchDiscoveryResponse: DiscoveryEnvelope?
@@ -230,6 +232,7 @@
       fetchGraphCategoriesError: GraphError? = nil,
       fetchCommentsResponse: [DeprecatedComment]? = nil,
       fetchCommentsError: ErrorEnvelope? = nil,
+      fetchCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>? = nil,
       fetchConfigResponse: Config? = nil,
       fetchDiscoveryResponse: DiscoveryEnvelope? = nil,
       fetchDiscoveryError: ErrorEnvelope? = nil,
@@ -376,6 +379,8 @@
       ]
 
       self.fetchCommentsError = fetchCommentsError
+
+      self.fetchCommentsEnvelopeResult = fetchCommentsEnvelopeResult
 
       self.fetchConfigResponse = fetchConfigResponse ?? .template
 
@@ -638,6 +643,10 @@
         return SignalProducer(value: comments.value ?? .template)
       }
       return .empty
+    }
+
+    func fetchComments(query _: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+      return producer(for: self.fetchCommentsEnvelopeResult)
     }
 
     internal func fetchConfig() -> SignalProducer<Config, ErrorEnvelope> {

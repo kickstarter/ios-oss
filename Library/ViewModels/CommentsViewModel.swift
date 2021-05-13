@@ -18,7 +18,14 @@ public protocol CommentsViewModelType {
 public final class CommentsViewModel: CommentsViewModelType,
   CommentsViewModelInputs,
   CommentsViewModelOutputs {
-  public init() {}
+  public init() {
+    // FIXME: Configure this VM with a project in order to feed the slug in here to fetch comments
+    // Call this again with a cursor to paginate.
+    _ = self.viewDidLoadProperty.signal.map {
+      AppEnvironment.current.apiService.fetchComments(query: comments(withProjectSlug: ""))
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+    }
+  }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {

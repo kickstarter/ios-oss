@@ -174,6 +174,12 @@ public struct Service: ServiceType {
     return request(.projectComments(project))
   }
 
+  public func fetchComments(query: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+    return fetch(query: query)
+      .mapError(ErrorEnvelope.envelope(from:))
+      .flatMap(CommentsEnvelope.envelopeProducer(from:))
+  }
+
   public func fetchComments(update: Update) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
     return request(.updateComments(update))
   }
