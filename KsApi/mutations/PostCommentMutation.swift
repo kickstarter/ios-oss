@@ -11,7 +11,10 @@ public struct PostCommentMutation<T: GraphMutationInput>: GraphMutation {
     return """
     mutation ($input: PostCommentInput!) {
       createComment(input: $input) {
-        clientMutationId
+        comment {
+          body
+          id
+        }
       }
     }
     """

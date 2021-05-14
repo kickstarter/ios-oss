@@ -137,7 +137,7 @@
     fileprivate let deprecatedPostCommentResponse: DeprecatedComment?
     fileprivate let deprecatedPostCommentError: ErrorEnvelope?
 
-    fileprivate let postCommentResponse: GraphMutationEmptyResponseEnvelope?
+    fileprivate let postCommentResponse: GraphMutationPostCommentResponseEnvelope?
     fileprivate let postCommentError: GraphError?
 
     fileprivate let fetchProjectActivitiesResponse: [Activity]?
@@ -291,7 +291,7 @@
       fetchUserSelfError: ErrorEnvelope? = nil,
       deprecatedPostCommentResponse: DeprecatedComment? = nil,
       deprecatedPostCommentError: ErrorEnvelope? = nil,
-      postCommentResponse: GraphMutationEmptyResponseEnvelope? = nil,
+      postCommentResponse: GraphMutationPostCommentResponseEnvelope? = nil,
       postCommentError: GraphError? = nil,
       loginResponse: AccessTokenEnvelope? = nil,
       loginError: ErrorEnvelope? = nil,
@@ -1205,7 +1205,7 @@
     }
 
     func postComment(input _: PostCommentInput)
-      -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError> {
+      -> SignalProducer<GraphMutationPostCommentResponseEnvelope, GraphError> {
       if let error = self.postCommentError {
         return SignalProducer(error: error)
       } else if let comment = self.postCommentResponse {

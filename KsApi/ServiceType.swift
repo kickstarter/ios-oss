@@ -263,7 +263,8 @@ public protocol ServiceType {
     -> SignalProducer<DeprecatedComment, ErrorEnvelope>
 
   /// Posts a comment to a project or replies in a thread
-  func postComment(input: PostCommentInput) -> SignalProducer<GraphMutationEmptyResponseEnvelope, GraphError>
+  func postComment(input: PostCommentInput)
+    -> SignalProducer<GraphMutationPostCommentResponseEnvelope, GraphError>
 
   /// Returns a project update preview URL.
   func previewUrl(forDraft draft: UpdateDraft) -> URL?

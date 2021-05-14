@@ -9,7 +9,7 @@ public struct PostCommentInput: GraphMutationInput {
   /// If the comment is on the project level, this is nil. For replies, this is the ID of the comment.
   let parentId: String?
 
-  public init(body: String, commentableId: String, parentId: String?) {
+  public init(body: String, commentableId: String, parentId: String? = nil) {
     self.body = body
     self.commentableId = commentableId
     self.parentId = parentId
