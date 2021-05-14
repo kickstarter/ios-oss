@@ -3,7 +3,7 @@ import XCTest
 
 final class CommentsQueriesTests: XCTestCase {
   func testCommentsQuery() {
-    let queryString = Query.build(comments(withProjectSlug: "project-slug", after: "end-cursor"))
+    let queryString = Query.build(commentsQuery(withProjectSlug: "project-slug", after: "end-cursor"))
 
     XCTAssertEqual(
       queryString,

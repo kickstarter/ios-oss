@@ -8,6 +8,7 @@ public struct CommentsEnvelope: Decodable {
   public var cursor: String?
   public var hasNextPage: Bool
   public var totalCount: Int
+  public var projectId: String
 }
 
 extension CommentsEnvelope {
