@@ -25,6 +25,8 @@ internal final class CommentsViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
 
     self.tableView.registerCellClass(CommentCell.self)
+    self.tableView.registerCellClass(CommentPostFailedCell.self)
+    self.tableView.registerCellClass(CommentRemovedCell.self)
   }
 
   internal override func viewWillAppear(_ animated: Bool) {

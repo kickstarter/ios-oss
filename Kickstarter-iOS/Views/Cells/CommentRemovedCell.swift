@@ -3,7 +3,7 @@ import Library
 import Prelude
 import UIKit
 
-final class CommentCell: UITableViewCell, ValueCell {
+final class CommentRemovedCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
   private lazy var userImageView = { UIImageView(frame: .zero)
@@ -25,10 +25,7 @@ final class CommentCell: UITableViewCell, ValueCell {
   private lazy var usernameLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var usernameTimeLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var commentLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var replyButton = { UIButton(frame: .zero) }()
-  private lazy var flagButton = { UIButton(frame: .zero) }()
   private lazy var topColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var bottomColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   // MARK: - Lifecycle
 
@@ -75,33 +72,29 @@ final class CommentCell: UITableViewCell, ValueCell {
       |> \.adjustsFontForContentSizeCategory .~ true
 
     _ = self.commentLabel
+      |> \.attributedText .~ attributedCommentRemoved()
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 0
-      |> \.textColor .~ .ksr_support_700
-      |> \.textAlignment .~ .left
-      |> \.font .~ UIFont.ksr_callout()
       |> \.adjustsFontForContentSizeCategory .~ true
 
     _ = self.rootStackView
       |> rootStackViewStyle
 
     _ = self.topColumnStackView
-      |> topStackViewStyle
+      |> \.axis .~ .horizontal
+      |> \.spacing .~ Styles.grid(2)
 
     _ = self.usernameLabelsStackView
-      |> usernameLabelsStackViewStyle
+      |> \.axis .~ .horizontal
+      |> \.spacing .~ Styles.grid(1)
 
     _ = self.usernameTimeLabelsStackView
-      |> usernameTimeLabelsStackViewStyle
+      |> \.axis .~ .vertical
+      |> \.spacing .~ Styles.grid(1)
 
     _ = self.separatorView
-      |> separatorViewStyle
-
-    _ = self.replyButton
-      |> replyButtonStyle
-
-    _ = self.flagButton
-      |> UIButton.lens.image(for: .normal) %~ { _ in UIImage(named: "flag") }
+      |> \.backgroundColor .~ UIColor.hex(0xF0F0F0)
+      |> \.accessibilityElementsHidden .~ true
   }
 
   // MARK: - Configuration
@@ -113,18 +106,10 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.userImageView
       .ksr_setRoundedImageWith(URL(string: value.imageURL)!)
     self.userNameTagLabel.text = value.type == .backer ? nil : value.type.rawValue.capitalized
-    self.commentLabel.text = value.body
   }
 
-//  private func styleUsernameTagLabel(from type: DemoComment.UserTypeEnum) {
-//    switch type {
-//    case .creator:
-//
-//    }
-//  }
-
   private func configureViews() {
-    _ = ([self.topColumnStackView, self.commentLabel, self.bottomColumnStackView], self.rootStackView)
+    _ = ([self.topColumnStackView, self.commentLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.userNameLabel, self.userNameTagLabel, UIView()], self.usernameLabelsStackView)
@@ -134,9 +119,6 @@ final class CommentCell: UITableViewCell, ValueCell {
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.userImageView, self.usernameTimeLabelsStackView], self.topColumnStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = ([self.replyButton, UIView(), self.flagButton], self.bottomColumnStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -151,10 +133,6 @@ final class CommentCell: UITableViewCell, ValueCell {
     NSLayoutConstraint.activate([
       self.userImageView.widthAnchor.constraint(equalToConstant: Styles.grid(7)),
       self.userImageView.heightAnchor.constraint(equalToConstant: Styles.grid(7)),
-      self.replyButton.widthAnchor.constraint(equalToConstant: 70),
-      self.replyButton.heightAnchor.constraint(equalToConstant: 20),
-      self.flagButton.widthAnchor.constraint(equalToConstant: Styles.grid(3)),
-      self.flagButton.heightAnchor.constraint(equalToConstant: Styles.grid(3)),
       self.rootStackView.bottomAnchor.constraint(equalTo: self.separatorView.topAnchor, constant: 1),
       self.separatorView.heightAnchor.constraint(equalToConstant: 1),
       self.separatorView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
@@ -175,43 +153,6 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(3)
 }
 
-private let textViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
-  textView
-    |> tappableLinksViewStyle
-    |> \.accessibilityTraits .~ [.staticText]
-    |> \.backgroundColor .~ .ksr_support_200
-}
-
-private let usernameTimeLabelsStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .vertical
-    |> \.spacing .~ Styles.grid(1)
-}
-
-private let usernameLabelsStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .horizontal
-    |> \.spacing .~ Styles.grid(1)
-}
-
-private let usernameCreatorTagStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .horizontal
-    |> \.spacing .~ Styles.grid(1)
-}
-
-private let topStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .horizontal
-    |> \.spacing .~ Styles.grid(2)
-}
-
-private let separatorViewStyle: ViewStyle = { (view: UIView) in
-  view
-    |> \.backgroundColor .~ UIColor.hex(0xF0F0F0)
-    |> \.accessibilityElementsHidden .~ true
-}
-
 private let replyButtonStyle: ButtonStyle = { button in
   button
     |> UIButton.lens.title(for: .normal) %~ { _ in "Reply" }
@@ -221,4 +162,38 @@ private let replyButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.tintColor .~ UIColor.hex(0x656969)
     |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: 7.17)
     |> UIButton.lens.contentHorizontalAlignment .~ .left
+}
+
+private let tapRetryPostButtonStyle: ButtonStyle = { button in
+  button
+    |> UIButton.lens.title(for: .normal) %~ { _ in "Failed to post. Tap to retry" }
+    |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
+    |> UIButton.lens.image(for: .normal) .~ Library.image(named: "circle-back")
+    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_celebrate_700
+    |> UIButton.lens.tintColor .~ UIColor.ksr_celebrate_700
+    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: 7.17)
+    |> UIButton.lens.contentHorizontalAlignment .~ .left
+}
+
+private func attributedCommentRemoved() -> NSAttributedString {
+  let regularFontAttribute = [
+    NSAttributedString.Key.font: UIFont.ksr_callout(),
+    NSAttributedString.Key.foregroundColor: UIColor.hex(0x656969)
+  ]
+  let coloredFontAttribute = [
+    NSAttributedString.Key.font: UIFont.ksr_callout(),
+    NSAttributedString.Key.foregroundColor: UIColor.ksr_create_700
+  ]
+
+  let attributedString = NSMutableAttributedString(
+    string: "This comment has been removed by Kickstarter. ",
+    attributes: regularFontAttribute
+  )
+  let attributedString2 = NSMutableAttributedString(
+    string: "Learn more about comment guidelines",
+    attributes: coloredFontAttribute
+  )
+  attributedString.append(attributedString2)
+
+  return attributedString
 }
