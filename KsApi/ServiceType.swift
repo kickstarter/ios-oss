@@ -264,7 +264,7 @@ public protocol ServiceType {
 
   /// Posts a comment to a project or replies in a thread
   func postComment(input: PostCommentInput)
-    -> SignalProducer<Comment, GraphError>
+    -> SignalProducer<Comment, ErrorEnvelope>
 
   /// Returns a project update preview URL.
   func previewUrl(forDraft draft: UpdateDraft) -> URL?

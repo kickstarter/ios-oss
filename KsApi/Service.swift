@@ -422,8 +422,9 @@ public struct Service: ServiceType {
   }
 
   public func postComment(input: PostCommentInput)
-    -> SignalProducer<Comment, GraphError> {
+    -> SignalProducer<Comment, ErrorEnvelope> {
     return applyMutation(mutation: PostCommentMutation(input: input))
+      .mapError(ErrorEnvelope.envelope(from:))
   }
 
   public func publish(draft: UpdateDraft) -> SignalProducer<Update, ErrorEnvelope> {
