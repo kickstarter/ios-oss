@@ -125,7 +125,7 @@ final class CommentCell: UITableViewCell, ValueCell {
     NSLayoutConstraint.activate([
       self.userImageView.widthAnchor.constraint(equalToConstant: Styles.grid(7)),
       self.userImageView.heightAnchor.constraint(equalToConstant: Styles.grid(7)),
-      self.replyButton.widthAnchor.constraint(equalToConstant: 80),
+      self.replyButton.widthAnchor.constraint(equalToConstant: 70),
       self.replyButton.heightAnchor.constraint(equalToConstant: 20),
       self.flagButton.widthAnchor.constraint(equalToConstant: Styles.grid(3)),
       self.flagButton.heightAnchor.constraint(equalToConstant: Styles.grid(3)),
@@ -174,6 +174,6 @@ private let replyButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "reply")
     |> UIButton.lens.titleColor(for: .normal) .~ UIColor.hex(0x656969)
     |> UIButton.lens.tintColor .~ UIColor.hex(0x656969)
-    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(3))
-    |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(leftRight: 0)
+    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: 7.17)
+    |> UIButton.lens.contentHorizontalAlignment .~ .left
 }
