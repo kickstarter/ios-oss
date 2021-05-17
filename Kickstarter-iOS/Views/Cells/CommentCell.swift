@@ -49,6 +49,9 @@ final class CommentCell: UITableViewCell, ValueCell {
   override func bindStyles() {
     super.bindStyles()
 
+    _ = self
+      |> \.selectionStyle .~ .none
+
     _ = self.commentLabel
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 0
@@ -92,12 +95,13 @@ final class CommentCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  internal func configureWith(value: String) {
-    self.commentLabel.text = value
-    self.userNameLabel.text = "Barry Gordon"
-    self.postTimeLabel.text = "About 1 hour ago"
+  internal func configureWith(value: DemoComment) {
+    self.commentLabel.text = value.body
+    self.userNameLabel.text = value.username == nil ? (value.firstName + " " + value.lastName) : value
+      .username
+    self.postTimeLabel.text = value.postTime
     self.userImageView
-      .ksr_setRoundedImageWith(URL(string: "https://pixinvent.com/materialize-material-design-admin-template/app-assets/images/user/12.jpg")!)
+      .ksr_setRoundedImageWith(URL(string: value.imageURL)!)
   }
 
   private func configureViews() {
