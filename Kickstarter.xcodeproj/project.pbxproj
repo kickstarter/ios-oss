@@ -601,6 +601,7 @@
 		94114D53265149080063E8F6 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D47264EEA2D0063E8F6 /* CommentCell.swift */; };
 		94114D5B265305210063E8F6 /* CommentPostFailedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D5A265305200063E8F6 /* CommentPostFailedCell.swift */; };
 		94114D602653135E0063E8F6 /* CommentRemovedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D5F2653135E0063E8F6 /* CommentRemovedCell.swift */; };
+		94114D72265329770063E8F6 /* CommentCellHeaderStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D6426531F890063E8F6 /* CommentCellHeaderStackView.swift */; };
 		94BE15C225E857C4007CD9A4 /* TrackingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BE15C125E857C4007CD9A4 /* TrackingHelpers.swift */; };
 		94BE15CE25E970A3007CD9A4 /* TrackingHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BE15C925E96F06007CD9A4 /* TrackingHelpersTests.swift */; };
 		94F4A95A26125C8C000C21F9 /* TimeInterval+ISO8601Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F4A95926125C8C000C21F9 /* TimeInterval+ISO8601Date.swift */; };
@@ -2144,6 +2145,7 @@
 		94114D47264EEA2D0063E8F6 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		94114D5A265305200063E8F6 /* CommentPostFailedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPostFailedCell.swift; sourceTree = "<group>"; };
 		94114D5F2653135E0063E8F6 /* CommentRemovedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRemovedCell.swift; sourceTree = "<group>"; };
+		94114D6426531F890063E8F6 /* CommentCellHeaderStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCellHeaderStackView.swift; sourceTree = "<group>"; };
 		94BE15C125E857C4007CD9A4 /* TrackingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingHelpers.swift; sourceTree = "<group>"; };
 		94BE15C925E96F06007CD9A4 /* TrackingHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingHelpersTests.swift; sourceTree = "<group>"; };
 		94F4A95926125C8C000C21F9 /* TimeInterval+ISO8601Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+ISO8601Date.swift"; sourceTree = "<group>"; };
@@ -3410,6 +3412,7 @@
 				37E9E29F225EABB000D29DD7 /* AmountInputView.swift */,
 				D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */,
 				7727494C23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift */,
+				94114D6426531F890063E8F6 /* CommentCellHeaderStackView.swift */,
 				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
 				018422841D2C47A400CA7566 /* DashboardTitleView.swift */,
 				7758A83120979BE50018B96D /* DiscoveryProjectCategoryView.swift */,
@@ -5928,6 +5931,7 @@
 				598D96B61D426D80003F3F66 /* ActivitySampleFollowCell.swift in Sources */,
 				D0971E16221E083100DFEF9B /* SelectCurrencyCell.swift in Sources */,
 				8A14E09723971C1300387824 /* PledgeShippingLocationShimmerLoadingView.swift in Sources */,
+				94114D72265329770063E8F6 /* CommentCellHeaderStackView.swift in Sources */,
 				A72C3AB91D00FB1F0075227E /* DiscoverySelectableRowCell.swift in Sources */,
 				A75A29281CE0B7DD00D35E5C /* BackingCell.swift in Sources */,
 				A79F53001D8F50CF00C051B8 /* ProjectPamphletSubpageCell.swift in Sources */,

@@ -6,10 +6,6 @@ import UIKit
 final class CommentRemovedCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private lazy var userImageView = { UIImageView(frame: .zero)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -19,13 +15,10 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var userNameLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var userNameTagLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var postTimeLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var usernameLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var usernameTimeLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var commentLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var topColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var commentCellHeaderStackView: CommentCellHeaderStackView = {
+    CommentCellHeaderStackView(frame: .zero)
+  }()
 
   // MARK: - Lifecycle
 
@@ -50,47 +43,14 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
     _ = self
       |> \.selectionStyle .~ .none
 
-    _ = self.userNameLabel
-      |> \.numberOfLines .~ 1
-      |> \.textColor .~ .ksr_support_700
-      |> \.textAlignment .~ .left
-      |> \.font .~ UIFont.ksr_callout().weighted(.semibold)
-      |> \.adjustsFontForContentSizeCategory .~ true
-
-    _ = self.userNameTagLabel
-      |> \.numberOfLines .~ 1
-      |> \.textColor .~ .ksr_create_500
-      |> \.textAlignment .~ .left
-      |> \.font .~ UIFont.ksr_callout().bolded
-      |> \.adjustsFontForContentSizeCategory .~ true
-
-    _ = self.postTimeLabel
-      |> \.numberOfLines .~ 1
-      |> \.textColor .~ .ksr_support_400
-      |> \.textAlignment .~ .left
-      |> \.font .~ UIFont.ksr_footnote()
-      |> \.adjustsFontForContentSizeCategory .~ true
+    _ = self.rootStackView
+      |> rootStackViewStyle
 
     _ = self.commentLabel
       |> \.attributedText .~ attributedCommentRemoved()
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 0
       |> \.adjustsFontForContentSizeCategory .~ true
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
-
-    _ = self.topColumnStackView
-      |> \.axis .~ .horizontal
-      |> \.spacing .~ Styles.grid(2)
-
-    _ = self.usernameLabelsStackView
-      |> \.axis .~ .horizontal
-      |> \.spacing .~ Styles.grid(1)
-
-    _ = self.usernameTimeLabelsStackView
-      |> \.axis .~ .vertical
-      |> \.spacing .~ Styles.grid(1)
 
     _ = self.separatorView
       |> \.backgroundColor .~ UIColor.hex(0xF0F0F0)
@@ -100,25 +60,11 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
   // MARK: - Configuration
 
   internal func configureWith(value: DemoComment) {
-    self.userNameLabel.text = value.username == nil ? (value.firstName + " " + value.lastName) : value
-      .username
-    self.postTimeLabel.text = value.postTime
-    self.userImageView
-      .ksr_setRoundedImageWith(URL(string: value.imageURL)!)
-    self.userNameTagLabel.text = value.type == .backer ? nil : value.type.rawValue.capitalized
+    self.commentCellHeaderStackView.configureWith(comment: value)
   }
 
   private func configureViews() {
-    _ = ([self.topColumnStackView, self.commentLabel], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = ([self.userNameLabel, self.userNameTagLabel, UIView()], self.usernameLabelsStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = ([self.usernameLabelsStackView, self.postTimeLabel], self.usernameTimeLabelsStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = ([self.userImageView, self.usernameTimeLabelsStackView], self.topColumnStackView)
+    _ = ([self.commentCellHeaderStackView, self.commentLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -131,8 +77,6 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
 
     NSLayoutConstraint.activate([
-      self.userImageView.widthAnchor.constraint(equalToConstant: Styles.grid(7)),
-      self.userImageView.heightAnchor.constraint(equalToConstant: Styles.grid(7)),
       self.rootStackView.bottomAnchor.constraint(equalTo: self.separatorView.topAnchor, constant: 1),
       self.separatorView.heightAnchor.constraint(equalToConstant: 1),
       self.separatorView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),

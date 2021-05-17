@@ -6,10 +6,6 @@ import UIKit
 final class CommentCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private lazy var userImageView = { UIImageView(frame: .zero)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -19,15 +15,13 @@ final class CommentCell: UITableViewCell, ValueCell {
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var userNameLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var userNameTagLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var postTimeLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var usernameLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var usernameTimeLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var commentLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var replyButton = { UIButton(frame: .zero) }()
   private lazy var flagButton = { UIButton(frame: .zero) }()
-  private lazy var topColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var commentCellHeaderStackView: CommentCellHeaderStackView = {
+    CommentCellHeaderStackView(frame: .zero)
+  }()
+
   private lazy var bottomColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   // MARK: - Lifecycle
@@ -53,27 +47,6 @@ final class CommentCell: UITableViewCell, ValueCell {
     _ = self
       |> \.selectionStyle .~ .none
 
-    _ = self.userNameLabel
-      |> \.numberOfLines .~ 1
-      |> \.textColor .~ .ksr_support_700
-      |> \.textAlignment .~ .left
-      |> \.font .~ UIFont.ksr_callout().weighted(.semibold)
-      |> \.adjustsFontForContentSizeCategory .~ true
-
-    _ = self.userNameTagLabel
-      |> \.numberOfLines .~ 1
-      |> \.textColor .~ .ksr_create_500
-      |> \.textAlignment .~ .left
-      |> \.font .~ UIFont.ksr_callout().bolded
-      |> \.adjustsFontForContentSizeCategory .~ true
-
-    _ = self.postTimeLabel
-      |> \.numberOfLines .~ 1
-      |> \.textColor .~ .ksr_support_400
-      |> \.textAlignment .~ .left
-      |> \.font .~ UIFont.ksr_footnote()
-      |> \.adjustsFontForContentSizeCategory .~ true
-
     _ = self.commentLabel
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 0
@@ -84,15 +57,6 @@ final class CommentCell: UITableViewCell, ValueCell {
 
     _ = self.rootStackView
       |> rootStackViewStyle
-
-    _ = self.topColumnStackView
-      |> topStackViewStyle
-
-    _ = self.usernameLabelsStackView
-      |> usernameLabelsStackViewStyle
-
-    _ = self.usernameTimeLabelsStackView
-      |> usernameTimeLabelsStackViewStyle
 
     _ = self.separatorView
       |> separatorViewStyle
@@ -107,33 +71,12 @@ final class CommentCell: UITableViewCell, ValueCell {
   // MARK: - Configuration
 
   internal func configureWith(value: DemoComment) {
-    self.userNameLabel.text = value.username == nil ? (value.firstName + " " + value.lastName) : value
-      .username
-    self.postTimeLabel.text = value.postTime
-    self.userImageView
-      .ksr_setRoundedImageWith(URL(string: value.imageURL)!)
-    self.userNameTagLabel.text = value.type == .backer ? nil : value.type.rawValue.capitalized
+    self.commentCellHeaderStackView.configureWith(comment: value)
     self.commentLabel.text = value.body
   }
 
-//  private func styleUsernameTagLabel(from type: DemoComment.UserTypeEnum) {
-//    switch type {
-//    case .creator:
-//
-//    }
-//  }
-
   private func configureViews() {
-    _ = ([self.topColumnStackView, self.commentLabel, self.bottomColumnStackView], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = ([self.userNameLabel, self.userNameTagLabel, UIView()], self.usernameLabelsStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = ([self.usernameLabelsStackView, self.postTimeLabel], self.usernameTimeLabelsStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = ([self.userImageView, self.usernameTimeLabelsStackView], self.topColumnStackView)
+    _ = ([self.commentCellHeaderStackView, self.commentLabel, self.bottomColumnStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.replyButton, UIView(), self.flagButton], self.bottomColumnStackView)
@@ -149,8 +92,6 @@ final class CommentCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
 
     NSLayoutConstraint.activate([
-      self.userImageView.widthAnchor.constraint(equalToConstant: Styles.grid(7)),
-      self.userImageView.heightAnchor.constraint(equalToConstant: Styles.grid(7)),
       self.replyButton.widthAnchor.constraint(equalToConstant: 70),
       self.replyButton.heightAnchor.constraint(equalToConstant: 20),
       self.flagButton.widthAnchor.constraint(equalToConstant: Styles.grid(3)),
@@ -173,37 +114,6 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.insetsLayoutMarginsFromSafeArea .~ false
     |> \.spacing .~ Styles.grid(3)
-}
-
-private let textViewStyle: TextViewStyle = { (textView: UITextView) -> UITextView in
-  textView
-    |> tappableLinksViewStyle
-    |> \.accessibilityTraits .~ [.staticText]
-    |> \.backgroundColor .~ .ksr_support_200
-}
-
-private let usernameTimeLabelsStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .vertical
-    |> \.spacing .~ Styles.grid(1)
-}
-
-private let usernameLabelsStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .horizontal
-    |> \.spacing .~ Styles.grid(1)
-}
-
-private let usernameCreatorTagStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .horizontal
-    |> \.spacing .~ Styles.grid(1)
-}
-
-private let topStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .horizontal
-    |> \.spacing .~ Styles.grid(2)
 }
 
 private let separatorViewStyle: ViewStyle = { (view: UIView) in
