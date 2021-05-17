@@ -1,6 +1,6 @@
 import Foundation
 
-public struct GraphMutationPostCommentEnvelope: Decodable {
+internal struct GraphMutationPostCommentEnvelope: Decodable {
   public let body: String
   public let id: String
 

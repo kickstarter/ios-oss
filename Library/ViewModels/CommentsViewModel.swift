@@ -11,10 +11,7 @@ public protocol CommentsViewModelInputs {
   func viewDidLoad()
 }
 
-public protocol CommentsViewModelOutputs {
-  /// Emits a boolean that determines if the comment bar button is visible.
-  var envelopeTemplate: Signal<GraphMutationPostCommentEnvelope, Never> { get }
-}
+public protocol CommentsViewModelOutputs {}
 
 public protocol CommentsViewModelType {
   var inputs: CommentsViewModelInputs { get }
@@ -49,11 +46,6 @@ public final class CommentsViewModel: CommentsViewModelType,
         .materialize()
     }
     .observeValues { print($0) }
-
-    /// Temporary addition for testing
-    self.envelopeTemplate = self.viewDidLoadProperty.signal.map { _ in
-      GraphMutationPostCommentEnvelope.template
-    }
   }
 
   fileprivate let postCommentButtonTappedProperty = MutableProperty(())
@@ -65,8 +57,6 @@ public final class CommentsViewModel: CommentsViewModelType,
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-
-  public let envelopeTemplate: Signal<GraphMutationPostCommentEnvelope, Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }
