@@ -48,6 +48,8 @@ final class CommentInputContainerView: UIView {
       |> \.isHidden .~ true
   }()
 
+  private let characterLimit: Int = 9_000
+
   // MARK: - Lifecycle
 
   override init(frame: CGRect) {
@@ -140,12 +142,22 @@ extension CommentInputContainerView: UITextViewDelegate {
     self.handleEmptyState(textView.text.isEmpty)
   }
 
-  public func handleEmptyState(_ isEmpty: Bool) {
+  private func handleEmptyState(_ isEmpty: Bool) {
     _ = self.placeholderLabel |> \.isHidden .~ !isEmpty
     _ = self.postButton |> \.isHidden .~ isEmpty
     _ = self.backgroundColor = isEmpty ? .ksr_support_100 : .ksr_white
   }
+
+  func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
+                replacementText text: String) -> Bool {
+    let currentText = textView.text ?? ""
+    guard let stringRange = Range(range, in: currentText) else { return false }
+    let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
+    return updatedText.count <= self.characterLimit
+  }
 }
+
+// MARK: - Helper Functions
 
 private let placeholderLabelStyle: LabelStyle = { label in
   label
