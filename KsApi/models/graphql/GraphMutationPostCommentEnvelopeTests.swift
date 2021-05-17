@@ -1,7 +1,7 @@
 @testable import KsApi
 import XCTest
 
-final class GraphMutationPostCommentResponseEnvelopeTests: XCTestCase {
+final class GraphMutationPostCommentEnvelopeTests: XCTestCase {
   func testDecode() {
     let dictionary: [String: Any] = [
       "createComment": [
@@ -18,9 +18,9 @@ final class GraphMutationPostCommentResponseEnvelopeTests: XCTestCase {
     }
 
     do {
-      let envelope = try JSONDecoder().decode(GraphMutationPostCommentResponseEnvelope.self, from: data)
-      XCTAssertEqual(envelope.createComment.comment.body, "Hello World")
-      XCTAssertEqual(envelope.createComment.comment.id, "Q29tbWVudC0zMjY2MjU0MQ==")
+      let envelope = try JSONDecoder().decode(GraphMutationPostCommentEnvelope.self, from: data)
+      XCTAssertEqual(envelope.body, "Hello World")
+      XCTAssertEqual(envelope.id, "Q29tbWVudC0zMjY2MjU0MQ==")
     } catch {
       XCTFail()
       print(error)

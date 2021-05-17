@@ -137,8 +137,7 @@
     fileprivate let deprecatedPostCommentResponse: DeprecatedComment?
     fileprivate let deprecatedPostCommentError: ErrorEnvelope?
 
-    fileprivate let postCommentResponse: GraphMutationPostCommentResponseEnvelope?
-    fileprivate let postCommentError: GraphError?
+    fileprivate let postCommentResult: Result<Comment, GraphError>?
 
     fileprivate let fetchProjectActivitiesResponse: [Activity]?
     fileprivate let fetchProjectActivitiesError: ErrorEnvelope?
@@ -291,8 +290,7 @@
       fetchUserSelfError: ErrorEnvelope? = nil,
       deprecatedPostCommentResponse: DeprecatedComment? = nil,
       deprecatedPostCommentError: ErrorEnvelope? = nil,
-      postCommentResponse: GraphMutationPostCommentResponseEnvelope? = nil,
-      postCommentError: GraphError? = nil,
+      postCommentResult: Result<Comment, GraphError>? = nil,
       loginResponse: AccessTokenEnvelope? = nil,
       loginError: ErrorEnvelope? = nil,
       resendCodeResponse: ErrorEnvelope? = nil,
@@ -486,9 +484,7 @@
 
       self.deprecatedPostCommentError = deprecatedPostCommentError
 
-      self.postCommentResponse = postCommentResponse
-
-      self.postCommentError = postCommentError
+      self.postCommentResult = postCommentResult
 
       self.loginResponse = loginResponse
 
@@ -1205,13 +1201,12 @@
     }
 
     func postComment(input _: PostCommentInput)
-      -> SignalProducer<GraphMutationPostCommentResponseEnvelope, GraphError> {
-      if let error = self.postCommentError {
+      -> SignalProducer<Comment, GraphError> {
+      if let error = self.postCommentResult?.error {
         return SignalProducer(error: error)
-      } else if let comment = self.postCommentResponse {
-        return SignalProducer(value: comment)
       }
-      return .empty
+
+      return SignalProducer(value: self.postCommentResult?.value ?? .template)
     }
 
     func resetPassword(email _: String) -> SignalProducer<User, ErrorEnvelope> {
@@ -1483,8 +1478,7 @@
             fetchUserSelfError: $1.fetchUserSelfError,
             deprecatedPostCommentResponse: $1.deprecatedPostCommentResponse,
             deprecatedPostCommentError: $1.deprecatedPostCommentError,
-            postCommentResponse: $1.postCommentResponse,
-            postCommentError: $1.postCommentError,
+            postCommentResult: $1.postCommentResult,
             loginResponse: $1.loginResponse,
             loginError: $1.loginError,
             resendCodeResponse: $1.resendCodeResponse,

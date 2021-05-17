@@ -422,7 +422,7 @@ public struct Service: ServiceType {
   }
 
   public func postComment(input: PostCommentInput)
-    -> SignalProducer<GraphMutationPostCommentResponseEnvelope, GraphError> {
+    -> SignalProducer<Comment, GraphError> {
     return applyMutation(mutation: PostCommentMutation(input: input))
   }
 
