@@ -4,23 +4,19 @@ import UIKit
 
 private enum Layout {
   enum Border {
-    static let margin: CGFloat = 15.0
     static let height: CGFloat = 1.0
   }
 
   enum Avatar {
-    static let height: CGFloat = 44.0
-    static let margin: CGFloat = 18.0
-  }
-
-  enum InputContainer {
-    static let spacing: CGFloat = 12.0
+    static let diameter: CGFloat = 44.0
     static let margin: CGFloat = 18.0
   }
 }
 
 final class CommentComposerView: UIView {
   // MARK: - Properties
+
+  private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   private let topBorderView = {
     UIView(frame: .zero)
@@ -32,16 +28,20 @@ final class CommentComposerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let onlyBackersLabel: UILabel = {
-    UILabel(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-      |> \.isHidden .~ true
-  }()
-
   private lazy var avatarImageView = {
     CircleAvatarImageView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
+  private let onlyBackersLabel: UILabel = {
+    UILabel(frame: .zero)
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
+  // This will be replaced with a ViewModel ouput binding
+  private let isBacker = false
+
+  // MARK: - Lifecycle
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -64,13 +64,20 @@ final class CommentComposerView: UIView {
     _ = self |> \.autoresizingMask .~ .flexibleHeight
     _ = self |> \.backgroundColor .~ .ksr_white
 
+    _ = self.inputContainerView
+      |> \.isHidden .~ !self.isBacker
+
+    _ = self.onlyBackersLabel
+      |> \.isHidden .~ self.isBacker
+
+    _ = ([self.avatarImageView, self.inputContainerView, self.onlyBackersLabel], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (self.rootStackView, self)
+      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
+
     _ = (self.topBorderView, self)
-      |> ksr_addSubviewToParent()
-
-    _ = (self.avatarImageView, self)
-      |> ksr_addSubviewToParent()
-
-    _ = (self.inputContainerView, self)
       |> ksr_addSubviewToParent()
 
     _ = (self.onlyBackersLabel, self)
@@ -81,32 +88,25 @@ final class CommentComposerView: UIView {
     NSLayoutConstraint.activate([
       self.topBorderView.topAnchor.constraint(equalTo: topAnchor),
       self.topBorderView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      self.topBorderView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Layout.Border.margin),
+      self.topBorderView.trailingAnchor.constraint(equalTo: trailingAnchor),
       self.topBorderView.heightAnchor.constraint(equalToConstant: Layout.Border.height),
-      self.avatarImageView.leadingAnchor
-        .constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Layout.Avatar.margin),
-      self.avatarImageView.bottomAnchor
-        .constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -Layout.Avatar.margin),
-      self.avatarImageView.heightAnchor.constraint(equalToConstant: Layout.Avatar.height),
-      self.avatarImageView.widthAnchor.constraint(equalToConstant: Layout.Avatar.height),
-      self.inputContainerView.leadingAnchor
-        .constraint(equalTo: self.avatarImageView.trailingAnchor, constant: Layout.InputContainer.spacing),
-      self.inputContainerView.trailingAnchor
-        .constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Layout.InputContainer.margin),
-      self.inputContainerView.bottomAnchor
-        .constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -Layout.InputContainer.margin),
-      self.inputContainerView.topAnchor
-        .constraint(equalTo: topAnchor, constant: Layout.InputContainer.margin),
+      self.avatarImageView.heightAnchor.constraint(equalToConstant: Layout.Avatar.diameter),
+      self.avatarImageView.widthAnchor.constraint(equalToConstant: Layout.Avatar.diameter),
       self.onlyBackersLabel.leadingAnchor
-        .constraint(equalTo: self.avatarImageView.trailingAnchor, constant: Layout.InputContainer.margin),
+        .constraint(equalTo: self.avatarImageView.trailingAnchor, constant: Styles.grid(2)),
       self.onlyBackersLabel.trailingAnchor
-        .constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Layout.InputContainer.margin),
+        .constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Styles.grid(2)),
       self.onlyBackersLabel.centerYAnchor.constraint(equalTo: self.avatarImageView.centerYAnchor)
     ])
   }
 
   override func bindStyles() {
     super.bindStyles()
+
+    _ = self.rootStackView
+      |> rootStackViewStyle
+
+    self.rootStackView.alignment = self.isBacker ? .bottom : .leading
 
     _ = self.topBorderView
       |> \.backgroundColor .~ .ksr_support_300
@@ -117,6 +117,17 @@ final class CommentComposerView: UIView {
 
     _ = self.onlyBackersLabel |> onlyBackersLabelStyle
   }
+}
+
+// MARK: - Styles
+
+private let rootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .horizontal
+    |> \.distribution .~ .fill
+    |> \.spacing .~ Styles.grid(2)
+    |> \.layoutMargins .~ .init(all: Styles.grid(3))
+    |> \.isLayoutMarginsRelativeArrangement .~ true
 }
 
 private let onlyBackersLabelStyle: LabelStyle = { label in

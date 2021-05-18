@@ -43,7 +43,7 @@ final class CommentInputTextView: UITextView {
 private let inputTextViewStyle: TextViewStyle = { textView in
   textView
     |> \.showsVerticalScrollIndicator .~ false
-    |> \.textContainerInset .~ UIEdgeInsets.zero
+    |> \.textContainerInset .~ .init(top: 0, left: -4, bottom: 0, right: 0)
     |> \.font .~ UIFont.ksr_body(size: 15)
     |> \.backgroundColor .~ UIColor.clear
     |> \.textColor .~ UIColor.ksr_support_700

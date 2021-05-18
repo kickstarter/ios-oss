@@ -5,7 +5,7 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
-enum Layout {
+private enum Layout {
   enum Composer {
     static let originalHeight: CGFloat = 80.0
   }

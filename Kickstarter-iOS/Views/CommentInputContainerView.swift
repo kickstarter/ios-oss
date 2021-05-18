@@ -4,47 +4,29 @@ import UIKit
 
 private enum Layout {
   enum Container {
-    // Using the radius of 30 specified in the design won't achieve
-    // the corner radius look for the same height of 44 of the container on the iOS App.
     static let radius: CGFloat = 22
   }
 
   enum Button {
-    static let bottomMargin: CGFloat = 12.0
-    static let rightMargin: CGFloat = 18.0
     static let height: CGFloat = 20.0
     static let width: CGFloat = 33.0
-  }
-
-  enum TextView {
-    static let leftMargin: CGFloat = 14.0
-    static let rightMargin: CGFloat = 5.0
-    static let yMargin: CGFloat = 12.0
-  }
-
-  enum Placeholder {
-    static let xMargin: CGFloat = 18.0
-    static let yMargin: CGFloat = 13.0
   }
 }
 
 final class CommentInputContainerView: UIView {
   // MARK: - Properties
 
+  private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+
   private lazy var inputTextView: CommentInputTextView = {
     CommentInputTextView(frame: .zero)
       |> \.delegate .~ self
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let placeholderLabel: UILabel = {
-    UILabel(frame: .zero)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
+  private let placeholderLabel: UILabel = { UILabel(frame: .zero) }()
 
   private lazy var postButton: UIButton = {
     UIButton(type: .system)
-      |> \.translatesAutoresizingMaskIntoConstraints .~ false
       |> \.isHidden .~ true
   }()
 
@@ -70,40 +52,28 @@ final class CommentInputContainerView: UIView {
   // MARK: - Views
 
   private func configureViews() {
-    _ = self |> \.autoresizingMask .~ .flexibleHeight
+    _ = self
+      |> \.autoresizingMask .~ .flexibleHeight
+      |> \.layoutMargins .~ .init(left: 18)
 
     _ = self.inputTextView |> \.delegate .~ self
 
-    _ = (self.inputTextView, self)
+    _ = ([self.inputTextView, self.postButton], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToEdgesInParent()
 
     _ = (self.placeholderLabel, self)
       |> ksr_addSubviewToParent()
-
-    _ = (self.postButton, self)
-      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
   }
 
   private func setupConstraints() {
     NSLayoutConstraint.activate([
-      self.postButton.bottomAnchor
-        .constraint(equalTo: self.bottomAnchor, constant: -Layout.Button.bottomMargin),
-      self.postButton.trailingAnchor
-        .constraint(equalTo: self.trailingAnchor, constant: -Layout.Button.rightMargin),
       self.postButton.heightAnchor.constraint(equalToConstant: Layout.Button.height),
-      self.postButton.widthAnchor.constraint(equalToConstant: Layout.Button.width),
-      self.inputTextView.leadingAnchor
-        .constraint(equalTo: self.leadingAnchor, constant: Layout.TextView.leftMargin),
-      self.inputTextView.topAnchor.constraint(equalTo: self.topAnchor, constant: Layout.TextView.yMargin),
-      self.inputTextView.bottomAnchor
-        .constraint(equalTo: self.bottomAnchor, constant: -Layout.TextView.yMargin),
-      self.inputTextView.trailingAnchor
-        .constraint(equalTo: self.postButton.leadingAnchor, constant: -Layout.TextView.rightMargin),
-      self.placeholderLabel.leadingAnchor
-        .constraint(equalTo: leadingAnchor, constant: Layout.Placeholder.xMargin),
-      self.placeholderLabel.trailingAnchor
-        .constraint(equalTo: trailingAnchor, constant: -Layout.Placeholder.xMargin),
-      self.placeholderLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+      self.postButton.widthAnchor.constraint(equalToConstant: Layout.Button.width)
     ])
   }
 
@@ -112,13 +82,10 @@ final class CommentInputContainerView: UIView {
   override func bindStyles() {
     super.bindStyles()
 
-    _ = self |> \.backgroundColor .~ .ksr_support_100
+    _ = self |> containerStyle
 
-    _ = self
-      |> \.layer.borderColor .~ UIColor.ksr_support_300.cgColor
-      |> \.layer.borderWidth .~ 1
-      |> \.layer.cornerRadius .~ Layout.Container.radius
-      |> \.clipsToBounds .~ true
+    _ = self.rootStackView
+      |> rootStackViewStyle
 
     _ = self.placeholderLabel
       |> placeholderLabelStyle
@@ -158,7 +125,26 @@ extension CommentInputContainerView: UITextViewDelegate {
   }
 }
 
-// MARK: - Helper Functions
+// MARK: - Styles
+
+private let containerStyle: ViewStyle = { view in
+  view
+    |> \.backgroundColor .~ .ksr_support_100
+    |> \.layer.borderColor .~ UIColor.ksr_support_300.cgColor
+    |> \.layer.borderWidth .~ 1
+    |> \.layer.cornerRadius .~ Layout.Container.radius
+    |> \.clipsToBounds .~ true
+}
+
+private let rootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .horizontal
+    |> \.distribution .~ .fill
+    |> \.alignment .~ .bottom
+    |> \.spacing .~ Styles.grid(1)
+    |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+}
 
 private let placeholderLabelStyle: LabelStyle = { label in
   label
