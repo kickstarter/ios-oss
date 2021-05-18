@@ -113,6 +113,7 @@ public final class ProjectPamphletContentViewController: UITableViewController {
   internal func commentsViewController(for project: Project) -> UITableViewController {
     let isCommentThreadingFeatureEnabled = AppEnvironment.current.optimizelyClient?
       .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentThreading.rawValue) ?? false
+    // TODO: Use the isCommentThreadingFeatureEnabled flag once requirements for https://kickstarter.atlassian.net/browse/NT-1895 have been met.
     return true ? CommentsViewController
       .configuredWith(project: project, update: nil) : DeprecatedCommentsViewController
       .configuredWith(project: project, update: nil)

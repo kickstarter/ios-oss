@@ -22,6 +22,7 @@ public protocol CommentsViewModelInputs {
 }
 
 public protocol CommentsViewModelOutputs {
+  /// Call when a new array of Comment objects can be displayed.
   var loadCommentsIntoDataSource: Signal<[Comment], Never> { get }
 }
 

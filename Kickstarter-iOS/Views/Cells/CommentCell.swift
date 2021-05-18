@@ -7,11 +7,9 @@ internal final class CommentCell: UITableViewCell, ValueCell {
   internal override func bindStyles() {
     super.bindStyles()
 
-    let cellBackgroundColor = UIColor.ksr_white
-
     _ = self
       |> baseTableViewCellStyle()
-      |> UITableViewCell.lens.backgroundColor .~ cellBackgroundColor
+      |> UITableViewCell.lens.backgroundColor .~ .ksr_white
       |> UITableViewCell.lens.contentView.layoutMargins .~
       .init(topBottom: Styles.grid(3), leftRight: Styles.grid(2))
   }

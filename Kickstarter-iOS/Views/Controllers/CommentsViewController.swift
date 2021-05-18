@@ -42,7 +42,6 @@ internal final class CommentsViewController: UITableViewController {
   internal override func bindViewModel() {
     self.viewModel.outputs.loadCommentsIntoDataSource
       .observeForUI()
-      .logEvents()
       .observeValues { comments in
         self.dataSource.updateCommentsSection(comments: comments)
         self.tableView.reloadData()

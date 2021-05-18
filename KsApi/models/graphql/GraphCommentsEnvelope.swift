@@ -5,8 +5,8 @@ struct GraphCommentsEnvelope: Decodable {
   var comments: [GraphComment]
   var cursor: String
   var hasNextPage: Bool
-  var totalCount: Int
   var slug: String
+  var totalCount: Int
 }
 
 extension GraphCommentsEnvelope {
@@ -18,8 +18,8 @@ extension GraphCommentsEnvelope {
     case pageInfo
     case endCursor
     case hasNextPage
-    case totalCount
     case slug
+    case totalCount
   }
 
   init(from decoder: Decoder) throws {

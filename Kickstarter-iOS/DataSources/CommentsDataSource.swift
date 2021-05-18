@@ -4,8 +4,8 @@ import UIKit
 
 internal final class CommentsDataSource: ValueCellDataSource {
   internal enum Section: Int {
-    case empty
     case comments
+    case empty
   }
 
   internal func updateCommentsSection(
