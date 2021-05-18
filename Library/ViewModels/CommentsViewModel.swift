@@ -32,8 +32,6 @@ public final class CommentsViewModel: CommentsViewModelType,
   CommentsViewModelOutputs {
   
   public init() {
-    // FIXME: Configure this VM with a project in order to feed the slug in here to fetch comments
-    // Call this again with a cursor to paginate.
     let projectOrUpdate = Signal.combineLatest(
       self.projectAndUpdateProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
@@ -60,6 +58,21 @@ public final class CommentsViewModel: CommentsViewModelType,
       .filter { isClose in isClose }
       .ignoreValues()
     
+    var projectSlug = String()
+    
+    let initialProjectPageLoad: ((Project) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>) = { project in
+      projectSlug = project.slug
+      
+      return AppEnvironment.current.apiService
+        .fetchComments(query: commentsQuery(withProjectSlug: project.slug))
+    }
+    
+    let projectNextPageLoad: ((String) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>) = { cursor in
+      AppEnvironment.current.apiService
+        .fetchComments(query: commentsQuery(withProjectSlug: projectSlug,
+                                            after: cursor))
+    }
+    
     let (comments, _, _, _) = paginate(
       requestFirstPageWith: initialProject,
       requestNextPageWhen: isCloseToBottom,
@@ -67,12 +80,10 @@ public final class CommentsViewModel: CommentsViewModelType,
       valuesFromEnvelope: { $0.comments },
       cursorFromEnvelope: { $0.cursor ?? ""},
       requestFromParams: { project in
-        AppEnvironment.current.apiService
-          .fetchComments(query: commentsQuery(withProjectSlug: project.slug))
+        initialProjectPageLoad(project)
       },
-      requestFromCursor: { envelope in
-        AppEnvironment.current.apiService
-          .fetchComments(query: commentsQuery(withProjectSlug: "", after: ""))
+      requestFromCursor: { cursor in
+        projectNextPageLoad(cursor)
       }
     )
     

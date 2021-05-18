@@ -18,7 +18,7 @@ internal final class CommentCell: UITableViewCell, ValueCell {
   }
 
   internal func configureWith(value: Comment) {
-    self.textLabel?.text = value.id + " " + value.body
+    self.textLabel?.text = value.body
   }
 }
 

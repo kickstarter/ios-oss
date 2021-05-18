@@ -6,11 +6,10 @@ struct GraphCommentsEnvelope: Decodable {
   var cursor: String
   var hasNextPage: Bool
   var totalCount: Int
-  var projectId: String
 }
 
 extension GraphCommentsEnvelope {
-  private enum CodingKeys: String, CodingKey {
+  private enum CodingKeys: CodingKey {
     case comments
     case edges
     case node
@@ -19,7 +18,6 @@ extension GraphCommentsEnvelope {
     case endCursor
     case hasNextPage
     case totalCount
-    case projectId = "id"
   }
 
   init(from decoder: Decoder) throws {
@@ -29,11 +27,6 @@ extension GraphCommentsEnvelope {
     
     let commentsContainer = try projectContainer
       .nestedContainer(keyedBy: CodingKeys.self, forKey: .comments)
-
-    let projectId = try projectContainer
-      .decode(String.self, forKey: .projectId)
-    
-    self.projectId = projectId
     
     var edges = try commentsContainer
       .nestedUnkeyedContainer(forKey: .edges)
