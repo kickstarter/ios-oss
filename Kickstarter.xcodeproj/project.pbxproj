@@ -164,7 +164,15 @@
 		4748C18325B7A0EC0098E89E /* GoogleDataTransport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C18225B7A0EC0098E89E /* GoogleDataTransport.framework */; };
 		4748C18825B7A18F0098E89E /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C18725B7A18F0098E89E /* FIRAnalyticsConnector.framework */; };
 		4748C19125B7A2F80098E89E /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4748C19025B7A2F80098E89E /* FirebaseCore.framework */; };
+		4753C76F264DAFD300BB10B6 /* PostCommentInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */; };
+		4753C774264DC17900BB10B6 /* PostCommentMutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C773264DC17900BB10B6 /* PostCommentMutation.swift */; };
+		4753C779264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C778264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift */; };
+		4753C785264ED1F000BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C77D264ED0F400BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift */; };
+		4753C78A264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C789264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift */; };
+		4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */; };
 		47567A5D25E40E500073AD6E /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47567A5C25E40E500073AD6E /* ErrorHandler.swift */; };
+		47613FBE2652C66A006F09FF /* PostCommentMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */; };
+		47613FC62652CD11006F09FF /* CommentTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47613FC52652CD11006F09FF /* CommentTemplate.swift */; };
 		476A2A6425DEED2600EB6A56 /* PerimeterXTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */; };
 		477290FA264AE91800B83E10 /* CommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477290F9264AE91800B83E10 /* CommentsViewModel.swift */; };
 		477731BA25C4E7CF00AF3273 /* FirebaseRemoteConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 477731B925C4E7CF00AF3273 /* FirebaseRemoteConfig.framework */; };
@@ -1741,7 +1749,15 @@
 		4748C18225B7A0EC0098E89E /* GoogleDataTransport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleDataTransport.framework; path = Carthage/Build/iOS/GoogleDataTransport.framework; sourceTree = "<group>"; };
 		4748C18725B7A18F0098E89E /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FIRAnalyticsConnector.framework; path = Carthage/Build/iOS/FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
 		4748C19025B7A2F80098E89E /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCore.framework; path = Carthage/Build/iOS/FirebaseCore.framework; sourceTree = "<group>"; };
+		4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentInput.swift; sourceTree = "<group>"; };
+		4753C773264DC17900BB10B6 /* PostCommentMutation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentMutation.swift; sourceTree = "<group>"; };
+		4753C778264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutationPostCommentEnvelope.swift; sourceTree = "<group>"; };
+		4753C77D264ED0F400BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutationPostCommentEnvelopeTests.swift; sourceTree = "<group>"; };
+		4753C789264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphMutationPostCommentEnvelopeTemplate.swift; sourceTree = "<group>"; };
+		4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentInputTests.swift; sourceTree = "<group>"; };
 		47567A5C25E40E500073AD6E /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentMutationTests.swift; sourceTree = "<group>"; };
+		47613FC52652CD11006F09FF /* CommentTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTemplate.swift; sourceTree = "<group>"; };
 		476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerimeterXTypes.swift; sourceTree = "<group>"; };
 		477290F9264AE91800B83E10 /* CommentsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewModel.swift; sourceTree = "<group>"; };
 		477731B925C4E7CF00AF3273 /* FirebaseRemoteConfig.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseRemoteConfig.framework; path = Carthage/Build/iOS/FirebaseRemoteConfig.framework; sourceTree = "<group>"; };
@@ -3112,6 +3128,8 @@
 			isa = PBXGroup;
 			children = (
 				77776BC5234BA6B700A42388 /* CancelBackingMutation.swift */,
+				4753C773264DC17900BB10B6 /* PostCommentMutation.swift */,
+				47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */,
 				D08C71DB22A71A0100A245B7 /* ClearUserUnseenActivityMutation.swift */,
 				77950F09231EB8C300308331 /* CreateApplePayBackingMutation.swift */,
 				D755ECA62315E95C0096F189 /* CreateBackingMutation.swift */,
@@ -3270,6 +3288,8 @@
 				8A49396024B54C0C00C3C3CE /* RewardAddOnSelectionViewEnvelope.swift */,
 				8A49396224B54C3000C3C3CE /* RewardAddOnSelectionViewEnvelopeTests.swift */,
 				8AE3F72F24DA29DE002B03C3 /* adapters */,
+				4753C778264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift */,
+				4753C77D264ED0F400BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift */,
 			);
 			path = graphql;
 			sourceTree = "<group>";
@@ -4670,6 +4690,7 @@
 				D01587F31EEB2ED7006E7684 /* ChangePaymentMethodEnvelopeTemplates.swift */,
 				D01587F51EEB2ED7006E7684 /* DeprecatedCommentsEnvelopeTemplates.swift */,
 				D01587F61EEB2ED7006E7684 /* DeprecatedCommentTemplates.swift */,
+				47613FC52652CD11006F09FF /* CommentTemplate.swift */,
 				D01587F71EEB2ED7006E7684 /* ConfigTemplates.swift */,
 				D794408F2208970E00D0A747 /* CreatePaymentSourceTemplate.swift */,
 				D01587F91EEB2ED7006E7684 /* DiscoveryEnvelopeTemplates.swift */,
@@ -4713,6 +4734,7 @@
 				D01588181EEB2ED7006E7684 /* User.StatsTemplates.swift */,
 				D01588191EEB2ED7006E7684 /* UserTemplates.swift */,
 				8A0B1E2824DA1048009E90C0 /* graphql */,
+				4753C789264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift */,
 			);
 			path = templates;
 			sourceTree = "<group>";
@@ -4747,6 +4769,8 @@
 				D002CAE2218CF91D009783F2 /* WatchProjectInput.swift */,
 				D6F5C6102437E12300C1A79D /* SignInWithAppleInput.swift */,
 				77C0818D245CBA1B004ABE88 /* SignInWithAppleInputTests.swift */,
+				4753C76E264DAFD300BB10B6 /* PostCommentInput.swift */,
+				4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */,
 			);
 			path = inputs;
 			sourceTree = "<group>";
@@ -6337,6 +6361,7 @@
 				D015885B1EEB2ED7006E7684 /* DeprecatedComment.swift in Sources */,
 				D01588C71EEB2ED7006E7684 /* RewardItemLenses.swift in Sources */,
 				D01588E91EEB2ED7006E7684 /* Message.swift in Sources */,
+				4753C774264DC17900BB10B6 /* PostCommentMutation.swift in Sources */,
 				D015887F1EEB2ED7006E7684 /* Activity.MemberDataLenses.swift in Sources */,
 				D015889F1EEB2ED7006E7684 /* MessageLenses.swift in Sources */,
 				D08CD1C021910C97009F89F0 /* GraphIDBridging.swift in Sources */,
@@ -6350,6 +6375,7 @@
 				D63BBD31217F7212007E01F0 /* GraphUserCreditCard.swift in Sources */,
 				D79CF32E219CE51A00ECB73A /* CreatePaymentSourceInput.swift in Sources */,
 				D01588A51EEB2ED7006E7684 /* Project.DatesLenses.swift in Sources */,
+				4753C779264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift in Sources */,
 				84264EEC25387B0500D8DF81 /* Param.swift in Sources */,
 				D01588EB1EEB2ED7006E7684 /* MessageSubject.swift in Sources */,
 				D770DDE8217D729300B5319A /* GraphUserTemplates.swift in Sources */,
@@ -6357,6 +6383,7 @@
 				8A555874264C4C8300C2C30D /* CommentsQueries.swift in Sources */,
 				77950F0A231EB8C300308331 /* CreateApplePayBackingMutation.swift in Sources */,
 				D0158A1B1EEB30A2006E7684 /* Project.VideoTemplates.swift in Sources */,
+				4753C76F264DAFD300BB10B6 /* PostCommentInput.swift in Sources */,
 				D0158A311EEB30A2006E7684 /* User.NotificationsTemplates.swift in Sources */,
 				D6ED1B3E216D61E0007F7547 /* UpdateUserAccountMutation.swift in Sources */,
 				D01588C91EEB2ED7006E7684 /* RewardLenses.swift in Sources */,
@@ -6419,6 +6446,7 @@
 				D015882D1EEB2ED7006E7684 /* BasicHTTPAuth.swift in Sources */,
 				D0851010219500F200BC418B /* PaymentSourceDeleteMutation.swift in Sources */,
 				D01589091EEB2ED7006E7684 /* ProjectsEnvelope.swift in Sources */,
+				4753C78A264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift in Sources */,
 				D6C9A2541F758C7900981E64 /* GraphCategoryLenses.swift in Sources */,
 				8ADCCCD8264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift in Sources */,
 				D015883B1EEB2ED7006E7684 /* MimeType.swift in Sources */,
@@ -6448,6 +6476,7 @@
 				D01588B51EEB2ED7006E7684 /* ProjectNotificationLenses.swift in Sources */,
 				8A1F155624DB609D00E0C000 /* DateFormatter+ISOFormatter.swift in Sources */,
 				D015882B1EEB2ED7006E7684 /* NSURLSession.swift in Sources */,
+				47613FC62652CD11006F09FF /* CommentTemplate.swift in Sources */,
 				D79440572203A63300D0A747 /* CreatePaymentSourceEnvelope.swift in Sources */,
 				D08CD1F921910DF5009F89F0 /* UnwatchProjectMutation.swift in Sources */,
 				D6AE52281FD1B4BA00BEC788 /* CategoryEnvelope.swift in Sources */,
@@ -6492,6 +6521,7 @@
 				7798B56821750368008BC50D /* UserQueriesTests.swift in Sources */,
 				D0D10C201EEB4550005EBAD0 /* User.NewsletterSubscriptionsTests.swift in Sources */,
 				D0D10C051EEB4550005EBAD0 /* ChangePaymentMethodEnvelopeTests.swift in Sources */,
+				4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */,
 				8A1F65F2262660EF00A28E74 /* PerimeterXClientTests.swift in Sources */,
 				77272D382370AB8E003B7A9C /* BackingPaymentSourceTests.swift in Sources */,
 				D0E78C3822A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift in Sources */,
@@ -6527,6 +6557,7 @@
 				77C0818E245CBA1B004ABE88 /* SignInWithAppleInputTests.swift in Sources */,
 				D0D10C151EEB4550005EBAD0 /* ProjectStatsEnvelopeTests.swift in Sources */,
 				8A2C015F2589391D00EE11E7 /* ProjectActivityEnvelopeTests.swift in Sources */,
+				4753C785264ED1F000BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift in Sources */,
 				D0D10C221EEB4550005EBAD0 /* UserTests.swift in Sources */,
 				8ADCCCCB264CA13F0079D308 /* Comment+GraphCommentTests.swift in Sources */,
 				8A45169124B3E2CE00D8CAEF /* RewardAddOnSelectionViewQueriesTests.swift in Sources */,
@@ -6537,6 +6568,7 @@
 				8ADCCC87264C6E4A0079D308 /* GraphCommentTests.swift in Sources */,
 				D755ECAE23216C290096F189 /* CreateBackingInputTests.swift in Sources */,
 				D755ECB123217D5B0096F189 /* CreateBackingEnvelopeTests.swift in Sources */,
+				47613FBE2652C66A006F09FF /* PostCommentMutationTests.swift in Sources */,
 				D0D10C1B1EEB4550005EBAD0 /* SurveyResponseTests.swift in Sources */,
 				D0D10C1F1EEB4550005EBAD0 /* User.AvatarTests.swift in Sources */,
 				77FA1AF32445FB810035D659 /* GraphUserTests.swift in Sources */,

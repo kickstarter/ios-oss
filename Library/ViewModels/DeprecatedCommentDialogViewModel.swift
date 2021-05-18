@@ -195,8 +195,8 @@ private func postComment(_ body: String, toUpdateOrComment updateOrComment: Eith
   -> SignalProducer<DeprecatedComment, ErrorEnvelope> {
   switch updateOrComment {
   case let .left(update):
-    return AppEnvironment.current.apiService.postComment(body, toUpdate: update)
+    return AppEnvironment.current.apiService.deprecatedPostComment(body, toUpdate: update)
   case let .right(project):
-    return AppEnvironment.current.apiService.postComment(body, toProject: project)
+    return AppEnvironment.current.apiService.deprecatedPostComment(body, toProject: project)
   }
 }
