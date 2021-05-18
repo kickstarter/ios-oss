@@ -5,11 +5,22 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
+enum Layout {
+  enum Composer {
+    static let originalHeight: CGFloat = 80.0
+  }
+}
+
 internal final class CommentsViewController: UITableViewController {
   // MARK: - Properties
 
   private lazy var commentComposer: CommentComposerView = {
-    let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 80)
+    let frame = CGRect(
+      x: 0,
+      y: 0,
+      width: view.frame.width,
+      height: Layout.Composer.originalHeight
+    )
     let view = CommentComposerView(frame: frame)
     return view
   }()
@@ -23,6 +34,7 @@ internal final class CommentsViewController: UITableViewController {
 
     tableView.keyboardDismissMode = .interactive
     tableView.estimatedRowHeight = UITableView.automaticDimension
+    // This would be replaced with actual Comment cells.
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
 
     self.viewModel.inputs.viewDidLoad()
@@ -47,6 +59,7 @@ internal final class CommentsViewController: UITableViewController {
   internal override func bindViewModel() {}
 }
 
+// This should be removed when DataSource for comments is setup
 extension CommentsViewController {
   // MARK: - UITableViewDataSource & UITableViewDelegate
 

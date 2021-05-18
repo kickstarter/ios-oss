@@ -126,6 +126,7 @@ final class CommentInputContainerView: UIView {
     _ = self.postButton
       |> UIButton.lens.titleLabel.font %~ { _ in UIFont.ksr_body(size: 15).weighted(.semibold) }
       |> UIButton.lens.titleColor(for: .normal) %~ { _ in .ksr_create_700 }
+      // To be replaced with a type-safe string when copy is available.
       |> UIButton.lens.title(for: .normal) %~ { _ in "Post" }
   }
 

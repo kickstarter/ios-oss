@@ -11,8 +11,6 @@ final class CommentInputTextView: UITextView {
 
   override init(frame: CGRect, textContainer: NSTextContainer?) {
     super.init(frame: frame, textContainer: textContainer)
-
-    self.configureView()
   }
 
   required init?(coder _: NSCoder) {
@@ -30,9 +28,11 @@ final class CommentInputTextView: UITextView {
     return size
   }
 
-  // MARK: - Views
+  // MARK: - Styles
 
-  public func configureView() {
+  override func bindStyles() {
+    super.bindStyles()
+
     _ = self
       |> inputTextViewStyle
       |> \.tintColor .~ UIColor.ksr_create_700
