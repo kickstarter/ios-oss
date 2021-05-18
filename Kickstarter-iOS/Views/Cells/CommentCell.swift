@@ -4,7 +4,6 @@ import Prelude
 import UIKit
 
 internal final class CommentCell: UITableViewCell, ValueCell {
-
   internal override func bindStyles() {
     super.bindStyles()
 
@@ -21,4 +20,3 @@ internal final class CommentCell: UITableViewCell, ValueCell {
     self.textLabel?.text = value.body
   }
 }
-

@@ -7,19 +7,22 @@ import UIKit
 
 internal final class CommentsViewController: UITableViewController {
   // MARK: - Properties
+
   private let viewModel: CommentsViewModelType = CommentsViewModel()
   private let dataSource = CommentsDataSource()
-  
+
   // MARK: - Configuration
+
   internal static func configuredWith(project: Project? = nil, update: Update? = nil)
     -> CommentsViewController {
     let vc = CommentsViewController.instantiate()
     vc.viewModel.inputs.configureWith(project: project, update: update)
-    
+
     return vc
   }
-  
+
   // MARK: - Lifecycle
+
   internal override func viewDidLoad() {
     super.viewDidLoad()
     self.tableView.registerCellClass(CommentCell.self)
@@ -45,12 +48,12 @@ internal final class CommentsViewController: UITableViewController {
         self.tableView.reloadData()
       }
   }
-  
 }
 
 // MARK: - Tableview Delegates
+
 extension CommentsViewController {
-  override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+  override func tableView(_: UITableView, willDisplay _: UITableViewCell, forRowAt indexPath: IndexPath) {
     self.viewModel.inputs.willDisplayRow(
       self.dataSource.itemIndexAt(indexPath),
       outOf: self.dataSource.numberOfItems()

@@ -26,12 +26,12 @@ extension GraphCommentsEnvelope {
     let values = try decoder.container(keyedBy: CodingKeys.self)
 
     let projectContainer = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .project)
-    
+
     self.slug = try projectContainer.decode(String.self, forKey: .slug)
-    
+
     let commentsContainer = try projectContainer
       .nestedContainer(keyedBy: CodingKeys.self, forKey: .comments)
-    
+
     var edges = try commentsContainer
       .nestedUnkeyedContainer(forKey: .edges)
 

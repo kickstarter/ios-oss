@@ -10,13 +10,13 @@ public protocol CommentsViewModelInputs {
 
   ///  Call when pull-to-refresh is invoked.
   func refresh()
-  
+
   /// Call when the User is posting a comment or reply
   func postCommentButtonTapped()
 
   /// Call when the view loads.
   func viewDidLoad()
-  
+
   /// Call when a new row is displayed.
   func willDisplayRow(_ row: Int, outOf totalRows: Int)
 }
@@ -33,7 +33,6 @@ public protocol CommentsViewModelType {
 public final class CommentsViewModel: CommentsViewModelType,
   CommentsViewModelInputs,
   CommentsViewModelOutputs {
-  
   public init() {
     let projectOrUpdate = Signal.combineLatest(
       self.projectAndUpdateProperty.signal.skipNil(),
@@ -54,7 +53,7 @@ public final class CommentsViewModel: CommentsViewModelType,
           }
         )
       }
-    
+
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in row >= total - 3 }
       .skipRepeats()
@@ -71,13 +70,15 @@ public final class CommentsViewModel: CommentsViewModelType,
         AppEnvironment.current.apiService
           .fetchComments(query: commentsQuery(withProjectSlug: project.slug))
       },
-      requestFromCursor: { (projectSlug, cursor) in
+      requestFromCursor: { projectSlug, cursor in
         AppEnvironment.current.apiService
-          .fetchComments(query: commentsQuery(withProjectSlug: projectSlug,
-                                              after: cursor))
+          .fetchComments(query: commentsQuery(
+            withProjectSlug: projectSlug,
+            after: cursor
+          ))
       }
     )
-    
+
     self.loadCommentsIntoDataSource = comments
 
     // FIXME: We need to dynamically supply the IDs when the UI is built.
@@ -105,12 +106,12 @@ public final class CommentsViewModel: CommentsViewModelType,
   public func configureWith(project: Project?, update: Update?) {
     self.projectAndUpdateProperty.value = (project, update)
   }
-  
+
   fileprivate let refreshProperty = MutableProperty(())
   public func refresh() {
     self.refreshProperty.value = ()
   }
-  
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -120,9 +121,9 @@ public final class CommentsViewModel: CommentsViewModelType,
   public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
   }
-  
+
   public let loadCommentsIntoDataSource: Signal<[Comment], Never>
-  
+
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }
 }
