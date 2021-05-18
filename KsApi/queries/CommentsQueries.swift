@@ -11,6 +11,7 @@ public func commentsQuery(
   return Query.project(
     slug: slug,
     .id +| [
+      .slug,
       .comments(
         args,
         .edges(

@@ -6,6 +6,7 @@ struct GraphCommentsEnvelope: Decodable {
   var cursor: String
   var hasNextPage: Bool
   var totalCount: Int
+  var slug: String
 }
 
 extension GraphCommentsEnvelope {
@@ -18,12 +19,15 @@ extension GraphCommentsEnvelope {
     case endCursor
     case hasNextPage
     case totalCount
+    case slug
   }
 
   init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
 
     let projectContainer = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .project)
+    
+    self.slug = try projectContainer.decode(String.self, forKey: .slug)
     
     let commentsContainer = try projectContainer
       .nestedContainer(keyedBy: CodingKeys.self, forKey: .comments)

@@ -56,7 +56,8 @@ final class GraphCommentsEnvelopeTests: XCTestCase {
             "hasNextPage": true
           ],
           "totalCount": 61
-        ]
+        ],
+        "slug": "jadelabo-j1-beautiful-powerful-and-smart-idex-3d-printer"
       ]
     ]
 
@@ -67,6 +68,7 @@ final class GraphCommentsEnvelopeTests: XCTestCase {
 
     do {
       let envelope = try JSONDecoder().decode(GraphCommentsEnvelope.self, from: data)
+      XCTAssertEqual(envelope.slug, "jadelabo-j1-beautiful-powerful-and-smart-idex-3d-printer")
       XCTAssertEqual(envelope.comments[0].id, "Q29tbWVudC0zMDQ5MDQ2NA==")
       XCTAssertEqual(envelope.comments[0].body, "I have not received a survey yet either.")
       XCTAssertEqual(envelope.comments[0].author.id, "VXNlci0xOTE1MDY0NDY3")

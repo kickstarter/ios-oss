@@ -1,13 +1,12 @@
 import Foundation
 import ReactiveSwift
 
-// TODO: Add project slug to envelope here.
-
 public struct CommentsEnvelope: Decodable {
   public var comments: [Comment]
   public var cursor: String?
   public var hasNextPage: Bool
   public var totalCount: Int
+  public var slug: String
 }
 
 extension CommentsEnvelope {

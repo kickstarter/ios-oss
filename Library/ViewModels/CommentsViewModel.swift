@@ -60,33 +60,21 @@ public final class CommentsViewModel: CommentsViewModelType,
       .skipRepeats()
       .filter { isClose in isClose }
       .ignoreValues()
-    
-    var projectSlug = String()
-    
-    let initialProjectPageLoad: ((Project) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>) = { project in
-      projectSlug = project.slug
-      
-      return AppEnvironment.current.apiService
-        .fetchComments(query: commentsQuery(withProjectSlug: project.slug))
-    }
-    
-    let projectNextPageLoad: ((String) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>) = { cursor in
-      AppEnvironment.current.apiService
-        .fetchComments(query: commentsQuery(withProjectSlug: projectSlug,
-                                            after: cursor))
-    }
 
     let (comments, _, _, _) = paginate(
       requestFirstPageWith: initialProject,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
       valuesFromEnvelope: { $0.comments },
-      cursorFromEnvelope: { $0.cursor ?? ""},
+      cursorFromEnvelope: { ($0.slug, $0.cursor ?? "") },
       requestFromParams: { project in
-        initialProjectPageLoad(project)
+        AppEnvironment.current.apiService
+          .fetchComments(query: commentsQuery(withProjectSlug: project.slug))
       },
-      requestFromCursor: { cursor in
-        projectNextPageLoad(cursor)
+      requestFromCursor: { (projectSlug, cursor) in
+        AppEnvironment.current.apiService
+          .fetchComments(query: commentsQuery(withProjectSlug: projectSlug,
+                                              after: cursor))
       }
     )
     
