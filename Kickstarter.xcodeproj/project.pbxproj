@@ -602,6 +602,7 @@
 		94114D5B265305210063E8F6 /* CommentPostFailedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D5A265305200063E8F6 /* CommentPostFailedCell.swift */; };
 		94114D602653135E0063E8F6 /* CommentRemovedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D5F2653135E0063E8F6 /* CommentRemovedCell.swift */; };
 		94114D72265329770063E8F6 /* CommentCellHeaderStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D6426531F890063E8F6 /* CommentCellHeaderStackView.swift */; };
+		94114D7B26543AE30063E8F6 /* CommentsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D7626543AD80063E8F6 /* CommentsDataSourceTests.swift */; };
 		94BE15C225E857C4007CD9A4 /* TrackingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BE15C125E857C4007CD9A4 /* TrackingHelpers.swift */; };
 		94BE15CE25E970A3007CD9A4 /* TrackingHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BE15C925E96F06007CD9A4 /* TrackingHelpersTests.swift */; };
 		94F4A95A26125C8C000C21F9 /* TimeInterval+ISO8601Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F4A95926125C8C000C21F9 /* TimeInterval+ISO8601Date.swift */; };
@@ -2146,6 +2147,7 @@
 		94114D5A265305200063E8F6 /* CommentPostFailedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPostFailedCell.swift; sourceTree = "<group>"; };
 		94114D5F2653135E0063E8F6 /* CommentRemovedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRemovedCell.swift; sourceTree = "<group>"; };
 		94114D6426531F890063E8F6 /* CommentCellHeaderStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCellHeaderStackView.swift; sourceTree = "<group>"; };
+		94114D7626543AD80063E8F6 /* CommentsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsDataSourceTests.swift; sourceTree = "<group>"; };
 		94BE15C125E857C4007CD9A4 /* TrackingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingHelpers.swift; sourceTree = "<group>"; };
 		94BE15C925E96F06007CD9A4 /* TrackingHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingHelpersTests.swift; sourceTree = "<group>"; };
 		94F4A95926125C8C000C21F9 /* TimeInterval+ISO8601Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+ISO8601Date.swift"; sourceTree = "<group>"; };
@@ -4024,6 +4026,7 @@
 				7727494823FC8C2A0065E9F2 /* CategorySelectionDataSource.swift */,
 				776B1A122419407700B03098 /* CategorySelectionDataSourceTests.swift */,
 				94114D42264EE63E0063E8F6 /* CommentsDataSource.swift */,
+				94114D7626543AD80063E8F6 /* CommentsDataSourceTests.swift */,
 				A7A051E41CD12D9A005AF5E2 /* DeprecatedCommentsDataSource.swift */,
 				A7ED20061E83229E00BFFA01 /* DeprecatedCommentsDataSourceTests.swift */,
 				59B0DFC31D11AC850081D2DC /* DashboardDataSource.swift */,
@@ -6209,6 +6212,7 @@
 				A78356081E85BE6D0021DA5A /* BackerDashboardProjectsDataSourceTests.swift in Sources */,
 				D60C8BF321481BCC00D96152 /* SettingsAccountViewControllerTests.swift in Sources */,
 				8AA3DB36250AE470009AC8EA /* SettingsAccountViewModelTests.swift in Sources */,
+				94114D7B26543AE30063E8F6 /* CommentsDataSourceTests.swift in Sources */,
 				D6B4F0032107B4760079159D /* SettingsNewslettersViewControllerTests.swift in Sources */,
 				A7ED205C1E83240D00BFFA01 /* FundingGraphViewTests.swift in Sources */,
 				77C9122C23C5082800F3D2C9 /* MockApplePayCapable.swift in Sources */,

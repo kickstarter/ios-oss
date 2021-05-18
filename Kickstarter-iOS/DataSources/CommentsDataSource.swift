@@ -8,7 +8,7 @@ internal final class CommentsDataSource: ValueCellDataSource {
     case comments
   }
 
-  func load() {
+  internal func load() {
     let section = Section.comments.rawValue
     self.clearValues(section: section)
     comments().forEach { comment in
@@ -72,6 +72,7 @@ struct DemoComment: Codable {
     case backer
     case superbacker
     case creator
+    case you
   }
 }
 
@@ -81,7 +82,7 @@ private let sampleComments: [[String: Any]] =
       "id": 1,
       "first_name": "Kale",
       "last_name": "Mewrcik",
-      "username": "kmewrcik0",
+      "username": "kmewrcik",
       "postTime": "06:15am Yesterday",
       "body": "Hi Nimble! Where are you incorporated? Thank you!",
       "type": "superbacker",
@@ -192,7 +193,7 @@ private let sampleComments: [[String: Any]] =
       "last_name": "Jones",
       "postTime": "Just now",
       "body": "Hi Nimble! Where are you incorporated? Thank you!",
-      "type": "superbacker",
+      "type": "you",
       "is_failed": true,
       "imageURL": "https://thumbs.dreamstime.com/b/african-american-man-close-up-his-face-screaming-mouths-wide-open-looking-angry-isolated-white-background-144047493.jpg"
     ]

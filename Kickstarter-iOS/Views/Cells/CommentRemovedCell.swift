@@ -41,13 +41,13 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     _ = self
-      |> \.selectionStyle .~ .none
+      |> baseTableViewCellStyle()
 
     _ = self.rootStackView
       |> rootStackViewStyle
 
     _ = self.commentLabel
-      |> \.attributedText .~ attributedCommentRemoved()
+      |> \.attributedText .~ attributedTextCommentRemoved()
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 0
       |> \.adjustsFontForContentSizeCategory .~ true
@@ -119,7 +119,9 @@ private let tapRetryPostButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.contentHorizontalAlignment .~ .left
 }
 
-private func attributedCommentRemoved() -> NSAttributedString {
+// MARK: - Functions
+
+private func attributedTextCommentRemoved() -> NSAttributedString {
   let regularFontAttribute = [
     NSAttributedString.Key.font: UIFont.ksr_callout(),
     NSAttributedString.Key.foregroundColor: UIColor.hex(0x656969)

@@ -9,7 +9,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
   }()
 
   private lazy var userNameLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var userNameTagLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var userNameTagLabel: PaddingLabel = { PaddingLabel(frame: .zero) }()
   private lazy var postTimeLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var usernameLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var usernameTimeLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -28,6 +28,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
     _ = self.usernameLabelsStackView
       |> \.axis .~ .horizontal
       |> \.spacing .~ Styles.grid(1)
+      |> \.alignment .~ .leading
 
     _ = self.userNameLabel
       |> \.numberOfLines .~ 1
@@ -50,13 +51,14 @@ internal final class CommentCellHeaderStackView: UIStackView {
       |> \.font .~ UIFont.ksr_footnote()
       |> \.adjustsFontForContentSizeCategory .~ true
 
-    self.addArrangedSubview(self.userImageView)
-    self.addArrangedSubview(self.usernameTimeLabelsStackView)
+    _ = ([self.userImageView, self.usernameTimeLabelsStackView], self)
+      |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.usernameLabelsStackView, self.postTimeLabel], self.usernameTimeLabelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.userNameLabel, self.userNameTagLabel, UIView()], self.usernameLabelsStackView)
+    let emptyView = UIView()
+    _ = ([self.userNameLabel, self.userNameTagLabel, emptyView], self.usernameLabelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     NSLayoutConstraint.activate([
@@ -69,12 +71,83 @@ internal final class CommentCellHeaderStackView: UIStackView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  public func configureWith(comment: DemoComment) {
-    self.userNameLabel.text = comment.username == nil ? (comment.firstName + " " + comment.lastName) : comment
-      .username
+  // MARK: - Configuration
+
+  internal func configureWith(comment: DemoComment) {
+    self.userNameLabel.text = comment.username == nil
+      ? (comment.firstName + " " + comment.lastName)
+      : comment.username
+
     self.postTimeLabel.text = comment.postTime
     self.userImageView
       .ksr_setRoundedImageWith(URL(string: comment.imageURL)!)
-    self.userNameTagLabel.text = comment.type == .backer ? nil : comment.type.rawValue.capitalized
+
+    switch comment.type {
+    case .creator:
+      _ = self.userNameTagLabel
+        |> creatorTagLabelStyle
+    case .superbacker:
+      _ = self.userNameTagLabel
+        |> \.insets .~ .zero
+        |> superbackerTagLabelStyle
+
+      _ = self
+        |> \.alignment .~ .top
+    case .you:
+      _ = self.userNameTagLabel
+        |> youTagLabelStyle
+    default:
+      break
+    }
+  }
+}
+
+// MARK: Styles
+
+private let creatorTagLabelStyle: LabelStyle = { label in
+  label
+    |> \.text .~ "Creator"
+    |> \.font .~ UIFont.ksr_footnote()
+    |> \.textColor .~ UIColor.ksr_create_700
+    |> \.backgroundColor .~ UIColor.ksr_create_700.withAlphaComponent(0.06)
+    |> roundedStyle(cornerRadius: Styles.grid(1))
+    |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.textAlignment .~ NSTextAlignment.right
+}
+
+private let youTagLabelStyle: LabelStyle = { label in
+  label
+    |> \.text .~ "You"
+    |> \.font .~ UIFont.ksr_footnote()
+    |> \.textColor .~ UIColor.ksr_trust_700
+    |> \.backgroundColor .~ UIColor.ksr_trust_100
+    |> roundedStyle(cornerRadius: Styles.grid(1))
+    |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.textAlignment .~ NSTextAlignment.right
+}
+
+private let superbackerTagLabelStyle: LabelStyle = { label in
+  label
+    |> \.text .~ "SUPERBACKER"
+    |> \.font .~ UIFont.ksr_headline(size: 10)
+    |> \.textColor .~ UIColor.ksr_celebrate_500
+    |> \.adjustsFontForContentSizeCategory .~ true
+}
+
+// MARK: Helper Class
+
+private class PaddingLabel: UILabel {
+  var insets = UIEdgeInsets(all: Styles.grid(1))
+
+  override func drawText(in rect: CGRect) {
+    super.drawText(in: rect.inset(by: self.insets))
+  }
+
+  override var intrinsicContentSize: CGSize {
+    let size = super.intrinsicContentSize
+    return CGSize(
+      width: size.width + self.insets.left + self.insets.right,
+      height: size.height + self.insets.top + self.insets.bottom
+    )
   }
 }
