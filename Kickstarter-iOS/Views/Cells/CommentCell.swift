@@ -6,6 +6,8 @@ import UIKit
 final class CommentCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
+  fileprivate let viewModel = CommentCellViewModel()
+
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -72,7 +74,7 @@ final class CommentCell: UITableViewCell, ValueCell {
 
   internal func configureWith(value: DemoComment) {
     self.commentCellHeaderStackView.configureWith(comment: value)
-    self.commentLabel.text = value.body
+    self.viewModel.inputs.configureWith(comment: value)
   }
 
   private func configureViews() {
@@ -102,6 +104,12 @@ final class CommentCell: UITableViewCell, ValueCell {
       self.separatorView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
       self.separatorView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor)
     ])
+  }
+
+  // MARK: - View model
+
+  internal override func bindViewModel() {
+    self.commentLabel.rac.text = self.viewModel.outputs.body
   }
 }
 

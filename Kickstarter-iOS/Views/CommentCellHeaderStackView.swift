@@ -4,7 +4,11 @@ import Prelude
 import UIKit
 
 internal final class CommentCellHeaderStackView: UIStackView {
-  private lazy var userImageView = { UIImageView(frame: .zero)
+  // MARK: - Properties
+
+  fileprivate let viewModel = CommentCellViewModel()
+
+  private lazy var avatarImageView = { UIImageView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -17,6 +21,19 @@ internal final class CommentCellHeaderStackView: UIStackView {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
+    self.bindStyles()
+    self.configureViews()
+    self.bindViewModel()
+  }
+
+  required init(coder _: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  // MARK: - Styles
+
+  override func bindStyles() {
+    super.bindStyles()
     _ = self
       |> \.axis .~ .horizontal
       |> \.spacing .~ Styles.grid(2)
@@ -50,39 +67,16 @@ internal final class CommentCellHeaderStackView: UIStackView {
       |> \.textAlignment .~ .left
       |> \.font .~ UIFont.ksr_footnote()
       |> \.adjustsFontForContentSizeCategory .~ true
-
-    _ = ([self.userImageView, self.usernameTimeLabelsStackView], self)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = ([self.usernameLabelsStackView, self.postTimeLabel], self.usernameTimeLabelsStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    let emptyView = UIView()
-    _ = ([self.userNameLabel, self.userNameTagLabel, emptyView], self.usernameLabelsStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    NSLayoutConstraint.activate([
-      self.userImageView.widthAnchor.constraint(equalToConstant: Styles.grid(7)),
-      self.userImageView.heightAnchor.constraint(equalToConstant: Styles.grid(7))
-    ])
-  }
-
-  required init(coder _: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
 
   // MARK: - Configuration
 
   internal func configureWith(comment: DemoComment) {
-    self.userNameLabel.text = comment.username == nil
-      ? (comment.firstName + " " + comment.lastName)
-      : comment.username
+    self.viewModel.inputs.configureWith(comment: comment)
+  }
 
-    self.postTimeLabel.text = comment.postTime
-    self.userImageView
-      .ksr_setRoundedImageWith(URL(string: comment.imageURL)!)
-
-    switch comment.type {
+  internal func configureUserTagStlye(from userTag: DemoComment.UserTagEnum) {
+    switch userTag {
     case .creator:
       _ = self.userNameTagLabel
         |> creatorTagLabelStyle
@@ -99,6 +93,45 @@ internal final class CommentCellHeaderStackView: UIStackView {
     default:
       break
     }
+  }
+
+  private func configureViews() {
+    _ = ([self.avatarImageView, self.usernameTimeLabelsStackView], self)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.usernameLabelsStackView, self.postTimeLabel], self.usernameTimeLabelsStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    let emptyView = UIView()
+    _ = ([self.userNameLabel, self.userNameTagLabel, emptyView], self.usernameLabelsStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    NSLayoutConstraint.activate([
+      self.avatarImageView.widthAnchor.constraint(equalToConstant: Styles.grid(7)),
+      self.avatarImageView.heightAnchor.constraint(equalToConstant: Styles.grid(7))
+    ])
+  }
+
+  // MARK: View Model
+
+  override func bindViewModel() {
+    self.viewModel.outputs.avatarImageURL
+      .observeForUI()
+      .on(event: { [weak self] _ in
+        self?.avatarImageView.af.cancelImageRequest()
+        self?.avatarImageView.image = nil
+      })
+      .skipNil()
+      .observeValues { [weak self] url in
+        self?.avatarImageView.ksr_setRoundedImageWith(url)
+      }
+
+    self.viewModel.outputs.userTag
+      .observeForUI()
+      .observeValues(self.configureUserTagStlye)
+
+    self.userNameLabel.rac.text = self.viewModel.authorName
+    self.postTimeLabel.rac.text = self.viewModel.postTime
   }
 }
 

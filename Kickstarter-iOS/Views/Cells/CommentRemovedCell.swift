@@ -28,7 +28,6 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
     self.setupConstraints()
     self.bindStyles()
     self.configureViews()
-    self.bindViewModel()
   }
 
   required init?(coder aDecoder: NSCoder) {
