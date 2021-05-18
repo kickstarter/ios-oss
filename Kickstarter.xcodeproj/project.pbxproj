@@ -6402,7 +6402,6 @@
 				8AA407CE24DB5316008C5FB0 /* GraphCategoryTemplates.swift in Sources */,
 				D01588A91EEB2ED7006E7684 /* Project.PersonalizationLenses.swift in Sources */,
 				D015888B1EEB2ED7006E7684 /* DeprecatedCommentLenses.swift in Sources */,
-				D015888B1EEB2ED7006E7684 /* DeprecatedCommentLenses.swift in Sources */,
 				8A1F65E6262660CB00A28E74 /* PerimeterXClient.swift in Sources */,
 				D0158A281EEB30A2006E7684 /* StarEnvelopeTemplates.swift in Sources */,
 				D0158A221EEB30A2006E7684 /* ProjectStatsEnvelopeTemplates.swift in Sources */,
