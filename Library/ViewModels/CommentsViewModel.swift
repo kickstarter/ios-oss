@@ -11,6 +11,9 @@ public protocol CommentsViewModelInputs {
   ///  Call when pull-to-refresh is invoked.
   func refresh()
   
+  /// Call when the User is posting a comment or reply
+  func postCommentButtonTapped()
+
   /// Call when the view loads.
   func viewDidLoad()
   
@@ -72,7 +75,7 @@ public final class CommentsViewModel: CommentsViewModelType,
         .fetchComments(query: commentsQuery(withProjectSlug: projectSlug,
                                             after: cursor))
     }
-    
+
     let (comments, _, _, _) = paginate(
       requestFirstPageWith: initialProject,
       requestNextPageWhen: isCloseToBottom,
@@ -88,6 +91,26 @@ public final class CommentsViewModel: CommentsViewModelType,
     )
     
     self.loadCommentsIntoDataSource = comments
+
+    // FIXME: We need to dynamically supply the IDs when the UI is built.
+    // The IDs here correspond to the following project: `THE GREAT GATSBY: Limited Edition Letterpress Print`.
+    // When testing, replace with a project you have Backed or Created.
+    self.postCommentButtonTappedProperty.signal.switchMap { _ in
+      AppEnvironment.current.apiService
+        .postComment(input: .init(
+          body: "Testing on iOS!",
+          commentableId: "UHJvamVjdC02NDQ2NzAxMzU=",
+          parentId: "Q29tbWVudC0zMjY2MjUzOQ=="
+        ))
+        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+        .materialize()
+    }
+    .observeValues { print($0) }
+  }
+
+  fileprivate let postCommentButtonTappedProperty = MutableProperty(())
+  public func postCommentButtonTapped() {
+    self.postCommentButtonTappedProperty.value = ()
   }
 
   fileprivate let projectAndUpdateProperty = MutableProperty<(Project?, Update?)?>(nil)
