@@ -22,6 +22,8 @@ public protocol CommentsViewModelInputs {
 }
 
 public protocol CommentsViewModelOutputs {
+  /// Emits a boolean that determines if comments are currently loading.
+  var commentsAreLoading: Signal<Bool, Never> { get }
   /// Call when a new array of Comment objects can be displayed.
   var loadCommentsIntoDataSource: Signal<[Comment], Never> { get }
 }
@@ -60,9 +62,17 @@ public final class CommentsViewModel: CommentsViewModelType,
       .skipRepeats()
       .filter { isClose in isClose }
       .ignoreValues()
-
-    let (comments, _, _, _) = paginate(
-      requestFirstPageWith: initialProject,
+    
+    let requestFirstPageWith = Signal.merge(
+      initialProject,
+      initialProject.takeWhen(self.refreshProperty.signal)
+      /** TODO: Add this in once comment composer is added.
+      projectOrUpdate.takeWhen(self.commentPostedProperty.signal)
+       **/
+    )
+    
+    let (comments, isLoading, _, _) = paginate(
+      requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
       valuesFromEnvelope: { $0.comments },
@@ -81,6 +91,7 @@ public final class CommentsViewModel: CommentsViewModelType,
     )
 
     self.loadCommentsIntoDataSource = comments
+    self.commentsAreLoading = isLoading
 
     // FIXME: We need to dynamically supply the IDs when the UI is built.
     // The IDs here correspond to the following project: `THE GREAT GATSBY: Limited Edition Letterpress Print`.
@@ -123,6 +134,7 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
+  public let commentsAreLoading: Signal<Bool, Never>
   public let loadCommentsIntoDataSource: Signal<[Comment], Never>
 
   public var inputs: CommentsViewModelInputs { return self }
