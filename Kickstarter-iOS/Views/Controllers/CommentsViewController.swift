@@ -49,4 +49,8 @@ internal final class CommentsViewController: UITableViewController {
   // MARK: - View Model
 
   internal override func bindViewModel() {}
+
+  @objc fileprivate func closeButtonTapped() {
+    self.dismiss(animated: true, completion: nil)
+  }
 }
