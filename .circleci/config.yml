@@ -70,6 +70,9 @@ distribute_job: &distribute_job
   steps:
     - checkout
     - run:
+        name: SPM SSH Workaround
+        command: *spm_ssh_workaround
+    - run:
         name: Store Xcode Version
         command: xcodebuild -version > xcode_version.txt
     - restore_cache:
@@ -122,6 +125,9 @@ jobs:
       - *default_environment
     steps:
       - checkout
+      - run:
+          name: SPM SSH Workaround
+          command: *spm_ssh_workaround
       - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
@@ -190,6 +196,9 @@ jobs:
       - *default_environment
     steps:
       - checkout
+      - run:
+          name: SPM SSH Workaround
+          command: *spm_ssh_workaround
       - run:
           name: Store Xcode Version
           command: xcodebuild -version > xcode_version.txt
