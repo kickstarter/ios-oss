@@ -17,7 +17,7 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var commentLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var bodyTextView: UITextView = { UITextView(frame: .zero) }()
   private lazy var tapRetryPostButton = { UIButton(frame: .zero) }()
   private lazy var commentCellHeaderStackView: CommentCellHeaderStackView = {
     CommentCellHeaderStackView(frame: .zero)
@@ -44,12 +44,14 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     _ = self
-      |> \.selectionStyle .~ .none
+      |> baseTableViewCellStyle()
 
-    _ = self.commentLabel
-      |> \.lineBreakMode .~ .byWordWrapping
-      |> \.numberOfLines .~ 0
-      |> \.textColor .~ .ksr_support_400
+    _ = self.bodyTextView
+      |> UITextView.lens.isScrollEnabled .~ false
+      |> UITextView.lens.textContainerInset .~ UIEdgeInsets.zero
+      |> UITextView.lens.textContainer.lineFragmentPadding .~ 0
+      |> UITextView.lens.backgroundColor .~ UIColor.ksr_white
+      |> \.textColor .~ .ksr_support_700
       |> \.textAlignment .~ .left
       |> \.font .~ UIFont.ksr_callout()
       |> \.adjustsFontForContentSizeCategory .~ true
@@ -73,7 +75,7 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
   }
 
   private func configureViews() {
-    _ = ([self.commentCellHeaderStackView, self.commentLabel, self.tapRetryPostButton], self.rootStackView)
+    _ = ([self.commentCellHeaderStackView, self.bodyTextView, self.tapRetryPostButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -97,7 +99,7 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
   // MARK: - View model
 
   internal override func bindViewModel() {
-    self.commentLabel.rac.text = self.viewModel.outputs.body
+    self.bodyTextView.rac.text = self.viewModel.outputs.body
   }
 }
 

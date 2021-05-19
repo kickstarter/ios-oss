@@ -17,7 +17,7 @@ final class CommentCell: UITableViewCell, ValueCell {
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var commentLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var bodyTextView: UITextView = { UITextView(frame: .zero) }()
   private lazy var replyButton = { UIButton(frame: .zero) }()
   private lazy var flagButton = { UIButton(frame: .zero) }()
   private lazy var commentCellHeaderStackView: CommentCellHeaderStackView = {
@@ -47,11 +47,13 @@ final class CommentCell: UITableViewCell, ValueCell {
     super.bindStyles()
 
     _ = self
-      |> \.selectionStyle .~ .none
+      |> baseTableViewCellStyle()
 
-    _ = self.commentLabel
-      |> \.lineBreakMode .~ .byWordWrapping
-      |> \.numberOfLines .~ 0
+    _ = self.bodyTextView
+      |> UITextView.lens.isScrollEnabled .~ false
+      |> UITextView.lens.textContainerInset .~ UIEdgeInsets.zero
+      |> UITextView.lens.textContainer.lineFragmentPadding .~ 0
+      |> UITextView.lens.backgroundColor .~ UIColor.ksr_white
       |> \.textColor .~ .ksr_support_700
       |> \.textAlignment .~ .left
       |> \.font .~ UIFont.ksr_callout()
@@ -78,7 +80,7 @@ final class CommentCell: UITableViewCell, ValueCell {
   }
 
   private func configureViews() {
-    _ = ([self.commentCellHeaderStackView, self.commentLabel, self.bottomColumnStackView], self.rootStackView)
+    _ = ([self.commentCellHeaderStackView, self.bodyTextView, self.bottomColumnStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.replyButton, UIView(), self.flagButton], self.bottomColumnStackView)
@@ -109,7 +111,7 @@ final class CommentCell: UITableViewCell, ValueCell {
   // MARK: - View model
 
   internal override func bindViewModel() {
-    self.commentLabel.rac.text = self.viewModel.outputs.body
+    self.bodyTextView.rac.text = self.viewModel.outputs.body
   }
 }
 
