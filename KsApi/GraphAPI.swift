@@ -1,3 +1,6 @@
+// @generated
+//  This file was automatically generated and should not be edited.
+
 import Apollo
 import Foundation
 
@@ -32,7 +35,7 @@ public final class FetchCommentsQuery: GraphQLQuery {
   public let operationName: String = "FetchComments"
 
   public var queryDocument: String {
-    var document: String = self.operationDefinition
+    var document: String = operationDefinition
     document.append("\n" + CommentFragment.fragmentDefinition)
     return document
   }
@@ -48,7 +51,7 @@ public final class FetchCommentsQuery: GraphQLQuery {
   }
 
   public var variables: GraphQLMap? {
-    return ["slug": self.slug, "cursor": self.cursor, "limit": self.limit]
+    return ["slug": slug, "cursor": cursor, "limit": limit]
   }
 
   public struct Data: GraphQLSelectionSet {
@@ -56,11 +59,7 @@ public final class FetchCommentsQuery: GraphQLQuery {
 
     public static var selections: [GraphQLSelection] {
       return [
-        GraphQLField(
-          "project",
-          arguments: ["slug": GraphQLVariable("slug")],
-          type: .object(Project.selections)
-        )
+        GraphQLField("project", arguments: ["slug": GraphQLVariable("slug")], type: .object(Project.selections)),
       ]
     }
 
@@ -71,20 +70,16 @@ public final class FetchCommentsQuery: GraphQLQuery {
     }
 
     public init(project: Project? = nil) {
-      self
-        .init(unsafeResultMap: [
-          "__typename": "Query",
-          "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }
-        ])
+      self.init(unsafeResultMap: ["__typename": "Query", "project": project.flatMap { (value: Project) -> ResultMap in value.resultMap }])
     }
 
     /// Fetches a project given its slug or pid.
     public var project: Project? {
       get {
-        return (self.resultMap["project"] as? ResultMap).flatMap { Project(unsafeResultMap: $0) }
+        return (resultMap["project"] as? ResultMap).flatMap { Project(unsafeResultMap: $0) }
       }
       set {
-        self.resultMap.updateValue(newValue?.resultMap, forKey: "project")
+        resultMap.updateValue(newValue?.resultMap, forKey: "project")
       }
     }
 
@@ -94,12 +89,8 @@ public final class FetchCommentsQuery: GraphQLQuery {
       public static var selections: [GraphQLSelection] {
         return [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField(
-            "comments",
-            arguments: ["after": GraphQLVariable("cursor"), "first": GraphQLVariable("limit")],
-            type: .object(Comment.selections)
-          ),
-          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self)))
+          GraphQLField("comments", arguments: ["after": GraphQLVariable("cursor"), "first": GraphQLVariable("limit")], type: .object(Comment.selections)),
+          GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         ]
       }
 
@@ -110,39 +101,34 @@ public final class FetchCommentsQuery: GraphQLQuery {
       }
 
       public init(comments: Comment? = nil, id: GraphQLID) {
-        self
-          .init(unsafeResultMap: [
-            "__typename": "Project",
-            "comments": comments.flatMap { (value: Comment) -> ResultMap in value.resultMap },
-            "id": id
-          ])
+        self.init(unsafeResultMap: ["__typename": "Project", "comments": comments.flatMap { (value: Comment) -> ResultMap in value.resultMap }, "id": id])
       }
 
       public var __typename: String {
         get {
-          return self.resultMap["__typename"]! as! String
+          return resultMap["__typename"]! as! String
         }
         set {
-          self.resultMap.updateValue(newValue, forKey: "__typename")
+          resultMap.updateValue(newValue, forKey: "__typename")
         }
       }
 
       /// List of comments on the commentable
       public var comments: Comment? {
         get {
-          return (self.resultMap["comments"] as? ResultMap).flatMap { Comment(unsafeResultMap: $0) }
+          return (resultMap["comments"] as? ResultMap).flatMap { Comment(unsafeResultMap: $0) }
         }
         set {
-          self.resultMap.updateValue(newValue?.resultMap, forKey: "comments")
+          resultMap.updateValue(newValue?.resultMap, forKey: "comments")
         }
       }
 
       public var id: GraphQLID {
         get {
-          return self.resultMap["id"]! as! GraphQLID
+          return resultMap["id"]! as! GraphQLID
         }
         set {
-          self.resultMap.updateValue(newValue, forKey: "id")
+          resultMap.updateValue(newValue, forKey: "id")
         }
       }
 
@@ -154,7 +140,7 @@ public final class FetchCommentsQuery: GraphQLQuery {
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
             GraphQLField("edges", type: .list(.object(Edge.selections))),
             GraphQLField("pageInfo", type: .nonNull(.object(PageInfo.selections))),
-            GraphQLField("totalCount", type: .nonNull(.scalar(Int.self)))
+            GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
           ]
         }
 
@@ -165,62 +151,44 @@ public final class FetchCommentsQuery: GraphQLQuery {
         }
 
         public init(edges: [Edge?]? = nil, pageInfo: PageInfo, totalCount: Int) {
-          self
-            .init(unsafeResultMap: [
-              "__typename": "CommentConnection",
-              "edges": edges
-                .flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in
-                  value.flatMap { (value: Edge) -> ResultMap in value.resultMap }
-            } },
-              "pageInfo": pageInfo.resultMap,
-              "totalCount": totalCount
-            ])
+          self.init(unsafeResultMap: ["__typename": "CommentConnection", "edges": edges.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }, "pageInfo": pageInfo.resultMap, "totalCount": totalCount])
         }
 
         public var __typename: String {
           get {
-            return self.resultMap["__typename"]! as! String
+            return resultMap["__typename"]! as! String
           }
           set {
-            self.resultMap.updateValue(newValue, forKey: "__typename")
+            resultMap.updateValue(newValue, forKey: "__typename")
           }
         }
 
         /// A list of edges.
         public var edges: [Edge?]? {
           get {
-            return (self.resultMap["edges"] as? [ResultMap?])
-              .flatMap { (value: [ResultMap?]) -> [Edge?] in value.map { (value: ResultMap?) -> Edge? in
-                value.flatMap { (value: ResultMap) -> Edge in Edge(unsafeResultMap: value) }
-              } }
+            return (resultMap["edges"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Edge?] in value.map { (value: ResultMap?) -> Edge? in value.flatMap { (value: ResultMap) -> Edge in Edge(unsafeResultMap: value) } } }
           }
           set {
-            self.resultMap
-              .updateValue(newValue.flatMap { (value: [Edge?]) -> [ResultMap?] in
-                value
-                  .map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in
-                    value.resultMap
-              } }
-              }, forKey: "edges")
+            resultMap.updateValue(newValue.flatMap { (value: [Edge?]) -> [ResultMap?] in value.map { (value: Edge?) -> ResultMap? in value.flatMap { (value: Edge) -> ResultMap in value.resultMap } } }, forKey: "edges")
           }
         }
 
         /// Information to aid in pagination.
         public var pageInfo: PageInfo {
           get {
-            return PageInfo(unsafeResultMap: self.resultMap["pageInfo"]! as! ResultMap)
+            return PageInfo(unsafeResultMap: resultMap["pageInfo"]! as! ResultMap)
           }
           set {
-            self.resultMap.updateValue(newValue.resultMap, forKey: "pageInfo")
+            resultMap.updateValue(newValue.resultMap, forKey: "pageInfo")
           }
         }
 
         public var totalCount: Int {
           get {
-            return self.resultMap["totalCount"]! as! Int
+            return resultMap["totalCount"]! as! Int
           }
           set {
-            self.resultMap.updateValue(newValue, forKey: "totalCount")
+            resultMap.updateValue(newValue, forKey: "totalCount")
           }
         }
 
@@ -230,7 +198,7 @@ public final class FetchCommentsQuery: GraphQLQuery {
           public static var selections: [GraphQLSelection] {
             return [
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-              GraphQLField("node", type: .object(Node.selections))
+              GraphQLField("node", type: .object(Node.selections)),
             ]
           }
 
@@ -241,29 +209,25 @@ public final class FetchCommentsQuery: GraphQLQuery {
           }
 
           public init(node: Node? = nil) {
-            self
-              .init(unsafeResultMap: [
-                "__typename": "CommentEdge",
-                "node": node.flatMap { (value: Node) -> ResultMap in value.resultMap }
-              ])
+            self.init(unsafeResultMap: ["__typename": "CommentEdge", "node": node.flatMap { (value: Node) -> ResultMap in value.resultMap }])
           }
 
           public var __typename: String {
             get {
-              return self.resultMap["__typename"]! as! String
+              return resultMap["__typename"]! as! String
             }
             set {
-              self.resultMap.updateValue(newValue, forKey: "__typename")
+              resultMap.updateValue(newValue, forKey: "__typename")
             }
           }
 
           /// The item at the end of the edge.
           public var node: Node? {
             get {
-              return (self.resultMap["node"] as? ResultMap).flatMap { Node(unsafeResultMap: $0) }
+              return (resultMap["node"] as? ResultMap).flatMap { Node(unsafeResultMap: $0) }
             }
             set {
-              self.resultMap.updateValue(newValue?.resultMap, forKey: "node")
+              resultMap.updateValue(newValue?.resultMap, forKey: "node")
             }
           }
 
@@ -273,7 +237,7 @@ public final class FetchCommentsQuery: GraphQLQuery {
             public static var selections: [GraphQLSelection] {
               return [
                 GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-                GraphQLFragmentSpread(CommentFragment.self)
+                GraphQLFragmentSpread(CommentFragment.self),
               ]
             }
 
@@ -285,19 +249,19 @@ public final class FetchCommentsQuery: GraphQLQuery {
 
             public var __typename: String {
               get {
-                return self.resultMap["__typename"]! as! String
+                return resultMap["__typename"]! as! String
               }
               set {
-                self.resultMap.updateValue(newValue, forKey: "__typename")
+                resultMap.updateValue(newValue, forKey: "__typename")
               }
             }
 
             public var fragments: Fragments {
               get {
-                return Fragments(unsafeResultMap: self.resultMap)
+                return Fragments(unsafeResultMap: resultMap)
               }
               set {
-                self.resultMap += newValue.resultMap
+                resultMap += newValue.resultMap
               }
             }
 
@@ -310,10 +274,10 @@ public final class FetchCommentsQuery: GraphQLQuery {
 
               public var commentFragment: CommentFragment {
                 get {
-                  return CommentFragment(unsafeResultMap: self.resultMap)
+                  return CommentFragment(unsafeResultMap: resultMap)
                 }
                 set {
-                  self.resultMap += newValue.resultMap
+                  resultMap += newValue.resultMap
                 }
               }
             }
@@ -327,7 +291,7 @@ public final class FetchCommentsQuery: GraphQLQuery {
             return [
               GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
               GraphQLField("endCursor", type: .scalar(String.self)),
-              GraphQLField("hasNextPage", type: .nonNull(.scalar(Bool.self)))
+              GraphQLField("hasNextPage", type: .nonNull(.scalar(Bool.self))),
             ]
           }
 
@@ -338,40 +302,35 @@ public final class FetchCommentsQuery: GraphQLQuery {
           }
 
           public init(endCursor: String? = nil, hasNextPage: Bool) {
-            self
-              .init(unsafeResultMap: [
-                "__typename": "PageInfo",
-                "endCursor": endCursor,
-                "hasNextPage": hasNextPage
-              ])
+            self.init(unsafeResultMap: ["__typename": "PageInfo", "endCursor": endCursor, "hasNextPage": hasNextPage])
           }
 
           public var __typename: String {
             get {
-              return self.resultMap["__typename"]! as! String
+              return resultMap["__typename"]! as! String
             }
             set {
-              self.resultMap.updateValue(newValue, forKey: "__typename")
+              resultMap.updateValue(newValue, forKey: "__typename")
             }
           }
 
           /// When paginating forwards, the cursor to continue.
           public var endCursor: String? {
             get {
-              return self.resultMap["endCursor"] as? String
+              return resultMap["endCursor"] as? String
             }
             set {
-              self.resultMap.updateValue(newValue, forKey: "endCursor")
+              resultMap.updateValue(newValue, forKey: "endCursor")
             }
           }
 
           /// When paginating forwards, are there more items?
           public var hasNextPage: Bool {
             get {
-              return self.resultMap["hasNextPage"]! as! Bool
+              return resultMap["hasNextPage"]! as! Bool
             }
             set {
-              self.resultMap.updateValue(newValue, forKey: "hasNextPage")
+              resultMap.updateValue(newValue, forKey: "hasNextPage")
             }
           }
         }
@@ -409,7 +368,7 @@ public struct CommentFragment: GraphQLFragment {
       GraphQLField("author", type: .object(Author.selections)),
       GraphQLField("body", type: .nonNull(.scalar(String.self))),
       GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
-      GraphQLField("replies", type: .object(Reply.selections))
+      GraphQLField("replies", type: .object(Reply.selections)),
     ]
   }
 
@@ -420,61 +379,54 @@ public struct CommentFragment: GraphQLFragment {
   }
 
   public init(author: Author? = nil, body: String, id: GraphQLID, replies: Reply? = nil) {
-    self
-      .init(unsafeResultMap: [
-        "__typename": "Comment",
-        "author": author.flatMap { (value: Author) -> ResultMap in value.resultMap },
-        "body": body,
-        "id": id,
-        "replies": replies.flatMap { (value: Reply) -> ResultMap in value.resultMap }
-      ])
+    self.init(unsafeResultMap: ["__typename": "Comment", "author": author.flatMap { (value: Author) -> ResultMap in value.resultMap }, "body": body, "id": id, "replies": replies.flatMap { (value: Reply) -> ResultMap in value.resultMap }])
   }
 
   public var __typename: String {
     get {
-      return self.resultMap["__typename"]! as! String
+      return resultMap["__typename"]! as! String
     }
     set {
-      self.resultMap.updateValue(newValue, forKey: "__typename")
+      resultMap.updateValue(newValue, forKey: "__typename")
     }
   }
 
   /// The author of the comment
   public var author: Author? {
     get {
-      return (self.resultMap["author"] as? ResultMap).flatMap { Author(unsafeResultMap: $0) }
+      return (resultMap["author"] as? ResultMap).flatMap { Author(unsafeResultMap: $0) }
     }
     set {
-      self.resultMap.updateValue(newValue?.resultMap, forKey: "author")
+      resultMap.updateValue(newValue?.resultMap, forKey: "author")
     }
   }
 
   /// The body of the comment
   public var body: String {
     get {
-      return self.resultMap["body"]! as! String
+      return resultMap["body"]! as! String
     }
     set {
-      self.resultMap.updateValue(newValue, forKey: "body")
+      resultMap.updateValue(newValue, forKey: "body")
     }
   }
 
   public var id: GraphQLID {
     get {
-      return self.resultMap["id"]! as! GraphQLID
+      return resultMap["id"]! as! GraphQLID
     }
     set {
-      self.resultMap.updateValue(newValue, forKey: "id")
+      resultMap.updateValue(newValue, forKey: "id")
     }
   }
 
   /// The replies on a comment
   public var replies: Reply? {
     get {
-      return (self.resultMap["replies"] as? ResultMap).flatMap { Reply(unsafeResultMap: $0) }
+      return (resultMap["replies"] as? ResultMap).flatMap { Reply(unsafeResultMap: $0) }
     }
     set {
-      self.resultMap.updateValue(newValue?.resultMap, forKey: "replies")
+      resultMap.updateValue(newValue?.resultMap, forKey: "replies")
     }
   }
 
@@ -486,7 +438,7 @@ public struct CommentFragment: GraphQLFragment {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("id", type: .nonNull(.scalar(GraphQLID.self))),
         GraphQLField("isCreator", type: .scalar(Bool.self)),
-        GraphQLField("name", type: .nonNull(.scalar(String.self)))
+        GraphQLField("name", type: .nonNull(.scalar(String.self))),
       ]
     }
 
@@ -502,39 +454,39 @@ public struct CommentFragment: GraphQLFragment {
 
     public var __typename: String {
       get {
-        return self.resultMap["__typename"]! as! String
+        return resultMap["__typename"]! as! String
       }
       set {
-        self.resultMap.updateValue(newValue, forKey: "__typename")
+        resultMap.updateValue(newValue, forKey: "__typename")
       }
     }
 
     public var id: GraphQLID {
       get {
-        return self.resultMap["id"]! as! GraphQLID
+        return resultMap["id"]! as! GraphQLID
       }
       set {
-        self.resultMap.updateValue(newValue, forKey: "id")
+        resultMap.updateValue(newValue, forKey: "id")
       }
     }
 
     /// Whether a user is a creator
     public var isCreator: Bool? {
       get {
-        return self.resultMap["isCreator"] as? Bool
+        return resultMap["isCreator"] as? Bool
       }
       set {
-        self.resultMap.updateValue(newValue, forKey: "isCreator")
+        resultMap.updateValue(newValue, forKey: "isCreator")
       }
     }
 
     /// The user's provided name.
     public var name: String {
       get {
-        return self.resultMap["name"]! as! String
+        return resultMap["name"]! as! String
       }
       set {
-        self.resultMap.updateValue(newValue, forKey: "name")
+        resultMap.updateValue(newValue, forKey: "name")
       }
     }
   }
@@ -545,7 +497,7 @@ public struct CommentFragment: GraphQLFragment {
     public static var selections: [GraphQLSelection] {
       return [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLField("totalCount", type: .nonNull(.scalar(Int.self)))
+        GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
       ]
     }
 
@@ -561,19 +513,19 @@ public struct CommentFragment: GraphQLFragment {
 
     public var __typename: String {
       get {
-        return self.resultMap["__typename"]! as! String
+        return resultMap["__typename"]! as! String
       }
       set {
-        self.resultMap.updateValue(newValue, forKey: "__typename")
+        resultMap.updateValue(newValue, forKey: "__typename")
       }
     }
 
     public var totalCount: Int {
       get {
-        return self.resultMap["totalCount"]! as! Int
+        return resultMap["totalCount"]! as! Int
       }
       set {
-        self.resultMap.updateValue(newValue, forKey: "totalCount")
+        resultMap.updateValue(newValue, forKey: "totalCount")
       }
     }
   }
