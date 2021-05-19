@@ -79,11 +79,24 @@ public struct DemoComment: Codable {
     }
   }
 
+  public static var template: DemoComment {
+    return comments()[2]
+  }
+
   public var authorName: String {
     guard let username = username else {
       return self.firstName + " " + self.lastName
     }
     return username
+  }
+
+  public static func template(for tag: UserTagEnum) -> Self {
+    switch tag {
+    case .backer: return self.comments()[1]
+    case .superbacker: return self.comments()[0]
+    case .creator: return self.comments()[3]
+    case .you: return self.comments()[11]
+    }
   }
 }
 

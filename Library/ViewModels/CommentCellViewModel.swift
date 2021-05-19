@@ -11,26 +11,26 @@ public protocol CommentCellViewModelOutputs {
   /// Emits a url to the comment author's image.
   var avatarImageURL: Signal<URL?, Never> { get }
 
-  /// Emits text containing author's message
+  /// Emits text containing comment body
   var body: Signal<String, Never> { get }
 
   /// Emits text containing author's fullname or username
   var authorName: Signal<String, Never> { get }
 
-  /// Emits text containing author's fullname or username
+  /// Emits text  relative time the comment was posted
   var postTime: Signal<String, Never> { get }
 
-  /// Emits author's tag
+  /// Emits author's tag for a comment
   var userTag: Signal<DemoComment.UserTagEnum, Never> { get }
 }
 
-public protocol CommentCellViewModelViewModelType {
+public protocol CommentCellViewModelType {
   var inputs: CommentCellViewModelInputs { get }
   var outputs: CommentCellViewModelOutputs { get }
 }
 
 public final class CommentCellViewModel:
-  CommentCellViewModelViewModelType, CommentCellViewModelInputs, CommentCellViewModelOutputs {
+  CommentCellViewModelType, CommentCellViewModelInputs, CommentCellViewModelOutputs {
   public init() {
     let comment = self.commentProperty.signal.skipNil()
 
