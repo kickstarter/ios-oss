@@ -3,7 +3,24 @@ import Foundation
 import ReactiveSwift
 
 class GraphQL {
+  // MARK: - Properties
+
+  private var apollo: ApolloClient?
+  private(set) lazy var client: ApolloClient = {
+    guard let client = self.apollo else {
+      fatalError("Apollo Client accessed before calling configure(with:headers:additionalHeaders:)")
+    }
+
+    return client
+  }()
   static let shared = GraphQL()
+
+  /**
+   Configures the shared instance with the specified URL and headers.
+
+   - parameter url: The URL for the GraphQL endpoint.
+   - parameter headers: Additional headers to configure each GraphQL request with.
+   */
 
   func configure(
     with url: URL,
@@ -20,15 +37,6 @@ class GraphQL {
 
     self.apollo = ApolloClient(networkTransport: transport, store: store)
   }
-
-  private var apollo: ApolloClient?
-  private(set) lazy var client: ApolloClient = {
-    guard let client = self.apollo else {
-      fatalError("Apollo Client accessed before calling configure(with:headers:additionalHeaders:)")
-    }
-
-    return client
-  }()
 }
 
 extension ApolloClient {
