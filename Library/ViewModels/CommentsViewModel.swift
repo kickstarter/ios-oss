@@ -66,7 +66,7 @@ public final class CommentsViewModel: CommentsViewModelType,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
       valuesFromEnvelope: { $0.comments },
-      cursorFromEnvelope: { ($0.slug, $0.cursor ?? "") },
+      cursorFromEnvelope: { ($0.slug, $0.cursor) },
       requestFromParams: { project in
         AppEnvironment.current.apiService
           .fetchComments(query: commentsQuery(withProjectSlug: project.slug))
