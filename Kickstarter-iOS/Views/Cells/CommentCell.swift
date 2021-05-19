@@ -80,6 +80,7 @@ final class CommentCell: UITableViewCell, ValueCell {
 
     NSLayoutConstraint.activate([
       self.replyButton.heightAnchor.constraint(equalToConstant: Styles.grid(3)),
+      self.replyButton.widthAnchor.constraint(equalToConstant: Styles.grid(13)),
       self.flagButton.widthAnchor.constraint(equalToConstant: Styles.grid(3)),
       self.flagButton.heightAnchor.constraint(equalToConstant: Styles.grid(3))
     ])
