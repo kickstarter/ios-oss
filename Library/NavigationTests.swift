@@ -230,6 +230,11 @@ public final class NavigationTests: XCTestCase {
 
     XCTAssertEqual(
       .emailClick,
+      Navigation.match(URL(string: "https://click.e.kickstarter.com/wf/click?upn=deadbeef")!)
+    )
+
+    XCTAssertEqual(
+      .emailClick,
       Navigation.match(URL(string: "https://clicks.kickstarter.com/wf/click?upn=deadbeef")!)
     )
 
