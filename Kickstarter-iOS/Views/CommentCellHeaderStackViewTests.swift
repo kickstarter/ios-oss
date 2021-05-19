@@ -11,6 +11,7 @@ internal final class CommentCellHeaderStackViewTests: TestCase {
 
   override func setUp() {
     super.setUp()
+
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     self.vm.outputs.userTag.observe(self.userTag.observer)
   }
@@ -25,10 +26,10 @@ internal final class CommentCellHeaderStackViewTests: TestCase {
       CommentCellHeaderStackView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 45))
 
     let userTagStates = [
-      "Tag Is Backer": DemoComment.UserTagEnum.backer,
-      "Tag Is Superbacker": DemoComment.UserTagEnum.superbacker,
-      "Tag Is Creator": DemoComment.UserTagEnum.creator,
-      "Tag Is You": DemoComment.UserTagEnum.you
+      "Tag_Is_Backer": DemoComment.UserTagEnum.backer,
+      "Tag_Is_Superbacker": DemoComment.UserTagEnum.superbacker,
+      "Tag_Is_Creator": DemoComment.UserTagEnum.creator,
+      "Tag_Is_You": DemoComment.UserTagEnum.you
     ]
 
     for (key, tag) in userTagStates {
