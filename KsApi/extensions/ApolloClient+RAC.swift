@@ -59,6 +59,14 @@ extension ApolloClient {
     return ApolloClient(networkTransport: transport, store: store)
   }
 
+  // TODO: consider tests
+  /**
+   Performs a GraphQL fetch request with a given query.
+
+   - parameter query: The `Query` to fetch.
+
+   - returns: A `SignalProducer` generic over `Query.Data` and `ErrorEnvelope`.
+   */
   public func fetch<Query: GraphQLQuery>(query: Query) -> SignalProducer<Query.Data, ErrorEnvelope> {
     SignalProducer { observer, _ in
       self.fetch(query: query) { result in
@@ -76,6 +84,14 @@ extension ApolloClient {
     }
   }
 
+  // TODO: consider tests
+  /**
+   Performs a GraphQL mutation request with a given mutation.
+
+   - parameter mutation: The `Mutation` to perform.
+
+   - returns: A `SignalProducer` generic over `Mutation.Data` and `ErrorEnvelope`.
+   */
   public func perform<Mutation: GraphQLMutation>(
     mutation: Mutation
   ) -> SignalProducer<Mutation.Data, ErrorEnvelope> {
@@ -120,6 +136,7 @@ class HeadersInterceptor: ApolloInterceptor {
     self.additionalHeaders = additionalHeaders
   }
 
+  // TODO: can we test this?
   func interceptAsync<Operation: GraphQLOperation>(
     chain: RequestChain,
     request: HTTPRequest<Operation>,
