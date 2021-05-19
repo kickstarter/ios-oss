@@ -8,7 +8,7 @@ iphone_name: &iphone_name iPhone 8
 preload_simulator: &preload_simulator xcrun instruments -w "iPhone 8 (14.2) [" || true
 
 # Works around an issue in xcodebuild where it requires GitHub to have been added to the known_hosts in order for it to clone dependencies.
-spm_ssh_workaround: &spm_ssh_workaround - for ip in $(dig @1.1.1.1 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
+spm_ssh_workaround: &spm_ssh_workaround for ip in $(dig @1.1.1.1 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts
 
 # Templates
 
