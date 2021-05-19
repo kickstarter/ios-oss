@@ -96,8 +96,8 @@ final class CommentCell: UITableViewCell, ValueCell {
       |> ksr_addSubviewToParent()
 
     NSLayoutConstraint.activate([
-      self.replyButton.widthAnchor.constraint(equalToConstant: 70),
-      self.replyButton.heightAnchor.constraint(equalToConstant: 20),
+      self.replyButton.widthAnchor.constraint(equalToConstant: Styles.grid(12)),
+      self.replyButton.heightAnchor.constraint(equalToConstant: Styles.grid(3)),
       self.flagButton.widthAnchor.constraint(equalToConstant: Styles.grid(3)),
       self.flagButton.heightAnchor.constraint(equalToConstant: Styles.grid(3)),
       self.rootStackView.bottomAnchor.constraint(equalTo: self.separatorView.topAnchor, constant: 1),
@@ -140,6 +140,6 @@ private let replyButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "reply")
     |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_support_400
     |> UIButton.lens.tintColor .~ UIColor.ksr_support_400
-    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: 7.17)
+    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(1))
     |> UIButton.lens.contentHorizontalAlignment .~ .left
 }
