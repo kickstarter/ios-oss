@@ -42,12 +42,12 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
     _ = self
       |> baseTableViewCellStyle()
 
+    _ = self.rootStackView
+      |> commentCellRootStackViewStyle
+
     _ = self.bodyTextView
       |> commentBodyTextViewStyle
       |> \.textColor .~ .ksr_support_400
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
 
     _ = self.tapRetryPostButton
       |> tapRetryPostButtonStyle

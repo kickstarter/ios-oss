@@ -11,7 +11,17 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private lazy var infoImageView = {
+    UIImageView(frame: .zero)
+      |> \.image .~ Library.image(named: "info")
+      |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var commentLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var rowStackView: UIStackView = {
+    UIStackView(frame: .zero)
+  }()
+
   private lazy var commentCellHeaderStackView: CommentCellHeaderStackView = {
     CommentCellHeaderStackView(frame: .zero)
   }()
@@ -39,7 +49,10 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
       |> baseTableViewCellStyle()
 
     _ = self.rootStackView
-      |> rootStackViewStyle
+      |> commentCellRootStackViewStyle
+
+    _ = self.rowStackView
+      |> rowStackViewStyle
 
     _ = self.commentLabel
       |> \.attributedText .~ attributedTextCommentRemoved()
@@ -55,7 +68,11 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
   }
 
   private func configureViews() {
-    _ = ([self.commentCellHeaderStackView, self.commentLabel], self.rootStackView)
+    self.rowStackView.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+    _ = ([self.commentCellHeaderStackView, self.rowStackView], self.rootStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.infoImageView, self.commentLabel], self.rowStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -63,36 +80,25 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
+
+    NSLayoutConstraint.activate([
+      self.infoImageView.widthAnchor.constraint(equalToConstant: Styles.grid(4)),
+      self.infoImageView.heightAnchor.constraint(equalToConstant: Styles.grid(4))
+    ])
   }
 }
 
 // MARK: Styles
 
-private let replyButtonStyle: ButtonStyle = { button in
-  button
-    |> UIButton.lens.title(for: .normal) %~ { _ in "Reply" }
-    |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
-    |> UIButton.lens.image(for: .normal) .~ Library.image(named: "reply")
-    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_support_400
-    |> UIButton.lens.tintColor .~ UIColor.ksr_support_400
-    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: 7.17)
-    |> UIButton.lens.contentHorizontalAlignment .~ .left
-}
-
-private let tapRetryPostButtonStyle: ButtonStyle = { button in
-  button
-    |> UIButton.lens.title(for: .normal) %~ { _ in "Failed to post. Tap to retry" }
-    |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
-    |> UIButton.lens.image(for: .normal) .~ Library.image(named: "circle-back")
-    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_celebrate_700
-    |> UIButton.lens.tintColor .~ UIColor.ksr_celebrate_700
-    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: 7.17)
-    |> UIButton.lens.contentHorizontalAlignment .~ .left
+private let rowStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.alignment .~ .top
+    |> \.spacing .~ Styles.grid(1)
 }
 
 // MARK: - Functions
 
-// TODO: - Replace linkURL: "https://kickstarter.com" with actual url
+// TODO: - Replace with tappable linkURL
 
 private func attributedTextCommentRemoved() -> NSAttributedString {
   let regularFontAttribute = [

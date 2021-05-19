@@ -45,17 +45,17 @@ final class CommentCell: UITableViewCell, ValueCell {
     _ = self
       |> baseTableViewCellStyle()
 
+    _ = self.rootStackView
+      |> commentCellRootStackViewStyle
+
     _ = self.bodyTextView
       |> commentBodyTextViewStyle
-
-    _ = self.rootStackView
-      |> rootStackViewStyle
 
     _ = self.replyButton
       |> replyButtonStyle
 
     _ = self.flagButton
-      |> UIButton.lens.image(for: .normal) %~ { _ in UIImage(named: "flag") }
+      |> UIButton.lens.image(for: .normal) %~ { _ in Library.image(named: "flag") }
   }
 
   // MARK: - Configuration

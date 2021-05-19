@@ -2,7 +2,7 @@ import Prelude
 import Prelude_UIKit
 import UIKit
 
-public let rootStackViewStyle: StackViewStyle = { stackView in
+public let commentCellRootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
     |> \.layoutMargins .~ .init(all: Styles.grid(3))
