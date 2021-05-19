@@ -12,4 +12,20 @@ extension CommentsEnvelope {
       totalCount: graphCommentsEnvelope.totalCount
     )
   }
+
+  /**
+   Returns a minimal `CommentsEnvelope` from a `FetchCommentsQuery.Data`
+   */
+  static func commentsEnvelope(from data: FetchCommentsQuery.Data) -> CommentsEnvelope? {
+    // FIXME: Explore simpler way to access the node in edges structure.
+    let comments = data.project?.comments?.edges?.compactMap { $0?.node?.fragments.commentFragment }
+      .compactMap(Comment.comment(from:)) ?? []
+
+    return CommentsEnvelope(
+      comments: comments,
+      cursor: data.project?.comments?.pageInfo.endCursor ?? "",
+      hasNextPage: data.project?.comments?.pageInfo.hasNextPage ?? false,
+      totalCount: data.project?.comments?.totalCount ?? 0
+    )
+  }
 }

@@ -196,7 +196,8 @@
         currency: currency,
         buildVersion: buildVersion,
         deviceIdentifier: deviceIdentifier,
-        perimeterXClient: perimeterXClient
+        perimeterXClient: perimeterXClient,
+        fetchProjectResponse: nil
       )
     }
 

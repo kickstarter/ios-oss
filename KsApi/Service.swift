@@ -1,3 +1,4 @@
+import Apollo
 import Foundation
 import PerimeterX
 import Prelude
@@ -22,6 +23,13 @@ public struct Service: ServiceType {
   public let buildVersion: String
   public let deviceIdentifier: String
   public let perimeterXClient: PerimeterXClientType
+
+  private lazy var apolloClient: ApolloClient = {
+    ApolloClient.client(
+      with: serverConfig.graphQLEndpointUrl,
+      headers: { [x=self] in self.defaultHeaders() }
+    )
+  }()
 
   public init(
     appId: String = Bundle.main.bundleIdentifier ?? "com.kickstarter.kickstarter",
