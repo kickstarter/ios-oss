@@ -102,6 +102,13 @@ public protocol ServiceType {
   /// Fetch comments for a project with a query.
   func fetchComments(query: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
 
+  /// Fetch comments for a project with a slug, cursor and limit.
+  func fetchComments(
+    slug: String,
+    cursor: String?,
+    limit: Int?
+  ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
+
   /// Fetch comments for an update.
   func fetchComments(update: Update) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope>
 
@@ -493,7 +500,7 @@ extension ServiceType {
   }
 
   // PerimeterX authorization header
-  fileprivate var pxHeaders: [String: String] {
+  internal var pxHeaders: [String: String] {
     return self.perimeterXClient.headers()
   }
 

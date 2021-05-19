@@ -24,13 +24,6 @@ public struct Service: ServiceType {
   public let deviceIdentifier: String
   public let perimeterXClient: PerimeterXClientType
 
-  private lazy var apolloClient: ApolloClient = {
-    ApolloClient.client(
-      with: serverConfig.graphQLEndpointUrl,
-      headers: { [x=self] in self.defaultHeaders() }
-    )
-  }()
-
   public init(
     appId: String = Bundle.main.bundleIdentifier ?? "com.kickstarter.kickstarter",
     serverConfig: ServerConfigType = ServerConfig.production,
@@ -55,6 +48,13 @@ public struct Service: ServiceType {
 
     // Initialize PerimeterX
     PXManager.sharedInstance().start(with: Secrets.PerimeterX.appId)
+
+    // Configure GraphQL Client
+    GraphQL.shared.configure(
+      with: serverConfig.graphQLEndpointUrl,
+      headers: self.defaultHeaders,
+      additionalHeaders: { perimeterXClient.headers() }
+    )
   }
 
   public func login(_ oauthToken: OauthTokenAuthType) -> Service {
@@ -185,6 +185,16 @@ public struct Service: ServiceType {
   public func fetchComments(query: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
     return fetch(query: query)
       .mapError(ErrorEnvelope.envelope(from:))
+      .flatMap(CommentsEnvelope.envelopeProducer(from:))
+  }
+
+  public func fetchComments(
+    slug: String,
+    cursor: String?,
+    limit: Int?
+  ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+    return GraphQL.shared.client
+      .fetch(query: FetchCommentsQuery(slug: slug, cursor: cursor, limit: limit))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 

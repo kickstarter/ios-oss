@@ -4,7 +4,7 @@ import XCTest
 final class Comment_GraphCommentTests: XCTestCase {
   func test() {
     let comment = Comment.comment(from: .template)
-    
+
     XCTAssertEqual(comment.id, "VXNlci0yMDU3OTc4MTQ2")
     XCTAssertEqual(
       comment.body,

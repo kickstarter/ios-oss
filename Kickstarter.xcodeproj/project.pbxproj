@@ -579,6 +579,8 @@
 		8ADCCD3E26532D730079D308 /* FetchComments.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 8ADCCD3D26532D730079D308 /* FetchComments.graphql */; };
 		8ADCCD4F2654281E0079D308 /* GraphAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCD4E2654281E0079D308 /* GraphAPI.swift */; };
 		8ADCCD5C265440FD0079D308 /* ApolloClient+RAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADCCD5B265440FD0079D308 /* ApolloClient+RAC.swift */; };
+		8ADCCD7526557D1F0079D308 /* ApolloCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADCCD7226557D130079D308 /* ApolloCore.framework */; };
+		8ADCCD7626557D210079D308 /* ApolloCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADCCD7226557D130079D308 /* ApolloCore.framework */; };
 		8ADF4D7624BCCFD60018AD4B /* PillsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADF4D7524BCCFD60018AD4B /* PillsView.swift */; };
 		8AE09C3A244537BE00036043 /* PledgeDisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */; };
 		8AE09C3C2446330100036043 /* PledgeDisclaimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE09C3B2446330100036043 /* PledgeDisclaimerViewModel.swift */; };
@@ -2123,6 +2125,7 @@
 		8ADCCD3D26532D730079D308 /* FetchComments.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = FetchComments.graphql; sourceTree = "<group>"; };
 		8ADCCD4E2654281E0079D308 /* GraphAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphAPI.swift; sourceTree = "<group>"; };
 		8ADCCD5B265440FD0079D308 /* ApolloClient+RAC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ApolloClient+RAC.swift"; sourceTree = "<group>"; };
+		8ADCCD7226557D130079D308 /* ApolloCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApolloCore.framework; path = Carthage/Build/iOS/ApolloCore.framework; sourceTree = "<group>"; };
 		8ADF4D7524BCCFD60018AD4B /* PillsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillsView.swift; sourceTree = "<group>"; };
 		8AE09C39244537BE00036043 /* PledgeDisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerView.swift; sourceTree = "<group>"; };
 		8AE09C3B2446330100036043 /* PledgeDisclaimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeDisclaimerViewModel.swift; sourceTree = "<group>"; };
@@ -3028,6 +3031,7 @@
 				D0B45B6B1EF858C00020A8DA /* KsApi.framework in Frameworks */,
 				D0D58D862257FAE000532AC1 /* Prelude.framework in Frameworks */,
 				D0D58D8E2257FAE000532AC1 /* Prelude_UIKit.framework in Frameworks */,
+				8ADCCD7526557D1F0079D308 /* ApolloCore.framework in Frameworks */,
 				477731BA25C4E7CF00AF3273 /* FirebaseRemoteConfig.framework in Frameworks */,
 				4748C14525B1021D0098E89E /* FirebaseABTesting.framework in Frameworks */,
 				4748C18825B7A18F0098E89E /* FIRAnalyticsConnector.framework in Frameworks */,
@@ -3059,6 +3063,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8ADCCD7626557D210079D308 /* ApolloCore.framework in Frameworks */,
 				D0BE6F1E228634C700D05A10 /* Prelude.framework in Frameworks */,
 				D0BE6F1F228634C700D05A10 /* ReactiveExtensions.framework in Frameworks */,
 				D0BE6F20228634C700D05A10 /* ReactiveSwift.framework in Frameworks */,
@@ -3981,6 +3986,7 @@
 				D00A373E2258270600F46F47 /* Alamofire.framework */,
 				D00A371F225815FA00F46F47 /* AlamofireImage.framework */,
 				8ADCCD31265309CD0079D308 /* Apollo.framework */,
+				8ADCCD7226557D130079D308 /* ApolloCore.framework */,
 				8A04FE23262781240056F413 /* Appboy_iOS_SDK.framework */,
 				8AA5B064235E25820022F5F0 /* AppCenter.framework */,
 				8AA5B065235E25820022F5F0 /* AppCenterDistribute.framework */,

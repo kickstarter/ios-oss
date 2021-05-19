@@ -23,7 +23,7 @@ public final class CommentsViewModel: CommentsViewModelType,
     // Call this again with a cursor to paginate.
     self.viewDidLoadProperty.signal.switchMap { _ in
       AppEnvironment.current.apiService
-        .fetchComments(query: comments(withProjectSlug: "bring-back-weekly-world-news"))
+        .fetchComments(slug: "bring-back-weekly-world-news", cursor: nil, limit: nil)
         .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
         .materialize()
     }

@@ -18,8 +18,10 @@ extension CommentsEnvelope {
    */
   static func commentsEnvelope(from data: FetchCommentsQuery.Data) -> CommentsEnvelope? {
     // FIXME: Explore simpler way to access the node in edges structure.
-    let comments = data.project?.comments?.edges?.compactMap { $0?.node?.fragments.commentFragment }
-      .compactMap(Comment.comment(from:)) ?? []
+    guard let comments = data.project?.comments?.edges?
+      .compactMap({ $0?.node?.fragments.commentFragment })
+      .compactMap(Comment.comment(from:))
+    else { return nil }
 
     return CommentsEnvelope(
       comments: comments,

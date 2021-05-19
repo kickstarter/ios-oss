@@ -650,6 +650,14 @@
       return producer(for: self.fetchCommentsEnvelopeResult)
     }
 
+    func fetchComments(
+      slug _: String,
+      cursor _: String?,
+      limit _: Int?
+    ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+      return producer(for: self.fetchCommentsEnvelopeResult)
+    }
+
     internal func fetchConfig() -> SignalProducer<Config, ErrorEnvelope> {
       guard let config = self.fetchConfigResponse else { return .empty }
       return SignalProducer(value: config)
