@@ -80,6 +80,8 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
 
 // MARK: Styles
 
+// TODO: Internationalized in the near future.
+
 private let tapRetryPostButtonStyle: ButtonStyle = { button in
   button
     |> UIButton.lens

@@ -79,7 +79,6 @@ final class CommentCell: UITableViewCell, ValueCell {
       |> ksr_constrainViewToMarginsInParent()
 
     NSLayoutConstraint.activate([
-      self.replyButton.widthAnchor.constraint(equalToConstant: Styles.grid(12)),
       self.replyButton.heightAnchor.constraint(equalToConstant: Styles.grid(3)),
       self.flagButton.widthAnchor.constraint(equalToConstant: Styles.grid(3)),
       self.flagButton.heightAnchor.constraint(equalToConstant: Styles.grid(3))
@@ -94,6 +93,8 @@ final class CommentCell: UITableViewCell, ValueCell {
 }
 
 // MARK: Styles
+
+// TODO: Internationalized in the near future.
 
 private let replyButtonStyle: ButtonStyle = { button in
   button

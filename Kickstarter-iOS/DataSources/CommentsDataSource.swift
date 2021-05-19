@@ -8,6 +8,8 @@ internal final class CommentsDataSource: ValueCellDataSource {
     case comments
   }
 
+  // TODO: Get comments from GraphComment
+
   internal func load() {
     let section = Section.comments.rawValue
     self.clearValues(section: section)
