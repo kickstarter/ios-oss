@@ -13,10 +13,6 @@ final class CommentCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var separatorView: UIView = { UIView(frame: .zero)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   private lazy var bodyTextView: UITextView = { UITextView(frame: .zero) }()
   private lazy var replyButton = { UIButton(frame: .zero) }()
   private lazy var flagButton = { UIButton(frame: .zero) }()
@@ -55,9 +51,6 @@ final class CommentCell: UITableViewCell, ValueCell {
     _ = self.rootStackView
       |> rootStackViewStyle
 
-    _ = self.separatorView
-      |> separatorViewStyle
-
     _ = self.replyButton
       |> replyButtonStyle
 
@@ -83,21 +76,13 @@ final class CommentCell: UITableViewCell, ValueCell {
   private func setupConstraints() {
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent(priority: .defaultHigh)
-
-    _ = (self.separatorView, self.contentView)
-      |> ksr_addSubviewToParent()
+      |> ksr_constrainViewToMarginsInParent()
 
     NSLayoutConstraint.activate([
       self.replyButton.widthAnchor.constraint(equalToConstant: Styles.grid(12)),
       self.replyButton.heightAnchor.constraint(equalToConstant: Styles.grid(3)),
       self.flagButton.widthAnchor.constraint(equalToConstant: Styles.grid(3)),
-      self.flagButton.heightAnchor.constraint(equalToConstant: Styles.grid(3)),
-      self.rootStackView.bottomAnchor.constraint(equalTo: self.separatorView.topAnchor, constant: 1),
-      self.separatorView.heightAnchor.constraint(equalToConstant: 1),
-      self.separatorView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
-      self.separatorView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
-      self.separatorView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor)
+      self.flagButton.heightAnchor.constraint(equalToConstant: Styles.grid(3))
     ])
   }
 

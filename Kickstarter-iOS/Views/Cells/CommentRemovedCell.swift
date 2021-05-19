@@ -11,10 +11,6 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var separatorView: UIView = { UIView(frame: .zero)
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   private lazy var commentLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var commentCellHeaderStackView: CommentCellHeaderStackView = {
     CommentCellHeaderStackView(frame: .zero)
@@ -50,9 +46,6 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
       |> \.lineBreakMode .~ .byWordWrapping
       |> \.numberOfLines .~ 0
       |> \.adjustsFontForContentSizeCategory .~ true
-
-    _ = self.separatorView
-      |> separatorViewStyle
   }
 
   // MARK: - Configuration
@@ -69,18 +62,7 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
   private func setupConstraints() {
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent(priority: .defaultHigh)
-
-    _ = (self.separatorView, self.contentView)
-      |> ksr_addSubviewToParent()
-
-    NSLayoutConstraint.activate([
-      self.rootStackView.bottomAnchor.constraint(equalTo: self.separatorView.topAnchor, constant: 1),
-      self.separatorView.heightAnchor.constraint(equalToConstant: 1),
-      self.separatorView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
-      self.separatorView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
-      self.separatorView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor)
-    ])
+      |> ksr_constrainViewToMarginsInParent()
   }
 }
 

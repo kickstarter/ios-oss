@@ -11,12 +11,6 @@ public let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(3)
 }
 
-public let separatorViewStyle: ViewStyle = { (view: UIView) in
-  view
-    |> \.backgroundColor .~ UIColor.ksr_support_200
-    |> \.accessibilityElementsHidden .~ true
-}
-
 public let commentBodyTextViewStyle: TextViewStyle = { textView in
   textView
     |> UITextView.lens.isScrollEnabled .~ false

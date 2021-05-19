@@ -37,7 +37,7 @@ public func == (lhs: DeprecatedComment, rhs: DeprecatedComment) -> Bool {
   return lhs.id == rhs.id
 }
 
-// TODO: remove DemoComment and related sample code
+// TODO: - remove DemoComment and related sample code
 
 public struct DemoComment: Codable {
   public let id: Int
@@ -106,7 +106,7 @@ private let sampleComments: [[String: Any]] =
       "id": 1,
       "first_name": "Kale",
       "last_name": "Mewrcik",
-      "username": "kmewrcik",
+      "username": "kmewrciksdjgddskdkgdkgkgkgkdskfsskdskfkkdsksdk",
       "postTime": "06:15am Yesterday",
       "body": "Hi Nimble! Where are you incorporated? Thank you!",
       "type": "superbacker",
@@ -117,7 +117,7 @@ private let sampleComments: [[String: Any]] =
       "id": 2,
       "first_name": "Ariella",
       "last_name": "Cassin",
-      "username": "acassin1",
+      "username": "acassin1askfkddfksfdkfkdksdkaskakakakddk",
       "postTime": "01:10pm Yesterday",
       "body": "The 36 second video with an obvious break and needlessly sped up when backers have asked repeatedly for a no frills, unedited start to finish video of a working product? That video? Yeah, I doubt its real. Its such a simple request. Ive backed at least 3 projects in which the creators have done live videos to take and answer questions and show off their product.\n\nWhy is Nimble being so weird about this?",
       "type": "backer",

@@ -42,7 +42,8 @@ internal final class CommentsViewController: UITableViewController {
     _ = self.tableView
       |> \.rowHeight .~ UITableView.automaticDimension
       |> \.estimatedRowHeight .~ 100.0
-      |> \.separatorStyle .~ .none
+      |> \.separatorInset .~ .zero
+      |> \.separatorColor .~ UIColor.ksr_support_200
   }
 
   // MARK: - View Model
