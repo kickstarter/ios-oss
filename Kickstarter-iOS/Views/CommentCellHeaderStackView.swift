@@ -139,7 +139,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
 
 private let creatorTagLabelStyle: LabelStyle = { label in
   label
-    |> \.text .~ "Creator"
+    |> \.text .~ Strings.Creator()
     |> \.font .~ UIFont.ksr_footnote()
     |> \.textColor .~ UIColor.ksr_create_700
     |> \.backgroundColor .~ UIColor.ksr_create_700.withAlphaComponent(0.06)
@@ -150,7 +150,7 @@ private let creatorTagLabelStyle: LabelStyle = { label in
 
 private let youTagLabelStyle: LabelStyle = { label in
   label
-    |> \.text .~ "You"
+    |> \.text .~ localizedString(key: "You_tag_for_comment_author", defaultValue: "You")
     |> \.font .~ UIFont.ksr_footnote()
     |> \.textColor .~ UIColor.ksr_trust_700
     |> \.backgroundColor .~ UIColor.ksr_trust_100
@@ -161,7 +161,7 @@ private let youTagLabelStyle: LabelStyle = { label in
 
 private let superbackerTagLabelStyle: LabelStyle = { label in
   label
-    |> \.text .~ "SUPERBACKER"
+    |> \.text .~ localizedString(key: "Superbacker", defaultValue: "SUPERBACKER")
     |> \.font .~ UIFont.ksr_headline(size: 10)
     |> \.textColor .~ UIColor.ksr_celebrate_500
     |> \.adjustsFontForContentSizeCategory .~ true

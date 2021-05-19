@@ -52,7 +52,7 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
       |> \.adjustsFontForContentSizeCategory .~ true
 
     _ = self.separatorView
-      |> \.backgroundColor .~ UIColor.hex(0xF0F0F0)
+      |> \.backgroundColor .~ UIColor.ksr_support_200
       |> \.accessibilityElementsHidden .~ true
   }
 
@@ -101,8 +101,8 @@ private let replyButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.title(for: .normal) %~ { _ in "Reply" }
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "reply")
-    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.hex(0x656969)
-    |> UIButton.lens.tintColor .~ UIColor.hex(0x656969)
+    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_support_400
+    |> UIButton.lens.tintColor .~ UIColor.ksr_support_400
     |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: 7.17)
     |> UIButton.lens.contentHorizontalAlignment .~ .left
 }
@@ -123,7 +123,7 @@ private let tapRetryPostButtonStyle: ButtonStyle = { button in
 private func attributedTextCommentRemoved() -> NSAttributedString {
   let regularFontAttribute = [
     NSAttributedString.Key.font: UIFont.ksr_callout(),
-    NSAttributedString.Key.foregroundColor: UIColor.hex(0x656969)
+    NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400
   ]
   let coloredFontAttribute = [
     NSAttributedString.Key.font: UIFont.ksr_callout(),
@@ -131,11 +131,17 @@ private func attributedTextCommentRemoved() -> NSAttributedString {
   ]
 
   let attributedString = NSMutableAttributedString(
-    string: "This comment has been removed by Kickstarter. ",
+    string: localizedString(
+      key: "This_comment_has_been_removed_by_Kickstarter",
+      defaultValue: "This comment has been removed by Kickstarter. "
+    ),
     attributes: regularFontAttribute
   )
   let attributedString2 = NSMutableAttributedString(
-    string: "Learn more about comment guidelines",
+    string: localizedString(
+      key: "Learn_more_about_comment_guidelines",
+      defaultValue: "Learn more about comment guidelines."
+    ),
     attributes: coloredFontAttribute
   )
   attributedString.append(attributedString2)

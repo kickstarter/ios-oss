@@ -126,17 +126,18 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
 
 private let separatorViewStyle: ViewStyle = { (view: UIView) in
   view
-    |> \.backgroundColor .~ UIColor.hex(0xF0F0F0)
+    |> \.backgroundColor .~ UIColor.ksr_support_200
     |> \.accessibilityElementsHidden .~ true
 }
 
 private let replyButtonStyle: ButtonStyle = { button in
   button
-    |> UIButton.lens.title(for: .normal) %~ { _ in "Reply" }
+    |> UIButton.lens
+    .title(for: .normal) %~ { _ in localizedString(key: "Reply_a_comment", defaultValue: "Reply") }
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "reply")
-    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.hex(0x656969)
-    |> UIButton.lens.tintColor .~ UIColor.hex(0x656969)
+    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_support_400
+    |> UIButton.lens.tintColor .~ UIColor.ksr_support_400
     |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: 7.17)
     |> UIButton.lens.contentHorizontalAlignment .~ .left
 }

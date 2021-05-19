@@ -37,7 +37,7 @@ public func == (lhs: DeprecatedComment, rhs: DeprecatedComment) -> Bool {
   return lhs.id == rhs.id
 }
 
-// To be removed
+// TODO: remove DemoComment and related sample code
 
 public struct DemoComment: Codable {
   public let id: Int

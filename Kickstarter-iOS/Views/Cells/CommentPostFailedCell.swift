@@ -58,7 +58,7 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
       |> rootStackViewStyle
 
     _ = self.separatorView
-      |> \.backgroundColor .~ UIColor.hex(0xF0F0F0)
+      |> \.backgroundColor .~ UIColor.ksr_support_200
       |> \.accessibilityElementsHidden .~ true
 
     _ = self.tapRetryPostButton
@@ -112,20 +112,13 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(3)
 }
 
-private let replyButtonStyle: ButtonStyle = { button in
-  button
-    |> UIButton.lens.title(for: .normal) %~ { _ in "Reply" }
-    |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
-    |> UIButton.lens.image(for: .normal) .~ Library.image(named: "reply")
-    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.hex(0x656969)
-    |> UIButton.lens.tintColor .~ UIColor.hex(0x656969)
-    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: 7.17)
-    |> UIButton.lens.contentHorizontalAlignment .~ .left
-}
-
 private let tapRetryPostButtonStyle: ButtonStyle = { button in
   button
-    |> UIButton.lens.title(for: .normal) %~ { _ in "Failed to post. Tap to retry" }
+    |> UIButton.lens
+    .title(for: .normal) %~
+    { _ in
+      localizedString(key: "Failed_to_post_Tap_to_retry", defaultValue: "Failed to post. Tap to retry")
+    }
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "circle-back")
     |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_celebrate_700
