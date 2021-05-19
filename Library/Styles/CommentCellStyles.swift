@@ -1,9 +1,30 @@
-//
-//  CommentCellStyles.swift
-//  Library-iOS
-//
-//  Created by Afees Lawal on 19/05/2021.
-//  Copyright © 2021 Kickstarter. All rights reserved.
-//
+import Prelude
+import Prelude_UIKit
+import UIKit
 
-import Foundation
+public let rootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .vertical
+    |> \.layoutMargins .~ .init(all: Styles.grid(3))
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.insetsLayoutMarginsFromSafeArea .~ false
+    |> \.spacing .~ Styles.grid(3)
+}
+
+public let separatorViewStyle: ViewStyle = { (view: UIView) in
+  view
+    |> \.backgroundColor .~ UIColor.ksr_support_200
+    |> \.accessibilityElementsHidden .~ true
+}
+
+public let commentBodyTextViewStyle: TextViewStyle = { textView in
+  textView
+    |> UITextView.lens.isScrollEnabled .~ false
+    |> UITextView.lens.textContainerInset .~ UIEdgeInsets.zero
+    |> UITextView.lens.textContainer.lineFragmentPadding .~ 0
+    |> UITextView.lens.backgroundColor .~ UIColor.ksr_white
+    |> \.textColor .~ .ksr_support_700
+    |> \.textAlignment .~ .left
+    |> \.font .~ UIFont.ksr_callout()
+    |> \.adjustsFontForContentSizeCategory .~ true
+}

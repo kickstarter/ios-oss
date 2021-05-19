@@ -52,8 +52,7 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
       |> \.adjustsFontForContentSizeCategory .~ true
 
     _ = self.separatorView
-      |> \.backgroundColor .~ UIColor.ksr_support_200
-      |> \.accessibilityElementsHidden .~ true
+      |> separatorViewStyle
   }
 
   // MARK: - Configuration
@@ -87,15 +86,6 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
 
 // MARK: Styles
 
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .vertical
-    |> \.layoutMargins .~ .init(all: Styles.grid(3))
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.insetsLayoutMarginsFromSafeArea .~ false
-    |> \.spacing .~ Styles.grid(3)
-}
-
 private let replyButtonStyle: ButtonStyle = { button in
   button
     |> UIButton.lens.title(for: .normal) %~ { _ in "Reply" }
@@ -120,6 +110,8 @@ private let tapRetryPostButtonStyle: ButtonStyle = { button in
 
 // MARK: - Functions
 
+// TODO: - Replace linkURL: "https://kickstarter.com" with actual url
+
 private func attributedTextCommentRemoved() -> NSAttributedString {
   let regularFontAttribute = [
     NSAttributedString.Key.font: UIFont.ksr_callout(),
@@ -137,14 +129,14 @@ private func attributedTextCommentRemoved() -> NSAttributedString {
     ),
     attributes: regularFontAttribute
   )
-  let attributedString2 = NSMutableAttributedString(
+  let learnMorAttributedString = NSMutableAttributedString(
     string: localizedString(
       key: "Learn_more_about_comment_guidelines",
       defaultValue: "Learn more about comment guidelines."
     ),
     attributes: coloredFontAttribute
   )
-  attributedString.append(attributedString2)
+  attributedString.append(learnMorAttributedString)
 
   return attributedString
 }

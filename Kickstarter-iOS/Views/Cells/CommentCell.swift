@@ -50,14 +50,7 @@ final class CommentCell: UITableViewCell, ValueCell {
       |> baseTableViewCellStyle()
 
     _ = self.bodyTextView
-      |> UITextView.lens.isScrollEnabled .~ false
-      |> UITextView.lens.textContainerInset .~ UIEdgeInsets.zero
-      |> UITextView.lens.textContainer.lineFragmentPadding .~ 0
-      |> UITextView.lens.backgroundColor .~ UIColor.ksr_white
-      |> \.textColor .~ .ksr_support_700
-      |> \.textAlignment .~ .left
-      |> \.font .~ UIFont.ksr_callout()
-      |> \.adjustsFontForContentSizeCategory .~ true
+      |> commentBodyTextViewStyle
 
     _ = self.rootStackView
       |> rootStackViewStyle
@@ -116,21 +109,6 @@ final class CommentCell: UITableViewCell, ValueCell {
 }
 
 // MARK: Styles
-
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .vertical
-    |> \.layoutMargins .~ .init(all: Styles.grid(3))
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.insetsLayoutMarginsFromSafeArea .~ false
-    |> \.spacing .~ Styles.grid(3)
-}
-
-private let separatorViewStyle: ViewStyle = { (view: UIView) in
-  view
-    |> \.backgroundColor .~ UIColor.ksr_support_200
-    |> \.accessibilityElementsHidden .~ true
-}
 
 private let replyButtonStyle: ButtonStyle = { button in
   button
