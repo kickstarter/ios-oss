@@ -37,6 +37,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
     _ = self
       |> \.axis .~ .horizontal
       |> \.spacing .~ Styles.grid(2)
+      |> \.alignment .~ .top
 
     _ = self.usernameTimeLabelsStackView
       |> \.axis .~ .vertical
@@ -83,14 +84,12 @@ internal final class CommentCellHeaderStackView: UIStackView {
       _ = self.userNameTagLabel
         |> \.insets .~ .zero
         |> superbackerTagLabelStyle
-
-      _ = self
-        |> \.alignment .~ .top
     case .you:
       _ = self.userNameTagLabel
         |> youTagLabelStyle
     default:
-      break
+      _ = self.userNameTagLabel
+        |> \.text .~ nil
     }
   }
 
@@ -159,7 +158,6 @@ private let youTagLabelStyle: LabelStyle = { label in
     |> \.backgroundColor .~ UIColor.ksr_trust_100
     |> roundedStyle(cornerRadius: Styles.grid(1))
     |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.textAlignment .~ NSTextAlignment.right
 }
 
 // TODO: Internationalized in the near future.
