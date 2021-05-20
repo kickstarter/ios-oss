@@ -32,10 +32,7 @@ internal final class CommentsViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    tableView.keyboardDismissMode = .interactive
-    tableView.estimatedRowHeight = UITableView.automaticDimension
-    // This would be replaced with actual Comment cells.
-    tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellId")
+    self.configureViews()
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -48,6 +45,13 @@ internal final class CommentsViewController: UITableViewController {
     return true
   }
 
+  // MARK: - Views
+
+  private func configureViews() {
+    // TODO: Use actual data from ViewModel to configure composer.
+    self.commentComposer.configure(with: (nil, true))
+  }
+
   // MARK: - Styles
 
   internal override func bindStyles() {
@@ -57,21 +61,4 @@ internal final class CommentsViewController: UITableViewController {
   // MARK: - View Model
 
   internal override func bindViewModel() {}
-}
-
-// This should be removed when DataSource for comments is setup
-extension CommentsViewController {
-  // MARK: - UITableViewDataSource & UITableViewDelegate
-
-  override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-    return 25
-  }
-
-  override func tableView(_ tableView: UITableView, cellForRowAt _: IndexPath) -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: "cellId") else { fatalError() }
-    cell.textLabel?
-      .text = "Seen on reddit, this promises to be a great game with beautiful pixdel arts, love it!"
-    cell.textLabel?.numberOfLines = 0
-    return cell
-  }
 }

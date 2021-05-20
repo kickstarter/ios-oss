@@ -18,19 +18,16 @@ final class CommentInputContainerView: UIView {
 
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
-  private lazy var inputTextView: CommentInputTextView = {
+  lazy var inputTextView: CommentInputTextView = {
     CommentInputTextView(frame: .zero)
-      |> \.delegate .~ self
   }()
 
-  private let placeholderLabel: UILabel = { UILabel(frame: .zero) }()
+  let placeholderLabel: UILabel = { UILabel(frame: .zero) }()
 
-  private lazy var postButton: UIButton = {
+  lazy var postButton: UIButton = {
     UIButton(type: .system)
       |> \.isHidden .~ true
   }()
-
-  private let characterLimit: Int = 9_000
 
   // MARK: - Lifecycle
 
@@ -55,8 +52,6 @@ final class CommentInputContainerView: UIView {
     _ = self
       |> \.autoresizingMask .~ .flexibleHeight
       |> \.layoutMargins .~ .init(left: 18)
-
-    _ = self.inputTextView |> \.delegate .~ self
 
     _ = ([self.inputTextView, self.postButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -93,35 +88,12 @@ final class CommentInputContainerView: UIView {
     _ = self.postButton
       |> UIButton.lens.titleLabel.font %~ { _ in UIFont.ksr_body(size: 15).weighted(.semibold) }
       |> UIButton.lens.titleColor(for: .normal) %~ { _ in .ksr_create_700 }
-      // To be replaced with a type-safe string when copy is available.
-      |> UIButton.lens.title(for: .normal) %~ { _ in "Post" }
+      // TODO: To be replaced with a type-safe string when copy is available.
+      |> UIButton.lens.title(for: .normal) %~ { _ in localizedString(key: "Post", defaultValue: "Post") }
   }
 
   override func traitCollectionDidChange(_: UITraitCollection?) {
     self.inputTextView.invalidateIntrinsicContentSize()
-  }
-}
-
-// MARK: - UITextViewDelegate
-
-extension CommentInputContainerView: UITextViewDelegate {
-  func textViewDidChange(_ textView: UITextView) {
-    self.inputTextView.invalidateIntrinsicContentSize()
-    self.handleEmptyState(textView.text.isEmpty)
-  }
-
-  private func handleEmptyState(_ isEmpty: Bool) {
-    _ = self.placeholderLabel |> \.isHidden .~ !isEmpty
-    _ = self.postButton |> \.isHidden .~ isEmpty
-    _ = self.backgroundColor = isEmpty ? .ksr_support_100 : .ksr_white
-  }
-
-  func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
-                replacementText text: String) -> Bool {
-    let currentText = textView.text ?? ""
-    guard let stringRange = Range(range, in: currentText) else { return false }
-    let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
-    return updatedText.count <= self.characterLimit
   }
 }
 
@@ -150,7 +122,7 @@ private let placeholderLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_support_400
     |> \.font .~ UIFont.ksr_body(size: 15.0)
-    // To be replaced with a type-safe string when copy is available.
-    |> \.text .~ "Leave a comment..."
+    // TODO: To be replaced with a type-safe string when copy is available.
+    |> \.text .~ localizedString(key: "Leave_a_comment", defaultValue: "Leave a comment...")
     |> \.adjustsFontForContentSizeCategory .~ true
 }

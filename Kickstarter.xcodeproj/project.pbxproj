@@ -79,6 +79,8 @@
 		20ABFEE4264EE06400AA48EC /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCBE98264D5EB100510EDF /* CommentInputTextView.swift */; };
 		20BCBEB0264DAA4B00510EDF /* CommentComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCBEA2264D83C600510EDF /* CommentComposerView.swift */; };
 		20BCBEB7264DAA5500510EDF /* CommentInputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCBE9D264D6E6500510EDF /* CommentInputContainerView.swift */; };
+		20D7EE6126544F200094B04C /* CommentComposerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EE6026544F200094B04C /* CommentComposerViewModel.swift */; };
+		20D7EE6626544F8B0094B04C /* CommentComposerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */; };
 		37059843226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37059842226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift */; };
 		3705CF0F222EE7670025D37E /* EnvironmentVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */; };
 		3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */; };
@@ -1665,6 +1667,8 @@
 		20BCBE98264D5EB100510EDF /* CommentInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputTextView.swift; sourceTree = "<group>"; };
 		20BCBE9D264D6E6500510EDF /* CommentInputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputContainerView.swift; sourceTree = "<group>"; };
 		20BCBEA2264D83C600510EDF /* CommentComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerView.swift; sourceTree = "<group>"; };
+		20D7EE6026544F200094B04C /* CommentComposerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewModel.swift; sourceTree = "<group>"; };
+		20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewModelTests.swift; sourceTree = "<group>"; };
 		37059842226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationViewController.swift; sourceTree = "<group>"; };
 		3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariables.swift; sourceTree = "<group>"; };
 		3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariablesTests.swift; sourceTree = "<group>"; };
@@ -4184,6 +4188,8 @@
 				A7ED1F691E831C5C00BFFA01 /* DeprecatedCommentsEmptyStateCellViewModelTests.swift */,
 				A7F441961D005A9400FE6FC5 /* DeprecatedCommentsViewModel.swift */,
 				A7ED1F5F1E831C5C00BFFA01 /* DeprecatedCommentsViewModelTests.swift */,
+				20D7EE6026544F200094B04C /* CommentComposerViewModel.swift */,
+				20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */,
 				47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */,
 				373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */,
 				373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */,
@@ -5303,6 +5309,7 @@
 				D6050F54240463F100E029D2 /* LandingPageStatsViewModel.swift in Sources */,
 				D78E038E229305E90043E92F /* PledgeStateCTAType.swift in Sources */,
 				A73379451D0E36A600C91445 /* Colors.swift in Sources */,
+				20D7EE6626544F8B0094B04C /* CommentComposerViewModelTests.swift in Sources */,
 				01C7CDB11D13462500D9E0D1 /* DashboardRewardRowStackViewViewModel.swift in Sources */,
 				5981BE101D7F4656002E49F1 /* DeprecatedCommentStyles.swift in Sources */,
 				A7B1EBB11D901DE800BEE8B3 /* ProjectPamphletViewModel.swift in Sources */,
@@ -5509,6 +5516,7 @@
 				A718885D1DE0DDCE0094856D /* ShortcutItem.swift in Sources */,
 				8AF91CDD22EF5AF8005F9C90 /* Feature.swift in Sources */,
 				9D25472D1D23135F0053844D /* ProjectActivityCommentCellViewModel.swift in Sources */,
+				20D7EE6126544F200094B04C /* CommentComposerViewModel.swift in Sources */,
 				A755116A1C8642C3005355CF /* UILabel+LocalizedKey.swift in Sources */,
 				A755116B1C8642C3005355CF /* UILabel+SimpleHTML.swift in Sources */,
 				5955E6811D21805200B4153D /* DashboardReferrersCellViewModel.swift in Sources */,

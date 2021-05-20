@@ -11,7 +11,13 @@ public protocol CommentsViewModelInputs {
   func viewDidLoad()
 }
 
-public protocol CommentsViewModelOutputs {}
+public protocol CommentsViewModelOutputs {
+  /// Emits a URL for the avatar image view.
+  var avatarURL: Signal<URL?, Never> { get }
+
+  /// Emits a boolean that determines if the comment input area is visible.
+  var inputAreaVisible: Signal<Bool, Never> { get }
+}
 
 public protocol CommentsViewModelType {
   var inputs: CommentsViewModelInputs { get }
@@ -22,6 +28,10 @@ public final class CommentsViewModel: CommentsViewModelType,
   CommentsViewModelInputs,
   CommentsViewModelOutputs {
   public init() {
+    let currentUser = self.viewDidLoadProperty.signal
+      .map { _ in AppEnvironment.current.currentUser }
+      .skipNil()
+
     // FIXME: Configure this VM with a project in order to feed the slug in here to fetch comments
     // Call this again with a cursor to paginate.
     self.viewDidLoadProperty.signal.switchMap { _ in
@@ -46,6 +56,12 @@ public final class CommentsViewModel: CommentsViewModelType,
         .materialize()
     }
     .observeValues { print($0) }
+
+    self.avatarURL = currentUser.map { URL(string: $0.avatar.medium) }
+
+    // When Project is supplied to the config, we will use that to determine who can comment on the project
+    // and also to determine whethere input area is visible.
+    self.inputAreaVisible = self.viewDidLoadProperty.signal.mapConst(true)
   }
 
   fileprivate let postCommentButtonTappedProperty = MutableProperty(())
@@ -57,6 +73,9 @@ public final class CommentsViewModel: CommentsViewModelType,
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
+
+  public var avatarURL: Signal<URL?, Never>
+  public var inputAreaVisible: Signal<Bool, Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }

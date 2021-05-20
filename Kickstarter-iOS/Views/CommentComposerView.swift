@@ -9,7 +9,6 @@ private enum Layout {
 
   enum Avatar {
     static let diameter: CGFloat = 44.0
-    static let margin: CGFloat = 18.0
   }
 }
 
@@ -17,29 +16,28 @@ final class CommentComposerView: UIView {
   // MARK: - Properties
 
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-
   private let topBorderView = {
     UIView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let inputContainerView: CommentInputContainerView = {
+  private lazy var inputContainerView: CommentInputContainerView = {
     CommentInputContainerView()
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var avatarImageView = {
+  lazy var avatarImageView = {
     CircleAvatarImageView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let onlyBackersLabel: UILabel = {
+  private lazy var onlyBackersLabel: UILabel = {
     UILabel(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  // This will be replaced with a ViewModel ouput binding
-  private let isBacker = false
+  private let characterLimit: Int = 9_000
+  private let viewModel: CommentComposerViewModelType = CommentComposerViewModel()
 
   // MARK: - Lifecycle
 
@@ -48,6 +46,7 @@ final class CommentComposerView: UIView {
 
     self.configureViews()
     self.setupConstraints()
+    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
@@ -58,17 +57,23 @@ final class CommentComposerView: UIView {
     return .zero
   }
 
+  // MARK: - Configuration
+
+  public func configure(with data: CommentComposerViewData) {
+    self.viewModel.inputs.configure(with: data)
+  }
+
   // MARK: - Views
 
   private func configureViews() {
     _ = self |> \.autoresizingMask .~ .flexibleHeight
     _ = self |> \.backgroundColor .~ .ksr_white
 
-    _ = self.inputContainerView
-      |> \.isHidden .~ !self.isBacker
+    _ = self.inputContainerView.inputTextView
+      |> \.delegate .~ self
 
-    _ = self.onlyBackersLabel
-      |> \.isHidden .~ self.isBacker
+    self.inputContainerView.postButton
+      .addTarget(self, action: #selector(self.postButtonPressed), for: .touchUpInside)
 
     _ = ([self.avatarImageView, self.inputContainerView, self.onlyBackersLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -100,22 +105,81 @@ final class CommentComposerView: UIView {
     ])
   }
 
+  // MARK: - Styles
+
   override func bindStyles() {
     super.bindStyles()
 
     _ = self.rootStackView
       |> rootStackViewStyle
 
-    self.rootStackView.alignment = self.isBacker ? .bottom : .leading
-
     _ = self.topBorderView
       |> \.backgroundColor .~ .ksr_support_300
 
     _ = self.avatarImageView
-      |> \.backgroundColor .~ .ksr_create_700
       |> UIImageView.lens.image .~ UIImage(named: "avatar--placeholder")
 
     _ = self.onlyBackersLabel |> onlyBackersLabelStyle
+  }
+
+  // MARK: - ViewModel
+
+  override func bindViewModel() {
+    super.bindViewModel()
+
+    self.avatarImageView.rac.ksr_imageUrl = self.viewModel.outputs.avatarURL
+
+    self.viewModel.outputs.inputAreaVisible
+      .observeForUI()
+      .observeValues { [weak self] isVisible in
+        self?.showInputArea(isVisible)
+      }
+
+    self.viewModel.outputs.inputEmpty
+      .observeForUI()
+      .observeValues { [weak self] isEmpty in
+        self?.handleInputEmptyState(isEmpty)
+      }
+  }
+
+  // MARK: - Helpers
+
+  private func showInputArea(_ show: Bool) {
+    self.rootStackView.alignment = show ? .bottom : .leading
+    _ = self.inputContainerView
+      |> \.isHidden .~ !show
+
+    _ = self.onlyBackersLabel
+      |> \.isHidden .~ show
+  }
+
+  private func handleInputEmptyState(_ isEmpty: Bool) {
+    _ = self.inputContainerView.placeholderLabel |> \.isHidden .~ !isEmpty
+    _ = self.inputContainerView.postButton |> \.isHidden .~ isEmpty
+    _ = self.inputContainerView.backgroundColor = isEmpty ? .ksr_support_100 : .ksr_white
+  }
+
+  // MARK: - Actions
+
+  @objc private func postButtonPressed() {
+    self.viewModel.inputs.postButtonPressed()
+  }
+}
+
+// MARK: - UITextViewDelegate
+
+extension CommentComposerView: UITextViewDelegate {
+  func textViewDidChange(_ textView: UITextView) {
+    self.inputContainerView.inputTextView.invalidateIntrinsicContentSize()
+    self.viewModel.inputs.textDidChange(textView.text)
+  }
+
+  func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
+                replacementText text: String) -> Bool {
+    let currentText = textView.text ?? ""
+    guard let stringRange = Range(range, in: currentText) else { return false }
+    let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
+    return updatedText.count <= self.characterLimit
   }
 }
 
@@ -134,7 +198,8 @@ private let onlyBackersLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_support_400
     |> \.font .~ UIFont.ksr_body(size: 15.0)
-    // To be replaced with a type-safe string when copy is available.
-    |> \.text .~ "Only backers can leave comments"
+    // TODO: To be replaced with a type-safe string when copy is available.
+    |> \.text .~
+    localizedString(key: "Only_backers_can_leave_comments", defaultValue: "Only backers can leave comments")
     |> \.adjustsFontForContentSizeCategory .~ true
 }
