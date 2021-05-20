@@ -62,15 +62,15 @@ public final class CommentsViewModel: CommentsViewModelType,
       .skipRepeats()
       .filter { isClose in isClose }
       .ignoreValues()
-    
+
     let requestFirstPageWith = Signal.merge(
       initialProject,
       initialProject.takeWhen(self.refreshProperty.signal)
       /** TODO: Add this in once comment composer is added.
-      projectOrUpdate.takeWhen(self.commentPostedProperty.signal)
-       **/
+       projectOrUpdate.takeWhen(self.commentPostedProperty.signal)
+        **/
     )
-    
+
     let (comments, isLoading, _, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,

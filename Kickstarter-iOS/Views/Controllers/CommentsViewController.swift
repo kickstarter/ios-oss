@@ -8,13 +8,25 @@ import UIKit
 internal final class CommentsViewController: UITableViewController {
   // MARK: - Properties
 
+  private lazy var refreshIndicator: UIRefreshControl = {
+    let refreshControl = UIRefreshControl()
+
+    refreshControl.addTarget(
+      self,
+      action: #selector(self.refresh),
+      for: .valueChanged
+    )
+
+    return refreshControl
+  }()
+
   private let viewModel: CommentsViewModelType = CommentsViewModel()
   private let dataSource = CommentsDataSource()
-  private let refreshIndicator = UIRefreshControl()
 
-  // MARK: - Configuration
+  // MARK: - Accessors
 
-  internal static func configuredWith(project: Project? = nil, update: Update? = nil) -> CommentsViewController {
+  internal static func configuredWith(project: Project? = nil,
+                                      update: Update? = nil) -> CommentsViewController {
     let vc = CommentsViewController.instantiate()
     vc.viewModel.inputs.configureWith(project: project, update: update)
 
@@ -25,10 +37,12 @@ internal final class CommentsViewController: UITableViewController {
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
-    
-    self.setupTableView()
-    self.setupRefreshControl()
-    
+
+    self.tableView.registerCellClass(CommentCell.self)
+    self.tableView.dataSource = self.dataSource
+    self.tableView.delegate = self
+    self.tableView.refreshControl = self.refreshIndicator
+
     self.viewModel.inputs.viewDidLoad()
   }
 
@@ -48,34 +62,22 @@ internal final class CommentsViewController: UITableViewController {
         self.dataSource.updateCommentsSection(comments: comments)
         self.tableView.reloadData()
       }
-    
+
     self.viewModel.outputs.commentsAreLoading
       .observeForUI()
       .observeValues { [weak self] in
         $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
       }
   }
-  
-  // MARK: Helpers
-  private func setupTableView() {
-    self.tableView.registerCellClass(CommentCell.self)
-    self.tableView.dataSource = self.dataSource
-    self.tableView.delegate = self
-    self.tableView.refreshControl = refreshIndicator
-  }
-  
-  private func setupRefreshControl() {
-    refreshIndicator.addTarget(self,
-                               action: #selector(self.refresh),
-                               for: .valueChanged)
-  }
-  
+
+  // MARK: - Actions
+
   @objc private func refresh() {
     self.viewModel.inputs.refresh()
   }
 }
 
-// MARK: - Tableview Delegates
+// MARK: - CommentsViewController Delegate
 
 extension CommentsViewController {
   override func tableView(_: UITableView, willDisplay _: UITableViewCell, forRowAt indexPath: IndexPath) {
