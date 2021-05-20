@@ -12,6 +12,10 @@ private enum Layout {
   }
 }
 
+protocol CommentComposerViewDelegate: AnyObject {
+  func commentComposerView(_ view: CommentComposerView, didSubmitText text: String)
+}
+
 final class CommentComposerView: UIView {
   // MARK: - Properties
 
@@ -36,7 +40,7 @@ final class CommentComposerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let characterLimit: Int = 9_000
+  weak var delegate: CommentComposerViewDelegate?
   private let viewModel: CommentComposerViewModelType = CommentComposerViewModel()
 
   // MARK: - Lifecycle
@@ -61,6 +65,10 @@ final class CommentComposerView: UIView {
 
   public func configure(with data: CommentComposerViewData) {
     self.viewModel.inputs.configure(with: data)
+  }
+
+  public func commentPostedSuccessfully() {
+    self.viewModel.inputs.bodyTextDidChange("")
   }
 
   // MARK: - Views
@@ -128,35 +136,32 @@ final class CommentComposerView: UIView {
     super.bindViewModel()
 
     self.avatarImageView.rac.ksr_imageUrl = self.viewModel.outputs.avatarURL
+    self.inputContainerView.placeholderLabel.rac.hidden = self.viewModel.outputs.placeholderHidden
+    self.inputContainerView.postButton.rac.hidden = self.viewModel.outputs.postButtonHidden
 
-    self.viewModel.outputs.inputAreaVisible
+    self.viewModel.outputs.notifyDelegateDidSubmitText
       .observeForUI()
-      .observeValues { [weak self] isVisible in
-        self?.showInputArea(isVisible)
+      .observeValues { [weak self] text in
+        guard let self = self else { return }
+        self.delegate?.commentComposerView(self, didSubmitText: text)
       }
 
-    self.viewModel.outputs.inputEmpty
+    self.viewModel.outputs.inputAreaHidden
       .observeForUI()
-      .observeValues { [weak self] isEmpty in
-        self?.handleInputEmptyState(isEmpty)
+      .observeValues { [weak self] isHidden in
+        self?.hideInputArea(isHidden)
       }
   }
 
   // MARK: - Helpers
 
-  private func showInputArea(_ show: Bool) {
-    self.rootStackView.alignment = show ? .bottom : .leading
+  private func hideInputArea(_ hide: Bool) {
+    self.rootStackView.alignment = hide ? .leading : .bottom
     _ = self.inputContainerView
-      |> \.isHidden .~ !show
+      |> \.isHidden .~ hide
 
     _ = self.onlyBackersLabel
-      |> \.isHidden .~ show
-  }
-
-  private func handleInputEmptyState(_ isEmpty: Bool) {
-    _ = self.inputContainerView.placeholderLabel |> \.isHidden .~ !isEmpty
-    _ = self.inputContainerView.postButton |> \.isHidden .~ isEmpty
-    _ = self.inputContainerView.backgroundColor = isEmpty ? .ksr_support_100 : .ksr_white
+      |> \.isHidden .~ !hide
   }
 
   // MARK: - Actions
@@ -164,6 +169,8 @@ final class CommentComposerView: UIView {
   @objc private func postButtonPressed() {
     self.viewModel.inputs.postButtonPressed()
   }
+
+  private let characterLimit = 100
 }
 
 // MARK: - UITextViewDelegate
@@ -171,15 +178,12 @@ final class CommentComposerView: UIView {
 extension CommentComposerView: UITextViewDelegate {
   func textViewDidChange(_ textView: UITextView) {
     self.inputContainerView.inputTextView.invalidateIntrinsicContentSize()
-    self.viewModel.inputs.textDidChange(textView.text)
+    self.viewModel.inputs.bodyTextDidChange(textView.text)
   }
 
   func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
                 replacementText text: String) -> Bool {
-    let currentText = textView.text ?? ""
-    guard let stringRange = Range(range, in: currentText) else { return false }
-    let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
-    return updatedText.count <= self.characterLimit
+    return self.viewModel.inputs.textViewShouldChange(text: textView.text, in: range, replacementText: text)
   }
 }
 

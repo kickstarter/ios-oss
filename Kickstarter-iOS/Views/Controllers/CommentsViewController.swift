@@ -15,12 +15,7 @@ internal final class CommentsViewController: UITableViewController {
   // MARK: - Properties
 
   private lazy var commentComposer: CommentComposerView = {
-    let frame = CGRect(
-      x: 0,
-      y: 0,
-      width: view.frame.width,
-      height: Layout.Composer.originalHeight
-    )
+    let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: Layout.Composer.originalHeight)
     let view = CommentComposerView(frame: frame)
     return view
   }()
@@ -48,8 +43,9 @@ internal final class CommentsViewController: UITableViewController {
   // MARK: - Views
 
   private func configureViews() {
-    // TODO: Use actual data from ViewModel to configure composer.
+    // TODO: Use actual data from CommentViewModel to configure composer.
     self.commentComposer.configure(with: (nil, true))
+    self.commentComposer.delegate = self
   }
 
   // MARK: - Styles
@@ -61,4 +57,10 @@ internal final class CommentsViewController: UITableViewController {
   // MARK: - View Model
 
   internal override func bindViewModel() {}
+}
+
+extension CommentsViewController: CommentComposerViewDelegate {
+  func commentComposerView(_: CommentComposerView, didSubmitText _: String) {
+    // TODO: Capture submitted user comment in this delegate method.
+  }
 }
