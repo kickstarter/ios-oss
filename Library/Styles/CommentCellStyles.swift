@@ -21,4 +21,6 @@ public let commentBodyTextViewStyle: TextViewStyle = { textView in
     |> \.textAlignment .~ .left
     |> \.font .~ UIFont.ksr_callout()
     |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.isEditable .~ false
+    |> \.isUserInteractionEnabled .~ false
 }

@@ -6,21 +6,21 @@ import UIKit
 final class CommentCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  fileprivate let viewModel = CommentCellViewModel()
+  private let viewModel = CommentCellViewModel()
+
+  private lazy var bodyTextView: UITextView = { UITextView(frame: .zero) }()
+  private lazy var bottomColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var commentCellHeaderStackView: CommentCellHeaderStackView = {
+    CommentCellHeaderStackView(frame: .zero)
+  }()
+
+  private lazy var flagButton = { UIButton(frame: .zero) }()
+  private lazy var replyButton = { UIButton(frame: .zero) }()
 
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-
-  private lazy var bodyTextView: UITextView = { UITextView(frame: .zero) }()
-  private lazy var replyButton = { UIButton(frame: .zero) }()
-  private lazy var flagButton = { UIButton(frame: .zero) }()
-  private lazy var commentCellHeaderStackView: CommentCellHeaderStackView = {
-    CommentCellHeaderStackView(frame: .zero)
-  }()
-
-  private lazy var bottomColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   // MARK: - Lifecycle
 
@@ -77,13 +77,6 @@ final class CommentCell: UITableViewCell, ValueCell {
     _ = (self.rootStackView, self.contentView)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToMarginsInParent()
-
-    NSLayoutConstraint.activate([
-      self.replyButton.heightAnchor.constraint(equalToConstant: Styles.grid(3)),
-      self.replyButton.widthAnchor.constraint(equalToConstant: Styles.grid(13)),
-      self.flagButton.widthAnchor.constraint(equalToConstant: Styles.grid(3)),
-      self.flagButton.heightAnchor.constraint(equalToConstant: Styles.grid(3))
-    ])
   }
 
   // MARK: - View model
@@ -105,6 +98,7 @@ private let replyButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "reply")
     |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_support_400
     |> UIButton.lens.tintColor .~ UIColor.ksr_support_400
-    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(1))
+    |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(left: Styles.grid(-1))
+    |> UIButton.lens.contentEdgeInsets .~ UIEdgeInsets(leftRight: Styles.grid(1))
     |> UIButton.lens.contentHorizontalAlignment .~ .left
 }

@@ -6,18 +6,19 @@ import UIKit
 final class CommentPostFailedCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  fileprivate let viewModel = CommentCellViewModel()
+  private let viewModel = CommentCellViewModel()
+
+  private lazy var bodyTextView: UITextView = { UITextView(frame: .zero) }()
+  private lazy var commentCellHeaderStackView: CommentCellHeaderStackView = {
+    CommentCellHeaderStackView(frame: .zero)
+  }()
 
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var bodyTextView: UITextView = { UITextView(frame: .zero) }()
   private lazy var tapRetryPostButton = { UIButton(frame: .zero) }()
-  private lazy var commentCellHeaderStackView: CommentCellHeaderStackView = {
-    CommentCellHeaderStackView(frame: .zero)
-  }()
 
   // MARK: - Lifecycle
 
@@ -93,6 +94,6 @@ private let tapRetryPostButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "circle-back")
     |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_celebrate_700
     |> UIButton.lens.tintColor .~ UIColor.ksr_celebrate_700
-    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: 7.17)
+    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(6))
     |> UIButton.lens.contentHorizontalAlignment .~ .left
 }

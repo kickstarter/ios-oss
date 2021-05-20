@@ -11,11 +11,11 @@ public protocol CommentCellViewModelOutputs {
   /// Emits a url to the comment author's image.
   var avatarImageURL: Signal<URL?, Never> { get }
 
-  /// Emits text containing comment body
-  var body: Signal<String, Never> { get }
-
   /// Emits text containing author's fullname or username
   var authorName: Signal<String, Never> { get }
+
+  /// Emits text containing comment body
+  var body: Signal<String, Never> { get }
 
   /// Emits text  relative time the comment was posted
   var postTime: Signal<String, Never> { get }
@@ -37,13 +37,13 @@ public final class CommentCellViewModel:
     self.avatarImageURL = comment
       .map { $0.imageURL }.map(URL.init)
 
-    self.body = comment.map { $0.body }
+    self.body = comment.map(\.body)
 
-    self.authorName = comment.map { $0.authorName }
+    self.authorName = comment.map(\.authorName)
 
-    self.postTime = comment.map { $0.postTime }
+    self.postTime = comment.map(\.postTime)
 
-    self.userTag = comment.map { $0.userTag }
+    self.userTag = comment.map(\.userTag)
   }
 
   fileprivate let commentProperty = MutableProperty<DemoComment?>(nil)

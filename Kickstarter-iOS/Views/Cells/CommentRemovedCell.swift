@@ -117,14 +117,14 @@ private func attributedTextCommentRemoved() -> NSAttributedString {
     ),
     attributes: regularFontAttribute
   )
-  let learnMorAttributedString = NSMutableAttributedString(
+  let learnMoreAttributedString = NSMutableAttributedString(
     string: localizedString(
       key: "Learn_more_about_comment_guidelines",
       defaultValue: "Learn more about comment guidelines."
     ),
     attributes: coloredFontAttribute
   )
-  attributedString.append(learnMorAttributedString)
+  attributedString.append(learnMoreAttributedString)
 
   return attributedString
 }

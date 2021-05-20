@@ -13,10 +13,10 @@ internal final class CommentCellHeaderStackView: UIStackView {
   }()
 
   private lazy var userNameLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var userNameTagLabel: PaddingLabel = { PaddingLabel(frame: .zero) }()
-  private lazy var postTimeLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var usernameLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var userNameTagLabel: PaddingLabel = { PaddingLabel(frame: .zero) }()
   private lazy var usernameTimeLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var postTimeLabel: UILabel = { UILabel(frame: .zero) }()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -45,7 +45,6 @@ internal final class CommentCellHeaderStackView: UIStackView {
     _ = self.usernameLabelsStackView
       |> \.axis .~ .horizontal
       |> \.spacing .~ Styles.grid(1)
-      |> \.alignment .~ .leading
 
     _ = self.userNameLabel
       |> \.numberOfLines .~ 1
@@ -62,7 +61,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
       |> \.adjustsFontForContentSizeCategory .~ true
 
     _ = self.postTimeLabel
-      |> \.numberOfLines .~ 1
+      |> \.numberOfLines .~ 2
       |> \.textColor .~ .ksr_support_400
       |> \.textAlignment .~ .left
       |> \.font .~ UIFont.ksr_footnote()
@@ -75,7 +74,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
     self.viewModel.inputs.configureWith(comment: comment)
   }
 
-  internal func configureUserTagStlye(from userTag: DemoComment.UserTagEnum) {
+  internal func configureUserTagStyle(from userTag: DemoComment.UserTagEnum) {
     switch userTag {
     case .creator:
       _ = self.userNameTagLabel
@@ -102,9 +101,11 @@ internal final class CommentCellHeaderStackView: UIStackView {
     _ = ([self.usernameLabelsStackView, self.postTimeLabel], self.usernameTimeLabelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    let emptyView = UIView()
-    _ = ([self.userNameLabel, self.userNameTagLabel, emptyView], self.usernameLabelsStackView)
+    _ = ([self.userNameLabel, self.userNameTagLabel, UIView()], self.usernameLabelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
+
+    self.userNameTagLabel.setContentCompressionResistancePriority(.init(1_000), for: .horizontal)
+    self.userNameTagLabel.setContentHuggingPriority(.init(1_000), for: .horizontal)
 
     NSLayoutConstraint.activate([
       self.avatarImageView.widthAnchor.constraint(equalToConstant: Styles.grid(7)),
@@ -128,7 +129,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
 
     self.viewModel.outputs.userTag
       .observeForUI()
-      .observeValues(self.configureUserTagStlye)
+      .observeValues(self.configureUserTagStyle)
 
     self.userNameLabel.rac.text = self.viewModel.authorName
     self.postTimeLabel.rac.text = self.viewModel.postTime
