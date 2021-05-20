@@ -149,7 +149,7 @@ internal final class DeprecatedCommentDialogViewModelTests: TestCase {
       exception: nil
     )
 
-    withEnvironment(apiService: MockService(postCommentError: error)) {
+    withEnvironment(apiService: MockService(deprecatedPostCommentError: error)) {
       self.vm.inputs.configureWith(project: .template, update: nil, recipient: nil, context: .projectComments)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.commentBodyChanged("hello")
@@ -177,7 +177,7 @@ internal final class DeprecatedCommentDialogViewModelTests: TestCase {
       exception: nil
     )
 
-    withEnvironment(apiService: MockService(postCommentError: error)) {
+    withEnvironment(apiService: MockService(deprecatedPostCommentError: error)) {
       self.vm.inputs.configureWith(project: .template, update: nil, recipient: nil, context: .projectComments)
       self.vm.inputs.viewWillAppear()
       self.vm.inputs.commentBodyChanged("hello")
