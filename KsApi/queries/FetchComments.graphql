@@ -15,16 +15,3 @@ query FetchComments($slug: String!, $cursor: String, $limit: Int) {
     id
   }
 }
-
-fragment CommentFragment on Comment {
-  author {
-    id
-    isCreator
-    name
-  }
-  body
-  id
-  replies {
-    totalCount
-  }
-}
