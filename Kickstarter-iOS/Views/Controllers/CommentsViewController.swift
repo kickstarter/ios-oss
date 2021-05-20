@@ -22,11 +22,11 @@ internal final class CommentsViewController: UITableViewController {
 
     self.dataSource.load()
 
-    self.viewModel.inputs.viewDidLoad()
-
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(CommentPostFailedCell.self)
     self.tableView.registerCellClass(CommentRemovedCell.self)
+
+    self.viewModel.inputs.viewDidLoad()
   }
 
   internal override func viewWillAppear(_ animated: Bool) {
@@ -49,8 +49,4 @@ internal final class CommentsViewController: UITableViewController {
   // MARK: - View Model
 
   internal override func bindViewModel() {}
-
-  @objc fileprivate func closeButtonTapped() {
-    self.dismiss(animated: true, completion: nil)
-  }
 }

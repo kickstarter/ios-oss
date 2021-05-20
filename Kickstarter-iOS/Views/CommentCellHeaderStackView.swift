@@ -149,6 +149,8 @@ private let creatorTagLabelStyle: LabelStyle = { label in
     |> \.textAlignment .~ NSTextAlignment.right
 }
 
+// TODO: Internationalized in the near future.
+
 private let youTagLabelStyle: LabelStyle = { label in
   label
     |> \.text .~ localizedString(key: "You_tag_for_comment_author", defaultValue: "You")
@@ -159,6 +161,8 @@ private let youTagLabelStyle: LabelStyle = { label in
     |> \.adjustsFontForContentSizeCategory .~ true
     |> \.textAlignment .~ NSTextAlignment.right
 }
+
+// TODO: Internationalized in the near future.
 
 private let superbackerTagLabelStyle: LabelStyle = { label in
   label
