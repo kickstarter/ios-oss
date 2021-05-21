@@ -7,13 +7,13 @@ import XCTest
 
 internal final class CommentCellHeaderStackViewTests: TestCase {
   fileprivate let vm: CommentCellViewModelType = CommentCellViewModel()
-  fileprivate let userTag = TestObserver<DemoComment.UserTagEnum, Never>()
+  fileprivate let authorBadge = TestObserver<Comment.AuthorBadge, Never>()
 
   override func setUp() {
     super.setUp()
 
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-    self.vm.outputs.userTag.observe(self.userTag.observer)
+    self.vm.outputs.authorBadge.observe(self.authorBadge.observer)
   }
 
   override func tearDown() {
@@ -23,17 +23,19 @@ internal final class CommentCellHeaderStackViewTests: TestCase {
 
   func testUserTagState() {
     let commentCellHeaderStackView =
-      CommentCellHeaderStackView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 45))
+      CommentCellHeaderStackView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 80))
 
-    let userTagStates = [
-      "Tag_Is_Backer": DemoComment.UserTagEnum.backer,
-      "Tag_Is_Superbacker": DemoComment.UserTagEnum.superbacker,
-      "Tag_Is_Creator": DemoComment.UserTagEnum.creator,
-      "Tag_Is_You": DemoComment.UserTagEnum.you
+    let authorBadgeStates = [
+      "AuthorBadge_Is_Backer": Comment.AuthorBadge.backer,
+      "AuthorBadge_Is_Superbacker": Comment.AuthorBadge.superbacker,
+      "AuthorBadge_Is_Creator": Comment.AuthorBadge.creator,
+      "AuthorBadge_Is_You": Comment.AuthorBadge.you
     ]
 
-    for (key, tag) in userTagStates {
-      self.vm.inputs.configureWith(comment: DemoComment.template(for: tag))
+    let viewer = User.template |> \.id .~ 12_345
+
+    for (key, authorBadge) in authorBadgeStates {
+      self.vm.inputs.configureWith(comment: Comment.template(for: authorBadge), viewer: viewer)
       FBSnapshotVerifyView(commentCellHeaderStackView, identifier: "state_\(key)")
     }
   }

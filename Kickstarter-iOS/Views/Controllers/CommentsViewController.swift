@@ -16,11 +16,9 @@ internal final class CommentsViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.navigationItem.title = Strings.project_menu_buttons_comments()
-
     self.tableView.dataSource = self.dataSource
 
-    self.dataSource.load()
+    self.navigationItem.title = Strings.project_menu_buttons_comments()
 
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(CommentPostFailedCell.self)
@@ -48,5 +46,15 @@ internal final class CommentsViewController: UITableViewController {
 
   // MARK: - View Model
 
-  internal override func bindViewModel() {}
+  internal override func bindViewModel() {
+    self.viewModel.outputs.dataSource
+      .observeForUI()
+      .observeValues { [weak self] comments, user in
+        self?.dataSource.load(
+          comments: comments,
+          loggedInUser: user
+        )
+        self?.tableView.reloadData()
+      }
+  }
 }

@@ -71,12 +71,12 @@ internal final class CommentCellHeaderStackView: UIStackView {
 
   // MARK: - Configuration
 
-  internal func configureWith(comment: DemoComment) {
-    self.viewModel.inputs.configureWith(comment: comment)
+  internal func configureWith(comment: Comment, user: User?) {
+    self.viewModel.inputs.configureWith(comment: comment, viewer: user)
   }
 
-  internal func configureUserTagStyle(from userTag: DemoComment.UserTagEnum) {
-    switch userTag {
+  internal func configureUserTagStyle(from badge: Comment.AuthorBadge) {
+    switch badge {
     case .creator:
       _ = self.userNameTagLabel
         |> creatorTagLabelStyle
@@ -126,7 +126,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
         self?.avatarImageView.ksr_setRoundedImageWith(url)
       }
 
-    self.viewModel.outputs.userTag
+    self.viewModel.outputs.authorBadge
       .observeForUI()
       .observeValues(self.configureUserTagStyle)
 
