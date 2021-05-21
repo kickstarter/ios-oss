@@ -3,7 +3,10 @@ import KsApi
 import ReactiveSwift
 
 public typealias CommentComposerViewData = (avatarURL: URL?, isBackingProject: Bool)
-private let characterLimit: Int = 9_000
+
+public enum CommentComposerConstant {
+  public static let characterLimit: Int = 9_000
+}
 
 public protocol CommentComposerViewModelInputs {
   /// Call to configure composer avatar and input area visibility
@@ -72,7 +75,7 @@ public final class CommentComposerViewModel:
         let currentText = text ?? ""
         guard let stringRange = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: stringRange, with: replacementText)
-        return updatedText.trimmed().count <= characterLimit
+        return updatedText.trimmed().count <= CommentComposerConstant.characterLimit
       }
   }
 

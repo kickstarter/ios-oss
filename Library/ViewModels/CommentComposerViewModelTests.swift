@@ -4,7 +4,7 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 final class CommentComposerViewModelTests: TestCase {
-  private let viewModel: CommentComposerViewModelType = CommentComposerViewModel()
+  private let vm: CommentComposerViewModelType = CommentComposerViewModel()
 
   private let bodyText = TestObserver<String, Never>()
   private let avatarURL = TestObserver<URL?, Never>()
@@ -16,16 +16,16 @@ final class CommentComposerViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.viewModel.outputs.bodyText.observe(self.bodyText.observer)
-    self.viewModel.outputs.avatarURL.observe(self.avatarURL.observer)
-    self.viewModel.outputs.inputAreaHidden.observe(self.inputAreaHidden.observer)
-    self.viewModel.outputs.notifyDelegateDidSubmitText.observe(self.notifyDelegateDidSubmitText.observer)
-    self.viewModel.outputs.postButtonHidden.observe(self.postButtonHidden.observer)
-    self.viewModel.outputs.placeholderHidden.observe(self.placeholderHidden.observer)
+    self.vm.outputs.bodyText.observe(self.bodyText.observer)
+    self.vm.outputs.avatarURL.observe(self.avatarURL.observer)
+    self.vm.outputs.inputAreaHidden.observe(self.inputAreaHidden.observer)
+    self.vm.outputs.notifyDelegateDidSubmitText.observe(self.notifyDelegateDidSubmitText.observer)
+    self.vm.outputs.postButtonHidden.observe(self.postButtonHidden.observer)
+    self.vm.outputs.placeholderHidden.observe(self.placeholderHidden.observer)
   }
 
   func testPostingCommentFlow() {
-    self.viewModel.inputs.configure(with: (nil, true))
+    self.vm.inputs.configure(with: (nil, true))
 
     self.postButtonHidden.assertValues([true])
     self.placeholderHidden.assertValues([false])
@@ -33,61 +33,89 @@ final class CommentComposerViewModelTests: TestCase {
 
     self.bodyText.assertValues([])
 
-    self.viewModel.inputs.bodyTextDidChange("Nice Project.")
+    self.vm.inputs.bodyTextDidChange("Nice Project.")
 
     self.postButtonHidden.assertValues([true, false])
     self.placeholderHidden.assertValues([false, true])
     self.bodyText.assertValues(["Nice Project."])
 
-    self.viewModel.inputs.bodyTextDidChange("Nice Project. Cheers!")
+    self.vm.inputs.bodyTextDidChange("Nice Project. Cheers!")
     self.postButtonHidden.assertValues([true, false, false])
     self.placeholderHidden.assertValues([false, true, true])
     self.bodyText.assertValues(["Nice Project.", "Nice Project. Cheers!"])
 
-    self.viewModel.inputs.postButtonPressed()
+    self.vm.inputs.postButtonPressed()
     self.postButtonHidden.assertValues([true, false, false])
     self.placeholderHidden.assertValues([false, true, true])
     self.bodyText.assertValues(["Nice Project.", "Nice Project. Cheers!"])
     self.notifyDelegateDidSubmitText.assertValues(["Nice Project. Cheers!"])
 
-    self.viewModel.inputs.bodyTextDidChange("")
+    self.vm.inputs.bodyTextDidChange("")
     self.bodyText.assertValues(["Nice Project.", "Nice Project. Cheers!", ""])
   }
 
   func testAvatarURL() {
-    self.viewModel.inputs.configure(with: (nil, true))
+    self.vm.inputs.configure(with: (nil, true))
     self.avatarURL.assertValues([nil])
 
-    self.viewModel.inputs.configure(with: (URL(string: "https://avatar.png"), true))
+    self.vm.inputs.configure(with: (URL(string: "https://avatar.png"), true))
     self.avatarURL.assertValues([nil, URL(string: "https://avatar.png")])
   }
 
   func testInputAreaVisibility() {
-    self.viewModel.inputs.configure(with: (nil, true))
+    self.vm.inputs.configure(with: (nil, true))
     self.inputAreaHidden.assertValues([false])
 
-    self.viewModel.inputs.configure(with: (nil, false))
+    self.vm.inputs.configure(with: (nil, false))
     self.inputAreaHidden.assertValues([false, true])
   }
 
   func testEmptyInput() {
-    self.viewModel.inputs.configure(with: (nil, true))
+    self.vm.inputs.configure(with: (nil, true))
     self.postButtonHidden.assertValues([true])
     self.placeholderHidden.assertValues([false])
 
-    self.viewModel.inputs.bodyTextDidChange("Enough Add Ons")
+    self.vm.inputs.bodyTextDidChange("Enough Add Ons")
     self.postButtonHidden.assertValues([true, false])
     self.placeholderHidden.assertValues([false, true])
   }
 
   func testPostCommentAction() {
-    self.viewModel.inputs.configure(with: (nil, true))
+    self.vm.inputs.configure(with: (nil, true))
     self.notifyDelegateDidSubmitText.assertValues([])
 
-    self.viewModel.inputs.bodyTextDidChange("Can't wait for this")
+    self.vm.inputs.bodyTextDidChange("Can't wait for this")
     self.notifyDelegateDidSubmitText.assertValues([])
 
-    self.viewModel.inputs.postButtonPressed()
+    self.vm.inputs.postButtonPressed()
     self.notifyDelegateDidSubmitText.assertValues(["Can't wait for this"])
+  }
+
+  func testTextViewShouldChangeTextInRange_LengthExceeded() {
+    let current = String(Array(repeating: "1", count: CommentComposerConstant.characterLimit))
+
+    let range = (current as NSString).range(of: current)
+    let replacement = current + "1"
+
+    XCTAssertFalse(
+      self.vm.inputs.textViewShouldChange(text: current, in: range, replacementText: replacement)
+    )
+  }
+
+  func testTextViewShouldChangeTextInRange_LengthUnchanged() {
+    let current = String(Array(repeating: "1", count: CommentComposerConstant.characterLimit))
+
+    let range = (current as NSString).range(of: current)
+    let replacement = current
+
+    XCTAssertTrue(self.vm.inputs.textViewShouldChange(text: current, in: range, replacementText: replacement))
+  }
+
+  func testTextViewShouldChangeTextInRange_LengthShorter() {
+    let current = String(Array(repeating: "1", count: CommentComposerConstant.characterLimit))
+    let range = (current as NSString).range(of: current)
+    let replacement = String(current.dropLast())
+
+    XCTAssertTrue(self.vm.inputs.textViewShouldChange(text: current, in: range, replacementText: replacement))
   }
 }
