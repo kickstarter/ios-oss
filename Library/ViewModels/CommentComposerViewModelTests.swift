@@ -92,7 +92,7 @@ final class CommentComposerViewModelTests: TestCase {
   }
 
   func testTextViewShouldChangeTextInRange_LengthExceeded() {
-    let current = String(Array(0..<CommentComposerConstant.characterLimit).map { _ -> Character in "1" })
+    let current = String(Array(repeating: "1", count: CommentComposerConstant.characterLimit))
 
     let range = (current as NSString).range(of: current)
     let replacement = current + "1"
@@ -103,7 +103,7 @@ final class CommentComposerViewModelTests: TestCase {
   }
 
   func testTextViewShouldChangeTextInRange_LengthUnchanged() {
-    let current = String(Array(0..<CommentComposerConstant.characterLimit).map { _ -> Character in "1" })
+    let current = String(Array(repeating: "1", count: CommentComposerConstant.characterLimit))
 
     let range = (current as NSString).range(of: current)
     let replacement = current
@@ -112,7 +112,7 @@ final class CommentComposerViewModelTests: TestCase {
   }
 
   func testTextViewShouldChangeTextInRange_LengthShorter() {
-    let current = String(Array(0..<CommentComposerConstant.characterLimit).map { _ -> Character in "1" })
+    let current = String(Array(repeating: "1", count: CommentComposerConstant.characterLimit))
     let range = (current as NSString).range(of: current)
     let replacement = String(current.dropLast())
 
