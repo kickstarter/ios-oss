@@ -101,8 +101,8 @@ final class CommentInputContainerView: UIView {
 
 private let containerStyle: ViewStyle = { view in
   view
-    |> \.backgroundColor .~ .ksr_support_100
-    |> \.layer.borderColor .~ UIColor.ksr_support_300.cgColor
+    |> \.backgroundColor .~ .ksr_white
+    |> \.layer.borderColor .~ UIColor.ksr_support_200.cgColor
     |> \.layer.borderWidth .~ 1
     |> \.layer.cornerRadius .~ Layout.Container.radius
     |> \.clipsToBounds .~ true

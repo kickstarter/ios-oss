@@ -67,6 +67,9 @@ final class CommentComposerView: UIView {
     self.viewModel.inputs.configure(with: data)
   }
 
+  /*
+   Call this to clear body text.
+   */
   public func commentPostedSuccessfully() {
     self.viewModel.inputs.bodyTextDidChange("")
   }
@@ -92,9 +95,6 @@ final class CommentComposerView: UIView {
 
     _ = (self.topBorderView, self)
       |> ksr_addSubviewToParent()
-
-    _ = (self.onlyBackersLabel, self)
-      |> ksr_addSubviewToParent()
   }
 
   private func setupConstraints() {
@@ -104,12 +104,7 @@ final class CommentComposerView: UIView {
       self.topBorderView.trailingAnchor.constraint(equalTo: trailingAnchor),
       self.topBorderView.heightAnchor.constraint(equalToConstant: Layout.Border.height),
       self.avatarImageView.heightAnchor.constraint(equalToConstant: Layout.Avatar.diameter),
-      self.avatarImageView.widthAnchor.constraint(equalToConstant: Layout.Avatar.diameter),
-      self.onlyBackersLabel.leadingAnchor
-        .constraint(equalTo: self.avatarImageView.trailingAnchor, constant: Styles.grid(2)),
-      self.onlyBackersLabel.trailingAnchor
-        .constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Styles.grid(2)),
-      self.onlyBackersLabel.centerYAnchor.constraint(equalTo: self.avatarImageView.centerYAnchor)
+      self.avatarImageView.widthAnchor.constraint(equalToConstant: Layout.Avatar.diameter)
     ])
   }
 
@@ -122,7 +117,7 @@ final class CommentComposerView: UIView {
       |> rootStackViewStyle
 
     _ = self.topBorderView
-      |> \.backgroundColor .~ .ksr_support_300
+      |> \.backgroundColor .~ .ksr_support_200
 
     _ = self.avatarImageView
       |> UIImageView.lens.image .~ UIImage(named: "avatar--placeholder")
@@ -135,9 +130,20 @@ final class CommentComposerView: UIView {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.avatarImageView.rac.ksr_imageUrl = self.viewModel.outputs.avatarURL
     self.inputContainerView.placeholderLabel.rac.hidden = self.viewModel.outputs.placeholderHidden
     self.inputContainerView.postButton.rac.hidden = self.viewModel.outputs.postButtonHidden
+    
+    self.viewModel.outputs.avatarURL
+      .observeForUI()
+      .on(event: { [weak self] _ in
+        self?.avatarImageView.af.cancelImageRequest()
+        self?.avatarImageView.image = nil
+      })
+      .skipNil()
+      .observeValues { [weak self] url in
+        self?.avatarImageView.ksr_setRoundedImageWith(url)
+      }
+
 
     self.viewModel.outputs.notifyDelegateDidSubmitText
       .observeForUI()
@@ -156,7 +162,7 @@ final class CommentComposerView: UIView {
   // MARK: - Helpers
 
   private func hideInputArea(_ hide: Bool) {
-    self.rootStackView.alignment = hide ? .leading : .bottom
+    self.rootStackView.alignment = hide ? .center : .bottom
     _ = self.inputContainerView
       |> \.isHidden .~ hide
 
@@ -169,8 +175,6 @@ final class CommentComposerView: UIView {
   @objc private func postButtonPressed() {
     self.viewModel.inputs.postButtonPressed()
   }
-
-  private let characterLimit = 100
 }
 
 // MARK: - UITextViewDelegate

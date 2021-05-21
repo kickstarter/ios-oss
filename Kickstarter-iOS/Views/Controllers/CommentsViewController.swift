@@ -56,7 +56,12 @@ internal final class CommentsViewController: UITableViewController {
 
   // MARK: - View Model
 
-  internal override func bindViewModel() {}
+  internal override func bindViewModel() {
+    super.bindViewModel()
+
+    // TODO: Call this method after post comment is successful to clear the input field text
+    // self.commentComposer.commentPostedSuccessfully()
+  }
 }
 
 extension CommentsViewController: CommentComposerViewDelegate {

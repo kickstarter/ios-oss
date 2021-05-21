@@ -78,6 +78,7 @@
 		1611EF6B23B2792F0051CDCC /* MockUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6823B275700051CDCC /* MockUUID.swift */; };
 		20338E1F26566F9E00F2C43A /* CommentComposerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */; };
 		20338E262656AAD900F2C43A /* CommentComposerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EE6026544F200094B04C /* CommentComposerViewModel.swift */; };
+		209B0E3A265801D70006DB7D /* CommentComposerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209B0E39265801D70006DB7D /* CommentComposerViewTests.swift */; };
 		20ABFEE4264EE06400AA48EC /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCBE98264D5EB100510EDF /* CommentInputTextView.swift */; };
 		20BCBEB0264DAA4B00510EDF /* CommentComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCBEA2264D83C600510EDF /* CommentComposerView.swift */; };
 		20BCBEB7264DAA5500510EDF /* CommentInputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCBE9D264D6E6500510EDF /* CommentInputContainerView.swift */; };
@@ -1664,6 +1665,7 @@
 		1611EF6123ABD7C00051CDCC /* OptimizelyResultTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyResultTypeTests.swift; sourceTree = "<group>"; };
 		1611EF6623B2752A0051CDCC /* UUIDType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUIDType.swift; sourceTree = "<group>"; };
 		1611EF6823B275700051CDCC /* MockUUID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUUID.swift; sourceTree = "<group>"; };
+		209B0E39265801D70006DB7D /* CommentComposerViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewTests.swift; sourceTree = "<group>"; };
 		20BCBE98264D5EB100510EDF /* CommentInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputTextView.swift; sourceTree = "<group>"; };
 		20BCBE9D264D6E6500510EDF /* CommentInputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputContainerView.swift; sourceTree = "<group>"; };
 		20BCBEA2264D83C600510EDF /* CommentComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerView.swift; sourceTree = "<group>"; };
@@ -3433,6 +3435,7 @@
 				D625AA0B23DA34EA009E6F2C /* BetaToolsFooterView.swift */,
 				7727494C23FDA5FD0065E9F2 /* CategorySelectionHeaderView.swift */,
 				20BCBEA2264D83C600510EDF /* CommentComposerView.swift */,
+				209B0E39265801D70006DB7D /* CommentComposerViewTests.swift */,
 				20BCBE9D264D6E6500510EDF /* CommentInputContainerView.swift */,
 				20BCBE98264D5EB100510EDF /* CommentInputTextView.swift */,
 				015A06F21D21914E007AE210 /* DashboardRewardRowStackView.swift */,
@@ -6171,6 +6174,7 @@
 				D72370942119139D001EA4CA /* SettingsPrivacyViewControllerTests.swift in Sources */,
 				A7ED20651E83256700BFFA01 /* UpdatePreviewViewModelTests.swift in Sources */,
 				77891BDE20CEB6DB00B46D5D /* ThanksProjectsDataSourceTests.swift in Sources */,
+				209B0E3A265801D70006DB7D /* CommentComposerViewTests.swift in Sources */,
 				3767EDA922CFFE770088E8E4 /* ShippingRulesDataSourceTests.swift in Sources */,
 				8AA524952384CADE00FD52CF /* EditorialProjectsViewControllerTests.swift in Sources */,
 				8A8C6136243FBA640092B682 /* PledgePaymentMethodsDataSourceTests.swift in Sources */,
