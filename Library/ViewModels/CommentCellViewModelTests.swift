@@ -51,7 +51,6 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testPersonalizedLabels_ViewerIs_Creator_Author() {
     let comment = Comment.template
-      |> Comment.lens.authorBadges .~ [.creator]
 
     let viewer = User.template |> \.id .~ 12_345
 
@@ -66,6 +65,7 @@ internal final class CommentCellViewModelTests: TestCase {
 
     let comment = Comment.template
       |> \.author .~ author
+      |> \.authorBadges .~ [.superbacker]
 
     let viewer = User.template |> \.id .~ 12_345
 
@@ -75,8 +75,7 @@ internal final class CommentCellViewModelTests: TestCase {
   }
 
   func testPersonalizedLabels_ViewerIs_Superbacker_Author() {
-    let comment = Comment.template
-      |> Comment.lens.authorBadges .~ [.superbacker]
+    let comment = Comment.superbackerTemplate
 
     let viewer = User.template |> \.id .~ 12_345
 
@@ -86,8 +85,7 @@ internal final class CommentCellViewModelTests: TestCase {
   }
 
   func testPersonalizedLabels_ViewerIs_Backer_Author() {
-    let comment = Comment.template
-      |> Comment.lens.authorBadges .~ nil
+    let comment = Comment.backerTemplate
 
     let viewer = User.template |> \.id .~ 12_345
 

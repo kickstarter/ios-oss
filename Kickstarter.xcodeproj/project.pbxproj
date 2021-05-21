@@ -617,7 +617,6 @@
 		941710B526557A6A00F5954E /* CommentCellStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941710B426557A6A00F5954E /* CommentCellStyles.swift */; };
 		94BE15C225E857C4007CD9A4 /* TrackingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BE15C125E857C4007CD9A4 /* TrackingHelpers.swift */; };
 		94BE15CE25E970A3007CD9A4 /* TrackingHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BE15C925E96F06007CD9A4 /* TrackingHelpersTests.swift */; };
-		94C92E62265806A300A96818 /* CommentLenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C92E61265806A300A96818 /* CommentLenses.swift */; };
 		94F4A95A26125C8C000C21F9 /* TimeInterval+ISO8601Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F4A95926125C8C000C21F9 /* TimeInterval+ISO8601Date.swift */; };
 		94F4A96926125EE8000C21F9 /* TimeInterval+ISO8601DateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F4A96126125EA0000C21F9 /* TimeInterval+ISO8601DateTests.swift */; };
 		9D10B91B1D35407C008B8045 /* String+Truncate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D10B91A1D35407C008B8045 /* String+Truncate.swift */; };
@@ -2175,7 +2174,6 @@
 		941710B426557A6A00F5954E /* CommentCellStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCellStyles.swift; sourceTree = "<group>"; };
 		94BE15C125E857C4007CD9A4 /* TrackingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingHelpers.swift; sourceTree = "<group>"; };
 		94BE15C925E96F06007CD9A4 /* TrackingHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingHelpersTests.swift; sourceTree = "<group>"; };
-		94C92E61265806A300A96818 /* CommentLenses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentLenses.swift; sourceTree = "<group>"; };
 		94F4A95926125C8C000C21F9 /* TimeInterval+ISO8601Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+ISO8601Date.swift"; sourceTree = "<group>"; };
 		94F4A96126125EA0000C21F9 /* TimeInterval+ISO8601DateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+ISO8601DateTests.swift"; sourceTree = "<group>"; };
 		9D10B91A1D35407C008B8045 /* String+Truncate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Truncate.swift"; sourceTree = "<group>"; };
@@ -4661,7 +4659,6 @@
 				D01587991EEB2ED6006E7684 /* ActivityLenses.swift */,
 				D015879A1EEB2ED6006E7684 /* BackingLenses.swift */,
 				D015879E1EEB2ED6006E7684 /* DeprecatedCommentLenses.swift */,
-				94C92E61265806A300A96818 /* CommentLenses.swift */,
 				D015879F1EEB2ED6006E7684 /* ConfigLenses.swift */,
 				378CA24522C4449F004E3C86 /* CountryLenses.swift */,
 				D01587A11EEB2ED6006E7684 /* DiscoveryEnvelopeLenses.swift */,
@@ -6475,7 +6472,6 @@
 				D01588F91EEB2ED7006E7684 /* Project.Country.swift in Sources */,
 				D01588311EEB2ED7006E7684 /* OauthToken.swift in Sources */,
 				77776BC8234BA76400A42388 /* CancelBackingInput.swift in Sources */,
-				94C92E62265806A300A96818 /* CommentLenses.swift in Sources */,
 				8AA407CA24DB453C008C5FB0 /* Project.Category+GraphCategory.swift in Sources */,
 				8A1F155824DC657E00E0C000 /* Project.RewardDataLenses.swift in Sources */,
 				D62B1477221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift in Sources */,

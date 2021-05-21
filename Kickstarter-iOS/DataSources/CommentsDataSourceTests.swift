@@ -11,11 +11,12 @@ class CommentsDataSourceTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    self.dataSource.load(comments: Comment.templates, loggedInUser: nil)
+    let user = User.template |> \.id .~ 12_345
+    self.dataSource.load(comments: Comment.templates, loggedInUser: user)
   }
 
   func testLoadedComments() {
-    XCTAssertEqual(4, self.dataSource.numberOfItems(in: self.section))
+    XCTAssertEqual(5, self.dataSource.numberOfItems(in: self.section))
     XCTAssertEqual(self.section + 1, self.dataSource.numberOfSections(in: self.tableView))
   }
 
@@ -32,7 +33,7 @@ class CommentsDataSourceTests: XCTestCase {
   }
 
   func testComment_shouldContainFailedCell() {
-    let rowIndex: Int = 3
+    let rowIndex: Int = 4
     XCTAssertEqual(Comment.Status.failed, Comment.templates[rowIndex].status)
     XCTAssertEqual("CommentPostFailedCell", self.dataSource.reusableId(item: rowIndex, section: self.section))
   }
