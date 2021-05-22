@@ -11,11 +11,11 @@ public protocol CommentCellViewModelOutputs {
   /// Emits author's tag for a comment
   var authorBadge: Signal<Comment.AuthorBadge, Never> { get }
 
-  /// Emits a url to the comment author's image.
-  var avatarImageURL: Signal<URL?, Never> { get }
-
   /// Emits text containing author's fullname or username
   var authorName: Signal<String, Never> { get }
+
+  /// Emits a url to the comment author's image.
+  var avatarImageURL: Signal<URL?, Never> { get }
 
   /// Emits text containing comment body
   var body: Signal<String, Never> { get }
