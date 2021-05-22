@@ -6,8 +6,6 @@ import UIKit
 final class CommentCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private let viewModel = CommentCellViewModel()
-
   private lazy var bodyTextView: UITextView = { UITextView(frame: .zero) }()
   private lazy var bottomColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var commentCellHeaderStackView: CommentCellHeaderStackView = {
@@ -21,6 +19,8 @@ final class CommentCell: UITableViewCell, ValueCell {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
+
+  private let viewModel = CommentCellViewModel()
 
   // MARK: - Lifecycle
 

@@ -8,6 +8,9 @@ public protocol CommentCellViewModelInputs {
 }
 
 public protocol CommentCellViewModelOutputs {
+  /// Emits author's tag for a comment
+  var authorBadge: Signal<Comment.AuthorBadge, Never> { get }
+
   /// Emits a url to the comment author's image.
   var avatarImageURL: Signal<URL?, Never> { get }
 
@@ -19,9 +22,6 @@ public protocol CommentCellViewModelOutputs {
 
   /// Emits text  relative time the comment was posted
   var postTime: Signal<String, Never> { get }
-
-  /// Emits author's tag for a comment
-  var authorBadge: Signal<Comment.AuthorBadge, Never> { get }
 }
 
 public protocol CommentCellViewModelType {
@@ -57,11 +57,11 @@ public final class CommentCellViewModel:
     self.commentViewer.value = (comment, viewer)
   }
 
+  public let authorBadge: Signal<Comment.AuthorBadge, Never>
   public let avatarImageURL: Signal<URL?, Never>
   public let body: Signal<String, Never>
   public let authorName: Signal<String, Never>
   public let postTime: Signal<String, Never>
-  public let authorBadge: Signal<Comment.AuthorBadge, Never>
 
   public var inputs: CommentCellViewModelInputs { self }
   public var outputs: CommentCellViewModelOutputs { self }

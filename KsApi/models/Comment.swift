@@ -22,7 +22,7 @@ public struct Comment {
     return self.authorBadges?.first ?? .backer
   }
 
-  // return the current status of the comment
+  /// return the current status of the `Comment`
   public var status: Status {
     return self.isDeleted ? .removed : self.isFailed ? .failed : .success
   }
@@ -36,15 +36,15 @@ public struct Comment {
 
   public enum AuthorBadge: String {
     case creator
-    case superbacker
     case backer
+    case superbacker
     case you // This doesn't exist on GraphComment, but would be mapped with current user id and author id
   }
 
   public enum Status {
-    case success
     case failed
     case removed
+    case success
   }
 }
 

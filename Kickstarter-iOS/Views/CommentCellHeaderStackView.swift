@@ -75,7 +75,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
     self.viewModel.inputs.configureWith(comment: comment, viewer: user)
   }
 
-  internal func configureUserTagStyle(from badge: Comment.AuthorBadge) {
+  internal func configureUserBadgeStyle(from badge: Comment.AuthorBadge) {
     switch badge {
     case .creator:
       _ = self.userNameTagLabel
@@ -128,7 +128,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
 
     self.viewModel.outputs.authorBadge
       .observeForUI()
-      .observeValues(self.configureUserTagStyle)
+      .observeValues(self.configureUserBadgeStyle)
 
     self.userNameLabel.rac.text = self.viewModel.authorName
     self.postTimeLabel.rac.text = self.viewModel.postTime
