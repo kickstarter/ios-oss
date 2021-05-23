@@ -24,3 +24,38 @@ public let commentBodyTextViewStyle: TextViewStyle = { textView in
     |> \.isEditable .~ false
     |> \.isUserInteractionEnabled .~ false
 }
+
+public let creatorAuthorBadgeStyle: PaddingLabelStyle = { label in
+  label
+    |> \.text .~ Strings.Creator()
+    |> \.font .~ UIFont.ksr_footnote()
+    |> \.textColor .~ UIColor.ksr_create_700
+    |> \.backgroundColor .~ UIColor.ksr_create_700.withAlphaComponent(0.06)
+    |> roundedStyle(cornerRadius: Styles.grid(1))
+    |> \.adjustsFontForContentSizeCategory .~ true
+}
+
+// TODO: Internationalized in the near future.
+
+public let superbackerAuthorBadgeStyle: PaddingLabelStyle = { label in
+  label
+    |> \.text .~ localizedString(key: "Superbacker", defaultValue: "SUPERBACKER")
+    |> \.font .~ UIFont.ksr_headline(size: 10)
+    |> \.textColor .~ UIColor.ksr_celebrate_500
+    |> \.insets .~ .zero
+    |> \.adjustsFontForContentSizeCategory .~ true
+}
+
+// TODO: Internationalized in the near future.
+
+public let youAuthorBadgeStyle: PaddingLabelStyle = { label in
+  label
+    |> \.text .~ localizedString(key: "You_tag_for_comment_author", defaultValue: "You")
+    |> \.font .~ UIFont.ksr_footnote()
+    |> \.textColor .~ UIColor.ksr_trust_700
+    |> \.backgroundColor .~ UIColor.ksr_trust_100
+    |> roundedStyle(cornerRadius: Styles.grid(1))
+    |> \.adjustsFontForContentSizeCategory .~ true
+}
+
+public let defaultAuthorBadgeStyle: PaddingLabelStyle = { $0 }

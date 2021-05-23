@@ -8,14 +8,14 @@ internal final class CommentCellHeaderStackView: UIStackView {
 
   fileprivate let viewModel = CommentCellViewModel()
 
-  private lazy var avatarImageView = { UIImageView(frame: .zero)
+  private lazy var circleAvatarImageView = { CircleAvatarImageView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var userNameLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var usernameLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var userNameTagLabel: PaddingLabel = { PaddingLabel(frame: .zero) }()
-  private lazy var usernameTimeLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var authorNameLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var authorBadgeLabel: PaddingLabel = { PaddingLabel(frame: .zero) }()
+  private lazy var authorNameBadgeLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var authorNameTimeLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var postTimeLabel: UILabel = { UILabel(frame: .zero) }()
 
   override init(frame: CGRect) {
@@ -39,22 +39,22 @@ internal final class CommentCellHeaderStackView: UIStackView {
       |> \.spacing .~ Styles.grid(2)
       |> \.alignment .~ .top
 
-    _ = self.usernameTimeLabelsStackView
+    _ = self.authorNameTimeLabelsStackView
       |> \.axis .~ .vertical
       |> \.spacing .~ Styles.grid(1)
 
-    _ = self.usernameLabelsStackView
+    _ = self.authorNameBadgeLabelsStackView
       |> \.axis .~ .horizontal
       |> \.spacing .~ Styles.grid(1)
 
-    _ = self.userNameLabel
+    _ = self.authorNameLabel
       |> \.numberOfLines .~ 1
       |> \.textColor .~ .ksr_support_700
       |> \.textAlignment .~ .left
       |> \.font .~ UIFont.ksr_callout().weighted(.semibold)
       |> \.adjustsFontForContentSizeCategory .~ true
 
-    _ = self.userNameTagLabel
+    _ = self.authorBadgeLabel
       |> \.numberOfLines .~ 1
       |> \.textColor .~ .ksr_create_500
       |> \.textAlignment .~ .left
@@ -75,115 +75,51 @@ internal final class CommentCellHeaderStackView: UIStackView {
     self.viewModel.inputs.configureWith(comment: comment, viewer: user)
   }
 
-  internal func configureUserBadgeStyle(from badge: Comment.AuthorBadge) {
-    switch badge {
-    case .creator:
-      _ = self.userNameTagLabel
-        |> creatorTagLabelStyle
-    case .superbacker:
-      _ = self.userNameTagLabel
-        |> \.insets .~ .zero
-        |> superbackerTagLabelStyle
-    case .you:
-      _ = self.userNameTagLabel
-        |> youTagLabelStyle
-    default:
-      _ = self.userNameTagLabel
-        |> \.text .~ nil
-    }
-  }
-
   private func configureViews() {
-    _ = ([self.avatarImageView, self.usernameTimeLabelsStackView], self)
+    _ = ([self.circleAvatarImageView, self.authorNameTimeLabelsStackView], self)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.usernameLabelsStackView, self.postTimeLabel], self.usernameTimeLabelsStackView)
+    _ = ([self.authorNameBadgeLabelsStackView, self.postTimeLabel], self.authorNameTimeLabelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.userNameLabel, self.userNameTagLabel, UIView()], self.usernameLabelsStackView)
+    _ = ([self.authorNameLabel, self.authorBadgeLabel, UIView()], self.authorNameBadgeLabelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.userNameTagLabel.setContentCompressionResistancePriority(.init(1_000), for: .horizontal)
-    self.userNameTagLabel.setContentHuggingPriority(.init(1_000), for: .horizontal)
+    self.authorBadgeLabel.setContentCompressionResistancePriority(.init(1_000), for: .horizontal)
+    self.authorBadgeLabel.setContentHuggingPriority(.init(1_000), for: .horizontal)
 
     NSLayoutConstraint.activate([
-      self.avatarImageView.widthAnchor.constraint(equalToConstant: Styles.grid(7)),
-      self.avatarImageView.heightAnchor.constraint(equalToConstant: Styles.grid(7))
+      self.circleAvatarImageView.widthAnchor.constraint(equalToConstant: Styles.grid(7)),
+      self.circleAvatarImageView.heightAnchor.constraint(equalToConstant: Styles.grid(7))
     ])
   }
 
   // MARK: View Model
 
   override func bindViewModel() {
-    self.viewModel.outputs.avatarImageURL
+    self.viewModel.outputs.authorImageURLAndPlaceholderImageName
       .observeForUI()
       .on(event: { [weak self] _ in
-        self?.avatarImageView.af.cancelImageRequest()
-        self?.avatarImageView.image = nil
+        self?.circleAvatarImageView.af.cancelImageRequest()
+        self?.circleAvatarImageView.image = nil
       })
-      .skipNil()
-      .observeValues { [weak self] url in
-        self?.avatarImageView.ksr_setRoundedImageWith(url)
+      .observeValues { [weak self] url, placeholderImageName in
+        self?.circleAvatarImageView
+          .ksr_setImageWithURL(url, placeholderImage: UIImage(named: placeholderImageName))
       }
 
-    self.viewModel.outputs.authorBadge
+    self.viewModel.outputs.authorBadgeStyleStackViewAligment
       .observeForUI()
-      .observeValues(self.configureUserBadgeStyle)
+      .observeValues { [weak self] authorBadgeLabelStyle, stackViewAlignment in
+        guard let self = self else { return }
+        _ = self.authorBadgeLabel
+          |> authorBadgeLabelStyle
 
-    self.userNameLabel.rac.text = self.viewModel.authorName
+        _ = self.authorNameBadgeLabelsStackView
+          |> \.alignment .~ stackViewAlignment
+      }
+
+    self.authorNameLabel.rac.text = self.viewModel.authorName
     self.postTimeLabel.rac.text = self.viewModel.postTime
-  }
-}
-
-// MARK: Styles
-
-private let creatorTagLabelStyle: LabelStyle = { label in
-  label
-    |> \.text .~ Strings.Creator()
-    |> \.font .~ UIFont.ksr_footnote()
-    |> \.textColor .~ UIColor.ksr_create_700
-    |> \.backgroundColor .~ UIColor.ksr_create_700.withAlphaComponent(0.06)
-    |> roundedStyle(cornerRadius: Styles.grid(1))
-    |> \.adjustsFontForContentSizeCategory .~ true
-    |> \.textAlignment .~ NSTextAlignment.right
-}
-
-// TODO: Internationalized in the near future.
-
-private let youTagLabelStyle: LabelStyle = { label in
-  label
-    |> \.text .~ localizedString(key: "You_tag_for_comment_author", defaultValue: "You")
-    |> \.font .~ UIFont.ksr_footnote()
-    |> \.textColor .~ UIColor.ksr_trust_700
-    |> \.backgroundColor .~ UIColor.ksr_trust_100
-    |> roundedStyle(cornerRadius: Styles.grid(1))
-    |> \.adjustsFontForContentSizeCategory .~ true
-}
-
-// TODO: Internationalized in the near future.
-
-private let superbackerTagLabelStyle: LabelStyle = { label in
-  label
-    |> \.text .~ localizedString(key: "Superbacker", defaultValue: "SUPERBACKER")
-    |> \.font .~ UIFont.ksr_headline(size: 10)
-    |> \.textColor .~ UIColor.ksr_celebrate_500
-    |> \.adjustsFontForContentSizeCategory .~ true
-}
-
-// MARK: Helper Class
-
-private class PaddingLabel: UILabel {
-  var insets = UIEdgeInsets(all: Styles.grid(1))
-
-  override func drawText(in rect: CGRect) {
-    super.drawText(in: rect.inset(by: self.insets))
-  }
-
-  override var intrinsicContentSize: CGSize {
-    let size = super.intrinsicContentSize
-    return CGSize(
-      width: size.width + self.insets.left + self.insets.right,
-      height: size.height + self.insets.top + self.insets.bottom
-    )
   }
 }

@@ -6,37 +6,42 @@ import ReactiveExtensions_TestHelpers
 import XCTest
 
 internal final class CommentCellHeaderStackViewTests: TestCase {
-  fileprivate let vm: CommentCellViewModelType = CommentCellViewModel()
-  fileprivate let authorBadge = TestObserver<Comment.AuthorBadge, Never>()
+  private let vm: CommentCellViewModelType = CommentCellViewModel()
+  private let commentCellHeaderStackView =
+    CommentCellHeaderStackView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 80))
+  private let viewer: User = User.template |> \.id .~ 12_345
 
   override func setUp() {
     super.setUp()
+    self.commentCellHeaderStackView.layer.backgroundColor = UIColor.ksr_white.cgColor
 
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
-    self.vm.outputs.authorBadge.observe(self.authorBadge.observer)
+    UIView.setAnimationsEnabled(false)
   }
 
   override func tearDown() {
-    super.tearDown()
     AppEnvironment.popEnvironment()
+    UIView.setAnimationsEnabled(true)
+    super.tearDown()
   }
 
-  func testUserTagState() {
-    let commentCellHeaderStackView =
-      CommentCellHeaderStackView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 80))
+  func testAuthorBadge_Backer() {
+    self.commentCellHeaderStackView.configureWith(comment: Comment.backerTemplate, user: self.viewer)
+    FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_Backer")
+  }
 
-    let authorBadgeStates = [
-      "AuthorBadge_Is_Backer": Comment.AuthorBadge.backer,
-      "AuthorBadge_Is_Superbacker": Comment.AuthorBadge.superbacker,
-      "AuthorBadge_Is_Creator": Comment.AuthorBadge.creator,
-      "AuthorBadge_Is_You": Comment.AuthorBadge.you
-    ]
+  func testAuthorBadge_Creator() {
+    self.commentCellHeaderStackView.configureWith(comment: Comment.template, user: self.viewer)
+    FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_Creator")
+  }
 
-    let viewer = User.template |> \.id .~ 12_345
+  func testAuthorBadge_SuperBacker() {
+    self.commentCellHeaderStackView.configureWith(comment: Comment.superbackerTemplate, user: self.viewer)
+    FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_Superbacker")
+  }
 
-    for (key, authorBadge) in authorBadgeStates {
-      self.vm.inputs.configureWith(comment: Comment.template(for: authorBadge), viewer: viewer)
-      FBSnapshotVerifyView(commentCellHeaderStackView, identifier: "state_\(key)")
-    }
+  func testAuthorBadge_You() {
+    self.commentCellHeaderStackView.configureWith(comment: Comment.failedTemplate, user: self.viewer)
+    FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_You")
   }
 }

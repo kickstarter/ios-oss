@@ -23,9 +23,9 @@ extension Comment {
       id: "AFD8hsfh7gsSf9==",
       imageUrl: "https://ks_.imag/fedrico.jpg",
       isCreator: true,
-      name: "Federico Fellini"
+      name: "Nandi Adams"
     ),
-    authorBadges: [.creator],
+    authorBadges: nil,
     body: "Hello World",
     createdAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970,
     deletedAt: nil,
@@ -40,14 +40,14 @@ extension Comment {
       id: "ADG8hsfh7gsSf7==",
       imageUrl: "https://ks_.imag/lemwer.jpg",
       isCreator: true,
-      name: "Kmewrci"
+      name: "KmewrcW"
     ),
     authorBadges: [.superbacker],
     body: "Hi Nimble! Where are you incorporated? Thank you!",
     createdAt: Date(timeIntervalSince1970: 1_475_361_215).timeIntervalSince1970,
     deletedAt: Date(timeIntervalSince1970: 1_475_361_230).timeIntervalSince1970,
     id: "78DJa89jdSDJ89sd8==",
-    isDeleted: true,
+    isDeleted: false,
     uid: 11_445,
     replyCount: 10
   )
