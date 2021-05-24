@@ -120,7 +120,7 @@ final class CommentComposerView: UIView {
       |> \.backgroundColor .~ .ksr_support_200
 
     _ = self.avatarImageView
-      |> UIImageView.lens.image .~ UIImage(named: "avatar--placeholder")
+      |> UIImageView.lens.image .~ Library.image(named: "avatar--placeholder")
 
     _ = self.onlyBackersLabel |> onlyBackersLabelStyle
   }
@@ -208,6 +208,6 @@ private let onlyBackersLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_body(size: 15.0)
     // TODO: To be replaced with a type-safe string when copy is available.
     |> \.text .~
-    localizedString(key: "Only_backers_can_leave_comments", defaultValue: "Only backers can leave comments")
+    localizedString(key: "Only_backers_can_post_comments", defaultValue: "Only backers can post comments.")
     |> \.adjustsFontForContentSizeCategory .~ true
 }

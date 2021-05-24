@@ -123,6 +123,6 @@ private let placeholderLabelStyle: LabelStyle = { label in
     |> \.textColor .~ .ksr_support_400
     |> \.font .~ UIFont.ksr_body(size: 15.0)
     // TODO: To be replaced with a type-safe string when copy is available.
-    |> \.text .~ localizedString(key: "Leave_a_comment", defaultValue: "Leave a comment...")
+    |> \.text .~ localizedString(key: "Write_a_comment", defaultValue: "Write a comment...")
     |> \.adjustsFontForContentSizeCategory .~ true
 }
