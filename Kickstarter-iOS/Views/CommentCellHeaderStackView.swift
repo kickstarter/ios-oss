@@ -38,7 +38,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
     _ = self
       |> \.axis .~ .horizontal
       |> \.spacing .~ Styles.grid(2)
-      |> \.alignment .~ .top
+      |> \.alignment .~ .center
 
     _ = self.authorNameTimeLabelsStackView
       |> \.axis .~ .vertical

@@ -8,7 +8,12 @@ import XCTest
 internal final class CommentCellHeaderStackViewTests: TestCase {
   private let vm: CommentCellViewModelType = CommentCellViewModel()
   private let commentCellHeaderStackView =
-    CommentCellHeaderStackView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 80))
+    CommentCellHeaderStackView(frame: CGRect(
+      x: 0,
+      y: 0,
+      width: UIScreen.main.bounds.width,
+      height: Styles.grid(9)
+    ))
   private let viewer: User = User.template |> \.id .~ 12_345
 
   override func setUp() {
