@@ -171,7 +171,7 @@
                                     <outlet property="youView" destination="3ET-R2-24I" id="ExL-bE-Za6"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentsEmptyStateCell" id="AgR-zW-Trc" customClass="DeprecatedCommentsEmptyStateCell" customModule="Kickstarter_Framework" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DeprecatedCommentsEmptyStateCell" id="AgR-zW-Trc" customClass="DeprecatedCommentsEmptyStateCell" customModule="Kickstarter_Framework" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="268" width="450" height="198"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AgR-zW-Trc" id="GhZ-I8-Uys">
