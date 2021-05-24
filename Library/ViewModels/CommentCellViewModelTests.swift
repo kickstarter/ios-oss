@@ -8,7 +8,6 @@ import XCTest
 internal final class CommentCellViewModelTests: TestCase {
   let vm: CommentCellViewModelType = CommentCellViewModel()
 
-  private let authorImagePlaceholderImageName = TestObserver<String, Never>()
   private let authorBadgeStyle = TestObserver<PaddingLabelStyle, Never>()
   private let authorImageURL = TestObserver<URL, Never>()
   private let body = TestObserver<String, Never>()
@@ -19,10 +18,8 @@ internal final class CommentCellViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    self.vm.outputs.authorImageURLAndPlaceholderImageName.map(second)
-      .observe(self.authorImagePlaceholderImageName.observer)
     self.vm.outputs.authorBadgeStyleStackViewAligment.map(first).observe(self.authorBadgeStyle.observer)
-    self.vm.outputs.authorImageURLAndPlaceholderImageName.map(first).observe(self.authorImageURL.observer)
+    self.vm.outputs.authorImageURL.observe(self.authorImageURL.observer)
     self.vm.outputs.body.observe(self.body.observer)
     self.vm.outputs.authorName.observe(self.authorName.observer)
     self.vm.outputs.postTime.observe(self.postTime.observer)
@@ -41,7 +38,6 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(comment: comment, viewer: viewer)
 
     self.authorImageURL.assertValues([URL(string: "http://www.kickstarter.com/small.jpg")!])
-    self.authorImagePlaceholderImageName.assertValues(["avatar--placeholder"])
     self.body.assertValues([comment.body], "The comment body is emitted.")
     self.authorName.assertValues([comment.author.name], "The author's name is emitted.")
     self.postTime.assertValueCount(1, "The relative time of the comment is emitted.")
@@ -65,7 +61,6 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(comment: comment, viewer: nil)
 
     self.authorImageURL.assertValues([URL(string: "http://www.kickstarter.com/small.jpg")!])
-    self.authorImagePlaceholderImageName.assertValues(["avatar--placeholder"])
     self.body.assertValues([comment.body], "The comment body is emitted.")
     self.authorName.assertValues([comment.author.name], "The author's name is emitted.")
     self.postTime.assertValueCount(1, "The relative time of the comment is emitted.")

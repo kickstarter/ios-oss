@@ -14,8 +14,8 @@ public protocol CommentCellViewModelOutputs {
   /// Emits text containing author's fullname or username
   var authorName: Signal<String, Never> { get }
 
-  /// Emits a url to the comment author's image and a placeholder image.
-  var authorImageURLAndPlaceholderImageName: Signal<(URL, String), Never> { get }
+  /// Emits a url to the comment author's image
+  var authorImageURL: Signal<URL, Never> { get }
 
   /// Emits text containing comment body
   var body: Signal<String, Never> { get }
@@ -41,11 +41,10 @@ public final class CommentCellViewModel:
       }
       .map(setAuthorBadgeStyleStackViewAligment)
 
-    self.authorImageURLAndPlaceholderImageName = comment
+    self.authorImageURL = comment
       .map(\.author.imageUrl)
       .map(URL.init)
       .skipNil()
-      .map { ($0, "avatar--placeholder") }
 
     self.body = comment.map(\.body)
 
@@ -62,7 +61,7 @@ public final class CommentCellViewModel:
   }
 
   public let authorBadgeStyleStackViewAligment: Signal<(PaddingLabelStyle, UIStackView.Alignment), Never>
-  public var authorImageURLAndPlaceholderImageName: Signal<(URL, String), Never>
+  public var authorImageURL: Signal<URL, Never>
   public let body: Signal<String, Never>
   public let authorName: Signal<String, Never>
   public let postTime: Signal<String, Never>

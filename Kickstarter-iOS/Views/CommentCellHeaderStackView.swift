@@ -9,6 +9,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
   fileprivate let viewModel = CommentCellViewModel()
 
   private lazy var circleAvatarImageView = { CircleAvatarImageView(frame: .zero)
+    |> \.backgroundColor .~ .ksr_support_100
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -97,15 +98,15 @@ internal final class CommentCellHeaderStackView: UIStackView {
   // MARK: View Model
 
   override func bindViewModel() {
-    self.viewModel.outputs.authorImageURLAndPlaceholderImageName
+    self.viewModel.outputs.authorImageURL
       .observeForUI()
       .on(event: { [weak self] _ in
         self?.circleAvatarImageView.af.cancelImageRequest()
         self?.circleAvatarImageView.image = nil
       })
-      .observeValues { [weak self] url, placeholderImageName in
+      .observeValues { [weak self] url in
         self?.circleAvatarImageView
-          .ksr_setImageWithURL(url, placeholderImage: UIImage(named: placeholderImageName))
+          .ksr_setImageWithURL(url)
       }
 
     self.viewModel.outputs.authorBadgeStyleStackViewAligment
