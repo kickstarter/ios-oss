@@ -120,7 +120,7 @@ final class CommentComposerView: UIView {
       |> \.backgroundColor .~ .ksr_support_200
 
     _ = self.avatarImageView
-      |> UIImageView.lens.image .~ Library.image(named: "avatar--placeholder")
+      |> \.backgroundColor .~ .ksr_support_100
 
     _ = self.onlyBackersLabel |> onlyBackersLabelStyle
   }
@@ -132,7 +132,7 @@ final class CommentComposerView: UIView {
 
     self.inputContainerView.placeholderLabel.rac.hidden = self.viewModel.outputs.placeholderHidden
     self.inputContainerView.postButton.rac.hidden = self.viewModel.outputs.postButtonHidden
-    
+
     self.viewModel.outputs.avatarURL
       .observeForUI()
       .on(event: { [weak self] _ in
@@ -143,7 +143,6 @@ final class CommentComposerView: UIView {
       .observeValues { [weak self] url in
         self?.avatarImageView.ksr_setRoundedImageWith(url)
       }
-
 
     self.viewModel.outputs.notifyDelegateDidSubmitText
       .observeForUI()
