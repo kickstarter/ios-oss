@@ -5,7 +5,7 @@ import UIKit
 final class CommentInputTextView: UITextView {
   // MARK: - Properties
 
-  let maxHeight: CGFloat = 200
+  let maxHeight: CGFloat = 200 // Product definition
 
   // MARK: - Lifecycle
 
@@ -21,9 +21,9 @@ final class CommentInputTextView: UITextView {
     var size = super.intrinsicContentSize
     if size.height > self.maxHeight {
       size.height = self.maxHeight
-      isScrollEnabled = true
+      self.isScrollEnabled = true
     } else {
-      isScrollEnabled = false
+      self.isScrollEnabled = false
     }
     return size
   }

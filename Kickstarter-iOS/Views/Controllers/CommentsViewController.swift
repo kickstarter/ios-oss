@@ -15,7 +15,7 @@ internal final class CommentsViewController: UITableViewController {
   // MARK: - Properties
 
   private lazy var commentComposer: CommentComposerView = {
-    let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: Layout.Composer.originalHeight)
+    let frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: Layout.Composer.originalHeight)
     let view = CommentComposerView(frame: frame)
     return view
   }()
@@ -33,7 +33,7 @@ internal final class CommentsViewController: UITableViewController {
   }
 
   override var inputAccessoryView: UIView? {
-    return commentComposer
+    return self.commentComposer
   }
 
   override var canBecomeFirstResponder: Bool {
@@ -60,7 +60,7 @@ internal final class CommentsViewController: UITableViewController {
     super.bindViewModel()
 
     // TODO: Call this method after post comment is successful to clear the input field text
-    // self.commentComposer.commentPostedSuccessfully()
+    // self.commentComposer.clearOnSuccess()
   }
 }
 

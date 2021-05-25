@@ -3,12 +3,12 @@ import Prelude
 import UIKit
 
 private enum Layout {
-  enum Border {
-    static let height: CGFloat = 1.0
-  }
-
   enum Avatar {
     static let diameter: CGFloat = 44.0
+  }
+
+  enum Border {
+    static let height: CGFloat = 1.0
   }
 }
 
@@ -19,9 +19,8 @@ protocol CommentComposerViewDelegate: AnyObject {
 final class CommentComposerView: UIView {
   // MARK: - Properties
 
-  private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private let topBorderView = {
-    UIView(frame: .zero)
+  lazy var avatarImageView = {
+    CircleAvatarImageView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -30,13 +29,14 @@ final class CommentComposerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  lazy var avatarImageView = {
-    CircleAvatarImageView(frame: .zero)
+  private lazy var onlyBackersLabel: UILabel = {
+    UILabel(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var onlyBackersLabel: UILabel = {
-    UILabel(frame: .zero)
+  private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private let topBorderView = {
+    UIView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
@@ -48,9 +48,9 @@ final class CommentComposerView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
+    self.bindViewModel()
     self.configureViews()
     self.setupConstraints()
-    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
@@ -70,7 +70,7 @@ final class CommentComposerView: UIView {
   /*
    Call this to clear body text.
    */
-  public func commentPostedSuccessfully() {
+  public func clearOnSuccess() {
     self.viewModel.inputs.bodyTextDidChange("")
   }
 
@@ -192,15 +192,6 @@ extension CommentComposerView: UITextViewDelegate {
 
 // MARK: - Styles
 
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.axis .~ .horizontal
-    |> \.distribution .~ .fill
-    |> \.spacing .~ Styles.grid(2)
-    |> \.layoutMargins .~ .init(all: Styles.grid(3))
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-}
-
 private let onlyBackersLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_support_400
@@ -209,4 +200,13 @@ private let onlyBackersLabelStyle: LabelStyle = { label in
     |> \.text .~
     localizedString(key: "Only_backers_can_post_comments", defaultValue: "Only backers can post comments.")
     |> \.adjustsFontForContentSizeCategory .~ true
+}
+
+private let rootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .horizontal
+    |> \.distribution .~ .fill
+    |> \.spacing .~ Styles.grid(2)
+    |> \.layoutMargins .~ .init(all: Styles.grid(3))
+    |> \.isLayoutMarginsRelativeArrangement .~ true
 }

@@ -3,31 +3,30 @@ import Prelude
 import UIKit
 
 private enum Layout {
-  enum Container {
-    static let radius: CGFloat = 22
-  }
-
   enum Button {
     static let height: CGFloat = 20.0
     static let width: CGFloat = 33.0
+  }
+
+  enum Container {
+    static let radius: CGFloat = 22
   }
 }
 
 final class CommentInputContainerView: UIView {
   // MARK: - Properties
 
-  private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
-
   lazy var inputTextView: CommentInputTextView = {
     CommentInputTextView(frame: .zero)
   }()
 
   let placeholderLabel: UILabel = { UILabel(frame: .zero) }()
-
   lazy var postButton: UIButton = {
     UIButton(type: .system)
       |> \.isHidden .~ true
   }()
+
+  private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   // MARK: - Lifecycle
 
@@ -51,7 +50,7 @@ final class CommentInputContainerView: UIView {
   private func configureViews() {
     _ = self
       |> \.autoresizingMask .~ .flexibleHeight
-      |> \.layoutMargins .~ .init(left: 18)
+      |> \.layoutMargins .~ .init(left: Styles.grid(3))
 
     _ = ([self.inputTextView, self.postButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -108,6 +107,15 @@ private let containerStyle: ViewStyle = { view in
     |> \.clipsToBounds .~ true
 }
 
+private let placeholderLabelStyle: LabelStyle = { label in
+  label
+    |> \.textColor .~ .ksr_support_400
+    |> \.font .~ UIFont.ksr_body(size: 15.0)
+    // TODO: To be replaced with a type-safe string when copy is available.
+    |> \.text .~ localizedString(key: "Write_a_comment", defaultValue: "Write a comment...")
+    |> \.adjustsFontForContentSizeCategory .~ true
+}
+
 private let rootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .horizontal
@@ -116,13 +124,4 @@ private let rootStackViewStyle: StackViewStyle = { stackView in
     |> \.spacing .~ Styles.grid(1)
     |> \.layoutMargins .~ .init(topBottom: Styles.grid(2), leftRight: Styles.grid(3))
     |> \.isLayoutMarginsRelativeArrangement .~ true
-}
-
-private let placeholderLabelStyle: LabelStyle = { label in
-  label
-    |> \.textColor .~ .ksr_support_400
-    |> \.font .~ UIFont.ksr_body(size: 15.0)
-    // TODO: To be replaced with a type-safe string when copy is available.
-    |> \.text .~ localizedString(key: "Write_a_comment", defaultValue: "Write a comment...")
-    |> \.adjustsFontForContentSizeCategory .~ true
 }
