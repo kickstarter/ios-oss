@@ -98,7 +98,8 @@ private let rowStackViewStyle: StackViewStyle = { stackView in
 
 // MARK: - Functions
 
-// TODO: Internationalized in the near future.
+// TODO/FIXME: Internationalized in the near future.
+// Allow "Learn more about comment guidelines." to be tappable and open link in a web browser
 
 private func attributedTextCommentRemoved() -> NSAttributedString {
   let regularFontAttribute = [
