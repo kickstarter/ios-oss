@@ -11,7 +11,10 @@ public protocol CommentsViewModelInputs {
   func viewDidLoad()
 }
 
-public protocol CommentsViewModelOutputs {}
+public protocol CommentsViewModelOutputs {
+  /// Emits a list of comments that should be displayed.
+  var dataSource: Signal<([Comment], User?), Never> { get }
+}
 
 public protocol CommentsViewModelType {
   var inputs: CommentsViewModelInputs { get }
@@ -46,6 +49,9 @@ public final class CommentsViewModel: CommentsViewModelType,
         .materialize()
     }
     .observeValues { print($0) }
+
+    // FIXME: This would be removed when we fetch comments from API
+    self.dataSource = self.templatesComments.signal.skipNil()
   }
 
   fileprivate let postCommentButtonTappedProperty = MutableProperty(())
@@ -54,9 +60,17 @@ public final class CommentsViewModel: CommentsViewModelType,
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
+
+  // TODO: - This would be removed when we fetch comments from API
+  fileprivate let templatesComments = MutableProperty<([Comment], User?)?>(nil)
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+
+    // FIXME: This would be removed when we fetch comments from API
+    self.templatesComments.value = (Comment.templates, AppEnvironment.current.currentUser)
   }
+
+  public let dataSource: Signal<([Comment], User?), Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }
