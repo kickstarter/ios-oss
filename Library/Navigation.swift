@@ -494,6 +494,9 @@ private func settingsNotifications(_ params: RouteParamsDecoded) -> Navigation? 
 
 private func parsedParams(url: URL, fromTemplate template: String) -> RouteParamsDecoded? {
   let recognizedEmailHosts = [
+    "me.kickstarter.com",
+    "ea.kickstarter.com",
+    "clicks.kickstarter.com",
     "click.e.kickstarter.com",
     "click.em.kickstarter.com",
     "emails.kickstarter.com",
