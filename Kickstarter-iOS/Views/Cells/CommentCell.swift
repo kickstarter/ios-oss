@@ -60,9 +60,9 @@ final class CommentCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  internal func configureWith(value: (comment: Comment, viewer: User?)) {
-    self.commentCellHeaderStackView.configureWith(comment: value.comment, user: value.viewer)
-    self.viewModel.inputs.configureWith(comment: value.comment, viewer: value.viewer)
+  internal func configureWith(value: (comment: Comment, user: User?)) {
+    self.commentCellHeaderStackView.configureWith(comment: value.comment, user: value.user)
+    self.viewModel.inputs.configureWith(comment: value.comment, user: value.user)
   }
 
   private func configureViews() {
@@ -93,7 +93,7 @@ final class CommentCell: UITableViewCell, ValueCell {
 private let replyButtonStyle: ButtonStyle = { button in
   button
     |> UIButton.lens
-    .title(for: .normal) %~ { _ in localizedString(key: "Reply_a_comment", defaultValue: "Reply") }
+    .title(for: .normal) %~ { _ in localizedString(key: "Reply", defaultValue: "Reply") }
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "reply")
     |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_support_400

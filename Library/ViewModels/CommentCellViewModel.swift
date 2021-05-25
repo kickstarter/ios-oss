@@ -4,12 +4,12 @@ import ReactiveSwift
 
 public protocol CommentCellViewModelInputs {
   /// Call to configure with a Comment and User.
-  func configureWith(comment: Comment, viewer: User?)
+  func configureWith(comment: Comment, user: User?)
 }
 
 public protocol CommentCellViewModelOutputs {
-  /// Emits a styling for the author's badge and an alignment for the stackview containing `authorName` and `authorBadge
-  var authorBadgeStyleStackViewAlignment: Signal<(PaddingLabelStyle, UIStackView.Alignment), Never> { get }
+  /// Emits author's badge for a comment
+  var authorBadge: Signal<Comment.AuthorBadge, Never> { get }
 
   /// Emits text containing author's fullname or username
   var authorName: Signal<String, Never> { get }
@@ -32,14 +32,13 @@ public protocol CommentCellViewModelType {
 public final class CommentCellViewModel:
   CommentCellViewModelType, CommentCellViewModelInputs, CommentCellViewModelOutputs {
   public init() {
-    let comment = self.commentViewer.signal.skipNil()
+    let comment = self.commentUser.signal.skipNil()
       .map { comment, _ in comment }
 
-    self.authorBadgeStyleStackViewAlignment = self.commentViewer.signal.skipNil()
-      .map { comment, viewer in
-        comment.author.id == viewer?.id.description ? .you : comment.authorBadge
+    self.authorBadge = self.commentUser.signal.skipNil()
+      .map { comment, user in
+        comment.author.id == user?.id.description ? .you : comment.authorBadge
       }
-      .map(setAuthorBadgeStyleStackViewAlignment)
 
     self.authorImageURL = comment
       .map(\.author.imageUrl)
@@ -55,12 +54,12 @@ public final class CommentCellViewModel:
     }
   }
 
-  fileprivate let commentViewer = MutableProperty<(Comment, User?)?>(nil)
-  public func configureWith(comment: Comment, viewer: User?) {
-    self.commentViewer.value = (comment, viewer)
+  fileprivate let commentUser = MutableProperty<(Comment, User?)?>(nil)
+  public func configureWith(comment: Comment, user: User?) {
+    self.commentUser.value = (comment, user)
   }
 
-  public let authorBadgeStyleStackViewAlignment: Signal<(PaddingLabelStyle, UIStackView.Alignment), Never>
+  public let authorBadge: Signal<Comment.AuthorBadge, Never>
   public var authorImageURL: Signal<URL, Never>
   public let body: Signal<String, Never>
   public let authorName: Signal<String, Never>
@@ -68,19 +67,4 @@ public final class CommentCellViewModel:
 
   public var inputs: CommentCellViewModelInputs { self }
   public var outputs: CommentCellViewModelOutputs { self }
-}
-
-private func setAuthorBadgeStyleStackViewAlignment(
-  from badge: Comment.AuthorBadge
-) -> (PaddingLabelStyle, UIStackView.Alignment) {
-  switch badge {
-  case .creator:
-    return (creatorAuthorBadgeStyle, .center)
-  case .superbacker:
-    return (superbackerAuthorBadgeStyle, .top)
-  case .you:
-    return (youAuthorBadgeStyle, .center)
-  default:
-    return (defaultAuthorBadgeStyle, .center)
-  }
 }

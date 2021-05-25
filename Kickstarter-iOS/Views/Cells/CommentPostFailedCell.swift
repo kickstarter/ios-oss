@@ -56,9 +56,9 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  internal func configureWith(value: (comment: Comment, viewer: User?)) {
-    self.commentCellHeaderStackView.configureWith(comment: value.comment, user: value.viewer)
-    self.viewModel.inputs.configureWith(comment: value.comment, viewer: value.viewer)
+  internal func configureWith(value: (comment: Comment, user: User?)) {
+    self.commentCellHeaderStackView.configureWith(comment: value.comment, user: value.user)
+    self.viewModel.inputs.configureWith(comment: value.comment, user: value.user)
   }
 
   private func configureViews() {

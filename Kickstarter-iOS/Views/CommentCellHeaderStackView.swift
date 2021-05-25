@@ -8,11 +8,8 @@ internal final class CommentCellHeaderStackView: UIStackView {
 
   private lazy var authorNameLabel: UILabel = { UILabel(frame: .zero) }()
 
-  /// Hidden as there's need for clarification on how Comment.AuthorBadge works on GraphQL
-  /// There's currently a bug on rotation of device where the style for the authorBadgeLabel resets to a wrong state
   private lazy var authorBadgeLabel: PaddingLabel = {
     PaddingLabel(frame: .zero)
-      |> \.isHidden .~ true
   }()
 
   private lazy var authorNameBadgeLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -22,6 +19,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private var authorBadgeStyle: PaddingLabelStyle = { $0 }
   private lazy var postTimeLabel: UILabel = { UILabel(frame: .zero) }()
   private let viewModel = CommentCellViewModel()
 
@@ -74,12 +72,15 @@ internal final class CommentCellHeaderStackView: UIStackView {
       |> \.textAlignment .~ .left
       |> \.font .~ UIFont.ksr_footnote()
       |> \.adjustsFontForContentSizeCategory .~ true
+
+    _ = self.authorBadgeLabel
+      |> self.authorBadgeStyle
   }
 
   // MARK: - Configuration
 
   internal func configureWith(comment: Comment, user: User?) {
-    self.viewModel.inputs.configureWith(comment: comment, viewer: user)
+    self.viewModel.inputs.configureWith(comment: comment, user: user)
   }
 
   private func configureViews() {
@@ -101,6 +102,31 @@ internal final class CommentCellHeaderStackView: UIStackView {
     ])
   }
 
+  private func configureUserBadgeStyle(from badge: Comment.AuthorBadge) {
+    switch badge {
+    case .creator:
+      self.authorBadgeStyle = creatorAuthorBadgeStyle
+
+      _ = self.authorNameBadgeLabelsStackView
+        |> \.alignment .~ .center
+    case .superbacker:
+      self.authorBadgeStyle = superbackerAuthorBadgeStyle
+
+      _ = self.authorNameBadgeLabelsStackView
+        |> \.alignment .~ .top
+    case .you:
+      self.authorBadgeStyle = youAuthorBadgeStyle
+
+      _ = self.authorNameBadgeLabelsStackView
+        |> \.alignment .~ .center
+    case .backer:
+      _ = self.authorBadgeLabel
+        |> \.text .~ nil
+    }
+    _ = self.authorBadgeLabel
+      |> self.authorBadgeStyle
+  }
+
   // MARK: View Model
 
   override func bindViewModel() {
@@ -115,16 +141,9 @@ internal final class CommentCellHeaderStackView: UIStackView {
           .ksr_setImageWithURL(url)
       }
 
-    self.viewModel.outputs.authorBadgeStyleStackViewAlignment
+    self.viewModel.outputs.authorBadge
       .observeForUI()
-      .observeValues { [weak self] authorBadgeLabelStyle, stackViewAlignment in
-        guard let self = self else { return }
-        _ = self.authorBadgeLabel
-          |> authorBadgeLabelStyle
-
-        _ = self.authorNameBadgeLabelsStackView
-          |> \.alignment .~ stackViewAlignment
-      }
+      .observeValues(self.configureUserBadgeStyle)
 
     self.authorNameLabel.rac.text = self.viewModel.authorName
     self.postTimeLabel.rac.text = self.viewModel.postTime
