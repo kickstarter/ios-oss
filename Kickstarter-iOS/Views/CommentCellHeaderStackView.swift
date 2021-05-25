@@ -19,16 +19,15 @@ internal final class CommentCellHeaderStackView: UIStackView {
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private var authorBadgeStyle: PaddingLabelStyle = { $0 }
   private lazy var postTimeLabel: UILabel = { UILabel(frame: .zero) }()
   private let viewModel = CommentCellViewModel()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
+    self.bindViewModel()
     self.bindStyles()
     self.configureViews()
-    self.bindViewModel()
   }
 
   required init(coder _: NSCoder) {
@@ -39,6 +38,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
 
   override func bindStyles() {
     super.bindStyles()
+
     _ = self
       |> \.axis .~ .horizontal
       |> \.spacing .~ Styles.grid(2)
@@ -59,13 +59,6 @@ internal final class CommentCellHeaderStackView: UIStackView {
       |> \.font .~ UIFont.ksr_callout().weighted(.semibold)
       |> \.adjustsFontForContentSizeCategory .~ true
 
-    _ = self.authorBadgeLabel
-      |> \.numberOfLines .~ 1
-      |> \.textColor .~ .ksr_create_500
-      |> \.textAlignment .~ .left
-      |> \.font .~ UIFont.ksr_callout().bolded
-      |> \.adjustsFontForContentSizeCategory .~ true
-
     _ = self.postTimeLabel
       |> \.numberOfLines .~ 2
       |> \.textColor .~ .ksr_support_400
@@ -73,8 +66,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
       |> \.font .~ UIFont.ksr_footnote()
       |> \.adjustsFontForContentSizeCategory .~ true
 
-    _ = self.authorBadgeLabel
-      |> self.authorBadgeStyle
+    self.viewModel.inputs.bindStyles()
   }
 
   // MARK: - Configuration
@@ -93,8 +85,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
     _ = ([self.authorNameLabel, self.authorBadgeLabel, UIView()], self.authorNameBadgeLabelsStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    self.authorBadgeLabel.setContentCompressionResistancePriority(.init(1_000), for: .horizontal)
-    self.authorBadgeLabel.setContentHuggingPriority(.init(1_000), for: .horizontal)
+    self.authorBadgeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
 
     NSLayoutConstraint.activate([
       self.circleAvatarImageView.widthAnchor.constraint(equalToConstant: Styles.grid(7)),
@@ -103,28 +94,27 @@ internal final class CommentCellHeaderStackView: UIStackView {
   }
 
   private func configureUserBadgeStyle(from badge: Comment.AuthorBadge) {
+    var style: PaddingLabelStyle = { $0 }
+    var stackViewAlignment: UIStackView.Alignment = .center
+
     switch badge {
     case .creator:
-      self.authorBadgeStyle = creatorAuthorBadgeStyle
-
-      _ = self.authorNameBadgeLabelsStackView
-        |> \.alignment .~ .center
+      style = creatorAuthorBadgeStyle
+      stackViewAlignment = .center
     case .superbacker:
-      self.authorBadgeStyle = superbackerAuthorBadgeStyle
-
-      _ = self.authorNameBadgeLabelsStackView
-        |> \.alignment .~ .top
+      style = superbackerAuthorBadgeStyle
+      stackViewAlignment = .top
     case .you:
-      self.authorBadgeStyle = youAuthorBadgeStyle
-
-      _ = self.authorNameBadgeLabelsStackView
-        |> \.alignment .~ .center
+      style = youAuthorBadgeStyle
     case .backer:
-      _ = self.authorBadgeLabel
-        |> \.text .~ nil
+      break
     }
+
     _ = self.authorBadgeLabel
-      |> self.authorBadgeStyle
+      |> authorBadgeLabelStyle
+      |> style
+    _ = self.authorNameBadgeLabelsStackView
+      |> \.alignment .~ stackViewAlignment
   }
 
   // MARK: View Model
@@ -148,4 +138,13 @@ internal final class CommentCellHeaderStackView: UIStackView {
     self.authorNameLabel.rac.text = self.viewModel.authorName
     self.postTimeLabel.rac.text = self.viewModel.postTime
   }
+}
+
+private let authorBadgeLabelStyle: PaddingLabelStyle = { label in
+  label
+    |> \.numberOfLines .~ 1
+    |> \.textColor .~ .ksr_create_500
+    |> \.textAlignment .~ .left
+    |> \.font .~ UIFont.ksr_callout().bolded
+    |> \.adjustsFontForContentSizeCategory .~ true
 }

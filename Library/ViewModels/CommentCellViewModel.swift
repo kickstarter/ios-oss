@@ -3,6 +3,9 @@ import Prelude
 import ReactiveSwift
 
 public protocol CommentCellViewModelInputs {
+  /// Call when bindStyles is called.
+  func bindStyles()
+
   /// Call to configure with a Comment and User.
   func configureWith(comment: Comment, user: User?)
 }
@@ -35,11 +38,6 @@ public final class CommentCellViewModel:
     let comment = self.commentUser.signal.skipNil()
       .map { comment, _ in comment }
 
-    self.authorBadge = self.commentUser.signal.skipNil()
-      .map { comment, user in
-        comment.author.id == user?.id.description ? .you : comment.authorBadge
-      }
-
     self.authorImageURL = comment
       .map(\.author.imageUrl)
       .map(URL.init)
@@ -52,6 +50,21 @@ public final class CommentCellViewModel:
     self.postTime = comment.map {
       Format.date(secondsInUTC: $0.createdAt, dateStyle: .medium, timeStyle: .short)
     }
+
+    let badge = self.commentUser.signal.skipNil()
+      .map { comment, user in
+        comment.author.id == user?.id.description ? .you : comment.authorBadge
+      }
+
+    self.authorBadge = Signal.merge(
+      badge,
+      badge.takeWhen(self.bindStylesProperty.signal)
+    )
+  }
+
+  private var bindStylesProperty = MutableProperty(())
+  public func bindStyles() {
+    self.bindStylesProperty.value = ()
   }
 
   fileprivate let commentUser = MutableProperty<(Comment, User?)?>(nil)

@@ -89,12 +89,24 @@ internal final class CommentCellViewModelTests: TestCase {
     self.authorBadge.assertValues([.superbacker], "The author's badge is emitted.")
   }
 
-  func testPersonalizedLabels_UserrIs_Backer_Author() {
+  func testPersonalizedLabels_UserIs_Backer_Author() {
     let comment = Comment.backerTemplate
 
     let user = User.template |> \.id .~ 12_345
 
     self.vm.inputs.configureWith(comment: comment, user: user)
     self.authorBadge.assertValues([.backer], "The author's badge is emitted.")
+  }
+
+  func testBindStylesEmitsAuthorBadge() {
+    self.authorBadge.assertDidNotEmitValue()
+
+    self.vm.inputs.configureWith(comment: .template, user: nil)
+
+    self.authorBadge.assertValues([.creator], "The author's badge is emitted.")
+
+    self.vm.inputs.bindStyles()
+
+    self.authorBadge.assertValues([.creator, .creator], "The author's badge is emitted.")
   }
 }
