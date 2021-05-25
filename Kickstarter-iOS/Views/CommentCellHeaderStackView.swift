@@ -13,7 +13,8 @@ internal final class CommentCellHeaderStackView: UIStackView {
 
   private lazy var authorNameLabel: UILabel = { UILabel(frame: .zero) }()
 
-  // Hidden as there's need for clarification on how Comment.AuthorBadge works on GraphQL
+  /// Hidden as there's need for clarification on how Comment.AuthorBadge works on GraphQL
+  /// There current a bug on rotation of device where the style for the authorBadgeLabel is wrong
   private lazy var authorBadgeLabel: PaddingLabel = {
     PaddingLabel(frame: .zero)
       |> \.isHidden .~ true

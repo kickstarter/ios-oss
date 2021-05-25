@@ -8,7 +8,7 @@ public protocol CommentCellViewModelInputs {
 }
 
 public protocol CommentCellViewModelOutputs {
-  /// Emits a styling for the author's badge and an alignment for the stackview containing `authorName` and `authorBadge`
+  /// Emits a styling for the author's badge and an alignment for the stackview containing `authorName` and `authorBadge
   var authorBadgeStyleStackViewAlignment: Signal<(PaddingLabelStyle, UIStackView.Alignment), Never> { get }
 
   /// Emits text containing author's fullname or username
