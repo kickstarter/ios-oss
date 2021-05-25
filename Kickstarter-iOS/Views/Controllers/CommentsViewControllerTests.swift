@@ -21,7 +21,7 @@ internal final class CommentsViewControllerTests: TestCase {
       withEnvironment(language: language) {
         let controller = CommentsViewController()
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 800
+        parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
 

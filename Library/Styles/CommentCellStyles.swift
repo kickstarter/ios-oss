@@ -5,7 +5,7 @@ import UIKit
 public let commentCellRootStackViewStyle: StackViewStyle = { stackView in
   stackView
     |> \.axis .~ .vertical
-    |> \.layoutMargins .~ .init(all: Styles.grid(3))
+    |> \.layoutMargins .~ .init(topBottom: Styles.grid(3), leftRight: Styles.grid(1))
     |> \.isLayoutMarginsRelativeArrangement .~ true
     |> \.insetsLayoutMarginsFromSafeArea .~ false
     |> \.spacing .~ Styles.grid(3)
