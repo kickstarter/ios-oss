@@ -6,11 +6,6 @@ import UIKit
 internal final class CommentCellHeaderStackView: UIStackView {
   // MARK: - Properties
 
-  private lazy var circleAvatarImageView = { CircleAvatarImageView(frame: .zero)
-    |> \.backgroundColor .~ .ksr_support_100
-    |> \.translatesAutoresizingMaskIntoConstraints .~ false
-  }()
-
   private lazy var authorNameLabel: UILabel = { UILabel(frame: .zero) }()
 
   /// Hidden as there's need for clarification on how Comment.AuthorBadge works on GraphQL
@@ -22,6 +17,11 @@ internal final class CommentCellHeaderStackView: UIStackView {
 
   private lazy var authorNameBadgeLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var authorNameTimeLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var circleAvatarImageView = { CircleAvatarImageView(frame: .zero)
+    |> \.backgroundColor .~ .ksr_support_100
+    |> \.translatesAutoresizingMaskIntoConstraints .~ false
+  }()
+
   private lazy var postTimeLabel: UILabel = { UILabel(frame: .zero) }()
   private let viewModel = CommentCellViewModel()
 
