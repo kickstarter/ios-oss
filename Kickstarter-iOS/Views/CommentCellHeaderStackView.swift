@@ -6,18 +6,23 @@ import UIKit
 internal final class CommentCellHeaderStackView: UIStackView {
   // MARK: - Properties
 
-  fileprivate let viewModel = CommentCellViewModel()
-
   private lazy var circleAvatarImageView = { CircleAvatarImageView(frame: .zero)
     |> \.backgroundColor .~ .ksr_support_100
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
   private lazy var authorNameLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var authorBadgeLabel: PaddingLabel = { PaddingLabel(frame: .zero) }()
+
+  // Hidden as there's need for clarification on how Comment.AuthorBadge works on GraphQL
+  private lazy var authorBadgeLabel: PaddingLabel = {
+    PaddingLabel(frame: .zero)
+      |> \.isHidden .~ true
+  }()
+
   private lazy var authorNameBadgeLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var authorNameTimeLabelsStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var postTimeLabel: UILabel = { UILabel(frame: .zero) }()
+  private let viewModel = CommentCellViewModel()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -109,7 +114,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
           .ksr_setImageWithURL(url)
       }
 
-    self.viewModel.outputs.authorBadgeStyleStackViewAligment
+    self.viewModel.outputs.authorBadgeStyleStackViewAlignment
       .observeForUI()
       .observeValues { [weak self] authorBadgeLabelStyle, stackViewAlignment in
         guard let self = self else { return }

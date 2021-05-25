@@ -18,12 +18,12 @@ internal final class CommentCellViewModelTests: TestCase {
 
   override func setUp() {
     super.setUp()
-    self.vm.outputs.authorBadgeStyleStackViewAligment.map(first).observe(self.authorBadgeStyle.observer)
+    self.vm.outputs.authorBadgeStyleStackViewAlignment.map(first).observe(self.authorBadgeStyle.observer)
     self.vm.outputs.authorImageURL.observe(self.authorImageURL.observer)
     self.vm.outputs.body.observe(self.body.observer)
     self.vm.outputs.authorName.observe(self.authorName.observer)
     self.vm.outputs.postTime.observe(self.postTime.observer)
-    self.vm.outputs.authorBadgeStyleStackViewAligment.map(second).observe(self.stackViewAligment.observer)
+    self.vm.outputs.authorBadgeStyleStackViewAlignment.map(second).observe(self.stackViewAligment.observer)
   }
 
   func testOutputs() {
@@ -43,7 +43,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.postTime.assertValueCount(1, "The relative time of the comment is emitted.")
 
     self.stackViewAligment
-      .assertValues([.center], "The stack view alignment of name and author's badge is emiited.")
+      .assertValues([.center], "The stack view alignment of name and author's badge is emitted.")
 
     _ = self.testLabel
       |> self.authorBadgeStyle.lastValue!
@@ -66,7 +66,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.postTime.assertValueCount(1, "The relative time of the comment is emitted.")
 
     self.stackViewAligment
-      .assertValues([.center], "The stack view alignment of name and author's badge is emiited.")
+      .assertValues([.center], "The stack view alignment of name and author's badge is emitted.")
 
     _ = self.testLabel
       |> self.authorBadgeStyle.lastValue!
@@ -82,7 +82,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(comment: comment, viewer: viewer)
 
     self.stackViewAligment
-      .assertValues([.center], "The stack view alignment of name and author's badge is emiited.")
+      .assertValues([.center], "The stack view alignment of name and author's badge is emitted.")
 
     _ = self.testLabel
       |> self.authorBadgeStyle.lastValue!
@@ -106,7 +106,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(comment: comment, viewer: viewer)
 
     self.stackViewAligment
-      .assertValues([.center], "The stack view alignment of name and author's badge is emiited.")
+      .assertValues([.center], "The stack view alignment of name and author's badge is emitted.")
 
     _ = self.testLabel
       |> self.authorBadgeStyle.lastValue!
@@ -145,7 +145,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(comment: comment, viewer: viewer)
 
     self.stackViewAligment
-      .assertValues([.center], "The stack view alignment of name and author's badge is emiited.")
+      .assertValues([.center], "The stack view alignment of name and author's badge is emitted.")
 
     _ = self.testLabel
       |> self.authorBadgeStyle.lastValue!

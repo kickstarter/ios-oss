@@ -18,7 +18,7 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var tapRetryPostButton = { UIButton(frame: .zero) }()
+  private lazy var retryButton = { UIButton(frame: .zero) }()
 
   // MARK: - Lifecycle
 
@@ -50,8 +50,8 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
       |> commentBodyTextViewStyle
       |> \.textColor .~ .ksr_support_400
 
-    _ = self.tapRetryPostButton
-      |> tapRetryPostButtonStyle
+    _ = self.retryButton
+      |> retryButtonStyle
   }
 
   // MARK: - Configuration
@@ -62,7 +62,7 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
   }
 
   private func configureViews() {
-    _ = ([self.commentCellHeaderStackView, self.bodyTextView, self.tapRetryPostButton], self.rootStackView)
+    _ = ([self.commentCellHeaderStackView, self.bodyTextView, self.retryButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -83,7 +83,7 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
 
 // TODO: Internationalized in the near future.
 
-private let tapRetryPostButtonStyle: ButtonStyle = { button in
+private let retryButtonStyle: ButtonStyle = { button in
   button
     |> UIButton.lens
     .title(for: .normal) %~

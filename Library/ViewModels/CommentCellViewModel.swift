@@ -9,7 +9,7 @@ public protocol CommentCellViewModelInputs {
 
 public protocol CommentCellViewModelOutputs {
   /// Emits a styling for the author's badge and an alignment for the stackview containing `authorName` and `authorBadge`
-  var authorBadgeStyleStackViewAligment: Signal<(PaddingLabelStyle, UIStackView.Alignment), Never> { get }
+  var authorBadgeStyleStackViewAlignment: Signal<(PaddingLabelStyle, UIStackView.Alignment), Never> { get }
 
   /// Emits text containing author's fullname or username
   var authorName: Signal<String, Never> { get }
@@ -35,11 +35,11 @@ public final class CommentCellViewModel:
     let comment = self.commentViewer.signal.skipNil()
       .map { comment, _ in comment }
 
-    self.authorBadgeStyleStackViewAligment = self.commentViewer.signal.skipNil()
+    self.authorBadgeStyleStackViewAlignment = self.commentViewer.signal.skipNil()
       .map { comment, viewer in
         comment.author.id == viewer?.id.description ? .you : comment.authorBadge
       }
-      .map(setAuthorBadgeStyleStackViewAligment)
+      .map(setAuthorBadgeStyleStackViewAlignment)
 
     self.authorImageURL = comment
       .map(\.author.imageUrl)
@@ -60,7 +60,7 @@ public final class CommentCellViewModel:
     self.commentViewer.value = (comment, viewer)
   }
 
-  public let authorBadgeStyleStackViewAligment: Signal<(PaddingLabelStyle, UIStackView.Alignment), Never>
+  public let authorBadgeStyleStackViewAlignment: Signal<(PaddingLabelStyle, UIStackView.Alignment), Never>
   public var authorImageURL: Signal<URL, Never>
   public let body: Signal<String, Never>
   public let authorName: Signal<String, Never>
@@ -70,7 +70,7 @@ public final class CommentCellViewModel:
   public var outputs: CommentCellViewModelOutputs { self }
 }
 
-private func setAuthorBadgeStyleStackViewAligment(
+private func setAuthorBadgeStyleStackViewAlignment(
   from badge: Comment.AuthorBadge
 ) -> (PaddingLabelStyle, UIStackView.Alignment) {
   switch badge {
