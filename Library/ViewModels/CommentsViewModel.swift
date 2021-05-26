@@ -15,6 +15,12 @@ public protocol CommentsViewModelInputs {
 }
 
 public protocol CommentsViewModelOutputs {
+  /// Emits a URL for the avatar image view.
+  var avatarURL: Signal<URL?, Never> { get }
+
+  /// Emits a boolean that determines if the comment input area is visible.
+  var inputAreaVisible: Signal<Bool, Never> { get }
+
   /// Emits a list of comments that should be displayed.
   var dataSource: Signal<([Comment], User?, Project), Never> { get }
 }
@@ -28,6 +34,10 @@ public final class CommentsViewModel: CommentsViewModelType,
   CommentsViewModelInputs,
   CommentsViewModelOutputs {
   public init() {
+    let currentUser = self.viewDidLoadProperty.signal
+      .map { _ in AppEnvironment.current.currentUser }
+      .skipNil()
+
     // FIXME: Configure this VM with a project in order to feed the slug in here to fetch comments
     // Call this again with a cursor to paginate.
     self.viewDidLoadProperty.signal.switchMap { _ in
@@ -53,6 +63,12 @@ public final class CommentsViewModel: CommentsViewModelType,
     }
     .observeValues { print($0) }
 
+    self.avatarURL = currentUser.map { URL(string: $0.avatar.medium) }
+
+    // When Project is supplied to the config, we will use that to determine who can comment on the project
+    // and also to determine whethere input area is visible.
+    self.inputAreaVisible = self.viewDidLoadProperty.signal.mapConst(true)
+
     // FIXME: This will be updated/removed when we fetch comments from API
     self.dataSource = self.templatesComments.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
@@ -62,7 +78,6 @@ public final class CommentsViewModel: CommentsViewModelType,
   public func configureWith(project: Project) {
     self.projectProperty.value = project
 
-    // FIXME: This would be removed when we fetch comments from API
     self.templatesComments.value = (
       Comment.templates,
       AppEnvironment.current.currentUser,
@@ -83,6 +98,8 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
+  public var avatarURL: Signal<URL?, Never>
+  public var inputAreaVisible: Signal<Bool, Never>
   public let dataSource: Signal<([Comment], User?, Project), Never>
 
   public var inputs: CommentsViewModelInputs { return self }
