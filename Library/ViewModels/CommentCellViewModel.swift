@@ -24,7 +24,7 @@ public protocol CommentCellViewModelOutputs {
   var body: Signal<String, Never> { get }
 
   /// Emits a Bool determining if the reply and flag buttons in the bottomColumnStackView are hidden
-  var bottomColumnStackViewIsHidden: Signal<Bool, Never> { get }
+  var replyButtonIsHidden: Signal<Bool, Never> { get }
 
   /// Emits text  relative time the comment was posted
   var postTime: Signal<String, Never> { get }
@@ -74,7 +74,7 @@ public final class CommentCellViewModel:
       .map { _, _, project in project }
       .map { $0?.personalization.isBacking }
 
-    self.bottomColumnStackViewIsHidden = Signal.combineLatest(isLoggedOut, isBacker)
+    self.replyButtonIsHidden = Signal.combineLatest(isLoggedOut, isBacker)
       .map { isLoggedOut, isBacker in
         isLoggedOut || isBacker == false
       }
@@ -93,7 +93,7 @@ public final class CommentCellViewModel:
   public let authorBadge: Signal<Comment.AuthorBadge, Never>
   public var authorImageURL: Signal<URL, Never>
   public let body: Signal<String, Never>
-  public let bottomColumnStackViewIsHidden: Signal<Bool, Never>
+  public let replyButtonIsHidden: Signal<Bool, Never>
   public let authorName: Signal<String, Never>
   public let postTime: Signal<String, Never>
 

@@ -83,7 +83,7 @@ final class CommentCell: UITableViewCell, ValueCell {
 
   internal override func bindViewModel() {
     self.bodyTextView.rac.text = self.viewModel.outputs.body
-    self.bottomColumnStackView.rac.hidden = self.viewModel.outputs.bottomColumnStackViewIsHidden
+    self.replyButton.rac.hidden = self.viewModel.outputs.replyButtonIsHidden
   }
 }
 
