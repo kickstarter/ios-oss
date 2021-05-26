@@ -64,7 +64,7 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
   // MARK: - Configuration
 
   internal func configureWith(value: (comment: Comment, user: User?)) {
-    self.commentCellHeaderStackView.configureWith(comment: value.comment, user: value.user)
+    self.commentCellHeaderStackView.configureWith(comment: value.comment, user: value.user, project: nil)
   }
 
   private func configureViews() {

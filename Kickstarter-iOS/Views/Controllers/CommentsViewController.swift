@@ -11,6 +11,15 @@ internal final class CommentsViewController: UITableViewController {
   fileprivate let dataSource = CommentsDataSource()
   fileprivate let viewModel: CommentsViewModelType = CommentsViewModel()
 
+  // MARK: - Configuration
+
+  internal static func configuredWith(project: Project)
+    -> CommentsViewController {
+    let vc = CommentsViewController.instantiate()
+    vc.viewModel.inputs.configureWith(project: project)
+    return vc
+  }
+
   // MARK: - Lifecycle
 
   internal override func viewDidLoad() {
@@ -49,10 +58,11 @@ internal final class CommentsViewController: UITableViewController {
   internal override func bindViewModel() {
     self.viewModel.outputs.dataSource
       .observeForUI()
-      .observeValues { [weak self] comments, user in
+      .observeValues { [weak self] comments, user, project in
         self?.dataSource.load(
           comments: comments,
-          loggedInUser: user
+          loggedInUser: user,
+          project: project
         )
         self?.tableView.reloadData()
       }

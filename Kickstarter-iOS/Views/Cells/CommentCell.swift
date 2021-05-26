@@ -60,9 +60,9 @@ final class CommentCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  internal func configureWith(value: (comment: Comment, user: User?)) {
-    self.commentCellHeaderStackView.configureWith(comment: value.comment, user: value.user)
-    self.viewModel.inputs.configureWith(comment: value.comment, user: value.user)
+  internal func configureWith(value: (comment: Comment, user: User?, project: Project)) {
+    self.commentCellHeaderStackView.configureWith(comment: value.comment, user: value.user, project: nil)
+    self.viewModel.inputs.configureWith(comment: value.comment, user: value.user, project: value.project)
   }
 
   private func configureViews() {
@@ -83,6 +83,7 @@ final class CommentCell: UITableViewCell, ValueCell {
 
   internal override func bindViewModel() {
     self.bodyTextView.rac.text = self.viewModel.outputs.body
+    self.bottomColumnStackView.rac.hidden = self.viewModel.outputs.bottomColumnStackViewIsHidden
   }
 }
 
