@@ -17,6 +17,9 @@ public protocol CommentsViewModelOutputs {
 
   /// Emits a boolean that determines if the comment input area is visible.
   var inputAreaVisible: Signal<Bool, Never> { get }
+
+  /// Emits a list of comments that should be displayed.
+  var dataSource: Signal<([Comment], User?), Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -62,6 +65,9 @@ public final class CommentsViewModel: CommentsViewModelType,
     // When Project is supplied to the config, we will use that to determine who can comment on the project
     // and also to determine whethere input area is visible.
     self.inputAreaVisible = self.viewDidLoadProperty.signal.mapConst(true)
+
+    // FIXME: This would be removed when we fetch comments from API
+    self.dataSource = self.templatesComments.signal.skipNil()
   }
 
   fileprivate let postCommentButtonTappedProperty = MutableProperty(())
@@ -70,12 +76,19 @@ public final class CommentsViewModel: CommentsViewModelType,
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
+
+  // TODO: - This would be removed when we fetch comments from API
+  fileprivate let templatesComments = MutableProperty<([Comment], User?)?>(nil)
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
+
+    // FIXME: This would be removed when we fetch comments from API
+    self.templatesComments.value = (Comment.templates, AppEnvironment.current.currentUser)
   }
 
   public var avatarURL: Signal<URL?, Never>
   public var inputAreaVisible: Signal<Bool, Never>
+  public let dataSource: Signal<([Comment], User?), Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }
