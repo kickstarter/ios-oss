@@ -7,6 +7,8 @@ import XCTest
 internal final class CommentsViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
+
+    AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
 
@@ -20,9 +22,12 @@ internal final class CommentsViewControllerTests: TestCase {
       withEnvironment(language: language) {
         let controller = CommentsViewController()
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
-        parent.view.frame.size.height = 600
+        parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
+
+        controller.tableView.layoutIfNeeded()
+        controller.tableView.reloadData()
 
         FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
       }

@@ -3,24 +3,22 @@ import Library
 import Prelude
 import UIKit
 
-final class CommentCell: UITableViewCell, ValueCell {
+final class CommentPostFailedCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
+  private let viewModel = CommentCellViewModel()
+
   private lazy var bodyTextView: UITextView = { UITextView(frame: .zero) }()
-  private lazy var bottomColumnStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var commentCellHeaderStackView: CommentCellHeaderStackView = {
     CommentCellHeaderStackView(frame: .zero)
   }()
-
-  private lazy var flagButton = { UIButton(frame: .zero) }()
-  private lazy var replyButton = { UIButton(frame: .zero) }()
 
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel = CommentCellViewModel()
+  private lazy var retryButton = { UIButton(frame: .zero) }()
 
   // MARK: - Lifecycle
 
@@ -50,12 +48,10 @@ final class CommentCell: UITableViewCell, ValueCell {
 
     _ = self.bodyTextView
       |> commentBodyTextViewStyle
+      |> \.textColor .~ .ksr_support_400
 
-    _ = self.replyButton
-      |> replyButtonStyle
-
-    _ = self.flagButton
-      |> UIButton.lens.image(for: .normal) %~ { _ in Library.image(named: "flag") }
+    _ = self.retryButton
+      |> retryButtonStyle
   }
 
   // MARK: - Configuration
@@ -66,10 +62,7 @@ final class CommentCell: UITableViewCell, ValueCell {
   }
 
   private func configureViews() {
-    _ = ([self.commentCellHeaderStackView, self.bodyTextView, self.bottomColumnStackView], self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = ([self.replyButton, UIView(), self.flagButton], self.bottomColumnStackView)
+    _ = ([self.commentCellHeaderStackView, self.bodyTextView, self.retryButton], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -90,15 +83,17 @@ final class CommentCell: UITableViewCell, ValueCell {
 
 // TODO: Internationalized in the near future.
 
-private let replyButtonStyle: ButtonStyle = { button in
+private let retryButtonStyle: ButtonStyle = { button in
   button
     |> UIButton.lens
-    .title(for: .normal) %~ { _ in localizedString(key: "Reply", defaultValue: "Reply") }
+    .title(for: .normal) %~
+    { _ in
+      localizedString(key: "Failed_to_post_Tap_to_retry", defaultValue: "Failed to post. Tap to retry")
+    }
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
-    |> UIButton.lens.image(for: .normal) .~ Library.image(named: "reply")
-    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_support_400
-    |> UIButton.lens.tintColor .~ UIColor.ksr_support_400
-    |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(left: Styles.grid(-1))
-    |> UIButton.lens.contentEdgeInsets .~ UIEdgeInsets(leftRight: Styles.grid(1))
+    |> UIButton.lens.image(for: .normal) .~ Library.image(named: "circle-back")
+    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_celebrate_700
+    |> UIButton.lens.tintColor .~ UIColor.ksr_celebrate_700
+    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(6))
     |> UIButton.lens.contentHorizontalAlignment .~ .left
 }

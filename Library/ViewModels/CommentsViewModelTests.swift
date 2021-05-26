@@ -14,7 +14,7 @@ internal final class CommentsViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.loadCommentsIntoDataSource.map { comments in !comments.isEmpty }
+    self.vm.outputs.dataSource.map { comments, _ in !comments.isEmpty }
       .observe(self.hasComments.observer)
     self.vm.outputs.commentsAreLoading.observe(self.commentsAreLoading.observer)
   }

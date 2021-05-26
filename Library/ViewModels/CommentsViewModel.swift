@@ -24,8 +24,9 @@ public protocol CommentsViewModelInputs {
 public protocol CommentsViewModelOutputs {
   /// Emits a boolean that determines if comments are currently loading.
   var commentsAreLoading: Signal<Bool, Never> { get }
-  /// Call when a new array of Comment objects can be displayed.
-  var loadCommentsIntoDataSource: Signal<[Comment], Never> { get }
+
+  /// Emits a list of comments that should be displayed.
+  var dataSource: Signal<([Comment], User?), Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -90,7 +91,10 @@ public final class CommentsViewModel: CommentsViewModelType,
       }
     )
 
-    self.loadCommentsIntoDataSource = comments
+    let commentsAndUser = comments
+      .map { ($0, AppEnvironment.current.currentUser) }
+    
+    self.dataSource = commentsAndUser
     self.commentsAreLoading = isLoading
 
     // FIXME: We need to dynamically supply the IDs when the UI is built.
@@ -125,6 +129,9 @@ public final class CommentsViewModel: CommentsViewModelType,
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
+
+  // TODO: - This would be removed when we fetch comments from API
+  fileprivate let templatesComments = MutableProperty<([Comment], User?)?>(nil)
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
@@ -135,7 +142,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   }
 
   public let commentsAreLoading: Signal<Bool, Never>
-  public let loadCommentsIntoDataSource: Signal<[Comment], Never>
+  public let dataSource: Signal<([Comment], User?), Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }
