@@ -12,7 +12,7 @@ class CommentsDataSourceTests: XCTestCase {
   override func setUp() {
     super.setUp()
     let user = User.template |> \.id .~ 12_345
-    self.dataSource.load(comments: Comment.templates, loggedInUser: user)
+    self.dataSource.load(comments: Comment.templates, loggedInUser: user, project: .template)
   }
 
   func testLoadedComments() {

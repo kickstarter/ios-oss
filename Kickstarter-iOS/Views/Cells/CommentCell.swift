@@ -61,7 +61,8 @@ final class CommentCell: UITableViewCell, ValueCell {
   // MARK: - Configuration
 
   internal func configureWith(value: (comment: Comment, user: User?, project: Project)) {
-    self.commentCellHeaderStackView.configureWith(comment: value.comment, user: value.user, project: nil)
+    self.commentCellHeaderStackView
+      .configureWith(comment: value.comment, user: value.user, project: value.project)
     self.viewModel.inputs.configureWith(comment: value.comment, user: value.user, project: value.project)
   }
 

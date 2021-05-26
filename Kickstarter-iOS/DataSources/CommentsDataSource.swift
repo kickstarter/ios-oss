@@ -16,12 +16,17 @@ internal final class CommentsDataSource: ValueCellDataSource {
       case .failed:
         self
           .appendRow(
-            value: (comment, loggedInUser),
+            value: (comment, loggedInUser, project),
             cellClass: CommentPostFailedCell.self,
             toSection: section
           )
       case .removed:
-        self.appendRow(value: (comment, loggedInUser), cellClass: CommentRemovedCell.self, toSection: section)
+        self
+          .appendRow(
+            value: (comment, loggedInUser, project),
+            cellClass: CommentRemovedCell.self,
+            toSection: section
+          )
       case .success:
         self
           .appendRow(value: (comment, loggedInUser, project), cellClass: CommentCell.self, toSection: section)
@@ -33,9 +38,9 @@ internal final class CommentsDataSource: ValueCellDataSource {
     switch (cell, value) {
     case let (cell as CommentCell, value as (Comment, User?, Project)):
       cell.configureWith(value: value)
-    case let (cell as CommentPostFailedCell, value as (Comment, User?)):
+    case let (cell as CommentPostFailedCell, value as (Comment, User?, Project)):
       cell.configureWith(value: value)
-    case let (cell as CommentRemovedCell, value as (Comment, User?)):
+    case let (cell as CommentRemovedCell, value as (Comment, User?, Project)):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value).")

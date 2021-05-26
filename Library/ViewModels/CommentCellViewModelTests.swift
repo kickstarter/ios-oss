@@ -78,7 +78,7 @@ internal final class CommentCellViewModelTests: TestCase {
       self.vm.inputs.configureWith(comment: .template, user: user, project: .template)
 
       self.replyButtonIsHidden
-        .assertValue(false, "The replyButton is not hidden because the user is logged in.")
+        .assertValue(true, "The replyButton is hidden because the user is logged in but not a backer.")
     }
   }
 

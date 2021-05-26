@@ -71,7 +71,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
 
   // MARK: - Configuration
 
-  internal func configureWith(comment: Comment, user: User?, project: Project?) {
+  internal func configureWith(comment: Comment, user: User?, project: Project) {
     self.viewModel.inputs.configureWith(comment: comment, user: user, project: project)
   }
 

@@ -31,22 +31,26 @@ internal final class CommentCellHeaderStackViewTests: TestCase {
   }
 
   func testAuthorBadge_Backer() {
-    self.commentCellHeaderStackView.configureWith(comment: Comment.backerTemplate, user: self.user)
+    self.commentCellHeaderStackView
+      .configureWith(comment: Comment.backerTemplate, user: self.user, project: .template)
     FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_Backer")
   }
 
   func testAuthorBadge_Creator() {
-    self.commentCellHeaderStackView.configureWith(comment: Comment.template, user: self.user)
+    self.commentCellHeaderStackView
+      .configureWith(comment: Comment.template, user: self.user, project: .template)
     FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_Creator")
   }
 
   func testAuthorBadge_SuperBacker() {
-    self.commentCellHeaderStackView.configureWith(comment: Comment.superbackerTemplate, user: self.user)
+    self.commentCellHeaderStackView
+      .configureWith(comment: Comment.superbackerTemplate, user: self.user, project: .template)
     FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_Superbacker")
   }
 
   func testAuthorBadge_You() {
-    self.commentCellHeaderStackView.configureWith(comment: Comment.failedTemplate, user: self.user)
+    self.commentCellHeaderStackView
+      .configureWith(comment: Comment.failedTemplate, user: self.user, project: .template)
     FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_You")
   }
 }
