@@ -46,4 +46,14 @@ internal final class CommentsDataSource: ValueCellDataSource {
       assertionFailure("Unrecognized combo: \(cell), \(value).")
     }
   }
+
+  public func comment(at indexPath: IndexPath) -> Comment? {
+    let value = self[indexPath]
+
+    switch value {
+    case let value as Comment: return value
+    case let value as (comment: Comment, project: Project): return value.comment
+    default: return nil
+    }
+  }
 }

@@ -42,6 +42,7 @@ internal final class CommentsViewController: UITableViewController {
     self.navigationItem.title = Strings.project_menu_buttons_comments()
 
     self.tableView.dataSource = self.dataSource
+    self.tableView.delegate = self
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(CommentPostFailedCell.self)
     self.tableView.registerCellClass(CommentRemovedCell.self)
@@ -100,8 +101,20 @@ internal final class CommentsViewController: UITableViewController {
   }
 }
 
+// MARK: - CommentComposerViewDelegate
+
 extension CommentsViewController: CommentComposerViewDelegate {
   func commentComposerView(_: CommentComposerView, didSubmitText _: String) {
     // TODO: Capture submitted user comment in this delegate method.
+  }
+}
+
+// MARK: - UITableViewDelegate
+
+extension CommentsViewController {
+  override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let comment = self.dataSource.comment(at: indexPath) else { return }
+
+    self.viewModel.inputs.didSelectComment(comment)
   }
 }

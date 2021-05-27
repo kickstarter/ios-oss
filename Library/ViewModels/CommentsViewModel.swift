@@ -4,10 +4,13 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol CommentsViewModelInputs {
-  /// Call after instantiating the view controller
+  /// Call with a `Comment` when it is selected.
+  func didSelectComment(_ comment: Comment)
+
+  /// Call with a `Project` after instantiating the view controller.
   func configureWith(project: Project)
 
-  /// Call when the User is posting a comment or reply
+  /// Call when the User is posting a comment or reply.
   func postCommentButtonTapped()
 
   /// Call when the view loads.
@@ -17,6 +20,9 @@ public protocol CommentsViewModelInputs {
 public protocol CommentsViewModelOutputs {
   /// Emits a URL for the avatar image view.
   var avatarURL: Signal<URL?, Never> { get }
+
+  /// Emits the selected `Comment` and `Project` to navigate to its replies.
+  var goToCommentReplies: Signal<(Comment, Project), Never> { get }
 
   /// Emits a boolean that determines if the comment input area is visible.
   var inputAreaVisible: Signal<Bool, Never> { get }
@@ -37,6 +43,12 @@ public final class CommentsViewModel: CommentsViewModelType,
     let currentUser = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.currentUser }
       .skipNil()
+
+    let project = Signal.combineLatest(
+      self.projectProperty.signal.skipNil(),
+      self.viewDidLoadProperty.signal
+    )
+    .map(first)
 
     // FIXME: Configure this VM with a project in order to feed the slug in here to fetch comments
     // Call this again with a cursor to paginate.
@@ -72,6 +84,17 @@ public final class CommentsViewModel: CommentsViewModelType,
     // FIXME: This will be updated/removed when we fetch comments from API
     self.dataSource = self.templatesComments.signal.skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
+
+    self.goToCommentReplies = self.didSelectCommentProperty.signal.skipNil()
+      .filter { comment in
+        [comment.replyCount > 0, comment.status == .success].allSatisfy(isTrue)
+      }
+      .withLatestFrom(project)
+  }
+
+  private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
+  public func didSelectComment(_ comment: Comment) {
+    self.didSelectCommentProperty.value = comment
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
@@ -98,6 +121,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   }
 
   public var avatarURL: Signal<URL?, Never>
+  public var goToCommentReplies: Signal<(Comment, Project), Never>
   public var inputAreaVisible: Signal<Bool, Never>
   public let dataSource: Signal<([Comment], Project), Never>
 

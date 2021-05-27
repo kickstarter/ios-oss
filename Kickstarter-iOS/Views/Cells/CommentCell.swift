@@ -14,7 +14,6 @@ final class CommentCell: UITableViewCell, ValueCell {
 
   private lazy var flagButton = { UIButton(frame: .zero) }()
   private lazy var replyButton = { UIButton(frame: .zero) }()
-  private lazy var viewRepliesContainer: UIView = { UIView(frame: .zero) }()
   private lazy var viewRepliesStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var viewRepliesLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var viewRepliesIconImageView: UIImageView = { UIImageView(frame: .zero) }()
@@ -57,9 +56,6 @@ final class CommentCell: UITableViewCell, ValueCell {
     _ = self.replyButton
       |> replyButtonStyle
 
-    _ = self.viewRepliesContainer
-      |> viewRepliesContainerStyle
-
     _ = self.viewRepliesStackView
       |> viewRepliesStackViewStyle
 
@@ -85,7 +81,7 @@ final class CommentCell: UITableViewCell, ValueCell {
     let rootViews = [
       self.commentCellHeaderStackView,
       self.bodyTextView,
-      self.viewRepliesContainer,
+      self.viewRepliesStackView,
       self.bottomRowStackView
     ]
 
@@ -95,10 +91,6 @@ final class CommentCell: UITableViewCell, ValueCell {
 
     _ = (rootViews, self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
-
-    _ = (self.viewRepliesStackView, self.viewRepliesContainer)
-      |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToMarginsInParent()
 
     _ = ([self.viewRepliesLabel, UIView(), self.viewRepliesIconImageView], self.viewRepliesStackView)
       |> ksr_addArrangedSubviewsToStackView()
@@ -113,7 +105,7 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.bodyTextView.rac.text = self.viewModel.outputs.body
     self.replyButton.rac.hidden = self.viewModel.outputs.replyButtonIsHidden
 
-    self.viewRepliesContainer.rac.hidden = self.viewModel.outputs.viewRepliesContainerHidden
+    self.viewRepliesStackView.rac.hidden = self.viewModel.outputs.viewRepliesStackViewHidden
   }
 }
 
@@ -134,16 +126,14 @@ private let replyButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.contentHorizontalAlignment .~ .left
 }
 
-private let viewRepliesContainerStyle: ViewStyle = { view in
-  view
-    |> roundedStyle(cornerRadius: 2.0)
-    |> UIView.lens.layer.borderColor .~ UIColor.ksr_support_200.cgColor
-    |> UIView.lens.layer.borderWidth .~ 1.0
-}
-
-private let viewRepliesStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.layoutMargins .~ .init(all: Styles.grid(2))
-    |> \.isLayoutMarginsRelativeArrangement .~ true
+private let viewRepliesStackViewStyle: StackViewStyle = { stackVew in
+  stackVew
+    |> \.axis .~ .horizontal
     |> \.alignment .~ .center
+    |> \.layoutMargins .~ .init(all: Styles.grid(3))
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.spacing .~ Styles.grid(1)
+    |> \.layer.borderWidth .~ 1
+    |> \.layer.borderColor .~ UIColor.ksr_support_200.cgColor
+    |> roundedStyle(cornerRadius: 2.0)
 }

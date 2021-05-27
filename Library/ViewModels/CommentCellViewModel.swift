@@ -29,8 +29,8 @@ public protocol CommentCellViewModelOutputs {
   /// Emits a Bool determining if the reply and flag buttons in the bottomColumnStackView are hidden.
   var replyButtonIsHidden: Signal<Bool, Never> { get }
 
-  /// Emits whether or not the view replies container is hidden.
-  var viewRepliesContainerHidden: Signal<Bool, Never> { get }
+  /// Emits whether or not the view replies stack view is hidden.
+  var viewRepliesStackViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol CommentCellViewModelType {
@@ -83,7 +83,7 @@ public final class CommentCellViewModel:
     self.replyButtonIsHidden = Signal.combineLatest(isLoggedOut, isNotABacker)
       .map { isLoggedOut, isNotABacker in isLoggedOut || isNotABacker }
 
-    self.viewRepliesContainerHidden = comment.map(\.replyCount)
+    self.viewRepliesStackViewHidden = comment.map(\.replyCount)
       .map { $0 == 0 }
   }
 
@@ -103,7 +103,7 @@ public final class CommentCellViewModel:
   public let body: Signal<String, Never>
   public let postTime: Signal<String, Never>
   public let replyButtonIsHidden: Signal<Bool, Never>
-  public let viewRepliesContainerHidden: Signal<Bool, Never>
+  public let viewRepliesStackViewHidden: Signal<Bool, Never>
 
   public var inputs: CommentCellViewModelInputs { self }
   public var outputs: CommentCellViewModelOutputs { self }

@@ -14,7 +14,7 @@ internal final class CommentCellViewModelTests: TestCase {
   private let body = TestObserver<String, Never>()
   private let postTime = TestObserver<String, Never>()
   private let replyButtonIsHidden = TestObserver<Bool, Never>()
-  private let viewRepliesContainerHidden = TestObserver<Bool, Never>()
+  private let viewRepliesStackViewHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -24,7 +24,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.outputs.body.observe(self.body.observer)
     self.vm.outputs.postTime.observe(self.postTime.observer)
     self.vm.outputs.replyButtonIsHidden.observe(self.replyButtonIsHidden.observer)
-    self.vm.outputs.viewRepliesContainerHidden.observe(self.viewRepliesContainerHidden.observer)
+    self.vm.outputs.viewRepliesStackViewHidden.observe(self.viewRepliesStackViewHidden.observer)
   }
 
   func testOutputs() {
@@ -147,24 +147,24 @@ internal final class CommentCellViewModelTests: TestCase {
   }
 
   func testViewRepliesContainerHidden_IsHiddenWhenNoReplies() {
-    self.viewRepliesContainerHidden.assertDidNotEmitValue()
+    self.viewRepliesStackViewHidden.assertDidNotEmitValue()
 
     let comment = Comment.template
       |> \.replyCount .~ 0
 
-    self.vm.inputs.configureWith(comment: comment, user: nil)
+    self.vm.inputs.configureWith(comment: comment, project: .template)
 
-    self.viewRepliesContainerHidden.assertValues([true])
+    self.viewRepliesStackViewHidden.assertValues([true])
   }
 
   func testViewRepliesContainerHidden_IsNotHiddenWhenCommentHasReplies() {
-    self.viewRepliesContainerHidden.assertDidNotEmitValue()
+    self.viewRepliesStackViewHidden.assertDidNotEmitValue()
 
     let comment = Comment.template
       |> \.replyCount .~ 1
 
-    self.vm.inputs.configureWith(comment: comment, user: nil)
+    self.vm.inputs.configureWith(comment: comment, project: .template)
 
-    self.viewRepliesContainerHidden.assertValues([false])
+    self.viewRepliesStackViewHidden.assertValues([false])
   }
 }
