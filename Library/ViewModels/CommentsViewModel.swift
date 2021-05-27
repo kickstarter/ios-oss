@@ -22,7 +22,7 @@ public protocol CommentsViewModelOutputs {
   var inputAreaVisible: Signal<Bool, Never> { get }
 
   /// Emits a list of comments that should be displayed.
-  var dataSource: Signal<([Comment], User?, Project), Never> { get }
+  var dataSource: Signal<([Comment], Project), Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -80,7 +80,6 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     self.templatesComments.value = (
       Comment.templates,
-      AppEnvironment.current.currentUser,
       project
     )
   }
@@ -93,14 +92,14 @@ public final class CommentsViewModel: CommentsViewModelType,
   fileprivate let viewDidLoadProperty = MutableProperty(())
 
   // TODO: - This would be removed when we fetch comments from API
-  fileprivate let templatesComments = MutableProperty<([Comment], User?, Project)?>(nil)
+  fileprivate let templatesComments = MutableProperty<([Comment], Project)?>(nil)
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
 
   public var avatarURL: Signal<URL?, Never>
   public var inputAreaVisible: Signal<Bool, Never>
-  public let dataSource: Signal<([Comment], User?, Project), Never>
+  public let dataSource: Signal<([Comment], Project), Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }
