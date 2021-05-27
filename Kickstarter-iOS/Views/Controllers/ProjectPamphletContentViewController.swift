@@ -114,9 +114,9 @@ public final class ProjectPamphletContentViewController: UITableViewController {
     let isCommentThreadingFeatureEnabled = AppEnvironment.current.optimizelyClient?
       .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentThreading.rawValue) ?? false
 
-    return isCommentThreadingFeatureEnabled ? CommentsViewController
-      .configuredWith(project: project) : DeprecatedCommentsViewController
-      .configuredWith(project: project, update: nil)
+    return isCommentThreadingFeatureEnabled ?
+      CommentsViewController.configuredWith(project: project) :
+      DeprecatedCommentsViewController.configuredWith(project: project, update: nil)
   }
 
   private func goToDashboard(param: Param) {

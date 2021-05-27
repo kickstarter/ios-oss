@@ -32,7 +32,7 @@ public protocol CommentsViewModelOutputs {
   var inputAreaVisible: Signal<Bool, Never> { get }
 
   /// Emits a list of comments that should be displayed.
-  var dataSource: Signal<([Comment], User?), Never> { get }
+  var dataSource: Signal<([Comment], Project), Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -101,10 +101,9 @@ public final class CommentsViewModel: CommentsViewModelType,
       }
     )
 
-    let commentsAndUser = comments
-      .map { ($0, AppEnvironment.current.currentUser) }
+    let commentsAndProject = Signal.combineLatest(comments, initialProject)
 
-    self.dataSource = commentsAndUser
+    self.dataSource = commentsAndProject
     self.commentsAreLoading = isLoading
 
     // FIXME: We need to dynamically supply the IDs when the UI is built.
@@ -143,13 +142,10 @@ public final class CommentsViewModel: CommentsViewModelType,
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
-
-  // TODO: - This would be removed when we fetch comments from API
-  fileprivate let templatesComments = MutableProperty<([Comment], User?)?>(nil)
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-
+  
   fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
   public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)
@@ -158,7 +154,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let commentsAreLoading: Signal<Bool, Never>
   public var avatarURL: Signal<URL?, Never>
   public var inputAreaVisible: Signal<Bool, Never>
-  public let dataSource: Signal<([Comment], User?), Never>
+  public let dataSource: Signal<([Comment], Project), Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }
