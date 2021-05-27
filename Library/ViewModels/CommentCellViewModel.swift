@@ -6,8 +6,8 @@ public protocol CommentCellViewModelInputs {
   /// Call when bindStyles is called.
   func bindStyles()
 
-  /// Call to configure with a Comment, User and Project
-  func configureWith(comment: Comment, user: User?, project: Project?)
+  /// Call to configure with a Comment and Project
+  func configureWith(comment: Comment, project: Project?)
 }
 
 public protocol CommentCellViewModelOutputs {
@@ -38,8 +38,8 @@ public protocol CommentCellViewModelType {
 public final class CommentCellViewModel:
   CommentCellViewModelType, CommentCellViewModelInputs, CommentCellViewModelOutputs {
   public init() {
-    let comment = self.commentUserAndProject.signal.skipNil()
-      .map { comment, _, _ in comment }
+    let comment = self.commentAndProject.signal.skipNil()
+      .map { comment, _ in comment }
 
     self.authorImageURL = comment
       .map(\.author.imageUrl)
@@ -54,9 +54,10 @@ public final class CommentCellViewModel:
       Format.date(secondsInUTC: $0.createdAt, dateStyle: .medium, timeStyle: .short)
     }
 
-    let badge = self.commentUserAndProject.signal.skipNil()
-      .map { comment, user, _ in
-        comment.author.id == user?.id.description ? .you : comment.authorBadge
+    let badge = self.commentAndProject.signal
+      .skipNil()
+      .map { comment, _ in
+        comment.author.id == AppEnvironment.current.currentUser?.id.description ? .you : comment.authorBadge
       }
 
     self.authorBadge = Signal.merge(
@@ -64,14 +65,14 @@ public final class CommentCellViewModel:
       badge.takeWhen(self.bindStylesProperty.signal)
     )
 
-    let isLoggedOut = self.commentUserAndProject.signal
+    let isLoggedOut = self.commentAndProject.signal
       .ignoreValues()
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNil)
 
-    let isNotABacker = self.commentUserAndProject.signal
+    let isNotABacker = self.commentAndProject.signal
       .skipNil()
-      .map { _, _, project in project }
+      .map { _, project in project }
       .skipNil()
       .map(userIsBackingProject)
       .negate()
@@ -85,9 +86,9 @@ public final class CommentCellViewModel:
     self.bindStylesProperty.value = ()
   }
 
-  fileprivate let commentUserAndProject = MutableProperty<(Comment, User?, Project?)?>(nil)
-  public func configureWith(comment: Comment, user: User?, project: Project?) {
-    self.commentUserAndProject.value = (comment, user, project)
+  fileprivate let commentAndProject = MutableProperty<(Comment, Project?)?>(nil)
+  public func configureWith(comment: Comment, project: Project?) {
+    self.commentAndProject.value = (comment, project)
   }
 
   public let authorBadge: Signal<Comment.AuthorBadge, Never>

@@ -14,7 +14,6 @@ internal final class CommentCellHeaderStackViewTests: TestCase {
       width: UIScreen.main.bounds.width,
       height: Styles.grid(9)
     ))
-  private let user: User = User.template |> \.id .~ 12_345
 
   override func setUp() {
     super.setUp()
@@ -32,25 +31,25 @@ internal final class CommentCellHeaderStackViewTests: TestCase {
 
   func testAuthorBadge_Backer() {
     self.commentCellHeaderStackView
-      .configureWith(comment: Comment.backerTemplate, user: self.user)
+      .configureWith(comment: Comment.backerTemplate)
     FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_Backer")
   }
 
   func testAuthorBadge_Creator() {
     self.commentCellHeaderStackView
-      .configureWith(comment: Comment.template, user: self.user)
+      .configureWith(comment: Comment.template)
     FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_Creator")
   }
 
   func testAuthorBadge_SuperBacker() {
     self.commentCellHeaderStackView
-      .configureWith(comment: Comment.superbackerTemplate, user: self.user)
+      .configureWith(comment: Comment.superbackerTemplate)
     FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_Superbacker")
   }
 
   func testAuthorBadge_You() {
     self.commentCellHeaderStackView
-      .configureWith(comment: Comment.failedTemplate, user: self.user)
+      .configureWith(comment: Comment.failedTemplate)
     FBSnapshotVerifyView(self.commentCellHeaderStackView, identifier: "state_AuthorBadge_Is_You")
   }
 }

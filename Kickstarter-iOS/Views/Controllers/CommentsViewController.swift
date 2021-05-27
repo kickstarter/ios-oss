@@ -88,10 +88,9 @@ internal final class CommentsViewController: UITableViewController {
     super.bindViewModel()
     self.viewModel.outputs.dataSource
       .observeForUI()
-      .observeValues { [weak self] comments, user, project in
+      .observeValues { [weak self] comments, _, project in
         self?.dataSource.load(
           comments: comments,
-          loggedInUser: user,
           project: project
         )
         self?.tableView.reloadData()

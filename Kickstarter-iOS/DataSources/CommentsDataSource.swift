@@ -8,7 +8,7 @@ internal final class CommentsDataSource: ValueCellDataSource {
     case comments
   }
 
-  internal func load(comments: [Comment], loggedInUser: User?, project: Project) {
+  internal func load(comments: [Comment], project: Project) {
     let section = Section.comments.rawValue
     self.clearValues(section: section)
     comments.forEach { comment in
@@ -16,31 +16,31 @@ internal final class CommentsDataSource: ValueCellDataSource {
       case .failed:
         self
           .appendRow(
-            value: (comment, loggedInUser),
+            value: comment,
             cellClass: CommentPostFailedCell.self,
             toSection: section
           )
       case .removed:
         self
           .appendRow(
-            value: (comment, loggedInUser),
+            value: comment,
             cellClass: CommentRemovedCell.self,
             toSection: section
           )
       case .success:
         self
-          .appendRow(value: (comment, loggedInUser, project), cellClass: CommentCell.self, toSection: section)
+          .appendRow(value: (comment, project), cellClass: CommentCell.self, toSection: section)
       }
     }
   }
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {
-    case let (cell as CommentCell, value as (Comment, User?, Project)):
+    case let (cell as CommentCell, value as (Comment, Project)):
       cell.configureWith(value: value)
-    case let (cell as CommentPostFailedCell, value as (Comment, User?)):
+    case let (cell as CommentPostFailedCell, value as Comment):
       cell.configureWith(value: value)
-    case let (cell as CommentRemovedCell, value as (Comment, User?)):
+    case let (cell as CommentRemovedCell, value as Comment):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value).")

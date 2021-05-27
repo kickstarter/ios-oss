@@ -35,9 +35,7 @@ internal final class CommentCellViewModelTests: TestCase {
     let project = Project.template
       |> \.personalization.isBacking .~ true
 
-    let user = User.template |> \.id .~ 12_345
-
-    self.vm.inputs.configureWith(comment: comment, user: user, project: project)
+    self.vm.inputs.configureWith(comment: comment, project: project)
 
     self.authorBadge.assertValues([.creator], "The author's badge is emitted.")
     self.authorImageURL.assertValues([URL(string: "http://www.kickstarter.com/small.jpg")!])
@@ -53,7 +51,7 @@ internal final class CommentCellViewModelTests: TestCase {
     let user = User.template |> \.id .~ 12_345
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(comment: .template, user: user, project: project)
+      self.vm.inputs.configureWith(comment: .template, project: project)
 
       self.replyButtonIsHidden
         .assertValue(false, "The replyButton is not hidden because the user is a backer AND logged in.")
@@ -61,10 +59,8 @@ internal final class CommentCellViewModelTests: TestCase {
   }
 
   func testOutputs_replyButtonIsHidden_IsBacker_False_IsLoggedOut() {
-    let user = User.template |> \.id .~ 12_345
-
     withEnvironment(currentUser: nil) {
-      self.vm.inputs.configureWith(comment: .template, user: user, project: .template)
+      self.vm.inputs.configureWith(comment: .template, project: .template)
 
       self.replyButtonIsHidden
         .assertValue(true, "The replyButton is hidden because the user is not a backer AND not logged in.")
@@ -75,7 +71,7 @@ internal final class CommentCellViewModelTests: TestCase {
     let user = User.template |> \.id .~ 12_345
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(comment: .template, user: user, project: .template)
+      self.vm.inputs.configureWith(comment: .template, project: .template)
 
       self.replyButtonIsHidden
         .assertValue(true, "The replyButton is hidden because the user is logged in but not a backer.")
@@ -89,7 +85,7 @@ internal final class CommentCellViewModelTests: TestCase {
     let comment = Comment.template
       |> \.author .~ author
 
-    self.vm.inputs.configureWith(comment: comment, user: nil, project: .template)
+    self.vm.inputs.configureWith(comment: comment, project: .template)
 
     self.authorBadge.assertValues([.creator], "The author's badge is emitted.")
     self.authorImageURL.assertValues([URL(string: "http://www.kickstarter.com/small.jpg")!])
@@ -102,9 +98,7 @@ internal final class CommentCellViewModelTests: TestCase {
   func testPersonalizedLabels_UserIs_Creator_Author() {
     let comment = Comment.template
 
-    let user = User.template |> \.id .~ 12_345
-
-    self.vm.inputs.configureWith(comment: comment, user: user, project: .template)
+    self.vm.inputs.configureWith(comment: comment, project: .template)
     self.authorBadge.assertValues([.creator], "The author's badge is emitted.")
   }
 
@@ -118,32 +112,30 @@ internal final class CommentCellViewModelTests: TestCase {
 
     let user = User.template |> \.id .~ 12_345
 
-    self.vm.inputs.configureWith(comment: comment, user: user, project: .template)
-    self.authorBadge.assertValues([.you], "The author's badge is emitted.")
+    withEnvironment(currentUser: user) {
+      self.vm.inputs.configureWith(comment: comment, project: .template)
+      self.authorBadge.assertValues([.you], "The author's badge is emitted.")
+    }
   }
 
   func testPersonalizedLabels_UserIs_Superbacker_Author() {
     let comment = Comment.superbackerTemplate
 
-    let user = User.template |> \.id .~ 12_345
-
-    self.vm.inputs.configureWith(comment: comment, user: user, project: .template)
+    self.vm.inputs.configureWith(comment: comment, project: .template)
     self.authorBadge.assertValues([.superbacker], "The author's badge is emitted.")
   }
 
   func testPersonalizedLabels_UserIs_Backer_Author() {
     let comment = Comment.backerTemplate
 
-    let user = User.template |> \.id .~ 12_345
-
-    self.vm.inputs.configureWith(comment: comment, user: user, project: .template)
+    self.vm.inputs.configureWith(comment: comment, project: .template)
     self.authorBadge.assertValues([.backer], "The author's badge is emitted.")
   }
 
   func testBindStylesEmitsAuthorBadge() {
     self.authorBadge.assertDidNotEmitValue()
 
-    self.vm.inputs.configureWith(comment: .template, user: nil, project: .template)
+    self.vm.inputs.configureWith(comment: .template, project: .template)
 
     self.authorBadge.assertValues([.creator], "The author's badge is emitted.")
 
