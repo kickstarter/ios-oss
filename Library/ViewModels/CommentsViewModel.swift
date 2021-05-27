@@ -22,8 +22,14 @@ public protocol CommentsViewModelInputs {
 }
 
 public protocol CommentsViewModelOutputs {
+  /// Emits a URL for the avatar image view.
+  var avatarURL: Signal<URL?, Never> { get }
+  
   /// Emits a boolean that determines if comments are currently loading.
   var commentsAreLoading: Signal<Bool, Never> { get }
+  
+  /// Emits a boolean that determines if the comment input area is visible.
+  var inputAreaVisible: Signal<Bool, Never> { get }
 
   /// Emits a list of comments that should be displayed.
   var dataSource: Signal<([Comment], User?), Never> { get }
@@ -47,6 +53,10 @@ public final class CommentsViewModel: CommentsViewModelType,
       SignalProducer(value: project.map(Either.left) ?? update.map(Either.right))
         .skipNil()
     }
+    
+    let currentUser = self.viewDidLoadProperty.signal
+      .map { _ in AppEnvironment.current.currentUser }
+      .skipNil()
 
     let initialProject = projectOrUpdate
       .flatMap { projectOrUpdate in
@@ -111,6 +121,10 @@ public final class CommentsViewModel: CommentsViewModelType,
         .materialize()
     }
     .observeValues { print($0) }
+
+    self.avatarURL = currentUser.map { URL(string: $0.avatar.medium) }
+      // TODO: https://github.com/kickstarter/ios-oss/pull/1483 NT-1796
+    self.inputAreaVisible = self.viewDidLoadProperty.signal.mapConst(true)
   }
 
   fileprivate let postCommentButtonTappedProperty = MutableProperty(())
@@ -142,6 +156,8 @@ public final class CommentsViewModel: CommentsViewModelType,
   }
 
   public let commentsAreLoading: Signal<Bool, Never>
+  public var avatarURL: Signal<URL?, Never>
+  public var inputAreaVisible: Signal<Bool, Never>
   public let dataSource: Signal<([Comment], User?), Never>
 
   public var inputs: CommentsViewModelInputs { return self }
