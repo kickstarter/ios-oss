@@ -12,7 +12,7 @@ internal final class CommentsDataSource: ValueCellDataSource {
   internal func load(comments: [Comment], loggedInUser: User?) {
     let section = Section.comments.rawValue
     self.clearValues(section: section)
-    
+
     comments.forEach { comment in
       switch comment.status {
       case .failed:

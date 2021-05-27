@@ -3,15 +3,16 @@ import XCTest
 
 final class GraphCommentTests: XCTestCase {
   func testDecode() {
-    let expectedCreatedAt: TimeInterval = 1622067124
-    let expectedImageURL = "https://ksr-qa-ugc.imgix.net/missing_user_avatar.png?ixlib=rb-4.0.2&w=200&h=200&fit=crop&v=&auto=format&frame=1&q=92&s=e5c4e9017b28bb95181ff20d61b17f99"
+    let expectedCreatedAt: TimeInterval = 1_622_067_124
+    let expectedImageURL =
+      "https://ksr-qa-ugc.imgix.net/missing_user_avatar.png?ixlib=rb-4.0.2&w=200&h=200&fit=crop&v=&auto=format&frame=1&q=92&s=e5c4e9017b28bb95181ff20d61b17f99"
     let expectedAuthorName = "James Bond"
     let expectedAuthorId = "VXNlci0xOTE1MDY0NDY3"
     let expectedCommentId = "Q29tbWVudC0zMDQ5MDQ2NA=="
     let expectedCommentBody = "I have not received a survey yet either."
     let expectedReplyTotalCount = 5
     let expectedAuthorBadge = "superbacker"
-    
+
     let dictionary: [String: Any] =
       [
         "author": [

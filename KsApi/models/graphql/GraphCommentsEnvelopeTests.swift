@@ -18,7 +18,7 @@ final class GraphCommentsEnvelopeTests: XCTestCase {
                 "authorBadges": [],
                 "body": "I have not received a survey yet either.",
                 "id": "Q29tbWVudC0zMDQ5MDQ2NA==",
-                "createdAt": 1622267124,
+                "createdAt": 1_622_267_124,
                 "deleted": true,
                 "replies": [
                   "totalCount": 1
@@ -36,7 +36,7 @@ final class GraphCommentsEnvelopeTests: XCTestCase {
                 "authorBadges": ["backer"],
                 "body": "I hope you guys all remembered to write in Bat Boy/Bigfoot on your ballots! Bat Boy 2020!!",
                 "id": "Q29tbWVudC0zMDQ2ODc1MA==",
-                "createdAt": 1522067124,
+                "createdAt": 1_522_067_124,
                 "deleted": false,
                 "replies": [
                   "totalCount": 1
@@ -54,7 +54,7 @@ final class GraphCommentsEnvelopeTests: XCTestCase {
                 "authorBadges": ["superbacker"],
                 "body": "I haven't received my survey yet. Should I have?",
                 "id": "Q29tbWVudC0zMDQ1ODg5MQ==",
-                "createdAt": 1622067114,
+                "createdAt": 1_622_067_114,
                 "deleted": false,
                 "replies": [
                   "totalCount": 1
@@ -88,7 +88,7 @@ final class GraphCommentsEnvelopeTests: XCTestCase {
       XCTAssertEqual(envelope.comments[0].author.name, "Billy Bob")
       XCTAssertEqual(envelope.comments[0].author.imageUrl, "https://image.com")
       XCTAssertEqual(envelope.comments[0].replyCount, 1)
-      XCTAssertEqual(envelope.comments[0].createdAt, 1622267124)
+      XCTAssertEqual(envelope.comments[0].createdAt, 1_622_267_124)
       XCTAssertTrue(envelope.comments[0].deleted)
       XCTAssertEqual(envelope.comments.count, 3)
 

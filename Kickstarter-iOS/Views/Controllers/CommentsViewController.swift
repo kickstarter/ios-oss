@@ -94,7 +94,7 @@ internal final class CommentsViewController: UITableViewController {
     self.viewModel.outputs.dataSource
       .observeForUI()
       .observeValues { [weak self] comments, user in
-        
+
         self?.dataSource.load(
           comments: comments,
           loggedInUser: user

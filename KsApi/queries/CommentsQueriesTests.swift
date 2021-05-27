@@ -13,4 +13,3 @@ final class CommentsQueriesTests: XCTestCase {
     )
   }
 }
-

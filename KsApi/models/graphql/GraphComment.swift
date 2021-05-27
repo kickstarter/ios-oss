@@ -9,13 +9,13 @@ struct GraphComment: Decodable {
   var replyCount: Int
   var deleted: Bool
   var createdAt: TimeInterval
-  
+
   struct GraphAuthor: Decodable {
     var id: String
     var isCreator: Bool
     var name: String
     var imageUrl: String
-    
+
     enum GraphAuthorBadges: String {
       case backer
       case creator
@@ -68,16 +68,16 @@ extension GraphComment {
       .decode(Int.self, forKey: .totalCount)
     self.deleted = try values.decode(Bool.self, forKey: .deleted)
     self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
-    
+
     self.authorBadges = []
-    
+
     let rawAuthorBadges = try values.decode([String].self, forKey: .authorBadges)
-    
-    rawAuthorBadges.forEach({ badgeText in
+
+    rawAuthorBadges.forEach { badgeText in
       if let supportedBadge = GraphComment.GraphAuthor.GraphAuthorBadges(rawValue: badgeText) {
         self.authorBadges.append(supportedBadge)
       }
-    })
+    }
   }
 }
 

@@ -96,7 +96,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
   private func configureUserBadgeStyle(from badge: Comment.Author.AuthorBadge) {
     var style: PaddingLabelStyle = { $0 }
     var stackViewAlignment: UIStackView.Alignment = .center
-    
+
     switch badge {
     case .creator:
       style = creatorAuthorBadgeStyle
@@ -113,7 +113,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
     _ = self.authorBadgeLabel
       |> authorBadgeLabelStyle
       |> style
-    
+
     _ = self.authorNameBadgeLabelsStackView
       |> \.alignment .~ stackViewAlignment
   }

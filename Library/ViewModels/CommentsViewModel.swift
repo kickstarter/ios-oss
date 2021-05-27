@@ -24,10 +24,10 @@ public protocol CommentsViewModelInputs {
 public protocol CommentsViewModelOutputs {
   /// Emits a URL for the avatar image view.
   var avatarURL: Signal<URL?, Never> { get }
-  
+
   /// Emits a boolean that determines if comments are currently loading.
   var commentsAreLoading: Signal<Bool, Never> { get }
-  
+
   /// Emits a boolean that determines if the comment input area is visible.
   var inputAreaVisible: Signal<Bool, Never> { get }
 
@@ -53,7 +53,7 @@ public final class CommentsViewModel: CommentsViewModelType,
       SignalProducer(value: project.map(Either.left) ?? update.map(Either.right))
         .skipNil()
     }
-    
+
     let currentUser = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.currentUser }
       .skipNil()
@@ -103,7 +103,7 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     let commentsAndUser = comments
       .map { ($0, AppEnvironment.current.currentUser) }
-    
+
     self.dataSource = commentsAndUser
     self.commentsAreLoading = isLoading
 
@@ -123,7 +123,7 @@ public final class CommentsViewModel: CommentsViewModelType,
     .observeValues { print($0) }
 
     self.avatarURL = currentUser.map { URL(string: $0.avatar.medium) }
-      // TODO: https://github.com/kickstarter/ios-oss/pull/1483 NT-1796
+    // TODO: https://github.com/kickstarter/ios-oss/pull/1483 NT-1796
     self.inputAreaVisible = self.viewDidLoadProperty.signal.mapConst(true)
   }
 

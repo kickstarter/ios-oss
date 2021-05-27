@@ -26,7 +26,7 @@ public struct Comment {
     public var imageUrl: String
     public var isCreator: Bool
     public var name: String
-    
+
     public enum AuthorBadge: String, Decodable {
       case creator
       case backer
@@ -57,7 +57,7 @@ extension Comment: Decodable {
 
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
-    
+
     self.author = try values.decode(Author.self, forKey: .author)
     self.body = try values.decode(String.self, forKey: .body)
     self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)

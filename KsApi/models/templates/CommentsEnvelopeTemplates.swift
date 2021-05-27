@@ -17,12 +17,14 @@ extension CommentsEnvelope {
       slug: "slug",
       totalCount: 2
     )
-  
-  internal static let failedRemovedSuccessfulCommentsTemplate =     CommentsEnvelope(
-    comments: [Comment.failedTemplate,
-               Comment.deletedTemplate,
-               Comment.superbackerTemplate,
-               Comment.backerTemplate],
+
+  internal static let failedRemovedSuccessfulCommentsTemplate = CommentsEnvelope(
+    comments: [
+      Comment.failedTemplate,
+      Comment.deletedTemplate,
+      Comment.superbackerTemplate,
+      Comment.backerTemplate
+    ],
     cursor: nil,
     hasNextPage: false,
     slug: "slug",
