@@ -55,3 +55,17 @@ public let youAuthorBadgeStyle: PaddingLabelStyle = { label in
     |> roundedStyle(cornerRadius: Styles.grid(1))
     |> \.adjustsFontForContentSizeCategory .~ true
 }
+
+public let authorBadgeLabelStyle: PaddingLabelStyle = { label in
+  label
+    |> \.numberOfLines .~ 1
+    |> \.textColor .~ .ksr_create_500
+    |> \.textAlignment .~ .left
+    |> \.font .~ UIFont.ksr_callout().bolded
+    |> \.adjustsFontForContentSizeCategory .~ true
+}
+
+public let resetTextStyle: PaddingLabelStyle = { label in
+  label
+    |> \.text .~ String()
+}

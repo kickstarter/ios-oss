@@ -4,25 +4,27 @@ extension Comment {
   /**
    Returns a minimal `Comment` from a `GraphComment`
    */
-
-  /**
-   FIXME: Some of the properties needed for `Comment` hasn't been mapped out on GraphComment. We are returning default values.
-   These properties are `Author.imageUrl`, `authorBadges`, `createdAt`, `deletedAt`, `isDeleted`
-   */
   static func comment(from graphComment: GraphComment) -> Comment {
+    var authorBadges = [Comment.Author.AuthorBadge]()
+    
+    graphComment.authorBadges.forEach { graphCommentBadge in
+      if let commentBadge = Comment.Author.AuthorBadge(rawValue: graphCommentBadge.rawValue) {
+        authorBadges.append(commentBadge)
+      }
+    }
+    
     return Comment(
       author: Author(
         id: graphComment.author.id,
-        imageUrl: "",
+        imageUrl: graphComment.author.imageUrl,
         isCreator: graphComment.author.isCreator,
         name: graphComment.author.name
       ),
-      authorBadges: nil,
+      authorBadges: authorBadges,
       body: graphComment.body,
-      createdAt: TimeInterval.init(),
-      deletedAt: TimeInterval.init(),
+      createdAt: graphComment.createdAt,
       id: graphComment.id,
-      isDeleted: false,
+      isDeleted: graphComment.deleted,
       uid: decompose(id: graphComment.id) ?? -1,
       replyCount: graphComment.replyCount
     )

@@ -94,6 +94,6 @@ private let retryButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "circle-back")
     |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_celebrate_700
     |> UIButton.lens.tintColor .~ UIColor.ksr_celebrate_700
-    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(6))
+    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(1))
     |> UIButton.lens.contentHorizontalAlignment .~ .left
 }

@@ -144,12 +144,15 @@ public enum Query {
     case author(NonEmptySet<Author>)
     case id
     case body
+    case deleted
+    case createdAt
     case replies(NonEmptySet<CommentReplyCount>)
 
-    public enum Author: String {
+    public enum Author {
       case id
       case name
       case isCreator
+      case imageURL(width: Int)
     }
 
     public enum CommentReplyCount: String {
@@ -511,13 +514,20 @@ extension Query.Comment: QueryType {
     case let .author(fields): return "author { \(join(fields)) }"
     case .body: return "body"
     case let .replies(fields): return "replies { \(join(fields)) }"
+    case .createdAt: return "createdAt"
+    case .deleted: return "deleted"
     }
   }
 }
 
 extension Query.Comment.Author: QueryType {
   public var description: String {
-    return self.rawValue
+    switch self {
+    case .id: return "id"
+    case .name: return "name"
+    case .isCreator: return "isCreator"
+    case let .imageURL(width): return "imageUrl(width: \(width))"
+    }
   }
 }
 

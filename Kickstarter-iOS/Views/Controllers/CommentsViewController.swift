@@ -25,10 +25,9 @@ internal final class CommentsViewController: UITableViewController {
 
   // MARK: - Accessors
 
-  internal static func configuredWith(project: Project? = nil,
-                                      update: Update? = nil) -> CommentsViewController {
+  internal static func configuredWith(project: Project? = nil) -> CommentsViewController {
     let vc = CommentsViewController.instantiate()
-    vc.viewModel.inputs.configureWith(project: project, update: update)
+    vc.viewModel.inputs.configureWith(project: project, update: nil)
 
     return vc
   }
@@ -45,6 +44,7 @@ internal final class CommentsViewController: UITableViewController {
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
     self.tableView.refreshControl = self.refreshIndicator
+    self.tableView.tableFooterView = UIView()
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -72,6 +72,7 @@ internal final class CommentsViewController: UITableViewController {
     self.viewModel.outputs.dataSource
       .observeForUI()
       .observeValues { [weak self] comments, user in
+        
         self?.dataSource.load(
           comments: comments,
           loggedInUser: user

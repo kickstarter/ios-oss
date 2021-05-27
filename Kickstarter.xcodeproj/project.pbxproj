@@ -1358,7 +1358,7 @@
 		D6B9DF3F1F72E25A0064A4D8 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9DF3E1F72E25A0064A4D8 /* Category.swift */; };
 		D6B9F90A22035840003282A5 /* DeprecatedAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9F90922035840003282A5 /* DeprecatedAuthor.swift */; };
 		D6B9F943220358D1003282A5 /* AuthorTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9F942220358D1003282A5 /* AuthorTemplates.swift */; };
-		D6B9F94522035E34003282A5 /* AuthorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9F94422035E34003282A5 /* AuthorTests.swift */; };
+		D6B9F94522035E34003282A5 /* DeprecatedAuthorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B9F94422035E34003282A5 /* DeprecatedAuthorTests.swift */; };
 		D6BD66B323CCC9A8008694BB /* NSAttributedString+Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BD66B223CCC9A8008694BB /* NSAttributedString+Link.swift */; };
 		D6BD66B523CCCA51008694BB /* NSAttributedStringLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BD66B423CCCA51008694BB /* NSAttributedStringLinkTests.swift */; };
 		D6BD66BB23CCF79D008694BB /* Equatable+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BD66BA23CCF79D008694BB /* Equatable+Helpers.swift */; };
@@ -2887,7 +2887,7 @@
 		D6B9DF3E1F72E25A0064A4D8 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		D6B9F90922035840003282A5 /* DeprecatedAuthor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeprecatedAuthor.swift; sourceTree = "<group>"; };
 		D6B9F942220358D1003282A5 /* AuthorTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorTemplates.swift; sourceTree = "<group>"; };
-		D6B9F94422035E34003282A5 /* AuthorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorTests.swift; sourceTree = "<group>"; };
+		D6B9F94422035E34003282A5 /* DeprecatedAuthorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeprecatedAuthorTests.swift; sourceTree = "<group>"; };
 		D6B9FA1422089C05003282A5 /* SelectCurrencyViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCurrencyViewControllerTests.swift; sourceTree = "<group>"; };
 		D6BD66B223CCC9A8008694BB /* NSAttributedString+Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Link.swift"; sourceTree = "<group>"; };
 		D6BD66B423CCCA51008694BB /* NSAttributedStringLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSAttributedStringLinkTests.swift; sourceTree = "<group>"; };
@@ -3515,7 +3515,6 @@
 				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
 				776B1A0C2418227100B03098 /* CategoryPillCell.swift */,
 				06CACBF2264DCC060026CDFD /* CommentCell.swift */,
-				D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */,
 				A7A052121CD12DD7005AF5E2 /* DeprecatedCommentCell.swift */,
 				5981BE421D7F59DE002E49F1 /* DeprecatedCommentsEmptyStateCell.swift */,
 				D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */,
@@ -4163,7 +4162,6 @@
 			children = (
 				A7F4418E1D005A9400FE6FC5 /* ActivitiesViewModel.swift */,
 				A7ED1F6D1E831C5C00BFFA01 /* ActivitiesViewModelTests.swift */,
-				477290F9264AE91800B83E10 /* CommentsViewModel.swift */,
 				94114D82265451FE0063E8F6 /* CommentCellViewModel.swift */,
 				94114D8726547F620063E8F6 /* CommentCellViewModelTests.swift */,
 				D69C552A239EFA6C00B0987A /* ActivityErroredBackingsCellViewModel.swift */,
@@ -4557,7 +4555,7 @@
 				D01587791EEB2ED6006E7684 /* Activity.swift */,
 				D015877A1EEB2ED6006E7684 /* ActivityEnvelope.swift */,
 				D015877B1EEB2ED6006E7684 /* ActivityTests.swift */,
-				D6B9F94422035E34003282A5 /* AuthorTests.swift */,
+				D6B9F94422035E34003282A5 /* DeprecatedAuthorTests.swift */,
 				D015877C1EEB2ED6006E7684 /* Backing.swift */,
 				77272D362370AB5C003B7A9C /* BackingPaymentSourceTests.swift */,
 				8A67DDB724DDB21100B4AB10 /* BackingsEnvelope.swift */,
@@ -5758,7 +5756,7 @@
 				D69C552F23A0609600B0987A /* ErroredBackingViewViewModelTests.swift in Sources */,
 				373AB25B222A063500769FC2 /* CreatePasswordViewModelTests.swift in Sources */,
 				A7ED1FCE1E831C5C00BFFA01 /* DashboardReferrerRowStackViewViewModelTests.swift in Sources */,
-				D6B9F94522035E34003282A5 /* AuthorTests.swift in Sources */,
+				D6B9F94522035E34003282A5 /* DeprecatedAuthorTests.swift in Sources */,
 				A7ED1FF11E831C5C00BFFA01 /* MessageThreadCellViewModelTests.swift in Sources */,
 				8A49395F24B53D1900C3C3CE /* RewardAddOnSelectionViewModelTests.swift in Sources */,
 				D72370922118FEFA001EA4CA /* SettingsPrivacyViewModelTests.swift in Sources */,

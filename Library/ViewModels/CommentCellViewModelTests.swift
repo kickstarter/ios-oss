@@ -8,7 +8,7 @@ import XCTest
 internal final class CommentCellViewModelTests: TestCase {
   let vm: CommentCellViewModelType = CommentCellViewModel()
 
-  private let authorBadge = TestObserver<Comment.AuthorBadge, Never>()
+  private let authorBadge = TestObserver<Comment.Author.AuthorBadge, Never>()
   private let authorImageURL = TestObserver<URL, Never>()
   private let body = TestObserver<String, Never>()
   private let authorName = TestObserver<String, Never>()

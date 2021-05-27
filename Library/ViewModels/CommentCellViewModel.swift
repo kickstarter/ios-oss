@@ -12,7 +12,7 @@ public protocol CommentCellViewModelInputs {
 
 public protocol CommentCellViewModelOutputs {
   /// Emits author's badge for a comment
-  var authorBadge: Signal<Comment.AuthorBadge, Never> { get }
+  var authorBadge: Signal<Comment.Author.AuthorBadge, Never> { get }
 
   /// Emits text containing author's fullname or username
   var authorName: Signal<String, Never> { get }
@@ -51,7 +51,8 @@ public final class CommentCellViewModel:
       Format.date(secondsInUTC: $0.createdAt, dateStyle: .medium, timeStyle: .short)
     }
 
-    let badge = self.commentUser.signal.skipNil()
+    let badge = self.commentUser.signal
+      .skipNil()
       .map { comment, user in
         comment.author.id == user?.id.description ? .you : comment.authorBadge
       }
@@ -72,7 +73,7 @@ public final class CommentCellViewModel:
     self.commentUser.value = (comment, user)
   }
 
-  public let authorBadge: Signal<Comment.AuthorBadge, Never>
+  public let authorBadge: Signal<Comment.Author.AuthorBadge, Never>
   public var authorImageURL: Signal<URL, Never>
   public let body: Signal<String, Never>
   public let authorName: Signal<String, Never>
