@@ -15,17 +15,14 @@ public protocol CommentsViewModelInputs {
 }
 
 public protocol CommentsViewModelOutputs {
-  /// Emits a URL for the avatar image view.
-  var avatarURL: Signal<URL?, Never> { get }
-
-  /// Emits a boolean that determines if the comment input area is visible.
-  var isCommentComposerHidden: Signal<Bool, Never> { get }
-
   /// Emits a boolean that determines if the user is a backer on the project.
-  var isBacking: Signal<Bool, Never> { get }
+  var configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never> { get }
 
   /// Emits a list of comments that should be displayed.
   var dataSource: Signal<([Comment], Project), Never> { get }
+
+  /// Emits a boolean that determines if the comment input area is visible.
+  var isCommentComposerHidden: Signal<Bool, Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -65,20 +62,23 @@ public final class CommentsViewModel: CommentsViewModelType,
     }
     .observeValues { print($0) }
 
-    self.avatarURL = currentUser
-      .skipNil()
-      .map { URL(string: $0.avatar.medium) }
+    self.configureCommentComposerViewWithData = Signal
+      .combineLatest(self.projectProperty.signal.skipNil(), currentUser.signal)
+      .takeWhen(self.viewDidLoadProperty.signal)
+      .map { project, currentUser in
+        let isBacker = userIsBackingProject(project)
+
+        guard let user = currentUser else {
+          return (nil, isBacker)
+        }
+
+        return (URL(string: user.avatar.medium), isBacker)
+      }
 
     // FIXME: This will be updated/removed when we fetch comments from API
     self.dataSource = self.templatesComments.signal
       .skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
-
-    self.isBacking = self.projectProperty.signal
-      .takeWhen(self.viewDidLoadProperty.signal)
-      .map { $0 }
-      .skipNil()
-      .map(userIsBackingProject)
 
     self.isCommentComposerHidden = currentUser.signal
       .map { user in user.isNil }
@@ -107,10 +107,9 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  public var avatarURL: Signal<URL?, Never>
-  public let isCommentComposerHidden: Signal<Bool, Never>
-  public let isBacking: Signal<Bool, Never>
+  public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let dataSource: Signal<([Comment], Project), Never>
+  public let isCommentComposerHidden: Signal<Bool, Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }

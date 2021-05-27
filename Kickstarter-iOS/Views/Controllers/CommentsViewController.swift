@@ -97,10 +97,10 @@ internal final class CommentsViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.isBacking
+    self.viewModel.outputs.configureCommentComposerViewWithData
       .observeForUI()
-      .observeValues { [weak self] isBacking in
-        self?.commentComposer.configure(with: (nil, isBacking))
+      .observeValues { [weak self] avatarUrl, isBacking in
+        self?.commentComposer.configure(with: (avatarUrl, isBacking))
       }
 
     // TODO: Call this method after post comment is successful to clear the input field text
