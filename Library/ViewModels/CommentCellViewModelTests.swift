@@ -46,7 +46,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.postTime.assertValueCount(1, "The relative time of the comment is emitted.")
   }
 
-  func testOutputs_replyButtonIsHidden_IsBacker_True_IsLoggedIn_True() {
+  func testOutputs_replyButtonIsHidden_IsBacker_True_IsLoggedIn() {
     let project = Project.template
       |> \.personalization.isBacking .~ true
 
@@ -60,7 +60,7 @@ internal final class CommentCellViewModelTests: TestCase {
     }
   }
 
-  func testOutputs_replyButtonIsHidden_IsBacker_False_IsLoggedIn_False() {
+  func testOutputs_replyButtonIsHidden_IsBacker_False_IsLoggedOut() {
     let user = User.template |> \.id .~ 12_345
 
     withEnvironment(currentUser: nil) {
@@ -71,7 +71,7 @@ internal final class CommentCellViewModelTests: TestCase {
     }
   }
 
-  func testOutputs_replyButtonIsHidden_IsBacker_False_IsLoggedIn_True() {
+  func testOutputs_replyButtonIsHidden_IsBacker_False_IsLoggedIn() {
     let user = User.template |> \.id .~ 12_345
 
     withEnvironment(currentUser: user) {

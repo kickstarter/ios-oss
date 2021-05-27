@@ -69,16 +69,14 @@ public final class CommentCellViewModel:
       .map { _ in AppEnvironment.current.currentUser }
       .map(isNil)
 
-    let isBacker = self.commentUserAndProject.signal
+    let isNotABacker = self.commentUserAndProject.signal
       .skipNil()
       .map { _, _, project in project }
       .map(userIsBackingProject)
+      .negate()
 
-    self.replyButtonIsHidden = Signal.combineLatest(isLoggedOut, isBacker)
-      .map { isLoggedOut, isBacker in
-        // If the user is logged out OR logged in AND not a backer, hide replyButton
-        isLoggedOut || (!isLoggedOut && isBacker == false)
-      }
+    self.replyButtonIsHidden = Signal.combineLatest(isLoggedOut, isNotABacker)
+      .map { isLoggedOut, isNotABacker in isLoggedOut || isNotABacker }
   }
 
   private var bindStylesProperty = MutableProperty(())
