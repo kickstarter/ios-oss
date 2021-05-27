@@ -4,6 +4,9 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol CommentsViewModelInputs {
+  /// Call after instantiating the view controller
+  func configureWith(project: Project)
+
   /// Call when the User is posting a comment or reply
   func postCommentButtonTapped()
 
@@ -19,7 +22,7 @@ public protocol CommentsViewModelOutputs {
   var inputAreaVisible: Signal<Bool, Never> { get }
 
   /// Emits a list of comments that should be displayed.
-  var dataSource: Signal<([Comment], User?), Never> { get }
+  var dataSource: Signal<([Comment], Project), Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -66,8 +69,19 @@ public final class CommentsViewModel: CommentsViewModelType,
     // and also to determine whethere input area is visible.
     self.inputAreaVisible = self.viewDidLoadProperty.signal.mapConst(true)
 
-    // FIXME: This would be removed when we fetch comments from API
+    // FIXME: This will be updated/removed when we fetch comments from API
     self.dataSource = self.templatesComments.signal.skipNil()
+      .takeWhen(self.viewDidLoadProperty.signal)
+  }
+
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
+    self.projectProperty.value = project
+
+    self.templatesComments.value = (
+      Comment.templates,
+      project
+    )
   }
 
   fileprivate let postCommentButtonTappedProperty = MutableProperty(())
@@ -78,17 +92,14 @@ public final class CommentsViewModel: CommentsViewModelType,
   fileprivate let viewDidLoadProperty = MutableProperty(())
 
   // TODO: - This would be removed when we fetch comments from API
-  fileprivate let templatesComments = MutableProperty<([Comment], User?)?>(nil)
+  fileprivate let templatesComments = MutableProperty<([Comment], Project)?>(nil)
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
-
-    // FIXME: This would be removed when we fetch comments from API
-    self.templatesComments.value = (Comment.templates, AppEnvironment.current.currentUser)
   }
 
   public var avatarURL: Signal<URL?, Never>
   public var inputAreaVisible: Signal<Bool, Never>
-  public let dataSource: Signal<([Comment], User?), Never>
+  public let dataSource: Signal<([Comment], Project), Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }
