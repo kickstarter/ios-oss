@@ -7,7 +7,7 @@ public protocol CommentCellViewModelInputs {
   func bindStyles()
 
   /// Call to configure with a Comment, User and Project
-  func configureWith(comment: Comment, user: User?, project: Project)
+  func configureWith(comment: Comment, user: User?, project: Project?)
 }
 
 public protocol CommentCellViewModelOutputs {
@@ -72,6 +72,7 @@ public final class CommentCellViewModel:
     let isNotABacker = self.commentUserAndProject.signal
       .skipNil()
       .map { _, _, project in project }
+      .skipNil()
       .map(userIsBackingProject)
       .negate()
 
@@ -84,8 +85,8 @@ public final class CommentCellViewModel:
     self.bindStylesProperty.value = ()
   }
 
-  fileprivate let commentUserAndProject = MutableProperty<(Comment, User?, Project)?>(nil)
-  public func configureWith(comment: Comment, user: User?, project: Project) {
+  fileprivate let commentUserAndProject = MutableProperty<(Comment, User?, Project?)?>(nil)
+  public func configureWith(comment: Comment, user: User?, project: Project?) {
     self.commentUserAndProject.value = (comment, user, project)
   }
 

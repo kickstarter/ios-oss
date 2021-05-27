@@ -25,9 +25,6 @@ internal final class CommentsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        controller.tableView.layoutIfNeeded()
-        controller.tableView.reloadData()
-
         FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
       }
     }
@@ -45,9 +42,6 @@ internal final class CommentsViewControllerTests: TestCase {
 
         self.scheduler.run()
 
-        controller.tableView.layoutIfNeeded()
-        controller.tableView.reloadData()
-
         FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
       }
     }
@@ -61,9 +55,6 @@ internal final class CommentsViewControllerTests: TestCase {
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
-
-        controller.tableView.layoutIfNeeded()
-        controller.tableView.reloadData()
 
         FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
       }
