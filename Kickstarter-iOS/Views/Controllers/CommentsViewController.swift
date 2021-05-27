@@ -65,8 +65,6 @@ internal final class CommentsViewController: UITableViewController {
   // MARK: - Views
 
   private func configureViews() {
-    // TODO: Use actual data from CommentViewModel to configure composer.
-    self.commentComposer.configure(with: (nil, true))
     self.commentComposer.delegate = self
   }
 
@@ -86,6 +84,9 @@ internal final class CommentsViewController: UITableViewController {
 
   internal override func bindViewModel() {
     super.bindViewModel()
+
+    self.commentComposer.rac.hidden = self.viewModel.outputs.isCommentComposerHidden
+
     self.viewModel.outputs.dataSource
       .observeForUI()
       .observeValues { [weak self] comments, project in
@@ -95,6 +96,13 @@ internal final class CommentsViewController: UITableViewController {
         )
         self?.tableView.reloadData()
       }
+
+    self.viewModel.outputs.isBacking
+      .observeForUI()
+      .observeValues { [weak self] isBacking in
+        self?.commentComposer.configure(with: (nil, isBacking))
+      }
+
     // TODO: Call this method after post comment is successful to clear the input field text
     // self.commentComposer.clearOnSuccess()
   }

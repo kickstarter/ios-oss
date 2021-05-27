@@ -19,7 +19,10 @@ public protocol CommentsViewModelOutputs {
   var avatarURL: Signal<URL?, Never> { get }
 
   /// Emits a boolean that determines if the comment input area is visible.
-  var inputAreaVisible: Signal<Bool, Never> { get }
+  var isCommentComposerHidden: Signal<Bool, Never> { get }
+
+  /// Emits a boolean that determines if the user is a backer on the project.
+  var isBacking: Signal<Bool, Never> { get }
 
   /// Emits a list of comments that should be displayed.
   var dataSource: Signal<([Comment], Project), Never> { get }
@@ -36,7 +39,6 @@ public final class CommentsViewModel: CommentsViewModelType,
   public init() {
     let currentUser = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.currentUser }
-      .skipNil()
 
     // FIXME: Configure this VM with a project in order to feed the slug in here to fetch comments
     // Call this again with a cursor to paginate.
@@ -63,15 +65,23 @@ public final class CommentsViewModel: CommentsViewModelType,
     }
     .observeValues { print($0) }
 
-    self.avatarURL = currentUser.map { URL(string: $0.avatar.medium) }
-
-    // When Project is supplied to the config, we will use that to determine who can comment on the project
-    // and also to determine whethere input area is visible.
-    self.inputAreaVisible = self.viewDidLoadProperty.signal.mapConst(true)
+    self.avatarURL = currentUser
+      .skipNil()
+      .map { URL(string: $0.avatar.medium) }
 
     // FIXME: This will be updated/removed when we fetch comments from API
-    self.dataSource = self.templatesComments.signal.skipNil()
+    self.dataSource = self.templatesComments.signal
+      .skipNil()
       .takeWhen(self.viewDidLoadProperty.signal)
+
+    self.isBacking = self.projectProperty.signal
+      .takeWhen(self.viewDidLoadProperty.signal)
+      .map { $0 }
+      .skipNil()
+      .map(userIsBackingProject)
+
+    self.isCommentComposerHidden = currentUser.signal
+      .map { user in user.isNil }
   }
 
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
@@ -98,7 +108,8 @@ public final class CommentsViewModel: CommentsViewModelType,
   }
 
   public var avatarURL: Signal<URL?, Never>
-  public var inputAreaVisible: Signal<Bool, Never>
+  public let isCommentComposerHidden: Signal<Bool, Never>
+  public let isBacking: Signal<Bool, Never>
   public let dataSource: Signal<([Comment], Project), Never>
 
   public var inputs: CommentsViewModelInputs { return self }
