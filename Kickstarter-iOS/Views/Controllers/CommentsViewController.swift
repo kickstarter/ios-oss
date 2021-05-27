@@ -96,6 +96,14 @@ internal final class CommentsViewController: UITableViewController {
         )
         self?.tableView.reloadData()
       }
+
+    self.viewModel.outputs.goToCommentReplies
+      .observeForControllerAction()
+      .observeValues { [weak self] _, _ in
+        let vc = CommentRepliesViewController.instantiate()
+        self?.navigationController?.pushViewController(vc, animated: true)
+      }
+
     // TODO: Call this method after post comment is successful to clear the input field text
     // self.commentComposer.clearOnSuccess()
   }

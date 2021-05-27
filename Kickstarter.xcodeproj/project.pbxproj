@@ -405,8 +405,8 @@
 		8A04FE3D262783A10056F413 /* Segment_Appboy.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A04FE24262781240056F413 /* Segment_Appboy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A05CB0E23DB82D3002B01EE /* CookieRefTagFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */; };
 		8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A072D39230223B200BA1538 /* UIImage+Color.swift */; };
-		8A07CEF62660338600426B1C /* CommentRepliesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CEF52660338600426B1C /* CommentRepliesViewController.swift */; };
 		8A07CF052660344E00426B1C /* CommentRepliesViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CEFD2660344200426B1C /* CommentRepliesViewControllerTests.swift */; };
+		8A07CF1226604E8F00426B1C /* CommentRepliesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CEF52660338600426B1C /* CommentRepliesViewController.swift */; };
 		8A08B521249C3352009CF74E /* EasyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A08B520249C3352009CF74E /* EasyButton.swift */; };
 		8A0B1E2124D4B271009E90C0 /* EmptyStateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0B1E2024D4B271009E90C0 /* EmptyStateViewModelTests.swift */; };
 		8A0B1E2324D4C486009E90C0 /* GraphProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0B1E2224D4C486009E90C0 /* GraphProject.swift */; };
@@ -6125,6 +6125,7 @@
 				018422BE1D2C484700CA7566 /* DashboardTitleView.swift in Sources */,
 				5970739A1D06346700B00444 /* ProjectNotificationsViewController.swift in Sources */,
 				A745D1411CAAB48F00C12802 /* LoginToutViewController.swift in Sources */,
+				8A07CF1226604E8F00426B1C /* CommentRepliesViewController.swift in Sources */,
 				77EFBAE52268E01400DA5C3C /* RewardCell.swift in Sources */,
 				77FD8B46216D6245000A95AC /* LoadingBarButtonItemView.swift in Sources */,
 				9D14FF8E1D133351005F4ABB /* ProjectActivityEmptyStateCell.swift in Sources */,
@@ -6181,7 +6182,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A73924041D272404004524C3 /* AppDelegate.swift in Sources */,
-				8A07CEF62660338600426B1C /* CommentRepliesViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
