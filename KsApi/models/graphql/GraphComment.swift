@@ -91,8 +91,10 @@ extension GraphComment.GraphAuthor {
 
   init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
-
-    self.id = try values.decode(String.self, forKey: .id)
+    let rawId = try values.decode(String.self, forKey: .id)
+    let decomposedRawId = decompose(id: rawId) ?? -1
+    
+    self.id = decomposedRawId.description
     self.isCreator = try values.decodeIfPresent(Bool.self, forKey: .isCreator) ?? false
     self.name = try values.decode(String.self, forKey: .name)
     self.imageUrl = try values.decode(String.self, forKey: .imageUrl)

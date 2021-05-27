@@ -25,7 +25,6 @@ extension Comment {
       createdAt: graphComment.createdAt,
       id: graphComment.id,
       isDeleted: graphComment.deleted,
-      uid: decompose(id: graphComment.id) ?? -1,
       replyCount: graphComment.replyCount
     )
   }

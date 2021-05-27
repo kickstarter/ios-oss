@@ -13,7 +13,6 @@ extension Comment {
     createdAt: Date(timeIntervalSince1970: 1_475_361_415).timeIntervalSince1970,
     id: "89DJa89jdSDJ89sd8==",
     isDeleted: false,
-    uid: 12_345,
     replyCount: 2
   )
 
@@ -29,7 +28,6 @@ extension Comment {
     createdAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970,
     id: "89DJa89jdSDJ89sd8==",
     isDeleted: true,
-    uid: 12_345,
     replyCount: 2
   )
 
@@ -45,7 +43,6 @@ extension Comment {
     createdAt: Date(timeIntervalSince1970: 1_475_361_215).timeIntervalSince1970,
     id: "78DJa89jdSDJ89sd8==",
     isDeleted: false,
-    uid: 11_445,
     replyCount: 10
   )
 
@@ -61,7 +58,6 @@ extension Comment {
     createdAt: Date(timeIntervalSince1970: 1_475_361_115).timeIntervalSince1970,
     id: "BOD5af89jdDA4fG==",
     isDeleted: false,
-    uid: 11_345,
     replyCount: 0
   )
 
@@ -78,7 +74,6 @@ extension Comment {
     id: "78DJa89jdSDJ89sd8==",
     isDeleted: false,
     isFailed: true,
-    uid: 11_245,
     replyCount: 15
   )
 

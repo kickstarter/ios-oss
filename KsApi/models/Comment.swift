@@ -8,7 +8,6 @@ public struct Comment {
   public var id: String
   public var isDeleted: Bool
   public var isFailed: Bool = false
-  public var uid: Int
   public var replyCount: Int
 
   /// return the first `authorBadges`, if nil  return `.backer`
@@ -51,19 +50,17 @@ extension Comment: Decodable {
     case deletedAt = "deleted_at"
     case id
     case isDeleted = "deleted"
-    case uid
     case replyCount
   }
 
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
-
+    
     self.author = try values.decode(Author.self, forKey: .author)
     self.body = try values.decode(String.self, forKey: .body)
     self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
     self.id = try values.decode(String.self, forKey: .id)
     self.isDeleted = try values.decode(Bool.self, forKey: .isDeleted)
-    self.uid = try values.decode(Int.self, forKey: .uid)
     self.replyCount = try values.decode(Int.self, forKey: .replyCount)
     self.authorBadges = try values.decode([Author.AuthorBadge].self, forKey: .authorBadges)
   }

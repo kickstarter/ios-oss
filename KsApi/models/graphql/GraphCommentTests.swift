@@ -44,7 +44,7 @@ final class GraphCommentTests: XCTestCase {
     XCTAssertEqual(comment!.authorBadges, [.superbacker])
     XCTAssertEqual(comment!.id, expectedCommentId)
     XCTAssertEqual(comment!.replyCount, 5)
-    XCTAssertEqual(comment!.author.id, expectedAuthorId)
+    XCTAssertEqual(comment!.author.id, decompose(id: expectedAuthorId)?.description)
     XCTAssertEqual(comment!.author.isCreator, false)
     XCTAssertEqual(comment!.author.name, expectedAuthorName)
     XCTAssertEqual(comment!.author.imageUrl, expectedImageURL)

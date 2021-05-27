@@ -83,7 +83,7 @@ final class GraphCommentsEnvelopeTests: XCTestCase {
 
       XCTAssertEqual(envelope.comments[0].id, "Q29tbWVudC0zMDQ5MDQ2NA==")
       XCTAssertEqual(envelope.comments[0].body, "I have not received a survey yet either.")
-      XCTAssertEqual(envelope.comments[0].author.id, "VXNlci0xOTE1MDY0NDY3")
+      XCTAssertEqual(envelope.comments[0].author.id, decompose(id: "VXNlci0xOTE1MDY0NDY3")?.description)
       XCTAssertTrue(envelope.comments[0].author.isCreator)
       XCTAssertEqual(envelope.comments[0].author.name, "Billy Bob")
       XCTAssertEqual(envelope.comments[0].author.imageUrl, "https://image.com")
