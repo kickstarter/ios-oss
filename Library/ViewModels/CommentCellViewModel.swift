@@ -11,20 +11,23 @@ public protocol CommentCellViewModelInputs {
 }
 
 public protocol CommentCellViewModelOutputs {
-  /// Emits author's badge for a comment
+  /// Emits author's badge for a comment.
   var authorBadge: Signal<Comment.AuthorBadge, Never> { get }
 
-  /// Emits text containing author's fullname or username
+  /// Emits text containing author's fullname or username.
   var authorName: Signal<String, Never> { get }
 
-  /// Emits a url to the comment author's image
+  /// Emits a url to the comment author's image.
   var authorImageURL: Signal<URL, Never> { get }
 
-  /// Emits text containing comment body
+  /// Emits text containing comment body.
   var body: Signal<String, Never> { get }
 
-  /// Emits text  relative time the comment was posted
+  /// Emits text  relative time the comment was posted.
   var postTime: Signal<String, Never> { get }
+
+  /// Emits whether or not the view replies container is hidden.
+  var viewRepliesContainerHidden: Signal<Bool, Never> { get }
 }
 
 public protocol CommentCellViewModelType {
@@ -60,6 +63,9 @@ public final class CommentCellViewModel:
       badge,
       badge.takeWhen(self.bindStylesProperty.signal)
     )
+
+    self.viewRepliesContainerHidden = comment.map(\.replyCount)
+      .map { $0 == 0 }
   }
 
   private var bindStylesProperty = MutableProperty(())
@@ -77,6 +83,7 @@ public final class CommentCellViewModel:
   public let body: Signal<String, Never>
   public let authorName: Signal<String, Never>
   public let postTime: Signal<String, Never>
+  public let viewRepliesContainerHidden: Signal<Bool, Never>
 
   public var inputs: CommentCellViewModelInputs { self }
   public var outputs: CommentCellViewModelOutputs { self }

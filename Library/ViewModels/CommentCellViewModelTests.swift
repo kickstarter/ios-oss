@@ -13,6 +13,7 @@ internal final class CommentCellViewModelTests: TestCase {
   private let body = TestObserver<String, Never>()
   private let authorName = TestObserver<String, Never>()
   private let postTime = TestObserver<String, Never>()
+  private let viewRepliesContainerHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -21,6 +22,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.outputs.body.observe(self.body.observer)
     self.vm.outputs.authorName.observe(self.authorName.observer)
     self.vm.outputs.postTime.observe(self.postTime.observer)
+    self.vm.outputs.viewRepliesContainerHidden.observe(self.viewRepliesContainerHidden.observer)
   }
 
   func testOutputs() {
@@ -108,5 +110,27 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.inputs.bindStyles()
 
     self.authorBadge.assertValues([.creator, .creator], "The author's badge is emitted.")
+  }
+
+  func testViewRepliesContainerHidden_IsHiddenWhenNoReplies() {
+    self.viewRepliesContainerHidden.assertDidNotEmitValue()
+
+    let comment = Comment.template
+      |> \.replyCount .~ 0
+
+    self.vm.inputs.configureWith(comment: comment, user: nil)
+
+    self.viewRepliesContainerHidden.assertValues([true])
+  }
+
+  func testViewRepliesContainerHidden_IsNotHiddenWhenCommentHasReplies() {
+    self.viewRepliesContainerHidden.assertDidNotEmitValue()
+
+    let comment = Comment.template
+      |> \.replyCount .~ 1
+
+    self.vm.inputs.configureWith(comment: comment, user: nil)
+
+    self.viewRepliesContainerHidden.assertValues([false])
   }
 }
