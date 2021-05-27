@@ -145,7 +145,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
   }
-  
+
   fileprivate let willDisplayRowProperty = MutableProperty<(row: Int, total: Int)?>(nil)
   public func willDisplayRow(_ row: Int, outOf totalRows: Int) {
     self.willDisplayRowProperty.value = (row, totalRows)

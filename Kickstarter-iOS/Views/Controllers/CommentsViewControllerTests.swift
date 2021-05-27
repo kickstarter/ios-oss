@@ -35,7 +35,7 @@ internal final class CommentsViewControllerTests: TestCase {
           orientation: .portrait,
           child: controller
         )
-        
+
         parent.view.frame.size.height = 1_100
 
         self.scheduler.run()
