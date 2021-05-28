@@ -105,7 +105,7 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.bodyTextView.rac.text = self.viewModel.outputs.body
     self.replyButton.rac.hidden = self.viewModel.outputs.replyButtonIsHidden
 
-    self.viewRepliesStackView.rac.hidden = self.viewModel.outputs.viewRepliesStackViewHidden
+    self.viewRepliesStackView.rac.hidden = self.viewModel.outputs.viewRepliesStackViewIsHidden
   }
 }
 
