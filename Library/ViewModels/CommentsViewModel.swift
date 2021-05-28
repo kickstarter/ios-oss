@@ -15,7 +15,7 @@ public protocol CommentsViewModelInputs {
 }
 
 public protocol CommentsViewModelOutputs {
-  /// Emits a boolean that determines if the user is a backer on the project.
+  /// Emits a CommentComposerViewData object that determines the avatarURL and whether the user is a backer.
   var configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never> { get }
 
   /// Emits a list of comments that should be displayed.
