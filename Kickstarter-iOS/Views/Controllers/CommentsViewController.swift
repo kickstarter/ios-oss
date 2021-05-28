@@ -92,7 +92,7 @@ internal final class CommentsViewController: UITableViewController {
 
   internal override func bindViewModel() {
     super.bindViewModel()
-    self.viewModel.outputs.dataSource
+    self.viewModel.outputs.loadCommentsAndProjectIntoDataSource
       .observeForUI()
       .observeValues { [weak self] comments, project in
         self?.dataSource.load(
