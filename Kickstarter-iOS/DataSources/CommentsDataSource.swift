@@ -6,11 +6,13 @@ import UIKit
 internal final class CommentsDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case comments
+    case empty
   }
 
   internal func load(comments: [Comment], project: Project) {
     let section = Section.comments.rawValue
     self.clearValues(section: section)
+
     comments.forEach { comment in
       switch comment.status {
       case .failed:

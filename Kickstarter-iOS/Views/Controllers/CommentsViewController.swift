@@ -20,15 +20,27 @@ internal final class CommentsViewController: UITableViewController {
     return view
   }()
 
-  fileprivate let dataSource = CommentsDataSource()
-  fileprivate let viewModel: CommentsViewModelType = CommentsViewModel()
+  private lazy var refreshIndicator: UIRefreshControl = {
+    let refreshControl = UIRefreshControl()
 
-  // MARK: - Configuration
+    refreshControl.addTarget(
+      self,
+      action: #selector(self.refresh),
+      for: .valueChanged
+    )
 
-  internal static func configuredWith(project: Project)
-    -> CommentsViewController {
+    return refreshControl
+  }()
+
+  private let viewModel: CommentsViewModelType = CommentsViewModel()
+  private let dataSource = CommentsDataSource()
+
+  // MARK: - Accessors
+
+  internal static func configuredWith(project: Project? = nil) -> CommentsViewController {
     let vc = CommentsViewController.instantiate()
-    vc.viewModel.inputs.configureWith(project: project)
+    vc.viewModel.inputs.configureWith(project: project, update: nil)
+
     return vc
   }
 
@@ -37,15 +49,16 @@ internal final class CommentsViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.configureViews()
-
     self.navigationItem.title = Strings.project_menu_buttons_comments()
-
-    self.tableView.dataSource = self.dataSource
-    self.tableView.delegate = self
+    self.commentComposer.configure(with: (nil, true))
+    self.commentComposer.delegate = self
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(CommentPostFailedCell.self)
     self.tableView.registerCellClass(CommentRemovedCell.self)
+    self.tableView.dataSource = self.dataSource
+    self.tableView.delegate = self
+    self.tableView.refreshControl = self.refreshIndicator
+    self.tableView.tableFooterView = UIView()
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -61,14 +74,6 @@ internal final class CommentsViewController: UITableViewController {
 
   override var canBecomeFirstResponder: Bool {
     return true
-  }
-
-  // MARK: - Views
-
-  private func configureViews() {
-    // TODO: Use actual data from CommentViewModel to configure composer.
-    self.commentComposer.configure(with: (nil, true))
-    self.commentComposer.delegate = self
   }
 
   // MARK: - Styles
@@ -87,7 +92,7 @@ internal final class CommentsViewController: UITableViewController {
 
   internal override func bindViewModel() {
     super.bindViewModel()
-    self.viewModel.outputs.dataSource
+    self.viewModel.outputs.loadCommentsAndProjectIntoDataSource
       .observeForUI()
       .observeValues { [weak self] comments, project in
         self?.dataSource.load(
@@ -103,6 +108,29 @@ internal final class CommentsViewController: UITableViewController {
         let vc = CommentRepliesViewController.instantiate()
         self?.navigationController?.pushViewController(vc, animated: true)
       }
+
+    self.viewModel.outputs.isCommentsLoading
+      .observeForUI()
+      .observeValues { [weak self] in
+        $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
+      }
+  }
+
+  // MARK: - Actions
+
+  @objc private func refresh() {
+    self.viewModel.inputs.refresh()
+  }
+}
+
+// MARK: - CommentsViewController Delegate
+
+extension CommentsViewController {
+  override func tableView(_: UITableView, willDisplay _: UITableViewCell, forRowAt indexPath: IndexPath) {
+    self.viewModel.inputs.willDisplayRow(
+      self.dataSource.itemIndexAt(indexPath),
+      outOf: self.dataSource.numberOfItems()
+    )
 
     // TODO: Call this method after post comment is successful to clear the input field text
     // self.commentComposer.clearOnSuccess()

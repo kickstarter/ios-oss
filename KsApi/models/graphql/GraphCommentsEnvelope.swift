@@ -3,8 +3,9 @@ import ReactiveSwift
 
 struct GraphCommentsEnvelope: Decodable {
   var comments: [GraphComment]
-  var cursor: String
+  var cursor: String?
   var hasNextPage: Bool
+  var slug: String
   var totalCount: Int
 }
 
@@ -17,13 +18,18 @@ extension GraphCommentsEnvelope {
     case pageInfo
     case endCursor
     case hasNextPage
+    case slug
     case totalCount
   }
 
   init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
 
-    let commentsContainer = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .project)
+    let projectContainer = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .project)
+
+    self.slug = try projectContainer.decode(String.self, forKey: .slug)
+
+    let commentsContainer = try projectContainer
       .nestedContainer(keyedBy: CodingKeys.self, forKey: .comments)
 
     var edges = try commentsContainer
@@ -40,7 +46,7 @@ extension GraphCommentsEnvelope {
 
     let pageInfoContainer = try commentsContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .pageInfo)
 
-    self.cursor = try pageInfoContainer.decode(String.self, forKey: .endCursor)
+    self.cursor = try pageInfoContainer.decodeIfPresent(String.self, forKey: .endCursor)
     self.hasNextPage = try pageInfoContainer.decode(Bool.self, forKey: .hasNextPage)
     self.totalCount = try commentsContainer.decode(Int.self, forKey: .totalCount)
   }

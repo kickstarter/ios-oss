@@ -11,10 +11,8 @@ extension Comment {
     authorBadges: [.creator],
     body: "Hello World",
     createdAt: Date(timeIntervalSince1970: 1_475_361_415).timeIntervalSince1970,
-    deletedAt: nil,
     id: "89DJa89jdSDJ89sd8==",
     isDeleted: false,
-    uid: 12_345,
     replyCount: 2
   )
 
@@ -25,13 +23,11 @@ extension Comment {
       isCreator: true,
       name: "Nandi Adams"
     ),
-    authorBadges: nil,
+    authorBadges: [],
     body: "Hello World",
     createdAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970,
-    deletedAt: nil,
     id: "89DJa89jdSDJ89sd8==",
     isDeleted: true,
-    uid: 12_345,
     replyCount: 2
   )
 
@@ -45,10 +41,8 @@ extension Comment {
     authorBadges: [.superbacker],
     body: "Hi Nimble! Where are you incorporated? Thank you!",
     createdAt: Date(timeIntervalSince1970: 1_475_361_215).timeIntervalSince1970,
-    deletedAt: Date(timeIntervalSince1970: 1_475_361_230).timeIntervalSince1970,
     id: "78DJa89jdSDJ89sd8==",
     isDeleted: false,
-    uid: 11_445,
     replyCount: 10
   )
 
@@ -59,13 +53,11 @@ extension Comment {
       isCreator: false,
       name: "Cordero"
     ),
-    authorBadges: nil,
+    authorBadges: [],
     body: "@dave safeuniverse has some sort of obsession. Normal people would say their piece and let it go, and be a lot less hostile towards everyone.",
     createdAt: Date(timeIntervalSince1970: 1_475_361_115).timeIntervalSince1970,
-    deletedAt: nil,
     id: "BOD5af89jdDA4fG==",
     isDeleted: false,
-    uid: 11_345,
     replyCount: 0
   )
 
@@ -79,11 +71,9 @@ extension Comment {
     authorBadges: [.you],
     body: "It is true what SafeUniverse is saying Doug. To do business in NY you have to be a registered business in NY even if you are registered in another state. What can Nimble provide to show they are registered in NY SafeUniverse?",
     createdAt: Date(timeIntervalSince1970: 1_475_361_100).timeIntervalSince1970,
-    deletedAt: nil,
     id: "78DJa89jdSDJ89sd8==",
     isDeleted: false,
     isFailed: true,
-    uid: 11_245,
     replyCount: 15
   )
 
