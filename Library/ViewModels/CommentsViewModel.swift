@@ -31,8 +31,8 @@ public protocol CommentsViewModelOutputs {
   /// Emits a boolean that determines if the comment input area is visible.
   var inputAreaVisible: Signal<Bool, Never> { get }
 
-  /// Emits a list of comments that should be displayed.
-  var dataSource: Signal<([Comment], Project), Never> { get }
+  /// Emits a list of `Comment`s and the `Project` to load into the data source.
+  var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -103,7 +103,7 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     let commentsAndProject = Signal.combineLatest(comments, initialProject)
 
-    self.dataSource = commentsAndProject
+    self.loadCommentsAndProjectIntoDataSource = commentsAndProject
     self.isCommentsLoading = isLoading
 
     // FIXME: We need to dynamically supply the IDs when the UI is built.
@@ -154,7 +154,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let isCommentsLoading: Signal<Bool, Never>
   public var avatarURL: Signal<URL?, Never>
   public var inputAreaVisible: Signal<Bool, Never>
-  public let dataSource: Signal<([Comment], Project), Never>
+  public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }
