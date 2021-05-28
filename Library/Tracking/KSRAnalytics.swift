@@ -339,7 +339,6 @@ public final class KSRAnalytics {
     case location
     case percentRaised
     case pledge(PledgeContext)
-    case project
     case projectState
     case pwl
     case recommended
@@ -416,7 +415,6 @@ public final class KSRAnalytics {
       case .location: return "location"
       case .percentRaised: return "percent_raised"
       case let .pledge(pledgeContext): return pledgeContext.trackingString
-      case .project: return "project"
       case .projectState: return "project_state"
       case .pwl: return "pwl"
       case .recommended: return "recommended"
@@ -725,7 +723,6 @@ public final class KSRAnalytics {
                                          refTag: RefTag) {
     let props = contextProperties(
       page: .discovery,
-      typeContext: .project,
       locationContext: .discoverAdvanced
     )
     .withAllValuesFrom(discoveryProperties(from: params))
