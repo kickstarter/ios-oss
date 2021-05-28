@@ -155,7 +155,7 @@ public final class FacebookConfirmationViewModel: FacebookConfirmationViewModelT
     self.showLogin = self.loginButtonPressedProperty.signal
 
     self.notifyDelegateOpenHelpType = self.tappedUrlProperty.signal.skipNil().map { url -> HelpType? in
-      return HelpType.allCases.first(where: {
+      HelpType.allCases.first(where: {
         url.absoluteString == $0.url(
           withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
         )?.absoluteString
