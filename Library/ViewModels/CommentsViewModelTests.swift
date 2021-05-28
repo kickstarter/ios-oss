@@ -8,7 +8,7 @@ import XCTest
 
 internal final class CommentsViewModelTests: TestCase {
   internal let vm: CommentsViewModelType = CommentsViewModel()
-  internal let commentsAreLoading = TestObserver<Bool, Never>()
+  internal let isCommentsLoading = TestObserver<Bool, Never>()
   internal let hasComments = TestObserver<Bool, Never>()
 
   override func setUp() {
@@ -16,7 +16,7 @@ internal final class CommentsViewModelTests: TestCase {
 
     self.vm.outputs.dataSource.map { comments, _ in !comments.isEmpty }
       .observe(self.hasComments.observer)
-    self.vm.outputs.commentsAreLoading.observe(self.commentsAreLoading.observer)
+    self.vm.outputs.isCommentsLoading.observe(self.isCommentsLoading.observer)
   }
 
   func testLoggedOut_ViewingComments_CanViewComments() {
@@ -93,23 +93,23 @@ internal final class CommentsViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: Project.template, update: nil)
       self.vm.inputs.viewDidLoad()
 
-      self.commentsAreLoading.assertValues([true])
+      self.isCommentsLoading.assertValues([true])
 
       self.scheduler.advance()
 
       self.hasComments.assertValues([true], "A set of comments is emitted.")
-      self.commentsAreLoading.assertValues([true, false])
+      self.isCommentsLoading.assertValues([true, false])
 
       withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(.multipleCommentTemplate))) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
 
         self.hasComments.assertValues([true], "No new comments are emitted.")
-        self.commentsAreLoading.assertValues([true, false, true])
+        self.isCommentsLoading.assertValues([true, false, true])
 
         self.scheduler.advance()
 
         self.hasComments.assertValues([true, true], "Another set of comments are emitted.")
-        self.commentsAreLoading.assertValues([true, false, true, false])
+        self.isCommentsLoading.assertValues([true, false, true, false])
       }
     }
   }
@@ -119,23 +119,23 @@ internal final class CommentsViewModelTests: TestCase {
       self.vm.inputs.configureWith(project: nil, update: .template)
       self.vm.inputs.viewDidLoad()
 
-      self.commentsAreLoading.assertValues([true])
+      self.isCommentsLoading.assertValues([true])
 
       self.scheduler.advance()
 
       self.hasComments.assertValues([true], "A set of comments is emitted.")
-      self.commentsAreLoading.assertValues([true, false])
+      self.isCommentsLoading.assertValues([true, false])
 
       withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(.multipleCommentTemplate))) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
 
         self.hasComments.assertValues([true], "No new comments are emitted.")
-        self.commentsAreLoading.assertValues([true, false, true])
+        self.isCommentsLoading.assertValues([true, false, true])
 
         self.scheduler.advance()
 
         self.hasComments.assertValues([true, true], "Another set of comments are emitted.")
-        self.commentsAreLoading.assertValues([true, false, true, false])
+        self.isCommentsLoading.assertValues([true, false, true, false])
       }
     }
   }
@@ -151,12 +151,12 @@ internal final class CommentsViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
-      self.commentsAreLoading.assertValues([true])
+      self.isCommentsLoading.assertValues([true])
 
       self.scheduler.advance()
 
       self.hasComments.assertValues([true], "A set of comments is emitted.")
-      self.commentsAreLoading.assertValues([true, false])
+      self.isCommentsLoading.assertValues([true, false])
     }
   }
 
@@ -168,12 +168,12 @@ internal final class CommentsViewModelTests: TestCase {
 
       self.vm.inputs.viewDidLoad()
 
-      self.commentsAreLoading.assertDidNotEmitValue("Nothing emits when no project or update is provided.")
+      self.isCommentsLoading.assertDidNotEmitValue("Nothing emits when no project or update is provided.")
 
       self.scheduler.advance()
 
       self.hasComments.assertDidNotEmitValue("Nothing emits when no project or update is provided.")
-      self.commentsAreLoading.assertDidNotEmitValue("Nothing emits when no project or update is provided.")
+      self.isCommentsLoading.assertDidNotEmitValue("Nothing emits when no project or update is provided.")
     }
   }
 

@@ -26,7 +26,7 @@ public protocol CommentsViewModelOutputs {
   var avatarURL: Signal<URL?, Never> { get }
 
   /// Emits a boolean that determines if comments are currently loading.
-  var commentsAreLoading: Signal<Bool, Never> { get }
+  var isCommentsLoading: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if the comment input area is visible.
   var inputAreaVisible: Signal<Bool, Never> { get }
@@ -104,7 +104,7 @@ public final class CommentsViewModel: CommentsViewModelType,
     let commentsAndProject = Signal.combineLatest(comments, initialProject)
 
     self.dataSource = commentsAndProject
-    self.commentsAreLoading = isLoading
+    self.isCommentsLoading = isLoading
 
     // FIXME: We need to dynamically supply the IDs when the UI is built.
     // The IDs here correspond to the following project: `THE GREAT GATSBY: Limited Edition Letterpress Print`.
@@ -151,7 +151,7 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public let commentsAreLoading: Signal<Bool, Never>
+  public let isCommentsLoading: Signal<Bool, Never>
   public var avatarURL: Signal<URL?, Never>
   public var inputAreaVisible: Signal<Bool, Never>
   public let dataSource: Signal<([Comment], Project), Never>

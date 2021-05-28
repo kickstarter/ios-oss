@@ -102,7 +102,7 @@ internal final class CommentsViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.commentsAreLoading
+    self.viewModel.outputs.isCommentsLoading
       .observeForUI()
       .observeValues { [weak self] in
         $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
