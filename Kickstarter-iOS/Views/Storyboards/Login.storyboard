@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -170,13 +170,16 @@
                                                             </button>
                                                         </subviews>
                                                     </stackView>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="9S8-OL-QoV">
+                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ehO-aY-w7p">
                                                         <rect key="frame" x="0.0" y="727.5" width="360" height="150"/>
+                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="a7j-yx-6DV"/>
+                                                            <constraint firstAttribute="height" constant="150" id="xuj-wD-hFl"/>
                                                         </constraints>
-                                                        <state key="normal" title="Button"/>
-                                                    </button>
+                                                        <color key="textColor" systemColor="labelColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    </textView>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
@@ -211,7 +214,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="400" height="600"/>
                     <connections>
-                        <outlet property="disclaimerButton" destination="9S8-OL-QoV" id="W1D-aB-Gug"/>
+                        <outlet property="disclaimerTextView" destination="ehO-aY-w7p" id="hSp-cd-dfg"/>
                         <outlet property="emailTextField" destination="GFK-DU-V4K" id="HlQ-zL-u8b"/>
                         <outlet property="formBackgroundView" destination="694-m2-31k" id="eSR-OX-NgE"/>
                         <outlet property="nameTextField" destination="XVh-38-OnS" id="Twf-sT-ypZ"/>
@@ -656,6 +659,9 @@
     <resources>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
     </resources>
 </document>

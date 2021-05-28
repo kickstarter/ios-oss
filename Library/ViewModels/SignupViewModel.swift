@@ -28,6 +28,9 @@ public protocol SignupViewModelInputs {
   /// Call when the user taps signup.
   func signupButtonPressed()
 
+  /// Call when link tapped on disclaimer textView
+  func tapped(_ url: URL)
+
   /// Call when the view did load.
   func viewDidLoad()
 
@@ -45,14 +48,17 @@ public protocol SignupViewModelOutputs {
   /// Emits an access token envelope that can be used to update the environment.
   var logIntoEnvironment: Signal<AccessTokenEnvelope, Never> { get }
 
+  /// Sets whether the name text field is the first responder.
+  var nameTextFieldBecomeFirstResponder: Signal<(), Never> { get }
+
+  /// Emits when a help link from a disclaimer should be opened.
+  var notifyDelegateOpenHelpType: Signal<HelpType, Never> { get }
+
   /// Sets whether the password text field is the first responder.
   var passwordTextFieldBecomeFirstResponder: Signal<(), Never> { get }
 
   /// Emits when a notification should be posted.
   var postNotification: Signal<Notification, Never> { get }
-
-  /// Sets whether the name text field is the first responder.
-  var nameTextFieldBecomeFirstResponder: Signal<(), Never> { get }
 
   /// Emits the value for the weekly newsletter.
   var setWeeklyNewsletterState: Signal<Bool, Never> { get }
@@ -132,6 +138,18 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     self.postNotification = self.environmentLoggedInProperty.signal
       .mapConst(Notification(name: .ksr_sessionStarted))
 
+    self.notifyDelegateOpenHelpType = self.tappedUrlProperty.signal.skipNil().map { url -> HelpType? in
+      let helpType = HelpType.allCases.filter { helpType in
+        url.absoluteString == helpType.url(
+          withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
+        )?.absoluteString
+      }
+      .first
+
+      return helpType
+    }
+    .skipNil()
+
     // Tracking
 
     isSubscribed.takeWhen(attemptSignup)
@@ -183,6 +201,11 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
     self.signupButtonPressedProperty.value = ()
   }
 
+  private let tappedUrlProperty = MutableProperty<(URL)?>(nil)
+  public func tapped(_ url: URL) {
+    self.tappedUrlProperty.value = url
+  }
+
   fileprivate let viewDidLoadProperty = MutableProperty(())
   public func viewDidLoad() {
     self.viewDidLoadProperty.value = ()
@@ -197,6 +220,7 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
   public let isSignupButtonEnabled: Signal<Bool, Never>
   public let logIntoEnvironment: Signal<AccessTokenEnvelope, Never>
   public let nameTextFieldBecomeFirstResponder: Signal<(), Never>
+  public let notifyDelegateOpenHelpType: Signal<HelpType, Never>
   public let passwordTextFieldBecomeFirstResponder: Signal<(), Never>
   public let postNotification: Signal<Notification, Never>
   public let setWeeklyNewsletterState: Signal<Bool, Never>

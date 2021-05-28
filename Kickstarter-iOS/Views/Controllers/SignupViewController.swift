@@ -9,7 +9,7 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
   fileprivate let helpViewModel = HelpViewModel()
 
   @IBOutlet fileprivate var scrollView: UIScrollView!
-  @IBOutlet fileprivate var disclaimerButton: UIButton!
+  @IBOutlet fileprivate var disclaimerTextView: UITextView!
   @IBOutlet fileprivate var emailTextField: UITextField!
   @IBOutlet fileprivate var formBackgroundView: UIView!
   @IBOutlet fileprivate var nameTextField: UITextField!
@@ -65,14 +65,13 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       for: [.editingChanged]
     )
 
-    self.disclaimerButton.addTarget(
-      self, action: #selector(self.disclaimerButtonPressed), for: .touchUpInside
-    )
     let newsletterLabelTapGesture = UITapGestureRecognizer(
       target: self,
       action: #selector(self.newsletterLabelTapped)
     )
     self.newsletterLabel.addGestureRecognizer(newsletterLabelTapGesture)
+
+    self.disclaimerTextView.delegate = self
 
     self.viewModel.inputs.viewDidLoad()
   }
@@ -83,8 +82,8 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     _ = self
       |> signupControllerStyle
 
-    _ = self.disclaimerButton
-      |> disclaimerButtonStyle
+    _ = self.disclaimerTextView
+      |> disclaimerTextViewStyle
 
     _ = self.nameTextField
       |> UITextField.lens.returnKeyType .~ .next
@@ -137,12 +136,6 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
         )
       }
 
-    self.helpViewModel.outputs.showHelpSheet
-      .observeForControllerAction()
-      .observeValues { [weak self] in
-        self?.showHelpSheet(helpTypes: $0)
-      }
-
     self.helpViewModel.outputs.showMailCompose
       .observeForControllerAction()
       .observeValues { [weak self] in
@@ -156,6 +149,11 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
       .observeForControllerAction()
       .observeValues { [weak self] alert in
         self?.present(alert, animated: true, completion: nil)
+      }
+    self.viewModel.outputs.notifyDelegateOpenHelpType
+      .observeForUI()
+      .observeValues { [weak self] helpType in
+        self?.goToHelpType(helpType)
       }
 
     self.helpViewModel.outputs.showWebHelp
@@ -200,10 +198,6 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     self.viewModel.inputs.signupButtonPressed()
   }
 
-  @objc fileprivate func disclaimerButtonPressed() {
-    self.helpViewModel.inputs.showHelpSheetButtonTapped()
-  }
-
   @objc fileprivate func newsletterLabelTapped() {
     self.helpViewModel.inputs.showHelpSheetButtonTapped()
   }
@@ -227,27 +221,24 @@ internal final class SignupViewController: UIViewController, MFMailComposeViewCo
     let vc = HelpWebViewController.configuredWith(helpType: helpType)
     self.navigationController?.pushViewController(vc, animated: true)
   }
+}
 
-  fileprivate func showHelpSheet(helpTypes: [HelpType]) {
-    let helpSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+extension SignupViewController: UITextViewDelegate {
+  func textView(
+    _: UITextView,
+    shouldInteractWith _: NSTextAttachment,
+    in _: NSRange,
+    interaction _: UITextItemInteraction
+  ) -> Bool {
+    return false
+  }
 
-    helpTypes.forEach { helpType in
-      helpSheet.addAction(
-        UIAlertAction(title: helpType.title, style: .default) { [weak helpVM = self.helpViewModel] _ in
-          helpVM?.inputs.helpTypeButtonTapped(helpType)
-        }
-      )
-    }
-
-    helpSheet.addAction(UIAlertAction(
-      title: Strings.login_tout_help_sheet_cancel(),
-      style: .cancel,
-      handler: nil
-    ))
-
-    // iPad provision
-    helpSheet.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
-
-    self.present(helpSheet, animated: true, completion: nil)
+  func textView(
+    _: UITextView, shouldInteractWith url: URL,
+    in _: NSRange,
+    interaction _: UITextItemInteraction
+  ) -> Bool {
+    self.viewModel.inputs.tapped(url)
+    return false
   }
 }
