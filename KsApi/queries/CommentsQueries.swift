@@ -1,7 +1,7 @@
 import Foundation
 import Prelude
 
-public func comments(
+public func commentsQuery(
   withProjectSlug slug: String,
   first: Int = Query.defaultPaginationCount,
   after cursor: String? = nil
@@ -11,6 +11,7 @@ public func comments(
   return Query.project(
     slug: slug,
     .id +| [
+      .slug,
       .comments(
         args,
         .edges(
