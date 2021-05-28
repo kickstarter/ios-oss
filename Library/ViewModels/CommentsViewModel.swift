@@ -8,7 +8,10 @@ public protocol CommentsViewModelInputs {
   /// the number of API requests made, but it will be assumed we are viewing the comments for the update.
   func configureWith(project: Project?, update: Update?)
 
-  /// Call when the User is posting a comment or reply
+  /// Call with a `Comment` when it is selected.
+  func didSelectComment(_ comment: Comment)
+
+  /// Call when the User is posting a comment or reply.
   func postCommentButtonTapped()
 
   ///  Call when pull-to-refresh is invoked.
@@ -25,6 +28,9 @@ public protocol CommentsViewModelOutputs {
   /// Emits a CommentComposerViewData object that determines the avatarURL and whether the user is a backer.
   var configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never> { get }
 
+  /// Emits the selected `Comment` and `Project` to navigate to its replies.
+  var goToCommentReplies: Signal<(Comment, Project), Never> { get }
+  
   /// Emits a boolean that determines if the comment input area is visible.
   var isCommentComposerHidden: Signal<Bool, Never> { get }
 
@@ -136,6 +142,17 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     self.isCommentComposerHidden = currentUser.signal
       .map { user in user.isNil }
+
+    self.goToCommentReplies = self.didSelectCommentProperty.signal.skipNil()
+      .filter { comment in
+        [comment.replyCount > 0, comment.status == .success].allSatisfy(isTrue)
+      }
+      .withLatestFrom(initialProject)
+  }
+
+  private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
+  public func didSelectComment(_ comment: Comment) {
+    self.didSelectCommentProperty.value = comment
   }
 
   fileprivate let postCommentButtonTappedProperty = MutableProperty(())
@@ -164,6 +181,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   }
 
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
+  public let goToCommentReplies: Signal<(Comment, Project), Never>
   public let isCommentComposerHidden: Signal<Bool, Never>
   public let isCommentsLoading: Signal<Bool, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>

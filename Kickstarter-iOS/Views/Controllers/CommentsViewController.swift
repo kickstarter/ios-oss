@@ -116,6 +116,13 @@ internal final class CommentsViewController: UITableViewController {
       .observeValues { [weak self] avatarUrl, isBacking in
         self?.commentComposer.configure(with: (avatarUrl, isBacking))
       }
+    
+    self.viewModel.outputs.goToCommentReplies
+      .observeForControllerAction()
+      .observeValues { [weak self] _, _ in
+        let vc = CommentRepliesViewController.instantiate()
+        self?.navigationController?.pushViewController(vc, animated: true)
+      }
 
     self.viewModel.outputs.isCommentsLoading
       .observeForUI()
@@ -145,8 +152,20 @@ extension CommentsViewController {
   }
 }
 
+// MARK: - CommentComposerViewDelegate
+
 extension CommentsViewController: CommentComposerViewDelegate {
   func commentComposerView(_: CommentComposerView, didSubmitText _: String) {
     // TODO: Capture submitted user comment in this delegate method.
+  }
+}
+
+// MARK: - UITableViewDelegate
+
+extension CommentsViewController {
+  override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let comment = self.dataSource.comment(at: indexPath) else { return }
+
+    self.viewModel.inputs.didSelectComment(comment)
   }
 }
