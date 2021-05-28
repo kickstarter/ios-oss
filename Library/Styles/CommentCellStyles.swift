@@ -68,4 +68,6 @@ public let authorBadgeLabelStyle: PaddingLabelStyle = { label in
 public let resetTextStyle: PaddingLabelStyle = { label in
   label
     |> \.text .~ nil
+    |> \.backgroundColor .~ .clear
+    |> \.insets .~ UIEdgeInsets(all: Styles.grid(1))
 }

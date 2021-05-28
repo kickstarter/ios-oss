@@ -106,7 +106,7 @@ internal final class CommentCellHeaderStackView: UIStackView {
       stackViewAlignment = .top
     case .you:
       style = youAuthorBadgeStyle
-    case .backer:
+    default:
       style = resetTextStyle
     }
 
