@@ -13,12 +13,13 @@ private enum Layout {
 
 internal final class CommentsViewController: UITableViewController {
   // MARK: - Properties
+
   private lazy var commentComposer: CommentComposerView = {
     let frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: Layout.Composer.originalHeight)
     let view = CommentComposerView(frame: frame)
     return view
   }()
-  
+
   private lazy var refreshIndicator: UIRefreshControl = {
     let refreshControl = UIRefreshControl()
 

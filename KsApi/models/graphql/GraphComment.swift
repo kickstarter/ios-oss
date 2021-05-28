@@ -68,7 +68,6 @@ extension GraphComment {
       .decode(Int.self, forKey: .totalCount)
     self.deleted = try values.decode(Bool.self, forKey: .deleted)
     self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
-
     self.authorBadges = try values.decode([GraphComment.GraphBadge].self, forKey: .authorBadges)
   }
 }
