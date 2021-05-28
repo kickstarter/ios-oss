@@ -58,7 +58,7 @@ internal final class CommentsViewModelTests: TestCase {
     let envelope = CommentsEnvelope.singleCommentTemplate
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ false
-    
+
     withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(.singleCommentTemplate))) {
       AppEnvironment.login(accessToken)
 
@@ -67,10 +67,10 @@ internal final class CommentsViewModelTests: TestCase {
         update: nil
       )
       self.vm.inputs.viewDidLoad()
-      
+
       self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
       self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
-      
+
       self.scheduler.advance()
 
       self.loadCommentsAndProjectIntoDataSourceComments.assertValues([envelope.comments])
@@ -87,7 +87,7 @@ internal final class CommentsViewModelTests: TestCase {
     let envelope = CommentsEnvelope.singleCommentTemplate
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ true
-    
+
     withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
       AppEnvironment.login(accessToken)
 
@@ -96,13 +96,14 @@ internal final class CommentsViewModelTests: TestCase {
         update: nil
       )
       self.vm.inputs.viewDidLoad()
-      
+
       self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
       self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
-      
+
       self.scheduler.advance()
 
-      self.loadCommentsAndProjectIntoDataSourceComments.assertValues([envelope.comments], "New comments are emitted")
+      self.loadCommentsAndProjectIntoDataSourceComments
+        .assertValues([envelope.comments], "New comments are emitted")
       self.loadCommentsAndProjectIntoDataSourceProject.assertValues([project], "New project is emitted")
     }
   }
@@ -110,34 +111,39 @@ internal final class CommentsViewModelTests: TestCase {
   func testRefreshing_WhenNewCommentAdded_CommentsAreUpdatedInDataSource() {
     self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
     self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
-    
+
     let project = Project.template
     let envelope = CommentsEnvelope.singleCommentTemplate
-    
+
     withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
       self.vm.inputs.configureWith(project: project, update: nil)
       self.vm.inputs.viewDidLoad()
-      
+
       self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
       self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
-      
+
       self.scheduler.advance()
 
-      self.loadCommentsAndProjectIntoDataSourceComments.assertValues([envelope.comments], "New comments are emitted")
+      self.loadCommentsAndProjectIntoDataSourceComments
+        .assertValues([envelope.comments], "New comments are emitted")
       self.loadCommentsAndProjectIntoDataSourceProject.assertValues([project], "New project is emitted")
 
       let updatedEnvelope = CommentsEnvelope.multipleCommentTemplate
-      
+
       withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(updatedEnvelope))) {
         self.vm.inputs.refresh()
 
-        self.loadCommentsAndProjectIntoDataSourceComments.assertValues([envelope.comments], "No new comments are emitted")
-        self.loadCommentsAndProjectIntoDataSourceProject.assertValues([project], "No new projects are emitted")
+        self.loadCommentsAndProjectIntoDataSourceComments
+          .assertValues([envelope.comments], "No new comments are emitted")
+        self.loadCommentsAndProjectIntoDataSourceProject
+          .assertValues([project], "No new projects are emitted")
 
         self.scheduler.advance()
 
-        self.loadCommentsAndProjectIntoDataSourceComments.assertValues([envelope.comments, updatedEnvelope.comments], "New comments are emitted")
-        self.loadCommentsAndProjectIntoDataSourceProject.assertValues([project, project], "Same project is emitted again")
+        self.loadCommentsAndProjectIntoDataSourceComments
+          .assertValues([envelope.comments, updatedEnvelope.comments], "New comments are emitted")
+        self.loadCommentsAndProjectIntoDataSourceProject
+          .assertValues([project, project], "Same project is emitted again")
       }
     }
   }
@@ -242,29 +248,30 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-
   func testComments_WhenOnlyUpdate_CommentsAreUpdatedInDataSource() {
     self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
     self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
 
     let envelope = CommentsEnvelope.singleCommentTemplate
     let update = Update.template
-    
+
     withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
       self.vm.inputs.configureWith(
         project: nil,
         update: update
       )
       self.vm.inputs.viewDidLoad()
-      
+
       self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
       self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
       self.isCommentsLoading.assertValues([true], "loading begins")
-      
+
       self.scheduler.advance()
 
-      self.loadCommentsAndProjectIntoDataSourceComments.assertValues([envelope.comments], "New comments are emitted")
-      self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template], "Same project is emitted again")
+      self.loadCommentsAndProjectIntoDataSourceComments
+        .assertValues([envelope.comments], "New comments are emitted")
+      self.loadCommentsAndProjectIntoDataSourceProject
+        .assertValues([.template], "Same project is emitted again")
       self.isCommentsLoading.assertValues([true, false], "loading ends")
     }
   }
@@ -274,18 +281,18 @@ internal final class CommentsViewModelTests: TestCase {
     self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
 
     let envelope = CommentsEnvelope.singleCommentTemplate
-    
+
     withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
       self.vm.inputs.configureWith(
         project: nil,
         update: nil
       )
       self.vm.inputs.viewDidLoad()
-      
+
       self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
       self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
       self.isCommentsLoading.assertDidNotEmitValue()
-      
+
       self.scheduler.advance()
 
       self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
