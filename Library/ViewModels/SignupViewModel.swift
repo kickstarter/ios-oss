@@ -139,14 +139,11 @@ public final class SignupViewModel: SignupViewModelType, SignupViewModelInputs, 
       .mapConst(Notification(name: .ksr_sessionStarted))
 
     self.notifyDelegateOpenHelpType = self.tappedUrlProperty.signal.skipNil().map { url -> HelpType? in
-      let helpType = HelpType.allCases.filter { helpType in
-        url.absoluteString == helpType.url(
+      return HelpType.allCases.first(where: {
+        url.absoluteString == $0.url(
           withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
         )?.absoluteString
-      }
-      .first
-
-      return helpType
+      })
     }
     .skipNil()
 
