@@ -36,4 +36,15 @@ class CommentsDataSourceTests: XCTestCase {
     XCTAssertEqual(Comment.Status.failed, Comment.templates[rowIndex].status)
     XCTAssertEqual("CommentPostFailedCell", self.dataSource.reusableId(item: rowIndex, section: self.section))
   }
+
+  func testCommentAtIndexPath() {
+    super.setUp()
+
+    self.dataSource.load(comments: Comment.templates, project: .template)
+
+    XCTAssertEqual(
+      self.dataSource.comment(at: IndexPath(row: 1, section: 0)),
+      Comment.templates[1]
+    )
+  }
 }

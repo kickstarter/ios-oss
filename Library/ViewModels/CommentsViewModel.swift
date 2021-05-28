@@ -8,7 +8,10 @@ public protocol CommentsViewModelInputs {
   /// the number of API requests made, but it will be assumed we are viewing the comments for the update.
   func configureWith(project: Project?, update: Update?)
 
-  /// Call when the User is posting a comment or reply
+  /// Call with a `Comment` when it is selected.
+  func didSelectComment(_ comment: Comment)
+
+  /// Call when the User is posting a comment or reply.
   func postCommentButtonTapped()
 
   ///  Call when pull-to-refresh is invoked.
@@ -24,6 +27,9 @@ public protocol CommentsViewModelInputs {
 public protocol CommentsViewModelOutputs {
   /// Emits a URL for the avatar image view.
   var avatarURL: Signal<URL?, Never> { get }
+
+  /// Emits the selected `Comment` and `Project` to navigate to its replies.
+  var goToCommentReplies: Signal<(Comment, Project), Never> { get }
 
   /// Emits a boolean that determines if comments are currently loading.
   var isCommentsLoading: Signal<Bool, Never> { get }
@@ -124,6 +130,17 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.avatarURL = currentUser.map { URL(string: $0.avatar.medium) }
     // TODO: https://github.com/kickstarter/ios-oss/pull/1483 NT-1796
     self.inputAreaVisible = self.viewDidLoadProperty.signal.mapConst(true)
+
+    self.goToCommentReplies = self.didSelectCommentProperty.signal.skipNil()
+      .filter { comment in
+        [comment.replyCount > 0, comment.status == .success].allSatisfy(isTrue)
+      }
+      .withLatestFrom(initialProject)
+  }
+
+  private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
+  public func didSelectComment(_ comment: Comment) {
+    self.didSelectCommentProperty.value = comment
   }
 
   fileprivate let postCommentButtonTappedProperty = MutableProperty(())
@@ -153,6 +170,7 @@ public final class CommentsViewModel: CommentsViewModelType,
 
   public let isCommentsLoading: Signal<Bool, Never>
   public var avatarURL: Signal<URL?, Never>
+  public var goToCommentReplies: Signal<(Comment, Project), Never>
   public var inputAreaVisible: Signal<Bool, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
 
