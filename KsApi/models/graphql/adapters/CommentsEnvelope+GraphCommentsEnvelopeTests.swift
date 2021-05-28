@@ -12,5 +12,6 @@ final class CommentsEnvelope_GraphCommentsEnvelopeTests: XCTestCase {
     XCTAssertEqual(envelope.hasNextPage, true)
     XCTAssertEqual(envelope.cursor, "WzMwNDkwNDY0XQ==")
     XCTAssertEqual(envelope.totalCount, 100)
+    XCTAssertEqual(envelope.slug, "jadelabo-j1-beautiful-powerful-and-smart-idex-3d-printer")
   }
 }

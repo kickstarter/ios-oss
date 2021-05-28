@@ -106,13 +106,14 @@ internal final class CommentCellHeaderStackView: UIStackView {
       stackViewAlignment = .top
     case .you:
       style = youAuthorBadgeStyle
-    case .backer:
-      break
+    default:
+      style = resetTextStyle
     }
 
     _ = self.authorBadgeLabel
       |> authorBadgeLabelStyle
       |> style
+
     _ = self.authorNameBadgeLabelsStackView
       |> \.alignment .~ stackViewAlignment
   }
@@ -138,13 +139,4 @@ internal final class CommentCellHeaderStackView: UIStackView {
     self.authorNameLabel.rac.text = self.viewModel.authorName
     self.postTimeLabel.rac.text = self.viewModel.postTime
   }
-}
-
-private let authorBadgeLabelStyle: PaddingLabelStyle = { label in
-  label
-    |> \.numberOfLines .~ 1
-    |> \.textColor .~ .ksr_create_500
-    |> \.textAlignment .~ .left
-    |> \.font .~ UIFont.ksr_callout().bolded
-    |> \.adjustsFontForContentSizeCategory .~ true
 }
