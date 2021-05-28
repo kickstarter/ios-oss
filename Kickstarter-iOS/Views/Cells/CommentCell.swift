@@ -14,9 +14,9 @@ final class CommentCell: UITableViewCell, ValueCell {
 
   private lazy var flagButton = { UIButton(frame: .zero) }()
   private lazy var replyButton = { UIButton(frame: .zero) }()
-  private lazy var viewRepliesStackView: UIStackView = { UIStackView(frame: .zero) }()
-  private lazy var viewRepliesLabel: UILabel = { UILabel(frame: .zero) }()
   private lazy var viewRepliesIconImageView: UIImageView = { UIImageView(frame: .zero) }()
+  private lazy var viewRepliesLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var viewRepliesStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   private lazy var rootStackView = {
     UIStackView(frame: .zero)

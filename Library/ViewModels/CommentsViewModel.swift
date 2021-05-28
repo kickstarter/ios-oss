@@ -4,11 +4,11 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol CommentsViewModelInputs {
-  /// Call with a `Comment` when it is selected.
-  func didSelectComment(_ comment: Comment)
-
   /// Call with a `Project` after instantiating the view controller.
   func configureWith(project: Project)
+
+  /// Call with a `Comment` when it is selected.
+  func didSelectComment(_ comment: Comment)
 
   /// Call when the User is posting a comment or reply.
   func postCommentButtonTapped()
@@ -92,11 +92,6 @@ public final class CommentsViewModel: CommentsViewModelType,
       .withLatestFrom(project)
   }
 
-  private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
-  public func didSelectComment(_ comment: Comment) {
-    self.didSelectCommentProperty.value = comment
-  }
-
   fileprivate let projectProperty = MutableProperty<Project?>(nil)
   public func configureWith(project: Project) {
     self.projectProperty.value = project
@@ -105,6 +100,11 @@ public final class CommentsViewModel: CommentsViewModelType,
       Comment.templates,
       project
     )
+  }
+
+  private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
+  public func didSelectComment(_ comment: Comment) {
+    self.didSelectCommentProperty.value = comment
   }
 
   fileprivate let postCommentButtonTappedProperty = MutableProperty(())
