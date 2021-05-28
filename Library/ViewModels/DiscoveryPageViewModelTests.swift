@@ -1492,7 +1492,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       let segmentTrackingClientProperties = self.segmentTrackingClient.properties.last
 
-      XCTAssertEqual("project", segmentTrackingClientProperties?["context_type"] as? String)
       XCTAssertEqual("discover", segmentTrackingClientProperties?["context_page"] as? String)
       XCTAssertEqual("discover_advanced", segmentTrackingClientProperties?["context_location"] as? String)
     }

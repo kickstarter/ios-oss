@@ -148,10 +148,6 @@ internal final class BackerDashboardProjectsViewModelTests: TestCase {
         self.segmentTrackingClient.properties(forKey: "context_page", as: String.self)
       )
       XCTAssertEqual(
-        ["project"],
-        self.segmentTrackingClient.properties(forKey: "context_type", as: String.self)
-      )
-      XCTAssertEqual(
         ["backed"],
         self.segmentTrackingClient.properties(forKey: "context_section", as: String.self)
       )

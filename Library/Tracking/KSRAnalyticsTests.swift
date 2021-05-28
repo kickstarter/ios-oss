@@ -795,13 +795,11 @@ final class KSRAnalyticsTests: TestCase {
 
     ksrAnalytics.trackProjectCardClicked(
       page: .activities,
-      project: .template,
-      typeContext: .project
+      project: .template
     )
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
     XCTAssertEqual("project", segmentClient.properties.last?["context_cta"] as? String)
-    XCTAssertEqual("project", segmentClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("activity_feed", segmentClient.properties.last?["context_page"] as? String)
 
     self.assertProjectProperties(segmentClient.properties.last)
@@ -814,14 +812,12 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackProjectCardClicked(
       page: .profile,
       project: .template,
-      typeContext: .project,
       location: .accountMenu,
       section: .backed
     )
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
     XCTAssertEqual("project", segmentClient.properties.last?["context_cta"] as? String)
-    XCTAssertEqual("project", segmentClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("profile", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("account_menu", segmentClient.properties.last?["context_location"] as? String)
     XCTAssertEqual("backed", segmentClient.properties.last?["context_section"] as? String)
@@ -836,14 +832,12 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackProjectCardClicked(
       page: .profile,
       project: .template,
-      typeContext: .project,
       location: .accountMenu,
       section: .watched
     )
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
     XCTAssertEqual("project", segmentClient.properties.last?["context_cta"] as? String)
-    XCTAssertEqual("project", segmentClient.properties.last?["context_type"] as? String)
     XCTAssertEqual("profile", segmentClient.properties.last?["context_page"] as? String)
     XCTAssertEqual("account_menu", segmentClient.properties.last?["context_location"] as? String)
     XCTAssertEqual("watched", segmentClient.properties.last?["context_section"] as? String)

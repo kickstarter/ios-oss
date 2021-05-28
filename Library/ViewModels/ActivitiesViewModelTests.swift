@@ -328,10 +328,6 @@ final class ActivitiesViewModelTests: TestCase {
       ["activity_feed"],
       self.segmentTrackingClient.properties(forKey: "context_page", as: String.self)
     )
-    XCTAssertEqual(
-      ["project"],
-      self.segmentTrackingClient.properties(forKey: "context_type", as: String.self)
-    )
   }
 
   func testGoToFriends() {
