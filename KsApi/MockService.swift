@@ -651,7 +651,12 @@
     }
 
     func fetchComments(query _: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-      return producer(for: self.fetchCommentsEnvelopeResult)
+      if let error = fetchCommentsEnvelopeResult?.error {
+        return SignalProducer(error: error)
+      } else if let comments = fetchCommentsEnvelopeResult {
+        return SignalProducer(value: comments.value ?? .singleCommentTemplate)
+      }
+      return .empty
     }
 
     internal func fetchConfig() -> SignalProducer<Config, ErrorEnvelope> {
@@ -1433,6 +1438,7 @@
             fetchGraphCategoriesResponse: $1.fetchGraphCategoriesResponse,
             fetchCommentsResponse: $1.fetchCommentsResponse,
             fetchCommentsError: $1.fetchCommentsError,
+            fetchCommentsEnvelopeResult: $1.fetchCommentsEnvelopeResult,
             fetchConfigResponse: $1.fetchConfigResponse,
             fetchDiscoveryResponse: $1.fetchDiscoveryResponse,
             fetchDiscoveryError: $1.fetchDiscoveryError,
