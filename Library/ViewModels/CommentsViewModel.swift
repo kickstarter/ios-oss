@@ -72,7 +72,8 @@ public final class CommentsViewModel: CommentsViewModelType,
           return (nil, isBacker)
         }
 
-        return (URL(string: user.avatar.medium), isBacker)
+        let url = URL(string: user.avatar.medium)
+        return (url, isBacker)
       }
 
     // FIXME: This will be updated/removed when we fetch comments from API
