@@ -342,8 +342,7 @@ public final class ActivitiesViewModel: ActivitiesViewModelType, ActitiviesViewM
     self.goToProject.signal.map(first).observeValues { project in
       AppEnvironment.current.ksrAnalytics.trackProjectCardClicked(
         page: .activities,
-        project: project,
-        typeContext: .project
+        project: project
       )
     }
   }
