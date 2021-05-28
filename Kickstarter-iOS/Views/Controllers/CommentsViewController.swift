@@ -49,6 +49,7 @@ internal final class CommentsViewController: UITableViewController {
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
+    self.navigationItem.title = Strings.project_menu_buttons_comments()
     self.commentComposer.configure(with: (nil, true))
     self.commentComposer.delegate = self
     self.tableView.registerCellClass(CommentCell.self)

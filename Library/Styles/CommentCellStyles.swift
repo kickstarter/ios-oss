@@ -67,5 +67,5 @@ public let authorBadgeLabelStyle: PaddingLabelStyle = { label in
 
 public let resetTextStyle: PaddingLabelStyle = { label in
   label
-    |> \.text .~ String()
+    |> \.text .~ nil
 }

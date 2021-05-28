@@ -87,7 +87,7 @@ extension Comment {
 }
 
 extension Comment {
-  public static func template(for badge: Author.AuthorBadge) -> Comment {
+  public static func template(for badge: AuthorBadge) -> Comment {
     switch badge {
     case .creator:
       return .template

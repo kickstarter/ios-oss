@@ -2,7 +2,7 @@ import Foundation
 
 public struct Comment {
   public var author: Author
-  public var authorBadges: [Author.AuthorBadge]
+  public var authorBadges: [AuthorBadge]
   public var body: String
   public let createdAt: TimeInterval
   public var id: String
@@ -11,7 +11,7 @@ public struct Comment {
   public var replyCount: Int
 
   /// return the first `authorBadges`, if nil  return `.backer`
-  public var authorBadge: Author.AuthorBadge {
+  public var authorBadge: AuthorBadge {
     return self.authorBadges.first ?? .backer
   }
 
@@ -25,13 +25,13 @@ public struct Comment {
     public var imageUrl: String
     public var isCreator: Bool
     public var name: String
-
-    public enum AuthorBadge: String, Decodable {
-      case creator
-      case backer
-      case superbacker
-      case you
-    }
+  }
+  
+  public enum AuthorBadge: String, Decodable {
+    case creator
+    case backer
+    case superbacker
+    case you
   }
 
   public enum Status {
@@ -62,7 +62,7 @@ extension Comment: Decodable {
     self.id = try values.decode(String.self, forKey: .id)
     self.isDeleted = try values.decode(Bool.self, forKey: .isDeleted)
     self.replyCount = try values.decode(Int.self, forKey: .replyCount)
-    self.authorBadges = try values.decode([Author.AuthorBadge].self, forKey: .authorBadges)
+    self.authorBadges = try values.decode([AuthorBadge].self, forKey: .authorBadges)
   }
 }
 

@@ -12,7 +12,7 @@ public protocol CommentCellViewModelInputs {
 
 public protocol CommentCellViewModelOutputs {
   /// Emits author's badge for a comment
-  var authorBadge: Signal<Comment.Author.AuthorBadge, Never> { get }
+  var authorBadge: Signal<Comment.AuthorBadge, Never> { get }
 
   /// Emits a url to the comment author's image
   var authorImageURL: Signal<URL, Never> { get }
@@ -91,7 +91,7 @@ public final class CommentCellViewModel:
     self.commentAndProject.value = (comment, project)
   }
 
-  public let authorBadge: Signal<Comment.Author.AuthorBadge, Never>
+  public let authorBadge: Signal<Comment.AuthorBadge, Never>
   public var authorImageURL: Signal<URL, Never>
   public let authorName: Signal<String, Never>
   public let body: Signal<String, Never>

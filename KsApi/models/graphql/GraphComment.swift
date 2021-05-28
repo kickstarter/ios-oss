@@ -3,7 +3,7 @@ import Prelude
 
 struct GraphComment: Decodable {
   var author: GraphAuthor
-  var authorBadges: [GraphAuthor.GraphAuthorBadges]
+  var authorBadges: [GraphBadge]
   var body: String
   var id: String
   var replyCount: Int
@@ -15,12 +15,12 @@ struct GraphComment: Decodable {
     var isCreator: Bool
     var name: String
     var imageUrl: String
-
-    enum GraphAuthorBadges: String {
-      case backer
-      case creator
-      case superbacker
-    }
+  }
+  
+  enum GraphBadge: String, Decodable {
+    case backer
+    case creator
+    case superbacker
   }
 }
 
@@ -69,15 +69,7 @@ extension GraphComment {
     self.deleted = try values.decode(Bool.self, forKey: .deleted)
     self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
 
-    self.authorBadges = []
-
-    let rawAuthorBadges = try values.decode([String].self, forKey: .authorBadges)
-
-    rawAuthorBadges.forEach { badgeText in
-      if let supportedBadge = GraphComment.GraphAuthor.GraphAuthorBadges(rawValue: badgeText) {
-        self.authorBadges.append(supportedBadge)
-      }
-    }
+    self.authorBadges = try values.decode([GraphComment.GraphBadge].self, forKey: .authorBadges)
   }
 }
 
