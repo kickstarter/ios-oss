@@ -8,8 +8,8 @@ import XCTest
 
 internal final class CommentsViewModelTests: TestCase {
   internal let vm: CommentsViewModelType = CommentsViewModel()
-  internal let hasComments = TestObserver<Bool, Never>()
   internal let commentsAreLoading = TestObserver<Bool, Never>()
+  internal let hasComments = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()

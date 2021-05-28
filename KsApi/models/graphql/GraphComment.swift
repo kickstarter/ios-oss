@@ -16,7 +16,7 @@ struct GraphComment: Decodable {
     var name: String
     var imageUrl: String
   }
-  
+
   enum GraphBadge: String, Decodable {
     case backer
     case creator

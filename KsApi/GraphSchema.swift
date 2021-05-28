@@ -144,15 +144,15 @@ public enum Query {
     case author(NonEmptySet<Author>)
     case id
     case body
-    case deleted
     case createdAt
+    case deleted
     case replies(NonEmptySet<CommentReplyCount>)
 
     public enum Author {
       case id
       case name
-      case isCreator
       case imageURL(width: Int)
+      case isCreator
     }
 
     public enum CommentReplyCount: String {

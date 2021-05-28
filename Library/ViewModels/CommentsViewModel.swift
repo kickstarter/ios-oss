@@ -8,11 +8,11 @@ public protocol CommentsViewModelInputs {
   /// the number of API requests made, but it will be assumed we are viewing the comments for the update.
   func configureWith(project: Project?, update: Update?)
 
-  ///  Call when pull-to-refresh is invoked.
-  func refresh()
-
   /// Call when the User is posting a comment or reply
   func postCommentButtonTapped()
+
+  ///  Call when pull-to-refresh is invoked.
+  func refresh()
 
   /// Call when the view loads.
   func viewDidLoad()

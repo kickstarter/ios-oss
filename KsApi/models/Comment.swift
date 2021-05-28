@@ -26,7 +26,7 @@ public struct Comment {
     public var isCreator: Bool
     public var name: String
   }
-  
+
   public enum AuthorBadge: String, Decodable {
     case creator
     case backer
