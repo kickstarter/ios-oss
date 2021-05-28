@@ -116,7 +116,7 @@ internal final class CommentsViewController: UITableViewController {
       .observeValues { [weak self] avatarUrl, isBacking in
         self?.commentComposer.configure(with: (avatarUrl, isBacking))
       }
-    
+
     self.viewModel.outputs.goToCommentReplies
       .observeForControllerAction()
       .observeValues { [weak self] _, _ in

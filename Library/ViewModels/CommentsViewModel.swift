@@ -30,7 +30,7 @@ public protocol CommentsViewModelOutputs {
 
   /// Emits the selected `Comment` and `Project` to navigate to its replies.
   var goToCommentReplies: Signal<(Comment, Project), Never> { get }
-  
+
   /// Emits a boolean that determines if the comment input area is visible.
   var isCommentComposerHidden: Signal<Bool, Never> { get }
 
