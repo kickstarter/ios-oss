@@ -408,6 +408,8 @@
 		8A04FE3D262783A10056F413 /* Segment_Appboy.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8A04FE24262781240056F413 /* Segment_Appboy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A05CB0E23DB82D3002B01EE /* CookieRefTagFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */; };
 		8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A072D39230223B200BA1538 /* UIImage+Color.swift */; };
+		8A07CF052660344E00426B1C /* CommentRepliesViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CEFD2660344200426B1C /* CommentRepliesViewControllerTests.swift */; };
+		8A07CF1226604E8F00426B1C /* CommentRepliesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CEF52660338600426B1C /* CommentRepliesViewController.swift */; };
 		8A08B521249C3352009CF74E /* EasyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A08B520249C3352009CF74E /* EasyButton.swift */; };
 		8A0B1E2124D4B271009E90C0 /* EmptyStateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0B1E2024D4B271009E90C0 /* EmptyStateViewModelTests.swift */; };
 		8A0B1E2324D4C486009E90C0 /* GraphProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0B1E2224D4C486009E90C0 /* GraphProject.swift */; };
@@ -1994,6 +1996,8 @@
 		8A04FE25262781240056F413 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
 		8A05CB0D23DB82D3002B01EE /* CookieRefTagFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieRefTagFunctions.swift; sourceTree = "<group>"; };
 		8A072D39230223B200BA1538 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
+		8A07CEF52660338600426B1C /* CommentRepliesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewController.swift; sourceTree = "<group>"; };
+		8A07CEFD2660344200426B1C /* CommentRepliesViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewControllerTests.swift; sourceTree = "<group>"; };
 		8A08B520249C3352009CF74E /* EasyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyButton.swift; sourceTree = "<group>"; };
 		8A0B1E2024D4B271009E90C0 /* EmptyStateViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateViewModelTests.swift; sourceTree = "<group>"; };
 		8A0B1E2224D4C486009E90C0 /* GraphProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphProject.swift; sourceTree = "<group>"; };
@@ -3537,6 +3541,7 @@
 				94114D47264EEA2D0063E8F6 /* CommentCell.swift */,
 				94114D5A265305200063E8F6 /* CommentPostFailedCell.swift */,
 				94114D5F2653135E0063E8F6 /* CommentRemovedCell.swift */,
+				D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */,
 				59B0E0021D1203970081D2DC /* DashboardActionCell.swift */,
 				59B0DFFC1D11B2E50081D2DC /* DashboardContextCell.swift */,
 				593AC5CE1D33F4BF002613F4 /* DashboardFundingCell.swift */,
@@ -3545,6 +3550,8 @@
 				5955E64D1D21800300B4153D /* DashboardReferrersCell.swift */,
 				015A06F51D219513007AE210 /* DashboardRewardsCell.swift */,
 				59D1E6241D1865AC00896A4C /* DashboardVideoCell.swift */,
+				A7A052121CD12DD7005AF5E2 /* DeprecatedCommentCell.swift */,
+				5981BE421D7F59DE002E49F1 /* DeprecatedCommentsEmptyStateCell.swift */,
 				773452F92384477D00E6B6A3 /* DiscoveryEditorialCell.swift */,
 				A72C3AB11D00FB1F0075227E /* DiscoveryExpandableRowCell.swift */,
 				A72C3AB21D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift */,
@@ -3632,6 +3639,8 @@
 				D6B6871721923BA6005F5DA7 /* ChangeEmailViewControllerTests.swift */,
 				7754A0AD215A8361003AA36D /* ChangePasswordViewController.swift */,
 				77941D2D216FCB0100398B89 /* ChangePasswordViewControllerTests.swift */,
+				8A07CEF52660338600426B1C /* CommentRepliesViewController.swift */,
+				8A07CEFD2660344200426B1C /* CommentRepliesViewControllerTests.swift */,
 				A7A0534C1CD19C68005AF5E2 /* DeprecatedCommentDialogViewController.swift */,
 				A7180BA81CCED598001711CA /* DeprecatedCommentsViewController.swift */,
 				A7ED20341E8323E900BFFA01 /* DeprecatedCommentsViewControllerTests.swift */,
@@ -3647,6 +3656,9 @@
 				A745D0461CA8985B00C12802 /* DashboardViewController.swift */,
 				A7ED202A1E8323E900BFFA01 /* DashboardViewControllerTests.swift */,
 				A75798901D6A201F0063CEEC /* DebugPushNotificationsViewController.swift */,
+				A7A0534C1CD19C68005AF5E2 /* DeprecatedCommentDialogViewController.swift */,
+				A7180BA81CCED598001711CA /* DeprecatedCommentsViewController.swift */,
+				A7ED20341E8323E900BFFA01 /* DeprecatedCommentsViewControllerTests.swift */,
 				0169F9851D6F4E1D00C8D5C5 /* DiscoveryFiltersViewController.swift */,
 				A7ED20251E8323E900BFFA01 /* DiscoveryFiltersViewControllerTests.swift */,
 				017508151D67A4E300BB1863 /* DiscoveryNavigationHeaderViewController.swift */,
@@ -6137,6 +6149,7 @@
 				018422BE1D2C484700CA7566 /* DashboardTitleView.swift in Sources */,
 				5970739A1D06346700B00444 /* ProjectNotificationsViewController.swift in Sources */,
 				A745D1411CAAB48F00C12802 /* LoginToutViewController.swift in Sources */,
+				8A07CF1226604E8F00426B1C /* CommentRepliesViewController.swift in Sources */,
 				77EFBAE52268E01400DA5C3C /* RewardCell.swift in Sources */,
 				77FD8B46216D6245000A95AC /* LoadingBarButtonItemView.swift in Sources */,
 				9D14FF8E1D133351005F4ABB /* ProjectActivityEmptyStateCell.swift in Sources */,
@@ -6226,6 +6239,7 @@
 				D60CAB922208A1B60083FA40 /* SelectCurrencyViewControllerTests.swift in Sources */,
 				77E84E0C2166A8C600DA8891 /* MessageBannerViewControllerTests.swift in Sources */,
 				8A64F16624BE6528004917E2 /* RewardAddOnSelectionViewControllerTests.swift in Sources */,
+				8A07CF052660344E00426B1C /* CommentRepliesViewControllerTests.swift in Sources */,
 				A7ED20581E8323E900BFFA01 /* SignupViewControllerTests.swift in Sources */,
 				D6B6875221923BCF005F5DA7 /* ChangeEmailViewControllerTests.swift in Sources */,
 				D00A376E225BDAF800F46F47 /* UIAlertControllerTests.swift in Sources */,
