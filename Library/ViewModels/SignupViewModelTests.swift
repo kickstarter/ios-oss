@@ -11,6 +11,7 @@ internal final class SignupViewModelTests: TestCase {
   fileprivate let isSignupButtonEnabled = TestObserver<Bool, Never>()
   fileprivate let logIntoEnvironment = TestObserver<AccessTokenEnvelope, Never>()
   fileprivate let nameTextFieldBecomeFirstResponder = TestObserver<(), Never>()
+  fileprivate let notifyDelegateOpenHelpType = TestObserver<HelpType, Never>()
   fileprivate let passwordTextFieldBecomeFirstResponder = TestObserver<(), Never>()
   fileprivate let postNotification = TestObserver<Notification.Name, Never>()
   fileprivate let setWeeklyNewsletterState = TestObserver<Bool, Never>()
@@ -24,6 +25,7 @@ internal final class SignupViewModelTests: TestCase {
     self.vm.outputs.isSignupButtonEnabled.observe(self.isSignupButtonEnabled.observer)
     self.vm.outputs.logIntoEnvironment.observe(self.logIntoEnvironment.observer)
     self.vm.outputs.nameTextFieldBecomeFirstResponder.observe(self.nameTextFieldBecomeFirstResponder.observer)
+    self.vm.outputs.notifyDelegateOpenHelpType.observe(self.notifyDelegateOpenHelpType.observer)
     self.vm.outputs.passwordTextFieldBecomeFirstResponder
       .observe(self.passwordTextFieldBecomeFirstResponder.observer)
     self.vm.outputs.postNotification.map { $0.name }.observe(self.postNotification.observer)
@@ -88,6 +90,17 @@ internal final class SignupViewModelTests: TestCase {
       [.ksr_sessionStarted],
       "Notification posted after scheduler advances."
     )
+  }
+
+  func testNotifyDelegateOpenHelpType() {
+    let baseUrl = AppEnvironment.current.apiService.serverConfig.webBaseUrl
+    let allCases = HelpType.allCases.filter { $0 != .contact }
+
+    let allHelpTypeUrls = allCases.map { $0.url(withBaseUrl: baseUrl) }.compact()
+
+    allHelpTypeUrls.forEach { self.vm.inputs.tapped($0) }
+
+    self.notifyDelegateOpenHelpType.assertValues(allCases)
   }
 
   func testBecomeFirstResponder() {
