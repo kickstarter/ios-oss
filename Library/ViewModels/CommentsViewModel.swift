@@ -25,17 +25,17 @@ public protocol CommentsViewModelInputs {
 }
 
 public protocol CommentsViewModelOutputs {
-  /// Emits a URL for the avatar image view.
-  var avatarURL: Signal<URL?, Never> { get }
+  /// Emits a CommentComposerViewData object that determines the avatarURL and whether the user is a backer.
+  var configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never> { get }
 
   /// Emits the selected `Comment` and `Project` to navigate to its replies.
   var goToCommentReplies: Signal<(Comment, Project), Never> { get }
 
+  /// Emits a boolean that determines if the comment input area is visible.
+  var isCommentComposerHidden: Signal<Bool, Never> { get }
+
   /// Emits a boolean that determines if comments are currently loading.
   var isCommentsLoading: Signal<Bool, Never> { get }
-
-  /// Emits a boolean that determines if the comment input area is visible.
-  var inputAreaVisible: Signal<Bool, Never> { get }
 
   /// Emits a list of `Comment`s and the `Project` to load into the data source.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
@@ -62,7 +62,6 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     let currentUser = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.currentUser }
-      .skipNil()
 
     let initialProject = projectOrUpdate
       .flatMap { projectOrUpdate in
@@ -127,9 +126,22 @@ public final class CommentsViewModel: CommentsViewModelType,
     }
     .observeValues { print($0) }
 
-    self.avatarURL = currentUser.map { URL(string: $0.avatar.medium) }
-    // TODO: https://github.com/kickstarter/ios-oss/pull/1483 NT-1796
-    self.inputAreaVisible = self.viewDidLoadProperty.signal.mapConst(true)
+    self.configureCommentComposerViewWithData = Signal
+      .combineLatest(initialProject.signal, currentUser.signal)
+      .takeWhen(self.viewDidLoadProperty.signal)
+      .map { project, currentUser in
+        let isBacker = userIsBackingProject(project)
+
+        guard let user = currentUser else {
+          return (nil, isBacker)
+        }
+
+        let url = URL(string: user.avatar.medium)
+        return (url, isBacker)
+      }
+
+    self.isCommentComposerHidden = currentUser.signal
+      .map { user in user.isNil }
 
     self.goToCommentReplies = self.didSelectCommentProperty.signal.skipNil()
       .filter { comment in
@@ -168,10 +180,10 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
+  public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
+  public let goToCommentReplies: Signal<(Comment, Project), Never>
+  public let isCommentComposerHidden: Signal<Bool, Never>
   public let isCommentsLoading: Signal<Bool, Never>
-  public var avatarURL: Signal<URL?, Never>
-  public var goToCommentReplies: Signal<(Comment, Project), Never>
-  public var inputAreaVisible: Signal<Bool, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
 
   public var inputs: CommentsViewModelInputs { return self }

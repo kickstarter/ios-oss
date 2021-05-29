@@ -76,6 +76,12 @@ internal final class CommentsViewController: UITableViewController {
     return true
   }
 
+  // MARK: - Views
+
+  private func configureViews() {
+    self.commentComposer.delegate = self
+  }
+
   // MARK: - Styles
 
   internal override func bindStyles() {
@@ -92,6 +98,9 @@ internal final class CommentsViewController: UITableViewController {
 
   internal override func bindViewModel() {
     super.bindViewModel()
+
+    self.commentComposer.rac.hidden = self.viewModel.outputs.isCommentComposerHidden
+
     self.viewModel.outputs.loadCommentsAndProjectIntoDataSource
       .observeForUI()
       .observeValues { [weak self] comments, project in
@@ -100,6 +109,12 @@ internal final class CommentsViewController: UITableViewController {
           project: project
         )
         self?.tableView.reloadData()
+      }
+
+    self.viewModel.outputs.configureCommentComposerViewWithData
+      .observeForUI()
+      .observeValues { [weak self] avatarUrl, isBacking in
+        self?.commentComposer.configure(with: (avatarUrl, isBacking))
       }
 
     self.viewModel.outputs.goToCommentReplies
