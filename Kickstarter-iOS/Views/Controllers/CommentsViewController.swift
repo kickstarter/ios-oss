@@ -31,6 +31,8 @@ internal final class CommentsViewController: UITableViewController {
 
     return refreshControl
   }()
+  
+  private let emptyStateLabel: UILabel = UILabel(frame: .zero)
 
   private let viewModel: CommentsViewModelType = CommentsViewModel()
   private let dataSource = CommentsDataSource()
@@ -58,6 +60,7 @@ internal final class CommentsViewController: UITableViewController {
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
     self.tableView.refreshControl = self.refreshIndicator
+    self.tableView.backgroundView = emptyStateLabel
     self.tableView.tableFooterView = UIView()
 
     self.viewModel.inputs.viewDidLoad()
@@ -92,6 +95,11 @@ internal final class CommentsViewController: UITableViewController {
       |> \.estimatedRowHeight .~ 100.0
       |> \.separatorInset .~ .zero
       |> \.separatorColor .~ UIColor.ksr_support_200
+    
+    _ = self.emptyStateLabel
+      |> \.textAlignment .~ .center
+      |> \.numberOfLines .~ 0
+      |> \.font .~ UIFont.ksr_subhead()
   }
 
   // MARK: - View Model
@@ -129,6 +137,8 @@ internal final class CommentsViewController: UITableViewController {
       .observeValues { [weak self] in
         $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
       }
+    
+    self.emptyStateLabel.rac.text = self.viewModel.outputs.emptyStateText
   }
 
   // MARK: - Actions
