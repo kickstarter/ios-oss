@@ -51,13 +51,13 @@ internal final class DeprecatedCommentCell: UITableViewCell, ValueCell {
       |> UIStackView.lens.backgroundColor .~ cellBackgroundColor
 
     _ = self.creatorLabel
-      |> authorBadgeLabelStyle
+      |> deprecatedAuthorBadgeLabelStyle
       |> UILabel.lens.textColor .~ .ksr_white
       |> UILabel.lens.text %~ { _ in Strings.update_comments_creator() }
       |> UILabel.lens.backgroundColor .~ .ksr_support_700
 
     _ = self.creatorView
-      |> authorBadgeViewStyle
+      |> deprecatedAuthorBadgeViewStyle
       |> UIView.lens.backgroundColor .~ .ksr_support_700
 
     _ = self.nameLabel
@@ -77,12 +77,12 @@ internal final class DeprecatedCommentCell: UITableViewCell, ValueCell {
       |> UILabel.lens.backgroundColor .~ cellBackgroundColor
 
     _ = self.youLabel
-      |> authorBadgeLabelStyle
+      |> deprecatedAuthorBadgeLabelStyle
       |> UILabel.lens.textColor .~ .ksr_white
       |> UILabel.lens.text %~ { _ in Strings.update_comments_you() }
 
     _ = self.youView
-      |> authorBadgeViewStyle
+      |> deprecatedAuthorBadgeViewStyle
       |> UIView.lens.backgroundColor .~ .ksr_create_700
   }
 

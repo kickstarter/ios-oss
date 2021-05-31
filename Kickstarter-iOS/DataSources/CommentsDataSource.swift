@@ -6,11 +6,13 @@ import UIKit
 internal final class CommentsDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case comments
+    case empty
   }
 
   internal func load(comments: [Comment], project: Project) {
     let section = Section.comments.rawValue
     self.clearValues(section: section)
+
     comments.forEach { comment in
       switch comment.status {
       case .failed:
@@ -44,6 +46,16 @@ internal final class CommentsDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value).")
+    }
+  }
+
+  public func comment(at indexPath: IndexPath) -> Comment? {
+    let value = self[indexPath]
+
+    switch value {
+    case let value as Comment: return value
+    case let value as (comment: Comment, project: Project): return value.comment
+    default: return nil
     }
   }
 }

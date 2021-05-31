@@ -11,23 +11,26 @@ public protocol CommentCellViewModelInputs {
 }
 
 public protocol CommentCellViewModelOutputs {
-  /// Emits author's badge for a comment
+  /// Emits author's badge for a comment.
   var authorBadge: Signal<Comment.AuthorBadge, Never> { get }
 
-  /// Emits a url to the comment author's image
+  /// Emits a url to the comment author's image.
   var authorImageURL: Signal<URL, Never> { get }
 
-  /// Emits text containing author's fullname or username
+  /// Emits text containing author's fullname or username.
   var authorName: Signal<String, Never> { get }
 
-  /// Emits text containing comment body
+  /// Emits text containing comment body.
   var body: Signal<String, Never> { get }
 
-  /// Emits text  relative time the comment was posted
+  /// Emits text  relative time the comment was posted.
   var postTime: Signal<String, Never> { get }
 
-  /// Emits a Bool determining if the reply and flag buttons in the bottomColumnStackView are hidden
+  /// Emits a Bool determining if the reply and flag buttons in the bottomColumnStackView are hidden.
   var replyButtonIsHidden: Signal<Bool, Never> { get }
+
+  /// Emits whether or not the view replies stack view is hidden.
+  var viewRepliesStackViewIsHidden: Signal<Bool, Never> { get }
 }
 
 public protocol CommentCellViewModelType {
@@ -79,6 +82,9 @@ public final class CommentCellViewModel:
 
     self.replyButtonIsHidden = Signal.combineLatest(isLoggedOut, isNotABacker)
       .map { isLoggedOut, isNotABacker in isLoggedOut || isNotABacker }
+
+    self.viewRepliesStackViewIsHidden = comment.map(\.replyCount)
+      .map { $0 == 0 }
   }
 
   private var bindStylesProperty = MutableProperty(())
@@ -97,6 +103,7 @@ public final class CommentCellViewModel:
   public let body: Signal<String, Never>
   public let postTime: Signal<String, Never>
   public let replyButtonIsHidden: Signal<Bool, Never>
+  public let viewRepliesStackViewIsHidden: Signal<Bool, Never>
 
   public var inputs: CommentCellViewModelInputs { self }
   public var outputs: CommentCellViewModelOutputs { self }

@@ -63,6 +63,11 @@ final class CommentComposerView: UIView {
 
   // MARK: - Configuration
 
+  /**
+   Sets up the interface for the CommentComposerView, including the avatar and conditional rendering of the text view
+
+   - parameter with: `CommentComposerViewData` object that determines.the avatarURL and if the user is a backer
+   */
   public func configure(with data: CommentComposerViewData) {
     self.viewModel.inputs.configure(with: data)
   }
