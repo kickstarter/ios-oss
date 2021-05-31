@@ -77,7 +77,8 @@ final class CommentComposerView: UIView {
    */
   public func clearOnSuccess() {
     // TODO: Replace this with a viewModel input for clearing body text.
-    self.viewModel.inputs.bodyTextDidChange("")
+    self.viewModel.inputs.bodyTextDidChange(nil)
+    self.inputContainerView.inputTextView.text = nil
   }
 
   // MARK: - Views

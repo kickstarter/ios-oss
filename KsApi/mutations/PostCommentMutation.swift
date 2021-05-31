@@ -12,6 +12,12 @@ public struct PostCommentMutation<T: GraphMutationInput>: GraphMutation {
     mutation ($input: PostCommentInput!) {
       createComment(input: $input) {
         comment {
+          author {
+            id
+            imageUrl(width: \(Constants.previewImageWidth))
+            isCreator
+            name
+          }
           body
           id
         }

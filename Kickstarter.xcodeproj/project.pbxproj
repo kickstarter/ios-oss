@@ -86,6 +86,7 @@
 		20ABFEE4264EE06400AA48EC /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCBE98264D5EB100510EDF /* CommentInputTextView.swift */; };
 		20BCBEB0264DAA4B00510EDF /* CommentComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCBEA2264D83C600510EDF /* CommentComposerView.swift */; };
 		20BCBEB7264DAA5500510EDF /* CommentInputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCBE9D264D6E6500510EDF /* CommentInputContainerView.swift */; };
+		20EB9313266030CB004FA1C8 /* PostCommentEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */; };
 		37059843226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37059842226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift */; };
 		3705CF0F222EE7670025D37E /* EnvironmentVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */; };
 		3705CF48222EE77F0025D37E /* EnvironmentVariablesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */; };
@@ -1690,6 +1691,7 @@
 		20BCBEA2264D83C600510EDF /* CommentComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerView.swift; sourceTree = "<group>"; };
 		20D7EE6026544F200094B04C /* CommentComposerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewModel.swift; sourceTree = "<group>"; };
 		20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewModelTests.swift; sourceTree = "<group>"; };
+		20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentEnvelope.swift; sourceTree = "<group>"; };
 		37059842226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PledgeShippingLocationViewController.swift; sourceTree = "<group>"; };
 		3705CF0E222EE7670025D37E /* EnvironmentVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariables.swift; sourceTree = "<group>"; };
 		3705CF47222EE77E0025D37E /* EnvironmentVariablesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariablesTests.swift; sourceTree = "<group>"; };
@@ -3535,9 +3537,6 @@
 				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
 				776B1A0C2418227100B03098 /* CategoryPillCell.swift */,
 				06CACBF2264DCC060026CDFD /* CommentCell.swift */,
-				A7A052121CD12DD7005AF5E2 /* DeprecatedCommentCell.swift */,
-				5981BE421D7F59DE002E49F1 /* DeprecatedCommentsEmptyStateCell.swift */,
-				D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */,
 				94114D47264EEA2D0063E8F6 /* CommentCell.swift */,
 				94114D5A265305200063E8F6 /* CommentPostFailedCell.swift */,
 				94114D5F2653135E0063E8F6 /* CommentRemovedCell.swift */,
@@ -3641,9 +3640,6 @@
 				77941D2D216FCB0100398B89 /* ChangePasswordViewControllerTests.swift */,
 				8A07CEF52660338600426B1C /* CommentRepliesViewController.swift */,
 				8A07CEFD2660344200426B1C /* CommentRepliesViewControllerTests.swift */,
-				A7A0534C1CD19C68005AF5E2 /* DeprecatedCommentDialogViewController.swift */,
-				A7180BA81CCED598001711CA /* DeprecatedCommentsViewController.swift */,
-				A7ED20341E8323E900BFFA01 /* DeprecatedCommentsViewControllerTests.swift */,
 				47AC212E264AD2590090AEDF /* CommentsViewController.swift */,
 				47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */,
 				3708DD44220A76FD00F8E569 /* CreatePasswordTableControllerTests.swift */,
@@ -4237,12 +4233,6 @@
 				D04AAC13218BB70A00CF713E /* ChangePasswordViewModelTests.swift */,
 				477290F9264AE91800B83E10 /* CommentsViewModel.swift */,
 				47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */,
-				373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */,
-				373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */,
-				D63BBD36217FC224007E01F0 /* CreditCardCellViewModel.swift */,
-				D6B6876D21937182005F5DA7 /* CreditCardCellViewModelTests.swift */,
-				D660078B2416D66C00AC1EDB /* CuratedProjectsViewModel.swift */,
-				D660078F241A7C0000AC1EDB /* CuratedProjectsViewModelTests.swift */,
 				A7F441941D005A9400FE6FC5 /* DeprecatedCommentCellViewModel.swift */,
 				A7ED1F661E831C5C00BFFA01 /* DeprecatedCommentCellViewModelTests.swift */,
 				A7F441951D005A9400FE6FC5 /* DeprecatedCommentDialogViewModel.swift */,
@@ -4253,7 +4243,6 @@
 				A7ED1F5F1E831C5C00BFFA01 /* DeprecatedCommentsViewModelTests.swift */,
 				20D7EE6026544F200094B04C /* CommentComposerViewModel.swift */,
 				20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */,
-				47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */,
 				373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */,
 				373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */,
 				D63BBD36217FC224007E01F0 /* CreditCardCellViewModel.swift */,
@@ -4648,6 +4637,7 @@
 				8A4E953A2450FE1500A578CF /* Money.swift */,
 				D01587D41EEB2ED7006E7684 /* Param.swift */,
 				D79CF38521AC9AD200ECB73A /* PaymentType.swift */,
+				20EB9312266030CB004FA1C8 /* PostCommentEnvelope.swift */,
 				D01587D51EEB2ED7006E7684 /* Project.Country.swift */,
 				D67B6CD7221F46D700B63A6B /* Project.Country+Encode.swift */,
 				D01587D61EEB2ED7006E7684 /* Project.CountryTests.swift */,
@@ -6525,6 +6515,7 @@
 				D01588CB1EEB2ED7006E7684 /* ShippingRuleLenses.swift in Sources */,
 				D72370902118E1F5001EA4CA /* ExportDataEnvelopeLenses.swift in Sources */,
 				D01588411EEB2ED7006E7684 /* AccessTokenEnvelope.swift in Sources */,
+				20EB9313266030CB004FA1C8 /* PostCommentEnvelope.swift in Sources */,
 				D01588BD1EEB2ED7006E7684 /* ProjectStatsEnvelope.RewardDistributionLenses.swift in Sources */,
 				D01588611EEB2ED7006E7684 /* Config.swift in Sources */,
 				D64DDCE123564D3700DE0EA9 /* PaymentSourceTemplates.swift in Sources */,

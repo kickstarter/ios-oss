@@ -66,6 +66,30 @@ extension Comment: Decodable {
   }
 }
 
+extension Comment {
+  public static func optimisticComment(
+    project: Project,
+    user: User,
+    body: String
+  ) -> Comment {
+    let author = Author(
+      id: "\(user.id)",
+      imageUrl: user.avatar.medium,
+      isCreator: project.creator == user,
+      name: user.name
+    )
+    return Comment(
+      author: author,
+      authorBadges: [.you],
+      body: body,
+      createdAt: Date().timeIntervalSince1970,
+      id: UUID().uuidString,
+      isDeleted: false,
+      replyCount: 0
+    )
+  }
+}
+
 extension Comment: Equatable {}
 
 public func == (lhs: Comment, rhs: Comment) -> Bool {

@@ -422,7 +422,7 @@ public struct Service: ServiceType {
   }
 
   public func postComment(input: PostCommentInput)
-    -> SignalProducer<Comment, ErrorEnvelope> {
+    -> SignalProducer<PostCommentEnvelope, ErrorEnvelope> {
     return applyMutation(mutation: PostCommentMutation(input: input))
       .mapError(ErrorEnvelope.envelope(from:))
   }

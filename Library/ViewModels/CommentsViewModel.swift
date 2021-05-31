@@ -11,8 +11,8 @@ public protocol CommentsViewModelInputs {
   /// Call with a `Comment` when it is selected.
   func didSelectComment(_ comment: Comment)
 
-  /// Call when the User is posting a comment or reply.
-  func postCommentButtonTapped()
+  /// Call when the User is posting a comment or reply
+  func postCommentButtonTapped(_ text: String)
 
   ///  Call when pull-to-refresh is invoked.
   func refresh()
@@ -25,9 +25,6 @@ public protocol CommentsViewModelInputs {
 }
 
 public protocol CommentsViewModelOutputs {
-  /// Emits a CommentComposerViewData object that determines the avatarURL and whether the user is a backer.
-  var configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never> { get }
-
   /// Emits the selected `Comment` and `Project` to navigate to its replies.
   var goToCommentReplies: Signal<(Comment, Project), Never> { get }
 
@@ -39,6 +36,17 @@ public protocol CommentsViewModelOutputs {
 
   /// Emits a list of `Comment`s and the `Project` to load into the data source.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
+
+  /// Emits data to configure comment composer view.
+  var commentComposerData: Signal<CommentComposerViewData, Never> { get }
+
+  /// Emits when a comment was successfully posted.
+  var postCommentSuccessful: Signal<Comment, Never> { get }
+
+  /// Emits when a comment was submitted to be posted.
+  var postCommentSubmitted: Signal<(), Never> { get }
+
+  var errorMessage: Signal<String, Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -73,6 +81,37 @@ public final class CommentsViewModel: CommentsViewModelType,
         )
       }
 
+    let postCommentEvent = initialProject
+      .takePairWhen(self.postCommentButtonTappedProperty.signal.skipNil())
+      .switchMap { project, comment in
+        AppEnvironment.current.apiService
+          .postComment(input: .init(
+            body: comment,
+            commentableId: "Project-\(project.id)".toBase64()
+          ))
+          .materialize()
+      }
+
+    self.postCommentSuccessful = postCommentEvent.values().map { $0.createComment.comment }
+    self.errorMessage = postCommentEvent.errors().map { $0.errorMessages.first }.skipNil()
+
+    self.commentComposerData = Signal
+      .combineLatest(initialProject.signal, currentUser.signal)
+      .takeWhen(self.viewDidLoadProperty.signal)
+      .map { project, currentUser in
+        let isBacker = userIsBackingProject(project)
+
+        guard let user = currentUser else {
+          return (nil, isBacker)
+        }
+
+        let url = URL(string: user.avatar.medium)
+        return (url, isBacker)
+      }
+
+    self.isCommentComposerHidden = currentUser.signal
+      .map { user in user.isNil }
+
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in row >= total - 3 }
       .skipRepeats()
@@ -81,10 +120,8 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     let requestFirstPageWith = Signal.merge(
       initialProject,
-      initialProject.takeWhen(self.refreshProperty.signal)
-      /** TODO: Add this in once comment composer is added.
-       projectOrUpdate.takeWhen(self.commentPostedProperty.signal)
-        **/
+      initialProject.takeWhen(self.refreshProperty.signal),
+      initialProject.takeWhen(self.postCommentSuccessful)
     )
 
     let (comments, isLoading, _, _) = paginate(
@@ -106,42 +143,30 @@ public final class CommentsViewModel: CommentsViewModelType,
       }
     )
 
-    let commentsAndProject = Signal.combineLatest(comments, initialProject)
+    let optimisticPostComment = Signal.combineLatest(
+      initialProject,
+      currentUser.skipNil()
+    ).takePairWhen(self.postCommentButtonTappedProperty.signal.skipNil())
+      .map(unpack)
+      .map(Comment.optimisticComment)
+
+    self.postCommentSubmitted = optimisticPostComment.ignoreValues()
+
+    let commentsWithOptimisticPostComment = Signal
+      .combineLatest(comments, optimisticPostComment)
+      .map { loadedComments, optimisticComment -> [Comment] in
+        var comments = loadedComments
+        comments.insert(optimisticComment, at: 0)
+        return comments
+      }
+
+    let commentsAndProject = Signal.combineLatest(
+      Signal.merge(comments, commentsWithOptimisticPostComment),
+      initialProject
+    )
 
     self.loadCommentsAndProjectIntoDataSource = commentsAndProject
     self.isCommentsLoading = isLoading
-
-    // FIXME: We need to dynamically supply the IDs when the UI is built.
-    // The IDs here correspond to the following project: `THE GREAT GATSBY: Limited Edition Letterpress Print`.
-    // When testing, replace with a project you have Backed or Created.
-    self.postCommentButtonTappedProperty.signal.switchMap { _ in
-      AppEnvironment.current.apiService
-        .postComment(input: .init(
-          body: "Testing on iOS!",
-          commentableId: "UHJvamVjdC02NDQ2NzAxMzU=",
-          parentId: "Q29tbWVudC0zMjY2MjUzOQ=="
-        ))
-        .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
-        .materialize()
-    }
-    .observeValues { print($0) }
-
-    self.configureCommentComposerViewWithData = Signal
-      .combineLatest(initialProject.signal, currentUser.signal)
-      .takeWhen(self.viewDidLoadProperty.signal)
-      .map { project, currentUser in
-        let isBacker = userIsBackingProject(project)
-
-        guard let user = currentUser else {
-          return (nil, isBacker)
-        }
-
-        let url = URL(string: user.avatar.medium)
-        return (url, isBacker)
-      }
-
-    self.isCommentComposerHidden = currentUser.signal
-      .map { user in user.isNil }
 
     self.goToCommentReplies = self.didSelectCommentProperty.signal.skipNil()
       .filter { comment in
@@ -155,9 +180,14 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.didSelectCommentProperty.value = comment
   }
 
-  fileprivate let postCommentButtonTappedProperty = MutableProperty(())
-  public func postCommentButtonTapped() {
-    self.postCommentButtonTappedProperty.value = ()
+  fileprivate let projectProperty = MutableProperty<Project?>(nil)
+  public func configureWith(project: Project) {
+    self.projectProperty.value = project
+  }
+
+  fileprivate let postCommentButtonTappedProperty = MutableProperty<String?>(nil)
+  public func postCommentButtonTapped(_ text: String) {
+    self.postCommentButtonTappedProperty.value = text
   }
 
   fileprivate let projectAndUpdateProperty = MutableProperty<(Project?, Update?)?>(nil)
@@ -180,11 +210,14 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let goToCommentReplies: Signal<(Comment, Project), Never>
   public let isCommentComposerHidden: Signal<Bool, Never>
   public let isCommentsLoading: Signal<Bool, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
+  public let commentComposerData: Signal<CommentComposerViewData, Never>
+  public let errorMessage: Signal<String, Never>
+  public let postCommentSuccessful: Signal<Comment, Never>
+  public var postCommentSubmitted: Signal<(), Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }

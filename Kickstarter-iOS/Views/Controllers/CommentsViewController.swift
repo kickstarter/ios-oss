@@ -44,14 +44,25 @@ internal final class CommentsViewController: UITableViewController {
     return vc
   }
 
+  // MARK: - Accessors
+
+  internal static func configuredWith(project: Project) -> CommentsViewController {
+    let vc = CommentsViewController.instantiate()
+    vc.viewModel.inputs.configureWith(project: project, update: nil)
+
+    return vc
+  }
+
   // MARK: - Lifecycle
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
 
     self.navigationItem.title = Strings.project_menu_buttons_comments()
-    self.commentComposer.configure(with: (nil, true))
+
     self.commentComposer.delegate = self
+
+    self.tableView.dataSource = self.dataSource
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(CommentPostFailedCell.self)
     self.tableView.registerCellClass(CommentRemovedCell.self)
@@ -76,22 +87,12 @@ internal final class CommentsViewController: UITableViewController {
     return true
   }
 
-  // MARK: - Views
-
-  private func configureViews() {
-    self.commentComposer.delegate = self
-  }
-
   // MARK: - Styles
 
   internal override func bindStyles() {
     super.bindStyles()
 
-    _ = self.tableView
-      |> \.rowHeight .~ UITableView.automaticDimension
-      |> \.estimatedRowHeight .~ 100.0
-      |> \.separatorInset .~ .zero
-      |> \.separatorColor .~ UIColor.ksr_support_200
+    _ = self.tableView |> tableViewStyle
   }
 
   // MARK: - View Model
@@ -100,6 +101,19 @@ internal final class CommentsViewController: UITableViewController {
     super.bindViewModel()
 
     self.commentComposer.rac.hidden = self.viewModel.outputs.isCommentComposerHidden
+
+    self.viewModel.outputs.postCommentSubmitted
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.commentComposer.clearOnSuccess()
+        self?.tableView.scrollToTop()
+      }
+
+    self.viewModel.outputs.commentComposerData
+      .observeForUI()
+      .observeValues { [weak self] data in
+        self?.commentComposer.configure(with: data)
+      }
 
     self.viewModel.outputs.loadCommentsAndProjectIntoDataSource
       .observeForUI()
@@ -111,7 +125,7 @@ internal final class CommentsViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.configureCommentComposerViewWithData
+    self.viewModel.outputs.commentComposerData
       .observeForUI()
       .observeValues { [weak self] avatarUrl, isBacking in
         self?.commentComposer.configure(with: (avatarUrl, isBacking))
@@ -138,7 +152,7 @@ internal final class CommentsViewController: UITableViewController {
   }
 }
 
-// MARK: - CommentsViewController Delegate
+// MARK: - UITableViewDelegate
 
 extension CommentsViewController {
   override func tableView(_: UITableView, willDisplay _: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -146,26 +160,28 @@ extension CommentsViewController {
       self.dataSource.itemIndexAt(indexPath),
       outOf: self.dataSource.numberOfItems()
     )
+  }
 
-    // TODO: Call this method after post comment is successful to clear the input field text
-    // self.commentComposer.clearOnSuccess()
+  override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let comment = self.dataSource.comment(at: indexPath) else { return }
+
+    self.viewModel.inputs.didSelectComment(comment)
   }
 }
 
 // MARK: - CommentComposerViewDelegate
 
 extension CommentsViewController: CommentComposerViewDelegate {
-  func commentComposerView(_: CommentComposerView, didSubmitText _: String) {
-    // TODO: Capture submitted user comment in this delegate method.
+  func commentComposerView(_: CommentComposerView, didSubmitText text: String) {
+    self.viewModel.inputs.postCommentButtonTapped(text)
+    // self.commentComposer.clearOnSuccess()
   }
 }
 
-// MARK: - UITableViewDelegate
-
-extension CommentsViewController {
-  override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard let comment = self.dataSource.comment(at: indexPath) else { return }
-
-    self.viewModel.inputs.didSelectComment(comment)
-  }
+private let tableViewStyle: TableViewStyle = { tableView in
+  tableView
+    |> \.rowHeight .~ UITableView.automaticDimension
+    |> \.estimatedRowHeight .~ 100.0
+    |> \.separatorInset .~ .zero
+    |> \.separatorColor .~ UIColor.ksr_support_200
 }
