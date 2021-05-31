@@ -180,6 +180,13 @@ public struct Service: ServiceType {
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
 
+  public func fetchCommentReplies(query: NonEmptySet<Query>)
+    -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
+    return fetch(query: query)
+      .mapError(ErrorEnvelope.envelope(from:))
+      .flatMap(CommentRepliesEnvelope.envelopeProducer(from:))
+  }
+
   public func fetchComments(update: Update) -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
     return request(.updateComments(update))
   }
