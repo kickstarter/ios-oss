@@ -27,9 +27,6 @@ public protocol CommentsViewModelInputs {
 public protocol CommentsViewModelOutputs {
   /// Emits a CommentComposerViewData object that determines the avatarURL and whether the user is a backer.
   var configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never> { get }
-
-  /// Empty state text when there are no comments available.
-  var emptyStateText: Signal<String, Never> { get }
   
   /// Emits the selected `Comment` and `Project` to navigate to its replies.
   var goToCommentReplies: Signal<(Comment, Project), Never> { get }
@@ -89,7 +86,7 @@ public final class CommentsViewModel: CommentsViewModelType,
        projectOrUpdate.takeWhen(self.commentPostedProperty.signal)
         **/
     )
-
+    
     let (comments, isLoading, _, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
@@ -113,7 +110,6 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     self.loadCommentsAndProjectIntoDataSource = commentsAndProject
     self.isCommentsLoading = isLoading
-    self.emptyStateText = self.viewDidLoadProperty.signal.map { Strings.No_comments_yet() }
 
     // FIXME: We need to dynamically supply the IDs when the UI is built.
     // The IDs here correspond to the following project: `THE GREAT GATSBY: Limited Edition Letterpress Print`.
@@ -189,7 +185,6 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let isCommentComposerHidden: Signal<Bool, Never>
   public let isCommentsLoading: Signal<Bool, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
-  public let emptyStateText: Signal<String, Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }
