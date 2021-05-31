@@ -19,10 +19,10 @@ internal final class CommentsDataSource: ValueCellDataSource {
         cellClass: EmptyCommentsCell.self,
         toSection: section
       )
-      
+
       return
     }
-    
+
     comments.forEach { comment in
       switch comment.status {
       case .failed:

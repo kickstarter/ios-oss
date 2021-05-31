@@ -19,6 +19,6 @@ internal final class EmptyCommentsCellViewModelTests: TestCase {
   func testOutputs() {
     self.vm.inputs.configureWith(project: Project.template)
 
-    self.emptyStateText.assertValue(expectedEmptyStateText, "The empty state text is emitted.")
+    self.emptyStateText.assertValue(self.expectedEmptyStateText, "The empty state text is emitted.")
   }
 }

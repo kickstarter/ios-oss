@@ -27,7 +27,7 @@ public protocol CommentsViewModelInputs {
 public protocol CommentsViewModelOutputs {
   /// Emits a CommentComposerViewData object that determines the avatarURL and whether the user is a backer.
   var configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never> { get }
-  
+
   /// Emits the selected `Comment` and `Project` to navigate to its replies.
   var goToCommentReplies: Signal<(Comment, Project), Never> { get }
 
@@ -86,7 +86,7 @@ public final class CommentsViewModel: CommentsViewModelType,
        projectOrUpdate.takeWhen(self.commentPostedProperty.signal)
         **/
     )
-    
+
     let (comments, isLoading, _, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,

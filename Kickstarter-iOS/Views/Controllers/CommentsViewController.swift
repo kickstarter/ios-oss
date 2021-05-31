@@ -87,7 +87,7 @@ internal final class CommentsViewController: UITableViewController {
 
   internal override func bindStyles() {
     super.bindStyles()
-    
+
     _ = self.tableView
       |> \.rowHeight .~ UITableView.automaticDimension
       |> \.estimatedRowHeight .~ 100.0

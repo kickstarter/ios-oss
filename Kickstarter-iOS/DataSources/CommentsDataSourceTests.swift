@@ -48,12 +48,15 @@ class CommentsDataSourceTests: XCTestCase {
       Comment.templates[1]
     )
   }
-  
+
   func testEmptyState_WhenNoComments_ShouldShowEmptyStateCell() {
     let rowIndex: Int = 0
     self.dataSource.load(comments: [], project: .template)
-    
-    XCTAssertEqual(1, self.dataSource.numberOfItems(in: emptySection))
-    XCTAssertEqual("EmptyCommentsCell", self.dataSource.reusableId(item: rowIndex, section: emptySection))
+
+    XCTAssertEqual(1, self.dataSource.numberOfItems(in: self.emptySection))
+    XCTAssertEqual(
+      "EmptyCommentsCell",
+      self.dataSource.reusableId(item: rowIndex, section: self.emptySection)
+    )
   }
 }

@@ -20,7 +20,7 @@ public protocol EmptyCommentsCellViewModelType {
 public final class EmptyCommentsCellViewModel:
   EmptyCommentsCellViewModelType, EmptyCommentsCellViewModelInputs, EmptyCommentsCellViewModelOutputs {
   public init() {
-    self.emptyText = configured.signal.map { _ in Strings.No_comments_yet() }
+    self.emptyText = self.configured.signal.map { _ in Strings.No_comments_yet() }
   }
 
   // TODO: Not needed but maybe later we want to personalize the empty comments state of each project.
@@ -28,7 +28,7 @@ public final class EmptyCommentsCellViewModel:
   public func configureWith(project: Project?) {
     self.configured.value = project
   }
-  
+
   public let emptyText: Signal<String, Never>
 
   public var inputs: EmptyCommentsCellViewModelInputs { self }

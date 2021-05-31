@@ -90,7 +90,7 @@ internal final class CommentsViewControllerTests: TestCase {
       }
     }
   }
-  
+
   func testView_NoComments_ShouldShowEmptyState() {
     AppEnvironment.pushEnvironment(
       apiService: MockService(
@@ -99,7 +99,7 @@ internal final class CommentsViewControllerTests: TestCase {
       currentUser: User.template,
       mainBundle: Bundle.framework
     )
-    
+
     Language.allLanguages.forEach { language in
       withEnvironment(currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)

@@ -10,7 +10,7 @@ final class EmptyCommentsCell: UITableViewCell, ValueCell {
 
   fileprivate let viewModel: EmptyCommentsCellViewModelType =
     EmptyCommentsCellViewModel()
-  
+
   // MARK: - Lifecycle
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -41,18 +41,20 @@ final class EmptyCommentsCell: UITableViewCell, ValueCell {
   }
 
   // MARK: - Configuration
+
   internal func configureWith(value: Project) {
     self.viewModel.inputs.configureWith(project: value)
   }
-  
+
   private func configureViews() {
     _ = (self.noCommentsLabel, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToCenterInParent()
   }
-  
+
   // MARK: View Model
+
   internal override func bindViewModel() {
-    self.noCommentsLabel.rac.text = viewModel.outputs.emptyText
+    self.noCommentsLabel.rac.text = self.viewModel.outputs.emptyText
   }
 }

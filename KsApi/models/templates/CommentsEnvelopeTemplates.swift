@@ -30,7 +30,7 @@ extension CommentsEnvelope {
     slug: "slug",
     totalCount: 4
   )
-  
+
   internal static let emptyCommentsTemplate = CommentsEnvelope(
     comments: [],
     cursor: nil,
