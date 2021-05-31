@@ -10,9 +10,19 @@ internal final class CommentsDataSource: ValueCellDataSource {
   }
 
   internal func load(comments: [Comment], project: Project) {
-    let section = Section.comments.rawValue
+    let section = comments.isEmpty ? Section.comments.rawValue : Section.empty.rawValue
     self.clearValues(section: section)
 
+    guard !comments.isEmpty else {
+      self.appendRow(
+        value: project,
+        cellClass: EmptyCommentsCell.self,
+        toSection: section
+      )
+      
+      return
+    }
+    
     comments.forEach { comment in
       switch comment.status {
       case .failed:
@@ -43,6 +53,8 @@ internal final class CommentsDataSource: ValueCellDataSource {
     case let (cell as CommentPostFailedCell, value as Comment):
       cell.configureWith(value: value)
     case let (cell as CommentRemovedCell, value as Comment):
+      cell.configureWith(value: value)
+    case let (cell as EmptyCommentsCell, value as Project):
       cell.configureWith(value: value)
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value).")
