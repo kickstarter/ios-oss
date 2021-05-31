@@ -19,9 +19,10 @@ extension GraphComment {
     ),
     authorBadges: [.superbacker],
     body: expectedCommentBody,
-    id: expectedCommentId,
-    replyCount: expectedCommentReplyCount,
+    createdAt: expectedCommentCreatedAt,
     deleted: false,
-    createdAt: expectedCommentCreatedAt
+    id: expectedCommentId,
+    parentId: nil,
+    replyCount: expectedCommentReplyCount
   )
 }

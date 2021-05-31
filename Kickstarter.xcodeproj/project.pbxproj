@@ -410,6 +410,8 @@
 		8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A072D39230223B200BA1538 /* UIImage+Color.swift */; };
 		8A07CF052660344E00426B1C /* CommentRepliesViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CEFD2660344200426B1C /* CommentRepliesViewControllerTests.swift */; };
 		8A07CF1226604E8F00426B1C /* CommentRepliesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CEF52660338600426B1C /* CommentRepliesViewController.swift */; };
+		8A07CFE12665743600426B1C /* GraphCommentRepliesEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CFE02665743600426B1C /* GraphCommentRepliesEnvelope.swift */; };
+		8A07CFE92665785000426B1C /* GraphCommentRepliesEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CFE82665785000426B1C /* GraphCommentRepliesEnvelopeTests.swift */; };
 		8A08B521249C3352009CF74E /* EasyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A08B520249C3352009CF74E /* EasyButton.swift */; };
 		8A0B1E2124D4B271009E90C0 /* EmptyStateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0B1E2024D4B271009E90C0 /* EmptyStateViewModelTests.swift */; };
 		8A0B1E2324D4C486009E90C0 /* GraphProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0B1E2224D4C486009E90C0 /* GraphProject.swift */; };
@@ -1998,6 +2000,8 @@
 		8A072D39230223B200BA1538 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		8A07CEF52660338600426B1C /* CommentRepliesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewController.swift; sourceTree = "<group>"; };
 		8A07CEFD2660344200426B1C /* CommentRepliesViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewControllerTests.swift; sourceTree = "<group>"; };
+		8A07CFE02665743600426B1C /* GraphCommentRepliesEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentRepliesEnvelope.swift; sourceTree = "<group>"; };
+		8A07CFE82665785000426B1C /* GraphCommentRepliesEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentRepliesEnvelopeTests.swift; sourceTree = "<group>"; };
 		8A08B520249C3352009CF74E /* EasyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyButton.swift; sourceTree = "<group>"; };
 		8A0B1E2024D4B271009E90C0 /* EmptyStateViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateViewModelTests.swift; sourceTree = "<group>"; };
 		8A0B1E2224D4C486009E90C0 /* GraphProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphProject.swift; sourceTree = "<group>"; };
@@ -3315,11 +3319,15 @@
 				8A41CC6B2458A0480095B15E /* GraphBackingTests.swift */,
 				8AA407BF24DA43D8008C5FB0 /* GraphCategory.swift */,
 				8A555868264C4AE400C2C30D /* GraphComment.swift */,
+				8A07CFE02665743600426B1C /* GraphCommentRepliesEnvelope.swift */,
+				8A07CFE82665785000426B1C /* GraphCommentRepliesEnvelopeTests.swift */,
 				8A555863264C4AA500C2C30D /* GraphCommentsEnvelope.swift */,
 				8ADCCC8E264C72B20079D308 /* GraphCommentsEnvelopeTests.swift */,
 				8ADCCC86264C6E4A0079D308 /* GraphCommentTests.swift */,
 				8AA407C124DB0C8D008C5FB0 /* GraphCountry.swift */,
 				8A0B1E2624DA0DC3009E90C0 /* GraphLocation.swift */,
+				4753C778264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift */,
+				4753C77D264ED0F400BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift */,
 				D002CAE4218CF951009783F2 /* GraphMutationWatchProjectResponseEnvelope.swift */,
 				8A0B1E2224D4C486009E90C0 /* GraphProject.swift */,
 				8A0B1E2424D4C491009E90C0 /* GraphReward.swift */,
@@ -3332,8 +3340,6 @@
 				8A49396024B54C0C00C3C3CE /* RewardAddOnSelectionViewEnvelope.swift */,
 				8A49396224B54C3000C3C3CE /* RewardAddOnSelectionViewEnvelopeTests.swift */,
 				8AE3F72F24DA29DE002B03C3 /* adapters */,
-				4753C778264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift */,
-				4753C77D264ED0F400BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift */,
 			);
 			path = graphql;
 			sourceTree = "<group>";
@@ -3535,9 +3541,6 @@
 				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
 				776B1A0C2418227100B03098 /* CategoryPillCell.swift */,
 				06CACBF2264DCC060026CDFD /* CommentCell.swift */,
-				A7A052121CD12DD7005AF5E2 /* DeprecatedCommentCell.swift */,
-				5981BE421D7F59DE002E49F1 /* DeprecatedCommentsEmptyStateCell.swift */,
-				D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */,
 				94114D47264EEA2D0063E8F6 /* CommentCell.swift */,
 				94114D5A265305200063E8F6 /* CommentPostFailedCell.swift */,
 				94114D5F2653135E0063E8F6 /* CommentRemovedCell.swift */,
@@ -3641,9 +3644,6 @@
 				77941D2D216FCB0100398B89 /* ChangePasswordViewControllerTests.swift */,
 				8A07CEF52660338600426B1C /* CommentRepliesViewController.swift */,
 				8A07CEFD2660344200426B1C /* CommentRepliesViewControllerTests.swift */,
-				A7A0534C1CD19C68005AF5E2 /* DeprecatedCommentDialogViewController.swift */,
-				A7180BA81CCED598001711CA /* DeprecatedCommentsViewController.swift */,
-				A7ED20341E8323E900BFFA01 /* DeprecatedCommentsViewControllerTests.swift */,
 				47AC212E264AD2590090AEDF /* CommentsViewController.swift */,
 				47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */,
 				3708DD44220A76FD00F8E569 /* CreatePasswordTableControllerTests.swift */,
@@ -4236,13 +4236,6 @@
 				D04AAC0A218BB70800CF713E /* ChangePasswordViewModel.swift */,
 				D04AAC13218BB70A00CF713E /* ChangePasswordViewModelTests.swift */,
 				477290F9264AE91800B83E10 /* CommentsViewModel.swift */,
-				47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */,
-				373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */,
-				373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */,
-				D63BBD36217FC224007E01F0 /* CreditCardCellViewModel.swift */,
-				D6B6876D21937182005F5DA7 /* CreditCardCellViewModelTests.swift */,
-				D660078B2416D66C00AC1EDB /* CuratedProjectsViewModel.swift */,
-				D660078F241A7C0000AC1EDB /* CuratedProjectsViewModelTests.swift */,
 				A7F441941D005A9400FE6FC5 /* DeprecatedCommentCellViewModel.swift */,
 				A7ED1F661E831C5C00BFFA01 /* DeprecatedCommentCellViewModelTests.swift */,
 				A7F441951D005A9400FE6FC5 /* DeprecatedCommentDialogViewModel.swift */,
@@ -6445,6 +6438,7 @@
 				8A0B1E2A24DA12E4009E90C0 /* GraphRewardTemplates.swift in Sources */,
 				8A555869264C4AE400C2C30D /* GraphComment.swift in Sources */,
 				8ACF36D1262745520026E74D /* MockService.swift in Sources */,
+				8A07CFE12665743600426B1C /* GraphCommentRepliesEnvelope.swift in Sources */,
 				D68F0B18243F6730009FC948 /* SignInWithAppleEnvelopeTemplates.swift in Sources */,
 				D01588D51EEB2ED7006E7684 /* UpdateDraftLenses.swift in Sources */,
 				8ACF558923E8D467001654A2 /* TryDecodable.swift in Sources */,
@@ -6668,6 +6662,7 @@
 				8ADCCC87264C6E4A0079D308 /* GraphCommentTests.swift in Sources */,
 				D755ECAE23216C290096F189 /* CreateBackingInputTests.swift in Sources */,
 				D755ECB123217D5B0096F189 /* CreateBackingEnvelopeTests.swift in Sources */,
+				8A07CFE92665785000426B1C /* GraphCommentRepliesEnvelopeTests.swift in Sources */,
 				47613FBE2652C66A006F09FF /* PostCommentMutationTests.swift in Sources */,
 				D0D10C1B1EEB4550005EBAD0 /* SurveyResponseTests.swift in Sources */,
 				D0D10C1F1EEB4550005EBAD0 /* User.AvatarTests.swift in Sources */,
