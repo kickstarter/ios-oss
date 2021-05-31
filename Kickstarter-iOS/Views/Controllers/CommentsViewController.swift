@@ -87,11 +87,10 @@ internal final class CommentsViewController: UITableViewController {
 
   internal override func bindStyles() {
     super.bindStyles()
-
-    _ = self
-      |> baseTableControllerStyle(estimatedRowHeight: 100.0)
     
     _ = self.tableView
+      |> \.rowHeight .~ UITableView.automaticDimension
+      |> \.estimatedRowHeight .~ 100.0
       |> \.separatorInset .~ .zero
       |> \.separatorColor .~ UIColor.ksr_support_200
   }

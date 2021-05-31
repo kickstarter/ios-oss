@@ -8,6 +8,7 @@ class CommentsDataSourceTests: XCTestCase {
   let dataSource = CommentsDataSource()
   let tableView = UITableView()
   let section = CommentsDataSource.Section.comments.rawValue
+  let emptySection = CommentsDataSource.Section.empty.rawValue
 
   override func setUp() {
     super.setUp()
@@ -46,5 +47,13 @@ class CommentsDataSourceTests: XCTestCase {
       self.dataSource.comment(at: IndexPath(row: 1, section: 0)),
       Comment.templates[1]
     )
+  }
+  
+  func testEmptyState_WhenNoComments_ShouldShowEmptyStateCell() {
+    let rowIndex: Int = 0
+    self.dataSource.load(comments: [], project: .template)
+    
+    XCTAssertEqual(1, self.dataSource.numberOfItems(in: emptySection))
+    XCTAssertEqual("EmptyCommentsCell", self.dataSource.reusableId(item: rowIndex, section: emptySection))
   }
 }
