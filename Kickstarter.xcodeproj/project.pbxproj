@@ -83,6 +83,7 @@
 		20338E1F26566F9E00F2C43A /* CommentComposerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */; };
 		20338E262656AAD900F2C43A /* CommentComposerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D7EE6026544F200094B04C /* CommentComposerViewModel.swift */; };
 		209B0E3A265801D70006DB7D /* CommentComposerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209B0E39265801D70006DB7D /* CommentComposerViewTests.swift */; };
+		20A0938A2666578D00DEC258 /* CommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A093852666575F00DEC258 /* CommentTests.swift */; };
 		20ABFEE4264EE06400AA48EC /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCBE98264D5EB100510EDF /* CommentInputTextView.swift */; };
 		20BCBEB0264DAA4B00510EDF /* CommentComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCBEA2264D83C600510EDF /* CommentComposerView.swift */; };
 		20BCBEB7264DAA5500510EDF /* CommentInputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCBE9D264D6E6500510EDF /* CommentInputContainerView.swift */; };
@@ -1686,6 +1687,7 @@
 		1611EF6623B2752A0051CDCC /* UUIDType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUIDType.swift; sourceTree = "<group>"; };
 		1611EF6823B275700051CDCC /* MockUUID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUUID.swift; sourceTree = "<group>"; };
 		209B0E39265801D70006DB7D /* CommentComposerViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerViewTests.swift; sourceTree = "<group>"; };
+		20A093852666575F00DEC258 /* CommentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTests.swift; sourceTree = "<group>"; };
 		20BCBE98264D5EB100510EDF /* CommentInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputTextView.swift; sourceTree = "<group>"; };
 		20BCBE9D264D6E6500510EDF /* CommentInputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputContainerView.swift; sourceTree = "<group>"; };
 		20BCBEA2264D83C600510EDF /* CommentComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentComposerView.swift; sourceTree = "<group>"; };
@@ -4597,6 +4599,7 @@
 				D0E78C3722A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift */,
 				8ADCCCAD264C98A50079D308 /* Comment.swift */,
 				8ADCCCA5264C97940079D308 /* CommentsEnvelope.swift */,
+				20A093852666575F00DEC258 /* CommentTests.swift */,
 				D01587881EEB2ED6006E7684 /* Config.swift */,
 				D67B6C9C221F458700B63A6B /* Config+Encode.swift */,
 				D01587891EEB2ED6006E7684 /* ConfigTests.swift */,
@@ -6613,6 +6616,7 @@
 				D0D10C201EEB4550005EBAD0 /* User.NewsletterSubscriptionsTests.swift in Sources */,
 				D0D10C051EEB4550005EBAD0 /* ChangePaymentMethodEnvelopeTests.swift in Sources */,
 				4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */,
+				20A0938A2666578D00DEC258 /* CommentTests.swift in Sources */,
 				8A1F65F2262660EF00A28E74 /* PerimeterXClientTests.swift in Sources */,
 				77272D382370AB8E003B7A9C /* BackingPaymentSourceTests.swift in Sources */,
 				D0E78C3822A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift in Sources */,

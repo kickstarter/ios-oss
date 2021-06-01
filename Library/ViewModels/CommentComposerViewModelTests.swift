@@ -50,8 +50,8 @@ final class CommentComposerViewModelTests: TestCase {
     self.bodyText.assertValues(["Nice Project.", "Nice Project. Cheers!"])
     self.notifyDelegateDidSubmitText.assertValues(["Nice Project. Cheers!"])
 
-    self.vm.inputs.bodyTextDidChange("")
-    self.bodyText.assertValues(["Nice Project.", "Nice Project. Cheers!", ""])
+    self.vm.inputs.bodyTextDidChange(nil)
+    self.bodyText.assertValues(["Nice Project.", "Nice Project. Cheers!", nil])
   }
 
   func testAvatarURL() {

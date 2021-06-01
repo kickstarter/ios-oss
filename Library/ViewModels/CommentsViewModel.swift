@@ -25,6 +25,12 @@ public protocol CommentsViewModelInputs {
 }
 
 public protocol CommentsViewModelOutputs {
+  /// Emits data to configure comment composer view.
+  var commentComposerData: Signal<CommentComposerViewData, Never> { get }
+
+  // Emits a message if there is an error from posting a comment.
+  var errorMessage: Signal<String, Never> { get }
+
   /// Emits the selected `Comment` and `Project` to navigate to its replies.
   var goToCommentReplies: Signal<(Comment, Project), Never> { get }
 
@@ -37,16 +43,11 @@ public protocol CommentsViewModelOutputs {
   /// Emits a list of `Comment`s and the `Project` to load into the data source.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
 
-  /// Emits data to configure comment composer view.
-  var commentComposerData: Signal<CommentComposerViewData, Never> { get }
-
   /// Emits when a comment was successfully posted.
   var postCommentSuccessful: Signal<Comment, Never> { get }
 
   /// Emits when a comment was submitted to be posted.
   var postCommentSubmitted: Signal<(), Never> { get }
-
-  var errorMessage: Signal<String, Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -92,6 +93,7 @@ public final class CommentsViewModel: CommentsViewModelType,
           .materialize()
       }
 
+    // TODO: Handle error and success states appropriately for the datasource item
     self.postCommentSuccessful = postCommentEvent.values().map { $0.createComment.comment }
     self.errorMessage = postCommentEvent.errors().map { $0.errorMessages.first }.skipNil()
 
@@ -178,11 +180,6 @@ public final class CommentsViewModel: CommentsViewModelType,
   private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
   public func didSelectComment(_ comment: Comment) {
     self.didSelectCommentProperty.value = comment
-  }
-
-  fileprivate let projectProperty = MutableProperty<Project?>(nil)
-  public func configureWith(project: Project) {
-    self.projectProperty.value = project
   }
 
   fileprivate let postCommentButtonTappedProperty = MutableProperty<String?>(nil)

@@ -106,7 +106,7 @@ internal final class CommentsViewController: UITableViewController {
     self.viewModel.outputs.postCommentSubmitted
       .observeForUI()
       .observeValues { [weak self] _ in
-        self?.commentComposer.clearOnSuccess()
+        self?.commentComposer.resetInput()
         self?.tableView.scrollToTop()
       }
 
@@ -175,7 +175,6 @@ extension CommentsViewController {
 extension CommentsViewController: CommentComposerViewDelegate {
   func commentComposerView(_: CommentComposerView, didSubmitText text: String) {
     self.viewModel.inputs.postCommentButtonTapped(text)
-    // self.commentComposer.clearOnSuccess()
   }
 }
 
