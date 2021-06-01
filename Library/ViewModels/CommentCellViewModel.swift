@@ -26,13 +26,13 @@ public protocol CommentCellViewModelOutputs {
   /// Emits a Bool determining if the bottomRowStackView is hidden.
   var bottomRowStackViewIsHidden: Signal<Bool, Never> { get }
 
-  /// Emits a Bool determining if the flag button in the bottomColumnStackView is hidden.
+  /// Emits a Bool determining if the flag button in the bottomRowStackView is hidden.
   var flagButtonIsHidden: Signal<Bool, Never> { get }
 
   /// Emits text  relative time the comment was posted.
   var postTime: Signal<String, Never> { get }
 
-  /// Emits a Bool determining if the reply button in the bottomColumnStackView are hidden.
+  /// Emits a Bool determining if the reply button in the bottomRowStackView are hidden.
   var replyButtonIsHidden: Signal<Bool, Never> { get }
 
   /// Emits whether or not the view replies stack view is hidden.
