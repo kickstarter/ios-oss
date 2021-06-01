@@ -79,6 +79,7 @@ final class CommentComposerView: UIView {
     // TODO: Replace this with a viewModel input for clearing body text.
     self.viewModel.inputs.bodyTextDidChange(nil)
     self.inputContainerView.inputTextView.text = nil
+    self.inputContainerView.inputTextView.resignFirstResponder()
   }
 
   // MARK: - Views

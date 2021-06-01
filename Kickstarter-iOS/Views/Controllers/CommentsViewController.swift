@@ -70,6 +70,7 @@ internal final class CommentsViewController: UITableViewController {
     self.tableView.delegate = self
     self.tableView.refreshControl = self.refreshIndicator
     self.tableView.tableFooterView = UIView()
+    self.tableView.keyboardDismissMode = .interactive
 
     self.viewModel.inputs.viewDidLoad()
   }
