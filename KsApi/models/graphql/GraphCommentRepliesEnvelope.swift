@@ -3,9 +3,9 @@ import ReactiveSwift
 
 struct GraphCommentRepliesEnvelope: Decodable {
   var comment: GraphComment
-  var replies: [GraphComment]
   var cursor: String?
   var hasPreviousPage: Bool
+  var replies: [GraphComment]
   var totalCount: Int
 }
 

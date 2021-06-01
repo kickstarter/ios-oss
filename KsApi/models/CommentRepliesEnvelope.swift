@@ -3,9 +3,9 @@ import ReactiveSwift
 
 public struct CommentRepliesEnvelope: Decodable {
   public var comment: Comment
-  public var replies: [Comment]
   public var cursor: String?
   public var hasPreviousPage: Bool
+  public var replies: [Comment]
   public var totalCount: Int
 }
 

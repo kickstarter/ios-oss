@@ -9,9 +9,9 @@ extension CommentRepliesEnvelope {
   ) -> CommentRepliesEnvelope {
     return CommentRepliesEnvelope(
       comment: Comment.comment(from: graphCommentRepliesEnvelope.comment),
-      replies: graphCommentRepliesEnvelope.replies.map(Comment.comment(from:)),
       cursor: graphCommentRepliesEnvelope.cursor,
       hasPreviousPage: graphCommentRepliesEnvelope.hasPreviousPage,
+      replies: graphCommentRepliesEnvelope.replies.map(Comment.comment(from:)),
       totalCount: graphCommentRepliesEnvelope.totalCount
     )
   }
