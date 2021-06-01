@@ -23,10 +23,16 @@ public protocol CommentCellViewModelOutputs {
   /// Emits text containing comment body.
   var body: Signal<String, Never> { get }
 
+  /// Emits a Bool determining if the bottomRowStackView is hidden.
+  var bottomRowStackViewIsHidden: Signal<Bool, Never> { get }
+
+  /// Emits a Bool determining if the flag button in the bottomColumnStackView is hidden.
+  var flagButtonIsHidden: Signal<Bool, Never> { get }
+
   /// Emits text  relative time the comment was posted.
   var postTime: Signal<String, Never> { get }
 
-  /// Emits a Bool determining if the reply and flag buttons in the bottomColumnStackView are hidden.
+  /// Emits a Bool determining if the reply button in the bottomColumnStackView are hidden.
   var replyButtonIsHidden: Signal<Bool, Never> { get }
 
   /// Emits whether or not the view replies stack view is hidden.
@@ -68,6 +74,13 @@ public final class CommentCellViewModel:
       badge.takeWhen(self.bindStylesProperty.signal)
     )
 
+    self.flagButtonIsHidden = self.commentAndProject.signal
+      .ignoreValues()
+      .map { _ in
+        AppEnvironment.current.optimizelyClient?
+          .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentFlagging.rawValue) ?? false
+      }
+
     let isLoggedOut = self.commentAndProject.signal
       .ignoreValues()
       .map { _ in AppEnvironment.current.currentUser }
@@ -82,6 +95,14 @@ public final class CommentCellViewModel:
 
     self.replyButtonIsHidden = Signal.combineLatest(isLoggedOut, isNotABacker)
       .map { isLoggedOut, isNotABacker in isLoggedOut || isNotABacker }
+
+    // If both the replyButton and flagButton should be hidden, the entire stackview will be hidden too
+    self.bottomRowStackViewIsHidden = Signal.combineLatest(
+      self.flagButtonIsHidden.signal,
+      self.replyButtonIsHidden.signal
+    ).map { flagButtonIsHidden, replyButtonIsHidden in
+      flagButtonIsHidden && replyButtonIsHidden
+    }
 
     self.viewRepliesStackViewIsHidden = comment.map(\.replyCount)
       .map { $0 == 0 }
@@ -101,6 +122,8 @@ public final class CommentCellViewModel:
   public var authorImageURL: Signal<URL, Never>
   public let authorName: Signal<String, Never>
   public let body: Signal<String, Never>
+  public let bottomRowStackViewIsHidden: Signal<Bool, Never>
+  public let flagButtonIsHidden: Signal<Bool, Never>
   public let postTime: Signal<String, Never>
   public let replyButtonIsHidden: Signal<Bool, Never>
   public let viewRepliesStackViewIsHidden: Signal<Bool, Never>
