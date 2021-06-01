@@ -181,7 +181,7 @@
 		4753C78F264EE1B100BB10B6 /* PostCommentInputTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */; };
 		47567A5D25E40E500073AD6E /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47567A5C25E40E500073AD6E /* ErrorHandler.swift */; };
 		47613FBE2652C66A006F09FF /* PostCommentMutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */; };
-		47613FC62652CD11006F09FF /* CommentTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47613FC52652CD11006F09FF /* CommentTemplate.swift */; };
+		47613FC62652CD11006F09FF /* CommentTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47613FC52652CD11006F09FF /* CommentTemplates.swift */; };
 		476A2A6425DEED2600EB6A56 /* PerimeterXTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */; };
 		477290FA264AE91800B83E10 /* CommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477290F9264AE91800B83E10 /* CommentsViewModel.swift */; };
 		477731BA25C4E7CF00AF3273 /* FirebaseRemoteConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 477731B925C4E7CF00AF3273 /* FirebaseRemoteConfig.framework */; };
@@ -410,6 +410,13 @@
 		8A072D3A230223B200BA1538 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A072D39230223B200BA1538 /* UIImage+Color.swift */; };
 		8A07CF052660344E00426B1C /* CommentRepliesViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CEFD2660344200426B1C /* CommentRepliesViewControllerTests.swift */; };
 		8A07CF1226604E8F00426B1C /* CommentRepliesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CEF52660338600426B1C /* CommentRepliesViewController.swift */; };
+		8A07CFE12665743600426B1C /* GraphCommentRepliesEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CFE02665743600426B1C /* GraphCommentRepliesEnvelope.swift */; };
+		8A07CFE92665785000426B1C /* GraphCommentRepliesEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CFE82665785000426B1C /* GraphCommentRepliesEnvelopeTests.swift */; };
+		8A07CFF426657E2400426B1C /* CommentRepliesEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CFF326657E2400426B1C /* CommentRepliesEnvelope.swift */; };
+		8A07CFF926657E8E00426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07CFF826657E8E00426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelope.swift */; };
+		8A07D00426657F7800426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelopeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07D00326657F7700426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelopeTests.swift */; };
+		8A07D00C26657FCE00426B1C /* CommentRepliesEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07D00B26657FCE00426B1C /* CommentRepliesEnvelopeTemplates.swift */; };
+		8A07D0142665814C00426B1C /* GraphCommentRepliesEnvelopeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07D0132665814C00426B1C /* GraphCommentRepliesEnvelopeTemplates.swift */; };
 		8A08B521249C3352009CF74E /* EasyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A08B520249C3352009CF74E /* EasyButton.swift */; };
 		8A0B1E2124D4B271009E90C0 /* EmptyStateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0B1E2024D4B271009E90C0 /* EmptyStateViewModelTests.swift */; };
 		8A0B1E2324D4C486009E90C0 /* GraphProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0B1E2224D4C486009E90C0 /* GraphProject.swift */; };
@@ -616,8 +623,6 @@
 		8AF91CDD22EF5AF8005F9C90 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF91CDC22EF5AF7005F9C90 /* Feature.swift */; };
 		8AFB8C97233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB8C96233E9977006779B5 /* CreatePaymentSourceInput+Constructor.swift */; };
 		8AFB8C99233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB8C98233E9A1F006779B5 /* CreatePaymentSourceInput+ConstructorTests.swift */; };
-		94114D4C265148AE0063E8F6 /* CommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D42264EE63E0063E8F6 /* CommentsDataSource.swift */; };
-		94114D53265149080063E8F6 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D47264EEA2D0063E8F6 /* CommentCell.swift */; };
 		94114D5B265305210063E8F6 /* CommentPostFailedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D5A265305200063E8F6 /* CommentPostFailedCell.swift */; };
 		94114D602653135E0063E8F6 /* CommentRemovedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D5F2653135E0063E8F6 /* CommentRemovedCell.swift */; };
 		94114D72265329770063E8F6 /* CommentCellHeaderStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D6426531F890063E8F6 /* CommentCellHeaderStackView.swift */; };
@@ -1788,7 +1793,7 @@
 		4753C78E264EE1B100BB10B6 /* PostCommentInputTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentInputTests.swift; sourceTree = "<group>"; };
 		47567A5C25E40E500073AD6E /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		47613FBD2652C66A006F09FF /* PostCommentMutationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentMutationTests.swift; sourceTree = "<group>"; };
-		47613FC52652CD11006F09FF /* CommentTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTemplate.swift; sourceTree = "<group>"; };
+		47613FC52652CD11006F09FF /* CommentTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTemplates.swift; sourceTree = "<group>"; };
 		476A2A6325DEED2600EB6A56 /* PerimeterXTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerimeterXTypes.swift; sourceTree = "<group>"; };
 		477290F9264AE91800B83E10 /* CommentsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewModel.swift; sourceTree = "<group>"; };
 		477731B925C4E7CF00AF3273 /* FirebaseRemoteConfig.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseRemoteConfig.framework; path = Carthage/Build/iOS/FirebaseRemoteConfig.framework; sourceTree = "<group>"; };
@@ -1998,6 +2003,13 @@
 		8A072D39230223B200BA1538 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		8A07CEF52660338600426B1C /* CommentRepliesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewController.swift; sourceTree = "<group>"; };
 		8A07CEFD2660344200426B1C /* CommentRepliesViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesViewControllerTests.swift; sourceTree = "<group>"; };
+		8A07CFE02665743600426B1C /* GraphCommentRepliesEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentRepliesEnvelope.swift; sourceTree = "<group>"; };
+		8A07CFE82665785000426B1C /* GraphCommentRepliesEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentRepliesEnvelopeTests.swift; sourceTree = "<group>"; };
+		8A07CFF326657E2400426B1C /* CommentRepliesEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesEnvelope.swift; sourceTree = "<group>"; };
+		8A07CFF826657E8E00426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentRepliesEnvelope+GraphCommentRepliesEnvelope.swift"; sourceTree = "<group>"; };
+		8A07D00326657F7700426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelopeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentRepliesEnvelope+GraphCommentRepliesEnvelopeTests.swift"; sourceTree = "<group>"; };
+		8A07D00B26657FCE00426B1C /* CommentRepliesEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepliesEnvelopeTemplates.swift; sourceTree = "<group>"; };
+		8A07D0132665814C00426B1C /* GraphCommentRepliesEnvelopeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphCommentRepliesEnvelopeTemplates.swift; sourceTree = "<group>"; };
 		8A08B520249C3352009CF74E /* EasyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyButton.swift; sourceTree = "<group>"; };
 		8A0B1E2024D4B271009E90C0 /* EmptyStateViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateViewModelTests.swift; sourceTree = "<group>"; };
 		8A0B1E2224D4C486009E90C0 /* GraphProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphProject.swift; sourceTree = "<group>"; };
@@ -3247,6 +3259,7 @@
 				8A41CC6E2458A0610095B15E /* GraphBackingTemplates.swift */,
 				D6ED38A11F796FE5006CAAE9 /* GraphCategoriesEnvelopeTemplate.swift */,
 				8AA407CD24DB5316008C5FB0 /* GraphCategoryTemplates.swift */,
+				8A07D0132665814C00426B1C /* GraphCommentRepliesEnvelopeTemplates.swift */,
 				8ADCCCD7264CA1A00079D308 /* GraphCommentsEnvelopeTemplates.swift */,
 				8ADCCCCF264CA18E0079D308 /* GraphCommentTemplates.swift */,
 				D63BBD32217F9CDE007E01F0 /* GraphCreditCardTemplate.swift */,
@@ -3315,11 +3328,15 @@
 				8A41CC6B2458A0480095B15E /* GraphBackingTests.swift */,
 				8AA407BF24DA43D8008C5FB0 /* GraphCategory.swift */,
 				8A555868264C4AE400C2C30D /* GraphComment.swift */,
+				8A07CFE02665743600426B1C /* GraphCommentRepliesEnvelope.swift */,
+				8A07CFE82665785000426B1C /* GraphCommentRepliesEnvelopeTests.swift */,
 				8A555863264C4AA500C2C30D /* GraphCommentsEnvelope.swift */,
 				8ADCCC8E264C72B20079D308 /* GraphCommentsEnvelopeTests.swift */,
 				8ADCCC86264C6E4A0079D308 /* GraphCommentTests.swift */,
 				8AA407C124DB0C8D008C5FB0 /* GraphCountry.swift */,
 				8A0B1E2624DA0DC3009E90C0 /* GraphLocation.swift */,
+				4753C778264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift */,
+				4753C77D264ED0F400BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift */,
 				D002CAE4218CF951009783F2 /* GraphMutationWatchProjectResponseEnvelope.swift */,
 				8A0B1E2224D4C486009E90C0 /* GraphProject.swift */,
 				8A0B1E2424D4C491009E90C0 /* GraphReward.swift */,
@@ -3332,8 +3349,6 @@
 				8A49396024B54C0C00C3C3CE /* RewardAddOnSelectionViewEnvelope.swift */,
 				8A49396224B54C3000C3C3CE /* RewardAddOnSelectionViewEnvelopeTests.swift */,
 				8AE3F72F24DA29DE002B03C3 /* adapters */,
-				4753C778264EC6DC00BB10B6 /* GraphMutationPostCommentEnvelope.swift */,
-				4753C77D264ED0F400BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift */,
 			);
 			path = graphql;
 			sourceTree = "<group>";
@@ -3345,6 +3360,8 @@
 				8A8831C424DA2B9D002BCA5E /* Backing+GraphBackingTests.swift */,
 				8ADCCCBA264C9F4C0079D308 /* Comment+GraphComment.swift */,
 				8ADCCCCA264CA13F0079D308 /* Comment+GraphCommentTests.swift */,
+				8A07CFF826657E8E00426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelope.swift */,
+				8A07D00326657F7700426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelopeTests.swift */,
 				8ADCCCB5264C9F3B0079D308 /* CommentsEnvelope+GraphCommentsEnvelope.swift */,
 				8ADCCCBF264CA1270079D308 /* CommentsEnvelope+GraphCommentsEnvelopeTests.swift */,
 				8AA407CB24DB49CE008C5FB0 /* Location+GraphLocation.swift */,
@@ -3535,9 +3552,6 @@
 				A75A29261CE0B7DD00D35E5C /* BackingCell.swift */,
 				776B1A0C2418227100B03098 /* CategoryPillCell.swift */,
 				06CACBF2264DCC060026CDFD /* CommentCell.swift */,
-				A7A052121CD12DD7005AF5E2 /* DeprecatedCommentCell.swift */,
-				5981BE421D7F59DE002E49F1 /* DeprecatedCommentsEmptyStateCell.swift */,
-				D63BBCD8217E7802007E01F0 /* CreditCardCell.swift */,
 				94114D47264EEA2D0063E8F6 /* CommentCell.swift */,
 				94114D5A265305200063E8F6 /* CommentPostFailedCell.swift */,
 				94114D5F2653135E0063E8F6 /* CommentRemovedCell.swift */,
@@ -3641,9 +3655,6 @@
 				77941D2D216FCB0100398B89 /* ChangePasswordViewControllerTests.swift */,
 				8A07CEF52660338600426B1C /* CommentRepliesViewController.swift */,
 				8A07CEFD2660344200426B1C /* CommentRepliesViewControllerTests.swift */,
-				A7A0534C1CD19C68005AF5E2 /* DeprecatedCommentDialogViewController.swift */,
-				A7180BA81CCED598001711CA /* DeprecatedCommentsViewController.swift */,
-				A7ED20341E8323E900BFFA01 /* DeprecatedCommentsViewControllerTests.swift */,
 				47AC212E264AD2590090AEDF /* CommentsViewController.swift */,
 				47AC213D264AD7E00090AEDF /* CommentsViewControllerTests.swift */,
 				3708DD44220A76FD00F8E569 /* CreatePasswordTableControllerTests.swift */,
@@ -4236,13 +4247,6 @@
 				D04AAC0A218BB70800CF713E /* ChangePasswordViewModel.swift */,
 				D04AAC13218BB70A00CF713E /* ChangePasswordViewModelTests.swift */,
 				477290F9264AE91800B83E10 /* CommentsViewModel.swift */,
-				47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */,
-				373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */,
-				373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */,
-				D63BBD36217FC224007E01F0 /* CreditCardCellViewModel.swift */,
-				D6B6876D21937182005F5DA7 /* CreditCardCellViewModelTests.swift */,
-				D660078B2416D66C00AC1EDB /* CuratedProjectsViewModel.swift */,
-				D660078F241A7C0000AC1EDB /* CuratedProjectsViewModelTests.swift */,
 				A7F441941D005A9400FE6FC5 /* DeprecatedCommentCellViewModel.swift */,
 				A7ED1F661E831C5C00BFFA01 /* DeprecatedCommentCellViewModelTests.swift */,
 				A7F441951D005A9400FE6FC5 /* DeprecatedCommentDialogViewModel.swift */,
@@ -4592,7 +4596,6 @@
 				D01587791EEB2ED6006E7684 /* Activity.swift */,
 				D015877A1EEB2ED6006E7684 /* ActivityEnvelope.swift */,
 				D015877B1EEB2ED6006E7684 /* ActivityTests.swift */,
-				D6B9F94422035E34003282A5 /* DeprecatedAuthorTests.swift */,
 				D015877C1EEB2ED6006E7684 /* Backing.swift */,
 				77272D362370AB5C003B7A9C /* BackingPaymentSourceTests.swift */,
 				8A67DDB724DDB21100B4AB10 /* BackingsEnvelope.swift */,
@@ -4607,6 +4610,7 @@
 				D0E78C3522A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift */,
 				D0E78C3722A981EE00AAB645 /* ClearUserUnseenActivityEnvelopeTests.swift */,
 				8ADCCCAD264C98A50079D308 /* Comment.swift */,
+				8A07CFF326657E2400426B1C /* CommentRepliesEnvelope.swift */,
 				8ADCCCA5264C97940079D308 /* CommentsEnvelope.swift */,
 				D01587881EEB2ED6006E7684 /* Config.swift */,
 				D67B6C9C221F458700B63A6B /* Config+Encode.swift */,
@@ -4618,6 +4622,7 @@
 				D62B1476221216A000AC05C8 /* DeletePaymentMethodEnvelope.swift */,
 				D62B14AF2212184500AC05C8 /* DeletePaymentMethodEnvelopeTests.swift */,
 				D6B9F90922035840003282A5 /* DeprecatedAuthor.swift */,
+				D6B9F94422035E34003282A5 /* DeprecatedAuthorTests.swift */,
 				D01587851EEB2ED6006E7684 /* DeprecatedComment.swift */,
 				D01587861EEB2ED6006E7684 /* DeprecatedCommentsEnvelope.swift */,
 				D01587871EEB2ED6006E7684 /* DeprecatedCommentTests.swift */,
@@ -4766,16 +4771,18 @@
 				D01587F01EEB2ED7006E7684 /* BackingTemplates.swift */,
 				D6C9A2551F75921500981E64 /* CategoryTemplates.swift */,
 				D01587F31EEB2ED7006E7684 /* ChangePaymentMethodEnvelopeTemplates.swift */,
-				D01587F51EEB2ED7006E7684 /* DeprecatedCommentsEnvelopeTemplates.swift */,
-				D01587F61EEB2ED7006E7684 /* DeprecatedCommentTemplates.swift */,
-				47613FC52652CD11006F09FF /* CommentTemplate.swift */,
+				8A07D00B26657FCE00426B1C /* CommentRepliesEnvelopeTemplates.swift */,
 				0667C88B26569CF2003FB5E3 /* CommentsEnvelopeTemplates.swift */,
+				47613FC52652CD11006F09FF /* CommentTemplates.swift */,
 				D01587F71EEB2ED7006E7684 /* ConfigTemplates.swift */,
 				D794408F2208970E00D0A747 /* CreatePaymentSourceTemplate.swift */,
+				D01587F51EEB2ED7006E7684 /* DeprecatedCommentsEnvelopeTemplates.swift */,
+				D01587F61EEB2ED7006E7684 /* DeprecatedCommentTemplates.swift */,
 				D01587F91EEB2ED7006E7684 /* DiscoveryEnvelopeTemplates.swift */,
 				D7417D0D20BF4833004DABA6 /* ExportStateEnvelopeTemplates.swift */,
 				D01587FA1EEB2ED7006E7684 /* FindFriendsEnvelopeTemplates.swift */,
 				D01587FB1EEB2ED7006E7684 /* FriendStatsEnvelopeTemplates.swift */,
+				4753C789264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift */,
 				D01587FC1EEB2ED7006E7684 /* ItemTemplates.swift */,
 				D01587FD1EEB2ED7006E7684 /* LocationTemplates.swift */,
 				D01587FE1EEB2ED7006E7684 /* MessageTemplates.swift */,
@@ -4813,7 +4820,6 @@
 				D01588181EEB2ED7006E7684 /* User.StatsTemplates.swift */,
 				D01588191EEB2ED7006E7684 /* UserTemplates.swift */,
 				8A0B1E2824DA1048009E90C0 /* graphql */,
-				4753C789264ED44100BB10B6 /* GraphMutationPostCommentEnvelopeTemplate.swift */,
 			);
 			path = templates;
 			sourceTree = "<group>";
@@ -5046,7 +5052,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = Kickstarter;
 				TargetAttributes = {
 					A755113B1C8642B3005355CF = {
@@ -5977,7 +5983,6 @@
 				0157067D1E65F0420087DD68 /* BackerDashboardProjectsViewController.swift in Sources */,
 				A762EFF31C8CC663005581A4 /* ActivityFriendFollowCell.swift in Sources */,
 				06CACBF7264DCC0F0026CDFD /* CommentCell.swift in Sources */,
-				94114D53265149080063E8F6 /* CommentCell.swift in Sources */,
 				8A4DDAB32373427000ADE31D /* PledgeStatusLabelView.swift in Sources */,
 				D6AE3F9220EA977D00DB212F /* SettingsNotificationsViewController.swift in Sources */,
 				59019FBA1D21ABD200EAEC9D /* DashboardReferrerRowStackView.swift in Sources */,
@@ -6063,7 +6068,6 @@
 				A72C3AB71D00FB1F0075227E /* DiscoveryExpandedSelectableRow.swift in Sources */,
 				37059843226F79A700BDA6E3 /* PledgeShippingLocationViewController.swift in Sources */,
 				06CACBEB264DC9480026CDFD /* CommentsDataSource.swift in Sources */,
-				94114D4C265148AE0063E8F6 /* CommentsDataSource.swift in Sources */,
 				01940B291D467ECE0074FCE3 /* HelpWebViewController.swift in Sources */,
 				8AA3DB35250AE46D009AC8EA /* SettingsAccountViewModel.swift in Sources */,
 				8AB87DF3243FF22B006D7451 /* PledgePaymentMethodAddCell.swift in Sources */,
@@ -6445,6 +6449,7 @@
 				8A0B1E2A24DA12E4009E90C0 /* GraphRewardTemplates.swift in Sources */,
 				8A555869264C4AE400C2C30D /* GraphComment.swift in Sources */,
 				8ACF36D1262745520026E74D /* MockService.swift in Sources */,
+				8A07CFE12665743600426B1C /* GraphCommentRepliesEnvelope.swift in Sources */,
 				D68F0B18243F6730009FC948 /* SignInWithAppleEnvelopeTemplates.swift in Sources */,
 				D01588D51EEB2ED7006E7684 /* UpdateDraftLenses.swift in Sources */,
 				8ACF558923E8D467001654A2 /* TryDecodable.swift in Sources */,
@@ -6467,6 +6472,7 @@
 				D015889F1EEB2ED7006E7684 /* MessageLenses.swift in Sources */,
 				D08CD1C021910C97009F89F0 /* GraphIDBridging.swift in Sources */,
 				D015888D1EEB2ED7006E7684 /* ConfigLenses.swift in Sources */,
+				8A07CFF926657E8E00426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelope.swift in Sources */,
 				D0158A1E1EEB30A2006E7684 /* ProjectStatsEnvelope.FundingDateStatsTemplates.swift in Sources */,
 				D015899B1EEB2ED7006E7684 /* Service.swift in Sources */,
 				D6ED1B39216D50BE007F7547 /* UserEmailFields.swift in Sources */,
@@ -6492,6 +6498,7 @@
 				77CD894921791B05003066DA /* ProjectStatsTemplate.swift in Sources */,
 				D01588B11EEB2ED7006E7684 /* ProjectLenses.swift in Sources */,
 				D777442F217A3382008D679F /* ChangeCurrencyInput.swift in Sources */,
+				8A07D0142665814C00426B1C /* GraphCommentRepliesEnvelopeTemplates.swift in Sources */,
 				D01588531EEB2ED7006E7684 /* ChangePaymentMethodEnvelope.swift in Sources */,
 				8A41CC6F2458A0610095B15E /* GraphBackingsEnvelopeTemplates.swift in Sources */,
 				D01588E51EEB2ED7006E7684 /* Location.swift in Sources */,
@@ -6540,6 +6547,7 @@
 				8A0B1E2524D4C491009E90C0 /* GraphReward.swift in Sources */,
 				8A49396524B54F9B00C3C3CE /* Reward+GraphReward.swift in Sources */,
 				D01588F31EEB2ED7006E7684 /* MessageThreadsEnvelope.swift in Sources */,
+				8A07CFF426657E2400426B1C /* CommentRepliesEnvelope.swift in Sources */,
 				8A4E9537244F9CEA00A578CF /* ManagePledgeViewBackingEnvelope.swift in Sources */,
 				D6C9A2561F75921500981E64 /* CategoryTemplates.swift in Sources */,
 				8AA407C624DB36E8008C5FB0 /* Project.Country+GraphCountry.swift in Sources */,
@@ -6568,6 +6576,7 @@
 				D0158A0F1EEB30A2006E7684 /* DeprecatedCommentsEnvelopeTemplates.swift in Sources */,
 				D6DC652F21768502008CF69C /* Queryable.swift in Sources */,
 				8ACF36E22627481C0026E74D /* ApiDateProtocol.swift in Sources */,
+				8A07D00C26657FCE00426B1C /* CommentRepliesEnvelopeTemplates.swift in Sources */,
 				D0158A2C1EEB30A2006E7684 /* UpdatePledgeEnvelopeTemplates.swift in Sources */,
 				D015889D1EEB2ED7006E7684 /* LocationLenses.swift in Sources */,
 				D0E78C3622A980A600AAB645 /* ClearUserUnseenActivityEnvelope.swift in Sources */,
@@ -6576,7 +6585,7 @@
 				D01588B51EEB2ED7006E7684 /* ProjectNotificationLenses.swift in Sources */,
 				8A1F155624DB609D00E0C000 /* DateFormatter+ISOFormatter.swift in Sources */,
 				D015882B1EEB2ED7006E7684 /* NSURLSession.swift in Sources */,
-				47613FC62652CD11006F09FF /* CommentTemplate.swift in Sources */,
+				47613FC62652CD11006F09FF /* CommentTemplates.swift in Sources */,
 				D79440572203A63300D0A747 /* CreatePaymentSourceEnvelope.swift in Sources */,
 				D08CD1F921910DF5009F89F0 /* UnwatchProjectMutation.swift in Sources */,
 				D6AE52281FD1B4BA00BEC788 /* CategoryEnvelope.swift in Sources */,
@@ -6656,6 +6665,7 @@
 				D0D10C101EEB4550005EBAD0 /* MessageTests.swift in Sources */,
 				77C0818E245CBA1B004ABE88 /* SignInWithAppleInputTests.swift in Sources */,
 				D0D10C151EEB4550005EBAD0 /* ProjectStatsEnvelopeTests.swift in Sources */,
+				8A07D00426657F7800426B1C /* CommentRepliesEnvelope+GraphCommentRepliesEnvelopeTests.swift in Sources */,
 				8A2C015F2589391D00EE11E7 /* ProjectActivityEnvelopeTests.swift in Sources */,
 				4753C785264ED1F000BB10B6 /* GraphMutationPostCommentEnvelopeTests.swift in Sources */,
 				D0D10C221EEB4550005EBAD0 /* UserTests.swift in Sources */,
@@ -6668,6 +6678,7 @@
 				8ADCCC87264C6E4A0079D308 /* GraphCommentTests.swift in Sources */,
 				D755ECAE23216C290096F189 /* CreateBackingInputTests.swift in Sources */,
 				D755ECB123217D5B0096F189 /* CreateBackingEnvelopeTests.swift in Sources */,
+				8A07CFE92665785000426B1C /* GraphCommentRepliesEnvelopeTests.swift in Sources */,
 				47613FBE2652C66A006F09FF /* PostCommentMutationTests.swift in Sources */,
 				D0D10C1B1EEB4550005EBAD0 /* SurveyResponseTests.swift in Sources */,
 				D0D10C1F1EEB4550005EBAD0 /* User.AvatarTests.swift in Sources */,
