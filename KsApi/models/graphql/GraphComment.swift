@@ -5,10 +5,11 @@ struct GraphComment: Decodable {
   var author: GraphAuthor
   var authorBadges: [GraphBadge]
   var body: String
-  var id: String
-  var replyCount: Int
-  var deleted: Bool
   var createdAt: TimeInterval
+  var deleted: Bool
+  var id: String
+  var parentId: String?
+  var replyCount: Int
 
   struct GraphAuthor: Decodable {
     var id: String
@@ -39,9 +40,7 @@ extension GraphComment {
       .createdAt,
       .deleted,
       .authorBadges,
-      .replies(
-        .totalCount +| []
-      )
+      .parentId
     ]
   }
 }
@@ -54,6 +53,7 @@ extension GraphComment {
     case createdAt
     case deleted
     case id
+    case parentId
     case totalCount
     case replies
   }
@@ -64,11 +64,12 @@ extension GraphComment {
     self.id = try values.decode(String.self, forKey: .id)
     self.author = try values.decode(GraphComment.GraphAuthor.self, forKey: .author)
     self.body = try values.decode(String.self, forKey: .body)
-    self.replyCount = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .replies)
-      .decode(Int.self, forKey: .totalCount)
+    self.replyCount = (try? values.nestedContainer(keyedBy: CodingKeys.self, forKey: .replies)
+      .decode(Int.self, forKey: .totalCount)) ?? 0
     self.deleted = try values.decode(Bool.self, forKey: .deleted)
     self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
     self.authorBadges = try values.decode([GraphComment.GraphBadge].self, forKey: .authorBadges)
+    self.parentId = try values.decodeIfPresent(String.self, forKey: .parentId)
   }
 }
 

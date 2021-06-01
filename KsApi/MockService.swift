@@ -52,6 +52,8 @@
 
     fileprivate let fetchCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>?
 
+    fileprivate let fetchCommentRepliesEnvelopeResult: Result<CommentRepliesEnvelope, ErrorEnvelope>?
+
     fileprivate let fetchConfigResponse: Config?
 
     fileprivate let fetchDiscoveryResponse: DiscoveryEnvelope?
@@ -235,6 +237,7 @@
       fetchCommentsResponse: [DeprecatedComment]? = nil,
       fetchCommentsError: ErrorEnvelope? = nil,
       fetchCommentsEnvelopeResult: Result<CommentsEnvelope, ErrorEnvelope>? = nil,
+      fetchCommentRepliesEnvelopeResult: Result<CommentRepliesEnvelope, ErrorEnvelope>? = nil,
       fetchConfigResponse: Config? = nil,
       fetchDiscoveryResponse: DiscoveryEnvelope? = nil,
       fetchDiscoveryError: ErrorEnvelope? = nil,
@@ -384,6 +387,8 @@
       self.fetchCommentsError = fetchCommentsError
 
       self.fetchCommentsEnvelopeResult = fetchCommentsEnvelopeResult
+
+      self.fetchCommentRepliesEnvelopeResult = fetchCommentRepliesEnvelopeResult
 
       self.fetchConfigResponse = fetchConfigResponse ?? .template
 
@@ -651,12 +656,12 @@
     }
 
     func fetchComments(query _: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-      if let error = fetchCommentsEnvelopeResult?.error {
-        return SignalProducer(error: error)
-      } else if let comments = fetchCommentsEnvelopeResult {
-        return SignalProducer(value: comments.value ?? .singleCommentTemplate)
-      }
-      return .empty
+      return producer(for: self.fetchCommentsEnvelopeResult)
+    }
+
+    func fetchCommentReplies(query _: NonEmptySet<Query>)
+      -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
+      return producer(for: self.fetchCommentRepliesEnvelopeResult)
     }
 
     internal func fetchConfig() -> SignalProducer<Config, ErrorEnvelope> {

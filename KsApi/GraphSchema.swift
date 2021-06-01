@@ -116,6 +116,7 @@ public enum GraphError: Error {
 public enum Query {
   case backing(id: String, NonEmptySet<Backing>)
   case category(id: String, NonEmptySet<Category>)
+  case comment(id: String, NonEmptySet<Comment>)
   case project(slug: String, NonEmptySet<Project>)
   case rootCategories(NonEmptySet<Category>)
   case user(NonEmptySet<User>)
@@ -139,14 +140,15 @@ public enum Query {
     case url
   }
 
-  public enum Comment {
+  public indirect enum Comment {
     case authorBadges
     case author(NonEmptySet<Author>)
     case id
+    case parentId
     case body
     case createdAt
     case deleted
-    case replies(NonEmptySet<CommentReplyCount>)
+    case replies(Set<QueryArg<Never>>, NonEmptySet<Connection<Comment>>)
 
     public enum Author {
       case id
@@ -396,6 +398,8 @@ extension Query: QueryType {
       return "backing(id: \"\(id)\") { \(join(fields)) }"
     case let .category(id, fields):
       return "node(id: \"\(id)\") { ... on Category { \(join(fields)) } }"
+    case let .comment(id: id, fields):
+      return "comment: node(id: \"\(id)\") { ... on Comment { \(join(fields)) } }"
     case let .project(slug, fields):
       return "project(slug: \"\(slug)\") { \(join(fields)) }"
     case let .rootCategories(fields):
@@ -511,9 +515,10 @@ extension Query.Comment: QueryType {
     switch self {
     case .id: return "id"
     case .authorBadges: return "authorBadges"
+    case .parentId: return "parentId"
     case let .author(fields): return "author { \(join(fields)) }"
     case .body: return "body"
-    case let .replies(fields): return "replies { \(join(fields)) }"
+    case let .replies(args, fields): return "replies\(connection(args, fields))"
     case .createdAt: return "createdAt"
     case .deleted: return "deleted"
     }
