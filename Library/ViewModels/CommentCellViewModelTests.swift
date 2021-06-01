@@ -52,7 +52,7 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testOutputs_bottomRowStackViewIsHidden_LoggedIn_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlagging.rawValue: false]
+      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: false]
 
     let user = User.template |> \.id .~ 12_345
 
@@ -69,7 +69,7 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testOutputs_bottomRowStackViewIsHidden_IsBacking_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlagging.rawValue: false]
+      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: false]
 
     let project = Project.template
       |> \.personalization.isBacking .~ true
@@ -87,7 +87,7 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testOutputs_bottomRowStackViewIsHidden_LoggedOut_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlagging.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: true]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
@@ -102,7 +102,7 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testOutputs_bottomRowStackViewIsHidden_IsNotBacking_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlagging.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: true]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
@@ -117,7 +117,7 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testOutputs_flagButtonIsHidden_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlagging.rawValue: false]
+      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: false]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
@@ -128,7 +128,7 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testOutputs_flagButtonIsHidden_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlagging.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: true]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
