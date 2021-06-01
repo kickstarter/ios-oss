@@ -45,7 +45,7 @@ public func commentsQuery(
 
 /**
  Constructs a query to fetch a `Comment`'s replies. Accepts an optional cursor to page in the
- most replies before that cursor from most recent to oldest.
+ replies before that cursor from most recent to oldest.
 
  - parameter id: A parent `Comment`'s ID to fetch replies for.
  - parameter last: An optional limit parameter, defaulted to `Query.defaultPaginationCount`.
