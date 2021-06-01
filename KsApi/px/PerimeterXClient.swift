@@ -44,7 +44,13 @@ public class PerimeterXClient: NSObject, PerimeterXClientType {
       [.Block, .Captcha].contains(response.type)
     else { return false }
 
-    NotificationCenter.default.post(name: Notification.Name.ksr_perimeterXCaptcha, object: response)
+    DispatchQueue.main.async {
+      NotificationCenter.default.post(
+        name: Notification.Name.ksr_perimeterXCaptcha,
+        object: nil,
+        userInfo: ["response": response]
+      )
+    }
 
     return true
   }
