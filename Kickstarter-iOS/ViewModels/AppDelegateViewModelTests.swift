@@ -2471,7 +2471,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     let response = MockPerimeterXBlockResponse(blockType: .Captcha)
 
-    self.vm.inputs.perimeterXCaptchaTriggered(response: response)
+    self.vm.inputs.perimeterXCaptchaTriggeredWithUserInfo(["response": response])
 
     self.goToPerimeterXCaptcha.assertValueCount(1)
     XCTAssertEqual(self.goToPerimeterXCaptcha.values.last?.type, .Captcha)
@@ -2482,7 +2482,7 @@ final class AppDelegateViewModelTests: TestCase {
 
     let response = MockPerimeterXBlockResponse(blockType: .Block)
 
-    self.vm.inputs.perimeterXCaptchaTriggered(response: response)
+    self.vm.inputs.perimeterXCaptchaTriggeredWithUserInfo(["response": response])
 
     self.goToPerimeterXCaptcha.assertValueCount(1)
     XCTAssertEqual(self.goToPerimeterXCaptcha.values.last?.type, .Block)

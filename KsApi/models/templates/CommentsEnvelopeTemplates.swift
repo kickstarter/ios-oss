@@ -9,14 +9,13 @@ extension CommentsEnvelope {
     totalCount: 1
   )
 
-  internal static let multipleCommentTemplate =
-    CommentsEnvelope(
-      comments: [Comment.template, Comment.superbackerTemplate],
-      cursor: nil,
-      hasNextPage: false,
-      slug: "slug",
-      totalCount: 2
-    )
+  internal static let multipleCommentTemplate = CommentsEnvelope(
+    comments: [Comment.template, Comment.superbackerTemplate],
+    cursor: nil,
+    hasNextPage: false,
+    slug: "slug",
+    totalCount: 2
+  )
 
   internal static let failedRemovedSuccessfulCommentsTemplate = CommentsEnvelope(
     comments: [

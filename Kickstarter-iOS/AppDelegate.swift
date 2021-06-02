@@ -294,8 +294,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         object: nil,
         queue: nil
       ) { [weak self] note in
-        guard let response = note.object as? PerimeterXBlockResponseType else { return }
-        self?.viewModel.inputs.perimeterXCaptchaTriggered(response: response)
+        self?.viewModel.inputs.perimeterXCaptchaTriggeredWithUserInfo(note.userInfo)
       }
 
     self.window?.tintColor = .ksr_create_700
