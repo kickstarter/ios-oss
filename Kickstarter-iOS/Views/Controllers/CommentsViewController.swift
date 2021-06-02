@@ -19,6 +19,8 @@ internal final class CommentsViewController: UITableViewController {
     let view = CommentComposerView(frame: frame)
     return view
   }()
+  
+  private lazy var footerView = { CommentTableViewFooter() }()
 
   private lazy var refreshIndicator: UIRefreshControl = {
     let refreshControl = UIRefreshControl()
@@ -92,6 +94,7 @@ internal final class CommentsViewController: UITableViewController {
       |> \.estimatedRowHeight .~ 100.0
       |> \.separatorInset .~ .zero
       |> \.separatorColor .~ UIColor.ksr_support_200
+      //|> \.tableFooterView .~ footerView
   }
 
   // MARK: - View Model
@@ -129,6 +132,12 @@ internal final class CommentsViewController: UITableViewController {
       .observeValues { [weak self] in
         $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
       }
+    
+    self.viewModel.outputs.shouldShowLoadMoreIndicator
+      .observeForUI()
+      .observeValues  { [weak self] shouldHide in
+        self?.footerView.shouldAnimateLoadMoreIndicator = shouldHide
+      }
   }
 
   // MARK: - Actions
@@ -146,6 +155,15 @@ extension CommentsViewController {
       self.dataSource.itemIndexAt(indexPath),
       outOf: self.dataSource.numberOfItems()
     )
+//    self.tableView.addLoading(indexPath) {
+//      self.viewModel.inputs.willDisplayRow(
+//        self.dataSource.itemIndexAt(indexPath),
+//        outOf: self.dataSource.numberOfItems()
+//      )
+//        // add your code here
+//        // append Your array and reload your tableview
+//      self.tableView.stopLoading() // stop your indicator
+//      }
 
     // TODO: Call this method after post comment is successful to clear the input field text
     // self.commentComposer.clearOnSuccess()
@@ -167,5 +185,46 @@ extension CommentsViewController {
     guard let comment = self.dataSource.comment(at: indexPath) else { return }
 
     self.viewModel.inputs.didSelectComment(comment)
+  }
+}
+
+
+private extension UITableView {
+
+  func indicatorView() -> UIActivityIndicatorView{
+      var activityIndicatorView = UIActivityIndicatorView()
+      if self.tableFooterView == nil {
+          let indicatorFrame = CGRect(x: 0, y: 0, width: self.bounds.width, height: 80)
+          activityIndicatorView = UIActivityIndicatorView(frame: indicatorFrame)
+          activityIndicatorView.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin]
+          activityIndicatorView.hidesWhenStopped = true
+
+          self.tableFooterView = activityIndicatorView
+          return activityIndicatorView
+      }
+      else {
+          return activityIndicatorView
+      }
+  }
+
+  func addLoading(_ indexPath:IndexPath, closure: @escaping (() -> Void)){
+      indicatorView().startAnimating()
+      if let lastVisibleIndexPath = self.indexPathsForVisibleRows?.last {
+          if indexPath == lastVisibleIndexPath && indexPath.row == self.numberOfRows(inSection: 0) - 1 {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                  closure()
+              }
+          }
+      }
+  }
+
+  func stopLoading() {
+      if self.tableFooterView != nil {
+          self.indicatorView().stopAnimating()
+          self.tableFooterView = nil
+      }
+      else {
+          self.tableFooterView = nil
+      }
   }
 }
