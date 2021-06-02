@@ -25,10 +25,6 @@ final class CommentTableViewFooter: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override var intrinsicContentSize: CGSize {
-    return .init(width: self.bounds.width, height: 40)
-  }
-
   private func configureViews() {
     _ = self |> \.autoresizingMask .~ .flexibleHeight
     _ = self |> \.backgroundColor .~ .ksr_white
