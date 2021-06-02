@@ -102,7 +102,7 @@ internal final class CommentsViewController: UITableViewController {
       |> \.estimatedRowHeight .~ 100.0
       |> \.separatorInset .~ .zero
       |> \.separatorColor .~ UIColor.ksr_support_200
-      |> \.tableFooterView .~ UIView()
+      |> \.tableFooterView .~ self.footerView
   }
 
   // MARK: - View Model
@@ -146,8 +146,6 @@ internal final class CommentsViewController: UITableViewController {
       .observeValues { [weak self] shouldShow in
         guard let self = self else { return }
         self.footerView.shouldShowActivityIndicator = shouldShow
-        _ = self.tableView
-          |> \.tableFooterView .~ (shouldShow ? self.footerView : nil)
       }
   }
 

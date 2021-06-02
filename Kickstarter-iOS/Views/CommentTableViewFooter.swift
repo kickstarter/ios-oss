@@ -8,6 +8,7 @@ final class CommentTableViewFooter: UIView {
   private lazy var activityIndicator: UIActivityIndicatorView = {
     let indicator = UIActivityIndicatorView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
+    indicator.hidesWhenStopped = true
     return indicator
   }()
 
