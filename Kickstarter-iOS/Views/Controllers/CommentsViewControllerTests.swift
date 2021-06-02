@@ -7,6 +7,7 @@ import XCTest
 internal final class CommentsViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
+
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
@@ -235,7 +236,21 @@ internal final class CommentsViewControllerTests: TestCase {
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
 
     Language.allLanguages.forEach { language in
-      withEnvironment(apiService: mockService, language: language, optimizelyClient: mockOptimizelyClient) {
+      withEnvironment(apiService: mockService, language: language, optimizelyClient: mockOptimizelyClient) {}
+    }
+  }
+
+  func testView_NoComments_ShouldShowEmptyState() {
+    AppEnvironment.pushEnvironment(
+      apiService: MockService(
+        fetchCommentsEnvelopeResult: .success(CommentsEnvelope.emptyCommentsTemplate)
+      ),
+      currentUser: User.template,
+      mainBundle: Bundle.framework
+    )
+
+    Language.allLanguages.forEach { language in
+      withEnvironment(currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
         let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
         parent.view.frame.size.height = 1_100
