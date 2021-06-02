@@ -8,16 +8,12 @@ final class EmptyCommentsCell: UITableViewCell, ValueCell {
 
   private lazy var noCommentsLabel: UILabel = { UILabel(frame: .zero) }()
 
-  fileprivate let viewModel: EmptyCommentsCellViewModelType =
-    EmptyCommentsCellViewModel()
-
   // MARK: - Lifecycle
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     self.bindStyles()
-    self.bindViewModel()
     self.configureViews()
   }
 
@@ -42,19 +38,14 @@ final class EmptyCommentsCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  internal func configureWith(value: Project) {
-    self.viewModel.inputs.configureWith(project: value)
+  internal func configureWith(value: Void) {
+    self.noCommentsLabel.text = Strings.No_comments_yet()
   }
 
   private func configureViews() {
     _ = (self.noCommentsLabel, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToCenterInParent()
-  }
-
-  // MARK: View Model
-
-  internal override func bindViewModel() {
-    self.noCommentsLabel.rac.text = self.viewModel.outputs.emptyText
+      |> ksr_constrainViewToEdgesInParent()
   }
 }

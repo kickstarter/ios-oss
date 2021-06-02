@@ -15,7 +15,7 @@ internal final class CommentsDataSource: ValueCellDataSource {
 
     guard !comments.isEmpty else {
       self.appendRow(
-        value: project,
+        value: (),
         cellClass: EmptyCommentsCell.self,
         toSection: section
       )
@@ -54,8 +54,8 @@ internal final class CommentsDataSource: ValueCellDataSource {
       cell.configureWith(value: value)
     case let (cell as CommentRemovedCell, value as Comment):
       cell.configureWith(value: value)
-    case let (cell as EmptyCommentsCell, value as Project):
-      cell.configureWith(value: value)
+    case let (cell as EmptyCommentsCell, _):
+      cell.configureWith(value: ())
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value).")
     }
