@@ -33,6 +33,9 @@ public protocol CommentComposerViewModelOutputs {
   /// Emits a string that should be put into the body text view.
   var bodyText: Signal<String?, Never> { get }
 
+  /// Emits when input text view's text should be cleared
+  var clearInputTextView: Signal<(), Never> { get }
+
   /// Emits a boolean that determines if the input area is hidden.
   var inputAreaHidden: Signal<Bool, Never> { get }
 
@@ -77,7 +80,7 @@ public final class CommentComposerViewModel:
 
     self.postButtonHidden = Signal.merge(
       self.configDataProperty.signal.mapConst(true).take(first: 1),
-      self.bodyText.map { ($0?.trimmed().isEmpty == true) }
+      self.bodyText.map { $0?.trimmed().isEmpty ?? true }
     )
 
     self.textViewShouldChangeReturnProperty <~ self.textViewShouldChangeProperty.signal.skipNil()
@@ -89,6 +92,7 @@ public final class CommentComposerViewModel:
       }
 
     self.inputTextViewResignFirstResponder = self.resetInputProperty.signal
+    self.clearInputTextView = self.bodyText.filter { $0 == nil }.ignoreValues()
   }
 
   private let bodyTextDidChangeProperty = MutableProperty<String?>(nil)
@@ -120,6 +124,7 @@ public final class CommentComposerViewModel:
 
   public var avatarURL: Signal<URL?, Never>
   public var bodyText: Signal<String?, Never>
+  public var clearInputTextView: Signal<(), Never>
   public var inputAreaHidden: Signal<Bool, Never>
   public var inputTextViewResignFirstResponder: Signal<(), Never>
   public var notifyDelegateDidSubmitText: Signal<String, Never>

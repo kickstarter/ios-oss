@@ -132,10 +132,10 @@ final class CommentComposerView: UIView {
   override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.bodyText
+    self.viewModel.outputs.clearInputTextView
       .observeForUI()
-      .observeValues { [weak self] text in
-        self?.inputContainerView.inputTextView.text = text
+      .observeValues { [weak self] _ in
+        self?.inputContainerView.inputTextView.text = nil
       }
 
     self.viewModel.outputs.inputTextViewResignFirstResponder
