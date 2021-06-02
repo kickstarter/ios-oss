@@ -3,7 +3,7 @@ import XCTest
 
 final class CommentTests: XCTestCase {
   func testOptimisticComment() {
-    let comment = Comment.optimisticComment(
+    let comment = Comment.createFailableComment(
       project: .template,
       user: .template,
       body: "Nice project!"

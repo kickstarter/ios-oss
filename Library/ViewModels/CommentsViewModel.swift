@@ -12,7 +12,7 @@ public protocol CommentsViewModelInputs {
   func didSelectComment(_ comment: Comment)
 
   /// Call when the User is posting a comment or reply
-  func postCommentButtonTapped(_ text: String)
+  func commentComposerDidSubmitText(_ text: String)
 
   ///  Call when pull-to-refresh is invoked.
   func refresh()
@@ -26,7 +26,7 @@ public protocol CommentsViewModelInputs {
 
 public protocol CommentsViewModelOutputs {
   /// Emits data to configure comment composer view.
-  var commentComposerData: Signal<CommentComposerViewData, Never> { get }
+  var configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never> { get }
 
   // Emits a message if there is an error from posting a comment.
   var errorMessage: Signal<String, Never> { get }
@@ -35,7 +35,7 @@ public protocol CommentsViewModelOutputs {
   var goToCommentReplies: Signal<(Comment, Project), Never> { get }
 
   /// Emits a boolean that determines if the comment input area is visible.
-  var isCommentComposerHidden: Signal<Bool, Never> { get }
+  var commentComposerViewHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if comments are currently loading.
   var isCommentsLoading: Signal<Bool, Never> { get }
@@ -88,16 +88,16 @@ public final class CommentsViewModel: CommentsViewModelType,
         AppEnvironment.current.apiService
           .postComment(input: .init(
             body: comment,
-            commentableId: "Project-\(project.id)".toBase64()
+            commentableId: project.graphID
           ))
           .materialize()
       }
 
     // TODO: Handle error and success states appropriately for the datasource item
-    self.postCommentSuccessful = postCommentEvent.values().map { $0.createComment.comment }
+    self.postCommentSuccessful = postCommentEvent.values().map { $0 }
     self.errorMessage = postCommentEvent.errors().map { $0.errorMessages.first }.skipNil()
 
-    self.commentComposerData = Signal
+    self.configureCommentComposerViewWithData = Signal
       .combineLatest(initialProject.signal, currentUser.signal)
       .takeWhen(self.viewDidLoadProperty.signal)
       .map { project, currentUser in
@@ -111,7 +111,7 @@ public final class CommentsViewModel: CommentsViewModelType,
         return (url, isBacker)
       }
 
-    self.isCommentComposerHidden = currentUser.signal
+    self.commentComposerViewHidden = currentUser.signal
       .map { user in user.isNil }
 
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
@@ -150,7 +150,7 @@ public final class CommentsViewModel: CommentsViewModelType,
       currentUser.skipNil()
     ).takePairWhen(self.postCommentButtonTappedProperty.signal.skipNil())
       .map(unpack)
-      .map(Comment.optimisticComment)
+      .map(Comment.createFailableComment)
 
     self.postCommentSubmitted = optimisticPostComment.ignoreValues()
 
@@ -183,7 +183,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   }
 
   fileprivate let postCommentButtonTappedProperty = MutableProperty<String?>(nil)
-  public func postCommentButtonTapped(_ text: String) {
+  public func commentComposerDidSubmitText(_ text: String) {
     self.postCommentButtonTappedProperty.value = text
   }
 
@@ -208,10 +208,10 @@ public final class CommentsViewModel: CommentsViewModelType,
   }
 
   public let goToCommentReplies: Signal<(Comment, Project), Never>
-  public let isCommentComposerHidden: Signal<Bool, Never>
+  public let commentComposerViewHidden: Signal<Bool, Never>
   public let isCommentsLoading: Signal<Bool, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
-  public let commentComposerData: Signal<CommentComposerViewData, Never>
+  public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let errorMessage: Signal<String, Never>
   public let postCommentSuccessful: Signal<Comment, Never>
   public var postCommentSubmitted: Signal<(), Never>

@@ -1,13 +1,17 @@
 import Foundation
+import ReactiveSwift
 
-public struct PostCommentEnvelope: Decodable {
-  public let createComment: CreateComment
+struct PostCommentEnvelope: Decodable {
+  let createComment: CreateComment
 
-  public struct CreateComment: Decodable {
-    public let comment: Comment
+  struct CreateComment: Decodable {
+    let comment: GraphComment
   }
 }
 
 extension PostCommentEnvelope {
-  public static let template = PostCommentEnvelope(createComment: CreateComment(comment: .template))
+  static func modelProducer(from envelope: PostCommentEnvelope)
+    -> SignalProducer<Comment, ErrorEnvelope> {
+    return SignalProducer(value: Comment.comment(from: envelope.createComment.comment))
+  }
 }

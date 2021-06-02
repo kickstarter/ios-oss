@@ -22,11 +22,11 @@ internal final class CommentsViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.commentComposerData.map(first)
+    self.vm.outputs.configureCommentComposerViewWithData.map(first)
       .observe(self.configureCommentComposerViewURL.observer)
-    self.vm.outputs.commentComposerData.map(second)
+    self.vm.outputs.configureCommentComposerViewWithData.map(second)
       .observe(self.configureCommentComposerViewIsBacking.observer)
-    self.vm.outputs.isCommentComposerHidden.observe(self.isCommentComposerHidden.observer)
+    self.vm.outputs.commentComposerViewHidden.observe(self.isCommentComposerHidden.observer)
     self.vm.outputs.goToCommentReplies.map(first).observe(self.goToCommentRepliesComment.observer)
     self.vm.outputs.goToCommentReplies.map(second).observe(self.goToCommentRepliesProject.observer)
     self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(first)
@@ -490,9 +490,10 @@ internal final class CommentsViewModelTests: TestCase {
 
       let bodyText = "I just posted a comment."
 
-      self.vm.inputs.postCommentButtonTapped(bodyText)
+      self.vm.inputs.commentComposerDidSubmitText(bodyText)
 
-      let optimisticComment = Comment.optimisticComment(project: .template, user: .template, body: bodyText)
+      let optimisticComment = Comment
+        .createFailableComment(project: .template, user: .template, body: bodyText)
 
       XCTAssertEqual(
         self.loadCommentsAndProjectIntoDataSourceComments.values.last?.first?.body,
@@ -508,7 +509,7 @@ internal final class CommentsViewModelTests: TestCase {
     withEnvironment(currentUser: .template) {
       let bodyText = "Posting another comment."
 
-      self.vm.inputs.postCommentButtonTapped(bodyText)
+      self.vm.inputs.commentComposerDidSubmitText(bodyText)
 
       self.postCommentSuccessful.assertValueCount(1, "Comment posted successfully")
     }

@@ -101,7 +101,7 @@ internal final class CommentsViewController: UITableViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.commentComposer.rac.hidden = self.viewModel.outputs.isCommentComposerHidden
+    self.commentComposer.rac.hidden = self.viewModel.outputs.commentComposerViewHidden
 
     self.viewModel.outputs.postCommentSubmitted
       .observeForUI()
@@ -110,7 +110,7 @@ internal final class CommentsViewController: UITableViewController {
         self?.tableView.scrollToTop()
       }
 
-    self.viewModel.outputs.commentComposerData
+    self.viewModel.outputs.configureCommentComposerViewWithData
       .observeForUI()
       .observeValues { [weak self] data in
         self?.commentComposer.configure(with: data)
@@ -124,12 +124,6 @@ internal final class CommentsViewController: UITableViewController {
           project: project
         )
         self?.tableView.reloadData()
-      }
-
-    self.viewModel.outputs.commentComposerData
-      .observeForUI()
-      .observeValues { [weak self] avatarUrl, isBacking in
-        self?.commentComposer.configure(with: (avatarUrl, isBacking))
       }
 
     self.viewModel.outputs.goToCommentReplies
@@ -174,9 +168,11 @@ extension CommentsViewController {
 
 extension CommentsViewController: CommentComposerViewDelegate {
   func commentComposerView(_: CommentComposerView, didSubmitText text: String) {
-    self.viewModel.inputs.postCommentButtonTapped(text)
+    self.viewModel.inputs.commentComposerDidSubmitText(text)
   }
 }
+
+// MARK: - Styles
 
 private let tableViewStyle: TableViewStyle = { tableView in
   tableView

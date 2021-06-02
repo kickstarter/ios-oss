@@ -21,8 +21,14 @@ final class PostCommentMutationTests: XCTestCase {
               isCreator
               name
             }
+            authorBadges
             body
+            createdAt
+            deleted
             id
+            replies {
+              totalCount
+            }
           }
         }
       }

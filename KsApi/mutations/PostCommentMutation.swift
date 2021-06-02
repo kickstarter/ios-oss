@@ -18,8 +18,14 @@ public struct PostCommentMutation<T: GraphMutationInput>: GraphMutation {
             isCreator
             name
           }
+          authorBadges
           body
+          createdAt
+          deleted
           id
+          replies {
+            totalCount
+          }
         }
       }
     }
