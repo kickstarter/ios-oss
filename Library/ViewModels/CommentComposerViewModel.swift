@@ -19,6 +19,9 @@ public protocol CommentComposerViewModelInputs {
   /// Call when the post button is pressed.
   func postButtonPressed()
 
+  /// Call when the input textview of the composer should be reset.
+  func resetInput()
+
   /// Call in  `textView(_:shouldChangeTextIn:replacementText:)` UITextView delegate method.
   func textViewShouldChange(text: String?, in range: NSRange, replacementText: String) -> Bool
 }
@@ -32,6 +35,9 @@ public protocol CommentComposerViewModelOutputs {
 
   /// Emits a boolean that determines if the input area is hidden.
   var inputAreaHidden: Signal<Bool, Never> { get }
+
+  /// Emits when the input textview should resign first responder.
+  var inputTextViewResignFirstResponder: Signal<(), Never> { get }
 
   /// Emits when composer notifies view controller of comment submitted.
   var notifyDelegateDidSubmitText: Signal<String, Never> { get }
@@ -78,6 +84,8 @@ public final class CommentComposerViewModel:
         let updatedText = currentText.replacingCharacters(in: stringRange, with: replacementText)
         return updatedText.trimmed().count <= CommentComposerConstant.characterLimit
       }
+
+    self.inputTextViewResignFirstResponder = self.resetInputProperty.signal
   }
 
   private let bodyTextDidChangeProperty = MutableProperty<String?>(nil)
@@ -95,6 +103,12 @@ public final class CommentComposerViewModel:
     self.postButtonPressedProperty.value = ()
   }
 
+  fileprivate let resetInputProperty = MutableProperty(())
+  public func resetInput() {
+    self.bodyTextDidChange(nil)
+    self.resetInputProperty.value = ()
+  }
+
   private let textViewShouldChangeProperty = MutableProperty<(String?, NSRange, String)?>(nil)
   private let textViewShouldChangeReturnProperty = MutableProperty<Bool>(false)
   public func textViewShouldChange(text: String?, in range: NSRange, replacementText: String) -> Bool {
@@ -105,6 +119,7 @@ public final class CommentComposerViewModel:
   public var avatarURL: Signal<URL?, Never>
   public var bodyText: Signal<String?, Never>
   public var inputAreaHidden: Signal<Bool, Never>
+  public var inputTextViewResignFirstResponder: Signal<(), Never>
   public var notifyDelegateDidSubmitText: Signal<String, Never>
   public var placeholderHidden: Signal<Bool, Never>
   public var postButtonHidden: Signal<Bool, Never>

@@ -73,9 +73,7 @@ final class CommentComposerView: UIView {
   }
 
   public func resetInput() {
-    self.viewModel.inputs.bodyTextDidChange(nil)
-    self.inputContainerView.inputTextView.text = nil
-    self.inputContainerView.inputTextView.resignFirstResponder()
+    self.viewModel.inputs.resetInput()
   }
 
   // MARK: - Views
@@ -133,6 +131,18 @@ final class CommentComposerView: UIView {
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.bodyText
+      .observeForUI()
+      .observeValues { [weak self] text in
+        self?.inputContainerView.inputTextView.text = text
+      }
+
+    self.viewModel.outputs.inputTextViewResignFirstResponder
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.inputContainerView.inputTextView.resignFirstResponder()
+      }
 
     self.inputContainerView.placeholderLabel.rac.hidden = self.viewModel.outputs.placeholderHidden
     self.inputContainerView.postButton.rac.hidden = self.viewModel.outputs.postButtonHidden

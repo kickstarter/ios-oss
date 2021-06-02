@@ -25,6 +25,9 @@ public protocol CommentsViewModelInputs {
 }
 
 public protocol CommentsViewModelOutputs {
+  /// Emits a boolean that determines if the comment input area is visible.
+  var commentComposerViewHidden: Signal<Bool, Never> { get }
+
   /// Emits data to configure comment composer view.
   var configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never> { get }
 
@@ -33,9 +36,6 @@ public protocol CommentsViewModelOutputs {
 
   /// Emits the selected `Comment` and `Project` to navigate to its replies.
   var goToCommentReplies: Signal<(Comment, Project), Never> { get }
-
-  /// Emits a boolean that determines if the comment input area is visible.
-  var commentComposerViewHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if comments are currently loading.
   var isCommentsLoading: Signal<Bool, Never> { get }
@@ -82,21 +82,6 @@ public final class CommentsViewModel: CommentsViewModelType,
         )
       }
 
-    let postCommentEvent = initialProject
-      .takePairWhen(self.postCommentButtonTappedProperty.signal.skipNil())
-      .switchMap { project, comment in
-        AppEnvironment.current.apiService
-          .postComment(input: .init(
-            body: comment,
-            commentableId: project.graphID
-          ))
-          .materialize()
-      }
-
-    // TODO: Handle error and success states appropriately for the datasource item
-    self.postCommentSuccessful = postCommentEvent.values().map { $0 }
-    self.errorMessage = postCommentEvent.errors().map { $0.errorMessages.first }.skipNil()
-
     self.configureCommentComposerViewWithData = Signal
       .combineLatest(initialProject.signal, currentUser.signal)
       .takeWhen(self.viewDidLoadProperty.signal)
@@ -113,6 +98,21 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     self.commentComposerViewHidden = currentUser.signal
       .map { user in user.isNil }
+
+    let postCommentEvent = initialProject
+      .takePairWhen(self.postCommentButtonTappedProperty.signal.skipNil())
+      .switchMap { project, comment in
+        AppEnvironment.current.apiService
+          .postComment(input: .init(
+            body: comment,
+            commentableId: project.graphID
+          ))
+          .materialize()
+      }
+
+    // TODO: Handle error and success states appropriately for the datasource item
+    self.postCommentSuccessful = postCommentEvent.values().map { $0 }
+    self.errorMessage = postCommentEvent.errors().map { $0.errorMessages.first }.skipNil()
 
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total in row >= total - 3 }
@@ -207,12 +207,12 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
-  public let goToCommentReplies: Signal<(Comment, Project), Never>
   public let commentComposerViewHidden: Signal<Bool, Never>
-  public let isCommentsLoading: Signal<Bool, Never>
-  public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let errorMessage: Signal<String, Never>
+  public let goToCommentReplies: Signal<(Comment, Project), Never>
+  public let isCommentsLoading: Signal<Bool, Never>
+  public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
   public let postCommentSuccessful: Signal<Comment, Never>
   public var postCommentSubmitted: Signal<(), Never>
 

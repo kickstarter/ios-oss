@@ -18,6 +18,7 @@ internal final class CommentsViewModelTests: TestCase {
   private let loadCommentsAndProjectIntoDataSourceComments = TestObserver<[Comment], Never>()
   private let loadCommentsAndProjectIntoDataSourceProject = TestObserver<Project, Never>()
   private let postCommentSuccessful = TestObserver<Comment, Never>()
+  private let postCommentSubmitted = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()
@@ -35,6 +36,7 @@ internal final class CommentsViewModelTests: TestCase {
       .observe(self.loadCommentsAndProjectIntoDataSourceProject.observer)
     self.vm.outputs.isCommentsLoading.observe(self.isCommentsLoading.observer)
     self.vm.outputs.postCommentSuccessful.observe(self.postCommentSuccessful.observer)
+    self.vm.outputs.postCommentSubmitted.observe(self.postCommentSubmitted.observer)
   }
 
   func testOutput_ConfigureCommentComposerViewWithData_IsLoggedOut() {
@@ -475,7 +477,7 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-  func testOptimisticComment() {
+  func testDataSourceContainsFailableComment() {
     self.vm.inputs.configureWith(project: .template, update: nil)
 
     let envelope = CommentsEnvelope.singleCommentTemplate
@@ -495,6 +497,8 @@ internal final class CommentsViewModelTests: TestCase {
       let optimisticComment = Comment
         .createFailableComment(project: .template, user: .template, body: bodyText)
 
+      self.postCommentSubmitted.assertDidEmitValue()
+
       XCTAssertEqual(
         self.loadCommentsAndProjectIntoDataSourceComments.values.last?.first?.body,
         optimisticComment.body
@@ -502,7 +506,7 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-  func testPostComment() {
+  func testPostCommentSuccessful() {
     self.vm.inputs.configureWith(project: .template, update: nil)
     self.vm.inputs.viewDidLoad()
 

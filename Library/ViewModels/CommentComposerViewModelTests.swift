@@ -12,6 +12,7 @@ final class CommentComposerViewModelTests: TestCase {
   private let notifyDelegateDidSubmitText = TestObserver<String, Never>()
   private let postButtonHidden = TestObserver<Bool, Never>()
   private let placeholderHidden = TestObserver<Bool, Never>()
+  private let inputTextViewResignFirstResponder = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()
@@ -22,6 +23,7 @@ final class CommentComposerViewModelTests: TestCase {
     self.vm.outputs.notifyDelegateDidSubmitText.observe(self.notifyDelegateDidSubmitText.observer)
     self.vm.outputs.postButtonHidden.observe(self.postButtonHidden.observer)
     self.vm.outputs.placeholderHidden.observe(self.placeholderHidden.observer)
+    self.vm.outputs.inputTextViewResignFirstResponder.observe(self.inputTextViewResignFirstResponder.observer)
   }
 
   func testPostingCommentFlow() {
@@ -50,8 +52,9 @@ final class CommentComposerViewModelTests: TestCase {
     self.bodyText.assertValues(["Nice Project.", "Nice Project. Cheers!"])
     self.notifyDelegateDidSubmitText.assertValues(["Nice Project. Cheers!"])
 
-    self.vm.inputs.bodyTextDidChange(nil)
+    self.vm.inputs.resetInput()
     self.bodyText.assertValues(["Nice Project.", "Nice Project. Cheers!", nil])
+    self.inputTextViewResignFirstResponder.assertDidEmitValue()
   }
 
   func testAvatarURL() {
