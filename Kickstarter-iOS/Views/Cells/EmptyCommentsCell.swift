@@ -38,7 +38,7 @@ final class EmptyCommentsCell: UITableViewCell, ValueCell {
 
   // MARK: - Configuration
 
-  internal func configureWith(value: Void) {
+  internal func configureWith(value _: Void) {
     self.noCommentsLabel.text = Strings.No_comments_yet()
   }
 
