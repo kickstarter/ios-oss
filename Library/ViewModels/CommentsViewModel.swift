@@ -157,10 +157,8 @@ public final class CommentsViewModel: CommentsViewModelType,
     let commentsWithOptimisticPostComment = Signal
       .combineLatest(comments, optimisticPostComment)
       .map { loadedComments, optimisticComment -> [Comment] in
-        var comments = loadedComments
-        comments.insert(optimisticComment, at: 0)
-        return comments
-      }
+        [optimisticComment] + loadedComments
+      }.map { $0 as Array }
 
     let commentsAndProject = Signal.combineLatest(
       Signal.merge(comments, commentsWithOptimisticPostComment),

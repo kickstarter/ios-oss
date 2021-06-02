@@ -60,7 +60,10 @@ public final class CommentComposerViewModel:
   CommentComposerViewModelOutputs {
   public init() {
     self.avatarURL = self.configDataProperty.signal.skipNil().map(\.avatarURL)
-    self.bodyText = self.bodyTextDidChangeProperty.signal
+    self.bodyText = Signal.merge(
+      self.bodyTextDidChangeProperty.signal,
+      self.resetInputProperty.signal.mapConst(nil)
+    )
     self.inputAreaHidden = self.configDataProperty.signal.skipNil().map(\.isBacking).negate()
 
     self.notifyDelegateDidSubmitText = self.bodyText.skipNil()
@@ -69,12 +72,12 @@ public final class CommentComposerViewModel:
 
     self.placeholderHidden = Signal.merge(
       self.configDataProperty.signal.mapConst(false).take(first: 1),
-      self.bodyText.map { !($0?.isEmpty ?? true) }
+      self.bodyText.map { $0?.isEmpty == false }
     )
 
     self.postButtonHidden = Signal.merge(
       self.configDataProperty.signal.mapConst(true).take(first: 1),
-      self.bodyText.map { ($0?.trimmed().isEmpty ?? true) }
+      self.bodyText.map { ($0?.trimmed().isEmpty == true) }
     )
 
     self.textViewShouldChangeReturnProperty <~ self.textViewShouldChangeProperty.signal.skipNil()
@@ -105,7 +108,6 @@ public final class CommentComposerViewModel:
 
   fileprivate let resetInputProperty = MutableProperty(())
   public func resetInput() {
-    self.bodyTextDidChange(nil)
     self.resetInputProperty.value = ()
   }
 
