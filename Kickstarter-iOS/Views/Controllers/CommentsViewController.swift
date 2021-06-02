@@ -141,14 +141,14 @@ internal final class CommentsViewController: UITableViewController {
         $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
       }
 
-//    self.viewModel.outputs.shouldShowLoadMoreIndicator
-//      .observeForUI()
-//      .observeValues { [weak self] shouldShow in
-//        guard let self = self else { return }
-//        self.footerView.shouldShowActivityIndicator = shouldShow
-//        _ = self.tableView
-//          |> \.tableFooterView .~ (shouldShow ? self.footerView : nil)
-//      }
+    self.viewModel.outputs.shouldShowLoadMoreIndicator
+      .observeForUI()
+      .observeValues { [weak self] shouldShow in
+        guard let self = self else { return }
+        self.footerView.shouldShowActivityIndicator = shouldShow
+        _ = self.tableView
+          |> \.tableFooterView .~ (shouldShow ? self.footerView : nil)
+      }
   }
 
   // MARK: - Actions
