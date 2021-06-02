@@ -4,15 +4,15 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol CommentsViewModelInputs {
+  /// Call when the User is posting a comment or reply
+  func commentComposerDidSubmitText(_ text: String)
+
   /// Call with the project/update that we are viewing comments for. Both can be provided to minimize
   /// the number of API requests made, but it will be assumed we are viewing the comments for the update.
   func configureWith(project: Project?, update: Update?)
 
   /// Call with a `Comment` when it is selected.
   func didSelectComment(_ comment: Comment)
-
-  /// Call when the User is posting a comment or reply
-  func commentComposerDidSubmitText(_ text: String)
 
   ///  Call when pull-to-refresh is invoked.
   func refresh()

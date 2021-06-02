@@ -488,6 +488,8 @@ internal final class CommentsViewModelTests: TestCase {
     ) {
       self.vm.inputs.viewDidLoad()
 
+      self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
+
       self.scheduler.advance()
 
       let bodyText = "I just posted a comment."

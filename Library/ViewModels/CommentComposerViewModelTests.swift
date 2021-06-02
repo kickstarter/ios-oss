@@ -6,13 +6,13 @@ import XCTest
 final class CommentComposerViewModelTests: TestCase {
   private let vm: CommentComposerViewModelType = CommentComposerViewModel()
 
-  private let bodyText = TestObserver<String?, Never>()
   private let avatarURL = TestObserver<URL?, Never>()
+  private let bodyText = TestObserver<String?, Never>()
   private let inputAreaHidden = TestObserver<Bool, Never>()
-  private let notifyDelegateDidSubmitText = TestObserver<String, Never>()
-  private let postButtonHidden = TestObserver<Bool, Never>()
-  private let placeholderHidden = TestObserver<Bool, Never>()
   private let inputTextViewResignFirstResponder = TestObserver<(), Never>()
+  private let notifyDelegateDidSubmitText = TestObserver<String, Never>()
+  private let placeholderHidden = TestObserver<Bool, Never>()
+  private let postButtonHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
