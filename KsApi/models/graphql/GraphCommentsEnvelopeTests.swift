@@ -82,6 +82,7 @@ final class GraphCommentsEnvelopeTests: XCTestCase {
       let envelope = try JSONDecoder().decode(GraphCommentsEnvelope.self, from: data)
 
       XCTAssertEqual(envelope.comments[0].id, "Q29tbWVudC0zMDQ5MDQ2NA==")
+      XCTAssertNil(envelope.comments[0].parentId)
       XCTAssertEqual(envelope.comments[0].body, "I have not received a survey yet either.")
       XCTAssertEqual(envelope.comments[0].author.id, decompose(id: "VXNlci0xOTE1MDY0NDY3")?.description)
       XCTAssertTrue(envelope.comments[0].author.isCreator)
