@@ -6,8 +6,10 @@ import UIKit
 final class EmptyCommentsCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private lazy var noCommentsLabel: PaddingLabel = { PaddingLabel(frame: .zero,
-                                                                  edgeInsets: UIEdgeInsets(all: Styles.grid(6))) }()
+  private lazy var noCommentsLabel: PaddingLabel = { PaddingLabel(
+    frame: .zero,
+    edgeInsets: UIEdgeInsets(all: Styles.grid(6))
+  ) }()
 
   // MARK: - Lifecycle
 
@@ -26,7 +28,7 @@ final class EmptyCommentsCell: UITableViewCell, ValueCell {
 
   override func bindStyles() {
     super.bindStyles()
-    
+
     _ = self
       |> baseTableViewCellStyle()
 

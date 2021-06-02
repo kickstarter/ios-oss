@@ -130,7 +130,7 @@ internal final class CommentsViewController: UITableViewController {
       .observeValues { [weak self] in
         $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
       }
-    
+
     self.viewModel.outputs.isCellSeparatorHidden
       .observeForUI()
       .observeValues { [weak self] isHidden in

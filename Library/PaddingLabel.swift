@@ -16,12 +16,12 @@ public class PaddingLabel: UILabel {
       height: size.height + self.insets.top + self.insets.bottom
     )
   }
-  
+
   // MARK: Initializers
-  
+
   public convenience init(frame: CGRect, edgeInsets: UIEdgeInsets) {
     self.init(frame: frame)
-    
+
     self.insets = edgeInsets
   }
 }

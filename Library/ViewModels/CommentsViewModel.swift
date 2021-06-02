@@ -36,7 +36,7 @@ public protocol CommentsViewModelOutputs {
 
   /// Emits a boolean that determines if comments are currently loading.
   var isCommentsLoading: Signal<Bool, Never> { get }
-  
+
   /// Emits a boolean that determines if cell separator is to be hidden.
   var isCellSeparatorHidden: Signal<Bool, Never> { get }
 
@@ -112,7 +112,7 @@ public final class CommentsViewModel: CommentsViewModelType,
     let commentsAndProject = Signal.combineLatest(comments, initialProject)
 
     let hideCellSeparator = comments.map { $0.count <= .zero }
-    
+
     self.loadCommentsAndProjectIntoDataSource = commentsAndProject
     self.isCommentsLoading = isLoading
     self.isCellSeparatorHidden = hideCellSeparator
