@@ -102,7 +102,7 @@ internal final class CommentsViewController: UITableViewController {
       |> \.estimatedRowHeight .~ 100.0
       |> \.separatorInset .~ .zero
       |> \.separatorColor .~ UIColor.ksr_support_200
-      |> \.tableFooterView .~ self.footerView
+      |> \.tableFooterView .~ UIView()
   }
 
   // MARK: - View Model
@@ -141,11 +141,14 @@ internal final class CommentsViewController: UITableViewController {
         $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
       }
 
-    self.viewModel.outputs.shouldShowLoadMoreIndicator
-      .observeForUI()
-      .observeValues { [weak self] shouldShow in
-        self?.footerView.shouldShowActivityIndicator = shouldShow
-      }
+//    self.viewModel.outputs.shouldShowLoadMoreIndicator
+//      .observeForUI()
+//      .observeValues { [weak self] shouldShow in
+//        guard let self = self else { return }
+//        self.footerView.shouldShowActivityIndicator = shouldShow
+//        _ = self.tableView
+//          |> \.tableFooterView .~ (shouldShow ? self.footerView : nil)
+//      }
   }
 
   // MARK: - Actions
