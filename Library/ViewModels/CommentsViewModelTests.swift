@@ -358,7 +358,7 @@ internal final class CommentsViewModelTests: TestCase {
 
         self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template])
         self.isCommentsLoading.assertValues([true, false, true])
-        self.shouldShowLoadMoreIndicator.assertValues([true])
+        self.shouldShowLoadMoreIndicator.assertValues([false, true])
 
         self.scheduler.advance()
 
@@ -402,7 +402,7 @@ internal final class CommentsViewModelTests: TestCase {
 
       withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(updatedEnvelope))) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
-        self.shouldShowLoadMoreIndicator.assertValues([true])
+        self.shouldShowLoadMoreIndicator.assertValues([false, true])
 
         self.loadCommentsAndProjectIntoDataSourceComments.assertValues(
           [envelope.comments],
@@ -423,7 +423,7 @@ internal final class CommentsViewModelTests: TestCase {
         self.isCommentsLoading.assertValues([true, false, true, false])
 
         self.vm.inputs.willDisplayRow(5, outOf: 10)
-        self.shouldShowLoadMoreIndicator.assertValues([true, false])
+        self.shouldShowLoadMoreIndicator.assertValues([false, true, false])
       }
     }
   }

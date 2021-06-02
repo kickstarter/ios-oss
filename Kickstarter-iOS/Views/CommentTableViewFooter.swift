@@ -8,9 +8,16 @@ final class CommentTableViewFooter: UIView {
   private lazy var activityIndicator: UIActivityIndicatorView = {
     let indicator = UIActivityIndicatorView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
-    indicator.startAnimating()
     return indicator
   }()
+
+  public var shouldShowActivityIndicator: Bool = false {
+    didSet {
+      shouldShowActivityIndicator
+        ? activityIndicator.startAnimating()
+        : activityIndicator.stopAnimating()
+    }
+  }
 
   // MARK: - Lifecycle
 

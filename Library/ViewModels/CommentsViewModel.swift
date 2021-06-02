@@ -152,8 +152,11 @@ public final class CommentsViewModel: CommentsViewModelType,
       }
       .withLatestFrom(initialProject)
 
-    self.shouldShowLoadMoreIndicator = self.willDisplayRowProperty.signal.skipNil()
-      .map { row, total in row >= total - 3 }
+    self.shouldShowLoadMoreIndicator = Signal
+      .combineLatest(isCloseToBottom.mapConst(true), self.isCommentsLoading)
+      .map { isCloseToBottom, isCommentsLoading in
+        isCloseToBottom && isCommentsLoading
+      }
   }
 
   private let didSelectCommentProperty = MutableProperty<Comment?>(nil)

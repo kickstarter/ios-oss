@@ -11,7 +11,7 @@ private enum Layout {
   }
 
   enum Footer {
-    static let height: CGFloat = 40.0
+    static let height: CGFloat = 80.0
   }
 }
 
@@ -21,6 +21,12 @@ internal final class CommentsViewController: UITableViewController {
   private lazy var commentComposer: CommentComposerView = {
     let frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: Layout.Composer.originalHeight)
     let view = CommentComposerView(frame: frame)
+    return view
+  }()
+
+  private lazy var footerView: CommentTableViewFooter = {
+    let frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: Layout.Footer.height)
+    let view = CommentTableViewFooter(frame: frame)
     return view
   }()
 
@@ -96,7 +102,7 @@ internal final class CommentsViewController: UITableViewController {
       |> \.estimatedRowHeight .~ 100.0
       |> \.separatorInset .~ .zero
       |> \.separatorColor .~ UIColor.ksr_support_200
-      |> \.tableFooterView .~ UIView()
+      |> \.tableFooterView .~ self.footerView
   }
 
   // MARK: - View Model
@@ -138,15 +144,7 @@ internal final class CommentsViewController: UITableViewController {
     self.viewModel.outputs.shouldShowLoadMoreIndicator
       .observeForUI()
       .observeValues { [weak self] shouldShow in
-        self?.tableView.tableFooterView = shouldShow
-          ?
-          CommentTableViewFooter(frame: CGRect(
-            x: 0,
-            y: 0,
-            width: UIScreen.main.bounds.width,
-            height: Layout.Footer.height
-          ))
-          : nil
+        self?.footerView.shouldShowActivityIndicator = shouldShow
       }
   }
 
