@@ -14,14 +14,14 @@ internal final class CommentsDataSource: ValueCellDataSource {
     self.clearValues(section: section)
 
     guard !comments.isEmpty else {
-      self.appendRow(
-        value: (),
-        cellClass: EmptyCommentsCell.self,
-        toSection: section
-      )
+      self.appendRow(value: (),
+                     cellClass: EmptyCommentsCell.self,
+                     toSection: section)
 
       return
     }
+    
+    self.clearValues(section: Section.empty.rawValue)
 
     comments.forEach { comment in
       switch comment.status {
