@@ -59,6 +59,7 @@ internal final class CommentsViewController: UITableViewController {
     self.tableView.registerCellClass(CommentCell.self)
     self.tableView.registerCellClass(CommentPostFailedCell.self)
     self.tableView.registerCellClass(CommentRemovedCell.self)
+    self.tableView.registerCellClass(EmptyCommentsCell.self)
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
     self.tableView.refreshControl = self.refreshIndicator

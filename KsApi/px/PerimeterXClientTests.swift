@@ -50,20 +50,13 @@ final class PerimeterXClientTests: XCTestCase {
       return
     }
 
-    var notification: Notification?
+    XCTAssertTrue(client.handleError(response: response, and: data!))
 
-    let token = NotificationCenter.default.addObserver(
-      forName: Notification.Name.ksr_perimeterXCaptcha,
-      object: nil,
-      queue: nil
-    ) { note in
-      notification = note
+    expectation(forNotification: Notification.Name.ksr_perimeterXCaptcha, object: nil) { note in
+      Thread.isMainThread && (note.userInfo?["response"] as? PerimeterXBlockResponseType)?.type == .Captcha
     }
 
-    XCTAssertTrue(client.handleError(response: response, and: data!))
-    XCTAssertNotNil(notification)
-
-    NotificationCenter.default.removeObserver(token)
+    waitForExpectations(timeout: 0.01, handler: nil)
   }
 
   func testHandleError_StatusCode_403_Block() {
@@ -82,20 +75,13 @@ final class PerimeterXClientTests: XCTestCase {
       return
     }
 
-    var notification: Notification?
+    XCTAssertTrue(client.handleError(response: response, and: data!))
 
-    let token = NotificationCenter.default.addObserver(
-      forName: Notification.Name.ksr_perimeterXCaptcha,
-      object: nil,
-      queue: nil
-    ) { note in
-      notification = note
+    expectation(forNotification: Notification.Name.ksr_perimeterXCaptcha, object: nil) { note in
+      Thread.isMainThread && (note.userInfo?["response"] as? PerimeterXBlockResponseType)?.type == .Block
     }
 
-    XCTAssertTrue(client.handleError(response: response, and: data!))
-    XCTAssertNotNil(notification)
-
-    NotificationCenter.default.removeObserver(token)
+    waitForExpectations(timeout: 0.01, handler: nil)
   }
 
   func testHandleError_StatusCode_200() {

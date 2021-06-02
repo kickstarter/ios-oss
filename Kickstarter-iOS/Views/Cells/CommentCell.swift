@@ -103,8 +103,9 @@ final class CommentCell: UITableViewCell, ValueCell {
 
   internal override func bindViewModel() {
     self.bodyTextView.rac.text = self.viewModel.outputs.body
+    self.bottomRowStackView.rac.hidden = self.viewModel.outputs.bottomRowStackViewIsHidden
+    self.flagButton.rac.hidden = self.viewModel.outputs.flagButtonIsHidden
     self.replyButton.rac.hidden = self.viewModel.outputs.replyButtonIsHidden
-
     self.viewRepliesStackView.rac.hidden = self.viewModel.outputs.viewRepliesStackViewIsHidden
   }
 }
