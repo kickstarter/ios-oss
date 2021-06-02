@@ -95,7 +95,7 @@ internal final class CommentsViewControllerTests: TestCase {
     }
   }
 
-  func testView_CurrentUser_LoggedIn_IsBacking_FeatureFlag_True() {
+  func testView_CurrentUser_LoggedIn_IsBacking_CommentFlaggingDisabledFeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: true]
 
@@ -123,7 +123,35 @@ internal final class CommentsViewControllerTests: TestCase {
     }
   }
 
-  func testView_CurrentUser_LoggedIn_IsBacking_FeatureFlag_False() {
+  func testView_CurrentUser_LoggedIn_IsBacking_CommentThreadingRepliesDisabledFeatureFlag_True() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesDisabled.rawValue: true]
+
+    let mockService =
+      MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
+
+    let project = Project.template
+      |> \.personalization.isBacking .~ true
+
+    Language.allLanguages.forEach { language in
+      withEnvironment(
+        apiService: mockService,
+        currentUser: .template,
+        language: language,
+        optimizelyClient: mockOptimizelyClient
+      ) {
+        let controller = CommentsViewController.configuredWith(project: project)
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_100
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+      }
+    }
+  }
+
+  func testView_CurrentUser_LoggedIn_IsBacking_CommentFlaggingDisabledFeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: false]
 
@@ -151,9 +179,57 @@ internal final class CommentsViewControllerTests: TestCase {
     }
   }
 
-  func testView_CurrentUser_LoggedOut_FeatureFlag_True() {
+  func testView_CurrentUser_LoggedIn_IsBacking_CommentThreadingRepliesDisabledFeatureFlag_False() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesDisabled.rawValue: false]
+
+    let mockService =
+      MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
+
+    let project = Project.template
+      |> \.personalization.isBacking .~ true
+
+    Language.allLanguages.forEach { language in
+      withEnvironment(
+        apiService: mockService,
+        currentUser: .template,
+        language: language,
+        optimizelyClient: mockOptimizelyClient
+      ) {
+        let controller = CommentsViewController.configuredWith(project: project)
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_100
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+      }
+    }
+  }
+
+  func testView_CurrentUser_LoggedOut_CommentFlaggingDisabledFeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: true]
+
+    let mockService =
+      MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
+
+    Language.allLanguages.forEach { language in
+      withEnvironment(apiService: mockService, language: language, optimizelyClient: mockOptimizelyClient) {
+        let controller = CommentsViewController.configuredWith(project: .template)
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_100
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+      }
+    }
+  }
+
+  func testView_CurrentUser_LoggedOut_CommentThreadingRepliesDisabledFeatureFlag_True() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesDisabled.rawValue: true]
 
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
