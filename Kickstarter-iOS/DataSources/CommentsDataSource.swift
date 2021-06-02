@@ -24,7 +24,7 @@ internal final class CommentsDataSource: ValueCellDataSource {
     }
 
     self.clearValues(section: Section.empty.rawValue)
-
+    
     comments.forEach { comment in
       switch comment.status {
       case .failed:
