@@ -152,11 +152,17 @@ internal final class CommentsViewController: UITableViewController {
         $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
       }
 
-    self.viewModel.outputs.shouldShowIndicator
+    self.viewModel.outputs.shouldShowLoadingIndicator
       .observeForUI()
       .observeValues { [weak self] shouldShow in
         guard let self = self else { return }
         self.footerView.shouldShowActivityIndicator = shouldShow
+      }
+
+    self.viewModel.outputs.isCellSeparatorHidden
+      .observeForUI()
+      .observeValues { [weak self] isHidden in
+        self?.tableView.separatorStyle = isHidden ? .none : .singleLine
       }
   }
 

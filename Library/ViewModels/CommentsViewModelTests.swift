@@ -9,6 +9,7 @@ import XCTest
 internal final class CommentsViewModelTests: TestCase {
   private let vm: CommentsViewModelType = CommentsViewModel()
 
+  private let isCellSeparatorHidden = TestObserver<Bool, Never>()
   private let configureCommentComposerViewURL = TestObserver<URL?, Never>()
   private let configureCommentComposerViewIsBacking = TestObserver<Bool, Never>()
   private let goToCommentRepliesComment = TestObserver<Comment, Never>()
@@ -17,13 +18,14 @@ internal final class CommentsViewModelTests: TestCase {
   private let isCommentsLoading = TestObserver<Bool, Never>()
   private let loadCommentsAndProjectIntoDataSourceComments = TestObserver<[Comment], Never>()
   private let loadCommentsAndProjectIntoDataSourceProject = TestObserver<Project, Never>()
-  private let shouldShowIndicator = TestObserver<Bool, Never>()
+  private let shouldShowLoadingIndicator = TestObserver<Bool, Never>()
   private let postCommentSuccessful = TestObserver<Comment, Never>()
   private let postCommentSubmitted = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.isCellSeparatorHidden.observe(self.isCellSeparatorHidden.observer)
     self.vm.outputs.configureCommentComposerViewWithData.map(first)
       .observe(self.configureCommentComposerViewURL.observer)
     self.vm.outputs.configureCommentComposerViewWithData.map(second)
@@ -36,7 +38,7 @@ internal final class CommentsViewModelTests: TestCase {
     self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(second)
       .observe(self.loadCommentsAndProjectIntoDataSourceProject.observer)
     self.vm.outputs.isCommentsLoading.observe(self.isCommentsLoading.observer)
-    self.vm.outputs.shouldShowIndicator.observe(self.shouldShowIndicator.observer)
+    self.vm.outputs.shouldShowLoadingIndicator.observe(self.shouldShowLoadingIndicator.observer)
     self.vm.outputs.postCommentSuccessful.observe(self.postCommentSuccessful.observer)
     self.vm.outputs.postCommentSubmitted.observe(self.postCommentSubmitted.observer)
   }
@@ -358,7 +360,7 @@ internal final class CommentsViewModelTests: TestCase {
 
         self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template])
         self.isCommentsLoading.assertValues([true, false, true])
-        self.shouldShowIndicator.assertValues([false, true])
+        self.shouldShowLoadingIndicator.assertValues([false, true])
 
         self.scheduler.advance()
 
@@ -370,7 +372,7 @@ internal final class CommentsViewModelTests: TestCase {
         )
         self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template, .template])
         self.isCommentsLoading.assertValues([true, false, true, false])
-        self.shouldShowIndicator.assertValues([false, true, false])
+        self.shouldShowLoadingIndicator.assertValues([false, true, false])
       }
     }
   }
@@ -403,7 +405,7 @@ internal final class CommentsViewModelTests: TestCase {
 
       withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(updatedEnvelope))) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
-        self.shouldShowIndicator.assertValues([false, true])
+        self.shouldShowLoadingIndicator.assertValues([false, true])
 
         self.loadCommentsAndProjectIntoDataSourceComments.assertValues(
           [envelope.comments],
@@ -411,7 +413,7 @@ internal final class CommentsViewModelTests: TestCase {
         )
         self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template])
         self.isCommentsLoading.assertValues([true, false, true])
-        self.shouldShowIndicator.assertValues([false, true])
+        self.shouldShowLoadingIndicator.assertValues([false, true])
 
         self.scheduler.advance()
 
@@ -423,10 +425,10 @@ internal final class CommentsViewModelTests: TestCase {
         )
         self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template, .template])
         self.isCommentsLoading.assertValues([true, false, true, false])
-        self.shouldShowIndicator.assertValues([false, true, false])
+        self.shouldShowLoadingIndicator.assertValues([false, true, false])
 
         self.vm.inputs.willDisplayRow(5, outOf: 10)
-        self.shouldShowIndicator.assertValues([false, true, false])
+        self.shouldShowLoadingIndicator.assertValues([false, true, false])
       }
     }
   }
@@ -484,6 +486,102 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-  // TODO: Empty state not tested yet https://kickstarter.atlassian.net/browse/NT-1942
-  // TODO: Post comments can be fully tested after this ticket is merged: https://kickstarter.atlassian.net/browse/NT-1893
+  func testDataSourceContainsFailableComment() {
+    self.vm.inputs.configureWith(project: .template, update: nil)
+
+    let envelope = CommentsEnvelope.singleCommentTemplate
+
+    withEnvironment(
+      apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope)),
+      currentUser: .template
+    ) {
+      self.vm.inputs.viewDidLoad()
+
+      self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      let bodyText = "I just posted a comment."
+
+      self.vm.inputs.commentComposerDidSubmitText(bodyText)
+
+      let optimisticComment = Comment
+        .createFailableComment(project: .template, user: .template, body: bodyText)
+
+      self.postCommentSubmitted.assertDidEmitValue()
+
+      XCTAssertEqual(
+        self.loadCommentsAndProjectIntoDataSourceComments.values.last?.first?.body,
+        optimisticComment.body
+      )
+    }
+  }
+
+  func testPostCommentSuccessful() {
+    self.vm.inputs.configureWith(project: .template, update: nil)
+    self.vm.inputs.viewDidLoad()
+
+    withEnvironment(currentUser: .template) {
+      let bodyText = "Posting another comment."
+
+      self.vm.inputs.commentComposerDidSubmitText(bodyText)
+
+      self.postCommentSuccessful.assertValueCount(1, "Comment posted successfully")
+    }
+  }
+
+  func testViewingComments_WithNoComments_ShouldHaveCellSeparator() {
+    self.isCellSeparatorHidden.assertDidNotEmitValue()
+    self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
+
+    let envelope = CommentsEnvelope.emptyCommentsTemplate
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ false
+
+    withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
+      self.vm.inputs.configureWith(
+        project: project,
+        update: nil
+      )
+
+      self.vm.inputs.viewDidLoad()
+
+      self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
+      self.isCellSeparatorHidden.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.loadCommentsAndProjectIntoDataSourceComments.assertValues([envelope.comments])
+      self.isCellSeparatorHidden.assertValue(true)
+    }
+  }
+
+  func testViewingComments_WithComments_ShouldHaveCellSeparator() {
+    self.isCellSeparatorHidden.assertDidNotEmitValue()
+    self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
+
+    let envelope = CommentsEnvelope.singleCommentTemplate
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ false
+
+    withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
+      self.vm.inputs.configureWith(
+        project: project,
+        update: nil
+      )
+
+      self.vm.inputs.viewDidLoad()
+
+      self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
+      self.isCellSeparatorHidden.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.loadCommentsAndProjectIntoDataSourceComments.assertValues([envelope.comments])
+      self.isCellSeparatorHidden.assertValue(false)
+    }
+  }
 }
+
+// TODO: Empty state not tested yet https://kickstarter.atlassian.net/browse/NT-1942
+// TODO: Post comments can be fully tested after this ticket is merged: https://kickstarter.atlassian.net/browse/NT-1893
