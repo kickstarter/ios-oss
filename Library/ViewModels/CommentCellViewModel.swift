@@ -92,10 +92,11 @@ public final class CommentCellViewModel:
       .map(userIsBackingProject)
       .negate()
 
+    // If the user is either logged out, not backing or the flag is enabled, hide replyButton.
     self.replyButtonIsHidden = Signal.combineLatest(isLoggedOut, isNotABacker)
-      .map { isLoggedOut, isNotABacker in isLoggedOut || isNotABacker }
+      .map(replyButtonHidden)
 
-    // If both the replyButton and flagButton should be hidden, the entire stackview will be hidden too
+    // If both the replyButton and flagButton should be hidden, the entire stackview will be hidden too.
     self.bottomRowStackViewIsHidden = Signal.combineLatest(
       self.flagButtonIsHidden.signal,
       self.replyButtonIsHidden.signal
@@ -103,8 +104,9 @@ public final class CommentCellViewModel:
       flagButtonIsHidden && replyButtonIsHidden
     }
 
+    // If there are no replies or if the feature flag returns true, hide the stack view.
     self.viewRepliesStackViewIsHidden = comment.map(\.replyCount)
-      .map { $0 == 0 }
+      .map(viewRepliesStackViewHidden)
   }
 
   private var bindStylesProperty = MutableProperty(())
@@ -129,4 +131,19 @@ public final class CommentCellViewModel:
 
   public var inputs: CommentCellViewModelInputs { self }
   public var outputs: CommentCellViewModelOutputs { self }
+}
+
+private func commentThreadingRepliesDisabled() -> Bool {
+  return AppEnvironment.current.optimizelyClient?
+    .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentThreadingRepliesDisabled.rawValue) ?? false
+}
+
+private func replyButtonHidden(isLoggedOut: Bool, isNotABacker: Bool) -> Bool {
+  guard commentThreadingRepliesDisabled() == false else { return true }
+  return isLoggedOut || isNotABacker
+}
+
+private func viewRepliesStackViewHidden(_ replyCount: Int) -> Bool {
+  guard commentThreadingRepliesDisabled() == false else { return true }
+  return replyCount == 0
 }
