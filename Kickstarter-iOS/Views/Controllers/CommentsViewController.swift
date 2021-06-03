@@ -142,8 +142,8 @@ internal final class CommentsViewController: UITableViewController {
 
     self.viewModel.outputs.isCellSeparatorHidden
       .observeForUI()
-      .observeValues { [weak self] _ in
-        self?.tableView.separatorStyle = .none
+      .observeValues { [weak self] isHidden in
+        self?.tableView.separatorStyle = isHidden ? .none : .singleLine
       }
   }
 
