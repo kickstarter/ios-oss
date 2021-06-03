@@ -13,6 +13,7 @@ final class CommentCell: UITableViewCell, ValueCell {
   }()
 
   private lazy var flagButton = { UIButton(frame: .zero) }()
+  private lazy var postedButton = { UIButton(frame: .zero) }()
   private lazy var replyButton = { UIButton(frame: .zero) }()
   private lazy var viewRepliesIconImageView: UIImageView = { UIImageView(frame: .zero) }()
   private lazy var viewRepliesLabel: UILabel = { UILabel(frame: .zero) }()
@@ -53,6 +54,9 @@ final class CommentCell: UITableViewCell, ValueCell {
     _ = self.bodyTextView
       |> commentBodyTextViewStyle
 
+    _ = self.postedButton
+      |> postedButtonStyle
+
     _ = self.replyButton
       |> replyButtonStyle
 
@@ -67,6 +71,8 @@ final class CommentCell: UITableViewCell, ValueCell {
 
     _ = self.flagButton
       |> UIButton.lens.image(for: .normal) %~ { _ in Library.image(named: "flag") }
+
+    self.viewModel.inputs.bindStyles()
   }
 
   // MARK: - Configuration
@@ -81,6 +87,7 @@ final class CommentCell: UITableViewCell, ValueCell {
     let rootViews = [
       self.commentCellHeaderStackView,
       self.bodyTextView,
+      self.postedButton,
       self.viewRepliesStackView,
       self.bottomRowStackView
     ]
@@ -107,6 +114,8 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.flagButton.rac.hidden = self.viewModel.outputs.flagButtonIsHidden
     self.replyButton.rac.hidden = self.viewModel.outputs.replyButtonIsHidden
     self.viewRepliesStackView.rac.hidden = self.viewModel.outputs.viewRepliesStackViewIsHidden
+
+    self.postedButton.rac.hidden = self.viewModel.outputs.commentStatus.map { $0 != .retrySuccess }
   }
 }
 
@@ -137,4 +146,22 @@ private let viewRepliesStackViewStyle: StackViewStyle = { stackVew in
     |> \.layer.borderWidth .~ 1
     |> \.layer.borderColor .~ UIColor.ksr_support_200.cgColor
     |> roundedStyle(cornerRadius: 2.0)
+}
+
+// TODO: Internationalized in the near future.
+
+private let postedButtonStyle: ButtonStyle = { button in
+  button
+    |> \.isUserInteractionEnabled .~ false
+    |> UIButton.lens
+    .title(for: .normal) %~
+    { _ in
+      localizedString(key: "Posted", defaultValue: "Posted")
+    }
+    |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
+    |> UIButton.lens.image(for: .normal) .~ Library.image(named: "posted")
+    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_create_500
+    |> UIButton.lens.tintColor .~ UIColor.ksr_create_700
+    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(1))
+    |> UIButton.lens.contentHorizontalAlignment .~ .left
 }

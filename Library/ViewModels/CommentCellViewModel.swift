@@ -26,6 +26,9 @@ public protocol CommentCellViewModelOutputs {
   /// Emits a Bool determining if the bottomRowStackView is hidden.
   var bottomRowStackViewIsHidden: Signal<Bool, Never> { get }
 
+  /// Emits the current status of a comment
+  var commentStatus: Signal<Comment.Status, Never> { get }
+
   /// Emits a Bool determining if the flag button in the bottomRowStackView is hidden.
   var flagButtonIsHidden: Signal<Bool, Never> { get }
 
@@ -58,6 +61,13 @@ public final class CommentCellViewModel:
     self.body = comment.map(\.body)
 
     self.authorName = comment.map(\.author.name)
+
+    let status = comment.map(\.status)
+
+    self.commentStatus = Signal.merge(
+      status,
+      status.takeWhen(self.bindStylesProperty.signal)
+    )
 
     self.postTime = comment.map {
       Format.date(secondsInUTC: $0.createdAt, dateStyle: .medium, timeStyle: .short)
@@ -124,6 +134,7 @@ public final class CommentCellViewModel:
   public let authorName: Signal<String, Never>
   public let body: Signal<String, Never>
   public let bottomRowStackViewIsHidden: Signal<Bool, Never>
+  public let commentStatus: Signal<Comment.Status, Never>
   public let flagButtonIsHidden: Signal<Bool, Never>
   public let postTime: Signal<String, Never>
   public let replyButtonIsHidden: Signal<Bool, Never>

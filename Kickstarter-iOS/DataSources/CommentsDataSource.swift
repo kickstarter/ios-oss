@@ -25,7 +25,7 @@ internal final class CommentsDataSource: ValueCellDataSource {
 
     comments.forEach { comment in
       switch comment.status {
-      case .failed:
+      case .failed, .retrying:
         self
           .appendRow(
             value: comment,
@@ -39,7 +39,7 @@ internal final class CommentsDataSource: ValueCellDataSource {
             cellClass: CommentRemovedCell.self,
             toSection: section
           )
-      case .success:
+      case .success, .retrySuccess:
         self
           .appendRow(value: (comment, project), cellClass: CommentCell.self, toSection: section)
       }

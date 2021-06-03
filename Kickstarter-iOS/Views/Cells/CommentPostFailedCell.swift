@@ -50,8 +50,7 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
       |> commentBodyTextViewStyle
       |> \.textColor .~ .ksr_support_400
 
-    _ = self.retryButton
-      |> retryButtonStyle
+    self.viewModel.inputs.bindStyles()
   }
 
   // MARK: - Configuration
@@ -77,6 +76,13 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
 
   internal override func bindViewModel() {
     self.bodyTextView.rac.text = self.viewModel.outputs.body
+
+    self.viewModel.outputs.commentStatus
+      .observeForUI()
+      .observeValues { status in
+        _ = self.retryButton
+          |> status == .retrying ? postingButtonStyle : retryButtonStyle
+      }
   }
 }
 
@@ -95,6 +101,24 @@ private let retryButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "circle-back")
     |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_celebrate_700
     |> UIButton.lens.tintColor .~ UIColor.ksr_celebrate_700
+    |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(1))
+    |> UIButton.lens.contentHorizontalAlignment .~ .left
+}
+
+// TODO: Internationalized in the near future.
+
+private let postingButtonStyle: ButtonStyle = { button in
+  button
+    |> UIButton.lens
+    .title(for: .normal) %~
+    { _ in
+      localizedString(key: "Posting", defaultValue: "Posting...")
+    }
+    |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
+    |> UIButton.lens.image(for: .normal) .~ Library.image(named: "circle-back")?
+    .withRenderingMode(.alwaysTemplate)
+    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_support_400
+    |> UIButton.lens.tintColor .~ UIColor.ksr_support_400
     |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(1))
     |> UIButton.lens.contentHorizontalAlignment .~ .left
 }

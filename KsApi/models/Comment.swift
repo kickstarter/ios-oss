@@ -9,7 +9,6 @@ public struct Comment {
   public var isDeleted: Bool
   public var isFailed: Bool = false
   public var replyCount: Int
-
   /// return the first `authorBadges`, if nil  return `.backer`
   public var authorBadge: AuthorBadge {
     return self.authorBadges.first ?? .backer
@@ -17,7 +16,12 @@ public struct Comment {
 
   /// return the current status of the `Comment`
   public var status: Status {
-    return self.isDeleted ? .removed : self.isFailed ? .failed : .success
+    return .success
+//    get {
+//      guard self.isDeleted == false else { return .removed }
+//      return self.status
+//    }
+//    set {}
   }
 
   public struct Author: Decodable, Equatable {
@@ -34,9 +38,11 @@ public struct Comment {
     case you
   }
 
-  public enum Status {
+  public enum Status: String, Decodable {
     case failed
     case removed
+    case retrying
+    case retrySuccess
     case success
   }
 }
