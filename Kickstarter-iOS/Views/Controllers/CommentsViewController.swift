@@ -25,7 +25,7 @@ internal final class CommentsViewController: UITableViewController {
   }()
 
   private lazy var footerView: CommentTableViewFooter = {
-    let frame = CGRect(x: 0, y: 1, width: UIScreen.main.bounds.width, height: Layout.Footer.height)
+    let frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: Layout.Footer.height)
     let view = CommentTableViewFooter(frame: frame)
     return view
   }()
@@ -141,7 +141,7 @@ internal final class CommentsViewController: UITableViewController {
         $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
       }
 
-    self.viewModel.outputs.shouldShowLoadMoreIndicator
+    self.viewModel.outputs.shouldShowIndicator
       .observeForUI()
       .observeValues { [weak self] shouldShow in
         guard let self = self else { return }

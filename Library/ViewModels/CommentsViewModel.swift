@@ -40,8 +40,8 @@ public protocol CommentsViewModelOutputs {
   /// Emits a list of `Comment`s and the `Project` to load into the data source.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
 
-  /// Emits a boolean that determines if the loader more activity indicator should show
-  var shouldShowLoadMoreIndicator: Signal<Bool, Never> { get }
+  /// Emits a Bool that determines if the activity indicator should render.
+  var shouldShowIndicator: Signal<Bool, Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -152,7 +152,7 @@ public final class CommentsViewModel: CommentsViewModelType,
       }
       .withLatestFrom(initialProject)
 
-    self.shouldShowLoadMoreIndicator = Signal
+    self.shouldShowIndicator = Signal
       .combineLatest(isCloseToBottom.mapConst(true), self.isCommentsLoading)
       .map { isCloseToBottom, isCommentsLoading in
         isCloseToBottom && isCommentsLoading
@@ -194,7 +194,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let isCommentComposerHidden: Signal<Bool, Never>
   public let isCommentsLoading: Signal<Bool, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
-  public let shouldShowLoadMoreIndicator: Signal<Bool, Never>
+  public let shouldShowIndicator: Signal<Bool, Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }
