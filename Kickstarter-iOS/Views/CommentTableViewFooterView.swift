@@ -5,6 +5,8 @@ import UIKit
 final class CommentTableViewFooterView: UIView {
   // MARK: - Properties
 
+  private let viewModel = CommentTableViewFooterViewModel()
+
   private lazy var activityIndicator: UIActivityIndicatorView = {
     let indicator = UIActivityIndicatorView(frame: .zero)
       |> \.hidesWhenStopped .~ true
@@ -12,7 +14,7 @@ final class CommentTableViewFooterView: UIView {
     return indicator
   }()
 
-  public var shouldShowActivityIndicator: Bool = false {
+  private var shouldShowActivityIndicator: Bool = false {
     didSet {
       shouldShowActivityIndicator
         ? activityIndicator.startAnimating()
@@ -26,10 +28,17 @@ final class CommentTableViewFooterView: UIView {
     super.init(frame: frame)
 
     self.configureViews()
+    self.bindViewModel()
   }
 
   required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  // MARK: - Configuration
+
+  func configureWith(value: Bool) {
+    self.viewModel.inputs.configure(with: value)
   }
 
   private func configureViews() {
@@ -39,5 +48,15 @@ final class CommentTableViewFooterView: UIView {
     _ = (self.activityIndicator, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToCenterInParent()
+  }
+
+  // MARK: - View model
+
+  override func bindViewModel() {
+    self.viewModel.outputs.shouldStartLoaderIndicator
+      .observeForUI()
+      .observeValues { shouldLoad in
+        self.shouldShowActivityIndicator = shouldLoad
+      }
   }
 }

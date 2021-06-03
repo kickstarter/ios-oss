@@ -154,10 +154,7 @@ internal final class CommentsViewController: UITableViewController {
 
     self.viewModel.outputs.shouldShowLoadingIndicator
       .observeForUI()
-      .observeValues { [weak self] shouldShow in
-        guard let self = self else { return }
-        self.footerView.shouldShowActivityIndicator = shouldShow
-      }
+      .observeValues(self.footerView.configureWith)
 
     self.viewModel.outputs.isCellSeparatorHidden
       .observeForUI()
