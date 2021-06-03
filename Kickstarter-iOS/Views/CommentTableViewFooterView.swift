@@ -27,8 +27,8 @@ final class CommentTableViewFooterView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    self.configureViews()
     self.bindViewModel()
+    self.configureViews()
   }
 
   required init?(coder _: NSCoder) {
