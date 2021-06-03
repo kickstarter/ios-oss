@@ -12,7 +12,7 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
   internal func load(comment: Comment, project: Project) {
     let section = Section.comment.rawValue
     self.clearValues()
-    
+
     self
       .appendRow(value: (comment, project), cellClass: CommentCell.self, toSection: section)
   }

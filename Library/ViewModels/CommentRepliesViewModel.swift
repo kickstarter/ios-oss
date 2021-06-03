@@ -13,7 +13,7 @@ public protocol CommentRepliesViewModelInputs {
 }
 
 public protocol CommentRepliesViewModelOutputs {
-  /// TODO: Likely we will be adding `[Comment]` to this output to load replies
+  // TODO: Likely we will be adding `[Comment]` to this output to load replies
   /// Emits a root `Comment`s and the `Project` to load into the data source.
   var loadCommentAndProjectIntoDataSource: Signal<(Comment, Project), Never> { get }
 }
@@ -35,7 +35,7 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
 
     self.loadCommentAndProjectIntoDataSource = rootCommentAndProject
   }
-  
+
   fileprivate let commentAndProjectProperty = MutableProperty<(Comment, Project)?>(nil)
   public func configureWith(comment: Comment, project: Project) {
     self.commentAndProjectProperty.value = (comment, project)

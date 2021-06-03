@@ -29,7 +29,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
     let project = Project.template
       |> Project.lens.personalization.isBacking .~ false
 
-    withEnvironment() {
+    withEnvironment {
       self.vm.inputs.configureWith(
         comment: rootComment,
         project: project
