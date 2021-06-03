@@ -37,11 +37,11 @@ public protocol CommentsViewModelOutputs {
   /// Emits the selected `Comment` and `Project` to navigate to its replies.
   var goToCommentReplies: Signal<(Comment, Project), Never> { get }
 
-  /// Emits a boolean that determines if comments are currently loading.
-  var isCommentsLoading: Signal<Bool, Never> { get }
-
   /// Emits a boolean that determines if cell separator is to be hidden.
   var isCellSeparatorHidden: Signal<Bool, Never> { get }
+
+  /// Emits a boolean that determines if comments are currently loading.
+  var isCommentsLoading: Signal<Bool, Never> { get }
 
   /// Emits a list of `Comment`s and the `Project` to load into the data source.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
@@ -168,11 +168,11 @@ public final class CommentsViewModel: CommentsViewModelType,
       initialProject
     )
 
-    let hideCellSeparator = comments.map { $0.count <= .zero }
+    let cellSeparatorHidden = comments.map { $0.count <= .zero }
 
     self.loadCommentsAndProjectIntoDataSource = commentsAndProject
     self.isCommentsLoading = isLoading
-    self.isCellSeparatorHidden = hideCellSeparator
+    self.isCellSeparatorHidden = cellSeparatorHidden
 
     self.goToCommentReplies = self.didSelectCommentProperty.signal.skipNil()
       .filter { comment in
@@ -215,8 +215,8 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let errorMessage: Signal<String, Never>
   public let goToCommentReplies: Signal<(Comment, Project), Never>
-  public let isCellSeparatorHidden: Signal<Bool, Never>
   public let isCommentsLoading: Signal<Bool, Never>
+  public let isCellSeparatorHidden: Signal<Bool, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
   public let postCommentSuccessful: Signal<Comment, Never>
   public var postCommentSubmitted: Signal<(), Never>

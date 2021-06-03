@@ -22,7 +22,7 @@ class CommentsDataSourceTests: XCTestCase {
 
   func testLoadedComments() {
     XCTAssertEqual(5, self.dataSource.numberOfItems(in: self.commentsSection))
-    XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
+    XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.tableView))
   }
 
   func testComment_shouldContainCommentCell() {
@@ -73,9 +73,14 @@ class CommentsDataSourceTests: XCTestCase {
 
   func testEmptyState_WhenNoCommentsAndThenAddedComments_ShouldNotShowEmptyStateCell() {
     let rowIndex: Int = 0
+    XCTAssertEqual(5, self.dataSource.numberOfItems(in: self.commentsSection))
+    XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.tableView))
+
     self.dataSource.load(comments: [], project: .template)
 
     XCTAssertEqual(1, self.dataSource.numberOfItems(in: self.emptySection))
+    XCTAssertEqual(0, self.dataSource.numberOfItems(in: self.commentsSection))
+    XCTAssertEqual(2, self.dataSource.numberOfSections(in: self.tableView))
     XCTAssertEqual(
       "EmptyCommentsCell",
       self.dataSource.reusableId(item: rowIndex, section: self.emptySection)
@@ -83,7 +88,7 @@ class CommentsDataSourceTests: XCTestCase {
 
     self.dataSource.load(comments: [Comment.template], project: .template)
 
-    XCTAssertEqual(0, self.dataSource.numberOfItems(in: self.emptySection))
     XCTAssertEqual(1, self.dataSource.numberOfItems(in: self.commentsSection))
+    XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.tableView))
   }
 }

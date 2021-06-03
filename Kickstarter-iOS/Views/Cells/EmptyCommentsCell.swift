@@ -37,8 +37,8 @@ final class EmptyCommentsCell: UITableViewCell, ValueCell {
       |> \.numberOfLines .~ 0
       |> \.adjustsFontForContentSizeCategory .~ true
       |> \.font .~ UIFont.ksr_callout()
-      |> \.textColor .~ UIColor.ksr_support_400
       |> \.textAlignment .~ .center
+      |> \.textColor .~ UIColor.ksr_support_400
   }
 
   // MARK: - Configuration

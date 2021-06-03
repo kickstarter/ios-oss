@@ -9,6 +9,7 @@ import XCTest
 internal final class CommentsViewModelTests: TestCase {
   private let vm: CommentsViewModelType = CommentsViewModel()
 
+  private let isCellSeparatorHidden = TestObserver<Bool, Never>()
   private let configureCommentComposerViewURL = TestObserver<URL?, Never>()
   private let configureCommentComposerViewIsBacking = TestObserver<Bool, Never>()
   private let goToCommentRepliesComment = TestObserver<Comment, Never>()
@@ -23,6 +24,7 @@ internal final class CommentsViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
+    self.vm.outputs.isCellSeparatorHidden.observe(self.isCellSeparatorHidden.observer)
     self.vm.outputs.configureCommentComposerViewWithData.map(first)
       .observe(self.configureCommentComposerViewURL.observer)
     self.vm.outputs.configureCommentComposerViewWithData.map(second)
@@ -521,6 +523,55 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-  // TODO: Empty state not tested yet https://kickstarter.atlassian.net/browse/NT-1942
-  // TODO: Post comments can be fully tested after this ticket is merged: https://kickstarter.atlassian.net/browse/NT-1893
+  func testViewingComments_WithNoComments_ShouldHaveCellSeparator() {
+    self.isCellSeparatorHidden.assertDidNotEmitValue()
+    self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
+
+    let envelope = CommentsEnvelope.emptyCommentsTemplate
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ false
+
+    withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
+      self.vm.inputs.configureWith(
+        project: project,
+        update: nil
+      )
+
+      self.vm.inputs.viewDidLoad()
+
+      self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
+      self.isCellSeparatorHidden.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.loadCommentsAndProjectIntoDataSourceComments.assertValues([envelope.comments])
+      self.isCellSeparatorHidden.assertValue(true)
+    }
+  }
+
+  func testViewingComments_WithComments_ShouldHaveCellSeparator() {
+    self.isCellSeparatorHidden.assertDidNotEmitValue()
+    self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
+
+    let envelope = CommentsEnvelope.singleCommentTemplate
+    let project = Project.template
+      |> Project.lens.personalization.isBacking .~ false
+
+    withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
+      self.vm.inputs.configureWith(
+        project: project,
+        update: nil
+      )
+
+      self.vm.inputs.viewDidLoad()
+
+      self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
+      self.isCellSeparatorHidden.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
+      self.loadCommentsAndProjectIntoDataSourceComments.assertValues([envelope.comments])
+      self.isCellSeparatorHidden.assertValue(false)
+    }
+  }
 }
