@@ -11,13 +11,16 @@ public enum CommentComposerConstant {
 
 public protocol CommentComposerViewModelInputs {
   /// Call when the comment text changes.
-  func bodyTextDidChange(_ text: String)
+  func bodyTextDidChange(_ text: String?)
 
   /// Call to configure composer avatar and input area visibility
   func configure(with data: CommentComposerViewData)
 
   /// Call when the post button is pressed.
   func postButtonPressed()
+
+  /// Call when the input textview of the composer should be reset.
+  func resetInput()
 
   /// Call in  `textView(_:shouldChangeTextIn:replacementText:)` UITextView delegate method.
   func textViewShouldChange(text: String?, in range: NSRange, replacementText: String) -> Bool
@@ -28,10 +31,16 @@ public protocol CommentComposerViewModelOutputs {
   var avatarURL: Signal<URL?, Never> { get }
 
   /// Emits a string that should be put into the body text view.
-  var bodyText: Signal<String, Never> { get }
+  var bodyText: Signal<String?, Never> { get }
+
+  /// Emits when input text view's text should be cleared
+  var clearInputTextView: Signal<(), Never> { get }
 
   /// Emits a boolean that determines if the input area is hidden.
   var inputAreaHidden: Signal<Bool, Never> { get }
+
+  /// Emits when the input textview should resign first responder.
+  var inputTextViewResignFirstResponder: Signal<(), Never> { get }
 
   /// Emits when composer notifies view controller of comment submitted.
   var notifyDelegateDidSubmitText: Signal<String, Never> { get }
@@ -54,21 +63,24 @@ public final class CommentComposerViewModel:
   CommentComposerViewModelOutputs {
   public init() {
     self.avatarURL = self.configDataProperty.signal.skipNil().map(\.avatarURL)
-    self.bodyText = self.bodyTextDidChangeProperty.signal.skipNil()
+    self.bodyText = Signal.merge(
+      self.bodyTextDidChangeProperty.signal,
+      self.resetInputProperty.signal.mapConst(nil)
+    )
     self.inputAreaHidden = self.configDataProperty.signal.skipNil().map(\.isBacking).negate()
 
-    self.notifyDelegateDidSubmitText = self.bodyText
+    self.notifyDelegateDidSubmitText = self.bodyText.skipNil()
       .takeWhen(self.postButtonPressedProperty.signal)
       .map { $0.trimmed() }
 
     self.placeholderHidden = Signal.merge(
       self.configDataProperty.signal.mapConst(false).take(first: 1),
-      self.bodyText.map { !$0.isEmpty }
+      self.bodyText.map { $0?.isEmpty == false }
     )
 
     self.postButtonHidden = Signal.merge(
       self.configDataProperty.signal.mapConst(true).take(first: 1),
-      self.bodyText.map { $0.trimmed().isEmpty }
+      self.bodyText.map { $0?.trimmed().isEmpty ?? true }
     )
 
     self.textViewShouldChangeReturnProperty <~ self.textViewShouldChangeProperty.signal.skipNil()
@@ -78,10 +90,13 @@ public final class CommentComposerViewModel:
         let updatedText = currentText.replacingCharacters(in: stringRange, with: replacementText)
         return updatedText.trimmed().count <= CommentComposerConstant.characterLimit
       }
+
+    self.inputTextViewResignFirstResponder = self.resetInputProperty.signal
+    self.clearInputTextView = self.bodyText.filter { $0 == nil }.ignoreValues()
   }
 
   private let bodyTextDidChangeProperty = MutableProperty<String?>(nil)
-  public func bodyTextDidChange(_ text: String) {
+  public func bodyTextDidChange(_ text: String?) {
     self.bodyTextDidChangeProperty.value = text
   }
 
@@ -95,6 +110,11 @@ public final class CommentComposerViewModel:
     self.postButtonPressedProperty.value = ()
   }
 
+  fileprivate let resetInputProperty = MutableProperty(())
+  public func resetInput() {
+    self.resetInputProperty.value = ()
+  }
+
   private let textViewShouldChangeProperty = MutableProperty<(String?, NSRange, String)?>(nil)
   private let textViewShouldChangeReturnProperty = MutableProperty<Bool>(false)
   public func textViewShouldChange(text: String?, in range: NSRange, replacementText: String) -> Bool {
@@ -103,8 +123,10 @@ public final class CommentComposerViewModel:
   }
 
   public var avatarURL: Signal<URL?, Never>
-  public var bodyText: Signal<String, Never>
+  public var bodyText: Signal<String?, Never>
+  public var clearInputTextView: Signal<(), Never>
   public var inputAreaHidden: Signal<Bool, Never>
+  public var inputTextViewResignFirstResponder: Signal<(), Never>
   public var notifyDelegateDidSubmitText: Signal<String, Never>
   public var placeholderHidden: Signal<Bool, Never>
   public var postButtonHidden: Signal<Bool, Never>
