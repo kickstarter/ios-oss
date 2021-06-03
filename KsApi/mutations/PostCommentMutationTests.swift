@@ -15,8 +15,20 @@ final class PostCommentMutationTests: XCTestCase {
       mutation ($input: PostCommentInput!) {
         createComment(input: $input) {
           comment {
+            author {
+              id
+              imageUrl(width: 200)
+              isCreator
+              name
+            }
+            authorBadges
             body
+            createdAt
+            deleted
             id
+            replies {
+              totalCount
+            }
           }
         }
       }

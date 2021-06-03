@@ -432,6 +432,7 @@ public struct Service: ServiceType {
     -> SignalProducer<Comment, ErrorEnvelope> {
     return applyMutation(mutation: PostCommentMutation(input: input))
       .mapError(ErrorEnvelope.envelope(from:))
+      .flatMap(PostCommentEnvelope.modelProducer(from:))
   }
 
   public func publish(draft: UpdateDraft) -> SignalProducer<Update, ErrorEnvelope> {
