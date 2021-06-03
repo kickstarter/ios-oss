@@ -2,13 +2,13 @@ import Library
 import Prelude
 import UIKit
 
-final class CommentTableViewFooter: UIView {
+final class CommentTableViewFooterView: UIView {
   // MARK: - Properties
 
   private lazy var activityIndicator: UIActivityIndicatorView = {
     let indicator = UIActivityIndicatorView(frame: .zero)
+      |> \.hidesWhenStopped .~ true
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
-    indicator.hidesWhenStopped = true
     return indicator
   }()
 

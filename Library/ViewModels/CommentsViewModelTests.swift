@@ -18,6 +18,8 @@ internal final class CommentsViewModelTests: TestCase {
   private let loadCommentsAndProjectIntoDataSourceComments = TestObserver<[Comment], Never>()
   private let loadCommentsAndProjectIntoDataSourceProject = TestObserver<Project, Never>()
   private let shouldShowIndicator = TestObserver<Bool, Never>()
+  private let postCommentSuccessful = TestObserver<Comment, Never>()
+  private let postCommentSubmitted = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()
@@ -26,7 +28,7 @@ internal final class CommentsViewModelTests: TestCase {
       .observe(self.configureCommentComposerViewURL.observer)
     self.vm.outputs.configureCommentComposerViewWithData.map(second)
       .observe(self.configureCommentComposerViewIsBacking.observer)
-    self.vm.outputs.isCommentComposerHidden.observe(self.isCommentComposerHidden.observer)
+    self.vm.outputs.commentComposerViewHidden.observe(self.isCommentComposerHidden.observer)
     self.vm.outputs.goToCommentReplies.map(first).observe(self.goToCommentRepliesComment.observer)
     self.vm.outputs.goToCommentReplies.map(second).observe(self.goToCommentRepliesProject.observer)
     self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(first)
@@ -35,6 +37,8 @@ internal final class CommentsViewModelTests: TestCase {
       .observe(self.loadCommentsAndProjectIntoDataSourceProject.observer)
     self.vm.outputs.isCommentsLoading.observe(self.isCommentsLoading.observer)
     self.vm.outputs.shouldShowIndicator.observe(self.shouldShowIndicator.observer)
+    self.vm.outputs.postCommentSuccessful.observe(self.postCommentSuccessful.observer)
+    self.vm.outputs.postCommentSubmitted.observe(self.postCommentSubmitted.observer)
   }
 
   func testOutput_ConfigureCommentComposerViewWithData_IsLoggedOut() {
@@ -163,6 +167,7 @@ internal final class CommentsViewModelTests: TestCase {
       |> \.isFailed .~ true
 
     self.vm.inputs.configureWith(project: .template, update: nil)
+
     self.vm.inputs.viewDidLoad()
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
@@ -317,7 +322,7 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-  func testProjectPagination_WhenLimitReached_CommentsAreUpdatedInDataSource() {
+  func testProjectPagination_WhenLimitReached_CommentsAreUpdatedInDataSource_AndEmitsLoadMoreIndicatorValue() {
     self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
     self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
 
@@ -325,6 +330,7 @@ internal final class CommentsViewModelTests: TestCase {
 
     withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
       self.vm.inputs.configureWith(project: .template, update: nil)
+
       self.vm.inputs.viewDidLoad()
 
       self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
@@ -364,11 +370,12 @@ internal final class CommentsViewModelTests: TestCase {
         )
         self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template, .template])
         self.isCommentsLoading.assertValues([true, false, true, false])
+        self.shouldShowIndicator.assertValues([false, true, false])
       }
     }
   }
 
-  func testUpdatePagination_WhenLimitReached_CommentsAreLoadedIntoDataSource() {
+  func testUpdatePagination_WhenLimitReached_CommentsAreLoadedIntoDataSource_AndEmitsLoadMoreIndicatorValue() {
     self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
     self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
 
@@ -404,6 +411,7 @@ internal final class CommentsViewModelTests: TestCase {
         )
         self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template])
         self.isCommentsLoading.assertValues([true, false, true])
+        self.shouldShowIndicator.assertValues([false, true])
 
         self.scheduler.advance()
 
@@ -415,6 +423,7 @@ internal final class CommentsViewModelTests: TestCase {
         )
         self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template, .template])
         self.isCommentsLoading.assertValues([true, false, true, false])
+        self.shouldShowIndicator.assertValues([false, true, false])
 
         self.vm.inputs.willDisplayRow(5, outOf: 10)
         self.shouldShowIndicator.assertValues([false, true, false])

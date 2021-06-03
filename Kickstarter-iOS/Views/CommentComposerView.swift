@@ -72,12 +72,8 @@ final class CommentComposerView: UIView {
     self.viewModel.inputs.configure(with: data)
   }
 
-  /*
-   Call this to clear body text.
-   */
-  public func clearOnSuccess() {
-    // TODO: Replace this with a viewModel input for clearing body text.
-    self.viewModel.inputs.bodyTextDidChange("")
+  public func resetInput() {
+    self.viewModel.inputs.resetInput()
   }
 
   // MARK: - Views
@@ -135,6 +131,18 @@ final class CommentComposerView: UIView {
 
   override func bindViewModel() {
     super.bindViewModel()
+
+    self.viewModel.outputs.clearInputTextView
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.inputContainerView.inputTextView.text = nil
+      }
+
+    self.viewModel.outputs.inputTextViewResignFirstResponder
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.inputContainerView.inputTextView.resignFirstResponder()
+      }
 
     self.inputContainerView.placeholderLabel.rac.hidden = self.viewModel.outputs.placeholderHidden
     self.inputContainerView.postButton.rac.hidden = self.viewModel.outputs.postButtonHidden
