@@ -41,28 +41,29 @@ public struct Comment {
   }
 }
 
-extension Comment: Decodable {
-  enum CodingKeys: String, CodingKey {
-    case author
-    case authorBadges
-    case body
-    case createdAt = "created_at"
-    case deletedAt = "deleted_at"
-    case id
-    case isDeleted = "deleted"
-    case replyCount
-  }
+extension Comment: Decodable {}
 
-  public init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-
-    self.author = try values.decode(Author.self, forKey: .author)
-    self.body = try values.decode(String.self, forKey: .body)
-    self.createdAt = try values.decode(TimeInterval.self, forKey: .createdAt)
-    self.id = try values.decode(String.self, forKey: .id)
-    self.isDeleted = try values.decode(Bool.self, forKey: .isDeleted)
-    self.replyCount = try values.decode(Int.self, forKey: .replyCount)
-    self.authorBadges = try values.decode([AuthorBadge].self, forKey: .authorBadges)
+extension Comment {
+  public static func createFailableComment(
+    project: Project,
+    user: User,
+    body: String
+  ) -> Comment {
+    let author = Author(
+      id: "\(user.id)",
+      imageUrl: user.avatar.medium,
+      isCreator: project.creator == user,
+      name: user.name
+    )
+    return Comment(
+      author: author,
+      authorBadges: [.you],
+      body: body,
+      createdAt: Date().timeIntervalSince1970,
+      id: UUID().uuidString,
+      isDeleted: false,
+      replyCount: 0
+    )
   }
 }
 
