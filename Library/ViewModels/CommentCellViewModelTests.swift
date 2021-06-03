@@ -171,6 +171,71 @@ internal final class CommentCellViewModelTests: TestCase {
     }
   }
 
+  func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsBacker_True_IsLoggedIn_FeatureFlag_True() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesDisabled.rawValue: true]
+
+    let project = Project.template
+      |> \.personalization.isBacking .~ true
+
+    let user = User.template |> \.id .~ 12_345
+
+    withEnvironment(currentUser: user, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(comment: .template, project: project)
+
+      self.replyButtonIsHidden
+        .assertValue(true, "The replyButton is hidden because the feature flag is true.")
+    }
+    self.viewRepliesStackViewIsHidden
+      .assertValue(true, "The stack view is hidden because the feature flag is true.")
+  }
+
+  func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsBacker_False_IsLoggedIn_FeatureFlag_True() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesDisabled.rawValue: true]
+
+    let user = User.template |> \.id .~ 12_345
+
+    withEnvironment(currentUser: user, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(comment: .template, project: .template)
+
+      self.replyButtonIsHidden
+        .assertValue(true, "The replyButton is hidden because the feature flag is true.")
+    }
+    self.viewRepliesStackViewIsHidden
+      .assertValue(true, "The stack view is hidden because the feature flag is true.")
+  }
+
+  func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsBacker_False_IsLoggedIn_FeatureFlag_False() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesDisabled.rawValue: false]
+
+    let user = User.template |> \.id .~ 12_345
+
+    withEnvironment(currentUser: user, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(comment: .template, project: .template)
+
+      self.replyButtonIsHidden
+        .assertValue(true, "The replyButton is hidden because the user is not backing.")
+    }
+    self.viewRepliesStackViewIsHidden
+      .assertValue(false, "The stack view is not hidden because the flag is false and there are replies.")
+  }
+
+  func testOutputs_replyButtonIsHidden_viewRepliesStackViewIsHidden_IsLoggedOut_FeatureFlag_False() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesDisabled.rawValue: false]
+
+    withEnvironment(currentUser: nil, optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(comment: .template, project: .template)
+
+      self.replyButtonIsHidden
+        .assertValue(true, "The replyButton is hidden because the user is not backing.")
+    }
+    self.viewRepliesStackViewIsHidden
+      .assertValue(false, "The stack view is not hidden because the flag is false and there are replies.")
+  }
+
   func testOutputs_UserIs_LoggedOut() {
     let author = Comment.Author.template
       |> \.imageUrl .~ "http://www.kickstarter.com/small.jpg"
