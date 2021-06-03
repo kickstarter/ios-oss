@@ -11,7 +11,7 @@ internal final class CommentsDataSource: ValueCellDataSource {
 
   internal func load(comments: [Comment], project: Project) {
     let section = !comments.isEmpty ? Section.comments.rawValue : Section.empty.rawValue
-    self.clearValues(section: section)
+    self.clearValues()
 
     guard !comments.isEmpty else {
       self.appendRow(
