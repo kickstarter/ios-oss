@@ -14,7 +14,7 @@ final class CommentTableViewFooterViewModelTests: TestCase {
     self.vm.outputs.shouldShowActivityIndicator.observe(self.shouldShowActivityIndicator.observer)
   }
 
-  func testShowActivityIndicator() {
+  func testShouldShowActivityIndicator_Configure_True() {
     self.shouldShowActivityIndicator.assertDidNotEmitValue()
 
     self.vm.inputs.configure(with: true)
@@ -22,7 +22,7 @@ final class CommentTableViewFooterViewModelTests: TestCase {
     self.shouldShowActivityIndicator.assertValues([true], "loading indicator value is emitted")
   }
 
-  func testHideActivityIndicator() {
+  func testShouldShowActivityIndicator_Configure_False() {
     self.shouldShowActivityIndicator.assertDidNotEmitValue()
 
     self.vm.inputs.configure(with: false)
