@@ -121,6 +121,7 @@
 "Continue_with_quantity_count_add_ons.two" = "Continuer avec %{quantity_count} compléments";
 "Continue_with_quantity_count_add_ons.zero" = "Continuer avec %{quantity_count} compléments";
 "Continue_with_this_reward" = "Continuer avec cette récompense ?";
+"Couldn't_post" = "Publication impossible. Cliquez pour réessayer.";
 "Couldnt_add_attachment" = "Impossible d'ajouter la pièce jointe";
 "Couldnt_open_live_stream_Try_again_later" = "Impossible d'ouvrir la diffusion en direct. Veuillez réessayer plus tard.";
 "Couldnt_remove_attachment" = "Impossible de supprimer la pièce jointe";
@@ -311,6 +312,7 @@
 "Kickstarter_on_Film" = "Kickstarter on Film";
 "Know_when_creators_and_backers_message_you" = "Activez vos notifications pour savoir quand un créateur ou un contributeur vous envoie un message.";
 "Learn_more_about_accountability" = "En savoir plus sur la responsabilité";
+"Learn_more_about_comment_guidelines" = "En savoir plus sur les directives applicables aux commentaires";
 "Left_count_left.few" = "%{left_count} restantes";
 "Left_count_left.many" = "%{left_count} restantes";
 "Left_count_left.one" = "%{left_count} restante";
@@ -381,6 +383,7 @@
 "Notifications" = "Notifications";
 "Once_you_back_a_project_well_share" = "Une fois que vous aurez soutenu un projet, des recommandations personnalisées s'afficheront ici.";
 "Only_amount_of_time_left_to_watch_this" = "Plus que %{amount_of_time} pour regarder cette diffusion.";
+"Only_backers_can_post_comments" = "Seuls les contributeurs peuvent commenter.";
 "Open_inbox" = "Ouvrir ma boîte de réception";
 "Opens_comments" = "Ouvre les commentaires.";
 "Opens_creator_profile" = "Ouvre le profil du créateur.";
@@ -423,6 +426,7 @@
 "Pledged_on_date" = "<b>Engagement</b> du %{pledge_date}";
 "Popular" = "Tendances";
 "Popular_Projects" = "Les tendances";
+"Post" = "Publier";
 "Postal_code" = "Code postal";
 "Postcode" = "Code postal";
 "Preparing_your_personal_data" = "La préparation de vos données personnelles est en cours...";
@@ -568,6 +572,7 @@
 "Subscribed" = "Abonné ";
 "Subscribes_to_upcoming_lives_streams" = "Abonnement aux diffusions en direct à venir.";
 "Successful_projects_have_been_created_on_kickstarter" = "Le nombre total de projets intégralement financés sur Kickstarter.";
+"Superbacker" = "Superbacker";
 "Support_creative_independence" = "Soutenez l'indépendance créative";
 "Support_creative_spaces_and_businesses_affected_by" = "Les entreprises et les espaces créatifs touchés par le COVID-19 ont besoin de vous.";
 "Survey" = "Questionnaire";
@@ -596,6 +601,7 @@
 "There_was_a_problem_with_this_payment" = "Un problème s'est produit lors de ce règlement.";
 "These_projects_could_use_your_support" = "Ces créateurs ont besoin de vous.";
 "This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency" = "L'objectif du projet et les montants des engagements s'afficheront ainsi dans la devise de votre choix.";
+"This_comment_has_been_removed_by_Kickstarter" = "Ce commentaire a été supprimé par Kickstarter.";
 "This_facebook_account_is_already_linked_to_another_Kickstarter_user" = "Ce compte Facebook est déjà relié à un autre utilisateur Kickstarter.";
 "This_holiday_season_support_a_project_for_no_reward" = "Pour les fêtes, soutenez un projet simplement parce qu'il vous parle, sans choisir de récompense.";
 "This_pledge_was_dropped_because_of_payment_errors" = "Cet engagement a été annulé en raison d'un échec de règlement.";
@@ -675,6 +681,7 @@
 "Which_categories_interest_you" = "Quelles sont les catégories qui vous intéressent ?";
 "Working_on_it" = "Working on it";
 "Write_a_bio" = "Une petite biographie d'une phrase ou deux.";
+"Write_a_comment" = "Rédiger un commentaire...";
 "Yes" = "Oui";
 "Yes_cancel_it" = "Oui, annuler";
 "Yes_cancel_my_pledge" = "Oui, annuler mon engagement";

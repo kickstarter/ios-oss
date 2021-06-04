@@ -112,12 +112,10 @@ final class CommentCell: UITableViewCell, ValueCell {
 
 // MARK: Styles
 
-// TODO: Internationalized in the near future.
-
 private let replyButtonStyle: ButtonStyle = { button in
   button
     |> UIButton.lens
-    .title(for: .normal) %~ { _ in localizedString(key: "Reply", defaultValue: "Reply") }
+    .title(for: .normal) %~ { _ in Strings.general_navigation_buttons_reply() }
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "reply")
     |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_support_400

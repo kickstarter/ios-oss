@@ -954,8 +954,7 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count}
-バッカー"
+   - **ja**: "%{backers_count} バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -1975,6 +1974,23 @@ Haz clic para volver a intentarlo."
     return localizedString(
       key: "Continue_with_this_reward",
       defaultValue: "Continue with this reward?",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Couldn't post. Tap to retry"
+
+   - **en**: "Couldn't post. Tap to retry"
+   - **de**: "Post fehlgeschlagen. Antippen und erneut versuchen"
+   - **es**: "No se pudo publicar. Toca para intentar de nuevo."
+   - **fr**: "Publication impossible. Cliquez pour réessayer."
+   - **ja**: "投稿できませんでした。タップして再試行してください。"
+  */
+  public static func Couldnt_post() -> String {
+    return localizedString(
+      key: "Couldn't_post",
+      defaultValue: "Couldn't post. Tap to retry",
       count: nil,
       substitutions: [:]
     )
@@ -5145,6 +5161,23 @@ with friends."
     )
   }
   /**
+   "Learn more about comment guidelines"
+
+   - **en**: "Learn more about comment guidelines"
+   - **de**: "Mehr Info zu den Kommentar-Richtlinien"
+   - **es**: "Más información sobre las reglas de los comentarios"
+   - **fr**: "En savoir plus sur les directives applicables aux commentaires"
+   - **ja**: "コメントのガイドラインについて詳細を見る"
+  */
+  public static func Learn_more_about_comment_guidelines() -> String {
+    return localizedString(
+      key: "Learn_more_about_comment_guidelines",
+      defaultValue: "Learn more about comment guidelines",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "%{left_count} left"
 
    - **en**: "%{left_count} left"
@@ -6270,6 +6303,23 @@ n'ont rien soutenu."
     )
   }
   /**
+   "Only backers can post comments."
+
+   - **en**: "Only backers can post comments."
+   - **de**: "Kommentare können nur von Unterstützern hinterlassen werden."
+   - **es**: "Only backers can post comments."
+   - **fr**: "Seuls les contributeurs peuvent commenter."
+   - **ja**: "バッカーのみコメントできます。"
+  */
+  public static func Only_backers_can_post_comments() -> String {
+    return localizedString(
+      key: "Only_backers_can_post_comments",
+      defaultValue: "Only backers can post comments.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Open inbox"
 
    - **en**: "Open inbox"
@@ -6979,6 +7029,23 @@ n'ont rien soutenu."
     return localizedString(
       key: "Popular_Projects",
       defaultValue: "Popular Projects",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Post"
+
+   - **en**: "Post"
+   - **de**: "Posten"
+   - **es**: "Publicar"
+   - **fr**: "Publier"
+   - **ja**: "投稿する"
+  */
+  public static func Post() -> String {
+    return localizedString(
+      key: "Post",
+      defaultValue: "Post",
       count: nil,
       substitutions: [:]
     )
@@ -9182,6 +9249,23 @@ catch your eye?"
     )
   }
   /**
+   "Superbacker"
+
+   - **en**: "Superbacker"
+   - **de**: "Superbacker"
+   - **es**: "Superbacker"
+   - **fr**: "Superbacker"
+   - **ja**: "Superbacker"
+  */
+  public static func Superbacker() -> String {
+    return localizedString(
+      key: "Superbacker",
+      defaultValue: "Superbacker",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
    "Support creative independence"
 
    - **en**: "Support creative independence"
@@ -9653,6 +9737,23 @@ catch your eye?"
     return localizedString(
       key: "This_allows_you_to_see_project_goal_and_pledge_amounts_in_your_preferred_currency",
       defaultValue: "This allows you to see project goal and pledge amounts in your preferred currency.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "This comment has been removed by Kickstarter."
+
+   - **en**: "This comment has been removed by Kickstarter."
+   - **de**: "Dieser Kommentar wurde von Kickstarter entfernt."
+   - **es**: "Este comentario ha sido eliminado por Kickstarter."
+   - **fr**: "Ce commentaire a été supprimé par Kickstarter."
+   - **ja**: "このコメントは Kickstarter によって削除されました。"
+  */
+  public static func This_comment_has_been_removed_by_Kickstarter() -> String {
+    return localizedString(
+      key: "This_comment_has_been_removed_by_Kickstarter",
+      defaultValue: "This comment has been removed by Kickstarter.",
       count: nil,
       substitutions: [:]
     )
@@ -11002,6 +11103,23 @@ Veuillez réessayer ultérieurement."
     return localizedString(
       key: "Write_a_bio",
       defaultValue: "Write a short bio. Just a sentence or two is great.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Write a comment..."
+
+   - **en**: "Write a comment..."
+   - **de**: "Hinterlasse einen Kommentar ..."
+   - **es**: "Escribe un comentario..."
+   - **fr**: "Rédiger un commentaire..."
+   - **ja**: "コメントを残す..."
+  */
+  public static func Write_a_comment() -> String {
+    return localizedString(
+      key: "Write_a_comment",
+      defaultValue: "Write a comment...",
       count: nil,
       substitutions: [:]
     )
@@ -21451,7 +21569,7 @@ Let's change that!"
    - **de**: "Benachrichtigungen"
    - **es**: "Notificaciones"
    - **fr**: "Notifications"
-   - **ja**: "通知設定"
+   - **ja**: "通知"
   */
   public static func profile_settings_navbar_title_notifications() -> String {
     return localizedString(
