@@ -18,6 +18,7 @@ internal final class CommentsViewModelTests: TestCase {
   private let isCommentsLoading = TestObserver<Bool, Never>()
   private let loadCommentsAndProjectIntoDataSourceComments = TestObserver<[Comment], Never>()
   private let loadCommentsAndProjectIntoDataSourceProject = TestObserver<Project, Never>()
+  private let shouldShowLoadingIndicator = TestObserver<Bool, Never>()
   private let postCommentSuccessful = TestObserver<Comment, Never>()
   private let postCommentSubmitted = TestObserver<(), Never>()
 
@@ -37,6 +38,7 @@ internal final class CommentsViewModelTests: TestCase {
     self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(second)
       .observe(self.loadCommentsAndProjectIntoDataSourceProject.observer)
     self.vm.outputs.isCommentsLoading.observe(self.isCommentsLoading.observer)
+    self.vm.outputs.shouldShowLoadingIndicator.observe(self.shouldShowLoadingIndicator.observer)
     self.vm.outputs.postCommentSuccessful.observe(self.postCommentSuccessful.observer)
     self.vm.outputs.postCommentSubmitted.observe(self.postCommentSubmitted.observer)
   }
@@ -123,11 +125,10 @@ internal final class CommentsViewModelTests: TestCase {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
 
-    let project = Project.template
     let comment = Comment.template
       |> \.replyCount .~ 1
 
-    self.vm.inputs.configureWith(project: project, update: nil)
+    self.vm.inputs.configureWith(project: .template, update: nil)
     self.vm.inputs.viewDidLoad()
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
@@ -136,19 +137,18 @@ internal final class CommentsViewModelTests: TestCase {
     self.vm.inputs.didSelectComment(comment)
 
     self.goToCommentRepliesComment.assertValues([comment])
-    self.goToCommentRepliesProject.assertValues([project])
+    self.goToCommentRepliesProject.assertValues([.template])
   }
 
   func testGoToCommentReplies_CommentHasReplies_IsDeleted_GoToDoesNotEmit() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
 
-    let project = Project.template
     let comment = Comment.template
       |> \.replyCount .~ 1
       |> \.isDeleted .~ true
 
-    self.vm.inputs.configureWith(project: project, update: nil)
+    self.vm.inputs.configureWith(project: .template, update: nil)
     self.vm.inputs.viewDidLoad()
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
@@ -164,12 +164,12 @@ internal final class CommentsViewModelTests: TestCase {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
 
-    let project = Project.template
     let comment = Comment.template
       |> \.replyCount .~ 1
       |> \.isFailed .~ true
 
-    self.vm.inputs.configureWith(project: project, update: nil)
+    self.vm.inputs.configureWith(project: .template, update: nil)
+
     self.vm.inputs.viewDidLoad()
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
@@ -185,11 +185,10 @@ internal final class CommentsViewModelTests: TestCase {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
 
-    let project = Project.template
     let comment = Comment.template
       |> \.replyCount .~ 0
 
-    self.vm.inputs.configureWith(project: project, update: nil)
+    self.vm.inputs.configureWith(project: .template, update: nil)
     self.vm.inputs.viewDidLoad()
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
@@ -290,11 +289,10 @@ internal final class CommentsViewModelTests: TestCase {
     self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
     self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
 
-    let project = Project.template
     let envelope = CommentsEnvelope.singleCommentTemplate
 
     withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
-      self.vm.inputs.configureWith(project: project, update: nil)
+      self.vm.inputs.configureWith(project: .template, update: nil)
       self.vm.inputs.viewDidLoad()
 
       self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
@@ -304,7 +302,7 @@ internal final class CommentsViewModelTests: TestCase {
 
       self.loadCommentsAndProjectIntoDataSourceComments
         .assertValues([envelope.comments], "New comments are emitted")
-      self.loadCommentsAndProjectIntoDataSourceProject.assertValues([project], "New project is emitted")
+      self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template], "New project is emitted")
 
       let updatedEnvelope = CommentsEnvelope.multipleCommentTemplate
 
@@ -314,27 +312,27 @@ internal final class CommentsViewModelTests: TestCase {
         self.loadCommentsAndProjectIntoDataSourceComments
           .assertValues([envelope.comments], "No new comments are emitted")
         self.loadCommentsAndProjectIntoDataSourceProject
-          .assertValues([project], "No new projects are emitted")
+          .assertValues([.template], "No new projects are emitted")
 
         self.scheduler.advance()
 
         self.loadCommentsAndProjectIntoDataSourceComments
           .assertValues([envelope.comments, updatedEnvelope.comments], "New comments are emitted")
         self.loadCommentsAndProjectIntoDataSourceProject
-          .assertValues([project, project], "Same project is emitted again")
+          .assertValues([.template, .template], "Same project is emitted again")
       }
     }
   }
 
-  func testProjectPagination_WhenLimitReached_CommentsAreUpdatedInDataSource() {
+  func testPaginatingCommentsAndLoadingIndicator_WillDisplayRowAtEnd() {
     self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
     self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
 
     let envelope = CommentsEnvelope.singleCommentTemplate
-    let project = Project.template
 
     withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
-      self.vm.inputs.configureWith(project: project, update: nil)
+      self.vm.inputs.configureWith(project: .template, update: nil)
+
       self.vm.inputs.viewDidLoad()
 
       self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
@@ -359,8 +357,10 @@ internal final class CommentsViewModelTests: TestCase {
           [envelope.comments],
           "No new comments are emitted."
         )
+
         self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template])
         self.isCommentsLoading.assertValues([true, false, true])
+        self.shouldShowLoadingIndicator.assertValues([false, true])
 
         self.scheduler.advance()
 
@@ -372,11 +372,12 @@ internal final class CommentsViewModelTests: TestCase {
         )
         self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template, .template])
         self.isCommentsLoading.assertValues([true, false, true, false])
+        self.shouldShowLoadingIndicator.assertValues([false, true, false])
       }
     }
   }
 
-  func testUpdatePagination_WhenLimitReached_CommentsAreLoadedIntoDataSource() {
+  func testUpdateProjectPaginatingCommentsAndLoadingIndicator_WillDisplayRowAtEnd() {
     self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
     self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
 
@@ -404,6 +405,7 @@ internal final class CommentsViewModelTests: TestCase {
 
       withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(updatedEnvelope))) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
+        self.shouldShowLoadingIndicator.assertValues([false, true])
 
         self.loadCommentsAndProjectIntoDataSourceComments.assertValues(
           [envelope.comments],
@@ -411,6 +413,7 @@ internal final class CommentsViewModelTests: TestCase {
         )
         self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template])
         self.isCommentsLoading.assertValues([true, false, true])
+        self.shouldShowLoadingIndicator.assertValues([false, true])
 
         self.scheduler.advance()
 
@@ -422,6 +425,10 @@ internal final class CommentsViewModelTests: TestCase {
         )
         self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template, .template])
         self.isCommentsLoading.assertValues([true, false, true, false])
+        self.shouldShowLoadingIndicator.assertValues([false, true, false])
+
+        self.vm.inputs.willDisplayRow(5, outOf: 10)
+        self.shouldShowLoadingIndicator.assertValues([false, true, false])
       }
     }
   }
@@ -575,3 +582,6 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 }
+
+// TODO: Empty state not tested yet https://kickstarter.atlassian.net/browse/NT-1942
+// TODO: Post comments can be fully tested after this ticket is merged: https://kickstarter.atlassian.net/browse/NT-1893

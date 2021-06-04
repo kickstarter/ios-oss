@@ -51,6 +51,9 @@ public protocol CommentsViewModelOutputs {
 
   /// Emits when a comment was submitted to be posted.
   var postCommentSubmitted: Signal<(), Never> { get }
+
+  /// Emits a Bool that determines if the activity indicator should render.
+  var shouldShowLoadingIndicator: Signal<Bool, Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -179,6 +182,12 @@ public final class CommentsViewModel: CommentsViewModelType,
         [comment.replyCount > 0, comment.status == .success].allSatisfy(isTrue)
       }
       .withLatestFrom(initialProject)
+
+    self.shouldShowLoadingIndicator = Signal
+      .combineLatest(isCloseToBottom, self.isCommentsLoading)
+      .map { _, isCommentsLoading in
+        isCommentsLoading
+      }
   }
 
   private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
@@ -220,6 +229,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
   public let postCommentSuccessful: Signal<Comment, Never>
   public var postCommentSubmitted: Signal<(), Never>
+  public let shouldShowLoadingIndicator: Signal<Bool, Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }
