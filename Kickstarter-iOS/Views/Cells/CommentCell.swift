@@ -59,6 +59,8 @@ final class CommentCell: UITableViewCell, ValueCell {
     _ = self.viewRepliesStackView
       |> viewRepliesStackViewStyle
 
+    // TODO: Submit string for translation and localize
+
     _ = self.viewRepliesLabel
       |> \.text %~ { _ in localizedString(key: "View_replies", defaultValue: "View replies") }
 
