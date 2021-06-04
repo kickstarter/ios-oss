@@ -1212,11 +1212,7 @@
 
     func postComment(input _: PostCommentInput)
       -> SignalProducer<Comment, ErrorEnvelope> {
-      if let error = self.postCommentResult?.error {
-        return SignalProducer(error: error)
-      }
-
-      return SignalProducer(value: self.postCommentResult?.value ?? .template)
+      return producer(for: self.postCommentResult)
     }
 
     func resetPassword(email _: String) -> SignalProducer<User, ErrorEnvelope> {

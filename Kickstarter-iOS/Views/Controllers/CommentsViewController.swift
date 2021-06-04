@@ -104,7 +104,7 @@ internal final class CommentsViewController: UITableViewController {
 
     self.commentComposer.rac.hidden = self.viewModel.outputs.commentComposerViewHidden
 
-    self.viewModel.outputs.postCommentSubmitted
+    self.viewModel.outputs.resetCommentComposerAndScrollToTop
       .observeForUI()
       .observeValues { [weak self] _ in
         self?.commentComposer.resetInput()

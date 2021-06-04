@@ -40,6 +40,7 @@ extension XCTestCase {
     scheduler: DateScheduler = AppEnvironment.current.scheduler,
     ubiquitousStore: KeyValueStoreType = AppEnvironment.current.ubiquitousStore,
     userDefaults: KeyValueStoreType = AppEnvironment.current.userDefaults,
+    uuidType: UUIDType.Type = AppEnvironment.current.uuidType,
     body: () -> Void
   ) {
     self.withEnvironment(
@@ -69,7 +70,8 @@ extension XCTestCase {
         pushRegistrationType: pushRegistrationType,
         scheduler: scheduler,
         ubiquitousStore: ubiquitousStore,
-        userDefaults: userDefaults
+        userDefaults: userDefaults,
+        uuidType: uuidType
       ),
       body: body
     )
