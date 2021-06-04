@@ -121,7 +121,7 @@
 "Continue_with_quantity_count_add_ons.two" = "Continuer avec %{quantity_count} compléments";
 "Continue_with_quantity_count_add_ons.zero" = "Continuer avec %{quantity_count} compléments";
 "Continue_with_this_reward" = "Continuer avec cette récompense ?";
-"Couldn't_post" = "Publication impossible. Cliquez pour réessayer.";
+"Couldnt_post" = "Publication impossible. Cliquez pour réessayer.";
 "Couldnt_add_attachment" = "Impossible d'ajouter la pièce jointe";
 "Couldnt_open_live_stream_Try_again_later" = "Impossible d'ouvrir la diffusion en direct. Veuillez réessayer plus tard.";
 "Couldnt_remove_attachment" = "Impossible de supprimer la pièce jointe";

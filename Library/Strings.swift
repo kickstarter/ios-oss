@@ -1989,7 +1989,7 @@ Haz clic para volver a intentarlo."
   */
   public static func Couldnt_post() -> String {
     return localizedString(
-      key: "Couldn't_post",
+      key: "Couldnt_post",
       defaultValue: "Couldn't post. Tap to retry",
       count: nil,
       substitutions: [:]

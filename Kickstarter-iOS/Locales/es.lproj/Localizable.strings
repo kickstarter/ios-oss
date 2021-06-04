@@ -121,7 +121,7 @@
 "Continue_with_quantity_count_add_ons.two" = "Continuar con %{quantity_count} complementos";
 "Continue_with_quantity_count_add_ons.zero" = "Continuar con %{quantity_count} complementos";
 "Continue_with_this_reward" = "¿Continuar con esta recompensa?";
-"Couldn't_post" = "No se pudo publicar. Toca para intentar de nuevo.";
+"Couldnt_post" = "No se pudo publicar. Toca para intentar de nuevo.";
 "Couldnt_add_attachment" = "No se pudo añadir el anexo";
 "Couldnt_open_live_stream_Try_again_later" = "No se pudo abrir este live stream, por favor inténtalo de nuevo más tarde.";
 "Couldnt_remove_attachment" = "No se pudo remover el anexo";

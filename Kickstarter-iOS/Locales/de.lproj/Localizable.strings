@@ -121,7 +121,7 @@
 "Continue_with_quantity_count_add_ons.two" = "Weiter mit %{quantity_count} Add-ons";
 "Continue_with_quantity_count_add_ons.zero" = "Weiter mit %{quantity_count} Add-ons";
 "Continue_with_this_reward" = "Weiter mit dieser Belohnung?";
-"Couldn't_post" = "Post fehlgeschlagen. Antippen und erneut versuchen";
+"Couldnt_post" = "Post fehlgeschlagen. Antippen und erneut versuchen";
 "Couldnt_add_attachment" = "Anhang konnte nicht hinzugefügt werden";
 "Couldnt_open_live_stream_Try_again_later" = "Live-Stream konnte nicht geöffnet werden. Bitte versuche es später noch einmal.";
 "Couldnt_remove_attachment" = "Anhang konnte nicht entfernt werden";
