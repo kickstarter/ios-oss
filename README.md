@@ -39,6 +39,18 @@ as a pure mapping of input signals to output signals, and [test](https://github.
 them heavily, including tests for localization, accessibility and event
 tracking.
 
+## Testing the project
+
+There are four testing schemas that can be run.
+`Library-iOS` contains tests for view models, styles, extensions, base objects.
+`KsApi-iOS` contains the network response, models and graphql schema tests.
+`Kickstarter-Framework-iOS` contains the screenshot tests of the view controllers and views.
+`KickstarterUITests` just has two tests that can be removed at some point or moved around to other schemas.
+
+These schema names correspond to the `Target Membership` of each file, with files ending in `Test` in the schema name above + `Test` membership.
+Running `CMD+U` on the `Kickstarter-iOS` schema may not always correctly run all test schemas above even if it is meant to.
+So running each schema with `CMD+U` above before pushing a commit will help ensure CI correctly passes and is ready for review.
+
 ## Documentation
 
 While we’re at it, why not share our docs? Check out the
