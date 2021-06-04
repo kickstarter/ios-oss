@@ -14,7 +14,7 @@ final class CommentTableViewFooterViewModelTests: TestCase {
     self.vm.outputs.shouldStartLoaderIndicator.observe(self.shouldStartLoaderIndicator.observer)
   }
 
-  func testShouldStartLoadingIndicator() {
+  func testOutputs() {
     self.shouldStartLoaderIndicator.assertDidNotEmitValue()
 
     self.vm.inputs.configure(with: true)
