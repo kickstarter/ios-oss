@@ -46,14 +46,14 @@ public protocol CommentsViewModelOutputs {
   /// Emits a list of `Comment`s and the `Project` to load into the data source.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
 
-  /// Emits a Bool that determines if the activity indicator should render.
-  var shouldShowLoadingIndicator: Signal<Bool, Never> { get }
-
   /// Emits when a comment was successfully posted.
   var postCommentSuccessful: Signal<Comment, Never> { get }
 
   /// Emits when a comment was submitted to be posted.
   var postCommentSubmitted: Signal<(), Never> { get }
+
+  /// Emits a Bool that determines if the activity indicator should render.
+  var shouldShowLoadingIndicator: Signal<Bool, Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -227,9 +227,9 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let isCommentsLoading: Signal<Bool, Never>
   public let isCellSeparatorHidden: Signal<Bool, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
-  public let shouldShowLoadingIndicator: Signal<Bool, Never>
   public let postCommentSuccessful: Signal<Comment, Never>
   public var postCommentSubmitted: Signal<(), Never>
+  public let shouldShowLoadingIndicator: Signal<Bool, Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }

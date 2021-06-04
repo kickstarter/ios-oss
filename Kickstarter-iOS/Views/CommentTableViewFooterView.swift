@@ -53,10 +53,10 @@ final class CommentTableViewFooterView: UIView {
   // MARK: - View model
 
   override func bindViewModel() {
-    self.viewModel.outputs.shouldStartLoaderIndicator
+    self.viewModel.outputs.shouldShowActivityIndicator
       .observeForUI()
-      .observeValues { shouldLoad in
-        self.shouldShowActivityIndicator = shouldLoad
+      .observeValues { [weak self] shouldLoad in
+        self?.shouldShowActivityIndicator = shouldLoad
       }
   }
 }

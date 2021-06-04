@@ -324,7 +324,7 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-  func testProjectPagination_WhenLimitReached_CommentsAreUpdatedInDataSource_AndEmitsLoadMoreIndicatorValue() {
+  func testPaginatingCommentsAndLoadingIndicator_WillDisplayRowAtEnd() {
     self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
     self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
 
@@ -377,7 +377,7 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-  func testUpdatePagination_WhenLimitReached_CommentsAreLoadedIntoDataSource_AndEmitsLoadMoreIndicatorValue() {
+  func testUpdateProjectPaginatingCommentsAndLoadingIndicator_WillDisplayRowAtEnd() {
     self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
     self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
 

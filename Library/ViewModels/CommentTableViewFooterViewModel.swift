@@ -6,7 +6,7 @@ public protocol CommentTableViewFooterViewModelInputs {
 }
 
 public protocol CommentTableViewFooterViewModelOutputs {
-  var shouldStartLoaderIndicator: Signal<Bool, Never> { get }
+  var shouldShowActivityIndicator: Signal<Bool, Never> { get }
 }
 
 public protocol CommentTableViewFooterViewModelType {
@@ -17,7 +17,7 @@ public protocol CommentTableViewFooterViewModelType {
 public final class CommentTableViewFooterViewModel: CommentTableViewFooterViewModelType,
   CommentTableViewFooterViewModelInputs, CommentTableViewFooterViewModelOutputs {
   public init() {
-    self.shouldStartLoaderIndicator = self.loadingIndicatorSignal
+    self.shouldShowActivityIndicator = self.loadingIndicatorSignal
   }
 
   fileprivate let (loadingIndicatorSignal, observer) = Signal<Bool, Never>.pipe()
@@ -25,7 +25,7 @@ public final class CommentTableViewFooterViewModel: CommentTableViewFooterViewMo
     self.observer.send(value: value)
   }
 
-  public let shouldStartLoaderIndicator: Signal<Bool, Never>
+  public let shouldShowActivityIndicator: Signal<Bool, Never>
 
   public var inputs: CommentTableViewFooterViewModelInputs { return self }
   public var outputs: CommentTableViewFooterViewModelOutputs { return self }
