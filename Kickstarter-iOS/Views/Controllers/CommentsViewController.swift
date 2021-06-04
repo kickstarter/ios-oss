@@ -25,7 +25,7 @@ internal final class CommentsViewController: UITableViewController {
   }()
 
   private lazy var footerView: CommentTableViewFooterView = {
-    let frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: Layout.Footer.height)
+    let frame = CGRect(x: 0, y: 0, width: self.tableView.frame.width, height: Layout.Footer.height)
     let view = CommentTableViewFooterView(frame: frame)
     return view
   }()

@@ -100,14 +100,22 @@ public final class CommentsViewModel: CommentsViewModelType,
       .map { user in user.isNil }
 
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
-      .map { row, total in row >= total - 3 }
+      .map { row, total -> Bool in
+        // Prevent paging when only the empty state cell is shown.
+        guard total > 1 else { return false }
+        return row >= total - 3
+      }
       .skipRepeats()
-      .filter { isClose in isClose }
+      .filter(isTrue)
       .ignoreValues()
+
+    let pullToRefresh = self.refreshProperty.signal
 
     let requestFirstPageWith = Signal.merge(
       initialProject,
-      initialProject.takeWhen(self.refreshProperty.signal)
+      initialProject.takeWhen(pullToRefresh)
+        // Thread hop so that we can clear our comments buffer before newly paginated results.
+        .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
     )
 
     let (comments, isLoading, _, _) = paginate(
@@ -128,7 +136,9 @@ public final class CommentsViewModel: CommentsViewModelType,
             after: cursor
           )
         )
-      }
+      },
+      // only return new pages, we'll concat them ourselves
+      concater: { _, value in value }
     )
 
     let currentComments = self.currentComments.signal.skipNil()
@@ -151,34 +161,36 @@ public final class CommentsViewModel: CommentsViewModelType,
       .filter(isNotNil)
       .ignoreValues()
 
-    let firstPage = comments.take(first: 1)
-
-    let subsequentPages = comments
-      .skip(first: 1) // Take emissions after the first page is loaded.
-      .skip { $0.isEmpty } // Ignore initial emissions from page refreshes.
-
-    let pagedComments = Signal.merge(
-      firstPage,
-      subsequentPages
+    let paginatedComments = Signal.merge(
+      // Pull to refresh, clear comments cache.
+      pullToRefresh.mapConst(([], true)),
+      // Regular paged comments, don't clear accumulator.
+      comments.map { comments in (comments, false) },
+      // Comments with a retrying comment, replace our current comments cache with this.
+      commentsWithRetryingComment.map { comments in (comments, true) },
+      // Comments with a failable or new comment, replace our current comments cache with this.
+      commentsWithFailableOrComment.map { comments in (comments, true) }
     )
+    .scan([]) { accum, value -> [Comment] in
+      let (comments, clear) = value
+      guard clear == false else { return comments }
+      return accum + comments
+    }
 
-    let commentsAndProject = Signal.combineLatest(
-      Signal.merge(
-        pagedComments,
-        commentsWithFailableOrComment,
-        commentsWithRetryingComment
-      ),
-      initialProject
+    let commentsAndProject = initialProject
+      .takePairWhen(paginatedComments)
+      .map { ($1, $0) }
+
+    self.currentComments <~ commentsAndProject.map(first)
+      // Thread hop so that we don't circularly buffer.
+      .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
+
+    self.loadCommentsAndProjectIntoDataSource = Signal.merge(
+      // If we start off with no comments, show an empty state.
+      commentsAndProject.take(first: 1),
+      // Subsequent empty emissions (pull to refresh) should be ignored until replaced.
+      commentsAndProject.skip(first: 1).filter { comments, _ in comments.isEmpty == false }
     )
-
-    self.currentComments <~ Signal.merge(
-      commentsAndProject.map(first)
-        // A little trick to avoid an infinite loop, causes a thread hop here.
-        .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler),
-      requestFirstPageWith.mapConst([]) // clear this when we're about to refresh.
-    )
-
-    self.loadCommentsAndProjectIntoDataSource = commentsAndProject
     self.beginOrEndRefreshing = isLoading
     self.cellSeparatorHidden = commentsAndProject.map(first).map { $0.count == .zero }
 
@@ -276,7 +288,7 @@ private func retryCommentProducer(
   // retry was successful and then, after a 1 second delay, the actual successful comment is returned.
   .flatMap { successfulComment -> SignalProducer<Comment, ErrorEnvelope> in
     let retrySuccessComment = successfulComment.updatingStatus(to: .retrySuccess)
-      |> \.id .~ comment.id // Give this the original errored comment's ID to replace.
+      |> \.id .~ comment.id // Inject the original errored comment's ID to replace.
 
     return SignalProducer(value: successfulComment)
       .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
