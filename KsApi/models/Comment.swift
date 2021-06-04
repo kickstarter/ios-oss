@@ -7,7 +7,6 @@ public struct Comment {
   public let createdAt: TimeInterval
   public var id: String
   public var isDeleted: Bool
-  public var isFailed: Bool = false
   public var replyCount: Int
 
   /// return the first `authorBadges`, if nil  return `.backer`

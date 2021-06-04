@@ -25,6 +25,12 @@ public protocol CommentsViewModelInputs {
 }
 
 public protocol CommentsViewModelOutputs {
+  /// Emits a boolean that determines if comments are currently loading.
+  var beginOrEndRefreshing: Signal<Bool, Never> { get }
+
+  /// Emits a boolean that determines if cell separator is to be hidden.
+  var cellSeparatorHidden: Signal<Bool, Never> { get }
+
   /// Emits a boolean that determines if the comment input area is visible.
   var commentComposerViewHidden: Signal<Bool, Never> { get }
 
@@ -34,14 +40,14 @@ public protocol CommentsViewModelOutputs {
   /// Emits the selected `Comment` and `Project` to navigate to its replies.
   var goToCommentReplies: Signal<(Comment, Project), Never> { get }
 
-  /// Emits a boolean that determines if comments are currently loading.
-  var isCommentsLoading: Signal<Bool, Never> { get }
-
   /// Emits a list of `Comment`s and the `Project` to load into the data source.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
 
   /// Emits when a comment has been posted and we should scroll to top and reset the composer.
   var resetCommentComposerAndScrollToTop: Signal<(), Never> { get }
+
+  /// Emits a Bool that determines if the activity indicator should render.
+  var showLoadingIndicatorInFooterView: Signal<Bool, Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -173,10 +179,13 @@ public final class CommentsViewModel: CommentsViewModelType,
     )
 
     self.loadCommentsAndProjectIntoDataSource = commentsAndProject
-    self.isCommentsLoading = isLoading
+    self.beginOrEndRefreshing = isLoading
+    self.cellSeparatorHidden = commentsAndProject.map(first).map { $0.count == .zero }
 
     let commentTapped = self.didSelectCommentProperty.signal.skipNil()
-    let regularCommentTapped = commentTapped.filter { comment in comment.status == .success }
+    let regularCommentTapped = commentTapped.filter { comment in
+      [comment.status == .success, comment.isDeleted == false].allSatisfy(isTrue)
+    }
     let erroredCommentTapped = commentTapped.filter { comment in comment.status == .failed }
 
     self.goToCommentReplies = regularCommentTapped
@@ -197,6 +206,10 @@ public final class CommentsViewModel: CommentsViewModelType,
       .takePairWhen(erroredCommentTapped)
       .map { ($1, $0) }
       .flatMap(retryCommentProducer)
+
+    self.showLoadingIndicatorInFooterView = Signal
+      .combineLatest(isCloseToBottom, self.beginOrEndRefreshing)
+      .map(second >>> isTrue)
   }
 
   // Properties to assist with injecting these values into the existing data streams.
@@ -234,12 +247,14 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
+  public let beginOrEndRefreshing: Signal<Bool, Never>
+  public let cellSeparatorHidden: Signal<Bool, Never>
   public let commentComposerViewHidden: Signal<Bool, Never>
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let goToCommentReplies: Signal<(Comment, Project), Never>
-  public let isCommentsLoading: Signal<Bool, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
   public let resetCommentComposerAndScrollToTop: Signal<(), Never>
+  public let showLoadingIndicatorInFooterView: Signal<Bool, Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }
