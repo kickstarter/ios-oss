@@ -52,7 +52,10 @@ internal final class CommentCellViewModelTests: TestCase {
 
   func testOutputs_bottomRowStackViewIsHidden_LoggedIn_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: false]
+      |> \.features .~ [
+        OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: false,
+        OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: false
+      ]
 
     let user = User.template |> \.id .~ 12_345
 
@@ -61,15 +64,18 @@ internal final class CommentCellViewModelTests: TestCase {
 
       self.bottomRowStackViewIsHidden
         .assertValue(
-          false,
-          "The feature flag is false and the user is logged in, therefore the stack view is not hidden."
+          true,
+          "The feature flags are false, therefore the stack view is hidden."
         )
     }
   }
 
   func testOutputs_bottomRowStackViewIsHidden_IsBacking_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: false]
+      |> \.features .~ [
+        OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: false,
+        OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: false
+      ]
 
     let project = Project.template
       |> \.personalization.isBacking .~ true
@@ -79,61 +85,63 @@ internal final class CommentCellViewModelTests: TestCase {
 
       self.bottomRowStackViewIsHidden
         .assertValue(
-          false,
-          "The feature flag is false and the user is a backer, therefore the stack view is not hidden."
+          true,
+          "The feature flags are false, therefore the stack view is hidden."
         )
     }
   }
 
   func testOutputs_bottomRowStackViewIsHidden_LoggedOut_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: true]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
 
       self.bottomRowStackViewIsHidden
         .assertValue(
-          true,
-          "The feature flag is true and the user is not logged in, therefore the stack view is hidden."
+          false,
+          "The comment flagging feature is enabled, therefore the stack view is not hidden."
         )
     }
   }
 
   func testOutputs_bottomRowStackViewIsHidden_IsNotBacking_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: true]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
 
       self.bottomRowStackViewIsHidden
         .assertValue(
-          true,
-          "The feature flag is true and the user is not a backer, therefore the stack view is hidden."
+          false,
+          "The comment flagging feature is enabled, therefore the stack view is not hidden."
         )
     }
   }
 
   func testOutputs_flagButtonIsHidden_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: false]
+      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: false]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
 
-      self.flagButtonIsHidden.assertValue(false, "The feature flag is false, therefore the output is false.")
+      self.flagButtonIsHidden
+        .assertValue(true, "The feature flag is not enabled, therefore the flag button is hidden.")
     }
   }
 
   func testOutputs_flagButtonIsHidden_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: true]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       self.vm.inputs.configureWith(comment: .template, project: .template)
 
-      self.flagButtonIsHidden.assertValue(true, "The feature flag is true, therefore the output is true.")
+      self.flagButtonIsHidden
+        .assertValue(false, "The feature flag is enabled, therefore the flag button is not hidden.")
     }
   }
 

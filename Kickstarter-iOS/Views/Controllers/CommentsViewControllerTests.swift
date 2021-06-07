@@ -96,9 +96,9 @@ internal final class CommentsViewControllerTests: TestCase {
     }
   }
 
-  func testView_CurrentUser_LoggedIn_IsBacking_CommentFlaggingDisabledFeatureFlag_True() {
+  func testView_CurrentUser_LoggedIn_IsBacking_CommentFlaggingEnabledFeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: true]
 
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
@@ -152,9 +152,9 @@ internal final class CommentsViewControllerTests: TestCase {
     }
   }
 
-  func testView_CurrentUser_LoggedIn_IsBacking_CommentFlaggingDisabledFeatureFlag_False() {
+  func testView_CurrentUser_LoggedIn_IsBacking_CommentFlaggingEnabledFeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: false]
+      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: false]
 
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
@@ -208,9 +208,9 @@ internal final class CommentsViewControllerTests: TestCase {
     }
   }
 
-  func testView_CurrentUser_LoggedOut_CommentFlaggingDisabledFeatureFlag_True() {
+  func testView_CurrentUser_LoggedOut_CommentFlaggingEnabledFeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingDisabled.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: true]
 
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))

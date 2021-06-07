@@ -76,8 +76,12 @@ public final class CommentCellViewModel:
 
     self.flagButtonIsHidden = self.commentAndProject.signal
       .map { _ in
-        AppEnvironment.current.optimizelyClient?
-          .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentFlaggingDisabled.rawValue) ?? false
+        guard let isFeatureEnabled = AppEnvironment.current.optimizelyClient?
+          .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentFlaggingEnabled.rawValue)
+        else { return true }
+
+        // If the feature is enabled, the flag button should be visible.
+        return !isFeatureEnabled
       }
 
     let isLoggedOut = self.commentAndProject.signal
