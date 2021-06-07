@@ -15,7 +15,6 @@ and read more about our journey to open source [here](https://kickstarter.engine
 1. Install Xcode.
 1. Clone this repository.
 1. Run `make bootstrap` to install tools and dependencies.
-1. Run `make test-all` to build and run tests on all platforms.  
 
 &#42; To provide a mock version that serves up hard-coded data immediately, set `KsApi.Secrets.isOSS` = `true`.
 
@@ -41,11 +40,8 @@ tracking.
 
 ## Testing the project
 
-There are four testing schemas that can be run.
-`Library-iOS` contains tests for view models, styles, extensions, base objects.
-`KsApi-iOS` contains the network response, models and graphql schema tests.
-`Kickstarter-Framework-iOS` contains the screenshot tests of the view controllers and views.
-`KickstarterUITests` just has two tests that can be removed at some point or moved around to other schemas.
+- Run all tests from the command line by running `make test-all`.
+- Run an individual scheme's tests by selecting that scheme in Xcode and hitting CMD+U.
 
 These schema names correspond to the `Target Membership` of each file, with files ending in `Test` in the schema name above + `Test` membership.
 Running `CMD+U` on the `Kickstarter-iOS` schema may not always correctly run all test schemas above even if it is meant to.
