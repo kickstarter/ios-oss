@@ -101,6 +101,7 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total -> Bool in
+        // TODO: ensure this does not page when cells are less than threshold.
         // Prevent paging when only the empty state cell is shown.
         guard total > 1 else { return false }
         return row >= total - 3
