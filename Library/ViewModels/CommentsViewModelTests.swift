@@ -23,8 +23,8 @@ internal final class CommentsViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.cellSeparatorHidden.observe(self.cellSeparatorHidden.observer)
     self.vm.outputs.beginOrEndRefreshing.observe(self.beginOrEndRefreshing.observer)
+    self.vm.outputs.cellSeparatorHidden.observe(self.cellSeparatorHidden.observer)
     self.vm.outputs.commentComposerViewHidden.observe(self.commentComposerViewHidden.observer)
     self.vm.outputs.configureCommentComposerViewWithData.map(first)
       .observe(self.configureCommentComposerViewURL.observer)
@@ -519,6 +519,12 @@ internal final class CommentsViewModelTests: TestCase {
         self.loadCommentsAndProjectIntoDataSourceComments.values.last?.first,
         expectedFailableComment,
         "Failable temporary comment is emitted first."
+      )
+
+      XCTAssertEqual(
+        self.loadCommentsAndProjectIntoDataSourceComments.values.last?.count,
+        2,
+        "The amount of comments in the data source doesn't change."
       )
 
       self.scheduler.advance()
