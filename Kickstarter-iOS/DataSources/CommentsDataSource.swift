@@ -24,24 +24,26 @@ internal final class CommentsDataSource: ValueCellDataSource {
     }
 
     comments.forEach { comment in
+      guard comment.isDeleted == false else {
+        self.appendRow(
+          value: comment,
+          cellClass: CommentRemovedCell.self,
+          toSection: section
+        )
+        return
+      }
+
       switch comment.status {
-      case .failed:
-        self
-          .appendRow(
-            value: comment,
-            cellClass: CommentPostFailedCell.self,
-            toSection: section
-          )
-      case .removed:
-        self
-          .appendRow(
-            value: comment,
-            cellClass: CommentRemovedCell.self,
-            toSection: section
-          )
-      case .success:
-        self
-          .appendRow(value: (comment, project), cellClass: CommentCell.self, toSection: section)
+      case .failed, .retrying:
+        self.appendRow(
+          value: comment,
+          cellClass: CommentPostFailedCell.self,
+          toSection: section
+        )
+      case .success, .retrySuccess:
+        self.appendRow(value: (comment, project), cellClass: CommentCell.self, toSection: section)
+      case .unknown:
+        assertionFailure("Comments that have not had their state set should not be added to the data source.")
       }
     }
   }
