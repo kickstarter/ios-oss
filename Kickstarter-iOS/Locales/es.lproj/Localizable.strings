@@ -121,9 +121,9 @@
 "Continue_with_quantity_count_add_ons.two" = "Continuar con %{quantity_count} complementos";
 "Continue_with_quantity_count_add_ons.zero" = "Continuar con %{quantity_count} complementos";
 "Continue_with_this_reward" = "¿Continuar con esta recompensa?";
-"Couldnt_post" = "No se pudo publicar. Toca para intentar de nuevo.";
 "Couldnt_add_attachment" = "No se pudo añadir el anexo";
 "Couldnt_open_live_stream_Try_again_later" = "No se pudo abrir este live stream, por favor inténtalo de nuevo más tarde.";
+"Couldnt_post" = "No se pudo publicar. Toca para intentar de nuevo.";
 "Couldnt_remove_attachment" = "No se pudo remover el anexo";
 "Create_password" = "Crea contraseña";
 "Created_projects_projects_count" = "Proyectos creados: %{projects_count}";
@@ -383,7 +383,7 @@
 "Notifications" = "Notificaciones";
 "Once_you_back_a_project_well_share" = "Tu patrocinio de un proyecto nos ayuda a hacerte recomendaciones personalizadas.";
 "Only_amount_of_time_left_to_watch_this" = "Queda poco tiempo para verlo (%{amount_of_time}).";
-"Only_backers_can_post_comments" = "Only backers can post comments.";
+"Only_backers_can_post_comments" = "Sólo los patrocinadores pueden publicar comentarios.";
 "Open_inbox" = "Abrir la bandeja de entrada";
 "Opens_comments" = "Abre comentarios.";
 "Opens_creator_profile" = "Abre el perfil del creador.";

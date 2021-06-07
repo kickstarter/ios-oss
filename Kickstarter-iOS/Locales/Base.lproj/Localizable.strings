@@ -121,9 +121,9 @@
 "Continue_with_quantity_count_add_ons.two" = "Continue with %{quantity_count} add-ons";
 "Continue_with_quantity_count_add_ons.zero" = "Continue with %{quantity_count} add-ons";
 "Continue_with_this_reward" = "Continue with this reward?";
-"Couldnt_post" = "Couldn't post. Tap to retry";
 "Couldnt_add_attachment" = "Couldn't add attachment";
 "Couldnt_open_live_stream_Try_again_later" = "Couldn‘t open live stream. Try again later.";
+"Couldnt_post" = "Couldn't post. Tap to retry";
 "Couldnt_remove_attachment" = "Couldn't remove attachment";
 "Create_password" = "Create password";
 "Created_projects_projects_count" = "Created projects %{projects_count}";

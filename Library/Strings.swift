@@ -1979,23 +1979,6 @@ Haz clic para volver a intentarlo."
     )
   }
   /**
-   "Couldn't post. Tap to retry"
-
-   - **en**: "Couldn't post. Tap to retry"
-   - **de**: "Post fehlgeschlagen. Antippen und erneut versuchen"
-   - **es**: "No se pudo publicar. Toca para intentar de nuevo."
-   - **fr**: "Publication impossible. Cliquez pour réessayer."
-   - **ja**: "投稿できませんでした。タップして再試行してください。"
-  */
-  public static func Couldnt_post() -> String {
-    return localizedString(
-      key: "Couldnt_post",
-      defaultValue: "Couldn't post. Tap to retry",
-      count: nil,
-      substitutions: [:]
-    )
-  }
-  /**
    "Couldn't add attachment"
 
    - **en**: "Couldn't add attachment"
@@ -2025,6 +2008,23 @@ Haz clic para volver a intentarlo."
     return localizedString(
       key: "Couldnt_open_live_stream_Try_again_later",
       defaultValue: "Couldn‘t open live stream. Try again later.",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Couldn't post. Tap to retry"
+
+   - **en**: "Couldn't post. Tap to retry"
+   - **de**: "Post fehlgeschlagen. Antippen und erneut versuchen"
+   - **es**: "No se pudo publicar. Toca para intentar de nuevo."
+   - **fr**: "Publication impossible. Cliquez pour réessayer."
+   - **ja**: "投稿できませんでした。タップして再試行してください。"
+  */
+  public static func Couldnt_post() -> String {
+    return localizedString(
+      key: "Couldnt_post",
+      defaultValue: "Couldn't post. Tap to retry",
       count: nil,
       substitutions: [:]
     )

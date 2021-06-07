@@ -121,9 +121,9 @@
 "Continue_with_quantity_count_add_ons.two" = "%{quantity_count} 個のアドオンで続行する";
 "Continue_with_quantity_count_add_ons.zero" = "%{quantity_count} 個のアドオンで続行する";
 "Continue_with_this_reward" = "このリワードで続けますか？";
-"Couldnt_post" = "投稿できませんでした。タップして再試行してください。";
 "Couldnt_add_attachment" = "添付ファイルを追加できませんでした";
 "Couldnt_open_live_stream_Try_again_later" = "ライブ配信を開けませんでした。後ほどお試しください。";
+"Couldnt_post" = "投稿できませんでした。タップして再試行してください。";
 "Couldnt_remove_attachment" = "添付ファイルを削除できませんでした";
 "Create_password" = "パスワードを作成";
 "Created_projects_projects_count" = "%{projects_count} のプロジェクト作成済";
