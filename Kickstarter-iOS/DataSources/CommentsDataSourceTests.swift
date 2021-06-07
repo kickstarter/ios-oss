@@ -33,7 +33,7 @@ class CommentsDataSourceTests: XCTestCase {
 
   func testComment_shouldContainRemovedCell() {
     let rowIndex: Int = 1
-    XCTAssertEqual(true, Comment.templates[rowIndex].isDeleted)
+    XCTAssertTrue(Comment.templates[rowIndex].isDeleted)
     XCTAssertEqual(
       "CommentRemovedCell",
       self.dataSource.reusableId(item: rowIndex, section: self.commentsSection)

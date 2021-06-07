@@ -16,6 +16,8 @@ final class CommentTests: XCTestCase {
     XCTAssertEqual(0, comment.replyCount)
     XCTAssertEqual("Blob", comment.author.name)
     XCTAssertEqual("http://www.kickstarter.com/medium.jpg", comment.author.imageUrl)
-    XCTAssertEqual(Comment.AuthorBadge.you, comment.authorBadge)
+    XCTAssertEqual(.you, comment.authorBadge)
+    XCTAssertEqual(.success, comment.status)
+    XCTAssertEqual([.you], comment.authorBadges)
   }
 }
