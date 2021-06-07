@@ -22,6 +22,7 @@ internal class TestCase: FBSnapshotTestCase {
   internal let segmentTrackingClient = MockTrackingClient()
   internal let ubiquitousStore = MockKeyValueStore()
   internal let userDefaults = MockKeyValueStore()
+  internal let uuidType = MockUUID.self
 
   override var recordMode: Bool {
     willSet(newValue) {
@@ -70,7 +71,8 @@ internal class TestCase: FBSnapshotTestCase {
       reachability: self.reachability.producer,
       scheduler: self.scheduler,
       ubiquitousStore: self.ubiquitousStore,
-      userDefaults: self.userDefaults
+      userDefaults: self.userDefaults,
+      uuidType: self.uuidType
     )
   }
 

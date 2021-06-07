@@ -7,7 +7,6 @@ public struct Comment {
   public let createdAt: TimeInterval
   public var id: String
   public var isDeleted: Bool
-  public var isFailed: Bool = false
   public var replyCount: Int
 
   /// return the first `authorBadges`, if nil  return `.backer`
@@ -15,10 +14,8 @@ public struct Comment {
     return self.authorBadges.first ?? .backer
   }
 
-  /// return the current status of the `Comment`
-  public var status: Status {
-    return self.isDeleted ? .removed : self.isFailed ? .failed : .success
-  }
+  /// Track and return the current status of the `Comment`
+  public var status: Status = .unknown
 
   public struct Author: Decodable, Equatable {
     public var id: String
@@ -34,17 +31,21 @@ public struct Comment {
     case you
   }
 
-  public enum Status {
+  public enum Status: String, Decodable {
     case failed
-    case removed
+    case retrying
+    case retrySuccess
     case success
+    case unknown // Before a status is set
   }
 }
 
 extension Comment: Decodable {}
 
 extension Comment {
-  public static func createFailableComment(
+  public static func failableComment(
+    withId id: String,
+    date: Date,
     project: Project,
     user: User,
     body: String
@@ -59,16 +60,19 @@ extension Comment {
       author: author,
       authorBadges: [.you],
       body: body,
-      createdAt: Date().timeIntervalSince1970,
-      id: UUID().uuidString,
+      createdAt: date.timeIntervalSince1970,
+      id: id,
       isDeleted: false,
-      replyCount: 0
+      replyCount: 0,
+      status: .success
     )
+  }
+
+  public func updatingStatus(to status: Comment.Status) -> Comment {
+    var comment = self
+    comment.status = status
+    return comment
   }
 }
 
 extension Comment: Equatable {}
-
-public func == (lhs: Comment, rhs: Comment) -> Bool {
-  return lhs.id == rhs.id
-}
