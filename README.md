@@ -43,10 +43,6 @@ tracking.
 - Run all tests from the command line by running `make test-all`.
 - Run an individual scheme's tests by selecting that scheme in Xcode and hitting CMD+U.
 
-These schema names correspond to the `Target Membership` of each file, with files ending in `Test` in the schema name above + `Test` membership.
-Running `CMD+U` on the `Kickstarter-iOS` schema may not always correctly run all test schemas above even if it is meant to.
-So running each schema with `CMD+U` above before pushing a commit will help ensure CI correctly passes and is ready for review.
-
 ## Documentation
 
 While we’re at it, why not share our docs? Check out the
