@@ -25,35 +25,29 @@ public protocol CommentsViewModelInputs {
 }
 
 public protocol CommentsViewModelOutputs {
+  /// Emits a boolean that determines if comments are currently loading.
+  var beginOrEndRefreshing: Signal<Bool, Never> { get }
+
+  /// Emits a boolean that determines if cell separator is to be hidden.
+  var cellSeparatorHidden: Signal<Bool, Never> { get }
+
   /// Emits a boolean that determines if the comment input area is visible.
   var commentComposerViewHidden: Signal<Bool, Never> { get }
 
   /// Emits data to configure comment composer view.
   var configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never> { get }
 
-  // Emits a message if there is an error from posting a comment.
-  var errorMessage: Signal<String, Never> { get }
-
   /// Emits the selected `Comment` and `Project` to navigate to its replies.
   var goToCommentReplies: Signal<(Comment, Project), Never> { get }
-
-  /// Emits a boolean that determines if cell separator is to be hidden.
-  var isCellSeparatorHidden: Signal<Bool, Never> { get }
-
-  /// Emits a boolean that determines if comments are currently loading.
-  var isCommentsLoading: Signal<Bool, Never> { get }
 
   /// Emits a list of `Comment`s and the `Project` to load into the data source.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
 
-  /// Emits when a comment was successfully posted.
-  var postCommentSuccessful: Signal<Comment, Never> { get }
-
-  /// Emits when a comment was submitted to be posted.
-  var postCommentSubmitted: Signal<(), Never> { get }
+  /// Emits when a comment has been posted and we should scroll to top and reset the composer.
+  var resetCommentComposerAndScrollToTop: Signal<(), Never> { get }
 
   /// Emits a Bool that determines if the activity indicator should render.
-  var shouldShowLoadingIndicator: Signal<Bool, Never> { get }
+  var showLoadingIndicatorInFooterView: Signal<Bool, Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -105,99 +99,145 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.commentComposerViewHidden = currentUser.signal
       .map { user in user.isNil }
 
-    let postCommentEvent = initialProject
-      .takePairWhen(self.postCommentButtonTappedProperty.signal.skipNil())
-      .switchMap { project, comment in
-        AppEnvironment.current.apiService
-          .postComment(input: .init(
-            body: comment,
-            commentableId: project.graphID
-          ))
-          .materialize()
-      }
-
-    // TODO: Handle error and success states appropriately for the datasource item
-    self.postCommentSuccessful = postCommentEvent.values().map { $0 }
-    self.errorMessage = postCommentEvent.errors().map { $0.errorMessages.first }.skipNil()
-
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
-      .map { row, total in row >= total - 3 }
+      .map { row, total -> Bool in
+        // TODO: ensure this does not page when cells are less than threshold.
+        // Prevent paging when only the empty state cell is shown.
+        guard total > 1 else { return false }
+        return row >= total - 3
+      }
       .skipRepeats()
-      .filter { isClose in isClose }
+      .filter(isTrue)
       .ignoreValues()
+
+    let pullToRefresh = self.refreshProperty.signal
 
     let requestFirstPageWith = Signal.merge(
       initialProject,
-      initialProject.takeWhen(self.refreshProperty.signal),
-      initialProject.takeWhen(self.postCommentSuccessful)
+      initialProject.takeWhen(pullToRefresh)
+        // Thread hop so that we can clear our comments buffer before newly paginated results.
+        .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
     )
 
     let (comments, isLoading, _, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
-      clearOnNewRequest: false,
+      clearOnNewRequest: true,
       valuesFromEnvelope: { $0.comments },
       cursorFromEnvelope: { ($0.slug, $0.cursor) },
       requestFromParams: { project in
-        AppEnvironment.current.apiService
-          .fetchComments(query: commentsQuery(withProjectSlug: project.slug))
+        AppEnvironment.current.apiService.fetchComments(
+          query: commentsQuery(withProjectSlug: project.slug)
+        )
       },
       requestFromCursor: { projectSlug, cursor in
-        AppEnvironment.current.apiService
-          .fetchComments(query: commentsQuery(
+        AppEnvironment.current.apiService.fetchComments(
+          query: commentsQuery(
             withProjectSlug: projectSlug,
             after: cursor
-          ))
-      }
+          )
+        )
+      },
+      // only return new pages, we'll concat them ourselves
+      concater: { _, value in value }
     )
 
-    let optimisticPostComment = Signal.combineLatest(
-      initialProject,
-      currentUser.skipNil()
-    ).takePairWhen(self.postCommentButtonTappedProperty.signal.skipNil())
+    let currentComments = self.currentComments.signal.skipNil()
+
+    let commentsWithRetryingComment = currentComments
+      .takePairWhen(self.retryingComment.signal.skipNil())
       .map(unpack)
-      .map(Comment.createFailableComment)
+      .map(commentsReplacingCommentById)
 
-    self.postCommentSubmitted = optimisticPostComment.ignoreValues()
+    let commentsWithFailableOrComment = currentComments
+      .takePairWhen(self.failableOrComment.signal.skipNil())
+      .map(unpack)
+      .map(commentsReplacingCommentById)
 
-    let commentsWithOptimisticPostComment = Signal
-      .combineLatest(comments, optimisticPostComment)
-      .map { loadedComments, optimisticComment -> [Comment] in
-        [optimisticComment] + loadedComments
-      }.map { $0 as Array }
+    self.resetCommentComposerAndScrollToTop = commentsWithFailableOrComment
+      // We only want to scroll to top for failable comments as they represent the initial
+      // comment that's inserted. We check here to see that the first comment's ID is a UUID
+      // to determine this. There may be better ways.
+      .map { UUID(uuidString: $0.first?.id ?? "") }
+      .filter(isNotNil)
+      .ignoreValues()
 
-    let commentsAndProject = Signal.combineLatest(
-      Signal.merge(comments, commentsWithOptimisticPostComment),
-      initialProject
+    let paginatedComments = Signal.merge(
+      // Pull to refresh, clear comments cache.
+      pullToRefresh.mapConst(([], true)),
+      // Regular paged comments, don't clear accumulator.
+      comments.map { comments in (comments, false) },
+      // Comments with a retrying comment, replace our current comments cache with this.
+      commentsWithRetryingComment.map { comments in (comments, true) },
+      // Comments with a failable or new comment, replace our current comments cache with this.
+      commentsWithFailableOrComment.map { comments in (comments, true) }
     )
+    .scan([]) { accum, value -> [Comment] in
+      let (comments, clear) = value
+      guard clear == false else { return comments }
+      return accum + comments
+    }
 
-    let cellSeparatorHidden = comments.map { $0.count <= .zero }
+    let commentsAndProject = initialProject
+      .takePairWhen(paginatedComments)
+      .map { ($1, $0) }
 
-    self.loadCommentsAndProjectIntoDataSource = commentsAndProject
-    self.isCommentsLoading = isLoading
-    self.isCellSeparatorHidden = cellSeparatorHidden
+    self.currentComments <~ commentsAndProject.map(first)
+      // Thread hop so that we don't circularly buffer.
+      .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
 
-    self.goToCommentReplies = self.didSelectCommentProperty.signal.skipNil()
-      .filter { comment in
-        [comment.replyCount > 0, comment.status == .success].allSatisfy(isTrue)
-      }
+    self.loadCommentsAndProjectIntoDataSource = Signal.merge(
+      // If we start off with no comments, show an empty state.
+      commentsAndProject.take(first: 1),
+      // Subsequent empty emissions (pull to refresh) should be ignored until replaced.
+      commentsAndProject.skip(first: 1).filter { comments, _ in comments.isEmpty == false }
+    )
+    self.beginOrEndRefreshing = isLoading
+    self.cellSeparatorHidden = commentsAndProject.map(first).map { $0.count == .zero }
+
+    let commentTapped = self.didSelectCommentProperty.signal.skipNil()
+    let regularCommentTapped = commentTapped.filter { comment in
+      [comment.status == .success, comment.isDeleted == false].allSatisfy(isTrue)
+    }
+    let erroredCommentTapped = commentTapped.filter { comment in comment.status == .failed }
+
+    self.goToCommentReplies = regularCommentTapped
+      .filter { comment in comment.replyCount > 0 }
       .withLatestFrom(initialProject)
 
-    self.shouldShowLoadingIndicator = Signal
-      .combineLatest(isCloseToBottom, self.isCommentsLoading)
-      .map { _, isCommentsLoading in
-        isCommentsLoading
-      }
+    let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
+
+    self.failableOrComment <~ Signal.combineLatest(
+      initialProject,
+      currentUser.skipNil()
+    )
+    .takePairWhen(commentComposerDidSubmitText)
+    .map(unpack)
+    .flatMap(postCommentProducer)
+
+    self.retryingComment <~ initialProject
+      .takePairWhen(erroredCommentTapped)
+      .map { ($1, $0) }
+      .flatMap(retryCommentProducer)
+
+    self.showLoadingIndicatorInFooterView = Signal
+      .combineLatest(isCloseToBottom, self.beginOrEndRefreshing)
+      .map(second >>> isTrue)
   }
+
+  // Properties to assist with injecting these values into the existing data streams.
+  private let currentComments = MutableProperty<[Comment]?>(nil)
+  private let retryingComment = MutableProperty<(Comment, String)?>(nil)
+  private let failableOrComment = MutableProperty<(Comment, String)?>(nil)
 
   private let didSelectCommentProperty = MutableProperty<Comment?>(nil)
   public func didSelectComment(_ comment: Comment) {
     self.didSelectCommentProperty.value = comment
   }
 
-  fileprivate let postCommentButtonTappedProperty = MutableProperty<String?>(nil)
+  fileprivate let commentComposerDidSubmitTextProperty = MutableProperty<String?>(nil)
   public func commentComposerDidSubmitText(_ text: String) {
-    self.postCommentButtonTappedProperty.value = text
+    self.commentComposerDidSubmitTextProperty.value = text
   }
 
   fileprivate let projectAndUpdateProperty = MutableProperty<(Project?, Update?)?>(nil)
@@ -220,17 +260,93 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.willDisplayRowProperty.value = (row, totalRows)
   }
 
+  public let beginOrEndRefreshing: Signal<Bool, Never>
+  public let cellSeparatorHidden: Signal<Bool, Never>
   public let commentComposerViewHidden: Signal<Bool, Never>
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
-  public let errorMessage: Signal<String, Never>
   public let goToCommentReplies: Signal<(Comment, Project), Never>
-  public let isCommentsLoading: Signal<Bool, Never>
-  public let isCellSeparatorHidden: Signal<Bool, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
-  public let postCommentSuccessful: Signal<Comment, Never>
-  public var postCommentSubmitted: Signal<(), Never>
-  public let shouldShowLoadingIndicator: Signal<Bool, Never>
+  public let resetCommentComposerAndScrollToTop: Signal<(), Never>
+  public let showLoadingIndicatorInFooterView: Signal<Bool, Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }
+}
+
+private func retryCommentProducer(
+  erroredComment comment: Comment,
+  project: Project
+) -> SignalProducer<(Comment, String), Never> {
+  // Retry posting the comment.
+  AppEnvironment.current.apiService.postComment(
+    input: .init(
+      body: comment.body,
+      commentableId: project.graphID
+    )
+  )
+  .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+  // Return a producer with the successful comment that is prefixed by a comment indicating that the
+  // retry was successful and then, after a 1 second delay, the actual successful comment is returned.
+  .flatMap { successfulComment -> SignalProducer<Comment, ErrorEnvelope> in
+    let retrySuccessComment = successfulComment.updatingStatus(to: .retrySuccess)
+      |> \.id .~ comment.id // Inject the original errored comment's ID to replace.
+
+    return SignalProducer(value: successfulComment)
+      .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
+      .prefix(value: retrySuccessComment)
+  }
+  // Immediately return a comment in a retrying state when this producer starts.
+  .prefix(value: comment.updatingStatus(to: .retrying))
+  // If retrying errors again, return the original comment returning it to its errored state.
+  .demoteErrors(replaceErrorWith: comment)
+  // Return the comment that will be replaced with the ID to find it by.
+  .map { replacementComment in (replacementComment, comment.id) }
+}
+
+private func postCommentProducer(
+  project: Project,
+  user: User,
+  body: String
+) -> SignalProducer<(Comment, String), Never> {
+  let failableComment = Comment.failableComment(
+    withId: AppEnvironment.current.uuidType.init().uuidString,
+    date: AppEnvironment.current.dateType.init().date,
+    project: project,
+    user: user,
+    body: body
+  )
+
+  // Post the new comment.
+  return AppEnvironment.current.apiService.postComment(
+    input: .init(
+      body: body,
+      commentableId: project.graphID
+    )
+  )
+  .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
+  // Immediately return a failable comment with a generated ID.
+  .prefix(value: failableComment)
+  // If the request errors we return the failableComment in a failed state.
+  .demoteErrors(replaceErrorWith: failableComment.updatingStatus(to: .failed))
+  // Once the request completes return the actual comment and replace it by its ID.
+  .map { commentOrFailable in (commentOrFailable, failableComment.id) }
+}
+
+private func commentsReplacingCommentById(
+  _ comments: [Comment],
+  replacingComment: Comment,
+  withId id: String
+) -> [Comment] {
+  // TODO: We may need to introduce optimizations here if this becomes problematic for projects that have
+  /// thousands of comments. Consider an accompanying `Set` to track membership or replacing entirely
+  /// with an `OrderedSet`.
+  guard let commentIndex = comments.firstIndex(where: { $0.id == id }) else {
+    // If the comment we're replacing is not found, it's new, prepend it.
+    return [replacingComment] + comments
+  }
+
+  var mutableComments = comments
+  mutableComments[commentIndex] = replacingComment
+
+  return mutableComments
 }
