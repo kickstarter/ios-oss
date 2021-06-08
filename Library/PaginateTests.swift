@@ -143,63 +143,6 @@ final class PaginateTests: TestCase {
     loadingTest.assertValues([true, false, true, false])
   }
 
-  func testPaginateStats() {
-    let (values, _, _, stats) = paginate(
-      requestFirstPageWith: newRequest,
-      requestNextPageWhen: nextPage,
-      clearOnNewRequest: true,
-      valuesFromEnvelope: valuesFromEnvelope,
-      cursorFromEnvelope: cursorFromEnvelope,
-      statsFromEnvelope: statsFromEnvelope,
-      requestFromParams: requestFromParams,
-      requestFromCursor: requestFromCursor
-    )
-
-    let valuesTest = TestObserver<[Int], Never>()
-    values.observe(valuesTest.observer)
-    let statsTest = TestObserver<Int, Never>()
-    stats.observe(statsTest.observer)
-
-    valuesTest.assertDidNotEmitValue("No values emit immediately.")
-    statsTest.assertDidNotEmitValue("No values emit immediately.")
-
-    // Start request for new set of values.
-    self.newRequestObserver.send(value: 1)
-
-    valuesTest.assertDidNotEmitValue("No values emit immediately.")
-    statsTest.assertDidNotEmitValue("No values emit immediately.")
-
-    // Wait enough time for request to finish.
-    self.scheduler.advance()
-
-    valuesTest.assertValues([[1]], "Values emit after waiting enough time for request to finish.")
-    statsTest.assertValues([10], "Values emit after waiting enough time for request to finish.")
-
-    // Request next page of values.
-    self.nextPageObserver.send(value: ())
-
-    valuesTest.assertValues([[1]], "No values emit immediately.")
-    statsTest.assertValues([10], "No values emit immediately.")
-
-    // Wait enough time for request to finish.
-    self.scheduler.advance()
-
-    valuesTest.assertValues([[1], [1, 2]], "New page of values emit after waiting enough time.")
-    statsTest.assertValues([10, 10], "Values emit after waiting enough time.")
-
-    // Request next page of results (this page is empty since the last request exhausted the results.)
-    self.nextPageObserver.send(value: ())
-
-    valuesTest.assertValues([[1], [1, 2]], "No values emit immediately.")
-    statsTest.assertValues([10, 10], "No values emit immediately.")
-
-    // Wait enough time for request to finish.
-    self.scheduler.advance()
-
-    valuesTest.assertValues([[1], [1, 2]], "No values emit since we exhausted all pages.")
-    statsTest.assertValues([10, 10, 10], "Values remain the same even after we exhausted all pages.")
-  }
-
   func testPaginateFlow() {
     let (values, loading, _, _) = paginate(
       requestFirstPageWith: newRequest,
@@ -291,6 +234,76 @@ final class PaginateTests: TestCase {
       [true, false, true, false, true, false, true, false, true, false],
       "Loading finishes."
     )
+  }
+
+  func testPaginateFlow_Errors() {
+    let requestFromParams: (Int) -> SignalProducer<[Int], Error> = { p in
+      p == 2 ? .init(error: NSError()) : .init(value: [p])
+    }
+    let requestFromCursor: (Int) -> SignalProducer<[Int], Error> = { c in .init(value: c <= 2 ? [c] : []) }
+
+    let (values, loading, _, errors) = paginate(
+      requestFirstPageWith: newRequest,
+      requestNextPageWhen: nextPage,
+      clearOnNewRequest: false,
+      valuesFromEnvelope: valuesFromEnvelope,
+      cursorFromEnvelope: cursorFromEnvelope,
+      requestFromParams: requestFromParams,
+      requestFromCursor: requestFromCursor
+    )
+
+    let valuesTest = TestObserver<[Int], Never>()
+    values.observe(valuesTest.observer)
+    let loadingTest = TestObserver<Bool, Never>()
+    loading.observe(loadingTest.observer)
+    let errorsTest = TestObserver<Error, Never>()
+    errors.observe(errorsTest.observer)
+
+    valuesTest.assertDidNotEmitValue("No values emit immediately.")
+    loadingTest.assertDidNotEmitValue("No loading happens immediately.")
+    errorsTest.assertDidNotEmitValue("No errors emit immediately.")
+
+    // Start request for new set of values.
+    self.newRequestObserver.send(value: 1)
+
+    valuesTest.assertDidNotEmitValue("No values emit immediately.")
+    loadingTest.assertValues([true], "Loading starts.")
+    errorsTest.assertDidNotEmitValue("No errors emit.")
+
+    // Wait enough time for request to finish.
+    self.scheduler.advance()
+
+    valuesTest.assertValues([[1]], "Values emit after waiting enough time for request to finish.")
+    loadingTest.assertValues([true, false], "Loading stops.")
+    errorsTest.assertDidNotEmitValue("No errors emit.")
+
+    // Next page errors.
+    self.newRequestObserver.send(value: 2)
+
+    valuesTest.assertValues([[1]], "Values emit after waiting enough time for request to finish.")
+    loadingTest.assertValues([true, false, true], "Loading starts.")
+    errorsTest.assertDidNotEmitValue("No errors emit.")
+
+    // Wait enough time for request to finish.
+    self.scheduler.advance()
+
+    valuesTest.assertValues([[1]], "No values emit on this page.")
+    loadingTest.assertValues([true, false, true, false], "Loading stops.")
+    errorsTest.assertValueCount(1, "Error emits.")
+
+    // Next page succeeds.
+    self.newRequestObserver.send(value: 3)
+
+    valuesTest.assertValues([[1]], "No values emit yet.")
+    loadingTest.assertValues([true, false, true, false, true], "Loading starts.")
+    errorsTest.assertValueCount(1, "Error does not emit again.")
+
+    // Wait enough time for request to finish.
+    self.scheduler.advance()
+
+    valuesTest.assertValues([[1], [3]], "Values emit after waiting enough time for request to finish.")
+    loadingTest.assertValues([true, false, true, false, true, false], "Loading stops.")
+    errorsTest.assertValueCount(1, "Error does not emit again.")
   }
 
   func testPaginateFlow_With_Repeats() {

@@ -286,17 +286,22 @@ private func retryCommentProducer(
   )
   .ksr_delay(AppEnvironment.current.apiDelayInterval, on: AppEnvironment.current.scheduler)
   // Return a producer with the successful comment that is prefixed by a comment indicating that the
-  // retry was successful and then, after a 1 second delay, the actual successful comment is returned.
+  // retry was successful and then, after a 3 second delay, the actual successful comment is returned.
   .flatMap { successfulComment -> SignalProducer<Comment, ErrorEnvelope> in
     let retrySuccessComment = successfulComment.updatingStatus(to: .retrySuccess)
       |> \.id .~ comment.id // Inject the original errored comment's ID to replace.
 
     return SignalProducer(value: successfulComment)
-      .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
+      .ksr_delay(.seconds(3), on: AppEnvironment.current.scheduler)
       .prefix(value: retrySuccessComment)
   }
   // Immediately return a comment in a retrying state when this producer starts.
-  .prefix(value: comment.updatingStatus(to: .retrying))
+  // Delay further emissions by 1 sec.
+  .prefix(
+    SignalProducer(value: comment.updatingStatus(to: .retrying))
+      .ksr_delay(.seconds(1), on: AppEnvironment.current.scheduler)
+      .prefix(value: comment.updatingStatus(to: .retrying))
+  )
   // If retrying errors again, return the original comment returning it to its errored state.
   .demoteErrors(replaceErrorWith: comment)
   // Return the comment that will be replaced with the ID to find it by.
