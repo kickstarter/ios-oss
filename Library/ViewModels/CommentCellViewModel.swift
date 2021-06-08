@@ -99,7 +99,7 @@ public final class CommentCellViewModel:
       .map(replyButtonHidden)
 
     // If both the replyButton and flagButton should be hidden the entire stackview will be hidden too.
-    let hideBottomRowStackView = Signal.combineLatest(
+    self.bottomRowStackViewIsHidden = Signal.combineLatest(
       self.flagButtonIsHidden.signal,
       self.replyButtonIsHidden.signal
     ).map { flagButtonIsHidden, replyButtonIsHidden -> Bool in
