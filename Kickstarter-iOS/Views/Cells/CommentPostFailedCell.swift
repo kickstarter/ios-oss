@@ -81,7 +81,8 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
 
     self.viewModel.outputs.commentStatus
       .observeForUI()
-      .observeValues { status in
+      .observeValues { [weak self] status in
+        guard let self = self else { return }
         _ = self.retryButton
           |> status == .retrying ? postingButtonStyle : retryButtonStyle
       }

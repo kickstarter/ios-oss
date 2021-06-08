@@ -117,7 +117,7 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.replyButton.rac.hidden = self.viewModel.outputs.replyButtonIsHidden
     self.viewRepliesStackView.rac.hidden = self.viewModel.outputs.viewRepliesStackViewIsHidden
 
-    self.postedButton.rac.hidden = self.viewModel.outputs.commentStatus.map { $0 != .retrySuccess }
+    self.postedButton.rac.hidden = self.viewModel.outputs.postedButtonIsHidden
   }
 }
 

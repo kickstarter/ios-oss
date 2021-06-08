@@ -16,6 +16,7 @@ internal final class CommentCellViewModelTests: TestCase {
   private let commentStatus = TestObserver<Comment.Status, Never>()
   private let flagButtonIsHidden = TestObserver<Bool, Never>()
   private let postTime = TestObserver<String, Never>()
+  private let postedButtonIsHidden = TestObserver<Bool, Never>()
   private let replyButtonIsHidden = TestObserver<Bool, Never>()
   private let viewRepliesStackViewIsHidden = TestObserver<Bool, Never>()
 
@@ -29,6 +30,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.outputs.commentStatus.observe(self.commentStatus.observer)
     self.vm.outputs.flagButtonIsHidden.observe(self.flagButtonIsHidden.observer)
     self.vm.outputs.postTime.observe(self.postTime.observer)
+    self.vm.outputs.postedButtonIsHidden.observe(self.postedButtonIsHidden.observer)
     self.vm.outputs.replyButtonIsHidden.observe(self.replyButtonIsHidden.observer)
     self.vm.outputs.viewRepliesStackViewIsHidden.observe(self.viewRepliesStackViewIsHidden.observer)
   }
@@ -311,10 +313,27 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.inputs.configureWith(comment: comment, project: .template)
 
     self.commentStatus.assertValues([.retrying], "The comment status is emitted.")
+    self.postedButtonIsHidden.assertValues([true], "The posted button hiddent state is emitted.")
 
     self.vm.inputs.bindStyles()
 
     self.commentStatus.assertValues([.retrying, .retrying], "The comment status is emitted.")
+    self.postedButtonIsHidden.assertValues([true, true], "The posted button hiddent state is emitted.")
+  }
+
+  func testPostedButtonIsHidden_NotHiddenWhenCommentStatus_IsRetrySuccess() {
+    let comment = Comment.template
+      |> \.status .~ .retrySuccess
+
+    self.vm.inputs.configureWith(comment: comment, project: .template)
+
+    self.commentStatus.assertValues([.retrySuccess], "The comment status is emitted.")
+    self.postedButtonIsHidden.assertValues([false], "The posted button hiddent state is emitted.")
+
+    self.vm.inputs.bindStyles()
+
+    self.commentStatus.assertValues([.retrySuccess, .retrySuccess], "The comment status is emitted.")
+    self.postedButtonIsHidden.assertValues([false, false], "The posted button hiddent state is emitted.")
   }
 
   func testViewRepliesContainerHidden_IsHiddenWhenNoReplies() {

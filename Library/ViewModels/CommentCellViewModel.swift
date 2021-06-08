@@ -35,6 +35,9 @@ public protocol CommentCellViewModelOutputs {
   /// Emits text  relative time the comment was posted.
   var postTime: Signal<String, Never> { get }
 
+  /// Emits a  Bool determining if the posted button ts hidden
+  var postedButtonIsHidden: Signal<Bool, Never> { get }
+
   /// Emits a Bool determining if the reply button in the bottomRowStackView are hidden.
   var replyButtonIsHidden: Signal<Bool, Never> { get }
 
@@ -72,6 +75,8 @@ public final class CommentCellViewModel:
     self.postTime = comment.map {
       Format.date(secondsInUTC: $0.createdAt, dateStyle: .medium, timeStyle: .short)
     }
+
+    self.postedButtonIsHidden = self.commentStatus.map { $0 != .retrySuccess }
 
     let badge = self.commentAndProject.signal
       .skipNil()
@@ -136,6 +141,7 @@ public final class CommentCellViewModel:
   public let commentStatus: Signal<Comment.Status, Never>
   public let flagButtonIsHidden: Signal<Bool, Never>
   public let postTime: Signal<String, Never>
+  public let postedButtonIsHidden: Signal<Bool, Never>
   public let replyButtonIsHidden: Signal<Bool, Never>
   public let viewRepliesStackViewIsHidden: Signal<Bool, Never>
 
