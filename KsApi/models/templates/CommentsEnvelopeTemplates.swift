@@ -37,4 +37,16 @@ extension CommentsEnvelope {
     slug: "slug",
     totalCount: 0
   )
+
+  internal static let failedRetryingRetrySuccessCommentsTemplate = CommentsEnvelope(
+    comments: [
+      .failedTemplate,
+      .retryingTemplate,
+      .retrySuccessTemplate
+    ],
+    cursor: nil,
+    hasNextPage: false,
+    slug: "slug",
+    totalCount: 0
+  )
 }
