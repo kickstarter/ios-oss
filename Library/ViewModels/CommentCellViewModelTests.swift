@@ -309,15 +309,15 @@ internal final class CommentCellViewModelTests: TestCase {
     self.commentStatus.assertDidNotEmitValue()
 
     let comment = Comment.template
-      |> \.status .~ .retrySuccess
+      |> \.status .~ .retrying
 
     self.vm.inputs.configureWith(comment: comment, project: .template)
 
-    self.commentStatus.assertValues([.retrySuccess], "The comment status is emitted.")
+    self.commentStatus.assertValues([.retrying], "The comment status is emitted.")
 
     self.vm.inputs.bindStyles()
 
-    self.commentStatus.assertValues([.retrySuccess, .retrySuccess], "The comment status is emitted.")
+    self.commentStatus.assertValues([.retrying, .retrying], "The comment status is emitted.")
   }
 
   func testViewRepliesContainerHidden_IsHiddenWhenNoReplies() {

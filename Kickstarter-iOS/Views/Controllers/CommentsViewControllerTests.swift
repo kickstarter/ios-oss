@@ -44,7 +44,7 @@ internal final class CommentsViewControllerTests: TestCase {
   func testView_WithFailedRetryingRetrySuccessComments_ShouldDisplayAll() {
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope
-          .failedRetryingRetrySuccessCommentsTemplate))
+          .successFailedRetryingRetrySuccessCommentsTemplate))
 
     Language.allLanguages.forEach { language in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {

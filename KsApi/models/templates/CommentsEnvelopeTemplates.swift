@@ -38,8 +38,9 @@ extension CommentsEnvelope {
     totalCount: 0
   )
 
-  internal static let failedRetryingRetrySuccessCommentsTemplate = CommentsEnvelope(
+  internal static let successFailedRetryingRetrySuccessCommentsTemplate = CommentsEnvelope(
     comments: [
+      .failedTemplate |> \.status .~ .success,
       .failedTemplate,
       .retryingTemplate,
       .retrySuccessTemplate
