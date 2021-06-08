@@ -25,17 +25,17 @@ import ReactiveSwift
  - parameter skipRepeats:          A boolean that determines if results can be repeated.
  - parameter valuesFromEnvelope:   A function to get an array of values from the results envelope.
  - parameter cursorFromEnvelope:   A function to get the cursor for the next page from a results envelope.
- - parameter statsFromEnvelope:    A function to get the stats from the results envelope.
  - parameter requestFromParams:    A function to get a request for values from a params value.
  - parameter requestFromCursor:    A function to get a request for values from a cursor value.
  - parameter concater:             An optional function that concats a page of values to the current array of
                                    values. By default this simply concatenates the arrays, but you might want
                                    to do something more specific, such as concatenating only distinct values.
 
- - returns: A tuple of signals, (paginatedValues, isLoading, pageCount). The `paginatedValues` signal will
+ - returns: A tuple of signals, (paginatedValues, isLoading, pageCount, errors). The `paginatedValues` signal will
             emit a full set of values when a new page has loaded. The `isLoading` signal will emit `true`
             while a page of values is loading, and then `false` when it has terminated (either by completion
-            or error). Finally, `pageCount` emits the number of the page that loaded, starting at 1.
+            or error). The `pageCount` signal emits the number of the page that loaded, starting at 1. Finally,
+            `errors` emits the `ErrorEnvelope` when a page request fails.
  */
 public func paginate<Cursor, Value: Equatable, Envelope, ErrorEnvelope, RequestParams>(
   requestFirstPageWith requestFirstPage: Signal<RequestParams, Never>,
@@ -44,7 +44,6 @@ public func paginate<Cursor, Value: Equatable, Envelope, ErrorEnvelope, RequestP
   skipRepeats: Bool = true,
   valuesFromEnvelope: @escaping ((Envelope) -> [Value]),
   cursorFromEnvelope: @escaping ((Envelope) -> Cursor),
-  statsFromEnvelope: ((Envelope) -> Int)? = nil,
   requestFromParams: @escaping ((RequestParams) -> SignalProducer<Envelope, ErrorEnvelope>),
   requestFromCursor: @escaping ((Cursor) -> SignalProducer<Envelope, ErrorEnvelope>),
   concater: @escaping (([Value], [Value]) -> [Value]) = (+)
@@ -54,11 +53,11 @@ public func paginate<Cursor, Value: Equatable, Envelope, ErrorEnvelope, RequestP
     paginatedValues: Signal<[Value], Never>,
     isLoading: Signal<Bool, Never>,
     pageCount: Signal<Int, Never>,
-    stats: Signal<Int, Never>
+    errors: Signal<ErrorEnvelope, Never>
   ) {
   let cursor = MutableProperty<Cursor?>(nil)
   let isLoading = MutableProperty<Bool>(false)
-  let stats = MutableProperty<Int>(0)
+  let errors = MutableProperty<ErrorEnvelope?>(nil)
 
   // Emits the last cursor when nextPage emits
   let cursorOnNextPage = cursor.producer.skipNil().sample(on: requestNextPage)
@@ -78,12 +77,14 @@ public func paginate<Cursor, Value: Equatable, Envelope, ErrorEnvelope, RequestP
               starting: { [weak isLoading] in
                 isLoading?.value = true
               },
+              failed: { [weak errors] error in
+                errors?.value = error
+              },
               terminated: { [weak isLoading] in
                 isLoading?.value = false
               },
-              value: { [weak cursor, weak stats] env in
+              value: { [weak cursor] env in
                 cursor?.value = cursorFromEnvelope(env)
-                stats?.value = statsFromEnvelope?(env) ?? 0
               }
             )
             .map(valuesFromEnvelope)
@@ -103,6 +104,6 @@ public func paginate<Cursor, Value: Equatable, Envelope, ErrorEnvelope, RequestP
     skipRepeats ? paginatedValues.skipRepeats(==) : paginatedValues,
     isLoading.signal,
     pageCount,
-    stats.signal
+    errors.signal.skipNil()
   )
 }
