@@ -81,6 +81,38 @@ extension Comment {
     status: .failed
   )
 
+  public static let retryingTemplate = Comment(
+    author: Author(
+      id: "AKLEhYbp7CDO6E==",
+      imageUrl: "https://ks_.img/johnson.jpg",
+      isCreator: false,
+      name: "Maribeth Bainbridge"
+    ),
+    authorBadges: [.you],
+    body: "It is true what SafeUniverse is saying Doug. To do business in NY you have to be a registered business in NY even if you are registered in another state. What can Nimble provide to show they are registered in NY SafeUniverse?",
+    createdAt: Date(timeIntervalSince1970: 1_475_361_100).timeIntervalSince1970,
+    id: "78DJa89jdSDJ89sd8==",
+    isDeleted: false,
+    replyCount: 15,
+    status: .retrying
+  )
+
+  public static let retrySuccessTemplate = Comment(
+    author: Author(
+      id: "AKLEhYbp7CDO6E==",
+      imageUrl: "https://ks_.img/johnson.jpg",
+      isCreator: false,
+      name: "Maribeth Bainbridge"
+    ),
+    authorBadges: [.you],
+    body: "It is true what SafeUniverse is saying Doug. To do business in NY you have to be a registered business in NY even if you are registered in another state. What can Nimble provide to show they are registered in NY SafeUniverse?",
+    createdAt: Date(timeIntervalSince1970: 1_475_361_100).timeIntervalSince1970,
+    id: "78DJa89jdSDJ89sd8==",
+    isDeleted: false,
+    replyCount: 4,
+    status: .retrySuccess
+  )
+
   public static let templates: [Comment] = [
     .template,
     .deletedTemplate,
