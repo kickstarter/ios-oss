@@ -8,9 +8,6 @@ public protocol CommentCellViewModelInputs {
 
   /// Call to configure with a Comment and Project
   func configureWith(comment: Comment, project: Project?)
-
-  /// Call to configure Comment as a root comment on a list of comments
-  func configureAsRootComment(value: Bool)
 }
 
 public protocol CommentCellViewModelOutputs {
@@ -102,7 +99,7 @@ public final class CommentCellViewModel:
     self.bottomRowStackViewIsHidden = Signal.combineLatest(
       self.flagButtonIsHidden.signal,
       self.replyButtonIsHidden.signal
-    ).map { flagButtonIsHidden, replyButtonIsHidden  in
+    ).map { flagButtonIsHidden, replyButtonIsHidden in
       flagButtonIsHidden && replyButtonIsHidden
     }
 
@@ -119,11 +116,6 @@ public final class CommentCellViewModel:
   fileprivate let commentAndProject = MutableProperty<(Comment, Project?)?>(nil)
   public func configureWith(comment: Comment, project: Project?) {
     self.commentAndProject.value = (comment, project)
-  }
-
-  fileprivate let isRootCommentProperty = MutableProperty<Bool>(false)
-  public func configureAsRootComment(value: Bool) {
-    self.isRootCommentProperty.value = value
   }
 
   public let authorBadge: Signal<Comment.AuthorBadge, Never>

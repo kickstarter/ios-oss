@@ -17,7 +17,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
     self.vm.outputs.loadCommentIntoDataSource.observe(self.loadCommentIntoDataSourceComment.observer)
   }
 
-  func testDataSource_WithComment_IsLoaded() {
+  func testDataSource_WithComment_HasComment() {
     self.loadCommentIntoDataSourceComment.assertDidNotEmitValue()
 
     let rootComment = Comment.template
@@ -27,6 +27,8 @@ internal final class CommentRepliesViewModelTests: TestCase {
         comment: rootComment
       )
 
+      self.loadCommentIntoDataSourceComment.assertDidNotEmitValue()
+      
       self.vm.inputs.viewDidLoad()
 
       self.loadCommentIntoDataSourceComment.assertValue(rootComment)

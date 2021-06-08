@@ -78,6 +78,7 @@
 		06CACBEB264DC9480026CDFD /* CommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */; };
 		06DC4138266FEE89005205F7 /* RootCommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */; };
 		06DC4144266FF184005205F7 /* RootCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC413C266FF179005205F7 /* RootCommentCell.swift */; };
+		06DC4152266FFE81005205F7 /* RootCommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */; };
 		1611EF5E23ABD1550051CDCC /* OptimizelyResultType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF5D23ABD1550051CDCC /* OptimizelyResultType.swift */; };
 		1611EF6023ABD3D90051CDCC /* MockOptimizelyResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF5F23ABD3D90051CDCC /* MockOptimizelyResult.swift */; };
 		1611EF6223ABD7C00051CDCC /* OptimizelyResultTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1611EF6123ABD7C00051CDCC /* OptimizelyResultTypeTests.swift */; };
@@ -1702,6 +1703,7 @@
 		06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsDataSource.swift; sourceTree = "<group>"; };
 		06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModel.swift; sourceTree = "<group>"; };
 		06DC413C266FF179005205F7 /* RootCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCell.swift; sourceTree = "<group>"; };
+		06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCommentCellViewModelTests.swift; sourceTree = "<group>"; };
 		1611EF5D23ABD1550051CDCC /* OptimizelyResultType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyResultType.swift; sourceTree = "<group>"; };
 		1611EF5F23ABD3D90051CDCC /* MockOptimizelyResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockOptimizelyResult.swift; sourceTree = "<group>"; };
 		1611EF6123ABD7C00051CDCC /* OptimizelyResultTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizelyResultTypeTests.swift; sourceTree = "<group>"; };
@@ -4269,12 +4271,22 @@
 				D6ED1B36216D0C64007F7547 /* ChangeEmailViewModelTests.swift */,
 				D04AAC0A218BB70800CF713E /* ChangePasswordViewModel.swift */,
 				D04AAC13218BB70A00CF713E /* ChangePasswordViewModelTests.swift */,
+				94114D82265451FE0063E8F6 /* CommentCellViewModel.swift */,
+				94114D8726547F620063E8F6 /* CommentCellViewModelTests.swift */,
+				20D7EE6026544F200094B04C /* CommentComposerViewModel.swift */,
+				20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */,
 				477290F9264AE91800B83E10 /* CommentsViewModel.swift */,
 				47AC2138264AD5430090AEDF /* CommentsViewModelTests.swift */,
 				0616459526696C0D007D8D96 /* CommentRepliesViewModel.swift */,
 				061645AD26697D55007D8D96 /* CommentRepliesViewModelTests.swift */,
 				94BA16E326698C8B0034CC3F /* CommentTableViewFooterViewModel.swift */,
 				94BA16E826698EF00034CC3F /* CommentTableViewFooterViewModelTests.swift */,
+				373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */,
+				373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */,
+				D63BBD36217FC224007E01F0 /* CreditCardCellViewModel.swift */,
+				D6B6876D21937182005F5DA7 /* CreditCardCellViewModelTests.swift */,
+				D660078B2416D66C00AC1EDB /* CuratedProjectsViewModel.swift */,
+				D660078F241A7C0000AC1EDB /* CuratedProjectsViewModelTests.swift */,
 				A7F441941D005A9400FE6FC5 /* DeprecatedCommentCellViewModel.swift */,
 				A7ED1F661E831C5C00BFFA01 /* DeprecatedCommentCellViewModelTests.swift */,
 				A7F441951D005A9400FE6FC5 /* DeprecatedCommentDialogViewModel.swift */,
@@ -4283,16 +4295,6 @@
 				A7ED1F691E831C5C00BFFA01 /* DeprecatedCommentsEmptyStateCellViewModelTests.swift */,
 				A7F441961D005A9400FE6FC5 /* DeprecatedCommentsViewModel.swift */,
 				A7ED1F5F1E831C5C00BFFA01 /* DeprecatedCommentsViewModelTests.swift */,
-				20D7EE6026544F200094B04C /* CommentComposerViewModel.swift */,
-				20D7EE6526544F8B0094B04C /* CommentComposerViewModelTests.swift */,
-				373AB221222A058600769FC2 /* CreatePasswordViewModel.swift */,
-				373AB25A222A063500769FC2 /* CreatePasswordViewModelTests.swift */,
-				D63BBD36217FC224007E01F0 /* CreditCardCellViewModel.swift */,
-				D6B6876D21937182005F5DA7 /* CreditCardCellViewModelTests.swift */,
-				D660078B2416D66C00AC1EDB /* CuratedProjectsViewModel.swift */,
-				D660078F241A7C0000AC1EDB /* CuratedProjectsViewModelTests.swift */,
-				94114D82265451FE0063E8F6 /* CommentCellViewModel.swift */,
-				94114D8726547F620063E8F6 /* CommentCellViewModelTests.swift */,
 				59B0E0051D1207070081D2DC /* DashboardActionCellViewModel.swift */,
 				A7ED1F741E831C5C00BFFA01 /* DashboardActionCellViewModelTests.swift */,
 				593AC6001D33F517002613F4 /* DashboardFundingCellViewModel.swift */,
@@ -4491,6 +4493,7 @@
 				77EFBAE12268D44D00DA5C3C /* RewardsCollectionViewModel.swift */,
 				77C7B653226E0E54001101AC /* RewardsCollectionViewModelTests.swift */,
 				06DC4137266FEE89005205F7 /* RootCommentCellViewModel.swift */,
+				06DC4151266FFE81005205F7 /* RootCommentCellViewModelTests.swift */,
 				A775B5451CA871D700BBB587 /* RootViewModel.swift */,
 				A7ED205F1E83256700BFFA01 /* RootViewModelTests.swift */,
 				D7A37CCE1E2FF93D00EA066D /* SearchEmptyStateCellViewModel.swift */,
@@ -5736,6 +5739,7 @@
 				8AD9CF1424C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift in Sources */,
 				774D98D923A96E7500FC81C2 /* OptimizelyClientTypeTests.swift in Sources */,
 				A7ED1FD91E831C5C00BFFA01 /* ProjectActivitiesViewModelTests.swift in Sources */,
+				06DC4152266FFE81005205F7 /* RootCommentCellViewModelTests.swift in Sources */,
 				A7ED1FDB1E831C5C00BFFA01 /* DashboardViewModelTests.swift in Sources */,
 				77D19FF22406D5A40058FC8E /* CategorySelectionViewModelTests.swift in Sources */,
 				3706408822A8A6F200889CBD /* PledgeShippingLocationViewModelTests.swift in Sources */,
