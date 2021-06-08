@@ -160,7 +160,7 @@ private let postedButtonStyle: ButtonStyle = { button in
     }
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "posted")
-    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_create_500
+    |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_create_700
     |> UIButton.lens.tintColor .~ UIColor.ksr_create_700
     |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(1))
     |> UIButton.lens.contentHorizontalAlignment .~ .left
