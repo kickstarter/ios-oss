@@ -99,8 +99,7 @@ private let rowStackViewStyle: StackViewStyle = { stackView in
 
 // MARK: - Functions
 
-// TODO/FIXME: Internationalized in the near future.
-// Allow "Learn more about comment guidelines." to be tappable and open link in a web browser
+// TODO/FIXME: Allow "Learn more about comment guidelines." to be tappable and open link in a web browser
 
 private func attributedTextCommentRemoved() -> NSAttributedString {
   let regularFontAttribute = [
@@ -113,17 +112,11 @@ private func attributedTextCommentRemoved() -> NSAttributedString {
   ]
 
   let attributedString = NSMutableAttributedString(
-    string: localizedString(
-      key: "This_comment_has_been_removed_by_Kickstarter",
-      defaultValue: "This comment has been removed by Kickstarter. "
-    ),
+    string: Strings.This_comment_has_been_removed_by_Kickstarter(),
     attributes: regularFontAttribute
   )
   let learnMoreAttributedString = NSMutableAttributedString(
-    string: localizedString(
-      key: "Learn_more_about_comment_guidelines",
-      defaultValue: "Learn more about comment guidelines."
-    ),
+    string: Strings.Learn_more_about_comment_guidelines(),
     attributes: coloredFontAttribute
   )
   attributedString.append(learnMoreAttributedString)

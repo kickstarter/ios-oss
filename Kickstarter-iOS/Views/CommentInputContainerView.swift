@@ -87,8 +87,7 @@ final class CommentInputContainerView: UIView {
     _ = self.postButton
       |> UIButton.lens.titleLabel.font %~ { _ in UIFont.systemFont(ofSize: 15, weight: .semibold) }
       |> UIButton.lens.titleColor(for: .normal) %~ { _ in .ksr_create_700 }
-      // TODO: To be replaced with a type-safe string when copy is available.
-      |> UIButton.lens.title(for: .normal) %~ { _ in localizedString(key: "Post", defaultValue: "Post") }
+      |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Post() }
   }
 
   override func traitCollectionDidChange(_: UITraitCollection?) {
@@ -111,8 +110,7 @@ private let placeholderLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_support_400
     |> \.font .~ UIFont.ksr_body(size: 15.0)
-    // TODO: To be replaced with a type-safe string when copy is available.
-    |> \.text .~ localizedString(key: "Write_a_comment", defaultValue: "Write a comment...")
+    |> \.text .~ Strings.Write_a_comment()
     |> \.adjustsFontForContentSizeCategory .~ true
 }
 

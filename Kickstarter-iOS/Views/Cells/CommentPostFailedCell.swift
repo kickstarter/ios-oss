@@ -82,15 +82,11 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
 
 // MARK: Styles
 
-// TODO: Internationalized in the near future.
-
 private let retryButtonStyle: ButtonStyle = { button in
   button
     |> UIButton.lens
     .title(for: .normal) %~
-    { _ in
-      localizedString(key: "Failed_to_post_Tap_to_retry", defaultValue: "Failed to post. Tap to retry")
-    }
+    { _ in Strings.Couldnt_post() }
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "circle-back")
     |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_celebrate_700
