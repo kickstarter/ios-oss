@@ -42,6 +42,7 @@ public let superbackerAuthorBadgeStyle: PaddingLabelStyle = { label in
     |> \.text .~ localizedString(key: "Superbacker", defaultValue: "Superbacker").uppercased()
     |> \.font .~ UIFont.ksr_headline(size: 10)
     |> \.textColor .~ UIColor.ksr_celebrate_500
+    |> \.backgroundColor .~ .clear
     |> \.insets .~ .zero
     |> \.adjustsFontForContentSizeCategory .~ true
 }
@@ -54,6 +55,7 @@ public let youAuthorBadgeStyle: PaddingLabelStyle = { label in
     |> \.backgroundColor .~ UIColor.ksr_trust_100
     |> roundedStyle(cornerRadius: Styles.grid(1))
     |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.insets .~ UIEdgeInsets(all: Styles.grid(1))
 }
 
 public let authorBadgeLabelStyle: PaddingLabelStyle = { label in

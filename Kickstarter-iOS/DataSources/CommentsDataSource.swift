@@ -11,7 +11,7 @@ internal final class CommentsDataSource: ValueCellDataSource {
 
   internal func load(comments: [Comment], project: Project) {
     let section = !comments.isEmpty ? Section.comments.rawValue : Section.empty.rawValue
-    self.clearValues(section: section)
+    self.clearValues()
 
     guard !comments.isEmpty else {
       self.appendRow(
@@ -24,24 +24,26 @@ internal final class CommentsDataSource: ValueCellDataSource {
     }
 
     comments.forEach { comment in
+      guard comment.isDeleted == false else {
+        self.appendRow(
+          value: comment,
+          cellClass: CommentRemovedCell.self,
+          toSection: section
+        )
+        return
+      }
+
       switch comment.status {
       case .failed, .retrying:
-        self
-          .appendRow(
-            value: comment,
-            cellClass: CommentPostFailedCell.self,
-            toSection: section
-          )
-      case .removed:
-        self
-          .appendRow(
-            value: comment,
-            cellClass: CommentRemovedCell.self,
-            toSection: section
-          )
+        self.appendRow(
+          value: comment,
+          cellClass: CommentPostFailedCell.self,
+          toSection: section
+        )
       case .success, .retrySuccess:
-        self
-          .appendRow(value: (comment, project), cellClass: CommentCell.self, toSection: section)
+        self.appendRow(value: (comment, project), cellClass: CommentCell.self, toSection: section)
+      case .unknown:
+        assertionFailure("Comments that have not had their state set should not be added to the data source.")
       }
     }
   }

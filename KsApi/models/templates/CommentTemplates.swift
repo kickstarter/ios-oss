@@ -13,7 +13,8 @@ extension Comment {
     createdAt: Date(timeIntervalSince1970: 1_475_361_415).timeIntervalSince1970,
     id: "89DJa89jdSDJ89sd8==",
     isDeleted: false,
-    replyCount: 2
+    replyCount: 2,
+    status: .success
   )
 
   public static let deletedTemplate = Comment(
@@ -28,7 +29,8 @@ extension Comment {
     createdAt: Date(timeIntervalSince1970: 1_475_361_315).timeIntervalSince1970,
     id: "89DJa89jdSDJ89sd8==",
     isDeleted: true,
-    replyCount: 2
+    replyCount: 2,
+    status: .success
   )
 
   public static let superbackerTemplate = Comment(
@@ -43,7 +45,8 @@ extension Comment {
     createdAt: Date(timeIntervalSince1970: 1_475_361_215).timeIntervalSince1970,
     id: "78DJa89jdSDJ89sd8==",
     isDeleted: false,
-    replyCount: 10
+    replyCount: 10,
+    status: .success
   )
 
   public static let backerTemplate = Comment(
@@ -58,7 +61,8 @@ extension Comment {
     createdAt: Date(timeIntervalSince1970: 1_475_361_115).timeIntervalSince1970,
     id: "BOD5af89jdDA4fG==",
     isDeleted: false,
-    replyCount: 0
+    replyCount: 0,
+    status: .success
   )
 
   public static let failedTemplate = Comment(
@@ -73,8 +77,8 @@ extension Comment {
     createdAt: Date(timeIntervalSince1970: 1_475_361_100).timeIntervalSince1970,
     id: "78DJa89jdSDJ89sd8==",
     isDeleted: false,
-    isFailed: true,
-    replyCount: 15
+    replyCount: 15,
+    status: .failed
   )
 
   public static let templates: [Comment] = [

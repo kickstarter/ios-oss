@@ -9,6 +9,10 @@ private enum Layout {
   enum Composer {
     static let originalHeight: CGFloat = 80.0
   }
+
+  enum Footer {
+    static let height: CGFloat = 80.0
+  }
 }
 
 internal final class CommentsViewController: UITableViewController {
@@ -17,6 +21,12 @@ internal final class CommentsViewController: UITableViewController {
   private lazy var commentComposer: CommentComposerView = {
     let frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: Layout.Composer.originalHeight)
     let view = CommentComposerView(frame: frame)
+    return view
+  }()
+
+  private lazy var footerView: CommentTableViewFooterView = {
+    let frame = CGRect(x: 0, y: 0, width: self.tableView.frame.width, height: Layout.Footer.height)
+    let view = CommentTableViewFooterView(frame: frame)
     return view
   }()
 
@@ -94,7 +104,9 @@ internal final class CommentsViewController: UITableViewController {
   internal override func bindStyles() {
     super.bindStyles()
 
-    _ = self.tableView |> tableViewStyle
+    _ = self.tableView
+      |> \.tableFooterView .~ self.footerView
+      |> tableViewStyle
   }
 
   // MARK: - View Model
@@ -104,7 +116,7 @@ internal final class CommentsViewController: UITableViewController {
 
     self.commentComposer.rac.hidden = self.viewModel.outputs.commentComposerViewHidden
 
-    self.viewModel.outputs.postCommentSubmitted
+    self.viewModel.outputs.resetCommentComposerAndScrollToTop
       .observeForUI()
       .observeValues { [weak self] _ in
         self?.commentComposer.resetInput()
@@ -134,10 +146,22 @@ internal final class CommentsViewController: UITableViewController {
         self?.navigationController?.pushViewController(vc, animated: true)
       }
 
-    self.viewModel.outputs.isCommentsLoading
+    self.viewModel.outputs.beginOrEndRefreshing
       .observeForUI()
       .observeValues { [weak self] in
         $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
+      }
+
+    self.viewModel.outputs.showLoadingIndicatorInFooterView
+      .observeForUI()
+      .observeValues { [weak self] shouldShow in
+        self?.footerView.configureWith(value: shouldShow)
+      }
+
+    self.viewModel.outputs.cellSeparatorHidden
+      .observeForUI()
+      .observeValues { [weak self] isHidden in
+        self?.tableView.separatorStyle = isHidden ? .none : .singleLine
       }
   }
 

@@ -18,7 +18,9 @@ final class CommentPostFailedCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var retryButton = { UIButton(frame: .zero) }()
+  private lazy var retryButton = { UIButton(frame: .zero)
+    |> \.isUserInteractionEnabled .~ false
+  }()
 
   // MARK: - Lifecycle
 
