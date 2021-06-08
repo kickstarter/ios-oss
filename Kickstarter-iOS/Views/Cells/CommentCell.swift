@@ -67,6 +67,8 @@ final class CommentCell: UITableViewCell, ValueCell {
 
     _ = self.viewRepliesLabel
       |> \.text %~ { _ in localizedString(key: "View_replies", defaultValue: "View replies") }
+      |> \.textColor .~ UIColor.ksr_support_400
+      |> \.font .~ UIFont.ksr_callout(size: 14)
 
     _ = self.viewRepliesIconImageView
       |> UIImageView.lens.image .~ Library.image(named: "right-diagonal")
