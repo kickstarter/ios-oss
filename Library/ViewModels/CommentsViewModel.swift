@@ -87,7 +87,7 @@ public final class CommentsViewModel: CommentsViewModelType,
       .takeWhen(self.viewDidLoadProperty.signal)
       .map { project, currentUser in
         let isBacker = userIsBackingProject(project)
-        let isCreatorOrCollaborator = !project.memberData.permissions.isEmpty
+        let isCreatorOrCollaborator = !project.memberData.permissions.isEmpty && !isBacker
         let canPostComment = isBacker || isCreatorOrCollaborator
 
         guard let user = currentUser else {
