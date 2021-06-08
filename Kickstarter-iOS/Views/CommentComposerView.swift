@@ -144,6 +144,12 @@ final class CommentComposerView: UIView {
         self?.inputContainerView.inputTextView.resignFirstResponder()
       }
 
+    self.viewModel.outputs.updateTextViewHeight
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.inputContainerView.inputTextView.invalidateIntrinsicContentSize()
+      }
+
     self.inputContainerView.placeholderLabel.rac.hidden = self.viewModel.outputs.placeholderHidden
     self.inputContainerView.postButton.rac.hidden = self.viewModel.outputs.postButtonHidden
 
@@ -194,7 +200,6 @@ final class CommentComposerView: UIView {
 
 extension CommentComposerView: UITextViewDelegate {
   func textViewDidChange(_ textView: UITextView) {
-    self.inputContainerView.inputTextView.invalidateIntrinsicContentSize()
     self.viewModel.inputs.bodyTextDidChange(textView.text)
   }
 

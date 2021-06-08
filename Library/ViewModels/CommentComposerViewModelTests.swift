@@ -14,6 +14,7 @@ final class CommentComposerViewModelTests: TestCase {
   private let notifyDelegateDidSubmitText = TestObserver<String, Never>()
   private let placeholderHidden = TestObserver<Bool, Never>()
   private let postButtonHidden = TestObserver<Bool, Never>()
+  private let updateTextViewHeight = TestObserver<(), Never>()
 
   override func setUp() {
     super.setUp()
@@ -26,6 +27,7 @@ final class CommentComposerViewModelTests: TestCase {
     self.vm.outputs.placeholderHidden.observe(self.placeholderHidden.observer)
     self.vm.outputs.inputTextViewResignFirstResponder.observe(self.inputTextViewResignFirstResponder.observer)
     self.vm.outputs.clearInputTextView.observe(self.clearInputTextView.observer)
+    self.vm.outputs.updateTextViewHeight.observe(self.updateTextViewHeight.observer)
   }
 
   func testPostingCommentFlow() {
@@ -59,6 +61,7 @@ final class CommentComposerViewModelTests: TestCase {
     self.postButtonHidden.assertValues([true, false, false, true])
     self.placeholderHidden.assertValues([false, true, true, false])
     self.inputTextViewResignFirstResponder.assertDidEmitValue()
+    self.updateTextViewHeight.assertValueCount(3)
     self.clearInputTextView.assertValueCount(1)
   }
 
