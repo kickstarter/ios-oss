@@ -3,6 +3,11 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
+private struct SearchPageData: Equatable {
+  public let projects: [Project]
+  public let statsCount: Int
+}
+
 public protocol SearchViewModelInputs {
   /// Call when the cancel button is pressed.
   func cancelButtonPressed()
@@ -133,17 +138,19 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
           }
       }
 
-    let (paginatedProjects, isLoading, page, stats) = paginate(
+    let (paginatedValues, isLoading, page, _) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: isCloseToBottom,
       clearOnNewRequest: false,
       skipRepeats: false,
-      valuesFromEnvelope: { $0.projects },
+      valuesFromEnvelope: { [SearchPageData(projects: $0.projects, statsCount: $0.stats.count)] },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
-      statsFromEnvelope: { $0.stats.count },
       requestFromParams: requestFromParamsWithDebounce,
       requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) }
     )
+
+    let paginatedProjects = paginatedValues.map { $0[0].projects }
+    let stats = paginatedValues.map { $0[0].statsCount }
 
     self.searchLoaderIndicatorIsAnimating = isLoading
 
