@@ -13,6 +13,7 @@ internal final class CommentCellViewModelTests: TestCase {
   private let authorName = TestObserver<String, Never>()
   private let body = TestObserver<String, Never>()
   private let bottomRowStackViewIsHidden = TestObserver<Bool, Never>()
+  private let commentStatus = TestObserver<Comment.Status, Never>()
   private let flagButtonIsHidden = TestObserver<Bool, Never>()
   private let postTime = TestObserver<String, Never>()
   private let replyButtonIsHidden = TestObserver<Bool, Never>()
@@ -25,6 +26,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.outputs.authorName.observe(self.authorName.observer)
     self.vm.outputs.body.observe(self.body.observer)
     self.vm.outputs.bottomRowStackViewIsHidden.observe(self.bottomRowStackViewIsHidden.observer)
+    self.vm.outputs.commentStatus.observe(self.commentStatus.observer)
     self.vm.outputs.flagButtonIsHidden.observe(self.flagButtonIsHidden.observer)
     self.vm.outputs.postTime.observe(self.postTime.observer)
     self.vm.outputs.replyButtonIsHidden.observe(self.replyButtonIsHidden.observer)
@@ -47,6 +49,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.authorImageURL.assertValues([URL(string: "http://www.kickstarter.com/small.jpg")!])
     self.authorName.assertValues([comment.author.name], "The author's name is emitted.")
     self.body.assertValues([comment.body], "The comment body is emitted.")
+    self.commentStatus.assertValues([.success], "The comment status is emmited.")
     self.postTime.assertValueCount(1, "The relative time of the comment is emitted.")
   }
 
@@ -300,6 +303,21 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.inputs.bindStyles()
 
     self.authorBadge.assertValues([.creator, .creator], "The author's badge is emitted.")
+  }
+
+  func testBindStylesEmitsCommentStatus() {
+    self.commentStatus.assertDidNotEmitValue()
+
+    let comment = Comment.template
+      |> \.status .~ .retrySuccess
+
+    self.vm.inputs.configureWith(comment: comment, project: .template)
+
+    self.commentStatus.assertValues([.retrySuccess], "The comment status is emitted.")
+
+    self.vm.inputs.bindStyles()
+
+    self.commentStatus.assertValues([.retrySuccess, .retrySuccess], "The comment status is emitted.")
   }
 
   func testViewRepliesContainerHidden_IsHiddenWhenNoReplies() {
