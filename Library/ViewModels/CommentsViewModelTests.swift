@@ -690,7 +690,7 @@ internal final class CommentsViewModelTests: TestCase {
           "Comment is replaced with one with a retrying status."
         )
 
-        self.scheduler.advance()
+        self.scheduler.advance(by: .seconds(1))
 
         let expectedRetryingSuccessComment = expectedFailedComment
           |> \.body .~ bodyText
@@ -699,10 +699,10 @@ internal final class CommentsViewModelTests: TestCase {
         XCTAssertEqual(
           self.loadCommentsAndProjectIntoDataSourceComments.values.last?.first,
           expectedRetryingSuccessComment,
-          "Comment is replaced with one with a retrySuccess status."
+          "Comment is replaced with one with a retrySuccess status after elapsed time."
         )
 
-        self.scheduler.advance(by: .seconds(1))
+        self.scheduler.advance(by: .seconds(3))
 
         XCTAssertEqual(
           self.loadCommentsAndProjectIntoDataSourceComments.values.last?.first,
@@ -782,7 +782,7 @@ internal final class CommentsViewModelTests: TestCase {
           "Comment is replaced with one with a retrying status."
         )
 
-        self.scheduler.advance()
+        self.scheduler.advance(by: .seconds(1))
 
         XCTAssertEqual(
           self.loadCommentsAndProjectIntoDataSourceComments.values.last?.first,

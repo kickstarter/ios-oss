@@ -50,6 +50,9 @@ public protocol CommentComposerViewModelOutputs {
 
   /// Emits a boolean that determines if the post button is hidden.
   var postButtonHidden: Signal<Bool, Never> { get }
+
+  /// Emits when the input area size should be reset.
+  var updateTextViewHeight: Signal<(), Never> { get }
 }
 
 public protocol CommentComposerViewModelType {
@@ -92,6 +95,7 @@ public final class CommentComposerViewModel:
       }
 
     self.inputTextViewResignFirstResponder = self.resetInputProperty.signal
+    self.updateTextViewHeight = self.bodyText.signal.ignoreValues()
     self.clearInputTextView = self.bodyText.filter { $0 == nil }.ignoreValues()
   }
 
@@ -130,6 +134,7 @@ public final class CommentComposerViewModel:
   public var notifyDelegateDidSubmitText: Signal<String, Never>
   public var placeholderHidden: Signal<Bool, Never>
   public var postButtonHidden: Signal<Bool, Never>
+  public var updateTextViewHeight: Signal<(), Never>
 
   public var inputs: CommentComposerViewModelInputs { return self }
   public var outputs: CommentComposerViewModelOutputs { return self }
