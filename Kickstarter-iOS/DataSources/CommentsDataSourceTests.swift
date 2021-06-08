@@ -5,10 +5,10 @@ import Prelude
 import XCTest
 
 class CommentsDataSourceTests: XCTestCase {
-  private let dataSource = CommentsDataSource()
-  private let tableView = UITableView()
   private let commentsSection = CommentsDataSource.Section.comments.rawValue
+  private let dataSource = CommentsDataSource()
   private let emptySection = CommentsDataSource.Section.empty.rawValue
+  private let tableView = UITableView()
 
   private let templateComments = Comment.templates + [Comment.retryingTemplate, Comment.retrySuccessTemplate]
 
