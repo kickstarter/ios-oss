@@ -35,11 +35,9 @@ public let creatorAuthorBadgeStyle: PaddingLabelStyle = { label in
     |> \.adjustsFontForContentSizeCategory .~ true
 }
 
-// TODO: Internationalized in the near future.
-
 public let superbackerAuthorBadgeStyle: PaddingLabelStyle = { label in
   label
-    |> \.text .~ localizedString(key: "Superbacker", defaultValue: "Superbacker").uppercased()
+    |> \.text .~ Strings.Superbacker().uppercased()
     |> \.font .~ UIFont.ksr_headline(size: 10)
     |> \.textColor .~ UIColor.ksr_celebrate_500
     |> \.backgroundColor .~ .clear
