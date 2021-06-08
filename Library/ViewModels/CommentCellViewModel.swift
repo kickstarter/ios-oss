@@ -134,12 +134,12 @@ public final class CommentCellViewModel:
 
 private func commentFlaggingEnabled() -> Bool {
   return AppEnvironment.current.optimizelyClient?
-    .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentFlaggingEnabled.rawValue) ?? false
+    .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentFlaggingEnabled.rawValue) ?? true
 }
 
 private func commentThreadingRepliesEnabled() -> Bool {
   return AppEnvironment.current.optimizelyClient?
-    .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue) ?? false
+    .isFeatureEnabled(featureKey: OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue) ?? true
 }
 
 private func replyButtonHidden(isLoggedOut: Bool, isNotABacker: Bool) -> Bool {

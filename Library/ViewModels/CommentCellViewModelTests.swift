@@ -310,7 +310,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.viewRepliesStackViewIsHidden.assertValues([true])
   }
 
-  func testViewRepliesContainerHidden_IsNotHiddenWhenCommentHasReplies() {
+  func testViewRepliesContainerHidden_IsNotHiddenWhenCommentHasReplies_CommentThreadingRepliesEnabledFeatureFlag_False() {
     let comment = Comment.template
       |> \.replyCount .~ 1
 
