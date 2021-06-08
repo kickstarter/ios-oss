@@ -41,7 +41,7 @@ internal final class CommentsViewControllerTests: TestCase {
     }
   }
 
-  func testView_WithFailedRetryingRetrySuccessComments_ShouldDisplayAll() {
+  func testView_WithSuccessFailedRetryingRetrySuccessComments_ShouldDisplayAll() {
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope
           .successFailedRetryingRetrySuccessCommentsTemplate))
