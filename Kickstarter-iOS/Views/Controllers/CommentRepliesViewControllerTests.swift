@@ -4,7 +4,7 @@ import Library
 import Prelude
 import XCTest
 
-internal final class CommentRepliesViewControllerTests: TestCase {
+final class CommentRepliesViewControllerTests: TestCase {
   override func setUp() {
     super.setUp()
 
@@ -17,10 +17,10 @@ internal final class CommentRepliesViewControllerTests: TestCase {
     super.tearDown()
   }
 
-  func testView_WithRootComment_ShouldDisplayRootComment() {
+  func testViewController_WithComment_HasRootComment() {
     Language.allLanguages.forEach { language in
       withEnvironment(currentUser: .template, language: language) {
-        let controller = CommentRepliesViewController.configuredWith(comment: .template, project: .template)
+        let controller = CommentRepliesViewController.configuredWith(comment: .template)
 
         let (parent, _) = traitControllers(
           device: .phone4_7inch,
