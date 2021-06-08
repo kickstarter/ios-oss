@@ -8,6 +8,9 @@ public protocol CommentCellViewModelInputs {
 
   /// Call to configure with a Comment and Project
   func configureWith(comment: Comment, project: Project?)
+
+  /// Call to configure Comment as a root comment on a list of comments
+  func configureAsRootComment(value: Bool)
 }
 
 public protocol CommentCellViewModelOutputs {
@@ -95,14 +98,16 @@ public final class CommentCellViewModel:
     self.replyButtonIsHidden = Signal.combineLatest(isLoggedOut, isNotABacker)
       .map(replyButtonHidden)
 
-    // If both the replyButton and flagButton should be hidden, the entire stackview will be hidden too.
-    self.bottomRowStackViewIsHidden = Signal.combineLatest(
+    // If both the replyButton and flagButton should be hidden the entire stackview will be hidden too.
+    let hideBottomRowStackView = Signal.combineLatest(
       self.flagButtonIsHidden.signal,
       self.replyButtonIsHidden.signal
-    ).map { flagButtonIsHidden, replyButtonIsHidden in
-      flagButtonIsHidden && replyButtonIsHidden
+    ).map { flagButtonIsHidden, replyButtonIsHidden -> Bool in
+      let flag = flagButtonIsHidden && replyButtonIsHidden
+      
+      return flag
     }
-
+    
     // If there are no replies or if the feature flag returns false, hide the stack view.
     self.viewRepliesStackViewIsHidden = comment.map(\.replyCount)
       .map(viewRepliesStackViewHidden)
@@ -116,6 +121,11 @@ public final class CommentCellViewModel:
   fileprivate let commentAndProject = MutableProperty<(Comment, Project?)?>(nil)
   public func configureWith(comment: Comment, project: Project?) {
     self.commentAndProject.value = (comment, project)
+  }
+
+  fileprivate let isRootCommentProperty = MutableProperty<Bool>(false)
+  public func configureAsRootComment(value: Bool) {
+    self.isRootCommentProperty.value = value
   }
 
   public let authorBadge: Signal<Comment.AuthorBadge, Never>

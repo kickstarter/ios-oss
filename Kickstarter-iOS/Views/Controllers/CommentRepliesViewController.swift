@@ -7,14 +7,14 @@ import UIKit
 final class CommentRepliesViewController: UITableViewController {
   // MARK: Properties
 
-  private let viewModel: CommentRepliesViewModelType = CommentRepliesViewModel()
   private let dataSource = CommentRepliesDataSource()
+  private let viewModel: CommentRepliesViewModelType = CommentRepliesViewModel()
 
   // MARK: - Accessors
 
-  internal static func configuredWith(comment: Comment, project: Project) -> CommentRepliesViewController {
+  internal static func configuredWith(comment: Comment) -> CommentRepliesViewController {
     let vc = CommentRepliesViewController.instantiate()
-    vc.viewModel.inputs.configureWith(comment: comment, project: project)
+    vc.viewModel.inputs.configureWith(comment: comment)
 
     return vc
   }
@@ -45,12 +45,11 @@ final class CommentRepliesViewController: UITableViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewModel.outputs.loadCommentAndProjectIntoDataSource
+    self.viewModel.outputs.loadCommentIntoDataSource
       .observeForUI()
-      .observeValues { [weak self] comment, project in
+      .observeValues { [weak self] comment in
         self?.dataSource.load(
-          comment: comment,
-          project: project
+          comment: comment
         )
 
         self?.tableView.reloadData()
@@ -62,8 +61,8 @@ final class CommentRepliesViewController: UITableViewController {
 
 private let tableViewStyle: TableViewStyle = { tableView in
   tableView
-    |> \.rowHeight .~ UITableView.automaticDimension
     |> \.estimatedRowHeight .~ 100.0
-    |> \.separatorInset .~ .zero
+    |> \.rowHeight .~ UITableView.automaticDimension
     |> \.separatorColor .~ UIColor.ksr_support_200
+    |> \.separatorInset .~ .zero
 }

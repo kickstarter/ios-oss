@@ -132,7 +132,7 @@ internal final class CommentsViewController: UITableViewController {
     self.viewModel.outputs.goToCommentReplies
       .observeForControllerAction()
       .observeValues { [weak self] comment, project in
-        let vc = CommentRepliesViewController.configuredWith(comment: comment, project: project)
+        let vc = CommentRepliesViewController.configuredWith(comment: comment)
         self?.navigationController?.pushViewController(vc, animated: true)
       }
 
@@ -191,8 +191,8 @@ extension CommentsViewController: CommentComposerViewDelegate {
 
 private let tableViewStyle: TableViewStyle = { tableView in
   tableView
-    |> \.rowHeight .~ UITableView.automaticDimension
     |> \.estimatedRowHeight .~ 100.0
-    |> \.separatorInset .~ .zero
+    |> \.rowHeight .~ UITableView.automaticDimension
     |> \.separatorColor .~ UIColor.ksr_support_200
+    |> \.separatorInset .~ .zero
 }

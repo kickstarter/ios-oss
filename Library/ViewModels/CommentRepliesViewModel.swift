@@ -4,9 +4,9 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol CommentRepliesViewModelInputs {
-  /// Call with the comment/project that we are viewing replies for. Both can be provided to minimize
-  /// the number of API requests made, but it will be assumed we are viewing the replies for the comment.
-  func configureWith(comment: Comment, project: Project)
+  /// Call with the comment that we are viewing replies for. `Comment` can be provided to minimize
+  /// the number of API requests made (ie. no need to find the comment id), but this is for viewing the replies for the root comment.
+  func configureWith(comment: Comment)
 
   /// Call when the view loads.
   func viewDidLoad()
@@ -14,8 +14,8 @@ public protocol CommentRepliesViewModelInputs {
 
 public protocol CommentRepliesViewModelOutputs {
   // TODO: Likely we will be adding `[Comment]` to this output to load replies
-  /// Emits a root `Comment`s and the `Project` to load into the data source.
-  var loadCommentAndProjectIntoDataSource: Signal<(Comment, Project), Never> { get }
+  /// Emits a root `Comment`s  to load into the data source.
+  var loadCommentIntoDataSource: Signal<Comment, Never> { get }
 }
 
 public protocol CommentRepliesViewModelType {
@@ -27,18 +27,18 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
   CommentRepliesViewModelInputs,
   CommentRepliesViewModelOutputs {
   public init() {
-    let rootCommentAndProject = Signal.combineLatest(
-      self.commentAndProjectProperty.signal.skipNil(),
+    let rootComment = Signal.combineLatest(
+      self.commentProperty.signal.skipNil(),
       self.viewDidLoadProperty.signal
     )
     .map(first)
 
-    self.loadCommentAndProjectIntoDataSource = rootCommentAndProject
+    self.loadCommentIntoDataSource = rootComment
   }
 
-  fileprivate let commentAndProjectProperty = MutableProperty<(Comment, Project)?>(nil)
-  public func configureWith(comment: Comment, project: Project) {
-    self.commentAndProjectProperty.value = (comment, project)
+  fileprivate let commentProperty = MutableProperty<(Comment)?>(nil)
+  public func configureWith(comment: Comment) {
+    self.commentProperty.value = comment
   }
 
   fileprivate let viewDidLoadProperty = MutableProperty(())
@@ -46,7 +46,7 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
     self.viewDidLoadProperty.value = ()
   }
 
-  public let loadCommentAndProjectIntoDataSource: Signal<(Comment, Project), Never>
+  public let loadCommentIntoDataSource: Signal<Comment, Never>
 
   public var inputs: CommentRepliesViewModelInputs { return self }
   public var outputs: CommentRepliesViewModelOutputs { return self }
