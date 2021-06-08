@@ -146,7 +146,11 @@ public final class SearchViewModel: SearchViewModelType, SearchViewModelInputs, 
       valuesFromEnvelope: { [SearchPageData(projects: $0.projects, statsCount: $0.stats.count)] },
       cursorFromEnvelope: { $0.urls.api.moreProjects },
       requestFromParams: requestFromParamsWithDebounce,
-      requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) }
+      requestFromCursor: { AppEnvironment.current.apiService.fetchDiscovery(paginationUrl: $0) },
+      concater: { (accum, data) -> [SearchPageData] in
+        let currentProjects = !accum.isEmpty ? accum[0].projects : []
+        return [SearchPageData(projects: currentProjects + data[0].projects, statsCount: data[0].statsCount)]
+      }
     )
 
     let paginatedProjects = paginatedValues.map { $0[0].projects }

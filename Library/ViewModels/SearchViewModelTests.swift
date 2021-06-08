@@ -684,7 +684,7 @@ internal final class SearchViewModelTests: TestCase {
 
         self.scrollToProjectRow.assertValues([5, 6, 7, 8])
 
-        self.hasAddedProjects.assertValues([true, false, true], "Paginated projects are loaded.")
+        self.hasAddedProjects.assertValues([true, false, true, true], "Paginated projects are loaded.")
 
         self.vm.inputs.transitionedToProject(at: 7, outOf: playlist2.count)
 
