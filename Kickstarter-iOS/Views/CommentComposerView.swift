@@ -144,6 +144,12 @@ final class CommentComposerView: UIView {
         self?.inputContainerView.inputTextView.resignFirstResponder()
       }
 
+    self.viewModel.outputs.updateTextViewHeight
+      .observeForUI()
+      .observeValues { [weak self] _ in
+        self?.inputContainerView.inputTextView.invalidateIntrinsicContentSize()
+      }
+
     self.inputContainerView.placeholderLabel.rac.hidden = self.viewModel.outputs.placeholderHidden
     self.inputContainerView.postButton.rac.hidden = self.viewModel.outputs.postButtonHidden
 
@@ -194,7 +200,6 @@ final class CommentComposerView: UIView {
 
 extension CommentComposerView: UITextViewDelegate {
   func textViewDidChange(_ textView: UITextView) {
-    self.inputContainerView.inputTextView.invalidateIntrinsicContentSize()
     self.viewModel.inputs.bodyTextDidChange(textView.text)
   }
 
@@ -210,9 +215,7 @@ private let onlyBackersLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_support_400
     |> \.font .~ UIFont.ksr_body(size: 15.0)
-    // TODO: To be replaced with a type-safe string when copy is available.
-    |> \.text .~
-    localizedString(key: "Only_backers_can_post_comments", defaultValue: "Only backers can post comments.")
+    |> \.text .~ Strings.Only_backers_can_post_comments()
     |> \.adjustsFontForContentSizeCategory .~ true
 }
 
