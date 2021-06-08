@@ -38,7 +38,7 @@ public protocol CommentsViewModelOutputs {
   var configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never> { get }
 
   /// Emits the selected `Comment` and `Project` to navigate to its replies.
-  var goToCommentReplies: Signal<(Comment, Project), Never> { get }
+  var goToCommentReplies: Signal<Comment, Never> { get }
 
   /// Emits a list of `Comment`s and the `Project` to load into the data source.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
@@ -103,7 +103,7 @@ public final class CommentsViewModel: CommentsViewModelType,
       .map { row, total -> Bool in
         // TODO: ensure this does not page when cells are less than threshold.
         // Prevent paging when only the empty state cell is shown.
-        guard total > 1 else { return false }
+        guard total > 3 else { return false }
         return row >= total - 3
       }
       .skipRepeats()
@@ -203,7 +203,6 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     self.goToCommentReplies = regularCommentTapped
       .filter { comment in comment.replyCount > 0 }
-      .withLatestFrom(initialProject)
 
     let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
 
@@ -264,7 +263,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let cellSeparatorHidden: Signal<Bool, Never>
   public let commentComposerViewHidden: Signal<Bool, Never>
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
-  public let goToCommentReplies: Signal<(Comment, Project), Never>
+  public let goToCommentReplies: Signal<Comment, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
   public let resetCommentComposerAndScrollToTop: Signal<(), Never>
   public let showLoadingIndicatorInFooterView: Signal<Bool, Never>

@@ -36,7 +36,7 @@ final class CommentRepliesViewController: UITableViewController {
     self.navigationItem.title = "Replies"
 
     self.tableView.dataSource = self.dataSource
-    self.tableView.registerCellClass(CommentCell.self)
+    self.tableView.registerCellClass(RootCommentCell.self)
     self.tableView.tableFooterView = UIView()
 
     self.viewModel.inputs.viewDidLoad()

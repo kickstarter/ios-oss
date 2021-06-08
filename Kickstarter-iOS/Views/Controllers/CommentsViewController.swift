@@ -131,7 +131,7 @@ internal final class CommentsViewController: UITableViewController {
 
     self.viewModel.outputs.goToCommentReplies
       .observeForControllerAction()
-      .observeValues { [weak self] comment, project in
+      .observeValues { [weak self] comment in
         let vc = CommentRepliesViewController.configuredWith(comment: comment)
         self?.navigationController?.pushViewController(vc, animated: true)
       }

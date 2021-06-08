@@ -79,11 +79,6 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.viewModel.inputs.configureWith(comment: value.comment, project: value.project)
   }
 
-  internal func configureAsRootWith(comment: Comment) {
-    self.configureWith(value: (comment, nil))
-    self.viewModel.inputs.configureAsRootComment(value: true)
-  }
-
   private func configureViews() {
     let rootViews = [
       self.commentCellHeaderStackView,
