@@ -98,16 +98,14 @@ public final class CommentCellViewModel:
     self.replyButtonIsHidden = Signal.combineLatest(isLoggedOut, isNotABacker)
       .map(replyButtonHidden)
 
-    // If both the replyButton and flagButton should be hidden the entire stackview will be hidden too.
+    // If both the replyButton and flagButton should be hidden, the entire stackview will be hidden too.
     self.bottomRowStackViewIsHidden = Signal.combineLatest(
       self.flagButtonIsHidden.signal,
       self.replyButtonIsHidden.signal
-    ).map { flagButtonIsHidden, replyButtonIsHidden -> Bool in
-      let flag = flagButtonIsHidden && replyButtonIsHidden
-      
-      return flag
+    ).map { flagButtonIsHidden, replyButtonIsHidden  in
+      flagButtonIsHidden && replyButtonIsHidden
     }
-    
+
     // If there are no replies or if the feature flag returns false, hide the stack view.
     self.viewRepliesStackViewIsHidden = comment.map(\.replyCount)
       .map(viewRepliesStackViewHidden)
