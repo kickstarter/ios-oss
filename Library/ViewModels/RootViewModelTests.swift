@@ -492,7 +492,7 @@ final class RootViewModelTests: TestCase {
     self.selectedIndex.assertValues([0, 1, 0, 2], "Selects index immediately.")
 
     XCTAssertEqual(
-      ["other", "discover"],
+      ["activity_feed", "discover"],
       self.segmentTrackingClient.properties(forKey: "context_page")
     )
     XCTAssertEqual(
