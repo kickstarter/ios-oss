@@ -8,7 +8,6 @@ public struct Comment {
   public var id: String
   public var isDeleted: Bool
   public var replyCount: Int
-
   /// return the first `authorBadges`, if nil  return `.backer`
   public var authorBadge: AuthorBadge {
     return self.authorBadges.first ?? .backer
