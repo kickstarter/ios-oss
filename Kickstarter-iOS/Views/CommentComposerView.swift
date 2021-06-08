@@ -215,9 +215,7 @@ private let onlyBackersLabelStyle: LabelStyle = { label in
   label
     |> \.textColor .~ .ksr_support_400
     |> \.font .~ UIFont.ksr_body(size: 15.0)
-    // TODO: To be replaced with a type-safe string when copy is available.
-    |> \.text .~
-    localizedString(key: "Only_backers_can_post_comments", defaultValue: "Only backers can post comments.")
+    |> \.text .~ Strings.Only_backers_can_post_comments()
     |> \.adjustsFontForContentSizeCategory .~ true
 }
 
