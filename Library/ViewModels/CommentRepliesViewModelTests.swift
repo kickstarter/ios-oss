@@ -28,7 +28,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
       )
 
       self.loadCommentIntoDataSourceComment.assertDidNotEmitValue()
-      
+
       self.vm.inputs.viewDidLoad()
 
       self.loadCommentIntoDataSourceComment.assertValue(rootComment)

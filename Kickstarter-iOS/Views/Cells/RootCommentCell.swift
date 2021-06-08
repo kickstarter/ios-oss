@@ -58,7 +58,7 @@ final class RootCommentCell: UITableViewCell, ValueCell {
   private func configureViews() {
     let rootViews = [
       self.commentCellHeaderStackView,
-      self.bodyTextView,
+      self.bodyTextView
     ]
 
     _ = (self.rootStackView, self.contentView)
