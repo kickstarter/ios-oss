@@ -35,7 +35,7 @@ public protocol CommentCellViewModelOutputs {
   /// Emits text  relative time the comment was posted.
   var postTime: Signal<String, Never> { get }
 
-  /// Emits a  Bool determining if the posted button ts hidden
+  /// Emits a  Bool determining if the posted button is hidden
   var postedButtonIsHidden: Signal<Bool, Never> { get }
 
   /// Emits a Bool determining if the reply button in the bottomRowStackView are hidden.
