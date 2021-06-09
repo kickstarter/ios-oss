@@ -13,9 +13,9 @@ public protocol CommentTableViewFooterViewModelInputs {
 
 public protocol CommentTableViewFooterViewModelOutputs {
   var activityIndicatorHidden: Signal<Bool, Never> { get }
+  var bottomInsetHeight: Signal<Int, Never> { get }
   var retryButtonHidden: Signal<Bool, Never> { get }
   var rootStackViewHidden: Signal<Bool, Never> { get }
-  var bottomInsetHeight: Signal<Int, Never> { get }
 }
 
 public protocol CommentTableViewFooterViewModelType {
@@ -43,9 +43,9 @@ public final class CommentTableViewFooterViewModel: CommentTableViewFooterViewMo
   }
 
   public let activityIndicatorHidden: Signal<Bool, Never>
+  public let bottomInsetHeight: Signal<Int, Never>
   public let retryButtonHidden: Signal<Bool, Never>
   public let rootStackViewHidden: Signal<Bool, Never>
-  public let bottomInsetHeight: Signal<Int, Never>
 
   public var inputs: CommentTableViewFooterViewModelInputs { return self }
   public var outputs: CommentTableViewFooterViewModelOutputs { return self }
