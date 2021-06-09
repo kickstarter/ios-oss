@@ -33,7 +33,7 @@ final class CommentRepliesViewController: UITableViewController {
     super.viewDidLoad()
 
     // TODO: Internationalize
-    self.navigationItem.title = localizedString(key: "", defaultValue: "Replies")
+    self.navigationItem.title = localizedString(key: "Replies", defaultValue: "Replies")
 
     self.tableView.dataSource = self.dataSource
     self.tableView.registerCellClass(RootCommentCell.self)
