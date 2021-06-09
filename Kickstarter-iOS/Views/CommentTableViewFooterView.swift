@@ -19,12 +19,12 @@ final class CommentTableViewFooterView: UIView {
 
   weak var delegate: CommentTableViewFooterViewDelegate?
 
+  private lazy var retryButton = { UIButton(type: .custom) }()
+
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
-
-  private lazy var retryButton = { UIButton(type: .custom) }()
 
   // MARK: - Lifecycle
 
@@ -105,14 +105,10 @@ final class CommentTableViewFooterView: UIView {
 
 // MARK: - Styles
 
-private let rootStackViewStyle: StackViewStyle = { stackView in
-  stackView
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-}
-
 private let retryButtonStyle: ButtonStyle = { button in
   button
     |> UIButton.lens.title(for: .normal) %~ { _ in
+      // TODO: Add translation.
       localizedString(
         key: "Couldnt_load_more_comments_Tap_to_retry",
         defaultValue: "Couldn't load more comments.\nTap to retry"
@@ -127,4 +123,9 @@ private let retryButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(1))
     |> UIButton.lens.contentVerticalAlignment .~ .top
     |> UIButton.lens.contentHorizontalAlignment .~ .left
+}
+
+private let rootStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.isLayoutMarginsRelativeArrangement .~ true
 }

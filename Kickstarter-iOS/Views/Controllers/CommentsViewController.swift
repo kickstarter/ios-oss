@@ -8,10 +8,6 @@ private enum Layout {
   enum Composer {
     static let originalHeight: CGFloat = 80.0
   }
-
-  enum Footer {
-    static let height: CGFloat = 80.0
-  }
 }
 
 internal final class CommentsViewController: UITableViewController {

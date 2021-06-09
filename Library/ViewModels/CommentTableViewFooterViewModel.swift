@@ -31,6 +31,9 @@ public final class CommentTableViewFooterViewModel: CommentTableViewFooterViewMo
     self.activityIndicatorHidden = state.map { $0 == .activity }.negate()
     self.retryButtonHidden = state.map { $0 == .error }.negate()
     self.rootStackViewHidden = state.map { $0 == .hidden }
+
+    // When the button is visible its content is aligned to top which pushes the text down
+    // requiring more space at the bottom.
     self.bottomInsetHeight = state.map { state -> Int in
       if case .error = state { return 4 }
       return 2

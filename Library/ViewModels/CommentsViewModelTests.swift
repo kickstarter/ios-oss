@@ -879,10 +879,9 @@ internal final class CommentsViewModelTests: TestCase {
     self.configureFooterViewWithState.assertDidNotEmitValue()
 
     let envelope = CommentsEnvelope.singleCommentTemplate
-    let project = Project.template
 
     withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
-      self.vm.inputs.configureWith(project: project, update: nil)
+      self.vm.inputs.configureWith(project: .template, update: nil)
       self.vm.inputs.viewDidLoad()
 
       self.configureFooterViewWithState.assertValues([.hidden])
