@@ -15,7 +15,6 @@ internal final class CommentsViewModelTests: TestCase {
   private let configureCommentComposerViewURL = TestObserver<URL?, Never>()
   private let configureCommentComposerViewCanPostComment = TestObserver<Bool, Never>()
   private let goToCommentRepliesComment = TestObserver<Comment, Never>()
-  private let goToCommentRepliesProject = TestObserver<Project, Never>()
   private let loadCommentsAndProjectIntoDataSourceComments = TestObserver<[Comment], Never>()
   private let loadCommentsAndProjectIntoDataSourceProject = TestObserver<Project, Never>()
   private let showLoadingIndicatorInFooterView = TestObserver<Bool, Never>()
@@ -30,8 +29,7 @@ internal final class CommentsViewModelTests: TestCase {
       .observe(self.configureCommentComposerViewURL.observer)
     self.vm.outputs.configureCommentComposerViewWithData.map(second)
       .observe(self.configureCommentComposerViewCanPostComment.observer)
-    self.vm.outputs.goToCommentReplies.map(first).observe(self.goToCommentRepliesComment.observer)
-    self.vm.outputs.goToCommentReplies.map(second).observe(self.goToCommentRepliesProject.observer)
+    self.vm.outputs.goToCommentReplies.observe(self.goToCommentRepliesComment.observer)
     self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(first)
       .observe(self.loadCommentsAndProjectIntoDataSourceComments.observer)
     self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(second)
@@ -142,7 +140,6 @@ internal final class CommentsViewModelTests: TestCase {
 
   func testGoToCommentReplies_CommentHasReplies_GoToEmits() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
 
     let project = Project.template
     let comment = Comment.template
@@ -153,17 +150,14 @@ internal final class CommentsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
 
     self.vm.inputs.didSelectComment(comment)
 
     self.goToCommentRepliesComment.assertValues([comment])
-    self.goToCommentRepliesProject.assertValues([project])
   }
 
   func testGoToCommentReplies_CommentHasReplies_IsDeleted_GoToDoesNotEmit() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
 
     let project = Project.template
     let comment = Comment.template
@@ -174,17 +168,14 @@ internal final class CommentsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
 
     self.vm.inputs.didSelectComment(comment)
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
   }
 
   func testGoToCommentReplies_CommentHasReplies_IsErrored_GoToDoesNotEmit() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
 
     let project = Project.template
     let comment = Comment.template
@@ -195,17 +186,14 @@ internal final class CommentsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
 
     self.vm.inputs.didSelectComment(comment)
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
   }
 
   func testGoToCommentReplies_CommentHasNoReplies_GoToDoesNotEmit() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
 
     let project = Project.template
     let comment = Comment.template
@@ -215,12 +203,10 @@ internal final class CommentsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
 
     self.vm.inputs.didSelectComment(comment)
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
   }
 
   func testLoggedOut_ViewingComments_CommentsAreLoadedIntoDataSource() {
