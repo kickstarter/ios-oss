@@ -357,14 +357,20 @@ public final class RootViewModel: RootViewModelType, RootViewModelInputs, RootVi
       }
 
     self.tabBarItemsData
+      .combineLatest(with: prevSelectedTabBarItem.signal)
       .takePairWhen(self.didSelectIndexProperty.signal)
-      .compactMap { data, index in
+      .compactMap { dataAndPrevSelectedTabBarItem, index in
+        let (data, prevSelectedTabBarItem) = dataAndPrevSelectedTabBarItem
         guard index < data.items.count else { return nil }
 
-        return tabBarItemLabel(for: data.items[index])
+        return (tabBarItemLabel(for: data.items[index]), prevSelectedTabBarItem)
       }
-      .observeValues { tabBarItemLabel in
-        AppEnvironment.current.ksrAnalytics.trackTabBarClicked(tabBarItemLabel)
+      .observeValues { tabBarItemLabel, prevTabBarItemLabel in
+        AppEnvironment.current.ksrAnalytics
+          .trackTabBarClicked(
+            tabBarItemLabel: tabBarItemLabel,
+            previousTabBarItemLabel: prevTabBarItemLabel
+          )
       }
   }
 

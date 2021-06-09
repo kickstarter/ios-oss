@@ -566,12 +566,22 @@ public final class KSRAnalytics {
 
   // MARK: - Application Lifecycle
 
-  /// Called when the user taps on a TabBarItem
-  public func trackTabBarClicked(_ tabBarItemLabel: TabBarItemLabel) {
+  /**
+   Called when the user selected a tab bar item.
+
+   - parameter tabBarItemLabel: The tab the user is navigating to.
+   - parameter previousTabBarItemLabel: The tab the user is navigating from.
+   */
+  public func trackTabBarClicked(
+    tabBarItemLabel: TabBarItemLabel,
+    previousTabBarItemLabel: TabBarItemLabel
+  ) {
+    let page = pageContext(from: previousTabBarItemLabel)
     switch tabBarItemLabel {
     case .discovery:
       let properties = contextProperties(
         ctaContext: .discover,
+        page: page,
         locationContext: .globalNav
       )
       self.track(
@@ -590,22 +600,10 @@ public final class KSRAnalytics {
    */
 
   public func trackSearchTabBarClicked(prevTabBarItemLabel: TabBarItemLabel) {
-    let pageContext: PageContext?
-    switch prevTabBarItemLabel {
-    case .activity:
-      pageContext = .activities
-    case .discovery:
-      pageContext = .discovery
-    case .profile:
-      pageContext = .profile
-    case .search:
-      pageContext = .search
-    default:
-      pageContext = nil
-    }
+    let page = pageContext(from: prevTabBarItemLabel)
     let properties = contextProperties(
       ctaContext: .search,
-      page: pageContext,
+      page: page,
       locationContext: .globalNav
     )
     self.track(
@@ -1514,6 +1512,28 @@ private func shareTypeProperty(_ shareType: UIActivity.ActivityType?) -> String?
     return "safari"
   } else {
     return shareType.rawValue
+  }
+}
+
+/**
+ Call to get a `PageContext` value from a `TabBarItemLabel`
+
+ - parameter from: The `TabBarItemLabel` that is being converted.
+
+ - returns: A `PageContext` value used for analytics.
+ */
+private func pageContext(from tabBarItemLabel: KSRAnalytics.TabBarItemLabel) -> KSRAnalytics.PageContext? {
+  switch tabBarItemLabel {
+  case .activity:
+    return .activities
+  case .discovery:
+    return .discovery
+  case .profile:
+    return .profile
+  case .search:
+    return .search
+  default:
+    return nil
   }
 }
 
