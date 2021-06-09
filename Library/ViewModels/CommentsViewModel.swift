@@ -43,8 +43,8 @@ public protocol CommentsViewModelOutputs {
   /// Configures the footer view with the current state.
   var configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never> { get }
 
-  /// Emits the selected `Comment` and `Project` to navigate to its replies.
-  var goToCommentReplies: Signal<(Comment, Project), Never> { get }
+  /// Emits the selected `Comment` to navigate to its replies.
+  var goToCommentReplies: Signal<Comment, Never> { get }
 
   /// Emits a list of `Comment`s and the `Project` to load into the data source.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
@@ -226,7 +226,6 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     self.goToCommentReplies = regularCommentTapped
       .filter { comment in comment.replyCount > 0 }
-      .withLatestFrom(initialProject)
 
     let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
 
@@ -305,7 +304,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let commentComposerViewHidden: Signal<Bool, Never>
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never>
-  public let goToCommentReplies: Signal<(Comment, Project), Never>
+  public let goToCommentReplies: Signal<Comment, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
   public let resetCommentComposerAndScrollToTop: Signal<(), Never>
 
