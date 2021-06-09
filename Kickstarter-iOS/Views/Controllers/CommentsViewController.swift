@@ -41,7 +41,7 @@ internal final class CommentsViewController: UITableViewController {
     return refreshControl
   }()
 
-  private let viewModel: CommentsViewModelType = CommentsViewModel()
+  internal let viewModel: CommentsViewModelType = CommentsViewModel()
   private let dataSource = CommentsDataSource()
 
   // MARK: - Accessors
