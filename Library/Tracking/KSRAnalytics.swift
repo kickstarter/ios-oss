@@ -570,7 +570,7 @@ public final class KSRAnalytics {
    Called when the user selected a tab bar item.
 
    - parameter tabBarItemLabel: The tab the user is navigating to.
-   - parameter prevTabBarItemLabel: The tab the user is navigating from.
+   - parameter previousTabBarItemLabel: The tab the user is navigating from.
    */
   public func trackTabBarClicked(
     tabBarItemLabel: TabBarItemLabel,
