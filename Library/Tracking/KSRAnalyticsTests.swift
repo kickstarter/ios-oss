@@ -33,7 +33,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackTabBarClicked(.discovery)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
     let segmentClientProperties = segmentClient.properties.last
 
@@ -67,7 +67,7 @@ final class KSRAnalyticsTests: TestCase {
       let segmentClient = MockTrackingClient()
       let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
 
-      ksrAnalytics.trackTabBarClicked(.discovery)
+      ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
       XCTAssertEqual(
         [["native_project_cards": "control"]],
@@ -81,7 +81,7 @@ final class KSRAnalyticsTests: TestCase {
       let segmentClient = MockTrackingClient()
       let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
 
-      ksrAnalytics.trackTabBarClicked(.discovery)
+      ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
       XCTAssertEqual("es", segmentClient.properties.last?["session_display_language"] as? String)
     }
@@ -92,7 +92,7 @@ final class KSRAnalyticsTests: TestCase {
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
 
     withEnvironment(isVoiceOverRunning: { true }) {
-      ksrAnalytics.trackTabBarClicked(.discovery)
+      ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
       let segmentClientProperties = segmentClient.properties.last
 
@@ -100,7 +100,7 @@ final class KSRAnalyticsTests: TestCase {
     }
 
     withEnvironment(isVoiceOverRunning: { false }) {
-      ksrAnalytics.trackTabBarClicked(.discovery)
+      ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
       let segmentClientProperties = segmentClient.properties.last
 
@@ -115,7 +115,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackTabBarClicked(.discovery)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
     let segmentClientProperties = segmentClient.properties.last
 
@@ -129,7 +129,7 @@ final class KSRAnalyticsTests: TestCase {
       loggedInUser: nil,
       segmentClient: segmentClient
     )
-    ksrAnalytics.trackTabBarClicked(.discovery)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
     XCTAssertEqual("phone", segmentClient.properties.last?["session_device_type"] as? String)
     XCTAssertEqual("native_ios", segmentClient.properties.last?["session_platform"] as? String)
@@ -142,7 +142,7 @@ final class KSRAnalyticsTests: TestCase {
       loggedInUser: nil,
       segmentClient: segmentClient
     )
-    ksrAnalytics.trackTabBarClicked(.discovery)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
     XCTAssertEqual("tablet", segmentClient.properties.last?["session_device_type"] as? String)
     XCTAssertEqual("native_ios", segmentClient.properties.last?["session_platform"] as? String)
@@ -155,7 +155,7 @@ final class KSRAnalyticsTests: TestCase {
       loggedInUser: nil,
       segmentClient: segmentClient
     )
-    ksrAnalytics.trackTabBarClicked(.discovery)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
     XCTAssertEqual("tv", segmentClient.properties.last?["session_device_type"] as? String)
     XCTAssertEqual("tvos", segmentClient.properties.last?["session_platform"] as? String)
@@ -169,7 +169,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackTabBarClicked(.discovery)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
     XCTAssertEqual("face_down", segmentClient.properties.last?["session_device_orientation"] as? String)
   }
@@ -182,7 +182,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackTabBarClicked(.discovery)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
     XCTAssertEqual("face_up", segmentClient.properties.last?["session_device_orientation"] as? String)
   }
@@ -195,7 +195,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackTabBarClicked(.discovery)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
     XCTAssertEqual("landscape_left", segmentClient.properties.last?["session_device_orientation"] as? String)
   }
@@ -208,7 +208,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackTabBarClicked(.discovery)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
     XCTAssertEqual("landscape_right", segmentClient.properties.last?["session_device_orientation"] as? String)
   }
@@ -221,7 +221,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackTabBarClicked(.discovery)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
     XCTAssertEqual("portrait", segmentClient.properties.last?["session_device_orientation"] as? String)
   }
@@ -234,7 +234,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackTabBarClicked(.discovery)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
     XCTAssertEqual(
       "portrait_upside_down",
@@ -250,7 +250,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackTabBarClicked(.discovery)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
     XCTAssertEqual("unknown", segmentClient.properties.last?["session_device_orientation"] as? String)
   }
@@ -745,7 +745,7 @@ final class KSRAnalyticsTests: TestCase {
       callBackProperties = properties
     }
 
-    ksrAnalytics.trackTabBarClicked(.discovery)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
     XCTAssertEqual(["CTA Clicked"], callBackEvents)
@@ -763,7 +763,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(true, callBackProperties?["session_apple_pay_capable"] as? Bool)
     XCTAssertEqual(false, callBackProperties?["session_is_voiceover_running"] as? Bool)
     XCTAssertEqual("global_nav", callBackProperties?["context_location"] as? String)
-    XCTAssertEqual("other", callBackProperties?["context_page"] as? String)
+    XCTAssertEqual("search", callBackProperties?["context_page"] as? String)
     XCTAssertEqual("discover", callBackProperties?["context_cta"] as? String)
   }
 
@@ -1236,7 +1236,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackTabBarClicked(.discovery)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
     let segmentClientProps = segmentClient.properties.last
 
@@ -1262,7 +1262,7 @@ final class KSRAnalyticsTests: TestCase {
       segmentClient: segmentClient
     )
 
-    ksrAnalytics.trackTabBarClicked(.discovery)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
 
     let segmentClientProps = segmentClient.properties.last
 
@@ -1285,29 +1285,29 @@ final class KSRAnalyticsTests: TestCase {
     let tabBarProfile = KSRAnalytics.TabBarItemLabel.profile
     let search = KSRAnalytics.TabBarItemLabel.search
 
-    ksrAnalytics.trackTabBarClicked(tabBarActivity)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: tabBarActivity, previousTabBarItemLabel: search)
 
     XCTAssertEqual([], segmentClient.events)
 
-    ksrAnalytics.trackTabBarClicked(tabBarDashboard)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: tabBarDashboard, previousTabBarItemLabel: search)
 
     XCTAssertEqual([], segmentClient.events)
 
-    ksrAnalytics.trackTabBarClicked(tabBarHome)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: tabBarHome, previousTabBarItemLabel: search)
 
     XCTAssertEqual(["CTA Clicked"], segmentClient.events)
 
     XCTAssertEqual("discover", segmentClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
 
-    ksrAnalytics.trackTabBarClicked(tabBarProfile)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: tabBarProfile, previousTabBarItemLabel: search)
 
     XCTAssertEqual(
       ["CTA Clicked"],
       segmentClient.events
     )
 
-    ksrAnalytics.trackTabBarClicked(search)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: search, previousTabBarItemLabel: tabBarProfile)
 
     XCTAssertEqual([
       "CTA Clicked"
@@ -1620,9 +1620,10 @@ final class KSRAnalyticsTests: TestCase {
     let segmentClient = MockTrackingClient()
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
 
-    ksrAnalytics.trackTabBarClicked(.discovery)
+    ksrAnalytics.trackTabBarClicked(tabBarItemLabel: .discovery, previousTabBarItemLabel: .search)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_cta"] as? String)
     XCTAssertEqual("global_nav", segmentClient.properties.last?["context_location"] as? String)
+    XCTAssertEqual("search", segmentClient.properties.last?["context_page"] as? String)
   }
 
   func testContextLocationProperties() {
