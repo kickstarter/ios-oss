@@ -1,4 +1,3 @@
-import Foundation
 import KsApi
 import Library
 import Prelude
@@ -44,15 +43,6 @@ internal final class CommentsViewController: UITableViewController {
 
   private let viewModel: CommentsViewModelType = CommentsViewModel()
   private let dataSource = CommentsDataSource()
-
-  // MARK: - Accessors
-
-  internal static func configuredWith(project: Project? = nil) -> CommentsViewController {
-    let vc = CommentsViewController.instantiate()
-    vc.viewModel.inputs.configureWith(project: project, update: nil)
-
-    return vc
-  }
 
   // MARK: - Accessors
 
@@ -141,8 +131,8 @@ internal final class CommentsViewController: UITableViewController {
 
     self.viewModel.outputs.goToCommentReplies
       .observeForControllerAction()
-      .observeValues { [weak self] _, _ in
-        let vc = CommentRepliesViewController.instantiate()
+      .observeValues { [weak self] comment in
+        let vc = CommentRepliesViewController.configuredWith(comment: comment)
         self?.navigationController?.pushViewController(vc, animated: true)
       }
 
@@ -201,8 +191,8 @@ extension CommentsViewController: CommentComposerViewDelegate {
 
 private let tableViewStyle: TableViewStyle = { tableView in
   tableView
-    |> \.rowHeight .~ UITableView.automaticDimension
     |> \.estimatedRowHeight .~ 100.0
-    |> \.separatorInset .~ .zero
+    |> \.rowHeight .~ UITableView.automaticDimension
     |> \.separatorColor .~ UIColor.ksr_support_200
+    |> \.separatorInset .~ .zero
 }

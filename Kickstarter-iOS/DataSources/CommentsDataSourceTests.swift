@@ -80,7 +80,7 @@ class CommentsDataSourceTests: XCTestCase {
     )
   }
 
-  func testEmptyState_WhenNoComments_ShouldShowEmptyStateCell() {
+  func testEmptyState_WhenNoComments_HasEmptyStateCell() {
     let rowIndex: Int = 0
     self.dataSource.load(comments: [], project: .template)
 
@@ -91,7 +91,7 @@ class CommentsDataSourceTests: XCTestCase {
     )
   }
 
-  func testEmptyState_WhenNoCommentsAndThenAddedComments_ShouldNotShowEmptyStateCell() {
+  func testEmptyState_WhenNoCommentsAndThenAddedComments_DoesNotShowEmptyStateCell() {
     let rowIndex: Int = 0
     XCTAssertEqual(7, self.dataSource.numberOfItems(in: self.commentsSection))
     XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.tableView))
