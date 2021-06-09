@@ -11,7 +11,7 @@ class CommentRepliesDataSourceTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    self.dataSource.load(comment: .template)
+    self.dataSource.createContext(comment: .template)
   }
 
   func testDataSource_WithComment_HasLoadedRootComment() {

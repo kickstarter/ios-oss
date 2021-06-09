@@ -13,9 +13,8 @@ internal final class CommentsViewModelTests: TestCase {
   private let cellSeparatorHidden = TestObserver<Bool, Never>()
   private let commentComposerViewHidden = TestObserver<Bool, Never>()
   private let configureCommentComposerViewURL = TestObserver<URL?, Never>()
-  private let configureCommentComposerViewIsBacking = TestObserver<Bool, Never>()
+  private let configureCommentComposerViewCanPostComment = TestObserver<Bool, Never>()
   private let goToCommentRepliesComment = TestObserver<Comment, Never>()
-  private let goToCommentRepliesProject = TestObserver<Project, Never>()
   private let loadCommentsAndProjectIntoDataSourceComments = TestObserver<[Comment], Never>()
   private let loadCommentsAndProjectIntoDataSourceProject = TestObserver<Project, Never>()
   private let showLoadingIndicatorInFooterView = TestObserver<Bool, Never>()
@@ -29,7 +28,7 @@ internal final class CommentsViewModelTests: TestCase {
     self.vm.outputs.configureCommentComposerViewWithData.map(first)
       .observe(self.configureCommentComposerViewURL.observer)
     self.vm.outputs.configureCommentComposerViewWithData.map(second)
-      .observe(self.configureCommentComposerViewIsBacking.observer)
+      .observe(self.configureCommentComposerViewCanPostComment.observer)
     self.vm.outputs.goToCommentReplies.observe(self.goToCommentRepliesComment.observer)
     self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(first)
       .observe(self.loadCommentsAndProjectIntoDataSourceComments.observer)
@@ -41,7 +40,7 @@ internal final class CommentsViewModelTests: TestCase {
 
   func testOutput_ConfigureCommentComposerViewWithData_IsLoggedOut() {
     self.configureCommentComposerViewURL.assertDidNotEmitValue()
-    self.configureCommentComposerViewIsBacking.assertDidNotEmitValue()
+    self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
 
     withEnvironment(currentUser: nil) {
       self.vm.inputs.configureWith(project: .template, update: nil)
@@ -49,7 +48,7 @@ internal final class CommentsViewModelTests: TestCase {
 
       self.configureCommentComposerViewURL
         .assertValues([nil], "nil is emitted because the user is not logged in.")
-      self.configureCommentComposerViewIsBacking
+      self.configureCommentComposerViewCanPostComment
         .assertValues([false], "false is emitted because the project is not backed.")
     }
   }
@@ -58,7 +57,7 @@ internal final class CommentsViewModelTests: TestCase {
     let user = User.template |> \.id .~ 12_345
 
     self.configureCommentComposerViewURL.assertDidNotEmitValue()
-    self.configureCommentComposerViewIsBacking.assertDidNotEmitValue()
+    self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
 
     withEnvironment(currentUser: user) {
       self.vm.inputs.configureWith(project: .template, update: nil)
@@ -69,7 +68,7 @@ internal final class CommentsViewModelTests: TestCase {
           [URL(string: "http://www.kickstarter.com/medium.jpg")],
           "An URL is emitted because the user is logged in."
         )
-      self.configureCommentComposerViewIsBacking
+      self.configureCommentComposerViewCanPostComment
         .assertValues([false], "false is emitted because the project is not backed.")
     }
   }
@@ -81,7 +80,7 @@ internal final class CommentsViewModelTests: TestCase {
     let user = User.template |> \.id .~ 12_345
 
     self.configureCommentComposerViewURL.assertDidNotEmitValue()
-    self.configureCommentComposerViewIsBacking.assertDidNotEmitValue()
+    self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
 
     withEnvironment(currentUser: user) {
       self.vm.inputs.configureWith(project: project, update: nil)
@@ -92,8 +91,30 @@ internal final class CommentsViewModelTests: TestCase {
           [URL(string: "http://www.kickstarter.com/medium.jpg")],
           "An URL is emitted because the user is logged in."
         )
-      self.configureCommentComposerViewIsBacking
+      self.configureCommentComposerViewCanPostComment
         .assertValues([true], "true is emitted because the project is backed.")
+    }
+  }
+
+  func testOutput_ConfigureCommentComposerViewWithData_IsLoggedIn_IsCreatorOrCollaborator_True() {
+    let project = Project.template
+      |> \.personalization.isBacking .~ false
+      |> Project.lens.memberData.permissions .~ [.post, .viewPledges, .comment]
+
+    self.configureCommentComposerViewURL.assertDidNotEmitValue()
+    self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
+
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(project: project, update: nil)
+      self.vm.inputs.viewDidLoad()
+
+      self.configureCommentComposerViewURL
+        .assertValues(
+          [URL(string: "http://www.kickstarter.com/medium.jpg")],
+          "An URL is emitted because the user is logged in."
+        )
+      self.configureCommentComposerViewCanPostComment
+        .assertValues([true], "true is emitted because current user is creator or collaborator.")
     }
   }
 
@@ -137,7 +158,6 @@ internal final class CommentsViewModelTests: TestCase {
 
   func testGoToCommentReplies_CommentHasReplies_IsDeleted_GoToDoesNotEmit() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
 
     let project = Project.template
     let comment = Comment.template
@@ -148,17 +168,14 @@ internal final class CommentsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
 
     self.vm.inputs.didSelectComment(comment)
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
   }
 
   func testGoToCommentReplies_CommentHasReplies_IsErrored_GoToDoesNotEmit() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
 
     let project = Project.template
     let comment = Comment.template
@@ -169,17 +186,14 @@ internal final class CommentsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
 
     self.vm.inputs.didSelectComment(comment)
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
   }
 
   func testGoToCommentReplies_CommentHasNoReplies_GoToDoesNotEmit() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
 
     let project = Project.template
     let comment = Comment.template
@@ -189,12 +203,10 @@ internal final class CommentsViewModelTests: TestCase {
     self.vm.inputs.viewDidLoad()
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
 
     self.vm.inputs.didSelectComment(comment)
 
     self.goToCommentRepliesComment.assertDidNotEmitValue()
-    self.goToCommentRepliesProject.assertDidNotEmitValue()
   }
 
   func testLoggedOut_ViewingComments_CommentsAreLoadedIntoDataSource() {

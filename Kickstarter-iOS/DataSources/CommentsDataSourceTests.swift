@@ -5,14 +5,16 @@ import Prelude
 import XCTest
 
 class CommentsDataSourceTests: XCTestCase {
-  let dataSource = CommentsDataSource()
-  let tableView = UITableView()
-  let commentsSection = CommentsDataSource.Section.comments.rawValue
-  let emptySection = CommentsDataSource.Section.empty.rawValue
+  private let commentsSection = CommentsDataSource.Section.comments.rawValue
+  private let dataSource = CommentsDataSource()
+  private let emptySection = CommentsDataSource.Section.empty.rawValue
+  private let tableView = UITableView()
+
+  private let templateComments = Comment.templates + [Comment.retryingTemplate, Comment.retrySuccessTemplate]
 
   override func setUp() {
     super.setUp()
-    self.dataSource.load(comments: Comment.templates, project: .template)
+    self.dataSource.load(comments: self.templateComments, project: .template)
   }
 
   override func tearDown() {
@@ -21,19 +23,19 @@ class CommentsDataSourceTests: XCTestCase {
   }
 
   func testLoadedComments() {
-    XCTAssertEqual(5, self.dataSource.numberOfItems(in: self.commentsSection))
+    XCTAssertEqual(7, self.dataSource.numberOfItems(in: self.commentsSection))
     XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.tableView))
   }
 
   func testComment_shouldContainCommentCell() {
     let rowIndex: Int = 0
-    XCTAssertEqual(Comment.Status.success, Comment.templates[rowIndex].status)
+    XCTAssertEqual(Comment.Status.success, self.templateComments[rowIndex].status)
     XCTAssertEqual("CommentCell", self.dataSource.reusableId(item: 0, section: self.commentsSection))
   }
 
   func testComment_shouldContainRemovedCell() {
     let rowIndex: Int = 1
-    XCTAssertTrue(Comment.templates[rowIndex].isDeleted)
+    XCTAssertTrue(self.templateComments[rowIndex].isDeleted)
     XCTAssertEqual(
       "CommentRemovedCell",
       self.dataSource.reusableId(item: rowIndex, section: self.commentsSection)
@@ -42,9 +44,27 @@ class CommentsDataSourceTests: XCTestCase {
 
   func testComment_shouldContainFailedCell() {
     let rowIndex: Int = 4
-    XCTAssertEqual(Comment.Status.failed, Comment.templates[rowIndex].status)
+    XCTAssertEqual(Comment.Status.failed, self.templateComments[rowIndex].status)
     XCTAssertEqual(
       "CommentPostFailedCell",
+      self.dataSource.reusableId(item: rowIndex, section: self.commentsSection)
+    )
+  }
+
+  func testComment_shouldContainFailedCell_Retrying() {
+    let rowIndex: Int = 5
+    XCTAssertEqual(Comment.Status.retrying, self.templateComments[rowIndex].status)
+    XCTAssertEqual(
+      "CommentPostFailedCell",
+      self.dataSource.reusableId(item: rowIndex, section: self.commentsSection)
+    )
+  }
+
+  func testComment_shouldContainCommentCell_RetrySuccess() {
+    let rowIndex: Int = 6
+    XCTAssertEqual(Comment.Status.retrySuccess, self.templateComments[rowIndex].status)
+    XCTAssertEqual(
+      "CommentCell",
       self.dataSource.reusableId(item: rowIndex, section: self.commentsSection)
     )
   }
@@ -73,7 +93,7 @@ class CommentsDataSourceTests: XCTestCase {
 
   func testEmptyState_WhenNoCommentsAndThenAddedComments_DoesNotShowEmptyStateCell() {
     let rowIndex: Int = 0
-    XCTAssertEqual(5, self.dataSource.numberOfItems(in: self.commentsSection))
+    XCTAssertEqual(7, self.dataSource.numberOfItems(in: self.commentsSection))
     XCTAssertEqual(1, self.dataSource.numberOfSections(in: self.tableView))
 
     self.dataSource.load(comments: [], project: .template)
