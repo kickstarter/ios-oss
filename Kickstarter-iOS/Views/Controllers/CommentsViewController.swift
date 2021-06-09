@@ -25,9 +25,8 @@ internal final class CommentsViewController: UITableViewController {
   }()
 
   private lazy var footerView: CommentTableViewFooterView = {
-    let frame = CGRect(x: 0, y: 0, width: self.tableView.frame.width, height: Layout.Footer.height)
-    let view = CommentTableViewFooterView(frame: frame)
-    return view
+    CommentTableViewFooterView(frame: .zero)
+      |> \.delegate .~ self
   }()
 
   private lazy var refreshIndicator: UIRefreshControl = {
@@ -152,10 +151,17 @@ internal final class CommentsViewController: UITableViewController {
         $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
       }
 
-    self.viewModel.outputs.showLoadingIndicatorInFooterView
+    self.viewModel.outputs.configureFooterViewWithState
       .observeForUI()
-      .observeValues { [weak self] shouldShow in
-        self?.footerView.configureWith(value: shouldShow)
+      .observeValues { [weak self] state in
+        self?.footerView.configureWith(value: state)
+
+        // Force tableFooterView to layout
+        DispatchQueue.main.async {
+          self?.tableView.tableFooterView = nil
+          self?.tableView.tableFooterView = self?.footerView
+          self?.tableView.layoutIfNeeded()
+        }
       }
 
     self.viewModel.outputs.cellSeparatorHidden
@@ -194,6 +200,14 @@ extension CommentsViewController {
 extension CommentsViewController: CommentComposerViewDelegate {
   func commentComposerView(_: CommentComposerView, didSubmitText text: String) {
     self.viewModel.inputs.commentComposerDidSubmitText(text)
+  }
+}
+
+// MARK: - CommentTableViewFooterViewDelegate
+
+extension CommentsViewController: CommentTableViewFooterViewDelegate {
+  func commentTableViewFooterViewDidTapRetry(_: CommentTableViewFooterView) {
+    self.viewModel.inputs.commentTableViewFooterViewDidTapRetry()
   }
 }
 
