@@ -4,8 +4,11 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol CommentsViewModelInputs {
-  /// Call when the User is posting a comment or reply
+  /// Call when the User is posting a comment or reply.
   func commentComposerDidSubmitText(_ text: String)
+
+  /// Call when the user tapped to retry after failed pagination.
+  func commentTableViewFooterViewDidTapRetry()
 
   /// Call with the project/update that we are viewing comments for. Both can be provided to minimize
   /// the number of API requests made, but it will be assumed we are viewing the comments for the update.
@@ -37,6 +40,9 @@ public protocol CommentsViewModelOutputs {
   /// Emits data to configure comment composer view.
   var configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never> { get }
 
+  /// Configures the footer view with the current state.
+  var configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never> { get }
+
   /// Emits the selected `Comment` to navigate to its replies.
   var goToCommentReplies: Signal<Comment, Never> { get }
 
@@ -45,9 +51,6 @@ public protocol CommentsViewModelOutputs {
 
   /// Emits when a comment has been posted and we should scroll to top and reset the composer.
   var resetCommentComposerAndScrollToTop: Signal<(), Never> { get }
-
-  /// Emits a Bool that determines if the activity indicator should render.
-  var showLoadingIndicatorInFooterView: Signal<Bool, Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -112,18 +115,38 @@ public final class CommentsViewModel: CommentsViewModelType,
       .filter(isTrue)
       .ignoreValues()
 
+    let currentComments = self.currentComments.signal.skipNil()
+
+    let tappedToRetry = self.commentTableViewFooterViewDidTapRetryProperty.signal
+
+    // Don't retry the first page if we've paged before.
+    let retryFirstPage = tappedToRetry
+      .take(until: isCloseToBottom)
+
+    // Retry the next page if we've paged before at least once and tapped to retry.
+    let retryNextPage = Signal.combineLatest(
+      isCloseToBottom.take(first: 1),
+      tappedToRetry
+    )
+
+    let requestNextPage = Signal.merge(
+      isCloseToBottom.ignoreValues(),
+      retryNextPage.ignoreValues()
+    )
+
     let pullToRefresh = self.refreshProperty.signal
 
     let requestFirstPageWith = Signal.merge(
       initialProject,
+      initialProject.takeWhen(retryFirstPage),
       initialProject.takeWhen(pullToRefresh)
         // Thread hop so that we can clear our comments buffer before newly paginated results.
         .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
     )
 
-    let (comments, isLoading, _, _) = paginate(
+    let (comments, isLoading, _, errors) = paginate(
       requestFirstPageWith: requestFirstPageWith,
-      requestNextPageWhen: isCloseToBottom,
+      requestNextPageWhen: requestNextPage,
       clearOnNewRequest: true,
       valuesFromEnvelope: { $0.comments },
       cursorFromEnvelope: { ($0.slug, $0.cursor) },
@@ -143,8 +166,6 @@ public final class CommentsViewModel: CommentsViewModelType,
       // only return new pages, we'll concat them ourselves
       concater: { _, value in value }
     )
-
-    let currentComments = self.currentComments.signal.skipNil()
 
     let commentsWithRetryingComment = currentComments
       .takePairWhen(self.retryingComment.signal.skipNil())
@@ -221,9 +242,21 @@ public final class CommentsViewModel: CommentsViewModelType,
       .map { ($1, $0) }
       .flatMap(retryCommentProducer)
 
-    self.showLoadingIndicatorInFooterView = Signal
-      .combineLatest(isCloseToBottom, self.beginOrEndRefreshing)
-      .map(second >>> isTrue)
+    let footerViewActivityState = Signal
+      .combineLatest(isCloseToBottom, isLoading)
+      .filter(second >>> isTrue)
+
+    let initialLoadOrReload = Signal.merge(
+      projectOrUpdate.ignoreValues(),
+      self.loadCommentsAndProjectIntoDataSource.ignoreValues()
+    )
+
+    self.configureFooterViewWithState = Signal.merge(
+      initialLoadOrReload.mapConst(.hidden),
+      footerViewActivityState.mapConst(.activity),
+      errors.mapConst(.error)
+    )
+    .skipRepeats()
   }
 
   // Properties to assist with injecting these values into the existing data streams.
@@ -239,6 +272,11 @@ public final class CommentsViewModel: CommentsViewModelType,
   fileprivate let commentComposerDidSubmitTextProperty = MutableProperty<String?>(nil)
   public func commentComposerDidSubmitText(_ text: String) {
     self.commentComposerDidSubmitTextProperty.value = text
+  }
+
+  private let commentTableViewFooterViewDidTapRetryProperty = MutableProperty(())
+  public func commentTableViewFooterViewDidTapRetry() {
+    self.commentTableViewFooterViewDidTapRetryProperty.value = ()
   }
 
   fileprivate let projectAndUpdateProperty = MutableProperty<(Project?, Update?)?>(nil)
@@ -265,10 +303,10 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let cellSeparatorHidden: Signal<Bool, Never>
   public let commentComposerViewHidden: Signal<Bool, Never>
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
+  public let configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never>
   public let goToCommentReplies: Signal<Comment, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
   public let resetCommentComposerAndScrollToTop: Signal<(), Never>
-  public let showLoadingIndicatorInFooterView: Signal<Bool, Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }

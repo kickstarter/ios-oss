@@ -8,10 +8,6 @@ private enum Layout {
   enum Composer {
     static let originalHeight: CGFloat = 80.0
   }
-
-  enum Footer {
-    static let height: CGFloat = 80.0
-  }
 }
 
 internal final class CommentsViewController: UITableViewController {
@@ -24,9 +20,8 @@ internal final class CommentsViewController: UITableViewController {
   }()
 
   private lazy var footerView: CommentTableViewFooterView = {
-    let frame = CGRect(x: 0, y: 0, width: self.tableView.frame.width, height: Layout.Footer.height)
-    let view = CommentTableViewFooterView(frame: frame)
-    return view
+    CommentTableViewFooterView(frame: .zero)
+      |> \.delegate .~ self
   }()
 
   private lazy var refreshIndicator: UIRefreshControl = {
@@ -41,7 +36,7 @@ internal final class CommentsViewController: UITableViewController {
     return refreshControl
   }()
 
-  private let viewModel: CommentsViewModelType = CommentsViewModel()
+  internal let viewModel: CommentsViewModelType = CommentsViewModel()
   private let dataSource = CommentsDataSource()
 
   // MARK: - Accessors
@@ -87,6 +82,12 @@ internal final class CommentsViewController: UITableViewController {
 
   override var canBecomeFirstResponder: Bool {
     return true
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.tableView.ksr_sizeHeaderFooterViewsToFit()
   }
 
   // MARK: - Styles
@@ -142,10 +143,17 @@ internal final class CommentsViewController: UITableViewController {
         $0 ? self?.refreshControl?.beginRefreshing() : self?.refreshControl?.endRefreshing()
       }
 
-    self.viewModel.outputs.showLoadingIndicatorInFooterView
+    self.viewModel.outputs.configureFooterViewWithState
       .observeForUI()
-      .observeValues { [weak self] shouldShow in
-        self?.footerView.configureWith(value: shouldShow)
+      .observeValues { [weak self] state in
+        self?.footerView.configureWith(value: state)
+
+        // Force tableFooterView to layout
+        DispatchQueue.main.async {
+          self?.tableView.tableFooterView = nil
+          self?.tableView.tableFooterView = self?.footerView
+          self?.tableView.layoutIfNeeded()
+        }
       }
 
     self.viewModel.outputs.cellSeparatorHidden
@@ -184,6 +192,14 @@ extension CommentsViewController {
 extension CommentsViewController: CommentComposerViewDelegate {
   func commentComposerView(_: CommentComposerView, didSubmitText text: String) {
     self.viewModel.inputs.commentComposerDidSubmitText(text)
+  }
+}
+
+// MARK: - CommentTableViewFooterViewDelegate
+
+extension CommentsViewController: CommentTableViewFooterViewDelegate {
+  func commentTableViewFooterViewDidTapRetry(_: CommentTableViewFooterView) {
+    self.viewModel.inputs.commentTableViewFooterViewDidTapRetry()
   }
 }
 

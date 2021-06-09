@@ -120,6 +120,29 @@ internal final class CommentsViewControllerTests: TestCase {
     }
   }
 
+  func testView_CurrentUser_LoggedIn_PagingError() {
+    let mockService =
+      MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
+
+    Language.allLanguages.forEach { language in
+      withEnvironment(apiService: mockService, currentUser: .template, language: language) {
+        let controller = CommentsViewController.configuredWith(project: .template)
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 600
+
+        self.scheduler.advance()
+
+        withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .failure(.couldNotParseJSON))) {
+          controller.viewModel.inputs.willDisplayRow(3, outOf: 4)
+
+          self.scheduler.advance()
+
+          FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+        }
+      }
+    }
+  }
+
   func testView_CurrentUser_LoggedIn_IsBacking_CommentFlaggingEnabledFeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
       |> \.features .~ [OptimizelyFeature.Key.commentFlaggingEnabled.rawValue: true]
