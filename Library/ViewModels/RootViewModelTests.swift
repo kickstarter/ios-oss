@@ -473,7 +473,7 @@ final class RootViewModelTests: TestCase {
   }
 
   func testSelectedIndex() {
-    self.selectedIndex.assertValues([], "No index seleted before view loads.")
+    self.selectedIndex.assertValues([], "No index selected before view loads.")
 
     self.vm.inputs.viewDidLoad()
 
