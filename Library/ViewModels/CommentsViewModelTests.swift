@@ -14,10 +14,10 @@ internal final class CommentsViewModelTests: TestCase {
   private let commentComposerViewHidden = TestObserver<Bool, Never>()
   private let configureCommentComposerViewURL = TestObserver<URL?, Never>()
   private let configureCommentComposerViewCanPostComment = TestObserver<Bool, Never>()
+  private let configureFooterViewWithState = TestObserver<CommentTableViewFooterViewState, Never>()
   private let goToCommentRepliesComment = TestObserver<Comment, Never>()
   private let loadCommentsAndProjectIntoDataSourceComments = TestObserver<[Comment], Never>()
   private let loadCommentsAndProjectIntoDataSourceProject = TestObserver<Project, Never>()
-  private let showLoadingIndicatorInFooterView = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
@@ -29,13 +29,12 @@ internal final class CommentsViewModelTests: TestCase {
       .observe(self.configureCommentComposerViewURL.observer)
     self.vm.outputs.configureCommentComposerViewWithData.map(second)
       .observe(self.configureCommentComposerViewCanPostComment.observer)
+    self.vm.outputs.configureFooterViewWithState.observe(self.configureFooterViewWithState.observer)
     self.vm.outputs.goToCommentReplies.observe(self.goToCommentRepliesComment.observer)
     self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(first)
       .observe(self.loadCommentsAndProjectIntoDataSourceComments.observer)
     self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(second)
       .observe(self.loadCommentsAndProjectIntoDataSourceProject.observer)
-    self.vm.outputs.showLoadingIndicatorInFooterView
-      .observe(self.showLoadingIndicatorInFooterView.observer)
   }
 
   func testOutput_ConfigureCommentComposerViewWithData_IsLoggedOut() {
@@ -337,6 +336,8 @@ internal final class CommentsViewModelTests: TestCase {
   func testProjectPagination_WhenLimitReached_CommentsAreUpdatedInDataSource() {
     self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
     self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
+    self.beginOrEndRefreshing.assertDidNotEmitValue()
+    self.configureFooterViewWithState.assertDidNotEmitValue()
 
     let envelope = CommentsEnvelope.singleCommentTemplate
     let project = Project.template
@@ -348,6 +349,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
       self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
       self.beginOrEndRefreshing.assertValues([true])
+      self.configureFooterViewWithState.assertValues([.hidden])
 
       self.scheduler.advance()
 
@@ -357,6 +359,7 @@ internal final class CommentsViewModelTests: TestCase {
       )
       self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template])
       self.beginOrEndRefreshing.assertValues([true, false])
+      self.configureFooterViewWithState.assertValues([.hidden])
 
       let updatedEnvelope = CommentsEnvelope.multipleCommentTemplate
 
@@ -369,7 +372,7 @@ internal final class CommentsViewModelTests: TestCase {
         )
         self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template])
         self.beginOrEndRefreshing.assertValues([true, false, true])
-        self.showLoadingIndicatorInFooterView.assertValues([false, true])
+        self.configureFooterViewWithState.assertValues([.hidden, .activity])
 
         self.scheduler.advance()
 
@@ -381,6 +384,7 @@ internal final class CommentsViewModelTests: TestCase {
         )
         self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template, .template])
         self.beginOrEndRefreshing.assertValues([true, false, true, false])
+        self.configureFooterViewWithState.assertValues([.hidden, .activity, .hidden])
       }
     }
   }
@@ -388,6 +392,8 @@ internal final class CommentsViewModelTests: TestCase {
   func testUpdatePagination_WhenLimitReached_CommentsAreLoadedIntoDataSource() {
     self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
     self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
+    self.beginOrEndRefreshing.assertDidNotEmitValue()
+    self.configureFooterViewWithState.assertDidNotEmitValue()
 
     let envelope = CommentsEnvelope.singleCommentTemplate
     let update = Update.template
@@ -399,6 +405,7 @@ internal final class CommentsViewModelTests: TestCase {
       self.loadCommentsAndProjectIntoDataSourceComments.assertDidNotEmitValue()
       self.loadCommentsAndProjectIntoDataSourceProject.assertDidNotEmitValue()
       self.beginOrEndRefreshing.assertValues([true])
+      self.configureFooterViewWithState.assertValues([.hidden])
 
       self.scheduler.advance()
 
@@ -408,12 +415,12 @@ internal final class CommentsViewModelTests: TestCase {
       )
       self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template])
       self.beginOrEndRefreshing.assertValues([true, false])
+      self.configureFooterViewWithState.assertValues([.hidden])
 
       let updatedEnvelope = CommentsEnvelope.multipleCommentTemplate
 
       withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(updatedEnvelope))) {
         self.vm.inputs.willDisplayRow(3, outOf: 4)
-        self.showLoadingIndicatorInFooterView.assertValues([false, true])
 
         self.loadCommentsAndProjectIntoDataSourceComments.assertValues(
           [envelope.comments],
@@ -421,7 +428,7 @@ internal final class CommentsViewModelTests: TestCase {
         )
         self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template])
         self.beginOrEndRefreshing.assertValues([true, false, true])
-        self.showLoadingIndicatorInFooterView.assertValues([false, true])
+        self.configureFooterViewWithState.assertValues([.hidden, .activity])
 
         self.scheduler.advance()
 
@@ -433,10 +440,7 @@ internal final class CommentsViewModelTests: TestCase {
         )
         self.loadCommentsAndProjectIntoDataSourceProject.assertValues([.template, .template])
         self.beginOrEndRefreshing.assertValues([true, false, true, false])
-        self.showLoadingIndicatorInFooterView.assertValues([false, true, false])
-
-        self.vm.inputs.willDisplayRow(5, outOf: 10)
-        self.showLoadingIndicatorInFooterView.assertValues([false, true, false])
+        self.configureFooterViewWithState.assertValues([.hidden, .activity, .hidden])
       }
     }
   }
@@ -828,6 +832,113 @@ internal final class CommentsViewModelTests: TestCase {
 
       self.loadCommentsAndProjectIntoDataSourceComments.assertValues([envelope.comments])
       self.cellSeparatorHidden.assertValue(false)
+    }
+  }
+
+  func testConfigureFooterViewWithState_HiddenOnViewDidLoad() {
+    self.configureFooterViewWithState.assertDidNotEmitValue()
+
+    let envelope = CommentsEnvelope.singleCommentTemplate
+    let project = Project.template
+
+    withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
+      self.vm.inputs.configureWith(project: project, update: nil)
+      self.vm.inputs.viewDidLoad()
+
+      self.configureFooterViewWithState.assertValues([.hidden])
+    }
+  }
+
+  func testConfigureFooterViewWithState_ErrorOnFirstPage() {
+    self.configureFooterViewWithState.assertDidNotEmitValue()
+
+    let envelope = CommentsEnvelope.singleCommentTemplate
+    let project = Project.template
+
+    withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .failure(.couldNotParseJSON))) {
+      self.vm.inputs.configureWith(project: project, update: nil)
+      self.vm.inputs.viewDidLoad()
+
+      self.configureFooterViewWithState.assertValues([.hidden])
+
+      self.scheduler.advance()
+
+      self.configureFooterViewWithState.assertValues([.hidden, .error], "Emits error state.")
+
+      withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
+        self.vm.inputs.commentTableViewFooterViewDidTapRetry()
+
+        self.scheduler.advance()
+
+        self.configureFooterViewWithState.assertValues([.hidden, .error, .hidden], "Returns to hidden.")
+      }
+    }
+  }
+
+  func testConfigureFooterViewWithState_ErrorOnNextPage() {
+    self.configureFooterViewWithState.assertDidNotEmitValue()
+
+    let envelope = CommentsEnvelope.singleCommentTemplate
+
+    withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {
+      self.vm.inputs.configureWith(project: .template, update: nil)
+      self.vm.inputs.viewDidLoad()
+
+      self.configureFooterViewWithState.assertValues([.hidden])
+
+      self.scheduler.advance()
+
+      self.configureFooterViewWithState.assertValues([.hidden])
+
+      let updatedEnvelope = CommentsEnvelope.multipleCommentTemplate
+
+      withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(updatedEnvelope))) {
+        self.vm.inputs.willDisplayRow(3, outOf: 4)
+
+        self.configureFooterViewWithState.assertValues(
+          [.hidden, .activity], "Activity is shown during paging."
+        )
+
+        self.scheduler.advance()
+
+        self.configureFooterViewWithState.assertValues(
+          [.hidden, .activity, .hidden], "Returns to hidden."
+        )
+
+        // "Scrolling"
+        self.vm.inputs.willDisplayRow(5, outOf: 10)
+
+        withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .failure(.couldNotParseJSON))) {
+          self.vm.inputs.willDisplayRow(9, outOf: 10)
+
+          self.configureFooterViewWithState.assertValues(
+            [.hidden, .activity, .hidden, .activity], "Activity is shown during paging."
+          )
+
+          self.scheduler.advance()
+
+          self.configureFooterViewWithState.assertValues(
+            [.hidden, .activity, .hidden, .activity, .error], "Emits error state."
+          )
+
+          withEnvironment(
+            apiService: MockService(fetchCommentsEnvelopeResult: .success(.singleCommentTemplate))
+          ) {
+            // Retry
+            self.vm.inputs.commentTableViewFooterViewDidTapRetry()
+
+            self.configureFooterViewWithState.assertValues(
+              [.hidden, .activity, .hidden, .activity, .error, .activity], "Activity is shown during paging."
+            )
+
+            self.scheduler.advance()
+
+            self.configureFooterViewWithState.assertValues(
+              [.hidden, .activity, .hidden, .activity, .error, .activity, .hidden], "Returns to hidden."
+            )
+          }
+        }
+      }
     }
   }
 

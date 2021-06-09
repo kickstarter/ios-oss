@@ -6,27 +6,45 @@ import XCTest
 final class CommentTableViewFooterViewModelTests: TestCase {
   private let vm: CommentTableViewFooterViewModelType = CommentTableViewFooterViewModel()
 
-  private let shouldShowActivityIndicator = TestObserver<Bool, Never>()
+  private let activityIndicatorHidden = TestObserver<Bool, Never>()
+  private let bottomInsetHeight = TestObserver<Int, Never>()
+  private let retryButtonHidden = TestObserver<Bool, Never>()
+  private let rootStackViewHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.shouldShowActivityIndicator.observe(self.shouldShowActivityIndicator.observer)
+    self.vm.outputs.activityIndicatorHidden.observe(self.activityIndicatorHidden.observer)
+    self.vm.outputs.bottomInsetHeight.observe(self.bottomInsetHeight.observer)
+    self.vm.outputs.retryButtonHidden.observe(self.retryButtonHidden.observer)
+    self.vm.outputs.rootStackViewHidden.observe(self.rootStackViewHidden.observer)
   }
 
-  func testShouldShowActivityIndicator_Configure_True() {
-    self.shouldShowActivityIndicator.assertDidNotEmitValue()
+  func testStates() {
+    self.activityIndicatorHidden.assertDidNotEmitValue()
+    self.bottomInsetHeight.assertDidNotEmitValue()
+    self.retryButtonHidden.assertDidNotEmitValue()
+    self.rootStackViewHidden.assertDidNotEmitValue()
 
-    self.vm.inputs.configure(with: true)
+    self.vm.inputs.configure(with: .activity)
 
-    self.shouldShowActivityIndicator.assertValues([true], "loading indicator value is emitted")
-  }
+    self.activityIndicatorHidden.assertValues([false])
+    self.bottomInsetHeight.assertValues([2])
+    self.retryButtonHidden.assertValues([true])
+    self.rootStackViewHidden.assertValues([false])
 
-  func testShouldShowActivityIndicator_Configure_False() {
-    self.shouldShowActivityIndicator.assertDidNotEmitValue()
+    self.vm.inputs.configure(with: .error)
 
-    self.vm.inputs.configure(with: false)
+    self.activityIndicatorHidden.assertValues([false, true])
+    self.bottomInsetHeight.assertValues([2, 4])
+    self.retryButtonHidden.assertValues([true, false])
+    self.rootStackViewHidden.assertValues([false, false])
 
-    self.shouldShowActivityIndicator.assertValues([false], "loading indicator value is emitted")
+    self.vm.inputs.configure(with: .hidden)
+
+    self.activityIndicatorHidden.assertValues([false, true, true])
+    self.bottomInsetHeight.assertValues([2, 4, 2])
+    self.retryButtonHidden.assertValues([true, false, true])
+    self.rootStackViewHidden.assertValues([false, false, true])
   }
 }
