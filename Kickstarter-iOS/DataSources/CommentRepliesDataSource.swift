@@ -9,13 +9,14 @@ internal final class CommentRepliesDataSource: ValueCellDataSource {
     case replies
   }
 
-  internal func load(comment: Comment) {
+  internal func createContext(comment: Comment) {
     let section = Section.comment.rawValue
     self.clearValues()
 
-    self
-      .appendRow(value: comment, cellClass: RootCommentCell.self, toSection: section)
+    self.appendRow(value: comment, cellClass: RootCommentCell.self, toSection: section)
   }
+
+  // TODO: Use a separate function called `loadReplies(comments: [Comment]` to update the existing data source with replies.
 
   internal override func configureCell(tableCell cell: UITableViewCell, withValue value: Any) {
     switch (cell, value) {

@@ -37,7 +37,7 @@ public protocol CommentsViewModelOutputs {
   /// Emits data to configure comment composer view.
   var configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never> { get }
 
-  /// Emits the selected `Comment` and `Project` to navigate to its replies.
+  /// Emits the selected `Comment` to navigate to its replies.
   var goToCommentReplies: Signal<Comment, Never> { get }
 
   /// Emits a list of `Comment`s and the `Project` to load into the data source.

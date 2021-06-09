@@ -13,7 +13,7 @@ public protocol CommentRepliesViewModelInputs {
 }
 
 public protocol CommentRepliesViewModelOutputs {
-  // TODO: Likely we will be adding `[Comment]` to this output to load replies
+  // TODO: Create a new output for `[Comment]` to only return replies and tie it directly to `loadReplies(comments: [Comment])` in the `CommentRepliesDataSource`. Removes dependency on the root comment to the network request that gets replies.
   /// Emits a root `Comment`s  to load into the data source.
   var loadCommentIntoDataSource: Signal<Comment, Never> { get }
 }

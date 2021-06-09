@@ -36,7 +36,6 @@ public final class RootCommentCellViewModel:
   RootCommentCellViewModelType, RootCommentCellViewModelInputs, RootCommentCellViewModelOutputs {
   public init() {
     let comment = self.comment.signal.skipNil()
-      .map { comment in comment }
 
     self.authorImageURL = comment
       .map(\.author.imageUrl)

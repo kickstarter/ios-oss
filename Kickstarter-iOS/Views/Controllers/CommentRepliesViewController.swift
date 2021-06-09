@@ -33,7 +33,7 @@ final class CommentRepliesViewController: UITableViewController {
     super.viewDidLoad()
 
     // TODO: Internationalize
-    self.navigationItem.title = "Replies"
+    self.navigationItem.title = localizedString(key: "", defaultValue: "Replies")
 
     self.tableView.dataSource = self.dataSource
     self.tableView.registerCellClass(RootCommentCell.self)
@@ -48,7 +48,7 @@ final class CommentRepliesViewController: UITableViewController {
     self.viewModel.outputs.loadCommentIntoDataSource
       .observeForUI()
       .observeValues { [weak self] comment in
-        self?.dataSource.load(
+        self?.dataSource.createContext(
           comment: comment
         )
 
