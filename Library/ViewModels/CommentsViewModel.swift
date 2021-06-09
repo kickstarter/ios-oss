@@ -117,11 +117,13 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     let tappedToRetry = self.commentTableViewFooterViewDidTapRetryProperty.signal
 
+    // Don't retry the first page if we've paged before.
     let retryFirstPage = tappedToRetry
-      .take(until: currentComments.ignoreValues())
+      .take(until: isCloseToBottom)
 
+    // Retry the next page if we've paged before at least once and tapped to retry.
     let retryNextPage = Signal.combineLatest(
-      currentComments.take(first: 1),
+      isCloseToBottom.take(first: 1),
       tappedToRetry
     )
 
@@ -240,7 +242,7 @@ public final class CommentsViewModel: CommentsViewModelType,
       .flatMap(retryCommentProducer)
 
     let footerViewActivityState = Signal
-      .combineLatest(isCloseToBottom, self.beginOrEndRefreshing)
+      .combineLatest(isCloseToBottom, isLoading)
       .filter(second >>> isTrue)
 
     let initialLoadOrReload = Signal.merge(
@@ -250,10 +252,10 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     self.configureFooterViewWithState = Signal.merge(
       initialLoadOrReload.mapConst(.hidden),
-      self.loadCommentsAndProjectIntoDataSource.mapConst(.hidden),
-      footerViewActivityState.mapConst(CommentTableViewFooterViewState.activity),
+      footerViewActivityState.mapConst(.activity),
       errors.mapConst(.error)
     )
+    .skipRepeats()
   }
 
   // Properties to assist with injecting these values into the existing data streams.
