@@ -18,7 +18,7 @@ final class CommentComposerViewTests: TestCase {
     super.tearDown()
   }
 
-  func testComposerView_User_Is_Backing() {
+  func testComposerView_User_CanPostComment_True() {
     let devices = [Device.phone4_7inch, Device.phone5_8inch]
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(language: language) {
@@ -26,7 +26,7 @@ final class CommentComposerViewTests: TestCase {
           language: language,
           device: device,
           avatarURL: nil,
-          isBackingProject: true
+          canPostComment: true
         )
 
         FBSnapshotVerifyView(
@@ -37,7 +37,7 @@ final class CommentComposerViewTests: TestCase {
     }
   }
 
-  func testComposerView_User_Not_Backing() {
+  func testComposerView_User_CanPostComment_False() {
     let devices = [Device.phone4_7inch, Device.phone5_8inch]
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(language: language) {
@@ -45,7 +45,7 @@ final class CommentComposerViewTests: TestCase {
           language: language,
           device: device,
           avatarURL: nil,
-          isBackingProject: false
+          canPostComment: false
         )
 
         FBSnapshotVerifyView(
@@ -61,7 +61,7 @@ private func composerInViewController(
   language _: Language,
   device: Device,
   avatarURL: URL?,
-  isBackingProject: Bool
+  canPostComment: Bool
 ) -> UIViewController {
   let composer = CommentComposerView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -77,7 +77,7 @@ private func composerInViewController(
     composer.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor)
   ])
 
-  composer.configure(with: (avatarURL, isBackingProject))
+  composer.configure(with: (avatarURL, canPostComment))
 
   return parent
 }
