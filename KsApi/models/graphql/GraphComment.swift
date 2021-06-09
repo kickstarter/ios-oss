@@ -22,6 +22,7 @@ struct GraphComment: Decodable {
     case backer
     case creator
     case superbacker
+    case collaborator
   }
 }
 
