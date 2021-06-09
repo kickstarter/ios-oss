@@ -87,13 +87,15 @@ public final class CommentsViewModel: CommentsViewModelType,
       .takeWhen(self.viewDidLoadProperty.signal)
       .map { project, currentUser in
         let isBacker = userIsBackingProject(project)
+        let isCreatorOrCollaborator = !project.memberData.permissions.isEmpty && !isBacker
+        let canPostComment = isBacker || isCreatorOrCollaborator
 
         guard let user = currentUser else {
-          return (nil, isBacker)
+          return (nil, false)
         }
 
         let url = URL(string: user.avatar.medium)
-        return (url, isBacker)
+        return (url, canPostComment)
       }
 
     self.commentComposerViewHidden = currentUser.signal

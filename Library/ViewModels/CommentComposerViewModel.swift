@@ -2,7 +2,7 @@ import Foundation
 import KsApi
 import ReactiveSwift
 
-public typealias CommentComposerViewData = (avatarURL: URL?, isBacking: Bool)
+public typealias CommentComposerViewData = (avatarURL: URL?, canPostComment: Bool)
 
 public enum CommentComposerConstant {
   // The API only supports comments not more than 9000 characters
@@ -70,7 +70,7 @@ public final class CommentComposerViewModel:
       self.bodyTextDidChangeProperty.signal,
       self.resetInputProperty.signal.mapConst(nil)
     )
-    self.inputAreaHidden = self.configDataProperty.signal.skipNil().map(\.isBacking).negate()
+    self.inputAreaHidden = self.configDataProperty.signal.skipNil().map(\.canPostComment).negate()
 
     self.notifyDelegateDidSubmitText = self.bodyText.skipNil()
       .takeWhen(self.postButtonPressedProperty.signal)
