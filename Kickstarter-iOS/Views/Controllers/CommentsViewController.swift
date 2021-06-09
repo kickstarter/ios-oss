@@ -98,6 +98,12 @@ internal final class CommentsViewController: UITableViewController {
     return true
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    self.tableView.ksr_sizeHeaderFooterViewsToFit()
+  }
+
   // MARK: - Styles
 
   internal override func bindStyles() {
