@@ -213,3 +213,12 @@ private let tableViewStyle: TableViewStyle = { tableView in
     |> \.separatorColor .~ UIColor.ksr_support_200
     |> \.separatorInset .~ .zero
 }
+
+internal func commentsViewController(
+  for project: Project? = nil,
+  update: Update? = nil
+) -> UIViewController {
+  return featureCommentThreadingIsEnabled() ?
+    CommentsViewController.configuredWith(project: project, update: update) :
+    DeprecatedCommentsViewController.configuredWith(project: project, update: update)
+}

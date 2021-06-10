@@ -308,4 +308,30 @@ internal final class CommentsViewControllerTests: TestCase {
       }
     }
   }
+
+  func testCommentsViewController_Optimizely_FeatureFlag_True() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.commentThreading.rawValue: true]
+
+    let mockService = MockService(fetchProjectResponse: .template)
+
+    withEnvironment(
+      apiService: mockService, optimizelyClient: mockOptimizelyClient
+    ) {
+      XCTAssert(commentsViewController(for: .template).isKind(of: CommentsViewController.self))
+    }
+  }
+
+  func testCommentsViewController_Optimizely_FeatureFlag_False() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.commentThreading.rawValue: false]
+
+    let mockService = MockService(fetchProjectResponse: .template)
+
+    withEnvironment(
+      apiService: mockService, optimizelyClient: mockOptimizelyClient
+    ) {
+      XCTAssert(commentsViewController(for: .template).isKind(of: DeprecatedCommentsViewController.self))
+    }
+  }
 }
