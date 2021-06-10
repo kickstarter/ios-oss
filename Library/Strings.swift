@@ -5164,15 +5164,15 @@ with friends."
    "<a href="%{community_link}">Learn more about comment guidelines</a>"
 
    - **en**: "<a href="%{community_link}">Learn more about comment guidelines</a>"
-   - **de**: "<a href="%{community_link}">Mehr Info zu den Kommentar-Richtlinien</a>"
+   - **de**: "<a href="%{community_link}">Learn more about comment guidelines</a>"
    - **es**: "<a href="%{community_link}">Más información sobre las reglas de los comentarios</a>"
    - **fr**: "<a href="%{community_link}">En savoir plus sur les directives applicables aux commentaires</a>"
-   - **ja**: "<a href="%{community_link}">コメントのガイドラインについて詳細を見る</a>"
+   - **ja**: "<a href="%{community_link}">Learn more about comment guidelines</a>"
   */
   public static func Learn_more_about_comment_guidelines(community_link: String) -> String {
     return localizedString(
       key: "Learn_more_about_comment_guidelines",
-      defaultValue: "Learn more about comment guidelines",
+      defaultValue: "<a href=\"%{community_link}\">Learn more about comment guidelines</a>",
       count: nil,
       substitutions: ["community_link": community_link]
     )

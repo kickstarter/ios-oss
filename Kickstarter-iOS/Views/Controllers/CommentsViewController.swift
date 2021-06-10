@@ -130,13 +130,6 @@ internal final class CommentsViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.openUrl
-      .observeForControllerAction()
-      .observeValues { [weak self] _ in
-        print("*** ENTERED")
-//        self?.presentHelpWebViewController(with: .helpCenter, presentationStyle: .formSheet)
-      }
-
     self.viewModel.outputs.goToCommentReplies
       .observeForControllerAction()
       .observeValues { [weak self] comment in
@@ -167,6 +160,12 @@ internal final class CommentsViewController: UITableViewController {
       .observeForUI()
       .observeValues { [weak self] isHidden in
         self?.tableView.separatorStyle = isHidden ? .none : .singleLine
+      }
+
+    self.viewModel.outputs.showHelpWebViewController
+      .observeForControllerAction()
+      .observeValues { [weak self] helpType in
+        self?.presentHelpWebViewController(with: helpType)
       }
   }
 
@@ -217,8 +216,8 @@ extension CommentsViewController: CommentTableViewFooterViewDelegate {
 // MARK: - CommentRemovedCellDelegate
 
 extension CommentsViewController: CommentRemovedCellDelegate {
-  func commentLabelTapped(_: CommentRemovedCell) {
-    self.viewModel.inputs.commentRemovedCellLabelTapped()
+  func commentRemovedCell(_: CommentRemovedCell, didTapURL _: URL) {
+    self.viewModel.inputs.commentRemovedCellDidTapURL()
   }
 }
 

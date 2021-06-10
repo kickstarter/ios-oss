@@ -4,11 +4,11 @@ import ReactiveExtensions
 import ReactiveSwift
 
 public protocol CommentsViewModelInputs {
-  /// Call when the user taps the attributed text in the CommentRemovedCell.
-  func commentRemovedCellLabelTapped()
-
   /// Call when the User is posting a comment or reply.
   func commentComposerDidSubmitText(_ text: String)
+
+  /// Call when the delegate method for the CommentRemovedCellDelegate is called.
+  func commentRemovedCellDidTapURL()
 
   /// Call when the user tapped to retry after failed pagination.
   func commentTableViewFooterViewDidTapRetry()
@@ -52,8 +52,8 @@ public protocol CommentsViewModelOutputs {
   /// Emits a list of `Comment`s and the `Project` to load into the data source.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
 
-  /// Emits a Void when a webview should be rendered to open the /help/community URL.
-  var openUrl: Signal<Void, Never> { get }
+  /// Emits a HelpType to use when presenting a HelpWebViewController.
+  var showHelpWebViewController: Signal<HelpType, Never> { get }
 
   /// Emits when a comment has been posted and we should scroll to top and reset the composer.
   var resetCommentComposerAndScrollToTop: Signal<(), Never> { get }
@@ -109,8 +109,6 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     self.commentComposerViewHidden = currentUser.signal
       .map { user in user.isNil }
-
-    self.openUrl = self.commentRemovedCellLabelTappedProperty.signal
 
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total -> Bool in
@@ -265,6 +263,8 @@ public final class CommentsViewModel: CommentsViewModelType,
       errors.mapConst(.error)
     )
     .skipRepeats()
+
+    self.showHelpWebViewController = self.commentRemovedCellDidTapURLProperty.signal.mapConst(.community)
   }
 
   // Properties to assist with injecting these values into the existing data streams.
@@ -282,9 +282,9 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.commentComposerDidSubmitTextProperty.value = text
   }
 
-  fileprivate let commentRemovedCellLabelTappedProperty = MutableProperty(())
-  public func commentRemovedCellLabelTapped() {
-    self.commentRemovedCellLabelTappedProperty.value = ()
+  fileprivate let commentRemovedCellDidTapURLProperty = MutableProperty(())
+  public func commentRemovedCellDidTapURL() {
+    self.commentRemovedCellDidTapURLProperty.value = ()
   }
 
   private let commentTableViewFooterViewDidTapRetryProperty = MutableProperty(())
@@ -319,7 +319,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never>
   public let goToCommentReplies: Signal<Comment, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
-  public let openUrl: Signal<(), Never>
+  public let showHelpWebViewController: Signal<HelpType, Never>
   public let resetCommentComposerAndScrollToTop: Signal<(), Never>
 
   public var inputs: CommentsViewModelInputs { return self }

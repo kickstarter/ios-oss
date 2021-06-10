@@ -4,9 +4,7 @@ import Prelude
 import UIKit
 
 protocol CommentRemovedCellDelegate: AnyObject {
-  func commentLabelTapped(
-    _ cell: CommentRemovedCell
-  )
+  func commentRemovedCell(_ cell: CommentRemovedCell, didTapURL: URL)
 }
 
 final class CommentRemovedCell: UITableViewCell, ValueCell {
@@ -25,7 +23,11 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var commentLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var commentTextView: UITextView = {
+    UITextView(frame: .zero)
+      |> \.delegate .~ self
+  }()
+
   private lazy var rowStackView: UIStackView = {
     UIStackView(frame: .zero)
   }()
@@ -65,23 +67,21 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
     _ = self.rowStackView
       |> rowStackViewStyle
 
-    _ = self.commentLabel
+    _ = self.commentTextView
+      |> tappableLinksViewStyle
       |> \.attributedText .~ attributedTextCommentRemoved()
-      |> \.isUserInteractionEnabled .~ true
-      |> \.lineBreakMode .~ .byWordWrapping
-      |> \.numberOfLines .~ 0
-      |> \.adjustsFontForContentSizeCategory .~ true
   }
 
   // MARK: - View model
 
-  internal override func bindViewModel() {
-    self.viewModel.outputs.notifyDelegateLabelTapped
-      .observeForUI()
-      .observeValues { [weak self] _ in
-        guard let self = self else { return }
+  override func bindViewModel() {
+    super.bindViewModel()
 
-        self.delegate?.commentLabelTapped(self)
+    self.viewModel.outputs.notifyDelegateLinkTappedWithURL
+      .observeForUI()
+      .observeValues { [weak self] url in
+        guard let self = self else { return }
+        self.delegate?.commentRemovedCell(self, didTapURL: url)
       }
   }
 
@@ -97,15 +97,8 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
     _ = ([self.commentCellHeaderStackView, self.rowStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.infoImageView, self.commentLabel], self.rowStackView)
+    _ = ([self.infoImageView, self.commentTextView], self.rowStackView)
       |> ksr_addArrangedSubviewsToStackView()
-
-    let tapGestureRecognizer = UITapGestureRecognizer(
-      target: self,
-      action: #selector(CommentRemovedCell.commentLabelTapped)
-    )
-
-    self.commentLabel.addGestureRecognizer(tapGestureRecognizer)
   }
 
   private func setupConstraints() {
@@ -117,12 +110,6 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
       self.infoImageView.widthAnchor.constraint(equalToConstant: Styles.grid(4)),
       self.infoImageView.heightAnchor.constraint(equalToConstant: Styles.grid(4))
     ])
-  }
-
-  // MARK: - Accessors
-
-  @objc private func commentLabelTapped() {
-    self.viewModel.inputs.commentLabelTapped()
   }
 }
 
@@ -136,32 +123,64 @@ private let rowStackViewStyle: StackViewStyle = { stackView in
 
 // MARK: - Functions
 
-// TODO: Add logic in here for range of label
 private func attributedTextCommentRemoved() -> NSAttributedString {
-  let regularFontAttribute = [
-    NSAttributedString.Key.font: UIFont.ksr_callout(),
-    NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400
+  let regularFontAttribute: String.Attributes = [
+    .font: UIFont.ksr_callout(),
+    .foregroundColor: UIColor.ksr_support_400
   ]
-  let coloredFontAttribute = [
-    NSAttributedString.Key.font: UIFont.ksr_callout(),
-    NSAttributedString.Key.foregroundColor: UIColor.ksr_create_700
+  let coloredFontAttribute: String.Attributes = [
+    .font: UIFont.ksr_callout(),
+    .foregroundColor: UIColor.ksr_create_700,
+    .underlineStyle: 0
   ]
 
-  let attributedString = NSMutableAttributedString(
+  let removedCommentAttributedString = NSMutableAttributedString(
     string: Strings.This_comment_has_been_removed_by_Kickstarter(),
     attributes: regularFontAttribute
   )
 
-  if var helpCenter = HelpType.helpCenter
-    .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl) {
-    helpCenter.appendPathComponent("community")
-
-    let learnMoreAttributedString = NSMutableAttributedString(
-      string: Strings.Learn_more_about_comment_guidelines(community_link: helpCenter.absoluteString),
-      attributes: coloredFontAttribute
-    )
-    attributedString.append(learnMoreAttributedString)
+  guard let communityGuidelinesLink = HelpType.community
+    .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString else {
+    return removedCommentAttributedString
   }
 
-  return attributedString
+  let communityGuidelinesString = Strings
+    .Learn_more_about_comment_guidelines(community_link: communityGuidelinesLink)
+
+  guard let communityGuidelinesAttributedString = try? NSMutableAttributedString(
+    data: Data(communityGuidelinesString.utf8),
+    options: [
+      .documentType: NSAttributedString.DocumentType.html,
+      .characterEncoding: String.Encoding.utf8.rawValue
+    ],
+    documentAttributes: nil
+  ) else { return removedCommentAttributedString }
+
+  let fullRange = (communityGuidelinesAttributedString.string as NSString)
+    .range(of: communityGuidelinesAttributedString.string)
+  communityGuidelinesAttributedString.addAttributes(coloredFontAttribute, range: fullRange)
+
+  let combinedString = removedCommentAttributedString + NSAttributedString(string: " ") +
+    communityGuidelinesAttributedString
+
+  return combinedString
+}
+
+// MARK: - UITextViewDelegate
+
+extension CommentRemovedCell: UITextViewDelegate {
+  func textView(
+    _: UITextView, shouldInteractWith _: NSTextAttachment,
+    in _: NSRange, interaction _: UITextItemInteraction
+  ) -> Bool {
+    return false
+  }
+
+  func textView(
+    _: UITextView, shouldInteractWith url: URL, in _: NSRange,
+    interaction _: UITextItemInteraction
+  ) -> Bool {
+    self.viewModel.inputs.linkTapped(url: url)
+    return false
+  }
 }

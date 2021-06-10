@@ -9,8 +9,8 @@ public protocol CommentCellViewModelInputs {
   /// Call to configure with a Comment and Project
   func configureWith(comment: Comment, project: Project?)
 
-  /// Call when the commentLabel on a `CommentRemovedCell` is tapped.
-  func commentLabelTapped()
+  /// Call when the textView delegate method for shouldInteractWith url is called
+  func linkTapped(url: URL)
 }
 
 public protocol CommentCellViewModelOutputs {
@@ -35,8 +35,8 @@ public protocol CommentCellViewModelOutputs {
   /// Emits a Bool determining if the flag button in the bottomRowStackView is hidden.
   var flagButtonIsHidden: Signal<Bool, Never> { get }
 
-  /// Emits a Void when the commentLabel of a CommentRemovedCell is tapped.
-  var notifyDelegateLabelTapped: Signal<Void, Never> { get }
+  /// Emits an URL for the CommentRemovedCellDelegate to use as an argument.
+  var notifyDelegateLinkTappedWithURL: Signal<URL, Never> { get }
 
   /// Emits text relative time the comment was posted.
   var postTime: Signal<String, Never> { get }
@@ -77,8 +77,6 @@ public final class CommentCellViewModel:
       status,
       status.takeWhen(self.bindStylesProperty.signal)
     )
-
-    self.notifyDelegateLabelTapped = self.commentLabelTappedProperty.signal
 
     self.postTime = comment.map {
       Format.date(secondsInUTC: $0.createdAt, dateStyle: .medium, timeStyle: .short)
@@ -126,6 +124,8 @@ public final class CommentCellViewModel:
       flagButtonIsHidden && replyButtonIsHidden
     }
 
+    self.notifyDelegateLinkTappedWithURL = self.linkTappedProperty.signal.skipNil()
+
     // If there are no replies or if the feature flag returns false, hide the stack view.
     self.viewRepliesStackViewIsHidden = comment.map(\.replyCount)
       .map(viewRepliesStackViewHidden)
@@ -141,9 +141,9 @@ public final class CommentCellViewModel:
     self.commentAndProject.value = (comment, project)
   }
 
-  private var commentLabelTappedProperty = MutableProperty(())
-  public func commentLabelTapped() {
-    self.commentLabelTappedProperty.value = ()
+  fileprivate let linkTappedProperty = MutableProperty<URL?>(nil)
+  public func linkTapped(url: URL) {
+    self.linkTappedProperty.value = url
   }
 
   public let authorBadge: Signal<Comment.AuthorBadge, Never>
@@ -153,7 +153,7 @@ public final class CommentCellViewModel:
   public let bottomRowStackViewIsHidden: Signal<Bool, Never>
   public let commentStatus: Signal<Comment.Status, Never>
   public let flagButtonIsHidden: Signal<Bool, Never>
-  public let notifyDelegateLabelTapped: Signal<Void, Never>
+  public let notifyDelegateLinkTappedWithURL: Signal<URL, Never>
   public let postTime: Signal<String, Never>
   public let postedButtonIsHidden: Signal<Bool, Never>
   public let replyButtonIsHidden: Signal<Bool, Never>

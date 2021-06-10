@@ -2,6 +2,7 @@ import UIKit
 
 public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
   case helpCenter
+  case community
   case contact
   case howItWorks
   case terms
@@ -23,6 +24,8 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
     switch self {
     case .helpCenter:
       return Strings.Help_center()
+    case .community:
+      return ""
     case .contact:
       return Strings.profile_settings_about_contact()
     case .howItWorks:
@@ -55,6 +58,8 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
 
   public var trackingString: String {
     switch self {
+    case .community:
+      return "Community Guidelines"
     case .contact:
       return "Contact"
     case .cookie:
@@ -76,6 +81,8 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
 
   public func url(withBaseUrl baseUrl: URL) -> URL? {
     switch self {
+    case .community:
+      return baseUrl.appendingPathComponent("help/community")
     case .cookie:
       return baseUrl.appendingPathComponent("cookies")
     case .contact:
@@ -99,7 +106,8 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
 extension HelpType: Equatable {}
 public func == (lhs: HelpType, rhs: HelpType) -> Bool {
   switch (lhs, rhs) {
-  case (.contact, .contact), (.cookie, .cookie), (.helpCenter, .helpCenter), (.howItWorks, .howItWorks),
+  case (.community, .community), (.contact, .contact), (.cookie, .cookie), (.helpCenter, .helpCenter),
+       (.howItWorks, .howItWorks),
        (.privacy, .privacy), (.terms, .terms), (.trust, .trust), (.accessibility, .accessibility):
     return true
   default:
