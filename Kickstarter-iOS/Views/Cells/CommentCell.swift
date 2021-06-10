@@ -138,18 +138,6 @@ private let replyButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.contentHorizontalAlignment .~ .left
 }
 
-private let viewRepliesStackViewStyle: StackViewStyle = { stackVew in
-  stackVew
-    |> \.axis .~ .horizontal
-    |> \.alignment .~ .center
-    |> \.layoutMargins .~ .init(all: Styles.grid(3))
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.spacing .~ Styles.grid(1)
-    |> \.layer.borderWidth .~ 1
-    |> \.layer.borderColor .~ UIColor.ksr_support_200.cgColor
-    |> roundedStyle(cornerRadius: 2.0)
-}
-
 // TODO: Internationalized in the near future.
 
 private let postedButtonStyle: ButtonStyle = { button in

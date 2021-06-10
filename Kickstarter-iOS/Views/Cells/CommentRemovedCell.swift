@@ -36,6 +36,10 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
     CommentCellHeaderStackView(frame: .zero)
   }()
 
+  private lazy var viewRepliesIconImageView: UIImageView = { UIImageView(frame: .zero) }()
+  private lazy var viewRepliesLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var viewRepliesStackView: UIStackView = { UIStackView(frame: .zero) }()
+
   private let viewModel = CommentCellViewModel()
 
   // MARK: - Lifecycle
@@ -45,8 +49,8 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
 
     self.setupConstraints()
     self.bindStyles()
-    self.bindViewModel()
     self.configureViews()
+    self.bindViewModel()
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -70,19 +74,21 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
     _ = self.commentTextView
       |> tappableLinksViewStyle
       |> \.attributedText .~ attributedTextCommentRemoved()
-  }
 
-  // MARK: - View model
+    _ = self.viewRepliesStackView
+      |> viewRepliesStackViewStyle
 
-  override func bindViewModel() {
-    super.bindViewModel()
+    // TODO: Submit string for translation and localize
 
-    self.viewModel.outputs.notifyDelegateLinkTappedWithURL
-      .observeForUI()
-      .observeValues { [weak self] url in
-        guard let self = self else { return }
-        self.delegate?.commentRemovedCell(self, didTapURL: url)
-      }
+    _ = self.viewRepliesLabel
+      |> \.text %~ { _ in localizedString(key: "View_replies", defaultValue: "View replies") }
+      |> \.textColor .~ UIColor.ksr_support_400
+      |> \.font .~ UIFont.ksr_callout(size: 14)
+
+    _ = self.viewRepliesIconImageView
+      |> UIImageView.lens.image .~ Library.image(named: "right-diagonal")
+
+    self.viewModel.inputs.bindStyles()
   }
 
   // MARK: - Configuration
@@ -90,14 +96,18 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
   internal func configureWith(value: Comment) {
     self.commentCellHeaderStackView
       .configureWith(comment: value)
+    self.viewModel.inputs.configureWith(comment: value, project: nil)
   }
 
   private func configureViews() {
     self.rowStackView.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-    _ = ([self.commentCellHeaderStackView, self.rowStackView], self.rootStackView)
+    _ = ([self.commentCellHeaderStackView, self.rowStackView, self.viewRepliesStackView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.infoImageView, self.commentTextView], self.rowStackView)
+      |> ksr_addArrangedSubviewsToStackView()
+
+    _ = ([self.viewRepliesLabel, UIView(), self.viewRepliesIconImageView], self.viewRepliesStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -110,6 +120,21 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
       self.infoImageView.widthAnchor.constraint(equalToConstant: Styles.grid(4)),
       self.infoImageView.heightAnchor.constraint(equalToConstant: Styles.grid(4))
     ])
+  }
+
+  // MARK: - View model
+
+  internal override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewRepliesStackView.rac.hidden = self.viewModel.outputs.viewRepliesStackViewIsHidden
+
+    self.viewModel.outputs.notifyDelegateLinkTappedWithURL
+      .observeForUI()
+      .observeValues { [weak self] url in
+        guard let self = self else { return }
+        self.delegate?.commentRemovedCell(self, didTapURL: url)
+      }
   }
 }
 
