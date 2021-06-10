@@ -641,6 +641,8 @@
 		94114D8826547F620063E8F6 /* CommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D8726547F620063E8F6 /* CommentCellViewModelTests.swift */; };
 		94114D90265488720063E8F6 /* CommentCellHeaderStackViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D8F265488710063E8F6 /* CommentCellHeaderStackViewTests.swift */; };
 		941710B526557A6A00F5954E /* CommentCellStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941710B426557A6A00F5954E /* CommentCellStyles.swift */; };
+		94B0E3DE26728A6C0085E68F /* OptimizelyFeature+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B0E3D32672789C0085E68F /* OptimizelyFeature+HelpersTests.swift */; };
+		94B0E3E426728A6D0085E68F /* OptimizelyFeature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B0E3CE267277B40085E68F /* OptimizelyFeature+Helpers.swift */; };
 		94BA168E2667C37F0034CC3F /* CommentTableViewFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BA168D2667C37F0034CC3F /* CommentTableViewFooterView.swift */; };
 		94BA16E426698C8B0034CC3F /* CommentTableViewFooterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BA16E326698C8B0034CC3F /* CommentTableViewFooterViewModel.swift */; };
 		94BA16E926698EF00034CC3F /* CommentTableViewFooterViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BA16E826698EF00034CC3F /* CommentTableViewFooterViewModelTests.swift */; };
@@ -2228,6 +2230,8 @@
 		94114D8726547F620063E8F6 /* CommentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCellViewModelTests.swift; sourceTree = "<group>"; };
 		94114D8F265488710063E8F6 /* CommentCellHeaderStackViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCellHeaderStackViewTests.swift; sourceTree = "<group>"; };
 		941710B426557A6A00F5954E /* CommentCellStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCellStyles.swift; sourceTree = "<group>"; };
+		94B0E3CE267277B40085E68F /* OptimizelyFeature+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptimizelyFeature+Helpers.swift"; sourceTree = "<group>"; };
+		94B0E3D32672789C0085E68F /* OptimizelyFeature+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptimizelyFeature+HelpersTests.swift"; sourceTree = "<group>"; };
 		94BA168D2667C37F0034CC3F /* CommentTableViewFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewFooterView.swift; sourceTree = "<group>"; };
 		94BA16E326698C8B0034CC3F /* CommentTableViewFooterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewFooterViewModel.swift; sourceTree = "<group>"; };
 		94BA16E826698EF00034CC3F /* CommentTableViewFooterViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewFooterViewModelTests.swift; sourceTree = "<group>"; };
@@ -3179,6 +3183,8 @@
 				379CFFEF2242DAC300F6F0C2 /* MFMailComposeViewController.swift */,
 				379CFFF02242DAC400F6F0C2 /* Nib.swift */,
 				379CFFEB2242DAC200F6F0C2 /* NSBundle-Framework.swift */,
+				94B0E3CE267277B40085E68F /* OptimizelyFeature+Helpers.swift */,
+				94B0E3D32672789C0085E68F /* OptimizelyFeature+HelpersTests.swift */,
 				774D98D523A94F6C00FC81C2 /* Optimizely+OptimizelyClientType.swift */,
 				1611EF6123ABD7C00051CDCC /* OptimizelyResultTypeTests.swift */,
 				770187BE22FDCF960019129D /* PledgeViewControllerMessageDisplaying.swift */,
@@ -6104,6 +6110,7 @@
 				013744AE1D95AC2300E50C78 /* EmptyStatesViewController.swift in Sources */,
 				37637ED8224AA03D00777AD2 /* CreatePasswordViewController.swift in Sources */,
 				77216D9820F3D2E40061BE82 /* SettingsViewController.swift in Sources */,
+				94B0E3E426728A6D0085E68F /* OptimizelyFeature+Helpers.swift in Sources */,
 				D63BBD392180BE5D007E01F0 /* PaymentMethodsFooterView.swift in Sources */,
 				774F8D5B22B1B0B300A1ACD5 /* FeatureFlagToolsViewController.swift in Sources */,
 				7754A0AE215A8361003AA36D /* ChangePasswordViewController.swift in Sources */,
@@ -6274,6 +6281,7 @@
 				A7ED201B1E83229E00BFFA01 /* ProjectActivitiesDataSourceTests.swift in Sources */,
 				3767EDAF22CFFF010088E8E4 /* ShippingRulesTableViewControllerTests.swift in Sources */,
 				37DEC2242257CB650051EF9B /* PledgeViewControllerTests.swift in Sources */,
+				94B0E3DE26728A6C0085E68F /* OptimizelyFeature+HelpersTests.swift in Sources */,
 				A7ED20161E83229E00BFFA01 /* DiscoveryPagesDataSourceTests.swift in Sources */,
 				3742037522DEB691007AA86E /* PillCollectionViewDataSourceTests.swift in Sources */,
 				8A13D16C249848DA007E2C0B /* PledgeExpandableRewardsHeaderDataSourceTests.swift in Sources */,
