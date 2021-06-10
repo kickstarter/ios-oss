@@ -15,6 +15,7 @@ internal final class CommentCellViewModelTests: TestCase {
   private let bottomRowStackViewIsHidden = TestObserver<Bool, Never>()
   private let commentStatus = TestObserver<Comment.Status, Never>()
   private let flagButtonIsHidden = TestObserver<Bool, Never>()
+  private let notifyDelegateLinkTappedWithURL = TestObserver<URL, Never>()
   private let postTime = TestObserver<String, Never>()
   private let postedButtonIsHidden = TestObserver<Bool, Never>()
   private let replyButtonIsHidden = TestObserver<Bool, Never>()
@@ -29,6 +30,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.outputs.bottomRowStackViewIsHidden.observe(self.bottomRowStackViewIsHidden.observer)
     self.vm.outputs.commentStatus.observe(self.commentStatus.observer)
     self.vm.outputs.flagButtonIsHidden.observe(self.flagButtonIsHidden.observer)
+    self.vm.outputs.notifyDelegateLinkTappedWithURL.observe(self.notifyDelegateLinkTappedWithURL.observer)
     self.vm.outputs.postTime.observe(self.postTime.observer)
     self.vm.outputs.postedButtonIsHidden.observe(self.postedButtonIsHidden.observer)
     self.vm.outputs.replyButtonIsHidden.observe(self.replyButtonIsHidden.observer)
@@ -147,6 +149,30 @@ internal final class CommentCellViewModelTests: TestCase {
 
       self.flagButtonIsHidden
         .assertValue(false, "The feature flag is enabled, therefore the flag button is not hidden.")
+    }
+  }
+
+  func testOutput_notifyDelegateLinkTappedWithURL() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [
+        OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: true
+      ]
+
+    guard let expectedURL = HelpType.community
+      .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl) else {
+      XCTFail()
+      return
+    }
+
+    withEnvironment(optimizelyClient: mockOptimizelyClient) {
+      self.vm.inputs.configureWith(comment: .template, project: nil)
+
+      self.scheduler.advance()
+
+      self.vm.inputs.linkTapped(url: expectedURL)
+
+      self.notifyDelegateLinkTappedWithURL
+        .assertValue(expectedURL, "The URL directs to Kickstarters Community Guidelines.")
     }
   }
 

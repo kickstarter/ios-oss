@@ -18,6 +18,7 @@ internal final class CommentsViewModelTests: TestCase {
   private let goToCommentRepliesComment = TestObserver<Comment, Never>()
   private let loadCommentsAndProjectIntoDataSourceComments = TestObserver<[Comment], Never>()
   private let loadCommentsAndProjectIntoDataSourceProject = TestObserver<Project, Never>()
+  private let showHelpWebViewController = TestObserver<HelpType, Never>()
 
   override func setUp() {
     super.setUp()
@@ -35,6 +36,7 @@ internal final class CommentsViewModelTests: TestCase {
       .observe(self.loadCommentsAndProjectIntoDataSourceComments.observer)
     self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(second)
       .observe(self.loadCommentsAndProjectIntoDataSourceProject.observer)
+    self.vm.outputs.showHelpWebViewController.observe(self.showHelpWebViewController.observer)
   }
 
   func testOutput_ConfigureCommentComposerViewWithData_IsLoggedOut() {
@@ -134,6 +136,22 @@ internal final class CommentsViewModelTests: TestCase {
       self.vm.inputs.viewDidLoad()
 
       self.commentComposerViewHidden.assertValue(true)
+    }
+  }
+
+  func testOutput_ShowHelpWebViewController() {
+    self.showHelpWebViewController.assertDidNotEmitValue()
+
+    withEnvironment {
+      self.vm.inputs.configureWith(project: .template, update: nil)
+      self.vm.inputs.viewDidLoad()
+
+      self.scheduler.advance()
+
+      self.vm.inputs.commentRemovedCellDidTapURL()
+
+      self.showHelpWebViewController
+        .assertValue(.community, ".community is emitted after commentRemovedCellDidTapURL is called.")
     }
   }
 

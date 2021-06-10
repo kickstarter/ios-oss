@@ -41,6 +41,38 @@ internal final class CommentsViewControllerTests: TestCase {
     }
   }
 
+  func testView_WithFailedRemovedAndSuccessfulComments_ShouldDisplayAll_CommentThreadingRepliesEnabledFeatureFlag_True() {
+    let mockOptimizelyClient = MockOptimizelyClient()
+      |> \.features .~ [OptimizelyFeature.Key.commentThreadingRepliesEnabled.rawValue: true]
+
+    let mockService =
+      MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope
+          .failedRemovedSuccessfulCommentsTemplate))
+
+    Language.allLanguages.forEach { language in
+      withEnvironment(
+        apiService: mockService,
+        currentUser: .template,
+        language: language,
+        optimizelyClient: mockOptimizelyClient
+      ) {
+        let controller = CommentsViewController.configuredWith(project: Project.template)
+
+        let (parent, _) = traitControllers(
+          device: .phone4_7inch,
+          orientation: .portrait,
+          child: controller
+        )
+
+        parent.view.frame.size.height = 1_100
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+      }
+    }
+  }
+
   func testView_WithSuccessFailedRetryingRetrySuccessComments_ShouldDisplayAll() {
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope
