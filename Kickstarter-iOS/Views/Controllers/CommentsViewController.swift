@@ -130,6 +130,13 @@ internal final class CommentsViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
+    self.viewModel.outputs.openUrl
+      .observeForControllerAction()
+      .observeValues { [weak self] _ in
+        print("*** ENTERED")
+//        self?.presentHelpWebViewController(with: .helpCenter, presentationStyle: .formSheet)
+      }
+
     self.viewModel.outputs.goToCommentReplies
       .observeForControllerAction()
       .observeValues { [weak self] comment in
@@ -173,7 +180,11 @@ internal final class CommentsViewController: UITableViewController {
 // MARK: - UITableViewDelegate
 
 extension CommentsViewController {
-  override func tableView(_: UITableView, willDisplay _: UITableViewCell, forRowAt indexPath: IndexPath) {
+  override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    if let commentRemovedCell = cell as? CommentRemovedCell {
+      commentRemovedCell.delegate = self
+    }
+
     self.viewModel.inputs.willDisplayRow(
       self.dataSource.itemIndexAt(indexPath),
       outOf: self.dataSource.numberOfItems()
@@ -200,6 +211,14 @@ extension CommentsViewController: CommentComposerViewDelegate {
 extension CommentsViewController: CommentTableViewFooterViewDelegate {
   func commentTableViewFooterViewDidTapRetry(_: CommentTableViewFooterView) {
     self.viewModel.inputs.commentTableViewFooterViewDidTapRetry()
+  }
+}
+
+// MARK: - CommentRemovedCellDelegate
+
+extension CommentsViewController: CommentRemovedCellDelegate {
+  func commentLabelTapped(_: CommentRemovedCell) {
+    self.viewModel.inputs.commentRemovedCellLabelTapped()
   }
 }
 

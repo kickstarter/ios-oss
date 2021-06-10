@@ -8,6 +8,9 @@ public protocol CommentCellViewModelInputs {
 
   /// Call to configure with a Comment and Project
   func configureWith(comment: Comment, project: Project?)
+
+  /// Call when the commentLabel on a `CommentRemovedCell` is tapped.
+  func commentLabelTapped()
 }
 
 public protocol CommentCellViewModelOutputs {
@@ -32,7 +35,10 @@ public protocol CommentCellViewModelOutputs {
   /// Emits a Bool determining if the flag button in the bottomRowStackView is hidden.
   var flagButtonIsHidden: Signal<Bool, Never> { get }
 
-  /// Emits text  relative time the comment was posted.
+  /// Emits a Void when the commentLabel of a CommentRemovedCell is tapped.
+  var notifyDelegateLabelTapped: Signal<Void, Never> { get }
+
+  /// Emits text relative time the comment was posted.
   var postTime: Signal<String, Never> { get }
 
   /// Emits a  Bool determining if the posted button is hidden
@@ -71,6 +77,8 @@ public final class CommentCellViewModel:
       status,
       status.takeWhen(self.bindStylesProperty.signal)
     )
+
+    self.notifyDelegateLabelTapped = self.commentLabelTappedProperty.signal
 
     self.postTime = comment.map {
       Format.date(secondsInUTC: $0.createdAt, dateStyle: .medium, timeStyle: .short)
@@ -133,6 +141,11 @@ public final class CommentCellViewModel:
     self.commentAndProject.value = (comment, project)
   }
 
+  private var commentLabelTappedProperty = MutableProperty(())
+  public func commentLabelTapped() {
+    self.commentLabelTappedProperty.value = ()
+  }
+
   public let authorBadge: Signal<Comment.AuthorBadge, Never>
   public var authorImageURL: Signal<URL, Never>
   public let authorName: Signal<String, Never>
@@ -140,6 +153,7 @@ public final class CommentCellViewModel:
   public let bottomRowStackViewIsHidden: Signal<Bool, Never>
   public let commentStatus: Signal<Comment.Status, Never>
   public let flagButtonIsHidden: Signal<Bool, Never>
+  public let notifyDelegateLabelTapped: Signal<Void, Never>
   public let postTime: Signal<String, Never>
   public let postedButtonIsHidden: Signal<Bool, Never>
   public let replyButtonIsHidden: Signal<Bool, Never>

@@ -5161,20 +5161,20 @@ with friends."
     )
   }
   /**
-   "Learn more about comment guidelines"
+   "<a href="%{community_link}">Learn more about comment guidelines</a>"
 
-   - **en**: "Learn more about comment guidelines"
-   - **de**: "Mehr Info zu den Kommentar-Richtlinien"
-   - **es**: "Más información sobre las reglas de los comentarios"
-   - **fr**: "En savoir plus sur les directives applicables aux commentaires"
-   - **ja**: "コメントのガイドラインについて詳細を見る"
+   - **en**: "<a href="%{community_link}">Learn more about comment guidelines</a>"
+   - **de**: "<a href="%{community_link}">Mehr Info zu den Kommentar-Richtlinien</a>"
+   - **es**: "<a href="%{community_link}">Más información sobre las reglas de los comentarios</a>"
+   - **fr**: "<a href="%{community_link}">En savoir plus sur les directives applicables aux commentaires</a>"
+   - **ja**: "<a href="%{community_link}">コメントのガイドラインについて詳細を見る</a>"
   */
-  public static func Learn_more_about_comment_guidelines() -> String {
+  public static func Learn_more_about_comment_guidelines(community_link: String) -> String {
     return localizedString(
       key: "Learn_more_about_comment_guidelines",
       defaultValue: "Learn more about comment guidelines",
       count: nil,
-      substitutions: [:]
+      substitutions: ["community_link": community_link]
     )
   }
   /**
