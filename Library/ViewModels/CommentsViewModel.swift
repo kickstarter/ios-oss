@@ -87,9 +87,7 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     self.configureCommentComposerViewWithData = Signal
       .combineLatest(initialProject, currentUser.signal, self.viewDidLoadProperty.signal.ignoreValues())
-      .map { project, currentUser, _ in
-        (project, currentUser)
-      }
+      .map { ($0.0, $0.1) }
       .map { project, currentUser in
         let isBacker = userIsBackingProject(project)
         let isCreatorOrCollaborator = !project.memberData.permissions.isEmpty && !isBacker
