@@ -90,6 +90,28 @@ class CommentsDataSourceTests: XCTestCase {
       self.dataSource.reusableId(item: rowIndex, section: self.emptySection)
     )
   }
+  
+  func testEmptyState_OnCommentsLoadingError_ShouldShowErrorStateCell() {
+    let rowIndex: Int = 0
+    self.dataSource.load(comments: [], project: .template)
+
+    XCTAssertEqual(1, self.dataSource.numberOfItems(in: self.emptySection))
+    XCTAssertEqual(
+      "CommentsErrorCell",
+      self.dataSource.reusableId(item: rowIndex, section: self.emptySection)
+    )
+  }
+  
+  func testEmptyState_OnCommentsLoadingSuccess_ShouldNotShowErrorStateCell() {
+    let rowIndex: Int = 0
+    self.dataSource.load(comments: [], project: .template)
+
+    XCTAssertEqual(1, self.dataSource.numberOfItems(in: self.emptySection))
+    XCTAssertEqual(
+      "CommentsErrorCell",
+      self.dataSource.reusableId(item: rowIndex, section: self.emptySection)
+    )
+  }
 
   func testEmptyState_WhenNoCommentsAndThenAddedComments_DoesNotShowEmptyStateCell() {
     let rowIndex: Int = 0

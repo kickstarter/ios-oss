@@ -7,10 +7,11 @@ internal final class CommentsDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case comments
     case empty
+    case error
   }
 
-  internal func load(comments: [Comment], project: Project) {
-    let section = !comments.isEmpty ? Section.comments.rawValue : Section.empty.rawValue
+  internal func load(comments: [Comment], project: Project, shouldShowErrorState: Bool) {
+    let section = shouldShowErrorState ? Section.error.rawValue : (!comments.isEmpty ? Section.comments.rawValue : Section.empty.rawValue)
     self.clearValues()
 
     guard !comments.isEmpty else {
@@ -57,6 +58,8 @@ internal final class CommentsDataSource: ValueCellDataSource {
     case let (cell as CommentRemovedCell, value as Comment):
       cell.configureWith(value: value)
     case let (cell as EmptyCommentsCell, _):
+      cell.configureWith(value: ())
+    case let (cell as CommentsErrorCell, _):
       cell.configureWith(value: ())
     default:
       assertionFailure("Unrecognized combo: \(cell), \(value).")

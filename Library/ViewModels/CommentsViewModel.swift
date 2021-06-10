@@ -51,6 +51,9 @@ public protocol CommentsViewModelOutputs {
 
   /// Emits when a comment has been posted and we should scroll to top and reset the composer.
   var resetCommentComposerAndScrollToTop: Signal<(), Never> { get }
+  
+  /// Emits a when the comments fail to load initially.
+  var showCommentsLoadingError: Signal<(), Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -166,6 +169,8 @@ public final class CommentsViewModel: CommentsViewModelType,
       // only return new pages, we'll concat them ourselves
       concater: { _, value in value }
     )
+    
+    self.showCommentsLoadingError = errors.ignoreValues()
 
     let commentsWithRetryingComment = currentComments
       .takePairWhen(self.retryingComment.signal.skipNil())
@@ -307,6 +312,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let goToCommentReplies: Signal<Comment, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
   public let resetCommentComposerAndScrollToTop: Signal<(), Never>
+  public let showCommentsLoadingError: Signal<(), Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }

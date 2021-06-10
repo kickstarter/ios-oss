@@ -126,7 +126,8 @@ internal final class CommentsViewController: UITableViewController {
       .observeValues { [weak self] comments, project in
         self?.dataSource.load(
           comments: comments,
-          project: project
+          project: project,
+          shouldShowErrorState: true
         )
         self?.tableView.reloadData()
       }
