@@ -36,9 +36,7 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
     CommentCellHeaderStackView(frame: .zero)
   }()
 
-  private lazy var viewRepliesIconImageView: UIImageView = { UIImageView(frame: .zero) }()
-  private lazy var viewRepliesLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var viewRepliesStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var viewRepliesView: ViewRepliesView = { ViewRepliesView(frame: .zero) }()
 
   private let viewModel = CommentCellViewModel()
 
@@ -75,19 +73,6 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
       |> tappableLinksViewStyle
       |> \.attributedText .~ attributedTextCommentRemoved()
 
-    _ = self.viewRepliesStackView
-      |> viewRepliesStackViewStyle
-
-    // TODO: Submit string for translation and localize
-
-    _ = self.viewRepliesLabel
-      |> \.text %~ { _ in localizedString(key: "View_replies", defaultValue: "View replies") }
-      |> \.textColor .~ UIColor.ksr_support_400
-      |> \.font .~ UIFont.ksr_callout(size: 14)
-
-    _ = self.viewRepliesIconImageView
-      |> UIImageView.lens.image .~ Library.image(named: "right-diagonal")
-
     self.viewModel.inputs.bindStyles()
   }
 
@@ -101,13 +86,10 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
 
   private func configureViews() {
     self.rowStackView.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-    _ = ([self.commentCellHeaderStackView, self.rowStackView, self.viewRepliesStackView], self.rootStackView)
+    _ = ([self.commentCellHeaderStackView, self.rowStackView, self.viewRepliesView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.infoImageView, self.commentTextView], self.rowStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = ([self.viewRepliesLabel, UIView(), self.viewRepliesIconImageView], self.viewRepliesStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -127,7 +109,7 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewRepliesStackView.rac.hidden = self.viewModel.outputs.viewRepliesStackViewIsHidden
+    self.viewRepliesView.rac.hidden = self.viewModel.outputs.viewRepliesStackViewIsHidden
 
     self.viewModel.outputs.notifyDelegateLinkTappedWithURL
       .observeForUI()
