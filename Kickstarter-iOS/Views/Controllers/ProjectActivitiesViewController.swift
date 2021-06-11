@@ -100,7 +100,7 @@ internal final class ProjectActivitiesViewController: UITableViewController {
   }
 
   internal func goToComments(project: Project?, update: Update?) {
-    let vc = commentsViewController(for: project, update: update)
+    let vc = DeprecatedCommentsViewController.configuredWith(project: project, update: update)
     if self.traitCollection.userInterfaceIdiom == .pad {
       let nav = UINavigationController(rootViewController: vc)
       nav.modalPresentationStyle = UIModalPresentationStyle.formSheet

@@ -86,7 +86,7 @@ internal final class ProjectUpdatesViewController: WebViewController {
   }
 
   fileprivate func goToComments(forUpdate update: Update) {
-    let vc = commentsViewController(update: update)
+    let vc = DeprecatedCommentsViewController.configuredWith(update: update)
     if self.traitCollection.userInterfaceIdiom == .pad {
       let nav = UINavigationController(rootViewController: vc)
       nav.modalPresentationStyle = UIModalPresentationStyle.formSheet
