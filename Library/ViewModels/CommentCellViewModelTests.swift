@@ -34,7 +34,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.outputs.postTime.observe(self.postTime.observer)
     self.vm.outputs.postedButtonIsHidden.observe(self.postedButtonIsHidden.observer)
     self.vm.outputs.replyButtonIsHidden.observe(self.replyButtonIsHidden.observer)
-    self.vm.outputs.viewRepliesStackViewIsHidden.observe(self.viewRepliesStackViewIsHidden.observer)
+    self.vm.outputs.viewRepliesViewHidden.observe(self.viewRepliesStackViewIsHidden.observer)
   }
 
   func testOutputs() {

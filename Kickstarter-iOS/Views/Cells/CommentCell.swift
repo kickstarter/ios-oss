@@ -99,7 +99,7 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.bottomRowStackView.rac.hidden = self.viewModel.outputs.bottomRowStackViewIsHidden
     self.flagButton.rac.hidden = self.viewModel.outputs.flagButtonIsHidden
     self.replyButton.rac.hidden = self.viewModel.outputs.replyButtonIsHidden
-    self.viewRepliesView.rac.hidden = self.viewModel.outputs.viewRepliesStackViewIsHidden
+    self.viewRepliesView.rac.hidden = self.viewModel.outputs.viewRepliesViewHidden
 
     self.postedButton.rac.hidden = self.viewModel.outputs.postedButtonIsHidden
   }

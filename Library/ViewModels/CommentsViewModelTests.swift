@@ -148,6 +148,10 @@ internal final class CommentsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
+      self.showHelpWebViewController.assertDidNotEmitValue()
+
+      self.scheduler.advance()
+
       self.vm.inputs.commentRemovedCellDidTapURL()
 
       self.showHelpWebViewController

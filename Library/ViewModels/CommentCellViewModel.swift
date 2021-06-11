@@ -48,7 +48,7 @@ public protocol CommentCellViewModelOutputs {
   var replyButtonIsHidden: Signal<Bool, Never> { get }
 
   /// Emits whether or not the view replies stack view is hidden.
-  var viewRepliesStackViewIsHidden: Signal<Bool, Never> { get }
+  var viewRepliesViewHidden: Signal<Bool, Never> { get }
 }
 
 public protocol CommentCellViewModelType {
@@ -127,7 +127,7 @@ public final class CommentCellViewModel:
     self.notifyDelegateLinkTappedWithURL = self.linkTappedProperty.signal.skipNil()
 
     // If there are no replies or if the feature flag returns false, hide the stack view.
-    self.viewRepliesStackViewIsHidden = comment.map(\.replyCount)
+    self.viewRepliesViewHidden = comment.map(\.replyCount)
       .map(viewRepliesStackViewHidden)
   }
 
@@ -157,7 +157,7 @@ public final class CommentCellViewModel:
   public let postTime: Signal<String, Never>
   public let postedButtonIsHidden: Signal<Bool, Never>
   public let replyButtonIsHidden: Signal<Bool, Never>
-  public let viewRepliesStackViewIsHidden: Signal<Bool, Never>
+  public let viewRepliesViewHidden: Signal<Bool, Never>
 
   public var inputs: CommentCellViewModelInputs { self }
   public var outputs: CommentCellViewModelOutputs { self }

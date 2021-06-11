@@ -109,7 +109,7 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.viewRepliesView.rac.hidden = self.viewModel.outputs.viewRepliesStackViewIsHidden
+    self.viewRepliesView.rac.hidden = self.viewModel.outputs.viewRepliesViewHidden
 
     self.viewModel.outputs.notifyDelegateLinkTappedWithURL
       .observeForUI()
@@ -146,13 +146,7 @@ private func attributedTextCommentRemoved() -> NSAttributedString {
     attributes: regularFontAttribute
   )
 
-  guard let communityGuidelinesLink = HelpType.community
-    .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString else {
-    return removedCommentAttributedString
-  }
-
-  let communityGuidelinesString = Strings
-    .Learn_more_about_comment_guidelines(community_link: communityGuidelinesLink)
+  let communityGuidelinesString = Strings.Learn_more_about_comment_guidelines()
 
   guard let communityGuidelinesAttributedString = try? NSMutableAttributedString(
     data: Data(communityGuidelinesString.utf8),
