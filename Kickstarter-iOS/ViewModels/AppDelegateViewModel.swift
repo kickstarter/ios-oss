@@ -548,7 +548,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
     let projectCommentsLink = projectLink
       .filter { _, subpage, _, _ in subpage == .comments }
       .map { project, _, vcs, _ in
-        vcs + [DeprecatedCommentsViewController.configuredWith(project: project, update: nil)]
+        vcs + [commentsViewController(for: project, update: nil)]
       }
 
     let surveyResponseLink = deepLink
@@ -611,7 +611,7 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
       .observeForUI()
       .map { _, update, subpage, vcs -> [UIViewController]? in
         guard case .comments = subpage else { return nil }
-        return vcs + [DeprecatedCommentsViewController.configuredWith(update: update)]
+        return vcs + [commentsViewController(update: update)]
       }
       .skipNil()
 
