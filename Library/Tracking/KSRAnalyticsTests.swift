@@ -1550,7 +1550,7 @@ final class KSRAnalyticsTests: TestCase {
       XCTAssertEqual(self.segmentTrackingClient.traits?["name"] as? String, user.name)
     }
   }
-  
+
   func testIdentifyingTrackingClient_DoesNotRepeatAfterInitialUserSet() {
     let user = User.template
 

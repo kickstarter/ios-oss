@@ -10,7 +10,7 @@ public final class KSRAnalytics {
   private let device: UIDeviceType
   internal private(set) var loggedInUser: User? {
     willSet {
-      self.identify(oldUser: loggedInUser, newUser: newValue)
+      self.identify(oldUser: self.loggedInUser, newUser: newValue)
     }
   }
 
@@ -538,7 +538,7 @@ public final class KSRAnalytics {
       self.segmentClient?.reset()
       return
     }
-    
+
     let newData = KSRAnalyticsIdentityData(newUser)
     if let oldUser = oldUser, newData == KSRAnalyticsIdentityData(oldUser) {
       return

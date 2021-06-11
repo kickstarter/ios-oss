@@ -65,7 +65,7 @@ public struct AppEnvironment: AppEnvironmentType {
 
   public static func updateConfig(_ config: Config) {
     let debugConfigOrConfig = self.current.debugData?.config ?? config
-    
+
     self.replaceCurrentEnvironment(
       config: debugConfigOrConfig,
       countryCode: debugConfigOrConfig.countryCode,
