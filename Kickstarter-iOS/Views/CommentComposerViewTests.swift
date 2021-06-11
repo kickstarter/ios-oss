@@ -8,6 +8,7 @@ import XCTest
 final class CommentComposerViewTests: TestCase {
   override func setUp() {
     super.setUp()
+    
     AppEnvironment.pushEnvironment(mainBundle: Bundle.framework)
     UIView.setAnimationsEnabled(false)
   }
@@ -19,7 +20,7 @@ final class CommentComposerViewTests: TestCase {
   }
 
   func testComposerView_User_CanPostComment_True() {
-    let devices = [Device.phone4_7inch, Device.phone5_8inch]
+    let devices = [Device.phone4_7inch, Device.pad]
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(language: language) {
         let composer = composerView(
@@ -43,7 +44,7 @@ final class CommentComposerViewTests: TestCase {
   }
 
   func testComposerView_User_CanPostComment_False() {
-    let devices = [Device.phone4_7inch, Device.phone5_8inch]
+    let devices = [Device.phone4_7inch, Device.pad]
     combos(Language.allLanguages, devices).forEach { language, device in
       withEnvironment(language: language) {
         let composer = composerView(
