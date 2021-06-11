@@ -64,8 +64,6 @@ public struct AppEnvironment: AppEnvironmentType {
   }
 
   public static func updateConfig(_ config: Config) {
-    AppEnvironment.current.userDefaults.analyticsIdentityData = nil
-
     let debugConfigOrConfig = self.current.debugData?.config ?? config
     
     self.replaceCurrentEnvironment(
@@ -83,8 +81,6 @@ public struct AppEnvironment: AppEnvironmentType {
   public static func logout() {
     let storage = AppEnvironment.current.cookieStorage
     storage.cookies?.forEach(storage.deleteCookie)
-
-    AppEnvironment.current.userDefaults.analyticsIdentityData = nil
 
     self.replaceCurrentEnvironment(
       apiService: AppEnvironment.current.apiService.logout(),

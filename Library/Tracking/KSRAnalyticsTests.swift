@@ -1547,8 +1547,6 @@ final class KSRAnalyticsTests: TestCase {
 
     let data = KSRAnalyticsIdentityData(user)
 
-    mockKeyValueStore.analyticsIdentityData = data
-
     withEnvironment(userDefaults: mockKeyValueStore) {
       AppEnvironment.updateCurrentUser(user)
 
@@ -1565,8 +1563,6 @@ final class KSRAnalyticsTests: TestCase {
       |> User.lens.notifications.messages .~ true
 
     let data = KSRAnalyticsIdentityData(user)
-
-    mockKeyValueStore.analyticsIdentityData = data
 
     withEnvironment(userDefaults: mockKeyValueStore) {
       let updatedUser = User.template
