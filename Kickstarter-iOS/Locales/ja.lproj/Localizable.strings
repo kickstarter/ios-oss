@@ -312,7 +312,7 @@
 "Kickstarter_on_Film" = "Kickstarter on Film";
 "Know_when_creators_and_backers_message_you" = "クリエイターやバッカ―からメッセージが届いた場合にすぐ分かるように、通知機能を有効にしましょう。";
 "Learn_more_about_accountability" = "報告義務に関してさらに詳しく";
-"Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">コメントのガイドラインについて詳細を見る</a>";
+"Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">コメントのガイドラインについてもっと詳しく</a>";
 "Left_count_left.few" = "残り%{left_count}";
 "Left_count_left.many" = "残り%{left_count}";
 "Left_count_left.one" = "残り%{left_count}";
