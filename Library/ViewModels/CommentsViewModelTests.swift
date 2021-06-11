@@ -696,6 +696,11 @@ internal final class CommentsViewModelTests: TestCase {
         // Tap on the failed comment to retry
         self.vm.inputs.didSelectComment(expectedFailedComment)
 
+        // Tapping repeatedly is ignored (in the case where retries may be in flight).
+        self.vm.inputs.didSelectComment(expectedFailedComment)
+        self.vm.inputs.didSelectComment(expectedFailedComment)
+        self.vm.inputs.didSelectComment(expectedFailedComment)
+
         let expectedRetryingComment = expectedFailedComment
           |> \.status .~ .retrying
 
