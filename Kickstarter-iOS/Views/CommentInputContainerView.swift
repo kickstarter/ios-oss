@@ -20,15 +20,15 @@ final class CommentInputContainerView: UIView {
     CommentInputTextView(frame: .zero)
   }()
 
-  let placeholderLabel: UILabel = { UILabel(frame: .zero) }()
   lazy var postButton: UIButton = {
     UIButton(type: .system)
       |> \.isHidden .~ true
   }()
 
-  private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+  let placeholderLabel: UILabel = { UILabel(frame: .zero) }()
   private let postButtonTitleFont = UIFont.systemFont(ofSize: 15, weight: .semibold)
-  
+  private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
+
   // MARK: - Lifecycle
 
   override init(frame: CGRect) {
@@ -66,12 +66,21 @@ final class CommentInputContainerView: UIView {
   }
 
   private func setupConstraints() {
-    let postButtonTitleMaximumBoundingRectangle = CGSize(width: .greatestFiniteMagnitude,
-                                                         height: Layout.Button.height)
-    let postButtonTitleConstrainedBoundingRectangle = Strings.Post().boundingRect(with: postButtonTitleMaximumBoundingRectangle,
-                                                                                  options: .usesLineFragmentOrigin,
-                                                                                  attributes: [NSAttributedString.Key.font: postButtonTitleFont],
-                                                                                  context: nil)
+    let postButtonTitleMaximumBoundingRectangle = CGSize(
+      width: .greatestFiniteMagnitude,
+      height: Layout.Button.height
+    )
+    let postButtonTitleConstrainedBoundingRectangle = Strings.Post()
+      .boundingRect(
+        with: postButtonTitleMaximumBoundingRectangle,
+        options: .usesLineFragmentOrigin,
+        attributes: [
+          NSAttributedString
+            .Key.font: self
+            .postButtonTitleFont
+        ],
+        context: nil
+      )
     let precalculatedPostButtonTitleWidth = ceil(postButtonTitleConstrainedBoundingRectangle.width)
 
     NSLayoutConstraint.activate([
