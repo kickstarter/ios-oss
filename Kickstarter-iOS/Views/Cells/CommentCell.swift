@@ -15,9 +15,7 @@ final class CommentCell: UITableViewCell, ValueCell {
   private lazy var flagButton = { UIButton(frame: .zero) }()
   private lazy var postedButton = { UIButton(frame: .zero) }()
   private lazy var replyButton = { UIButton(frame: .zero) }()
-  private lazy var viewRepliesIconImageView: UIImageView = { UIImageView(frame: .zero) }()
-  private lazy var viewRepliesLabel: UILabel = { UILabel(frame: .zero) }()
-  private lazy var viewRepliesStackView: UIStackView = { UIStackView(frame: .zero) }()
+  private lazy var viewRepliesView: ViewRepliesView = { ViewRepliesView(frame: .zero) }()
 
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
@@ -60,19 +58,6 @@ final class CommentCell: UITableViewCell, ValueCell {
     _ = self.replyButton
       |> replyButtonStyle
 
-    _ = self.viewRepliesStackView
-      |> viewRepliesStackViewStyle
-
-    // TODO: Submit string for translation and localize
-
-    _ = self.viewRepliesLabel
-      |> \.text %~ { _ in localizedString(key: "View_replies", defaultValue: "View replies") }
-      |> \.textColor .~ UIColor.ksr_support_400
-      |> \.font .~ UIFont.ksr_callout(size: 14)
-
-    _ = self.viewRepliesIconImageView
-      |> UIImageView.lens.image .~ Library.image(named: "right-diagonal")
-
     _ = self.flagButton
       |> UIButton.lens.image(for: .normal) %~ { _ in Library.image(named: "flag") }
 
@@ -92,7 +77,7 @@ final class CommentCell: UITableViewCell, ValueCell {
       self.commentCellHeaderStackView,
       self.bodyTextView,
       self.postedButton,
-      self.viewRepliesStackView,
+      self.viewRepliesView,
       self.bottomRowStackView
     ]
 
@@ -101,9 +86,6 @@ final class CommentCell: UITableViewCell, ValueCell {
       |> ksr_constrainViewToMarginsInParent()
 
     _ = (rootViews, self.rootStackView)
-      |> ksr_addArrangedSubviewsToStackView()
-
-    _ = ([self.viewRepliesLabel, UIView(), self.viewRepliesIconImageView], self.viewRepliesStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
     _ = ([self.replyButton, UIView(), self.flagButton], self.bottomRowStackView)
@@ -117,7 +99,7 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.bottomRowStackView.rac.hidden = self.viewModel.outputs.bottomRowStackViewIsHidden
     self.flagButton.rac.hidden = self.viewModel.outputs.flagButtonIsHidden
     self.replyButton.rac.hidden = self.viewModel.outputs.replyButtonIsHidden
-    self.viewRepliesStackView.rac.hidden = self.viewModel.outputs.viewRepliesStackViewIsHidden
+    self.viewRepliesView.rac.hidden = self.viewModel.outputs.viewRepliesViewHidden
 
     self.postedButton.rac.hidden = self.viewModel.outputs.postedButtonIsHidden
   }
@@ -136,18 +118,6 @@ private let replyButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.imageEdgeInsets .~ UIEdgeInsets(left: Styles.grid(-1))
     |> UIButton.lens.contentEdgeInsets .~ UIEdgeInsets(leftRight: Styles.grid(1))
     |> UIButton.lens.contentHorizontalAlignment .~ .left
-}
-
-private let viewRepliesStackViewStyle: StackViewStyle = { stackVew in
-  stackVew
-    |> \.axis .~ .horizontal
-    |> \.alignment .~ .center
-    |> \.layoutMargins .~ .init(all: Styles.grid(3))
-    |> \.isLayoutMarginsRelativeArrangement .~ true
-    |> \.spacing .~ Styles.grid(1)
-    |> \.layer.borderWidth .~ 1
-    |> \.layer.borderColor .~ UIColor.ksr_support_200.cgColor
-    |> roundedStyle(cornerRadius: 2.0)
 }
 
 // TODO: Internationalized in the near future.

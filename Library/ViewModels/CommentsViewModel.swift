@@ -9,6 +9,9 @@ public protocol CommentsViewModelInputs {
   /// Call when the User is posting a comment or reply.
   func commentComposerDidSubmitText(_ text: String)
 
+  /// Call when the delegate method for the CommentRemovedCellDelegate is called.
+  func commentRemovedCellDidTapURL(_ url: URL)
+
   /// Call when the user tapped to retry after failed pagination.
   func commentTableViewFooterViewDidTapRetry()
 
@@ -50,6 +53,9 @@ public protocol CommentsViewModelOutputs {
 
   /// Emits a list of `Comment`s and the `Project` to load into the data source.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
+
+  /// Emits a HelpType to use when presenting a HelpWebViewController.
+  var showHelpWebViewController: Signal<HelpType, Never> { get }
 
   /// Emits when a comment has been posted and we should scroll to top and reset the composer.
   var resetCommentComposerAndScrollToTop: Signal<(), Never> { get }
@@ -268,6 +274,10 @@ public final class CommentsViewModel: CommentsViewModelType,
       errors.mapConst(.error)
     )
     .skipRepeats()
+
+    self.showHelpWebViewController = self.commentRemovedCellDidTapURLProperty.signal.skipNil()
+      .map(HelpType.helpType)
+      .skipNil()
   }
 
   // Properties to assist with injecting these values into the existing data streams.
@@ -283,6 +293,11 @@ public final class CommentsViewModel: CommentsViewModelType,
   fileprivate let commentComposerDidSubmitTextProperty = MutableProperty<String?>(nil)
   public func commentComposerDidSubmitText(_ text: String) {
     self.commentComposerDidSubmitTextProperty.value = text
+  }
+
+  fileprivate let commentRemovedCellDidTapURLProperty = MutableProperty<URL?>(nil)
+  public func commentRemovedCellDidTapURL(_ url: URL) {
+    self.commentRemovedCellDidTapURLProperty.value = url
   }
 
   private let commentTableViewFooterViewDidTapRetryProperty = MutableProperty(())
@@ -317,6 +332,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never>
   public let goToCommentReplies: Signal<Comment, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
+  public let showHelpWebViewController: Signal<HelpType, Never>
   public let resetCommentComposerAndScrollToTop: Signal<(), Never>
 
   public var inputs: CommentsViewModelInputs { return self }
