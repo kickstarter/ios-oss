@@ -140,6 +140,9 @@ internal final class CommentsViewModelTests: TestCase {
   }
 
   func testOutput_ShowHelpWebViewController() {
+    var url = AppEnvironment.current.apiService.serverConfig.webBaseUrl
+    url.appendPathComponent("help/community")
+
     self.showHelpWebViewController.assertDidNotEmitValue()
 
     withEnvironment {
@@ -152,7 +155,7 @@ internal final class CommentsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
-      self.vm.inputs.commentRemovedCellDidTapURL()
+      self.vm.inputs.commentRemovedCellDidTapURL(url)
 
       self.showHelpWebViewController
         .assertValue(.community, ".community is emitted after commentRemovedCellDidTapURL is called.")

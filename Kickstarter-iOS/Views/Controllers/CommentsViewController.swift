@@ -217,8 +217,8 @@ extension CommentsViewController: CommentTableViewFooterViewDelegate {
 // MARK: - CommentRemovedCellDelegate
 
 extension CommentsViewController: CommentRemovedCellDelegate {
-  func commentRemovedCell(_: CommentRemovedCell, didTapURL _: URL) {
-    self.viewModel.inputs.commentRemovedCellDidTapURL()
+  func commentRemovedCell(_: CommentRemovedCell, didTapURL: URL) {
+    self.viewModel.inputs.commentRemovedCellDidTapURL(didTapURL)
   }
 }
 

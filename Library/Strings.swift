@@ -5169,12 +5169,12 @@ with friends."
    - **fr**: "<a href="%{community_link}">En savoir plus sur les directives applicables aux commentaires</a>"
    - **ja**: "<a href="%{community_link}">コメントのガイドラインについて詳細を見る</a>"
   */
-  public static func Learn_more_about_comment_guidelines(community_link: String? = nil) -> String {
+  public static func Learn_more_about_comment_guidelines(community_link: String) -> String {
     return localizedString(
       key: "Learn_more_about_comment_guidelines",
       defaultValue: "<a href=\"%{community_link}\">Learn more about comment guidelines</a>",
       count: nil,
-      substitutions: [:]
+      substitutions: ["community_link": community_link]
     )
   }
   /**

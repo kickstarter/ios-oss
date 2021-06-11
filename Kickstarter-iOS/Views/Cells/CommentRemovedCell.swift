@@ -146,7 +146,13 @@ private func attributedTextCommentRemoved() -> NSAttributedString {
     attributes: regularFontAttribute
   )
 
-  let communityGuidelinesString = Strings.Learn_more_about_comment_guidelines()
+  guard let communityGuidelinesLink = HelpType.community
+    .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString else {
+    return removedCommentAttributedString
+  }
+
+  let communityGuidelinesString = Strings
+    .Learn_more_about_comment_guidelines(community_link: communityGuidelinesLink)
 
   guard let communityGuidelinesAttributedString = try? NSMutableAttributedString(
     data: Data(communityGuidelinesString.utf8),

@@ -22,7 +22,7 @@ internal final class CommentsViewControllerTests: TestCase {
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope
           .failedRemovedSuccessfulCommentsTemplate))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: Project.template)
@@ -50,7 +50,7 @@ internal final class CommentsViewControllerTests: TestCase {
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope
           .failedRemovedSuccessfulCommentsTemplate))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
       withEnvironment(
         apiService: mockService,
@@ -80,7 +80,7 @@ internal final class CommentsViewControllerTests: TestCase {
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope
           .successFailedRetryingRetrySuccessCommentsTemplate))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: Project.template)
@@ -104,7 +104,7 @@ internal final class CommentsViewControllerTests: TestCase {
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
       withEnvironment(apiService: mockService, currentUser: nil, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
@@ -126,7 +126,7 @@ internal final class CommentsViewControllerTests: TestCase {
     let project = Project.template
       |> \.personalization.isBacking .~ true
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: project)
@@ -144,7 +144,7 @@ internal final class CommentsViewControllerTests: TestCase {
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
@@ -162,7 +162,7 @@ internal final class CommentsViewControllerTests: TestCase {
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
       withEnvironment(apiService: mockService, currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)
@@ -192,7 +192,7 @@ internal final class CommentsViewControllerTests: TestCase {
     let project = Project.template
       |> \.personalization.isBacking .~ true
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
       withEnvironment(
         apiService: mockService,
@@ -221,7 +221,7 @@ internal final class CommentsViewControllerTests: TestCase {
     let project = Project.template
       |> \.personalization.isBacking .~ true
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
       withEnvironment(
         apiService: mockService,
@@ -250,7 +250,7 @@ internal final class CommentsViewControllerTests: TestCase {
     let project = Project.template
       |> \.personalization.isBacking .~ true
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
       withEnvironment(
         apiService: mockService,
@@ -279,7 +279,7 @@ internal final class CommentsViewControllerTests: TestCase {
     let project = Project.template
       |> \.personalization.isBacking .~ true
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
       withEnvironment(
         apiService: mockService,
@@ -305,7 +305,7 @@ internal final class CommentsViewControllerTests: TestCase {
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
       withEnvironment(apiService: mockService, language: language, optimizelyClient: mockOptimizelyClient) {
         let controller = CommentsViewController.configuredWith(project: .template)
@@ -326,7 +326,7 @@ internal final class CommentsViewControllerTests: TestCase {
     let mockService =
       MockService(fetchCommentsEnvelopeResult: .success(CommentsEnvelope.multipleCommentTemplate))
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
       withEnvironment(apiService: mockService, language: language, optimizelyClient: mockOptimizelyClient) {}
     }
@@ -341,7 +341,7 @@ internal final class CommentsViewControllerTests: TestCase {
       mainBundle: Bundle.framework
     )
 
-    combos(Language.allLanguages, [Device.phone4_7inch, Device.phone5_8inch, Device.pad]).forEach {
+    combos(Language.allLanguages, [Device.phone4_7inch, Device.pad]).forEach {
       language, _ in
       withEnvironment(currentUser: .template, language: language) {
         let controller = CommentsViewController.configuredWith(project: .template)

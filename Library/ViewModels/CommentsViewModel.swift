@@ -8,7 +8,7 @@ public protocol CommentsViewModelInputs {
   func commentComposerDidSubmitText(_ text: String)
 
   /// Call when the delegate method for the CommentRemovedCellDelegate is called.
-  func commentRemovedCellDidTapURL()
+  func commentRemovedCellDidTapURL(_ url: URL)
 
   /// Call when the user tapped to retry after failed pagination.
   func commentTableViewFooterViewDidTapRetry()
@@ -264,7 +264,9 @@ public final class CommentsViewModel: CommentsViewModelType,
     )
     .skipRepeats()
 
-    self.showHelpWebViewController = self.commentRemovedCellDidTapURLProperty.signal.mapConst(.community)
+    self.showHelpWebViewController = self.commentRemovedCellDidTapURLProperty.signal.skipNil()
+      .map(HelpType.helpType)
+      .skipNil()
   }
 
   // Properties to assist with injecting these values into the existing data streams.
@@ -282,9 +284,9 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.commentComposerDidSubmitTextProperty.value = text
   }
 
-  fileprivate let commentRemovedCellDidTapURLProperty = MutableProperty(())
-  public func commentRemovedCellDidTapURL() {
-    self.commentRemovedCellDidTapURLProperty.value = ()
+  fileprivate let commentRemovedCellDidTapURLProperty = MutableProperty<URL?>(nil)
+  public func commentRemovedCellDidTapURL(_ url: URL) {
+    self.commentRemovedCellDidTapURLProperty.value = url
   }
 
   private let commentTableViewFooterViewDidTapRetryProperty = MutableProperty(())

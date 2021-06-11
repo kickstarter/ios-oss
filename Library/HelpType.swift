@@ -11,6 +11,17 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
   case trust
   case accessibility
 
+  public static func helpType(from url: URL) -> HelpType? {
+    let helpType = HelpType.allCases.filter { helpType in
+      url.absoluteString == helpType.url(
+        withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl
+      )?.absoluteString
+    }
+    .first
+
+    return helpType
+  }
+
   public var accessibilityTraits: UIAccessibilityTraits {
     switch self {
     case .contact:
@@ -54,29 +65,6 @@ public enum HelpType: SettingsCellTypeProtocol, CaseIterable {
 
   public var textColor: UIColor {
     return .ksr_support_700
-  }
-
-  public var trackingString: String {
-    switch self {
-    case .community:
-      return "Community Guidelines"
-    case .contact:
-      return "Contact"
-    case .cookie:
-      return "Cookie Policy"
-    case .helpCenter:
-      return "FAQ"
-    case .howItWorks:
-      return "How It Works"
-    case .privacy:
-      return "Privacy Policy"
-    case .terms:
-      return "Terms"
-    case .trust:
-      return "Trust & Safety"
-    case .accessibility:
-      return "Accessibility Statement"
-    }
   }
 
   public func url(withBaseUrl baseUrl: URL) -> URL? {
