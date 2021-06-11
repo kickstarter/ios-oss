@@ -1540,14 +1540,24 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertNil(self.segmentTrackingClient.traits)
   }
 
-  func testIdentifyingTrackingClient_DoesNotRepeat() {
-    let mockKeyValueStore = MockKeyValueStore()
-
+  func testIdentifyingTrackingClient_OnInitialUserSet() {
     let user = User.template
 
-    let data = KSRAnalyticsIdentityData(user)
+    withEnvironment {
+      AppEnvironment.updateCurrentUser(user)
 
-    withEnvironment(userDefaults: mockKeyValueStore) {
+      XCTAssertEqual(self.segmentTrackingClient.userId, "\(1)")
+      XCTAssertEqual(self.segmentTrackingClient.traits?["name"] as? String, user.name)
+    }
+  }
+  
+  func testIdentifyingTrackingClient_DoesNotRepeatAfterInitialUserSet() {
+    let user = User.template
+
+    withEnvironment {
+      AppEnvironment.updateCurrentUser(user)
+      self.segmentTrackingClient.userId = nil
+      self.segmentTrackingClient.traits = nil
       AppEnvironment.updateCurrentUser(user)
 
       XCTAssertNil(self.segmentTrackingClient.userId)
@@ -1561,8 +1571,6 @@ final class KSRAnalyticsTests: TestCase {
     let user = User.template
       |> User.lens.notifications.mobileUpdates .~ true
       |> User.lens.notifications.messages .~ true
-
-    let data = KSRAnalyticsIdentityData(user)
 
     withEnvironment(userDefaults: mockKeyValueStore) {
       let updatedUser = User.template
