@@ -3,7 +3,7 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
-private let concurrentCommentLimit: UInt = 3
+private let concurrentCommentLimit: UInt = 5
 
 public protocol CommentsViewModelInputs {
   /// Call when the User is posting a comment or reply.
