@@ -642,6 +642,8 @@
 		94114D8826547F620063E8F6 /* CommentCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D8726547F620063E8F6 /* CommentCellViewModelTests.swift */; };
 		94114D90265488720063E8F6 /* CommentCellHeaderStackViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D8F265488710063E8F6 /* CommentCellHeaderStackViewTests.swift */; };
 		941710B526557A6A00F5954E /* CommentCellStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941710B426557A6A00F5954E /* CommentCellStyles.swift */; };
+		94B0E3F92672CF8F0085E68F /* OptimizelyFeature+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B0E3CE267277B40085E68F /* OptimizelyFeature+Helpers.swift */; };
+		94B0E4002672CF960085E68F /* OptimizelyFeature+HelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B0E3D32672789C0085E68F /* OptimizelyFeature+HelpersTests.swift */; };
 		94BA168E2667C37F0034CC3F /* CommentTableViewFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BA168D2667C37F0034CC3F /* CommentTableViewFooterView.swift */; };
 		94BA16E426698C8B0034CC3F /* CommentTableViewFooterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BA16E326698C8B0034CC3F /* CommentTableViewFooterViewModel.swift */; };
 		94BA16E926698EF00034CC3F /* CommentTableViewFooterViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BA16E826698EF00034CC3F /* CommentTableViewFooterViewModelTests.swift */; };
@@ -2230,6 +2232,8 @@
 		94114D8726547F620063E8F6 /* CommentCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCellViewModelTests.swift; sourceTree = "<group>"; };
 		94114D8F265488710063E8F6 /* CommentCellHeaderStackViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCellHeaderStackViewTests.swift; sourceTree = "<group>"; };
 		941710B426557A6A00F5954E /* CommentCellStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCellStyles.swift; sourceTree = "<group>"; };
+		94B0E3CE267277B40085E68F /* OptimizelyFeature+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptimizelyFeature+Helpers.swift"; sourceTree = "<group>"; };
+		94B0E3D32672789C0085E68F /* OptimizelyFeature+HelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OptimizelyFeature+HelpersTests.swift"; sourceTree = "<group>"; };
 		94BA168D2667C37F0034CC3F /* CommentTableViewFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewFooterView.swift; sourceTree = "<group>"; };
 		94BA16E326698C8B0034CC3F /* CommentTableViewFooterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewFooterViewModel.swift; sourceTree = "<group>"; };
 		94BA16E826698EF00034CC3F /* CommentTableViewFooterViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewFooterViewModelTests.swift; sourceTree = "<group>"; };
@@ -3906,6 +3910,8 @@
 				774D98D823A96E7500FC81C2 /* OptimizelyClientTypeTests.swift */,
 				D7B962B42396E963003AA616 /* OptimizelyExperiment.swift */,
 				8AF2ABD7247ED350009BF5E7 /* OptimizelyFeature.swift */,
+				94B0E3CE267277B40085E68F /* OptimizelyFeature+Helpers.swift */,
+				94B0E3D32672789C0085E68F /* OptimizelyFeature+HelpersTests.swift */,
 				771123FA23BF9E7E00BA5702 /* OptimizelyLogLevelType.swift */,
 				1611EF5D23ABD1550051CDCC /* OptimizelyResultType.swift */,
 				94C92E7B2659EDBF00A96818 /* PaddingLabel.swift */,
@@ -5706,6 +5712,7 @@
 				8A788F27263C80D600A89DAE /* BrazeDebounceMiddleware.swift in Sources */,
 				D093B46321A86F7F00910962 /* PushRegistrationType.swift in Sources */,
 				A7CC13D71D00E6CF00035C52 /* FindFriendsHeaderCellViewModel.swift in Sources */,
+				94B0E3F92672CF8F0085E68F /* OptimizelyFeature+Helpers.swift in Sources */,
 				A709697E1D143D1300DB39D3 /* AlertError.swift in Sources */,
 				8A8099F122E2142C00373E66 /* RewardCardViewModel.swift in Sources */,
 				37BB45C92243031200E7392A /* UIView+AutoLayout.swift in Sources */,
@@ -5738,6 +5745,7 @@
 				A7ED1FD71E831C5C00BFFA01 /* SearchEmptyStateCellViewModelTests.swift in Sources */,
 				A7ED1F491E831BA200BFFA01 /* DispatchTimeInterval-Extensions.swift in Sources */,
 				A7ED1FBB1E831C5C00BFFA01 /* DeprecatedCommentsViewModelTests.swift in Sources */,
+				94B0E4002672CF960085E68F /* OptimizelyFeature+HelpersTests.swift in Sources */,
 				77AA2B3D233D10D3008BBCB8 /* CreateBackingConstructorTests.swift in Sources */,
 				8AD9CF1424C8D46800F77223 /* PledgeShippingSummaryViewModelTests.swift in Sources */,
 				774D98D923A96E7500FC81C2 /* OptimizelyClientTypeTests.swift in Sources */,

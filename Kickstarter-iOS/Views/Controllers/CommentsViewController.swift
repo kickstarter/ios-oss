@@ -41,9 +41,10 @@ internal final class CommentsViewController: UITableViewController {
 
   // MARK: - Accessors
 
-  internal static func configuredWith(project: Project) -> CommentsViewController {
+  internal static func configuredWith(project: Project? = nil,
+                                      update: Update? = nil) -> CommentsViewController {
     let vc = CommentsViewController.instantiate()
-    vc.viewModel.inputs.configureWith(project: project, update: nil)
+    vc.viewModel.inputs.configureWith(project: project, update: update)
 
     return vc
   }
@@ -229,4 +230,13 @@ private let tableViewStyle: TableViewStyle = { tableView in
     |> \.rowHeight .~ UITableView.automaticDimension
     |> \.separatorColor .~ UIColor.ksr_support_200
     |> \.separatorInset .~ .zero
+}
+
+internal func commentsViewController(
+  for project: Project? = nil,
+  update: Update? = nil
+) -> UIViewController {
+  return featureCommentThreadingIsEnabled() ?
+    CommentsViewController.configuredWith(project: project, update: update) :
+    DeprecatedCommentsViewController.configuredWith(project: project, update: update)
 }
