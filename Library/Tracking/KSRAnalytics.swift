@@ -538,10 +538,12 @@ public final class KSRAnalytics {
       self.segmentClient?.reset()
       return
     }
-
-    guard newUser != oldUser else { return }
-
+    
     let newData = KSRAnalyticsIdentityData(newUser)
+    if let oldUser = oldUser, newData == KSRAnalyticsIdentityData(oldUser) {
+      return
+    }
+
     self.segmentClient?.identify(
       "\(newData.userId)",
       traits: newData.allTraits
