@@ -5,7 +5,6 @@ import UIKit
 private enum Layout {
   enum Button {
     static let height: CGFloat = 20.0
-    static let width: CGFloat = 33.0
   }
 
   enum Container {
