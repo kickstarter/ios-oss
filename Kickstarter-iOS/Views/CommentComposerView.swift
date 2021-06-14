@@ -81,11 +81,10 @@ final class CommentComposerView: UIView {
   // MARK: - Views
 
   private func configureViews() {
-    self.inputAreaHeightConstraint.isActive = true
-    self.clipsToBounds = true
-
-    _ = self |> \.autoresizingMask .~ .flexibleHeight
-    _ = self |> \.backgroundColor .~ .ksr_white
+    _ = self
+      |> \.autoresizingMask .~ .flexibleHeight
+      |> \.backgroundColor .~ .ksr_white
+      |> \.clipsToBounds .~ true
 
     _ = self.inputContainerView.inputTextView
       |> \.delegate .~ self
@@ -102,6 +101,9 @@ final class CommentComposerView: UIView {
 
     _ = (self.topBorderView, self)
       |> ksr_addSubviewToParent()
+
+    _ = self.inputAreaHeightConstraint
+      |> \.isActive .~ true
   }
 
   private func setupConstraints() {
