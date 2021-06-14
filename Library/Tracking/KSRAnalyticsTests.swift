@@ -1540,20 +1540,47 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertNil(self.segmentTrackingClient.traits)
   }
 
-  func testIdentifyingTrackingClient_DoesNotRepeat() {
-    let mockKeyValueStore = MockKeyValueStore()
-
+  func testIdentifyingTrackingClient_OnInitialUserSet() {
     let user = User.template
 
-    let data = KSRAnalyticsIdentityData(user)
+    withEnvironment {
+      AppEnvironment.updateCurrentUser(user)
 
-    mockKeyValueStore.analyticsIdentityData = data
+      XCTAssertEqual(self.segmentTrackingClient.userId, "\(1)")
+      XCTAssertEqual(self.segmentTrackingClient.traits?["name"] as? String, user.name)
+    }
+  }
 
-    withEnvironment(userDefaults: mockKeyValueStore) {
+  func testIdentifyingTrackingClient_DoesNotRepeatAfterInitialUserSet() {
+    let user = User.template
+
+    withEnvironment {
+      AppEnvironment.updateCurrentUser(user)
+      self.segmentTrackingClient.userId = nil
+      self.segmentTrackingClient.traits = nil
       AppEnvironment.updateCurrentUser(user)
 
       XCTAssertNil(self.segmentTrackingClient.userId)
       XCTAssertNil(self.segmentTrackingClient.traits)
+    }
+  }
+
+  func testIdentifyingTrackingClient_RepeatsIfAnalyticsIdentityDataChanges() {
+    let user = User.template
+      |> User.lens.notifications.follower .~ false
+    let updatedUser = user
+      |> User.lens.notifications.follower .~ true
+
+    withEnvironment {
+      AppEnvironment.updateCurrentUser(user)
+
+      self.segmentTrackingClient.userId = nil
+      self.segmentTrackingClient.traits = nil
+
+      AppEnvironment.updateCurrentUser(updatedUser)
+
+      XCTAssertNotNil(self.segmentTrackingClient.userId)
+      XCTAssertNotNil(self.segmentTrackingClient.traits)
     }
   }
 
@@ -1563,10 +1590,6 @@ final class KSRAnalyticsTests: TestCase {
     let user = User.template
       |> User.lens.notifications.mobileUpdates .~ true
       |> User.lens.notifications.messages .~ true
-
-    let data = KSRAnalyticsIdentityData(user)
-
-    mockKeyValueStore.analyticsIdentityData = data
 
     withEnvironment(userDefaults: mockKeyValueStore) {
       let updatedUser = User.template

@@ -229,6 +229,7 @@ private let onlyBackersLabelStyle: LabelStyle = { label in
     |> \.font .~ UIFont.ksr_body(size: 15.0)
     |> \.text .~ Strings.Only_backers_can_post_comments()
     |> \.adjustsFontForContentSizeCategory .~ true
+    |> \.numberOfLines .~ 0
 }
 
 private let rootStackViewStyle: StackViewStyle = { stackView in

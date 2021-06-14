@@ -22,7 +22,7 @@ public protocol CommentComposerViewModelInputs {
   /// Call when the input textview of the composer should be reset.
   func resetInput()
 
-  /// Call in  `textView(_:shouldChangeTextIn:replacementText:)` UITextView delegate method.
+  /// Call in `textView(_:shouldChangeTextIn:replacementText:)` `UITextViewDelegate` method.
   func textViewShouldChange(text: String?, in range: NSRange, replacementText: String) -> Bool
 }
 

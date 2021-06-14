@@ -3,7 +3,13 @@ import Library
 import Prelude
 import UIKit
 
+protocol CommentRemovedCellDelegate: AnyObject {
+  func commentRemovedCell(_ cell: CommentRemovedCell, didTapURL: URL)
+}
+
 final class CommentRemovedCell: UITableViewCell, ValueCell {
+  weak var delegate: CommentRemovedCellDelegate?
+
   // MARK: - Properties
 
   private lazy var rootStackView = {
@@ -17,7 +23,11 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private lazy var commentLabel: UILabel = { UILabel(frame: .zero) }()
+  private lazy var commentTextView: UITextView = {
+    UITextView(frame: .zero)
+      |> \.delegate .~ self
+  }()
+
   private lazy var rowStackView: UIStackView = {
     UIStackView(frame: .zero)
   }()
@@ -25,6 +35,10 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
   private lazy var commentCellHeaderStackView: CommentCellHeaderStackView = {
     CommentCellHeaderStackView(frame: .zero)
   }()
+
+  private lazy var viewRepliesView: ViewRepliesView = { ViewRepliesView(frame: .zero) }()
+
+  private let viewModel = CommentCellViewModel()
 
   // MARK: - Lifecycle
 
@@ -34,6 +48,7 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
     self.setupConstraints()
     self.bindStyles()
     self.configureViews()
+    self.bindViewModel()
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -54,11 +69,11 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
     _ = self.rowStackView
       |> rowStackViewStyle
 
-    _ = self.commentLabel
+    _ = self.commentTextView
+      |> tappableLinksViewStyle
       |> \.attributedText .~ attributedTextCommentRemoved()
-      |> \.lineBreakMode .~ .byWordWrapping
-      |> \.numberOfLines .~ 0
-      |> \.adjustsFontForContentSizeCategory .~ true
+
+    self.viewModel.inputs.bindStyles()
   }
 
   // MARK: - Configuration
@@ -66,14 +81,15 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
   internal func configureWith(value: Comment) {
     self.commentCellHeaderStackView
       .configureWith(comment: value)
+    self.viewModel.inputs.configureWith(comment: value, project: nil)
   }
 
   private func configureViews() {
     self.rowStackView.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-    _ = ([self.commentCellHeaderStackView, self.rowStackView], self.rootStackView)
+    _ = ([self.commentCellHeaderStackView, self.rowStackView, self.viewRepliesView], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
 
-    _ = ([self.infoImageView, self.commentLabel], self.rowStackView)
+    _ = ([self.infoImageView, self.commentTextView], self.rowStackView)
       |> ksr_addArrangedSubviewsToStackView()
   }
 
@@ -87,6 +103,21 @@ final class CommentRemovedCell: UITableViewCell, ValueCell {
       self.infoImageView.heightAnchor.constraint(equalToConstant: Styles.grid(4))
     ])
   }
+
+  // MARK: - View model
+
+  internal override func bindViewModel() {
+    super.bindViewModel()
+
+    self.viewRepliesView.rac.hidden = self.viewModel.outputs.viewRepliesViewHidden
+
+    self.viewModel.outputs.notifyDelegateLinkTappedWithURL
+      .observeForUI()
+      .observeValues { [weak self] url in
+        guard let self = self else { return }
+        self.delegate?.commentRemovedCell(self, didTapURL: url)
+      }
+  }
 }
 
 // MARK: Styles
@@ -99,27 +130,64 @@ private let rowStackViewStyle: StackViewStyle = { stackView in
 
 // MARK: - Functions
 
-// TODO/FIXME: Allow "Learn more about comment guidelines." to be tappable and open link in a web browser
-
 private func attributedTextCommentRemoved() -> NSAttributedString {
-  let regularFontAttribute = [
-    NSAttributedString.Key.font: UIFont.ksr_callout(),
-    NSAttributedString.Key.foregroundColor: UIColor.ksr_support_400
+  let regularFontAttribute: String.Attributes = [
+    .font: UIFont.ksr_callout(),
+    .foregroundColor: UIColor.ksr_support_400
   ]
-  let coloredFontAttribute = [
-    NSAttributedString.Key.font: UIFont.ksr_callout(),
-    NSAttributedString.Key.foregroundColor: UIColor.ksr_create_700
+  let coloredFontAttribute: String.Attributes = [
+    .font: UIFont.ksr_callout(),
+    .foregroundColor: UIColor.ksr_create_700,
+    .underlineStyle: 0
   ]
 
-  let attributedString = NSMutableAttributedString(
+  let removedCommentAttributedString = NSMutableAttributedString(
     string: Strings.This_comment_has_been_removed_by_Kickstarter(),
     attributes: regularFontAttribute
   )
-  let learnMoreAttributedString = NSMutableAttributedString(
-    string: Strings.Learn_more_about_comment_guidelines(),
-    attributes: coloredFontAttribute
-  )
-  attributedString.append(learnMoreAttributedString)
 
-  return attributedString
+  guard let communityGuidelinesLink = HelpType.community
+    .url(withBaseUrl: AppEnvironment.current.apiService.serverConfig.webBaseUrl)?.absoluteString else {
+    return removedCommentAttributedString
+  }
+
+  let communityGuidelinesString = Strings
+    .Learn_more_about_comment_guidelines(community_link: communityGuidelinesLink)
+
+  guard let communityGuidelinesAttributedString = try? NSMutableAttributedString(
+    data: Data(communityGuidelinesString.utf8),
+    options: [
+      .documentType: NSAttributedString.DocumentType.html,
+      .characterEncoding: String.Encoding.utf8.rawValue
+    ],
+    documentAttributes: nil
+  ) else { return removedCommentAttributedString }
+
+  let fullRange = (communityGuidelinesAttributedString.string as NSString)
+    .range(of: communityGuidelinesAttributedString.string)
+  communityGuidelinesAttributedString.addAttributes(coloredFontAttribute, range: fullRange)
+
+  let combinedString = removedCommentAttributedString + NSAttributedString(string: " ") +
+    communityGuidelinesAttributedString
+
+  return combinedString
+}
+
+// MARK: - UITextViewDelegate
+
+extension CommentRemovedCell: UITextViewDelegate {
+  func textView(
+    _: UITextView, shouldInteractWith _: NSTextAttachment,
+    in _: NSRange, interaction _: UITextItemInteraction
+  ) -> Bool {
+    return false
+  }
+
+  func textView(
+    _: UITextView, shouldInteractWith url: URL, in _: NSRange,
+    interaction _: UITextItemInteraction
+  ) -> Bool {
+    self.viewModel.inputs.linkTapped(url: url)
+    return false
+  }
 }
