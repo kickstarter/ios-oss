@@ -40,7 +40,6 @@ public final class KSRAnalytics {
     case checkout // // PledgeViewController
     case discovery = "discover" // DiscoveryViewController
     case editorialProjects = "editorial_collection" // EditorialProjectsViewController
-    case emailVerification = "email_verification" // EmailVerificationViewController
     case forgotPassword = "forgot_password" // ResetPasswordViewController
     case landingPage = "landing_page" // LandingViewController
     case login = "log_in" // LoginViewController
