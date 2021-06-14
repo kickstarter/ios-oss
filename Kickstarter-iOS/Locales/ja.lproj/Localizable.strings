@@ -122,6 +122,7 @@
 "Continue_with_quantity_count_add_ons.zero" = "%{quantity_count} 個のアドオンで続行する";
 "Continue_with_this_reward" = "このリワードで続けますか？";
 "Couldnt_add_attachment" = "添付ファイルを追加できませんでした";
+"Couldnt_load_more_comments_Tap_to_retry" = "他のコメントを読み込めませんでした。\nタップして再試行してください";
 "Couldnt_open_live_stream_Try_again_later" = "ライブ配信を開けませんでした。後ほどお試しください。";
 "Couldnt_post" = "投稿できませんでした。タップして再試行してください。";
 "Couldnt_remove_attachment" = "添付ファイルを削除できませんでした";
@@ -429,6 +430,8 @@
 "Post" = "投稿する";
 "Postal_code" = "郵便番号";
 "Postcode" = "郵便番号";
+"Posted" = "投稿しました";
+"Posting" = "投稿中…";
 "Preparing_your_personal_data" = "あなたの個人データを準備中…";
 "Privacy" = "プライバシー";
 "Private_profile" = "プライベート設定のプロフィール";
@@ -647,6 +650,7 @@
 "View_dashboard" = "ダッシュボードを表示";
 "View_progress" = "進捗状況を表示";
 "View_project" = "プロジェクトを見る";
+"View_replies" = "返信を表示";
 "View_rewards" = "リワードを見る";
 "View_the_rewards" = "リワードを表示";
 "View_your_pledge" = "プレッジをみる";
