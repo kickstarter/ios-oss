@@ -102,6 +102,7 @@ private let retryButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.tintColor .~ UIColor.ksr_celebrate_700
     |> UIButton.lens.titleEdgeInsets .~ UIEdgeInsets(left: Styles.grid(1))
     |> UIButton.lens.contentHorizontalAlignment .~ .left
+    |> UIButton.lens.titleLabel.numberOfLines .~ 0
 }
 
 // TODO: Internationalized in the near future.

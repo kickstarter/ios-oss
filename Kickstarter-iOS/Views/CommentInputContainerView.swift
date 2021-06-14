@@ -5,7 +5,6 @@ import UIKit
 private enum Layout {
   enum Button {
     static let height: CGFloat = 20.0
-    static let width: CGFloat = 33.0
   }
 
   enum Container {
@@ -21,6 +20,7 @@ final class CommentInputContainerView: UIView {
   }()
 
   let placeholderLabel: UILabel = { UILabel(frame: .zero) }()
+
   lazy var postButton: UIButton = {
     UIButton(type: .system)
       |> \.isHidden .~ true
@@ -67,7 +67,7 @@ final class CommentInputContainerView: UIView {
   private func setupConstraints() {
     NSLayoutConstraint.activate([
       self.postButton.heightAnchor.constraint(equalToConstant: Layout.Button.height),
-      self.postButton.widthAnchor.constraint(equalToConstant: Layout.Button.width)
+      self.postButton.widthAnchor.constraint(lessThanOrEqualTo: self.widthAnchor, multiplier: 0.25)
     ])
   }
 
@@ -85,9 +85,11 @@ final class CommentInputContainerView: UIView {
       |> placeholderLabelStyle
 
     _ = self.postButton
-      |> UIButton.lens.titleLabel.font %~ { _ in UIFont.systemFont(ofSize: 15, weight: .semibold) }
+      |> UIButton.lens.titleLabel.font .~ .systemFont(ofSize: 15, weight: .semibold)
+      |> UIButton.lens.titleLabel.numberOfLines .~ 0
       |> UIButton.lens.titleColor(for: .normal) %~ { _ in .ksr_create_700 }
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Post() }
+      |> UIButton.lens.titleLabel.textAlignment .~ .center
   }
 
   override func traitCollectionDidChange(_: UITraitCollection?) {
