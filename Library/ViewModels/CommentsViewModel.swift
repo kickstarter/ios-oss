@@ -34,9 +34,6 @@ public protocol CommentsViewModelOutputs {
   /// Emits a boolean that determines if cell separator is to be hidden.
   var cellSeparatorHidden: Signal<Bool, Never> { get }
 
-  /// Emits a boolean that determines if the comment input area is visible.
-  var commentComposerViewHidden: Signal<Bool, Never> { get }
-
   /// Emits data to configure comment composer view.
   var configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never> { get }
 
@@ -94,15 +91,12 @@ public final class CommentsViewModel: CommentsViewModelType,
         let canPostComment = isBacker || isCreatorOrCollaborator
 
         guard let user = currentUser else {
-          return (nil, false)
+          return (nil, false, true)
         }
 
         let url = URL(string: user.avatar.medium)
-        return (url, canPostComment)
+        return (url, canPostComment, false)
       }
-
-    self.commentComposerViewHidden = currentUser.signal
-      .map { user in user.isNil }
 
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total -> Bool in
@@ -301,7 +295,6 @@ public final class CommentsViewModel: CommentsViewModelType,
 
   public let beginOrEndRefreshing: Signal<Bool, Never>
   public let cellSeparatorHidden: Signal<Bool, Never>
-  public let commentComposerViewHidden: Signal<Bool, Never>
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never>
   public let goToCommentReplies: Signal<Comment, Never>

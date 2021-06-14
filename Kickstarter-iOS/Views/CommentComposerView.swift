@@ -40,12 +40,15 @@ final class CommentComposerView: UIView {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
+  private var inputAreaHeightConstraint: NSLayoutConstraint
+
   weak var delegate: CommentComposerViewDelegate?
   private let viewModel: CommentComposerViewModelType = CommentComposerViewModel()
 
   // MARK: - Lifecycle
 
   override init(frame: CGRect) {
+    self.inputAreaHeightConstraint = self.rootStackView.heightAnchor.constraint(equalToConstant: 0)
     super.init(frame: frame)
 
     self.bindViewModel()
@@ -79,6 +82,9 @@ final class CommentComposerView: UIView {
   // MARK: - Views
 
   private func configureViews() {
+    self.inputAreaHeightConstraint.isActive = true
+    self.clipsToBounds = true
+
     _ = self |> \.autoresizingMask .~ .flexibleHeight
     _ = self |> \.backgroundColor .~ .ksr_white
 
@@ -175,6 +181,12 @@ final class CommentComposerView: UIView {
       .observeForUI()
       .observeValues { [weak self] isHidden in
         self?.hideInputArea(isHidden)
+      }
+
+    self.viewModel.outputs.commentComposerHidden
+      .observeForUI()
+      .observeValues { [weak self] isHidden in
+        self?.inputAreaHeightConstraint.isActive = isHidden
       }
   }
 

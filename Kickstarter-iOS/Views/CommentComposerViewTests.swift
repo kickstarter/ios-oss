@@ -1,5 +1,6 @@
 import Foundation
 @testable import Kickstarter_Framework
+@testable import KsApi
 @testable import Library
 import Prelude
 import UIKit
@@ -26,7 +27,8 @@ final class CommentComposerViewTests: TestCase {
           language: language,
           device: device,
           avatarURL: nil,
-          canPostComment: true
+          canPostComment: true,
+          hideComposerView: false
         )
 
         FBSnapshotVerifyView(
@@ -45,7 +47,48 @@ final class CommentComposerViewTests: TestCase {
           language: language,
           device: device,
           avatarURL: nil,
-          canPostComment: false
+          canPostComment: false,
+          hideComposerView: false
+        )
+
+        FBSnapshotVerifyView(
+          vc.view,
+          identifier: "CommentComposerView - lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
+  func testComposerView_User_IsNotLoggedIn() {
+    let devices = [Device.phone4_7inch, Device.phone5_8inch]
+    combos(Language.allLanguages, devices).forEach { language, device in
+      withEnvironment(currentUser: nil, language: language) {
+        let vc = composerInViewController(
+          language: language,
+          device: device,
+          avatarURL: nil,
+          canPostComment: false,
+          hideComposerView: AppEnvironment.current.currentUser == nil
+        )
+
+        FBSnapshotVerifyView(
+          vc.view,
+          identifier: "CommentComposerView - lang_\(language)_device_\(device)"
+        )
+      }
+    }
+  }
+
+  func testComposerView_User_IsLoggedIn() {
+    let devices = [Device.phone4_7inch, Device.phone5_8inch]
+    combos(Language.allLanguages, devices).forEach { language, device in
+      withEnvironment(currentUser: .template, language: language) {
+        let vc = composerInViewController(
+          language: language,
+          device: device,
+          avatarURL: nil,
+          canPostComment: false,
+          hideComposerView: AppEnvironment.current.currentUser == nil
         )
 
         FBSnapshotVerifyView(
@@ -61,7 +104,8 @@ private func composerInViewController(
   language _: Language,
   device: Device,
   avatarURL: URL?,
-  canPostComment: Bool
+  canPostComment: Bool,
+  hideComposerView: Bool
 ) -> UIViewController {
   let composer = CommentComposerView(frame: .zero)
     |> \.translatesAutoresizingMaskIntoConstraints .~ false
@@ -77,7 +121,7 @@ private func composerInViewController(
     composer.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor)
   ])
 
-  composer.configure(with: (avatarURL, canPostComment))
+  composer.configure(with: (avatarURL, canPostComment, hideComposerView))
 
   return parent
 }

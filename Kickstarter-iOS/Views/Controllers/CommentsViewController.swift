@@ -106,8 +106,6 @@ internal final class CommentsViewController: UITableViewController {
   internal override func bindViewModel() {
     super.bindViewModel()
 
-    self.commentComposer.rac.hidden = self.viewModel.outputs.commentComposerViewHidden
-
     self.viewModel.outputs.resetCommentComposerAndScrollToTop
       .observeForUI()
       .observeValues { [weak self] _ in

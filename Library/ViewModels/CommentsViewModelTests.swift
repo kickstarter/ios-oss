@@ -24,7 +24,8 @@ internal final class CommentsViewModelTests: TestCase {
 
     self.vm.outputs.beginOrEndRefreshing.observe(self.beginOrEndRefreshing.observer)
     self.vm.outputs.cellSeparatorHidden.observe(self.cellSeparatorHidden.observer)
-    self.vm.outputs.commentComposerViewHidden.observe(self.commentComposerViewHidden.observer)
+    self.vm.outputs.configureCommentComposerViewWithData.map(third)
+      .observe(self.commentComposerViewHidden.observer)
     self.vm.outputs.configureCommentComposerViewWithData.map(first)
       .observe(self.configureCommentComposerViewURL.observer)
     self.vm.outputs.configureCommentComposerViewWithData.map(second)
@@ -117,10 +118,17 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-  func testOutput_IsCommentComposerHidden_False() {
-    let user = User.template |> \.id .~ 12_345
+  func testCommentComposerHidden_WhenUserIsLoggedIn_AndProjectIsNil() {
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(project: nil, update: nil)
+      self.vm.inputs.viewDidLoad()
 
-    withEnvironment(currentUser: user) {
+      self.commentComposerViewHidden.assertValue(true)
+    }
+  }
+
+  func testCommentComposerHidden_WhenUserIsLoggedIn_AndHasProject() {
+    withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(project: .template, update: nil)
       self.vm.inputs.viewDidLoad()
 
@@ -128,7 +136,7 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-  func testOutput_IsCommentComposerHidden_True() {
+  func testCommentComposerHidden_WhenUserIsNotLoggedIn_AndHasProject() {
     withEnvironment(currentUser: nil) {
       self.vm.inputs.configureWith(project: .template, update: nil)
       self.vm.inputs.viewDidLoad()
