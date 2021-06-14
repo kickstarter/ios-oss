@@ -5,14 +5,6 @@ public func featureBrazeIsEnabled() -> Bool {
   return Feature.braze.isEnabled()
 }
 
-public func featureEmailVerificationFlowIsEnabled() -> Bool {
-  return Feature.emailVerificationFlow.isEnabled()
-}
-
-public func featureEmailVerificationSkipIsEnabled() -> Bool {
-  return Feature.emailVerificationSkip.isEnabled()
-}
-
 public func featureSegmentIsEnabled() -> Bool {
   return Feature.segment.isEnabled()
 }
