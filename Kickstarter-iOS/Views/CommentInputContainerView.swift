@@ -25,7 +25,6 @@ final class CommentInputContainerView: UIView {
   }()
 
   let placeholderLabel: UILabel = { UILabel(frame: .zero) }()
-  private let postButtonTitleFont = UIFont.systemFont(ofSize: 15, weight: .semibold)
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   // MARK: - Lifecycle
@@ -65,26 +64,9 @@ final class CommentInputContainerView: UIView {
   }
 
   private func setupConstraints() {
-    let postButtonTitleMaximumBoundingRectangle = CGSize(
-      width: .greatestFiniteMagnitude,
-      height: Layout.Button.height
-    )
-    let postButtonTitleConstrainedBoundingRectangle = Strings.Post()
-      .boundingRect(
-        with: postButtonTitleMaximumBoundingRectangle,
-        options: .usesLineFragmentOrigin,
-        attributes: [
-          NSAttributedString
-            .Key.font: self
-            .postButtonTitleFont
-        ],
-        context: nil
-      )
-    let precalculatedPostButtonTitleWidth = ceil(postButtonTitleConstrainedBoundingRectangle.width)
-
     NSLayoutConstraint.activate([
       self.postButton.heightAnchor.constraint(equalToConstant: Layout.Button.height),
-      self.postButton.widthAnchor.constraint(equalToConstant: precalculatedPostButtonTitleWidth)
+      self.postButton.widthAnchor.constraint(lessThanOrEqualTo: self.widthAnchor, multiplier: 0.25)
     ])
   }
 
@@ -102,9 +84,11 @@ final class CommentInputContainerView: UIView {
       |> placeholderLabelStyle
 
     _ = self.postButton
-      |> UIButton.lens.titleLabel.font %~ { _ in self.postButtonTitleFont }
+      |> UIButton.lens.titleLabel.font .~ .systemFont(ofSize: 15, weight: .semibold)
+      |> UIButton.lens.titleLabel.numberOfLines .~ 0
       |> UIButton.lens.titleColor(for: .normal) %~ { _ in .ksr_create_700 }
       |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Post() }
+      |> UIButton.lens.titleLabel.textAlignment .~ .center
   }
 
   override func traitCollectionDidChange(_: UITraitCollection?) {
