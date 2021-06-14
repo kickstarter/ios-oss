@@ -162,6 +162,12 @@ internal final class CommentsViewController: UITableViewController {
       .observeValues { [weak self] isHidden in
         self?.tableView.separatorStyle = isHidden ? .none : .singleLine
       }
+
+    self.viewModel.outputs.showHelpWebViewController
+      .observeForControllerAction()
+      .observeValues { [weak self] helpType in
+        self?.presentHelpWebViewController(with: helpType)
+      }
   }
 
   // MARK: - Actions
@@ -174,7 +180,11 @@ internal final class CommentsViewController: UITableViewController {
 // MARK: - UITableViewDelegate
 
 extension CommentsViewController {
-  override func tableView(_: UITableView, willDisplay _: UITableViewCell, forRowAt indexPath: IndexPath) {
+  override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    if let commentRemovedCell = cell as? CommentRemovedCell {
+      commentRemovedCell.delegate = self
+    }
+
     self.viewModel.inputs.willDisplayRow(
       self.dataSource.itemIndexAt(indexPath),
       outOf: self.dataSource.numberOfItems()
@@ -201,6 +211,14 @@ extension CommentsViewController: CommentComposerViewDelegate {
 extension CommentsViewController: CommentTableViewFooterViewDelegate {
   func commentTableViewFooterViewDidTapRetry(_: CommentTableViewFooterView) {
     self.viewModel.inputs.commentTableViewFooterViewDidTapRetry()
+  }
+}
+
+// MARK: - CommentRemovedCellDelegate
+
+extension CommentsViewController: CommentRemovedCellDelegate {
+  func commentRemovedCell(_: CommentRemovedCell, didTapURL: URL) {
+    self.viewModel.inputs.commentRemovedCellDidTapURL(didTapURL)
   }
 }
 

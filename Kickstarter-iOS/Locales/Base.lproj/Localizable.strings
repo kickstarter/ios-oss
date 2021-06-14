@@ -312,7 +312,7 @@
 "Kickstarter_on_Film" = "Kickstarter on Film";
 "Know_when_creators_and_backers_message_you" = "Know when creators and backers message you by enabling notifications.";
 "Learn_more_about_accountability" = "Learn more about accountability";
-"Learn_more_about_comment_guidelines" = "Learn more about comment guidelines";
+"Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">Learn more about comment guidelines</a>";
 "Left_count_left.few" = "%{left_count} left";
 "Left_count_left.many" = "%{left_count} left";
 "Left_count_left.one" = "%{left_count} left";
