@@ -82,8 +82,6 @@ public struct AppEnvironment: AppEnvironmentType {
     let storage = AppEnvironment.current.cookieStorage
     storage.cookies?.forEach(storage.deleteCookie)
 
-    AppEnvironment.current.userDefaults.analyticsIdentityData = nil
-
     self.replaceCurrentEnvironment(
       apiService: AppEnvironment.current.apiService.logout(),
       cache: type(of: AppEnvironment.current.cache).init(),
