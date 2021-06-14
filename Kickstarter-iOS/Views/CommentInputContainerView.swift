@@ -19,12 +19,13 @@ final class CommentInputContainerView: UIView {
     CommentInputTextView(frame: .zero)
   }()
 
+  let placeholderLabel: UILabel = { UILabel(frame: .zero) }()
+  
   lazy var postButton: UIButton = {
     UIButton(type: .system)
       |> \.isHidden .~ true
   }()
 
-  let placeholderLabel: UILabel = { UILabel(frame: .zero) }()
   private let rootStackView: UIStackView = { UIStackView(frame: .zero) }()
 
   // MARK: - Lifecycle
