@@ -20,7 +20,7 @@ final class CommentInputContainerView: UIView {
   }()
 
   let placeholderLabel: UILabel = { UILabel(frame: .zero) }()
-  
+
   lazy var postButton: UIButton = {
     UIButton(type: .system)
       |> \.isHidden .~ true
