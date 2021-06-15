@@ -120,16 +120,10 @@ private let replyButtonStyle: ButtonStyle = { button in
     |> UIButton.lens.contentHorizontalAlignment .~ .left
 }
 
-// TODO: Internationalized in the near future.
-
 private let postedButtonStyle: ButtonStyle = { button in
   button
     |> \.isUserInteractionEnabled .~ false
-    |> UIButton.lens
-    .title(for: .normal) %~
-    { _ in
-      localizedString(key: "Posted", defaultValue: "Posted")
-    }
+    |> UIButton.lens.title(for: .normal) %~ { _ in Strings.Posted() }
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
     |> UIButton.lens.image(for: .normal) .~ Library.image(named: "posted")
     |> UIButton.lens.titleColor(for: .normal) .~ UIColor.ksr_create_700

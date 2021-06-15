@@ -307,7 +307,7 @@ workflows:
       - deploy_beta:
           filters:
             branches:
-              only: master
+              only: main
           requires: *all_jobs
       - beta:
           filters:
@@ -332,8 +332,8 @@ experimental:
   notify:
     branches:
       only:
-        # matches branch named exactly `master`
-        - master
+        # matches branch named exactly `main`
+        - main
         # matches all branches that begin with 'alpha-dist'
         - /alpha-dist.*/
         # matches all branches that begin with 'beta-dist'

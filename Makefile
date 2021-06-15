@@ -7,7 +7,7 @@ PLATFORM ?= iOS
 RELEASE ?= itunes
 IOS_VERSION ?= 14.2
 IPHONE_NAME ?= iPhone 8
-BRANCH ?= master
+BRANCH ?= main
 DIST_BRANCH = $(RELEASE)-dist
 COMMIT ?= $(CIRCLE_SHA1)
 CURRENT_BRANCH ?= $(CIRCLE_BRANCH)
@@ -73,9 +73,9 @@ deploy:
 		echo "RELEASE must be 'itunes'."; \
 		exit 1; \
 	fi
-	@if test "$(RELEASE)" = "itunes" && test "$(BRANCH)" != "master"; \
+	@if test "$(RELEASE)" = "itunes" && test "$(BRANCH)" != "main"; \
 	then \
-		echo "BRANCH must be 'master' for iTunes releases."; \
+		echo "BRANCH must be 'main' for iTunes releases."; \
 		exit 1; \
 	fi
 

@@ -122,6 +122,7 @@
 "Continue_with_quantity_count_add_ons.zero" = "Continue with %{quantity_count} add-ons";
 "Continue_with_this_reward" = "Continue with this reward?";
 "Couldnt_add_attachment" = "Couldn't add attachment";
+"Couldnt_load_more_comments_Tap_to_retry" = "Couldn't load more comments.\nTap to retry";
 "Couldnt_open_live_stream_Try_again_later" = "Couldn‘t open live stream. Try again later.";
 "Couldnt_post" = "Couldn't post. Tap to retry";
 "Couldnt_remove_attachment" = "Couldn't remove attachment";
@@ -429,6 +430,8 @@
 "Post" = "Post";
 "Postal_code" = "Postal code";
 "Postcode" = "Postcode";
+"Posted" = "Posted";
+"Posting" = "Posting...";
 "Preparing_your_personal_data" = "Preparing your personal data...";
 "Privacy" = "Privacy";
 "Private_profile" = "Private profile";
@@ -647,6 +650,7 @@
 "View_dashboard" = "View dashboard";
 "View_progress" = "View progress";
 "View_project" = "View project";
+"View_replies" = "View replies";
 "View_rewards" = "View rewards";
 "View_the_rewards" = "View the rewards";
 "View_your_pledge" = "View your pledge";

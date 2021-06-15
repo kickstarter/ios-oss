@@ -108,11 +108,7 @@ final class CommentTableViewFooterView: UIView {
 private let retryButtonStyle: ButtonStyle = { button in
   button
     |> UIButton.lens.title(for: .normal) %~ { _ in
-      // TODO: Add translation.
-      localizedString(
-        key: "Couldnt_load_more_comments_Tap_to_retry",
-        defaultValue: "Couldn't load more comments.\nTap to retry"
-      )
+      Strings.Couldnt_load_more_comments_Tap_to_retry()
     }
     |> UIButton.lens.titleLabel.lineBreakMode .~ .byWordWrapping
     |> UIButton.lens.titleLabel.font .~ UIFont.ksr_subhead()
