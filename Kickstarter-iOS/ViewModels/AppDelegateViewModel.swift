@@ -1212,23 +1212,6 @@ private func configRetainingDebugFeatureFlags(_ config: Config) -> Config {
   return config |> Config.lens.features .~ currentFeatures.withAllValuesFrom(storedFeatures)
 }
 
-<<<<<<< HEAD
-=======
-private func willHandleBrazeUrlAndNavigation(urlAndExtras: (URL?, [AnyHashable: Any]?)?)
-  -> (Bool, Navigation?) {
-  guard
-    let (maybeUrl, _) = urlAndExtras,
-    let url = maybeUrl
-  else { return (false, nil) }
-
-  guard let navigation = Navigation.match(url) else {
-    return (false, nil)
-  }
-
-  return (true, navigation)
-}
-
->>>>>>> Handle deeplink and enable notification option
 private func updateUserNotificationSetting(navigation: Navigation) -> SignalProducer<User, Never> {
   guard
     case let .settings(.notifications(notification, enabled)) = navigation,
