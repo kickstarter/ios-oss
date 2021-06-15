@@ -6,7 +6,6 @@ internal final class DiscoveryProjectsDataSource: ValueCellDataSource {
   internal enum Section: Int {
     case onboarding
     case personalization
-    case editorial
     case activitySample
     case projects
   }
