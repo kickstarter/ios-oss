@@ -19,7 +19,6 @@ public struct DiscoveryParams {
   public var staffPicks: Bool?
   public var starred: Bool?
   public var state: State?
-  public var tagId: TagID?
 
   public enum State: String, Decodable {
     case all
@@ -43,16 +42,12 @@ public struct DiscoveryParams {
     }
   }
 
-  public enum TagID: String, Decodable {
-    case lightsOn = "557"
-  }
-
   public static let defaults = DiscoveryParams(
     backed: nil, category: nil, collaborated: nil,
     created: nil, hasVideo: nil, includePOTD: nil,
     page: nil, perPage: nil, query: nil, recommended: nil,
     seed: nil, similarTo: nil, social: nil, sort: nil,
-    staffPicks: nil, starred: nil, state: nil, tagId: nil
+    staffPicks: nil, starred: nil, state: nil
   )
 
   public static let recommendedDefaults = DiscoveryParams.defaults
@@ -78,7 +73,6 @@ public struct DiscoveryParams {
     params["starred"] = self.starred == true ? "1" : self.starred == false ? "-1" : nil
     params["state"] = self.state?.rawValue
     params["term"] = self.query
-    params["tag_id"] = self.tagId?.rawValue
 
     return params
   }
@@ -125,7 +119,6 @@ extension DiscoveryParams: Decodable {
     self.staffPicks = try stringToBool(values.decodeIfPresent(String.self, forKey: .staffPicks))
     self.starred = try stringIntToBool(values.decodeIfPresent(String.self, forKey: .starred))
     self.state = try values.decodeIfPresent(State.self, forKey: .state)
-    self.tagId = try values.decodeIfPresent(TagID.self, forKey: .tagId)
   }
 
   enum CodingKeys: String, CodingKey {
@@ -146,7 +139,6 @@ extension DiscoveryParams: Decodable {
     case staffPicks = "staff_picks"
     case starred
     case state
-    case tagId = "tag_id"
   }
 }
 

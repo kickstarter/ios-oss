@@ -13,9 +13,6 @@ public protocol DiscoveryPageViewModelInputs {
   /// Call when the current environment has changed
   func currentEnvironmentChanged(environment: EnvironmentType)
 
-  /// Call when the editioral cell is tapped
-  func discoveryEditorialCellTapped(with tagId: DiscoveryParams.TagID)
-
   /// Call when onboarding has been completed
   func onboardingCompleted()
 
@@ -90,9 +87,6 @@ public protocol DiscoveryPageViewModelOutputs {
   /// Emits an array of KsApi.Category objects used to generate a curated list of projects
   var goToCuratedProjects: Signal<[KsApi.Category], Never> { get }
 
-  /// Emits a refTag for the editorial project list
-  var goToEditorialProjectList: Signal<DiscoveryParams.TagID, Never> { get }
-
   /// Emits a LoginIntent for the LoginToutViewController ot be configured with
   var goToLoginSignup: Signal<LoginIntent, Never> { get }
 
@@ -119,9 +113,6 @@ public protocol DiscoveryPageViewModelOutputs {
 
   /// Emits a bool to allow status bar tap to scroll the table view to the top.
   var setScrollsToTop: Signal<Bool, Never> { get }
-
-  /// Emits to show an editorial header
-  var showEditorialHeader: Signal<DiscoveryEditorialCellValue?, Never> { get }
 
   /// Emits to show the empty state controller.
   var showEmptyState: Signal<EmptyState, Never> { get }
@@ -335,7 +326,7 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     .skipRepeats(==)
 
     self.showOnboarding = Signal.combineLatest(currentUser, paramsChanged)
-      .map { user, params in user == nil && params.sort == .magic && params.tagId == nil }
+      .map { user, params in user == nil && params.sort == .magic }
       .skipRepeats()
 
     self.scrollToProjectRow = self.transitionedToProjectRowAndTotalProperty.signal.skipNil().map(first)
@@ -358,24 +349,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
 
         return sort == .magic && filterParams == DiscoveryViewModel.initialParams()
       }
-
-    let featureFlagValue = self.sortProperty.signal.skipNil()
-      .map { _ in editorialLightsOnFeatureIsEnabled() }
-
-    let updateEditorialHeader = Signal.combineLatest(editorialHeaderShouldShow, featureFlagValue)
-
-    self.showEditorialHeader = updateEditorialHeader
-      .map { shouldShow, isEnabled in
-        guard shouldShow, isEnabled else {
-          return nil
-        }
-
-        return DiscoveryEditorialCellValue(
-          title: Strings.Introducing_Lights_On(),
-          subtitle: Strings.Support_creative_spaces_and_businesses_affected_by(),
-          imageName: "lights-on", tagId: .lightsOn
-        )
-      }.skipRepeats()
 
     // MARK: Personalization Callout Card
 
@@ -400,9 +373,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     self.dismissPersonalizationCell = self.personalizationCellDismissTappedProperty.signal
       .on(value: { _ in AppEnvironment.current.userDefaults.hasDismissedPersonalizationCard = true })
 
-    self.goToEditorialProjectList = self.discoveryEditorialCellTappedWithValueProperty.signal
-      .skipNil()
-
     self.notifyDelegateContentOffsetChanged = Signal.combineLatest(
       self.scrollViewDidScrollToContentOffsetProperty.signal.skipNil(),
       self.projectsAreLoadingAnimated.map(first)
@@ -423,17 +393,8 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     let personalizationCellTappedAndRefTag = self.personalizationCellTappedProperty.signal
       .mapConst(RefTag.onboarding)
 
-    let editorialCellTappedAndRefTag = self.discoveryEditorialCellTappedWithValueProperty.signal
-      .skipNil()
-      .map { RefTag.projectCollection($0) }
-
-    let editorialOrPersonaliztionCardTappedAndRefTag = Signal.merge(
-      personalizationCellTappedAndRefTag,
-      editorialCellTappedAndRefTag
-    )
-
     requestFirstPageWith
-      .takePairWhen(editorialOrPersonaliztionCardTappedAndRefTag)
+      .takePairWhen(personalizationCellTappedAndRefTag)
       .observeValues { params, refTag in
         AppEnvironment.current.ksrAnalytics.trackEditorialHeaderTapped(
           params: params, refTag: refTag
@@ -462,12 +423,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   fileprivate let currentEnvironmentChangedProperty = MutableProperty<EnvironmentType?>(nil)
   public func currentEnvironmentChanged(environment: EnvironmentType) {
     self.currentEnvironmentChangedProperty.value = environment
-  }
-
-  fileprivate let discoveryEditorialCellTappedWithValueProperty
-    = MutableProperty<DiscoveryParams.TagID?>(nil)
-  public func discoveryEditorialCellTapped(with tagId: DiscoveryParams.TagID) {
-    self.discoveryEditorialCellTappedWithValueProperty.value = tagId
   }
 
   fileprivate let onboardingCompletedProperty = MutableProperty(())
@@ -561,7 +516,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let dismissPersonalizationCell: Signal<Void, Never>
   public let goToActivityProject: Signal<(Project, RefTag), Never>
   public let goToCuratedProjects: Signal<[KsApi.Category], Never>
-  public let goToEditorialProjectList: Signal<DiscoveryParams.TagID, Never>
   public let goToLoginSignup: Signal<LoginIntent, Never>
   public let goToProjectPlaylist: Signal<(Project, [Project], RefTag), Never>
   public let goToProjectUpdate: Signal<(Project, Update), Never>
@@ -571,7 +525,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
   public let projectsAreLoadingAnimated: Signal<(Bool, Bool), Never>
   public let setScrollsToTop: Signal<Bool, Never>
   public let scrollToProjectRow: Signal<Int, Never>
-  public let showEditorialHeader: Signal<DiscoveryEditorialCellValue?, Never>
   public let showEmptyState: Signal<EmptyState, Never>
   public let showOnboarding: Signal<Bool, Never>
   public let showPersonalization: Signal<Bool, Never>
@@ -629,9 +582,4 @@ private func emptyState(forParams params: DiscoveryParams) -> EmptyState? {
   }
 
   return nil
-}
-
-private func editorialLightsOnFeatureIsEnabled() -> Bool {
-  return AppEnvironment.current.optimizelyClient?
-    .isFeatureEnabled(featureKey: OptimizelyFeature.Key.lightsOn.rawValue) ?? false
 }

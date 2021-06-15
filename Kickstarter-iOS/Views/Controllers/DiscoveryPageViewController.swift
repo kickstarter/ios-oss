@@ -36,7 +36,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
     super.viewDidLoad()
 
     self.tableView.register(nib: Nib.DiscoveryPostcardCell)
-    self.tableView.registerCellClass(DiscoveryEditorialCell.self)
     self.tableView.registerCellClass(PersonalizationCell.self)
     self.tableView.registerCellClass(DiscoveryProjectCardCell.self)
 
@@ -206,14 +205,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.showEditorialHeader
-      .observeForUI()
-      .observeValues { [weak self] value in
-        self?.dataSource.showEditorial(value: value)
-
-        self?.tableView.reloadData()
-      }
-
     self.viewModel.outputs.showPersonalization
       .observeForUI()
       .observeValues { [weak self] shouldShow in
@@ -285,12 +276,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
         }
       }
 
-    self.viewModel.outputs.goToEditorialProjectList
-      .observeForControllerAction()
-      .observeValues { [weak self] tagId in
-        self?.goToEditorialProjectList(using: tagId)
-      }
-
     self.viewModel.outputs.notifyDelegateContentOffsetChanged
       .observeForUI()
       .observeValues { [weak self] offset in
@@ -336,8 +321,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
       cell.delegate = self
     } else if let cell = cell as? DiscoveryOnboardingCell, cell.delegate == nil {
       cell.delegate = self
-    } else if let cell = cell as? DiscoveryEditorialCell {
-      cell.delegate = self
     } else if let cell = cell as? PersonalizationCell {
       cell.delegate = self
     } else if let cell = cell as? DiscoveryProjectCardCell {
@@ -372,12 +355,6 @@ internal final class DiscoveryPageViewController: UITableViewController {
     }
 
     self.present(controller, animated: true, completion: nil)
-  }
-
-  fileprivate func goToEditorialProjectList(using tagId: DiscoveryParams.TagID) {
-    let vc = EditorialProjectsViewController.instantiate()
-    vc.configure(with: tagId)
-    self.present(vc, animated: true)
   }
 
   fileprivate func goTo(project: Project, refTag: RefTag) {
@@ -458,14 +435,6 @@ extension DiscoveryPageViewController: ActivitySampleBackingCellDelegate, Activi
 extension DiscoveryPageViewController: DiscoveryOnboardingCellDelegate {
   internal func discoveryOnboardingTappedSignUpLoginButton() {
     self.viewModel.inputs.signupLoginButtonTapped()
-  }
-}
-
-// MARK: - DiscoveryEditorialCellDelegate
-
-extension DiscoveryPageViewController: DiscoveryEditorialCellDelegate {
-  func discoveryEditorialCellTapped(_: DiscoveryEditorialCell, tagId: DiscoveryParams.TagID) {
-    self.viewModel.inputs.discoveryEditorialCellTapped(with: tagId)
   }
 }
 

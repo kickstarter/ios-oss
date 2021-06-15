@@ -9,7 +9,7 @@ extension DiscoveryParams {
         created: $1.created, hasVideo: $1.hasVideo,
         includePOTD: $1.includePOTD, page: $1.page, perPage: $1.perPage, query: $1.query,
         recommended: $1.recommended, seed: $1.seed, similarTo: $1.similarTo, social: $1.social, sort: $1.sort,
-        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state, tagId: $1.tagId
+        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state
       ) }
     )
     public static let category = Lens<DiscoveryParams, Category?>(
@@ -19,7 +19,7 @@ extension DiscoveryParams {
         created: $1.created, hasVideo: $1.hasVideo,
         includePOTD: $1.includePOTD, page: $1.page, perPage: $1.perPage, query: $1.query,
         recommended: $1.recommended, seed: $1.seed, similarTo: $1.similarTo, social: $1.social, sort: $1.sort,
-        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state, tagId: $1.tagId
+        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state
       ) }
     )
     public static let collaborated = Lens<DiscoveryParams, Bool?>(
@@ -29,7 +29,7 @@ extension DiscoveryParams {
         created: $1.created, hasVideo: $1.hasVideo,
         includePOTD: $1.includePOTD, page: $1.page, perPage: $1.perPage, query: $1.query,
         recommended: $1.recommended, seed: $1.seed, similarTo: $1.similarTo, social: $1.social, sort: $1.sort,
-        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state, tagId: $1.tagId
+        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state
       ) }
     )
     public static let created = Lens<DiscoveryParams, Bool?>(
@@ -39,7 +39,7 @@ extension DiscoveryParams {
         created: $0, hasVideo: $1.hasVideo,
         includePOTD: $1.includePOTD, page: $1.page, perPage: $1.perPage, query: $1.query,
         recommended: $1.recommended, seed: $1.seed, similarTo: $1.similarTo, social: $1.social, sort: $1.sort,
-        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state, tagId: $1.tagId
+        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state
       ) }
     )
     public static let hasVideo = Lens<DiscoveryParams, Bool?>(
@@ -49,7 +49,7 @@ extension DiscoveryParams {
         created: $1.created, hasVideo: $0, includePOTD: $1.includePOTD,
         page: $1.page, perPage: $1.perPage, query: $1.query, recommended: $1.recommended, seed: $1.seed,
         similarTo: $1.similarTo, social: $1.social, sort: $1.sort, staffPicks: $1.staffPicks,
-        starred: $1.starred, state: $1.state, tagId: $1.tagId
+        starred: $1.starred, state: $1.state
       ) }
     )
     public static let includePOTD = Lens<DiscoveryParams, Bool?>(
@@ -59,7 +59,7 @@ extension DiscoveryParams {
         created: $1.created, hasVideo: $1.hasVideo, includePOTD: $0,
         page: $1.page, perPage: $1.perPage, query: $1.query, recommended: $1.recommended, seed: $1.seed,
         similarTo: $1.similarTo, social: $1.social, sort: $1.sort, staffPicks: $1.staffPicks,
-        starred: $1.starred, state: $1.state, tagId: $1.tagId
+        starred: $1.starred, state: $1.state
       ) }
     )
     public static let page = Lens<DiscoveryParams, Int?>(
@@ -69,7 +69,7 @@ extension DiscoveryParams {
         created: $1.created, hasVideo: $1.hasVideo,
         includePOTD: $1.includePOTD, page: $0, perPage: $1.perPage, query: $1.query,
         recommended: $1.recommended, seed: $1.seed, similarTo: $1.similarTo, social: $1.social, sort: $1.sort,
-        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state, tagId: $1.tagId
+        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state
       ) }
     )
     public static let perPage = Lens<DiscoveryParams, Int?>(
@@ -79,7 +79,7 @@ extension DiscoveryParams {
         created: $1.created, hasVideo: $1.hasVideo,
         includePOTD: $1.includePOTD, page: $1.page, perPage: $0, query: $1.query,
         recommended: $1.recommended, seed: $1.seed, similarTo: $1.similarTo, social: $1.social,
-        sort: $1.sort, staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state, tagId: $1.tagId
+        sort: $1.sort, staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state
       ) }
     )
     public static let query = Lens<DiscoveryParams, String?>(
@@ -89,7 +89,7 @@ extension DiscoveryParams {
         created: $1.created, hasVideo: $1.hasVideo,
         includePOTD: $1.includePOTD, page: $1.page, perPage: $1.perPage, query: $0,
         recommended: $1.recommended, seed: $1.seed, similarTo: $1.similarTo, social: $1.social,
-        sort: $1.sort, staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state, tagId: $1.tagId
+        sort: $1.sort, staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state
       ) }
     )
     public static let recommended = Lens<DiscoveryParams, Bool?>(
@@ -99,7 +99,7 @@ extension DiscoveryParams {
         created: $1.created, hasVideo: $1.hasVideo,
         includePOTD: $1.includePOTD, page: $1.page, perPage: $1.perPage, query: $1.query,
         recommended: $0, seed: $1.seed, similarTo: $1.similarTo, social: $1.social, sort: $1.sort,
-        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state, tagId: $1.tagId
+        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state
       ) }
     )
     public static let seed = Lens<DiscoveryParams, Int?>(
@@ -109,7 +109,7 @@ extension DiscoveryParams {
         created: $1.created, hasVideo: $1.hasVideo,
         includePOTD: $1.includePOTD, page: $1.page, perPage: $1.perPage, query: $1.query,
         recommended: $1.recommended, seed: $0, similarTo: $1.similarTo, social: $1.social, sort: $1.sort,
-        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state, tagId: $1.tagId
+        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state
       ) }
     )
     public static let similarTo = Lens<DiscoveryParams, Project?>(
@@ -119,7 +119,7 @@ extension DiscoveryParams {
         created: $1.created, hasVideo: $1.hasVideo,
         includePOTD: $1.includePOTD, page: $1.page, perPage: $1.perPage, query: $1.query,
         recommended: $1.recommended, seed: $1.seed, similarTo: $0, social: $1.social, sort: $1.sort,
-        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state, tagId: $1.tagId
+        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state
       ) }
     )
     public static let social = Lens<DiscoveryParams, Bool?>(
@@ -129,7 +129,7 @@ extension DiscoveryParams {
         created: $1.created, hasVideo: $1.hasVideo,
         includePOTD: $1.includePOTD, page: $1.page, perPage: $1.perPage, query: $1.query,
         recommended: $1.recommended, seed: $1.seed, similarTo: $1.similarTo, social: $0, sort: $1.sort,
-        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state, tagId: $1.tagId
+        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state
       ) }
     )
     public static let sort = Lens<DiscoveryParams, DiscoveryParams.Sort?>(
@@ -139,7 +139,7 @@ extension DiscoveryParams {
         created: $1.created, hasVideo: $1.hasVideo,
         includePOTD: $1.includePOTD, page: $1.page, perPage: $1.perPage, query: $1.query,
         recommended: $1.recommended, seed: $1.seed, similarTo: $1.similarTo, social: $1.social,
-        sort: $0, staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state, tagId: $1.tagId
+        sort: $0, staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state
       ) }
     )
     public static let staffPicks = Lens<DiscoveryParams, Bool?>(
@@ -149,7 +149,7 @@ extension DiscoveryParams {
         created: $1.created, hasVideo: $1.hasVideo,
         includePOTD: $1.includePOTD, page: $1.page, perPage: $1.perPage, query: $1.query,
         recommended: $1.recommended, seed: $1.seed, similarTo: $1.similarTo, social: $1.social,
-        sort: $1.sort, staffPicks: $0, starred: $1.starred, state: $1.state, tagId: $1.tagId
+        sort: $1.sort, staffPicks: $0, starred: $1.starred, state: $1.state
       ) }
     )
     public static let starred = Lens<DiscoveryParams, Bool?>(
@@ -159,7 +159,7 @@ extension DiscoveryParams {
         created: $1.created, hasVideo: $1.hasVideo,
         includePOTD: $1.includePOTD, page: $1.page, perPage: $1.perPage, query: $1.query,
         recommended: $1.recommended, seed: $1.seed, similarTo: $1.similarTo, social: $1.social,
-        sort: $1.sort, staffPicks: $1.staffPicks, starred: $0, state: $1.state, tagId: $1.tagId
+        sort: $1.sort, staffPicks: $1.staffPicks, starred: $0, state: $1.state
       ) }
     )
     public static let state = Lens<DiscoveryParams, DiscoveryParams.State?>(
@@ -169,17 +169,7 @@ extension DiscoveryParams {
         created: $1.created, hasVideo: $1.hasVideo,
         includePOTD: $1.includePOTD, page: $1.page, perPage: $1.perPage, query: $1.query,
         recommended: $1.recommended, seed: $1.seed, similarTo: $1.similarTo, social: $1.social, sort: $1.sort,
-        staffPicks: $1.staffPicks, starred: $1.starred, state: $0, tagId: $1.tagId
-      ) }
-    )
-    public static let tagId = Lens<DiscoveryParams, DiscoveryParams.TagID?>(
-      view: { $0.tagId },
-      set: { DiscoveryParams(
-        backed: $1.backed, category: $1.category, collaborated: $1.collaborated,
-        created: $1.created, hasVideo: $1.hasVideo,
-        includePOTD: $1.includePOTD, page: $1.page, perPage: $1.perPage, query: $1.query,
-        recommended: $1.recommended, seed: $1.seed, similarTo: $1.similarTo, social: $1.social, sort: $1.sort,
-        staffPicks: $1.staffPicks, starred: $1.starred, state: $1.state, tagId: $0
+        staffPicks: $1.staffPicks, starred: $1.starred, state: $0
       ) }
     )
   }

@@ -398,28 +398,24 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.projectCategoryViewHidden.assertValue(true)
   }
 
-  func testLocationStackView_IsNotHidden_WhenTagIsLightsOn() {
+  func testLocationStackView_IsHidden() {
     let project = Project.template
       |> \.location .~ Location.template
 
     let params = DiscoveryParams.defaults
-      |> \.tagId .~ DiscoveryParams.TagID.lightsOn
-
-    self.vm.inputs.configure(with: (project, .illustration, params))
-
-    self.locationStackViewHidden.assertValues([false])
-  }
-
-  func testLocationStackView_IsHidden_WhenTagIsNotLightsOn() {
-    let project = Project.template
-      |> \.location .~ Location.template
-
-    let params = DiscoveryParams.defaults
-      |> \.tagId .~ nil
 
     self.vm.inputs.configure(with: (project, .illustration, params))
 
     self.locationStackViewHidden.assertValues([true])
+  }
+
+  func testLocationStackView_IsNotHidden() {
+    let project = Project.template
+      |> \.location .~ Location.template
+
+    self.vm.inputs.configure(with: (project, .illustration, nil))
+
+    self.locationStackViewHidden.assertValues([false])
   }
 
   func testLocationLabelText() {

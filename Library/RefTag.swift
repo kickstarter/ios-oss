@@ -17,7 +17,6 @@ public enum RefTag {
   case profile
   case profileBacked
   case profileSaved
-  case projectCollection(DiscoveryParams.TagID)
   case projectPage
   case push
   case recommended
@@ -129,8 +128,6 @@ public enum RefTag {
       return "profile"
     case .profileBacked:
       return "profile_backed"
-    case let .projectCollection(tagId):
-      return "ios_project_collection_tag_\(tagId.rawValue)"
     case .profileSaved:
       return "profile_saved"
     case .projectPage:
@@ -195,10 +192,6 @@ private func sortRefTagSuffix(_ sort: DiscoveryParams.Sort) -> String {
 
 extension RefTag {
   public static func fromParams(_ params: DiscoveryParams) -> RefTag {
-    if let tagId = params.tagId {
-      return .projectCollection(tagId)
-    }
-
     if params.category != nil {
       return .categoryWithSort(params.sort ?? .magic)
     } else if params.recommended == .some(true) {
