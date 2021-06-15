@@ -2671,16 +2671,12 @@ final class AppDelegateViewModelTests: TestCase {
       let url =
         "https://\(AppEnvironment.current.apiService.serverConfig.webBaseUrl.host ?? "")/settings/notify_mobile_of_messages/true"
 
-<<<<<<< HEAD
       let result = self.vm.inputs.applicationOpenUrl(
         application: UIApplication.shared,
         url: URL(string: url)!,
         options: [:]
       )
       XCTAssertTrue(result)
-=======
-      XCTAssertTrue(self.vm.inputs.brazeDidHandleURL(URL(string: url), extras: [:]))
->>>>>>> Handle deeplink and enable notification option
 
       self.updateCurrentUserInEnvironment.assertValues([user])
 

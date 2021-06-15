@@ -46,9 +46,6 @@ public protocol AppDelegateViewModelInputs {
   /// Call when the application receives a request to perform a shortcut action.
   func applicationPerformActionForShortcutItem(_ item: UIApplicationShortcutItem)
 
-  /// Call when a Braze in-app message's button is tapped with its URL and extras.
-  func brazeDidHandleURL(_ url: URL?, extras: [AnyHashable: Any]?) -> Bool
-
   /// Call when the Braze SDK will display an in-app message, return a display choice.
   func brazeWillDisplayInAppMessage(_ message: BrazeInAppMessageType) -> ABKInAppMessageDisplayChoice
 
@@ -740,14 +737,6 @@ public final class AppDelegateViewModel: AppDelegateViewModelType, AppDelegateVi
   fileprivate let applicationDidReceiveMemoryWarningProperty = MutableProperty(())
   public func applicationDidReceiveMemoryWarning() {
     self.applicationDidReceiveMemoryWarningProperty.value = ()
-  }
-
-  private let brazeDidHandleURLProperty = MutableProperty<(URL?, [AnyHashable: Any]?)?>(nil)
-  private let brazeDidHandleURLReturnProperty
-    = MutableProperty<Bool>(false)
-  public func brazeDidHandleURL(_ url: URL?, extras: [AnyHashable: Any]?) -> Bool {
-    self.brazeDidHandleURLProperty.value = (url, extras)
-    return self.brazeDidHandleURLReturnProperty.value
   }
 
   private let brazeWillDisplayInAppMessageProperty = MutableProperty<BrazeInAppMessageType?>(nil)
