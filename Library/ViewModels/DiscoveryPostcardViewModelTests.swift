@@ -398,7 +398,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.projectCategoryViewHidden.assertValue(true)
   }
 
-  func testLocationStackView_IsHidden() {
+  func testLocationStackView_IsHidden_ParamsNotNil() {
     let project = Project.template
       |> \.location .~ Location.template
 
@@ -409,7 +409,7 @@ internal final class DiscoveryPostcardViewModelTests: TestCase {
     self.locationStackViewHidden.assertValues([true])
   }
 
-  func testLocationStackView_IsNotHidden() {
+  func testLocationStackView_IsNotHidden_ParamsNil() {
     let project = Project.template
       |> \.location .~ Location.template
 

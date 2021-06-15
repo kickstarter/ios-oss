@@ -275,10 +275,7 @@ public final class DiscoveryPostcardViewModel: DiscoveryPostcardViewModelType,
 
     let params = self.configureWithValueProperty.signal.skipNil().map(third)
 
-    self.locationStackViewHidden = params.map { params in
-      guard let _ = params else { return false }
-      return true
-    }
+    self.locationStackViewHidden = params.map { $0 != nil }
 
     self.locationLabelText = configuredProject.map(\.location.name)
   }
