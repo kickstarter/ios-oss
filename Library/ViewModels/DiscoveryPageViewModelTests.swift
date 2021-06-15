@@ -1021,72 +1021,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
     }
   }
 
-  func testGoToEditorialProject() {
-    let project = Project.template
-    let discoveryEnvelope = .template
-      |> DiscoveryEnvelope.lens.projects .~ (
-        (0...2).map { id in .template |> Project.lens.id .~ (100 + id) }
-      )
-
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: discoveryEnvelope)) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(.defaults)
-      self.scheduler.advance()
-
-      self.vm.inputs.tapped(project: project)
-
-      self.goToPlaylist.assertValues([discoveryEnvelope.projects], "Project playlist emits.")
-      self.goToPlaylistProject.assertValues([project])
-    }
-  }
-
-  func testTrackEditorialHeaderTapped() {
-    withEnvironment(apiService: MockService(fetchDiscoveryResponse: .template)) {
-      self.vm.inputs.configureWith(sort: .magic)
-      self.vm.inputs.viewWillAppear()
-      self.vm.inputs.viewDidAppear()
-      self.vm.inputs.selectedFilter(.defaults)
-      self.scheduler.advance()
-
-      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
-      XCTAssertEqual(
-        [nil],
-        self.segmentTrackingClient.properties(forKey: "session_ref_tag", as: String.self)
-      )
-
-      let segmentTrackingClientProps = self.segmentTrackingClient.properties.last
-
-      XCTAssertEqual(true, segmentTrackingClientProps?["discover_everything"] as? Bool)
-      XCTAssertEqual("discovery_home", segmentTrackingClientProps?["discover_ref_tag"] as? String)
-      XCTAssertEqual("magic", segmentTrackingClientProps?["discover_sort"] as? String)
-
-      XCTAssertNil(segmentTrackingClientProps?["discover_recommended"] as? Bool)
-      XCTAssertNil(segmentTrackingClientProps?["discover_pwl"] as? Bool)
-      XCTAssertNil(segmentTrackingClientProps?["discover_social"] as? Bool)
-      XCTAssertNil(segmentTrackingClientProps?["discover_watched"] as? Bool)
-      XCTAssertNil(segmentTrackingClientProps?["discover_subcategory_id"] as? Int)
-      XCTAssertNil(segmentTrackingClientProps?["discover_subcategory_name"] as? String)
-      XCTAssertNil(segmentTrackingClientProps?["discover_category_id"] as? Int)
-      XCTAssertNil(segmentTrackingClientProps?["discover_category_name"] as? String)
-      XCTAssertNil(segmentTrackingClientProps?["discover_search_term"] as? String)
-
-      XCTAssertNil(
-        segmentTrackingClientProps?["optimizely_api_key"],
-        "Event does not include Optimizely properties"
-      )
-      XCTAssertNil(
-        segmentTrackingClientProps?["optimizely_environment"],
-        "Event does not include Optimizely properties"
-      )
-      XCTAssertNil(
-        segmentTrackingClientProps?["optimizely_experiments"],
-        "Event does not include Optimizely properties"
-      )
-    }
-  }
-
   func testNotifyDelegateContentOffsetChanged() {
     self.notifyDelegateContentOffsetChanged.assertDidNotEmitValue()
 
@@ -1151,7 +1085,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       // Change the filter
       self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.category .~ Category.art)
-      self.showPersonalization.assertValues([true, false], "Section hides on non-default filters")
+      self.showPersonalization.assertValues([true, true], "Section does not hide on default filters")
     }
   }
 
@@ -1184,7 +1118,7 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       // Change the filter
       self.vm.inputs.selectedFilter(.defaults |> DiscoveryParams.lens.category .~ Category.art)
-      self.showPersonalization.assertValues([true, false], "Section hides on non-default filters")
+      self.showPersonalization.assertValues([true, true], "Section does not hide on default filters")
     }
   }
 
@@ -1354,10 +1288,10 @@ internal final class DiscoveryPageViewModelTests: TestCase {
 
       self.vm.inputs.personalizationCellTapped()
 
-      XCTAssertEqual(["Page Viewed", "Card Clicked"], self.segmentTrackingClient.events)
+      XCTAssertEqual(["Page Viewed"], self.segmentTrackingClient.events)
 
       XCTAssertEqual(
-        [nil, "ios_experiment_onboarding_1"],
+        [nil],
         self.segmentTrackingClient.properties(forKey: "session_ref_tag")
       )
       self.goToCuratedProjects.assertValues([[.art, .illustration]])
@@ -1365,7 +1299,6 @@ internal final class DiscoveryPageViewModelTests: TestCase {
       let segmentTrackingClientProperties = self.segmentTrackingClient.properties.last
 
       XCTAssertEqual("discover", segmentTrackingClientProperties?["context_page"] as? String)
-      XCTAssertEqual("discover_advanced", segmentTrackingClientProperties?["context_location"] as? String)
     }
   }
 

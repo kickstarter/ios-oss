@@ -336,35 +336,22 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
       self.viewDidDisappearProperty.signal.mapConst(false)
     )
 
-    // MARK: - Editorial Header
+    // MARK: Personalization Callout Card
 
     let filtersUpdated = self.sortProperty.signal.skipNil()
       .takePairWhen(self.selectedFilterProperty.signal.skipNil().skipRepeats())
 
-    let editorialHeaderShouldShow = filtersUpdated
-      .compactMap { sort, filterParams -> Bool? in
-        if sort != .magic {
-          return nil
-        }
-
-        return sort == .magic && filterParams == DiscoveryViewModel.initialParams()
-      }
-
-    // MARK: Personalization Callout Card
-
     let viewReady = Signal.combineLatest(
       self.viewDidAppearProperty.signal,
-      editorialHeaderShouldShow
+      filtersUpdated
     )
 
     self.showPersonalization = Signal.merge(
       viewReady,
       viewReady.takeWhen(self.onboardingCompletedProperty.signal)
     )
-    .map(second)
-    .map { shouldShowHeader in
-      shouldShowHeader && shouldShowPersonalization()
-    }
+    .ignoreValues()
+    .map(shouldShowPersonalization)
 
     self.goToCuratedProjects = self.personalizationCellTappedProperty.signal
       .map(cachedCategories)
@@ -388,17 +375,6 @@ public final class DiscoveryPageViewModel: DiscoveryPageViewModelType, Discovery
     Signal.combineLatest(requestFirstPageWith, self.viewWillAppearProperty.signal)
       .observeValues { params, _ in
         AppEnvironment.current.ksrAnalytics.trackDiscovery(params: params)
-      }
-
-    let personalizationCellTappedAndRefTag = self.personalizationCellTappedProperty.signal
-      .mapConst(RefTag.onboarding)
-
-    requestFirstPageWith
-      .takePairWhen(personalizationCellTappedAndRefTag)
-      .observeValues { params, refTag in
-        AppEnvironment.current.ksrAnalytics.trackEditorialHeaderTapped(
-          params: params, refTag: refTag
-        )
       }
 
     paramsChanged

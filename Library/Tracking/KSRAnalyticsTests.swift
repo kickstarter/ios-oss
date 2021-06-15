@@ -1655,9 +1655,6 @@ final class KSRAnalyticsTests: TestCase {
     ksrAnalytics.trackDiscovery(params: .defaults)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
 
-    ksrAnalytics.trackEditorialHeaderTapped(params: .defaults, refTag: .discovery)
-    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
-
     ksrAnalytics.trackExploreButtonClicked()
     XCTAssertEqual("activity_feed", segmentClient.properties.last?["context_page"] as? String)
 

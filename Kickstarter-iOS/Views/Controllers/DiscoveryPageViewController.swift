@@ -133,10 +133,7 @@ internal final class DiscoveryPageViewController: UITableViewController {
       |> \.estimatedRowHeight .~ 200.0
 
     _ = self.view
-      |> \.backgroundColor .~ (
-        // Update the background if it is not currently clear (contained in EditorialProjectsViewController)
-        self.view.backgroundColor != .clear ? discoveryPageBackgroundColor() : self.view.backgroundColor
-      )
+      |> \.backgroundColor .~ discoveryPageBackgroundColor()
 
     _ = self.headerLabel
       |> headerLabelStyle

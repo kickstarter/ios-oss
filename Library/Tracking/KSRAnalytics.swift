@@ -710,24 +710,6 @@ public final class KSRAnalytics {
   }
 
   /**
-   Call when the user taps the editorial header at the top of Discovery
-   */
-  public func trackEditorialHeaderTapped(params: DiscoveryParams,
-                                         refTag: RefTag) {
-    let props = contextProperties(
-      page: .discovery,
-      locationContext: .discoverAdvanced
-    )
-    .withAllValuesFrom(discoveryProperties(from: params))
-
-    self.track(
-      event: SegmentEvent.cardClicked.rawValue,
-      properties: props,
-      refTag: refTag.stringTag
-    )
-  }
-
-  /**
    Call when a project card is clicked from a list of projects
    - parameter page: The `PageContext` representing the specific area the UI is interacted in
    - parameter checkoutData: The `CheckoutPropertiesData` associated with this specific checkout instance
