@@ -4,17 +4,29 @@ import Prelude
 import ReactiveSwift
 import UIKit
 
+private enum Layout {
+  enum Composer {
+    static let originalHeight: CGFloat = 80.0
+  }
+}
+
 final class CommentRepliesViewController: UITableViewController {
   // MARK: Properties
 
   private let dataSource = CommentRepliesDataSource()
   private let viewModel: CommentRepliesViewModelType = CommentRepliesViewModel()
+  
+  private lazy var commentComposer: CommentComposerView = {
+    let frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: Layout.Composer.originalHeight)
+    let view = CommentComposerView(frame: frame)
+    return view
+  }()
 
   // MARK: - Accessors
 
-  internal static func configuredWith(comment: Comment) -> CommentRepliesViewController {
+  internal static func configuredWith(comment: Comment, project: Project) -> CommentRepliesViewController {
     let vc = CommentRepliesViewController.instantiate()
-    vc.viewModel.inputs.configureWith(comment: comment)
+    vc.viewModel.inputs.configureWith(comment: comment, project: project)
 
     return vc
   }
@@ -28,6 +40,14 @@ final class CommentRepliesViewController: UITableViewController {
   }
 
   // MARK: Lifecycle
+  
+  override var inputAccessoryView: UIView? {
+    return self.commentComposer
+  }
+
+  override var canBecomeFirstResponder: Bool {
+    return true
+  }
 
   internal override func viewDidLoad() {
     super.viewDidLoad()
@@ -53,6 +73,12 @@ final class CommentRepliesViewController: UITableViewController {
         )
 
         self?.tableView.reloadData()
+      }
+    
+    self.viewModel.outputs.configureCommentComposerViewWithData
+      .observeForUI()
+      .observeValues { [weak self] data in
+        self?.commentComposer.configure(with: data)
       }
   }
 }
