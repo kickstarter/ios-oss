@@ -10,7 +10,7 @@ final class OptimizelyResultTypeTests: XCTestCase {
 
   func testIsSuccess_ReturnsFalse() {
     let result = OptimizelyResult<Any>.failure(OptimizelyError.generic)
-
-    XCTAssertEqual("Unknown reason.", result.hasError?.localizedDescription)
+    //TODO: Remove this comment, it's just to trigger a CI build.
+    XCTAssertEqual("Unknown reason", result.hasError?.localizedDescription)
   }
 }
