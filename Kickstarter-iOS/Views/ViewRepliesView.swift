@@ -41,10 +41,8 @@ final class ViewRepliesView: UIView {
     _ = self.rootStackView
       |> viewRepliesStackViewStyle
 
-    // TODO: Submit string for translation and localize
-
     _ = self.textLabel
-      |> \.text %~ { _ in localizedString(key: "View_replies", defaultValue: "View replies") }
+      |> \.text %~ { _ in Strings.View_replies() }
       |> \.textColor .~ UIColor.ksr_support_400
       |> \.font .~ UIFont.ksr_callout(size: 14)
 
