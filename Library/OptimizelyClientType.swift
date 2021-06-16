@@ -71,6 +71,12 @@ extension OptimizelyClientType {
     return OptimizelyExperiment.Key.allCases.map { $0.rawValue }
   }
 
+  /* Returns all features the app knows about */
+
+  public func allFeatures() -> [OptimizelyFeature] {
+    return OptimizelyFeature.allCases
+  }
+
   public func isFeatureEnabled(featureKey: String) -> Bool {
     return self.isFeatureEnabled(
       featureKey: featureKey,

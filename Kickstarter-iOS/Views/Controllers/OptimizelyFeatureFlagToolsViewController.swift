@@ -4,22 +4,22 @@ import Library
 import Prelude
 import UIKit
 
-final class FeatureFlagToolsViewController: UITableViewController {
+final class OptimizelyFeatureFlagToolsViewController: UITableViewController {
   // MARK: - Properties
 
-  private var features = [FeatureEnabled]()
+  private var features = OptimizelyFeatures()
   private let reuseId = "FeatureFlagTools.TableViewCell"
-  private let viewModel: FeatureFlagToolsViewModelType = FeatureFlagToolsViewModel()
+  private let viewModel: OptimizelyFeatureFlagToolsViewModelType = OptimizelyFeatureFlagToolsViewModel()
 
-  static func instantiate() -> FeatureFlagToolsViewController {
-    return FeatureFlagToolsViewController(style: .plain)
+  static func instantiate() -> OptimizelyFeatureFlagToolsViewController {
+    return OptimizelyFeatureFlagToolsViewController(style: .plain)
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     _ = self
-      |> \.title .~ "Config Feature flags"
+      |> \.title .~ "Optimizely Feature flags"
 
     _ = self.tableView
       |> \.tableFooterView .~ UIView(frame: .zero)
@@ -35,20 +35,21 @@ final class FeatureFlagToolsViewController: UITableViewController {
     self.viewModel.outputs.reloadWithData
       .observeForUI()
       .observeValues { [weak self] features in
-        self?.features = featureEnabledFromDictionaries(features)
+//        self?.features = featureEnabledFromDictionaries(features)
+        self?.features = features
 
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.updateConfigWithFeatures
-      .observeForUI()
-      .observeValues { [weak self] features in
-        self?.updateConfig(with: features)
-      }
-
-    self.viewModel.outputs.postNotification
-      .observeForUI()
-      .observeValues(NotificationCenter.default.post)
+//    self.viewModel.outputs.updateConfigWithFeatures
+//      .observeForUI()
+//      .observeValues { [weak self] features in
+//        self?.updateConfig(with: features)
+//      }
+//
+//    self.viewModel.outputs.postNotification
+//      .observeForUI()
+//      .observeValues(NotificationCenter.default.post)
   }
 
   @objc private func switchTogged(_ switchControl: UISwitch) {
@@ -72,7 +73,7 @@ final class FeatureFlagToolsViewController: UITableViewController {
 
 // MARK: - UITableViewDataSource
 
-extension FeatureFlagToolsViewController {
+extension OptimizelyFeatureFlagToolsViewController {
   override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
     return self.features.count
   }

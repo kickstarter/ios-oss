@@ -165,7 +165,11 @@ internal final class BetaToolsViewController: UITableViewController {
     self.navigationController?.pushViewController(featureFlagToolsViewController, animated: true)
   }
 
-  private func goToOptimizelyFeatureFlagTools() {}
+  private func goToOptimizelyFeatureFlagTools() {
+    let viewController = OptimizelyFeatureFlagToolsViewController.instantiate()
+
+    self.navigationController?.pushViewController(viewController, animated: true)
+  }
 
   private func showLanguageActionSheet(sourceViewIndex: Int) {
     guard let sourceView = self.tableView
