@@ -25,7 +25,7 @@ final class BetaToolsViewModelTests: TestCase {
     super.setUp()
 
     self.vm.outputs.goToBetaFeedback.observe(self.goToBetaFeedback.observer)
-    self.vm.outputs.goToFeatureFlagTools.observe(self.goToFeatureFlagTools.observer)
+    self.vm.outputs.goToConfigFeatureFlagTools.observe(self.goToFeatureFlagTools.observer)
     self.vm.outputs.goToPushNotificationTools.observe(self.goToPushNotificationTools.observer)
     self.vm.outputs.logoutWithParams.observe(self.logoutWithParams.observer)
     self.vm.outputs.reloadWithData.map { $0.0 }.observe(self.reloadWithDataCurrentLanguage.observer)
@@ -146,7 +146,7 @@ final class BetaToolsViewModelTests: TestCase {
 
     self.goToFeatureFlagTools.assertDidNotEmitValue()
 
-    self.vm.inputs.didSelectBetaToolsRow(.debugFeatureFlags)
+    self.vm.inputs.didSelectBetaToolsRow(.debugConfigFeatureFlags)
 
     self.goToFeatureFlagTools.assertValueCount(1)
   }
