@@ -129,10 +129,10 @@ internal final class CommentsViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.goToCommentReplies
+    self.viewModel.outputs.goToRepliesWithCommentAndProject
       .observeForControllerAction()
-      .observeValues { [weak self] comment in
-        let vc = CommentRepliesViewController.configuredWith(comment: comment)
+      .observeValues { [weak self] comment, project in
+        let vc = CommentRepliesViewController.configuredWith(comment: comment, project: project)
         self?.navigationController?.pushViewController(vc, animated: true)
       }
 

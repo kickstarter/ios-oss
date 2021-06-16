@@ -45,8 +45,8 @@ public protocol CommentsViewModelOutputs {
   /// Configures the footer view with the current state.
   var configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never> { get }
 
-  /// Emits the selected `Comment` to navigate to its replies.
-  var goToCommentReplies: Signal<Comment, Never> { get }
+  /// Emits the selected `Comment` and the `Project` to navigate to its replies.
+  var goToRepliesWithCommentAndProject: Signal<(Comment, Project), Never> { get }
 
   /// Emits a list of `Comment`s and the `Project` to load into the data source.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
@@ -221,8 +221,10 @@ public final class CommentsViewModel: CommentsViewModelType,
     }
     let erroredCommentTapped = commentTapped.filter { comment in comment.status == .failed }
 
-    self.goToCommentReplies = regularCommentTapped
+    let commentWithReplies = regularCommentTapped
       .filter { comment in comment.replyCount > 0 }
+
+    self.goToRepliesWithCommentAndProject = Signal.combineLatest(commentWithReplies, initialProject)
 
     let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
 
@@ -323,7 +325,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let cellSeparatorHidden: Signal<Bool, Never>
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never>
-  public let goToCommentReplies: Signal<Comment, Never>
+  public let goToRepliesWithCommentAndProject: Signal<(Comment, Project), Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
   public let showHelpWebViewController: Signal<HelpType, Never>
   public let resetCommentComposerAndScrollToTop: Signal<(), Never>

@@ -15,7 +15,7 @@ public protocol CommentRepliesViewModelInputs {
 public protocol CommentRepliesViewModelOutputs {
   /// Emits data to configure comment composer view.
   var configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never> { get }
-  
+
   // TODO: Create a new output for `[Comment]` to only return replies and tie it directly to `loadReplies(comments: [Comment])` in the `CommentRepliesDataSource`. Removes dependency on the root comment to the network request that gets replies.
   /// Emits a root `Comment`s  to load into the data source.
   var loadCommentIntoDataSource: Signal<Comment, Never> { get }
@@ -35,16 +35,16 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
       self.viewDidLoadProperty.signal
     )
     .map(first)
-    
+
     let rootComment = rootCommentProject.map(first)
-    
+
     let project = rootCommentProject.map(second)
 
     self.loadCommentIntoDataSource = rootComment
-    
+
     let currentUser = self.viewDidLoadProperty.signal
       .map { _ in AppEnvironment.current.currentUser }
-    
+
     self.configureCommentComposerViewWithData = Signal
       .combineLatest(project, currentUser.signal, self.viewDidLoadProperty.signal.ignoreValues())
       .map { ($0.0, $0.1) }
@@ -54,11 +54,11 @@ public final class CommentRepliesViewModel: CommentRepliesViewModelType,
         let canPostComment = isBacker || isCreatorOrCollaborator
 
         guard let user = currentUser else {
-          return (nil, false)
+          return (nil, false, true)
         }
 
         let url = URL(string: user.avatar.medium)
-        return (url, canPostComment)
+        return (url, canPostComment, false)
       }
   }
 

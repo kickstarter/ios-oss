@@ -41,7 +41,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
       self.loadCommentIntoDataSourceComment.assertValue(rootComment)
     }
   }
-  
+
   func testOutput_ConfigureCommentComposerViewWithData_IsLoggedOut() {
     self.configureCommentComposerViewURL.assertDidNotEmitValue()
     self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
@@ -122,4 +122,3 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 }
-

@@ -15,7 +15,7 @@ final class CommentRepliesViewController: UITableViewController {
 
   private let dataSource = CommentRepliesDataSource()
   private let viewModel: CommentRepliesViewModelType = CommentRepliesViewModel()
-  
+
   private lazy var commentComposer: CommentComposerView = {
     let frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: Layout.Composer.originalHeight)
     let view = CommentComposerView(frame: frame)
@@ -40,7 +40,7 @@ final class CommentRepliesViewController: UITableViewController {
   }
 
   // MARK: Lifecycle
-  
+
   override var inputAccessoryView: UIView? {
     return self.commentComposer
   }
@@ -74,7 +74,7 @@ final class CommentRepliesViewController: UITableViewController {
 
         self?.tableView.reloadData()
       }
-    
+
     self.viewModel.outputs.configureCommentComposerViewWithData
       .observeForUI()
       .observeValues { [weak self] data in
