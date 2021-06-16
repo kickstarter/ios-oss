@@ -59,6 +59,8 @@ final class CommentRepliesViewController: UITableViewController {
     self.tableView.registerCellClass(RootCommentCell.self)
     self.tableView.tableFooterView = UIView()
 
+    self.commentComposer.becomeFirstResponder()
+
     self.viewModel.inputs.viewDidLoad()
   }
 

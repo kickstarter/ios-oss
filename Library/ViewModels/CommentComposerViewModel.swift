@@ -54,6 +54,9 @@ public protocol CommentComposerViewModelOutputs {
   /// Emits a boolean that determines if the post button is hidden.
   var postButtonHidden: Signal<Bool, Never> { get }
 
+  /// Emits a boolean that determines if the inputTextView should be shown on initialization.
+  var shouldBecomeFirstResponder: Signal<Bool, Never> { get }
+
   /// Emits when the input area size should be reset.
   var updateTextViewHeight: Signal<(), Never> { get }
 }
@@ -140,6 +143,7 @@ public final class CommentComposerViewModel:
   public var notifyDelegateDidSubmitText: Signal<String, Never>
   public var placeholderHidden: Signal<Bool, Never>
   public var postButtonHidden: Signal<Bool, Never>
+  public var shouldBecomeFirstResponder: Signal<Bool, Never>
   public var updateTextViewHeight: Signal<(), Never>
 
   public var inputs: CommentComposerViewModelInputs { return self }
