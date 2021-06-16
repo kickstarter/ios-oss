@@ -153,9 +153,7 @@ public final class CommentsViewModel: CommentsViewModelType,
       valuesFromEnvelope: { $0.comments },
       cursorFromEnvelope: { ($0.slug, $0.cursor) },
       requestFromParams: { project in
-        AppEnvironment.current.apiService.fetchComments(
-          query: commentsQuery(withProjectSlug: project.slug)
-        )
+        AppEnvironment.current.apiService.fetchUpdateComments(query: projectUpdatesQuery())
       },
       requestFromCursor: { projectSlug, cursor in
         AppEnvironment.current.apiService.fetchComments(
@@ -169,6 +167,12 @@ public final class CommentsViewModel: CommentsViewModelType,
       concater: { _, value in value }
     )
 
+   // let comments2 = AppEnvironment.current.apiService.fetchUpdateComments(query: projectUpdatesQuery()).map { $0.comments }
+    
+  //  _ = comments2.map({ comments in
+  //    print("*** COMMENTS \(comments)")
+  //  })
+    
     let commentsWithRetryingComment = currentComments
       .takePairWhen(self.retryingComment.signal.skipNil())
       .map(unpack)

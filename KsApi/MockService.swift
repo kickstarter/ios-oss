@@ -3,7 +3,7 @@
   import Prelude
   import ReactiveSwift
 
-  internal struct MockService: ServiceType {
+internal struct MockService: ServiceType {
     internal let appId: String
     internal let serverConfig: ServerConfigType
     internal let oauthToken: OauthTokenAuthType?
@@ -625,6 +625,10 @@
       }
       return .empty
     }
+    
+  func fetchUpdateComments(query: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+    producer(for: self.fetchCommentsEnvelopeResult)
+  }
 
     internal func fetchComments(paginationUrl _: String)
       -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
