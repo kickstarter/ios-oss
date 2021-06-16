@@ -39,8 +39,6 @@ public final class KSRAnalytics {
     case changePayment = "change_payment" // PledgeViewController
     case checkout // // PledgeViewController
     case discovery = "discover" // DiscoveryViewController
-    case editorialProjects = "editorial_collection" // EditorialProjectsViewController
-    case emailVerification = "email_verification" // EmailVerificationViewController
     case forgotPassword = "forgot_password" // ResetPasswordViewController
     case landingPage = "landing_page" // LandingViewController
     case login = "log_in" // LoginViewController
@@ -708,24 +706,6 @@ public final class KSRAnalytics {
     self.track(
       event: SegmentEvent.ctaClicked.rawValue,
       properties: props
-    )
-  }
-
-  /**
-   Call when the user taps the editorial header at the top of Discovery
-   */
-  public func trackEditorialHeaderTapped(params: DiscoveryParams,
-                                         refTag: RefTag) {
-    let props = contextProperties(
-      page: .discovery,
-      locationContext: .discoverAdvanced
-    )
-    .withAllValuesFrom(discoveryProperties(from: params))
-
-    self.track(
-      event: SegmentEvent.cardClicked.rawValue,
-      properties: props,
-      refTag: refTag.stringTag
     )
   }
 
