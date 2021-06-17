@@ -161,7 +161,9 @@ public final class CommentsViewModel: CommentsViewModelType,
             )
           )
         } ifRight: {
-          AppEnvironment.current.apiService.fetchComments(query: projectUpdateCommentsQuery(id: $0.id))
+          AppEnvironment.current.apiService.fetchComments(
+            query: projectUpdateCommentsQuery(id: $0.id)
+          )
         }
       },
       requestFromCursor: { projectSlug, cursor in
