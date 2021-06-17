@@ -8,6 +8,7 @@ import Foundation
 #else
   import KsApi
 #endif
+import Firebase
 import Kickstarter_Framework
 import Library
 import Optimizely
@@ -19,7 +20,6 @@ import Segment
 import Segment_Appboy
 import UIKit
 import UserNotifications
-import Firebase
 
 @UIApplicationMain
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
