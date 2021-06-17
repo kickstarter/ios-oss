@@ -6,6 +6,7 @@ public struct CommentsEnvelope: Decodable {
   public var cursor: String?
   public var hasNextPage: Bool
   public var slug: String
+  public var updateID: Int?
   public var totalCount: Int
 }
 

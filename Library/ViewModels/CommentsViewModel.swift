@@ -151,29 +151,9 @@ public final class CommentsViewModel: CommentsViewModelType,
       requestNextPageWhen: requestNextPage,
       clearOnNewRequest: true,
       valuesFromEnvelope: { $0.comments },
-      cursorFromEnvelope: { ($0.slug, $0.cursor) },
-      requestFromParams: { projectOrUpdate in
-        projectOrUpdate.ifLeft {
-          AppEnvironment.current.apiService.fetchComments(
-            query: commentsQuery(
-              withProjectSlug:
-              $0.slug
-            )
-          )
-        } ifRight: {
-          AppEnvironment.current.apiService.fetchComments(
-            query: projectUpdateCommentsQuery(id: $0.id)
-          )
-        }
-      },
-      requestFromCursor: { projectSlug, cursor in
-        AppEnvironment.current.apiService.fetchComments(
-          query: commentsQuery(
-            withProjectSlug: projectSlug,
-            after: cursor
-          )
-        )
-      },
+      cursorFromEnvelope: { ($0.slug, $0.cursor, $0.updateID) },
+      requestFromParams: commentsFirstPage,
+      requestFromCursor: commentsNextPage,
       // only return new pages, we'll concat them ourselves
       concater: { _, value in value }
     )
@@ -422,4 +402,39 @@ private func commentsReplacingCommentById(
   mutableComments[commentIndex] = replacingComment
 
   return mutableComments
+}
+
+private func commentsFirstPage(from projectOrUpdate: Either<Project, Update>)
+  -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+  return projectOrUpdate.ifLeft {
+    AppEnvironment.current.apiService.fetchComments(
+      query: commentsQuery(
+        withProjectSlug:
+        $0.slug
+      )
+    )
+  } ifRight: {
+    AppEnvironment.current.apiService.fetchComments(
+      query: projectUpdateCommentsQuery(id: $0.id)
+    )
+  }
+}
+
+private func commentsNextPage(from projectSlug: String, cursor: String?,
+                              updateID: Int?) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
+  if let id = updateID {
+    return AppEnvironment.current.apiService.fetchComments(
+      query: projectUpdateCommentsQuery(
+        id: id,
+        after: cursor
+      )
+    )
+  } else {
+    return AppEnvironment.current.apiService.fetchComments(
+      query: commentsQuery(
+        withProjectSlug: projectSlug,
+        after: cursor
+      )
+    )
+  }
 }

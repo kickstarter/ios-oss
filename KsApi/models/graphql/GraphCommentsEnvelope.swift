@@ -6,6 +6,7 @@ struct GraphCommentsEnvelope: Decodable {
   var cursor: String?
   var hasNextPage: Bool
   var slug: String
+  var updateID: Int?
   var totalCount: Int
 }
 
@@ -13,6 +14,7 @@ extension GraphCommentsEnvelope {
   private enum CodingKeys: CodingKey {
     case comments
     case edges
+    case id
     case node
     case post
     case project
@@ -33,6 +35,8 @@ extension GraphCommentsEnvelope {
     } else {
       container = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .post)
       self.slug = ""
+      let updateIDString = try container.decodeIfPresent(String.self, forKey: .id)
+      self.updateID = updateIDString.flatMap(decompose(id:))
     }
 
     let commentsContainer = try container

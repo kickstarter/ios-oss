@@ -93,6 +93,7 @@ final class GraphCommentsEnvelopeTests: XCTestCase {
       XCTAssertTrue(envelope.comments[0].deleted)
       XCTAssertEqual(envelope.comments.count, 3)
 
+      XCTAssertNil(envelope.updateID)
       XCTAssertEqual(envelope.hasNextPage, true)
       XCTAssertEqual(envelope.cursor, "WzMwNDU4ODkxXQ==")
       XCTAssertEqual(envelope.totalCount, 61)
@@ -107,6 +108,7 @@ final class GraphCommentsEnvelopeTests: XCTestCase {
   func testUpdateCommentsDecode() {
     let dictionary: [String: Any] = [
       "post": [
+        "id": "WzMwNDU4ODkxXQ==",
         "comments": [
           "edges": [
             [
@@ -194,6 +196,7 @@ final class GraphCommentsEnvelopeTests: XCTestCase {
       XCTAssertTrue(envelope.comments[0].deleted)
       XCTAssertEqual(envelope.comments.count, 3)
 
+      XCTAssertEqual(envelope.updateID, decompose(id: "WzMwNDU4ODkxXQ=="))
       XCTAssertEqual(envelope.hasNextPage, true)
       XCTAssertEqual(envelope.cursor, "WzMwNDU4ODkxXQ==")
       XCTAssertEqual(envelope.totalCount, 61)
