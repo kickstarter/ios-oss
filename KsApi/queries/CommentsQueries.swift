@@ -79,23 +79,24 @@ public func commentRepliesQuery(
 }
 
 /**
- Constructs a query to fetch a `Comment`'s replies. Accepts an optional cursor to page in the
- replies before that cursor from most recent to oldest.
+ Constructs a query to fetch a list of top-level `Comment`s for a project update. Accepts an optional cursor to page in
+ the comments after that cursor from oldest to most recent.
 
- - parameter id: A parent `Comment`'s ID to fetch replies for.
- - parameter last: An optional limit parameter, defaulted to `Query.defaultPaginationCount`.
- - parameter before: An optional cursor to fetch the most recent replies before.
+ - parameter id: A `Update`'s id to fetch comments for.
+ - parameter first: An optional limit parameter, defaulted to `Query.defaultPaginationCount`.
+ - parameter after: An optional cursor to fetch the comments after.
 
  - returns: A `NonEmptySet<Query>`.
  */
-public func projectUpdatesQuery(
+public func projectUpdateCommentsQuery(
+  id: Int,
   first: Int = Query.defaultPaginationCount,
   after cursor: String? = nil
 ) -> NonEmptySet<Query> {
   let args = Set([cursor.flatMap(QueryArg<Never>.after), .first(first)].compact())
 
   return Query.post(
-    id: "RnJlZWZvcm1Qb3N0LTMxNjY0OTg=",
+    id: id,
     .id +| [
       .comments(
         args,

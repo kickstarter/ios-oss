@@ -14,6 +14,7 @@ extension GraphCommentsEnvelope {
     case comments
     case edges
     case node
+    case post
     case project
     case pageInfo
     case endCursor
@@ -24,12 +25,17 @@ extension GraphCommentsEnvelope {
 
   init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
+    let container: KeyedDecodingContainer<GraphCommentsEnvelope.CodingKeys>
 
-    let projectContainer = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .project)
+    if let projectContainer = try? values.nestedContainer(keyedBy: CodingKeys.self, forKey: .project) {
+      container = projectContainer
+      self.slug = try container.decode(String.self, forKey: .slug)
+    } else {
+      container = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .post)
+      self.slug = ""
+    }
 
-    self.slug = try projectContainer.decode(String.self, forKey: .slug)
-
-    let commentsContainer = try projectContainer
+    let commentsContainer = try container
       .nestedContainer(keyedBy: CodingKeys.self, forKey: .comments)
 
     var edges = try commentsContainer

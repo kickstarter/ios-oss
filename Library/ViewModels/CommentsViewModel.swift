@@ -139,9 +139,9 @@ public final class CommentsViewModel: CommentsViewModelType,
     let pullToRefresh = self.refreshProperty.signal
 
     let requestFirstPageWith = Signal.merge(
-      initialProject,
-      initialProject.takeWhen(retryFirstPage),
-      initialProject.takeWhen(pullToRefresh)
+      projectOrUpdate,
+      projectOrUpdate.takeWhen(retryFirstPage),
+      projectOrUpdate.takeWhen(pullToRefresh)
         // Thread hop so that we can clear our comments buffer before newly paginated results.
         .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
     )
@@ -152,8 +152,17 @@ public final class CommentsViewModel: CommentsViewModelType,
       clearOnNewRequest: true,
       valuesFromEnvelope: { $0.comments },
       cursorFromEnvelope: { ($0.slug, $0.cursor) },
-      requestFromParams: { project in
-        AppEnvironment.current.apiService.fetchUpdateComments(query: projectUpdatesQuery())
+      requestFromParams: { projectOrUpdate in
+        projectOrUpdate.ifLeft {
+          AppEnvironment.current.apiService.fetchComments(
+            query: commentsQuery(
+              withProjectSlug:
+              $0.slug
+            )
+          )
+        } ifRight: {
+          AppEnvironment.current.apiService.fetchComments(query: projectUpdateCommentsQuery(id: $0.id))
+        }
       },
       requestFromCursor: { projectSlug, cursor in
         AppEnvironment.current.apiService.fetchComments(
@@ -167,12 +176,6 @@ public final class CommentsViewModel: CommentsViewModelType,
       concater: { _, value in value }
     )
 
-   // let comments2 = AppEnvironment.current.apiService.fetchUpdateComments(query: projectUpdatesQuery()).map { $0.comments }
-    
-  //  _ = comments2.map({ comments in
-  //    print("*** COMMENTS \(comments)")
-  //  })
-    
     let commentsWithRetryingComment = currentComments
       .takePairWhen(self.retryingComment.signal.skipNil())
       .map(unpack)

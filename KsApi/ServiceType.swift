@@ -101,9 +101,6 @@ public protocol ServiceType {
 
   /// Fetch comments for a project with a query.
   func fetchComments(query: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
-  
-  /// Fetch comments for a project with a query.
-  func fetchUpdateComments(query: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope>
 
   /// Fetch comment replies for a comment with a query.
   func fetchCommentReplies(query: NonEmptySet<Query>) -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope>

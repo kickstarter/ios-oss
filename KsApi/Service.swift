@@ -179,12 +179,6 @@ public struct Service: ServiceType {
       .mapError(ErrorEnvelope.envelope(from:))
       .flatMap(CommentsEnvelope.envelopeProducer(from:))
   }
-  
-  public func fetchUpdateComments(query: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-    return fetch(query: query)
-      .mapError(ErrorEnvelope.envelope(from:))
-      .flatMap(CommentsEnvelope.envelopeProducer(from:))
-  }
 
   public func fetchCommentReplies(query: NonEmptySet<Query>)
     -> SignalProducer<CommentRepliesEnvelope, ErrorEnvelope> {
