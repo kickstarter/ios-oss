@@ -2,7 +2,6 @@ import Appboy_iOS_SDK
 import AppCenter
 import AppCenterDistribute
 import FBSDKCoreKit
-import Firebase
 import Foundation
 #if DEBUG
   @testable import KsApi
@@ -20,6 +19,7 @@ import Segment
 import Segment_Appboy
 import UIKit
 import UserNotifications
+import Firebase
 
 @UIApplicationMain
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
