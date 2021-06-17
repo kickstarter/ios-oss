@@ -146,7 +146,7 @@ final class CommentComposerView: UIView {
         self?.inputContainerView.inputTextView.text = nil
       }
 
-    self.viewModel.outputs.inputTextViewResignFirstResponder
+    self.viewModel.outputs.inputTextViewBecomeFirstResponder
       .observeForUI()
       .observeValues { [weak self] _ in
         self?.inputContainerView.inputTextView.resignFirstResponder()

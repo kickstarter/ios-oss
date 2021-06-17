@@ -42,8 +42,8 @@ public protocol CommentComposerViewModelOutputs {
   /// Emits a boolean that determines if the input area is hidden.
   var inputAreaHidden: Signal<Bool, Never> { get }
 
-  /// Emits when the input textview should resign first responder.
-  var inputTextViewResignFirstResponder: Signal<(), Never> { get }
+  /// Emits when the input textview should become first responder.
+  var inputTextViewBecomeFirstResponder: Signal<Bool, Never> { get }
 
   /// Emits when composer notifies view controller of comment submitted.
   var notifyDelegateDidSubmitText: Signal<String, Never> { get }
@@ -53,9 +53,6 @@ public protocol CommentComposerViewModelOutputs {
 
   /// Emits a boolean that determines if the post button is hidden.
   var postButtonHidden: Signal<Bool, Never> { get }
-
-  /// Emits a boolean that determines if the inputTextView should be shown on initialization.
-  var shouldBecomeFirstResponder: Signal<Bool, Never> { get }
 
   /// Emits when the input area size should be reset.
   var updateTextViewHeight: Signal<(), Never> { get }
@@ -102,9 +99,14 @@ public final class CommentComposerViewModel:
         return updatedText.trimmed().count <= CommentComposerConstant.characterLimit
       }
 
-    self.inputTextViewResignFirstResponder = self.resetInputProperty.signal
+    self.inputTextViewBecomeFirstResponder = self.resetInputProperty.signal
     self.updateTextViewHeight = self.bodyText.signal.ignoreValues()
     self.clearInputTextView = self.bodyText.filter { $0 == nil }.ignoreValues()
+  }
+
+  fileprivate let inputTextViewBecomeFirstResponderProperty = MutableProperty(())
+  public func setInputTextViewBecomeFirstResponder() {
+    self.inputTextViewBecomeFirstResponderProperty.value = ()
   }
 
   private let bodyTextDidChangeProperty = MutableProperty<String?>(nil)
@@ -139,11 +141,10 @@ public final class CommentComposerViewModel:
   public var clearInputTextView: Signal<(), Never>
   public var commentComposerHidden: Signal<Bool, Never>
   public var inputAreaHidden: Signal<Bool, Never>
-  public var inputTextViewResignFirstResponder: Signal<(), Never>
+  public var inputTextViewBecomeFirstResponder: Signal<Bool, Never>
   public var notifyDelegateDidSubmitText: Signal<String, Never>
   public var placeholderHidden: Signal<Bool, Never>
   public var postButtonHidden: Signal<Bool, Never>
-  public var shouldBecomeFirstResponder: Signal<Bool, Never>
   public var updateTextViewHeight: Signal<(), Never>
 
   public var inputs: CommentComposerViewModelInputs { return self }

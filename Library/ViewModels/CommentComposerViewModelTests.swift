@@ -26,7 +26,7 @@ final class CommentComposerViewModelTests: TestCase {
     self.vm.outputs.notifyDelegateDidSubmitText.observe(self.notifyDelegateDidSubmitText.observer)
     self.vm.outputs.postButtonHidden.observe(self.postButtonHidden.observer)
     self.vm.outputs.placeholderHidden.observe(self.placeholderHidden.observer)
-    self.vm.outputs.inputTextViewResignFirstResponder.observe(self.inputTextViewResignFirstResponder.observer)
+    self.vm.outputs.inputTextViewBecomeFirstResponder.observe(self.inputTextViewResignFirstResponder.observer)
     self.vm.outputs.clearInputTextView.observe(self.clearInputTextView.observer)
     self.vm.outputs.commentComposerHidden.observe(self.commentComposerHidden.observer)
     self.vm.outputs.updateTextViewHeight.observe(self.updateTextViewHeight.observer)
