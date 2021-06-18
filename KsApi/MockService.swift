@@ -626,10 +626,6 @@
       return .empty
     }
 
-    func fetchUpdateComments(query _: NonEmptySet<Query>) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-      producer(for: self.fetchCommentsEnvelopeResult)
-    }
-
     internal func fetchComments(paginationUrl _: String)
       -> SignalProducer<DeprecatedCommentsEnvelope, ErrorEnvelope> {
       if let error = fetchCommentsError {
