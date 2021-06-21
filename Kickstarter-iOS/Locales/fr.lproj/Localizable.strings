@@ -122,6 +122,7 @@
 "Continue_with_quantity_count_add_ons.zero" = "Continuer avec %{quantity_count} compléments";
 "Continue_with_this_reward" = "Continuer avec cette récompense ?";
 "Couldnt_add_attachment" = "Impossible d'ajouter la pièce jointe";
+"Couldnt_load_more_comments_Tap_to_retry" = "Impossible de charger plus de commentaires.\nCliquez pour réessayer.";
 "Couldnt_open_live_stream_Try_again_later" = "Impossible d'ouvrir la diffusion en direct. Veuillez réessayer plus tard.";
 "Couldnt_post" = "Publication impossible. Cliquez pour réessayer.";
 "Couldnt_remove_attachment" = "Impossible de supprimer la pièce jointe";
@@ -312,7 +313,7 @@
 "Kickstarter_on_Film" = "Kickstarter on Film";
 "Know_when_creators_and_backers_message_you" = "Activez vos notifications pour savoir quand un créateur ou un contributeur vous envoie un message.";
 "Learn_more_about_accountability" = "En savoir plus sur la responsabilité";
-"Learn_more_about_comment_guidelines" = "En savoir plus sur les directives applicables aux commentaires";
+"Learn_more_about_comment_guidelines" = "<a href=\"%{community_link}\">En savoir plus sur les directives applicables aux commentaires</a>";
 "Left_count_left.few" = "%{left_count} restantes";
 "Left_count_left.many" = "%{left_count} restantes";
 "Left_count_left.one" = "%{left_count} restante";
@@ -429,6 +430,8 @@
 "Post" = "Publier";
 "Postal_code" = "Code postal";
 "Postcode" = "Code postal";
+"Posted" = "Publié";
+"Posting" = "Publication en cours...";
 "Preparing_your_personal_data" = "La préparation de vos données personnelles est en cours...";
 "Privacy" = "Vie privée";
 "Private_profile" = "Profil privé";
@@ -647,6 +650,7 @@
 "View_dashboard" = "Tableau de bord";
 "View_progress" = "Voir les progrès";
 "View_project" = "Afficher le projet";
+"View_replies" = "Afficher les réponses";
 "View_rewards" = "Afficher les récompenses";
 "View_the_rewards" = "Voir les récompenses";
 "View_your_pledge" = "Afficher mon engagement";

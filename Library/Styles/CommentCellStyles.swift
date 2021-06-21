@@ -71,3 +71,15 @@ public let resetTextStyle: PaddingLabelStyle = { label in
     |> \.backgroundColor .~ .clear
     |> \.insets .~ UIEdgeInsets(all: Styles.grid(1))
 }
+
+public let viewRepliesStackViewStyle: StackViewStyle = { stackView in
+  stackView
+    |> \.axis .~ .horizontal
+    |> \.alignment .~ .center
+    |> \.layoutMargins .~ .init(all: Styles.grid(3))
+    |> \.isLayoutMarginsRelativeArrangement .~ true
+    |> \.spacing .~ Styles.grid(1)
+    |> \.layer.borderWidth .~ 1
+    |> \.layer.borderColor .~ UIColor.ksr_support_200.cgColor
+    |> roundedStyle(cornerRadius: 2.0)
+}

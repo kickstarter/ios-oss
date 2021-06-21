@@ -9,8 +9,8 @@ public final class KSRAnalytics {
   internal private(set) var config: Config?
   private let device: UIDeviceType
   internal private(set) var loggedInUser: User? {
-    didSet {
-      self.identify(self.loggedInUser)
+    willSet {
+      self.identify(oldUser: self.loggedInUser, newUser: newValue)
     }
   }
 
@@ -39,8 +39,6 @@ public final class KSRAnalytics {
     case changePayment = "change_payment" // PledgeViewController
     case checkout // // PledgeViewController
     case discovery = "discover" // DiscoveryViewController
-    case editorialProjects = "editorial_collection" // EditorialProjectsViewController
-    case emailVerification = "email_verification" // EmailVerificationViewController
     case forgotPassword = "forgot_password" // ResetPasswordViewController
     case landingPage = "landing_page" // LandingViewController
     case login = "log_in" // LoginViewController
@@ -533,24 +531,21 @@ public final class KSRAnalytics {
   }
 
   /// Configure Tracking Client's supporting user identity
-  private func identify(_ user: User?) {
-    guard let user = user else {
+  private func identify(oldUser: User?, newUser: User?) {
+    guard let newUser = newUser else {
       self.segmentClient?.reset()
       return
     }
 
-    let previousIdentityData = AppEnvironment.current.userDefaults.analyticsIdentityData
-
-    let newData = KSRAnalyticsIdentityData(user)
-
-    guard newData != previousIdentityData else { return }
+    let newData = KSRAnalyticsIdentityData(newUser)
+    if let oldUser = oldUser, newData == KSRAnalyticsIdentityData(oldUser) {
+      return
+    }
 
     self.segmentClient?.identify(
       "\(newData.userId)",
       traits: newData.allTraits
     )
-
-    AppEnvironment.current.userDefaults.analyticsIdentityData = newData
   }
 
   // MARK: - Activity
@@ -711,24 +706,6 @@ public final class KSRAnalytics {
     self.track(
       event: SegmentEvent.ctaClicked.rawValue,
       properties: props
-    )
-  }
-
-  /**
-   Call when the user taps the editorial header at the top of Discovery
-   */
-  public func trackEditorialHeaderTapped(params: DiscoveryParams,
-                                         refTag: RefTag) {
-    let props = contextProperties(
-      page: .discovery,
-      locationContext: .discoverAdvanced
-    )
-    .withAllValuesFrom(discoveryProperties(from: params))
-
-    self.track(
-      event: SegmentEvent.cardClicked.rawValue,
-      properties: props,
-      refTag: refTag.stringTag
     )
   }
 

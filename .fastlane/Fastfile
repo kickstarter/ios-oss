@@ -257,7 +257,7 @@ platform :ios do
   desc "Commit history from a given tag"
   lane :commit_history do |options|
     changelog_from_git_commits(
-      between: [options[:tag], "master"],
+      between: [options[:tag], "main"],
       pretty: "- %s",
       date_format: "short",
       match_lightweight_tag: false,

@@ -8,7 +8,10 @@ private let concurrentCommentLimit: UInt = 5
 public protocol CommentsViewModelInputs {
   /// Call when the User is posting a comment or reply.
   func commentComposerDidSubmitText(_ text: String)
-  
+
+  /// Call when the delegate method for the CommentRemovedCellDelegate is called.
+  func commentRemovedCellDidTapURL(_ url: URL)
+
   /// Call when the user tapped to retry after failed pagination.
   func commentTableViewFooterViewDidTapRetry()
 
@@ -36,9 +39,6 @@ public protocol CommentsViewModelOutputs {
   /// Emits a boolean that determines if cell separator is to be hidden.
   var cellSeparatorHidden: Signal<Bool, Never> { get }
 
-  /// Emits a boolean that determines if the comment input area is visible.
-  var commentComposerViewHidden: Signal<Bool, Never> { get }
-
   /// Emits data to configure comment composer view.
   var configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never> { get }
 
@@ -50,6 +50,9 @@ public protocol CommentsViewModelOutputs {
 
   /// Emits a list of `Comment`s and the `Project` to load into the data source.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project, Bool), Never> { get }
+
+  /// Emits a HelpType to use when presenting a HelpWebViewController.
+  var showHelpWebViewController: Signal<HelpType, Never> { get }
 
   /// Emits when a comment has been posted and we should scroll to top and reset the composer.
   var resetCommentComposerAndScrollToTop: Signal<(), Never> { get }
@@ -96,15 +99,12 @@ public final class CommentsViewModel: CommentsViewModelType,
         let canPostComment = isBacker || isCreatorOrCollaborator
 
         guard let user = currentUser else {
-          return (nil, false)
+          return (nil, false, true)
         }
 
         let url = URL(string: user.avatar.medium)
-        return (url, canPostComment)
+        return (url, canPostComment, false)
       }
-
-    self.commentComposerViewHidden = currentUser.signal
-      .map { user in user.isNil }
 
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
       .map { row, total -> Bool in
@@ -242,7 +242,9 @@ public final class CommentsViewModel: CommentsViewModelType,
     .takePairWhen(commentComposerDidSubmitText)
     .map(unpack)
     .flatMap(.concurrent(limit: concurrentCommentLimit), postCommentProducer)
+
     let currentlyRetrying = MutableProperty<Set<String>>([])
+
     let newErroredCommentTapped = erroredCommentTapped
       // Check that we are not currently retrying this comment.
       .filter { [currentlyRetrying] comment in !currentlyRetrying.value.contains(comment.id) }
@@ -284,6 +286,10 @@ public final class CommentsViewModel: CommentsViewModelType,
         .map(first)
     )
     .skipRepeats()
+
+    self.showHelpWebViewController = self.commentRemovedCellDidTapURLProperty.signal.skipNil()
+      .map(HelpType.helpType)
+      .skipNil()
   }
 
   // Properties to assist with injecting these values into the existing data streams.
@@ -299,6 +305,11 @@ public final class CommentsViewModel: CommentsViewModelType,
   fileprivate let commentComposerDidSubmitTextProperty = MutableProperty<String?>(nil)
   public func commentComposerDidSubmitText(_ text: String) {
     self.commentComposerDidSubmitTextProperty.value = text
+  }
+
+  fileprivate let commentRemovedCellDidTapURLProperty = MutableProperty<URL?>(nil)
+  public func commentRemovedCellDidTapURL(_ url: URL) {
+    self.commentRemovedCellDidTapURLProperty.value = url
   }
 
   private let commentTableViewFooterViewDidTapRetryProperty = MutableProperty(())
@@ -328,11 +339,11 @@ public final class CommentsViewModel: CommentsViewModelType,
 
   public let beginOrEndRefreshing: Signal<Bool, Never>
   public let cellSeparatorHidden: Signal<Bool, Never>
-  public let commentComposerViewHidden: Signal<Bool, Never>
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never>
   public let goToCommentReplies: Signal<Comment, Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project, Bool), Never>
+  public let showHelpWebViewController: Signal<HelpType, Never>
   public let resetCommentComposerAndScrollToTop: Signal<(), Never>
 
   public var inputs: CommentsViewModelInputs { return self }

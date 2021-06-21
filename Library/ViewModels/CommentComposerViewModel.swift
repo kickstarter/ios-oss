@@ -2,7 +2,7 @@ import Foundation
 import KsApi
 import ReactiveSwift
 
-public typealias CommentComposerViewData = (avatarURL: URL?, canPostComment: Bool)
+public typealias CommentComposerViewData = (avatarURL: URL?, canPostComment: Bool, hidden: Bool)
 
 public enum CommentComposerConstant {
   // The API only supports comments not more than 9000 characters
@@ -22,7 +22,7 @@ public protocol CommentComposerViewModelInputs {
   /// Call when the input textview of the composer should be reset.
   func resetInput()
 
-  /// Call in  `textView(_:shouldChangeTextIn:replacementText:)` UITextView delegate method.
+  /// Call in `textView(_:shouldChangeTextIn:replacementText:)` `UITextViewDelegate` method.
   func textViewShouldChange(text: String?, in range: NSRange, replacementText: String) -> Bool
 }
 
@@ -35,6 +35,9 @@ public protocol CommentComposerViewModelOutputs {
 
   /// Emits when input text view's text should be cleared
   var clearInputTextView: Signal<(), Never> { get }
+
+  /// Emits a boolean that determines if the comment composer view is hidden.
+  var commentComposerHidden: Signal<Bool, Never> { get }
 
   /// Emits a boolean that determines if the input area is hidden.
   var inputAreaHidden: Signal<Bool, Never> { get }
@@ -71,6 +74,8 @@ public final class CommentComposerViewModel:
       self.resetInputProperty.signal.mapConst(nil)
     )
     self.inputAreaHidden = self.configDataProperty.signal.skipNil().map(\.canPostComment).negate()
+
+    self.commentComposerHidden = self.configDataProperty.signal.skipNil().map(\.hidden)
 
     self.notifyDelegateDidSubmitText = self.bodyText.skipNil()
       .takeWhen(self.postButtonPressedProperty.signal)
@@ -129,6 +134,7 @@ public final class CommentComposerViewModel:
   public var avatarURL: Signal<URL?, Never>
   public var bodyText: Signal<String?, Never>
   public var clearInputTextView: Signal<(), Never>
+  public var commentComposerHidden: Signal<Bool, Never>
   public var inputAreaHidden: Signal<Bool, Never>
   public var inputTextViewResignFirstResponder: Signal<(), Never>
   public var notifyDelegateDidSubmitText: Signal<String, Never>

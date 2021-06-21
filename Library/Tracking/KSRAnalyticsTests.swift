@@ -517,7 +517,6 @@ final class KSRAnalyticsTests: TestCase {
       )
       <> DiscoveryParams.lens.query .~ "collage"
       <> DiscoveryParams.lens.sort .~ .popular
-      <> DiscoveryParams.lens.tagId .~ .lightsOn
       <> DiscoveryParams.lens.page .~ 2
 
     let loggedInUser = User.template |> \.id .~ 42
@@ -540,7 +539,7 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertEqual(Category.filmAndVideo.intID, segmentClientProperties?["discover_category_id"] as? Int)
     XCTAssertEqual(Category.filmAndVideo.name, segmentClientProperties?["discover_category_name"] as? String)
     XCTAssertEqual("popular", segmentClientProperties?["discover_sort"] as? String)
-    XCTAssertEqual("ios_project_collection_tag_557", segmentClientProperties?["discover_ref_tag"] as? String)
+    XCTAssertEqual("category_popular", segmentClientProperties?["discover_ref_tag"] as? String)
     XCTAssertEqual("collage", segmentClientProperties?["discover_search_term"] as? String)
   }
 
@@ -1540,20 +1539,47 @@ final class KSRAnalyticsTests: TestCase {
     XCTAssertNil(self.segmentTrackingClient.traits)
   }
 
-  func testIdentifyingTrackingClient_DoesNotRepeat() {
-    let mockKeyValueStore = MockKeyValueStore()
-
+  func testIdentifyingTrackingClient_OnInitialUserSet() {
     let user = User.template
 
-    let data = KSRAnalyticsIdentityData(user)
+    withEnvironment {
+      AppEnvironment.updateCurrentUser(user)
 
-    mockKeyValueStore.analyticsIdentityData = data
+      XCTAssertEqual(self.segmentTrackingClient.userId, "\(1)")
+      XCTAssertEqual(self.segmentTrackingClient.traits?["name"] as? String, user.name)
+    }
+  }
 
-    withEnvironment(userDefaults: mockKeyValueStore) {
+  func testIdentifyingTrackingClient_DoesNotRepeatAfterInitialUserSet() {
+    let user = User.template
+
+    withEnvironment {
+      AppEnvironment.updateCurrentUser(user)
+      self.segmentTrackingClient.userId = nil
+      self.segmentTrackingClient.traits = nil
       AppEnvironment.updateCurrentUser(user)
 
       XCTAssertNil(self.segmentTrackingClient.userId)
       XCTAssertNil(self.segmentTrackingClient.traits)
+    }
+  }
+
+  func testIdentifyingTrackingClient_RepeatsIfAnalyticsIdentityDataChanges() {
+    let user = User.template
+      |> User.lens.notifications.follower .~ false
+    let updatedUser = user
+      |> User.lens.notifications.follower .~ true
+
+    withEnvironment {
+      AppEnvironment.updateCurrentUser(user)
+
+      self.segmentTrackingClient.userId = nil
+      self.segmentTrackingClient.traits = nil
+
+      AppEnvironment.updateCurrentUser(updatedUser)
+
+      XCTAssertNotNil(self.segmentTrackingClient.userId)
+      XCTAssertNotNil(self.segmentTrackingClient.traits)
     }
   }
 
@@ -1563,10 +1589,6 @@ final class KSRAnalyticsTests: TestCase {
     let user = User.template
       |> User.lens.notifications.mobileUpdates .~ true
       |> User.lens.notifications.messages .~ true
-
-    let data = KSRAnalyticsIdentityData(user)
-
-    mockKeyValueStore.analyticsIdentityData = data
 
     withEnvironment(userDefaults: mockKeyValueStore) {
       let updatedUser = User.template
@@ -1631,9 +1653,6 @@ final class KSRAnalyticsTests: TestCase {
     let ksrAnalytics = KSRAnalytics(segmentClient: segmentClient)
 
     ksrAnalytics.trackDiscovery(params: .defaults)
-    XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
-
-    ksrAnalytics.trackEditorialHeaderTapped(params: .defaults, refTag: .discovery)
     XCTAssertEqual("discover", segmentClient.properties.last?["context_page"] as? String)
 
     ksrAnalytics.trackExploreButtonClicked()

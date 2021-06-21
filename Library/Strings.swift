@@ -954,7 +954,8 @@ Unterstützer"
 patrocinadores"
    - **fr**: "%{backers_count}
 contributeurs"
-   - **ja**: "%{backers_count} バッカー"
+   - **ja**: "%{backers_count}
+バッカー"
   */
   public static func Backers_count_separator_backers(backers_count: Int) -> String {
     return localizedString(
@@ -1991,6 +1992,29 @@ Haz clic para volver a intentarlo."
     return localizedString(
       key: "Couldnt_add_attachment",
       defaultValue: "Couldn't add attachment",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Couldn't load more comments.
+Tap to retry"
+
+   - **en**: "Couldn't load more comments.
+Tap to retry"
+   - **de**: "Weitere Kommentare konnten nicht geladen werden.
+Antippen und erneut versuchen"
+   - **es**: "No se pudo cargar más comentarios.
+Toca para intentar de nuevo."
+   - **fr**: "Impossible de charger plus de commentaires.
+Cliquez pour réessayer."
+   - **ja**: "他のコメントを読み込めませんでした。
+タップして再試行してください"
+  */
+  public static func Couldnt_load_more_comments_Tap_to_retry() -> String {
+    return localizedString(
+      key: "Couldnt_load_more_comments_Tap_to_retry",
+      defaultValue: "Couldn't load more comments.\nTap to retry",
       count: nil,
       substitutions: [:]
     )
@@ -5161,20 +5185,20 @@ with friends."
     )
   }
   /**
-   "Learn more about comment guidelines"
+   "<a href="%{community_link}">Learn more about comment guidelines</a>"
 
-   - **en**: "Learn more about comment guidelines"
-   - **de**: "Mehr Info zu den Kommentar-Richtlinien"
-   - **es**: "Más información sobre las reglas de los comentarios"
-   - **fr**: "En savoir plus sur les directives applicables aux commentaires"
-   - **ja**: "コメントのガイドラインについて詳細を見る"
+   - **en**: "<a href="%{community_link}">Learn more about comment guidelines</a>"
+   - **de**: "<a href="%{community_link}">Mehr Info zu Kommentar-Richtlinien</a>"
+   - **es**: "<a href="%{community_link}">Más información sobre las reglas de los comentarios</a>"
+   - **fr**: "<a href="%{community_link}">En savoir plus sur les directives applicables aux commentaires</a>"
+   - **ja**: "<a href="%{community_link}">コメントのガイドラインについてもっと詳しく</a>"
   */
-  public static func Learn_more_about_comment_guidelines() -> String {
+  public static func Learn_more_about_comment_guidelines(community_link: String) -> String {
     return localizedString(
       key: "Learn_more_about_comment_guidelines",
-      defaultValue: "Learn more about comment guidelines",
+      defaultValue: "<a href=\"%{community_link}\">Learn more about comment guidelines</a>",
       count: nil,
-      substitutions: [:]
+      substitutions: ["community_link": community_link]
     )
   }
   /**
@@ -6307,7 +6331,7 @@ n'ont rien soutenu."
 
    - **en**: "Only backers can post comments."
    - **de**: "Kommentare können nur von Unterstützern hinterlassen werden."
-   - **es**: "Only backers can post comments."
+   - **es**: "Sólo los patrocinadores pueden publicar comentarios."
    - **fr**: "Seuls les contributeurs peuvent commenter."
    - **ja**: "バッカーのみコメントできます。"
   */
@@ -7080,6 +7104,40 @@ n'ont rien soutenu."
     return localizedString(
       key: "Postcode",
       defaultValue: "Postcode",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Posted"
+
+   - **en**: "Posted"
+   - **de**: "Veröffentlicht"
+   - **es**: "Publicado"
+   - **fr**: "Publié"
+   - **ja**: "投稿しました"
+  */
+  public static func Posted() -> String {
+    return localizedString(
+      key: "Posted",
+      defaultValue: "Posted",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "Posting..."
+
+   - **en**: "Posting..."
+   - **de**: "Veröffentlichung läuft..."
+   - **es**: "Publicación en proceso..."
+   - **fr**: "Publication en cours..."
+   - **ja**: "投稿中…"
+  */
+  public static func Posting() -> String {
+    return localizedString(
+      key: "Posting",
+      defaultValue: "Posting...",
       count: nil,
       substitutions: [:]
     )
@@ -10519,6 +10577,23 @@ catch your eye?"
     return localizedString(
       key: "View_project",
       defaultValue: "View project",
+      count: nil,
+      substitutions: [:]
+    )
+  }
+  /**
+   "View replies"
+
+   - **en**: "View replies"
+   - **de**: "Antworten ansehen"
+   - **es**: "Ver respuestas"
+   - **fr**: "Afficher les réponses"
+   - **ja**: "返信を表示"
+  */
+  public static func View_replies() -> String {
+    return localizedString(
+      key: "View_replies",
+      defaultValue: "View replies",
       count: nil,
       substitutions: [:]
     )
