@@ -3,8 +3,16 @@ import Library
 import Prelude
 import UIKit
 
+protocol CommentCellDelegate: AnyObject {
+  func commentCellDidTapReply(_ cell: CommentCell, comment: Comment)
+}
+
 final class CommentCell: UITableViewCell, ValueCell {
   // MARK: - Properties
+
+  private var comment: Comment?
+  weak var delegate: CommentCellDelegate?
+  private let viewModel = CommentCellViewModel()
 
   private lazy var bodyTextView: UITextView = { UITextView(frame: .zero) }()
   private lazy var bottomRowStackView: UIStackView = { UIStackView(frame: .zero) }()
@@ -22,8 +30,6 @@ final class CommentCell: UITableViewCell, ValueCell {
       |> \.translatesAutoresizingMaskIntoConstraints .~ false
   }()
 
-  private let viewModel = CommentCellViewModel()
-
   // MARK: - Lifecycle
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -32,10 +38,19 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.bindStyles()
     self.configureViews()
     self.bindViewModel()
+
+    self.replyButton.addTarget(self, action: #selector(self.replyButtonTapped), for: .touchUpInside)
   }
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
+  }
+
+  // MARK: - Actions
+
+  @objc func replyButtonTapped() {
+    guard let comment = comment else { return }
+    self.delegate?.commentCellDidTapReply(self, comment: comment)
   }
 
   // MARK: - Styles
@@ -70,6 +85,7 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.commentCellHeaderStackView
       .configureWith(comment: value.comment)
     self.viewModel.inputs.configureWith(comment: value.comment, project: value.project)
+    self.comment = value.comment
   }
 
   private func configureViews() {

@@ -9,6 +9,7 @@ import XCTest
 internal final class CommentRepliesViewModelTests: TestCase {
   private let vm: CommentRepliesViewModelType = CommentRepliesViewModel()
 
+  private let configureCommentComposerBecomeFirstResponder = TestObserver<Bool, Never>()
   private let configureCommentComposerViewURL = TestObserver<URL?, Never>()
   private let configureCommentComposerViewCanPostComment = TestObserver<Bool, Never>()
   private let loadCommentIntoDataSourceComment = TestObserver<Comment, Never>()
@@ -16,9 +17,11 @@ internal final class CommentRepliesViewModelTests: TestCase {
   override func setUp() {
     super.setUp()
 
-    self.vm.outputs.configureCommentComposerViewWithData.map(first)
+    self.vm.outputs.configureCommentComposerViewWithData.map(\.becomeFirstResponder)
+      .observe(self.configureCommentComposerBecomeFirstResponder.observer)
+    self.vm.outputs.configureCommentComposerViewWithData.map(\.avatarURL)
       .observe(self.configureCommentComposerViewURL.observer)
-    self.vm.outputs.configureCommentComposerViewWithData.map(second)
+    self.vm.outputs.configureCommentComposerViewWithData.map(\.canPostComment)
       .observe(self.configureCommentComposerViewCanPostComment.observer)
     self.vm.outputs.loadCommentIntoDataSource.observe(self.loadCommentIntoDataSourceComment.observer)
   }
@@ -31,7 +34,8 @@ internal final class CommentRepliesViewModelTests: TestCase {
     withEnvironment {
       self.vm.inputs.configureWith(
         comment: rootComment,
-        project: .template
+        project: .template,
+        inputAreaBecomeFirstResponder: false
       )
 
       self.loadCommentIntoDataSourceComment.assertDidNotEmitValue()
@@ -47,8 +51,10 @@ internal final class CommentRepliesViewModelTests: TestCase {
     self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
 
     withEnvironment(currentUser: nil) {
-      self.vm.inputs.configureWith(comment: .template, project: .template)
+      self.vm.inputs
+        .configureWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: false)
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
 
       self.configureCommentComposerViewURL
         .assertValues([nil], "nil is emitted because the user is not logged in.")
@@ -64,8 +70,10 @@ internal final class CommentRepliesViewModelTests: TestCase {
     self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(comment: .template, project: .template)
+      self.vm.inputs
+        .configureWith(comment: .template, project: .template, inputAreaBecomeFirstResponder: false)
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
 
       self.configureCommentComposerViewURL
         .assertValues(
@@ -87,8 +95,9 @@ internal final class CommentRepliesViewModelTests: TestCase {
     self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(comment: .template, project: project)
+      self.vm.inputs.configureWith(comment: .template, project: project, inputAreaBecomeFirstResponder: false)
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
 
       self.configureCommentComposerViewURL
         .assertValues(
@@ -109,8 +118,9 @@ internal final class CommentRepliesViewModelTests: TestCase {
     self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(comment: .template, project: project)
+      self.vm.inputs.configureWith(comment: .template, project: project, inputAreaBecomeFirstResponder: false)
       self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
 
       self.configureCommentComposerViewURL
         .assertValues(
@@ -119,6 +129,55 @@ internal final class CommentRepliesViewModelTests: TestCase {
         )
       self.configureCommentComposerViewCanPostComment
         .assertValues([true], "true is emitted because current user is creator or collaborator.")
+    }
+  }
+
+  func testOutput_ConfigureCommentComposerViewWithData_IsFromReplyComment() {
+    let project = Project.template
+      |> \.personalization.isBacking .~ false
+      |> Project.lens.memberData.permissions .~ [.post, .viewPledges, .comment]
+
+    self.configureCommentComposerViewURL.assertDidNotEmitValue()
+    self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
+
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(comment: .template, project: project, inputAreaBecomeFirstResponder: true)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
+
+      self.configureCommentComposerViewURL
+        .assertValues(
+          [URL(string: "http://www.kickstarter.com/medium.jpg")],
+          "An URL is emitted because the user is logged in."
+        )
+      self.configureCommentComposerBecomeFirstResponder
+        .assertValues([true], "true is emitted because the user clicked on reply on the root comment")
+    }
+  }
+
+  func testOutput_ConfigureCommentComposerViewWithData_IsFromViewReplies() {
+    let project = Project.template
+      |> \.personalization.isBacking .~ false
+      |> Project.lens.memberData.permissions .~ [.post, .viewPledges, .comment]
+
+    self.configureCommentComposerViewURL.assertDidNotEmitValue()
+    self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
+
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(comment: .template, project: project, inputAreaBecomeFirstResponder: false)
+      self.vm.inputs.viewDidLoad()
+      self.vm.inputs.viewDidAppear()
+
+      self.configureCommentComposerViewURL
+        .assertValues(
+          [URL(string: "http://www.kickstarter.com/medium.jpg")],
+          "An URL is emitted because the user is logged in."
+        )
+      self.configureCommentComposerBecomeFirstResponder
+        .assertValues(
+          [false],
+          "false is emitted because the user clicked on view replies on the root comment"
+        )
     }
   }
 }

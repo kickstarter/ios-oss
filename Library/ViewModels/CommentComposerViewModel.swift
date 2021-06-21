@@ -2,7 +2,12 @@ import Foundation
 import KsApi
 import ReactiveSwift
 
-public typealias CommentComposerViewData = (avatarURL: URL?, canPostComment: Bool, hidden: Bool)
+public typealias CommentComposerViewData = (
+  avatarURL: URL?,
+  canPostComment: Bool,
+  hidden: Bool,
+  becomeFirstResponder: Bool
+)
 
 public enum CommentComposerConstant {
   // The API only supports comments not more than 9000 characters
@@ -99,14 +104,13 @@ public final class CommentComposerViewModel:
         return updatedText.trimmed().count <= CommentComposerConstant.characterLimit
       }
 
-    self.inputTextViewBecomeFirstResponder = self.resetInputProperty.signal
+    self.inputTextViewBecomeFirstResponder = Signal.merge(
+      self.configDataProperty.signal.skipNil().map(\.becomeFirstResponder),
+      self.resetInputProperty.signal.map { false }
+    )
+
     self.updateTextViewHeight = self.bodyText.signal.ignoreValues()
     self.clearInputTextView = self.bodyText.filter { $0 == nil }.ignoreValues()
-  }
-
-  fileprivate let inputTextViewBecomeFirstResponderProperty = MutableProperty(())
-  public func setInputTextViewBecomeFirstResponder() {
-    self.inputTextViewBecomeFirstResponderProperty.value = ()
   }
 
   private let bodyTextDidChangeProperty = MutableProperty<String?>(nil)

@@ -12,6 +12,9 @@ public protocol CommentsViewModelInputs {
   /// Call when the delegate method for the CommentRemovedCellDelegate is called.
   func commentRemovedCellDidTapURL(_ url: URL)
 
+  /// Call when the delegate method for the CommentCellDelegate is called.
+  func commentCellDidTapReply(comment: Comment)
+
   /// Call when the user tapped to retry after failed pagination.
   func commentTableViewFooterViewDidTapRetry()
 
@@ -45,8 +48,8 @@ public protocol CommentsViewModelOutputs {
   /// Configures the footer view with the current state.
   var configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never> { get }
 
-  /// Emits the selected `Comment` and the `Project` to navigate to its replies.
-  var goToRepliesWithCommentAndProject: Signal<(Comment, Project), Never> { get }
+  /// Emits the selected `Comment`, `Project` and a `Bool` to determine if keyboard should show when user to navigate to replies.
+  var goToRepliesWithCommentProjectAndShowKeyboard: Signal<(Comment, Project, Bool), Never> { get }
 
   /// Emits a list of `Comment`s and the `Project` to load into the data source.
   var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
@@ -99,11 +102,11 @@ public final class CommentsViewModel: CommentsViewModelType,
         let canPostComment = isBacker || isCreatorOrCollaborator
 
         guard let user = currentUser else {
-          return (nil, false, true)
+          return (nil, false, true, false)
         }
 
         let url = URL(string: user.avatar.medium)
-        return (url, canPostComment, false)
+        return (url, canPostComment, false, false)
       }
 
     let isCloseToBottom = self.willDisplayRowProperty.signal.skipNil()
@@ -224,7 +227,20 @@ public final class CommentsViewModel: CommentsViewModelType,
     let commentWithReplies = regularCommentTapped
       .filter { comment in comment.replyCount > 0 }
 
-    self.goToRepliesWithCommentAndProject = Signal.combineLatest(commentWithReplies, initialProject)
+    let commentsWithRepliesAndProject = Signal.combineLatest(
+      commentWithReplies, initialProject
+    )
+
+    let replyCommentWithProject = Signal.combineLatest(
+      self.commentCellDidTapReplyProperty.signal.skipNil(),
+      initialProject
+    )
+
+    self.goToRepliesWithCommentProjectAndShowKeyboard =
+      Signal.merge(
+        commentsWithRepliesAndProject.map { ($0, $1, false) },
+        replyCommentWithProject.map { ($0, $1, true) }
+      )
 
     let commentComposerDidSubmitText = self.commentComposerDidSubmitTextProperty.signal.skipNil()
 
@@ -296,6 +312,11 @@ public final class CommentsViewModel: CommentsViewModelType,
     self.commentRemovedCellDidTapURLProperty.value = url
   }
 
+  fileprivate let commentCellDidTapReplyProperty = MutableProperty<Comment?>(nil)
+  public func commentCellDidTapReply(comment: Comment) {
+    self.commentCellDidTapReplyProperty.value = comment
+  }
+
   private let commentTableViewFooterViewDidTapRetryProperty = MutableProperty(())
   public func commentTableViewFooterViewDidTapRetry() {
     self.commentTableViewFooterViewDidTapRetryProperty.value = ()
@@ -325,7 +346,7 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let cellSeparatorHidden: Signal<Bool, Never>
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never>
-  public let goToRepliesWithCommentAndProject: Signal<(Comment, Project), Never>
+  public let goToRepliesWithCommentProjectAndShowKeyboard: Signal<(Comment, Project, Bool), Never>
   public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
   public let showHelpWebViewController: Signal<HelpType, Never>
   public let resetCommentComposerAndScrollToTop: Signal<(), Never>

@@ -11,7 +11,7 @@ final class CommentComposerViewModelTests: TestCase {
   private let clearInputTextView = TestObserver<(), Never>()
   private let commentComposerHidden = TestObserver<Bool, Never>()
   private let inputAreaHidden = TestObserver<Bool, Never>()
-  private let inputTextViewResignFirstResponder = TestObserver<(), Never>()
+  private let inputTextViewBecomeFirstResponder = TestObserver<Bool, Never>()
   private let notifyDelegateDidSubmitText = TestObserver<String, Never>()
   private let placeholderHidden = TestObserver<Bool, Never>()
   private let postButtonHidden = TestObserver<Bool, Never>()
@@ -26,14 +26,14 @@ final class CommentComposerViewModelTests: TestCase {
     self.vm.outputs.notifyDelegateDidSubmitText.observe(self.notifyDelegateDidSubmitText.observer)
     self.vm.outputs.postButtonHidden.observe(self.postButtonHidden.observer)
     self.vm.outputs.placeholderHidden.observe(self.placeholderHidden.observer)
-    self.vm.outputs.inputTextViewBecomeFirstResponder.observe(self.inputTextViewResignFirstResponder.observer)
+    self.vm.outputs.inputTextViewBecomeFirstResponder.observe(self.inputTextViewBecomeFirstResponder.observer)
     self.vm.outputs.clearInputTextView.observe(self.clearInputTextView.observer)
     self.vm.outputs.commentComposerHidden.observe(self.commentComposerHidden.observer)
     self.vm.outputs.updateTextViewHeight.observe(self.updateTextViewHeight.observer)
   }
 
   func testPostingCommentFlow() {
-    self.vm.inputs.configure(with: (nil, true, false))
+    self.vm.inputs.configure(with: (nil, true, false, false))
 
     self.postButtonHidden.assertValues([true])
     self.placeholderHidden.assertValues([false])
@@ -62,37 +62,53 @@ final class CommentComposerViewModelTests: TestCase {
     self.bodyText.assertValues(["Nice Project.", "Nice Project. Cheers!", nil])
     self.postButtonHidden.assertValues([true, false, false, true])
     self.placeholderHidden.assertValues([false, true, true, false])
-    self.inputTextViewResignFirstResponder.assertDidEmitValue()
+    self.inputTextViewBecomeFirstResponder.assertDidEmitValue()
     self.updateTextViewHeight.assertValueCount(3)
     self.clearInputTextView.assertValueCount(1)
   }
 
   func testAvatarURL() {
-    self.vm.inputs.configure(with: (nil, true, false))
+    self.vm.inputs.configure(with: (nil, true, false, false))
     self.avatarURL.assertValues([nil])
 
-    self.vm.inputs.configure(with: (URL(string: "https://avatar.png"), true, false))
+    self.vm.inputs.configure(with: (URL(string: "https://avatar.png"), true, false, false))
     self.avatarURL.assertValues([nil, URL(string: "https://avatar.png")])
   }
 
   func testCommentComposerVisibility() {
-    self.vm.inputs.configure(with: (nil, true, true))
+    self.vm.inputs.configure(with: (nil, true, true, false))
     self.commentComposerHidden.assertValues([true])
 
-    self.vm.inputs.configure(with: (nil, false, false))
+    self.vm.inputs.configure(with: (nil, false, false, false))
     self.commentComposerHidden.assertValues([true, false])
   }
 
+  func testInputTextViewBecomeFirstResponder_False() {
+    self.inputTextViewBecomeFirstResponder.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (nil, true, true, false))
+
+    self.inputTextViewBecomeFirstResponder.assertValues([false])
+  }
+
+  func testInputTextViewBecomeFirstResponder_True() {
+    self.inputTextViewBecomeFirstResponder.assertDidNotEmitValue()
+
+    self.vm.inputs.configure(with: (nil, true, true, true))
+
+    self.inputTextViewBecomeFirstResponder.assertValues([true])
+  }
+
   func testInputAreaVisibility() {
-    self.vm.inputs.configure(with: (nil, true, false))
+    self.vm.inputs.configure(with: (nil, true, false, false))
     self.inputAreaHidden.assertValues([false])
 
-    self.vm.inputs.configure(with: (nil, false, false))
+    self.vm.inputs.configure(with: (nil, false, false, false))
     self.inputAreaHidden.assertValues([false, true])
   }
 
   func testEmptyInput() {
-    self.vm.inputs.configure(with: (nil, true, false))
+    self.vm.inputs.configure(with: (nil, true, false, false))
     self.postButtonHidden.assertValues([true])
     self.placeholderHidden.assertValues([false])
 
@@ -102,7 +118,7 @@ final class CommentComposerViewModelTests: TestCase {
   }
 
   func testPostCommentAction() {
-    self.vm.inputs.configure(with: (nil, true, false))
+    self.vm.inputs.configure(with: (nil, true, false, false))
     self.notifyDelegateDidSubmitText.assertValues([])
 
     self.vm.inputs.bodyTextDidChange("Can't wait for this")

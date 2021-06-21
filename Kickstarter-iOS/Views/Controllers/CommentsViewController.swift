@@ -129,10 +129,14 @@ internal final class CommentsViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.goToRepliesWithCommentAndProject
+    self.viewModel.outputs.goToRepliesWithCommentProjectAndShowKeyboard
       .observeForControllerAction()
-      .observeValues { [weak self] comment, project in
-        let vc = CommentRepliesViewController.configuredWith(comment: comment, project: project)
+      .observeValues { [weak self] comment, project, showKeyboard in
+        let vc = CommentRepliesViewController.configuredWith(
+          comment: comment,
+          project: project,
+          inputAreaBecomeFirstResponder: showKeyboard
+        )
         self?.navigationController?.pushViewController(vc, animated: true)
       }
 
@@ -179,7 +183,9 @@ internal final class CommentsViewController: UITableViewController {
 
 extension CommentsViewController {
   override func tableView(_: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    if let commentRemovedCell = cell as? CommentRemovedCell {
+    if let commentCell = cell as? CommentCell {
+      commentCell.delegate = self
+    } else if let commentRemovedCell = cell as? CommentRemovedCell {
       commentRemovedCell.delegate = self
     }
 
@@ -209,6 +215,14 @@ extension CommentsViewController: CommentComposerViewDelegate {
 extension CommentsViewController: CommentTableViewFooterViewDelegate {
   func commentTableViewFooterViewDidTapRetry(_: CommentTableViewFooterView) {
     self.viewModel.inputs.commentTableViewFooterViewDidTapRetry()
+  }
+}
+
+// MARK: - CommentCellDelegate
+
+extension CommentsViewController: CommentCellDelegate {
+  func commentCellDidTapReply(_: CommentCell, comment: Comment) {
+    self.viewModel.inputs.commentCellDidTapReply(comment: comment)
   }
 }
 

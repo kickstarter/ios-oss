@@ -24,9 +24,17 @@ final class CommentRepliesViewController: UITableViewController {
 
   // MARK: - Accessors
 
-  internal static func configuredWith(comment: Comment, project: Project) -> CommentRepliesViewController {
+  internal static func configuredWith(
+    comment: Comment,
+    project: Project,
+    inputAreaBecomeFirstResponder: Bool
+  ) -> CommentRepliesViewController {
     let vc = CommentRepliesViewController.instantiate()
-    vc.viewModel.inputs.configureWith(comment: comment, project: project)
+    vc.viewModel.inputs.configureWith(
+      comment: comment,
+      project: project,
+      inputAreaBecomeFirstResponder: inputAreaBecomeFirstResponder
+    )
 
     return vc
   }
@@ -59,9 +67,14 @@ final class CommentRepliesViewController: UITableViewController {
     self.tableView.registerCellClass(RootCommentCell.self)
     self.tableView.tableFooterView = UIView()
 
-    self.commentComposer.becomeFirstResponder()
+    self.commentComposer.delegate = self
 
     self.viewModel.inputs.viewDidLoad()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    self.viewModel.inputs.viewDidAppear()
   }
 
   internal override func bindViewModel() {
@@ -82,6 +95,14 @@ final class CommentRepliesViewController: UITableViewController {
       .observeValues { [weak self] data in
         self?.commentComposer.configure(with: data)
       }
+  }
+}
+
+// MARK: - CommentComposerViewDelegate
+
+extension CommentRepliesViewController: CommentComposerViewDelegate {
+  func commentComposerView(_: CommentComposerView, didSubmitText _: String) {
+    self.commentComposer.resetInput()
   }
 }
 
