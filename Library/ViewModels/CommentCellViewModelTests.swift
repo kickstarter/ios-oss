@@ -63,6 +63,7 @@ internal final class CommentCellViewModelTests: TestCase {
     let comment = Comment.template
     withEnvironment(currentUser: .template) {
       self.vm.inputs.configureWith(comment: comment, project: .template)
+      self.replyComment.assertDidNotEmitValue()
 
       self.vm.inputs.replyButtonTapped()
 

@@ -46,9 +46,10 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 
-  func testOutput_ConfigureCommentComposerViewWithData_IsLoggedOut() {
+  func testOutput_ConfigureCommentComposerViewWithData_IsLoggedOut_HasNoCommentComposer() {
     self.configureCommentComposerViewURL.assertDidNotEmitValue()
     self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
+    self.configureCommentComposerBecomeFirstResponder.assertDidNotEmitValue()
 
     withEnvironment(currentUser: nil) {
       self.vm.inputs
@@ -60,10 +61,14 @@ internal final class CommentRepliesViewModelTests: TestCase {
         .assertValues([nil], "nil is emitted because the user is not logged in.")
       self.configureCommentComposerViewCanPostComment
         .assertValues([false], "false is emitted because the project is not backed.")
+      self.configureCommentComposerBecomeFirstResponder.assertValues(
+        [false],
+        "false is emitted because the user is not logged in."
+      )
     }
   }
 
-  func testOutput_ConfigureCommentComposerViewWithData_IsLoggedIn_IsBacking_False() {
+  func testOutput_ConfigureCommentComposerViewWithData_IsLoggedIn_IsBacking_False_HasBlockedCommentComposer() {
     let user = User.template |> \.id .~ 12_345
 
     self.configureCommentComposerViewURL.assertDidNotEmitValue()
@@ -85,7 +90,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 
-  func testOutput_ConfigureCommentComposerViewWithData_IsLoggedIn_IsBacking_True() {
+  func testOutput_ConfigureCommentComposerViewWithData_IsLoggedIn_IsBacking_True_HasCommentComposer() {
     let project = Project.template
       |> \.personalization.isBacking .~ true
 
@@ -95,7 +100,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
     self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
 
     withEnvironment(currentUser: user) {
-      self.vm.inputs.configureWith(comment: .template, project: project, inputAreaBecomeFirstResponder: false)
+      self.vm.inputs.configureWith(comment: .template, project: project, inputAreaBecomeFirstResponder: true)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear()
 
@@ -109,7 +114,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 
-  func testOutput_ConfigureCommentComposerViewWithData_IsLoggedIn_IsCreatorOrCollaborator_True() {
+  func testOutput_ConfigureCommentComposerViewWithData_IsLoggedIn_IsCreatorOrCollaborator_True_HasCommentComposer() {
     let project = Project.template
       |> \.personalization.isBacking .~ false
       |> Project.lens.memberData.permissions .~ [.post, .viewPledges, .comment]
@@ -118,7 +123,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
     self.configureCommentComposerViewCanPostComment.assertDidNotEmitValue()
 
     withEnvironment(currentUser: .template) {
-      self.vm.inputs.configureWith(comment: .template, project: project, inputAreaBecomeFirstResponder: false)
+      self.vm.inputs.configureWith(comment: .template, project: project, inputAreaBecomeFirstResponder: true)
       self.vm.inputs.viewDidLoad()
       self.vm.inputs.viewDidAppear()
 
@@ -132,7 +137,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 
-  func testOutput_ConfigureCommentComposerViewWithData_IsFromReplyComment() {
+  func testOutput_ConfigureCommentComposerViewWithData_IsFromReplyComment_HasShownKeyboard() {
     let project = Project.template
       |> \.personalization.isBacking .~ false
       |> Project.lens.memberData.permissions .~ [.post, .viewPledges, .comment]
@@ -155,7 +160,7 @@ internal final class CommentRepliesViewModelTests: TestCase {
     }
   }
 
-  func testOutput_ConfigureCommentComposerViewWithData_IsFromViewReplies() {
+  func testOutput_ConfigureCommentComposerViewWithData_IsFromViewReplies_HasNotShownKeyboard() {
     let project = Project.template
       |> \.personalization.isBacking .~ false
       |> Project.lens.memberData.permissions .~ [.post, .viewPledges, .comment]

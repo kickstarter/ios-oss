@@ -168,7 +168,7 @@ internal final class CommentsViewModelTests: TestCase {
     }
   }
 
-  func testGoToCommentReplies_ReplyComments() {
+  func testGoToCommentReplies_ReplyComment_HasShownKeyboard() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
@@ -193,7 +193,7 @@ internal final class CommentsViewModelTests: TestCase {
     self.goToCommentRepliesShowKeyboard.assertValues([true])
   }
 
-  func testGoToCommentReplies_CommentHasReplies_GoToEmits() {
+  func testGoToCommentReplies_CommentHasReplies_GoToEmits_HasNotShownKeyboard() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
@@ -217,7 +217,7 @@ internal final class CommentsViewModelTests: TestCase {
     self.goToCommentRepliesShowKeyboard.assertValues([false])
   }
 
-  func testGoToCommentReplies_CommentHasReplies_IsDeleted_GoToDoesNotEmit() {
+  func testGoToCommentReplies_CommentHasReplies_IsDeleted_GoToDoesNotEmit_HasNotShownKeyboard() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
@@ -265,7 +265,7 @@ internal final class CommentsViewModelTests: TestCase {
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
   }
 
-  func testGoToCommentReplies_CommentHasNoReplies_GoToDoesNotEmit() {
+  func testGoToCommentReplies_CommentHasNoReplies_GoToDoesNotEmit_HasNotShownKeyboard() {
     self.goToCommentRepliesComment.assertDidNotEmitValue()
     self.goToCommentRepliesProject.assertDidNotEmitValue()
     self.goToCommentRepliesShowKeyboard.assertDidNotEmitValue()
