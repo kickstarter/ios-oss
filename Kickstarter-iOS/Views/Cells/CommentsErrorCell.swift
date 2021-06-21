@@ -3,58 +3,57 @@ import Prelude
 import UIKit
 
 final class CommentsErrorCell: UITableViewCell, ValueCell {
-  
   private let rootStackView = UIStackView()
   private let iconImageView = UIImageView()
   private let messageLabel = UILabel()
-  
+
   // MARK: - Lifecycle
-  
+
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    
+
     self.bindStyles()
     self.configureViews()
   }
-  
-  required init?(coder: NSCoder) {
+
+  required init?(coder _: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   // MARK: - Styles
-  
+
   override func bindStyles() {
     super.bindStyles()
-    
+
     _ = self |> baseTableViewCellStyle()
-    
+
     _ = self.rootStackView
       |> \.axis .~ .vertical
       |> \.distribution .~ .fillProportionally
       |> \.alignment .~ .center
       |> \.spacing .~ Styles.grid(2)
-    
+
     _ = self.messageLabel
       |> messageLabelStyle
-    
+
     _ = self.iconImageView
       |> UIImageView.lens.image .~ Library.image(named: "icon--alert")
   }
-  
+
   // MARK: - Configuration
-  
-  func configureWith(value: Void) {
+
+  func configureWith(value _: Void) {
     self.messageLabel.text = Strings.Something_went_wrong_pull_to_refresh()
   }
-  
+
   private func configureViews() {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
       |> ksr_constrainViewToCenterInParent()
-    
+
     _ = ([self.iconImageView, self.messageLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
-    
+
     NSLayoutConstraint.activate([
       self.rootStackView.heightAnchor.constraint(equalToConstant: Styles.grid(9))
     ])

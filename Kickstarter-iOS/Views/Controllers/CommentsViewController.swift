@@ -217,15 +217,15 @@ extension CommentsViewController: CommentTableViewFooterViewDelegate {
 // MARK: - UITableViewDelegate
 
 extension CommentsViewController {
-  override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+  override func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     if self.dataSource.isErrorStateIndexPath(indexPath) {
       return (self.view.safeAreaLayoutGuide.layoutFrame.height * 0.70)
     }
-    
+
     return UITableView.automaticDimension
   }
 }
-  
+
 // MARK: - CommentRemovedCellDelegate
 
 extension CommentsViewController: CommentRemovedCellDelegate {

@@ -91,7 +91,7 @@ class CommentsDataSourceTests: XCTestCase {
       self.dataSource.reusableId(item: rowIndex, section: self.emptySection)
     )
   }
-  
+
   func testEmptyState_OnCommentsLoadingError_ShouldShowErrorStateCell() {
     let rowIndex: Int = 0
     self.dataSource.load(comments: [], project: .template, shouldShowErrorState: true)
@@ -103,7 +103,7 @@ class CommentsDataSourceTests: XCTestCase {
     )
     XCTAssertTrue(self.dataSource.isErrorStateIndexPath(IndexPath(row: 0, section: 2)))
   }
-  
+
   func testEmptyState_OnCommentsLoadingSuccess_ShouldNotShowErrorStateCell() {
     let rowIndex: Int = 0
     self.dataSource.load(comments: [], project: .template, shouldShowErrorState: false)

@@ -38,7 +38,8 @@ internal final class CommentsViewModelTests: TestCase {
       .observe(self.loadCommentsAndProjectIntoDataSourceComments.observer)
     self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(second)
       .observe(self.loadCommentsAndProjectIntoDataSourceProject.observer)
-    self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(third).observe(self.loadCommentsAndProjectIntoDataSourceShouldShowErrorState.observer)
+    self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(third)
+      .observe(self.loadCommentsAndProjectIntoDataSourceShouldShowErrorState.observer)
     self.vm.outputs.showHelpWebViewController.observe(self.showHelpWebViewController.observer)
   }
 

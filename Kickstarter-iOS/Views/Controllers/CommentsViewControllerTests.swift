@@ -354,10 +354,11 @@ internal final class CommentsViewControllerTests: TestCase {
       }
     }
   }
-  
+
   func testView_NoComments_ShouldShowErrorState() {
-    AppEnvironment.pushEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .failure(.couldNotParseJSON)))
-    
+    AppEnvironment
+      .pushEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .failure(.couldNotParseJSON)))
+
     Language.allLanguages.forEach { language in
       withEnvironment {
         let controller = CommentsViewController.configuredWith(project: .template)
