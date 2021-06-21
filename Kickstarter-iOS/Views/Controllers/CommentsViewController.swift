@@ -224,6 +224,7 @@ extension CommentsViewController {
     
     return UITableView.automaticDimension
   }
+}
   
 // MARK: - CommentRemovedCellDelegate
 
