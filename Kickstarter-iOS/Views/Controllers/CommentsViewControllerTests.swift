@@ -308,6 +308,22 @@ internal final class CommentsViewControllerTests: TestCase {
       }
     }
   }
+  
+  func testView_NoComments_ShouldShowErrorState() {
+    AppEnvironment.pushEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .failure(.couldNotParseJSON)))
+    
+    Language.allLanguages.forEach { language in
+      withEnvironment {
+        let controller = CommentsViewController.configuredWith(project: .template)
+        let (parent, _) = traitControllers(device: .phone4_7inch, orientation: .portrait, child: controller)
+        parent.view.frame.size.height = 1_100
+
+        self.scheduler.run()
+
+        FBSnapshotVerifyView(parent.view, identifier: "Comments - lang_\(language)")
+      }
+    }
+  }
 
   func testCommentsViewController_Optimizely_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()

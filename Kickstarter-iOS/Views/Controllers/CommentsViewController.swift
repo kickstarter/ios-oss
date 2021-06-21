@@ -63,6 +63,7 @@ internal final class CommentsViewController: UITableViewController {
     self.tableView.registerCellClass(CommentPostFailedCell.self)
     self.tableView.registerCellClass(CommentRemovedCell.self)
     self.tableView.registerCellClass(EmptyCommentsCell.self)
+    self.tableView.registerCellClass(CommentsErrorCell.self)
     self.tableView.dataSource = self.dataSource
     self.tableView.delegate = self
     self.tableView.refreshControl = self.refreshIndicator
@@ -123,11 +124,11 @@ internal final class CommentsViewController: UITableViewController {
 
     self.viewModel.outputs.loadCommentsAndProjectIntoDataSource
       .observeForUI()
-      .observeValues { [weak self] comments, project in
+      .observeValues { [weak self] comments, project, shouldShow in
         self?.dataSource.load(
           comments: comments,
           project: project,
-          shouldShowErrorState: true
+          shouldShowErrorState: shouldShow
         )
         self?.tableView.reloadData()
       }
@@ -202,6 +203,18 @@ extension CommentsViewController: CommentComposerViewDelegate {
 extension CommentsViewController: CommentTableViewFooterViewDelegate {
   func commentTableViewFooterViewDidTapRetry(_: CommentTableViewFooterView) {
     self.viewModel.inputs.commentTableViewFooterViewDidTapRetry()
+  }
+}
+
+// MARK: - UITableViewDelegate
+
+extension CommentsViewController {
+  override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    if self.dataSource.isErrorStateIndexPath(indexPath) {
+      return (self.view.safeAreaLayoutGuide.layoutFrame.height * 0.70)
+    }
+    
+    return UITableView.automaticDimension
   }
 }
 

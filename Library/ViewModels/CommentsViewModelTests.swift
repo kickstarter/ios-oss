@@ -17,6 +17,7 @@ internal final class CommentsViewModelTests: TestCase {
   private let configureFooterViewWithState = TestObserver<CommentTableViewFooterViewState, Never>()
   private let goToCommentRepliesComment = TestObserver<Comment, Never>()
   private let loadCommentsAndProjectIntoDataSourceComments = TestObserver<[Comment], Never>()
+  private let loadCommentsAndProjectIntoDataSourceShouldShowErrorState = TestObserver<Bool, Never>()
   private let loadCommentsAndProjectIntoDataSourceProject = TestObserver<Project, Never>()
 
   override func setUp() {
@@ -35,6 +36,7 @@ internal final class CommentsViewModelTests: TestCase {
       .observe(self.loadCommentsAndProjectIntoDataSourceComments.observer)
     self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(second)
       .observe(self.loadCommentsAndProjectIntoDataSourceProject.observer)
+    self.vm.outputs.loadCommentsAndProjectIntoDataSource.map(third).observe(self.loadCommentsAndProjectIntoDataSourceShouldShowErrorState.observer)
   }
 
   func testOutput_ConfigureCommentComposerViewWithData_IsLoggedOut() {
@@ -863,6 +865,7 @@ internal final class CommentsViewModelTests: TestCase {
 
       self.scheduler.advance()
 
+      self.loadCommentsAndProjectIntoDataSourceShouldShowErrorState.assertValues([true])
       self.configureFooterViewWithState.assertValues([.hidden, .error], "Emits error state.")
 
       withEnvironment(apiService: MockService(fetchCommentsEnvelopeResult: .success(envelope))) {

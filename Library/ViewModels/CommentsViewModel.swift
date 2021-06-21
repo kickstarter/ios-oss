@@ -3,10 +3,12 @@ import Prelude
 import ReactiveExtensions
 import ReactiveSwift
 
+private let concurrentCommentLimit: UInt = 5
+
 public protocol CommentsViewModelInputs {
   /// Call when the User is posting a comment or reply.
   func commentComposerDidSubmitText(_ text: String)
-
+  
   /// Call when the user tapped to retry after failed pagination.
   func commentTableViewFooterViewDidTapRetry()
 
@@ -47,13 +49,10 @@ public protocol CommentsViewModelOutputs {
   var goToCommentReplies: Signal<Comment, Never> { get }
 
   /// Emits a list of `Comment`s and the `Project` to load into the data source.
-  var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never> { get }
+  var loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project, Bool), Never> { get }
 
   /// Emits when a comment has been posted and we should scroll to top and reset the composer.
   var resetCommentComposerAndScrollToTop: Signal<(), Never> { get }
-  
-  /// Emits a when the comments fail to load initially.
-  var showCommentsLoadingError: Signal<(), Never> { get }
 }
 
 public protocol CommentsViewModelType {
@@ -121,11 +120,6 @@ public final class CommentsViewModel: CommentsViewModelType,
     let currentComments = self.currentComments.signal.skipNil()
 
     let tappedToRetry = self.commentTableViewFooterViewDidTapRetryProperty.signal
-
-    // Don't retry the first page if we've paged before.
-    let retryFirstPage = tappedToRetry
-      .take(until: isCloseToBottom)
-
     // Retry the next page if we've paged before at least once and tapped to retry.
     let retryNextPage = Signal.combineLatest(
       isCloseToBottom.take(first: 1),
@@ -141,12 +135,14 @@ public final class CommentsViewModel: CommentsViewModelType,
 
     let requestFirstPageWith = Signal.merge(
       initialProject,
-      initialProject.takeWhen(retryFirstPage),
       initialProject.takeWhen(pullToRefresh)
         // Thread hop so that we can clear our comments buffer before newly paginated results.
         .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
     )
-
+    let hasRequestedNextPage = Signal.merge(
+      requestFirstPageWith.mapConst(false),
+      requestNextPage.mapConst(true)
+    )
     let (comments, isLoading, _, errors) = paginate(
       requestFirstPageWith: requestFirstPageWith,
       requestNextPageWhen: requestNextPage,
@@ -169,9 +165,6 @@ public final class CommentsViewModel: CommentsViewModelType,
       // only return new pages, we'll concat them ourselves
       concater: { _, value in value }
     )
-    
-    self.showCommentsLoadingError = errors.ignoreValues()
-
     let commentsWithRetryingComment = currentComments
       .takePairWhen(self.retryingComment.signal.skipNil())
       .map(unpack)
@@ -181,13 +174,7 @@ public final class CommentsViewModel: CommentsViewModelType,
       .takePairWhen(self.failableOrComment.signal.skipNil())
       .map(unpack)
       .map(commentsReplacingCommentById)
-
-    self.resetCommentComposerAndScrollToTop = commentsWithFailableOrComment
-      // We only want to scroll to top for failable comments as they represent the initial
-      // comment that's inserted. We check here to see that the first comment's ID is a UUID
-      // to determine this. There may be better ways.
-      .map { UUID(uuidString: $0.first?.id ?? "") }
-      .filter(isNotNil)
+    self.resetCommentComposerAndScrollToTop = self.commentComposerDidSubmitTextProperty.signal.skipNil()
       .ignoreValues()
 
     let paginatedComments = Signal.merge(
@@ -205,7 +192,7 @@ public final class CommentsViewModel: CommentsViewModelType,
       guard clear == false else { return comments }
       return accum + comments
     }
-
+    .filter { !$0.isEmpty }
     let commentsAndProject = initialProject
       .takePairWhen(paginatedComments)
       .map { ($1, $0) }
@@ -215,10 +202,24 @@ public final class CommentsViewModel: CommentsViewModelType,
       .ksr_debounce(.nanoseconds(0), on: AppEnvironment.current.scheduler)
 
     self.loadCommentsAndProjectIntoDataSource = Signal.merge(
-      // If we start off with no comments, show an empty state.
-      commentsAndProject.take(first: 1),
-      // Subsequent empty emissions (pull to refresh) should be ignored until replaced.
-      commentsAndProject.skip(first: 1).filter { comments, _ in comments.isEmpty == false }
+      // Allow empty arrays from the first emission.
+      Signal.combineLatest(comments.skip(first: 1), initialProject)
+        .filter { $0.0.isEmpty }
+        .map { ($0.0, $0.1) }
+        .map { ($0, $1, false) },
+      // Allow empty arrays on pull to refresh.
+      Signal.zip(comments, pullToRefresh)
+        .withLatestFrom(initialProject)
+        .map(unpack)
+        .filter { $0.0.isEmpty }
+        .map { ($0.0, $0.2) }
+        .map { ($0, $1, false) },
+      // Continue to paginate normally.
+      commentsAndProject
+        .filter { comments, _ in comments.isEmpty == false }
+        .map { ($0, $1, false) },
+      // If there are errors emit empty comments array, project and error boolean.
+      errors.withLatestFrom(initialProject).map { ([], $1, true) }
     )
     self.beginOrEndRefreshing = isLoading
     self.cellSeparatorHidden = commentsAndProject.map(first).map { $0.count == .zero }
@@ -240,13 +241,23 @@ public final class CommentsViewModel: CommentsViewModelType,
     )
     .takePairWhen(commentComposerDidSubmitText)
     .map(unpack)
-    .flatMap(postCommentProducer)
-
+    .flatMap(.concurrent(limit: concurrentCommentLimit), postCommentProducer)
+    let currentlyRetrying = MutableProperty<Set<String>>([])
+    let newErroredCommentTapped = erroredCommentTapped
+      // Check that we are not currently retrying this comment.
+      .filter { [currentlyRetrying] comment in !currentlyRetrying.value.contains(comment.id) }
+      // If we pass the filter add it to our set of retrying comments.
+      .on(value: { [currentlyRetrying] comment in
+        currentlyRetrying.value.insert(comment.id)
+      })
     self.retryingComment <~ initialProject
-      .takePairWhen(erroredCommentTapped)
+      .takePairWhen(newErroredCommentTapped)
       .map { ($1, $0) }
-      .flatMap(retryCommentProducer)
-
+      .flatMap(.concurrent(limit: concurrentCommentLimit), retryCommentProducer)
+      // Once we've emitted a value here the comment has been retried and can be removed.
+      .on(value: { [currentlyRetrying] _, id in
+        currentlyRetrying.value.remove(id)
+      })
     let footerViewActivityState = Signal
       .combineLatest(isCloseToBottom, isLoading)
       .filter(second >>> isTrue)
@@ -255,11 +266,22 @@ public final class CommentsViewModel: CommentsViewModelType,
       projectOrUpdate.ignoreValues(),
       self.loadCommentsAndProjectIntoDataSource.ignoreValues()
     )
-
-    self.configureFooterViewWithState = Signal.merge(
+    
+    let hideFooterView: Signal<CommentTableViewFooterViewState, Never> = Signal.merge(
       initialLoadOrReload.mapConst(.hidden),
+      errors
+        .mapConst(.error)
+        .withLatestFrom(hasRequestedNextPage.filter(isFalse))
+        .map(first)
+    )
+    
+    self.configureFooterViewWithState = Signal.merge(
+      hideFooterView,
       footerViewActivityState.mapConst(.activity),
-      errors.mapConst(.error)
+      errors
+        .mapConst(.error)
+        .withLatestFrom(hasRequestedNextPage.filter(isTrue))
+        .map(first)
     )
     .skipRepeats()
   }
@@ -310,9 +332,8 @@ public final class CommentsViewModel: CommentsViewModelType,
   public let configureCommentComposerViewWithData: Signal<CommentComposerViewData, Never>
   public let configureFooterViewWithState: Signal<CommentTableViewFooterViewState, Never>
   public let goToCommentReplies: Signal<Comment, Never>
-  public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project), Never>
+  public let loadCommentsAndProjectIntoDataSource: Signal<([Comment], Project, Bool), Never>
   public let resetCommentComposerAndScrollToTop: Signal<(), Never>
-  public let showCommentsLoadingError: Signal<(), Never>
 
   public var inputs: CommentsViewModelInputs { return self }
   public var outputs: CommentsViewModelOutputs { return self }

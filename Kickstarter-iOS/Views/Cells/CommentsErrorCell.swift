@@ -30,7 +30,7 @@ final class CommentsErrorCell: UITableViewCell, ValueCell {
     
     _ = self.rootStackView
       |> \.axis .~ .vertical
-      |> \.distribution .~ .fill
+      |> \.distribution .~ .fillProportionally
       |> \.alignment .~ .center
       |> \.spacing .~ Styles.grid(2)
     
@@ -50,10 +50,14 @@ final class CommentsErrorCell: UITableViewCell, ValueCell {
   private func configureViews() {
     _ = (self.rootStackView, self)
       |> ksr_addSubviewToParent()
-      |> ksr_constrainViewToEdgesInParent()
+      |> ksr_constrainViewToCenterInParent()
     
     _ = ([self.iconImageView, self.messageLabel], self.rootStackView)
       |> ksr_addArrangedSubviewsToStackView()
+    
+    NSLayoutConstraint.activate([
+      self.rootStackView.heightAnchor.constraint(equalToConstant: Styles.grid(9))
+    ])
   }
 }
 

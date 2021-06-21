@@ -11,7 +11,19 @@ internal final class CommentsDataSource: ValueCellDataSource {
   }
 
   internal func load(comments: [Comment], project: Project, shouldShowErrorState: Bool) {
-    let section = shouldShowErrorState ? Section.error.rawValue : (!comments.isEmpty ? Section.comments.rawValue : Section.empty.rawValue)
+    
+    guard !shouldShowErrorState else {
+      self.clearValues()
+      self.appendRow(
+        value: (),
+        cellClass: CommentsErrorCell.self,
+        toSection: Section.error.rawValue
+      )
+      
+      return
+    }
+    
+    let section = !comments.isEmpty ? Section.comments.rawValue : Section.empty.rawValue
     self.clearValues()
 
     guard !comments.isEmpty else {
@@ -74,5 +86,9 @@ internal final class CommentsDataSource: ValueCellDataSource {
     case let value as (comment: Comment, project: Project): return value.comment
     default: return nil
     }
+  }
+  
+  func isErrorStateIndexPath(_ indexPath: IndexPath) -> Bool {
+    return indexPath.section == Section.error.rawValue
   }
 }
