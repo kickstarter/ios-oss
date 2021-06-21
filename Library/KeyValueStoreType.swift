@@ -4,6 +4,9 @@ public enum AppKeys: String {
   // swiftformat:disable wrap
   case closedFacebookConnectInActivity = "com.kickstarter.KeyValueStoreType.closedFacebookConnectInActivity"
   case closedFindFriendsInActivity = "com.kickstarter.KeyValueStoreType.closedFindFriendsInActivity"
+  case commentFlaggingEnabled = "com.kickstarter.KeyValueStoreType.iOSCommentThreadingCommentFlagging"
+  case commentThreadingEnabled = "com.kickstarter.KeyValueStoreType.iOSCommentThreading"
+  case commentThreadingRepliesEnabled = "com.kickstarter.KeyValueStoreType.iOSCommentThreadingReplyButtons"
   case deniedNotificationContexts = "com.kickstarter.KeyValueStoreType.deniedNotificationContexts"
   case favoriteCategoryIds = "favorite_category_ids"
   case hasCompletedCategoryPersonalizationFlow = "com.kickstarter.KeyValueStoreType.hasCompletedCategoryPersonalizationFlow"
@@ -32,6 +35,9 @@ public protocol KeyValueStoreType: AnyObject {
   func string(forKey defaultName: String) -> String?
   func synchronize() -> Bool
 
+  var commentFlaggingEnabled: Bool? { get set }
+  var commentThreadingEnabled: Bool? { get set }
+  var commentThreadingRepliesEnabled: Bool? { get set }
   func removeObject(forKey defaultName: String)
   var deniedNotificationContexts: [String] { get set }
   var favoriteCategoryIds: [Int] { get set }
@@ -50,6 +56,36 @@ public protocol KeyValueStoreType: AnyObject {
 }
 
 extension KeyValueStoreType {
+  public var commentFlaggingEnabled: Bool? {
+    get {
+      return self.object(forKey: AppKeys.commentFlaggingEnabled.rawValue) as? Bool
+//        ?? false
+    }
+    set {
+      self.set(newValue, forKey: AppKeys.commentFlaggingEnabled.rawValue)
+    }
+  }
+
+  public var commentThreadingEnabled: Bool? {
+    get {
+      return self.object(forKey: AppKeys.commentThreadingEnabled.rawValue) as? Bool
+//        ?? false
+    }
+    set {
+      self.set(newValue, forKey: AppKeys.commentThreadingEnabled.rawValue)
+    }
+  }
+
+  public var commentThreadingRepliesEnabled: Bool? {
+    get {
+      return self.object(forKey: AppKeys.commentThreadingRepliesEnabled.rawValue) as? Bool
+//        ?? false
+    }
+    set {
+      self.set(newValue, forKey: AppKeys.commentThreadingRepliesEnabled.rawValue)
+    }
+  }
+
   public var favoriteCategoryIds: [Int] {
     get {
       return self.object(forKey: AppKeys.favoriteCategoryIds.rawValue) as? [Int] ?? []

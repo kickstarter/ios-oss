@@ -3,13 +3,11 @@ import KsApi
 import Prelude
 import ReactiveSwift
 
-// public typealias FeatureEnabled = (feature: Feature, isEnabled: Bool)
 public typealias OptimizelyFeatures = [(OptimizelyFeature, Bool)]
 
 public protocol OptimizelyFeatureFlagToolsViewModelOutputs {
-//  var postNotification: Signal<Notification, Never> { get }
   var reloadWithData: Signal<OptimizelyFeatures, Never> { get }
-//  var updateConfigWithFeatures: Signal<OptimizelyFeatures, Never> { get }
+  var updateConfigWithFeatures: Signal<OptimizelyFeatures, Never> { get }
 }
 
 public protocol OptimizelyFeatureFlagToolsViewModelInputs {
@@ -40,37 +38,46 @@ public final class OptimizelyFeatureFlagToolsViewModel: OptimizelyFeatureFlagToo
     let optimizelyFeatures = features
       .map { features in
         features.map { feature -> (OptimizelyFeature, Bool) in
-          let isEnabled = AppEnvironment.current.optimizelyClient?
+          let isEnabledFromServer = AppEnvironment.current.optimizelyClient?
             .isFeatureEnabled(featureKey: feature.rawValue) ?? false
 
-          return (feature, isEnabled)
+          var isEnabledFromUserDefaults: Bool?
+
+          switch feature {
+          case .commentFlaggingEnabled:
+            isEnabledFromUserDefaults = AppEnvironment.current.userDefaults.commentFlaggingEnabled
+          case .commentThreading:
+            isEnabledFromUserDefaults = AppEnvironment.current.userDefaults.commentThreadingEnabled
+          case .commentThreadingRepliesEnabled:
+            isEnabledFromUserDefaults = AppEnvironment.current.userDefaults.commentThreadingRepliesEnabled
+          }
+
+          return (feature, isEnabledFromUserDefaults ?? isEnabledFromServer)
         }
       }
 
     self.reloadWithData = optimizelyFeatures
 
-//    self.updateConfigWithFeatures = sortedFeatures
-//      .takePairWhen(self.setFeatureEnabledAtIndexProperty.signal.skipNil())
-//      .map(unpack)
-//      .map { features, index, enabled -> Features? in
-//        guard features.count > index else {
-//          return nil
-//        }
-//        let featureEnabledPair = features[index]
-//
-//        guard featureEnabledPair.value != enabled else {
-//          return nil
-//        }
-//
-//        var environmentFeatures = AppEnvironment.current.config?.features
-//        environmentFeatures?[featureEnabledPair.key] = enabled
-//
-//        return environmentFeatures
-//      }
-//      .skipNil()
-//
-//    self.postNotification = self.didUpdateConfigProperty.signal
-//      .mapConst(Notification(name: .ksr_configUpdated, object: nil))
+    self.updateConfigWithFeatures = optimizelyFeatures
+      .takePairWhen(self.setFeatureEnabledAtIndexProperty.signal.skipNil())
+      .map(unpack)
+      .map { features, index, isEnabled -> OptimizelyFeatures? in
+        let (feature, _) = features[index]
+        var mutatedFeatures = features
+
+        switch feature {
+        case .commentFlaggingEnabled:
+          AppEnvironment.current.userDefaults.commentFlaggingEnabled = isEnabled
+        case .commentThreading:
+          AppEnvironment.current.userDefaults.commentThreadingEnabled = isEnabled
+        case .commentThreadingRepliesEnabled:
+          AppEnvironment.current.userDefaults.commentThreadingRepliesEnabled = isEnabled
+        }
+
+        mutatedFeatures[index] = (feature, isEnabled)
+        return mutatedFeatures
+      }
+      .skipNil()
   }
 
   private let setFeatureEnabledAtIndexProperty = MutableProperty<(Int, Bool)?>(nil)
@@ -88,20 +95,9 @@ public final class OptimizelyFeatureFlagToolsViewModel: OptimizelyFeatureFlagToo
     self.viewDidLoadProperty.value = ()
   }
 
-//  public let postNotification: Signal<Notification, Never>
   public let reloadWithData: Signal<OptimizelyFeatures, Never>
-//  public let updateConfigWithFeatures: Signal<Features, Never>
+  public let updateConfigWithFeatures: Signal<OptimizelyFeatures, Never>
 
   public var inputs: OptimizelyFeatureFlagToolsViewModelInputs { return self }
   public var outputs: OptimizelyFeatureFlagToolsViewModelOutputs { return self }
 }
-
-// public func featureEnabledFromDictionaries(_ dictionaryArray: [Features]) -> [FeatureEnabled] {
-//  return dictionaryArray.compactMap { dictionary -> (Feature, Bool)? in
-//    dictionary.compactMap { key, value in
-//      guard let feature = Feature(rawValue: key) else { return nil }
-//      return (feature, value)
-//    }
-//    .first
-//  }
-// }

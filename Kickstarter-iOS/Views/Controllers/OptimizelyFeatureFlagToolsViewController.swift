@@ -35,38 +35,25 @@ final class OptimizelyFeatureFlagToolsViewController: UITableViewController {
     self.viewModel.outputs.reloadWithData
       .observeForUI()
       .observeValues { [weak self] features in
-//        self?.features = featureEnabledFromDictionaries(features)
         self?.features = features
 
         self?.tableView.reloadData()
       }
 
-//    self.viewModel.outputs.updateConfigWithFeatures
-//      .observeForUI()
-//      .observeValues { [weak self] features in
-//        self?.updateConfig(with: features)
-//      }
-//
-//    self.viewModel.outputs.postNotification
-//      .observeForUI()
-//      .observeValues(NotificationCenter.default.post)
+    self.viewModel.outputs.updateConfigWithFeatures
+      .observeForUI()
+      .observeValues { [weak self] features in
+        self?.updateConfig(with: features)
+      }
   }
 
-  @objc private func switchTogged(_ switchControl: UISwitch) {
+  @objc private func switchToggled(_ switchControl: UISwitch) {
     self.viewModel.inputs.setFeatureAtIndexEnabled(index: switchControl.tag, isEnabled: switchControl.isOn)
   }
 
   // MARK: - Private Helpers
 
-  private func updateConfig(with features: Features) {
-    guard let config = AppEnvironment.current.config else { return }
-
-    let updatedConfig = config
-      |> \.features .~ features
-
-    AppEnvironment.updateDebugData(DebugData(config: updatedConfig))
-    AppEnvironment.updateConfig(updatedConfig)
-
+  private func updateConfig(with _: OptimizelyFeatures) {
     self.viewModel.inputs.didUpdateConfig()
   }
 }
@@ -87,7 +74,7 @@ extension OptimizelyFeatureFlagToolsViewController {
       |> \.tag .~ indexPath.row
       |> \.isOn .~ enabled
 
-    switchControl.addTarget(self, action: #selector(self.switchTogged(_:)), for: .valueChanged)
+    switchControl.addTarget(self, action: #selector(self.switchToggled(_:)), for: .valueChanged)
 
     _ = cell
       ?|> baseTableViewCellStyle()
