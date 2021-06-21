@@ -10,7 +10,8 @@ extension CommentsEnvelope {
       cursor: graphCommentsEnvelope.cursor,
       hasNextPage: graphCommentsEnvelope.hasNextPage,
       slug: graphCommentsEnvelope.slug,
-      totalCount: graphCommentsEnvelope.totalCount
+      totalCount: graphCommentsEnvelope.totalCount,
+      updateID: graphCommentsEnvelope.updateID
     )
   }
 }
