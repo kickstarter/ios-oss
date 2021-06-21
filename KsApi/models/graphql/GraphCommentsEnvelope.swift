@@ -5,15 +5,18 @@ struct GraphCommentsEnvelope: Decodable {
   var comments: [GraphComment]
   var cursor: String?
   var hasNextPage: Bool
-  var slug: String
+  var slug: String?
   var totalCount: Int
+  var updateID: String?
 }
 
 extension GraphCommentsEnvelope {
   private enum CodingKeys: CodingKey {
     case comments
     case edges
+    case id
     case node
+    case post
     case project
     case pageInfo
     case endCursor
@@ -24,12 +27,17 @@ extension GraphCommentsEnvelope {
 
   init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
+    let container: KeyedDecodingContainer<GraphCommentsEnvelope.CodingKeys>
 
-    let projectContainer = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .project)
+    if let projectContainer = try? values.nestedContainer(keyedBy: CodingKeys.self, forKey: .project) {
+      container = projectContainer
+      self.slug = try container.decodeIfPresent(String.self, forKey: .slug)
+    } else {
+      container = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .post)
+      self.updateID = try container.decodeIfPresent(String.self, forKey: .id)
+    }
 
-    self.slug = try projectContainer.decode(String.self, forKey: .slug)
-
-    let commentsContainer = try projectContainer
+    let commentsContainer = try container
       .nestedContainer(keyedBy: CodingKeys.self, forKey: .comments)
 
     var edges = try commentsContainer

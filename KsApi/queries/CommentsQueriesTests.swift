@@ -23,4 +23,16 @@ final class CommentsQueriesTests: XCTestCase {
       """
     )
   }
+
+  func testProjectUpdateCommentsQuery() {
+    let query = projectUpdateCommentsQuery(id: "GDgOaVFgU4ODDGdfS=", after: "end-cursor")
+    let queryString = Query.build(query)
+
+    XCTAssertEqual(
+      queryString,
+      """
+      { post(id: "GDgOaVFgU4ODDGdfS=") { ... on FreeformPost { comments(after: "end-cursor" first: 25) { edges { node { author { id imageUrl(width: 200) isCreator name } authorBadges body createdAt deleted id parentId replies { totalCount } } } pageInfo { endCursor hasNextPage } totalCount } id } } }
+      """
+    )
+  }
 }
