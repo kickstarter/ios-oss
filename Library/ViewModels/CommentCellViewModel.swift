@@ -50,7 +50,7 @@ public protocol CommentCellViewModelOutputs {
   /// Emits a Bool determining if the reply button in the bottomRowStackView are hidden.
   var replyButtonIsHidden: Signal<Bool, Never> { get }
 
-  /// Emits a Bool determining if the reply button in the bottomRowStackView are hidden.
+  /// Emits current `Comment` reply button is clicked for
   var replyComment: Signal<Comment, Never> { get }
 
   /// Emits whether or not the view replies stack view is hidden.
