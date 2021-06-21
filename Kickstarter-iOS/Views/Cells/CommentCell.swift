@@ -10,20 +10,20 @@ protocol CommentCellDelegate: AnyObject {
 final class CommentCell: UITableViewCell, ValueCell {
   // MARK: - Properties
 
-  private var comment: Comment?
-  weak var delegate: CommentCellDelegate?
-  private let viewModel = CommentCellViewModel()
-
   private lazy var bodyTextView: UITextView = { UITextView(frame: .zero) }()
   private lazy var bottomRowStackView: UIStackView = { UIStackView(frame: .zero) }()
   private lazy var commentCellHeaderStackView: CommentCellHeaderStackView = {
     CommentCellHeaderStackView(frame: .zero)
   }()
 
+  weak var delegate: CommentCellDelegate?
+
   private lazy var flagButton = { UIButton(frame: .zero) }()
   private lazy var postedButton = { UIButton(frame: .zero) }()
   private lazy var replyButton = { UIButton(frame: .zero) }()
   private lazy var viewRepliesView: ViewRepliesView = { ViewRepliesView(frame: .zero) }()
+
+  private let viewModel = CommentCellViewModel()
 
   private lazy var rootStackView = {
     UIStackView(frame: .zero)
@@ -49,8 +49,7 @@ final class CommentCell: UITableViewCell, ValueCell {
   // MARK: - Actions
 
   @objc func replyButtonTapped() {
-    guard let comment = comment else { return }
-    self.delegate?.commentCellDidTapReply(self, comment: comment)
+    self.viewModel.inputs.replyButtonTapped()
   }
 
   // MARK: - Styles
@@ -85,7 +84,6 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.commentCellHeaderStackView
       .configureWith(comment: value.comment)
     self.viewModel.inputs.configureWith(comment: value.comment, project: value.project)
-    self.comment = value.comment
   }
 
   private func configureViews() {
@@ -118,6 +116,13 @@ final class CommentCell: UITableViewCell, ValueCell {
     self.viewRepliesView.rac.hidden = self.viewModel.outputs.viewRepliesViewHidden
 
     self.postedButton.rac.hidden = self.viewModel.outputs.postedButtonIsHidden
+
+    self.viewModel.outputs.replyComment
+      .observeForControllerAction()
+      .observeValues { [weak self] comment in
+        guard let self = self else { return }
+        self.delegate?.commentCellDidTapReply(self, comment: comment)
+      }
   }
 }
 

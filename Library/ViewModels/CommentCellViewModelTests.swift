@@ -19,6 +19,7 @@ internal final class CommentCellViewModelTests: TestCase {
   private let postTime = TestObserver<String, Never>()
   private let postedButtonIsHidden = TestObserver<Bool, Never>()
   private let replyButtonIsHidden = TestObserver<Bool, Never>()
+  private let replyComment = TestObserver<Comment, Never>()
   private let viewRepliesStackViewIsHidden = TestObserver<Bool, Never>()
 
   override func setUp() {
@@ -34,6 +35,7 @@ internal final class CommentCellViewModelTests: TestCase {
     self.vm.outputs.postTime.observe(self.postTime.observer)
     self.vm.outputs.postedButtonIsHidden.observe(self.postedButtonIsHidden.observer)
     self.vm.outputs.replyButtonIsHidden.observe(self.replyButtonIsHidden.observer)
+    self.vm.outputs.replyComment.observe(self.replyComment.observer)
     self.vm.outputs.viewRepliesViewHidden.observe(self.viewRepliesStackViewIsHidden.observer)
   }
 
@@ -55,6 +57,18 @@ internal final class CommentCellViewModelTests: TestCase {
     self.body.assertValues([comment.body], "The comment body is emitted.")
     self.commentStatus.assertValues([.success], "The comment status is emmited.")
     self.postTime.assertValueCount(1, "The relative time of the comment is emitted.")
+  }
+
+  func testReplyComment() {
+    let comment = Comment.template
+    withEnvironment(currentUser: .template) {
+      self.vm.inputs.configureWith(comment: comment, project: .template)
+
+      self.vm.inputs.replyButtonTapped()
+
+      self.replyComment
+        .assertValue(comment, "The that should be replied to was emmited")
+    }
   }
 
   func testOutputs_bottomRowStackViewIsHidden_LoggedIn_FeatureFlag_False() {
