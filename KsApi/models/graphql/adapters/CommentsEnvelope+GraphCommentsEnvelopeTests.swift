@@ -18,8 +18,8 @@ final class CommentsEnvelope_GraphCommentsEnvelopeTests: XCTestCase {
   }
 
   func testProjectUpdateComments() {
-    let envelope = CommentsEnvelope.commentsEnvelope(from: .template)
-      |> \.updateID .~ 1_234
+    let envelope = CommentsEnvelope.commentsEnvelope(from: .projectUpdateTemplate)
+      |> \.updateID .~ "GDgOaVFgU4ODDGdfS=="
 
     XCTAssertEqual(
       envelope.comments,
@@ -28,7 +28,7 @@ final class CommentsEnvelope_GraphCommentsEnvelopeTests: XCTestCase {
     XCTAssertEqual(envelope.hasNextPage, true)
     XCTAssertEqual(envelope.cursor, "WzMwNDkwNDY0XQ==")
     XCTAssertEqual(envelope.totalCount, 100)
-    XCTAssertEqual(envelope.updateID, 1_234)
-    XCTAssertEqual(envelope.slug, "jadelabo-j1-beautiful-powerful-and-smart-idex-3d-printer")
+    XCTAssertEqual(envelope.updateID, "GDgOaVFgU4ODDGdfS==")
+    XCTAssertTrue(envelope.slug.isEmpty)
   }
 }

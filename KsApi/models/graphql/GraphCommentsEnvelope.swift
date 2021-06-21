@@ -5,9 +5,9 @@ struct GraphCommentsEnvelope: Decodable {
   var comments: [GraphComment]
   var cursor: String?
   var hasNextPage: Bool
-  var slug: String
-  var updateID: Int?
+  var slug: String?
   var totalCount: Int
+  var updateID: String?
 }
 
 extension GraphCommentsEnvelope {
@@ -31,13 +31,12 @@ extension GraphCommentsEnvelope {
 
     if let projectContainer = try? values.nestedContainer(keyedBy: CodingKeys.self, forKey: .project) {
       container = projectContainer
-      self.slug = try container.decode(String.self, forKey: .slug)
     } else {
       container = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .post)
-      self.slug = ""
-      let updateIDString = try container.decodeIfPresent(String.self, forKey: .id)
-      self.updateID = updateIDString.flatMap(decompose(id:))
+      self.updateID = try container.decodeIfPresent(String.self, forKey: .id)
     }
+
+    self.slug = try container.decodeIfPresent(String.self, forKey: .slug)
 
     let commentsContainer = try container
       .nestedContainer(keyedBy: CodingKeys.self, forKey: .comments)

@@ -117,7 +117,7 @@ public enum Query {
   case backing(id: String, NonEmptySet<Backing>)
   case category(id: String, NonEmptySet<Category>)
   case comment(id: String, NonEmptySet<Comment>)
-  case post(id: Int, NonEmptySet<Project>)
+  case post(id: String, NonEmptySet<Project>)
   case project(slug: String, NonEmptySet<Project>)
   case rootCategories(NonEmptySet<Category>)
   case user(NonEmptySet<User>)

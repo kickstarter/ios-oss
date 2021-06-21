@@ -89,7 +89,7 @@ public func commentRepliesQuery(
  - returns: A `NonEmptySet<Query>`.
  */
 public func projectUpdateCommentsQuery(
-  id: Int,
+  id: String,
   first: Int = Query.defaultPaginationCount,
   after cursor: String? = nil
 ) -> NonEmptySet<Query> {
