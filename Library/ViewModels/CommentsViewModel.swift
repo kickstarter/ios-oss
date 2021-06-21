@@ -413,14 +413,14 @@ private func commentsFirstPage(from projectOrUpdate: Either<Project, Update>)
         project.slug
       )
     )
-  } ifRight: { update in
+  } ifRight: {
     AppEnvironment.current.apiService.fetchComments(
-      query: projectUpdateCommentsQuery(id: update.id.description)
+      query: projectUpdateCommentsQuery(id: $0.id.description)
     )
   }
 }
 
-private func commentsNextPage(from projectSlug: String, cursor: String?,
+private func commentsNextPage(from projectSlug: String?, cursor: String?,
                               updateID: String?) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
   if let id = updateID {
     return AppEnvironment.current.apiService.fetchComments(
@@ -430,6 +430,7 @@ private func commentsNextPage(from projectSlug: String, cursor: String?,
       )
     )
   } else {
+    guard let projectSlug = projectSlug else { return .empty }
     return AppEnvironment.current.apiService.fetchComments(
       query: commentsQuery(
         withProjectSlug: projectSlug,

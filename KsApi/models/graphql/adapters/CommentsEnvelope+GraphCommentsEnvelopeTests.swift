@@ -29,6 +29,6 @@ final class CommentsEnvelope_GraphCommentsEnvelopeTests: XCTestCase {
     XCTAssertEqual(envelope.cursor, "WzMwNDkwNDY0XQ==")
     XCTAssertEqual(envelope.totalCount, 100)
     XCTAssertEqual(envelope.updateID, "GDgOaVFgU4ODDGdfS==")
-    XCTAssertTrue(envelope.slug.isEmpty)
+    XCTAssertNil(envelope.slug)
   }
 }
