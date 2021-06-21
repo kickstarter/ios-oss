@@ -1,5 +1,0 @@
-# Carthage input files
-
-$(SRCROOT)/Carthage/Build/iOS/Prelude.framework
-$(SRCROOT)/Carthage/Build/iOS/ReactiveExtensions.framework
-$(SRCROOT)/Carthage/Build/iOS/ReactiveSwift.framework
