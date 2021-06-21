@@ -104,7 +104,7 @@ final class GraphCommentsEnvelopeTests: XCTestCase {
     }
   }
 
-  func testUpdateCommentsDecode() {
+  func testProjectUpdateCommentsDecode() {
     let dictionary: [String: Any] = [
       "post": [
         "id": "WzMwNDU4ODkxXQ==",
