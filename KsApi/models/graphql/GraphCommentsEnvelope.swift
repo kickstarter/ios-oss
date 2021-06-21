@@ -31,12 +31,11 @@ extension GraphCommentsEnvelope {
 
     if let projectContainer = try? values.nestedContainer(keyedBy: CodingKeys.self, forKey: .project) {
       container = projectContainer
+      self.slug = try container.decodeIfPresent(String.self, forKey: .slug)
     } else {
       container = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .post)
       self.updateID = try container.decodeIfPresent(String.self, forKey: .id)
     }
-
-    self.slug = try container.decodeIfPresent(String.self, forKey: .slug)
 
     let commentsContainer = try container
       .nestedContainer(keyedBy: CodingKeys.self, forKey: .comments)
