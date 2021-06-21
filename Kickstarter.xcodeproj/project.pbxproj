@@ -167,6 +167,11 @@
 		067F4B2E268156E3008609C4 /* FBSDKCoreKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F47452680F033008609C4 /* FBSDKCoreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4B3526815707008609C4 /* FBSDKLoginKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F47472680F040008609C4 /* FBSDKLoginKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		067F4B3C2681572A008609C4 /* ReactiveExtensions_TestHelpers.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A0F66C1267BDCB100E30863 /* ReactiveExtensions_TestHelpers.xcframework */; };
+		067F4B442681585E008609C4 /* SDWebImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F47662680F0BB008609C4 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		067F4B4A26815864008609C4 /* Segment_Appboy.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F47432680F012008609C4 /* Segment_Appboy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		067F4B502681586A008609C4 /* Appboy_iOS_SDK.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F473B2680EFCF008609C4 /* Appboy_iOS_SDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		067F4B56268158BA008609C4 /* FBSDKCoreKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F47452680F033008609C4 /* FBSDKCoreKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		067F4B5C268158D0008609C4 /* FBSDKLoginKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 067F47472680F040008609C4 /* FBSDKLoginKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		06B02B9F26656AF900903A83 /* EmptyCommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B02B90266569D300903A83 /* EmptyCommentsCell.swift */; };
 		06B02BED26680D4300903A83 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94114D47264EEA2D0063E8F6 /* CommentCell.swift */; };
 		06CACBEB264DC9480026CDFD /* CommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CACBE3264DC60A0026CDFD /* CommentsDataSource.swift */; };
@@ -1544,6 +1549,20 @@
 				067F4B27268156C7008609C4 /* Segment_Appboy.framework in CopyFiles */,
 				067F4B20268156AE008609C4 /* Appboy_iOS_SDK.framework in CopyFiles */,
 				067F4B0D2681566E008609C4 /* SDWebImage.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		067F4B4326815844008609C4 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				067F4B5C268158D0008609C4 /* FBSDKLoginKit.framework in CopyFiles */,
+				067F4B56268158BA008609C4 /* FBSDKCoreKit.framework in CopyFiles */,
+				067F4B502681586A008609C4 /* Appboy_iOS_SDK.framework in CopyFiles */,
+				067F4B4A26815864008609C4 /* Segment_Appboy.framework in CopyFiles */,
+				067F4B442681585E008609C4 /* SDWebImage.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4902,6 +4921,7 @@
 				A75511411C8642B3005355CF /* Sources */,
 				A75511421C8642B3005355CF /* Frameworks */,
 				A75511431C8642B3005355CF /* Resources */,
+				067F4B4326815844008609C4 /* CopyFiles */,
 			);
 			buildRules = (
 			);
