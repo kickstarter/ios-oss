@@ -426,18 +426,18 @@ private func commentsNextPage(
   cursor: String?,
   updateID: String?
 ) -> SignalProducer<CommentsEnvelope, ErrorEnvelope> {
-  if let id = updateID {
+  if let projectSlug = projectSlug {
     return AppEnvironment.current.apiService.fetchComments(
-      query: projectUpdateCommentsQuery(
-        id: id,
+      query: commentsQuery(
+        withProjectSlug: projectSlug,
         after: cursor
       )
     )
   } else {
-    guard let projectSlug = projectSlug else { return .empty }
+    guard let id = updateID else { return .empty }
     return AppEnvironment.current.apiService.fetchComments(
-      query: commentsQuery(
-        withProjectSlug: projectSlug,
+      query: projectUpdateCommentsQuery(
+        id: id,
         after: cursor
       )
     )
