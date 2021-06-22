@@ -100,7 +100,6 @@ final class GraphCommentsEnvelopeTests: XCTestCase {
       XCTAssertEqual(envelope.slug, "jadelabo-j1-beautiful-powerful-and-smart-idex-3d-printer")
     } catch {
       XCTFail()
-      print(error)
     }
   }
 
