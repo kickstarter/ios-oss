@@ -59,7 +59,6 @@ extension KeyValueStoreType {
   public var commentFlaggingEnabled: Bool? {
     get {
       return self.object(forKey: AppKeys.commentFlaggingEnabled.rawValue) as? Bool
-//        ?? false
     }
     set {
       self.set(newValue, forKey: AppKeys.commentFlaggingEnabled.rawValue)
@@ -69,7 +68,6 @@ extension KeyValueStoreType {
   public var commentThreadingEnabled: Bool? {
     get {
       return self.object(forKey: AppKeys.commentThreadingEnabled.rawValue) as? Bool
-//        ?? false
     }
     set {
       self.set(newValue, forKey: AppKeys.commentThreadingEnabled.rawValue)
@@ -79,7 +77,6 @@ extension KeyValueStoreType {
   public var commentThreadingRepliesEnabled: Bool? {
     get {
       return self.object(forKey: AppKeys.commentThreadingRepliesEnabled.rawValue) as? Bool
-//        ?? false
     }
     set {
       self.set(newValue, forKey: AppKeys.commentThreadingRepliesEnabled.rawValue)

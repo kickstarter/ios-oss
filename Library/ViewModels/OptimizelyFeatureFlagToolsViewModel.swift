@@ -7,11 +7,11 @@ public typealias OptimizelyFeatures = [(OptimizelyFeature, Bool)]
 
 public protocol OptimizelyFeatureFlagToolsViewModelOutputs {
   var reloadWithData: Signal<OptimizelyFeatures, Never> { get }
-  var updateConfigWithFeatures: Signal<OptimizelyFeatures, Never> { get }
+  var updateUserDefaultsWithFeatures: Signal<OptimizelyFeatures, Never> { get }
 }
 
 public protocol OptimizelyFeatureFlagToolsViewModelInputs {
-  func didUpdateConfig()
+  func didUpdateUserDefaults()
   func setFeatureAtIndexEnabled(index: Int, isEnabled: Bool)
   func viewDidLoad()
 }
@@ -25,12 +25,12 @@ public final class OptimizelyFeatureFlagToolsViewModel: OptimizelyFeatureFlagToo
   OptimizelyFeatureFlagToolsViewModelInputs,
   OptimizelyFeatureFlagToolsViewModelOutputs {
   public init() {
-    let didUpdateConfigAndUI = self.didUpdateConfigProperty.signal
+    let didUpdateUserDefaultsAndUI = self.didUpdateUserDefaultsProperty.signal
       .ksr_debounce(.seconds(1), on: AppEnvironment.current.scheduler)
 
     let features = Signal.merge(
       self.viewDidLoadProperty.signal,
-      didUpdateConfigAndUI
+      didUpdateUserDefaultsAndUI
     )
     .map { _ in AppEnvironment.current.optimizelyClient?.allFeatures() }
     .skipNil()
@@ -41,16 +41,7 @@ public final class OptimizelyFeatureFlagToolsViewModel: OptimizelyFeatureFlagToo
           let isEnabledFromServer = AppEnvironment.current.optimizelyClient?
             .isFeatureEnabled(featureKey: feature.rawValue) ?? false
 
-          var isEnabledFromUserDefaults: Bool?
-
-          switch feature {
-          case .commentFlaggingEnabled:
-            isEnabledFromUserDefaults = AppEnvironment.current.userDefaults.commentFlaggingEnabled
-          case .commentThreading:
-            isEnabledFromUserDefaults = AppEnvironment.current.userDefaults.commentThreadingEnabled
-          case .commentThreadingRepliesEnabled:
-            isEnabledFromUserDefaults = AppEnvironment.current.userDefaults.commentThreadingRepliesEnabled
-          }
+          let isEnabledFromUserDefaults = getValueFromUserDefaults(for: feature)
 
           return (feature, isEnabledFromUserDefaults ?? isEnabledFromServer)
         }
@@ -58,21 +49,14 @@ public final class OptimizelyFeatureFlagToolsViewModel: OptimizelyFeatureFlagToo
 
     self.reloadWithData = optimizelyFeatures
 
-    self.updateConfigWithFeatures = optimizelyFeatures
+    self.updateUserDefaultsWithFeatures = optimizelyFeatures
       .takePairWhen(self.setFeatureEnabledAtIndexProperty.signal.skipNil())
       .map(unpack)
       .map { features, index, isEnabled -> OptimizelyFeatures? in
         let (feature, _) = features[index]
         var mutatedFeatures = features
 
-        switch feature {
-        case .commentFlaggingEnabled:
-          AppEnvironment.current.userDefaults.commentFlaggingEnabled = isEnabled
-        case .commentThreading:
-          AppEnvironment.current.userDefaults.commentThreadingEnabled = isEnabled
-        case .commentThreadingRepliesEnabled:
-          AppEnvironment.current.userDefaults.commentThreadingRepliesEnabled = isEnabled
-        }
+        setValueInUserDefaults(for: feature, and: isEnabled)
 
         mutatedFeatures[index] = (feature, isEnabled)
         return mutatedFeatures
@@ -85,9 +69,9 @@ public final class OptimizelyFeatureFlagToolsViewModel: OptimizelyFeatureFlagToo
     self.setFeatureEnabledAtIndexProperty.value = (index, isEnabled)
   }
 
-  private let didUpdateConfigProperty = MutableProperty(())
-  public func didUpdateConfig() {
-    self.didUpdateConfigProperty.value = ()
+  private let didUpdateUserDefaultsProperty = MutableProperty(())
+  public func didUpdateUserDefaults() {
+    self.didUpdateUserDefaultsProperty.value = ()
   }
 
   private let viewDidLoadProperty = MutableProperty(())
@@ -96,8 +80,36 @@ public final class OptimizelyFeatureFlagToolsViewModel: OptimizelyFeatureFlagToo
   }
 
   public let reloadWithData: Signal<OptimizelyFeatures, Never>
-  public let updateConfigWithFeatures: Signal<OptimizelyFeatures, Never>
+  public let updateUserDefaultsWithFeatures: Signal<OptimizelyFeatures, Never>
 
   public var inputs: OptimizelyFeatureFlagToolsViewModelInputs { return self }
   public var outputs: OptimizelyFeatureFlagToolsViewModelOutputs { return self }
+}
+
+// MARK: - Private Helpers
+
+/** Returns the value of the User Defaults key in the AppEnvironment.
+ */
+private func getValueFromUserDefaults(for feature: OptimizelyFeature) -> Bool? {
+  switch feature {
+  case .commentFlaggingEnabled:
+    return AppEnvironment.current.userDefaults.commentFlaggingEnabled
+  case .commentThreading:
+    return AppEnvironment.current.userDefaults.commentThreadingEnabled
+  case .commentThreadingRepliesEnabled:
+    return AppEnvironment.current.userDefaults.commentThreadingRepliesEnabled
+  }
+}
+
+/** Sets the value for the UserDefaults key in the AppEnvironment.
+ */
+private func setValueInUserDefaults(for feature: OptimizelyFeature, and value: Bool) {
+  switch feature {
+  case .commentFlaggingEnabled:
+    AppEnvironment.current.userDefaults.commentFlaggingEnabled = value
+  case .commentThreading:
+    AppEnvironment.current.userDefaults.commentThreadingEnabled = value
+  case .commentThreadingRepliesEnabled:
+    AppEnvironment.current.userDefaults.commentThreadingRepliesEnabled = value
+  }
 }

@@ -5,7 +5,7 @@ import XCTest
 final class OptimizelyFeatureHelpersTests: TestCase {
   func testCommentsThreading_Optimizely_FeatureFlag_True() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentThreading.rawValue: true]
+      |> \.features .~ [OptimizelyFeature.commentThreading.rawValue: true]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       XCTAssertTrue(featureCommentThreadingIsEnabled())
@@ -14,7 +14,7 @@ final class OptimizelyFeatureHelpersTests: TestCase {
 
   func testCommentsThreading_Optimizely_FeatureFlag_False() {
     let mockOptimizelyClient = MockOptimizelyClient()
-      |> \.features .~ [OptimizelyFeature.Key.commentThreading.rawValue: false]
+      |> \.features .~ [OptimizelyFeature.commentThreading.rawValue: false]
 
     withEnvironment(optimizelyClient: mockOptimizelyClient) {
       XCTAssertFalse(featureCommentThreadingIsEnabled())

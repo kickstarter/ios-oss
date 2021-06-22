@@ -15,6 +15,8 @@ final class OptimizelyFeatureFlagToolsViewController: UITableViewController {
     return OptimizelyFeatureFlagToolsViewController(style: .plain)
   }
 
+  // MARK: - Lifecycle
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -29,6 +31,8 @@ final class OptimizelyFeatureFlagToolsViewController: UITableViewController {
     self.viewModel.inputs.viewDidLoad()
   }
 
+  // MARK: - View model
+
   override func bindViewModel() {
     super.bindViewModel()
 
@@ -40,10 +44,10 @@ final class OptimizelyFeatureFlagToolsViewController: UITableViewController {
         self?.tableView.reloadData()
       }
 
-    self.viewModel.outputs.updateConfigWithFeatures
+    self.viewModel.outputs.updateUserDefaultsWithFeatures
       .observeForUI()
       .observeValues { [weak self] features in
-        self?.updateConfig(with: features)
+        self?.updateUserDefaults(with: features)
       }
   }
 
@@ -53,8 +57,8 @@ final class OptimizelyFeatureFlagToolsViewController: UITableViewController {
 
   // MARK: - Private Helpers
 
-  private func updateConfig(with _: OptimizelyFeatures) {
-    self.viewModel.inputs.didUpdateConfig()
+  private func updateUserDefaults(with _: OptimizelyFeatures) {
+    self.viewModel.inputs.didUpdateUserDefaults()
   }
 }
 
