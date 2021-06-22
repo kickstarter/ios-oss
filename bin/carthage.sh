@@ -31,6 +31,6 @@ elif ! cmp -s Cartfile.resolved Carthage/Cartfile.resolved; then
   # Related: https://discuss.circleci.com/t/homebrew-stopped-to-download-openssl-1-1/39828
   HOMEBREW_BOTTLE_DOMAIN=https://ghcr.io/v2/Homebrew/core brew upgrade carthage
   echo "Resolving dependencies"
-  carthage bootstrap --platform iOS
+  carthage bootstrap --xc-frameworks --platform iOS
   cp Cartfile.resolved Carthage
 fi
